@@ -92,6 +92,10 @@ const page = html`
     }
     button:hover { opacity: 0.85; }
     button:active { opacity: 0.7; }
+    button:focus-visible {
+      outline: 3px solid #333;
+      outline-offset: 3px;
+    }
     .info-box {
       background: #fafafa;
       border-left: 4px solid #f0e68c;
