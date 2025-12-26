@@ -356,6 +356,57 @@ button:focus-visible {
   }
 }
 
+/* 404 Not Found page */
+.not-found-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 20px;
+  min-height: 50vh;
+}
+
+.not-found-heading {
+  font-size: 4rem;
+  font-weight: 300;
+  color: var(--md-sys-color-primary);
+  margin-bottom: 10px;
+}
+
+.not-found-title {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface);
+  margin-bottom: 15px;
+}
+
+.not-found-message {
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 30px;
+  max-width: 400px;
+}
+
+.not-found-link {
+  display: inline-block;
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  padding: 15px 30px;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+.not-found-link:hover {
+  opacity: 0.85;
+}
+
+.not-found-link:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 3px;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   h1 {

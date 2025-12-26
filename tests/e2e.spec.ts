@@ -226,3 +226,97 @@ test.describe('Navigation - E2E Tests', () => {
     await expect(activeLink).toContainText('WHOIS検索');
   });
 });
+
+test.describe('404 Not Found - E2E Tests', () => {
+  test('should display 404 page for undefined routes', async ({ page }) => {
+    await page.goto('/nonexistent-route');
+    const heading = page.locator('.not-found-heading');
+    await expect(heading).toBeVisible();
+    await expect(heading).toContainText('404');
+  });
+
+  test('should display Japanese error message on 404 page', async ({ page }) => {
+    await page.goto('/invalid-path');
+    const title = page.locator('.not-found-title');
+    await expect(title).toBeVisible();
+    await expect(title).toContainText('ページが見つかりません');
+  });
+
+  test('should display explanation text on 404 page', async ({ page }) => {
+    await page.goto('/missing');
+    const message = page.locator('.not-found-message');
+    await expect(message).toBeVisible();
+    await expect(message).toContainText('お探しのページは存在しないか');
+  });
+
+  test('should have link back to home on 404 page', async ({ page }) => {
+    await page.goto('/wrong-path');
+    const homeLink = page.locator('.not-found-link');
+    await expect(homeLink).toBeVisible();
+    await expect(homeLink).toContainText('ホームに戻る');
+  });
+
+  test('should navigate to home when clicking the link on 404 page', async ({ page }) => {
+    await page.goto('/some/deep/path');
+    await page.click('.not-found-link');
+    await expect(page).toHaveURL('/');
+  });
+
+  test('should have proper language attribute on 404 page', async ({ page }) => {
+    await page.goto('/not-here');
+    const html = page.locator('html');
+    await expect(html).toHaveAttribute('lang', 'ja');
+  });
+
+  test('should include accessibility features on 404 page', async ({ page }) => {
+    await page.goto('/missing-page');
+    await expect(page.locator('[role="banner"]')).toBeVisible();
+    await expect(page.locator('[role="main"]')).toBeVisible();
+    const skipLink = page.locator('.skip-link');
+    await expect(skipLink).toBeAttached();
+  });
+});
+
+test.describe('Accessibility - E2E Tests', () => {
+  test('should have aria-live status element on main page', async ({ page }) => {
+    await page.goto('/');
+    const statusElement = page.locator('[aria-live="polite"]');
+    await expect(statusElement).toBeAttached();
+  });
+
+  test('should have aria-live status element on WHOIS page', async ({ page }) => {
+    await page.goto('/whois');
+    const statusElement = page.locator('[aria-live="polite"]');
+    await expect(statusElement).toBeAttached();
+  });
+
+  test('should have proper ARIA labels on input fields', async ({ page }) => {
+    await page.goto('/');
+    const inputTextarea = page.locator('#inputText');
+    await expect(inputTextarea).toHaveAttribute('aria-label');
+  });
+
+  test('should have proper form labels', async ({ page }) => {
+    await page.goto('/');
+    const label = page.locator('label[for="inputText"]');
+    await expect(label).toBeVisible();
+  });
+
+  test('should have navigation with aria-label', async ({ page }) => {
+    await page.goto('/');
+    const nav = page.locator('nav[aria-label]');
+    await expect(nav).toBeVisible();
+  });
+
+  test('should have skip link for keyboard navigation', async ({ page }) => {
+    await page.goto('/');
+    const skipLink = page.locator('.skip-link');
+    await expect(skipLink).toHaveAttribute('href', '#main-content');
+  });
+
+  test('should have main content target for skip link', async ({ page }) => {
+    await page.goto('/');
+    const mainContent = page.locator('#main-content');
+    await expect(mainContent).toBeVisible();
+  });
+});

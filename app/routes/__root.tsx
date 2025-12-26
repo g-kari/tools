@@ -30,7 +30,25 @@ export const Route = createRootRoute({
     ],
   }),
   component: RootComponent,
+  notFoundComponent: NotFoundComponent,
 });
+
+function NotFoundComponent() {
+  return (
+    <RootDocument>
+      <div className="not-found-container">
+        <h1 className="not-found-heading">404</h1>
+        <h2 className="not-found-title">ページが見つかりません</h2>
+        <p className="not-found-message">
+          お探しのページは存在しないか、移動した可能性があります。
+        </p>
+        <Link to="/" className="not-found-link">
+          ホームに戻る
+        </Link>
+      </div>
+    </RootDocument>
+  );
+}
 
 function RootComponent() {
   return (
