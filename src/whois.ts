@@ -699,6 +699,15 @@ const whoisPage = html`
         return;
       }
 
+      // Client-side domain validation
+      const domainRegex = /^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,}$/;
+      if (!domainRegex.test(domain)) {
+        showError('無効なドメイン形式です');
+        announceStatus('エラー: 無効なドメイン形式です');
+        domainInput.focus();
+        return;
+      }
+
       hideError();
       showLoading(true);
       announceStatus('検索中...');
