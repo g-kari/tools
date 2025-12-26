@@ -10,18 +10,46 @@ const page = html`
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Unicode エスケープ変換ツール</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&family=Roboto+Mono&display=swap" rel="stylesheet">
   <style>
+    /* Material Design 3 - Color System (WCAG AA Compliant) */
+    :root {
+      /* Brand color #ffffef used as surface */
+      --md-sys-color-surface: #ffffef;
+      --md-sys-color-on-surface: #1c1b1e;
+      --md-sys-color-on-surface-variant: #49454e;
+
+      /* Primary colors - warm golden brown palette */
+      --md-sys-color-primary: #8b6914;
+      --md-sys-color-on-primary: #ffffff;
+      --md-sys-color-primary-container: #ffedb3;
+      --md-sys-color-on-primary-container: #2d1f00;
+
+      /* Secondary colors - warm earth tones */
+      --md-sys-color-secondary: #6b5e3f;
+      --md-sys-color-on-secondary: #ffffff;
+      --md-sys-color-secondary-container: #f4e7c3;
+      --md-sys-color-on-secondary-container: #231b04;
+
+      /* Neutral colors */
+      --md-sys-color-surface-variant: #e7e0ec;
+      --md-sys-color-outline: #79747e;
+      --md-sys-color-outline-variant: #cac4cf;
+    }
+
     /* Material Design - Base Styles */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #fff8e1;
+      background: var(--md-sys-color-surface);
       min-height: 100vh;
       padding: 20px;
-      color: rgba(0, 0, 0, 0.87);
+      color: var(--md-sys-color-on-surface);
     }
     .container { max-width: 1200px; margin: 0 auto; }
-    header { text-align: center; color: rgba(0, 0, 0, 0.87); margin-bottom: 40px; }
+    header { text-align: center; color: var(--md-sys-color-on-surface); margin-bottom: 40px; }
     h1 {
       font-size: 2.5rem;
       margin-bottom: 10px;
@@ -30,7 +58,7 @@ const page = html`
     }
     .subtitle {
       font-size: 1.1rem;
-      color: rgba(0, 0, 0, 0.6);
+      color: var(--md-sys-color-on-surface-variant);
       font-weight: 300;
     }
     .converter-container {
@@ -41,7 +69,7 @@ const page = html`
     .converter-section { margin-bottom: 30px; }
     .section-title {
       font-size: 1.2rem;
-      color: rgba(0, 0, 0, 0.87);
+      color: var(--md-sys-color-on-surface);
       margin-bottom: 15px;
       font-weight: 500;
     }
@@ -49,17 +77,18 @@ const page = html`
       width: 100%;
       min-height: 150px;
       padding: 15px;
-      border: 1px solid rgba(0, 0, 0, 0.12);
+      border: 1px solid var(--md-sys-color-outline-variant);
       border-radius: 4px;
       font-size: 14px;
       font-family: 'Roboto Mono', 'Courier New', monospace;
       resize: vertical;
       transition: border-color 0.2s;
-      background: #fafafa;
+      background: var(--md-sys-color-surface-variant);
+      color: var(--md-sys-color-on-surface);
     }
     textarea:focus {
       outline: none;
-      border-color: #1976d2;
+      border-color: var(--md-sys-color-primary);
       background: white;
     }
     .button-group { display: flex; gap: 15px; margin: 20px 0; flex-wrap: wrap; }
@@ -77,16 +106,16 @@ const page = html`
       letter-spacing: 0.5px;
     }
     .btn-encode {
-      background: #fff4b3;
-      color: rgba(0, 0, 0, 0.87);
+      background: var(--md-sys-color-primary);
+      color: var(--md-sys-color-on-primary);
     }
     .btn-decode {
-      background: #ffe0b2;
-      color: rgba(0, 0, 0, 0.87);
+      background: var(--md-sys-color-secondary);
+      color: var(--md-sys-color-on-secondary);
     }
     .btn-clear {
-      background: rgba(0, 0, 0, 0.12);
-      color: rgba(0, 0, 0, 0.87);
+      background: var(--md-sys-color-surface-variant);
+      color: var(--md-sys-color-on-surface);
       flex: 0 0 auto;
       min-width: 120px;
     }
@@ -97,8 +126,8 @@ const page = html`
       outline-offset: 3px;
     }
     .info-box {
-      background: #fafafa;
-      border-left: 4px solid #f0e68c;
+      background: var(--md-sys-color-primary-container);
+      border-left: 4px solid var(--md-sys-color-primary);
       padding: 15px;
       border-radius: 4px;
       margin-top: 20px;
@@ -106,12 +135,12 @@ const page = html`
     .info-box h3 {
       font-size: 1rem;
       margin-bottom: 10px;
-      color: rgba(0, 0, 0, 0.87);
+      color: var(--md-sys-color-on-primary-container);
       font-weight: 500;
     }
     .info-box ul {
       list-style-position: inside;
-      color: rgba(0, 0, 0, 0.6);
+      color: var(--md-sys-color-on-primary-container);
       font-size: 0.9rem;
       line-height: 1.8;
     }
