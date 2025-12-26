@@ -59,7 +59,7 @@ const page = html`
     }
     textarea:focus {
       outline: none;
-      border-color: #f0e68c;
+      border-color: #1976d2;
       background: white;
     }
     .button-group { display: flex; gap: 15px; margin: 20px 0; flex-wrap: wrap; }
