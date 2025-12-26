@@ -98,10 +98,12 @@ test.describe('Unicode Escape Converter - E2E Tests', () => {
   });
 
   test('should have proper accessibility attributes', async ({ page }) => {
-    // Check for ARIA labels
+    // Check for ARIA roles
     await expect(page.locator('[role="banner"]')).toBeVisible();
     await expect(page.locator('[role="main"]')).toBeVisible();
-    await expect(page.locator('[aria-live="polite"]')).toBeAttached();
+
+    // Check for screen reader status announcements
+    await expect(page.locator('#status-message[aria-live="polite"]')).toBeAttached();
 
     // Check for skip link
     const skipLink = page.locator('.skip-link');
