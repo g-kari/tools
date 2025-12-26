@@ -77,11 +77,11 @@ const page = html`
       letter-spacing: 0.5px;
     }
     .btn-encode {
-      background: #f0e68c;
+      background: #fff4b3;
       color: rgba(0, 0, 0, 0.87);
     }
     .btn-decode {
-      background: #ffe4b5;
+      background: #ffe0b2;
       color: rgba(0, 0, 0, 0.87);
     }
     .btn-clear {
