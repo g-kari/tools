@@ -1,6 +1,7 @@
 {
   "name": "tools",
   "version": "1.0.0",
+  "type": "module",
   "description": "Collection of useful web tools",
   "scripts": {
     "dev": "wrangler dev",
