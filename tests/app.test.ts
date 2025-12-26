@@ -160,3 +160,87 @@ describe('Domain validation regex', () => {
     expect(domainRegex.test('my-example.com')).toBe(true);
   });
 });
+
+describe('IP address validation', () => {
+  // IPv4 validation
+  function isValidIPv4(ip: string): boolean {
+    const parts = ip.split(".");
+    if (parts.length !== 4) return false;
+    return parts.every((part) => {
+      const num = parseInt(part, 10);
+      return num >= 0 && num <= 255 && part === num.toString();
+    });
+  }
+
+  // IPv6 validation
+  function isValidIPv6(ip: string): boolean {
+    const ipv6Regex = /^([0-9a-fA-F]{0,4}:){2,7}[0-9a-fA-F]{0,4}$/;
+    const ipv6WithIPv4Regex =
+      /^([0-9a-fA-F]{0,4}:){2,6}(\d{1,3}\.){3}\d{1,3}$/;
+    return ipv6Regex.test(ip) || ipv6WithIPv4Regex.test(ip);
+  }
+
+  describe('IPv4 validation', () => {
+    it('should accept valid IPv4 address', () => {
+      expect(isValidIPv4('192.168.1.1')).toBe(true);
+    });
+
+    it('should accept loopback address', () => {
+      expect(isValidIPv4('127.0.0.1')).toBe(true);
+    });
+
+    it('should accept 0.0.0.0', () => {
+      expect(isValidIPv4('0.0.0.0')).toBe(true);
+    });
+
+    it('should accept 255.255.255.255', () => {
+      expect(isValidIPv4('255.255.255.255')).toBe(true);
+    });
+
+    it('should reject IP with out of range octet', () => {
+      expect(isValidIPv4('256.1.1.1')).toBe(false);
+    });
+
+    it('should reject IP with too few octets', () => {
+      expect(isValidIPv4('192.168.1')).toBe(false);
+    });
+
+    it('should reject IP with too many octets', () => {
+      expect(isValidIPv4('192.168.1.1.1')).toBe(false);
+    });
+
+    it('should reject IP with leading zeros', () => {
+      expect(isValidIPv4('192.168.01.1')).toBe(false);
+    });
+
+    it('should reject IP with non-numeric characters', () => {
+      expect(isValidIPv4('192.168.a.1')).toBe(false);
+    });
+
+    it('should reject empty string', () => {
+      expect(isValidIPv4('')).toBe(false);
+    });
+  });
+
+  describe('IPv6 validation', () => {
+    it('should accept valid full IPv6 address', () => {
+      expect(isValidIPv6('2001:0db8:85a3:0000:0000:8a2e:0370:7334')).toBe(true);
+    });
+
+    it('should accept compressed IPv6 address', () => {
+      expect(isValidIPv6('2001:db8::1')).toBe(true);
+    });
+
+    it('should accept loopback IPv6 address', () => {
+      expect(isValidIPv6('::1')).toBe(true);
+    });
+
+    it('should reject invalid IPv6 format', () => {
+      expect(isValidIPv6('not-an-ipv6')).toBe(false);
+    });
+
+    it('should reject empty string', () => {
+      expect(isValidIPv6('')).toBe(false);
+    });
+  });
+});

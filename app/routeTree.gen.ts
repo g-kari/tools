@@ -10,11 +10,17 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WhoisRouteImport } from './routes/whois'
+import { Route as IpGeolocationRouteImport } from './routes/ip-geolocation'
 import { Route as IndexRouteImport } from './routes/index'
 
 const WhoisRoute = WhoisRouteImport.update({
   id: '/whois',
   path: '/whois',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IpGeolocationRoute = IpGeolocationRouteImport.update({
+  id: '/ip-geolocation',
+  path: '/ip-geolocation',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -25,27 +31,31 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/ip-geolocation': typeof IpGeolocationRoute
   '/whois': typeof WhoisRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/ip-geolocation': typeof IpGeolocationRoute
   '/whois': typeof WhoisRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/ip-geolocation': typeof IpGeolocationRoute
   '/whois': typeof WhoisRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/whois'
+  fullPaths: '/' | '/ip-geolocation' | '/whois'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/whois'
-  id: '__root__' | '/' | '/whois'
+  to: '/' | '/ip-geolocation' | '/whois'
+  id: '__root__' | '/' | '/ip-geolocation' | '/whois'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  IpGeolocationRoute: typeof IpGeolocationRoute
   WhoisRoute: typeof WhoisRoute
 }
 
@@ -56,6 +66,13 @@ declare module '@tanstack/react-router' {
       path: '/whois'
       fullPath: '/whois'
       preLoaderRoute: typeof WhoisRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ip-geolocation': {
+      id: '/ip-geolocation'
+      path: '/ip-geolocation'
+      fullPath: '/ip-geolocation'
+      preLoaderRoute: typeof IpGeolocationRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -70,6 +87,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  IpGeolocationRoute: IpGeolocationRoute,
   WhoisRoute: WhoisRoute,
 }
 export const routeTree = rootRouteImport
