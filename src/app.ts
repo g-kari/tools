@@ -251,8 +251,8 @@ const page = html`
           <h3 id="usage-title">使い方</h3>
           <ul>
             <li>「入力テキスト」欄にテキストを入力します</li>
-            <li>「Unicode エスケープに変換」ボタンで日本語などを \uXXXX 形式に変換</li>
-            <li>「Unicode から復元」ボタンで \uXXXX 形式を元の文字に変換</li>
+            <li>「Unicode エスケープに変換」ボタンで日本語などを \\uXXXX 形式に変換</li>
+            <li>「Unicode から復元」ボタンで \\uXXXX 形式を元の文字に変換</li>
             <li>変換結果は「出力結果」欄に表示されます</li>
             <li>キーボードショートカット: Ctrl+Enter で変換実行</li>
           </ul>
