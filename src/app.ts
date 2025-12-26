@@ -350,4 +350,90 @@ const page = html`
 
 app.get('/', (c) => c.html(page));
 
+// 404 handler for undefined routes
+const notFoundPage = html`
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 - ページが見つかりません</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --md-sys-color-surface: #ffffef;
+      --md-sys-color-on-surface: #1c1b1e;
+      --md-sys-color-on-surface-variant: #49454e;
+      --md-sys-color-primary: #8b6914;
+      --md-sys-color-on-primary: #ffffff;
+      --md-sys-color-secondary-container: #f4e7c3;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--md-sys-color-surface);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--md-sys-color-on-surface);
+    }
+    .container {
+      text-align: center;
+      padding: 40px;
+      background: white;
+      border-radius: 8px;
+      max-width: 500px;
+      margin: 20px;
+    }
+    h1 {
+      font-size: 4rem;
+      font-weight: 300;
+      color: var(--md-sys-color-primary);
+      margin-bottom: 10px;
+    }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin-bottom: 20px;
+    }
+    p {
+      color: var(--md-sys-color-on-surface-variant);
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
+    a {
+      display: inline-block;
+      background: var(--md-sys-color-primary);
+      color: var(--md-sys-color-on-primary);
+      text-decoration: none;
+      padding: 12px 32px;
+      border-radius: 4px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: opacity 0.2s;
+    }
+    a:hover { opacity: 0.85; }
+    a:focus-visible {
+      outline: 3px solid var(--md-sys-color-primary);
+      outline-offset: 3px;
+    }
+  </style>
+</head>
+<body>
+  <main class="container" role="main">
+    <h1>404</h1>
+    <h2>ページが見つかりません</h2>
+    <p>お探しのページは存在しないか、移動した可能性があります。</p>
+    <a href="/">ホームに戻る</a>
+  </main>
+</body>
+</html>
+`;
+
+app.notFound((c) => c.html(notFoundPage, 404));
+
 export default app;
