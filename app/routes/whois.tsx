@@ -194,17 +194,14 @@ function WhoisLookup() {
 
   return (
     <>
-      <style>{`@import "/styles.css";`}</style>
       <div className="tool-container">
         <form
           onSubmit={(e) => e.preventDefault()}
           aria-label="WHOIS検索フォーム"
         >
-          <div style={{ marginBottom: "30px" }}>
-            <div
-              style={{ display: "flex", gap: "15px", alignItems: "flex-end" }}
-            >
-              <div style={{ flex: 1 }}>
+          <div className="converter-section">
+            <div className="search-form-row">
+              <div className="search-input-wrapper">
                 <label htmlFor="domainInput">ドメイン名</label>
                 <input
                   type="text"
@@ -225,7 +222,6 @@ function WhoisLookup() {
                 onClick={handleSearch}
                 disabled={isLoading}
                 aria-label="WHOIS情報を検索"
-                style={{ minWidth: "120px" }}
               >
                 検索
               </button>

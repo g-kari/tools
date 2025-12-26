@@ -132,6 +132,22 @@ h1 {
   padding: 30px;
 }
 
+/* Converter section */
+.converter-section {
+  margin-bottom: 30px;
+}
+
+/* Search form layout */
+.search-form-row {
+  display: flex;
+  gap: 15px;
+  align-items: flex-end;
+}
+
+.search-input-wrapper {
+  flex: 1;
+}
+
 /* Section title */
 .section-title {
   font-size: 1.2rem;
