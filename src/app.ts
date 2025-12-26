@@ -11,64 +11,106 @@ const page = html`
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Unicode エスケープ変換ツール</title>
   <style>
+    /* Material Design - Base Styles */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #ffffef;
       min-height: 100vh;
       padding: 20px;
+      color: rgba(0, 0, 0, 0.87);
     }
     .container { max-width: 1200px; margin: 0 auto; }
-    header { text-align: center; color: white; margin-bottom: 40px; }
-    h1 { font-size: 2.5rem; margin-bottom: 10px; }
-    .subtitle { font-size: 1.1rem; opacity: 0.9; }
+    header { text-align: center; color: rgba(0, 0, 0, 0.87); margin-bottom: 40px; }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      font-weight: 400;
+      letter-spacing: -0.5px;
+    }
+    .subtitle {
+      font-size: 1.1rem;
+      color: rgba(0, 0, 0, 0.6);
+      font-weight: 300;
+    }
     .converter-container {
       background: white;
-      border-radius: 12px;
+      border-radius: 4px;
       padding: 30px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
     }
     .converter-section { margin-bottom: 30px; }
-    .section-title { font-size: 1.2rem; color: #333; margin-bottom: 15px; font-weight: 600; }
+    .section-title {
+      font-size: 1.2rem;
+      color: rgba(0, 0, 0, 0.87);
+      margin-bottom: 15px;
+      font-weight: 500;
+    }
     textarea {
       width: 100%;
       min-height: 150px;
       padding: 15px;
-      border: 2px solid #e0e0e0;
-      border-radius: 8px;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      border-radius: 4px;
       font-size: 14px;
-      font-family: 'Courier New', monospace;
+      font-family: 'Roboto Mono', 'Courier New', monospace;
       resize: vertical;
-      transition: border-color 0.3s;
+      transition: border-color 0.2s;
+      background: #fafafa;
     }
-    textarea:focus { outline: none; border-color: #667eea; }
+    textarea:focus {
+      outline: none;
+      border-color: #f0e68c;
+      background: white;
+    }
     .button-group { display: flex; gap: 15px; margin: 20px 0; flex-wrap: wrap; }
     button {
       flex: 1;
       min-width: 200px;
       padding: 15px 30px;
       font-size: 16px;
-      font-weight: 600;
+      font-weight: 500;
       border: none;
-      border-radius: 8px;
+      border-radius: 4px;
       cursor: pointer;
-      transition: all 0.3s;
-      color: white;
+      transition: background-color 0.2s, opacity 0.2s;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
-    .btn-encode { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-    .btn-decode { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
-    .btn-clear { background: #6c757d; flex: 0 0 auto; min-width: 120px; }
-    button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); }
-    button:active { transform: translateY(0); }
+    .btn-encode {
+      background: #f0e68c;
+      color: rgba(0, 0, 0, 0.87);
+    }
+    .btn-decode {
+      background: #ffe4b5;
+      color: rgba(0, 0, 0, 0.87);
+    }
+    .btn-clear {
+      background: rgba(0, 0, 0, 0.12);
+      color: rgba(0, 0, 0, 0.87);
+      flex: 0 0 auto;
+      min-width: 120px;
+    }
+    button:hover { opacity: 0.85; }
+    button:active { opacity: 0.7; }
     .info-box {
-      background: #f8f9fa;
-      border-left: 4px solid #667eea;
+      background: #fafafa;
+      border-left: 4px solid #f0e68c;
       padding: 15px;
       border-radius: 4px;
       margin-top: 20px;
     }
-    .info-box h3 { font-size: 1rem; margin-bottom: 10px; color: #667eea; }
-    .info-box ul { list-style-position: inside; color: #666; font-size: 0.9rem; line-height: 1.8; }
+    .info-box h3 {
+      font-size: 1rem;
+      margin-bottom: 10px;
+      color: rgba(0, 0, 0, 0.87);
+      font-weight: 500;
+    }
+    .info-box ul {
+      list-style-position: inside;
+      color: rgba(0, 0, 0, 0.6);
+      font-size: 0.9rem;
+      line-height: 1.8;
+    }
     @media (max-width: 768px) {
       h1 { font-size: 2rem; }
       .button-group { flex-direction: column; }
