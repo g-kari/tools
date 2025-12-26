@@ -60,7 +60,7 @@ export const htmlPage = toolLayout('HTML エスケープ', html`
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#x27;')
-      .replace(/\\//g, '&#x2F;');
+      .replace(/\//g, '&#x2F;');
     
     document.getElementById('output').value = escaped;
     announceStatus('エスケープしました');
