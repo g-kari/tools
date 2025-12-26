@@ -121,6 +121,127 @@ test.describe('Unicode Escape Converter - E2E Tests', () => {
   });
 });
 
+test.describe('WHOIS Lookup - E2E Tests', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/whois');
+  });
+
+  test('should load the page without "undefined" content', async ({ page }) => {
+    const bodyText = await page.textContent('body');
+    expect(bodyText).not.toContain('undefined');
+    expect(bodyText).not.toBe('undefined');
+  });
+
+  test('should display the correct page title', async ({ page }) => {
+    await expect(page).toHaveTitle('WHOIS検索ツール');
+  });
+
+  test('should display the main heading', async ({ page }) => {
+    const heading = page.locator('h1');
+    await expect(heading).toBeVisible();
+    await expect(heading).toContainText('WHOIS検索ツール');
+  });
+
+  test('should have domain input field', async ({ page }) => {
+    const domainInput = page.locator('#domainInput');
+    await expect(domainInput).toBeVisible();
+  });
+
+  test('should have search button', async ({ page }) => {
+    const searchButton = page.locator('button.btn-search');
+    await expect(searchButton).toBeVisible();
+    await expect(searchButton).toContainText('検索');
+  });
+
+  test('should show alert when searching with empty input', async ({ page }) => {
+    const searchButton = page.locator('button.btn-search');
+
+    page.on('dialog', async (dialog) => {
+      expect(dialog.message()).toContain('ドメイン名を入力してください');
+      await dialog.accept();
+    });
+
+    await searchButton.click();
+  });
+
+  test('should have proper accessibility attributes', async ({ page }) => {
+    await expect(page.locator('[role="banner"]')).toBeVisible();
+    await expect(page.locator('[role="main"]')).toBeVisible();
+    await expect(page.locator('#status-message[aria-live="polite"]')).toBeAttached();
+    const skipLink = page.locator('.skip-link');
+    await expect(skipLink).toBeAttached();
+  });
+
+  test('should display usage instructions', async ({ page }) => {
+    const usageSection = page.locator('.info-box');
+    await expect(usageSection).toBeVisible();
+
+    const usageText = await usageSection.textContent();
+    expect(usageText).toContain('使い方');
+    expect(usageText).not.toContain('undefined');
+  });
+
+  test('should have navigation links', async ({ page }) => {
+    const navLinks = page.locator('.nav-links');
+    await expect(navLinks).toBeVisible();
+
+    const unicodeLink = page.locator('.nav-links a[href="/"]');
+    await expect(unicodeLink).toBeVisible();
+    await expect(unicodeLink).toContainText('Unicode変換');
+
+    const whoisLink = page.locator('.nav-links a[href="/whois"]');
+    await expect(whoisLink).toBeVisible();
+    await expect(whoisLink).toContainText('WHOIS検索');
+  });
+
+  test('should navigate to Unicode page when clicking the link', async ({ page }) => {
+    await page.click('.nav-links a[href="/"]');
+    await expect(page).toHaveURL('/');
+    await expect(page.locator('h1')).toContainText('Unicode エスケープ変換ツール');
+  });
+
+  test('should show error for invalid domain format', async ({ page }) => {
+    const domainInput = page.locator('#domainInput');
+    const searchButton = page.locator('button.btn-search');
+
+    await domainInput.fill('invalid');
+    await searchButton.click();
+
+    // Wait for error message
+    const errorSection = page.locator('#errorSection');
+    await expect(errorSection).toBeVisible({ timeout: 10000 });
+    await expect(errorSection).toContainText('無効なドメイン形式です');
+  });
+});
+
+test.describe('Navigation - E2E Tests', () => {
+  test('should navigate from Unicode page to WHOIS page', async ({ page }) => {
+    await page.goto('/');
+    await page.click('.nav-links a[href="/whois"]');
+    await expect(page).toHaveURL('/whois');
+    await expect(page.locator('h1')).toContainText('WHOIS検索ツール');
+  });
+
+  test('should navigate from WHOIS page to Unicode page', async ({ page }) => {
+    await page.goto('/whois');
+    await page.click('.nav-links a[href="/"]');
+    await expect(page).toHaveURL('/');
+    await expect(page.locator('h1')).toContainText('Unicode エスケープ変換ツール');
+  });
+
+  test('should show active state on Unicode link when on main page', async ({ page }) => {
+    await page.goto('/');
+    const activeLink = page.locator('.nav-links a.active');
+    await expect(activeLink).toContainText('Unicode変換');
+  });
+
+  test('should show active state on WHOIS link when on whois page', async ({ page }) => {
+    await page.goto('/whois');
+    const activeLink = page.locator('.nav-links a.active');
+    await expect(activeLink).toContainText('WHOIS検索');
+  });
+});
+
 test.describe('404 Page - E2E Tests', () => {
   // Test the /404 route directly (SSG generates this as a static page)
   test('should show 404 heading and message', async ({ page }) => {

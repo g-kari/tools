@@ -1,8 +1,13 @@
 import { Hono } from 'hono';
 import { html } from 'hono/html';
+import whois from './whois';
 
 const app = new Hono();
 
+// Mount WHOIS routes
+app.route('/', whois);
+
+// Unicode Escape Converter page
 const page = html`
 <!DOCTYPE html>
 <html lang="ja">
@@ -180,10 +185,33 @@ const page = html`
       font-size: 0.9rem;
       line-height: 1.8;
     }
+    /* Navigation */
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 15px;
+    }
+    .nav-links a {
+      color: var(--md-sys-color-primary);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: 4px;
+      transition: background-color 0.2s;
+    }
+    .nav-links a:hover {
+      background: var(--md-sys-color-primary-container);
+    }
+    .nav-links a.active {
+      background: var(--md-sys-color-primary);
+      color: var(--md-sys-color-on-primary);
+    }
     @media (max-width: 768px) {
       h1 { font-size: 2rem; }
       .button-group { flex-direction: column; }
       button { width: 100%; }
+      .nav-links { flex-direction: column; align-items: center; }
     }
   </style>
 </head>
@@ -195,6 +223,10 @@ const page = html`
     <header role="banner">
       <h1>Unicode エスケープ変換ツール</h1>
       <p class="subtitle">日本語などのUnicode文字をエスケープシーケンスに変換します</p>
+      <nav class="nav-links" aria-label="ツールナビゲーション">
+        <a href="/" class="active">Unicode変換</a>
+        <a href="/whois">WHOIS検索</a>
+      </nav>
     </header>
 
     <main id="main-content" role="main">
