@@ -490,6 +490,181 @@ describe('Hono App - 404 Not Found Handler', () => {
   });
 });
 
+describe('Hono App - WHOIS Page', () => {
+  describe('GET /whois', () => {
+    it('should return 200 status code for whois path', async () => {
+      const res = await app.request('/whois');
+      expect(res.status).toBe(200);
+    });
+
+    it('should return HTML content type for whois path', async () => {
+      const res = await app.request('/whois');
+      expect(res.headers.get('content-type')).toContain('text/html');
+    });
+
+    it('should return the WHOIS page with correct title', async () => {
+      const res = await app.request('/whois');
+      const html = await res.text();
+      expect(html).toContain('WHOIS検索ツール');
+    });
+
+    it('should include the domain input field', async () => {
+      const res = await app.request('/whois');
+      const html = await res.text();
+      expect(html).toContain('id="domainInput"');
+    });
+
+    it('should include the search button', async () => {
+      const res = await app.request('/whois');
+      const html = await res.text();
+      expect(html).toContain('btn-search');
+      expect(html).toContain('検索');
+    });
+
+    it('should include Material Design color system variables', async () => {
+      const res = await app.request('/whois');
+      const html = await res.text();
+      expect(html).toContain('--md-sys-color-surface');
+      expect(html).toContain('--md-sys-color-primary');
+    });
+
+    it('should include accessibility features - skip link', async () => {
+      const res = await app.request('/whois');
+      const html = await res.text();
+      expect(html).toContain('skip-link');
+      expect(html).toContain('メインコンテンツへスキップ');
+    });
+
+    it('should include ARIA labels for accessibility', async () => {
+      const res = await app.request('/whois');
+      const html = await res.text();
+      expect(html).toContain('role="banner"');
+      expect(html).toContain('role="main"');
+      expect(html).toContain('aria-label');
+    });
+
+    it('should include the searchWhois function', async () => {
+      const res = await app.request('/whois');
+      const html = await res.text();
+      expect(html).toContain('function searchWhois');
+    });
+
+    it('should include usage instructions', async () => {
+      const res = await app.request('/whois');
+      const html = await res.text();
+      expect(html).toContain('使い方');
+      expect(html).toContain('ドメイン名');
+    });
+
+    it('should have navigation links', async () => {
+      const res = await app.request('/whois');
+      const html = await res.text();
+      expect(html).toContain('nav-links');
+      expect(html).toContain('href="/"');
+      expect(html).toContain('href="/whois"');
+    });
+
+    it('should have proper language attribute', async () => {
+      const res = await app.request('/whois');
+      const html = await res.text();
+      expect(html).toContain('lang="ja"');
+    });
+
+    it('should include proper meta tags for mobile', async () => {
+      const res = await app.request('/whois');
+      const html = await res.text();
+      expect(html).toContain('viewport');
+      expect(html).toContain('width=device-width');
+    });
+
+    it('should include Google Fonts preconnect', async () => {
+      const res = await app.request('/whois');
+      const html = await res.text();
+      expect(html).toContain('fonts.googleapis.com');
+      expect(html).toContain('fonts.gstatic.com');
+    });
+
+    it('should include Roboto font family', async () => {
+      const res = await app.request('/whois');
+      const html = await res.text();
+      expect(html).toContain('Roboto');
+    });
+  });
+});
+
+describe('Hono App - WHOIS API', () => {
+  describe('GET /api/whois', () => {
+    it('should return 400 when domain parameter is missing', async () => {
+      const res = await app.request('/api/whois');
+      expect(res.status).toBe(400);
+      const json = await res.json();
+      expect(json.error).toBe('domain parameter is required');
+    });
+
+    it('should return 400 for invalid domain format', async () => {
+      const res = await app.request('/api/whois?domain=invalid');
+      expect(res.status).toBe(400);
+      const json = await res.json();
+      expect(json.error).toBe('無効なドメイン形式です');
+    });
+
+    it('should return 400 for domain with invalid characters', async () => {
+      const res = await app.request('/api/whois?domain=test@domain.com');
+      expect(res.status).toBe(400);
+      const json = await res.json();
+      expect(json.error).toBe('無効なドメイン形式です');
+    });
+
+    it('should return 400 for domain starting with hyphen', async () => {
+      const res = await app.request('/api/whois?domain=-example.com');
+      expect(res.status).toBe(400);
+      const json = await res.json();
+      expect(json.error).toBe('無効なドメイン形式です');
+    });
+
+    it('should return JSON content type', async () => {
+      const res = await app.request('/api/whois?domain=example.com');
+      expect(res.headers.get('content-type')).toContain('application/json');
+    });
+
+    it('should accept valid domain format', async () => {
+      // This test just checks that a valid format passes validation
+      // The actual RDAP query may succeed or fail depending on network
+      const res = await app.request('/api/whois?domain=example.com');
+      // Should not be 400 (bad request) - could be 200 or 404 depending on RDAP
+      expect(res.status).not.toBe(400);
+    });
+
+    it('should accept subdomain format', async () => {
+      const res = await app.request('/api/whois?domain=sub.example.com');
+      // Should pass validation (not 400)
+      expect(res.status).not.toBe(400);
+    });
+  });
+});
+
+describe('Navigation - Main page has nav links', () => {
+  it('should have navigation links on main page', async () => {
+    const res = await app.request('/');
+    const html = await res.text();
+    expect(html).toContain('nav-links');
+    expect(html).toContain('href="/"');
+    expect(html).toContain('href="/whois"');
+  });
+
+  it('should have Unicode変換 link marked as active on main page', async () => {
+    const res = await app.request('/');
+    const html = await res.text();
+    expect(html).toContain('<a href="/" class="active">Unicode変換</a>');
+  });
+
+  it('should have WHOIS検索 link marked as active on whois page', async () => {
+    const res = await app.request('/whois');
+    const html = await res.text();
+    expect(html).toContain('<a href="/whois" class="active">WHOIS検索</a>');
+  });
+});
+
 describe('App export', () => {
   it('should export the Hono app instance', () => {
     expect(app).toBeDefined();
