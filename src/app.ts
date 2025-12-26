@@ -15,7 +15,7 @@ const page = html`
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #ffffef;
+      background: #fff8e1;
       min-height: 100vh;
       padding: 20px;
       color: rgba(0, 0, 0, 0.87);
