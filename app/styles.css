@@ -1,0 +1,432 @@
+/* Material Design 3 - Color System (WCAG AA Compliant) */
+:root {
+  /* Brand color #ffffef used as surface */
+  --md-sys-color-surface: #ffffef;
+  --md-sys-color-on-surface: #1c1b1e;
+  --md-sys-color-on-surface-variant: #49454e;
+
+  /* Primary colors - warm golden brown palette */
+  --md-sys-color-primary: #8b6914;
+  --md-sys-color-on-primary: #ffffff;
+  --md-sys-color-primary-container: #ffedb3;
+  --md-sys-color-on-primary-container: #2d1f00;
+
+  /* Secondary colors - warm earth tones */
+  --md-sys-color-secondary: #6b5e3f;
+  --md-sys-color-on-secondary: #ffffff;
+  --md-sys-color-secondary-container: #f4e7c3;
+  --md-sys-color-on-secondary-container: #231b04;
+
+  /* Neutral colors */
+  --md-sys-color-surface-variant: #e7e0ec;
+  --md-sys-color-outline: #79747e;
+  --md-sys-color-outline-variant: #cac4cf;
+
+  /* Error colors */
+  --md-sys-color-error: #ba1a1a;
+  --md-sys-color-on-error: #ffffff;
+  --md-sys-color-error-container: #ffdad6;
+}
+
+/* Material Design - Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  background: var(--md-sys-color-surface);
+  min-height: 100vh;
+  padding: 20px;
+  color: var(--md-sys-color-on-surface);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+header {
+  text-align: center;
+  color: var(--md-sys-color-on-surface);
+  margin-bottom: 40px;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  font-weight: 400;
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-weight: 300;
+}
+
+/* Skip link for keyboard navigation */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: 0 0 4px 0;
+  font-weight: 500;
+  z-index: 100;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* Status messages for screen readers */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Navigation */
+.nav-links {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.nav-links a {
+  color: var(--md-sys-color-primary);
+  text-decoration: none;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.nav-links a:hover {
+  background: var(--md-sys-color-primary-container);
+}
+
+.nav-links a[data-active="true"] {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+/* Tool container */
+.tool-container {
+  background: white;
+  border-radius: 4px;
+  padding: 30px;
+}
+
+/* Converter section */
+.converter-section {
+  margin-bottom: 30px;
+}
+
+/* Search form layout */
+.search-form-row {
+  display: flex;
+  gap: 15px;
+  align-items: flex-end;
+}
+
+.search-input-wrapper {
+  flex: 1;
+}
+
+/* Section title */
+.section-title {
+  font-size: 1.2rem;
+  color: var(--md-sys-color-on-surface);
+  margin-bottom: 15px;
+  font-weight: 500;
+}
+
+/* Labels */
+label {
+  display: block;
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: var(--md-sys-color-on-surface);
+}
+
+/* Textarea */
+textarea {
+  width: 100%;
+  min-height: 150px;
+  padding: 15px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: "Roboto Mono", "Courier New", monospace;
+  resize: vertical;
+  transition: border-color 0.2s;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+}
+
+textarea:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  background: white;
+}
+
+/* Input */
+input[type="text"] {
+  width: 100%;
+  padding: 15px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  font-size: 16px;
+  font-family: "Roboto Mono", "Courier New", monospace;
+  transition: border-color 0.2s;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  background: white;
+}
+
+/* Button group */
+.button-group {
+  display: flex;
+  gap: 15px;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+/* Buttons */
+button {
+  flex: 1;
+  min-width: 200px;
+  padding: 15px 30px;
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s, opacity 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+button:hover {
+  opacity: 0.85;
+}
+
+button:active {
+  opacity: 0.7;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+button:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 3px;
+}
+
+.btn-primary {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+.btn-secondary {
+  background: var(--md-sys-color-secondary);
+  color: var(--md-sys-color-on-secondary);
+}
+
+.btn-clear {
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  flex: 0 0 auto;
+  min-width: 120px;
+}
+
+/* Info box */
+.info-box {
+  background: var(--md-sys-color-primary-container);
+  border-left: 4px solid var(--md-sys-color-primary);
+  padding: 15px;
+  border-radius: 4px;
+  margin-top: 20px;
+}
+
+.info-box h3 {
+  font-size: 1rem;
+  margin-bottom: 10px;
+  color: var(--md-sys-color-on-primary-container);
+  font-weight: 500;
+}
+
+.info-box ul {
+  list-style-position: inside;
+  color: var(--md-sys-color-on-primary-container);
+  font-size: 0.9rem;
+  line-height: 1.8;
+}
+
+/* Result card */
+.result-card {
+  background: var(--md-sys-color-surface-variant);
+  border-radius: 4px;
+  padding: 20px;
+  margin-top: 15px;
+}
+
+.result-row {
+  display: flex;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.result-row:last-child {
+  border-bottom: none;
+}
+
+.result-label {
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface);
+  width: 150px;
+  flex-shrink: 0;
+}
+
+.result-value {
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: "Roboto Mono", "Courier New", monospace;
+  word-break: break-all;
+}
+
+.result-value.list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Error message */
+.error-message {
+  background: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-error);
+  padding: 15px;
+  border-radius: 4px;
+  margin-top: 15px;
+}
+
+/* Loading */
+.loading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--md-sys-color-outline-variant);
+  border-top-color: var(--md-sys-color-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 404 Not Found page */
+.not-found-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 20px;
+  min-height: 50vh;
+}
+
+.not-found-heading {
+  font-size: 4rem;
+  font-weight: 300;
+  color: var(--md-sys-color-primary);
+  margin-bottom: 10px;
+}
+
+.not-found-title {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface);
+  margin-bottom: 15px;
+}
+
+.not-found-message {
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 30px;
+  max-width: 400px;
+}
+
+.not-found-link {
+  display: inline-block;
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  padding: 15px 30px;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+.not-found-link:hover {
+  opacity: 0.85;
+}
+
+.not-found-link:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 3px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+  .button-group {
+    flex-direction: column;
+  }
+  button {
+    width: 100%;
+  }
+  .nav-links {
+    flex-direction: column;
+    align-items: center;
+  }
+  .result-row {
+    flex-direction: column;
+    gap: 5px;
+  }
+  .result-label {
+    width: auto;
+  }
+}
