@@ -103,10 +103,9 @@ function UnicodeConverter() {
 
   return (
     <>
-      <style>{`@import "/styles.css";`}</style>
       <div className="tool-container">
         <form onSubmit={(e) => e.preventDefault()} aria-label="Unicode変換フォーム">
-          <div style={{ marginBottom: "30px" }}>
+          <div className="converter-section">
             <label htmlFor="inputText" className="section-title">
               入力テキスト
             </label>

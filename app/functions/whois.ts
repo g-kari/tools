@@ -61,6 +61,11 @@ interface RdapResponse {
 // IANA RDAP Bootstrap file URL
 const IANA_BOOTSTRAP_URL = "https://data.iana.org/rdap/dns.json";
 
+// Cache for bootstrap data (TLD -> RDAP server URL)
+let bootstrapCache: Record<string, string> | null = null;
+let bootstrapCacheTime = 0;
+const CACHE_TTL = 3600000; // 1 hour in milliseconds
+
 // Bootstrap file structure
 interface BootstrapFile {
   version: string;
@@ -76,6 +81,13 @@ function getTld(domain: string): string {
 
 // Function to fetch and parse IANA bootstrap file
 async function getBootstrapData(): Promise<Record<string, string>> {
+  const now = Date.now();
+
+  // Return cached data if still valid
+  if (bootstrapCache && now - bootstrapCacheTime < CACHE_TTL) {
+    return bootstrapCache;
+  }
+
   try {
     const response = await fetch(IANA_BOOTSTRAP_URL, {
       headers: { Accept: "application/json" },
@@ -100,9 +112,14 @@ async function getBootstrapData(): Promise<Record<string, string>> {
       }
     }
 
+    // Update cache
+    bootstrapCache = mapping;
+    bootstrapCacheTime = now;
+
     return mapping;
   } catch {
-    return {};
+    // Return cached data on error, or empty object
+    return bootstrapCache || {};
   }
 }
 

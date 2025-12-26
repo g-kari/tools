@@ -1,9 +1,10 @@
 {
+  "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "tools",
-  "main": "@tanstack/react-start/server-entry",
   "compatibility_date": "2025-12-26",
   "compatibility_flags": ["nodejs_compat"],
-  "assets": {
-    "directory": ".output/public"
+  "main": "@tanstack/react-start/server-entry",
+  "observability": {
+    "enabled": true
   }
 }
