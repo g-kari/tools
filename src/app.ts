@@ -109,10 +109,24 @@ const page = html`
   </div>
   <script>
     function toUnicodeEscape(text) {
-      return text.split('').map(char => {
-        const code = char.charCodeAt(0);
-        return code > 127 ? '\\\\u' + code.toString(16).padStart(4, '0') : char;
-      }).join('');
+      let result = '';
+      for (let i = 0; i < text.length; ) {
+        const cp = text.codePointAt(i);
+        if (cp > 0xFFFF) {
+          const high = ((cp - 0x10000) >> 10) + 0xD800;
+          const low = ((cp - 0x10000) & 0x3FF) + 0xDC00;
+          result += '\\\\u' + high.toString(16).padStart(4, '0');
+          result += '\\\\u' + low.toString(16).padStart(4, '0');
+          i += 2;
+        } else if (cp > 127) {
+          result += '\\\\u' + cp.toString(16).padStart(4, '0');
+          i += 1;
+        } else {
+          result += text[i];
+          i += 1;
+        }
+      }
+      return result;
     }
     function fromUnicodeEscape(text) {
       return text.replace(/\\\\u([0-9a-fA-F]{4})/g, (_, code) => String.fromCharCode(parseInt(code, 16)));
