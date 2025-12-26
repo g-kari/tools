@@ -308,7 +308,7 @@ async function queryRdap(domain: string): Promise<WhoisResult> {
 
 // Server function for WHOIS lookup
 export const lookupWhois = createServerFn({ method: "GET" })
-  .validator((data: string) => {
+  .inputValidator((data: string) => {
     const domainRegex =
       /^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
     if (!domainRegex.test(data)) {
