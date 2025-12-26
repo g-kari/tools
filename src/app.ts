@@ -1,5 +1,14 @@
 import { Hono } from 'hono';
 import { html } from 'hono/html';
+import { homePage } from './tools/home';
+import { unicodeToolPage } from './tools/unicode';
+import { uuidPage } from './tools/uuid';
+import { passwordPage } from './tools/password';
+import { jsonPage } from './tools/json';
+import { urlPage } from './tools/url';
+import { htmlPage } from './tools/html';
+import { jwtPage } from './tools/jwt';
+import { ipPage, getIpPageWithIP } from './tools/ip';
 
 const app = new Hono();
 
@@ -348,7 +357,42 @@ const page = html`
 </html>
 `;
 
-app.get('/', (c) => c.html(page));
+// Homepage with tool listing
+app.get('/', (c) => c.html(homePage));
+
+// Unicode escape tool (with navigation)
+app.get('/unicode', (c) => c.html(unicodeToolPage));
+
+// UUID generator
+app.get('/uuid', (c) => c.html(uuidPage));
+
+// Password generator
+app.get('/password', (c) => c.html(passwordPage));
+
+// JSON formatter
+app.get('/json', (c) => c.html(jsonPage));
+
+// URL encode/decode
+app.get('/url', (c) => c.html(urlPage));
+
+// HTML escape/unescape
+app.get('/html', (c) => c.html(htmlPage));
+
+// JWT decoder
+app.get('/jwt', (c) => c.html(jwtPage));
+
+// IP address display
+app.get('/ip', (c) => {
+  // Get client IP from various headers
+  const cfConnectingIP = c.req.header('CF-Connecting-IP');
+  const xForwardedFor = c.req.header('X-Forwarded-For');
+  const xRealIP = c.req.header('X-Real-IP');
+  
+  // Priority: CF-Connecting-IP > X-Real-IP > X-Forwarded-For > fallback
+  const ip = cfConnectingIP || xRealIP || (xForwardedFor?.split(',')[0]?.trim()) || '不明';
+  
+  return c.html(getIpPageWithIP(ip));
+});
 
 // 404 page - also available at /404 for SSG
 const notFoundPage = html`

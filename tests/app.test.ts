@@ -13,25 +13,23 @@ describe('Hono App - Main Routes', () => {
       expect(res.headers.get('content-type')).toContain('text/html');
     });
 
-    it('should return the Unicode converter page with correct title', async () => {
+    it('should return the homepage with correct title', async () => {
       const res = await app.request('/');
       const html = await res.text();
-      expect(html).toContain('Unicode エスケープ変換ツール');
+      expect(html).toContain('Web ツール集');
     });
 
-    it('should include the main converter form', async () => {
+    it('should include tool cards for all tools', async () => {
       const res = await app.request('/');
       const html = await res.text();
-      expect(html).toContain('id="inputText"');
-      expect(html).toContain('id="outputText"');
-    });
-
-    it('should include all three action buttons', async () => {
-      const res = await app.request('/');
-      const html = await res.text();
-      expect(html).toContain('Unicode エスケープに変換');
-      expect(html).toContain('Unicode から復元');
-      expect(html).toContain('クリア');
+      expect(html).toContain('Unicode エスケープ変換');
+      expect(html).toContain('UUID 生成');
+      expect(html).toContain('パスワード生成');
+      expect(html).toContain('JSON フォーマット');
+      expect(html).toContain('URL エンコード・デコード');
+      expect(html).toContain('HTML エスケープ');
+      expect(html).toContain('JWT デコーダー');
+      expect(html).toContain('グローバル IP');
     });
 
     it('should include Material Design color system variables', async () => {
@@ -40,41 +38,6 @@ describe('Hono App - Main Routes', () => {
       expect(html).toContain('--md-sys-color-surface');
       expect(html).toContain('--md-sys-color-primary');
       expect(html).toContain('#ffffef');
-    });
-
-    it('should include accessibility features - skip link', async () => {
-      const res = await app.request('/');
-      const html = await res.text();
-      expect(html).toContain('skip-link');
-      expect(html).toContain('メインコンテンツへスキップ');
-    });
-
-    it('should include ARIA labels for accessibility', async () => {
-      const res = await app.request('/');
-      const html = await res.text();
-      expect(html).toContain('role="banner"');
-      expect(html).toContain('role="main"');
-      expect(html).toContain('aria-label');
-      expect(html).toContain('aria-live="polite"');
-    });
-
-    it('should include the toUnicodeEscape function', async () => {
-      const res = await app.request('/');
-      const html = await res.text();
-      expect(html).toContain('function toUnicodeEscape');
-    });
-
-    it('should include the fromUnicodeEscape function', async () => {
-      const res = await app.request('/');
-      const html = await res.text();
-      expect(html).toContain('function fromUnicodeEscape');
-    });
-
-    it('should include keyboard shortcut handling', async () => {
-      const res = await app.request('/');
-      const html = await res.text();
-      expect(html).toContain('Ctrl+Enter');
-      expect(html).toContain('keydown');
     });
 
     it('should include proper meta tags for mobile', async () => {
@@ -102,13 +65,191 @@ describe('Hono App - Main Routes', () => {
       const html = await res.text();
       expect(html).toContain('lang="ja"');
     });
+  });
+
+  describe('GET /unicode', () => {
+    it('should return 200 status code', async () => {
+      const res = await app.request('/unicode');
+      expect(res.status).toBe(200);
+    });
+
+    it('should return the Unicode converter page with correct title', async () => {
+      const res = await app.request('/unicode');
+      const html = await res.text();
+      expect(html).toContain('Unicode エスケープ変換ツール');
+    });
+
+    it('should include the main converter form', async () => {
+      const res = await app.request('/unicode');
+      const html = await res.text();
+      expect(html).toContain('id="inputText"');
+      expect(html).toContain('id="outputText"');
+    });
+
+    it('should include all three action buttons', async () => {
+      const res = await app.request('/unicode');
+      const html = await res.text();
+      expect(html).toContain('Unicode エスケープに変換');
+      expect(html).toContain('Unicode から復元');
+      expect(html).toContain('クリア');
+    });
+
+    it('should include navigation for accessibility', async () => {
+      const res = await app.request('/unicode');
+      const html = await res.text();
+      expect(html).toContain('<nav');
+      expect(html).toContain('role="navigation"');
+      expect(html).toContain('href="/"');
+    });
+
+    it('should include ARIA labels for accessibility', async () => {
+      const res = await app.request('/unicode');
+      const html = await res.text();
+      expect(html).toContain('role="main"');
+      expect(html).toContain('aria-label');
+      expect(html).toContain('aria-live="polite"');
+    });
+
+    it('should include the toUnicodeEscape function', async () => {
+      const res = await app.request('/unicode');
+      const html = await res.text();
+      expect(html).toContain('function toUnicodeEscape');
+    });
+
+    it('should include the fromUnicodeEscape function', async () => {
+      const res = await app.request('/unicode');
+      const html = await res.text();
+      expect(html).toContain('function fromUnicodeEscape');
+    });
+
+    it('should include keyboard shortcut handling', async () => {
+      const res = await app.request('/unicode');
+      const html = await res.text();
+      expect(html).toContain('Ctrl+Enter');
+      expect(html).toContain('keydown');
+    });
 
     it('should include usage instructions', async () => {
-      const res = await app.request('/');
+      const res = await app.request('/unicode');
       const html = await res.text();
       expect(html).toContain('使い方');
       expect(html).toContain('入力テキスト');
     });
+  });
+
+  describe('GET /uuid', () => {
+    it('should return 200 status code', async () => {
+      const res = await app.request('/uuid');
+      expect(res.status).toBe(200);
+    });
+
+    it('should return UUID generator page', async () => {
+      const res = await app.request('/uuid');
+      const html = await res.text();
+      expect(html).toContain('UUID 生成');
+    });
+  });
+
+  describe('GET /password', () => {
+    it('should return 200 status code', async () => {
+      const res = await app.request('/password');
+      expect(res.status).toBe(200);
+    });
+
+    it('should return password generator page', async () => {
+      const res = await app.request('/password');
+      const html = await res.text();
+      expect(html).toContain('パスワード生成');
+    });
+  });
+
+  describe('GET /json', () => {
+    it('should return 200 status code', async () => {
+      const res = await app.request('/json');
+      expect(res.status).toBe(200);
+    });
+
+    it('should return JSON formatter page', async () => {
+      const res = await app.request('/json');
+      const html = await res.text();
+      expect(html).toContain('JSON フォーマット');
+    });
+  });
+
+  describe('GET /url', () => {
+    it('should return 200 status code', async () => {
+      const res = await app.request('/url');
+      expect(res.status).toBe(200);
+    });
+
+    it('should return URL encode/decode page', async () => {
+      const res = await app.request('/url');
+      const html = await res.text();
+      expect(html).toContain('URL エンコード・デコード');
+    });
+  });
+
+  describe('GET /html', () => {
+    it('should return 200 status code', async () => {
+      const res = await app.request('/html');
+      expect(res.status).toBe(200);
+    });
+
+    it('should return HTML escape page', async () => {
+      const res = await app.request('/html');
+      const html = await res.text();
+      expect(html).toContain('HTML エスケープ');
+    });
+  });
+
+  describe('GET /jwt', () => {
+    it('should return 200 status code', async () => {
+      const res = await app.request('/jwt');
+      expect(res.status).toBe(200);
+    });
+
+    it('should return JWT decoder page', async () => {
+      const res = await app.request('/jwt');
+      const html = await res.text();
+      expect(html).toContain('JWT デコーダー');
+    });
+  });
+
+  describe('GET /ip', () => {
+    it('should return 200 status code', async () => {
+      const res = await app.request('/ip');
+      expect(res.status).toBe(200);
+    });
+
+    it('should return IP address page', async () => {
+      const res = await app.request('/ip');
+      const html = await res.text();
+      expect(html).toContain('グローバル IP');
+    });
+  });
+});
+
+describe('Hono App - Navigation', () => {
+  it('homepage should have navigation to all tools', async () => {
+    const res = await app.request('/');
+    const html = await res.text();
+    expect(html).toContain('href="/unicode"');
+    expect(html).toContain('href="/uuid"');
+    expect(html).toContain('href="/password"');
+    expect(html).toContain('href="/json"');
+    expect(html).toContain('href="/url"');
+    expect(html).toContain('href="/html"');
+    expect(html).toContain('href="/jwt"');
+    expect(html).toContain('href="/ip"');
+  });
+
+  it('tool pages should have navigation back to home', async () => {
+    const pages = ['/unicode', '/uuid', '/password', '/json', '/url', '/html', '/jwt', '/ip'];
+    for (const page of pages) {
+      const res = await app.request(page);
+      const html = await res.text();
+      expect(html).toContain('href="/"');
+    }
   });
 });
 
@@ -425,7 +566,7 @@ describe('Hono App - 404 Not Found Handler', () => {
       const notFoundHtml = await notFoundRes.text();
       
       expect(homeHtml).not.toBe(notFoundHtml);
-      expect(homeHtml).toContain('Unicode エスケープ変換ツール');
+      expect(homeHtml).toContain('Web ツール集');
       expect(notFoundHtml).toContain('ページが見つかりません');
     });
 
