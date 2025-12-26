@@ -47,20 +47,20 @@ interface RdapResponse {
   description?: string[];
 }
 
-// TLD to RDAP server mapping for common TLDs
-const rdapServers: Record<string, string> = {
-  'com': 'https://rdap.verisign.com/com/v1',
-  'net': 'https://rdap.verisign.com/net/v1',
-  'org': 'https://rdap.publicinterestregistry.org/rdap',
-  'info': 'https://rdap.afilias.net/rdap/info',
-  'io': 'https://rdap.nic.io',
-  'co': 'https://rdap.nic.co',
-  'dev': 'https://rdap.nic.google',
-  'app': 'https://rdap.nic.google',
-  'xyz': 'https://rdap.nic.xyz',
-  'me': 'https://rdap.nic.me',
-  'jp': 'https://rdap.jprs.jp/rdap',
-};
+// IANA RDAP Bootstrap file URL
+const IANA_BOOTSTRAP_URL = 'https://data.iana.org/rdap/dns.json';
+
+// Cache for bootstrap data (TLD -> RDAP server URL)
+let bootstrapCache: Record<string, string> | null = null;
+let bootstrapCacheTime = 0;
+const CACHE_TTL = 3600000; // 1 hour in milliseconds
+
+// Bootstrap file structure
+interface BootstrapFile {
+  version: string;
+  publication: string;
+  services: Array<[string[], string[]]>;
+}
 
 // Function to get TLD from domain
 function getTld(domain: string): string {
@@ -68,12 +68,53 @@ function getTld(domain: string): string {
   return parts[parts.length - 1].toLowerCase();
 }
 
+// Function to fetch and parse IANA bootstrap file
+async function getBootstrapData(): Promise<Record<string, string>> {
+  const now = Date.now();
+
+  // Return cached data if still valid
+  if (bootstrapCache && (now - bootstrapCacheTime) < CACHE_TTL) {
+    return bootstrapCache;
+  }
+
+  try {
+    const response = await fetch(IANA_BOOTSTRAP_URL, {
+      headers: { 'Accept': 'application/json' },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch bootstrap: ${response.status}`);
+    }
+
+    const data: BootstrapFile = await response.json();
+    const mapping: Record<string, string> = {};
+
+    // Parse services array: [[tlds], [urls]]
+    for (const service of data.services) {
+      const tlds = service[0];
+      const urls = service[1];
+      if (urls.length > 0) {
+        const serverUrl = urls[0].replace(/\/$/, ''); // Remove trailing slash
+        for (const tld of tlds) {
+          mapping[tld.toLowerCase()] = serverUrl;
+        }
+      }
+    }
+
+    bootstrapCache = mapping;
+    bootstrapCacheTime = now;
+    return mapping;
+  } catch {
+    // Return empty object on error, will fallback to rdap.org
+    return bootstrapCache || {};
+  }
+}
+
 // Function to query a single RDAP server
 async function queryRdapServer(url: string): Promise<Response> {
   return fetch(url, {
     headers: {
       'Accept': 'application/rdap+json',
-      'User-Agent': 'WHOIS-Tool/1.0',
     },
   });
 }
@@ -83,12 +124,13 @@ async function queryRdap(domain: string): Promise<WhoisResult> {
   const result: WhoisResult = { domain };
   const tld = getTld(domain);
 
-  // Build list of RDAP servers to try
+  // Get bootstrap data for TLD-specific server
+  const bootstrap = await getBootstrapData();
   const serversToTry: string[] = [];
 
-  // Add TLD-specific server if available
-  if (rdapServers[tld]) {
-    serversToTry.push(`${rdapServers[tld]}/domain/${encodeURIComponent(domain)}`);
+  // Add TLD-specific server from IANA bootstrap if available
+  if (bootstrap[tld]) {
+    serversToTry.push(`${bootstrap[tld]}/domain/${encodeURIComponent(domain)}`);
   }
 
   // Add rdap.org as fallback
