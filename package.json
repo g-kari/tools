@@ -4,13 +4,16 @@
   "description": "Collection of useful web tools",
   "scripts": {
     "dev": "wrangler dev",
-    "deploy": "wrangler deploy"
+    "build": "npx tsx src/ssg.ts",
+    "deploy": "npm run build && wrangler deploy"
   },
   "dependencies": {
     "hono": "^4.0.0"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20231218.0",
+    "@types/node": "^20.0.0",
+    "tsx": "^4.0.0",
     "typescript": "^5.3.3",
     "wrangler": "^3.22.0"
   }
