@@ -1,6 +1,6 @@
 # Tools - Web ツール集
 
-様々な便利なWebツールを集めたサイトです。
+様々な便利なWebツールを集めたサイトです。Cloudflare Workers上で動作します。
 
 ## 機能
 
@@ -12,18 +12,24 @@
 - 入力: `こんにちは`
 - 出力: `\u3053\u3093\u306b\u3061\u306f`
 
+### WHOIS 検索ツール
+
+ドメイン名のWHOIS情報を検索できるツールです。ドメインの登録情報、有効期限、ネームサーバーなどを確認できます。
+
 ## 技術スタック
 
-- **Cloudflare Workers**: サーバーレスプラットフォーム
-- **Hono**: 軽量で高速なWebフレームワーク
-- **TypeScript**: 型安全な開発
+- **ランタイム**: Cloudflare Workers
+- **フレームワーク**: TanStack Start (React + TanStack Router)
+- **言語**: TypeScript
+- **ビルドツール**: Vite 7
+- **テスト**: Vitest（ユニットテスト）、Playwright（E2Eテスト）
 
 ## セットアップ
 
 ### 必要な環境
 
 - Node.js 18以上
-- npm または yarn
+- npm
 
 ### インストール
 
@@ -37,7 +43,17 @@ npm install
 npm run dev
 ```
 
-ローカルで http://localhost:8787 にアクセスできます。
+### ビルド
+
+```bash
+npm run build
+```
+
+### プレビュー
+
+```bash
+npm run preview
+```
 
 ### デプロイ
 
@@ -48,16 +64,51 @@ npx wrangler login
 npm run deploy
 ```
 
+## テスト
+
+### ユニットテスト
+
+```bash
+# テスト実行
+npm test
+
+# ウォッチモード
+npm run test:watch
+
+# カバレッジレポート生成
+npm run test:coverage
+```
+
+### E2Eテスト
+
+```bash
+npm run test:e2e
+```
+
 ## プロジェクト構成
 
 ```
 .
-├── src/
-│   └── index.ts        # メインアプリケーションファイル
-├── package.json        # プロジェクト依存関係
-├── tsconfig.json       # TypeScript設定
-├── wrangler.toml       # Cloudflare Workers設定
-└── README.md          # このファイル
+├── app/
+│   ├── router.tsx        # ルーター設定
+│   ├── client.tsx        # クライアントエントリ
+│   ├── ssr.tsx           # SSRエントリ
+│   ├── styles.css        # 共通スタイル
+│   ├── routes/
+│   │   ├── __root.tsx    # ルートレイアウト
+│   │   ├── index.tsx     # Unicode変換ページ (/)
+│   │   └── whois.tsx     # WHOIS検索ページ (/whois)
+│   └── functions/
+│       └── whois.ts      # WHOISサーバーファンクション
+├── tests/
+│   ├── app.test.ts       # ユニットテスト
+│   └── e2e.spec.ts       # E2Eテスト
+├── package.json
+├── tsconfig.json
+├── vite.config.ts        # Vite設定
+├── vitest.config.ts      # Vitest設定
+├── playwright.config.ts  # Playwright設定
+└── wrangler.jsonc        # Cloudflare Workers設定
 ```
 
 ## ライセンス
