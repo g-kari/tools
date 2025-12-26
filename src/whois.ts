@@ -47,94 +47,146 @@ interface RdapResponse {
   description?: string[];
 }
 
+// TLD to RDAP server mapping for common TLDs
+const rdapServers: Record<string, string> = {
+  'com': 'https://rdap.verisign.com/com/v1',
+  'net': 'https://rdap.verisign.com/net/v1',
+  'org': 'https://rdap.publicinterestregistry.org/rdap',
+  'info': 'https://rdap.afilias.net/rdap/info',
+  'io': 'https://rdap.nic.io',
+  'co': 'https://rdap.nic.co',
+  'dev': 'https://rdap.nic.google',
+  'app': 'https://rdap.nic.google',
+  'xyz': 'https://rdap.nic.xyz',
+  'me': 'https://rdap.nic.me',
+  'jp': 'https://rdap.jprs.jp/rdap',
+};
+
+// Function to get TLD from domain
+function getTld(domain: string): string {
+  const parts = domain.split('.');
+  return parts[parts.length - 1].toLowerCase();
+}
+
+// Function to query a single RDAP server
+async function queryRdapServer(url: string): Promise<Response> {
+  return fetch(url, {
+    headers: {
+      'Accept': 'application/rdap+json',
+      'User-Agent': 'WHOIS-Tool/1.0',
+    },
+  });
+}
+
 // Function to query RDAP
 async function queryRdap(domain: string): Promise<WhoisResult> {
   const result: WhoisResult = { domain };
+  const tld = getTld(domain);
 
-  try {
-    // Try rdap.org first (it routes to the correct RDAP server)
-    const response = await fetch(`https://rdap.org/domain/${encodeURIComponent(domain)}`, {
-      headers: {
-        'Accept': 'application/rdap+json',
-      },
-    });
+  // Build list of RDAP servers to try
+  const serversToTry: string[] = [];
 
-    if (!response.ok) {
+  // Add TLD-specific server if available
+  if (rdapServers[tld]) {
+    serversToTry.push(`${rdapServers[tld]}/domain/${encodeURIComponent(domain)}`);
+  }
+
+  // Add rdap.org as fallback
+  serversToTry.push(`https://rdap.org/domain/${encodeURIComponent(domain)}`);
+
+  let lastError = '';
+
+  for (const serverUrl of serversToTry) {
+    try {
+      const response = await queryRdapServer(serverUrl);
+
+      if (response.ok) {
+        const data: RdapResponse = await response.json();
+        return parseRdapResponse(data, domain);
+      }
+
       if (response.status === 404) {
         result.error = 'ドメインが見つかりませんでした';
-      } else {
-        result.error = `RDAP query failed: ${response.status}`;
+        return result;
       }
-      return result;
+
+      lastError = `HTTP ${response.status}`;
+      // Continue to next server on 403 or other errors
+    } catch (err) {
+      lastError = err instanceof Error ? err.message : 'Unknown error';
+      // Continue to next server
     }
+  }
 
-    const data: RdapResponse = await response.json();
+  result.error = `WHOIS情報を取得できませんでした (${lastError})`;
+  return result;
+}
 
-    // Parse domain name
-    result.domain = data.ldhName || domain;
+// Parse RDAP response into WhoisResult
+function parseRdapResponse(data: RdapResponse, domain: string): WhoisResult {
+  const result: WhoisResult = { domain };
 
-    // Parse status
-    if (data.status) {
-      result.status = data.status;
+  // Parse domain name
+  result.domain = data.ldhName || domain;
+
+  // Parse status
+  if (data.status) {
+    result.status = data.status;
+  }
+
+  // Parse events (registration, expiration, last update)
+  if (data.events) {
+    for (const event of data.events) {
+      switch (event.eventAction) {
+        case 'registration':
+          result.createdDate = event.eventDate;
+          break;
+        case 'expiration':
+          result.expiryDate = event.eventDate;
+          break;
+        case 'last changed':
+        case 'last update of RDAP database':
+          if (!result.updatedDate) {
+            result.updatedDate = event.eventDate;
+          }
+          break;
+      }
     }
+  }
 
-    // Parse events (registration, expiration, last update)
-    if (data.events) {
-      for (const event of data.events) {
-        switch (event.eventAction) {
-          case 'registration':
-            result.createdDate = event.eventDate;
-            break;
-          case 'expiration':
-            result.expiryDate = event.eventDate;
-            break;
-          case 'last changed':
-          case 'last update of RDAP database':
-            if (!result.updatedDate) {
-              result.updatedDate = event.eventDate;
-            }
-            break;
+  // Parse nameservers
+  if (data.nameservers) {
+    result.nameServers = data.nameservers.map(ns => ns.ldhName).filter(Boolean);
+  }
+
+  // Parse entities (registrar, registrant)
+  if (data.entities) {
+    for (const entity of data.entities) {
+      if (entity.roles?.includes('registrar')) {
+        // Try to get registrar name from vcard
+        if (entity.vcardArray && entity.vcardArray[1]) {
+          const fnEntry = entity.vcardArray[1].find(entry => entry[0] === 'fn');
+          if (fnEntry) {
+            result.registrar = fnEntry[3] as string;
+          }
+        }
+        // Fallback to publicIds
+        if (!result.registrar && entity.publicIds) {
+          const ianaId = entity.publicIds.find(id => id.type === 'IANA Registrar ID');
+          if (ianaId) {
+            result.registrar = `IANA ID: ${ianaId.identifier}`;
+          }
+        }
+      }
+      if (entity.roles?.includes('registrant')) {
+        if (entity.vcardArray && entity.vcardArray[1]) {
+          const fnEntry = entity.vcardArray[1].find(entry => entry[0] === 'fn');
+          if (fnEntry) {
+            result.registrant = fnEntry[3] as string;
+          }
         }
       }
     }
-
-    // Parse nameservers
-    if (data.nameservers) {
-      result.nameServers = data.nameservers.map(ns => ns.ldhName).filter(Boolean);
-    }
-
-    // Parse entities (registrar, registrant)
-    if (data.entities) {
-      for (const entity of data.entities) {
-        if (entity.roles?.includes('registrar')) {
-          // Try to get registrar name from vcard
-          if (entity.vcardArray && entity.vcardArray[1]) {
-            const fnEntry = entity.vcardArray[1].find(entry => entry[0] === 'fn');
-            if (fnEntry) {
-              result.registrar = fnEntry[3] as string;
-            }
-          }
-          // Fallback to publicIds
-          if (!result.registrar && entity.publicIds) {
-            const ianaId = entity.publicIds.find(id => id.type === 'IANA Registrar ID');
-            if (ianaId) {
-              result.registrar = `IANA ID: ${ianaId.identifier}`;
-            }
-          }
-        }
-        if (entity.roles?.includes('registrant')) {
-          if (entity.vcardArray && entity.vcardArray[1]) {
-            const fnEntry = entity.vcardArray[1].find(entry => entry[0] === 'fn');
-            if (fnEntry) {
-              result.registrant = fnEntry[3] as string;
-            }
-          }
-        }
-      }
-    }
-
-  } catch (err) {
-    result.error = err instanceof Error ? err.message : 'Unknown error occurred';
   }
 
   return result;
