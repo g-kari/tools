@@ -350,7 +350,7 @@ const page = html`
 
 app.get('/', (c) => c.html(page));
 
-// 404 handler for undefined routes
+// 404 page - also available at /404 for SSG
 const notFoundPage = html`
 <!DOCTYPE html>
 <html lang="ja">
@@ -433,6 +433,9 @@ const notFoundPage = html`
 </body>
 </html>
 `;
+
+// Route for SSG to generate 404.html
+app.get('/404', (c) => c.html(notFoundPage));
 
 app.notFound((c) => c.html(notFoundPage, 404));
 

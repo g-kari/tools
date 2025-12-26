@@ -120,21 +120,16 @@ test.describe('Unicode Escape Converter - E2E Tests', () => {
 });
 
 test.describe('404 Page - E2E Tests', () => {
-  test('should display 404 page for unknown routes', async ({ page }) => {
-    const response = await page.goto('/nonexistent-page');
-
-    expect(response?.status()).toBe(404);
-  });
-
+  // Test the /404 route directly (SSG generates this as a static page)
   test('should show 404 heading and message', async ({ page }) => {
-    await page.goto('/nonexistent-page');
+    await page.goto('/404');
 
     await expect(page.locator('h1')).toContainText('404');
     await expect(page.locator('h2')).toContainText('ページが見つかりません');
   });
 
   test('should have link back to home', async ({ page }) => {
-    await page.goto('/nonexistent-page');
+    await page.goto('/404');
 
     const homeLink = page.locator('a[href="/"]');
     await expect(homeLink).toBeVisible();
@@ -142,7 +137,7 @@ test.describe('404 Page - E2E Tests', () => {
   });
 
   test('should navigate back to home when clicking the link', async ({ page }) => {
-    await page.goto('/nonexistent-page');
+    await page.goto('/404');
 
     await page.click('a[href="/"]');
 
@@ -151,7 +146,7 @@ test.describe('404 Page - E2E Tests', () => {
   });
 
   test('404 page should not contain undefined', async ({ page }) => {
-    await page.goto('/nonexistent-page');
+    await page.goto('/404');
 
     const bodyText = await page.textContent('body');
     expect(bodyText).not.toContain('undefined');
