@@ -1,0 +1,6 @@
+name = "tools"
+main = "src/index.ts"
+compatibility_date = "2023-12-18"
+
+[build]
+command = ""
