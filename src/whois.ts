@@ -4,6 +4,15 @@ import { commonStyles } from './styles';
 
 const whois = new Hono();
 
+// Contact information
+interface ContactInfo {
+  name?: string;
+  organization?: string;
+  email?: string;
+  phone?: string;
+  address?: string;
+}
+
 // WHOIS API types
 interface WhoisResult {
   domain: string;
@@ -13,7 +22,11 @@ interface WhoisResult {
   updatedDate?: string;
   nameServers?: string[];
   status?: string[];
-  registrant?: string;
+  registrant?: ContactInfo;
+  administrative?: ContactInfo;
+  technical?: ContactInfo;
+  billing?: ContactInfo;
+  abuse?: ContactInfo;
   raw?: string;
   error?: string;
 }
@@ -201,18 +214,19 @@ function parseRdapResponse(data: RdapResponse, domain: string): WhoisResult {
     result.nameServers = data.nameservers.map(ns => ns.ldhName).filter(Boolean);
   }
 
-  // Parse entities (registrar, registrant)
+  // Parse entities (registrar, registrant, admin, tech, billing, abuse)
   if (data.entities) {
     for (const entity of data.entities) {
-      if (entity.roles?.includes('registrar')) {
-        // Try to get registrar name from vcard
+      const roles = entity.roles || [];
+
+      // Handle registrar separately (just name)
+      if (roles.includes('registrar')) {
         if (entity.vcardArray && entity.vcardArray[1]) {
           const fnEntry = entity.vcardArray[1].find(entry => entry[0] === 'fn');
           if (fnEntry) {
             result.registrar = fnEntry[3] as string;
           }
         }
-        // Fallback to publicIds
         if (!result.registrar && entity.publicIds) {
           const ianaId = entity.publicIds.find(id => id.type === 'IANA Registrar ID');
           if (ianaId) {
@@ -220,18 +234,72 @@ function parseRdapResponse(data: RdapResponse, domain: string): WhoisResult {
           }
         }
       }
-      if (entity.roles?.includes('registrant')) {
-        if (entity.vcardArray && entity.vcardArray[1]) {
-          const fnEntry = entity.vcardArray[1].find(entry => entry[0] === 'fn');
-          if (fnEntry) {
-            result.registrant = fnEntry[3] as string;
-          }
-        }
+
+      // Parse contact info for other roles
+      const contactInfo = parseVcardToContact(entity.vcardArray);
+
+      if (roles.includes('registrant') && contactInfo) {
+        result.registrant = contactInfo;
+      }
+      if (roles.includes('administrative') && contactInfo) {
+        result.administrative = contactInfo;
+      }
+      if (roles.includes('technical') && contactInfo) {
+        result.technical = contactInfo;
+      }
+      if (roles.includes('billing') && contactInfo) {
+        result.billing = contactInfo;
+      }
+      if (roles.includes('abuse') && contactInfo) {
+        result.abuse = contactInfo;
       }
     }
   }
 
   return result;
+}
+
+// Helper function to parse vCard array into ContactInfo
+function parseVcardToContact(vcardArray?: [string, Array<[string, Record<string, unknown>, string, string | string[]]>]): ContactInfo | undefined {
+  if (!vcardArray || !vcardArray[1]) {
+    return undefined;
+  }
+
+  const vcard = vcardArray[1];
+  const contact: ContactInfo = {};
+
+  for (const entry of vcard) {
+    const [type, , , value] = entry;
+
+    switch (type) {
+      case 'fn':
+        contact.name = typeof value === 'string' ? value : undefined;
+        break;
+      case 'org':
+        contact.organization = typeof value === 'string' ? value : (Array.isArray(value) ? value[0] : undefined);
+        break;
+      case 'email':
+        contact.email = typeof value === 'string' ? value : undefined;
+        break;
+      case 'tel':
+        contact.phone = typeof value === 'string' ? value : undefined;
+        break;
+      case 'adr':
+        if (Array.isArray(value)) {
+          // vCard address format: [PO Box, Extended, Street, City, Region, Postal, Country]
+          const parts = value.filter(v => v && typeof v === 'string');
+          contact.address = parts.join(', ');
+        }
+        break;
+    }
+  }
+
+  // Return undefined if no meaningful data
+  if (!contact.name && !contact.organization && !contact.email) {
+    return undefined;
+  }
+
+  return contact;
 }
 
 // WHOIS API endpoint
@@ -536,6 +604,17 @@ const whoisPage = html`
       document.getElementById('errorSection').style.display = 'none';
     }
 
+    function formatContact(contact) {
+      if (!contact) return null;
+      const parts = [];
+      if (contact.name) parts.push(contact.name);
+      if (contact.organization) parts.push(contact.organization);
+      if (contact.email) parts.push(contact.email);
+      if (contact.phone) parts.push(contact.phone);
+      if (contact.address) parts.push(contact.address);
+      return parts.length > 0 ? parts : null;
+    }
+
     function displayResult(data) {
       const resultCard = document.getElementById('resultCard');
       const rows = [];
@@ -552,6 +631,27 @@ const whoisPage = html`
           value: data.nameServers,
           isList: true
         });
+      }
+
+      // Contact information
+      const registrantInfo = formatContact(data.registrant);
+      if (registrantInfo) {
+        rows.push({ label: '登録者', value: registrantInfo, isList: true });
+      }
+
+      const adminInfo = formatContact(data.administrative);
+      if (adminInfo) {
+        rows.push({ label: '管理連絡先', value: adminInfo, isList: true });
+      }
+
+      const techInfo = formatContact(data.technical);
+      if (techInfo) {
+        rows.push({ label: '技術連絡先', value: techInfo, isList: true });
+      }
+
+      const abuseInfo = formatContact(data.abuse);
+      if (abuseInfo) {
+        rows.push({ label: '不正利用連絡先', value: abuseInfo, isList: true });
       }
 
       if (data.status && data.status.length > 0) {
