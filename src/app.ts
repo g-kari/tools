@@ -122,8 +122,44 @@ const page = html`
     button:hover { opacity: 0.85; }
     button:active { opacity: 0.7; }
     button:focus-visible {
-      outline: 3px solid #333;
+      outline: 3px solid var(--md-sys-color-primary);
       outline-offset: 3px;
+    }
+    /* Skip link for keyboard navigation */
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 0;
+      background: var(--md-sys-color-primary);
+      color: var(--md-sys-color-on-primary);
+      padding: 8px 16px;
+      text-decoration: none;
+      border-radius: 0 0 4px 0;
+      font-weight: 500;
+      z-index: 100;
+    }
+    .skip-link:focus {
+      top: 0;
+    }
+    /* Status messages for screen readers */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border-width: 0;
+    }
+    /* Labels */
+    label {
+      display: block;
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: var(--md-sys-color-on-surface);
     }
     .info-box {
       background: var(--md-sys-color-primary-container);
@@ -152,37 +188,90 @@ const page = html`
   </style>
 </head>
 <body>
+  <!-- Skip link for keyboard users -->
+  <a href="#main-content" class="skip-link">メインコンテンツへスキップ</a>
+
   <div class="container">
-    <header>
+    <header role="banner">
       <h1>Unicode エスケープ変換ツール</h1>
       <p class="subtitle">日本語などのUnicode文字をエスケープシーケンスに変換します</p>
     </header>
-    <div class="converter-container">
-      <div class="converter-section">
-        <h2 class="section-title">入力テキスト</h2>
-        <textarea id="inputText" placeholder="変換したいテキストを入力してください...&#10;例: こんにちは"></textarea>
+
+    <main id="main-content" role="main">
+      <div class="converter-container">
+        <form onsubmit="return false;" aria-label="Unicode変換フォーム">
+          <div class="converter-section">
+            <label for="inputText" class="section-title">入力テキスト</label>
+            <textarea
+              id="inputText"
+              name="inputText"
+              placeholder="変換したいテキストを入力してください...&#10;例: こんにちは"
+              aria-describedby="input-help"
+              aria-label="変換元のテキスト入力欄"></textarea>
+            <span id="input-help" class="sr-only">このフィールドにテキストを入力して、Unicodeエスケープシーケンスに変換できます</span>
+          </div>
+
+          <div class="button-group" role="group" aria-label="変換操作">
+            <button
+              type="button"
+              class="btn-encode"
+              onclick="encodeToUnicode()"
+              aria-label="入力テキストをUnicodeエスケープに変換">
+              Unicode エスケープに変換
+            </button>
+            <button
+              type="button"
+              class="btn-decode"
+              onclick="decodeFromUnicode()"
+              aria-label="Unicodeエスケープを通常のテキストに復元">
+              Unicode から復元
+            </button>
+            <button
+              type="button"
+              class="btn-clear"
+              onclick="clearAll()"
+              aria-label="入力と出力をクリア">
+              クリア
+            </button>
+          </div>
+
+          <div class="converter-section">
+            <label for="outputText" class="section-title">出力結果</label>
+            <textarea
+              id="outputText"
+              name="outputText"
+              placeholder="変換結果がここに表示されます..."
+              readonly
+              aria-label="変換結果の出力欄"
+              aria-live="polite"></textarea>
+          </div>
+        </form>
+
+        <aside class="info-box" role="complementary" aria-labelledby="usage-title">
+          <h3 id="usage-title">使い方</h3>
+          <ul>
+            <li>「入力テキスト」欄にテキストを入力します</li>
+            <li>「Unicode エスケープに変換」ボタンで日本語などを \uXXXX 形式に変換</li>
+            <li>「Unicode から復元」ボタンで \uXXXX 形式を元の文字に変換</li>
+            <li>変換結果は「出力結果」欄に表示されます</li>
+            <li>キーボードショートカット: Ctrl+Enter で変換実行</li>
+          </ul>
+        </aside>
       </div>
-      <div class="button-group">
-        <button class="btn-encode" onclick="encodeToUnicode()">Unicode エスケープに変換</button>
-        <button class="btn-decode" onclick="decodeFromUnicode()">Unicode から復元</button>
-        <button class="btn-clear" onclick="clearAll()">クリア</button>
-      </div>
-      <div class="converter-section">
-        <h2 class="section-title">出力結果</h2>
-        <textarea id="outputText" placeholder="変換結果がここに表示されます..." readonly></textarea>
-      </div>
-      <div class="info-box">
-        <h3>使い方</h3>
-        <ul>
-          <li>「入力テキスト」欄にテキストを入力します</li>
-          <li>「Unicode エスケープに変換」ボタンで日本語などを \\uXXXX 形式に変換</li>
-          <li>「Unicode から復元」ボタンで \\uXXXX 形式を元の文字に変換</li>
-          <li>変換結果は「出力結果」欄に表示されます</li>
-        </ul>
-      </div>
-    </div>
+    </main>
   </div>
+
+  <!-- Status announcements for screen readers -->
+  <div role="status" aria-live="polite" aria-atomic="true" class="sr-only" id="status-message"></div>
   <script>
+    // Announce status to screen readers
+    function announceStatus(message) {
+      const statusEl = document.getElementById('status-message');
+      statusEl.textContent = message;
+      // Clear after announcement
+      setTimeout(() => { statusEl.textContent = ''; }, 3000);
+    }
+
     function toUnicodeEscape(text) {
       let result = '';
       for (let i = 0; i < text.length; ) {
@@ -203,23 +292,57 @@ const page = html`
       }
       return result;
     }
+
     function fromUnicodeEscape(text) {
       return text.replace(/\\\\u([0-9a-fA-F]{4})/g, (_, code) => String.fromCharCode(parseInt(code, 16)));
     }
+
     function encodeToUnicode() {
       const input = document.getElementById('inputText').value;
-      if (!input) { alert('テキストを入力してください'); return; }
-      document.getElementById('outputText').value = toUnicodeEscape(input);
+      if (!input) {
+        announceStatus('エラー: テキストを入力してください');
+        alert('テキストを入力してください');
+        document.getElementById('inputText').focus();
+        return;
+      }
+      const result = toUnicodeEscape(input);
+      document.getElementById('outputText').value = result;
+      announceStatus('Unicodeエスケープへの変換が完了しました');
     }
+
     function decodeFromUnicode() {
       const input = document.getElementById('inputText').value;
-      if (!input) { alert('テキストを入力してください'); return; }
-      document.getElementById('outputText').value = fromUnicodeEscape(input);
+      if (!input) {
+        announceStatus('エラー: テキストを入力してください');
+        alert('テキストを入力してください');
+        document.getElementById('inputText').focus();
+        return;
+      }
+      const result = fromUnicodeEscape(input);
+      document.getElementById('outputText').value = result;
+      announceStatus('Unicodeからの復元が完了しました');
     }
+
     function clearAll() {
       document.getElementById('inputText').value = '';
       document.getElementById('outputText').value = '';
+      announceStatus('入力と出力をクリアしました');
+      document.getElementById('inputText').focus();
     }
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+      // Ctrl+Enter or Cmd+Enter to encode
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        e.preventDefault();
+        encodeToUnicode();
+      }
+    });
+
+    // Focus management on page load
+    window.addEventListener('load', function() {
+      document.getElementById('inputText').focus();
+    });
   </script>
 </body>
 </html>

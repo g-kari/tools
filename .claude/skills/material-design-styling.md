@@ -210,6 +210,87 @@ node verify-contrast.js
 
 新しいカラーを追加する場合は、必ず WCAG AA 基準（≥4.5:1）を満たすことを確認してください。
 
+## アクセシビリティ（WCAG 2.1 準拠）
+
+Material Design を実装する際は、WCAG 2.1 レベル AA 以上の基準を満たす必要があります。
+
+### フォーカスインジケーター
+
+```css
+/* Material Design 準拠のフォーカススタイル */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 3px;
+}
+```
+
+### スキップリンク
+
+```css
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: 0 0 4px 0;
+  font-weight: 500;
+  z-index: 100;
+}
+.skip-link:focus {
+  top: 0;
+}
+```
+
+### スクリーンリーダー専用テキスト
+
+```css
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+```
+
+### セマンティックHTML
+
+```html
+<!-- ✓ ランドマークの使用 -->
+<header role="banner">
+<main role="main">
+<nav role="navigation">
+<aside role="complementary">
+
+<!-- ✓ ラベルとの関連付け -->
+<label for="input-id">ラベル</label>
+<input id="input-id" type="text">
+
+<!-- ✓ ARIAラベル -->
+<button aria-label="閉じる">×</button>
+```
+
+### ライブリージョン
+
+```html
+<!-- ステータスメッセージの通知 -->
+<div role="status" aria-live="polite" aria-atomic="true">
+  <!-- 動的に更新される内容 -->
+</div>
+```
+
+詳細は `wcag-accessibility.md` スキルを参照してください。
+
 ## 注意事項
 
 - このデザインシステムは、ブランドカラー `#ffffef` を Surface カラーとして使用
@@ -217,3 +298,4 @@ node verify-contrast.js
 - すべての変更は Material Design の原則と WCAG AA アクセシビリティ基準に従ってください
 - 新しいコンポーネントを追加する際は、このガイドラインとカラートークンを参照してください
 - カスタムカラーを使用する場合は、必ずコントラスト比を検証してください
+- キーボード操作性、フォーカス管理、ARIAラベルなどのアクセシビリティ要件を満たしてください
