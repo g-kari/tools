@@ -111,6 +111,12 @@ function RootDocument({ children }: { children: ReactNode }) {
                 JSON
               </Link>
               <Link
+                to="/url-encode"
+                data-active={pathname === "/url-encode" ? "true" : undefined}
+              >
+                URLエンコード
+              </Link>
+              <Link
                 to="/uuid"
                 data-active={pathname === "/uuid" ? "true" : undefined}
               >
@@ -121,6 +127,12 @@ function RootDocument({ children }: { children: ReactNode }) {
                 data-active={pathname === "/password-generator" ? "true" : undefined}
               >
                 パスワード生成
+              </Link>
+              <Link
+                to="/server-env"
+                data-active={pathname === "/server-env" ? "true" : undefined}
+              >
+                サーバー環境
               </Link>
             </nav>
           </header>
