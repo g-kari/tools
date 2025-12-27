@@ -62,4 +62,22 @@ test.describe('Navigation - E2E Tests', () => {
     const activeLink = page.locator('.nav-links a[data-active="true"]');
     await expect(activeLink).toContainText('グローバルIP');
   });
+
+  test('should navigate from Unicode page to サーバー環境 page', async ({ page }) => {
+    await page.goto('/');
+    await page.click('.nav-links a[href="/server-env"]');
+    await expect(page).toHaveURL('/server-env');
+  });
+
+  test('should navigate from サーバー環境 page to WHOIS page', async ({ page }) => {
+    await page.goto('/server-env');
+    await page.click('.nav-links a[href="/whois"]');
+    await expect(page).toHaveURL('/whois');
+  });
+
+  test('should show active state on サーバー環境 link when on server-env page', async ({ page }) => {
+    await page.goto('/server-env');
+    const activeLink = page.locator('.nav-links a[data-active="true"]');
+    await expect(activeLink).toContainText('サーバー環境');
+  });
 });

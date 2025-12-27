@@ -104,6 +104,12 @@ function RootDocument({ children }: { children: ReactNode }) {
               >
                 正規表現
               </Link>
+              <Link
+                to="/server-env"
+                data-active={pathname === "/server-env" ? "true" : undefined}
+              >
+                サーバー環境
+              </Link>
             </nav>
           </header>
 
