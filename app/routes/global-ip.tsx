@@ -15,11 +15,29 @@ function GlobalIpLookup() {
   const [isLoading, setIsLoading] = useState(false);
   const [copied, setCopied] = useState(false);
   const statusRef = useRef<HTMLDivElement>(null);
+  const statusTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const copiedTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Cleanup timeouts on unmount
+  useEffect(() => {
+    return () => {
+      if (statusTimeoutRef.current) {
+        clearTimeout(statusTimeoutRef.current);
+      }
+      if (copiedTimeoutRef.current) {
+        clearTimeout(copiedTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const announceStatus = useCallback((message: string) => {
     if (statusRef.current) {
       statusRef.current.textContent = message;
-      setTimeout(() => {
+      // Clear previous timeout
+      if (statusTimeoutRef.current) {
+        clearTimeout(statusTimeoutRef.current);
+      }
+      statusTimeoutRef.current = setTimeout(() => {
         if (statusRef.current) {
           statusRef.current.textContent = "";
         }
@@ -63,10 +81,27 @@ function GlobalIpLookup() {
     if (!result?.ip) return;
 
     try {
-      await navigator.clipboard.writeText(result.ip);
+      // Use Clipboard API if available, fallback to execCommand
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(result.ip);
+      } else {
+        // Fallback for older browsers
+        const textArea = document.createElement("textarea");
+        textArea.value = result.ip;
+        textArea.style.position = "fixed";
+        textArea.style.left = "-9999px";
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textArea);
+      }
       setCopied(true);
       announceStatus("IPアドレスをコピーしました");
-      setTimeout(() => setCopied(false), 2000);
+      // Clear previous timeout
+      if (copiedTimeoutRef.current) {
+        clearTimeout(copiedTimeoutRef.current);
+      }
+      copiedTimeoutRef.current = setTimeout(() => setCopied(false), 2000);
     } catch {
       announceStatus("コピーに失敗しました");
     }
@@ -91,7 +126,7 @@ function GlobalIpLookup() {
             </div>
           )}
 
-          {result && !error && (
+          {result && !error && result.ip && (
             <div className="ip-display-container" aria-live="polite">
               <div className="ip-display" aria-label="あなたのIPアドレス">
                 {result.ip}
@@ -130,7 +165,7 @@ function GlobalIpLookup() {
             <li>プロバイダーから割り当てられます</li>
             <li>VPNやプロキシを使用すると異なるIPが表示されます</li>
           </ul>
-          <h3>このツールについて</h3>
+          <h3 id="about-tool-title">このツールについて</h3>
           <p>
             サーバーに接続した際のIPアドレスを表示します。Cloudflare経由でアクセスしている場合、実際のIPアドレスが正確に取得されます。
           </p>
@@ -155,8 +190,8 @@ function GlobalIpLookup() {
           font-family: 'Roboto Mono', monospace;
           font-size: 2rem;
           font-weight: 500;
-          color: var(--on-surface);
-          background-color: var(--surface-container);
+          color: var(--md-sys-color-on-surface);
+          background-color: var(--md-sys-color-surface-variant);
           padding: 1.5rem 2rem;
           border-radius: 12px;
           margin-bottom: 1.5rem;
