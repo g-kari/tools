@@ -8,7 +8,7 @@ import {
 
 export const Route = createFileRoute("/server-env")({
   head: () => ({
-    meta: [{ title: "サーバー環境変数確認ツール" }],
+    meta: [{ title: "サーバー環境情報" }],
   }),
   component: ServerEnvPage,
 });

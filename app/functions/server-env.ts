@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { getRequestHeader } from "@tanstack/react-start/server";
 
-// Environment variable item type
+// Server environment item type
 export interface EnvItem {
   key: string;
   value: string;
@@ -11,7 +11,6 @@ export interface EnvItem {
 // Server environment result type
 export interface ServerEnvResult {
   items?: EnvItem[];
-  timestamp?: string;
   error?: string;
 }
 
@@ -77,7 +76,6 @@ export const getServerEnv = createServerFn({ method: "GET" }).handler(
 
       return {
         items,
-        timestamp: new Date().toISOString(),
       };
     } catch (err) {
       return {
