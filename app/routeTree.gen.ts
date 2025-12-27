@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WhoisRouteImport } from './routes/whois'
 import { Route as IpGeolocationRouteImport } from './routes/ip-geolocation'
+import { Route as GlobalIpRouteImport } from './routes/global-ip'
 import { Route as IndexRouteImport } from './routes/index'
 
 const WhoisRoute = WhoisRouteImport.update({
@@ -23,6 +24,11 @@ const IpGeolocationRoute = IpGeolocationRouteImport.update({
   path: '/ip-geolocation',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GlobalIpRoute = GlobalIpRouteImport.update({
+  id: '/global-ip',
+  path: '/global-ip',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -31,30 +37,34 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/global-ip': typeof GlobalIpRoute
   '/ip-geolocation': typeof IpGeolocationRoute
   '/whois': typeof WhoisRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/global-ip': typeof GlobalIpRoute
   '/ip-geolocation': typeof IpGeolocationRoute
   '/whois': typeof WhoisRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/global-ip': typeof GlobalIpRoute
   '/ip-geolocation': typeof IpGeolocationRoute
   '/whois': typeof WhoisRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/ip-geolocation' | '/whois'
+  fullPaths: '/' | '/global-ip' | '/ip-geolocation' | '/whois'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/ip-geolocation' | '/whois'
-  id: '__root__' | '/' | '/ip-geolocation' | '/whois'
+  to: '/' | '/global-ip' | '/ip-geolocation' | '/whois'
+  id: '__root__' | '/' | '/global-ip' | '/ip-geolocation' | '/whois'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  GlobalIpRoute: typeof GlobalIpRoute
   IpGeolocationRoute: typeof IpGeolocationRoute
   WhoisRoute: typeof WhoisRoute
 }
@@ -75,6 +85,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IpGeolocationRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/global-ip': {
+      id: '/global-ip'
+      path: '/global-ip'
+      fullPath: '/global-ip'
+      preLoaderRoute: typeof GlobalIpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -87,6 +104,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  GlobalIpRoute: GlobalIpRoute,
   IpGeolocationRoute: IpGeolocationRoute,
   WhoisRoute: WhoisRoute,
 }
