@@ -244,6 +244,18 @@ function IpGeolocationLookup() {
             <li>IPv4とIPv6の両方に対応</li>
             <li>キーボードショートカット: Enterキーで検索実行</li>
           </ul>
+          <h3>利用サービス</h3>
+          <p>
+            このツールは{" "}
+            <a
+              href="https://ip-api.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              ip-api.com
+            </a>{" "}
+            のAPIを利用しています。無料版のため、1分間に45リクエストまでの制限があります。
+          </p>
         </aside>
       </div>
 
