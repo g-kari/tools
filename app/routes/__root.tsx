@@ -110,6 +110,12 @@ function RootDocument({ children }: { children: ReactNode }) {
               >
                 UUID生成
               </Link>
+              <Link
+                to="/password-generator"
+                data-active={pathname === "/password-generator" ? "true" : undefined}
+              >
+                パスワード生成
+              </Link>
             </nav>
           </header>
 

@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as WhoisRouteImport } from './routes/whois'
 import { Route as UuidRouteImport } from './routes/uuid'
 import { Route as RegexCheckerRouteImport } from './routes/regex-checker'
+import { Route as PasswordGeneratorRouteImport } from './routes/password-generator'
 import { Route as IpGeolocationRouteImport } from './routes/ip-geolocation'
 import { Route as GlobalIpRouteImport } from './routes/global-ip'
 import { Route as IndexRouteImport } from './routes/index'
@@ -29,6 +30,11 @@ const UuidRoute = UuidRouteImport.update({
 const RegexCheckerRoute = RegexCheckerRouteImport.update({
   id: '/regex-checker',
   path: '/regex-checker',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PasswordGeneratorRoute = PasswordGeneratorRouteImport.update({
+  id: '/password-generator',
+  path: '/password-generator',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IpGeolocationRoute = IpGeolocationRouteImport.update({
@@ -51,6 +57,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/global-ip': typeof GlobalIpRoute
   '/ip-geolocation': typeof IpGeolocationRoute
+  '/password-generator': typeof PasswordGeneratorRoute
   '/regex-checker': typeof RegexCheckerRoute
   '/uuid': typeof UuidRoute
   '/whois': typeof WhoisRoute
@@ -59,6 +66,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/global-ip': typeof GlobalIpRoute
   '/ip-geolocation': typeof IpGeolocationRoute
+  '/password-generator': typeof PasswordGeneratorRoute
   '/regex-checker': typeof RegexCheckerRoute
   '/uuid': typeof UuidRoute
   '/whois': typeof WhoisRoute
@@ -68,6 +76,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/global-ip': typeof GlobalIpRoute
   '/ip-geolocation': typeof IpGeolocationRoute
+  '/password-generator': typeof PasswordGeneratorRoute
   '/regex-checker': typeof RegexCheckerRoute
   '/uuid': typeof UuidRoute
   '/whois': typeof WhoisRoute
@@ -78,6 +87,7 @@ export interface FileRouteTypes {
     | '/'
     | '/global-ip'
     | '/ip-geolocation'
+    | '/password-generator'
     | '/regex-checker'
     | '/uuid'
     | '/whois'
@@ -86,6 +96,7 @@ export interface FileRouteTypes {
     | '/'
     | '/global-ip'
     | '/ip-geolocation'
+    | '/password-generator'
     | '/regex-checker'
     | '/uuid'
     | '/whois'
@@ -94,6 +105,7 @@ export interface FileRouteTypes {
     | '/'
     | '/global-ip'
     | '/ip-geolocation'
+    | '/password-generator'
     | '/regex-checker'
     | '/uuid'
     | '/whois'
@@ -103,6 +115,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   GlobalIpRoute: typeof GlobalIpRoute
   IpGeolocationRoute: typeof IpGeolocationRoute
+  PasswordGeneratorRoute: typeof PasswordGeneratorRoute
   RegexCheckerRoute: typeof RegexCheckerRoute
   UuidRoute: typeof UuidRoute
   WhoisRoute: typeof WhoisRoute
@@ -129,6 +142,13 @@ declare module '@tanstack/react-router' {
       path: '/regex-checker'
       fullPath: '/regex-checker'
       preLoaderRoute: typeof RegexCheckerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/password-generator': {
+      id: '/password-generator'
+      path: '/password-generator'
+      fullPath: '/password-generator'
+      preLoaderRoute: typeof PasswordGeneratorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ip-geolocation': {
@@ -159,6 +179,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   GlobalIpRoute: GlobalIpRoute,
   IpGeolocationRoute: IpGeolocationRoute,
+  PasswordGeneratorRoute: PasswordGeneratorRoute,
   RegexCheckerRoute: RegexCheckerRoute,
   UuidRoute: UuidRoute,
   WhoisRoute: WhoisRoute,
