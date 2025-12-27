@@ -1,21 +1,16 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Global IP Lookup - E2E Tests', () => {
-  test.describe.configure({ timeout: 20000 });
+  // Disable retries as requested (retry処理は不要)
+  test.describe.configure({ timeout: 20000, retries: 0 });
 
   test.beforeEach(async ({ page }) => {
     await page.goto('/global-ip');
     await page.waitForLoadState('load');
 
-    // Wait for the page to reach a stable state (either IP displayed or error shown)
-    // This ensures React hydration and the initial API call have completed
-    // before tests run, preventing race conditions and undefined content
-    await Promise.race([
-      page.waitForSelector('.ip-display', { timeout: 8000 }),
-      page.waitForSelector('.error-message', { timeout: 8000 }),
-    ]).catch(() => {
-      // If neither appears within timeout, subsequent tests will fail with more specific errors
-    });
+    // Wait for loading to complete by checking that the loading spinner is gone
+    // The page initially shows a .loading div, then shows either .ip-display or .error-message
+    await page.waitForSelector('.loading', { state: 'hidden', timeout: 10000 });
   });
 
   test('should load the page without "undefined" content', async ({ page }) => {
@@ -71,16 +66,7 @@ test.describe('Global IP Lookup - E2E Tests', () => {
   });
 
   test('should display either IP address or error message after loading', async ({ page }) => {
-    // Wait for loading to complete (either success or error)
-    // Use a longer timeout since server function may take time
-    await Promise.race([
-      page.waitForSelector('.ip-display', { timeout: 8000 }),
-      page.waitForSelector('.error-message', { timeout: 8000 }),
-    ]).catch(() => {
-      // If neither appears, the test will fail below
-    });
-
-    // Verify that loading is complete - either IP or error should be visible
+    // After loading completes (guaranteed by beforeEach), verify result state
     const ipDisplay = page.locator('.ip-display');
     const errorMessage = page.locator('.error-message');
     const isIpVisible = await ipDisplay.isVisible();
@@ -91,13 +77,7 @@ test.describe('Global IP Lookup - E2E Tests', () => {
   });
 
   test('should have copy and refresh buttons when IP is displayed', async ({ page }) => {
-    // Wait for loading to complete
-    await Promise.race([
-      page.waitForSelector('.ip-display', { timeout: 8000 }),
-      page.waitForSelector('.error-message', { timeout: 8000 }),
-    ]).catch(() => {});
-
-    // Check buttons only if IP is displayed
+    // Check buttons only if IP is displayed (not in error state)
     const ipDisplay = page.locator('.ip-display');
     if (await ipDisplay.isVisible()) {
       const copyButton = page.locator('button.btn-primary');
