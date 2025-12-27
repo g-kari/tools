@@ -62,4 +62,22 @@ test.describe('Navigation - E2E Tests', () => {
     const activeLink = page.locator('.nav-links a[data-active="true"]');
     await expect(activeLink).toContainText('グローバルIP');
   });
+
+  test('should navigate from Unicode page to UUID生成 page', async ({ page }) => {
+    await page.goto('/');
+    await page.click('.nav-links a[href="/uuid"]');
+    await expect(page).toHaveURL('/uuid');
+  });
+
+  test('should navigate from UUID生成 page to WHOIS page', async ({ page }) => {
+    await page.goto('/uuid');
+    await page.click('.nav-links a[href="/whois"]');
+    await expect(page).toHaveURL('/whois');
+  });
+
+  test('should show active state on UUID生成 link when on uuid page', async ({ page }) => {
+    await page.goto('/uuid');
+    const activeLink = page.locator('.nav-links a[data-active="true"]');
+    await expect(activeLink).toContainText('UUID生成');
+  });
 });

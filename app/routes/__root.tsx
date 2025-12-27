@@ -104,6 +104,12 @@ function RootDocument({ children }: { children: ReactNode }) {
               >
                 正規表現
               </Link>
+              <Link
+                to="/uuid"
+                data-active={pathname === "/uuid" ? "true" : undefined}
+              >
+                UUID生成
+              </Link>
             </nav>
           </header>
 
