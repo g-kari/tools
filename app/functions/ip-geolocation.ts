@@ -82,13 +82,18 @@ function isValidIPv6(ip: string): boolean {
   const hasDoubleColon = ip.includes("::");
 
   // Without ::, must have exactly 8 groups
-  // With ::, must have <= 7 groups (:: represents 1+ groups)
+  // With ::, split produces extra empty strings at boundaries, allow up to 9
   if (!hasDoubleColon && groups.length !== 8) return false;
-  if (hasDoubleColon && groups.length > 7) return false;
+  if (hasDoubleColon && groups.length > 9) return false;
 
-  // Validate each group (0-4 hex chars, empty allowed for ::)
-  const hexGroupRegex = /^[0-9a-fA-F]{0,4}$/;
+  // Validate each group
+  const hexGroupRegex = /^[0-9a-fA-F]{1,4}$/;
   for (const group of groups) {
+    // Skip empty groups when hasDoubleColon (produced by :: compression)
+    if (group === "") {
+      if (!hasDoubleColon) return false;
+      continue;
+    }
     if (!hexGroupRegex.test(group)) return false;
   }
 

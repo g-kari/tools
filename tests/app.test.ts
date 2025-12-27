@@ -187,9 +187,13 @@ describe('IP address validation', () => {
     const groups = ip.split(":");
     const hasDoubleColon = ip.includes("::");
     if (!hasDoubleColon && groups.length !== 8) return false;
-    if (hasDoubleColon && groups.length > 7) return false;
-    const hexGroupRegex = /^[0-9a-fA-F]{0,4}$/;
+    if (hasDoubleColon && groups.length > 9) return false;
+    const hexGroupRegex = /^[0-9a-fA-F]{1,4}$/;
     for (const group of groups) {
+      if (group === "") {
+        if (!hasDoubleColon) return false;
+        continue;
+      }
       if (!hexGroupRegex.test(group)) return false;
     }
     return true;
@@ -254,6 +258,22 @@ describe('IP address validation', () => {
       expect(isValidIPv6('::')).toBe(true);
     });
 
+    it('should accept trailing compression', () => {
+      expect(isValidIPv6('2001:db8::')).toBe(true);
+    });
+
+    it('should accept IPv4-mapped IPv6 prefix', () => {
+      expect(isValidIPv6('::ffff:c000:280')).toBe(true);
+    });
+
+    it('should accept link-local address', () => {
+      expect(isValidIPv6('fe80::1')).toBe(true);
+    });
+
+    it('should accept multicast address', () => {
+      expect(isValidIPv6('ff02::1')).toBe(true);
+    });
+
     it('should reject triple colons', () => {
       expect(isValidIPv6(':::')).toBe(false);
     });
@@ -274,12 +294,24 @@ describe('IP address validation', () => {
       expect(isValidIPv6('1:2:3:4:5:6:7:8:9')).toBe(false);
     });
 
+    it('should reject too many groups with compression', () => {
+      expect(isValidIPv6('1:2:3:4:5:6:7::8:9')).toBe(false);
+    });
+
     it('should reject invalid IPv6 format', () => {
       expect(isValidIPv6('not-an-ipv6')).toBe(false);
     });
 
     it('should reject empty string', () => {
       expect(isValidIPv6('')).toBe(false);
+    });
+
+    it('should reject group with more than 4 hex digits', () => {
+      expect(isValidIPv6('2001:0db8:85a3:00000:0000:8a2e:0370:7334')).toBe(false);
+    });
+
+    it('should reject invalid hex characters', () => {
+      expect(isValidIPv6('2001:0db8:85a3:gggg:0000:8a2e:0370:7334')).toBe(false);
     });
   });
 });
