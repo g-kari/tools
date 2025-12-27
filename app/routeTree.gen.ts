@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WhoisRouteImport } from './routes/whois'
 import { Route as UuidRouteImport } from './routes/uuid'
+import { Route as UrlEncodeRouteImport } from './routes/url-encode'
 import { Route as ServerEnvRouteImport } from './routes/server-env'
 import { Route as RegexCheckerRouteImport } from './routes/regex-checker'
 import { Route as PasswordGeneratorRouteImport } from './routes/password-generator'
@@ -26,6 +27,11 @@ const WhoisRoute = WhoisRouteImport.update({
 const UuidRoute = UuidRouteImport.update({
   id: '/uuid',
   path: '/uuid',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UrlEncodeRoute = UrlEncodeRouteImport.update({
+  id: '/url-encode',
+  path: '/url-encode',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ServerEnvRoute = ServerEnvRouteImport.update({
@@ -66,6 +72,7 @@ export interface FileRoutesByFullPath {
   '/password-generator': typeof PasswordGeneratorRoute
   '/regex-checker': typeof RegexCheckerRoute
   '/server-env': typeof ServerEnvRoute
+  '/url-encode': typeof UrlEncodeRoute
   '/uuid': typeof UuidRoute
   '/whois': typeof WhoisRoute
 }
@@ -76,6 +83,7 @@ export interface FileRoutesByTo {
   '/password-generator': typeof PasswordGeneratorRoute
   '/regex-checker': typeof RegexCheckerRoute
   '/server-env': typeof ServerEnvRoute
+  '/url-encode': typeof UrlEncodeRoute
   '/uuid': typeof UuidRoute
   '/whois': typeof WhoisRoute
 }
@@ -87,6 +95,7 @@ export interface FileRoutesById {
   '/password-generator': typeof PasswordGeneratorRoute
   '/regex-checker': typeof RegexCheckerRoute
   '/server-env': typeof ServerEnvRoute
+  '/url-encode': typeof UrlEncodeRoute
   '/uuid': typeof UuidRoute
   '/whois': typeof WhoisRoute
 }
@@ -99,6 +108,7 @@ export interface FileRouteTypes {
     | '/password-generator'
     | '/regex-checker'
     | '/server-env'
+    | '/url-encode'
     | '/uuid'
     | '/whois'
   fileRoutesByTo: FileRoutesByTo
@@ -109,6 +119,7 @@ export interface FileRouteTypes {
     | '/password-generator'
     | '/regex-checker'
     | '/server-env'
+    | '/url-encode'
     | '/uuid'
     | '/whois'
   id:
@@ -119,6 +130,7 @@ export interface FileRouteTypes {
     | '/password-generator'
     | '/regex-checker'
     | '/server-env'
+    | '/url-encode'
     | '/uuid'
     | '/whois'
   fileRoutesById: FileRoutesById
@@ -130,6 +142,7 @@ export interface RootRouteChildren {
   PasswordGeneratorRoute: typeof PasswordGeneratorRoute
   RegexCheckerRoute: typeof RegexCheckerRoute
   ServerEnvRoute: typeof ServerEnvRoute
+  UrlEncodeRoute: typeof UrlEncodeRoute
   UuidRoute: typeof UuidRoute
   WhoisRoute: typeof WhoisRoute
 }
@@ -148,6 +161,13 @@ declare module '@tanstack/react-router' {
       path: '/uuid'
       fullPath: '/uuid'
       preLoaderRoute: typeof UuidRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/url-encode': {
+      id: '/url-encode'
+      path: '/url-encode'
+      fullPath: '/url-encode'
+      preLoaderRoute: typeof UrlEncodeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/server-env': {
@@ -202,6 +222,7 @@ const rootRouteChildren: RootRouteChildren = {
   PasswordGeneratorRoute: PasswordGeneratorRoute,
   RegexCheckerRoute: RegexCheckerRoute,
   ServerEnvRoute: ServerEnvRoute,
+  UrlEncodeRoute: UrlEncodeRoute,
   UuidRoute: UuidRoute,
   WhoisRoute: WhoisRoute,
 }
