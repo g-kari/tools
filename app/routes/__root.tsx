@@ -92,6 +92,12 @@ function RootDocument({ children }: { children: ReactNode }) {
               >
                 IP検索
               </Link>
+              <Link
+                to="/global-ip"
+                data-active={pathname === "/global-ip" ? "true" : undefined}
+              >
+                グローバルIP
+              </Link>
             </nav>
           </header>
 
