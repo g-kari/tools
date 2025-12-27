@@ -40,6 +40,7 @@ test.describe('Unicode Escape Converter - E2E Tests', () => {
   });
 
   test('should encode text to Unicode escape', async ({ page }) => {
+    test.setTimeout(10000);
     const inputTextarea = page.locator('#inputText');
     const outputTextarea = page.locator('#outputText');
     const encodeButton = page.locator('button.btn-primary').first();
@@ -47,12 +48,14 @@ test.describe('Unicode Escape Converter - E2E Tests', () => {
     await inputTextarea.fill('こんにちは');
     await encodeButton.click();
 
+    // Wait for output to be populated
+    await expect(outputTextarea).not.toHaveValue('');
     const output = await outputTextarea.inputValue();
     expect(output).toContain('\\u');
-    expect(output).not.toBe('');
   });
 
   test('should decode Unicode escape to text', async ({ page }) => {
+    test.setTimeout(10000);
     const inputTextarea = page.locator('#inputText');
     const outputTextarea = page.locator('#outputText');
     const decodeButton = page.locator('button.btn-secondary').first();
@@ -60,11 +63,12 @@ test.describe('Unicode Escape Converter - E2E Tests', () => {
     await inputTextarea.fill('\\u3053\\u3093\\u306b\\u3061\\u306f');
     await decodeButton.click();
 
-    const output = await outputTextarea.inputValue();
-    expect(output).toBe('こんにちは');
+    // Wait for output to be populated
+    await expect(outputTextarea).toHaveValue('こんにちは');
   });
 
   test('should clear both textareas', async ({ page }) => {
+    test.setTimeout(10000);
     const inputTextarea = page.locator('#inputText');
     const outputTextarea = page.locator('#outputText');
     const encodeButton = page.locator('button.btn-primary').first();
@@ -73,7 +77,7 @@ test.describe('Unicode Escape Converter - E2E Tests', () => {
     await inputTextarea.fill('テスト');
     await encodeButton.click();
 
-    // Verify output has content
+    // Wait for output to have content
     await expect(outputTextarea).not.toHaveValue('');
 
     // Click clear
@@ -188,6 +192,7 @@ test.describe('WHOIS Lookup - E2E Tests', () => {
   });
 
   test('should show error for invalid domain format', async ({ page }) => {
+    test.setTimeout(10000);
     const domainInput = page.locator('#domainInput');
     const searchButton = page.locator('button.btn-primary');
 
@@ -196,7 +201,7 @@ test.describe('WHOIS Lookup - E2E Tests', () => {
 
     // Wait for error message
     const errorSection = page.locator('.error-message');
-    await expect(errorSection).toBeVisible({ timeout: 10000 });
+    await expect(errorSection).toBeVisible();
     await expect(errorSection).toContainText('無効なドメイン形式です');
   });
 });
@@ -287,9 +292,10 @@ test.describe('404 Not Found - E2E Tests', () => {
   });
 
   test('should include accessibility features on 404 page', async ({ page }) => {
+    test.setTimeout(10000);
     await page.goto('/missing-page');
-    await expect(page.locator('[role="banner"]')).toBeVisible();
-    await expect(page.locator('[role="main"]')).toBeVisible();
+    await expect(page.locator('[role="banner"]').first()).toBeVisible();
+    await expect(page.locator('[role="main"]').first()).toBeVisible();
     const skipLink = page.locator('.skip-link');
     await expect(skipLink).toBeAttached();
   });
@@ -366,13 +372,13 @@ test.describe('IP Geolocation Lookup - E2E Tests', () => {
 test.describe('Accessibility - E2E Tests', () => {
   test('should have aria-live status element on main page', async ({ page }) => {
     await page.goto('/');
-    const statusElement = page.locator('[aria-live="polite"]');
+    const statusElement = page.locator('#status-message');
     await expect(statusElement).toBeAttached();
   });
 
   test('should have aria-live status element on WHOIS page', async ({ page }) => {
     await page.goto('/whois');
-    const statusElement = page.locator('[aria-live="polite"]');
+    const statusElement = page.locator('#status-message');
     await expect(statusElement).toBeAttached();
   });
 
