@@ -5,8 +5,11 @@ test.describe('Global IP Lookup - E2E Tests', () => {
 
   test.beforeEach(async ({ page }) => {
     await page.goto('/global-ip');
-    // Wait for React hydration
-    await page.waitForLoadState('networkidle');
+    // Wait for page load and React hydration
+    // Note: We use 'load' instead of 'networkidle' because the page makes
+    // an immediate API call on mount to fetch the IP address, so the network
+    // is never truly "idle" during initial load
+    await page.waitForLoadState('load');
   });
 
   test('should load the page without "undefined" content', async ({ page }) => {
