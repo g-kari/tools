@@ -39,7 +39,7 @@ test.describe('404 Not Found - E2E Tests', () => {
 
   test('should have proper language attribute on 404 page', async ({ page }) => {
     await page.goto('/not-here');
-    const html = page.locator('html');
+    const html = page.locator('html').first();
     await expect(html).toHaveAttribute('lang', 'ja');
   });
 

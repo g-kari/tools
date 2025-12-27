@@ -4,8 +4,9 @@ test.describe('Password Generator - E2E Tests', () => {
   // タイムアウトはplaywright.config.tsで設定（CI: 30秒, ローカル: 10秒）
 
   test.beforeEach(async ({ page }) => {
-    await page.goto('/password-generator');
-    await page.waitForLoadState('networkidle');
+    await page.goto('/password-generator', { waitUntil: 'domcontentloaded' });
+    // Wait for password to be generated (indicates page is ready)
+    await page.waitForSelector('#passwordOutput');
   });
 
   test('should load the page without "undefined" content', async ({ page }) => {
