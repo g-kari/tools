@@ -134,6 +134,12 @@ function RootDocument({ children }: { children: ReactNode }) {
               >
                 サーバー環境
               </Link>
+              <Link
+                to="/ogp"
+                data-active={pathname === "/ogp" ? "true" : undefined}
+              >
+                OGPチェック
+              </Link>
             </nav>
           </header>
 

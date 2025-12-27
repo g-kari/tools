@@ -536,6 +536,264 @@ input[type="range"]:focus-visible {
   background: #388e3c;
 }
 
+/* OGP Checker - Platform tabs */
+.platform-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.platform-tab {
+  flex: 0 0 auto;
+  min-width: 100px;
+  padding: 10px 20px;
+  font-size: 14px;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.platform-tab.active {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  border-color: var(--md-sys-color-primary);
+}
+
+/* OGP Preview - Common */
+.ogp-preview {
+  margin-top: 15px;
+}
+
+.ogp-preview-label {
+  font-size: 0.9rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.ogp-value {
+  max-width: 600px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* OGP Preview - X (Twitter) */
+.ogp-card-x {
+  background: #15202b;
+  border-radius: 16px;
+  overflow: hidden;
+  max-width: 500px;
+  border: 1px solid #38444d;
+}
+
+.ogp-image-container-x {
+  width: 100%;
+  aspect-ratio: 1.91 / 1;
+  overflow: hidden;
+  background: #192734;
+}
+
+.ogp-image-x {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ogp-content-x {
+  padding: 12px;
+}
+
+.ogp-title-x {
+  color: #fff;
+  font-size: 15px;
+  font-weight: 400;
+  margin-bottom: 4px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.ogp-description-x {
+  color: #8899a6;
+  font-size: 15px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+
+.ogp-site-x {
+  color: #8899a6;
+  font-size: 15px;
+}
+
+/* OGP Preview - Facebook */
+.ogp-card-facebook {
+  background: #fff;
+  border-radius: 0;
+  overflow: hidden;
+  max-width: 500px;
+  border: 1px solid #dddfe2;
+}
+
+.ogp-image-container-facebook {
+  width: 100%;
+  aspect-ratio: 1.91 / 1;
+  overflow: hidden;
+  background: #f0f2f5;
+}
+
+.ogp-image-facebook {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ogp-content-facebook {
+  padding: 10px 12px;
+  background: #f2f3f5;
+}
+
+.ogp-site-facebook {
+  color: #606770;
+  font-size: 12px;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+.ogp-title-facebook {
+  color: #1d2129;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.ogp-description-facebook {
+  color: #606770;
+  font-size: 14px;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* OGP Preview - Slack */
+.ogp-card-slack {
+  background: #fff;
+  border-left: 4px solid #36c5f0;
+  padding: 8px 12px;
+  max-width: 500px;
+  display: flex;
+  gap: 12px;
+}
+
+.ogp-content-slack {
+  flex: 1;
+  min-width: 0;
+}
+
+.ogp-site-slack {
+  color: #1d1c1d;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.ogp-title-slack {
+  color: #1264a3;
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.ogp-description-slack {
+  color: #1d1c1d;
+  font-size: 15px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.ogp-image-container-slack {
+  flex: 0 0 auto;
+  width: 80px;
+  height: 80px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #f8f8f8;
+}
+
+.ogp-image-slack {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* OGP Preview - Discord */
+.ogp-card-discord {
+  background: #2f3136;
+  border-left: 4px solid #5865f2;
+  padding: 8px 16px 16px 12px;
+  max-width: 500px;
+  border-radius: 4px;
+}
+
+.ogp-content-discord {
+  margin-bottom: 12px;
+}
+
+.ogp-site-discord {
+  color: #b9bbbe;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+.ogp-title-discord {
+  color: #00aff4;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.ogp-description-discord {
+  color: #dcddde;
+  font-size: 14px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.ogp-image-container-discord {
+  max-width: 400px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #202225;
+}
+
+.ogp-image-discord {
+  width: 100%;
+  height: auto;
+  max-height: 300px;
+  object-fit: cover;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   h1 {
