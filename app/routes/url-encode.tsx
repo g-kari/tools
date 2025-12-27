@@ -13,11 +13,25 @@ function UrlEncoder() {
   const [outputText, setOutputText] = useState("");
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const statusRef = useRef<HTMLDivElement>(null);
+  const statusTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (statusTimeoutRef.current) {
+        clearTimeout(statusTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const announceStatus = useCallback((message: string) => {
     if (statusRef.current) {
       statusRef.current.textContent = message;
-      setTimeout(() => {
+      // Clear previous timeout
+      if (statusTimeoutRef.current) {
+        clearTimeout(statusTimeoutRef.current);
+      }
+      statusTimeoutRef.current = setTimeout(() => {
         if (statusRef.current) {
           statusRef.current.textContent = "";
         }

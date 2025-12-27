@@ -29,7 +29,8 @@ describe('URL Encode/Decode Functions', () => {
     it('should encode special characters', () => {
       const result = urlEncode('hello!@#$%^&*()');
       expect(result).toContain('%');
-      // encodeURIComponent encodes @, #, $, %, ^, & but not !, *, (, )
+      // Per ECMAScript spec, encodeURIComponent encodes reserved characters like @, #, $, %, ^, &
+      // but leaves unreserved characters like !, *, (, ) unencoded intentionally
       expect(result).toContain('%40'); // @
       expect(result).toContain('%23'); // #
       expect(result).toContain('%24'); // $
