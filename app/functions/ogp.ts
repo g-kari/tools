@@ -88,7 +88,7 @@ function isValidUrl(urlString: string): boolean {
 
 // Server function to fetch OGP data
 export const fetchOgp = createServerFn({ method: "GET" })
-  .validator((data: unknown) => {
+  .inputValidator((data: unknown) => {
     if (!data || typeof data !== "string") {
       throw new Error("URLを入力してください");
     }
