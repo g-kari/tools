@@ -28,23 +28,60 @@ interface OgpData {
   error?: string;
 }
 
+// Decode HTML entities
+function decodeHtmlEntities(text: string): string {
+  return text
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&#x27;/g, "'")
+    .replace(/&#x2F;/g, "/")
+    .replace(/&apos;/g, "'")
+    .replace(/&#(\d+);/g, (_, num) => String.fromCharCode(parseInt(num, 10)))
+    .replace(/&#x([0-9a-fA-F]+);/g, (_, hex) =>
+      String.fromCharCode(parseInt(hex, 16))
+    );
+}
+
 // Parse OGP and meta tags from HTML (duplicated for testing)
 function parseOgpFromHtml(html: string, url: string): OgpData {
   const result: OgpData = { fetchedUrl: url };
 
   // Helper function to extract content from meta tags
+  // Supports various attribute orderings and formats
   const getMetaContent = (
     propertyOrName: string,
     isProperty: boolean = true
   ): string | undefined => {
     const attr = isProperty ? "property" : "name";
-    // Match both single and double quotes
-    const regex = new RegExp(
-      `<meta\\s+[^>]*${attr}=["']${propertyOrName}["'][^>]*content=["']([^"']*)["'][^>]*>|<meta\\s+[^>]*content=["']([^"']*)["'][^>]*${attr}=["']${propertyOrName}["'][^>]*>`,
-      "i"
-    );
-    const match = html.match(regex);
-    return match ? match[1] || match[2] : undefined;
+    const escapedProp = propertyOrName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+    // Pattern 1: attribute comes before content
+    // Pattern 2: content comes before attribute
+    // Supports: single/double quotes, spaces, newlines
+    const patterns = [
+      // property/name="..." content="..."
+      new RegExp(
+        `<meta[^>]+${attr}\\s*=\\s*["']${escapedProp}["'][^>]+content\\s*=\\s*["']([^"']*?)["']`,
+        "is"
+      ),
+      // content="..." property/name="..."
+      new RegExp(
+        `<meta[^>]+content\\s*=\\s*["']([^"']*?)["'][^>]+${attr}\\s*=\\s*["']${escapedProp}["']`,
+        "is"
+      ),
+    ];
+
+    for (const regex of patterns) {
+      const match = html.match(regex);
+      if (match && match[1]) {
+        return decodeHtmlEntities(match[1].trim());
+      }
+    }
+
+    return undefined;
   };
 
   // Extract OGP tags
@@ -258,6 +295,63 @@ describe("OGP Parser", () => {
       const result = parseOgpFromHtml(html, "https://example.com");
 
       expect(result.locale).toBe("en_US");
+    });
+
+    it("should decode HTML entities in content", () => {
+      const html = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta property="og:title" content="Test &amp; Title">
+          <meta property="og:description" content="&quot;Quoted&quot; &lt;text&gt;">
+        </head>
+        <body></body>
+        </html>
+      `;
+
+      const result = parseOgpFromHtml(html, "https://example.com");
+
+      expect(result.title).toBe("Test & Title");
+      expect(result.description).toBe('"Quoted" <text>');
+    });
+
+    it("should decode numeric HTML entities", () => {
+      const html = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta property="og:title" content="Test &#39;Title&#39;">
+          <meta property="og:description" content="&#x27;Hex&#x27; entities">
+        </head>
+        <body></body>
+        </html>
+      `;
+
+      const result = parseOgpFromHtml(html, "https://example.com");
+
+      expect(result.title).toBe("Test 'Title'");
+      expect(result.description).toBe("'Hex' entities");
+    });
+
+    it("should handle meta tags with extra whitespace", () => {
+      const html = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta   property = "og:title"   content = "Spaced Title"  >
+          <meta
+            property="og:description"
+            content="Multiline Meta"
+          >
+        </head>
+        <body></body>
+        </html>
+      `;
+
+      const result = parseOgpFromHtml(html, "https://example.com");
+
+      expect(result.title).toBe("Spaced Title");
+      expect(result.description).toBe("Multiline Meta");
     });
 
     it("should handle complex HTML with multiple meta tags", () => {
