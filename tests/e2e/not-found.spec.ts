@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('404 Not Found - E2E Tests', () => {
-  test.describe.configure({ timeout: 10000 });
+  // タイムアウトはplaywright.config.tsで設定（CI: 30秒, ローカル: 10秒）
 
   test('should display 404 page for undefined routes', async ({ page }) => {
     await page.goto('/nonexistent-route');

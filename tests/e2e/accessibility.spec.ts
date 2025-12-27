@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Accessibility - E2E Tests', () => {
-  test.describe.configure({ timeout: 10000 });
+  // タイムアウトはplaywright.config.tsで設定（CI: 30秒, ローカル: 10秒）
 
   test('should have aria-live status element on main page', async ({ page }) => {
     await page.goto('/');
