@@ -15,6 +15,8 @@ import { Route as UrlEncodeRouteImport } from './routes/url-encode'
 import { Route as ServerEnvRouteImport } from './routes/server-env'
 import { Route as RegexCheckerRouteImport } from './routes/regex-checker'
 import { Route as PasswordGeneratorRouteImport } from './routes/password-generator'
+import { Route as OgpRouteImport } from './routes/ogp'
+import { Route as JsonRouteImport } from './routes/json'
 import { Route as IpGeolocationRouteImport } from './routes/ip-geolocation'
 import { Route as GlobalIpRouteImport } from './routes/global-ip'
 import { Route as IndexRouteImport } from './routes/index'
@@ -49,6 +51,16 @@ const PasswordGeneratorRoute = PasswordGeneratorRouteImport.update({
   path: '/password-generator',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OgpRoute = OgpRouteImport.update({
+  id: '/ogp',
+  path: '/ogp',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JsonRoute = JsonRouteImport.update({
+  id: '/json',
+  path: '/json',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IpGeolocationRoute = IpGeolocationRouteImport.update({
   id: '/ip-geolocation',
   path: '/ip-geolocation',
@@ -69,6 +81,8 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/global-ip': typeof GlobalIpRoute
   '/ip-geolocation': typeof IpGeolocationRoute
+  '/json': typeof JsonRoute
+  '/ogp': typeof OgpRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/regex-checker': typeof RegexCheckerRoute
   '/server-env': typeof ServerEnvRoute
@@ -80,6 +94,8 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/global-ip': typeof GlobalIpRoute
   '/ip-geolocation': typeof IpGeolocationRoute
+  '/json': typeof JsonRoute
+  '/ogp': typeof OgpRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/regex-checker': typeof RegexCheckerRoute
   '/server-env': typeof ServerEnvRoute
@@ -92,6 +108,8 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/global-ip': typeof GlobalIpRoute
   '/ip-geolocation': typeof IpGeolocationRoute
+  '/json': typeof JsonRoute
+  '/ogp': typeof OgpRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/regex-checker': typeof RegexCheckerRoute
   '/server-env': typeof ServerEnvRoute
@@ -105,6 +123,8 @@ export interface FileRouteTypes {
     | '/'
     | '/global-ip'
     | '/ip-geolocation'
+    | '/json'
+    | '/ogp'
     | '/password-generator'
     | '/regex-checker'
     | '/server-env'
@@ -116,6 +136,8 @@ export interface FileRouteTypes {
     | '/'
     | '/global-ip'
     | '/ip-geolocation'
+    | '/json'
+    | '/ogp'
     | '/password-generator'
     | '/regex-checker'
     | '/server-env'
@@ -127,6 +149,8 @@ export interface FileRouteTypes {
     | '/'
     | '/global-ip'
     | '/ip-geolocation'
+    | '/json'
+    | '/ogp'
     | '/password-generator'
     | '/regex-checker'
     | '/server-env'
@@ -139,6 +163,8 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   GlobalIpRoute: typeof GlobalIpRoute
   IpGeolocationRoute: typeof IpGeolocationRoute
+  JsonRoute: typeof JsonRoute
+  OgpRoute: typeof OgpRoute
   PasswordGeneratorRoute: typeof PasswordGeneratorRoute
   RegexCheckerRoute: typeof RegexCheckerRoute
   ServerEnvRoute: typeof ServerEnvRoute
@@ -191,6 +217,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PasswordGeneratorRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ogp': {
+      id: '/ogp'
+      path: '/ogp'
+      fullPath: '/ogp'
+      preLoaderRoute: typeof OgpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/json': {
+      id: '/json'
+      path: '/json'
+      fullPath: '/json'
+      preLoaderRoute: typeof JsonRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/ip-geolocation': {
       id: '/ip-geolocation'
       path: '/ip-geolocation'
@@ -219,6 +259,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   GlobalIpRoute: GlobalIpRoute,
   IpGeolocationRoute: IpGeolocationRoute,
+  JsonRoute: JsonRoute,
+  OgpRoute: OgpRoute,
   PasswordGeneratorRoute: PasswordGeneratorRoute,
   RegexCheckerRoute: RegexCheckerRoute,
   ServerEnvRoute: ServerEnvRoute,
