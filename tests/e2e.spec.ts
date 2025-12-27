@@ -3,6 +3,8 @@ import { test, expect } from '@playwright/test';
 test.describe('Unicode Escape Converter - E2E Tests', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
+    // Wait for React hydration
+    await page.waitForLoadState('networkidle');
   });
 
   test('should load the page without "undefined" content', async ({ page }) => {
@@ -123,6 +125,8 @@ test.describe('Unicode Escape Converter - E2E Tests', () => {
 test.describe('WHOIS Lookup - E2E Tests', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/whois');
+    // Wait for React hydration
+    await page.waitForLoadState('networkidle');
   });
 
   test('should load the page without "undefined" content', async ({ page }) => {
@@ -296,7 +300,7 @@ test.describe('404 Not Found - E2E Tests', () => {
     await page.goto('/missing-page');
     await expect(page.locator('[role="banner"]').first()).toBeVisible();
     await expect(page.locator('[role="main"]').first()).toBeVisible();
-    const skipLink = page.locator('.skip-link');
+    const skipLink = page.locator('.skip-link').first();
     await expect(skipLink).toBeAttached();
   });
 });
@@ -304,6 +308,8 @@ test.describe('404 Not Found - E2E Tests', () => {
 test.describe('IP Geolocation Lookup - E2E Tests', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/ip-geolocation');
+    // Wait for React hydration
+    await page.waitForLoadState('networkidle');
   });
 
   test('should load the page without "undefined" content', async ({ page }) => {
