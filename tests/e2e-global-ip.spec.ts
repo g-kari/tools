@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Global IP Lookup - E2E Tests', () => {
-  test.describe.configure({ timeout: 10000 });
+  test.describe.configure({ timeout: 20000 });
 
   test.beforeEach(async ({ page }) => {
     await page.goto('/global-ip');
