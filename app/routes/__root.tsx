@@ -86,6 +86,12 @@ function RootDocument({ children }: { children: ReactNode }) {
               >
                 WHOIS検索
               </Link>
+              <Link
+                to="/ip-geolocation"
+                data-active={pathname === "/ip-geolocation" ? "true" : undefined}
+              >
+                IP検索
+              </Link>
             </nav>
           </header>
 

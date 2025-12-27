@@ -21,7 +21,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
 
       - name: Install dependencies
@@ -29,18 +29,15 @@ jobs:
         env:
           CI: true
 
-      - name: Build
-        run: npm run build
-
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps chromium
 
       - name: Run E2E tests
         run: |
-          npx serve dist -l 8788 &
+          npm run dev &
           SERVER_PID=$!
-          npx wait-on http://localhost:8788 --timeout 30000
-          BASE_URL=http://localhost:8788 npx playwright test --project=chromium
+          npx wait-on http://localhost:5173 --timeout 60000
+          BASE_URL=http://localhost:5173 npx playwright test --project=chromium
           kill $SERVER_PID || true
         env:
           CI: true

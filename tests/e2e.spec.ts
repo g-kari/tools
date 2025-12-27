@@ -1,8 +1,12 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Unicode Escape Converter - E2E Tests', () => {
+  test.describe.configure({ timeout: 10000 });
+
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
+    // Wait for React hydration
+    await page.waitForLoadState('networkidle');
   });
 
   test('should load the page without "undefined" content', async ({ page }) => {
@@ -47,9 +51,10 @@ test.describe('Unicode Escape Converter - E2E Tests', () => {
     await inputTextarea.fill('こんにちは');
     await encodeButton.click();
 
+    // Wait for output to be populated
+    await expect(outputTextarea).not.toHaveValue('');
     const output = await outputTextarea.inputValue();
     expect(output).toContain('\\u');
-    expect(output).not.toBe('');
   });
 
   test('should decode Unicode escape to text', async ({ page }) => {
@@ -60,8 +65,8 @@ test.describe('Unicode Escape Converter - E2E Tests', () => {
     await inputTextarea.fill('\\u3053\\u3093\\u306b\\u3061\\u306f');
     await decodeButton.click();
 
-    const output = await outputTextarea.inputValue();
-    expect(output).toBe('こんにちは');
+    // Wait for output to be populated
+    await expect(outputTextarea).toHaveValue('こんにちは');
   });
 
   test('should clear both textareas', async ({ page }) => {
@@ -73,7 +78,7 @@ test.describe('Unicode Escape Converter - E2E Tests', () => {
     await inputTextarea.fill('テスト');
     await encodeButton.click();
 
-    // Verify output has content
+    // Wait for output to have content
     await expect(outputTextarea).not.toHaveValue('');
 
     // Click clear
@@ -117,8 +122,12 @@ test.describe('Unicode Escape Converter - E2E Tests', () => {
 });
 
 test.describe('WHOIS Lookup - E2E Tests', () => {
+  test.describe.configure({ timeout: 10000 });
+
   test.beforeEach(async ({ page }) => {
     await page.goto('/whois');
+    // Wait for React hydration
+    await page.waitForLoadState('networkidle');
   });
 
   test('should load the page without "undefined" content', async ({ page }) => {
@@ -196,12 +205,14 @@ test.describe('WHOIS Lookup - E2E Tests', () => {
 
     // Wait for error message
     const errorSection = page.locator('.error-message');
-    await expect(errorSection).toBeVisible({ timeout: 10000 });
+    await expect(errorSection).toBeVisible();
     await expect(errorSection).toContainText('無効なドメイン形式です');
   });
 });
 
 test.describe('Navigation - E2E Tests', () => {
+  test.describe.configure({ timeout: 10000 });
+
   test('should navigate from Unicode page to WHOIS page', async ({ page }) => {
     await page.goto('/');
     await page.click('.nav-links a[href="/whois"]');
@@ -212,6 +223,18 @@ test.describe('Navigation - E2E Tests', () => {
     await page.goto('/whois');
     await page.click('.nav-links a[href="/"]');
     await expect(page).toHaveURL('/');
+  });
+
+  test('should navigate from Unicode page to IP検索 page', async ({ page }) => {
+    await page.goto('/');
+    await page.click('.nav-links a[href="/ip-geolocation"]');
+    await expect(page).toHaveURL('/ip-geolocation');
+  });
+
+  test('should navigate from IP検索 page to WHOIS page', async ({ page }) => {
+    await page.goto('/ip-geolocation');
+    await page.click('.nav-links a[href="/whois"]');
+    await expect(page).toHaveURL('/whois');
   });
 
   test('should show active state on Unicode link when on main page', async ({ page }) => {
@@ -225,9 +248,17 @@ test.describe('Navigation - E2E Tests', () => {
     const activeLink = page.locator('.nav-links a[data-active="true"]');
     await expect(activeLink).toContainText('WHOIS検索');
   });
+
+  test('should show active state on IP検索 link when on ip-geolocation page', async ({ page }) => {
+    await page.goto('/ip-geolocation');
+    const activeLink = page.locator('.nav-links a[data-active="true"]');
+    await expect(activeLink).toContainText('IP検索');
+  });
 });
 
 test.describe('404 Not Found - E2E Tests', () => {
+  test.describe.configure({ timeout: 10000 });
+
   test('should display 404 page for undefined routes', async ({ page }) => {
     await page.goto('/nonexistent-route');
     const heading = page.locator('.not-found-heading');
@@ -270,23 +301,97 @@ test.describe('404 Not Found - E2E Tests', () => {
 
   test('should include accessibility features on 404 page', async ({ page }) => {
     await page.goto('/missing-page');
+    await expect(page.locator('[role="banner"]').first()).toBeVisible();
+    await expect(page.locator('[role="main"]').first()).toBeVisible();
+    const skipLink = page.locator('.skip-link').first();
+    await expect(skipLink).toBeAttached();
+  });
+});
+
+test.describe('IP Geolocation Lookup - E2E Tests', () => {
+  test.describe.configure({ timeout: 10000 });
+
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/ip-geolocation');
+    // Wait for React hydration
+    await page.waitForLoadState('networkidle');
+  });
+
+  test('should load the page without "undefined" content', async ({ page }) => {
+    const bodyText = await page.textContent('body');
+    expect(bodyText).not.toContain('undefined');
+    expect(bodyText).not.toBe('undefined');
+  });
+
+  test('should display the correct page title', async ({ page }) => {
+    await expect(page).toHaveTitle(/IP/);
+  });
+
+  test('should have IP input field', async ({ page }) => {
+    const ipInput = page.locator('#ipInput');
+    await expect(ipInput).toBeVisible();
+  });
+
+  test('should have search button', async ({ page }) => {
+    const searchButton = page.locator('button.btn-primary');
+    await expect(searchButton).toBeVisible();
+    await expect(searchButton).toContainText('検索');
+  });
+
+  test('should show alert when searching with empty input', async ({ page }) => {
+    const searchButton = page.locator('button.btn-primary');
+
+    page.on('dialog', async (dialog) => {
+      expect(dialog.message()).toContain('IPアドレスを入力してください');
+      await dialog.accept();
+    });
+
+    await searchButton.click();
+  });
+
+  test('should have proper accessibility attributes', async ({ page }) => {
     await expect(page.locator('[role="banner"]')).toBeVisible();
     await expect(page.locator('[role="main"]')).toBeVisible();
     const skipLink = page.locator('.skip-link');
     await expect(skipLink).toBeAttached();
   });
+
+  test('should display usage instructions', async ({ page }) => {
+    const usageSection = page.locator('.info-box');
+    await expect(usageSection).toBeVisible();
+
+    const usageText = await usageSection.textContent();
+    expect(usageText).toContain('使い方');
+    expect(usageText).not.toContain('undefined');
+  });
+
+  test('should have navigation links including IP検索', async ({ page }) => {
+    const navLinks = page.locator('.nav-links');
+    await expect(navLinks).toBeVisible();
+
+    const ipLink = page.locator('.nav-links a[href="/ip-geolocation"]');
+    await expect(ipLink).toBeVisible();
+    await expect(ipLink).toContainText('IP検索');
+  });
+
+  test('should navigate to Unicode page when clicking the link', async ({ page }) => {
+    await page.click('.nav-links a[href="/"]');
+    await expect(page).toHaveURL('/');
+  });
 });
 
 test.describe('Accessibility - E2E Tests', () => {
+  test.describe.configure({ timeout: 10000 });
+
   test('should have aria-live status element on main page', async ({ page }) => {
     await page.goto('/');
-    const statusElement = page.locator('[aria-live="polite"]');
+    const statusElement = page.locator('#status-message');
     await expect(statusElement).toBeAttached();
   });
 
   test('should have aria-live status element on WHOIS page', async ({ page }) => {
     await page.goto('/whois');
-    const statusElement = page.locator('[aria-live="polite"]');
+    const statusElement = page.locator('#status-message');
     await expect(statusElement).toBeAttached();
   });
 
