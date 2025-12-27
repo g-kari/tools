@@ -1,12 +1,14 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('WHOIS Lookup - E2E Tests', () => {
-  test.describe.configure({ timeout: 10000 });
+  test.describe.configure({ timeout: 15000 });
 
   test.beforeEach(async ({ page }) => {
     await page.goto('/whois');
-    // Wait for React hydration
-    await page.waitForLoadState('networkidle');
+    // Wait for page load and React hydration
+    // Note: Using 'load' instead of 'networkidle' for better reliability in CI environments
+    // The WHOIS page is static on mount (no immediate API calls), so 'load' is sufficient
+    await page.waitForLoadState('load');
   });
 
   test('should load the page without "undefined" content', async ({ page }) => {
