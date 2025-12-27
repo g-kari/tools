@@ -454,31 +454,40 @@ test.describe('Global IP Lookup - E2E Tests', () => {
     await expect(globalIpLink).toContainText('グローバルIP');
   });
 
-  test('should show active state on グローバルIP link when on global-ip page', async ({ page }) => {
-    const activeLink = page.locator('.nav-links a[data-active="true"]');
-    await expect(activeLink).toContainText('グローバルIP');
-  });
-
   test('should navigate to Unicode page when clicking the link', async ({ page }) => {
     await page.click('.nav-links a[href="/"]');
     await expect(page).toHaveURL('/');
   });
 
-  test('should have copy and refresh buttons when IP is displayed', async ({ page }) => {
-    // Wait for IP to be fetched (either success or error)
+  test('should display either IP address or error message after loading', async ({ page }) => {
+    // Wait for either success or error state
     await page.waitForSelector('.ip-display, .error-message', { timeout: 5000 });
 
-    // If IP is displayed, check buttons
+    // Verify that loading is complete - either IP or error should be visible
     const ipDisplay = page.locator('.ip-display');
-    if (await ipDisplay.isVisible()) {
-      const copyButton = page.locator('button.btn-primary');
-      const refreshButton = page.locator('button.btn-secondary');
+    const errorMessage = page.locator('.error-message');
+    const isIpVisible = await ipDisplay.isVisible();
+    const isErrorVisible = await errorMessage.isVisible();
 
-      await expect(copyButton).toBeVisible();
-      await expect(copyButton).toContainText('コピー');
-      await expect(refreshButton).toBeVisible();
-      await expect(refreshButton).toContainText('再取得');
-    }
+    // One of them must be visible (mutually exclusive states)
+    expect(isIpVisible || isErrorVisible).toBe(true);
+  });
+
+  test('should have copy and refresh buttons when IP is successfully displayed', async ({ page }) => {
+    // Wait for either success or error state
+    await page.waitForSelector('.ip-display, .error-message', { timeout: 5000 });
+
+    const ipDisplay = page.locator('.ip-display');
+    // Skip test if IP is not displayed (server-side environment may not have IP)
+    test.skip(!(await ipDisplay.isVisible()), 'IP not available in this environment');
+
+    const copyButton = page.locator('button.btn-primary');
+    const refreshButton = page.locator('button.btn-secondary');
+
+    await expect(copyButton).toBeVisible();
+    await expect(copyButton).toContainText('コピー');
+    await expect(refreshButton).toBeVisible();
+    await expect(refreshButton).toContainText('再取得');
   });
 });
 

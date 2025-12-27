@@ -190,8 +190,8 @@ function GlobalIpLookup() {
           font-family: 'Roboto Mono', monospace;
           font-size: 2rem;
           font-weight: 500;
-          color: var(--on-surface);
-          background-color: var(--surface-container);
+          color: var(--md-sys-color-on-surface);
+          background-color: var(--md-sys-color-surface-variant);
           padding: 1.5rem 2rem;
           border-radius: 12px;
           margin-bottom: 1.5rem;

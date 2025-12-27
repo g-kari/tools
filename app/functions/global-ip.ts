@@ -18,8 +18,8 @@ export const getGlobalIp = createServerFn({ method: "GET" }).handler(
       const cfConnectingIp = getRequestHeader(
         "CF-Connecting-IP" as Parameters<typeof getRequestHeader>[0]
       );
-      if (cfConnectingIp) {
-        return { ip: cfConnectingIp };
+      if (cfConnectingIp && cfConnectingIp.trim()) {
+        return { ip: cfConnectingIp.trim() };
       }
 
       // Use getRequestIP with xForwardedFor enabled for proxy environments.
@@ -28,8 +28,8 @@ export const getGlobalIp = createServerFn({ method: "GET" }).handler(
       // balancer that sanitizes/overwrites this header (for example, Cloudflare),
       // and MUST NOT be used for security-sensitive decisions (auth, rate limiting, etc.).
       const ip = getRequestIP({ xForwardedFor: true });
-      if (ip) {
-        return { ip };
+      if (ip && ip.trim()) {
+        return { ip: ip.trim() };
       }
 
       return {
