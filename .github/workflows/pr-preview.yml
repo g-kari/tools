@@ -39,7 +39,7 @@ jobs:
 
       - name: Run E2E tests
         run: |
-          npm run preview -- --port 8788 &
+          npm run preview -- --port 8788 --host &
           SERVER_PID=$!
           npx wait-on http://127.0.0.1:8788 --timeout 60000
           BASE_URL=http://127.0.0.1:8788 npx playwright test --project=chromium
