@@ -59,10 +59,40 @@ function isValidIPv4(ip: string): boolean {
 
 // Validate IPv6 address
 function isValidIPv6(ip: string): boolean {
-  const ipv6Regex = /^([0-9a-fA-F]{0,4}:){2,7}[0-9a-fA-F]{0,4}$/;
-  const ipv6WithIPv4Regex =
-    /^([0-9a-fA-F]{0,4}:){2,6}(\d{1,3}\.){3}\d{1,3}$/;
-  return ipv6Regex.test(ip) || ipv6WithIPv4Regex.test(ip);
+  // Reject empty or obviously invalid
+  if (!ip || ip.length < 2) return false;
+
+  // Reject multiple consecutive colons (except for :: which appears once)
+  if (ip.includes(":::")) return false;
+
+  // Reject leading/trailing single colons (but allow :: at start/end)
+  if (
+    (ip.startsWith(":") && !ip.startsWith("::")) ||
+    (ip.endsWith(":") && !ip.endsWith("::"))
+  ) {
+    return false;
+  }
+
+  // Count :: occurrences (only one allowed)
+  const doubleColonCount = (ip.match(/::/g) || []).length;
+  if (doubleColonCount > 1) return false;
+
+  // Split by : and validate each group
+  const groups = ip.split(":");
+  const hasDoubleColon = ip.includes("::");
+
+  // Without ::, must have exactly 8 groups
+  // With ::, must have <= 7 groups (:: represents 1+ groups)
+  if (!hasDoubleColon && groups.length !== 8) return false;
+  if (hasDoubleColon && groups.length > 7) return false;
+
+  // Validate each group (0-4 hex chars, empty allowed for ::)
+  const hexGroupRegex = /^[0-9a-fA-F]{0,4}$/;
+  for (const group of groups) {
+    if (!hexGroupRegex.test(group)) return false;
+  }
+
+  return true;
 }
 
 // Validate IP address (IPv4 or IPv6)
@@ -105,6 +135,13 @@ async function queryIpApi(ip: string): Promise<IpGeolocationResult> {
     });
 
     if (!response.ok) {
+      if (response.status === 429) {
+        return {
+          ip,
+          error:
+            "リクエスト制限に達しました。しばらく待ってから再度お試しください",
+        };
+      }
       return {
         ip,
         error: `APIリクエストに失敗しました (HTTP ${response.status})`,

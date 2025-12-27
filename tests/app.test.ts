@@ -174,10 +174,25 @@ describe('IP address validation', () => {
 
   // IPv6 validation
   function isValidIPv6(ip: string): boolean {
-    const ipv6Regex = /^([0-9a-fA-F]{0,4}:){2,7}[0-9a-fA-F]{0,4}$/;
-    const ipv6WithIPv4Regex =
-      /^([0-9a-fA-F]{0,4}:){2,6}(\d{1,3}\.){3}\d{1,3}$/;
-    return ipv6Regex.test(ip) || ipv6WithIPv4Regex.test(ip);
+    if (!ip || ip.length < 2) return false;
+    if (ip.includes(":::")) return false;
+    if (
+      (ip.startsWith(":") && !ip.startsWith("::")) ||
+      (ip.endsWith(":") && !ip.endsWith("::"))
+    ) {
+      return false;
+    }
+    const doubleColonCount = (ip.match(/::/g) || []).length;
+    if (doubleColonCount > 1) return false;
+    const groups = ip.split(":");
+    const hasDoubleColon = ip.includes("::");
+    if (!hasDoubleColon && groups.length !== 8) return false;
+    if (hasDoubleColon && groups.length > 7) return false;
+    const hexGroupRegex = /^[0-9a-fA-F]{0,4}$/;
+    for (const group of groups) {
+      if (!hexGroupRegex.test(group)) return false;
+    }
+    return true;
   }
 
   describe('IPv4 validation', () => {
@@ -233,6 +248,30 @@ describe('IP address validation', () => {
 
     it('should accept loopback IPv6 address', () => {
       expect(isValidIPv6('::1')).toBe(true);
+    });
+
+    it('should accept all zeros compressed', () => {
+      expect(isValidIPv6('::')).toBe(true);
+    });
+
+    it('should reject triple colons', () => {
+      expect(isValidIPv6(':::')).toBe(false);
+    });
+
+    it('should reject trailing single colon', () => {
+      expect(isValidIPv6('1:2:')).toBe(false);
+    });
+
+    it('should reject leading single colon', () => {
+      expect(isValidIPv6(':1:2')).toBe(false);
+    });
+
+    it('should reject multiple double colons', () => {
+      expect(isValidIPv6('2001::db8::1')).toBe(false);
+    });
+
+    it('should reject too many groups', () => {
+      expect(isValidIPv6('1:2:3:4:5:6:7:8:9')).toBe(false);
     });
 
     it('should reject invalid IPv6 format', () => {

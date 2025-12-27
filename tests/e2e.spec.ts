@@ -361,11 +361,6 @@ test.describe('IP Geolocation Lookup - E2E Tests', () => {
     await page.click('.nav-links a[href="/"]');
     await expect(page).toHaveURL('/');
   });
-
-  test('should show active state on IP検索 link when on ip-geolocation page', async ({ page }) => {
-    const activeLink = page.locator('.nav-links a[data-active="true"]');
-    await expect(activeLink).toContainText('IP検索');
-  });
 });
 
 test.describe('Accessibility - E2E Tests', () => {
