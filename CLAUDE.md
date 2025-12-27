@@ -4,7 +4,12 @@
 
 ## プロジェクト概要
 
-Cloudflare Workers上で動作するWebツール集です。Unicodeエスケープ変換ツールとWHOIS検索ツールを提供しています。
+Cloudflare Workers上で動作するWebツール集です。以下のツールを提供しています：
+
+- **Unicodeエスケープ変換** - Unicode文字列のエスケープ/アンエスケープ変換
+- **WHOIS検索** - ドメイン情報の検索
+- **IPジオロケーション** - IPアドレスから地理情報を取得
+- **グローバルIP確認** - アクセス元のグローバルIPアドレスを表示
 
 ## 技術スタック
 
@@ -74,11 +79,15 @@ npm run test:e2e
 │   ├── start.tsx         # TanStack Start設定
 │   ├── styles.css        # 共通スタイル
 │   ├── routes/
-│   │   ├── __root.tsx    # ルートレイアウト
-│   │   ├── index.tsx     # Unicode変換ページ (/)
-│   │   └── whois.tsx     # WHOIS検索ページ (/whois)
+│   │   ├── __root.tsx        # ルートレイアウト
+│   │   ├── index.tsx         # Unicode変換ページ (/)
+│   │   ├── whois.tsx         # WHOIS検索ページ (/whois)
+│   │   ├── ip-geolocation.tsx # IPジオロケーションページ (/ip-geolocation)
+│   │   └── global-ip.tsx     # グローバルIP確認ページ (/global-ip)
 │   └── functions/
-│       └── whois.ts      # WHOISサーバーファンクション
+│       ├── whois.ts          # WHOISサーバーファンクション
+│       ├── ip-geolocation.ts # IPジオロケーションファンクション
+│       └── global-ip.ts      # グローバルIPファンクション
 ├── tests/
 │   ├── app.test.ts       # ユニットテスト
 │   └── e2e.spec.ts       # E2Eテスト（Playwright）
