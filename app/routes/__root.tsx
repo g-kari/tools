@@ -98,6 +98,12 @@ function RootDocument({ children }: { children: ReactNode }) {
               >
                 グローバルIP
               </Link>
+              <Link
+                to="/regex-checker"
+                data-active={pathname === "/regex-checker" ? "true" : undefined}
+              >
+                正規表現
+              </Link>
             </nav>
           </header>
 

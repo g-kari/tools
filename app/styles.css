@@ -407,6 +407,41 @@ button:focus-visible {
   outline-offset: 3px;
 }
 
+/* Regex checker specific styles */
+.regex-input-group {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.regex-pattern-wrapper {
+  flex: 1;
+}
+
+.regex-flags-wrapper {
+  flex: 0 0 auto;
+}
+
+.match-item {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 2px solid var(--md-sys-color-outline-variant);
+}
+
+.match-item:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
+.info-box h4 {
+  font-size: 0.95rem;
+  margin-top: 15px;
+  margin-bottom: 8px;
+  color: var(--md-sys-color-on-primary-container);
+  font-weight: 500;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   h1 {
@@ -428,5 +463,15 @@ button:focus-visible {
   }
   .result-label {
     width: auto;
+  }
+  .regex-input-group {
+    flex-direction: column;
+  }
+  .regex-flags-wrapper {
+    flex: 1;
+  }
+  .regex-flags-wrapper input {
+    width: 100%;
+    max-width: none !important;
   }
 }
