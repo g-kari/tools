@@ -5,10 +5,11 @@ test.describe('WHOIS Lookup - E2E Tests', () => {
 
   test.beforeEach(async ({ page }) => {
     await page.goto('/whois');
-    // Wait for page load and React hydration
-    // Note: Using 'load' instead of 'networkidle' for better reliability in CI environments
-    // The WHOIS page is static on mount (no immediate API calls), so 'load' is sufficient
+    // Wait for page load
     await page.waitForLoadState('load');
+    // Wait for React hydration by ensuring the input field is rendered and visible
+    // This ensures all React components are mounted before tests run
+    await page.waitForSelector('#domainInput', { state: 'visible' });
   });
 
   test('should load the page without "undefined" content', async ({ page }) => {
