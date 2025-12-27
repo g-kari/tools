@@ -37,7 +37,7 @@ jobs:
 
       - name: Run E2E tests
         run: |
-          npx wrangler pages dev dist --port 8788 &
+          npx serve dist/client -l 8788 --single &
           SERVER_PID=$!
           npx wait-on http://localhost:8788 --timeout 60000
           BASE_URL=http://localhost:8788 npx playwright test --project=chromium
