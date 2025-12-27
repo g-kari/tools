@@ -1,6 +1,8 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Unicode Escape Converter - E2E Tests', () => {
+  test.describe.configure({ timeout: 10000 });
+
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
     // Wait for React hydration
@@ -42,7 +44,6 @@ test.describe('Unicode Escape Converter - E2E Tests', () => {
   });
 
   test('should encode text to Unicode escape', async ({ page }) => {
-    test.setTimeout(10000);
     const inputTextarea = page.locator('#inputText');
     const outputTextarea = page.locator('#outputText');
     const encodeButton = page.locator('button.btn-primary').first();
@@ -57,7 +58,6 @@ test.describe('Unicode Escape Converter - E2E Tests', () => {
   });
 
   test('should decode Unicode escape to text', async ({ page }) => {
-    test.setTimeout(10000);
     const inputTextarea = page.locator('#inputText');
     const outputTextarea = page.locator('#outputText');
     const decodeButton = page.locator('button.btn-secondary').first();
@@ -70,7 +70,6 @@ test.describe('Unicode Escape Converter - E2E Tests', () => {
   });
 
   test('should clear both textareas', async ({ page }) => {
-    test.setTimeout(10000);
     const inputTextarea = page.locator('#inputText');
     const outputTextarea = page.locator('#outputText');
     const encodeButton = page.locator('button.btn-primary').first();
@@ -123,6 +122,8 @@ test.describe('Unicode Escape Converter - E2E Tests', () => {
 });
 
 test.describe('WHOIS Lookup - E2E Tests', () => {
+  test.describe.configure({ timeout: 10000 });
+
   test.beforeEach(async ({ page }) => {
     await page.goto('/whois');
     // Wait for React hydration
@@ -196,7 +197,6 @@ test.describe('WHOIS Lookup - E2E Tests', () => {
   });
 
   test('should show error for invalid domain format', async ({ page }) => {
-    test.setTimeout(10000);
     const domainInput = page.locator('#domainInput');
     const searchButton = page.locator('button.btn-primary');
 
@@ -211,6 +211,8 @@ test.describe('WHOIS Lookup - E2E Tests', () => {
 });
 
 test.describe('Navigation - E2E Tests', () => {
+  test.describe.configure({ timeout: 10000 });
+
   test('should navigate from Unicode page to WHOIS page', async ({ page }) => {
     await page.goto('/');
     await page.click('.nav-links a[href="/whois"]');
@@ -255,6 +257,8 @@ test.describe('Navigation - E2E Tests', () => {
 });
 
 test.describe('404 Not Found - E2E Tests', () => {
+  test.describe.configure({ timeout: 10000 });
+
   test('should display 404 page for undefined routes', async ({ page }) => {
     await page.goto('/nonexistent-route');
     const heading = page.locator('.not-found-heading');
@@ -296,7 +300,6 @@ test.describe('404 Not Found - E2E Tests', () => {
   });
 
   test('should include accessibility features on 404 page', async ({ page }) => {
-    test.setTimeout(10000);
     await page.goto('/missing-page');
     await expect(page.locator('[role="banner"]').first()).toBeVisible();
     await expect(page.locator('[role="main"]').first()).toBeVisible();
@@ -306,6 +309,8 @@ test.describe('404 Not Found - E2E Tests', () => {
 });
 
 test.describe('IP Geolocation Lookup - E2E Tests', () => {
+  test.describe.configure({ timeout: 10000 });
+
   test.beforeEach(async ({ page }) => {
     await page.goto('/ip-geolocation');
     // Wait for React hydration
@@ -376,6 +381,8 @@ test.describe('IP Geolocation Lookup - E2E Tests', () => {
 });
 
 test.describe('Accessibility - E2E Tests', () => {
+  test.describe.configure({ timeout: 10000 });
+
   test('should have aria-live status element on main page', async ({ page }) => {
     await page.goto('/');
     const statusElement = page.locator('#status-message');
