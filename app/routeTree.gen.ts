@@ -10,6 +10,8 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WhoisRouteImport } from './routes/whois'
+import { Route as UrlEncodeRouteImport } from './routes/url-encode'
+import { Route as RegexCheckerRouteImport } from './routes/regex-checker'
 import { Route as IpGeolocationRouteImport } from './routes/ip-geolocation'
 import { Route as GlobalIpRouteImport } from './routes/global-ip'
 import { Route as IndexRouteImport } from './routes/index'
@@ -17,6 +19,16 @@ import { Route as IndexRouteImport } from './routes/index'
 const WhoisRoute = WhoisRouteImport.update({
   id: '/whois',
   path: '/whois',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UrlEncodeRoute = UrlEncodeRouteImport.update({
+  id: '/url-encode',
+  path: '/url-encode',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegexCheckerRoute = RegexCheckerRouteImport.update({
+  id: '/regex-checker',
+  path: '/regex-checker',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IpGeolocationRoute = IpGeolocationRouteImport.update({
@@ -39,12 +51,16 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/global-ip': typeof GlobalIpRoute
   '/ip-geolocation': typeof IpGeolocationRoute
+  '/regex-checker': typeof RegexCheckerRoute
+  '/url-encode': typeof UrlEncodeRoute
   '/whois': typeof WhoisRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/global-ip': typeof GlobalIpRoute
   '/ip-geolocation': typeof IpGeolocationRoute
+  '/regex-checker': typeof RegexCheckerRoute
+  '/url-encode': typeof UrlEncodeRoute
   '/whois': typeof WhoisRoute
 }
 export interface FileRoutesById {
@@ -52,20 +68,43 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/global-ip': typeof GlobalIpRoute
   '/ip-geolocation': typeof IpGeolocationRoute
+  '/regex-checker': typeof RegexCheckerRoute
+  '/url-encode': typeof UrlEncodeRoute
   '/whois': typeof WhoisRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/global-ip' | '/ip-geolocation' | '/whois'
+  fullPaths:
+    | '/'
+    | '/global-ip'
+    | '/ip-geolocation'
+    | '/regex-checker'
+    | '/url-encode'
+    | '/whois'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/global-ip' | '/ip-geolocation' | '/whois'
-  id: '__root__' | '/' | '/global-ip' | '/ip-geolocation' | '/whois'
+  to:
+    | '/'
+    | '/global-ip'
+    | '/ip-geolocation'
+    | '/regex-checker'
+    | '/url-encode'
+    | '/whois'
+  id:
+    | '__root__'
+    | '/'
+    | '/global-ip'
+    | '/ip-geolocation'
+    | '/regex-checker'
+    | '/url-encode'
+    | '/whois'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   GlobalIpRoute: typeof GlobalIpRoute
   IpGeolocationRoute: typeof IpGeolocationRoute
+  RegexCheckerRoute: typeof RegexCheckerRoute
+  UrlEncodeRoute: typeof UrlEncodeRoute
   WhoisRoute: typeof WhoisRoute
 }
 
@@ -76,6 +115,20 @@ declare module '@tanstack/react-router' {
       path: '/whois'
       fullPath: '/whois'
       preLoaderRoute: typeof WhoisRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/url-encode': {
+      id: '/url-encode'
+      path: '/url-encode'
+      fullPath: '/url-encode'
+      preLoaderRoute: typeof UrlEncodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/regex-checker': {
+      id: '/regex-checker'
+      path: '/regex-checker'
+      fullPath: '/regex-checker'
+      preLoaderRoute: typeof RegexCheckerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ip-geolocation': {
@@ -106,6 +159,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   GlobalIpRoute: GlobalIpRoute,
   IpGeolocationRoute: IpGeolocationRoute,
+  RegexCheckerRoute: RegexCheckerRoute,
+  UrlEncodeRoute: UrlEncodeRoute,
   WhoisRoute: WhoisRoute,
 }
 export const routeTree = rootRouteImport
