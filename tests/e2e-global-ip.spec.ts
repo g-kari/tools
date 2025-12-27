@@ -5,11 +5,17 @@ test.describe('Global IP Lookup - E2E Tests', () => {
 
   test.beforeEach(async ({ page }) => {
     await page.goto('/global-ip');
-    // Wait for page load and React hydration
-    // Note: We use 'load' instead of 'networkidle' because the page makes
-    // an immediate API call on mount to fetch the IP address, so the network
-    // is never truly "idle" during initial load
     await page.waitForLoadState('load');
+
+    // Wait for the page to reach a stable state (either IP displayed or error shown)
+    // This ensures React hydration and the initial API call have completed
+    // before tests run, preventing race conditions and undefined content
+    await Promise.race([
+      page.waitForSelector('.ip-display', { timeout: 8000 }),
+      page.waitForSelector('.error-message', { timeout: 8000 }),
+    ]).catch(() => {
+      // If neither appears within timeout, subsequent tests will fail with more specific errors
+    });
   });
 
   test('should load the page without "undefined" content', async ({ page }) => {
