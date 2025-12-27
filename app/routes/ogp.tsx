@@ -33,8 +33,8 @@ function OgpChecker() {
 
   const handleCheck = useCallback(async () => {
     if (!url.trim()) {
+      setError("URLを入力してください");
       announceStatus("エラー: URLを入力してください");
-      alert("URLを入力してください");
       inputRef.current?.focus();
       return;
     }

@@ -1,12 +1,10 @@
 import { test, expect } from "@playwright/test";
 
 test.describe("OGP Checker - E2E Tests", () => {
-  test.describe.configure({ timeout: 15000 });
-
   test.beforeEach(async ({ page }) => {
     await page.goto("/ogp");
-    // Wait for React hydration
-    await page.waitForLoadState("networkidle");
+    // Wait for the main content to be visible
+    await page.waitForSelector(".tool-container", { state: "visible" });
   });
 
   test("should load the page without undefined content", async ({ page }) => {
@@ -36,21 +34,18 @@ test.describe("OGP Checker - E2E Tests", () => {
     await expect(checkButton).toContainText("チェック");
   });
 
-  test("should show alert when checking empty input", async ({ page }) => {
+  test("should show inline error when checking empty input", async ({ page }) => {
     const checkButton = page.locator('button[aria-label="OGP情報を取得"]');
 
-    // Set up dialog handler
-    page.on("dialog", async (dialog) => {
-      expect(dialog.message()).toContain("URLを入力してください");
-      await dialog.accept();
-    });
-
     await checkButton.click();
+
+    // Check for inline error message
+    const errorMessage = page.locator(".error-message");
+    await expect(errorMessage).toBeVisible();
+    await expect(errorMessage).toContainText("URLを入力してください");
   });
 
-  test("should have platform tabs", async ({ page }) => {
-    // Platform tabs are only visible after a successful check
-    // We can verify the UI structure exists
+  test("should have form visible", async ({ page }) => {
     const form = page.locator('form[aria-label="OGPチェックフォーム"]');
     await expect(form).toBeVisible();
   });
@@ -84,10 +79,9 @@ test.describe("OGP Checker - E2E Tests", () => {
   });
 
   test("should focus on URL input on page load", async ({ page }) => {
-    // Wait a bit for autofocus
-    await page.waitForTimeout(500);
     const urlInput = page.locator("#urlInput");
-    await expect(urlInput).toBeFocused();
+    // Wait for the input to be focused
+    await expect(urlInput).toBeFocused({ timeout: 2000 });
   });
 
   test("should have proper form structure", async ({ page }) => {

@@ -108,14 +108,21 @@ export const fetchOgp = createServerFn({ method: "GET" })
   })
   .handler(async ({ data: url }) => {
     try {
+      // Set up timeout with AbortController
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000);
+
       const response = await fetch(url, {
         headers: {
           "User-Agent":
-            "Mozilla/5.0 (compatible; OGPChecker/1.0; +https://tools.example.com)",
+            "Mozilla/5.0 (compatible; OGPChecker/1.0)",
           Accept: "text/html,application/xhtml+xml",
         },
         redirect: "follow",
+        signal: controller.signal,
       });
+
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
         return {
@@ -135,12 +142,17 @@ export const fetchOgp = createServerFn({ method: "GET" })
       const html = await response.text();
       return parseOgpFromHtml(html, url);
     } catch (error) {
+      let errorMessage = "不明なエラーが発生しました";
+      if (error instanceof Error) {
+        if (error.name === "AbortError") {
+          errorMessage = "タイムアウト: サーバーからの応答がありませんでした";
+        } else {
+          errorMessage = `取得エラー: ${error.message}`;
+        }
+      }
       return {
         fetchedUrl: url,
-        error:
-          error instanceof Error
-            ? `取得エラー: ${error.message}`
-            : "不明なエラーが発生しました",
+        error: errorMessage,
       } as OgpData;
     }
   });
