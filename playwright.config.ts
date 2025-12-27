@@ -16,14 +16,21 @@ export default defineConfig({
   // CI環境では5回連続失敗でテストを中断
   maxFailures: process.env.CI ? 5 : 0,
   use: {
-    baseURL: process.env.BASE_URL || 'http://localhost:8788',
+    // CI環境では127.0.0.1を明示的に使用（localhost解決の問題を回避）
+    baseURL: process.env.BASE_URL?.replace('localhost', '127.0.0.1') || 'http://localhost:8788',
     // ナビゲーションタイムアウトを延長
     navigationTimeout: process.env.CI ? 30000 : 10000,
   },
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: {
+        ...devices['Desktop Chrome'],
+        // CI環境でのChromium設定
+        launchOptions: process.env.CI ? {
+          args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        } : undefined,
+      },
     },
   ],
   webServer: process.env.CI ? undefined : {
