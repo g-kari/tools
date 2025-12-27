@@ -20,12 +20,17 @@ function UuidGenerator() {
   const [copied, setCopied] = useState<number | null>(null);
   const [copiedAll, setCopiedAll] = useState(false);
   const statusRef = useRef<HTMLDivElement>(null);
+  const statusTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const copiedTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const copiedAllTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isInitialMount = useRef(true);
 
   // Cleanup timeouts on unmount
   useEffect(() => {
     return () => {
+      if (statusTimeoutRef.current) {
+        clearTimeout(statusTimeoutRef.current);
+      }
       if (copiedTimeoutRef.current) {
         clearTimeout(copiedTimeoutRef.current);
       }
@@ -38,11 +43,34 @@ function UuidGenerator() {
   const announceStatus = useCallback((message: string) => {
     if (statusRef.current) {
       statusRef.current.textContent = message;
-      setTimeout(() => {
+      if (statusTimeoutRef.current) {
+        clearTimeout(statusTimeoutRef.current);
+      }
+      statusTimeoutRef.current = setTimeout(() => {
         if (statusRef.current) {
           statusRef.current.textContent = "";
         }
       }, 3000);
+    }
+  }, []);
+
+  const copyToClipboard = useCallback(async (text: string): Promise<boolean> => {
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed";
+        textArea.style.left = "-9999px";
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textArea);
+      }
+      return true;
+    } catch {
+      return false;
     }
   }, []);
 
@@ -74,57 +102,35 @@ function UuidGenerator() {
   const handleCopy = useCallback(
     async (index: number) => {
       const uuid = formatUUID(uuids[index]);
-      try {
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          await navigator.clipboard.writeText(uuid);
-        } else {
-          const textArea = document.createElement("textarea");
-          textArea.value = uuid;
-          textArea.style.position = "fixed";
-          textArea.style.left = "-9999px";
-          document.body.appendChild(textArea);
-          textArea.select();
-          document.execCommand("copy");
-          document.body.removeChild(textArea);
-        }
+      const success = await copyToClipboard(uuid);
+      if (success) {
         setCopied(index);
         announceStatus("UUIDをコピーしました");
         if (copiedTimeoutRef.current) {
           clearTimeout(copiedTimeoutRef.current);
         }
         copiedTimeoutRef.current = setTimeout(() => setCopied(null), 2000);
-      } catch {
+      } else {
         announceStatus("コピーに失敗しました");
       }
     },
-    [uuids, formatUUID, announceStatus]
+    [uuids, formatUUID, copyToClipboard, announceStatus]
   );
 
   const handleCopyAll = useCallback(async () => {
     const allUuids = uuids.map(formatUUID).join("\n");
-    try {
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText(allUuids);
-      } else {
-        const textArea = document.createElement("textarea");
-        textArea.value = allUuids;
-        textArea.style.position = "fixed";
-        textArea.style.left = "-9999px";
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand("copy");
-        document.body.removeChild(textArea);
-      }
+    const success = await copyToClipboard(allUuids);
+    if (success) {
       setCopiedAll(true);
       announceStatus("すべてのUUIDをコピーしました");
       if (copiedAllTimeoutRef.current) {
         clearTimeout(copiedAllTimeoutRef.current);
       }
       copiedAllTimeoutRef.current = setTimeout(() => setCopiedAll(false), 2000);
-    } catch {
+    } else {
       announceStatus("コピーに失敗しました");
     }
-  }, [uuids, formatUUID, announceStatus]);
+  }, [uuids, formatUUID, copyToClipboard, announceStatus]);
 
   const handleClear = useCallback(() => {
     setUuids([]);
@@ -135,9 +141,11 @@ function UuidGenerator() {
 
   // Generate one UUID on initial load
   useEffect(() => {
-    handleGenerate();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      handleGenerate();
+    }
+  }, [handleGenerate]);
 
   return (
     <>

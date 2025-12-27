@@ -69,11 +69,11 @@ test.describe('UUID Generator - E2E Tests', () => {
     const firstUuid = await page.locator('.uuid-value').first().textContent();
 
     await page.click('button.btn-primary');
-    await page.waitForTimeout(100); // Wait for state update
-
-    const secondUuid = await page.locator('.uuid-value').first().textContent();
-    // UUIDs should be different (extremely unlikely to be the same)
-    expect(secondUuid).not.toBe(firstUuid);
+    // Wait for the UUID to change
+    await expect(async () => {
+      const secondUuid = await page.locator('.uuid-value').first().textContent();
+      expect(secondUuid).not.toBe(firstUuid);
+    }).toPass({ timeout: 5000 });
   });
 
   test('should generate multiple UUIDs when count is changed', async ({ page }) => {
@@ -86,8 +86,6 @@ test.describe('UUID Generator - E2E Tests', () => {
   });
 
   test('should convert to uppercase when checkbox is checked', async ({ page }) => {
-    // Check uppercase checkbox
-    await page.click('input[type="checkbox"]:has(+ *:text-is(""))');
     const uppercaseCheckbox = page.locator('label:has-text("大文字で表示") input[type="checkbox"]');
     await uppercaseCheckbox.check();
     await page.click('button.btn-primary');
