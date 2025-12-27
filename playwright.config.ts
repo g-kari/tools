@@ -1,17 +1,20 @@
 import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
-  testDir: './tests',
+  testDir: './tests/e2e',
   testMatch: '**/*.spec.ts',
-  fullyParallel: true,
+  // CI環境では並列実行を無効化（Vite SSRサーバーとの競合を回避）
+  fullyParallel: !process.env.CI,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: undefined,
+  retries: 0,
+  // CI環境ではシングルワーカーで実行
+  workers: process.env.CI ? 1 : undefined,
   reporter: [['html'], ['list']],
-  timeout: 2000,
+  timeout: 10000,
+  // CI環境では3回連続失敗でテストを中断
+  maxFailures: process.env.CI ? 3 : 0,
   use: {
     baseURL: process.env.BASE_URL || 'http://localhost:8788',
-    trace: 'on-first-retry',
   },
   projects: [
     {

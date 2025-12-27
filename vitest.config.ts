@@ -5,6 +5,8 @@ export default defineConfig({
     globals: false,
     environment: 'node',
     pool: 'forks',
+    // CI環境では3回連続失敗でテストを中断
+    bail: process.env.CI ? 3 : 0,
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
@@ -16,6 +18,6 @@ export default defineConfig({
         'tests/**',
       ],
     },
-    include: ['tests/**/*.test.ts'],
+    include: ['tests/unit/**/*.test.ts'],
   },
 });

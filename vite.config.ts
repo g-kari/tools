@@ -15,4 +15,10 @@ export default defineConfig({
     }),
     tsconfigPaths(),
   ],
+  server: {
+    watch: {
+      // PlaywrightのレポートディレクトリをHMR監視対象から除外
+      ignored: ["**/playwright-report/**", "**/test-results/**"],
+    },
+  },
 });
