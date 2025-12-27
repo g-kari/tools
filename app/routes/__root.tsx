@@ -105,6 +105,12 @@ function RootDocument({ children }: { children: ReactNode }) {
                 正規表現
               </Link>
               <Link
+                to="/json"
+                data-active={pathname === "/json" ? "true" : undefined}
+              >
+                JSON
+              </Link>
+              <Link
                 to="/url-encode"
                 data-active={pathname === "/url-encode" ? "true" : undefined}
               >
