@@ -1,42 +1,7 @@
 import { describe, it, expect } from 'vitest';
+import { isValidIPv4, isValidIPv6 } from '../app/utils/validation';
 
 describe('IP address validation', () => {
-  // IPv4 validation
-  function isValidIPv4(ip: string): boolean {
-    const parts = ip.split(".");
-    if (parts.length !== 4) return false;
-    return parts.every((part) => {
-      const num = parseInt(part, 10);
-      return num >= 0 && num <= 255 && part === num.toString();
-    });
-  }
-
-  // IPv6 validation
-  function isValidIPv6(ip: string): boolean {
-    if (!ip || ip.length < 2) return false;
-    if (ip.includes(":::")) return false;
-    if (
-      (ip.startsWith(":") && !ip.startsWith("::")) ||
-      (ip.endsWith(":") && !ip.endsWith("::"))
-    ) {
-      return false;
-    }
-    const doubleColonCount = (ip.match(/::/g) || []).length;
-    if (doubleColonCount > 1) return false;
-    const groups = ip.split(":");
-    const hasDoubleColon = ip.includes("::");
-    if (!hasDoubleColon && groups.length !== 8) return false;
-    if (hasDoubleColon && groups.length > 9) return false;
-    const hexGroupRegex = /^[0-9a-fA-F]{1,4}$/;
-    for (const group of groups) {
-      if (group === "") {
-        if (!hasDoubleColon) return false;
-        continue;
-      }
-      if (!hexGroupRegex.test(group)) return false;
-    }
-    return true;
-  }
 
   describe('IPv4 validation', () => {
     it('should accept valid IPv4 address', () => {

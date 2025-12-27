@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
+import { domainRegex } from '../app/utils/validation';
 
 describe('Domain validation regex', () => {
-  const domainRegex = /^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
 
   it('should match valid domain', () => {
     expect(domainRegex.test('example.com')).toBe(true);

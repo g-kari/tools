@@ -1,29 +1,7 @@
 import { describe, it, expect } from 'vitest';
+import { testRegexPattern } from '../app/utils/regex';
 
 describe('Regex pattern testing', () => {
-  function testRegexPattern(pattern: string, flags: string, testString: string): { matches: number; error: string | null } {
-    try {
-      const regex = new RegExp(pattern, flags);
-      let matchCount = 0;
-
-      if (flags.includes('g')) {
-        let match;
-        while ((match = regex.exec(testString)) !== null) {
-          matchCount++;
-          if (match.index === regex.lastIndex) {
-            regex.lastIndex++;
-          }
-        }
-      } else {
-        const match = regex.exec(testString);
-        if (match) matchCount = 1;
-      }
-
-      return { matches: matchCount, error: null };
-    } catch (err) {
-      return { matches: 0, error: err instanceof Error ? err.message : 'Invalid regex' };
-    }
-  }
 
   it('should match simple pattern', () => {
     const result = testRegexPattern('\\d+', '', '123');

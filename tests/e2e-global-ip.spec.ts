@@ -56,7 +56,7 @@ test.describe('Global IP Lookup - E2E Tests', () => {
     await expect(globalIpLink).toContainText('グローバルIP');
   });
 
-  test('should navigate to Unicode page when clicking the link', async ({ page }) => {
+  test('should navigate to home page when clicking the link', async ({ page }) => {
     await page.click('.nav-links a[href="/"]');
     await expect(page).toHaveURL('/');
   });

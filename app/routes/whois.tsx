@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { lookupWhois, type WhoisResult } from "../functions/whois";
+import { domainRegex } from "../utils/validation";
 
 export const Route = createFileRoute("/whois")({
   head: () => ({
@@ -71,8 +72,6 @@ function WhoisLookup() {
       return;
     }
 
-    const domainRegex =
-      /^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
     if (!domainRegex.test(domain.trim())) {
       setError("無効なドメイン形式です");
       announceStatus("エラー: 無効なドメイン形式です");
