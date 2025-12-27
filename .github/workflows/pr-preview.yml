@@ -32,12 +32,17 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps chromium
 
+      - name: Build application
+        run: npm run build
+        env:
+          CI: true
+
       - name: Run E2E tests
         run: |
-          npm run dev &
+          npx wrangler pages dev dist --port 8788 &
           SERVER_PID=$!
-          npx wait-on http://localhost:5173 --timeout 60000
-          BASE_URL=http://localhost:5173 npx playwright test --project=chromium
+          npx wait-on http://127.0.0.1:8788 --timeout 60000
+          BASE_URL=http://127.0.0.1:8788 npx playwright test --project=chromium
           kill $SERVER_PID || true
         env:
           CI: true
