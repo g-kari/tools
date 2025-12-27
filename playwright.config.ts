@@ -1,7 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
-  testDir: './tests',
+  testDir: './tests/e2e',
   testMatch: '**/*.spec.ts',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
@@ -9,6 +9,8 @@ export default defineConfig({
   workers: undefined,
   reporter: [['html'], ['list']],
   timeout: 2000,
+  // CI環境では3回連続失敗でテストを中断
+  maxFailures: process.env.CI ? 3 : 0,
   use: {
     baseURL: process.env.BASE_URL || 'http://localhost:8788',
     trace: 'on-first-retry',
