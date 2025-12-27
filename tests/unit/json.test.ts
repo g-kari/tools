@@ -1,15 +1,5 @@
 import { describe, it, expect } from 'vitest';
-
-// JSON utility functions (same as in the app)
-function formatJson(text: string, indent: number = 2): string {
-  const parsed = JSON.parse(text);
-  return JSON.stringify(parsed, null, indent);
-}
-
-function minifyJson(text: string): string {
-  const parsed = JSON.parse(text);
-  return JSON.stringify(parsed);
-}
+import { formatJson, minifyJson } from '../../app/utils/json';
 
 describe('JSON Formatter Functions', () => {
   describe('formatJson', () => {

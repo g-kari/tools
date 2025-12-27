@@ -81,26 +81,24 @@ test.describe('JSON Formatter - E2E Tests', () => {
     await expect(outputTextarea).toHaveValue('');
   });
 
-  test('should show alert when formatting empty input', async ({ page }) => {
+  test('should show error when formatting empty input', async ({ page }) => {
     const formatButton = page.locator('button.btn-primary');
 
-    page.on('dialog', async (dialog) => {
-      expect(dialog.message()).toContain('JSONを入力してください');
-      await dialog.accept();
-    });
-
     await formatButton.click();
+
+    const errorMessage = page.locator('.error-message');
+    await expect(errorMessage).toBeVisible();
+    await expect(errorMessage).toContainText('JSONを入力してください');
   });
 
-  test('should show alert when minifying empty input', async ({ page }) => {
+  test('should show error when minifying empty input', async ({ page }) => {
     const minifyButton = page.locator('button.btn-secondary');
 
-    page.on('dialog', async (dialog) => {
-      expect(dialog.message()).toContain('JSONを入力してください');
-      await dialog.accept();
-    });
-
     await minifyButton.click();
+
+    const errorMessage = page.locator('.error-message');
+    await expect(errorMessage).toBeVisible();
+    await expect(errorMessage).toContainText('JSONを入力してください');
   });
 
   test('should show error for invalid JSON', async ({ page }) => {
