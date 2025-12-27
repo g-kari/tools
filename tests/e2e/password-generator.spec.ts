@@ -60,11 +60,15 @@ test.describe('Password Generator - E2E Tests', () => {
     const generateButton = page.locator('button.btn-primary');
 
     const firstPassword = await passwordOutput.inputValue();
+    expect(firstPassword.length).toBeGreaterThan(0);
+
     await generateButton.click();
     const secondPassword = await passwordOutput.inputValue();
 
-    // Very unlikely to be the same (unless length is very small)
+    // Verify a new password was generated
     expect(secondPassword.length).toBeGreaterThan(0);
+    // Passwords should be different (extremely unlikely to be the same with 16 chars)
+    expect(secondPassword).not.toBe(firstPassword);
   });
 
   test('should clear password when clear button is clicked', async ({ page }) => {

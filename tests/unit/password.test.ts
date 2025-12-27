@@ -1,4 +1,9 @@
-import { describe, it, expect, vi, beforeAll } from 'vitest';
+import { describe, it, expect, beforeAll } from 'vitest';
+import {
+  generatePassword,
+  calculateStrength,
+  CHAR_COUNTS,
+} from '../../app/utils/password';
 
 // Mock crypto.getRandomValues for Node.js environment
 beforeAll(() => {
@@ -15,59 +20,6 @@ beforeAll(() => {
     } as Crypto;
   }
 });
-
-const UPPERCASE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-const LOWERCASE_CHARS = "abcdefghijklmnopqrstuvwxyz";
-const NUMBER_CHARS = "0123456789";
-const SYMBOL_CHARS = "!@#$%^&*()_+-=[]{}|;:,.<>?";
-
-interface PasswordOptions {
-  length: number;
-  uppercase: boolean;
-  lowercase: boolean;
-  numbers: boolean;
-  symbols: boolean;
-}
-
-function generatePassword(options: PasswordOptions): string {
-  let charset = "";
-  if (options.uppercase) charset += UPPERCASE_CHARS;
-  if (options.lowercase) charset += LOWERCASE_CHARS;
-  if (options.numbers) charset += NUMBER_CHARS;
-  if (options.symbols) charset += SYMBOL_CHARS;
-
-  if (charset.length === 0) {
-    return "";
-  }
-
-  const array = new Uint32Array(options.length);
-  crypto.getRandomValues(array);
-
-  let password = "";
-  for (let i = 0; i < options.length; i++) {
-    password += charset[array[i] % charset.length];
-  }
-
-  return password;
-}
-
-function calculateStrength(password: string, options: PasswordOptions): { score: number; label: string } {
-  if (password.length === 0) return { score: 0, label: "" };
-
-  let charsetSize = 0;
-  if (options.uppercase) charsetSize += 26;
-  if (options.lowercase) charsetSize += 26;
-  if (options.numbers) charsetSize += 10;
-  if (options.symbols) charsetSize += 26;
-
-  const entropy = password.length * Math.log2(charsetSize || 1);
-
-  if (entropy < 28) return { score: 1, label: "非常に弱い" };
-  if (entropy < 36) return { score: 2, label: "弱い" };
-  if (entropy < 60) return { score: 3, label: "普通" };
-  if (entropy < 128) return { score: 4, label: "強い" };
-  return { score: 5, label: "非常に強い" };
-}
 
 describe('Password generation', () => {
   it('should generate password with specified length', () => {
@@ -253,5 +205,15 @@ describe('Password strength calculation', () => {
     });
     expect(result.score).toBe(5);
     expect(result.label).toBe("非常に強い");
+  });
+});
+
+describe('Character counts', () => {
+  it('should have correct character counts for entropy calculation', () => {
+    expect(CHAR_COUNTS.uppercase).toBe(26);
+    expect(CHAR_COUNTS.lowercase).toBe(26);
+    expect(CHAR_COUNTS.numbers).toBe(10);
+    // SYMBOL_CHARS = "!@#$%^&*()_+-=[]{}|;:,.<>?" has 26 characters
+    expect(CHAR_COUNTS.symbols).toBe(26);
   });
 });

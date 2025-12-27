@@ -1,5 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect, useRef, useCallback } from "react";
+import {
+  generatePassword,
+  calculateStrength,
+  type PasswordOptions,
+} from "../utils/password";
 
 export const Route = createFileRoute("/password-generator")({
   head: () => ({
@@ -7,59 +12,6 @@ export const Route = createFileRoute("/password-generator")({
   }),
   component: PasswordGenerator,
 });
-
-interface PasswordOptions {
-  length: number;
-  uppercase: boolean;
-  lowercase: boolean;
-  numbers: boolean;
-  symbols: boolean;
-}
-
-const UPPERCASE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-const LOWERCASE_CHARS = "abcdefghijklmnopqrstuvwxyz";
-const NUMBER_CHARS = "0123456789";
-const SYMBOL_CHARS = "!@#$%^&*()_+-=[]{}|;:,.<>?";
-
-function generatePassword(options: PasswordOptions): string {
-  let charset = "";
-  if (options.uppercase) charset += UPPERCASE_CHARS;
-  if (options.lowercase) charset += LOWERCASE_CHARS;
-  if (options.numbers) charset += NUMBER_CHARS;
-  if (options.symbols) charset += SYMBOL_CHARS;
-
-  if (charset.length === 0) {
-    return "";
-  }
-
-  const array = new Uint32Array(options.length);
-  crypto.getRandomValues(array);
-
-  let password = "";
-  for (let i = 0; i < options.length; i++) {
-    password += charset[array[i] % charset.length];
-  }
-
-  return password;
-}
-
-function calculateStrength(password: string, options: PasswordOptions): { score: number; label: string } {
-  if (password.length === 0) return { score: 0, label: "" };
-
-  let charsetSize = 0;
-  if (options.uppercase) charsetSize += 26;
-  if (options.lowercase) charsetSize += 26;
-  if (options.numbers) charsetSize += 10;
-  if (options.symbols) charsetSize += 26;
-
-  const entropy = password.length * Math.log2(charsetSize || 1);
-
-  if (entropy < 28) return { score: 1, label: "非常に弱い" };
-  if (entropy < 36) return { score: 2, label: "弱い" };
-  if (entropy < 60) return { score: 3, label: "普通" };
-  if (entropy < 128) return { score: 4, label: "強い" };
-  return { score: 5, label: "非常に強い" };
-}
 
 function PasswordGenerator() {
   const [password, setPassword] = useState("");
