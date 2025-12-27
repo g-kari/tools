@@ -6,7 +6,7 @@ import {
 
 // Global IP result type
 export interface GlobalIpResult {
-  ip: string;
+  ip?: string;
   error?: string;
 }
 
@@ -15,7 +15,7 @@ export const getGlobalIp = createServerFn({ method: "GET" }).handler(
   async () => {
     try {
       // Cloudflare Workers provides client IP in CF-Connecting-IP header
-      const cfConnectingIp = getRequestHeader("CF-Connecting-IP" as any);
+      const cfConnectingIp = getRequestHeader("CF-Connecting-IP");
       if (cfConnectingIp) {
         return { ip: cfConnectingIp };
       }
@@ -27,12 +27,10 @@ export const getGlobalIp = createServerFn({ method: "GET" }).handler(
       }
 
       return {
-        ip: "",
         error: "IPアドレスを取得できませんでした",
       };
     } catch (err) {
       return {
-        ip: "",
         error:
           err instanceof Error ? err.message : "IPアドレスの取得に失敗しました",
       };
