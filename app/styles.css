@@ -536,33 +536,16 @@ input[type="range"]:focus-visible {
   background: #388e3c;
 }
 
-/* OGP Checker - Platform tabs */
-.platform-tabs {
+/* OGP Checker - All previews grid */
+.ogp-previews-grid {
   display: flex;
-  gap: 8px;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-}
-
-.platform-tab {
-  flex: 0 0 auto;
-  min-width: 100px;
-  padding: 10px 20px;
-  font-size: 14px;
-  background: var(--md-sys-color-surface-variant);
-  color: var(--md-sys-color-on-surface);
-  border: 1px solid var(--md-sys-color-outline-variant);
-}
-
-.platform-tab.active {
-  background: var(--md-sys-color-primary);
-  color: var(--md-sys-color-on-primary);
-  border-color: var(--md-sys-color-primary);
+  flex-direction: column;
+  gap: 30px;
 }
 
 /* OGP Preview - Common */
 .ogp-preview {
-  margin-top: 15px;
+  margin-top: 0;
 }
 
 .ogp-preview-label {
@@ -570,6 +553,42 @@ input[type="range"]:focus-visible {
   color: var(--md-sys-color-on-surface-variant);
   margin-bottom: 10px;
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ogp-card-type-badge {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Twitter Cards Grid */
+.ogp-twitter-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.ogp-twitter-card-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.ogp-card-type-label {
+  font-size: 0.8rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 8px;
+  font-family: "Roboto Mono", monospace;
+  background: var(--md-sys-color-surface-variant);
+  padding: 4px 8px;
+  border-radius: 4px;
+  display: inline-block;
+  width: fit-content;
 }
 
 .ogp-value {
@@ -578,13 +597,125 @@ input[type="range"]:focus-visible {
   text-overflow: ellipsis;
 }
 
-/* OGP Preview - X (Twitter) */
+/* OGP Preview - X (Twitter) - Common */
 .ogp-card-x {
   background: #15202b;
   border-radius: 16px;
   overflow: hidden;
-  max-width: 500px;
+  max-width: 100%;
   border: 1px solid #38444d;
+}
+
+/* Twitter Card - summary (small thumbnail) */
+.ogp-card-x-summary {
+  display: flex;
+  flex-direction: row;
+}
+
+.ogp-image-container-x-summary {
+  width: 130px;
+  min-width: 130px;
+  height: 130px;
+  overflow: hidden;
+  background: #192734;
+  flex-shrink: 0;
+}
+
+.ogp-image-x-summary {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ogp-content-x-summary {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+
+/* Twitter Card - summary_large_image */
+.ogp-card-x-large {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Twitter Card - player */
+.ogp-card-x-player {
+  display: flex;
+  flex-direction: column;
+}
+
+.ogp-player-container {
+  position: relative;
+}
+
+.ogp-player-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ogp-play-button {
+  width: 60px;
+  height: 60px;
+  background: rgba(29, 161, 242, 0.9);
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 24px;
+  padding-left: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.ogp-play-button:hover {
+  background: rgba(29, 161, 242, 1);
+}
+
+.ogp-play-button:focus {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* Twitter Card - app */
+.ogp-card-x-app {
+  display: flex;
+  flex-direction: row;
+  padding: 12px;
+  gap: 12px;
+}
+
+.ogp-app-icon-container {
+  width: 64px;
+  height: 64px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #192734;
+  flex-shrink: 0;
+}
+
+.ogp-app-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ogp-content-x-app {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
 }
 
 .ogp-image-container-x {
@@ -825,5 +956,23 @@ input[type="range"]:focus-visible {
   .regex-flags-wrapper input {
     width: 100%;
     max-width: none !important;
+  }
+  /* OGP responsive */
+  .ogp-twitter-cards-grid {
+    grid-template-columns: 1fr;
+  }
+  .ogp-card-x-summary {
+    flex-direction: column;
+  }
+  .ogp-image-container-x-summary {
+    width: 100%;
+    min-width: 100%;
+    height: auto;
+    aspect-ratio: 1.91 / 1;
+  }
+  .ogp-card-x-app {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
   }
 }
