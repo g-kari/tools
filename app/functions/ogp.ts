@@ -184,6 +184,167 @@ function isImageContentType(contentType: string): boolean {
   return contentType.startsWith("image/");
 }
 
+// Extract YouTube video ID from URL
+function extractYouTubeVideoId(url: string): string | null {
+  try {
+    const urlObj = new URL(url);
+    // youtube.com/watch?v=VIDEO_ID
+    if (
+      urlObj.hostname === "www.youtube.com" ||
+      urlObj.hostname === "youtube.com"
+    ) {
+      return urlObj.searchParams.get("v");
+    }
+    // youtu.be/VIDEO_ID
+    if (urlObj.hostname === "youtu.be") {
+      return urlObj.pathname.slice(1);
+    }
+    // youtube.com/embed/VIDEO_ID
+    if (urlObj.pathname.startsWith("/embed/")) {
+      return urlObj.pathname.split("/")[2];
+    }
+  } catch {
+    return null;
+  }
+  return null;
+}
+
+// Extract X/Twitter status ID from URL
+function extractTwitterStatusId(url: string): {
+  username: string;
+  statusId: string;
+} | null {
+  try {
+    const urlObj = new URL(url);
+    if (
+      urlObj.hostname === "twitter.com" ||
+      urlObj.hostname === "www.twitter.com" ||
+      urlObj.hostname === "x.com" ||
+      urlObj.hostname === "www.x.com"
+    ) {
+      const match = urlObj.pathname.match(/^\/([^/]+)\/status\/(\d+)/);
+      if (match) {
+        return { username: match[1], statusId: match[2] };
+      }
+    }
+  } catch {
+    return null;
+  }
+  return null;
+}
+
+// Extract image URL from proxy URL (e.g., img.0g0.xyz/?url=...)
+function extractProxiedImageUrl(url: string): string | null {
+  try {
+    const urlObj = new URL(url);
+    const proxiedUrl = urlObj.searchParams.get("url");
+    if (proxiedUrl && isImageUrl(proxiedUrl)) {
+      return proxiedUrl;
+    }
+  } catch {
+    return null;
+  }
+  return null;
+}
+
+// Fetch YouTube OGP using noembed API
+async function fetchYouTubeOgp(
+  videoId: string,
+  originalUrl: string,
+  signal: AbortSignal
+): Promise<OgpData> {
+  try {
+    const oembedUrl = `https://noembed.com/embed?url=https://www.youtube.com/watch?v=${videoId}`;
+    const response = await fetch(oembedUrl, { signal });
+
+    if (response.ok) {
+      const data = await response.json();
+      return {
+        fetchedUrl: originalUrl,
+        title: data.title || undefined,
+        description: data.author_name
+          ? `${data.author_name} のYouTube動画`
+          : undefined,
+        image: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
+        siteName: "YouTube",
+        type: "video",
+        url: `https://www.youtube.com/watch?v=${videoId}`,
+      };
+    }
+  } catch {
+    // Fallback to basic info
+  }
+
+  // Fallback: return basic info with thumbnail
+  return {
+    fetchedUrl: originalUrl,
+    title: "YouTube動画",
+    image: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
+    siteName: "YouTube",
+    type: "video",
+    url: `https://www.youtube.com/watch?v=${videoId}`,
+  };
+}
+
+// Fetch X/Twitter OGP using syndication API
+async function fetchTwitterOgp(
+  username: string,
+  statusId: string,
+  originalUrl: string,
+  signal: AbortSignal
+): Promise<OgpData> {
+  try {
+    // Use syndication API to get tweet data
+    const syndicationUrl = `https://cdn.syndication.twimg.com/tweet-result?id=${statusId}&token=0`;
+    const response = await fetch(syndicationUrl, {
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+      },
+      signal,
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      const text = data.text || "";
+      const authorName = data.user?.name || username;
+      const authorScreenName = data.user?.screen_name || username;
+      const profileImage = data.user?.profile_image_url_https;
+
+      // Get media if available
+      let image: string | undefined;
+      if (data.mediaDetails && data.mediaDetails.length > 0) {
+        image = data.mediaDetails[0].media_url_https;
+      } else if (data.photos && data.photos.length > 0) {
+        image = data.photos[0].url;
+      }
+
+      return {
+        fetchedUrl: originalUrl,
+        title: `${authorName} (@${authorScreenName})`,
+        description: text.length > 200 ? text.substring(0, 200) + "..." : text,
+        image: image || profileImage,
+        siteName: "X (formerly Twitter)",
+        type: "article",
+        url: `https://x.com/${authorScreenName}/status/${statusId}`,
+        twitterCard: "summary_large_image",
+        twitterSite: `@${authorScreenName}`,
+      };
+    }
+  } catch {
+    // Fallback to basic info
+  }
+
+  // Fallback: return basic info
+  return {
+    fetchedUrl: originalUrl,
+    title: `@${username} のポスト`,
+    siteName: "X (formerly Twitter)",
+    type: "article",
+    url: originalUrl,
+  };
+}
+
 // Server function to fetch OGP data
 export const fetchOgp = createServerFn({ method: "GET" })
   .inputValidator((data: unknown) => {
@@ -209,6 +370,39 @@ export const fetchOgp = createServerFn({ method: "GET" })
       // Set up timeout with AbortController
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 15000);
+
+      // Check for special URL handlers first
+
+      // YouTube
+      const youtubeVideoId = extractYouTubeVideoId(url);
+      if (youtubeVideoId) {
+        clearTimeout(timeoutId);
+        return await fetchYouTubeOgp(youtubeVideoId, url, controller.signal);
+      }
+
+      // X/Twitter
+      const twitterStatus = extractTwitterStatusId(url);
+      if (twitterStatus) {
+        clearTimeout(timeoutId);
+        return await fetchTwitterOgp(
+          twitterStatus.username,
+          twitterStatus.statusId,
+          url,
+          controller.signal
+        );
+      }
+
+      // Image proxy URLs
+      const proxiedImageUrl = extractProxiedImageUrl(url);
+      if (proxiedImageUrl) {
+        clearTimeout(timeoutId);
+        return {
+          fetchedUrl: url,
+          title: "画像",
+          image: proxiedImageUrl,
+          type: "image",
+        } as OgpData;
+      }
 
       // First, try with bot user agents (better for OGP)
       let response = await fetchWithBotUserAgent(url, controller.signal);
