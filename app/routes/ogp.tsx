@@ -9,14 +9,11 @@ export const Route = createFileRoute("/ogp")({
   component: OgpChecker,
 });
 
-type Platform = "x" | "facebook" | "slack" | "discord";
-
 function OgpChecker() {
   const [url, setUrl] = useState("");
   const [result, setResult] = useState<OgpData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [activePlatform, setActivePlatform] = useState<Platform>("x");
   const inputRef = useRef<HTMLInputElement>(null);
   const statusRef = useRef<HTMLDivElement>(null);
 
@@ -108,89 +105,215 @@ function OgpChecker() {
     }
   };
 
-  const renderPlatformPreview = (data: OgpData, platform: Platform) => {
+  const getTwitterCardType = (data: OgpData): string => {
+    return data.twitterCard || "summary";
+  };
+
+  // Twitter Card - summary (small thumbnail left, text right)
+  const renderTwitterSummary = (data: OgpData) => {
     const title = getTitle(data);
     const description = getDescription(data);
     const image = getImage(data);
     const siteName = getSiteName(data);
 
-    switch (platform) {
-      case "x":
-        return (
-          <div className="ogp-preview ogp-preview-x">
-            <div className="ogp-preview-label">X (Twitter) プレビュー</div>
-            <div className="ogp-card-x">
-              {image && (
-                <div className="ogp-image-container-x">
-                  <img src={image} alt="" className="ogp-image-x" />
-                </div>
-              )}
-              <div className="ogp-content-x">
-                <div className="ogp-title-x">{title}</div>
-                <div className="ogp-description-x">{description}</div>
-                <div className="ogp-site-x">{siteName}</div>
-              </div>
-            </div>
+    return (
+      <div className="ogp-card-x ogp-card-x-summary">
+        {image && (
+          <div className="ogp-image-container-x-summary">
+            <img src={image} alt="" className="ogp-image-x-summary" />
           </div>
-        );
+        )}
+        <div className="ogp-content-x-summary">
+          <div className="ogp-site-x">{siteName}</div>
+          <div className="ogp-title-x">{title}</div>
+          <div className="ogp-description-x">{description}</div>
+        </div>
+      </div>
+    );
+  };
 
-      case "facebook":
-        return (
-          <div className="ogp-preview ogp-preview-facebook">
-            <div className="ogp-preview-label">Facebook プレビュー</div>
-            <div className="ogp-card-facebook">
-              {image && (
-                <div className="ogp-image-container-facebook">
-                  <img src={image} alt="" className="ogp-image-facebook" />
-                </div>
-              )}
-              <div className="ogp-content-facebook">
-                <div className="ogp-site-facebook">{siteName}</div>
-                <div className="ogp-title-facebook">{title}</div>
-                <div className="ogp-description-facebook">{description}</div>
-              </div>
-            </div>
-          </div>
-        );
+  // Twitter Card - summary_large_image (large image top, text bottom)
+  const renderTwitterSummaryLargeImage = (data: OgpData) => {
+    const title = getTitle(data);
+    const description = getDescription(data);
+    const image = getImage(data);
+    const siteName = getSiteName(data);
 
-      case "slack":
-        return (
-          <div className="ogp-preview ogp-preview-slack">
-            <div className="ogp-preview-label">Slack プレビュー</div>
-            <div className="ogp-card-slack">
-              <div className="ogp-content-slack">
-                <div className="ogp-site-slack">{siteName}</div>
-                <div className="ogp-title-slack">{title}</div>
-                <div className="ogp-description-slack">{description}</div>
-              </div>
-              {image && (
-                <div className="ogp-image-container-slack">
-                  <img src={image} alt="" className="ogp-image-slack" />
-                </div>
-              )}
-            </div>
+    return (
+      <div className="ogp-card-x ogp-card-x-large">
+        {image && (
+          <div className="ogp-image-container-x">
+            <img src={image} alt="" className="ogp-image-x" />
           </div>
-        );
+        )}
+        <div className="ogp-content-x">
+          <div className="ogp-site-x">{siteName}</div>
+          <div className="ogp-title-x">{title}</div>
+          <div className="ogp-description-x">{description}</div>
+        </div>
+      </div>
+    );
+  };
 
-      case "discord":
-        return (
-          <div className="ogp-preview ogp-preview-discord">
-            <div className="ogp-preview-label">Discord プレビュー</div>
-            <div className="ogp-card-discord">
-              <div className="ogp-content-discord">
-                <div className="ogp-site-discord">{siteName}</div>
-                <div className="ogp-title-discord">{title}</div>
-                <div className="ogp-description-discord">{description}</div>
-              </div>
-              {image && (
-                <div className="ogp-image-container-discord">
-                  <img src={image} alt="" className="ogp-image-discord" />
-                </div>
-              )}
+  // Twitter Card - player (video/audio player)
+  const renderTwitterPlayer = (data: OgpData) => {
+    const title = getTitle(data);
+    const description = getDescription(data);
+    const image = getImage(data);
+    const siteName = getSiteName(data);
+
+    return (
+      <div className="ogp-card-x ogp-card-x-player">
+        {image && (
+          <div className="ogp-image-container-x ogp-player-container">
+            <img src={image} alt="" className="ogp-image-x" />
+            <div className="ogp-player-overlay">
+              <div className="ogp-play-button">▶</div>
             </div>
           </div>
-        );
-    }
+        )}
+        <div className="ogp-content-x">
+          <div className="ogp-site-x">{siteName}</div>
+          <div className="ogp-title-x">{title}</div>
+          <div className="ogp-description-x">{description}</div>
+        </div>
+      </div>
+    );
+  };
+
+  // Twitter Card - app (app download card)
+  const renderTwitterApp = (data: OgpData) => {
+    const title = getTitle(data);
+    const description = getDescription(data);
+    const image = getImage(data);
+    const siteName = getSiteName(data);
+
+    return (
+      <div className="ogp-card-x ogp-card-x-app">
+        <div className="ogp-app-icon-container">
+          {image && <img src={image} alt="" className="ogp-app-icon" />}
+        </div>
+        <div className="ogp-content-x-app">
+          <div className="ogp-title-x">{title}</div>
+          <div className="ogp-description-x">{description}</div>
+          <div className="ogp-site-x">{siteName}</div>
+        </div>
+      </div>
+    );
+  };
+
+  // Render all X/Twitter card types
+  const renderXPreview = (data: OgpData) => {
+    const cardType = getTwitterCardType(data);
+
+    return (
+      <div className="ogp-preview ogp-preview-x">
+        <div className="ogp-preview-label">
+          X (Twitter) プレビュー
+          <span className="ogp-card-type-badge">{cardType}</span>
+        </div>
+
+        <div className="ogp-twitter-cards-grid">
+          <div className="ogp-twitter-card-item">
+            <div className="ogp-card-type-label">summary</div>
+            {renderTwitterSummary(data)}
+          </div>
+
+          <div className="ogp-twitter-card-item">
+            <div className="ogp-card-type-label">summary_large_image</div>
+            {renderTwitterSummaryLargeImage(data)}
+          </div>
+
+          <div className="ogp-twitter-card-item">
+            <div className="ogp-card-type-label">player</div>
+            {renderTwitterPlayer(data)}
+          </div>
+
+          <div className="ogp-twitter-card-item">
+            <div className="ogp-card-type-label">app</div>
+            {renderTwitterApp(data)}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Facebook preview
+  const renderFacebookPreview = (data: OgpData) => {
+    const title = getTitle(data);
+    const description = getDescription(data);
+    const image = getImage(data);
+    const siteName = getSiteName(data);
+
+    return (
+      <div className="ogp-preview ogp-preview-facebook">
+        <div className="ogp-preview-label">Facebook プレビュー</div>
+        <div className="ogp-card-facebook">
+          {image && (
+            <div className="ogp-image-container-facebook">
+              <img src={image} alt="" className="ogp-image-facebook" />
+            </div>
+          )}
+          <div className="ogp-content-facebook">
+            <div className="ogp-site-facebook">{siteName}</div>
+            <div className="ogp-title-facebook">{title}</div>
+            <div className="ogp-description-facebook">{description}</div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Slack preview
+  const renderSlackPreview = (data: OgpData) => {
+    const title = getTitle(data);
+    const description = getDescription(data);
+    const image = getImage(data);
+    const siteName = getSiteName(data);
+
+    return (
+      <div className="ogp-preview ogp-preview-slack">
+        <div className="ogp-preview-label">Slack プレビュー</div>
+        <div className="ogp-card-slack">
+          <div className="ogp-content-slack">
+            <div className="ogp-site-slack">{siteName}</div>
+            <div className="ogp-title-slack">{title}</div>
+            <div className="ogp-description-slack">{description}</div>
+          </div>
+          {image && (
+            <div className="ogp-image-container-slack">
+              <img src={image} alt="" className="ogp-image-slack" />
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  // Discord preview
+  const renderDiscordPreview = (data: OgpData) => {
+    const title = getTitle(data);
+    const description = getDescription(data);
+    const image = getImage(data);
+    const siteName = getSiteName(data);
+
+    return (
+      <div className="ogp-preview ogp-preview-discord">
+        <div className="ogp-preview-label">Discord プレビュー</div>
+        <div className="ogp-card-discord">
+          <div className="ogp-content-discord">
+            <div className="ogp-site-discord">{siteName}</div>
+            <div className="ogp-title-discord">{title}</div>
+            <div className="ogp-description-discord">{description}</div>
+          </div>
+          {image && (
+            <div className="ogp-image-container-discord">
+              <img src={image} alt="" className="ogp-image-discord" />
+            </div>
+          )}
+        </div>
+      </div>
+    );
   };
 
   const renderOgpDetails = (data: OgpData) => {
@@ -226,17 +349,13 @@ function OgpChecker() {
     );
   };
 
-  const platforms: { id: Platform; label: string }[] = [
-    { id: "x", label: "X" },
-    { id: "facebook", label: "Facebook" },
-    { id: "slack", label: "Slack" },
-    { id: "discord", label: "Discord" },
-  ];
-
   return (
     <>
       <div className="tool-container">
-        <form onSubmit={(e) => e.preventDefault()} aria-label="OGPチェックフォーム">
+        <form
+          onSubmit={(e) => e.preventDefault()}
+          aria-label="OGPチェックフォーム"
+        >
           <div className="converter-section">
             <div className="search-form-row">
               <div className="search-input-wrapper">
@@ -289,25 +408,11 @@ function OgpChecker() {
               <h2 id="preview-title" className="section-title">
                 プレビュー
               </h2>
-              <div
-                className="platform-tabs"
-                role="tablist"
-                aria-label="プラットフォーム選択"
-              >
-                {platforms.map((p) => (
-                  <button
-                    key={p.id}
-                    role="tab"
-                    aria-selected={activePlatform === p.id}
-                    className={`platform-tab ${activePlatform === p.id ? "active" : ""}`}
-                    onClick={() => setActivePlatform(p.id)}
-                  >
-                    {p.label}
-                  </button>
-                ))}
-              </div>
-              <div role="tabpanel" aria-label={`${activePlatform}のプレビュー`}>
-                {renderPlatformPreview(result, activePlatform)}
+              <div className="ogp-previews-grid">
+                {renderXPreview(result)}
+                {renderFacebookPreview(result)}
+                {renderSlackPreview(result)}
+                {renderDiscordPreview(result)}
               </div>
             </section>
 
@@ -329,6 +434,10 @@ function OgpChecker() {
           <ul>
             <li>URLを入力して「チェック」ボタンをクリック</li>
             <li>X、Facebook、Slack、Discordでのプレビュー表示を確認</li>
+            <li>
+              Xカードは4種類（summary, summary_large_image, player,
+              app）を同時表示
+            </li>
             <li>OGPタグの設定値を一覧で確認可能</li>
             <li>キーボードショートカット: Enterキーでチェック実行</li>
           </ul>
