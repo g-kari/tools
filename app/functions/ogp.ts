@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import { decodeHtmlEntities } from "../utils/html";
 
 // OGP data structure
 export interface OgpData {
@@ -28,22 +29,7 @@ export interface OgpData {
   error?: string;
 }
 
-// Decode HTML entities
-function decodeHtmlEntities(text: string): string {
-  return text
-    .replace(/&amp;/g, "&")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/&#x27;/g, "'")
-    .replace(/&#x2F;/g, "/")
-    .replace(/&apos;/g, "'")
-    .replace(/&#(\d+);/g, (_, num) => String.fromCharCode(parseInt(num, 10)))
-    .replace(/&#x([0-9a-fA-F]+);/g, (_, hex) =>
-      String.fromCharCode(parseInt(hex, 16))
-    );
-}
+// decodeHtmlEntities is now imported from ../utils/html
 
 // Parse OGP and meta tags from HTML
 export function parseOgpFromHtml(html: string, url: string): OgpData {
@@ -60,16 +46,36 @@ export function parseOgpFromHtml(html: string, url: string): OgpData {
 
     // Pattern 1: attribute comes before content
     // Pattern 2: content comes before attribute
-    // Supports: single/double quotes, spaces, newlines
+    // Supports: single/double quotes with proper quote matching
     const patterns = [
-      // property/name="..." content="..."
+      // property/name="..." content="..." (double quotes)
       new RegExp(
-        `<meta[^>]+${attr}\\s*=\\s*["']${escapedProp}["'][^>]+content\\s*=\\s*["']([^"']*?)["']`,
+        `<meta[^>]+${attr}\\s*=\\s*"${escapedProp}"[^>]+content\\s*=\\s*"([^"]*)"`,
         "is"
       ),
-      // content="..." property/name="..."
+      // property/name='...' content='...' (single quotes)
       new RegExp(
-        `<meta[^>]+content\\s*=\\s*["']([^"']*?)["'][^>]+${attr}\\s*=\\s*["']${escapedProp}["']`,
+        `<meta[^>]+${attr}\\s*=\\s*'${escapedProp}'[^>]+content\\s*=\\s*'([^']*)'`,
+        "is"
+      ),
+      // content="..." property/name="..." (double quotes, reversed)
+      new RegExp(
+        `<meta[^>]+content\\s*=\\s*"([^"]*)"[^>]+${attr}\\s*=\\s*"${escapedProp}"`,
+        "is"
+      ),
+      // content='...' property/name='...' (single quotes, reversed)
+      new RegExp(
+        `<meta[^>]+content\\s*=\\s*'([^']*)'[^>]+${attr}\\s*=\\s*'${escapedProp}'`,
+        "is"
+      ),
+      // Mixed: property/name="..." content='...'
+      new RegExp(
+        `<meta[^>]+${attr}\\s*=\\s*"${escapedProp}"[^>]+content\\s*=\\s*'([^']*)'`,
+        "is"
+      ),
+      // Mixed: property/name='...' content="..."
+      new RegExp(
+        `<meta[^>]+${attr}\\s*=\\s*'${escapedProp}'[^>]+content\\s*=\\s*"([^"]*)"`,
         "is"
       ),
     ];
@@ -193,15 +199,21 @@ function extractYouTubeVideoId(url: string): string | null {
       urlObj.hostname === "www.youtube.com" ||
       urlObj.hostname === "youtube.com"
     ) {
-      return urlObj.searchParams.get("v");
+      const videoId = urlObj.searchParams.get("v");
+      if (videoId) return videoId;
+
+      // youtube.com/embed/VIDEO_ID
+      if (urlObj.pathname.startsWith("/embed/")) {
+        const parts = urlObj.pathname.split("/");
+        if (parts.length >= 3 && parts[2]) {
+          return parts[2];
+        }
+      }
     }
     // youtu.be/VIDEO_ID
     if (urlObj.hostname === "youtu.be") {
-      return urlObj.pathname.slice(1);
-    }
-    // youtube.com/embed/VIDEO_ID
-    if (urlObj.pathname.startsWith("/embed/")) {
-      return urlObj.pathname.split("/")[2];
+      const videoId = urlObj.pathname.slice(1);
+      if (videoId) return videoId;
     }
   } catch {
     return null;
@@ -247,6 +259,15 @@ function extractProxiedImageUrl(url: string): string | null {
   return null;
 }
 
+// Get YouTube thumbnail URL with fallback
+// maxresdefault.jpg is not available for all videos, use hqdefault as fallback
+function getYouTubeThumbnailUrl(videoId: string): string {
+  // Use hqdefault as it's more reliably available
+  // maxresdefault (1280x720) is only available for HD videos
+  // hqdefault (480x360) is available for all videos
+  return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+}
+
 // Fetch YouTube OGP using noembed API
 async function fetchYouTubeOgp(
   videoId: string,
@@ -259,13 +280,16 @@ async function fetchYouTubeOgp(
 
     if (response.ok) {
       const data = await response.json();
+      // Use thumbnail_url from API if available, otherwise use our fallback
+      const thumbnail =
+        data.thumbnail_url || getYouTubeThumbnailUrl(videoId);
       return {
         fetchedUrl: originalUrl,
         title: data.title || undefined,
         description: data.author_name
           ? `${data.author_name} のYouTube動画`
           : undefined,
-        image: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
+        image: thumbnail,
         siteName: "YouTube",
         type: "video",
         url: `https://www.youtube.com/watch?v=${videoId}`,
@@ -279,7 +303,7 @@ async function fetchYouTubeOgp(
   return {
     fetchedUrl: originalUrl,
     title: "YouTube動画",
-    image: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
+    image: getYouTubeThumbnailUrl(videoId),
     siteName: "YouTube",
     type: "video",
     url: `https://www.youtube.com/watch?v=${videoId}`,
@@ -287,62 +311,90 @@ async function fetchYouTubeOgp(
 }
 
 // Fetch X/Twitter OGP using syndication API
+// Note: This uses an undocumented API endpoint which may change or require tokens
 async function fetchTwitterOgp(
   username: string,
   statusId: string,
   originalUrl: string,
   signal: AbortSignal
 ): Promise<OgpData> {
-  try {
-    // Use syndication API to get tweet data
-    const syndicationUrl = `https://cdn.syndication.twimg.com/tweet-result?id=${statusId}&token=0`;
-    const response = await fetch(syndicationUrl, {
-      headers: {
-        "User-Agent":
-          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-      },
-      signal,
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      const text = data.text || "";
-      const authorName = data.user?.name || username;
-      const authorScreenName = data.user?.screen_name || username;
-      const profileImage = data.user?.profile_image_url_https;
-
-      // Get media if available
-      let image: string | undefined;
-      if (data.mediaDetails && data.mediaDetails.length > 0) {
-        image = data.mediaDetails[0].media_url_https;
-      } else if (data.photos && data.photos.length > 0) {
-        image = data.photos[0].url;
-      }
-
-      return {
-        fetchedUrl: originalUrl,
-        title: `${authorName} (@${authorScreenName})`,
-        description: text.length > 200 ? text.substring(0, 200) + "..." : text,
-        image: image || profileImage,
-        siteName: "X (formerly Twitter)",
-        type: "article",
-        url: `https://x.com/${authorScreenName}/status/${statusId}`,
-        twitterCard: "summary_large_image",
-        twitterSite: `@${authorScreenName}`,
-      };
-    }
-  } catch {
-    // Fallback to basic info
-  }
-
-  // Fallback: return basic info
-  return {
+  // Create fallback data first
+  const fallbackData: OgpData = {
     fetchedUrl: originalUrl,
     title: `@${username} のポスト`,
     siteName: "X (formerly Twitter)",
     type: "article",
     url: originalUrl,
   };
+
+  try {
+    // Use syndication API to get tweet data
+    // This is an undocumented endpoint and may require token parameter
+    const syndicationUrl = `https://cdn.syndication.twimg.com/tweet-result?id=${statusId}&token=0`;
+    const response = await fetch(syndicationUrl, {
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        Accept: "application/json",
+      },
+      signal,
+    });
+
+    // Handle various error responses
+    if (!response.ok) {
+      // 404: Tweet not found or deleted
+      // 403: Access denied
+      // Other: API changes or rate limiting
+      console.warn(
+        `Twitter syndication API returned ${response.status} for status ${statusId}`
+      );
+      return fallbackData;
+    }
+
+    const contentType = response.headers.get("content-type") || "";
+    if (!contentType.includes("application/json")) {
+      console.warn(`Twitter syndication API returned non-JSON content`);
+      return fallbackData;
+    }
+
+    const data = await response.json();
+
+    // Validate response structure
+    if (!data || typeof data !== "object") {
+      return fallbackData;
+    }
+
+    const text = data.text || "";
+    const authorName = data.user?.name || username;
+    const authorScreenName = data.user?.screen_name || username;
+    const profileImage = data.user?.profile_image_url_https;
+
+    // Get media if available
+    let image: string | undefined;
+    if (data.mediaDetails && data.mediaDetails.length > 0) {
+      image = data.mediaDetails[0].media_url_https;
+    } else if (data.photos && data.photos.length > 0) {
+      image = data.photos[0].url;
+    }
+
+    return {
+      fetchedUrl: originalUrl,
+      title: `${authorName} (@${authorScreenName})`,
+      description: text.length > 200 ? text.substring(0, 200) + "..." : text,
+      image: image || profileImage,
+      siteName: "X (formerly Twitter)",
+      type: "article",
+      url: `https://x.com/${authorScreenName}/status/${statusId}`,
+      twitterCard: "summary_large_image",
+      twitterSite: `@${authorScreenName}`,
+    };
+  } catch (error) {
+    // Handle network errors, timeouts, JSON parse errors, etc.
+    if (error instanceof Error && error.name !== "AbortError") {
+      console.warn(`Twitter syndication API error: ${error.message}`);
+    }
+    return fallbackData;
+  }
 }
 
 // Server function to fetch OGP data
@@ -366,36 +418,41 @@ export const fetchOgp = createServerFn({ method: "GET" })
     return urlWithProtocol;
   })
   .handler(async ({ data: url }) => {
-    try {
-      // Set up timeout with AbortController
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 15000);
+    // Set up timeout with AbortController
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000);
 
+    try {
       // Check for special URL handlers first
 
       // YouTube
       const youtubeVideoId = extractYouTubeVideoId(url);
       if (youtubeVideoId) {
-        clearTimeout(timeoutId);
-        return await fetchYouTubeOgp(youtubeVideoId, url, controller.signal);
+        // Keep timeout active during async operation, clear in finally
+        const result = await fetchYouTubeOgp(
+          youtubeVideoId,
+          url,
+          controller.signal
+        );
+        return result;
       }
 
       // X/Twitter
       const twitterStatus = extractTwitterStatusId(url);
       if (twitterStatus) {
-        clearTimeout(timeoutId);
-        return await fetchTwitterOgp(
+        // Keep timeout active during async operation, clear in finally
+        const result = await fetchTwitterOgp(
           twitterStatus.username,
           twitterStatus.statusId,
           url,
           controller.signal
         );
+        return result;
       }
 
       // Image proxy URLs
       const proxiedImageUrl = extractProxiedImageUrl(url);
       if (proxiedImageUrl) {
-        clearTimeout(timeoutId);
         return {
           fetchedUrl: url,
           title: "画像",
@@ -422,8 +479,6 @@ export const fetchOgp = createServerFn({ method: "GET" })
           signal: controller.signal,
         });
       }
-
-      clearTimeout(timeoutId);
 
       if (!response.ok) {
         return {
@@ -473,5 +528,8 @@ export const fetchOgp = createServerFn({ method: "GET" })
         fetchedUrl: url,
         error: errorMessage,
       } as OgpData;
+    } finally {
+      // Always clear the timeout to prevent memory leaks
+      clearTimeout(timeoutId);
     }
   });

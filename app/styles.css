@@ -667,6 +667,7 @@ input[type="range"]:focus-visible {
   width: 60px;
   height: 60px;
   background: rgba(29, 161, 242, 0.9);
+  border: none;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -674,6 +675,17 @@ input[type="range"]:focus-visible {
   color: white;
   font-size: 24px;
   padding-left: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.ogp-play-button:hover {
+  background: rgba(29, 161, 242, 1);
+}
+
+.ogp-play-button:focus {
+  outline: 2px solid var(--md-primary);
+  outline-offset: 2px;
 }
 
 /* Twitter Card - app */

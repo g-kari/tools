@@ -168,7 +168,14 @@ function OgpChecker() {
           <div className="ogp-image-container-x ogp-player-container">
             <img src={image} alt="" className="ogp-image-x" />
             <div className="ogp-player-overlay">
-              <div className="ogp-play-button">▶</div>
+              <button
+                type="button"
+                className="ogp-play-button"
+                aria-label="動画を再生"
+                tabIndex={-1}
+              >
+                <span aria-hidden="true">▶</span>
+              </button>
             </div>
           </div>
         )}

@@ -1,4 +1,5 @@
 import { describe, it, expect } from "vitest";
+import { decodeHtmlEntities } from "../../app/utils/html";
 
 // OGP data structure (duplicated for testing without importing server code)
 interface OgpData {
@@ -28,23 +29,6 @@ interface OgpData {
   error?: string;
 }
 
-// Decode HTML entities
-function decodeHtmlEntities(text: string): string {
-  return text
-    .replace(/&amp;/g, "&")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/&#x27;/g, "'")
-    .replace(/&#x2F;/g, "/")
-    .replace(/&apos;/g, "'")
-    .replace(/&#(\d+);/g, (_, num) => String.fromCharCode(parseInt(num, 10)))
-    .replace(/&#x([0-9a-fA-F]+);/g, (_, hex) =>
-      String.fromCharCode(parseInt(hex, 16))
-    );
-}
-
 // Parse OGP and meta tags from HTML (duplicated for testing)
 function parseOgpFromHtml(html: string, url: string): OgpData {
   const result: OgpData = { fetchedUrl: url };
@@ -60,16 +44,36 @@ function parseOgpFromHtml(html: string, url: string): OgpData {
 
     // Pattern 1: attribute comes before content
     // Pattern 2: content comes before attribute
-    // Supports: single/double quotes, spaces, newlines
+    // Supports: single/double quotes with proper quote matching
     const patterns = [
-      // property/name="..." content="..."
+      // property/name="..." content="..." (double quotes)
       new RegExp(
-        `<meta[^>]+${attr}\\s*=\\s*["']${escapedProp}["'][^>]+content\\s*=\\s*["']([^"']*?)["']`,
+        `<meta[^>]+${attr}\\s*=\\s*"${escapedProp}"[^>]+content\\s*=\\s*"([^"]*)"`,
         "is"
       ),
-      // content="..." property/name="..."
+      // property/name='...' content='...' (single quotes)
       new RegExp(
-        `<meta[^>]+content\\s*=\\s*["']([^"']*?)["'][^>]+${attr}\\s*=\\s*["']${escapedProp}["']`,
+        `<meta[^>]+${attr}\\s*=\\s*'${escapedProp}'[^>]+content\\s*=\\s*'([^']*)'`,
+        "is"
+      ),
+      // content="..." property/name="..." (double quotes, reversed)
+      new RegExp(
+        `<meta[^>]+content\\s*=\\s*"([^"]*)"[^>]+${attr}\\s*=\\s*"${escapedProp}"`,
+        "is"
+      ),
+      // content='...' property/name='...' (single quotes, reversed)
+      new RegExp(
+        `<meta[^>]+content\\s*=\\s*'([^']*)'[^>]+${attr}\\s*=\\s*'${escapedProp}'`,
+        "is"
+      ),
+      // Mixed: property/name="..." content='...'
+      new RegExp(
+        `<meta[^>]+${attr}\\s*=\\s*"${escapedProp}"[^>]+content\\s*=\\s*'([^']*)'`,
+        "is"
+      ),
+      // Mixed: property/name='...' content="..."
+      new RegExp(
+        `<meta[^>]+${attr}\\s*=\\s*'${escapedProp}'[^>]+content\\s*=\\s*"([^"]*)"`,
         "is"
       ),
     ];
