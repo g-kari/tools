@@ -684,7 +684,7 @@ input[type="range"]:focus-visible {
 }
 
 .ogp-play-button:focus {
-  outline: 2px solid var(--md-primary);
+  outline: 2px solid var(--md-sys-color-primary);
   outline-offset: 2px;
 }
 
