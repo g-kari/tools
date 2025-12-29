@@ -173,6 +173,18 @@ function safeStopAudioSource(source: AudioBufferSourceNode | null): void {
   }
 }
 
+function generateFilename(
+  waveform: WaveformType,
+  frequency: number,
+  duration: number,
+  extension: "wav" | "mp3"
+): string {
+  const waveformLabel =
+    WAVEFORM_OPTIONS.find((opt) => opt.value === waveform)?.label || waveform;
+  const frequencyPart = waveform === "noise" ? "" : `_${frequency}Hz`;
+  return `dummy_audio_${waveformLabel}${frequencyPart}_${duration}s.${extension}`;
+}
+
 function DummyAudioGenerator() {
   const [waveform, setWaveform] = useState<WaveformType>("sine");
   const [frequency, setFrequency] = useState(440);
@@ -282,10 +294,7 @@ function DummyAudioGenerator() {
     const wavData = audioBufferToWav(audioBufferRef.current);
     const blob = new Blob([wavData], { type: "audio/wav" });
     const url = URL.createObjectURL(blob);
-
-    const waveformLabel =
-      WAVEFORM_OPTIONS.find((opt) => opt.value === waveform)?.label || waveform;
-    const filename = `dummy_audio_${waveformLabel}_${frequency}Hz_${duration}s.wav`;
+    const filename = generateFilename(waveform, frequency, duration, "wav");
 
     const a = document.createElement("a");
     a.href = url;
@@ -311,10 +320,7 @@ function DummyAudioGenerator() {
     try {
       const mp3Blob = await audioBufferToMp3(audioBufferRef.current);
       const url = URL.createObjectURL(mp3Blob);
-
-      const waveformLabel =
-        WAVEFORM_OPTIONS.find((opt) => opt.value === waveform)?.label || waveform;
-      const filename = `dummy_audio_${waveformLabel}_${frequency}Hz_${duration}s.mp3`;
+      const filename = generateFilename(waveform, frequency, duration, "mp3");
 
       const a = document.createElement("a");
       a.href = url;
