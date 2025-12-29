@@ -330,6 +330,36 @@ button:focus-visible {
   padding: 15px;
   border-radius: 4px;
   margin-top: 15px;
+  margin-bottom: 20px;
+  border: 1px solid var(--md-sys-color-error);
+}
+
+/* JWT Decoder - Output sections */
+.jwt-output-section {
+  margin-bottom: 20px;
+}
+
+.jwt-output-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.jwt-copy-button {
+  font-size: 12px;
+  padding: 4px 12px;
+  min-width: auto;
+  flex: 0 0 auto;
+}
+
+.jwt-monospace-output {
+  font-family: "Roboto Mono", "Courier New", monospace;
+  font-size: 14px;
+}
+
+.jwt-signature-output {
+  min-height: 60px;
 }
 
 /* Loading */
