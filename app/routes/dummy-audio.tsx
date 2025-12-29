@@ -121,48 +121,40 @@ export function audioBufferToWav(buffer: AudioBuffer): ArrayBuffer {
   return arrayBuffer;
 }
 
-export function audioBufferToMp3(buffer: AudioBuffer): Promise<Blob> {
-  return new Promise((resolve, reject) => {
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      const lamejs = require("lamejs");
-      const numChannels = 1;
-      const sampleRate = buffer.sampleRate;
-      const kbps = 128;
+export async function audioBufferToMp3(buffer: AudioBuffer): Promise<Blob> {
+  const lamejs = await import("lamejs");
+  const numChannels = 1;
+  const sampleRate = buffer.sampleRate;
+  const kbps = 128;
 
-      const mp3encoder = new lamejs.Mp3Encoder(numChannels, sampleRate, kbps);
-      const samples = buffer.getChannelData(0);
-      const sampleBlockSize = 1152;
-      const mp3Data: Int8Array[] = [];
+  const mp3encoder = new lamejs.Mp3Encoder(numChannels, sampleRate, kbps);
+  const samples = buffer.getChannelData(0);
+  const sampleBlockSize = 1152;
+  const mp3Data: Int8Array[] = [];
 
-      // Convert Float32Array to Int16Array
-      const samples16 = new Int16Array(samples.length);
-      for (let i = 0; i < samples.length; i++) {
-        const s = Math.max(-1, Math.min(1, samples[i]));
-        samples16[i] = s < 0 ? s * 0x8000 : s * 0x7fff;
-      }
+  // Convert Float32Array to Int16Array
+  const samples16 = new Int16Array(samples.length);
+  for (let i = 0; i < samples.length; i++) {
+    const s = Math.max(-1, Math.min(1, samples[i]));
+    samples16[i] = s < 0 ? s * 0x8000 : s * 0x7fff;
+  }
 
-      // Encode in blocks
-      for (let i = 0; i < samples16.length; i += sampleBlockSize) {
-        const sampleChunk = samples16.subarray(i, i + sampleBlockSize);
-        const mp3buf = mp3encoder.encodeBuffer(sampleChunk);
-        if (mp3buf.length > 0) {
-          mp3Data.push(new Int8Array(mp3buf));
-        }
-      }
-
-      // Finish encoding
-      const mp3buf = mp3encoder.flush();
-      if (mp3buf.length > 0) {
-        mp3Data.push(new Int8Array(mp3buf));
-      }
-
-      const blob = new Blob(mp3Data, { type: "audio/mp3" });
-      resolve(blob);
-    } catch (error) {
-      reject(error);
+  // Encode in blocks
+  for (let i = 0; i < samples16.length; i += sampleBlockSize) {
+    const sampleChunk = samples16.subarray(i, i + sampleBlockSize);
+    const mp3buf = mp3encoder.encodeBuffer(sampleChunk);
+    if (mp3buf.length > 0) {
+      mp3Data.push(new Int8Array(mp3buf));
     }
-  });
+  }
+
+  // Finish encoding
+  const mp3buf = mp3encoder.flush();
+  if (mp3buf.length > 0) {
+    mp3Data.push(new Int8Array(mp3buf));
+  }
+
+  return new Blob(mp3Data, { type: "audio/mp3" });
 }
 
 function writeString(view: DataView, offset: number, str: string): void {
