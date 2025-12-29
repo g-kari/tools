@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect, useRef, useCallback } from "react";
+import { decodeJWT, type DecodedJWT } from "../utils/jwt";
 
 export const Route = createFileRoute("/jwt")({
   head: () => ({
@@ -8,74 +9,10 @@ export const Route = createFileRoute("/jwt")({
   component: JwtDecoder,
 });
 
-interface DecodedJWT {
-  header: string;
-  payload: string;
-  signature: string;
-  headerRaw: string;
-  payloadRaw: string;
-}
-
-function base64UrlDecode(str: string): string {
-  // Base64URL to Base64
-  let base64 = str.replace(/-/g, "+").replace(/_/g, "/");
-
-  // パディングを追加
-  while (base64.length % 4 !== 0) {
-    base64 += "=";
-  }
-
-  try {
-    // Base64デコード
-    const decoded = atob(base64);
-    // UTF-8デコード
-    return decodeURIComponent(
-      decoded
-        .split("")
-        .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
-        .join("")
-    );
-  } catch (error) {
-    throw new Error("Base64URLデコードに失敗しました");
-  }
-}
-
-function decodeJWT(token: string): DecodedJWT {
-  const parts = token.trim().split(".");
-
-  if (parts.length !== 3) {
-    throw new Error("JWTは3つのパート（ヘッダー.ペイロード.署名）で構成されている必要があります");
-  }
-
-  const [headerPart, payloadPart, signaturePart] = parts;
-
-  if (!headerPart || !payloadPart || !signaturePart) {
-    throw new Error("JWTの各パートが空です");
-  }
-
-  try {
-    const headerRaw = base64UrlDecode(headerPart);
-    const payloadRaw = base64UrlDecode(payloadPart);
-
-    // JSONとして整形
-    const headerJson = JSON.parse(headerRaw);
-    const payloadJson = JSON.parse(payloadRaw);
-
-    return {
-      header: JSON.stringify(headerJson, null, 2),
-      payload: JSON.stringify(payloadJson, null, 2),
-      signature: signaturePart,
-      headerRaw,
-      payloadRaw,
-    };
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(`デコードエラー: ${error.message}`);
-    }
-    throw new Error("JWTのデコードに失敗しました");
-  }
-}
-
+/**
+ * JWT Decoder component that allows users to decode and inspect JWT tokens.
+ * Displays the header, payload, and signature in a user-friendly format.
+ */
 function JwtDecoder() {
   const [inputToken, setInputToken] = useState("");
   const [decodedResult, setDecodedResult] = useState<DecodedJWT | null>(null);
@@ -83,6 +20,11 @@ function JwtDecoder() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const statusRef = useRef<HTMLDivElement>(null);
 
+  /**
+   * Announces a status message to screen readers via ARIA live region.
+   * The message is cleared after 3 seconds.
+   * @param message - The status message to announce
+   */
   const announceStatus = useCallback((message: string) => {
     if (statusRef.current) {
       statusRef.current.textContent = message;
@@ -94,12 +36,15 @@ function JwtDecoder() {
     }
   }, []);
 
+  /**
+   * Handles the JWT decode operation.
+   * Validates input, decodes the JWT, and updates the UI with results or errors.
+   */
   const handleDecode = useCallback(() => {
     if (!inputToken.trim()) {
-      const message = "エラー: JWTトークンを入力してください";
+      const message = "JWTトークンを入力してください";
       setErrorMessage(message);
-      announceStatus(message);
-      alert("JWTトークンを入力してください");
+      announceStatus(`エラー: ${message}`);
       inputRef.current?.focus();
       return;
     }
@@ -117,6 +62,9 @@ function JwtDecoder() {
     }
   }, [inputToken, announceStatus]);
 
+  /**
+   * Clears all input and output fields and resets the component state.
+   */
   const handleClear = useCallback(() => {
     setInputToken("");
     setDecodedResult(null);
@@ -125,6 +73,11 @@ function JwtDecoder() {
     inputRef.current?.focus();
   }, [announceStatus]);
 
+  /**
+   * Copies the specified text to the clipboard.
+   * @param text - The text to copy
+   * @param label - A label describing what was copied (for status announcements)
+   */
   const handleCopyToClipboard = useCallback(
     async (text: string, label: string) => {
       try {
@@ -137,6 +90,7 @@ function JwtDecoder() {
     [announceStatus]
   );
 
+  // Keyboard shortcut: Ctrl/Cmd+Enter to decode
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
@@ -149,6 +103,7 @@ function JwtDecoder() {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [handleDecode]);
 
+  // Focus input field on mount
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
@@ -169,7 +124,7 @@ function JwtDecoder() {
               placeholder="JWTトークンを入力してください...&#10;例: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
               aria-describedby="input-help"
               aria-label="JWTトークン入力欄"
-              style={{ fontFamily: "Roboto Mono, monospace", fontSize: "14px" }}
+              className="jwt-monospace-output"
             />
             <span id="input-help" className="sr-only">
               このフィールドにJWTトークンを入力してデコードできます
@@ -200,14 +155,6 @@ function JwtDecoder() {
               className="error-message"
               role="alert"
               aria-live="assertive"
-              style={{
-                color: "#d32f2f",
-                backgroundColor: "#ffebee",
-                padding: "12px 16px",
-                borderRadius: "4px",
-                marginBottom: "20px",
-                border: "1px solid #ef9a9a",
-              }}
             >
               {errorMessage}
             </div>
@@ -215,16 +162,15 @@ function JwtDecoder() {
 
           {decodedResult && (
             <>
-              <div style={{ marginBottom: "20px" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
+              <div className="jwt-output-section">
+                <div className="jwt-output-header">
                   <label htmlFor="outputHeader" className="section-title">
                     ヘッダー (Header)
                   </label>
                   <button
                     type="button"
-                    className="btn-secondary"
+                    className="btn-secondary jwt-copy-button"
                     onClick={() => handleCopyToClipboard(decodedResult.header, "ヘッダー")}
-                    style={{ fontSize: "12px", padding: "4px 12px" }}
                     aria-label="ヘッダーをコピー"
                   >
                     コピー
@@ -236,20 +182,19 @@ function JwtDecoder() {
                   readOnly
                   aria-label="デコードされたヘッダー"
                   aria-live="polite"
-                  style={{ fontFamily: "Roboto Mono, monospace", fontSize: "14px" }}
+                  className="jwt-monospace-output"
                 />
               </div>
 
-              <div style={{ marginBottom: "20px" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
+              <div className="jwt-output-section">
+                <div className="jwt-output-header">
                   <label htmlFor="outputPayload" className="section-title">
                     ペイロード (Payload)
                   </label>
                   <button
                     type="button"
-                    className="btn-secondary"
+                    className="btn-secondary jwt-copy-button"
                     onClick={() => handleCopyToClipboard(decodedResult.payload, "ペイロード")}
-                    style={{ fontSize: "12px", padding: "4px 12px" }}
                     aria-label="ペイロードをコピー"
                   >
                     コピー
@@ -261,20 +206,19 @@ function JwtDecoder() {
                   readOnly
                   aria-label="デコードされたペイロード"
                   aria-live="polite"
-                  style={{ fontFamily: "Roboto Mono, monospace", fontSize: "14px" }}
+                  className="jwt-monospace-output"
                 />
               </div>
 
-              <div style={{ marginBottom: "30px" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
+              <div className="jwt-output-section">
+                <div className="jwt-output-header">
                   <label htmlFor="outputSignature" className="section-title">
                     署名 (Signature)
                   </label>
                   <button
                     type="button"
-                    className="btn-secondary"
+                    className="btn-secondary jwt-copy-button"
                     onClick={() => handleCopyToClipboard(decodedResult.signature, "署名")}
-                    style={{ fontSize: "12px", padding: "4px 12px" }}
                     aria-label="署名をコピー"
                   >
                     コピー
@@ -286,11 +230,7 @@ function JwtDecoder() {
                   readOnly
                   aria-label="JWT署名"
                   aria-live="polite"
-                  style={{
-                    fontFamily: "Roboto Mono, monospace",
-                    fontSize: "14px",
-                    minHeight: "60px"
-                  }}
+                  className="jwt-monospace-output jwt-signature-output"
                 />
               </div>
             </>

@@ -112,16 +112,16 @@ test.describe('JWT Decoder - E2E Tests', () => {
     await expect(page.locator('#outputHeader')).not.toBeVisible();
   });
 
-  test('should show alert when decoding empty input', async ({ page }) => {
+  test('should show error message when decoding empty input', async ({ page }) => {
     const decodeButton = page.locator('button.btn-primary');
 
-    // Set up dialog handler
-    page.on('dialog', async (dialog) => {
-      expect(dialog.message()).toContain('JWTトークンを入力してください');
-      await dialog.accept();
-    });
-
     await decodeButton.click();
+
+    // Check for error message
+    const errorMessage = page.locator('.error-message');
+    await expect(errorMessage).toBeVisible();
+    const errorText = await errorMessage.textContent();
+    expect(errorText).toContain('JWTトークンを入力してください');
   });
 
   test('should have proper accessibility attributes', async ({ page }) => {
