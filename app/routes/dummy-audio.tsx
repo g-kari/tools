@@ -19,18 +19,17 @@ const WAVEFORM_OPTIONS: { value: WaveformType; label: string }[] = [
 ];
 
 const SAMPLE_RATE = 44100;
+const MAX_DURATION = 60;
 
-function generateAudioBuffer(
-  audioContext: AudioContext,
+export function generateAudioSamples(
   waveform: WaveformType,
   frequency: number,
   duration: number,
-  volume: number
-): AudioBuffer {
-  const sampleRate = audioContext.sampleRate;
+  volume: number,
+  sampleRate: number = SAMPLE_RATE
+): Float32Array {
   const numSamples = Math.floor(sampleRate * duration);
-  const buffer = audioContext.createBuffer(1, numSamples, sampleRate);
-  const channelData = buffer.getChannelData(0);
+  const samples = new Float32Array(numSamples);
   const amplitude = volume / 100;
 
   for (let i = 0; i < numSamples; i++) {
@@ -55,14 +54,28 @@ function generateAudioBuffer(
         break;
     }
 
-    channelData[i] = sample * amplitude;
+    samples[i] = sample * amplitude;
   }
 
+  return samples;
+}
+
+function generateAudioBuffer(
+  audioContext: AudioContext,
+  waveform: WaveformType,
+  frequency: number,
+  duration: number,
+  volume: number
+): AudioBuffer {
+  const sampleRate = audioContext.sampleRate;
+  const samples = generateAudioSamples(waveform, frequency, duration, volume, sampleRate);
+  const buffer = audioContext.createBuffer(1, samples.length, sampleRate);
+  buffer.getChannelData(0).set(samples);
   return buffer;
 }
 
-function audioBufferToWav(buffer: AudioBuffer): ArrayBuffer {
-  const numChannels = buffer.numberOfChannels;
+export function audioBufferToWav(buffer: AudioBuffer): ArrayBuffer {
+  const numChannels = 1; // モノラル固定
   const sampleRate = buffer.sampleRate;
   const format = 1; // PCM
   const bitsPerSample = 16;
@@ -108,9 +121,63 @@ function audioBufferToWav(buffer: AudioBuffer): ArrayBuffer {
   return arrayBuffer;
 }
 
+export function audioBufferToMp3(buffer: AudioBuffer): Promise<Blob> {
+  return new Promise((resolve, reject) => {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const lamejs = require("lamejs");
+      const numChannels = 1;
+      const sampleRate = buffer.sampleRate;
+      const kbps = 128;
+
+      const mp3encoder = new lamejs.Mp3Encoder(numChannels, sampleRate, kbps);
+      const samples = buffer.getChannelData(0);
+      const sampleBlockSize = 1152;
+      const mp3Data: Int8Array[] = [];
+
+      // Convert Float32Array to Int16Array
+      const samples16 = new Int16Array(samples.length);
+      for (let i = 0; i < samples.length; i++) {
+        const s = Math.max(-1, Math.min(1, samples[i]));
+        samples16[i] = s < 0 ? s * 0x8000 : s * 0x7fff;
+      }
+
+      // Encode in blocks
+      for (let i = 0; i < samples16.length; i += sampleBlockSize) {
+        const sampleChunk = samples16.subarray(i, i + sampleBlockSize);
+        const mp3buf = mp3encoder.encodeBuffer(sampleChunk);
+        if (mp3buf.length > 0) {
+          mp3Data.push(new Int8Array(mp3buf));
+        }
+      }
+
+      // Finish encoding
+      const mp3buf = mp3encoder.flush();
+      if (mp3buf.length > 0) {
+        mp3Data.push(new Int8Array(mp3buf));
+      }
+
+      const blob = new Blob(mp3Data, { type: "audio/mp3" });
+      resolve(blob);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
 function writeString(view: DataView, offset: number, str: string): void {
   for (let i = 0; i < str.length; i++) {
     view.setUint8(offset + i, str.charCodeAt(i));
+  }
+}
+
+function safeStopAudioSource(source: AudioBufferSourceNode | null): void {
+  if (source) {
+    try {
+      source.stop();
+    } catch {
+      // Already stopped, ignore error
+    }
   }
 }
 
@@ -121,6 +188,7 @@ function DummyAudioGenerator() {
   const [volume, setVolume] = useState(50);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isGenerated, setIsGenerated] = useState(false);
+  const [isEncodingMp3, setIsEncodingMp3] = useState(false);
 
   const audioContextRef = useRef<AudioContext | null>(null);
   const sourceNodeRef = useRef<AudioBufferSourceNode | null>(null);
@@ -133,9 +201,7 @@ function DummyAudioGenerator() {
       if (statusTimeoutRef.current) {
         clearTimeout(statusTimeoutRef.current);
       }
-      if (sourceNodeRef.current) {
-        sourceNodeRef.current.stop();
-      }
+      safeStopAudioSource(sourceNodeRef.current);
       if (audioContextRef.current) {
         audioContextRef.current.close();
       }
@@ -181,15 +247,19 @@ function DummyAudioGenerator() {
       handleGenerate();
     }
 
+    // Re-check after potential generation
+    if (!audioBufferRef.current) {
+      announceStatus("音声の生成に失敗しました");
+      return;
+    }
+
     const audioContext = getAudioContext();
 
     if (audioContext.state === "suspended") {
       await audioContext.resume();
     }
 
-    if (sourceNodeRef.current) {
-      sourceNodeRef.current.stop();
-    }
+    safeStopAudioSource(sourceNodeRef.current);
 
     const source = audioContext.createBufferSource();
     source.buffer = audioBufferRef.current;
@@ -204,15 +274,13 @@ function DummyAudioGenerator() {
   }, [handleGenerate, getAudioContext, announceStatus]);
 
   const handleStop = useCallback(() => {
-    if (sourceNodeRef.current) {
-      sourceNodeRef.current.stop();
-      sourceNodeRef.current = null;
-    }
+    safeStopAudioSource(sourceNodeRef.current);
+    sourceNodeRef.current = null;
     setIsPlaying(false);
     announceStatus("停止しました");
   }, [announceStatus]);
 
-  const handleDownload = useCallback(() => {
+  const handleDownloadWav = useCallback(() => {
     if (!audioBufferRef.current) {
       handleGenerate();
     }
@@ -236,6 +304,41 @@ function DummyAudioGenerator() {
     URL.revokeObjectURL(url);
 
     announceStatus("WAVファイルをダウンロードしました");
+  }, [waveform, frequency, duration, handleGenerate, announceStatus]);
+
+  const handleDownloadMp3 = useCallback(async () => {
+    if (!audioBufferRef.current) {
+      handleGenerate();
+    }
+
+    if (!audioBufferRef.current) return;
+
+    setIsEncodingMp3(true);
+    announceStatus("MP3エンコード中...");
+
+    try {
+      const mp3Blob = await audioBufferToMp3(audioBufferRef.current);
+      const url = URL.createObjectURL(mp3Blob);
+
+      const waveformLabel =
+        WAVEFORM_OPTIONS.find((opt) => opt.value === waveform)?.label || waveform;
+      const filename = `dummy_audio_${waveformLabel}_${frequency}Hz_${duration}s.mp3`;
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      announceStatus("MP3ファイルをダウンロードしました");
+    } catch (error) {
+      console.error("MP3 encoding failed:", error);
+      announceStatus("MP3エンコードに失敗しました");
+    } finally {
+      setIsEncodingMp3(false);
+    }
   }, [waveform, frequency, duration, handleGenerate, announceStatus]);
 
   const handleWaveformChange = useCallback((newWaveform: WaveformType) => {
@@ -324,18 +427,18 @@ function DummyAudioGenerator() {
                   type="number"
                   id="duration"
                   min="0.1"
-                  max="10"
+                  max={MAX_DURATION}
                   step="0.1"
                   value={duration}
                   onChange={(e) =>
                     handleDurationChange(
-                      Math.max(0.1, Math.min(10, parseFloat(e.target.value) || 1))
+                      Math.max(0.1, Math.min(MAX_DURATION, parseFloat(e.target.value) || 1))
                     )
                   }
                   aria-describedby="duration-help"
                 />
                 <span id="duration-help" className="sr-only">
-                  0.1秒から10秒の間で持続時間を指定できます
+                  0.1秒から{MAX_DURATION}秒の間で持続時間を指定できます
                 </span>
               </div>
 
@@ -380,9 +483,17 @@ function DummyAudioGenerator() {
               <button
                 type="button"
                 className="btn-secondary"
-                onClick={handleDownload}
+                onClick={handleDownloadWav}
               >
                 WAVダウンロード
+              </button>
+              <button
+                type="button"
+                className="btn-secondary"
+                onClick={handleDownloadMp3}
+                disabled={isEncodingMp3}
+              >
+                {isEncodingMp3 ? "エンコード中..." : "MP3ダウンロード"}
               </button>
             </div>
           </div>
@@ -417,7 +528,7 @@ function DummyAudioGenerator() {
                 </div>
                 <div className="info-item">
                   <span className="info-label">形式:</span>
-                  <span className="info-value">WAV (16bit PCM)</span>
+                  <span className="info-value">WAV/MP3 (16bit)</span>
                 </div>
               </div>
             </div>
@@ -433,7 +544,7 @@ function DummyAudioGenerator() {
           <ul>
             <li>テストや開発用のダミー音声ファイルを生成します</li>
             <li>Web Audio APIを使用してブラウザ内で音声を生成</li>
-            <li>WAVファイル（16bit PCM）としてダウンロード可能</li>
+            <li>WAVまたはMP3形式でダウンロード可能</li>
           </ul>
           <h3 id="waveform-title">波形タイプについて</h3>
           <ul>
@@ -446,8 +557,9 @@ function DummyAudioGenerator() {
           <h3 id="about-tool-title">使い方</h3>
           <ul>
             <li>波形タイプを選択します</li>
-            <li>周波数、持続時間、音量を設定します</li>
-            <li>「再生」ボタンでプレビュー、「WAVダウンロード」で保存</li>
+            <li>周波数、持続時間（最大{MAX_DURATION}秒）、音量を設定します</li>
+            <li>「再生」ボタンでプレビュー</li>
+            <li>「WAVダウンロード」または「MP3ダウンロード」で保存</li>
           </ul>
         </aside>
       </div>

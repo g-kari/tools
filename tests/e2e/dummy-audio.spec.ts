@@ -109,9 +109,19 @@ test.describe('Dummy Audio Generator - E2E Tests', () => {
     await expect(playButton).toBeVisible();
   });
 
-  test('should have download button', async ({ page }) => {
+  test('should have WAV download button', async ({ page }) => {
     const downloadButton = page.locator('button.btn-secondary:has-text("WAVダウンロード")');
     await expect(downloadButton).toBeVisible();
+  });
+
+  test('should have MP3 download button', async ({ page }) => {
+    const downloadButton = page.locator('button.btn-secondary:has-text("MP3ダウンロード")');
+    await expect(downloadButton).toBeVisible();
+  });
+
+  test('should have duration input with max 60 seconds', async ({ page }) => {
+    const durationInput = page.locator('#duration');
+    await expect(durationInput).toHaveAttribute('max', '60');
   });
 
   test('should show generation info after clicking generate button', async ({ page }) => {
