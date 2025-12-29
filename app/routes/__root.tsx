@@ -146,6 +146,12 @@ function RootDocument({ children }: { children: ReactNode }) {
               >
                 JWTデコード
               </Link>
+              <Link
+                to="/dummy-audio"
+                data-active={pathname === "/dummy-audio" ? "true" : undefined}
+              >
+                ダミー音声
+              </Link>
             </nav>
           </header>
 
