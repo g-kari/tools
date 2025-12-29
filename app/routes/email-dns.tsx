@@ -212,6 +212,9 @@ function EmailDNSChecker() {
                       <tr>
                         <th>優先度</th>
                         <th>メールサーバー</th>
+                        <th>IPアドレス</th>
+                        <th>PTR</th>
+                        <th>TTL</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -219,10 +222,28 @@ function EmailDNSChecker() {
                         <tr key={index}>
                           <td>{record.priority}</td>
                           <td className="monospace">{record.exchange}</td>
+                          <td className="monospace">
+                            {record.ipAddresses
+                              ? record.ipAddresses.join(", ")
+                              : "-"}
+                          </td>
+                          <td className="monospace">
+                            {record.ptr ? record.ptr.join(", ") : "-"}
+                          </td>
+                          <td>{record.ttl || "-"}</td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
+                  {result.mx.warnings && result.mx.warnings.length > 0 && (
+                    <div className="dns-warnings">
+                      {result.mx.warnings.map((warning, idx) => (
+                        <div key={idx} className="warning-item">
+                          ⚠ {warning}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
               {result.mx.error && (
@@ -264,6 +285,14 @@ function EmailDNSChecker() {
                           {result.spf.details.isValid ? "✓ 有効" : "✗ 無効"}
                         </div>
                       </div>
+                      {result.spf.details.lookupCount !== undefined && (
+                        <div className="result-row">
+                          <div className="result-label">DNSルックアップ回数</div>
+                          <div className="result-value">
+                            {result.spf.details.lookupCount}/10
+                          </div>
+                        </div>
+                      )}
                       {result.spf.details.mechanisms &&
                         result.spf.details.mechanisms.length > 0 && (
                           <div className="result-row">
@@ -275,6 +304,29 @@ function EmailDNSChecker() {
                                 </span>
                               ))}
                             </div>
+                          </div>
+                        )}
+                      {result.spf.details.expandedIncludes &&
+                        result.spf.details.expandedIncludes.length > 0 && (
+                          <div className="result-row">
+                            <div className="result-label">展開されたinclude</div>
+                            <div className="result-value list">
+                              {result.spf.details.expandedIncludes.map((inc, i) => (
+                                <span key={i} className="monospace">
+                                  {inc}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      {result.spf.details.warnings &&
+                        result.spf.details.warnings.length > 0 && (
+                          <div className="dns-warnings">
+                            {result.spf.details.warnings.map((warning, idx) => (
+                              <div key={idx} className="warning-item">
+                                ⚠ {warning}
+                              </div>
+                            ))}
                           </div>
                         )}
                     </>
@@ -338,6 +390,42 @@ function EmailDNSChecker() {
                           </div>
                         </div>
                       )}
+                      {result.dmarc.details.rua &&
+                        result.dmarc.details.rua.length > 0 && (
+                          <div className="result-row">
+                            <div className="result-label">集計レポート送信先 (rua)</div>
+                            <div className="result-value list">
+                              {result.dmarc.details.rua.map((r, i) => (
+                                <span key={i} className="monospace">
+                                  {r}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      {result.dmarc.details.ruf &&
+                        result.dmarc.details.ruf.length > 0 && (
+                          <div className="result-row">
+                            <div className="result-label">失敗レポート送信先 (ruf)</div>
+                            <div className="result-value list">
+                              {result.dmarc.details.ruf.map((r, i) => (
+                                <span key={i} className="monospace">
+                                  {r}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      {result.dmarc.details.warnings &&
+                        result.dmarc.details.warnings.length > 0 && (
+                          <div className="dns-warnings">
+                            {result.dmarc.details.warnings.map((warning, idx) => (
+                              <div key={idx} className="warning-item">
+                                ⚠ {warning}
+                              </div>
+                            ))}
+                          </div>
+                        )}
                     </>
                   )}
                 </div>
@@ -379,6 +467,54 @@ function EmailDNSChecker() {
                 {result.dkim.error && (
                   <div className="dns-record-error">{result.dkim.error}</div>
                 )}
+              </div>
+            )}
+
+            {/* Recommendations */}
+            {result.recommendations && result.recommendations.length > 0 && (
+              <div className="result-card recommendations-card">
+                <h3 className="section-title">推奨事項</h3>
+                <ul className="recommendations-list">
+                  {result.recommendations.map((rec, idx) => (
+                    <li key={idx}>{rec}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* SMTP Check Instructions */}
+            {result.smtpCheckInstructions && (
+              <div className="result-card smtp-instructions-card">
+                <h3 className="section-title">
+                  SMTP接続チェック（ローカル確認方法）
+                </h3>
+                <p className="smtp-instructions-intro">
+                  以下のコマンドをターミナルで実行して、メールサーバーへの接続とTLS対応を確認できます：
+                </p>
+
+                <div className="smtp-check-section">
+                  <h4>Telnetでの基本チェック</h4>
+                  <pre className="code-block">
+                    {result.smtpCheckInstructions.telnet.join("\n")}
+                  </pre>
+                </div>
+
+                <div className="smtp-check-section">
+                  <h4>curlでのSMTPチェック</h4>
+                  <pre className="code-block">
+                    {result.smtpCheckInstructions.curl.join("\n")}
+                  </pre>
+                </div>
+
+                <div className="smtp-check-section">
+                  <h4>OpenSSLでのTLS/SSL確認</h4>
+                  <pre className="code-block">
+                    {result.smtpCheckInstructions.openssl.join("\n")}
+                  </pre>
+                  <p className="smtp-note">
+                    ※ STARTTLS対応の確認には25番ポート、SMTPS対応の確認には465番ポートを使用します
+                  </p>
+                </div>
               </div>
             )}
           </section>
