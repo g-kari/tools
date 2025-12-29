@@ -140,6 +140,12 @@ function RootDocument({ children }: { children: ReactNode }) {
               >
                 OGPチェック
               </Link>
+              <Link
+                to="/jwt"
+                data-active={pathname === "/jwt" ? "true" : undefined}
+              >
+                JWTデコード
+              </Link>
             </nav>
           </header>
 

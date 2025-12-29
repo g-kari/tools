@@ -16,6 +16,7 @@ import { Route as ServerEnvRouteImport } from './routes/server-env'
 import { Route as RegexCheckerRouteImport } from './routes/regex-checker'
 import { Route as PasswordGeneratorRouteImport } from './routes/password-generator'
 import { Route as OgpRouteImport } from './routes/ogp'
+import { Route as JwtRouteImport } from './routes/jwt'
 import { Route as JsonRouteImport } from './routes/json'
 import { Route as IpGeolocationRouteImport } from './routes/ip-geolocation'
 import { Route as GlobalIpRouteImport } from './routes/global-ip'
@@ -56,6 +57,11 @@ const OgpRoute = OgpRouteImport.update({
   path: '/ogp',
   getParentRoute: () => rootRouteImport,
 } as any)
+const JwtRoute = JwtRouteImport.update({
+  id: '/jwt',
+  path: '/jwt',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const JsonRoute = JsonRouteImport.update({
   id: '/json',
   path: '/json',
@@ -82,6 +88,7 @@ export interface FileRoutesByFullPath {
   '/global-ip': typeof GlobalIpRoute
   '/ip-geolocation': typeof IpGeolocationRoute
   '/json': typeof JsonRoute
+  '/jwt': typeof JwtRoute
   '/ogp': typeof OgpRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/regex-checker': typeof RegexCheckerRoute
@@ -95,6 +102,7 @@ export interface FileRoutesByTo {
   '/global-ip': typeof GlobalIpRoute
   '/ip-geolocation': typeof IpGeolocationRoute
   '/json': typeof JsonRoute
+  '/jwt': typeof JwtRoute
   '/ogp': typeof OgpRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/regex-checker': typeof RegexCheckerRoute
@@ -109,6 +117,7 @@ export interface FileRoutesById {
   '/global-ip': typeof GlobalIpRoute
   '/ip-geolocation': typeof IpGeolocationRoute
   '/json': typeof JsonRoute
+  '/jwt': typeof JwtRoute
   '/ogp': typeof OgpRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/regex-checker': typeof RegexCheckerRoute
@@ -124,6 +133,7 @@ export interface FileRouteTypes {
     | '/global-ip'
     | '/ip-geolocation'
     | '/json'
+    | '/jwt'
     | '/ogp'
     | '/password-generator'
     | '/regex-checker'
@@ -137,6 +147,7 @@ export interface FileRouteTypes {
     | '/global-ip'
     | '/ip-geolocation'
     | '/json'
+    | '/jwt'
     | '/ogp'
     | '/password-generator'
     | '/regex-checker'
@@ -150,6 +161,7 @@ export interface FileRouteTypes {
     | '/global-ip'
     | '/ip-geolocation'
     | '/json'
+    | '/jwt'
     | '/ogp'
     | '/password-generator'
     | '/regex-checker'
@@ -164,6 +176,7 @@ export interface RootRouteChildren {
   GlobalIpRoute: typeof GlobalIpRoute
   IpGeolocationRoute: typeof IpGeolocationRoute
   JsonRoute: typeof JsonRoute
+  JwtRoute: typeof JwtRoute
   OgpRoute: typeof OgpRoute
   PasswordGeneratorRoute: typeof PasswordGeneratorRoute
   RegexCheckerRoute: typeof RegexCheckerRoute
@@ -224,6 +237,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OgpRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/jwt': {
+      id: '/jwt'
+      path: '/jwt'
+      fullPath: '/jwt'
+      preLoaderRoute: typeof JwtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/json': {
       id: '/json'
       path: '/json'
@@ -260,6 +280,7 @@ const rootRouteChildren: RootRouteChildren = {
   GlobalIpRoute: GlobalIpRoute,
   IpGeolocationRoute: IpGeolocationRoute,
   JsonRoute: JsonRoute,
+  JwtRoute: JwtRoute,
   OgpRoute: OgpRoute,
   PasswordGeneratorRoute: PasswordGeneratorRoute,
   RegexCheckerRoute: RegexCheckerRoute,
