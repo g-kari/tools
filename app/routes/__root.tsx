@@ -87,6 +87,12 @@ function RootDocument({ children }: { children: ReactNode }) {
                 WHOIS検索
               </Link>
               <Link
+                to="/email-dns"
+                data-active={pathname === "/email-dns" ? "true" : undefined}
+              >
+                メールDNS
+              </Link>
+              <Link
                 to="/ip-geolocation"
                 data-active={pathname === "/ip-geolocation" ? "true" : undefined}
               >

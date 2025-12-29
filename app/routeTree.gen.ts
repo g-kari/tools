@@ -20,6 +20,7 @@ import { Route as JwtRouteImport } from './routes/jwt'
 import { Route as JsonRouteImport } from './routes/json'
 import { Route as IpGeolocationRouteImport } from './routes/ip-geolocation'
 import { Route as GlobalIpRouteImport } from './routes/global-ip'
+import { Route as EmailDnsRouteImport } from './routes/email-dns'
 import { Route as IndexRouteImport } from './routes/index'
 
 const WhoisRoute = WhoisRouteImport.update({
@@ -77,6 +78,11 @@ const GlobalIpRoute = GlobalIpRouteImport.update({
   path: '/global-ip',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EmailDnsRoute = EmailDnsRouteImport.update({
+  id: '/email-dns',
+  path: '/email-dns',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -85,6 +91,7 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/email-dns': typeof EmailDnsRoute
   '/global-ip': typeof GlobalIpRoute
   '/ip-geolocation': typeof IpGeolocationRoute
   '/json': typeof JsonRoute
@@ -99,6 +106,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/email-dns': typeof EmailDnsRoute
   '/global-ip': typeof GlobalIpRoute
   '/ip-geolocation': typeof IpGeolocationRoute
   '/json': typeof JsonRoute
@@ -114,6 +122,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/email-dns': typeof EmailDnsRoute
   '/global-ip': typeof GlobalIpRoute
   '/ip-geolocation': typeof IpGeolocationRoute
   '/json': typeof JsonRoute
@@ -130,6 +139,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/email-dns'
     | '/global-ip'
     | '/ip-geolocation'
     | '/json'
@@ -144,6 +154,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/email-dns'
     | '/global-ip'
     | '/ip-geolocation'
     | '/json'
@@ -158,6 +169,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/email-dns'
     | '/global-ip'
     | '/ip-geolocation'
     | '/json'
@@ -173,6 +185,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  EmailDnsRoute: typeof EmailDnsRoute
   GlobalIpRoute: typeof GlobalIpRoute
   IpGeolocationRoute: typeof IpGeolocationRoute
   JsonRoute: typeof JsonRoute
@@ -265,6 +278,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GlobalIpRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/email-dns': {
+      id: '/email-dns'
+      path: '/email-dns'
+      fullPath: '/email-dns'
+      preLoaderRoute: typeof EmailDnsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -277,6 +297,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  EmailDnsRoute: EmailDnsRoute,
   GlobalIpRoute: GlobalIpRoute,
   IpGeolocationRoute: IpGeolocationRoute,
   JsonRoute: JsonRoute,

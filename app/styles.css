@@ -955,6 +955,92 @@ input[type="range"]:focus-visible {
   object-fit: cover;
 }
 
+/* Email DNS Checker */
+.dns-record-header {
+  margin-bottom: 15px;
+}
+
+.dns-record-header h3 {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dns-record-content {
+  margin-top: 10px;
+}
+
+.dns-record-error {
+  color: var(--md-sys-color-error);
+  font-size: 0.9rem;
+  margin-top: 10px;
+}
+
+.dns-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.dns-table thead {
+  background: var(--md-sys-color-primary-container);
+}
+
+.dns-table th {
+  padding: 12px;
+  text-align: left;
+  font-weight: 500;
+  color: var(--md-sys-color-on-primary-container);
+  border-bottom: 2px solid var(--md-sys-color-outline-variant);
+}
+
+.dns-table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.dns-table tr:last-child td {
+  border-bottom: none;
+}
+
+.status-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.status-success {
+  background: #4caf50;
+  color: white;
+}
+
+.status-warning {
+  background: #ff9800;
+  color: white;
+}
+
+.status-error {
+  background: #f44336;
+  color: white;
+}
+
+.monospace {
+  font-family: "Roboto Mono", "Courier New", monospace;
+}
+
+.word-break {
+  word-break: break-all;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   h1 {
