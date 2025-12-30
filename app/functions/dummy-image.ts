@@ -106,6 +106,35 @@ export function parseImageParams(searchParams: URLSearchParams): {
 let wasmInitialized = false;
 
 /**
+ * フォントバッファのキャッシュ
+ */
+let fontBuffer: Uint8Array | null = null;
+
+/**
+ * フォントバッファを取得する
+ * @returns フォントデータのUint8Array
+ */
+async function getFontBuffer(): Promise<Uint8Array | null> {
+  if (fontBuffer) {
+    return fontBuffer;
+  }
+
+  try {
+    // Cloudflare Workers環境: フォントファイルをfetch
+    const response = await fetch(
+      "https://fonts.gstatic.com/s/roboto/v30/KFOlCnqEu92Fr1MmWUlfBBc4AMP6lQ.woff2"
+    );
+    const arrayBuffer = await response.arrayBuffer();
+    fontBuffer = new Uint8Array(arrayBuffer);
+    return fontBuffer;
+  } catch (error) {
+    console.error("Font loading error:", error);
+    // フォントが読み込めない場合はnullを返す
+    return null;
+  }
+}
+
+/**
  * SVGをPNGに変換する
  * @param svg - SVG文字列
  * @returns PNG画像のArrayBuffer
@@ -126,7 +155,21 @@ export async function convertSvgToPng(svg: string): Promise<ArrayBuffer> {
     wasmInitialized = true;
   }
 
-  const resvg = new Resvg(svg);
+  // フォントバッファを取得
+  const font = await getFontBuffer();
+
+  // フォントオプションを設定
+  const opts = font
+    ? {
+        font: {
+          fontBuffers: [font], // フォントが取得できた場合のみ設定
+          defaultFontFamily: "Roboto",
+          sansSerifFamily: "Roboto",
+        },
+      }
+    : undefined;
+
+  const resvg = new Resvg(svg, opts);
   const pngData = resvg.render();
   const pngBytes = pngData.asPng();
   return pngBytes.buffer;
