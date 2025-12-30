@@ -189,4 +189,81 @@ test.describe('Dummy Image Generator - E2E Tests', () => {
     await navigateViaCategory(page, '生成', '/dummy-image');
     await expect(page).toHaveURL('/dummy-image');
   });
+
+  test.describe('API Endpoints', () => {
+    test('SVG API endpoint should return valid image', async ({ page }) => {
+      const response = await page.request.get('/api/image.svg?w=100&h=100');
+      expect(response.ok()).toBeTruthy();
+      expect(response.headers()['content-type']).toContain('image/svg+xml');
+      const body = await response.text();
+      expect(body).toContain('<svg');
+      expect(body).toContain('100 × 100');
+    });
+
+    test('PNG API endpoint should return valid image', async ({ page }) => {
+      const response = await page.request.get('/api/image.png?w=100&h=100');
+      expect(response.ok()).toBeTruthy();
+      expect(response.headers()['content-type']).toBe('image/png');
+      const buffer = await response.body();
+      expect(buffer.length).toBeGreaterThan(0);
+    });
+
+    test('JPEG API endpoint should return valid image', async ({ page }) => {
+      const response = await page.request.get('/api/image.jpg?w=100&h=100&q=85');
+      expect(response.ok()).toBeTruthy();
+      expect(response.headers()['content-type']).toBe('image/jpeg');
+      const buffer = await response.body();
+      expect(buffer.length).toBeGreaterThan(0);
+    });
+
+    test('WebP API endpoint should return valid image', async ({ page }) => {
+      const response = await page.request.get('/api/image.webp?w=100&h=100');
+      expect(response.ok()).toBeTruthy();
+      expect(response.headers()['content-type']).toBe('image/webp');
+      const buffer = await response.body();
+      expect(buffer.length).toBeGreaterThan(0);
+    });
+
+    test('API endpoints should support custom colors', async ({ page }) => {
+      const response = await page.request.get('/api/image.svg?w=200&h=200&bg=FF0000&text=FFFFFF');
+      expect(response.ok()).toBeTruthy();
+      const body = await response.text();
+      expect(body).toContain('#FF0000');
+      expect(body).toContain('#FFFFFF');
+    });
+
+    test('API endpoints should have cache headers', async ({ page }) => {
+      const response = await page.request.get('/api/image.png?w=100&h=100');
+      expect(response.ok()).toBeTruthy();
+      expect(response.headers()['cache-control']).toContain('public');
+      expect(response.headers()['cache-control']).toContain('max-age=31536000');
+    });
+
+    test('PNG API should handle different sizes', async ({ page }) => {
+      const smallResponse = await page.request.get('/api/image.png?w=50&h=50');
+      const largeResponse = await page.request.get('/api/image.png?w=500&h=500');
+
+      expect(smallResponse.ok()).toBeTruthy();
+      expect(largeResponse.ok()).toBeTruthy();
+
+      const smallBuffer = await smallResponse.body();
+      const largeBuffer = await largeResponse.body();
+
+      expect(largeBuffer.length).toBeGreaterThan(smallBuffer.length);
+    });
+
+    test('JPEG API should handle quality parameter', async ({ page }) => {
+      const lowQuality = await page.request.get('/api/image.jpg?w=200&h=200&q=50');
+      const highQuality = await page.request.get('/api/image.jpg?w=200&h=200&q=95');
+
+      expect(lowQuality.ok()).toBeTruthy();
+      expect(highQuality.ok()).toBeTruthy();
+
+      const lowBuffer = await lowQuality.body();
+      const highBuffer = await highQuality.body();
+
+      // Higher quality should result in larger file size
+      expect(highBuffer.length).toBeGreaterThanOrEqual(lowBuffer.length);
+    });
+  });
 });

@@ -101,3 +101,61 @@ export function parseImageParams(searchParams: URLSearchParams): {
     textColor: sanitizeHexColor(text, DEFAULT_TEXT_COLOR),
   };
 }
+
+// WASMの初期化状態を追跡
+let wasmInitialized = false;
+
+/**
+ * SVGをPNGに変換する
+ * @param svg - SVG文字列
+ * @returns PNG画像のArrayBuffer
+ */
+export async function convertSvgToPng(svg: string): Promise<ArrayBuffer> {
+  const { Resvg, initWasm } = await import("@resvg/resvg-wasm");
+
+  if (!wasmInitialized) {
+    // 環境に応じて異なる初期化方法を使用
+    try {
+      // Cloudflare Workers環境: WASMファイルを直接インポート
+      const wasmModule = await import("@resvg/resvg-wasm/index_bg.wasm");
+      await initWasm(wasmModule.default);
+    } catch {
+      // テスト環境やNode.js環境: unpkgからfetch
+      await initWasm(fetch("https://unpkg.com/@resvg/resvg-wasm/index_bg.wasm"));
+    }
+    wasmInitialized = true;
+  }
+
+  const resvg = new Resvg(svg);
+  const pngData = resvg.render();
+  const pngBytes = pngData.asPng();
+  return pngBytes.buffer;
+}
+
+/**
+ * PNGをJPEGに変換する
+ * @param pngBuffer - PNG画像のArrayBuffer
+ * @param quality - 画質 (1-100, デフォルト: 85)
+ * @returns JPEG画像のArrayBuffer
+ */
+export async function convertPngToJpeg(
+  pngBuffer: ArrayBuffer,
+  quality: number = 85
+): Promise<ArrayBuffer> {
+  const { PhotonImage } = await import("@cf-wasm/photon");
+  const photonImage = PhotonImage.new_from_byteslice(new Uint8Array(pngBuffer));
+  const jpegBytes = photonImage.get_bytes_jpeg(quality);
+  return jpegBytes.buffer;
+}
+
+/**
+ * PNGをWebPに変換する
+ * @param pngBuffer - PNG画像のArrayBuffer
+ * @returns WebP画像のArrayBuffer
+ */
+export async function convertPngToWebp(pngBuffer: ArrayBuffer): Promise<ArrayBuffer> {
+  const { PhotonImage } = await import("@cf-wasm/photon");
+  const photonImage = PhotonImage.new_from_byteslice(new Uint8Array(pngBuffer));
+  const webpBytes = photonImage.get_bytes_webp();
+  return webpBytes.buffer;
+}

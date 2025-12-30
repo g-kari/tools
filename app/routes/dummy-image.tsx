@@ -425,10 +425,16 @@ function DummyImageGenerator() {
             <li>「ダウンロード」で画像を保存</li>
           </ul>
           <h3 id="api-title">APIエンドポイント</h3>
-          <p>URLで直接画像を取得できます（SVG形式）:</p>
+          <p>URLで直接画像を取得できます:</p>
           <ul>
-            <li><code>/api/image.svg?w=800&h=600</code></li>
-            <li><code>/api/image.svg?w=1200&h=630&bg=FF0000&text=FFFFFF</code></li>
+            <li><strong>SVG:</strong> <code>/api/image.svg?w=800&h=600</code></li>
+            <li><strong>PNG:</strong> <code>/api/image.png?w=800&h=600</code></li>
+            <li><strong>JPEG:</strong> <code>/api/image.jpg?w=800&h=600&q=85</code></li>
+            <li><strong>WebP:</strong> <code>/api/image.webp?w=800&h=600</code></li>
+          </ul>
+          <p>カスタム色の例:</p>
+          <ul>
+            <li><code>/api/image.png?w=1200&h=630&bg=FF0000&text=FFFFFF</code></li>
           </ul>
           <p>パラメータ:</p>
           <ul>
@@ -436,6 +442,7 @@ function DummyImageGenerator() {
             <li><strong>h</strong>: 高さ (1-4096, デフォルト: 150)</li>
             <li><strong>bg</strong>: 背景色 HEX (デフォルト: 6750A4)</li>
             <li><strong>text</strong>: テキスト色 HEX (デフォルト: FFFFFF)</li>
+            <li><strong>q</strong>: 画質 (1-100, デフォルト: 85) ※JPEGのみ</li>
           </ul>
         </aside>
       </div>
