@@ -114,7 +114,15 @@ export async function convertSvgToPng(svg: string): Promise<ArrayBuffer> {
   const { Resvg, initWasm } = await import("@resvg/resvg-wasm");
 
   if (!wasmInitialized) {
-    await initWasm(fetch("https://unpkg.com/@resvg/resvg-wasm/index_bg.wasm"));
+    // 環境に応じて異なる初期化方法を使用
+    try {
+      // Cloudflare Workers環境: WASMファイルを直接インポート
+      const wasmModule = await import("@resvg/resvg-wasm/index_bg.wasm");
+      await initWasm(wasmModule.default);
+    } catch {
+      // テスト環境やNode.js環境: unpkgからfetch
+      await initWasm(fetch("https://unpkg.com/@resvg/resvg-wasm/index_bg.wasm"));
+    }
     wasmInitialized = true;
   }
 
