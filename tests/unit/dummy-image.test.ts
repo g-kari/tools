@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { drawDummyImage, generateFilename } from '../../app/routes/dummy-image';
-import { generateSvgImage, parseImageParams } from '../../app/functions/dummy-image';
+import { generateSvgImage, parseImageParams, convertSvgToPng, convertPngToJpeg, convertPngToWebp } from '../../app/functions/dummy-image';
 
 // Mock canvas for testing
 function createMockCanvas(): HTMLCanvasElement {
@@ -281,6 +281,79 @@ describe('Dummy Image Generation', () => {
         expect(result.height).toBe(630);
         expect(result.bgColor).toBe('123456');
         expect(result.textColor).toBe('ABCDEF');
+      });
+    });
+  });
+
+  describe('Image Conversion API', () => {
+    describe('convertSvgToPng', () => {
+      it('should convert SVG to PNG buffer', async () => {
+        const svg = generateSvgImage(100, 100, '000000', 'FFFFFF');
+        const pngBuffer = await convertSvgToPng(svg);
+        expect(pngBuffer).toBeInstanceOf(ArrayBuffer);
+        expect(pngBuffer.byteLength).toBeGreaterThan(0);
+      });
+
+      it('should handle small SVG images', async () => {
+        const svg = generateSvgImage(1, 1, '000000', 'FFFFFF');
+        const pngBuffer = await convertSvgToPng(svg);
+        expect(pngBuffer).toBeInstanceOf(ArrayBuffer);
+      });
+
+      it('should handle large SVG images', async () => {
+        const svg = generateSvgImage(1000, 1000, '000000', 'FFFFFF');
+        const pngBuffer = await convertSvgToPng(svg);
+        expect(pngBuffer).toBeInstanceOf(ArrayBuffer);
+        expect(pngBuffer.byteLength).toBeGreaterThan(0);
+      });
+    });
+
+    describe('convertPngToJpeg', () => {
+      it('should convert PNG to JPEG buffer', async () => {
+        const svg = generateSvgImage(100, 100, '000000', 'FFFFFF');
+        const pngBuffer = await convertSvgToPng(svg);
+        const jpegBuffer = await convertPngToJpeg(pngBuffer, 85);
+        expect(jpegBuffer).toBeInstanceOf(ArrayBuffer);
+        expect(jpegBuffer.byteLength).toBeGreaterThan(0);
+      });
+
+      it('should accept quality parameter', async () => {
+        const svg = generateSvgImage(100, 100, '000000', 'FFFFFF');
+        const pngBuffer = await convertSvgToPng(svg);
+
+        const jpegLowQuality = await convertPngToJpeg(pngBuffer, 50);
+        const jpegHighQuality = await convertPngToJpeg(pngBuffer, 95);
+
+        expect(jpegLowQuality).toBeInstanceOf(ArrayBuffer);
+        expect(jpegHighQuality).toBeInstanceOf(ArrayBuffer);
+      });
+    });
+
+    describe('convertPngToWebp', () => {
+      it('should convert PNG to WebP buffer', async () => {
+        const svg = generateSvgImage(100, 100, '000000', 'FFFFFF');
+        const pngBuffer = await convertSvgToPng(svg);
+        const webpBuffer = await convertPngToWebp(pngBuffer);
+        expect(webpBuffer).toBeInstanceOf(ArrayBuffer);
+        expect(webpBuffer.byteLength).toBeGreaterThan(0);
+      });
+    });
+
+    describe('Full conversion pipeline', () => {
+      it('should convert SVG to PNG, JPEG, and WebP', async () => {
+        const svg = generateSvgImage(200, 200, 'FF0000', '000000');
+
+        // SVG to PNG
+        const pngBuffer = await convertSvgToPng(svg);
+        expect(pngBuffer).toBeInstanceOf(ArrayBuffer);
+
+        // PNG to JPEG
+        const jpegBuffer = await convertPngToJpeg(pngBuffer, 85);
+        expect(jpegBuffer).toBeInstanceOf(ArrayBuffer);
+
+        // PNG to WebP
+        const webpBuffer = await convertPngToWebp(pngBuffer);
+        expect(webpBuffer).toBeInstanceOf(ArrayBuffer);
       });
     });
   });

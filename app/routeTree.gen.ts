@@ -24,7 +24,10 @@ import { Route as EmailDnsRouteImport } from './routes/email-dns'
 import { Route as DummyImageRouteImport } from './routes/dummy-image'
 import { Route as DummyAudioRouteImport } from './routes/dummy-audio'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiImageDotwebpRouteImport } from './routes/api/image[.]webp'
 import { Route as ApiImageDotsvgRouteImport } from './routes/api/image[.]svg'
+import { Route as ApiImageDotpngRouteImport } from './routes/api/image[.]png'
+import { Route as ApiImageDotjpgRouteImport } from './routes/api/image[.]jpg'
 
 const WhoisRoute = WhoisRouteImport.update({
   id: '/whois',
@@ -101,9 +104,24 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiImageDotwebpRoute = ApiImageDotwebpRouteImport.update({
+  id: '/api/image.webp',
+  path: '/api/image.webp',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiImageDotsvgRoute = ApiImageDotsvgRouteImport.update({
   id: '/api/image.svg',
   path: '/api/image.svg',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiImageDotpngRoute = ApiImageDotpngRouteImport.update({
+  id: '/api/image.png',
+  path: '/api/image.png',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiImageDotjpgRoute = ApiImageDotjpgRouteImport.update({
+  id: '/api/image.jpg',
+  path: '/api/image.jpg',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -123,7 +141,10 @@ export interface FileRoutesByFullPath {
   '/url-encode': typeof UrlEncodeRoute
   '/uuid': typeof UuidRoute
   '/whois': typeof WhoisRoute
+  '/api/image.jpg': typeof ApiImageDotjpgRoute
+  '/api/image.png': typeof ApiImageDotpngRoute
   '/api/image.svg': typeof ApiImageDotsvgRoute
+  '/api/image.webp': typeof ApiImageDotwebpRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -141,7 +162,10 @@ export interface FileRoutesByTo {
   '/url-encode': typeof UrlEncodeRoute
   '/uuid': typeof UuidRoute
   '/whois': typeof WhoisRoute
+  '/api/image.jpg': typeof ApiImageDotjpgRoute
+  '/api/image.png': typeof ApiImageDotpngRoute
   '/api/image.svg': typeof ApiImageDotsvgRoute
+  '/api/image.webp': typeof ApiImageDotwebpRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -160,7 +184,10 @@ export interface FileRoutesById {
   '/url-encode': typeof UrlEncodeRoute
   '/uuid': typeof UuidRoute
   '/whois': typeof WhoisRoute
+  '/api/image.jpg': typeof ApiImageDotjpgRoute
+  '/api/image.png': typeof ApiImageDotpngRoute
   '/api/image.svg': typeof ApiImageDotsvgRoute
+  '/api/image.webp': typeof ApiImageDotwebpRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -180,7 +207,10 @@ export interface FileRouteTypes {
     | '/url-encode'
     | '/uuid'
     | '/whois'
+    | '/api/image.jpg'
+    | '/api/image.png'
     | '/api/image.svg'
+    | '/api/image.webp'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -198,7 +228,10 @@ export interface FileRouteTypes {
     | '/url-encode'
     | '/uuid'
     | '/whois'
+    | '/api/image.jpg'
+    | '/api/image.png'
     | '/api/image.svg'
+    | '/api/image.webp'
   id:
     | '__root__'
     | '/'
@@ -216,7 +249,10 @@ export interface FileRouteTypes {
     | '/url-encode'
     | '/uuid'
     | '/whois'
+    | '/api/image.jpg'
+    | '/api/image.png'
     | '/api/image.svg'
+    | '/api/image.webp'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -235,7 +271,10 @@ export interface RootRouteChildren {
   UrlEncodeRoute: typeof UrlEncodeRoute
   UuidRoute: typeof UuidRoute
   WhoisRoute: typeof WhoisRoute
+  ApiImageDotjpgRoute: typeof ApiImageDotjpgRoute
+  ApiImageDotpngRoute: typeof ApiImageDotpngRoute
   ApiImageDotsvgRoute: typeof ApiImageDotsvgRoute
+  ApiImageDotwebpRoute: typeof ApiImageDotwebpRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -345,11 +384,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/image.webp': {
+      id: '/api/image.webp'
+      path: '/api/image.webp'
+      fullPath: '/api/image.webp'
+      preLoaderRoute: typeof ApiImageDotwebpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/image.svg': {
       id: '/api/image.svg'
       path: '/api/image.svg'
       fullPath: '/api/image.svg'
       preLoaderRoute: typeof ApiImageDotsvgRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/image.png': {
+      id: '/api/image.png'
+      path: '/api/image.png'
+      fullPath: '/api/image.png'
+      preLoaderRoute: typeof ApiImageDotpngRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/image.jpg': {
+      id: '/api/image.jpg'
+      path: '/api/image.jpg'
+      fullPath: '/api/image.jpg'
+      preLoaderRoute: typeof ApiImageDotjpgRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -371,7 +431,10 @@ const rootRouteChildren: RootRouteChildren = {
   UrlEncodeRoute: UrlEncodeRoute,
   UuidRoute: UuidRoute,
   WhoisRoute: WhoisRoute,
+  ApiImageDotjpgRoute: ApiImageDotjpgRoute,
+  ApiImageDotpngRoute: ApiImageDotpngRoute,
   ApiImageDotsvgRoute: ApiImageDotsvgRoute,
+  ApiImageDotwebpRoute: ApiImageDotwebpRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
