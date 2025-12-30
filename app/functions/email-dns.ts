@@ -420,26 +420,42 @@ async function queryEmailDNS(
     },
   };
 
-  // Query MX records
-  try {
-    const mxResponse = await queryDNS(domain, "MX");
-    if (mxResponse && mxResponse.Status === 0) {
-      const mxRecords = parseMXRecords(mxResponse);
-      if (mxRecords.length > 0) {
-        // Enrich MX records with IP and PTR information
-        const enrichedRecords = await enrichMXRecords(mxRecords);
-        const mxWarnings: string[] = [];
+  // Parallelize independent DNS queries for better performance
+  const [mxResult, txtResult, dmarcResult, dkimResult] = await Promise.allSettled([
+    queryDNS(domain, "MX"),
+    queryDNS(domain, "TXT"),
+    queryDNS(`_dmarc.${domain}`, "TXT"),
+    dkimSelector ? queryDNS(`${dkimSelector}._domainkey.${domain}`, "TXT") : Promise.resolve(null),
+  ]);
 
-        // Check for single MX record
-        if (enrichedRecords.length === 1) {
-          mxWarnings.push("MXレコードが1つしかありません。冗長性のため複数設定を推奨します");
+  // Process MX results
+  if (mxResult.status === "fulfilled") {
+    const mxResponse = mxResult.value;
+    try {
+      if (mxResponse && mxResponse.Status === 0) {
+        const mxRecords = parseMXRecords(mxResponse);
+        if (mxRecords.length > 0) {
+          // Enrich MX records with IP and PTR information
+          const enrichedRecords = await enrichMXRecords(mxRecords);
+          const mxWarnings: string[] = [];
+
+          // Check for single MX record
+          if (enrichedRecords.length === 1) {
+            mxWarnings.push("MXレコードが1つしかありません。冗長性のため複数設定を推奨します");
+          }
+
+          result.mx = {
+            records: enrichedRecords,
+            status: "success",
+            warnings: mxWarnings.length > 0 ? mxWarnings : undefined,
+          };
+        } else {
+          result.mx = {
+            records: [],
+            status: "not_found",
+            error: "MXレコードが見つかりませんでした",
+          };
         }
-
-        result.mx = {
-          records: enrichedRecords,
-          status: "success",
-          warnings: mxWarnings.length > 0 ? mxWarnings : undefined,
-        };
       } else {
         result.mx = {
           records: [],
@@ -447,83 +463,92 @@ async function queryEmailDNS(
           error: "MXレコードが見つかりませんでした",
         };
       }
-    } else {
+    } catch (err) {
       result.mx = {
         records: [],
-        status: "not_found",
-        error: "MXレコードが見つかりませんでした",
+        status: "error",
+        error: err instanceof Error ? err.message : "MXレコードの取得に失敗しました",
       };
     }
-  } catch (err) {
+  } else {
     result.mx = {
       records: [],
       status: "error",
-      error: err instanceof Error ? err.message : "MXレコードの取得に失敗しました",
+      error: "MXレコードの取得に失敗しました",
     };
   }
 
-  // Query SPF records (TXT)
-  try {
-    const txtResponse = await queryDNS(domain, "TXT");
-    const txtRecords = parseTXTRecords(txtResponse);
-    const spfRecord = txtRecords.find((record) => record.startsWith("v=spf1"));
+  // Process SPF results
+  if (txtResult.status === "fulfilled") {
+    try {
+      const txtRecords = parseTXTRecords(txtResult.value);
+      const spfRecord = txtRecords.find((record) => record.startsWith("v=spf1"));
 
-    if (spfRecord) {
-      const details = await validateSPF(spfRecord, domain);
+      if (spfRecord) {
+        const details = await validateSPF(spfRecord, domain);
+        result.spf = {
+          record: spfRecord,
+          status: "success",
+          details,
+        };
+      } else {
+        result.spf = {
+          status: "not_found",
+          error: "SPFレコードが見つかりませんでした",
+        };
+      }
+    } catch (err) {
       result.spf = {
-        record: spfRecord,
-        status: "success",
-        details,
-      };
-    } else {
-      result.spf = {
-        status: "not_found",
-        error: "SPFレコードが見つかりませんでした",
+        status: "error",
+        error: err instanceof Error ? err.message : "SPFレコードの取得に失敗しました",
       };
     }
-  } catch (err) {
+  } else {
     result.spf = {
       status: "error",
-      error: err instanceof Error ? err.message : "SPFレコードの取得に失敗しました",
+      error: "SPFレコードの取得に失敗しました",
     };
   }
 
-  // Query DMARC records
-  try {
-    const dmarcDomain = `_dmarc.${domain}`;
-    const dmarcResponse = await queryDNS(dmarcDomain, "TXT");
-    const dmarcRecords = parseTXTRecords(dmarcResponse);
-    const dmarcRecord = dmarcRecords.find((record) =>
-      record.startsWith("v=DMARC1")
-    );
+  // Process DMARC results
+  if (dmarcResult.status === "fulfilled") {
+    try {
+      const dmarcRecords = parseTXTRecords(dmarcResult.value);
+      const dmarcRecord = dmarcRecords.find((record) =>
+        record.startsWith("v=DMARC1")
+      );
 
-    if (dmarcRecord) {
-      const details = validateDMARC(dmarcRecord);
+      if (dmarcRecord) {
+        const details = validateDMARC(dmarcRecord);
+        result.dmarc = {
+          record: dmarcRecord,
+          status: "success",
+          details,
+        };
+      } else {
+        result.dmarc = {
+          status: "not_found",
+          error: "DMARCレコードが見つかりませんでした",
+        };
+      }
+    } catch (err) {
       result.dmarc = {
-        record: dmarcRecord,
-        status: "success",
-        details,
-      };
-    } else {
-      result.dmarc = {
-        status: "not_found",
-        error: "DMARCレコードが見つかりませんでした",
+        status: "error",
+        error:
+          err instanceof Error ? err.message : "DMARCレコードの取得に失敗しました",
       };
     }
-  } catch (err) {
+  } else {
     result.dmarc = {
       status: "error",
-      error:
-        err instanceof Error ? err.message : "DMARCレコードの取得に失敗しました",
+      error: "DMARCレコードの取得に失敗しました",
     };
   }
 
-  // Query DKIM records (optional)
-  if (dkimSelector) {
+  // Process DKIM results (if selector provided)
+  if (dkimSelector && dkimResult.status === "fulfilled" && dkimResult.value) {
     try {
-      const dkimDomain = `${dkimSelector}._domainkey.${domain}`;
-      const dkimResponse = await queryDNS(dkimDomain, "TXT");
-      const dkimRecords = parseTXTRecords(dkimResponse);
+      const dkimRecords = parseTXTRecords(dkimResult.value);
       const dkimRecord = dkimRecords.find((record) =>
         record.includes("v=DKIM1")
       );
@@ -549,6 +574,12 @@ async function queryEmailDNS(
           err instanceof Error ? err.message : "DKIMレコードの取得に失敗しました",
       };
     }
+  } else if (dkimSelector && dkimResult.status === "rejected") {
+    result.dkim = {
+      selector: dkimSelector,
+      status: "error",
+      error: "DKIMレコードの取得に失敗しました",
+    };
   }
 
   // Generate recommendations

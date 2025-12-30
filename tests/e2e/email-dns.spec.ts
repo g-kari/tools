@@ -110,13 +110,16 @@ test.describe('Email DNS Checker - E2E Tests', () => {
 
     await domainInput.fill('gmail.com');
 
-    // Click and immediately check for loading state
-    await checkButton.click();
+    // Set up promise to wait for loading state before clicking
+    const loadingPromise = page.waitForSelector('.loading', { state: 'visible', timeout: 5000 });
 
-    // Loading indicator should appear
+    // Click and wait for loading indicator to appear
+    await checkButton.click();
+    await loadingPromise;
+
+    // Verify loading indicator is visible
     const loadingIndicator = page.locator('.loading');
-    // Use waitFor with a short timeout since it might disappear quickly
-    await expect(loadingIndicator).toBeVisible({ timeout: 5000 });
+    await expect(loadingIndicator).toBeVisible();
   });
 
   test('should display result sections after successful check', async ({ page }) => {
@@ -131,9 +134,26 @@ test.describe('Email DNS Checker - E2E Tests', () => {
     await expect(resultTitle).toBeVisible({ timeout: 15000 });
     await expect(resultTitle).toContainText('gmail.com');
 
-    // Check that result cards are present
+    // Check that all DNS record sections are present
     const resultCards = page.locator('.result-card');
     await expect(resultCards.first()).toBeVisible();
+
+    // Verify MX section with status indicator
+    const mxSection = page.locator('.result-card').filter({ hasText: 'MXレコード' });
+    await expect(mxSection).toBeVisible();
+    await expect(mxSection.locator('.status-icon')).toBeVisible();
+
+    // Verify SPF section with status indicator
+    const spfSection = page.locator('.result-card').filter({ hasText: 'SPFレコード' });
+    await expect(spfSection).toBeVisible();
+    await expect(spfSection.locator('.status-icon')).toBeVisible();
+
+    // Verify DMARC section with status indicator
+    const dmarcSection = page.locator('.result-card').filter({ hasText: 'DMARCレコード' });
+    await expect(dmarcSection).toBeVisible();
+    await expect(dmarcSection.locator('.status-icon')).toBeVisible();
+
+    // DKIM section is optional (only if selector provided), so we don't check it here
   });
 
   test('should handle Enter key press in domain input', async ({ page }) => {
