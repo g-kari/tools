@@ -206,3 +206,4 @@ npm run build && npm run test:e2e
 
 - [Material Design Styling](.claude/skills/material-design-styling.md) - Material Design 3に基づくスタイリングガイドライン（カラーパレット、タイポグラフィ、コンポーネントスタイル）
 - [WCAG Accessibility](.claude/skills/wcag-accessibility.md) - WCAG 2.1準拠のアクセシビリティ実装ガイドライン
+- [UX Psychology](.claude/skills/ux-psychology.md) - UXデザインに活用できる心理学の法則と原則（認知バイアス、エンゲージメント、意思決定支援）
