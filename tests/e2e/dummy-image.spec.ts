@@ -1,6 +1,18 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Dummy Image Generator - E2E Tests', () => {
+  /**
+   * カテゴリドロップダウンを開いてリンクをクリックするヘルパー関数
+   */
+  async function navigateViaCategory(page: import('@playwright/test').Page, categoryName: string, linkHref: string) {
+    const categoryBtn = page.locator('.nav-category-btn', { hasText: categoryName });
+    await categoryBtn.hover();
+    const dropdown = page.locator('.nav-dropdown');
+    await expect(dropdown).toBeVisible();
+    const link = dropdown.locator(`a[href="${linkHref}"]`);
+    await link.click();
+  }
+
   test.beforeEach(async ({ page }) => {
     await page.goto('/dummy-image');
     await page.waitForLoadState('networkidle');
@@ -38,18 +50,23 @@ test.describe('Dummy Image Generator - E2E Tests', () => {
     expect(usageText).not.toContain('undefined');
   });
 
-  test('should have navigation links including ダミー画像', async ({ page }) => {
-    const navLinks = page.locator('.nav-links');
-    await expect(navLinks).toBeVisible();
+  test('should have category navigation with active state', async ({ page }) => {
+    const navCategories = page.locator('.nav-categories');
+    await expect(navCategories).toBeVisible();
 
-    const dummyImageLink = page.locator('.nav-links a[href="/dummy-image"]');
-    await expect(dummyImageLink).toBeVisible();
-    await expect(dummyImageLink).toContainText('ダミー画像');
+    // 生成カテゴリがアクティブであることを確認
+    const activeCategory = page.locator('.nav-category-btn.active');
+    await expect(activeCategory).toContainText('生成');
   });
 
-  test('should show active state on ダミー画像 link', async ({ page }) => {
-    const activeLink = page.locator('.nav-links a[data-active="true"]');
-    await expect(activeLink).toContainText('ダミー画像');
+  test('should show ダミー画像 link in category dropdown', async ({ page }) => {
+    const categoryBtn = page.locator('.nav-category-btn', { hasText: '生成' });
+    await categoryBtn.hover();
+    const dropdown = page.locator('.nav-dropdown');
+    await expect(dropdown).toBeVisible();
+    const dummyImageLink = dropdown.locator('a[href="/dummy-image"]');
+    await expect(dummyImageLink).toBeVisible();
+    await expect(dummyImageLink).toContainText('ダミー画像');
   });
 
   test('should display width and height inputs', async ({ page }) => {
@@ -160,18 +177,16 @@ test.describe('Dummy Image Generator - E2E Tests', () => {
     await expect(qualitySlider).toBeVisible();
   });
 
-  test('should navigate to Unicode page when clicking the link', async ({ page }) => {
-    await page.click('.nav-links a[href="/"]');
+  test('should navigate to Unicode page via category dropdown', async ({ page }) => {
+    await navigateViaCategory(page, '変換', '/');
     await expect(page).toHaveURL('/');
   });
 
-  test('should navigate from dummy-audio to dummy-image', async ({ page }) => {
+  test('should navigate from dummy-audio to dummy-image via category', async ({ page }) => {
     await page.goto('/dummy-audio');
     await page.waitForLoadState('networkidle');
 
-    const dummyImageLink = page.locator('.nav-links a[href="/dummy-image"]');
-    await dummyImageLink.click();
-
+    await navigateViaCategory(page, '生成', '/dummy-image');
     await expect(page).toHaveURL('/dummy-image');
   });
 });

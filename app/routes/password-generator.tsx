@@ -5,6 +5,7 @@ import {
   calculateStrength,
   type PasswordOptions,
 } from "../utils/password";
+import { useToast } from "../components/Toast";
 
 export const Route = createFileRoute("/password-generator")({
   head: () => ({
@@ -23,8 +24,10 @@ function PasswordGenerator() {
     symbols: false,
   });
   const [copied, setCopied] = useState(false);
+  const [showAdvanced, setShowAdvanced] = useState(false);
   const passwordRef = useRef<HTMLInputElement>(null);
   const statusRef = useRef<HTMLDivElement>(null);
+  const { showToast } = useToast();
 
   const announceStatus = useCallback((message: string) => {
     if (statusRef.current) {
@@ -40,29 +43,33 @@ function PasswordGenerator() {
   const handleGenerate = useCallback(() => {
     if (!options.uppercase && !options.lowercase && !options.numbers && !options.symbols) {
       announceStatus("エラー: 少なくとも1つの文字種を選択してください");
-      alert("少なくとも1つの文字種を選択してください");
+      showToast("少なくとも1つの文字種を選択してください", "error");
       return;
     }
     const newPassword = generatePassword(options);
     setPassword(newPassword);
     setCopied(false);
     announceStatus("パスワードを生成しました");
-  }, [options, announceStatus]);
+    showToast("パスワードを生成しました", "success");
+  }, [options, announceStatus, showToast]);
 
   const handleCopy = useCallback(async () => {
     if (!password) {
       announceStatus("エラー: コピーするパスワードがありません");
+      showToast("コピーするパスワードがありません", "error");
       return;
     }
     try {
       await navigator.clipboard.writeText(password);
       setCopied(true);
       announceStatus("パスワードをクリップボードにコピーしました");
+      showToast("クリップボードにコピーしました", "success");
       setTimeout(() => setCopied(false), 2000);
     } catch {
       announceStatus("コピーに失敗しました");
+      showToast("コピーに失敗しました", "error");
     }
-  }, [password, announceStatus]);
+  }, [password, announceStatus, showToast]);
 
   const handleClear = useCallback(() => {
     setPassword("");
@@ -117,45 +124,58 @@ function PasswordGenerator() {
             </span>
           </div>
 
-          <div className="converter-section">
-            <div className="section-title">文字種</div>
-            <div className="checkbox-group" role="group" aria-label="使用する文字種の選択">
-              <label className="checkbox-label">
-                <input
-                  type="checkbox"
-                  checked={options.uppercase}
-                  onChange={(e) => handleOptionChange("uppercase", e.target.checked)}
-                  aria-label="大文字を含める"
-                />
-                大文字 (A-Z)
-              </label>
-              <label className="checkbox-label">
-                <input
-                  type="checkbox"
-                  checked={options.lowercase}
-                  onChange={(e) => handleOptionChange("lowercase", e.target.checked)}
-                  aria-label="小文字を含める"
-                />
-                小文字 (a-z)
-              </label>
-              <label className="checkbox-label">
-                <input
-                  type="checkbox"
-                  checked={options.numbers}
-                  onChange={(e) => handleOptionChange("numbers", e.target.checked)}
-                  aria-label="数字を含める"
-                />
-                数字 (0-9)
-              </label>
-              <label className="checkbox-label">
-                <input
-                  type="checkbox"
-                  checked={options.symbols}
-                  onChange={(e) => handleOptionChange("symbols", e.target.checked)}
-                  aria-label="記号を含める"
-                />
-                記号 (!@#$%...)
-              </label>
+          <div className={`collapsible ${showAdvanced ? "open" : ""}`}>
+            <button
+              type="button"
+              className="collapsible-header"
+              onClick={() => setShowAdvanced(!showAdvanced)}
+              aria-expanded={showAdvanced}
+              aria-controls="advanced-options"
+            >
+              <span className="collapsible-title">詳細設定（文字種）</span>
+              <span className="collapsible-icon" aria-hidden="true">▾</span>
+            </button>
+            <div className="collapsible-content" id="advanced-options">
+              <div className="collapsible-body">
+                <div className="checkbox-group" role="group" aria-label="使用する文字種の選択">
+                  <label className="checkbox-label">
+                    <input
+                      type="checkbox"
+                      checked={options.uppercase}
+                      onChange={(e) => handleOptionChange("uppercase", e.target.checked)}
+                      aria-label="大文字を含める"
+                    />
+                    大文字 (A-Z)
+                  </label>
+                  <label className="checkbox-label">
+                    <input
+                      type="checkbox"
+                      checked={options.lowercase}
+                      onChange={(e) => handleOptionChange("lowercase", e.target.checked)}
+                      aria-label="小文字を含める"
+                    />
+                    小文字 (a-z)
+                  </label>
+                  <label className="checkbox-label">
+                    <input
+                      type="checkbox"
+                      checked={options.numbers}
+                      onChange={(e) => handleOptionChange("numbers", e.target.checked)}
+                      aria-label="数字を含める"
+                    />
+                    数字 (0-9)
+                  </label>
+                  <label className="checkbox-label">
+                    <input
+                      type="checkbox"
+                      checked={options.symbols}
+                      onChange={(e) => handleOptionChange("symbols", e.target.checked)}
+                      aria-label="記号を含める"
+                    />
+                    記号 (!@#$%...)
+                  </label>
+                </div>
+              </div>
             </div>
           </div>
 

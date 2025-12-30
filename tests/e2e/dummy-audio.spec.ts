@@ -1,6 +1,18 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Dummy Audio Generator - E2E Tests', () => {
+  /**
+   * カテゴリドロップダウンを開いてリンクをクリックするヘルパー関数
+   */
+  async function navigateViaCategory(page: import('@playwright/test').Page, categoryName: string, linkHref: string) {
+    const categoryBtn = page.locator('.nav-category-btn', { hasText: categoryName });
+    await categoryBtn.hover();
+    const dropdown = page.locator('.nav-dropdown');
+    await expect(dropdown).toBeVisible();
+    const link = dropdown.locator(`a[href="${linkHref}"]`);
+    await link.click();
+  }
+
   test.beforeEach(async ({ page }) => {
     await page.goto('/dummy-audio');
     await page.waitForLoadState('networkidle');
@@ -38,18 +50,23 @@ test.describe('Dummy Audio Generator - E2E Tests', () => {
     expect(usageText).not.toContain('undefined');
   });
 
-  test('should have navigation links including ダミー音声', async ({ page }) => {
-    const navLinks = page.locator('.nav-links');
-    await expect(navLinks).toBeVisible();
+  test('should have category navigation with active state', async ({ page }) => {
+    const navCategories = page.locator('.nav-categories');
+    await expect(navCategories).toBeVisible();
 
-    const dummyAudioLink = page.locator('.nav-links a[href="/dummy-audio"]');
-    await expect(dummyAudioLink).toBeVisible();
-    await expect(dummyAudioLink).toContainText('ダミー音声');
+    // 生成カテゴリがアクティブであることを確認
+    const activeCategory = page.locator('.nav-category-btn.active');
+    await expect(activeCategory).toContainText('生成');
   });
 
-  test('should show active state on ダミー音声 link when on dummy-audio page', async ({ page }) => {
-    const activeLink = page.locator('.nav-links a[data-active="true"]');
-    await expect(activeLink).toContainText('ダミー音声');
+  test('should show ダミー音声 link in category dropdown', async ({ page }) => {
+    const categoryBtn = page.locator('.nav-category-btn', { hasText: '生成' });
+    await categoryBtn.hover();
+    const dropdown = page.locator('.nav-dropdown');
+    await expect(dropdown).toBeVisible();
+    const dummyAudioLink = dropdown.locator('a[href="/dummy-audio"]');
+    await expect(dummyAudioLink).toBeVisible();
+    await expect(dummyAudioLink).toContainText('ダミー音声');
   });
 
   test('should have waveform select with all options', async ({ page }) => {
@@ -151,8 +168,8 @@ test.describe('Dummy Audio Generator - E2E Tests', () => {
     expect(infoText).toContain('880 Hz');
   });
 
-  test('should navigate to Unicode page when clicking the link', async ({ page }) => {
-    await page.click('.nav-links a[href="/"]');
+  test('should navigate to Unicode page via category dropdown', async ({ page }) => {
+    await navigateViaCategory(page, '変換', '/');
     await expect(page).toHaveURL('/');
   });
 
