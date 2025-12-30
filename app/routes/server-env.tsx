@@ -77,21 +77,41 @@ function ServerEnvPage() {
 
   const groupByCategory = (items: EnvItem[]) => {
     const groups: Record<string, EnvItem[]> = {
-      cloudflare: [],
-      request: [],
+      "cloudflare-geo": [],
+      "cloudflare-network": [],
+      "cloudflare-security": [],
+      "request-url": [],
+      "request-headers": [],
+      "request-client-hints": [],
       runtime: [],
     };
     for (const item of items) {
-      groups[item.category].push(item);
+      if (groups[item.category]) {
+        groups[item.category].push(item);
+      }
     }
     return groups;
   };
 
   const categoryLabels: Record<string, string> = {
-    cloudflare: "Cloudflare情報",
-    request: "リクエスト情報",
+    "cloudflare-geo": "Cloudflare 位置情報",
+    "cloudflare-network": "Cloudflare ネットワーク情報",
+    "cloudflare-security": "Cloudflare セキュリティ情報",
+    "request-url": "リクエストURL情報",
+    "request-headers": "リクエストヘッダー",
+    "request-client-hints": "Client Hints",
     runtime: "ランタイム情報",
   };
+
+  const categoryOrder = [
+    "cloudflare-geo",
+    "cloudflare-network",
+    "cloudflare-security",
+    "request-url",
+    "request-headers",
+    "request-client-hints",
+    "runtime",
+  ];
 
   return (
     <>
@@ -114,37 +134,41 @@ function ServerEnvPage() {
 
           {result && !error && result.items && (
             <div className="env-results" aria-live="polite">
-              {Object.entries(groupByCategory(result.items)).map(
-                ([category, items]) =>
-                  items.length > 0 && (
-                    <div key={category} className="env-category">
-                      <h3 className="env-category-title">
-                        {categoryLabels[category]}
-                      </h3>
-                      <div className="env-table-wrapper">
-                        <table
-                          className="env-table"
-                          aria-label={categoryLabels[category]}
-                        >
-                          <thead>
-                            <tr>
-                              <th scope="col">項目</th>
-                              <th scope="col">値</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {items.map((item, index) => (
-                              <tr key={index}>
-                                <td className="env-key">{item.key}</td>
-                                <td className="env-value">{item.value}</td>
+              {(() => {
+                const groups = groupByCategory(result.items);
+                return categoryOrder.map(
+                  (category) =>
+                    groups[category] &&
+                    groups[category].length > 0 && (
+                      <div key={category} className="env-category">
+                        <h3 className="env-category-title">
+                          {categoryLabels[category]}
+                        </h3>
+                        <div className="env-table-wrapper">
+                          <table
+                            className="env-table"
+                            aria-label={categoryLabels[category]}
+                          >
+                            <thead>
+                              <tr>
+                                <th scope="col">項目</th>
+                                <th scope="col">値</th>
                               </tr>
-                            ))}
-                          </tbody>
-                        </table>
+                            </thead>
+                            <tbody>
+                              {groups[category].map((item, index) => (
+                                <tr key={index}>
+                                  <td className="env-key">{item.key}</td>
+                                  <td className="env-value">{item.value}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
                       </div>
-                    </div>
-                  )
-              )}
+                    )
+                );
+              })()}
 
               <div className="env-actions">
                 <button
@@ -168,24 +192,41 @@ function ServerEnvPage() {
         >
           <h3 id="usage-title">サーバー環境情報とは</h3>
           <ul>
-            <li>
-              このページはサーバー側で取得できる情報を表示します
-            </li>
+            <li>このページはサーバー側で取得できる情報を表示します</li>
             <li>
               Cloudflareのエッジサーバーで処理されるリクエスト情報を確認できます
             </li>
-            <li>
-              開発者がデバッグや環境確認に利用できます
-            </li>
+            <li>開発者がデバッグや環境確認に利用できます</li>
           </ul>
-          <h3 id="about-cloudflare-title">Cloudflare情報について</h3>
+
+          <h3>カテゴリについて</h3>
+          <dl className="info-dl">
+            <dt>Cloudflare 位置情報</dt>
+            <dd>IPアドレスから推測される地理情報（国、都市、緯度経度など）</dd>
+
+            <dt>Cloudflare ネットワーク情報</dt>
+            <dd>ASN、データセンター、HTTPプロトコルなどのネットワーク情報</dd>
+
+            <dt>Cloudflare セキュリティ情報</dt>
+            <dd>TLSバージョン、暗号スイート、Bot検出情報など</dd>
+
+            <dt>リクエストURL情報</dt>
+            <dd>リクエストのURL、ホスト、パス、クライアントIP</dd>
+
+            <dt>リクエストヘッダー</dt>
+            <dd>ブラウザから送信された標準的なHTTPヘッダー</dd>
+
+            <dt>Client Hints</dt>
+            <dd>ブラウザの詳細情報を提供するClient Hintsヘッダー</dd>
+
+            <dt>ランタイム情報</dt>
+            <dd>サーバーのランタイム環境とタイムスタンプ</dd>
+          </dl>
+
+          <h3>セキュリティについて</h3>
           <p>
-            CF-Ray:
-            リクエストを識別するユニークなID。サポート問い合わせ時に役立ちます。
-          </p>
-          <p>
-            CF-IPCountry:
-            アクセス元の国コード（ISO 3166-1 alpha-2形式）。
+            Cookie、Authorization、API
+            Keyなどの機密性の高いヘッダーは表示されません。
           </p>
         </aside>
       </div>
@@ -243,6 +284,7 @@ function ServerEnvPage() {
           font-weight: 500;
           color: var(--md-sys-color-on-surface);
           white-space: nowrap;
+          min-width: 200px;
         }
 
         .env-value {
@@ -257,6 +299,22 @@ function ServerEnvPage() {
           justify-content: center;
         }
 
+        .info-dl {
+          margin: 0.5rem 0;
+        }
+
+        .info-dl dt {
+          font-weight: 500;
+          color: var(--md-sys-color-on-surface);
+          margin-top: 0.75rem;
+        }
+
+        .info-dl dd {
+          margin-left: 0;
+          color: var(--md-sys-color-on-surface-variant);
+          font-size: 0.9rem;
+        }
+
         @media (max-width: 600px) {
           .env-table th,
           .env-table td {
@@ -266,6 +324,7 @@ function ServerEnvPage() {
 
           .env-key {
             white-space: normal;
+            min-width: auto;
           }
         }
       `}</style>
