@@ -413,8 +413,8 @@ function DummyImageGenerator() {
           <h3 id="api-title">APIエンドポイント</h3>
           <p>URLで直接画像を取得できます（SVG形式）:</p>
           <ul>
-            <li><code>/api/image?w=800&h=600</code></li>
-            <li><code>/api/image?w=1200&h=630&bg=FF0000&text=FFFFFF</code></li>
+            <li><code>/api/image.svg?w=800&h=600</code></li>
+            <li><code>/api/image.svg?w=1200&h=630&bg=FF0000&text=FFFFFF</code></li>
           </ul>
           <p>パラメータ:</p>
           <ul>

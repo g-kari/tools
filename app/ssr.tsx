@@ -13,8 +13,8 @@ export default {
   async fetch(request: Request, env: unknown, ctx: ExecutionContext) {
     const url = new URL(request.url);
 
-    // /api/image エンドポイント - ダミー画像を直接返す
-    if (url.pathname === "/api/image") {
+    // /api/image.svg エンドポイント - ダミー画像を直接返す（.svg拡張子でCDNキャッシュ対象）
+    if (url.pathname === "/api/image.svg") {
       try {
         // Cloudflare CDNキャッシュを確認
         const cache = caches.default;
@@ -38,6 +38,7 @@ export default {
           headers: {
             "Content-Type": "image/svg+xml",
             "Cache-Control": "public, max-age=31536000, immutable",
+            "CDN-Cache-Control": "public, max-age=31536000, immutable",
           },
         });
 
