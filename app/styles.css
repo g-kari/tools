@@ -955,6 +955,160 @@ input[type="range"]:focus-visible {
   object-fit: cover;
 }
 
+/* Email DNS Checker */
+.dns-record-header {
+  margin-bottom: 15px;
+}
+
+.dns-record-header h3 {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dns-record-content {
+  margin-top: 10px;
+}
+
+.dns-record-error {
+  color: var(--md-sys-color-error);
+  font-size: 0.9rem;
+  margin-top: 10px;
+}
+
+.dns-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.dns-table thead {
+  background: var(--md-sys-color-primary-container);
+}
+
+.dns-table th {
+  padding: 12px;
+  text-align: left;
+  font-weight: 500;
+  color: var(--md-sys-color-on-primary-container);
+  border-bottom: 2px solid var(--md-sys-color-outline-variant);
+}
+
+.dns-table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.dns-table tr:last-child td {
+  border-bottom: none;
+}
+
+.status-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.status-success {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+.status-warning {
+  background: var(--md-sys-color-secondary);
+  color: var(--md-sys-color-on-secondary);
+}
+
+.status-error {
+  background: var(--md-sys-color-error);
+  color: var(--md-sys-color-on-error);
+}
+
+.monospace {
+  font-family: "Roboto Mono", "Courier New", monospace;
+}
+
+.word-break {
+  word-break: break-all;
+}
+
+.dns-warnings {
+  margin-top: 15px;
+  padding: 10px;
+  background: var(--md-sys-color-secondary-container);
+  border-left: 4px solid var(--md-sys-color-secondary);
+  border-radius: 4px;
+}
+
+.warning-item {
+  color: var(--md-sys-color-on-secondary-container);
+  font-size: 0.9rem;
+  margin: 5px 0;
+}
+
+.recommendations-card {
+  background: var(--md-sys-color-primary-container);
+  border-left: 4px solid var(--md-sys-color-primary);
+}
+
+.recommendations-list {
+  list-style-position: inside;
+  color: var(--md-sys-color-on-primary-container);
+  font-size: 0.95rem;
+  line-height: 1.8;
+  margin-left: 10px;
+}
+
+.smtp-instructions-card {
+  background: var(--md-sys-color-surface-variant);
+}
+
+.smtp-instructions-intro {
+  margin-bottom: 20px;
+  color: var(--md-sys-color-on-surface-variant);
+  line-height: 1.6;
+}
+
+.smtp-check-section {
+  margin-bottom: 25px;
+}
+
+.smtp-check-section h4 {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 10px;
+  color: var(--md-sys-color-on-surface);
+}
+
+.code-block {
+  background: var(--md-sys-color-on-surface);
+  color: var(--md-sys-color-surface);
+  padding: 15px;
+  border-radius: 6px;
+  font-family: "Roboto Mono", "Courier New", monospace;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  overflow-x: auto;
+  white-space: pre;
+  border: 1px solid var(--md-sys-color-outline);
+}
+
+.smtp-note {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-style: italic;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   h1 {
@@ -1004,5 +1158,20 @@ input[type="range"]:focus-visible {
     flex-direction: column;
     align-items: center;
     text-align: center;
+  }
+  /* Email DNS responsive */
+  .dns-table {
+    font-size: 0.75rem;
+  }
+  .dns-table th,
+  .dns-table td {
+    padding: 8px 4px;
+  }
+  .code-block {
+    font-size: 0.75rem;
+    padding: 10px;
+  }
+  .smtp-check-section {
+    margin-bottom: 20px;
   }
 }
