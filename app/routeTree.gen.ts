@@ -24,6 +24,7 @@ import { Route as EmailDnsRouteImport } from './routes/email-dns'
 import { Route as DummyImageRouteImport } from './routes/dummy-image'
 import { Route as DummyAudioRouteImport } from './routes/dummy-audio'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiImageSvgRouteImport } from './routes/api/image.svg'
 
 const WhoisRoute = WhoisRouteImport.update({
   id: '/whois',
@@ -100,6 +101,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiImageSvgRoute = ApiImageSvgRouteImport.update({
+  id: '/api/image/svg',
+  path: '/api/image/svg',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -117,6 +123,7 @@ export interface FileRoutesByFullPath {
   '/url-encode': typeof UrlEncodeRoute
   '/uuid': typeof UuidRoute
   '/whois': typeof WhoisRoute
+  '/api/image/svg': typeof ApiImageSvgRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -134,6 +141,7 @@ export interface FileRoutesByTo {
   '/url-encode': typeof UrlEncodeRoute
   '/uuid': typeof UuidRoute
   '/whois': typeof WhoisRoute
+  '/api/image/svg': typeof ApiImageSvgRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -152,6 +160,7 @@ export interface FileRoutesById {
   '/url-encode': typeof UrlEncodeRoute
   '/uuid': typeof UuidRoute
   '/whois': typeof WhoisRoute
+  '/api/image/svg': typeof ApiImageSvgRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -171,6 +180,7 @@ export interface FileRouteTypes {
     | '/url-encode'
     | '/uuid'
     | '/whois'
+    | '/api/image/svg'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -188,6 +198,7 @@ export interface FileRouteTypes {
     | '/url-encode'
     | '/uuid'
     | '/whois'
+    | '/api/image/svg'
   id:
     | '__root__'
     | '/'
@@ -205,6 +216,7 @@ export interface FileRouteTypes {
     | '/url-encode'
     | '/uuid'
     | '/whois'
+    | '/api/image/svg'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -223,6 +235,7 @@ export interface RootRouteChildren {
   UrlEncodeRoute: typeof UrlEncodeRoute
   UuidRoute: typeof UuidRoute
   WhoisRoute: typeof WhoisRoute
+  ApiImageSvgRoute: typeof ApiImageSvgRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -332,6 +345,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/image/svg': {
+      id: '/api/image/svg'
+      path: '/api/image/svg'
+      fullPath: '/api/image/svg'
+      preLoaderRoute: typeof ApiImageSvgRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -351,6 +371,7 @@ const rootRouteChildren: RootRouteChildren = {
   UrlEncodeRoute: UrlEncodeRoute,
   UuidRoute: UuidRoute,
   WhoisRoute: WhoisRoute,
+  ApiImageSvgRoute: ApiImageSvgRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
