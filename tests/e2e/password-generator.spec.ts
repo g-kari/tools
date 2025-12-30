@@ -116,6 +116,11 @@ test.describe('Password Generator - E2E Tests', () => {
   });
 
   test('should show alert when no character type is selected', async ({ page }) => {
+    // Expand the collapsible section first
+    const collapsibleHeader = page.locator('.collapsible-header[aria-controls="advanced-options"]');
+    await collapsibleHeader.click();
+    await page.waitForTimeout(300); // Wait for animation
+
     const uppercaseCheckbox = page.locator('input[aria-label="大文字を含める"]');
     const lowercaseCheckbox = page.locator('input[aria-label="小文字を含める"]');
     const numbersCheckbox = page.locator('input[aria-label="数字を含める"]');
@@ -135,7 +140,11 @@ test.describe('Password Generator - E2E Tests', () => {
   });
 
   test('should generate password with only uppercase when only uppercase is selected', async ({ page }) => {
-    const uppercaseCheckbox = page.locator('input[aria-label="大文字を含める"]');
+    // Expand the collapsible section first
+    const collapsibleHeader = page.locator('.collapsible-header[aria-controls="advanced-options"]');
+    await collapsibleHeader.click();
+    await page.waitForTimeout(300); // Wait for animation
+
     const lowercaseCheckbox = page.locator('input[aria-label="小文字を含める"]');
     const numbersCheckbox = page.locator('input[aria-label="数字を含める"]');
     const generateButton = page.locator('button.btn-primary');
