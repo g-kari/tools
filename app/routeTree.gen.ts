@@ -20,6 +20,7 @@ import { Route as JwtRouteImport } from './routes/jwt'
 import { Route as JsonRouteImport } from './routes/json'
 import { Route as IpGeolocationRouteImport } from './routes/ip-geolocation'
 import { Route as GlobalIpRouteImport } from './routes/global-ip'
+import { Route as DummyAudioRouteImport } from './routes/dummy-audio'
 import { Route as EmailDnsRouteImport } from './routes/email-dns'
 import { Route as IndexRouteImport } from './routes/index'
 
@@ -78,6 +79,11 @@ const GlobalIpRoute = GlobalIpRouteImport.update({
   path: '/global-ip',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DummyAudioRoute = DummyAudioRouteImport.update({
+  id: '/dummy-audio',
+  path: '/dummy-audio',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EmailDnsRoute = EmailDnsRouteImport.update({
   id: '/email-dns',
   path: '/email-dns',
@@ -91,6 +97,7 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/dummy-audio': typeof DummyAudioRoute
   '/email-dns': typeof EmailDnsRoute
   '/global-ip': typeof GlobalIpRoute
   '/ip-geolocation': typeof IpGeolocationRoute
@@ -106,6 +113,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/dummy-audio': typeof DummyAudioRoute
   '/email-dns': typeof EmailDnsRoute
   '/global-ip': typeof GlobalIpRoute
   '/ip-geolocation': typeof IpGeolocationRoute
@@ -122,6 +130,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/dummy-audio': typeof DummyAudioRoute
   '/email-dns': typeof EmailDnsRoute
   '/global-ip': typeof GlobalIpRoute
   '/ip-geolocation': typeof IpGeolocationRoute
@@ -139,6 +148,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/dummy-audio'
     | '/email-dns'
     | '/global-ip'
     | '/ip-geolocation'
@@ -154,6 +164,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/dummy-audio'
     | '/email-dns'
     | '/global-ip'
     | '/ip-geolocation'
@@ -169,6 +180,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/dummy-audio'
     | '/email-dns'
     | '/global-ip'
     | '/ip-geolocation'
@@ -185,6 +197,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DummyAudioRoute: typeof DummyAudioRoute
   EmailDnsRoute: typeof EmailDnsRoute
   GlobalIpRoute: typeof GlobalIpRoute
   IpGeolocationRoute: typeof IpGeolocationRoute
@@ -278,6 +291,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GlobalIpRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dummy-audio': {
+      id: '/dummy-audio'
+      path: '/dummy-audio'
+      fullPath: '/dummy-audio'
+      preLoaderRoute: typeof DummyAudioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/email-dns': {
       id: '/email-dns'
       path: '/email-dns'
@@ -297,6 +317,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DummyAudioRoute: DummyAudioRoute,
   EmailDnsRoute: EmailDnsRoute,
   GlobalIpRoute: GlobalIpRoute,
   IpGeolocationRoute: IpGeolocationRoute,
