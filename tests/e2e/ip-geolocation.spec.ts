@@ -3,6 +3,18 @@ import { test, expect } from '@playwright/test';
 test.describe('IP Geolocation Lookup - E2E Tests', () => {
   // タイムアウトはplaywright.config.tsで設定（CI: 30秒, ローカル: 10秒）
 
+  /**
+   * カテゴリドロップダウンを開いてリンクをクリックするヘルパー関数
+   */
+  async function navigateViaCategory(page: import('@playwright/test').Page, categoryName: string, linkHref: string) {
+    const categoryBtn = page.locator('.nav-category-btn', { hasText: categoryName });
+    await categoryBtn.hover();
+    const dropdown = page.locator('.nav-dropdown');
+    await expect(dropdown).toBeVisible();
+    const link = dropdown.locator(`a[href="${linkHref}"]`);
+    await link.click();
+  }
+
   test.beforeEach(async ({ page }) => {
     await page.goto('/ip-geolocation');
     // Wait for React hydration
@@ -57,17 +69,17 @@ test.describe('IP Geolocation Lookup - E2E Tests', () => {
     expect(usageText).not.toContain('undefined');
   });
 
-  test('should have navigation links including IP検索', async ({ page }) => {
-    const navLinks = page.locator('.nav-links');
-    await expect(navLinks).toBeVisible();
+  test('should have category navigation with active state', async ({ page }) => {
+    const navCategories = page.locator('.nav-categories');
+    await expect(navCategories).toBeVisible();
 
-    const ipLink = page.locator('.nav-links a[href="/ip-geolocation"]');
-    await expect(ipLink).toBeVisible();
-    await expect(ipLink).toContainText('IP検索');
+    // 検索カテゴリがアクティブであることを確認
+    const activeCategory = page.locator('.nav-category-btn.active');
+    await expect(activeCategory).toContainText('検索');
   });
 
-  test('should navigate to Unicode page when clicking the link', async ({ page }) => {
-    await page.click('.nav-links a[href="/"]');
+  test('should navigate to Unicode page via category dropdown', async ({ page }) => {
+    await navigateViaCategory(page, '変換', '/');
     await expect(page).toHaveURL('/');
   });
 });

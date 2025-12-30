@@ -3,6 +3,18 @@ import { test, expect } from '@playwright/test';
 test.describe('JSON Formatter - E2E Tests', () => {
   test.describe.configure({ timeout: 10000 });
 
+  /**
+   * カテゴリドロップダウンを開いてリンクをクリックするヘルパー関数
+   */
+  async function navigateViaCategory(page: import('@playwright/test').Page, categoryName: string, linkHref: string) {
+    const categoryBtn = page.locator('.nav-category-btn', { hasText: categoryName });
+    await categoryBtn.hover();
+    const dropdown = page.locator('.nav-dropdown');
+    await expect(dropdown).toBeVisible();
+    const link = dropdown.locator(`a[href="${linkHref}"]`);
+    await link.click();
+  }
+
   test.beforeEach(async ({ page }) => {
     await page.goto('/json');
     await page.waitForLoadState('networkidle');
@@ -146,21 +158,25 @@ test.describe('JSON Formatter - E2E Tests', () => {
     expect(usageText).not.toContain('undefined');
   });
 
-  test('should have navigation link to JSON formatter', async ({ page }) => {
+  test('should have navigation link to JSON formatter in category dropdown', async ({ page }) => {
     await page.goto('/');
-    const jsonLink = page.locator('.nav-links a[href="/json"]');
+    const categoryBtn = page.locator('.nav-category-btn', { hasText: '変換' });
+    await categoryBtn.hover();
+    const dropdown = page.locator('.nav-dropdown');
+    await expect(dropdown).toBeVisible();
+    const jsonLink = dropdown.locator('a[href="/json"]');
     await expect(jsonLink).toBeVisible();
     await expect(jsonLink).toContainText('JSON');
   });
 
-  test('should navigate to JSON formatter from other pages', async ({ page }) => {
+  test('should navigate to JSON formatter from other pages via category', async ({ page }) => {
     await page.goto('/');
-    await page.click('.nav-links a[href="/json"]');
+    await navigateViaCategory(page, '変換', '/json');
     await expect(page).toHaveURL('/json');
   });
 
-  test('should show active state on JSON link when on json page', async ({ page }) => {
-    const activeLink = page.locator('.nav-links a[data-active="true"]');
-    await expect(activeLink).toContainText('JSON');
+  test('should show active state on category button when on json page', async ({ page }) => {
+    const activeCategory = page.locator('.nav-category-btn.active');
+    await expect(activeCategory).toContainText('変換');
   });
 });

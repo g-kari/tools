@@ -3,6 +3,18 @@ import { test, expect } from '@playwright/test';
 test.describe('Password Generator - E2E Tests', () => {
   // タイムアウトはplaywright.config.tsで設定（CI: 30秒, ローカル: 10秒）
 
+  /**
+   * カテゴリドロップダウンを開いてリンクをクリックするヘルパー関数
+   */
+  async function navigateViaCategory(page: import('@playwright/test').Page, categoryName: string, linkHref: string) {
+    const categoryBtn = page.locator('.nav-category-btn', { hasText: categoryName });
+    await categoryBtn.hover();
+    const dropdown = page.locator('.nav-dropdown');
+    await expect(dropdown).toBeVisible();
+    const link = dropdown.locator(`a[href="${linkHref}"]`);
+    await link.click();
+  }
+
   test.beforeEach(async ({ page }) => {
     await page.goto('/password-generator', { waitUntil: 'domcontentloaded' });
     // Wait for password to be generated (indicates page is ready)
@@ -161,22 +173,26 @@ test.describe('Password Generator - E2E Tests', () => {
     expect(usageText).not.toContain('undefined');
   });
 
-  test('should have navigation link to password generator', async ({ page }) => {
+  test('should have navigation link to password generator in category dropdown', async ({ page }) => {
     await page.goto('/');
-    const passwordLink = page.locator('.nav-links a[href="/password-generator"]');
+    const categoryBtn = page.locator('.nav-category-btn', { hasText: '生成' });
+    await categoryBtn.hover();
+    const dropdown = page.locator('.nav-dropdown');
+    await expect(dropdown).toBeVisible();
+    const passwordLink = dropdown.locator('a[href="/password-generator"]');
     await expect(passwordLink).toBeVisible();
-    await expect(passwordLink).toContainText('パスワード生成');
+    await expect(passwordLink).toContainText('パスワード');
   });
 
-  test('should navigate to password generator from other pages', async ({ page }) => {
+  test('should navigate to password generator from other pages via category', async ({ page }) => {
     await page.goto('/');
-    await page.click('.nav-links a[href="/password-generator"]');
+    await navigateViaCategory(page, '生成', '/password-generator');
     await expect(page).toHaveURL('/password-generator');
   });
 
-  test('should show active state on password link when on password-generator page', async ({ page }) => {
-    const activeLink = page.locator('.nav-links a[data-active="true"]');
-    await expect(activeLink).toContainText('パスワード生成');
+  test('should show active state on category button when on password-generator page', async ({ page }) => {
+    const activeCategory = page.locator('.nav-category-btn.active');
+    await expect(activeCategory).toContainText('生成');
   });
 
   test('should copy password text changes when copy is successful', async ({ page, context }) => {

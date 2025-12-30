@@ -4,7 +4,7 @@
  * UX心理学のピーク・エンド法則に基づき、操作完了時の印象を強化
  */
 
-import { useState, useCallback, createContext, useContext, type ReactNode } from "react";
+import { useState, useCallback, createContext, useContext, useRef, useEffect, type ReactNode } from "react";
 
 /**
  * トースト通知の種類
@@ -54,27 +54,67 @@ export function useToast(): ToastContextType {
   return context;
 }
 
+/** トースト表示の最大数 */
+const MAX_TOASTS = 5;
+
 /**
  * Toast notification provider component
+ * setTimeoutのクリーンアップと表示数制限を実装
  */
 export function ToastProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([]);
+  const timeoutsRef = useRef<Map<string, NodeJS.Timeout[]>>(new Map());
+
+  // コンポーネントのアンマウント時にすべてのタイムアウトをクリア
+  useEffect(() => {
+    return () => {
+      timeoutsRef.current.forEach((timeouts) => {
+        timeouts.forEach((timeout) => clearTimeout(timeout));
+      });
+      timeoutsRef.current.clear();
+    };
+  }, []);
 
   const showToast = useCallback((message: string, type: ToastType = "info") => {
     const id = Math.random().toString(36).substring(2, 9);
-    setToasts((prev) => [...prev, { id, message, type }]);
+
+    setToasts((prev) => {
+      // 最大数を超える場合は古いトーストを削除
+      const newToasts = [...prev, { id, message, type }];
+      if (newToasts.length > MAX_TOASTS) {
+        // 削除するトーストのタイムアウトをクリア
+        const toRemove = newToasts.slice(0, newToasts.length - MAX_TOASTS);
+        toRemove.forEach((toast) => {
+          const timeouts = timeoutsRef.current.get(toast.id);
+          if (timeouts) {
+            timeouts.forEach((timeout) => clearTimeout(timeout));
+            timeoutsRef.current.delete(toast.id);
+          }
+        });
+        return newToasts.slice(-MAX_TOASTS);
+      }
+      return newToasts;
+    });
+
+    // タイムアウトを保存
+    const timeouts: NodeJS.Timeout[] = [];
 
     // Start exit animation after 2.5 seconds
-    setTimeout(() => {
+    const exitTimeout = setTimeout(() => {
       setToasts((prev) =>
         prev.map((t) => (t.id === id ? { ...t, exiting: true } : t))
       );
     }, 2500);
+    timeouts.push(exitTimeout);
 
     // Remove toast after animation completes
-    setTimeout(() => {
+    const removeTimeout = setTimeout(() => {
       setToasts((prev) => prev.filter((t) => t.id !== id));
+      timeoutsRef.current.delete(id);
     }, 2800);
+    timeouts.push(removeTimeout);
+
+    timeoutsRef.current.set(id, timeouts);
   }, []);
 
   return (

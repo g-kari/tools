@@ -6,7 +6,7 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { type ReactNode, useState } from "react";
+import { type ReactNode, useState, useRef, useCallback, useEffect } from "react";
 import appCss from "../styles.css?url";
 import { ToastProvider } from "../components/Toast";
 
@@ -109,6 +109,7 @@ function RootComponent() {
 /**
  * ナビゲーションカテゴリコンポーネント
  * ホバーまたはクリックでドロップダウンメニューを表示する
+ * キーボードナビゲーション対応（WCAG 2.1準拠）
  * @param props - コンポーネントのプロパティ
  * @param props.category - カテゴリ情報（名前、アイコン、アイテム一覧）
  * @param props.pathname - 現在のパス名（アクティブ状態の判定に使用）
@@ -122,15 +123,87 @@ function NavCategory({
   pathname: string;
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [focusedIndex, setFocusedIndex] = useState(-1);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const isActive = category.items.some((item) => item.path === pathname);
+
+  // ドロップダウンが開いたときに最初のアイテムにフォーカス
+  useEffect(() => {
+    if (isOpen && focusedIndex === -1) {
+      setFocusedIndex(0);
+    }
+  }, [isOpen, focusedIndex]);
+
+  // フォーカスインデックスが変更されたときにフォーカスを更新
+  useEffect(() => {
+    if (isOpen && focusedIndex >= 0 && menuRef.current) {
+      const items = menuRef.current.querySelectorAll<HTMLAnchorElement>('[role="menuitem"]');
+      items[focusedIndex]?.focus();
+    }
+  }, [isOpen, focusedIndex]);
+
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (!isOpen) {
+      // ドロップダウンが閉じている場合
+      if (e.key === "ArrowDown" || e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        setIsOpen(true);
+        setFocusedIndex(0);
+      }
+      return;
+    }
+
+    // ドロップダウンが開いている場合
+    switch (e.key) {
+      case "ArrowDown":
+        e.preventDefault();
+        setFocusedIndex((prev) =>
+          prev < category.items.length - 1 ? prev + 1 : 0
+        );
+        break;
+      case "ArrowUp":
+        e.preventDefault();
+        setFocusedIndex((prev) =>
+          prev > 0 ? prev - 1 : category.items.length - 1
+        );
+        break;
+      case "Escape":
+        e.preventDefault();
+        setIsOpen(false);
+        setFocusedIndex(-1);
+        buttonRef.current?.focus();
+        break;
+      case "Tab":
+        // Tabでドロップダウンを閉じる
+        setIsOpen(false);
+        setFocusedIndex(-1);
+        break;
+      case "Home":
+        e.preventDefault();
+        setFocusedIndex(0);
+        break;
+      case "End":
+        e.preventDefault();
+        setFocusedIndex(category.items.length - 1);
+        break;
+    }
+  }, [isOpen, category.items.length]);
+
+  const handleClose = useCallback(() => {
+    setIsOpen(false);
+    setFocusedIndex(-1);
+  }, []);
 
   return (
     <div
       className="nav-category"
       onMouseEnter={() => setIsOpen(true)}
-      onMouseLeave={() => setIsOpen(false)}
+      onMouseLeave={handleClose}
+      onKeyDown={handleKeyDown}
     >
       <button
+        ref={buttonRef}
         className={`nav-category-btn ${isActive ? "active" : ""}`}
         aria-expanded={isOpen}
         aria-haspopup="true"
@@ -145,14 +218,15 @@ function NavCategory({
         </span>
       </button>
       {isOpen && (
-        <div className="nav-dropdown" role="menu">
-          {category.items.map((item) => (
+        <div className="nav-dropdown" role="menu" ref={menuRef}>
+          {category.items.map((item, index) => (
             <Link
               key={item.path}
               to={item.path}
               role="menuitem"
+              tabIndex={focusedIndex === index ? 0 : -1}
               className={`nav-dropdown-item ${pathname === item.path ? "active" : ""}`}
-              onClick={() => setIsOpen(false)}
+              onClick={handleClose}
             >
               {item.label}
             </Link>
