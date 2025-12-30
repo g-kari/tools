@@ -53,9 +53,9 @@ export function drawDummyImage(
   ctx.fillStyle = bgColor;
   ctx.fillRect(0, 0, width, height);
 
-  // サイズテキストを描画
+  // サイズテキストを描画（最小フォントサイズ12pxをSVG生成と統一）
   const text = `${width} × ${height}`;
-  const fontSize = Math.min(width, height) / 8;
+  const fontSize = Math.max(12, Math.min(width, height) / 8);
   ctx.font = `bold ${fontSize}px 'Roboto', sans-serif`;
   ctx.fillStyle = textColor;
   ctx.textAlign = "center";
