@@ -31,6 +31,13 @@ const navCategories = [
     ],
   },
   {
+    name: "画像",
+    icon: "🎨",
+    items: [
+      { path: "/color-extractor", label: "カラー抽出" },
+    ],
+  },
+  {
     name: "検索",
     icon: "🔍",
     items: [
