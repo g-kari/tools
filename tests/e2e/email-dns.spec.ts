@@ -3,6 +3,18 @@ import { test, expect } from '@playwright/test';
 test.describe('Email DNS Checker - E2E Tests', () => {
   // Timeout is configured in playwright.config.ts (CI: 30 seconds, local: 10 seconds)
 
+  /**
+   * カテゴリドロップダウンを開いてリンクをクリックするヘルパー関数
+   */
+  async function navigateViaCategory(page: import('@playwright/test').Page, categoryName: string, linkHref: string) {
+    const categoryBtn = page.locator('.nav-category-btn', { hasText: categoryName });
+    await categoryBtn.hover();
+    const dropdown = page.locator('.nav-dropdown');
+    await expect(dropdown).toBeVisible();
+    const link = dropdown.locator(`a[href="${linkHref}"]`);
+    await link.click();
+  }
+
   test.beforeEach(async ({ page }) => {
     await page.goto('/email-dns');
     // Wait for React hydration
@@ -66,21 +78,27 @@ test.describe('Email DNS Checker - E2E Tests', () => {
     expect(usageText).not.toContain('undefined');
   });
 
-  test('should have navigation links', async ({ page }) => {
-    const navLinks = page.locator('.nav-links');
-    await expect(navLinks).toBeVisible();
+  test('should have category navigation with active state', async ({ page }) => {
+    const navCategories = page.locator('.nav-categories');
+    await expect(navCategories).toBeVisible();
 
-    const unicodeLink = page.locator('.nav-links a[href="/"]');
-    await expect(unicodeLink).toBeVisible();
-    await expect(unicodeLink).toContainText('Unicode変換');
+    // 検証カテゴリがアクティブであることを確認
+    const activeCategory = page.locator('.nav-category-btn.active');
+    await expect(activeCategory).toContainText('検証');
+  });
 
-    const emailDnsLink = page.locator('.nav-links a[href="/email-dns"]');
+  test('should show メールDNS link in category dropdown', async ({ page }) => {
+    const categoryBtn = page.locator('.nav-category-btn', { hasText: '検証' });
+    await categoryBtn.hover();
+    const dropdown = page.locator('.nav-dropdown');
+    await expect(dropdown).toBeVisible();
+    const emailDnsLink = dropdown.locator('a[href="/email-dns"]');
     await expect(emailDnsLink).toBeVisible();
     await expect(emailDnsLink).toContainText('メールDNS');
   });
 
-  test('should navigate to Unicode page when clicking the link', async ({ page }) => {
-    await page.click('.nav-links a[href="/"]');
+  test('should navigate to Unicode page via category dropdown', async ({ page }) => {
+    await navigateViaCategory(page, '変換', '/');
     await expect(page).toHaveURL('/');
   });
 

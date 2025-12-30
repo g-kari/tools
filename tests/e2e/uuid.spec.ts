@@ -3,6 +3,18 @@ import { test, expect } from '@playwright/test';
 test.describe('UUID Generator - E2E Tests', () => {
   // タイムアウトはplaywright.config.tsで設定（CI: 30秒, ローカル: 10秒）
 
+  /**
+   * カテゴリドロップダウンを開いてリンクをクリックするヘルパー関数
+   */
+  async function navigateViaCategory(page: import('@playwright/test').Page, categoryName: string, linkHref: string) {
+    const categoryBtn = page.locator('.nav-category-btn', { hasText: categoryName });
+    await categoryBtn.hover();
+    const dropdown = page.locator('.nav-dropdown');
+    await expect(dropdown).toBeVisible();
+    const link = dropdown.locator(`a[href="${linkHref}"]`);
+    await link.click();
+  }
+
   test.beforeEach(async ({ page }) => {
     await page.goto('/uuid');
     // Wait for React hydration
@@ -41,18 +53,23 @@ test.describe('UUID Generator - E2E Tests', () => {
     expect(usageText).not.toContain('undefined');
   });
 
-  test('should have navigation links including UUID生成', async ({ page }) => {
-    const navLinks = page.locator('.nav-links');
-    await expect(navLinks).toBeVisible();
+  test('should have category navigation with active state', async ({ page }) => {
+    const navCategories = page.locator('.nav-categories');
+    await expect(navCategories).toBeVisible();
 
-    const uuidLink = page.locator('.nav-links a[href="/uuid"]');
-    await expect(uuidLink).toBeVisible();
-    await expect(uuidLink).toContainText('UUID生成');
+    // 生成カテゴリがアクティブであることを確認
+    const activeCategory = page.locator('.nav-category-btn.active');
+    await expect(activeCategory).toContainText('生成');
   });
 
-  test('should show active state on UUID生成 link when on uuid page', async ({ page }) => {
-    const activeLink = page.locator('.nav-links a[data-active="true"]');
-    await expect(activeLink).toContainText('UUID生成');
+  test('should show UUID生成 link in category dropdown', async ({ page }) => {
+    const categoryBtn = page.locator('.nav-category-btn', { hasText: '生成' });
+    await categoryBtn.hover();
+    const dropdown = page.locator('.nav-dropdown');
+    await expect(dropdown).toBeVisible();
+    const uuidLink = dropdown.locator('a[href="/uuid"]');
+    await expect(uuidLink).toBeVisible();
+    await expect(uuidLink).toContainText('UUID');
   });
 
   test('should generate a UUID on page load', async ({ page }) => {
@@ -132,8 +149,8 @@ test.describe('UUID Generator - E2E Tests', () => {
     await expect(copyAllButton).toBeVisible();
   });
 
-  test('should navigate to Unicode page when clicking the link', async ({ page }) => {
-    await page.click('.nav-links a[href="/"]');
+  test('should navigate to Unicode page via category dropdown', async ({ page }) => {
+    await navigateViaCategory(page, '変換', '/');
     await expect(page).toHaveURL('/');
   });
 });

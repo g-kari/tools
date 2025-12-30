@@ -3,6 +3,18 @@ import { test, expect } from '@playwright/test';
 test.describe('Regex Checker - E2E Tests', () => {
   // タイムアウトはplaywright.config.tsで設定（CI: 30秒, ローカル: 10秒）
 
+  /**
+   * カテゴリドロップダウンを開いてリンクをクリックするヘルパー関数
+   */
+  async function navigateViaCategory(page: import('@playwright/test').Page, categoryName: string, linkHref: string) {
+    const categoryBtn = page.locator('.nav-category-btn', { hasText: categoryName });
+    await categoryBtn.hover();
+    const dropdown = page.locator('.nav-dropdown');
+    await expect(dropdown).toBeVisible();
+    const link = dropdown.locator(`a[href="${linkHref}"]`);
+    await link.click();
+  }
+
   test.beforeEach(async ({ page }) => {
     await page.goto('/regex-checker');
     await page.waitForLoadState('networkidle');
@@ -111,21 +123,25 @@ test.describe('Regex Checker - E2E Tests', () => {
     expect(usageText).not.toContain('undefined');
   });
 
-  test('should have navigation link to regex checker', async ({ page }) => {
+  test('should have navigation link to regex checker in category dropdown', async ({ page }) => {
     await page.goto('/');
-    const regexLink = page.locator('.nav-links a[href="/regex-checker"]');
+    const categoryBtn = page.locator('.nav-category-btn', { hasText: '検証' });
+    await categoryBtn.hover();
+    const dropdown = page.locator('.nav-dropdown');
+    await expect(dropdown).toBeVisible();
+    const regexLink = dropdown.locator('a[href="/regex-checker"]');
     await expect(regexLink).toBeVisible();
     await expect(regexLink).toContainText('正規表現');
   });
 
-  test('should navigate to regex checker from other pages', async ({ page }) => {
+  test('should navigate to regex checker from other pages via category', async ({ page }) => {
     await page.goto('/');
-    await page.click('.nav-links a[href="/regex-checker"]');
+    await navigateViaCategory(page, '検証', '/regex-checker');
     await expect(page).toHaveURL('/regex-checker');
   });
 
-  test('should show active state on regex link when on regex-checker page', async ({ page }) => {
-    const activeLink = page.locator('.nav-links a[data-active="true"]');
-    await expect(activeLink).toContainText('正規表現');
+  test('should show active state on category button when on regex-checker page', async ({ page }) => {
+    const activeCategory = page.locator('.nav-category-btn.active');
+    await expect(activeCategory).toContainText('検証');
   });
 });
