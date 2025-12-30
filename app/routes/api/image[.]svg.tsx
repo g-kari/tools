@@ -85,11 +85,11 @@ export const Route = createFileRoute("/api/image.svg")({
             },
           });
 
-          // キャッシュに保存（非同期で実行、レスポンスを待たない）
+          // キャッシュに保存（完了を待機）
           const responseToCache = new Response(svg, {
             headers: getCacheHeaders(),
           });
-          cache.put(cacheKey, responseToCache);
+          await cache.put(cacheKey, responseToCache);
 
           return response;
         } catch (error) {
