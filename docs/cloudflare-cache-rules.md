@@ -1,10 +1,10 @@
 # Cloudflare Cache Rules 設定ガイド
 
-このドキュメントでは、ダミー画像生成API (`/api/image/svg`) をCloudflare CDNでキャッシュするためのCache Rules設定手順を説明します。
+このドキュメントでは、ダミー画像生成API (`/api/image.svg`) をCloudflare CDNでキャッシュするためのCache Rules設定手順を説明します。
 
 ## 背景
 
-Cloudflareはデフォルトで拡張子を持つ静的ファイル（`.jpg`, `.png`, `.svg`など）のみをキャッシュします。`/api/image/svg` のようなAPIパスは拡張子がないため、Cache Rulesを設定してキャッシュ対象にする必要があります。
+Cloudflareはデフォルトで拡張子を持つ静的ファイル（`.jpg`, `.png`, `.svg`など）のみをキャッシュします。`/api/image.svg` は拡張子があるため自動キャッシュ対象ですが、Cache APIを使用して明示的にキャッシュを制御しています。追加でCache Rulesを設定することで、より細かい制御が可能です。
 
 ## 設定手順
 
@@ -35,11 +35,11 @@ Rule name: Dummy Image API Cache
 
 **Field:** `URI Path`
 **Operator:** `starts with`
-**Value:** `/api/image/`
+**Value:** `/api/image.`
 
 または、Expression Builderで以下を入力:
 ```
-(starts_with(http.request.uri.path, "/api/image/"))
+(starts_with(http.request.uri.path, "/api/image."))
 ```
 
 ### 6. キャッシュ動作を設定
@@ -63,7 +63,7 @@ Cache Rulesは上から順に評価されます。このルールが最初に適
 ルールが正しく動作しているか確認するには、レスポンスヘッダーを確認します:
 
 ```bash
-curl -I "https://your-domain.workers.dev/api/image/svg?w=800&h=600"
+curl -I "https://your-domain.workers.dev/api/image.svg?w=800&h=600"
 ```
 
 以下のヘッダーを確認:

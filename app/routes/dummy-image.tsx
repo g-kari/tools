@@ -198,7 +198,7 @@ function DummyImageGenerator() {
   const handleOpenApi = useCallback(() => {
     const bg = bgColor.replace(/^#/, "");
     const text = textColor.replace(/^#/, "");
-    const url = `/api/image/svg?w=${width}&h=${height}&bg=${bg}&text=${text}`;
+    const url = `/api/image.svg?w=${width}&h=${height}&bg=${bg}&text=${text}`;
     window.open(url, "_blank");
   }, [width, height, bgColor, textColor]);
 
@@ -427,8 +427,8 @@ function DummyImageGenerator() {
           <h3 id="api-title">APIエンドポイント</h3>
           <p>URLで直接画像を取得できます（SVG形式）:</p>
           <ul>
-            <li><code>/api/image/svg?w=800&h=600</code></li>
-            <li><code>/api/image/svg?w=1200&h=630&bg=FF0000&text=FFFFFF</code></li>
+            <li><code>/api/image.svg?w=800&h=600</code></li>
+            <li><code>/api/image.svg?w=1200&h=630&bg=FF0000&text=FFFFFF</code></li>
           </ul>
           <p>パラメータ:</p>
           <ul>
