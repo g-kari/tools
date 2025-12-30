@@ -42,6 +42,7 @@ Cloudflare Workers上で動作するWebツール集です。以下のツール�
 - **正規表現チェッカー** - 正規表現のテスト・検証
 - **JWTデコーダー** - JWTトークンのデコード・検証
 - **OGPチェッカー** - Open Graph Protocol情報の取得・確認
+- **ダミー画像生成** - 開発用プレースホルダー画像の生成
 
 ## 技術スタック
 
@@ -146,7 +147,8 @@ npm run build && npm run test:e2e
 │   │   ├── server-env.tsx       # サーバー環境ページ (/server-env)
 │   │   ├── regex-checker.tsx    # 正規表現チェッカーページ (/regex-checker)
 │   │   ├── jwt.tsx              # JWTデコーダーページ (/jwt)
-│   │   └── ogp.tsx              # OGPチェッカーページ (/ogp)
+│   │   ├── ogp.tsx              # OGPチェッカーページ (/ogp)
+│   │   └── dummy-image.tsx      # ダミー画像生成ページ (/dummy-image)
 │   └── functions/
 │       ├── whois.ts             # WHOISサーバーファンクション
 │       ├── ip-geolocation.ts    # IPジオロケーションファンクション
@@ -163,7 +165,8 @@ npm run build && npm run test:e2e
 │   │   ├── json.test.ts
 │   │   ├── regex.test.ts
 │   │   ├── ip-validation.test.ts
-│   │   └── ogp.test.ts
+│   │   ├── ogp.test.ts
+│   │   └── dummy-image.test.ts
 │   └── e2e/              # E2Eテスト（Playwright）
 │       ├── navigation.spec.ts
 │       ├── unicode.spec.ts
@@ -178,6 +181,7 @@ npm run build && npm run test:e2e
 │       ├── regex-checker.spec.ts
 │       ├── jwt.spec.ts
 │       ├── ogp.spec.ts
+│       ├── dummy-image.spec.ts
 │       ├── accessibility.spec.ts
 │       └── not-found.spec.ts
 ├── package.json

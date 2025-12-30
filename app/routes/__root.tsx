@@ -158,6 +158,12 @@ function RootDocument({ children }: { children: ReactNode }) {
               >
                 ダミー音声
               </Link>
+              <Link
+                to="/dummy-image"
+                data-active={pathname === "/dummy-image" ? "true" : undefined}
+              >
+                ダミー画像
+              </Link>
             </nav>
           </header>
 
