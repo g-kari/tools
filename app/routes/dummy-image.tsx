@@ -195,6 +195,13 @@ function DummyImageGenerator() {
     }
   }, [announceStatus]);
 
+  const handleOpenApi = useCallback(() => {
+    const bg = bgColor.replace(/^#/, "");
+    const text = textColor.replace(/^#/, "");
+    const url = `/api/image.svg?w=${width}&h=${height}&bg=${bg}&text=${text}`;
+    window.open(url, "_blank");
+  }, [width, height, bgColor, textColor]);
+
   return (
     <>
       <div className="tool-container">
@@ -355,6 +362,13 @@ function DummyImageGenerator() {
                 onClick={handleCopyToClipboard}
               >
                 クリップボードにコピー
+              </button>
+              <button
+                type="button"
+                className="btn-secondary"
+                onClick={handleOpenApi}
+              >
+                APIで開く
               </button>
             </div>
           </div>
