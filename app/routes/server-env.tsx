@@ -13,6 +13,13 @@ export const Route = createFileRoute("/server-env")({
   component: ServerEnvPage,
 });
 
+/**
+ * Render the "Server Environment Information" page and manage fetching, grouping, and status announcements of server-side environment data.
+ *
+ * Fetches environment information on mount, displays loading and error states, groups returned items into predefined categories for presentation, and provides a control to re-fetch the data. Accessibility-friendly status announcements are exposed via an off-screen status region.
+ *
+ * @returns The React element for the server environment information page, including categorized results, loading/error UI, and a re-fetch button.
+ */
 function ServerEnvPage() {
   const [result, setResult] = useState<ServerEnvResult | null>(null);
   const [error, setError] = useState<string | null>(null);
