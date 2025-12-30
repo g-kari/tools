@@ -191,3 +191,10 @@ npm run build && npm run test:e2e
 - レスポンシブデザイン対応
 - 日本語UIをメインにサポート
 - TanStack Startのサーバーファンクションを使用してAPI実装
+
+## スキル（デザインガイドライン）
+
+このプロジェクトでは以下のスキルファイルを参照してください：
+
+- [Material Design Styling](.claude/skills/material-design-styling.md) - Material Design 3に基づくスタイリングガイドライン（カラーパレット、タイポグラフィ、コンポーネントスタイル）
+- [WCAG Accessibility](.claude/skills/wcag-accessibility.md) - WCAG 2.1準拠のアクセシビリティ実装ガイドライン
