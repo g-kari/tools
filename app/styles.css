@@ -26,6 +26,10 @@
   --md-sys-color-error: #ba1a1a;
   --md-sys-color-on-error: #ffffff;
   --md-sys-color-error-container: #ffdad6;
+
+  /* Success colors */
+  --md-sys-color-success: #2e7d32;
+  --md-sys-color-on-success: #ffffff;
 }
 
 /* Material Design - Base Styles */
@@ -169,6 +173,16 @@ h1 {
   z-index: 1000;
   padding: 8px 0;
   animation: dropdownFadeIn 0.15s ease-out;
+}
+
+/* 隙間をカバーする透明な領域（ホバー判定を維持） */
+.nav-dropdown::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: 0;
+  right: 0;
+  height: 8px;
 }
 
 @keyframes dropdownFadeIn {
@@ -1374,8 +1388,8 @@ button:active::after {
 }
 
 .toast.toast-success {
-  background: #2e7d32;
-  color: white;
+  background: var(--md-sys-color-success);
+  color: var(--md-sys-color-on-success);
 }
 
 .toast.toast-error {
@@ -1426,14 +1440,14 @@ button:active::after {
   justify-content: center;
   width: 24px;
   height: 24px;
-  background: #2e7d32;
+  background: var(--md-sys-color-success);
   border-radius: 50%;
   animation: checkmarkPop 0.4s ease-out;
 }
 
 .success-checkmark::after {
   content: "✓";
-  color: white;
+  color: var(--md-sys-color-on-success);
   font-size: 14px;
   font-weight: bold;
 }
@@ -1454,8 +1468,8 @@ button:active::after {
 
 /* Copy Button Success State */
 .btn-copied {
-  background: #2e7d32 !important;
-  color: white !important;
+  background: var(--md-sys-color-success) !important;
+  color: var(--md-sys-color-on-success) !important;
 }
 
 .btn-copied::before {
@@ -1567,7 +1581,7 @@ input[type="text"]:focus {
 }
 
 .collapsible.open .collapsible-content {
-  max-height: 500px;
+  max-height: 1000px;
 }
 
 .collapsible-body {

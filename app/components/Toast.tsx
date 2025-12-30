@@ -1,15 +1,42 @@
-import { useState, useEffect, useCallback, createContext, useContext, type ReactNode } from "react";
+/**
+ * @fileoverview トースト通知コンポーネント
+ * ユーザーアクションに対する視覚的フィードバックを提供する
+ * UX心理学のピーク・エンド法則に基づき、操作完了時の印象を強化
+ */
 
+import { useState, useCallback, createContext, useContext, type ReactNode } from "react";
+
+/**
+ * トースト通知の種類
+ * - success: 成功時（緑色）
+ * - error: エラー時（赤色）
+ * - info: 情報通知（グレー）
+ */
 type ToastType = "success" | "error" | "info";
 
+/**
+ * トースト通知の内部状態
+ */
 interface Toast {
+  /** 一意の識別子 */
   id: string;
+  /** 表示するメッセージ */
   message: string;
+  /** 通知の種類 */
   type: ToastType;
+  /** 退出アニメーション中かどうか */
   exiting?: boolean;
 }
 
+/**
+ * トーストコンテキストの型定義
+ */
 interface ToastContextType {
+  /**
+   * トースト通知を表示する
+   * @param message - 表示するメッセージ
+   * @param type - 通知の種類（デフォルト: "info"）
+   */
   showToast: (message: string, type?: ToastType) => void;
 }
 

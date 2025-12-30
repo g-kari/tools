@@ -106,6 +106,14 @@ function RootComponent() {
   );
 }
 
+/**
+ * ナビゲーションカテゴリコンポーネント
+ * ホバーまたはクリックでドロップダウンメニューを表示する
+ * @param props - コンポーネントのプロパティ
+ * @param props.category - カテゴリ情報（名前、アイコン、アイテム一覧）
+ * @param props.pathname - 現在のパス名（アクティブ状態の判定に使用）
+ * @returns カテゴリボタンとドロップダウンメニューを含むJSX要素
+ */
 function NavCategory({
   category,
   pathname,
