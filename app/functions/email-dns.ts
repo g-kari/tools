@@ -1,5 +1,9 @@
 import { createServerFn } from "@tanstack/react-start";
 
+// Domain validation regex
+export const DOMAIN_REGEX =
+  /^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
+
 // DNS record types
 export interface MXRecord {
   priority: number;
@@ -83,18 +87,28 @@ async function queryDNS(
     url.searchParams.set("name", domain);
     url.searchParams.set("type", type);
 
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+
     const response = await fetch(url.toString(), {
       headers: {
         Accept: "application/dns-json",
       },
+      signal: controller.signal,
     });
 
+    clearTimeout(timeoutId);
+
     if (!response.ok) {
+      console.error(`DNS query failed for ${domain} (${type}): HTTP ${response.status}`);
       return null;
     }
 
     return await response.json();
-  } catch {
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(`DNS query error for ${domain} (${type}):`, error.message);
+    }
     return null;
   }
 }
@@ -117,8 +131,10 @@ function parseMXRecords(response: DoHResponse | null): MXRecord[] {
 
 // Resolve IP addresses for a hostname
 async function resolveIPAddresses(hostname: string): Promise<string[]> {
-  const ipv4Response = await queryDNS(hostname, "A");
-  const ipv6Response = await queryDNS(hostname, "AAAA");
+  const [ipv4Response, ipv6Response] = await Promise.all([
+    queryDNS(hostname, "A"),
+    queryDNS(hostname, "AAAA"),
+  ]);
 
   const ips: string[] = [];
 
@@ -158,9 +174,7 @@ async function getPTRRecords(ip: string): Promise<string[]> {
 
 // Enrich MX records with IP and PTR information
 async function enrichMXRecords(records: MXRecord[]): Promise<MXRecord[]> {
-  const enriched: MXRecord[] = [];
-
-  for (const record of records) {
+  const enrichPromises = records.map(async (record) => {
     const ipAddresses = await resolveIPAddresses(record.exchange);
     const ptr: string[] = [];
 
@@ -170,14 +184,14 @@ async function enrichMXRecords(records: MXRecord[]): Promise<MXRecord[]> {
       ptr.push(...ptrRecords);
     }
 
-    enriched.push({
+    return {
       ...record,
       ipAddresses: ipAddresses.length > 0 ? ipAddresses : undefined,
       ptr: ptr.length > 0 ? ptr : undefined,
-    });
-  }
+    };
+  });
 
-  return enriched;
+  return Promise.all(enrichPromises);
 }
 
 // Parse TXT records
@@ -197,7 +211,8 @@ async function validateSPF(
   record: string,
   domain: string,
   visitedDomains: Set<string> = new Set(),
-  depth: number = 0
+  depth: number = 0,
+  startTime?: number
 ): Promise<{
   version?: string;
   mechanisms?: string[];
@@ -217,6 +232,23 @@ async function validateSPF(
   const warnings: string[] = [];
   const expandedIncludes: string[] = [];
   let lookupCount = 0;
+
+  // Set start time for timeout check
+  const st = startTime || Date.now();
+  const SPF_TIMEOUT_MS = 10000; // 10 seconds total timeout for SPF validation
+
+  // Check timeout
+  if (Date.now() - st > SPF_TIMEOUT_MS) {
+    warnings.push("SPF検証がタイムアウトしました");
+    return {
+      version,
+      mechanisms,
+      isValid: true,
+      lookupCount,
+      warnings,
+      expandedIncludes,
+    };
+  }
 
   // Prevent infinite recursion
   if (depth > 10) {
@@ -264,7 +296,8 @@ async function validateSPF(
             includedSPF,
             includeDomain,
             visitedDomains,
-            depth + 1
+            depth + 1,
+            st
           );
           lookupCount += expanded.lookupCount || 0;
           if (expanded.warnings) {
@@ -274,7 +307,9 @@ async function validateSPF(
             expandedIncludes.push(...expanded.expandedIncludes);
           }
         }
-      } catch {
+      } catch (error) {
+        const errorMsg = error instanceof Error ? error.message : "不明なエラー";
+        console.error(`SPF include lookup failed for ${includeDomain}:`, errorMsg);
         warnings.push(`include:${includeDomain} の取得に失敗しました`);
       }
     } else if (mechanism.startsWith("a:") || mechanism.startsWith("mx:")) {
@@ -540,7 +575,6 @@ async function queryEmailDNS(
   // Generate SMTP check instructions
   if (result.mx.status === "success" && result.mx.records.length > 0) {
     const firstMX = result.mx.records[0].exchange;
-    const firstIP = result.mx.records[0].ipAddresses?.[0];
 
     result.smtpCheckInstructions = {
       telnet: [
@@ -567,9 +601,7 @@ async function queryEmailDNS(
 // Server function for email DNS lookup
 export const lookupEmailDNS = createServerFn({ method: "GET" })
   .inputValidator((data: { domain: string; dkimSelector?: string }) => {
-    const domainRegex =
-      /^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
-    if (!domainRegex.test(data.domain)) {
+    if (!DOMAIN_REGEX.test(data.domain)) {
       throw new Error("無効なドメイン形式です");
     }
     return {

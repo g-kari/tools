@@ -1019,18 +1019,18 @@ input[type="range"]:focus-visible {
 }
 
 .status-success {
-  background: #4caf50;
-  color: white;
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
 }
 
 .status-warning {
-  background: #ff9800;
-  color: white;
+  background: var(--md-sys-color-secondary);
+  color: var(--md-sys-color-on-secondary);
 }
 
 .status-error {
-  background: #f44336;
-  color: white;
+  background: var(--md-sys-color-error);
+  color: var(--md-sys-color-on-error);
 }
 
 .monospace {
@@ -1044,13 +1044,13 @@ input[type="range"]:focus-visible {
 .dns-warnings {
   margin-top: 15px;
   padding: 10px;
-  background: #fff3cd;
-  border-left: 4px solid #ffc107;
+  background: var(--md-sys-color-secondary-container);
+  border-left: 4px solid var(--md-sys-color-secondary);
   border-radius: 4px;
 }
 
 .warning-item {
-  color: #856404;
+  color: var(--md-sys-color-on-secondary-container);
   font-size: 0.9rem;
   margin: 5px 0;
 }
@@ -1069,7 +1069,7 @@ input[type="range"]:focus-visible {
 }
 
 .smtp-instructions-card {
-  background: #f8f9fa;
+  background: var(--md-sys-color-surface-variant);
 }
 
 .smtp-instructions-intro {
@@ -1090,8 +1090,8 @@ input[type="range"]:focus-visible {
 }
 
 .code-block {
-  background: #2d3748;
-  color: #e2e8f0;
+  background: var(--md-sys-color-on-surface);
+  color: var(--md-sys-color-surface);
   padding: 15px;
   border-radius: 6px;
   font-family: "Roboto Mono", "Courier New", monospace;
@@ -1099,7 +1099,7 @@ input[type="range"]:focus-visible {
   line-height: 1.6;
   overflow-x: auto;
   white-space: pre;
-  border: 1px solid #4a5568;
+  border: 1px solid var(--md-sys-color-outline);
 }
 
 .smtp-note {
@@ -1158,5 +1158,20 @@ input[type="range"]:focus-visible {
     flex-direction: column;
     align-items: center;
     text-align: center;
+  }
+  /* Email DNS responsive */
+  .dns-table {
+    font-size: 0.75rem;
+  }
+  .dns-table th,
+  .dns-table td {
+    padding: 8px 4px;
+  }
+  .code-block {
+    font-size: 0.75rem;
+    padding: 10px;
+  }
+  .smtp-check-section {
+    margin-bottom: 20px;
   }
 }

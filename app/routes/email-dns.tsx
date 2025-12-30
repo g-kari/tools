@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect, useRef, useCallback } from "react";
-import { lookupEmailDNS, type EmailDNSResult } from "../functions/email-dns";
+import { lookupEmailDNS, DOMAIN_REGEX, type EmailDNSResult } from "../functions/email-dns";
 
 export const Route = createFileRoute("/email-dns")({
   head: () => ({
@@ -31,15 +31,13 @@ function EmailDNSChecker() {
 
   const handleCheck = useCallback(async () => {
     if (!domain.trim()) {
+      setError("ドメイン名を入力してください");
       announceStatus("エラー: ドメイン名を入力してください");
-      alert("ドメイン名を入力してください");
       inputRef.current?.focus();
       return;
     }
 
-    const domainRegex =
-      /^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
-    if (!domainRegex.test(domain.trim())) {
+    if (!DOMAIN_REGEX.test(domain.trim())) {
       setError("無効なドメイン形式です");
       announceStatus("エラー: 無効なドメイン形式です");
       inputRef.current?.focus();
@@ -71,20 +69,11 @@ function EmailDNSChecker() {
     }
   }, [domain, dkimSelector, announceStatus]);
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (
-        e.key === "Enter" &&
-        ((e.target as HTMLElement)?.id === "domainInput" ||
-          (e.target as HTMLElement)?.id === "dkimSelectorInput")
-      ) {
-        e.preventDefault();
-        handleCheck();
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleCheck();
+    }
   }, [handleCheck]);
 
   useEffect(() => {
@@ -130,6 +119,7 @@ function EmailDNSChecker() {
                   ref={inputRef}
                   value={domain}
                   onChange={(e) => setDomain(e.target.value)}
+                  onKeyDown={handleKeyDown}
                   placeholder="example.com"
                   aria-describedby="domain-help"
                   aria-label="検証するドメイン名"
@@ -148,6 +138,7 @@ function EmailDNSChecker() {
                   id="dkimSelectorInput"
                   value={dkimSelector}
                   onChange={(e) => setDkimSelector(e.target.value)}
+                  onKeyDown={handleKeyDown}
                   placeholder="default, google, など"
                   aria-describedby="dkim-help"
                   aria-label="DKIMセレクタ"
