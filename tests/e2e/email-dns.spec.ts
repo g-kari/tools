@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Email DNS Checker - E2E Tests', () => {
-  // タイムアウトはplaywright.config.tsで設定（CI: 30秒, ローカル: 10秒）
+  // Timeout is configured in playwright.config.ts (CI: 30 seconds, local: 10 seconds)
 
   test.beforeEach(async ({ page }) => {
     await page.goto('/email-dns');
@@ -35,15 +35,15 @@ test.describe('Email DNS Checker - E2E Tests', () => {
     await expect(checkButton).toContainText('検証');
   });
 
-  test('should show alert when checking with empty input', async ({ page }) => {
+  test('should show error message when checking with empty input', async ({ page }) => {
     const checkButton = page.locator('button.btn-primary');
 
-    page.on('dialog', async (dialog) => {
-      expect(dialog.message()).toContain('ドメイン名を入力してください');
-      await dialog.accept();
-    });
-
     await checkButton.click();
+
+    // Wait for error message to appear
+    const errorSection = page.locator('.error-message');
+    await expect(errorSection).toBeVisible();
+    await expect(errorSection).toContainText('ドメイン名を入力してください');
   });
 
   test('should have proper accessibility attributes', async ({ page }) => {
@@ -139,29 +139,25 @@ test.describe('Email DNS Checker - E2E Tests', () => {
   test('should handle Enter key press in domain input', async ({ page }) => {
     const domainInput = page.locator('#domainInput');
 
-    // Set up dialog handler first
-    page.on('dialog', async (dialog) => {
-      await dialog.accept();
-    });
-
     await domainInput.focus();
     await domainInput.press('Enter');
 
-    // Should trigger validation (alert should have been shown)
+    // Should trigger validation and show error message
+    const errorSection = page.locator('.error-message');
+    await expect(errorSection).toBeVisible();
+    await expect(errorSection).toContainText('ドメイン名を入力してください');
   });
 
   test('should handle Enter key press in DKIM selector input', async ({ page }) => {
     const dkimInput = page.locator('#dkimSelectorInput');
 
-    // Set up dialog handler first
-    page.on('dialog', async (dialog) => {
-      await dialog.accept();
-    });
-
     await dkimInput.focus();
     await dkimInput.press('Enter');
 
-    // Should trigger validation (alert should have been shown)
+    // Should trigger validation and show error message (domain is empty)
+    const errorSection = page.locator('.error-message');
+    await expect(errorSection).toBeVisible();
+    await expect(errorSection).toContainText('ドメイン名を入力してください');
   });
 
   test('should focus on domain input on page load', async ({ page }) => {
