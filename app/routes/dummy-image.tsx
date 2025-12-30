@@ -410,6 +410,19 @@ function DummyImageGenerator() {
             <li>プレビューで確認</li>
             <li>「ダウンロード」で画像を保存</li>
           </ul>
+          <h3 id="api-title">APIエンドポイント</h3>
+          <p>URLで直接画像を取得できます（SVG形式）:</p>
+          <ul>
+            <li><code>/api/image?w=800&h=600</code></li>
+            <li><code>/api/image?w=1200&h=630&bg=FF0000&text=FFFFFF</code></li>
+          </ul>
+          <p>パラメータ:</p>
+          <ul>
+            <li><strong>w</strong>: 幅 (1-4096, デフォルト: 300)</li>
+            <li><strong>h</strong>: 高さ (1-4096, デフォルト: 150)</li>
+            <li><strong>bg</strong>: 背景色 HEX (デフォルト: 6750A4)</li>
+            <li><strong>text</strong>: テキスト色 HEX (デフォルト: FFFFFF)</li>
+          </ul>
         </aside>
       </div>
 
