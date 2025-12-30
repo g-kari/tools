@@ -20,8 +20,8 @@ import { Route as JwtRouteImport } from './routes/jwt'
 import { Route as JsonRouteImport } from './routes/json'
 import { Route as IpGeolocationRouteImport } from './routes/ip-geolocation'
 import { Route as GlobalIpRouteImport } from './routes/global-ip'
-import { Route as DummyAudioRouteImport } from './routes/dummy-audio'
 import { Route as EmailDnsRouteImport } from './routes/email-dns'
+import { Route as DummyAudioRouteImport } from './routes/dummy-audio'
 import { Route as IndexRouteImport } from './routes/index'
 
 const WhoisRoute = WhoisRouteImport.update({
@@ -79,14 +79,14 @@ const GlobalIpRoute = GlobalIpRouteImport.update({
   path: '/global-ip',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DummyAudioRoute = DummyAudioRouteImport.update({
-  id: '/dummy-audio',
-  path: '/dummy-audio',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const EmailDnsRoute = EmailDnsRouteImport.update({
   id: '/email-dns',
   path: '/email-dns',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DummyAudioRoute = DummyAudioRouteImport.update({
+  id: '/dummy-audio',
+  path: '/dummy-audio',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -291,18 +291,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GlobalIpRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/dummy-audio': {
-      id: '/dummy-audio'
-      path: '/dummy-audio'
-      fullPath: '/dummy-audio'
-      preLoaderRoute: typeof DummyAudioRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/email-dns': {
       id: '/email-dns'
       path: '/email-dns'
       fullPath: '/email-dns'
       preLoaderRoute: typeof EmailDnsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dummy-audio': {
+      id: '/dummy-audio'
+      path: '/dummy-audio'
+      fullPath: '/dummy-audio'
+      preLoaderRoute: typeof DummyAudioRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
