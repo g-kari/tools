@@ -1,3 +1,9 @@
+/**
+ * @fileoverview ダミー画像生成APIルート
+ * SVG形式のプレースホルダー画像を動的に生成して返すAPIエンドポイント。
+ * @module routes/api/image.svg
+ */
+
 import { createFileRoute } from "@tanstack/react-router";
 import {
   generateSvgImage,
@@ -7,6 +13,31 @@ import {
 export const Route = createFileRoute("/api/image/svg")({
   server: {
     handlers: {
+      /**
+       * ダミーSVG画像を生成して返すGETハンドラー
+       *
+       * @param {Object} context - リクエストコンテキスト
+       * @param {Request} context.request - HTTPリクエストオブジェクト
+       *
+       * @queryParam {number} [w=300] - 画像の幅 (1-4096)
+       * @queryParam {number} [h=150] - 画像の高さ (1-4096)
+       * @queryParam {string} [bg=6750A4] - 背景色 (HEX形式、#なし)
+       * @queryParam {string} [text=FFFFFF] - テキスト色 (HEX形式、#なし)
+       *
+       * @returns {Response} 200: SVG画像 (Content-Type: image/svg+xml)
+       *   - Cache-Control: public, max-age=31536000, immutable
+       *   - CDN-Cache-Control: public, max-age=31536000, immutable
+       * @returns {Response} 500: エラー時のデフォルトSVG画像
+       *   - Cache-Control: no-store
+       *
+       * @example
+       * // 基本的な使用例
+       * GET /api/image/svg?w=800&h=600
+       *
+       * @example
+       * // カスタム色を指定
+       * GET /api/image/svg?w=1200&h=630&bg=FF0000&text=FFFFFF
+       */
       GET: async ({ request }) => {
         try {
           const url = new URL(request.url);
