@@ -6,8 +6,55 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import type { ReactNode } from "react";
+import { type ReactNode, useState } from "react";
 import appCss from "../styles.css?url";
+import { ToastProvider } from "../components/Toast";
+
+const navCategories = [
+  {
+    name: "変換",
+    icon: "⇄",
+    items: [
+      { path: "/", label: "Unicode変換" },
+      { path: "/url-encode", label: "URLエンコード" },
+      { path: "/json", label: "JSON整形" },
+    ],
+  },
+  {
+    name: "生成",
+    icon: "✦",
+    items: [
+      { path: "/uuid", label: "UUID生成" },
+      { path: "/password-generator", label: "パスワード" },
+      { path: "/dummy-image", label: "ダミー画像" },
+      { path: "/dummy-audio", label: "ダミー音声" },
+    ],
+  },
+  {
+    name: "検索",
+    icon: "🔍",
+    items: [
+      { path: "/whois", label: "WHOIS" },
+      { path: "/ip-geolocation", label: "IP検索" },
+      { path: "/global-ip", label: "グローバルIP" },
+      { path: "/ogp", label: "OGPチェック" },
+    ],
+  },
+  {
+    name: "検証",
+    icon: "✓",
+    items: [
+      { path: "/regex-checker", label: "正規表現" },
+      { path: "/jwt", label: "JWTデコード" },
+      { path: "/email-dns", label: "メールDNS" },
+    ],
+  },
+  {
+    name: "情報",
+    icon: "ℹ",
+    items: [{ path: "/server-env", label: "サーバー環境" }],
+  },
+];
 
 export const Route = createRootRoute({
   head: () => ({
@@ -59,6 +106,55 @@ function RootComponent() {
   );
 }
 
+function NavCategory({
+  category,
+  pathname,
+}: {
+  category: (typeof navCategories)[0];
+  pathname: string;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const isActive = category.items.some((item) => item.path === pathname);
+
+  return (
+    <div
+      className="nav-category"
+      onMouseEnter={() => setIsOpen(true)}
+      onMouseLeave={() => setIsOpen(false)}
+    >
+      <button
+        className={`nav-category-btn ${isActive ? "active" : ""}`}
+        aria-expanded={isOpen}
+        aria-haspopup="true"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <span className="nav-category-icon" aria-hidden="true">
+          {category.icon}
+        </span>
+        <span>{category.name}</span>
+        <span className="nav-category-arrow" aria-hidden="true">
+          ▾
+        </span>
+      </button>
+      {isOpen && (
+        <div className="nav-dropdown" role="menu">
+          {category.items.map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              role="menuitem"
+              className={`nav-dropdown-item ${pathname === item.path ? "active" : ""}`}
+              onClick={() => setIsOpen(false)}
+            >
+              {item.label}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function RootDocument({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
@@ -68,117 +164,39 @@ function RootDocument({ children }: { children: ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        <a href="#main-content" className="skip-link">
-          メインコンテンツへスキップ
-        </a>
+        <ToastProvider>
+          <a href="#main-content" className="skip-link">
+            メインコンテンツへスキップ
+          </a>
 
-        <div className="container">
-          <header role="banner">
-            <h1>Web ツール集</h1>
-            <p className="subtitle">便利なWebツールを提供します</p>
-            <nav className="nav-links" aria-label="ツールナビゲーション">
-              <Link to="/" data-active={pathname === "/" ? "true" : undefined}>
-                Unicode変換
-              </Link>
-              <Link
-                to="/whois"
-                data-active={pathname === "/whois" ? "true" : undefined}
-              >
-                WHOIS検索
-              </Link>
-              <Link
-                to="/email-dns"
-                data-active={pathname === "/email-dns" ? "true" : undefined}
-              >
-                メールDNS
-              </Link>
-              <Link
-                to="/ip-geolocation"
-                data-active={pathname === "/ip-geolocation" ? "true" : undefined}
-              >
-                IP検索
-              </Link>
-              <Link
-                to="/global-ip"
-                data-active={pathname === "/global-ip" ? "true" : undefined}
-              >
-                グローバルIP
-              </Link>
-              <Link
-                to="/regex-checker"
-                data-active={pathname === "/regex-checker" ? "true" : undefined}
-              >
-                正規表現
-              </Link>
-              <Link
-                to="/json"
-                data-active={pathname === "/json" ? "true" : undefined}
-              >
-                JSON
-              </Link>
-              <Link
-                to="/url-encode"
-                data-active={pathname === "/url-encode" ? "true" : undefined}
-              >
-                URLエンコード
-              </Link>
-              <Link
-                to="/uuid"
-                data-active={pathname === "/uuid" ? "true" : undefined}
-              >
-                UUID生成
-              </Link>
-              <Link
-                to="/password-generator"
-                data-active={pathname === "/password-generator" ? "true" : undefined}
-              >
-                パスワード生成
-              </Link>
-              <Link
-                to="/server-env"
-                data-active={pathname === "/server-env" ? "true" : undefined}
-              >
-                サーバー環境
-              </Link>
-              <Link
-                to="/ogp"
-                data-active={pathname === "/ogp" ? "true" : undefined}
-              >
-                OGPチェック
-              </Link>
-              <Link
-                to="/jwt"
-                data-active={pathname === "/jwt" ? "true" : undefined}
-              >
-                JWTデコード
-              </Link>
-              <Link
-                to="/dummy-audio"
-                data-active={pathname === "/dummy-audio" ? "true" : undefined}
-              >
-                ダミー音声
-              </Link>
-              <Link
-                to="/dummy-image"
-                data-active={pathname === "/dummy-image" ? "true" : undefined}
-              >
-                ダミー画像
-              </Link>
-            </nav>
-          </header>
+          <div className="container">
+            <header role="banner">
+              <h1>Web ツール集</h1>
+              <p className="subtitle">便利なWebツールを提供します</p>
+              <nav className="nav-categories" aria-label="ツールナビゲーション">
+                {navCategories.map((category) => (
+                  <NavCategory
+                    key={category.name}
+                    category={category}
+                    pathname={pathname}
+                  />
+                ))}
+              </nav>
+            </header>
 
-          <main id="main-content" role="main">
-            {children}
-          </main>
-        </div>
+            <main id="main-content" role="main">
+              {children}
+            </main>
+          </div>
 
-        <div
-          role="status"
-          aria-live="polite"
-          aria-atomic="true"
-          className="sr-only"
-          id="status-message"
-        />
+          <div
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+            className="sr-only"
+            id="status-message"
+          />
+        </ToastProvider>
 
         <Scripts />
       </body>

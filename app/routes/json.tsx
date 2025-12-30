@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { formatJson, minifyJson } from "../utils/json";
+import { useToast } from "../components/Toast";
 
 export const Route = createFileRoute("/json")({
   head: () => ({
@@ -15,6 +16,7 @@ function JsonFormatter() {
   const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const statusRef = useRef<HTMLDivElement>(null);
+  const { showToast } = useToast();
 
   const announceStatus = useCallback((message: string) => {
     if (statusRef.current) {
@@ -31,6 +33,7 @@ function JsonFormatter() {
     if (!inputText) {
       setError("JSONを入力してください");
       announceStatus("エラー: JSONを入力してください");
+      showToast("JSONを入力してください", "error");
       inputRef.current?.focus();
       return;
     }
@@ -39,18 +42,21 @@ function JsonFormatter() {
       const result = formatJson(inputText);
       setOutputText(result);
       announceStatus("JSONのフォーマットが完了しました");
+      showToast("JSONをフォーマットしました", "success");
     } catch (err) {
       const message = err instanceof Error ? err.message : "無効なJSONです";
       setError(message);
       setOutputText("");
       announceStatus("エラー: " + message);
+      showToast(message, "error");
     }
-  }, [inputText, announceStatus]);
+  }, [inputText, announceStatus, showToast]);
 
   const handleMinify = useCallback(() => {
     if (!inputText) {
       setError("JSONを入力してください");
       announceStatus("エラー: JSONを入力してください");
+      showToast("JSONを入力してください", "error");
       inputRef.current?.focus();
       return;
     }
@@ -59,13 +65,15 @@ function JsonFormatter() {
       const result = minifyJson(inputText);
       setOutputText(result);
       announceStatus("JSONの圧縮が完了しました");
+      showToast("JSONを圧縮しました", "success");
     } catch (err) {
       const message = err instanceof Error ? err.message : "無効なJSONです";
       setError(message);
       setOutputText("");
       announceStatus("エラー: " + message);
+      showToast(message, "error");
     }
-  }, [inputText, announceStatus]);
+  }, [inputText, announceStatus, showToast]);
 
   const handleClear = useCallback(() => {
     setInputText("");
