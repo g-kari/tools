@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { drawDummyImage, generateFilename } from '../../app/routes/dummy-image';
+import { generateSvgImage, parseImageParams } from '../../app/functions/dummy-image';
 
 // Mock canvas for testing
 function createMockCanvas(): HTMLCanvasElement {
@@ -181,6 +182,106 @@ describe('Dummy Image Generation', () => {
       const qualityPercent = 92;
       const qualityDecimal = qualityPercent / 100;
       expect(qualityDecimal).toBeCloseTo(0.92);
+    });
+  });
+
+  describe('SVG Image API', () => {
+    describe('generateSvgImage', () => {
+      it('should generate valid SVG with correct dimensions', () => {
+        const svg = generateSvgImage(800, 600, '6750A4', 'FFFFFF');
+        expect(svg).toContain('<svg');
+        expect(svg).toContain('width="800"');
+        expect(svg).toContain('height="600"');
+        expect(svg).toContain('800 × 600');
+      });
+
+      it('should include correct colors', () => {
+        const svg = generateSvgImage(400, 300, 'FF0000', '000000');
+        expect(svg).toContain('fill="#FF0000"');
+        expect(svg).toContain('fill="#000000"');
+      });
+
+      it('should handle small dimensions', () => {
+        const svg = generateSvgImage(1, 1, '000000', 'FFFFFF');
+        expect(svg).toContain('width="1"');
+        expect(svg).toContain('height="1"');
+      });
+
+      it('should handle large dimensions', () => {
+        const svg = generateSvgImage(4096, 4096, '000000', 'FFFFFF');
+        expect(svg).toContain('width="4096"');
+        expect(svg).toContain('height="4096"');
+      });
+
+      it('should have valid SVG structure', () => {
+        const svg = generateSvgImage(100, 100, 'AABBCC', 'DDEEFF');
+        expect(svg).toContain('xmlns="http://www.w3.org/2000/svg"');
+        expect(svg).toContain('<rect');
+        expect(svg).toContain('<text');
+        expect(svg).toContain('</svg>');
+      });
+    });
+
+    describe('parseImageParams', () => {
+      it('should parse width and height correctly', () => {
+        const params = new URLSearchParams('w=800&h=600');
+        const result = parseImageParams(params);
+        expect(result.width).toBe(800);
+        expect(result.height).toBe(600);
+      });
+
+      it('should use default values when params are missing', () => {
+        const params = new URLSearchParams();
+        const result = parseImageParams(params);
+        expect(result.width).toBe(300);
+        expect(result.height).toBe(150);
+        expect(result.bgColor).toBe('6750A4');
+        expect(result.textColor).toBe('FFFFFF');
+      });
+
+      it('should clamp width to valid range', () => {
+        const paramsSmall = new URLSearchParams('w=0');
+        expect(parseImageParams(paramsSmall).width).toBe(1);
+
+        const paramsLarge = new URLSearchParams('w=10000');
+        expect(parseImageParams(paramsLarge).width).toBe(4096);
+      });
+
+      it('should clamp height to valid range', () => {
+        const paramsSmall = new URLSearchParams('h=-100');
+        expect(parseImageParams(paramsSmall).height).toBe(1);
+
+        const paramsLarge = new URLSearchParams('h=5000');
+        expect(parseImageParams(paramsLarge).height).toBe(4096);
+      });
+
+      it('should sanitize background color', () => {
+        const validParams = new URLSearchParams('bg=FF0000');
+        expect(parseImageParams(validParams).bgColor).toBe('FF0000');
+
+        const invalidParams = new URLSearchParams('bg=invalid');
+        expect(parseImageParams(invalidParams).bgColor).toBe('6750A4');
+
+        const hashParams = new URLSearchParams('bg=#00FF00');
+        expect(parseImageParams(hashParams).bgColor).toBe('00FF00');
+      });
+
+      it('should sanitize text color', () => {
+        const validParams = new URLSearchParams('text=000000');
+        expect(parseImageParams(validParams).textColor).toBe('000000');
+
+        const invalidParams = new URLSearchParams('text=xyz');
+        expect(parseImageParams(invalidParams).textColor).toBe('FFFFFF');
+      });
+
+      it('should handle all parameters together', () => {
+        const params = new URLSearchParams('w=1200&h=630&bg=123456&text=ABCDEF');
+        const result = parseImageParams(params);
+        expect(result.width).toBe(1200);
+        expect(result.height).toBe(630);
+        expect(result.bgColor).toBe('123456');
+        expect(result.textColor).toBe('ABCDEF');
+      });
     });
   });
 });
