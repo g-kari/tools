@@ -23,6 +23,7 @@ import { Route as GlobalIpRouteImport } from './routes/global-ip'
 import { Route as EmailDnsRouteImport } from './routes/email-dns'
 import { Route as DummyImageRouteImport } from './routes/dummy-image'
 import { Route as DummyAudioRouteImport } from './routes/dummy-audio'
+import { Route as DiceRollRouteImport } from './routes/dice-roll'
 import { Route as ColorExtractorRouteImport } from './routes/color-extractor'
 import { Route as CharCountRouteImport } from './routes/char-count'
 import { Route as Base64RouteImport } from './routes/base64'
@@ -102,6 +103,11 @@ const DummyAudioRoute = DummyAudioRouteImport.update({
   path: '/dummy-audio',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DiceRollRoute = DiceRollRouteImport.update({
+  id: '/dice-roll',
+  path: '/dice-roll',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ColorExtractorRoute = ColorExtractorRouteImport.update({
   id: '/color-extractor',
   path: '/color-extractor',
@@ -148,6 +154,7 @@ export interface FileRoutesByFullPath {
   '/base64': typeof Base64Route
   '/char-count': typeof CharCountRoute
   '/color-extractor': typeof ColorExtractorRoute
+  '/dice-roll': typeof DiceRollRoute
   '/dummy-audio': typeof DummyAudioRoute
   '/dummy-image': typeof DummyImageRoute
   '/email-dns': typeof EmailDnsRoute
@@ -172,6 +179,7 @@ export interface FileRoutesByTo {
   '/base64': typeof Base64Route
   '/char-count': typeof CharCountRoute
   '/color-extractor': typeof ColorExtractorRoute
+  '/dice-roll': typeof DiceRollRoute
   '/dummy-audio': typeof DummyAudioRoute
   '/dummy-image': typeof DummyImageRoute
   '/email-dns': typeof EmailDnsRoute
@@ -197,6 +205,7 @@ export interface FileRoutesById {
   '/base64': typeof Base64Route
   '/char-count': typeof CharCountRoute
   '/color-extractor': typeof ColorExtractorRoute
+  '/dice-roll': typeof DiceRollRoute
   '/dummy-audio': typeof DummyAudioRoute
   '/dummy-image': typeof DummyImageRoute
   '/email-dns': typeof EmailDnsRoute
@@ -223,6 +232,7 @@ export interface FileRouteTypes {
     | '/base64'
     | '/char-count'
     | '/color-extractor'
+    | '/dice-roll'
     | '/dummy-audio'
     | '/dummy-image'
     | '/email-dns'
@@ -247,6 +257,7 @@ export interface FileRouteTypes {
     | '/base64'
     | '/char-count'
     | '/color-extractor'
+    | '/dice-roll'
     | '/dummy-audio'
     | '/dummy-image'
     | '/email-dns'
@@ -271,6 +282,7 @@ export interface FileRouteTypes {
     | '/base64'
     | '/char-count'
     | '/color-extractor'
+    | '/dice-roll'
     | '/dummy-audio'
     | '/dummy-image'
     | '/email-dns'
@@ -296,6 +308,7 @@ export interface RootRouteChildren {
   Base64Route: typeof Base64Route
   CharCountRoute: typeof CharCountRoute
   ColorExtractorRoute: typeof ColorExtractorRoute
+  DiceRollRoute: typeof DiceRollRoute
   DummyAudioRoute: typeof DummyAudioRoute
   DummyImageRoute: typeof DummyImageRoute
   EmailDnsRoute: typeof EmailDnsRoute
@@ -416,6 +429,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DummyAudioRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dice-roll': {
+      id: '/dice-roll'
+      path: '/dice-roll'
+      fullPath: '/dice-roll'
+      preLoaderRoute: typeof DiceRollRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/color-extractor': {
       id: '/color-extractor'
       path: '/color-extractor'
@@ -480,6 +500,7 @@ const rootRouteChildren: RootRouteChildren = {
   Base64Route: Base64Route,
   CharCountRoute: CharCountRoute,
   ColorExtractorRoute: ColorExtractorRoute,
+  DiceRollRoute: DiceRollRoute,
   DummyAudioRoute: DummyAudioRoute,
   DummyImageRoute: DummyImageRoute,
   EmailDnsRoute: EmailDnsRoute,

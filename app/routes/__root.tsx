@@ -69,6 +69,11 @@ const navCategories = [
     icon: "ℹ",
     items: [{ path: "/server-env", label: "サーバー環境" }],
   },
+  {
+    name: "ゲーム",
+    icon: "🎲",
+    items: [{ path: "/dice-roll", label: "ダイスロール" }],
+  },
 ];
 
 export const Route = createRootRoute({
