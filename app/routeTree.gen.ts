@@ -23,6 +23,9 @@ import { Route as GlobalIpRouteImport } from './routes/global-ip'
 import { Route as EmailDnsRouteImport } from './routes/email-dns'
 import { Route as DummyImageRouteImport } from './routes/dummy-image'
 import { Route as DummyAudioRouteImport } from './routes/dummy-audio'
+import { Route as ColorExtractorRouteImport } from './routes/color-extractor'
+import { Route as CharCountRouteImport } from './routes/char-count'
+import { Route as Base64RouteImport } from './routes/base64'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiImageDotwebpRouteImport } from './routes/api/image[.]webp'
 import { Route as ApiImageDotsvgRouteImport } from './routes/api/image[.]svg'
@@ -99,6 +102,21 @@ const DummyAudioRoute = DummyAudioRouteImport.update({
   path: '/dummy-audio',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ColorExtractorRoute = ColorExtractorRouteImport.update({
+  id: '/color-extractor',
+  path: '/color-extractor',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CharCountRoute = CharCountRouteImport.update({
+  id: '/char-count',
+  path: '/char-count',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Base64Route = Base64RouteImport.update({
+  id: '/base64',
+  path: '/base64',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -127,6 +145,9 @@ const ApiImageDotjpgRoute = ApiImageDotjpgRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/base64': typeof Base64Route
+  '/char-count': typeof CharCountRoute
+  '/color-extractor': typeof ColorExtractorRoute
   '/dummy-audio': typeof DummyAudioRoute
   '/dummy-image': typeof DummyImageRoute
   '/email-dns': typeof EmailDnsRoute
@@ -148,6 +169,9 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/base64': typeof Base64Route
+  '/char-count': typeof CharCountRoute
+  '/color-extractor': typeof ColorExtractorRoute
   '/dummy-audio': typeof DummyAudioRoute
   '/dummy-image': typeof DummyImageRoute
   '/email-dns': typeof EmailDnsRoute
@@ -170,6 +194,9 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/base64': typeof Base64Route
+  '/char-count': typeof CharCountRoute
+  '/color-extractor': typeof ColorExtractorRoute
   '/dummy-audio': typeof DummyAudioRoute
   '/dummy-image': typeof DummyImageRoute
   '/email-dns': typeof EmailDnsRoute
@@ -193,6 +220,9 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/base64'
+    | '/char-count'
+    | '/color-extractor'
     | '/dummy-audio'
     | '/dummy-image'
     | '/email-dns'
@@ -214,6 +244,9 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/base64'
+    | '/char-count'
+    | '/color-extractor'
     | '/dummy-audio'
     | '/dummy-image'
     | '/email-dns'
@@ -235,6 +268,9 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/base64'
+    | '/char-count'
+    | '/color-extractor'
     | '/dummy-audio'
     | '/dummy-image'
     | '/email-dns'
@@ -257,6 +293,9 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  Base64Route: typeof Base64Route
+  CharCountRoute: typeof CharCountRoute
+  ColorExtractorRoute: typeof ColorExtractorRoute
   DummyAudioRoute: typeof DummyAudioRoute
   DummyImageRoute: typeof DummyImageRoute
   EmailDnsRoute: typeof EmailDnsRoute
@@ -377,6 +416,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DummyAudioRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/color-extractor': {
+      id: '/color-extractor'
+      path: '/color-extractor'
+      fullPath: '/color-extractor'
+      preLoaderRoute: typeof ColorExtractorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/char-count': {
+      id: '/char-count'
+      path: '/char-count'
+      fullPath: '/char-count'
+      preLoaderRoute: typeof CharCountRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/base64': {
+      id: '/base64'
+      path: '/base64'
+      fullPath: '/base64'
+      preLoaderRoute: typeof Base64RouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -417,6 +477,9 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  Base64Route: Base64Route,
+  CharCountRoute: CharCountRoute,
+  ColorExtractorRoute: ColorExtractorRoute,
   DummyAudioRoute: DummyAudioRoute,
   DummyImageRoute: DummyImageRoute,
   EmailDnsRoute: EmailDnsRoute,
