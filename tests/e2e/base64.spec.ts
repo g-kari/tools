@@ -90,16 +90,15 @@ test.describe('Base64 Encode/Decode - E2E Tests', () => {
     await expect(outputTextarea).toHaveValue('');
   });
 
-  test('should show alert when encoding empty input', async ({ page }) => {
+  test('should show toast when encoding empty input', async ({ page }) => {
     const encodeButton = page.locator('button.btn-primary').first();
 
-    // Set up dialog handler
-    page.on('dialog', async (dialog) => {
-      expect(dialog.message()).toContain('テキストを入力してください');
-      await dialog.accept();
-    });
-
     await encodeButton.click();
+
+    // Check for toast notification
+    const toast = page.locator('.toast');
+    await expect(toast).toBeVisible();
+    await expect(toast).toContainText('テキストを入力してください');
   });
 
   test('should have proper accessibility attributes', async ({ page }) => {
@@ -171,13 +170,12 @@ test.describe('Base64 Encode/Decode - E2E Tests', () => {
     const inputTextarea = page.locator('#inputText');
     const decodeButton = page.locator('button.btn-secondary').first();
 
-    // Set up dialog handler
-    page.on('dialog', async (dialog) => {
-      expect(dialog.message()).toContain('無効なBase64文字列です');
-      await dialog.accept();
-    });
-
     await inputTextarea.fill('invalid!!!');
     await decodeButton.click();
+
+    // Check for toast notification
+    const toast = page.locator('.toast');
+    await expect(toast).toBeVisible();
+    await expect(toast).toContainText('無効なBase64文字列です');
   });
 });
