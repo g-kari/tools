@@ -217,12 +217,6 @@ function ColorExtractor() {
       img.onload = () => {
         if (!canvasRef.current) return;
 
-        // 古いオブジェクトURLをクリーンアップ
-        if (imageSrc) {
-          URL.revokeObjectURL(imageSrc);
-        }
-        setImageSrc(objectUrl);
-
         const canvas = canvasRef.current;
         const ctx = canvas.getContext("2d");
         if (!ctx) return;
@@ -255,6 +249,7 @@ function ColorExtractor() {
         // カラーを抽出
         const extractedColors = extractColors(pixels, colorCount);
         setColors(extractedColors);
+        setImageSrc(objectUrl);
         setIsProcessing(false);
         announceStatus(`${extractedColors.length}色を抽出しました`);
       };
@@ -271,7 +266,7 @@ function ColorExtractor() {
       announceStatus("画像の処理中にエラーが発生しました");
       setIsProcessing(false);
     }
-  }, [colorCount, announceStatus, imageSrc]);
+  }, [colorCount, announceStatus]);
 
   const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -423,14 +418,14 @@ function ColorExtractor() {
           )}
         </div>
 
-        {imageSrc && (
-          <div className="converter-section">
-            <h2 className="section-title">プレビュー</h2>
-            <div className="preview-container">
-              <canvas ref={canvasRef} aria-label="アップロードされた画像" />
-            </div>
+        <div className="converter-section" style={{ display: imageSrc ? 'block' : 'none' }}>
+          <h2 className="section-title">プレビュー</h2>
+          <div className="preview-container">
+            <canvas ref={canvasRef} aria-label="アップロードされた画像" />
           </div>
-        )}
+        </div>
+        {/* Hidden canvas for processing when preview is not visible */}
+        {!imageSrc && <canvas ref={canvasRef} style={{ display: 'none' }} aria-hidden="true" />}
 
         {colors.length > 0 && (
           <div className="converter-section">
