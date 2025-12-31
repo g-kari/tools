@@ -424,7 +424,6 @@ function ImageToGifConverter() {
             accept="image/*"
             onChange={handleFileSelect}
             disabled={isLoading}
-            aria-describedby="file-help"
             style={{ display: "none" }}
           />
 

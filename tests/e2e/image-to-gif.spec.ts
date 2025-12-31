@@ -216,8 +216,8 @@ test.describe('Image to GIF Converter - E2E Tests', () => {
   });
 
   test('should have proper aria labels', async ({ page }) => {
-    const fileInput = page.locator('input[type="file"]');
-    await expect(fileInput).toHaveAttribute('aria-describedby', 'file-help');
+    const dropzone = page.locator('.dropzone');
+    await expect(dropzone).toHaveAttribute('aria-label', '画像ファイルをアップロード');
 
     const framerateInput = page.locator('input#framerate');
     await expect(framerateInput).toHaveAttribute('aria-describedby', 'framerate-help');
