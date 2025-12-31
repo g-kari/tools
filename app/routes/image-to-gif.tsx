@@ -90,13 +90,14 @@ export async function convertImagesToGif(
       ]);
     } else {
       // 複数枚の場合はアニメーションGIFを作成
+      // 各画像を個別に読み込み、concatフィルターで結合
       await ffmpeg.exec([
         ...images.flatMap((_, i) => {
           const ext = images[i].name.split(".").pop() || "png";
-          return ["-loop", "1", "-framerate", framerate.toString(), "-t", (1/framerate).toString(), "-i", `input${i}.${ext}`];
+          return ["-loop", "1", "-t", (1/framerate).toString(), "-i", `input${i}.${ext}`];
         }),
         "-filter_complex",
-        `concat=n=${images.length}:v=1:a=0[v];[v]split[s0][s1];[s0]palettegen=max_colors=256[p];[s1][p]paletteuse=dither=bayer:bayer_scale=${gifQuality > 5 ? 5 : gifQuality}`,
+        `concat=n=${images.length}:v=1:a=0,fps=${framerate},split[s0][s1];[s0]palettegen=max_colors=256[p];[s1][p]paletteuse=dither=bayer:bayer_scale=${gifQuality > 5 ? 5 : gifQuality}`,
         "-loop",
         loop.toString(),
         "output.gif",
@@ -157,13 +158,13 @@ ffmpeg -i input.${ext} \\
     // 複数画像の場合
     const inputLines = images.map((img, i) => {
       const ext = img.name.split(".").pop() || "png";
-      return `  -loop 1 -framerate ${framerate} -t ${(1/framerate).toFixed(4)} -i input${i}.${ext}`;
+      return `  -loop 1 -t ${(1/framerate).toFixed(4)} -i input${i}.${ext}`;
     }).join(" \\\n");
 
     return `# 複数画像からアニメーションGIF生成（フレームレート: ${framerate}fps、品質: ${quality}）
 ffmpeg \\
 ${inputLines} \\
-  -filter_complex "concat=n=${images.length}:v=1:a=0[v];[v]split[s0][s1];[s0]palettegen=max_colors=256[p];[s1][p]paletteuse=dither=bayer:bayer_scale=${bayerScale}" \\
+  -filter_complex "concat=n=${images.length}:v=1:a=0,fps=${framerate},split[s0][s1];[s0]palettegen=max_colors=256[p];[s1][p]paletteuse=dither=bayer:bayer_scale=${bayerScale}" \\
   -loop ${loop} \\
   output.gif`;
   }

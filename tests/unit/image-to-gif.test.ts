@@ -133,10 +133,10 @@ describe("image-to-gif", () => {
       expect(ffmpeg.writeFile).toHaveBeenCalledWith("input1.png", expect.any(Uint8Array));
       expect(ffmpeg.exec).toHaveBeenCalledWith(
         expect.arrayContaining([
-          "-loop", "1", "-framerate", "10", "-t", expect.any(String), "-i", "input0.png",
-          "-loop", "1", "-framerate", "10", "-t", expect.any(String), "-i", "input1.png",
+          "-loop", "1", "-t", expect.any(String), "-i", "input0.png",
+          "-loop", "1", "-t", expect.any(String), "-i", "input1.png",
           "-filter_complex",
-          "concat=n=2:v=1:a=0[v];[v]split[s0][s1];[s0]palettegen=max_colors=256[p];[s1][p]paletteuse=dither=bayer:bayer_scale=5",
+          "concat=n=2:v=1:a=0,fps=10,split[s0][s1];[s0]palettegen=max_colors=256[p];[s1][p]paletteuse=dither=bayer:bayer_scale=5",
           "-loop",
           "0",
           "output.gif",
@@ -151,10 +151,10 @@ describe("image-to-gif", () => {
       expect(result).toBeInstanceOf(Blob);
       expect(ffmpeg.exec).toHaveBeenCalledWith(
         expect.arrayContaining([
-          "-loop", "1", "-framerate", "5", "-t", expect.any(String), "-i", "input0.png",
-          "-loop", "1", "-framerate", "5", "-t", expect.any(String), "-i", "input1.png",
+          "-loop", "1", "-t", expect.any(String), "-i", "input0.png",
+          "-loop", "1", "-t", expect.any(String), "-i", "input1.png",
           "-filter_complex",
-          "concat=n=2:v=1:a=0[v];[v]split[s0][s1];[s0]palettegen=max_colors=256[p];[s1][p]paletteuse=dither=bayer:bayer_scale=5",
+          "concat=n=2:v=1:a=0,fps=5,split[s0][s1];[s0]palettegen=max_colors=256[p];[s1][p]paletteuse=dither=bayer:bayer_scale=5",
           "-loop",
           "3",
           "output.gif",
