@@ -411,7 +411,9 @@ function EmojiConverter() {
     const a = document.createElement("a");
     a.href = previewUrl;
     a.download = `emoji_${Date.now()}.png`;
+    document.body.appendChild(a);
     a.click();
+    document.body.removeChild(a);
 
     announceStatus("ダウンロードしました");
   }, [previewUrl, announceStatus]);
