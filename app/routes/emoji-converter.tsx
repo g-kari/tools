@@ -581,10 +581,13 @@ function EmojiConverter() {
           </div>
         </section>
 
-        {/* 編集オプション */}
+        {/* 編集オプションとプレビューを横並び */}
         {file && (
-          <section className="section">
-            <h2 className="section-title">編集オプション</h2>
+          <div className="emoji-editor-layout">
+            {/* 編集オプション */}
+            <div className="emoji-editor-panel">
+              <section className="section">
+                <h2 className="section-title">編集オプション</h2>
 
             {/* テキスト埋め込み */}
             <details className="details">
@@ -952,13 +955,13 @@ function EmojiConverter() {
                 )}
               </div>
             </details>
-          </section>
-        )}
+              </section>
+            </div>
 
-        {/* プレビュー */}
-        {file && (
-          <section className="section">
-            <h2 className="section-title">プレビュー</h2>
+            {/* プレビュー */}
+            <div className="emoji-preview-panel">
+              <section className="section">
+                <h2 className="section-title">プレビュー</h2>
 
             <div className="preview-container">
               <canvas
@@ -991,7 +994,9 @@ function EmojiConverter() {
                 リセット
               </button>
             </div>
-          </section>
+              </section>
+            </div>
+          </div>
         )}
       </main>
     </div>

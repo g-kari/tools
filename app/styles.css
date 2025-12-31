@@ -1599,6 +1599,35 @@ input[type="range"]:focus-visible {
   margin-bottom: 2rem;
 }
 
+.emoji-editor-layout {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.emoji-editor-panel {
+  flex: 1;
+  min-width: 0;
+}
+
+.emoji-preview-panel {
+  flex: 0 0 400px;
+  position: sticky;
+  top: 20px;
+}
+
+@media (max-width: 1024px) {
+  .emoji-editor-layout {
+    flex-direction: column;
+  }
+
+  .emoji-preview-panel {
+    flex: 1;
+    width: 100%;
+    position: static;
+  }
+}
+
 .details {
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: 4px;
