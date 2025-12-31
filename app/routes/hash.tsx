@@ -359,15 +359,6 @@ function HashGenerator() {
               value={algorithm}
               onChange={(e) => setAlgorithm(e.target.value as HashAlgorithm)}
               aria-label="ハッシュアルゴリズムを選択"
-              style={{
-                width: "100%",
-                padding: "12px",
-                fontSize: "16px",
-                borderRadius: "8px",
-                border: "1px solid var(--md-sys-color-outline)",
-                backgroundColor: "var(--md-sys-color-surface-container-low)",
-                color: "var(--md-sys-color-on-surface)",
-              }}
             >
               <option value="MD5">MD5 (128-bit)</option>
               <option value="SHA-1">SHA-1 (160-bit)</option>
@@ -387,15 +378,6 @@ function HashGenerator() {
               onChange={(e) => setSalt(e.target.value)}
               placeholder="ソルト文字列を入力（省略可）"
               aria-label="ソルト文字列入力欄"
-              style={{
-                width: "100%",
-                padding: "12px",
-                fontSize: "16px",
-                borderRadius: "8px",
-                border: "1px solid var(--md-sys-color-outline)",
-                backgroundColor: "var(--md-sys-color-surface-container-low)",
-                color: "var(--md-sys-color-on-surface)",
-              }}
             />
           </div>
 
