@@ -200,6 +200,7 @@ npm run build && npm run test:e2e
 - 日本語UIをメインにサポート
 - TanStack Startのサーバーファンクションを使用してAPI実装
 - **インラインスタイル原則禁止**: Reactコンポーネントではインラインスタイル（style属性）を使用せず、必ずapp/styles.cssまたは専用のCSSファイルでスタイルを定義すること
+- **alert()メソッド使用禁止**: サイト全体でalert()メソッドを使用しないこと。ユーザー体験を損なうため、代わりにapp/components/Toast.tsxのトースト通知を使用すること
 
 ### Git Worktreeを使用した開発
 

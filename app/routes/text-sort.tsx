@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect, useRef, useCallback } from "react";
+import { useToast } from "../components/Toast";
 
 export const Route = createFileRoute("/text-sort")({
   head: () => ({
@@ -17,6 +18,7 @@ export const Route = createFileRoute("/text-sort")({
  * @returns テキストソート/重複削除ツールのReactコンポーネント
  */
 function TextSortTool() {
+  const { showToast } = useToast();
   const [inputText, setInputText] = useState("");
   const [outputText, setOutputText] = useState("");
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -50,12 +52,12 @@ function TextSortTool() {
   const validateInput = useCallback(() => {
     if (!inputText.trim()) {
       announceStatus("エラー: テキストを入力してください");
-      alert("テキストを入力してください");
+      showToast("テキストを入力してください", "error");
       inputRef.current?.focus();
       return false;
     }
     return true;
-  }, [inputText, announceStatus]);
+  }, [inputText, announceStatus, showToast]);
 
   const handleSortAsc = useCallback(() => {
     if (!validateInput()) return;

@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect, useRef, useCallback } from "react";
+import { useToast } from "../components/Toast";
 
 export const Route = createFileRoute("/hash")({
   head: () => ({
@@ -234,6 +235,7 @@ function md5(str: string): string {
 }
 
 function HashGenerator() {
+  const { showToast } = useToast();
   const [inputText, setInputText] = useState("");
   const [salt, setSalt] = useState("");
   const [algorithm, setAlgorithm] = useState<HashAlgorithm>("SHA-256");
@@ -269,7 +271,7 @@ function HashGenerator() {
   const handleGenerate = useCallback(async () => {
     if (!inputText) {
       announceStatus("エラー: テキストを入力してください");
-      alert("テキストを入力してください");
+      showToast("テキストを入力してください", "error");
       inputRef.current?.focus();
       return;
     }
@@ -281,10 +283,10 @@ function HashGenerator() {
       );
     } catch (error) {
       announceStatus("エラー: ハッシュ生成に失敗しました");
-      alert("ハッシュ生成に失敗しました");
+      showToast("ハッシュ生成に失敗しました", "error");
       console.error(error);
     }
-  }, [inputText, algorithm, salt, announceStatus]);
+  }, [inputText, algorithm, salt, announceStatus, showToast]);
 
   const handleClear = useCallback(() => {
     setInputText("");
@@ -297,7 +299,7 @@ function HashGenerator() {
   const handleCopy = useCallback(async () => {
     if (!outputHash) {
       announceStatus("エラー: コピーするハッシュがありません");
-      alert("コピーするハッシュがありません");
+      showToast("コピーするハッシュがありません", "error");
       return;
     }
     try {
@@ -305,9 +307,9 @@ function HashGenerator() {
       announceStatus("ハッシュをクリップボードにコピーしました");
     } catch {
       announceStatus("エラー: クリップボードへのコピーに失敗しました");
-      alert("クリップボードへのコピーに失敗しました");
+      showToast("クリップボードへのコピーに失敗しました", "error");
     }
-  }, [outputHash, announceStatus]);
+  }, [outputHash, announceStatus, showToast]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {

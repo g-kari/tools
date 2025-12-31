@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { lookupWhois, type WhoisResult } from "../functions/whois";
+import { useToast } from "../components/Toast";
 
 export const Route = createFileRoute("/whois")({
   head: () => ({
@@ -45,6 +46,7 @@ function formatContact(contact?: ContactInfo): string[] | null {
 }
 
 function WhoisLookup() {
+  const { showToast } = useToast();
   const [domain, setDomain] = useState("");
   const [result, setResult] = useState<WhoisResult | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -66,7 +68,7 @@ function WhoisLookup() {
   const handleSearch = useCallback(async () => {
     if (!domain.trim()) {
       announceStatus("エラー: ドメイン名を入力してください");
-      alert("ドメイン名を入力してください");
+      showToast("ドメイン名を入力してください", "error");
       inputRef.current?.focus();
       return;
     }
@@ -104,7 +106,7 @@ function WhoisLookup() {
     } finally {
       setIsLoading(false);
     }
-  }, [domain, announceStatus]);
+  }, [domain, announceStatus, showToast]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {

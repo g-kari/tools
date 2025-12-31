@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile, toBlobURL } from "@ffmpeg/util";
+import { useToast } from "../components/Toast";
 
 export const Route = createFileRoute("/audio-converter")({
   head: () => ({
@@ -127,6 +128,7 @@ async function convertAudioWithFFmpeg(
 }
 
 function AudioConverter() {
+  const { showToast } = useToast();
   const [sourceFile, setSourceFile] = useState<File | null>(null);
   const [format, setFormat] = useState<"mp3" | "wav" | "ogg">("mp3");
   const [bitrate, setBitrate] = useState<string>("192");
@@ -162,7 +164,7 @@ function AudioConverter() {
       if (file) {
         if (!file.type.startsWith("audio/")) {
           announceStatus("エラー: オーディオファイルを選択してください");
-          alert("オーディオファイルを選択してください");
+          showToast("オーディオファイルを選択してください", "error");
           return;
         }
         setSourceFile(file);
@@ -177,7 +179,7 @@ function AudioConverter() {
   const handleConvert = useCallback(async () => {
     if (!sourceFile) {
       announceStatus("エラー: ファイルを選択してください");
-      alert("ファイルを選択してください");
+      showToast("ファイルを選択してください", "error");
       fileInputRef.current?.focus();
       return;
     }
@@ -219,14 +221,15 @@ function AudioConverter() {
     } catch (error) {
       console.error("Conversion error:", error);
       announceStatus("エラー: 変換に失敗しました");
-      alert(
-        `変換に失敗しました: ${error instanceof Error ? error.message : "不明なエラー"}`
+      showToast(
+        `変換に失敗しました: ${error instanceof Error ? error.message : "不明なエラー"}`,
+        "error"
       );
     } finally {
       setIsConverting(false);
       setIsLoading(false);
     }
-  }, [sourceFile, format, bitrate, sampleRate, channels, convertedUrl, announceStatus]);
+  }, [sourceFile, format, bitrate, sampleRate, channels, convertedUrl, announceStatus, showToast]);
 
   const handleClear = useCallback(() => {
     setSourceFile(null);

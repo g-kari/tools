@@ -4,6 +4,7 @@ import {
   lookupIpGeolocation,
   type IpGeolocationResult,
 } from "../functions/ip-geolocation";
+import { useToast } from "../components/Toast";
 
 export const Route = createFileRoute("/ip-geolocation")({
   head: () => ({
@@ -13,6 +14,7 @@ export const Route = createFileRoute("/ip-geolocation")({
 });
 
 function IpGeolocationLookup() {
+  const { showToast } = useToast();
   const [ipAddress, setIpAddress] = useState("");
   const [result, setResult] = useState<IpGeolocationResult | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -34,7 +36,7 @@ function IpGeolocationLookup() {
   const handleSearch = useCallback(async () => {
     if (!ipAddress.trim()) {
       announceStatus("エラー: IPアドレスを入力してください");
-      alert("IPアドレスを入力してください");
+      showToast("IPアドレスを入力してください", "error");
       inputRef.current?.focus();
       return;
     }
@@ -63,7 +65,7 @@ function IpGeolocationLookup() {
     } finally {
       setIsLoading(false);
     }
-  }, [ipAddress, announceStatus]);
+  }, [ipAddress, announceStatus, showToast]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
