@@ -63,8 +63,8 @@ export async function convertImagesToGif(
 ): Promise<Blob | null> {
   try {
     // 画像をFFmpegファイルシステムに書き込み
-    onProgress?.("画像を読み込んでいます...");
     for (let i = 0; i < images.length; i++) {
+      onProgress?.(`画像を読み込んでいます... (${i + 1}/${images.length})`);
       const data = await fetchFile(images[i]);
       const ext = images[i].name.split(".").pop() || "png";
       await ffmpeg.writeFile(`input${i}.${ext}`, data);
