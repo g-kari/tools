@@ -49,6 +49,7 @@ export async function loadFFmpeg(
  * @param images - 画像ファイルの配列
  * @param framerate - フレームレート（fps）
  * @param loop - ループ回数（0=無限ループ）
+ * @param quality - 画質（1-100、高いほど高画質）
  * @param onProgress - 進捗コールバック
  * @returns 生成されたGIFのBlob
  */
@@ -57,6 +58,7 @@ export async function convertImagesToGif(
   images: File[],
   framerate: number,
   loop: number,
+  quality: number,
   onProgress?: (message: string) => void
 ): Promise<Blob | null> {
   try {
@@ -68,40 +70,40 @@ export async function convertImagesToGif(
       await ffmpeg.writeFile(`input${i}.${ext}`, data);
     }
 
-    // 1枚の場合と複数枚の場合で処理を分ける
+    // GIF生成
     onProgress?.("GIFを生成しています...");
+
+    // 画質パラメータの計算（1-100 を 100-1 に反転、値が小さいほど高画質）
+    const gifQuality = Math.round(101 - quality);
+
     if (images.length === 1) {
       // 1枚の場合は静止画GIFを作成
       const ext = images[0].name.split(".").pop() || "png";
       await ffmpeg.exec([
         "-i",
         `input0.${ext}`,
+        "-vf",
+        `split[s0][s1];[s0]palettegen=max_colors=256:stats_mode=single[p];[s1][p]paletteuse=dither=bayer:bayer_scale=${gifQuality > 5 ? 5 : gifQuality}`,
         "-loop",
         loop.toString(),
         "output.gif",
       ]);
     } else {
       // 複数枚の場合はアニメーションGIFを作成
-      // concat用のリストファイルを作成
-      const fileList = images
-        .map((_, i) => {
-          const ext = images[i].name.split(".").pop() || "png";
-          const duration = 1 / framerate;
-          return `file 'input${i}.${ext}'\nduration ${duration}`;
-        })
-        .join("\n");
+      // 各画像を指定されたフレームレートで結合
+      const inputs = images.map((_, i) => {
+        const ext = images[i].name.split(".").pop() || "png";
+        return `-loop 1 -t ${1/framerate} -i input${i}.${ext}`;
+      }).join(" ");
 
-      await ffmpeg.writeFile("filelist.txt", new TextEncoder().encode(fileList));
-
+      // パレット生成とGIF作成を2ステップで実行
       await ffmpeg.exec([
-        "-f",
-        "concat",
-        "-safe",
-        "0",
-        "-i",
-        "filelist.txt",
-        "-vf",
-        `fps=${framerate}`,
+        ...images.flatMap((_, i) => {
+          const ext = images[i].name.split(".").pop() || "png";
+          return ["-loop", "1", "-framerate", framerate.toString(), "-t", (1/framerate).toString(), "-i", `input${i}.${ext}`];
+        }),
+        "-filter_complex",
+        `concat=n=${images.length}:v=1:a=0[v];[v]split[s0][s1];[s0]palettegen=max_colors=256[p];[s1][p]paletteuse=dither=bayer:bayer_scale=${gifQuality > 5 ? 5 : gifQuality}`,
         "-loop",
         loop.toString(),
         "output.gif",
@@ -116,9 +118,6 @@ export async function convertImagesToGif(
     for (let i = 0; i < images.length; i++) {
       const ext = images[i].name.split(".").pop() || "png";
       await ffmpeg.deleteFile(`input${i}.${ext}`);
-    }
-    if (images.length > 1) {
-      await ffmpeg.deleteFile("filelist.txt");
     }
     await ffmpeg.deleteFile("output.gif");
 
@@ -135,6 +134,7 @@ function ImageToGifConverter() {
   const [images, setImages] = useState<ImageFile[]>([]);
   const [framerate, setFramerate] = useState(10);
   const [loop, setLoop] = useState(0);
+  const [quality, setQuality] = useState(80);
   const [isLoading, setIsLoading] = useState(false);
   const [progress, setProgress] = useState("");
   const [outputUrl, setOutputUrl] = useState<string | null>(null);
@@ -246,6 +246,7 @@ function ImageToGifConverter() {
       images.map((img) => img.file),
       framerate,
       loop,
+      quality,
       setProgress
     );
 
@@ -261,7 +262,7 @@ function ImageToGifConverter() {
     }
 
     setIsLoading(false);
-  }, [images, framerate, loop, outputUrl, announceStatus]);
+  }, [images, framerate, loop, quality, outputUrl, announceStatus]);
 
   const handleDownload = useCallback(() => {
     if (!outputUrl) return;
@@ -364,6 +365,23 @@ function ImageToGifConverter() {
             </div>
 
             <div className="option-group">
+              <label htmlFor="quality">品質: {quality}</label>
+              <input
+                type="range"
+                id="quality"
+                min="1"
+                max="100"
+                value={quality}
+                onChange={(e) => setQuality(parseInt(e.target.value))}
+                disabled={isLoading}
+                aria-describedby="quality-help"
+              />
+              <span id="quality-help" className="option-help">
+                GIFの品質（1: 低品質、100: 高品質）
+              </span>
+            </div>
+
+            <div className="option-group">
               <label htmlFor="loop">ループ設定</label>
               <select
                 id="loop"
@@ -447,13 +465,16 @@ function ImageToGifConverter() {
               <strong>フレームレート:</strong> 1秒間に表示するフレーム数（複数枚の場合のみ有効）
             </li>
             <li>
+              <strong>品質:</strong> GIFの画質（値が大きいほど高品質だがファイルサイズも増加）
+            </li>
+            <li>
               <strong>ループ設定:</strong> アニメーションの繰り返し回数
             </li>
           </ul>
           <h3 id="how-to-title">使い方</h3>
           <ul>
             <li>「画像を選択」から1枚以上の画像ファイルを選択</li>
-            <li>フレームレートとループ設定を調整</li>
+            <li>フレームレート、品質、ループ設定を調整</li>
             <li>「GIFに変換」ボタンをクリック</li>
             <li>変換完了後、「ダウンロード」でGIFを保存</li>
           </ul>
