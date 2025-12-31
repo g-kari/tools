@@ -91,7 +91,7 @@ test.describe('Audio Converter - E2E Tests', () => {
     const optionTexts = await options.allTextContents();
     expect(optionTexts).toContain('MP3');
     expect(optionTexts).toContain('WAV');
-    expect(optionTexts).toContain('OGG');
+    expect(optionTexts).toContain('OGG (Vorbis)');
   });
 
   test('should have convert button disabled initially', async ({ page }) => {
