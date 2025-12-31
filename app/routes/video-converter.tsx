@@ -44,6 +44,14 @@ export async function convertVideoWithFFmpeg(
   options: ConversionOptions,
   onProgress?: (progress: number) => void
 ): Promise<{ blob: Blob; filename: string }> {
+  // ファイルサイズチェック（ブラウザメモリ制限を考慮して500MB以下を推奨）
+  const MAX_FILE_SIZE = 500 * 1024 * 1024; // 500MB
+  if (file.size > MAX_FILE_SIZE) {
+    throw new Error(
+      `ファイルサイズが大きすぎます。${MAX_FILE_SIZE / 1024 / 1024}MB以下のファイルを選択してください。`
+    );
+  }
+
   const ffmpeg = new FFmpeg();
 
   // 進捗ログの処理
@@ -117,6 +125,11 @@ export async function convertVideoWithFFmpeg(
   return { blob, filename };
 }
 
+/**
+ * 動画変換コンポーネント
+ * ffmpeg.wasmを使用してブラウザ上で動画ファイルを別のフォーマットに変換する
+ * MP4、WebM、AVI、MOV形式に対応し、ビットレート・解像度・フレームレートなどの詳細設定が可能
+ */
 function VideoConverter() {
   const [file, setFile] = useState<File | null>(null);
   const [format, setFormat] = useState<"mp4" | "webm" | "avi" | "mov">("mp4");
@@ -134,12 +147,20 @@ function VideoConverter() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const statusRef = useRef<HTMLDivElement>(null);
 
+  /**
+   * スクリーンリーダー用のステータスメッセージを通知する
+   * @param message - 通知するメッセージ
+   */
   const announceStatus = useCallback((message: string) => {
     if (statusRef.current) {
       statusRef.current.textContent = message;
     }
   }, []);
 
+  /**
+   * ファイル選択時のハンドラー
+   * @param e - ファイル入力の変更イベント
+   */
   const handleFileChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const selectedFile = e.target.files?.[0];
@@ -152,6 +173,10 @@ function VideoConverter() {
     [announceStatus]
   );
 
+  /**
+   * 動画変換を実行するハンドラー
+   * 選択されたファイルと設定オプションを使用してFFmpegで変換を行う
+   */
   const handleConvert = useCallback(async () => {
     if (!file) return;
 
@@ -199,6 +224,10 @@ function VideoConverter() {
     announceStatus,
   ]);
 
+  /**
+   * 変換済みファイルをダウンロードするハンドラー
+   * Blob URLを作成してダウンロードを実行し、メモリリークを防ぐためURLを解放する
+   */
   const handleDownload = useCallback(() => {
     if (!convertedBlob) return;
 
@@ -214,6 +243,10 @@ function VideoConverter() {
     announceStatus("ダウンロードしました");
   }, [convertedBlob, convertedFilename, announceStatus]);
 
+  /**
+   * 選択されたファイルと変換結果をクリアするハンドラー
+   * フォームを初期状態にリセットする
+   */
   const handleClear = useCallback(() => {
     setFile(null);
     setConvertedBlob(null);

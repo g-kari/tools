@@ -63,12 +63,12 @@ test.describe('Video Converter - E2E Tests', () => {
   });
 
   test('should have disabled convert button initially', async ({ page }) => {
-    const convertButton = page.locator('button:has-text("変換")');
+    const convertButton = page.locator('[aria-label="操作"] button:has-text("変換")');
     await expect(convertButton).toBeDisabled();
   });
 
   test('should display clear button', async ({ page }) => {
-    const clearButton = page.locator('button:has-text("クリア")');
+    const clearButton = page.locator('[aria-label="操作"] button:has-text("クリア")');
     await expect(clearButton).toBeVisible();
   });
 
