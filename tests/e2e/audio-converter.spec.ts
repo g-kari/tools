@@ -73,11 +73,23 @@ test.describe('Audio Converter - E2E Tests', () => {
     await expect(audioLink).toContainText('オーディオ変換');
   });
 
-  test('should display file input', async ({ page }) => {
+  test('should display dropzone', async ({ page }) => {
+    const dropzone = page.locator('.dropzone');
+    await expect(dropzone).toBeVisible();
+    await expect(dropzone).toContainText('クリックして音声を選択');
+  });
+
+  test('should have file input with correct attributes', async ({ page }) => {
     const fileInput = page.locator('input#audioFile');
-    await expect(fileInput).toBeVisible();
+    await expect(fileInput).toBeAttached();
     await expect(fileInput).toHaveAttribute('type', 'file');
     await expect(fileInput).toHaveAttribute('accept', 'audio/*');
+  });
+
+  test('should display dropzone hint', async ({ page }) => {
+    const dropzoneHint = page.locator('.dropzone-hint');
+    await expect(dropzoneHint).toBeVisible();
+    await expect(dropzoneHint).toContainText('MP3, WAV, OGG, AAC, FLAC');
   });
 
   test('should display format selector', async ({ page }) => {
