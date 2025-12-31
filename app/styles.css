@@ -123,12 +123,12 @@ h1 {
   padding: 10px 16px;
   background: var(--md-sys-color-surface-variant);
   border: 1px solid var(--md-sys-color-outline-variant);
-  border-radius: 20px;
+  border-radius: 4px;
   color: var(--md-sys-color-on-surface);
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s, border-color 0.2s, opacity 0.2s;
   min-width: auto;
   text-transform: none;
   letter-spacing: normal;
@@ -137,8 +137,7 @@ h1 {
 .nav-category-btn:hover {
   background: var(--md-sys-color-primary-container);
   border-color: var(--md-sys-color-primary);
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  opacity: 0.85;
 }
 
 .nav-category-btn.active {
@@ -167,12 +166,11 @@ h1 {
   transform: translateX(-50%);
   background: white;
   border: 1px solid var(--md-sys-color-outline-variant);
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
   min-width: 160px;
   z-index: 1000;
   padding: 8px 0;
-  animation: dropdownFadeIn 0.15s ease-out;
+  animation: dropdownFadeIn 0.2s ease-out;
 }
 
 /* 隙間をカバーする透明な領域（ホバー判定を維持） */
@@ -202,7 +200,7 @@ h1 {
   color: var(--md-sys-color-on-surface);
   text-decoration: none;
   font-size: 14px;
-  transition: all 0.15s ease;
+  transition: background-color 0.2s, color 0.2s;
 }
 
 .nav-dropdown-item:hover {
@@ -324,6 +322,50 @@ input[type="text"]:focus {
   outline: none;
   border-color: var(--md-sys-color-primary);
   background: white;
+}
+
+/* Select */
+select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+  transition: border-color 0.2s, background 0.2s;
+  cursor: pointer;
+}
+
+select:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  background: white;
+}
+
+select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+select:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 3px;
+}
+
+/* Option group - フォーム要素のグループ化 */
+.option-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.option-group label {
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface);
+  font-size: 14px;
 }
 
 /* Button group */
