@@ -26,6 +26,7 @@ import { Route as DummyAudioRouteImport } from './routes/dummy-audio'
 import { Route as ColorExtractorRouteImport } from './routes/color-extractor'
 import { Route as CharCountRouteImport } from './routes/char-count'
 import { Route as Base64RouteImport } from './routes/base64'
+import { Route as AudioConverterRouteImport } from './routes/audio-converter'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiImageDotwebpRouteImport } from './routes/api/image[.]webp'
 import { Route as ApiImageDotsvgRouteImport } from './routes/api/image[.]svg'
@@ -117,6 +118,11 @@ const Base64Route = Base64RouteImport.update({
   path: '/base64',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AudioConverterRoute = AudioConverterRouteImport.update({
+  id: '/audio-converter',
+  path: '/audio-converter',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -145,6 +151,7 @@ const ApiImageDotjpgRoute = ApiImageDotjpgRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/audio-converter': typeof AudioConverterRoute
   '/base64': typeof Base64Route
   '/char-count': typeof CharCountRoute
   '/color-extractor': typeof ColorExtractorRoute
@@ -169,6 +176,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/audio-converter': typeof AudioConverterRoute
   '/base64': typeof Base64Route
   '/char-count': typeof CharCountRoute
   '/color-extractor': typeof ColorExtractorRoute
@@ -194,6 +202,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/audio-converter': typeof AudioConverterRoute
   '/base64': typeof Base64Route
   '/char-count': typeof CharCountRoute
   '/color-extractor': typeof ColorExtractorRoute
@@ -220,6 +229,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/audio-converter'
     | '/base64'
     | '/char-count'
     | '/color-extractor'
@@ -244,6 +254,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/audio-converter'
     | '/base64'
     | '/char-count'
     | '/color-extractor'
@@ -268,6 +279,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/audio-converter'
     | '/base64'
     | '/char-count'
     | '/color-extractor'
@@ -293,6 +305,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AudioConverterRoute: typeof AudioConverterRoute
   Base64Route: typeof Base64Route
   CharCountRoute: typeof CharCountRoute
   ColorExtractorRoute: typeof ColorExtractorRoute
@@ -437,6 +450,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Base64RouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/audio-converter': {
+      id: '/audio-converter'
+      path: '/audio-converter'
+      fullPath: '/audio-converter'
+      preLoaderRoute: typeof AudioConverterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -477,6 +497,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AudioConverterRoute: AudioConverterRoute,
   Base64Route: Base64Route,
   CharCountRoute: CharCountRoute,
   ColorExtractorRoute: ColorExtractorRoute,
