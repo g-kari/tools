@@ -144,6 +144,7 @@ function VideoConverter() {
   const [progress, setProgress] = useState(0);
   const [convertedBlob, setConvertedBlob] = useState<Blob | null>(null);
   const [convertedFilename, setConvertedFilename] = useState("");
+  const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const statusRef = useRef<HTMLDivElement>(null);
 
@@ -257,6 +258,39 @@ function VideoConverter() {
     announceStatus("クリアしました");
   }, [announceStatus]);
 
+  /**
+   * ドラッグオーバー時のハンドラー
+   */
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  }, []);
+
+  /**
+   * ドラッグリーブ時のハンドラー
+   */
+  const handleDragLeave = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  }, []);
+
+  /**
+   * ドロップ時のハンドラー
+   */
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+
+    const droppedFile = e.dataTransfer.files[0];
+    if (droppedFile && droppedFile.type.startsWith("video/")) {
+      setFile(droppedFile);
+      setConvertedBlob(null);
+      announceStatus(`ファイルを選択しました: ${droppedFile.name}`);
+    } else {
+      announceStatus("動画ファイルをドロップしてください");
+    }
+  }, [announceStatus]);
+
   // コーデックの選択肢をフォーマットに応じて更新
   useEffect(() => {
     if (format === "mp4") {
@@ -290,23 +324,55 @@ function VideoConverter() {
         <div className="converter-section">
           <h2 className="section-title">ファイル選択</h2>
 
-          <div className="file-input-wrapper">
-            <input
-              ref={fileInputRef}
-              type="file"
-              id="videoFile"
-              accept="video/*"
-              onChange={handleFileChange}
-              disabled={isConverting}
-              aria-describedby="file-help"
-            />
-            <label htmlFor="videoFile" className="file-input-label">
-              ファイルを選択
-            </label>
-            <span id="file-help" className="file-help">
-              対応フォーマット: MP4, WebM, AVI, MOV など
-            </span>
+          <div
+            className={`dropzone ${isDragging ? "dragging" : ""}`}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+            onClick={() => fileInputRef.current?.click()}
+            role="button"
+            tabIndex={0}
+            aria-label="動画ファイルをアップロード"
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                fileInputRef.current?.click();
+              }
+            }}
+          >
+            <div className="dropzone-content">
+              <svg
+                className="upload-icon"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="17 8 12 3 7 8" />
+                <line x1="12" y1="3" x2="12" y2="15" />
+              </svg>
+              <p className="dropzone-text">
+                クリックして動画を選択、またはドラッグ&ドロップ
+              </p>
+              <p className="dropzone-hint">MP4, WebM, AVI, MOV など</p>
+            </div>
           </div>
+
+          <input
+            ref={fileInputRef}
+            type="file"
+            id="videoFile"
+            accept="video/*"
+            onChange={handleFileChange}
+            disabled={isConverting}
+            aria-describedby="file-help"
+            style={{ display: "none" }}
+          />
 
           {file && (
             <div className="selected-file" role="status">

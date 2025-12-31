@@ -178,6 +178,7 @@ function ImageToGifConverter() {
   const [isLoading, setIsLoading] = useState(false);
   const [progress, setProgress] = useState("");
   const [outputUrl, setOutputUrl] = useState<string | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const ffmpegRef = useRef<FFmpeg>(new FFmpeg());
@@ -331,30 +332,101 @@ function ImageToGifConverter() {
     announceStatus("すべてクリアしました");
   }, [images, outputUrl, announceStatus]);
 
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  }, []);
+
+  const handleDragLeave = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  }, []);
+
+  const handleDrop = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      setIsDragging(false);
+
+      const files = Array.from(e.dataTransfer.files || []);
+      const validFiles = files.filter((file) =>
+        file.type.startsWith("image/")
+      );
+
+      if (validFiles.length === 0) {
+        announceStatus("有効な画像ファイルをドロップしてください");
+        return;
+      }
+
+      // 既存のプレビューURLをクリーンアップ
+      images.forEach((img) => URL.revokeObjectURL(img.preview));
+
+      const newImages: ImageFile[] = validFiles.map((file, index) => ({
+        id: `${Date.now()}-${index}`,
+        file,
+        preview: URL.createObjectURL(file),
+      }));
+
+      setImages(newImages);
+      announceStatus(`${validFiles.length}枚の画像を読み込みました`);
+    },
+    [images, announceStatus]
+  );
+
   return (
     <>
       <div className="tool-container">
         <div className="converter-section">
           <h2 className="section-title">画像選択</h2>
 
-          <div className="file-input-wrapper">
-            <input
-              ref={fileInputRef}
-              type="file"
-              id="imageFiles"
-              multiple
-              accept="image/*"
-              onChange={handleFileSelect}
-              disabled={isLoading}
-              aria-describedby="file-help"
-            />
-            <label htmlFor="imageFiles" className="file-input-label">
-              画像を選択（複数可）
-            </label>
-            <span id="file-help" className="file-help">
-              PNG, JPEG, WebPなどの画像ファイルに対応（1枚からでもOK）
-            </span>
+          <div
+            className={`dropzone ${isDragging ? "dragging" : ""}`}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+            onClick={() => fileInputRef.current?.click()}
+            role="button"
+            tabIndex={0}
+            aria-label="画像ファイルをアップロード"
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                fileInputRef.current?.click();
+              }
+            }}
+          >
+            <div className="dropzone-content">
+              <svg
+                className="upload-icon"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="17 8 12 3 7 8" />
+                <line x1="12" y1="3" x2="12" y2="15" />
+              </svg>
+              <p className="dropzone-text">
+                クリックして画像を選択、またはドラッグ&ドロップ
+              </p>
+              <p className="dropzone-hint">PNG, JPEG, WebP など（複数選択可）</p>
+            </div>
           </div>
+
+          <input
+            ref={fileInputRef}
+            type="file"
+            id="imageFiles"
+            multiple
+            accept="image/*"
+            onChange={handleFileSelect}
+            disabled={isLoading}
+            style={{ display: "none" }}
+          />
 
           {images.length > 0 && (
             <div className="image-preview-list" role="list" aria-label="選択された画像">
@@ -562,50 +634,6 @@ function ImageToGifConverter() {
       />
 
       <style>{`
-        .file-input-wrapper {
-          margin-bottom: 1.5rem;
-        }
-
-        .file-input-wrapper input[type="file"] {
-          position: absolute;
-          width: 1px;
-          height: 1px;
-          padding: 0;
-          margin: -1px;
-          overflow: hidden;
-          clip: rect(0, 0, 0, 0);
-          white-space: nowrap;
-          border-width: 0;
-        }
-
-        .file-input-label {
-          display: inline-block;
-          padding: 0.75rem 1.5rem;
-          background-color: var(--md-sys-color-primary);
-          color: var(--md-sys-color-on-primary);
-          border-radius: 8px;
-          cursor: pointer;
-          font-weight: 500;
-          transition: background-color 0.2s;
-        }
-
-        .file-input-label:hover {
-          background-color: var(--md-sys-color-primary-container);
-          color: var(--md-sys-color-on-primary-container);
-        }
-
-        input[type="file"]:disabled + .file-input-label {
-          opacity: 0.5;
-          cursor: not-allowed;
-        }
-
-        .file-help {
-          display: block;
-          margin-top: 0.5rem;
-          font-size: 0.875rem;
-          color: var(--md-sys-color-on-surface-variant);
-        }
-
         .image-preview-list {
           display: grid;
           grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));

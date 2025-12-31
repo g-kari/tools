@@ -70,9 +70,23 @@ test.describe('Image to GIF Converter - E2E Tests', () => {
     await expect(imageToGifLink).toContainText('画像→GIF変換');
   });
 
-  test('should display file input', async ({ page }) => {
+  test('should display dropzone', async ({ page }) => {
+    const dropzone = page.locator('.dropzone');
+    await expect(dropzone).toBeVisible();
+    await expect(dropzone).toContainText('クリックして画像を選択');
+  });
+
+  test('should have file input with correct attributes', async ({ page }) => {
     const fileInput = page.locator('input[type="file"]');
     await expect(fileInput).toBeAttached();
+    await expect(fileInput).toHaveAttribute('accept', 'image/*');
+    await expect(fileInput).toHaveAttribute('multiple');
+  });
+
+  test('should display dropzone hint', async ({ page }) => {
+    const dropzoneHint = page.locator('.dropzone-hint');
+    await expect(dropzoneHint).toBeVisible();
+    await expect(dropzoneHint).toContainText('PNG, JPEG, WebP');
   });
 
   test('should display framerate slider', async ({ page }) => {
@@ -134,11 +148,11 @@ test.describe('Image to GIF Converter - E2E Tests', () => {
     await expect(page).toHaveURL('/color-extractor');
   });
 
-  test('should have help text for file input', async ({ page }) => {
-    const helpText = page.locator('.file-help');
-    await expect(helpText).toBeVisible();
-    const text = await helpText.textContent();
-    expect(text).toContain('1枚からでもOK');
+  test('should have help text in dropzone hint', async ({ page }) => {
+    const dropzoneHint = page.locator('.dropzone-hint');
+    await expect(dropzoneHint).toBeVisible();
+    const text = await dropzoneHint.textContent();
+    expect(text).toContain('複数選択可');
   });
 
   test('should have help text for framerate', async ({ page }) => {
@@ -202,8 +216,8 @@ test.describe('Image to GIF Converter - E2E Tests', () => {
   });
 
   test('should have proper aria labels', async ({ page }) => {
-    const fileInput = page.locator('input[type="file"]');
-    await expect(fileInput).toHaveAttribute('aria-describedby', 'file-help');
+    const dropzone = page.locator('.dropzone');
+    await expect(dropzone).toHaveAttribute('aria-label', '画像ファイルをアップロード');
 
     const framerateInput = page.locator('input#framerate');
     await expect(framerateInput).toHaveAttribute('aria-describedby', 'framerate-help');

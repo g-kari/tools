@@ -137,6 +137,7 @@ function AudioConverter() {
   const [convertedFilename, setConvertedFilename] = useState<string>("");
   const [progress, setProgress] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const statusRef = useRef<HTMLDivElement>(null);
 
@@ -248,6 +249,33 @@ function AudioConverter() {
     fileInputRef.current?.focus();
   }, [convertedUrl, announceStatus]);
 
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  }, []);
+
+  const handleDragLeave = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  }, []);
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+
+    const droppedFile = e.dataTransfer.files[0];
+    if (droppedFile) {
+      if (!droppedFile.type.startsWith("audio/")) {
+        announceStatus("エラー: オーディオファイルをドロップしてください");
+        return;
+      }
+      setSourceFile(droppedFile);
+      setConvertedUrl("");
+      setProgress(0);
+      announceStatus(`ファイル ${droppedFile.name} を選択しました`);
+    }
+  }, [announceStatus]);
+
   return (
     <>
       <div className="tool-container">
@@ -256,41 +284,61 @@ function AudioConverter() {
           aria-label="オーディオ変換フォーム"
         >
           <div className="converter-section">
-            <label htmlFor="audioFile" className="section-title">
-              オーディオファイルを選択
-            </label>
+            <h2 className="section-title">ファイル選択</h2>
+
+            <div
+              className={`dropzone ${isDragging ? "dragging" : ""}`}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+              onClick={() => fileInputRef.current?.click()}
+              role="button"
+              tabIndex={0}
+              aria-label="オーディオファイルをアップロード"
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  fileInputRef.current?.click();
+                }
+              }}
+            >
+              <div className="dropzone-content">
+                <svg
+                  className="upload-icon"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="17 8 12 3 7 8" />
+                  <line x1="12" y1="3" x2="12" y2="15" />
+                </svg>
+                <p className="dropzone-text">
+                  クリックして音声を選択、またはドラッグ&ドロップ
+                </p>
+                <p className="dropzone-hint">MP3, WAV, OGG, AAC, FLAC など</p>
+              </div>
+            </div>
+
             <input
-              id="audioFile"
-              type="file"
               ref={fileInputRef}
+              type="file"
+              id="audioFile"
               accept="audio/*"
               onChange={handleFileChange}
               aria-describedby="file-help"
-              aria-label="変換するオーディオファイルを選択"
-              style={{
-                padding: "12px",
-                fontSize: "16px",
-                border: "1px solid var(--md-sys-color-outline)",
-                borderRadius: "4px",
-                backgroundColor: "var(--md-sys-color-surface-container)",
-                color: "var(--md-sys-color-on-surface)",
-                width: "100%",
-              }}
+              style={{ display: "none" }}
             />
-            <span id="file-help" className="sr-only">
-              MP3, WAV, OGG, AAC, FLAC等のオーディオファイルを選択してください
-            </span>
+
             {sourceFile && (
-              <p
-                style={{
-                  marginTop: "8px",
-                  fontSize: "14px",
-                  color: "var(--md-sys-color-on-surface-variant)",
-                }}
-              >
-                選択中: {sourceFile.name} ({(sourceFile.size / 1024).toFixed(2)}{" "}
-                KB)
-              </p>
+              <div className="selected-file" role="status">
+                <strong>選択中:</strong> {sourceFile.name} ({(sourceFile.size / 1024).toFixed(2)} KB)
+              </div>
             )}
           </div>
 

@@ -33,7 +33,7 @@ test.describe('Audio Converter - E2E Tests', () => {
   test('should display the main heading', async ({ page }) => {
     const heading = page.locator('.section-title').first();
     await expect(heading).toBeVisible();
-    await expect(heading).toContainText('オーディオファイルを選択');
+    await expect(heading).toContainText('ファイル選択');
   });
 
   test('should have proper accessibility attributes', async ({ page }) => {
@@ -73,11 +73,23 @@ test.describe('Audio Converter - E2E Tests', () => {
     await expect(audioLink).toContainText('オーディオ変換');
   });
 
-  test('should display file input', async ({ page }) => {
+  test('should display dropzone', async ({ page }) => {
+    const dropzone = page.locator('.dropzone');
+    await expect(dropzone).toBeVisible();
+    await expect(dropzone).toContainText('クリックして音声を選択');
+  });
+
+  test('should have file input with correct attributes', async ({ page }) => {
     const fileInput = page.locator('input#audioFile');
-    await expect(fileInput).toBeVisible();
+    await expect(fileInput).toBeAttached();
     await expect(fileInput).toHaveAttribute('type', 'file');
     await expect(fileInput).toHaveAttribute('accept', 'audio/*');
+  });
+
+  test('should display dropzone hint', async ({ page }) => {
+    const dropzoneHint = page.locator('.dropzone-hint');
+    await expect(dropzoneHint).toBeVisible();
+    await expect(dropzoneHint).toContainText('MP3, WAV, OGG, AAC, FLAC');
   });
 
   test('should display format selector', async ({ page }) => {
@@ -125,15 +137,15 @@ test.describe('Audio Converter - E2E Tests', () => {
     // Note: This test requires a valid audio file in the test fixtures
     // For now, we'll test the UI elements existence
     const fileInput = page.locator('input#audioFile');
-    await expect(fileInput).toBeVisible();
+    await expect(fileInput).toBeAttached();
   });
 
   test('should have proper ARIA labels', async ({ page }) => {
     const form = page.locator('form[aria-label="オーディオ変換フォーム"]');
     await expect(form).toBeVisible();
 
-    const fileInput = page.locator('input#audioFile');
-    await expect(fileInput).toHaveAttribute('aria-label', '変換するオーディオファイルを選択');
+    const dropzone = page.locator('.dropzone');
+    await expect(dropzone).toHaveAttribute('aria-label', 'オーディオファイルをアップロード');
 
     const formatSelect = page.locator('select#outputFormat');
     await expect(formatSelect).toHaveAttribute('aria-label', '出力フォーマットを選択');

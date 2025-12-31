@@ -545,79 +545,13 @@ function ColorExtractor() {
       />
 
       <style>{`
-        .dropzone {
-          border: 2px dashed var(--md-sys-color-outline);
-          border-radius: 12px;
-          padding: 3rem 2rem;
-          text-align: center;
-          cursor: pointer;
-          transition: all 0.2s;
-          background-color: var(--md-sys-color-surface);
-          margin-bottom: 1.5rem;
-        }
-
-        .dropzone:hover,
-        .dropzone:focus {
-          border-color: var(--md-sys-color-primary);
-          background-color: var(--md-sys-color-surface-variant);
-          outline: none;
-        }
-
-        .dropzone.dragging {
-          border-color: var(--md-sys-color-primary);
-          background-color: var(--md-sys-color-primary-container);
-        }
-
-        .dropzone-content {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 1rem;
-        }
-
-        .upload-icon {
-          width: 48px;
-          height: 48px;
-          color: var(--md-sys-color-primary);
-        }
-
-        .dropzone-text {
-          font-size: 1.125rem;
-          font-weight: 500;
-          color: var(--md-sys-color-on-surface);
-          margin: 0;
-        }
-
-        .dropzone-hint {
-          font-size: 0.875rem;
-          color: var(--md-sys-color-on-surface-variant);
-          margin: 0;
-        }
-
-        .option-group {
-          display: flex;
-          flex-direction: column;
-          gap: 0.5rem;
-          margin-bottom: 1rem;
-        }
-
-        .option-group label {
-          font-weight: 500;
-          color: var(--md-sys-color-on-surface);
-        }
-
-        .option-group input[type="range"] {
-          width: 100%;
-          accent-color: var(--md-sys-color-primary);
-        }
-
         .preview-container {
           display: flex;
           justify-content: center;
           align-items: center;
           padding: 1rem;
           background-color: var(--md-sys-color-surface-variant);
-          border-radius: 12px;
+          border-radius: 4px;
         }
 
         .preview-container canvas {
@@ -639,7 +573,7 @@ function ColorExtractor() {
           background-color: var(--md-sys-color-secondary-container);
           color: var(--md-sys-color-on-secondary-container);
           border: none;
-          border-radius: 8px;
+          border-radius: 4px;
           cursor: pointer;
           font-size: 0.875rem;
           font-weight: 500;
