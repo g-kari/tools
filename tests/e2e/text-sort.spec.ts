@@ -47,7 +47,7 @@ test.describe('Text Sort Tool', () => {
   test('should remove duplicate lines', async ({ page }) => {
     const inputTextarea = page.locator('#inputText');
     const outputTextarea = page.locator('#outputText');
-    const removeDupButton = page.getByRole('button', { name: /^重複削除$/ });
+    const removeDupButton = page.getByRole('button', { name: '重複行を削除' });
 
     await inputTextarea.fill('apple\nbanana\napple\ncherry\nbanana');
     await removeDupButton.click();
@@ -90,7 +90,7 @@ test.describe('Text Sort Tool', () => {
   });
 
   test('should show alert when trying to sort empty input', async ({ page }) => {
-    const sortAscButton = page.getByRole('button', { name: /昇順ソート/ });
+    const sortAscButton = page.getByRole('button', { name: '入力テキストを昇順ソート' });
 
     page.on('dialog', async (dialog) => {
       expect(dialog.message()).toContain('テキストを入力してください');
@@ -138,6 +138,12 @@ test.describe('Text Sort Tool', () => {
     await sortAscButton.click();
 
     const output = await outputTextarea.inputValue();
-    expect(output).toContain('\n\n');
+    const lines = output.split('\n');
+    // Empty line should be sorted to the beginning
+    expect(lines).toHaveLength(4);
+    expect(lines[0]).toBe('');
+    expect(lines).toContain('apple');
+    expect(lines).toContain('banana');
+    expect(lines).toContain('cherry');
   });
 });

@@ -47,58 +47,48 @@ function TextSortTool() {
     }
   }, []);
 
-  const handleSortAsc = useCallback(() => {
+  const validateInput = useCallback(() => {
     if (!inputText.trim()) {
       announceStatus("エラー: テキストを入力してください");
       alert("テキストを入力してください");
       inputRef.current?.focus();
-      return;
+      return false;
     }
+    return true;
+  }, [inputText, announceStatus]);
+
+  const handleSortAsc = useCallback(() => {
+    if (!validateInput()) return;
     const lines = inputText.split("\n");
     const sorted = lines.sort((a, b) => a.localeCompare(b, "ja"));
     setOutputText(sorted.join("\n"));
     announceStatus("昇順ソートが完了しました");
-  }, [inputText, announceStatus]);
+  }, [inputText, validateInput, announceStatus]);
 
   const handleSortDesc = useCallback(() => {
-    if (!inputText.trim()) {
-      announceStatus("エラー: テキストを入力してください");
-      alert("テキストを入力してください");
-      inputRef.current?.focus();
-      return;
-    }
+    if (!validateInput()) return;
     const lines = inputText.split("\n");
     const sorted = lines.sort((a, b) => b.localeCompare(a, "ja"));
     setOutputText(sorted.join("\n"));
     announceStatus("降順ソートが完了しました");
-  }, [inputText, announceStatus]);
+  }, [inputText, validateInput, announceStatus]);
 
   const handleRemoveDuplicates = useCallback(() => {
-    if (!inputText.trim()) {
-      announceStatus("エラー: テキストを入力してください");
-      alert("テキストを入力してください");
-      inputRef.current?.focus();
-      return;
-    }
+    if (!validateInput()) return;
     const lines = inputText.split("\n");
     const unique = Array.from(new Set(lines));
     setOutputText(unique.join("\n"));
     announceStatus("重複削除が完了しました");
-  }, [inputText, announceStatus]);
+  }, [inputText, validateInput, announceStatus]);
 
   const handleSortAndRemoveDuplicates = useCallback(() => {
-    if (!inputText.trim()) {
-      announceStatus("エラー: テキストを入力してください");
-      alert("テキストを入力してください");
-      inputRef.current?.focus();
-      return;
-    }
+    if (!validateInput()) return;
     const lines = inputText.split("\n");
     const unique = Array.from(new Set(lines));
     const sorted = unique.sort((a, b) => a.localeCompare(b, "ja"));
     setOutputText(sorted.join("\n"));
     announceStatus("ソートと重複削除が完了しました");
-  }, [inputText, announceStatus]);
+  }, [inputText, validateInput, announceStatus]);
 
   const handleClear = useCallback(() => {
     setInputText("");
@@ -176,7 +166,7 @@ function TextSortTool() {
             </button>
           </div>
 
-          <div style={{ marginBottom: "30px" }}>
+          <div className="output-section">
             <label htmlFor="outputText" className="section-title">
               出力結果
             </label>
