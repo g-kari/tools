@@ -20,6 +20,8 @@ export default defineConfig({
     baseURL: process.env.BASE_URL?.replace('localhost', '127.0.0.1') || 'http://localhost:8788',
     // ナビゲーションタイムアウトを延長
     navigationTimeout: process.env.CI ? 30000 : 10000,
+    // クリップボード権限を付与
+    permissions: ['clipboard-read', 'clipboard-write'],
   },
   projects: [
     {
