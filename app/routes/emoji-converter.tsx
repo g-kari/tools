@@ -125,19 +125,47 @@ export function applyEditOptions(
 
   // トリミング処理（最初に適用）
   if (options.crop) {
-    const cropCanvas = document.createElement("canvas");
-    const cropCtx = cropCanvas.getContext("2d");
-    if (cropCtx) {
-      // パーセント値をピクセル値に変換
-      const sx = (sourceCanvas.width * options.cropX) / 100;
-      const sy = (sourceCanvas.height * options.cropY) / 100;
-      const sw = (sourceCanvas.width * options.cropWidth) / 100;
-      const sh = (sourceCanvas.height * options.cropHeight) / 100;
+    // 境界値検証
+    const cropXEnd = options.cropX + options.cropWidth;
+    const cropYEnd = options.cropY + options.cropHeight;
 
-      cropCanvas.width = sw;
-      cropCanvas.height = sh;
-      cropCtx.drawImage(sourceCanvas, sx, sy, sw, sh, 0, 0, sw, sh);
-      workCanvas = cropCanvas;
+    if (cropXEnd > 100 || cropYEnd > 100) {
+      console.warn(
+        `Invalid crop bounds: cropX(${options.cropX}) + cropWidth(${options.cropWidth}) = ${cropXEnd}, ` +
+        `cropY(${options.cropY}) + cropHeight(${options.cropHeight}) = ${cropYEnd}`
+      );
+      // 境界値を超える場合は調整
+      const adjustedCropWidth = Math.min(options.cropWidth, 100 - options.cropX);
+      const adjustedCropHeight = Math.min(options.cropHeight, 100 - options.cropY);
+
+      const cropCanvas = document.createElement("canvas");
+      const cropCtx = cropCanvas.getContext("2d");
+      if (cropCtx) {
+        const sx = (sourceCanvas.width * options.cropX) / 100;
+        const sy = (sourceCanvas.height * options.cropY) / 100;
+        const sw = (sourceCanvas.width * adjustedCropWidth) / 100;
+        const sh = (sourceCanvas.height * adjustedCropHeight) / 100;
+
+        cropCanvas.width = sw;
+        cropCanvas.height = sh;
+        cropCtx.drawImage(sourceCanvas, sx, sy, sw, sh, 0, 0, sw, sh);
+        workCanvas = cropCanvas;
+      }
+    } else {
+      const cropCanvas = document.createElement("canvas");
+      const cropCtx = cropCanvas.getContext("2d");
+      if (cropCtx) {
+        // パーセント値をピクセル値に変換
+        const sx = (sourceCanvas.width * options.cropX) / 100;
+        const sy = (sourceCanvas.height * options.cropY) / 100;
+        const sw = (sourceCanvas.width * options.cropWidth) / 100;
+        const sh = (sourceCanvas.height * options.cropHeight) / 100;
+
+        cropCanvas.width = sw;
+        cropCanvas.height = sh;
+        cropCtx.drawImage(sourceCanvas, sx, sy, sw, sh, 0, 0, sw, sh);
+        workCanvas = cropCanvas;
+      }
     }
   }
 
@@ -415,7 +443,8 @@ function EmojiConverter() {
         URL.revokeObjectURL(previewUrl);
       }
     };
-  }, [previewUrl]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // マウント解除時のみクリーンアップ（二重revokeを防ぐため依存配列は空）
 
   const handleFileChange = useCallback(
     (selectedFile: File | null) => {
