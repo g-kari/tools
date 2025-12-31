@@ -62,6 +62,7 @@ const navCategories = [
       { path: "/regex-checker", label: "正規表現" },
       { path: "/jwt", label: "JWTデコード" },
       { path: "/email-dns", label: "メールDNS" },
+      { path: "/hash", label: "ハッシュ生成" },
     ],
   },
   {
