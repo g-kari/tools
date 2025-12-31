@@ -48,6 +48,13 @@ const navCategories = [
     ],
   },
   {
+    name: "テキスト",
+    icon: "📝",
+    items: [
+      { path: "/char-count", label: "文字数カウント" },
+    ],
+  },
+  {
     name: "検証",
     icon: "✓",
     items: [
