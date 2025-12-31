@@ -1,0 +1,212 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { useState, useEffect, useRef, useCallback } from "react";
+
+export const Route = createFileRoute("/text-sort")({
+  head: () => ({
+    meta: [{ title: "テキストソート/重複削除 ツール" }],
+  }),
+  component: TextSortTool,
+});
+
+function TextSortTool() {
+  const [inputText, setInputText] = useState("");
+  const [outputText, setOutputText] = useState("");
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const statusRef = useRef<HTMLDivElement>(null);
+  const statusTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (statusTimeoutRef.current) {
+        clearTimeout(statusTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  const announceStatus = useCallback((message: string) => {
+    if (statusRef.current) {
+      statusRef.current.textContent = message;
+      // Clear previous timeout
+      if (statusTimeoutRef.current) {
+        clearTimeout(statusTimeoutRef.current);
+      }
+      statusTimeoutRef.current = setTimeout(() => {
+        if (statusRef.current) {
+          statusRef.current.textContent = "";
+        }
+      }, 3000);
+    }
+  }, []);
+
+  const handleSortAsc = useCallback(() => {
+    if (!inputText.trim()) {
+      announceStatus("エラー: テキストを入力してください");
+      alert("テキストを入力してください");
+      inputRef.current?.focus();
+      return;
+    }
+    const lines = inputText.split("\n");
+    const sorted = lines.sort((a, b) => a.localeCompare(b, "ja"));
+    setOutputText(sorted.join("\n"));
+    announceStatus("昇順ソートが完了しました");
+  }, [inputText, announceStatus]);
+
+  const handleSortDesc = useCallback(() => {
+    if (!inputText.trim()) {
+      announceStatus("エラー: テキストを入力してください");
+      alert("テキストを入力してください");
+      inputRef.current?.focus();
+      return;
+    }
+    const lines = inputText.split("\n");
+    const sorted = lines.sort((a, b) => b.localeCompare(a, "ja"));
+    setOutputText(sorted.join("\n"));
+    announceStatus("降順ソートが完了しました");
+  }, [inputText, announceStatus]);
+
+  const handleRemoveDuplicates = useCallback(() => {
+    if (!inputText.trim()) {
+      announceStatus("エラー: テキストを入力してください");
+      alert("テキストを入力してください");
+      inputRef.current?.focus();
+      return;
+    }
+    const lines = inputText.split("\n");
+    const unique = Array.from(new Set(lines));
+    setOutputText(unique.join("\n"));
+    announceStatus("重複削除が完了しました");
+  }, [inputText, announceStatus]);
+
+  const handleSortAndRemoveDuplicates = useCallback(() => {
+    if (!inputText.trim()) {
+      announceStatus("エラー: テキストを入力してください");
+      alert("テキストを入力してください");
+      inputRef.current?.focus();
+      return;
+    }
+    const lines = inputText.split("\n");
+    const unique = Array.from(new Set(lines));
+    const sorted = unique.sort((a, b) => a.localeCompare(b, "ja"));
+    setOutputText(sorted.join("\n"));
+    announceStatus("ソートと重複削除が完了しました");
+  }, [inputText, announceStatus]);
+
+  const handleClear = useCallback(() => {
+    setInputText("");
+    setOutputText("");
+    announceStatus("入力と出力をクリアしました");
+    inputRef.current?.focus();
+  }, [announceStatus]);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+
+  return (
+    <>
+      <div className="tool-container">
+        <form onSubmit={(e) => e.preventDefault()} aria-label="テキストソートフォーム">
+          <div className="converter-section">
+            <label htmlFor="inputText" className="section-title">
+              入力テキスト
+            </label>
+            <textarea
+              id="inputText"
+              ref={inputRef}
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+              placeholder="1行に1つずつテキストを入力してください...&#10;例:&#10;りんご&#10;バナナ&#10;りんご&#10;みかん"
+              aria-describedby="input-help"
+              aria-label="ソート・重複削除するテキスト入力欄"
+            />
+            <span id="input-help" className="sr-only">
+              このフィールドに1行に1つずつテキストを入力して、ソートや重複削除ができます
+            </span>
+          </div>
+
+          <div className="button-group" role="group" aria-label="ソート操作">
+            <button
+              type="button"
+              className="btn-primary"
+              onClick={handleSortAsc}
+              aria-label="入力テキストを昇順ソート"
+            >
+              昇順ソート
+            </button>
+            <button
+              type="button"
+              className="btn-primary"
+              onClick={handleSortDesc}
+              aria-label="入力テキストを降順ソート"
+            >
+              降順ソート
+            </button>
+            <button
+              type="button"
+              className="btn-secondary"
+              onClick={handleRemoveDuplicates}
+              aria-label="重複行を削除"
+            >
+              重複削除
+            </button>
+            <button
+              type="button"
+              className="btn-secondary"
+              onClick={handleSortAndRemoveDuplicates}
+              aria-label="昇順ソートと重複削除を同時実行"
+            >
+              ソート + 重複削除
+            </button>
+            <button
+              type="button"
+              className="btn-clear"
+              onClick={handleClear}
+              aria-label="入力と出力をクリア"
+            >
+              クリア
+            </button>
+          </div>
+
+          <div style={{ marginBottom: "30px" }}>
+            <label htmlFor="outputText" className="section-title">
+              出力結果
+            </label>
+            <textarea
+              id="outputText"
+              value={outputText}
+              readOnly
+              placeholder="処理結果がここに表示されます..."
+              aria-label="処理結果の出力欄"
+              aria-live="polite"
+            />
+          </div>
+        </form>
+
+        <aside
+          className="info-box"
+          role="complementary"
+          aria-labelledby="usage-title"
+        >
+          <h3 id="usage-title">使い方</h3>
+          <ul>
+            <li>「入力テキスト」欄に1行に1つずつテキストを入力します</li>
+            <li>「昇順ソート」ボタンで行を昇順（A→Z、あ→ん）に並び替え</li>
+            <li>「降順ソート」ボタンで行を降順（Z→A、ん→あ）に並び替え</li>
+            <li>「重複削除」ボタンで重複する行を削除</li>
+            <li>「ソート + 重複削除」ボタンで昇順ソートと重複削除を同時実行</li>
+            <li>処理結果は「出力結果」欄に表示されます</li>
+          </ul>
+        </aside>
+      </div>
+
+      <div
+        ref={statusRef}
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        className="sr-only"
+      />
+    </>
+  );
+}
