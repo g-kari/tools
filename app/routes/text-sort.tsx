@@ -8,6 +8,14 @@ export const Route = createFileRoute("/text-sort")({
   component: TextSortTool,
 });
 
+/**
+ * テキストソート/重複削除ツールコンポーネント
+ *
+ * テキスト行の昇順・降順ソート、重複削除、および両方の組み合わせ処理を提供します。
+ * 日本語ロケールに対応したソートを行い、アクセシビリティにも配慮しています。
+ *
+ * @returns テキストソート/重複削除ツールのReactコンポーネント
+ */
 function TextSortTool() {
   const [inputText, setInputText] = useState("");
   const [outputText, setOutputText] = useState("");
