@@ -199,6 +199,7 @@ npm run build && npm run test:e2e
 - レスポンシブデザイン対応
 - 日本語UIをメインにサポート
 - TanStack Startのサーバーファンクションを使用してAPI実装
+- **インラインスタイル原則禁止**: Reactコンポーネントではインラインスタイル（style属性）を使用せず、必ずapp/styles.cssまたは専用のCSSファイルでスタイルを定義すること
 
 ### Git Worktreeを使用した開発
 
