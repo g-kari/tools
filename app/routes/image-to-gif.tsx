@@ -130,6 +130,52 @@ export async function convertImagesToGif(
   }
 }
 
+/**
+ * ローカルCLI環境で実行可能なFFmpegコマンドを生成する
+ * @param images - 変換する画像ファイル
+ * @param framerate - フレームレート
+ * @param loop - ループ回数
+ * @param quality - 品質（1-100）
+ * @returns FFmpegコマンド文字列
+ */
+export function generateFFmpegCommand(
+  images: File[],
+  framerate: number,
+  loop: number,
+  quality: number
+): string {
+  // 品質パラメータの計算
+  const gifQuality = Math.round(101 - quality);
+  const bayerScale = gifQuality > 5 ? 5 : gifQuality;
+
+  if (images.length === 0) {
+    return "# 画像を選択してください";
+  }
+
+  if (images.length === 1) {
+    // 単一画像の場合
+    const ext = images[0].name.split(".").pop() || "png";
+    return `# 単一画像からGIF生成（品質: ${quality}）
+ffmpeg -i input.${ext} \\
+  -vf "split[s0][s1];[s0]palettegen=max_colors=256:stats_mode=single[p];[s1][p]paletteuse=dither=bayer:bayer_scale=${bayerScale}" \\
+  -loop ${loop} \\
+  output.gif`;
+  } else {
+    // 複数画像の場合
+    const inputLines = images.map((img, i) => {
+      const ext = img.name.split(".").pop() || "png";
+      return `  -loop 1 -framerate ${framerate} -t ${(1/framerate).toFixed(4)} -i input${i}.${ext}`;
+    }).join(" \\\n");
+
+    return `# 複数画像からアニメーションGIF生成（フレームレート: ${framerate}fps、品質: ${quality}）
+ffmpeg \\
+${inputLines} \\
+  -filter_complex "concat=n=${images.length}:v=1:a=0[v];[v]split[s0][s1];[s0]palettegen=max_colors=256[p];[s1][p]paletteuse=dither=bayer:bayer_scale=${bayerScale}" \\
+  -loop ${loop} \\
+  output.gif`;
+  }
+}
+
 function ImageToGifConverter() {
   const [images, setImages] = useState<ImageFile[]>([]);
   const [framerate, setFramerate] = useState(10);
@@ -443,6 +489,32 @@ function ImageToGifConverter() {
                 onClick={handleDownload}
               >
                 ダウンロード
+              </button>
+            </div>
+          </div>
+        )}
+
+        {images.length > 0 && (
+          <div className="converter-section">
+            <h2 className="section-title">FFmpegコマンド（CLI用）</h2>
+            <p className="section-description">
+              ローカル環境でFFmpegを使用する場合は、以下のコマンドで同様の変換が可能です
+            </p>
+            <pre className="command-output">
+              <code>{generateFFmpegCommand(images.map(img => img.file), framerate, loop, quality)}</code>
+            </pre>
+            <div className="button-group" role="group" aria-label="コマンド操作">
+              <button
+                type="button"
+                className="btn-secondary"
+                onClick={() => {
+                  navigator.clipboard.writeText(
+                    generateFFmpegCommand(images.map(img => img.file), framerate, loop, quality)
+                  );
+                  announceStatus("コマンドをクリップボードにコピーしました");
+                }}
+              >
+                コマンドをコピー
               </button>
             </div>
           </div>
