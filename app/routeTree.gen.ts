@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WhoisRouteImport } from './routes/whois'
+import { Route as VideoConverterRouteImport } from './routes/video-converter'
 import { Route as UuidRouteImport } from './routes/uuid'
 import { Route as UrlEncodeRouteImport } from './routes/url-encode'
 import { Route as TextSortRouteImport } from './routes/text-sort'
@@ -23,6 +24,7 @@ import { Route as IpGeolocationRouteImport } from './routes/ip-geolocation'
 import { Route as ImageToGifRouteImport } from './routes/image-to-gif'
 import { Route as HashRouteImport } from './routes/hash'
 import { Route as GlobalIpRouteImport } from './routes/global-ip'
+import { Route as EmojiConverterRouteImport } from './routes/emoji-converter'
 import { Route as EmailDnsRouteImport } from './routes/email-dns'
 import { Route as DummyImageRouteImport } from './routes/dummy-image'
 import { Route as DummyAudioRouteImport } from './routes/dummy-audio'
@@ -40,6 +42,11 @@ import { Route as ApiImageDotjpgRouteImport } from './routes/api/image[.]jpg'
 const WhoisRoute = WhoisRouteImport.update({
   id: '/whois',
   path: '/whois',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VideoConverterRoute = VideoConverterRouteImport.update({
+  id: '/video-converter',
+  path: '/video-converter',
   getParentRoute: () => rootRouteImport,
 } as any)
 const UuidRoute = UuidRouteImport.update({
@@ -105,6 +112,11 @@ const HashRoute = HashRouteImport.update({
 const GlobalIpRoute = GlobalIpRouteImport.update({
   id: '/global-ip',
   path: '/global-ip',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EmojiConverterRoute = EmojiConverterRouteImport.update({
+  id: '/emoji-converter',
+  path: '/emoji-converter',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EmailDnsRoute = EmailDnsRouteImport.update({
@@ -183,6 +195,7 @@ export interface FileRoutesByFullPath {
   '/dummy-audio': typeof DummyAudioRoute
   '/dummy-image': typeof DummyImageRoute
   '/email-dns': typeof EmailDnsRoute
+  '/emoji-converter': typeof EmojiConverterRoute
   '/global-ip': typeof GlobalIpRoute
   '/hash': typeof HashRoute
   '/image-to-gif': typeof ImageToGifRoute
@@ -196,6 +209,7 @@ export interface FileRoutesByFullPath {
   '/text-sort': typeof TextSortRoute
   '/url-encode': typeof UrlEncodeRoute
   '/uuid': typeof UuidRoute
+  '/video-converter': typeof VideoConverterRoute
   '/whois': typeof WhoisRoute
   '/api/image.jpg': typeof ApiImageDotjpgRoute
   '/api/image.png': typeof ApiImageDotpngRoute
@@ -212,6 +226,7 @@ export interface FileRoutesByTo {
   '/dummy-audio': typeof DummyAudioRoute
   '/dummy-image': typeof DummyImageRoute
   '/email-dns': typeof EmailDnsRoute
+  '/emoji-converter': typeof EmojiConverterRoute
   '/global-ip': typeof GlobalIpRoute
   '/hash': typeof HashRoute
   '/image-to-gif': typeof ImageToGifRoute
@@ -225,6 +240,7 @@ export interface FileRoutesByTo {
   '/text-sort': typeof TextSortRoute
   '/url-encode': typeof UrlEncodeRoute
   '/uuid': typeof UuidRoute
+  '/video-converter': typeof VideoConverterRoute
   '/whois': typeof WhoisRoute
   '/api/image.jpg': typeof ApiImageDotjpgRoute
   '/api/image.png': typeof ApiImageDotpngRoute
@@ -242,6 +258,7 @@ export interface FileRoutesById {
   '/dummy-audio': typeof DummyAudioRoute
   '/dummy-image': typeof DummyImageRoute
   '/email-dns': typeof EmailDnsRoute
+  '/emoji-converter': typeof EmojiConverterRoute
   '/global-ip': typeof GlobalIpRoute
   '/hash': typeof HashRoute
   '/image-to-gif': typeof ImageToGifRoute
@@ -255,6 +272,7 @@ export interface FileRoutesById {
   '/text-sort': typeof TextSortRoute
   '/url-encode': typeof UrlEncodeRoute
   '/uuid': typeof UuidRoute
+  '/video-converter': typeof VideoConverterRoute
   '/whois': typeof WhoisRoute
   '/api/image.jpg': typeof ApiImageDotjpgRoute
   '/api/image.png': typeof ApiImageDotpngRoute
@@ -273,6 +291,7 @@ export interface FileRouteTypes {
     | '/dummy-audio'
     | '/dummy-image'
     | '/email-dns'
+    | '/emoji-converter'
     | '/global-ip'
     | '/hash'
     | '/image-to-gif'
@@ -286,6 +305,7 @@ export interface FileRouteTypes {
     | '/text-sort'
     | '/url-encode'
     | '/uuid'
+    | '/video-converter'
     | '/whois'
     | '/api/image.jpg'
     | '/api/image.png'
@@ -302,6 +322,7 @@ export interface FileRouteTypes {
     | '/dummy-audio'
     | '/dummy-image'
     | '/email-dns'
+    | '/emoji-converter'
     | '/global-ip'
     | '/hash'
     | '/image-to-gif'
@@ -315,6 +336,7 @@ export interface FileRouteTypes {
     | '/text-sort'
     | '/url-encode'
     | '/uuid'
+    | '/video-converter'
     | '/whois'
     | '/api/image.jpg'
     | '/api/image.png'
@@ -331,6 +353,7 @@ export interface FileRouteTypes {
     | '/dummy-audio'
     | '/dummy-image'
     | '/email-dns'
+    | '/emoji-converter'
     | '/global-ip'
     | '/hash'
     | '/image-to-gif'
@@ -344,6 +367,7 @@ export interface FileRouteTypes {
     | '/text-sort'
     | '/url-encode'
     | '/uuid'
+    | '/video-converter'
     | '/whois'
     | '/api/image.jpg'
     | '/api/image.png'
@@ -361,6 +385,7 @@ export interface RootRouteChildren {
   DummyAudioRoute: typeof DummyAudioRoute
   DummyImageRoute: typeof DummyImageRoute
   EmailDnsRoute: typeof EmailDnsRoute
+  EmojiConverterRoute: typeof EmojiConverterRoute
   GlobalIpRoute: typeof GlobalIpRoute
   HashRoute: typeof HashRoute
   ImageToGifRoute: typeof ImageToGifRoute
@@ -374,6 +399,7 @@ export interface RootRouteChildren {
   TextSortRoute: typeof TextSortRoute
   UrlEncodeRoute: typeof UrlEncodeRoute
   UuidRoute: typeof UuidRoute
+  VideoConverterRoute: typeof VideoConverterRoute
   WhoisRoute: typeof WhoisRoute
   ApiImageDotjpgRoute: typeof ApiImageDotjpgRoute
   ApiImageDotpngRoute: typeof ApiImageDotpngRoute
@@ -388,6 +414,13 @@ declare module '@tanstack/react-router' {
       path: '/whois'
       fullPath: '/whois'
       preLoaderRoute: typeof WhoisRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/video-converter': {
+      id: '/video-converter'
+      path: '/video-converter'
+      fullPath: '/video-converter'
+      preLoaderRoute: typeof VideoConverterRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/uuid': {
@@ -479,6 +512,13 @@ declare module '@tanstack/react-router' {
       path: '/global-ip'
       fullPath: '/global-ip'
       preLoaderRoute: typeof GlobalIpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/emoji-converter': {
+      id: '/emoji-converter'
+      path: '/emoji-converter'
+      fullPath: '/emoji-converter'
+      preLoaderRoute: typeof EmojiConverterRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/email-dns': {
@@ -585,6 +625,7 @@ const rootRouteChildren: RootRouteChildren = {
   DummyAudioRoute: DummyAudioRoute,
   DummyImageRoute: DummyImageRoute,
   EmailDnsRoute: EmailDnsRoute,
+  EmojiConverterRoute: EmojiConverterRoute,
   GlobalIpRoute: GlobalIpRoute,
   HashRoute: HashRoute,
   ImageToGifRoute: ImageToGifRoute,
@@ -598,6 +639,7 @@ const rootRouteChildren: RootRouteChildren = {
   TextSortRoute: TextSortRoute,
   UrlEncodeRoute: UrlEncodeRoute,
   UuidRoute: UuidRoute,
+  VideoConverterRoute: VideoConverterRoute,
   WhoisRoute: WhoisRoute,
   ApiImageDotjpgRoute: ApiImageDotjpgRoute,
   ApiImageDotpngRoute: ApiImageDotpngRoute,

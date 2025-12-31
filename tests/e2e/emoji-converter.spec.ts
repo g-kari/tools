@@ -1,0 +1,452 @@
+import { test, expect } from '@playwright/test';
+
+test.describe('Emoji Converter - E2E Tests', () => {
+  /**
+   * カテゴリドロップダウンを開いてリンクをクリックするヘルパー関数
+   */
+  async function navigateViaCategory(page: import('@playwright/test').Page, categoryName: string, linkHref: string) {
+    const categoryBtn = page.locator('.nav-category-btn', { hasText: categoryName });
+    await categoryBtn.hover();
+    const dropdown = page.locator('.nav-dropdown');
+    await expect(dropdown).toBeVisible();
+    const link = dropdown.locator(`a[href="${linkHref}"]`);
+    await link.click();
+  }
+
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/emoji-converter');
+    await page.waitForLoadState('networkidle');
+  });
+
+  test('should load the page without "undefined" content', async ({ page }) => {
+    const bodyText = await page.textContent('body');
+    expect(bodyText).not.toContain('undefined');
+    expect(bodyText).not.toBe('undefined');
+  });
+
+  test('should display the correct page title', async ({ page }) => {
+    await expect(page).toHaveTitle(/絵文字コンバーター/);
+  });
+
+  test('should display the main heading', async ({ page }) => {
+    const heading = page.locator('.title');
+    await expect(heading).toBeVisible();
+    await expect(heading).toContainText('絵文字コンバーター');
+  });
+
+  test('should have proper accessibility attributes', async ({ page }) => {
+    await expect(page.locator('[role="banner"]')).toBeVisible();
+    await expect(page.locator('[role="main"]')).toBeVisible();
+    const skipLink = page.locator('.skip-link');
+    await expect(skipLink).toBeAttached();
+  });
+
+  test('should have category navigation with active state', async ({ page }) => {
+    const navCategories = page.locator('.nav-categories');
+    await expect(navCategories).toBeVisible();
+
+    // 画像カテゴリがアクティブであることを確認
+    const activeCategory = page.locator('.nav-category-btn.active');
+    await expect(activeCategory).toContainText('画像');
+  });
+
+  test('should show 絵文字変換 link in category dropdown', async ({ page }) => {
+    const categoryBtn = page.locator('.nav-category-btn', { hasText: '画像' });
+    await categoryBtn.hover();
+    const dropdown = page.locator('.nav-dropdown');
+    await expect(dropdown).toBeVisible();
+    const emojiConverterLink = dropdown.locator('a[href="/emoji-converter"]');
+    await expect(emojiConverterLink).toBeVisible();
+    await expect(emojiConverterLink).toContainText('絵文字変換');
+  });
+
+  test('should display dropzone', async ({ page }) => {
+    const dropzone = page.locator('.dropzone');
+    await expect(dropzone).toBeVisible();
+    await expect(dropzone).toContainText('クリックして画像を選択');
+  });
+
+  test('should have file input with accept attribute', async ({ page }) => {
+    const fileInput = page.locator('input[type="file"]');
+    await expect(fileInput).toHaveAttribute('accept', 'image/*');
+  });
+
+  test('should display dropzone hint', async ({ page }) => {
+    const dropzoneHint = page.locator('.dropzone-hint');
+    await expect(dropzoneHint).toBeVisible();
+    await expect(dropzoneHint).toContainText('PNG, JPEG, GIF対応');
+  });
+
+  test('should display platform selector', async ({ page }) => {
+    const platformSelector = page.locator('select#platform');
+    await expect(platformSelector).toBeVisible();
+    await expect(platformSelector).toHaveValue('discord');
+  });
+
+  test('should have Discord and Slack platform options', async ({ page }) => {
+    const platformSelector = page.locator('select#platform');
+    const options = await platformSelector.locator('option').allTextContents();
+    expect(options.some(opt => opt.includes('Discord'))).toBeTruthy();
+    expect(options.some(opt => opt.includes('Slack'))).toBeTruthy();
+  });
+
+  test('should not display edit options initially', async ({ page }) => {
+    const editSection = page.locator('h2.section-title:has-text("編集オプション")');
+    await expect(editSection).not.toBeVisible();
+  });
+
+  test('should not display preview initially', async ({ page }) => {
+    const previewSection = page.locator('h2.section-title:has-text("プレビュー")');
+    await expect(previewSection).not.toBeVisible();
+  });
+
+  test('should navigate to UUID page via category dropdown', async ({ page }) => {
+    await navigateViaCategory(page, '生成', '/uuid');
+    await expect(page).toHaveURL('/uuid');
+  });
+
+  test('should navigate to カラー抽出 page via category dropdown', async ({ page }) => {
+    await navigateViaCategory(page, '画像', '/color-extractor');
+    await expect(page).toHaveURL('/color-extractor');
+  });
+
+  test.describe('Image Upload and Processing', () => {
+    test('should upload image and display preview', async ({ page }) => {
+      // テスト用の小さな画像を作成
+      const imageDataUrl = await page.evaluate(() => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 128;
+        canvas.height = 128;
+        const ctx = canvas.getContext('2d')!;
+
+        // 赤い四角形
+        ctx.fillStyle = '#FF0000';
+        ctx.fillRect(0, 0, 128, 128);
+
+        return canvas.toDataURL('image/png');
+      });
+
+      const buffer = Buffer.from(imageDataUrl.split(',')[1], 'base64');
+
+      const fileInput = page.locator('input[type="file"]');
+      await fileInput.setInputFiles({
+        name: 'test.png',
+        mimeType: 'image/png',
+        buffer: buffer,
+      });
+
+      // プレビューが表示される
+      const previewSection = page.locator('h2.section-title:has-text("プレビュー")');
+      await expect(previewSection).toBeVisible({ timeout: 10000 });
+
+      const canvas = page.locator('canvas.preview-canvas');
+      await expect(canvas).toBeVisible();
+    });
+
+    test('should display edit options after upload', async ({ page }) => {
+      const imageDataUrl = await page.evaluate(() => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 128;
+        canvas.height = 128;
+        const ctx = canvas.getContext('2d')!;
+        ctx.fillStyle = '#FF0000';
+        ctx.fillRect(0, 0, 128, 128);
+        return canvas.toDataURL('image/png');
+      });
+
+      const buffer = Buffer.from(imageDataUrl.split(',')[1], 'base64');
+      const fileInput = page.locator('input[type="file"]');
+      await fileInput.setInputFiles({
+        name: 'test.png',
+        mimeType: 'image/png',
+        buffer: buffer,
+      });
+
+      // 編集オプションが表示される
+      const editSection = page.locator('h2.section-title:has-text("編集オプション")');
+      await expect(editSection).toBeVisible({ timeout: 10000 });
+    });
+
+    test('should display file size info after upload', async ({ page }) => {
+      const imageDataUrl = await page.evaluate(() => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 128;
+        canvas.height = 128;
+        const ctx = canvas.getContext('2d')!;
+        ctx.fillStyle = '#FF0000';
+        ctx.fillRect(0, 0, 128, 128);
+        return canvas.toDataURL('image/png');
+      });
+
+      const buffer = Buffer.from(imageDataUrl.split(',')[1], 'base64');
+      const fileInput = page.locator('input[type="file"]');
+      await fileInput.setInputFiles({
+        name: 'test.png',
+        mimeType: 'image/png',
+        buffer: buffer,
+      });
+
+      // ファイルサイズ情報が表示される
+      const fileSizeInfo = page.locator('.file-size-info');
+      await expect(fileSizeInfo).toBeVisible({ timeout: 10000 });
+      await expect(fileSizeInfo).toContainText('KB');
+    });
+
+    test('should have download and reset buttons after upload', async ({ page }) => {
+      const imageDataUrl = await page.evaluate(() => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 128;
+        canvas.height = 128;
+        const ctx = canvas.getContext('2d')!;
+        ctx.fillStyle = '#FF0000';
+        ctx.fillRect(0, 0, 128, 128);
+        return canvas.toDataURL('image/png');
+      });
+
+      const buffer = Buffer.from(imageDataUrl.split(',')[1], 'base64');
+      const fileInput = page.locator('input[type="file"]');
+      await fileInput.setInputFiles({
+        name: 'test.png',
+        mimeType: 'image/png',
+        buffer: buffer,
+      });
+
+      // ダウンロードボタンとリセットボタンが表示される
+      const downloadButton = page.locator('button:has-text("ダウンロード")');
+      await expect(downloadButton).toBeVisible({ timeout: 10000 });
+
+      const resetButton = page.locator('button:has-text("リセット")');
+      await expect(resetButton).toBeVisible();
+    });
+  });
+
+  test.describe('Edit Options', () => {
+    test.beforeEach(async ({ page }) => {
+      // 画像をアップロード
+      const imageDataUrl = await page.evaluate(() => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 128;
+        canvas.height = 128;
+        const ctx = canvas.getContext('2d')!;
+        ctx.fillStyle = '#FF0000';
+        ctx.fillRect(0, 0, 128, 128);
+        return canvas.toDataURL('image/png');
+      });
+
+      const buffer = Buffer.from(imageDataUrl.split(',')[1], 'base64');
+      const fileInput = page.locator('input[type="file"]');
+      await fileInput.setInputFiles({
+        name: 'test.png',
+        mimeType: 'image/png',
+        buffer: buffer,
+      });
+
+      // 編集オプションが表示されるまで待機
+      await expect(page.locator('h2.section-title:has-text("編集オプション")')).toBeVisible({ timeout: 10000 });
+    });
+
+    test('should have text embedding option', async ({ page }) => {
+      const textEmbedding = page.locator('summary:has-text("テキスト埋め込み")');
+      await expect(textEmbedding).toBeVisible();
+
+      await textEmbedding.click();
+
+      const textInput = page.locator('input#text');
+      await expect(textInput).toBeVisible();
+    });
+
+    test('should have rotation/flip option', async ({ page }) => {
+      const rotationFlip = page.locator('summary:has-text("回転・反転")');
+      await expect(rotationFlip).toBeVisible();
+
+      await rotationFlip.click();
+
+      const rotationSlider = page.locator('input#rotation');
+      await expect(rotationSlider).toBeVisible();
+    });
+
+    test('should have filter option', async ({ page }) => {
+      const filter = page.locator('summary:has-text("フィルター")');
+      await expect(filter).toBeVisible();
+
+      await filter.click();
+
+      const brightnessSlider = page.locator('input#brightness');
+      await expect(brightnessSlider).toBeVisible();
+
+      const contrastSlider = page.locator('input#contrast');
+      await expect(contrastSlider).toBeVisible();
+
+      const saturationSlider = page.locator('input#saturation');
+      await expect(saturationSlider).toBeVisible();
+    });
+
+    test('should have transparency option', async ({ page }) => {
+      const transparency = page.locator('summary:has-text("透過処理")');
+      await expect(transparency).toBeVisible();
+
+      await transparency.click();
+
+      // details内のチェックボックスを選択
+      const transparentCheckbox = transparency.locator('..').locator('input[type="checkbox"]').first();
+      await expect(transparentCheckbox).toBeAttached();
+    });
+
+    test('should have border option', async ({ page }) => {
+      const border = page.locator('summary:has-text("枠線")');
+      await expect(border).toBeVisible();
+
+      await border.click();
+
+      // details内のチェックボックスを選択
+      const borderCheckbox = border.locator('..').locator('input[type="checkbox"]').first();
+      await expect(borderCheckbox).toBeAttached();
+    });
+
+    test('should apply text to preview', async ({ page }) => {
+      const textEmbedding = page.locator('summary:has-text("テキスト埋め込み")');
+      await textEmbedding.click();
+
+      const textInput = page.locator('input#text');
+      await textInput.fill('TEST');
+
+      // プレビューが更新されるまで少し待機
+      await page.waitForTimeout(500);
+
+      const canvas = page.locator('canvas.preview-canvas');
+      await expect(canvas).toBeVisible();
+    });
+
+    test('should apply rotation to preview', async ({ page }) => {
+      const rotationFlip = page.locator('summary:has-text("回転・反転")');
+      await rotationFlip.click();
+
+      const rotationSlider = page.locator('input#rotation');
+      await rotationSlider.fill('90');
+
+      // プレビューが更新されるまで少し待機
+      await page.waitForTimeout(500);
+
+      const canvas = page.locator('canvas.preview-canvas');
+      await expect(canvas).toBeVisible();
+    });
+  });
+
+  test.describe('Platform Switching', () => {
+    test('should switch between Discord and Slack', async ({ page }) => {
+      const platformSelector = page.locator('select#platform');
+
+      // Discordを選択
+      await platformSelector.selectOption('discord');
+      await expect(platformSelector).toHaveValue('discord');
+
+      // Slackを選択
+      await platformSelector.selectOption('slack');
+      await expect(platformSelector).toHaveValue('slack');
+    });
+
+    test('should display different size limits for platforms', async ({ page }) => {
+      // 画像をアップロード
+      const imageDataUrl = await page.evaluate(() => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 128;
+        canvas.height = 128;
+        const ctx = canvas.getContext('2d')!;
+        ctx.fillStyle = '#FF0000';
+        ctx.fillRect(0, 0, 128, 128);
+        return canvas.toDataURL('image/png');
+      });
+
+      const buffer = Buffer.from(imageDataUrl.split(',')[1], 'base64');
+      const fileInput = page.locator('input[type="file"]');
+      await fileInput.setInputFiles({
+        name: 'test.png',
+        mimeType: 'image/png',
+        buffer: buffer,
+      });
+
+      // ファイルサイズ情報を確認
+      const fileSizeInfo = page.locator('.file-size-info');
+      await expect(fileSizeInfo).toBeVisible({ timeout: 10000 });
+
+      // Discordの制限が表示される
+      await expect(fileSizeInfo).toContainText('256');
+
+      // Slackに切り替え
+      const platformSelector = page.locator('select#platform');
+      await platformSelector.selectOption('slack');
+
+      // Slackの制限が表示される
+      await expect(fileSizeInfo).toContainText('1024');
+    });
+  });
+
+  test.describe('Reset Functionality', () => {
+    test('should reset all settings when reset button is clicked', async ({ page }) => {
+      // 画像をアップロード
+      const imageDataUrl = await page.evaluate(() => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 128;
+        canvas.height = 128;
+        const ctx = canvas.getContext('2d')!;
+        ctx.fillStyle = '#FF0000';
+        ctx.fillRect(0, 0, 128, 128);
+        return canvas.toDataURL('image/png');
+      });
+
+      const buffer = Buffer.from(imageDataUrl.split(',')[1], 'base64');
+      const fileInput = page.locator('input[type="file"]');
+      await fileInput.setInputFiles({
+        name: 'test.png',
+        mimeType: 'image/png',
+        buffer: buffer,
+      });
+
+      // プレビューが表示されることを確認
+      await expect(page.locator('h2.section-title:has-text("プレビュー")')).toBeVisible({ timeout: 10000 });
+
+      // リセットボタンをクリック
+      const resetButton = page.locator('button:has-text("リセット")');
+      await resetButton.click();
+
+      // プレビューが非表示になる
+      await expect(page.locator('h2.section-title:has-text("プレビュー")')).not.toBeVisible();
+
+      // 編集オプションが非表示になる
+      await expect(page.locator('h2.section-title:has-text("編集オプション")')).not.toBeVisible();
+    });
+  });
+
+  test.describe('Accessibility', () => {
+    test('should have proper ARIA labels', async ({ page }) => {
+      const dropzone = page.locator('.dropzone');
+      await expect(dropzone).toHaveAttribute('aria-label', '画像ファイルをアップロード');
+
+      const fileInput = page.locator('input#imageFile');
+      await expect(fileInput).toHaveAttribute('aria-label', '画像ファイルを選択');
+
+      const platformSelect = page.locator('select#platform');
+      await expect(platformSelect).toHaveAttribute('aria-describedby', 'platform-help');
+    });
+
+    test('should have status region for screen readers', async ({ page }) => {
+      // main-content内のステータス領域を特定（複数あるためfirstを使用）
+      const statusRegion = page.locator('#main-content [role="status"]');
+      await expect(statusRegion).toBeAttached();
+      await expect(statusRegion).toHaveAttribute('aria-live', 'polite');
+    });
+
+    test('should be keyboard navigable', async ({ page }) => {
+      const dropzone = page.locator('.dropzone');
+
+      // dropzoneがtabIndex=0を持つことを確認
+      await expect(dropzone).toHaveAttribute('tabIndex', '0');
+
+      // dropzoneにフォーカスを当てる
+      await dropzone.focus();
+
+      // フォーカスされていることを確認
+      await expect(dropzone).toBeFocused();
+    });
+  });
+});

@@ -39,6 +39,7 @@ const navCategories = [
     items: [
       { path: "/color-extractor", label: "カラー抽出" },
       { path: "/image-to-gif", label: "画像→GIF変換" },
+      { path: "/emoji-converter", label: "絵文字変換" },
     ],
   },
   {
@@ -97,7 +98,7 @@ export const Route = createRootRoute({
       },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&family=Roboto+Mono&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Roboto:wght@300;400;500&family=Roboto+Mono&display=swap",
       },
       { rel: "stylesheet", href: appCss },
     ],
