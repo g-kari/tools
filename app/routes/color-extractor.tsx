@@ -418,14 +418,13 @@ function ColorExtractor() {
           )}
         </div>
 
-        <div className="converter-section" style={{ display: imageSrc ? 'block' : 'none' }}>
+        {/* Canvas always exists in DOM for processing, parent controls visibility */}
+        <div className="converter-section preview-section" style={imageSrc ? {} : { position: 'absolute', left: '-9999px', visibility: 'hidden' }}>
           <h2 className="section-title">プレビュー</h2>
           <div className="preview-container">
             <canvas ref={canvasRef} aria-label="アップロードされた画像" />
           </div>
         </div>
-        {/* Hidden canvas for processing when preview is not visible */}
-        {!imageSrc && <canvas ref={canvasRef} style={{ display: 'none' }} aria-hidden="true" />}
 
         {colors.length > 0 && (
           <div className="converter-section">
