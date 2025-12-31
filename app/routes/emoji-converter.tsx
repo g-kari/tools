@@ -633,24 +633,24 @@ function EmojiConverter() {
                 </div>
 
                 <div className="checkbox-group">
-                  <label className="checkbox-label">
+                  <label className="md3-checkbox-wrapper">
                     <input
                       type="checkbox"
                       checked={editOptions.flipH}
                       onChange={(e) => updateEditOption("flipH", e.target.checked)}
-                      className="checkbox"
                     />
-                    左右反転
+                    <span className="md3-checkbox" />
+                    <span className="md3-checkbox-label">左右反転</span>
                   </label>
 
-                  <label className="checkbox-label">
+                  <label className="md3-checkbox-wrapper">
                     <input
                       type="checkbox"
                       checked={editOptions.flipV}
                       onChange={(e) => updateEditOption("flipV", e.target.checked)}
-                      className="checkbox"
                     />
-                    上下反転
+                    <span className="md3-checkbox" />
+                    <span className="md3-checkbox-label">上下反転</span>
                   </label>
                 </div>
               </div>
@@ -718,16 +718,16 @@ function EmojiConverter() {
               <summary className="details-summary">透過処理</summary>
               <div className="details-content">
                 <div className="checkbox-group">
-                  <label className="checkbox-label">
+                  <label className="md3-checkbox-wrapper">
                     <input
                       type="checkbox"
                       checked={editOptions.transparent}
                       onChange={(e) =>
                         updateEditOption("transparent", e.target.checked)
                       }
-                      className="checkbox"
                     />
-                    指定色を透過
+                    <span className="md3-checkbox" />
+                    <span className="md3-checkbox-label">指定色を透過</span>
                   </label>
                 </div>
 
@@ -755,14 +755,14 @@ function EmojiConverter() {
               <summary className="details-summary">枠線</summary>
               <div className="details-content">
                 <div className="checkbox-group">
-                  <label className="checkbox-label">
+                  <label className="md3-checkbox-wrapper">
                     <input
                       type="checkbox"
                       checked={editOptions.border}
                       onChange={(e) => updateEditOption("border", e.target.checked)}
-                      className="checkbox"
                     />
-                    枠線を追加
+                    <span className="md3-checkbox" />
+                    <span className="md3-checkbox-label">枠線を追加</span>
                   </label>
                 </div>
 
