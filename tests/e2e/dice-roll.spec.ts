@@ -218,9 +218,11 @@ test.describe('Dice Roll - E2E Tests', () => {
     await rollButton.click();
 
     const copyButton = page.locator('button.btn-secondary');
+    await expect(copyButton).toContainText('結果をコピー');
     await copyButton.click();
 
-    await expect(copyButton).toContainText('コピーしました');
+    // Wait for the button text to change after copy
+    await expect(copyButton).toContainText('コピーしました', { timeout: 5000 });
   });
 
   test('should display roll history after rolling', async ({ page }) => {
