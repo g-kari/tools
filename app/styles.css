@@ -254,6 +254,10 @@ h1 {
   margin-bottom: 30px;
 }
 
+.output-section {
+  margin-bottom: 30px;
+}
+
 /* Search form layout */
 .search-form-row {
   display: flex;
