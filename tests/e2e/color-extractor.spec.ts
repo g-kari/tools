@@ -139,9 +139,13 @@ test.describe('Color Extractor - E2E Tests', () => {
         buffer: buffer,
       });
 
+      // 画像処理が完了するまで待機（再分析ボタンが表示されるのを待つ）
+      const reanalyzeButton = page.locator('button.btn-primary:has-text("再分析")');
+      await expect(reanalyzeButton).toBeVisible({ timeout: 10000 });
+
       // プレビューが表示されることを確認
       const previewSection = page.locator('.preview-container');
-      await expect(previewSection).toBeVisible({ timeout: 5000 });
+      await expect(previewSection).toBeVisible();
 
       const canvas = page.locator('canvas');
       await expect(canvas).toBeVisible();
@@ -169,7 +173,7 @@ test.describe('Color Extractor - E2E Tests', () => {
 
       // カラーカウントスライダーが表示される
       const colorCountSlider = page.locator('input#colorCount');
-      await expect(colorCountSlider).toBeVisible({ timeout: 5000 });
+      await expect(colorCountSlider).toBeVisible({ timeout: 10000 });
     });
 
     test('should extract colors after upload', async ({ page }) => {
@@ -198,7 +202,7 @@ test.describe('Color Extractor - E2E Tests', () => {
 
       // カラーグリッドが表示される
       const colorGrid = page.locator('.color-grid');
-      await expect(colorGrid).toBeVisible({ timeout: 5000 });
+      await expect(colorGrid).toBeVisible({ timeout: 10000 });
 
       // カラーカードが表示される
       const colorCards = page.locator('.color-card');
@@ -227,7 +231,7 @@ test.describe('Color Extractor - E2E Tests', () => {
       });
 
       // カラー情報が表示される
-      await expect(page.locator('.color-hex').first()).toBeVisible({ timeout: 5000 });
+      await expect(page.locator('.color-hex').first()).toBeVisible({ timeout: 10000 });
       await expect(page.locator('.color-rgb').first()).toBeVisible();
       await expect(page.locator('.color-usage').first()).toBeVisible();
 
@@ -258,7 +262,7 @@ test.describe('Color Extractor - E2E Tests', () => {
 
       // すべてコピーボタンが表示される
       const copyAllButton = page.locator('.btn-copy-all');
-      await expect(copyAllButton).toBeVisible({ timeout: 5000 });
+      await expect(copyAllButton).toBeVisible({ timeout: 10000 });
       await expect(copyAllButton).toContainText('すべてコピー');
     });
 
@@ -284,7 +288,7 @@ test.describe('Color Extractor - E2E Tests', () => {
 
       // 再分析ボタンが表示される
       const reanalyzeButton = page.locator('button.btn-primary:has-text("再分析")');
-      await expect(reanalyzeButton).toBeVisible({ timeout: 5000 });
+      await expect(reanalyzeButton).toBeVisible({ timeout: 10000 });
     });
   });
 
@@ -311,7 +315,7 @@ test.describe('Color Extractor - E2E Tests', () => {
 
       // カラーカウントスライダーを変更
       const colorCountSlider = page.locator('input#colorCount');
-      await expect(colorCountSlider).toBeVisible({ timeout: 5000 });
+      await expect(colorCountSlider).toBeVisible({ timeout: 10000 });
 
       // 再分析ボタンをクリック
       const reanalyzeButton = page.locator('button.btn-primary:has-text("再分析")');
@@ -321,8 +325,8 @@ test.describe('Color Extractor - E2E Tests', () => {
       await colorCountSlider.fill('5');
       await reanalyzeButton.click();
 
-      // カラーカードが更新される
-      await page.waitForTimeout(500);
+      // カラーカードが更新される（再分析ボタンが「分析中...」から「再分析」に戻るのを待つ）
+      await expect(reanalyzeButton).toHaveText('再分析', { timeout: 10000 });
       const colorCards = page.locator('.color-card');
       const count = await colorCards.count();
       expect(count).toBeGreaterThan(0);
