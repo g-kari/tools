@@ -87,13 +87,13 @@ test.describe('Dice Roll - E2E Tests', () => {
     const presets = ['D4', 'D6', 'D8', 'D10', 'D12', 'D20', 'D100'];
 
     for (const preset of presets) {
-      const button = page.locator(`.btn-preset:has-text("${preset}")`);
+      const button = page.getByRole('button', { name: preset, exact: true });
       await expect(button).toBeVisible();
     }
   });
 
   test('should change dice sides when clicking preset button', async ({ page }) => {
-    const d20Button = page.locator('.btn-preset:has-text("D20")');
+    const d20Button = page.getByRole('button', { name: 'D20', exact: true });
     await d20Button.click();
 
     const sidesInput = page.locator('input#dice-sides');
@@ -104,10 +104,10 @@ test.describe('Dice Roll - E2E Tests', () => {
   });
 
   test('should highlight active preset button', async ({ page }) => {
-    const d6Button = page.locator('.btn-preset:has-text("D6")');
+    const d6Button = page.getByRole('button', { name: 'D6', exact: true });
     await expect(d6Button).toHaveClass(/active/);
 
-    const d12Button = page.locator('.btn-preset:has-text("D12")');
+    const d12Button = page.getByRole('button', { name: 'D12', exact: true });
     await d12Button.click();
     await expect(d12Button).toHaveClass(/active/);
     await expect(d6Button).not.toHaveClass(/active/);
