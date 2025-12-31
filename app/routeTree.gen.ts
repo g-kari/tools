@@ -20,6 +20,7 @@ import { Route as OgpRouteImport } from './routes/ogp'
 import { Route as JwtRouteImport } from './routes/jwt'
 import { Route as JsonRouteImport } from './routes/json'
 import { Route as IpGeolocationRouteImport } from './routes/ip-geolocation'
+import { Route as ImageToGifRouteImport } from './routes/image-to-gif'
 import { Route as HashRouteImport } from './routes/hash'
 import { Route as GlobalIpRouteImport } from './routes/global-ip'
 import { Route as EmailDnsRouteImport } from './routes/email-dns'
@@ -89,6 +90,11 @@ const JsonRoute = JsonRouteImport.update({
 const IpGeolocationRoute = IpGeolocationRouteImport.update({
   id: '/ip-geolocation',
   path: '/ip-geolocation',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ImageToGifRoute = ImageToGifRouteImport.update({
+  id: '/image-to-gif',
+  path: '/image-to-gif',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HashRoute = HashRouteImport.update({
@@ -179,6 +185,7 @@ export interface FileRoutesByFullPath {
   '/email-dns': typeof EmailDnsRoute
   '/global-ip': typeof GlobalIpRoute
   '/hash': typeof HashRoute
+  '/image-to-gif': typeof ImageToGifRoute
   '/ip-geolocation': typeof IpGeolocationRoute
   '/json': typeof JsonRoute
   '/jwt': typeof JwtRoute
@@ -207,6 +214,7 @@ export interface FileRoutesByTo {
   '/email-dns': typeof EmailDnsRoute
   '/global-ip': typeof GlobalIpRoute
   '/hash': typeof HashRoute
+  '/image-to-gif': typeof ImageToGifRoute
   '/ip-geolocation': typeof IpGeolocationRoute
   '/json': typeof JsonRoute
   '/jwt': typeof JwtRoute
@@ -236,6 +244,7 @@ export interface FileRoutesById {
   '/email-dns': typeof EmailDnsRoute
   '/global-ip': typeof GlobalIpRoute
   '/hash': typeof HashRoute
+  '/image-to-gif': typeof ImageToGifRoute
   '/ip-geolocation': typeof IpGeolocationRoute
   '/json': typeof JsonRoute
   '/jwt': typeof JwtRoute
@@ -266,6 +275,7 @@ export interface FileRouteTypes {
     | '/email-dns'
     | '/global-ip'
     | '/hash'
+    | '/image-to-gif'
     | '/ip-geolocation'
     | '/json'
     | '/jwt'
@@ -294,6 +304,7 @@ export interface FileRouteTypes {
     | '/email-dns'
     | '/global-ip'
     | '/hash'
+    | '/image-to-gif'
     | '/ip-geolocation'
     | '/json'
     | '/jwt'
@@ -322,6 +333,7 @@ export interface FileRouteTypes {
     | '/email-dns'
     | '/global-ip'
     | '/hash'
+    | '/image-to-gif'
     | '/ip-geolocation'
     | '/json'
     | '/jwt'
@@ -351,6 +363,7 @@ export interface RootRouteChildren {
   EmailDnsRoute: typeof EmailDnsRoute
   GlobalIpRoute: typeof GlobalIpRoute
   HashRoute: typeof HashRoute
+  ImageToGifRoute: typeof ImageToGifRoute
   IpGeolocationRoute: typeof IpGeolocationRoute
   JsonRoute: typeof JsonRoute
   JwtRoute: typeof JwtRoute
@@ -445,6 +458,13 @@ declare module '@tanstack/react-router' {
       path: '/ip-geolocation'
       fullPath: '/ip-geolocation'
       preLoaderRoute: typeof IpGeolocationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/image-to-gif': {
+      id: '/image-to-gif'
+      path: '/image-to-gif'
+      fullPath: '/image-to-gif'
+      preLoaderRoute: typeof ImageToGifRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/hash': {
@@ -567,6 +587,7 @@ const rootRouteChildren: RootRouteChildren = {
   EmailDnsRoute: EmailDnsRoute,
   GlobalIpRoute: GlobalIpRoute,
   HashRoute: HashRoute,
+  ImageToGifRoute: ImageToGifRoute,
   IpGeolocationRoute: IpGeolocationRoute,
   JsonRoute: JsonRoute,
   JwtRoute: JwtRoute,
