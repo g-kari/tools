@@ -184,9 +184,7 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 pull_number: pr_number,
-                merge_method: 'squash',
-                commit_title: pr.title,
-                commit_message: pr.body || ''
+                merge_method: 'merge'
               });
 
               console.log('PR merged successfully!');
