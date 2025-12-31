@@ -19,6 +19,7 @@ import { Route as OgpRouteImport } from './routes/ogp'
 import { Route as JwtRouteImport } from './routes/jwt'
 import { Route as JsonRouteImport } from './routes/json'
 import { Route as IpGeolocationRouteImport } from './routes/ip-geolocation'
+import { Route as HashRouteImport } from './routes/hash'
 import { Route as GlobalIpRouteImport } from './routes/global-ip'
 import { Route as EmailDnsRouteImport } from './routes/email-dns'
 import { Route as DummyImageRouteImport } from './routes/dummy-image'
@@ -27,6 +28,7 @@ import { Route as DiceRollRouteImport } from './routes/dice-roll'
 import { Route as ColorExtractorRouteImport } from './routes/color-extractor'
 import { Route as CharCountRouteImport } from './routes/char-count'
 import { Route as Base64RouteImport } from './routes/base64'
+import { Route as AudioConverterRouteImport } from './routes/audio-converter'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiImageDotwebpRouteImport } from './routes/api/image[.]webp'
 import { Route as ApiImageDotsvgRouteImport } from './routes/api/image[.]svg'
@@ -83,6 +85,11 @@ const IpGeolocationRoute = IpGeolocationRouteImport.update({
   path: '/ip-geolocation',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HashRoute = HashRouteImport.update({
+  id: '/hash',
+  path: '/hash',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GlobalIpRoute = GlobalIpRouteImport.update({
   id: '/global-ip',
   path: '/global-ip',
@@ -123,6 +130,11 @@ const Base64Route = Base64RouteImport.update({
   path: '/base64',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AudioConverterRoute = AudioConverterRouteImport.update({
+  id: '/audio-converter',
+  path: '/audio-converter',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -151,6 +163,7 @@ const ApiImageDotjpgRoute = ApiImageDotjpgRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/audio-converter': typeof AudioConverterRoute
   '/base64': typeof Base64Route
   '/char-count': typeof CharCountRoute
   '/color-extractor': typeof ColorExtractorRoute
@@ -159,6 +172,7 @@ export interface FileRoutesByFullPath {
   '/dummy-image': typeof DummyImageRoute
   '/email-dns': typeof EmailDnsRoute
   '/global-ip': typeof GlobalIpRoute
+  '/hash': typeof HashRoute
   '/ip-geolocation': typeof IpGeolocationRoute
   '/json': typeof JsonRoute
   '/jwt': typeof JwtRoute
@@ -176,6 +190,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/audio-converter': typeof AudioConverterRoute
   '/base64': typeof Base64Route
   '/char-count': typeof CharCountRoute
   '/color-extractor': typeof ColorExtractorRoute
@@ -184,6 +199,7 @@ export interface FileRoutesByTo {
   '/dummy-image': typeof DummyImageRoute
   '/email-dns': typeof EmailDnsRoute
   '/global-ip': typeof GlobalIpRoute
+  '/hash': typeof HashRoute
   '/ip-geolocation': typeof IpGeolocationRoute
   '/json': typeof JsonRoute
   '/jwt': typeof JwtRoute
@@ -202,6 +218,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/audio-converter': typeof AudioConverterRoute
   '/base64': typeof Base64Route
   '/char-count': typeof CharCountRoute
   '/color-extractor': typeof ColorExtractorRoute
@@ -210,6 +227,7 @@ export interface FileRoutesById {
   '/dummy-image': typeof DummyImageRoute
   '/email-dns': typeof EmailDnsRoute
   '/global-ip': typeof GlobalIpRoute
+  '/hash': typeof HashRoute
   '/ip-geolocation': typeof IpGeolocationRoute
   '/json': typeof JsonRoute
   '/jwt': typeof JwtRoute
@@ -229,6 +247,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/audio-converter'
     | '/base64'
     | '/char-count'
     | '/color-extractor'
@@ -237,6 +256,7 @@ export interface FileRouteTypes {
     | '/dummy-image'
     | '/email-dns'
     | '/global-ip'
+    | '/hash'
     | '/ip-geolocation'
     | '/json'
     | '/jwt'
@@ -254,6 +274,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/audio-converter'
     | '/base64'
     | '/char-count'
     | '/color-extractor'
@@ -262,6 +283,7 @@ export interface FileRouteTypes {
     | '/dummy-image'
     | '/email-dns'
     | '/global-ip'
+    | '/hash'
     | '/ip-geolocation'
     | '/json'
     | '/jwt'
@@ -279,6 +301,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/audio-converter'
     | '/base64'
     | '/char-count'
     | '/color-extractor'
@@ -287,6 +310,7 @@ export interface FileRouteTypes {
     | '/dummy-image'
     | '/email-dns'
     | '/global-ip'
+    | '/hash'
     | '/ip-geolocation'
     | '/json'
     | '/jwt'
@@ -305,6 +329,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AudioConverterRoute: typeof AudioConverterRoute
   Base64Route: typeof Base64Route
   CharCountRoute: typeof CharCountRoute
   ColorExtractorRoute: typeof ColorExtractorRoute
@@ -313,6 +338,7 @@ export interface RootRouteChildren {
   DummyImageRoute: typeof DummyImageRoute
   EmailDnsRoute: typeof EmailDnsRoute
   GlobalIpRoute: typeof GlobalIpRoute
+  HashRoute: typeof HashRoute
   IpGeolocationRoute: typeof IpGeolocationRoute
   JsonRoute: typeof JsonRoute
   JwtRoute: typeof JwtRoute
@@ -401,6 +427,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IpGeolocationRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/hash': {
+      id: '/hash'
+      path: '/hash'
+      fullPath: '/hash'
+      preLoaderRoute: typeof HashRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/global-ip': {
       id: '/global-ip'
       path: '/global-ip'
@@ -457,6 +490,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Base64RouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/audio-converter': {
+      id: '/audio-converter'
+      path: '/audio-converter'
+      fullPath: '/audio-converter'
+      preLoaderRoute: typeof AudioConverterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -497,6 +537,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AudioConverterRoute: AudioConverterRoute,
   Base64Route: Base64Route,
   CharCountRoute: CharCountRoute,
   ColorExtractorRoute: ColorExtractorRoute,
@@ -505,6 +546,7 @@ const rootRouteChildren: RootRouteChildren = {
   DummyImageRoute: DummyImageRoute,
   EmailDnsRoute: EmailDnsRoute,
   GlobalIpRoute: GlobalIpRoute,
+  HashRoute: HashRoute,
   IpGeolocationRoute: IpGeolocationRoute,
   JsonRoute: JsonRoute,
   JwtRoute: JwtRoute,
