@@ -29,7 +29,7 @@ export async function loadFFmpeg(
   if (ffmpeg.loaded) return true;
 
   try {
-    const baseURL = "https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm";
+    const baseURL = "https://unpkg.com/@ffmpeg/core@0.12.10/dist/esm";
     await ffmpeg.load({
       coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, "text/javascript"),
       wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, "application/wasm"),
@@ -161,12 +161,13 @@ function ImageToGifConverter() {
   // FFmpegのログをプログレスに表示
   useEffect(() => {
     const ffmpeg = ffmpegRef.current;
-    ffmpeg.on("log", ({ message }) => {
+    const logHandler = ({ message }: { message: string }) => {
       setProgress(message);
-    });
+    };
+    ffmpeg.on("log", logHandler);
 
     return () => {
-      ffmpeg.off("log", () => {});
+      ffmpeg.off("log", logHandler);
     };
   }, []);
 
