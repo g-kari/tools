@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
+import { FFmpeg } from "@ffmpeg/ffmpeg";
+import { fetchFile, toBlobURL } from "@ffmpeg/util";
 
 export const Route = createFileRoute("/audio-converter")({
   head: () => ({
@@ -9,162 +11,71 @@ export const Route = createFileRoute("/audio-converter")({
 });
 
 /**
- * オーディオファイルを指定形式に変換する
- * @param audioBuffer - 変換元のAudioBuffer
+ * ffmpeg.wasmを使用してオーディオファイルを変換する
+ * @param file - 変換元のファイル
  * @param format - 変換先のフォーマット ('mp3' | 'wav' | 'ogg')
+ * @param onProgress - 進捗コールバック
  * @returns 変換後のBlobとファイル名
  */
-async function convertAudio(
-  audioBuffer: AudioBuffer,
-  format: "mp3" | "wav" | "ogg"
+async function convertAudioWithFFmpeg(
+  file: File,
+  format: "mp3" | "wav" | "ogg",
+  onProgress?: (progress: number) => void
 ): Promise<{ blob: Blob; filename: string }> {
-  const offlineContext = new OfflineAudioContext(
-    audioBuffer.numberOfChannels,
-    audioBuffer.length,
-    audioBuffer.sampleRate
-  );
+  const ffmpeg = new FFmpeg();
 
-  const source = offlineContext.createBufferSource();
-  source.buffer = audioBuffer;
-  source.connect(offlineContext.destination);
-  source.start();
+  // 進捗ログの処理
+  ffmpeg.on("log", ({ message }) => {
+    console.log(message);
+  });
 
-  const renderedBuffer = await offlineContext.startRendering();
+  // 進捗の処理
+  ffmpeg.on("progress", ({ progress }) => {
+    if (onProgress) {
+      onProgress(Math.round(progress * 100));
+    }
+  });
 
-  let blob: Blob;
-  let mimeType: string;
+  // ffmpeg-coreのロード
+  const baseURL = "https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm";
+  await ffmpeg.load({
+    coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, "text/javascript"),
+    wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, "application/wasm"),
+  });
 
-  if (format === "wav") {
-    // WAV形式に変換
-    const wavData = audioBufferToWav(renderedBuffer);
-    mimeType = "audio/wav";
-    blob = new Blob([wavData], { type: mimeType });
+  // 入力ファイルを書き込み
+  const inputName = "input" + file.name.substring(file.name.lastIndexOf("."));
+  await ffmpeg.writeFile(inputName, await fetchFile(file));
+
+  // 出力ファイル名
+  const outputName = `output.${format}`;
+
+  // フォーマットに応じた変換コマンド
+  let args: string[];
+  if (format === "mp3") {
+    args = ["-i", inputName, "-codec:a", "libmp3lame", "-qscale:a", "2", outputName];
+  } else if (format === "wav") {
+    args = ["-i", inputName, "-acodec", "pcm_s16le", "-ar", "44100", outputName];
   } else {
-    // MP3, OGG等はMediaRecorderを使用
-    mimeType = format === "mp3" ? "audio/mpeg" : "audio/ogg";
-    blob = await encodeWithMediaRecorder(renderedBuffer, mimeType);
+    // ogg
+    args = ["-i", inputName, "-codec:a", "libvorbis", "-qscale:a", "5", outputName];
   }
+
+  // 変換実行
+  await ffmpeg.exec(args);
+
+  // 出力ファイルを読み込み
+  const data = await ffmpeg.readFile(outputName);
+  const mimeType =
+    format === "mp3"
+      ? "audio/mpeg"
+      : format === "wav"
+        ? "audio/wav"
+        : "audio/ogg";
+  const blob = new Blob([data], { type: mimeType });
 
   const filename = `converted.${format}`;
   return { blob, filename };
-}
-
-/**
- * AudioBufferをWAV形式のArrayBufferに変換
- * @param buffer - 変換元のAudioBuffer
- * @returns WAV形式のArrayBuffer
- */
-function audioBufferToWav(buffer: AudioBuffer): ArrayBuffer {
-  const numberOfChannels = buffer.numberOfChannels;
-  const sampleRate = buffer.sampleRate;
-  const format = 1; // PCM
-  const bitDepth = 16;
-
-  const bytesPerSample = bitDepth / 8;
-  const blockAlign = numberOfChannels * bytesPerSample;
-
-  const data = new Float32Array(buffer.length * numberOfChannels);
-  for (let channel = 0; channel < numberOfChannels; channel++) {
-    const channelData = buffer.getChannelData(channel);
-    for (let i = 0; i < buffer.length; i++) {
-      data[i * numberOfChannels + channel] = channelData[i];
-    }
-  }
-
-  const dataLength = data.length * bytesPerSample;
-  const bufferLength = 44 + dataLength;
-  const arrayBuffer = new ArrayBuffer(bufferLength);
-  const view = new DataView(arrayBuffer);
-
-  // WAVヘッダーを書き込み
-  writeString(view, 0, "RIFF");
-  view.setUint32(4, 36 + dataLength, true);
-  writeString(view, 8, "WAVE");
-  writeString(view, 12, "fmt ");
-  view.setUint32(16, 16, true); // fmt chunk size
-  view.setUint16(20, format, true);
-  view.setUint16(22, numberOfChannels, true);
-  view.setUint32(24, sampleRate, true);
-  view.setUint32(28, sampleRate * blockAlign, true);
-  view.setUint16(32, blockAlign, true);
-  view.setUint16(34, bitDepth, true);
-  writeString(view, 36, "data");
-  view.setUint32(40, dataLength, true);
-
-  // PCMデータを書き込み
-  let offset = 44;
-  for (let i = 0; i < data.length; i++) {
-    const sample = Math.max(-1, Math.min(1, data[i]));
-    view.setInt16(
-      offset,
-      sample < 0 ? sample * 0x8000 : sample * 0x7fff,
-      true
-    );
-    offset += 2;
-  }
-
-  return arrayBuffer;
-}
-
-/**
- * DataViewに文字列を書き込む
- * @param view - 書き込み先のDataView
- * @param offset - 書き込み開始位置
- * @param string - 書き込む文字列
- */
-function writeString(view: DataView, offset: number, string: string): void {
-  for (let i = 0; i < string.length; i++) {
-    view.setUint8(offset + i, string.charCodeAt(i));
-  }
-}
-
-/**
- * MediaRecorderを使用してAudioBufferをエンコード
- * @param buffer - エンコード元のAudioBuffer
- * @param mimeType - エンコード先のMIMEタイプ
- * @returns エンコード後のBlob
- */
-async function encodeWithMediaRecorder(
-  buffer: AudioBuffer,
-  mimeType: string
-): Promise<Blob> {
-  // AudioBufferを再生可能なストリームに変換
-  const audioContext = new AudioContext();
-  const source = audioContext.createBufferSource();
-  source.buffer = buffer;
-
-  const destination = audioContext.createMediaStreamDestination();
-  source.connect(destination);
-
-  const mediaRecorder = new MediaRecorder(destination.stream, {
-    mimeType: mimeType,
-  });
-
-  const chunks: Blob[] = [];
-  mediaRecorder.ondataavailable = (e) => {
-    if (e.data.size > 0) {
-      chunks.push(e.data);
-    }
-  };
-
-  return new Promise((resolve, reject) => {
-    mediaRecorder.onstop = () => {
-      resolve(new Blob(chunks, { type: mimeType }));
-    };
-
-    mediaRecorder.onerror = () => {
-      reject(new Error("Encoding failed"));
-    };
-
-    mediaRecorder.start();
-    source.start();
-
-    // バッファの再生時間後に停止
-    setTimeout(() => {
-      mediaRecorder.stop();
-      audioContext.close();
-    }, (buffer.duration + 0.1) * 1000);
-  });
 }
 
 function AudioConverter() {
@@ -173,8 +84,19 @@ function AudioConverter() {
   const [isConverting, setIsConverting] = useState(false);
   const [convertedUrl, setConvertedUrl] = useState<string>("");
   const [convertedFilename, setConvertedFilename] = useState<string>("");
+  const [progress, setProgress] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const statusRef = useRef<HTMLDivElement>(null);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (convertedUrl) {
+        URL.revokeObjectURL(convertedUrl);
+      }
+    };
+  }, [convertedUrl]);
 
   const announceStatus = useCallback((message: string) => {
     if (statusRef.current) {
@@ -193,6 +115,7 @@ function AudioConverter() {
         }
         setSourceFile(file);
         setConvertedUrl("");
+        setProgress(0);
         announceStatus(`ファイル ${file.name} を選択しました`);
       }
     },
@@ -208,18 +131,21 @@ function AudioConverter() {
     }
 
     setIsConverting(true);
-    announceStatus("変換を開始しています...");
+    setIsLoading(true);
+    setProgress(0);
+    announceStatus("FFmpegを読み込んでいます...");
 
     try {
-      // ファイルをArrayBufferとして読み込み
-      const arrayBuffer = await sourceFile.arrayBuffer();
-
-      // AudioContextでデコード
-      const audioContext = new AudioContext();
-      const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-
-      // 指定フォーマットに変換
-      const { blob, filename } = await convertAudio(audioBuffer, format);
+      // ffmpeg.wasmを使用して変換
+      const { blob, filename } = await convertAudioWithFFmpeg(
+        sourceFile,
+        format,
+        (p) => {
+          setProgress(p);
+          setIsLoading(false);
+          announceStatus(`変換中... ${p}%`);
+        }
+      );
 
       // Blob URLを作成
       if (convertedUrl) {
@@ -228,9 +154,9 @@ function AudioConverter() {
       const url = URL.createObjectURL(blob);
       setConvertedUrl(url);
       setConvertedFilename(filename);
+      setProgress(100);
 
       announceStatus(`${format.toUpperCase()}形式への変換が完了しました`);
-      await audioContext.close();
     } catch (error) {
       console.error("Conversion error:", error);
       announceStatus("エラー: 変換に失敗しました");
@@ -239,6 +165,7 @@ function AudioConverter() {
       );
     } finally {
       setIsConverting(false);
+      setIsLoading(false);
     }
   }, [sourceFile, format, convertedUrl, announceStatus]);
 
@@ -246,6 +173,8 @@ function AudioConverter() {
     setSourceFile(null);
     setFormat("mp3");
     setIsConverting(false);
+    setProgress(0);
+    setIsLoading(false);
     if (convertedUrl) {
       URL.revokeObjectURL(convertedUrl);
     }
@@ -288,7 +217,7 @@ function AudioConverter() {
               }}
             />
             <span id="file-help" className="sr-only">
-              MP3, WAV, OGG等のオーディオファイルを選択してください
+              MP3, WAV, OGG, AAC, FLAC等のオーディオファイルを選択してください
             </span>
             {sourceFile && (
               <p
@@ -315,6 +244,7 @@ function AudioConverter() {
                 setFormat(e.target.value as "mp3" | "wav" | "ogg")
               }
               aria-label="出力フォーマットを選択"
+              disabled={isConverting}
               style={{
                 padding: "12px",
                 fontSize: "16px",
@@ -327,9 +257,39 @@ function AudioConverter() {
             >
               <option value="mp3">MP3</option>
               <option value="wav">WAV</option>
-              <option value="ogg">OGG</option>
+              <option value="ogg">OGG (Vorbis)</option>
             </select>
           </div>
+
+          {isConverting && (
+            <div className="converter-section">
+              <label className="section-title">
+                {isLoading ? "読み込み中..." : `変換進捗: ${progress}%`}
+              </label>
+              <div
+                style={{
+                  width: "100%",
+                  height: "8px",
+                  backgroundColor: "var(--md-sys-color-surface-variant)",
+                  borderRadius: "4px",
+                  overflow: "hidden",
+                }}
+                role="progressbar"
+                aria-valuenow={progress}
+                aria-valuemin={0}
+                aria-valuemax={100}
+              >
+                <div
+                  style={{
+                    width: `${progress}%`,
+                    height: "100%",
+                    backgroundColor: "var(--md-sys-color-primary)",
+                    transition: "width 0.3s ease",
+                  }}
+                />
+              </div>
+            </div>
+          )}
 
           <div className="button-group" role="group" aria-label="変換操作">
             <button
@@ -392,18 +352,15 @@ function AudioConverter() {
           </ul>
           <h3>対応フォーマット</h3>
           <ul>
-            <li>入力: MP3, WAV, OGG, AAC, FLAC 等（ブラウザ対応形式）</li>
-            <li>出力: MP3, WAV, OGG</li>
+            <li>入力: MP3, WAV, OGG, AAC, FLAC, M4A 等（FFmpegサポート形式）</li>
+            <li>出力: MP3 (高品質), WAV (PCM 44.1kHz), OGG (Vorbis)</li>
           </ul>
-          <h3>注意事項</h3>
+          <h3>技術情報</h3>
           <ul>
-            <li>
-              変換処理はブラウザ上で実行されます（サーバーにアップロードされません）
-            </li>
+            <li>変換処理にはFFmpeg.wasmを使用しています</li>
+            <li>すべての処理はブラウザ上で実行されます（サーバーへのアップロードなし）</li>
+            <li>初回変換時にFFmpegライブラリ（約31MB）をダウンロードします</li>
             <li>大きなファイルの変換には時間がかかる場合があります</li>
-            <li>
-              ブラウザの対応状況により、一部のフォーマットが利用できない場合があります
-            </li>
           </ul>
         </aside>
       </div>

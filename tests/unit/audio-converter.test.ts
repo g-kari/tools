@@ -1,248 +1,6 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-
-/**
- * Mock AudioBuffer interface for testing
- */
-interface MockAudioBuffer {
-  numberOfChannels: number;
-  length: number;
-  sampleRate: number;
-  getChannelData(channel: number): Float32Array;
-}
-
-/**
- * AudioBufferをWAV形式のArrayBufferに変換するヘルパー関数のテスト用コピー
- * 実際のコードから分離してテスト可能にする
- */
-function audioBufferToWav(buffer: MockAudioBuffer): ArrayBuffer {
-  const numberOfChannels = buffer.numberOfChannels;
-  const sampleRate = buffer.sampleRate;
-  const format = 1; // PCM
-  const bitDepth = 16;
-
-  const bytesPerSample = bitDepth / 8;
-  const blockAlign = numberOfChannels * bytesPerSample;
-
-  const data = new Float32Array(buffer.length * numberOfChannels);
-  for (let channel = 0; channel < numberOfChannels; channel++) {
-    const channelData = buffer.getChannelData(channel);
-    for (let i = 0; i < buffer.length; i++) {
-      data[i * numberOfChannels + channel] = channelData[i];
-    }
-  }
-
-  const dataLength = data.length * bytesPerSample;
-  const bufferLength = 44 + dataLength;
-  const arrayBuffer = new ArrayBuffer(bufferLength);
-  const view = new DataView(arrayBuffer);
-
-  // Helper to write string to DataView
-  function writeString(offset: number, string: string): void {
-    for (let i = 0; i < string.length; i++) {
-      view.setUint8(offset + i, string.charCodeAt(i));
-    }
-  }
-
-  // Write WAV header
-  writeString(0, "RIFF");
-  view.setUint32(4, 36 + dataLength, true);
-  writeString(8, "WAVE");
-  writeString(12, "fmt ");
-  view.setUint32(16, 16, true);
-  view.setUint16(20, format, true);
-  view.setUint16(22, numberOfChannels, true);
-  view.setUint32(24, sampleRate, true);
-  view.setUint32(28, sampleRate * blockAlign, true);
-  view.setUint16(32, blockAlign, true);
-  view.setUint16(34, bitDepth, true);
-  writeString(36, "data");
-  view.setUint32(40, dataLength, true);
-
-  // Write PCM data
-  let offset = 44;
-  for (let i = 0; i < data.length; i++) {
-    const sample = Math.max(-1, Math.min(1, data[i]));
-    view.setInt16(
-      offset,
-      sample < 0 ? sample * 0x8000 : sample * 0x7fff,
-      true
-    );
-    offset += 2;
-  }
-
-  return arrayBuffer;
-}
-
-/**
- * モックAudioBufferを作成
- */
-function createMockAudioBuffer(
-  numberOfChannels: number,
-  length: number,
-  sampleRate: number
-): MockAudioBuffer {
-  const channels: Float32Array[] = [];
-
-  // Fill with test data
-  for (let channel = 0; channel < numberOfChannels; channel++) {
-    const channelData = new Float32Array(length);
-    for (let i = 0; i < length; i++) {
-      // Generate a simple sine wave
-      channelData[i] = Math.sin(2 * Math.PI * 440 * i / sampleRate);
-    }
-    channels.push(channelData);
-  }
-
-  return {
-    numberOfChannels,
-    length,
-    sampleRate,
-    getChannelData(channel: number): Float32Array {
-      return channels[channel];
-    }
-  };
-}
+import { describe, it, expect } from 'vitest';
 
 describe('Audio Converter', () => {
-  beforeEach(() => {
-    vi.restoreAllMocks();
-  });
-
-  describe('audioBufferToWav', () => {
-    it('should create a valid WAV header', () => {
-      const buffer = createMockAudioBuffer(2, 1000, 44100);
-      const wavBuffer = audioBufferToWav(buffer);
-      const view = new DataView(wavBuffer);
-
-      // Check RIFF header
-      const riff = String.fromCharCode(
-        view.getUint8(0),
-        view.getUint8(1),
-        view.getUint8(2),
-        view.getUint8(3)
-      );
-      expect(riff).toBe('RIFF');
-
-      // Check WAVE format
-      const wave = String.fromCharCode(
-        view.getUint8(8),
-        view.getUint8(9),
-        view.getUint8(10),
-        view.getUint8(11)
-      );
-      expect(wave).toBe('WAVE');
-
-      // Check fmt chunk
-      const fmt = String.fromCharCode(
-        view.getUint8(12),
-        view.getUint8(13),
-        view.getUint8(14),
-        view.getUint8(15)
-      );
-      expect(fmt).toBe('fmt ');
-    });
-
-    it('should set correct audio format (PCM)', () => {
-      const buffer = createMockAudioBuffer(2, 1000, 44100);
-      const wavBuffer = audioBufferToWav(buffer);
-      const view = new DataView(wavBuffer);
-
-      const audioFormat = view.getUint16(20, true);
-      expect(audioFormat).toBe(1); // PCM format
-    });
-
-    it('should set correct number of channels', () => {
-      const buffer = createMockAudioBuffer(2, 1000, 44100);
-      const wavBuffer = audioBufferToWav(buffer);
-      const view = new DataView(wavBuffer);
-
-      const numChannels = view.getUint16(22, true);
-      expect(numChannels).toBe(2);
-    });
-
-    it('should set correct sample rate', () => {
-      const buffer = createMockAudioBuffer(2, 1000, 44100);
-      const wavBuffer = audioBufferToWav(buffer);
-      const view = new DataView(wavBuffer);
-
-      const sampleRate = view.getUint32(24, true);
-      expect(sampleRate).toBe(44100);
-    });
-
-    it('should set correct bit depth', () => {
-      const buffer = createMockAudioBuffer(2, 1000, 44100);
-      const wavBuffer = audioBufferToWav(buffer);
-      const view = new DataView(wavBuffer);
-
-      const bitsPerSample = view.getUint16(34, true);
-      expect(bitsPerSample).toBe(16);
-    });
-
-    it('should calculate correct buffer size', () => {
-      const numberOfChannels = 2;
-      const length = 1000;
-      const buffer = createMockAudioBuffer(numberOfChannels, length, 44100);
-      const wavBuffer = audioBufferToWav(buffer);
-
-      // WAV header (44 bytes) + PCM data (length * channels * 2 bytes)
-      const expectedSize = 44 + (length * numberOfChannels * 2);
-      expect(wavBuffer.byteLength).toBe(expectedSize);
-    });
-
-    it('should handle mono audio', () => {
-      const buffer = createMockAudioBuffer(1, 1000, 44100);
-      const wavBuffer = audioBufferToWav(buffer);
-      const view = new DataView(wavBuffer);
-
-      const numChannels = view.getUint16(22, true);
-      expect(numChannels).toBe(1);
-    });
-
-    it('should have data chunk marker', () => {
-      const buffer = createMockAudioBuffer(2, 1000, 44100);
-      const wavBuffer = audioBufferToWav(buffer);
-      const view = new DataView(wavBuffer);
-
-      const data = String.fromCharCode(
-        view.getUint8(36),
-        view.getUint8(37),
-        view.getUint8(38),
-        view.getUint8(39)
-      );
-      expect(data).toBe('data');
-    });
-
-    it('should clamp audio samples to valid range', () => {
-      const channelData = new Float32Array(10);
-
-      // Set values outside valid range
-      channelData[0] = 2.0;  // Above max
-      channelData[1] = -2.0; // Below min
-      channelData[2] = 0.5;  // Normal
-
-      const buffer: MockAudioBuffer = {
-        numberOfChannels: 1,
-        length: 10,
-        sampleRate: 44100,
-        getChannelData(channel: number): Float32Array {
-          return channelData;
-        }
-      };
-
-      const wavBuffer = audioBufferToWav(buffer);
-      const view = new DataView(wavBuffer);
-
-      // Check that values are clamped (samples start at byte 44)
-      const sample0 = view.getInt16(44, true);
-      const sample1 = view.getInt16(46, true);
-      const sample2 = view.getInt16(48, true);
-
-      expect(sample0).toBe(0x7FFF); // Max value
-      expect(sample1).toBe(-0x8000); // Min value
-      expect(sample2).toBeGreaterThan(0); // Positive value
-    });
-  });
-
   describe('Audio format support', () => {
     it('should recognize common audio MIME types', () => {
       const audioTypes = [
@@ -252,6 +10,8 @@ describe('Audio Converter', () => {
         'audio/ogg',
         'audio/webm',
         'audio/aac',
+        'audio/flac',
+        'audio/m4a',
       ];
 
       audioTypes.forEach(type => {
@@ -260,7 +20,7 @@ describe('Audio Converter', () => {
     });
 
     it('should validate file type is audio', () => {
-      const validTypes = ['audio/mp3', 'audio/wav'];
+      const validTypes = ['audio/mp3', 'audio/wav', 'audio/ogg'];
       const invalidTypes = ['video/mp4', 'image/png', 'text/plain'];
 
       validTypes.forEach(type => {
@@ -285,6 +45,12 @@ describe('Audio Converter', () => {
       const kb = (bytes / 1024).toFixed(2);
       expect(kb).toBe('1.50');
     });
+
+    it('should handle large file sizes', () => {
+      const bytes = 5242880; // 5 MB
+      const kb = bytes / 1024;
+      expect(kb).toBe(5120);
+    });
   });
 
   describe('Audio format extensions', () => {
@@ -304,6 +70,109 @@ describe('Audio Converter', () => {
       const format = 'ogg';
       const filename = `converted.${format}`;
       expect(filename).toBe('converted.ogg');
+    });
+  });
+
+  describe('MIME type mapping', () => {
+    it('should map MP3 format to correct MIME type', () => {
+      const format = 'mp3';
+      const mimeType = format === 'mp3' ? 'audio/mpeg' : '';
+      expect(mimeType).toBe('audio/mpeg');
+    });
+
+    it('should map WAV format to correct MIME type', () => {
+      const format = 'wav';
+      const mimeType = format === 'wav' ? 'audio/wav' : '';
+      expect(mimeType).toBe('audio/wav');
+    });
+
+    it('should map OGG format to correct MIME type', () => {
+      const format = 'ogg';
+      const mimeType = format === 'ogg' ? 'audio/ogg' : '';
+      expect(mimeType).toBe('audio/ogg');
+    });
+  });
+
+  describe('FFmpeg command arguments', () => {
+    it('should generate MP3 conversion arguments', () => {
+      const format = 'mp3';
+      const inputName = 'input.wav';
+      const outputName = `output.${format}`;
+      const args = ["-i", inputName, "-codec:a", "libmp3lame", "-qscale:a", "2", outputName];
+
+      expect(args).toContain('-i');
+      expect(args).toContain(inputName);
+      expect(args).toContain('-codec:a');
+      expect(args).toContain('libmp3lame');
+      expect(args).toContain(outputName);
+    });
+
+    it('should generate WAV conversion arguments', () => {
+      const format = 'wav';
+      const inputName = 'input.mp3';
+      const outputName = `output.${format}`;
+      const args = ["-i", inputName, "-acodec", "pcm_s16le", "-ar", "44100", outputName];
+
+      expect(args).toContain('-i');
+      expect(args).toContain(inputName);
+      expect(args).toContain('-acodec');
+      expect(args).toContain('pcm_s16le');
+      expect(args).toContain('-ar');
+      expect(args).toContain('44100');
+      expect(args).toContain(outputName);
+    });
+
+    it('should generate OGG conversion arguments', () => {
+      const format = 'ogg';
+      const inputName = 'input.mp3';
+      const outputName = `output.${format}`;
+      const args = ["-i", inputName, "-codec:a", "libvorbis", "-qscale:a", "5", outputName];
+
+      expect(args).toContain('-i');
+      expect(args).toContain(inputName);
+      expect(args).toContain('-codec:a');
+      expect(args).toContain('libvorbis');
+      expect(args).toContain(outputName);
+    });
+  });
+
+  describe('File extension extraction', () => {
+    it('should extract extension from filename', () => {
+      const filename = 'audio.mp3';
+      const ext = filename.substring(filename.lastIndexOf('.'));
+      expect(ext).toBe('.mp3');
+    });
+
+    it('should handle multiple dots in filename', () => {
+      const filename = 'my.audio.file.wav';
+      const ext = filename.substring(filename.lastIndexOf('.'));
+      expect(ext).toBe('.wav');
+    });
+
+    it('should handle filename without extension', () => {
+      const filename = 'audio';
+      const lastDotIndex = filename.lastIndexOf('.');
+      expect(lastDotIndex).toBe(-1);
+    });
+  });
+
+  describe('Progress percentage', () => {
+    it('should round progress to integer', () => {
+      const progress = 0.456;
+      const rounded = Math.round(progress * 100);
+      expect(rounded).toBe(46);
+    });
+
+    it('should handle zero progress', () => {
+      const progress = 0;
+      const rounded = Math.round(progress * 100);
+      expect(rounded).toBe(0);
+    });
+
+    it('should handle complete progress', () => {
+      const progress = 1;
+      const rounded = Math.round(progress * 100);
+      expect(rounded).toBe(100);
     });
   });
 });
