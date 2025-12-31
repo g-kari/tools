@@ -14,7 +14,7 @@ test.describe('Text Sort Tool', () => {
   test('should sort text in ascending order', async ({ page }) => {
     const inputTextarea = page.locator('#inputText');
     const outputTextarea = page.locator('#outputText');
-    const sortAscButton = page.getByRole('button', { name: /昇順ソート/ });
+    const sortAscButton = page.getByRole('button', { name: '入力テキストを昇順ソート' });
 
     await inputTextarea.fill('cherry\napple\nbanana');
     await sortAscButton.click();
@@ -36,7 +36,7 @@ test.describe('Text Sort Tool', () => {
   test('should sort Japanese text in ascending order', async ({ page }) => {
     const inputTextarea = page.locator('#inputText');
     const outputTextarea = page.locator('#outputText');
-    const sortAscButton = page.getByRole('button', { name: /昇順ソート/ });
+    const sortAscButton = page.getByRole('button', { name: '入力テキストを昇順ソート' });
 
     await inputTextarea.fill('りんご\nみかん\nバナナ');
     await sortAscButton.click();
@@ -64,7 +64,7 @@ test.describe('Text Sort Tool', () => {
   test('should sort and remove duplicates', async ({ page }) => {
     const inputTextarea = page.locator('#inputText');
     const outputTextarea = page.locator('#outputText');
-    const sortAndRemoveButton = page.getByRole('button', { name: /ソート \+ 重複削除/ });
+    const sortAndRemoveButton = page.getByRole('button', { name: '昇順ソートと重複削除を同時実行' });
 
     await inputTextarea.fill('cherry\napple\nbanana\napple\ncherry');
     await sortAndRemoveButton.click();
@@ -75,7 +75,7 @@ test.describe('Text Sort Tool', () => {
   test('should clear input and output', async ({ page }) => {
     const inputTextarea = page.locator('#inputText');
     const outputTextarea = page.locator('#outputText');
-    const sortAscButton = page.getByRole('button', { name: /昇順ソート/ });
+    const sortAscButton = page.getByRole('button', { name: '入力テキストを昇順ソート' });
     const clearButton = page.getByRole('button', { name: /クリア/ });
 
     await inputTextarea.fill('test\ndata');
@@ -121,7 +121,7 @@ test.describe('Text Sort Tool', () => {
   test('should handle multiline Japanese text with duplicates', async ({ page }) => {
     const inputTextarea = page.locator('#inputText');
     const outputTextarea = page.locator('#outputText');
-    const sortAndRemoveButton = page.getByRole('button', { name: /ソート \+ 重複削除/ });
+    const sortAndRemoveButton = page.getByRole('button', { name: '昇順ソートと重複削除を同時実行' });
 
     await inputTextarea.fill('りんご\nバナナ\nりんご\nみかん\nバナナ');
     await sortAndRemoveButton.click();
@@ -132,7 +132,7 @@ test.describe('Text Sort Tool', () => {
   test('should preserve empty lines during sort', async ({ page }) => {
     const inputTextarea = page.locator('#inputText');
     const outputTextarea = page.locator('#outputText');
-    const sortAscButton = page.getByRole('button', { name: /昇順ソート/ });
+    const sortAscButton = page.getByRole('button', { name: '入力テキストを昇順ソート' });
 
     await inputTextarea.fill('cherry\n\napple\nbanana');
     await sortAscButton.click();
