@@ -10,10 +10,13 @@ export const Route = createFileRoute("/dice-roll")({
 
 /**
  * サイコロをロールする関数
- * @param sides - サイコロの面数
+ * @param sides - サイコロの面数（2以上の整数）
  * @returns 1からsidesまでのランダムな整数
+ * @example
+ * // 6面サイコロをロール
+ * const result = rollDice(6); // 1-6のいずれかの値
  */
-function rollDice(sides: number): number {
+export function rollDice(sides: number): number {
   return Math.floor(Math.random() * sides) + 1;
 }
 
@@ -31,6 +34,21 @@ interface RollHistory {
   timestamp: number;
 }
 
+/**
+ * ダイスロールページコンポーネント
+ * TRPG（テーブルトークRPG）やボードゲームで使用するサイコロをシミュレートする機能を提供します。
+ *
+ * 主な機能:
+ * - サイコロの個数（1-100個）と面数（2-1000面）を自由に設定可能
+ * - D4/D6/D8/D10/D12/D20/D100のプリセットボタン
+ * - 各サイコロの出目と合計値の表示
+ * - ロール結果のコピー機能
+ * - 過去10件のロール履歴表示
+ * - Material Design 3準拠のUI
+ * - WCAGアクセシビリティ対応
+ *
+ * @returns ダイスロールページのReactコンポーネント
+ */
 function DiceRoll() {
   const [diceCount, setDiceCount] = useState(1);
   const [diceSides, setDiceSides] = useState(6);

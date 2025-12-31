@@ -1,13 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-
-/**
- * サイコロをロールする関数（テスト用に再定義）
- * @param sides - サイコロの面数
- * @returns 1からsidesまでのランダムな整数
- */
-function rollDice(sides: number): number {
-  return Math.floor(Math.random() * sides) + 1;
-}
+import { rollDice } from '../../app/routes/dice-roll';
 
 describe('Dice Roll', () => {
   beforeEach(() => {

@@ -17,8 +17,8 @@ test.describe('Dice Roll - E2E Tests', () => {
 
   test.beforeEach(async ({ page }) => {
     await page.goto('/dice-roll');
-    // Wait for React hydration
-    await page.waitForLoadState('networkidle');
+    // Wait for React hydration by checking for a key element
+    await page.waitForSelector('.tool-container');
   });
 
   test('should load the page without "undefined" content', async ({ page }) => {
