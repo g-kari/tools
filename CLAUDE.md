@@ -200,6 +200,26 @@ npm run build && npm run test:e2e
 - 日本語UIをメインにサポート
 - TanStack Startのサーバーファンクションを使用してAPI実装
 
+### Git Worktreeを使用した開発
+
+**推奨**: 複数の機能ブランチを同時に開発する場合は、git worktreeを使用して作業ディレクトリを分けることを推奨します。
+
+```bash
+# 新しい機能ブランチ用のworktreeを作成
+git worktree add ../tools-feat-example feat/example
+
+# worktreeの一覧を確認
+git worktree list
+
+# worktreeを削除（ブランチ作業完了後）
+git worktree remove ../tools-feat-example
+```
+
+**利点**:
+- 複数のブランチを同時に作業できる（ブランチの切り替え不要）
+- ビルド成果物やnode_modulesがブランチごとに独立
+- メインブランチを保持したまま、別の作業を進められる
+
 ## スキル（デザインガイドライン）
 
 このプロジェクトでは以下のスキルファイルを参照してください：
