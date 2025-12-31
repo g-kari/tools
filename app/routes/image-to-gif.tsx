@@ -90,13 +90,6 @@ export async function convertImagesToGif(
       ]);
     } else {
       // 複数枚の場合はアニメーションGIFを作成
-      // 各画像を指定されたフレームレートで結合
-      const inputs = images.map((_, i) => {
-        const ext = images[i].name.split(".").pop() || "png";
-        return `-loop 1 -t ${1/framerate} -i input${i}.${ext}`;
-      }).join(" ");
-
-      // パレット生成とGIF作成を2ステップで実行
       await ffmpeg.exec([
         ...images.flatMap((_, i) => {
           const ext = images[i].name.split(".").pop() || "png";
