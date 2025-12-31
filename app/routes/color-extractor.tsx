@@ -173,6 +173,7 @@ function ColorExtractor() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const statusRef = useRef<HTMLDivElement>(null);
   const statusTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const loadedImageRef = useRef<HTMLImageElement | null>(null);
 
   const announceStatus = useCallback((message: string) => {
     if (statusRef.current) {
@@ -200,27 +201,13 @@ function ColorExtractor() {
     };
   }, [imageSrc]);
 
-  const processImage = useCallback(async (file: File) => {
-    if (!file.type.startsWith("image/")) {
-      announceStatus("画像ファイルを選択してください");
-      return;
-    }
-
-    setIsProcessing(true);
-    setColors([]);
-
-    try {
-      // 画像を読み込む
-      const img = new Image();
-      const objectUrl = URL.createObjectURL(file);
-
-      img.onload = () => {
-        if (!canvasRef.current) return;
-
-        const canvas = canvasRef.current;
-        const ctx = canvas.getContext("2d");
-        if (!ctx) return;
-
+  // imageSrcが設定されたらcanvasに画像を描画
+  useEffect(() => {
+    if (imageSrc && loadedImageRef.current && canvasRef.current) {
+      const canvas = canvasRef.current;
+      const ctx = canvas.getContext("2d");
+      const img = loadedImageRef.current;
+      if (ctx) {
         // キャンバスサイズを画像に合わせる（最大800px）
         const maxSize = 800;
         let width = img.width;
@@ -238,17 +225,63 @@ function ColorExtractor() {
 
         canvas.width = width;
         canvas.height = height;
+        ctx.drawImage(img, 0, 0, width, height);
+      }
+    }
+  }, [imageSrc]);
+
+  const processImage = useCallback(async (file: File) => {
+    if (!file.type.startsWith("image/")) {
+      announceStatus("画像ファイルを選択してください");
+      return;
+    }
+
+    setIsProcessing(true);
+    setColors([]);
+
+    try {
+      // 画像を読み込む
+      const img = new Image();
+      const objectUrl = URL.createObjectURL(file);
+
+      img.onload = () => {
+        // 画像をrefに保存（後でcanvasに描画するため）
+        loadedImageRef.current = img;
+
+        // 一時的なcanvasでピクセルデータを取得
+        const tempCanvas = document.createElement("canvas");
+        const tempCtx = tempCanvas.getContext("2d");
+        if (!tempCtx) return;
+
+        // キャンバスサイズを画像に合わせる（最大800px）
+        const maxSize = 800;
+        let width = img.width;
+        let height = img.height;
+
+        if (width > maxSize || height > maxSize) {
+          if (width > height) {
+            height = (height * maxSize) / width;
+            width = maxSize;
+          } else {
+            width = (width * maxSize) / height;
+            height = maxSize;
+          }
+        }
+
+        tempCanvas.width = width;
+        tempCanvas.height = height;
 
         // 画像を描画
-        ctx.drawImage(img, 0, 0, width, height);
+        tempCtx.drawImage(img, 0, 0, width, height);
 
         // ピクセルデータを取得
-        const imageData = ctx.getImageData(0, 0, width, height);
+        const imageData = tempCtx.getImageData(0, 0, width, height);
         const pixels = getPixelsFromImageData(imageData, 10);
 
         // カラーを抽出
         const extractedColors = extractColors(pixels, colorCount);
         setColors(extractedColors);
+        // imageSrcを設定すると、useEffectでcanvasに描画される
         setImageSrc(objectUrl);
         setIsProcessing(false);
         announceStatus(`${extractedColors.length}色を抽出しました`);
