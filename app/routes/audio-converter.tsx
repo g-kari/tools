@@ -306,15 +306,6 @@ function AudioConverter() {
               }
               aria-label="出力フォーマットを選択"
               disabled={isConverting}
-              style={{
-                padding: "12px",
-                fontSize: "16px",
-                border: "1px solid var(--md-sys-color-outline)",
-                borderRadius: "4px",
-                backgroundColor: "var(--md-sys-color-surface-container)",
-                color: "var(--md-sys-color-on-surface)",
-                width: "100%",
-              }}
             >
               <option value="mp3">MP3</option>
               <option value="wav">WAV</option>
@@ -325,8 +316,8 @@ function AudioConverter() {
           <div className="converter-section">
             <h3 className="section-title">変換オプション</h3>
 
-            <div style={{ marginBottom: "16px" }}>
-              <label htmlFor="bitrate" style={{ display: "block", marginBottom: "4px", fontSize: "14px" }}>
+            <div className="option-group">
+              <label htmlFor="bitrate">
                 ビットレート (kbps)
               </label>
               <select
@@ -335,15 +326,6 @@ function AudioConverter() {
                 onChange={(e) => setBitrate(e.target.value)}
                 disabled={isConverting || format === "wav"}
                 aria-label="ビットレートを選択"
-                style={{
-                  padding: "8px",
-                  fontSize: "14px",
-                  border: "1px solid var(--md-sys-color-outline)",
-                  borderRadius: "4px",
-                  backgroundColor: "var(--md-sys-color-surface-container)",
-                  color: "var(--md-sys-color-on-surface)",
-                  width: "100%",
-                }}
               >
                 <option value="320">320 (最高品質)</option>
                 <option value="256">256 (高品質)</option>
@@ -359,8 +341,8 @@ function AudioConverter() {
               )}
             </div>
 
-            <div style={{ marginBottom: "16px" }}>
-              <label htmlFor="sampleRate" style={{ display: "block", marginBottom: "4px", fontSize: "14px" }}>
+            <div className="option-group">
+              <label htmlFor="sampleRate">
                 サンプリングレート (Hz)
               </label>
               <select
@@ -369,15 +351,6 @@ function AudioConverter() {
                 onChange={(e) => setSampleRate(e.target.value)}
                 disabled={isConverting}
                 aria-label="サンプリングレートを選択"
-                style={{
-                  padding: "8px",
-                  fontSize: "14px",
-                  border: "1px solid var(--md-sys-color-outline)",
-                  borderRadius: "4px",
-                  backgroundColor: "var(--md-sys-color-surface-container)",
-                  color: "var(--md-sys-color-on-surface)",
-                  width: "100%",
-                }}
               >
                 <option value="48000">48000 (最高品質)</option>
                 <option value="44100">44100 (CD品質)</option>
@@ -389,8 +362,8 @@ function AudioConverter() {
               </select>
             </div>
 
-            <div style={{ marginBottom: "16px" }}>
-              <label htmlFor="channels" style={{ display: "block", marginBottom: "4px", fontSize: "14px" }}>
+            <div className="option-group">
+              <label htmlFor="channels">
                 チャンネル
               </label>
               <select
@@ -399,15 +372,6 @@ function AudioConverter() {
                 onChange={(e) => setChannels(e.target.value)}
                 disabled={isConverting}
                 aria-label="チャンネルを選択"
-                style={{
-                  padding: "8px",
-                  fontSize: "14px",
-                  border: "1px solid var(--md-sys-color-outline)",
-                  borderRadius: "4px",
-                  backgroundColor: "var(--md-sys-color-surface-container)",
-                  color: "var(--md-sys-color-on-surface)",
-                  width: "100%",
-                }}
               >
                 <option value="2">ステレオ (2ch)</option>
                 <option value="1">モノラル (1ch)</option>
