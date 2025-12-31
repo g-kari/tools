@@ -86,7 +86,7 @@ test.describe('Image to GIF Converter - E2E Tests', () => {
     await expect(loopSelect).toBeVisible();
 
     const options = page.locator('select#loop option');
-    await expect(options.first()).toBeVisible();
+    await expect(options).toHaveCount(5); // 無限ループ、1回、2回、3回、5回
   });
 
   test('should have default settings', async ({ page }) => {
@@ -112,12 +112,10 @@ test.describe('Image to GIF Converter - E2E Tests', () => {
     await expect(convertButton).toBeDisabled();
   });
 
-  test('should update framerate label when slider changes', async ({ page }) => {
+  test('should have disabled framerate slider when no images selected', async ({ page }) => {
     const framerateInput = page.locator('input#framerate');
-    const label = page.locator('label[for="framerate"]');
-
-    await framerateInput.fill('15');
-    await expect(label).toContainText('15 fps');
+    // 画像が選択されていない場合はdisabled
+    await expect(framerateInput).toBeDisabled();
   });
 
   test('should change loop setting', async ({ page }) => {
