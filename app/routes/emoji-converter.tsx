@@ -34,6 +34,11 @@ interface EditOptions {
   border: boolean;
   borderWidth: number;
   borderColor: string;
+  crop: boolean;
+  cropX: number;
+  cropY: number;
+  cropWidth: number;
+  cropHeight: number;
 }
 
 const DEFAULT_EDIT_OPTIONS: EditOptions = {
@@ -53,6 +58,11 @@ const DEFAULT_EDIT_OPTIONS: EditOptions = {
   border: false,
   borderWidth: 2,
   borderColor: "#000000",
+  crop: false,
+  cropX: 0,
+  cropY: 0,
+  cropWidth: 100,
+  cropHeight: 100,
 };
 
 /**
@@ -87,10 +97,16 @@ export async function resizeImage(
       const y = (size - scaledHeight) / 2;
 
       ctx.drawImage(img, x, y, scaledWidth, scaledHeight);
+
+      // BlobURLをクリーンアップ
+      URL.revokeObjectURL(img.src);
       resolve(canvas);
     };
 
-    img.onerror = () => reject(new Error("Failed to load image"));
+    img.onerror = () => {
+      URL.revokeObjectURL(img.src);
+      reject(new Error("Failed to load image"));
+    };
     img.src = URL.createObjectURL(file);
   });
 }
@@ -105,12 +121,32 @@ export function applyEditOptions(
   sourceCanvas: HTMLCanvasElement,
   options: EditOptions
 ): HTMLCanvasElement {
+  let workCanvas = sourceCanvas;
+
+  // トリミング処理（最初に適用）
+  if (options.crop) {
+    const cropCanvas = document.createElement("canvas");
+    const cropCtx = cropCanvas.getContext("2d");
+    if (cropCtx) {
+      // パーセント値をピクセル値に変換
+      const sx = (sourceCanvas.width * options.cropX) / 100;
+      const sy = (sourceCanvas.height * options.cropY) / 100;
+      const sw = (sourceCanvas.width * options.cropWidth) / 100;
+      const sh = (sourceCanvas.height * options.cropHeight) / 100;
+
+      cropCanvas.width = sw;
+      cropCanvas.height = sh;
+      cropCtx.drawImage(sourceCanvas, sx, sy, sw, sh, 0, 0, sw, sh);
+      workCanvas = cropCanvas;
+    }
+  }
+
   const canvas = document.createElement("canvas");
-  canvas.width = sourceCanvas.width;
-  canvas.height = sourceCanvas.height;
+  canvas.width = workCanvas.width;
+  canvas.height = workCanvas.height;
   const ctx = canvas.getContext("2d");
 
-  if (!ctx) return sourceCanvas;
+  if (!ctx) return workCanvas;
 
   ctx.save();
 
@@ -129,7 +165,7 @@ export function applyEditOptions(
 
   // 元の画像を描画
   ctx.drawImage(
-    sourceCanvas,
+    workCanvas,
     -canvas.width / 2,
     -canvas.height / 2,
     canvas.width,
@@ -270,12 +306,21 @@ export async function canvasToBlobWithLimit(
   canvas: HTMLCanvasElement,
   maxSize: number
 ): Promise<Blob | null> {
+  // まずPNGで試す
+  let blob = await new Promise<Blob | null>((resolve) => {
+    canvas.toBlob((b) => resolve(b), "image/png");
+  });
+
+  if (blob && blob.size <= maxSize) {
+    return blob;
+  }
+
+  // PNGが大きすぎる場合はWebPで圧縮
   let quality = 0.95;
-  let blob: Blob | null = null;
 
   while (quality > 0.1) {
     blob = await new Promise<Blob | null>((resolve) => {
-      canvas.toBlob((b) => resolve(b), "image/png", quality);
+      canvas.toBlob((b) => resolve(b), "image/webp", quality);
     });
 
     if (blob && blob.size <= maxSize) {
@@ -336,8 +381,13 @@ function EmojiConverter() {
       const blob = await canvasToBlobWithLimit(editedCanvas, maxSize);
 
       if (blob) {
-        const url = URL.createObjectURL(blob);
-        setPreviewUrl(url);
+        // 古いBlobURLがあればクリーンアップ
+        setPreviewUrl((prevUrl) => {
+          if (prevUrl) {
+            URL.revokeObjectURL(prevUrl);
+          }
+          return URL.createObjectURL(blob);
+        });
         setFileSize(blob.size);
         announceStatus(`処理完了（${(blob.size / 1024).toFixed(1)} KB）`);
       } else {
@@ -357,6 +407,15 @@ function EmojiConverter() {
       processImage();
     }
   }, [file, platform, editOptions, processImage]);
+
+  // コンポーネントアンマウント時にBlobURLをクリーンアップ
+  useEffect(() => {
+    return () => {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
 
   const handleFileChange = useCallback(
     (selectedFile: File | null) => {
@@ -522,10 +581,13 @@ function EmojiConverter() {
           </div>
         </section>
 
-        {/* 編集オプション */}
+        {/* 編集オプションとプレビューを横並び */}
         {file && (
-          <section className="section">
-            <h2 className="section-title">編集オプション</h2>
+          <div className="emoji-editor-layout">
+            {/* 編集オプション */}
+            <div className="emoji-editor-panel">
+              <section className="section">
+                <h2 className="section-title">編集オプション</h2>
 
             {/* テキスト埋め込み */}
             <details className="details">
@@ -803,13 +865,103 @@ function EmojiConverter() {
                 )}
               </div>
             </details>
-          </section>
-        )}
 
-        {/* プレビュー */}
-        {file && (
-          <section className="section">
-            <h2 className="section-title">プレビュー</h2>
+            {/* トリミング */}
+            <details className="details">
+              <summary className="details-summary">トリミング</summary>
+              <div className="details-content">
+                <div className="checkbox-group">
+                  <label className="md3-checkbox-wrapper">
+                    <input
+                      type="checkbox"
+                      checked={editOptions.crop}
+                      onChange={(e) => updateEditOption("crop", e.target.checked)}
+                    />
+                    <span className="md3-checkbox" />
+                    <span className="md3-checkbox-label">トリミングを有効化</span>
+                  </label>
+                </div>
+
+                {editOptions.crop && (
+                  <>
+                    <div className="form-group">
+                      <label htmlFor="cropX" className="label">
+                        X位置: {editOptions.cropX}%
+                      </label>
+                      <input
+                        id="cropX"
+                        type="range"
+                        min="0"
+                        max="100"
+                        value={editOptions.cropX}
+                        onChange={(e) =>
+                          updateEditOption("cropX", Number(e.target.value))
+                        }
+                        className="range"
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label htmlFor="cropY" className="label">
+                        Y位置: {editOptions.cropY}%
+                      </label>
+                      <input
+                        id="cropY"
+                        type="range"
+                        min="0"
+                        max="100"
+                        value={editOptions.cropY}
+                        onChange={(e) =>
+                          updateEditOption("cropY", Number(e.target.value))
+                        }
+                        className="range"
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label htmlFor="cropWidth" className="label">
+                        幅: {editOptions.cropWidth}%
+                      </label>
+                      <input
+                        id="cropWidth"
+                        type="range"
+                        min="1"
+                        max="100"
+                        value={editOptions.cropWidth}
+                        onChange={(e) =>
+                          updateEditOption("cropWidth", Number(e.target.value))
+                        }
+                        className="range"
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label htmlFor="cropHeight" className="label">
+                        高さ: {editOptions.cropHeight}%
+                      </label>
+                      <input
+                        id="cropHeight"
+                        type="range"
+                        min="1"
+                        max="100"
+                        value={editOptions.cropHeight}
+                        onChange={(e) =>
+                          updateEditOption("cropHeight", Number(e.target.value))
+                        }
+                        className="range"
+                      />
+                    </div>
+                  </>
+                )}
+              </div>
+            </details>
+              </section>
+            </div>
+
+            {/* プレビュー */}
+            <div className="emoji-preview-panel">
+              <section className="section">
+                <h2 className="section-title">プレビュー</h2>
 
             <div className="preview-container">
               <canvas
@@ -842,7 +994,9 @@ function EmojiConverter() {
                 リセット
               </button>
             </div>
-          </section>
+              </section>
+            </div>
+          </div>
         )}
       </main>
     </div>
