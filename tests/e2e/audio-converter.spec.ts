@@ -50,7 +50,7 @@ test.describe('Audio Converter - E2E Tests', () => {
     const usageText = await usageSection.textContent();
     expect(usageText).toContain('使い方');
     expect(usageText).toContain('対応フォーマット');
-    expect(usageText).toContain('注意事項');
+    expect(usageText).toContain('技術情報');
     expect(usageText).not.toContain('undefined');
   });
 
@@ -159,15 +159,16 @@ test.describe('Audio Converter - E2E Tests', () => {
     // 対応フォーマットセクション
     await expect(infoBox.locator('h3:has-text("対応フォーマット")')).toBeVisible();
 
-    // 注意事項セクション
-    await expect(infoBox.locator('h3:has-text("注意事項")')).toBeVisible();
-    const noticeList = infoBox.locator('h3:has-text("注意事項")').locator('xpath=following-sibling::ul[1]');
-    const noticeItems = await noticeList.locator('li').allTextContents();
-    expect(noticeItems.some(item => item.includes('ブラウザ上で実行'))).toBe(true);
+    // 技術情報セクション
+    await expect(infoBox.locator('h3:has-text("技術情報")')).toBeVisible();
+    const techInfoList = infoBox.locator('h3:has-text("技術情報")').locator('xpath=following-sibling::ul[1]');
+    const techInfoItems = await techInfoList.locator('li').allTextContents();
+    expect(techInfoItems.some(item => item.includes('ブラウザ上で実行'))).toBe(true);
   });
 
   test('should have status region for screen readers', async ({ page }) => {
-    const statusRegion = page.locator('[role="status"][aria-live="polite"]');
+    // audio-converterページ固有のステータスリージョンをチェック（ツールコンテナ内）
+    const statusRegion = page.locator('.tool-container ~ [role="status"][aria-live="polite"]');
     await expect(statusRegion).toBeAttached();
   });
 
