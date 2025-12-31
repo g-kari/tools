@@ -11,15 +11,29 @@ export const Route = createFileRoute("/audio-converter")({
 });
 
 /**
+ * オーディオ変換オプション
+ */
+interface ConversionOptions {
+  /** ビットレート（kbps） */
+  bitrate: string;
+  /** サンプリングレート（Hz） */
+  sampleRate: string;
+  /** チャンネル（1: モノラル, 2: ステレオ） */
+  channels: string;
+}
+
+/**
  * ffmpeg.wasmを使用してオーディオファイルを変換する
  * @param file - 変換元のファイル
  * @param format - 変換先のフォーマット ('mp3' | 'wav' | 'ogg')
+ * @param options - 変換オプション
  * @param onProgress - 進捗コールバック
  * @returns 変換後のBlobとファイル名
  */
 async function convertAudioWithFFmpeg(
   file: File,
   format: "mp3" | "wav" | "ogg",
+  options: ConversionOptions,
   onProgress?: (progress: number) => void
 ): Promise<{ blob: Blob; filename: string }> {
   const ffmpeg = new FFmpeg();
@@ -53,12 +67,46 @@ async function convertAudioWithFFmpeg(
   // フォーマットに応じた変換コマンド
   let args: string[];
   if (format === "mp3") {
-    args = ["-i", inputName, "-codec:a", "libmp3lame", "-qscale:a", "2", outputName];
+    args = [
+      "-i",
+      inputName,
+      "-codec:a",
+      "libmp3lame",
+      "-b:a",
+      `${options.bitrate}k`,
+      "-ar",
+      options.sampleRate,
+      "-ac",
+      options.channels,
+      outputName,
+    ];
   } else if (format === "wav") {
-    args = ["-i", inputName, "-acodec", "pcm_s16le", "-ar", "44100", outputName];
+    args = [
+      "-i",
+      inputName,
+      "-acodec",
+      "pcm_s16le",
+      "-ar",
+      options.sampleRate,
+      "-ac",
+      options.channels,
+      outputName,
+    ];
   } else {
     // ogg
-    args = ["-i", inputName, "-codec:a", "libvorbis", "-qscale:a", "5", outputName];
+    args = [
+      "-i",
+      inputName,
+      "-codec:a",
+      "libvorbis",
+      "-b:a",
+      `${options.bitrate}k`,
+      "-ar",
+      options.sampleRate,
+      "-ac",
+      options.channels,
+      outputName,
+    ];
   }
 
   // 変換実行
@@ -81,6 +129,9 @@ async function convertAudioWithFFmpeg(
 function AudioConverter() {
   const [sourceFile, setSourceFile] = useState<File | null>(null);
   const [format, setFormat] = useState<"mp3" | "wav" | "ogg">("mp3");
+  const [bitrate, setBitrate] = useState<string>("192");
+  const [sampleRate, setSampleRate] = useState<string>("44100");
+  const [channels, setChannels] = useState<string>("2");
   const [isConverting, setIsConverting] = useState(false);
   const [convertedUrl, setConvertedUrl] = useState<string>("");
   const [convertedFilename, setConvertedFilename] = useState<string>("");
@@ -136,10 +187,17 @@ function AudioConverter() {
     announceStatus("FFmpegを読み込んでいます...");
 
     try {
+      const options: ConversionOptions = {
+        bitrate,
+        sampleRate,
+        channels,
+      };
+
       // ffmpeg.wasmを使用して変換
       const { blob, filename } = await convertAudioWithFFmpeg(
         sourceFile,
         format,
+        options,
         (p) => {
           setProgress(p);
           setIsLoading(false);
@@ -167,11 +225,14 @@ function AudioConverter() {
       setIsConverting(false);
       setIsLoading(false);
     }
-  }, [sourceFile, format, convertedUrl, announceStatus]);
+  }, [sourceFile, format, bitrate, sampleRate, channels, convertedUrl, announceStatus]);
 
   const handleClear = useCallback(() => {
     setSourceFile(null);
     setFormat("mp3");
+    setBitrate("192");
+    setSampleRate("44100");
+    setChannels("2");
     setIsConverting(false);
     setProgress(0);
     setIsLoading(false);
@@ -261,6 +322,99 @@ function AudioConverter() {
             </select>
           </div>
 
+          <div className="converter-section">
+            <h3 className="section-title">変換オプション</h3>
+
+            <div style={{ marginBottom: "16px" }}>
+              <label htmlFor="bitrate" style={{ display: "block", marginBottom: "4px", fontSize: "14px" }}>
+                ビットレート (kbps)
+              </label>
+              <select
+                id="bitrate"
+                value={bitrate}
+                onChange={(e) => setBitrate(e.target.value)}
+                disabled={isConverting || format === "wav"}
+                aria-label="ビットレートを選択"
+                style={{
+                  padding: "8px",
+                  fontSize: "14px",
+                  border: "1px solid var(--md-sys-color-outline)",
+                  borderRadius: "4px",
+                  backgroundColor: "var(--md-sys-color-surface-container)",
+                  color: "var(--md-sys-color-on-surface)",
+                  width: "100%",
+                }}
+              >
+                <option value="320">320 (最高品質)</option>
+                <option value="256">256 (高品質)</option>
+                <option value="192">192 (標準)</option>
+                <option value="128">128 (バランス)</option>
+                <option value="96">96 (低品質)</option>
+                <option value="64">64 (最低品質)</option>
+              </select>
+              {format === "wav" && (
+                <p style={{ fontSize: "12px", color: "var(--md-sys-color-on-surface-variant)", marginTop: "4px" }}>
+                  ※ WAV形式ではビットレート設定は使用されません
+                </p>
+              )}
+            </div>
+
+            <div style={{ marginBottom: "16px" }}>
+              <label htmlFor="sampleRate" style={{ display: "block", marginBottom: "4px", fontSize: "14px" }}>
+                サンプリングレート (Hz)
+              </label>
+              <select
+                id="sampleRate"
+                value={sampleRate}
+                onChange={(e) => setSampleRate(e.target.value)}
+                disabled={isConverting}
+                aria-label="サンプリングレートを選択"
+                style={{
+                  padding: "8px",
+                  fontSize: "14px",
+                  border: "1px solid var(--md-sys-color-outline)",
+                  borderRadius: "4px",
+                  backgroundColor: "var(--md-sys-color-surface-container)",
+                  color: "var(--md-sys-color-on-surface)",
+                  width: "100%",
+                }}
+              >
+                <option value="48000">48000 (最高品質)</option>
+                <option value="44100">44100 (CD品質)</option>
+                <option value="32000">32000</option>
+                <option value="22050">22050</option>
+                <option value="16000">16000</option>
+                <option value="11025">11025</option>
+                <option value="8000">8000 (電話品質)</option>
+              </select>
+            </div>
+
+            <div style={{ marginBottom: "16px" }}>
+              <label htmlFor="channels" style={{ display: "block", marginBottom: "4px", fontSize: "14px" }}>
+                チャンネル
+              </label>
+              <select
+                id="channels"
+                value={channels}
+                onChange={(e) => setChannels(e.target.value)}
+                disabled={isConverting}
+                aria-label="チャンネルを選択"
+                style={{
+                  padding: "8px",
+                  fontSize: "14px",
+                  border: "1px solid var(--md-sys-color-outline)",
+                  borderRadius: "4px",
+                  backgroundColor: "var(--md-sys-color-surface-container)",
+                  color: "var(--md-sys-color-on-surface)",
+                  width: "100%",
+                }}
+              >
+                <option value="2">ステレオ (2ch)</option>
+                <option value="1">モノラル (1ch)</option>
+              </select>
+            </div>
+          </div>
+
           {isConverting && (
             <div className="converter-section">
               <label className="section-title">
@@ -347,13 +501,20 @@ function AudioConverter() {
           <ul>
             <li>「オーディオファイルを選択」からファイルを選択します</li>
             <li>「出力フォーマット」で変換先の形式を選択します</li>
+            <li>「変換オプション」でビットレート、サンプリングレート、チャンネルを調整します</li>
             <li>「変換」ボタンをクリックして変換を実行します</li>
             <li>変換が完了すると、プレビューとダウンロードリンクが表示されます</li>
           </ul>
           <h3>対応フォーマット</h3>
           <ul>
             <li>入力: MP3, WAV, OGG, AAC, FLAC, M4A 等（FFmpegサポート形式）</li>
-            <li>出力: MP3 (高品質), WAV (PCM 44.1kHz), OGG (Vorbis)</li>
+            <li>出力: MP3 (libmp3lame), WAV (PCM), OGG (Vorbis)</li>
+          </ul>
+          <h3>変換オプションについて</h3>
+          <ul>
+            <li><strong>ビットレート:</strong> 音質とファイルサイズのバランス。高いほど高音質で大きなサイズになります</li>
+            <li><strong>サンプリングレート:</strong> 音質の細かさ。44100Hz（CD品質）が標準です</li>
+            <li><strong>チャンネル:</strong> ステレオ（2ch）またはモノラル（1ch）を選択できます</li>
           </ul>
           <h3>技術情報</h3>
           <ul>
@@ -361,6 +522,35 @@ function AudioConverter() {
             <li>すべての処理はブラウザ上で実行されます（サーバーへのアップロードなし）</li>
             <li>初回変換時にFFmpegライブラリ（約31MB）をダウンロードします</li>
             <li>大きなファイルの変換には時間がかかる場合があります</li>
+          </ul>
+          <h3>参考</h3>
+          <ul>
+            <li>
+              <a
+                href="https://zenn.dev/henvate/articles/cdd7aee45157cf"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  color: "var(--md-sys-color-primary)",
+                  textDecoration: "underline",
+                }}
+              >
+                Next.js + FFmpeg.wasmで動画変換サービスを作った
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://ffmpegwasm.netlify.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  color: "var(--md-sys-color-primary)",
+                  textDecoration: "underline",
+                }}
+              >
+                FFmpeg.wasm 公式サイト
+              </a>
+            </li>
           </ul>
         </aside>
       </div>
