@@ -618,14 +618,11 @@ function ColorExtractor() {
           padding: 1rem;
           background-color: var(--md-sys-color-surface-variant);
           border-radius: 12px;
-          overflow: auto;
-          max-height: 400px;
         }
 
         .preview-container canvas {
           max-width: 100%;
-          max-height: 100%;
-          object-fit: contain;
+          height: auto;
           border-radius: 4px;
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
