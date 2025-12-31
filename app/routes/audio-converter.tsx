@@ -256,41 +256,29 @@ function AudioConverter() {
           aria-label="オーディオ変換フォーム"
         >
           <div className="converter-section">
-            <label htmlFor="audioFile" className="section-title">
-              オーディオファイルを選択
-            </label>
-            <input
-              id="audioFile"
-              type="file"
-              ref={fileInputRef}
-              accept="audio/*"
-              onChange={handleFileChange}
-              aria-describedby="file-help"
-              aria-label="変換するオーディオファイルを選択"
-              style={{
-                padding: "12px",
-                fontSize: "16px",
-                border: "1px solid var(--md-sys-color-outline)",
-                borderRadius: "4px",
-                backgroundColor: "var(--md-sys-color-surface-container)",
-                color: "var(--md-sys-color-on-surface)",
-                width: "100%",
-              }}
-            />
-            <span id="file-help" className="sr-only">
-              MP3, WAV, OGG, AAC, FLAC等のオーディオファイルを選択してください
-            </span>
+            <h2 className="section-title">ファイル選択</h2>
+
+            <div className="file-input-wrapper">
+              <input
+                ref={fileInputRef}
+                type="file"
+                id="audioFile"
+                accept="audio/*"
+                onChange={handleFileChange}
+                aria-describedby="file-help"
+              />
+              <label htmlFor="audioFile" className="file-input-label">
+                ファイルを選択
+              </label>
+              <span id="file-help" className="file-help">
+                対応フォーマット: MP3, WAV, OGG, AAC, FLAC など
+              </span>
+            </div>
+
             {sourceFile && (
-              <p
-                style={{
-                  marginTop: "8px",
-                  fontSize: "14px",
-                  color: "var(--md-sys-color-on-surface-variant)",
-                }}
-              >
-                選択中: {sourceFile.name} ({(sourceFile.size / 1024).toFixed(2)}{" "}
-                KB)
-              </p>
+              <div className="selected-file" role="status">
+                <strong>選択中:</strong> {sourceFile.name} ({(sourceFile.size / 1024).toFixed(2)} KB)
+              </div>
             )}
           </div>
 
