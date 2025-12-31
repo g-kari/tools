@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test';
-import * as path from 'path';
 
 test.describe('Color Extractor - E2E Tests', () => {
   /**
