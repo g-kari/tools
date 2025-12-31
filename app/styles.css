@@ -1594,6 +1594,205 @@ input[type="range"]:focus-visible {
   margin: 0;
 }
 
+/* Emoji Converter specific styles */
+.section {
+  margin-bottom: 2rem;
+}
+
+.details {
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.details-summary {
+  padding: 1rem;
+  background: var(--md-sys-color-surface-variant);
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface);
+  user-select: none;
+  list-style: none;
+  transition: background-color 0.2s;
+}
+
+.details-summary::-webkit-details-marker {
+  display: none;
+}
+
+.details-summary::before {
+  content: "▶";
+  display: inline-block;
+  margin-right: 0.5rem;
+  transition: transform 0.2s;
+  font-size: 0.75rem;
+}
+
+details[open] .details-summary::before {
+  transform: rotate(90deg);
+}
+
+.details-summary:hover {
+  background: var(--md-sys-color-primary-container);
+}
+
+.details-content {
+  padding: 1rem;
+  background: white;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: var(--md-sys-color-on-surface);
+}
+
+.input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  background: white;
+}
+
+.range {
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 8px;
+  background: var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  outline: none;
+}
+
+.range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: var(--md-sys-color-primary);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.range::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+}
+
+.range::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: var(--md-sys-color-primary);
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+}
+
+.select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  font-size: 1rem;
+  transition: border-color 0.2s, background 0.2s;
+  cursor: pointer;
+}
+
+.select:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  background: white;
+}
+
+.color-input {
+  width: 100%;
+  height: 48px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  cursor: pointer;
+  background: var(--md-sys-color-surface-variant);
+}
+
+.color-input:focus {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.help-text {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-top: 0.5rem;
+}
+
+.file-info {
+  padding: 1rem;
+  background: var(--md-sys-color-primary-container);
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.file-input {
+  display: none;
+}
+
+.preview-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  background: var(--md-sys-color-surface-variant);
+  border-radius: 4px;
+  min-height: 200px;
+}
+
+.preview-canvas {
+  max-width: 100%;
+  height: auto;
+  border: 2px solid var(--md-sys-color-outline);
+  border-radius: 4px;
+  image-rendering: pixelated;
+}
+
+.file-size-info {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: var(--md-sys-color-surface-variant);
+  border-radius: 4px;
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.file-size-warning {
+  background: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-error);
+}
+
+.file-size-success {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   h1 {
