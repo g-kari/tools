@@ -33,14 +33,14 @@ interface ConversionOptions {
 /**
  * ffmpeg.wasmを使用して動画ファイルを変換する
  * @param file - 変換元のファイル
- * @param format - 変換先のフォーマット ('mp4' | 'webm' | 'avi' | 'mov')
+ * @param format - 変換先のフォーマット ('mp4' | 'webm' | 'avi' | 'mov' | 'gif')
  * @param options - 変換オプション
  * @param onProgress - 進捗コールバック
  * @returns 変換後のBlobとファイル名
  */
 export async function convertVideoWithFFmpeg(
   file: File,
-  format: "mp4" | "webm" | "avi" | "mov",
+  format: "mp4" | "webm" | "avi" | "mov" | "gif",
   options: ConversionOptions,
   onProgress?: (progress: number) => void
 ): Promise<{ blob: Blob; filename: string }> {
@@ -80,43 +80,69 @@ export async function convertVideoWithFFmpeg(
   // 出力ファイル名
   const outputName = `output.${format}`;
 
-  // 共通のビデオ・オーディオオプション
-  const commonArgs: string[] = [];
+  // GIF形式の場合は特別な処理
+  if (format === "gif") {
+    const args: string[] = ["-i", inputName];
 
-  // ビデオコーデック
-  commonArgs.push("-c:v", options.videoCodec);
+    // フレームレート
+    if (options.framerate !== "auto") {
+      args.push("-r", options.framerate);
+    }
 
-  // ビデオビットレート
-  if (options.videoBitrate !== "auto") {
-    commonArgs.push("-b:v", `${options.videoBitrate}k`);
+    // 解像度
+    if (options.width !== "auto" && options.height !== "auto") {
+      args.push("-s", `${options.width}x${options.height}`);
+    }
+
+    // GIF用のフィルター（高品質なパレット生成）
+    args.push("-vf", "split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse");
+
+    // ループ設定（0 = 無限ループ）
+    args.push("-loop", "0");
+
+    args.push(outputName);
+
+    await ffmpeg.exec(args);
+  } else {
+    // 共通のビデオ・オーディオオプション
+    const commonArgs: string[] = [];
+
+    // ビデオコーデック
+    commonArgs.push("-c:v", options.videoCodec);
+
+    // ビデオビットレート
+    if (options.videoBitrate !== "auto") {
+      commonArgs.push("-b:v", `${options.videoBitrate}k`);
+    }
+
+    // フレームレート
+    if (options.framerate !== "auto") {
+      commonArgs.push("-r", options.framerate);
+    }
+
+    // 解像度
+    if (options.width !== "auto" && options.height !== "auto") {
+      commonArgs.push("-s", `${options.width}x${options.height}`);
+    }
+
+    // オーディオコーデック
+    commonArgs.push("-c:a", options.audioCodec);
+
+    // オーディオビットレート
+    if (options.audioBitrate !== "auto") {
+      commonArgs.push("-b:a", `${options.audioBitrate}k`);
+    }
+
+    // フォーマットに応じた変換コマンド
+    const args = ["-i", inputName, ...commonArgs, outputName];
+
+    await ffmpeg.exec(args);
   }
-
-  // フレームレート
-  if (options.framerate !== "auto") {
-    commonArgs.push("-r", options.framerate);
-  }
-
-  // 解像度
-  if (options.width !== "auto" && options.height !== "auto") {
-    commonArgs.push("-s", `${options.width}x${options.height}`);
-  }
-
-  // オーディオコーデック
-  commonArgs.push("-c:a", options.audioCodec);
-
-  // オーディオビットレート
-  if (options.audioBitrate !== "auto") {
-    commonArgs.push("-b:a", `${options.audioBitrate}k`);
-  }
-
-  // フォーマットに応じた変換コマンド
-  const args = ["-i", inputName, ...commonArgs, outputName];
-
-  await ffmpeg.exec(args);
 
   // 出力ファイルを読み込み
   const data = await ffmpeg.readFile(outputName);
-  const blob = new Blob([data], { type: `video/${format}` });
+  const mimeType = format === "gif" ? "image/gif" : `video/${format}`;
+  const blob = new Blob([data], { type: mimeType });
 
   // 元のファイル名から拡張子を取得して置き換え
   const originalName = file.name.substring(0, file.name.lastIndexOf("."));
@@ -128,11 +154,11 @@ export async function convertVideoWithFFmpeg(
 /**
  * 動画変換コンポーネント
  * ffmpeg.wasmを使用してブラウザ上で動画ファイルを別のフォーマットに変換する
- * MP4、WebM、AVI、MOV形式に対応し、ビットレート・解像度・フレームレートなどの詳細設定が可能
+ * MP4、WebM、AVI、MOV、GIF形式に対応し、ビットレート・解像度・フレームレートなどの詳細設定が可能
  */
 function VideoConverter() {
   const [file, setFile] = useState<File | null>(null);
-  const [format, setFormat] = useState<"mp4" | "webm" | "avi" | "mov">("mp4");
+  const [format, setFormat] = useState<"mp4" | "webm" | "avi" | "mov" | "gif">("mp4");
   const [videoBitrate, setVideoBitrate] = useState("2000");
   const [audioBitrate, setAudioBitrate] = useState("128");
   const [framerate, setFramerate] = useState("auto");
@@ -305,6 +331,9 @@ function VideoConverter() {
     } else if (format === "mov") {
       setVideoCodec("libx264");
       setAudioCodec("aac");
+    } else if (format === "gif") {
+      setVideoCodec("gif");
+      setAudioCodec("none");
     }
   }, [format]);
 
@@ -396,6 +425,7 @@ function VideoConverter() {
               <option value="webm">WebM (VP8)</option>
               <option value="avi">AVI (MPEG-4)</option>
               <option value="mov">MOV (H.264)</option>
+              <option value="gif">GIF (アニメーション画像)</option>
             </select>
           </div>
 
