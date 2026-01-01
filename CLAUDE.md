@@ -204,23 +204,18 @@ npm run build && npm run test:e2e
 
 ### Git Worktreeを使用した開発
 
-**推奨**: 複数の機能ブランチを同時に開発する場合は、git worktreeを使用して作業ディレクトリを分けることを推奨します。
+- AIを利用して開発する場合は、GitWorktreeを利用すること。
 
 ```bash
 # 新しい機能ブランチ用のworktreeを作成
-git worktree add ../tools-feat-example feat/example
+git worktree add wip/tools-feat-example feat/example
 
 # worktreeの一覧を確認
 git worktree list
 
 # worktreeを削除（ブランチ作業完了後）
-git worktree remove ../tools-feat-example
+git worktree remove wip/tools-feat-example
 ```
-
-**利点**:
-- 複数のブランチを同時に作業できる（ブランチの切り替え不要）
-- ビルド成果物やnode_modulesがブランチごとに独立
-- メインブランチを保持したまま、別の作業を進められる
 
 ## スキル（デザインガイドライン）
 
