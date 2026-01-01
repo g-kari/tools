@@ -31,6 +31,7 @@ import { Route as DummyImageRouteImport } from './routes/dummy-image'
 import { Route as DummyAudioRouteImport } from './routes/dummy-audio'
 import { Route as DiceRollRouteImport } from './routes/dice-roll'
 import { Route as ColorExtractorRouteImport } from './routes/color-extractor'
+import { Route as CidrRouteImport } from './routes/cidr'
 import { Route as CharCountRouteImport } from './routes/char-count'
 import { Route as Base64RouteImport } from './routes/base64'
 import { Route as AudioConverterRouteImport } from './routes/audio-converter'
@@ -150,6 +151,11 @@ const ColorExtractorRoute = ColorExtractorRouteImport.update({
   path: '/color-extractor',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CidrRoute = CidrRouteImport.update({
+  id: '/cidr',
+  path: '/cidr',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CharCountRoute = CharCountRouteImport.update({
   id: '/char-count',
   path: '/char-count',
@@ -196,6 +202,7 @@ export interface FileRoutesByFullPath {
   '/audio-converter': typeof AudioConverterRoute
   '/base64': typeof Base64Route
   '/char-count': typeof CharCountRoute
+  '/cidr': typeof CidrRoute
   '/color-extractor': typeof ColorExtractorRoute
   '/dice-roll': typeof DiceRollRoute
   '/dummy-audio': typeof DummyAudioRoute
@@ -228,6 +235,7 @@ export interface FileRoutesByTo {
   '/audio-converter': typeof AudioConverterRoute
   '/base64': typeof Base64Route
   '/char-count': typeof CharCountRoute
+  '/cidr': typeof CidrRoute
   '/color-extractor': typeof ColorExtractorRoute
   '/dice-roll': typeof DiceRollRoute
   '/dummy-audio': typeof DummyAudioRoute
@@ -261,6 +269,7 @@ export interface FileRoutesById {
   '/audio-converter': typeof AudioConverterRoute
   '/base64': typeof Base64Route
   '/char-count': typeof CharCountRoute
+  '/cidr': typeof CidrRoute
   '/color-extractor': typeof ColorExtractorRoute
   '/dice-roll': typeof DiceRollRoute
   '/dummy-audio': typeof DummyAudioRoute
@@ -295,6 +304,7 @@ export interface FileRouteTypes {
     | '/audio-converter'
     | '/base64'
     | '/char-count'
+    | '/cidr'
     | '/color-extractor'
     | '/dice-roll'
     | '/dummy-audio'
@@ -327,6 +337,7 @@ export interface FileRouteTypes {
     | '/audio-converter'
     | '/base64'
     | '/char-count'
+    | '/cidr'
     | '/color-extractor'
     | '/dice-roll'
     | '/dummy-audio'
@@ -359,6 +370,7 @@ export interface FileRouteTypes {
     | '/audio-converter'
     | '/base64'
     | '/char-count'
+    | '/cidr'
     | '/color-extractor'
     | '/dice-roll'
     | '/dummy-audio'
@@ -392,6 +404,7 @@ export interface RootRouteChildren {
   AudioConverterRoute: typeof AudioConverterRoute
   Base64Route: typeof Base64Route
   CharCountRoute: typeof CharCountRoute
+  CidrRoute: typeof CidrRoute
   ColorExtractorRoute: typeof ColorExtractorRoute
   DiceRollRoute: typeof DiceRollRoute
   DummyAudioRoute: typeof DummyAudioRoute
@@ -576,6 +589,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ColorExtractorRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/cidr': {
+      id: '/cidr'
+      path: '/cidr'
+      fullPath: '/cidr'
+      preLoaderRoute: typeof CidrRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/char-count': {
       id: '/char-count'
       path: '/char-count'
@@ -640,6 +660,7 @@ const rootRouteChildren: RootRouteChildren = {
   AudioConverterRoute: AudioConverterRoute,
   Base64Route: Base64Route,
   CharCountRoute: CharCountRoute,
+  CidrRoute: CidrRoute,
   ColorExtractorRoute: ColorExtractorRoute,
   DiceRollRoute: DiceRollRoute,
   DummyAudioRoute: DummyAudioRoute,
