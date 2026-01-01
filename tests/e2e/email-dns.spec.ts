@@ -128,9 +128,16 @@ test.describe('Email DNS Checker - E2E Tests', () => {
 
     await domainInput.fill('gmail.com');
 
-    // Verify button text changes to "検証中..." when loading
+    // Set up promise to wait for loading state before clicking
+    const loadingPromise = page.waitForSelector('.loading', { state: 'visible', timeout: 5000 });
+
+    // Click and wait for loading indicator to appear
     await checkButton.click();
-    await expect(checkButton).toContainText('検証中...');
+    await loadingPromise;
+
+    // Verify loading indicator is visible
+    const loadingIndicator = page.locator('.loading');
+    await expect(loadingIndicator).toBeVisible();
   });
 
   test('should display result sections after successful check', async ({ page }) => {
