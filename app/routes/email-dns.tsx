@@ -127,8 +127,6 @@ function EmailDNSChecker() {
                   spellCheck="false"
                 />
               </div>
-            </div>
-            <div className="search-form-row">
               <div className="search-input-wrapper">
                 <label htmlFor="dkimSelectorInput">
                   DKIMセレクタ（オプション）
@@ -146,16 +144,16 @@ function EmailDNSChecker() {
                   spellCheck="false"
                 />
               </div>
+              <button
+                type="submit"
+                className="btn-primary"
+                onClick={handleCheck}
+                disabled={isLoading}
+                aria-label="メールDNS設定を検証"
+              >
+                {isLoading ? "検証中..." : "検証"}
+              </button>
             </div>
-            <button
-              type="submit"
-              className="btn-primary"
-              onClick={handleCheck}
-              disabled={isLoading}
-              aria-label="メールDNS設定を検証"
-            >
-              検証
-            </button>
             <span id="domain-help" className="sr-only">
               example.comのような形式でドメイン名を入力してください
             </span>
