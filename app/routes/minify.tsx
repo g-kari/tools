@@ -160,6 +160,28 @@ function MinifyTool() {
   }, [input, codeType, showToast]);
 
   /**
+   * ファイルをアップロードして読み込む
+   */
+  const handleFileUpload = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const text = e.target?.result as string;
+        setInput(text);
+        showToast("ファイルを読み込みました", "success");
+      };
+      reader.onerror = () => {
+        showToast("ファイルの読み込みに失敗しました", "error");
+      };
+      reader.readAsText(file);
+    },
+    [showToast]
+  );
+
+  /**
    * 出力をクリップボードにコピー
    */
   const handleCopy = useCallback(() => {
@@ -213,9 +235,22 @@ function MinifyTool() {
           </div>
 
           <div className="input-group">
-            <label htmlFor="input" className="input-label">
-              入力コード
-            </label>
+            <div className="output-header">
+              <label htmlFor="input" className="input-label">
+                入力コード
+              </label>
+              <label htmlFor="fileInput" className="text-button">
+                📁 ファイルから読み込む
+              </label>
+              <input
+                type="file"
+                id="fileInput"
+                onChange={handleFileUpload}
+                accept=".js,.css,.html,.json,.txt"
+                className="sr-only"
+                aria-label="ファイルを選択"
+              />
+            </div>
             <textarea
               ref={inputRef}
               id="input"
