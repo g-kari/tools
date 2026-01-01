@@ -19,11 +19,13 @@ import { Route as SecurityHeadersRouteImport } from './routes/security-headers'
 import { Route as RegexCheckerRouteImport } from './routes/regex-checker'
 import { Route as PasswordGeneratorRouteImport } from './routes/password-generator'
 import { Route as OgpRouteImport } from './routes/ogp'
+import { Route as MinifyRouteImport } from './routes/minify'
 import { Route as JwtRouteImport } from './routes/jwt'
 import { Route as JsonRouteImport } from './routes/json'
 import { Route as IpGeolocationRouteImport } from './routes/ip-geolocation'
 import { Route as IpConverterRouteImport } from './routes/ip-converter'
 import { Route as ImageToGifRouteImport } from './routes/image-to-gif'
+import { Route as ImageCompressRouteImport } from './routes/image-compress'
 import { Route as HashRouteImport } from './routes/hash'
 import { Route as GlobalIpRouteImport } from './routes/global-ip'
 import { Route as EmojiConverterRouteImport } from './routes/emoji-converter'
@@ -93,6 +95,11 @@ const OgpRoute = OgpRouteImport.update({
   path: '/ogp',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MinifyRoute = MinifyRouteImport.update({
+  id: '/minify',
+  path: '/minify',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const JwtRoute = JwtRouteImport.update({
   id: '/jwt',
   path: '/jwt',
@@ -116,6 +123,11 @@ const IpConverterRoute = IpConverterRouteImport.update({
 const ImageToGifRoute = ImageToGifRouteImport.update({
   id: '/image-to-gif',
   path: '/image-to-gif',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ImageCompressRoute = ImageCompressRouteImport.update({
+  id: '/image-compress',
+  path: '/image-compress',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HashRoute = HashRouteImport.update({
@@ -224,11 +236,13 @@ export interface FileRoutesByFullPath {
   '/emoji-converter': typeof EmojiConverterRoute
   '/global-ip': typeof GlobalIpRoute
   '/hash': typeof HashRoute
+  '/image-compress': typeof ImageCompressRoute
   '/image-to-gif': typeof ImageToGifRoute
   '/ip-converter': typeof IpConverterRoute
   '/ip-geolocation': typeof IpGeolocationRoute
   '/json': typeof JsonRoute
   '/jwt': typeof JwtRoute
+  '/minify': typeof MinifyRoute
   '/ogp': typeof OgpRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/regex-checker': typeof RegexCheckerRoute
@@ -259,11 +273,13 @@ export interface FileRoutesByTo {
   '/emoji-converter': typeof EmojiConverterRoute
   '/global-ip': typeof GlobalIpRoute
   '/hash': typeof HashRoute
+  '/image-compress': typeof ImageCompressRoute
   '/image-to-gif': typeof ImageToGifRoute
   '/ip-converter': typeof IpConverterRoute
   '/ip-geolocation': typeof IpGeolocationRoute
   '/json': typeof JsonRoute
   '/jwt': typeof JwtRoute
+  '/minify': typeof MinifyRoute
   '/ogp': typeof OgpRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/regex-checker': typeof RegexCheckerRoute
@@ -295,11 +311,13 @@ export interface FileRoutesById {
   '/emoji-converter': typeof EmojiConverterRoute
   '/global-ip': typeof GlobalIpRoute
   '/hash': typeof HashRoute
+  '/image-compress': typeof ImageCompressRoute
   '/image-to-gif': typeof ImageToGifRoute
   '/ip-converter': typeof IpConverterRoute
   '/ip-geolocation': typeof IpGeolocationRoute
   '/json': typeof JsonRoute
   '/jwt': typeof JwtRoute
+  '/minify': typeof MinifyRoute
   '/ogp': typeof OgpRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/regex-checker': typeof RegexCheckerRoute
@@ -332,11 +350,13 @@ export interface FileRouteTypes {
     | '/emoji-converter'
     | '/global-ip'
     | '/hash'
+    | '/image-compress'
     | '/image-to-gif'
     | '/ip-converter'
     | '/ip-geolocation'
     | '/json'
     | '/jwt'
+    | '/minify'
     | '/ogp'
     | '/password-generator'
     | '/regex-checker'
@@ -367,11 +387,13 @@ export interface FileRouteTypes {
     | '/emoji-converter'
     | '/global-ip'
     | '/hash'
+    | '/image-compress'
     | '/image-to-gif'
     | '/ip-converter'
     | '/ip-geolocation'
     | '/json'
     | '/jwt'
+    | '/minify'
     | '/ogp'
     | '/password-generator'
     | '/regex-checker'
@@ -402,11 +424,13 @@ export interface FileRouteTypes {
     | '/emoji-converter'
     | '/global-ip'
     | '/hash'
+    | '/image-compress'
     | '/image-to-gif'
     | '/ip-converter'
     | '/ip-geolocation'
     | '/json'
     | '/jwt'
+    | '/minify'
     | '/ogp'
     | '/password-generator'
     | '/regex-checker'
@@ -438,11 +462,13 @@ export interface RootRouteChildren {
   EmojiConverterRoute: typeof EmojiConverterRoute
   GlobalIpRoute: typeof GlobalIpRoute
   HashRoute: typeof HashRoute
+  ImageCompressRoute: typeof ImageCompressRoute
   ImageToGifRoute: typeof ImageToGifRoute
   IpConverterRoute: typeof IpConverterRoute
   IpGeolocationRoute: typeof IpGeolocationRoute
   JsonRoute: typeof JsonRoute
   JwtRoute: typeof JwtRoute
+  MinifyRoute: typeof MinifyRoute
   OgpRoute: typeof OgpRoute
   PasswordGeneratorRoute: typeof PasswordGeneratorRoute
   RegexCheckerRoute: typeof RegexCheckerRoute
@@ -531,6 +557,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OgpRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/minify': {
+      id: '/minify'
+      path: '/minify'
+      fullPath: '/minify'
+      preLoaderRoute: typeof MinifyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/jwt': {
       id: '/jwt'
       path: '/jwt'
@@ -564,6 +597,13 @@ declare module '@tanstack/react-router' {
       path: '/image-to-gif'
       fullPath: '/image-to-gif'
       preLoaderRoute: typeof ImageToGifRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/image-compress': {
+      id: '/image-compress'
+      path: '/image-compress'
+      fullPath: '/image-compress'
+      preLoaderRoute: typeof ImageCompressRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/hash': {
@@ -710,11 +750,13 @@ const rootRouteChildren: RootRouteChildren = {
   EmojiConverterRoute: EmojiConverterRoute,
   GlobalIpRoute: GlobalIpRoute,
   HashRoute: HashRoute,
+  ImageCompressRoute: ImageCompressRoute,
   ImageToGifRoute: ImageToGifRoute,
   IpConverterRoute: IpConverterRoute,
   IpGeolocationRoute: IpGeolocationRoute,
   JsonRoute: JsonRoute,
   JwtRoute: JwtRoute,
+  MinifyRoute: MinifyRoute,
   OgpRoute: OgpRoute,
   PasswordGeneratorRoute: PasswordGeneratorRoute,
   RegexCheckerRoute: RegexCheckerRoute,

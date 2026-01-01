@@ -38,6 +38,7 @@ const navCategories = [
     name: "画像",
     icon: "🎨",
     items: [
+      { path: "/image-compress", label: "画像圧縮" },
       { path: "/color-extractor", label: "カラー抽出" },
       { path: "/image-to-gif", label: "画像→GIF変換" },
       { path: "/emoji-converter", label: "絵文字変換" },
