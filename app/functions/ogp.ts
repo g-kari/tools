@@ -391,11 +391,21 @@ const BOT_USER_AGENTS = [
   "Mozilla/5.0 (compatible; Discordbot/2.0; +https://discordapp.com)",
 ];
 
+// Browser-like User-Agents as fallback for sites that block bots
+const BROWSER_USER_AGENTS = [
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0",
+];
+
 // Fetch with bot User-Agent to get OGP data
 async function fetchWithBotUserAgent(
   url: string,
   signal: AbortSignal
 ): Promise<Response | null> {
+  const parsedUrl = new URL(url);
+
+  // Try bot User-Agents first
   for (const userAgent of BOT_USER_AGENTS) {
     try {
       const response = await fetch(url, {
@@ -404,6 +414,7 @@ async function fetchWithBotUserAgent(
           Accept:
             "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
           "Accept-Language": "ja,en-US;q=0.9,en;q=0.8",
+          Referer: `${parsedUrl.protocol}//${parsedUrl.host}/`,
         },
         redirect: "follow",
         signal,
@@ -417,6 +428,38 @@ async function fetchWithBotUserAgent(
       continue;
     }
   }
+
+  // Fallback to browser-like User-Agents for sites that block bots
+  for (const userAgent of BROWSER_USER_AGENTS) {
+    try {
+      const response = await fetch(url, {
+        headers: {
+          "User-Agent": userAgent,
+          Accept:
+            "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
+          "Accept-Language": "ja,en-US;q=0.9,en;q=0.8",
+          "Accept-Encoding": "gzip, deflate, br",
+          Referer: `${parsedUrl.protocol}//${parsedUrl.host}/`,
+          "Sec-Fetch-Dest": "document",
+          "Sec-Fetch-Mode": "navigate",
+          "Sec-Fetch-Site": "none",
+          "Sec-Fetch-User": "?1",
+          "Upgrade-Insecure-Requests": "1",
+          "Cache-Control": "max-age=0",
+        },
+        redirect: "follow",
+        signal,
+      });
+
+      if (response.ok) {
+        return response;
+      }
+    } catch {
+      // Try next user agent
+      continue;
+    }
+  }
+
   return null;
 }
 
