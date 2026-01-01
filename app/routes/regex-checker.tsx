@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect, useRef, useCallback } from "react";
+import { useToast } from "../components/Toast";
 
 export const Route = createFileRoute("/regex-checker")({
   head: () => ({
@@ -15,6 +16,7 @@ interface RegexMatch {
 }
 
 function RegexChecker() {
+  const { showToast } = useToast();
   const [pattern, setPattern] = useState("");
   const [flags, setFlags] = useState("");
   const [testString, setTestString] = useState("");
@@ -38,14 +40,14 @@ function RegexChecker() {
   const handleTest = useCallback(() => {
     if (!pattern) {
       announceStatus("エラー: 正規表現パターンを入力してください");
-      alert("正規表現パターンを入力してください");
+      showToast("正規表現パターンを入力してください", "error");
       patternRef.current?.focus();
       return;
     }
 
     if (!testString) {
       announceStatus("エラー: テスト文字列を入力してください");
-      alert("テスト文字列を入力してください");
+      showToast("テスト文字列を入力してください", "error");
       return;
     }
 
@@ -93,7 +95,7 @@ function RegexChecker() {
       setIsValid(false);
       announceStatus("エラー: " + message);
     }
-  }, [pattern, flags, testString, announceStatus]);
+  }, [pattern, flags, testString, announceStatus, showToast]);
 
   const handleClear = useCallback(() => {
     setPattern("");

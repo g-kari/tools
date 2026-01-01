@@ -150,16 +150,15 @@ test.describe('Hash Generator - E2E Tests', () => {
     await expect(outputTextarea).toHaveValue('');
   });
 
-  test('should show alert when generating hash with empty input', async ({ page }) => {
+  test('should show toast when generating hash with empty input', async ({ page }) => {
     const generateButton = page.locator('button.btn-primary').first();
 
-    // Set up dialog handler
-    page.on('dialog', async (dialog) => {
-      expect(dialog.message()).toContain('テキストを入力してください');
-      await dialog.accept();
-    });
-
     await generateButton.click();
+
+    // Check for toast notification
+    const toast = page.locator('.toast');
+    await expect(toast).toBeVisible();
+    await expect(toast).toContainText('テキストを入力してください');
   });
 
   test('should disable copy button when no hash is generated', async ({ page }) => {

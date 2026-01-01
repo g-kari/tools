@@ -51,15 +51,15 @@ test.describe('Regex Checker - E2E Tests', () => {
     await expect(clearButton).toContainText('クリア');
   });
 
-  test('should show alert when testing with empty pattern', async ({ page }) => {
+  test('should show toast when testing with empty pattern', async ({ page }) => {
     const testButton = page.locator('button.btn-primary');
 
-    page.on('dialog', async (dialog) => {
-      expect(dialog.message()).toContain('正規表現パターンを入力してください');
-      await dialog.accept();
-    });
-
     await testButton.click();
+
+    // Check for toast notification
+    const toast = page.locator('.toast');
+    await expect(toast).toBeVisible();
+    await expect(toast).toContainText('正規表現パターンを入力してください');
   });
 
   test('should test a simple regex pattern', async ({ page }) => {

@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect, useRef, useCallback } from "react";
+import { useToast } from "../components/Toast";
 
 export const Route = createFileRoute("/url-encode")({
   head: () => ({
@@ -9,6 +10,7 @@ export const Route = createFileRoute("/url-encode")({
 });
 
 function UrlEncoder() {
+  const { showToast } = useToast();
   const [inputText, setInputText] = useState("");
   const [outputText, setOutputText] = useState("");
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -42,7 +44,7 @@ function UrlEncoder() {
   const handleEncode = useCallback(() => {
     if (!inputText) {
       announceStatus("エラー: テキストを入力してください");
-      alert("テキストを入力してください");
+      showToast("テキストを入力してください", "error");
       inputRef.current?.focus();
       return;
     }
@@ -52,14 +54,14 @@ function UrlEncoder() {
       announceStatus("URLエンコードが完了しました");
     } catch {
       announceStatus("エラー: エンコードに失敗しました");
-      alert("エンコードに失敗しました");
+      showToast("エンコードに失敗しました", "error");
     }
-  }, [inputText, announceStatus]);
+  }, [inputText, announceStatus, showToast]);
 
   const handleDecode = useCallback(() => {
     if (!inputText) {
       announceStatus("エラー: テキストを入力してください");
-      alert("テキストを入力してください");
+      showToast("テキストを入力してください", "error");
       inputRef.current?.focus();
       return;
     }
@@ -69,9 +71,9 @@ function UrlEncoder() {
       announceStatus("URLデコードが完了しました");
     } catch {
       announceStatus("エラー: 無効なURLエンコード文字列です");
-      alert("無効なURLエンコード文字列です");
+      showToast("無効なURLエンコード文字列です", "error");
     }
-  }, [inputText, announceStatus]);
+  }, [inputText, announceStatus, showToast]);
 
   const handleClear = useCallback(() => {
     setInputText("");

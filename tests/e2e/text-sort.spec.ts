@@ -89,15 +89,15 @@ test.describe('Text Sort Tool', () => {
     await expect(outputTextarea).toHaveValue('');
   });
 
-  test('should show alert when trying to sort empty input', async ({ page }) => {
+  test('should show toast when trying to sort empty input', async ({ page }) => {
     const sortAscButton = page.getByRole('button', { name: '入力テキストを昇順ソート' });
 
-    page.on('dialog', async (dialog) => {
-      expect(dialog.message()).toContain('テキストを入力してください');
-      await dialog.accept();
-    });
-
     await sortAscButton.click();
+
+    // Check for toast notification
+    const toast = page.locator('.toast');
+    await expect(toast).toBeVisible();
+    await expect(toast).toContainText('テキストを入力してください');
   });
 
   test('should have accessible form elements', async ({ page }) => {

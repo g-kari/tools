@@ -115,7 +115,7 @@ test.describe('Password Generator - E2E Tests', () => {
     expect(longPassword.length).toBe(32);
   });
 
-  test('should show alert when no character type is selected', async ({ page }) => {
+  test('should show toast when no character type is selected', async ({ page }) => {
     // Expand the collapsible section first
     const collapsibleHeader = page.locator('.collapsible-header[aria-controls="advanced-options"]');
     await collapsibleHeader.click();
@@ -131,12 +131,12 @@ test.describe('Password Generator - E2E Tests', () => {
     await lowercaseCheckbox.uncheck();
     await numbersCheckbox.uncheck();
 
-    page.on('dialog', async (dialog) => {
-      expect(dialog.message()).toContain('少なくとも1つの文字種を選択してください');
-      await dialog.accept();
-    });
-
     await generateButton.click();
+
+    // Check for error toast notification (use .toast-error to avoid strict mode violation)
+    const toast = page.locator('.toast-error');
+    await expect(toast).toBeVisible();
+    await expect(toast).toContainText('少なくとも1つの文字種を選択してください');
   });
 
   test('should generate password with only uppercase when only uppercase is selected', async ({ page }) => {

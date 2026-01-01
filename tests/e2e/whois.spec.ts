@@ -42,15 +42,15 @@ test.describe('WHOIS Lookup - E2E Tests', () => {
     await expect(searchButton).toContainText('検索');
   });
 
-  test('should show alert when searching with empty input', async ({ page }) => {
+  test('should show toast when searching with empty input', async ({ page }) => {
     const searchButton = page.locator('button.btn-primary');
 
-    page.on('dialog', async (dialog) => {
-      expect(dialog.message()).toContain('ドメイン名を入力してください');
-      await dialog.accept();
-    });
-
     await searchButton.click();
+
+    // Check for toast notification
+    const toast = page.locator('.toast');
+    await expect(toast).toBeVisible();
+    await expect(toast).toContainText('ドメイン名を入力してください');
   });
 
   test('should have proper accessibility attributes', async ({ page }) => {

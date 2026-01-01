@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect, useRef, useCallback } from "react";
+import { useToast } from "../components/Toast";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -38,6 +39,7 @@ function fromUnicodeEscape(text: string): string {
 }
 
 function UnicodeConverter() {
+  const { showToast } = useToast();
   const [inputText, setInputText] = useState("");
   const [outputText, setOutputText] = useState("");
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -57,26 +59,26 @@ function UnicodeConverter() {
   const handleEncode = useCallback(() => {
     if (!inputText) {
       announceStatus("エラー: テキストを入力してください");
-      alert("テキストを入力してください");
+      showToast("テキストを入力してください", "error");
       inputRef.current?.focus();
       return;
     }
     const result = toUnicodeEscape(inputText);
     setOutputText(result);
     announceStatus("Unicodeエスケープへの変換が完了しました");
-  }, [inputText, announceStatus]);
+  }, [inputText, announceStatus, showToast]);
 
   const handleDecode = useCallback(() => {
     if (!inputText) {
       announceStatus("エラー: テキストを入力してください");
-      alert("テキストを入力してください");
+      showToast("テキストを入力してください", "error");
       inputRef.current?.focus();
       return;
     }
     const result = fromUnicodeEscape(inputText);
     setOutputText(result);
     announceStatus("Unicodeからの復元が完了しました");
-  }, [inputText, announceStatus]);
+  }, [inputText, announceStatus, showToast]);
 
   const handleClear = useCallback(() => {
     setInputText("");

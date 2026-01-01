@@ -42,15 +42,15 @@ test.describe('IP Geolocation Lookup - E2E Tests', () => {
     await expect(searchButton).toContainText('検索');
   });
 
-  test('should show alert when searching with empty input', async ({ page }) => {
+  test('should show toast when searching with empty input', async ({ page }) => {
     const searchButton = page.locator('button.btn-primary');
 
-    page.on('dialog', async (dialog) => {
-      expect(dialog.message()).toContain('IPアドレスを入力してください');
-      await dialog.accept();
-    });
-
     await searchButton.click();
+
+    // Check for toast notification
+    const toast = page.locator('.toast');
+    await expect(toast).toBeVisible();
+    await expect(toast).toContainText('IPアドレスを入力してください');
   });
 
   test('should have proper accessibility attributes', async ({ page }) => {
