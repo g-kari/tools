@@ -332,6 +332,8 @@ function VideoConverter() {
       setVideoCodec("libx264");
       setAudioCodec("aac");
     } else if (format === "gif") {
+      // GIF変換では独自のパレット生成フィルターを使用するため、
+      // これらのコーデック設定は表示・状態管理のみに使用され、実際の変換処理では参照されない
       setVideoCodec("gif");
       setAudioCodec("none");
     }
@@ -400,7 +402,7 @@ function VideoConverter() {
             onChange={handleFileChange}
             disabled={isConverting}
             aria-describedby="file-help"
-            style={{ display: "none" }}
+            className="hidden-file-input"
           />
 
           {file && (
@@ -532,8 +534,8 @@ function VideoConverter() {
           </div>
 
           {isConverting && (
-            <div className="progress-bar" role="progressbar" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100}>
-              <div className="progress-fill" style={{ width: `${progress}%` }} />
+            <div className="progress-bar" role="progressbar" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100} style={{ "--progress-width": `${progress}%` } as React.CSSProperties}>
+              <div className="progress-fill" />
             </div>
           )}
         </div>
