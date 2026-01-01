@@ -64,6 +64,7 @@ function MinifyTool() {
   const [output, setOutput] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [compressionRatio, setCompressionRatio] = useState<number | null>(null);
+  const [usedLibrary, setUsedLibrary] = useState<string | null>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
@@ -85,6 +86,7 @@ function MinifyTool() {
 
     try {
       let minified = "";
+      let library = "";
 
       switch (codeType) {
         case "javascript":
@@ -99,9 +101,11 @@ function MinifyTool() {
               );
             }
             minified = result.code || "";
+            library = "Terser";
           } else {
             // フォールバック: regex実装
             minified = minifyJavaScript(input);
+            library = "正規表現（フォールバック）";
           }
           break;
         case "css":
@@ -109,9 +113,11 @@ function MinifyTool() {
           if (window.csso) {
             const result = window.csso.minify(input);
             minified = result.css;
+            library = "CSSO";
           } else {
             // フォールバック: regex実装
             minified = minifyCSS(input);
+            library = "正規表現（フォールバック）";
           }
           break;
         case "html":
@@ -127,17 +133,21 @@ function MinifyTool() {
               minifyCSS: true,
               minifyJS: true,
             });
+            library = "html-minifier-terser";
           } else {
             // フォールバック: regex実装
             minified = minifyHTML(input);
+            library = "正規表現（フォールバック）";
           }
           break;
         case "json":
           minified = minifyJSON(input);
+          library = "JSON.stringify";
           break;
       }
 
       setOutput(minified);
+      setUsedLibrary(library);
 
       // 圧縮率を計算
       const originalSize = new Blob([input]).size;
@@ -204,6 +214,7 @@ function MinifyTool() {
     setOutput("");
     setError(null);
     setCompressionRatio(null);
+    setUsedLibrary(null);
     inputRef.current?.focus();
   }, []);
 
@@ -293,11 +304,16 @@ function MinifyTool() {
                 <label htmlFor="output" className="input-label">
                   圧縮結果
                 </label>
-                {compressionRatio !== null && (
-                  <span className="compression-ratio">
-                    圧縮率: {compressionRatio.toFixed(2)}% 削減
-                  </span>
-                )}
+                <div className="library-info-group">
+                  {usedLibrary && (
+                    <span className="library-info">使用: {usedLibrary}</span>
+                  )}
+                  {compressionRatio !== null && (
+                    <span className="compression-ratio">
+                      圧縮率: {compressionRatio.toFixed(2)}% 削減
+                    </span>
+                  )}
+                </div>
               </div>
               <textarea
                 id="output"
