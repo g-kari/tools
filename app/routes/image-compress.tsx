@@ -382,57 +382,61 @@ function ImageCompressor() {
             <div className="converter-section">
               <h2 className="section-title">比較プレビュー</h2>
 
-              {isLoading && (
-                <div className="loading-enhanced">
-                  <div className="spinner-enhanced" />
-                  <span className="loading-text">圧縮中...</span>
+              {compressedBlob && (
+                <div className="compression-stats">
+                  <div className="stat-item">
+                    <span className="stat-label">元のサイズ</span>
+                    <span className="stat-value">{formatFileSize(originalFile.size)}</span>
+                  </div>
+                  <div className="stat-item stat-arrow" aria-hidden="true">→</div>
+                  <div className="stat-item">
+                    <span className="stat-label">圧縮後</span>
+                    <span className="stat-value">{formatFileSize(compressedBlob.size)}</span>
+                  </div>
+                  <div className="stat-item stat-ratio">
+                    <span className="stat-label">削減率</span>
+                    <span className={`stat-value ${compressionRatio > 0 ? "stat-positive" : "stat-negative"}`}>
+                      {compressionRatio > 0 ? `-${compressionRatio}%` : `+${Math.abs(compressionRatio)}%`}
+                    </span>
+                  </div>
                 </div>
               )}
 
-              {!isLoading && compressedPreview && (
-                <>
-                  <div className="compression-stats">
-                    <div className="stat-item">
-                      <span className="stat-label">元のサイズ</span>
-                      <span className="stat-value">{formatFileSize(originalFile.size)}</span>
-                    </div>
-                    <div className="stat-item stat-arrow" aria-hidden="true">→</div>
-                    <div className="stat-item">
-                      <span className="stat-label">圧縮後</span>
-                      <span className="stat-value">{formatFileSize(compressedBlob?.size || 0)}</span>
-                    </div>
-                    <div className="stat-item stat-ratio">
-                      <span className="stat-label">削減率</span>
-                      <span className={`stat-value ${compressionRatio > 0 ? "stat-positive" : "stat-negative"}`}>
-                        {compressionRatio > 0 ? `-${compressionRatio}%` : `+${Math.abs(compressionRatio)}%`}
-                      </span>
-                    </div>
+              <div className="preview-comparison">
+                <div className="preview-panel">
+                  <h3 className="preview-label">元の画像</h3>
+                  <div className="preview-image-container">
+                    {originalPreview ? (
+                      <img
+                        src={originalPreview}
+                        alt="元の画像"
+                        className="preview-image"
+                      />
+                    ) : (
+                      <span className="preview-placeholder">プレビューなし</span>
+                    )}
                   </div>
-
-                  <div className="preview-comparison">
-                    <div className="preview-panel">
-                      <h3 className="preview-label">元の画像</h3>
-                      <div className="preview-image-container">
-                        <img
-                          src={originalPreview || ""}
-                          alt="元の画像"
-                          className="preview-image"
-                        />
+                </div>
+                <div className="preview-panel">
+                  <h3 className="preview-label">圧縮後</h3>
+                  <div className="preview-image-container">
+                    {isLoading ? (
+                      <div className="loading-enhanced">
+                        <div className="spinner-enhanced" />
+                        <span className="loading-text">圧縮中...</span>
                       </div>
-                    </div>
-                    <div className="preview-panel">
-                      <h3 className="preview-label">圧縮後</h3>
-                      <div className="preview-image-container">
-                        <img
-                          src={compressedPreview}
-                          alt="圧縮後の画像"
-                          className="preview-image"
-                        />
-                      </div>
-                    </div>
+                    ) : compressedPreview ? (
+                      <img
+                        src={compressedPreview}
+                        alt="圧縮後の画像"
+                        className="preview-image"
+                      />
+                    ) : (
+                      <span className="preview-placeholder">圧縮待ち</span>
+                    )}
                   </div>
-                </>
-              )}
+                </div>
+              </div>
             </div>
           </>
         )}
@@ -591,6 +595,11 @@ function ImageCompressor() {
           max-height: 380px;
           object-fit: contain;
           border-radius: 4px;
+        }
+
+        .preview-placeholder {
+          color: var(--md-sys-color-on-surface-variant);
+          font-size: 0.875rem;
         }
 
         @media (max-width: 768px) {
