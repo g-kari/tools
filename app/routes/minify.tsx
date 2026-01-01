@@ -64,6 +64,7 @@ function MinifyTool() {
   const [output, setOutput] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [compressionRatio, setCompressionRatio] = useState<number | null>(null);
+  const [usedLibrary, setUsedLibrary] = useState<string | null>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
@@ -85,12 +86,23 @@ function MinifyTool() {
 
     try {
       let minified = "";
+      let library = "";
 
       switch (codeType) {
         case "javascript":
           // Terserが利用可能ならそれを使用
           if (window.Terser) {
-            const result = await window.Terser.minify(input);
+            const result = await window.Terser.minify(input, {
+              compress: {
+                passes: 2,
+              },
+              mangle: {
+                toplevel: true,
+              },
+              format: {
+                comments: false,
+              },
+            });
             if (result.error) {
               throw new Error(
                 result.error instanceof Error
@@ -99,9 +111,11 @@ function MinifyTool() {
               );
             }
             minified = result.code || "";
+            library = "Terser";
           } else {
             // フォールバック: regex実装
             minified = minifyJavaScript(input);
+            library = "正規表現（フォールバック）";
           }
           break;
         case "css":
@@ -109,9 +123,11 @@ function MinifyTool() {
           if (window.csso) {
             const result = window.csso.minify(input);
             minified = result.css;
+            library = "CSSO";
           } else {
             // フォールバック: regex実装
             minified = minifyCSS(input);
+            library = "正規表現（フォールバック）";
           }
           break;
         case "html":
@@ -127,17 +143,21 @@ function MinifyTool() {
               minifyCSS: true,
               minifyJS: true,
             });
+            library = "html-minifier-terser";
           } else {
             // フォールバック: regex実装
             minified = minifyHTML(input);
+            library = "正規表現（フォールバック）";
           }
           break;
         case "json":
           minified = minifyJSON(input);
+          library = "JSON.stringify";
           break;
       }
 
       setOutput(minified);
+      setUsedLibrary(library);
 
       // 圧縮率を計算
       const originalSize = new Blob([input]).size;
@@ -158,6 +178,28 @@ function MinifyTool() {
       showToast(message, "error");
     }
   }, [input, codeType, showToast]);
+
+  /**
+   * ファイルをアップロードして読み込む
+   */
+  const handleFileUpload = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const text = e.target?.result as string;
+        setInput(text);
+        showToast("ファイルを読み込みました", "success");
+      };
+      reader.onerror = () => {
+        showToast("ファイルの読み込みに失敗しました", "error");
+      };
+      reader.readAsText(file);
+    },
+    [showToast]
+  );
 
   /**
    * 出力をクリップボードにコピー
@@ -182,6 +224,7 @@ function MinifyTool() {
     setOutput("");
     setError(null);
     setCompressionRatio(null);
+    setUsedLibrary(null);
     inputRef.current?.focus();
   }, []);
 
@@ -213,9 +256,22 @@ function MinifyTool() {
           </div>
 
           <div className="input-group">
-            <label htmlFor="input" className="input-label">
-              入力コード
-            </label>
+            <div className="output-header">
+              <label htmlFor="input" className="input-label">
+                入力コード
+              </label>
+              <label htmlFor="fileInput" className="text-button">
+                📁 ファイルから読み込む
+              </label>
+              <input
+                type="file"
+                id="fileInput"
+                onChange={handleFileUpload}
+                accept=".js,.css,.html,.json,.txt"
+                className="sr-only"
+                aria-label="ファイルを選択"
+              />
+            </div>
             <textarea
               ref={inputRef}
               id="input"
@@ -258,11 +314,18 @@ function MinifyTool() {
                 <label htmlFor="output" className="input-label">
                   圧縮結果
                 </label>
-                {compressionRatio !== null && (
-                  <span className="compression-ratio">
-                    圧縮率: {compressionRatio.toFixed(2)}% 削減
-                  </span>
-                )}
+                <div className="library-info-group">
+                  {usedLibrary && (
+                    <span className="library-info">使用: {usedLibrary}</span>
+                  )}
+                  {compressionRatio !== null && (
+                    <span className="compression-ratio">
+                      圧縮率: {compressionRatio.toFixed(2)}% 削減 (
+                      {new Blob([input]).size} → {new Blob([output]).size}{" "}
+                      bytes)
+                    </span>
+                  )}
+                </div>
               </div>
               <textarea
                 id="output"
