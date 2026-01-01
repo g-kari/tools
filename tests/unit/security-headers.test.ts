@@ -1,4 +1,5 @@
 import { describe, it, expect } from "vitest";
+import { isPrivateOrLocalhost } from "../../app/functions/security-headers";
 
 describe("URL validation", () => {
   it("should validate valid HTTPS URL", () => {
@@ -26,41 +27,6 @@ describe("URL validation", () => {
 });
 
 describe("SSRF protection - private IP detection", () => {
-  // isPrivateOrLocalhost関数のロジックテスト
-  function isPrivateOrLocalhost(hostname: string): boolean {
-    if (
-      hostname === "localhost" ||
-      hostname === "127.0.0.1" ||
-      hostname === "::1" ||
-      hostname.endsWith(".localhost")
-    ) {
-      return true;
-    }
-
-    const ipv4Regex = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/;
-    const match = hostname.match(ipv4Regex);
-
-    if (match) {
-      const [, a, b, c, d] = match.map(Number);
-      if (a === 10) return true;
-      if (a === 172 && b >= 16 && b <= 31) return true;
-      if (a === 192 && b === 168) return true;
-      if (a === 127) return true;
-      if (a === 169 && b === 254) return true;
-      if (a > 255 || b > 255 || c > 255 || d > 255) return true;
-    }
-
-    if (
-      hostname.startsWith("::1") ||
-      hostname.startsWith("fc00:") ||
-      hostname.startsWith("fd00:") ||
-      hostname.startsWith("fe80:")
-    ) {
-      return true;
-    }
-
-    return false;
-  }
 
   it("should detect localhost", () => {
     expect(isPrivateOrLocalhost("localhost")).toBe(true);
@@ -118,6 +84,31 @@ describe("SSRF protection - private IP detection", () => {
     expect(isPrivateOrLocalhost("1.256.1.1")).toBe(true);
     expect(isPrivateOrLocalhost("1.1.256.1")).toBe(true);
     expect(isPrivateOrLocalhost("1.1.1.256")).toBe(true);
+  });
+
+  it("should detect 0.0.0.0/8 (this network)", () => {
+    expect(isPrivateOrLocalhost("0.0.0.0")).toBe(true);
+    expect(isPrivateOrLocalhost("0.0.0.1")).toBe(true);
+    expect(isPrivateOrLocalhost("0.255.255.255")).toBe(true);
+  });
+
+  it("should detect multicast addresses - 224.0.0.0/4", () => {
+    expect(isPrivateOrLocalhost("224.0.0.0")).toBe(true);
+    expect(isPrivateOrLocalhost("224.0.0.1")).toBe(true);
+    expect(isPrivateOrLocalhost("239.255.255.255")).toBe(true);
+  });
+
+  it("should detect reserved addresses - 240.0.0.0/4", () => {
+    expect(isPrivateOrLocalhost("240.0.0.0")).toBe(true);
+    expect(isPrivateOrLocalhost("240.0.0.1")).toBe(true);
+    expect(isPrivateOrLocalhost("255.255.255.255")).toBe(true);
+  });
+
+  it("should detect IPv4-mapped IPv6 addresses", () => {
+    expect(isPrivateOrLocalhost("::ffff:127.0.0.1")).toBe(true);
+    expect(isPrivateOrLocalhost("::ffff:10.0.0.1")).toBe(true);
+    expect(isPrivateOrLocalhost("::ffff:192.168.1.1")).toBe(true);
+    expect(isPrivateOrLocalhost("::ffff:8.8.8.8")).toBe(false);
   });
 });
 

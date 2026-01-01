@@ -322,10 +322,11 @@ function calculateScore(checks: HeaderCheck[]): number {
 
 /**
  * SSRF攻撃を防ぐためのプライベートIP・ローカルホストチェック
- * @param hostname - チェックするホスト名
+ * DNS rebinding対策のため、テスト可能なようexport
+ * @param hostname - チェックするホスト名またはIPアドレス
  * @returns プライベートIPまたはローカルホストの場合true
  */
-function isPrivateOrLocalhost(hostname: string): boolean {
+export function isPrivateOrLocalhost(hostname: string): boolean {
   // ローカルホストのチェック
   if (
     hostname === "localhost" ||
@@ -336,39 +337,68 @@ function isPrivateOrLocalhost(hostname: string): boolean {
     return true;
   }
 
-  // プライベートIPレンジのチェック
+  // プライベートIPレンジのチェック（IPv4）
   const ipv4Regex = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/;
   const match = hostname.match(ipv4Regex);
 
   if (match) {
     const [, a, b, c, d] = match.map(Number);
 
-    // 10.0.0.0/8
+    // 各オクテットの範囲チェック
+    if (a > 255 || b > 255 || c > 255 || d > 255) return true;
+
+    // 0.0.0.0/8 (このネットワーク)
+    if (a === 0) return true;
+
+    // 10.0.0.0/8 (プライベート)
     if (a === 10) return true;
 
-    // 172.16.0.0/12
-    if (a === 172 && b >= 16 && b <= 31) return true;
-
-    // 192.168.0.0/16
-    if (a === 192 && b === 168) return true;
-
-    // 127.0.0.0/8 (localhost)
+    // 127.0.0.0/8 (ループバック)
     if (a === 127) return true;
 
     // 169.254.0.0/16 (link-local)
     if (a === 169 && b === 254) return true;
 
-    // 各オクテットの範囲チェック
-    if (a > 255 || b > 255 || c > 255 || d > 255) return true;
+    // 172.16.0.0/12 (プライベート)
+    if (a === 172 && b >= 16 && b <= 31) return true;
+
+    // 192.168.0.0/16 (プライベート)
+    if (a === 192 && b === 168) return true;
+
+    // 224.0.0.0/4 (マルチキャスト)
+    if (a >= 224 && a <= 239) return true;
+
+    // 240.0.0.0/4 (予約済み)
+    if (a >= 240 && a <= 255) return true;
+
+    // 255.255.255.255 (ブロードキャスト) - 上記の240.0.0.0/4に含まれる
   }
 
   // IPv6プライベート・ローカルアドレス
+  const normalizedHostname = hostname.toLowerCase();
+
+  // IPv6ループバック
+  if (normalizedHostname === "::1" || normalizedHostname.startsWith("::1/")) {
+    return true;
+  }
+
+  // IPv4マップIPv6アドレス (::ffff:x.x.x.x)
+  if (normalizedHostname.startsWith("::ffff:")) {
+    const ipv4Part = normalizedHostname.substring(7);
+    return isPrivateOrLocalhost(ipv4Part);
+  }
+
+  // Unique Local Address (fc00::/7, fd00::/8)
   if (
-    hostname.startsWith("::1") ||
-    hostname.startsWith("fc00:") ||
-    hostname.startsWith("fd00:") ||
-    hostname.startsWith("fe80:")
+    normalizedHostname.startsWith("fc") ||
+    normalizedHostname.startsWith("fd")
   ) {
+    return true;
+  }
+
+  // Link-Local (fe80::/10)
+  if (normalizedHostname.startsWith("fe8") || normalizedHostname.startsWith("fe9") ||
+      normalizedHostname.startsWith("fea") || normalizedHostname.startsWith("feb")) {
     return true;
   }
 
@@ -402,21 +432,21 @@ export const checkSecurityHeaders = createServerFn({ method: "GET" })
     }
   })
   .handler(async ({ data: url }): Promise<SecurityHeadersResult> => {
+    const controller = new AbortController();
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
     try {
       const parsedUrl = new URL(url);
       const isHttps = parsedUrl.protocol === "https:";
 
       // タイムアウト設定（10秒）
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000);
+      timeoutId = setTimeout(() => controller.abort(), 10000);
 
       const response = await fetch(url, {
         method: "HEAD",
         redirect: "follow",
         signal: controller.signal,
       });
-
-      clearTimeout(timeoutId);
 
       const headers = response.headers;
 
@@ -464,5 +494,10 @@ export const checkSecurityHeaders = createServerFn({ method: "GET" })
             ? err.message
             : "セキュリティヘッダーの取得に失敗しました",
       };
+    } finally {
+      // タイムアウトのクリーンアップ（必ず実行）
+      if (timeoutId !== null) {
+        clearTimeout(timeoutId);
+      }
     }
   });
