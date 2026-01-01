@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { decodeHtmlEntities } from "../utils/html";
+import Encoding from "encoding-japanese";
 
 // OGP data structure
 export interface OgpData {
@@ -80,64 +81,160 @@ export function extractCharsetFromContentType(
 export function normalizeCharset(charset: string): string {
   const normalized = charset.toLowerCase().replace(/[_-]/g, "");
 
-  // Map common aliases
+  // Map common aliases to their standard names
   const charsetMap: Record<string, string> = {
+    // Shift_JIS variants
     shiftjis: "shift_jis",
     sjis: "shift_jis",
     shiftjis2004: "shift_jis",
+    xsjis: "shift_jis",
+    csshiftjis: "shift_jis",
+    mskanji: "shift_jis",
+    windows31j: "shift_jis",
+    cp932: "shift_jis",
+
+    // EUC-JP variants
     eucjp: "euc-jp",
-    iso88591: "iso-8859-1",
-    latin1: "iso-8859-1",
+    xeucjp: "euc-jp",
+    cseucpkdfmtjapanese: "euc-jp",
+
+    // ISO-2022-JP variants
+    iso2022jp: "iso-2022-jp",
+    csiso2022jp: "iso-2022-jp",
+    jis: "iso-2022-jp",
+
+    // UTF-8 variants
     utf8: "utf-8",
     unicode: "utf-8",
+
+    // ISO-8859-1 variants
+    iso88591: "iso-8859-1",
+    latin1: "iso-8859-1",
+    csisolatin1: "iso-8859-1",
+    l1: "iso-8859-1",
+    ibm819: "iso-8859-1",
+    cp819: "iso-8859-1",
+    windows1252: "windows-1252",
+    cp1252: "windows-1252",
   };
 
   return charsetMap[normalized] || charset.toLowerCase();
 }
 
 /**
- * Decode HTML content with specified charset using TextDecoder
- * Falls back to UTF-8 if charset is unsupported
+ * Check if charset is a Japanese encoding that requires special handling
+ */
+function isJapaneseCharset(charset: string): boolean {
+  const japaneseCharsets = ["shift_jis", "euc-jp", "iso-2022-jp"];
+  return japaneseCharsets.includes(charset);
+}
+
+/**
+ * Convert encoding-japanese encoding code to normalized charset name
+ */
+function encodingCodeToCharset(
+  code: ReturnType<typeof Encoding.detect>
+): string {
+  switch (code) {
+    case "SJIS":
+      return "shift_jis";
+    case "EUCJP":
+      return "euc-jp";
+    case "JIS":
+      return "iso-2022-jp";
+    case "UTF8":
+      return "utf-8";
+    case "UTF16":
+    case "UTF16BE":
+      return "utf-16be";
+    case "UTF16LE":
+      return "utf-16le";
+    case "UTF32":
+      return "utf-32";
+    case "UNICODE":
+      return "utf-8";
+    case "ASCII":
+      return "ascii";
+    default:
+      return "utf-8";
+  }
+}
+
+/**
+ * Auto-detect encoding from byte array using encoding-japanese
+ */
+export function detectEncodingFromBytes(bytes: Uint8Array): string {
+  const detected = Encoding.detect(bytes);
+  return encodingCodeToCharset(detected);
+}
+
+/**
+ * Convert charset name to encoding-japanese encoding type
+ */
+function charsetToEncodingType(
+  charset: string
+): "SJIS" | "EUCJP" | "JIS" | "UTF8" | null {
+  switch (charset) {
+    case "shift_jis":
+      return "SJIS";
+    case "euc-jp":
+      return "EUCJP";
+    case "iso-2022-jp":
+      return "JIS";
+    case "utf-8":
+      return "UTF8";
+    default:
+      return null;
+  }
+}
+
+/**
+ * Decode HTML content with specified charset
+ * Uses encoding-japanese for Japanese encodings (Shift_JIS, EUC-JP, ISO-2022-JP)
+ * Falls back to TextDecoder for other encodings
  */
 export async function decodeHtmlWithCharset(
   arrayBuffer: ArrayBuffer,
   charset: string
 ): Promise<string> {
   const normalizedCharset = normalizeCharset(charset);
+  const bytes = new Uint8Array(arrayBuffer);
 
-  // List of charsets supported by TextDecoder in most browsers/runtimes
-  // Note: Shift_JIS and EUC-JP support varies by runtime
-  const supportedCharsets = [
-    "utf-8",
-    "utf-16le",
-    "utf-16be",
-    "iso-8859-1",
-    "iso-8859-2",
-    "iso-8859-3",
-    "iso-8859-4",
-    "iso-8859-5",
-    "iso-8859-6",
-    "iso-8859-7",
-    "iso-8859-8",
-    "iso-8859-9",
-    "iso-8859-10",
-    "iso-8859-13",
-    "iso-8859-14",
-    "iso-8859-15",
-    "iso-8859-16",
-    "windows-1250",
-    "windows-1251",
-    "windows-1252",
-    "windows-1253",
-    "windows-1254",
-    "windows-1255",
-    "windows-1256",
-    "windows-1257",
-    "windows-1258",
-  ];
+  // For Japanese encodings, use encoding-japanese library
+  if (isJapaneseCharset(normalizedCharset)) {
+    try {
+      const encodingType = charsetToEncodingType(normalizedCharset);
+      if (encodingType) {
+        // Convert to Unicode array and then to string
+        const unicodeArray = Encoding.convert(bytes, {
+          to: "UNICODE",
+          from: encodingType,
+        });
+        return Encoding.codeToString(unicodeArray);
+      }
+    } catch {
+      // Fall through to auto-detection
+    }
+  }
 
+  // Try auto-detection for unspecified or failed encodings
+  if (normalizedCharset === "utf-8" || !normalizedCharset) {
+    const detected = Encoding.detect(bytes);
+    if (detected && detected !== "UTF8" && detected !== "ASCII") {
+      try {
+        const unicodeArray = Encoding.convert(bytes, {
+          to: "UNICODE",
+          from: detected,
+        });
+        return Encoding.codeToString(unicodeArray);
+      } catch {
+        // Fall through to TextDecoder
+      }
+    }
+  }
+
+  // Use TextDecoder for other encodings
   try {
-    // Try to decode with specified charset
     const decoder = new TextDecoder(normalizedCharset, { fatal: false });
     return decoder.decode(arrayBuffer);
   } catch {
@@ -150,6 +247,40 @@ export async function decodeHtmlWithCharset(
       const decoder = new TextDecoder("iso-8859-1");
       return decoder.decode(arrayBuffer);
     }
+  }
+}
+
+/**
+ * Resolve a relative URL to an absolute URL based on the base URL
+ * Handles various relative path formats:
+ * - Absolute URLs (https://...) - returned as-is
+ * - Protocol-relative URLs (//example.com/...) - adds https:
+ * - Root-relative URLs (/path/to/...) - uses base URL origin
+ * - Relative URLs (path/to/...) - resolves relative to base URL
+ */
+export function resolveUrl(relativeUrl: string, baseUrl: string): string {
+  if (!relativeUrl) {
+    return relativeUrl;
+  }
+
+  // Already absolute URL
+  if (relativeUrl.startsWith("http://") || relativeUrl.startsWith("https://")) {
+    return relativeUrl;
+  }
+
+  try {
+    const base = new URL(baseUrl);
+
+    // Protocol-relative URL (//example.com/path)
+    if (relativeUrl.startsWith("//")) {
+      return `https:${relativeUrl}`;
+    }
+
+    // Use URL constructor to resolve relative URLs
+    return new URL(relativeUrl, base).href;
+  } catch {
+    // If URL parsing fails, return the original
+    return relativeUrl;
   }
 }
 
@@ -215,7 +346,8 @@ export function parseOgpFromHtml(html: string, url: string): OgpData {
   // Extract OGP tags
   result.title = getMetaContent("og:title");
   result.description = getMetaContent("og:description");
-  result.image = getMetaContent("og:image");
+  const ogImage = getMetaContent("og:image");
+  result.image = ogImage ? resolveUrl(ogImage, url) : undefined;
   result.url = getMetaContent("og:url");
   result.type = getMetaContent("og:type");
   result.siteName = getMetaContent("og:site_name");
@@ -225,7 +357,8 @@ export function parseOgpFromHtml(html: string, url: string): OgpData {
   result.twitterCard = getMetaContent("twitter:card", false);
   result.twitterTitle = getMetaContent("twitter:title", false);
   result.twitterDescription = getMetaContent("twitter:description", false);
-  result.twitterImage = getMetaContent("twitter:image", false);
+  const twitterImage = getMetaContent("twitter:image", false);
+  result.twitterImage = twitterImage ? resolveUrl(twitterImage, url) : undefined;
   result.twitterSite = getMetaContent("twitter:site", false);
   result.twitterCreator = getMetaContent("twitter:creator", false);
 
@@ -636,14 +769,33 @@ export const fetchOgp = createServerFn({ method: "GET" })
 
       // Get response as ArrayBuffer for proper charset handling
       const arrayBuffer = await response.arrayBuffer();
+      const bytes = new Uint8Array(arrayBuffer);
 
-      // First, try to decode as UTF-8 to extract charset from HTML meta tags
-      const tempDecoder = new TextDecoder("utf-8", { fatal: false });
+      // Auto-detect encoding from bytes (for cases where header/meta are incorrect)
+      const detectedEncoding = detectEncodingFromBytes(bytes);
+
+      // First, try to decode as ASCII/Latin-1 to extract charset from HTML meta tags
+      // This works because meta charset declarations are in ASCII-compatible positions
+      const tempDecoder = new TextDecoder("iso-8859-1", { fatal: false });
       const tempHtml = tempDecoder.decode(arrayBuffer);
       const charsetFromMeta = extractCharsetFromHtml(tempHtml);
 
-      // Use charset from meta tag if available, otherwise use header charset, otherwise UTF-8
-      const finalCharset = charsetFromMeta || charsetFromHeader || "utf-8";
+      // Determine final charset with priority:
+      // 1. Meta tag charset (most reliable for the actual content)
+      // 2. Content-Type header charset
+      // 3. Auto-detected encoding from bytes
+      // 4. UTF-8 as default
+      let finalCharset: string;
+      if (charsetFromMeta) {
+        finalCharset = charsetFromMeta;
+      } else if (charsetFromHeader) {
+        finalCharset = charsetFromHeader;
+      } else if (detectedEncoding !== "utf-8" && detectedEncoding !== "ascii") {
+        // Use auto-detected encoding if it's not UTF-8/ASCII
+        finalCharset = detectedEncoding;
+      } else {
+        finalCharset = "utf-8";
+      }
 
       // Decode with the detected charset
       const html = await decodeHtmlWithCharset(arrayBuffer, finalCharset);

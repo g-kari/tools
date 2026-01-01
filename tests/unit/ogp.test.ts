@@ -4,6 +4,9 @@ import {
   extractCharsetFromHtml,
   extractCharsetFromContentType,
   normalizeCharset,
+  detectEncodingFromBytes,
+  decodeHtmlWithCharset,
+  resolveUrl,
 } from "../../app/functions/ogp";
 
 // OGP data structure (duplicated for testing without importing server code)
@@ -96,7 +99,8 @@ function parseOgpFromHtml(html: string, url: string): OgpData {
   // Extract OGP tags
   result.title = getMetaContent("og:title");
   result.description = getMetaContent("og:description");
-  result.image = getMetaContent("og:image");
+  const ogImage = getMetaContent("og:image");
+  result.image = ogImage ? resolveUrl(ogImage, url) : undefined;
   result.url = getMetaContent("og:url");
   result.type = getMetaContent("og:type");
   result.siteName = getMetaContent("og:site_name");
@@ -106,7 +110,8 @@ function parseOgpFromHtml(html: string, url: string): OgpData {
   result.twitterCard = getMetaContent("twitter:card", false);
   result.twitterTitle = getMetaContent("twitter:title", false);
   result.twitterDescription = getMetaContent("twitter:description", false);
-  result.twitterImage = getMetaContent("twitter:image", false);
+  const twitterImage = getMetaContent("twitter:image", false);
+  result.twitterImage = twitterImage ? resolveUrl(twitterImage, url) : undefined;
   result.twitterSite = getMetaContent("twitter:site", false);
   result.twitterCreator = getMetaContent("twitter:creator", false);
 
@@ -503,6 +508,268 @@ describe("OGP Parser", () => {
         expect(normalizeCharset("windows-1252")).toBe("windows-1252");
         expect(normalizeCharset("UNKNOWN-CHARSET")).toBe("unknown-charset");
       });
+
+      it("should normalize additional Shift_JIS variants", () => {
+        expect(normalizeCharset("x-sjis")).toBe("shift_jis");
+        expect(normalizeCharset("csShiftJIS")).toBe("shift_jis");
+        expect(normalizeCharset("MS_Kanji")).toBe("shift_jis");
+        expect(normalizeCharset("Windows-31J")).toBe("shift_jis");
+        expect(normalizeCharset("CP932")).toBe("shift_jis");
+      });
+
+      it("should normalize additional EUC-JP variants", () => {
+        expect(normalizeCharset("x-euc-jp")).toBe("euc-jp");
+        expect(normalizeCharset("cseucpkdfmtjapanese")).toBe("euc-jp");
+      });
+
+      it("should normalize ISO-2022-JP variants", () => {
+        expect(normalizeCharset("iso-2022-jp")).toBe("iso-2022-jp");
+        expect(normalizeCharset("csISO2022JP")).toBe("iso-2022-jp");
+        expect(normalizeCharset("jis")).toBe("iso-2022-jp");
+      });
+
+      it("should normalize Windows-1252 variants", () => {
+        expect(normalizeCharset("windows-1252")).toBe("windows-1252");
+        expect(normalizeCharset("CP1252")).toBe("windows-1252");
+      });
+    });
+
+    describe("detectEncodingFromBytes", () => {
+      it("should detect UTF-8 encoded text", () => {
+        const utf8Text = new TextEncoder().encode("Hello, 日本語テスト");
+        expect(detectEncodingFromBytes(utf8Text)).toBe("utf-8");
+      });
+
+      it("should detect ASCII text", () => {
+        const asciiText = new TextEncoder().encode("Hello, World!");
+        const result = detectEncodingFromBytes(asciiText);
+        expect(["ascii", "utf-8"]).toContain(result);
+      });
+    });
+
+    describe("decodeHtmlWithCharset", () => {
+      it("should decode UTF-8 content", async () => {
+        const utf8Text = "Hello, 日本語テスト";
+        const bytes = new TextEncoder().encode(utf8Text);
+        const result = await decodeHtmlWithCharset(bytes.buffer, "utf-8");
+        expect(result).toBe(utf8Text);
+      });
+
+      it("should decode Shift_JIS content", async () => {
+        // Shift_JIS encoded "日本語" (0x93FA 0x967B 0x8CEA)
+        const shiftJisBytes = new Uint8Array([
+          0x93, 0xfa, 0x96, 0x7b, 0x8c, 0xea,
+        ]);
+        const result = await decodeHtmlWithCharset(
+          shiftJisBytes.buffer,
+          "shift_jis"
+        );
+        expect(result).toBe("日本語");
+      });
+
+      it("should decode EUC-JP content", async () => {
+        // EUC-JP encoded "日本語" (0xC6FC 0xCBDC 0xB8EC)
+        const eucJpBytes = new Uint8Array([
+          0xc6, 0xfc, 0xcb, 0xdc, 0xb8, 0xec,
+        ]);
+        const result = await decodeHtmlWithCharset(eucJpBytes.buffer, "euc-jp");
+        expect(result).toBe("日本語");
+      });
+
+      it("should decode ISO-8859-1 content", async () => {
+        // ISO-8859-1 encoded text with accented characters
+        const text = "Café résumé";
+        const encoder = new TextEncoder();
+        // Create ISO-8859-1 bytes manually for special chars
+        const isoBytes = new Uint8Array([
+          0x43,
+          0x61,
+          0x66,
+          0xe9, // Café
+          0x20,
+          0x72,
+          0xe9,
+          0x73,
+          0x75,
+          0x6d,
+          0xe9, // résumé
+        ]);
+        const result = await decodeHtmlWithCharset(
+          isoBytes.buffer,
+          "iso-8859-1"
+        );
+        expect(result).toBe("Café résumé");
+      });
+
+      it("should fallback gracefully for unknown charsets", async () => {
+        const utf8Text = "Hello, World!";
+        const bytes = new TextEncoder().encode(utf8Text);
+        const result = await decodeHtmlWithCharset(
+          bytes.buffer,
+          "unknown-charset-xyz"
+        );
+        // Should not throw and return something readable
+        expect(result).toBeTruthy();
+      });
+
+      it("should handle empty content", async () => {
+        const emptyBytes = new Uint8Array([]);
+        const result = await decodeHtmlWithCharset(emptyBytes.buffer, "utf-8");
+        expect(result).toBe("");
+      });
+
+      it("should decode Shift_JIS HTML with meta tag", async () => {
+        // Shift_JIS encoded HTML: <meta charset="shift_jis"><title>テスト</title>
+        // "テスト" in Shift_JIS: 0x83 0x65 0x83 0x58 0x83 0x67
+        const shiftJisHtml = new Uint8Array([
+          // <meta charset="shift_jis"><title>
+          0x3c,
+          0x6d,
+          0x65,
+          0x74,
+          0x61,
+          0x20,
+          0x63,
+          0x68,
+          0x61,
+          0x72,
+          0x73,
+          0x65,
+          0x74,
+          0x3d,
+          0x22,
+          0x73,
+          0x68,
+          0x69,
+          0x66,
+          0x74,
+          0x5f,
+          0x6a,
+          0x69,
+          0x73,
+          0x22,
+          0x3e,
+          0x3c,
+          0x74,
+          0x69,
+          0x74,
+          0x6c,
+          0x65,
+          0x3e,
+          // テスト
+          0x83,
+          0x65,
+          0x83,
+          0x58,
+          0x83,
+          0x67,
+          // </title>
+          0x3c,
+          0x2f,
+          0x74,
+          0x69,
+          0x74,
+          0x6c,
+          0x65,
+          0x3e,
+        ]);
+        const result = await decodeHtmlWithCharset(
+          shiftJisHtml.buffer,
+          "shift_jis"
+        );
+        expect(result).toContain("テスト");
+        expect(result).toContain("<meta charset");
+      });
+    });
+
+    describe("resolveUrl", () => {
+      it("should return absolute URLs unchanged", () => {
+        expect(resolveUrl("https://example.com/image.jpg", "https://base.com/page")).toBe("https://example.com/image.jpg");
+        expect(resolveUrl("http://example.com/image.jpg", "https://base.com/page")).toBe("http://example.com/image.jpg");
+      });
+
+      it("should resolve protocol-relative URLs", () => {
+        expect(resolveUrl("//cdn.example.com/image.jpg", "https://base.com/page")).toBe("https://cdn.example.com/image.jpg");
+      });
+
+      it("should resolve root-relative URLs", () => {
+        expect(resolveUrl("/images/og.jpg", "https://example.com/path/to/page")).toBe("https://example.com/images/og.jpg");
+        expect(resolveUrl("/og.png", "https://example.com/")).toBe("https://example.com/og.png");
+      });
+
+      it("should resolve relative URLs", () => {
+        expect(resolveUrl("images/og.jpg", "https://example.com/path/page.html")).toBe("https://example.com/path/images/og.jpg");
+        expect(resolveUrl("../images/og.jpg", "https://example.com/path/to/page.html")).toBe("https://example.com/path/images/og.jpg");
+        expect(resolveUrl("./og.jpg", "https://example.com/path/page.html")).toBe("https://example.com/path/og.jpg");
+      });
+
+      it("should handle empty or undefined URLs", () => {
+        expect(resolveUrl("", "https://example.com/")).toBe("");
+      });
+
+      it("should handle URLs with query strings and fragments", () => {
+        expect(resolveUrl("/image.jpg?v=123", "https://example.com/page")).toBe("https://example.com/image.jpg?v=123");
+        expect(resolveUrl("/image.jpg#section", "https://example.com/page")).toBe("https://example.com/image.jpg#section");
+      });
+
+      it("should handle complex relative paths", () => {
+        expect(resolveUrl("../../assets/og.png", "https://example.com/a/b/c/page.html")).toBe("https://example.com/a/assets/og.png");
+      });
+    });
+  });
+
+  describe("parseOgpFromHtml with relative URLs", () => {
+    it("should resolve relative og:image URLs", () => {
+      const html = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta property="og:title" content="Test">
+          <meta property="og:image" content="/images/og.jpg">
+        </head>
+        </html>
+      `;
+      const result = parseOgpFromHtml(html, "https://example.com/page");
+      expect(result.image).toBe("https://example.com/images/og.jpg");
+    });
+
+    it("should resolve protocol-relative og:image URLs", () => {
+      const html = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta property="og:image" content="//cdn.example.com/og.jpg">
+        </head>
+        </html>
+      `;
+      const result = parseOgpFromHtml(html, "https://example.com/page");
+      expect(result.image).toBe("https://cdn.example.com/og.jpg");
+    });
+
+    it("should resolve relative twitter:image URLs", () => {
+      const html = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta name="twitter:image" content="../assets/twitter.png">
+        </head>
+        </html>
+      `;
+      const result = parseOgpFromHtml(html, "https://example.com/path/page.html");
+      expect(result.twitterImage).toBe("https://example.com/assets/twitter.png");
+    });
+
+    it("should keep absolute image URLs unchanged", () => {
+      const html = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta property="og:image" content="https://other.com/image.jpg">
+        </head>
+        </html>
+      `;
+      const result = parseOgpFromHtml(html, "https://example.com/page");
+      expect(result.image).toBe("https://other.com/image.jpg");
     });
   });
 });
