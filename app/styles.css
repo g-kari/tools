@@ -2400,6 +2400,60 @@ a:focus-visible {
 }
 
 /* DNS Lookup specific styles */
+.page-subtitle {
+  font-size: 1rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 20px;
+}
+
+.text-button {
+  background: none;
+  border: none;
+  color: var(--md-sys-color-primary);
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0;
+  text-decoration: none;
+}
+
+.text-button:hover {
+  text-decoration: underline;
+}
+
+.text-button:disabled {
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: not-allowed;
+}
+
+.icon-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 4px;
+  color: var(--md-sys-color-on-surface-variant);
+  transition: background-color 0.2s ease;
+  border-radius: 4px;
+}
+
+.icon-button:hover {
+  background-color: var(--md-sys-color-surface-container);
+}
+
+.icon-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.info-message {
+  padding: 12px 16px;
+  background-color: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-on-surface-variant);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  margin-bottom: 16px;
+}
+
 .checkbox-group-header {
   display: flex;
   justify-content: space-between;

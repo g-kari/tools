@@ -167,11 +167,18 @@ function DnsLookup() {
   return (
     <>
       <div className="tool-container">
+        <p className="page-subtitle">
+          ドメインのDNSレコード（A, AAAA, MX, TXT等）を検索します
+        </p>
+
         <form
           onSubmit={(e) => e.preventDefault()}
           aria-label="DNS検索フォーム"
         >
           <div className="converter-section">
+            <h2 id="input-heading" className="sr-only">
+              ドメイン入力
+            </h2>
             <div className="search-form-row">
               <div className="search-input-wrapper">
                 <label htmlFor="domainInput">ドメイン名</label>
