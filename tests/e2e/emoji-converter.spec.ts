@@ -29,7 +29,7 @@ test.describe('Emoji Converter - E2E Tests', () => {
   });
 
   test('should display the main heading', async ({ page }) => {
-    const heading = page.locator('.title');
+    const heading = page.locator('h1');
     await expect(heading).toBeVisible();
     await expect(heading).toContainText('絵文字コンバーター');
   });
