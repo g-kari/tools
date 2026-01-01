@@ -15,6 +15,7 @@ import { Route as UuidRouteImport } from './routes/uuid'
 import { Route as UrlEncodeRouteImport } from './routes/url-encode'
 import { Route as TextSortRouteImport } from './routes/text-sort'
 import { Route as ServerEnvRouteImport } from './routes/server-env'
+import { Route as SecurityHeadersRouteImport } from './routes/security-headers'
 import { Route as RegexCheckerRouteImport } from './routes/regex-checker'
 import { Route as PasswordGeneratorRouteImport } from './routes/password-generator'
 import { Route as OgpRouteImport } from './routes/ogp'
@@ -67,6 +68,11 @@ const TextSortRoute = TextSortRouteImport.update({
 const ServerEnvRoute = ServerEnvRouteImport.update({
   id: '/server-env',
   path: '/server-env',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SecurityHeadersRoute = SecurityHeadersRouteImport.update({
+  id: '/security-headers',
+  path: '/security-headers',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RegexCheckerRoute = RegexCheckerRouteImport.update({
@@ -205,6 +211,7 @@ export interface FileRoutesByFullPath {
   '/ogp': typeof OgpRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/regex-checker': typeof RegexCheckerRoute
+  '/security-headers': typeof SecurityHeadersRoute
   '/server-env': typeof ServerEnvRoute
   '/text-sort': typeof TextSortRoute
   '/url-encode': typeof UrlEncodeRoute
@@ -236,6 +243,7 @@ export interface FileRoutesByTo {
   '/ogp': typeof OgpRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/regex-checker': typeof RegexCheckerRoute
+  '/security-headers': typeof SecurityHeadersRoute
   '/server-env': typeof ServerEnvRoute
   '/text-sort': typeof TextSortRoute
   '/url-encode': typeof UrlEncodeRoute
@@ -268,6 +276,7 @@ export interface FileRoutesById {
   '/ogp': typeof OgpRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/regex-checker': typeof RegexCheckerRoute
+  '/security-headers': typeof SecurityHeadersRoute
   '/server-env': typeof ServerEnvRoute
   '/text-sort': typeof TextSortRoute
   '/url-encode': typeof UrlEncodeRoute
@@ -301,6 +310,7 @@ export interface FileRouteTypes {
     | '/ogp'
     | '/password-generator'
     | '/regex-checker'
+    | '/security-headers'
     | '/server-env'
     | '/text-sort'
     | '/url-encode'
@@ -332,6 +342,7 @@ export interface FileRouteTypes {
     | '/ogp'
     | '/password-generator'
     | '/regex-checker'
+    | '/security-headers'
     | '/server-env'
     | '/text-sort'
     | '/url-encode'
@@ -363,6 +374,7 @@ export interface FileRouteTypes {
     | '/ogp'
     | '/password-generator'
     | '/regex-checker'
+    | '/security-headers'
     | '/server-env'
     | '/text-sort'
     | '/url-encode'
@@ -395,6 +407,7 @@ export interface RootRouteChildren {
   OgpRoute: typeof OgpRoute
   PasswordGeneratorRoute: typeof PasswordGeneratorRoute
   RegexCheckerRoute: typeof RegexCheckerRoute
+  SecurityHeadersRoute: typeof SecurityHeadersRoute
   ServerEnvRoute: typeof ServerEnvRoute
   TextSortRoute: typeof TextSortRoute
   UrlEncodeRoute: typeof UrlEncodeRoute
@@ -449,6 +462,13 @@ declare module '@tanstack/react-router' {
       path: '/server-env'
       fullPath: '/server-env'
       preLoaderRoute: typeof ServerEnvRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/security-headers': {
+      id: '/security-headers'
+      path: '/security-headers'
+      fullPath: '/security-headers'
+      preLoaderRoute: typeof SecurityHeadersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/regex-checker': {
@@ -635,6 +655,7 @@ const rootRouteChildren: RootRouteChildren = {
   OgpRoute: OgpRoute,
   PasswordGeneratorRoute: PasswordGeneratorRoute,
   RegexCheckerRoute: RegexCheckerRoute,
+  SecurityHeadersRoute: SecurityHeadersRoute,
   ServerEnvRoute: ServerEnvRoute,
   TextSortRoute: TextSortRoute,
   UrlEncodeRoute: UrlEncodeRoute,

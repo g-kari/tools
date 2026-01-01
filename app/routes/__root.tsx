@@ -68,6 +68,7 @@ const navCategories = [
       { path: "/jwt", label: "JWTデコード" },
       { path: "/email-dns", label: "メールDNS" },
       { path: "/hash", label: "ハッシュ生成" },
+      { path: "/security-headers", label: "セキュリティヘッダー" },
     ],
   },
   {
