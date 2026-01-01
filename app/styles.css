@@ -2398,3 +2398,195 @@ a:focus-visible {
   display: block;
   margin-top: 5px;
 }
+
+/* DNS Lookup specific styles */
+.page-subtitle {
+  font-size: 1rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 20px;
+}
+
+.text-button {
+  background: none;
+  border: none;
+  color: var(--md-sys-color-primary);
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0;
+  text-decoration: none;
+}
+
+.text-button:hover {
+  text-decoration: underline;
+}
+
+.text-button:disabled {
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: not-allowed;
+}
+
+.icon-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 4px;
+  color: var(--md-sys-color-on-surface-variant);
+  transition: background-color 0.2s ease;
+  border-radius: 4px;
+}
+
+.icon-button:hover {
+  background-color: var(--md-sys-color-surface-container);
+}
+
+.icon-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.info-message {
+  padding: 12px 16px;
+  background-color: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-on-surface-variant);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  margin-bottom: 16px;
+}
+
+.checkbox-group-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.checkbox-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.checkbox-controls-separator {
+  color: var(--md-sys-color-outline);
+  user-select: none;
+}
+
+.checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.checkbox-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.checkbox-type {
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface);
+}
+
+.checkbox-desc {
+  font-size: 0.85rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.result-timestamp {
+  font-size: 0.9rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 20px;
+}
+
+.dns-record-section {
+  margin-bottom: 30px;
+}
+
+.dns-record-type {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface);
+  margin-bottom: 12px;
+  font-family: "Roboto Mono", monospace;
+}
+
+.dns-record-count {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.dns-records-table-container {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.dns-records-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.dns-records-table thead {
+  background: var(--md-sys-color-surface-variant);
+}
+
+.dns-records-table th {
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.dns-records-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  color: var(--md-sys-color-on-surface);
+}
+
+.dns-records-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.dns-records-table tbody tr:hover {
+  background: var(--md-sys-color-surface-container-low);
+}
+
+.dns-record-name {
+  font-family: "Roboto Mono", monospace;
+  font-size: 0.9rem;
+  word-break: break-all;
+}
+
+.dns-record-ttl {
+  font-family: "Roboto Mono", monospace;
+  white-space: nowrap;
+}
+
+.dns-record-data {
+  font-family: "Roboto Mono", monospace;
+  font-size: 0.9rem;
+  word-break: break-all;
+}
+
+/* Responsive adjustments for DNS Lookup */
+@media (max-width: 768px) {
+  .checkbox-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
+  .dns-records-table {
+    font-size: 0.85rem;
+  }
+
+  .dns-records-table th,
+  .dns-records-table td {
+    padding: 10px 12px;
+  }
+}
