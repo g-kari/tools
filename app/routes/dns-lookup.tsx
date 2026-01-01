@@ -184,18 +184,19 @@ function DnsLookup() {
                   placeholder="example.com"
                   aria-describedby="domain-help"
                   aria-label="検索するドメイン名"
+                  aria-required="true"
                   autoComplete="off"
                   spellCheck="false"
                 />
               </div>
               <button
                 type="submit"
-                className="btn-primary"
+                className="btn-primary primary-button"
                 onClick={handleSearch}
                 disabled={isLoading}
                 aria-label="DNS情報を検索"
               >
-                検索
+                {isLoading ? "検索中..." : "検索"}
               </button>
             </div>
             <span id="domain-help" className="sr-only">
