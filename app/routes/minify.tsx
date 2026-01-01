@@ -11,11 +11,44 @@ import {
 export const Route = createFileRoute("/minify")({
   head: () => ({
     meta: [{ title: "コード圧縮ツール (Minify)" }],
+    scripts: [
+      // Terser - JavaScript minifier
+      {
+        src: "https://cdn.jsdelivr.net/npm/terser@5/dist/bundle.min.js",
+        type: "text/javascript",
+      },
+      // CSSO - CSS minifier
+      {
+        src: "https://cdn.jsdelivr.net/npm/csso@5/dist/csso.min.js",
+        type: "text/javascript",
+      },
+      // html-minifier-terser - HTML minifier
+      {
+        src: "https://cdn.jsdelivr.net/npm/html-minifier-terser@7/dist/htmlminifier.min.js",
+        type: "text/javascript",
+      },
+    ],
   }),
   component: MinifyTool,
 });
 
 type CodeType = "javascript" | "css" | "html" | "json";
+
+// グローバル変数の型定義
+declare global {
+  interface Window {
+    Terser?: {
+      minify: (
+        code: string,
+        options?: Record<string, unknown>
+      ) => Promise<{ code?: string; error?: Error }>;
+    };
+    csso?: {
+      minify: (code: string) => { css: string };
+    };
+    minify?: (code: string, options?: Record<string, unknown>) => string;
+  }
+}
 
 /**
  * Minifyツールコンポーネント
@@ -40,7 +73,7 @@ function MinifyTool() {
   /**
    * コードをminify化する
    */
-  const handleMinify = useCallback(() => {
+  const handleMinify = useCallback(async () => {
     if (!input.trim()) {
       setError("コードを入力してください");
       setOutput("");
@@ -55,13 +88,45 @@ function MinifyTool() {
 
       switch (codeType) {
         case "javascript":
-          minified = minifyJavaScript(input);
+          // Terserが利用可能ならそれを使用
+          if (window.Terser) {
+            const result = await window.Terser.minify(input);
+            if (result.error) {
+              throw new Error(result.error.message);
+            }
+            minified = result.code || "";
+          } else {
+            // フォールバック: regex実装
+            minified = minifyJavaScript(input);
+          }
           break;
         case "css":
-          minified = minifyCSS(input);
+          // CSSOが利用可能ならそれを使用
+          if (window.csso) {
+            const result = window.csso.minify(input);
+            minified = result.css;
+          } else {
+            // フォールバック: regex実装
+            minified = minifyCSS(input);
+          }
           break;
         case "html":
-          minified = minifyHTML(input);
+          // html-minifier-terserが利用可能ならそれを使用
+          if (window.minify) {
+            minified = window.minify(input, {
+              collapseWhitespace: true,
+              removeComments: true,
+              removeRedundantAttributes: true,
+              removeScriptTypeAttributes: true,
+              removeStyleLinkTypeAttributes: true,
+              useShortDoctype: true,
+              minifyCSS: true,
+              minifyJS: true,
+            });
+          } else {
+            // フォールバック: regex実装
+            minified = minifyHTML(input);
+          }
           break;
         case "json":
           minified = minifyJSON(input);
@@ -225,9 +290,39 @@ function MinifyTool() {
           </ul>
           <h3>圧縮の特徴</h3>
           <ul>
-            <li>JavaScript: コメントと不要な空白を削除</li>
-            <li>CSS: コメントと不要な空白を削除</li>
-            <li>HTML: コメントと不要な空白を削除</li>
+            <li>
+              JavaScript:{" "}
+              <a
+                href="https://terser.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Terser
+              </a>
+              を使用した高精度な圧縮
+            </li>
+            <li>
+              CSS:{" "}
+              <a
+                href="https://css.github.io/csso/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                CSSO
+              </a>
+              による構造的最適化
+            </li>
+            <li>
+              HTML:{" "}
+              <a
+                href="https://github.com/terser/html-minifier-terser"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                html-minifier-terser
+              </a>
+              による高度な圧縮
+            </li>
             <li>JSON: 不要な空白を削除して1行に圧縮</li>
           </ul>
           <h3>注意事項</h3>
@@ -236,6 +331,43 @@ function MinifyTool() {
             <li>本番環境用のファイルサイズ削減に適しています</li>
             <li>デバッグには元のコードを使用してください</li>
           </ul>
+          <h3>スポンサー支援</h3>
+          <p>このツールは以下の素晴らしいオープンソースライブラリを使用しています：</p>
+          <ul>
+            <li>
+              <a
+                href="https://opencollective.com/terser"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Terser への支援
+              </a>
+              {" - JavaScript minifier"}
+            </li>
+            <li>
+              <a
+                href="https://github.com/sponsors/css"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                CSSO への支援
+              </a>
+              {" - CSS optimizer"}
+            </li>
+            <li>
+              <a
+                href="https://www.jsdelivr.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                jsDelivr への支援
+              </a>
+              {" - CDN provider"}
+            </li>
+          </ul>
+          <p>
+            これらのライブラリの開発者に感謝します。スポンサーとしての支援をぜひご検討ください。
+          </p>
         </aside>
       </div>
     </>
