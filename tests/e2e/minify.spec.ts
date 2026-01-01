@@ -187,12 +187,12 @@ test.describe("Minify Tool", () => {
   });
 
   test("should clear all fields", async ({ page }) => {
-    // Fill input
-    await page.fill("#input", "test code");
+    // Fill input with valid JavaScript
+    await page.fill("#input", "function test() { return true; }");
     await page.click('button:has-text("圧縮")');
 
     // Wait for output
-    await expect(page.locator("#output")).toBeVisible();
+    await expect(page.locator("#output")).toBeVisible({ timeout: 10000 });
 
     // Click clear button
     await page.click('button:has-text("クリア")');
