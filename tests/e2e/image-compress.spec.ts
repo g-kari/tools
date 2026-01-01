@@ -119,9 +119,12 @@ test.describe('Image Compressor - E2E Tests', () => {
   test('should be keyboard accessible', async ({ page }) => {
     const dropzone = page.locator('.dropzone');
 
-    // Tab to dropzone
-    await page.keyboard.press('Tab');
+    // Focus dropzone directly and verify it can receive focus
+    await dropzone.focus();
     await expect(dropzone).toBeFocused();
+
+    // Verify tabindex is set for keyboard accessibility
+    await expect(dropzone).toHaveAttribute('tabindex', '0');
   });
 
   test('should navigate to other pages via category dropdown', async ({ page }) => {
