@@ -9,7 +9,9 @@ test.describe("Minify Tool", () => {
     await expect(page).toHaveTitle("コード圧縮ツール (Minify)");
 
     // Check main heading
-    await expect(page.locator("h1")).toContainText("コード圧縮ツール");
+    await expect(page.locator(".tool-container h1")).toContainText(
+      "コード圧縮ツール"
+    );
 
     // Check page subtitle
     await expect(page.locator(".page-subtitle")).toBeVisible();
