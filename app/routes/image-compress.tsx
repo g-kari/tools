@@ -131,11 +131,15 @@ function ImageCompressor() {
     };
   }, [originalPreview, compressedPreview]);
 
-  // 画質/形式変更時に自動で再圧縮
+  // 画質/形式変更時に自動で再圧縮（デバウンス付き）
   useEffect(() => {
-    if (originalFile && !isLoading) {
+    if (!originalFile || isLoading) return;
+
+    const timeoutId = setTimeout(() => {
       handleCompress();
-    }
+    }, 300);
+
+    return () => clearTimeout(timeoutId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [quality, format]);
 
