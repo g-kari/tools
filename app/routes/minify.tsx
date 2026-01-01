@@ -24,7 +24,7 @@ export const Route = createFileRoute("/minify")({
       },
       // html-minifier-terser - HTML minifier
       {
-        src: "https://cdn.jsdelivr.net/npm/html-minifier-terser@7/dist/htmlminifier.min.js",
+        src: "https://cdn.jsdelivr.net/npm/html-minifier-terser@7/dist/htmlminifier.umd.bundle.min.js",
         type: "text/javascript",
       },
     ],
