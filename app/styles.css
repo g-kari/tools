@@ -2454,6 +2454,21 @@ a:focus-visible {
   margin-bottom: 16px;
 }
 
+.library-info-group {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.library-info {
+  padding: 4px 8px;
+  background-color: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-on-surface-variant);
+  border-radius: 4px;
+  font-size: 0.85rem;
+  margin-bottom: 0;
+}
+
 .checkbox-group-header {
   display: flex;
   justify-content: space-between;

@@ -25,14 +25,14 @@ export function minifyJavaScript(code: string): string {
   // 行頭・行末の空白を削除
   result = result.replace(/^\s+|\s+$/gm, "");
 
+  // 改行を削除
+  result = result.replace(/\n+/g, "");
+
   // 複数の空白を1つに
   result = result.replace(/\s+/g, " ");
 
   // 演算子周りの空白を削除
   result = result.replace(/\s*([{}();:,=+\-*/<>!&|])\s*/g, "$1");
-
-  // 空行を削除
-  result = result.replace(/\n+/g, "");
 
   return result.trim();
 }
@@ -61,14 +61,14 @@ export function minifyCSS(code: string): string {
   // 行頭・行末の空白を削除
   result = result.replace(/^\s+|\s+$/gm, "");
 
+  // 改行を削除
+  result = result.replace(/\n+/g, "");
+
   // 複数の空白を1つに
   result = result.replace(/\s+/g, " ");
 
   // セレクタ・プロパティ周りの空白を削除
   result = result.replace(/\s*([{}:;,>+~])\s*/g, "$1");
-
-  // 空行を削除
-  result = result.replace(/\n+/g, "");
 
   // 0の単位を削除 (0px -> 0)
   result = result.replace(
@@ -112,11 +112,11 @@ export function minifyHTML(code: string): string {
   // 行頭・行末の空白を削除
   result = result.replace(/^\s+|\s+$/gm, "");
 
+  // 改行を削除
+  result = result.replace(/\n+/g, "");
+
   // 複数の空白を1つに
   result = result.replace(/\s+/g, " ");
-
-  // 空行を削除
-  result = result.replace(/\n+/g, "");
 
   return result.trim();
 }

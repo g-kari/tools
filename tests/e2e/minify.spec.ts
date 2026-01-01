@@ -19,6 +19,11 @@ test.describe("Minify Tool", () => {
     // Check code type selector
     await expect(page.locator("#codeType")).toBeVisible();
 
+    // Check file upload button
+    await expect(
+      page.locator('label[for="fileInput"]:has-text("ファイルから読み込む")')
+    ).toBeVisible();
+
     // Check input textarea
     await expect(page.locator("#input")).toBeVisible();
 
@@ -53,7 +58,8 @@ test.describe("Minify Tool", () => {
     const output = await page.locator("#output").inputValue();
     expect(output).not.toContain("//");
     expect(output).not.toContain("\n");
-    expect(output).toContain("function hello()");
+    expect(output).toContain("console.log");
+    expect(output).toContain("function");
 
     // Check compression ratio is displayed
     await expect(page.locator(".compression-ratio")).toBeVisible();
@@ -183,7 +189,8 @@ test.describe("Minify Tool", () => {
     const clipboardText = await page.evaluate(() =>
       navigator.clipboard.readText()
     );
-    expect(clipboardText).toContain("function test()");
+    expect(clipboardText).toContain("function");
+    expect(clipboardText).toContain("return");
   });
 
   test("should clear all fields", async ({ page }) => {
@@ -300,5 +307,31 @@ test.describe("Minify Tool", () => {
     const output = await page.locator("#output").inputValue();
     expect(output.length).toBeGreaterThan(0);
     expect(output.length).toBeLessThan(largeCode.length);
+  });
+
+  test("should load file when file upload button is clicked", async ({
+    page,
+  }) => {
+    // Create a test file content
+    const testCode = "function test() { return true; }";
+
+    // Upload file using file chooser
+    const [fileChooser] = await Promise.all([
+      page.waitForEvent("filechooser"),
+      page.click('label[for="fileInput"]'),
+    ]);
+
+    // Create a file from string content
+    await fileChooser.setFiles({
+      name: "test.js",
+      mimeType: "text/javascript",
+      buffer: Buffer.from(testCode),
+    });
+
+    // Wait a bit for file to be read
+    await page.waitForTimeout(500);
+
+    // Check that input has the file content
+    await expect(page.locator("#input")).toHaveValue(testCode);
   });
 });

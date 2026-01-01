@@ -522,13 +522,11 @@ function EmojiConverter() {
   };
 
   return (
-    <div className="container">
-      <header className="header">
-        <h1 className="title">絵文字コンバーター</h1>
-        <p className="subtitle">
-          Discord・Slack用の絵文字を作成（画像編集機能付き）
-        </p>
-      </header>
+    <div className="tool-container">
+      <h1>絵文字コンバーター</h1>
+      <p className="page-subtitle">
+        Discord・Slack用の絵文字を作成（画像編集機能付き）
+      </p>
 
       <div
         ref={statusRef}
@@ -537,9 +535,9 @@ function EmojiConverter() {
         className="sr-only"
       />
 
-      <main className="main">
+      <div className="converter-section">
         {/* ファイル選択 */}
-        <section className="section">
+        <section>
           <h2 className="section-title">ファイル選択</h2>
 
           <div
@@ -1027,7 +1025,7 @@ function EmojiConverter() {
             </div>
           </div>
         )}
-      </main>
+      </div>
     </div>
   );
 }
