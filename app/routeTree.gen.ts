@@ -29,6 +29,7 @@ import { Route as EmojiConverterRouteImport } from './routes/emoji-converter'
 import { Route as EmailDnsRouteImport } from './routes/email-dns'
 import { Route as DummyImageRouteImport } from './routes/dummy-image'
 import { Route as DummyAudioRouteImport } from './routes/dummy-audio'
+import { Route as DnsLookupRouteImport } from './routes/dns-lookup'
 import { Route as DiceRollRouteImport } from './routes/dice-roll'
 import { Route as ColorExtractorRouteImport } from './routes/color-extractor'
 import { Route as CharCountRouteImport } from './routes/char-count'
@@ -140,6 +141,11 @@ const DummyAudioRoute = DummyAudioRouteImport.update({
   path: '/dummy-audio',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DnsLookupRoute = DnsLookupRouteImport.update({
+  id: '/dns-lookup',
+  path: '/dns-lookup',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DiceRollRoute = DiceRollRouteImport.update({
   id: '/dice-roll',
   path: '/dice-roll',
@@ -198,6 +204,7 @@ export interface FileRoutesByFullPath {
   '/char-count': typeof CharCountRoute
   '/color-extractor': typeof ColorExtractorRoute
   '/dice-roll': typeof DiceRollRoute
+  '/dns-lookup': typeof DnsLookupRoute
   '/dummy-audio': typeof DummyAudioRoute
   '/dummy-image': typeof DummyImageRoute
   '/email-dns': typeof EmailDnsRoute
@@ -230,6 +237,7 @@ export interface FileRoutesByTo {
   '/char-count': typeof CharCountRoute
   '/color-extractor': typeof ColorExtractorRoute
   '/dice-roll': typeof DiceRollRoute
+  '/dns-lookup': typeof DnsLookupRoute
   '/dummy-audio': typeof DummyAudioRoute
   '/dummy-image': typeof DummyImageRoute
   '/email-dns': typeof EmailDnsRoute
@@ -263,6 +271,7 @@ export interface FileRoutesById {
   '/char-count': typeof CharCountRoute
   '/color-extractor': typeof ColorExtractorRoute
   '/dice-roll': typeof DiceRollRoute
+  '/dns-lookup': typeof DnsLookupRoute
   '/dummy-audio': typeof DummyAudioRoute
   '/dummy-image': typeof DummyImageRoute
   '/email-dns': typeof EmailDnsRoute
@@ -297,6 +306,7 @@ export interface FileRouteTypes {
     | '/char-count'
     | '/color-extractor'
     | '/dice-roll'
+    | '/dns-lookup'
     | '/dummy-audio'
     | '/dummy-image'
     | '/email-dns'
@@ -329,6 +339,7 @@ export interface FileRouteTypes {
     | '/char-count'
     | '/color-extractor'
     | '/dice-roll'
+    | '/dns-lookup'
     | '/dummy-audio'
     | '/dummy-image'
     | '/email-dns'
@@ -361,6 +372,7 @@ export interface FileRouteTypes {
     | '/char-count'
     | '/color-extractor'
     | '/dice-roll'
+    | '/dns-lookup'
     | '/dummy-audio'
     | '/dummy-image'
     | '/email-dns'
@@ -394,6 +406,7 @@ export interface RootRouteChildren {
   CharCountRoute: typeof CharCountRoute
   ColorExtractorRoute: typeof ColorExtractorRoute
   DiceRollRoute: typeof DiceRollRoute
+  DnsLookupRoute: typeof DnsLookupRoute
   DummyAudioRoute: typeof DummyAudioRoute
   DummyImageRoute: typeof DummyImageRoute
   EmailDnsRoute: typeof EmailDnsRoute
@@ -562,6 +575,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DummyAudioRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dns-lookup': {
+      id: '/dns-lookup'
+      path: '/dns-lookup'
+      fullPath: '/dns-lookup'
+      preLoaderRoute: typeof DnsLookupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dice-roll': {
       id: '/dice-roll'
       path: '/dice-roll'
@@ -642,6 +662,7 @@ const rootRouteChildren: RootRouteChildren = {
   CharCountRoute: CharCountRoute,
   ColorExtractorRoute: ColorExtractorRoute,
   DiceRollRoute: DiceRollRoute,
+  DnsLookupRoute: DnsLookupRoute,
   DummyAudioRoute: DummyAudioRoute,
   DummyImageRoute: DummyImageRoute,
   EmailDnsRoute: EmailDnsRoute,
