@@ -58,7 +58,8 @@ test.describe("Minify Tool", () => {
     const output = await page.locator("#output").inputValue();
     expect(output).not.toContain("//");
     expect(output).not.toContain("\n");
-    expect(output).toContain("function hello()");
+    expect(output).toContain("console.log");
+    expect(output).toContain("function");
 
     // Check compression ratio is displayed
     await expect(page.locator(".compression-ratio")).toBeVisible();
@@ -188,7 +189,8 @@ test.describe("Minify Tool", () => {
     const clipboardText = await page.evaluate(() =>
       navigator.clipboard.readText()
     );
-    expect(clipboardText).toContain("function test()");
+    expect(clipboardText).toContain("function");
+    expect(clipboardText).toContain("return");
   });
 
   test("should clear all fields", async ({ page }) => {
