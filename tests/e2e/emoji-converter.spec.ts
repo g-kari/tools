@@ -29,9 +29,8 @@ test.describe('Emoji Converter - E2E Tests', () => {
   });
 
   test('should display the main heading', async ({ page }) => {
-    const heading = page.locator('h1');
+    const heading = page.getByRole('heading', { name: '絵文字コンバーター' });
     await expect(heading).toBeVisible();
-    await expect(heading).toContainText('絵文字コンバーター');
   });
 
   test('should have proper accessibility attributes', async ({ page }) => {
