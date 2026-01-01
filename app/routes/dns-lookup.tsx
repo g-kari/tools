@@ -14,6 +14,14 @@ export const Route = createFileRoute("/dns-lookup")({
   component: DnsLookup,
 });
 
+/**
+ * DNS record types supported by the DNS lookup tool
+ *
+ * Each record type includes:
+ * - value: DnsRecordType enum value
+ * - label: Display label in UI
+ * - description: User-friendly description in Japanese
+ */
 const RECORD_TYPES: { value: DnsRecordType; label: string; description: string }[] = [
   { value: "A", label: "A", description: "IPv4アドレス" },
   { value: "AAAA", label: "AAAA", description: "IPv6アドレス" },
@@ -27,6 +35,22 @@ const RECORD_TYPES: { value: DnsRecordType; label: string; description: string }
   { value: "CAA", label: "CAA", description: "証明書認証局" },
 ];
 
+/**
+ * DNS Lookup Component
+ *
+ * Provides a UI for querying DNS records of a domain.
+ * Supports multiple record types (A, AAAA, MX, TXT, etc.) with checkboxes.
+ * Results are displayed in a table format with copy functionality.
+ *
+ * Features:
+ * - Multi-type DNS record search
+ * - Select all/deselect all functionality
+ * - Keyboard shortcuts (Enter to search)
+ * - Accessibility support with ARIA labels
+ * - Real-time status announcements for screen readers
+ *
+ * @returns DNS lookup page component
+ */
 function DnsLookup() {
   const { showToast } = useToast();
   const [domain, setDomain] = useState("");
@@ -106,10 +130,17 @@ function DnsLookup() {
     }
   }, [domain, selectedTypes, announceStatus, showToast]);
 
+  /**
+   * Copy DNS record data to clipboard
+   *
+   * @param record - DNS record data to copy
+   */
   const handleCopyRecord = useCallback(
     (record: string) => {
-      navigator.clipboard.writeText(record);
-      showToast("コピーしました", "success");
+      navigator.clipboard
+        .writeText(record)
+        .then(() => showToast("コピーしました", "success"))
+        .catch(() => showToast("コピーに失敗しました", "error"));
     },
     [showToast]
   );
