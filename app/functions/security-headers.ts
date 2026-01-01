@@ -321,6 +321,61 @@ function calculateScore(checks: HeaderCheck[]): number {
 }
 
 /**
+ * SSRF攻撃を防ぐためのプライベートIP・ローカルホストチェック
+ * @param hostname - チェックするホスト名
+ * @returns プライベートIPまたはローカルホストの場合true
+ */
+function isPrivateOrLocalhost(hostname: string): boolean {
+  // ローカルホストのチェック
+  if (
+    hostname === "localhost" ||
+    hostname === "127.0.0.1" ||
+    hostname === "::1" ||
+    hostname.endsWith(".localhost")
+  ) {
+    return true;
+  }
+
+  // プライベートIPレンジのチェック
+  const ipv4Regex = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/;
+  const match = hostname.match(ipv4Regex);
+
+  if (match) {
+    const [, a, b, c, d] = match.map(Number);
+
+    // 10.0.0.0/8
+    if (a === 10) return true;
+
+    // 172.16.0.0/12
+    if (a === 172 && b >= 16 && b <= 31) return true;
+
+    // 192.168.0.0/16
+    if (a === 192 && b === 168) return true;
+
+    // 127.0.0.0/8 (localhost)
+    if (a === 127) return true;
+
+    // 169.254.0.0/16 (link-local)
+    if (a === 169 && b === 254) return true;
+
+    // 各オクテットの範囲チェック
+    if (a > 255 || b > 255 || c > 255 || d > 255) return true;
+  }
+
+  // IPv6プライベート・ローカルアドレス
+  if (
+    hostname.startsWith("::1") ||
+    hostname.startsWith("fc00:") ||
+    hostname.startsWith("fd00:") ||
+    hostname.startsWith("fe80:")
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
+/**
  * URLからHTTPヘッダーを取得してセキュリティチェックを実行
  */
 export const checkSecurityHeaders = createServerFn({ method: "GET" })
@@ -330,8 +385,19 @@ export const checkSecurityHeaders = createServerFn({ method: "GET" })
       if (!["http:", "https:"].includes(url.protocol)) {
         throw new Error("HTTPまたはHTTPSのURLを入力してください");
       }
+
+      // SSRF対策: プライベートIP・ローカルホストへのアクセスを拒否
+      if (isPrivateOrLocalhost(url.hostname)) {
+        throw new Error(
+          "セキュリティ上の理由により、ローカルホストやプライベートIPアドレスへのアクセスはできません"
+        );
+      }
+
       return data;
-    } catch {
+    } catch (err) {
+      if (err instanceof Error) {
+        throw err;
+      }
       throw new Error("無効なURL形式です");
     }
   })
@@ -340,10 +406,17 @@ export const checkSecurityHeaders = createServerFn({ method: "GET" })
       const parsedUrl = new URL(url);
       const isHttps = parsedUrl.protocol === "https:";
 
+      // タイムアウト設定（10秒）
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000);
+
       const response = await fetch(url, {
         method: "HEAD",
         redirect: "follow",
+        signal: controller.signal,
       });
+
+      clearTimeout(timeoutId);
 
       const headers = response.headers;
 
@@ -372,6 +445,16 @@ export const checkSecurityHeaders = createServerFn({ method: "GET" })
         score,
       };
     } catch (err) {
+      // AbortErrorの場合はタイムアウトメッセージ
+      if (err instanceof Error && err.name === "AbortError") {
+        return {
+          url,
+          checks: [],
+          score: 0,
+          error: "リクエストがタイムアウトしました（10秒）",
+        };
+      }
+
       return {
         url,
         checks: [],

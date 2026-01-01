@@ -25,6 +25,102 @@ describe("URL validation", () => {
   });
 });
 
+describe("SSRF protection - private IP detection", () => {
+  // isPrivateOrLocalhost関数のロジックテスト
+  function isPrivateOrLocalhost(hostname: string): boolean {
+    if (
+      hostname === "localhost" ||
+      hostname === "127.0.0.1" ||
+      hostname === "::1" ||
+      hostname.endsWith(".localhost")
+    ) {
+      return true;
+    }
+
+    const ipv4Regex = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/;
+    const match = hostname.match(ipv4Regex);
+
+    if (match) {
+      const [, a, b, c, d] = match.map(Number);
+      if (a === 10) return true;
+      if (a === 172 && b >= 16 && b <= 31) return true;
+      if (a === 192 && b === 168) return true;
+      if (a === 127) return true;
+      if (a === 169 && b === 254) return true;
+      if (a > 255 || b > 255 || c > 255 || d > 255) return true;
+    }
+
+    if (
+      hostname.startsWith("::1") ||
+      hostname.startsWith("fc00:") ||
+      hostname.startsWith("fd00:") ||
+      hostname.startsWith("fe80:")
+    ) {
+      return true;
+    }
+
+    return false;
+  }
+
+  it("should detect localhost", () => {
+    expect(isPrivateOrLocalhost("localhost")).toBe(true);
+    expect(isPrivateOrLocalhost("test.localhost")).toBe(true);
+  });
+
+  it("should detect IPv4 localhost", () => {
+    expect(isPrivateOrLocalhost("127.0.0.1")).toBe(true);
+    expect(isPrivateOrLocalhost("127.0.0.2")).toBe(true);
+    expect(isPrivateOrLocalhost("127.255.255.255")).toBe(true);
+  });
+
+  it("should detect IPv6 localhost", () => {
+    expect(isPrivateOrLocalhost("::1")).toBe(true);
+  });
+
+  it("should detect private IP ranges - 10.x.x.x", () => {
+    expect(isPrivateOrLocalhost("10.0.0.0")).toBe(true);
+    expect(isPrivateOrLocalhost("10.0.0.1")).toBe(true);
+    expect(isPrivateOrLocalhost("10.255.255.255")).toBe(true);
+  });
+
+  it("should detect private IP ranges - 172.16-31.x.x", () => {
+    expect(isPrivateOrLocalhost("172.16.0.0")).toBe(true);
+    expect(isPrivateOrLocalhost("172.16.0.1")).toBe(true);
+    expect(isPrivateOrLocalhost("172.31.255.255")).toBe(true);
+  });
+
+  it("should detect private IP ranges - 192.168.x.x", () => {
+    expect(isPrivateOrLocalhost("192.168.0.0")).toBe(true);
+    expect(isPrivateOrLocalhost("192.168.1.1")).toBe(true);
+    expect(isPrivateOrLocalhost("192.168.255.255")).toBe(true);
+  });
+
+  it("should detect link-local addresses - 169.254.x.x", () => {
+    expect(isPrivateOrLocalhost("169.254.0.0")).toBe(true);
+    expect(isPrivateOrLocalhost("169.254.169.254")).toBe(true);
+  });
+
+  it("should detect IPv6 private addresses", () => {
+    expect(isPrivateOrLocalhost("fc00::1")).toBe(true);
+    expect(isPrivateOrLocalhost("fd00::1")).toBe(true);
+    expect(isPrivateOrLocalhost("fe80::1")).toBe(true);
+  });
+
+  it("should allow public IP addresses", () => {
+    expect(isPrivateOrLocalhost("8.8.8.8")).toBe(false);
+    expect(isPrivateOrLocalhost("1.1.1.1")).toBe(false);
+    expect(isPrivateOrLocalhost("example.com")).toBe(false);
+    expect(isPrivateOrLocalhost("google.com")).toBe(false);
+  });
+
+  it("should reject invalid IP octets", () => {
+    expect(isPrivateOrLocalhost("256.1.1.1")).toBe(true);
+    expect(isPrivateOrLocalhost("1.256.1.1")).toBe(true);
+    expect(isPrivateOrLocalhost("1.1.256.1")).toBe(true);
+    expect(isPrivateOrLocalhost("1.1.1.256")).toBe(true);
+  });
+});
+
 describe("Security header score calculation logic", () => {
   // スコア計算の重み付けテスト
   const weights = {
