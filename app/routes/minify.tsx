@@ -93,13 +93,7 @@ function MinifyTool() {
           // Terserが利用可能ならそれを使用
           if (window.Terser) {
             const result = await window.Terser.minify(input, {
-              compress: {
-                dead_code: true,
-                drop_console: false,
-                drop_debugger: true,
-                keep_classnames: false,
-                keep_fnames: false,
-              },
+              compress: true,
               mangle: true,
               format: {
                 comments: false,
