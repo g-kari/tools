@@ -385,7 +385,45 @@ export function isPrivateOrLocalhost(hostname: string): boolean {
   // IPv4マップIPv6アドレス (::ffff:x.x.x.x)
   if (normalizedHostname.startsWith("::ffff:")) {
     const ipv4Part = normalizedHostname.substring(7);
-    return isPrivateOrLocalhost(ipv4Part);
+
+    // ドット10進表記 (::ffff:192.168.1.1)
+    if (ipv4Part.includes('.')) {
+      return isPrivateOrLocalhost(ipv4Part);
+    }
+
+    // 16進表記 (::ffff:c0a8:0101)
+    const hexMatch = ipv4Part.match(/^([0-9a-f]{1,4}):([0-9a-f]{1,4})$/);
+    if (hexMatch) {
+      const high = Number.parseInt(hexMatch[1], 16);
+      const low = Number.parseInt(hexMatch[2], 16);
+      const a = (high >> 8) & 0xff;
+      const b = high & 0xff;
+      const c = (low >> 8) & 0xff;
+      const d = low & 0xff;
+      const ipv4Addr = `${a}.${b}.${c}.${d}`;
+      return isPrivateOrLocalhost(ipv4Addr);
+    }
+  }
+
+  // IPv4マップIPv6の展開形式 (0000:0000:0000:0000:0000:ffff:xxxx:xxxx)
+  const ipv6ExpandedMappedRegex = /^(?:0{1,4}:){5}ffff:([0-9a-f]{1,4}):([0-9a-f]{1,4})$/;
+  const expandedMatch = normalizedHostname.match(ipv6ExpandedMappedRegex);
+  if (expandedMatch) {
+    const high = Number.parseInt(expandedMatch[1], 16);
+    const low = Number.parseInt(expandedMatch[2], 16);
+    const a = (high >> 8) & 0xff;
+    const b = high & 0xff;
+    const c = (low >> 8) & 0xff;
+    const d = low & 0xff;
+    const ipv4Addr = `${a}.${b}.${c}.${d}`;
+    return isPrivateOrLocalhost(ipv4Addr);
+  }
+
+  // 展開形式でドット10進表記を含む場合 (0:0:0:0:0:ffff:192.168.1.1)
+  const ipv6ExpandedDottedRegex = /^(?:0{0,4}:){5}ffff:(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})$/;
+  const expandedDottedMatch = normalizedHostname.match(ipv6ExpandedDottedRegex);
+  if (expandedDottedMatch) {
+    return isPrivateOrLocalhost(expandedDottedMatch[1]);
   }
 
   // Unique Local Address (fc00::/7, fd00::/8)
