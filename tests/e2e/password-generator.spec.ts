@@ -133,8 +133,8 @@ test.describe('Password Generator - E2E Tests', () => {
 
     await generateButton.click();
 
-    // Check for toast notification
-    const toast = page.locator('.toast');
+    // Check for error toast notification (use .toast-error to avoid strict mode violation)
+    const toast = page.locator('.toast-error');
     await expect(toast).toBeVisible();
     await expect(toast).toContainText('少なくとも1つの文字種を選択してください');
   });
