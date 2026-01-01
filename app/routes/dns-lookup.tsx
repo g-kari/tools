@@ -165,51 +165,43 @@ function DnsLookup() {
   }, []);
 
   return (
-    <div className="page-container">
-      <header className="page-header">
-        <h1 className="page-title">DNSレコード検索</h1>
-        <p className="page-subtitle">
-          ドメインのDNSレコード（A, AAAA, MX, TXT等）を検索します
-        </p>
-      </header>
-
-      <div
-        ref={statusRef}
-        className="sr-only"
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
-      ></div>
-
-      <main className="page-content">
-        <section className="input-section" aria-labelledby="input-heading">
-          <h2 id="input-heading" className="section-title">
-            ドメイン入力
-          </h2>
-          <div className="input-group">
-            <label htmlFor="domainInput" className="input-label">
-              ドメイン名
-            </label>
-            <input
-              ref={inputRef}
-              type="text"
-              id="domainInput"
-              className="text-input"
-              value={domain}
-              onChange={(e) => setDomain(e.target.value)}
-              placeholder="example.com"
-              aria-required="true"
-              aria-invalid={error !== null}
-              aria-describedby={error ? "domain-error" : undefined}
-            />
-            {error && (
-              <div id="domain-error" className="error-message" role="alert">
-                {error}
+    <>
+      <div className="tool-container">
+        <form
+          onSubmit={(e) => e.preventDefault()}
+          aria-label="DNS検索フォーム"
+        >
+          <div className="converter-section">
+            <div className="search-form-row">
+              <div className="search-input-wrapper">
+                <label htmlFor="domainInput">ドメイン名</label>
+                <input
+                  type="text"
+                  id="domainInput"
+                  ref={inputRef}
+                  value={domain}
+                  onChange={(e) => setDomain(e.target.value)}
+                  placeholder="example.com"
+                  aria-describedby="domain-help"
+                  aria-label="検索するドメイン名"
+                  autoComplete="off"
+                  spellCheck="false"
+                />
               </div>
-            )}
-          </div>
+              <button
+                type="submit"
+                className="btn-primary"
+                onClick={handleSearch}
+                disabled={isLoading}
+                aria-label="DNS情報を検索"
+              >
+                検索
+              </button>
+            </div>
+            <span id="domain-help" className="sr-only">
+              example.comのような形式でドメイン名を入力してください
+            </span>
 
-          <div className="input-group">
             <div className="checkbox-group-header">
               <label className="input-label">レコードタイプ</label>
               <div className="checkbox-controls">
@@ -253,24 +245,29 @@ function DnsLookup() {
               ))}
             </div>
           </div>
+        </form>
 
-          <button
-            onClick={handleSearch}
-            disabled={isLoading}
-            className="primary-button"
-            aria-label="DNS検索を実行"
-          >
-            {isLoading ? "検索中..." : "検索"}
-          </button>
-        </section>
+        {isLoading && (
+          <div className="loading" aria-live="polite">
+            <div className="spinner" aria-hidden="true" />
+            <span>検索中...</span>
+          </div>
+        )}
 
-        {result && (
-          <section className="output-section" aria-labelledby="output-heading">
-            <h2 id="output-heading" className="section-title">
-              検索結果: {result.domain}
+        {error && (
+          <div className="error-message" role="alert" aria-live="assertive">
+            {error}
+          </div>
+        )}
+
+        {result && !error && (
+          <section aria-labelledby="result-title">
+            <h2 id="result-title" className="section-title">
+              検索結果
             </h2>
             <div className="result-timestamp">
-              検索日時: {new Date(result.timestamp).toLocaleString("ja-JP")}
+              ドメイン: {result.domain} | 検索日時:{" "}
+              {new Date(result.timestamp).toLocaleString("ja-JP")}
             </div>
 
             {result.results.map((typeResult) => {
@@ -339,7 +336,38 @@ function DnsLookup() {
             })}
           </section>
         )}
-      </main>
-    </div>
+
+        <aside
+          className="info-box"
+          role="complementary"
+          aria-labelledby="usage-title"
+        >
+          <h3 id="usage-title">使い方</h3>
+          <ul>
+            <li>ドメイン名を入力して検索したいレコードタイプを選択</li>
+            <li>「検索」ボタンをクリックしてDNSレコードを取得</li>
+            <li>例: google.com, github.com</li>
+            <li>複数のレコードタイプを同時に検索可能</li>
+            <li>キーボードショートカット: Enterキーで検索実行</li>
+          </ul>
+          <h3>対応レコードタイプ</h3>
+          <ul>
+            <li>A (IPv4アドレス), AAAA (IPv6アドレス)</li>
+            <li>CNAME (正規名), MX (メールサーバー)</li>
+            <li>TXT (テキストレコード), NS (ネームサーバー)</li>
+            <li>SOA (権威レコード), PTR (逆引き)</li>
+            <li>SRV (サービスレコード), CAA (証明書認証局)</li>
+          </ul>
+        </aside>
+      </div>
+
+      <div
+        ref={statusRef}
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        className="sr-only"
+      />
+    </>
   );
 }
