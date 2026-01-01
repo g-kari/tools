@@ -105,10 +105,26 @@ describe("SSRF protection - private IP detection", () => {
   });
 
   it("should detect IPv4-mapped IPv6 addresses", () => {
+    // ドット10進表記
     expect(isPrivateOrLocalhost("::ffff:127.0.0.1")).toBe(true);
     expect(isPrivateOrLocalhost("::ffff:10.0.0.1")).toBe(true);
     expect(isPrivateOrLocalhost("::ffff:192.168.1.1")).toBe(true);
     expect(isPrivateOrLocalhost("::ffff:8.8.8.8")).toBe(false);
+
+    // 16進表記
+    expect(isPrivateOrLocalhost("::ffff:c0a8:0101")).toBe(true); // 192.168.1.1 in hex
+    expect(isPrivateOrLocalhost("::ffff:7f00:0001")).toBe(true); // 127.0.0.1 in hex
+    expect(isPrivateOrLocalhost("::ffff:0a00:0001")).toBe(true); // 10.0.0.1 in hex
+    expect(isPrivateOrLocalhost("::ffff:0808:0808")).toBe(false); // 8.8.8.8 in hex
+
+    // 展開形式（16進）
+    expect(isPrivateOrLocalhost("0000:0000:0000:0000:0000:ffff:c0a8:0101")).toBe(true); // 192.168.1.1
+    expect(isPrivateOrLocalhost("0:0:0:0:0:ffff:c0a8:0101")).toBe(true); // 192.168.1.1 (省略形)
+    expect(isPrivateOrLocalhost("0000:0000:0000:0000:0000:ffff:7f00:0001")).toBe(true); // 127.0.0.1
+
+    // 展開形式（ドット10進）
+    expect(isPrivateOrLocalhost("0:0:0:0:0:ffff:192.168.1.1")).toBe(true);
+    expect(isPrivateOrLocalhost("0000:0000:0000:0000:0000:ffff:127.0.0.1")).toBe(true);
   });
 });
 
