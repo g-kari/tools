@@ -11,7 +11,11 @@
       "Bash(git push:*)",
       "Bash(gh pr create:*)",
       "Bash(curl:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(mkdir:*)",
+      "Bash(gh issue list:*)",
+      "mcp__taskmaster-ai__get_tasks",
+      "mcp__taskmaster-ai__parse_prd"
     ]
   }
 }

@@ -1,0 +1,202 @@
+[
+  {
+    "id": "115",
+    "title": "動画変換時の出力形式に、GIFなどのアニメーション画像も選べるように",
+    "description": "",
+    "status": "pending",
+    "labels": [],
+    "githubIssue": 115
+  },
+  {
+    "id": "107",
+    "title": "サイトのOGP",
+    "description": "機能ごとにOGP画像はよういしたいね",
+    "status": "pending",
+    "labels": [],
+    "githubIssue": 107
+  },
+  {
+    "id": "96",
+    "title": "HTTPレスポンスヘッダのセキュリティチェック機能",
+    "description": "",
+    "status": "pending",
+    "labels": [],
+    "githubIssue": 96
+  },
+  {
+    "id": "95",
+    "title": "単位計算",
+    "description": "",
+    "status": "pending",
+    "labels": [],
+    "githubIssue": 95
+  },
+  {
+    "id": "94",
+    "title": "指定したURLのオープンポートチェック",
+    "description": "",
+    "status": "pending",
+    "labels": [],
+    "githubIssue": 94
+  },
+  {
+    "id": "93",
+    "title": "暗号化 opt salt",
+    "description": "",
+    "status": "pending",
+    "labels": [],
+    "githubIssue": 93
+  },
+  {
+    "id": "91",
+    "title": "DNSレコードもろもろ",
+    "description": "",
+    "status": "pending",
+    "labels": [],
+    "githubIssue": 91
+  },
+  {
+    "id": "87",
+    "title": "IP変換",
+    "description": "",
+    "status": "pending",
+    "labels": [],
+    "githubIssue": 87
+  },
+  {
+    "id": "86",
+    "title": "CIDR計算",
+    "description": "",
+    "status": "pending",
+    "labels": [],
+    "githubIssue": 86
+  },
+  {
+    "id": "85",
+    "title": "minify化機能",
+    "description": "",
+    "status": "pending",
+    "labels": [],
+    "githubIssue": 85
+  },
+  {
+    "id": "84",
+    "title": "画像トリミング",
+    "description": "",
+    "status": "pending",
+    "labels": [],
+    "githubIssue": 84
+  },
+  {
+    "id": "83",
+    "title": "画像リサイズ",
+    "description": "",
+    "status": "pending",
+    "labels": [],
+    "githubIssue": 83
+  },
+  {
+    "id": "82",
+    "title": "画像圧縮",
+    "description": "",
+    "status": "pending",
+    "labels": [],
+    "githubIssue": 82
+  },
+  {
+    "id": "81",
+    "title": "からーピッカー",
+    "description": "",
+    "status": "pending",
+    "labels": [],
+    "githubIssue": 81
+  },
+  {
+    "id": "80",
+    "title": "favicon生成",
+    "description": "",
+    "status": "pending",
+    "labels": [],
+    "githubIssue": 80
+  },
+  {
+    "id": "79",
+    "title": "透過画像生成",
+    "description": "",
+    "status": "pending",
+    "labels": [],
+    "githubIssue": 79
+  },
+  {
+    "id": "78",
+    "title": "base64変換 画像",
+    "description": "",
+    "status": "pending",
+    "labels": [],
+    "githubIssue": 78
+  },
+  {
+    "id": "76",
+    "title": "GoogleAdもしくは難かしらの広告",
+    "description": "",
+    "status": "pending",
+    "labels": [],
+    "githubIssue": 76
+  },
+  {
+    "id": "75",
+    "title": "phpシリアライズ変換",
+    "description": "",
+    "status": "pending",
+    "labels": [],
+    "githubIssue": 75
+  },
+  {
+    "id": "74",
+    "title": "msgpack変換",
+    "description": "",
+    "status": "pending",
+    "labels": [],
+    "githubIssue": 74
+  },
+  {
+    "id": "73",
+    "title": "png,jpgなどをdiscordの絵文字にするやつ",
+    "description": "discordとかslackね\n\n容量とかサイズの制限とかあるからそれに合わせて変換かけるのと、\nなんか編集機能も欲しいね\nテキスト埋め込みとか揺れるアニメーションとか透過とか",
+    "status": "pending",
+    "labels": [],
+    "githubIssue": 73
+  },
+  {
+    "id": "72",
+    "title": "png,jpgなどをdiscordのスタンプにするやつ",
+    "description": "discordとか、slackね",
+    "status": "pending",
+    "labels": [],
+    "githubIssue": 72
+  },
+  {
+    "id": "64",
+    "title": "特定のOGPのタイトルなどが文字化けする",
+    "description": "",
+    "status": "pending",
+    "labels": [],
+    "githubIssue": 64
+  },
+  {
+    "id": "19",
+    "title": "HTML変換",
+    "description": "",
+    "status": "pending",
+    "labels": [],
+    "githubIssue": 19
+  },
+  {
+    "id": "9",
+    "title": "TODO",
+    "description": "# 実装したい機能をsub-issueでまとめる\n\n作業中のissueはwipのラベルを付ける。\n基本issueをもとに作成したPRをマージされたらissueは閉じること\n\n# 機能\n- [x] whois\n- [x] IPアドレスから、大体の位置\n- [x] IPアドレスから、取得できるプロバイダーなどの情報すべて\n\n# その他\n",
+    "status": "pending",
+    "labels": [],
+    "githubIssue": 9
+  }
+]
