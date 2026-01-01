@@ -181,6 +181,7 @@ function MinifyTool() {
   return (
     <>
       <div className="tool-container">
+        <h1>コード圧縮ツール (Minify)</h1>
         <p className="page-subtitle">
           JavaScript、CSS、HTML、JSONのコードを圧縮します
         </p>
