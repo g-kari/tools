@@ -92,7 +92,19 @@ function MinifyTool() {
         case "javascript":
           // Terserが利用可能ならそれを使用
           if (window.Terser) {
-            const result = await window.Terser.minify(input);
+            const result = await window.Terser.minify(input, {
+              compress: {
+                dead_code: true,
+                drop_console: false,
+                drop_debugger: true,
+                keep_classnames: false,
+                keep_fnames: false,
+              },
+              mangle: true,
+              format: {
+                comments: false,
+              },
+            });
             if (result.error) {
               throw new Error(
                 result.error instanceof Error
@@ -310,7 +322,9 @@ function MinifyTool() {
                   )}
                   {compressionRatio !== null && (
                     <span className="compression-ratio">
-                      圧縮率: {compressionRatio.toFixed(2)}% 削減
+                      圧縮率: {compressionRatio.toFixed(2)}% 削減 (
+                      {new Blob([input]).size} → {new Blob([output]).size}{" "}
+                      bytes)
                     </span>
                   )}
                 </div>
