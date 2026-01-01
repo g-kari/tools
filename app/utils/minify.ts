@@ -71,7 +71,10 @@ export function minifyCSS(code: string): string {
   result = result.replace(/\n+/g, "");
 
   // 0の単位を削除 (0px -> 0)
-  result = result.replace(/(\s|:)0(px|em|rem|%|vh|vw)/g, "$10");
+  result = result.replace(
+    /(\s|:)0(px|em|rem|%|vh|vw|vmin|vmax|pt|pc|cm|mm|in|ex|ch)/g,
+    "$10"
+  );
 
   // カラーコードの短縮 (#ffffff -> #fff)
   result = result.replace(

@@ -92,7 +92,11 @@ function MinifyTool() {
           if (window.Terser) {
             const result = await window.Terser.minify(input);
             if (result.error) {
-              throw new Error(result.error.message);
+              throw new Error(
+                result.error instanceof Error
+                  ? result.error.message
+                  : String(result.error)
+              );
             }
             minified = result.code || "";
           } else {
@@ -138,7 +142,10 @@ function MinifyTool() {
       // 圧縮率を計算
       const originalSize = new Blob([input]).size;
       const minifiedSize = new Blob([minified]).size;
-      const ratio = ((originalSize - minifiedSize) / originalSize) * 100;
+      const ratio = Math.max(
+        0,
+        ((originalSize - minifiedSize) / originalSize) * 100
+      );
       setCompressionRatio(ratio);
 
       showToast("コードを圧縮しました", "success");
