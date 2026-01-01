@@ -1,5 +1,10 @@
 import { describe, it, expect } from "vitest";
 import { decodeHtmlEntities } from "../../app/utils/html";
+import {
+  extractCharsetFromHtml,
+  extractCharsetFromContentType,
+  normalizeCharset,
+} from "../../app/functions/ogp";
 
 // OGP data structure (duplicated for testing without importing server code)
 interface OgpData {
@@ -399,6 +404,105 @@ describe("OGP Parser", () => {
       expect(result.twitterImage).toBe("https://example.com/twitter.jpg");
       expect(result.metaTitle).toBe("Page Title");
       expect(result.metaDescription).toBe("Meta Description");
+    });
+  });
+
+  describe("Charset Detection", () => {
+    describe("extractCharsetFromHtml", () => {
+      it("should extract charset from HTML5 meta tag", () => {
+        const html = '<meta charset="UTF-8">';
+        expect(extractCharsetFromHtml(html)).toBe("utf-8");
+      });
+
+      it("should extract charset from HTML5 meta tag without quotes", () => {
+        const html = "<meta charset=UTF-8>";
+        expect(extractCharsetFromHtml(html)).toBe("utf-8");
+      });
+
+      it("should extract charset from HTML4 meta tag", () => {
+        const html =
+          '<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">';
+        expect(extractCharsetFromHtml(html)).toBe("shift_jis");
+      });
+
+      it("should extract charset from HTML4 meta tag with reversed attributes", () => {
+        const html =
+          '<meta content="text/html; charset=EUC-JP" http-equiv="Content-Type">';
+        expect(extractCharsetFromHtml(html)).toBe("euc-jp");
+      });
+
+      it("should handle case insensitivity", () => {
+        const html = '<meta charset="utf-8">';
+        expect(extractCharsetFromHtml(html)).toBe("utf-8");
+      });
+
+      it("should return null if no charset is found", () => {
+        const html = "<html><head><title>Test</title></head></html>";
+        expect(extractCharsetFromHtml(html)).toBeNull();
+      });
+
+      it("should extract charset from ISO-8859-1", () => {
+        const html =
+          '<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">';
+        expect(extractCharsetFromHtml(html)).toBe("iso-8859-1");
+      });
+    });
+
+    describe("extractCharsetFromContentType", () => {
+      it("should extract charset from Content-Type header", () => {
+        const contentType = "text/html; charset=UTF-8";
+        expect(extractCharsetFromContentType(contentType)).toBe("utf-8");
+      });
+
+      it("should handle charset with different case", () => {
+        const contentType = "text/html; charset=shift_jis";
+        expect(extractCharsetFromContentType(contentType)).toBe("shift_jis");
+      });
+
+      it("should return null if no charset is specified", () => {
+        const contentType = "text/html";
+        expect(extractCharsetFromContentType(contentType)).toBeNull();
+      });
+
+      it("should handle complex Content-Type headers", () => {
+        const contentType =
+          "text/html; charset=UTF-8; boundary=something";
+        expect(extractCharsetFromContentType(contentType)).toBe("utf-8");
+      });
+    });
+
+    describe("normalizeCharset", () => {
+      it("should normalize shift-jis variants", () => {
+        expect(normalizeCharset("shift-jis")).toBe("shift_jis");
+        expect(normalizeCharset("shift_jis")).toBe("shift_jis");
+        expect(normalizeCharset("shiftjis")).toBe("shift_jis");
+        expect(normalizeCharset("sjis")).toBe("shift_jis");
+        expect(normalizeCharset("Shift_JIS")).toBe("shift_jis");
+      });
+
+      it("should normalize euc-jp variants", () => {
+        expect(normalizeCharset("euc-jp")).toBe("euc-jp");
+        expect(normalizeCharset("eucjp")).toBe("euc-jp");
+        expect(normalizeCharset("EUC-JP")).toBe("euc-jp");
+      });
+
+      it("should normalize utf-8 variants", () => {
+        expect(normalizeCharset("utf-8")).toBe("utf-8");
+        expect(normalizeCharset("utf8")).toBe("utf-8");
+        expect(normalizeCharset("UTF-8")).toBe("utf-8");
+        expect(normalizeCharset("unicode")).toBe("utf-8");
+      });
+
+      it("should normalize iso-8859-1 variants", () => {
+        expect(normalizeCharset("iso-8859-1")).toBe("iso-8859-1");
+        expect(normalizeCharset("iso88591")).toBe("iso-8859-1");
+        expect(normalizeCharset("latin1")).toBe("iso-8859-1");
+      });
+
+      it("should preserve unknown charsets in lowercase", () => {
+        expect(normalizeCharset("windows-1252")).toBe("windows-1252");
+        expect(normalizeCharset("UNKNOWN-CHARSET")).toBe("unknown-charset");
+      });
     });
   });
 });

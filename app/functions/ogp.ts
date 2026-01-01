@@ -31,6 +31,128 @@ export interface OgpData {
 
 // decodeHtmlEntities is now imported from ../utils/html
 
+/**
+ * Extract charset from HTML meta tags
+ * Supports both HTML5 (<meta charset="...">) and HTML4 (<meta http-equiv="Content-Type" ...>) formats
+ */
+export function extractCharsetFromHtml(html: string): string | null {
+  // HTML5 format: <meta charset="UTF-8">
+  const html5Match = html.match(
+    /<meta\s+charset\s*=\s*["']?([a-zA-Z0-9_-]+)["']?/i
+  );
+  if (html5Match) {
+    return html5Match[1].toLowerCase();
+  }
+
+  // HTML4 format: <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  const html4Match = html.match(
+    /<meta\s+http-equiv\s*=\s*["']?content-type["']?[^>]+content\s*=\s*["'][^"']*charset=([a-zA-Z0-9_-]+)/i
+  );
+  if (html4Match) {
+    return html4Match[1].toLowerCase();
+  }
+
+  // Reversed attribute order
+  const reversedMatch = html.match(
+    /<meta\s+content\s*=\s*["'][^"']*charset=([a-zA-Z0-9_-]+)[^>]+http-equiv\s*=\s*["']?content-type["']?/i
+  );
+  if (reversedMatch) {
+    return reversedMatch[1].toLowerCase();
+  }
+
+  return null;
+}
+
+/**
+ * Extract charset from Content-Type header
+ */
+export function extractCharsetFromContentType(
+  contentType: string
+): string | null {
+  const match = contentType.match(/charset=([a-zA-Z0-9_-]+)/i);
+  return match ? match[1].toLowerCase() : null;
+}
+
+/**
+ * Normalize charset name to standard form
+ * Maps common aliases to their standard names
+ */
+export function normalizeCharset(charset: string): string {
+  const normalized = charset.toLowerCase().replace(/[_-]/g, "");
+
+  // Map common aliases
+  const charsetMap: Record<string, string> = {
+    shiftjis: "shift_jis",
+    sjis: "shift_jis",
+    shiftjis2004: "shift_jis",
+    eucjp: "euc-jp",
+    iso88591: "iso-8859-1",
+    latin1: "iso-8859-1",
+    utf8: "utf-8",
+    unicode: "utf-8",
+  };
+
+  return charsetMap[normalized] || charset.toLowerCase();
+}
+
+/**
+ * Decode HTML content with specified charset using TextDecoder
+ * Falls back to UTF-8 if charset is unsupported
+ */
+export async function decodeHtmlWithCharset(
+  arrayBuffer: ArrayBuffer,
+  charset: string
+): Promise<string> {
+  const normalizedCharset = normalizeCharset(charset);
+
+  // List of charsets supported by TextDecoder in most browsers/runtimes
+  // Note: Shift_JIS and EUC-JP support varies by runtime
+  const supportedCharsets = [
+    "utf-8",
+    "utf-16le",
+    "utf-16be",
+    "iso-8859-1",
+    "iso-8859-2",
+    "iso-8859-3",
+    "iso-8859-4",
+    "iso-8859-5",
+    "iso-8859-6",
+    "iso-8859-7",
+    "iso-8859-8",
+    "iso-8859-9",
+    "iso-8859-10",
+    "iso-8859-13",
+    "iso-8859-14",
+    "iso-8859-15",
+    "iso-8859-16",
+    "windows-1250",
+    "windows-1251",
+    "windows-1252",
+    "windows-1253",
+    "windows-1254",
+    "windows-1255",
+    "windows-1256",
+    "windows-1257",
+    "windows-1258",
+  ];
+
+  try {
+    // Try to decode with specified charset
+    const decoder = new TextDecoder(normalizedCharset, { fatal: false });
+    return decoder.decode(arrayBuffer);
+  } catch {
+    // If charset is not supported, try UTF-8 as fallback
+    try {
+      const decoder = new TextDecoder("utf-8", { fatal: false });
+      return decoder.decode(arrayBuffer);
+    } catch {
+      // Last resort: decode as Latin-1 (ISO-8859-1) which accepts all byte values
+      const decoder = new TextDecoder("iso-8859-1");
+      return decoder.decode(arrayBuffer);
+    }
+  }
+}
+
 // Parse OGP and meta tags from HTML
 export function parseOgpFromHtml(html: string, url: string): OgpData {
   const result: OgpData = { fetchedUrl: url };
@@ -509,7 +631,23 @@ export const fetchOgp = createServerFn({ method: "GET" })
         } as OgpData;
       }
 
-      const html = await response.text();
+      // Detect charset from Content-Type header
+      const charsetFromHeader = extractCharsetFromContentType(contentType);
+
+      // Get response as ArrayBuffer for proper charset handling
+      const arrayBuffer = await response.arrayBuffer();
+
+      // First, try to decode as UTF-8 to extract charset from HTML meta tags
+      const tempDecoder = new TextDecoder("utf-8", { fatal: false });
+      const tempHtml = tempDecoder.decode(arrayBuffer);
+      const charsetFromMeta = extractCharsetFromHtml(tempHtml);
+
+      // Use charset from meta tag if available, otherwise use header charset, otherwise UTF-8
+      const finalCharset = charsetFromMeta || charsetFromHeader || "utf-8";
+
+      // Decode with the detected charset
+      const html = await decodeHtmlWithCharset(arrayBuffer, finalCharset);
+
       const ogpData = parseOgpFromHtml(html, url);
 
       // If no OGP data was found with bot UA, the result might still be empty
