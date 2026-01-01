@@ -47,6 +47,7 @@ const navCategories = [
     icon: "🔍",
     items: [
       { path: "/whois", label: "WHOIS" },
+      { path: "/dns-lookup", label: "DNSレコード" },
       { path: "/ip-geolocation", label: "IP検索" },
       { path: "/global-ip", label: "グローバルIP" },
       { path: "/ogp", label: "OGPチェック" },
@@ -69,6 +70,14 @@ const navCategories = [
       { path: "/email-dns", label: "メールDNS" },
       { path: "/hash", label: "ハッシュ生成" },
       { path: "/security-headers", label: "セキュリティヘッダー" },
+    ],
+  },
+  {
+    name: "ネットワーク",
+    icon: "🌐",
+    items: [
+      { path: "/cidr", label: "CIDR計算" },
+      { path: "/ip-converter", label: "IP変換" },
     ],
   },
   {

@@ -79,7 +79,24 @@ const DNS_TYPE_MAP: Record<DnsRecordType, number> = {
 };
 
 /**
- * Validate domain name
+ * Validate domain name format
+ *
+ * Checks if the domain name follows RFC 1035 naming conventions:
+ * - Must contain at least one dot
+ * - Labels can be up to 63 characters
+ * - Labels can contain alphanumeric characters and hyphens
+ * - Labels cannot start or end with a hyphen
+ *
+ * @param domain - Domain name to validate
+ * @returns True if domain name is valid, false otherwise
+ *
+ * @example
+ * ```ts
+ * isValidDomain("example.com") // true
+ * isValidDomain("sub.example.com") // true
+ * isValidDomain("example") // false
+ * isValidDomain("-example.com") // false
+ * ```
  */
 function isValidDomain(domain: string): boolean {
   const domainRegex =
@@ -89,6 +106,19 @@ function isValidDomain(domain: string): boolean {
 
 /**
  * Query DNS over HTTPS
+ *
+ * Queries DNS records using DNS-over-HTTPS protocol.
+ * Tries Cloudflare DOH first, then falls back to Google DOH.
+ *
+ * @param domain - Domain name to query
+ * @param recordType - DNS record type to query (A, AAAA, MX, etc.)
+ * @returns DNS query result with records or error
+ *
+ * @example
+ * ```ts
+ * const result = await queryDoh("example.com", "A");
+ * console.log(result.records); // [{ name: "example.com", type: 1, TTL: 3600, data: "93.184.216.34" }]
+ * ```
  */
 async function queryDoh(
   domain: string,
