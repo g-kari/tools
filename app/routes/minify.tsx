@@ -181,11 +181,19 @@ function MinifyTool() {
 
   /**
    * ファイルをアップロードして読み込む
+   * @param event - ファイル入力の変更イベント
    */
   const handleFileUpload = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const file = event.target.files?.[0];
       if (!file) return;
+
+      // Limit file size to 10MB
+      const MAX_FILE_SIZE = 10 * 1024 * 1024;
+      if (file.size > MAX_FILE_SIZE) {
+        showToast("ファイルサイズが大きすぎます（最大10MB）", "error");
+        return;
+      }
 
       const reader = new FileReader();
       reader.onload = (e) => {
