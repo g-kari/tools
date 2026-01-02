@@ -3463,29 +3463,31 @@ a:focus-visible {
 }
 
 /* Unit Converter Styles */
-.unit-category-grid {
+.unit-converter-layout {
   display: flex;
-  flex-wrap: nowrap;
-  gap: 6px;
+  gap: 16px;
   margin-bottom: 20px;
-  overflow-x: auto;
-  padding-bottom: 4px;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
+}
+
+.unit-category-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex-shrink: 0;
 }
 
 .unit-category-btn {
-  padding: 6px 12px;
+  padding: 8px 12px;
   background: transparent;
   border: 1px solid var(--md-sys-color-outline-variant);
-  border-radius: 16px;
+  border-radius: 6px;
   color: var(--md-sys-color-on-surface);
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.15s ease;
   white-space: nowrap;
-  flex-shrink: 0;
+  text-align: left;
 }
 
 .unit-category-btn:hover {
@@ -3505,13 +3507,13 @@ a:focus-visible {
 }
 
 .unit-converter-main {
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 12px;
   padding: 16px;
   background: var(--md-sys-color-surface-variant);
   border-radius: 8px;
-  margin-bottom: 20px;
 }
 
 .unit-input-group {
@@ -3583,6 +3585,7 @@ a:focus-visible {
 .unit-swap-container {
   display: flex;
   justify-content: center;
+  align-items: center;
   padding: 4px 0;
 }
 
@@ -3590,8 +3593,11 @@ a:focus-visible {
   width: 32px;
   height: 32px;
   min-width: 32px;
+  max-width: 32px;
   min-height: 32px;
-  flex-shrink: 0;
+  max-height: 32px;
+  aspect-ratio: 1 / 1;
+  flex: 0 0 32px;
   border-radius: 50%;
   border: none;
   background: var(--md-sys-color-primary);
@@ -3602,6 +3608,8 @@ a:focus-visible {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 .unit-swap-btn:hover {
@@ -3726,7 +3734,22 @@ a:focus-visible {
 }
 
 /* Unit converter responsive */
-@media (max-width: 500px) {
+@media (max-width: 600px) {
+  .unit-converter-layout {
+    flex-direction: column;
+  }
+
+  .unit-category-sidebar {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .unit-category-btn {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
   .unit-input-row {
     flex-direction: column;
     align-items: stretch;

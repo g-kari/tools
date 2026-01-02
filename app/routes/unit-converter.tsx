@@ -160,28 +160,29 @@ function UnitConverter() {
     <>
       <div className="tool-container">
         <form onSubmit={(e) => e.preventDefault()} aria-label="単位変換フォーム">
-          {/* カテゴリ選択 */}
-          <div
-            className="unit-category-grid"
-            role="radiogroup"
-            aria-label="カテゴリ選択"
-          >
-            {UNIT_CATEGORIES.map((category) => (
-              <button
-                key={category.id}
-                type="button"
-                role="radio"
-                aria-checked={selectedCategory === category.id}
-                className={`unit-category-btn ${selectedCategory === category.id ? "active" : ""}`}
-                onClick={() => handleCategoryChange(category.id)}
-              >
-                {category.name}
-              </button>
-            ))}
-          </div>
+          <div className="unit-converter-layout">
+            {/* カテゴリ選択（左サイドバー） */}
+            <div
+              className="unit-category-sidebar"
+              role="radiogroup"
+              aria-label="カテゴリ選択"
+            >
+              {UNIT_CATEGORIES.map((category) => (
+                <button
+                  key={category.id}
+                  type="button"
+                  role="radio"
+                  aria-checked={selectedCategory === category.id}
+                  className={`unit-category-btn ${selectedCategory === category.id ? "active" : ""}`}
+                  onClick={() => handleCategoryChange(category.id)}
+                >
+                  {category.name}
+                </button>
+              ))}
+            </div>
 
-          {/* メイン変換エリア */}
-          <div className="unit-converter-main">
+            {/* メイン変換エリア */}
+            <div className="unit-converter-main">
             {/* 入力セクション */}
             <div className="unit-input-group">
               <span className="unit-input-label">変換元</span>
@@ -251,57 +252,58 @@ function UnitConverter() {
                 </select>
               </div>
             </div>
-          </div>
 
-          {/* ボタングループ */}
-          <div className="unit-button-group" role="group" aria-label="変換操作">
-            <button
-              type="button"
-              className="unit-btn unit-btn-primary"
-              onClick={handleConvert}
-              aria-label="単位を変換して履歴に追加"
-            >
-              履歴に追加
-            </button>
-            <button
-              type="button"
-              className="unit-btn unit-btn-secondary"
-              onClick={handleClear}
-              aria-label="入力をクリア"
-            >
-              クリア
-            </button>
-          </div>
+              {/* ボタングループ */}
+              <div className="unit-button-group" role="group" aria-label="変換操作">
+                <button
+                  type="button"
+                  className="unit-btn unit-btn-primary"
+                  onClick={handleConvert}
+                  aria-label="単位を変換して履歴に追加"
+                >
+                  履歴に追加
+                </button>
+                <button
+                  type="button"
+                  className="unit-btn unit-btn-secondary"
+                  onClick={handleClear}
+                  aria-label="入力をクリア"
+                >
+                  クリア
+                </button>
+              </div>
 
-          {/* 変換履歴 */}
-          {history.length > 0 && (
-            <section className="unit-history-section" aria-labelledby="history-title">
-              <h2 id="history-title" className="unit-history-title">
-                変換履歴
-              </h2>
-              <ul className="unit-history-list" role="list">
-                {history.map((entry) => {
-                  const categoryUnits = getUnitsForCategory(entry.categoryId);
-                  const fromUnitDef = categoryUnits.find(
-                    (u: UnitDefinition) => u.id === entry.fromUnitId
-                  );
-                  const toUnitDef = categoryUnits.find(
-                    (u: UnitDefinition) => u.id === entry.toUnitId
-                  );
-                  return (
-                    <li key={entry.id} className="unit-history-item">
-                      <span className="unit-history-category">
-                        {getCategoryLabel(entry.categoryId)}
-                      </span>
-                      <span className="unit-history-conversion">
-                        {formatNumber(entry.inputValue)} {fromUnitDef?.symbol} → {formatNumber(entry.result)} {toUnitDef?.symbol}
-                      </span>
-                    </li>
-                  );
-                })}
-              </ul>
-            </section>
-          )}
+              {/* 変換履歴 */}
+              {history.length > 0 && (
+                <section className="unit-history-section" aria-labelledby="history-title">
+                  <h2 id="history-title" className="unit-history-title">
+                    変換履歴
+                  </h2>
+                  <ul className="unit-history-list" role="list">
+                    {history.map((entry) => {
+                      const categoryUnits = getUnitsForCategory(entry.categoryId);
+                      const fromUnitDef = categoryUnits.find(
+                        (u: UnitDefinition) => u.id === entry.fromUnitId
+                      );
+                      const toUnitDef = categoryUnits.find(
+                        (u: UnitDefinition) => u.id === entry.toUnitId
+                      );
+                      return (
+                        <li key={entry.id} className="unit-history-item">
+                          <span className="unit-history-category">
+                            {getCategoryLabel(entry.categoryId)}
+                          </span>
+                          <span className="unit-history-conversion">
+                            {formatNumber(entry.inputValue)} {fromUnitDef?.symbol} → {formatNumber(entry.result)} {toUnitDef?.symbol}
+                          </span>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </section>
+              )}
+            </div>
+          </div>
         </form>
 
         {/* 使い方 */}
