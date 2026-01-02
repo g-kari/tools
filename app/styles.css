@@ -3465,10 +3465,13 @@ a:focus-visible {
 /* Unit Converter Styles */
 .unit-category-grid {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 6px;
   margin-bottom: 20px;
-  justify-content: center;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
 }
 
 .unit-category-btn {
@@ -3482,6 +3485,7 @@ a:focus-visible {
   cursor: pointer;
   transition: all 0.15s ease;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .unit-category-btn:hover {
@@ -3585,6 +3589,9 @@ a:focus-visible {
 .unit-swap-btn {
   width: 32px;
   height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  flex-shrink: 0;
   border-radius: 50%;
   border: none;
   background: var(--md-sys-color-primary);
