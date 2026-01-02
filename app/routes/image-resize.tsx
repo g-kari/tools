@@ -234,6 +234,7 @@ function ImageResizer() {
   const [cropAspectRatio, setCropAspectRatio] = useState<number | null>(null);
   const [isDraggingCrop, setIsDraggingCrop] = useState(false);
   const [dragStart, setDragStart] = useState<{ x: number; y: number } | null>(null);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cropCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -290,75 +291,87 @@ function ImageResizer() {
     }
   }, [cropArea, enableCrop]);
 
-  // トリミング範囲をCanvasに描画（cropAreaがなくても初期化のために実行）
+  // 画像読み込み（originalPreviewが変わった時のみ）
   useEffect(() => {
-    if (!enableCrop || !originalPreview || !cropCanvasRef.current) return;
+    if (!originalPreview) {
+      setImageLoaded(false);
+      return;
+    }
+
+    setImageLoaded(false);
+    const img = new Image();
+    img.onload = () => {
+      imageElementRef.current = img;
+      setImageLoaded(true);
+    };
+    img.src = originalPreview;
+  }, [originalPreview]);
+
+  // トリミング範囲をCanvasに描画
+  useEffect(() => {
+    if (!enableCrop || !cropCanvasRef.current || !imageLoaded) return;
 
     const canvas = cropCanvasRef.current;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const img = new Image();
-    img.onload = () => {
-      // refに保存
-      imageElementRef.current = img;
+    const img = imageElementRef.current;
+    if (!img) return;
 
-      // Canvasのサイズを設定（表示サイズに合わせる）
-      const container = canvas.parentElement;
-      if (!container) return;
+    // Canvasのサイズを設定（表示サイズに合わせる）
+    const container = canvas.parentElement;
+    if (!container) return;
 
-      const maxWidth = container.clientWidth;
-      const maxHeight = 400;
-      const scale = Math.min(maxWidth / img.naturalWidth, maxHeight / img.naturalHeight, 1);
+    const maxWidth = container.clientWidth;
+    const maxHeight = 400;
+    const scale = Math.min(maxWidth / img.naturalWidth, maxHeight / img.naturalHeight, 1);
 
-      // スケールをrefに保存
-      canvasScaleRef.current = scale;
+    // スケールをrefに保存
+    canvasScaleRef.current = scale;
 
-      canvas.width = img.naturalWidth * scale;
-      canvas.height = img.naturalHeight * scale;
+    canvas.width = img.naturalWidth * scale;
+    canvas.height = img.naturalHeight * scale;
 
-      // 画像を描画
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    // 画像を描画
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-      // cropAreaがある場合のみオーバーレイと選択範囲を描画
-      if (cropArea) {
-        // オーバーレイ（暗くする）
-        ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // cropAreaがある場合のみオーバーレイと選択範囲を描画
+    if (cropArea) {
+      // オーバーレイ（暗くする）
+      ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // トリミング範囲をクリア（明るく表示）
-        ctx.clearRect(
-          cropArea.x * scale,
-          cropArea.y * scale,
-          cropArea.width * scale,
-          cropArea.height * scale
-        );
-        ctx.drawImage(
-          img,
-          cropArea.x,
-          cropArea.y,
-          cropArea.width,
-          cropArea.height,
-          cropArea.x * scale,
-          cropArea.y * scale,
-          cropArea.width * scale,
-          cropArea.height * scale
-        );
+      // トリミング範囲をクリア（明るく表示）
+      ctx.clearRect(
+        cropArea.x * scale,
+        cropArea.y * scale,
+        cropArea.width * scale,
+        cropArea.height * scale
+      );
+      ctx.drawImage(
+        img,
+        cropArea.x,
+        cropArea.y,
+        cropArea.width,
+        cropArea.height,
+        cropArea.x * scale,
+        cropArea.y * scale,
+        cropArea.width * scale,
+        cropArea.height * scale
+      );
 
-        // 選択範囲の枠を描画
-        ctx.strokeStyle = "#fff";
-        ctx.lineWidth = 2;
-        ctx.strokeRect(
-          cropArea.x * scale,
-          cropArea.y * scale,
-          cropArea.width * scale,
-          cropArea.height * scale
-        );
-      }
-    };
-    img.src = originalPreview;
-  }, [enableCrop, originalPreview, cropArea]);
+      // 選択範囲の枠を描画
+      ctx.strokeStyle = "#fff";
+      ctx.lineWidth = 2;
+      ctx.strokeRect(
+        cropArea.x * scale,
+        cropArea.y * scale,
+        cropArea.width * scale,
+        cropArea.height * scale
+      );
+    }
+  }, [enableCrop, imageLoaded, cropArea]);
 
   // ドラッグモード: 'create' = 新規作成, 'move' = 移動
   const [dragMode, setDragMode] = useState<'create' | 'move'>('create');
