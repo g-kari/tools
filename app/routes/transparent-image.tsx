@@ -380,104 +380,139 @@ function TransparentImageProcessor() {
 
   return (
     <div className="tool-container">
-      <div className="converter-section">
-        <h2 className="section-title">画像選択</h2>
-
-        <div
-          className={`dropzone ${isDragging ? "dragging" : ""}`}
-          onDragOver={handleDragOver}
-          onDragLeave={handleDragLeave}
-          onDrop={handleDrop}
-          onClick={() => fileInputRef.current?.click()}
-          role="button"
-          tabIndex={0}
-          aria-label="画像ファイルをアップロード"
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              e.preventDefault();
-              fileInputRef.current?.click();
-            }
-          }}
-        >
-          <div className="dropzone-content">
-            <svg
-              className="upload-icon"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-              <polyline points="17 8 12 3 7 8" />
-              <line x1="12" y1="3" x2="12" y2="15" />
-            </svg>
-            <p className="dropzone-text">
-              クリックして画像を選択、またはドラッグ&ドロップ
-            </p>
-            <p className="dropzone-hint">PNG, JPEG, WebP など</p>
-          </div>
-        </div>
-
-        <input
-          ref={fileInputRef}
-          type="file"
-          id="imageFile"
-          accept="image/*"
-          onChange={handleInputChange}
-          disabled={isLoading}
-          className="hidden-file-input"
-          aria-label="画像ファイルを選択"
-        />
-      </div>
-
-      {originalFile && imageDimensions && (
+      {!originalFile ? (
+        /* 画像未選択時：ドロップゾーンと説明を表示 */
         <>
           <div className="converter-section">
-            <h2 className="section-title">透過設定</h2>
+            <h2 className="section-title">画像選択</h2>
 
-            <div className="transparency-options">
-              <div className="option-group">
-                <label htmlFor="targetColor">透過する色</label>
-                <div className="color-picker-row">
-                  <div className="color-input-wrapper">
-                    <input
-                      type="color"
-                      id="targetColor"
-                      value={targetColor}
-                      onChange={(e) => setTargetColor(e.target.value)}
-                      disabled={isLoading}
-                    />
-                    <input
-                      type="text"
-                      value={targetColor}
-                      onChange={(e) => setTargetColor(e.target.value)}
-                      pattern="^#[0-9A-Fa-f]{6}$"
-                      aria-label="透過色のHEX値"
-                      disabled={isLoading}
-                    />
-                  </div>
+            <div
+              className={`dropzone ${isDragging ? "dragging" : ""}`}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+              onClick={() => fileInputRef.current?.click()}
+              role="button"
+              tabIndex={0}
+              aria-label="画像ファイルをアップロード"
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  fileInputRef.current?.click();
+                }
+              }}
+            >
+              <div className="dropzone-content">
+                <svg
+                  className="upload-icon"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="17 8 12 3 7 8" />
+                  <line x1="12" y1="3" x2="12" y2="15" />
+                </svg>
+                <p className="dropzone-text">
+                  クリックして画像を選択、またはドラッグ&ドロップ
+                </p>
+                <p className="dropzone-hint">PNG, JPEG, WebP など</p>
+              </div>
+            </div>
+          </div>
+
+          <aside
+            className="info-box"
+            role="complementary"
+            aria-labelledby="usage-title"
+          >
+            <h3 id="usage-title">画像透過ツールとは</h3>
+            <p>画像の特定の色を透明にするツールです。背景の除去やロゴの透過処理に便利です。</p>
+            <h3>使い方</h3>
+            <ol>
+              <li>画像をアップロード</li>
+              <li>透過させたい色を選択（カラーピッカーまたは画像クリック）</li>
+              <li>許容範囲を調整してプレビュー確認</li>
+              <li>「ダウンロード」でPNG保存</li>
+            </ol>
+          </aside>
+        </>
+      ) : imageDimensions && (
+        /* 画像選択後：コンパクトな2カラムレイアウト */
+        <div className="transparent-processor-layout">
+          {/* 左カラム：プレビュー */}
+          <div className="transparent-preview-column">
+            <div className="transparent-preview-grid">
+              <div className="transparent-preview-item">
+                <span className="transparent-preview-label">元画像{isPickingColor && " (クリックで色選択)"}</span>
+                <div className="transparent-canvas-wrapper">
+                  <canvas
+                    ref={originalCanvasRef}
+                    className={`preview-canvas ${isPickingColor ? "picking-color" : ""}`}
+                    onClick={handleCanvasClick}
+                    aria-label="元画像プレビュー"
+                  />
+                </div>
+              </div>
+              <div className="transparent-preview-item">
+                <span className="transparent-preview-label">透過後</span>
+                <div className="transparent-canvas-wrapper transparent-preview-bg">
+                  <canvas
+                    ref={previewCanvasRef}
+                    className="preview-canvas"
+                    aria-label="透過後プレビュー"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="transparent-image-meta">
+              {imageDimensions.width} × {imageDimensions.height} px
+            </div>
+          </div>
+
+          {/* 右カラム：設定とアクション */}
+          <div className="transparent-settings-column">
+            <div className="transparent-settings-card">
+              <div className="transparent-color-section">
+                <label className="transparent-label">透過する色</label>
+                <div className="transparent-color-controls">
+                  <input
+                    type="color"
+                    id="targetColor"
+                    value={targetColor}
+                    onChange={(e) => setTargetColor(e.target.value)}
+                    disabled={isLoading}
+                    className="transparent-color-input"
+                  />
+                  <input
+                    type="text"
+                    value={targetColor}
+                    onChange={(e) => setTargetColor(e.target.value)}
+                    pattern="^#[0-9A-Fa-f]{6}$"
+                    aria-label="透過色のHEX値"
+                    disabled={isLoading}
+                    className="transparent-hex-input"
+                  />
                   <button
                     type="button"
-                    className={`btn-secondary picker-btn ${isPickingColor ? "active" : ""}`}
+                    className={`transparent-pick-btn ${isPickingColor ? "active" : ""}`}
                     onClick={() => setIsPickingColor(!isPickingColor)}
                     disabled={isLoading}
+                    title="画像から色を選択"
                   >
-                    {isPickingColor ? "選択中..." : "画像から選択"}
+                    {isPickingColor ? "✓" : "🎯"}
                   </button>
                 </div>
-                {isPickingColor && (
-                  <p className="picker-hint">元画像をクリックして色を選択してください</p>
-                )}
               </div>
 
-              <div className="option-group tolerance-group">
-                <label htmlFor="tolerance">
-                  許容範囲: {tolerance}%
-                  <span className="tolerance-hint">（高いほど類似色も透過）</span>
+              <div className="transparent-tolerance-section">
+                <label className="transparent-label">
+                  許容範囲: <strong>{tolerance}%</strong>
                 </label>
                 <input
                   type="range"
@@ -487,112 +522,51 @@ function TransparentImageProcessor() {
                   value={tolerance}
                   onChange={(e) => setTolerance(parseInt(e.target.value))}
                   disabled={isLoading}
+                  className="transparent-slider"
                 />
-                <div className="tolerance-labels">
+                <div className="transparent-slider-labels">
                   <span>厳密</span>
                   <span>緩和</span>
                 </div>
               </div>
+
+              <div className="transparent-actions">
+                <button
+                  type="button"
+                  className="btn-primary"
+                  onClick={handleDownload}
+                  disabled={isLoading}
+                >
+                  {isLoading ? "処理中..." : "ダウンロード"}
+                </button>
+                <button
+                  type="button"
+                  className="btn-secondary"
+                  onClick={handleClear}
+                  disabled={isLoading}
+                >
+                  クリア
+                </button>
+              </div>
             </div>
+
+            <p className="transparent-tip">
+              💡 「🎯」ボタンを押して元画像をクリックすると色を直接選択できます
+            </p>
           </div>
-
-          <div className="converter-section">
-            <h2 className="section-title">プレビュー</h2>
-
-            <div className="preview-comparison">
-              <div className="preview-panel">
-                <h3 className="preview-label">元画像</h3>
-                <div className="preview-image-container">
-                  <canvas
-                    ref={originalCanvasRef}
-                    className={`preview-canvas ${isPickingColor ? "picking-color" : ""}`}
-                    onClick={handleCanvasClick}
-                    aria-label="元画像プレビュー"
-                  />
-                </div>
-              </div>
-              <div className="preview-panel">
-                <h3 className="preview-label">透過後</h3>
-                <div className="preview-image-container transparent-preview-bg">
-                  <canvas
-                    ref={previewCanvasRef}
-                    className="preview-canvas"
-                    aria-label="透過後プレビュー"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="transparent-image-info">
-              <div className="info-item">
-                <span className="info-label">サイズ:</span>
-                <span className="info-value">{imageDimensions.width} × {imageDimensions.height} px</span>
-              </div>
-              <div className="info-item">
-                <span className="info-label">透過色:</span>
-                <span className="info-value">
-                  <span
-                    className="color-swatch"
-                    style={{ backgroundColor: targetColor }}
-                    aria-hidden="true"
-                  />
-                  {targetColor}
-                </span>
-              </div>
-              <div className="info-item">
-                <span className="info-label">許容範囲:</span>
-                <span className="info-value">{tolerance}%</span>
-              </div>
-            </div>
-
-            <div className="button-group" role="group" aria-label="画像操作">
-              <button
-                type="button"
-                className="btn-primary"
-                onClick={handleDownload}
-                disabled={isLoading}
-              >
-                {isLoading ? "処理中..." : "ダウンロード"}
-              </button>
-              <button
-                type="button"
-                className="btn-secondary"
-                onClick={handleClear}
-                disabled={isLoading}
-              >
-                クリア
-              </button>
-            </div>
-          </div>
-        </>
+        </div>
       )}
 
-      <aside
-        className="info-box"
-        role="complementary"
-        aria-labelledby="usage-title"
-      >
-        <h3 id="usage-title">画像透過ツールとは</h3>
-        <ul>
-          <li>画像の特定の色を透明にするツールです</li>
-          <li>背景の除去やロゴの透過処理に便利</li>
-          <li>許容範囲を調整して類似色も透過できます</li>
-        </ul>
-        <h3>使い方</h3>
-        <ul>
-          <li>画像をアップロード</li>
-          <li>透過させたい色を選択（カラーピッカーまたは画像から）</li>
-          <li>許容範囲を調整してプレビューを確認</li>
-          <li>「ダウンロード」でPNG画像を保存</li>
-        </ul>
-        <h3>Tips</h3>
-        <ul>
-          <li>「画像から選択」で画像上の色を直接クリックして選べます</li>
-          <li>許容範囲を上げると、選択した色に近い色も透過されます</li>
-          <li>チェッカーボードパターンは透明度を視覚化するためのものです</li>
-          <li>出力形式はPNG（透過対応）です</li>
-        </ul>
-      </aside>
+      <input
+        ref={fileInputRef}
+        type="file"
+        id="imageFile"
+        accept="image/*"
+        onChange={handleInputChange}
+        disabled={isLoading}
+        className="hidden-file-input"
+        aria-label="画像ファイルを選択"
+      />
     </div>
   );
 }

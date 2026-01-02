@@ -118,10 +118,8 @@ test.describe('Transparent Image Processor - E2E Tests', () => {
     const infoBox = page.locator('.info-box');
     const infoText = await infoBox.textContent();
 
-    expect(infoText).toContain('画像から選択');
-    expect(infoText).toContain('許容範囲');
-    expect(infoText).toContain('チェッカーボード');
-    expect(infoText).toContain('PNG');
+    expect(infoText).toContain('画像透過ツールとは');
+    expect(infoText).toContain('使い方');
   });
 
   test('should have upload icon in dropzone', async ({ page }) => {
