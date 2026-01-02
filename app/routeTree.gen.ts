@@ -27,6 +27,7 @@ import { Route as IpConverterRouteImport } from './routes/ip-converter'
 import { Route as ImageToGifRouteImport } from './routes/image-to-gif'
 import { Route as ImageResizeRouteImport } from './routes/image-resize'
 import { Route as ImageCompressRouteImport } from './routes/image-compress'
+import { Route as ImageBase64RouteImport } from './routes/image-base64'
 import { Route as HashRouteImport } from './routes/hash'
 import { Route as GlobalIpRouteImport } from './routes/global-ip'
 import { Route as EmojiConverterRouteImport } from './routes/emoji-converter'
@@ -136,6 +137,11 @@ const ImageCompressRoute = ImageCompressRouteImport.update({
   path: '/image-compress',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ImageBase64Route = ImageBase64RouteImport.update({
+  id: '/image-base64',
+  path: '/image-base64',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HashRoute = HashRouteImport.update({
   id: '/hash',
   path: '/hash',
@@ -242,6 +248,7 @@ export interface FileRoutesByFullPath {
   '/emoji-converter': typeof EmojiConverterRoute
   '/global-ip': typeof GlobalIpRoute
   '/hash': typeof HashRoute
+  '/image-base64': typeof ImageBase64Route
   '/image-compress': typeof ImageCompressRoute
   '/image-resize': typeof ImageResizeRoute
   '/image-to-gif': typeof ImageToGifRoute
@@ -280,6 +287,7 @@ export interface FileRoutesByTo {
   '/emoji-converter': typeof EmojiConverterRoute
   '/global-ip': typeof GlobalIpRoute
   '/hash': typeof HashRoute
+  '/image-base64': typeof ImageBase64Route
   '/image-compress': typeof ImageCompressRoute
   '/image-resize': typeof ImageResizeRoute
   '/image-to-gif': typeof ImageToGifRoute
@@ -319,6 +327,7 @@ export interface FileRoutesById {
   '/emoji-converter': typeof EmojiConverterRoute
   '/global-ip': typeof GlobalIpRoute
   '/hash': typeof HashRoute
+  '/image-base64': typeof ImageBase64Route
   '/image-compress': typeof ImageCompressRoute
   '/image-resize': typeof ImageResizeRoute
   '/image-to-gif': typeof ImageToGifRoute
@@ -359,6 +368,7 @@ export interface FileRouteTypes {
     | '/emoji-converter'
     | '/global-ip'
     | '/hash'
+    | '/image-base64'
     | '/image-compress'
     | '/image-resize'
     | '/image-to-gif'
@@ -397,6 +407,7 @@ export interface FileRouteTypes {
     | '/emoji-converter'
     | '/global-ip'
     | '/hash'
+    | '/image-base64'
     | '/image-compress'
     | '/image-resize'
     | '/image-to-gif'
@@ -435,6 +446,7 @@ export interface FileRouteTypes {
     | '/emoji-converter'
     | '/global-ip'
     | '/hash'
+    | '/image-base64'
     | '/image-compress'
     | '/image-resize'
     | '/image-to-gif'
@@ -474,6 +486,7 @@ export interface RootRouteChildren {
   EmojiConverterRoute: typeof EmojiConverterRoute
   GlobalIpRoute: typeof GlobalIpRoute
   HashRoute: typeof HashRoute
+  ImageBase64Route: typeof ImageBase64Route
   ImageCompressRoute: typeof ImageCompressRoute
   ImageResizeRoute: typeof ImageResizeRoute
   ImageToGifRoute: typeof ImageToGifRoute
@@ -626,6 +639,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ImageCompressRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/image-base64': {
+      id: '/image-base64'
+      path: '/image-base64'
+      fullPath: '/image-base64'
+      preLoaderRoute: typeof ImageBase64RouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/hash': {
       id: '/hash'
       path: '/hash'
@@ -770,6 +790,7 @@ const rootRouteChildren: RootRouteChildren = {
   EmojiConverterRoute: EmojiConverterRoute,
   GlobalIpRoute: GlobalIpRoute,
   HashRoute: HashRoute,
+  ImageBase64Route: ImageBase64Route,
   ImageCompressRoute: ImageCompressRoute,
   ImageResizeRoute: ImageResizeRoute,
   ImageToGifRoute: ImageToGifRoute,

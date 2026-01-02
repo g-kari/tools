@@ -1,1 +1,275 @@
-[]
+{
+  "master": {
+    "tasks": [
+      {
+        "id": "1",
+        "title": "OGP文字化けバグ修正（Issue #64）",
+        "description": "OGPチェッカーで特定のサイトの文字エンコーディングが正しく処理されない問題を修正する。Shift_JIS、EUC-JP等の日本語エンコーディングの自動検出と変換処理を改善。",
+        "status": "done",
+        "dependencies": [],
+        "priority": "high",
+        "details": "【実装内容】\n1. app/functions/ogp.tsの文字エンコーディング検出ロジックを改善\n2. extractCharsetFromHtml関数とextractCharsetFromContentType関数の精度向上\n3. decodeHtmlWithCharset関数で未対応のエンコーディングのフォールバック処理を追加\n4. TextDecoderで対応していないShift_JIS等の文字コードに対する代替処理を実装\n5. 既存のnormalizeCharset関数を拡張し、より多くの文字コードエイリアスをサポート\n\n【技術アプローチ】\n- Content-Typeヘッダーとmetaタグの両方から文字コードを検出\n- 優先順位: metaタグ > Content-Typeヘッダー > UTF-8（デフォルト）\n- 必要に応じてiconv-liteやencoding-japanese等のライブラリを検討（ただしCloudflare Workers環境での動作確認必須）",
+        "testStrategy": "【テスト戦略】\n1. 既存のユニットテストを拡張（tests/unit/ogp.test.ts）\n2. Shift_JIS、EUC-JP、ISO-8859-1等の各種エンコーディングのテストケースを追加\n3. 文字化けが報告されている実際のサイトでE2Eテストを実行\n4. 正常なUTF-8サイトで既存機能が壊れていないことを確認（リグレッションテスト）",
+        "updatedAt": "2026-01-01T20:10:08.877Z",
+        "subtasks": []
+      },
+      {
+        "id": "2",
+        "title": "画像圧縮機能（Issue #82）",
+        "description": "アップロードした画像を圧縮して容量を削減する機能。複数の圧縮率オプションを提供し、プレビュー表示と圧縮前後のファイルサイズ比較を実装。",
+        "status": "done",
+        "dependencies": [],
+        "priority": "medium",
+        "details": "【実装内容】\n1. app/routes/image-compress.tsxを新規作成\n2. 画像アップロード機能（ドラッグ&ドロップ対応）\n3. Canvas APIを使用した画像圧縮処理\n4. 圧縮率スライダー（1-100%）\n5. WebP、JPEG、PNG形式での出力オプション\n6. プレビュー表示（圧縮前/圧縮後の比較表示）\n7. ファイルサイズ比較表示（KB/MB単位、圧縮率パーセント）\n8. ダウンロードボタン\n\n【UI/UX】\n- Material Design 3のカラーシステムを使用\n- アクセシビリティ対応（ARIAラベル、キーボードナビゲーション）\n- レスポンシブデザイン\n- app/styles.cssでスタイル定義（インラインスタイル禁止）\n- トースト通知を使用（app/components/Toast.tsx）\n\n【技術実装】\n```typescript\nfunction compressImage(file: File, quality: number): Promise<Blob> {\n  const canvas = document.createElement('canvas');\n  const ctx = canvas.getContext('2d');\n  // Canvas APIで画像を描画\n  // canvas.toBlob()でquality指定して圧縮\n}\n```",
+        "testStrategy": "【テスト戦略】\n1. ユニットテスト（tests/unit/image-compress.test.ts）\n   - 圧縮関数のロジックテスト\n   - 各フォーマット（WebP、JPEG、PNG）の出力テスト\n   - 圧縮率の境界値テスト\n2. E2Eテスト（tests/e2e/image-compress.spec.ts）\n   - ファイルアップロード\n   - 圧縮実行\n   - ダウンロード\n   - プレビュー表示\n   - アクセシビリティ（WCAG 2.1準拠）",
+        "subtasks": [],
+        "updatedAt": "2026-01-01T20:47:50.568Z"
+      },
+      {
+        "id": "3",
+        "title": "画像リサイズ機能（Issue #83）",
+        "description": "画像のサイズ（幅・高さ）を変更する機能。アスペクト比維持オプション、プレビュー表示、ダウンロード機能を実装。",
+        "status": "done",
+        "dependencies": [],
+        "priority": "medium",
+        "details": "【実装内容】\n1. app/routes/image-resize.tsxを新規作成\n2. 画像アップロード機能（ドラッグ&ドロップ対応）\n3. 幅・高さの入力フィールド（数値入力）\n4. アスペクト比維持チェックボックス\n5. プリセットサイズ（1920x1080、1280x720、640x480等）\n6. Canvas APIを使用したリサイズ処理\n7. リアルタイムプレビュー表示\n8. ダウンロード機能（元のファイル形式を維持）\n\n【機能詳細】\n- 元画像の情報表示（幅、高さ、ファイルサイズ）\n- アスペクト比維持時の自動計算（幅を変更すると高さが自動調整）\n- 最大サイズ制限（10000x10000px）\n- 縮小・拡大の両方に対応\n\n【技術実装】\n```typescript\nfunction resizeImage(\n  file: File,\n  width: number,\n  height: number,\n  maintainAspectRatio: boolean\n): Promise<Blob> {\n  const canvas = document.createElement('canvas');\n  const ctx = canvas.getContext('2d');\n  canvas.width = width;\n  canvas.height = height;\n  // drawImageでリサイズ\n}\n```",
+        "testStrategy": "【テスト戦略】\n1. ユニットテスト（tests/unit/image-resize.test.ts）\n   - リサイズ関数のロジックテスト\n   - アスペクト比計算のテスト\n   - 境界値テスト（最小/最大サイズ）\n2. E2Eテスト（tests/e2e/image-resize.spec.ts）\n   - ファイルアップロード\n   - サイズ指定とリサイズ実行\n   - アスペクト比維持の動作確認\n   - プリセット選択\n   - ダウンロード",
+        "subtasks": [],
+        "updatedAt": "2026-01-01T21:36:25.615Z"
+      },
+      {
+        "id": "4",
+        "title": "Base64画像変換機能（Issue #78）",
+        "description": "画像ファイルをBase64エンコードしてData URL形式で出力する機能。コピー機能付き。",
+        "status": "in-progress",
+        "dependencies": [],
+        "priority": "medium",
+        "details": "【実装内容】\n1. app/routes/image-base64.tsxを新規作成\n2. 画像アップロード機能（ドラッグ&ドロップ対応）\n3. FileReader APIを使用してBase64エンコード\n4. Data URL形式（data:image/png;base64,...）での出力\n5. プレビュー表示\n6. Base64文字列のテキストエリア表示\n7. コピーボタン（クリップボードAPIを使用）\n8. 文字数カウント表示\n\n【出力形式】\n- Data URL形式: `data:image/png;base64,iVBORw0KGgoAAAANSUhEUg...`\n- Base64のみ: `iVBORw0KGgoAAAANSUhEUg...`\n- HTML img形式: `<img src=\"data:image/png;base64,...\" />`\n- CSS background形式: `background-image: url('data:image/png;base64,...');`\n\n【技術実装】\n```typescript\nfunction imageToBase64(file: File): Promise<string> {\n  return new Promise((resolve, reject) => {\n    const reader = new FileReader();\n    reader.onload = () => resolve(reader.result as string);\n    reader.onerror = reject;\n    reader.readAsDataURL(file);\n  });\n}\n```",
+        "testStrategy": "【テスト戦略】\n1. ユニットテスト（tests/unit/image-base64.test.ts）\n   - Base64エンコード関数のテスト\n   - 各出力形式のテスト\n   - 各種画像フォーマット（PNG、JPEG、WebP等）のテスト\n2. E2Eテスト（tests/e2e/image-base64.spec.ts）\n   - ファイルアップロード\n   - Base64生成\n   - コピー機能\n   - 各出力形式の切り替え",
+        "subtasks": [],
+        "updatedAt": "2026-01-02T04:29:40.385Z"
+      },
+      {
+        "id": "5",
+        "title": "カラーピッカー機能（Issue #81）",
+        "description": "カラーコードの取得・変換機能。HEX⇔RGB⇔HSL⇔CMYK相互変換、ビジュアルカラーピッカー、カラーパレット保存機能を実装。",
+        "status": "pending",
+        "dependencies": [],
+        "priority": "medium",
+        "details": "【実装内容】\n1. app/routes/color-picker.tsxを新規作成\n2. ビジュアルカラーピッカー（input type=\"color\"を使用）\n3. カラーコード入力フィールド（HEX、RGB、HSL、CMYK）\n4. リアルタイム相互変換\n5. プレビュー表示（選択中の色の大きなスウォッチ）\n6. カラーパレット機能（最大10色まで保存）\n7. コピーボタン（各形式ごとにコピー可能）\n8. LocalStorageでカラーパレットを永続化\n\n【カラー形式】\n- HEX: #RRGGBB、#RRGGBBAA（アルファ値対応）\n- RGB: rgb(255, 255, 255)、rgba(255, 255, 255, 1.0)\n- HSL: hsl(0, 0%, 100%)、hsla(0, 0%, 100%, 1.0)\n- CMYK: cmyk(0%, 0%, 0%, 0%)\n\n【技術実装】\n```typescript\nfunction hexToRgb(hex: string): { r: number; g: number; b: number } {\n  const result = /^#?([a-f\\d]{2})([a-f\\d]{2})([a-f\\d]{2})$/i.exec(hex);\n  return result ? {\n    r: parseInt(result[1], 16),\n    g: parseInt(result[2], 16),\n    b: parseInt(result[3], 16)\n  } : { r: 0, g: 0, b: 0 };\n}\n\nfunction rgbToHsl(r: number, g: number, b: number): { h: number; s: number; l: number } {\n  // HSL変換ロジック\n}\n\nfunction rgbToCmyk(r: number, g: number, b: number): { c: number; m: number; y: number; k: number } {\n  // CMYK変換ロジック\n}\n```",
+        "testStrategy": "【テスト戦略】\n1. ユニットテスト（tests/unit/color-picker.test.ts）\n   - 各変換関数のテスト（HEX⇔RGB⇔HSL⇔CMYK）\n   - 境界値テスト（0、255等）\n   - 無効な入力のエラーハンドリング\n2. E2Eテスト（tests/e2e/color-picker.spec.ts）\n   - カラーピッカーでの色選択\n   - 各形式での入力と変換\n   - カラーパレットへの追加・削除\n   - コピー機能\n   - LocalStorage永続化",
+        "subtasks": []
+      },
+      {
+        "id": "6",
+        "title": "単位計算機能（Issue #95）",
+        "description": "各種単位の相互変換機能（長さ、重さ、温度、データサイズ等）。リアルタイム計算、よく使う単位のクイックアクセス。",
+        "status": "pending",
+        "dependencies": [],
+        "priority": "medium",
+        "details": "【実装内容】\n1. app/routes/unit-converter.tsxを新規作成\n2. カテゴリ選択（長さ、重さ、温度、データサイズ、面積、体積、速度、時間）\n3. 単位選択ドロップダウン（From/To）\n4. 数値入力フィールド\n5. リアルタイム変換結果表示\n6. 変換履歴表示（最新5件）\n7. よく使う単位のお気に入り機能\n\n【対応カテゴリと単位】\n- 長さ: メートル、キロメートル、センチメートル、ミリメートル、マイル、ヤード、フィート、インチ\n- 重さ: グラム、キログラム、トン、ポンド、オンス\n- 温度: 摂氏、華氏、ケルビン\n- データサイズ: バイト、KB、MB、GB、TB、PB（1000進数と1024進数の両方対応）\n- 面積: 平方メートル、平方キロメートル、ヘクタール、アール、坪、畳\n- 体積: リットル、ミリリットル、立方メートル、ガロン、カップ\n- 速度: m/s、km/h、mph、ノット\n- 時間: 秒、分、時間、日、週、月、年\n\n【技術実装】\n```typescript\ninterface ConversionRule {\n  fromUnit: string;\n  toUnit: string;\n  factor: number; // 乗算係数\n  offset?: number; // 加算オフセット（温度用）\n}\n\nconst CONVERSION_RULES: Record<string, ConversionRule[]> = {\n  length: [\n    { fromUnit: 'm', toUnit: 'km', factor: 0.001 },\n    { fromUnit: 'm', toUnit: 'cm', factor: 100 },\n    // ...\n  ],\n  temperature: [\n    { fromUnit: 'celsius', toUnit: 'fahrenheit', factor: 9/5, offset: 32 },\n    // ...\n  ]\n};\n```",
+        "testStrategy": "【テスト戦略】\n1. ユニットテスト（tests/unit/unit-converter.test.ts）\n   - 各カテゴリの変換ロジックテスト\n   - 変換係数の精度テスト\n   - 温度変換のオフセット処理テスト\n   - 境界値テスト\n2. E2Eテスト（tests/e2e/unit-converter.spec.ts）\n   - カテゴリ選択\n   - 単位選択と変換\n   - リアルタイム計算\n   - 履歴表示\n   - お気に入り機能",
+        "subtasks": []
+      },
+      {
+        "id": "7",
+        "title": "画像トリミング機能（Issue #84）",
+        "description": "画像の一部を切り取る機能。ドラッグ&ドロップでトリミング範囲指定、プレビュー表示、ダウンロード機能。",
+        "status": "pending",
+        "dependencies": [],
+        "priority": "low",
+        "details": "【実装内容】\n1. app/routes/image-crop.tsxを新規作成\n2. 画像アップロード機能\n3. トリミング範囲選択UI（マウスドラッグで矩形選択）\n4. トリミング範囲の手動調整（X、Y、幅、高さの数値入力）\n5. プリセットアスペクト比（1:1、4:3、16:9、自由）\n6. プレビュー表示（トリミング前/後の比較）\n7. Canvas APIを使用したトリミング処理\n8. ダウンロード機能\n\n【UI実装】\n- 画像上にドラッグ可能な選択矩形を表示\n- 矩形の四隅と辺にリサイズハンドルを配置\n- グリッド線表示（三分割法のガイドライン）\n- 選択範囲外は半透明のオーバーレイで暗くする\n\n【技術実装】\n```typescript\ninterface CropArea {\n  x: number;\n  y: number;\n  width: number;\n  height: number;\n}\n\nfunction cropImage(file: File, cropArea: CropArea): Promise<Blob> {\n  const canvas = document.createElement('canvas');\n  const ctx = canvas.getContext('2d');\n  canvas.width = cropArea.width;\n  canvas.height = cropArea.height;\n  // drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh)でトリミング\n}\n```",
+        "testStrategy": "【テスト戦略】\n1. ユニットテスト（tests/unit/image-crop.test.ts）\n   - トリミング関数のロジックテスト\n   - アスペクト比計算のテスト\n   - 境界値テスト（画像サイズを超える範囲指定等）\n2. E2Eテスト（tests/e2e/image-crop.spec.ts）\n   - ファイルアップロード\n   - トリミング範囲選択\n   - プリセットアスペクト比の適用\n   - トリミング実行\n   - ダウンロード",
+        "subtasks": []
+      },
+      {
+        "id": "8",
+        "title": "透過画像生成機能（Issue #79）",
+        "description": "指定したサイズの透過PNG画像を生成する機能。幅・高さ、透明度、背景色指定オプション、ダウンロード機能。",
+        "status": "pending",
+        "dependencies": [],
+        "priority": "low",
+        "details": "【実装内容】\n1. app/routes/transparent-image.tsxを新規作成\n2. 幅・高さの入力フィールド（デフォルト: 100x100）\n3. 透明度スライダー（0-100%）\n4. 背景色オプション（完全透明/半透明カラー）\n5. プレビュー表示（チェッカーボード背景で透明度を視覚化）\n6. Canvas APIを使用した画像生成\n7. PNG形式でダウンロード\n\n【機能詳細】\n- プリセットサイズ（16x16、32x32、64x64、128x128、256x256、512x512、1024x1024）\n- カスタムサイズ入力（最大10000x10000px）\n- 背景色指定（HEX形式）\n- 透明度調整（0-100%）\n- プレビューエリアにチェッカーボードパターンを表示して透明度を確認\n\n【技術実装】\n```typescript\nfunction generateTransparentImage(\n  width: number,\n  height: number,\n  opacity: number,\n  backgroundColor?: string\n): Blob {\n  const canvas = document.createElement('canvas');\n  canvas.width = width;\n  canvas.height = height;\n  const ctx = canvas.getContext('2d');\n  \n  if (backgroundColor && opacity > 0) {\n    ctx.globalAlpha = opacity / 100;\n    ctx.fillStyle = backgroundColor;\n    ctx.fillRect(0, 0, width, height);\n  }\n  \n  return canvas.toBlob((blob) => blob, 'image/png');\n}\n```",
+        "testStrategy": "【テスト戦略】\n1. ユニットテスト（tests/unit/transparent-image.test.ts）\n   - 画像生成関数のテスト\n   - 透明度計算のテスト\n   - 各サイズでの生成テスト\n2. E2Eテスト（tests/e2e/transparent-image.spec.ts）\n   - サイズ指定\n   - 透明度調整\n   - 背景色指定\n   - プレビュー表示\n   - ダウンロード",
+        "subtasks": []
+      },
+      {
+        "id": "9",
+        "title": "Favicon生成機能（Issue #80）",
+        "description": "画像から複数サイズのfaviconを生成する機能。16x16、32x32、48x48等の各種サイズを自動生成し、.ico形式で一括ダウンロード。",
+        "status": "pending",
+        "dependencies": [],
+        "priority": "low",
+        "details": "【実装内容】\n1. app/routes/favicon-generator.tsxを新規作成\n2. 元画像のアップロード機能\n3. 生成するサイズの選択チェックボックス（16x16、32x32、48x48、64x64、128x128、256x256）\n4. 各サイズのプレビュー表示\n5. .ico形式での一括ダウンロード\n6. 個別サイズのPNG形式ダウンロード\n\n【技術実装】\n- Canvas APIで各サイズにリサイズ\n- ico.jsまたは同等のライブラリを使用して.ico形式に変換\n- ZIPファイルで一括ダウンロードオプション（JSZipライブラリ使用）\n\n【出力形式】\n- favicon.ico（複数サイズを含むICOファイル）\n- favicon-16x16.png\n- favicon-32x32.png\n- favicon-48x48.png\n- apple-touch-icon.png（180x180）\n- android-chrome-192x192.png\n- android-chrome-512x512.png\n\n【必要ライブラリ】\n```bash\nnpm install --save jszip\n```\n\n【技術実装】\n```typescript\nimport JSZip from 'jszip';\n\nfunction generateFavicons(sourceImage: HTMLImageElement): Promise<Map<string, Blob>> {\n  const sizes = [16, 32, 48, 64, 128, 256];\n  const favicons = new Map<string, Blob>();\n  \n  for (const size of sizes) {\n    const canvas = document.createElement('canvas');\n    canvas.width = size;\n    canvas.height = size;\n    const ctx = canvas.getContext('2d');\n    ctx.drawImage(sourceImage, 0, 0, size, size);\n    \n    const blob = await new Promise<Blob>((resolve) => {\n      canvas.toBlob((b) => resolve(b!), 'image/png');\n    });\n    \n    favicons.set(`favicon-${size}x${size}.png`, blob);\n  }\n  \n  return favicons;\n}\n\nasync function downloadAsZip(favicons: Map<string, Blob>): Promise<void> {\n  const zip = new JSZip();\n  \n  for (const [filename, blob] of favicons) {\n    zip.file(filename, blob);\n  }\n  \n  const content = await zip.generateAsync({ type: 'blob' });\n  // ダウンロード処理\n}\n```",
+        "testStrategy": "【テスト戦略】\n1. ユニットテスト（tests/unit/favicon-generator.test.ts）\n   - 各サイズへのリサイズ処理テスト\n   - ZIP生成テスト\n2. E2Eテスト（tests/e2e/favicon-generator.spec.ts）\n   - ファイルアップロード\n   - サイズ選択\n   - プレビュー表示\n   - 一括ダウンロード\n   - 個別ダウンロード",
+        "subtasks": []
+      },
+      {
+        "id": "10",
+        "title": "Discordスタンプ生成機能（Issue #72）",
+        "description": "Discord・Slack用のスタンプ画像を生成する機能。プラットフォームのサイズ制限に自動調整、プレビュー表示、ダウンロード機能。",
+        "status": "pending",
+        "dependencies": [],
+        "priority": "low",
+        "details": "【実装内容】\n1. app/routes/sticker-converter.tsxを新規作成（または既存のemoji-converter.tsxを拡張）\n2. 画像アップロード機能\n3. プラットフォーム選択（Discord/Slack）\n4. スタンプサイズ自動調整（Discord: 320x320px最大、Slack: 128x128px最大）\n5. ファイルサイズ制限への自動圧縮（Discord: 512KB、Slack: 1MB）\n6. プレビュー表示\n7. ダウンロード機能（APNG/WebP/PNG形式対応）\n\n【Discordスタンプ仕様】\n- サイズ: 最大320x320px\n- ファイルサイズ: 最大512KB\n- 形式: PNG、APNG（アニメーション対応）\n- 透過: 対応\n\n【Slackスタンプ仕様】\n- サイズ: 128x128px\n- ファイルサイズ: 最大1MB\n- 形式: PNG\n- 透過: 対応\n\n【技術実装】\n```typescript\nconst STICKER_LIMITS = {\n  discord: { maxSize: 320, maxFileSize: 512 * 1024 },\n  slack: { maxSize: 128, maxFileSize: 1024 * 1024 },\n};\n\nfunction generateSticker(\n  file: File,\n  platform: 'discord' | 'slack'\n): Promise<Blob> {\n  const { maxSize, maxFileSize } = STICKER_LIMITS[platform];\n  // リサイズと圧縮処理\n}\n```",
+        "testStrategy": "【テスト戦略】\n1. ユニットテスト（tests/unit/sticker-converter.test.ts）\n   - リサイズ処理のテスト\n   - ファイルサイズ制限内への圧縮テスト\n   - プラットフォームごとの制限テスト\n2. E2Eテスト（tests/e2e/sticker-converter.spec.ts）\n   - ファイルアップロード\n   - プラットフォーム選択\n   - スタンプ生成\n   - プレビュー\n   - ダウンロード",
+        "subtasks": []
+      },
+      {
+        "id": "11",
+        "title": "動画→GIF変換機能（Issue #115）",
+        "description": "動画ファイルをGIFアニメーション等に変換する機能。フレームレート調整、サイズ調整、プレビュー表示、ダウンロード機能。",
+        "status": "pending",
+        "dependencies": [],
+        "priority": "low",
+        "details": "【実装内容】\n1. app/routes/video-to-gif.tsxを新規作成（または既存のvideo-converter.tsxを拡張）\n2. 動画ファイルアップロード（MP4、WebM、MOV等）\n3. FFmpeg.wasmを使用してGIF変換\n4. フレームレート調整スライダー（1-30fps）\n5. 出力サイズ調整（幅・高さ）\n6. 品質調整スライダー\n7. トリミング機能（開始時間・終了時間指定）\n8. プレビュー表示\n9. ダウンロード機能\n\n【FFmpeg.wasm使用】\n既存のimage-to-gif.tsxのFFmpeg実装を参考にする。\n\n【技術実装】\n```typescript\nimport { FFmpeg } from '@ffmpeg/ffmpeg';\nimport { fetchFile } from '@ffmpeg/util';\n\nasync function convertVideoToGif(\n  videoFile: File,\n  options: {\n    fps: number;\n    width: number;\n    height: number;\n    quality: number;\n    startTime: number;\n    endTime: number;\n  }\n): Promise<Blob> {\n  const ffmpeg = new FFmpeg();\n  await ffmpeg.load();\n  \n  await ffmpeg.writeFile('input.mp4', await fetchFile(videoFile));\n  \n  await ffmpeg.exec([\n    '-i', 'input.mp4',\n    '-ss', options.startTime.toString(),\n    '-to', options.endTime.toString(),\n    '-vf', `fps=${options.fps},scale=${options.width}:${options.height}:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse`,\n    '-loop', '0',\n    'output.gif'\n  ]);\n  \n  const data = await ffmpeg.readFile('output.gif');\n  return new Blob([data], { type: 'image/gif' });\n}\n```",
+        "testStrategy": "【テスト戦略】\n1. ユニットテスト（tests/unit/video-to-gif.test.ts）\n   - FFmpegコマンド生成のテスト\n   - パラメータ検証のテスト\n2. E2Eテスト（tests/e2e/video-to-gif.spec.ts）\n   - 動画アップロード\n   - パラメータ調整\n   - GIF変換\n   - プレビュー\n   - ダウンロード",
+        "subtasks": []
+      },
+      {
+        "id": "12",
+        "title": "HTML変換機能（Issue #19）",
+        "description": "HTMLのエスケープ/アンエスケープ、整形機能。コード整形、プレビュー表示を実装。",
+        "status": "pending",
+        "dependencies": [],
+        "priority": "low",
+        "details": "【実装内容】\n1. app/routes/html-converter.tsxを新規作成\n2. HTMLコード入力テキストエリア\n3. エスケープ/アンエスケープボタン\n4. コード整形ボタン\n5. プレビュー表示（サンドボックス化されたiframe）\n6. シンタックスハイライト表示\n7. コピーボタン\n\n【機能詳細】\n- HTMLエスケープ: `<` → `&lt;`、`>` → `&gt;`、`&` → `&amp;`等\n- HTMLアンエスケープ: `&lt;` → `<`、`&gt;` → `>`、`&amp;` → `&`等\n- コード整形: インデント整形、改行整理\n- プレビュー: セキュアなiframe内でHTMLをレンダリング\n\n【セキュリティ対策】\n- プレビュー表示はsandbox属性付きiframeを使用\n- XSS対策のためCSPを設定\n- 危険なスクリプトの実行を防止\n\n【技術実装】\n```typescript\nfunction escapeHtml(html: string): string {\n  const div = document.createElement('div');\n  div.textContent = html;\n  return div.innerHTML;\n}\n\nfunction unescapeHtml(html: string): string {\n  const div = document.createElement('div');\n  div.innerHTML = html;\n  return div.textContent || '';\n}\n\nfunction formatHtml(html: string): string {\n  // prettier-standalone等を使用してHTML整形\n  // またはシンプルな正規表現ベースの整形\n}\n```",
+        "testStrategy": "【テスト戦略】\n1. ユニットテスト（tests/unit/html-converter.test.ts）\n   - エスケープ関数のテスト\n   - アンエスケープ関数のテスト\n   - 整形関数のテスト\n   - XSS対策のテスト\n2. E2Eテスト（tests/e2e/html-converter.spec.ts）\n   - HTML入力\n   - エスケープ/アンエスケープ\n   - 整形\n   - プレビュー表示\n   - コピー機能",
+        "subtasks": []
+      },
+      {
+        "id": "13",
+        "title": "PHPシリアライズ変換機能（Issue #75）",
+        "description": "PHPのserialize/unserialize処理をJavaScriptで実現する機能。JSON⇔PHPシリアライズ形式の相互変換、入力値の検証。",
+        "status": "pending",
+        "dependencies": [],
+        "priority": "low",
+        "details": "【実装内容】\n1. app/routes/php-serialize.tsxを新規作成\n2. 入力テキストエリア（JSON/PHPシリアライズ）\n3. JSON → PHPシリアライズ変換ボタン\n4. PHPシリアライズ → JSON変換ボタン\n5. 出力テキストエリア\n6. コピーボタン\n7. エラー表示（無効な形式の場合）\n\n【PHPシリアライズ形式】\n```\ns:5:\"hello\";  // string\ni:123;        // integer\nd:3.14;       // double\nb:1;          // boolean (true)\nb:0;          // boolean (false)\nN;            // null\na:2:{i:0;s:3:\"foo\";i:1;s:3:\"bar\";}  // array\n```\n\n【必要ライブラリ】\n```bash\nnpm install --save php-serialize\n```\n\n【技術実装】\n```typescript\nimport { serialize, unserialize } from 'php-serialize';\n\nfunction jsonToPhp(json: string): string {\n  try {\n    const obj = JSON.parse(json);\n    return serialize(obj);\n  } catch (error) {\n    throw new Error('Invalid JSON format');\n  }\n}\n\nfunction phpToJson(php: string): string {\n  try {\n    const obj = unserialize(php);\n    return JSON.stringify(obj, null, 2);\n  } catch (error) {\n    throw new Error('Invalid PHP serialized format');\n  }\n}\n```",
+        "testStrategy": "【テスト戦略】\n1. ユニットテスト（tests/unit/php-serialize.test.ts）\n   - JSON→PHP変換のテスト\n   - PHP→JSON変換のテスト\n   - 各データ型のテスト（string、int、float、bool、null、array、object）\n   - エラーハンドリングのテスト\n2. E2Eテスト（tests/e2e/php-serialize.spec.ts）\n   - JSON入力と変換\n   - PHPシリアライズ入力と変換\n   - エラー表示\n   - コピー機能",
+        "subtasks": []
+      },
+      {
+        "id": "14",
+        "title": "MessagePack変換機能（Issue #74）",
+        "description": "MessagePack形式とJSONの相互変換機能。バイナリデータの可視化、コピー機能。",
+        "status": "pending",
+        "dependencies": [],
+        "priority": "low",
+        "details": "【実装内容】\n1. app/routes/msgpack-converter.tsxを新規作成\n2. JSON入力テキストエリア\n3. JSON → MessagePack変換ボタン\n4. MessagePack → JSON変換ボタン\n5. MessagePackバイナリの16進数表示\n6. MessagePackバイナリのBase64表示\n7. ファイルアップロード（.msgpackファイル）\n8. ダウンロードボタン（.msgpackファイルとして保存）\n9. コピーボタン\n\n【MessagePack形式】\nMessagePackはバイナリフォーマットなので、以下の形式で表示：\n- 16進数表示: `82 a7 63 6f 6d 70 61 63 74 c3 a6 73 63 68 65 6d 61 00`\n- Base64表示: `gqdjb21wYWN0w6ZzY2hlbWEA`\n\n【必要ライブラリ】\n```bash\nnpm install --save @msgpack/msgpack\n```\n\n【技術実装】\n```typescript\nimport { encode, decode } from '@msgpack/msgpack';\n\nfunction jsonToMsgpack(json: string): Uint8Array {\n  try {\n    const obj = JSON.parse(json);\n    return encode(obj);\n  } catch (error) {\n    throw new Error('Invalid JSON format');\n  }\n}\n\nfunction msgpackToJson(msgpack: Uint8Array): string {\n  try {\n    const obj = decode(msgpack);\n    return JSON.stringify(obj, null, 2);\n  } catch (error) {\n    throw new Error('Invalid MessagePack format');\n  }\n}\n\nfunction uint8ArrayToHex(bytes: Uint8Array): string {\n  return Array.from(bytes)\n    .map(b => b.toString(16).padStart(2, '0'))\n    .join(' ');\n}\n\nfunction uint8ArrayToBase64(bytes: Uint8Array): string {\n  return btoa(String.fromCharCode(...bytes));\n}\n```",
+        "testStrategy": "【テスト戦略】\n1. ユニットテスト（tests/unit/msgpack-converter.test.ts）\n   - JSON→MessagePack変換のテスト\n   - MessagePack→JSON変換のテスト\n   - 各データ型のテスト\n   - 16進数/Base64表示のテスト\n2. E2Eテスト（tests/e2e/msgpack-converter.spec.ts）\n   - JSON入力と変換\n   - ファイルアップロード\n   - バイナリ表示\n   - ダウンロード\n   - コピー機能",
+        "subtasks": []
+      },
+      {
+        "id": "15",
+        "title": "暗号化機能（Issue #93）",
+        "description": "テキストの暗号化・復号化機能（salt対応）。各種暗号化アルゴリズム対応（AES、SHA等）、結果のコピー機能。",
+        "status": "pending",
+        "dependencies": [],
+        "priority": "low",
+        "details": "【実装内容】\n1. app/routes/encryption.tsxを新規作成\n2. テキスト入力エリア\n3. アルゴリズム選択（AES-256-GCM、AES-256-CBC、ChaCha20-Poly1305等）\n4. パスワード入力フィールド\n5. Salt入力フィールド（オプション）\n6. 暗号化/復号化ボタン\n7. 出力テキストエリア（Base64形式）\n8. コピーボタン\n\n【対応アルゴリズム】\n- AES-256-GCM（推奨）\n- AES-256-CBC\n- AES-192-GCM\n- AES-128-GCM\n\n【Web Crypto API使用】\nブラウザのWeb Crypto APIを使用して暗号化を実装。\n\n【セキュリティ注意事項】\n- パスワードは送信されず、ブラウザ内で完結\n- 暗号化されたデータはBase64形式で出力\n- IVとsaltを暗号文に含める（復号化時に必要）\n\n【技術実装】\n```typescript\nasync function encryptText(\n  plaintext: string,\n  password: string,\n  algorithm: string,\n  salt?: string\n): Promise<string> {\n  const encoder = new TextEncoder();\n  const data = encoder.encode(plaintext);\n  \n  // パスワードからキーを生成\n  const passwordKey = await crypto.subtle.importKey(\n    'raw',\n    encoder.encode(password),\n    { name: 'PBKDF2' },\n    false,\n    ['deriveKey']\n  );\n  \n  const saltBytes = salt ? encoder.encode(salt) : crypto.getRandomValues(new Uint8Array(16));\n  \n  // PBKDF2でキー導出\n  const key = await crypto.subtle.deriveKey(\n    {\n      name: 'PBKDF2',\n      salt: saltBytes,\n      iterations: 100000,\n      hash: 'SHA-256'\n    },\n    passwordKey,\n    { name: 'AES-GCM', length: 256 },\n    false,\n    ['encrypt']\n  );\n  \n  const iv = crypto.getRandomValues(new Uint8Array(12));\n  \n  const ciphertext = await crypto.subtle.encrypt(\n    { name: 'AES-GCM', iv },\n    key,\n    data\n  );\n  \n  // IV + salt + ciphertextを結合してBase64エンコード\n  const result = new Uint8Array(iv.length + saltBytes.length + ciphertext.byteLength);\n  result.set(iv, 0);\n  result.set(saltBytes, iv.length);\n  result.set(new Uint8Array(ciphertext), iv.length + saltBytes.length);\n  \n  return btoa(String.fromCharCode(...result));\n}\n\nasync function decryptText(\n  ciphertextBase64: string,\n  password: string,\n  algorithm: string\n): Promise<string> {\n  // 復号化処理\n}\n```",
+        "testStrategy": "【テスト戦略】\n1. ユニットテスト（tests/unit/encryption.test.ts）\n   - 暗号化関数のテスト\n   - 復号化関数のテスト\n   - 暗号化→復号化のラウンドトリップテスト\n   - 各アルゴリズムのテスト\n   - saltの有無でのテスト\n2. E2Eテスト（tests/e2e/encryption.spec.ts）\n   - テキスト入力と暗号化\n   - 暗号文の復号化\n   - アルゴリズム選択\n   - salt使用\n   - コピー機能",
+        "subtasks": []
+      },
+      {
+        "id": "16",
+        "title": "オープンポートチェック機能（Issue #94）",
+        "description": "指定したURLまたはIPアドレスの一般的なポート（80, 443, 22, 3306等）の開放状態をチェックする機能。セキュリティリスクの警告。",
+        "status": "pending",
+        "dependencies": [],
+        "priority": "low",
+        "details": "【実装内容】\n1. app/routes/port-checker.tsxを新規作成\n2. app/functions/port-checker.tsを新規作成（サーバーファンクション）\n3. URL/IPアドレス入力フィールド\n4. チェックするポートの選択（プリセット/カスタム）\n5. チェックボタン\n6. 結果表示（ポートごとの開放/閉鎖状態）\n7. セキュリティリスク警告表示\n\n【チェック対象ポート（プリセット）】\n- 21: FTP\n- 22: SSH\n- 23: Telnet\n- 25: SMTP\n- 53: DNS\n- 80: HTTP\n- 110: POP3\n- 143: IMAP\n- 443: HTTPS\n- 3306: MySQL\n- 3389: RDP\n- 5432: PostgreSQL\n- 6379: Redis\n- 8080: HTTP Alternate\n- 27017: MongoDB\n\n【制限事項】\n- ブラウザからの直接ポートスキャンは不可能（CORS、セキュリティ制限）\n- Cloudflare WorkersのfetchはHTTP/HTTPSのみ対応\n- 実際のポートスキャンは外部APIを使用するか、限定的なHTTP/HTTPSチェックのみ実装\n\n【代替実装アプローチ】\n1. HTTP/HTTPSポートのみチェック（fetch可能）\n2. 外部ポートスキャンAPI統合（例: https://hackertarget.com/tcp-port-scan/）\n3. 教育的な目的でUI/UXのみ実装し、実際のスキャンは外部リンク案内\n\n【推奨実装】\nCloudflare Workers環境では制限があるため、HTTP/HTTPSポート（80, 443, 8080等）のみfetchでチェック可能。その他のポートは外部APIまたは教育的な説明のみ提供。\n\n【技術実装（HTTP/HTTPSのみ）】\n```typescript\nexport const checkHttpPorts = createServerFn({ method: 'GET' })\n  .handler(async ({ data: url }) => {\n    const ports = [80, 443, 8080, 8443];\n    const results: Array<{ port: number; status: 'open' | 'closed'; protocol: string }> = [];\n    \n    for (const port of ports) {\n      try {\n        const protocol = [443, 8443].includes(port) ? 'https' : 'http';\n        const targetUrl = `${protocol}://${url}:${port}`;\n        \n        const response = await fetch(targetUrl, {\n          method: 'HEAD',\n          signal: AbortSignal.timeout(5000)\n        });\n        \n        results.push({\n          port,\n          status: response.ok || response.status < 500 ? 'open' : 'closed',\n          protocol\n        });\n      } catch {\n        results.push({ port, status: 'closed', protocol: '' });\n      }\n    }\n    \n    return results;\n  });\n```",
+        "testStrategy": "【テスト戦略】\n1. ユニットテスト（tests/unit/port-checker.test.ts）\n   - HTTP/HTTPSポートチェックロジックのテスト\n   - タイムアウト処理のテスト\n2. E2Eテスト（tests/e2e/port-checker.spec.ts）\n   - URL入力\n   - ポートチェック実行\n   - 結果表示\n   - セキュリティ警告表示",
+        "subtasks": []
+      },
+      {
+        "id": "17",
+        "title": "サイトOGP画像作成機能（Issue #107）",
+        "description": "各機能ページごとの専用OGP画像の作成・設定。動的OGP生成機能、SNSシェア時のプレビュー最適化。",
+        "status": "pending",
+        "dependencies": [],
+        "priority": "low",
+        "details": "【実装内容】\n1. app/routes/api/ogp-image.tsxを新規作成（動的OGP画像生成API）\n2. 各ルートファイルのhead()関数にOGPメタタグを追加\n3. 静的OGP画像の作成（デザインツールまたはコード生成）\n4. 動的OGP画像生成機能（パラメータベース）\n\n【OGPメタタグ】\n各ページのhead()関数に以下を追加：\n```typescript\nhead: () => ({\n  meta: [\n    { title: \"ページタイトル - Webツール集\" },\n    { property: \"og:title\", content: \"ページタイトル\" },\n    { property: \"og:description\", content: \"ページの説明\" },\n    { property: \"og:image\", content: \"https://example.com/ogp/page-name.png\" },\n    { property: \"og:type\", content: \"website\" },\n    { property: \"og:url\", content: \"https://example.com/page-name\" },\n    { name: \"twitter:card\", content: \"summary_large_image\" },\n    { name: \"twitter:title\", content: \"ページタイトル\" },\n    { name: \"twitter:description\", content: \"ページの説明\" },\n    { name: \"twitter:image\", content: \"https://example.com/ogp/page-name.png\" },\n  ]\n})\n```\n\n【動的OGP画像生成】\nCloudflare WorkersでCanvas APIまたは画像生成ライブラリを使用：\n```typescript\nexport const GET = async ({ params }: { params: { tool: string } }) => {\n  const { tool } = params;\n  \n  // Canvasで画像生成\n  const canvas = createCanvas(1200, 630);\n  const ctx = canvas.getContext('2d');\n  \n  // 背景\n  ctx.fillStyle = '#1976d2';\n  ctx.fillRect(0, 0, 1200, 630);\n  \n  // テキスト\n  ctx.fillStyle = '#ffffff';\n  ctx.font = 'bold 60px sans-serif';\n  ctx.fillText(tool, 100, 315);\n  \n  // PNG出力\n  const buffer = canvas.toBuffer('image/png');\n  \n  return new Response(buffer, {\n    headers: {\n      'Content-Type': 'image/png',\n      'Cache-Control': 'public, max-age=31536000'\n    }\n  });\n};\n```\n\n【必要ライブラリ】\nCloudflare Workers環境でのCanvas実装は制限があるため、代替案：\n1. 静的OGP画像を事前生成してpublic/ogp/に配置\n2. Cloudflare Images等の外部サービスを使用\n3. @vercel/ogライブラリ等のエッジ対応OGP生成ライブラリを検討",
+        "testStrategy": "【テスト戦略】\n1. 各ページのOGPメタタグが正しく設定されていることを確認\n2. Facebook、Twitter、Slack等でシェア時のプレビューを手動テスト\n3. OGP Debuggerツール（Facebook Sharing Debugger等）でバリデーション\n4. E2Eテストでmetaタグの存在を確認",
+        "subtasks": []
+      },
+      {
+        "id": "18",
+        "title": "広告統合機能（Issue #76）",
+        "description": "サイトへの広告配置による収益化。Google AdSenseまたは他の広告プラットフォームの統合、UXを損なわない広告配置、広告ブロック検知。",
+        "status": "pending",
+        "dependencies": [],
+        "priority": "low",
+        "details": "【実装内容】\n1. Google AdSenseアカウント登録と審査\n2. app/components/AdUnit.tsxコンポーネント作成\n3. 広告配置戦略の決定（ページ上部、サイドバー、記事下等）\n4. 広告スクリプトの読み込み（app/__root.tsx）\n5. 広告ブロック検知機能\n6. UX配慮（広告の過剰配置を避ける）\n\n【広告配置ガイドライン】\n- ツール使用の妨げにならない位置に配置\n- モバイルでもレスポンシブに表示\n- ページ読み込み速度への影響を最小化\n- WCAG 2.1アクセシビリティ基準を維持\n\n【Google AdSense統合】\n```typescript\n// app/components/AdUnit.tsx\nexport function AdUnit({ slot }: { slot: string }) {\n  useEffect(() => {\n    try {\n      ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});\n    } catch (error) {\n      console.error('Ad failed to load', error);\n    }\n  }, []);\n\n  return (\n    <ins\n      className=\"adsbygoogle\"\n      style={{ display: 'block' }}\n      data-ad-client=\"ca-pub-XXXXXXXXXXXXXXXX\"\n      data-ad-slot={slot}\n      data-ad-format=\"auto\"\n      data-full-width-responsive=\"true\"\n    />\n  );\n}\n```\n\n【広告ブロック検知】\n```typescript\nfunction detectAdBlocker(): Promise<boolean> {\n  return new Promise((resolve) => {\n    const testAd = document.createElement('div');\n    testAd.innerHTML = '&nbsp;';\n    testAd.className = 'adsbox';\n    document.body.appendChild(testAd);\n    \n    setTimeout(() => {\n      const isBlocked = testAd.offsetHeight === 0;\n      document.body.removeChild(testAd);\n      resolve(isBlocked);\n    }, 100);\n  });\n}\n```\n\n【代替広告プラットフォーム】\n- Google AdSense（最も一般的）\n- Carbon Ads（開発者向け）\n- BuySellAds\n- 直接スポンサーシップ",
+        "testStrategy": "【テスト戦略】\n1. 広告の表示確認（本番環境）\n2. 広告ブロッカー有効時の動作確認\n3. ページ読み込み速度への影響測定\n4. モバイル/デスクトップでの表示確認\n5. アクセシビリティテスト（WCAG 2.1準拠）",
+        "subtasks": []
+      },
+      {
+        "id": "19",
+        "title": "ナビゲーションメニューの更新",
+        "description": "新規追加した機能を__root.tsxのnavCategoriesに追加し、適切なカテゴリに分類する。",
+        "status": "pending",
+        "dependencies": [
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16"
+        ],
+        "priority": "medium",
+        "details": "【実装内容】\n1. app/routes/__root.tsxのnavCategories配列を更新\n2. 新規機能を適切なカテゴリに分類\n3. カテゴリの追加が必要な場合は新規カテゴリを作成\n\n【カテゴリ分類案】\n- 変換: HTML変換、PHPシリアライズ、MessagePack\n- 画像: 画像圧縮、画像リサイズ、画像トリミング、Base64画像変換、透過画像生成、Favicon生成、カラーピッカー、Discordスタンプ\n- 動画: 動画→GIF変換\n- 検証: オープンポートチェック\n- セキュリティ: 暗号化\n- ユーティリティ: 単位計算\n\n【実装例】\n```typescript\nconst navCategories = [\n  {\n    name: \"画像処理\",\n    icon: \"🖼️\",\n    items: [\n      { path: \"/image-compress\", label: \"画像圧縮\" },\n      { path: \"/image-resize\", label: \"画像リサイズ\" },\n      { path: \"/image-crop\", label: \"画像トリミング\" },\n      { path: \"/image-base64\", label: \"Base64変換\" },\n      { path: \"/transparent-image\", label: \"透過画像生成\" },\n      { path: \"/favicon-generator\", label: \"Favicon生成\" },\n      { path: \"/color-picker\", label: \"カラーピッカー\" },\n      { path: \"/sticker-converter\", label: \"スタンプ変換\" },\n    ],\n  },\n  // ...\n];\n```",
+        "testStrategy": "【テスト戦略】\n1. ナビゲーションメニューの表示確認\n2. 各リンクのクリック動作確認\n3. アクセシビリティテスト（キーボードナビゲーション）\n4. E2Eテスト（tests/e2e/navigation.spec.ts）に新規ページを追加",
+        "subtasks": []
+      },
+      {
+        "id": "20",
+        "title": "全体テストとデプロイ準備",
+        "description": "全ての新機能のテストを実行し、ビルドが成功することを確認。デプロイ前の最終チェック。",
+        "status": "pending",
+        "dependencies": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19"
+        ],
+        "priority": "high",
+        "details": "【実装内容】\n1. 全てのユニットテストを実行（npm test）\n2. テストカバレッジを確認（80%以上を維持）\n3. ドキュメントカバレッジを確認（80%以上を維持）\n4. ビルドを実行（npm run build）\n5. E2Eテストを実行（npm run test:e2e）\n6. アクセシビリティテストを実行\n7. 各ブラウザでの動作確認（Chrome、Firefox、Safari、Edge）\n8. モバイルデバイスでの動作確認\n9. Lighthouse監査を実行（パフォーマンス、アクセシビリティ、ベストプラクティス、SEO）\n\n【チェックリスト】\n- [ ] 全てのユニットテストが成功\n- [ ] テストカバレッジ80%以上\n- [ ] ドキュメントカバレッジ80%以上\n- [ ] ビルドが成功\n- [ ] E2Eテストが成功（ローカル環境で可能な場合）\n- [ ] アクセシビリティ基準（WCAG 2.1 AA）に準拠\n- [ ] Material Design 3のスタイルガイドラインに準拠\n- [ ] インラインスタイル未使用を確認\n- [ ] alert()メソッド未使用を確認\n- [ ] 全てのページにJSDocコメントが記述されている\n- [ ] 各ブラウザで動作確認\n- [ ] モバイルで動作確認\n- [ ] Lighthouseスコア90以上\n\n【デプロイコマンド】\n```bash\nnpm run build && npm run deploy\n```",
+        "testStrategy": "【テスト戦略】\n1. CI/CDパイプラインでの自動テスト実行\n2. ステージング環境でのテスト\n3. 本番環境へのデプロイ\n4. 本番環境での動作確認\n5. ロールバック手順の準備",
+        "subtasks": []
+      }
+    ],
+    "metadata": {
+      "version": "1.0.0",
+      "lastModified": "2026-01-02T04:29:40.386Z",
+      "taskCount": 20,
+      "completedCount": 3,
+      "tags": [
+        "master"
+      ]
+    }
+  }
+}
