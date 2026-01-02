@@ -290,9 +290,9 @@ function ImageResizer() {
     }
   }, [cropArea, enableCrop]);
 
-  // トリミング範囲をCanvasに描画
+  // トリミング範囲をCanvasに描画（cropAreaがなくても初期化のために実行）
   useEffect(() => {
-    if (!enableCrop || !originalPreview || !cropArea || !cropCanvasRef.current) return;
+    if (!enableCrop || !originalPreview || !cropCanvasRef.current) return;
 
     const canvas = cropCanvasRef.current;
     const ctx = canvas.getContext("2d");
@@ -321,38 +321,41 @@ function ImageResizer() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-      // オーバーレイ（暗くする）
-      ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      // cropAreaがある場合のみオーバーレイと選択範囲を描画
+      if (cropArea) {
+        // オーバーレイ（暗くする）
+        ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // トリミング範囲をクリア（明るく表示）
-      ctx.clearRect(
-        cropArea.x * scale,
-        cropArea.y * scale,
-        cropArea.width * scale,
-        cropArea.height * scale
-      );
-      ctx.drawImage(
-        img,
-        cropArea.x,
-        cropArea.y,
-        cropArea.width,
-        cropArea.height,
-        cropArea.x * scale,
-        cropArea.y * scale,
-        cropArea.width * scale,
-        cropArea.height * scale
-      );
+        // トリミング範囲をクリア（明るく表示）
+        ctx.clearRect(
+          cropArea.x * scale,
+          cropArea.y * scale,
+          cropArea.width * scale,
+          cropArea.height * scale
+        );
+        ctx.drawImage(
+          img,
+          cropArea.x,
+          cropArea.y,
+          cropArea.width,
+          cropArea.height,
+          cropArea.x * scale,
+          cropArea.y * scale,
+          cropArea.width * scale,
+          cropArea.height * scale
+        );
 
-      // 選択範囲の枠を描画
-      ctx.strokeStyle = "#fff";
-      ctx.lineWidth = 2;
-      ctx.strokeRect(
-        cropArea.x * scale,
-        cropArea.y * scale,
-        cropArea.width * scale,
-        cropArea.height * scale
-      );
+        // 選択範囲の枠を描画
+        ctx.strokeStyle = "#fff";
+        ctx.lineWidth = 2;
+        ctx.strokeRect(
+          cropArea.x * scale,
+          cropArea.y * scale,
+          cropArea.width * scale,
+          cropArea.height * scale
+        );
+      }
     };
     img.src = originalPreview;
   }, [enableCrop, originalPreview, cropArea]);
