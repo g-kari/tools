@@ -5,7 +5,7 @@ import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
   plugins: [
-    tsConfigPaths({ projects: ['./tsconfig.json'] }),
+    tsconfigPaths({ projects: ['./tsconfig.json'] }),
     tanstackStart({
       srcDirectory: "app",
       // TODO: SSG prerenderingは一時的に無効（MUI SSR問題解決後に有効化）
