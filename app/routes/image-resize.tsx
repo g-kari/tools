@@ -249,11 +249,14 @@ function ImageResizer() {
     };
   }, [originalPreview, resizedPreview]);
 
-  // アスペクト比を計算
+  // アスペクト比を計算（トリミング有効時はトリミング範囲のアスペクト比を使用）
   const aspectRatio = useMemo(() => {
+    if (enableCrop && cropArea) {
+      return cropArea.width / cropArea.height;
+    }
     if (!originalDimensions) return 1;
     return originalDimensions.width / originalDimensions.height;
-  }, [originalDimensions]);
+  }, [originalDimensions, enableCrop, cropArea]);
 
   // トリミングモード切り替え時の処理
   useEffect(() => {
@@ -271,6 +274,21 @@ function ImageResizer() {
       setCropArea(null);
     }
   }, [enableCrop, originalDimensions, cropArea]);
+
+  // トリミング範囲変更時にリサイズ設定を更新（アスペクト比維持時）
+  useEffect(() => {
+    if (enableCrop && cropArea && maintainAspectRatio) {
+      // トリミング範囲のサイズをリサイズ設定に反映
+      const cropAspect = cropArea.width / cropArea.height;
+      if (lastChanged === "width") {
+        const newHeight = Math.round(width / cropAspect);
+        setHeight(clampDimension(newHeight));
+      } else {
+        const newWidth = Math.round(height * cropAspect);
+        setWidth(clampDimension(newWidth));
+      }
+    }
+  }, [cropArea, enableCrop]);
 
   // トリミング範囲をCanvasに描画
   useEffect(() => {
