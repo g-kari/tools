@@ -7,15 +7,9 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { type ReactNode, useState, useRef, useCallback, useEffect } from "react";
-import { CacheProvider } from "@emotion/react";
-import { ThemeProvider } from "@mui/material/styles";
 import appCss from "../styles.css?url";
 import { ToastProvider } from "../components/Toast";
-import createEmotionCache from "../utils/createEmotionCache";
-import { theme } from "../theme";
-
-// Emotionキャッシュをモジュールレベルで作成（SSR/CSR共通）
-const emotionCache = createEmotionCache();
+import { MuiProvider } from "../components/MuiProvider";
 
 const navCategories = [
   {
@@ -298,11 +292,8 @@ function RootDocument({ children }: { children: ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        <CacheProvider value={emotionCache}>
-          <ThemeProvider theme={theme}>
-            {/* CssBaselineは既存CSSとの競合を避けるため、移行完了まで無効化 */}
-            {/* <CssBaseline /> */}
-            <ToastProvider>
+        <MuiProvider>
+          <ToastProvider>
               <a href="#main-content" className="skip-link">
                 メインコンテンツへスキップ
               </a>
@@ -334,9 +325,8 @@ function RootDocument({ children }: { children: ReactNode }) {
                 className="sr-only"
                 id="status-message"
               />
-            </ToastProvider>
-          </ThemeProvider>
-        </CacheProvider>
+          </ToastProvider>
+        </MuiProvider>
 
         <Scripts />
       </body>
