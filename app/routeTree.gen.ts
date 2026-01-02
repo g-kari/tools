@@ -14,6 +14,7 @@ import { Route as VideoConverterRouteImport } from './routes/video-converter'
 import { Route as UuidRouteImport } from './routes/uuid'
 import { Route as UrlEncodeRouteImport } from './routes/url-encode'
 import { Route as UnitConverterRouteImport } from './routes/unit-converter'
+import { Route as TransparentImageRouteImport } from './routes/transparent-image'
 import { Route as TextSortRouteImport } from './routes/text-sort'
 import { Route as ServerEnvRouteImport } from './routes/server-env'
 import { Route as SecurityHeadersRouteImport } from './routes/security-headers'
@@ -72,6 +73,11 @@ const UrlEncodeRoute = UrlEncodeRouteImport.update({
 const UnitConverterRoute = UnitConverterRouteImport.update({
   id: '/unit-converter',
   path: '/unit-converter',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TransparentImageRoute = TransparentImageRouteImport.update({
+  id: '/transparent-image',
+  path: '/transparent-image',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TextSortRoute = TextSortRouteImport.update({
@@ -276,6 +282,7 @@ export interface FileRoutesByFullPath {
   '/security-headers': typeof SecurityHeadersRoute
   '/server-env': typeof ServerEnvRoute
   '/text-sort': typeof TextSortRoute
+  '/transparent-image': typeof TransparentImageRoute
   '/unit-converter': typeof UnitConverterRoute
   '/url-encode': typeof UrlEncodeRoute
   '/uuid': typeof UuidRoute
@@ -317,6 +324,7 @@ export interface FileRoutesByTo {
   '/security-headers': typeof SecurityHeadersRoute
   '/server-env': typeof ServerEnvRoute
   '/text-sort': typeof TextSortRoute
+  '/transparent-image': typeof TransparentImageRoute
   '/unit-converter': typeof UnitConverterRoute
   '/url-encode': typeof UrlEncodeRoute
   '/uuid': typeof UuidRoute
@@ -359,6 +367,7 @@ export interface FileRoutesById {
   '/security-headers': typeof SecurityHeadersRoute
   '/server-env': typeof ServerEnvRoute
   '/text-sort': typeof TextSortRoute
+  '/transparent-image': typeof TransparentImageRoute
   '/unit-converter': typeof UnitConverterRoute
   '/url-encode': typeof UrlEncodeRoute
   '/uuid': typeof UuidRoute
@@ -402,6 +411,7 @@ export interface FileRouteTypes {
     | '/security-headers'
     | '/server-env'
     | '/text-sort'
+    | '/transparent-image'
     | '/unit-converter'
     | '/url-encode'
     | '/uuid'
@@ -443,6 +453,7 @@ export interface FileRouteTypes {
     | '/security-headers'
     | '/server-env'
     | '/text-sort'
+    | '/transparent-image'
     | '/unit-converter'
     | '/url-encode'
     | '/uuid'
@@ -484,6 +495,7 @@ export interface FileRouteTypes {
     | '/security-headers'
     | '/server-env'
     | '/text-sort'
+    | '/transparent-image'
     | '/unit-converter'
     | '/url-encode'
     | '/uuid'
@@ -526,6 +538,7 @@ export interface RootRouteChildren {
   SecurityHeadersRoute: typeof SecurityHeadersRoute
   ServerEnvRoute: typeof ServerEnvRoute
   TextSortRoute: typeof TextSortRoute
+  TransparentImageRoute: typeof TransparentImageRoute
   UnitConverterRoute: typeof UnitConverterRoute
   UrlEncodeRoute: typeof UrlEncodeRoute
   UuidRoute: typeof UuidRoute
@@ -572,6 +585,13 @@ declare module '@tanstack/react-router' {
       path: '/unit-converter'
       fullPath: '/unit-converter'
       preLoaderRoute: typeof UnitConverterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/transparent-image': {
+      id: '/transparent-image'
+      path: '/transparent-image'
+      fullPath: '/transparent-image'
+      preLoaderRoute: typeof TransparentImageRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/text-sort': {
@@ -846,6 +866,7 @@ const rootRouteChildren: RootRouteChildren = {
   SecurityHeadersRoute: SecurityHeadersRoute,
   ServerEnvRoute: ServerEnvRoute,
   TextSortRoute: TextSortRoute,
+  TransparentImageRoute: TransparentImageRoute,
   UnitConverterRoute: UnitConverterRoute,
   UrlEncodeRoute: UrlEncodeRoute,
   UuidRoute: UuidRoute,
