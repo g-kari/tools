@@ -862,18 +862,6 @@ function ImageResizer() {
               <h2 className="section-title">リサイズ設定</h2>
 
               <div className="resize-options">
-                <div className="crop-toggle">
-                  <label className="checkbox-label">
-                    <input
-                      type="checkbox"
-                      checked={enableCrop}
-                      onChange={(e) => setEnableCrop(e.target.checked)}
-                      disabled={isLoading}
-                    />
-                    <span>トリミングを有効にする</span>
-                  </label>
-                </div>
-
                 <div className="size-inputs">
                   <div className="size-input-group">
                     <label htmlFor="width">幅 (px)</label>
@@ -977,14 +965,26 @@ function ImageResizer() {
               </div>
             </div>
 
+            {/* トリミング設定 */}
             <div className="converter-section">
-              <h2 className="section-title">プレビュー</h2>
+              <h2 className="section-title">トリミング設定</h2>
 
-              {/* トリミング設定（トリミング有効時のみ表示） */}
+              <div className="crop-toggle">
+                <label className="checkbox-label">
+                  <input
+                    type="checkbox"
+                    checked={enableCrop}
+                    onChange={(e) => setEnableCrop(e.target.checked)}
+                    disabled={isLoading}
+                  />
+                  <span>トリミングを有効にする</span>
+                </label>
+              </div>
+
               {enableCrop && (
                 <div className="crop-settings-inline">
                   <div className="crop-aspect-ratios">
-                    <label className="preset-label">トリミングのアスペクト比</label>
+                    <label className="preset-label">アスペクト比</label>
                     <div className="preset-buttons">
                       {CROP_ASPECT_RATIOS.map((preset) => (
                         <button
@@ -1011,47 +1011,58 @@ function ImageResizer() {
                   )}
                 </div>
               )}
+            </div>
 
-              <div className="preview-single">
-                <h3 className="preview-label">
-                  {resizedPreview
-                    ? `${enableCrop ? "トリミング・リサイズ後" : "リサイズ後"} (${width} × ${height})`
-                    : "元の画像"
-                  }
-                </h3>
-                <div className="preview-image-container preview-with-crop">
-                  {isLoading ? (
-                    <div className="loading-enhanced">
-                      <div className="spinner-enhanced" />
-                      <span className="loading-text">処理中...</span>
-                    </div>
-                  ) : resizedPreview ? (
-                    <img
-                      src={resizedPreview}
-                      alt="処理後の画像"
-                      className="preview-image"
-                    />
-                  ) : enableCrop && originalPreview ? (
-                    <canvas
-                      ref={cropCanvasRef}
-                      className={`crop-canvas ${cropArea ? 'has-selection' : ''}`}
-                      onMouseDown={handleDragStart}
-                      onMouseMove={handleDragMove}
-                      onMouseUp={handleDragEnd}
-                      onMouseLeave={handleDragEnd}
-                      onTouchStart={handleDragStart}
-                      onTouchMove={handleDragMove}
-                      onTouchEnd={handleDragEnd}
-                    />
-                  ) : originalPreview ? (
-                    <img
-                      src={originalPreview}
-                      alt="元の画像"
-                      className="preview-image"
-                    />
-                  ) : (
-                    <span className="preview-placeholder">プレビューなし</span>
-                  )}
+            <div className="converter-section">
+              <h2 className="section-title">プレビュー</h2>
+
+              <div className="preview-comparison">
+                <div className="preview-panel">
+                  <h3 className="preview-label">元の画像{enableCrop ? " / トリミング" : ""}</h3>
+                  <div className="preview-image-container preview-with-crop">
+                    {enableCrop && originalPreview ? (
+                      <canvas
+                        ref={cropCanvasRef}
+                        className={`crop-canvas ${cropArea ? 'has-selection' : ''}`}
+                        onMouseDown={handleDragStart}
+                        onMouseMove={handleDragMove}
+                        onMouseUp={handleDragEnd}
+                        onMouseLeave={handleDragEnd}
+                        onTouchStart={handleDragStart}
+                        onTouchMove={handleDragMove}
+                        onTouchEnd={handleDragEnd}
+                      />
+                    ) : originalPreview ? (
+                      <img
+                        src={originalPreview}
+                        alt="元の画像"
+                        className="preview-image"
+                      />
+                    ) : (
+                      <span className="preview-placeholder">プレビューなし</span>
+                    )}
+                  </div>
+                </div>
+                <div className="preview-panel">
+                  <h3 className="preview-label">
+                    {enableCrop ? "トリミング・リサイズ後" : "リサイズ後"} ({width} × {height})
+                  </h3>
+                  <div className="preview-image-container">
+                    {isLoading ? (
+                      <div className="loading-enhanced">
+                        <div className="spinner-enhanced" />
+                        <span className="loading-text">処理中...</span>
+                      </div>
+                    ) : resizedPreview ? (
+                      <img
+                        src={resizedPreview}
+                        alt="処理後の画像"
+                        className="preview-image"
+                      />
+                    ) : (
+                      <span className="preview-placeholder">処理待ち</span>
+                    )}
+                  </div>
                 </div>
               </div>
 
