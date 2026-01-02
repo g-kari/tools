@@ -1,10 +1,10 @@
 import { describe, it, expect } from 'vitest';
 import {
-  formatFileSize,
   calculateAspectRatioSize,
   clampDimension,
   generateFilename,
 } from '../../app/routes/image-resize';
+import { formatFileSize } from '../../app/utils/format';
 
 describe('Image Resize', () => {
   describe('formatFileSize', () => {

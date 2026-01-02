@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef, useCallback, useEffect, useMemo } from "react";
 import { useToast } from "../components/Toast";
+import { Dropzone } from "../components/Dropzone";
+import { formatFileSize } from "../utils/format";
 
 export const Route = createFileRoute("/image-resize")({
   head: () => ({
@@ -62,19 +64,6 @@ interface CropArea {
   y: number;
   width: number;
   height: number;
-}
-
-/**
- * ファイルサイズを人間が読みやすい形式にフォーマットする
- * @param bytes - バイト数
- * @returns フォーマットされた文字列（例: "1.5 MB"）
- */
-export function formatFileSize(bytes: number): string {
-  if (bytes === 0) return "0 B";
-  const k = 1024;
-  const sizes = ["B", "KB", "MB", "GB"];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
 }
 
 /**
@@ -225,7 +214,6 @@ function ImageResizer() {
   const [height, setHeight] = useState<number>(0);
   const [maintainAspectRatio, setMaintainAspectRatio] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
   const [lastChanged, setLastChanged] = useState<"width" | "height">("width");
 
   // トリミング関連のstate
@@ -238,7 +226,6 @@ function ImageResizer() {
   // ドラッグモード: 'create' = 新規作成, 'move' = 移動
   const [dragMode, setDragMode] = useState<'create' | 'move'>('create');
 
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const cropCanvasRef = useRef<HTMLCanvasElement>(null);
   const imageElementRef = useRef<HTMLImageElement | null>(null);
   const canvasScaleRef = useRef<number>(1);
@@ -692,16 +679,6 @@ function ImageResizer() {
     [originalPreview, resizedPreview, showToast]
   );
 
-  const handleInputChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files?.[0];
-      if (file) {
-        handleFileSelect(file);
-      }
-    },
-    [handleFileSelect]
-  );
-
   const handleResize = useCallback(async () => {
     if (!originalFile || width < MIN_DIMENSION || height < MIN_DIMENSION) {
       showToast("有効なサイズを指定してください", "error");
@@ -755,35 +732,8 @@ function ImageResizer() {
     setCropArea(null);
     setCropAspectRatio(null);
 
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
-
     showToast("クリアしました", "info");
   }, [originalPreview, resizedPreview, showToast]);
-
-  const handleDragOver = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(true);
-  }, []);
-
-  const handleDragLeave = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-  }, []);
-
-  const handleDrop = useCallback(
-    (e: React.DragEvent) => {
-      e.preventDefault();
-      setIsDragging(false);
-
-      const file = e.dataTransfer.files[0];
-      if (file) {
-        handleFileSelect(file);
-      }
-    },
-    [handleFileSelect]
-  );
 
   // サイズ変更の割合を計算
   const sizeChangePercent = useMemo(() => {
@@ -800,44 +750,13 @@ function ImageResizer() {
           <div className="converter-section">
             <h2 className="section-title">画像選択</h2>
 
-            <div
-              className={`dropzone ${isDragging ? "dragging" : ""}`}
-              onDragOver={handleDragOver}
-              onDragLeave={handleDragLeave}
-              onDrop={handleDrop}
-              onClick={() => fileInputRef.current?.click()}
-              role="button"
-              tabIndex={0}
-              aria-label="画像ファイルをアップロード"
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  fileInputRef.current?.click();
-                }
-              }}
-            >
-              <div className="dropzone-content">
-                <svg
-                  className="upload-icon"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
-                >
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                  <polyline points="17 8 12 3 7 8" />
-                  <line x1="12" y1="3" x2="12" y2="15" />
-                </svg>
-                <p className="dropzone-text">
-                  クリックして画像を選択、またはドラッグ&ドロップ
-                </p>
-                <p className="dropzone-hint">PNG, JPEG, WebP など</p>
-              </div>
-            </div>
+            <Dropzone
+              onFileSelect={handleFileSelect}
+              accept="image/*"
+              ariaLabel="画像ファイルをアップロード"
+              text="クリックして画像を選択、またはドラッグ&ドロップ"
+              hint="PNG, JPEG, WebP など"
+            />
           </div>
 
           <aside
@@ -1076,17 +995,6 @@ function ImageResizer() {
           </aside>
         </>
       )}
-
-      <input
-        ref={fileInputRef}
-        type="file"
-        id="imageFile"
-        accept="image/*"
-        onChange={handleInputChange}
-        disabled={isLoading}
-        className="hidden-file-input"
-        aria-label="画像ファイルを選択"
-      />
     </div>
   );
 }
