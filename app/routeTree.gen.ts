@@ -25,6 +25,7 @@ import { Route as JsonRouteImport } from './routes/json'
 import { Route as IpGeolocationRouteImport } from './routes/ip-geolocation'
 import { Route as IpConverterRouteImport } from './routes/ip-converter'
 import { Route as ImageToGifRouteImport } from './routes/image-to-gif'
+import { Route as ImageResizeRouteImport } from './routes/image-resize'
 import { Route as ImageCompressRouteImport } from './routes/image-compress'
 import { Route as HashRouteImport } from './routes/hash'
 import { Route as GlobalIpRouteImport } from './routes/global-ip'
@@ -123,6 +124,11 @@ const IpConverterRoute = IpConverterRouteImport.update({
 const ImageToGifRoute = ImageToGifRouteImport.update({
   id: '/image-to-gif',
   path: '/image-to-gif',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ImageResizeRoute = ImageResizeRouteImport.update({
+  id: '/image-resize',
+  path: '/image-resize',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ImageCompressRoute = ImageCompressRouteImport.update({
@@ -237,6 +243,7 @@ export interface FileRoutesByFullPath {
   '/global-ip': typeof GlobalIpRoute
   '/hash': typeof HashRoute
   '/image-compress': typeof ImageCompressRoute
+  '/image-resize': typeof ImageResizeRoute
   '/image-to-gif': typeof ImageToGifRoute
   '/ip-converter': typeof IpConverterRoute
   '/ip-geolocation': typeof IpGeolocationRoute
@@ -274,6 +281,7 @@ export interface FileRoutesByTo {
   '/global-ip': typeof GlobalIpRoute
   '/hash': typeof HashRoute
   '/image-compress': typeof ImageCompressRoute
+  '/image-resize': typeof ImageResizeRoute
   '/image-to-gif': typeof ImageToGifRoute
   '/ip-converter': typeof IpConverterRoute
   '/ip-geolocation': typeof IpGeolocationRoute
@@ -312,6 +320,7 @@ export interface FileRoutesById {
   '/global-ip': typeof GlobalIpRoute
   '/hash': typeof HashRoute
   '/image-compress': typeof ImageCompressRoute
+  '/image-resize': typeof ImageResizeRoute
   '/image-to-gif': typeof ImageToGifRoute
   '/ip-converter': typeof IpConverterRoute
   '/ip-geolocation': typeof IpGeolocationRoute
@@ -351,6 +360,7 @@ export interface FileRouteTypes {
     | '/global-ip'
     | '/hash'
     | '/image-compress'
+    | '/image-resize'
     | '/image-to-gif'
     | '/ip-converter'
     | '/ip-geolocation'
@@ -388,6 +398,7 @@ export interface FileRouteTypes {
     | '/global-ip'
     | '/hash'
     | '/image-compress'
+    | '/image-resize'
     | '/image-to-gif'
     | '/ip-converter'
     | '/ip-geolocation'
@@ -425,6 +436,7 @@ export interface FileRouteTypes {
     | '/global-ip'
     | '/hash'
     | '/image-compress'
+    | '/image-resize'
     | '/image-to-gif'
     | '/ip-converter'
     | '/ip-geolocation'
@@ -463,6 +475,7 @@ export interface RootRouteChildren {
   GlobalIpRoute: typeof GlobalIpRoute
   HashRoute: typeof HashRoute
   ImageCompressRoute: typeof ImageCompressRoute
+  ImageResizeRoute: typeof ImageResizeRoute
   ImageToGifRoute: typeof ImageToGifRoute
   IpConverterRoute: typeof IpConverterRoute
   IpGeolocationRoute: typeof IpGeolocationRoute
@@ -597,6 +610,13 @@ declare module '@tanstack/react-router' {
       path: '/image-to-gif'
       fullPath: '/image-to-gif'
       preLoaderRoute: typeof ImageToGifRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/image-resize': {
+      id: '/image-resize'
+      path: '/image-resize'
+      fullPath: '/image-resize'
+      preLoaderRoute: typeof ImageResizeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/image-compress': {
@@ -751,6 +771,7 @@ const rootRouteChildren: RootRouteChildren = {
   GlobalIpRoute: GlobalIpRoute,
   HashRoute: HashRoute,
   ImageCompressRoute: ImageCompressRoute,
+  ImageResizeRoute: ImageResizeRoute,
   ImageToGifRoute: ImageToGifRoute,
   IpConverterRoute: IpConverterRoute,
   IpGeolocationRoute: IpGeolocationRoute,
