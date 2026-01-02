@@ -1,5 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef, useCallback, useEffect } from "react";
+import { ColorInput } from "../components/ColorInput";
+import { Slider } from "../components/Slider";
+import TextField from "@mui/material/TextField";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
+import Box from "@mui/material/Box";
+import Chip from "@mui/material/Chip";
+import Typography from "@mui/material/Typography";
 
 export const Route = createFileRoute("/dummy-image")({
   head: () => ({
@@ -215,162 +227,114 @@ function DummyImageGenerator() {
           <div className="converter-section">
             <h2 className="section-title">画像設定</h2>
 
-            <div className="image-options">
-              <div className="option-group">
-                <label htmlFor="width">幅 (px):</label>
-                <input
-                  type="number"
+            <Stack spacing={3}>
+              <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
+                <TextField
                   id="width"
-                  min={MIN_SIZE}
-                  max={MAX_SIZE}
+                  label="幅 (px)"
+                  type="number"
+                  size="small"
                   value={width}
                   onChange={(e) => handleWidthChange(parseInt(e.target.value))}
-                  aria-describedby="width-help"
+                  slotProps={{
+                    htmlInput: { min: MIN_SIZE, max: MAX_SIZE },
+                  }}
+                  sx={{ width: { xs: "100%", sm: 120 } }}
                 />
-                <span id="width-help" className="sr-only">
-                  {MIN_SIZE}から{MAX_SIZE}ピクセルの間で幅を指定できます
-                </span>
-              </div>
-
-              <div className="option-group">
-                <label htmlFor="height">高さ (px):</label>
-                <input
-                  type="number"
+                <TextField
                   id="height"
-                  min={MIN_SIZE}
-                  max={MAX_SIZE}
+                  label="高さ (px)"
+                  type="number"
+                  size="small"
                   value={height}
                   onChange={(e) => handleHeightChange(parseInt(e.target.value))}
-                  aria-describedby="height-help"
+                  slotProps={{
+                    htmlInput: { min: MIN_SIZE, max: MAX_SIZE },
+                  }}
+                  sx={{ width: { xs: "100%", sm: 120 } }}
                 />
-                <span id="height-help" className="sr-only">
-                  {MIN_SIZE}から{MAX_SIZE}ピクセルの間で高さを指定できます
-                </span>
-              </div>
+              </Stack>
 
-              <div className="option-group">
-                <label htmlFor="bgColor">背景色:</label>
-                <div className="color-input-wrapper">
-                  <input
-                    type="color"
-                    id="bgColor"
-                    value={bgColor}
-                    onChange={(e) => setBgColor(e.target.value)}
-                    aria-describedby="bgColor-help"
-                  />
-                  <input
-                    type="text"
-                    value={bgColor}
-                    onChange={(e) => setBgColor(e.target.value)}
-                    pattern="^#[0-9A-Fa-f]{6}$"
-                    aria-label="背景色のHEX値"
-                  />
-                </div>
-                <span id="bgColor-help" className="sr-only">
-                  画像の背景色を選択します
-                </span>
-              </div>
+              <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
+                <ColorInput
+                  value={bgColor}
+                  onChange={setBgColor}
+                  id="bgColor"
+                  label="背景色"
+                  ariaLabel="背景色"
+                />
+                <ColorInput
+                  value={textColor}
+                  onChange={setTextColor}
+                  id="textColor"
+                  label="テキスト色"
+                  ariaLabel="テキスト色"
+                />
+              </Stack>
 
-              <div className="option-group">
-                <label htmlFor="textColor">テキスト色:</label>
-                <div className="color-input-wrapper">
-                  <input
-                    type="color"
-                    id="textColor"
-                    value={textColor}
-                    onChange={(e) => setTextColor(e.target.value)}
-                    aria-describedby="textColor-help"
-                  />
-                  <input
-                    type="text"
-                    value={textColor}
-                    onChange={(e) => setTextColor(e.target.value)}
-                    pattern="^#[0-9A-Fa-f]{6}$"
-                    aria-label="テキスト色のHEX値"
-                  />
-                </div>
-                <span id="textColor-help" className="sr-only">
-                  サイズ表示テキストの色を選択します
-                </span>
-              </div>
-
-              <div className="option-group">
-                <label htmlFor="format">形式:</label>
-                <select
-                  id="format"
-                  value={format}
-                  onChange={(e) => setFormat(e.target.value as ImageFormat)}
-                  aria-describedby="format-help"
-                >
-                  {FORMAT_OPTIONS.map((opt) => (
-                    <option key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </option>
-                  ))}
-                </select>
-                <span id="format-help" className="sr-only">
-                  ダウンロードする画像の形式を選択します
-                </span>
-              </div>
-
-              {format !== "png" && (
-                <div className="option-group quality-group">
-                  <label htmlFor="quality">画質: {quality}%</label>
-                  <input
-                    type="range"
-                    id="quality"
-                    min="1"
-                    max="100"
-                    value={quality}
-                    onChange={(e) => setQuality(parseInt(e.target.value))}
-                    aria-describedby="quality-help"
-                  />
-                  <span id="quality-help" className="sr-only">
-                    1%から100%の間で画質を指定できます
-                  </span>
-                </div>
-              )}
-            </div>
-
-            <div className="preset-section">
-              <h3 className="preset-title">プリセットサイズ</h3>
-              <div className="preset-buttons" role="group" aria-label="プリセットサイズ選択">
-                {PRESET_SIZES.map((preset) => (
-                  <button
-                    key={preset.label}
-                    type="button"
-                    className="btn-preset"
-                    onClick={() => handlePresetSelect(preset)}
-                    aria-label={`${preset.label} (${preset.width}x${preset.height})`}
+              <Stack direction={{ xs: "column", sm: "row" }} spacing={2} alignItems="flex-start">
+                <FormControl size="small" sx={{ minWidth: 120 }}>
+                  <InputLabel id="format-label">形式</InputLabel>
+                  <Select
+                    labelId="format-label"
+                    id="format"
+                    value={format}
+                    label="形式"
+                    onChange={(e) => setFormat(e.target.value as ImageFormat)}
                   >
-                    {preset.label}
-                    <span className="preset-size">
-                      {preset.width}×{preset.height}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            </div>
+                    {FORMAT_OPTIONS.map((opt) => (
+                      <MenuItem key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
 
-            <div className="button-group" role="group" aria-label="画像操作">
-              <button type="submit" className="btn-primary">
+                {format !== "png" && (
+                  <Box sx={{ width: { xs: "100%", sm: 200 } }}>
+                    <Slider
+                      label="画質"
+                      value={quality}
+                      onChange={setQuality}
+                      min={1}
+                      max={100}
+                      unit="%"
+                      size="small"
+                    />
+                  </Box>
+                )}
+              </Stack>
+            </Stack>
+
+            <Box sx={{ mt: 3 }}>
+              <Typography variant="subtitle2" gutterBottom>
+                プリセットサイズ
+              </Typography>
+              <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                {PRESET_SIZES.map((preset) => (
+                  <Chip
+                    key={preset.label}
+                    label={`${preset.label} (${preset.width}×${preset.height})`}
+                    onClick={() => handlePresetSelect(preset)}
+                    variant={width === preset.width && height === preset.height ? "filled" : "outlined"}
+                    color={width === preset.width && height === preset.height ? "primary" : "default"}
+                    sx={{ mb: 1 }}
+                  />
+                ))}
+              </Stack>
+            </Box>
+
+            <Stack direction="row" spacing={2} sx={{ mt: 3 }} flexWrap="wrap" useFlexGap>
+              <Button type="submit" variant="contained">
                 ダウンロード
-              </button>
-              <button
-                type="button"
-                className="btn-secondary"
-                onClick={handleCopyToClipboard}
-              >
+              </Button>
+              <Button variant="outlined" onClick={handleCopyToClipboard}>
                 クリップボードにコピー
-              </button>
-              <button
-                type="button"
-                className="btn-secondary"
-                onClick={handleOpenApi}
-              >
+              </Button>
+              <Button variant="outlined" onClick={handleOpenApi}>
                 APIで開く
-              </button>
-            </div>
+              </Button>
+            </Stack>
           </div>
 
           <div className="converter-section">
@@ -462,104 +426,6 @@ function DummyImageGenerator() {
           flex-wrap: wrap;
           align-items: flex-start;
           margin-bottom: 1.5rem;
-        }
-
-        .option-group {
-          display: flex;
-          flex-direction: column;
-          gap: 0.5rem;
-        }
-
-        .option-group label {
-          font-weight: 500;
-          color: var(--md-sys-color-on-surface);
-        }
-
-        .option-group select,
-        .option-group input[type="number"] {
-          padding: 0.5rem;
-          border: 1px solid var(--md-sys-color-outline);
-          border-radius: 8px;
-          font-size: 1rem;
-          background-color: var(--md-sys-color-surface);
-          color: var(--md-sys-color-on-surface);
-          min-width: 120px;
-        }
-
-        .color-input-wrapper {
-          display: flex;
-          gap: 0.5rem;
-          align-items: center;
-        }
-
-        .color-input-wrapper input[type="color"] {
-          width: 40px;
-          height: 40px;
-          padding: 0;
-          border: 1px solid var(--md-sys-color-outline);
-          border-radius: 8px;
-          cursor: pointer;
-        }
-
-        .color-input-wrapper input[type="text"] {
-          width: 90px;
-          padding: 0.5rem;
-          border: 1px solid var(--md-sys-color-outline);
-          border-radius: 8px;
-          font-size: 0.875rem;
-          font-family: 'Roboto Mono', monospace;
-          background-color: var(--md-sys-color-surface);
-          color: var(--md-sys-color-on-surface);
-        }
-
-        .quality-group {
-          min-width: 200px;
-        }
-
-        .option-group input[type="range"] {
-          width: 100%;
-          accent-color: var(--md-sys-color-primary);
-        }
-
-        .preset-section {
-          margin-bottom: 1.5rem;
-        }
-
-        .preset-title {
-          font-size: 1rem;
-          font-weight: 500;
-          color: var(--md-sys-color-on-surface);
-          margin-bottom: 0.75rem;
-        }
-
-        .preset-buttons {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 0.5rem;
-        }
-
-        .btn-preset {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          padding: 0.5rem 1rem;
-          border: 1px solid var(--md-sys-color-outline);
-          border-radius: 8px;
-          background-color: var(--md-sys-color-surface);
-          color: var(--md-sys-color-on-surface);
-          cursor: pointer;
-          transition: background-color 0.2s, border-color 0.2s;
-        }
-
-        .btn-preset:hover {
-          background-color: var(--md-sys-color-surface-variant);
-          border-color: var(--md-sys-color-primary);
-        }
-
-        .preset-size {
-          font-size: 0.75rem;
-          color: var(--md-sys-color-on-surface-variant);
-          font-family: 'Roboto Mono', monospace;
         }
 
         .preview-container {
