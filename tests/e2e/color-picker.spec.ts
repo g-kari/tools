@@ -307,6 +307,20 @@ test.describe("Color Picker", () => {
     await expect(page.locator(".image-picker-title")).toHaveText("画像から取得");
     await expect(page.locator(".btn-upload-small")).toBeVisible();
     await expect(page.locator(".image-placeholder")).toBeVisible();
+    // Check placeholder text includes D&D hint
+    await expect(page.locator(".image-placeholder")).toContainText("D&D");
+  });
+
+  test("should display info box with tips", async ({ page }) => {
+    // Check info-box sections
+    await expect(page.locator(".info-box")).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "カラーピッカーとは" })
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "カラー形式について" })
+    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Tips" })).toBeVisible();
   });
 
   test("should be keyboard accessible", async ({ page }) => {
