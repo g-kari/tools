@@ -339,69 +339,228 @@ function ImageResizer() {
     img.src = originalPreview;
   }, [enableCrop, originalPreview, cropArea]);
 
-  // Canvas上でのマウスイベント処理
-  const handleCanvasMouseDown = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!enableCrop || !cropCanvasRef.current || !imageElementRef.current) return;
+  // ドラッグモード: 'create' = 新規作成, 'move' = 移動
+  const [dragMode, setDragMode] = useState<'create' | 'move'>('create');
+
+  // 座標を取得する共通関数（マウス・タッチ両対応）
+  const getEventCoordinates = useCallback((
+    e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement> | MouseEvent | TouchEvent
+  ): { x: number; y: number } | null => {
+    if (!cropCanvasRef.current) return null;
 
     const canvas = cropCanvasRef.current;
     const rect = canvas.getBoundingClientRect();
     const scale = canvasScaleRef.current;
 
-    const x = (e.clientX - rect.left) / scale;
-    const y = (e.clientY - rect.top) / scale;
+    let clientX: number;
+    let clientY: number;
 
-    setIsDraggingCrop(true);
-    setDragStart({ x, y });
-  }, [enableCrop]);
-
-  const handleCanvasMouseMove = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!isDraggingCrop || !dragStart || !cropCanvasRef.current || !imageElementRef.current || !originalDimensions) return;
-
-    const canvas = cropCanvasRef.current;
-    const rect = canvas.getBoundingClientRect();
-    const scale = canvasScaleRef.current;
-
-    const currentX = (e.clientX - rect.left) / scale;
-    const currentY = (e.clientY - rect.top) / scale;
-
-    const x = Math.min(dragStart.x, currentX);
-    const y = Math.min(dragStart.y, currentY);
-    let newWidth = Math.abs(currentX - dragStart.x);
-    let newHeight = Math.abs(currentY - dragStart.y);
-
-    // 最小サイズを確保
-    const minSize = 10;
-    if (newWidth < minSize || newHeight < minSize) return;
-
-    // アスペクト比を適用
-    if (cropAspectRatio !== null && cropAspectRatio > 0) {
-      if (newWidth / newHeight > cropAspectRatio) {
-        newWidth = newHeight * cropAspectRatio;
-      } else {
-        newHeight = newWidth / cropAspectRatio;
-      }
+    if ('touches' in e) {
+      if (e.touches.length === 0) return null;
+      clientX = e.touches[0].clientX;
+      clientY = e.touches[0].clientY;
+    } else {
+      clientX = e.clientX;
+      clientY = e.clientY;
     }
 
-    // 画像範囲内に制限
-    const clampedX = Math.max(0, Math.min(x, originalDimensions.width - newWidth));
-    const clampedY = Math.max(0, Math.min(y, originalDimensions.height - newHeight));
-    const clampedWidth = Math.min(newWidth, originalDimensions.width - clampedX);
-    const clampedHeight = Math.min(newHeight, originalDimensions.height - clampedY);
+    return {
+      x: (clientX - rect.left) / scale,
+      y: (clientY - rect.top) / scale,
+    };
+  }, []);
 
-    if (clampedWidth < minSize || clampedHeight < minSize) return;
+  // 既存の選択範囲内かどうかを判定
+  const isInsideCropArea = useCallback((x: number, y: number): boolean => {
+    if (!cropArea) return false;
+    return (
+      x >= cropArea.x &&
+      x <= cropArea.x + cropArea.width &&
+      y >= cropArea.y &&
+      y <= cropArea.y + cropArea.height
+    );
+  }, [cropArea]);
 
-    setCropArea({
-      x: clampedX,
-      y: clampedY,
-      width: clampedWidth,
-      height: clampedHeight,
-    });
-  }, [isDraggingCrop, dragStart, originalDimensions, cropAspectRatio]);
+  // ドラッグ開始の共通処理
+  const handleDragStart = useCallback((
+    e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>
+  ) => {
+    if (!enableCrop || !imageElementRef.current) return;
 
-  const handleCanvasMouseUp = useCallback(() => {
+    // タッチイベントの場合はスクロールを防止
+    if ('touches' in e) {
+      e.preventDefault();
+    }
+
+    const coords = getEventCoordinates(e);
+    if (!coords) return;
+
+    // 既存の選択範囲内をクリックした場合は移動モード
+    if (isInsideCropArea(coords.x, coords.y)) {
+      setDragMode('move');
+    } else {
+      setDragMode('create');
+    }
+
+    setIsDraggingCrop(true);
+    setDragStart(coords);
+  }, [enableCrop, getEventCoordinates, isInsideCropArea]);
+
+  // ドラッグ中の共通処理
+  const handleDragMove = useCallback((
+    e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>
+  ) => {
+    if (!isDraggingCrop || !dragStart || !originalDimensions) return;
+
+    // タッチイベントの場合はスクロールを防止
+    if ('touches' in e) {
+      e.preventDefault();
+    }
+
+    const coords = getEventCoordinates(e);
+    if (!coords) return;
+
+    const minSize = 10;
+
+    if (dragMode === 'move' && cropArea) {
+      // 移動モード: 選択範囲を移動
+      const deltaX = coords.x - dragStart.x;
+      const deltaY = coords.y - dragStart.y;
+
+      let newX = cropArea.x + deltaX;
+      let newY = cropArea.y + deltaY;
+
+      // 画像範囲内に制限
+      newX = Math.max(0, Math.min(newX, originalDimensions.width - cropArea.width));
+      newY = Math.max(0, Math.min(newY, originalDimensions.height - cropArea.height));
+
+      setCropArea({
+        ...cropArea,
+        x: newX,
+        y: newY,
+      });
+
+      // ドラッグ開始位置を更新（差分計算のため）
+      setDragStart(coords);
+    } else {
+      // 作成モード: 新しい選択範囲を作成
+      const x = Math.min(dragStart.x, coords.x);
+      const y = Math.min(dragStart.y, coords.y);
+      let newWidth = Math.abs(coords.x - dragStart.x);
+      let newHeight = Math.abs(coords.y - dragStart.y);
+
+      if (newWidth < minSize || newHeight < minSize) return;
+
+      // アスペクト比を適用
+      if (cropAspectRatio !== null && cropAspectRatio > 0) {
+        if (newWidth / newHeight > cropAspectRatio) {
+          newWidth = newHeight * cropAspectRatio;
+        } else {
+          newHeight = newWidth / cropAspectRatio;
+        }
+      }
+
+      // 画像範囲内に制限
+      const clampedX = Math.max(0, Math.min(x, originalDimensions.width - newWidth));
+      const clampedY = Math.max(0, Math.min(y, originalDimensions.height - newHeight));
+      const clampedWidth = Math.min(newWidth, originalDimensions.width - clampedX);
+      const clampedHeight = Math.min(newHeight, originalDimensions.height - clampedY);
+
+      if (clampedWidth < minSize || clampedHeight < minSize) return;
+
+      setCropArea({
+        x: clampedX,
+        y: clampedY,
+        width: clampedWidth,
+        height: clampedHeight,
+      });
+    }
+  }, [isDraggingCrop, dragStart, originalDimensions, cropAspectRatio, dragMode, cropArea, getEventCoordinates]);
+
+  // ドラッグ終了の共通処理
+  const handleDragEnd = useCallback(() => {
     setIsDraggingCrop(false);
     setDragStart(null);
   }, []);
+
+  // グローバルなマウス/タッチイベントをリッスン（Canvas外でもドラッグを追跡）
+  useEffect(() => {
+    if (!isDraggingCrop) return;
+
+    const handleGlobalMove = (e: MouseEvent | TouchEvent) => {
+      if (!isDraggingCrop || !dragStart || !originalDimensions) return;
+
+      const coords = getEventCoordinates(e as MouseEvent | TouchEvent);
+      if (!coords) return;
+
+      const minSize = 10;
+
+      if (dragMode === 'move' && cropArea) {
+        const deltaX = coords.x - dragStart.x;
+        const deltaY = coords.y - dragStart.y;
+
+        let newX = cropArea.x + deltaX;
+        let newY = cropArea.y + deltaY;
+
+        newX = Math.max(0, Math.min(newX, originalDimensions.width - cropArea.width));
+        newY = Math.max(0, Math.min(newY, originalDimensions.height - cropArea.height));
+
+        setCropArea({
+          ...cropArea,
+          x: newX,
+          y: newY,
+        });
+
+        setDragStart(coords);
+      } else {
+        const x = Math.min(dragStart.x, coords.x);
+        const y = Math.min(dragStart.y, coords.y);
+        let newWidth = Math.abs(coords.x - dragStart.x);
+        let newHeight = Math.abs(coords.y - dragStart.y);
+
+        if (newWidth < minSize || newHeight < minSize) return;
+
+        if (cropAspectRatio !== null && cropAspectRatio > 0) {
+          if (newWidth / newHeight > cropAspectRatio) {
+            newWidth = newHeight * cropAspectRatio;
+          } else {
+            newHeight = newWidth / cropAspectRatio;
+          }
+        }
+
+        const clampedX = Math.max(0, Math.min(x, originalDimensions.width - newWidth));
+        const clampedY = Math.max(0, Math.min(y, originalDimensions.height - newHeight));
+        const clampedWidth = Math.min(newWidth, originalDimensions.width - clampedX);
+        const clampedHeight = Math.min(newHeight, originalDimensions.height - clampedY);
+
+        if (clampedWidth < minSize || clampedHeight < minSize) return;
+
+        setCropArea({
+          x: clampedX,
+          y: clampedY,
+          width: clampedWidth,
+          height: clampedHeight,
+        });
+      }
+    };
+
+    const handleGlobalEnd = () => {
+      setIsDraggingCrop(false);
+      setDragStart(null);
+    };
+
+    window.addEventListener('mousemove', handleGlobalMove);
+    window.addEventListener('mouseup', handleGlobalEnd);
+    window.addEventListener('touchmove', handleGlobalMove, { passive: false });
+    window.addEventListener('touchend', handleGlobalEnd);
+
+    return () => {
+      window.removeEventListener('mousemove', handleGlobalMove);
+      window.removeEventListener('mouseup', handleGlobalEnd);
+      window.removeEventListener('touchmove', handleGlobalMove);
+      window.removeEventListener('touchend', handleGlobalEnd);
+    };
+  }, [isDraggingCrop, dragStart, originalDimensions, cropAspectRatio, dragMode, cropArea, getEventCoordinates]);
 
   // 幅変更時のハンドラー
   const handleWidthChange = useCallback(
@@ -714,14 +873,19 @@ function ImageResizer() {
                   </div>
 
                   <div className="crop-canvas-container">
-                    <p className="crop-hint">ドラッグして範囲を選択してください</p>
+                    <p className="crop-hint">
+                      {cropArea ? "選択範囲をドラッグで移動、範囲外をドラッグで新規作成" : "ドラッグして範囲を選択してください"}
+                    </p>
                     <canvas
                       ref={cropCanvasRef}
-                      className="crop-canvas"
-                      onMouseDown={handleCanvasMouseDown}
-                      onMouseMove={handleCanvasMouseMove}
-                      onMouseUp={handleCanvasMouseUp}
-                      onMouseLeave={handleCanvasMouseUp}
+                      className={`crop-canvas ${cropArea ? 'has-selection' : ''}`}
+                      onMouseDown={handleDragStart}
+                      onMouseMove={handleDragMove}
+                      onMouseUp={handleDragEnd}
+                      onMouseLeave={handleDragEnd}
+                      onTouchStart={handleDragStart}
+                      onTouchMove={handleDragMove}
+                      onTouchEnd={handleDragEnd}
                     />
                   </div>
 

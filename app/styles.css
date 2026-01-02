@@ -2947,3 +2947,12 @@ a:focus-visible {
     max-width: 100%;
   }
 }
+
+/* Crop canvas touch support */
+.crop-canvas {
+  touch-action: none;
+}
+
+.crop-canvas.has-selection {
+  cursor: move;
+}
