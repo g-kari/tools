@@ -4,7 +4,7 @@
  */
 
 import { createTheme, ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
-import type { ReactNode } from "react";
+import { useState, useEffect, type ReactNode } from "react";
 
 /**
  * カスタムMUIテーマ
@@ -131,8 +131,20 @@ export const theme = createTheme({
 
 /**
  * テーマプロバイダーコンポーネント
+ * SSRではMUIコンポーネントをレンダリングせず、クライアントサイドでのみ有効化
  */
 export function ThemeProvider({ children }: { children: ReactNode }) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // SSR時は直接children を返し、クライアントでマウント後にThemeProviderを適用
+  if (!mounted) {
+    return <>{children}</>;
+  }
+
   return (
     <MuiThemeProvider theme={theme}>
       {children}
