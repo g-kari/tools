@@ -324,19 +324,19 @@ test.describe("Color Picker", () => {
   });
 
   test("should be keyboard accessible", async ({ page }) => {
-    // Focus on HEX input directly (color input is overlay and may not be tab-focusable)
-    const hexInput = page.locator(".hex-input-compact");
-    await hexInput.focus();
-    await expect(hexInput).toBeFocused();
-
-    // Tab to next input (RGB R)
-    await page.keyboard.press("Tab");
+    // Focus on RGB R input directly
     const rgbR = page.locator("#rgb-r");
+    await rgbR.focus();
     await expect(rgbR).toBeFocused();
 
-    // Tab through other RGB inputs
+    // Tab to RGB G
     await page.keyboard.press("Tab");
     const rgbG = page.locator("#rgb-g");
     await expect(rgbG).toBeFocused();
+
+    // Tab to RGB B
+    await page.keyboard.press("Tab");
+    const rgbB = page.locator("#rgb-b");
+    await expect(rgbB).toBeFocused();
   });
 });
