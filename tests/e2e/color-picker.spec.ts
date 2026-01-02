@@ -10,7 +10,7 @@ test.describe("Color Picker", () => {
 
     // Check main sections are visible
     await expect(
-      page.getByRole("heading", { name: "カラーピッカー" })
+      page.getByRole("heading", { name: "カラーピッカー", exact: true })
     ).toBeVisible();
     await expect(
       page.getByRole("heading", { name: "HEX形式" })
@@ -53,7 +53,11 @@ test.describe("Color Picker", () => {
     page,
   }) => {
     const colorInput = page.locator('input[type="color"]');
-    await colorInput.fill("#FF0000");
+    await colorInput.evaluate((el: HTMLInputElement) => {
+      el.value = "#ff0000";
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+      el.dispatchEvent(new Event("change", { bubbles: true }));
+    });
 
     // Wait for state updates
     await page.waitForTimeout(100);
@@ -130,12 +134,15 @@ test.describe("Color Picker", () => {
 
     await hslH.clear();
     await hslH.fill("240");
+    await hslH.press("Enter");
     await hslS.clear();
     await hslS.fill("100");
+    await hslS.press("Enter");
     await hslL.clear();
     await hslL.fill("50");
+    await hslL.press("Enter");
 
-    await page.waitForTimeout(100);
+    await page.waitForTimeout(200);
 
     // Check RGB format (should be blue)
     const rgbR = page.locator("#rgb-r");
@@ -151,7 +158,11 @@ test.describe("Color Picker", () => {
 
     // Set a known color
     const colorInput = page.locator('input[type="color"]');
-    await colorInput.fill("#123456");
+    await colorInput.evaluate((el: HTMLInputElement) => {
+      el.value = "#123456";
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+      el.dispatchEvent(new Event("change", { bubbles: true }));
+    });
     await page.waitForTimeout(100);
 
     // Click copy button for HEX
@@ -173,7 +184,11 @@ test.describe("Color Picker", () => {
 
     // Set a known color
     const colorInput = page.locator('input[type="color"]');
-    await colorInput.fill("#FF0000");
+    await colorInput.evaluate((el: HTMLInputElement) => {
+      el.value = "#ff0000";
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+      el.dispatchEvent(new Event("change", { bubbles: true }));
+    });
     await page.waitForTimeout(100);
 
     // Click copy button for RGB
@@ -193,7 +208,11 @@ test.describe("Color Picker", () => {
   test("should add color to palette", async ({ page }) => {
     // Set a color
     const colorInput = page.locator('input[type="color"]');
-    await colorInput.fill("#FF5733");
+    await colorInput.evaluate((el: HTMLInputElement) => {
+      el.value = "#ff5733";
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+      el.dispatchEvent(new Event("change", { bubbles: true }));
+    });
     await page.waitForTimeout(100);
 
     // Click add to palette button
@@ -211,7 +230,11 @@ test.describe("Color Picker", () => {
   test("should not add duplicate colors to palette", async ({ page }) => {
     // Set a color
     const colorInput = page.locator('input[type="color"]');
-    await colorInput.fill("#ABCDEF");
+    await colorInput.evaluate((el: HTMLInputElement) => {
+      el.value = "#abcdef";
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+      el.dispatchEvent(new Event("change", { bubbles: true }));
+    });
     await page.waitForTimeout(100);
 
     // Add to palette twice
@@ -228,7 +251,11 @@ test.describe("Color Picker", () => {
   test("should remove color from palette", async ({ page }) => {
     // Add a color to palette
     const colorInput = page.locator('input[type="color"]');
-    await colorInput.fill("#123456");
+    await colorInput.evaluate((el: HTMLInputElement) => {
+      el.value = "#123456";
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+      el.dispatchEvent(new Event("change", { bubbles: true }));
+    });
     await page.waitForTimeout(100);
 
     const addButton = page.getByRole("button", { name: /\+ 追加/ });
@@ -250,12 +277,20 @@ test.describe("Color Picker", () => {
     // Add two colors to palette
     const colorInput = page.locator('input[type="color"]');
 
-    await colorInput.fill("#FF0000");
+    await colorInput.evaluate((el: HTMLInputElement) => {
+      el.value = "#ff0000";
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+      el.dispatchEvent(new Event("change", { bubbles: true }));
+    });
     await page.waitForTimeout(100);
     await page.getByRole("button", { name: /\+ 追加/ }).click();
     await page.waitForTimeout(100);
 
-    await colorInput.fill("#00FF00");
+    await colorInput.evaluate((el: HTMLInputElement) => {
+      el.value = "#00ff00";
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+      el.dispatchEvent(new Event("change", { bubbles: true }));
+    });
     await page.waitForTimeout(100);
     await page.getByRole("button", { name: /\+ 追加/ }).click();
     await page.waitForTimeout(100);
@@ -277,7 +312,11 @@ test.describe("Color Picker", () => {
     // Add 10 colors
     for (let i = 0; i < 10; i++) {
       const color = `#${i.toString().padStart(6, "0")}`;
-      await colorInput.fill(color);
+      await colorInput.evaluate((el: HTMLInputElement, value: string) => {
+        el.value = value;
+        el.dispatchEvent(new Event("input", { bubbles: true }));
+        el.dispatchEvent(new Event("change", { bubbles: true }));
+      }, color);
       await page.waitForTimeout(50);
       await addButton.click();
       await page.waitForTimeout(50);
@@ -300,7 +339,11 @@ test.describe("Color Picker", () => {
 
     // Add a color to palette
     const colorInput = page.locator('input[type="color"]');
-    await colorInput.fill("#FEDCBA");
+    await colorInput.evaluate((el: HTMLInputElement) => {
+      el.value = "#fedcba";
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+      el.dispatchEvent(new Event("change", { bubbles: true }));
+    });
     await page.waitForTimeout(100);
     await page.getByRole("button", { name: /\+ 追加/ }).click();
     await page.waitForTimeout(100);
@@ -317,7 +360,11 @@ test.describe("Color Picker", () => {
   test("should display color format strings correctly", async ({ page }) => {
     // Set a known color
     const colorInput = page.locator('input[type="color"]');
-    await colorInput.fill("#FF8800");
+    await colorInput.evaluate((el: HTMLInputElement) => {
+      el.value = "#ff8800";
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+      el.dispatchEvent(new Event("change", { bubbles: true }));
+    });
     await page.waitForTimeout(100);
 
     // Check RGB string format
