@@ -65,12 +65,13 @@
         "id": "6",
         "title": "単位計算機能（Issue #95）",
         "description": "各種単位の相互変換機能（長さ、重さ、温度、データサイズ等）。リアルタイム計算、よく使う単位のクイックアクセス。",
-        "status": "pending",
+        "status": "done",
         "dependencies": [],
         "priority": "medium",
         "details": "【実装内容】\n1. app/routes/unit-converter.tsxを新規作成\n2. カテゴリ選択（長さ、重さ、温度、データサイズ、面積、体積、速度、時間）\n3. 単位選択ドロップダウン（From/To）\n4. 数値入力フィールド\n5. リアルタイム変換結果表示\n6. 変換履歴表示（最新5件）\n7. よく使う単位のお気に入り機能\n\n【対応カテゴリと単位】\n- 長さ: メートル、キロメートル、センチメートル、ミリメートル、マイル、ヤード、フィート、インチ\n- 重さ: グラム、キログラム、トン、ポンド、オンス\n- 温度: 摂氏、華氏、ケルビン\n- データサイズ: バイト、KB、MB、GB、TB、PB（1000進数と1024進数の両方対応）\n- 面積: 平方メートル、平方キロメートル、ヘクタール、アール、坪、畳\n- 体積: リットル、ミリリットル、立方メートル、ガロン、カップ\n- 速度: m/s、km/h、mph、ノット\n- 時間: 秒、分、時間、日、週、月、年\n\n【技術実装】\n```typescript\ninterface ConversionRule {\n  fromUnit: string;\n  toUnit: string;\n  factor: number; // 乗算係数\n  offset?: number; // 加算オフセット（温度用）\n}\n\nconst CONVERSION_RULES: Record<string, ConversionRule[]> = {\n  length: [\n    { fromUnit: 'm', toUnit: 'km', factor: 0.001 },\n    { fromUnit: 'm', toUnit: 'cm', factor: 100 },\n    // ...\n  ],\n  temperature: [\n    { fromUnit: 'celsius', toUnit: 'fahrenheit', factor: 9/5, offset: 32 },\n    // ...\n  ]\n};\n```",
         "testStrategy": "【テスト戦略】\n1. ユニットテスト（tests/unit/unit-converter.test.ts）\n   - 各カテゴリの変換ロジックテスト\n   - 変換係数の精度テスト\n   - 温度変換のオフセット処理テスト\n   - 境界値テスト\n2. E2Eテスト（tests/e2e/unit-converter.spec.ts）\n   - カテゴリ選択\n   - 単位選択と変換\n   - リアルタイム計算\n   - 履歴表示\n   - お気に入り機能",
-        "subtasks": []
+        "subtasks": [],
+        "updatedAt": "2026-01-02T09:27:13.798Z"
       },
       {
         "id": "7",
@@ -265,9 +266,9 @@
     ],
     "metadata": {
       "version": "1.0.0",
-      "lastModified": "2026-01-02T05:55:48.504Z",
+      "lastModified": "2026-01-02T09:27:13.799Z",
       "taskCount": 20,
-      "completedCount": 5,
+      "completedCount": 6,
       "tags": [
         "master"
       ]

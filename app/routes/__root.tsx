@@ -20,6 +20,7 @@ const navCategories = [
       { path: "/base64", label: "Base64変換" },
       { path: "/json", label: "JSON整形" },
       { path: "/minify", label: "コード圧縮" },
+      { path: "/unit-converter", label: "単位変換" },
       { path: "/audio-converter", label: "オーディオ変換" },
       { path: "/video-converter", label: "動画変換" },
     ],
