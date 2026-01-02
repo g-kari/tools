@@ -443,118 +443,123 @@ function TransparentImageProcessor() {
           </aside>
         </>
       ) : imageDimensions && (
-        /* 画像選択後：コンパクトな2カラムレイアウト */
-        <div className="transparent-processor-layout">
-          {/* 左カラム：プレビュー */}
-          <div className="transparent-preview-column">
-            <div className="transparent-preview-grid">
-              <div className="transparent-preview-item">
-                <span className="transparent-preview-label">元画像{isPickingColor && " (クリックで色選択)"}</span>
-                <div className="transparent-canvas-wrapper">
-                  <canvas
-                    ref={originalCanvasRef}
-                    className={`preview-canvas ${isPickingColor ? "picking-color" : ""}`}
-                    onClick={handleCanvasClick}
-                    aria-label="元画像プレビュー"
-                  />
-                </div>
-              </div>
-              <div className="transparent-preview-item">
-                <span className="transparent-preview-label">透過後</span>
-                <div className="transparent-canvas-wrapper transparent-preview-bg">
-                  <canvas
-                    ref={previewCanvasRef}
-                    className="preview-canvas"
-                    aria-label="透過後プレビュー"
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="transparent-image-meta">
-              {imageDimensions.width} × {imageDimensions.height} px
-            </div>
-          </div>
-
-          {/* 右カラム：設定とアクション */}
-          <div className="transparent-settings-column">
-            <div className="transparent-settings-card">
-              <div className="transparent-color-section">
-                <label className="transparent-label">透過する色</label>
-                <div className="transparent-color-controls">
-                  <input
-                    type="color"
-                    id="targetColor"
-                    value={targetColor}
-                    onChange={(e) => setTargetColor(e.target.value)}
-                    disabled={isLoading}
-                    className="transparent-color-input"
-                  />
-                  <input
-                    type="text"
-                    value={targetColor}
-                    onChange={(e) => setTargetColor(e.target.value)}
-                    pattern="^#[0-9A-Fa-f]{6}$"
-                    aria-label="透過色のHEX値"
-                    disabled={isLoading}
-                    className="transparent-hex-input"
-                  />
-                  <button
-                    type="button"
-                    className={`transparent-pick-btn ${isPickingColor ? "active" : ""}`}
-                    onClick={() => setIsPickingColor(!isPickingColor)}
-                    disabled={isLoading}
-                    title="画像から色を選択"
-                  >
-                    {isPickingColor ? "✓" : "🎯"}
-                  </button>
-                </div>
-              </div>
-
-              <div className="transparent-tolerance-section">
-                <label className="transparent-label">
-                  許容範囲: <strong>{tolerance}%</strong>
-                </label>
+        /* 画像選択後：設定を上、プレビューを下に配置 */
+        <>
+          {/* 設定バー：横並び */}
+          <div className="transparent-controls-bar">
+            <div className="transparent-control-item">
+              <label className="transparent-control-label">透過色</label>
+              <div className="transparent-color-row">
                 <input
-                  type="range"
-                  id="tolerance"
-                  min="0"
-                  max="100"
-                  value={tolerance}
-                  onChange={(e) => setTolerance(parseInt(e.target.value))}
+                  type="color"
+                  id="targetColor"
+                  value={targetColor}
+                  onChange={(e) => setTargetColor(e.target.value)}
                   disabled={isLoading}
-                  className="transparent-slider"
+                  className="transparent-color-input"
                 />
-                <div className="transparent-slider-labels">
-                  <span>厳密</span>
-                  <span>緩和</span>
-                </div>
-              </div>
-
-              <div className="transparent-actions">
+                <input
+                  type="text"
+                  value={targetColor}
+                  onChange={(e) => setTargetColor(e.target.value)}
+                  pattern="^#[0-9A-Fa-f]{6}$"
+                  aria-label="透過色のHEX値"
+                  disabled={isLoading}
+                  className="transparent-hex-input"
+                />
                 <button
                   type="button"
-                  className="btn-primary"
-                  onClick={handleDownload}
+                  className={`transparent-pick-btn ${isPickingColor ? "active" : ""}`}
+                  onClick={() => setIsPickingColor(!isPickingColor)}
                   disabled={isLoading}
+                  title="画像から色を選択"
                 >
-                  {isLoading ? "処理中..." : "ダウンロード"}
-                </button>
-                <button
-                  type="button"
-                  className="btn-secondary"
-                  onClick={handleClear}
-                  disabled={isLoading}
-                >
-                  クリア
+                  {isPickingColor ? "選択中" : "画像から"}
                 </button>
               </div>
             </div>
 
-            <p className="transparent-tip">
-              💡 「🎯」ボタンを押して元画像をクリックすると色を直接選択できます
-            </p>
+            <div className="transparent-control-item transparent-tolerance-item">
+              <label className="transparent-control-label">
+                許容範囲: <strong>{tolerance}%</strong>
+              </label>
+              <input
+                type="range"
+                id="tolerance"
+                min="0"
+                max="100"
+                value={tolerance}
+                onChange={(e) => setTolerance(parseInt(e.target.value))}
+                disabled={isLoading}
+                className="transparent-slider"
+              />
+            </div>
+
+            <div className="transparent-control-item transparent-actions-item">
+              <button
+                type="button"
+                className="btn-primary"
+                onClick={handleDownload}
+                disabled={isLoading}
+              >
+                {isLoading ? "処理中..." : "ダウンロード"}
+              </button>
+              <button
+                type="button"
+                className="btn-secondary"
+                onClick={handleClear}
+                disabled={isLoading}
+              >
+                クリア
+              </button>
+            </div>
           </div>
-        </div>
+
+          {/* プレビュー：横並びで大きく表示 */}
+          <div className="transparent-preview-area">
+            <div className="transparent-preview-panel">
+              <span className="transparent-preview-label">
+                元画像 {isPickingColor && <span className="picking-hint">(クリックで色選択)</span>}
+              </span>
+              <div className="transparent-canvas-wrapper">
+                <canvas
+                  ref={originalCanvasRef}
+                  className={`preview-canvas ${isPickingColor ? "picking-color" : ""}`}
+                  onClick={handleCanvasClick}
+                  aria-label="元画像プレビュー"
+                />
+              </div>
+            </div>
+            <div className="transparent-preview-panel">
+              <span className="transparent-preview-label">透過後</span>
+              <div className="transparent-canvas-wrapper transparent-preview-bg">
+                <canvas
+                  ref={previewCanvasRef}
+                  className="preview-canvas"
+                  aria-label="透過後プレビュー"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="transparent-image-meta">
+            {imageDimensions.width} × {imageDimensions.height} px
+          </div>
+
+          {/* Tips */}
+          <aside
+            className="info-box"
+            role="complementary"
+            aria-labelledby="tips-title"
+          >
+            <h3 id="tips-title">Tips</h3>
+            <ul>
+              <li>「画像から」ボタンを押して元画像をクリックすると色を直接選択できます</li>
+              <li>許容範囲を上げると、選択した色に近い色も透過されます</li>
+              <li>チェッカーボードパターンは透明度を視覚化するためのものです</li>
+              <li>出力形式はPNG（透過対応）です</li>
+            </ul>
+          </aside>
+        </>
       )}
 
       <input

@@ -3801,7 +3801,7 @@ a:focus-visible {
 /* 2カラムレイアウト */
 .transparent-processor-layout {
   display: grid;
-  grid-template-columns: 1fr 280px;
+  grid-template-columns: 1fr 300px;
   gap: 1.5rem;
   align-items: start;
 }
@@ -3838,6 +3838,7 @@ a:focus-visible {
   border-radius: 8px;
   overflow: hidden;
   background: var(--md-sys-color-surface);
+  line-height: 0;
 }
 
 .transparent-canvas-wrapper .preview-canvas {
@@ -3916,7 +3917,7 @@ a:focus-visible {
 
 .transparent-hex-input {
   flex: 1;
-  min-width: 0;
+  min-width: 80px;
   padding: 0.5rem 0.75rem;
   border: 1px solid var(--md-sys-color-outline);
   border-radius: 8px;
