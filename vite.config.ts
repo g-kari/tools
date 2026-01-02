@@ -20,6 +20,7 @@ export default defineConfig({
       "@mui/material",
       "@mui/icons-material",
       "@mui/system",
+      "@mui/utils",
       "@emotion/react",
       "@emotion/styled",
       "@emotion/cache",

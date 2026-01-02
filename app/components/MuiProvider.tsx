@@ -11,22 +11,28 @@ interface MuiProviderProps {
 /**
  * MUI Provider コンポーネント
  *
- * SSR環境（Cloudflare Workers）ではEmotionキャッシュを使用せず、
- * クライアントサイドでのみCacheProviderを有効化する
+ * SSR環境（Cloudflare Workers）ではMUIプロバイダーを使用せず、
+ * クライアントサイドでのみCacheProvider + ThemeProviderを有効化する
+ *
+ * @param props - プロバイダーのプロパティ
+ * @param props.children - ラップする子要素
+ * @returns MUIテーマとEmotionキャッシュを提供するプロバイダー（CSR時のみ）
  */
 export function MuiProvider({ children }: MuiProviderProps) {
+  const [isClient, setIsClient] = useState(false);
   const [emotionCache, setEmotionCache] = useState<ReturnType<
     typeof createEmotionCache
   > | null>(null);
 
   useEffect(() => {
     // クライアントサイドでのみEmotionキャッシュを作成
+    setIsClient(true);
     setEmotionCache(createEmotionCache());
   }, []);
 
-  // SSR時はThemeProviderのみ使用
-  if (!emotionCache) {
-    return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
+  // SSR時はプロバイダーなしで子要素をそのまま返す
+  if (!isClient || !emotionCache) {
+    return <>{children}</>;
   }
 
   // CSR時はCacheProvider + ThemeProvider
