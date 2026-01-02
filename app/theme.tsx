@@ -4,7 +4,6 @@
  */
 
 import { createTheme, ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
 import type { ReactNode } from "react";
 
 /**
@@ -136,7 +135,6 @@ export const theme = createTheme({
 export function ThemeProvider({ children }: { children: ReactNode }) {
   return (
     <MuiThemeProvider theme={theme}>
-      <CssBaseline />
       {children}
     </MuiThemeProvider>
   );
