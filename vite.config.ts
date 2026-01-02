@@ -22,7 +22,13 @@ export default defineConfig({
     }),
   ],
   ssr: {
-    noExternal: ["@mui/*"],
+    noExternal: [
+      "@mui/*",
+      "@emotion/react",
+      "@emotion/styled",
+      "@emotion/cache",
+      "@emotion/server",
+    ],
   },
   server: {
     watch: {
