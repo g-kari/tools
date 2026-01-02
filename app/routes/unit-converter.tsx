@@ -254,10 +254,10 @@ function UnitConverter() {
           </div>
 
           {/* ボタングループ */}
-          <div className="button-group" role="group" aria-label="変換操作">
+          <div className="unit-button-group" role="group" aria-label="変換操作">
             <button
               type="button"
-              className="btn-primary"
+              className="unit-btn unit-btn-primary"
               onClick={handleConvert}
               aria-label="単位を変換して履歴に追加"
             >
@@ -265,7 +265,7 @@ function UnitConverter() {
             </button>
             <button
               type="button"
-              className="btn-clear"
+              className="unit-btn unit-btn-secondary"
               onClick={handleClear}
               aria-label="入力をクリア"
             >

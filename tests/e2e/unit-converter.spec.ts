@@ -57,15 +57,12 @@ test.describe('Unit Converter - E2E Tests', () => {
     await expect(toUnitSelect).toBeVisible();
   });
 
-  test('should have convert, swap, and clear buttons', async ({ page }) => {
-    const convertButton = page.locator('button.btn-primary');
-    const swapButton = page.locator('button.btn-secondary');
-    const clearButton = page.locator('button.btn-clear');
+  test('should have history and clear buttons', async ({ page }) => {
+    const historyButton = page.locator('button.unit-btn-primary');
+    const clearButton = page.locator('button.unit-btn-secondary');
 
-    await expect(convertButton).toBeVisible();
-    await expect(convertButton).toContainText('変換');
-    await expect(swapButton).toBeVisible();
-    await expect(swapButton).toContainText('入れ替え');
+    await expect(historyButton).toBeVisible();
+    await expect(historyButton).toContainText('履歴に追加');
     await expect(clearButton).toBeVisible();
     await expect(clearButton).toContainText('クリア');
   });
@@ -140,7 +137,7 @@ test.describe('Unit Converter - E2E Tests', () => {
 
   test('should clear input when clear button is clicked', async ({ page }) => {
     const inputField = page.locator('#unitInput');
-    const clearButton = page.locator('button.btn-clear');
+    const clearButton = page.locator('button.unit-btn-secondary');
     const resultDiv = page.locator('.unit-result');
 
     await inputField.fill('100');
@@ -184,11 +181,11 @@ test.describe('Unit Converter - E2E Tests', () => {
   });
 
   test('should show toast when trying to convert empty input', async ({ page }) => {
-    const convertButton = page.locator('button.btn-primary');
+    const historyButton = page.locator('button.unit-btn-primary');
     const inputField = page.locator('#unitInput');
 
     await inputField.fill('');
-    await convertButton.click();
+    await historyButton.click();
 
     const toast = page.locator('.toast-error');
     await expect(toast).toBeVisible();
@@ -197,10 +194,10 @@ test.describe('Unit Converter - E2E Tests', () => {
 
   test('should add conversion to history', async ({ page }) => {
     const inputField = page.locator('#unitInput');
-    const convertButton = page.locator('button.btn-primary');
+    const historyButton = page.locator('button.unit-btn-primary');
 
     await inputField.fill('100');
-    await convertButton.click();
+    await historyButton.click();
 
     const historySection = page.locator('.unit-history-list');
     await expect(historySection).toBeVisible();
@@ -212,12 +209,12 @@ test.describe('Unit Converter - E2E Tests', () => {
 
   test('should limit history to 5 items', async ({ page }) => {
     const inputField = page.locator('#unitInput');
-    const convertButton = page.locator('button.btn-primary');
+    const historyButton = page.locator('button.unit-btn-primary');
 
     // Perform more than 5 conversions
     for (let i = 1; i <= 7; i++) {
       await inputField.fill(String(i * 100));
-      await convertButton.click();
+      await historyButton.click();
     }
 
     const historyItems = page.locator('.unit-history-item');
