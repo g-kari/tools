@@ -1,6 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useToast } from "../components/Toast";
+import { Dropzone } from "../components/Dropzone";
+import { Slider } from "../components/Slider";
+import { formatFileSize } from "../utils/format";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import FormHelperText from "@mui/material/FormHelperText";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
 
 export const Route = createFileRoute("/image-compress")({
   head: () => ({
@@ -16,19 +27,6 @@ const FORMAT_OPTIONS: { value: OutputFormat; label: string; mimeType: string }[]
   { value: "webp", label: "WebP", mimeType: "image/webp" },
   { value: "png", label: "PNG", mimeType: "image/png" },
 ];
-
-/**
- * ファイルサイズを人間が読みやすい形式にフォーマットする
- * @param bytes - バイト数
- * @returns フォーマットされた文字列（例: "1.5 MB"）
- */
-export function formatFileSize(bytes: number): string {
-  if (bytes === 0) return "0 B";
-  const k = 1024;
-  const sizes = ["B", "KB", "MB", "GB"];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
-}
 
 /**
  * 圧縮率を計算する
@@ -118,9 +116,7 @@ function ImageCompressor() {
   const [quality, setQuality] = useState(80);
   const [format, setFormat] = useState<OutputFormat>("jpeg");
   const [isLoading, setIsLoading] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
 
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const { showToast } = useToast();
 
   // クリーンアップ
@@ -176,16 +172,6 @@ function ImageCompressor() {
     [originalPreview, compressedPreview, quality, format, showToast]
   );
 
-  const handleInputChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files?.[0];
-      if (file) {
-        handleFileSelect(file);
-      }
-    },
-    [handleFileSelect]
-  );
-
   const handleCompress = useCallback(async () => {
     if (!originalFile) return;
 
@@ -228,35 +214,8 @@ function ImageCompressor() {
     setCompressedBlob(null);
     setCompressedPreview(null);
 
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
-
     showToast("クリアしました", "info");
   }, [originalPreview, compressedPreview, showToast]);
-
-  const handleDragOver = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(true);
-  }, []);
-
-  const handleDragLeave = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-  }, []);
-
-  const handleDrop = useCallback(
-    (e: React.DragEvent) => {
-      e.preventDefault();
-      setIsDragging(false);
-
-      const file = e.dataTransfer.files[0];
-      if (file) {
-        handleFileSelect(file);
-      }
-    },
-    [handleFileSelect]
-  );
 
   const compressionRatio = originalFile && compressedBlob
     ? calculateCompressionRatio(originalFile.size, compressedBlob.size)
@@ -268,54 +227,13 @@ function ImageCompressor() {
         <div className="converter-section">
           <h2 className="section-title">画像選択</h2>
 
-          <div
-            className={`dropzone ${isDragging ? "dragging" : ""}`}
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
-            onClick={() => fileInputRef.current?.click()}
-            role="button"
-            tabIndex={0}
-            aria-label="画像ファイルをアップロード"
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                fileInputRef.current?.click();
-              }
-            }}
-          >
-            <div className="dropzone-content">
-              <svg
-                className="upload-icon"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                <polyline points="17 8 12 3 7 8" />
-                <line x1="12" y1="3" x2="12" y2="15" />
-              </svg>
-              <p className="dropzone-text">
-                クリックして画像を選択、またはドラッグ&ドロップ
-              </p>
-              <p className="dropzone-hint">PNG, JPEG, WebP など</p>
-            </div>
-          </div>
-
-          <input
-            ref={fileInputRef}
-            type="file"
-            id="imageFile"
+          <Dropzone
+            onFileSelect={handleFileSelect}
             accept="image/*"
-            onChange={handleInputChange}
             disabled={isLoading}
-            className="hidden-file-input"
-            aria-label="画像ファイルを選択"
+            ariaLabel="画像ファイルをアップロード"
+            text="クリックして画像を選択、またはドラッグ&ドロップ"
+            hint="PNG, JPEG, WebP など"
           />
         </div>
 
@@ -324,63 +242,58 @@ function ImageCompressor() {
             <div className="converter-section">
               <h2 className="section-title">圧縮設定</h2>
 
-              <div className="compress-options">
-                <div className="option-group">
-                  <label htmlFor="quality">画質: {quality}%</label>
-                  <input
-                    type="range"
-                    id="quality"
-                    min="1"
-                    max="100"
+              <Stack spacing={3} sx={{ mb: 3 }}>
+                <Box>
+                  <Slider
+                    label="画質"
                     value={quality}
-                    onChange={(e) => setQuality(parseInt(e.target.value))}
+                    onChange={setQuality}
+                    min={1}
+                    max={100}
+                    unit="%"
                     disabled={isLoading}
-                    aria-describedby="quality-help"
+                    helpText={`値が低いほどファイルサイズが小さくなります${format === "png" ? "（PNGは画質設定が無視されます）" : ""}`}
                   />
-                  <span id="quality-help" className="option-help">
-                    値が低いほどファイルサイズが小さくなります{format === "png" && "（PNGは画質設定が無視されます）"}
-                  </span>
-                </div>
+                </Box>
 
-                <div className="option-group">
-                  <label htmlFor="format">出力形式</label>
-                  <select
+                <FormControl size="small" sx={{ maxWidth: 200 }}>
+                  <InputLabel id="format-label">出力形式</InputLabel>
+                  <Select
+                    labelId="format-label"
                     id="format"
                     value={format}
+                    label="出力形式"
                     onChange={(e) => setFormat(e.target.value as OutputFormat)}
                     disabled={isLoading}
-                    aria-describedby="format-help"
                   >
                     {FORMAT_OPTIONS.map((opt) => (
-                      <option key={opt.value} value={opt.value}>
+                      <MenuItem key={opt.value} value={opt.value}>
                         {opt.label}
-                      </option>
+                      </MenuItem>
                     ))}
-                  </select>
-                  <span id="format-help" className="option-help">
+                  </Select>
+                  <FormHelperText>
                     WebPは高い圧縮率、JPEGは広い互換性
-                  </span>
-                </div>
-              </div>
+                  </FormHelperText>
+                </FormControl>
+              </Stack>
 
-              <div className="button-group" role="group" aria-label="操作">
-                <button
-                  type="button"
-                  className="btn-primary"
+              <Stack direction="row" spacing={2}>
+                <Button
+                  variant="contained"
                   onClick={handleDownload}
                   disabled={isLoading || !compressedBlob}
                 >
                   ダウンロード
-                </button>
-                <button
-                  type="button"
-                  className="btn-secondary"
+                </Button>
+                <Button
+                  variant="outlined"
                   onClick={handleClear}
                   disabled={isLoading}
                 >
                   クリア
-                </button>
-              </div>
+                </Button>
+              </Stack>
             </div>
 
             <div className="converter-section">
@@ -472,44 +385,6 @@ function ImageCompressor() {
       </div>
 
       <style>{`
-        .compress-options {
-          display: flex;
-          flex-direction: column;
-          gap: 1.5rem;
-          margin-bottom: 1.5rem;
-        }
-
-        .option-group {
-          display: flex;
-          flex-direction: column;
-          gap: 0.5rem;
-        }
-
-        .option-group label {
-          font-weight: 500;
-          color: var(--md-sys-color-on-surface);
-        }
-
-        .option-group input[type="range"] {
-          width: 100%;
-          accent-color: var(--md-sys-color-primary);
-        }
-
-        .option-group select {
-          padding: 0.5rem;
-          border: 1px solid var(--md-sys-color-outline);
-          border-radius: 8px;
-          font-size: 1rem;
-          background-color: var(--md-sys-color-surface);
-          color: var(--md-sys-color-on-surface);
-          max-width: 200px;
-        }
-
-        .option-help {
-          font-size: 0.875rem;
-          color: var(--md-sys-color-on-surface-variant);
-        }
-
         .compression-stats {
           display: flex;
           flex-wrap: wrap;

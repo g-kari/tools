@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest';
 import {
-  formatFileSize,
   calculateCompressionRatio,
   generateFilename,
 } from '../../app/routes/image-compress';
+import { formatFileSize } from '../../app/utils/format';
 
 describe('Image Compression', () => {
   describe('formatFileSize', () => {
