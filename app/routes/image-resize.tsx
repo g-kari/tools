@@ -234,10 +234,11 @@ function ImageResizer() {
   const [cropAspectRatio, setCropAspectRatio] = useState<number | null>(null);
   const [isDraggingCrop, setIsDraggingCrop] = useState(false);
   const [dragStart, setDragStart] = useState<{ x: number; y: number } | null>(null);
-  const [imageElement, setImageElement] = useState<HTMLImageElement | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cropCanvasRef = useRef<HTMLCanvasElement>(null);
+  const imageElementRef = useRef<HTMLImageElement | null>(null);
+  const canvasScaleRef = useRef<number>(1);
   const { showToast } = useToast();
 
   // クリーンアップ
@@ -281,7 +282,8 @@ function ImageResizer() {
 
     const img = new Image();
     img.onload = () => {
-      setImageElement(img);
+      // refに保存
+      imageElementRef.current = img;
 
       // Canvasのサイズを設定（表示サイズに合わせる）
       const container = canvas.parentElement;
@@ -289,10 +291,13 @@ function ImageResizer() {
 
       const maxWidth = container.clientWidth;
       const maxHeight = 400;
-      const scale = Math.min(maxWidth / img.width, maxHeight / img.height, 1);
+      const scale = Math.min(maxWidth / img.naturalWidth, maxHeight / img.naturalHeight, 1);
 
-      canvas.width = img.width * scale;
-      canvas.height = img.height * scale;
+      // スケールをrefに保存
+      canvasScaleRef.current = scale;
+
+      canvas.width = img.naturalWidth * scale;
+      canvas.height = img.naturalHeight * scale;
 
       // 画像を描画
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -336,36 +341,40 @@ function ImageResizer() {
 
   // Canvas上でのマウスイベント処理
   const handleCanvasMouseDown = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!enableCrop || !cropCanvasRef.current || !imageElement) return;
+    if (!enableCrop || !cropCanvasRef.current || !imageElementRef.current) return;
 
     const canvas = cropCanvasRef.current;
     const rect = canvas.getBoundingClientRect();
-    const scale = imageElement.width / canvas.width;
+    const scale = canvasScaleRef.current;
 
-    const x = (e.clientX - rect.left) * scale;
-    const y = (e.clientY - rect.top) * scale;
+    const x = (e.clientX - rect.left) / scale;
+    const y = (e.clientY - rect.top) / scale;
 
     setIsDraggingCrop(true);
     setDragStart({ x, y });
-  }, [enableCrop, imageElement]);
+  }, [enableCrop]);
 
   const handleCanvasMouseMove = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!isDraggingCrop || !dragStart || !cropCanvasRef.current || !imageElement || !originalDimensions) return;
+    if (!isDraggingCrop || !dragStart || !cropCanvasRef.current || !imageElementRef.current || !originalDimensions) return;
 
     const canvas = cropCanvasRef.current;
     const rect = canvas.getBoundingClientRect();
-    const scale = imageElement.width / canvas.width;
+    const scale = canvasScaleRef.current;
 
-    const currentX = (e.clientX - rect.left) * scale;
-    const currentY = (e.clientY - rect.top) * scale;
+    const currentX = (e.clientX - rect.left) / scale;
+    const currentY = (e.clientY - rect.top) / scale;
 
     const x = Math.min(dragStart.x, currentX);
     const y = Math.min(dragStart.y, currentY);
     let newWidth = Math.abs(currentX - dragStart.x);
     let newHeight = Math.abs(currentY - dragStart.y);
 
+    // 最小サイズを確保
+    const minSize = 10;
+    if (newWidth < minSize || newHeight < minSize) return;
+
     // アスペクト比を適用
-    if (cropAspectRatio !== null) {
+    if (cropAspectRatio !== null && cropAspectRatio > 0) {
       if (newWidth / newHeight > cropAspectRatio) {
         newWidth = newHeight * cropAspectRatio;
       } else {
@@ -379,13 +388,15 @@ function ImageResizer() {
     const clampedWidth = Math.min(newWidth, originalDimensions.width - clampedX);
     const clampedHeight = Math.min(newHeight, originalDimensions.height - clampedY);
 
+    if (clampedWidth < minSize || clampedHeight < minSize) return;
+
     setCropArea({
       x: clampedX,
       y: clampedY,
       width: clampedWidth,
       height: clampedHeight,
     });
-  }, [isDraggingCrop, dragStart, imageElement, originalDimensions, cropAspectRatio]);
+  }, [isDraggingCrop, dragStart, originalDimensions, cropAspectRatio]);
 
   const handleCanvasMouseUp = useCallback(() => {
     setIsDraggingCrop(false);
