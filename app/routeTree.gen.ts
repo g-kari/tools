@@ -28,6 +28,7 @@ import { Route as IpGeolocationRouteImport } from './routes/ip-geolocation'
 import { Route as IpConverterRouteImport } from './routes/ip-converter'
 import { Route as ImageToGifRouteImport } from './routes/image-to-gif'
 import { Route as ImageResizeRouteImport } from './routes/image-resize'
+import { Route as ImageCropRouteImport } from './routes/image-crop'
 import { Route as ImageCompressRouteImport } from './routes/image-compress'
 import { Route as ImageBase64RouteImport } from './routes/image-base64'
 import { Route as HashRouteImport } from './routes/hash'
@@ -144,6 +145,11 @@ const ImageToGifRoute = ImageToGifRouteImport.update({
 const ImageResizeRoute = ImageResizeRouteImport.update({
   id: '/image-resize',
   path: '/image-resize',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ImageCropRoute = ImageCropRouteImport.update({
+  id: '/image-crop',
+  path: '/image-crop',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ImageCompressRoute = ImageCompressRouteImport.update({
@@ -276,6 +282,7 @@ export interface FileRoutesByFullPath {
   '/hash': typeof HashRoute
   '/image-base64': typeof ImageBase64Route
   '/image-compress': typeof ImageCompressRoute
+  '/image-crop': typeof ImageCropRoute
   '/image-resize': typeof ImageResizeRoute
   '/image-to-gif': typeof ImageToGifRoute
   '/ip-converter': typeof IpConverterRoute
@@ -319,6 +326,7 @@ export interface FileRoutesByTo {
   '/hash': typeof HashRoute
   '/image-base64': typeof ImageBase64Route
   '/image-compress': typeof ImageCompressRoute
+  '/image-crop': typeof ImageCropRoute
   '/image-resize': typeof ImageResizeRoute
   '/image-to-gif': typeof ImageToGifRoute
   '/ip-converter': typeof IpConverterRoute
@@ -363,6 +371,7 @@ export interface FileRoutesById {
   '/hash': typeof HashRoute
   '/image-base64': typeof ImageBase64Route
   '/image-compress': typeof ImageCompressRoute
+  '/image-crop': typeof ImageCropRoute
   '/image-resize': typeof ImageResizeRoute
   '/image-to-gif': typeof ImageToGifRoute
   '/ip-converter': typeof IpConverterRoute
@@ -408,6 +417,7 @@ export interface FileRouteTypes {
     | '/hash'
     | '/image-base64'
     | '/image-compress'
+    | '/image-crop'
     | '/image-resize'
     | '/image-to-gif'
     | '/ip-converter'
@@ -451,6 +461,7 @@ export interface FileRouteTypes {
     | '/hash'
     | '/image-base64'
     | '/image-compress'
+    | '/image-crop'
     | '/image-resize'
     | '/image-to-gif'
     | '/ip-converter'
@@ -494,6 +505,7 @@ export interface FileRouteTypes {
     | '/hash'
     | '/image-base64'
     | '/image-compress'
+    | '/image-crop'
     | '/image-resize'
     | '/image-to-gif'
     | '/ip-converter'
@@ -538,6 +550,7 @@ export interface RootRouteChildren {
   HashRoute: typeof HashRoute
   ImageBase64Route: typeof ImageBase64Route
   ImageCompressRoute: typeof ImageCompressRoute
+  ImageCropRoute: typeof ImageCropRoute
   ImageResizeRoute: typeof ImageResizeRoute
   ImageToGifRoute: typeof ImageToGifRoute
   IpConverterRoute: typeof IpConverterRoute
@@ -696,6 +709,13 @@ declare module '@tanstack/react-router' {
       path: '/image-resize'
       fullPath: '/image-resize'
       preLoaderRoute: typeof ImageResizeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/image-crop': {
+      id: '/image-crop'
+      path: '/image-crop'
+      fullPath: '/image-crop'
+      preLoaderRoute: typeof ImageCropRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/image-compress': {
@@ -874,6 +894,7 @@ const rootRouteChildren: RootRouteChildren = {
   HashRoute: HashRoute,
   ImageBase64Route: ImageBase64Route,
   ImageCompressRoute: ImageCompressRoute,
+  ImageCropRoute: ImageCropRoute,
   ImageResizeRoute: ImageResizeRoute,
   ImageToGifRoute: ImageToGifRoute,
   IpConverterRoute: IpConverterRoute,
