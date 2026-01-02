@@ -43,6 +43,7 @@ const navCategories = [
       { path: "/image-compress", label: "画像圧縮" },
       { path: "/image-base64", label: "Base64変換" },
       { path: "/image-resize", label: "画像リサイズ" },
+      { path: "/image-crop", label: "画像トリミング" },
       { path: "/transparent-image", label: "透過画像" },
       { path: "/color-extractor", label: "カラー抽出" },
       { path: "/color-picker", label: "カラーピッカー" },
