@@ -7,6 +7,12 @@ export default defineConfig({
   plugins: [
     tanstackStart({
       srcDirectory: "app",
+      // TODO: SSG prerenderingは一時的に無効（MUI SSR問題解決後に有効化）
+      // prerender: {
+      //   enabled: true,
+      //   crawlLinks: true,
+      //   filter: (route) => !route.path.startsWith("/api/"),
+      // },
     }),
     cloudflare({
       persistState: true,
@@ -15,6 +21,9 @@ export default defineConfig({
     }),
     tsconfigPaths(),
   ],
+  ssr: {
+    noExternal: ["@mui/*"],
+  },
   server: {
     watch: {
       // PlaywrightのレポートディレクトリをHMR監視対象から除外
