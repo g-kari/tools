@@ -1,5 +1,4 @@
 import { test, expect } from "@playwright/test";
-import path from "node:path";
 
 test.describe("Image Crop - E2E Tests", () => {
   /**
@@ -36,9 +35,9 @@ test.describe("Image Crop - E2E Tests", () => {
   });
 
   test("should display the main heading", async ({ page }) => {
-    const heading = page.locator("h2").first();
+    const heading = page.locator(".section-title").first();
     await expect(heading).toBeVisible();
-    await expect(heading).toContainText("画像トリミング");
+    await expect(heading).toContainText("画像選択");
   });
 
   test("should have proper accessibility attributes", async ({ page }) => {
@@ -48,40 +47,44 @@ test.describe("Image Crop - E2E Tests", () => {
     await expect(skipLink).toBeAttached();
   });
 
-  test("should display tool description", async ({ page }) => {
-    const description = page.locator(".tool-description");
-    await expect(description).toBeVisible();
-    const text = await description.textContent();
-    expect(text).toContain("画像の一部を切り取る");
-    expect(text).not.toContain("undefined");
+  test("should display usage instructions", async ({ page }) => {
+    const usageSection = page.locator(".info-box");
+    await expect(usageSection).toBeVisible();
+
+    const usageText = await usageSection.textContent();
+    expect(usageText).toContain("画像トリミングツールとは");
+    expect(usageText).not.toContain("undefined");
   });
 
-  test("should display file drop zone", async ({ page }) => {
-    const dropZone = page.locator(".file-drop-zone");
-    await expect(dropZone).toBeVisible();
-    await expect(dropZone).toContainText("画像をドラッグ&ドロップ");
+  test("should display dropzone for file upload", async ({ page }) => {
+    const dropzone = page.locator(".dropzone");
+    await expect(dropzone).toBeVisible();
+    await expect(dropzone).toContainText("クリックして画像を選択");
+    await expect(dropzone).toContainText("ドラッグ&ドロップ");
   });
 
-  test("should have proper aria-label on drop zone", async ({ page }) => {
-    const dropZone = page.locator(".file-drop-zone");
-    await expect(dropZone).toHaveAttribute("role", "button");
-    await expect(dropZone).toHaveAttribute("tabindex", "0");
+  test("should have proper aria-label on dropzone", async ({ page }) => {
+    const dropzone = page.locator(".dropzone");
+    await expect(dropzone).toHaveAttribute("aria-label", "画像ファイルをアップロード");
+    await expect(dropzone).toHaveAttribute("role", "button");
+    await expect(dropzone).toHaveAttribute("tabindex", "0");
   });
 
   test("should have file input hidden but present", async ({ page }) => {
-    const fileInput = page.locator("input[type='file']");
+    const fileInput = page.locator("input#imageFile");
+    await expect(fileInput).toHaveAttribute("type", "file");
     await expect(fileInput).toHaveAttribute("accept", "image/*");
-    // 隠されているがDOMには存在する
-    await expect(fileInput).toBeAttached();
   });
 
   test("should not display crop settings without image", async ({ page }) => {
-    const aspectRatioSection = page.locator("h3", {
+    const aspectRatioSection = page.locator(".section-title", {
       hasText: "アスペクト比",
     });
     await expect(aspectRatioSection).not.toBeVisible();
 
-    const cropAreaSection = page.locator("h3", { hasText: "トリミング範囲" });
+    const cropAreaSection = page.locator(".section-title", {
+      hasText: "トリミング範囲",
+    });
     await expect(cropAreaSection).not.toBeVisible();
   });
 
@@ -89,32 +92,16 @@ test.describe("Image Crop - E2E Tests", () => {
     await page.goto("/");
     await navigateViaCategory(page, "画像", "/image-crop");
     await expect(page).toHaveURL("/image-crop");
-    const heading = page.locator("h2", { hasText: "画像トリミング" });
+    const heading = page.locator(".section-title", { hasText: "画像選択" });
     await expect(heading).toBeVisible();
   });
 
-  test("should display aspect ratio presets after image upload", async ({
+  test("should have keyboard navigation support on dropzone", async ({
     page,
   }) => {
-    // テスト用の画像をアップロード（ダミー画像を生成）
-    const fileInput = page.locator("input[type='file']");
-
-    // テスト画像のパスを設定（実際のテスト環境に合わせて調整）
-    // ここでは一旦スキップして、アスペクト比ボタンの存在をチェック
-    const aspectRatioSection = page.locator("h3", {
-      hasText: "アスペクト比",
-    });
-
-    // 画像がない状態では表示されない
-    await expect(aspectRatioSection).not.toBeVisible();
-  });
-
-  test("should have keyboard navigation support on drop zone", async ({
-    page,
-  }) => {
-    const dropZone = page.locator(".file-drop-zone");
-    await dropZone.focus();
-    await expect(dropZone).toBeFocused();
+    const dropzone = page.locator(".dropzone");
+    await dropzone.focus();
+    await expect(dropzone).toBeFocused();
 
     // Enterキーでファイル選択ダイアログが開くことを確認（実際には開かない）
     const fileInput = page.locator("input[type='file']");
@@ -122,14 +109,14 @@ test.describe("Image Crop - E2E Tests", () => {
   });
 
   test("should display correct initial state", async ({ page }) => {
-    const heading = page.locator("h2", { hasText: "画像トリミング" });
+    const heading = page.locator(".section-title", { hasText: "画像選択" });
     await expect(heading).toBeVisible();
 
-    const dropZone = page.locator(".file-drop-zone");
-    await expect(dropZone).toBeVisible();
+    const dropzone = page.locator(".dropzone");
+    await expect(dropzone).toBeVisible();
 
-    const description = page.locator(".tool-description");
-    await expect(description).toBeVisible();
+    const infoBox = page.locator(".info-box");
+    await expect(infoBox).toBeVisible();
   });
 
   test("should have responsive layout", async ({ page }) => {
@@ -146,7 +133,7 @@ test.describe("Image Crop - E2E Tests", () => {
   });
 
   test("should not show cropped preview initially", async ({ page }) => {
-    const result = page.locator("h3", { hasText: "トリミング結果" });
+    const result = page.locator(".section-title", { hasText: "トリミング結果" });
     await expect(result).not.toBeVisible();
   });
 
@@ -154,9 +141,8 @@ test.describe("Image Crop - E2E Tests", () => {
     const container = page.locator(".tool-container");
     await expect(container).toBeVisible();
 
-    // ボタンが存在しない場合はスキップ
-    const dropZone = page.locator(".file-drop-zone");
-    const backgroundColor = await dropZone.evaluate((el) => {
+    const dropzone = page.locator(".dropzone");
+    const backgroundColor = await dropzone.evaluate((el) => {
       return window.getComputedStyle(el).backgroundColor;
     });
     // Material Design 3のカラーが適用されていることを確認
@@ -184,17 +170,6 @@ test.describe("Image Crop - E2E Tests", () => {
     // クリックして遷移
     await cropLink.click();
     await expect(page).toHaveURL("/image-crop");
-  });
-
-  test("should display aspect ratio buttons with correct labels", async ({
-    page,
-  }) => {
-    // 画像なしの状態では表示されないため、このテストは画像アップロード後に実施すべき
-    // 現時点ではスキップ
-    const aspectRatioSection = page.locator("h3", {
-      hasText: "アスペクト比",
-    });
-    await expect(aspectRatioSection).not.toBeVisible();
   });
 
   test("should have proper input labels", async ({ page }) => {
@@ -237,11 +212,29 @@ test.describe("Image Crop - E2E Tests", () => {
     );
   });
 
-  test("should display file icon in drop zone", async ({ page }) => {
-    const dropZone = page.locator(".file-drop-zone");
-    const icon = dropZone.locator(".file-drop-icon");
+  test("should display upload icon in dropzone", async ({ page }) => {
+    const dropzone = page.locator(".dropzone");
+    const icon = dropzone.locator(".upload-icon");
     await expect(icon).toBeVisible();
-    const iconText = await icon.textContent();
-    expect(iconText).toBe("📁");
+  });
+
+  test("should display dropzone hint text", async ({ page }) => {
+    const dropzone = page.locator(".dropzone");
+    const hint = dropzone.locator(".dropzone-hint");
+    await expect(hint).toBeVisible();
+    await expect(hint).toContainText("PNG, JPEG, WebP");
+  });
+
+  test("should display info box with usage instructions", async ({ page }) => {
+    const infoBox = page.locator(".info-box");
+    await expect(infoBox).toBeVisible();
+
+    // 使い方セクションの確認
+    const usageTitle = infoBox.locator("h3", { hasText: "使い方" });
+    await expect(usageTitle).toBeVisible();
+
+    // 機能セクションの確認
+    const featuresTitle = infoBox.locator("h3", { hasText: "機能" });
+    await expect(featuresTitle).toBeVisible();
   });
 });

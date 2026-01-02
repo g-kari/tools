@@ -177,7 +177,6 @@ function ImageCropper() {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cropCanvasRef = useRef<HTMLCanvasElement>(null);
-  const imageElementRef = useRef<HTMLImageElement | null>(null);
   const canvasScaleRef = useRef<number>(1);
   const { showToast } = useToast();
 
@@ -192,7 +191,7 @@ function ImageCropper() {
   /**
    * ファイル選択時の処理
    */
-  const handleFileChange = useCallback(
+  const handleFileSelect = useCallback(
     (file: File) => {
       if (!file.type.startsWith("image/")) {
         showToast("画像ファイルを選択してください", "error");
@@ -230,14 +229,14 @@ function ImageCropper() {
   /**
    * ファイル入力変更時の処理
    */
-  const onFileInputChange = useCallback(
+  const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
       if (file) {
-        handleFileChange(file);
+        handleFileSelect(file);
       }
     },
-    [handleFileChange]
+    [handleFileSelect]
   );
 
   /**
@@ -260,11 +259,32 @@ function ImageCropper() {
 
       const file = e.dataTransfer.files[0];
       if (file) {
-        handleFileChange(file);
+        handleFileSelect(file);
       }
     },
-    [handleFileChange]
+    [handleFileSelect]
   );
+
+  /**
+   * クリア処理
+   */
+  const handleClear = useCallback(() => {
+    if (originalPreview) URL.revokeObjectURL(originalPreview);
+    if (croppedPreview) URL.revokeObjectURL(croppedPreview);
+
+    setOriginalFile(null);
+    setOriginalPreview(null);
+    setOriginalDimensions(null);
+    setCroppedBlob(null);
+    setCroppedPreview(null);
+    setAspectRatio(null);
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+
+    showToast("クリアしました", "info");
+  }, [originalPreview, croppedPreview, showToast]);
 
   /**
    * アスペクト比を適用する
@@ -557,146 +577,202 @@ function ImageCropper() {
 
   return (
     <div className="tool-container">
-      <h2>画像トリミング</h2>
-      <p className="tool-description">
-        画像の一部を切り取ることができます。ドラッグ&ドロップで画像をアップロードし、トリミング範囲を指定してください。
-      </p>
-
-      {/* ファイルアップロード */}
-      <div
-        className={`file-drop-zone ${isDragging ? "dragging" : ""}`}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
-        onClick={() => fileInputRef.current?.click()}
-        role="button"
-        tabIndex={0}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            fileInputRef.current?.click();
-          }
-        }}
-        aria-label="画像ファイルをドラッグ&ドロップまたはクリックして選択"
-      >
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/*"
-          onChange={onFileInputChange}
-          className="file-input-hidden"
-          aria-label="画像ファイルを選択"
-        />
-        <div className="file-drop-content">
-          <span className="file-drop-icon" aria-hidden="true">
-            📁
-          </span>
-          <p>
-            {originalFile
-              ? `${originalFile.name} (${formatFileSize(originalFile.size)})`
-              : "画像をドラッグ&ドロップまたはクリックして選択"}
-          </p>
-          {originalDimensions && (
-            <p className="file-dimensions">
-              元のサイズ: {originalDimensions.width} × {originalDimensions.height}px
-            </p>
-          )}
-        </div>
-      </div>
-
-      {/* トリミング設定 */}
-      {originalFile && originalDimensions && (
+      {!originalFile ? (
         <>
-          <div className="control-section">
-            <h3>アスペクト比</h3>
-            <div className="button-group">
+          <div className="converter-section">
+            <h2 className="section-title">画像選択</h2>
+
+            <div
+              className={`dropzone ${isDragging ? "dragging" : ""}`}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+              onClick={() => fileInputRef.current?.click()}
+              role="button"
+              tabIndex={0}
+              aria-label="画像ファイルをアップロード"
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  fileInputRef.current?.click();
+                }
+              }}
+            >
+              <div className="dropzone-content">
+                <svg
+                  className="upload-icon"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="17 8 12 3 7 8" />
+                  <line x1="12" y1="3" x2="12" y2="15" />
+                </svg>
+                <p className="dropzone-text">
+                  クリックして画像を選択、またはドラッグ&ドロップ
+                </p>
+                <p className="dropzone-hint">PNG, JPEG, WebP など</p>
+              </div>
+            </div>
+          </div>
+
+          <aside
+            className="info-box"
+            role="complementary"
+            aria-labelledby="usage-title"
+          >
+            <h3 id="usage-title">画像トリミングツールとは</h3>
+            <p>画像の一部を切り取って保存できるツールです。</p>
+            <h3>使い方</h3>
+            <ol>
+              <li>トリミングしたい画像をアップロード</li>
+              <li>必要に応じてアスペクト比を選択</li>
+              <li>キャンバス上でトリミング範囲をドラッグして調整</li>
+              <li>「トリミングを実行」ボタンをクリック</li>
+              <li>結果を確認してダウンロード</li>
+            </ol>
+            <h3>機能</h3>
+            <ul>
+              <li><strong>アスペクト比プリセット</strong>: 1:1、4:3、16:9など</li>
+              <li><strong>グリッド線表示</strong>: 三分割法のガイドライン</li>
+              <li><strong>手動調整</strong>: X、Y、幅、高さを数値入力可能</li>
+            </ul>
+          </aside>
+        </>
+      ) : (
+        <>
+          <div className="converter-section">
+            <h2 className="section-title">元画像</h2>
+            <div className="image-source-preview">
+              {originalPreview && (
+                <img
+                  src={originalPreview}
+                  alt="元画像プレビュー"
+                  className="image-source-thumbnail"
+                />
+              )}
+              {originalDimensions && (
+                <div className="image-source-info">
+                  <span>{originalFile?.name}</span>
+                  <span>{originalDimensions.width} × {originalDimensions.height} px</span>
+                  <span>{formatFileSize(originalFile?.size || 0)}</span>
+                </div>
+              )}
+            </div>
+            <button
+              type="button"
+              className="btn-secondary"
+              onClick={handleClear}
+              disabled={isLoading}
+            >
+              別の画像を選択
+            </button>
+          </div>
+
+          <div className="converter-section">
+            <h2 className="section-title">アスペクト比</h2>
+            <div className="aspect-ratio-buttons" role="group" aria-label="アスペクト比選択">
               {ASPECT_RATIO_PRESETS.map((preset) => (
                 <button
                   key={preset.label}
                   type="button"
-                  className={`btn-secondary ${aspectRatio === preset.ratio ? "active" : ""}`}
+                  className={`btn-chip ${aspectRatio === preset.ratio ? "active" : ""}`}
                   onClick={() => applyAspectRatio(preset.ratio)}
+                  disabled={isLoading}
                 >
                   {preset.label}
                 </button>
               ))}
             </div>
-
             <label className="checkbox-label">
               <input
                 type="checkbox"
                 checked={showGrid}
                 onChange={(e) => setShowGrid(e.target.checked)}
+                disabled={isLoading}
               />
-              グリッド線を表示
+              グリッド線を表示（三分割法）
             </label>
           </div>
 
-          <div className="control-section">
-            <h3>トリミング範囲</h3>
-            <div className="input-grid">
-              <div className="input-group">
+          <div className="converter-section">
+            <h2 className="section-title">トリミング範囲</h2>
+            <div className="crop-inputs-grid">
+              <div className="crop-input-group">
                 <label htmlFor="crop-x">X</label>
                 <input
                   id="crop-x"
                   type="number"
                   min="0"
-                  max={originalDimensions.width - cropArea.width}
+                  max={originalDimensions ? originalDimensions.width - cropArea.width : 0}
                   value={Math.round(cropArea.x)}
                   onChange={(e) =>
                     handleCropInputChange("x", Number.parseInt(e.target.value) || 0)
                   }
+                  disabled={isLoading}
                 />
+                <span className="input-unit">px</span>
               </div>
 
-              <div className="input-group">
+              <div className="crop-input-group">
                 <label htmlFor="crop-y">Y</label>
                 <input
                   id="crop-y"
                   type="number"
                   min="0"
-                  max={originalDimensions.height - cropArea.height}
+                  max={originalDimensions ? originalDimensions.height - cropArea.height : 0}
                   value={Math.round(cropArea.y)}
                   onChange={(e) =>
                     handleCropInputChange("y", Number.parseInt(e.target.value) || 0)
                   }
+                  disabled={isLoading}
                 />
+                <span className="input-unit">px</span>
               </div>
 
-              <div className="input-group">
+              <div className="crop-input-group">
                 <label htmlFor="crop-width">幅</label>
                 <input
                   id="crop-width"
                   type="number"
                   min="1"
-                  max={originalDimensions.width - cropArea.x}
+                  max={originalDimensions ? originalDimensions.width - cropArea.x : 1}
                   value={Math.round(cropArea.width)}
                   onChange={(e) =>
                     handleCropInputChange("width", Number.parseInt(e.target.value) || 1)
                   }
+                  disabled={isLoading}
                 />
+                <span className="input-unit">px</span>
               </div>
 
-              <div className="input-group">
+              <div className="crop-input-group">
                 <label htmlFor="crop-height">高さ</label>
                 <input
                   id="crop-height"
                   type="number"
                   min="1"
-                  max={originalDimensions.height - cropArea.y}
+                  max={originalDimensions ? originalDimensions.height - cropArea.y : 1}
                   value={Math.round(cropArea.height)}
                   onChange={(e) =>
                     handleCropInputChange("height", Number.parseInt(e.target.value) || 1)
                   }
+                  disabled={isLoading}
                 />
+                <span className="input-unit">px</span>
               </div>
             </div>
           </div>
 
-          {/* プレビューキャンバス */}
-          <div className="control-section">
-            <h3>プレビュー</h3>
-            <div className="crop-canvas-wrapper">
+          <div className="converter-section">
+            <h2 className="section-title">プレビュー</h2>
+            <div className="crop-canvas-container">
               <canvas
                 ref={cropCanvasRef}
                 className="crop-canvas"
@@ -704,39 +780,42 @@ function ImageCropper() {
                 onMouseMove={handleCanvasMouseMove}
                 onMouseUp={handleCanvasMouseUp}
                 onMouseLeave={handleCanvasMouseUp}
+                aria-label="トリミング範囲を調整"
               />
             </div>
             <p className="help-text">
-              ドラッグで移動、ハンドルでリサイズできます
+              ドラッグで移動、角や辺のハンドルでリサイズできます
             </p>
           </div>
 
-          {/* トリミング実行 */}
-          <div className="control-section">
-            <button
-              type="button"
-              className="btn-primary"
-              onClick={handleCrop}
-              disabled={isLoading}
-            >
-              {isLoading ? "処理中..." : "トリミングを実行"}
-            </button>
+          <div className="converter-section">
+            <div className="button-group" role="group" aria-label="操作ボタン">
+              <button
+                type="button"
+                className="btn-primary"
+                onClick={handleCrop}
+                disabled={isLoading}
+              >
+                {isLoading ? "処理中..." : "トリミングを実行"}
+              </button>
+            </div>
           </div>
 
-          {/* トリミング結果 */}
           {croppedPreview && croppedBlob && (
-            <div className="control-section">
-              <h3>トリミング結果</h3>
-              <div className="preview-container">
+            <div className="converter-section">
+              <h2 className="section-title">トリミング結果</h2>
+              <div className="crop-result-preview">
                 <img
                   src={croppedPreview}
                   alt="トリミング結果"
-                  className="preview-image"
+                  className="crop-result-image"
                 />
-                <p className="preview-info">
-                  サイズ: {Math.round(cropArea.width)} × {Math.round(cropArea.height)}px
-                  ({formatFileSize(croppedBlob.size)})
-                </p>
+                <div className="crop-result-info">
+                  <span>
+                    {Math.round(cropArea.width)} × {Math.round(cropArea.height)} px
+                  </span>
+                  <span>{formatFileSize(croppedBlob.size)}</span>
+                </div>
               </div>
               <button
                 type="button"
@@ -747,8 +826,32 @@ function ImageCropper() {
               </button>
             </div>
           )}
+
+          <aside
+            className="info-box"
+            role="complementary"
+            aria-labelledby="tips-title"
+          >
+            <h3 id="tips-title">トリミングのヒント</h3>
+            <ul>
+              <li><strong>三分割法</strong>: グリッド線の交点に被写体を配置すると、バランスの良い構図になります</li>
+              <li><strong>アスペクト比</strong>: SNS投稿用には1:1、YouTubeサムネイルには16:9がおすすめです</li>
+              <li><strong>画質保持</strong>: 元の画像形式（PNG/JPEG等）を維持して高品質で出力します</li>
+            </ul>
+          </aside>
         </>
       )}
+
+      <input
+        ref={fileInputRef}
+        type="file"
+        id="imageFile"
+        accept="image/*"
+        onChange={handleInputChange}
+        disabled={isLoading}
+        className="hidden-file-input"
+        aria-label="画像ファイルを選択"
+      />
     </div>
   );
 }
