@@ -615,11 +615,18 @@ button:focus-visible {
   font-weight: 500;
 }
 
-.info-box ul {
+.info-box ul,
+.info-box ol {
   list-style-position: inside;
   color: var(--md-sys-color-on-primary-container);
   font-size: 0.9rem;
   line-height: 1.8;
+  margin: 0;
+  padding-left: 0;
+}
+
+.info-box h3:not(:first-child) {
+  margin-top: 1rem;
 }
 
 /* Result card */
@@ -3770,116 +3777,31 @@ a:focus-visible {
    画像透過ツール
    ======================================== */
 
-/* 設定バー：横並び */
-.transparent-controls-bar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  align-items: flex-end;
-  padding: 1rem;
-  background: var(--md-sys-color-surface-container);
-  border-radius: 12px;
-  margin-bottom: 1rem;
+/* 2カラムレイアウト */
+.transparent-processor-layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 1.5rem;
+  align-items: start;
 }
 
-.transparent-control-item {
+/* 左カラム：プレビュー */
+.transparent-preview-column {
   display: flex;
   flex-direction: column;
-  gap: 0.375rem;
-}
-
-.transparent-control-label {
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: var(--md-sys-color-on-surface-variant);
-}
-
-.transparent-color-row {
-  display: flex;
   gap: 0.5rem;
-  align-items: center;
 }
 
-.transparent-color-input {
-  width: 36px;
-  height: 36px;
-  padding: 2px;
-  border: 1px solid var(--md-sys-color-outline);
-  border-radius: 6px;
-  cursor: pointer;
-  flex-shrink: 0;
-}
-
-.transparent-hex-input {
-  width: 90px;
-  padding: 0.5rem 0.625rem;
-  border: 1px solid var(--md-sys-color-outline);
-  border-radius: 6px;
-  font-size: 0.875rem;
-  font-family: "Roboto Mono", monospace;
-  background-color: var(--md-sys-color-surface);
-  color: var(--md-sys-color-on-surface);
-}
-
-.transparent-pick-btn {
-  padding: 0.5rem 0.75rem;
-  border: 1px solid var(--md-sys-color-outline);
-  border-radius: 6px;
-  background: var(--md-sys-color-surface);
-  cursor: pointer;
-  font-size: 0.75rem;
-  white-space: nowrap;
-  transition: all 0.2s ease;
-}
-
-.transparent-pick-btn:hover {
-  background: var(--md-sys-color-surface-variant);
-}
-
-.transparent-pick-btn.active {
-  background: var(--md-sys-color-primary);
-  border-color: var(--md-sys-color-primary);
-  color: var(--md-sys-color-on-primary);
-}
-
-.transparent-tolerance-item {
-  min-width: 200px;
-  flex: 1;
-}
-
-.transparent-slider {
-  width: 100%;
-  height: 6px;
-  border-radius: 3px;
-  accent-color: var(--md-sys-color-primary);
-  cursor: pointer;
-}
-
-.transparent-actions-item {
-  display: flex;
-  flex-direction: row;
-  gap: 0.5rem;
-  margin-left: auto;
-}
-
-.transparent-actions-item .btn-primary,
-.transparent-actions-item .btn-secondary {
-  padding: 0.5rem 1.25rem;
-  font-size: 0.875rem;
-  white-space: nowrap;
-}
-
-/* プレビューエリア：横並び */
-.transparent-preview-area {
+.transparent-preview-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
 }
 
-.transparent-preview-panel {
+.transparent-preview-item {
   display: flex;
   flex-direction: column;
-  gap: 0.375rem;
+  gap: 0.25rem;
 }
 
 .transparent-preview-label {
@@ -3890,16 +3812,12 @@ a:focus-visible {
   letter-spacing: 0.5px;
 }
 
-.transparent-preview-label .picking-hint {
-  color: var(--md-sys-color-primary);
-  font-weight: 600;
-}
-
 .transparent-canvas-wrapper {
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: 8px;
   overflow: hidden;
   background: var(--md-sys-color-surface);
+  line-height: 0;
 }
 
 .transparent-canvas-wrapper .preview-canvas {
@@ -3930,38 +3848,154 @@ a:focus-visible {
   color: var(--md-sys-color-on-surface-variant);
   text-align: center;
   font-family: "Roboto Mono", monospace;
-  margin-top: 0.5rem;
-  margin-bottom: 1rem;
+}
+
+/* 右カラム：設定 */
+.transparent-settings-column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.transparent-settings-card {
+  background: var(--md-sys-color-surface-container);
+  border-radius: 12px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.transparent-color-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.transparent-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface);
+}
+
+.transparent-color-controls {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.transparent-color-input {
+  width: 40px;
+  height: 40px;
+  padding: 2px;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 8px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.transparent-hex-input {
+  flex: 1;
+  min-width: 80px;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-family: "Roboto Mono", monospace;
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+}
+
+.transparent-pick-btn {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 8px;
+  background: var(--md-sys-color-surface);
+  cursor: pointer;
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.transparent-pick-btn:hover {
+  background: var(--md-sys-color-surface-variant);
+}
+
+.transparent-pick-btn.active {
+  background: var(--md-sys-color-primary);
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+.transparent-tolerance-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.transparent-slider {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  accent-color: var(--md-sys-color-primary);
+  cursor: pointer;
+  margin-top: 0.25rem;
+}
+
+.transparent-slider-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.transparent-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.transparent-actions .btn-primary,
+.transparent-actions .btn-secondary {
+  flex: 1;
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+}
+
+.transparent-tip {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin: 0;
+  line-height: 1.4;
 }
 
 /* レスポンシブ */
 @media (max-width: 768px) {
-  .transparent-controls-bar {
-    flex-direction: column;
-    align-items: stretch;
+  .transparent-processor-layout {
+    grid-template-columns: 1fr;
   }
 
-  .transparent-actions-item {
-    margin-left: 0;
-    width: 100%;
+  .transparent-settings-column {
+    order: -1;
   }
 
-  .transparent-actions-item .btn-primary,
-  .transparent-actions-item .btn-secondary {
-    flex: 1;
-  }
-
-  .transparent-preview-area {
+  .transparent-preview-grid {
     grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 480px) {
-  .transparent-color-row {
+  .transparent-color-controls {
     flex-wrap: wrap;
   }
 
   .transparent-hex-input {
-    flex: 1;
+    order: 1;
+    flex-basis: 100%;
+    margin-top: 0.25rem;
   }
 }
