@@ -296,7 +296,6 @@ test.describe("Color Picker", () => {
     await page.waitForTimeout(100);
 
     // Verify the color changed
-    const hexInput = page.locator('input[placeholder="#000000"]');
     await expect(hexInput).toHaveValue("#FF0000");
   });
 
