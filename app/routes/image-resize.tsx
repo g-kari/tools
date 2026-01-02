@@ -235,6 +235,8 @@ function ImageResizer() {
   const [isDraggingCrop, setIsDraggingCrop] = useState(false);
   const [dragStart, setDragStart] = useState<{ x: number; y: number } | null>(null);
   const [imageLoaded, setImageLoaded] = useState(false);
+  // ドラッグモード: 'create' = 新規作成, 'move' = 移動
+  const [dragMode, setDragMode] = useState<'create' | 'move'>('create');
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cropCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -372,9 +374,6 @@ function ImageResizer() {
       );
     }
   }, [enableCrop, imageLoaded, cropArea]);
-
-  // ドラッグモード: 'create' = 新規作成, 'move' = 移動
-  const [dragMode, setDragMode] = useState<'create' | 'move'>('create');
 
   // 座標を取得する共通関数（マウス・タッチ両対応）
   const getEventCoordinates = useCallback((
@@ -795,329 +794,299 @@ function ImageResizer() {
   }, [originalDimensions, width, height]);
 
   return (
-    <>
-      <div className="tool-container">
-        <div className="converter-section">
-          <h2 className="section-title">画像選択</h2>
+    <div className="tool-container">
+      {!originalFile ? (
+        <>
+          <div className="converter-section">
+            <h2 className="section-title">画像選択</h2>
 
-          <div
-            className={`dropzone ${isDragging ? "dragging" : ""}`}
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
-            onClick={() => fileInputRef.current?.click()}
-            role="button"
-            tabIndex={0}
-            aria-label="画像ファイルをアップロード"
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                fileInputRef.current?.click();
-              }
-            }}
-          >
-            <div className="dropzone-content">
-              <svg
-                className="upload-icon"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                <polyline points="17 8 12 3 7 8" />
-                <line x1="12" y1="3" x2="12" y2="15" />
-              </svg>
-              <p className="dropzone-text">
-                クリックして画像を選択、またはドラッグ&ドロップ
-              </p>
-              <p className="dropzone-hint">PNG, JPEG, WebP など</p>
+            <div
+              className={`dropzone ${isDragging ? "dragging" : ""}`}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+              onClick={() => fileInputRef.current?.click()}
+              role="button"
+              tabIndex={0}
+              aria-label="画像ファイルをアップロード"
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  fileInputRef.current?.click();
+                }
+              }}
+            >
+              <div className="dropzone-content">
+                <svg
+                  className="upload-icon"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="17 8 12 3 7 8" />
+                  <line x1="12" y1="3" x2="12" y2="15" />
+                </svg>
+                <p className="dropzone-text">
+                  クリックして画像を選択、またはドラッグ&ドロップ
+                </p>
+                <p className="dropzone-hint">PNG, JPEG, WebP など</p>
+              </div>
             </div>
           </div>
 
-          <input
-            ref={fileInputRef}
-            type="file"
-            id="imageFile"
-            accept="image/*"
-            onChange={handleInputChange}
-            disabled={isLoading}
-            className="hidden-file-input"
-            aria-label="画像ファイルを選択"
-          />
-        </div>
-
-        {originalFile && originalDimensions && (
-          <>
-            <div className="converter-section">
-              <h2 className="section-title">元画像の情報</h2>
-              <div className="image-info-grid">
-                <div className="info-item">
-                  <span className="info-label">ファイル名</span>
-                  <span className="info-value">{originalFile.name}</span>
+          <aside
+            className="info-box"
+            role="complementary"
+            aria-labelledby="usage-title"
+          >
+            <h3 id="usage-title">画像リサイズ・トリミングツールとは</h3>
+            <p>画像の幅と高さを変更したり、必要な部分だけを切り出せるツールです。</p>
+            <h3>使い方</h3>
+            <ol>
+              <li>リサイズしたい画像をアップロード</li>
+              <li>プリセットサイズを選択、または幅・高さを入力</li>
+              <li>必要に応じてトリミングを有効にして範囲を選択</li>
+              <li>「リサイズ」ボタンをクリック</li>
+              <li>結果を確認してダウンロード</li>
+            </ol>
+            <h3>機能</h3>
+            <ul>
+              <li><strong>プリセットサイズ</strong>: Full HD、HD、VGAなど一般的なサイズ</li>
+              <li><strong>アスペクト比維持</strong>: 縦横比を保ったままリサイズ</li>
+              <li><strong>トリミング機能</strong>: 必要な部分だけを切り出し</li>
+              <li><strong>ブラウザ内処理</strong>: サーバーにアップロードしません</li>
+            </ul>
+          </aside>
+        </>
+      ) : (
+        <>
+          <div className="converter-section">
+            <h2 className="section-title">元画像</h2>
+            <div className="image-source-preview">
+              {originalPreview && (
+                <img
+                  src={originalPreview}
+                  alt="元画像プレビュー"
+                  className="image-source-thumbnail"
+                />
+              )}
+              {originalDimensions && (
+                <div className="image-source-info">
+                  <span>{originalFile?.name}</span>
+                  <span>{originalDimensions.width} × {originalDimensions.height} px</span>
+                  <span>{formatFileSize(originalFile?.size || 0)}</span>
                 </div>
-                <div className="info-item">
-                  <span className="info-label">サイズ</span>
-                  <span className="info-value">{formatFileSize(originalFile.size)}</span>
-                </div>
-                <div className="info-item">
-                  <span className="info-label">解像度</span>
-                  <span className="info-value">{originalDimensions.width} × {originalDimensions.height} px</span>
-                </div>
-              </div>
+              )}
             </div>
+            <button
+              type="button"
+              className="btn-secondary"
+              onClick={handleClear}
+              disabled={isLoading}
+            >
+              別の画像を選択
+            </button>
+          </div>
 
-            <div className="converter-section">
-              <h2 className="section-title">リサイズ設定</h2>
+          <div className="converter-section">
+            <h2 className="section-title">リサイズ設定</h2>
 
-              <div className="resize-options">
-                <div className="size-inputs">
-                  <div className="size-input-group">
-                    <label htmlFor="width">幅 (px)</label>
-                    <input
-                      type="number"
-                      id="width"
-                      min={MIN_DIMENSION}
-                      max={MAX_DIMENSION}
-                      value={width}
-                      onChange={(e) => handleWidthChange(parseInt(e.target.value) || 0)}
-                      disabled={isLoading}
-                      aria-describedby="width-help"
-                    />
-                  </div>
-
-                  <div className="size-link-icon" aria-hidden="true">
-                    {maintainAspectRatio ? "🔗" : "⛓️‍💥"}
-                  </div>
-
-                  <div className="size-input-group">
-                    <label htmlFor="height">高さ (px)</label>
-                    <input
-                      type="number"
-                      id="height"
-                      min={MIN_DIMENSION}
-                      max={MAX_DIMENSION}
-                      value={height}
-                      onChange={(e) => handleHeightChange(parseInt(e.target.value) || 0)}
-                      disabled={isLoading}
-                      aria-describedby="height-help"
-                    />
-                  </div>
-                </div>
-
-                <div className="aspect-ratio-toggle">
-                  <label className="checkbox-label">
-                    <input
-                      type="checkbox"
-                      checked={maintainAspectRatio}
-                      onChange={(e) => handleAspectRatioToggle(e.target.checked)}
-                      disabled={isLoading}
-                    />
-                    <span>アスペクト比を維持</span>
-                  </label>
-                </div>
-
-                <div className="preset-section">
-                  <label className="preset-label">プリセットサイズ</label>
-                  <div className="preset-buttons">
-                    {PRESET_SIZES.map((preset) => (
-                      <button
-                        key={preset.label}
-                        type="button"
-                        className="preset-btn"
-                        onClick={() => handlePresetSelect(preset)}
-                        disabled={isLoading}
-                      >
-                        {preset.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <span id="width-help" className="option-help">
-                  {MIN_DIMENSION}〜{MAX_DIMENSION}px の範囲で指定
-                  {sizeChangePercent !== 0 && (
-                    <span className={sizeChangePercent > 0 ? "size-increase" : "size-decrease"}>
-                      {" "}（{sizeChangePercent > 0 ? "+" : ""}{sizeChangePercent}%）
-                    </span>
-                  )}
-                </span>
-              </div>
-
-              <div className="button-group" role="group" aria-label="操作">
-                <button
-                  type="button"
-                  className="btn-primary"
-                  onClick={handleResize}
-                  disabled={isLoading || width < MIN_DIMENSION || height < MIN_DIMENSION}
-                >
-                  {isLoading ? "処理中..." : (enableCrop ? "トリミング&リサイズ" : "リサイズ")}
-                </button>
-                {resizedBlob && (
-                  <button
-                    type="button"
-                    className="btn-primary"
-                    onClick={handleDownload}
-                    disabled={isLoading}
-                  >
-                    ダウンロード
-                  </button>
-                )}
-                <button
-                  type="button"
-                  className="btn-secondary"
-                  onClick={handleClear}
-                  disabled={isLoading}
-                >
-                  クリア
-                </button>
-              </div>
-            </div>
-
-            {/* トリミング設定 */}
-            <div className="converter-section">
-              <h2 className="section-title">トリミング設定</h2>
-
-              <div className="crop-toggle">
-                <label className="checkbox-label">
+            <div className="resize-size-controls">
+              <div className="crop-inputs-grid">
+                <div className="crop-input-group">
+                  <label htmlFor="width">幅</label>
                   <input
-                    type="checkbox"
-                    checked={enableCrop}
-                    onChange={(e) => setEnableCrop(e.target.checked)}
+                    type="number"
+                    id="width"
+                    min={MIN_DIMENSION}
+                    max={MAX_DIMENSION}
+                    value={width}
+                    onChange={(e) => handleWidthChange(parseInt(e.target.value) || 0)}
                     disabled={isLoading}
                   />
-                  <span>トリミングを有効にする</span>
-                </label>
+                  <span className="input-unit">px</span>
+                </div>
+
+                <div className="crop-input-group">
+                  <label htmlFor="height">高さ</label>
+                  <input
+                    type="number"
+                    id="height"
+                    min={MIN_DIMENSION}
+                    max={MAX_DIMENSION}
+                    value={height}
+                    onChange={(e) => handleHeightChange(parseInt(e.target.value) || 0)}
+                    disabled={isLoading}
+                  />
+                  <span className="input-unit">px</span>
+                </div>
               </div>
 
-              {enableCrop && (
-                <div className="crop-settings-inline">
-                  <div className="crop-aspect-ratios">
-                    <label className="preset-label">アスペクト比</label>
-                    <div className="preset-buttons">
-                      {CROP_ASPECT_RATIOS.map((preset) => (
-                        <button
-                          key={preset.label}
-                          type="button"
-                          className={`preset-btn ${cropAspectRatio === preset.ratio ? "active" : ""}`}
-                          onClick={() => setCropAspectRatio(preset.ratio)}
-                          disabled={isLoading}
-                        >
-                          {preset.label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                  <p className="crop-hint">
-                    {cropArea ? "選択範囲をドラッグで移動、範囲外をドラッグで新規作成" : "画像をドラッグして範囲を選択"}
-                  </p>
-                  {cropArea && (
-                    <div className="crop-info-inline">
-                      <span>選択範囲: {Math.round(cropArea.width)} × {Math.round(cropArea.height)} px</span>
-                      <span className="crop-info-separator">|</span>
-                      <span>位置: ({Math.round(cropArea.x)}, {Math.round(cropArea.y)})</span>
-                    </div>
-                  )}
-                </div>
+              <label className="checkbox-label">
+                <input
+                  type="checkbox"
+                  checked={maintainAspectRatio}
+                  onChange={(e) => handleAspectRatioToggle(e.target.checked)}
+                  disabled={isLoading}
+                />
+                アスペクト比を維持
+              </label>
+
+              {sizeChangePercent !== 0 && (
+                <p className={`help-text ${sizeChangePercent > 0 ? "size-increase" : "size-decrease"}`}>
+                  サイズ変更: {sizeChangePercent > 0 ? "+" : ""}{sizeChangePercent}%
+                </p>
               )}
             </div>
+          </div>
 
+          <div className="converter-section">
+            <h2 className="section-title">プリセットサイズ</h2>
+            <div className="aspect-ratio-buttons" role="group" aria-label="プリセットサイズ選択">
+              {PRESET_SIZES.map((preset) => (
+                <button
+                  key={preset.label}
+                  type="button"
+                  className="btn-chip"
+                  onClick={() => handlePresetSelect(preset)}
+                  disabled={isLoading}
+                >
+                  {preset.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="converter-section">
+            <h2 className="section-title">トリミング設定</h2>
+
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                checked={enableCrop}
+                onChange={(e) => setEnableCrop(e.target.checked)}
+                disabled={isLoading}
+              />
+              トリミングを有効にする
+            </label>
+
+            {enableCrop && (
+              <>
+                <div className="aspect-ratio-buttons" role="group" aria-label="アスペクト比選択">
+                  {CROP_ASPECT_RATIOS.map((preset) => (
+                    <button
+                      key={preset.label}
+                      type="button"
+                      className={`btn-chip ${cropAspectRatio === preset.ratio ? "active" : ""}`}
+                      onClick={() => setCropAspectRatio(preset.ratio)}
+                      disabled={isLoading}
+                    >
+                      {preset.label}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="crop-canvas-container">
+                  <canvas
+                    ref={cropCanvasRef}
+                    className={`crop-canvas ${cropArea ? 'has-selection' : ''}`}
+                    onMouseDown={handleDragStart}
+                    onMouseMove={handleDragMove}
+                    onMouseUp={handleDragEnd}
+                    onMouseLeave={handleDragEnd}
+                    onTouchStart={handleDragStart}
+                    onTouchMove={handleDragMove}
+                    onTouchEnd={handleDragEnd}
+                  />
+                </div>
+
+                <p className="help-text">
+                  {cropArea ? "選択範囲をドラッグで移動、範囲外をドラッグで新規作成" : "画像をドラッグして範囲を選択"}
+                </p>
+
+                {cropArea && (
+                  <div className="crop-result-info">
+                    <span>選択範囲: {Math.round(cropArea.width)} × {Math.round(cropArea.height)} px</span>
+                    <span>位置: ({Math.round(cropArea.x)}, {Math.round(cropArea.y)})</span>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+
+          <div className="converter-section">
+            <div className="button-group" role="group" aria-label="操作ボタン">
+              <button
+                type="button"
+                className="btn-primary"
+                onClick={handleResize}
+                disabled={isLoading || width < MIN_DIMENSION || height < MIN_DIMENSION}
+              >
+                {isLoading ? "処理中..." : (enableCrop ? "トリミング&リサイズ" : "リサイズ")}
+              </button>
+            </div>
+          </div>
+
+          {resizedBlob && resizedPreview && (
             <div className="converter-section">
-              <h2 className="section-title">プレビュー</h2>
-
-              <div className="preview-comparison">
-                <div className="preview-panel">
-                  <h3 className="preview-label">元の画像{enableCrop ? " / トリミング" : ""}</h3>
-                  <div className="preview-image-container preview-with-crop">
-                    {enableCrop && originalPreview ? (
-                      <canvas
-                        ref={cropCanvasRef}
-                        className={`crop-canvas ${cropArea ? 'has-selection' : ''}`}
-                        onMouseDown={handleDragStart}
-                        onMouseMove={handleDragMove}
-                        onMouseUp={handleDragEnd}
-                        onMouseLeave={handleDragEnd}
-                        onTouchStart={handleDragStart}
-                        onTouchMove={handleDragMove}
-                        onTouchEnd={handleDragEnd}
-                      />
-                    ) : originalPreview ? (
-                      <img
-                        src={originalPreview}
-                        alt="元の画像"
-                        className="preview-image"
-                      />
-                    ) : (
-                      <span className="preview-placeholder">プレビューなし</span>
-                    )}
-                  </div>
-                </div>
-                <div className="preview-panel">
-                  <h3 className="preview-label">
-                    {enableCrop ? "トリミング・リサイズ後" : "リサイズ後"} ({width} × {height})
-                  </h3>
-                  <div className="preview-image-container">
-                    {isLoading ? (
-                      <div className="loading-enhanced">
-                        <div className="spinner-enhanced" />
-                        <span className="loading-text">処理中...</span>
-                      </div>
-                    ) : resizedPreview ? (
-                      <img
-                        src={resizedPreview}
-                        alt="処理後の画像"
-                        className="preview-image"
-                      />
-                    ) : (
-                      <span className="preview-placeholder">処理待ち</span>
-                    )}
-                  </div>
+              <h2 className="section-title">リサイズ結果</h2>
+              <div className="crop-result-preview">
+                <img
+                  src={resizedPreview}
+                  alt="リサイズ結果"
+                  className="crop-result-image"
+                />
+                <div className="crop-result-info">
+                  <span>{width} × {height} px</span>
+                  <span>{formatFileSize(resizedBlob.size)}</span>
+                  <span className={resizedBlob.size < originalFile.size ? "size-decrease" : "size-increase"}>
+                    {resizedBlob.size < originalFile.size ? "▼" : "▲"}
+                    {Math.abs(Math.round((1 - resizedBlob.size / originalFile.size) * 100))}%
+                  </span>
                 </div>
               </div>
-
-              {resizedBlob && (
-                <div className="resize-stats">
-                  <div className="stat-item">
-                    <span className="stat-label">元のサイズ</span>
-                    <span className="stat-value">{formatFileSize(originalFile.size)}</span>
-                  </div>
-                  <div className="stat-item stat-arrow" aria-hidden="true">→</div>
-                  <div className="stat-item">
-                    <span className="stat-label">処理後</span>
-                    <span className="stat-value">{formatFileSize(resizedBlob.size)}</span>
-                  </div>
-                </div>
-              )}
+              <button
+                type="button"
+                className="btn-primary"
+                onClick={handleDownload}
+              >
+                ダウンロード
+              </button>
             </div>
-          </>
-        )}
+          )}
 
-        <aside
-          className="info-box"
-          role="complementary"
-          aria-labelledby="usage-title"
-        >
-          <h3 id="usage-title">画像リサイズ・トリミングとは</h3>
-          <ul>
-            <li>画像の幅と高さを変更し、サイズを調整します</li>
-            <li>トリミング機能で必要な部分だけを切り出せます</li>
-            <li>アスペクト比を維持して歪みを防ぐことができます</li>
-            <li>すべての処理はブラウザ内で完結（サーバーにアップロードされません）</li>
-          </ul>
-          <h3 id="tips-title">Tips</h3>
-          <ul>
-            <li>縮小は画質劣化が少なく、拡大は画質が低下する可能性があります</li>
-            <li>トリミングで不要な部分を削除してからリサイズすると効率的です</li>
-            <li>Canvas上でドラッグしてトリミング範囲を選択できます</li>
-            <li>プリセットサイズやアスペクト比を使用すると素早く設定できます</li>
-            <li>最大サイズは10000×10000pxです</li>
-          </ul>
-        </aside>
-      </div>
-    </>
+          <aside
+            className="info-box"
+            role="complementary"
+            aria-labelledby="tips-title"
+          >
+            <h3 id="tips-title">リサイズのヒント</h3>
+            <ul>
+              <li><strong>縮小推奨</strong>: 拡大は画質が劣化する可能性があります</li>
+              <li><strong>アスペクト比</strong>: 維持することで画像の歪みを防げます</li>
+              <li><strong>トリミング併用</strong>: 不要な部分を削除してからリサイズすると効率的です</li>
+              <li><strong>最大サイズ</strong>: 10000×10000pxまで対応</li>
+            </ul>
+          </aside>
+        </>
+      )}
+
+      <input
+        ref={fileInputRef}
+        type="file"
+        id="imageFile"
+        accept="image/*"
+        onChange={handleInputChange}
+        disabled={isLoading}
+        className="hidden-file-input"
+        aria-label="画像ファイルを選択"
+      />
+    </div>
   );
 }

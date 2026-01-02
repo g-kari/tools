@@ -4223,3 +4223,167 @@ a:focus-visible {
     text-align: center;
   }
 }
+
+/* ==================== Image Crop Tool Styles ==================== */
+
+.image-source-preview {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--md-sys-color-surface-variant);
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.image-source-thumbnail {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.image-source-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.image-source-info span:first-child {
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface);
+}
+
+.aspect-ratio-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.btn-chip {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 8px;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-chip:hover:not(:disabled) {
+  background: var(--md-sys-color-surface-variant);
+}
+
+.btn-chip.active {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  border-color: var(--md-sys-color-primary);
+}
+
+.btn-chip:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.crop-inputs-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+}
+
+.crop-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.crop-input-group label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.crop-input-group input[type="number"] {
+  padding: 0.5rem;
+  font-size: 0.875rem;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  width: 100%;
+}
+
+.crop-input-group input[type="number"]:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+}
+
+.crop-input-group input[type="number"]:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.input-unit {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.crop-result-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--md-sys-color-surface-variant);
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.crop-result-image {
+  max-width: 100%;
+  max-height: 400px;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.crop-result-info {
+  display: flex;
+  gap: 1rem;
+  font-family: "Roboto Mono", monospace;
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* Image Resize specific styles */
+.resize-size-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.resize-size-controls .crop-inputs-grid {
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 300px;
+}
+
+@media (max-width: 600px) {
+  .image-source-preview {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .crop-inputs-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .aspect-ratio-buttons {
+    justify-content: center;
+  }
+}

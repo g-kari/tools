@@ -46,7 +46,7 @@ test.describe('Image Resize - E2E Tests', () => {
     await expect(usageSection).toBeVisible();
 
     const usageText = await usageSection.textContent();
-    expect(usageText).toContain('画像リサイズ・トリミングとは');
+    expect(usageText).toContain('画像リサイズ・トリミングツールとは');
     expect(usageText).not.toContain('undefined');
   });
 
@@ -102,16 +102,12 @@ test.describe('Image Resize - E2E Tests', () => {
     await expect(imageResizeLink).toContainText('画像リサイズ');
   });
 
-  test('should display tips section', async ({ page }) => {
+  test('should display feature list in info box', async ({ page }) => {
     const infoBox = page.locator('.info-box');
-    await expect(infoBox).toContainText('Tips');
     await expect(infoBox).toContainText('プリセットサイズ');
-    await expect(infoBox).toContainText('アスペクト比');
-  });
-
-  test('should display max size info', async ({ page }) => {
-    const infoBox = page.locator('.info-box');
-    await expect(infoBox).toContainText('10000×10000px');
+    await expect(infoBox).toContainText('アスペクト比維持');
+    await expect(infoBox).toContainText('トリミング機能');
+    await expect(infoBox).toContainText('ブラウザ内処理');
   });
 
   test('should be keyboard accessible', async ({ page }) => {
