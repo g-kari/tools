@@ -53,14 +53,23 @@ test.describe("Color Picker", () => {
     page,
   }) => {
     const colorInput = page.locator('input[type="color"]');
+
+    // Interact with the color input using keyboard/click to trigger React events
+    await colorInput.click();
     await colorInput.evaluate((el: HTMLInputElement) => {
       el.value = "#ff0000";
+      // Trigger React's onChange by simulating user interaction
+      const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+        window.HTMLInputElement.prototype,
+        "value"
+      )?.set;
+      nativeInputValueSetter?.call(el, "#ff0000");
       el.dispatchEvent(new Event("input", { bubbles: true }));
       el.dispatchEvent(new Event("change", { bubbles: true }));
     });
 
     // Wait for state updates
-    await page.waitForTimeout(100);
+    await page.waitForTimeout(300);
 
     // Check HEX format
     const hexInput = page.locator('input[placeholder="#000000"]');
@@ -156,14 +165,12 @@ test.describe("Color Picker", () => {
   test("should copy HEX format to clipboard", async ({ page, context }) => {
     await context.grantPermissions(["clipboard-read", "clipboard-write"]);
 
-    // Set a known color
-    const colorInput = page.locator('input[type="color"]');
-    await colorInput.evaluate((el: HTMLInputElement) => {
-      el.value = "#123456";
-      el.dispatchEvent(new Event("input", { bubbles: true }));
-      el.dispatchEvent(new Event("change", { bubbles: true }));
-    });
-    await page.waitForTimeout(100);
+    // Set a known color using HEX input instead
+    const hexInput = page.locator('input[placeholder="#000000"]');
+    await hexInput.clear();
+    await hexInput.fill("#123456");
+    await hexInput.press("Enter");
+    await page.waitForTimeout(200);
 
     // Click copy button for HEX
     const hexSection = page
@@ -182,14 +189,12 @@ test.describe("Color Picker", () => {
   test("should copy RGB format to clipboard", async ({ page, context }) => {
     await context.grantPermissions(["clipboard-read", "clipboard-write"]);
 
-    // Set a known color
-    const colorInput = page.locator('input[type="color"]');
-    await colorInput.evaluate((el: HTMLInputElement) => {
-      el.value = "#ff0000";
-      el.dispatchEvent(new Event("input", { bubbles: true }));
-      el.dispatchEvent(new Event("change", { bubbles: true }));
-    });
-    await page.waitForTimeout(100);
+    // Set a known color using HEX input instead
+    const hexInput = page.locator('input[placeholder="#000000"]');
+    await hexInput.clear();
+    await hexInput.fill("#FF0000");
+    await hexInput.press("Enter");
+    await page.waitForTimeout(200);
 
     // Click copy button for RGB
     const rgbSection = page
@@ -206,14 +211,12 @@ test.describe("Color Picker", () => {
   });
 
   test("should add color to palette", async ({ page }) => {
-    // Set a color
-    const colorInput = page.locator('input[type="color"]');
-    await colorInput.evaluate((el: HTMLInputElement) => {
-      el.value = "#ff5733";
-      el.dispatchEvent(new Event("input", { bubbles: true }));
-      el.dispatchEvent(new Event("change", { bubbles: true }));
-    });
-    await page.waitForTimeout(100);
+    // Set a color using HEX input
+    const hexInput = page.locator('input[placeholder="#000000"]');
+    await hexInput.clear();
+    await hexInput.fill("#FF5733");
+    await hexInput.press("Enter");
+    await page.waitForTimeout(200);
 
     // Click add to palette button
     const addButton = page.getByRole("button", { name: /\+ 追加/ });
@@ -228,14 +231,12 @@ test.describe("Color Picker", () => {
   });
 
   test("should not add duplicate colors to palette", async ({ page }) => {
-    // Set a color
-    const colorInput = page.locator('input[type="color"]');
-    await colorInput.evaluate((el: HTMLInputElement) => {
-      el.value = "#abcdef";
-      el.dispatchEvent(new Event("input", { bubbles: true }));
-      el.dispatchEvent(new Event("change", { bubbles: true }));
-    });
-    await page.waitForTimeout(100);
+    // Set a color using HEX input
+    const hexInput = page.locator('input[placeholder="#000000"]');
+    await hexInput.clear();
+    await hexInput.fill("#ABCDEF");
+    await hexInput.press("Enter");
+    await page.waitForTimeout(200);
 
     // Add to palette twice
     const addButton = page.getByRole("button", { name: /\+ 追加/ });
@@ -249,14 +250,12 @@ test.describe("Color Picker", () => {
   });
 
   test("should remove color from palette", async ({ page }) => {
-    // Add a color to palette
-    const colorInput = page.locator('input[type="color"]');
-    await colorInput.evaluate((el: HTMLInputElement) => {
-      el.value = "#123456";
-      el.dispatchEvent(new Event("input", { bubbles: true }));
-      el.dispatchEvent(new Event("change", { bubbles: true }));
-    });
-    await page.waitForTimeout(100);
+    // Add a color to palette using HEX input
+    const hexInput = page.locator('input[placeholder="#000000"]');
+    await hexInput.clear();
+    await hexInput.fill("#123456");
+    await hexInput.press("Enter");
+    await page.waitForTimeout(200);
 
     const addButton = page.getByRole("button", { name: /\+ 追加/ });
     await addButton.click();
@@ -274,24 +273,20 @@ test.describe("Color Picker", () => {
   });
 
   test("should select color from palette", async ({ page }) => {
-    // Add two colors to palette
-    const colorInput = page.locator('input[type="color"]');
+    // Add two colors to palette using HEX input
+    const hexInput = page.locator('input[placeholder="#000000"]');
 
-    await colorInput.evaluate((el: HTMLInputElement) => {
-      el.value = "#ff0000";
-      el.dispatchEvent(new Event("input", { bubbles: true }));
-      el.dispatchEvent(new Event("change", { bubbles: true }));
-    });
-    await page.waitForTimeout(100);
+    await hexInput.clear();
+    await hexInput.fill("#FF0000");
+    await hexInput.press("Enter");
+    await page.waitForTimeout(200);
     await page.getByRole("button", { name: /\+ 追加/ }).click();
     await page.waitForTimeout(100);
 
-    await colorInput.evaluate((el: HTMLInputElement) => {
-      el.value = "#00ff00";
-      el.dispatchEvent(new Event("input", { bubbles: true }));
-      el.dispatchEvent(new Event("change", { bubbles: true }));
-    });
-    await page.waitForTimeout(100);
+    await hexInput.clear();
+    await hexInput.fill("#00FF00");
+    await hexInput.press("Enter");
+    await page.waitForTimeout(200);
     await page.getByRole("button", { name: /\+ 追加/ }).click();
     await page.waitForTimeout(100);
 
@@ -307,16 +302,14 @@ test.describe("Color Picker", () => {
 
   test("should limit palette to 10 colors", async ({ page }) => {
     const addButton = page.getByRole("button", { name: /\+ 追加/ });
-    const colorInput = page.locator('input[type="color"]');
+    const hexInput = page.locator('input[placeholder="#000000"]');
 
     // Add 10 colors
     for (let i = 0; i < 10; i++) {
       const color = `#${i.toString().padStart(6, "0")}`;
-      await colorInput.evaluate((el: HTMLInputElement, value: string) => {
-        el.value = value;
-        el.dispatchEvent(new Event("input", { bubbles: true }));
-        el.dispatchEvent(new Event("change", { bubbles: true }));
-      }, color);
+      await hexInput.clear();
+      await hexInput.fill(color);
+      await hexInput.press("Enter");
       await page.waitForTimeout(50);
       await addButton.click();
       await page.waitForTimeout(50);
@@ -337,14 +330,12 @@ test.describe("Color Picker", () => {
     // Clear localStorage first
     await page.evaluate(() => localStorage.clear());
 
-    // Add a color to palette
-    const colorInput = page.locator('input[type="color"]');
-    await colorInput.evaluate((el: HTMLInputElement) => {
-      el.value = "#fedcba";
-      el.dispatchEvent(new Event("input", { bubbles: true }));
-      el.dispatchEvent(new Event("change", { bubbles: true }));
-    });
-    await page.waitForTimeout(100);
+    // Add a color to palette using HEX input
+    const hexInput = page.locator('input[placeholder="#000000"]');
+    await hexInput.clear();
+    await hexInput.fill("#FEDCBA");
+    await hexInput.press("Enter");
+    await page.waitForTimeout(200);
     await page.getByRole("button", { name: /\+ 追加/ }).click();
     await page.waitForTimeout(100);
 
@@ -358,14 +349,12 @@ test.describe("Color Picker", () => {
   });
 
   test("should display color format strings correctly", async ({ page }) => {
-    // Set a known color
-    const colorInput = page.locator('input[type="color"]');
-    await colorInput.evaluate((el: HTMLInputElement) => {
-      el.value = "#ff8800";
-      el.dispatchEvent(new Event("input", { bubbles: true }));
-      el.dispatchEvent(new Event("change", { bubbles: true }));
-    });
-    await page.waitForTimeout(100);
+    // Set a known color using HEX input
+    const hexInput = page.locator('input[placeholder="#000000"]');
+    await hexInput.clear();
+    await hexInput.fill("#FF8800");
+    await hexInput.press("Enter");
+    await page.waitForTimeout(200);
 
     // Check RGB string format
     const rgbString = page
