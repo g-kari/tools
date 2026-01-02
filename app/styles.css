@@ -3765,71 +3765,131 @@ a:focus-visible {
   }
 }
 
+
 /* ========================================
-   透過画像生成ツール
+   画像透過ツール
    ======================================== */
 
-.transparent-image-options {
-  display: flex;
-  gap: 1rem;
-  align-items: flex-end;
-  flex-wrap: wrap;
-  margin-bottom: 0.5rem;
+/* 2カラムレイアウト */
+.transparent-processor-layout {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 1.5rem;
+  align-items: start;
 }
 
-.transparent-image-options .option-group {
+/* 左カラム：プレビュー */
+.transparent-preview-column {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
-.transparent-image-options input[type="number"] {
-  width: 120px;
-  padding: 0.75rem;
-  border: 1px solid var(--md-sys-color-outline);
+.transparent-preview-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.transparent-preview-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.transparent-preview-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.transparent-canvas-wrapper {
+  border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: 8px;
-  font-size: 1rem;
-  background-color: var(--md-sys-color-surface);
+  overflow: hidden;
+  background: var(--md-sys-color-surface);
+}
+
+.transparent-canvas-wrapper .preview-canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.transparent-canvas-wrapper .preview-canvas.picking-color {
+  cursor: crosshair;
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: -2px;
+}
+
+.transparent-preview-bg {
+  background-image:
+    linear-gradient(45deg, #e0e0e0 25%, transparent 25%),
+    linear-gradient(-45deg, #e0e0e0 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #e0e0e0 75%),
+    linear-gradient(-45deg, transparent 75%, #e0e0e0 75%);
+  background-size: 16px 16px;
+  background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+  background-color: #ffffff;
+}
+
+.transparent-image-meta {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  text-align: center;
+  font-family: "Roboto Mono", monospace;
+}
+
+/* 右カラム：設定 */
+.transparent-settings-column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.transparent-settings-card {
+  background: var(--md-sys-color-surface-container);
+  border-radius: 12px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.transparent-color-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.transparent-label {
+  font-size: 0.875rem;
+  font-weight: 500;
   color: var(--md-sys-color-on-surface);
 }
 
-.size-separator {
-  font-size: 1.5rem;
-  color: var(--md-sys-color-on-surface-variant);
-  padding-bottom: 0.75rem;
-}
-
-.background-toggle {
-  margin-bottom: 1rem;
-}
-
-.background-options {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  padding: 1rem;
-  background-color: var(--md-sys-color-surface-variant);
-  border-radius: 12px;
-}
-
-.background-options .color-input-wrapper {
+.transparent-color-controls {
   display: flex;
   gap: 0.5rem;
   align-items: center;
 }
 
-.background-options .color-input-wrapper input[type="color"] {
-  width: 48px;
-  height: 48px;
-  padding: 0;
+.transparent-color-input {
+  width: 40px;
+  height: 40px;
+  padding: 2px;
   border: 1px solid var(--md-sys-color-outline);
   border-radius: 8px;
   cursor: pointer;
+  flex-shrink: 0;
 }
 
-.background-options .color-input-wrapper input[type="text"] {
-  width: 100px;
-  padding: 0.75rem;
+.transparent-hex-input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.5rem 0.75rem;
   border: 1px solid var(--md-sys-color-outline);
   border-radius: 8px;
   font-size: 0.875rem;
@@ -3838,104 +3898,96 @@ a:focus-visible {
   color: var(--md-sys-color-on-surface);
 }
 
-.opacity-group {
-  width: 100%;
+.transparent-pick-btn {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 8px;
+  background: var(--md-sys-color-surface);
+  cursor: pointer;
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
 }
 
-.opacity-group label {
+.transparent-pick-btn:hover {
+  background: var(--md-sys-color-surface-variant);
+}
+
+.transparent-pick-btn.active {
+  background: var(--md-sys-color-primary);
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+.transparent-tolerance-section {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
 }
 
-.opacity-hint {
-  font-size: 0.75rem;
-  font-weight: 400;
-  color: var(--md-sys-color-on-surface-variant);
-}
-
-.opacity-group input[type="range"] {
+.transparent-slider {
   width: 100%;
-  height: 8px;
-  border-radius: 4px;
+  height: 6px;
+  border-radius: 3px;
   accent-color: var(--md-sys-color-primary);
   cursor: pointer;
-  margin-top: 0.5rem;
-}
-
-.opacity-labels {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.75rem;
-  color: var(--md-sys-color-on-surface-variant);
   margin-top: 0.25rem;
 }
 
-.transparent-preview-container {
+.transparent-slider-labels {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 1.5rem;
-  background-color: var(--md-sys-color-surface-variant);
-  border-radius: 12px;
-  margin-bottom: 1rem;
-  min-height: 200px;
-}
-
-.transparent-preview-container canvas {
-  border-radius: 4px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  image-rendering: pixelated;
-}
-
-.transparent-image-info {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-.transparent-image-info .info-item {
-  display: flex;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  background-color: var(--md-sys-color-surface-variant);
-  border-radius: 8px;
-}
-
-.transparent-image-info .info-label {
-  font-weight: 500;
+  justify-content: space-between;
+  font-size: 0.7rem;
   color: var(--md-sys-color-on-surface-variant);
 }
 
-.transparent-image-info .info-value {
-  font-family: "Roboto Mono", monospace;
-  color: var(--md-sys-color-on-surface);
+.transparent-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.transparent-actions .btn-primary,
+.transparent-actions .btn-secondary {
+  flex: 1;
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+}
+
+.transparent-tip {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* レスポンシブ */
+@media (max-width: 768px) {
+  .transparent-processor-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .transparent-settings-column {
+    order: -1;
+  }
+
+  .transparent-preview-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 480px) {
-  .transparent-image-options {
-    flex-direction: column;
-    align-items: stretch;
+  .transparent-color-controls {
+    flex-wrap: wrap;
   }
 
-  .transparent-image-options .option-group {
-    width: 100%;
-  }
-
-  .transparent-image-options input[type="number"] {
-    width: 100%;
-  }
-
-  .size-separator {
-    display: none;
-  }
-
-  .background-options .color-input-wrapper input[type="text"] {
-    flex: 1;
-  }
-
-  .transparent-image-info {
-    flex-direction: column;
+  .transparent-hex-input {
+    order: 1;
+    flex-basis: 100%;
+    margin-top: 0.25rem;
   }
 }

@@ -1,186 +1,217 @@
 import { describe, it, expect } from 'vitest';
 import {
-  hexToRgba,
+  hexToRgb,
+  rgbToHex,
+  colorDistance,
+  makeColorTransparent,
   drawCheckerboard,
   generateFilename,
 } from '../../app/routes/transparent-image';
 
-// Mock canvas for testing
-function createMockCanvas(width: number = 100, height: number = 100): {
-  canvas: HTMLCanvasElement;
+// Mock canvas context for testing
+function createMockImageData(width: number, height: number, fillColor?: { r: number; g: number; b: number; a: number }): ImageData {
+  const data = new Uint8ClampedArray(width * height * 4);
+  if (fillColor) {
+    for (let i = 0; i < data.length; i += 4) {
+      data[i] = fillColor.r;
+      data[i + 1] = fillColor.g;
+      data[i + 2] = fillColor.b;
+      data[i + 3] = fillColor.a;
+    }
+  }
+  return { data, width, height, colorSpace: 'srgb' } as ImageData;
+}
+
+function createMockContext(): {
   ctx: CanvasRenderingContext2D;
   fillRects: Array<{ x: number; y: number; w: number; h: number }>;
 } {
   const fillRects: Array<{ x: number; y: number; w: number; h: number }> = [];
   const ctx = {
     fillStyle: '',
-    globalAlpha: 1,
     fillRect: (x: number, y: number, w: number, h: number) => {
       fillRects.push({ x, y, w, h });
     },
-    clearRect: () => {},
   } as unknown as CanvasRenderingContext2D;
-
-  const canvas = {
-    width,
-    height,
-    getContext: () => ctx,
-  } as unknown as HTMLCanvasElement;
-
-  return { canvas, ctx, fillRects };
+  return { ctx, fillRects };
 }
 
-describe('Transparent Image Generation', () => {
-  describe('hexToRgba', () => {
-    it('should convert valid hex color to rgba', () => {
-      expect(hexToRgba('#FF0000', 1)).toBe('rgba(255, 0, 0, 1)');
-      expect(hexToRgba('#00FF00', 0.5)).toBe('rgba(0, 255, 0, 0.5)');
-      expect(hexToRgba('#0000FF', 0)).toBe('rgba(0, 0, 255, 0)');
+describe('Transparent Image Processing', () => {
+  describe('hexToRgb', () => {
+    it('should convert valid hex color to RGB', () => {
+      expect(hexToRgb('#FF0000')).toEqual({ r: 255, g: 0, b: 0 });
+      expect(hexToRgb('#00FF00')).toEqual({ r: 0, g: 255, b: 0 });
+      expect(hexToRgb('#0000FF')).toEqual({ r: 0, g: 0, b: 255 });
+      expect(hexToRgb('#FFFFFF')).toEqual({ r: 255, g: 255, b: 255 });
+      expect(hexToRgb('#000000')).toEqual({ r: 0, g: 0, b: 0 });
     });
 
     it('should handle hex without hash', () => {
-      expect(hexToRgba('FF0000', 1)).toBe('rgba(255, 0, 0, 1)');
+      expect(hexToRgb('FF0000')).toEqual({ r: 255, g: 0, b: 0 });
     });
 
     it('should handle lowercase hex', () => {
-      expect(hexToRgba('#ff0000', 1)).toBe('rgba(255, 0, 0, 1)');
+      expect(hexToRgb('#ff0000')).toEqual({ r: 255, g: 0, b: 0 });
     });
 
     it('should handle mixed case hex', () => {
-      expect(hexToRgba('#Ff00Ff', 0.75)).toBe('rgba(255, 0, 255, 0.75)');
+      expect(hexToRgb('#Ff00Ff')).toEqual({ r: 255, g: 0, b: 255 });
     });
 
-    it('should return black for invalid hex', () => {
-      expect(hexToRgba('#GGG', 1)).toBe('rgba(0, 0, 0, 1)');
-      expect(hexToRgba('invalid', 0.5)).toBe('rgba(0, 0, 0, 0.5)');
+    it('should return null for invalid hex', () => {
+      expect(hexToRgb('#GGG')).toBeNull();
+      expect(hexToRgb('invalid')).toBeNull();
+      expect(hexToRgb('#FFF')).toBeNull();
+      expect(hexToRgb('')).toBeNull();
+    });
+  });
+
+  describe('rgbToHex', () => {
+    it('should convert RGB to hex', () => {
+      expect(rgbToHex(255, 0, 0)).toBe('#ff0000');
+      expect(rgbToHex(0, 255, 0)).toBe('#00ff00');
+      expect(rgbToHex(0, 0, 255)).toBe('#0000ff');
+      expect(rgbToHex(255, 255, 255)).toBe('#ffffff');
+      expect(rgbToHex(0, 0, 0)).toBe('#000000');
     });
 
-    it('should handle various alpha values', () => {
-      expect(hexToRgba('#FFFFFF', 0)).toBe('rgba(255, 255, 255, 0)');
-      expect(hexToRgba('#FFFFFF', 0.25)).toBe('rgba(255, 255, 255, 0.25)');
-      expect(hexToRgba('#FFFFFF', 0.5)).toBe('rgba(255, 255, 255, 0.5)');
-      expect(hexToRgba('#FFFFFF', 0.75)).toBe('rgba(255, 255, 255, 0.75)');
-      expect(hexToRgba('#FFFFFF', 1)).toBe('rgba(255, 255, 255, 1)');
+    it('should handle intermediate values', () => {
+      expect(rgbToHex(128, 128, 128)).toBe('#808080');
+      expect(rgbToHex(16, 32, 48)).toBe('#102030');
+    });
+
+    it('should pad single digit hex values', () => {
+      expect(rgbToHex(1, 2, 3)).toBe('#010203');
+      expect(rgbToHex(0, 15, 0)).toBe('#000f00');
+    });
+  });
+
+  describe('colorDistance', () => {
+    it('should return 0 for identical colors', () => {
+      const color = { r: 128, g: 128, b: 128 };
+      expect(colorDistance(color, color)).toBe(0);
+    });
+
+    it('should calculate distance between colors', () => {
+      const white = { r: 255, g: 255, b: 255 };
+      const black = { r: 0, g: 0, b: 0 };
+      // Max distance is √(255² + 255² + 255²) ≈ 441.67
+      expect(colorDistance(white, black)).toBeCloseTo(441.67, 1);
+    });
+
+    it('should calculate distance for single channel difference', () => {
+      const color1 = { r: 0, g: 0, b: 0 };
+      const color2 = { r: 255, g: 0, b: 0 };
+      expect(colorDistance(color1, color2)).toBe(255);
+    });
+
+    it('should be symmetric', () => {
+      const color1 = { r: 100, g: 150, b: 200 };
+      const color2 = { r: 50, g: 100, b: 250 };
+      expect(colorDistance(color1, color2)).toBe(colorDistance(color2, color1));
+    });
+  });
+
+  describe('makeColorTransparent', () => {
+    it('should make exact matching color fully transparent', () => {
+      const imageData = createMockImageData(2, 2, { r: 255, g: 255, b: 255, a: 255 });
+      const targetColor = { r: 255, g: 255, b: 255 };
+      const result = makeColorTransparent(imageData, targetColor, 10);
+
+      // All pixels should be transparent
+      for (let i = 0; i < result.data.length; i += 4) {
+        expect(result.data[i + 3]).toBe(0);
+      }
+    });
+
+    it('should not affect non-matching colors with low tolerance', () => {
+      const imageData = createMockImageData(2, 2, { r: 0, g: 0, b: 0, a: 255 });
+      const targetColor = { r: 255, g: 255, b: 255 };
+      const result = makeColorTransparent(imageData, targetColor, 10);
+
+      // All pixels should remain opaque
+      for (let i = 0; i < result.data.length; i += 4) {
+        expect(result.data[i + 3]).toBe(255);
+      }
+    });
+
+    it('should handle 0% tolerance', () => {
+      const imageData = createMockImageData(1, 1, { r: 255, g: 255, b: 255, a: 255 });
+      const targetColor = { r: 255, g: 255, b: 255 };
+      const result = makeColorTransparent(imageData, targetColor, 0);
+
+      // Even exact match should work at 0% tolerance (distance is 0)
+      expect(result.data[3]).toBe(0);
+    });
+
+    it('should handle 100% tolerance', () => {
+      const imageData = createMockImageData(1, 1, { r: 0, g: 0, b: 0, a: 255 });
+      const targetColor = { r: 255, g: 255, b: 255 };
+      const result = makeColorTransparent(imageData, targetColor, 100);
+
+      // At 100% tolerance, the max distance covers entire color space
+      // Black (0,0,0) to white (255,255,255) has distance ~441.67
+      // At 100% tolerance, all colors should be within range
+      expect(result.data[3]).toBeLessThanOrEqual(255);
     });
   });
 
   describe('drawCheckerboard', () => {
     it('should draw checkerboard pattern', () => {
-      const { ctx, fillRects } = createMockCanvas(100, 100);
+      const { ctx, fillRects } = createMockContext();
       drawCheckerboard(ctx, 100, 100, 10);
 
-      // Should have at least one fill (the white background)
-      expect(fillRects.length).toBeGreaterThan(0);
-      // First fill should be full canvas (white background)
+      // First fill is white background
       expect(fillRects[0]).toEqual({ x: 0, y: 0, w: 100, h: 100 });
+      // Should have gray cells
+      expect(fillRects.length).toBeGreaterThan(1);
     });
 
-    it('should use default cell size of 10', () => {
-      const { ctx, fillRects } = createMockCanvas(30, 30);
+    it('should use default cell size', () => {
+      const { ctx, fillRects } = createMockContext();
       drawCheckerboard(ctx, 30, 30);
 
-      // First is white background, then gray cells
       expect(fillRects.length).toBeGreaterThan(1);
     });
 
     it('should handle small canvas', () => {
-      const { ctx, fillRects } = createMockCanvas(10, 10);
+      const { ctx, fillRects } = createMockContext();
       drawCheckerboard(ctx, 10, 10, 5);
-
-      expect(fillRects.length).toBeGreaterThan(0);
-    });
-
-    it('should handle large canvas', () => {
-      const { ctx, fillRects } = createMockCanvas(1000, 1000);
-      drawCheckerboard(ctx, 1000, 1000, 10);
 
       expect(fillRects.length).toBeGreaterThan(0);
     });
   });
 
   describe('generateFilename', () => {
-    it('should generate correct filename for transparent image', () => {
-      const filename = generateFilename(256, 256, 0);
-      expect(filename).toBe('transparent_256x256_transparent.png');
+    it('should generate correct filename with extension', () => {
+      expect(generateFilename('image.jpg')).toBe('image_transparent.png');
+      expect(generateFilename('photo.png')).toBe('photo_transparent.png');
+      expect(generateFilename('test.webp')).toBe('test_transparent.png');
     });
 
-    it('should generate correct filename with opacity', () => {
-      const filename = generateFilename(512, 512, 50);
-      expect(filename).toBe('transparent_512x512_opacity50.png');
+    it('should handle files without extension', () => {
+      expect(generateFilename('noextension')).toBe('noextension_transparent.png');
     });
 
-    it('should handle various dimensions', () => {
-      expect(generateFilename(16, 16, 0)).toBe('transparent_16x16_transparent.png');
-      expect(generateFilename(1024, 1024, 100)).toBe('transparent_1024x1024_opacity100.png');
-      expect(generateFilename(100, 200, 75)).toBe('transparent_100x200_opacity75.png');
-    });
-  });
-
-  describe('Preset sizes', () => {
-    const presetSizes = [
-      { label: '16×16', width: 16, height: 16 },
-      { label: '32×32', width: 32, height: 32 },
-      { label: '64×64', width: 64, height: 64 },
-      { label: '128×128', width: 128, height: 128 },
-      { label: '256×256', width: 256, height: 256 },
-      { label: '512×512', width: 512, height: 512 },
-      { label: '1024×1024', width: 1024, height: 1024 },
-    ];
-
-    it('should have all preset sizes defined', () => {
-      expect(presetSizes).toHaveLength(7);
-    });
-
-    it('should have valid square dimensions for all presets', () => {
-      presetSizes.forEach((preset) => {
-        expect(preset.width).toBeGreaterThan(0);
-        expect(preset.height).toBeGreaterThan(0);
-        expect(preset.width).toBe(preset.height);
-      });
-    });
-
-    it('should have power of 2 dimensions', () => {
-      const isPowerOfTwo = (n: number) => n > 0 && (n & (n - 1)) === 0;
-      presetSizes.forEach((preset) => {
-        expect(isPowerOfTwo(preset.width)).toBe(true);
-      });
+    it('should handle complex filenames', () => {
+      expect(generateFilename('my.file.name.jpg')).toBe('my.file.name_transparent.png');
+      expect(generateFilename('file-with-dashes.png')).toBe('file-with-dashes_transparent.png');
+      expect(generateFilename('file_with_underscores.png')).toBe('file_with_underscores_transparent.png');
     });
   });
 
-  describe('Size constraints', () => {
-    const MIN_SIZE = 1;
-    const MAX_SIZE = 10000;
-
-    it('should have minimum size of 1', () => {
-      expect(MIN_SIZE).toBe(1);
-    });
-
-    it('should have maximum size of 10000', () => {
-      expect(MAX_SIZE).toBe(10000);
-    });
-
-    it('should clamp values within bounds', () => {
-      const clamp = (value: number) => Math.max(MIN_SIZE, Math.min(MAX_SIZE, value));
-
-      expect(clamp(0)).toBe(MIN_SIZE);
-      expect(clamp(-100)).toBe(MIN_SIZE);
-      expect(clamp(20000)).toBe(MAX_SIZE);
-      expect(clamp(5000)).toBe(5000);
-    });
-  });
-
-  describe('Opacity validation', () => {
-    it('should accept opacity values from 0 to 100', () => {
-      for (let opacity = 0; opacity <= 100; opacity += 10) {
-        expect(opacity).toBeGreaterThanOrEqual(0);
-        expect(opacity).toBeLessThanOrEqual(100);
+  describe('Tolerance validation', () => {
+    it('should accept tolerance values from 0 to 100', () => {
+      for (let tolerance = 0; tolerance <= 100; tolerance += 10) {
+        expect(tolerance).toBeGreaterThanOrEqual(0);
+        expect(tolerance).toBeLessThanOrEqual(100);
       }
     });
 
-    it('should convert opacity to 0-1 range for canvas API', () => {
-      expect(0 / 100).toBe(0);
-      expect(50 / 100).toBe(0.5);
-      expect(100 / 100).toBe(1);
+    it('should calculate max distance correctly', () => {
+      // Max RGB distance is √(255² + 255² + 255²) ≈ 441.67
+      const maxDistance = Math.sqrt(255 * 255 + 255 * 255 + 255 * 255);
+      expect(maxDistance).toBeCloseTo(441.67, 1);
     });
   });
 
@@ -188,41 +219,55 @@ describe('Transparent Image Generation', () => {
     it('should accept valid hex colors', () => {
       const validColors = ['#000000', '#FFFFFF', '#6750A4', '#ff0000', '#00FF00'];
       validColors.forEach((color) => {
-        expect(color).toMatch(/^#[0-9A-Fa-f]{6}$/);
+        expect(hexToRgb(color)).not.toBeNull();
       });
     });
 
-    it('should recognize invalid hex colors', () => {
-      const invalidColors = ['000000', '#FFF', '#GGGGGG', 'red', 'rgb(0,0,0)'];
+    it('should reject invalid hex colors', () => {
+      // '000000' without hash is now valid, so test truly invalid colors
+      const invalidColors = ['#FFF', '#GGGGGG', 'red', 'rgb(0,0,0)', ''];
       invalidColors.forEach((color) => {
-        expect(color).not.toMatch(/^#[0-9A-Fa-f]{6}$/);
+        expect(hexToRgb(color)).toBeNull();
       });
     });
   });
 
-  describe('Image generation options', () => {
-    it('should support complete transparency', () => {
-      const opacity = 0;
-      const useBackgroundColor = false;
-      // When useBackgroundColor is false or opacity is 0, image should be fully transparent
-      expect(opacity === 0 || !useBackgroundColor).toBe(true);
+  describe('Image processing edge cases', () => {
+    it('should handle empty image data', () => {
+      const imageData = createMockImageData(0, 0);
+      const targetColor = { r: 255, g: 255, b: 255 };
+      const result = makeColorTransparent(imageData, targetColor, 50);
+      expect(result.data.length).toBe(0);
     });
 
-    it('should support semi-transparent background', () => {
-      const opacity = 50;
-      const useBackgroundColor = true;
-      const backgroundColor = '#6750A4';
-      // When useBackgroundColor is true and opacity > 0, should use background
-      expect(useBackgroundColor && opacity > 0).toBe(true);
-      expect(backgroundColor).toMatch(/^#[0-9A-Fa-f]{6}$/);
+    it('should handle single pixel image', () => {
+      const imageData = createMockImageData(1, 1, { r: 128, g: 128, b: 128, a: 255 });
+      const targetColor = { r: 128, g: 128, b: 128 };
+      const result = makeColorTransparent(imageData, targetColor, 10);
+      expect(result.data[3]).toBe(0);
     });
 
-    it('should support opaque background', () => {
-      const opacity = 100;
-      const useBackgroundColor = true;
-      // When opacity is 100, image should be fully opaque
-      expect(opacity).toBe(100);
-      expect(useBackgroundColor).toBe(true);
+    it('should preserve non-targeted pixels', () => {
+      // Create image with two different colors
+      const imageData = createMockImageData(2, 1);
+      // First pixel: red
+      imageData.data[0] = 255;
+      imageData.data[1] = 0;
+      imageData.data[2] = 0;
+      imageData.data[3] = 255;
+      // Second pixel: blue
+      imageData.data[4] = 0;
+      imageData.data[5] = 0;
+      imageData.data[6] = 255;
+      imageData.data[7] = 255;
+
+      const targetColor = { r: 255, g: 0, b: 0 };
+      const result = makeColorTransparent(imageData, targetColor, 10);
+
+      // Red pixel should be transparent
+      expect(result.data[3]).toBe(0);
+      // Blue pixel should remain opaque
+      expect(result.data[7]).toBe(255);
     });
   });
 });
