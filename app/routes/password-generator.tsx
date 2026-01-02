@@ -6,6 +6,23 @@ import {
   type PasswordOptions,
 } from "../utils/password";
 import { useToast } from "../components/Toast";
+import { Slider } from "../components/Slider";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
+import Box from "@mui/material/Box";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormGroup from "@mui/material/FormGroup";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import Typography from "@mui/material/Typography";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import LinearProgress from "@mui/material/LinearProgress";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import ClearIcon from "@mui/icons-material/Clear";
 
 export const Route = createFileRoute("/password-generator")({
   head: () => ({
@@ -100,162 +117,142 @@ function PasswordGenerator() {
 
   const strength = calculateStrength(password, options);
 
+  const getStrengthColor = (score: number) => {
+    switch (score) {
+      case 1: return "error";
+      case 2: return "warning";
+      case 3: return "info";
+      case 4: return "success";
+      case 5: return "success";
+      default: return "inherit";
+    }
+  };
+
   return (
     <>
       <div className="tool-container">
         <form onSubmit={(e) => e.preventDefault()} aria-label="パスワード生成フォーム">
           <div className="converter-section">
-            <label htmlFor="passwordLength" className="section-title">
-              パスワードの長さ: {options.length}文字
-            </label>
-            <input
-              type="range"
-              id="passwordLength"
-              min="4"
-              max="128"
+            <Slider
+              label="パスワードの長さ"
               value={options.length}
-              onChange={(e) => handleOptionChange("length", parseInt(e.target.value, 10))}
-              aria-describedby="length-help"
-              aria-label="パスワードの長さ"
-              style={{ width: "100%", marginBottom: "20px" }}
+              onChange={(value) => handleOptionChange("length", value)}
+              min={4}
+              max={128}
+              unit="文字"
+              helpText="4文字から128文字までの長さを選択できます"
             />
-            <span id="length-help" className="sr-only">
-              4文字から128文字までの長さを選択できます
-            </span>
           </div>
 
-          <div className={`collapsible ${showAdvanced ? "open" : ""}`}>
-            <button
-              type="button"
-              className="collapsible-header"
-              onClick={() => setShowAdvanced(!showAdvanced)}
-              aria-expanded={showAdvanced}
-              aria-controls="advanced-options"
-            >
-              <span className="collapsible-title">詳細設定（文字種）</span>
-              <span className="collapsible-icon" aria-hidden="true">▾</span>
-            </button>
-            <div className="collapsible-content" id="advanced-options">
-              <div className="collapsible-body">
-                <div className="checkbox-group" role="group" aria-label="使用する文字種の選択">
-                  <label className="checkbox-label">
-                    <input
-                      type="checkbox"
+          <Accordion
+            expanded={showAdvanced}
+            onChange={() => setShowAdvanced(!showAdvanced)}
+            sx={{ mb: 3, bgcolor: "background.paper" }}
+          >
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography>詳細設定（文字種）</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <FormGroup row>
+                <FormControlLabel
+                  control={
+                    <Checkbox
                       checked={options.uppercase}
                       onChange={(e) => handleOptionChange("uppercase", e.target.checked)}
-                      aria-label="大文字を含める"
                     />
-                    大文字 (A-Z)
-                  </label>
-                  <label className="checkbox-label">
-                    <input
-                      type="checkbox"
+                  }
+                  label="大文字 (A-Z)"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
                       checked={options.lowercase}
                       onChange={(e) => handleOptionChange("lowercase", e.target.checked)}
-                      aria-label="小文字を含める"
                     />
-                    小文字 (a-z)
-                  </label>
-                  <label className="checkbox-label">
-                    <input
-                      type="checkbox"
+                  }
+                  label="小文字 (a-z)"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
                       checked={options.numbers}
                       onChange={(e) => handleOptionChange("numbers", e.target.checked)}
-                      aria-label="数字を含める"
                     />
-                    数字 (0-9)
-                  </label>
-                  <label className="checkbox-label">
-                    <input
-                      type="checkbox"
+                  }
+                  label="数字 (0-9)"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
                       checked={options.symbols}
                       onChange={(e) => handleOptionChange("symbols", e.target.checked)}
-                      aria-label="記号を含める"
                     />
-                    記号 (!@#$%...)
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
+                  }
+                  label="記号 (!@#$%...)"
+                />
+              </FormGroup>
+            </AccordionDetails>
+          </Accordion>
 
-          <div className="button-group" role="group" aria-label="パスワード生成操作">
-            <button
-              type="button"
-              className="btn-primary"
+          <Stack direction="row" spacing={2} sx={{ mb: 3 }} flexWrap="wrap" useFlexGap>
+            <Button
+              variant="contained"
               onClick={handleGenerate}
-              aria-label="新しいパスワードを生成"
+              startIcon={<RefreshIcon />}
             >
               生成
-            </button>
-            <button
-              type="button"
-              className="btn-secondary"
+            </Button>
+            <Button
+              variant="outlined"
               onClick={handleCopy}
               disabled={!password}
-              aria-label="パスワードをクリップボードにコピー"
+              startIcon={<ContentCopyIcon />}
+              color={copied ? "success" : "primary"}
             >
               {copied ? "コピーしました" : "コピー"}
-            </button>
-            <button
-              type="button"
-              className="btn-clear"
+            </Button>
+            <Button
+              variant="outlined"
+              color="inherit"
               onClick={handleClear}
-              aria-label="パスワードをクリア"
+              startIcon={<ClearIcon />}
             >
               クリア
-            </button>
-          </div>
+            </Button>
+          </Stack>
 
-          <div className="converter-section" style={{ marginTop: "30px" }}>
-            <label htmlFor="passwordOutput" className="section-title">
+          <Box sx={{ mb: 3 }}>
+            <Typography variant="subtitle2" gutterBottom>
               生成されたパスワード
-            </label>
-            <input
-              type="text"
+            </Typography>
+            <TextField
+              fullWidth
               id="passwordOutput"
-              ref={passwordRef}
+              inputRef={passwordRef}
               value={password}
-              readOnly
+              slotProps={{
+                input: { readOnly: true },
+                htmlInput: {
+                  "aria-live": "polite",
+                  style: { fontFamily: "'Roboto Mono', monospace", fontSize: "1.1rem", letterSpacing: "0.05em" },
+                },
+              }}
               placeholder="パスワードを生成してください..."
-              aria-label="生成されたパスワード"
-              aria-live="polite"
-              style={{ fontFamily: "'Roboto Mono', monospace", fontSize: "1.1rem", letterSpacing: "0.05em" }}
             />
-          </div>
+          </Box>
 
           {password && (
-            <section aria-labelledby="strength-title" style={{ marginTop: "20px" }}>
-              <h2 id="strength-title" className="section-title">
-                パスワード強度
-              </h2>
-              <div className="result-card" aria-live="polite">
-                <div className="result-row">
-                  <div className="result-label">強度</div>
-                  <div className="result-value">{strength.label}</div>
-                </div>
-                <div className="result-row">
-                  <div className="result-label">強度インジケーター</div>
-                  <div className="result-value">
-                    <div
-                      className="strength-bar"
-                      role="progressbar"
-                      aria-valuenow={strength.score}
-                      aria-valuemin={0}
-                      aria-valuemax={5}
-                      aria-label={`パスワード強度: ${strength.label}`}
-                    >
-                      {[1, 2, 3, 4, 5].map((level) => (
-                        <div
-                          key={level}
-                          className={`strength-segment ${level <= strength.score ? `strength-${strength.score}` : ""}`}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
+            <Box sx={{ mb: 3 }}>
+              <Typography variant="subtitle2" gutterBottom>
+                パスワード強度: {strength.label}
+              </Typography>
+              <LinearProgress
+                variant="determinate"
+                value={(strength.score / 5) * 100}
+                color={getStrengthColor(strength.score) as "error" | "warning" | "info" | "success" | "inherit"}
+                sx={{ height: 10, borderRadius: 5 }}
+              />
+            </Box>
           )}
         </form>
 
