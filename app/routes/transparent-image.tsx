@@ -550,11 +550,25 @@ function TransparentImageProcessor() {
               </div>
             </div>
 
-            <p className="transparent-tip">
-              💡 「🎯」ボタンを押して元画像をクリックすると色を直接選択できます
-            </p>
           </div>
         </div>
+      )}
+
+      {/* Tipsは常に表示 */}
+      {originalFile && imageDimensions && (
+        <aside
+          className="info-box transparent-info-box"
+          role="complementary"
+          aria-labelledby="tips-title"
+        >
+          <h3 id="tips-title">Tips</h3>
+          <ul>
+            <li>「🎯」ボタンを押して元画像をクリックすると色を直接選択できます</li>
+            <li>許容範囲を上げると、選択した色に近い色も透過されます</li>
+            <li>チェッカーボードパターンは透明度を視覚化するためのものです</li>
+            <li>出力形式はPNG（透過対応）です</li>
+          </ul>
+        </aside>
       )}
 
       <input

@@ -3773,7 +3773,7 @@ a:focus-visible {
 /* 2カラムレイアウト */
 .transparent-processor-layout {
   display: grid;
-  grid-template-columns: 1fr 280px;
+  grid-template-columns: 1fr 320px;
   gap: 1.5rem;
   align-items: start;
 }
@@ -3888,7 +3888,8 @@ a:focus-visible {
 
 .transparent-hex-input {
   flex: 1;
-  min-width: 0;
+  min-width: 80px;
+  width: 100%;
   padding: 0.5rem 0.75rem;
   border: 1px solid var(--md-sys-color-outline);
   border-radius: 8px;
@@ -3958,11 +3959,22 @@ a:focus-visible {
   font-size: 0.875rem;
 }
 
-.transparent-tip {
-  font-size: 0.75rem;
-  color: var(--md-sys-color-on-surface-variant);
+.transparent-info-box {
+  margin-top: 1rem;
+}
+
+.transparent-info-box h3 {
+  margin-bottom: 0.5rem;
+}
+
+.transparent-info-box ul {
   margin: 0;
-  line-height: 1.4;
+  padding-left: 1.25rem;
+}
+
+.transparent-info-box li {
+  font-size: 0.875rem;
+  margin-bottom: 0.25rem;
 }
 
 /* レスポンシブ */
