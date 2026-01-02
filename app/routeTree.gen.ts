@@ -36,6 +36,7 @@ import { Route as DummyImageRouteImport } from './routes/dummy-image'
 import { Route as DummyAudioRouteImport } from './routes/dummy-audio'
 import { Route as DnsLookupRouteImport } from './routes/dns-lookup'
 import { Route as DiceRollRouteImport } from './routes/dice-roll'
+import { Route as ColorPickerRouteImport } from './routes/color-picker'
 import { Route as ColorExtractorRouteImport } from './routes/color-extractor'
 import { Route as CidrRouteImport } from './routes/cidr'
 import { Route as CharCountRouteImport } from './routes/char-count'
@@ -182,6 +183,11 @@ const DiceRollRoute = DiceRollRouteImport.update({
   path: '/dice-roll',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ColorPickerRoute = ColorPickerRouteImport.update({
+  id: '/color-picker',
+  path: '/color-picker',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ColorExtractorRoute = ColorExtractorRouteImport.update({
   id: '/color-extractor',
   path: '/color-extractor',
@@ -240,6 +246,7 @@ export interface FileRoutesByFullPath {
   '/char-count': typeof CharCountRoute
   '/cidr': typeof CidrRoute
   '/color-extractor': typeof ColorExtractorRoute
+  '/color-picker': typeof ColorPickerRoute
   '/dice-roll': typeof DiceRollRoute
   '/dns-lookup': typeof DnsLookupRoute
   '/dummy-audio': typeof DummyAudioRoute
@@ -279,6 +286,7 @@ export interface FileRoutesByTo {
   '/char-count': typeof CharCountRoute
   '/cidr': typeof CidrRoute
   '/color-extractor': typeof ColorExtractorRoute
+  '/color-picker': typeof ColorPickerRoute
   '/dice-roll': typeof DiceRollRoute
   '/dns-lookup': typeof DnsLookupRoute
   '/dummy-audio': typeof DummyAudioRoute
@@ -319,6 +327,7 @@ export interface FileRoutesById {
   '/char-count': typeof CharCountRoute
   '/cidr': typeof CidrRoute
   '/color-extractor': typeof ColorExtractorRoute
+  '/color-picker': typeof ColorPickerRoute
   '/dice-roll': typeof DiceRollRoute
   '/dns-lookup': typeof DnsLookupRoute
   '/dummy-audio': typeof DummyAudioRoute
@@ -360,6 +369,7 @@ export interface FileRouteTypes {
     | '/char-count'
     | '/cidr'
     | '/color-extractor'
+    | '/color-picker'
     | '/dice-roll'
     | '/dns-lookup'
     | '/dummy-audio'
@@ -399,6 +409,7 @@ export interface FileRouteTypes {
     | '/char-count'
     | '/cidr'
     | '/color-extractor'
+    | '/color-picker'
     | '/dice-roll'
     | '/dns-lookup'
     | '/dummy-audio'
@@ -438,6 +449,7 @@ export interface FileRouteTypes {
     | '/char-count'
     | '/cidr'
     | '/color-extractor'
+    | '/color-picker'
     | '/dice-roll'
     | '/dns-lookup'
     | '/dummy-audio'
@@ -478,6 +490,7 @@ export interface RootRouteChildren {
   CharCountRoute: typeof CharCountRoute
   CidrRoute: typeof CidrRoute
   ColorExtractorRoute: typeof ColorExtractorRoute
+  ColorPickerRoute: typeof ColorPickerRoute
   DiceRollRoute: typeof DiceRollRoute
   DnsLookupRoute: typeof DnsLookupRoute
   DummyAudioRoute: typeof DummyAudioRoute
@@ -702,6 +715,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DiceRollRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/color-picker': {
+      id: '/color-picker'
+      path: '/color-picker'
+      fullPath: '/color-picker'
+      preLoaderRoute: typeof ColorPickerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/color-extractor': {
       id: '/color-extractor'
       path: '/color-extractor'
@@ -782,6 +802,7 @@ const rootRouteChildren: RootRouteChildren = {
   CharCountRoute: CharCountRoute,
   CidrRoute: CidrRoute,
   ColorExtractorRoute: ColorExtractorRoute,
+  ColorPickerRoute: ColorPickerRoute,
   DiceRollRoute: DiceRollRoute,
   DnsLookupRoute: DnsLookupRoute,
   DummyAudioRoute: DummyAudioRoute,
