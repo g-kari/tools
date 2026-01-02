@@ -32,6 +32,7 @@ import { Route as ImageCompressRouteImport } from './routes/image-compress'
 import { Route as ImageBase64RouteImport } from './routes/image-base64'
 import { Route as HashRouteImport } from './routes/hash'
 import { Route as GlobalIpRouteImport } from './routes/global-ip'
+import { Route as FaviconGeneratorRouteImport } from './routes/favicon-generator'
 import { Route as EmojiConverterRouteImport } from './routes/emoji-converter'
 import { Route as EmailDnsRouteImport } from './routes/email-dns'
 import { Route as DummyImageRouteImport } from './routes/dummy-image'
@@ -165,6 +166,11 @@ const GlobalIpRoute = GlobalIpRouteImport.update({
   path: '/global-ip',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FaviconGeneratorRoute = FaviconGeneratorRouteImport.update({
+  id: '/favicon-generator',
+  path: '/favicon-generator',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EmojiConverterRoute = EmojiConverterRouteImport.update({
   id: '/emoji-converter',
   path: '/emoji-converter',
@@ -265,6 +271,7 @@ export interface FileRoutesByFullPath {
   '/dummy-image': typeof DummyImageRoute
   '/email-dns': typeof EmailDnsRoute
   '/emoji-converter': typeof EmojiConverterRoute
+  '/favicon-generator': typeof FaviconGeneratorRoute
   '/global-ip': typeof GlobalIpRoute
   '/hash': typeof HashRoute
   '/image-base64': typeof ImageBase64Route
@@ -307,6 +314,7 @@ export interface FileRoutesByTo {
   '/dummy-image': typeof DummyImageRoute
   '/email-dns': typeof EmailDnsRoute
   '/emoji-converter': typeof EmojiConverterRoute
+  '/favicon-generator': typeof FaviconGeneratorRoute
   '/global-ip': typeof GlobalIpRoute
   '/hash': typeof HashRoute
   '/image-base64': typeof ImageBase64Route
@@ -350,6 +358,7 @@ export interface FileRoutesById {
   '/dummy-image': typeof DummyImageRoute
   '/email-dns': typeof EmailDnsRoute
   '/emoji-converter': typeof EmojiConverterRoute
+  '/favicon-generator': typeof FaviconGeneratorRoute
   '/global-ip': typeof GlobalIpRoute
   '/hash': typeof HashRoute
   '/image-base64': typeof ImageBase64Route
@@ -394,6 +403,7 @@ export interface FileRouteTypes {
     | '/dummy-image'
     | '/email-dns'
     | '/emoji-converter'
+    | '/favicon-generator'
     | '/global-ip'
     | '/hash'
     | '/image-base64'
@@ -436,6 +446,7 @@ export interface FileRouteTypes {
     | '/dummy-image'
     | '/email-dns'
     | '/emoji-converter'
+    | '/favicon-generator'
     | '/global-ip'
     | '/hash'
     | '/image-base64'
@@ -478,6 +489,7 @@ export interface FileRouteTypes {
     | '/dummy-image'
     | '/email-dns'
     | '/emoji-converter'
+    | '/favicon-generator'
     | '/global-ip'
     | '/hash'
     | '/image-base64'
@@ -521,6 +533,7 @@ export interface RootRouteChildren {
   DummyImageRoute: typeof DummyImageRoute
   EmailDnsRoute: typeof EmailDnsRoute
   EmojiConverterRoute: typeof EmojiConverterRoute
+  FaviconGeneratorRoute: typeof FaviconGeneratorRoute
   GlobalIpRoute: typeof GlobalIpRoute
   HashRoute: typeof HashRoute
   ImageBase64Route: typeof ImageBase64Route
@@ -713,6 +726,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GlobalIpRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/favicon-generator': {
+      id: '/favicon-generator'
+      path: '/favicon-generator'
+      fullPath: '/favicon-generator'
+      preLoaderRoute: typeof FaviconGeneratorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/emoji-converter': {
       id: '/emoji-converter'
       path: '/emoji-converter'
@@ -849,6 +869,7 @@ const rootRouteChildren: RootRouteChildren = {
   DummyImageRoute: DummyImageRoute,
   EmailDnsRoute: EmailDnsRoute,
   EmojiConverterRoute: EmojiConverterRoute,
+  FaviconGeneratorRoute: FaviconGeneratorRoute,
   GlobalIpRoute: GlobalIpRoute,
   HashRoute: HashRoute,
   ImageBase64Route: ImageBase64Route,
