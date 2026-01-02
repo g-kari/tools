@@ -41,24 +41,25 @@
         "id": "4",
         "title": "Base64画像変換機能（Issue #78）",
         "description": "画像ファイルをBase64エンコードしてData URL形式で出力する機能。コピー機能付き。",
-        "status": "in-progress",
+        "status": "done",
         "dependencies": [],
         "priority": "medium",
         "details": "【実装内容】\n1. app/routes/image-base64.tsxを新規作成\n2. 画像アップロード機能（ドラッグ&ドロップ対応）\n3. FileReader APIを使用してBase64エンコード\n4. Data URL形式（data:image/png;base64,...）での出力\n5. プレビュー表示\n6. Base64文字列のテキストエリア表示\n7. コピーボタン（クリップボードAPIを使用）\n8. 文字数カウント表示\n\n【出力形式】\n- Data URL形式: `data:image/png;base64,iVBORw0KGgoAAAANSUhEUg...`\n- Base64のみ: `iVBORw0KGgoAAAANSUhEUg...`\n- HTML img形式: `<img src=\"data:image/png;base64,...\" />`\n- CSS background形式: `background-image: url('data:image/png;base64,...');`\n\n【技術実装】\n```typescript\nfunction imageToBase64(file: File): Promise<string> {\n  return new Promise((resolve, reject) => {\n    const reader = new FileReader();\n    reader.onload = () => resolve(reader.result as string);\n    reader.onerror = reject;\n    reader.readAsDataURL(file);\n  });\n}\n```",
         "testStrategy": "【テスト戦略】\n1. ユニットテスト（tests/unit/image-base64.test.ts）\n   - Base64エンコード関数のテスト\n   - 各出力形式のテスト\n   - 各種画像フォーマット（PNG、JPEG、WebP等）のテスト\n2. E2Eテスト（tests/e2e/image-base64.spec.ts）\n   - ファイルアップロード\n   - Base64生成\n   - コピー機能\n   - 各出力形式の切り替え",
         "subtasks": [],
-        "updatedAt": "2026-01-02T04:29:40.385Z"
+        "updatedAt": "2026-01-02T05:51:32.092Z"
       },
       {
         "id": "5",
         "title": "カラーピッカー機能（Issue #81）",
         "description": "カラーコードの取得・変換機能。HEX⇔RGB⇔HSL⇔CMYK相互変換、ビジュアルカラーピッカー、カラーパレット保存機能を実装。",
-        "status": "pending",
+        "status": "done",
         "dependencies": [],
         "priority": "medium",
         "details": "【実装内容】\n1. app/routes/color-picker.tsxを新規作成\n2. ビジュアルカラーピッカー（input type=\"color\"を使用）\n3. カラーコード入力フィールド（HEX、RGB、HSL、CMYK）\n4. リアルタイム相互変換\n5. プレビュー表示（選択中の色の大きなスウォッチ）\n6. カラーパレット機能（最大10色まで保存）\n7. コピーボタン（各形式ごとにコピー可能）\n8. LocalStorageでカラーパレットを永続化\n\n【カラー形式】\n- HEX: #RRGGBB、#RRGGBBAA（アルファ値対応）\n- RGB: rgb(255, 255, 255)、rgba(255, 255, 255, 1.0)\n- HSL: hsl(0, 0%, 100%)、hsla(0, 0%, 100%, 1.0)\n- CMYK: cmyk(0%, 0%, 0%, 0%)\n\n【技術実装】\n```typescript\nfunction hexToRgb(hex: string): { r: number; g: number; b: number } {\n  const result = /^#?([a-f\\d]{2})([a-f\\d]{2})([a-f\\d]{2})$/i.exec(hex);\n  return result ? {\n    r: parseInt(result[1], 16),\n    g: parseInt(result[2], 16),\n    b: parseInt(result[3], 16)\n  } : { r: 0, g: 0, b: 0 };\n}\n\nfunction rgbToHsl(r: number, g: number, b: number): { h: number; s: number; l: number } {\n  // HSL変換ロジック\n}\n\nfunction rgbToCmyk(r: number, g: number, b: number): { c: number; m: number; y: number; k: number } {\n  // CMYK変換ロジック\n}\n```",
         "testStrategy": "【テスト戦略】\n1. ユニットテスト（tests/unit/color-picker.test.ts）\n   - 各変換関数のテスト（HEX⇔RGB⇔HSL⇔CMYK）\n   - 境界値テスト（0、255等）\n   - 無効な入力のエラーハンドリング\n2. E2Eテスト（tests/e2e/color-picker.spec.ts）\n   - カラーピッカーでの色選択\n   - 各形式での入力と変換\n   - カラーパレットへの追加・削除\n   - コピー機能\n   - LocalStorage永続化",
-        "subtasks": []
+        "subtasks": [],
+        "updatedAt": "2026-01-02T05:55:48.503Z"
       },
       {
         "id": "6",
@@ -264,9 +265,9 @@
     ],
     "metadata": {
       "version": "1.0.0",
-      "lastModified": "2026-01-02T04:29:40.386Z",
+      "lastModified": "2026-01-02T05:55:48.504Z",
       "taskCount": 20,
-      "completedCount": 3,
+      "completedCount": 5,
       "tags": [
         "master"
       ]
