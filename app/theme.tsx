@@ -10,8 +10,9 @@ import type { ReactNode } from "react";
 
 /**
  * Emotionキャッシュ（SSR対応）
+ * prepend: trueでスタイルをheadの先頭に挿入（既存CSSとの優先順位問題を回避）
  */
-export const emotionCache = createCache({ key: "css" });
+export const emotionCache = createCache({ key: "css", prepend: true });
 
 /**
  * カスタムMUIテーマ
