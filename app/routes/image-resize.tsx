@@ -385,7 +385,7 @@ function ImageResizer() {
   const handleDragStart = useCallback((
     e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>
   ) => {
-    if (!enableCrop || !imageElementRef.current) return;
+    if (!enableCrop || !originalDimensions) return;
 
     // タッチイベントの場合はスクロールを防止
     if ('touches' in e) {
@@ -404,7 +404,7 @@ function ImageResizer() {
 
     setIsDraggingCrop(true);
     setDragStart(coords);
-  }, [enableCrop, getEventCoordinates, isInsideCropArea]);
+  }, [enableCrop, originalDimensions, getEventCoordinates, isInsideCropArea]);
 
   // ドラッグ中の共通処理
   const handleDragMove = useCallback((
