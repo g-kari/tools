@@ -7,8 +7,15 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { type ReactNode, useState, useRef, useCallback, useEffect } from "react";
+import { CacheProvider } from "@emotion/react";
+import { ThemeProvider } from "@mui/material/styles";
 import appCss from "../styles.css?url";
 import { ToastProvider } from "../components/Toast";
+import createEmotionCache from "../utils/createEmotionCache";
+import { theme } from "../theme";
+
+// Emotionキャッシュをモジュールレベルで作成（SSR/CSR共通）
+const emotionCache = createEmotionCache();
 
 const navCategories = [
   {
@@ -291,39 +298,45 @@ function RootDocument({ children }: { children: ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        <ToastProvider>
-          <a href="#main-content" className="skip-link">
-            メインコンテンツへスキップ
-          </a>
+        <CacheProvider value={emotionCache}>
+          <ThemeProvider theme={theme}>
+            {/* CssBaselineは既存CSSとの競合を避けるため、移行完了まで無効化 */}
+            {/* <CssBaseline /> */}
+            <ToastProvider>
+              <a href="#main-content" className="skip-link">
+                メインコンテンツへスキップ
+              </a>
 
-          <div className="container">
-            <header role="banner">
-              <h1>Web ツール集</h1>
-              <p className="subtitle">便利なWebツールを提供します</p>
-              <nav className="nav-categories" aria-label="ツールナビゲーション">
-                {navCategories.map((category) => (
-                  <NavCategory
-                    key={category.name}
-                    category={category}
-                    pathname={pathname}
-                  />
-                ))}
-              </nav>
-            </header>
+              <div className="container">
+                <header role="banner">
+                  <h1>Web ツール集</h1>
+                  <p className="subtitle">便利なWebツールを提供します</p>
+                  <nav className="nav-categories" aria-label="ツールナビゲーション">
+                    {navCategories.map((category) => (
+                      <NavCategory
+                        key={category.name}
+                        category={category}
+                        pathname={pathname}
+                      />
+                    ))}
+                  </nav>
+                </header>
 
-            <main id="main-content" role="main">
-              {children}
-            </main>
-          </div>
+                <main id="main-content" role="main">
+                  {children}
+                </main>
+              </div>
 
-          <div
-            role="status"
-            aria-live="polite"
-            aria-atomic="true"
-            className="sr-only"
-            id="status-message"
-          />
-        </ToastProvider>
+              <div
+                role="status"
+                aria-live="polite"
+                aria-atomic="true"
+                className="sr-only"
+                id="status-message"
+              />
+            </ToastProvider>
+          </ThemeProvider>
+        </CacheProvider>
 
         <Scripts />
       </body>

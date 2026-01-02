@@ -15,6 +15,16 @@ export default defineConfig({
     }),
     tsconfigPaths(),
   ],
+  ssr: {
+    noExternal: [
+      "@mui/material",
+      "@mui/icons-material",
+      "@mui/system",
+      "@emotion/react",
+      "@emotion/styled",
+      "@emotion/cache",
+    ],
+  },
   server: {
     watch: {
       // PlaywrightのレポートディレクトリをHMR監視対象から除外
