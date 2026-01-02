@@ -237,7 +237,7 @@ test.describe('Unit Converter - E2E Tests', () => {
 
     const usageText = await usageSection.textContent();
     expect(usageText).toContain('使い方');
-    expect(usageText).toContain('対応カテゴリ');
+    expect(usageText).toContain('カテゴリを選択');
     expect(usageText).not.toContain('undefined');
   });
 
