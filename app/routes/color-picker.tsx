@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useToast } from "../components/Toast";
 
 export const Route = createFileRoute("/color-picker")({
@@ -240,6 +240,12 @@ function ColorPicker() {
   const [hsl, setHsl] = useState<HSL>({ h: 207, s: 79, l: 46 });
   const [cmyk, setCmyk] = useState<CMYK>({ c: 88, m: 44, y: 0, k: 18 });
   const [palette, setPalette] = useState<string[]>([]);
+  const [imageData, setImageData] = useState<string | null>(null);
+  const [isPickingFromImage, setIsPickingFromImage] = useState(false);
+
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const imageRef = useRef<HTMLImageElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const { showToast } = useToast();
 
@@ -387,6 +393,94 @@ function ColorPicker() {
     },
     [updateAllFormats, showToast]
   );
+
+  // 画像ファイルの読み込み
+  const handleImageUpload = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+
+      if (!file.type.startsWith("image/")) {
+        showToast("画像ファイルを選択してください", "error");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const result = event.target?.result as string;
+        setImageData(result);
+        setIsPickingFromImage(true);
+      };
+      reader.onerror = () => {
+        showToast("画像の読み込みに失敗しました", "error");
+      };
+      reader.readAsDataURL(file);
+    },
+    [showToast]
+  );
+
+  // 画像がロードされたらCanvasに描画
+  useEffect(() => {
+    if (imageData && imageRef.current && canvasRef.current) {
+      const img = imageRef.current;
+      const canvas = canvasRef.current;
+      const ctx = canvas.getContext("2d");
+
+      img.onload = () => {
+        // 最大サイズを設定
+        const maxWidth = 400;
+        const maxHeight = 300;
+        let width = img.naturalWidth;
+        let height = img.naturalHeight;
+
+        // アスペクト比を維持してリサイズ
+        if (width > maxWidth) {
+          height = (height * maxWidth) / width;
+          width = maxWidth;
+        }
+        if (height > maxHeight) {
+          width = (width * maxHeight) / height;
+          height = maxHeight;
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        ctx?.drawImage(img, 0, 0, width, height);
+      };
+    }
+  }, [imageData]);
+
+  // 画像から色をピック
+  const handleImageClick = useCallback(
+    (e: React.MouseEvent<HTMLCanvasElement>) => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+
+      const pixel = ctx.getImageData(x, y, 1, 1).data;
+      const pickedRgb: RGB = { r: pixel[0], g: pixel[1], b: pixel[2] };
+      const hex = rgbToHex(pickedRgb);
+
+      updateAllFormats(hex);
+      showToast(`色を取得しました: ${hex}`, "success");
+    },
+    [updateAllFormats, showToast]
+  );
+
+  // 画像のクリア
+  const handleClearImage = useCallback(() => {
+    setImageData(null);
+    setIsPickingFromImage(false);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  }, []);
 
   return (
     <div className="tool-container">
@@ -621,6 +715,53 @@ function ColorPicker() {
       </div>
 
       <div className="converter-section">
+        <h2 className="section-title">画像から色を取得</h2>
+        <div className="image-picker-container">
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleImageUpload}
+            className="file-input"
+            id="image-upload"
+            aria-label="画像ファイルを選択"
+          />
+          <label htmlFor="image-upload" className="file-input-label">
+            画像を選択
+          </label>
+
+          {isPickingFromImage && (
+            <button
+              type="button"
+              className="btn-clear-image"
+              onClick={handleClearImage}
+              aria-label="画像をクリア"
+            >
+              クリア
+            </button>
+          )}
+        </div>
+
+        {imageData && (
+          <div className="image-preview-container">
+            <img
+              ref={imageRef}
+              src={imageData}
+              alt="色取得用の画像"
+              className="hidden-image"
+            />
+            <canvas
+              ref={canvasRef}
+              onClick={handleImageClick}
+              className="image-canvas"
+              aria-label="画像をクリックして色を取得"
+            />
+            <p className="image-hint">画像をクリックして色を取得できます</p>
+          </div>
+        )}
+      </div>
+
+      <div className="converter-section">
         <div className="section-header">
           <h2 className="section-title">カラーパレット</h2>
           <button
@@ -674,6 +815,7 @@ function ColorPicker() {
         <ul>
           <li>色の選択と各種形式への変換ができるツールです</li>
           <li>HEX、RGB、HSL、CMYK形式に対応しています</li>
+          <li>画像をアップロードして色を抽出できます</li>
           <li>選択した色をパレットに保存できます（最大10色）</li>
           <li>パレットはブラウザに保存され、次回も利用できます</li>
         </ul>
@@ -695,6 +837,7 @@ function ColorPicker() {
         <h3 id="tips-title">Tips</h3>
         <ul>
           <li>各形式の入力欄に直接値を入力して色を変更できます</li>
+          <li>画像をクリックすると、その場所の色を取得できます</li>
           <li>コピーボタンで各形式の色コードをクリップボードにコピーできます</li>
           <li>パレットに保存した色をクリックすると、その色を選択できます</li>
           <li>CMYKは印刷向けの色表現のため、RGB/HEXとは若干異なる場合があります</li>
