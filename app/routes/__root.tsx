@@ -9,7 +9,6 @@ import {
 import { type ReactNode, useState, useRef, useCallback, useEffect } from "react";
 import appCss from "../styles.css?url";
 import { ToastProvider } from "../components/Toast";
-import { MuiProvider } from "../components/MuiProvider";
 
 const navCategories = [
   {
@@ -292,41 +291,39 @@ function RootDocument({ children }: { children: ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        <MuiProvider>
-          <ToastProvider>
-              <a href="#main-content" className="skip-link">
-                メインコンテンツへスキップ
-              </a>
+        <ToastProvider>
+          <a href="#main-content" className="skip-link">
+            メインコンテンツへスキップ
+          </a>
 
-              <div className="container">
-                <header role="banner">
-                  <h1>Web ツール集</h1>
-                  <p className="subtitle">便利なWebツールを提供します</p>
-                  <nav className="nav-categories" aria-label="ツールナビゲーション">
-                    {navCategories.map((category) => (
-                      <NavCategory
-                        key={category.name}
-                        category={category}
-                        pathname={pathname}
-                      />
-                    ))}
-                  </nav>
-                </header>
+          <div className="container">
+            <header role="banner">
+              <h1>Web ツール集</h1>
+              <p className="subtitle">便利なWebツールを提供します</p>
+              <nav className="nav-categories" aria-label="ツールナビゲーション">
+                {navCategories.map((category) => (
+                  <NavCategory
+                    key={category.name}
+                    category={category}
+                    pathname={pathname}
+                  />
+                ))}
+              </nav>
+            </header>
 
-                <main id="main-content" role="main">
-                  {children}
-                </main>
-              </div>
+            <main id="main-content" role="main">
+              {children}
+            </main>
+          </div>
 
-              <div
-                role="status"
-                aria-live="polite"
-                aria-atomic="true"
-                className="sr-only"
-                id="status-message"
-              />
-          </ToastProvider>
-        </MuiProvider>
+          <div
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+            className="sr-only"
+            id="status-message"
+          />
+        </ToastProvider>
 
         <Scripts />
       </body>
