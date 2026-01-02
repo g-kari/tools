@@ -4,7 +4,14 @@
  */
 
 import { createTheme, ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
-import { useState, useEffect, type ReactNode } from "react";
+import createCache from "@emotion/cache";
+import { CacheProvider } from "@emotion/react";
+import type { ReactNode } from "react";
+
+/**
+ * Emotionキャッシュ（SSR対応）
+ */
+export const emotionCache = createCache({ key: "css" });
 
 /**
  * カスタムMUIテーマ
@@ -131,23 +138,14 @@ export const theme = createTheme({
 
 /**
  * テーマプロバイダーコンポーネント
- * SSRではMUIコンポーネントをレンダリングせず、クライアントサイドでのみ有効化
+ * EmotionのCacheProviderでSSR対応
  */
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // SSR時は直接children を返し、クライアントでマウント後にThemeProviderを適用
-  if (!mounted) {
-    return <>{children}</>;
-  }
-
   return (
-    <MuiThemeProvider theme={theme}>
-      {children}
-    </MuiThemeProvider>
+    <CacheProvider value={emotionCache}>
+      <MuiThemeProvider theme={theme}>
+        {children}
+      </MuiThemeProvider>
+    </CacheProvider>
   );
 }
