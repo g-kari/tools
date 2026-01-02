@@ -3765,60 +3765,37 @@ a:focus-visible {
   }
 }
 
+
 /* ========================================
-   透過画像生成ツール
+   画像透過ツール
    ======================================== */
 
-.transparent-image-options {
+.transparency-options {
   display: flex;
-  gap: 1rem;
-  align-items: flex-end;
-  flex-wrap: wrap;
-  margin-bottom: 0.5rem;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
-.transparent-image-options .option-group {
+.transparency-options .option-group {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
-.transparent-image-options input[type="number"] {
-  width: 120px;
-  padding: 0.75rem;
-  border: 1px solid var(--md-sys-color-outline);
-  border-radius: 8px;
-  font-size: 1rem;
-  background-color: var(--md-sys-color-surface);
-  color: var(--md-sys-color-on-surface);
-}
-
-.size-separator {
-  font-size: 1.5rem;
-  color: var(--md-sys-color-on-surface-variant);
-  padding-bottom: 0.75rem;
-}
-
-.background-toggle {
-  margin-bottom: 1rem;
-}
-
-.background-options {
+.color-picker-row {
   display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  padding: 1rem;
-  background-color: var(--md-sys-color-surface-variant);
-  border-radius: 12px;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
-.background-options .color-input-wrapper {
+.color-picker-row .color-input-wrapper {
   display: flex;
   gap: 0.5rem;
   align-items: center;
 }
 
-.background-options .color-input-wrapper input[type="color"] {
+.color-picker-row .color-input-wrapper input[type="color"] {
   width: 48px;
   height: 48px;
   padding: 0;
@@ -3827,7 +3804,7 @@ a:focus-visible {
   cursor: pointer;
 }
 
-.background-options .color-input-wrapper input[type="text"] {
+.color-picker-row .color-input-wrapper input[type="text"] {
   width: 100px;
   padding: 0.75rem;
   border: 1px solid var(--md-sys-color-outline);
@@ -3838,23 +3815,41 @@ a:focus-visible {
   color: var(--md-sys-color-on-surface);
 }
 
-.opacity-group {
-  width: 100%;
+.picker-btn {
+  white-space: nowrap;
 }
 
-.opacity-group label {
+.picker-btn.active {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  border-color: var(--md-sys-color-primary);
+}
+
+.picker-hint {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-primary);
+  margin-top: 0.5rem;
+  font-weight: 500;
+}
+
+.tolerance-group {
+  width: 100%;
+  max-width: 400px;
+}
+
+.tolerance-group label {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
 }
 
-.opacity-hint {
+.tolerance-hint {
   font-size: 0.75rem;
   font-weight: 400;
   color: var(--md-sys-color-on-surface-variant);
 }
 
-.opacity-group input[type="range"] {
+.tolerance-group input[type="range"] {
   width: 100%;
   height: 8px;
   border-radius: 4px;
@@ -3863,7 +3858,7 @@ a:focus-visible {
   margin-top: 0.5rem;
 }
 
-.opacity-labels {
+.tolerance-labels {
   display: flex;
   justify-content: space-between;
   font-size: 0.75rem;
@@ -3871,21 +3866,27 @@ a:focus-visible {
   margin-top: 0.25rem;
 }
 
-.transparent-preview-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 1.5rem;
-  background-color: var(--md-sys-color-surface-variant);
-  border-radius: 12px;
-  margin-bottom: 1rem;
-  min-height: 200px;
+.preview-canvas {
+  max-width: 100%;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.transparent-preview-container canvas {
-  border-radius: 4px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  image-rendering: pixelated;
+.preview-canvas.picking-color {
+  cursor: crosshair;
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.transparent-preview-bg {
+  background-image:
+    linear-gradient(45deg, #e0e0e0 25%, transparent 25%),
+    linear-gradient(-45deg, #e0e0e0 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #e0e0e0 75%),
+    linear-gradient(-45deg, transparent 75%, #e0e0e0 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+  background-color: #ffffff;
 }
 
 .transparent-image-info {
@@ -3893,10 +3894,12 @@ a:focus-visible {
   flex-wrap: wrap;
   gap: 1rem;
   margin-bottom: 1.5rem;
+  margin-top: 1rem;
 }
 
 .transparent-image-info .info-item {
   display: flex;
+  align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1rem;
   background-color: var(--md-sys-color-surface-variant);
@@ -3911,28 +3914,35 @@ a:focus-visible {
 .transparent-image-info .info-value {
   font-family: "Roboto Mono", monospace;
   color: var(--md-sys-color-on-surface);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.color-swatch {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: 1px solid var(--md-sys-color-outline);
 }
 
 @media (max-width: 480px) {
-  .transparent-image-options {
+  .color-picker-row {
     flex-direction: column;
     align-items: stretch;
   }
 
-  .transparent-image-options .option-group {
-    width: 100%;
-  }
-
-  .transparent-image-options input[type="number"] {
-    width: 100%;
-  }
-
-  .size-separator {
-    display: none;
-  }
-
-  .background-options .color-input-wrapper input[type="text"] {
+  .color-picker-row .color-input-wrapper input[type="text"] {
     flex: 1;
+  }
+
+  .picker-btn {
+    width: 100%;
+  }
+
+  .tolerance-group {
+    max-width: none;
   }
 
   .transparent-image-info {

@@ -4,49 +4,96 @@ import { useToast } from "../components/Toast";
 
 export const Route = createFileRoute("/transparent-image")({
   head: () => ({
-    meta: [{ title: "透過画像生成ツール" }],
+    meta: [{ title: "画像透過ツール" }],
   }),
-  component: TransparentImageGenerator,
+  component: TransparentImageProcessor,
 });
 
-/**
- * プリセットサイズの定義
- */
-interface PresetSize {
-  label: string;
-  width: number;
-  height: number;
-}
-
-const PRESET_SIZES: PresetSize[] = [
-  { label: "16×16", width: 16, height: 16 },
-  { label: "32×32", width: 32, height: 32 },
-  { label: "64×64", width: 64, height: 64 },
-  { label: "128×128", width: 128, height: 128 },
-  { label: "256×256", width: 256, height: 256 },
-  { label: "512×512", width: 512, height: 512 },
-  { label: "1024×1024", width: 1024, height: 1024 },
-];
-
-const MIN_SIZE = 1;
-const MAX_SIZE = 10000;
 const CHECKERBOARD_SIZE = 10;
 
 /**
- * HEX色をRGBA形式に変換する
- * @param hex - HEX形式の色（#RRGGBB）
- * @param alpha - 透明度（0-1）
- * @returns RGBA形式の色文字列
+ * RGB色の型定義
  */
-export function hexToRgba(hex: string, alpha: number): string {
+interface RgbColor {
+  r: number;
+  g: number;
+  b: number;
+}
+
+/**
+ * HEX色をRGB形式に変換する
+ * @param hex - HEX形式の色（#RRGGBB）
+ * @returns RGB形式のオブジェクト
+ */
+export function hexToRgb(hex: string): RgbColor | null {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  if (!result) return `rgba(0, 0, 0, ${alpha})`;
+  if (!result) return null;
 
-  const r = parseInt(result[1], 16);
-  const g = parseInt(result[2], 16);
-  const b = parseInt(result[3], 16);
+  return {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16),
+  };
+}
 
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+/**
+ * RGB色をHEX形式に変換する
+ * @param r - 赤成分（0-255）
+ * @param g - 緑成分（0-255）
+ * @param b - 青成分（0-255）
+ * @returns HEX形式の色文字列
+ */
+export function rgbToHex(r: number, g: number, b: number): string {
+  return "#" + [r, g, b].map((x) => x.toString(16).padStart(2, "0")).join("");
+}
+
+/**
+ * 2つの色の距離を計算する（ユークリッド距離）
+ * @param color1 - 比較する色1
+ * @param color2 - 比較する色2
+ * @returns 色の距離（0-441.67程度）
+ */
+export function colorDistance(color1: RgbColor, color2: RgbColor): number {
+  const dr = color1.r - color2.r;
+  const dg = color1.g - color2.g;
+  const db = color1.b - color2.b;
+  return Math.sqrt(dr * dr + dg * dg + db * db);
+}
+
+/**
+ * 画像の指定した色を透過処理する
+ * @param imageData - 処理する画像データ
+ * @param targetColor - 透過させる色
+ * @param tolerance - 許容範囲（0-100）
+ * @returns 処理後の画像データ
+ */
+export function makeColorTransparent(
+  imageData: ImageData,
+  targetColor: RgbColor,
+  tolerance: number
+): ImageData {
+  const data = imageData.data;
+  const maxDistance = (tolerance / 100) * 441.67; // 最大距離は√(255²+255²+255²) ≈ 441.67
+
+  for (let i = 0; i < data.length; i += 4) {
+    const pixelColor: RgbColor = {
+      r: data[i],
+      g: data[i + 1],
+      b: data[i + 2],
+    };
+
+    const distance = colorDistance(pixelColor, targetColor);
+
+    if (distance <= maxDistance) {
+      // 透過度を距離に応じて計算（近いほど透明）
+      const alpha = distance <= maxDistance * 0.5
+        ? 0
+        : Math.round(((distance - maxDistance * 0.5) / (maxDistance * 0.5)) * 255);
+      data[i + 3] = alpha;
+    }
+  }
+
+  return imageData;
 }
 
 /**
@@ -76,345 +123,468 @@ export function drawCheckerboard(
 }
 
 /**
- * 透過画像を生成する
- * @param width - 画像の幅
- * @param height - 画像の高さ
- * @param opacity - 透明度（0-100）
- * @param backgroundColor - 背景色（HEX形式、オプション）
- * @returns 生成されたBlobを含むPromise
- */
-export function generateTransparentImage(
-  width: number,
-  height: number,
-  opacity: number,
-  backgroundColor?: string
-): Promise<Blob | null> {
-  return new Promise((resolve) => {
-    const canvas = document.createElement("canvas");
-    canvas.width = width;
-    canvas.height = height;
-
-    const ctx = canvas.getContext("2d");
-    if (!ctx) {
-      resolve(null);
-      return;
-    }
-
-    // 透明な背景をクリア
-    ctx.clearRect(0, 0, width, height);
-
-    // 背景色と透明度がある場合のみ描画
-    if (backgroundColor && opacity > 0) {
-      ctx.globalAlpha = opacity / 100;
-      ctx.fillStyle = backgroundColor;
-      ctx.fillRect(0, 0, width, height);
-    }
-
-    canvas.toBlob((blob) => resolve(blob), "image/png");
-  });
-}
-
-/**
  * ダウンロード用のファイル名を生成する
- * @param width - 画像の幅
- * @param height - 画像の高さ
- * @param opacity - 透明度
- * @returns ファイル名
+ * @param originalName - 元のファイル名
+ * @returns 新しいファイル名
  */
-export function generateFilename(width: number, height: number, opacity: number): string {
-  const opacityStr = opacity === 0 ? "transparent" : `opacity${opacity}`;
-  return `transparent_${width}x${height}_${opacityStr}.png`;
+export function generateFilename(originalName: string): string {
+  const ext = originalName.match(/\.[^/.]+$/)?.[0] || "";
+  const nameWithoutExt = originalName.replace(/\.[^/.]+$/, "");
+  return `${nameWithoutExt}_transparent.png`;
 }
 
-function TransparentImageGenerator() {
-  const [width, setWidth] = useState(256);
-  const [height, setHeight] = useState(256);
-  const [opacity, setOpacity] = useState(0);
-  const [backgroundColor, setBackgroundColor] = useState("#6750A4");
-  const [useBackgroundColor, setUseBackgroundColor] = useState(false);
+function TransparentImageProcessor() {
+  const [originalFile, setOriginalFile] = useState<File | null>(null);
+  const [originalPreview, setOriginalPreview] = useState<string | null>(null);
+  const [processedBlob, setProcessedBlob] = useState<Blob | null>(null);
+  const [targetColor, setTargetColor] = useState<string>("#ffffff");
+  const [tolerance, setTolerance] = useState<number>(30);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [isPickingColor, setIsPickingColor] = useState(false);
+  const [imageDimensions, setImageDimensions] = useState<{ width: number; height: number } | null>(null);
 
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const originalCanvasRef = useRef<HTMLCanvasElement>(null);
   const previewCanvasRef = useRef<HTMLCanvasElement>(null);
+  const imageRef = useRef<HTMLImageElement | null>(null);
   const { showToast } = useToast();
 
-  // プレビューを描画
-  const renderPreview = useCallback(() => {
-    if (!previewCanvasRef.current) return;
+  // クリーンアップ
+  useEffect(() => {
+    return () => {
+      if (originalPreview) URL.revokeObjectURL(originalPreview);
+    };
+  }, [originalPreview]);
 
-    const canvas = previewCanvasRef.current;
+  // 元画像をCanvasに描画
+  const drawOriginalImage = useCallback(() => {
+    if (!originalCanvasRef.current || !imageRef.current || !imageDimensions) return;
+
+    const canvas = originalCanvasRef.current;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // プレビュー用のスケール（大きすぎる場合は縮小）
-    const maxPreviewSize = 400;
-    const scale = Math.min(1, maxPreviewSize / Math.max(width, height));
-    const previewWidth = Math.max(1, Math.round(width * scale));
-    const previewHeight = Math.max(1, Math.round(height * scale));
+    const maxSize = 500;
+    const scale = Math.min(1, maxSize / Math.max(imageDimensions.width, imageDimensions.height));
+    canvas.width = Math.round(imageDimensions.width * scale);
+    canvas.height = Math.round(imageDimensions.height * scale);
 
-    canvas.width = previewWidth;
-    canvas.height = previewHeight;
+    ctx.drawImage(imageRef.current, 0, 0, canvas.width, canvas.height);
+  }, [imageDimensions]);
+
+  useEffect(() => {
+    drawOriginalImage();
+  }, [drawOriginalImage]);
+
+  // 透過処理を実行してプレビューを更新
+  const processImage = useCallback(() => {
+    if (!originalCanvasRef.current || !previewCanvasRef.current || !imageRef.current || !imageDimensions) return;
+
+    const originalCanvas = originalCanvasRef.current;
+    const previewCanvas = previewCanvasRef.current;
+    const originalCtx = originalCanvas.getContext("2d");
+    const previewCtx = previewCanvas.getContext("2d");
+    if (!originalCtx || !previewCtx) return;
+
+    const rgbTarget = hexToRgb(targetColor);
+    if (!rgbTarget) return;
+
+    // プレビューキャンバスのサイズを設定
+    previewCanvas.width = originalCanvas.width;
+    previewCanvas.height = originalCanvas.height;
 
     // チェッカーボードを描画
-    drawCheckerboard(ctx, previewWidth, previewHeight);
+    drawCheckerboard(previewCtx, previewCanvas.width, previewCanvas.height);
 
-    // 透過画像をオーバーレイ
-    if (useBackgroundColor && opacity > 0) {
-      ctx.globalAlpha = opacity / 100;
-      ctx.fillStyle = backgroundColor;
-      ctx.fillRect(0, 0, previewWidth, previewHeight);
+    // 元画像のデータを取得
+    const imageData = originalCtx.getImageData(0, 0, originalCanvas.width, originalCanvas.height);
+
+    // 透過処理
+    const processedData = makeColorTransparent(imageData, rgbTarget, tolerance);
+
+    // 一時キャンバスに処理結果を描画
+    const tempCanvas = document.createElement("canvas");
+    tempCanvas.width = originalCanvas.width;
+    tempCanvas.height = originalCanvas.height;
+    const tempCtx = tempCanvas.getContext("2d");
+    if (tempCtx) {
+      tempCtx.putImageData(processedData, 0, 0);
+      // プレビューキャンバスに描画
+      previewCtx.drawImage(tempCanvas, 0, 0);
     }
-  }, [width, height, opacity, backgroundColor, useBackgroundColor]);
+  }, [targetColor, tolerance, imageDimensions]);
 
-  // パラメータ変更時に再描画
   useEffect(() => {
-    renderPreview();
-  }, [renderPreview]);
+    if (originalFile && imageDimensions) {
+      processImage();
+    }
+  }, [processImage, originalFile, imageDimensions]);
 
-  const handleWidthChange = useCallback((value: number) => {
-    setWidth(Math.max(MIN_SIZE, Math.min(MAX_SIZE, value || MIN_SIZE)));
+  const handleFileSelect = useCallback(
+    async (file: File) => {
+      if (!file.type.startsWith("image/")) {
+        showToast("画像ファイルを選択してください", "error");
+        return;
+      }
+
+      // 既存のプレビューをクリーンアップ
+      if (originalPreview) URL.revokeObjectURL(originalPreview);
+
+      const preview = URL.createObjectURL(file);
+      setOriginalFile(file);
+      setOriginalPreview(preview);
+      setProcessedBlob(null);
+
+      // 画像サイズを取得
+      const img = new Image();
+      img.onload = () => {
+        imageRef.current = img;
+        setImageDimensions({ width: img.naturalWidth, height: img.naturalHeight });
+      };
+      img.src = preview;
+    },
+    [originalPreview, showToast]
+  );
+
+  const handleInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (file) {
+        handleFileSelect(file);
+      }
+    },
+    [handleFileSelect]
+  );
+
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
   }, []);
 
-  const handleHeightChange = useCallback((value: number) => {
-    setHeight(Math.max(MIN_SIZE, Math.min(MAX_SIZE, value || MIN_SIZE)));
+  const handleDragLeave = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
   }, []);
 
-  const handlePresetSelect = useCallback((preset: PresetSize) => {
-    setWidth(preset.width);
-    setHeight(preset.height);
-  }, []);
+  const handleDrop = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      setIsDragging(false);
 
+      const file = e.dataTransfer.files[0];
+      if (file) {
+        handleFileSelect(file);
+      }
+    },
+    [handleFileSelect]
+  );
+
+  // 画像クリックで色を取得
+  const handleCanvasClick = useCallback(
+    (e: React.MouseEvent<HTMLCanvasElement>) => {
+      if (!isPickingColor || !originalCanvasRef.current) return;
+
+      const canvas = originalCanvasRef.current;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+
+      const rect = canvas.getBoundingClientRect();
+      const x = Math.floor((e.clientX - rect.left) * (canvas.width / rect.width));
+      const y = Math.floor((e.clientY - rect.top) * (canvas.height / rect.height));
+
+      const pixel = ctx.getImageData(x, y, 1, 1).data;
+      const hex = rgbToHex(pixel[0], pixel[1], pixel[2]);
+      setTargetColor(hex);
+      setIsPickingColor(false);
+      showToast(`色を選択しました: ${hex}`, "success");
+    },
+    [isPickingColor, showToast]
+  );
+
+  // 透過画像を生成してダウンロード
   const handleDownload = useCallback(async () => {
-    const blob = await generateTransparentImage(
-      width,
-      height,
-      useBackgroundColor ? opacity : 0,
-      useBackgroundColor ? backgroundColor : undefined
-    );
+    if (!imageRef.current || !originalFile || !imageDimensions) return;
 
-    if (!blob) {
-      showToast("画像の生成に失敗しました", "error");
+    setIsLoading(true);
+
+    const rgbTarget = hexToRgb(targetColor);
+    if (!rgbTarget) {
+      showToast("無効な色が指定されています", "error");
+      setIsLoading(false);
       return;
     }
 
-    const url = URL.createObjectURL(blob);
-    const filename = generateFilename(width, height, useBackgroundColor ? opacity : 0);
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-
-    showToast("PNGファイルをダウンロードしました", "success");
-  }, [width, height, opacity, backgroundColor, useBackgroundColor, showToast]);
-
-  const handleCopyToClipboard = useCallback(async () => {
-    const blob = await generateTransparentImage(
-      width,
-      height,
-      useBackgroundColor ? opacity : 0,
-      useBackgroundColor ? backgroundColor : undefined
-    );
-
-    if (!blob) {
-      showToast("画像の生成に失敗しました", "error");
+    // フルサイズで処理
+    const canvas = document.createElement("canvas");
+    canvas.width = imageDimensions.width;
+    canvas.height = imageDimensions.height;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) {
+      showToast("画像処理に失敗しました", "error");
+      setIsLoading(false);
       return;
     }
 
-    try {
-      await navigator.clipboard.write([
-        new ClipboardItem({ "image/png": blob }),
-      ]);
-      showToast("クリップボードにコピーしました", "success");
-    } catch {
-      showToast("クリップボードへのコピーに失敗しました", "error");
+    ctx.drawImage(imageRef.current, 0, 0);
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const processedData = makeColorTransparent(imageData, rgbTarget, tolerance);
+    ctx.putImageData(processedData, 0, 0);
+
+    canvas.toBlob(
+      (blob) => {
+        if (blob) {
+          setProcessedBlob(blob);
+          const url = URL.createObjectURL(blob);
+          const filename = generateFilename(originalFile.name);
+
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = filename;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+
+          showToast("透過画像をダウンロードしました", "success");
+        } else {
+          showToast("画像の生成に失敗しました", "error");
+        }
+        setIsLoading(false);
+      },
+      "image/png"
+    );
+  }, [originalFile, targetColor, tolerance, imageDimensions, showToast]);
+
+  const handleClear = useCallback(() => {
+    if (originalPreview) URL.revokeObjectURL(originalPreview);
+
+    setOriginalFile(null);
+    setOriginalPreview(null);
+    setProcessedBlob(null);
+    setImageDimensions(null);
+    imageRef.current = null;
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
     }
-  }, [width, height, opacity, backgroundColor, useBackgroundColor, showToast]);
+
+    showToast("クリアしました", "info");
+  }, [originalPreview, showToast]);
 
   return (
     <div className="tool-container">
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleDownload();
-        }}
-        aria-label="透過画像生成フォーム"
-      >
-        <div className="converter-section">
-          <h2 className="section-title">画像サイズ</h2>
+      <div className="converter-section">
+        <h2 className="section-title">画像選択</h2>
 
-          <div className="transparent-image-options">
-            <div className="option-group">
-              <label htmlFor="width">幅 (px)</label>
-              <input
-                type="number"
-                id="width"
-                min={MIN_SIZE}
-                max={MAX_SIZE}
-                value={width}
-                onChange={(e) => handleWidthChange(parseInt(e.target.value))}
-                aria-describedby="size-help"
-              />
-            </div>
-
-            <span className="size-separator" aria-hidden="true">×</span>
-
-            <div className="option-group">
-              <label htmlFor="height">高さ (px)</label>
-              <input
-                type="number"
-                id="height"
-                min={MIN_SIZE}
-                max={MAX_SIZE}
-                value={height}
-                onChange={(e) => handleHeightChange(parseInt(e.target.value))}
-              />
-            </div>
-          </div>
-
-          <span id="size-help" className="option-help">
-            {MIN_SIZE}〜{MAX_SIZE}px の範囲で指定できます
-          </span>
-
-          <div className="preset-section">
-            <label className="preset-label">プリセットサイズ</label>
-            <div className="preset-buttons" role="group" aria-label="プリセットサイズ選択">
-              {PRESET_SIZES.map((preset) => (
-                <button
-                  key={preset.label}
-                  type="button"
-                  className={`preset-btn ${width === preset.width && height === preset.height ? "active" : ""}`}
-                  onClick={() => handlePresetSelect(preset)}
-                >
-                  {preset.label}
-                </button>
-              ))}
-            </div>
+        <div
+          className={`dropzone ${isDragging ? "dragging" : ""}`}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+          onClick={() => fileInputRef.current?.click()}
+          role="button"
+          tabIndex={0}
+          aria-label="画像ファイルをアップロード"
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              fileInputRef.current?.click();
+            }
+          }}
+        >
+          <div className="dropzone-content">
+            <svg
+              className="upload-icon"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="17 8 12 3 7 8" />
+              <line x1="12" y1="3" x2="12" y2="15" />
+            </svg>
+            <p className="dropzone-text">
+              クリックして画像を選択、またはドラッグ&ドロップ
+            </p>
+            <p className="dropzone-hint">PNG, JPEG, WebP など</p>
           </div>
         </div>
 
-        <div className="converter-section">
-          <h2 className="section-title">背景設定</h2>
+        <input
+          ref={fileInputRef}
+          type="file"
+          id="imageFile"
+          accept="image/*"
+          onChange={handleInputChange}
+          disabled={isLoading}
+          className="hidden-file-input"
+          aria-label="画像ファイルを選択"
+        />
+      </div>
 
-          <div className="background-toggle">
-            <label className="checkbox-label">
-              <input
-                type="checkbox"
-                checked={useBackgroundColor}
-                onChange={(e) => setUseBackgroundColor(e.target.checked)}
-              />
-              <span>背景色を使用する</span>
-            </label>
-          </div>
+      {originalFile && imageDimensions && (
+        <>
+          <div className="converter-section">
+            <h2 className="section-title">透過設定</h2>
 
-          {useBackgroundColor && (
-            <div className="background-options">
+            <div className="transparency-options">
               <div className="option-group">
-                <label htmlFor="bgColor">背景色</label>
-                <div className="color-input-wrapper">
-                  <input
-                    type="color"
-                    id="bgColor"
-                    value={backgroundColor}
-                    onChange={(e) => setBackgroundColor(e.target.value)}
-                  />
-                  <input
-                    type="text"
-                    value={backgroundColor}
-                    onChange={(e) => setBackgroundColor(e.target.value)}
-                    pattern="^#[0-9A-Fa-f]{6}$"
-                    aria-label="背景色のHEX値"
-                  />
+                <label htmlFor="targetColor">透過する色</label>
+                <div className="color-picker-row">
+                  <div className="color-input-wrapper">
+                    <input
+                      type="color"
+                      id="targetColor"
+                      value={targetColor}
+                      onChange={(e) => setTargetColor(e.target.value)}
+                      disabled={isLoading}
+                    />
+                    <input
+                      type="text"
+                      value={targetColor}
+                      onChange={(e) => setTargetColor(e.target.value)}
+                      pattern="^#[0-9A-Fa-f]{6}$"
+                      aria-label="透過色のHEX値"
+                      disabled={isLoading}
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    className={`btn-secondary picker-btn ${isPickingColor ? "active" : ""}`}
+                    onClick={() => setIsPickingColor(!isPickingColor)}
+                    disabled={isLoading}
+                  >
+                    {isPickingColor ? "選択中..." : "画像から選択"}
+                  </button>
                 </div>
+                {isPickingColor && (
+                  <p className="picker-hint">元画像をクリックして色を選択してください</p>
+                )}
               </div>
 
-              <div className="option-group opacity-group">
-                <label htmlFor="opacity">
-                  透明度: {opacity}%
-                  <span className="opacity-hint">（0% = 完全透明、100% = 不透明）</span>
+              <div className="option-group tolerance-group">
+                <label htmlFor="tolerance">
+                  許容範囲: {tolerance}%
+                  <span className="tolerance-hint">（高いほど類似色も透過）</span>
                 </label>
                 <input
                   type="range"
-                  id="opacity"
+                  id="tolerance"
                   min="0"
                   max="100"
-                  value={opacity}
-                  onChange={(e) => setOpacity(parseInt(e.target.value))}
+                  value={tolerance}
+                  onChange={(e) => setTolerance(parseInt(e.target.value))}
+                  disabled={isLoading}
                 />
-                <div className="opacity-labels">
-                  <span>透明</span>
-                  <span>不透明</span>
+                <div className="tolerance-labels">
+                  <span>厳密</span>
+                  <span>緩和</span>
                 </div>
               </div>
             </div>
-          )}
-        </div>
-
-        <div className="converter-section">
-          <h2 className="section-title">プレビュー</h2>
-          <div className="transparent-preview-container">
-            <canvas
-              ref={previewCanvasRef}
-              aria-label={`プレビュー画像 (${width}x${height})`}
-            />
-          </div>
-          <div className="transparent-image-info">
-            <div className="info-item">
-              <span className="info-label">サイズ:</span>
-              <span className="info-value">{width} × {height} px</span>
-            </div>
-            <div className="info-item">
-              <span className="info-label">形式:</span>
-              <span className="info-value">PNG（透過対応）</span>
-            </div>
-            <div className="info-item">
-              <span className="info-label">状態:</span>
-              <span className="info-value">
-                {!useBackgroundColor || opacity === 0 ? "完全透明" : `${opacity}% 不透明`}
-              </span>
-            </div>
           </div>
 
-          <div className="button-group" role="group" aria-label="画像操作">
-            <button type="submit" className="btn-primary">
-              ダウンロード
-            </button>
-            <button
-              type="button"
-              className="btn-secondary"
-              onClick={handleCopyToClipboard}
-            >
-              クリップボードにコピー
-            </button>
+          <div className="converter-section">
+            <h2 className="section-title">プレビュー</h2>
+
+            <div className="preview-comparison">
+              <div className="preview-panel">
+                <h3 className="preview-label">元画像</h3>
+                <div className="preview-image-container">
+                  <canvas
+                    ref={originalCanvasRef}
+                    className={`preview-canvas ${isPickingColor ? "picking-color" : ""}`}
+                    onClick={handleCanvasClick}
+                    aria-label="元画像プレビュー"
+                  />
+                </div>
+              </div>
+              <div className="preview-panel">
+                <h3 className="preview-label">透過後</h3>
+                <div className="preview-image-container transparent-preview-bg">
+                  <canvas
+                    ref={previewCanvasRef}
+                    className="preview-canvas"
+                    aria-label="透過後プレビュー"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="transparent-image-info">
+              <div className="info-item">
+                <span className="info-label">サイズ:</span>
+                <span className="info-value">{imageDimensions.width} × {imageDimensions.height} px</span>
+              </div>
+              <div className="info-item">
+                <span className="info-label">透過色:</span>
+                <span className="info-value">
+                  <span
+                    className="color-swatch"
+                    style={{ backgroundColor: targetColor }}
+                    aria-hidden="true"
+                  />
+                  {targetColor}
+                </span>
+              </div>
+              <div className="info-item">
+                <span className="info-label">許容範囲:</span>
+                <span className="info-value">{tolerance}%</span>
+              </div>
+            </div>
+
+            <div className="button-group" role="group" aria-label="画像操作">
+              <button
+                type="button"
+                className="btn-primary"
+                onClick={handleDownload}
+                disabled={isLoading}
+              >
+                {isLoading ? "処理中..." : "ダウンロード"}
+              </button>
+              <button
+                type="button"
+                className="btn-secondary"
+                onClick={handleClear}
+                disabled={isLoading}
+              >
+                クリア
+              </button>
+            </div>
           </div>
-        </div>
-      </form>
+        </>
+      )}
 
       <aside
         className="info-box"
         role="complementary"
         aria-labelledby="usage-title"
       >
-        <h3 id="usage-title">透過画像生成とは</h3>
+        <h3 id="usage-title">画像透過ツールとは</h3>
         <ul>
-          <li>指定したサイズの透過PNG画像を生成します</li>
-          <li>Webデザインやアプリ開発のプレースホルダーに最適</li>
-          <li>スペーサー画像やオーバーレイ用画像の作成に便利</li>
+          <li>画像の特定の色を透明にするツールです</li>
+          <li>背景の除去やロゴの透過処理に便利</li>
+          <li>許容範囲を調整して類似色も透過できます</li>
         </ul>
         <h3>使い方</h3>
         <ul>
-          <li>幅と高さを指定、またはプリセットを選択</li>
-          <li>必要に応じて背景色と透明度を設定</li>
-          <li>チェッカーボード上でプレビューを確認</li>
+          <li>画像をアップロード</li>
+          <li>透過させたい色を選択（カラーピッカーまたは画像から）</li>
+          <li>許容範囲を調整してプレビューを確認</li>
           <li>「ダウンロード」でPNG画像を保存</li>
         </ul>
         <h3>Tips</h3>
         <ul>
-          <li>完全透明（0%）の画像は見えませんが、正しく生成されます</li>
-          <li>半透明の背景色を使うとオーバーレイ画像が作れます</li>
-          <li>チェッカーボードは透明度を視覚化するためのもので、画像には含まれません</li>
-          <li>最大10000×10000pxまで生成可能です</li>
+          <li>「画像から選択」で画像上の色を直接クリックして選べます</li>
+          <li>許容範囲を上げると、選択した色に近い色も透過されます</li>
+          <li>チェッカーボードパターンは透明度を視覚化するためのものです</li>
+          <li>出力形式はPNG（透過対応）です</li>
         </ul>
       </aside>
     </div>
