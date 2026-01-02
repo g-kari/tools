@@ -13,6 +13,7 @@ import { Route as WhoisRouteImport } from './routes/whois'
 import { Route as VideoConverterRouteImport } from './routes/video-converter'
 import { Route as UuidRouteImport } from './routes/uuid'
 import { Route as UrlEncodeRouteImport } from './routes/url-encode'
+import { Route as UnitConverterRouteImport } from './routes/unit-converter'
 import { Route as TextSortRouteImport } from './routes/text-sort'
 import { Route as ServerEnvRouteImport } from './routes/server-env'
 import { Route as SecurityHeadersRouteImport } from './routes/security-headers'
@@ -66,6 +67,11 @@ const UuidRoute = UuidRouteImport.update({
 const UrlEncodeRoute = UrlEncodeRouteImport.update({
   id: '/url-encode',
   path: '/url-encode',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UnitConverterRoute = UnitConverterRouteImport.update({
+  id: '/unit-converter',
+  path: '/unit-converter',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TextSortRoute = TextSortRouteImport.update({
@@ -270,6 +276,7 @@ export interface FileRoutesByFullPath {
   '/security-headers': typeof SecurityHeadersRoute
   '/server-env': typeof ServerEnvRoute
   '/text-sort': typeof TextSortRoute
+  '/unit-converter': typeof UnitConverterRoute
   '/url-encode': typeof UrlEncodeRoute
   '/uuid': typeof UuidRoute
   '/video-converter': typeof VideoConverterRoute
@@ -310,6 +317,7 @@ export interface FileRoutesByTo {
   '/security-headers': typeof SecurityHeadersRoute
   '/server-env': typeof ServerEnvRoute
   '/text-sort': typeof TextSortRoute
+  '/unit-converter': typeof UnitConverterRoute
   '/url-encode': typeof UrlEncodeRoute
   '/uuid': typeof UuidRoute
   '/video-converter': typeof VideoConverterRoute
@@ -351,6 +359,7 @@ export interface FileRoutesById {
   '/security-headers': typeof SecurityHeadersRoute
   '/server-env': typeof ServerEnvRoute
   '/text-sort': typeof TextSortRoute
+  '/unit-converter': typeof UnitConverterRoute
   '/url-encode': typeof UrlEncodeRoute
   '/uuid': typeof UuidRoute
   '/video-converter': typeof VideoConverterRoute
@@ -393,6 +402,7 @@ export interface FileRouteTypes {
     | '/security-headers'
     | '/server-env'
     | '/text-sort'
+    | '/unit-converter'
     | '/url-encode'
     | '/uuid'
     | '/video-converter'
@@ -433,6 +443,7 @@ export interface FileRouteTypes {
     | '/security-headers'
     | '/server-env'
     | '/text-sort'
+    | '/unit-converter'
     | '/url-encode'
     | '/uuid'
     | '/video-converter'
@@ -473,6 +484,7 @@ export interface FileRouteTypes {
     | '/security-headers'
     | '/server-env'
     | '/text-sort'
+    | '/unit-converter'
     | '/url-encode'
     | '/uuid'
     | '/video-converter'
@@ -514,6 +526,7 @@ export interface RootRouteChildren {
   SecurityHeadersRoute: typeof SecurityHeadersRoute
   ServerEnvRoute: typeof ServerEnvRoute
   TextSortRoute: typeof TextSortRoute
+  UnitConverterRoute: typeof UnitConverterRoute
   UrlEncodeRoute: typeof UrlEncodeRoute
   UuidRoute: typeof UuidRoute
   VideoConverterRoute: typeof VideoConverterRoute
@@ -552,6 +565,13 @@ declare module '@tanstack/react-router' {
       path: '/url-encode'
       fullPath: '/url-encode'
       preLoaderRoute: typeof UrlEncodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/unit-converter': {
+      id: '/unit-converter'
+      path: '/unit-converter'
+      fullPath: '/unit-converter'
+      preLoaderRoute: typeof UnitConverterRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/text-sort': {
@@ -826,6 +846,7 @@ const rootRouteChildren: RootRouteChildren = {
   SecurityHeadersRoute: SecurityHeadersRoute,
   ServerEnvRoute: ServerEnvRoute,
   TextSortRoute: TextSortRoute,
+  UnitConverterRoute: UnitConverterRoute,
   UrlEncodeRoute: UrlEncodeRoute,
   UuidRoute: UuidRoute,
   VideoConverterRoute: VideoConverterRoute,

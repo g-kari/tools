@@ -3461,3 +3461,185 @@ a:focus-visible {
     max-height: 200px;
   }
 }
+
+/* Unit Converter Styles */
+.unit-category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.unit-category-btn {
+  padding: 12px 16px;
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 8px;
+  color: var(--md-sys-color-on-surface);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s, transform 0.1s;
+  text-align: center;
+}
+
+.unit-category-btn:hover {
+  background: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+}
+
+.unit-category-btn.active {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  border-color: var(--md-sys-color-primary);
+}
+
+.unit-category-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.unit-input-row {
+  display: flex;
+  gap: 12px;
+  align-items: stretch;
+}
+
+.unit-input {
+  flex: 1;
+  padding: 15px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  font-size: 18px;
+  font-family: "Roboto Mono", monospace;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.unit-input:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(139, 105, 20, 0.15);
+}
+
+.unit-select {
+  min-width: 180px;
+  padding: 12px 16px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.unit-select:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  background: white;
+}
+
+.unit-swap-container {
+  display: flex;
+  justify-content: center;
+  margin: 16px 0;
+}
+
+.unit-swap-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid var(--md-sys-color-primary);
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-primary);
+  font-size: 24px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.unit-swap-btn:hover {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  transform: rotate(180deg);
+}
+
+.unit-swap-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 3px;
+}
+
+.unit-result {
+  flex: 1;
+  padding: 15px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  font-size: 18px;
+  font-family: "Roboto Mono", monospace;
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  min-height: 56px;
+}
+
+.unit-history-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.unit-history-item {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--md-sys-color-surface-variant);
+  border-radius: 8px;
+  font-size: 14px;
+  align-items: center;
+}
+
+.unit-history-category {
+  padding: 4px 8px;
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.unit-history-conversion {
+  font-family: "Roboto Mono", monospace;
+  color: var(--md-sys-color-on-surface);
+}
+
+/* Unit converter responsive */
+@media (max-width: 600px) {
+  .unit-category-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .unit-input-row {
+    flex-direction: column;
+  }
+
+  .unit-select {
+    min-width: 100%;
+  }
+
+  .unit-history-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
