@@ -483,366 +483,296 @@ function ColorPicker() {
   }, []);
 
   return (
-    <div className="tool-container">
-      <div className="converter-section">
-        <h2 className="section-title">カラーピッカー</h2>
-
-        <div className="color-picker-container">
-          <div className="color-preview" style={{ backgroundColor: currentColor }}>
-            <span className="color-preview-text">{currentColor}</span>
-          </div>
-
-          <input
-            type="color"
-            value={currentColor}
-            onChange={handleColorChange}
-            className="color-input"
-            aria-label="カラーピッカー"
-          />
-        </div>
-      </div>
-
-      <div className="converter-section">
-        <h2 className="section-title">HEX形式</h2>
-        <div className="color-format-group">
-          <input
-            type="text"
-            value={currentColor}
-            onChange={handleHexInput}
-            className="color-format-input"
-            placeholder="#000000"
-            maxLength={7}
-            aria-label="HEX形式の色コード"
-          />
-          <button
-            type="button"
-            className="btn-copy"
-            onClick={() => handleCopy(currentColor, "HEX")}
-            aria-label="HEX形式をコピー"
-          >
-            コピー
-          </button>
-        </div>
-      </div>
-
-      <div className="converter-section">
-        <h2 className="section-title">RGB形式</h2>
-        <div className="rgb-inputs">
-          <div className="rgb-input-group">
-            <label htmlFor="rgb-r">R</label>
-            <input
-              id="rgb-r"
-              type="number"
-              value={rgb.r}
-              onChange={(e) => handleRgbInput("r", e.target.value)}
-              min="0"
-              max="255"
-              className="color-component-input"
-            />
-          </div>
-          <div className="rgb-input-group">
-            <label htmlFor="rgb-g">G</label>
-            <input
-              id="rgb-g"
-              type="number"
-              value={rgb.g}
-              onChange={(e) => handleRgbInput("g", e.target.value)}
-              min="0"
-              max="255"
-              className="color-component-input"
-            />
-          </div>
-          <div className="rgb-input-group">
-            <label htmlFor="rgb-b">B</label>
-            <input
-              id="rgb-b"
-              type="number"
-              value={rgb.b}
-              onChange={(e) => handleRgbInput("b", e.target.value)}
-              min="0"
-              max="255"
-              className="color-component-input"
-            />
-          </div>
-        </div>
-        <div className="color-format-group">
-          <input
-            type="text"
-            value={rgbToString(rgb)}
-            readOnly
-            className="color-format-input readonly"
-            aria-label="RGB形式の色コード"
-          />
-          <button
-            type="button"
-            className="btn-copy"
-            onClick={() => handleCopy(rgbToString(rgb), "RGB")}
-            aria-label="RGB形式をコピー"
-          >
-            コピー
-          </button>
-        </div>
-      </div>
-
-      <div className="converter-section">
-        <h2 className="section-title">HSL形式</h2>
-        <div className="rgb-inputs">
-          <div className="rgb-input-group">
-            <label htmlFor="hsl-h">H</label>
-            <input
-              id="hsl-h"
-              type="number"
-              value={hsl.h}
-              onChange={(e) => handleHslInput("h", e.target.value)}
-              min="0"
-              max="360"
-              className="color-component-input"
-            />
-          </div>
-          <div className="rgb-input-group">
-            <label htmlFor="hsl-s">S</label>
-            <input
-              id="hsl-s"
-              type="number"
-              value={hsl.s}
-              onChange={(e) => handleHslInput("s", e.target.value)}
-              min="0"
-              max="100"
-              className="color-component-input"
-            />
-          </div>
-          <div className="rgb-input-group">
-            <label htmlFor="hsl-l">L</label>
-            <input
-              id="hsl-l"
-              type="number"
-              value={hsl.l}
-              onChange={(e) => handleHslInput("l", e.target.value)}
-              min="0"
-              max="100"
-              className="color-component-input"
-            />
-          </div>
-        </div>
-        <div className="color-format-group">
-          <input
-            type="text"
-            value={hslToString(hsl)}
-            readOnly
-            className="color-format-input readonly"
-            aria-label="HSL形式の色コード"
-          />
-          <button
-            type="button"
-            className="btn-copy"
-            onClick={() => handleCopy(hslToString(hsl), "HSL")}
-            aria-label="HSL形式をコピー"
-          >
-            コピー
-          </button>
-        </div>
-      </div>
-
-      <div className="converter-section">
-        <h2 className="section-title">CMYK形式</h2>
-        <div className="cmyk-inputs">
-          <div className="rgb-input-group">
-            <label htmlFor="cmyk-c">C</label>
-            <input
-              id="cmyk-c"
-              type="number"
-              value={cmyk.c}
-              onChange={(e) => handleCmykInput("c", e.target.value)}
-              min="0"
-              max="100"
-              className="color-component-input"
-            />
-          </div>
-          <div className="rgb-input-group">
-            <label htmlFor="cmyk-m">M</label>
-            <input
-              id="cmyk-m"
-              type="number"
-              value={cmyk.m}
-              onChange={(e) => handleCmykInput("m", e.target.value)}
-              min="0"
-              max="100"
-              className="color-component-input"
-            />
-          </div>
-          <div className="rgb-input-group">
-            <label htmlFor="cmyk-y">Y</label>
-            <input
-              id="cmyk-y"
-              type="number"
-              value={cmyk.y}
-              onChange={(e) => handleCmykInput("y", e.target.value)}
-              min="0"
-              max="100"
-              className="color-component-input"
-            />
-          </div>
-          <div className="rgb-input-group">
-            <label htmlFor="cmyk-k">K</label>
-            <input
-              id="cmyk-k"
-              type="number"
-              value={cmyk.k}
-              onChange={(e) => handleCmykInput("k", e.target.value)}
-              min="0"
-              max="100"
-              className="color-component-input"
-            />
-          </div>
-        </div>
-        <div className="color-format-group">
-          <input
-            type="text"
-            value={cmykToString(cmyk)}
-            readOnly
-            className="color-format-input readonly"
-            aria-label="CMYK形式の色コード"
-          />
-          <button
-            type="button"
-            className="btn-copy"
-            onClick={() => handleCopy(cmykToString(cmyk), "CMYK")}
-            aria-label="CMYK形式をコピー"
-          >
-            コピー
-          </button>
-        </div>
-      </div>
-
-      <div className="converter-section">
-        <h2 className="section-title">画像から色を取得</h2>
-        <div className="image-picker-container">
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            onChange={handleImageUpload}
-            className="file-input"
-            id="image-upload"
-            aria-label="画像ファイルを選択"
-          />
-          <label htmlFor="image-upload" className="file-input-label">
-            画像を選択
-          </label>
-
-          {isPickingFromImage && (
-            <button
-              type="button"
-              className="btn-clear-image"
-              onClick={handleClearImage}
-              aria-label="画像をクリア"
+    <div className="tool-container color-picker-page">
+      {/* メインエリア：2カラムグリッド */}
+      <div className="color-picker-main">
+        {/* 左カラム：プレビューと入力 */}
+        <div className="color-picker-left">
+          {/* カラープレビュー＆ピッカー */}
+          <div className="color-picker-header">
+            <div
+              className="color-preview-compact"
+              style={{ backgroundColor: currentColor }}
             >
-              クリア
-            </button>
-          )}
-        </div>
-
-        {imageData && (
-          <div className="image-preview-container">
-            <img
-              ref={imageRef}
-              src={imageData}
-              alt="色取得用の画像"
-              className="hidden-image"
-            />
-            <canvas
-              ref={canvasRef}
-              onClick={handleImageClick}
-              className="image-canvas"
-              aria-label="画像をクリックして色を取得"
-            />
-            <p className="image-hint">画像をクリックして色を取得できます</p>
-          </div>
-        )}
-      </div>
-
-      <div className="converter-section">
-        <div className="section-header">
-          <h2 className="section-title">カラーパレット</h2>
-          <button
-            type="button"
-            className="btn-add-palette"
-            onClick={handleAddToPalette}
-            disabled={palette.length >= 10}
-            aria-label="現在の色をパレットに追加"
-          >
-            + 追加
-          </button>
-        </div>
-
-        <div className="palette-container" role="list" aria-label="カラーパレット">
-          {palette.length === 0 ? (
-            <p className="palette-empty">パレットに色が追加されていません</p>
-          ) : (
-            palette.map((color, index) => (
-              <div
-                key={`${color}-${index}`}
-                className="palette-item"
-                role="listitem"
+              <input
+                type="color"
+                value={currentColor}
+                onChange={handleColorChange}
+                className="color-input-overlay"
+                aria-label="カラーピッカー"
+              />
+            </div>
+            <div className="color-hex-input">
+              <input
+                type="text"
+                value={currentColor}
+                onChange={handleHexInput}
+                className="hex-input-compact"
+                placeholder="#000000"
+                maxLength={7}
+                aria-label="HEX形式の色コード"
+              />
+              <button
+                type="button"
+                className="btn-copy-small"
+                onClick={() => handleCopy(currentColor, "HEX")}
+                aria-label="HEX形式をコピー"
               >
-                <button
-                  type="button"
-                  className="palette-color"
-                  style={{ backgroundColor: color }}
-                  onClick={() => handleSelectFromPalette(color)}
-                  aria-label={`色 ${color} を選択`}
-                  title={color}
-                />
-                <button
-                  type="button"
-                  className="palette-remove"
-                  onClick={() => handleRemoveFromPalette(index)}
-                  aria-label={`色 ${color} を削除`}
-                >
-                  ×
-                </button>
-              </div>
-            ))
-          )}
-        </div>
-        {palette.length > 0 && (
-          <p className="palette-count">{palette.length} / 10色</p>
-        )}
-      </div>
+                コピー
+              </button>
+            </div>
+          </div>
 
-      <aside className="info-box" role="complementary" aria-labelledby="usage-title">
-        <h3 id="usage-title">カラーピッカーとは</h3>
-        <ul>
-          <li>色の選択と各種形式への変換ができるツールです</li>
-          <li>HEX、RGB、HSL、CMYK形式に対応しています</li>
-          <li>画像をアップロードして色を抽出できます</li>
-          <li>選択した色をパレットに保存できます（最大10色）</li>
-          <li>パレットはブラウザに保存され、次回も利用できます</li>
-        </ul>
-        <h3 id="format-title">カラー形式について</h3>
-        <ul>
-          <li>
-            <strong>HEX</strong>: Web開発で最も一般的な形式（例: #FF0000）
-          </li>
-          <li>
-            <strong>RGB</strong>: 光の三原色による表現（例: rgb(255, 0, 0)）
-          </li>
-          <li>
-            <strong>HSL</strong>: 色相・彩度・輝度による表現（例: hsl(0, 100%, 50%)）
-          </li>
-          <li>
-            <strong>CMYK</strong>: 印刷で使用される色表現（例: cmyk(0%, 100%, 100%, 0%)）
-          </li>
-        </ul>
-        <h3 id="tips-title">Tips</h3>
-        <ul>
-          <li>各形式の入力欄に直接値を入力して色を変更できます</li>
-          <li>画像をクリックすると、その場所の色を取得できます</li>
-          <li>コピーボタンで各形式の色コードをクリップボードにコピーできます</li>
-          <li>パレットに保存した色をクリックすると、その色を選択できます</li>
-          <li>CMYKは印刷向けの色表現のため、RGB/HEXとは若干異なる場合があります</li>
-        </ul>
-      </aside>
+          {/* カラー形式入力グリッド */}
+          <div className="color-formats-grid">
+            {/* RGB */}
+            <div className="format-row">
+              <span className="format-label">RGB</span>
+              <div className="format-inputs">
+                <input
+                  id="rgb-r"
+                  type="number"
+                  value={rgb.r}
+                  onChange={(e) => handleRgbInput("r", e.target.value)}
+                  min="0"
+                  max="255"
+                  className="compact-input"
+                  aria-label="R"
+                />
+                <input
+                  id="rgb-g"
+                  type="number"
+                  value={rgb.g}
+                  onChange={(e) => handleRgbInput("g", e.target.value)}
+                  min="0"
+                  max="255"
+                  className="compact-input"
+                  aria-label="G"
+                />
+                <input
+                  id="rgb-b"
+                  type="number"
+                  value={rgb.b}
+                  onChange={(e) => handleRgbInput("b", e.target.value)}
+                  min="0"
+                  max="255"
+                  className="compact-input"
+                  aria-label="B"
+                />
+              </div>
+              <button
+                type="button"
+                className="btn-copy-small"
+                onClick={() => handleCopy(rgbToString(rgb), "RGB")}
+                aria-label="RGB形式をコピー"
+              >
+                コピー
+              </button>
+            </div>
+
+            {/* HSL */}
+            <div className="format-row">
+              <span className="format-label">HSL</span>
+              <div className="format-inputs">
+                <input
+                  id="hsl-h"
+                  type="number"
+                  value={hsl.h}
+                  onChange={(e) => handleHslInput("h", e.target.value)}
+                  min="0"
+                  max="360"
+                  className="compact-input"
+                  aria-label="H"
+                />
+                <input
+                  id="hsl-s"
+                  type="number"
+                  value={hsl.s}
+                  onChange={(e) => handleHslInput("s", e.target.value)}
+                  min="0"
+                  max="100"
+                  className="compact-input"
+                  aria-label="S"
+                />
+                <input
+                  id="hsl-l"
+                  type="number"
+                  value={hsl.l}
+                  onChange={(e) => handleHslInput("l", e.target.value)}
+                  min="0"
+                  max="100"
+                  className="compact-input"
+                  aria-label="L"
+                />
+              </div>
+              <button
+                type="button"
+                className="btn-copy-small"
+                onClick={() => handleCopy(hslToString(hsl), "HSL")}
+                aria-label="HSL形式をコピー"
+              >
+                コピー
+              </button>
+            </div>
+
+            {/* CMYK */}
+            <div className="format-row">
+              <span className="format-label">CMYK</span>
+              <div className="format-inputs format-inputs-4">
+                <input
+                  id="cmyk-c"
+                  type="number"
+                  value={cmyk.c}
+                  onChange={(e) => handleCmykInput("c", e.target.value)}
+                  min="0"
+                  max="100"
+                  className="compact-input"
+                  aria-label="C"
+                />
+                <input
+                  id="cmyk-m"
+                  type="number"
+                  value={cmyk.m}
+                  onChange={(e) => handleCmykInput("m", e.target.value)}
+                  min="0"
+                  max="100"
+                  className="compact-input"
+                  aria-label="M"
+                />
+                <input
+                  id="cmyk-y"
+                  type="number"
+                  value={cmyk.y}
+                  onChange={(e) => handleCmykInput("y", e.target.value)}
+                  min="0"
+                  max="100"
+                  className="compact-input"
+                  aria-label="Y"
+                />
+                <input
+                  id="cmyk-k"
+                  type="number"
+                  value={cmyk.k}
+                  onChange={(e) => handleCmykInput("k", e.target.value)}
+                  min="0"
+                  max="100"
+                  className="compact-input"
+                  aria-label="K"
+                />
+              </div>
+              <button
+                type="button"
+                className="btn-copy-small"
+                onClick={() => handleCopy(cmykToString(cmyk), "CMYK")}
+                aria-label="CMYK形式をコピー"
+              >
+                コピー
+              </button>
+            </div>
+          </div>
+
+          {/* パレット */}
+          <div className="palette-section-compact">
+            <div className="palette-header-compact">
+              <span className="palette-title">パレット</span>
+              <button
+                type="button"
+                className="btn-add-palette-small"
+                onClick={handleAddToPalette}
+                disabled={palette.length >= 10}
+                aria-label="現在の色をパレットに追加"
+              >
+                +
+              </button>
+            </div>
+            <div
+              className="palette-container-compact"
+              role="list"
+              aria-label="カラーパレット"
+            >
+              {palette.length === 0 ? (
+                <span className="palette-empty-compact">未登録</span>
+              ) : (
+                palette.map((color, index) => (
+                  <button
+                    key={`${color}-${index}`}
+                    type="button"
+                    className="palette-color-compact"
+                    style={{ backgroundColor: color }}
+                    onClick={() => handleSelectFromPalette(color)}
+                    onContextMenu={(e) => {
+                      e.preventDefault();
+                      handleRemoveFromPalette(index);
+                    }}
+                    aria-label={`色 ${color} を選択（右クリックで削除）`}
+                    title={`${color} (右クリックで削除)`}
+                    role="listitem"
+                  />
+                ))
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* 右カラム：画像ピッカー */}
+        <div className="color-picker-right">
+          <div className="image-picker-compact">
+            <div className="image-picker-header-compact">
+              <span className="image-picker-title">画像から取得</span>
+              <div className="image-picker-actions">
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="file-input"
+                  id="image-upload"
+                  aria-label="画像ファイルを選択"
+                />
+                <label htmlFor="image-upload" className="btn-upload-small">
+                  選択
+                </label>
+                {isPickingFromImage && (
+                  <button
+                    type="button"
+                    className="btn-clear-small"
+                    onClick={handleClearImage}
+                    aria-label="画像をクリア"
+                  >
+                    クリア
+                  </button>
+                )}
+              </div>
+            </div>
+
+            <div className="image-canvas-container">
+              {imageData ? (
+                <>
+                  <img
+                    ref={imageRef}
+                    src={imageData}
+                    alt="色取得用の画像"
+                    className="hidden-image"
+                  />
+                  <canvas
+                    ref={canvasRef}
+                    onClick={handleImageClick}
+                    className="image-canvas-compact"
+                    aria-label="画像をクリックして色を取得"
+                  />
+                </>
+              ) : (
+                <div className="image-placeholder">
+                  <span>画像をアップロード</span>
+                  <span className="image-placeholder-hint">
+                    クリックで色を取得
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

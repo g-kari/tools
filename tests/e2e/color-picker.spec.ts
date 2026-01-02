@@ -8,30 +8,17 @@ test.describe("Color Picker", () => {
   test("should display the page title and main elements", async ({ page }) => {
     await expect(page).toHaveTitle(/カラーピッカー/);
 
-    // Check main sections are visible
-    await expect(
-      page.getByRole("heading", { name: "カラーピッカー", exact: true })
-    ).toBeVisible();
-    await expect(
-      page.getByRole("heading", { name: "HEX形式" })
-    ).toBeVisible();
-    await expect(
-      page.getByRole("heading", { name: "RGB形式" })
-    ).toBeVisible();
-    await expect(
-      page.getByRole("heading", { name: "HSL形式" })
-    ).toBeVisible();
-    await expect(
-      page.getByRole("heading", { name: "CMYK形式" })
-    ).toBeVisible();
-    await expect(
-      page.getByRole("heading", { name: "カラーパレット" })
-    ).toBeVisible();
+    // Check main elements are visible (compact layout)
+    await expect(page.locator(".color-preview-compact")).toBeVisible();
+    await expect(page.locator(".hex-input-compact")).toBeVisible();
+    await expect(page.locator(".color-formats-grid")).toBeVisible();
+    await expect(page.locator(".palette-section-compact")).toBeVisible();
+    await expect(page.locator(".image-picker-compact")).toBeVisible();
   });
 
   test("should have a color picker input", async ({ page }) => {
     const colorInput = page.locator('input[type="color"]');
-    await expect(colorInput).toBeVisible();
+    await expect(colorInput).toBeAttached();
 
     // Default color should be set
     const value = await colorInput.inputValue();
@@ -39,7 +26,7 @@ test.describe("Color Picker", () => {
   });
 
   test("should display color preview with current color", async ({ page }) => {
-    const colorPreview = page.locator(".color-preview");
+    const colorPreview = page.locator(".color-preview-compact");
     await expect(colorPreview).toBeVisible();
 
     // Preview should have a background color
@@ -52,8 +39,8 @@ test.describe("Color Picker", () => {
   test("should update all formats when HEX input is changed", async ({
     page,
   }) => {
-    // Use HEX input to set color (more reliable than color input in E2E tests)
-    const hexInput = page.locator('input[placeholder="#000000"]');
+    // Use HEX input to set color
+    const hexInput = page.locator(".hex-input-compact");
     await hexInput.clear();
     await hexInput.fill("#FF0000");
     await hexInput.press("Enter");
@@ -79,7 +66,7 @@ test.describe("Color Picker", () => {
   test("should update all formats when HEX input changes with blur", async ({
     page,
   }) => {
-    const hexInput = page.locator('input[placeholder="#000000"]');
+    const hexInput = page.locator(".hex-input-compact");
     await hexInput.clear();
     await hexInput.fill("#00FF00");
     await hexInput.blur();
@@ -110,14 +97,14 @@ test.describe("Color Picker", () => {
     await page.waitForTimeout(100);
 
     // Check HEX format
-    const hexInput = page.locator('input[placeholder="#000000"]');
+    const hexInput = page.locator(".hex-input-compact");
     await expect(hexInput).toHaveValue("#0000FF");
   });
 
   test("should update HEX when HSL inputs change", async ({ page }) => {
     // Test that HSL input changes the HEX value
     const hslH = page.locator("#hsl-h");
-    const hexInput = page.locator('input[placeholder="#000000"]');
+    const hexInput = page.locator(".hex-input-compact");
 
     // Get initial HEX value
     const initialHex = await hexInput.inputValue();
@@ -136,18 +123,15 @@ test.describe("Color Picker", () => {
   test("should copy HEX format to clipboard", async ({ page, context }) => {
     await context.grantPermissions(["clipboard-read", "clipboard-write"]);
 
-    // Set a known color using HEX input instead
-    const hexInput = page.locator('input[placeholder="#000000"]');
+    // Set a known color using HEX input
+    const hexInput = page.locator(".hex-input-compact");
     await hexInput.clear();
     await hexInput.fill("#123456");
     await hexInput.press("Enter");
     await page.waitForTimeout(200);
 
-    // Click copy button for HEX
-    const hexSection = page
-      .locator(".converter-section")
-      .filter({ hasText: "HEX形式" });
-    const copyButton = hexSection.getByRole("button", { name: /コピー/ });
+    // Click copy button for HEX (first copy button in header)
+    const copyButton = page.locator(".color-hex-input .btn-copy-small");
     await copyButton.click();
 
     // Verify clipboard content
@@ -160,18 +144,16 @@ test.describe("Color Picker", () => {
   test("should copy RGB format to clipboard", async ({ page, context }) => {
     await context.grantPermissions(["clipboard-read", "clipboard-write"]);
 
-    // Set a known color using HEX input instead
-    const hexInput = page.locator('input[placeholder="#000000"]');
+    // Set a known color using HEX input
+    const hexInput = page.locator(".hex-input-compact");
     await hexInput.clear();
     await hexInput.fill("#FF0000");
     await hexInput.press("Enter");
     await page.waitForTimeout(200);
 
-    // Click copy button for RGB
-    const rgbSection = page
-      .locator(".converter-section")
-      .filter({ hasText: "RGB形式" });
-    const copyButton = rgbSection.getByRole("button", { name: /コピー/ });
+    // Click copy button for RGB (first format row)
+    const rgbRow = page.locator(".format-row").first();
+    const copyButton = rgbRow.locator(".btn-copy-small");
     await copyButton.click();
 
     // Verify clipboard content
@@ -183,73 +165,70 @@ test.describe("Color Picker", () => {
 
   test("should add color to palette", async ({ page }) => {
     // Set a color using HEX input
-    const hexInput = page.locator('input[placeholder="#000000"]');
+    const hexInput = page.locator(".hex-input-compact");
     await hexInput.clear();
     await hexInput.fill("#FF5733");
     await hexInput.press("Enter");
     await page.waitForTimeout(200);
 
-    // Click add to palette button using class selector
-    const addButton = page.locator(".btn-add-palette");
+    // Click add to palette button
+    const addButton = page.locator(".btn-add-palette-small");
     await addButton.scrollIntoViewIfNeeded();
     await addButton.click();
+    await page.waitForTimeout(100);
 
     // Verify color is in palette
-    const paletteItems = page.locator(".palette-item");
-    await expect(paletteItems).toHaveCount(1);
-
-    // Verify color count
-    await expect(page.locator(".palette-count")).toHaveText("1 / 10色");
+    const paletteColors = page.locator(".palette-color-compact");
+    await expect(paletteColors).toHaveCount(1);
   });
 
   test("should not add duplicate colors to palette", async ({ page }) => {
     // Set a color using HEX input
-    const hexInput = page.locator('input[placeholder="#000000"]');
+    const hexInput = page.locator(".hex-input-compact");
     await hexInput.clear();
     await hexInput.fill("#ABCDEF");
     await hexInput.press("Enter");
     await page.waitForTimeout(200);
 
-    // Add to palette twice using class selector
-    const addButton = page.locator(".btn-add-palette");
+    // Add to palette twice
+    const addButton = page.locator(".btn-add-palette-small");
     await addButton.scrollIntoViewIfNeeded();
     await addButton.click();
     await page.waitForTimeout(100);
     await addButton.click();
 
     // Should still have only 1 item
-    const paletteItems = page.locator(".palette-item");
-    await expect(paletteItems).toHaveCount(1);
+    const paletteColors = page.locator(".palette-color-compact");
+    await expect(paletteColors).toHaveCount(1);
   });
 
-  test("should remove color from palette", async ({ page }) => {
+  test("should remove color from palette with right-click", async ({
+    page,
+  }) => {
     // Add a color to palette using HEX input
-    const hexInput = page.locator('input[placeholder="#000000"]');
+    const hexInput = page.locator(".hex-input-compact");
     await hexInput.clear();
     await hexInput.fill("#123456");
     await hexInput.press("Enter");
     await page.waitForTimeout(200);
 
-    const addButton = page.locator(".btn-add-palette");
+    const addButton = page.locator(".btn-add-palette-small");
     await addButton.scrollIntoViewIfNeeded();
     await addButton.click();
     await page.waitForTimeout(100);
 
-    // Remove the color
-    const removeButton = page
-      .locator(".palette-item")
-      .first()
-      .locator(".palette-remove");
-    await removeButton.click();
+    // Right-click to remove the color
+    const paletteColor = page.locator(".palette-color-compact").first();
+    await paletteColor.click({ button: "right" });
 
     // Verify palette is empty
-    await expect(page.locator(".palette-empty")).toBeVisible();
+    await expect(page.locator(".palette-empty-compact")).toBeVisible();
   });
 
   test("should select color from palette", async ({ page }) => {
     // Add two colors to palette using HEX input
-    const hexInput = page.locator('input[placeholder="#000000"]');
-    const addButton = page.locator(".btn-add-palette");
+    const hexInput = page.locator(".hex-input-compact");
+    const addButton = page.locator(".btn-add-palette-small");
 
     await hexInput.clear();
     await hexInput.fill("#FF0000");
@@ -267,7 +246,7 @@ test.describe("Color Picker", () => {
     await page.waitForTimeout(100);
 
     // Click the first palette color
-    const firstPaletteColor = page.locator(".palette-color").first();
+    const firstPaletteColor = page.locator(".palette-color-compact").first();
     await firstPaletteColor.click();
     await page.waitForTimeout(100);
 
@@ -276,8 +255,8 @@ test.describe("Color Picker", () => {
   });
 
   test("should limit palette to 10 colors", async ({ page }) => {
-    const addButton = page.locator(".btn-add-palette");
-    const hexInput = page.locator('input[placeholder="#000000"]');
+    const addButton = page.locator(".btn-add-palette-small");
+    const hexInput = page.locator(".hex-input-compact");
     await addButton.scrollIntoViewIfNeeded();
 
     // Add 10 colors
@@ -292,23 +271,20 @@ test.describe("Color Picker", () => {
     }
 
     // Verify 10 colors are in palette
-    const paletteItems = page.locator(".palette-item");
-    await expect(paletteItems).toHaveCount(10);
+    const paletteColors = page.locator(".palette-color-compact");
+    await expect(paletteColors).toHaveCount(10);
 
     // Verify add button is disabled
     await expect(addButton).toBeDisabled();
-
-    // Verify count display
-    await expect(page.locator(".palette-count")).toHaveText("10 / 10色");
   });
 
-  test("should persist palette in localStorage", async ({ page, context }) => {
+  test("should persist palette in localStorage", async ({ page }) => {
     // Clear localStorage first
     await page.evaluate(() => localStorage.clear());
 
     // Add a color to palette using HEX input
-    const hexInput = page.locator('input[placeholder="#000000"]');
-    const addButton = page.locator(".btn-add-palette");
+    const hexInput = page.locator(".hex-input-compact");
+    const addButton = page.locator(".btn-add-palette-small");
     await hexInput.clear();
     await hexInput.fill("#FEDCBA");
     await hexInput.press("Enter");
@@ -322,44 +298,19 @@ test.describe("Color Picker", () => {
     await page.waitForTimeout(200);
 
     // Verify palette is still there
-    const paletteItems = page.locator(".palette-item");
-    await expect(paletteItems).toHaveCount(1);
+    const paletteColors = page.locator(".palette-color-compact");
+    await expect(paletteColors).toHaveCount(1);
   });
 
-  test("should display color format strings correctly", async ({ page }) => {
-    // Set a known color using HEX input
-    const hexInput = page.locator('input[placeholder="#000000"]');
-    await hexInput.clear();
-    await hexInput.fill("#FF8800");
-    await hexInput.press("Enter");
-    await page.waitForTimeout(200);
-
-    // Check RGB string format
-    const rgbString = page
-      .locator(".converter-section")
-      .filter({ hasText: "RGB形式" })
-      .locator(".color-format-input.readonly");
-    await expect(rgbString).toHaveValue("rgb(255, 136, 0)");
-
-    // Check HSL string format
-    const hslString = page
-      .locator(".converter-section")
-      .filter({ hasText: "HSL形式" })
-      .locator(".color-format-input.readonly");
-    const hslValue = await hslString.inputValue();
-    expect(hslValue).toMatch(/^hsl\(\d+, \d+%, \d+%\)$/);
-
-    // Check CMYK string format
-    const cmykString = page
-      .locator(".converter-section")
-      .filter({ hasText: "CMYK形式" })
-      .locator(".color-format-input.readonly");
-    const cmykValue = await cmykString.inputValue();
-    expect(cmykValue).toMatch(/^cmyk\(\d+%, \d+%, \d+%, \d+%\)$/);
+  test("should display image picker section", async ({ page }) => {
+    // Check image picker elements
+    await expect(page.locator(".image-picker-title")).toHaveText("画像から取得");
+    await expect(page.locator(".btn-upload-small")).toBeVisible();
+    await expect(page.locator(".image-placeholder")).toBeVisible();
   });
 
   test("should be keyboard accessible", async ({ page }) => {
-    // Tab through inputs
+    // Tab to color input
     await page.keyboard.press("Tab");
     await page.keyboard.press("Tab");
 
@@ -369,17 +320,7 @@ test.describe("Color Picker", () => {
 
     // HEX input should be focusable
     await page.keyboard.press("Tab");
-    const hexInput = page.locator('input[placeholder="#000000"]');
+    const hexInput = page.locator(".hex-input-compact");
     await expect(hexInput).toBeFocused();
-  });
-
-  test("should display info box", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "カラーピッカーとは" })
-    ).toBeVisible();
-    await expect(
-      page.getByRole("heading", { name: "カラー形式について" })
-    ).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Tips" })).toBeVisible();
   });
 });
