@@ -2860,6 +2860,66 @@ a:focus-visible {
   color: var(--md-sys-color-error);
 }
 
+/* Crop canvas styles */
+.crop-toggle {
+  margin-bottom: 1rem;
+}
+
+.crop-aspect-ratios {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.crop-canvas-container {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: var(--md-sys-color-surface-variant);
+  border-radius: 8px;
+}
+
+.crop-hint {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  text-align: center;
+}
+
+.crop-canvas {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  cursor: crosshair;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.crop-info {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: var(--md-sys-color-primary-container);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.crop-info p {
+  margin: 0.25rem 0;
+  font-family: "Roboto Mono", monospace;
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.crop-info-detail {
+  font-size: 0.875rem;
+  opacity: 0.8;
+}
+
+.preset-btn.active {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  border-color: var(--md-sys-color-primary);
+}
+
 @media (max-width: 768px) {
   .preview-comparison {
     grid-template-columns: 1fr;
@@ -2881,5 +2941,9 @@ a:focus-visible {
   .size-link-icon {
     padding-top: 0;
     text-align: center;
+  }
+
+  .crop-canvas {
+    max-width: 100%;
   }
 }

@@ -143,26 +143,31 @@ describe('Image Resize', () => {
 
   describe('generateFilename', () => {
     it('should generate filename with dimensions and original extension', () => {
-      expect(generateFilename('photo.jpg', 800, 600)).toBe('photo_800x600.jpg');
-      expect(generateFilename('image.png', 1920, 1080)).toBe('image_1920x1080.png');
+      expect(generateFilename('photo.jpg', 800, 600, false)).toBe('photo_resized_800x600.jpg');
+      expect(generateFilename('image.png', 1920, 1080, false)).toBe('image_resized_1920x1080.png');
+    });
+
+    it('should generate filename with cropped suffix when isCropped is true', () => {
+      expect(generateFilename('photo.jpg', 800, 600, true)).toBe('photo_cropped_800x600.jpg');
+      expect(generateFilename('image.png', 500, 500, true)).toBe('image_cropped_500x500.png');
     });
 
     it('should handle files without extension', () => {
-      expect(generateFilename('image', 500, 500)).toBe('image_500x500.png');
+      expect(generateFilename('image', 500, 500, false)).toBe('image_resized_500x500.png');
     });
 
     it('should handle multiple dots in filename', () => {
-      expect(generateFilename('my.photo.file.jpeg', 640, 480)).toBe('my.photo.file_640x480.jpeg');
+      expect(generateFilename('my.photo.file.jpeg', 640, 480, false)).toBe('my.photo.file_resized_640x480.jpeg');
     });
 
     it('should preserve various extensions', () => {
-      expect(generateFilename('test.webp', 256, 256)).toBe('test_256x256.webp');
-      expect(generateFilename('test.gif', 100, 100)).toBe('test_100x100.gif');
-      expect(generateFilename('test.bmp', 50, 50)).toBe('test_50x50.bmp');
+      expect(generateFilename('test.webp', 256, 256, false)).toBe('test_resized_256x256.webp');
+      expect(generateFilename('test.gif', 100, 100, false)).toBe('test_resized_100x100.gif');
+      expect(generateFilename('test.bmp', 50, 50, false)).toBe('test_resized_50x50.bmp');
     });
 
     it('should handle filenames with special characters', () => {
-      expect(generateFilename('photo-2024_01.jpg', 400, 300)).toBe('photo-2024_01_400x300.jpg');
+      expect(generateFilename('photo-2024_01.jpg', 400, 300, false)).toBe('photo-2024_01_resized_400x300.jpg');
     });
   });
 
