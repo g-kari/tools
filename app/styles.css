@@ -4361,6 +4361,18 @@ a:focus-visible {
   color: var(--md-sys-color-on-surface-variant);
 }
 
+/* Image Resize specific styles */
+.resize-size-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.resize-size-controls .crop-inputs-grid {
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 300px;
+}
+
 @media (max-width: 600px) {
   .image-source-preview {
     flex-direction: column;
