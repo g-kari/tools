@@ -46,7 +46,7 @@ test.describe('Image Resize - E2E Tests', () => {
     await expect(usageSection).toBeVisible();
 
     const usageText = await usageSection.textContent();
-    expect(usageText).toContain('画像リサイズとは');
+    expect(usageText).toContain('画像リサイズ・トリミングとは');
     expect(usageText).not.toContain('undefined');
   });
 
