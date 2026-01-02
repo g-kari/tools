@@ -1,0 +1,11 @@
+# CodeRabbit Configuration
+# https://docs.coderabbit.ai/configure-coderabbit
+
+reviews:
+  # テストファイルをレビュー対象外にする
+  path_filters:
+    - "!tests/**"
+    - "!**/*.test.ts"
+    - "!**/*.test.tsx"
+    - "!**/*.spec.ts"
+    - "!**/*.spec.tsx"
