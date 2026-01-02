@@ -15,7 +15,7 @@ test.describe('Unit Converter - E2E Tests', () => {
 
   test.beforeEach(async ({ page }) => {
     await page.goto('/unit-converter', { waitUntil: 'domcontentloaded' });
-    await page.waitForSelector('.unit-category-grid');
+    await page.waitForSelector('.unit-category-sidebar');
   });
 
   test('should load the page without "undefined" content', async ({ page }) => {
