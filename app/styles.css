@@ -3147,6 +3147,7 @@ a:focus-visible {
   position: relative;
   cursor: pointer;
   flex-shrink: 0;
+  background-color: var(--current-color, #000);
 }
 
 .color-input-overlay {
@@ -3333,6 +3334,7 @@ a:focus-visible {
   border: 1px solid var(--md-sys-color-outline-variant);
   cursor: pointer;
   transition: transform 0.15s, box-shadow 0.15s;
+  background-color: var(--palette-color, #000);
 }
 
 .palette-color-compact:hover {

@@ -525,7 +525,7 @@ function ColorPicker() {
           <div className="color-picker-header">
             <div
               className="color-preview-compact"
-              style={{ backgroundColor: currentColor }}
+              style={{ "--current-color": currentColor } as React.CSSProperties}
             >
               <input
                 type="color"
@@ -731,7 +731,7 @@ function ColorPicker() {
                     key={`${color}-${index}`}
                     type="button"
                     className="palette-color-compact"
-                    style={{ backgroundColor: color }}
+                    style={{ "--palette-color": color } as React.CSSProperties}
                     onClick={() => handleSelectFromPalette(color)}
                     onContextMenu={(e) => {
                       e.preventDefault();

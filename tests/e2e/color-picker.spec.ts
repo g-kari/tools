@@ -1,5 +1,16 @@
+/**
+ * E2E tests for the Color Picker feature.
+ * Tests color format conversions (HEX/RGB/HSL/CMYK), palette management,
+ * clipboard operations, localStorage persistence, and accessibility.
+ * @module tests/e2e/color-picker.spec
+ */
 import { test, expect } from "@playwright/test";
 
+/**
+ * Color Picker test suite.
+ * Validates the /color-picker route functionality including UI elements,
+ * color conversions, palette operations, and keyboard navigation.
+ */
 test.describe("Color Picker", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/color-picker");
