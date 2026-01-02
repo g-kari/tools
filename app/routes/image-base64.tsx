@@ -14,6 +14,9 @@ export const Route = createFileRoute("/image-base64")({
  */
 type OutputFormat = "dataUrl" | "base64Only" | "htmlImg" | "cssBackground";
 
+/**
+ * 出力形式オプションの定義
+ */
 interface FormatOption {
   value: OutputFormat;
   label: string;
@@ -110,6 +113,10 @@ export function formatNumber(num: number): string {
   return num.toLocaleString("ja-JP");
 }
 
+/**
+ * 画像をBase64形式に変換するコンバーターコンポーネント
+ * ドラッグ&ドロップ、ファイル選択、複数の出力形式をサポート
+ */
 function ImageBase64Converter() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
@@ -204,8 +211,12 @@ function ImageBase64Converter() {
       // フォールバック: textareaを選択してコピー
       if (textareaRef.current) {
         textareaRef.current.select();
-        document.execCommand("copy");
-        showToast("クリップボードにコピーしました", "success");
+        const success = document.execCommand("copy");
+        if (success) {
+          showToast("クリップボードにコピーしました", "success");
+        } else {
+          showToast("コピーに失敗しました", "error");
+        }
       } else {
         showToast("コピーに失敗しました", "error");
       }
