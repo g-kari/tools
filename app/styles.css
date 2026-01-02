@@ -3866,13 +3866,15 @@ a:focus-visible {
   margin-top: 0.25rem;
 }
 
-.preview-canvas {
+.transparency-options .preview-canvas {
   max-width: 100%;
+  height: auto;
+  border: 2px solid var(--md-sys-color-outline);
   border-radius: 4px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.preview-canvas.picking-color {
+.transparency-options .preview-canvas.picking-color {
   cursor: crosshair;
   outline: 3px solid var(--md-sys-color-primary);
   outline-offset: 2px;

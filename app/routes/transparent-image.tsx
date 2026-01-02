@@ -242,6 +242,12 @@ function TransparentImageProcessor() {
         imageRef.current = img;
         setImageDimensions({ width: img.naturalWidth, height: img.naturalHeight });
       };
+      img.onerror = () => {
+        showToast("画像の読み込みに失敗しました", "error");
+        URL.revokeObjectURL(preview);
+        setOriginalFile(null);
+        setOriginalPreview(null);
+      };
       img.src = preview;
     },
     [originalPreview, showToast]
