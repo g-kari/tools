@@ -96,7 +96,7 @@ function IPConverter() {
             <div className="search-form-row">
               <div className="search-input-wrapper">
                 <label htmlFor="ipInput">IPアドレス</label>
-                <input
+                <Input
                   type="text"
                   id="ipInput"
                   ref={inputRef}
@@ -106,7 +106,7 @@ function IPConverter() {
                   aria-describedby="ip-help"
                   aria-label="IPアドレスまたは数値を入力"
                   autoComplete="off"
-                  spellCheck="false"
+                  spellCheck={false}
                 />
               </div>
               <Button

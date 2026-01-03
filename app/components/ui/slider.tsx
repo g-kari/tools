@@ -1,8 +1,20 @@
+/**
+ * Slider component module.
+ * Provides a horizontal slider control built on Radix UI primitives.
+ * @module components/ui/slider
+ */
 import * as React from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 
 import { cn } from "~/lib/utils";
 
+/**
+ * A horizontal slider control for selecting values from a range.
+ * Supports keyboard navigation and screen readers.
+ *
+ * @example
+ * <Slider defaultValue={[50]} max={100} step={1} onValueChange={(value) => setValue(value)} />
+ */
 const Slider = React.forwardRef<
   React.ElementRef<typeof SliderPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root>

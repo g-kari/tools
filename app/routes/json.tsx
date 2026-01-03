@@ -156,7 +156,7 @@ function JsonFormatter() {
             </div>
           )}
 
-          <div style={{ marginBottom: "30px" }}>
+          <div className="output-section">
             <label htmlFor="outputText" className="section-title">
               出力結果
             </label>

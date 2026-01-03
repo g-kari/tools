@@ -28,6 +28,7 @@ export default defineConfig({
       // PlaywrightのレポートディレクトリをHMR監視対象から除外
       ignored: ["**/playwright-report/**", "**/test-results/**"],
     },
-    allowedHosts: ['sub2pc-preview.0g0.xyz'],
+    // Cloudflare Pagesプレビュー環境用のホスト許可設定
+    allowedHosts: ["sub2pc-preview.0g0.xyz"],
   },
 });

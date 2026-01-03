@@ -1,9 +1,21 @@
+/**
+ * Checkbox component module.
+ * Provides a styled checkbox built on Radix UI primitives.
+ * @module components/ui/checkbox
+ */
 import * as React from "react";
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 import { Check } from "lucide-react";
 
 import { cn } from "~/lib/utils";
 
+/**
+ * A styled checkbox component with integrated check indicator.
+ * Supports all Radix UI Checkbox.Root props including checked, disabled, and onCheckedChange.
+ *
+ * @example
+ * <Checkbox checked={isChecked} onCheckedChange={setIsChecked} />
+ */
 const Checkbox = React.forwardRef<
   React.ElementRef<typeof CheckboxPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>
