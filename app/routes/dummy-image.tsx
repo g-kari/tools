@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef, useCallback, useEffect } from "react";
+import { Button } from "~/components/ui/button";
+import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/dummy-image")({
   head: () => ({
@@ -353,23 +355,23 @@ function DummyImageGenerator() {
             </div>
 
             <div className="button-group" role="group" aria-label="画像操作">
-              <button type="submit" className="btn-primary">
+              <Button type="submit">
                 ダウンロード
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
-                className="btn-secondary"
+                variant="secondary"
                 onClick={handleCopyToClipboard}
               >
                 クリップボードにコピー
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
-                className="btn-secondary"
+                variant="secondary"
                 onClick={handleOpenApi}
               >
                 APIで開く
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -400,51 +402,46 @@ function DummyImageGenerator() {
           </div>
         </form>
 
-        <aside
-          className="info-box"
-          role="complementary"
-          aria-labelledby="usage-title"
-        >
-          <h3 id="usage-title">ダミー画像生成とは</h3>
-          <ul>
-            <li>開発やデザインモックアップ用のプレースホルダー画像を生成します</li>
-            <li>指定したサイズと色で画像を作成</li>
-            <li>PNG、JPEG、WebP形式でダウンロード可能</li>
-          </ul>
-          <h3 id="format-title">形式について</h3>
-          <ul>
-            <li><strong>PNG:</strong> 可逆圧縮、透明度対応、ロゴやアイコンに最適</li>
-            <li><strong>JPEG:</strong> 非可逆圧縮、写真に最適、ファイルサイズ小</li>
-            <li><strong>WebP:</strong> 高圧縮率、モダンブラウザ対応</li>
-          </ul>
-          <h3 id="about-tool-title">使い方</h3>
-          <ul>
-            <li>幅と高さを指定、またはプリセットを選択</li>
-            <li>背景色とテキスト色を設定</li>
-            <li>プレビューで確認</li>
-            <li>「ダウンロード」で画像を保存</li>
-          </ul>
-          <h3 id="api-title">APIエンドポイント</h3>
-          <p>URLで直接画像を取得できます:</p>
-          <ul>
-            <li><strong>SVG:</strong> <code>/api/image.svg?w=800&h=600</code></li>
-            <li><strong>PNG:</strong> <code>/api/image.png?w=800&h=600</code></li>
-            <li><strong>JPEG:</strong> <code>/api/image.jpg?w=800&h=600&q=85</code></li>
-            <li><strong>WebP:</strong> <code>/api/image.webp?w=800&h=600</code></li>
-          </ul>
-          <p>カスタム色の例:</p>
-          <ul>
-            <li><code>/api/image.png?w=1200&h=630&bg=FF0000&text=FFFFFF</code></li>
-          </ul>
-          <p>パラメータ:</p>
-          <ul>
-            <li><strong>w</strong>: 幅 (1-4096, デフォルト: 300)</li>
-            <li><strong>h</strong>: 高さ (1-4096, デフォルト: 150)</li>
-            <li><strong>bg</strong>: 背景色 HEX (デフォルト: 6750A4)</li>
-            <li><strong>text</strong>: テキスト色 HEX (デフォルト: FFFFFF)</li>
-            <li><strong>q</strong>: 画質 (1-100, デフォルト: 85) ※JPEGのみ</li>
-          </ul>
-        </aside>
+        <TipsCard
+          sections={[
+            {
+              title: "ダミー画像生成とは",
+              items: [
+                "開発やデザインモックアップ用のプレースホルダー画像を生成します",
+                "指定したサイズと色で画像を作成",
+                "PNG、JPEG、WebP形式でダウンロード可能",
+              ],
+            },
+            {
+              title: "形式について",
+              items: [
+                "PNG: 可逆圧縮、透明度対応、ロゴやアイコンに最適",
+                "JPEG: 非可逆圧縮、写真に最適、ファイルサイズ小",
+                "WebP: 高圧縮率、モダンブラウザ対応",
+              ],
+            },
+            {
+              title: "使い方",
+              items: [
+                "幅と高さを指定、またはプリセットを選択",
+                "背景色とテキスト色を設定",
+                "プレビューで確認",
+                "「ダウンロード」で画像を保存",
+              ],
+            },
+            {
+              title: "APIエンドポイント",
+              items: [
+                "SVG: /api/image.svg?w=800&h=600",
+                "PNG: /api/image.png?w=800&h=600",
+                "JPEG: /api/image.jpg?w=800&h=600&q=85",
+                "WebP: /api/image.webp?w=800&h=600",
+                "カスタム色の例: /api/image.png?w=1200&h=630&bg=FF0000&text=FFFFFF",
+                "パラメータ: w(幅), h(高さ), bg(背景色), text(テキスト色), q(画質/JPEGのみ)",
+              ],
+            },
+          ]}
+        />
       </div>
 
       <div

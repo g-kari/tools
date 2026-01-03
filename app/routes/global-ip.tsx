@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { getGlobalIp, type GlobalIpResult } from "../functions/global-ip";
+import { Button } from "~/components/ui/button";
+import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/global-ip")({
   head: () => ({
@@ -132,44 +134,46 @@ function GlobalIpLookup() {
                 {result.ip}
               </div>
               <div className="ip-actions">
-                <button
+                <Button
                   type="button"
-                  className="btn-primary"
                   onClick={handleCopy}
                   aria-label="IPアドレスをコピー"
                 >
                   {copied ? "コピーしました" : "コピー"}
-                </button>
-                <button
+                </Button>
+                <Button
                   type="button"
-                  className="btn-secondary"
+                  variant="secondary"
                   onClick={fetchIp}
                   disabled={isLoading}
                   aria-label="IPアドレスを再取得"
                 >
                   再取得
-                </button>
+                </Button>
               </div>
             </div>
           )}
         </div>
 
-        <aside
-          className="info-box"
-          role="complementary"
-          aria-labelledby="usage-title"
-        >
-          <h3 id="usage-title">グローバルIPアドレスとは</h3>
-          <ul>
-            <li>インターネット上であなたのデバイスを識別するアドレスです</li>
-            <li>プロバイダーから割り当てられます</li>
-            <li>VPNやプロキシを使用すると異なるIPが表示されます</li>
-          </ul>
-          <h3 id="about-tool-title">このツールについて</h3>
-          <p>
-            サーバーに接続した際のIPアドレスを表示します。Cloudflare経由でアクセスしている場合、実際のIPアドレスが正確に取得されます。
-          </p>
-        </aside>
+        <TipsCard
+          sections={[
+            {
+              title: "グローバルIPアドレスとは",
+              items: [
+                "インターネット上であなたのデバイスを識別するアドレスです",
+                "プロバイダーから割り当てられます",
+                "VPNやプロキシを使用すると異なるIPが表示されます",
+              ],
+            },
+            {
+              title: "このツールについて",
+              items: [
+                "サーバーに接続した際のIPアドレスを表示します",
+                "Cloudflare経由でアクセスしている場合、実際のIPアドレスが正確に取得されます",
+              ],
+            },
+          ]}
+        />
       </div>
 
       <div

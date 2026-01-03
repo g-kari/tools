@@ -2,6 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { lookupWhois, type WhoisResult } from "../functions/whois";
 import { useToast } from "../components/Toast";
+import { Button } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
+import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/whois")({
   head: () => ({
@@ -205,7 +208,7 @@ function WhoisLookup() {
             <div className="search-form-row">
               <div className="search-input-wrapper">
                 <label htmlFor="domainInput">ドメイン名</label>
-                <input
+                <Input
                   type="text"
                   id="domainInput"
                   ref={inputRef}
@@ -218,15 +221,14 @@ function WhoisLookup() {
                   spellCheck="false"
                 />
               </div>
-              <button
+              <Button
                 type="submit"
-                className="btn-primary"
                 onClick={handleSearch}
                 disabled={isLoading}
                 aria-label="WHOIS情報を検索"
               >
                 検索
-              </button>
+              </Button>
             </div>
             <span id="domain-help" className="sr-only">
               example.comのような形式でドメイン名を入力してください
@@ -258,19 +260,19 @@ function WhoisLookup() {
           </section>
         )}
 
-        <aside
-          className="info-box"
-          role="complementary"
-          aria-labelledby="usage-title"
-        >
-          <h3 id="usage-title">使い方</h3>
-          <ul>
-            <li>ドメイン名を入力して「検索」ボタンをクリック</li>
-            <li>例: google.com, github.com</li>
-            <li>登録者、有効期限、ネームサーバーなどの情報を表示</li>
-            <li>キーボードショートカット: Enterキーで検索実行</li>
-          </ul>
-        </aside>
+        <TipsCard
+          sections={[
+            {
+              title: "使い方",
+              items: [
+                "ドメイン名を入力して「検索」ボタンをクリック",
+                "例: google.com, github.com",
+                "登録者、有効期限、ネームサーバーなどの情報を表示",
+                "キーボードショートカット: Enterキーで検索実行",
+              ],
+            },
+          ]}
+        />
       </div>
 
       <div

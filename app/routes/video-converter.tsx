@@ -2,6 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile, toBlobURL } from "@ffmpeg/util";
+import { Button } from "~/components/ui/button";
+import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/video-converter")({
   head: () => ({
@@ -515,22 +517,22 @@ function VideoConverter() {
           </div>
 
           <div className="button-group" role="group" aria-label="操作">
-            <button
+            <Button
               type="button"
-              className="btn-primary"
               onClick={handleConvert}
               disabled={!file || isConverting}
             >
               {isConverting ? `変換中... ${progress}%` : "変換"}
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
-              className="btn-secondary"
+              variant="secondary"
+              className="btn-clear"
               onClick={handleClear}
               disabled={isConverting}
             >
               クリア
-            </button>
+            </Button>
           </div>
 
           {isConverting && (
@@ -554,53 +556,46 @@ function VideoConverter() {
             </div>
 
             <div className="button-group" role="group" aria-label="ダウンロード">
-              <button
+              <Button
                 type="button"
-                className="btn-primary"
                 onClick={handleDownload}
               >
                 ダウンロード
-              </button>
+              </Button>
             </div>
           </div>
         )}
 
-        <aside
-          className="info-box"
-          role="complementary"
-          aria-labelledby="usage-title"
-        >
-          <h3 id="usage-title">動画変換とは</h3>
-          <ul>
-            <li>動画ファイルを異なるフォーマットに変換できます</li>
-            <li>解像度やビットレートを調整してファイルサイズを最適化できます</li>
-            <li>ブラウザ上で完結するため、ファイルがサーバーにアップロードされることはありません</li>
-          </ul>
-          <h3 id="options-title">オプションについて</h3>
-          <ul>
-            <li>
-              <strong>出力フォーマット:</strong> 変換先の動画形式を選択します
-            </li>
-            <li>
-              <strong>解像度:</strong> 動画の幅と高さを設定します（縦横比は保持されません）
-            </li>
-            <li>
-              <strong>フレームレート:</strong> 1秒あたりのフレーム数を設定します
-            </li>
-            <li>
-              <strong>ビデオビットレート:</strong> 動画の品質を決定します（高いほど高画質）
-            </li>
-            <li>
-              <strong>オーディオビットレート:</strong> 音質を決定します（高いほど高音質）
-            </li>
-          </ul>
-          <h3 id="tips-title">Tips</h3>
-          <ul>
-            <li>ファイルサイズを小さくしたい場合は、解像度とビットレートを下げてください</li>
-            <li>大きなファイルは変換に時間がかかる場合があります</li>
-            <li>ブラウザのメモリ制限により、非常に大きなファイルは変換できない場合があります</li>
-          </ul>
-        </aside>
+        <TipsCard
+          sections={[
+            {
+              title: "動画変換とは",
+              items: [
+                "動画ファイルを異なるフォーマットに変換できます",
+                "解像度やビットレートを調整してファイルサイズを最適化できます",
+                "ブラウザ上で完結するため、ファイルがサーバーにアップロードされることはありません",
+              ],
+            },
+            {
+              title: "オプションについて",
+              items: [
+                "出力フォーマット: 変換先の動画形式を選択します",
+                "解像度: 動画の幅と高さを設定します（縦横比は保持されません）",
+                "フレームレート: 1秒あたりのフレーム数を設定します",
+                "ビデオビットレート: 動画の品質を決定します（高いほど高画質）",
+                "オーディオビットレート: 音質を決定します（高いほど高音質）",
+              ],
+            },
+            {
+              title: "Tips",
+              items: [
+                "ファイルサイズを小さくしたい場合は、解像度とビットレートを下げてください",
+                "大きなファイルは変換に時間がかかる場合があります",
+                "ブラウザのメモリ制限により、非常に大きなファイルは変換できない場合があります",
+              ],
+            },
+          ]}
+        />
       </div>
     </>
   );

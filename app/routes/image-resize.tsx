@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef, useCallback, useEffect, useMemo } from "react";
 import { useToast } from "../components/Toast";
+import { Button } from "~/components/ui/button";
+import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/image-resize")({
   head: () => ({
@@ -840,29 +842,35 @@ function ImageResizer() {
             </div>
           </div>
 
-          <aside
-            className="info-box"
-            role="complementary"
-            aria-labelledby="usage-title"
-          >
-            <h3 id="usage-title">画像リサイズ・トリミングツールとは</h3>
-            <p>画像の幅と高さを変更したり、必要な部分だけを切り出せるツールです。</p>
-            <h3>使い方</h3>
-            <ol>
-              <li>リサイズしたい画像をアップロード</li>
-              <li>プリセットサイズを選択、または幅・高さを入力</li>
-              <li>必要に応じてトリミングを有効にして範囲を選択</li>
-              <li>「リサイズ」ボタンをクリック</li>
-              <li>結果を確認してダウンロード</li>
-            </ol>
-            <h3>機能</h3>
-            <ul>
-              <li><strong>プリセットサイズ</strong>: Full HD、HD、VGAなど一般的なサイズ</li>
-              <li><strong>アスペクト比維持</strong>: 縦横比を保ったままリサイズ</li>
-              <li><strong>トリミング機能</strong>: 必要な部分だけを切り出し</li>
-              <li><strong>ブラウザ内処理</strong>: サーバーにアップロードしません</li>
-            </ul>
-          </aside>
+          <TipsCard
+            sections={[
+              {
+                title: "画像リサイズ・トリミングツールとは",
+                items: [
+                  "画像の幅と高さを変更したり、必要な部分だけを切り出せるツールです",
+                ],
+              },
+              {
+                title: "使い方",
+                items: [
+                  "リサイズしたい画像をアップロード",
+                  "プリセットサイズを選択、または幅・高さを入力",
+                  "必要に応じてトリミングを有効にして範囲を選択",
+                  "「リサイズ」ボタンをクリック",
+                  "結果を確認してダウンロード",
+                ],
+              },
+              {
+                title: "機能",
+                items: [
+                  "プリセットサイズ: Full HD、HD、VGAなど一般的なサイズ",
+                  "アスペクト比維持: 縦横比を保ったままリサイズ",
+                  "トリミング機能: 必要な部分だけを切り出し",
+                  "ブラウザ内処理: サーバーにアップロードしません",
+                ],
+              },
+            ]}
+          />
         </>
       ) : (
         <>
@@ -884,14 +892,15 @@ function ImageResizer() {
                 </div>
               )}
             </div>
-            <button
+            <Button
               type="button"
-              className="btn-secondary"
+              variant="secondary"
+              className="btn-clear"
               onClick={handleClear}
               disabled={isLoading}
             >
               別の画像を選択
-            </button>
+            </Button>
           </div>
 
           <div className="converter-section">
@@ -1022,14 +1031,13 @@ function ImageResizer() {
 
           <div className="converter-section">
             <div className="button-group" role="group" aria-label="操作ボタン">
-              <button
+              <Button
                 type="button"
-                className="btn-primary"
                 onClick={handleResize}
                 disabled={isLoading || width < MIN_DIMENSION || height < MIN_DIMENSION}
               >
                 {isLoading ? "処理中..." : (enableCrop ? "トリミング&リサイズ" : "リサイズ")}
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -1051,29 +1059,28 @@ function ImageResizer() {
                   </span>
                 </div>
               </div>
-              <button
+              <Button
                 type="button"
-                className="btn-primary"
                 onClick={handleDownload}
               >
                 ダウンロード
-              </button>
+              </Button>
             </div>
           )}
 
-          <aside
-            className="info-box"
-            role="complementary"
-            aria-labelledby="tips-title"
-          >
-            <h3 id="tips-title">リサイズのヒント</h3>
-            <ul>
-              <li><strong>縮小推奨</strong>: 拡大は画質が劣化する可能性があります</li>
-              <li><strong>アスペクト比</strong>: 維持することで画像の歪みを防げます</li>
-              <li><strong>トリミング併用</strong>: 不要な部分を削除してからリサイズすると効率的です</li>
-              <li><strong>最大サイズ</strong>: 10000×10000pxまで対応</li>
-            </ul>
-          </aside>
+          <TipsCard
+            sections={[
+              {
+                title: "リサイズのヒント",
+                items: [
+                  "縮小推奨: 拡大は画質が劣化する可能性があります",
+                  "アスペクト比: 維持することで画像の歪みを防げます",
+                  "トリミング併用: 不要な部分を削除してからリサイズすると効率的です",
+                  "最大サイズ: 10000x10000pxまで対応",
+                ],
+              },
+            ]}
+          />
         </>
       )}
 

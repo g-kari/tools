@@ -1,6 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef, useCallback } from "react";
 import { useToast } from "../components/Toast";
+import { Button } from "~/components/ui/button";
+import { Textarea } from "~/components/ui/textarea";
+import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/image-base64")({
   head: () => ({
@@ -382,7 +385,7 @@ function ImageBase64Converter() {
                 </div>
               </div>
 
-              <textarea
+              <Textarea
                 ref={textareaRef}
                 className="base64-output"
                 value={outputText}
@@ -392,54 +395,58 @@ function ImageBase64Converter() {
               />
 
               <div className="button-group" role="group" aria-label="操作">
-                <button
+                <Button
                   type="button"
-                  className="btn-primary"
                   onClick={handleCopy}
                   disabled={isLoading || !base64Data}
                 >
                   コピー
-                </button>
-                <button
+                </Button>
+                <Button
                   type="button"
-                  className="btn-secondary"
+                  variant="secondary"
+                  className="btn-clear"
                   onClick={handleClear}
                   disabled={isLoading}
                 >
                   クリア
-                </button>
+                </Button>
               </div>
             </div>
           </>
         )}
 
-        <aside
-          className="info-box"
-          role="complementary"
-          aria-labelledby="usage-title"
-        >
-          <h3 id="usage-title">画像Base64変換とは</h3>
-          <ul>
-            <li>画像ファイルをBase64形式のテキストデータに変換します</li>
-            <li>HTMLやCSSに直接埋め込むことができます</li>
-            <li>小さな画像やアイコンの埋め込みに便利です</li>
-            <li>すべての処理はブラウザ内で完結（サーバーにアップロードされません）</li>
-          </ul>
-          <h3 id="format-title">出力形式について</h3>
-          <ul>
-            <li><strong>Data URL</strong>: ブラウザで直接読み込める形式</li>
-            <li><strong>Base64のみ</strong>: エンコードされた文字列のみ</li>
-            <li><strong>HTML img形式</strong>: HTML imgタグとして使用可能</li>
-            <li><strong>CSS background形式</strong>: CSS背景画像として使用可能</li>
-          </ul>
-          <h3 id="tips-title">Tips</h3>
-          <ul>
-            <li>Base64変換すると元のファイルサイズより約33%増加します</li>
-            <li>大きな画像はファイルサイズが大幅に増えるため推奨されません</li>
-            <li>アイコンやロゴなど小さな画像に最適です</li>
-            <li>Data URL形式ならHTMLのsrc属性に直接指定できます</li>
-          </ul>
-        </aside>
+        <TipsCard
+          sections={[
+            {
+              title: "画像Base64変換とは",
+              items: [
+                "画像ファイルをBase64形式のテキストデータに変換します",
+                "HTMLやCSSに直接埋め込むことができます",
+                "小さな画像やアイコンの埋め込みに便利です",
+                "すべての処理はブラウザ内で完結（サーバーにアップロードされません）",
+              ],
+            },
+            {
+              title: "出力形式について",
+              items: [
+                "Data URL: ブラウザで直接読み込める形式",
+                "Base64のみ: エンコードされた文字列のみ",
+                "HTML img形式: HTML imgタグとして使用可能",
+                "CSS background形式: CSS背景画像として使用可能",
+              ],
+            },
+            {
+              title: "Tips",
+              items: [
+                "Base64変換すると元のファイルサイズより約33%増加します",
+                "大きな画像はファイルサイズが大幅に増えるため推奨されません",
+                "アイコンやロゴなど小さな画像に最適です",
+                "Data URL形式ならHTMLのsrc属性に直接指定できます",
+              ],
+            },
+          ]}
+        />
       </div>
     </>
   );

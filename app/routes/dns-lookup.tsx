@@ -6,6 +6,9 @@ import {
   type DnsRecordType,
 } from "../functions/dns-lookup";
 import { useToast } from "../components/Toast";
+import { Button } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
+import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/dns-lookup")({
   head: () => ({
@@ -196,15 +199,15 @@ function DnsLookup() {
                   spellCheck="false"
                 />
               </div>
-              <button
+              <Button
                 type="submit"
-                className="btn-primary primary-button"
+                className="primary-button"
                 onClick={handleSearch}
                 disabled={isLoading}
                 aria-label="DNS情報を検索"
               >
                 {isLoading ? "検索中..." : "検索"}
-              </button>
+              </Button>
             </div>
             <span id="domain-help" className="sr-only">
               example.comのような形式でドメイン名を入力してください
@@ -345,28 +348,30 @@ function DnsLookup() {
           </section>
         )}
 
-        <aside
-          className="info-box"
-          role="complementary"
-          aria-labelledby="usage-title"
-        >
-          <h3 id="usage-title">使い方</h3>
-          <ul>
-            <li>ドメイン名を入力して検索したいレコードタイプを選択</li>
-            <li>「検索」ボタンをクリックしてDNSレコードを取得</li>
-            <li>例: google.com, github.com</li>
-            <li>複数のレコードタイプを同時に検索可能</li>
-            <li>キーボードショートカット: Enterキーで検索実行</li>
-          </ul>
-          <h3>対応レコードタイプ</h3>
-          <ul>
-            <li>A (IPv4アドレス), AAAA (IPv6アドレス)</li>
-            <li>CNAME (正規名), MX (メールサーバー)</li>
-            <li>TXT (テキストレコード), NS (ネームサーバー)</li>
-            <li>SOA (権威レコード), PTR (逆引き)</li>
-            <li>SRV (サービスレコード), CAA (証明書認証局)</li>
-          </ul>
-        </aside>
+        <TipsCard
+          sections={[
+            {
+              title: "使い方",
+              items: [
+                "ドメイン名を入力して検索したいレコードタイプを選択",
+                "「検索」ボタンをクリックしてDNSレコードを取得",
+                "例: google.com, github.com",
+                "複数のレコードタイプを同時に検索可能",
+                "キーボードショートカット: Enterキーで検索実行",
+              ],
+            },
+            {
+              title: "対応レコードタイプ",
+              items: [
+                "A (IPv4アドレス), AAAA (IPv6アドレス)",
+                "CNAME (正規名), MX (メールサーバー)",
+                "TXT (テキストレコード), NS (ネームサーバー)",
+                "SOA (権威レコード), PTR (逆引き)",
+                "SRV (サービスレコード), CAA (証明書認証局)",
+              ],
+            },
+          ]}
+        />
       </div>
 
       <div
