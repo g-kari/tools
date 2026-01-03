@@ -1,5 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useCallback } from "react";
+import { Button } from "~/components/ui/button";
+import { Textarea } from "~/components/ui/textarea";
+import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/char-count")({
   head: () => ({
@@ -90,7 +93,7 @@ function CharCountPage() {
       <div className="tool-container">
         <div className="converter-section">
           <h2 className="section-title">テキスト入力</h2>
-          <textarea
+          <Textarea
             className="input-area"
             placeholder="文字数をカウントしたいテキストを入力してください..."
             value={text}
@@ -99,14 +102,14 @@ function CharCountPage() {
             rows={10}
           />
           <div className="button-group" role="group" aria-label="テキスト操作">
-            <button
+            <Button
               type="button"
-              className="btn-clear"
+              variant="outline"
               onClick={handleClear}
               disabled={text.length === 0}
             >
               クリア
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -152,23 +155,25 @@ function CharCountPage() {
           </div>
         </div>
 
-        <aside
-          className="info-box"
-          role="complementary"
-          aria-labelledby="usage-title"
-        >
-          <h3 id="usage-title">文字数カウントとは</h3>
-          <ul>
-            <li>テキストの文字数、バイト数、行数などをリアルタイムでカウントします</li>
-            <li>日本語、英語、絵文字など、あらゆる文字に対応しています</li>
-            <li>バイト数はUTF-8エンコーディングで計算されます</li>
-          </ul>
-          <h3>使い方</h3>
-          <ul>
-            <li>テキストエリアに文字列を入力すると、自動的にカウントされます</li>
-            <li>「クリア」ボタンで入力内容をリセットできます</li>
-          </ul>
-        </aside>
+        <TipsCard
+          sections={[
+            {
+              title: "文字数カウントとは",
+              items: [
+                "テキストの文字数、バイト数、行数などをリアルタイムでカウントします",
+                "日本語、英語、絵文字など、あらゆる文字に対応しています",
+                "バイト数はUTF-8エンコーディングで計算されます",
+              ],
+            },
+            {
+              title: "使い方",
+              items: [
+                "テキストエリアに文字列を入力すると、自動的にカウントされます",
+                "「クリア」ボタンで入力内容をリセットできます",
+              ],
+            },
+          ]}
+        />
       </div>
 
     </>

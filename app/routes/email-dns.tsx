@@ -1,6 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { lookupEmailDNS, DOMAIN_REGEX, type EmailDNSResult } from "../functions/email-dns";
+import { Button } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
+import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/email-dns")({
   head: () => ({
@@ -144,15 +147,14 @@ function EmailDNSChecker() {
                   spellCheck="false"
                 />
               </div>
-              <button
+              <Button
                 type="submit"
-                className="btn-primary"
                 onClick={handleCheck}
                 disabled={isLoading}
                 aria-label="メールDNS設定を検証"
               >
                 {isLoading ? "検証中..." : "検証"}
-              </button>
+              </Button>
             </div>
             <span id="domain-help" className="sr-only">
               example.comのような形式でドメイン名を入力してください
@@ -509,35 +511,29 @@ function EmailDNSChecker() {
           </section>
         )}
 
-        <aside
-          className="info-box"
-          role="complementary"
-          aria-labelledby="usage-title"
-        >
-          <h3 id="usage-title">使い方</h3>
-          <ul>
-            <li>ドメイン名を入力して「検証」ボタンをクリック</li>
-            <li>例: gmail.com, yahoo.co.jp</li>
-            <li>MX、SPF、DMARC、DKIMレコードを検証</li>
-            <li>DKIMは任意のセレクタを指定（例: default, google）</li>
-            <li>キーボードショートカット: Enterキーで検証実行</li>
-          </ul>
-          <h3>各レコードについて</h3>
-          <ul>
-            <li>
-              <strong>MX</strong>: メール配送先サーバーを指定
-            </li>
-            <li>
-              <strong>SPF</strong>: 送信元IPアドレスを認証
-            </li>
-            <li>
-              <strong>DMARC</strong>: SPF/DKIM失敗時の処理を定義
-            </li>
-            <li>
-              <strong>DKIM</strong>: 電子署名でメールの改ざんを検知
-            </li>
-          </ul>
-        </aside>
+        <TipsCard
+          sections={[
+            {
+              title: "使い方",
+              items: [
+                "ドメイン名を入力して「検証」ボタンをクリック",
+                "例: gmail.com, yahoo.co.jp",
+                "MX、SPF、DMARC、DKIMレコードを検証",
+                "DKIMは任意のセレクタを指定（例: default, google）",
+                "キーボードショートカット: Enterキーで検証実行",
+              ],
+            },
+            {
+              title: "各レコードについて",
+              items: [
+                "MX: メール配送先サーバーを指定",
+                "SPF: 送信元IPアドレスを認証",
+                "DMARC: SPF/DKIM失敗時の処理を定義",
+                "DKIM: 電子署名でメールの改ざんを検知",
+              ],
+            },
+          ]}
+        />
       </div>
 
       <div

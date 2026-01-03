@@ -6,6 +6,11 @@ import {
   type PasswordOptions,
 } from "../utils/password";
 import { useToast } from "../components/Toast";
+import { Button } from "~/components/ui/button";
+import { Checkbox } from "~/components/ui/checkbox";
+import { Label } from "~/components/ui/label";
+import { Slider } from "~/components/ui/slider";
+import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/password-generator")({
   head: () => ({
@@ -108,16 +113,16 @@ function PasswordGenerator() {
             <label htmlFor="passwordLength" className="section-title">
               パスワードの長さ: {options.length}文字
             </label>
-            <input
-              type="range"
+            <Slider
               id="passwordLength"
-              min="4"
-              max="128"
-              value={options.length}
-              onChange={(e) => handleOptionChange("length", parseInt(e.target.value, 10))}
+              min={4}
+              max={128}
+              step={1}
+              value={[options.length]}
+              onValueChange={(value) => handleOptionChange("length", value[0])}
               aria-describedby="length-help"
               aria-label="パスワードの長さ"
-              style={{ width: "100%", marginBottom: "20px" }}
+              className="mb-5"
             />
             <span id="length-help" className="sr-only">
               4文字から128文字までの長さを選択できます
@@ -138,73 +143,72 @@ function PasswordGenerator() {
             <div className="collapsible-content" id="advanced-options">
               <div className="collapsible-body">
                 <div className="checkbox-group" role="group" aria-label="使用する文字種の選択">
-                  <label className="checkbox-label">
-                    <input
-                      type="checkbox"
+                  <div className="checkbox-label">
+                    <Checkbox
+                      id="uppercase"
                       checked={options.uppercase}
-                      onChange={(e) => handleOptionChange("uppercase", e.target.checked)}
+                      onCheckedChange={(checked) => handleOptionChange("uppercase", checked === true)}
                       aria-label="大文字を含める"
                     />
-                    大文字 (A-Z)
-                  </label>
-                  <label className="checkbox-label">
-                    <input
-                      type="checkbox"
+                    <Label htmlFor="uppercase">大文字 (A-Z)</Label>
+                  </div>
+                  <div className="checkbox-label">
+                    <Checkbox
+                      id="lowercase"
                       checked={options.lowercase}
-                      onChange={(e) => handleOptionChange("lowercase", e.target.checked)}
+                      onCheckedChange={(checked) => handleOptionChange("lowercase", checked === true)}
                       aria-label="小文字を含める"
                     />
-                    小文字 (a-z)
-                  </label>
-                  <label className="checkbox-label">
-                    <input
-                      type="checkbox"
+                    <Label htmlFor="lowercase">小文字 (a-z)</Label>
+                  </div>
+                  <div className="checkbox-label">
+                    <Checkbox
+                      id="numbers"
                       checked={options.numbers}
-                      onChange={(e) => handleOptionChange("numbers", e.target.checked)}
+                      onCheckedChange={(checked) => handleOptionChange("numbers", checked === true)}
                       aria-label="数字を含める"
                     />
-                    数字 (0-9)
-                  </label>
-                  <label className="checkbox-label">
-                    <input
-                      type="checkbox"
+                    <Label htmlFor="numbers">数字 (0-9)</Label>
+                  </div>
+                  <div className="checkbox-label">
+                    <Checkbox
+                      id="symbols"
                       checked={options.symbols}
-                      onChange={(e) => handleOptionChange("symbols", e.target.checked)}
+                      onCheckedChange={(checked) => handleOptionChange("symbols", checked === true)}
                       aria-label="記号を含める"
                     />
-                    記号 (!@#$%...)
-                  </label>
+                    <Label htmlFor="symbols">記号 (!@#$%...)</Label>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
           <div className="button-group" role="group" aria-label="パスワード生成操作">
-            <button
+            <Button
               type="button"
-              className="btn-primary"
               onClick={handleGenerate}
               aria-label="新しいパスワードを生成"
             >
               生成
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
-              className="btn-secondary"
+              variant="secondary"
               onClick={handleCopy}
               disabled={!password}
               aria-label="パスワードをクリップボードにコピー"
             >
               {copied ? "コピーしました" : "コピー"}
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
-              className="btn-clear"
+              variant="outline"
               onClick={handleClear}
               aria-label="パスワードをクリア"
             >
               クリア
-            </button>
+            </Button>
           </div>
 
           <div className="converter-section" style={{ marginTop: "30px" }}>
@@ -259,27 +263,29 @@ function PasswordGenerator() {
           )}
         </form>
 
-        <aside
-          className="info-box"
-          role="complementary"
-          aria-labelledby="usage-title"
-        >
-          <h3 id="usage-title">使い方</h3>
-          <ul>
-            <li>スライダーでパスワードの長さを調整（4〜128文字）</li>
-            <li>使用する文字種をチェックボックスで選択</li>
-            <li>「生成」ボタンで新しいパスワードを作成</li>
-            <li>「コピー」ボタンでクリップボードにコピー</li>
-            <li>キーボードショートカット: Ctrl+Enter で生成</li>
-          </ul>
-          <h4>セキュリティのヒント</h4>
-          <ul>
-            <li>パスワードは12文字以上を推奨</li>
-            <li>複数の文字種を組み合わせると強度が上がります</li>
-            <li>各サービスで異なるパスワードを使用してください</li>
-            <li>パスワードマネージャーの利用をお勧めします</li>
-          </ul>
-        </aside>
+        <TipsCard
+          sections={[
+            {
+              title: "使い方",
+              items: [
+                "スライダーでパスワードの長さを調整（4〜128文字）",
+                "使用する文字種をチェックボックスで選択",
+                "「生成」ボタンで新しいパスワードを作成",
+                "「コピー」ボタンでクリップボードにコピー",
+                "キーボードショートカット: Ctrl+Enter で生成",
+              ],
+            },
+            {
+              title: "セキュリティのヒント",
+              items: [
+                "パスワードは12文字以上を推奨",
+                "複数の文字種を組み合わせると強度が上がります",
+                "各サービスで異なるパスワードを使用してください",
+                "パスワードマネージャーの利用をお勧めします",
+              ],
+            },
+          ]}
+        />
       </div>
 
       <div

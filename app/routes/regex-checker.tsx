@@ -1,6 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useToast } from "../components/Toast";
+import { Button } from "~/components/ui/button";
+import { Textarea } from "~/components/ui/textarea";
+import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/regex-checker")({
   head: () => ({
@@ -173,7 +176,7 @@ function RegexChecker() {
             <label htmlFor="testString" className="section-title">
               テスト文字列
             </label>
-            <textarea
+            <Textarea
               id="testString"
               value={testString}
               onChange={(e) => setTestString(e.target.value)}
@@ -187,22 +190,21 @@ function RegexChecker() {
           </div>
 
           <div className="button-group" role="group" aria-label="正規表現チェック操作">
-            <button
+            <Button
               type="button"
-              className="btn-primary"
               onClick={handleTest}
               aria-label="正規表現をテスト"
             >
               テスト
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
-              className="btn-clear"
+              variant="outline"
               onClick={handleClear}
               aria-label="すべての入力をクリア"
             >
               クリア
-            </button>
+            </Button>
           </div>
         </form>
 
@@ -254,29 +256,31 @@ function RegexChecker() {
           </section>
         )}
 
-        <aside
-          className="info-box"
-          role="complementary"
-          aria-labelledby="usage-title"
-        >
-          <h3 id="usage-title">使い方</h3>
-          <ul>
-            <li>「正規表現パターン」欄にテストしたい正規表現を入力</li>
-            <li>「フラグ」欄に必要に応じてフラグ（g, i, m など）を入力</li>
-            <li>「テスト文字列」欄にマッチングを試す文字列を入力</li>
-            <li>「テスト」ボタンでマッチング結果を確認</li>
-            <li>マッチした文字列、位置、キャプチャグループを表示</li>
-            <li>キーボードショートカット: Ctrl+Enter でテスト実行</li>
-          </ul>
-          <h4>フラグの説明</h4>
-          <ul>
-            <li><strong>g</strong>: グローバル検索（すべてのマッチを検索）</li>
-            <li><strong>i</strong>: 大文字小文字を区別しない</li>
-            <li><strong>m</strong>: 複数行モード</li>
-            <li><strong>s</strong>: ドットが改行にもマッチ</li>
-            <li><strong>u</strong>: Unicode モード</li>
-          </ul>
-        </aside>
+        <TipsCard
+          sections={[
+            {
+              title: "使い方",
+              items: [
+                "「正規表現パターン」欄にテストしたい正規表現を入力",
+                "「フラグ」欄に必要に応じてフラグ（g, i, m など）を入力",
+                "「テスト文字列」欄にマッチングを試す文字列を入力",
+                "「テスト」ボタンでマッチング結果を確認",
+                "マッチした文字列、位置、キャプチャグループを表示",
+                "キーボードショートカット: Ctrl+Enter でテスト実行",
+              ],
+            },
+            {
+              title: "フラグの説明",
+              items: [
+                "g: グローバル検索（すべてのマッチを検索）",
+                "i: 大文字小文字を区別しない",
+                "m: 複数行モード",
+                "s: ドットが改行にもマッチ",
+                "u: Unicode モード",
+              ],
+            },
+          ]}
+        />
       </div>
 
       <div

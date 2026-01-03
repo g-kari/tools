@@ -3,6 +3,8 @@ import { useState, useRef, useCallback, useEffect } from "react";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile, toBlobURL } from "@ffmpeg/util";
 import { useToast } from "../components/Toast";
+import { Button } from "~/components/ui/button";
+import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/audio-converter")({
   head: () => ({
@@ -461,24 +463,23 @@ function AudioConverter() {
           )}
 
           <div className="button-group" role="group" aria-label="変換操作">
-            <button
+            <Button
               type="button"
-              className="btn-primary"
               onClick={handleConvert}
               disabled={isConverting || !sourceFile}
               aria-label="オーディオファイルを変換"
             >
               {isConverting ? "変換中..." : "変換"}
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
-              className="btn-clear"
+              variant="outline"
               onClick={handleClear}
               disabled={isConverting}
               aria-label="入力をクリア"
             >
               クリア
-            </button>
+            </Button>
           </div>
 
           {convertedUrl && (
@@ -507,67 +508,44 @@ function AudioConverter() {
           )}
         </form>
 
-        <aside
-          className="info-box"
-          role="complementary"
-          aria-labelledby="usage-title"
-        >
-          <h3 id="usage-title">使い方</h3>
-          <ul>
-            <li>「オーディオファイルを選択」からファイルを選択します</li>
-            <li>「出力フォーマット」で変換先の形式を選択します</li>
-            <li>「変換オプション」でビットレート、サンプリングレート、チャンネルを調整します</li>
-            <li>「変換」ボタンをクリックして変換を実行します</li>
-            <li>変換が完了すると、プレビューとダウンロードリンクが表示されます</li>
-          </ul>
-          <h3>対応フォーマット</h3>
-          <ul>
-            <li>入力: MP3, WAV, OGG, AAC, FLAC, M4A 等（FFmpegサポート形式）</li>
-            <li>出力: MP3 (libmp3lame), WAV (PCM), OGG (Vorbis)</li>
-          </ul>
-          <h3>変換オプションについて</h3>
-          <ul>
-            <li><strong>ビットレート:</strong> 音質とファイルサイズのバランス。高いほど高音質で大きなサイズになります</li>
-            <li><strong>サンプリングレート:</strong> 音質の細かさ。44100Hz（CD品質）が標準です</li>
-            <li><strong>チャンネル:</strong> ステレオ（2ch）またはモノラル（1ch）を選択できます</li>
-          </ul>
-          <h3>技術情報</h3>
-          <ul>
-            <li>変換処理にはFFmpeg.wasmを使用しています</li>
-            <li>すべての処理はブラウザ上で実行されます（サーバーへのアップロードなし）</li>
-            <li>初回変換時にFFmpegライブラリ（約31MB）をダウンロードします</li>
-            <li>大きなファイルの変換には時間がかかる場合があります</li>
-          </ul>
-          <h3>参考</h3>
-          <ul>
-            <li>
-              <a
-                href="https://zenn.dev/henvate/articles/cdd7aee45157cf"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  color: "var(--md-sys-color-primary)",
-                  textDecoration: "underline",
-                }}
-              >
-                Next.js + FFmpeg.wasmで動画変換サービスを作った
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://ffmpegwasm.netlify.app/"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  color: "var(--md-sys-color-primary)",
-                  textDecoration: "underline",
-                }}
-              >
-                FFmpeg.wasm 公式サイト
-              </a>
-            </li>
-          </ul>
-        </aside>
+        <TipsCard
+          sections={[
+            {
+              title: "使い方",
+              items: [
+                "「オーディオファイルを選択」からファイルを選択します",
+                "「出力フォーマット」で変換先の形式を選択します",
+                "「変換オプション」でビットレート、サンプリングレート、チャンネルを調整します",
+                "「変換」ボタンをクリックして変換を実行します",
+                "変換が完了すると、プレビューとダウンロードリンクが表示されます",
+              ],
+            },
+            {
+              title: "対応フォーマット",
+              items: [
+                "入力: MP3, WAV, OGG, AAC, FLAC, M4A 等（FFmpegサポート形式）",
+                "出力: MP3 (libmp3lame), WAV (PCM), OGG (Vorbis)",
+              ],
+            },
+            {
+              title: "変換オプションについて",
+              items: [
+                "ビットレート: 音質とファイルサイズのバランス。高いほど高音質で大きなサイズになります",
+                "サンプリングレート: 音質の細かさ。44100Hz（CD品質）が標準です",
+                "チャンネル: ステレオ（2ch）またはモノラル（1ch）を選択できます",
+              ],
+            },
+            {
+              title: "技術情報",
+              items: [
+                "変換処理にはFFmpeg.wasmを使用しています",
+                "すべての処理はブラウザ上で実行されます（サーバーへのアップロードなし）",
+                "初回変換時にFFmpegライブラリ（約31MB）をダウンロードします",
+                "大きなファイルの変換には時間がかかる場合があります",
+              ],
+            },
+          ]}
+        />
       </div>
 
       <div

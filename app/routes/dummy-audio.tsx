@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef, useCallback, useEffect } from "react";
+import { Button } from "~/components/ui/button";
+import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/dummy-audio")({
   head: () => ({
@@ -458,41 +460,41 @@ function DummyAudioGenerator() {
             </div>
 
             <div className="button-group" role="group" aria-label="音声操作">
-              <button type="submit" className="btn-primary">
+              <Button type="submit">
                 音声生成
-              </button>
+              </Button>
               {!isPlaying ? (
-                <button
+                <Button
                   type="button"
-                  className="btn-secondary"
+                  variant="secondary"
                   onClick={handlePlay}
                 >
                   再生
-                </button>
+                </Button>
               ) : (
-                <button
+                <Button
                   type="button"
-                  className="btn-secondary"
+                  variant="secondary"
                   onClick={handleStop}
                 >
                   停止
-                </button>
+                </Button>
               )}
-              <button
+              <Button
                 type="button"
-                className="btn-secondary"
+                variant="secondary"
                 onClick={handleDownloadWav}
               >
                 WAVダウンロード
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
-                className="btn-secondary"
+                variant="secondary"
                 onClick={handleDownloadMp3}
                 disabled={isEncodingMp3}
               >
                 {isEncodingMp3 ? "エンコード中..." : "MP3ダウンロード"}
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -533,33 +535,37 @@ function DummyAudioGenerator() {
           )}
         </form>
 
-        <aside
-          className="info-box"
-          role="complementary"
-          aria-labelledby="usage-title"
-        >
-          <h3 id="usage-title">ダミー音声生成とは</h3>
-          <ul>
-            <li>テストや開発用のダミー音声ファイルを生成します</li>
-            <li>Web Audio APIを使用してブラウザ内で音声を生成</li>
-            <li>WAVまたはMP3形式でダウンロード可能</li>
-          </ul>
-          <h3 id="waveform-title">波形タイプについて</h3>
-          <ul>
-            <li><strong>サイン波:</strong> 滑らかな正弦波、最も基本的な波形</li>
-            <li><strong>矩形波:</strong> オン/オフが切り替わる四角い波形</li>
-            <li><strong>三角波:</strong> 直線的に上下する波形</li>
-            <li><strong>ノコギリ波:</strong> 一方向に上昇し急降下する波形</li>
-            <li><strong>ホワイトノイズ:</strong> ランダムな音（周波数設定無効）</li>
-          </ul>
-          <h3 id="about-tool-title">使い方</h3>
-          <ul>
-            <li>波形タイプを選択します</li>
-            <li>周波数、持続時間（最大{MAX_DURATION}秒）、音量を設定します</li>
-            <li>「再生」ボタンでプレビュー</li>
-            <li>「WAVダウンロード」または「MP3ダウンロード」で保存</li>
-          </ul>
-        </aside>
+        <TipsCard
+          sections={[
+            {
+              title: "ダミー音声生成とは",
+              items: [
+                "テストや開発用のダミー音声ファイルを生成します",
+                "Web Audio APIを使用してブラウザ内で音声を生成",
+                "WAVまたはMP3形式でダウンロード可能",
+              ],
+            },
+            {
+              title: "波形タイプについて",
+              items: [
+                "サイン波: 滑らかな正弦波、最も基本的な波形",
+                "矩形波: オン/オフが切り替わる四角い波形",
+                "三角波: 直線的に上下する波形",
+                "ノコギリ波: 一方向に上昇し急降下する波形",
+                "ホワイトノイズ: ランダムな音（周波数設定無効）",
+              ],
+            },
+            {
+              title: "使い方",
+              items: [
+                "波形タイプを選択します",
+                `周波数、持続時間（最大${MAX_DURATION}秒）、音量を設定します`,
+                "「再生」ボタンでプレビュー",
+                "「WAVダウンロード」または「MP3ダウンロード」で保存",
+              ],
+            },
+          ]}
+        />
       </div>
 
       <div

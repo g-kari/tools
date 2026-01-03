@@ -5,6 +5,9 @@ import {
   calculateCIDR,
   type CIDRResult,
 } from "../utils/cidr";
+import { Button } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
+import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/cidr")({
   head: () => ({
@@ -110,14 +113,13 @@ function CIDRCalculator() {
                   spellCheck="false"
                 />
               </div>
-              <button
+              <Button
                 type="submit"
-                className="btn-primary"
                 onClick={handleCalculate}
                 aria-label="CIDR計算を実行"
               >
                 計算
-              </button>
+              </Button>
             </div>
             <span id="cidr-help" className="sr-only">
               IPアドレスとプレフィックス長をスラッシュ区切りで入力してください（例: 192.168.1.0/24）
@@ -313,36 +315,30 @@ function CIDRCalculator() {
           </>
         )}
 
-        <aside
-          className="info-box"
-          role="complementary"
-          aria-labelledby="usage-title"
-        >
-          <h3 id="usage-title">使い方</h3>
-          <ul>
-            <li>
-              CIDR表記（例: 192.168.1.0/24）を入力して「計算」ボタンをクリック
-            </li>
-            <li>
-              ネットワークアドレス、ブロードキャストアドレス、サブネットマスク等を表示
-            </li>
-            <li>利用可能なIPアドレス範囲と数を確認</li>
-            <li>各値は「コピー」ボタンでクリップボードにコピー可能</li>
-            <li>キーボードショートカット: Enterキーで計算実行</li>
-          </ul>
-
-          <h3>CIDR表記について</h3>
-          <p className="info-text">
-            CIDR（Classless Inter-Domain
-            Routing）は、IPアドレスとネットワークのサイズを表す表記法です。
-            「IPアドレス/プレフィックス長」の形式で記述します。
-          </p>
-          <ul>
-            <li>/24 = サブネットマスク 255.255.255.0（256個のIP）</li>
-            <li>/16 = サブネットマスク 255.255.0.0（65,536個のIP）</li>
-            <li>/8 = サブネットマスク 255.0.0.0（16,777,216個のIP）</li>
-          </ul>
-        </aside>
+        <TipsCard
+          sections={[
+            {
+              title: "使い方",
+              items: [
+                "CIDR表記（例: 192.168.1.0/24）を入力して「計算」ボタンをクリック",
+                "ネットワークアドレス、ブロードキャストアドレス、サブネットマスク等を表示",
+                "利用可能なIPアドレス範囲と数を確認",
+                "各値は「コピー」ボタンでクリップボードにコピー可能",
+                "キーボードショートカット: Enterキーで計算実行",
+              ],
+            },
+            {
+              title: "CIDR表記について",
+              items: [
+                "CIDR（Classless Inter-Domain Routing）は、IPアドレスとネットワークのサイズを表す表記法です",
+                "「IPアドレス/プレフィックス長」の形式で記述します",
+                "/24 = サブネットマスク 255.255.255.0（256個のIP）",
+                "/16 = サブネットマスク 255.255.0.0（65,536個のIP）",
+                "/8 = サブネットマスク 255.0.0.0（16,777,216個のIP）",
+              ],
+            },
+          ]}
+        />
       </div>
 
       <div

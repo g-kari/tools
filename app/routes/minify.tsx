@@ -7,6 +7,9 @@ import {
   minifyHTML,
   minifyJSON,
 } from "../utils/minify";
+import { Button } from "~/components/ui/button";
+import { Textarea } from "~/components/ui/textarea";
+import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/minify")({
   head: () => ({
@@ -280,7 +283,7 @@ function MinifyTool() {
                 aria-label="ファイルを選択"
               />
             </div>
-            <textarea
+            <Textarea
               ref={inputRef}
               id="input"
               value={input}
@@ -294,20 +297,19 @@ function MinifyTool() {
           </div>
 
           <div className="button-group">
-            <button
+            <Button
               onClick={handleMinify}
-              className="btn-primary"
               aria-label="コードを圧縮"
             >
               圧縮
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={handleClear}
-              className="btn-secondary"
+              variant="secondary"
               aria-label="すべてクリア"
             >
               クリア
-            </button>
+            </Button>
           </div>
 
           {error && (
@@ -335,7 +337,7 @@ function MinifyTool() {
                   )}
                 </div>
               </div>
-              <textarea
+              <Textarea
                 id="output"
                 value={output}
                 readOnly
@@ -344,110 +346,47 @@ function MinifyTool() {
                 spellCheck={false}
                 aria-label="圧縮後のコード"
               />
-              <button
+              <Button
                 onClick={handleCopy}
-                className="btn-secondary"
+                variant="secondary"
                 aria-label="圧縮結果をコピー"
               >
                 📋 コピー
-              </button>
+              </Button>
             </div>
           )}
         </div>
 
-        <aside
-          className="info-box"
-          role="complementary"
-          aria-labelledby="usage-title"
-        >
-          <h3 id="usage-title">使い方</h3>
-          <ul>
-            <li>コードタイプ（JavaScript/CSS/HTML/JSON）を選択</li>
-            <li>入力欄にコードを貼り付けまたは入力</li>
-            <li>「圧縮」ボタンをクリックしてminify化</li>
-            <li>圧縮結果をコピーして使用</li>
-          </ul>
-          <h3>圧縮の特徴</h3>
-          <ul>
-            <li>
-              JavaScript:{" "}
-              <a
-                href="https://terser.org/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Terser
-              </a>
-              を使用した高精度な圧縮
-            </li>
-            <li>
-              CSS:{" "}
-              <a
-                href="https://css.github.io/csso/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                CSSO
-              </a>
-              による構造的最適化
-            </li>
-            <li>
-              HTML:{" "}
-              <a
-                href="https://github.com/terser/html-minifier-terser"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                html-minifier-terser
-              </a>
-              による高度な圧縮
-            </li>
-            <li>JSON: 不要な空白を削除して1行に圧縮</li>
-          </ul>
-          <h3>注意事項</h3>
-          <ul>
-            <li>圧縮後のコードは可読性が低下します</li>
-            <li>本番環境用のファイルサイズ削減に適しています</li>
-            <li>デバッグには元のコードを使用してください</li>
-          </ul>
-          <h3>スポンサー支援</h3>
-          <p>このツールは以下の素晴らしいオープンソースライブラリを使用しています：</p>
-          <ul>
-            <li>
-              <a
-                href="https://opencollective.com/terser"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Terser への支援
-              </a>
-              {" - JavaScript minifier"}
-            </li>
-            <li>
-              <a
-                href="https://github.com/sponsors/css"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                CSSO への支援
-              </a>
-              {" - CSS optimizer"}
-            </li>
-            <li>
-              <a
-                href="https://www.jsdelivr.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                jsDelivr への支援
-              </a>
-              {" - CDN provider"}
-            </li>
-          </ul>
-          <p>
-            これらのライブラリの開発者に感謝します。スポンサーとしての支援をぜひご検討ください。
-          </p>
-        </aside>
+        <TipsCard
+          sections={[
+            {
+              title: "使い方",
+              items: [
+                "コードタイプ（JavaScript/CSS/HTML/JSON）を選択",
+                "入力欄にコードを貼り付けまたは入力",
+                "「圧縮」ボタンをクリックしてminify化",
+                "圧縮結果をコピーして使用",
+              ],
+            },
+            {
+              title: "圧縮の特徴",
+              items: [
+                "JavaScript: Terserを使用した高精度な圧縮",
+                "CSS: CSSOによる構造的最適化",
+                "HTML: html-minifier-terserによる高度な圧縮",
+                "JSON: 不要な空白を削除して1行に圧縮",
+              ],
+            },
+            {
+              title: "注意事項",
+              items: [
+                "圧縮後のコードは可読性が低下します",
+                "本番環境用のファイルサイズ削減に適しています",
+                "デバッグには元のコードを使用してください",
+              ],
+            },
+          ]}
+        />
       </div>
     </>
   );

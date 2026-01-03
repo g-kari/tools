@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { useToast } from "../components/Toast";
+import { Button } from "~/components/ui/button";
+import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/image-compress")({
   head: () => ({
@@ -364,22 +366,21 @@ function ImageCompressor() {
               </div>
 
               <div className="button-group" role="group" aria-label="操作">
-                <button
+                <Button
                   type="button"
-                  className="btn-primary"
                   onClick={handleDownload}
                   disabled={isLoading || !compressedBlob}
                 >
                   ダウンロード
-                </button>
-                <button
+                </Button>
+                <Button
                   type="button"
-                  className="btn-secondary"
+                  variant="secondary"
                   onClick={handleClear}
                   disabled={isLoading}
                 >
                   クリア
-                </button>
+                </Button>
               </div>
             </div>
 
@@ -445,30 +446,34 @@ function ImageCompressor() {
           </>
         )}
 
-        <aside
-          className="info-box"
-          role="complementary"
-          aria-labelledby="usage-title"
-        >
-          <h3 id="usage-title">画像圧縮とは</h3>
-          <ul>
-            <li>画像のファイルサイズを削減し、Webサイトの読み込み速度を改善します</li>
-            <li>視覚的な品質を維持しながらファイルサイズを大幅に削減可能</li>
-            <li>すべての処理はブラウザ内で完結（サーバーにアップロードされません）</li>
-          </ul>
-          <h3 id="format-title">形式について</h3>
-          <ul>
-            <li><strong>JPEG:</strong> 写真に最適、広い互換性、透過非対応</li>
-            <li><strong>WebP:</strong> 高い圧縮率、モダンブラウザ対応、透過対応</li>
-            <li><strong>PNG:</strong> 可逆圧縮、透過対応、ファイルサイズ大</li>
-          </ul>
-          <h3 id="tips-title">Tips</h3>
-          <ul>
-            <li>写真は60-80%の画質でほとんど見分けがつきません</li>
-            <li>WebP形式はJPEGより約25-35%小さくなります</li>
-            <li>透過が必要な場合はWebPまたはPNGを選択</li>
-          </ul>
-        </aside>
+        <TipsCard
+          sections={[
+            {
+              title: "画像圧縮とは",
+              items: [
+                "画像のファイルサイズを削減し、Webサイトの読み込み速度を改善します",
+                "視覚的な品質を維持しながらファイルサイズを大幅に削減可能",
+                "すべての処理はブラウザ内で完結（サーバーにアップロードされません）",
+              ],
+            },
+            {
+              title: "形式について",
+              items: [
+                "JPEG: 写真に最適、広い互換性、透過非対応",
+                "WebP: 高い圧縮率、モダンブラウザ対応、透過対応",
+                "PNG: 可逆圧縮、透過対応、ファイルサイズ大",
+              ],
+            },
+            {
+              title: "Tips",
+              items: [
+                "写真は60-80%の画質でほとんど見分けがつきません",
+                "WebP形式はJPEGより約25-35%小さくなります",
+                "透過が必要な場合はWebPまたはPNGを選択",
+              ],
+            },
+          ]}
+        />
       </div>
 
     </>

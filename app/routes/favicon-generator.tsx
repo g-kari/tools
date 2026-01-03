@@ -2,6 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { useToast } from "../components/Toast";
 import JSZip from "jszip";
+import { Button } from "~/components/ui/button";
+import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/favicon-generator")({
   head: () => ({
@@ -410,27 +412,33 @@ function FaviconGenerator() {
             </div>
           </div>
 
-          <aside
-            className="info-box"
-            role="complementary"
-            aria-labelledby="usage-title"
-          >
-            <h3 id="usage-title">Favicon生成ツールとは</h3>
-            <p>画像から複数サイズのFaviconを一括生成するツールです。</p>
-            <h3>使い方</h3>
-            <ol>
-              <li>元画像をアップロード（正方形推奨）</li>
-              <li>生成するサイズを選択</li>
-              <li>「Favicon生成」ボタンをクリック</li>
-              <li>一括ダウンロード、または個別にダウンロード</li>
-            </ol>
-            <h3>生成可能なファイル</h3>
-            <ul>
-              <li><strong>favicon-16x16.png / 32x32.png</strong>: 標準的なfavicon</li>
-              <li><strong>apple-touch-icon.png</strong>: iOS用アイコン（180x180）</li>
-              <li><strong>android-chrome-*.png</strong>: Android用アイコン</li>
-            </ul>
-          </aside>
+          <TipsCard
+            sections={[
+              {
+                title: "Favicon生成ツールとは",
+                items: [
+                  "画像から複数サイズのFaviconを一括生成するツールです",
+                ],
+              },
+              {
+                title: "使い方",
+                items: [
+                  "元画像をアップロード（正方形推奨）",
+                  "生成するサイズを選択",
+                  "「Favicon生成」ボタンをクリック",
+                  "一括ダウンロード、または個別にダウンロード",
+                ],
+              },
+              {
+                title: "生成可能なファイル",
+                items: [
+                  "favicon-16x16.png / 32x32.png: 標準的なfavicon",
+                  "apple-touch-icon.png: iOS用アイコン（180x180）",
+                  "android-chrome-*.png: Android用アイコン",
+                ],
+              },
+            ]}
+          />
         </>
       ) : (
         <>
@@ -456,14 +464,14 @@ function FaviconGenerator() {
                 </div>
               )}
             </div>
-            <button
+            <Button
               type="button"
-              className="btn-secondary"
+              variant="secondary"
               onClick={handleClear}
               disabled={isLoading}
             >
               別の画像を選択
-            </button>
+            </Button>
           </div>
 
           <div className="converter-section">
@@ -518,23 +526,22 @@ function FaviconGenerator() {
 
           <div className="converter-section">
             <div className="button-group" role="group" aria-label="操作ボタン">
-              <button
+              <Button
                 type="button"
-                className="btn-primary"
                 onClick={handleGenerate}
                 disabled={isLoading || selectedSizes.size === 0}
               >
                 {isLoading ? "生成中..." : "Favicon生成"}
-              </button>
+              </Button>
               {generatedFavicons.size > 0 && (
-                <button
+                <Button
                   type="button"
-                  className="btn-secondary"
+                  variant="secondary"
                   onClick={handleDownloadAll}
                   disabled={isLoading}
                 >
                   ZIPで一括ダウンロード
-                </button>
+                </Button>
               )}
             </div>
           </div>
@@ -566,20 +573,20 @@ function FaviconGenerator() {
             </div>
           )}
 
-          <aside
-            className="info-box"
-            role="complementary"
-            aria-labelledby="html-code-title"
-          >
-            <h3 id="html-code-title">HTMLへの組み込み</h3>
-            <p>以下のコードをHTMLの<code>&lt;head&gt;</code>内に追加してください:</p>
-            <pre className="favicon-code-block">
-{`<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="manifest" href="/site.webmanifest">`}
-            </pre>
-          </aside>
+          <TipsCard
+            sections={[
+              {
+                title: "HTMLへの組み込み",
+                items: [
+                  "HTMLの<head>内に以下のコードを追加してください:",
+                  '<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">',
+                  '<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">',
+                  '<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">',
+                  '<link rel="manifest" href="/site.webmanifest">',
+                ],
+              },
+            ]}
+          />
         </>
       )}
 

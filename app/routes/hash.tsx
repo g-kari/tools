@@ -1,6 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useToast } from "../components/Toast";
+import { Button } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
+import { Textarea } from "~/components/ui/textarea";
+import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/hash")({
   head: () => ({
@@ -338,7 +342,7 @@ function HashGenerator() {
             <label htmlFor="inputText" className="section-title">
               入力テキスト
             </label>
-            <textarea
+            <Textarea
               id="inputText"
               ref={inputRef}
               value={inputText}
@@ -373,7 +377,7 @@ function HashGenerator() {
             <label htmlFor="salt" className="section-title">
               ソルト（オプション）
             </label>
-            <input
+            <Input
               type="text"
               id="salt"
               value={salt}
@@ -384,81 +388,71 @@ function HashGenerator() {
           </div>
 
           <div className="button-group" role="group" aria-label="変換操作">
-            <button
+            <Button
               type="button"
-              className="btn-primary"
               onClick={handleGenerate}
               aria-label="ハッシュを生成"
             >
               ハッシュ生成
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
-              className="btn-secondary"
+              variant="secondary"
               onClick={handleCopy}
               aria-label="ハッシュをクリップボードにコピー"
               disabled={!outputHash}
             >
               コピー
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
-              className="btn-clear"
+              variant="outline"
               onClick={handleClear}
               aria-label="入力と出力をクリア"
             >
               クリア
-            </button>
+            </Button>
           </div>
 
-          <div style={{ marginBottom: "30px" }}>
+          <div className="converter-section">
             <label htmlFor="outputHash" className="section-title">
               ハッシュ値
             </label>
-            <textarea
+            <Textarea
               id="outputHash"
               value={outputHash}
               readOnly
               placeholder="生成されたハッシュ値がここに表示されます..."
               aria-label="生成されたハッシュ値の出力欄"
               aria-live="polite"
-              style={{
-                fontFamily: "monospace",
-                wordBreak: "break-all",
-              }}
+              className="font-mono"
             />
           </div>
         </form>
 
-        <aside
-          className="info-box"
-          role="complementary"
-          aria-labelledby="usage-title"
-        >
-          <h3 id="usage-title">使い方</h3>
-          <ul>
-            <li>「入力テキスト」欄にハッシュ化したいテキストを入力します</li>
-            <li>
-              ハッシュアルゴリズムを選択します（MD5, SHA-1, SHA-256, SHA-512）
-            </li>
-            <li>
-              オプションで「ソルト」を追加することでセキュリティを強化できます
-            </li>
-            <li>「ハッシュ生成」ボタンでハッシュ値を生成します</li>
-            <li>「コピー」ボタンでハッシュ値をクリップボードにコピーできます</li>
-            <li>キーボードショートカット: Ctrl+Enter でハッシュ生成実行</li>
-          </ul>
-          <h3>セキュリティに関する注意</h3>
-          <ul>
-            <li>
-              MD5とSHA-1は暗号学的に脆弱とされており、セキュリティ用途には推奨されません
-            </li>
-            <li>
-              パスワードのハッシュ化には、より安全なアルゴリズム（bcrypt, argon2など）の使用を推奨します
-            </li>
-            <li>ソルトを使用することでレインボーテーブル攻撃を防ぐことができます</li>
-          </ul>
-        </aside>
+        <TipsCard
+          sections={[
+            {
+              title: "使い方",
+              items: [
+                "「入力テキスト」欄にハッシュ化したいテキストを入力します",
+                "ハッシュアルゴリズムを選択します（MD5, SHA-1, SHA-256, SHA-512）",
+                "オプションで「ソルト」を追加することでセキュリティを強化できます",
+                "「ハッシュ生成」ボタンでハッシュ値を生成します",
+                "「コピー」ボタンでハッシュ値をクリップボードにコピーできます",
+                "キーボードショートカット: Ctrl+Enter でハッシュ生成実行",
+              ],
+            },
+            {
+              title: "セキュリティに関する注意",
+              items: [
+                "MD5とSHA-1は暗号学的に脆弱とされており、セキュリティ用途には推奨されません",
+                "パスワードのハッシュ化には、より安全なアルゴリズム（bcrypt, argon2など）の使用を推奨します",
+                "ソルトを使用することでレインボーテーブル攻撃を防ぐことができます",
+              ],
+            },
+          ]}
+        />
       </div>
 
       <div

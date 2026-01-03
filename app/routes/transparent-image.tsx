@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { useToast } from "../components/Toast";
+import { Button } from "~/components/ui/button";
+import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/transparent-image")({
   head: () => ({
@@ -426,21 +428,26 @@ function TransparentImageProcessor() {
             </div>
           </div>
 
-          <aside
-            className="info-box"
-            role="complementary"
-            aria-labelledby="usage-title"
-          >
-            <h3 id="usage-title">画像透過ツールとは</h3>
-            <p>画像の特定の色を透明にするツールです。背景の除去やロゴの透過処理に便利です。</p>
-            <h3>使い方</h3>
-            <ol>
-              <li>画像をアップロード</li>
-              <li>透過させたい色を選択（カラーピッカーまたは画像クリック）</li>
-              <li>許容範囲を調整してプレビュー確認</li>
-              <li>「ダウンロード」でPNG保存</li>
-            </ol>
-          </aside>
+          <TipsCard
+            sections={[
+              {
+                title: "画像透過ツールとは",
+                items: [
+                  "画像の特定の色を透明にするツールです",
+                  "背景の除去やロゴの透過処理に便利です",
+                ],
+              },
+              {
+                title: "使い方",
+                items: [
+                  "画像をアップロード",
+                  "透過させたい色を選択（カラーピッカーまたは画像クリック）",
+                  "許容範囲を調整してプレビュー確認",
+                  "「ダウンロード」でPNG保存",
+                ],
+              },
+            ]}
+          />
         </>
       ) : imageDimensions && (
         /* 画像選択後：設定を上、プレビューを下に配置 */
@@ -496,22 +503,21 @@ function TransparentImageProcessor() {
             </div>
 
             <div className="transparent-control-item transparent-actions-item">
-              <button
+              <Button
                 type="button"
-                className="btn-primary"
                 onClick={handleDownload}
                 disabled={isLoading}
               >
                 {isLoading ? "処理中..." : "ダウンロード"}
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
-                className="btn-secondary"
+                variant="secondary"
                 onClick={handleClear}
                 disabled={isLoading}
               >
                 クリア
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -546,19 +552,19 @@ function TransparentImageProcessor() {
           </div>
 
           {/* Tips */}
-          <aside
-            className="info-box"
-            role="complementary"
-            aria-labelledby="tips-title"
-          >
-            <h3 id="tips-title">Tips</h3>
-            <ul>
-              <li>「画像から」ボタンを押して元画像をクリックすると色を直接選択できます</li>
-              <li>許容範囲を上げると、選択した色に近い色も透過されます</li>
-              <li>チェッカーボードパターンは透明度を視覚化するためのものです</li>
-              <li>出力形式はPNG（透過対応）です</li>
-            </ul>
-          </aside>
+          <TipsCard
+            sections={[
+              {
+                title: "Tips",
+                items: [
+                  "「画像から」ボタンを押して元画像をクリックすると色を直接選択できます",
+                  "許容範囲を上げると、選択した色に近い色も透過されます",
+                  "チェッカーボードパターンは透明度を視覚化するためのものです",
+                  "出力形式はPNG（透過対応）です",
+                ],
+              },
+            ]}
+          />
         </>
       )}
 

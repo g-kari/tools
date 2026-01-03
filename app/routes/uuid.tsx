@@ -1,5 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef, useCallback, useEffect } from "react";
+import { Button } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
+import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/uuid")({
   head: () => ({
@@ -163,7 +166,7 @@ function UuidGenerator() {
             <div className="uuid-options">
               <div className="option-group">
                 <label htmlFor="count">生成数:</label>
-                <input
+                <Input
                   type="number"
                   id="count"
                   min="1"
@@ -175,6 +178,7 @@ function UuidGenerator() {
                     )
                   }
                   aria-describedby="count-help"
+                  className="w-20"
                 />
                 <span id="count-help" className="sr-only">
                   1から100の間で生成するUUIDの数を指定できます
@@ -205,17 +209,17 @@ function UuidGenerator() {
             </div>
 
             <div className="button-group" role="group" aria-label="UUID操作">
-              <button type="submit" className="btn-primary">
+              <Button type="submit">
                 UUID生成
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
-                className="btn-clear"
+                variant="outline"
                 onClick={handleClear}
                 disabled={uuids.length === 0}
               >
                 クリア
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -224,13 +228,14 @@ function UuidGenerator() {
               <div className="uuid-result-header">
                 <h2 className="section-title">生成結果</h2>
                 {uuids.length > 1 && (
-                  <button
+                  <Button
                     type="button"
-                    className="btn-secondary btn-small"
+                    variant="secondary"
+                    size="sm"
                     onClick={handleCopyAll}
                   >
                     {copiedAll ? "コピーしました" : "すべてコピー"}
-                  </button>
+                  </Button>
                 )}
               </div>
 
@@ -238,14 +243,15 @@ function UuidGenerator() {
                 {uuids.map((uuid, index) => (
                   <div key={index} className="uuid-item" role="listitem">
                     <code className="uuid-value">{formatUUID(uuid)}</code>
-                    <button
+                    <Button
                       type="button"
-                      className="btn-copy"
+                      variant="outline"
+                      size="sm"
                       onClick={() => handleCopy(index)}
                       aria-label={`UUID ${index + 1}をコピー`}
                     >
                       {copied === index ? "済" : "コピー"}
-                    </button>
+                    </Button>
                   </div>
                 ))}
               </div>
@@ -253,28 +259,28 @@ function UuidGenerator() {
           )}
         </form>
 
-        <aside
-          className="info-box"
-          role="complementary"
-          aria-labelledby="usage-title"
-        >
-          <h3 id="usage-title">UUIDとは</h3>
-          <ul>
-            <li>
-              UUID（Universally Unique Identifier）は128ビットの一意識別子です
-            </li>
-            <li>このツールはUUID v4（ランダム生成）を使用しています</li>
-            <li>形式: xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx</li>
-            <li>衝突確率は実用上ほぼゼロです</li>
-          </ul>
-          <h3 id="about-tool-title">使い方</h3>
-          <ul>
-            <li>「UUID生成」ボタンで新しいUUIDを生成します</li>
-            <li>生成数を変更して複数のUUIDを一度に生成できます</li>
-            <li>大文字表示やハイフンなしの形式も選択可能です</li>
-            <li>各UUIDの「コピー」ボタンでクリップボードにコピーできます</li>
-          </ul>
-        </aside>
+        <TipsCard
+          sections={[
+            {
+              title: "UUIDとは",
+              items: [
+                "UUID（Universally Unique Identifier）は128ビットの一意識別子です",
+                "このツールはUUID v4（ランダム生成）を使用しています",
+                "形式: xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx",
+                "衝突確率は実用上ほぼゼロです",
+              ],
+            },
+            {
+              title: "使い方",
+              items: [
+                "「UUID生成」ボタンで新しいUUIDを生成します",
+                "生成数を変更して複数のUUIDを一度に生成できます",
+                "大文字表示やハイフンなしの形式も選択可能です",
+                "各UUIDの「コピー」ボタンでクリップボードにコピーできます",
+              ],
+            },
+          ]}
+        />
       </div>
 
       <div
