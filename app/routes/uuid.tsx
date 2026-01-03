@@ -3,7 +3,6 @@ import { useState, useRef, useCallback, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const Route = createFileRoute("/uuid")({
   head: () => ({
@@ -161,78 +160,74 @@ function UuidGenerator() {
           }}
           aria-label="UUID生成フォーム"
         >
-          <Card className="mb-6">
-            <CardHeader>
-              <CardTitle>UUID生成設定</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex flex-wrap gap-6 items-center">
-                <div className="flex items-center gap-2">
-                  <Label htmlFor="count">生成数:</Label>
-                  <Input
-                    type="number"
-                    id="count"
-                    min="1"
-                    max="100"
-                    value={count}
-                    onChange={(e) =>
-                      setCount(
-                        Math.max(1, Math.min(100, parseInt(e.target.value) || 1))
-                      )
-                    }
-                    aria-describedby="count-help"
-                    className="w-20"
-                  />
-                  <span id="count-help" className="sr-only">
-                    1から100の間で生成するUUIDの数を指定できます
-                  </span>
-                </div>
+          <div className="converter-section">
+            <h2 className="section-title">UUID生成設定</h2>
 
-                <div className="flex items-center gap-2">
+            <div className="uuid-options">
+              <div className="option-group">
+                <Label htmlFor="count">生成数:</Label>
+                <Input
+                  type="number"
+                  id="count"
+                  min="1"
+                  max="100"
+                  value={count}
+                  onChange={(e) =>
+                    setCount(
+                      Math.max(1, Math.min(100, parseInt(e.target.value) || 1))
+                    )
+                  }
+                  aria-describedby="count-help"
+                  className="w-20"
+                />
+                <span id="count-help" className="sr-only">
+                  1から100の間で生成するUUIDの数を指定できます
+                </span>
+              </div>
+
+              <div className="option-group checkbox-group">
+                <label>
                   <input
                     type="checkbox"
-                    id="uppercase"
                     checked={uppercase}
                     onChange={(e) => setUppercase(e.target.checked)}
-                    className="w-4 h-4 accent-primary"
                   />
-                  <Label htmlFor="uppercase" className="cursor-pointer">
-                    大文字で表示
-                  </Label>
-                </div>
+                  大文字で表示
+                </label>
+              </div>
 
-                <div className="flex items-center gap-2">
+              <div className="option-group checkbox-group">
+                <label>
                   <input
                     type="checkbox"
-                    id="noHyphens"
                     checked={noHyphens}
                     onChange={(e) => setNoHyphens(e.target.checked)}
-                    className="w-4 h-4 accent-primary"
                   />
-                  <Label htmlFor="noHyphens" className="cursor-pointer">
-                    ハイフンなし
-                  </Label>
-                </div>
+                  ハイフンなし
+                </label>
               </div>
+            </div>
 
-              <div className="flex gap-3" role="group" aria-label="UUID操作">
-                <Button type="submit">UUID生成</Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={handleClear}
-                  disabled={uuids.length === 0}
-                >
-                  クリア
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+            <div className="button-group" role="group" aria-label="UUID操作">
+              <Button type="submit" className="btn-primary">
+                UUID生成
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={handleClear}
+                disabled={uuids.length === 0}
+                className="btn-clear"
+              >
+                クリア
+              </Button>
+            </div>
+          </div>
 
           {uuids.length > 0 && (
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-                <CardTitle>生成結果</CardTitle>
+            <div className="converter-section">
+              <div className="uuid-result-header">
+                <h2 className="section-title">生成結果</h2>
                 {uuids.length > 1 && (
                   <Button
                     type="button"
@@ -243,32 +238,26 @@ function UuidGenerator() {
                     {copiedAll ? "コピーしました" : "すべてコピー"}
                   </Button>
                 )}
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3" role="list" aria-live="polite">
-                  {uuids.map((uuid, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center justify-between gap-4 p-3 bg-muted rounded-lg"
-                      role="listitem"
+              </div>
+
+              <div className="uuid-list" role="list" aria-live="polite">
+                {uuids.map((uuid, index) => (
+                  <div key={index} className="uuid-item" role="listitem">
+                    <code className="uuid-value">{formatUUID(uuid)}</code>
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      size="sm"
+                      onClick={() => handleCopy(index)}
+                      aria-label={`UUID ${index + 1}をコピー`}
+                      className="btn-copy"
                     >
-                      <code className="font-mono text-sm flex-1 break-all select-all">
-                        {formatUUID(uuid)}
-                      </code>
-                      <Button
-                        type="button"
-                        variant="secondary"
-                        size="sm"
-                        onClick={() => handleCopy(index)}
-                        aria-label={`UUID ${index + 1}をコピー`}
-                      >
-                        {copied === index ? "済" : "コピー"}
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+                      {copied === index ? "済" : "コピー"}
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            </div>
           )}
         </form>
 
@@ -303,6 +292,93 @@ function UuidGenerator() {
         aria-atomic="true"
         className="sr-only"
       />
+
+      <style>{`
+        .uuid-options {
+          display: flex;
+          gap: 1.5rem;
+          flex-wrap: wrap;
+          align-items: center;
+          margin-bottom: 1.5rem;
+        }
+
+        .option-group {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        }
+
+        .option-group label {
+          font-weight: 500;
+          color: var(--md-sys-color-on-surface);
+        }
+
+        .checkbox-group label {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          cursor: pointer;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+          width: 18px;
+          height: 18px;
+          accent-color: var(--md-sys-color-primary);
+        }
+
+        .uuid-result-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 1rem;
+        }
+
+        .uuid-result-header .section-title {
+          margin-bottom: 0;
+        }
+
+        .uuid-list {
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+        }
+
+        .uuid-item {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 1rem;
+          padding: 0.75rem 1rem;
+          background-color: var(--md-sys-color-surface-variant);
+          border-radius: 8px;
+        }
+
+        .uuid-value {
+          font-family: 'Roboto Mono', monospace;
+          font-size: 1rem;
+          color: var(--md-sys-color-on-surface);
+          user-select: all;
+          word-break: break-all;
+          flex: 1;
+        }
+
+        @media (max-width: 480px) {
+          .uuid-options {
+            flex-direction: column;
+            align-items: flex-start;
+          }
+
+          .uuid-item {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+          }
+
+          .uuid-value {
+            font-size: 0.875rem;
+          }
+        }
+      `}</style>
     </>
   );
 }
