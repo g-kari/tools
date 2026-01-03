@@ -70,6 +70,7 @@ jobs:
           path: |
             dist/
             .wrangler/
+            wrangler.jsonc
           retention-days: 1
 
       - name: Get E2E test files
@@ -103,6 +104,18 @@ jobs:
         uses: actions/download-artifact@v7
         with:
           name: build-output
+
+      - name: Debug artifact structure
+        run: |
+          echo "=== Current directory ==="
+          pwd
+          echo "=== Directory contents ==="
+          ls -la
+          echo "=== dist contents ==="
+          ls -la dist/ || echo "dist not found"
+          echo "=== .wrangler contents ==="
+          ls -la .wrangler/ || echo ".wrangler not found"
+          ls -la .wrangler/deploy/ || echo ".wrangler/deploy not found"
 
       - name: Install dependencies
         run: npm ci
