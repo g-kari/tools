@@ -67,9 +67,7 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: build-output
-          path: |
-            .output/
-            node_modules/
+          path: .output/
           retention-days: 1
 
       - name: Get E2E test files
@@ -104,7 +102,13 @@ jobs:
         with:
           name: build-output
 
-      - name: Install Playwright Browsers
+      - name: Install dependencies
+        run: npm ci
+        env:
+          CI: true
+
+      - name: Install Playwright Browsers (GitHub-hosted only)
+        if: needs.build.outputs.is_internal != 'true'
         run: npx playwright install --with-deps chromium
 
       - name: Run E2E test
