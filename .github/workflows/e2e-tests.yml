@@ -71,6 +71,7 @@ jobs:
             dist/
             .wrangler/
             wrangler.jsonc
+          include-hidden-files: true
           retention-days: 1
 
       - name: Get E2E test files
