@@ -67,7 +67,7 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: build-output
-          path: .output/
+          path: dist/
           retention-days: 1
 
       - name: Get E2E test files
