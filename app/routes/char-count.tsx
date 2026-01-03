@@ -171,45 +171,6 @@ function CharCountPage() {
         </aside>
       </div>
 
-      <style>{`
-        .count-results {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-          gap: 1rem;
-        }
-
-        .count-item {
-          display: flex;
-          flex-direction: column;
-          padding: 1rem;
-          background-color: var(--md-sys-color-surface-variant);
-          border-radius: 12px;
-          text-align: center;
-        }
-
-        .count-label {
-          font-size: 0.875rem;
-          color: var(--md-sys-color-on-surface-variant);
-          margin-bottom: 0.5rem;
-        }
-
-        .count-value {
-          font-size: 1.5rem;
-          font-weight: 500;
-          font-family: 'Roboto Mono', monospace;
-          color: var(--md-sys-color-primary);
-        }
-
-        @media (max-width: 480px) {
-          .count-results {
-            grid-template-columns: repeat(2, 1fr);
-          }
-
-          .count-value {
-            font-size: 1.25rem;
-          }
-        }
-      `}</style>
     </>
   );
 }

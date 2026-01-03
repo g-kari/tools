@@ -180,39 +180,6 @@ function GlobalIpLookup() {
         className="sr-only"
       />
 
-      <style>{`
-        .ip-display-container {
-          text-align: center;
-          padding: 2rem;
-        }
-
-        .ip-display {
-          font-family: 'Roboto Mono', monospace;
-          font-size: 2rem;
-          font-weight: 500;
-          color: var(--md-sys-color-on-surface);
-          background-color: var(--md-sys-color-surface-variant);
-          padding: 1.5rem 2rem;
-          border-radius: 12px;
-          margin-bottom: 1.5rem;
-          user-select: all;
-          word-break: break-all;
-        }
-
-        .ip-actions {
-          display: flex;
-          gap: 1rem;
-          justify-content: center;
-          flex-wrap: wrap;
-        }
-
-        @media (max-width: 480px) {
-          .ip-display {
-            font-size: 1.25rem;
-            padding: 1rem 1.5rem;
-          }
-        }
-      `}</style>
     </>
   );
 }
