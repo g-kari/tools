@@ -35,15 +35,15 @@ interface TipsCardProps {
 export function TipsCard({ sections }: TipsCardProps) {
   return (
     <Card
-      className="tips-card"
+      className="tips-card info-box"
       role="complementary"
-      aria-labelledby="tips-title"
+      aria-labelledby="usage-title"
     >
       {sections.map((section, index) => (
         <React.Fragment key={section.title}>
           <CardHeader className={index > 0 ? "pt-2" : ""}>
             <CardTitle
-              id={index === 0 ? "tips-title" : undefined}
+              id={index === 0 ? "usage-title" : undefined}
               className="text-base"
             >
               {section.title}
