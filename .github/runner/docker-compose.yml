@@ -1,0 +1,48 @@
+# GitHub Actions Self-Hosted Runner for E2E Testing
+#
+# Usage:
+#   1. Create .env file with required environment variables
+#   2. Build and run: docker compose up -d --build
+#   3. Scale runners: docker compose up -d --scale runner=3
+#
+# Environment variables (in .env file):
+#   GITHUB_REPOSITORY=owner/repo
+#   GITHUB_TOKEN=ghp_xxxx (with repo or admin:org scope)
+
+services:
+  runner:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        RUNNER_VERSION: "2.321.0"
+        RUNNER_ARCH: "x64"
+    environment:
+      - GITHUB_REPOSITORY=${GITHUB_REPOSITORY}
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      - RUNNER_NAME=${RUNNER_NAME:-tools-runner}
+      - RUNNER_LABELS=${RUNNER_LABELS:-self-hosted,Linux,X64,playwright,e2e}
+      - RUNNER_GROUP=${RUNNER_GROUP:-Default}
+      - RUNNER_WORK_DIR=${RUNNER_WORK_DIR:-_work}
+    volumes:
+      # Persist runner work directory for caching
+      - runner-work:/home/runner/_work
+    restart: unless-stopped
+    # Security settings
+    security_opt:
+      - seccomp=unconfined
+    # Required for Playwright/Chromium
+    shm_size: 2gb
+    # Resource limits (adjust based on your server)
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+        reservations:
+          cpus: '1'
+          memory: 2G
+
+volumes:
+  runner-work:
+    name: github-runner-work

@@ -1,0 +1,214 @@
+name: E2E Tests (Self-Hosted)
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+    inputs:
+      use_self_hosted:
+        description: 'Use self-hosted runner'
+        required: false
+        default: 'true'
+        type: boolean
+
+# Cancel in-progress runs for the same branch
+concurrency:
+  group: e2e-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Build job - runs on GitHub-hosted runner
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      is_internal: ${{ steps.check-origin.outputs.is_internal }}
+
+    steps:
+      - name: Check PR origin
+        id: check-origin
+        run: |
+          # For push events or internal PRs, use self-hosted runner
+          # For external PRs (forks), use GitHub-hosted runner for security
+          if [ "${{ github.event_name }}" == "push" ]; then
+            echo "is_internal=true" >> $GITHUB_OUTPUT
+            echo "Push event - using self-hosted runner"
+          elif [ "${{ github.event.pull_request.head.repo.full_name }}" == "${{ github.repository }}" ]; then
+            echo "is_internal=true" >> $GITHUB_OUTPUT
+            echo "Internal PR - using self-hosted runner"
+          else
+            echo "is_internal=false" >> $GITHUB_OUTPUT
+            echo "External PR (fork) - using GitHub-hosted runner for security"
+          fi
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+        env:
+          CI: true
+
+      - name: Build application
+        run: npm run build
+        env:
+          CI: true
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: |
+            .output/
+            node_modules/
+          retention-days: 1
+
+      - name: Get E2E test files
+        id: set-matrix
+        run: |
+          # Get list of E2E test files and create matrix
+          FILES=$(find tests/e2e -name "*.spec.ts" -type f | sort | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          echo "matrix={\"test-file\":$FILES}" >> $GITHUB_OUTPUT
+          echo "Found test files: $FILES"
+
+  # E2E test jobs - runs on self-hosted runners in parallel (internal only)
+  # External PRs use GitHub-hosted runners for security
+  e2e:
+    needs: build
+    timeout-minutes: 30
+    runs-on: ${{ needs.build.outputs.is_internal == 'true' && fromJson('["self-hosted", "playwright", "e2e"]') || 'ubuntu-latest' }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.build.outputs.matrix) }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-output
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run E2E test
+        id: test
+        run: |
+          npm run preview -- --port 8788 --host &
+          SERVER_PID=$!
+          npx wait-on http://127.0.0.1:8788 --timeout 60000
+          BASE_URL=http://127.0.0.1:8788 npx playwright test ${{ matrix.test-file }} --project=chromium --reporter=json --reporter=html
+          TEST_EXIT_CODE=$?
+          kill $SERVER_PID || true
+          exit $TEST_EXIT_CODE
+        env:
+          CI: true
+
+      - name: Get test file name
+        if: always()
+        id: filename
+        run: |
+          BASENAME=$(basename "${{ matrix.test-file }}" .spec.ts)
+          echo "name=$BASENAME" >> $GITHUB_OUTPUT
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report-${{ steps.filename.outputs.name }}
+          path: playwright-report/
+          retention-days: 7
+
+  # Summary job - aggregates results
+  summary:
+    needs: [build, e2e]
+    runs-on: ubuntu-latest
+    if: always()
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Download all test reports
+        uses: actions/download-artifact@v4
+        with:
+          pattern: playwright-report-*
+          path: all-reports/
+          merge-multiple: false
+
+      - name: Post test result to PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+
+            const e2eResult = '${{ needs.e2e.result }}';
+            const success = e2eResult === 'success';
+            const emoji = success ? '✅' : '❌';
+            const status = success ? 'passed' : 'failed';
+
+            let body = `## ${emoji} E2E Tests ${status}\n\n`;
+
+            const isInternal = '${{ needs.build.outputs.is_internal }}' === 'true';
+            const runnerType = isInternal ? 'self-hosted runners' : 'GitHub-hosted runners';
+
+            if (success) {
+              body += `All E2E tests passed successfully.\n\n`;
+            } else {
+              body += `Some E2E tests failed. Check the [workflow run](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}) for details.\n\n`;
+            }
+
+            body += `### Test Matrix Results\n\n`;
+            body += `| Status | Result |\n`;
+            body += `|--------|--------|\n`;
+            body += `| Build | ${{ needs.build.result == 'success' && '✅' || '❌' }} |\n`;
+            body += `| E2E Tests | ${emoji} |\n`;
+            body += `| Runner | ${runnerType} |\n`;
+
+            body += `\n---\n`;
+            body += `*Generated on ${new Date().toISOString()} (${runnerType})*`;
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const botComment = comments.find(comment =>
+              comment.user.type === 'Bot' &&
+              comment.body.includes('E2E Tests')
+            );
+
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: body,
+              });
+            }
