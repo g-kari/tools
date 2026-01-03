@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef, useCallback, useEffect } from "react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export const Route = createFileRoute("/dummy-audio")({
   head: () => ({
@@ -379,20 +380,21 @@ function DummyAudioGenerator() {
             <div className="audio-options">
               <div className="option-group">
                 <label htmlFor="waveform">波形タイプ:</label>
-                <select
-                  id="waveform"
+                <Select
                   value={waveform}
-                  onChange={(e) =>
-                    handleWaveformChange(e.target.value as WaveformType)
-                  }
-                  aria-describedby="waveform-help"
+                  onValueChange={(value) => handleWaveformChange(value as WaveformType)}
                 >
-                  {WAVEFORM_OPTIONS.map((opt) => (
-                    <option key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </option>
-                  ))}
-                </select>
+                  <SelectTrigger id="waveform" aria-describedby="waveform-help">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {WAVEFORM_OPTIONS.map((opt) => (
+                      <SelectItem key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <span id="waveform-help" className="sr-only">
                   生成する音声の波形タイプを選択します
                 </span>

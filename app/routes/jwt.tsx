@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { decodeJWT, type DecodedJWT } from "../utils/jwt";
+import { Textarea } from "@/components/ui/textarea";
 
 export const Route = createFileRoute("/jwt")({
   head: () => ({
@@ -116,7 +117,7 @@ function JwtDecoder() {
             <label htmlFor="inputToken" className="section-title">
               JWT トークン
             </label>
-            <textarea
+            <Textarea
               id="inputToken"
               ref={inputRef}
               value={inputToken}
@@ -176,7 +177,7 @@ function JwtDecoder() {
                     コピー
                   </button>
                 </div>
-                <textarea
+                <Textarea
                   id="outputHeader"
                   value={decodedResult.header}
                   readOnly
@@ -200,7 +201,7 @@ function JwtDecoder() {
                     コピー
                   </button>
                 </div>
-                <textarea
+                <Textarea
                   id="outputPayload"
                   value={decodedResult.payload}
                   readOnly
@@ -224,7 +225,7 @@ function JwtDecoder() {
                     コピー
                   </button>
                 </div>
-                <textarea
+                <Textarea
                   id="outputSignature"
                   value={decodedResult.signature}
                   readOnly

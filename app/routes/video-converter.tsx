@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile, toBlobURL } from "@ffmpeg/util";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export const Route = createFileRoute("/video-converter")({
   head: () => ({
@@ -417,101 +418,125 @@ function VideoConverter() {
 
           <div className="option-group">
             <label htmlFor="format">出力フォーマット</label>
-            <select
-              id="format"
+            <Select
               value={format}
-              onChange={(e) => setFormat(e.target.value as typeof format)}
+              onValueChange={(value) => setFormat(value as typeof format)}
               disabled={isConverting}
             >
-              <option value="mp4">MP4 (H.264)</option>
-              <option value="webm">WebM (VP8)</option>
-              <option value="avi">AVI (MPEG-4)</option>
-              <option value="mov">MOV (H.264)</option>
-              <option value="gif">GIF (アニメーション画像)</option>
-            </select>
+              <SelectTrigger id="format">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="mp4">MP4 (H.264)</SelectItem>
+                <SelectItem value="webm">WebM (VP8)</SelectItem>
+                <SelectItem value="avi">AVI (MPEG-4)</SelectItem>
+                <SelectItem value="mov">MOV (H.264)</SelectItem>
+                <SelectItem value="gif">GIF (アニメーション画像)</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="option-group">
             <label htmlFor="width">解像度（幅）</label>
-            <select
-              id="width"
+            <Select
               value={width}
-              onChange={(e) => setWidth(e.target.value)}
+              onValueChange={setWidth}
               disabled={isConverting}
             >
-              <option value="auto">元のまま</option>
-              <option value="640">640px</option>
-              <option value="854">854px (480p)</option>
-              <option value="1280">1280px (720p)</option>
-              <option value="1920">1920px (1080p)</option>
-              <option value="2560">2560px (1440p)</option>
-              <option value="3840">3840px (4K)</option>
-            </select>
+              <SelectTrigger id="width">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="auto">元のまま</SelectItem>
+                <SelectItem value="640">640px</SelectItem>
+                <SelectItem value="854">854px (480p)</SelectItem>
+                <SelectItem value="1280">1280px (720p)</SelectItem>
+                <SelectItem value="1920">1920px (1080p)</SelectItem>
+                <SelectItem value="2560">2560px (1440p)</SelectItem>
+                <SelectItem value="3840">3840px (4K)</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="option-group">
             <label htmlFor="height">解像度（高さ）</label>
-            <select
-              id="height"
+            <Select
               value={height}
-              onChange={(e) => setHeight(e.target.value)}
+              onValueChange={setHeight}
               disabled={isConverting}
             >
-              <option value="auto">元のまま</option>
-              <option value="360">360px</option>
-              <option value="480">480px</option>
-              <option value="720">720px (720p)</option>
-              <option value="1080">1080px (1080p)</option>
-              <option value="1440">1440px (1440p)</option>
-              <option value="2160">2160px (4K)</option>
-            </select>
+              <SelectTrigger id="height">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="auto">元のまま</SelectItem>
+                <SelectItem value="360">360px</SelectItem>
+                <SelectItem value="480">480px</SelectItem>
+                <SelectItem value="720">720px (720p)</SelectItem>
+                <SelectItem value="1080">1080px (1080p)</SelectItem>
+                <SelectItem value="1440">1440px (1440p)</SelectItem>
+                <SelectItem value="2160">2160px (4K)</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="option-group">
             <label htmlFor="framerate">フレームレート</label>
-            <select
-              id="framerate"
+            <Select
               value={framerate}
-              onChange={(e) => setFramerate(e.target.value)}
+              onValueChange={setFramerate}
               disabled={isConverting}
             >
-              <option value="auto">元のまま</option>
-              <option value="24">24 fps</option>
-              <option value="30">30 fps</option>
-              <option value="60">60 fps</option>
-            </select>
+              <SelectTrigger id="framerate">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="auto">元のまま</SelectItem>
+                <SelectItem value="24">24 fps</SelectItem>
+                <SelectItem value="30">30 fps</SelectItem>
+                <SelectItem value="60">60 fps</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="option-group">
             <label htmlFor="videoBitrate">ビデオビットレート</label>
-            <select
-              id="videoBitrate"
+            <Select
               value={videoBitrate}
-              onChange={(e) => setVideoBitrate(e.target.value)}
+              onValueChange={setVideoBitrate}
               disabled={isConverting}
             >
-              <option value="auto">自動</option>
-              <option value="1000">1000 kbps (低画質)</option>
-              <option value="2000">2000 kbps (標準)</option>
-              <option value="4000">4000 kbps (高画質)</option>
-              <option value="8000">8000 kbps (最高画質)</option>
-            </select>
+              <SelectTrigger id="videoBitrate">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="auto">自動</SelectItem>
+                <SelectItem value="1000">1000 kbps (低画質)</SelectItem>
+                <SelectItem value="2000">2000 kbps (標準)</SelectItem>
+                <SelectItem value="4000">4000 kbps (高画質)</SelectItem>
+                <SelectItem value="8000">8000 kbps (最高画質)</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="option-group">
             <label htmlFor="audioBitrate">オーディオビットレート</label>
-            <select
-              id="audioBitrate"
+            <Select
               value={audioBitrate}
-              onChange={(e) => setAudioBitrate(e.target.value)}
+              onValueChange={setAudioBitrate}
               disabled={isConverting}
             >
-              <option value="auto">自動</option>
-              <option value="96">96 kbps</option>
-              <option value="128">128 kbps (標準)</option>
-              <option value="192">192 kbps (高音質)</option>
-              <option value="256">256 kbps (最高音質)</option>
-            </select>
+              <SelectTrigger id="audioBitrate">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="auto">自動</SelectItem>
+                <SelectItem value="96">96 kbps</SelectItem>
+                <SelectItem value="128">128 kbps (標準)</SelectItem>
+                <SelectItem value="192">192 kbps (高音質)</SelectItem>
+                <SelectItem value="256">256 kbps (最高音質)</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="button-group" role="group" aria-label="操作">

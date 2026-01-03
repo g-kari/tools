@@ -2,6 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { useToast } from "../components/Toast";
 import JSZip from "jszip";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 
 export const Route = createFileRoute("/favicon-generator")({
   head: () => ({
@@ -488,17 +490,22 @@ function FaviconGenerator() {
             </div>
             <div className="favicon-size-grid" role="group" aria-label="生成サイズ選択">
               {FAVICON_SIZES.map((size) => (
-                <label
+                <div
                   key={size.name}
                   className={`favicon-size-item ${selectedSizes.has(size.name) ? "selected" : ""}`}
                 >
-                  <input
-                    type="checkbox"
-                    checked={selectedSizes.has(size.name)}
-                    onChange={() => handleSizeToggle(size.name)}
-                    disabled={isLoading}
-                    aria-describedby={`size-desc-${size.name}`}
-                  />
+                  <div className="flex items-center gap-2">
+                    <Checkbox
+                      id={`size-${size.name}`}
+                      checked={selectedSizes.has(size.name)}
+                      onCheckedChange={() => handleSizeToggle(size.name)}
+                      disabled={isLoading}
+                      aria-describedby={`size-desc-${size.name}`}
+                    />
+                    <Label htmlFor={`size-${size.name}`} className="cursor-pointer sr-only">
+                      {size.name}
+                    </Label>
+                  </div>
                   <canvas
                     ref={(el) => setPreviewCanvasRef(size.name, el)}
                     className="favicon-preview-canvas"
@@ -511,7 +518,7 @@ function FaviconGenerator() {
                     </span>
                     <span className="favicon-size-filename">{size.filename}</span>
                   </div>
-                </label>
+                </div>
               ))}
             </div>
           </div>

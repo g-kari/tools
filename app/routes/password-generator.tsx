@@ -6,6 +6,8 @@ import {
   type PasswordOptions,
 } from "../utils/password";
 import { useToast } from "../components/Toast";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 
 export const Route = createFileRoute("/password-generator")({
   head: () => ({
@@ -138,42 +140,42 @@ function PasswordGenerator() {
             <div className="collapsible-content" id="advanced-options">
               <div className="collapsible-body">
                 <div className="checkbox-group" role="group" aria-label="使用する文字種の選択">
-                  <label className="checkbox-label">
-                    <input
-                      type="checkbox"
+                  <div className="flex items-center gap-2">
+                    <Checkbox
+                      id="uppercase"
                       checked={options.uppercase}
-                      onChange={(e) => handleOptionChange("uppercase", e.target.checked)}
+                      onCheckedChange={(checked) => handleOptionChange("uppercase", checked as boolean)}
                       aria-label="大文字を含める"
                     />
-                    大文字 (A-Z)
-                  </label>
-                  <label className="checkbox-label">
-                    <input
-                      type="checkbox"
+                    <Label htmlFor="uppercase" className="cursor-pointer">大文字 (A-Z)</Label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Checkbox
+                      id="lowercase"
                       checked={options.lowercase}
-                      onChange={(e) => handleOptionChange("lowercase", e.target.checked)}
+                      onCheckedChange={(checked) => handleOptionChange("lowercase", checked as boolean)}
                       aria-label="小文字を含める"
                     />
-                    小文字 (a-z)
-                  </label>
-                  <label className="checkbox-label">
-                    <input
-                      type="checkbox"
+                    <Label htmlFor="lowercase" className="cursor-pointer">小文字 (a-z)</Label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Checkbox
+                      id="numbers"
                       checked={options.numbers}
-                      onChange={(e) => handleOptionChange("numbers", e.target.checked)}
+                      onCheckedChange={(checked) => handleOptionChange("numbers", checked as boolean)}
                       aria-label="数字を含める"
                     />
-                    数字 (0-9)
-                  </label>
-                  <label className="checkbox-label">
-                    <input
-                      type="checkbox"
+                    <Label htmlFor="numbers" className="cursor-pointer">数字 (0-9)</Label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Checkbox
+                      id="symbols"
                       checked={options.symbols}
-                      onChange={(e) => handleOptionChange("symbols", e.target.checked)}
+                      onCheckedChange={(checked) => handleOptionChange("symbols", checked as boolean)}
                       aria-label="記号を含める"
                     />
-                    記号 (!@#$%...)
-                  </label>
+                    <Label htmlFor="symbols" className="cursor-pointer">記号 (!@#$%...)</Label>
+                  </div>
                 </div>
               </div>
             </div>

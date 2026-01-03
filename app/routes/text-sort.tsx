@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useToast } from "../components/Toast";
+import { Textarea } from "@/components/ui/textarea";
 
 export const Route = createFileRoute("/text-sort")({
   head: () => ({
@@ -111,7 +112,7 @@ function TextSortTool() {
             <label htmlFor="inputText" className="section-title">
               入力テキスト
             </label>
-            <textarea
+            <Textarea
               id="inputText"
               ref={inputRef}
               value={inputText}
@@ -172,7 +173,7 @@ function TextSortTool() {
             <label htmlFor="outputText" className="section-title">
               出力結果
             </label>
-            <textarea
+            <Textarea
               id="outputText"
               value={outputText}
               readOnly

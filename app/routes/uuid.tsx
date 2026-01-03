@@ -3,6 +3,7 @@ import { useState, useRef, useCallback, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export const Route = createFileRoute("/uuid")({
   head: () => ({
@@ -186,25 +187,25 @@ function UuidGenerator() {
               </div>
 
               <div className="option-group checkbox-group">
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={uppercase}
-                    onChange={(e) => setUppercase(e.target.checked)}
-                  />
+                <Checkbox
+                  id="uppercase"
+                  checked={uppercase}
+                  onCheckedChange={setUppercase}
+                />
+                <Label htmlFor="uppercase" className="cursor-pointer">
                   大文字で表示
-                </label>
+                </Label>
               </div>
 
               <div className="option-group checkbox-group">
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={noHyphens}
-                    onChange={(e) => setNoHyphens(e.target.checked)}
-                  />
+                <Checkbox
+                  id="noHyphens"
+                  checked={noHyphens}
+                  onCheckedChange={setNoHyphens}
+                />
+                <Label htmlFor="noHyphens" className="cursor-pointer">
                   ハイフンなし
-                </label>
+                </Label>
               </div>
             </div>
 
@@ -313,17 +314,10 @@ function UuidGenerator() {
           color: var(--md-sys-color-on-surface);
         }
 
-        .checkbox-group label {
+        .checkbox-group {
           display: flex;
           align-items: center;
           gap: 0.5rem;
-          cursor: pointer;
-        }
-
-        .checkbox-group input[type="checkbox"] {
-          width: 18px;
-          height: 18px;
-          accent-color: var(--md-sys-color-primary);
         }
 
         .uuid-result-header {

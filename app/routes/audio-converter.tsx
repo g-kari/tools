@@ -3,6 +3,7 @@ import { useState, useRef, useCallback, useEffect } from "react";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile, toBlobURL } from "@ffmpeg/util";
 import { useToast } from "../components/Toast";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export const Route = createFileRoute("/audio-converter")({
   head: () => ({
@@ -349,19 +350,20 @@ function AudioConverter() {
             <label htmlFor="outputFormat" className="section-title">
               出力フォーマット
             </label>
-            <select
-              id="outputFormat"
+            <Select
               value={format}
-              onChange={(e) =>
-                setFormat(e.target.value as "mp3" | "wav" | "ogg")
-              }
-              aria-label="出力フォーマットを選択"
+              onValueChange={(value) => setFormat(value as "mp3" | "wav" | "ogg")}
               disabled={isConverting}
             >
-              <option value="mp3">MP3</option>
-              <option value="wav">WAV</option>
-              <option value="ogg">OGG (Vorbis)</option>
-            </select>
+              <SelectTrigger id="outputFormat" aria-label="出力フォーマットを選択">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="mp3">MP3</SelectItem>
+                <SelectItem value="wav">WAV</SelectItem>
+                <SelectItem value="ogg">OGG (Vorbis)</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="converter-section">
@@ -371,20 +373,23 @@ function AudioConverter() {
               <label htmlFor="bitrate">
                 ビットレート (kbps)
               </label>
-              <select
-                id="bitrate"
+              <Select
                 value={bitrate}
-                onChange={(e) => setBitrate(e.target.value)}
+                onValueChange={setBitrate}
                 disabled={isConverting || format === "wav"}
-                aria-label="ビットレートを選択"
               >
-                <option value="320">320 (最高品質)</option>
-                <option value="256">256 (高品質)</option>
-                <option value="192">192 (標準)</option>
-                <option value="128">128 (バランス)</option>
-                <option value="96">96 (低品質)</option>
-                <option value="64">64 (最低品質)</option>
-              </select>
+                <SelectTrigger id="bitrate" aria-label="ビットレートを選択">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="320">320 (最高品質)</SelectItem>
+                  <SelectItem value="256">256 (高品質)</SelectItem>
+                  <SelectItem value="192">192 (標準)</SelectItem>
+                  <SelectItem value="128">128 (バランス)</SelectItem>
+                  <SelectItem value="96">96 (低品質)</SelectItem>
+                  <SelectItem value="64">64 (最低品質)</SelectItem>
+                </SelectContent>
+              </Select>
               {format === "wav" && (
                 <p style={{ fontSize: "12px", color: "var(--md-sys-color-on-surface-variant)", marginTop: "4px" }}>
                   ※ WAV形式ではビットレート設定は使用されません
@@ -396,37 +401,43 @@ function AudioConverter() {
               <label htmlFor="sampleRate">
                 サンプリングレート (Hz)
               </label>
-              <select
-                id="sampleRate"
+              <Select
                 value={sampleRate}
-                onChange={(e) => setSampleRate(e.target.value)}
+                onValueChange={setSampleRate}
                 disabled={isConverting}
-                aria-label="サンプリングレートを選択"
               >
-                <option value="48000">48000 (最高品質)</option>
-                <option value="44100">44100 (CD品質)</option>
-                <option value="32000">32000</option>
-                <option value="22050">22050</option>
-                <option value="16000">16000</option>
-                <option value="11025">11025</option>
-                <option value="8000">8000 (電話品質)</option>
-              </select>
+                <SelectTrigger id="sampleRate" aria-label="サンプリングレートを選択">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="48000">48000 (最高品質)</SelectItem>
+                  <SelectItem value="44100">44100 (CD品質)</SelectItem>
+                  <SelectItem value="32000">32000</SelectItem>
+                  <SelectItem value="22050">22050</SelectItem>
+                  <SelectItem value="16000">16000</SelectItem>
+                  <SelectItem value="11025">11025</SelectItem>
+                  <SelectItem value="8000">8000 (電話品質)</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="option-group">
               <label htmlFor="channels">
                 チャンネル
               </label>
-              <select
-                id="channels"
+              <Select
                 value={channels}
-                onChange={(e) => setChannels(e.target.value)}
+                onValueChange={setChannels}
                 disabled={isConverting}
-                aria-label="チャンネルを選択"
               >
-                <option value="2">ステレオ (2ch)</option>
-                <option value="1">モノラル (1ch)</option>
-              </select>
+                <SelectTrigger id="channels" aria-label="チャンネルを選択">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="2">ステレオ (2ch)</SelectItem>
+                  <SelectItem value="1">モノラル (1ch)</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
 

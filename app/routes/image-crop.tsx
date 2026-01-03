@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { useToast } from "../components/Toast";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 
 export const Route = createFileRoute("/image-crop")({
   head: () => ({
@@ -690,15 +692,17 @@ function ImageCropper() {
                 </button>
               ))}
             </div>
-            <label className="checkbox-label">
-              <input
-                type="checkbox"
+            <div className="flex items-center gap-2">
+              <Checkbox
+                id="showGrid"
                 checked={showGrid}
-                onChange={(e) => setShowGrid(e.target.checked)}
+                onCheckedChange={(checked) => setShowGrid(checked as boolean)}
                 disabled={isLoading}
               />
-              グリッド線を表示（三分割法）
-            </label>
+              <Label htmlFor="showGrid" className="cursor-pointer">
+                グリッド線を表示（三分割法）
+              </Label>
+            </div>
           </div>
 
           <div className="converter-section">

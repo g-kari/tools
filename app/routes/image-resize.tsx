@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef, useCallback, useEffect, useMemo } from "react";
 import { useToast } from "../components/Toast";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 
 export const Route = createFileRoute("/image-resize")({
   head: () => ({
@@ -928,15 +930,17 @@ function ImageResizer() {
                 </div>
               </div>
 
-              <label className="checkbox-label">
-                <input
-                  type="checkbox"
+              <div className="flex items-center gap-2">
+                <Checkbox
+                  id="maintainAspectRatio"
                   checked={maintainAspectRatio}
-                  onChange={(e) => handleAspectRatioToggle(e.target.checked)}
+                  onCheckedChange={(checked) => handleAspectRatioToggle(checked as boolean)}
                   disabled={isLoading}
                 />
-                アスペクト比を維持
-              </label>
+                <Label htmlFor="maintainAspectRatio" className="cursor-pointer">
+                  アスペクト比を維持
+                </Label>
+              </div>
 
               {sizeChangePercent !== 0 && (
                 <p className={`help-text ${sizeChangePercent > 0 ? "size-increase" : "size-decrease"}`}>
@@ -966,15 +970,17 @@ function ImageResizer() {
           <div className="converter-section">
             <h2 className="section-title">トリミング設定</h2>
 
-            <label className="checkbox-label">
-              <input
-                type="checkbox"
+            <div className="flex items-center gap-2">
+              <Checkbox
+                id="enableCrop"
                 checked={enableCrop}
-                onChange={(e) => setEnableCrop(e.target.checked)}
+                onCheckedChange={(checked) => setEnableCrop(checked as boolean)}
                 disabled={isLoading}
               />
-              トリミングを有効にする
-            </label>
+              <Label htmlFor="enableCrop" className="cursor-pointer">
+                トリミングを有効にする
+              </Label>
+            </div>
 
             {enableCrop && (
               <>

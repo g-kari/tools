@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useToast } from "../components/Toast";
+import { Textarea } from "@/components/ui/textarea";
 
 export const Route = createFileRoute("/regex-checker")({
   head: () => ({
@@ -173,7 +174,7 @@ function RegexChecker() {
             <label htmlFor="testString" className="section-title">
               テスト文字列
             </label>
-            <textarea
+            <Textarea
               id="testString"
               value={testString}
               onChange={(e) => setTestString(e.target.value)}

@@ -7,6 +7,8 @@ import {
   minifyHTML,
   minifyJSON,
 } from "../utils/minify";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 
 export const Route = createFileRoute("/minify")({
   head: () => ({
@@ -249,18 +251,20 @@ function MinifyTool() {
             <label htmlFor="codeType" className="input-label">
               コードタイプ
             </label>
-            <select
-              id="codeType"
+            <Select
               value={codeType}
-              onChange={(e) => setCodeType(e.target.value as CodeType)}
-              className="select-input"
-              aria-label="圧縮するコードのタイプ"
+              onValueChange={(value) => setCodeType(value as CodeType)}
             >
-              <option value="javascript">JavaScript</option>
-              <option value="css">CSS</option>
-              <option value="html">HTML</option>
-              <option value="json">JSON</option>
-            </select>
+              <SelectTrigger id="codeType" className="select-input" aria-label="圧縮するコードのタイプ">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="javascript">JavaScript</SelectItem>
+                <SelectItem value="css">CSS</SelectItem>
+                <SelectItem value="html">HTML</SelectItem>
+                <SelectItem value="json">JSON</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="input-group">
@@ -280,7 +284,7 @@ function MinifyTool() {
                 aria-label="ファイルを選択"
               />
             </div>
-            <textarea
+            <Textarea
               ref={inputRef}
               id="input"
               value={input}
@@ -335,7 +339,7 @@ function MinifyTool() {
                   )}
                 </div>
               </div>
-              <textarea
+              <Textarea
                 id="output"
                 value={output}
                 readOnly

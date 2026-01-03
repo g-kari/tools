@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile, toBlobURL } from "@ffmpeg/util";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export const Route = createFileRoute("/image-to-gif")({
   head: () => ({
@@ -495,19 +496,22 @@ function ImageToGifConverter() {
 
             <div className="option-group">
               <label htmlFor="loop">ループ設定</label>
-              <select
-                id="loop"
-                value={loop}
-                onChange={(e) => setLoop(parseInt(e.target.value))}
+              <Select
+                value={loop.toString()}
+                onValueChange={(value) => setLoop(parseInt(value))}
                 disabled={isLoading}
-                aria-describedby="loop-help"
               >
-                <option value={0}>無限ループ</option>
-                <option value={1}>1回のみ</option>
-                <option value={2}>2回</option>
-                <option value={3}>3回</option>
-                <option value={5}>5回</option>
-              </select>
+                <SelectTrigger id="loop" aria-describedby="loop-help">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="0">無限ループ</SelectItem>
+                  <SelectItem value="1">1回のみ</SelectItem>
+                  <SelectItem value="2">2回</SelectItem>
+                  <SelectItem value="3">3回</SelectItem>
+                  <SelectItem value="5">5回</SelectItem>
+                </SelectContent>
+              </Select>
               <span id="loop-help" className="option-help">
                 GIFのループ回数を設定
               </span>

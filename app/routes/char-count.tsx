@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useCallback } from "react";
+import { Textarea } from "@/components/ui/textarea";
 
 export const Route = createFileRoute("/char-count")({
   head: () => ({
@@ -90,7 +91,7 @@ function CharCountPage() {
       <div className="tool-container">
         <div className="converter-section">
           <h2 className="section-title">テキスト入力</h2>
-          <textarea
+          <Textarea
             className="input-area"
             placeholder="文字数をカウントしたいテキストを入力してください..."
             value={text}

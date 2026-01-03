@@ -6,6 +6,8 @@ import {
   type DnsRecordType,
 } from "../functions/dns-lookup";
 import { useToast } from "../components/Toast";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 
 export const Route = createFileRoute("/dns-lookup")({
   head: () => ({
@@ -234,22 +236,24 @@ function DnsLookup() {
             </div>
             <div className="checkbox-grid" role="group" aria-label="レコードタイプ選択">
               {RECORD_TYPES.map((recordType) => (
-                <label
-                  key={recordType.value}
-                  className="checkbox-label"
-                  title={recordType.description}
-                >
-                  <input
-                    type="checkbox"
+                <div key={recordType.value} className="flex items-center gap-2">
+                  <Checkbox
+                    id={`record-type-${recordType.value}`}
                     checked={selectedTypes.includes(recordType.value)}
-                    onChange={() => handleTypeToggle(recordType.value)}
+                    onCheckedChange={() => handleTypeToggle(recordType.value)}
                     aria-label={`${recordType.label} - ${recordType.description}`}
                   />
-                  <span className="checkbox-text">
-                    <span className="checkbox-type">{recordType.label}</span>
-                    <span className="checkbox-desc">{recordType.description}</span>
-                  </span>
-                </label>
+                  <Label
+                    htmlFor={`record-type-${recordType.value}`}
+                    className="cursor-pointer"
+                    title={recordType.description}
+                  >
+                    <span className="checkbox-text">
+                      <span className="checkbox-type">{recordType.label}</span>
+                      <span className="checkbox-desc">{recordType.description}</span>
+                    </span>
+                  </Label>
+                </div>
               ))}
             </div>
           </div>

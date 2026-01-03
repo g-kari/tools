@@ -1,5 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef, useCallback, useEffect } from "react";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export const Route = createFileRoute("/emoji-converter")({
   head: () => ({
@@ -589,19 +592,18 @@ function EmojiConverter() {
             <label htmlFor="platform" className="label">
               使用先
             </label>
-            <select
-              id="platform"
-              value={platform}
-              onChange={(e) => setPlatform(e.target.value as Platform)}
-              className="select"
-              aria-describedby="platform-help"
-            >
-              {(Object.keys(PLATFORM_LIMITS) as Platform[]).map((p) => (
-                <option key={p} value={p}>
-                  {PLATFORM_LIMITS[p].label}
-                </option>
-              ))}
-            </select>
+            <Select value={platform} onValueChange={(value) => setPlatform(value as Platform)}>
+              <SelectTrigger id="platform" aria-describedby="platform-help">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {(Object.keys(PLATFORM_LIMITS) as Platform[]).map((p) => (
+                  <SelectItem key={p} value={p}>
+                    {PLATFORM_LIMITS[p].label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
             <small id="platform-help" className="help-text">
               プラットフォームに応じて自動的に容量制限を適用します
             </small>
@@ -722,25 +724,23 @@ function EmojiConverter() {
                 </div>
 
                 <div className="checkbox-group">
-                  <label className="md3-checkbox-wrapper">
-                    <input
-                      type="checkbox"
+                  <div className="flex items-center gap-2">
+                    <Checkbox
+                      id="flipH"
                       checked={editOptions.flipH}
-                      onChange={(e) => updateEditOption("flipH", e.target.checked)}
+                      onCheckedChange={(checked) => updateEditOption("flipH", checked as boolean)}
                     />
-                    <span className="md3-checkbox" />
-                    <span className="md3-checkbox-label">左右反転</span>
-                  </label>
+                    <Label htmlFor="flipH" className="cursor-pointer">左右反転</Label>
+                  </div>
 
-                  <label className="md3-checkbox-wrapper">
-                    <input
-                      type="checkbox"
+                  <div className="flex items-center gap-2">
+                    <Checkbox
+                      id="flipV"
                       checked={editOptions.flipV}
-                      onChange={(e) => updateEditOption("flipV", e.target.checked)}
+                      onCheckedChange={(checked) => updateEditOption("flipV", checked as boolean)}
                     />
-                    <span className="md3-checkbox" />
-                    <span className="md3-checkbox-label">上下反転</span>
-                  </label>
+                    <Label htmlFor="flipV" className="cursor-pointer">上下反転</Label>
+                  </div>
                 </div>
               </div>
             </details>
@@ -807,17 +807,16 @@ function EmojiConverter() {
               <summary className="details-summary">透過処理</summary>
               <div className="details-content">
                 <div className="checkbox-group">
-                  <label className="md3-checkbox-wrapper">
-                    <input
-                      type="checkbox"
+                  <div className="flex items-center gap-2">
+                    <Checkbox
+                      id="transparent"
                       checked={editOptions.transparent}
-                      onChange={(e) =>
-                        updateEditOption("transparent", e.target.checked)
+                      onCheckedChange={(checked) =>
+                        updateEditOption("transparent", checked as boolean)
                       }
                     />
-                    <span className="md3-checkbox" />
-                    <span className="md3-checkbox-label">指定色を透過</span>
-                  </label>
+                    <Label htmlFor="transparent" className="cursor-pointer">指定色を透過</Label>
+                  </div>
                 </div>
 
                 {editOptions.transparent && (
@@ -844,15 +843,14 @@ function EmojiConverter() {
               <summary className="details-summary">枠線</summary>
               <div className="details-content">
                 <div className="checkbox-group">
-                  <label className="md3-checkbox-wrapper">
-                    <input
-                      type="checkbox"
+                  <div className="flex items-center gap-2">
+                    <Checkbox
+                      id="border"
                       checked={editOptions.border}
-                      onChange={(e) => updateEditOption("border", e.target.checked)}
+                      onCheckedChange={(checked) => updateEditOption("border", checked as boolean)}
                     />
-                    <span className="md3-checkbox" />
-                    <span className="md3-checkbox-label">枠線を追加</span>
-                  </label>
+                    <Label htmlFor="border" className="cursor-pointer">枠線を追加</Label>
+                  </div>
                 </div>
 
                 {editOptions.border && (
@@ -898,15 +896,14 @@ function EmojiConverter() {
               <summary className="details-summary">トリミング</summary>
               <div className="details-content">
                 <div className="checkbox-group">
-                  <label className="md3-checkbox-wrapper">
-                    <input
-                      type="checkbox"
+                  <div className="flex items-center gap-2">
+                    <Checkbox
+                      id="crop"
                       checked={editOptions.crop}
-                      onChange={(e) => updateEditOption("crop", e.target.checked)}
+                      onCheckedChange={(checked) => updateEditOption("crop", checked as boolean)}
                     />
-                    <span className="md3-checkbox" />
-                    <span className="md3-checkbox-label">トリミングを有効化</span>
-                  </label>
+                    <Label htmlFor="crop" className="cursor-pointer">トリミングを有効化</Label>
+                  </div>
                 </div>
 
                 {editOptions.crop && (

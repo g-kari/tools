@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useToast } from "../components/Toast";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 
 export const Route = createFileRoute("/hash")({
   head: () => ({
@@ -338,7 +340,7 @@ function HashGenerator() {
             <label htmlFor="inputText" className="section-title">
               入力テキスト
             </label>
-            <textarea
+            <Textarea
               id="inputText"
               ref={inputRef}
               value={inputText}
@@ -356,17 +358,20 @@ function HashGenerator() {
             <label htmlFor="algorithm" className="section-title">
               ハッシュアルゴリズム
             </label>
-            <select
-              id="algorithm"
+            <Select
               value={algorithm}
-              onChange={(e) => setAlgorithm(e.target.value as HashAlgorithm)}
-              aria-label="ハッシュアルゴリズムを選択"
+              onValueChange={(value) => setAlgorithm(value as HashAlgorithm)}
             >
-              <option value="MD5">MD5 (128-bit)</option>
-              <option value="SHA-1">SHA-1 (160-bit)</option>
-              <option value="SHA-256">SHA-256 (256-bit)</option>
-              <option value="SHA-512">SHA-512 (512-bit)</option>
-            </select>
+              <SelectTrigger id="algorithm" aria-label="ハッシュアルゴリズムを選択">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="MD5">MD5 (128-bit)</SelectItem>
+                <SelectItem value="SHA-1">SHA-1 (160-bit)</SelectItem>
+                <SelectItem value="SHA-256">SHA-256 (256-bit)</SelectItem>
+                <SelectItem value="SHA-512">SHA-512 (512-bit)</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="converter-section">
@@ -415,7 +420,7 @@ function HashGenerator() {
             <label htmlFor="outputHash" className="section-title">
               ハッシュ値
             </label>
-            <textarea
+            <Textarea
               id="outputHash"
               value={outputHash}
               readOnly

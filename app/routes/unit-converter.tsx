@@ -11,6 +11,7 @@ import {
   createHistoryEntry,
 } from "../utils/unit-converter";
 import { useToast } from "../components/Toast";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export const Route = createFileRoute("/unit-converter")({
   head: () => ({
@@ -198,19 +199,21 @@ function UnitConverter() {
                   className="unit-input"
                   step="any"
                 />
-                <select
-                  id="fromUnit"
+                <Select
                   value={fromUnit}
-                  onChange={(e) => setFromUnit(e.target.value)}
-                  aria-label="変換元の単位"
-                  className="unit-select"
+                  onValueChange={setFromUnit}
                 >
-                  {units.map((unit) => (
-                    <option key={unit.id} value={unit.id}>
-                      {unit.name} ({unit.symbol})
-                    </option>
-                  ))}
-                </select>
+                  <SelectTrigger id="fromUnit" className="unit-select" aria-label="変換元の単位">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {units.map((unit) => (
+                      <SelectItem key={unit.id} value={unit.id}>
+                        {unit.name} ({unit.symbol})
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
               <span id="input-help" className="sr-only">
                 変換したい数値を入力してください
@@ -237,19 +240,21 @@ function UnitConverter() {
                 <div className="unit-result" aria-live="polite" aria-atomic="true">
                   {result !== null ? formatNumber(result) : <span className="unit-result-placeholder">—</span>}
                 </div>
-                <select
-                  id="toUnit"
+                <Select
                   value={toUnit}
-                  onChange={(e) => setToUnit(e.target.value)}
-                  aria-label="変換先の単位"
-                  className="unit-select"
+                  onValueChange={setToUnit}
                 >
-                  {units.map((unit) => (
-                    <option key={unit.id} value={unit.id}>
-                      {unit.name} ({unit.symbol})
-                    </option>
-                  ))}
-                </select>
+                  <SelectTrigger id="toUnit" className="unit-select" aria-label="変換先の単位">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {units.map((unit) => (
+                      <SelectItem key={unit.id} value={unit.id}>
+                        {unit.name} ({unit.symbol})
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             </div>
 

@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { useToast } from "../components/Toast";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export const Route = createFileRoute("/image-compress")({
   head: () => ({
@@ -344,19 +345,22 @@ function ImageCompressor() {
 
                 <div className="option-group">
                   <label htmlFor="format">出力形式</label>
-                  <select
-                    id="format"
+                  <Select
                     value={format}
-                    onChange={(e) => setFormat(e.target.value as OutputFormat)}
+                    onValueChange={(value) => setFormat(value as OutputFormat)}
                     disabled={isLoading}
-                    aria-describedby="format-help"
                   >
-                    {FORMAT_OPTIONS.map((opt) => (
-                      <option key={opt.value} value={opt.value}>
-                        {opt.label}
-                      </option>
-                    ))}
-                  </select>
+                    <SelectTrigger id="format" aria-describedby="format-help">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {FORMAT_OPTIONS.map((opt) => (
+                        <SelectItem key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <span id="format-help" className="option-help">
                     WebPは高い圧縮率、JPEGは広い互換性
                   </span>

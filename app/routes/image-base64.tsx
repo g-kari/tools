@@ -1,6 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef, useCallback } from "react";
 import { useToast } from "../components/Toast";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 export const Route = createFileRoute("/image-base64")({
   head: () => ({
@@ -344,24 +347,21 @@ function ImageBase64Converter() {
 
             <div className="converter-section">
               <h2 className="section-title">出力形式</h2>
-              <div className="format-options">
-                {FORMAT_OPTIONS.map((option) => (
-                  <label key={option.value} className="radio-option">
-                    <input
-                      type="radio"
-                      name="outputFormat"
-                      value={option.value}
-                      checked={outputFormat === option.value}
-                      onChange={(e) => setOutputFormat(e.target.value as OutputFormat)}
-                      disabled={isLoading}
-                    />
-                    <div className="radio-content">
-                      <span className="radio-label">{option.label}</span>
-                      <span className="radio-description">{option.description}</span>
+              <RadioGroup value={outputFormat} onValueChange={(value) => setOutputFormat(value as OutputFormat)} disabled={isLoading}>
+                <div className="format-options">
+                  {FORMAT_OPTIONS.map((option) => (
+                    <div key={option.value} className="flex items-center gap-2">
+                      <RadioGroupItem value={option.value} id={`format-${option.value}`} />
+                      <Label htmlFor={`format-${option.value}`} className="cursor-pointer">
+                        <div className="radio-content">
+                          <span className="radio-label">{option.label}</span>
+                          <span className="radio-description">{option.description}</span>
+                        </div>
+                      </Label>
                     </div>
-                  </label>
-                ))}
-              </div>
+                  ))}
+                </div>
+              </RadioGroup>
             </div>
 
             <div className="converter-section">
@@ -382,7 +382,7 @@ function ImageBase64Converter() {
                 </div>
               </div>
 
-              <textarea
+              <Textarea
                 ref={textareaRef}
                 className="base64-output"
                 value={outputText}

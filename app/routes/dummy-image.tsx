@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef, useCallback, useEffect } from "react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export const Route = createFileRoute("/dummy-image")({
   head: () => ({
@@ -296,18 +297,21 @@ function DummyImageGenerator() {
 
               <div className="option-group">
                 <label htmlFor="format">形式:</label>
-                <select
-                  id="format"
+                <Select
                   value={format}
-                  onChange={(e) => setFormat(e.target.value as ImageFormat)}
-                  aria-describedby="format-help"
+                  onValueChange={(value) => setFormat(value as ImageFormat)}
                 >
-                  {FORMAT_OPTIONS.map((opt) => (
-                    <option key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </option>
-                  ))}
-                </select>
+                  <SelectTrigger id="format" aria-describedby="format-help">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {FORMAT_OPTIONS.map((opt) => (
+                      <SelectItem key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <span id="format-help" className="sr-only">
                   ダウンロードする画像の形式を選択します
                 </span>
