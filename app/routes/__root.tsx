@@ -6,13 +6,20 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { type ReactNode, useState, useRef, useCallback, useEffect } from "react";
+import {
+  type ReactNode,
+  useState,
+  useRef,
+  useCallback,
+  useEffect,
+  useMemo,
+} from "react";
 import { CacheProvider } from "@emotion/react";
 import { ThemeProvider } from "@mui/material/styles";
-import createCache from "@emotion/cache";
 import appCss from "../styles.css?url";
 import { ToastProvider } from "../components/Toast";
 import { theme } from "../theme";
+import createEmotionCache from "../utils/createEmotionCache";
 
 const navCategories = [
   {
@@ -288,11 +295,12 @@ function NavCategory({
 
 /**
  * MUI/Emotionプロバイダーコンポーネント
- * 公式サンプルに従い、Emotionキャッシュを毎回作成してSSR/CSR間の一貫性を確保
+ * createEmotionCacheユーティリティを使用し、prepend: trueで既存CSSとの互換性を確保
+ * useMemoでキャッシュをメモ化し、不要な再作成を防止
  * @see https://github.com/tanstack/router/tree/main/examples/react/start-material-ui
  */
 function Providers({ children }: { children: ReactNode }) {
-  const emotionCache = createCache({ key: "css" });
+  const emotionCache = useMemo(() => createEmotionCache(), []);
 
   return (
     <CacheProvider value={emotionCache}>
