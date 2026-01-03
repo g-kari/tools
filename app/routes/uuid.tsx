@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { InfoBox } from "@/components/InfoBox";
 
 export const Route = createFileRoute("/uuid")({
   head: () => ({
@@ -262,28 +263,28 @@ function UuidGenerator() {
           )}
         </form>
 
-        <aside
-          className="info-box"
-          role="complementary"
-          aria-labelledby="usage-title"
-        >
-          <h3 id="usage-title">UUIDとは</h3>
-          <ul>
-            <li>
-              UUID（Universally Unique Identifier）は128ビットの一意識別子です
-            </li>
-            <li>このツールはUUID v4（ランダム生成）を使用しています</li>
-            <li>形式: xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx</li>
-            <li>衝突確率は実用上ほぼゼロです</li>
-          </ul>
-          <h3 id="about-tool-title">使い方</h3>
-          <ul>
-            <li>「UUID生成」ボタンで新しいUUIDを生成します</li>
-            <li>生成数を変更して複数のUUIDを一度に生成できます</li>
-            <li>大文字表示やハイフンなしの形式も選択可能です</li>
-            <li>各UUIDの「コピー」ボタンでクリップボードにコピーできます</li>
-          </ul>
-        </aside>
+        <InfoBox
+          sections={[
+            {
+              title: "UUIDとは",
+              items: [
+                "UUID（Universally Unique Identifier）は128ビットの一意識別子です",
+                "このツールはUUID v4（ランダム生成）を使用しています",
+                "形式: xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx",
+                "衝突確率は実用上ほぼゼロです",
+              ],
+            },
+            {
+              title: "使い方",
+              items: [
+                "「UUID生成」ボタンで新しいUUIDを生成します",
+                "生成数を変更して複数のUUIDを一度に生成できます",
+                "大文字表示やハイフンなしの形式も選択可能です",
+                "各UUIDの「コピー」ボタンでクリップボードにコピーできます",
+              ],
+            },
+          ]}
+        />
       </div>
 
       <div
