@@ -2,6 +2,14 @@ import * as React from "react";
 
 import { cn } from "~/lib/utils";
 
+/**
+ * A styled input component with consistent styling across the application.
+ * Supports all native input types and attributes.
+ *
+ * @example
+ * <Input type="text" placeholder="Enter text..." />
+ * <Input type="email" disabled />
+ */
 const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
   ({ className, type, ...props }, ref) => {
     return (

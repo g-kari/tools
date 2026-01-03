@@ -1,15 +1,24 @@
+/**
+ * Select component module.
+ * Provides a customizable select/dropdown component built on Radix UI.
+ * @module components/ui/select
+ */
 import * as React from "react"
 import * as SelectPrimitive from "@radix-ui/react-select"
 import { Check, ChevronDown, ChevronUp } from "lucide-react"
 
 import { cn } from "~/lib/utils"
 
+/** Root select component that manages state. */
 const Select = SelectPrimitive.Root
 
+/** Group container for select items. */
 const SelectGroup = SelectPrimitive.Group
 
+/** Displays the selected value. */
 const SelectValue = SelectPrimitive.Value
 
+/** Trigger button that opens the select dropdown. */
 const SelectTrigger = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>

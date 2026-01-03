@@ -2,6 +2,13 @@ import * as React from "react";
 
 import { cn } from "~/lib/utils";
 
+/**
+ * A styled textarea component for multi-line text input.
+ * Supports all native textarea attributes.
+ *
+ * @example
+ * <Textarea placeholder="Enter your message..." rows={5} />
+ */
 const Textarea = React.forwardRef<
   HTMLTextAreaElement,
   React.ComponentProps<"textarea">
