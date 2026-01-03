@@ -1,5 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef, useCallback, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const Route = createFileRoute("/uuid")({
   head: () => ({
@@ -157,99 +161,114 @@ function UuidGenerator() {
           }}
           aria-label="UUID生成フォーム"
         >
-          <div className="converter-section">
-            <h2 className="section-title">UUID生成設定</h2>
+          <Card className="mb-6">
+            <CardHeader>
+              <CardTitle>UUID生成設定</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex flex-wrap gap-6 items-center">
+                <div className="flex items-center gap-2">
+                  <Label htmlFor="count">生成数:</Label>
+                  <Input
+                    type="number"
+                    id="count"
+                    min="1"
+                    max="100"
+                    value={count}
+                    onChange={(e) =>
+                      setCount(
+                        Math.max(1, Math.min(100, parseInt(e.target.value) || 1))
+                      )
+                    }
+                    aria-describedby="count-help"
+                    className="w-20"
+                  />
+                  <span id="count-help" className="sr-only">
+                    1から100の間で生成するUUIDの数を指定できます
+                  </span>
+                </div>
 
-            <div className="uuid-options">
-              <div className="option-group">
-                <label htmlFor="count">生成数:</label>
-                <input
-                  type="number"
-                  id="count"
-                  min="1"
-                  max="100"
-                  value={count}
-                  onChange={(e) =>
-                    setCount(
-                      Math.max(1, Math.min(100, parseInt(e.target.value) || 1))
-                    )
-                  }
-                  aria-describedby="count-help"
-                />
-                <span id="count-help" className="sr-only">
-                  1から100の間で生成するUUIDの数を指定できます
-                </span>
-              </div>
-
-              <div className="option-group checkbox-group">
-                <label>
+                <div className="flex items-center gap-2">
                   <input
                     type="checkbox"
+                    id="uppercase"
                     checked={uppercase}
                     onChange={(e) => setUppercase(e.target.checked)}
+                    className="w-4 h-4 accent-primary"
                   />
-                  大文字で表示
-                </label>
-              </div>
+                  <Label htmlFor="uppercase" className="cursor-pointer">
+                    大文字で表示
+                  </Label>
+                </div>
 
-              <div className="option-group checkbox-group">
-                <label>
+                <div className="flex items-center gap-2">
                   <input
                     type="checkbox"
+                    id="noHyphens"
                     checked={noHyphens}
                     onChange={(e) => setNoHyphens(e.target.checked)}
+                    className="w-4 h-4 accent-primary"
                   />
-                  ハイフンなし
-                </label>
+                  <Label htmlFor="noHyphens" className="cursor-pointer">
+                    ハイフンなし
+                  </Label>
+                </div>
               </div>
-            </div>
 
-            <div className="button-group" role="group" aria-label="UUID操作">
-              <button type="submit" className="btn-primary">
-                UUID生成
-              </button>
-              <button
-                type="button"
-                className="btn-clear"
-                onClick={handleClear}
-                disabled={uuids.length === 0}
-              >
-                クリア
-              </button>
-            </div>
-          </div>
+              <div className="flex gap-3" role="group" aria-label="UUID操作">
+                <Button type="submit">UUID生成</Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handleClear}
+                  disabled={uuids.length === 0}
+                >
+                  クリア
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
 
           {uuids.length > 0 && (
-            <div className="converter-section">
-              <div className="uuid-result-header">
-                <h2 className="section-title">生成結果</h2>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+                <CardTitle>生成結果</CardTitle>
                 {uuids.length > 1 && (
-                  <button
+                  <Button
                     type="button"
-                    className="btn-secondary btn-small"
+                    variant="secondary"
+                    size="sm"
                     onClick={handleCopyAll}
                   >
                     {copiedAll ? "コピーしました" : "すべてコピー"}
-                  </button>
+                  </Button>
                 )}
-              </div>
-
-              <div className="uuid-list" role="list" aria-live="polite">
-                {uuids.map((uuid, index) => (
-                  <div key={index} className="uuid-item" role="listitem">
-                    <code className="uuid-value">{formatUUID(uuid)}</code>
-                    <button
-                      type="button"
-                      className="btn-copy"
-                      onClick={() => handleCopy(index)}
-                      aria-label={`UUID ${index + 1}をコピー`}
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3" role="list" aria-live="polite">
+                  {uuids.map((uuid, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between gap-4 p-3 bg-muted rounded-lg"
+                      role="listitem"
                     >
-                      {copied === index ? "済" : "コピー"}
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
+                      <code className="font-mono text-sm flex-1 break-all select-all">
+                        {formatUUID(uuid)}
+                      </code>
+                      <Button
+                        type="button"
+                        variant="secondary"
+                        size="sm"
+                        onClick={() => handleCopy(index)}
+                        aria-label={`UUID ${index + 1}をコピー`}
+                      >
+                        {copied === index ? "済" : "コピー"}
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
           )}
         </form>
 
@@ -284,129 +303,6 @@ function UuidGenerator() {
         aria-atomic="true"
         className="sr-only"
       />
-
-      <style>{`
-        .uuid-options {
-          display: flex;
-          gap: 1.5rem;
-          flex-wrap: wrap;
-          align-items: center;
-          margin-bottom: 1.5rem;
-        }
-
-        .option-group {
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-        }
-
-        .option-group label {
-          font-weight: 500;
-          color: var(--md-sys-color-on-surface);
-        }
-
-        .option-group input[type="number"] {
-          width: 80px;
-          padding: 0.5rem;
-          border: 1px solid var(--md-sys-color-outline);
-          border-radius: 8px;
-          font-size: 1rem;
-          background-color: var(--md-sys-color-surface);
-          color: var(--md-sys-color-on-surface);
-        }
-
-        .checkbox-group label {
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          cursor: pointer;
-        }
-
-        .checkbox-group input[type="checkbox"] {
-          width: 18px;
-          height: 18px;
-          accent-color: var(--md-sys-color-primary);
-        }
-
-        .uuid-result-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 1rem;
-        }
-
-        .uuid-result-header .section-title {
-          margin-bottom: 0;
-        }
-
-        .btn-small {
-          padding: 0.5rem 1rem;
-          font-size: 0.875rem;
-        }
-
-        .uuid-list {
-          display: flex;
-          flex-direction: column;
-          gap: 0.75rem;
-        }
-
-        .uuid-item {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          gap: 1rem;
-          padding: 0.75rem 1rem;
-          background-color: var(--md-sys-color-surface-variant);
-          border-radius: 8px;
-        }
-
-        .uuid-value {
-          font-family: 'Roboto Mono', monospace;
-          font-size: 1rem;
-          color: var(--md-sys-color-on-surface);
-          user-select: all;
-          word-break: break-all;
-          flex: 1;
-        }
-
-        .btn-copy {
-          padding: 0.375rem 0.75rem;
-          font-size: 0.875rem;
-          background-color: var(--md-sys-color-secondary-container);
-          color: var(--md-sys-color-on-secondary-container);
-          border: none;
-          border-radius: 6px;
-          cursor: pointer;
-          transition: background-color 0.2s;
-          white-space: nowrap;
-        }
-
-        .btn-copy:hover {
-          background-color: var(--md-sys-color-secondary);
-          color: var(--md-sys-color-on-secondary);
-        }
-
-        @media (max-width: 480px) {
-          .uuid-options {
-            flex-direction: column;
-            align-items: flex-start;
-          }
-
-          .uuid-item {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 0.5rem;
-          }
-
-          .uuid-value {
-            font-size: 0.875rem;
-          }
-
-          .btn-copy {
-            align-self: flex-end;
-          }
-        }
-      `}</style>
     </>
   );
 }
