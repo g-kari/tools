@@ -4495,3 +4495,18 @@ a:focus-visible {
     @apply bg-background text-foreground;
   }
 }
+
+/* shadcn/ui Checkbox - Enhanced visibility */
+[data-slot="checkbox"] {
+  border: 2px solid var(--md-sys-color-primary) !important;
+  background-color: var(--md-sys-color-surface) !important;
+}
+
+[data-slot="checkbox"][data-state="checked"] {
+  background-color: var(--md-sys-color-primary) !important;
+  border-color: var(--md-sys-color-primary) !important;
+}
+
+[data-slot="checkbox"][data-state="unchecked"] {
+  background-color: var(--md-sys-color-surface) !important;
+}
