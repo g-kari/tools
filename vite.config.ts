@@ -2,7 +2,8 @@ import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import { cloudflare } from "@cloudflare/vite-plugin";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
-import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
+import path from "path";
 
 export default defineConfig({
   plugins: [
@@ -15,10 +16,12 @@ export default defineConfig({
       viteEnvironment: { name: "ssr" },
     }),
     tsconfigPaths(),
-    react(),
+    tailwindcss(),
   ],
-  ssr: {
-    noExternal: ["@mui/*", "@emotion/*"],
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./app"),
+    },
   },
   server: {
     watch: {
