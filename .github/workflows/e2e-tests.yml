@@ -123,8 +123,7 @@ jobs:
         env:
           CI: true
 
-      - name: Install Playwright Browsers (GitHub-hosted only)
-        if: needs.build.outputs.is_internal != 'true'
+      - name: Install Playwright Browsers
         run: npx playwright install --with-deps chromium
 
       - name: Run E2E test
