@@ -16,15 +16,7 @@ export default defineConfig({
     tsconfigPaths(),
   ],
   ssr: {
-    noExternal: [
-      "@mui/material",
-      "@mui/icons-material",
-      "@mui/system",
-      "@mui/utils",
-      "@emotion/react",
-      "@emotion/styled",
-      "@emotion/cache",
-    ],
+    noExternal: ["@mui/*", "@emotion/*"],
   },
   server: {
     watch: {

@@ -7,8 +7,12 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { type ReactNode, useState, useRef, useCallback, useEffect } from "react";
+import { CacheProvider } from "@emotion/react";
+import { ThemeProvider } from "@mui/material/styles";
+import createCache from "@emotion/cache";
 import appCss from "../styles.css?url";
 import { ToastProvider } from "../components/Toast";
+import { theme } from "../theme";
 
 const navCategories = [
   {
@@ -282,6 +286,21 @@ function NavCategory({
   );
 }
 
+/**
+ * MUI/Emotionプロバイダーコンポーネント
+ * 公式サンプルに従い、Emotionキャッシュを毎回作成してSSR/CSR間の一貫性を確保
+ * @see https://github.com/tanstack/router/tree/main/examples/react/start-material-ui
+ */
+function Providers({ children }: { children: ReactNode }) {
+  const emotionCache = createCache({ key: "css" });
+
+  return (
+    <CacheProvider value={emotionCache}>
+      <ThemeProvider theme={theme}>{children}</ThemeProvider>
+    </CacheProvider>
+  );
+}
+
 function RootDocument({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
@@ -291,39 +310,41 @@ function RootDocument({ children }: { children: ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        <ToastProvider>
-          <a href="#main-content" className="skip-link">
-            メインコンテンツへスキップ
-          </a>
+        <Providers>
+          <ToastProvider>
+            <a href="#main-content" className="skip-link">
+              メインコンテンツへスキップ
+            </a>
 
-          <div className="container">
-            <header role="banner">
-              <h1>Web ツール集</h1>
-              <p className="subtitle">便利なWebツールを提供します</p>
-              <nav className="nav-categories" aria-label="ツールナビゲーション">
-                {navCategories.map((category) => (
-                  <NavCategory
-                    key={category.name}
-                    category={category}
-                    pathname={pathname}
-                  />
-                ))}
-              </nav>
-            </header>
+            <div className="container">
+              <header role="banner">
+                <h1>Web ツール集</h1>
+                <p className="subtitle">便利なWebツールを提供します</p>
+                <nav className="nav-categories" aria-label="ツールナビゲーション">
+                  {navCategories.map((category) => (
+                    <NavCategory
+                      key={category.name}
+                      category={category}
+                      pathname={pathname}
+                    />
+                  ))}
+                </nav>
+              </header>
 
-            <main id="main-content" role="main">
-              {children}
-            </main>
-          </div>
+              <main id="main-content" role="main">
+                {children}
+              </main>
+            </div>
 
-          <div
-            role="status"
-            aria-live="polite"
-            aria-atomic="true"
-            className="sr-only"
-            id="status-message"
-          />
-        </ToastProvider>
+            <div
+              role="status"
+              aria-live="polite"
+              aria-atomic="true"
+              className="sr-only"
+              id="status-message"
+            />
+          </ToastProvider>
+        </Providers>
 
         <Scripts />
       </body>
