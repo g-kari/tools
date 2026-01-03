@@ -215,6 +215,7 @@ function UuidGenerator() {
               <Button
                 type="button"
                 variant="outline"
+                className="btn-clear"
                 onClick={handleClear}
                 disabled={uuids.length === 0}
               >

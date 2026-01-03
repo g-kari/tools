@@ -474,6 +474,7 @@ function AudioConverter() {
             <Button
               type="button"
               variant="outline"
+              className="btn-clear"
               onClick={handleClear}
               disabled={isConverting}
               aria-label="入力をクリア"

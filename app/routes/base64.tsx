@@ -142,6 +142,7 @@ function Base64Converter() {
             <Button
               type="button"
               variant="outline"
+              className="btn-clear"
               onClick={handleClear}
               aria-label="入力と出力をクリア"
             >

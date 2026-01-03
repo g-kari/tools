@@ -204,6 +204,7 @@ function PasswordGenerator() {
             <Button
               type="button"
               variant="outline"
+              className="btn-clear"
               onClick={handleClear}
               aria-label="パスワードをクリア"
             >

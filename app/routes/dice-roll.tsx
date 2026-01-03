@@ -302,7 +302,7 @@ function DiceRoll() {
                 <Button
                   type="button"
                   variant="outline"
-                  className="btn-small"
+                  className="btn-small btn-clear"
                   onClick={handleClearHistory}
                 >
                   履歴をクリア

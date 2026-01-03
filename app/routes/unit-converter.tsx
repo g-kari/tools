@@ -266,7 +266,7 @@ function UnitConverter() {
                 </button>
                 <button
                   type="button"
-                  className="unit-btn unit-btn-secondary"
+                  className="unit-btn unit-btn-secondary btn-clear"
                   onClick={handleClear}
                   aria-label="入力をクリア"
                 >

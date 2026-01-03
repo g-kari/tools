@@ -405,6 +405,7 @@ function ImageBase64Converter() {
                 <Button
                   type="button"
                   variant="secondary"
+                  className="btn-clear"
                   onClick={handleClear}
                   disabled={isLoading}
                 >

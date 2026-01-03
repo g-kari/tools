@@ -306,6 +306,7 @@ function MinifyTool() {
             <Button
               onClick={handleClear}
               variant="secondary"
+              className="btn-clear"
               aria-label="すべてクリア"
             >
               クリア

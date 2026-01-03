@@ -527,6 +527,7 @@ function VideoConverter() {
             <Button
               type="button"
               variant="secondary"
+              className="btn-clear"
               onClick={handleClear}
               disabled={isConverting}
             >

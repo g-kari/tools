@@ -105,6 +105,7 @@ function CharCountPage() {
             <Button
               type="button"
               variant="outline"
+              className="btn-clear"
               onClick={handleClear}
               disabled={text.length === 0}
             >

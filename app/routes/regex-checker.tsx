@@ -200,6 +200,7 @@ function RegexChecker() {
             <Button
               type="button"
               variant="outline"
+              className="btn-clear"
               onClick={handleClear}
               aria-label="すべての入力をクリア"
             >
