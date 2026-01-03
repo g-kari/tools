@@ -1,62 +1,56 @@
-import { type ReactNode, useState, useEffect, lazy, Suspense } from "react";
+"use client";
+
+import { type ReactNode, useState, useEffect } from "react";
+import { CacheProvider } from "@emotion/react";
+import { ThemeProvider } from "@mui/material/styles";
+import createEmotionCache from "../utils/createEmotionCache";
+import { theme } from "../theme";
 
 interface MuiProviderProps {
   children: ReactNode;
 }
 
 /**
- * MUIテーマプロバイダー（クライアント専用）
- * クライアントサイドでのみThemeProviderをレンダリングする
- */
-const ClientMuiProvider = lazy(async () => {
-  const [{ CacheProvider }, { ThemeProvider }, createEmotionCache, { theme }] =
-    await Promise.all([
-      import("@emotion/react"),
-      import("@mui/material/styles"),
-      import("../utils/createEmotionCache").then((m) => m.default),
-      import("../theme"),
-    ]);
-
-  const cache = createEmotionCache();
-
-  return {
-    default: function InnerMuiProvider({ children }: MuiProviderProps) {
-      return (
-        <CacheProvider value={cache}>
-          <ThemeProvider theme={theme}>{children}</ThemeProvider>
-        </CacheProvider>
-      );
-    },
-  };
-});
-
-/**
  * MUI Provider コンポーネント
  *
- * SSR環境（Cloudflare Workers Edge Runtime）ではMUI/Emotionをロードせず、
- * クライアントサイドでのみ動的インポートしてCacheProvider + ThemeProviderを有効化する。
- * これによりEdge RuntimeでのNode.js API依存問題を回避する。
+ * SSR/CSR両方で同じReactツリー構造を維持しつつ、
+ * クライアントサイドでのみEmotionキャッシュを有効化する。
+ *
+ * SSR時: CacheProvider + ThemeProviderをレンダリングするが、
+ *        Emotionキャッシュは空の状態（スタイル生成なし）
+ * CSR時: ハイドレーション後にEmotionキャッシュが有効化され、
+ *        MUIコンポーネントのスタイルが適用される
  *
  * @param props - プロバイダーのプロパティ
  * @param props.children - ラップする子要素
- * @returns MUIテーマとEmotionキャッシュを提供するプロバイダー（CSR時のみ）
+ * @returns MUIテーマとEmotionキャッシュを提供するプロバイダー
  */
 export function MuiProvider({ children }: MuiProviderProps) {
-  const [isClient, setIsClient] = useState(false);
+  // SSR時はnull、CSR時にキャッシュを作成
+  const [emotionCache, setEmotionCache] = useState(() => {
+    // SSR環境かどうかをチェック
+    if (typeof window === "undefined") {
+      return null;
+    }
+    return createEmotionCache();
+  });
 
   useEffect(() => {
-    setIsClient(true);
-  }, []);
+    // CSRでキャッシュがまだない場合は作成
+    if (!emotionCache) {
+      setEmotionCache(createEmotionCache());
+    }
+  }, [emotionCache]);
 
-  // SSR時は子要素をそのまま返す（MUI/Emotionをロードしない）
-  if (!isClient) {
-    return <>{children}</>;
+  // SSR時はThemeProviderのみ（Emotionなし）
+  if (!emotionCache) {
+    return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
   }
 
-  // CSR時は動的にMUIプロバイダーをロード
+  // CSR時はCacheProvider + ThemeProvider
   return (
-    <Suspense fallback={<>{children}</>}>
-      <ClientMuiProvider>{children}</ClientMuiProvider>
-    </Suspense>
+    <CacheProvider value={emotionCache}>
+      <ThemeProvider theme={theme}>{children}</ThemeProvider>
+    </CacheProvider>
   );
 }
