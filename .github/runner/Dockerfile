@@ -61,6 +61,11 @@ RUN useradd -m -s /bin/bash runner \
 # Set up runner directory
 WORKDIR /home/runner
 
+# Create work directory with proper permissions
+RUN mkdir -p /home/runner/_work/_tool \
+    && mkdir -p /home/runner/_work/_temp \
+    && mkdir -p /home/runner/_work/_actions
+
 # Download and install GitHub Actions runner
 RUN curl -o actions-runner-linux-${RUNNER_ARCH}-${RUNNER_VERSION}.tar.gz -L \
     https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-${RUNNER_ARCH}-${RUNNER_VERSION}.tar.gz \
@@ -72,7 +77,7 @@ RUN curl -o actions-runner-linux-${RUNNER_ARCH}-${RUNNER_VERSION}.tar.gz -L \
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-# Change ownership to runner user
+# Change ownership to runner user (including work directories)
 RUN chown -R runner:runner /home/runner
 
 # Switch to runner user

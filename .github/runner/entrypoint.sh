@@ -5,8 +5,9 @@ set -e
 : "${GITHUB_REPOSITORY:?GITHUB_REPOSITORY is required}"
 : "${GITHUB_TOKEN:?GITHUB_TOKEN is required}"
 
-# Optional environment variables with defaults
-RUNNER_NAME="${RUNNER_NAME:-$(hostname)}"
+# Generate unique runner name with random suffix
+RANDOM_ID=$(cat /proc/sys/kernel/random/uuid | cut -d'-' -f1)
+RUNNER_NAME="${RUNNER_NAME:-tools-runner}-${RANDOM_ID}"
 RUNNER_LABELS="${RUNNER_LABELS:-self-hosted,Linux,X64,playwright}"
 RUNNER_GROUP="${RUNNER_GROUP:-Default}"
 RUNNER_WORK_DIR="${RUNNER_WORK_DIR:-_work}"
@@ -34,21 +35,22 @@ fi
 
 echo "Registration token obtained successfully."
 
-# Check if runner is already configured
-if [ ! -f ".runner" ]; then
-    echo "Configuring runner..."
-    ./config.sh \
-        --url "https://github.com/${GITHUB_REPOSITORY}" \
-        --token "${REGISTRATION_TOKEN}" \
-        --name "${RUNNER_NAME}" \
-        --labels "${RUNNER_LABELS}" \
-        --runnergroup "${RUNNER_GROUP}" \
-        --work "${RUNNER_WORK_DIR}" \
-        --unattended \
-        --replace
-else
-    echo "Runner already configured, skipping configuration."
+# Always configure runner (remove old config if exists)
+if [ -f ".runner" ]; then
+    echo "Removing old runner configuration..."
+    rm -f .runner .credentials .credentials_rsaparams
 fi
+
+echo "Configuring runner..."
+./config.sh \
+    --url "https://github.com/${GITHUB_REPOSITORY}" \
+    --token "${REGISTRATION_TOKEN}" \
+    --name "${RUNNER_NAME}" \
+    --labels "${RUNNER_LABELS}" \
+    --runnergroup "${RUNNER_GROUP}" \
+    --work "${RUNNER_WORK_DIR}" \
+    --unattended \
+    --replace
 
 # Cleanup function for graceful shutdown
 cleanup() {

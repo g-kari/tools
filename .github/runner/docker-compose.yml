@@ -24,9 +24,8 @@ services:
       - RUNNER_LABELS=${RUNNER_LABELS:-self-hosted,Linux,X64,playwright,e2e}
       - RUNNER_GROUP=${RUNNER_GROUP:-Default}
       - RUNNER_WORK_DIR=${RUNNER_WORK_DIR:-_work}
-    volumes:
-      # Persist runner work directory for caching
-      - runner-work:/home/runner/_work
+    # Note: Removed volume mount to avoid permission issues
+    # Each run gets a fresh workspace
     restart: unless-stopped
     # Security settings
     security_opt:
@@ -43,6 +42,3 @@ services:
           cpus: '1'
           memory: 2G
 
-volumes:
-  runner-work:
-    name: github-runner-work
