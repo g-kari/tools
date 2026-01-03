@@ -12,14 +12,11 @@ import {
   useRef,
   useCallback,
   useEffect,
-  useMemo,
 } from "react";
-import { CacheProvider } from "@emotion/react";
-import { ThemeProvider } from "@mui/material/styles";
 import appCss from "../styles.css?url";
 import { ToastProvider } from "../components/Toast";
-import { theme } from "../theme";
-import createEmotionCache from "../utils/createEmotionCache";
+import { ClientOnly } from "../components/ClientOnly";
+import { MuiProvider } from "../components/MuiProvider";
 
 const navCategories = [
   {
@@ -293,21 +290,6 @@ function NavCategory({
   );
 }
 
-/**
- * MUI/Emotionプロバイダーコンポーネント
- * createEmotionCacheユーティリティを使用し、prepend: trueで既存CSSとの互換性を確保
- * useMemoでキャッシュをメモ化し、不要な再作成を防止
- * @see https://github.com/tanstack/router/tree/main/examples/react/start-material-ui
- */
-function Providers({ children }: { children: ReactNode }) {
-  const emotionCache = useMemo(() => createEmotionCache(), []);
-
-  return (
-    <CacheProvider value={emotionCache}>
-      <ThemeProvider theme={theme}>{children}</ThemeProvider>
-    </CacheProvider>
-  );
-}
 
 function RootDocument({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
@@ -318,41 +300,43 @@ function RootDocument({ children }: { children: ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        <Providers>
-          <ToastProvider>
-            <a href="#main-content" className="skip-link">
-              メインコンテンツへスキップ
-            </a>
+        <ClientOnly>
+          <MuiProvider>
+            <ToastProvider>
+              <a href="#main-content" className="skip-link">
+                メインコンテンツへスキップ
+              </a>
 
-            <div className="container">
-              <header role="banner">
-                <h1>Web ツール集</h1>
-                <p className="subtitle">便利なWebツールを提供します</p>
-                <nav className="nav-categories" aria-label="ツールナビゲーション">
-                  {navCategories.map((category) => (
-                    <NavCategory
-                      key={category.name}
-                      category={category}
-                      pathname={pathname}
-                    />
-                  ))}
-                </nav>
-              </header>
+              <div className="container">
+                <header role="banner">
+                  <h1>Web ツール集</h1>
+                  <p className="subtitle">便利なWebツールを提供します</p>
+                  <nav className="nav-categories" aria-label="ツールナビゲーション">
+                    {navCategories.map((category) => (
+                      <NavCategory
+                        key={category.name}
+                        category={category}
+                        pathname={pathname}
+                      />
+                    ))}
+                  </nav>
+                </header>
 
-              <main id="main-content" role="main">
-                {children}
-              </main>
-            </div>
+                <main id="main-content" role="main">
+                  {children}
+                </main>
+              </div>
 
-            <div
-              role="status"
-              aria-live="polite"
-              aria-atomic="true"
-              className="sr-only"
-              id="status-message"
-            />
-          </ToastProvider>
-        </Providers>
+              <div
+                role="status"
+                aria-live="polite"
+                aria-atomic="true"
+                className="sr-only"
+                id="status-message"
+              />
+            </ToastProvider>
+          </MuiProvider>
+        </ClientOnly>
 
         <Scripts />
       </body>
