@@ -404,8 +404,8 @@ test.describe('Emoji Converter - E2E Tests', () => {
       // プレビューが表示されることを確認
       await expect(page.locator('h2.section-title:has-text("プレビュー")')).toBeVisible({ timeout: 10000 });
 
-      // リセットボタンをクリック
-      const resetButton = page.locator('button:has-text("リセット")');
+      // リセットボタンをクリック（button-group内のリセットボタン）
+      const resetButton = page.locator('.button-group button:has-text("リセット")');
       await resetButton.click();
 
       // プレビューが非表示になる
@@ -414,9 +414,149 @@ test.describe('Emoji Converter - E2E Tests', () => {
       // 編集オプションが非表示になる
       await expect(page.locator('h2.section-title:has-text("編集オプション")')).not.toBeVisible();
     });
+
+    test('should have reset all button in edit options section', async ({ page }) => {
+      // 画像をアップロード
+      const imageDataUrl = await page.evaluate(() => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 128;
+        canvas.height = 128;
+        const ctx = canvas.getContext('2d')!;
+        ctx.fillStyle = '#FF0000';
+        ctx.fillRect(0, 0, 128, 128);
+        return canvas.toDataURL('image/png');
+      });
+
+      const buffer = Buffer.from(imageDataUrl.split(',')[1], 'base64');
+      const fileInput = page.locator('input[type="file"]');
+      await fileInput.setInputFiles({
+        name: 'test.png',
+        mimeType: 'image/png',
+        buffer: buffer,
+      });
+
+      // プレビューが表示されることを確認
+      await expect(page.locator('h2.section-title:has-text("プレビュー")')).toBeVisible({ timeout: 10000 });
+
+      // 全てリセットボタンが存在することを確認
+      const resetAllButton = page.locator('.reset-all-button');
+      await expect(resetAllButton).toBeVisible();
+      await expect(resetAllButton).toHaveText('全てリセット');
+    });
+
+    test('should have reset buttons in each edit section', async ({ page }) => {
+      // 画像をアップロード
+      const imageDataUrl = await page.evaluate(() => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 128;
+        canvas.height = 128;
+        const ctx = canvas.getContext('2d')!;
+        ctx.fillStyle = '#FF0000';
+        ctx.fillRect(0, 0, 128, 128);
+        return canvas.toDataURL('image/png');
+      });
+
+      const buffer = Buffer.from(imageDataUrl.split(',')[1], 'base64');
+      const fileInput = page.locator('input[type="file"]');
+      await fileInput.setInputFiles({
+        name: 'test.png',
+        mimeType: 'image/png',
+        buffer: buffer,
+      });
+
+      // プレビューが表示されることを確認
+      await expect(page.locator('h2.section-title:has-text("プレビュー")')).toBeVisible({ timeout: 10000 });
+
+      // 各セクションにリセットボタンが存在することを確認
+      const resetSectionButtons = page.locator('.reset-section-button');
+      await expect(resetSectionButtons).toHaveCount(6);
+    });
+
+    test('should reset filter options when filter reset button is clicked', async ({ page }) => {
+      // 画像をアップロード
+      const imageDataUrl = await page.evaluate(() => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 128;
+        canvas.height = 128;
+        const ctx = canvas.getContext('2d')!;
+        ctx.fillStyle = '#FF0000';
+        ctx.fillRect(0, 0, 128, 128);
+        return canvas.toDataURL('image/png');
+      });
+
+      const buffer = Buffer.from(imageDataUrl.split(',')[1], 'base64');
+      const fileInput = page.locator('input[type="file"]');
+      await fileInput.setInputFiles({
+        name: 'test.png',
+        mimeType: 'image/png',
+        buffer: buffer,
+      });
+
+      // プレビューが表示されることを確認
+      await expect(page.locator('h2.section-title:has-text("プレビュー")')).toBeVisible({ timeout: 10000 });
+
+      // フィルターセクションを開く
+      const filterDetails = page.locator('details:has(summary:has-text("フィルター"))');
+      await filterDetails.locator('summary').click();
+
+      // 明るさスライダーの値を変更
+      const brightnessSlider = page.locator('#brightness');
+      await brightnessSlider.fill('150');
+      await expect(brightnessSlider).toHaveValue('150');
+
+      // フィルターリセットボタンをクリック
+      const filterResetButton = filterDetails.locator('.reset-section-button');
+      await filterResetButton.click();
+
+      // 明るさが100に戻ることを確認
+      await expect(brightnessSlider).toHaveValue('100');
+    });
+
+    test('should reset all edit options when reset all button is clicked', async ({ page }) => {
+      // 画像をアップロード
+      const imageDataUrl = await page.evaluate(() => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 128;
+        canvas.height = 128;
+        const ctx = canvas.getContext('2d')!;
+        ctx.fillStyle = '#FF0000';
+        ctx.fillRect(0, 0, 128, 128);
+        return canvas.toDataURL('image/png');
+      });
+
+      const buffer = Buffer.from(imageDataUrl.split(',')[1], 'base64');
+      const fileInput = page.locator('input[type="file"]');
+      await fileInput.setInputFiles({
+        name: 'test.png',
+        mimeType: 'image/png',
+        buffer: buffer,
+      });
+
+      // プレビューが表示されることを確認
+      await expect(page.locator('h2.section-title:has-text("プレビュー")')).toBeVisible({ timeout: 10000 });
+
+      // フィルターセクションを開いて値を変更
+      const filterDetails = page.locator('details:has(summary:has-text("フィルター"))');
+      await filterDetails.locator('summary').click();
+      const brightnessSlider = page.locator('#brightness');
+      await brightnessSlider.fill('150');
+
+      // 回転セクションを開いて値を変更
+      const transformDetails = page.locator('details:has(summary:has-text("回転・反転"))');
+      await transformDetails.locator('summary').click();
+      const rotationSlider = page.locator('#rotation');
+      await rotationSlider.fill('90');
+
+      // 全てリセットボタンをクリック
+      const resetAllButton = page.locator('.reset-all-button');
+      await resetAllButton.click();
+
+      // 値がデフォルトに戻ることを確認
+      await expect(brightnessSlider).toHaveValue('100');
+      await expect(rotationSlider).toHaveValue('0');
+    });
   });
 
-  test.describe('Accessibility', () => {
     test('should have proper ARIA labels', async ({ page }) => {
       const dropzone = page.locator('.dropzone');
       await expect(dropzone).toHaveAttribute('aria-label', '画像ファイルをアップロード');
