@@ -4,6 +4,9 @@ import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import { TipsCard } from "~/components/TipsCard";
+import { ImageUploadZone } from "~/components/ImageUploadZone";
+import { formatFileSize } from "~/utils/image";
+import { useClipboard } from "~/hooks/useClipboard";
 
 export const Route = createFileRoute("/image-base64")({
   head: () => ({
@@ -48,19 +51,6 @@ const FORMAT_OPTIONS: FormatOption[] = [
     description: "background-image: url(...);",
   },
 ];
-
-/**
- * ファイルサイズを人間が読みやすい形式にフォーマットする
- * @param bytes - バイト数
- * @returns フォーマットされた文字列（例: "1.5 MB"）
- */
-export function formatFileSize(bytes: number): string {
-  if (bytes === 0) return "0 B";
-  const k = 1024;
-  const sizes = ["B", "KB", "MB", "GB"];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
-}
 
 /**
  * 画像ファイルをBase64エンコードする
@@ -126,20 +116,14 @@ function ImageBase64Converter() {
   const [base64Data, setBase64Data] = useState<string>("");
   const [outputFormat, setOutputFormat] = useState<OutputFormat>("dataUrl");
   const [isLoading, setIsLoading] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
   const [imageDimensions, setImageDimensions] = useState<{ width: number; height: number } | null>(null);
 
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { showToast } = useToast();
+  const { copy } = useClipboard();
 
   const handleFileSelect = useCallback(
     async (file: File) => {
-      if (!file.type.startsWith("image/")) {
-        showToast("画像ファイルを選択してください", "error");
-        return;
-      }
-
       setIsLoading(true);
       setSelectedFile(file);
 
@@ -161,7 +145,7 @@ function ImageBase64Converter() {
         setPreview(dataUrl);
 
         showToast("Base64変換が完了しました", "success");
-      } catch (error) {
+      } catch {
         showToast("変換に失敗しました", "error");
         setIsLoading(false);
       }
@@ -169,62 +153,18 @@ function ImageBase64Converter() {
     [showToast]
   );
 
-  const handleInputChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files?.[0];
-      if (file) {
-        handleFileSelect(file);
-      }
-    },
-    [handleFileSelect]
-  );
-
-  const handleDragOver = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(true);
-  }, []);
-
-  const handleDragLeave = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-  }, []);
-
-  const handleDrop = useCallback(
-    (e: React.DragEvent) => {
-      e.preventDefault();
-      setIsDragging(false);
-
-      const file = e.dataTransfer.files[0];
-      if (file) {
-        handleFileSelect(file);
-      }
-    },
-    [handleFileSelect]
-  );
-
   const handleCopy = useCallback(async () => {
     if (!base64Data) return;
 
     const output = formatOutput(base64Data, outputFormat);
+    const success = await copy(output);
 
-    try {
-      await navigator.clipboard.writeText(output);
+    if (success) {
       showToast("クリップボードにコピーしました", "success");
-    } catch (error) {
-      // フォールバック: textareaを選択してコピー
-      if (textareaRef.current) {
-        textareaRef.current.select();
-        const success = document.execCommand("copy");
-        if (success) {
-          showToast("クリップボードにコピーしました", "success");
-        } else {
-          showToast("コピーに失敗しました", "error");
-        }
-      } else {
-        showToast("コピーに失敗しました", "error");
-      }
+    } else {
+      showToast("コピーに失敗しました", "error");
     }
-  }, [base64Data, outputFormat, showToast]);
+  }, [base64Data, outputFormat, copy, showToast]);
 
   const handleClear = useCallback(() => {
     setSelectedFile(null);
@@ -232,10 +172,6 @@ function ImageBase64Converter() {
     setBase64Data("");
     setOutputFormat("dataUrl");
     setImageDimensions(null);
-
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
 
     showToast("クリアしました", "info");
   }, [showToast]);
@@ -250,54 +186,11 @@ function ImageBase64Converter() {
         <div className="converter-section">
           <h2 className="section-title">画像選択</h2>
 
-          <div
-            className={`dropzone ${isDragging ? "dragging" : ""}`}
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
-            onClick={() => fileInputRef.current?.click()}
-            role="button"
-            tabIndex={0}
-            aria-label="画像ファイルをアップロード"
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                fileInputRef.current?.click();
-              }
-            }}
-          >
-            <div className="dropzone-content">
-              <svg
-                className="upload-icon"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                <polyline points="17 8 12 3 7 8" />
-                <line x1="12" y1="3" x2="12" y2="15" />
-              </svg>
-              <p className="dropzone-text">
-                クリックして画像を選択、またはドラッグ&ドロップ
-              </p>
-              <p className="dropzone-hint">PNG, JPEG, WebP, GIF など</p>
-            </div>
-          </div>
-
-          <input
-            ref={fileInputRef}
-            type="file"
-            id="imageFile"
-            accept="image/*"
-            onChange={handleInputChange}
+          <ImageUploadZone
+            onFileSelect={handleFileSelect}
+            onTypeError={() => showToast("画像ファイルを選択してください", "error")}
             disabled={isLoading}
-            className="hidden-file-input"
-            aria-label="画像ファイルを選択"
+            hint="PNG, JPEG, WebP, GIF など"
           />
         </div>
 

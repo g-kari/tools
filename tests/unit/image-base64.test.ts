@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
+import { formatFileSize } from '../../app/utils/image';
 import {
-  formatFileSize,
   extractBase64,
   formatOutput,
   formatNumber,

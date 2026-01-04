@@ -1,8 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
+import { ImageUploadZone } from "~/components/ImageUploadZone";
+import { formatFileSize, downloadBlob } from "~/utils/image";
 
 export const Route = createFileRoute("/image-compress")({
   head: () => ({
@@ -18,19 +20,6 @@ const FORMAT_OPTIONS: { value: OutputFormat; label: string; mimeType: string }[]
   { value: "webp", label: "WebP", mimeType: "image/webp" },
   { value: "png", label: "PNG", mimeType: "image/png" },
 ];
-
-/**
- * ファイルサイズを人間が読みやすい形式にフォーマットする
- * @param bytes - バイト数
- * @returns フォーマットされた文字列（例: "1.5 MB"）
- */
-export function formatFileSize(bytes: number): string {
-  if (bytes === 0) return "0 B";
-  const k = 1024;
-  const sizes = ["B", "KB", "MB", "GB"];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
-}
 
 /**
  * 圧縮率を計算する
@@ -120,9 +109,7 @@ function ImageCompressor() {
   const [quality, setQuality] = useState(80);
   const [format, setFormat] = useState<OutputFormat>("jpeg");
   const [isLoading, setIsLoading] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
 
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const { showToast } = useToast();
 
   // クリーンアップ
@@ -147,11 +134,6 @@ function ImageCompressor() {
 
   const handleFileSelect = useCallback(
     async (file: File) => {
-      if (!file.type.startsWith("image/")) {
-        showToast("画像ファイルを選択してください", "error");
-        return;
-      }
-
       // 既存のプレビューをクリーンアップ
       if (originalPreview) URL.revokeObjectURL(originalPreview);
       if (compressedPreview) URL.revokeObjectURL(compressedPreview);
@@ -178,16 +160,6 @@ function ImageCompressor() {
     [originalPreview, compressedPreview, quality, format, showToast]
   );
 
-  const handleInputChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files?.[0];
-      if (file) {
-        handleFileSelect(file);
-      }
-    },
-    [handleFileSelect]
-  );
-
   const handleCompress = useCallback(async () => {
     if (!originalFile) return;
 
@@ -207,17 +179,8 @@ function ImageCompressor() {
   const handleDownload = useCallback(() => {
     if (!compressedBlob || !originalFile) return;
 
-    const url = URL.createObjectURL(compressedBlob);
     const filename = generateFilename(originalFile.name, format);
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-
+    downloadBlob(compressedBlob, filename);
     showToast("ダウンロードを開始しました", "success");
   }, [compressedBlob, originalFile, format, showToast]);
 
@@ -230,35 +193,8 @@ function ImageCompressor() {
     setCompressedBlob(null);
     setCompressedPreview(null);
 
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
-
     showToast("クリアしました", "info");
   }, [originalPreview, compressedPreview, showToast]);
-
-  const handleDragOver = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(true);
-  }, []);
-
-  const handleDragLeave = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-  }, []);
-
-  const handleDrop = useCallback(
-    (e: React.DragEvent) => {
-      e.preventDefault();
-      setIsDragging(false);
-
-      const file = e.dataTransfer.files[0];
-      if (file) {
-        handleFileSelect(file);
-      }
-    },
-    [handleFileSelect]
-  );
 
   const compressionRatio = originalFile && compressedBlob
     ? calculateCompressionRatio(originalFile.size, compressedBlob.size)
@@ -270,54 +206,10 @@ function ImageCompressor() {
         <div className="converter-section">
           <h2 className="section-title">画像選択</h2>
 
-          <div
-            className={`dropzone ${isDragging ? "dragging" : ""}`}
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
-            onClick={() => fileInputRef.current?.click()}
-            role="button"
-            tabIndex={0}
-            aria-label="画像ファイルをアップロード"
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                fileInputRef.current?.click();
-              }
-            }}
-          >
-            <div className="dropzone-content">
-              <svg
-                className="upload-icon"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                <polyline points="17 8 12 3 7 8" />
-                <line x1="12" y1="3" x2="12" y2="15" />
-              </svg>
-              <p className="dropzone-text">
-                クリックして画像を選択、またはドラッグ&ドロップ
-              </p>
-              <p className="dropzone-hint">PNG, JPEG, WebP など</p>
-            </div>
-          </div>
-
-          <input
-            ref={fileInputRef}
-            type="file"
-            id="imageFile"
-            accept="image/*"
-            onChange={handleInputChange}
+          <ImageUploadZone
+            onFileSelect={handleFileSelect}
+            onTypeError={() => showToast("画像ファイルを選択してください", "error")}
             disabled={isLoading}
-            className="hidden-file-input"
-            aria-label="画像ファイルを選択"
           />
         </div>
 

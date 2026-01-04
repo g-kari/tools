@@ -3,8 +3,8 @@ import {
   formatFileSize,
   calculateAspectRatioSize,
   clampDimension,
-  generateFilename,
-} from '../../app/routes/image-resize';
+} from '../../app/utils/image';
+import { generateFilename } from '../../app/routes/image-resize';
 
 describe('Image Resize', () => {
   describe('formatFileSize', () => {

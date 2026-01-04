@@ -3,6 +3,14 @@ import { useState, useRef, useCallback, useEffect, useMemo } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
+import { ImageUploadZone } from "~/components/ImageUploadZone";
+import {
+  formatFileSize,
+  downloadBlob,
+  clampDimension,
+  MAX_DIMENSION,
+  MIN_DIMENSION,
+} from "~/utils/image";
 
 export const Route = createFileRoute("/image-resize")({
   head: () => ({
@@ -47,16 +55,6 @@ const CROP_ASPECT_RATIOS: AspectRatioPreset[] = [
 ];
 
 /**
- * 最大サイズ制限
- */
-const MAX_DIMENSION = 10000;
-
-/**
- * 最小サイズ制限
- */
-const MIN_DIMENSION = 1;
-
-/**
  * トリミング範囲の型定義
  */
 interface CropArea {
@@ -64,66 +62,6 @@ interface CropArea {
   y: number;
   width: number;
   height: number;
-}
-
-/**
- * ファイルサイズを人間が読みやすい形式にフォーマットする
- * @param bytes - バイト数
- * @returns フォーマットされた文字列（例: "1.5 MB"）
- */
-export function formatFileSize(bytes: number): string {
-  if (bytes === 0) return "0 B";
-  const k = 1024;
-  const sizes = ["B", "KB", "MB", "GB"];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
-}
-
-/**
- * アスペクト比を維持した新しいサイズを計算する
- * @param originalWidth - 元の幅
- * @param originalHeight - 元の高さ
- * @param newWidth - 新しい幅（nullの場合は高さから計算）
- * @param newHeight - 新しい高さ（nullの場合は幅から計算）
- * @returns 計算された幅と高さ
- */
-export function calculateAspectRatioSize(
-  originalWidth: number,
-  originalHeight: number,
-  newWidth: number | null,
-  newHeight: number | null
-): { width: number; height: number } {
-  const aspectRatio = originalWidth / originalHeight;
-
-  if (newWidth !== null && newHeight === null) {
-    return {
-      width: newWidth,
-      height: Math.round(newWidth / aspectRatio),
-    };
-  }
-
-  if (newHeight !== null && newWidth === null) {
-    return {
-      width: Math.round(newHeight * aspectRatio),
-      height: newHeight,
-    };
-  }
-
-  return {
-    width: newWidth ?? originalWidth,
-    height: newHeight ?? originalHeight,
-  };
-}
-
-/**
- * 値を指定された範囲内にクランプする
- * @param value - クランプする値
- * @param min - 最小値
- * @param max - 最大値
- * @returns クランプされた値
- */
-export function clampDimension(value: number, min: number = MIN_DIMENSION, max: number = MAX_DIMENSION): number {
-  return Math.max(min, Math.min(max, Math.round(value)));
 }
 
 /**
@@ -227,7 +165,6 @@ function ImageResizer() {
   const [height, setHeight] = useState<number>(0);
   const [maintainAspectRatio, setMaintainAspectRatio] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
   const [lastChanged, setLastChanged] = useState<"width" | "height">("width");
 
   // トリミング関連のstate
@@ -240,7 +177,6 @@ function ImageResizer() {
   // ドラッグモード: 'create' = 新規作成, 'move' = 移動
   const [dragMode, setDragMode] = useState<'create' | 'move'>('create');
 
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const cropCanvasRef = useRef<HTMLCanvasElement>(null);
   const imageElementRef = useRef<HTMLImageElement | null>(null);
   const canvasScaleRef = useRef<number>(1);
@@ -665,11 +601,6 @@ function ImageResizer() {
 
   const handleFileSelect = useCallback(
     async (file: File) => {
-      if (!file.type.startsWith("image/")) {
-        showToast("画像ファイルを選択してください", "error");
-        return;
-      }
-
       // 既存のプレビューをクリーンアップ
       if (originalPreview) URL.revokeObjectURL(originalPreview);
       if (resizedPreview) URL.revokeObjectURL(resizedPreview);
@@ -692,16 +623,6 @@ function ImageResizer() {
       img.src = preview;
     },
     [originalPreview, resizedPreview, showToast]
-  );
-
-  const handleInputChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files?.[0];
-      if (file) {
-        handleFileSelect(file);
-      }
-    },
-    [handleFileSelect]
   );
 
   const handleResize = useCallback(async () => {
@@ -727,17 +648,8 @@ function ImageResizer() {
   const handleDownload = useCallback(() => {
     if (!resizedBlob || !originalFile) return;
 
-    const url = URL.createObjectURL(resizedBlob);
     const filename = generateFilename(originalFile.name, width, height, enableCrop && cropArea !== null);
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-
+    downloadBlob(resizedBlob, filename);
     showToast("ダウンロードを開始しました", "success");
   }, [resizedBlob, originalFile, width, height, enableCrop, cropArea, showToast]);
 
@@ -757,35 +669,8 @@ function ImageResizer() {
     setCropArea(null);
     setCropAspectRatio(null);
 
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
-
     showToast("クリアしました", "info");
   }, [originalPreview, resizedPreview, showToast]);
-
-  const handleDragOver = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(true);
-  }, []);
-
-  const handleDragLeave = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-  }, []);
-
-  const handleDrop = useCallback(
-    (e: React.DragEvent) => {
-      e.preventDefault();
-      setIsDragging(false);
-
-      const file = e.dataTransfer.files[0];
-      if (file) {
-        handleFileSelect(file);
-      }
-    },
-    [handleFileSelect]
-  );
 
   // サイズ変更の割合を計算
   const sizeChangePercent = useMemo(() => {
@@ -802,44 +687,11 @@ function ImageResizer() {
           <div className="converter-section">
             <h2 className="section-title">画像選択</h2>
 
-            <div
-              className={`dropzone ${isDragging ? "dragging" : ""}`}
-              onDragOver={handleDragOver}
-              onDragLeave={handleDragLeave}
-              onDrop={handleDrop}
-              onClick={() => fileInputRef.current?.click()}
-              role="button"
-              tabIndex={0}
-              aria-label="画像ファイルをアップロード"
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  fileInputRef.current?.click();
-                }
-              }}
-            >
-              <div className="dropzone-content">
-                <svg
-                  className="upload-icon"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
-                >
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                  <polyline points="17 8 12 3 7 8" />
-                  <line x1="12" y1="3" x2="12" y2="15" />
-                </svg>
-                <p className="dropzone-text">
-                  クリックして画像を選択、またはドラッグ&ドロップ
-                </p>
-                <p className="dropzone-hint">PNG, JPEG, WebP など</p>
-              </div>
-            </div>
+            <ImageUploadZone
+              onFileSelect={handleFileSelect}
+              onTypeError={() => showToast("画像ファイルを選択してください", "error")}
+              disabled={isLoading}
+            />
           </div>
 
           <TipsCard
@@ -1083,17 +935,6 @@ function ImageResizer() {
           />
         </>
       )}
-
-      <input
-        ref={fileInputRef}
-        type="file"
-        id="imageFile"
-        accept="image/*"
-        onChange={handleInputChange}
-        disabled={isLoading}
-        className="hidden-file-input"
-        aria-label="画像ファイルを選択"
-      />
     </div>
   );
 }
