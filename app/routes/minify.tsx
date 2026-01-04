@@ -298,6 +298,7 @@ function MinifyTool() {
 
           <div className="button-group">
             <Button
+              className="btn-primary"
               onClick={handleMinify}
               aria-label="コードを圧縮"
             >
@@ -350,6 +351,7 @@ function MinifyTool() {
               <Button
                 onClick={handleCopy}
                 variant="secondary"
+                className="btn-secondary"
                 aria-label="圧縮結果をコピー"
               >
                 📋 コピー

@@ -136,6 +136,7 @@ function GlobalIpLookup() {
               <div className="ip-actions">
                 <Button
                   type="button"
+                  className="btn-secondary"
                   onClick={handleCopy}
                   aria-label="IPアドレスをコピー"
                 >
@@ -144,6 +145,7 @@ function GlobalIpLookup() {
                 <Button
                   type="button"
                   variant="secondary"
+                  className="btn-secondary"
                   onClick={fetchIp}
                   disabled={isLoading}
                   aria-label="IPアドレスを再取得"

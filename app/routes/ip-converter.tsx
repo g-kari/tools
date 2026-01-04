@@ -111,6 +111,7 @@ function IPConverter() {
               </div>
               <Button
                 type="submit"
+                className="btn-primary"
                 onClick={handleConvert}
                 aria-label="IP変換を実行"
               >

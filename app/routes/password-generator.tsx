@@ -187,6 +187,7 @@ function PasswordGenerator() {
           <div className="button-group" role="group" aria-label="パスワード生成操作">
             <Button
               type="button"
+              className="btn-primary"
               onClick={handleGenerate}
               aria-label="新しいパスワードを生成"
             >
@@ -195,6 +196,7 @@ function PasswordGenerator() {
             <Button
               type="button"
               variant="secondary"
+              className="btn-secondary"
               onClick={handleCopy}
               disabled={!password}
               aria-label="パスワードをクリップボードにコピー"

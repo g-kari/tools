@@ -249,7 +249,7 @@ function DiceRoll() {
             </div>
 
             <div className="button-group" role="group" aria-label="ダイスロール操作">
-              <Button type="submit" className="btn-large">
+              <Button type="submit" className="btn-large btn-primary">
                 ロール
               </Button>
             </div>
@@ -262,7 +262,7 @@ function DiceRoll() {
                 <Button
                   type="button"
                   variant="secondary"
-                  className="btn-small"
+                  className="btn-small btn-secondary"
                   onClick={handleCopyResult}
                 >
                   {copied ? "コピーしました" : "結果をコピー"}

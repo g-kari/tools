@@ -223,6 +223,7 @@ function WhoisLookup() {
               </div>
               <Button
                 type="submit"
+                className="btn-primary"
                 onClick={handleSearch}
                 disabled={isLoading}
                 aria-label="WHOIS情報を検索"

@@ -355,12 +355,13 @@ function DummyImageGenerator() {
             </div>
 
             <div className="button-group" role="group" aria-label="画像操作">
-              <Button type="submit">
+              <Button type="submit" className="btn-primary">
                 ダウンロード
               </Button>
               <Button
                 type="button"
                 variant="secondary"
+                className="btn-secondary"
                 onClick={handleCopyToClipboard}
               >
                 クリップボードにコピー
@@ -368,6 +369,7 @@ function DummyImageGenerator() {
               <Button
                 type="button"
                 variant="secondary"
+                className="btn-secondary"
                 onClick={handleOpenApi}
               >
                 APIで開く

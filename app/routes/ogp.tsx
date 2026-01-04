@@ -385,6 +385,7 @@ function OgpChecker() {
               </div>
               <Button
                 type="submit"
+                className="btn-primary"
                 onClick={handleCheck}
                 disabled={isLoading}
                 aria-label="OGP情報を取得"

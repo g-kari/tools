@@ -390,6 +390,7 @@ function HashGenerator() {
           <div className="button-group" role="group" aria-label="変換操作">
             <Button
               type="button"
+              className="btn-primary"
               onClick={handleGenerate}
               aria-label="ハッシュを生成"
             >
@@ -398,6 +399,7 @@ function HashGenerator() {
             <Button
               type="button"
               variant="secondary"
+              className="btn-secondary"
               onClick={handleCopy}
               aria-label="ハッシュをクリップボードにコピー"
               disabled={!outputHash}

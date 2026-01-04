@@ -198,6 +198,7 @@ function IpGeolocationLookup() {
               </div>
               <Button
                 type="submit"
+                className="btn-primary"
                 onClick={handleSearch}
                 disabled={isLoading}
                 aria-label="IP情報を検索"

@@ -176,6 +176,7 @@ function ServerEnvPage() {
                 <Button
                   type="button"
                   variant="secondary"
+                  className="btn-secondary"
                   onClick={fetchEnv}
                   disabled={isLoading}
                   aria-label="環境情報を再取得"

@@ -201,7 +201,7 @@ function DnsLookup() {
               </div>
               <Button
                 type="submit"
-                className="primary-button"
+                className="btn-primary"
                 onClick={handleSearch}
                 disabled={isLoading}
                 aria-label="DNS情報を検索"

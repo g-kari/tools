@@ -200,6 +200,7 @@ function SecurityHeadersChecker() {
               </div>
               <Button
                 type="submit"
+                className="btn-primary"
                 onClick={handleCheck}
                 disabled={isLoading}
                 aria-label="セキュリティヘッダーをチェック"

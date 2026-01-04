@@ -115,6 +115,7 @@ function CIDRCalculator() {
               </div>
               <Button
                 type="submit"
+                className="btn-primary"
                 onClick={handleCalculate}
                 aria-label="CIDR計算を実行"
               >

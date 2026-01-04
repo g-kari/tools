@@ -209,7 +209,7 @@ function UuidGenerator() {
             </div>
 
             <div className="button-group" role="group" aria-label="UUID操作">
-              <Button type="submit">
+              <Button type="submit" className="btn-primary">
                 UUID生成
               </Button>
               <Button
@@ -232,6 +232,7 @@ function UuidGenerator() {
                   <Button
                     type="button"
                     variant="secondary"
+                    className="btn-secondary"
                     size="sm"
                     onClick={handleCopyAll}
                   >

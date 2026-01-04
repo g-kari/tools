@@ -126,6 +126,7 @@ function UrlEncoder() {
           <div className="button-group" role="group" aria-label="変換操作">
             <Button
               type="button"
+              className="btn-primary"
               onClick={handleEncode}
               aria-label="入力テキストをURLエンコード"
             >
@@ -134,6 +135,7 @@ function UrlEncoder() {
             <Button
               type="button"
               variant="secondary"
+              className="btn-secondary"
               onClick={handleDecode}
               aria-label="URLエンコードされた文字列をデコード"
             >

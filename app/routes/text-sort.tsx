@@ -131,6 +131,7 @@ function TextSortTool() {
           <div className="button-group" role="group" aria-label="ソート操作">
             <Button
               type="button"
+              className="btn-primary"
               onClick={handleSortAsc}
               aria-label="入力テキストを昇順ソート"
             >
@@ -138,6 +139,7 @@ function TextSortTool() {
             </Button>
             <Button
               type="button"
+              className="btn-primary"
               onClick={handleSortDesc}
               aria-label="入力テキストを降順ソート"
             >
@@ -146,6 +148,7 @@ function TextSortTool() {
             <Button
               type="button"
               variant="secondary"
+              className="btn-secondary"
               onClick={handleRemoveDuplicates}
               aria-label="重複行を削除"
             >
@@ -154,6 +157,7 @@ function TextSortTool() {
             <Button
               type="button"
               variant="secondary"
+              className="btn-secondary"
               onClick={handleSortAndRemoveDuplicates}
               aria-label="昇順ソートと重複削除を同時実行"
             >

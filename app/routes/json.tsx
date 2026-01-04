@@ -127,6 +127,7 @@ function JsonFormatter() {
           <div className="button-group" role="group" aria-label="JSON操作">
             <Button
               type="button"
+              className="btn-primary"
               onClick={handleFormat}
               aria-label="JSONを整形（フォーマット）"
             >
@@ -135,6 +136,7 @@ function JsonFormatter() {
             <Button
               type="button"
               variant="secondary"
+              className="btn-secondary"
               onClick={handleMinify}
               aria-label="JSONを圧縮（ミニファイ）"
             >

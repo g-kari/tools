@@ -137,6 +137,7 @@ function JwtDecoder() {
           <div className="button-group" role="group" aria-label="デコード操作">
             <Button
               type="button"
+              className="btn-primary"
               onClick={handleDecode}
               aria-label="JWTトークンをデコード"
             >
@@ -173,7 +174,7 @@ function JwtDecoder() {
                   <Button
                     type="button"
                     variant="secondary"
-                    className="jwt-copy-button"
+                    className="jwt-copy-button btn-secondary"
                     onClick={() => handleCopyToClipboard(decodedResult.header, "ヘッダー")}
                     aria-label="ヘッダーをコピー"
                   >
@@ -198,7 +199,7 @@ function JwtDecoder() {
                   <Button
                     type="button"
                     variant="secondary"
-                    className="jwt-copy-button"
+                    className="jwt-copy-button btn-secondary"
                     onClick={() => handleCopyToClipboard(decodedResult.payload, "ペイロード")}
                     aria-label="ペイロードをコピー"
                   >
@@ -223,7 +224,7 @@ function JwtDecoder() {
                   <Button
                     type="button"
                     variant="secondary"
-                    className="jwt-copy-button"
+                    className="jwt-copy-button btn-secondary"
                     onClick={() => handleCopyToClipboard(decodedResult.signature, "署名")}
                     aria-label="署名をコピー"
                   >

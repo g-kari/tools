@@ -192,6 +192,7 @@ function RegexChecker() {
           <div className="button-group" role="group" aria-label="正規表現チェック操作">
             <Button
               type="button"
+              className="btn-primary"
               onClick={handleTest}
               aria-label="正規表現をテスト"
             >
