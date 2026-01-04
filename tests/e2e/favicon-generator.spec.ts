@@ -158,27 +158,153 @@ test.describe('Favicon Generator - E2E Tests', () => {
     expect(combinedText).toContain('android-chrome');
   });
 
-  // Tests that require file upload would need mock files
+  // Tests that require file upload
   test.describe('With uploaded image', () => {
-    test.skip('should show size selection after image upload', async () => {
-      // This test would require a mock file upload
-      // Skipping as it requires actual file interaction
+    test('should show size selection after image upload', async ({ page }) => {
+      // Upload a test image
+      const fileInput = page.locator('input#imageFile');
+      await fileInput.setInputFiles({
+        name: 'test-icon.png',
+        mimeType: 'image/png',
+        buffer: Buffer.from(
+          'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
+          'base64'
+        ),
+      });
+
+      // Wait for size selection to appear
+      const sizeGrid = page.locator('.favicon-size-grid');
+      await expect(sizeGrid).toBeVisible({ timeout: 5000 });
     });
 
-    test.skip('should show all favicon size options', async () => {
-      // This test would require a mock file upload
+    test('should show all favicon size options', async ({ page }) => {
+      const fileInput = page.locator('input#imageFile');
+      await fileInput.setInputFiles({
+        name: 'test-icon.png',
+        mimeType: 'image/png',
+        buffer: Buffer.from(
+          'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
+          'base64'
+        ),
+      });
+
+      await page.waitForSelector('.favicon-size-grid');
+
+      // Check that size options are visible
+      const sizeItems = page.locator('.favicon-size-item');
+      const count = await sizeItems.count();
+      expect(count).toBeGreaterThanOrEqual(6);
     });
 
-    test.skip('should have select all and deselect all buttons', async () => {
-      // This test would require a mock file upload
+    test('should have select all and deselect all buttons', async ({ page }) => {
+      const fileInput = page.locator('input#imageFile');
+      await fileInput.setInputFiles({
+        name: 'test-icon.png',
+        mimeType: 'image/png',
+        buffer: Buffer.from(
+          'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
+          'base64'
+        ),
+      });
+
+      await page.waitForSelector('.favicon-size-actions');
+
+      const selectAllBtn = page.locator('.btn-text', { hasText: 'すべて選択' });
+      const deselectAllBtn = page.locator('.btn-text', { hasText: 'すべて解除' });
+
+      await expect(selectAllBtn).toBeVisible();
+      await expect(deselectAllBtn).toBeVisible();
     });
 
-    test.skip('should show generate button', async () => {
-      // This test would require a mock file upload
+    test('should show generate button', async ({ page }) => {
+      const fileInput = page.locator('input#imageFile');
+      await fileInput.setInputFiles({
+        name: 'test-icon.png',
+        mimeType: 'image/png',
+        buffer: Buffer.from(
+          'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
+          'base64'
+        ),
+      });
+
+      await page.waitForSelector('.button-group');
+
+      const generateBtn = page.locator('button', { hasText: 'Favicon生成' });
+      await expect(generateBtn).toBeVisible();
     });
 
-    test.skip('should show download options after generation', async () => {
-      // This test would require a mock file upload
+    test('should show download options after generation', async ({ page }) => {
+      const fileInput = page.locator('input#imageFile');
+      await fileInput.setInputFiles({
+        name: 'test-icon.png',
+        mimeType: 'image/png',
+        buffer: Buffer.from(
+          'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
+          'base64'
+        ),
+      });
+
+      await page.waitForSelector('.button-group');
+
+      // Click generate button
+      const generateBtn = page.locator('button', { hasText: 'Favicon生成' });
+      await generateBtn.click();
+
+      // Wait for generation to complete
+      await page.waitForSelector('button:has-text("ZIPで一括ダウンロード")', { timeout: 10000 });
+
+      // Check download buttons
+      const zipBtn = page.locator('button', { hasText: 'ZIPで一括ダウンロード' });
+      const icoBtn = page.locator('button', { hasText: 'ICOをダウンロード' });
+
+      await expect(zipBtn).toBeVisible();
+      await expect(icoBtn).toBeVisible();
+    });
+
+    test('should display generated results', async ({ page }) => {
+      const fileInput = page.locator('input#imageFile');
+      await fileInput.setInputFiles({
+        name: 'test-icon.png',
+        mimeType: 'image/png',
+        buffer: Buffer.from(
+          'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
+          'base64'
+        ),
+      });
+
+      await page.waitForSelector('.button-group');
+
+      const generateBtn = page.locator('button', { hasText: 'Favicon生成' });
+      await generateBtn.click();
+
+      // Wait for results
+      await page.waitForSelector('.favicon-result-grid', { timeout: 10000 });
+
+      const resultItems = page.locator('.favicon-result-item');
+      const count = await resultItems.count();
+      expect(count).toBeGreaterThan(0);
+    });
+
+    test('should have clear button to select different image', async ({ page }) => {
+      const fileInput = page.locator('input#imageFile');
+      await fileInput.setInputFiles({
+        name: 'test-icon.png',
+        mimeType: 'image/png',
+        buffer: Buffer.from(
+          'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
+          'base64'
+        ),
+      });
+
+      await page.waitForSelector('.btn-clear');
+
+      const clearBtn = page.locator('.btn-clear', { hasText: '別の画像を選択' });
+      await expect(clearBtn).toBeVisible();
+
+      // Click clear and verify dropzone is shown again
+      await clearBtn.click();
+      const dropzone = page.locator('.dropzone');
+      await expect(dropzone).toBeVisible();
     });
   });
 });
