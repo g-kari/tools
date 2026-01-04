@@ -11,6 +11,12 @@ import { Checkbox } from "~/components/ui/checkbox";
 import { Label } from "~/components/ui/label";
 import { Slider } from "~/components/ui/slider";
 import { TipsCard } from "~/components/TipsCard";
+import {
+  useStatusAnnouncement,
+  StatusAnnouncer,
+} from "~/hooks/useStatusAnnouncement";
+import { useClipboard } from "~/hooks/useClipboard";
+import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 
 export const Route = createFileRoute("/password-generator")({
   head: () => ({
@@ -31,22 +37,18 @@ function PasswordGenerator() {
   const [copied, setCopied] = useState(false);
   const [showAdvanced, setShowAdvanced] = useState(false);
   const passwordRef = useRef<HTMLInputElement>(null);
-  const statusRef = useRef<HTMLDivElement>(null);
   const { showToast } = useToast();
 
-  const announceStatus = useCallback((message: string) => {
-    if (statusRef.current) {
-      statusRef.current.textContent = message;
-      setTimeout(() => {
-        if (statusRef.current) {
-          statusRef.current.textContent = "";
-        }
-      }, 3000);
-    }
-  }, []);
+  const { statusRef, announceStatus } = useStatusAnnouncement();
+  const { copy } = useClipboard();
 
   const handleGenerate = useCallback(() => {
-    if (!options.uppercase && !options.lowercase && !options.numbers && !options.symbols) {
+    if (
+      !options.uppercase &&
+      !options.lowercase &&
+      !options.numbers &&
+      !options.symbols
+    ) {
       announceStatus("エラー: 少なくとも1つの文字種を選択してください");
       showToast("少なくとも1つの文字種を選択してください", "error");
       return;
@@ -64,17 +66,17 @@ function PasswordGenerator() {
       showToast("コピーするパスワードがありません", "error");
       return;
     }
-    try {
-      await navigator.clipboard.writeText(password);
+    const success = await copy(password);
+    if (success) {
       setCopied(true);
       announceStatus("パスワードをクリップボードにコピーしました");
       showToast("クリップボードにコピーしました", "success");
       setTimeout(() => setCopied(false), 2000);
-    } catch {
+    } else {
       announceStatus("コピーに失敗しました");
       showToast("コピーに失敗しました", "error");
     }
-  }, [password, announceStatus, showToast]);
+  }, [password, announceStatus, showToast, copy]);
 
   const handleClear = useCallback(() => {
     setPassword("");
@@ -82,21 +84,15 @@ function PasswordGenerator() {
     announceStatus("パスワードをクリアしました");
   }, [announceStatus]);
 
-  const handleOptionChange = useCallback((key: keyof PasswordOptions, value: boolean | number) => {
-    setOptions((prev) => ({ ...prev, [key]: value }));
-  }, []);
+  const handleOptionChange = useCallback(
+    (key: keyof PasswordOptions, value: boolean | number) => {
+      setOptions((prev) => ({ ...prev, [key]: value }));
+    },
+    []
+  );
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
-        e.preventDefault();
-        handleGenerate();
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [handleGenerate]);
+  // Ctrl+Enter で生成
+  useKeyboardShortcut("Enter", handleGenerate, { ctrl: true });
 
   useEffect(() => {
     handleGenerate();
@@ -108,7 +104,10 @@ function PasswordGenerator() {
   return (
     <>
       <div className="tool-container">
-        <form onSubmit={(e) => e.preventDefault()} aria-label="パスワード生成フォーム">
+        <form
+          onSubmit={(e) => e.preventDefault()}
+          aria-label="パスワード生成フォーム"
+        >
           <div className="converter-section">
             <label htmlFor="passwordLength" className="section-title">
               パスワードの長さ: {options.length}文字
@@ -118,7 +117,9 @@ function PasswordGenerator() {
               type="number"
               id="passwordLength"
               value={options.length}
-              onChange={(e) => handleOptionChange("length", Number(e.target.value))}
+              onChange={(e) =>
+                handleOptionChange("length", Number(e.target.value))
+              }
               min={4}
               max={128}
               step={1}
@@ -149,24 +150,34 @@ function PasswordGenerator() {
               aria-controls="advanced-options"
             >
               <span className="collapsible-title">詳細設定（文字種）</span>
-              <span className="collapsible-icon" aria-hidden="true">▾</span>
+              <span className="collapsible-icon" aria-hidden="true">
+                ▾
+              </span>
             </button>
             <div className="collapsible-content" id="advanced-options">
               <div className="collapsible-body">
-                <div className="checkbox-group" role="group" aria-label="使用する文字種の選択">
+                <div
+                  className="checkbox-group"
+                  role="group"
+                  aria-label="使用する文字種の選択"
+                >
                   <div className="checkbox-label relative">
                     {/* Native checkbox for E2E testing - positioned over Radix checkbox */}
                     <input
                       type="checkbox"
                       checked={options.uppercase}
-                      onChange={(e) => handleOptionChange("uppercase", e.target.checked)}
+                      onChange={(e) =>
+                        handleOptionChange("uppercase", e.target.checked)
+                      }
                       aria-label="大文字を含める"
                       className="absolute left-0 top-0 w-4 h-4 opacity-[0.01] cursor-pointer z-10"
                     />
                     <Checkbox
                       id="uppercase"
                       checked={options.uppercase}
-                      onCheckedChange={(checked) => handleOptionChange("uppercase", checked === true)}
+                      onCheckedChange={(checked) =>
+                        handleOptionChange("uppercase", checked === true)
+                      }
                     />
                     <Label htmlFor="uppercase">大文字 (A-Z)</Label>
                   </div>
@@ -175,14 +186,18 @@ function PasswordGenerator() {
                     <input
                       type="checkbox"
                       checked={options.lowercase}
-                      onChange={(e) => handleOptionChange("lowercase", e.target.checked)}
+                      onChange={(e) =>
+                        handleOptionChange("lowercase", e.target.checked)
+                      }
                       aria-label="小文字を含める"
                       className="absolute left-0 top-0 w-4 h-4 opacity-[0.01] cursor-pointer z-10"
                     />
                     <Checkbox
                       id="lowercase"
                       checked={options.lowercase}
-                      onCheckedChange={(checked) => handleOptionChange("lowercase", checked === true)}
+                      onCheckedChange={(checked) =>
+                        handleOptionChange("lowercase", checked === true)
+                      }
                     />
                     <Label htmlFor="lowercase">小文字 (a-z)</Label>
                   </div>
@@ -191,14 +206,18 @@ function PasswordGenerator() {
                     <input
                       type="checkbox"
                       checked={options.numbers}
-                      onChange={(e) => handleOptionChange("numbers", e.target.checked)}
+                      onChange={(e) =>
+                        handleOptionChange("numbers", e.target.checked)
+                      }
                       aria-label="数字を含める"
                       className="absolute left-0 top-0 w-4 h-4 opacity-[0.01] cursor-pointer z-10"
                     />
                     <Checkbox
                       id="numbers"
                       checked={options.numbers}
-                      onCheckedChange={(checked) => handleOptionChange("numbers", checked === true)}
+                      onCheckedChange={(checked) =>
+                        handleOptionChange("numbers", checked === true)
+                      }
                     />
                     <Label htmlFor="numbers">数字 (0-9)</Label>
                   </div>
@@ -207,14 +226,18 @@ function PasswordGenerator() {
                     <input
                       type="checkbox"
                       checked={options.symbols}
-                      onChange={(e) => handleOptionChange("symbols", e.target.checked)}
+                      onChange={(e) =>
+                        handleOptionChange("symbols", e.target.checked)
+                      }
                       aria-label="記号を含める"
                       className="absolute left-0 top-0 w-4 h-4 opacity-[0.01] cursor-pointer z-10"
                     />
                     <Checkbox
                       id="symbols"
                       checked={options.symbols}
-                      onCheckedChange={(checked) => handleOptionChange("symbols", checked === true)}
+                      onCheckedChange={(checked) =>
+                        handleOptionChange("symbols", checked === true)
+                      }
                     />
                     <Label htmlFor="symbols">記号 (!@#$%...)</Label>
                   </div>
@@ -223,7 +246,11 @@ function PasswordGenerator() {
             </div>
           </div>
 
-          <div className="button-group" role="group" aria-label="パスワード生成操作">
+          <div
+            className="button-group"
+            role="group"
+            aria-label="パスワード生成操作"
+          >
             <Button
               type="button"
               className="btn-primary"
@@ -253,7 +280,7 @@ function PasswordGenerator() {
             </Button>
           </div>
 
-          <div className="converter-section" style={{ marginTop: "30px" }}>
+          <div className="converter-section password-output-section">
             <label htmlFor="passwordOutput" className="section-title">
               生成されたパスワード
             </label>
@@ -266,12 +293,12 @@ function PasswordGenerator() {
               placeholder="パスワードを生成してください..."
               aria-label="生成されたパスワード"
               aria-live="polite"
-              style={{ fontFamily: "'Roboto Mono', monospace", fontSize: "1.1rem", letterSpacing: "0.05em" }}
+              className="password-output-input"
             />
           </div>
 
           {password && (
-            <section aria-labelledby="strength-title" style={{ marginTop: "20px" }}>
+            <section aria-labelledby="strength-title" className="strength-section">
               <h2 id="strength-title" className="section-title">
                 パスワード強度
               </h2>
@@ -330,13 +357,7 @@ function PasswordGenerator() {
         />
       </div>
 
-      <div
-        ref={statusRef}
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
-        className="sr-only"
-      />
+      <StatusAnnouncer statusRef={statusRef} />
     </>
   );
 }

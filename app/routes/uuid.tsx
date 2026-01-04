@@ -3,6 +3,11 @@ import { useState, useRef, useCallback, useEffect } from "react";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { TipsCard } from "~/components/TipsCard";
+import {
+  useStatusAnnouncement,
+  StatusAnnouncer,
+} from "~/hooks/useStatusAnnouncement";
+import { useClipboard } from "~/hooks/useClipboard";
 
 export const Route = createFileRoute("/uuid")({
   head: () => ({
@@ -22,18 +27,18 @@ function UuidGenerator() {
   const [noHyphens, setNoHyphens] = useState(false);
   const [copied, setCopied] = useState<number | null>(null);
   const [copiedAll, setCopiedAll] = useState(false);
-  const statusRef = useRef<HTMLDivElement>(null);
-  const statusTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const copiedTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const copiedAllTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const copiedAllTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null
+  );
   const isInitialMount = useRef(true);
+
+  const { statusRef, announceStatus } = useStatusAnnouncement();
+  const { copy } = useClipboard();
 
   // Cleanup timeouts on unmount
   useEffect(() => {
     return () => {
-      if (statusTimeoutRef.current) {
-        clearTimeout(statusTimeoutRef.current);
-      }
       if (copiedTimeoutRef.current) {
         clearTimeout(copiedTimeoutRef.current);
       }
@@ -41,40 +46,6 @@ function UuidGenerator() {
         clearTimeout(copiedAllTimeoutRef.current);
       }
     };
-  }, []);
-
-  const announceStatus = useCallback((message: string) => {
-    if (statusRef.current) {
-      statusRef.current.textContent = message;
-      if (statusTimeoutRef.current) {
-        clearTimeout(statusTimeoutRef.current);
-      }
-      statusTimeoutRef.current = setTimeout(() => {
-        if (statusRef.current) {
-          statusRef.current.textContent = "";
-        }
-      }, 3000);
-    }
-  }, []);
-
-  const copyToClipboard = useCallback(async (text: string): Promise<boolean> => {
-    try {
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText(text);
-      } else {
-        const textArea = document.createElement("textarea");
-        textArea.value = text;
-        textArea.style.position = "fixed";
-        textArea.style.left = "-9999px";
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand("copy");
-        document.body.removeChild(textArea);
-      }
-      return true;
-    } catch {
-      return false;
-    }
   }, []);
 
   const formatUUID = useCallback(
@@ -105,7 +76,7 @@ function UuidGenerator() {
   const handleCopy = useCallback(
     async (index: number) => {
       const uuid = formatUUID(uuids[index]);
-      const success = await copyToClipboard(uuid);
+      const success = await copy(uuid);
       if (success) {
         setCopied(index);
         announceStatus("UUIDをコピーしました");
@@ -117,12 +88,12 @@ function UuidGenerator() {
         announceStatus("コピーに失敗しました");
       }
     },
-    [uuids, formatUUID, copyToClipboard, announceStatus]
+    [uuids, formatUUID, copy, announceStatus]
   );
 
   const handleCopyAll = useCallback(async () => {
     const allUuids = uuids.map(formatUUID).join("\n");
-    const success = await copyToClipboard(allUuids);
+    const success = await copy(allUuids);
     if (success) {
       setCopiedAll(true);
       announceStatus("すべてのUUIDをコピーしました");
@@ -133,7 +104,7 @@ function UuidGenerator() {
     } else {
       announceStatus("コピーに失敗しました");
     }
-  }, [uuids, formatUUID, copyToClipboard, announceStatus]);
+  }, [uuids, formatUUID, copy, announceStatus]);
 
   const handleClear = useCallback(() => {
     setUuids([]);
@@ -286,13 +257,7 @@ function UuidGenerator() {
         />
       </div>
 
-      <div
-        ref={statusRef}
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
-        className="sr-only"
-      />
+      <StatusAnnouncer statusRef={statusRef} />
     </>
   );
 }

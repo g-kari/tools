@@ -5,6 +5,12 @@ import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Textarea } from "~/components/ui/textarea";
 import { TipsCard } from "~/components/TipsCard";
+import {
+  useStatusAnnouncement,
+  StatusAnnouncer,
+} from "~/hooks/useStatusAnnouncement";
+import { useClipboard } from "~/hooks/useClipboard";
+import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 
 export const Route = createFileRoute("/hash")({
   head: () => ({
@@ -245,32 +251,9 @@ function HashGenerator() {
   const [algorithm, setAlgorithm] = useState<HashAlgorithm>("SHA-256");
   const [outputHash, setOutputHash] = useState("");
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const statusRef = useRef<HTMLDivElement>(null);
-  const statusTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Cleanup timeout on unmount
-  useEffect(() => {
-    return () => {
-      if (statusTimeoutRef.current) {
-        clearTimeout(statusTimeoutRef.current);
-      }
-    };
-  }, []);
-
-  const announceStatus = useCallback((message: string) => {
-    if (statusRef.current) {
-      statusRef.current.textContent = message;
-      // Clear previous timeout
-      if (statusTimeoutRef.current) {
-        clearTimeout(statusTimeoutRef.current);
-      }
-      statusTimeoutRef.current = setTimeout(() => {
-        if (statusRef.current) {
-          statusRef.current.textContent = "";
-        }
-      }, 3000);
-    }
-  }, []);
+  const { statusRef, announceStatus } = useStatusAnnouncement();
+  const { copy } = useClipboard();
 
   const handleGenerate = useCallback(async () => {
     if (!inputText) {
@@ -306,26 +289,17 @@ function HashGenerator() {
       showToast("コピーするハッシュがありません", "error");
       return;
     }
-    try {
-      await navigator.clipboard.writeText(outputHash);
+    const success = await copy(outputHash);
+    if (success) {
       announceStatus("ハッシュをクリップボードにコピーしました");
-    } catch {
+    } else {
       announceStatus("エラー: クリップボードへのコピーに失敗しました");
       showToast("クリップボードへのコピーに失敗しました", "error");
     }
-  }, [outputHash, announceStatus, showToast]);
+  }, [outputHash, announceStatus, showToast, copy]);
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
-        e.preventDefault();
-        handleGenerate();
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [handleGenerate]);
+  // Ctrl+Enter でハッシュ生成
+  useKeyboardShortcut("Enter", handleGenerate, { ctrl: true });
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -458,13 +432,7 @@ function HashGenerator() {
         />
       </div>
 
-      <div
-        ref={statusRef}
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
-        className="sr-only"
-      />
+      <StatusAnnouncer statusRef={statusRef} />
     </>
   );
 }

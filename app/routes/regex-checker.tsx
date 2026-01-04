@@ -4,6 +4,12 @@ import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import { TipsCard } from "~/components/TipsCard";
+import { ErrorMessage } from "~/components/ErrorMessage";
+import {
+  useStatusAnnouncement,
+  StatusAnnouncer,
+} from "~/hooks/useStatusAnnouncement";
+import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 
 export const Route = createFileRoute("/regex-checker")({
   head: () => ({
@@ -27,18 +33,8 @@ function RegexChecker() {
   const [error, setError] = useState<string | null>(null);
   const [isValid, setIsValid] = useState<boolean | null>(null);
   const patternRef = useRef<HTMLInputElement>(null);
-  const statusRef = useRef<HTMLDivElement>(null);
 
-  const announceStatus = useCallback((message: string) => {
-    if (statusRef.current) {
-      statusRef.current.textContent = message;
-      setTimeout(() => {
-        if (statusRef.current) {
-          statusRef.current.textContent = "";
-        }
-      }, 3000);
-    }
-  }, []);
+  const { statusRef, announceStatus } = useStatusAnnouncement();
 
   const handleTest = useCallback(() => {
     if (!pattern) {
@@ -111,17 +107,8 @@ function RegexChecker() {
     patternRef.current?.focus();
   }, [announceStatus]);
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
-        e.preventDefault();
-        handleTest();
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [handleTest]);
+  // Ctrl+Enter でテスト
+  useKeyboardShortcut("Enter", handleTest, { ctrl: true });
 
   useEffect(() => {
     patternRef.current?.focus();
@@ -210,11 +197,7 @@ function RegexChecker() {
           </div>
         </form>
 
-        {error && (
-          <div className="error-message" role="alert" aria-live="assertive">
-            {error}
-          </div>
-        )}
+        <ErrorMessage message={error} />
 
         {isValid !== null && !error && (
           <section aria-labelledby="result-title">
@@ -285,13 +268,7 @@ function RegexChecker() {
         />
       </div>
 
-      <div
-        ref={statusRef}
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
-        className="sr-only"
-      />
+      <StatusAnnouncer statusRef={statusRef} />
     </>
   );
 }

@@ -4,6 +4,12 @@ import { fetchOgp, type OgpData } from "../functions/ogp";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { TipsCard } from "~/components/TipsCard";
+import { ErrorMessage } from "~/components/ErrorMessage";
+import { LoadingSpinner } from "~/components/LoadingSpinner";
+import {
+  useStatusAnnouncement,
+  StatusAnnouncer,
+} from "~/hooks/useStatusAnnouncement";
 
 export const Route = createFileRoute("/ogp")({
   head: () => ({
@@ -18,18 +24,8 @@ function OgpChecker() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const statusRef = useRef<HTMLDivElement>(null);
 
-  const announceStatus = useCallback((message: string) => {
-    if (statusRef.current) {
-      statusRef.current.textContent = message;
-      setTimeout(() => {
-        if (statusRef.current) {
-          statusRef.current.textContent = "";
-        }
-      }, 3000);
-    }
-  }, []);
+  const { statusRef, announceStatus } = useStatusAnnouncement();
 
   const handleCheck = useCallback(async () => {
     if (!url.trim()) {
@@ -399,18 +395,9 @@ function OgpChecker() {
           </div>
         </form>
 
-        {isLoading && (
-          <div className="loading" aria-live="polite">
-            <div className="spinner" aria-hidden="true" />
-            <span>取得中...</span>
-          </div>
-        )}
+        <LoadingSpinner isLoading={isLoading} message="取得中..." />
 
-        {error && (
-          <div className="error-message" role="alert" aria-live="assertive">
-            {error}
-          </div>
-        )}
+        <ErrorMessage message={error} />
 
         {result && !error && (
           <>
@@ -451,13 +438,7 @@ function OgpChecker() {
         />
       </div>
 
-      <div
-        ref={statusRef}
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
-        className="sr-only"
-      />
+      <StatusAnnouncer statusRef={statusRef} />
     </>
   );
 }
