@@ -39,6 +39,12 @@ interface EditOptions {
   cropY: number;
   cropWidth: number;
   cropHeight: number;
+  /** トリミングプレビューのズームレベル (10-400%) */
+  cropZoom: number;
+  /** トリミングプレビューのパンX位置 */
+  cropPanX: number;
+  /** トリミングプレビューのパンY位置 */
+  cropPanY: number;
 }
 
 /** テキスト埋め込みのデフォルト値 */
@@ -78,12 +84,15 @@ const DEFAULT_BORDER_OPTIONS: Pick<EditOptions, "border" | "borderWidth" | "bord
 };
 
 /** トリミングのデフォルト値 */
-const DEFAULT_CROP_OPTIONS: Pick<EditOptions, "crop" | "cropX" | "cropY" | "cropWidth" | "cropHeight"> = {
+const DEFAULT_CROP_OPTIONS: Pick<EditOptions, "crop" | "cropX" | "cropY" | "cropWidth" | "cropHeight" | "cropZoom" | "cropPanX" | "cropPanY"> = {
   crop: false,
   cropX: 0,
   cropY: 0,
   cropWidth: 100,
   cropHeight: 100,
+  cropZoom: 100,
+  cropPanX: 0,
+  cropPanY: 0,
 };
 
 const DEFAULT_EDIT_OPTIONS: EditOptions = {
@@ -1137,6 +1146,132 @@ function EmojiConverter() {
                         }
                         className="range"
                       />
+                    </div>
+
+                    {/* ズームコントロール */}
+                    <div className="crop-zoom-section">
+                      <h4 className="crop-zoom-title">ズーム</h4>
+                      
+                      <div className="zoom-controls">
+                        <button
+                          type="button"
+                          onClick={() => updateEditOption("cropZoom", Math.max(10, editOptions.cropZoom - 10))}
+                          className="zoom-button"
+                          aria-label="ズームアウト"
+                          disabled={editOptions.cropZoom <= 10}
+                        >
+                          −
+                        </button>
+                        
+                        <div className="form-group zoom-slider-group">
+                          <label htmlFor="cropZoom" className="label">
+                            {editOptions.cropZoom}%
+                          </label>
+                          <input
+                            id="cropZoom"
+                            type="range"
+                            min="10"
+                            max="400"
+                            step="10"
+                            value={editOptions.cropZoom}
+                            onChange={(e) =>
+                              updateEditOption("cropZoom", Number(e.target.value))
+                            }
+                            className="range"
+                          />
+                        </div>
+                        
+                        <button
+                          type="button"
+                          onClick={() => updateEditOption("cropZoom", Math.min(400, editOptions.cropZoom + 10))}
+                          className="zoom-button"
+                          aria-label="ズームイン"
+                          disabled={editOptions.cropZoom >= 400}
+                        >
+                          +
+                        </button>
+                      </div>
+
+                      <div className="zoom-preset-buttons">
+                        <button
+                          type="button"
+                          onClick={() => updateEditOption("cropZoom", 50)}
+                          className={"zoom-preset-button" + (editOptions.cropZoom === 50 ? " active" : "")}
+                        >
+                          50%
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => updateEditOption("cropZoom", 100)}
+                          className={"zoom-preset-button" + (editOptions.cropZoom === 100 ? " active" : "")}
+                        >
+                          100%
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => updateEditOption("cropZoom", 200)}
+                          className={"zoom-preset-button" + (editOptions.cropZoom === 200 ? " active" : "")}
+                        >
+                          200%
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => updateEditOption("cropZoom", 400)}
+                          className={"zoom-preset-button" + (editOptions.cropZoom === 400 ? " active" : "")}
+                        >
+                          400%
+                        </button>
+                      </div>
+
+                      {editOptions.cropZoom > 100 && (
+                        <div className="pan-controls">
+                          <div className="form-group">
+                            <label htmlFor="cropPanX" className="label">
+                              パンX: {editOptions.cropPanX}%
+                            </label>
+                            <input
+                              id="cropPanX"
+                              type="range"
+                              min="-100"
+                              max="100"
+                              value={editOptions.cropPanX}
+                              onChange={(e) =>
+                                updateEditOption("cropPanX", Number(e.target.value))
+                              }
+                              className="range"
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label htmlFor="cropPanY" className="label">
+                              パンY: {editOptions.cropPanY}%
+                            </label>
+                            <input
+                              id="cropPanY"
+                              type="range"
+                              min="-100"
+                              max="100"
+                              value={editOptions.cropPanY}
+                              onChange={(e) =>
+                                updateEditOption("cropPanY", Number(e.target.value))
+                              }
+                              className="range"
+                            />
+                          </div>
+
+                          <button
+                            type="button"
+                            onClick={() => {
+                              updateEditOption("cropPanX", 0);
+                              updateEditOption("cropPanY", 0);
+                            }}
+                            className="reset-section-button"
+                            aria-label="パン位置をリセット"
+                          >
+                            パンリセット
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </>
                 )}

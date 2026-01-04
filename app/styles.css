@@ -5592,3 +5592,106 @@ a:focus-visible {
     height: 100px;
   }
 }
+
+/* ==================== */
+/* Crop Zoom Controls   */
+/* ==================== */
+
+.crop-zoom-section {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.crop-zoom-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface);
+  margin: 0 0 0.75rem 0;
+}
+
+.zoom-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.zoom-button {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 4px;
+  color: var(--md-sys-color-on-surface);
+  font-size: 1.25rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.zoom-button:hover:not(:disabled) {
+  background: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+}
+
+.zoom-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.zoom-slider-group {
+  flex: 1;
+  margin: 0;
+}
+
+.zoom-slider-group .label {
+  text-align: center;
+  font-size: 0.75rem;
+  min-width: 50px;
+}
+
+.zoom-preset-buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.zoom-preset-button {
+  flex: 1;
+  padding: 0.375rem 0.5rem;
+  font-size: 0.75rem;
+  background: transparent;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 4px;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.zoom-preset-button:hover {
+  background: var(--md-sys-color-surface-variant);
+}
+
+.zoom-preset-button.active {
+  background: var(--md-sys-color-primary);
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+.pan-controls {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed var(--md-sys-color-outline-variant);
+}
+
+.pan-controls .form-group {
+  margin-bottom: 0.75rem;
+}
+
+.pan-controls .reset-section-button {
+  margin-top: 0.5rem;
+}
