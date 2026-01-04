@@ -41,28 +41,58 @@ interface EditOptions {
   cropHeight: number;
 }
 
-const DEFAULT_EDIT_OPTIONS: EditOptions = {
+/** テキスト埋め込みのデフォルト値 */
+const DEFAULT_TEXT_OPTIONS: Pick<EditOptions, "text" | "fontSize" | "textColor" | "textX" | "textY"> = {
   text: "",
   fontSize: 24,
   textColor: "#FFFFFF",
   textX: 50,
   textY: 50,
+};
+
+/** 回転・反転のデフォルト値 */
+const DEFAULT_TRANSFORM_OPTIONS: Pick<EditOptions, "rotation" | "flipH" | "flipV"> = {
   rotation: 0,
   flipH: false,
   flipV: false,
+};
+
+/** フィルターのデフォルト値 */
+const DEFAULT_FILTER_OPTIONS: Pick<EditOptions, "brightness" | "contrast" | "saturation"> = {
   brightness: 100,
   contrast: 100,
   saturation: 100,
+};
+
+/** 透過処理のデフォルト値 */
+const DEFAULT_TRANSPARENT_OPTIONS: Pick<EditOptions, "transparent" | "transparentColor"> = {
   transparent: false,
   transparentColor: "#FFFFFF",
+};
+
+/** 枠線のデフォルト値 */
+const DEFAULT_BORDER_OPTIONS: Pick<EditOptions, "border" | "borderWidth" | "borderColor"> = {
   border: false,
   borderWidth: 2,
   borderColor: "#000000",
+};
+
+/** トリミングのデフォルト値 */
+const DEFAULT_CROP_OPTIONS: Pick<EditOptions, "crop" | "cropX" | "cropY" | "cropWidth" | "cropHeight"> = {
   crop: false,
   cropX: 0,
   cropY: 0,
   cropWidth: 100,
   cropHeight: 100,
+};
+
+const DEFAULT_EDIT_OPTIONS: EditOptions = {
+  ...DEFAULT_TEXT_OPTIONS,
+  ...DEFAULT_TRANSFORM_OPTIONS,
+  ...DEFAULT_FILTER_OPTIONS,
+  ...DEFAULT_TRANSPARENT_OPTIONS,
+  ...DEFAULT_BORDER_OPTIONS,
+  ...DEFAULT_CROP_OPTIONS,
 };
 
 /**
@@ -514,6 +544,48 @@ function EmojiConverter() {
     announceStatus("リセットしました");
   }, [announceStatus]);
 
+  /** テキスト埋め込みをリセット */
+  const resetTextOptions = useCallback(() => {
+    setEditOptions((prev) => ({ ...prev, ...DEFAULT_TEXT_OPTIONS }));
+    announceStatus("テキスト設定をリセットしました");
+  }, [announceStatus]);
+
+  /** 回転・反転をリセット */
+  const resetTransformOptions = useCallback(() => {
+    setEditOptions((prev) => ({ ...prev, ...DEFAULT_TRANSFORM_OPTIONS }));
+    announceStatus("回転・反転設定をリセットしました");
+  }, [announceStatus]);
+
+  /** フィルターをリセット */
+  const resetFilterOptions = useCallback(() => {
+    setEditOptions((prev) => ({ ...prev, ...DEFAULT_FILTER_OPTIONS }));
+    announceStatus("フィルター設定をリセットしました");
+  }, [announceStatus]);
+
+  /** 透過処理をリセット */
+  const resetTransparentOptions = useCallback(() => {
+    setEditOptions((prev) => ({ ...prev, ...DEFAULT_TRANSPARENT_OPTIONS }));
+    announceStatus("透過設定をリセットしました");
+  }, [announceStatus]);
+
+  /** 枠線をリセット */
+  const resetBorderOptions = useCallback(() => {
+    setEditOptions((prev) => ({ ...prev, ...DEFAULT_BORDER_OPTIONS }));
+    announceStatus("枠線設定をリセットしました");
+  }, [announceStatus]);
+
+  /** トリミングをリセット */
+  const resetCropOptions = useCallback(() => {
+    setEditOptions((prev) => ({ ...prev, ...DEFAULT_CROP_OPTIONS }));
+    announceStatus("トリミング設定をリセットしました");
+  }, [announceStatus]);
+
+  /** 全ての編集オプションをリセット（画像は保持） */
+  const resetAllEditOptions = useCallback(() => {
+    setEditOptions(DEFAULT_EDIT_OPTIONS);
+    announceStatus("全ての編集設定をリセットしました");
+  }, [announceStatus]);
+
   const updateEditOption = <K extends keyof EditOptions>(
     key: K,
     value: EditOptions[K]
@@ -614,11 +686,34 @@ function EmojiConverter() {
             {/* 編集オプション */}
             <div className="emoji-editor-panel">
               <section className="section">
-                <h2 className="section-title">編集オプション</h2>
+                <div className="section-header-with-reset">
+                  <h2 className="section-title">編集オプション</h2>
+                  <button
+                    type="button"
+                    onClick={resetAllEditOptions}
+                    className="reset-all-button"
+                    aria-label="全ての編集設定をリセット"
+                  >
+                    全てリセット
+                  </button>
+                </div>
 
             {/* テキスト埋め込み */}
             <details className="details">
-              <summary className="details-summary">テキスト埋め込み</summary>
+              <summary className="details-summary">
+                <span>テキスト埋め込み</span>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    resetTextOptions();
+                  }}
+                  className="reset-section-button"
+                  aria-label="テキスト設定をリセット"
+                >
+                  リセット
+                </button>
+              </summary>
               <div className="details-content">
                 <div className="form-group">
                   <label htmlFor="text" className="label">
@@ -702,7 +797,20 @@ function EmojiConverter() {
 
             {/* 回転・反転 */}
             <details className="details">
-              <summary className="details-summary">回転・反転</summary>
+              <summary className="details-summary">
+                <span>回転・反転</span>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    resetTransformOptions();
+                  }}
+                  className="reset-section-button"
+                  aria-label="回転・反転設定をリセット"
+                >
+                  リセット
+                </button>
+              </summary>
               <div className="details-content">
                 <div className="form-group">
                   <label htmlFor="rotation" className="label">
@@ -747,7 +855,20 @@ function EmojiConverter() {
 
             {/* フィルター */}
             <details className="details">
-              <summary className="details-summary">フィルター</summary>
+              <summary className="details-summary">
+                <span>フィルター</span>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    resetFilterOptions();
+                  }}
+                  className="reset-section-button"
+                  aria-label="フィルター設定をリセット"
+                >
+                  リセット
+                </button>
+              </summary>
               <div className="details-content">
                 <div className="form-group">
                   <label htmlFor="brightness" className="label">
@@ -804,7 +925,20 @@ function EmojiConverter() {
 
             {/* 透過処理 */}
             <details className="details">
-              <summary className="details-summary">透過処理</summary>
+              <summary className="details-summary">
+                <span>透過処理</span>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    resetTransparentOptions();
+                  }}
+                  className="reset-section-button"
+                  aria-label="透過設定をリセット"
+                >
+                  リセット
+                </button>
+              </summary>
               <div className="details-content">
                 <div className="checkbox-group">
                   <label className="md3-checkbox-wrapper">
@@ -841,7 +975,20 @@ function EmojiConverter() {
 
             {/* 枠線 */}
             <details className="details">
-              <summary className="details-summary">枠線</summary>
+              <summary className="details-summary">
+                <span>枠線</span>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    resetBorderOptions();
+                  }}
+                  className="reset-section-button"
+                  aria-label="枠線設定をリセット"
+                >
+                  リセット
+                </button>
+              </summary>
               <div className="details-content">
                 <div className="checkbox-group">
                   <label className="md3-checkbox-wrapper">
@@ -895,7 +1042,20 @@ function EmojiConverter() {
 
             {/* トリミング */}
             <details className="details">
-              <summary className="details-summary">トリミング</summary>
+              <summary className="details-summary">
+                <span>トリミング</span>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    resetCropOptions();
+                  }}
+                  className="reset-section-button"
+                  aria-label="トリミング設定をリセット"
+                >
+                  リセット
+                </button>
+              </summary>
               <div className="details-content">
                 <div className="checkbox-group">
                   <label className="md3-checkbox-wrapper">
