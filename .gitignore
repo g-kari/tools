@@ -147,6 +147,7 @@ vite.config.ts.timestamp-*
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+/.playwright-mcp
 
 # Work in progress directories
 wip/
@@ -167,3 +168,7 @@ dev-debug.log
 # Task files
 # tasks.json
 # tasks/ 
+
+# tmp
+.tmp
+tmp
