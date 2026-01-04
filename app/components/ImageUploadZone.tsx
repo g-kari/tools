@@ -99,11 +99,19 @@ export function ImageUploadZone({
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
-      if (file) {
-        onFileSelect(file);
+      if (!file) return;
+
+      // ドラッグ&ドロップと同じバリデーションを適用
+      if (!file.type.startsWith("image/")) {
+        onTypeError?.();
+        // inputをリセットして同じファイルを再選択可能に
+        e.target.value = "";
+        return;
       }
+
+      onFileSelect(file);
     },
-    [onFileSelect]
+    [onFileSelect, onTypeError]
   );
 
   return (
