@@ -547,14 +547,14 @@ function ColorPicker() {
                 maxLength={7}
                 aria-label="HEX形式の色コード"
               />
-              <button
+              <Button
                 type="button"
                 className="btn-copy-small"
                 onClick={() => handleCopy(currentColor, "HEX")}
                 aria-label="HEX形式をコピー"
               >
                 コピー
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -595,14 +595,14 @@ function ColorPicker() {
                   aria-label="B"
                 />
               </div>
-              <button
+              <Button
                 type="button"
                 className="btn-copy-small"
                 onClick={() => handleCopy(rgbToString(rgb), "RGB")}
                 aria-label="RGB形式をコピー"
               >
                 コピー
-              </button>
+              </Button>
             </div>
 
             {/* HSL */}
@@ -640,14 +640,14 @@ function ColorPicker() {
                   aria-label="L"
                 />
               </div>
-              <button
+              <Button
                 type="button"
                 className="btn-copy-small"
                 onClick={() => handleCopy(hslToString(hsl), "HSL")}
                 aria-label="HSL形式をコピー"
               >
                 コピー
-              </button>
+              </Button>
             </div>
 
             {/* CMYK */}
@@ -695,14 +695,14 @@ function ColorPicker() {
                   aria-label="K"
                 />
               </div>
-              <button
+              <Button
                 type="button"
                 className="btn-copy-small"
                 onClick={() => handleCopy(cmykToString(cmyk), "CMYK")}
                 aria-label="CMYK形式をコピー"
               >
                 コピー
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -710,7 +710,7 @@ function ColorPicker() {
           <div className="palette-section-compact">
             <div className="palette-header-compact">
               <span className="palette-title">パレット</span>
-              <button
+              <Button
                 type="button"
                 className="btn-add-palette-small"
                 onClick={handleAddToPalette}
@@ -718,7 +718,7 @@ function ColorPicker() {
                 aria-label="現在の色をパレットに追加"
               >
                 +
-              </button>
+              </Button>
             </div>
             <div
               className="palette-container-compact"
@@ -768,14 +768,14 @@ function ColorPicker() {
                   選択
                 </label>
                 {isPickingFromImage && (
-                  <button
+                  <Button
                     type="button"
                     className="btn-clear-small"
                     onClick={handleClearImage}
                     aria-label="画像をクリア"
                   >
                     クリア
-                  </button>
+                  </Button>
                 )}
               </div>
             </div>

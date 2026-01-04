@@ -464,14 +464,14 @@ function ColorExtractor() {
           <div className="converter-section">
             <h2 className="section-title">
               抽出されたカラーコード
-              <button
+              <Button
                 type="button"
                 className="btn-copy-all"
                 onClick={handleCopyAllColors}
                 aria-label="すべての色をコピー"
               >
                 すべてコピー
-              </button>
+              </Button>
             </h2>
 
             <div className="color-grid">

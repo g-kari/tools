@@ -249,6 +249,7 @@ function UuidGenerator() {
                       type="button"
                       variant="outline"
                       size="sm"
+                      className="btn-copy"
                       onClick={() => handleCopy(index)}
                       aria-label={`UUID ${index + 1}をコピー`}
                     >
