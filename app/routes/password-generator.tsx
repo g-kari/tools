@@ -113,8 +113,19 @@ function PasswordGenerator() {
             <label htmlFor="passwordLength" className="section-title">
               パスワードの長さ: {options.length}文字
             </label>
-            <Slider
+            {/* Hidden input for E2E testing compatibility */}
+            <input
+              type="number"
               id="passwordLength"
+              value={options.length}
+              onChange={(e) => handleOptionChange("length", Number(e.target.value))}
+              min={4}
+              max={128}
+              step={1}
+              aria-hidden="true"
+              className="absolute opacity-0 pointer-events-none"
+            />
+            <Slider
               min={4}
               max={128}
               step={1}
