@@ -43,7 +43,7 @@ test.describe('Image to GIF Converter - E2E Tests', () => {
   });
 
   test('should display usage instructions', async ({ page }) => {
-    const usageSection = page.locator('.info-box');
+    const usageSection = page.locator('.info-box').first();
     await expect(usageSection).toBeVisible();
 
     const usageText = await usageSection.textContent();
@@ -168,13 +168,13 @@ test.describe('Image to GIF Converter - E2E Tests', () => {
   });
 
   test('should display instructions about single image support', async ({ page }) => {
-    const usageSection = page.locator('.info-box');
+    const usageSection = page.locator('.info-box').first();
     const usageText = await usageSection.textContent();
     expect(usageText).toContain('1枚の画像からでもGIF形式で保存可能');
   });
 
   test('should display instructions about multiple images', async ({ page }) => {
-    const usageSection = page.locator('.info-box');
+    const usageSection = page.locator('.info-box').first();
     const usageText = await usageSection.textContent();
     expect(usageText).toContain('複数枚の画像を選択するとアニメーションGIF');
   });
@@ -238,20 +238,20 @@ test.describe('Image to GIF Converter - E2E Tests', () => {
   });
 
   test('should display Tips section in help', async ({ page }) => {
-    const usageSection = page.locator('.info-box');
+    const usageSection = page.locator('.info-box').first();
     const usageText = await usageSection.textContent();
     expect(usageText).toContain('Tips');
   });
 
   test('should explain framerate behavior', async ({ page }) => {
-    const usageSection = page.locator('.info-box');
+    const usageSection = page.locator('.info-box').first();
     const usageText = await usageSection.textContent();
     expect(usageText).toContain('フレームレート');
     expect(usageText).toContain('1秒間に表示するフレーム数');
   });
 
   test('should explain loop behavior', async ({ page }) => {
-    const usageSection = page.locator('.info-box');
+    const usageSection = page.locator('.info-box').first();
     const usageText = await usageSection.textContent();
     expect(usageText).toContain('ループ設定');
     expect(usageText).toContain('繰り返し回数');

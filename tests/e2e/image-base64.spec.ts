@@ -42,7 +42,7 @@ test.describe('Image Base64 Converter - E2E Tests', () => {
   });
 
   test('should display usage instructions', async ({ page }) => {
-    const usageSection = page.locator('.info-box');
+    const usageSection = page.locator('.info-box').first();
     await expect(usageSection).toBeVisible();
 
     const usageText = await usageSection.textContent();
@@ -100,7 +100,7 @@ test.describe('Image Base64 Converter - E2E Tests', () => {
   });
 
   test('should display output format options info', async ({ page }) => {
-    const infoBox = page.locator('.info-box');
+    const infoBox = page.locator('.info-box').first();
     await expect(infoBox).toContainText('Data URL');
     await expect(infoBox).toContainText('Base64のみ');
     await expect(infoBox).toContainText('HTML img形式');
@@ -108,7 +108,7 @@ test.describe('Image Base64 Converter - E2E Tests', () => {
   });
 
   test('should display tips section', async ({ page }) => {
-    const infoBox = page.locator('.info-box');
+    const infoBox = page.locator('.info-box').first();
     await expect(infoBox).toContainText('Tips');
     await expect(infoBox).toContainText('33%');
     await expect(infoBox).toContainText('アイコン');
@@ -164,7 +164,7 @@ test.describe('Image Base64 Converter - E2E Tests', () => {
       const dropzone = page.locator('.dropzone');
       await expect(dropzone).toBeVisible();
 
-      const infoBox = page.locator('.info-box');
+      const infoBox = page.locator('.info-box').first();
       await expect(infoBox).toBeVisible();
     });
 
@@ -174,7 +174,7 @@ test.describe('Image Base64 Converter - E2E Tests', () => {
       const dropzone = page.locator('.dropzone');
       await expect(dropzone).toBeVisible();
 
-      const infoBox = page.locator('.info-box');
+      const infoBox = page.locator('.info-box').first();
       await expect(infoBox).toBeVisible();
     });
 
@@ -184,7 +184,7 @@ test.describe('Image Base64 Converter - E2E Tests', () => {
       const dropzone = page.locator('.dropzone');
       await expect(dropzone).toBeVisible();
 
-      const infoBox = page.locator('.info-box');
+      const infoBox = page.locator('.info-box').first();
       await expect(infoBox).toBeVisible();
     });
   });
@@ -220,7 +220,7 @@ test.describe('Image Base64 Converter - E2E Tests', () => {
 
   test.describe('Format options', () => {
     test('should display all format option labels', async ({ page }) => {
-      const infoBox = page.locator('.info-box');
+      const infoBox = page.locator('.info-box').first();
       const infoText = await infoBox.textContent();
 
       // Verify all format options are mentioned in the info
@@ -233,12 +233,12 @@ test.describe('Image Base64 Converter - E2E Tests', () => {
 
   test.describe('Information content', () => {
     test('should explain Base64 encoding size increase', async ({ page }) => {
-      const infoBox = page.locator('.info-box');
+      const infoBox = page.locator('.info-box').first();
       await expect(infoBox).toContainText('33%');
     });
 
     test('should mention use cases', async ({ page }) => {
-      const infoBox = page.locator('.info-box');
+      const infoBox = page.locator('.info-box').first();
       const infoText = await infoBox.textContent();
       expect(infoText).toContain('HTML');
       expect(infoText).toContain('CSS');
@@ -246,12 +246,12 @@ test.describe('Image Base64 Converter - E2E Tests', () => {
     });
 
     test('should warn about large images', async ({ page }) => {
-      const infoBox = page.locator('.info-box');
+      const infoBox = page.locator('.info-box').first();
       await expect(infoBox).toContainText('大きな画像');
     });
 
     test('should mention browser-only processing', async ({ page }) => {
-      const infoBox = page.locator('.info-box');
+      const infoBox = page.locator('.info-box').first();
       await expect(infoBox).toContainText('ブラウザ内で完結');
       await expect(infoBox).toContainText('サーバーにアップロードされません');
     });

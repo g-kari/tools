@@ -32,7 +32,7 @@ test.describe("Minify Tool", () => {
     await expect(page.locator('button:has-text("クリア")')).toBeVisible();
 
     // Check info box
-    await expect(page.locator(".info-box")).toBeVisible();
+    await expect(page.locator(".info-box").first()).toBeVisible();
   });
 
   test("should minify JavaScript code", async ({ page }) => {

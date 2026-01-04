@@ -42,7 +42,7 @@ test.describe('Image Resize - E2E Tests', () => {
   });
 
   test('should display usage instructions', async ({ page }) => {
-    const usageSection = page.locator('.info-box');
+    const usageSection = page.locator('.info-box').first();
     await expect(usageSection).toBeVisible();
 
     const usageText = await usageSection.textContent();
@@ -103,7 +103,7 @@ test.describe('Image Resize - E2E Tests', () => {
   });
 
   test('should display feature list in info box', async ({ page }) => {
-    const infoBox = page.locator('.info-box');
+    const infoBox = page.locator('.info-box').first();
     await expect(infoBox).toContainText('プリセットサイズ');
     await expect(infoBox).toContainText('アスペクト比維持');
     await expect(infoBox).toContainText('トリミング機能');
@@ -160,7 +160,7 @@ test.describe('Image Resize - E2E Tests', () => {
       const dropzone = page.locator('.dropzone');
       await expect(dropzone).toBeVisible();
 
-      const infoBox = page.locator('.info-box');
+      const infoBox = page.locator('.info-box').first();
       await expect(infoBox).toBeVisible();
     });
 
@@ -170,7 +170,7 @@ test.describe('Image Resize - E2E Tests', () => {
       const dropzone = page.locator('.dropzone');
       await expect(dropzone).toBeVisible();
 
-      const infoBox = page.locator('.info-box');
+      const infoBox = page.locator('.info-box').first();
       await expect(infoBox).toBeVisible();
     });
 
@@ -180,7 +180,7 @@ test.describe('Image Resize - E2E Tests', () => {
       const dropzone = page.locator('.dropzone');
       await expect(dropzone).toBeVisible();
 
-      const infoBox = page.locator('.info-box');
+      const infoBox = page.locator('.info-box').first();
       await expect(infoBox).toBeVisible();
     });
   });

@@ -42,7 +42,7 @@ test.describe('Image Compressor - E2E Tests', () => {
   });
 
   test('should display usage instructions', async ({ page }) => {
-    const usageSection = page.locator('.info-box');
+    const usageSection = page.locator('.info-box').first();
     await expect(usageSection).toBeVisible();
 
     const usageText = await usageSection.textContent();
@@ -103,14 +103,14 @@ test.describe('Image Compressor - E2E Tests', () => {
   });
 
   test('should display format options info', async ({ page }) => {
-    const infoBox = page.locator('.info-box');
+    const infoBox = page.locator('.info-box').first();
     await expect(infoBox).toContainText('JPEG');
     await expect(infoBox).toContainText('WebP');
     await expect(infoBox).toContainText('PNG');
   });
 
   test('should display compression tips', async ({ page }) => {
-    const infoBox = page.locator('.info-box');
+    const infoBox = page.locator('.info-box').first();
     await expect(infoBox).toContainText('Tips');
     await expect(infoBox).toContainText('80%');
     await expect(infoBox).toContainText('WebP');
@@ -167,7 +167,7 @@ test.describe('Image Compressor - E2E Tests', () => {
       const dropzone = page.locator('.dropzone');
       await expect(dropzone).toBeVisible();
 
-      const infoBox = page.locator('.info-box');
+      const infoBox = page.locator('.info-box').first();
       await expect(infoBox).toBeVisible();
     });
 
@@ -177,7 +177,7 @@ test.describe('Image Compressor - E2E Tests', () => {
       const dropzone = page.locator('.dropzone');
       await expect(dropzone).toBeVisible();
 
-      const infoBox = page.locator('.info-box');
+      const infoBox = page.locator('.info-box').first();
       await expect(infoBox).toBeVisible();
     });
 
@@ -187,7 +187,7 @@ test.describe('Image Compressor - E2E Tests', () => {
       const dropzone = page.locator('.dropzone');
       await expect(dropzone).toBeVisible();
 
-      const infoBox = page.locator('.info-box');
+      const infoBox = page.locator('.info-box').first();
       await expect(infoBox).toBeVisible();
     });
   });

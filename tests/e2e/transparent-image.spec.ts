@@ -46,7 +46,7 @@ test.describe('Transparent Image Processor - E2E Tests', () => {
   });
 
   test('should display usage instructions', async ({ page }) => {
-    const usageSection = page.locator('.info-box');
+    const usageSection = page.locator('.info-box').first();
     await expect(usageSection).toBeVisible();
 
     const usageText = await usageSection.textContent();
@@ -115,7 +115,7 @@ test.describe('Transparent Image Processor - E2E Tests', () => {
   });
 
   test('should display tips in info box', async ({ page }) => {
-    const infoBox = page.locator('.info-box');
+    const infoBox = page.locator('.info-box').first();
     const infoText = await infoBox.textContent();
 
     expect(infoText).toContain('画像透過ツールとは');

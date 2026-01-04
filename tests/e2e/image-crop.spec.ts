@@ -48,7 +48,7 @@ test.describe("Image Crop - E2E Tests", () => {
   });
 
   test("should display usage instructions", async ({ page }) => {
-    const usageSection = page.locator(".info-box");
+    const usageSection = page.locator(".info-box").first();
     await expect(usageSection).toBeVisible();
 
     const usageText = await usageSection.textContent();
@@ -115,7 +115,7 @@ test.describe("Image Crop - E2E Tests", () => {
     const dropzone = page.locator(".dropzone");
     await expect(dropzone).toBeVisible();
 
-    const infoBox = page.locator(".info-box");
+    const infoBox = page.locator(".info-box").first();
     await expect(infoBox).toBeVisible();
   });
 
@@ -226,7 +226,7 @@ test.describe("Image Crop - E2E Tests", () => {
   });
 
   test("should display info box with usage instructions", async ({ page }) => {
-    const infoBox = page.locator(".info-box");
+    const infoBox = page.locator(".info-box").first();
     await expect(infoBox).toBeVisible();
 
     // 使い方セクションの確認

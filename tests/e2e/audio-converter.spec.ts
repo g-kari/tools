@@ -44,7 +44,7 @@ test.describe('Audio Converter - E2E Tests', () => {
   });
 
   test('should display usage instructions', async ({ page }) => {
-    const usageSection = page.locator('.info-box');
+    const usageSection = page.locator('.info-box').first();
     await expect(usageSection).toBeVisible();
 
     const usageText = await usageSection.textContent();
@@ -158,7 +158,7 @@ test.describe('Audio Converter - E2E Tests', () => {
   });
 
   test('should display usage instructions with correct content', async ({ page }) => {
-    const infoBox = page.locator('.info-box');
+    const infoBox = page.locator('.info-box').first();
 
     // 使い方セクション
     await expect(infoBox.locator('h3:has-text("使い方")')).toBeVisible();
