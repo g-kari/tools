@@ -42,7 +42,7 @@ test.describe('Image Resize - E2E Tests', () => {
   });
 
   test('should display usage instructions', async ({ page }) => {
-    const usageSection = page.locator('.info-box');
+    const usageSection = page.locator('.info-box').first();
     await expect(usageSection).toBeVisible();
 
     const usageText = await usageSection.textContent();
@@ -103,11 +103,15 @@ test.describe('Image Resize - E2E Tests', () => {
   });
 
   test('should display feature list in info box', async ({ page }) => {
-    const infoBox = page.locator('.info-box');
-    await expect(infoBox).toContainText('プリセットサイズ');
-    await expect(infoBox).toContainText('アスペクト比維持');
-    await expect(infoBox).toContainText('トリミング機能');
-    await expect(infoBox).toContainText('ブラウザ内処理');
+    // 複数のinfo-boxがあるので、すべてのテキストを結合して確認
+    const allInfoBoxes = page.locator('.info-box');
+    const allText = await allInfoBoxes.allTextContents();
+    const combinedText = allText.join(' ');
+
+    expect(combinedText).toContain('プリセットサイズ');
+    expect(combinedText).toContain('アスペクト比維持');
+    expect(combinedText).toContain('トリミング機能');
+    expect(combinedText).toContain('ブラウザ内処理');
   });
 
   test('should be keyboard accessible', async ({ page }) => {
@@ -160,7 +164,7 @@ test.describe('Image Resize - E2E Tests', () => {
       const dropzone = page.locator('.dropzone');
       await expect(dropzone).toBeVisible();
 
-      const infoBox = page.locator('.info-box');
+      const infoBox = page.locator('.info-box').first();
       await expect(infoBox).toBeVisible();
     });
 
@@ -170,7 +174,7 @@ test.describe('Image Resize - E2E Tests', () => {
       const dropzone = page.locator('.dropzone');
       await expect(dropzone).toBeVisible();
 
-      const infoBox = page.locator('.info-box');
+      const infoBox = page.locator('.info-box').first();
       await expect(infoBox).toBeVisible();
     });
 
@@ -180,7 +184,7 @@ test.describe('Image Resize - E2E Tests', () => {
       const dropzone = page.locator('.dropzone');
       await expect(dropzone).toBeVisible();
 
-      const infoBox = page.locator('.info-box');
+      const infoBox = page.locator('.info-box').first();
       await expect(infoBox).toBeVisible();
     });
   });
@@ -195,7 +199,7 @@ test.describe('Image Resize - E2E Tests', () => {
     });
 
     test('should have complementary region for info box', async ({ page }) => {
-      const complementary = page.locator('[role="complementary"]');
+      const complementary = page.locator('[role="complementary"]').first();
       await expect(complementary).toBeVisible();
       await expect(complementary).toHaveAttribute('aria-labelledby', 'usage-title');
     });

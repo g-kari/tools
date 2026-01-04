@@ -110,7 +110,7 @@ test.describe('Text Sort Tool', () => {
   });
 
   test('should have usage instructions', async ({ page }) => {
-    const infoBox = page.locator('.info-box');
+    const infoBox = page.locator('.info-box').first();
 
     await expect(infoBox).toContainText('使い方');
     await expect(infoBox).toContainText('昇順ソート');

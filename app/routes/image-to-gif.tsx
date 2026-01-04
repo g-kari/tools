@@ -2,6 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile, toBlobURL } from "@ffmpeg/util";
+import { Button } from "~/components/ui/button";
+import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/image-to-gif")({
   head: () => ({
@@ -515,22 +517,22 @@ function ImageToGifConverter() {
           </div>
 
           <div className="button-group" role="group" aria-label="操作">
-            <button
+            <Button
               type="button"
-              className="btn-primary"
               onClick={handleConvert}
               disabled={isLoading || images.length === 0}
             >
               {isLoading ? "変換中..." : "GIFに変換"}
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
-              className="btn-secondary"
+              variant="secondary"
+              className="btn-clear"
               onClick={handleClear}
               disabled={isLoading}
             >
               クリア
-            </button>
+            </Button>
           </div>
 
           {progress && (
@@ -549,13 +551,12 @@ function ImageToGifConverter() {
             </div>
 
             <div className="button-group" role="group" aria-label="ダウンロード">
-              <button
+              <Button
                 type="button"
-                className="btn-primary"
                 onClick={handleDownload}
               >
                 ダウンロード
-              </button>
+              </Button>
             </div>
           </div>
         )}
@@ -570,9 +571,9 @@ function ImageToGifConverter() {
               <code>{generateFFmpegCommand(images.map(img => img.file), framerate, loop, quality)}</code>
             </pre>
             <div className="button-group" role="group" aria-label="コマンド操作">
-              <button
+              <Button
                 type="button"
-                className="btn-secondary"
+                variant="secondary"
                 onClick={() => {
                   navigator.clipboard.writeText(
                     generateFFmpegCommand(images.map(img => img.file), framerate, loop, quality)
@@ -581,48 +582,48 @@ function ImageToGifConverter() {
                 }}
               >
                 コマンドをコピー
-              </button>
+              </Button>
             </div>
           </div>
         )}
 
-        <aside
-          className="info-box"
-          role="complementary"
-          aria-labelledby="usage-title"
-        >
-          <h3 id="usage-title">画像→GIF変換とは</h3>
-          <ul>
-            <li>PNG、JPEG、WebPなどの画像をアニメーションGIFに変換します</li>
-            <li>1枚の画像からでもGIF形式で保存可能</li>
-            <li>複数枚の画像を選択するとアニメーションGIFになります</li>
-          </ul>
-          <h3 id="settings-title">設定について</h3>
-          <ul>
-            <li>
-              <strong>フレームレート:</strong> 1秒間に表示するフレーム数（複数枚の場合のみ有効）
-            </li>
-            <li>
-              <strong>品質:</strong> GIFの画質（値が大きいほど高品質だがファイルサイズも増加）
-            </li>
-            <li>
-              <strong>ループ設定:</strong> アニメーションの繰り返し回数
-            </li>
-          </ul>
-          <h3 id="how-to-title">使い方</h3>
-          <ul>
-            <li>「画像を選択」から1枚以上の画像ファイルを選択</li>
-            <li>フレームレート、品質、ループ設定を調整</li>
-            <li>「GIFに変換」ボタンをクリック</li>
-            <li>変換完了後、「ダウンロード」でGIFを保存</li>
-          </ul>
-          <h3 id="tips-title">Tips</h3>
-          <ul>
-            <li>1枚の画像でも静止画GIFとして保存できます</li>
-            <li>複数枚選択時は選択した順序でアニメーション化されます</li>
-            <li>フレームレートを低くするとゆっくり、高くすると速く動きます</li>
-          </ul>
-        </aside>
+        <TipsCard
+          sections={[
+            {
+              title: "画像→GIF変換とは",
+              items: [
+                "PNG、JPEG、WebPなどの画像をアニメーションGIFに変換します",
+                "1枚の画像からでもGIF形式で保存可能",
+                "複数枚の画像を選択するとアニメーションGIFになります",
+              ],
+            },
+            {
+              title: "設定について",
+              items: [
+                "フレームレート: 1秒間に表示するフレーム数（複数枚の場合のみ有効）",
+                "品質: GIFの画質（値が大きいほど高品質だがファイルサイズも増加）",
+                "ループ設定: アニメーションの繰り返し回数",
+              ],
+            },
+            {
+              title: "使い方",
+              items: [
+                "「画像を選択」から1枚以上の画像ファイルを選択",
+                "フレームレート、品質、ループ設定を調整",
+                "「GIFに変換」ボタンをクリック",
+                "変換完了後、「ダウンロード」でGIFを保存",
+              ],
+            },
+            {
+              title: "Tips",
+              items: [
+                "1枚の画像でも静止画GIFとして保存できます",
+                "複数枚選択時は選択した順序でアニメーション化されます",
+                "フレームレートを低くするとゆっくり、高くすると速く動きます",
+              ],
+            },
+          ]}
+        />
       </div>
 
       <div

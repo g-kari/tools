@@ -7,6 +7,9 @@ import {
   type SecurityLevel,
 } from "../functions/security-headers";
 import { useToast } from "../components/Toast";
+import { Button } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
+import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/security-headers")({
   head: () => ({
@@ -195,7 +198,7 @@ function SecurityHeadersChecker() {
                   spellCheck="false"
                 />
               </div>
-              <button
+              <Button
                 type="submit"
                 className="btn-primary"
                 onClick={handleCheck}
@@ -203,7 +206,7 @@ function SecurityHeadersChecker() {
                 aria-label="セキュリティヘッダーをチェック"
               >
                 チェック
-              </button>
+              </Button>
             </div>
             <span id="url-help" className="sr-only">
               https://example.comのような形式でURLを入力してください
@@ -246,52 +249,31 @@ function SecurityHeadersChecker() {
           </section>
         )}
 
-        <aside
-          className="info-box"
-          role="complementary"
-          aria-labelledby="usage-title"
-        >
-          <h3 id="usage-title">使い方</h3>
-          <ul>
-            <li>チェックしたいWebサイトのURLを入力</li>
-            <li>「チェック」ボタンをクリックしてセキュリティヘッダーを検証</li>
-            <li>各ヘッダーの状態と推奨設定を確認</li>
-            <li>
-              チェック項目: CSP, HSTS, X-Content-Type-Options, X-Frame-Options,
-              Referrer-Policy, Permissions-Policy, X-XSS-Protection
-            </li>
-          </ul>
-        </aside>
-
-        <aside
-          className="info-box"
-          role="complementary"
-          aria-labelledby="about-title"
-        >
-          <h3 id="about-title">セキュリティヘッダーについて</h3>
-          <dl>
-            <dt>Content-Security-Policy (CSP)</dt>
-            <dd>XSS攻撃を防ぐためのヘッダー。信頼できるコンテンツソースを指定します。</dd>
-
-            <dt>Strict-Transport-Security (HSTS)</dt>
-            <dd>HTTPS接続を強制し、中間者攻撃を防ぎます。</dd>
-
-            <dt>X-Content-Type-Options</dt>
-            <dd>ブラウザのMIME sniffingを防止します。</dd>
-
-            <dt>X-Frame-Options</dt>
-            <dd>クリックジャッキング攻撃を防ぐために、iframe内での表示を制御します。</dd>
-
-            <dt>Referrer-Policy</dt>
-            <dd>リファラー情報の送信方法を制御します。</dd>
-
-            <dt>Permissions-Policy</dt>
-            <dd>ブラウザの機能（カメラ、マイクなど）へのアクセスを制御します。</dd>
-
-            <dt>X-XSS-Protection</dt>
-            <dd>古いブラウザのXSSフィルターを制御します（現在は非推奨、CSP使用を推奨）。</dd>
-          </dl>
-        </aside>
+        <TipsCard
+          sections={[
+            {
+              title: "使い方",
+              items: [
+                "チェックしたいWebサイトのURLを入力",
+                "「チェック」ボタンをクリックしてセキュリティヘッダーを検証",
+                "各ヘッダーの状態と推奨設定を確認",
+                "チェック項目: CSP, HSTS, X-Content-Type-Options, X-Frame-Options, Referrer-Policy, Permissions-Policy, X-XSS-Protection",
+              ],
+            },
+            {
+              title: "セキュリティヘッダーについて",
+              items: [
+                "Content-Security-Policy (CSP): XSS攻撃を防ぐためのヘッダー。信頼できるコンテンツソースを指定します",
+                "Strict-Transport-Security (HSTS): HTTPS接続を強制し、中間者攻撃を防ぎます",
+                "X-Content-Type-Options: ブラウザのMIME sniffingを防止します",
+                "X-Frame-Options: クリックジャッキング攻撃を防ぐために、iframe内での表示を制御します",
+                "Referrer-Policy: リファラー情報の送信方法を制御します",
+                "Permissions-Policy: ブラウザの機能（カメラ、マイクなど）へのアクセスを制御します",
+                "X-XSS-Protection: 古いブラウザのXSSフィルターを制御します（現在は非推奨、CSP使用を推奨）",
+              ],
+            },
+          ]}
+        />
       </div>
 
       <div

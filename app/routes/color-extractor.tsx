@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef, useCallback, useEffect } from "react";
+import { Button } from "~/components/ui/button";
+import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/color-extractor")({
   head: () => ({
@@ -439,14 +441,14 @@ function ColorExtractor() {
                 </span>
               </div>
 
-              <button
+              <Button
                 type="button"
                 className="btn-primary"
                 onClick={handleReanalyze}
                 disabled={isProcessing}
               >
                 {isProcessing ? "分析中..." : "再分析"}
-              </button>
+              </Button>
             </>
           )}
         </div>
@@ -463,14 +465,14 @@ function ColorExtractor() {
           <div className="converter-section">
             <h2 className="section-title">
               抽出されたカラーコード
-              <button
+              <Button
                 type="button"
                 className="btn-copy-all"
                 onClick={handleCopyAllColors}
                 aria-label="すべての色をコピー"
               >
                 すべてコピー
-              </button>
+              </Button>
             </h2>
 
             <div className="color-grid">
@@ -509,31 +511,35 @@ function ColorExtractor() {
           </div>
         )}
 
-        <aside
-          className="info-box"
-          role="complementary"
-          aria-labelledby="usage-title"
-        >
-          <h3 id="usage-title">カラーコード抽出とは</h3>
-          <ul>
-            <li>画像から主要な色を抽出してカラーコードを表示します</li>
-            <li>k-meansクラスタリングを使用して代表的な色を分析</li>
-            <li>デザインの配色確認やカラーパレット作成に便利</li>
-          </ul>
-          <h3 id="usage-steps-title">使い方</h3>
-          <ul>
-            <li>画像をアップロード（クリックまたはドラッグ&ドロップ）</li>
-            <li>抽出する色数を調整（2〜20色）</li>
-            <li>抽出された色をクリックしてコピー</li>
-            <li>「すべてコピー」ですべての色をまとめてコピー</li>
-          </ul>
-          <h3 id="tips-title">ヒント</h3>
-          <ul>
-            <li>色数を増やすと、より細かい色の違いを検出します</li>
-            <li>色数を減らすと、主要な色のみを抽出します</li>
-            <li>使用率は画像内でその色が占める割合を示します</li>
-          </ul>
-        </aside>
+        <TipsCard
+          sections={[
+            {
+              title: "カラーコード抽出とは",
+              items: [
+                "画像から主要な色を抽出してカラーコードを表示します",
+                "k-meansクラスタリングを使用して代表的な色を分析",
+                "デザインの配色確認やカラーパレット作成に便利",
+              ],
+            },
+            {
+              title: "使い方",
+              items: [
+                "画像をアップロード（クリックまたはドラッグ&ドロップ）",
+                "抽出する色数を調整（2〜20色）",
+                "抽出された色をクリックしてコピー",
+                "「すべてコピー」ですべての色をまとめてコピー",
+              ],
+            },
+            {
+              title: "ヒント",
+              items: [
+                "色数を増やすと、より細かい色の違いを検出します",
+                "色数を減らすと、主要な色のみを抽出します",
+                "使用率は画像内でその色が占める割合を示します",
+              ],
+            },
+          ]}
+        />
       </div>
 
       <div

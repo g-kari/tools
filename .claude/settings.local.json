@@ -15,7 +15,9 @@
       "Bash(mkdir:*)",
       "Bash(gh issue list:*)",
       "mcp__taskmaster-ai__get_tasks",
-      "mcp__taskmaster-ai__parse_prd"
+      "mcp__taskmaster-ai__parse_prd",
+      "Bash(npx shadcn@latest add:*)",
+      "Bash(cat:*)"
     ]
   }
 }

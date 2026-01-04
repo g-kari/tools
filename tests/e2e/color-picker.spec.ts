@@ -324,7 +324,7 @@ test.describe("Color Picker", () => {
 
   test("should display info box with tips", async ({ page }) => {
     // Check info-box sections
-    await expect(page.locator(".info-box")).toBeVisible();
+    await expect(page.locator(".info-box").first()).toBeVisible();
     await expect(
       page.getByRole("heading", { name: "カラーピッカーとは" })
     ).toBeVisible();

@@ -46,7 +46,7 @@ test.describe('Favicon Generator - E2E Tests', () => {
   });
 
   test('should display usage instructions', async ({ page }) => {
-    const usageSection = page.locator('.info-box');
+    const usageSection = page.locator('.info-box').first();
     await expect(usageSection).toBeVisible();
 
     const usageText = await usageSection.textContent();
@@ -115,11 +115,13 @@ test.describe('Favicon Generator - E2E Tests', () => {
   });
 
   test('should display tips in info box', async ({ page }) => {
-    const infoBox = page.locator('.info-box');
-    const infoText = await infoBox.textContent();
+    // 複数のinfo-boxがあるので、すべてのテキストを結合して確認
+    const allInfoBoxes = page.locator('.info-box');
+    const allText = await allInfoBoxes.allTextContents();
+    const combinedText = allText.join(' ');
 
-    expect(infoText).toContain('Favicon生成ツールとは');
-    expect(infoText).toContain('使い方');
+    expect(combinedText).toContain('Favicon生成ツールとは');
+    expect(combinedText).toContain('使い方');
   });
 
   test('should have upload icon in dropzone', async ({ page }) => {
@@ -146,12 +148,14 @@ test.describe('Favicon Generator - E2E Tests', () => {
   });
 
   test('should display information about generated files', async ({ page }) => {
-    const infoBox = page.locator('.info-box');
-    const infoText = await infoBox.textContent();
+    // 複数のinfo-boxがあるので、すべてのテキストを結合して確認
+    const allInfoBoxes = page.locator('.info-box');
+    const allText = await allInfoBoxes.allTextContents();
+    const combinedText = allText.join(' ');
 
-    expect(infoText).toContain('favicon-16x16.png');
-    expect(infoText).toContain('apple-touch-icon.png');
-    expect(infoText).toContain('android-chrome');
+    expect(combinedText).toContain('favicon-16x16.png');
+    expect(combinedText).toContain('apple-touch-icon.png');
+    expect(combinedText).toContain('android-chrome');
   });
 
   // Tests that require file upload would need mock files

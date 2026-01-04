@@ -48,7 +48,7 @@ test.describe("Image Crop - E2E Tests", () => {
   });
 
   test("should display usage instructions", async ({ page }) => {
-    const usageSection = page.locator(".info-box");
+    const usageSection = page.locator(".info-box").first();
     await expect(usageSection).toBeVisible();
 
     const usageText = await usageSection.textContent();
@@ -115,7 +115,7 @@ test.describe("Image Crop - E2E Tests", () => {
     const dropzone = page.locator(".dropzone");
     await expect(dropzone).toBeVisible();
 
-    const infoBox = page.locator(".info-box");
+    const infoBox = page.locator(".info-box").first();
     await expect(infoBox).toBeVisible();
   });
 
@@ -226,15 +226,17 @@ test.describe("Image Crop - E2E Tests", () => {
   });
 
   test("should display info box with usage instructions", async ({ page }) => {
-    const infoBox = page.locator(".info-box");
-    await expect(infoBox).toBeVisible();
-
-    // 使い方セクションの確認
-    const usageTitle = infoBox.locator("h3", { hasText: "使い方" });
+    // 使い方セクションの確認（1つ目のinfo-box）
+    const usageBox = page.locator(".info-box").first();
+    await expect(usageBox).toBeVisible();
+    const usageTitle = usageBox.locator("h3");
     await expect(usageTitle).toBeVisible();
 
-    // 機能セクションの確認
-    const featuresTitle = infoBox.locator("h3", { hasText: "機能" });
-    await expect(featuresTitle).toBeVisible();
+    // 複数のinfo-boxがあるので、すべてのテキストを結合して確認
+    const allInfoBoxes = page.locator('.info-box');
+    const allText = await allInfoBoxes.allTextContents();
+    const combinedText = allText.join(' ');
+    expect(combinedText).toContain("使い方");
+    expect(combinedText).toContain("機能");
   });
 });

@@ -1,6 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useToast } from "../components/Toast";
+import { Button } from "~/components/ui/button";
+import { Textarea } from "~/components/ui/textarea";
+import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/text-sort")({
   head: () => ({
@@ -111,7 +114,7 @@ function TextSortTool() {
             <label htmlFor="inputText" className="section-title">
               入力テキスト
             </label>
-            <textarea
+            <Textarea
               id="inputText"
               ref={inputRef}
               value={inputText}
@@ -126,53 +129,56 @@ function TextSortTool() {
           </div>
 
           <div className="button-group" role="group" aria-label="ソート操作">
-            <button
+            <Button
               type="button"
               className="btn-primary"
               onClick={handleSortAsc}
               aria-label="入力テキストを昇順ソート"
             >
               昇順ソート
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
               className="btn-primary"
               onClick={handleSortDesc}
               aria-label="入力テキストを降順ソート"
             >
               降順ソート
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
+              variant="secondary"
               className="btn-secondary"
               onClick={handleRemoveDuplicates}
               aria-label="重複行を削除"
             >
               重複削除
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
+              variant="secondary"
               className="btn-secondary"
               onClick={handleSortAndRemoveDuplicates}
               aria-label="昇順ソートと重複削除を同時実行"
             >
               ソート + 重複削除
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
+              variant="outline"
               className="btn-clear"
               onClick={handleClear}
               aria-label="入力と出力をクリア"
             >
               クリア
-            </button>
+            </Button>
           </div>
 
           <div className="output-section">
             <label htmlFor="outputText" className="section-title">
               出力結果
             </label>
-            <textarea
+            <Textarea
               id="outputText"
               value={outputText}
               readOnly
@@ -183,21 +189,21 @@ function TextSortTool() {
           </div>
         </form>
 
-        <aside
-          className="info-box"
-          role="complementary"
-          aria-labelledby="usage-title"
-        >
-          <h3 id="usage-title">使い方</h3>
-          <ul>
-            <li>「入力テキスト」欄に1行に1つずつテキストを入力します</li>
-            <li>「昇順ソート」ボタンで行を昇順（A→Z、あ→ん）に並び替え</li>
-            <li>「降順ソート」ボタンで行を降順（Z→A、ん→あ）に並び替え</li>
-            <li>「重複削除」ボタンで重複する行を削除</li>
-            <li>「ソート + 重複削除」ボタンで昇順ソートと重複削除を同時実行</li>
-            <li>処理結果は「出力結果」欄に表示されます</li>
-          </ul>
-        </aside>
+        <TipsCard
+          sections={[
+            {
+              title: "使い方",
+              items: [
+                "「入力テキスト」欄に1行に1つずつテキストを入力します",
+                "「昇順ソート」ボタンで行を昇順（A→Z、あ→ん）に並び替え",
+                "「降順ソート」ボタンで行を降順（Z→A、ん→あ）に並び替え",
+                "「重複削除」ボタンで重複する行を削除",
+                "「ソート + 重複削除」ボタンで昇順ソートと重複削除を同時実行",
+                "処理結果は「出力結果」欄に表示されます",
+              ],
+            },
+          ]}
+        />
       </div>
 
       <div

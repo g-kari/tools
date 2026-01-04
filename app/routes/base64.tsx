@@ -1,6 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useToast } from "../components/Toast";
+import { Button } from "~/components/ui/button";
+import { Textarea } from "~/components/ui/textarea";
+import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/base64")({
   head: () => ({
@@ -106,7 +109,7 @@ function Base64Converter() {
             <label htmlFor="inputText" className="section-title">
               入力テキスト
             </label>
-            <textarea
+            <Textarea
               id="inputText"
               ref={inputRef}
               value={inputText}
@@ -121,37 +124,39 @@ function Base64Converter() {
           </div>
 
           <div className="button-group" role="group" aria-label="変換操作">
-            <button
+            <Button
               type="button"
               className="btn-primary"
               onClick={handleEncode}
               aria-label="入力テキストをBase64エンコード"
             >
               Base64 エンコード
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
+              variant="secondary"
               className="btn-secondary"
               onClick={handleDecode}
               aria-label="Base64エンコードされた文字列をデコード"
             >
               Base64 デコード
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
+              variant="outline"
               className="btn-clear"
               onClick={handleClear}
               aria-label="入力と出力をクリア"
             >
               クリア
-            </button>
+            </Button>
           </div>
 
-          <div style={{ marginBottom: "30px" }}>
+          <div className="output-section">
             <label htmlFor="outputText" className="section-title">
               出力結果
             </label>
-            <textarea
+            <Textarea
               id="outputText"
               value={outputText}
               readOnly
@@ -162,20 +167,20 @@ function Base64Converter() {
           </div>
         </form>
 
-        <aside
-          className="info-box"
-          role="complementary"
-          aria-labelledby="usage-title"
-        >
-          <h3 id="usage-title">使い方</h3>
-          <ul>
-            <li>「入力テキスト」欄にテキストを入力します</li>
-            <li>「Base64 エンコード」ボタンでテキストをBase64形式に変換</li>
-            <li>「Base64 デコード」ボタンでBase64形式を元のテキストに変換</li>
-            <li>変換結果は「出力結果」欄に表示されます</li>
-            <li>キーボードショートカット: Ctrl+Enter でエンコード実行</li>
-          </ul>
-        </aside>
+        <TipsCard
+          sections={[
+            {
+              title: "使い方",
+              items: [
+                "「入力テキスト」欄にテキストを入力します",
+                "「Base64 エンコード」ボタンでテキストをBase64形式に変換",
+                "「Base64 デコード」ボタンでBase64形式を元のテキストに変換",
+                "変換結果は「出力結果」欄に表示されます",
+                "キーボードショートカット: Ctrl+Enter でエンコード実行",
+              ],
+            },
+          ]}
+        />
       </div>
 
       <div

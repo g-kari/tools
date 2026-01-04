@@ -5,6 +5,9 @@ import {
   type IpGeolocationResult,
 } from "../functions/ip-geolocation";
 import { useToast } from "../components/Toast";
+import { Button } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
+import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/ip-geolocation")({
   head: () => ({
@@ -180,7 +183,7 @@ function IpGeolocationLookup() {
             <div className="search-form-row">
               <div className="search-input-wrapper">
                 <label htmlFor="ipInput">IPアドレス</label>
-                <input
+                <Input
                   type="text"
                   id="ipInput"
                   ref={inputRef}
@@ -193,7 +196,7 @@ function IpGeolocationLookup() {
                   spellCheck="false"
                 />
               </div>
-              <button
+              <Button
                 type="submit"
                 className="btn-primary"
                 onClick={handleSearch}
@@ -201,7 +204,7 @@ function IpGeolocationLookup() {
                 aria-label="IP情報を検索"
               >
                 検索
-              </button>
+              </Button>
             </div>
             <span id="ip-help" className="sr-only">
               IPv4またはIPv6アドレスを入力してください
@@ -233,32 +236,27 @@ function IpGeolocationLookup() {
           </section>
         )}
 
-        <aside
-          className="info-box"
-          role="complementary"
-          aria-labelledby="usage-title"
-        >
-          <h3 id="usage-title">使い方</h3>
-          <ul>
-            <li>IPアドレスを入力して「検索」ボタンをクリック</li>
-            <li>例: 8.8.8.8, 1.1.1.1</li>
-            <li>位置情報、プロバイダー、組織名などを表示</li>
-            <li>IPv4とIPv6の両方に対応</li>
-            <li>キーボードショートカット: Enterキーで検索実行</li>
-          </ul>
-          <h3>利用サービス</h3>
-          <p>
-            このツールは{" "}
-            <a
-              href="https://ip-api.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              ip-api.com
-            </a>{" "}
-            のAPIを利用しています。無料版のため、1分間に45リクエストまでの制限があります。
-          </p>
-        </aside>
+        <TipsCard
+          sections={[
+            {
+              title: "使い方",
+              items: [
+                "IPアドレスを入力して「検索」ボタンをクリック",
+                "例: 8.8.8.8, 1.1.1.1",
+                "位置情報、プロバイダー、組織名などを表示",
+                "IPv4とIPv6の両方に対応",
+                "キーボードショートカット: Enterキーで検索実行",
+              ],
+            },
+            {
+              title: "利用サービス",
+              items: [
+                "このツールは ip-api.com のAPIを利用しています",
+                "無料版のため、1分間に45リクエストまでの制限があります",
+              ],
+            },
+          ]}
+        />
       </div>
 
       <div

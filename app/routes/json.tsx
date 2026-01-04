@@ -2,6 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { formatJson, minifyJson } from "../utils/json";
 import { useToast } from "../components/Toast";
+import { Button } from "~/components/ui/button";
+import { Textarea } from "~/components/ui/textarea";
+import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/json")({
   head: () => ({
@@ -107,7 +110,7 @@ function JsonFormatter() {
             <label htmlFor="inputText" className="section-title">
               入力JSON
             </label>
-            <textarea
+            <Textarea
               id="inputText"
               ref={inputRef}
               value={inputText}
@@ -122,30 +125,32 @@ function JsonFormatter() {
           </div>
 
           <div className="button-group" role="group" aria-label="JSON操作">
-            <button
+            <Button
               type="button"
               className="btn-primary"
               onClick={handleFormat}
               aria-label="JSONを整形（フォーマット）"
             >
               フォーマット
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
+              variant="secondary"
               className="btn-secondary"
               onClick={handleMinify}
               aria-label="JSONを圧縮（ミニファイ）"
             >
               圧縮
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
+              variant="outline"
               className="btn-clear"
               onClick={handleClear}
               aria-label="入力と出力をクリア"
             >
               クリア
-            </button>
+            </Button>
           </div>
 
           {error && (
@@ -154,11 +159,11 @@ function JsonFormatter() {
             </div>
           )}
 
-          <div style={{ marginBottom: "30px" }}>
+          <div className="output-section">
             <label htmlFor="outputText" className="section-title">
               出力結果
             </label>
-            <textarea
+            <Textarea
               id="outputText"
               value={outputText}
               readOnly
@@ -169,20 +174,20 @@ function JsonFormatter() {
           </div>
         </form>
 
-        <aside
-          className="info-box"
-          role="complementary"
-          aria-labelledby="usage-title"
-        >
-          <h3 id="usage-title">使い方</h3>
-          <ul>
-            <li>「入力JSON」欄にJSONを入力します</li>
-            <li>「フォーマット」ボタンでJSONを見やすく整形</li>
-            <li>「圧縮」ボタンでJSONを1行に圧縮（ミニファイ）</li>
-            <li>変換結果は「出力結果」欄に表示されます</li>
-            <li>キーボードショートカット: Ctrl+Enter でフォーマット実行</li>
-          </ul>
-        </aside>
+        <TipsCard
+          sections={[
+            {
+              title: "使い方",
+              items: [
+                "「入力JSON」欄にJSONを入力します",
+                "「フォーマット」ボタンでJSONを見やすく整形",
+                "「圧縮」ボタンでJSONを1行に圧縮（ミニファイ）",
+                "変換結果は「出力結果」欄に表示されます",
+                "キーボードショートカット: Ctrl+Enter でフォーマット実行",
+              ],
+            },
+          ]}
+        />
       </div>
 
       <div

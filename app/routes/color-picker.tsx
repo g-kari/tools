@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useToast } from "../components/Toast";
+import { Button } from "~/components/ui/button";
+import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/color-picker")({
   head: () => ({
@@ -545,14 +547,14 @@ function ColorPicker() {
                 maxLength={7}
                 aria-label="HEX形式の色コード"
               />
-              <button
+              <Button
                 type="button"
                 className="btn-copy-small"
                 onClick={() => handleCopy(currentColor, "HEX")}
                 aria-label="HEX形式をコピー"
               >
                 コピー
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -593,14 +595,14 @@ function ColorPicker() {
                   aria-label="B"
                 />
               </div>
-              <button
+              <Button
                 type="button"
                 className="btn-copy-small"
                 onClick={() => handleCopy(rgbToString(rgb), "RGB")}
                 aria-label="RGB形式をコピー"
               >
                 コピー
-              </button>
+              </Button>
             </div>
 
             {/* HSL */}
@@ -638,14 +640,14 @@ function ColorPicker() {
                   aria-label="L"
                 />
               </div>
-              <button
+              <Button
                 type="button"
                 className="btn-copy-small"
                 onClick={() => handleCopy(hslToString(hsl), "HSL")}
                 aria-label="HSL形式をコピー"
               >
                 コピー
-              </button>
+              </Button>
             </div>
 
             {/* CMYK */}
@@ -693,14 +695,14 @@ function ColorPicker() {
                   aria-label="K"
                 />
               </div>
-              <button
+              <Button
                 type="button"
                 className="btn-copy-small"
                 onClick={() => handleCopy(cmykToString(cmyk), "CMYK")}
                 aria-label="CMYK形式をコピー"
               >
                 コピー
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -708,7 +710,7 @@ function ColorPicker() {
           <div className="palette-section-compact">
             <div className="palette-header-compact">
               <span className="palette-title">パレット</span>
-              <button
+              <Button
                 type="button"
                 className="btn-add-palette-small"
                 onClick={handleAddToPalette}
@@ -716,7 +718,7 @@ function ColorPicker() {
                 aria-label="現在の色をパレットに追加"
               >
                 +
-              </button>
+              </Button>
             </div>
             <div
               className="palette-container-compact"
@@ -766,14 +768,14 @@ function ColorPicker() {
                   選択
                 </label>
                 {isPickingFromImage && (
-                  <button
+                  <Button
                     type="button"
                     className="btn-clear-small"
                     onClick={handleClearImage}
                     aria-label="画像をクリア"
                   >
                     クリア
-                  </button>
+                  </Button>
                 )}
               </div>
             </div>
@@ -811,39 +813,39 @@ function ColorPicker() {
         </div>
       </div>
 
-      <aside className="info-box" role="complementary" aria-labelledby="usage-title">
-        <h3 id="usage-title">カラーピッカーとは</h3>
-        <ul>
-          <li>色の選択と各種形式への変換ができるツールです</li>
-          <li>HEX、RGB、HSL、CMYK形式に対応しています</li>
-          <li>画像をアップロードして色を抽出できます</li>
-          <li>選択した色をパレットに保存できます（最大10色）</li>
-          <li>パレットはブラウザに保存され、次回も利用できます</li>
-        </ul>
-        <h3 id="format-title">カラー形式について</h3>
-        <ul>
-          <li>
-            <strong>HEX</strong>: Web開発で最も一般的な形式（例: #FF0000）
-          </li>
-          <li>
-            <strong>RGB</strong>: 光の三原色による表現（例: rgb(255, 0, 0)）
-          </li>
-          <li>
-            <strong>HSL</strong>: 色相・彩度・輝度による表現（例: hsl(0, 100%, 50%)）
-          </li>
-          <li>
-            <strong>CMYK</strong>: 印刷で使用される色表現（例: cmyk(0%, 100%, 100%, 0%)）
-          </li>
-        </ul>
-        <h3 id="tips-title">Tips</h3>
-        <ul>
-          <li>各形式の入力欄に直接値を入力して色を変更できます</li>
-          <li>画像をクリックすると、その場所の色を取得できます</li>
-          <li>コピーボタンで各形式の色コードをクリップボードにコピーできます</li>
-          <li>パレットの色を右クリックで削除できます</li>
-          <li>CMYKは印刷向けの色表現のため、RGB/HEXとは若干異なる場合があります</li>
-        </ul>
-      </aside>
+      <TipsCard
+        sections={[
+          {
+            title: "カラーピッカーとは",
+            items: [
+              "色の選択と各種形式への変換ができるツールです",
+              "HEX、RGB、HSL、CMYK形式に対応しています",
+              "画像をアップロードして色を抽出できます",
+              "選択した色をパレットに保存できます（最大10色）",
+              "パレットはブラウザに保存され、次回も利用できます",
+            ],
+          },
+          {
+            title: "カラー形式について",
+            items: [
+              "HEX: Web開発で最も一般的な形式（例: #FF0000）",
+              "RGB: 光の三原色による表現（例: rgb(255, 0, 0)）",
+              "HSL: 色相・彩度・輝度による表現（例: hsl(0, 100%, 50%)）",
+              "CMYK: 印刷で使用される色表現（例: cmyk(0%, 100%, 100%, 0%)）",
+            ],
+          },
+          {
+            title: "Tips",
+            items: [
+              "各形式の入力欄に直接値を入力して色を変更できます",
+              "画像をクリックすると、その場所の色を取得できます",
+              "コピーボタンで各形式の色コードをクリップボードにコピーできます",
+              "パレットの色を右クリックで削除できます",
+              "CMYKは印刷向けの色表現のため、RGB/HEXとは若干異なる場合があります",
+            ],
+          },
+        ]}
+      />
     </div>
   );
 }

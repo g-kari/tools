@@ -11,6 +11,7 @@ import {
   createHistoryEntry,
 } from "../utils/unit-converter";
 import { useToast } from "../components/Toast";
+import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/unit-converter")({
   head: () => ({
@@ -265,7 +266,7 @@ function UnitConverter() {
                 </button>
                 <button
                   type="button"
-                  className="unit-btn unit-btn-secondary"
+                  className="unit-btn unit-btn-secondary btn-clear"
                   onClick={handleClear}
                   aria-label="入力をクリア"
                 >
@@ -307,19 +308,19 @@ function UnitConverter() {
         </form>
 
         {/* 使い方 */}
-        <aside
-          className="info-box"
-          role="complementary"
-          aria-labelledby="usage-title"
-        >
-          <h3 id="usage-title">使い方</h3>
-          <ul>
-            <li>カテゴリを選択して変換する単位の種類を決める</li>
-            <li>数値を入力するとリアルタイムで変換</li>
-            <li>⇅ボタンで変換元と変換先を入れ替え</li>
-            <li>Ctrl+Enter で履歴に追加</li>
-          </ul>
-        </aside>
+        <TipsCard
+          sections={[
+            {
+              title: "使い方",
+              items: [
+                "カテゴリを選択して変換する単位の種類を決める",
+                "数値を入力するとリアルタイムで変換",
+                "⇅ボタンで変換元と変換先を入れ替え",
+                "Ctrl+Enter で履歴に追加",
+              ],
+            },
+          ]}
+        />
       </div>
 
       <div

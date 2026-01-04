@@ -1,6 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { fetchOgp, type OgpData } from "../functions/ogp";
+import { Button } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
+import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/ogp")({
   head: () => ({
@@ -367,7 +370,7 @@ function OgpChecker() {
             <div className="search-form-row">
               <div className="search-input-wrapper">
                 <label htmlFor="urlInput">URL</label>
-                <input
+                <Input
                   type="text"
                   id="urlInput"
                   ref={inputRef}
@@ -380,7 +383,7 @@ function OgpChecker() {
                   spellCheck="false"
                 />
               </div>
-              <button
+              <Button
                 type="submit"
                 className="btn-primary"
                 onClick={handleCheck}
@@ -388,7 +391,7 @@ function OgpChecker() {
                 aria-label="OGP情報を取得"
               >
                 チェック
-              </button>
+              </Button>
             </div>
             <span id="url-help" className="sr-only">
               OGP情報を取得したいWebページのURLを入力してください
@@ -432,23 +435,20 @@ function OgpChecker() {
           </>
         )}
 
-        <aside
-          className="info-box"
-          role="complementary"
-          aria-labelledby="usage-title"
-        >
-          <h3 id="usage-title">使い方</h3>
-          <ul>
-            <li>URLを入力して「チェック」ボタンをクリック</li>
-            <li>X、Facebook、Slack、Discordでのプレビュー表示を確認</li>
-            <li>
-              Xカードは4種類（summary, summary_large_image, player,
-              app）を同時表示
-            </li>
-            <li>OGPタグの設定値を一覧で確認可能</li>
-            <li>キーボードショートカット: Enterキーでチェック実行</li>
-          </ul>
-        </aside>
+        <TipsCard
+          sections={[
+            {
+              title: "使い方",
+              items: [
+                "URLを入力して「チェック」ボタンをクリック",
+                "X、Facebook、Slack、Discordでのプレビュー表示を確認",
+                "Xカードは4種類（summary, summary_large_image, player, app）を同時表示",
+                "OGPタグの設定値を一覧で確認可能",
+                "キーボードショートカット: Enterキーでチェック実行",
+              ],
+            },
+          ]}
+        />
       </div>
 
       <div

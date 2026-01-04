@@ -1,3 +1,31 @@
+@import "tailwindcss";
+
+/* Tailwind v4 Theme - shadcn/ui colors mapped from Material Design 3 */
+@theme inline {
+  --color-background: hsl(55 100% 97%);
+  --color-foreground: hsl(270 5% 11%);
+  --color-card: hsl(55 100% 97%);
+  --color-card-foreground: hsl(270 5% 11%);
+  --color-popover: hsl(55 100% 97%);
+  --color-popover-foreground: hsl(270 5% 11%);
+  --color-primary: hsl(42 77% 31%);
+  --color-primary-foreground: hsl(0 0% 100%);
+  --color-secondary: hsl(40 26% 33%);
+  --color-secondary-foreground: hsl(0 0% 100%);
+  --color-muted: hsl(270 22% 91%);
+  --color-muted-foreground: hsl(264 6% 32%);
+  --color-accent: hsl(44 100% 85%);
+  --color-accent-foreground: hsl(40 100% 9%);
+  --color-destructive: hsl(0 73% 42%);
+  --color-destructive-foreground: hsl(0 0% 100%);
+  --color-success: hsl(123 46% 34%);
+  --color-success-foreground: hsl(0 0% 100%);
+  --color-border: hsl(270 15% 79%);
+  --color-input: hsl(270 15% 79%);
+  --color-ring: hsl(42 77% 31%);
+  --radius: 0.5rem;
+}
+
 /* Material Design 3 - Color System (WCAG AA Compliant) */
 :root {
   /* Brand color #ffffef used as surface */
@@ -30,6 +58,50 @@
   /* Success colors */
   --md-sys-color-success: #2e7d32;
   --md-sys-color-on-success: #ffffff;
+
+  /* shadcn/ui CSS Variables - mapped from Material Design 3 */
+  --radius: 0.5rem;
+
+  /* Background and foreground (surface colors) */
+  --background: 55 100% 97%; /* #ffffef */
+  --foreground: 270 5% 11%; /* #1c1b1e */
+
+  /* Card */
+  --card: 55 100% 97%;
+  --card-foreground: 270 5% 11%;
+
+  /* Popover */
+  --popover: 55 100% 97%;
+  --popover-foreground: 270 5% 11%;
+
+  /* Primary - warm golden brown */
+  --primary: 42 77% 31%; /* #8b6914 */
+  --primary-foreground: 0 0% 100%;
+
+  /* Secondary - warm earth tones */
+  --secondary: 40 26% 33%; /* #6b5e3f */
+  --secondary-foreground: 0 0% 100%;
+
+  /* Muted */
+  --muted: 270 22% 91%; /* #e7e0ec */
+  --muted-foreground: 264 6% 32%; /* #49454e */
+
+  /* Accent */
+  --accent: 44 100% 85%; /* #ffedb3 */
+  --accent-foreground: 40 100% 9%; /* #2d1f00 */
+
+  /* Destructive - error */
+  --destructive: 0 73% 42%; /* #ba1a1a */
+  --destructive-foreground: 0 0% 100%;
+
+  /* Success */
+  --success: 123 46% 34%; /* #2e7d32 */
+  --success-foreground: 0 0% 100%;
+
+  /* Border and input */
+  --border: 270 15% 79%; /* #cac4cf */
+  --input: 270 15% 79%;
+  --ring: 42 77% 31%; /* primary color */
 }
 
 /* Material Design - Base Styles */
@@ -647,6 +719,41 @@ button:focus-visible {
 }
 
 .info-box li {
+  margin-bottom: 0.25rem;
+}
+
+/* TipsCard component styles */
+.tips-card {
+  background: var(--md-sys-color-primary-container);
+  border-left: 4px solid var(--md-sys-color-primary);
+  margin-top: 20px;
+  padding: 1rem 1.5rem;
+}
+
+.tips-card [data-slot="card-header"] {
+  padding: 0.5rem 0;
+}
+
+.tips-card [data-slot="card-title"] {
+  color: var(--md-sys-color-on-primary-container);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.tips-card [data-slot="card-content"] {
+  padding: 0 0 0.5rem 0;
+}
+
+.tips-card .tips-list {
+  color: var(--md-sys-color-on-primary-container);
+  font-size: 0.9rem;
+  line-height: 1.8;
+  padding-left: 1.5rem;
+  margin: 0;
+  list-style-type: disc;
+}
+
+.tips-card .tips-list li {
   margin-bottom: 0.25rem;
 }
 

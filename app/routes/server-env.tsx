@@ -5,6 +5,8 @@ import {
   type ServerEnvResult,
   type EnvItem,
 } from "../functions/server-env";
+import { Button } from "~/components/ui/button";
+import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/server-env")({
   head: () => ({
@@ -171,64 +173,51 @@ function ServerEnvPage() {
               })()}
 
               <div className="env-actions">
-                <button
+                <Button
                   type="button"
+                  variant="secondary"
                   className="btn-secondary"
                   onClick={fetchEnv}
                   disabled={isLoading}
                   aria-label="環境情報を再取得"
                 >
                   再取得
-                </button>
+                </Button>
               </div>
             </div>
           )}
         </div>
 
-        <aside
-          className="info-box"
-          role="complementary"
-          aria-labelledby="usage-title"
-        >
-          <h3 id="usage-title">サーバー環境情報とは</h3>
-          <ul>
-            <li>このページはサーバー側で取得できる情報を表示します</li>
-            <li>
-              Cloudflareのエッジサーバーで処理されるリクエスト情報を確認できます
-            </li>
-            <li>開発者がデバッグや環境確認に利用できます</li>
-          </ul>
-
-          <h3>カテゴリについて</h3>
-          <dl className="info-dl">
-            <dt>Cloudflare 位置情報</dt>
-            <dd>IPアドレスから推測される地理情報（国、都市、緯度経度など）</dd>
-
-            <dt>Cloudflare ネットワーク情報</dt>
-            <dd>ASN、データセンター、HTTPプロトコルなどのネットワーク情報</dd>
-
-            <dt>Cloudflare セキュリティ情報</dt>
-            <dd>TLSバージョン、暗号スイート、Bot検出情報など</dd>
-
-            <dt>リクエストURL情報</dt>
-            <dd>リクエストのURL、ホスト、パス、クライアントIP</dd>
-
-            <dt>リクエストヘッダー</dt>
-            <dd>ブラウザから送信された標準的なHTTPヘッダー</dd>
-
-            <dt>Client Hints</dt>
-            <dd>ブラウザの詳細情報を提供するClient Hintsヘッダー</dd>
-
-            <dt>ランタイム情報</dt>
-            <dd>サーバーのランタイム環境とタイムスタンプ</dd>
-          </dl>
-
-          <h3>セキュリティについて</h3>
-          <p>
-            Cookie、Authorization、API
-            Keyなどの機密性の高いヘッダーは表示されません。
-          </p>
-        </aside>
+        <TipsCard
+          sections={[
+            {
+              title: "サーバー環境情報とは",
+              items: [
+                "このページはサーバー側で取得できる情報を表示します",
+                "Cloudflareのエッジサーバーで処理されるリクエスト情報を確認できます",
+                "開発者がデバッグや環境確認に利用できます",
+              ],
+            },
+            {
+              title: "カテゴリについて",
+              items: [
+                "Cloudflare 位置情報: IPアドレスから推測される地理情報（国、都市、緯度経度など）",
+                "Cloudflare ネットワーク情報: ASN、データセンター、HTTPプロトコルなど",
+                "Cloudflare セキュリティ情報: TLSバージョン、暗号スイート、Bot検出情報など",
+                "リクエストURL情報: リクエストのURL、ホスト、パス、クライアントIP",
+                "リクエストヘッダー: ブラウザから送信された標準的なHTTPヘッダー",
+                "Client Hints: ブラウザの詳細情報を提供するClient Hintsヘッダー",
+                "ランタイム情報: サーバーのランタイム環境とタイムスタンプ",
+              ],
+            },
+            {
+              title: "セキュリティについて",
+              items: [
+                "Cookie、Authorization、API Keyなどの機密性の高いヘッダーは表示されません",
+              ],
+            },
+          ]}
+        />
       </div>
 
       <div

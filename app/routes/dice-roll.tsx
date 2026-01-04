@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef, useCallback, useEffect } from "react";
+import { Button } from "~/components/ui/button";
+import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/dice-roll")({
   head: () => ({
@@ -247,9 +249,9 @@ function DiceRoll() {
             </div>
 
             <div className="button-group" role="group" aria-label="ダイスロール操作">
-              <button type="submit" className="btn-primary btn-large">
+              <Button type="submit" className="btn-large btn-primary">
                 ロール
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -257,13 +259,14 @@ function DiceRoll() {
             <div className="converter-section">
               <div className="result-header">
                 <h2 className="section-title">結果</h2>
-                <button
+                <Button
                   type="button"
-                  className="btn-secondary btn-small"
+                  variant="secondary"
+                  className="btn-small btn-secondary"
                   onClick={handleCopyResult}
                 >
                   {copied ? "コピーしました" : "結果をコピー"}
-                </button>
+                </Button>
               </div>
 
               <div className="dice-result">
@@ -296,13 +299,14 @@ function DiceRoll() {
             <div className="converter-section">
               <div className="history-header">
                 <h2 className="section-title">履歴</h2>
-                <button
+                <Button
                   type="button"
-                  className="btn-clear btn-small"
+                  variant="outline"
+                  className="btn-small btn-clear"
                   onClick={handleClearHistory}
                 >
                   履歴をクリア
-                </button>
+                </Button>
               </div>
 
               <div className="roll-history" role="list" aria-label="ロール履歴">
@@ -322,29 +326,29 @@ function DiceRoll() {
           )}
         </form>
 
-        <aside
-          className="info-box"
-          role="complementary"
-          aria-labelledby="usage-title"
-        >
-          <h3 id="usage-title">ダイスロールとは</h3>
-          <ul>
-            <li>
-              TRPG（テーブルトークRPG）やボードゲームで使用するサイコロをシミュレートするツールです
-            </li>
-            <li>「2d6」は「6面サイコロを2個振る」という表記です</li>
-            <li>D4からD100まで、様々な面数のサイコロに対応しています</li>
-            <li>カスタム面数のサイコロも作成できます（2〜1000面）</li>
-          </ul>
-          <h3 id="about-tool-title">使い方</h3>
-          <ul>
-            <li>サイコロの数と面数を設定します</li>
-            <li>プリセットボタンで一般的なサイコロを素早く選択できます</li>
-            <li>「ロール」ボタンでサイコロを振ります</li>
-            <li>結果は各サイコロの出目と合計が表示されます</li>
-            <li>過去10件のロール履歴を確認できます</li>
-          </ul>
-        </aside>
+        <TipsCard
+          sections={[
+            {
+              title: "ダイスロールとは",
+              items: [
+                "TRPG（テーブルトークRPG）やボードゲームで使用するサイコロをシミュレートするツールです",
+                "「2d6」は「6面サイコロを2個振る」という表記です",
+                "D4からD100まで、様々な面数のサイコロに対応しています",
+                "カスタム面数のサイコロも作成できます（2〜1000面）",
+              ],
+            },
+            {
+              title: "使い方",
+              items: [
+                "サイコロの数と面数を設定します",
+                "プリセットボタンで一般的なサイコロを素早く選択できます",
+                "「ロール」ボタンでサイコロを振ります",
+                "結果は各サイコロの出目と合計が表示されます",
+                "過去10件のロール履歴を確認できます",
+              ],
+            },
+          ]}
+        />
       </div>
 
       <div

@@ -1012,12 +1012,12 @@ function EmojiConverter() {
               <button
                 onClick={handleDownload}
                 disabled={isProcessing || !previewUrl}
-                className="button button-primary"
+                className="button button-primary btn-primary"
               >
                 {isProcessing ? "処理中..." : "ダウンロード"}
               </button>
 
-              <button onClick={handleReset} className="button button-secondary">
+              <button onClick={handleReset} className="button button-secondary btn-clear">
                 リセット
               </button>
             </div>

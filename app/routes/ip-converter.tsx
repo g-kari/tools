@@ -1,6 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { convertIP, type IPConversionResult } from "../utils/ip-converter";
+import { Button } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
+import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/ip-converter")({
   head: () => ({
@@ -93,7 +96,7 @@ function IPConverter() {
             <div className="search-form-row">
               <div className="search-input-wrapper">
                 <label htmlFor="ipInput">IPアドレス</label>
-                <input
+                <Input
                   type="text"
                   id="ipInput"
                   ref={inputRef}
@@ -103,17 +106,17 @@ function IPConverter() {
                   aria-describedby="ip-help"
                   aria-label="IPアドレスまたは数値を入力"
                   autoComplete="off"
-                  spellCheck="false"
+                  spellCheck={false}
                 />
               </div>
-              <button
+              <Button
                 type="submit"
                 className="btn-primary"
                 onClick={handleConvert}
                 aria-label="IP変換を実行"
               >
                 変換
-              </button>
+              </Button>
             </div>
             <span id="ip-help" className="sr-only">
               IPアドレス、16進数、2進数、または整数形式で入力してください
@@ -249,44 +252,34 @@ function IPConverter() {
           </>
         )}
 
-        <aside
-          className="info-box"
-          role="complementary"
-          aria-labelledby="usage-title"
-        >
-          <h3 id="usage-title">使い方</h3>
-          <ul>
-            <li>以下のいずれかの形式でIPアドレスを入力</li>
-            <li>10進数: 192.168.1.1</li>
-            <li>16進数（ドット）: C0.A8.01.01</li>
-            <li>16進数（0x）: 0xC0A80101</li>
-            <li>2進数（ドット）: 11000000.10101000.00000001.00000001</li>
-            <li>2進数（32ビット）: 11000000101010000000000100000001</li>
-            <li>整数: 3232235777</li>
-            <li>各値は「コピー」ボタンでクリップボードにコピー可能</li>
-            <li>キーボードショートカット: Enterキーで変換実行</li>
-          </ul>
-
-          <h3>対応形式について</h3>
-          <p className="info-text">
-            IPv4アドレスは32ビットの数値で、複数の形式で表現できます。
-            このツールは、一つの形式から他の全ての形式に自動変換します。
-          </p>
-          <ul>
-            <li>
-              <strong>10進数ドット記法</strong>: 最も一般的な形式（0-255の4つの数値）
-            </li>
-            <li>
-              <strong>16進数</strong>: ネットワーク機器の設定で使用されることがある
-            </li>
-            <li>
-              <strong>2進数</strong>: サブネットマスクの理解やネットワーク計算に有用
-            </li>
-            <li>
-              <strong>整数</strong>: データベースやプログラミングで使用
-            </li>
-          </ul>
-        </aside>
+        <TipsCard
+          sections={[
+            {
+              title: "使い方",
+              items: [
+                "以下のいずれかの形式でIPアドレスを入力",
+                "10進数: 192.168.1.1",
+                "16進数（ドット）: C0.A8.01.01",
+                "16進数（0x）: 0xC0A80101",
+                "2進数（ドット）: 11000000.10101000.00000001.00000001",
+                "2進数（32ビット）: 11000000101010000000000100000001",
+                "整数: 3232235777",
+                "各値は「コピー」ボタンでクリップボードにコピー可能",
+                "キーボードショートカット: Enterキーで変換実行",
+              ],
+            },
+            {
+              title: "対応形式について",
+              items: [
+                "IPv4アドレスは32ビットの数値で、複数の形式で表現できます",
+                "10進数ドット記法: 最も一般的な形式（0-255の4つの数値）",
+                "16進数: ネットワーク機器の設定で使用されることがある",
+                "2進数: サブネットマスクの理解やネットワーク計算に有用",
+                "整数: データベースやプログラミングで使用",
+              ],
+            },
+          ]}
+        />
       </div>
 
       <div

@@ -44,14 +44,19 @@ test.describe('Audio Converter - E2E Tests', () => {
   });
 
   test('should display usage instructions', async ({ page }) => {
-    const usageSection = page.locator('.info-box');
+    const usageSection = page.locator('.info-box').first();
     await expect(usageSection).toBeVisible();
 
     const usageText = await usageSection.textContent();
     expect(usageText).toContain('使い方');
-    expect(usageText).toContain('対応フォーマット');
-    expect(usageText).toContain('技術情報');
     expect(usageText).not.toContain('undefined');
+
+    // 他のセクションも表示されていることを確認（個別の.info-boxとして）
+    const allInfoBoxes = page.locator('.info-box');
+    const allText = await allInfoBoxes.allTextContents();
+    const combinedText = allText.join(' ');
+    expect(combinedText).toContain('対応フォーマット');
+    expect(combinedText).toContain('技術情報');
   });
 
   test('should have category navigation with active state', async ({ page }) => {
@@ -158,22 +163,23 @@ test.describe('Audio Converter - E2E Tests', () => {
   });
 
   test('should display usage instructions with correct content', async ({ page }) => {
-    const infoBox = page.locator('.info-box');
-
-    // 使い方セクション
-    await expect(infoBox.locator('h3:has-text("使い方")')).toBeVisible();
-    const usageList = infoBox.locator('h3:has-text("使い方")').locator('xpath=following-sibling::ul[1]');
+    // 使い方セクション（1つ目のinfo-box）
+    const usageBox = page.locator('.info-box').first();
+    await expect(usageBox.locator('h3:has-text("使い方")')).toBeVisible();
+    const usageList = usageBox.locator('ul');
     const usageItems = await usageList.locator('li').allTextContents();
     expect(usageItems.some(item => item.includes('ファイルを選択'))).toBe(true);
     expect(usageItems.some(item => item.includes('出力フォーマット'))).toBe(true);
     expect(usageItems.some(item => item.includes('変換'))).toBe(true);
 
-    // 対応フォーマットセクション
-    await expect(infoBox.locator('h3:has-text("対応フォーマット")')).toBeVisible();
+    // 対応フォーマットセクション（2つ目のinfo-box）
+    const formatBox = page.locator('.info-box').nth(1);
+    await expect(formatBox.locator('h3:has-text("対応フォーマット")')).toBeVisible();
 
-    // 技術情報セクション
-    await expect(infoBox.locator('h3:has-text("技術情報")')).toBeVisible();
-    const techInfoList = infoBox.locator('h3:has-text("技術情報")').locator('xpath=following-sibling::ul[1]');
+    // 技術情報セクション（4つ目のinfo-box）
+    const techInfoBox = page.locator('.info-box').nth(3);
+    await expect(techInfoBox.locator('h3:has-text("技術情報")')).toBeVisible();
+    const techInfoList = techInfoBox.locator('ul');
     const techInfoItems = await techInfoList.locator('li').allTextContents();
     expect(techInfoItems.some(item => item.includes('ブラウザ上で実行'))).toBe(true);
   });
@@ -195,7 +201,7 @@ test.describe('Audio Converter - E2E Tests', () => {
   });
 
   test('should have complementary region for usage instructions', async ({ page }) => {
-    const complementary = page.locator('[role="complementary"]');
+    const complementary = page.locator('[role="complementary"]').first();
     await expect(complementary).toBeVisible();
     await expect(complementary).toHaveAttribute('aria-labelledby', 'usage-title');
   });

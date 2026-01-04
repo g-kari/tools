@@ -1,6 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { decodeJWT, type DecodedJWT } from "../utils/jwt";
+import { Button } from "~/components/ui/button";
+import { Textarea } from "~/components/ui/textarea";
+import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/jwt")({
   head: () => ({
@@ -116,7 +119,7 @@ function JwtDecoder() {
             <label htmlFor="inputToken" className="section-title">
               JWT トークン
             </label>
-            <textarea
+            <Textarea
               id="inputToken"
               ref={inputRef}
               value={inputToken}
@@ -132,22 +135,23 @@ function JwtDecoder() {
           </div>
 
           <div className="button-group" role="group" aria-label="デコード操作">
-            <button
+            <Button
               type="button"
               className="btn-primary"
               onClick={handleDecode}
               aria-label="JWTトークンをデコード"
             >
               デコード
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
+              variant="outline"
               className="btn-clear"
               onClick={handleClear}
               aria-label="入力と出力をクリア"
             >
               クリア
-            </button>
+            </Button>
           </div>
 
           {errorMessage && (
@@ -167,16 +171,17 @@ function JwtDecoder() {
                   <label htmlFor="outputHeader" className="section-title">
                     ヘッダー (Header)
                   </label>
-                  <button
+                  <Button
                     type="button"
-                    className="btn-secondary jwt-copy-button"
+                    variant="secondary"
+                    className="jwt-copy-button btn-secondary"
                     onClick={() => handleCopyToClipboard(decodedResult.header, "ヘッダー")}
                     aria-label="ヘッダーをコピー"
                   >
                     コピー
-                  </button>
+                  </Button>
                 </div>
-                <textarea
+                <Textarea
                   id="outputHeader"
                   value={decodedResult.header}
                   readOnly
@@ -191,16 +196,17 @@ function JwtDecoder() {
                   <label htmlFor="outputPayload" className="section-title">
                     ペイロード (Payload)
                   </label>
-                  <button
+                  <Button
                     type="button"
-                    className="btn-secondary jwt-copy-button"
+                    variant="secondary"
+                    className="jwt-copy-button btn-secondary"
                     onClick={() => handleCopyToClipboard(decodedResult.payload, "ペイロード")}
                     aria-label="ペイロードをコピー"
                   >
                     コピー
-                  </button>
+                  </Button>
                 </div>
-                <textarea
+                <Textarea
                   id="outputPayload"
                   value={decodedResult.payload}
                   readOnly
@@ -215,16 +221,17 @@ function JwtDecoder() {
                   <label htmlFor="outputSignature" className="section-title">
                     署名 (Signature)
                   </label>
-                  <button
+                  <Button
                     type="button"
-                    className="btn-secondary jwt-copy-button"
+                    variant="secondary"
+                    className="jwt-copy-button btn-secondary"
                     onClick={() => handleCopyToClipboard(decodedResult.signature, "署名")}
                     aria-label="署名をコピー"
                   >
                     コピー
-                  </button>
+                  </Button>
                 </div>
-                <textarea
+                <Textarea
                   id="outputSignature"
                   value={decodedResult.signature}
                   readOnly
@@ -237,24 +244,26 @@ function JwtDecoder() {
           )}
         </form>
 
-        <aside
-          className="info-box"
-          role="complementary"
-          aria-labelledby="usage-title"
-        >
-          <h3 id="usage-title">使い方</h3>
-          <ul>
-            <li>「JWT トークン」欄にJWTトークンを入力します</li>
-            <li>「デコード」ボタンでヘッダー、ペイロード、署名を表示</li>
-            <li>各セクションの「コピー」ボタンでクリップボードにコピー可能</li>
-            <li>キーボードショートカット: Ctrl+Enter でデコード実行</li>
-          </ul>
-          <h3 style={{ marginTop: "20px" }}>JWTについて</h3>
-          <p style={{ fontSize: "14px", lineHeight: "1.6", color: "#666" }}>
-            JWT (JSON Web Token) は、ヘッダー、ペイロード、署名の3つの部分で構成されます。
-            このツールではJWTをデコードして内容を確認できますが、署名の検証は行いません。
-          </p>
-        </aside>
+        <TipsCard
+          sections={[
+            {
+              title: "使い方",
+              items: [
+                "「JWT トークン」欄にJWTトークンを入力します",
+                "「デコード」ボタンでヘッダー、ペイロード、署名を表示",
+                "各セクションの「コピー」ボタンでクリップボードにコピー可能",
+                "キーボードショートカット: Ctrl+Enter でデコード実行",
+              ],
+            },
+            {
+              title: "JWTについて",
+              items: [
+                "JWT (JSON Web Token) は、ヘッダー、ペイロード、署名の3つの部分で構成されます",
+                "このツールではJWTをデコードして内容を確認できますが、署名の検証は行いません",
+              ],
+            },
+          ]}
+        />
       </div>
 
       <div

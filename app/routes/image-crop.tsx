@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { useToast } from "../components/Toast";
+import { Button } from "~/components/ui/button";
+import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/image-crop")({
   head: () => ({
@@ -622,28 +624,34 @@ function ImageCropper() {
             </div>
           </div>
 
-          <aside
-            className="info-box"
-            role="complementary"
-            aria-labelledby="usage-title"
-          >
-            <h3 id="usage-title">画像トリミングツールとは</h3>
-            <p>画像の一部を切り取って保存できるツールです。</p>
-            <h3>使い方</h3>
-            <ol>
-              <li>トリミングしたい画像をアップロード</li>
-              <li>必要に応じてアスペクト比を選択</li>
-              <li>キャンバス上でトリミング範囲をドラッグして調整</li>
-              <li>「トリミングを実行」ボタンをクリック</li>
-              <li>結果を確認してダウンロード</li>
-            </ol>
-            <h3>機能</h3>
-            <ul>
-              <li><strong>アスペクト比プリセット</strong>: 1:1、4:3、16:9など</li>
-              <li><strong>グリッド線表示</strong>: 三分割法のガイドライン</li>
-              <li><strong>手動調整</strong>: X、Y、幅、高さを数値入力可能</li>
-            </ul>
-          </aside>
+          <TipsCard
+            sections={[
+              {
+                title: "画像トリミングツールとは",
+                items: [
+                  "画像の一部を切り取って保存できるツールです",
+                ],
+              },
+              {
+                title: "使い方",
+                items: [
+                  "トリミングしたい画像をアップロード",
+                  "必要に応じてアスペクト比を選択",
+                  "キャンバス上でトリミング範囲をドラッグして調整",
+                  "「トリミングを実行」ボタンをクリック",
+                  "結果を確認してダウンロード",
+                ],
+              },
+              {
+                title: "機能",
+                items: [
+                  "アスペクト比プリセット: 1:1、4:3、16:9など",
+                  "グリッド線表示: 三分割法のガイドライン",
+                  "手動調整: X、Y、幅、高さを数値入力可能",
+                ],
+              },
+            ]}
+          />
         </>
       ) : (
         <>
@@ -665,14 +673,15 @@ function ImageCropper() {
                 </div>
               )}
             </div>
-            <button
+            <Button
               type="button"
-              className="btn-secondary"
+              variant="secondary"
+              className="btn-clear"
               onClick={handleClear}
               disabled={isLoading}
             >
               別の画像を選択
-            </button>
+            </Button>
           </div>
 
           <div className="converter-section">
@@ -790,14 +799,13 @@ function ImageCropper() {
 
           <div className="converter-section">
             <div className="button-group" role="group" aria-label="操作ボタン">
-              <button
+              <Button
                 type="button"
-                className="btn-primary"
                 onClick={handleCrop}
                 disabled={isLoading}
               >
                 {isLoading ? "処理中..." : "トリミングを実行"}
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -817,28 +825,27 @@ function ImageCropper() {
                   <span>{formatFileSize(croppedBlob.size)}</span>
                 </div>
               </div>
-              <button
+              <Button
                 type="button"
-                className="btn-primary"
                 onClick={handleDownload}
               >
                 ダウンロード
-              </button>
+              </Button>
             </div>
           )}
 
-          <aside
-            className="info-box"
-            role="complementary"
-            aria-labelledby="tips-title"
-          >
-            <h3 id="tips-title">トリミングのヒント</h3>
-            <ul>
-              <li><strong>三分割法</strong>: グリッド線の交点に被写体を配置すると、バランスの良い構図になります</li>
-              <li><strong>アスペクト比</strong>: SNS投稿用には1:1、YouTubeサムネイルには16:9がおすすめです</li>
-              <li><strong>画質保持</strong>: 元の画像形式（PNG/JPEG等）を維持して高品質で出力します</li>
-            </ul>
-          </aside>
+          <TipsCard
+            sections={[
+              {
+                title: "トリミングのヒント",
+                items: [
+                  "三分割法: グリッド線の交点に被写体を配置すると、バランスの良い構図になります",
+                  "アスペクト比: SNS投稿用には1:1、YouTubeサムネイルには16:9がおすすめです",
+                  "画質保持: 元の画像形式（PNG/JPEG等）を維持して高品質で出力します",
+                ],
+              },
+            ]}
+          />
         </>
       )}
 
