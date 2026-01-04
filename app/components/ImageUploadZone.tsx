@@ -21,6 +21,8 @@ export interface ImageUploadZoneProps {
   children?: ReactNode;
   /** aria-label */
   ariaLabel?: string;
+  /** input要素のID（テスト用） */
+  inputId?: string;
 }
 
 /**
@@ -67,6 +69,7 @@ export function ImageUploadZone({
   text = "クリックして画像を選択、またはドラッグ&ドロップ",
   children,
   ariaLabel = "画像ファイルをアップロード",
+  inputId = "imageFile",
 }: ImageUploadZoneProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -128,6 +131,7 @@ export function ImageUploadZone({
 
       <input
         ref={fileInputRef}
+        id={inputId}
         type="file"
         accept={accept}
         onChange={handleInputChange}
