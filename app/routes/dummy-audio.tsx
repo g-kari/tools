@@ -460,7 +460,7 @@ function DummyAudioGenerator() {
             </div>
 
             <div className="button-group" role="group" aria-label="音声操作">
-              <Button type="submit">
+              <Button type="submit" className="btn-primary">
                 音声生成
               </Button>
               {!isPlaying ? (

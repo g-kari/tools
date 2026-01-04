@@ -465,6 +465,7 @@ function AudioConverter() {
           <div className="button-group" role="group" aria-label="変換操作">
             <Button
               type="button"
+              className="btn-primary"
               onClick={handleConvert}
               disabled={isConverting || !sourceFile}
               aria-label="オーディオファイルを変換"

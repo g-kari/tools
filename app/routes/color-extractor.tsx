@@ -443,6 +443,7 @@ function ColorExtractor() {
 
               <Button
                 type="button"
+                className="btn-primary"
                 onClick={handleReanalyze}
                 disabled={isProcessing}
               >
