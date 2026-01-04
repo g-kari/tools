@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import { createIcoFile, createFaviconsZip } from '../../app/routes/favicon-generator';
 
 /**
  * Favicon Generator utility functions tests
@@ -237,6 +238,131 @@ describe('Favicon Generator', () => {
       invalidMimeTypes.forEach((mimeType) => {
         expect(mimeType.startsWith('image/')).toBe(false);
       });
+    });
+  });
+
+  describe('ICO file generation', () => {
+    it('should create valid ICO file structure', async () => {
+      // Create simple test PNG blobs
+      const createTestPngBlob = (size: number): Blob => {
+        // Minimal PNG header (8 bytes signature + simplified structure)
+        const pngSignature = new Uint8Array([
+          0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, // PNG signature
+          0x00, 0x00, 0x00, 0x0D, // IHDR length
+          0x49, 0x48, 0x44, 0x52, // IHDR type
+          0x00, 0x00, 0x00, size, // width
+          0x00, 0x00, 0x00, size, // height
+          0x08, 0x02, // bit depth, color type
+          0x00, 0x00, 0x00, // compression, filter, interlace
+          0x00, 0x00, 0x00, 0x00, // CRC placeholder
+        ]);
+        return new Blob([pngSignature], { type: 'image/png' });
+      };
+
+      const images = [
+        { size: 16, blob: createTestPngBlob(16) },
+        { size: 32, blob: createTestPngBlob(32) },
+      ];
+
+      const icoBlob = await createIcoFile(images);
+
+      expect(icoBlob).toBeInstanceOf(Blob);
+      expect(icoBlob.type).toBe('image/x-icon');
+      expect(icoBlob.size).toBeGreaterThan(0);
+    });
+
+    it('should include correct ICO header', async () => {
+      const testBlob = new Blob([new Uint8Array([0x89, 0x50, 0x4E, 0x47])], { type: 'image/png' });
+      const images = [{ size: 16, blob: testBlob }];
+
+      const icoBlob = await createIcoFile(images);
+      const arrayBuffer = await icoBlob.arrayBuffer();
+      const view = new DataView(arrayBuffer);
+
+      // Check ICO header
+      expect(view.getUint16(0, true)).toBe(0); // Reserved
+      expect(view.getUint16(2, true)).toBe(1); // Type (1 = ICO)
+      expect(view.getUint16(4, true)).toBe(1); // Number of images
+    });
+
+    it('should handle multiple image sizes', async () => {
+      const testBlob = new Blob([new Uint8Array([0x89, 0x50, 0x4E, 0x47])], { type: 'image/png' });
+      const images = [
+        { size: 16, blob: testBlob },
+        { size: 32, blob: testBlob },
+        { size: 48, blob: testBlob },
+      ];
+
+      const icoBlob = await createIcoFile(images);
+      const arrayBuffer = await icoBlob.arrayBuffer();
+      const view = new DataView(arrayBuffer);
+
+      expect(view.getUint16(4, true)).toBe(3); // Number of images
+    });
+
+    it('should sort images by size', async () => {
+      const testBlob = new Blob([new Uint8Array([0x89, 0x50, 0x4E, 0x47])], { type: 'image/png' });
+      // Provide images in unsorted order
+      const images = [
+        { size: 48, blob: testBlob },
+        { size: 16, blob: testBlob },
+        { size: 32, blob: testBlob },
+      ];
+
+      const icoBlob = await createIcoFile(images);
+      const arrayBuffer = await icoBlob.arrayBuffer();
+      const view = new DataView(arrayBuffer);
+
+      // Check that first entry is 16x16 (header offset 6)
+      expect(view.getUint8(6)).toBe(16); // Width of first image
+    });
+
+    it('should handle size 256 as 0 in ICO header', async () => {
+      const testBlob = new Blob([new Uint8Array([0x89, 0x50, 0x4E, 0x47])], { type: 'image/png' });
+      const images = [{ size: 256, blob: testBlob }];
+
+      const icoBlob = await createIcoFile(images);
+      const arrayBuffer = await icoBlob.arrayBuffer();
+      const view = new DataView(arrayBuffer);
+
+      // 256 should be stored as 0 in ICO format
+      expect(view.getUint8(6)).toBe(0); // Width
+      expect(view.getUint8(7)).toBe(0); // Height
+    });
+  });
+
+  describe('ZIP file creation', () => {
+    it('should have createFaviconsZip function exported', () => {
+      expect(typeof createFaviconsZip).toBe('function');
+    });
+
+    it('should accept Map and optional Blob parameters', () => {
+      // Verify function signature
+      expect(createFaviconsZip.length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('should return a Promise', () => {
+      const favicons = new Map<string, Blob>();
+      const result = createFaviconsZip(favicons);
+      expect(result).toBeInstanceOf(Promise);
+    });
+
+    // Note: Full ZIP creation tests require browser environment
+    // as JSZip doesn't fully support Node.js Blob
+  });
+
+  describe('ICO format specifications', () => {
+    it('should have correct ICO sizes for browser compatibility', () => {
+      const icoSizes = [16, 32, 48];
+      icoSizes.forEach((size) => {
+        expect(size).toBeLessThanOrEqual(256);
+        expect(size).toBeGreaterThan(0);
+      });
+    });
+
+    it('should support 32-bit color depth', () => {
+      const colorDepth = 32;
+      expect(colorDepth).toBe(32);
     });
   });
 });

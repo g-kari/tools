@@ -127,32 +127,16 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: Run E2E test
-        id: test
         run: |
           npm run preview -- --port 8788 --host &
           SERVER_PID=$!
           npx wait-on http://127.0.0.1:8788 --timeout 60000
-          BASE_URL=http://127.0.0.1:8788 npx playwright test ${{ matrix.test-file }} --project=chromium --reporter=json --reporter=html
+          BASE_URL=http://127.0.0.1:8788 npx playwright test ${{ matrix.test-file }} --project=chromium --reporter=list
           TEST_EXIT_CODE=$?
           kill $SERVER_PID || true
           exit $TEST_EXIT_CODE
         env:
           CI: true
-
-      - name: Get test file name
-        if: always()
-        id: filename
-        run: |
-          BASENAME=$(basename "${{ matrix.test-file }}" .spec.ts)
-          echo "name=$BASENAME" >> $GITHUB_OUTPUT
-
-      - name: Upload test results
-        uses: actions/upload-artifact@v6
-        if: always()
-        with:
-          name: playwright-report-${{ steps.filename.outputs.name }}
-          path: playwright-report/
-          retention-days: 1
 
   # Summary job - aggregates results
   summary:
@@ -164,21 +148,11 @@ jobs:
       pull-requests: write
 
     steps:
-      - name: Download all test reports
-        uses: actions/download-artifact@v7
-        with:
-          pattern: playwright-report-*
-          path: all-reports/
-          merge-multiple: false
-
       - name: Post test result to PR
         if: github.event_name == 'pull_request'
         uses: actions/github-script@v8
         with:
           script: |
-            const fs = require('fs');
-            const path = require('path');
-
             const e2eResult = '${{ needs.e2e.result }}';
             const success = e2eResult === 'success';
             const emoji = success ? '✅' : '❌';

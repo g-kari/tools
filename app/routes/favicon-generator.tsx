@@ -101,10 +101,12 @@ export async function generateFavicons(
 /**
  * FaviconsをZIPファイルとしてダウンロードする
  * @param favicons - ファイル名とBlobのMap
+ * @param icoBlob - ICOファイルのBlob（オプション）
  * @returns ZIPファイルのBlob
  */
 export async function createFaviconsZip(
-  favicons: Map<string, Blob>
+  favicons: Map<string, Blob>,
+  icoBlob?: Blob
 ): Promise<Blob> {
   const zip = new JSZip();
 
@@ -112,7 +114,81 @@ export async function createFaviconsZip(
     zip.file(filename, blob);
   }
 
+  if (icoBlob) {
+    zip.file("favicon.ico", icoBlob);
+  }
+
   return zip.generateAsync({ type: "blob" });
+}
+
+/**
+ * ICOファイルを生成する
+ * ICO形式はリトルエンディアンのバイナリ形式
+ * @param images - サイズごとのPNG Blob配列（16, 32, 48px推奨）
+ * @returns ICOファイルのBlob
+ */
+export async function createIcoFile(
+  images: { size: number; blob: Blob }[]
+): Promise<Blob> {
+  // サイズ順にソート（小さい順）
+  const sortedImages = [...images].sort((a, b) => a.size - b.size);
+
+  // 各画像のArrayBufferを取得
+  const imageBuffers: { size: number; buffer: ArrayBuffer }[] = [];
+  for (const img of sortedImages) {
+    const buffer = await img.blob.arrayBuffer();
+    imageBuffers.push({ size: img.size, buffer });
+  }
+
+  // ICOファイル構造を計算
+  const numImages = imageBuffers.length;
+  const headerSize = 6; // ICONDIR
+  const entrySize = 16; // ICONDIRENTRY per image
+  const dataOffset = headerSize + entrySize * numImages;
+
+  // 総ファイルサイズを計算
+  let totalDataSize = 0;
+  for (const img of imageBuffers) {
+    totalDataSize += img.buffer.byteLength;
+  }
+
+  const totalSize = dataOffset + totalDataSize;
+  const buffer = new ArrayBuffer(totalSize);
+  const view = new DataView(buffer);
+
+  // ICONDIR ヘッダー
+  view.setUint16(0, 0, true); // Reserved (must be 0)
+  view.setUint16(2, 1, true); // Type (1 = ICO)
+  view.setUint16(4, numImages, true); // Number of images
+
+  // ICONDIRENTRY エントリーとイメージデータ
+  let currentDataOffset = dataOffset;
+  for (let i = 0; i < imageBuffers.length; i++) {
+    const img = imageBuffers[i];
+    const entryOffset = headerSize + i * entrySize;
+
+    // サイズが256以上の場合は0を書き込む（ICO仕様）
+    const width = img.size >= 256 ? 0 : img.size;
+    const height = img.size >= 256 ? 0 : img.size;
+
+    view.setUint8(entryOffset, width); // Width
+    view.setUint8(entryOffset + 1, height); // Height
+    view.setUint8(entryOffset + 2, 0); // Color palette
+    view.setUint8(entryOffset + 3, 0); // Reserved
+    view.setUint16(entryOffset + 4, 1, true); // Color planes
+    view.setUint16(entryOffset + 6, 32, true); // Bits per pixel
+    view.setUint32(entryOffset + 8, img.buffer.byteLength, true); // Image size
+    view.setUint32(entryOffset + 12, currentDataOffset, true); // Image offset
+
+    // イメージデータをコピー
+    const imgArray = new Uint8Array(img.buffer);
+    const destArray = new Uint8Array(buffer, currentDataOffset, img.buffer.byteLength);
+    destArray.set(imgArray);
+
+    currentDataOffset += img.buffer.byteLength;
+  }
+
+  return new Blob([buffer], { type: "image/x-icon" });
 }
 
 /**
@@ -297,6 +373,24 @@ function FaviconGenerator() {
     showToast(`${favicons.size}個のFaviconを生成しました`, "success");
   }, [selectedSizes, showToast]);
 
+  // ICOファイルに含めるサイズ（16, 32, 48）を取得
+  const getIcoSizes = useCallback(() => {
+    const icoSizeNames = ["16x16", "32x32", "48x48"];
+    const icoImages: { size: number; blob: Blob }[] = [];
+
+    for (const sizeName of icoSizeNames) {
+      const sizeInfo = FAVICON_SIZES.find((s) => s.name === sizeName);
+      if (sizeInfo) {
+        const blob = generatedFavicons.get(sizeInfo.filename);
+        if (blob) {
+          icoImages.push({ size: sizeInfo.width, blob });
+        }
+      }
+    }
+
+    return icoImages;
+  }, [generatedFavicons]);
+
   const handleDownloadAll = useCallback(async () => {
     if (generatedFavicons.size === 0) {
       showToast("先にFaviconを生成してください", "error");
@@ -305,19 +399,62 @@ function FaviconGenerator() {
 
     setIsLoading(true);
 
-    const zipBlob = await createFaviconsZip(generatedFavicons);
-    const url = URL.createObjectURL(zipBlob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "favicons.zip";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    try {
+      // ICOファイルを生成（16, 32, 48サイズがあれば）
+      const icoImages = getIcoSizes();
+      let icoBlob: Blob | undefined;
+      if (icoImages.length > 0) {
+        icoBlob = await createIcoFile(icoImages);
+      }
 
-    setIsLoading(false);
-    showToast("ZIPファイルをダウンロードしました", "success");
-  }, [generatedFavicons, showToast]);
+      const zipBlob = await createFaviconsZip(generatedFavicons, icoBlob);
+      const url = URL.createObjectURL(zipBlob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "favicons.zip";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      showToast("ZIPファイルをダウンロードしました", "success");
+    } catch (error) {
+      console.error("ZIP creation failed:", error);
+      showToast("ZIPファイルの作成に失敗しました", "error");
+    } finally {
+      setIsLoading(false);
+    }
+  }, [generatedFavicons, getIcoSizes, showToast]);
+
+  const handleDownloadIco = useCallback(async () => {
+    const icoImages = getIcoSizes();
+
+    if (icoImages.length === 0) {
+      showToast("ICOファイルには16x16, 32x32, 48x48のサイズが必要です", "error");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const icoBlob = await createIcoFile(icoImages);
+      const url = URL.createObjectURL(icoBlob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "favicon.ico";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      showToast("favicon.icoをダウンロードしました", "success");
+    } catch (error) {
+      console.error("ICO creation failed:", error);
+      showToast("ICOファイルの作成に失敗しました", "error");
+    } finally {
+      setIsLoading(false);
+    }
+  }, [getIcoSizes, showToast]);
 
   const handleDownloadSingle = useCallback(
     (filename: string) => {
@@ -535,14 +672,24 @@ function FaviconGenerator() {
                 {isLoading ? "生成中..." : "Favicon生成"}
               </Button>
               {generatedFavicons.size > 0 && (
-                <Button
-                  type="button"
-                  variant="secondary"
-                  onClick={handleDownloadAll}
-                  disabled={isLoading}
-                >
-                  ZIPで一括ダウンロード
-                </Button>
+                <>
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={handleDownloadAll}
+                    disabled={isLoading}
+                  >
+                    ZIPで一括ダウンロード
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={handleDownloadIco}
+                    disabled={isLoading}
+                  >
+                    ICOをダウンロード
+                  </Button>
+                </>
               )}
             </div>
           </div>
