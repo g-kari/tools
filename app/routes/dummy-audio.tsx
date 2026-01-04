@@ -467,6 +467,7 @@ function DummyAudioGenerator() {
                 <Button
                   type="button"
                   variant="secondary"
+                  className="btn-secondary"
                   onClick={handlePlay}
                 >
                   再生
@@ -475,6 +476,7 @@ function DummyAudioGenerator() {
                 <Button
                   type="button"
                   variant="secondary"
+                  className="btn-secondary"
                   onClick={handleStop}
                 >
                   停止
@@ -483,6 +485,7 @@ function DummyAudioGenerator() {
               <Button
                 type="button"
                 variant="secondary"
+                className="btn-secondary"
                 onClick={handleDownloadWav}
               >
                 WAVダウンロード
@@ -490,6 +493,7 @@ function DummyAudioGenerator() {
               <Button
                 type="button"
                 variant="secondary"
+                className="btn-secondary"
                 onClick={handleDownloadMp3}
                 disabled={isEncodingMp3}
               >
