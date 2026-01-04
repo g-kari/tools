@@ -176,10 +176,14 @@ test.describe('Password Generator - E2E Tests', () => {
     const usageSection = page.locator('.info-box').first();
     await expect(usageSection).toBeVisible();
 
-    const usageText = await usageSection.textContent();
-    expect(usageText).toContain('使い方');
-    expect(usageText).toContain('セキュリティのヒント');
-    expect(usageText).not.toContain('undefined');
+    // 複数のinfo-boxがあるので、すべてのテキストを結合して確認
+    const allInfoBoxes = page.locator('.info-box');
+    const allText = await allInfoBoxes.allTextContents();
+    const combinedText = allText.join(' ');
+
+    expect(combinedText).toContain('使い方');
+    expect(combinedText).toContain('セキュリティのヒント');
+    expect(combinedText).not.toContain('undefined');
   });
 
   test('should have navigation link to password generator in category dropdown', async ({ page }) => {

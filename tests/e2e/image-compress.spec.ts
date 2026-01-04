@@ -103,17 +103,25 @@ test.describe('Image Compressor - E2E Tests', () => {
   });
 
   test('should display format options info', async ({ page }) => {
-    const infoBox = page.locator('.info-box').first();
-    await expect(infoBox).toContainText('JPEG');
-    await expect(infoBox).toContainText('WebP');
-    await expect(infoBox).toContainText('PNG');
+    // 複数のinfo-boxがあるので、すべてのテキストを結合して確認
+    const allInfoBoxes = page.locator('.info-box');
+    const allText = await allInfoBoxes.allTextContents();
+    const combinedText = allText.join(' ');
+
+    expect(combinedText).toContain('JPEG');
+    expect(combinedText).toContain('WebP');
+    expect(combinedText).toContain('PNG');
   });
 
   test('should display compression tips', async ({ page }) => {
-    const infoBox = page.locator('.info-box').first();
-    await expect(infoBox).toContainText('Tips');
-    await expect(infoBox).toContainText('80%');
-    await expect(infoBox).toContainText('WebP');
+    // 複数のinfo-boxがあるので、すべてのテキストを結合して確認
+    const allInfoBoxes = page.locator('.info-box');
+    const allText = await allInfoBoxes.allTextContents();
+    const combinedText = allText.join(' ');
+
+    expect(combinedText).toContain('Tips');
+    expect(combinedText).toContain('80%');
+    expect(combinedText).toContain('WebP');
   });
 
   test('should be keyboard accessible', async ({ page }) => {
@@ -202,7 +210,7 @@ test.describe('Image Compressor - E2E Tests', () => {
     });
 
     test('should have complementary region for info box', async ({ page }) => {
-      const complementary = page.locator('[role="complementary"]');
+      const complementary = page.locator('[role="complementary"]').first();
       await expect(complementary).toBeVisible();
       await expect(complementary).toHaveAttribute('aria-labelledby', 'usage-title');
     });

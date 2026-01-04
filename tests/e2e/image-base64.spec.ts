@@ -100,18 +100,26 @@ test.describe('Image Base64 Converter - E2E Tests', () => {
   });
 
   test('should display output format options info', async ({ page }) => {
-    const infoBox = page.locator('.info-box').first();
-    await expect(infoBox).toContainText('Data URL');
-    await expect(infoBox).toContainText('Base64のみ');
-    await expect(infoBox).toContainText('HTML img形式');
-    await expect(infoBox).toContainText('CSS background形式');
+    // 複数のinfo-boxがあるので、すべてのテキストを結合して確認
+    const allInfoBoxes = page.locator('.info-box');
+    const allText = await allInfoBoxes.allTextContents();
+    const combinedText = allText.join(' ');
+
+    expect(combinedText).toContain('Data URL');
+    expect(combinedText).toContain('Base64のみ');
+    expect(combinedText).toContain('HTML img形式');
+    expect(combinedText).toContain('CSS background形式');
   });
 
   test('should display tips section', async ({ page }) => {
-    const infoBox = page.locator('.info-box').first();
-    await expect(infoBox).toContainText('Tips');
-    await expect(infoBox).toContainText('33%');
-    await expect(infoBox).toContainText('アイコン');
+    // 複数のinfo-boxがあるので、すべてのテキストを結合して確認
+    const allInfoBoxes = page.locator('.info-box');
+    const allText = await allInfoBoxes.allTextContents();
+    const combinedText = allText.join(' ');
+
+    expect(combinedText).toContain('Tips');
+    expect(combinedText).toContain('33%');
+    expect(combinedText).toContain('アイコン');
   });
 
   test('should be keyboard accessible', async ({ page }) => {
@@ -199,7 +207,7 @@ test.describe('Image Base64 Converter - E2E Tests', () => {
     });
 
     test('should have complementary region for info box', async ({ page }) => {
-      const complementary = page.locator('[role="complementary"]');
+      const complementary = page.locator('[role="complementary"]').first();
       await expect(complementary).toBeVisible();
       await expect(complementary).toHaveAttribute('aria-labelledby', 'usage-title');
     });
@@ -220,40 +228,53 @@ test.describe('Image Base64 Converter - E2E Tests', () => {
 
   test.describe('Format options', () => {
     test('should display all format option labels', async ({ page }) => {
-      const infoBox = page.locator('.info-box').first();
-      const infoText = await infoBox.textContent();
+      // 複数のinfo-boxがあるので、すべてのテキストを結合して確認
+      const allInfoBoxes = page.locator('.info-box');
+      const allText = await allInfoBoxes.allTextContents();
+      const combinedText = allText.join(' ');
 
       // Verify all format options are mentioned in the info
-      expect(infoText).toContain('Data URL');
-      expect(infoText).toContain('Base64のみ');
-      expect(infoText).toContain('HTML');
-      expect(infoText).toContain('CSS');
+      expect(combinedText).toContain('Data URL');
+      expect(combinedText).toContain('Base64のみ');
+      expect(combinedText).toContain('HTML');
+      expect(combinedText).toContain('CSS');
     });
   });
 
   test.describe('Information content', () => {
     test('should explain Base64 encoding size increase', async ({ page }) => {
-      const infoBox = page.locator('.info-box').first();
-      await expect(infoBox).toContainText('33%');
+      // 複数のinfo-boxがあるので、すべてのテキストを結合して確認
+      const allInfoBoxes = page.locator('.info-box');
+      const allText = await allInfoBoxes.allTextContents();
+      const combinedText = allText.join(' ');
+      expect(combinedText).toContain('33%');
     });
 
     test('should mention use cases', async ({ page }) => {
-      const infoBox = page.locator('.info-box').first();
-      const infoText = await infoBox.textContent();
-      expect(infoText).toContain('HTML');
-      expect(infoText).toContain('CSS');
-      expect(infoText).toContain('埋め込み');
+      // 複数のinfo-boxがあるので、すべてのテキストを結合して確認
+      const allInfoBoxes = page.locator('.info-box');
+      const allText = await allInfoBoxes.allTextContents();
+      const combinedText = allText.join(' ');
+      expect(combinedText).toContain('HTML');
+      expect(combinedText).toContain('CSS');
+      expect(combinedText).toContain('埋め込み');
     });
 
     test('should warn about large images', async ({ page }) => {
-      const infoBox = page.locator('.info-box').first();
-      await expect(infoBox).toContainText('大きな画像');
+      // 複数のinfo-boxがあるので、すべてのテキストを結合して確認
+      const allInfoBoxes = page.locator('.info-box');
+      const allText = await allInfoBoxes.allTextContents();
+      const combinedText = allText.join(' ');
+      expect(combinedText).toContain('大きな画像');
     });
 
     test('should mention browser-only processing', async ({ page }) => {
-      const infoBox = page.locator('.info-box').first();
-      await expect(infoBox).toContainText('ブラウザ内で完結');
-      await expect(infoBox).toContainText('サーバーにアップロードされません');
+      // 複数のinfo-boxがあるので、すべてのテキストを結合して確認
+      const allInfoBoxes = page.locator('.info-box');
+      const allText = await allInfoBoxes.allTextContents();
+      const combinedText = allText.join(' ');
+      expect(combinedText).toContain('ブラウザ内で完結');
+      expect(combinedText).toContain('サーバーにアップロードされません');
     });
   });
 });

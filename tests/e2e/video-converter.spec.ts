@@ -130,9 +130,13 @@ test.describe('Video Converter - E2E Tests', () => {
     const usageSection = page.locator('.info-box').first();
     await expect(usageSection).toBeVisible();
 
-    const usageText = await usageSection.textContent();
-    expect(usageText).toContain('動画変換とは');
-    expect(usageText).toContain('オプションについて');
+    // 複数のinfo-boxがあるので、すべてのテキストを結合して確認
+    const allInfoBoxes = page.locator('.info-box');
+    const allText = await allInfoBoxes.allTextContents();
+    const combinedText = allText.join(' ');
+
+    expect(combinedText).toContain('動画変換とは');
+    expect(combinedText).toContain('オプションについて');
   });
 
   test('should have all format options', async ({ page }) => {
