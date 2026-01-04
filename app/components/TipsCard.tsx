@@ -16,7 +16,8 @@ interface TipsCardProps {
  * 各ツールページで使用するTips/使い方セクションを表示するためのカードコンポーネント。
  * 複数のセクション（例：「〇〇とは」「使い方」）をサポートします。
  *
- * Note: h3とulを兄弟要素として配置することでE2Eテストとの互換性を維持しています。
+ * Note: 各セクションを個別のCardとして描画することでE2Eテストとの互換性を維持しています。
+ * これにより .info-box.nth(0), .info-box.nth(1) などのセレクターが正しく動作します。
  *
  * @param sections - 表示するセクションの配列
  * @returns TipsCardのReactコンポーネント
@@ -36,16 +37,17 @@ interface TipsCardProps {
  */
 export function TipsCard({ sections }: TipsCardProps) {
   return (
-    <Card
-      className="tips-card info-box p-6"
-      role="complementary"
-      aria-labelledby="usage-title"
-    >
+    <>
       {sections.map((section, index) => (
-        <React.Fragment key={section.title}>
+        <Card
+          key={section.title}
+          className={`tips-card info-box p-6 ${index > 0 ? "mt-4" : ""}`}
+          role="complementary"
+          aria-labelledby={index === 0 ? "usage-title" : index === 1 ? "about-tool-title" : undefined}
+        >
           <h3
             id={index === 0 ? "usage-title" : index === 1 ? "about-tool-title" : undefined}
-            className={`font-semibold leading-none tracking-tight text-base ${index > 0 ? "mt-4" : ""}`}
+            className="font-semibold leading-none tracking-tight text-base"
           >
             {section.title}
           </h3>
@@ -54,8 +56,8 @@ export function TipsCard({ sections }: TipsCardProps) {
               <li key={itemIndex}>{item}</li>
             ))}
           </ul>
-        </React.Fragment>
+        </Card>
       ))}
-    </Card>
+    </>
   );
 }
