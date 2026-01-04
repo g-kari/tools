@@ -58,7 +58,7 @@ export function ResultCard({
   ariaLive = "polite",
 }: ResultCardProps) {
   return (
-    <section aria-labelledby={id} aria-live={ariaLive}>
+    <section {...(id ? { "aria-labelledby": id } : {})} aria-live={ariaLive}>
       {title && (
         <h2 id={id} className="section-title">
           {title}
@@ -72,7 +72,7 @@ export function ResultCard({
               {row.isList && Array.isArray(row.value) ? (
                 <ul className="result-list">
                   {row.value.map((item, itemIndex) => (
-                    <li key={itemIndex}>{item}</li>
+                    <li key={`${String(item).slice(0, 20)}-${itemIndex}`}>{item}</li>
                   ))}
                 </ul>
               ) : (
@@ -99,7 +99,7 @@ export function ResultRow({ label, value, isList, fallback }: ResultRow) {
         {isList && Array.isArray(value) ? (
           <ul className="result-list">
             {value.map((item, index) => (
-              <li key={index}>{item}</li>
+              <li key={`${String(item).slice(0, 20)}-${index}`}>{item}</li>
             ))}
           </ul>
         ) : (
