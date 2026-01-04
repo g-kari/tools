@@ -4,6 +4,13 @@ import { decodeJWT, type DecodedJWT } from "../utils/jwt";
 import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import { TipsCard } from "~/components/TipsCard";
+import { ErrorMessage } from "~/components/ErrorMessage";
+import {
+  useStatusAnnouncement,
+  StatusAnnouncer,
+} from "~/hooks/useStatusAnnouncement";
+import { useClipboard } from "~/hooks/useClipboard";
+import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 
 export const Route = createFileRoute("/jwt")({
   head: () => ({
@@ -21,23 +28,9 @@ function JwtDecoder() {
   const [decodedResult, setDecodedResult] = useState<DecodedJWT | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const statusRef = useRef<HTMLDivElement>(null);
 
-  /**
-   * Announces a status message to screen readers via ARIA live region.
-   * The message is cleared after 3 seconds.
-   * @param message - The status message to announce
-   */
-  const announceStatus = useCallback((message: string) => {
-    if (statusRef.current) {
-      statusRef.current.textContent = message;
-      setTimeout(() => {
-        if (statusRef.current) {
-          statusRef.current.textContent = "";
-        }
-      }, 3000);
-    }
-  }, []);
+  const { statusRef, announceStatus } = useStatusAnnouncement();
+  const { copy } = useClipboard();
 
   /**
    * Handles the JWT decode operation.
@@ -83,28 +76,18 @@ function JwtDecoder() {
    */
   const handleCopyToClipboard = useCallback(
     async (text: string, label: string) => {
-      try {
-        await navigator.clipboard.writeText(text);
+      const success = await copy(text);
+      if (success) {
         announceStatus(`${label}をクリップボードにコピーしました`);
-      } catch (error) {
-        announceStatus(`コピーに失敗しました: ${error instanceof Error ? error.message : "不明なエラー"}`);
+      } else {
+        announceStatus("コピーに失敗しました");
       }
     },
-    [announceStatus]
+    [copy, announceStatus]
   );
 
-  // Keyboard shortcut: Ctrl/Cmd+Enter to decode
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
-        e.preventDefault();
-        handleDecode();
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [handleDecode]);
+  // Ctrl+Enter でデコード
+  useKeyboardShortcut("Enter", handleDecode, { ctrl: true });
 
   // Focus input field on mount
   useEffect(() => {
@@ -154,15 +137,7 @@ function JwtDecoder() {
             </Button>
           </div>
 
-          {errorMessage && (
-            <div
-              className="error-message"
-              role="alert"
-              aria-live="assertive"
-            >
-              {errorMessage}
-            </div>
-          )}
+          <ErrorMessage message={errorMessage} />
 
           {decodedResult && (
             <>
@@ -266,13 +241,7 @@ function JwtDecoder() {
         />
       </div>
 
-      <div
-        ref={statusRef}
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
-        className="sr-only"
-      />
+      <StatusAnnouncer statusRef={statusRef} />
     </>
   );
 }

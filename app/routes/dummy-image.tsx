@@ -2,6 +2,10 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
+import {
+  useStatusAnnouncement,
+  StatusAnnouncer,
+} from "~/hooks/useStatusAnnouncement";
 
 export const Route = createFileRoute("/dummy-image")({
   head: () => ({
@@ -103,22 +107,8 @@ function DummyImageGenerator() {
   const [quality, setQuality] = useState(92);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const statusRef = useRef<HTMLDivElement>(null);
-  const statusTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const announceStatus = useCallback((message: string) => {
-    if (statusRef.current) {
-      statusRef.current.textContent = message;
-      if (statusTimeoutRef.current) {
-        clearTimeout(statusTimeoutRef.current);
-      }
-      statusTimeoutRef.current = setTimeout(() => {
-        if (statusRef.current) {
-          statusRef.current.textContent = "";
-        }
-      }, 3000);
-    }
-  }, []);
+  const { statusRef, announceStatus } = useStatusAnnouncement();
 
   // 画像を描画
   const renderImage = useCallback(() => {
@@ -131,15 +121,6 @@ function DummyImageGenerator() {
   useEffect(() => {
     renderImage();
   }, [renderImage]);
-
-  // クリーンアップ
-  useEffect(() => {
-    return () => {
-      if (statusTimeoutRef.current) {
-        clearTimeout(statusTimeoutRef.current);
-      }
-    };
-  }, []);
 
   const handleWidthChange = useCallback((value: number) => {
     setWidth(Math.max(MIN_SIZE, Math.min(MAX_SIZE, value || MIN_SIZE)));
@@ -446,14 +427,7 @@ function DummyImageGenerator() {
         />
       </div>
 
-      <div
-        ref={statusRef}
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
-        className="sr-only"
-      />
-
+      <StatusAnnouncer statusRef={statusRef} />
     </>
   );
 }

@@ -5,6 +5,12 @@ import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import { TipsCard } from "~/components/TipsCard";
+import { ErrorMessage } from "~/components/ErrorMessage";
+import {
+  useStatusAnnouncement,
+  StatusAnnouncer,
+} from "~/hooks/useStatusAnnouncement";
+import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 
 export const Route = createFileRoute("/json")({
   head: () => ({
@@ -18,19 +24,9 @@ function JsonFormatter() {
   const [outputText, setOutputText] = useState("");
   const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const statusRef = useRef<HTMLDivElement>(null);
   const { showToast } = useToast();
 
-  const announceStatus = useCallback((message: string) => {
-    if (statusRef.current) {
-      statusRef.current.textContent = message;
-      setTimeout(() => {
-        if (statusRef.current) {
-          statusRef.current.textContent = "";
-        }
-      }, 3000);
-    }
-  }, []);
+  const { statusRef, announceStatus } = useStatusAnnouncement();
 
   const handleFormat = useCallback(() => {
     if (!inputText) {
@@ -86,17 +82,8 @@ function JsonFormatter() {
     inputRef.current?.focus();
   }, [announceStatus]);
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
-        e.preventDefault();
-        handleFormat();
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [handleFormat]);
+  // Ctrl+Enter でフォーマット
+  useKeyboardShortcut("Enter", handleFormat, { ctrl: true });
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -105,7 +92,10 @@ function JsonFormatter() {
   return (
     <>
       <div className="tool-container">
-        <form onSubmit={(e) => e.preventDefault()} aria-label="JSONフォーマットフォーム">
+        <form
+          onSubmit={(e) => e.preventDefault()}
+          aria-label="JSONフォーマットフォーム"
+        >
           <div className="converter-section">
             <label htmlFor="inputText" className="section-title">
               入力JSON
@@ -153,11 +143,7 @@ function JsonFormatter() {
             </Button>
           </div>
 
-          {error && (
-            <div className="error-message" role="alert" aria-live="assertive">
-              {error}
-            </div>
-          )}
+          <ErrorMessage message={error} />
 
           <div className="output-section">
             <label htmlFor="outputText" className="section-title">
@@ -190,13 +176,7 @@ function JsonFormatter() {
         />
       </div>
 
-      <div
-        ref={statusRef}
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
-        className="sr-only"
-      />
+      <StatusAnnouncer statusRef={statusRef} />
     </>
   );
 }

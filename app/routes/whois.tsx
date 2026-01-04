@@ -5,6 +5,12 @@ import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { TipsCard } from "~/components/TipsCard";
+import { ErrorMessage } from "~/components/ErrorMessage";
+import { LoadingSpinner } from "~/components/LoadingSpinner";
+import {
+  useStatusAnnouncement,
+  StatusAnnouncer,
+} from "~/hooks/useStatusAnnouncement";
 
 export const Route = createFileRoute("/whois")({
   head: () => ({
@@ -55,18 +61,8 @@ function WhoisLookup() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const statusRef = useRef<HTMLDivElement>(null);
 
-  const announceStatus = useCallback((message: string) => {
-    if (statusRef.current) {
-      statusRef.current.textContent = message;
-      setTimeout(() => {
-        if (statusRef.current) {
-          statusRef.current.textContent = "";
-        }
-      }, 3000);
-    }
-  }, []);
+  const { statusRef, announceStatus } = useStatusAnnouncement();
 
   const handleSearch = useCallback(async () => {
     if (!domain.trim()) {
@@ -237,18 +233,9 @@ function WhoisLookup() {
           </div>
         </form>
 
-        {isLoading && (
-          <div className="loading" aria-live="polite">
-            <div className="spinner" aria-hidden="true" />
-            <span>検索中...</span>
-          </div>
-        )}
+        <LoadingSpinner isLoading={isLoading} message="検索中..." />
 
-        {error && (
-          <div className="error-message" role="alert" aria-live="assertive">
-            {error}
-          </div>
-        )}
+        <ErrorMessage message={error} />
 
         {result && !error && (
           <section aria-labelledby="result-title">
@@ -276,13 +263,7 @@ function WhoisLookup() {
         />
       </div>
 
-      <div
-        ref={statusRef}
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
-        className="sr-only"
-      />
+      <StatusAnnouncer statusRef={statusRef} />
     </>
   );
 }

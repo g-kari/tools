@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   getServerEnv,
   type ServerEnvResult,
@@ -7,6 +7,12 @@ import {
 } from "../functions/server-env";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
+import { ErrorMessage } from "~/components/ErrorMessage";
+import { LoadingSpinner } from "~/components/LoadingSpinner";
+import {
+  useStatusAnnouncement,
+  StatusAnnouncer,
+} from "~/hooks/useStatusAnnouncement";
 
 export const Route = createFileRoute("/server-env")({
   head: () => ({
@@ -19,32 +25,8 @@ function ServerEnvPage() {
   const [result, setResult] = useState<ServerEnvResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const statusRef = useRef<HTMLDivElement>(null);
-  const statusTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Cleanup timeouts on unmount
-  useEffect(() => {
-    return () => {
-      if (statusTimeoutRef.current) {
-        clearTimeout(statusTimeoutRef.current);
-      }
-    };
-  }, []);
-
-  const announceStatus = useCallback((message: string) => {
-    if (statusRef.current) {
-      statusRef.current.textContent = message;
-      // Clear previous timeout
-      if (statusTimeoutRef.current) {
-        clearTimeout(statusTimeoutRef.current);
-      }
-      statusTimeoutRef.current = setTimeout(() => {
-        if (statusRef.current) {
-          statusRef.current.textContent = "";
-        }
-      }, 3000);
-    }
-  }, []);
+  const { statusRef, announceStatus } = useStatusAnnouncement();
 
   const fetchEnv = useCallback(async () => {
     setError(null);
@@ -121,18 +103,9 @@ function ServerEnvPage() {
         <div className="converter-section">
           <h2 className="section-title">サーバー環境情報</h2>
 
-          {isLoading && (
-            <div className="loading" aria-live="polite">
-              <div className="spinner" aria-hidden="true" />
-              <span>取得中...</span>
-            </div>
-          )}
+          <LoadingSpinner isLoading={isLoading} message="取得中..." />
 
-          {error && (
-            <div className="error-message" role="alert" aria-live="assertive">
-              {error}
-            </div>
-          )}
+          <ErrorMessage message={error} />
 
           {result && !error && result.items && (
             <div className="env-results" aria-live="polite">
@@ -220,14 +193,7 @@ function ServerEnvPage() {
         />
       </div>
 
-      <div
-        ref={statusRef}
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
-        className="sr-only"
-      />
-
+      <StatusAnnouncer statusRef={statusRef} />
     </>
   );
 }

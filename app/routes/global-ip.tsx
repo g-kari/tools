@@ -3,6 +3,13 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { getGlobalIp, type GlobalIpResult } from "../functions/global-ip";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
+import { ErrorMessage } from "~/components/ErrorMessage";
+import { LoadingSpinner } from "~/components/LoadingSpinner";
+import {
+  useStatusAnnouncement,
+  StatusAnnouncer,
+} from "~/hooks/useStatusAnnouncement";
+import { useClipboard } from "~/hooks/useClipboard";
 
 export const Route = createFileRoute("/global-ip")({
   head: () => ({
@@ -16,35 +23,18 @@ function GlobalIpLookup() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [copied, setCopied] = useState(false);
-  const statusRef = useRef<HTMLDivElement>(null);
-  const statusTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const copiedTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Cleanup timeouts on unmount
+  const { statusRef, announceStatus } = useStatusAnnouncement();
+  const { copy } = useClipboard();
+
+  // Cleanup timeout on unmount
   useEffect(() => {
     return () => {
-      if (statusTimeoutRef.current) {
-        clearTimeout(statusTimeoutRef.current);
-      }
       if (copiedTimeoutRef.current) {
         clearTimeout(copiedTimeoutRef.current);
       }
     };
-  }, []);
-
-  const announceStatus = useCallback((message: string) => {
-    if (statusRef.current) {
-      statusRef.current.textContent = message;
-      // Clear previous timeout
-      if (statusTimeoutRef.current) {
-        clearTimeout(statusTimeoutRef.current);
-      }
-      statusTimeoutRef.current = setTimeout(() => {
-        if (statusRef.current) {
-          statusRef.current.textContent = "";
-        }
-      }, 3000);
-    }
   }, []);
 
   const fetchIp = useCallback(async () => {
@@ -82,21 +72,8 @@ function GlobalIpLookup() {
   const handleCopy = useCallback(async () => {
     if (!result?.ip) return;
 
-    try {
-      // Use Clipboard API if available, fallback to execCommand
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText(result.ip);
-      } else {
-        // Fallback for older browsers
-        const textArea = document.createElement("textarea");
-        textArea.value = result.ip;
-        textArea.style.position = "fixed";
-        textArea.style.left = "-9999px";
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand("copy");
-        document.body.removeChild(textArea);
-      }
+    const success = await copy(result.ip);
+    if (success) {
       setCopied(true);
       announceStatus("IPアドレスをコピーしました");
       // Clear previous timeout
@@ -104,10 +81,10 @@ function GlobalIpLookup() {
         clearTimeout(copiedTimeoutRef.current);
       }
       copiedTimeoutRef.current = setTimeout(() => setCopied(false), 2000);
-    } catch {
+    } else {
       announceStatus("コピーに失敗しました");
     }
-  }, [result?.ip, announceStatus]);
+  }, [result?.ip, copy, announceStatus]);
 
   return (
     <>
@@ -115,18 +92,9 @@ function GlobalIpLookup() {
         <div className="converter-section">
           <h2 className="section-title">あなたのグローバルIPアドレス</h2>
 
-          {isLoading && (
-            <div className="loading" aria-live="polite">
-              <div className="spinner" aria-hidden="true" />
-              <span>取得中...</span>
-            </div>
-          )}
+          <LoadingSpinner isLoading={isLoading} message="取得中..." />
 
-          {error && (
-            <div className="error-message" role="alert" aria-live="assertive">
-              {error}
-            </div>
-          )}
+          <ErrorMessage message={error} />
 
           {result && !error && result.ip && (
             <div className="ip-display-container" aria-live="polite">
@@ -178,14 +146,7 @@ function GlobalIpLookup() {
         />
       </div>
 
-      <div
-        ref={statusRef}
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
-        className="sr-only"
-      />
-
+      <StatusAnnouncer statusRef={statusRef} />
     </>
   );
 }

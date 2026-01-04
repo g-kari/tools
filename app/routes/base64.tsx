@@ -4,6 +4,11 @@ import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import { TipsCard } from "~/components/TipsCard";
+import {
+  useStatusAnnouncement,
+  StatusAnnouncer,
+} from "~/hooks/useStatusAnnouncement";
+import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 
 export const Route = createFileRoute("/base64")({
   head: () => ({
@@ -17,32 +22,8 @@ function Base64Converter() {
   const [inputText, setInputText] = useState("");
   const [outputText, setOutputText] = useState("");
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const statusRef = useRef<HTMLDivElement>(null);
-  const statusTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Cleanup timeout on unmount
-  useEffect(() => {
-    return () => {
-      if (statusTimeoutRef.current) {
-        clearTimeout(statusTimeoutRef.current);
-      }
-    };
-  }, []);
-
-  const announceStatus = useCallback((message: string) => {
-    if (statusRef.current) {
-      statusRef.current.textContent = message;
-      // Clear previous timeout
-      if (statusTimeoutRef.current) {
-        clearTimeout(statusTimeoutRef.current);
-      }
-      statusTimeoutRef.current = setTimeout(() => {
-        if (statusRef.current) {
-          statusRef.current.textContent = "";
-        }
-      }, 3000);
-    }
-  }, []);
+  const { statusRef, announceStatus } = useStatusAnnouncement();
 
   const handleEncode = useCallback(() => {
     if (!inputText) {
@@ -85,17 +66,8 @@ function Base64Converter() {
     inputRef.current?.focus();
   }, [announceStatus]);
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
-        e.preventDefault();
-        handleEncode();
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [handleEncode]);
+  // Ctrl+Enter でエンコード
+  useKeyboardShortcut("Enter", handleEncode, { ctrl: true });
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -104,7 +76,10 @@ function Base64Converter() {
   return (
     <>
       <div className="tool-container">
-        <form onSubmit={(e) => e.preventDefault()} aria-label="Base64変換フォーム">
+        <form
+          onSubmit={(e) => e.preventDefault()}
+          aria-label="Base64変換フォーム"
+        >
           <div className="converter-section">
             <label htmlFor="inputText" className="section-title">
               入力テキスト
@@ -183,13 +158,7 @@ function Base64Converter() {
         />
       </div>
 
-      <div
-        ref={statusRef}
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
-        className="sr-only"
-      />
+      <StatusAnnouncer statusRef={statusRef} />
     </>
   );
 }

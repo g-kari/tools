@@ -10,6 +10,8 @@ import {
 import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import { TipsCard } from "~/components/TipsCard";
+import { ErrorMessage } from "~/components/ErrorMessage";
+import { useClipboard } from "~/hooks/useClipboard";
 
 export const Route = createFileRoute("/minify")({
   head: () => ({
@@ -69,6 +71,7 @@ function MinifyTool() {
   const [compressionRatio, setCompressionRatio] = useState<number | null>(null);
   const [usedLibrary, setUsedLibrary] = useState<string | null>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const { copy } = useClipboard();
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -215,17 +218,19 @@ function MinifyTool() {
   /**
    * 出力をクリップボードにコピー
    */
-  const handleCopy = useCallback(() => {
+  const handleCopy = useCallback(async () => {
     if (!output) {
       showToast("コピーする内容がありません", "error");
       return;
     }
 
-    navigator.clipboard
-      .writeText(output)
-      .then(() => showToast("コピーしました", "success"))
-      .catch(() => showToast("コピーに失敗しました", "error"));
-  }, [output, showToast]);
+    const success = await copy(output);
+    if (success) {
+      showToast("コピーしました", "success");
+    } else {
+      showToast("コピーに失敗しました", "error");
+    }
+  }, [output, copy, showToast]);
 
   /**
    * フィールドをクリア
@@ -314,11 +319,7 @@ function MinifyTool() {
             </Button>
           </div>
 
-          {error && (
-            <div className="error-message" role="alert" aria-live="assertive">
-              {error}
-            </div>
-          )}
+          <ErrorMessage message={error} />
 
           {output && (
             <div className="input-group">

@@ -4,6 +4,11 @@ import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import { TipsCard } from "~/components/TipsCard";
+import {
+  useStatusAnnouncement,
+  StatusAnnouncer,
+} from "~/hooks/useStatusAnnouncement";
+import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -46,18 +51,8 @@ function UnicodeConverter() {
   const [inputText, setInputText] = useState("");
   const [outputText, setOutputText] = useState("");
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const statusRef = useRef<HTMLDivElement>(null);
 
-  const announceStatus = useCallback((message: string) => {
-    if (statusRef.current) {
-      statusRef.current.textContent = message;
-      setTimeout(() => {
-        if (statusRef.current) {
-          statusRef.current.textContent = "";
-        }
-      }, 3000);
-    }
-  }, []);
+  const { statusRef, announceStatus } = useStatusAnnouncement();
 
   const handleEncode = useCallback(() => {
     if (!inputText) {
@@ -90,17 +85,8 @@ function UnicodeConverter() {
     inputRef.current?.focus();
   }, [announceStatus]);
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
-        e.preventDefault();
-        handleEncode();
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [handleEncode]);
+  // Ctrl+Enter で変換
+  useKeyboardShortcut("Enter", handleEncode, { ctrl: true });
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -188,13 +174,7 @@ function UnicodeConverter() {
         />
       </div>
 
-      <div
-        ref={statusRef}
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
-        className="sr-only"
-      />
+      <StatusAnnouncer statusRef={statusRef} />
     </>
   );
 }

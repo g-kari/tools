@@ -152,7 +152,7 @@ jobs:
         with:
           name: playwright-report-${{ steps.filename.outputs.name }}
           path: playwright-report/
-          retention-days: 7
+          retention-days: 1
 
   # Summary job - aggregates results
   summary:
