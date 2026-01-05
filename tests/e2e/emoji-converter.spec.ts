@@ -670,17 +670,20 @@ test.describe('Emoji Converter - E2E Tests', () => {
           }
         });
       });
-      await page.waitForTimeout(300);
+      await page.waitForTimeout(500);
 
       // トリミングを有効化（JavaScriptで直接チェック）
       await page.evaluate(() => {
-        const label = document.querySelector('.md3-checkbox-label');
-        if (label?.textContent?.includes('トリミングを有効化')) {
-          const checkbox = label.parentElement?.querySelector('input[type="checkbox"]') as HTMLInputElement;
-          if (checkbox) checkbox.click();
-        }
+        const labels = document.querySelectorAll('.md3-checkbox-label');
+        labels.forEach(label => {
+          if (label?.textContent?.includes('トリミングを有効化')) {
+            const container = label.closest('.md3-checkbox');
+            const checkbox = container?.querySelector('input[type="checkbox"]') as HTMLInputElement;
+            if (checkbox && !checkbox.checked) checkbox.click();
+          }
+        });
       });
-      await page.waitForTimeout(300);
+      await page.waitForTimeout(500);
 
       // ズームセクションが表示されることを確認
       const zoomSection = page.locator('.crop-zoom-section');
@@ -705,13 +708,16 @@ test.describe('Emoji Converter - E2E Tests', () => {
 
       // トリミングを有効化（JavaScriptで直接チェック）
       await page.evaluate(() => {
-        const label = document.querySelector('.md3-checkbox-label');
-        if (label?.textContent?.includes('トリミングを有効化')) {
-          const checkbox = label.parentElement?.querySelector('input[type="checkbox"]') as HTMLInputElement;
-          if (checkbox) checkbox.click();
-        }
+        const labels = document.querySelectorAll('.md3-checkbox-label');
+        labels.forEach(label => {
+          if (label?.textContent?.includes('トリミングを有効化')) {
+            const container = label.closest('.md3-checkbox');
+            const checkbox = container?.querySelector('input[type="checkbox"]') as HTMLInputElement;
+            if (checkbox && !checkbox.checked) checkbox.click();
+          }
+        });
       });
-      await page.waitForTimeout(300);
+      await page.waitForTimeout(500);
 
       // プリセットボタンが存在することを確認
       const presetButtons = page.locator('.zoom-preset-button');
@@ -732,13 +738,16 @@ test.describe('Emoji Converter - E2E Tests', () => {
 
       // トリミングを有効化（JavaScriptで直接チェック）
       await page.evaluate(() => {
-        const label = document.querySelector('.md3-checkbox-label');
-        if (label?.textContent?.includes('トリミングを有効化')) {
-          const checkbox = label.parentElement?.querySelector('input[type="checkbox"]') as HTMLInputElement;
-          if (checkbox) checkbox.click();
-        }
+        const labels = document.querySelectorAll('.md3-checkbox-label');
+        labels.forEach(label => {
+          if (label?.textContent?.includes('トリミングを有効化')) {
+            const container = label.closest('.md3-checkbox');
+            const checkbox = container?.querySelector('input[type="checkbox"]') as HTMLInputElement;
+            if (checkbox && !checkbox.checked) checkbox.click();
+          }
+        });
       });
-      await page.waitForTimeout(300);
+      await page.waitForTimeout(500);
 
       // ズームイン/アウトボタンが存在することを確認
       const zoomInButton = page.locator('.zoom-button[aria-label="ズームイン"]');
@@ -761,13 +770,16 @@ test.describe('Emoji Converter - E2E Tests', () => {
 
       // トリミングを有効化（JavaScriptで直接チェック）
       await page.evaluate(() => {
-        const label = document.querySelector('.md3-checkbox-label');
-        if (label?.textContent?.includes('トリミングを有効化')) {
-          const checkbox = label.parentElement?.querySelector('input[type="checkbox"]') as HTMLInputElement;
-          if (checkbox) checkbox.click();
-        }
+        const labels = document.querySelectorAll('.md3-checkbox-label');
+        labels.forEach(label => {
+          if (label?.textContent?.includes('トリミングを有効化')) {
+            const container = label.closest('.md3-checkbox');
+            const checkbox = container?.querySelector('input[type="checkbox"]') as HTMLInputElement;
+            if (checkbox && !checkbox.checked) checkbox.click();
+          }
+        });
       });
-      await page.waitForTimeout(300);
+      await page.waitForTimeout(500);
 
       // 200%プリセットをクリック
       const preset200 = page.locator('.zoom-preset-button:has-text("200%")');
@@ -798,13 +810,16 @@ test.describe('Emoji Converter - E2E Tests', () => {
 
       // トリミングを有効化（JavaScriptで直接チェック）
       await page.evaluate(() => {
-        const label = document.querySelector('.md3-checkbox-label');
-        if (label?.textContent?.includes('トリミングを有効化')) {
-          const checkbox = label.parentElement?.querySelector('input[type="checkbox"]') as HTMLInputElement;
-          if (checkbox) checkbox.click();
-        }
+        const labels = document.querySelectorAll('.md3-checkbox-label');
+        labels.forEach(label => {
+          if (label?.textContent?.includes('トリミングを有効化')) {
+            const container = label.closest('.md3-checkbox');
+            const checkbox = container?.querySelector('input[type="checkbox"]') as HTMLInputElement;
+            if (checkbox && !checkbox.checked) checkbox.click();
+          }
+        });
       });
-      await page.waitForTimeout(300);
+      await page.waitForTimeout(500);
 
       // ズームを変更
       const preset200 = page.locator('.zoom-preset-button:has-text("200%")');
@@ -820,13 +835,16 @@ test.describe('Emoji Converter - E2E Tests', () => {
 
       // ズームがリセットされることを確認（トリミングが無効になるので再度有効化）
       await page.evaluate(() => {
-        const label = document.querySelector('.md3-checkbox-label');
-        if (label?.textContent?.includes('トリミングを有効化')) {
-          const checkbox = label.parentElement?.querySelector('input[type="checkbox"]') as HTMLInputElement;
-          if (checkbox && !checkbox.checked) checkbox.click();
-        }
+        const labels = document.querySelectorAll('.md3-checkbox-label');
+        labels.forEach(label => {
+          if (label?.textContent?.includes('トリミングを有効化')) {
+            const container = label.closest('.md3-checkbox');
+            const checkbox = container?.querySelector('input[type="checkbox"]') as HTMLInputElement;
+            if (checkbox && !checkbox.checked) checkbox.click();
+          }
+        });
       });
-      await page.waitForTimeout(300);
+      await page.waitForTimeout(500);
       await expect(zoomSlider).toHaveValue('100');
     });
   });
