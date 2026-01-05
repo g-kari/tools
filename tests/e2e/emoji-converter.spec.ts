@@ -677,7 +677,7 @@ test.describe('Emoji Converter - E2E Tests', () => {
         const labels = document.querySelectorAll('.md3-checkbox-label');
         labels.forEach(label => {
           if (label?.textContent?.includes('トリミングを有効化')) {
-            const container = label.closest('.md3-checkbox');
+            const container = label.closest('label.md3-checkbox-wrapper');
             const checkbox = container?.querySelector('input[type="checkbox"]') as HTMLInputElement;
             if (checkbox && !checkbox.checked) checkbox.click();
           }
@@ -711,7 +711,7 @@ test.describe('Emoji Converter - E2E Tests', () => {
         const labels = document.querySelectorAll('.md3-checkbox-label');
         labels.forEach(label => {
           if (label?.textContent?.includes('トリミングを有効化')) {
-            const container = label.closest('.md3-checkbox');
+            const container = label.closest('label.md3-checkbox-wrapper');
             const checkbox = container?.querySelector('input[type="checkbox"]') as HTMLInputElement;
             if (checkbox && !checkbox.checked) checkbox.click();
           }
@@ -741,7 +741,7 @@ test.describe('Emoji Converter - E2E Tests', () => {
         const labels = document.querySelectorAll('.md3-checkbox-label');
         labels.forEach(label => {
           if (label?.textContent?.includes('トリミングを有効化')) {
-            const container = label.closest('.md3-checkbox');
+            const container = label.closest('label.md3-checkbox-wrapper');
             const checkbox = container?.querySelector('input[type="checkbox"]') as HTMLInputElement;
             if (checkbox && !checkbox.checked) checkbox.click();
           }
@@ -773,7 +773,7 @@ test.describe('Emoji Converter - E2E Tests', () => {
         const labels = document.querySelectorAll('.md3-checkbox-label');
         labels.forEach(label => {
           if (label?.textContent?.includes('トリミングを有効化')) {
-            const container = label.closest('.md3-checkbox');
+            const container = label.closest('label.md3-checkbox-wrapper');
             const checkbox = container?.querySelector('input[type="checkbox"]') as HTMLInputElement;
             if (checkbox && !checkbox.checked) checkbox.click();
           }
@@ -813,7 +813,7 @@ test.describe('Emoji Converter - E2E Tests', () => {
         const labels = document.querySelectorAll('.md3-checkbox-label');
         labels.forEach(label => {
           if (label?.textContent?.includes('トリミングを有効化')) {
-            const container = label.closest('.md3-checkbox');
+            const container = label.closest('label.md3-checkbox-wrapper');
             const checkbox = container?.querySelector('input[type="checkbox"]') as HTMLInputElement;
             if (checkbox && !checkbox.checked) checkbox.click();
           }
@@ -838,7 +838,7 @@ test.describe('Emoji Converter - E2E Tests', () => {
         const labels = document.querySelectorAll('.md3-checkbox-label');
         labels.forEach(label => {
           if (label?.textContent?.includes('トリミングを有効化')) {
-            const container = label.closest('.md3-checkbox');
+            const container = label.closest('label.md3-checkbox-wrapper');
             const checkbox = container?.querySelector('input[type="checkbox"]') as HTMLInputElement;
             if (checkbox && !checkbox.checked) checkbox.click();
           }
