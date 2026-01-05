@@ -494,9 +494,9 @@ test.describe('Emoji Converter - E2E Tests', () => {
       // プレビューが表示されることを確認
       await expect(page.locator('h2.section-title:has-text("プレビュー")')).toBeVisible({ timeout: 10000 });
 
-      // 各セクションにリセットボタンが存在することを確認
+      // 各セクションにリセットボタンが存在することを確認（アニメーションセクション含め7つ）
       const resetSectionButtons = page.locator('.reset-section-button');
-      await expect(resetSectionButtons).toHaveCount(6);
+      await expect(resetSectionButtons).toHaveCount(7);
     });
 
     test('should reset filter options when filter reset button is clicked', async ({ page }) => {
