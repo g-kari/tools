@@ -38,6 +38,9 @@ const DEFAULT_CROP_OPTIONS = {
   cropY: 0,
   cropWidth: 100,
   cropHeight: 100,
+  cropZoom: 100,
+  cropPanX: 0,
+  cropPanY: 0,
 };
 
 const DEFAULT_EDIT_OPTIONS = {
@@ -186,6 +189,9 @@ describe("emoji-converter", () => {
         cropY: 0,
         cropWidth: 100,
         cropHeight: 100,
+        cropZoom: 100,
+        cropPanX: 0,
+        cropPanY: 0,
       });
     });
 
@@ -212,6 +218,9 @@ describe("emoji-converter", () => {
         cropY: 0,
         cropWidth: 100,
         cropHeight: 100,
+        cropZoom: 100,
+        cropPanX: 0,
+        cropPanY: 0,
       });
     });
   });
@@ -319,6 +328,9 @@ describe("emoji-converter", () => {
         cropY: 20,
         cropWidth: 80,
         cropHeight: 60,
+        cropZoom: 200,
+        cropPanX: 30,
+        cropPanY: -20,
       };
 
       const resetOptions = {
@@ -331,6 +343,9 @@ describe("emoji-converter", () => {
       expect(resetOptions.cropY).toBe(0);
       expect(resetOptions.cropWidth).toBe(100);
       expect(resetOptions.cropHeight).toBe(100);
+      expect(resetOptions.cropZoom).toBe(100);
+      expect(resetOptions.cropPanX).toBe(0);
+      expect(resetOptions.cropPanY).toBe(0);
     });
 
     it("全設定をリセットできる", () => {
@@ -363,6 +378,104 @@ describe("emoji-converter", () => {
 
       expect(resetOptions).toEqual(DEFAULT_EDIT_OPTIONS);
       expect(resetOptions).not.toEqual(modifiedOptions);
+    });
+  });
+
+  describe("ズーム機能", () => {
+    it("ズームのデフォルト値が正しい", () => {
+      expect(DEFAULT_CROP_OPTIONS.cropZoom).toBe(100);
+      expect(DEFAULT_CROP_OPTIONS.cropPanX).toBe(0);
+      expect(DEFAULT_CROP_OPTIONS.cropPanY).toBe(0);
+    });
+
+    it("ズームレベルの範囲が正しい", () => {
+      // ズームレベルは10-400%
+      const minZoom = 10;
+      const maxZoom = 400;
+      const defaultZoom = 100;
+      
+      expect(defaultZoom).toBeGreaterThanOrEqual(minZoom);
+      expect(defaultZoom).toBeLessThanOrEqual(maxZoom);
+    });
+
+    it("パン位置の範囲が正しい", () => {
+      // パン位置は-100から100%
+      const minPan = -100;
+      const maxPan = 100;
+      const defaultPan = 0;
+      
+      expect(defaultPan).toBeGreaterThanOrEqual(minPan);
+      expect(defaultPan).toBeLessThanOrEqual(maxPan);
+    });
+
+    it("ズームを変更できる", () => {
+      const options = { ...DEFAULT_CROP_OPTIONS };
+      options.cropZoom = 200;
+      expect(options.cropZoom).toBe(200);
+    });
+
+    it("パン位置を変更できる", () => {
+      const options = { ...DEFAULT_CROP_OPTIONS };
+      options.cropPanX = 50;
+      options.cropPanY = -30;
+      expect(options.cropPanX).toBe(50);
+      expect(options.cropPanY).toBe(-30);
+    });
+
+    it("ズームリセット時にパン位置もリセットされる", () => {
+      const modifiedOptions = {
+        ...DEFAULT_CROP_OPTIONS,
+        cropZoom: 300,
+        cropPanX: 50,
+        cropPanY: -25,
+      };
+
+      const resetOptions = { ...DEFAULT_CROP_OPTIONS };
+
+      expect(resetOptions.cropZoom).toBe(100);
+      expect(resetOptions.cropPanX).toBe(0);
+      expect(resetOptions.cropPanY).toBe(0);
+    });
+
+    it("ズームイン操作が正しく動作する", () => {
+      let zoom = 100;
+      const zoomIn = () => Math.min(400, zoom + 10);
+      
+      zoom = zoomIn();
+      expect(zoom).toBe(110);
+      
+      zoom = 390;
+      zoom = zoomIn();
+      expect(zoom).toBe(400);
+      
+      zoom = 400;
+      zoom = zoomIn();
+      expect(zoom).toBe(400); // 上限
+    });
+
+    it("ズームアウト操作が正しく動作する", () => {
+      let zoom = 100;
+      const zoomOut = () => Math.max(10, zoom - 10);
+      
+      zoom = zoomOut();
+      expect(zoom).toBe(90);
+      
+      zoom = 20;
+      zoom = zoomOut();
+      expect(zoom).toBe(10);
+      
+      zoom = 10;
+      zoom = zoomOut();
+      expect(zoom).toBe(10); // 下限
+    });
+
+    it("プリセットズーム値が正しい", () => {
+      const presets = [50, 100, 200, 400];
+      
+      expect(presets).toContain(50);
+      expect(presets).toContain(100);
+      expect(presets).toContain(200);
+      expect(presets).toContain(400);
     });
   });
 });

@@ -557,7 +557,6 @@ test.describe('Emoji Converter - E2E Tests', () => {
     });
   });
 
-  test.describe('Accessibility', () => {
     test('should have proper ARIA labels', async ({ page }) => {
       const dropzone = page.locator('.dropzone');
       await expect(dropzone).toHaveAttribute('aria-label', '画像ファイルをアップロード');
@@ -587,6 +586,121 @@ test.describe('Emoji Converter - E2E Tests', () => {
 
       // フォーカスされていることを確認
       await expect(dropzone).toBeFocused();
+    });
+
+  test.describe('Zoom functionality', () => {
+    test.beforeEach(async ({ page }) => {
+      // ダミー画像を作成してアップロード
+      const buffer = Buffer.alloc(100);
+      buffer.write('PNG');
+
+      await page.setInputFiles('input#imageFile', {
+        name: 'test.png',
+        mimeType: 'image/png',
+        buffer: buffer,
+      });
+
+      // 編集オプションが表示されるまで待機
+      await expect(page.locator('h2.section-title:has-text("編集オプション")')).toBeVisible({ timeout: 10000 });
+    });
+
+    test('should have zoom controls in crop section', async ({ page }) => {
+      // トリミングセクションを開く
+      const cropSection = page.locator('summary:has-text("トリミング")');
+      await expect(cropSection).toBeVisible();
+      await cropSection.click();
+
+      // トリミングを有効化
+      const cropCheckbox = page.locator('.md3-checkbox-label:has-text("トリミングを有効化")').locator('..');
+      await cropCheckbox.locator('input[type="checkbox"]').check();
+
+      // ズームセクションが表示されることを確認
+      const zoomSection = page.locator('.crop-zoom-section');
+      await expect(zoomSection).toBeVisible();
+
+      // ズームスライダーが存在することを確認
+      const zoomSlider = page.locator('input#cropZoom');
+      await expect(zoomSlider).toBeVisible();
+    });
+
+    test('should have zoom preset buttons', async ({ page }) => {
+      // トリミングセクションを開く
+      const cropSection = page.locator('summary:has-text("トリミング")');
+      await cropSection.click();
+
+      // トリミングを有効化
+      const cropCheckbox = page.locator('.md3-checkbox-label:has-text("トリミングを有効化")').locator('..');
+      await cropCheckbox.locator('input[type="checkbox"]').check();
+
+      // プリセットボタンが存在することを確認
+      const presetButtons = page.locator('.zoom-preset-button');
+      await expect(presetButtons).toHaveCount(4);
+    });
+
+    test('should have zoom in/out buttons', async ({ page }) => {
+      // トリミングセクションを開く
+      const cropSection = page.locator('summary:has-text("トリミング")');
+      await cropSection.click();
+
+      // トリミングを有効化
+      const cropCheckbox = page.locator('.md3-checkbox-label:has-text("トリミングを有効化")').locator('..');
+      await cropCheckbox.locator('input[type="checkbox"]').check();
+
+      // ズームイン/アウトボタンが存在することを確認
+      const zoomInButton = page.locator('.zoom-button[aria-label="ズームイン"]');
+      const zoomOutButton = page.locator('.zoom-button[aria-label="ズームアウト"]');
+      await expect(zoomInButton).toBeVisible();
+      await expect(zoomOutButton).toBeVisible();
+    });
+
+    test('should show pan controls when zoom is over 100%', async ({ page }) => {
+      // トリミングセクションを開く
+      const cropSection = page.locator('summary:has-text("トリミング")');
+      await cropSection.click();
+
+      // トリミングを有効化
+      const cropCheckbox = page.locator('.md3-checkbox-label:has-text("トリミングを有効化")').locator('..');
+      await cropCheckbox.locator('input[type="checkbox"]').check();
+
+      // 200%プリセットをクリック
+      const preset200 = page.locator('.zoom-preset-button:has-text("200%")');
+      await preset200.click();
+
+      // パンコントロールが表示されることを確認
+      const panControls = page.locator('.pan-controls');
+      await expect(panControls).toBeVisible();
+
+      // パンスライダーが存在することを確認
+      const panXSlider = page.locator('input#cropPanX');
+      const panYSlider = page.locator('input#cropPanY');
+      await expect(panXSlider).toBeVisible();
+      await expect(panYSlider).toBeVisible();
+    });
+
+    test('should reset zoom with crop reset button', async ({ page }) => {
+      // トリミングセクションを開く
+      const cropSection = page.locator('summary:has-text("トリミング")');
+      await cropSection.click();
+
+      // トリミングを有効化
+      const cropCheckbox = page.locator('.md3-checkbox-label:has-text("トリミングを有効化")').locator('..');
+      await cropCheckbox.locator('input[type="checkbox"]').check();
+
+      // ズームを変更
+      const preset200 = page.locator('.zoom-preset-button:has-text("200%")');
+      await preset200.click();
+
+      // ズームスライダーの値を確認
+      const zoomSlider = page.locator('input#cropZoom');
+      await expect(zoomSlider).toHaveValue('200');
+
+      // リセットボタンをクリック
+      const resetButton = cropSection.locator('..').locator('.reset-section-button[aria-label="トリミング設定をリセット"]');
+      await resetButton.click();
+
+      // ズームがリセットされることを確認（トリミングが無効になるので再度有効化）
+      await cropCheckbox.locator('input[type="checkbox"]').check();
+      await expect(zoomSlider).toHaveValue('100');
     });
   });
 });
