@@ -1821,6 +1821,11 @@ details[open] .details-summary::before {
   cursor: pointer;
   transition: all 0.2s;
   white-space: nowrap;
+  /* Override global button styles */
+  min-width: auto;
+  flex: 0 0 auto;
+  text-transform: none;
+  letter-spacing: normal;
 }
 
 .reset-section-button:hover {
@@ -5590,5 +5595,17 @@ a:focus-visible {
 
   .image-preview-item img {
     height: 100px;
+  }
+}
+
+/* リセットボタンのレスポンシブ対応 */
+@media (max-width: 360px) {
+  .details-summary {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .section-header-with-reset {
+    flex-wrap: wrap;
   }
 }
