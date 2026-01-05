@@ -547,8 +547,12 @@ function EmojiConverter() {
     (selectedFile: File | null) => {
       if (selectedFile && selectedFile.type.startsWith("image/")) {
         setFile(selectedFile);
+        setIsAnimated(isAnimatedImage(selectedFile));
+        setUseFirstFrameOnly(false);
         announceStatus(`ファイルを選択しました: ${selectedFile.name}`);
       } else {
+        setIsAnimated(false);
+        setUseFirstFrameOnly(false);
         announceStatus("画像ファイルを選択してください");
       }
     },
@@ -1433,8 +1437,7 @@ function EmojiConverter() {
                 <img
                   src={previewUrl}
                   alt="アニメーション絵文字プレビュー"
-                  className="preview-image"
-                  style={{ maxWidth: '128px', maxHeight: '128px' }}
+                  className="preview-image animated-emoji-preview"
                 />
               ) : (
                 <canvas

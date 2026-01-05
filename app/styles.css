@@ -5695,3 +5695,12 @@ a:focus-visible {
 .pan-controls .reset-section-button {
   margin-top: 0.5rem;
 }
+
+/* ==================== */
+/* Animated Emoji Preview */
+/* ==================== */
+
+.animated-emoji-preview {
+  max-width: 128px;
+  max-height: 128px;
+}
