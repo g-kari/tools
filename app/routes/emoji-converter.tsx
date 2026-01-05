@@ -9,6 +9,7 @@ export const Route = createFileRoute("/emoji-converter")({
 });
 
 type Platform = "discord" | "slack";
+type OutputFormat = "png" | "webp" | "avif";
 
 const PLATFORM_LIMITS = {
   discord: { maxSize: 256 * 1024, label: "Discord (最大256KB)" },
@@ -45,6 +46,10 @@ interface EditOptions {
   cropPanX: number;
   /** トリミングプレビューのパンY位置 */
   cropPanY: number;
+  /** 出力形式 */
+  outputFormat: OutputFormat;
+  /** 出力品質 (1-100%, WebP/AVIFのみ) */
+  outputQuality: number;
 }
 
 /** テキスト埋め込みのデフォルト値 */
@@ -95,6 +100,12 @@ const DEFAULT_CROP_OPTIONS: Pick<EditOptions, "crop" | "cropX" | "cropY" | "crop
   cropPanY: 0,
 };
 
+/** 出力形式のデフォルト値 */
+const DEFAULT_OUTPUT_OPTIONS: Pick<EditOptions, "outputFormat" | "outputQuality"> = {
+  outputFormat: "png",
+  outputQuality: 90,
+};
+
 const DEFAULT_EDIT_OPTIONS: EditOptions = {
   ...DEFAULT_TEXT_OPTIONS,
   ...DEFAULT_TRANSFORM_OPTIONS,
@@ -102,6 +113,7 @@ const DEFAULT_EDIT_OPTIONS: EditOptions = {
   ...DEFAULT_TRANSPARENT_OPTIONS,
   ...DEFAULT_BORDER_OPTIONS,
   ...DEFAULT_CROP_OPTIONS,
+  ...DEFAULT_OUTPUT_OPTIONS,
 };
 
 /**
@@ -367,27 +379,31 @@ function applyTransparency(
  * CanvasをBlobに変換（容量制限を満たすまで圧縮）
  * @param canvas - 変換元のcanvas
  * @param maxSize - 最大ファイルサイズ（バイト）
+ * @param format - 出力形式
+ * @param initialQuality - 初期品質（1-100、WebP/AVIFのみ）
  * @returns Blob
  */
 export async function canvasToBlobWithLimit(
   canvas: HTMLCanvasElement,
-  maxSize: number
+  maxSize: number,
+  format: OutputFormat = "png",
+  initialQuality: number = 90
 ): Promise<Blob | null> {
-  // まずPNGで試す
-  let blob = await new Promise<Blob | null>((resolve) => {
-    canvas.toBlob((b) => resolve(b), "image/png");
-  });
-
-  if (blob && blob.size <= maxSize) {
+  // PNGの場合は品質設定なし
+  if (format === "png") {
+    const blob = await new Promise<Blob | null>((resolve) => {
+      canvas.toBlob((b) => resolve(b), "image/png");
+    });
     return blob;
   }
 
-  // PNGが大きすぎる場合はWebPで圧縮
-  let quality = 0.95;
+  // WebPまたはAVIFの場合は品質を調整しながら圧縮
+  const mimeType = format === "webp" ? "image/webp" : "image/avif";
+  let quality = initialQuality / 100; // 0.0-1.0の範囲に変換
 
   while (quality > 0.1) {
-    blob = await new Promise<Blob | null>((resolve) => {
-      canvas.toBlob((b) => resolve(b), "image/webp", quality);
+    const blob = await new Promise<Blob | null>((resolve) => {
+      canvas.toBlob((b) => resolve(b), mimeType, quality);
     });
 
     if (blob && blob.size <= maxSize) {
@@ -397,7 +413,10 @@ export async function canvasToBlobWithLimit(
     quality -= 0.05;
   }
 
-  return blob;
+  // 最小品質でも容量制限を満たせない場合は最小品質のblobを返す
+  return await new Promise<Blob | null>((resolve) => {
+    canvas.toBlob((b) => resolve(b), mimeType, 0.1);
+  });
 }
 
 function EmojiConverter() {
@@ -445,7 +464,12 @@ function EmojiConverter() {
 
       // Blob生成（容量制限適用）
       const maxSize = PLATFORM_LIMITS[platform].maxSize;
-      const blob = await canvasToBlobWithLimit(editedCanvas, maxSize);
+      const blob = await canvasToBlobWithLimit(
+        editedCanvas,
+        maxSize,
+        editOptions.outputFormat,
+        editOptions.outputQuality
+      );
 
       if (blob) {
         // 古いBlobURLがあればクリーンアップ
@@ -589,6 +613,12 @@ function EmojiConverter() {
     announceStatus("トリミング設定をリセットしました");
   }, [announceStatus]);
 
+  /** 出力形式をリセット */
+  const resetOutputOptions = useCallback(() => {
+    setEditOptions((prev) => ({ ...prev, ...DEFAULT_OUTPUT_OPTIONS }));
+    announceStatus("出力形式設定をリセットしました");
+  }, [announceStatus]);
+
   /** 全ての編集オプションをリセット（画像は保持） */
   const resetAllEditOptions = useCallback(() => {
     setEditOptions(DEFAULT_EDIT_OPTIONS);
@@ -687,6 +717,62 @@ function EmojiConverter() {
               プラットフォームに応じて自動的に容量制限を適用します
             </small>
           </div>
+        </section>
+
+        {/* 出力形式 */}
+        <section className="section">
+          <div className="section-header-with-reset">
+            <h2 className="section-title">出力形式</h2>
+            <button
+              type="button"
+              onClick={resetOutputOptions}
+              className="reset-section-button"
+              aria-label="出力形式設定をリセット"
+            >
+              リセット
+            </button>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="outputFormat" className="label">
+              ファイル形式
+            </label>
+            <select
+              id="outputFormat"
+              value={editOptions.outputFormat}
+              onChange={(e) => updateEditOption("outputFormat", e.target.value as OutputFormat)}
+              className="select"
+              aria-describedby="format-help"
+            >
+              <option value="png">PNG（無劣化）</option>
+              <option value="webp">WebP（高圧縮）</option>
+              <option value="avif">AVIF（最高圧縮）</option>
+            </select>
+            <small id="format-help" className="help-text">
+              PNGは無劣化ですが容量が大きくなります。WebP・AVIFは品質を調整して容量を削減できます
+            </small>
+          </div>
+
+          {(editOptions.outputFormat === "webp" || editOptions.outputFormat === "avif") && (
+            <div className="form-group">
+              <label htmlFor="outputQuality" className="label">
+                品質: {editOptions.outputQuality}%
+              </label>
+              <input
+                id="outputQuality"
+                type="range"
+                min="1"
+                max="100"
+                value={editOptions.outputQuality}
+                onChange={(e) => updateEditOption("outputQuality", Number(e.target.value))}
+                className="range"
+                aria-describedby="quality-help"
+              />
+              <small id="quality-help" className="help-text">
+                品質を下げると容量が小さくなりますが、画質が低下します
+              </small>
+            </div>
+          )}
         </section>
 
         {/* 編集オプションとプレビューを横並び */}

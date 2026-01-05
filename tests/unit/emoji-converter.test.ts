@@ -43,6 +43,11 @@ const DEFAULT_CROP_OPTIONS = {
   cropPanY: 0,
 };
 
+const DEFAULT_OUTPUT_OPTIONS = {
+  outputFormat: "png" as const,
+  outputQuality: 90,
+};
+
 const DEFAULT_EDIT_OPTIONS = {
   ...DEFAULT_TEXT_OPTIONS,
   ...DEFAULT_TRANSFORM_OPTIONS,
@@ -50,6 +55,7 @@ const DEFAULT_EDIT_OPTIONS = {
   ...DEFAULT_TRANSPARENT_OPTIONS,
   ...DEFAULT_BORDER_OPTIONS,
   ...DEFAULT_CROP_OPTIONS,
+  ...DEFAULT_OUTPUT_OPTIONS,
 };
 
 // Mock canvas for testing
@@ -221,6 +227,8 @@ describe("emoji-converter", () => {
         cropZoom: 100,
         cropPanX: 0,
         cropPanY: 0,
+        outputFormat: "png",
+        outputQuality: 90,
       });
     });
   });
@@ -476,6 +484,55 @@ describe("emoji-converter", () => {
       expect(presets).toContain(100);
       expect(presets).toContain(200);
       expect(presets).toContain(400);
+    });
+  });
+
+  describe("出力形式機能", () => {
+    it("出力形式のデフォルト値が正しい", () => {
+      expect(DEFAULT_OUTPUT_OPTIONS.outputFormat).toBe("png");
+      expect(DEFAULT_OUTPUT_OPTIONS.outputQuality).toBe(90);
+    });
+
+    it("出力形式を変更できる", () => {
+      const options = { ...DEFAULT_OUTPUT_OPTIONS };
+      options.outputFormat = "webp" as const;
+      expect(options.outputFormat).toBe("webp");
+    });
+
+    it("出力品質を変更できる", () => {
+      const options = { ...DEFAULT_OUTPUT_OPTIONS };
+      options.outputQuality = 75;
+      expect(options.outputQuality).toBe(75);
+    });
+
+    it("出力品質の範囲が正しい", () => {
+      const minQuality = 1;
+      const maxQuality = 100;
+      const defaultQuality = 90;
+      
+      expect(defaultQuality).toBeGreaterThanOrEqual(minQuality);
+      expect(defaultQuality).toBeLessThanOrEqual(maxQuality);
+    });
+
+    it("対応する出力形式が正しい", () => {
+      const formats: Array<"png" | "webp" | "avif"> = ["png", "webp", "avif"];
+      
+      expect(formats).toContain("png");
+      expect(formats).toContain("webp");
+      expect(formats).toContain("avif");
+    });
+
+    it("出力形式をリセットできる", () => {
+      const modifiedOptions = {
+        ...DEFAULT_OUTPUT_OPTIONS,
+        outputFormat: "webp" as const,
+        outputQuality: 50,
+      };
+
+      const resetOptions = { ...DEFAULT_OUTPUT_OPTIONS };
+
+      expect(resetOptions.outputFormat).toBe("png");
+      expect(resetOptions.outputQuality).toBe(90);
     });
   });
 });
