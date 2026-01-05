@@ -214,7 +214,7 @@ test.describe('Emoji Converter - E2E Tests', () => {
       const downloadButton = page.locator('button:has-text("ダウンロード")');
       await expect(downloadButton).toBeVisible({ timeout: 10000 });
 
-      const resetButton = page.locator('button:has-text("リセット")');
+      const resetButton = page.locator('button.btn-clear:has-text("リセット")');
       await expect(resetButton).toBeVisible();
     });
   });
