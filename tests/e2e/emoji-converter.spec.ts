@@ -750,6 +750,4 @@ test.describe('Emoji Converter - E2E Tests', () => {
       await expect(resetButton).toBeVisible();
     });
   });
-
-  });
 });
