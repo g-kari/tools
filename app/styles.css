@@ -1736,7 +1736,7 @@ input[type="range"]:focus-visible {
 
 .emoji-editor-layout {
   display: flex;
-  gap: 1.5rem;
+  gap: 1rem;
   align-items: flex-start;
 }
 
@@ -1746,9 +1746,9 @@ input[type="range"]:focus-visible {
 }
 
 .emoji-preview-panel {
-  flex: 0 0 400px;
+  flex: 0 0 320px;
   position: sticky;
-  top: 20px;
+  top: 10px;
 }
 
 @media (max-width: 1024px) {
@@ -1986,12 +1986,13 @@ details[open] .details-summary::before {
 
 .preview-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 2rem;
+  padding: 1rem;
   background: var(--md-sys-color-surface-variant);
   border-radius: 4px;
-  min-height: 200px;
+  min-height: 180px;
 }
 
 .preview-canvas {
@@ -2014,21 +2015,19 @@ details[open] .details-summary::before {
 
 .preview-hint {
   margin-top: 0.5rem;
-  padding: 0.5rem;
-  background: var(--md-sys-color-surface-variant);
-  border-radius: 4px;
-  font-size: 0.875rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
   color: var(--md-sys-color-on-surface-variant);
   text-align: center;
 }
 
 .file-size-info {
-  margin-top: 1rem;
-  padding: 0.75rem;
+  margin-top: 0.75rem;
+  padding: 0.5rem;
   background: var(--md-sys-color-surface-variant);
   border-radius: 4px;
   text-align: center;
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   color: var(--md-sys-color-on-surface-variant);
 }
 

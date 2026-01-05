@@ -111,8 +111,7 @@ function applyBounceEffect(
   const maxBounce = canvas.height * 0.15; // Bounce up to 15% of height
   const offsetY = -bounce * maxBounce;
 
-  ctx.translate(0, offsetY);
-  ctx.drawImage(baseCanvas, 0, -offsetY, canvas.width, canvas.height);
+  ctx.drawImage(baseCanvas, 0, offsetY);
 }
 
 /**
@@ -127,8 +126,7 @@ function applyShakeEffect(
   const shakeAmount = canvas.width * 0.05; // Shake 5% of width
   const offsetX = Math.sin(progress * Math.PI * 8) * shakeAmount;
 
-  ctx.translate(offsetX, 0);
-  ctx.drawImage(baseCanvas, -offsetX, 0, canvas.width, canvas.height);
+  ctx.drawImage(baseCanvas, offsetX, 0);
 }
 
 /**
@@ -192,8 +190,7 @@ function applySlideEffect(
   // Slide from -100% to +100%
   const offsetX = (progress - 0.5) * canvas.width * 1.5;
 
-  ctx.translate(offsetX, 0);
-  ctx.drawImage(baseCanvas, -offsetX, 0, canvas.width, canvas.height);
+  ctx.drawImage(baseCanvas, offsetX, 0);
 }
 
 /**

@@ -694,7 +694,7 @@ function EmojiConverter() {
   }, [enableAnimation, ffmpegLoaded]);
 
   // Generate animation frames when animation is enabled
-  const generateAnimation = useCallback(async () => {
+  const generateAnimation = useCallback(() => {
     if (!processedImageRef.current || !enableAnimation) return;
 
     const config: AnimationConfig = {
@@ -703,11 +703,12 @@ function EmojiConverter() {
       loop: animationLoop,
     };
 
+    // Generate frames synchronously
     const frames = generateAnimationFrames(processedImageRef.current, config, animationFps);
-    animationFramesRef.current = frames;
 
-    // Start playing animation in preview
+    // Only update if we have frames
     if (frames.length > 0) {
+      animationFramesRef.current = frames;
       setIsAnimationPlaying(true);
     }
   }, [enableAnimation, animationEffect, animationSpeed, animationLoop, animationFps]);
