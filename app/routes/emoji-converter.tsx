@@ -1,5 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef, useCallback, useEffect } from "react";
+import { FFmpeg } from "@ffmpeg/ffmpeg";
+import { loadFFmpeg, convertImagesToGif } from "./image-to-gif";
+import {
+  generateAnimationFrames,
+  getAnimationEffectLabel,
+  getAnimationSpeedLabel,
+  type AnimationEffectType,
+  type AnimationSpeed,
+  type AnimationConfig,
+} from "~/utils/animationEffects";
 
 export const Route = createFileRoute("/emoji-converter")({
   head: () => ({
@@ -9,13 +19,36 @@ export const Route = createFileRoute("/emoji-converter")({
 });
 
 type Platform = "discord" | "slack";
+type OutputFormat = "png" | "jpeg" | "webp" | "avif";
 
 const PLATFORM_LIMITS = {
   discord: { maxSize: 256 * 1024, label: "Discord (最大256KB)" },
   slack: { maxSize: 1024 * 1024, label: "Slack (最大1MB)" },
 } as const;
 
-const EMOJI_SIZE = 128;
+const EMOJI_SIZE = 128; // Output size
+const PREVIEW_SIZE = 256; // Preview display size
+
+const FORMAT_LABELS: Record<OutputFormat, string> = {
+  png: "PNG (ロスレス)",
+  jpeg: "JPEG",
+  webp: "WebP",
+  avif: "AVIF",
+};
+
+const FORMAT_EXTENSIONS: Record<OutputFormat, string> = {
+  png: "png",
+  jpeg: "jpg",
+  webp: "webp",
+  avif: "avif",
+};
+
+const FORMAT_MIME_TYPES: Record<OutputFormat, string> = {
+  png: "image/png",
+  jpeg: "image/jpeg",
+  webp: "image/webp",
+  avif: "image/avif",
+};
 
 interface EditOptions {
   text: string;
@@ -366,35 +399,47 @@ function applyTransparency(
 /**
  * CanvasをBlobに変換（容量制限を満たすまで圧縮）
  * @param canvas - 変換元のcanvas
+ * @param format - 出力フォーマット
+ * @param quality - 品質 (0.0-1.0, PNGでは無視)
  * @param maxSize - 最大ファイルサイズ（バイト）
  * @returns Blob
  */
 export async function canvasToBlobWithLimit(
   canvas: HTMLCanvasElement,
+  format: OutputFormat,
+  quality: number,
   maxSize: number
 ): Promise<Blob | null> {
-  // まずPNGで試す
+  const mimeType = FORMAT_MIME_TYPES[format];
+
+  // PNG is lossless, no quality adjustment
+  if (format === "png") {
+    const blob = await new Promise<Blob | null>((resolve) => {
+      canvas.toBlob((b) => resolve(b), mimeType);
+    });
+    return blob;
+  }
+
+  // For lossy formats (JPEG, WebP, AVIF), try with specified quality first
+  let currentQuality = quality;
   let blob = await new Promise<Blob | null>((resolve) => {
-    canvas.toBlob((b) => resolve(b), "image/png");
+    canvas.toBlob((b) => resolve(b), mimeType, currentQuality);
   });
 
   if (blob && blob.size <= maxSize) {
     return blob;
   }
 
-  // PNGが大きすぎる場合はWebPで圧縮
-  let quality = 0.95;
-
-  while (quality > 0.1) {
+  // If still too large, reduce quality incrementally
+  while (currentQuality > 0.1) {
+    currentQuality -= 0.05;
     blob = await new Promise<Blob | null>((resolve) => {
-      canvas.toBlob((b) => resolve(b), "image/webp", quality);
+      canvas.toBlob((b) => resolve(b), mimeType, currentQuality);
     });
 
     if (blob && blob.size <= maxSize) {
       return blob;
     }
-
-    quality -= 0.05;
   }
 
   return blob;
@@ -403,21 +448,126 @@ export async function canvasToBlobWithLimit(
 function EmojiConverter() {
   const [file, setFile] = useState<File | null>(null);
   const [platform, setPlatform] = useState<Platform>("discord");
+  const [outputFormat, setOutputFormat] = useState<OutputFormat>("png");
+  const [outputQuality, setOutputQuality] = useState<number>(0.92);
   const [editOptions, setEditOptions] = useState<EditOptions>(DEFAULT_EDIT_OPTIONS);
   const [previewUrl, setPreviewUrl] = useState<string>("");
   const [fileSize, setFileSize] = useState<number>(0);
   const [isDragging, setIsDragging] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isPreviewDragging, setIsPreviewDragging] = useState(false);
+  const [dragStart, setDragStart] = useState<{ x: number; y: number } | null>(null);
+
+  // Animation state
+  const [enableAnimation, setEnableAnimation] = useState(false);
+  const [animationEffect, setAnimationEffect] = useState<AnimationEffectType>('bounce');
+  const [animationSpeed, setAnimationSpeed] = useState<AnimationSpeed>('normal');
+  const [animationLoop, setAnimationLoop] = useState<number>(0); // 0 = infinite
+  const [animationFps, setAnimationFps] = useState<number>(12);
+  const [isAnimationPlaying, setIsAnimationPlaying] = useState(false);
+  const [ffmpegLoaded, setFfmpegLoaded] = useState(false);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const statusRef = useRef<HTMLDivElement>(null);
+  const processedImageRef = useRef<HTMLCanvasElement | null>(null);
+  const ffmpegRef = useRef<FFmpeg>(new FFmpeg());
+  const animationFramesRef = useRef<HTMLCanvasElement[]>([]);
+  const animationIntervalRef = useRef<number | null>(null);
 
   const announceStatus = useCallback((message: string) => {
     if (statusRef.current) {
       statusRef.current.textContent = message;
     }
   }, []);
+
+  // Check browser support for image formats
+  const checkFormatSupport = useCallback((format: OutputFormat): boolean => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 1;
+    canvas.height = 1;
+    const mimeType = FORMAT_MIME_TYPES[format];
+    return canvas.toDataURL(mimeType).startsWith(`data:${mimeType}`);
+  }, []);
+
+  // プレビューキャンバス更新関数
+  const updatePreviewCanvas = useCallback(() => {
+    if (!canvasRef.current || !processedImageRef.current) return;
+
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    // Set preview canvas size
+    canvas.width = PREVIEW_SIZE;
+    canvas.height = PREVIEW_SIZE;
+
+    // Clear canvas
+    ctx.clearRect(0, 0, PREVIEW_SIZE, PREVIEW_SIZE);
+
+    // Calculate zoom and pan
+    const zoom = editOptions.cropZoom / 100;
+    const panX = (editOptions.cropPanX / 100) * EMOJI_SIZE * (zoom - 1);
+    const panY = (editOptions.cropPanY / 100) * EMOJI_SIZE * (zoom - 1);
+
+    // Center the image and apply zoom/pan
+    const scaleFactor = PREVIEW_SIZE / EMOJI_SIZE;
+    ctx.save();
+    ctx.translate(PREVIEW_SIZE / 2, PREVIEW_SIZE / 2);
+    ctx.scale(zoom * scaleFactor, zoom * scaleFactor);
+    ctx.translate(-EMOJI_SIZE / 2 - panX / zoom / scaleFactor, -EMOJI_SIZE / 2 - panY / zoom / scaleFactor);
+    ctx.drawImage(processedImageRef.current, 0, 0);
+    ctx.restore();
+  }, [editOptions.cropZoom, editOptions.cropPanX, editOptions.cropPanY]);
+
+  // Preview canvas mouse handlers
+  const handlePreviewMouseDown = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
+    setIsPreviewDragging(true);
+    setDragStart({ x: e.clientX, y: e.clientY });
+    e.currentTarget.style.cursor = 'grabbing';
+  }, []);
+
+  const handlePreviewMouseMove = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
+    if (!isPreviewDragging || !dragStart) return;
+
+    const deltaX = e.clientX - dragStart.x;
+    const deltaY = e.clientY - dragStart.y;
+
+    // Update pan position based on drag distance
+    const zoom = editOptions.cropZoom / 100;
+    const sensitivity = 0.5 / zoom; // More sensitive at higher zoom
+
+    setEditOptions(prev => ({
+      ...prev,
+      cropPanX: Math.max(-100, Math.min(100, prev.cropPanX + deltaX * sensitivity)),
+      cropPanY: Math.max(-100, Math.min(100, prev.cropPanY + deltaY * sensitivity)),
+    }));
+
+    setDragStart({ x: e.clientX, y: e.clientY });
+  }, [isPreviewDragging, dragStart, editOptions.cropZoom]);
+
+  const handlePreviewMouseUp = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
+    setIsPreviewDragging(false);
+    setDragStart(null);
+    e.currentTarget.style.cursor = 'grab';
+  }, []);
+
+  const handlePreviewWheel = useCallback((e: React.WheelEvent<HTMLCanvasElement>) => {
+    e.preventDefault();
+    const delta = e.deltaY > 0 ? -10 : 10;
+
+    setEditOptions(prev => ({
+      ...prev,
+      cropZoom: Math.max(10, Math.min(400, prev.cropZoom + delta)),
+    }));
+  }, []);
+
+  // Update preview when crop settings change
+  useEffect(() => {
+    if (processedImageRef.current) {
+      updatePreviewCanvas();
+    }
+  }, [editOptions.cropZoom, editOptions.cropPanX, editOptions.cropPanY, updatePreviewCanvas]);
 
   // 画像処理とプレビュー更新
   const processImage = useCallback(async () => {
@@ -433,19 +583,15 @@ function EmojiConverter() {
       // 編集オプション適用
       const editedCanvas = applyEditOptions(resizedCanvas, editOptions);
 
-      // プレビュー更新
-      if (canvasRef.current) {
-        const ctx = canvasRef.current.getContext("2d");
-        if (ctx) {
-          canvasRef.current.width = EMOJI_SIZE;
-          canvasRef.current.height = EMOJI_SIZE;
-          ctx.drawImage(editedCanvas, 0, 0);
-        }
-      }
+      // Store processed image for interactive preview
+      processedImageRef.current = editedCanvas;
+
+      // プレビュー更新 (larger preview size with crop/zoom support)
+      updatePreviewCanvas();
 
       // Blob生成（容量制限適用）
       const maxSize = PLATFORM_LIMITS[platform].maxSize;
-      const blob = await canvasToBlobWithLimit(editedCanvas, maxSize);
+      const blob = await canvasToBlobWithLimit(editedCanvas, outputFormat, outputQuality, maxSize);
 
       if (blob) {
         // 古いBlobURLがあればクリーンアップ
@@ -466,14 +612,14 @@ function EmojiConverter() {
     } finally {
       setIsProcessing(false);
     }
-  }, [file, platform, editOptions, announceStatus]);
+  }, [file, platform, outputFormat, outputQuality, editOptions, announceStatus]);
 
   // ファイルまたは編集オプション変更時に画像を処理
   useEffect(() => {
     if (file) {
       processImage();
     }
-  }, [file, platform, editOptions, processImage]);
+  }, [file, platform, outputFormat, outputQuality, editOptions, processImage]);
 
   // コンポーネントアンマウント時にBlobURLをクリーンアップ
   useEffect(() => {
@@ -532,18 +678,104 @@ function EmojiConverter() {
     [handleDropzoneClick]
   );
 
-  const handleDownload = useCallback(() => {
-    if (!previewUrl) return;
+  // Load FFmpeg for animation
+  useEffect(() => {
+    if (enableAnimation && !ffmpegLoaded) {
+      loadFFmpeg(ffmpegRef.current, (msg) => {
+        console.log(msg);
+      }).then((loaded) => {
+        setFfmpegLoaded(loaded);
+      });
+    }
+  }, [enableAnimation, ffmpegLoaded]);
 
-    const a = document.createElement("a");
-    a.href = previewUrl;
-    a.download = `emoji_${Date.now()}.png`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+  // Generate animation frames when animation is enabled
+  const generateAnimation = useCallback(async () => {
+    if (!processedImageRef.current || !enableAnimation) return;
 
-    announceStatus("ダウンロードしました");
-  }, [previewUrl, announceStatus]);
+    const config: AnimationConfig = {
+      effect: animationEffect,
+      speed: animationSpeed,
+      loop: animationLoop,
+    };
+
+    const frames = generateAnimationFrames(processedImageRef.current, config, animationFps);
+    animationFramesRef.current = frames;
+  }, [enableAnimation, animationEffect, animationSpeed, animationLoop, animationFps]);
+
+  // Generate animation when enabled or settings change
+  useEffect(() => {
+    if (enableAnimation && processedImageRef.current) {
+      generateAnimation();
+    }
+  }, [enableAnimation, generateAnimation]);
+
+  // Download handler with animation support
+  const handleDownload = useCallback(async () => {
+    if (!previewUrl && !enableAnimation) return;
+
+    setIsProcessing(true);
+
+    try {
+      if (enableAnimation && ffmpegLoaded && animationFramesRef.current.length > 0) {
+        // Generate animated GIF
+        announceStatus("アニメーションGIFを生成しています...");
+
+        // Convert frames to files
+        const frameFiles: File[] = [];
+        for (let i = 0; i < animationFramesRef.current.length; i++) {
+          const frameCanvas = animationFramesRef.current[i];
+          const blob = await new Promise<Blob | null>((resolve) => {
+            frameCanvas.toBlob((b) => resolve(b), 'image/png');
+          });
+
+          if (blob) {
+            const file = new File([blob], `frame${i}.png`, { type: 'image/png' });
+            frameFiles.push(file);
+          }
+        }
+
+        // Generate GIF with FFmpeg
+        const gifBlob = await convertImagesToGif(
+          ffmpegRef.current,
+          frameFiles,
+          animationFps,
+          animationLoop,
+          80, // Quality
+          (msg) => announceStatus(msg)
+        );
+
+        if (gifBlob) {
+          const url = URL.createObjectURL(gifBlob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = `emoji_animated_${Date.now()}.gif`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+          announceStatus("アニメーションGIFをダウンロードしました");
+        } else {
+          announceStatus("GIF生成に失敗しました");
+        }
+      } else {
+        // Regular static image download
+        const extension = FORMAT_EXTENSIONS[outputFormat];
+        const a = document.createElement("a");
+        a.href = previewUrl;
+        a.download = `emoji_${Date.now()}.${extension}`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        announceStatus("ダウンロードしました");
+      }
+    } catch (error) {
+      console.error("Download error:", error);
+      announceStatus("ダウンロードに失敗しました");
+    } finally {
+      setIsProcessing(false);
+    }
+  }, [previewUrl, outputFormat, enableAnimation, ffmpegLoaded, animationFps, animationLoop, announceStatus]);
 
   const handleReset = useCallback(() => {
     setFile(null);
@@ -687,6 +919,165 @@ function EmojiConverter() {
               プラットフォームに応じて自動的に容量制限を適用します
             </small>
           </div>
+        </section>
+
+        {/* 出力形式選択 */}
+        <section className="section">
+          <h2 className="section-title">出力形式</h2>
+
+          <div className="form-group">
+            <label htmlFor="outputFormat" className="label">
+              ファイル形式
+            </label>
+            <div className="format-selector">
+              {(["png", "jpeg", "webp", "avif"] as OutputFormat[]).map((format) => {
+                const isSupported = checkFormatSupport(format);
+                return (
+                  <label key={format} className="format-option">
+                    <input
+                      type="radio"
+                      name="outputFormat"
+                      value={format}
+                      checked={outputFormat === format}
+                      onChange={(e) => setOutputFormat(e.target.value as OutputFormat)}
+                      disabled={!isSupported}
+                    />
+                    <span className="format-label">
+                      {FORMAT_LABELS[format]}
+                      {!isSupported && " (未対応)"}
+                    </span>
+                  </label>
+                );
+              })}
+            </div>
+          </div>
+
+          {outputFormat !== "png" && (
+            <div className="form-group">
+              <label htmlFor="outputQuality" className="label">
+                品質: {Math.round(outputQuality * 100)}%
+              </label>
+              <input
+                type="range"
+                id="outputQuality"
+                min="0.1"
+                max="1.0"
+                step="0.01"
+                value={outputQuality}
+                onChange={(e) => setOutputQuality(parseFloat(e.target.value))}
+                className="slider"
+              />
+              <small className="help-text">
+                品質を下げるとファイルサイズが小さくなります
+              </small>
+            </div>
+          )}
+        </section>
+
+        {/* アニメーション設定 */}
+        <section className="section">
+          <h2 className="section-title">アニメーション</h2>
+
+          <div className="form-group">
+            <label className="md3-checkbox-label">
+              <input
+                type="checkbox"
+                checked={enableAnimation}
+                onChange={(e) => setEnableAnimation(e.target.checked)}
+              />
+              <span>アニメーションを有効化 (GIF出力)</span>
+            </label>
+            <small className="help-text">
+              アニメーション効果を追加してGIF形式で出力します
+            </small>
+          </div>
+
+          {enableAnimation && (
+            <>
+              <div className="form-group">
+                <label className="label">エフェクト</label>
+                <div className="format-selector">
+                  {(['bounce', 'shake', 'rotate', 'pulse', 'fade', 'slide'] as AnimationEffectType[]).map((effect) => (
+                    <label key={effect} className="format-option">
+                      <input
+                        type="radio"
+                        name="animationEffect"
+                        value={effect}
+                        checked={animationEffect === effect}
+                        onChange={(e) => setAnimationEffect(e.target.value as AnimationEffectType)}
+                      />
+                      <span className="format-label">
+                        {getAnimationEffectLabel(effect)}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label className="label">速度</label>
+                <div className="format-selector">
+                  {(['slow', 'normal', 'fast'] as AnimationSpeed[]).map((speed) => (
+                    <label key={speed} className="format-option">
+                      <input
+                        type="radio"
+                        name="animationSpeed"
+                        value={speed}
+                        checked={animationSpeed === speed}
+                        onChange={(e) => setAnimationSpeed(e.target.value as AnimationSpeed)}
+                      />
+                      <span className="format-label">
+                        {getAnimationSpeedLabel(speed)}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="animationFps" className="label">
+                  フレームレート: {animationFps} FPS
+                </label>
+                <input
+                  type="range"
+                  id="animationFps"
+                  min="6"
+                  max="24"
+                  step="1"
+                  value={animationFps}
+                  onChange={(e) => setAnimationFps(parseInt(e.target.value))}
+                  className="slider"
+                />
+                <small className="help-text">
+                  FPSが高いほど滑らかですがファイルサイズが大きくなります
+                </small>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="animationLoop" className="label">
+                  ループ回数
+                </label>
+                <select
+                  id="animationLoop"
+                  value={animationLoop}
+                  onChange={(e) => setAnimationLoop(parseInt(e.target.value))}
+                  className="select"
+                >
+                  <option value="0">無限ループ</option>
+                  <option value="1">1回</option>
+                  <option value="2">2回</option>
+                  <option value="3">3回</option>
+                  <option value="5">5回</option>
+                </select>
+              </div>
+
+              {!ffmpegLoaded && (
+                <div className="info-box">
+                  <p>⏳ FFmpegを読み込んでいます...</p>
+                </div>
+              )}
+            </>
+          )}
         </section>
 
         {/* 編集オプションとプレビューを横並び */}
@@ -1288,9 +1679,17 @@ function EmojiConverter() {
             <div className="preview-container">
               <canvas
                 ref={canvasRef}
-                className="preview-canvas"
-                aria-label="編集後の絵文字プレビュー"
+                className="preview-canvas preview-canvas-interactive"
+                aria-label="編集後の絵文字プレビュー（ドラッグで移動、ホイールでズーム）"
+                onMouseDown={handlePreviewMouseDown}
+                onMouseMove={handlePreviewMouseMove}
+                onMouseUp={handlePreviewMouseUp}
+                onMouseLeave={handlePreviewMouseUp}
+                onWheel={handlePreviewWheel}
               />
+              <div className="preview-hint">
+                ドラッグで移動 | ホイールでズーム ({editOptions.cropZoom}%)
+              </div>
             </div>
 
             <div className="file-size-info">

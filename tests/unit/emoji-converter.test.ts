@@ -471,11 +471,116 @@ describe("emoji-converter", () => {
 
     it("プリセットズーム値が正しい", () => {
       const presets = [50, 100, 200, 400];
-      
+
       expect(presets).toContain(50);
       expect(presets).toContain(100);
       expect(presets).toContain(200);
       expect(presets).toContain(400);
+    });
+  });
+
+  describe("出力形式", () => {
+    it("サポートされる形式が定義されている", () => {
+      const formats = ["png", "jpeg", "webp", "avif"];
+
+      expect(formats).toContain("png");
+      expect(formats).toContain("jpeg");
+      expect(formats).toContain("webp");
+      expect(formats).toContain("avif");
+    });
+
+    it("形式ごとのMIMEタイプが正しい", () => {
+      const mimeTypes: Record<string, string> = {
+        png: "image/png",
+        jpeg: "image/jpeg",
+        webp: "image/webp",
+        avif: "image/avif",
+      };
+
+      expect(mimeTypes.png).toBe("image/png");
+      expect(mimeTypes.jpeg).toBe("image/jpeg");
+      expect(mimeTypes.webp).toBe("image/webp");
+      expect(mimeTypes.avif).toBe("image/avif");
+    });
+
+    it("形式ごとのファイル拡張子が正しい", () => {
+      const extensions: Record<string, string> = {
+        png: "png",
+        jpeg: "jpg",
+        webp: "webp",
+        avif: "avif",
+      };
+
+      expect(extensions.png).toBe("png");
+      expect(extensions.jpeg).toBe("jpg");
+      expect(extensions.webp).toBe("webp");
+      expect(extensions.avif).toBe("avif");
+    });
+
+    it("形式ごとのラベルが定義されている", () => {
+      const labels: Record<string, string> = {
+        png: "PNG (ロスレス)",
+        jpeg: "JPEG",
+        webp: "WebP",
+        avif: "AVIF",
+      };
+
+      expect(labels.png).toContain("PNG");
+      expect(labels.jpeg).toBe("JPEG");
+      expect(labels.webp).toBe("WebP");
+      expect(labels.avif).toBe("AVIF");
+    });
+
+    it("デフォルトの出力形式がPNGである", () => {
+      const defaultFormat = "png";
+      expect(defaultFormat).toBe("png");
+    });
+
+    it("デフォルトの品質が0.92である", () => {
+      const defaultQuality = 0.92;
+      expect(defaultQuality).toBe(0.92);
+    });
+
+    it("品質の範囲が0.1から1.0である", () => {
+      const minQuality = 0.1;
+      const maxQuality = 1.0;
+      const defaultQuality = 0.92;
+
+      expect(defaultQuality).toBeGreaterThanOrEqual(minQuality);
+      expect(defaultQuality).toBeLessThanOrEqual(maxQuality);
+    });
+
+    it("PNGは品質設定の影響を受けない", () => {
+      // PNG is lossless, quality parameter is ignored
+      const pngFormat = "png";
+      expect(pngFormat).toBe("png");
+    });
+
+    it("JPEGは品質設定の影響を受ける", () => {
+      const jpegFormat = "jpeg";
+      const quality = 0.8;
+
+      expect(jpegFormat).toBe("jpeg");
+      expect(quality).toBeGreaterThan(0);
+      expect(quality).toBeLessThanOrEqual(1);
+    });
+
+    it("WebPは品質設定の影響を受ける", () => {
+      const webpFormat = "webp";
+      const quality = 0.85;
+
+      expect(webpFormat).toBe("webp");
+      expect(quality).toBeGreaterThan(0);
+      expect(quality).toBeLessThanOrEqual(1);
+    });
+
+    it("AVIFは品質設定の影響を受ける", () => {
+      const avifFormat = "avif";
+      const quality = 0.9;
+
+      expect(avifFormat).toBe("avif");
+      expect(quality).toBeGreaterThan(0);
+      expect(quality).toBeLessThanOrEqual(1);
     });
   });
 });

@@ -703,4 +703,240 @@ test.describe('Emoji Converter - E2E Tests', () => {
       await expect(zoomSlider).toHaveValue('100');
     });
   });
+
+  test.describe('Interactive Preview Canvas', () => {
+    test('should display preview hint with zoom level', async ({ page }) => {
+      const imageDataUrl = await page.evaluate(() => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 128;
+        canvas.height = 128;
+        const ctx = canvas.getContext('2d')!;
+        ctx.fillStyle = '#FF0000';
+        ctx.fillRect(0, 0, 128, 128);
+        return canvas.toDataURL('image/png');
+      });
+
+      const buffer = Buffer.from(imageDataUrl.split(',')[1], 'base64');
+      const fileInput = page.locator('input[type="file"]');
+      await fileInput.setInputFiles({
+        name: 'test.png',
+        mimeType: 'image/png',
+        buffer: buffer,
+      });
+
+      // Wait for preview to appear
+      await page.waitForSelector('canvas.preview-canvas-interactive', { timeout: 10000 });
+
+      // Check for preview hint
+      const previewHint = page.locator('.preview-hint');
+      await expect(previewHint).toBeVisible();
+      await expect(previewHint).toContainText('ドラッグで移動');
+      await expect(previewHint).toContainText('ホイールでズーム');
+      await expect(previewHint).toContainText('100%'); // Default zoom level
+    });
+
+    test('should have interactive canvas with grab cursor', async ({ page }) => {
+      const imageDataUrl = await page.evaluate(() => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 128;
+        canvas.height = 128;
+        const ctx = canvas.getContext('2d')!;
+        ctx.fillStyle = '#FF0000';
+        ctx.fillRect(0, 0, 128, 128);
+        return canvas.toDataURL('image/png');
+      });
+
+      const buffer = Buffer.from(imageDataUrl.split(',')[1], 'base64');
+      const fileInput = page.locator('input[type="file"]');
+      await fileInput.setInputFiles({
+        name: 'test.png',
+        mimeType: 'image/png',
+        buffer: buffer,
+      });
+
+      // Wait for preview canvas
+      const canvas = page.locator('canvas.preview-canvas-interactive');
+      await expect(canvas).toBeVisible({ timeout: 10000 });
+
+      // Check cursor style
+      const cursorStyle = await canvas.evaluate((el) => window.getComputedStyle(el).cursor);
+      expect(cursorStyle).toBe('grab');
+    });
+
+    test('should update zoom level when using mouse wheel', async ({ page }) => {
+      const imageDataUrl = await page.evaluate(() => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 128;
+        canvas.height = 128;
+        const ctx = canvas.getContext('2d')!;
+        ctx.fillStyle = '#FF0000';
+        ctx.fillRect(0, 0, 128, 128);
+        return canvas.toDataURL('image/png');
+      });
+
+      const buffer = Buffer.from(imageDataUrl.split(',')[1], 'base64');
+      const fileInput = page.locator('input[type="file"]');
+      await fileInput.setInputFiles({
+        name: 'test.png',
+        mimeType: 'image/png',
+        buffer: buffer,
+      });
+
+      const canvas = page.locator('canvas.preview-canvas-interactive');
+      await expect(canvas).toBeVisible({ timeout: 10000 });
+
+      // Zoom in with wheel (negative deltaY)
+      await canvas.hover();
+      await canvas.evaluate((el) => {
+        el.dispatchEvent(new WheelEvent('wheel', { deltaY: -100, bubbles: true }));
+      });
+
+      // Wait a bit for the zoom to update
+      await page.waitForTimeout(100);
+
+      // Check that zoom level increased
+      const previewHint = page.locator('.preview-hint');
+      const hintText = await previewHint.textContent();
+      expect(hintText).toMatch(/1[1-9]\d%|[2-9]\d\d%/); // Should be > 100%
+    });
+
+    test('should render preview canvas at 256x256px', async ({ page }) => {
+      const imageDataUrl = await page.evaluate(() => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 128;
+        canvas.height = 128;
+        const ctx = canvas.getContext('2d')!;
+        ctx.fillStyle = '#FF0000';
+        ctx.fillRect(0, 0, 128, 128);
+        return canvas.toDataURL('image/png');
+      });
+
+      const buffer = Buffer.from(imageDataUrl.split(',')[1], 'base64');
+      const fileInput = page.locator('input[type="file"]');
+      await fileInput.setInputFiles({
+        name: 'test.png',
+        mimeType: 'image/png',
+        buffer: buffer,
+      });
+
+      const canvas = page.locator('canvas.preview-canvas-interactive');
+      await expect(canvas).toBeVisible({ timeout: 10000 });
+
+      // Check canvas dimensions
+      const dimensions = await canvas.evaluate((el: HTMLCanvasElement) => ({
+        width: el.width,
+        height: el.height,
+      }));
+
+      expect(dimensions.width).toBe(256);
+      expect(dimensions.height).toBe(256);
+    });
+  });
+
+  test.describe('Output Format Selection', () => {
+    test('should display output format section', async ({ page }) => {
+      const formatSection = page.locator('h2.section-title:has-text("出力形式")');
+      await expect(formatSection).toBeVisible();
+    });
+
+    test('should have all format options', async ({ page }) => {
+      const pngOption = page.locator('input[name="outputFormat"][value="png"]');
+      const jpegOption = page.locator('input[name="outputFormat"][value="jpeg"]');
+      const webpOption = page.locator('input[name="outputFormat"][value="webp"]');
+      const avifOption = page.locator('input[name="outputFormat"][value="avif"]');
+
+      await expect(pngOption).toBeVisible();
+      await expect(jpegOption).toBeVisible();
+      await expect(webpOption).toBeVisible();
+      await expect(avifOption).toBeVisible();
+    });
+
+    test('should have PNG selected by default', async ({ page }) => {
+      const pngOption = page.locator('input[name="outputFormat"][value="png"]');
+      await expect(pngOption).toBeChecked();
+    });
+
+    test('should not show quality slider for PNG', async ({ page }) => {
+      const pngOption = page.locator('input[name="outputFormat"][value="png"]');
+      await expect(pngOption).toBeChecked();
+
+      const qualitySlider = page.locator('input#outputQuality');
+      await expect(qualitySlider).not.toBeVisible();
+    });
+
+    test('should show quality slider when JPEG is selected', async ({ page }) => {
+      const jpegOption = page.locator('input[name="outputFormat"][value="jpeg"]');
+      await jpegOption.check();
+
+      const qualitySlider = page.locator('input#outputQuality');
+      await expect(qualitySlider).toBeVisible();
+
+      const qualityLabel = page.locator('label[for="outputQuality"]');
+      await expect(qualityLabel).toContainText('%');
+    });
+
+    test('should show quality slider when WebP is selected', async ({ page }) => {
+      const webpOption = page.locator('input[name="outputFormat"][value="webp"]');
+      await webpOption.check();
+
+      const qualitySlider = page.locator('input#outputQuality');
+      await expect(qualitySlider).toBeVisible();
+    });
+
+    test('should update quality value when slider is moved', async ({ page }) => {
+      const jpegOption = page.locator('input[name="outputFormat"][value="jpeg"]');
+      await jpegOption.check();
+
+      const qualitySlider = page.locator('input#outputQuality');
+      await qualitySlider.fill('0.5');
+
+      const qualityLabel = page.locator('label[for="outputQuality"]');
+      await expect(qualityLabel).toContainText('50%');
+    });
+
+    test('should change download filename extension based on format', async ({ page }) => {
+      const imageDataUrl = await page.evaluate(() => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 128;
+        canvas.height = 128;
+        const ctx = canvas.getContext('2d')!;
+        ctx.fillStyle = '#FF0000';
+        ctx.fillRect(0, 0, 128, 128);
+        return canvas.toDataURL('image/png');
+      });
+
+      const buffer = Buffer.from(imageDataUrl.split(',')[1], 'base64');
+      const fileInput = page.locator('input[type="file"]');
+      await fileInput.setInputFiles({
+        name: 'test.png',
+        mimeType: 'image/png',
+        buffer: buffer,
+      });
+
+      await page.waitForSelector('canvas.preview-canvas-interactive', { timeout: 10000 });
+
+      // Select JPEG format
+      const jpegOption = page.locator('input[name="outputFormat"][value="jpeg"]');
+      await jpegOption.check();
+
+      // Wait a bit for processing
+      await page.waitForTimeout(500);
+
+      // Check that download button is enabled
+      const downloadButton = page.locator('button:has-text("ダウンロード")');
+      await expect(downloadButton).toBeEnabled();
+    });
+
+    test('should display format labels correctly', async ({ page }) => {
+      const pngLabel = page.locator('.format-label:has-text("PNG")');
+      const jpegLabel = page.locator('.format-label:has-text("JPEG")');
+      const webpLabel = page.locator('.format-label:has-text("WebP")');
+      const avifLabel = page.locator('.format-label:has-text("AVIF")');
+
+      await expect(pngLabel).toBeVisible();
+      await expect(jpegLabel).toBeVisible();
+      await expect(webpLabel).toBeVisible();
+      await expect(avifLabel).toBeVisible();
+    });
+  });
 });
