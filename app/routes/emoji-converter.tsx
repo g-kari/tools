@@ -593,15 +593,16 @@ function EmojiConverter() {
   const handleDownload = useCallback(() => {
     if (!previewUrl) return;
 
+    const extension = editOptions.outputFormat;
     const a = document.createElement("a");
     a.href = previewUrl;
-    a.download = `emoji_${Date.now()}.png`;
+    a.download = `emoji_${Date.now()}.${extension}`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
 
     announceStatus("ダウンロードしました");
-  }, [previewUrl, announceStatus]);
+  }, [previewUrl, announceStatus, editOptions.outputFormat]);
 
   const handleReset = useCallback(() => {
     setFile(null);
