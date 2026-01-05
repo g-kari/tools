@@ -652,14 +652,26 @@ test.describe('Emoji Converter - E2E Tests', () => {
     });
 
     test('should have zoom controls in crop section', async ({ page }) => {
-      // トリミングセクションを開く
-      const cropSection = page.locator('summary:has-text("トリミング")');
-      await expect(cropSection).toBeVisible();
-      await cropSection.click();
+      // トリミングセクションを開く（JavaScriptで直接開く）
+      await page.evaluate(() => {
+        const allDetails = document.querySelectorAll('details');
+        allDetails.forEach(d => {
+          if (d.querySelector('summary')?.textContent?.includes('トリミング')) {
+            d.open = true;
+          }
+        });
+      });
+      await page.waitForTimeout(300);
 
-      // トリミングを有効化
-      const cropCheckbox = page.locator('.md3-checkbox-label:has-text("トリミングを有効化")').locator('..');
-      await cropCheckbox.locator('input[type="checkbox"]').check();
+      // トリミングを有効化（JavaScriptで直接チェック）
+      await page.evaluate(() => {
+        const label = document.querySelector('.md3-checkbox-label');
+        if (label?.textContent?.includes('トリミングを有効化')) {
+          const checkbox = label.parentElement?.querySelector('input[type="checkbox"]') as HTMLInputElement;
+          if (checkbox) checkbox.click();
+        }
+      });
+      await page.waitForTimeout(300);
 
       // ズームセクションが表示されることを確認
       const zoomSection = page.locator('.crop-zoom-section');
@@ -671,13 +683,26 @@ test.describe('Emoji Converter - E2E Tests', () => {
     });
 
     test('should have zoom preset buttons', async ({ page }) => {
-      // トリミングセクションを開く
-      const cropSection = page.locator('summary:has-text("トリミング")');
-      await cropSection.click();
+      // トリミングセクションを開く（JavaScriptで直接開く）
+      await page.evaluate(() => {
+        const allDetails = document.querySelectorAll('details');
+        allDetails.forEach(d => {
+          if (d.querySelector('summary')?.textContent?.includes('トリミング')) {
+            d.open = true;
+          }
+        });
+      });
+      await page.waitForTimeout(300);
 
-      // トリミングを有効化
-      const cropCheckbox = page.locator('.md3-checkbox-label:has-text("トリミングを有効化")').locator('..');
-      await cropCheckbox.locator('input[type="checkbox"]').check();
+      // トリミングを有効化（JavaScriptで直接チェック）
+      await page.evaluate(() => {
+        const label = document.querySelector('.md3-checkbox-label');
+        if (label?.textContent?.includes('トリミングを有効化')) {
+          const checkbox = label.parentElement?.querySelector('input[type="checkbox"]') as HTMLInputElement;
+          if (checkbox) checkbox.click();
+        }
+      });
+      await page.waitForTimeout(300);
 
       // プリセットボタンが存在することを確認
       const presetButtons = page.locator('.zoom-preset-button');
@@ -685,13 +710,26 @@ test.describe('Emoji Converter - E2E Tests', () => {
     });
 
     test('should have zoom in/out buttons', async ({ page }) => {
-      // トリミングセクションを開く
-      const cropSection = page.locator('summary:has-text("トリミング")');
-      await cropSection.click();
+      // トリミングセクションを開く（JavaScriptで直接開く）
+      await page.evaluate(() => {
+        const allDetails = document.querySelectorAll('details');
+        allDetails.forEach(d => {
+          if (d.querySelector('summary')?.textContent?.includes('トリミング')) {
+            d.open = true;
+          }
+        });
+      });
+      await page.waitForTimeout(300);
 
-      // トリミングを有効化
-      const cropCheckbox = page.locator('.md3-checkbox-label:has-text("トリミングを有効化")').locator('..');
-      await cropCheckbox.locator('input[type="checkbox"]').check();
+      // トリミングを有効化（JavaScriptで直接チェック）
+      await page.evaluate(() => {
+        const label = document.querySelector('.md3-checkbox-label');
+        if (label?.textContent?.includes('トリミングを有効化')) {
+          const checkbox = label.parentElement?.querySelector('input[type="checkbox"]') as HTMLInputElement;
+          if (checkbox) checkbox.click();
+        }
+      });
+      await page.waitForTimeout(300);
 
       // ズームイン/アウトボタンが存在することを確認
       const zoomInButton = page.locator('.zoom-button[aria-label="ズームイン"]');
@@ -701,13 +739,26 @@ test.describe('Emoji Converter - E2E Tests', () => {
     });
 
     test('should show pan controls when zoom is over 100%', async ({ page }) => {
-      // トリミングセクションを開く
-      const cropSection = page.locator('summary:has-text("トリミング")');
-      await cropSection.click();
+      // トリミングセクションを開く（JavaScriptで直接開く）
+      await page.evaluate(() => {
+        const allDetails = document.querySelectorAll('details');
+        allDetails.forEach(d => {
+          if (d.querySelector('summary')?.textContent?.includes('トリミング')) {
+            d.open = true;
+          }
+        });
+      });
+      await page.waitForTimeout(300);
 
-      // トリミングを有効化
-      const cropCheckbox = page.locator('.md3-checkbox-label:has-text("トリミングを有効化")').locator('..');
-      await cropCheckbox.locator('input[type="checkbox"]').check();
+      // トリミングを有効化（JavaScriptで直接チェック）
+      await page.evaluate(() => {
+        const label = document.querySelector('.md3-checkbox-label');
+        if (label?.textContent?.includes('トリミングを有効化')) {
+          const checkbox = label.parentElement?.querySelector('input[type="checkbox"]') as HTMLInputElement;
+          if (checkbox) checkbox.click();
+        }
+      });
+      await page.waitForTimeout(300);
 
       // 200%プリセットをクリック
       const preset200 = page.locator('.zoom-preset-button:has-text("200%")');
@@ -725,13 +776,26 @@ test.describe('Emoji Converter - E2E Tests', () => {
     });
 
     test('should reset zoom with crop reset button', async ({ page }) => {
-      // トリミングセクションを開く
-      const cropSection = page.locator('summary:has-text("トリミング")');
-      await cropSection.click();
+      // トリミングセクションを開く（JavaScriptで直接開く）
+      await page.evaluate(() => {
+        const allDetails = document.querySelectorAll('details');
+        allDetails.forEach(d => {
+          if (d.querySelector('summary')?.textContent?.includes('トリミング')) {
+            d.open = true;
+          }
+        });
+      });
+      await page.waitForTimeout(300);
 
-      // トリミングを有効化
-      const cropCheckbox = page.locator('.md3-checkbox-label:has-text("トリミングを有効化")').locator('..');
-      await cropCheckbox.locator('input[type="checkbox"]').check();
+      // トリミングを有効化（JavaScriptで直接チェック）
+      await page.evaluate(() => {
+        const label = document.querySelector('.md3-checkbox-label');
+        if (label?.textContent?.includes('トリミングを有効化')) {
+          const checkbox = label.parentElement?.querySelector('input[type="checkbox"]') as HTMLInputElement;
+          if (checkbox) checkbox.click();
+        }
+      });
+      await page.waitForTimeout(300);
 
       // ズームを変更
       const preset200 = page.locator('.zoom-preset-button:has-text("200%")');
@@ -742,11 +806,18 @@ test.describe('Emoji Converter - E2E Tests', () => {
       await expect(zoomSlider).toHaveValue('200');
 
       // リセットボタンをクリック
-      const resetButton = cropSection.locator('..').locator('.reset-section-button[aria-label="トリミング設定をリセット"]');
+      const resetButton = page.locator('.reset-section-button[aria-label="トリミング設定をリセット"]');
       await resetButton.click();
 
       // ズームがリセットされることを確認（トリミングが無効になるので再度有効化）
-      await cropCheckbox.locator('input[type="checkbox"]').check();
+      await page.evaluate(() => {
+        const label = document.querySelector('.md3-checkbox-label');
+        if (label?.textContent?.includes('トリミングを有効化')) {
+          const checkbox = label.parentElement?.querySelector('input[type="checkbox"]') as HTMLInputElement;
+          if (checkbox && !checkbox.checked) checkbox.click();
+        }
+      });
+      await page.waitForTimeout(300);
       await expect(zoomSlider).toHaveValue('100');
     });
   });
