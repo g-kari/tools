@@ -703,6 +703,4 @@ test.describe('Emoji Converter - E2E Tests', () => {
       await expect(zoomSlider).toHaveValue('100');
     });
   });
-
-  });
 });
