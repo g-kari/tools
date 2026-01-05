@@ -751,5 +751,40 @@ test.describe('Emoji Converter - E2E Tests', () => {
     });
   });
 
+
+  test.describe('Animation functionality', () => {
+    test('should show animation settings for GIF files', async ({ page }) => {
+      // GIF画像をアップロード（モック）
+      const buffer = Buffer.alloc(100);
+      // GIFヘッダーを模倣
+      buffer.write('GIF89a', 0);
+
+      await page.setInputFiles('input#imageFile', {
+        name: 'test.gif',
+        mimeType: 'image/gif',
+        buffer: buffer,
+      });
+
+      // アニメーション設定セクションが表示されることを確認
+      const animationSection = page.locator('h2.section-title:has-text("アニメーション設定")');
+      await expect(animationSection).toBeVisible({ timeout: 10000 });
+    });
+
+    test('should have first frame only checkbox for animations', async ({ page }) => {
+      const buffer = Buffer.alloc(100);
+      buffer.write('GIF89a', 0);
+
+      await page.setInputFiles('input#imageFile', {
+        name: 'animated.gif',
+        mimeType: 'image/gif',
+        buffer: buffer,
+      });
+
+      // 第1フレームのみ使用チェックボックスが存在することを確認
+      const firstFrameCheckbox = page.locator('.md3-checkbox-label:has-text("第1フレームのみ使用")');
+      await expect(firstFrameCheckbox).toBeVisible({ timeout: 10000 });
+    });
+  });
+
   });
 });
