@@ -172,3 +172,6 @@ dev-debug.log
 # tmp
 .tmp
 tmp
+
+# Claude Code development files
+.claude/plans/
