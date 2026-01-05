@@ -309,13 +309,16 @@ test.describe('Emoji Converter - E2E Tests', () => {
     });
 
     test('should apply text to preview', async ({ page }) => {
-      const textEmbedding = page.locator('summary:has-text("テキスト埋め込み")');
-      await textEmbedding.scrollIntoViewIfNeeded();
-      await textEmbedding.click();
-      await page.waitForTimeout(200);
+      // テキスト埋め込みセクションを開く
+      const textDetails = page.locator('details:has(summary:has-text("テキスト埋め込み"))');
+      await textDetails.locator('summary').scrollIntoViewIfNeeded();
+      await textDetails.locator('summary').click();
+      // detailsが開くのを待機
+      await expect(textDetails).toHaveAttribute('open', '', { timeout: 5000 });
 
       const textInput = page.locator('input#text');
       await textInput.scrollIntoViewIfNeeded();
+      await textInput.click();
       await textInput.fill('TEST');
 
       // プレビューが更新されるまで少し待機
@@ -326,13 +329,16 @@ test.describe('Emoji Converter - E2E Tests', () => {
     });
 
     test('should apply rotation to preview', async ({ page }) => {
-      const rotationFlip = page.locator('summary:has-text("回転・反転")');
-      await rotationFlip.scrollIntoViewIfNeeded();
-      await rotationFlip.click();
-      await page.waitForTimeout(200);
+      // 回転・反転セクションを開く
+      const rotationDetails = page.locator('details:has(summary:has-text("回転・反転"))');
+      await rotationDetails.locator('summary').scrollIntoViewIfNeeded();
+      await rotationDetails.locator('summary').click();
+      // detailsが開くのを待機
+      await expect(rotationDetails).toHaveAttribute('open', '', { timeout: 5000 });
 
       const rotationSlider = page.locator('input#rotation');
       await rotationSlider.scrollIntoViewIfNeeded();
+      await rotationSlider.click();
       await rotationSlider.fill('90');
 
       // プレビューが更新されるまで少し待機
@@ -510,11 +516,12 @@ test.describe('Emoji Converter - E2E Tests', () => {
       // フィルターセクションを開く
       const filterDetails = page.locator('details:has(summary:has-text("フィルター"))');
       await filterDetails.locator('summary').click();
-      await page.waitForTimeout(200);
+      await expect(filterDetails).toHaveAttribute('open', '', { timeout: 5000 });
 
       // 明るさスライダーの値を変更
       const brightnessSlider = page.locator('#brightness');
       await brightnessSlider.scrollIntoViewIfNeeded();
+      await brightnessSlider.click();
       await brightnessSlider.fill('150');
       await expect(brightnessSlider).toHaveValue('150');
 
@@ -553,18 +560,20 @@ test.describe('Emoji Converter - E2E Tests', () => {
       const filterDetails = page.locator('details:has(summary:has-text("フィルター"))');
       await filterDetails.locator('summary').scrollIntoViewIfNeeded();
       await filterDetails.locator('summary').click();
-      await page.waitForTimeout(200);
+      await expect(filterDetails).toHaveAttribute('open', '', { timeout: 5000 });
       const brightnessSlider = page.locator('#brightness');
       await brightnessSlider.scrollIntoViewIfNeeded();
+      await brightnessSlider.click();
       await brightnessSlider.fill('150');
 
       // 回転セクションを開いて値を変更
       const transformDetails = page.locator('details:has(summary:has-text("回転・反転"))');
       await transformDetails.locator('summary').scrollIntoViewIfNeeded();
       await transformDetails.locator('summary').click();
-      await page.waitForTimeout(200);
+      await expect(transformDetails).toHaveAttribute('open', '', { timeout: 5000 });
       const rotationSlider = page.locator('#rotation');
       await rotationSlider.scrollIntoViewIfNeeded();
+      await rotationSlider.click();
       await rotationSlider.fill('90');
 
       // 全てリセットボタンをクリック
