@@ -557,6 +557,7 @@ test.describe('Emoji Converter - E2E Tests', () => {
     });
   });
 
+  test.describe('Accessibility', () => {
     test('should have proper ARIA labels', async ({ page }) => {
       const dropzone = page.locator('.dropzone');
       await expect(dropzone).toHaveAttribute('aria-label', '画像ファイルをアップロード');
