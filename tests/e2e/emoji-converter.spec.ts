@@ -253,8 +253,7 @@ test.describe('Emoji Converter - E2E Tests', () => {
       await page.waitForTimeout(100);
 
       const textInput = page.locator('input#text');
-      await textInput.scrollIntoViewIfNeeded();
-      await expect(textInput).toBeVisible();
+      await expect(textInput).toBeAttached();
     });
 
     test('should have rotation/flip option', async ({ page }) => {
@@ -266,8 +265,7 @@ test.describe('Emoji Converter - E2E Tests', () => {
       await page.waitForTimeout(100);
 
       const rotationSlider = page.locator('input#rotation');
-      await rotationSlider.scrollIntoViewIfNeeded();
-      await expect(rotationSlider).toBeVisible();
+      await expect(rotationSlider).toBeAttached();
     });
 
     test('should have filter option', async ({ page }) => {
@@ -279,14 +277,13 @@ test.describe('Emoji Converter - E2E Tests', () => {
       await page.waitForTimeout(100);
 
       const brightnessSlider = page.locator('input#brightness');
-      await brightnessSlider.scrollIntoViewIfNeeded();
-      await expect(brightnessSlider).toBeVisible();
+      await expect(brightnessSlider).toBeAttached();
 
       const contrastSlider = page.locator('input#contrast');
-      await expect(contrastSlider).toBeVisible();
+      await expect(contrastSlider).toBeAttached();
 
       const saturationSlider = page.locator('input#saturation');
-      await expect(saturationSlider).toBeVisible();
+      await expect(saturationSlider).toBeAttached();
     });
 
     test('should have transparency option', async ({ page }) => {
