@@ -637,11 +637,20 @@ test.describe('Emoji Converter - E2E Tests', () => {
 
   test.describe('Zoom functionality', () => {
     test.beforeEach(async ({ page }) => {
-      // ダミー画像を作成してアップロード
-      const buffer = Buffer.alloc(100);
-      buffer.write('PNG');
+      // 有効な画像を作成してアップロード
+      const imageDataUrl = await page.evaluate(() => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 128;
+        canvas.height = 128;
+        const ctx = canvas.getContext('2d')!;
+        ctx.fillStyle = '#FF0000';
+        ctx.fillRect(0, 0, 128, 128);
+        return canvas.toDataURL('image/png');
+      });
 
-      await page.setInputFiles('input#imageFile', {
+      const buffer = Buffer.from(imageDataUrl.split(',')[1], 'base64');
+      const fileInput = page.locator('input[type="file"]');
+      await fileInput.setInputFiles({
         name: 'test.png',
         mimeType: 'image/png',
         buffer: buffer,
