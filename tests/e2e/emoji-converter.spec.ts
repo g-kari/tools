@@ -704,5 +704,52 @@ test.describe('Emoji Converter - E2E Tests', () => {
     });
   });
 
+
+  test.describe('Output format functionality', () => {
+    test('should have output format selection', async ({ page }) => {
+      const formatSelect = page.locator('select#outputFormat');
+      await expect(formatSelect).toBeVisible();
+
+      // 出力形式の選択肢を確認
+      const options = await formatSelect.locator('option').allTextContents();
+      expect(options).toContain('PNG（無劣化）');
+      expect(options).toContain('WebP（高圧縮）');
+      expect(options).toContain('AVIF（最高圧縮）');
+    });
+
+    test('should show quality slider for WebP', async ({ page }) => {
+      const formatSelect = page.locator('select#outputFormat');
+      await formatSelect.selectOption('webp');
+
+      // 品質スライダーが表示されることを確認
+      const qualitySlider = page.locator('input#outputQuality');
+      await expect(qualitySlider).toBeVisible();
+    });
+
+    test('should show quality slider for AVIF', async ({ page }) => {
+      const formatSelect = page.locator('select#outputFormat');
+      await formatSelect.selectOption('avif');
+
+      // 品質スライダーが表示されることを確認
+      const qualitySlider = page.locator('input#outputQuality');
+      await expect(qualitySlider).toBeVisible();
+    });
+
+    test('should not show quality slider for PNG', async ({ page }) => {
+      const formatSelect = page.locator('select#outputFormat');
+      await formatSelect.selectOption('png');
+
+      // 品質スライダーが非表示であることを確認
+      const qualitySlider = page.locator('input#outputQuality');
+      await expect(qualitySlider).not.toBeVisible();
+    });
+
+    test('should have reset button for output format', async ({ page }) => {
+      // リセットボタンが存在することを確認
+      const resetButton = page.locator('.reset-section-button[aria-label="出力形式設定をリセット"]');
+      await expect(resetButton).toBeVisible();
+    });
+  });
+
   });
 });
