@@ -246,31 +246,40 @@ test.describe('Emoji Converter - E2E Tests', () => {
 
     test('should have text embedding option', async ({ page }) => {
       const textEmbedding = page.locator('summary:has-text("テキスト埋め込み")');
+      await textEmbedding.scrollIntoViewIfNeeded();
       await expect(textEmbedding).toBeVisible();
 
       await textEmbedding.click();
+      await page.waitForTimeout(100);
 
       const textInput = page.locator('input#text');
+      await textInput.scrollIntoViewIfNeeded();
       await expect(textInput).toBeVisible();
     });
 
     test('should have rotation/flip option', async ({ page }) => {
       const rotationFlip = page.locator('summary:has-text("回転・反転")');
+      await rotationFlip.scrollIntoViewIfNeeded();
       await expect(rotationFlip).toBeVisible();
 
       await rotationFlip.click();
+      await page.waitForTimeout(100);
 
       const rotationSlider = page.locator('input#rotation');
+      await rotationSlider.scrollIntoViewIfNeeded();
       await expect(rotationSlider).toBeVisible();
     });
 
     test('should have filter option', async ({ page }) => {
       const filter = page.locator('summary:has-text("フィルター")');
+      await filter.scrollIntoViewIfNeeded();
       await expect(filter).toBeVisible();
 
       await filter.click();
+      await page.waitForTimeout(100);
 
       const brightnessSlider = page.locator('input#brightness');
+      await brightnessSlider.scrollIntoViewIfNeeded();
       await expect(brightnessSlider).toBeVisible();
 
       const contrastSlider = page.locator('input#contrast');
