@@ -554,6 +554,7 @@ function EmojiConverter() {
 
   const handlePreviewWheel = useCallback((e: React.WheelEvent<HTMLCanvasElement>) => {
     e.preventDefault();
+    e.stopPropagation();
     const delta = e.deltaY > 0 ? -10 : 10;
 
     setEditOptions(prev => ({
@@ -562,12 +563,12 @@ function EmojiConverter() {
     }));
   }, []);
 
-  // Update preview when crop settings change
+  // Update preview when crop settings change (but not during animation playback)
   useEffect(() => {
-    if (processedImageRef.current) {
+    if (processedImageRef.current && !isAnimationPlaying) {
       updatePreviewCanvas();
     }
-  }, [editOptions.cropZoom, editOptions.cropPanX, editOptions.cropPanY, updatePreviewCanvas]);
+  }, [editOptions.cropZoom, editOptions.cropPanX, editOptions.cropPanY, updatePreviewCanvas, isAnimationPlaying]);
 
   // 画像処理とプレビュー更新
   const processImage = useCallback(async () => {
@@ -701,14 +702,67 @@ function EmojiConverter() {
 
     const frames = generateAnimationFrames(processedImageRef.current, config, animationFps);
     animationFramesRef.current = frames;
+
+    // Start playing animation in preview
+    if (frames.length > 0) {
+      setIsAnimationPlaying(true);
+    }
   }, [enableAnimation, animationEffect, animationSpeed, animationLoop, animationFps]);
 
   // Generate animation when enabled or settings change
   useEffect(() => {
     if (enableAnimation && processedImageRef.current) {
       generateAnimation();
+    } else {
+      // Stop animation when disabled
+      setIsAnimationPlaying(false);
+      if (animationIntervalRef.current) {
+        clearInterval(animationIntervalRef.current);
+        animationIntervalRef.current = null;
+      }
     }
   }, [enableAnimation, generateAnimation]);
+
+  // Animation playback in preview canvas
+  useEffect(() => {
+    if (!isAnimationPlaying || animationFramesRef.current.length === 0 || !canvasRef.current) {
+      return;
+    }
+
+    let frameIndex = 0;
+    const frameDelay = 1000 / animationFps;
+
+    animationIntervalRef.current = window.setInterval(() => {
+      if (!canvasRef.current || animationFramesRef.current.length === 0) return;
+
+      const canvas = canvasRef.current;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      // Clear and draw current frame
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const currentFrame = animationFramesRef.current[frameIndex];
+      const scaleFactor = PREVIEW_SIZE / EMOJI_SIZE;
+
+      ctx.save();
+      ctx.translate(PREVIEW_SIZE / 2, PREVIEW_SIZE / 2);
+      ctx.scale(scaleFactor, scaleFactor);
+      ctx.translate(-EMOJI_SIZE / 2, -EMOJI_SIZE / 2);
+      ctx.drawImage(currentFrame, 0, 0);
+      ctx.restore();
+
+      // Move to next frame
+      frameIndex = (frameIndex + 1) % animationFramesRef.current.length;
+    }, frameDelay);
+
+    return () => {
+      if (animationIntervalRef.current) {
+        clearInterval(animationIntervalRef.current);
+        animationIntervalRef.current = null;
+      }
+    };
+  }, [isAnimationPlaying, animationFps]);
 
   // Download handler with animation support
   const handleDownload = useCallback(async () => {

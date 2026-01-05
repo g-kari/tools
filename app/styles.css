@@ -316,12 +316,12 @@ h1 {
 .tool-container {
   background: white;
   border-radius: 4px;
-  padding: 30px;
+  padding: 20px;
 }
 
 /* Converter section */
 .converter-section {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .output-section {
@@ -343,7 +343,7 @@ h1 {
 .section-title {
   font-size: 1.2rem;
   color: var(--md-sys-color-on-surface);
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   font-weight: 500;
 }
 
@@ -1731,12 +1731,12 @@ input[type="range"]:focus-visible {
 
 /* Emoji Converter specific styles */
 .section {
-  margin-bottom: 2rem;
+  margin-bottom: 1.2rem;
 }
 
 .emoji-editor-layout {
   display: flex;
-  gap: 2rem;
+  gap: 1.5rem;
   align-items: flex-start;
 }
 
@@ -2686,7 +2686,7 @@ a:focus-visible {
 .page-subtitle {
   font-size: 1rem;
   color: var(--md-sys-color-on-surface-variant);
-  margin-bottom: 20px;
+  margin-bottom: 12px;
 }
 
 .text-button {
