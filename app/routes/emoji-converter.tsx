@@ -376,6 +376,20 @@ function applyTransparency(
 }
 
 /**
+ * 画像ファイルがアニメーションかどうかを判定
+ * @param file - 判定する画像ファイル
+ * @returns アニメーション画像の場合true
+ */
+export function isAnimatedImage(file: File): boolean {
+  const animatedTypes = [
+    'image/gif',
+    // WebPとAVIFはアニメーション対応だが、ブラウザで判定が難しいため
+    // とりあえずGIFのみをアニメーションとして扱う
+  ];
+  return animatedTypes.includes(file.type);
+}
+
+/**
  * CanvasをBlobに変換（容量制限を満たすまで圧縮）
  * @param canvas - 変換元のcanvas
  * @param maxSize - 最大ファイルサイズ（バイト）
@@ -427,6 +441,8 @@ function EmojiConverter() {
   const [fileSize, setFileSize] = useState<number>(0);
   const [isDragging, setIsDragging] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isAnimated, setIsAnimated] = useState(false);
+  const [useFirstFrameOnly, setUseFirstFrameOnly] = useState(false);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -446,6 +462,24 @@ function EmojiConverter() {
     announceStatus("画像を処理しています...");
 
     try {
+      // アニメーション画像で、第1フレームのみ使用しない場合は、元のファイルをそのまま使用
+      if (isAnimated && !useFirstFrameOnly) {
+        const blob = file;
+        const url = URL.createObjectURL(blob);
+        
+        // 古いBlobURLがあればクリーンアップ
+        setPreviewUrl((prevUrl) => {
+          if (prevUrl) {
+            URL.revokeObjectURL(prevUrl);
+          }
+          return url;
+        });
+        setFileSize(blob.size);
+        announceStatus(`アニメーション画像を読み込みました（${(blob.size / 1024).toFixed(1)} KB）`);
+        setIsProcessing(false);
+        return;
+      }
+      
       // リサイズ
       const resizedCanvas = await resizeImage(file, EMOJI_SIZE);
 
@@ -490,14 +524,14 @@ function EmojiConverter() {
     } finally {
       setIsProcessing(false);
     }
-  }, [file, platform, editOptions, announceStatus]);
+  }, [file, platform, editOptions, announceStatus, isAnimated, useFirstFrameOnly]);
 
   // ファイルまたは編集オプション変更時に画像を処理
   useEffect(() => {
     if (file) {
       processImage();
     }
-  }, [file, platform, editOptions, processImage]);
+  }, [file, platform, editOptions, processImage, useFirstFrameOnly]);
 
   // コンポーネントアンマウント時にBlobURLをクリーンアップ
   useEffect(() => {
@@ -513,8 +547,12 @@ function EmojiConverter() {
     (selectedFile: File | null) => {
       if (selectedFile && selectedFile.type.startsWith("image/")) {
         setFile(selectedFile);
+        setIsAnimated(isAnimatedImage(selectedFile));
+        setUseFirstFrameOnly(false);
         announceStatus(`ファイルを選択しました: ${selectedFile.name}`);
       } else {
+        setIsAnimated(false);
+        setUseFirstFrameOnly(false);
         announceStatus("画像ファイルを選択してください");
       }
     },
@@ -559,15 +597,16 @@ function EmojiConverter() {
   const handleDownload = useCallback(() => {
     if (!previewUrl) return;
 
+    const extension = editOptions.outputFormat;
     const a = document.createElement("a");
     a.href = previewUrl;
-    a.download = `emoji_${Date.now()}.png`;
+    a.download = `emoji_${Date.now()}.${extension}`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
 
     announceStatus("ダウンロードしました");
-  }, [previewUrl, announceStatus]);
+  }, [previewUrl, announceStatus, editOptions.outputFormat]);
 
   const handleReset = useCallback(() => {
     setFile(null);
@@ -774,6 +813,28 @@ function EmojiConverter() {
             </div>
           )}
         </section>
+
+        {/* アニメーション設定 */}
+        {isAnimated && (
+          <section className="section">
+            <h2 className="section-title">アニメーション設定</h2>
+            
+            <div className="form-group">
+              <label className="md3-checkbox-wrapper">
+                <input
+                  type="checkbox"
+                  checked={useFirstFrameOnly}
+                  onChange={(e) => setUseFirstFrameOnly(e.target.checked)}
+                />
+                <span className="md3-checkbox" />
+                <span className="md3-checkbox-label">第1フレームのみ使用（静止画として出力）</span>
+              </label>
+              <small className="help-text">
+                有効にすると、アニメーションの最初のフレームのみを使用して静止画として処理します
+              </small>
+            </div>
+          </section>
+        )}
 
         {/* 編集オプションとプレビューを横並び */}
         {file && (
@@ -1372,11 +1433,19 @@ function EmojiConverter() {
                 <h2 className="section-title">プレビュー</h2>
 
             <div className="preview-container">
-              <canvas
-                ref={canvasRef}
-                className="preview-canvas"
-                aria-label="編集後の絵文字プレビュー"
-              />
+              {isAnimated && !useFirstFrameOnly ? (
+                <img
+                  src={previewUrl}
+                  alt="アニメーション絵文字プレビュー"
+                  className="preview-image animated-emoji-preview"
+                />
+              ) : (
+                <canvas
+                  ref={canvasRef}
+                  className="preview-canvas"
+                  aria-label="編集後の絵文字プレビュー"
+                />
+              )}
             </div>
 
             <div className="file-size-info">

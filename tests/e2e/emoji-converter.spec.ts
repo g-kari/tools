@@ -494,7 +494,7 @@ test.describe('Emoji Converter - E2E Tests', () => {
       // プレビューが表示されることを確認
       await expect(page.locator('h2.section-title:has-text("プレビュー")')).toBeVisible({ timeout: 10000 });
 
-      // 各セクションにリセットボタンが存在することを確認（出力形式セクション含め7つ）
+      // 各セクションにリセットボタンが存在することを確認（アニメーションセクション含め7つ）
       const resetSectionButtons = page.locator('.reset-section-button');
       await expect(resetSectionButtons).toHaveCount(7);
     });
@@ -670,7 +670,7 @@ test.describe('Emoji Converter - E2E Tests', () => {
           }
         });
       });
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(300);
 
       // トリミングを有効化（JavaScriptで直接チェック）
       await page.evaluate(() => {
@@ -893,6 +893,41 @@ test.describe('Emoji Converter - E2E Tests', () => {
       // リセットボタンが存在することを確認
       const resetButton = page.locator('.reset-section-button[aria-label="出力形式設定をリセット"]');
       await expect(resetButton).toBeVisible();
+    });
+  });
+
+
+  test.describe('Animation functionality', () => {
+    test('should show animation settings for GIF files', async ({ page }) => {
+      // GIF画像をアップロード（モック）
+      const buffer = Buffer.alloc(100);
+      // GIFヘッダーを模倣
+      buffer.write('GIF89a', 0);
+
+      await page.setInputFiles('input#imageFile', {
+        name: 'test.gif',
+        mimeType: 'image/gif',
+        buffer: buffer,
+      });
+
+      // アニメーション設定セクションが表示されることを確認
+      const animationSection = page.locator('h2.section-title:has-text("アニメーション設定")');
+      await expect(animationSection).toBeVisible({ timeout: 10000 });
+    });
+
+    test('should have first frame only checkbox for animations', async ({ page }) => {
+      const buffer = Buffer.alloc(100);
+      buffer.write('GIF89a', 0);
+
+      await page.setInputFiles('input#imageFile', {
+        name: 'animated.gif',
+        mimeType: 'image/gif',
+        buffer: buffer,
+      });
+
+      // 第1フレームのみ使用チェックボックスが存在することを確認
+      const firstFrameCheckbox = page.locator('.md3-checkbox-label:has-text("第1フレームのみ使用")');
+      await expect(firstFrameCheckbox).toBeVisible({ timeout: 10000 });
     });
   });
 });
