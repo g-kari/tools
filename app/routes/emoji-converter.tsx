@@ -588,7 +588,10 @@ function EmojiConverter() {
       processedImageRef.current = editedCanvas;
 
       // プレビュー更新 (larger preview size with crop/zoom support)
-      updatePreviewCanvas();
+      // Skip preview update if animation is playing - it will be regenerated
+      if (!enableAnimation) {
+        updatePreviewCanvas();
+      }
 
       // Blob生成（容量制限適用）
       const maxSize = PLATFORM_LIMITS[platform].maxSize;
@@ -613,7 +616,7 @@ function EmojiConverter() {
     } finally {
       setIsProcessing(false);
     }
-  }, [file, platform, outputFormat, outputQuality, editOptions, announceStatus]);
+  }, [file, platform, outputFormat, outputQuality, editOptions, enableAnimation, updatePreviewCanvas, announceStatus]);
 
   // ファイルまたは編集オプション変更時に画像を処理
   useEffect(() => {
@@ -720,8 +723,12 @@ function EmojiConverter() {
         clearInterval(animationIntervalRef.current);
         animationIntervalRef.current = null;
       }
+      // Update static preview when animation is disabled
+      if (processedImageRef.current) {
+        updatePreviewCanvas();
+      }
     }
-  }, [enableAnimation, generateAnimation]);
+  }, [enableAnimation, generateAnimation, updatePreviewCanvas]);
 
   // Animation playback in preview canvas
   useEffect(() => {
