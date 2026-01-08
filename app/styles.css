@@ -396,7 +396,7 @@ textarea {
   border: 2px solid var(--md-sys-color-outline-variant);
   border-radius: 8px;
   font-size: 14px;
-  font-family: "Space Mono", "Roboto Mono", "Courier New", monospace;
+  font-family: "Space Mono", "Space Mono", "Courier New", monospace;
   resize: vertical;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   background: rgba(231, 224, 236, 0.3);
@@ -419,7 +419,7 @@ input[type="text"] {
   border: 2px solid var(--md-sys-color-outline-variant);
   border-radius: 8px;
   font-size: 16px;
-  font-family: "Space Mono", "Roboto Mono", "Courier New", monospace;
+  font-family: "Space Mono", "Space Mono", "Courier New", monospace;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   background: rgba(231, 224, 236, 0.3);
   color: var(--md-sys-color-on-surface);
@@ -737,11 +737,13 @@ button:focus-visible {
 
 /* Info box */
 .info-box {
-  background: var(--md-sys-color-primary-container);
+  background: rgba(255, 237, 179, 0.3);
   border-left: 4px solid var(--md-sys-color-primary);
-  padding: 15px;
-  border-radius: 4px;
-  margin-top: 20px;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 24px;
+  backdrop-filter: blur(5px);
+  box-shadow: 0 2px 8px rgba(139, 105, 20, 0.1);
 }
 
 .info-box h3 {
@@ -788,10 +790,13 @@ button:focus-visible {
 
 /* TipsCard component styles */
 .tips-card {
-  background: var(--md-sys-color-primary-container);
+  background: rgba(255, 237, 179, 0.3);
   border-left: 4px solid var(--md-sys-color-primary);
-  margin-top: 20px;
-  padding: 1rem 1.5rem;
+  margin-top: 24px;
+  padding: 1.25rem 1.75rem;
+  border-radius: 8px;
+  backdrop-filter: blur(5px);
+  box-shadow: 0 2px 8px rgba(139, 105, 20, 0.1);
 }
 
 .tips-card [data-slot="card-header"] {
@@ -823,10 +828,13 @@ button:focus-visible {
 
 /* Result card */
 .result-card {
-  background: var(--md-sys-color-surface-variant);
-  border-radius: 4px;
-  padding: 20px;
-  margin-top: 15px;
+  background: rgba(231, 224, 236, 0.4);
+  border-radius: 8px;
+  padding: 24px;
+  margin-top: 20px;
+  backdrop-filter: blur(5px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(231, 224, 236, 0.6);
 }
 
 .result-row {
@@ -848,7 +856,7 @@ button:focus-visible {
 
 .result-value {
   color: var(--md-sys-color-on-surface-variant);
-  font-family: "Roboto Mono", "Courier New", monospace;
+  font-family: "Space Mono", "Courier New", monospace;
   word-break: break-all;
 }
 
@@ -889,7 +897,7 @@ button:focus-visible {
 }
 
 .jwt-monospace-output {
-  font-family: "Roboto Mono", "Courier New", monospace;
+  font-family: "Space Mono", "Courier New", monospace;
   font-size: 14px;
 }
 
@@ -1247,7 +1255,7 @@ input[type="range"]:focus-visible {
   font-size: 0.8rem;
   color: var(--md-sys-color-on-surface-variant);
   margin-bottom: 8px;
-  font-family: "Roboto Mono", monospace;
+  font-family: "Space Mono", monospace;
   background: var(--md-sys-color-surface-variant);
   padding: 4px 8px;
   border-radius: 4px;
@@ -1668,7 +1676,7 @@ input[type="range"]:focus-visible {
 }
 
 .monospace {
-  font-family: "Roboto Mono", "Courier New", monospace;
+  font-family: "Space Mono", "Courier New", monospace;
 }
 
 .word-break {
@@ -1728,7 +1736,7 @@ input[type="range"]:focus-visible {
   color: var(--md-sys-color-surface);
   padding: 15px;
   border-radius: 6px;
-  font-family: "Roboto Mono", "Courier New", monospace;
+  font-family: "Space Mono", "Courier New", monospace;
   font-size: 0.85rem;
   line-height: 1.6;
   overflow-x: auto;
@@ -2725,7 +2733,7 @@ a:focus-visible {
   font-size: 1.1rem;
   font-weight: 500;
   color: var(--md-sys-color-on-surface);
-  font-family: "Roboto Mono", monospace;
+  font-family: "Space Mono", monospace;
 }
 
 .security-check-level {
@@ -2744,7 +2752,7 @@ a:focus-visible {
 }
 
 .security-check-value code {
-  font-family: "Roboto Mono", monospace;
+  font-family: "Space Mono", monospace;
   font-size: 0.9rem;
   word-break: break-all;
 }
@@ -2762,7 +2770,7 @@ a:focus-visible {
 }
 
 .security-check-recommendation code {
-  font-family: "Roboto Mono", monospace;
+  font-family: "Space Mono", monospace;
   font-size: 0.9rem;
   word-break: break-all;
   display: block;
@@ -2896,7 +2904,7 @@ a:focus-visible {
   font-weight: 500;
   color: var(--md-sys-color-on-surface);
   margin-bottom: 12px;
-  font-family: "Roboto Mono", monospace;
+  font-family: "Space Mono", monospace;
 }
 
 .dns-record-count {
@@ -2944,18 +2952,18 @@ a:focus-visible {
 }
 
 .dns-record-name {
-  font-family: "Roboto Mono", monospace;
+  font-family: "Space Mono", monospace;
   font-size: 0.9rem;
   word-break: break-all;
 }
 
 .dns-record-ttl {
-  font-family: "Roboto Mono", monospace;
+  font-family: "Space Mono", monospace;
   white-space: nowrap;
 }
 
 .dns-record-data {
-  font-family: "Roboto Mono", monospace;
+  font-family: "Space Mono", monospace;
   font-size: 0.9rem;
   word-break: break-all;
 }
@@ -3019,7 +3027,7 @@ a:focus-visible {
 .radio-description {
   font-size: 12px;
   color: var(--md-sys-color-on-surface-variant);
-  font-family: "Roboto Mono", monospace;
+  font-family: "Space Mono", monospace;
 }
 
 .base64-stats {
@@ -3036,7 +3044,7 @@ a:focus-visible {
   width: 100%;
   min-height: 200px;
   padding: 1rem;
-  font-family: "Roboto Mono", monospace;
+  font-family: "Space Mono", monospace;
   font-size: 12px;
   line-height: 1.5;
   background: var(--md-sys-color-surface-variant);
@@ -3098,7 +3106,7 @@ a:focus-visible {
   font-size: 1rem;
   font-weight: 500;
   color: var(--md-sys-color-on-surface);
-  font-family: "Roboto Mono", monospace;
+  font-family: "Space Mono", monospace;
   word-break: break-all;
 }
 
@@ -3138,7 +3146,7 @@ a:focus-visible {
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: 8px;
   font-size: 1rem;
-  font-family: "Roboto Mono", monospace;
+  font-family: "Space Mono", monospace;
   background: var(--md-sys-color-surface-variant);
   color: var(--md-sys-color-on-surface);
   transition: border-color 0.2s, background-color 0.2s;
@@ -3304,7 +3312,7 @@ a:focus-visible {
 .stat-value {
   font-size: 1.25rem;
   font-weight: 500;
-  font-family: "Roboto Mono", monospace;
+  font-family: "Space Mono", monospace;
   color: var(--md-sys-color-on-surface);
 }
 
@@ -3368,7 +3376,7 @@ a:focus-visible {
 
 .crop-info p {
   margin: 0.25rem 0;
-  font-family: "Roboto Mono", monospace;
+  font-family: "Space Mono", monospace;
   color: var(--md-sys-color-on-primary-container);
 }
 
@@ -3420,7 +3428,7 @@ a:focus-visible {
   align-items: center;
   gap: 0.5rem;
   margin-top: 0.5rem;
-  font-family: "Roboto Mono", monospace;
+  font-family: "Space Mono", monospace;
   font-size: 0.875rem;
   color: var(--md-sys-color-on-surface-variant);
 }
@@ -3540,7 +3548,7 @@ a:focus-visible {
   padding: 8px 12px;
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: 4px;
-  font-family: "Roboto Mono", "Courier New", monospace;
+  font-family: "Space Mono", "Courier New", monospace;
   font-size: 18px;
   font-weight: 600;
   background: var(--md-sys-color-surface-variant);
@@ -3596,7 +3604,7 @@ a:focus-visible {
   padding: 6px 4px;
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: 4px;
-  font-family: "Roboto Mono", "Courier New", monospace;
+  font-family: "Space Mono", "Courier New", monospace;
   font-size: 13px;
   background: white;
   color: var(--md-sys-color-on-surface);
@@ -3912,7 +3920,7 @@ a:focus-visible {
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: 6px;
   font-size: 16px;
-  font-family: "Roboto Mono", monospace;
+  font-family: "Space Mono", monospace;
   background: white;
   color: var(--md-sys-color-on-surface);
   transition: border-color 0.2s;
@@ -3998,7 +4006,7 @@ a:focus-visible {
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: 6px;
   font-size: 16px;
-  font-family: "Roboto Mono", monospace;
+  font-family: "Space Mono", monospace;
   background: var(--md-sys-color-primary-container);
   color: var(--md-sys-color-on-primary-container);
   font-weight: 500;
@@ -4098,7 +4106,7 @@ a:focus-visible {
 }
 
 .unit-history-conversion {
-  font-family: "Roboto Mono", monospace;
+  font-family: "Space Mono", monospace;
   color: var(--md-sys-color-on-surface);
   font-size: 12px;
 }
@@ -4210,7 +4218,7 @@ a:focus-visible {
   font-size: 0.75rem;
   color: var(--md-sys-color-on-surface-variant);
   text-align: center;
-  font-family: "Roboto Mono", monospace;
+  font-family: "Space Mono", monospace;
 }
 
 /* 右カラム：設定 */
@@ -4264,7 +4272,7 @@ a:focus-visible {
   border: 1px solid var(--md-sys-color-outline);
   border-radius: 8px;
   font-size: 0.875rem;
-  font-family: "Roboto Mono", monospace;
+  font-family: "Space Mono", monospace;
   background-color: var(--md-sys-color-surface);
   color: var(--md-sys-color-on-surface);
 }
@@ -4487,7 +4495,7 @@ a:focus-visible {
 .favicon-size-filename {
   font-size: 0.625rem;
   color: var(--md-sys-color-outline);
-  font-family: "Roboto Mono", monospace;
+  font-family: "Space Mono", monospace;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -4510,7 +4518,7 @@ a:focus-visible {
 
 .favicon-result-name {
   font-size: 0.75rem;
-  font-family: "Roboto Mono", monospace;
+  font-family: "Space Mono", monospace;
   color: var(--md-sys-color-on-surface);
   flex: 1;
   overflow: hidden;
@@ -4544,7 +4552,7 @@ a:focus-visible {
   background: var(--md-sys-color-surface-variant);
   padding: 1rem;
   border-radius: 4px;
-  font-family: "Roboto Mono", monospace;
+  font-family: "Space Mono", monospace;
   font-size: 0.75rem;
   overflow-x: auto;
   white-space: pre;
@@ -4698,7 +4706,7 @@ a:focus-visible {
 .crop-result-info {
   display: flex;
   gap: 1rem;
-  font-family: "Roboto Mono", monospace;
+  font-family: "Space Mono", monospace;
   font-size: 0.875rem;
   color: var(--md-sys-color-on-surface-variant);
 }
@@ -4806,7 +4814,7 @@ a:focus-visible {
 }
 
 .uuid-value {
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Space Mono', monospace;
   font-size: 1rem;
   color: var(--md-sys-color-on-surface);
   user-select: all;
@@ -4859,7 +4867,7 @@ a:focus-visible {
 }
 
 .ip-display {
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Space Mono', monospace;
   font-size: 2rem;
   font-weight: 500;
   color: var(--md-sys-color-on-surface);
@@ -4934,7 +4942,7 @@ a:focus-visible {
 }
 
 .env-value {
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Space Mono', monospace;
   word-break: break-all;
   color: var(--md-sys-color-on-surface);
 }
@@ -4999,7 +5007,7 @@ a:focus-visible {
 .count-value {
   font-size: 1.5rem;
   font-weight: 500;
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Space Mono', monospace;
   color: var(--md-sys-color-primary);
 }
 
@@ -5095,13 +5103,13 @@ a:focus-visible {
 .color-hex {
   font-size: 1.125rem;
   font-weight: 600;
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Space Mono', monospace;
   color: var(--md-sys-color-on-surface);
 }
 
 .color-rgb {
   font-size: 0.875rem;
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Space Mono', monospace;
   color: var(--md-sys-color-on-surface-variant);
 }
 
@@ -5151,7 +5159,7 @@ a:focus-visible {
 }
 
 .notation-value {
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Space Mono', monospace;
   font-size: 1.125rem;
   font-weight: 600;
   color: var(--md-sys-color-primary);
@@ -5274,7 +5282,7 @@ a:focus-visible {
 }
 
 .dice-expression code {
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Space Mono', monospace;
   font-size: 1rem;
   color: var(--md-sys-color-on-surface-variant);
 }
@@ -5298,7 +5306,7 @@ a:focus-visible {
 .history-notation {
   font-weight: 600;
   color: var(--md-sys-color-primary);
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Space Mono', monospace;
   min-width: 60px;
 }
 
@@ -5310,7 +5318,7 @@ a:focus-visible {
 }
 
 .history-results {
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Space Mono', monospace;
   font-size: 0.875rem;
   color: var(--md-sys-color-on-surface-variant);
 }
@@ -5418,7 +5426,7 @@ a:focus-visible {
   border: 1px solid var(--md-sys-color-outline);
   border-radius: 8px;
   font-size: 0.875rem;
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Space Mono', monospace;
   background-color: var(--md-sys-color-surface);
   color: var(--md-sys-color-on-surface);
 }
@@ -5465,7 +5473,7 @@ a:focus-visible {
 .preset-size {
   font-size: 0.75rem;
   color: var(--md-sys-color-on-surface-variant);
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Space Mono', monospace;
 }
 
 .dummy-image-preview-container {
@@ -5508,7 +5516,7 @@ a:focus-visible {
 }
 
 .info-value {
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Space Mono', monospace;
   color: var(--md-sys-color-on-surface);
 }
 
@@ -5585,7 +5593,7 @@ a:focus-visible {
 .stat-value {
   font-size: 1.25rem;
   font-weight: 500;
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Space Mono', monospace;
   color: var(--md-sys-color-on-surface);
 }
 
@@ -5734,7 +5742,7 @@ a:focus-visible {
   border-radius: 8px;
   font-size: 0.875rem;
   color: var(--md-sys-color-on-surface-variant);
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Space Mono', monospace;
 }
 
 .output-preview {
