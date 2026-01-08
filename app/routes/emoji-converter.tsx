@@ -923,25 +923,9 @@ function EmojiConverter() {
         </section>
 
         {/* アニメーション設定 */}
-        <section className="section">
-          <h2 className="section-title">アニメーション</h2>
-
-          <div className="form-group">
-            <label className="md3-checkbox-label">
-              <input
-                type="checkbox"
-                checked={enableAnimation}
-                onChange={(e) => setEnableAnimation(e.target.checked)}
-              />
-              <span>アニメーションを有効化 (GIF出力)</span>
-            </label>
-            <small className="help-text">
-              アニメーション効果を追加してGIF形式で出力します
-            </small>
-          </div>
-
-          {enableAnimation && (
-            <>
+        {outputFormat === 'gif' && (
+          <section className="section">
+            <h2 className="section-title">アニメーション</h2>
               <div className="form-group">
                 <label className="label">エフェクト</label>
                 <div className="format-selector">
@@ -962,43 +946,47 @@ function EmojiConverter() {
                 </div>
               </div>
 
-              <div className="form-group">
-                <label className="label">速度</label>
-                <div className="format-selector">
-                  {(['slow', 'normal', 'fast'] as AnimationSpeed[]).map((speed) => (
-                    <label key={speed} className="format-option">
-                      <input
-                        type="radio"
-                        name="animationSpeed"
-                        value={speed}
-                        checked={animationSpeed === speed}
-                        onChange={(e) => setAnimationSpeed(e.target.value as AnimationSpeed)}
-                      />
-                      <span className="format-label">
-                        {getAnimationSpeedLabel(speed)}
-                      </span>
-                    </label>
-                  ))}
+              <div className="form-group-horizontal">
+                <div className="form-group">
+                  <label htmlFor="animationSpeed" className="label">
+                    速度: {getAnimationSpeedLabel(animationSpeed)}
+                  </label>
+                  <input
+                    type="range"
+                    id="animationSpeed"
+                    min="1"
+                    max="3"
+                    step="1"
+                    value={animationSpeed === 'slow' ? 1 : animationSpeed === 'normal' ? 2 : 3}
+                    onChange={(e) => {
+                      const value = parseInt(e.target.value);
+                      setAnimationSpeed(value === 1 ? 'slow' : value === 2 ? 'normal' : 'fast');
+                    }}
+                    className="slider"
+                  />
+                  <small className="help-text">
+                    遅い ← → 速い
+                  </small>
                 </div>
-              </div>
 
-              <div className="form-group">
-                <label htmlFor="animationFps" className="label">
-                  フレームレート: {animationFps} FPS
-                </label>
-                <input
-                  type="range"
-                  id="animationFps"
-                  min="6"
-                  max="24"
-                  step="1"
-                  value={animationFps}
-                  onChange={(e) => setAnimationFps(parseInt(e.target.value))}
-                  className="slider"
-                />
-                <small className="help-text">
-                  FPSが高いほど滑らかですがファイルサイズが大きくなります
-                </small>
+                <div className="form-group">
+                  <label htmlFor="animationFps" className="label">
+                    フレームレート: {animationFps} FPS
+                  </label>
+                  <input
+                    type="range"
+                    id="animationFps"
+                    min="6"
+                    max="24"
+                    step="1"
+                    value={animationFps}
+                    onChange={(e) => setAnimationFps(parseInt(e.target.value))}
+                    className="slider"
+                  />
+                  <small className="help-text">
+                    FPSが高いほど滑らかですがファイルサイズが大きくなります
+                  </small>
+                </div>
               </div>
 
               <div className="form-group">
@@ -1024,9 +1012,8 @@ function EmojiConverter() {
                   <p>⏳ FFmpegを読み込んでいます...</p>
                 </div>
               )}
-            </>
+            </section>
           )}
-        </section>
 
         {/* 編集オプションとプレビューを横並び */}
         {file && (
@@ -1046,6 +1033,7 @@ function EmojiConverter() {
                   </button>
                 </div>
 
+            <div className="edit-options-grid">
             {/* テキスト埋め込み */}
             <details className="details">
               <summary className="details-summary">
@@ -1387,6 +1375,7 @@ function EmojiConverter() {
                 )}
               </div>
             </details>
+            </div>
               </section>
             </div>
 
