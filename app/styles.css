@@ -132,14 +132,14 @@ header {
 }
 
 h1 {
-  font-size: 2.5rem;
-  margin-bottom: 10px;
+  font-size: 1.75rem;
+  margin-bottom: 6px;
   font-weight: 400;
   letter-spacing: -0.5px;
 }
 
 .subtitle {
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   color: var(--md-sys-color-on-surface-variant);
   font-weight: 300;
 }
@@ -316,12 +316,12 @@ h1 {
 .tool-container {
   background: white;
   border-radius: 4px;
-  padding: 30px;
+  padding: 20px;
 }
 
 /* Converter section */
 .converter-section {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .output-section {
@@ -343,7 +343,7 @@ h1 {
 .section-title {
   font-size: 1.2rem;
   color: var(--md-sys-color-on-surface);
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   font-weight: 500;
 }
 
@@ -1731,12 +1731,12 @@ input[type="range"]:focus-visible {
 
 /* Emoji Converter specific styles */
 .section {
-  margin-bottom: 2rem;
+  margin-bottom: 1.2rem;
 }
 
 .emoji-editor-layout {
   display: flex;
-  gap: 2rem;
+  gap: 1rem;
   align-items: flex-start;
 }
 
@@ -1746,9 +1746,9 @@ input[type="range"]:focus-visible {
 }
 
 .emoji-preview-panel {
-  flex: 0 0 400px;
+  flex: 0 0 320px;
   position: sticky;
-  top: 20px;
+  top: 10px;
 }
 
 @media (max-width: 1024px) {
@@ -1766,15 +1766,16 @@ input[type="range"]:focus-visible {
 .details {
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: 4px;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
   overflow: hidden;
 }
 
 .details-summary {
-  padding: 1rem;
+  padding: 0.75rem;
   background: var(--md-sys-color-surface-variant);
   cursor: pointer;
   font-weight: 500;
+  font-size: 0.9rem;
   color: var(--md-sys-color-on-surface);
   user-select: none;
   list-style: none;
@@ -1806,7 +1807,7 @@ details[open] .details-summary::before {
 }
 
 .details-content {
-  padding: 1rem;
+  padding: 0.75rem;
   background: white;
 }
 
@@ -1871,7 +1872,30 @@ details[open] .details-summary::before {
 }
 
 .form-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.form-group-horizontal {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.form-group-horizontal > .form-group {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.edit-options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .edit-options-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .label {
@@ -1985,12 +2009,13 @@ details[open] .details-summary::before {
 
 .preview-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 2rem;
+  padding: 1rem;
   background: var(--md-sys-color-surface-variant);
   border-radius: 4px;
-  min-height: 200px;
+  min-height: 180px;
 }
 
 .preview-canvas {
@@ -2001,13 +2026,31 @@ details[open] .details-summary::before {
   image-rendering: pixelated;
 }
 
+.preview-canvas-interactive {
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+}
+
+.preview-canvas-interactive:active {
+  cursor: grabbing;
+}
+
+.preview-hint {
+  margin-top: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  text-align: center;
+}
+
 .file-size-info {
-  margin-top: 1rem;
-  padding: 0.75rem;
+  margin-top: 0.75rem;
+  padding: 0.5rem;
   background: var(--md-sys-color-surface-variant);
   border-radius: 4px;
   text-align: center;
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   color: var(--md-sys-color-on-surface-variant);
 }
 
@@ -2019,6 +2062,70 @@ details[open] .details-summary::before {
 .file-size-success {
   background: var(--md-sys-color-primary-container);
   color: var(--md-sys-color-on-primary-container);
+}
+
+/* Format Selector Styles */
+.format-selector {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.format-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--md-sys-color-surface-variant);
+  border: 2px solid var(--md-sys-color-outline);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.format-option:has(input:checked) {
+  background: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+}
+
+.format-option:has(input:disabled) {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.format-option input[type="radio"] {
+  cursor: pointer;
+}
+
+.format-option:has(input:disabled) input[type="radio"] {
+  cursor: not-allowed;
+}
+
+.format-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface);
+}
+
+.format-option:has(input:checked) .format-label {
+  color: var(--md-sys-color-on-primary-container);
+  font-weight: 600;
+}
+
+/* Info Box */
+.info-box {
+  padding: 1rem;
+  background: var(--md-sys-color-surface-variant);
+  border-left: 4px solid var(--md-sys-color-primary);
+  border-radius: 4px;
+  margin-top: 1rem;
+}
+
+.info-box p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
 }
 
 /* Responsive */
@@ -2602,7 +2709,7 @@ a:focus-visible {
 .page-subtitle {
   font-size: 1rem;
   color: var(--md-sys-color-on-surface-variant);
-  margin-bottom: 20px;
+  margin-bottom: 12px;
 }
 
 .text-button {
@@ -5694,13 +5801,4 @@ a:focus-visible {
 
 .pan-controls .reset-section-button {
   margin-top: 0.5rem;
-}
-
-/* ==================== */
-/* Animated Emoji Preview */
-/* ==================== */
-
-.animated-emoji-preview {
-  max-width: 128px;
-  max-height: 128px;
 }

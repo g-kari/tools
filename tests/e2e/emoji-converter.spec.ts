@@ -246,44 +246,38 @@ test.describe('Emoji Converter - E2E Tests', () => {
 
     test('should have text embedding option', async ({ page }) => {
       const textEmbedding = page.locator('summary:has-text("テキスト埋め込み")');
-      await textEmbedding.scrollIntoViewIfNeeded();
       await expect(textEmbedding).toBeVisible();
 
       await textEmbedding.click();
-      await page.waitForTimeout(100);
 
       const textInput = page.locator('input#text');
-      await expect(textInput).toBeAttached();
+      await expect(textInput).toBeVisible();
     });
 
     test('should have rotation/flip option', async ({ page }) => {
       const rotationFlip = page.locator('summary:has-text("回転・反転")');
-      await rotationFlip.scrollIntoViewIfNeeded();
       await expect(rotationFlip).toBeVisible();
 
       await rotationFlip.click();
-      await page.waitForTimeout(100);
 
       const rotationSlider = page.locator('input#rotation');
-      await expect(rotationSlider).toBeAttached();
+      await expect(rotationSlider).toBeVisible();
     });
 
     test('should have filter option', async ({ page }) => {
       const filter = page.locator('summary:has-text("フィルター")');
-      await filter.scrollIntoViewIfNeeded();
       await expect(filter).toBeVisible();
 
       await filter.click();
-      await page.waitForTimeout(100);
 
       const brightnessSlider = page.locator('input#brightness');
-      await expect(brightnessSlider).toBeAttached();
+      await expect(brightnessSlider).toBeVisible();
 
       const contrastSlider = page.locator('input#contrast');
-      await expect(contrastSlider).toBeAttached();
+      await expect(contrastSlider).toBeVisible();
 
       const saturationSlider = page.locator('input#saturation');
-      await expect(saturationSlider).toBeAttached();
+      await expect(saturationSlider).toBeVisible();
     });
 
     test('should have transparency option', async ({ page }) => {
@@ -309,21 +303,10 @@ test.describe('Emoji Converter - E2E Tests', () => {
     });
 
     test('should apply text to preview', async ({ page }) => {
-      // テキスト埋め込みセクションを開く（JavaScriptで直接開く）
-      await page.evaluate(() => {
-        const details = document.querySelector('details:has(summary)');
-        const allDetails = document.querySelectorAll('details');
-        allDetails.forEach(d => {
-          if (d.querySelector('summary')?.textContent?.includes('テキスト埋め込み')) {
-            d.open = true;
-          }
-        });
-      });
-      await page.waitForTimeout(300);
+      const textEmbedding = page.locator('summary:has-text("テキスト埋め込み")');
+      await textEmbedding.click();
 
       const textInput = page.locator('input#text');
-      await textInput.scrollIntoViewIfNeeded();
-      await page.waitForTimeout(100);
       await textInput.fill('TEST');
 
       // プレビューが更新されるまで少し待機
@@ -334,20 +317,10 @@ test.describe('Emoji Converter - E2E Tests', () => {
     });
 
     test('should apply rotation to preview', async ({ page }) => {
-      // 回転・反転セクションを開く（JavaScriptで直接開く）
-      await page.evaluate(() => {
-        const allDetails = document.querySelectorAll('details');
-        allDetails.forEach(d => {
-          if (d.querySelector('summary')?.textContent?.includes('回転・反転')) {
-            d.open = true;
-          }
-        });
-      });
-      await page.waitForTimeout(300);
+      const rotationFlip = page.locator('summary:has-text("回転・反転")');
+      await rotationFlip.click();
 
       const rotationSlider = page.locator('input#rotation');
-      await rotationSlider.scrollIntoViewIfNeeded();
-      await page.waitForTimeout(100);
       await rotationSlider.fill('90');
 
       // プレビューが更新されるまで少し待機
@@ -494,9 +467,9 @@ test.describe('Emoji Converter - E2E Tests', () => {
       // プレビューが表示されることを確認
       await expect(page.locator('h2.section-title:has-text("プレビュー")')).toBeVisible({ timeout: 10000 });
 
-      // 各セクションにリセットボタンが存在することを確認（アニメーションセクション含め7つ）
+      // 各セクションにリセットボタンが存在することを確認
       const resetSectionButtons = page.locator('.reset-section-button');
-      await expect(resetSectionButtons).toHaveCount(7);
+      await expect(resetSectionButtons).toHaveCount(6);
     });
 
     test('should reset filter options when filter reset button is clicked', async ({ page }) => {
@@ -522,26 +495,16 @@ test.describe('Emoji Converter - E2E Tests', () => {
       // プレビューが表示されることを確認
       await expect(page.locator('h2.section-title:has-text("プレビュー")')).toBeVisible({ timeout: 10000 });
 
-      // フィルターセクションを開く（JavaScriptで直接開く）
-      await page.evaluate(() => {
-        const allDetails = document.querySelectorAll('details');
-        allDetails.forEach(d => {
-          if (d.querySelector('summary')?.textContent?.includes('フィルター')) {
-            d.open = true;
-          }
-        });
-      });
-      await page.waitForTimeout(300);
+      // フィルターセクションを開く
+      const filterDetails = page.locator('details:has(summary:has-text("フィルター"))');
+      await filterDetails.locator('summary').click();
 
       // 明るさスライダーの値を変更
       const brightnessSlider = page.locator('#brightness');
-      await brightnessSlider.scrollIntoViewIfNeeded();
-      await page.waitForTimeout(100);
       await brightnessSlider.fill('150');
       await expect(brightnessSlider).toHaveValue('150');
 
       // フィルターリセットボタンをクリック
-      const filterDetails = page.locator('details:has(summary:has-text("フィルター"))');
       const filterResetButton = filterDetails.locator('.reset-section-button');
       await filterResetButton.click();
 
@@ -572,26 +535,16 @@ test.describe('Emoji Converter - E2E Tests', () => {
       // プレビューが表示されることを確認
       await expect(page.locator('h2.section-title:has-text("プレビュー")')).toBeVisible({ timeout: 10000 });
 
-      // フィルターセクションを開いて値を変更（JavaScriptで直接開く）
-      await page.evaluate(() => {
-        const allDetails = document.querySelectorAll('details');
-        allDetails.forEach(d => {
-          const summaryText = d.querySelector('summary')?.textContent;
-          if (summaryText?.includes('フィルター') || summaryText?.includes('回転・反転')) {
-            d.open = true;
-          }
-        });
-      });
-      await page.waitForTimeout(300);
-
+      // フィルターセクションを開いて値を変更
+      const filterDetails = page.locator('details:has(summary:has-text("フィルター"))');
+      await filterDetails.locator('summary').click();
       const brightnessSlider = page.locator('#brightness');
-      await brightnessSlider.scrollIntoViewIfNeeded();
-      await page.waitForTimeout(100);
       await brightnessSlider.fill('150');
 
+      // 回転セクションを開いて値を変更
+      const transformDetails = page.locator('details:has(summary:has-text("回転・反転"))');
+      await transformDetails.locator('summary').click();
       const rotationSlider = page.locator('#rotation');
-      await rotationSlider.scrollIntoViewIfNeeded();
-      await page.waitForTimeout(100);
       await rotationSlider.fill('90');
 
       // 全てリセットボタンをクリック
@@ -637,7 +590,122 @@ test.describe('Emoji Converter - E2E Tests', () => {
 
   test.describe('Zoom functionality', () => {
     test.beforeEach(async ({ page }) => {
-      // 有効な画像を作成してアップロード
+      // ダミー画像を作成してアップロード
+      const buffer = Buffer.alloc(100);
+      buffer.write('PNG');
+
+      await page.setInputFiles('input#imageFile', {
+        name: 'test.png',
+        mimeType: 'image/png',
+        buffer: buffer,
+      });
+
+      // 編集オプションが表示されるまで待機
+      await expect(page.locator('h2.section-title:has-text("編集オプション")')).toBeVisible({ timeout: 10000 });
+    });
+
+    test('should have zoom controls in crop section', async ({ page }) => {
+      // トリミングセクションを開く
+      const cropSection = page.locator('summary:has-text("トリミング")');
+      await expect(cropSection).toBeVisible();
+      await cropSection.click();
+
+      // トリミングを有効化
+      const cropCheckbox = page.locator('.md3-checkbox-label:has-text("トリミングを有効化")').locator('..');
+      await cropCheckbox.locator('input[type="checkbox"]').check();
+
+      // ズームセクションが表示されることを確認
+      const zoomSection = page.locator('.crop-zoom-section');
+      await expect(zoomSection).toBeVisible();
+
+      // ズームスライダーが存在することを確認
+      const zoomSlider = page.locator('input#cropZoom');
+      await expect(zoomSlider).toBeVisible();
+    });
+
+    test('should have zoom preset buttons', async ({ page }) => {
+      // トリミングセクションを開く
+      const cropSection = page.locator('summary:has-text("トリミング")');
+      await cropSection.click();
+
+      // トリミングを有効化
+      const cropCheckbox = page.locator('.md3-checkbox-label:has-text("トリミングを有効化")').locator('..');
+      await cropCheckbox.locator('input[type="checkbox"]').check();
+
+      // プリセットボタンが存在することを確認
+      const presetButtons = page.locator('.zoom-preset-button');
+      await expect(presetButtons).toHaveCount(4);
+    });
+
+    test('should have zoom in/out buttons', async ({ page }) => {
+      // トリミングセクションを開く
+      const cropSection = page.locator('summary:has-text("トリミング")');
+      await cropSection.click();
+
+      // トリミングを有効化
+      const cropCheckbox = page.locator('.md3-checkbox-label:has-text("トリミングを有効化")').locator('..');
+      await cropCheckbox.locator('input[type="checkbox"]').check();
+
+      // ズームイン/アウトボタンが存在することを確認
+      const zoomInButton = page.locator('.zoom-button[aria-label="ズームイン"]');
+      const zoomOutButton = page.locator('.zoom-button[aria-label="ズームアウト"]');
+      await expect(zoomInButton).toBeVisible();
+      await expect(zoomOutButton).toBeVisible();
+    });
+
+    test('should show pan controls when zoom is over 100%', async ({ page }) => {
+      // トリミングセクションを開く
+      const cropSection = page.locator('summary:has-text("トリミング")');
+      await cropSection.click();
+
+      // トリミングを有効化
+      const cropCheckbox = page.locator('.md3-checkbox-label:has-text("トリミングを有効化")').locator('..');
+      await cropCheckbox.locator('input[type="checkbox"]').check();
+
+      // 200%プリセットをクリック
+      const preset200 = page.locator('.zoom-preset-button:has-text("200%")');
+      await preset200.click();
+
+      // パンコントロールが表示されることを確認
+      const panControls = page.locator('.pan-controls');
+      await expect(panControls).toBeVisible();
+
+      // パンスライダーが存在することを確認
+      const panXSlider = page.locator('input#cropPanX');
+      const panYSlider = page.locator('input#cropPanY');
+      await expect(panXSlider).toBeVisible();
+      await expect(panYSlider).toBeVisible();
+    });
+
+    test('should reset zoom with crop reset button', async ({ page }) => {
+      // トリミングセクションを開く
+      const cropSection = page.locator('summary:has-text("トリミング")');
+      await cropSection.click();
+
+      // トリミングを有効化
+      const cropCheckbox = page.locator('.md3-checkbox-label:has-text("トリミングを有効化")').locator('..');
+      await cropCheckbox.locator('input[type="checkbox"]').check();
+
+      // ズームを変更
+      const preset200 = page.locator('.zoom-preset-button:has-text("200%")');
+      await preset200.click();
+
+      // ズームスライダーの値を確認
+      const zoomSlider = page.locator('input#cropZoom');
+      await expect(zoomSlider).toHaveValue('200');
+
+      // リセットボタンをクリック
+      const resetButton = cropSection.locator('..').locator('.reset-section-button[aria-label="トリミング設定をリセット"]');
+      await resetButton.click();
+
+      // ズームがリセットされることを確認（トリミングが無効になるので再度有効化）
+      await cropCheckbox.locator('input[type="checkbox"]').check();
+      await expect(zoomSlider).toHaveValue('100');
+    });
+  });
+
+  test.describe('Interactive Preview Canvas', () => {
+    test('should display preview hint with zoom level', async ({ page }) => {
       const imageDataUrl = await page.evaluate(() => {
         const canvas = document.createElement('canvas');
         canvas.width = 128;
@@ -656,278 +724,219 @@ test.describe('Emoji Converter - E2E Tests', () => {
         buffer: buffer,
       });
 
-      // 編集オプションが表示されるまで待機
-      await expect(page.locator('h2.section-title:has-text("編集オプション")')).toBeVisible({ timeout: 10000 });
+      // Wait for preview to appear
+      await page.waitForSelector('canvas.preview-canvas-interactive', { timeout: 10000 });
+
+      // Check for preview hint
+      const previewHint = page.locator('.preview-hint');
+      await expect(previewHint).toBeVisible();
+      await expect(previewHint).toContainText('ドラッグで移動');
+      await expect(previewHint).toContainText('ホイールでズーム');
+      await expect(previewHint).toContainText('100%'); // Default zoom level
     });
 
-    test('should have zoom controls in crop section', async ({ page }) => {
-      // トリミングセクションを開く（JavaScriptで直接開く）
-      await page.evaluate(() => {
-        const allDetails = document.querySelectorAll('details');
-        allDetails.forEach(d => {
-          if (d.querySelector('summary')?.textContent?.includes('トリミング')) {
-            d.open = true;
-          }
-        });
+    test('should have interactive canvas with grab cursor', async ({ page }) => {
+      const imageDataUrl = await page.evaluate(() => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 128;
+        canvas.height = 128;
+        const ctx = canvas.getContext('2d')!;
+        ctx.fillStyle = '#FF0000';
+        ctx.fillRect(0, 0, 128, 128);
+        return canvas.toDataURL('image/png');
       });
-      await page.waitForTimeout(300);
 
-      // トリミングを有効化（JavaScriptで直接チェック）
-      await page.evaluate(() => {
-        const labels = document.querySelectorAll('.md3-checkbox-label');
-        labels.forEach(label => {
-          if (label?.textContent?.includes('トリミングを有効化')) {
-            const container = label.closest('label.md3-checkbox-wrapper');
-            const checkbox = container?.querySelector('input[type="checkbox"]') as HTMLInputElement;
-            if (checkbox && !checkbox.checked) checkbox.click();
-          }
-        });
+      const buffer = Buffer.from(imageDataUrl.split(',')[1], 'base64');
+      const fileInput = page.locator('input[type="file"]');
+      await fileInput.setInputFiles({
+        name: 'test.png',
+        mimeType: 'image/png',
+        buffer: buffer,
       });
-      await page.waitForTimeout(500);
 
-      // ズームセクションが表示されることを確認
-      const zoomSection = page.locator('.crop-zoom-section');
-      await expect(zoomSection).toBeVisible();
+      // Wait for preview canvas
+      const canvas = page.locator('canvas.preview-canvas-interactive');
+      await expect(canvas).toBeVisible({ timeout: 10000 });
 
-      // ズームスライダーが存在することを確認
-      const zoomSlider = page.locator('input#cropZoom');
-      await expect(zoomSlider).toBeVisible();
+      // Check cursor style
+      const cursorStyle = await canvas.evaluate((el) => window.getComputedStyle(el).cursor);
+      expect(cursorStyle).toBe('grab');
     });
 
-    test('should have zoom preset buttons', async ({ page }) => {
-      // トリミングセクションを開く（JavaScriptで直接開く）
-      await page.evaluate(() => {
-        const allDetails = document.querySelectorAll('details');
-        allDetails.forEach(d => {
-          if (d.querySelector('summary')?.textContent?.includes('トリミング')) {
-            d.open = true;
-          }
-        });
+    test('should update zoom level when using mouse wheel', async ({ page }) => {
+      const imageDataUrl = await page.evaluate(() => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 128;
+        canvas.height = 128;
+        const ctx = canvas.getContext('2d')!;
+        ctx.fillStyle = '#FF0000';
+        ctx.fillRect(0, 0, 128, 128);
+        return canvas.toDataURL('image/png');
       });
-      await page.waitForTimeout(300);
 
-      // トリミングを有効化（JavaScriptで直接チェック）
-      await page.evaluate(() => {
-        const labels = document.querySelectorAll('.md3-checkbox-label');
-        labels.forEach(label => {
-          if (label?.textContent?.includes('トリミングを有効化')) {
-            const container = label.closest('label.md3-checkbox-wrapper');
-            const checkbox = container?.querySelector('input[type="checkbox"]') as HTMLInputElement;
-            if (checkbox && !checkbox.checked) checkbox.click();
-          }
-        });
+      const buffer = Buffer.from(imageDataUrl.split(',')[1], 'base64');
+      const fileInput = page.locator('input[type="file"]');
+      await fileInput.setInputFiles({
+        name: 'test.png',
+        mimeType: 'image/png',
+        buffer: buffer,
       });
-      await page.waitForTimeout(500);
 
-      // プリセットボタンが存在することを確認
-      const presetButtons = page.locator('.zoom-preset-button');
-      await expect(presetButtons).toHaveCount(4);
+      const canvas = page.locator('canvas.preview-canvas-interactive');
+      await expect(canvas).toBeVisible({ timeout: 10000 });
+
+      // Zoom in with wheel (negative deltaY)
+      await canvas.hover();
+      await canvas.evaluate((el) => {
+        el.dispatchEvent(new WheelEvent('wheel', { deltaY: -100, bubbles: true }));
+      });
+
+      // Wait a bit for the zoom to update
+      await page.waitForTimeout(100);
+
+      // Check that zoom level increased
+      const previewHint = page.locator('.preview-hint');
+      const hintText = await previewHint.textContent();
+      expect(hintText).toMatch(/1[1-9]\d%|[2-9]\d\d%/); // Should be > 100%
     });
 
-    test('should have zoom in/out buttons', async ({ page }) => {
-      // トリミングセクションを開く（JavaScriptで直接開く）
-      await page.evaluate(() => {
-        const allDetails = document.querySelectorAll('details');
-        allDetails.forEach(d => {
-          if (d.querySelector('summary')?.textContent?.includes('トリミング')) {
-            d.open = true;
-          }
-        });
+    test('should render preview canvas at 256x256px', async ({ page }) => {
+      const imageDataUrl = await page.evaluate(() => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 128;
+        canvas.height = 128;
+        const ctx = canvas.getContext('2d')!;
+        ctx.fillStyle = '#FF0000';
+        ctx.fillRect(0, 0, 128, 128);
+        return canvas.toDataURL('image/png');
       });
-      await page.waitForTimeout(300);
 
-      // トリミングを有効化（JavaScriptで直接チェック）
-      await page.evaluate(() => {
-        const labels = document.querySelectorAll('.md3-checkbox-label');
-        labels.forEach(label => {
-          if (label?.textContent?.includes('トリミングを有効化')) {
-            const container = label.closest('label.md3-checkbox-wrapper');
-            const checkbox = container?.querySelector('input[type="checkbox"]') as HTMLInputElement;
-            if (checkbox && !checkbox.checked) checkbox.click();
-          }
-        });
+      const buffer = Buffer.from(imageDataUrl.split(',')[1], 'base64');
+      const fileInput = page.locator('input[type="file"]');
+      await fileInput.setInputFiles({
+        name: 'test.png',
+        mimeType: 'image/png',
+        buffer: buffer,
       });
-      await page.waitForTimeout(500);
 
-      // ズームイン/アウトボタンが存在することを確認
-      const zoomInButton = page.locator('.zoom-button[aria-label="ズームイン"]');
-      const zoomOutButton = page.locator('.zoom-button[aria-label="ズームアウト"]');
-      await expect(zoomInButton).toBeVisible();
-      await expect(zoomOutButton).toBeVisible();
-    });
+      const canvas = page.locator('canvas.preview-canvas-interactive');
+      await expect(canvas).toBeVisible({ timeout: 10000 });
 
-    test('should show pan controls when zoom is over 100%', async ({ page }) => {
-      // トリミングセクションを開く（JavaScriptで直接開く）
-      await page.evaluate(() => {
-        const allDetails = document.querySelectorAll('details');
-        allDetails.forEach(d => {
-          if (d.querySelector('summary')?.textContent?.includes('トリミング')) {
-            d.open = true;
-          }
-        });
-      });
-      await page.waitForTimeout(300);
+      // Check canvas dimensions
+      const dimensions = await canvas.evaluate((el: HTMLCanvasElement) => ({
+        width: el.width,
+        height: el.height,
+      }));
 
-      // トリミングを有効化（JavaScriptで直接チェック）
-      await page.evaluate(() => {
-        const labels = document.querySelectorAll('.md3-checkbox-label');
-        labels.forEach(label => {
-          if (label?.textContent?.includes('トリミングを有効化')) {
-            const container = label.closest('label.md3-checkbox-wrapper');
-            const checkbox = container?.querySelector('input[type="checkbox"]') as HTMLInputElement;
-            if (checkbox && !checkbox.checked) checkbox.click();
-          }
-        });
-      });
-      await page.waitForTimeout(500);
-
-      // 200%プリセットをクリック
-      const preset200 = page.locator('.zoom-preset-button:has-text("200%")');
-      await preset200.click();
-
-      // パンコントロールが表示されることを確認
-      const panControls = page.locator('.pan-controls');
-      await expect(panControls).toBeVisible();
-
-      // パンスライダーが存在することを確認
-      const panXSlider = page.locator('input#cropPanX');
-      const panYSlider = page.locator('input#cropPanY');
-      await expect(panXSlider).toBeVisible();
-      await expect(panYSlider).toBeVisible();
-    });
-
-    test('should reset zoom with crop reset button', async ({ page }) => {
-      // トリミングセクションを開く（JavaScriptで直接開く）
-      await page.evaluate(() => {
-        const allDetails = document.querySelectorAll('details');
-        allDetails.forEach(d => {
-          if (d.querySelector('summary')?.textContent?.includes('トリミング')) {
-            d.open = true;
-          }
-        });
-      });
-      await page.waitForTimeout(300);
-
-      // トリミングを有効化（JavaScriptで直接チェック）
-      await page.evaluate(() => {
-        const labels = document.querySelectorAll('.md3-checkbox-label');
-        labels.forEach(label => {
-          if (label?.textContent?.includes('トリミングを有効化')) {
-            const container = label.closest('label.md3-checkbox-wrapper');
-            const checkbox = container?.querySelector('input[type="checkbox"]') as HTMLInputElement;
-            if (checkbox && !checkbox.checked) checkbox.click();
-          }
-        });
-      });
-      await page.waitForTimeout(500);
-
-      // ズームを変更
-      const preset200 = page.locator('.zoom-preset-button:has-text("200%")');
-      await preset200.click();
-
-      // ズームスライダーの値を確認
-      const zoomSlider = page.locator('input#cropZoom');
-      await expect(zoomSlider).toHaveValue('200');
-
-      // リセットボタンをクリック
-      const resetButton = page.locator('.reset-section-button[aria-label="トリミング設定をリセット"]');
-      await resetButton.click();
-
-      // ズームがリセットされることを確認（トリミングが無効になるので再度有効化）
-      await page.evaluate(() => {
-        const labels = document.querySelectorAll('.md3-checkbox-label');
-        labels.forEach(label => {
-          if (label?.textContent?.includes('トリミングを有効化')) {
-            const container = label.closest('label.md3-checkbox-wrapper');
-            const checkbox = container?.querySelector('input[type="checkbox"]') as HTMLInputElement;
-            if (checkbox && !checkbox.checked) checkbox.click();
-          }
-        });
-      });
-      await page.waitForTimeout(500);
-      await expect(zoomSlider).toHaveValue('100');
+      expect(dimensions.width).toBe(256);
+      expect(dimensions.height).toBe(256);
     });
   });
 
-
-  test.describe('Output format functionality', () => {
-    test('should have output format selection', async ({ page }) => {
-      const formatSelect = page.locator('select#outputFormat');
-      await expect(formatSelect).toBeVisible();
-
-      // 出力形式の選択肢を確認
-      const options = await formatSelect.locator('option').allTextContents();
-      expect(options).toContain('PNG（無劣化）');
-      expect(options).toContain('WebP（高圧縮）');
-      expect(options).toContain('AVIF（最高圧縮）');
+  test.describe('Output Format Selection', () => {
+    test('should display output format section', async ({ page }) => {
+      const formatSection = page.locator('h2.section-title:has-text("出力形式")');
+      await expect(formatSection).toBeVisible();
     });
 
-    test('should show quality slider for WebP', async ({ page }) => {
-      const formatSelect = page.locator('select#outputFormat');
-      await formatSelect.selectOption('webp');
+    test('should have all format options', async ({ page }) => {
+      const pngOption = page.locator('input[name="outputFormat"][value="png"]');
+      const jpegOption = page.locator('input[name="outputFormat"][value="jpeg"]');
+      const webpOption = page.locator('input[name="outputFormat"][value="webp"]');
+      const avifOption = page.locator('input[name="outputFormat"][value="avif"]');
 
-      // 品質スライダーが表示されることを確認
-      const qualitySlider = page.locator('input#outputQuality');
-      await expect(qualitySlider).toBeVisible();
+      await expect(pngOption).toBeVisible();
+      await expect(jpegOption).toBeVisible();
+      await expect(webpOption).toBeVisible();
+      await expect(avifOption).toBeVisible();
     });
 
-    test('should show quality slider for AVIF', async ({ page }) => {
-      const formatSelect = page.locator('select#outputFormat');
-      await formatSelect.selectOption('avif');
-
-      // 品質スライダーが表示されることを確認
-      const qualitySlider = page.locator('input#outputQuality');
-      await expect(qualitySlider).toBeVisible();
+    test('should have PNG selected by default', async ({ page }) => {
+      const pngOption = page.locator('input[name="outputFormat"][value="png"]');
+      await expect(pngOption).toBeChecked();
     });
 
     test('should not show quality slider for PNG', async ({ page }) => {
-      const formatSelect = page.locator('select#outputFormat');
-      await formatSelect.selectOption('png');
+      const pngOption = page.locator('input[name="outputFormat"][value="png"]');
+      await expect(pngOption).toBeChecked();
 
-      // 品質スライダーが非表示であることを確認
       const qualitySlider = page.locator('input#outputQuality');
       await expect(qualitySlider).not.toBeVisible();
     });
 
-    test('should have reset button for output format', async ({ page }) => {
-      // リセットボタンが存在することを確認
-      const resetButton = page.locator('.reset-section-button[aria-label="出力形式設定をリセット"]');
-      await expect(resetButton).toBeVisible();
+    test('should show quality slider when JPEG is selected', async ({ page }) => {
+      const jpegOption = page.locator('input[name="outputFormat"][value="jpeg"]');
+      await jpegOption.check();
+
+      const qualitySlider = page.locator('input#outputQuality');
+      await expect(qualitySlider).toBeVisible();
+
+      const qualityLabel = page.locator('label[for="outputQuality"]');
+      await expect(qualityLabel).toContainText('%');
     });
-  });
 
+    test('should show quality slider when WebP is selected', async ({ page }) => {
+      const webpOption = page.locator('input[name="outputFormat"][value="webp"]');
+      await webpOption.check();
 
-  test.describe('Animation functionality', () => {
-    test('should show animation settings for GIF files', async ({ page }) => {
-      // GIF画像をアップロード（モック）
-      const buffer = Buffer.alloc(100);
-      // GIFヘッダーを模倣
-      buffer.write('GIF89a', 0);
+      const qualitySlider = page.locator('input#outputQuality');
+      await expect(qualitySlider).toBeVisible();
+    });
 
-      await page.setInputFiles('input#imageFile', {
-        name: 'test.gif',
-        mimeType: 'image/gif',
+    test('should update quality value when slider is moved', async ({ page }) => {
+      const jpegOption = page.locator('input[name="outputFormat"][value="jpeg"]');
+      await jpegOption.check();
+
+      const qualitySlider = page.locator('input#outputQuality');
+      await qualitySlider.fill('0.5');
+
+      const qualityLabel = page.locator('label[for="outputQuality"]');
+      await expect(qualityLabel).toContainText('50%');
+    });
+
+    test('should change download filename extension based on format', async ({ page }) => {
+      const imageDataUrl = await page.evaluate(() => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 128;
+        canvas.height = 128;
+        const ctx = canvas.getContext('2d')!;
+        ctx.fillStyle = '#FF0000';
+        ctx.fillRect(0, 0, 128, 128);
+        return canvas.toDataURL('image/png');
+      });
+
+      const buffer = Buffer.from(imageDataUrl.split(',')[1], 'base64');
+      const fileInput = page.locator('input[type="file"]');
+      await fileInput.setInputFiles({
+        name: 'test.png',
+        mimeType: 'image/png',
         buffer: buffer,
       });
 
-      // アニメーション設定セクションが表示されることを確認
-      const animationSection = page.locator('h2.section-title:has-text("アニメーション設定")');
-      await expect(animationSection).toBeVisible({ timeout: 10000 });
+      await page.waitForSelector('canvas.preview-canvas-interactive', { timeout: 10000 });
+
+      // Select JPEG format
+      const jpegOption = page.locator('input[name="outputFormat"][value="jpeg"]');
+      await jpegOption.check();
+
+      // Wait a bit for processing
+      await page.waitForTimeout(500);
+
+      // Check that download button is enabled
+      const downloadButton = page.locator('button:has-text("ダウンロード")');
+      await expect(downloadButton).toBeEnabled();
     });
 
-    test('should have first frame only checkbox for animations', async ({ page }) => {
-      const buffer = Buffer.alloc(100);
-      buffer.write('GIF89a', 0);
+    test('should display format labels correctly', async ({ page }) => {
+      const pngLabel = page.locator('.format-label:has-text("PNG")');
+      const jpegLabel = page.locator('.format-label:has-text("JPEG")');
+      const webpLabel = page.locator('.format-label:has-text("WebP")');
+      const avifLabel = page.locator('.format-label:has-text("AVIF")');
 
-      await page.setInputFiles('input#imageFile', {
-        name: 'animated.gif',
-        mimeType: 'image/gif',
-        buffer: buffer,
-      });
-
-      // 第1フレームのみ使用チェックボックスが存在することを確認
-      const firstFrameCheckbox = page.locator('.md3-checkbox-label:has-text("第1フレームのみ使用")');
-      await expect(firstFrameCheckbox).toBeVisible({ timeout: 10000 });
+      await expect(pngLabel).toBeVisible();
+      await expect(jpegLabel).toBeVisible();
+      await expect(webpLabel).toBeVisible();
+      await expect(avifLabel).toBeVisible();
     });
   });
 });

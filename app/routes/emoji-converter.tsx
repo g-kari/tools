@@ -1,5 +1,21 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef, useCallback, useEffect } from "react";
+import { FFmpeg } from "@ffmpeg/ffmpeg";
+import { loadFFmpeg, convertImagesToGif } from "./image-to-gif";
+import {
+  generateAnimationFrames,
+  getAnimationEffectLabel,
+  getAnimationSpeedLabel,
+  type AnimationEffectType,
+  type AnimationSpeed,
+  type AnimationConfig,
+  type GSAPEasingType,
+  type EasingDirection,
+} from "~/utils/animationEffects";
+import {
+  getGSAPEasingLabel,
+  getEasingDirectionLabel,
+} from "~/utils/gsapAnimationEngine";
 
 export const Route = createFileRoute("/emoji-converter")({
   head: () => ({
@@ -9,14 +25,39 @@ export const Route = createFileRoute("/emoji-converter")({
 });
 
 type Platform = "discord" | "slack";
-type OutputFormat = "png" | "webp" | "avif";
+type OutputFormat = "png" | "jpeg" | "webp" | "avif" | "gif";
 
 const PLATFORM_LIMITS = {
   discord: { maxSize: 256 * 1024, label: "Discord (最大256KB)" },
   slack: { maxSize: 1024 * 1024, label: "Slack (最大1MB)" },
 } as const;
 
-const EMOJI_SIZE = 128;
+const EMOJI_SIZE = 128; // Output size
+const PREVIEW_SIZE = 256; // Preview display size
+
+const FORMAT_LABELS: Record<OutputFormat, string> = {
+  png: "PNG (ロスレス)",
+  jpeg: "JPEG",
+  webp: "WebP",
+  avif: "AVIF",
+  gif: "GIF",
+};
+
+const FORMAT_EXTENSIONS: Record<OutputFormat, string> = {
+  png: "png",
+  jpeg: "jpg",
+  webp: "webp",
+  avif: "avif",
+  gif: "gif",
+};
+
+const FORMAT_MIME_TYPES: Record<OutputFormat, string> = {
+  png: "image/png",
+  jpeg: "image/jpeg",
+  webp: "image/webp",
+  avif: "image/avif",
+  gif: "image/gif",
+};
 
 interface EditOptions {
   text: string;
@@ -35,21 +76,6 @@ interface EditOptions {
   border: boolean;
   borderWidth: number;
   borderColor: string;
-  crop: boolean;
-  cropX: number;
-  cropY: number;
-  cropWidth: number;
-  cropHeight: number;
-  /** トリミングプレビューのズームレベル (10-400%) */
-  cropZoom: number;
-  /** トリミングプレビューのパンX位置 */
-  cropPanX: number;
-  /** トリミングプレビューのパンY位置 */
-  cropPanY: number;
-  /** 出力形式 */
-  outputFormat: OutputFormat;
-  /** 出力品質 (1-100%, WebP/AVIFのみ) */
-  outputQuality: number;
 }
 
 /** テキスト埋め込みのデフォルト値 */
@@ -88,32 +114,12 @@ const DEFAULT_BORDER_OPTIONS: Pick<EditOptions, "border" | "borderWidth" | "bord
   borderColor: "#000000",
 };
 
-/** トリミングのデフォルト値 */
-const DEFAULT_CROP_OPTIONS: Pick<EditOptions, "crop" | "cropX" | "cropY" | "cropWidth" | "cropHeight" | "cropZoom" | "cropPanX" | "cropPanY"> = {
-  crop: false,
-  cropX: 0,
-  cropY: 0,
-  cropWidth: 100,
-  cropHeight: 100,
-  cropZoom: 100,
-  cropPanX: 0,
-  cropPanY: 0,
-};
-
-/** 出力形式のデフォルト値 */
-const DEFAULT_OUTPUT_OPTIONS: Pick<EditOptions, "outputFormat" | "outputQuality"> = {
-  outputFormat: "png",
-  outputQuality: 90,
-};
-
 const DEFAULT_EDIT_OPTIONS: EditOptions = {
   ...DEFAULT_TEXT_OPTIONS,
   ...DEFAULT_TRANSFORM_OPTIONS,
   ...DEFAULT_FILTER_OPTIONS,
   ...DEFAULT_TRANSPARENT_OPTIONS,
   ...DEFAULT_BORDER_OPTIONS,
-  ...DEFAULT_CROP_OPTIONS,
-  ...DEFAULT_OUTPUT_OPTIONS,
 };
 
 /**
@@ -172,60 +178,12 @@ export function applyEditOptions(
   sourceCanvas: HTMLCanvasElement,
   options: EditOptions
 ): HTMLCanvasElement {
-  let workCanvas = sourceCanvas;
-
-  // トリミング処理（最初に適用）
-  if (options.crop) {
-    // 境界値検証
-    const cropXEnd = options.cropX + options.cropWidth;
-    const cropYEnd = options.cropY + options.cropHeight;
-
-    if (cropXEnd > 100 || cropYEnd > 100) {
-      console.warn(
-        `Invalid crop bounds: cropX(${options.cropX}) + cropWidth(${options.cropWidth}) = ${cropXEnd}, ` +
-        `cropY(${options.cropY}) + cropHeight(${options.cropHeight}) = ${cropYEnd}`
-      );
-      // 境界値を超える場合は調整
-      const adjustedCropWidth = Math.min(options.cropWidth, 100 - options.cropX);
-      const adjustedCropHeight = Math.min(options.cropHeight, 100 - options.cropY);
-
-      const cropCanvas = document.createElement("canvas");
-      const cropCtx = cropCanvas.getContext("2d");
-      if (cropCtx) {
-        const sx = (sourceCanvas.width * options.cropX) / 100;
-        const sy = (sourceCanvas.height * options.cropY) / 100;
-        const sw = (sourceCanvas.width * adjustedCropWidth) / 100;
-        const sh = (sourceCanvas.height * adjustedCropHeight) / 100;
-
-        cropCanvas.width = sw;
-        cropCanvas.height = sh;
-        cropCtx.drawImage(sourceCanvas, sx, sy, sw, sh, 0, 0, sw, sh);
-        workCanvas = cropCanvas;
-      }
-    } else {
-      const cropCanvas = document.createElement("canvas");
-      const cropCtx = cropCanvas.getContext("2d");
-      if (cropCtx) {
-        // パーセント値をピクセル値に変換
-        const sx = (sourceCanvas.width * options.cropX) / 100;
-        const sy = (sourceCanvas.height * options.cropY) / 100;
-        const sw = (sourceCanvas.width * options.cropWidth) / 100;
-        const sh = (sourceCanvas.height * options.cropHeight) / 100;
-
-        cropCanvas.width = sw;
-        cropCanvas.height = sh;
-        cropCtx.drawImage(sourceCanvas, sx, sy, sw, sh, 0, 0, sw, sh);
-        workCanvas = cropCanvas;
-      }
-    }
-  }
-
   const canvas = document.createElement("canvas");
-  canvas.width = workCanvas.width;
-  canvas.height = workCanvas.height;
+  canvas.width = sourceCanvas.width;
+  canvas.height = sourceCanvas.height;
   const ctx = canvas.getContext("2d");
 
-  if (!ctx) return workCanvas;
+  if (!ctx) return sourceCanvas;
 
   ctx.save();
 
@@ -244,7 +202,7 @@ export function applyEditOptions(
 
   // 元の画像を描画
   ctx.drawImage(
-    workCanvas,
+    sourceCanvas,
     -canvas.width / 2,
     -canvas.height / 2,
     canvas.width,
@@ -376,83 +334,130 @@ function applyTransparency(
 }
 
 /**
- * 画像ファイルがアニメーションかどうかを判定
- * @param file - 判定する画像ファイル
- * @returns アニメーション画像の場合true
- */
-export function isAnimatedImage(file: File): boolean {
-  const animatedTypes = [
-    'image/gif',
-    // WebPとAVIFはアニメーション対応だが、ブラウザで判定が難しいため
-    // とりあえずGIFのみをアニメーションとして扱う
-  ];
-  return animatedTypes.includes(file.type);
-}
-
-/**
  * CanvasをBlobに変換（容量制限を満たすまで圧縮）
  * @param canvas - 変換元のcanvas
+ * @param format - 出力フォーマット
+ * @param quality - 品質 (0.0-1.0, PNGでは無視)
  * @param maxSize - 最大ファイルサイズ（バイト）
- * @param format - 出力形式
- * @param initialQuality - 初期品質（1-100、WebP/AVIFのみ）
  * @returns Blob
  */
 export async function canvasToBlobWithLimit(
   canvas: HTMLCanvasElement,
-  maxSize: number,
-  format: OutputFormat = "png",
-  initialQuality: number = 90
+  format: OutputFormat,
+  quality: number,
+  maxSize: number
 ): Promise<Blob | null> {
-  // PNGの場合は品質設定なし
+  const mimeType = FORMAT_MIME_TYPES[format];
+
+  // PNG is lossless, no quality adjustment
   if (format === "png") {
     const blob = await new Promise<Blob | null>((resolve) => {
-      canvas.toBlob((b) => resolve(b), "image/png");
+      canvas.toBlob((b) => resolve(b), mimeType);
     });
     return blob;
   }
 
-  // WebPまたはAVIFの場合は品質を調整しながら圧縮
-  const mimeType = format === "webp" ? "image/webp" : "image/avif";
-  let quality = initialQuality / 100; // 0.0-1.0の範囲に変換
+  // For lossy formats (JPEG, WebP, AVIF), try with specified quality first
+  let currentQuality = quality;
+  let blob = await new Promise<Blob | null>((resolve) => {
+    canvas.toBlob((b) => resolve(b), mimeType, currentQuality);
+  });
 
-  while (quality > 0.1) {
-    const blob = await new Promise<Blob | null>((resolve) => {
-      canvas.toBlob((b) => resolve(b), mimeType, quality);
+  if (blob && blob.size <= maxSize) {
+    return blob;
+  }
+
+  // If still too large, reduce quality incrementally
+  while (currentQuality > 0.1) {
+    currentQuality -= 0.05;
+    blob = await new Promise<Blob | null>((resolve) => {
+      canvas.toBlob((b) => resolve(b), mimeType, currentQuality);
     });
 
     if (blob && blob.size <= maxSize) {
       return blob;
     }
-
-    quality -= 0.05;
   }
 
-  // 最小品質でも容量制限を満たせない場合は最小品質のblobを返す
-  return await new Promise<Blob | null>((resolve) => {
-    canvas.toBlob((b) => resolve(b), mimeType, 0.1);
-  });
+  return blob;
 }
 
 function EmojiConverter() {
   const [file, setFile] = useState<File | null>(null);
   const [platform, setPlatform] = useState<Platform>("discord");
+  const [outputFormat, setOutputFormat] = useState<OutputFormat>("png");
+  const [outputQuality, setOutputQuality] = useState<number>(0.92);
   const [editOptions, setEditOptions] = useState<EditOptions>(DEFAULT_EDIT_OPTIONS);
   const [previewUrl, setPreviewUrl] = useState<string>("");
   const [fileSize, setFileSize] = useState<number>(0);
   const [isDragging, setIsDragging] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [isAnimated, setIsAnimated] = useState(false);
-  const [useFirstFrameOnly, setUseFirstFrameOnly] = useState(false);
+
+  // Animation state
+  const [enableAnimation, setEnableAnimation] = useState(false);
+  const [animationEffect, setAnimationEffect] = useState<AnimationEffectType>('bounce');
+  const [animationSpeed, setAnimationSpeed] = useState<AnimationSpeed>('normal');
+  const [animationLoop, setAnimationLoop] = useState<number>(0); // 0 = infinite
+  const [animationFps, setAnimationFps] = useState<number>(12);
+  const [isAnimationPlaying, setIsAnimationPlaying] = useState(false);
+  const [ffmpegLoaded, setFfmpegLoaded] = useState(false);
+  // GSAP animation settings
+  const [useGSAP, setUseGSAP] = useState(true);
+  const [gsapEasing, setGsapEasing] = useState<GSAPEasingType>('bounce');
+  const [easingDirection, setEasingDirection] = useState<EasingDirection>('out');
+  const [animationDuration, setAnimationDuration] = useState<number>(1.0);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const statusRef = useRef<HTMLDivElement>(null);
+  const processedImageRef = useRef<HTMLCanvasElement | null>(null);
+  const ffmpegRef = useRef<FFmpeg>(new FFmpeg());
+  const animationFramesRef = useRef<HTMLCanvasElement[]>([]);
+  const animationIntervalRef = useRef<number | null>(null);
 
   const announceStatus = useCallback((message: string) => {
     if (statusRef.current) {
       statusRef.current.textContent = message;
     }
   }, []);
+
+  // Check browser support for image formats
+  const checkFormatSupport = useCallback((format: OutputFormat): boolean => {
+    // GIF is always supported (generated via FFmpeg)
+    if (format === 'gif') return true;
+
+    const canvas = document.createElement('canvas');
+    canvas.width = 1;
+    canvas.height = 1;
+    const mimeType = FORMAT_MIME_TYPES[format];
+    return canvas.toDataURL(mimeType).startsWith(`data:${mimeType}`);
+  }, []);
+
+  // プレビューキャンバス更新関数
+  const updatePreviewCanvas = useCallback(() => {
+    if (!canvasRef.current || !processedImageRef.current) return;
+
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    // Set preview canvas size
+    canvas.width = PREVIEW_SIZE;
+    canvas.height = PREVIEW_SIZE;
+
+    // Clear canvas
+    ctx.clearRect(0, 0, PREVIEW_SIZE, PREVIEW_SIZE);
+
+    // Center the image
+    const scaleFactor = PREVIEW_SIZE / EMOJI_SIZE;
+    ctx.save();
+    ctx.translate(PREVIEW_SIZE / 2, PREVIEW_SIZE / 2);
+    ctx.scale(scaleFactor, scaleFactor);
+    ctx.translate(-EMOJI_SIZE / 2, -EMOJI_SIZE / 2);
+    ctx.drawImage(processedImageRef.current, 0, 0);
+    ctx.restore();
+  }, []);
+
 
   // 画像処理とプレビュー更新
   const processImage = useCallback(async () => {
@@ -462,48 +467,24 @@ function EmojiConverter() {
     announceStatus("画像を処理しています...");
 
     try {
-      // アニメーション画像で、第1フレームのみ使用しない場合は、元のファイルをそのまま使用
-      if (isAnimated && !useFirstFrameOnly) {
-        const blob = file;
-        const url = URL.createObjectURL(blob);
-        
-        // 古いBlobURLがあればクリーンアップ
-        setPreviewUrl((prevUrl) => {
-          if (prevUrl) {
-            URL.revokeObjectURL(prevUrl);
-          }
-          return url;
-        });
-        setFileSize(blob.size);
-        announceStatus(`アニメーション画像を読み込みました（${(blob.size / 1024).toFixed(1)} KB）`);
-        setIsProcessing(false);
-        return;
-      }
-      
       // リサイズ
       const resizedCanvas = await resizeImage(file, EMOJI_SIZE);
 
       // 編集オプション適用
       const editedCanvas = applyEditOptions(resizedCanvas, editOptions);
 
-      // プレビュー更新
-      if (canvasRef.current) {
-        const ctx = canvasRef.current.getContext("2d");
-        if (ctx) {
-          canvasRef.current.width = EMOJI_SIZE;
-          canvasRef.current.height = EMOJI_SIZE;
-          ctx.drawImage(editedCanvas, 0, 0);
-        }
+      // Store processed image for interactive preview
+      processedImageRef.current = editedCanvas;
+
+      // プレビュー更新 (larger preview size with crop/zoom support)
+      // Skip preview update if animation is playing - it will be regenerated
+      if (!enableAnimation) {
+        updatePreviewCanvas();
       }
 
       // Blob生成（容量制限適用）
       const maxSize = PLATFORM_LIMITS[platform].maxSize;
-      const blob = await canvasToBlobWithLimit(
-        editedCanvas,
-        maxSize,
-        editOptions.outputFormat,
-        editOptions.outputQuality
-      );
+      const blob = await canvasToBlobWithLimit(editedCanvas, outputFormat, outputQuality, maxSize);
 
       if (blob) {
         // 古いBlobURLがあればクリーンアップ
@@ -524,14 +505,14 @@ function EmojiConverter() {
     } finally {
       setIsProcessing(false);
     }
-  }, [file, platform, editOptions, announceStatus, isAnimated, useFirstFrameOnly]);
+  }, [file, platform, outputFormat, outputQuality, editOptions, enableAnimation, updatePreviewCanvas, announceStatus]);
 
   // ファイルまたは編集オプション変更時に画像を処理
   useEffect(() => {
     if (file) {
       processImage();
     }
-  }, [file, platform, editOptions, processImage, useFirstFrameOnly]);
+  }, [file, platform, outputFormat, outputQuality, editOptions, processImage]);
 
   // コンポーネントアンマウント時にBlobURLをクリーンアップ
   useEffect(() => {
@@ -547,12 +528,8 @@ function EmojiConverter() {
     (selectedFile: File | null) => {
       if (selectedFile && selectedFile.type.startsWith("image/")) {
         setFile(selectedFile);
-        setIsAnimated(isAnimatedImage(selectedFile));
-        setUseFirstFrameOnly(false);
         announceStatus(`ファイルを選択しました: ${selectedFile.name}`);
       } else {
-        setIsAnimated(false);
-        setUseFirstFrameOnly(false);
         announceStatus("画像ファイルを選択してください");
       }
     },
@@ -594,19 +571,177 @@ function EmojiConverter() {
     [handleDropzoneClick]
   );
 
-  const handleDownload = useCallback(() => {
-    if (!previewUrl) return;
+  // Load FFmpeg when GIF format is selected (for animation support)
+  useEffect(() => {
+    if (outputFormat === 'gif' && !ffmpegLoaded) {
+      loadFFmpeg(ffmpegRef.current, (msg) => {
+        console.log(msg);
+      }).then((loaded) => {
+        setFfmpegLoaded(loaded);
+      });
+    }
+  }, [outputFormat, ffmpegLoaded]);
 
-    const extension = editOptions.outputFormat;
-    const a = document.createElement("a");
-    a.href = previewUrl;
-    a.download = `emoji_${Date.now()}.${extension}`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+  // Load FFmpeg for animation
+  useEffect(() => {
+    if (enableAnimation && !ffmpegLoaded) {
+      loadFFmpeg(ffmpegRef.current, (msg) => {
+        console.log(msg);
+      }).then((loaded) => {
+        setFfmpegLoaded(loaded);
+      });
+    }
+  }, [enableAnimation, ffmpegLoaded]);
 
-    announceStatus("ダウンロードしました");
-  }, [previewUrl, announceStatus, editOptions.outputFormat]);
+  // Generate animation frames when animation is enabled
+  const generateAnimation = useCallback(() => {
+    if (!processedImageRef.current || !enableAnimation) return;
+
+    const config: AnimationConfig = {
+      effect: animationEffect,
+      speed: animationSpeed,
+      loop: animationLoop,
+      useGSAP: useGSAP,
+      gsapEasing: gsapEasing,
+      easingDirection: easingDirection,
+      duration: animationDuration,
+    };
+
+    // Generate frames synchronously
+    const frames = generateAnimationFrames(processedImageRef.current, config, animationFps);
+
+    // Only update if we have frames
+    if (frames.length > 0) {
+      animationFramesRef.current = frames;
+      setIsAnimationPlaying(true);
+    }
+  }, [enableAnimation, animationEffect, animationSpeed, animationLoop, animationFps, useGSAP, gsapEasing, easingDirection, animationDuration]);
+
+  // Generate animation when enabled or settings change
+  useEffect(() => {
+    if (enableAnimation && processedImageRef.current) {
+      generateAnimation();
+    } else {
+      // Stop animation when disabled
+      setIsAnimationPlaying(false);
+      if (animationIntervalRef.current) {
+        clearInterval(animationIntervalRef.current);
+        animationIntervalRef.current = null;
+      }
+      // Update static preview when animation is disabled
+      if (processedImageRef.current) {
+        updatePreviewCanvas();
+      }
+    }
+  }, [enableAnimation, generateAnimation, updatePreviewCanvas, editOptions]);
+
+  // Animation playback in preview canvas
+  useEffect(() => {
+    if (!isAnimationPlaying || animationFramesRef.current.length === 0 || !canvasRef.current) {
+      return;
+    }
+
+    let frameIndex = 0;
+    const frameDelay = 1000 / animationFps;
+
+    animationIntervalRef.current = window.setInterval(() => {
+      if (!canvasRef.current || animationFramesRef.current.length === 0) return;
+
+      const canvas = canvasRef.current;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      // Clear and draw current frame
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const currentFrame = animationFramesRef.current[frameIndex];
+      const scaleFactor = PREVIEW_SIZE / EMOJI_SIZE;
+
+      ctx.save();
+      ctx.translate(PREVIEW_SIZE / 2, PREVIEW_SIZE / 2);
+      ctx.scale(scaleFactor, scaleFactor);
+      ctx.translate(-EMOJI_SIZE / 2, -EMOJI_SIZE / 2);
+      ctx.drawImage(currentFrame, 0, 0);
+      ctx.restore();
+
+      // Move to next frame
+      frameIndex = (frameIndex + 1) % animationFramesRef.current.length;
+    }, frameDelay);
+
+    return () => {
+      if (animationIntervalRef.current) {
+        clearInterval(animationIntervalRef.current);
+        animationIntervalRef.current = null;
+      }
+    };
+  }, [isAnimationPlaying, animationFps]);
+
+  // Download handler with animation support
+  const handleDownload = useCallback(async () => {
+    if (!previewUrl && !enableAnimation) return;
+
+    setIsProcessing(true);
+
+    try {
+      if (enableAnimation && ffmpegLoaded && animationFramesRef.current.length > 0) {
+        // Generate animated GIF
+        announceStatus("アニメーションGIFを生成しています...");
+
+        // Convert frames to files
+        const frameFiles: File[] = [];
+        for (let i = 0; i < animationFramesRef.current.length; i++) {
+          const frameCanvas = animationFramesRef.current[i];
+          const blob = await new Promise<Blob | null>((resolve) => {
+            frameCanvas.toBlob((b) => resolve(b), 'image/png');
+          });
+
+          if (blob) {
+            const file = new File([blob], `frame${i}.png`, { type: 'image/png' });
+            frameFiles.push(file);
+          }
+        }
+
+        // Generate GIF with FFmpeg
+        const gifBlob = await convertImagesToGif(
+          ffmpegRef.current,
+          frameFiles,
+          animationFps,
+          animationLoop,
+          80, // Quality
+          (msg) => announceStatus(msg)
+        );
+
+        if (gifBlob) {
+          const url = URL.createObjectURL(gifBlob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = `emoji_animated_${Date.now()}.gif`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+          announceStatus("アニメーションGIFをダウンロードしました");
+        } else {
+          announceStatus("GIF生成に失敗しました");
+        }
+      } else {
+        // Regular static image download
+        const extension = FORMAT_EXTENSIONS[outputFormat];
+        const a = document.createElement("a");
+        a.href = previewUrl;
+        a.download = `emoji_${Date.now()}.${extension}`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        announceStatus("ダウンロードしました");
+      }
+    } catch (error) {
+      console.error("Download error:", error);
+      announceStatus("ダウンロードに失敗しました");
+    } finally {
+      setIsProcessing(false);
+    }
+  }, [previewUrl, outputFormat, enableAnimation, ffmpegLoaded, animationFps, animationLoop, announceStatus]);
 
   const handleReset = useCallback(() => {
     setFile(null);
@@ -644,18 +779,6 @@ function EmojiConverter() {
   const resetBorderOptions = useCallback(() => {
     setEditOptions((prev) => ({ ...prev, ...DEFAULT_BORDER_OPTIONS }));
     announceStatus("枠線設定をリセットしました");
-  }, [announceStatus]);
-
-  /** トリミングをリセット */
-  const resetCropOptions = useCallback(() => {
-    setEditOptions((prev) => ({ ...prev, ...DEFAULT_CROP_OPTIONS }));
-    announceStatus("トリミング設定をリセットしました");
-  }, [announceStatus]);
-
-  /** 出力形式をリセット */
-  const resetOutputOptions = useCallback(() => {
-    setEditOptions((prev) => ({ ...prev, ...DEFAULT_OUTPUT_OPTIONS }));
-    announceStatus("出力形式設定をリセットしました");
   }, [announceStatus]);
 
   /** 全ての編集オプションをリセット（画像は保持） */
@@ -758,83 +881,200 @@ function EmojiConverter() {
           </div>
         </section>
 
-        {/* 出力形式 */}
+        {/* 出力形式選択 */}
         <section className="section">
-          <div className="section-header-with-reset">
-            <h2 className="section-title">出力形式</h2>
-            <button
-              type="button"
-              onClick={resetOutputOptions}
-              className="reset-section-button"
-              aria-label="出力形式設定をリセット"
-            >
-              リセット
-            </button>
-          </div>
+          <h2 className="section-title">出力形式</h2>
 
           <div className="form-group">
             <label htmlFor="outputFormat" className="label">
               ファイル形式
             </label>
-            <select
-              id="outputFormat"
-              value={editOptions.outputFormat}
-              onChange={(e) => updateEditOption("outputFormat", e.target.value as OutputFormat)}
-              className="select"
-              aria-describedby="format-help"
-            >
-              <option value="png">PNG（無劣化）</option>
-              <option value="webp">WebP（高圧縮）</option>
-              <option value="avif">AVIF（最高圧縮）</option>
-            </select>
-            <small id="format-help" className="help-text">
-              PNGは無劣化ですが容量が大きくなります。WebP・AVIFは品質を調整して容量を削減できます
-            </small>
+            <div className="format-selector">
+              {(["png", "jpeg", "webp", "avif", "gif"] as OutputFormat[]).map((format) => {
+                const isSupported = checkFormatSupport(format);
+                return (
+                  <label key={format} className="format-option">
+                    <input
+                      type="radio"
+                      name="outputFormat"
+                      value={format}
+                      checked={outputFormat === format}
+                      onChange={(e) => {
+                        const newFormat = e.target.value as OutputFormat;
+                        setOutputFormat(newFormat);
+                        // Enable animation automatically when GIF is selected
+                        if (newFormat === 'gif') {
+                          setEnableAnimation(true);
+                        }
+                      }}
+                      disabled={!isSupported}
+                    />
+                    <span className="format-label">
+                      {FORMAT_LABELS[format]}
+                      {!isSupported && " (未対応)"}
+                    </span>
+                  </label>
+                );
+              })}
+            </div>
           </div>
 
-          {(editOptions.outputFormat === "webp" || editOptions.outputFormat === "avif") && (
+          {outputFormat !== "png" && outputFormat !== "gif" && (
             <div className="form-group">
               <label htmlFor="outputQuality" className="label">
-                品質: {editOptions.outputQuality}%
+                品質: {Math.round(outputQuality * 100)}%
               </label>
               <input
-                id="outputQuality"
                 type="range"
-                min="1"
-                max="100"
-                value={editOptions.outputQuality}
-                onChange={(e) => updateEditOption("outputQuality", Number(e.target.value))}
-                className="range"
-                aria-describedby="quality-help"
+                id="outputQuality"
+                min="0.1"
+                max="1.0"
+                step="0.01"
+                value={outputQuality}
+                onChange={(e) => setOutputQuality(parseFloat(e.target.value))}
+                className="slider"
               />
-              <small id="quality-help" className="help-text">
-                品質を下げると容量が小さくなりますが、画質が低下します
+              <small className="help-text">
+                品質を下げるとファイルサイズが小さくなります
               </small>
             </div>
           )}
         </section>
 
         {/* アニメーション設定 */}
-        {isAnimated && (
+        {outputFormat === 'gif' && (
           <section className="section">
-            <h2 className="section-title">アニメーション設定</h2>
-            
-            <div className="form-group">
-              <label className="md3-checkbox-wrapper">
-                <input
-                  type="checkbox"
-                  checked={useFirstFrameOnly}
-                  onChange={(e) => setUseFirstFrameOnly(e.target.checked)}
-                />
-                <span className="md3-checkbox" />
-                <span className="md3-checkbox-label">第1フレームのみ使用（静止画として出力）</span>
-              </label>
-              <small className="help-text">
-                有効にすると、アニメーションの最初のフレームのみを使用して静止画として処理します
-              </small>
-            </div>
-          </section>
-        )}
+            <h2 className="section-title">アニメーション</h2>
+              <div className="form-group">
+                <label className="label">エフェクト</label>
+                <div className="format-selector">
+                  {(['bounce', 'shake', 'rotate', 'pulse', 'fade', 'slide', 'wobble', 'pop'] as AnimationEffectType[]).map((effect) => (
+                    <label key={effect} className="format-option">
+                      <input
+                        type="radio"
+                        name="animationEffect"
+                        value={effect}
+                        checked={animationEffect === effect}
+                        onChange={(e) => setAnimationEffect(e.target.value as AnimationEffectType)}
+                      />
+                      <span className="format-label">
+                        {getAnimationEffectLabel(effect)}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* GSAP イージング設定 */}
+              <div className="form-group">
+                <label className="label">イージング</label>
+                <div className="format-selector">
+                  {(['bounce', 'elastic', 'back', 'expo', 'circ', 'sine', 'power2'] as GSAPEasingType[]).map((easing) => (
+                    <label key={easing} className="format-option">
+                      <input
+                        type="radio"
+                        name="gsapEasing"
+                        value={easing}
+                        checked={gsapEasing === easing}
+                        onChange={(e) => setGsapEasing(e.target.value as GSAPEasingType)}
+                      />
+                      <span className="format-label">
+                        {getGSAPEasingLabel(easing)}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* イージング方向 */}
+              <div className="form-group">
+                <label htmlFor="easingDirection" className="label">
+                  イージング方向: {getEasingDirectionLabel(easingDirection)}
+                </label>
+                <div className="format-selector">
+                  {(['in', 'out', 'inOut'] as EasingDirection[]).map((direction) => (
+                    <label key={direction} className="format-option">
+                      <input
+                        type="radio"
+                        name="easingDirection"
+                        value={direction}
+                        checked={easingDirection === direction}
+                        onChange={(e) => setEasingDirection(e.target.value as EasingDirection)}
+                      />
+                      <span className="format-label">
+                        {getEasingDirectionLabel(direction)}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              <div className="form-group-horizontal">
+                <div className="form-group">
+                  <label htmlFor="animationDuration" className="label">
+                    アニメーション時間: {animationDuration.toFixed(1)}秒
+                  </label>
+                  <input
+                    type="range"
+                    id="animationDuration"
+                    min="0.3"
+                    max="3.0"
+                    step="0.1"
+                    value={animationDuration}
+                    onChange={(e) => setAnimationDuration(parseFloat(e.target.value))}
+                    className="slider"
+                  />
+                  <small className="help-text">
+                    1サイクルの長さ
+                  </small>
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="animationFps" className="label">
+                    フレームレート: {animationFps} FPS
+                  </label>
+                  <input
+                    type="range"
+                    id="animationFps"
+                    min="6"
+                    max="30"
+                    step="1"
+                    value={animationFps}
+                    onChange={(e) => setAnimationFps(parseInt(e.target.value))}
+                    className="slider"
+                  />
+                  <small className="help-text">
+                    FPSが高いほど滑らかですがファイルサイズが大きくなります
+                  </small>
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="animationLoop" className="label">
+                  ループ回数
+                </label>
+                <select
+                  id="animationLoop"
+                  value={animationLoop}
+                  onChange={(e) => setAnimationLoop(parseInt(e.target.value))}
+                  className="select"
+                >
+                  <option value="0">無限ループ</option>
+                  <option value="1">1回</option>
+                  <option value="2">2回</option>
+                  <option value="3">3回</option>
+                  <option value="5">5回</option>
+                  <option value="10">10回</option>
+                </select>
+              </div>
+
+              {!ffmpegLoaded && (
+                <div className="info-box">
+                  <p>⏳ FFmpegを読み込んでいます...</p>
+                </div>
+              )}
+            </section>
+          )}
 
         {/* 編集オプションとプレビューを横並び */}
         {file && (
@@ -854,6 +1094,7 @@ function EmojiConverter() {
                   </button>
                 </div>
 
+            <div className="edit-options-grid">
             {/* テキスト埋め込み */}
             <details className="details">
               <summary className="details-summary">
@@ -1195,235 +1436,7 @@ function EmojiConverter() {
                 )}
               </div>
             </details>
-
-            {/* トリミング */}
-            <details className="details">
-              <summary className="details-summary">
-                <span>トリミング</span>
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    resetCropOptions();
-                  }}
-                  className="reset-section-button"
-                  aria-label="トリミング設定をリセット"
-                >
-                  リセット
-                </button>
-              </summary>
-              <div className="details-content">
-                <div className="checkbox-group">
-                  <label className="md3-checkbox-wrapper">
-                    <input
-                      type="checkbox"
-                      checked={editOptions.crop}
-                      onChange={(e) => updateEditOption("crop", e.target.checked)}
-                    />
-                    <span className="md3-checkbox" />
-                    <span className="md3-checkbox-label">トリミングを有効化</span>
-                  </label>
-                </div>
-
-                {editOptions.crop && (
-                  <>
-                    <div className="form-group">
-                      <label htmlFor="cropX" className="label">
-                        X位置: {editOptions.cropX}%
-                      </label>
-                      <input
-                        id="cropX"
-                        type="range"
-                        min="0"
-                        max="100"
-                        value={editOptions.cropX}
-                        onChange={(e) =>
-                          updateEditOption("cropX", Number(e.target.value))
-                        }
-                        className="range"
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label htmlFor="cropY" className="label">
-                        Y位置: {editOptions.cropY}%
-                      </label>
-                      <input
-                        id="cropY"
-                        type="range"
-                        min="0"
-                        max="100"
-                        value={editOptions.cropY}
-                        onChange={(e) =>
-                          updateEditOption("cropY", Number(e.target.value))
-                        }
-                        className="range"
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label htmlFor="cropWidth" className="label">
-                        幅: {editOptions.cropWidth}%
-                      </label>
-                      <input
-                        id="cropWidth"
-                        type="range"
-                        min="1"
-                        max="100"
-                        value={editOptions.cropWidth}
-                        onChange={(e) =>
-                          updateEditOption("cropWidth", Number(e.target.value))
-                        }
-                        className="range"
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label htmlFor="cropHeight" className="label">
-                        高さ: {editOptions.cropHeight}%
-                      </label>
-                      <input
-                        id="cropHeight"
-                        type="range"
-                        min="1"
-                        max="100"
-                        value={editOptions.cropHeight}
-                        onChange={(e) =>
-                          updateEditOption("cropHeight", Number(e.target.value))
-                        }
-                        className="range"
-                      />
-                    </div>
-
-                    {/* ズームコントロール */}
-                    <div className="crop-zoom-section">
-                      <h4 className="crop-zoom-title">ズーム</h4>
-                      
-                      <div className="zoom-controls">
-                        <button
-                          type="button"
-                          onClick={() => updateEditOption("cropZoom", Math.max(10, editOptions.cropZoom - 10))}
-                          className="zoom-button"
-                          aria-label="ズームアウト"
-                          disabled={editOptions.cropZoom <= 10}
-                        >
-                          −
-                        </button>
-                        
-                        <div className="form-group zoom-slider-group">
-                          <label htmlFor="cropZoom" className="label">
-                            {editOptions.cropZoom}%
-                          </label>
-                          <input
-                            id="cropZoom"
-                            type="range"
-                            min="10"
-                            max="400"
-                            step="10"
-                            value={editOptions.cropZoom}
-                            onChange={(e) =>
-                              updateEditOption("cropZoom", Number(e.target.value))
-                            }
-                            className="range"
-                          />
-                        </div>
-                        
-                        <button
-                          type="button"
-                          onClick={() => updateEditOption("cropZoom", Math.min(400, editOptions.cropZoom + 10))}
-                          className="zoom-button"
-                          aria-label="ズームイン"
-                          disabled={editOptions.cropZoom >= 400}
-                        >
-                          +
-                        </button>
-                      </div>
-
-                      <div className="zoom-preset-buttons">
-                        <button
-                          type="button"
-                          onClick={() => updateEditOption("cropZoom", 50)}
-                          className={"zoom-preset-button" + (editOptions.cropZoom === 50 ? " active" : "")}
-                        >
-                          50%
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => updateEditOption("cropZoom", 100)}
-                          className={"zoom-preset-button" + (editOptions.cropZoom === 100 ? " active" : "")}
-                        >
-                          100%
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => updateEditOption("cropZoom", 200)}
-                          className={"zoom-preset-button" + (editOptions.cropZoom === 200 ? " active" : "")}
-                        >
-                          200%
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => updateEditOption("cropZoom", 400)}
-                          className={"zoom-preset-button" + (editOptions.cropZoom === 400 ? " active" : "")}
-                        >
-                          400%
-                        </button>
-                      </div>
-
-                      {editOptions.cropZoom > 100 && (
-                        <div className="pan-controls">
-                          <div className="form-group">
-                            <label htmlFor="cropPanX" className="label">
-                              パンX: {editOptions.cropPanX}%
-                            </label>
-                            <input
-                              id="cropPanX"
-                              type="range"
-                              min="-100"
-                              max="100"
-                              value={editOptions.cropPanX}
-                              onChange={(e) =>
-                                updateEditOption("cropPanX", Number(e.target.value))
-                              }
-                              className="range"
-                            />
-                          </div>
-
-                          <div className="form-group">
-                            <label htmlFor="cropPanY" className="label">
-                              パンY: {editOptions.cropPanY}%
-                            </label>
-                            <input
-                              id="cropPanY"
-                              type="range"
-                              min="-100"
-                              max="100"
-                              value={editOptions.cropPanY}
-                              onChange={(e) =>
-                                updateEditOption("cropPanY", Number(e.target.value))
-                              }
-                              className="range"
-                            />
-                          </div>
-
-                          <button
-                            type="button"
-                            onClick={() => {
-                              updateEditOption("cropPanX", 0);
-                              updateEditOption("cropPanY", 0);
-                            }}
-                            className="reset-section-button"
-                            aria-label="パン位置をリセット"
-                          >
-                            パンリセット
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  </>
-                )}
-              </div>
-            </details>
+            </div>
               </section>
             </div>
 
@@ -1433,19 +1446,11 @@ function EmojiConverter() {
                 <h2 className="section-title">プレビュー</h2>
 
             <div className="preview-container">
-              {isAnimated && !useFirstFrameOnly ? (
-                <img
-                  src={previewUrl}
-                  alt="アニメーション絵文字プレビュー"
-                  className="preview-image animated-emoji-preview"
-                />
-              ) : (
-                <canvas
-                  ref={canvasRef}
-                  className="preview-canvas"
-                  aria-label="編集後の絵文字プレビュー"
-                />
-              )}
+              <canvas
+                ref={canvasRef}
+                className="preview-canvas"
+                aria-label="編集後の絵文字プレビュー"
+              />
             </div>
 
             <div className="file-size-info">

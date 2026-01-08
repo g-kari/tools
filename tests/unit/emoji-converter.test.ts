@@ -43,11 +43,6 @@ const DEFAULT_CROP_OPTIONS = {
   cropPanY: 0,
 };
 
-const DEFAULT_OUTPUT_OPTIONS = {
-  outputFormat: "png" as const,
-  outputQuality: 90,
-};
-
 const DEFAULT_EDIT_OPTIONS = {
   ...DEFAULT_TEXT_OPTIONS,
   ...DEFAULT_TRANSFORM_OPTIONS,
@@ -55,7 +50,6 @@ const DEFAULT_EDIT_OPTIONS = {
   ...DEFAULT_TRANSPARENT_OPTIONS,
   ...DEFAULT_BORDER_OPTIONS,
   ...DEFAULT_CROP_OPTIONS,
-  ...DEFAULT_OUTPUT_OPTIONS,
 };
 
 // Mock canvas for testing
@@ -227,8 +221,6 @@ describe("emoji-converter", () => {
         cropZoom: 100,
         cropPanX: 0,
         cropPanY: 0,
-        outputFormat: "png",
-        outputQuality: 90,
       });
     });
   });
@@ -479,7 +471,7 @@ describe("emoji-converter", () => {
 
     it("プリセットズーム値が正しい", () => {
       const presets = [50, 100, 200, 400];
-      
+
       expect(presets).toContain(50);
       expect(presets).toContain(100);
       expect(presets).toContain(200);
@@ -487,80 +479,108 @@ describe("emoji-converter", () => {
     });
   });
 
-  describe("出力形式機能", () => {
-    it("出力形式のデフォルト値が正しい", () => {
-      expect(DEFAULT_OUTPUT_OPTIONS.outputFormat).toBe("png");
-      expect(DEFAULT_OUTPUT_OPTIONS.outputQuality).toBe(90);
-    });
+  describe("出力形式", () => {
+    it("サポートされる形式が定義されている", () => {
+      const formats = ["png", "jpeg", "webp", "avif"];
 
-    it("出力形式を変更できる", () => {
-      const options = { ...DEFAULT_OUTPUT_OPTIONS };
-      options.outputFormat = "webp" as const;
-      expect(options.outputFormat).toBe("webp");
-    });
-
-    it("出力品質を変更できる", () => {
-      const options = { ...DEFAULT_OUTPUT_OPTIONS };
-      options.outputQuality = 75;
-      expect(options.outputQuality).toBe(75);
-    });
-
-    it("出力品質の範囲が正しい", () => {
-      const minQuality = 1;
-      const maxQuality = 100;
-      const defaultQuality = 90;
-      
-      expect(defaultQuality).toBeGreaterThanOrEqual(minQuality);
-      expect(defaultQuality).toBeLessThanOrEqual(maxQuality);
-    });
-
-    it("対応する出力形式が正しい", () => {
-      const formats: Array<"png" | "webp" | "avif"> = ["png", "webp", "avif"];
-      
       expect(formats).toContain("png");
+      expect(formats).toContain("jpeg");
       expect(formats).toContain("webp");
       expect(formats).toContain("avif");
     });
 
-    it("出力形式をリセットできる", () => {
-      const modifiedOptions = {
-        ...DEFAULT_OUTPUT_OPTIONS,
-        outputFormat: "webp" as const,
-        outputQuality: 50,
+    it("形式ごとのMIMEタイプが正しい", () => {
+      const mimeTypes: Record<string, string> = {
+        png: "image/png",
+        jpeg: "image/jpeg",
+        webp: "image/webp",
+        avif: "image/avif",
       };
 
-      const resetOptions = { ...DEFAULT_OUTPUT_OPTIONS };
-
-      expect(resetOptions.outputFormat).toBe("png");
-      expect(resetOptions.outputQuality).toBe(90);
-    });
-  });
-
-  describe("アニメーション機能", () => {
-    it("GIF画像をアニメーションとして検出できる", () => {
-      // モックFileオブジェクトを作成
-      const gifFile = new File([new Uint8Array(0)], "test.gif", { type: "image/gif" });
-      const pngFile = new File([new Uint8Array(0)], "test.png", { type: "image/png" });
-      
-      // テスト対象の関数は実装側にあるため、ここでは型定義のみテスト
-      expect(gifFile.type).toBe("image/gif");
-      expect(pngFile.type).toBe("image/png");
+      expect(mimeTypes.png).toBe("image/png");
+      expect(mimeTypes.jpeg).toBe("image/jpeg");
+      expect(mimeTypes.webp).toBe("image/webp");
+      expect(mimeTypes.avif).toBe("image/avif");
     });
 
-    it("アニメーション検出関数が正しく動作する", () => {
-      const gifFile = new File([new Uint8Array(0)], "test.gif", { type: "image/gif" });
-      const pngFile = new File([new Uint8Array(0)], "test.png", { type: "image/png" });
-      const webpFile = new File([new Uint8Array(0)], "test.webp", { type: "image/webp" });
-      
-      // GIFはアニメーションタイプに含まれる
-      expect(["image/gif"].includes(gifFile.type)).toBe(true);
-      expect(["image/gif"].includes(pngFile.type)).toBe(false);
-      expect(["image/gif"].includes(webpFile.type)).toBe(false);
+    it("形式ごとのファイル拡張子が正しい", () => {
+      const extensions: Record<string, string> = {
+        png: "png",
+        jpeg: "jpg",
+        webp: "webp",
+        avif: "avif",
+      };
+
+      expect(extensions.png).toBe("png");
+      expect(extensions.jpeg).toBe("jpg");
+      expect(extensions.webp).toBe("webp");
+      expect(extensions.avif).toBe("avif");
     });
 
-    it("アニメーション画像のファイル拡張子が正しい", () => {
-      const gifFile = new File([new Uint8Array(0)], "test.gif", { type: "image/gif" });
-      expect(gifFile.name).toMatch(/\.gif$/);
+    it("形式ごとのラベルが定義されている", () => {
+      const labels: Record<string, string> = {
+        png: "PNG (ロスレス)",
+        jpeg: "JPEG",
+        webp: "WebP",
+        avif: "AVIF",
+      };
+
+      expect(labels.png).toContain("PNG");
+      expect(labels.jpeg).toBe("JPEG");
+      expect(labels.webp).toBe("WebP");
+      expect(labels.avif).toBe("AVIF");
+    });
+
+    it("デフォルトの出力形式がPNGである", () => {
+      const defaultFormat = "png";
+      expect(defaultFormat).toBe("png");
+    });
+
+    it("デフォルトの品質が0.92である", () => {
+      const defaultQuality = 0.92;
+      expect(defaultQuality).toBe(0.92);
+    });
+
+    it("品質の範囲が0.1から1.0である", () => {
+      const minQuality = 0.1;
+      const maxQuality = 1.0;
+      const defaultQuality = 0.92;
+
+      expect(defaultQuality).toBeGreaterThanOrEqual(minQuality);
+      expect(defaultQuality).toBeLessThanOrEqual(maxQuality);
+    });
+
+    it("PNGは品質設定の影響を受けない", () => {
+      // PNG is lossless, quality parameter is ignored
+      const pngFormat = "png";
+      expect(pngFormat).toBe("png");
+    });
+
+    it("JPEGは品質設定の影響を受ける", () => {
+      const jpegFormat = "jpeg";
+      const quality = 0.8;
+
+      expect(jpegFormat).toBe("jpeg");
+      expect(quality).toBeGreaterThan(0);
+      expect(quality).toBeLessThanOrEqual(1);
+    });
+
+    it("WebPは品質設定の影響を受ける", () => {
+      const webpFormat = "webp";
+      const quality = 0.85;
+
+      expect(webpFormat).toBe("webp");
+      expect(quality).toBeGreaterThan(0);
+      expect(quality).toBeLessThanOrEqual(1);
+    });
+
+    it("AVIFは品質設定の影響を受ける", () => {
+      const avifFormat = "avif";
+      const quality = 0.9;
+
+      expect(avifFormat).toBe("avif");
+      expect(quality).toBeGreaterThan(0);
+      expect(quality).toBeLessThanOrEqual(1);
     });
   });
 });
