@@ -19,7 +19,7 @@ export const Route = createFileRoute("/emoji-converter")({
 });
 
 type Platform = "discord" | "slack";
-type OutputFormat = "png" | "jpeg" | "webp" | "avif";
+type OutputFormat = "png" | "jpeg" | "webp" | "avif" | "gif";
 
 const PLATFORM_LIMITS = {
   discord: { maxSize: 256 * 1024, label: "Discord (最大256KB)" },
@@ -34,6 +34,7 @@ const FORMAT_LABELS: Record<OutputFormat, string> = {
   jpeg: "JPEG",
   webp: "WebP",
   avif: "AVIF",
+  gif: "GIF",
 };
 
 const FORMAT_EXTENSIONS: Record<OutputFormat, string> = {
@@ -41,6 +42,7 @@ const FORMAT_EXTENSIONS: Record<OutputFormat, string> = {
   jpeg: "jpg",
   webp: "webp",
   avif: "avif",
+  gif: "gif",
 };
 
 const FORMAT_MIME_TYPES: Record<OutputFormat, string> = {
@@ -48,6 +50,7 @@ const FORMAT_MIME_TYPES: Record<OutputFormat, string> = {
   jpeg: "image/jpeg",
   webp: "image/webp",
   avif: "image/avif",
+  gif: "image/gif",
 };
 
 interface EditOptions {
@@ -409,6 +412,9 @@ function EmojiConverter() {
 
   // Check browser support for image formats
   const checkFormatSupport = useCallback((format: OutputFormat): boolean => {
+    // GIF is always supported (generated via FFmpeg)
+    if (format === 'gif') return true;
+
     const canvas = document.createElement('canvas');
     canvas.width = 1;
     canvas.height = 1;
@@ -553,6 +559,20 @@ function EmojiConverter() {
     },
     [handleDropzoneClick]
   );
+
+  // Sync GIF format with animation state
+  useEffect(() => {
+    if (enableAnimation && outputFormat !== 'gif') {
+      setOutputFormat('gif');
+    }
+  }, [enableAnimation, outputFormat]);
+
+  // Sync animation state with GIF format
+  useEffect(() => {
+    if (outputFormat === 'gif' && !enableAnimation) {
+      setEnableAnimation(true);
+    }
+  }, [outputFormat, enableAnimation]);
 
   // Load FFmpeg for animation
   useEffect(() => {
@@ -858,7 +878,7 @@ function EmojiConverter() {
               ファイル形式
             </label>
             <div className="format-selector">
-              {(["png", "jpeg", "webp", "avif"] as OutputFormat[]).map((format) => {
+              {(["png", "jpeg", "webp", "avif", "gif"] as OutputFormat[]).map((format) => {
                 const isSupported = checkFormatSupport(format);
                 return (
                   <label key={format} className="format-option">
@@ -880,7 +900,7 @@ function EmojiConverter() {
             </div>
           </div>
 
-          {outputFormat !== "png" && (
+          {outputFormat !== "png" && outputFormat !== "gif" && (
             <div className="form-group">
               <label htmlFor="outputQuality" className="label">
                 品質: {Math.round(outputQuality * 100)}%

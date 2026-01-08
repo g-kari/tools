@@ -2044,7 +2044,7 @@ details[open] .details-summary::before {
 /* Format Selector Styles */
 .format-selector {
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
   flex-wrap: wrap;
   margin-top: 0.5rem;
 }
