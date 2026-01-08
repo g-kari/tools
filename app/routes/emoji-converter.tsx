@@ -67,17 +67,6 @@ interface EditOptions {
   border: boolean;
   borderWidth: number;
   borderColor: string;
-  crop: boolean;
-  cropX: number;
-  cropY: number;
-  cropWidth: number;
-  cropHeight: number;
-  /** トリミングプレビューのズームレベル (10-400%) */
-  cropZoom: number;
-  /** トリミングプレビューのパンX位置 */
-  cropPanX: number;
-  /** トリミングプレビューのパンY位置 */
-  cropPanY: number;
 }
 
 /** テキスト埋め込みのデフォルト値 */
@@ -116,25 +105,12 @@ const DEFAULT_BORDER_OPTIONS: Pick<EditOptions, "border" | "borderWidth" | "bord
   borderColor: "#000000",
 };
 
-/** トリミングのデフォルト値 */
-const DEFAULT_CROP_OPTIONS: Pick<EditOptions, "crop" | "cropX" | "cropY" | "cropWidth" | "cropHeight" | "cropZoom" | "cropPanX" | "cropPanY"> = {
-  crop: false,
-  cropX: 0,
-  cropY: 0,
-  cropWidth: 100,
-  cropHeight: 100,
-  cropZoom: 100,
-  cropPanX: 0,
-  cropPanY: 0,
-};
-
 const DEFAULT_EDIT_OPTIONS: EditOptions = {
   ...DEFAULT_TEXT_OPTIONS,
   ...DEFAULT_TRANSFORM_OPTIONS,
   ...DEFAULT_FILTER_OPTIONS,
   ...DEFAULT_TRANSPARENT_OPTIONS,
   ...DEFAULT_BORDER_OPTIONS,
-  ...DEFAULT_CROP_OPTIONS,
 };
 
 /**
@@ -193,60 +169,12 @@ export function applyEditOptions(
   sourceCanvas: HTMLCanvasElement,
   options: EditOptions
 ): HTMLCanvasElement {
-  let workCanvas = sourceCanvas;
-
-  // トリミング処理（最初に適用）
-  if (options.crop) {
-    // 境界値検証
-    const cropXEnd = options.cropX + options.cropWidth;
-    const cropYEnd = options.cropY + options.cropHeight;
-
-    if (cropXEnd > 100 || cropYEnd > 100) {
-      console.warn(
-        `Invalid crop bounds: cropX(${options.cropX}) + cropWidth(${options.cropWidth}) = ${cropXEnd}, ` +
-        `cropY(${options.cropY}) + cropHeight(${options.cropHeight}) = ${cropYEnd}`
-      );
-      // 境界値を超える場合は調整
-      const adjustedCropWidth = Math.min(options.cropWidth, 100 - options.cropX);
-      const adjustedCropHeight = Math.min(options.cropHeight, 100 - options.cropY);
-
-      const cropCanvas = document.createElement("canvas");
-      const cropCtx = cropCanvas.getContext("2d");
-      if (cropCtx) {
-        const sx = (sourceCanvas.width * options.cropX) / 100;
-        const sy = (sourceCanvas.height * options.cropY) / 100;
-        const sw = (sourceCanvas.width * adjustedCropWidth) / 100;
-        const sh = (sourceCanvas.height * adjustedCropHeight) / 100;
-
-        cropCanvas.width = sw;
-        cropCanvas.height = sh;
-        cropCtx.drawImage(sourceCanvas, sx, sy, sw, sh, 0, 0, sw, sh);
-        workCanvas = cropCanvas;
-      }
-    } else {
-      const cropCanvas = document.createElement("canvas");
-      const cropCtx = cropCanvas.getContext("2d");
-      if (cropCtx) {
-        // パーセント値をピクセル値に変換
-        const sx = (sourceCanvas.width * options.cropX) / 100;
-        const sy = (sourceCanvas.height * options.cropY) / 100;
-        const sw = (sourceCanvas.width * options.cropWidth) / 100;
-        const sh = (sourceCanvas.height * options.cropHeight) / 100;
-
-        cropCanvas.width = sw;
-        cropCanvas.height = sh;
-        cropCtx.drawImage(sourceCanvas, sx, sy, sw, sh, 0, 0, sw, sh);
-        workCanvas = cropCanvas;
-      }
-    }
-  }
-
   const canvas = document.createElement("canvas");
-  canvas.width = workCanvas.width;
-  canvas.height = workCanvas.height;
+  canvas.width = sourceCanvas.width;
+  canvas.height = sourceCanvas.height;
   const ctx = canvas.getContext("2d");
 
-  if (!ctx) return workCanvas;
+  if (!ctx) return sourceCanvas;
 
   ctx.save();
 
@@ -265,7 +193,7 @@ export function applyEditOptions(
 
   // 元の画像を描画
   ctx.drawImage(
-    workCanvas,
+    sourceCanvas,
     -canvas.width / 2,
     -canvas.height / 2,
     canvas.width,
@@ -455,8 +383,6 @@ function EmojiConverter() {
   const [fileSize, setFileSize] = useState<number>(0);
   const [isDragging, setIsDragging] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [isPreviewDragging, setIsPreviewDragging] = useState(false);
-  const [dragStart, setDragStart] = useState<{ x: number; y: number } | null>(null);
 
   // Animation state
   const [enableAnimation, setEnableAnimation] = useState(false);
@@ -505,70 +431,16 @@ function EmojiConverter() {
     // Clear canvas
     ctx.clearRect(0, 0, PREVIEW_SIZE, PREVIEW_SIZE);
 
-    // Calculate zoom and pan
-    const zoom = editOptions.cropZoom / 100;
-    const panX = (editOptions.cropPanX / 100) * EMOJI_SIZE * (zoom - 1);
-    const panY = (editOptions.cropPanY / 100) * EMOJI_SIZE * (zoom - 1);
-
-    // Center the image and apply zoom/pan
+    // Center the image
     const scaleFactor = PREVIEW_SIZE / EMOJI_SIZE;
     ctx.save();
     ctx.translate(PREVIEW_SIZE / 2, PREVIEW_SIZE / 2);
-    ctx.scale(zoom * scaleFactor, zoom * scaleFactor);
-    ctx.translate(-EMOJI_SIZE / 2 - panX / zoom / scaleFactor, -EMOJI_SIZE / 2 - panY / zoom / scaleFactor);
+    ctx.scale(scaleFactor, scaleFactor);
+    ctx.translate(-EMOJI_SIZE / 2, -EMOJI_SIZE / 2);
     ctx.drawImage(processedImageRef.current, 0, 0);
     ctx.restore();
-  }, [editOptions.cropZoom, editOptions.cropPanX, editOptions.cropPanY]);
-
-  // Preview canvas mouse handlers
-  const handlePreviewMouseDown = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
-    setIsPreviewDragging(true);
-    setDragStart({ x: e.clientX, y: e.clientY });
-    e.currentTarget.style.cursor = 'grabbing';
   }, []);
 
-  const handlePreviewMouseMove = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!isPreviewDragging || !dragStart) return;
-
-    const deltaX = e.clientX - dragStart.x;
-    const deltaY = e.clientY - dragStart.y;
-
-    // Update pan position based on drag distance
-    const zoom = editOptions.cropZoom / 100;
-    const sensitivity = 0.5 / zoom; // More sensitive at higher zoom
-
-    setEditOptions(prev => ({
-      ...prev,
-      cropPanX: Math.max(-100, Math.min(100, prev.cropPanX + deltaX * sensitivity)),
-      cropPanY: Math.max(-100, Math.min(100, prev.cropPanY + deltaY * sensitivity)),
-    }));
-
-    setDragStart({ x: e.clientX, y: e.clientY });
-  }, [isPreviewDragging, dragStart, editOptions.cropZoom]);
-
-  const handlePreviewMouseUp = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
-    setIsPreviewDragging(false);
-    setDragStart(null);
-    e.currentTarget.style.cursor = 'grab';
-  }, []);
-
-  const handlePreviewWheel = useCallback((e: React.WheelEvent<HTMLCanvasElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const delta = e.deltaY > 0 ? -10 : 10;
-
-    setEditOptions(prev => ({
-      ...prev,
-      cropZoom: Math.max(10, Math.min(400, prev.cropZoom + delta)),
-    }));
-  }, []);
-
-  // Update preview when crop settings change (but not during animation playback)
-  useEffect(() => {
-    if (processedImageRef.current && !isAnimationPlaying) {
-      updatePreviewCanvas();
-    }
-  }, [editOptions.cropZoom, editOptions.cropPanX, editOptions.cropPanY, updatePreviewCanvas, isAnimationPlaying]);
 
   // 画像処理とプレビュー更新
   const processImage = useCallback(async () => {
@@ -729,7 +601,7 @@ function EmojiConverter() {
         updatePreviewCanvas();
       }
     }
-  }, [enableAnimation, generateAnimation, updatePreviewCanvas]);
+  }, [enableAnimation, generateAnimation, updatePreviewCanvas, editOptions]);
 
   // Animation playback in preview canvas
   useEffect(() => {
@@ -875,12 +747,6 @@ function EmojiConverter() {
   const resetBorderOptions = useCallback(() => {
     setEditOptions((prev) => ({ ...prev, ...DEFAULT_BORDER_OPTIONS }));
     announceStatus("枠線設定をリセットしました");
-  }, [announceStatus]);
-
-  /** トリミングをリセット */
-  const resetCropOptions = useCallback(() => {
-    setEditOptions((prev) => ({ ...prev, ...DEFAULT_CROP_OPTIONS }));
-    announceStatus("トリミング設定をリセットしました");
   }, [announceStatus]);
 
   /** 全ての編集オプションをリセット（画像は保持） */
@@ -1501,235 +1367,6 @@ function EmojiConverter() {
                 )}
               </div>
             </details>
-
-            {/* トリミング */}
-            <details className="details">
-              <summary className="details-summary">
-                <span>トリミング</span>
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    resetCropOptions();
-                  }}
-                  className="reset-section-button"
-                  aria-label="トリミング設定をリセット"
-                >
-                  リセット
-                </button>
-              </summary>
-              <div className="details-content">
-                <div className="checkbox-group">
-                  <label className="md3-checkbox-wrapper">
-                    <input
-                      type="checkbox"
-                      checked={editOptions.crop}
-                      onChange={(e) => updateEditOption("crop", e.target.checked)}
-                    />
-                    <span className="md3-checkbox" />
-                    <span className="md3-checkbox-label">トリミングを有効化</span>
-                  </label>
-                </div>
-
-                {editOptions.crop && (
-                  <>
-                    <div className="form-group">
-                      <label htmlFor="cropX" className="label">
-                        X位置: {editOptions.cropX}%
-                      </label>
-                      <input
-                        id="cropX"
-                        type="range"
-                        min="0"
-                        max="100"
-                        value={editOptions.cropX}
-                        onChange={(e) =>
-                          updateEditOption("cropX", Number(e.target.value))
-                        }
-                        className="range"
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label htmlFor="cropY" className="label">
-                        Y位置: {editOptions.cropY}%
-                      </label>
-                      <input
-                        id="cropY"
-                        type="range"
-                        min="0"
-                        max="100"
-                        value={editOptions.cropY}
-                        onChange={(e) =>
-                          updateEditOption("cropY", Number(e.target.value))
-                        }
-                        className="range"
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label htmlFor="cropWidth" className="label">
-                        幅: {editOptions.cropWidth}%
-                      </label>
-                      <input
-                        id="cropWidth"
-                        type="range"
-                        min="1"
-                        max="100"
-                        value={editOptions.cropWidth}
-                        onChange={(e) =>
-                          updateEditOption("cropWidth", Number(e.target.value))
-                        }
-                        className="range"
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label htmlFor="cropHeight" className="label">
-                        高さ: {editOptions.cropHeight}%
-                      </label>
-                      <input
-                        id="cropHeight"
-                        type="range"
-                        min="1"
-                        max="100"
-                        value={editOptions.cropHeight}
-                        onChange={(e) =>
-                          updateEditOption("cropHeight", Number(e.target.value))
-                        }
-                        className="range"
-                      />
-                    </div>
-
-                    {/* ズームコントロール */}
-                    <div className="crop-zoom-section">
-                      <h4 className="crop-zoom-title">ズーム</h4>
-                      
-                      <div className="zoom-controls">
-                        <button
-                          type="button"
-                          onClick={() => updateEditOption("cropZoom", Math.max(10, editOptions.cropZoom - 10))}
-                          className="zoom-button"
-                          aria-label="ズームアウト"
-                          disabled={editOptions.cropZoom <= 10}
-                        >
-                          −
-                        </button>
-                        
-                        <div className="form-group zoom-slider-group">
-                          <label htmlFor="cropZoom" className="label">
-                            {editOptions.cropZoom}%
-                          </label>
-                          <input
-                            id="cropZoom"
-                            type="range"
-                            min="10"
-                            max="400"
-                            step="10"
-                            value={editOptions.cropZoom}
-                            onChange={(e) =>
-                              updateEditOption("cropZoom", Number(e.target.value))
-                            }
-                            className="range"
-                          />
-                        </div>
-                        
-                        <button
-                          type="button"
-                          onClick={() => updateEditOption("cropZoom", Math.min(400, editOptions.cropZoom + 10))}
-                          className="zoom-button"
-                          aria-label="ズームイン"
-                          disabled={editOptions.cropZoom >= 400}
-                        >
-                          +
-                        </button>
-                      </div>
-
-                      <div className="zoom-preset-buttons">
-                        <button
-                          type="button"
-                          onClick={() => updateEditOption("cropZoom", 50)}
-                          className={"zoom-preset-button" + (editOptions.cropZoom === 50 ? " active" : "")}
-                        >
-                          50%
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => updateEditOption("cropZoom", 100)}
-                          className={"zoom-preset-button" + (editOptions.cropZoom === 100 ? " active" : "")}
-                        >
-                          100%
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => updateEditOption("cropZoom", 200)}
-                          className={"zoom-preset-button" + (editOptions.cropZoom === 200 ? " active" : "")}
-                        >
-                          200%
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => updateEditOption("cropZoom", 400)}
-                          className={"zoom-preset-button" + (editOptions.cropZoom === 400 ? " active" : "")}
-                        >
-                          400%
-                        </button>
-                      </div>
-
-                      {editOptions.cropZoom > 100 && (
-                        <div className="pan-controls">
-                          <div className="form-group">
-                            <label htmlFor="cropPanX" className="label">
-                              パンX: {editOptions.cropPanX}%
-                            </label>
-                            <input
-                              id="cropPanX"
-                              type="range"
-                              min="-100"
-                              max="100"
-                              value={editOptions.cropPanX}
-                              onChange={(e) =>
-                                updateEditOption("cropPanX", Number(e.target.value))
-                              }
-                              className="range"
-                            />
-                          </div>
-
-                          <div className="form-group">
-                            <label htmlFor="cropPanY" className="label">
-                              パンY: {editOptions.cropPanY}%
-                            </label>
-                            <input
-                              id="cropPanY"
-                              type="range"
-                              min="-100"
-                              max="100"
-                              value={editOptions.cropPanY}
-                              onChange={(e) =>
-                                updateEditOption("cropPanY", Number(e.target.value))
-                              }
-                              className="range"
-                            />
-                          </div>
-
-                          <button
-                            type="button"
-                            onClick={() => {
-                              updateEditOption("cropPanX", 0);
-                              updateEditOption("cropPanY", 0);
-                            }}
-                            className="reset-section-button"
-                            aria-label="パン位置をリセット"
-                          >
-                            パンリセット
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  </>
-                )}
-              </div>
-            </details>
               </section>
             </div>
 
@@ -1741,17 +1378,9 @@ function EmojiConverter() {
             <div className="preview-container">
               <canvas
                 ref={canvasRef}
-                className="preview-canvas preview-canvas-interactive"
-                aria-label="編集後の絵文字プレビュー（ドラッグで移動、ホイールでズーム）"
-                onMouseDown={handlePreviewMouseDown}
-                onMouseMove={handlePreviewMouseMove}
-                onMouseUp={handlePreviewMouseUp}
-                onMouseLeave={handlePreviewMouseUp}
-                onWheel={handlePreviewWheel}
+                className="preview-canvas"
+                aria-label="編集後の絵文字プレビュー"
               />
-              <div className="preview-hint">
-                ドラッグで移動 | ホイールでズーム ({editOptions.cropZoom}%)
-              </div>
             </div>
 
             <div className="file-size-info">
