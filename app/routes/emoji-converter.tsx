@@ -887,7 +887,14 @@ function EmojiConverter() {
                       name="outputFormat"
                       value={format}
                       checked={outputFormat === format}
-                      onChange={(e) => setOutputFormat(e.target.value as OutputFormat)}
+                      onChange={(e) => {
+                        const newFormat = e.target.value as OutputFormat;
+                        setOutputFormat(newFormat);
+                        // Enable animation automatically when GIF is selected
+                        if (newFormat === 'gif') {
+                          setEnableAnimation(true);
+                        }
+                      }}
                       disabled={!isSupported}
                     />
                     <span className="format-label">
