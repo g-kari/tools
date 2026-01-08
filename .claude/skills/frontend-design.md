@@ -1,97 +1,38 @@
 # Frontend Design
 
-このスキルは、ジェネリックなAIデザインとは一線を画す、個性的でプロダクション品質のフロントエンドインターフェースを作成するためのガイドラインを提供します。
+このスキルは、Material Design 3の枠組み内で個性的でプロダクション品質のフロントエンドインターフェースを作成するためのガイドラインを提供します。
+
+> **注意**: このスキルは `material-design-styling.md` を補完するものです。基本的なカラーパレット、タイポグラフィ、コンポーネントスタイルについてはそちらを参照してください。
 
 ## デザイン思考プロセス
 
-コーディング前に、コンテキストを理解し、**大胆な美的方向性**にコミットする：
+コーディング前に、コンテキストを理解する：
 
 ### 1. 目的の理解
 - このインターフェースが解決する問題は何か？
 - 誰が使用するのか？
-- 技術的制約（フレームワーク、パフォーマンス、アクセシビリティ）
+- 技術的制約（パフォーマンス、アクセシビリティ）
 
-### 2. トーンの選択
-以下から明確な方向性を選択（または独自の方向性を定義）：
+### 2. 差別化ポイント
+Material Design 3の一貫性を維持しながら、以下で個性を出す：
+- **モーション**: アニメーションの工夫
+- **空間構成**: レイアウトと余白の使い方
+- **情報階層**: コンテンツの優先順位付け
+- **マイクロインタラクション**: ユーザーフィードバック
 
-| トーン | 特徴 |
-|--------|------|
-| **ブルータルミニマル** | 極限まで削ぎ落とした、力強いシンプルさ |
-| **マキシマリスト** | 豊かなディテール、レイヤー、要素の重なり |
-| **レトロフューチャー** | 80年代/90年代のノスタルジアと未来的要素の融合 |
-| **オーガニック/ナチュラル** | 自然の形状、テクスチャ、流れるような曲線 |
-| **ラグジュアリー/洗練** | 上質な素材感、繊細なディテール、余白の美学 |
-| **プレイフル/トイライク** | 遊び心、丸み、カラフル、アニメーション |
-| **エディトリアル/マガジン** | 雑誌レイアウト、タイポグラフィ重視、グリッド |
-| **ブルータリスト/ロー** | 生々しいHTML感、意図的な粗さ |
-| **アールデコ/ジオメトリック** | 幾何学パターン、装飾的ライン、対称性 |
-| **ソフト/パステル** | 柔らかい色彩、グラデーション、優しい印象 |
-| **インダストリアル** | 実用的、機能重視、堅牢な印象 |
+## Material Design 3内での個性化
 
-### 3. 差別化ポイント
-- この設計を**忘れられないものにする**要素は何か？
-- ユーザーが記憶する「一つのこと」を定義する
+### 1. モーション＆アニメーション
 
-## 美的ガイドライン
+Material Design 3では0.2sのトランジションが基本ですが、**表現力のあるモーション**で個性を出せます。
 
-### タイポグラフィ
-
-**重要**: ジェネリックなフォント（Arial、Inter、Roboto、システムフォント）を避け、個性的な選択を行う。
-
+#### ページロードのスタガード効果
 ```css
-/* 良い例：個性的なフォント選択 */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+3:wght@300;400;600&display=swap');
-
-:root {
-  --font-display: 'Playfair Display', serif;  /* 見出し用 */
-  --font-body: 'Source Sans 3', sans-serif;   /* 本文用 */
-}
-
-/* 避けるべき例 */
-font-family: Inter, Arial, sans-serif;  /* ジェネリックすぎる */
-```
-
-#### フォント選択の指針
-- **ディスプレイフォント**: 見出しに個性を与える（例：Playfair Display, Archivo Black, Space Mono）
-- **ボディフォント**: 可読性を維持しつつ洗練された選択（例：Source Sans 3, Lora, Work Sans）
-- **モノスペース**: コード表示用（例：JetBrains Mono, Fira Code）
-
-### カラー＆テーマ
-
-**原則**: 控えめな均等配分より、ドミナントカラーとシャープなアクセントの組み合わせ。
-
-```css
-/* 大胆なカラースキームの例 */
-:root {
-  /* ドミナントカラー */
-  --color-dominant: #0a0a0a;
-  --color-dominant-soft: #1a1a1a;
-
-  /* シャープなアクセント */
-  --color-accent: #ff4d4d;
-  --color-accent-glow: rgba(255, 77, 77, 0.3);
-
-  /* テキスト */
-  --color-text-primary: #ffffff;
-  --color-text-muted: #888888;
-}
-```
-
-#### 避けるべきパターン
-- 白背景に紫グラデーション（クリシェ）
-- 無難な青と白の組み合わせ
-- すべての要素が同じ視覚的重みを持つ配色
-
-### モーション＆アニメーション
-
-**原則**: 散らばったマイクロインタラクションより、ページロード時の統一されたオーケストレーション。
-
-```css
-/* ページロードアニメーション - スタガード効果 */
+/* 要素を順番に表示してリズムを作る */
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(16px);
   }
   to {
     opacity: 1;
@@ -99,182 +40,242 @@ font-family: Inter, Arial, sans-serif;  /* ジェネリックすぎる */
   }
 }
 
-.hero-title {
-  animation: fadeInUp 0.6s ease-out forwards;
-  animation-delay: 0.1s;
-  opacity: 0;
+.tool-section:nth-child(1) { animation: fadeInUp 0.3s ease-out 0.1s both; }
+.tool-section:nth-child(2) { animation: fadeInUp 0.3s ease-out 0.2s both; }
+.tool-section:nth-child(3) { animation: fadeInUp 0.3s ease-out 0.3s both; }
+```
+
+#### インタラクティブなフィードバック
+```css
+/* ボタンのプレス効果 */
+.btn-primary:active {
+  transform: scale(0.98);
+  transition: transform 0.1s ease-out;
 }
 
-.hero-subtitle {
-  animation: fadeInUp 0.6s ease-out forwards;
-  animation-delay: 0.2s;
-  opacity: 0;
+/* 入力フォーカス時のラベルアニメーション */
+.input-label {
+  transition: transform 0.2s, font-size 0.2s, color 0.2s;
 }
 
-.hero-cta {
-  animation: fadeInUp 0.6s ease-out forwards;
-  animation-delay: 0.3s;
-  opacity: 0;
+.input:focus + .input-label {
+  transform: translateY(-24px);
+  font-size: 12px;
+  color: var(--md-sys-color-primary);
 }
 ```
 
-#### ハイインパクトなモーメント
-- **ページロード**: スタガードリビール（animation-delay）
-- **スクロールトリガー**: 要素が視界に入った時のアニメーション
-- **ホバーステート**: 予想外の変化で驚きを与える
-- **トランジション**: ページ間の滑らかな移行
-
-### 空間構成
-
-**原則**: 予測可能なレイアウトを破る。
-
+#### 成功/エラー時のフィードバック
 ```css
-/* 非対称レイアウト */
-.asymmetric-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 2rem;
+/* コピー成功時のパルス効果 */
+@keyframes successPulse {
+  0% { box-shadow: 0 0 0 0 rgba(139, 105, 20, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(139, 105, 20, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(139, 105, 20, 0); }
 }
 
-/* オーバーラップ効果 */
-.overlapping-element {
-  position: relative;
-  margin-top: -4rem;
-  z-index: 10;
+.copy-success {
+  animation: successPulse 0.6s ease-out;
+}
+```
+
+### 2. 空間構成とレイアウト
+
+#### 意図的な余白
+```css
+/* セクション間の余白でリズムを作る */
+.tool-section {
+  margin-bottom: 32px;
 }
 
-/* 対角線の流れ */
-.diagonal-section {
-  clip-path: polygon(0 0, 100% 5%, 100% 95%, 0 100%);
+.tool-section:last-child {
+  margin-bottom: 0;
 }
 
-/* グリッドを破る要素 */
-.grid-breaker {
+/* グループ内の要素間隔 */
+.button-group {
+  display: flex;
+  gap: 12px;
+}
+```
+
+#### 情報の階層化
+```css
+/* プライマリアクションを目立たせる */
+.action-primary {
   grid-column: 1 / -1;
-  margin-left: -2rem;
-  margin-right: -2rem;
+  padding: 20px;
+}
+
+.action-secondary {
+  padding: 16px;
+}
+
+/* 結果表示エリアの強調 */
+.result-area {
+  background: var(--md-sys-color-primary-container);
+  border-left: 4px solid var(--md-sys-color-primary);
+  padding: 16px;
+  border-radius: 4px;
 }
 ```
 
-#### 空間のアプローチ
-- **寛大なネガティブスペース** または **制御された密度**
-- **非対称性**: 完璧な対称を避ける
-- **オーバーラップ**: 要素の重なりで深みを作る
-- **グリッドブレイク**: 時折グリッドを破る要素
+#### レスポンシブな2カラムレイアウト
+```css
+/* 入力と出力を並べて表示 */
+.tool-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
 
-### 背景＆ビジュアルディテール
+@media (min-width: 768px) {
+  .tool-layout {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+```
 
-**原則**: ソリッドカラーをデフォルトにせず、雰囲気と深みを作る。
+### 3. タイポグラフィの階層
+
+Robotoファミリー内でウェイトとサイズを効果的に使い分ける：
 
 ```css
-/* グラデーションメッシュ */
-.gradient-mesh {
-  background:
-    radial-gradient(at 40% 20%, hsla(28, 100%, 74%, 0.3) 0px, transparent 50%),
-    radial-gradient(at 80% 0%, hsla(189, 100%, 56%, 0.2) 0px, transparent 50%),
-    radial-gradient(at 0% 50%, hsla(355, 85%, 63%, 0.2) 0px, transparent 50%);
+/* ページタイトル - 軽いウェイトで大きく */
+.page-title {
+  font-size: 2rem;
+  font-weight: 300;
+  letter-spacing: -0.5px;
+  color: var(--md-sys-color-on-surface);
 }
 
-/* ノイズテクスチャ */
-.noise-texture {
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  opacity: 0.05;
+/* セクションタイトル - ミディアムウェイト */
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface);
 }
 
-/* グレインオーバーレイ */
-.grain-overlay::after {
-  content: '';
+/* ラベル - 小さく控えめに */
+.input-label {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* モノスペース - コード/データ表示 */
+.code-output {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+```
+
+### 4. カラーの効果的な使用
+
+既存のMD3カラートークンを活用しつつ、視覚的な深みを追加：
+
+```css
+/* プライマリカラーのグロー効果（控えめに） */
+.primary-glow:focus {
+  box-shadow: 0 0 0 3px rgba(139, 105, 20, 0.2);
+}
+
+/* ホバー時の背景変化 */
+.interactive-card {
+  transition: background-color 0.2s;
+}
+
+.interactive-card:hover {
+  background-color: var(--md-sys-color-surface-variant);
+}
+
+/* ステータス表示 */
+.status-success { color: #2e7d32; }
+.status-error { color: #c62828; }
+.status-warning { color: #f57c00; }
+```
+
+### 5. マイクロインタラクション
+
+ユーザーアクションへの即座のフィードバック：
+
+```css
+/* コピーボタン */
+.copy-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.copy-button::after {
+  content: 'コピーしました';
   position: absolute;
   inset: 0;
-  background: url('/noise.png');
-  opacity: 0.03;
-  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  transform: translateY(100%);
+  transition: transform 0.2s ease-out;
 }
 
-/* ドラマチックなシャドウ */
-.dramatic-shadow {
-  box-shadow:
-    0 25px 50px -12px rgba(0, 0, 0, 0.25),
-    0 0 0 1px rgba(0, 0, 0, 0.05);
+.copy-button.copied::after {
+  transform: translateY(0);
 }
-```
 
-## 避けるべきパターン（AIスロップ）
+/* トグルスイッチ */
+.toggle-track {
+  transition: background-color 0.2s;
+}
 
-以下は「AIが生成した典型的なデザイン」として認識されやすいパターン：
-
-| カテゴリ | 避けるべきもの |
-|----------|----------------|
-| **フォント** | Inter, Roboto, Arial, システムフォント、Space Grotesk |
-| **カラー** | 白背景に紫グラデーション、無難な青系統 |
-| **レイアウト** | 完全に予測可能なグリッド、すべて中央揃え |
-| **アニメーション** | 控えめすぎるフェードイン、ジェネリックなホバー効果 |
-| **パターン** | クッキーカッター的なカード、同じ見た目のセクション |
-
-## 実装複雑度のマッチング
-
-**重要**: 美的ビジョンに合わせた実装複雑度を選択する。
-
-### マキシマリストデザインの場合
-- 豊富なアニメーション
-- 複数のレイヤーと効果
-- 詳細なマイクロインタラクション
-- 複雑なCSSグリッドとレイアウト
-
-### ミニマリスト/洗練デザインの場合
-- 抑制された実装
-- スペーシング、タイポグラフィ、微細なディテールへの注意
-- 少ない要素で最大の効果
-- 繊細で意図的なアニメーション
-
-## このプロジェクトでの適用
-
-このプロジェクトはMaterial Design 3をベースとしていますが、以下の方法で個性を出すことができます：
-
-### カラーカスタマイズ
-```css
-/* Material Design 3のカラートークンを活用しつつ個性を追加 */
-:root {
-  /* 既存のMD3カラーに加えて */
-  --accent-glow: rgba(139, 105, 20, 0.2);
-  --surface-texture: url('/subtle-pattern.svg');
+.toggle-thumb {
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 ```
 
-### タイポグラフィの強化
+## 避けるべきパターン
+
+Material Design 3を使用していても、以下は避ける：
+
+| カテゴリ | 避けるべきもの | 代わりに |
+|----------|----------------|----------|
+| **レイアウト** | すべて中央揃え、均一な間隔 | 意図的な階層と余白 |
+| **アニメーション** | 静的なUI、瞬間的な変化 | スムーズなトランジション |
+| **フィードバック** | 操作後の無反応 | 即座の視覚的フィードバック |
+| **情報設計** | フラットな情報構造 | 明確な優先順位付け |
+| **インタラクション** | 基本的なホバーのみ | 状態変化の可視化 |
+
+## 実装チェックリスト
+
+デザイン実装時に確認すること：
+
+### モーション
+- [ ] ページロード時にスタガード効果があるか
+- [ ] ボタンクリック時にフィードバックがあるか
+- [ ] 状態変化がスムーズにアニメーションするか
+- [ ] `prefers-reduced-motion`に対応しているか
+
+### 空間構成
+- [ ] 適切な余白でグループ化されているか
+- [ ] プライマリアクションが目立っているか
+- [ ] モバイルとデスクトップでレイアウトが最適化されているか
+
+### フィードバック
+- [ ] 操作成功時に視覚的確認があるか
+- [ ] エラー時に明確なメッセージがあるか
+- [ ] ローディング状態が表示されるか
+
+### アクセシビリティ
+- [ ] フォーカスインジケーターが視認可能か
+- [ ] コントラスト比がWCAG AA基準を満たすか
+- [ ] キーボード操作が可能か
+
+## prefers-reduced-motion対応
+
+アニメーションを使用する場合は必ず対応：
+
 ```css
-/* Robotoをベースに、見出しに個性的なフォントを追加 */
-.page-title {
-  font-family: 'Playfair Display', var(--font-primary);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-```
-
-### 独自のモーション
-```css
-/* Material Designの0.2sトランジションをベースに */
-.tool-card {
-  transition: transform 0.2s, box-shadow 0.3s ease-out;
-}
-
-.tool-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 24px -8px var(--accent-glow);
-}
-```
-
-## アクセシビリティとの両立
-
-個性的なデザインでもアクセシビリティは必須です：
-
-1. **コントラスト比**: WCAG AA基準（4.5:1以上）を維持
-2. **モーション**: `prefers-reduced-motion`で代替を提供
-3. **フォーカス**: 視認可能なフォーカスインジケーター
-4. **キーボード**: すべての操作がキーボードで可能
-
-```css
-/* モーション軽減設定への対応 */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -286,22 +287,8 @@ font-family: Inter, Arial, sans-serif;  /* ジェネリックすぎる */
 }
 ```
 
-## チェックリスト
+## 関連スキル
 
-デザイン実装時に確認すること：
-
-- [ ] ジェネリックなフォント（Inter, Roboto, Arial）を避けているか
-- [ ] 明確な美的方向性を持っているか
-- [ ] 少なくとも1つの「忘れられない」要素があるか
-- [ ] アニメーションが意図的で統一されているか
-- [ ] WCAG AA基準を満たしているか
-- [ ] `prefers-reduced-motion`に対応しているか
-- [ ] フォーカスインジケーターが視認可能か
-
-## 参考リソース
-
-- [Awwwards](https://www.awwwards.com/) - 受賞デザインの参考
-- [Dribbble](https://dribbble.com/) - UIインスピレーション
-- [Typewolf](https://www.typewolf.com/) - フォントの組み合わせ
-- [Coolors](https://coolors.co/) - カラーパレット生成
-- [Cubic-bezier](https://cubic-bezier.com/) - イージング関数のカスタマイズ
+- [Material Design Styling](./material-design-styling.md) - 基本的なスタイルガイドライン
+- [WCAG Accessibility](./wcag-accessibility.md) - アクセシビリティ要件
+- [UX Psychology](./ux-psychology.md) - ユーザー心理の活用
