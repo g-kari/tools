@@ -9,7 +9,13 @@ import {
   type AnimationEffectType,
   type AnimationSpeed,
   type AnimationConfig,
+  type GSAPEasingType,
+  type EasingDirection,
 } from "~/utils/animationEffects";
+import {
+  getGSAPEasingLabel,
+  getEasingDirectionLabel,
+} from "~/utils/gsapAnimationEngine";
 
 export const Route = createFileRoute("/emoji-converter")({
   head: () => ({
@@ -395,6 +401,11 @@ function EmojiConverter() {
   const [animationFps, setAnimationFps] = useState<number>(12);
   const [isAnimationPlaying, setIsAnimationPlaying] = useState(false);
   const [ffmpegLoaded, setFfmpegLoaded] = useState(false);
+  // GSAP animation settings
+  const [useGSAP, setUseGSAP] = useState(true);
+  const [gsapEasing, setGsapEasing] = useState<GSAPEasingType>('bounce');
+  const [easingDirection, setEasingDirection] = useState<EasingDirection>('out');
+  const [animationDuration, setAnimationDuration] = useState<number>(1.0);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -560,19 +571,16 @@ function EmojiConverter() {
     [handleDropzoneClick]
   );
 
-  // Sync GIF format with animation state
+  // Load FFmpeg when GIF format is selected (for animation support)
   useEffect(() => {
-    if (enableAnimation && outputFormat !== 'gif') {
-      setOutputFormat('gif');
+    if (outputFormat === 'gif' && !ffmpegLoaded) {
+      loadFFmpeg(ffmpegRef.current, (msg) => {
+        console.log(msg);
+      }).then((loaded) => {
+        setFfmpegLoaded(loaded);
+      });
     }
-  }, [enableAnimation, outputFormat]);
-
-  // Sync animation state with GIF format
-  useEffect(() => {
-    if (outputFormat === 'gif' && !enableAnimation) {
-      setEnableAnimation(true);
-    }
-  }, [outputFormat, enableAnimation]);
+  }, [outputFormat, ffmpegLoaded]);
 
   // Load FFmpeg for animation
   useEffect(() => {
@@ -593,6 +601,10 @@ function EmojiConverter() {
       effect: animationEffect,
       speed: animationSpeed,
       loop: animationLoop,
+      useGSAP: useGSAP,
+      gsapEasing: gsapEasing,
+      easingDirection: easingDirection,
+      duration: animationDuration,
     };
 
     // Generate frames synchronously
@@ -603,7 +615,7 @@ function EmojiConverter() {
       animationFramesRef.current = frames;
       setIsAnimationPlaying(true);
     }
-  }, [enableAnimation, animationEffect, animationSpeed, animationLoop, animationFps]);
+  }, [enableAnimation, animationEffect, animationSpeed, animationLoop, animationFps, useGSAP, gsapEasing, easingDirection, animationDuration]);
 
   // Generate animation when enabled or settings change
   useEffect(() => {
@@ -936,7 +948,7 @@ function EmojiConverter() {
               <div className="form-group">
                 <label className="label">エフェクト</label>
                 <div className="format-selector">
-                  {(['bounce', 'shake', 'rotate', 'pulse', 'fade', 'slide'] as AnimationEffectType[]).map((effect) => (
+                  {(['bounce', 'shake', 'rotate', 'pulse', 'fade', 'slide', 'wobble', 'pop'] as AnimationEffectType[]).map((effect) => (
                     <label key={effect} className="format-option">
                       <input
                         type="radio"
@@ -953,26 +965,67 @@ function EmojiConverter() {
                 </div>
               </div>
 
+              {/* GSAP イージング設定 */}
+              <div className="form-group">
+                <label className="label">イージング</label>
+                <div className="format-selector">
+                  {(['bounce', 'elastic', 'back', 'expo', 'circ', 'sine', 'power2'] as GSAPEasingType[]).map((easing) => (
+                    <label key={easing} className="format-option">
+                      <input
+                        type="radio"
+                        name="gsapEasing"
+                        value={easing}
+                        checked={gsapEasing === easing}
+                        onChange={(e) => setGsapEasing(e.target.value as GSAPEasingType)}
+                      />
+                      <span className="format-label">
+                        {getGSAPEasingLabel(easing)}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* イージング方向 */}
+              <div className="form-group">
+                <label htmlFor="easingDirection" className="label">
+                  イージング方向: {getEasingDirectionLabel(easingDirection)}
+                </label>
+                <div className="format-selector">
+                  {(['in', 'out', 'inOut'] as EasingDirection[]).map((direction) => (
+                    <label key={direction} className="format-option">
+                      <input
+                        type="radio"
+                        name="easingDirection"
+                        value={direction}
+                        checked={easingDirection === direction}
+                        onChange={(e) => setEasingDirection(e.target.value as EasingDirection)}
+                      />
+                      <span className="format-label">
+                        {getEasingDirectionLabel(direction)}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
               <div className="form-group-horizontal">
                 <div className="form-group">
-                  <label htmlFor="animationSpeed" className="label">
-                    速度: {getAnimationSpeedLabel(animationSpeed)}
+                  <label htmlFor="animationDuration" className="label">
+                    アニメーション時間: {animationDuration.toFixed(1)}秒
                   </label>
                   <input
                     type="range"
-                    id="animationSpeed"
-                    min="1"
-                    max="3"
-                    step="1"
-                    value={animationSpeed === 'slow' ? 1 : animationSpeed === 'normal' ? 2 : 3}
-                    onChange={(e) => {
-                      const value = parseInt(e.target.value);
-                      setAnimationSpeed(value === 1 ? 'slow' : value === 2 ? 'normal' : 'fast');
-                    }}
+                    id="animationDuration"
+                    min="0.3"
+                    max="3.0"
+                    step="0.1"
+                    value={animationDuration}
+                    onChange={(e) => setAnimationDuration(parseFloat(e.target.value))}
                     className="slider"
                   />
                   <small className="help-text">
-                    遅い ← → 速い
+                    1サイクルの長さ
                   </small>
                 </div>
 
@@ -984,7 +1037,7 @@ function EmojiConverter() {
                     type="range"
                     id="animationFps"
                     min="6"
-                    max="24"
+                    max="30"
                     step="1"
                     value={animationFps}
                     onChange={(e) => setAnimationFps(parseInt(e.target.value))}
@@ -1011,6 +1064,7 @@ function EmojiConverter() {
                   <option value="2">2回</option>
                   <option value="3">3回</option>
                   <option value="5">5回</option>
+                  <option value="10">10回</option>
                 </select>
               </div>
 

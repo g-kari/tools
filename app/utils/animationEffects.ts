@@ -3,13 +3,28 @@
  * Generates frame transformations for various animation effects
  */
 
-export type AnimationEffectType = 'bounce' | 'shake' | 'rotate' | 'pulse' | 'fade' | 'slide';
+import {
+  generateGSAPAnimationFrames,
+  type GSAPAnimationConfig,
+  type GSAPEasingType,
+  type EasingDirection,
+} from './gsapAnimationEngine';
+
+// Re-export GSAP types for convenience
+export type { GSAPEasingType, EasingDirection };
+
+export type AnimationEffectType = 'bounce' | 'shake' | 'rotate' | 'pulse' | 'fade' | 'slide' | 'wobble' | 'pop';
 export type AnimationSpeed = 'slow' | 'normal' | 'fast';
 
 export interface AnimationConfig {
   effect: AnimationEffectType;
   speed: AnimationSpeed;
   loop: number; // 0 = infinite
+  // GSAP options
+  useGSAP?: boolean;
+  gsapEasing?: GSAPEasingType;
+  easingDirection?: EasingDirection;
+  duration?: number; // Animation duration in seconds (for GSAP)
 }
 
 const SPEED_MULTIPLIERS: Record<AnimationSpeed, number> = {
@@ -29,6 +44,35 @@ export function generateAnimationFrames(
   baseCanvas: HTMLCanvasElement,
   config: AnimationConfig,
   fps: number = 12
+): HTMLCanvasElement[] {
+  // Use GSAP engine if enabled
+  if (config.useGSAP) {
+    const gsapConfig: GSAPAnimationConfig = {
+      effect: config.effect,
+      easing: config.gsapEasing || 'bounce',
+      easingDirection: config.easingDirection || 'out',
+      fps: fps,
+      duration: config.duration || 1.0,
+      loop: config.loop,
+    };
+    return generateGSAPAnimationFrames(baseCanvas, gsapConfig);
+  }
+
+  // Legacy sine-based implementation
+  return generateLegacyFrames(baseCanvas, config, fps);
+}
+
+/**
+ * Generate animation frames using legacy sine-based method
+ * @param baseCanvas - The source canvas to animate
+ * @param config - Animation configuration
+ * @param fps - Frames per second
+ * @returns Array of canvas elements representing animation frames
+ */
+function generateLegacyFrames(
+  baseCanvas: HTMLCanvasElement,
+  config: AnimationConfig,
+  fps: number
 ): HTMLCanvasElement[] {
   const speedMultiplier = SPEED_MULTIPLIERS[config.speed];
   const duration = 1.0 / speedMultiplier; // Duration in seconds
@@ -204,6 +248,8 @@ export function getAnimationEffectLabel(effect: AnimationEffectType): string {
     pulse: 'パルス',
     fade: 'フェード',
     slide: 'スライド',
+    wobble: 'ウォブル',
+    pop: 'ポップ',
   };
   return labels[effect];
 }
