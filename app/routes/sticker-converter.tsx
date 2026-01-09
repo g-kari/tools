@@ -34,7 +34,7 @@ const FORMAT_MIME_TYPES: Record<OutputFormat, string> = {
 };
 
 /**
- * 画像をリサイズする
+ * 画像をリサイズする（アップスケールは行わない）
  * @param file - 元の画像ファイル
  * @param maxSize - 最大サイズ（正方形）
  * @returns リサイズ後の画像を含むcanvas
@@ -54,8 +54,8 @@ export async function resizeImage(
     }
 
     img.onload = () => {
-      // アスペクト比を保持してリサイズ
-      const scale = Math.min(maxSize / img.width, maxSize / img.height);
+      // アスペクト比を保持してリサイズ（アップスケールしない）
+      const scale = Math.min(1, Math.min(maxSize / img.width, maxSize / img.height));
       const scaledWidth = img.width * scale;
       const scaledHeight = img.height * scale;
 
@@ -83,7 +83,7 @@ export async function resizeImage(
  * @param format - 出力フォーマット
  * @param quality - 品質 (0.0-1.0, PNGでは無視)
  * @param maxSize - 最大ファイルサイズ（バイト）
- * @returns Blob
+ * @returns Blob、または制限内に圧縮できない場合はnull
  */
 export async function canvasToBlobWithLimit(
   canvas: HTMLCanvasElement,
@@ -98,7 +98,11 @@ export async function canvasToBlobWithLimit(
     const blob = await new Promise<Blob | null>((resolve) => {
       canvas.toBlob((b) => resolve(b), mimeType);
     });
-    return blob;
+    // Check size limit for PNG
+    if (blob && blob.size <= maxSize) {
+      return blob;
+    }
+    return null;
   }
 
   // For WebP, try with specified quality first
@@ -123,9 +127,14 @@ export async function canvasToBlobWithLimit(
     }
   }
 
-  return blob;
+  // Could not compress within limit
+  return null;
 }
 
+/**
+ * スタンプコンバーターコンポーネント
+ * Discord・Slack用のスタンプ画像を生成する
+ */
 function StickerConverter() {
   const [file, setFile] = useState<File | null>(null);
   const [platform, setPlatform] = useState<Platform>("discord");
@@ -141,6 +150,7 @@ function StickerConverter() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const statusRef = useRef<HTMLDivElement>(null);
   const processedImageRef = useRef<HTMLCanvasElement | null>(null);
+  const processingIdRef = useRef<number>(0);
 
   const announceStatus = useCallback((message: string) => {
     if (statusRef.current) {
@@ -178,6 +188,9 @@ function StickerConverter() {
   const processImage = useCallback(async () => {
     if (!file) return;
 
+    // Increment processing ID to prevent race conditions
+    const currentProcessingId = ++processingIdRef.current;
+
     setIsProcessing(true);
     announceStatus("画像を処理しています...");
 
@@ -186,6 +199,11 @@ function StickerConverter() {
 
       // リサイズ
       const resizedCanvas = await resizeImage(file, limits.maxSize);
+
+      // Check if this is still the latest processing request
+      if (currentProcessingId !== processingIdRef.current) {
+        return;
+      }
 
       // Store processed image for preview
       processedImageRef.current = resizedCanvas;
@@ -202,6 +220,14 @@ function StickerConverter() {
         limits.maxFileSize
       );
 
+      // Check again if this is still the latest processing request
+      if (currentProcessingId !== processingIdRef.current) {
+        if (blob) {
+          URL.revokeObjectURL(URL.createObjectURL(blob));
+        }
+        return;
+      }
+
       if (blob) {
         // 古いBlobURLがあればクリーンアップ
         setPreviewUrl((prevUrl) => {
@@ -216,10 +242,16 @@ function StickerConverter() {
         announceStatus("容量制限内に圧縮できませんでした");
       }
     } catch (error) {
-      announceStatus("画像の処理に失敗しました");
-      console.error(error);
+      // Only show error if this is still the latest processing request
+      if (currentProcessingId === processingIdRef.current) {
+        announceStatus("画像の処理に失敗しました");
+        console.error(error);
+      }
     } finally {
-      setIsProcessing(false);
+      // Only update processing state if this is still the latest request
+      if (currentProcessingId === processingIdRef.current) {
+        setIsProcessing(false);
+      }
     }
   }, [file, platform, outputFormat, outputQuality, updatePreviewCanvas, announceStatus]);
 
@@ -301,12 +333,16 @@ function StickerConverter() {
   }, [previewUrl, outputFormat, platform, announceStatus]);
 
   const handleReset = useCallback(() => {
+    // Clean up old Blob URL to prevent memory leak
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+    }
     setFile(null);
     setPreviewUrl("");
     setFileSize(0);
     setImageDimensions(null);
     announceStatus("リセットしました");
-  }, [announceStatus]);
+  }, [previewUrl, announceStatus]);
 
   return (
     <div className="tool-container">
