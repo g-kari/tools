@@ -49,6 +49,7 @@ const navCategories = [
       { path: "/color-picker", label: "カラーピッカー" },
       { path: "/image-to-gif", label: "画像→GIF変換" },
       { path: "/emoji-converter", label: "絵文字変換" },
+      { path: "/sticker-converter", label: "スタンプ変換" },
     ],
   },
   {
