@@ -74,6 +74,7 @@ const navCategories = [
     items: [
       { path: "/char-count", label: "文字数カウント" },
       { path: "/text-sort", label: "ソート/重複削除" },
+      { path: "/diff", label: "テキスト差分" },
     ],
   },
   {

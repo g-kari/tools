@@ -6685,3 +6685,155 @@ a:focus-visible {
     box-shadow: none;
   }
 }
+
+/* テキスト差分ツール */
+.diff-input-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .diff-input-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.diff-result {
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  overflow: auto;
+  max-height: 500px;
+}
+
+.diff-line {
+  display: flex;
+  padding: 2px 8px;
+  font-family: "Roboto Mono", "Courier New", monospace;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.diff-line-added {
+  background-color: #c6efce;
+  color: #276221;
+}
+
+.diff-line-removed {
+  background-color: #ffc7ce;
+  color: #9c0006;
+}
+
+.diff-line-unchanged {
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.diff-line-prefix {
+  min-width: 24px;
+  user-select: none;
+  opacity: 0.6;
+  flex-shrink: 0;
+}
+
+.diff-stats {
+  display: flex;
+  gap: 16px;
+  padding: 8px 0;
+  font-size: 0.875rem;
+}
+
+.diff-stats-added {
+  color: #276221;
+  font-weight: 500;
+}
+
+.diff-stats-removed {
+  color: #9c0006;
+  font-weight: 500;
+}
+
+.diff-no-changes {
+  padding: 24px;
+  text-align: center;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.875rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+}
+
+/* ===== テキスト差分チェッカー ===== */
+.diff-input-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.diff-result {
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  overflow: auto;
+  font-family: 'Roboto Mono', 'Courier New', monospace;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  max-height: 400px;
+}
+
+.diff-line {
+  display: flex;
+  padding: 2px 8px;
+}
+
+.diff-line-added {
+  background-color: #c6efce;
+  color: #276221;
+}
+
+.diff-line-removed {
+  background-color: #ffc7ce;
+  color: #9c0006;
+}
+
+.diff-line-unchanged {
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.diff-line-prefix {
+  min-width: 24px;
+  user-select: none;
+  opacity: 0.6;
+  flex-shrink: 0;
+}
+
+.diff-stats {
+  display: flex;
+  gap: 16px;
+  padding: 8px 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.diff-stats-added {
+  color: #276221;
+}
+
+.diff-stats-removed {
+  color: #9c0006;
+}
+
+.diff-no-changes {
+  padding: 16px;
+  text-align: center;
+  color: var(--md-sys-color-on-surface-variant);
+  background: var(--md-sys-color-surface-variant);
+  border-radius: 4px;
+  font-style: italic;
+}
+
+@media (max-width: 767px) {
+  .diff-input-grid {
+    grid-template-columns: 1fr;
+  }
+}

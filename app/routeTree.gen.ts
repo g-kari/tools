@@ -44,6 +44,7 @@ import { Route as EmailDnsRouteImport } from './routes/email-dns'
 import { Route as DummyImageRouteImport } from './routes/dummy-image'
 import { Route as DummyAudioRouteImport } from './routes/dummy-audio'
 import { Route as DnsLookupRouteImport } from './routes/dns-lookup'
+import { Route as DiffRouteImport } from './routes/diff'
 import { Route as DiceRollRouteImport } from './routes/dice-roll'
 import { Route as ColorPickerRouteImport } from './routes/color-picker'
 import { Route as ColorExtractorRouteImport } from './routes/color-extractor'
@@ -233,6 +234,11 @@ const DnsLookupRoute = DnsLookupRouteImport.update({
   path: '/dns-lookup',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DiffRoute = DiffRouteImport.update({
+  id: '/diff',
+  path: '/diff',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DiceRollRoute = DiceRollRouteImport.update({
   id: '/dice-roll',
   path: '/dice-roll',
@@ -309,6 +315,7 @@ export interface FileRoutesByFullPath {
   '/color-extractor': typeof ColorExtractorRoute
   '/color-picker': typeof ColorPickerRoute
   '/dice-roll': typeof DiceRollRoute
+  '/diff': typeof DiffRoute
   '/dns-lookup': typeof DnsLookupRoute
   '/dummy-audio': typeof DummyAudioRoute
   '/dummy-image': typeof DummyImageRoute
@@ -359,6 +366,7 @@ export interface FileRoutesByTo {
   '/color-extractor': typeof ColorExtractorRoute
   '/color-picker': typeof ColorPickerRoute
   '/dice-roll': typeof DiceRollRoute
+  '/diff': typeof DiffRoute
   '/dns-lookup': typeof DnsLookupRoute
   '/dummy-audio': typeof DummyAudioRoute
   '/dummy-image': typeof DummyImageRoute
@@ -410,6 +418,7 @@ export interface FileRoutesById {
   '/color-extractor': typeof ColorExtractorRoute
   '/color-picker': typeof ColorPickerRoute
   '/dice-roll': typeof DiceRollRoute
+  '/diff': typeof DiffRoute
   '/dns-lookup': typeof DnsLookupRoute
   '/dummy-audio': typeof DummyAudioRoute
   '/dummy-image': typeof DummyImageRoute
@@ -462,6 +471,7 @@ export interface FileRouteTypes {
     | '/color-extractor'
     | '/color-picker'
     | '/dice-roll'
+    | '/diff'
     | '/dns-lookup'
     | '/dummy-audio'
     | '/dummy-image'
@@ -512,6 +522,7 @@ export interface FileRouteTypes {
     | '/color-extractor'
     | '/color-picker'
     | '/dice-roll'
+    | '/diff'
     | '/dns-lookup'
     | '/dummy-audio'
     | '/dummy-image'
@@ -562,6 +573,7 @@ export interface FileRouteTypes {
     | '/color-extractor'
     | '/color-picker'
     | '/dice-roll'
+    | '/diff'
     | '/dns-lookup'
     | '/dummy-audio'
     | '/dummy-image'
@@ -613,6 +625,7 @@ export interface RootRouteChildren {
   ColorExtractorRoute: typeof ColorExtractorRoute
   ColorPickerRoute: typeof ColorPickerRoute
   DiceRollRoute: typeof DiceRollRoute
+  DiffRoute: typeof DiffRoute
   DnsLookupRoute: typeof DnsLookupRoute
   DummyAudioRoute: typeof DummyAudioRoute
   DummyImageRoute: typeof DummyImageRoute
@@ -901,6 +914,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DnsLookupRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/diff': {
+      id: '/diff'
+      path: '/diff'
+      fullPath: '/diff'
+      preLoaderRoute: typeof DiffRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dice-roll': {
       id: '/dice-roll'
       path: '/dice-roll'
@@ -1005,6 +1025,7 @@ const rootRouteChildren: RootRouteChildren = {
   ColorExtractorRoute: ColorExtractorRoute,
   ColorPickerRoute: ColorPickerRoute,
   DiceRollRoute: DiceRollRoute,
+  DiffRoute: DiffRoute,
   DnsLookupRoute: DnsLookupRoute,
   DummyAudioRoute: DummyAudioRoute,
   DummyImageRoute: DummyImageRoute,
