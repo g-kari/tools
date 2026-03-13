@@ -279,7 +279,7 @@ input[type="text"]:focus {
 
 .collapsible-body {
   padding: 16px;
-  background: white;
+  background: var(--md-sys-color-surface-variant);
 }
 
 /* Tool Container Enhancement */

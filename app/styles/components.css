@@ -100,7 +100,7 @@ select {
   border-radius: 4px;
   background: var(--md-sys-color-surface-variant);
   color: var(--md-sys-color-on-surface);
-  font-family: "Roboto", sans-serif;
+  font-family: "Space Mono", "Courier New", monospace;
   font-size: 14px;
   transition: border-color 0.2s, background 0.2s;
   cursor: pointer;
@@ -109,7 +109,7 @@ select {
 select:focus {
   outline: none;
   border-color: var(--md-sys-color-primary);
-  background: white;
+  background: var(--md-sys-color-surface-variant);
 }
 
 select:disabled {
@@ -445,13 +445,11 @@ button:focus-visible {
 
 /* TipsCard component styles */
 .tips-card {
-  background: rgba(255, 237, 179, 0.3);
+  background: var(--md-sys-color-secondary-container);
   border-left: 4px solid var(--md-sys-color-primary);
   margin-top: 24px;
   padding: 1.25rem 1.75rem;
-  border-radius: 8px;
-  backdrop-filter: blur(5px);
-  box-shadow: 0 2px 8px rgba(139, 105, 20, 0.1);
+  border-radius: 4px;
 }
 
 .tips-card [data-slot="card-header"] {
