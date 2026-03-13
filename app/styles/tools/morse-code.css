@@ -1,0 +1,140 @@
+/* Morse Code変換ツール */
+
+.morse-code-mode-buttons {
+  display: flex;
+  gap: 0;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.morse-code-mode-btn {
+  flex: 1;
+  padding: 0.625rem 1rem;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  border: none;
+  border-radius: 0;
+  font-size: 0.875rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+.morse-code-mode-btn:not(:last-child) {
+  border-right: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.morse-code-mode-btn:hover:not(.active) {
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+}
+
+.morse-code-mode-btn.active {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+.morse-code-input-area {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.morse-code-output-area {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.morse-code-hint {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin: 0;
+}
+
+.morse-code-error {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-error);
+  background: var(--md-sys-color-error-container);
+  padding: 0.5rem 0.75rem;
+  margin: 0;
+  border: 1px solid var(--md-sys-color-error);
+}
+
+.morse-code-warning {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-secondary-container);
+  background: var(--md-sys-color-secondary-container);
+  padding: 0.5rem 0.75rem;
+  margin: 0;
+  border: 1px solid var(--md-sys-color-secondary);
+}
+
+.morse-code-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.morse-code-action-btn {
+  padding: 0.5rem 1.25rem;
+  border-radius: 0;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  font-size: 0.875rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, opacity 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.morse-code-action-btn--copy {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.morse-code-action-btn--copy:hover:not(:disabled) {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+.morse-code-action-btn--clear {
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.morse-code-action-btn--clear:hover:not(:disabled) {
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  border-color: var(--md-sys-color-outline);
+}
+
+.morse-code-action-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+  .morse-code-mode-buttons {
+    flex-direction: column;
+  }
+
+  .morse-code-mode-btn:not(:last-child) {
+    border-right: none;
+    border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  }
+
+  .morse-code-actions {
+    flex-direction: column;
+  }
+
+  .morse-code-action-btn {
+    width: 100%;
+    text-align: center;
+  }
+}

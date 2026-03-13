@@ -95,6 +95,7 @@ const navCategories = [
       { path: "/diff", label: "テキスト差分" },
       { path: "/markdown-preview", label: "Markdownプレビュー" },
       { path: "/text-case", label: "テキストケース変換" },
+      { path: "/morse-code", label: "Morse Code変換" },
     ],
   },
   {
