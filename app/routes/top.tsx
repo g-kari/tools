@@ -121,6 +121,13 @@ const toolCatalog: ToolCategory[] = [
         description: "YAMLとJSONの相互変換ツール。設定ファイルの変換に便利。",
         icon: "🔄",
       },
+      {
+        path: "/toml-json",
+        label: "TOML/JSON変換",
+        description:
+          "TOMLとJSONの相互変換ツール。Cargo.toml、pyproject.toml等の変換に便利。",
+        icon: "🔄",
+      },
     ],
   },
   {
