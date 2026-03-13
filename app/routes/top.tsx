@@ -320,6 +320,12 @@ const toolCatalog: ToolCategory[] = [
         description: "2つのテキストの差分を色分け表示",
         icon: "↔️",
       },
+      {
+        path: "/user-agent",
+        label: "User-Agentパーサー",
+        description: "User-Agent文字列を解析してブラウザ・OS・デバイス情報を表示",
+        icon: "🔍",
+      },
     ],
   },
   {

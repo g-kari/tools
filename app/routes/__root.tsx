@@ -107,6 +107,7 @@ const navCategories = [
       { path: "/hash", label: "ハッシュ生成" },
       { path: "/security-headers", label: "セキュリティヘッダー" },
       { path: "/cron-parser", label: "Cron式パーサー" },
+      { path: "/user-agent", label: "User-Agent解析" },
     ],
   },
   {
