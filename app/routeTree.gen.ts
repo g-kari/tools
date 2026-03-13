@@ -26,6 +26,7 @@ import { Route as PortCheckRouteImport } from './routes/port-check'
 import { Route as PhpSerializeRouteImport } from './routes/php-serialize'
 import { Route as PasswordGeneratorRouteImport } from './routes/password-generator'
 import { Route as OgpRouteImport } from './routes/ogp'
+import { Route as NumberBaseRouteImport } from './routes/number-base'
 import { Route as MsgpackRouteImport } from './routes/msgpack'
 import { Route as MinifyRouteImport } from './routes/minify'
 import { Route as MarkdownPreviewRouteImport } from './routes/markdown-preview'
@@ -149,6 +150,11 @@ const PasswordGeneratorRoute = PasswordGeneratorRouteImport.update({
 const OgpRoute = OgpRouteImport.update({
   id: '/ogp',
   path: '/ogp',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NumberBaseRoute = NumberBaseRouteImport.update({
+  id: '/number-base',
+  path: '/number-base',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MsgpackRoute = MsgpackRouteImport.update({
@@ -383,6 +389,7 @@ export interface FileRoutesByFullPath {
   '/markdown-preview': typeof MarkdownPreviewRoute
   '/minify': typeof MinifyRoute
   '/msgpack': typeof MsgpackRoute
+  '/number-base': typeof NumberBaseRoute
   '/ogp': typeof OgpRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/php-serialize': typeof PhpSerializeRoute
@@ -441,6 +448,7 @@ export interface FileRoutesByTo {
   '/markdown-preview': typeof MarkdownPreviewRoute
   '/minify': typeof MinifyRoute
   '/msgpack': typeof MsgpackRoute
+  '/number-base': typeof NumberBaseRoute
   '/ogp': typeof OgpRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/php-serialize': typeof PhpSerializeRoute
@@ -500,6 +508,7 @@ export interface FileRoutesById {
   '/markdown-preview': typeof MarkdownPreviewRoute
   '/minify': typeof MinifyRoute
   '/msgpack': typeof MsgpackRoute
+  '/number-base': typeof NumberBaseRoute
   '/ogp': typeof OgpRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/php-serialize': typeof PhpSerializeRoute
@@ -560,6 +569,7 @@ export interface FileRouteTypes {
     | '/markdown-preview'
     | '/minify'
     | '/msgpack'
+    | '/number-base'
     | '/ogp'
     | '/password-generator'
     | '/php-serialize'
@@ -618,6 +628,7 @@ export interface FileRouteTypes {
     | '/markdown-preview'
     | '/minify'
     | '/msgpack'
+    | '/number-base'
     | '/ogp'
     | '/password-generator'
     | '/php-serialize'
@@ -676,6 +687,7 @@ export interface FileRouteTypes {
     | '/markdown-preview'
     | '/minify'
     | '/msgpack'
+    | '/number-base'
     | '/ogp'
     | '/password-generator'
     | '/php-serialize'
@@ -735,6 +747,7 @@ export interface RootRouteChildren {
   MarkdownPreviewRoute: typeof MarkdownPreviewRoute
   MinifyRoute: typeof MinifyRoute
   MsgpackRoute: typeof MsgpackRoute
+  NumberBaseRoute: typeof NumberBaseRoute
   OgpRoute: typeof OgpRoute
   PasswordGeneratorRoute: typeof PasswordGeneratorRoute
   PhpSerializeRoute: typeof PhpSerializeRoute
@@ -877,6 +890,13 @@ declare module '@tanstack/react-router' {
       path: '/ogp'
       fullPath: '/ogp'
       preLoaderRoute: typeof OgpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/number-base': {
+      id: '/number-base'
+      path: '/number-base'
+      fullPath: '/number-base'
+      preLoaderRoute: typeof NumberBaseRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/msgpack': {
@@ -1191,6 +1211,7 @@ const rootRouteChildren: RootRouteChildren = {
   MarkdownPreviewRoute: MarkdownPreviewRoute,
   MinifyRoute: MinifyRoute,
   MsgpackRoute: MsgpackRoute,
+  NumberBaseRoute: NumberBaseRoute,
   OgpRoute: OgpRoute,
   PasswordGeneratorRoute: PasswordGeneratorRoute,
   PhpSerializeRoute: PhpSerializeRoute,
