@@ -88,6 +88,7 @@ const navCategories = [
       { path: "/text-sort", label: "ソート/重複削除" },
       { path: "/diff", label: "テキスト差分" },
       { path: "/markdown-preview", label: "Markdownプレビュー" },
+      { path: "/text-case", label: "テキストケース変換" },
     ],
   },
   {
