@@ -524,7 +524,7 @@ function ImageCropper() {
             <h2 className="section-title">画像選択</h2>
 
             <ImageUploadZone
-              onFileSelect={handleFileSelect}
+              onFileSelect={(files) => handleFileSelect(files[0])}
               onTypeError={() => showToast("画像ファイルを選択してください", "error")}
               disabled={isLoading}
             />
