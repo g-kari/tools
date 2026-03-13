@@ -19,8 +19,10 @@ import { Route as TextSortRouteImport } from './routes/text-sort'
 import { Route as ServerEnvRouteImport } from './routes/server-env'
 import { Route as SecurityHeadersRouteImport } from './routes/security-headers'
 import { Route as RegexCheckerRouteImport } from './routes/regex-checker'
+import { Route as PhpSerializeRouteImport } from './routes/php-serialize'
 import { Route as PasswordGeneratorRouteImport } from './routes/password-generator'
 import { Route as OgpRouteImport } from './routes/ogp'
+import { Route as MsgpackRouteImport } from './routes/msgpack'
 import { Route as MinifyRouteImport } from './routes/minify'
 import { Route as JwtRouteImport } from './routes/jwt'
 import { Route as JsonRouteImport } from './routes/json'
@@ -31,6 +33,7 @@ import { Route as ImageResizeRouteImport } from './routes/image-resize'
 import { Route as ImageCropRouteImport } from './routes/image-crop'
 import { Route as ImageCompressRouteImport } from './routes/image-compress'
 import { Route as ImageBase64RouteImport } from './routes/image-base64'
+import { Route as HtmlEncodeRouteImport } from './routes/html-encode'
 import { Route as HashRouteImport } from './routes/hash'
 import { Route as GlobalIpRouteImport } from './routes/global-ip'
 import { Route as FaviconGeneratorRouteImport } from './routes/favicon-generator'
@@ -103,6 +106,11 @@ const RegexCheckerRoute = RegexCheckerRouteImport.update({
   path: '/regex-checker',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PhpSerializeRoute = PhpSerializeRouteImport.update({
+  id: '/php-serialize',
+  path: '/php-serialize',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PasswordGeneratorRoute = PasswordGeneratorRouteImport.update({
   id: '/password-generator',
   path: '/password-generator',
@@ -111,6 +119,11 @@ const PasswordGeneratorRoute = PasswordGeneratorRouteImport.update({
 const OgpRoute = OgpRouteImport.update({
   id: '/ogp',
   path: '/ogp',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MsgpackRoute = MsgpackRouteImport.update({
+  id: '/msgpack',
+  path: '/msgpack',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MinifyRoute = MinifyRouteImport.update({
@@ -161,6 +174,11 @@ const ImageCompressRoute = ImageCompressRouteImport.update({
 const ImageBase64Route = ImageBase64RouteImport.update({
   id: '/image-base64',
   path: '/image-base64',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HtmlEncodeRoute = HtmlEncodeRouteImport.update({
+  id: '/html-encode',
+  path: '/html-encode',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HashRoute = HashRouteImport.update({
@@ -287,6 +305,7 @@ export interface FileRoutesByFullPath {
   '/favicon-generator': typeof FaviconGeneratorRoute
   '/global-ip': typeof GlobalIpRoute
   '/hash': typeof HashRoute
+  '/html-encode': typeof HtmlEncodeRoute
   '/image-base64': typeof ImageBase64Route
   '/image-compress': typeof ImageCompressRoute
   '/image-crop': typeof ImageCropRoute
@@ -297,8 +316,10 @@ export interface FileRoutesByFullPath {
   '/json': typeof JsonRoute
   '/jwt': typeof JwtRoute
   '/minify': typeof MinifyRoute
+  '/msgpack': typeof MsgpackRoute
   '/ogp': typeof OgpRoute
   '/password-generator': typeof PasswordGeneratorRoute
+  '/php-serialize': typeof PhpSerializeRoute
   '/regex-checker': typeof RegexCheckerRoute
   '/security-headers': typeof SecurityHeadersRoute
   '/server-env': typeof ServerEnvRoute
@@ -332,6 +353,7 @@ export interface FileRoutesByTo {
   '/favicon-generator': typeof FaviconGeneratorRoute
   '/global-ip': typeof GlobalIpRoute
   '/hash': typeof HashRoute
+  '/html-encode': typeof HtmlEncodeRoute
   '/image-base64': typeof ImageBase64Route
   '/image-compress': typeof ImageCompressRoute
   '/image-crop': typeof ImageCropRoute
@@ -342,8 +364,10 @@ export interface FileRoutesByTo {
   '/json': typeof JsonRoute
   '/jwt': typeof JwtRoute
   '/minify': typeof MinifyRoute
+  '/msgpack': typeof MsgpackRoute
   '/ogp': typeof OgpRoute
   '/password-generator': typeof PasswordGeneratorRoute
+  '/php-serialize': typeof PhpSerializeRoute
   '/regex-checker': typeof RegexCheckerRoute
   '/security-headers': typeof SecurityHeadersRoute
   '/server-env': typeof ServerEnvRoute
@@ -378,6 +402,7 @@ export interface FileRoutesById {
   '/favicon-generator': typeof FaviconGeneratorRoute
   '/global-ip': typeof GlobalIpRoute
   '/hash': typeof HashRoute
+  '/html-encode': typeof HtmlEncodeRoute
   '/image-base64': typeof ImageBase64Route
   '/image-compress': typeof ImageCompressRoute
   '/image-crop': typeof ImageCropRoute
@@ -388,8 +413,10 @@ export interface FileRoutesById {
   '/json': typeof JsonRoute
   '/jwt': typeof JwtRoute
   '/minify': typeof MinifyRoute
+  '/msgpack': typeof MsgpackRoute
   '/ogp': typeof OgpRoute
   '/password-generator': typeof PasswordGeneratorRoute
+  '/php-serialize': typeof PhpSerializeRoute
   '/regex-checker': typeof RegexCheckerRoute
   '/security-headers': typeof SecurityHeadersRoute
   '/server-env': typeof ServerEnvRoute
@@ -425,6 +452,7 @@ export interface FileRouteTypes {
     | '/favicon-generator'
     | '/global-ip'
     | '/hash'
+    | '/html-encode'
     | '/image-base64'
     | '/image-compress'
     | '/image-crop'
@@ -435,8 +463,10 @@ export interface FileRouteTypes {
     | '/json'
     | '/jwt'
     | '/minify'
+    | '/msgpack'
     | '/ogp'
     | '/password-generator'
+    | '/php-serialize'
     | '/regex-checker'
     | '/security-headers'
     | '/server-env'
@@ -470,6 +500,7 @@ export interface FileRouteTypes {
     | '/favicon-generator'
     | '/global-ip'
     | '/hash'
+    | '/html-encode'
     | '/image-base64'
     | '/image-compress'
     | '/image-crop'
@@ -480,8 +511,10 @@ export interface FileRouteTypes {
     | '/json'
     | '/jwt'
     | '/minify'
+    | '/msgpack'
     | '/ogp'
     | '/password-generator'
+    | '/php-serialize'
     | '/regex-checker'
     | '/security-headers'
     | '/server-env'
@@ -515,6 +548,7 @@ export interface FileRouteTypes {
     | '/favicon-generator'
     | '/global-ip'
     | '/hash'
+    | '/html-encode'
     | '/image-base64'
     | '/image-compress'
     | '/image-crop'
@@ -525,8 +559,10 @@ export interface FileRouteTypes {
     | '/json'
     | '/jwt'
     | '/minify'
+    | '/msgpack'
     | '/ogp'
     | '/password-generator'
+    | '/php-serialize'
     | '/regex-checker'
     | '/security-headers'
     | '/server-env'
@@ -561,6 +597,7 @@ export interface RootRouteChildren {
   FaviconGeneratorRoute: typeof FaviconGeneratorRoute
   GlobalIpRoute: typeof GlobalIpRoute
   HashRoute: typeof HashRoute
+  HtmlEncodeRoute: typeof HtmlEncodeRoute
   ImageBase64Route: typeof ImageBase64Route
   ImageCompressRoute: typeof ImageCompressRoute
   ImageCropRoute: typeof ImageCropRoute
@@ -571,8 +608,10 @@ export interface RootRouteChildren {
   JsonRoute: typeof JsonRoute
   JwtRoute: typeof JwtRoute
   MinifyRoute: typeof MinifyRoute
+  MsgpackRoute: typeof MsgpackRoute
   OgpRoute: typeof OgpRoute
   PasswordGeneratorRoute: typeof PasswordGeneratorRoute
+  PhpSerializeRoute: typeof PhpSerializeRoute
   RegexCheckerRoute: typeof RegexCheckerRoute
   SecurityHeadersRoute: typeof SecurityHeadersRoute
   ServerEnvRoute: typeof ServerEnvRoute
@@ -661,6 +700,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegexCheckerRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/php-serialize': {
+      id: '/php-serialize'
+      path: '/php-serialize'
+      fullPath: '/php-serialize'
+      preLoaderRoute: typeof PhpSerializeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/password-generator': {
       id: '/password-generator'
       path: '/password-generator'
@@ -673,6 +719,13 @@ declare module '@tanstack/react-router' {
       path: '/ogp'
       fullPath: '/ogp'
       preLoaderRoute: typeof OgpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/msgpack': {
+      id: '/msgpack'
+      path: '/msgpack'
+      fullPath: '/msgpack'
+      preLoaderRoute: typeof MsgpackRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/minify': {
@@ -743,6 +796,13 @@ declare module '@tanstack/react-router' {
       path: '/image-base64'
       fullPath: '/image-base64'
       preLoaderRoute: typeof ImageBase64RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/html-encode': {
+      id: '/html-encode'
+      path: '/html-encode'
+      fullPath: '/html-encode'
+      preLoaderRoute: typeof HtmlEncodeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/hash': {
@@ -913,6 +973,7 @@ const rootRouteChildren: RootRouteChildren = {
   FaviconGeneratorRoute: FaviconGeneratorRoute,
   GlobalIpRoute: GlobalIpRoute,
   HashRoute: HashRoute,
+  HtmlEncodeRoute: HtmlEncodeRoute,
   ImageBase64Route: ImageBase64Route,
   ImageCompressRoute: ImageCompressRoute,
   ImageCropRoute: ImageCropRoute,
@@ -923,8 +984,10 @@ const rootRouteChildren: RootRouteChildren = {
   JsonRoute: JsonRoute,
   JwtRoute: JwtRoute,
   MinifyRoute: MinifyRoute,
+  MsgpackRoute: MsgpackRoute,
   OgpRoute: OgpRoute,
   PasswordGeneratorRoute: PasswordGeneratorRoute,
+  PhpSerializeRoute: PhpSerializeRoute,
   RegexCheckerRoute: RegexCheckerRoute,
   SecurityHeadersRoute: SecurityHeadersRoute,
   ServerEnvRoute: ServerEnvRoute,
