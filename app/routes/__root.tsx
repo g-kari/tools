@@ -18,6 +18,7 @@ const navCategories = [
       { path: "/", label: "Unicode変換" },
       { path: "/url-encode", label: "URLエンコード" },
       { path: "/base64", label: "Base64変換" },
+      { path: "/base64-image", label: "Base64画像デコード" },
       { path: "/json", label: "JSON整形" },
       { path: "/minify", label: "コード圧縮" },
       { path: "/unit-converter", label: "単位変換" },
