@@ -34,6 +34,7 @@ import { Route as PasswordGeneratorRouteImport } from './routes/password-generat
 import { Route as OgpRouteImport } from './routes/ogp'
 import { Route as NumberBaseRouteImport } from './routes/number-base'
 import { Route as MsgpackRouteImport } from './routes/msgpack'
+import { Route as MorseCodeRouteImport } from './routes/morse-code'
 import { Route as MinifyRouteImport } from './routes/minify'
 import { Route as MarkdownPreviewRouteImport } from './routes/markdown-preview'
 import { Route as LoremIpsumRouteImport } from './routes/lorem-ipsum'
@@ -200,6 +201,11 @@ const NumberBaseRoute = NumberBaseRouteImport.update({
 const MsgpackRoute = MsgpackRouteImport.update({
   id: '/msgpack',
   path: '/msgpack',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MorseCodeRoute = MorseCodeRouteImport.update({
+  id: '/morse-code',
+  path: '/morse-code',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MinifyRoute = MinifyRouteImport.update({
@@ -452,6 +458,7 @@ export interface FileRoutesByFullPath {
   '/lorem-ipsum': typeof LoremIpsumRoute
   '/markdown-preview': typeof MarkdownPreviewRoute
   '/minify': typeof MinifyRoute
+  '/morse-code': typeof MorseCodeRoute
   '/msgpack': typeof MsgpackRoute
   '/number-base': typeof NumberBaseRoute
   '/ogp': typeof OgpRoute
@@ -521,6 +528,7 @@ export interface FileRoutesByTo {
   '/lorem-ipsum': typeof LoremIpsumRoute
   '/markdown-preview': typeof MarkdownPreviewRoute
   '/minify': typeof MinifyRoute
+  '/morse-code': typeof MorseCodeRoute
   '/msgpack': typeof MsgpackRoute
   '/number-base': typeof NumberBaseRoute
   '/ogp': typeof OgpRoute
@@ -591,6 +599,7 @@ export interface FileRoutesById {
   '/lorem-ipsum': typeof LoremIpsumRoute
   '/markdown-preview': typeof MarkdownPreviewRoute
   '/minify': typeof MinifyRoute
+  '/morse-code': typeof MorseCodeRoute
   '/msgpack': typeof MsgpackRoute
   '/number-base': typeof NumberBaseRoute
   '/ogp': typeof OgpRoute
@@ -662,6 +671,7 @@ export interface FileRouteTypes {
     | '/lorem-ipsum'
     | '/markdown-preview'
     | '/minify'
+    | '/morse-code'
     | '/msgpack'
     | '/number-base'
     | '/ogp'
@@ -731,6 +741,7 @@ export interface FileRouteTypes {
     | '/lorem-ipsum'
     | '/markdown-preview'
     | '/minify'
+    | '/morse-code'
     | '/msgpack'
     | '/number-base'
     | '/ogp'
@@ -800,6 +811,7 @@ export interface FileRouteTypes {
     | '/lorem-ipsum'
     | '/markdown-preview'
     | '/minify'
+    | '/morse-code'
     | '/msgpack'
     | '/number-base'
     | '/ogp'
@@ -870,6 +882,7 @@ export interface RootRouteChildren {
   LoremIpsumRoute: typeof LoremIpsumRoute
   MarkdownPreviewRoute: typeof MarkdownPreviewRoute
   MinifyRoute: typeof MinifyRoute
+  MorseCodeRoute: typeof MorseCodeRoute
   MsgpackRoute: typeof MsgpackRoute
   NumberBaseRoute: typeof NumberBaseRoute
   OgpRoute: typeof OgpRoute
@@ -1076,6 +1089,13 @@ declare module '@tanstack/react-router' {
       path: '/msgpack'
       fullPath: '/msgpack'
       preLoaderRoute: typeof MsgpackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/morse-code': {
+      id: '/morse-code'
+      path: '/morse-code'
+      fullPath: '/morse-code'
+      preLoaderRoute: typeof MorseCodeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/minify': {
@@ -1414,6 +1434,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoremIpsumRoute: LoremIpsumRoute,
   MarkdownPreviewRoute: MarkdownPreviewRoute,
   MinifyRoute: MinifyRoute,
+  MorseCodeRoute: MorseCodeRoute,
   MsgpackRoute: MsgpackRoute,
   NumberBaseRoute: NumberBaseRoute,
   OgpRoute: OgpRoute,
