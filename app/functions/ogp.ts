@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { decodeHtmlEntities } from "../utils/html";
 import Encoding from "encoding-japanese";
+import { isPrivateOrLocalhost } from "./security-headers";
 
 // OGP data structure
 export interface OgpData {
@@ -711,6 +712,14 @@ export const fetchOgp = createServerFn({ method: "GET" })
 
     if (!isValidUrl(urlWithProtocol)) {
       throw new Error("無効なURL形式です");
+    }
+
+    // SSRF対策: プライベートIP・ローカルホストへのアクセスを拒否
+    const parsedUrl = new URL(urlWithProtocol);
+    if (isPrivateOrLocalhost(parsedUrl.hostname)) {
+      throw new Error(
+        "セキュリティ上の理由により、ローカルホストやプライベートIPアドレスへのアクセスはできません"
+      );
     }
 
     return urlWithProtocol;

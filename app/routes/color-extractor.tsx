@@ -253,7 +253,11 @@ function ColorExtractor() {
         // 一時的なcanvasでピクセルデータを取得
         const tempCanvas = document.createElement("canvas");
         const tempCtx = tempCanvas.getContext("2d");
-        if (!tempCtx) return;
+        if (!tempCtx) {
+          URL.revokeObjectURL(objectUrl);
+          setIsProcessing(false);
+          return;
+        }
 
         // キャンバスサイズを画像に合わせる（最大800px）
         const maxSize = 800;
@@ -419,7 +423,7 @@ function ColorExtractor() {
             type="file"
             accept="image/*"
             onChange={handleFileSelect}
-            style={{ display: "none" }}
+            className="hidden-file-input"
             aria-label="画像ファイル選択"
           />
 
@@ -454,7 +458,7 @@ function ColorExtractor() {
         </div>
 
         {/* Canvas always exists in DOM for processing, parent controls visibility */}
-        <div className="converter-section preview-section" style={imageSrc ? {} : { position: 'absolute', left: '-9999px', visibility: 'hidden' }}>
+        <div className={`converter-section preview-section${imageSrc ? "" : " color-extractor-canvas-hidden"}`}>
           <h2 className="section-title">プレビュー</h2>
           <div className="preview-container">
             <canvas ref={canvasRef} aria-label="アップロードされた画像" />
@@ -492,8 +496,8 @@ function ColorExtractor() {
                   }}
                 >
                   <div
-                    className="color-swatch"
-                    style={{ backgroundColor: color.hex }}
+                    className="color-swatch color-swatch-dynamic"
+                    style={{ "--swatch-color": color.hex } as React.CSSProperties}
                     aria-hidden="true"
                   />
                   <div className="color-info">

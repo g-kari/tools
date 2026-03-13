@@ -86,7 +86,11 @@ export function calculateBroadcastAddress(
 ): string {
   const networkInt = ipToInt(networkAddress);
   const hostBits = 32 - prefix;
-  const broadcastInt = (networkInt | ((1 << hostBits) - 1)) >>> 0;
+  // JavaScriptのビット演算は32ビット符号付き整数のため、
+  // hostBits === 32 のとき `1 << 32` は 1 になってしまう（シフト量が & 0x1f マスクされるため）。
+  // そのため、/0 の場合は特殊ケースとして直接 0xffffffff を使用する。
+  const hostMask = hostBits === 32 ? 0xffffffff : (1 << hostBits) - 1;
+  const broadcastInt = (networkInt | hostMask) >>> 0;
   return intToIp(broadcastInt);
 }
 

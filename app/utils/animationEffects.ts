@@ -13,20 +13,33 @@ import {
 // Re-export GSAP types for convenience
 export type { GSAPEasingType, EasingDirection };
 
+/** アニメーションエフェクトの種類 */
 export type AnimationEffectType = 'bounce' | 'shake' | 'rotate' | 'pulse' | 'fade' | 'slide' | 'wobble' | 'pop';
+
+/** アニメーション速度のプリセット */
 export type AnimationSpeed = 'slow' | 'normal' | 'fast';
 
+/**
+ * アニメーション設定
+ */
 export interface AnimationConfig {
+  /** 適用するアニメーションエフェクト */
   effect: AnimationEffectType;
+  /** アニメーション速度 */
   speed: AnimationSpeed;
-  loop: number; // 0 = infinite
-  // GSAP options
+  /** ループ回数（0 = 無限ループ） */
+  loop: number;
+  /** GSAPエンジンを使用するかどうか */
   useGSAP?: boolean;
+  /** GSAPイージング種別 */
   gsapEasing?: GSAPEasingType;
+  /** イージング方向 */
   easingDirection?: EasingDirection;
-  duration?: number; // Animation duration in seconds (for GSAP)
+  /** アニメーション持続時間（秒、GSAP使用時） */
+  duration?: number;
 }
 
+/** アニメーション速度に対する速度倍率のマップ */
 const SPEED_MULTIPLIERS: Record<AnimationSpeed, number> = {
   slow: 0.5,
   normal: 1.0,
@@ -238,7 +251,9 @@ function applySlideEffect(
 }
 
 /**
- * Get animation effect label
+ * アニメーションエフェクトの日本語ラベルを返す
+ * @param effect - アニメーションエフェクト種別
+ * @returns 日本語ラベル文字列
  */
 export function getAnimationEffectLabel(effect: AnimationEffectType): string {
   const labels: Record<AnimationEffectType, string> = {
@@ -255,7 +270,9 @@ export function getAnimationEffectLabel(effect: AnimationEffectType): string {
 }
 
 /**
- * Get animation speed label
+ * アニメーション速度の日本語ラベルを返す
+ * @param speed - アニメーション速度プリセット
+ * @returns 日本語ラベル文字列
  */
 export function getAnimationSpeedLabel(speed: AnimationSpeed): string {
   const labels: Record<AnimationSpeed, string> = {

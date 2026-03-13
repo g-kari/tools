@@ -5964,10 +5964,86 @@ a:focus-visible {
   button:hover {
     transform: none;
   }
-  
+
   textarea:focus,
   input[type="text"]:focus {
     transform: none;
   }
+}
+
+/* Audio Converter - Progress Bar */
+.audio-progress-bar {
+  width: 100%;
+  height: 8px;
+  background-color: var(--md-sys-color-surface-variant);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.audio-progress-bar-fill {
+  height: 100%;
+  background-color: var(--md-sys-color-primary);
+  transition: width 0.3s ease;
+  width: var(--audio-progress-width, 0%);
+}
+
+/* Audio Converter - WAV bitrate note */
+.audio-wav-note {
+  font-size: 12px;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-top: 4px;
+}
+
+/* Audio Converter - Conversion result section */
+.audio-result-section {
+  margin-top: 30px;
+}
+
+.audio-result-player {
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.audio-download-link {
+  display: inline-block;
+  text-decoration: none;
+  text-align: center;
+}
+
+/* Color Extractor - Hidden canvas container */
+.color-extractor-canvas-hidden {
+  position: absolute;
+  left: -9999px;
+  visibility: hidden;
+}
+
+/* Color Extractor - Color swatch with dynamic background */
+.color-swatch-dynamic {
+  background-color: var(--swatch-color, #000000);
+}
+
+/* Regex checker - flags input max width */
+.regex-flags-input {
+  max-width: 120px;
+}
+
+/* Visually hidden file input (image-to-gif etc.) */
+.visually-hidden-input {
+  display: none;
+}
+
+/* IP Geolocation - HTTP warning notice */
+.http-warning-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  border-left: 4px solid var(--md-sys-color-secondary);
+  border-radius: 4px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  font-size: 0.875rem;
+  line-height: 1.5;
 }
 
