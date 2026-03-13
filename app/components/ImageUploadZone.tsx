@@ -5,8 +5,8 @@ import { useDropZone } from "~/hooks/useDropZone";
  * ImageUploadZoneのProps
  */
 export interface ImageUploadZoneProps {
-  /** ファイルが選択された時のコールバック */
-  onFileSelect: (file: File) => void;
+  /** ファイルが選択された時のコールバック（複数ファイル対応） */
+  onFileSelect: (files: File[]) => void;
   /** ファイルタイプエラー時のコールバック */
   onTypeError?: () => void;
   /** 許可するファイルタイプのaccept属性 */
@@ -23,6 +23,8 @@ export interface ImageUploadZoneProps {
   ariaLabel?: string;
   /** input要素のID（テスト用） */
   inputId?: string;
+  /** 複数ファイル選択を許可するか（デフォルト: false） */
+  multiple?: boolean;
 }
 
 /**
@@ -54,9 +56,10 @@ function UploadIcon() {
  * @example
  * ```tsx
  * <ImageUploadZone
- *   onFileSelect={(file) => handleFileSelect(file)}
+ *   onFileSelect={(files) => handleFilesSelect(files)}
  *   onTypeError={() => showToast("画像ファイルを選択してください", "error")}
  *   hint="PNG, JPEG, WebP など"
+ *   multiple={true}
  * />
  * ```
  */
@@ -70,6 +73,7 @@ export function ImageUploadZone({
   children,
   ariaLabel = "画像ファイルをアップロード",
   inputId = "imageFile",
+  multiple = false,
 }: ImageUploadZoneProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -78,6 +82,7 @@ export function ImageUploadZone({
       onFileSelect,
       acceptType: "image/",
       onTypeError,
+      multiple,
     });
 
   const handleClick = useCallback(() => {
@@ -98,18 +103,23 @@ export function ImageUploadZone({
 
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files?.[0];
-      if (!file) return;
+      const files = Array.from(e.target.files ?? []);
+      if (files.length === 0) return;
 
       // ドラッグ&ドロップと同じバリデーションを適用
-      if (!file.type.startsWith("image/")) {
+      const invalidFiles = files.filter(
+        (file) => !file.type.startsWith("image/")
+      );
+      if (invalidFiles.length > 0) {
         onTypeError?.();
         // inputをリセットして同じファイルを再選択可能に
         e.target.value = "";
         return;
       }
 
-      onFileSelect(file);
+      onFileSelect(files);
+      // inputをリセットして同じファイルを再選択可能に
+      e.target.value = "";
     },
     [onFileSelect, onTypeError]
   );
@@ -142,9 +152,11 @@ export function ImageUploadZone({
         id={inputId}
         type="file"
         accept={accept}
+        multiple={multiple}
         onChange={handleInputChange}
         disabled={disabled}
         className="hidden-file-input"
+        tabIndex={-1}
         aria-label="画像ファイルを選択"
       />
     </>

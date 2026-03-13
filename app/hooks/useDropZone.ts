@@ -4,12 +4,14 @@ import { useState, useCallback, type DragEvent } from "react";
  * ドロップゾーンのオプション
  */
 export interface UseDropZoneOptions {
-  /** ファイルが選択された時のコールバック */
-  onFileSelect: (file: File) => void;
+  /** ファイルが選択された時のコールバック（複数ファイル対応） */
+  onFileSelect: (files: File[]) => void;
   /** ドロップ時に許可するファイルタイプ（MIMEタイプのプレフィックス、例: "image/"） */
   acceptType?: string;
   /** ファイルタイプエラー時のコールバック */
   onTypeError?: () => void;
+  /** 複数ファイルを許可するか */
+  multiple?: boolean;
 }
 
 /**
@@ -32,8 +34,9 @@ export interface UseDropZoneReturn {
  * @example
  * ```tsx
  * const { isDragging, handleDragOver, handleDragLeave, handleDrop } = useDropZone({
- *   onFileSelect: (file) => console.log(file),
+ *   onFileSelect: (files) => console.log(files),
  *   acceptType: "image/",
+ *   multiple: true,
  *   onTypeError: () => showToast("画像ファイルを選択してください", "error"),
  * });
  *
@@ -53,6 +56,7 @@ export function useDropZone({
   onFileSelect,
   acceptType,
   onTypeError,
+  multiple = false,
 }: UseDropZoneOptions): UseDropZoneReturn {
   const [isDragging, setIsDragging] = useState(false);
 
@@ -71,18 +75,26 @@ export function useDropZone({
       e.preventDefault();
       setIsDragging(false);
 
-      const file = e.dataTransfer.files[0];
-      if (!file) return;
+      const droppedFiles = Array.from(e.dataTransfer.files);
+      if (droppedFiles.length === 0) return;
 
       // ファイルタイプチェック
-      if (acceptType && !file.type.startsWith(acceptType)) {
-        onTypeError?.();
+      if (acceptType) {
+        const validFiles = droppedFiles.filter((file) => file.type.startsWith(acceptType));
+        const invalidFiles = droppedFiles.filter((file) => !file.type.startsWith(acceptType));
+        if (invalidFiles.length > 0) {
+          onTypeError?.();
+        }
+        if (validFiles.length === 0) return;
+        const filesToProcess = multiple ? validFiles : [validFiles[0]];
+        onFileSelect(filesToProcess);
         return;
       }
 
-      onFileSelect(file);
+      const filesToProcess = multiple ? droppedFiles : [droppedFiles[0]];
+      onFileSelect(filesToProcess);
     },
-    [onFileSelect, acceptType, onTypeError]
+    [onFileSelect, acceptType, onTypeError, multiple]
   );
 
   return {

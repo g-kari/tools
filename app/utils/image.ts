@@ -172,3 +172,14 @@ export function getExtension(filename: string): string {
   const match = filename.match(/\.[^/.]+$/);
   return match ? match[0] : ".png";
 }
+
+/**
+ * 圧縮率を計算する
+ * @param originalSize - 元のファイルサイズ（バイト）
+ * @param compressedSize - 圧縮後のファイルサイズ（バイト）
+ * @returns 圧縮率（パーセント）
+ */
+export function calculateCompressionRatio(originalSize: number, compressedSize: number): number {
+  if (originalSize === 0) return 0;
+  return Math.round((1 - compressedSize / originalSize) * 100);
+}
