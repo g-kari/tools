@@ -16,6 +16,7 @@ import { Route as UrlEncodeRouteImport } from './routes/url-encode'
 import { Route as UnitConverterRouteImport } from './routes/unit-converter'
 import { Route as TransparentImageRouteImport } from './routes/transparent-image'
 import { Route as TopRouteImport } from './routes/top'
+import { Route as TimestampRouteImport } from './routes/timestamp'
 import { Route as TextSortRouteImport } from './routes/text-sort'
 import { Route as ServerEnvRouteImport } from './routes/server-env'
 import { Route as SecurityHeadersRouteImport } from './routes/security-headers'
@@ -96,6 +97,11 @@ const TransparentImageRoute = TransparentImageRouteImport.update({
 const TopRoute = TopRouteImport.update({
   id: '/top',
   path: '/top',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TimestampRoute = TimestampRouteImport.update({
+  id: '/timestamp',
+  path: '/timestamp',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TextSortRoute = TextSortRouteImport.update({
@@ -372,6 +378,7 @@ export interface FileRoutesByFullPath {
   '/security-headers': typeof SecurityHeadersRoute
   '/server-env': typeof ServerEnvRoute
   '/text-sort': typeof TextSortRoute
+  '/timestamp': typeof TimestampRoute
   '/top': typeof TopRoute
   '/transparent-image': typeof TransparentImageRoute
   '/unit-converter': typeof UnitConverterRoute
@@ -427,6 +434,7 @@ export interface FileRoutesByTo {
   '/security-headers': typeof SecurityHeadersRoute
   '/server-env': typeof ServerEnvRoute
   '/text-sort': typeof TextSortRoute
+  '/timestamp': typeof TimestampRoute
   '/top': typeof TopRoute
   '/transparent-image': typeof TransparentImageRoute
   '/unit-converter': typeof UnitConverterRoute
@@ -483,6 +491,7 @@ export interface FileRoutesById {
   '/security-headers': typeof SecurityHeadersRoute
   '/server-env': typeof ServerEnvRoute
   '/text-sort': typeof TextSortRoute
+  '/timestamp': typeof TimestampRoute
   '/top': typeof TopRoute
   '/transparent-image': typeof TransparentImageRoute
   '/unit-converter': typeof UnitConverterRoute
@@ -540,6 +549,7 @@ export interface FileRouteTypes {
     | '/security-headers'
     | '/server-env'
     | '/text-sort'
+    | '/timestamp'
     | '/top'
     | '/transparent-image'
     | '/unit-converter'
@@ -595,6 +605,7 @@ export interface FileRouteTypes {
     | '/security-headers'
     | '/server-env'
     | '/text-sort'
+    | '/timestamp'
     | '/top'
     | '/transparent-image'
     | '/unit-converter'
@@ -650,6 +661,7 @@ export interface FileRouteTypes {
     | '/security-headers'
     | '/server-env'
     | '/text-sort'
+    | '/timestamp'
     | '/top'
     | '/transparent-image'
     | '/unit-converter'
@@ -706,6 +718,7 @@ export interface RootRouteChildren {
   SecurityHeadersRoute: typeof SecurityHeadersRoute
   ServerEnvRoute: typeof ServerEnvRoute
   TextSortRoute: typeof TextSortRoute
+  TimestampRoute: typeof TimestampRoute
   TopRoute: typeof TopRoute
   TransparentImageRoute: typeof TransparentImageRoute
   UnitConverterRoute: typeof UnitConverterRoute
@@ -768,6 +781,13 @@ declare module '@tanstack/react-router' {
       path: '/top'
       fullPath: '/top'
       preLoaderRoute: typeof TopRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/timestamp': {
+      id: '/timestamp'
+      path: '/timestamp'
+      fullPath: '/timestamp'
+      preLoaderRoute: typeof TimestampRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/text-sort': {
@@ -1138,6 +1158,7 @@ const rootRouteChildren: RootRouteChildren = {
   SecurityHeadersRoute: SecurityHeadersRoute,
   ServerEnvRoute: ServerEnvRoute,
   TextSortRoute: TextSortRoute,
+  TimestampRoute: TimestampRoute,
   TopRoute: TopRoute,
   TransparentImageRoute: TransparentImageRoute,
   UnitConverterRoute: UnitConverterRoute,

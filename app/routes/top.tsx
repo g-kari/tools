@@ -91,6 +91,12 @@ const toolCatalog: ToolCategory[] = [
         icon: "⬇️",
       },
       {
+        path: "/timestamp",
+        label: "タイムスタンプ変換",
+        description: "Unixタイムスタンプと日時の相互変換",
+        icon: "⏱️",
+      },
+      {
         path: "/unit-converter",
         label: "単位変換",
         description: "長さ・重さ・温度など各種単位の相互変換",
