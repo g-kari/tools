@@ -1,0 +1,343 @@
+/* Image Compress Styles */
+.compress-options {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.option-help {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.compression-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background-color: var(--md-sys-color-surface-variant);
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.stat-arrow {
+  font-size: 1.5rem;
+  color: var(--md-sys-color-primary);
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-value {
+  font-size: 1.25rem;
+  font-weight: 500;
+  font-family: 'Space Mono', monospace;
+  color: var(--md-sys-color-on-surface);
+}
+
+.stat-ratio .stat-value {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+}
+
+.stat-positive {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.stat-negative {
+  background-color: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-error);
+}
+
+.preview-comparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.preview-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.preview-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+  text-align: center;
+}
+
+.preview-image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem;
+  background-color: var(--md-sys-color-surface-variant);
+  border-radius: 8px;
+  min-height: 200px;
+  max-height: 400px;
+  overflow: hidden;
+}
+
+.preview-image {
+  max-width: 100%;
+  max-height: 380px;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.preview-placeholder {
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.875rem;
+}
+
+@media (max-width: 768px) {
+  .preview-comparison {
+    grid-template-columns: 1fr;
+  }
+
+  .compression-stats {
+    flex-direction: column;
+  }
+
+  .stat-arrow {
+    transform: rotate(90deg);
+  }
+}
+
+/* Multi Image Compress Styles */
+.compress-image-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.compress-image-card {
+  background-color: var(--md-sys-color-surface-variant);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.2s ease;
+}
+
+.compress-image-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.compress-image-thumbnail-container {
+  position: relative;
+  width: 100%;
+  height: 160px;
+  overflow: hidden;
+  background-color: var(--md-sys-color-surface);
+}
+
+.compress-image-thumbnail {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+}
+
+.compress-image-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.compress-image-info {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.compress-image-filename {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 0;
+  font-weight: 500;
+}
+
+.compress-image-sizes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.compress-size-label {
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.compress-size-value {
+  color: var(--md-sys-color-on-surface);
+  font-family: 'Space Mono', monospace;
+}
+
+.compress-size-arrow {
+  color: var(--md-sys-color-primary);
+  font-weight: bold;
+}
+
+.compress-ratio-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-family: 'Space Mono', monospace;
+  align-self: flex-start;
+}
+
+.compress-ratio-positive {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.compress-ratio-negative {
+  background-color: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-error);
+}
+
+.compress-progress-text {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-primary);
+  margin: 0;
+}
+
+.compress-error-text {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-error);
+  margin: 0;
+}
+
+.compress-image-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.compress-action-btn {
+  flex: 1;
+  padding: 6px 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.15s ease, opacity 0.15s ease;
+}
+
+.compress-action-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.compress-action-download {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+.compress-action-download:hover:not(:disabled) {
+  background-color: var(--md-sys-color-secondary);
+}
+
+.compress-action-remove {
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface-variant);
+  border: 1px solid var(--md-sys-color-outline);
+}
+
+.compress-action-remove:hover:not(:disabled) {
+  background-color: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-error);
+  border-color: var(--md-sys-color-error);
+}
+
+.compress-bulk-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 1rem;
+}
+
+.compress-card-compressing {
+  opacity: 0.7;
+}
+
+.compress-card-error {
+  border: 2px solid var(--md-sys-color-error);
+}
+
+.compress-drop-hint {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-top: 8px;
+  text-align: center;
+}
+
+.compress-progress-bar {
+  height: 8px;
+  border-radius: 4px;
+  background-color: var(--md-sys-color-surface-variant);
+  overflow: hidden;
+}
+
+.compress-progress-fill {
+  height: 100%;
+  background-color: var(--md-sys-color-primary);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+@media (max-width: 600px) {
+  .compress-image-list {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+  }
+
+  .compress-image-thumbnail,
+  .compress-image-thumbnail-container {
+    height: 120px;
+  }
+
+  .compress-bulk-actions {
+    flex-direction: column;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .compress-image-card,
+  .compress-action-btn,
+  .compress-progress-fill {
+    transition: none;
+  }
+}
+

@@ -1,0 +1,12 @@
+/* MessagePack変換ツール固有スタイル */
+.msgpack-output-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.msgpack-output-header label {
+  margin-bottom: 0;
+}
+

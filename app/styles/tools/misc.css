@@ -1,0 +1,592 @@
+/* ========================================
+   画像透過ツール
+   ======================================== */
+
+/* 2カラムレイアウト */
+.transparent-processor-layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+/* 左カラム：プレビュー */
+.transparent-preview-column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.transparent-preview-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.transparent-preview-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.transparent-preview-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.transparent-canvas-wrapper {
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--md-sys-color-surface);
+  line-height: 0;
+}
+
+.transparent-canvas-wrapper .preview-canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.transparent-canvas-wrapper .preview-canvas.picking-color {
+  cursor: crosshair;
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: -2px;
+}
+
+.transparent-preview-bg {
+  background-image:
+    linear-gradient(45deg, #e0e0e0 25%, transparent 25%),
+    linear-gradient(-45deg, #e0e0e0 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #e0e0e0 75%),
+    linear-gradient(-45deg, transparent 75%, #e0e0e0 75%);
+  background-size: 16px 16px;
+  background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+  background-color: #ffffff;
+}
+
+.transparent-image-meta {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  text-align: center;
+  font-family: "Space Mono", monospace;
+}
+
+/* 右カラム：設定 */
+.transparent-settings-column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.transparent-settings-card {
+  background: var(--md-sys-color-surface-container);
+  border-radius: 12px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.transparent-color-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.transparent-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface);
+}
+
+.transparent-color-controls {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.transparent-color-input {
+  width: 40px;
+  height: 40px;
+  padding: 2px;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 8px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.transparent-hex-input {
+  flex: 1;
+  min-width: 80px;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-family: "Space Mono", monospace;
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+}
+
+.transparent-pick-btn {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 8px;
+  background: var(--md-sys-color-surface);
+  cursor: pointer;
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.transparent-pick-btn:hover {
+  background: var(--md-sys-color-surface-variant);
+}
+
+.transparent-pick-btn.active {
+  background: var(--md-sys-color-primary);
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+.transparent-tolerance-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.transparent-slider {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  accent-color: var(--md-sys-color-primary);
+  cursor: pointer;
+  margin-top: 0.25rem;
+}
+
+.transparent-slider-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.transparent-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.transparent-actions .btn-primary,
+.transparent-actions .btn-secondary {
+  flex: 1;
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+}
+
+.transparent-tip {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* レスポンシブ */
+@media (max-width: 768px) {
+  .transparent-processor-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .transparent-settings-column {
+    order: -1;
+  }
+
+  .transparent-preview-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .transparent-color-controls {
+    flex-wrap: wrap;
+  }
+
+  .transparent-hex-input {
+    order: 1;
+    flex-basis: 100%;
+    margin-top: 0.25rem;
+  }
+}
+
+/* =====================================================
+   Favicon Generator Styles
+   ===================================================== */
+
+.favicon-source-preview {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--md-sys-color-surface-variant);
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.favicon-source-image {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  border-radius: 4px;
+  background: repeating-conic-gradient(#e0e0e0 0% 25%, #fff 0% 50%) 50% / 16px 16px;
+}
+
+.favicon-source-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.favicon-warning {
+  color: var(--md-sys-color-error);
+  font-size: 0.75rem;
+}
+
+.favicon-size-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.btn-text {
+  background: transparent;
+  border: none;
+  color: var(--md-sys-color-primary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.btn-text:hover {
+  background: var(--md-sys-color-primary-container);
+}
+
+.btn-text:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.favicon-size-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.75rem;
+}
+
+.favicon-size-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: var(--md-sys-color-surface-variant);
+  border: 2px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.favicon-size-item:hover {
+  background: var(--md-sys-color-primary-container);
+}
+
+.favicon-size-item.selected {
+  border-color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-primary-container);
+}
+
+.favicon-size-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--md-sys-color-primary);
+  cursor: pointer;
+}
+
+.favicon-preview-canvas {
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.favicon-size-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 0;
+}
+
+.favicon-size-name {
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface);
+}
+
+.favicon-size-desc {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.favicon-size-filename {
+  font-size: 0.625rem;
+  color: var(--md-sys-color-outline);
+  font-family: "Space Mono", monospace;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.favicon-result-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 0.5rem;
+}
+
+.favicon-result-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--md-sys-color-surface-variant);
+  border-radius: 4px;
+}
+
+.favicon-result-name {
+  font-size: 0.75rem;
+  font-family: "Space Mono", monospace;
+  color: var(--md-sys-color-on-surface);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.favicon-result-size {
+  font-size: 0.625rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.btn-download-small {
+  padding: 0.25rem 0.5rem;
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  border: none;
+  border-radius: 4px;
+  font-size: 0.625rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+}
+
+.btn-download-small:hover {
+  opacity: 0.85;
+}
+
+.favicon-code-block {
+  background: var(--md-sys-color-surface-variant);
+  padding: 1rem;
+  border-radius: 4px;
+  font-family: "Space Mono", monospace;
+  font-size: 0.75rem;
+  overflow-x: auto;
+  white-space: pre;
+  color: var(--md-sys-color-on-surface);
+}
+
+@media (max-width: 600px) {
+  .favicon-size-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .favicon-result-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .favicon-source-preview {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+/* Dummy Audio Styles */
+.audio-options {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.volume-group {
+  min-width: 200px;
+}
+
+.audio-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+@media (max-width: 480px) {
+  .audio-options {
+    flex-direction: column;
+  }
+
+  .audio-info {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Color Extractor - Hidden canvas container */
+.color-extractor-canvas-hidden {
+  position: absolute;
+  left: -9999px;
+  visibility: hidden;
+}
+
+/* Color Extractor - Color swatch with dynamic background */
+.color-swatch-dynamic {
+  background-color: var(--swatch-color, #000000);
+}
+
+/* Regex checker - flags input max width */
+.regex-flags-input {
+  max-width: 120px;
+}
+
+/* Visually hidden file input (image-to-gif etc.) */
+.visually-hidden-input {
+  display: none;
+}
+
+/* IP Geolocation - HTTP warning notice */
+.http-warning-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  border-left: 4px solid var(--md-sys-color-secondary);
+  border-radius: 4px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+
+/* =====================================================
+   Base64画像デコードツール専用スタイル
+   ===================================================== */
+
+/* デコード用テキストエリア */
+.base64-decode-textarea {
+  width: 100%;
+  min-height: 160px;
+  font-family: "Space Mono", "Courier New", monospace;
+  font-size: 13px;
+  border: 2px solid var(--md-sys-color-outline-variant);
+  border-radius: 8px;
+  padding: 14px 16px;
+  resize: vertical;
+  background: rgba(231, 224, 236, 0.3);
+  color: var(--md-sys-color-on-surface);
+  line-height: 1.6;
+  transition: border-color 0.2s, background-color 0.2s, box-shadow 0.2s;
+  margin-bottom: 4px;
+}
+
+.base64-decode-textarea:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  background: white;
+  box-shadow: 0 0 0 4px rgba(139, 105, 20, 0.1);
+}
+
+.base64-decode-textarea[aria-invalid="true"] {
+  border-color: var(--md-sys-color-error);
+}
+
+.base64-decode-textarea[aria-invalid="true"]:focus {
+  box-shadow: 0 0 0 4px rgba(var(--md-sys-color-error), 0.15);
+}
+
+/* デコード結果プレビューコンテナ */
+.base64-decode-preview {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 8px;
+  padding: 16px;
+  background: rgba(231, 224, 236, 0.2);
+  min-height: 120px;
+  margin-bottom: 16px;
+}
+
+.base64-decode-preview img {
+  max-width: 100%;
+  max-height: 480px;
+  object-fit: contain;
+  border-radius: 4px;
+  display: block;
+}
+
+/* 入力ヒントテキスト */
+.input-hint {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-top: 4px;
+  margin-bottom: 12px;
+}
+
+/* セレクト入力 */
+.select-input {
+  display: block;
+  padding: 8px 12px;
+  border: 2px solid var(--md-sys-color-outline-variant);
+  border-radius: 6px;
+  background: white;
+  color: var(--md-sys-color-on-surface);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  min-width: 160px;
+  margin-bottom: 12px;
+}
+
+.select-input:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  box-shadow: 0 0 0 3px rgba(139, 105, 20, 0.15);
+}
+
+/* オプショングループのラベル */
+.option-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface);
+  margin-bottom: 6px;
+}
+

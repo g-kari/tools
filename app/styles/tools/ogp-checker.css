@@ -1,0 +1,389 @@
+/* OGP Checker - All previews grid */
+.ogp-previews-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* OGP Preview - Common */
+.ogp-preview {
+  margin-top: 0;
+}
+
+.ogp-preview-label {
+  font-size: 0.9rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 10px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ogp-card-type-badge {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Twitter Cards Grid */
+.ogp-twitter-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.ogp-twitter-card-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.ogp-card-type-label {
+  font-size: 0.8rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 8px;
+  font-family: "Space Mono", monospace;
+  background: var(--md-sys-color-surface-variant);
+  padding: 4px 8px;
+  border-radius: 4px;
+  display: inline-block;
+  width: fit-content;
+}
+
+.ogp-value {
+  max-width: 600px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* OGP Preview - X (Twitter) - Common */
+.ogp-card-x {
+  background: #15202b;
+  border-radius: 16px;
+  overflow: hidden;
+  max-width: 100%;
+  border: 1px solid #38444d;
+}
+
+/* Twitter Card - summary (small thumbnail) */
+.ogp-card-x-summary {
+  display: flex;
+  flex-direction: row;
+}
+
+.ogp-image-container-x-summary {
+  width: 130px;
+  min-width: 130px;
+  height: 130px;
+  overflow: hidden;
+  background: #192734;
+  flex-shrink: 0;
+}
+
+.ogp-image-x-summary {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ogp-content-x-summary {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+
+/* Twitter Card - summary_large_image */
+.ogp-card-x-large {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Twitter Card - player */
+.ogp-card-x-player {
+  display: flex;
+  flex-direction: column;
+}
+
+.ogp-player-container {
+  position: relative;
+}
+
+.ogp-player-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ogp-play-button {
+  width: 60px;
+  height: 60px;
+  background: rgba(29, 161, 242, 0.9);
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 24px;
+  padding-left: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.ogp-play-button:hover {
+  background: rgba(29, 161, 242, 1);
+}
+
+.ogp-play-button:focus {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* Twitter Card - app */
+.ogp-card-x-app {
+  display: flex;
+  flex-direction: row;
+  padding: 12px;
+  gap: 12px;
+}
+
+.ogp-app-icon-container {
+  width: 64px;
+  height: 64px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #192734;
+  flex-shrink: 0;
+}
+
+.ogp-app-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ogp-content-x-app {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+
+.ogp-image-container-x {
+  width: 100%;
+  aspect-ratio: 1.91 / 1;
+  overflow: hidden;
+  background: #192734;
+}
+
+.ogp-image-x {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ogp-content-x {
+  padding: 12px;
+}
+
+.ogp-title-x {
+  color: #fff;
+  font-size: 15px;
+  font-weight: 400;
+  margin-bottom: 4px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.ogp-description-x {
+  color: #8899a6;
+  font-size: 15px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+
+.ogp-site-x {
+  color: #8899a6;
+  font-size: 15px;
+}
+
+/* OGP Preview - Facebook */
+.ogp-card-facebook {
+  background: #fff;
+  border-radius: 0;
+  overflow: hidden;
+  max-width: 500px;
+  border: 1px solid #dddfe2;
+}
+
+.ogp-image-container-facebook {
+  width: 100%;
+  aspect-ratio: 1.91 / 1;
+  overflow: hidden;
+  background: #f0f2f5;
+}
+
+.ogp-image-facebook {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ogp-content-facebook {
+  padding: 10px 12px;
+  background: #f2f3f5;
+}
+
+.ogp-site-facebook {
+  color: #606770;
+  font-size: 12px;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+.ogp-title-facebook {
+  color: #1d2129;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.ogp-description-facebook {
+  color: #606770;
+  font-size: 14px;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* OGP Preview - Slack */
+.ogp-card-slack {
+  background: #fff;
+  border-left: 4px solid #36c5f0;
+  padding: 8px 12px;
+  max-width: 500px;
+  display: flex;
+  gap: 12px;
+}
+
+.ogp-content-slack {
+  flex: 1;
+  min-width: 0;
+}
+
+.ogp-site-slack {
+  color: #1d1c1d;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.ogp-title-slack {
+  color: #1264a3;
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.ogp-description-slack {
+  color: #1d1c1d;
+  font-size: 15px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.ogp-image-container-slack {
+  flex: 0 0 auto;
+  width: 80px;
+  height: 80px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #f8f8f8;
+}
+
+.ogp-image-slack {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* OGP Preview - Discord */
+.ogp-card-discord {
+  background: #2f3136;
+  border-left: 4px solid #5865f2;
+  padding: 8px 16px 16px 12px;
+  max-width: 500px;
+  border-radius: 4px;
+}
+
+.ogp-content-discord {
+  margin-bottom: 12px;
+}
+
+.ogp-site-discord {
+  color: #b9bbbe;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+.ogp-title-discord {
+  color: #00aff4;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.ogp-description-discord {
+  color: #dcddde;
+  font-size: 14px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.ogp-image-container-discord {
+  max-width: 400px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #202225;
+}
+
+.ogp-image-discord {
+  width: 100%;
+  height: auto;
+  max-height: 300px;
+  object-fit: cover;
+}
+

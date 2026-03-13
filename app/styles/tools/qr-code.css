@@ -1,0 +1,107 @@
+/* ===== QR Code Generator ===== */
+
+/** QRコードを表示するコンテナ */
+.qr-canvas-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 160px;
+  padding: 24px;
+  background-color: var(--md-sys-color-surface-variant);
+  border-radius: 12px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  margin-bottom: 16px;
+}
+
+.qr-canvas-container canvas {
+  display: block;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  max-width: 100%;
+  height: auto;
+}
+
+/** QRコードが未生成のときのプレースホルダーテキスト */
+.qr-placeholder-text {
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.875rem;
+  text-align: center;
+  margin: 0;
+}
+
+/** オプション設定のグリッドレイアウト */
+.qr-options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-top: 8px;
+}
+
+/** カラーピッカーのスタイル */
+.qr-color-input {
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--md-sys-color-outline-variant);
+  border-radius: 6px;
+  padding: 2px;
+  cursor: pointer;
+  background-color: transparent;
+  flex-shrink: 0;
+}
+
+.qr-color-input:focus {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/** HEXカラー入力フィールド */
+.qr-hex-input {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 12px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 6px;
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-size: 0.875rem;
+  font-family: 'Space Mono', monospace;
+}
+
+.qr-hex-input:focus {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+  border-color: var(--md-sys-color-primary);
+}
+
+/** ダウンロードボタンエリア */
+.qr-download-section {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+@media (max-width: 600px) {
+  .qr-options-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .qr-download-section {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .qr-download-section .btn-primary,
+  .qr-download-section .btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .qr-canvas-container canvas {
+    box-shadow: none;
+  }
+}
+

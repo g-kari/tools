@@ -1,0 +1,174 @@
+/* ====================================
+   Timestamp Converter
+   ==================================== */
+
+.timestamp-container {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.timestamp-section {
+  background: var(--md-sys-color-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 8px;
+  animation: fadeInUp 0.3s ease-out both;
+}
+
+.timestamp-section:first-of-type {
+  animation-delay: 0.05s;
+}
+
+.timestamp-section:last-of-type {
+  animation-delay: 0.1s;
+}
+
+.timestamp-input-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.timestamp-input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  font-family: 'Roboto Mono', 'Courier New', monospace;
+  font-size: 0.9375rem;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  transition: border-color 0.2s, background 0.2s;
+  min-width: 0;
+}
+
+.timestamp-input:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  background: #fff;
+}
+
+.timestamp-input:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 1px;
+}
+
+/* datetime-local input 調整 */
+input[type="datetime-local"].timestamp-input {
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  cursor: pointer;
+}
+
+.timestamp-result {
+  margin-top: 16px;
+  border: 1px solid var(--md-sys-color-primary-container);
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--md-sys-color-surface);
+}
+
+.timestamp-result-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  transition: background-color 0.15s;
+}
+
+.timestamp-result-row:last-child {
+  border-bottom: none;
+}
+
+.timestamp-result-row:hover {
+  background-color: var(--md-sys-color-primary-container);
+}
+
+.timestamp-result-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  min-width: 52px;
+  flex-shrink: 0;
+}
+
+.timestamp-result-value {
+  flex: 1;
+  font-family: 'Roboto Mono', 'Courier New', monospace;
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface);
+  word-break: break-all;
+  line-height: 1.5;
+}
+
+.timestamp-copy-button {
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background: var(--md-sys-color-secondary-container);
+  border: none;
+  border-radius: 4px;
+  color: var(--md-sys-color-on-secondary-container);
+  cursor: pointer;
+  transition: background-color 0.2s, opacity 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+  letter-spacing: 0.25px;
+}
+
+.timestamp-copy-button:hover {
+  opacity: 0.85;
+}
+
+.timestamp-copy-button:active {
+  opacity: 0.7;
+}
+
+.timestamp-copy-button:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.timestamp-divider {
+  height: 1px;
+  background: var(--md-sys-color-outline-variant);
+  margin: 12px 0;
+}
+
+/* アニメーション抑制 */
+@media (prefers-reduced-motion: reduce) {
+  .timestamp-section {
+    animation: none;
+  }
+  .timestamp-input,
+  .timestamp-result-row,
+  .timestamp-copy-button {
+    transition: none;
+  }
+}
+
+/* レスポンシブ */
+@media (max-width: 480px) {
+  .timestamp-input-row {
+    flex-wrap: wrap;
+  }
+  .timestamp-input {
+    min-width: 100%;
+  }
+  .timestamp-result-row {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .timestamp-result-label {
+    min-width: 44px;
+  }
+}
+
