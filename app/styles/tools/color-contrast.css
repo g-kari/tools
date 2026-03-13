@@ -1,0 +1,281 @@
+/* Color Contrast Checker Styles */
+
+/* ページレイアウト */
+.color-contrast-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* 2カラムグリッド: 入力 vs 結果 */
+.color-contrast-inputs {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .color-contrast-inputs {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* 左カラム: 色入力エリア */
+.color-contrast-left {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* 右カラム: 結果表示エリア */
+.color-contrast-right {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* 各色の入力グループ */
+.contrast-color-block {
+  background-color: var(--md-sys-color-surface-variant);
+  border-radius: 4px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.contrast-color-block-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+  margin: 0;
+}
+
+/* カラープレビュー正方形 */
+.contrast-color-preview {
+  width: 100%;
+  height: 60px;
+  border-radius: 4px;
+  background-color: var(--preview-color, #000000);
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+/* カラーピッカー+HEX入力の行 */
+.contrast-color-input {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* カラーピッカー */
+.contrast-color-picker {
+  width: 48px;
+  height: 40px;
+  padding: 2px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background-color: var(--md-sys-color-surface-variant);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.contrast-color-picker:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* HEX入力フィールド */
+.contrast-hex-input {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  font-family: "JetBrains Mono", "Roboto Mono", monospace;
+  font-size: 0.9rem;
+  background-color: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  transition: border-color 0.2s;
+}
+
+.contrast-hex-input:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  background-color: var(--md-sys-color-surface);
+}
+
+/* 色の入れ替えボタンコンテナ */
+.contrast-swap-container {
+  display: flex;
+  justify-content: center;
+}
+
+/* 入れ替えボタン */
+.contrast-swap-btn {
+  padding: 0.5rem 1.5rem;
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1.25rem;
+  font-weight: 500;
+  transition: background-color 0.2s, opacity 0.2s;
+}
+
+.contrast-swap-btn:hover {
+  opacity: 0.85;
+}
+
+.contrast-swap-btn:active {
+  opacity: 0.7;
+}
+
+.contrast-swap-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* コントラスト比の大きな表示 */
+.contrast-ratio-display {
+  background-color: var(--md-sys-color-primary-container);
+  border-left: 4px solid var(--md-sys-color-primary);
+  border-radius: 4px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* 大きい数値フォント */
+.contrast-ratio-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--md-sys-color-on-primary-container);
+  line-height: 1;
+  font-family: "JetBrains Mono", "Roboto Mono", monospace;
+}
+
+.contrast-ratio-label {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-primary-container);
+  font-weight: 500;
+}
+
+/* コントラスト比コピーボタン */
+.contrast-copy-btn {
+  padding: 0.375rem 1rem;
+  font-size: 0.875rem;
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.contrast-copy-btn:hover {
+  opacity: 0.85;
+}
+
+.contrast-copy-btn:active {
+  opacity: 0.7;
+}
+
+.contrast-copy-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* WCAG判定テーブルコンテナ */
+.wcag-table-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.wcag-table-title {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface);
+  margin: 0;
+}
+
+/* WCAG判定テーブル */
+.wcag-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.wcag-table th,
+.wcag-table td {
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.wcag-table th {
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+  background-color: var(--md-sys-color-surface-variant);
+}
+
+.wcag-table tbody tr:hover {
+  background-color: var(--md-sys-color-surface-variant);
+}
+
+/* Pass（緑）*/
+.wcag-pass {
+  color: var(--color-success, #2e7d32);
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  background-color: var(--color-success-bg, rgba(46, 125, 50, 0.1));
+}
+
+/* Fail（赤）*/
+.wcag-fail {
+  color: var(--color-error, #c62828);
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  background-color: var(--color-error-bg, rgba(198, 40, 40, 0.1));
+}
+
+/* プレビューエリア */
+.contrast-preview {
+  border-radius: 4px;
+  padding: 1.25rem;
+  background-color: var(--bg-color, #ffffff);
+  color: var(--fg-color, #000000);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* 大テキストサンプル（18pt以上） */
+.contrast-preview-text-large {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* 通常テキストサンプル */
+.contrast-preview-text {
+  font-size: 1rem;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* アニメーション対応 */
+@media (prefers-reduced-motion: reduce) {
+  .contrast-color-picker,
+  .contrast-hex-input,
+  .contrast-swap-btn,
+  .contrast-copy-btn {
+    transition: none;
+  }
+}

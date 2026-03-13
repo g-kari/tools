@@ -62,6 +62,7 @@ const navCategories = [
       { path: "/transparent-image", label: "透過画像" },
       { path: "/color-extractor", label: "カラー抽出" },
       { path: "/color-picker", label: "カラーピッカー" },
+      { path: "/color-contrast", label: "コントラストチェック" },
       { path: "/image-to-gif", label: "画像→GIF変換" },
       { path: "/emoji-converter", label: "絵文字変換" },
       { path: "/discord-emoji", label: "Discord絵文字" },

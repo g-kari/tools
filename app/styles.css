@@ -18,6 +18,7 @@
 @import "./styles/tools/image-to-gif.css";
 @import "./styles/tools/color-picker.css";
 @import "./styles/tools/color-extractor.css";
+@import "./styles/tools/color-contrast.css";
 @import "./styles/tools/unit-converter.css";
 @import "./styles/tools/uuid-generator.css";
 @import "./styles/tools/global-ip.css";
