@@ -31,6 +31,7 @@ import { Route as ImageResizeRouteImport } from './routes/image-resize'
 import { Route as ImageCropRouteImport } from './routes/image-crop'
 import { Route as ImageCompressRouteImport } from './routes/image-compress'
 import { Route as ImageBase64RouteImport } from './routes/image-base64'
+import { Route as HtmlEncodeRouteImport } from './routes/html-encode'
 import { Route as HashRouteImport } from './routes/hash'
 import { Route as GlobalIpRouteImport } from './routes/global-ip'
 import { Route as FaviconGeneratorRouteImport } from './routes/favicon-generator'
@@ -163,6 +164,11 @@ const ImageBase64Route = ImageBase64RouteImport.update({
   path: '/image-base64',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HtmlEncodeRoute = HtmlEncodeRouteImport.update({
+  id: '/html-encode',
+  path: '/html-encode',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HashRoute = HashRouteImport.update({
   id: '/hash',
   path: '/hash',
@@ -287,6 +293,7 @@ export interface FileRoutesByFullPath {
   '/favicon-generator': typeof FaviconGeneratorRoute
   '/global-ip': typeof GlobalIpRoute
   '/hash': typeof HashRoute
+  '/html-encode': typeof HtmlEncodeRoute
   '/image-base64': typeof ImageBase64Route
   '/image-compress': typeof ImageCompressRoute
   '/image-crop': typeof ImageCropRoute
@@ -332,6 +339,7 @@ export interface FileRoutesByTo {
   '/favicon-generator': typeof FaviconGeneratorRoute
   '/global-ip': typeof GlobalIpRoute
   '/hash': typeof HashRoute
+  '/html-encode': typeof HtmlEncodeRoute
   '/image-base64': typeof ImageBase64Route
   '/image-compress': typeof ImageCompressRoute
   '/image-crop': typeof ImageCropRoute
@@ -378,6 +386,7 @@ export interface FileRoutesById {
   '/favicon-generator': typeof FaviconGeneratorRoute
   '/global-ip': typeof GlobalIpRoute
   '/hash': typeof HashRoute
+  '/html-encode': typeof HtmlEncodeRoute
   '/image-base64': typeof ImageBase64Route
   '/image-compress': typeof ImageCompressRoute
   '/image-crop': typeof ImageCropRoute
@@ -425,6 +434,7 @@ export interface FileRouteTypes {
     | '/favicon-generator'
     | '/global-ip'
     | '/hash'
+    | '/html-encode'
     | '/image-base64'
     | '/image-compress'
     | '/image-crop'
@@ -470,6 +480,7 @@ export interface FileRouteTypes {
     | '/favicon-generator'
     | '/global-ip'
     | '/hash'
+    | '/html-encode'
     | '/image-base64'
     | '/image-compress'
     | '/image-crop'
@@ -515,6 +526,7 @@ export interface FileRouteTypes {
     | '/favicon-generator'
     | '/global-ip'
     | '/hash'
+    | '/html-encode'
     | '/image-base64'
     | '/image-compress'
     | '/image-crop'
@@ -561,6 +573,7 @@ export interface RootRouteChildren {
   FaviconGeneratorRoute: typeof FaviconGeneratorRoute
   GlobalIpRoute: typeof GlobalIpRoute
   HashRoute: typeof HashRoute
+  HtmlEncodeRoute: typeof HtmlEncodeRoute
   ImageBase64Route: typeof ImageBase64Route
   ImageCompressRoute: typeof ImageCompressRoute
   ImageCropRoute: typeof ImageCropRoute
@@ -745,6 +758,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ImageBase64RouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/html-encode': {
+      id: '/html-encode'
+      path: '/html-encode'
+      fullPath: '/html-encode'
+      preLoaderRoute: typeof HtmlEncodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/hash': {
       id: '/hash'
       path: '/hash'
@@ -913,6 +933,7 @@ const rootRouteChildren: RootRouteChildren = {
   FaviconGeneratorRoute: FaviconGeneratorRoute,
   GlobalIpRoute: GlobalIpRoute,
   HashRoute: HashRoute,
+  HtmlEncodeRoute: HtmlEncodeRoute,
   ImageBase64Route: ImageBase64Route,
   ImageCompressRoute: ImageCompressRoute,
   ImageCropRoute: ImageCropRoute,
