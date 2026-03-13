@@ -20,6 +20,7 @@ import { Route as UnitConverterRouteImport } from './routes/unit-converter'
 import { Route as TransparentImageRouteImport } from './routes/transparent-image'
 import { Route as TopRouteImport } from './routes/top'
 import { Route as TomlJsonRouteImport } from './routes/toml-json'
+import { Route as TimezoneRouteImport } from './routes/timezone'
 import { Route as TimestampRouteImport } from './routes/timestamp'
 import { Route as TextSortRouteImport } from './routes/text-sort'
 import { Route as TextCaseRouteImport } from './routes/text-case'
@@ -132,6 +133,11 @@ const TopRoute = TopRouteImport.update({
 const TomlJsonRoute = TomlJsonRouteImport.update({
   id: '/toml-json',
   path: '/toml-json',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TimezoneRoute = TimezoneRouteImport.update({
+  id: '/timezone',
+  path: '/timezone',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TimestampRoute = TimestampRouteImport.update({
@@ -480,6 +486,7 @@ export interface FileRoutesByFullPath {
   '/text-case': typeof TextCaseRoute
   '/text-sort': typeof TextSortRoute
   '/timestamp': typeof TimestampRoute
+  '/timezone': typeof TimezoneRoute
   '/toml-json': typeof TomlJsonRoute
   '/top': typeof TopRoute
   '/transparent-image': typeof TransparentImageRoute
@@ -551,6 +558,7 @@ export interface FileRoutesByTo {
   '/text-case': typeof TextCaseRoute
   '/text-sort': typeof TextSortRoute
   '/timestamp': typeof TimestampRoute
+  '/timezone': typeof TimezoneRoute
   '/toml-json': typeof TomlJsonRoute
   '/top': typeof TopRoute
   '/transparent-image': typeof TransparentImageRoute
@@ -623,6 +631,7 @@ export interface FileRoutesById {
   '/text-case': typeof TextCaseRoute
   '/text-sort': typeof TextSortRoute
   '/timestamp': typeof TimestampRoute
+  '/timezone': typeof TimezoneRoute
   '/toml-json': typeof TomlJsonRoute
   '/top': typeof TopRoute
   '/transparent-image': typeof TransparentImageRoute
@@ -696,6 +705,7 @@ export interface FileRouteTypes {
     | '/text-case'
     | '/text-sort'
     | '/timestamp'
+    | '/timezone'
     | '/toml-json'
     | '/top'
     | '/transparent-image'
@@ -767,6 +777,7 @@ export interface FileRouteTypes {
     | '/text-case'
     | '/text-sort'
     | '/timestamp'
+    | '/timezone'
     | '/toml-json'
     | '/top'
     | '/transparent-image'
@@ -838,6 +849,7 @@ export interface FileRouteTypes {
     | '/text-case'
     | '/text-sort'
     | '/timestamp'
+    | '/timezone'
     | '/toml-json'
     | '/top'
     | '/transparent-image'
@@ -910,6 +922,7 @@ export interface RootRouteChildren {
   TextCaseRoute: typeof TextCaseRoute
   TextSortRoute: typeof TextSortRoute
   TimestampRoute: typeof TimestampRoute
+  TimezoneRoute: typeof TimezoneRoute
   TomlJsonRoute: typeof TomlJsonRoute
   TopRoute: typeof TopRoute
   TransparentImageRoute: typeof TransparentImageRoute
@@ -1004,6 +1017,13 @@ declare module '@tanstack/react-router' {
       path: '/toml-json'
       fullPath: '/toml-json'
       preLoaderRoute: typeof TomlJsonRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/timezone': {
+      id: '/timezone'
+      path: '/timezone'
+      fullPath: '/timezone'
+      preLoaderRoute: typeof TimezoneRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/timestamp': {
@@ -1470,6 +1490,7 @@ const rootRouteChildren: RootRouteChildren = {
   TextCaseRoute: TextCaseRoute,
   TextSortRoute: TextSortRoute,
   TimestampRoute: TimestampRoute,
+  TimezoneRoute: TimezoneRoute,
   TomlJsonRoute: TomlJsonRoute,
   TopRoute: TopRoute,
   TransparentImageRoute: TransparentImageRoute,

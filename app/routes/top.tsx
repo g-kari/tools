@@ -146,6 +146,12 @@ const toolCatalog: ToolCategory[] = [
         description: "SQLクエリの整形・圧縮・構文検証ツール",
         icon: "🗄️",
       },
+      {
+        path: "/timezone",
+        label: "タイムゾーン変換",
+        description: "世界各地のタイムゾーン間で日時を変換",
+        icon: "🌍",
+      },
     ],
   },
   {
