@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
@@ -6,7 +7,17 @@ import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/color-picker")({
   head: () => ({
-    meta: [{ title: "カラーピッカー - カラーコード変換ツール" }],
+    meta: [
+    { title: "カラーピッカー | Web ツール集" },
+    { name: "description", content: "色を視覚的に選択し、HEX・RGB・HSL形式でコピーできるカラーピッカー。" },
+    { property: "og:title", content: "カラーピッカー | Web ツール集" },
+    { property: "og:description", content: "色を視覚的に選択し、HEX・RGB・HSL形式でコピーできるカラーピッカー。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/color-picker` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "カラーピッカー | Web ツール集" },
+    { name: "twitter:description", content: "色を視覚的に選択し、HEX・RGB・HSL形式でコピーできるカラーピッカー。" },
+  ],
   }),
   component: ColorPicker,
 });

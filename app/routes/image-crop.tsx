@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
@@ -8,7 +9,17 @@ import { formatFileSize, downloadBlob } from "~/utils/image";
 
 export const Route = createFileRoute("/image-crop")({
   head: () => ({
-    meta: [{ title: "画像トリミングツール" }],
+    meta: [
+    { title: "画像トリミング | Web ツール集" },
+    { name: "description", content: "画像を自由にトリミング（切り抜き）するオンラインツール。" },
+    { property: "og:title", content: "画像トリミング | Web ツール集" },
+    { property: "og:description", content: "画像を自由にトリミング（切り抜き）するオンラインツール。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/image-crop` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "画像トリミング | Web ツール集" },
+    { name: "twitter:description", content: "画像を自由にトリミング（切り抜き）するオンラインツール。" },
+  ],
   }),
   component: ImageCropper,
 });

@@ -4,6 +4,7 @@
  */
 
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useRef, useCallback, useEffect } from "react";
 import {
   isIPInCIDR,
@@ -22,7 +23,17 @@ import {
 
 export const Route = createFileRoute("/ip-cidr-check")({
   head: () => ({
-    meta: [{ title: "CIDR範囲チェック - Webツール集" }],
+    meta: [
+    { title: "IP/CIDRチェック | Web ツール集" },
+    { name: "description", content: "IPアドレスが指定したCIDRブロックの範囲内かどうかを確認するツール。" },
+    { property: "og:title", content: "IP/CIDRチェック | Web ツール集" },
+    { property: "og:description", content: "IPアドレスが指定したCIDRブロックの範囲内かどうかを確認するツール。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/ip-cidr-check` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "IP/CIDRチェック | Web ツール集" },
+    { name: "twitter:description", content: "IPアドレスが指定したCIDRブロックの範囲内かどうかを確認するツール。" },
+  ],
   }),
   component: IPCIDRCheck,
 });

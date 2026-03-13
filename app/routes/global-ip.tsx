@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { getGlobalIp, type GlobalIpResult } from "../functions/global-ip";
 import { Button } from "~/components/ui/button";
@@ -13,7 +14,17 @@ import { useClipboard } from "~/hooks/useClipboard";
 
 export const Route = createFileRoute("/global-ip")({
   head: () => ({
-    meta: [{ title: "グローバルIP確認ツール" }],
+    meta: [
+    { title: "グローバルIP確認 | Web ツール集" },
+    { name: "description", content: "アクセス元のグローバルIPアドレスを即座に確認できるツール。" },
+    { property: "og:title", content: "グローバルIP確認 | Web ツール集" },
+    { property: "og:description", content: "アクセス元のグローバルIPアドレスを即座に確認できるツール。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/global-ip` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "グローバルIP確認 | Web ツール集" },
+    { name: "twitter:description", content: "アクセス元のグローバルIPアドレスを即座に確認できるツール。" },
+  ],
   }),
   component: GlobalIpLookup,
 });

@@ -1,11 +1,22 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/dice-roll")({
   head: () => ({
-    meta: [{ title: "ダイスロールツール" }],
+    meta: [
+    { title: "サイコロ / 乱数生成 | Web ツール集" },
+    { name: "description", content: "サイコロの目や任意範囲の乱数を生成するツール。" },
+    { property: "og:title", content: "サイコロ / 乱数生成 | Web ツール集" },
+    { property: "og:description", content: "サイコロの目や任意範囲の乱数を生成するツール。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/dice-roll` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "サイコロ / 乱数生成 | Web ツール集" },
+    { name: "twitter:description", content: "サイコロの目や任意範囲の乱数を生成するツール。" },
+  ],
   }),
   component: DiceRoll,
 });

@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile, toBlobURL } from "@ffmpeg/util";
@@ -7,7 +8,17 @@ import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/image-to-gif")({
   head: () => ({
-    meta: [{ title: "画像→GIF変換ツール" }],
+    meta: [
+    { title: "画像→GIF変換 | Web ツール集" },
+    { name: "description", content: "複数の画像ファイルをアニメーションGIFに変換するツール。" },
+    { property: "og:title", content: "画像→GIF変換 | Web ツール集" },
+    { property: "og:description", content: "複数の画像ファイルをアニメーションGIFに変換するツール。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/image-to-gif` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "画像→GIF変換 | Web ツール集" },
+    { name: "twitter:description", content: "複数の画像ファイルをアニメーションGIFに変換するツール。" },
+  ],
   }),
   component: ImageToGifConverter,
 });

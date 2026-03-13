@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useEffect, useRef, useCallback } from "react";
 import {
   generatePassword,
@@ -20,7 +21,17 @@ import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 
 export const Route = createFileRoute("/password-generator")({
   head: () => ({
-    meta: [{ title: "パスワード生成ツール" }],
+    meta: [
+    { title: "パスワード生成ツール | Web ツール集" },
+    { name: "description", content: "安全なランダムパスワードをカスタマイズして生成。文字種・長さを自由設定。" },
+    { property: "og:title", content: "パスワード生成ツール | Web ツール集" },
+    { property: "og:description", content: "安全なランダムパスワードをカスタマイズして生成。文字種・長さを自由設定。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/password-generator` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "パスワード生成ツール | Web ツール集" },
+    { name: "twitter:description", content: "安全なランダムパスワードをカスタマイズして生成。文字種・長さを自由設定。" },
+  ],
   }),
   component: PasswordGenerator,
 });

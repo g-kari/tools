@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useEffect, useRef, useCallback } from "react";
 import {
   lookupDns,
@@ -12,7 +13,17 @@ import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/dns-lookup")({
   head: () => ({
-    meta: [{ title: "DNSレコード検索ツール" }],
+    meta: [
+    { title: "DNS検索 | Web ツール集" },
+    { name: "description", content: "ドメインのDNSレコード（A・AAAA・MX・TXT・CNAME等）を検索するツール。" },
+    { property: "og:title", content: "DNS検索 | Web ツール集" },
+    { property: "og:description", content: "ドメインのDNSレコード（A・AAAA・MX・TXT・CNAME等）を検索するツール。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/dns-lookup` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "DNS検索 | Web ツール集" },
+    { name: "twitter:description", content: "ドメインのDNSレコード（A・AAAA・MX・TXT・CNAME等）を検索するツール。" },
+  ],
   }),
   component: DnsLookup,
 });

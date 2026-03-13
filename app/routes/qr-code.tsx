@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useRef, useCallback, useEffect } from "react";
 import QRCode from "qrcode";
 import { Button } from "~/components/ui/button";
@@ -19,7 +20,17 @@ import {
 
 export const Route = createFileRoute("/qr-code")({
   head: () => ({
-    meta: [{ title: "QRコード生成ツール" }],
+    meta: [
+    { title: "QRコード生成 | Web ツール集" },
+    { name: "description", content: "テキストやURLからQRコードを即座に生成・ダウンロードできるツール。" },
+    { property: "og:title", content: "QRコード生成 | Web ツール集" },
+    { property: "og:description", content: "テキストやURLからQRコードを即座に生成・ダウンロードできるツール。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/qr-code` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "QRコード生成 | Web ツール集" },
+    { name: "twitter:description", content: "テキストやURLからQRコードを即座に生成・ダウンロードできるツール。" },
+  ],
   }),
   component: QrCodeGenerator,
 });

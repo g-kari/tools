@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { fetchOgp, type OgpData } from "../functions/ogp";
 import { Button } from "~/components/ui/button";
@@ -13,7 +14,17 @@ import {
 
 export const Route = createFileRoute("/ogp")({
   head: () => ({
-    meta: [{ title: "OGPチェッカー - Webツール集" }],
+    meta: [
+    { title: "OGPチェッカー | Web ツール集" },
+    { name: "description", content: "URLのOpen Graph Protocol情報を取得・プレビュー表示するツール。" },
+    { property: "og:title", content: "OGPチェッカー | Web ツール集" },
+    { property: "og:description", content: "URLのOpen Graph Protocol情報を取得・プレビュー表示するツール。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/ogp` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "OGPチェッカー | Web ツール集" },
+    { name: "twitter:description", content: "URLのOpen Graph Protocol情報を取得・プレビュー表示するツール。" },
+  ],
   }),
   component: OgpChecker,
 });

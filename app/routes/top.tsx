@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useMemo } from "react";
 
 /**
@@ -410,10 +411,14 @@ export const Route = createFileRoute("/top")({
   head: () => ({
     meta: [
       { title: "ツール一覧 | Web ツール集" },
-      {
-        name: "description",
-        content: "便利なWebツールを一覧から検索して利用できます",
-      },
+      { name: "description", content: "50以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
+      { property: "og:title", content: "ツール一覧 | Web ツール集" },
+      { property: "og:description", content: "50以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
+      { property: "og:url", content: `${SITE_BASE_URL}/top` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "ツール一覧 | Web ツール集" },
+      { name: "twitter:description", content: "50以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
     ],
   }),
   component: TopPage,

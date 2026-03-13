@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useEffect, useRef, useCallback } from "react";
 import {
   checkSecurityHeaders,
@@ -13,7 +14,17 @@ import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/security-headers")({
   head: () => ({
-    meta: [{ title: "セキュリティヘッダーチェック" }],
+    meta: [
+    { title: "セキュリティヘッダー確認 | Web ツール集" },
+    { name: "description", content: "WebサイトのHTTPセキュリティヘッダー（CSP・HSTS等）を確認するツール。" },
+    { property: "og:title", content: "セキュリティヘッダー確認 | Web ツール集" },
+    { property: "og:description", content: "WebサイトのHTTPセキュリティヘッダー（CSP・HSTS等）を確認するツール。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/security-headers` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "セキュリティヘッダー確認 | Web ツール集" },
+    { name: "twitter:description", content: "WebサイトのHTTPセキュリティヘッダー（CSP・HSTS等）を確認するツール。" },
+  ],
   }),
   component: SecurityHeadersChecker,
 });

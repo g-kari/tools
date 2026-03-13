@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile, toBlobURL } from "@ffmpeg/util";
@@ -7,7 +8,17 @@ import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/video-converter")({
   head: () => ({
-    meta: [{ title: "動画変換ツール" }],
+    meta: [
+    { title: "動画変換ツール | Web ツール集" },
+    { name: "description", content: "動画ファイルをMP4・WebM・GIF等の形式に変換するオンラインツール。" },
+    { property: "og:title", content: "動画変換ツール | Web ツール集" },
+    { property: "og:description", content: "動画ファイルをMP4・WebM・GIF等の形式に変換するオンラインツール。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/video-converter` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "動画変換ツール | Web ツール集" },
+    { name: "twitter:description", content: "動画ファイルをMP4・WebM・GIF等の形式に変換するオンラインツール。" },
+  ],
   }),
   component: VideoConverter,
 });

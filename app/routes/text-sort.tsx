@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
@@ -7,7 +8,17 @@ import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/text-sort")({
   head: () => ({
-    meta: [{ title: "テキストソート/重複削除 ツール" }],
+    meta: [
+    { title: "テキスト並び替え | Web ツール集" },
+    { name: "description", content: "テキストの行を昇順・降順・シャッフルで並び替えるツール。重複削除機能付き。" },
+    { property: "og:title", content: "テキスト並び替え | Web ツール集" },
+    { property: "og:description", content: "テキストの行を昇順・降順・シャッフルで並び替えるツール。重複削除機能付き。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/text-sort` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "テキスト並び替え | Web ツール集" },
+    { name: "twitter:description", content: "テキストの行を昇順・降順・シャッフルで並び替えるツール。重複削除機能付き。" },
+  ],
   }),
   component: TextSortTool,
 });

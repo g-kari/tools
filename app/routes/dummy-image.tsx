@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
@@ -9,7 +10,17 @@ import {
 
 export const Route = createFileRoute("/dummy-image")({
   head: () => ({
-    meta: [{ title: "ダミー画像生成ツール" }],
+    meta: [
+    { title: "ダミー画像生成 | Web ツール集" },
+    { name: "description", content: "開発・デザイン用プレースホルダー画像を任意のサイズで生成するツール。" },
+    { property: "og:title", content: "ダミー画像生成 | Web ツール集" },
+    { property: "og:description", content: "開発・デザイン用プレースホルダー画像を任意のサイズで生成するツール。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/dummy-image` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "ダミー画像生成 | Web ツール集" },
+    { name: "twitter:description", content: "開発・デザイン用プレースホルダー画像を任意のサイズで生成するツール。" },
+  ],
   }),
   component: DummyImageGenerator,
 });

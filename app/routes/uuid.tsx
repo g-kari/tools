@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
@@ -11,7 +12,17 @@ import { useClipboard } from "~/hooks/useClipboard";
 
 export const Route = createFileRoute("/uuid")({
   head: () => ({
-    meta: [{ title: "UUID生成ツール" }],
+    meta: [
+    { title: "UUID生成ツール | Web ツール集" },
+    { name: "description", content: "UUID v4をワンクリックで生成。複数同時生成・コピー機能付き。" },
+    { property: "og:title", content: "UUID生成ツール | Web ツール集" },
+    { property: "og:description", content: "UUID v4をワンクリックで生成。複数同時生成・コピー機能付き。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/uuid` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "UUID生成ツール | Web ツール集" },
+    { name: "twitter:description", content: "UUID v4をワンクリックで生成。複数同時生成・コピー機能付き。" },
+  ],
   }),
   component: UuidGenerator,
 });

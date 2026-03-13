@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { decodeJWT, type DecodedJWT } from "../utils/jwt";
 import { Button } from "~/components/ui/button";
@@ -14,7 +15,17 @@ import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 
 export const Route = createFileRoute("/jwt")({
   head: () => ({
-    meta: [{ title: "JWT デコーダー" }],
+    meta: [
+    { title: "JWTデコーダー | Web ツール集" },
+    { name: "description", content: "JWTトークンのヘッダー・ペイロードをデコード・検証するオンラインツール。" },
+    { property: "og:title", content: "JWTデコーダー | Web ツール集" },
+    { property: "og:description", content: "JWTトークンのヘッダー・ペイロードをデコード・検証するオンラインツール。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/jwt` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "JWTデコーダー | Web ツール集" },
+    { name: "twitter:description", content: "JWTトークンのヘッダー・ペイロードをデコード・検証するオンラインツール。" },
+  ],
   }),
   component: JwtDecoder,
 });

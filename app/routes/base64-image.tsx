@@ -4,6 +4,7 @@
  */
 
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useRef, useCallback } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
@@ -14,7 +15,17 @@ import { useClipboard } from "~/hooks/useClipboard";
 
 export const Route = createFileRoute("/base64-image")({
   head: () => ({
-    meta: [{ title: "Base64画像デコード" }],
+    meta: [
+    { title: "Base64画像デコード | Web ツール集" },
+    { name: "description", content: "Base64文字列またはData URIを画像としてプレビュー・変換するツール。" },
+    { property: "og:title", content: "Base64画像デコード | Web ツール集" },
+    { property: "og:description", content: "Base64文字列またはData URIを画像としてプレビュー・変換するツール。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/base64-image` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "Base64画像デコード | Web ツール集" },
+    { name: "twitter:description", content: "Base64文字列またはData URIを画像としてプレビュー・変換するツール。" },
+  ],
   }),
   component: Base64ImageDecoder,
 });

@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile, toBlobURL } from "@ffmpeg/util";
@@ -8,7 +9,17 @@ import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/audio-converter")({
   head: () => ({
-    meta: [{ title: "オーディオ変換ツール" }],
+    meta: [
+    { title: "音声変換ツール | Web ツール集" },
+    { name: "description", content: "音声ファイルをMP3・WAV・OGG等の形式に変換するオンラインツール。" },
+    { property: "og:title", content: "音声変換ツール | Web ツール集" },
+    { property: "og:description", content: "音声ファイルをMP3・WAV・OGG等の形式に変換するオンラインツール。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/audio-converter` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "音声変換ツール | Web ツール集" },
+    { name: "twitter:description", content: "音声ファイルをMP3・WAV・OGG等の形式に変換するオンラインツール。" },
+  ],
   }),
   component: AudioConverter,
 });

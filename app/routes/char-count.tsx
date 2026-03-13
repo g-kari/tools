@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useCallback } from "react";
 import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
@@ -6,7 +7,17 @@ import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/char-count")({
   head: () => ({
-    meta: [{ title: "文字数カウント" }],
+    meta: [
+    { title: "文字数カウント | Web ツール集" },
+    { name: "description", content: "テキストの文字数・単語数・行数・バイト数をリアルタイムでカウントするツール。" },
+    { property: "og:title", content: "文字数カウント | Web ツール集" },
+    { property: "og:description", content: "テキストの文字数・単語数・行数・バイト数をリアルタイムでカウントするツール。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/char-count` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "文字数カウント | Web ツール集" },
+    { name: "twitter:description", content: "テキストの文字数・単語数・行数・バイト数をリアルタイムでカウントするツール。" },
+  ],
   }),
   component: CharCountPage,
 });

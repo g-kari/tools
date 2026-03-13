@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
@@ -12,7 +13,17 @@ import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 
 export const Route = createFileRoute("/base64")({
   head: () => ({
-    meta: [{ title: "Base64 エンコード/デコード ツール" }],
+    meta: [
+    { title: "Base64エンコード・デコード | Web ツール集" },
+    { name: "description", content: "テキストをBase64形式にエンコード・デコードするオンラインツール。" },
+    { property: "og:title", content: "Base64エンコード・デコード | Web ツール集" },
+    { property: "og:description", content: "テキストをBase64形式にエンコード・デコードするオンラインツール。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/base64` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "Base64エンコード・デコード | Web ツール集" },
+    { name: "twitter:description", content: "テキストをBase64形式にエンコード・デコードするオンラインツール。" },
+  ],
   }),
   component: Base64Converter,
 });

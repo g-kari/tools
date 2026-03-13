@@ -1,11 +1,22 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/color-extractor")({
   head: () => ({
-    meta: [{ title: "カラーコード抽出ツール" }],
+    meta: [
+    { title: "画像カラー抽出 | Web ツール集" },
+    { name: "description", content: "画像から主要な色（カラーパレット）を抽出するツール。" },
+    { property: "og:title", content: "画像カラー抽出 | Web ツール集" },
+    { property: "og:description", content: "画像から主要な色（カラーパレット）を抽出するツール。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/color-extractor` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "画像カラー抽出 | Web ツール集" },
+    { name: "twitter:description", content: "画像から主要な色（カラーパレット）を抽出するツール。" },
+  ],
   }),
   component: ColorExtractor,
 });

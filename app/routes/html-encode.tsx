@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
@@ -12,7 +13,17 @@ import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 
 export const Route = createFileRoute("/html-encode")({
   head: () => ({
-    meta: [{ title: "HTML エンコード/デコード - Web Tools" }],
+    meta: [
+    { title: "HTMLエスケープ変換 | Web ツール集" },
+    { name: "description", content: "HTML特殊文字（&amp;, &lt;, &gt;, &quot;）のエスケープ・アンエスケープ変換ツール。" },
+    { property: "og:title", content: "HTMLエスケープ変換 | Web ツール集" },
+    { property: "og:description", content: "HTML特殊文字（&amp;, &lt;, &gt;, &quot;）のエスケープ・アンエスケープ変換ツール。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/html-encode` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "HTMLエスケープ変換 | Web ツール集" },
+    { name: "twitter:description", content: "HTML特殊文字（&amp;, &lt;, &gt;, &quot;）のエスケープ・アンエスケープ変換ツール。" },
+  ],
   }),
   component: HtmlEncoder,
 });

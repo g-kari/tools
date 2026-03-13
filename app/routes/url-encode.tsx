@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
@@ -12,7 +13,17 @@ import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 
 export const Route = createFileRoute("/url-encode")({
   head: () => ({
-    meta: [{ title: "URL エンコード/デコード ツール" }],
+    meta: [
+    { title: "URLエンコード・デコード | Web ツール集" },
+    { name: "description", content: "URL文字列のパーセントエンコード・デコードをブラウザ上で即座に変換できるツール。" },
+    { property: "og:title", content: "URLエンコード・デコード | Web ツール集" },
+    { property: "og:description", content: "URL文字列のパーセントエンコード・デコードをブラウザ上で即座に変換できるツール。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/url-encode` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "URLエンコード・デコード | Web ツール集" },
+    { name: "twitter:description", content: "URL文字列のパーセントエンコード・デコードをブラウザ上で即座に変換できるツール。" },
+  ],
   }),
   component: UrlEncoder,
 });

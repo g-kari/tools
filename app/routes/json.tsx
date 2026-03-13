@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { formatJson, minifyJson } from "../utils/json";
 import { useToast } from "../components/Toast";
@@ -14,7 +15,17 @@ import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 
 export const Route = createFileRoute("/json")({
   head: () => ({
-    meta: [{ title: "JSON フォーマッター" }],
+    meta: [
+    { title: "JSON整形・検証 | Web ツール集" },
+    { name: "description", content: "JSONデータの整形・バリデーション・圧縮ができるオンラインツール。" },
+    { property: "og:title", content: "JSON整形・検証 | Web ツール集" },
+    { property: "og:description", content: "JSONデータの整形・バリデーション・圧縮ができるオンラインツール。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/json` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "JSON整形・検証 | Web ツール集" },
+    { name: "twitter:description", content: "JSONデータの整形・バリデーション・圧縮ができるオンラインツール。" },
+  ],
   }),
   component: JsonFormatter,
 });

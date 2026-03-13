@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useCallback, useEffect, useRef } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
@@ -13,7 +14,17 @@ import {
 
 export const Route = createFileRoute("/discord-sticker")({
   head: () => ({
-    meta: [{ title: "Discordスタンプコンバーター" }],
+    meta: [
+    { title: "Discordスタンプコンバーター | Web ツール集" },
+    { name: "description", content: "PNG/JPG画像をDiscordスタンプサイズ（320x320px・512KB以下）に変換するツール。" },
+    { property: "og:title", content: "Discordスタンプコンバーター | Web ツール集" },
+    { property: "og:description", content: "PNG/JPG画像をDiscordスタンプサイズ（320x320px・512KB以下）に変換するツール。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/discord-sticker` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "Discordスタンプコンバーター | Web ツール集" },
+    { name: "twitter:description", content: "PNG/JPG画像をDiscordスタンプサイズ（320x320px・512KB以下）に変換するツール。" },
+  ],
   }),
   component: DiscordStickerConverter,
 });

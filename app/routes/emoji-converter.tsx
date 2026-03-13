@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { loadFFmpeg, convertImagesToGif } from "./image-to-gif";
@@ -19,7 +20,17 @@ import {
 
 export const Route = createFileRoute("/emoji-converter")({
   head: () => ({
-    meta: [{ title: "絵文字コンバーター" }],
+    meta: [
+    { title: "絵文字変換ツール | Web ツール集" },
+    { name: "description", content: "絵文字のUnicodeコードポイント変換や各種形式への変換ツール。" },
+    { property: "og:title", content: "絵文字変換ツール | Web ツール集" },
+    { property: "og:description", content: "絵文字のUnicodeコードポイント変換や各種形式への変換ツール。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/emoji-converter` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "絵文字変換ツール | Web ツール集" },
+    { name: "twitter:description", content: "絵文字のUnicodeコードポイント変換や各種形式への変換ツール。" },
+  ],
   }),
   component: EmojiConverter,
 });

@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useRef, useCallback } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
@@ -10,7 +11,17 @@ import { useClipboard } from "~/hooks/useClipboard";
 
 export const Route = createFileRoute("/image-base64")({
   head: () => ({
-    meta: [{ title: "画像Base64変換ツール" }],
+    meta: [
+    { title: "画像→Base64変換 | Web ツール集" },
+    { name: "description", content: "画像ファイルをBase64文字列またはData URIに変換するツール。" },
+    { property: "og:title", content: "画像→Base64変換 | Web ツール集" },
+    { property: "og:description", content: "画像ファイルをBase64文字列またはData URIに変換するツール。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/image-base64` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "画像→Base64変換 | Web ツール集" },
+    { name: "twitter:description", content: "画像ファイルをBase64文字列またはData URIに変換するツール。" },
+  ],
   }),
   component: ImageBase64Converter,
 });

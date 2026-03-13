@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useCallback, useRef, useEffect } from "react";
 import { useToast } from "../components/Toast";
 import {
@@ -15,7 +16,17 @@ import { useClipboard } from "~/hooks/useClipboard";
 
 export const Route = createFileRoute("/minify")({
   head: () => ({
-    meta: [{ title: "コード圧縮ツール (Minify)" }],
+    meta: [
+    { title: "コード圧縮（Minify） | Web ツール集" },
+    { name: "description", content: "HTML・CSS・JavaScriptコードを圧縮（Minify）するオンラインツール。" },
+    { property: "og:title", content: "コード圧縮（Minify） | Web ツール集" },
+    { property: "og:description", content: "HTML・CSS・JavaScriptコードを圧縮（Minify）するオンラインツール。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/minify` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "コード圧縮（Minify） | Web ツール集" },
+    { name: "twitter:description", content: "HTML・CSS・JavaScriptコードを圧縮（Minify）するオンラインツール。" },
+  ],
     scripts: [
       // Terser - JavaScript minifier
       {

@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
@@ -6,7 +7,17 @@ import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/transparent-image")({
   head: () => ({
-    meta: [{ title: "画像透過ツール" }],
+    meta: [
+    { title: "背景透過ツール | Web ツール集" },
+    { name: "description", content: "画像の背景を透過（透明化）するオンラインツール。" },
+    { property: "og:title", content: "背景透過ツール | Web ツール集" },
+    { property: "og:description", content: "画像の背景を透過（透明化）するオンラインツール。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/transparent-image` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "背景透過ツール | Web ツール集" },
+    { name: "twitter:description", content: "画像の背景を透過（透明化）するオンラインツール。" },
+  ],
   }),
   component: TransparentImageProcessor,
 });

@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useCallback, useRef, useEffect } from "react";
 import {
   checkPorts,
@@ -20,7 +21,17 @@ import {
 
 export const Route = createFileRoute("/port-check")({
   head: () => ({
-    meta: [{ title: "ポートチェックツール" }],
+    meta: [
+    { title: "ポートチェック | Web ツール集" },
+    { name: "description", content: "指定したホスト・IPアドレスのポートが開いているか確認するツール。" },
+    { property: "og:title", content: "ポートチェック | Web ツール集" },
+    { property: "og:description", content: "指定したホスト・IPアドレスのポートが開いているか確認するツール。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/port-check` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "ポートチェック | Web ツール集" },
+    { name: "twitter:description", content: "指定したホスト・IPアドレスのポートが開いているか確認するツール。" },
+  ],
   }),
   component: PortCheck,
 });

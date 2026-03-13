@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useEffect, useRef, useCallback } from "react";
 import {
   lookupIpGeolocation,
@@ -17,7 +18,17 @@ import {
 
 export const Route = createFileRoute("/ip-geolocation")({
   head: () => ({
-    meta: [{ title: "IPアドレス位置情報検索ツール" }],
+    meta: [
+    { title: "IPジオロケーション | Web ツール集" },
+    { name: "description", content: "IPアドレスから地理情報（国・都市・ISP等）を取得するオンラインツール。" },
+    { property: "og:title", content: "IPジオロケーション | Web ツール集" },
+    { property: "og:description", content: "IPアドレスから地理情報（国・都市・ISP等）を取得するオンラインツール。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/ip-geolocation` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "IPジオロケーション | Web ツール集" },
+    { name: "twitter:description", content: "IPアドレスから地理情報（国・都市・ISP等）を取得するオンラインツール。" },
+  ],
   }),
   component: IpGeolocationLookup,
 });

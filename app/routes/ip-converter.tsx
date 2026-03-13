@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { convertIP, type IPConversionResult } from "../utils/ip-converter";
 import { Button } from "~/components/ui/button";
@@ -7,7 +8,17 @@ import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/ip-converter")({
   head: () => ({
-    meta: [{ title: "IP変換 - Webツール集" }],
+    meta: [
+    { title: "IPアドレス変換 | Web ツール集" },
+    { name: "description", content: "IPアドレスをドット記法・整数・16進数に変換するツール。" },
+    { property: "og:title", content: "IPアドレス変換 | Web ツール集" },
+    { property: "og:description", content: "IPアドレスをドット記法・整数・16進数に変換するツール。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/ip-converter` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "IPアドレス変換 | Web ツール集" },
+    { name: "twitter:description", content: "IPアドレスをドット記法・整数・16進数に変換するツール。" },
+  ],
   }),
   component: IPConverter,
 });

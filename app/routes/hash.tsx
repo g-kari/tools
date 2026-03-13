@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
@@ -14,7 +15,17 @@ import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 
 export const Route = createFileRoute("/hash")({
   head: () => ({
-    meta: [{ title: "ハッシュ生成ツール" }],
+    meta: [
+    { title: "ハッシュ生成 | Web ツール集" },
+    { name: "description", content: "テキストのMD5・SHA-1・SHA-256・SHA-512ハッシュ値を生成するツール。" },
+    { property: "og:title", content: "ハッシュ生成 | Web ツール集" },
+    { property: "og:description", content: "テキストのMD5・SHA-1・SHA-256・SHA-512ハッシュ値を生成するツール。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/hash` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "ハッシュ生成 | Web ツール集" },
+    { name: "twitter:description", content: "テキストのMD5・SHA-1・SHA-256・SHA-512ハッシュ値を生成するツール。" },
+  ],
   }),
   component: HashGenerator,
 });

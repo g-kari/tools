@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { useToast } from "../components/Toast";
 import JSZip from "jszip";
@@ -7,7 +8,17 @@ import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/favicon-generator")({
   head: () => ({
-    meta: [{ title: "Favicon生成ツール" }],
+    meta: [
+    { title: "ファビコン生成 | Web ツール集" },
+    { name: "description", content: "画像からfavicon.icoを生成するツール。複数サイズ対応。" },
+    { property: "og:title", content: "ファビコン生成 | Web ツール集" },
+    { property: "og:description", content: "画像からfavicon.icoを生成するツール。複数サイズ対応。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/favicon-generator` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "ファビコン生成 | Web ツール集" },
+    { name: "twitter:description", content: "画像からfavicon.icoを生成するツール。複数サイズ対応。" },
+  ],
   }),
   component: FaviconGenerator,
 });

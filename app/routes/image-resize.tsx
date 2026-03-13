@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useRef, useCallback, useEffect, useMemo } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
@@ -14,7 +15,17 @@ import {
 
 export const Route = createFileRoute("/image-resize")({
   head: () => ({
-    meta: [{ title: "画像リサイズ・トリミングツール" }],
+    meta: [
+    { title: "画像リサイズ | Web ツール集" },
+    { name: "description", content: "画像を任意サイズにリサイズするブラウザ上で動作するツール。" },
+    { property: "og:title", content: "画像リサイズ | Web ツール集" },
+    { property: "og:description", content: "画像を任意サイズにリサイズするブラウザ上で動作するツール。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/image-resize` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "画像リサイズ | Web ツール集" },
+    { name: "twitter:description", content: "画像を任意サイズにリサイズするブラウザ上で動作するツール。" },
+  ],
   }),
   component: ImageResizer,
 });

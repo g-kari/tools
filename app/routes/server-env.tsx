@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useEffect, useCallback } from "react";
 import {
   getServerEnv,
@@ -16,7 +17,17 @@ import {
 
 export const Route = createFileRoute("/server-env")({
   head: () => ({
-    meta: [{ title: "サーバー環境情報" }],
+    meta: [
+    { title: "サーバー環境情報 | Web ツール集" },
+    { name: "description", content: "アクセス時のサーバー環境・リクエスト情報を表示するツール。" },
+    { property: "og:title", content: "サーバー環境情報 | Web ツール集" },
+    { property: "og:description", content: "アクセス時のサーバー環境・リクエスト情報を表示するツール。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/server-env` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "サーバー環境情報 | Web ツール集" },
+    { name: "twitter:description", content: "アクセス時のサーバー環境・リクエスト情報を表示するツール。" },
+  ],
   }),
   component: ServerEnvPage,
 });

@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { phpSerialize, phpUnserialize } from "../utils/php-serialize";
 import { useToast } from "../components/Toast";
@@ -14,7 +15,17 @@ import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 
 export const Route = createFileRoute("/php-serialize")({
   head: () => ({
-    meta: [{ title: "PHP シリアライズ/アンシリアライズ - Web Tools" }],
+    meta: [
+    { title: "PHPシリアライズ変換 | Web ツール集" },
+    { name: "description", content: "JSON ↔ PHPシリアライズ文字列の相互変換ツール。外部ライブラリ不要。" },
+    { property: "og:title", content: "PHPシリアライズ変換 | Web ツール集" },
+    { property: "og:description", content: "JSON ↔ PHPシリアライズ文字列の相互変換ツール。外部ライブラリ不要。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/php-serialize` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "PHPシリアライズ変換 | Web ツール集" },
+    { name: "twitter:description", content: "JSON ↔ PHPシリアライズ文字列の相互変換ツール。外部ライブラリ不要。" },
+  ],
   }),
   component: PhpSerializeConverter,
 });

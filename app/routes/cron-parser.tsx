@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
@@ -8,7 +9,17 @@ import { useToast } from "../components/Toast";
 
 export const Route = createFileRoute("/cron-parser")({
   head: () => ({
-    meta: [{ title: "Cronスケジュールパーサー" }],
+    meta: [
+    { title: "Cron式パーサー | Web ツール集" },
+    { name: "description", content: "Cron式を人間が読みやすい形式に変換・次回実行時刻を表示するツール。" },
+    { property: "og:title", content: "Cron式パーサー | Web ツール集" },
+    { property: "og:description", content: "Cron式を人間が読みやすい形式に変換・次回実行時刻を表示するツール。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/cron-parser` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "Cron式パーサー | Web ツール集" },
+    { name: "twitter:description", content: "Cron式を人間が読みやすい形式に変換・次回実行時刻を表示するツール。" },
+  ],
   }),
   component: CronParser,
 });

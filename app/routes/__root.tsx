@@ -9,6 +9,12 @@ import {
 import { type ReactNode, useState, useRef, useCallback, useEffect } from "react";
 import appCss from "../styles.css?url";
 import { ToastProvider } from "../components/Toast";
+import {
+  SITE_NAME,
+  SITE_BASE_URL,
+  SITE_DESCRIPTION,
+  SITE_OGP_IMAGE,
+} from "../constants/site";
 
 const navCategories = [
   {
@@ -117,6 +123,19 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1.0" },
+      { name: "description", content: SITE_DESCRIPTION },
+      { property: "og:title", content: SITE_NAME },
+      { property: "og:description", content: SITE_DESCRIPTION },
+      { property: "og:url", content: SITE_BASE_URL },
+      { property: "og:site_name", content: SITE_NAME },
+      { property: "og:type", content: "website" },
+      { property: "og:locale", content: "ja_JP" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:image:alt", content: SITE_NAME },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: SITE_OGP_IMAGE },
     ],
     links: [
       { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },

@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useCallback, useEffect, useRef } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
@@ -14,7 +15,17 @@ import {
 
 export const Route = createFileRoute("/discord-emoji")({
   head: () => ({
-    meta: [{ title: "Discord絵文字コンバーター" }],
+    meta: [
+    { title: "Discord絵文字コンバーター | Web ツール集" },
+    { name: "description", content: "PNG/JPG画像をDiscord絵文字サイズ（最大128x128px・256KB以下）に変換するツール。" },
+    { property: "og:title", content: "Discord絵文字コンバーター | Web ツール集" },
+    { property: "og:description", content: "PNG/JPG画像をDiscord絵文字サイズ（最大128x128px・256KB以下）に変換するツール。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/discord-emoji` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "Discord絵文字コンバーター | Web ツール集" },
+    { name: "twitter:description", content: "PNG/JPG画像をDiscord絵文字サイズ（最大128x128px・256KB以下）に変換するツール。" },
+  ],
   }),
   component: DiscordEmojiConverter,
 });

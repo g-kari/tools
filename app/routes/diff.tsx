@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
@@ -12,7 +13,17 @@ import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 
 export const Route = createFileRoute("/diff")({
   head: () => ({
-    meta: [{ title: "テキスト差分チェッカー" }],
+    meta: [
+    { title: "テキスト差分比較 | Web ツール集" },
+    { name: "description", content: "2つのテキストの差分を視覚的に比較するDiff表示ツール。" },
+    { property: "og:title", content: "テキスト差分比較 | Web ツール集" },
+    { property: "og:description", content: "2つのテキストの差分を視覚的に比較するDiff表示ツール。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/diff` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "テキスト差分比較 | Web ツール集" },
+    { name: "twitter:description", content: "2つのテキストの差分を視覚的に比較するDiff表示ツール。" },
+  ],
   }),
   component: DiffChecker,
 });

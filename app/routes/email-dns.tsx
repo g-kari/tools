@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { lookupEmailDNS, DOMAIN_REGEX, type EmailDNSResult } from "../functions/email-dns";
 import { Button } from "~/components/ui/button";
@@ -7,7 +8,17 @@ import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/email-dns")({
   head: () => ({
-    meta: [{ title: "メールDNS検証ツール" }],
+    meta: [
+    { title: "メールDNS検証 | Web ツール集" },
+    { name: "description", content: "ドメインのSPF・DKIM・DMARCレコードを確認するメールセキュリティ検証ツール。" },
+    { property: "og:title", content: "メールDNS検証 | Web ツール集" },
+    { property: "og:description", content: "ドメインのSPF・DKIM・DMARCレコードを確認するメールセキュリティ検証ツール。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/email-dns` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "メールDNS検証 | Web ツール集" },
+    { name: "twitter:description", content: "ドメインのSPF・DKIM・DMARCレコードを確認するメールセキュリティ検証ツール。" },
+  ],
   }),
   component: EmailDNSChecker,
 });

@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useCallback, useEffect, useRef } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
@@ -11,7 +12,17 @@ import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 
 export const Route = createFileRoute("/timestamp")({
   head: () => ({
-    meta: [{ title: "タイムスタンプ変換ツール" }],
+    meta: [
+    { title: "Unixタイムスタンプ変換 | Web ツール集" },
+    { name: "description", content: "Unixタイムスタンプと日時の相互変換ツール。" },
+    { property: "og:title", content: "Unixタイムスタンプ変換 | Web ツール集" },
+    { property: "og:description", content: "Unixタイムスタンプと日時の相互変換ツール。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/timestamp` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "Unixタイムスタンプ変換 | Web ツール集" },
+    { name: "twitter:description", content: "Unixタイムスタンプと日時の相互変換ツール。" },
+  ],
   }),
   component: TimestampConverter,
 });

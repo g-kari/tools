@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useRef, useCallback, useEffect } from "react";
 import {
   isValidCIDR,
@@ -11,7 +12,17 @@ import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/cidr")({
   head: () => ({
-    meta: [{ title: "CIDR計算 - Webツール集" }],
+    meta: [
+    { title: "CIDR計算ツール | Web ツール集" },
+    { name: "description", content: "CIDRブロックからネットワークアドレス・ブロードキャスト・IPレンジを計算するツール。" },
+    { property: "og:title", content: "CIDR計算ツール | Web ツール集" },
+    { property: "og:description", content: "CIDRブロックからネットワークアドレス・ブロードキャスト・IPレンジを計算するツール。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/cidr` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "CIDR計算ツール | Web ツール集" },
+    { name: "twitter:description", content: "CIDRブロックからネットワークアドレス・ブロードキャスト・IPレンジを計算するツール。" },
+  ],
   }),
   component: CIDRCalculator,
 });

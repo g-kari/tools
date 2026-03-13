@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useCallback, useRef, useEffect } from "react";
 import {
   UNIT_CATEGORIES,
@@ -15,7 +16,17 @@ import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/unit-converter")({
   head: () => ({
-    meta: [{ title: "単位変換ツール" }],
+    meta: [
+    { title: "単位変換ツール | Web ツール集" },
+    { name: "description", content: "長さ・重さ・温度・面積・速度など各種単位の変換ツール。" },
+    { property: "og:title", content: "単位変換ツール | Web ツール集" },
+    { property: "og:description", content: "長さ・重さ・温度・面積・速度など各種単位の変換ツール。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/unit-converter` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "単位変換ツール | Web ツール集" },
+    { name: "twitter:description", content: "長さ・重さ・温度・面積・速度など各種単位の変換ツール。" },
+  ],
   }),
   component: UnitConverter,
 });

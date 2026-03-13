@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { lookupWhois, type WhoisResult } from "../functions/whois";
 import { useToast } from "../components/Toast";
@@ -14,7 +15,17 @@ import {
 
 export const Route = createFileRoute("/whois")({
   head: () => ({
-    meta: [{ title: "WHOIS検索ツール" }],
+    meta: [
+    { title: "WHOIS検索 | Web ツール集" },
+    { name: "description", content: "ドメイン名のWHOIS情報を検索・表示するオンラインツール。" },
+    { property: "og:title", content: "WHOIS検索 | Web ツール集" },
+    { property: "og:description", content: "ドメイン名のWHOIS情報を検索・表示するオンラインツール。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/whois` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "WHOIS検索 | Web ツール集" },
+    { name: "twitter:description", content: "ドメイン名のWHOIS情報を検索・表示するオンラインツール。" },
+  ],
   }),
   component: WhoisLookup,
 });

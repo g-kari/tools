@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useCallback, useEffect, useRef } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
@@ -11,7 +12,17 @@ import JSZip from "jszip";
 
 export const Route = createFileRoute("/image-compress")({
   head: () => ({
-    meta: [{ title: "画像圧縮ツール" }],
+    meta: [
+    { title: "画像圧縮ツール | Web ツール集" },
+    { name: "description", content: "PNG・JPEG画像をブラウザ上で圧縮・最適化。複数ファイル対応・ZIP一括ダウンロード。" },
+    { property: "og:title", content: "画像圧縮ツール | Web ツール集" },
+    { property: "og:description", content: "PNG・JPEG画像をブラウザ上で圧縮・最適化。複数ファイル対応・ZIP一括ダウンロード。" },
+    { property: "og:url", content: `${SITE_BASE_URL}/image-compress` },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: SITE_OGP_IMAGE },
+    { name: "twitter:title", content: "画像圧縮ツール | Web ツール集" },
+    { name: "twitter:description", content: "PNG・JPEG画像をブラウザ上で圧縮・最適化。複数ファイル対応・ZIP一括ダウンロード。" },
+  ],
   }),
   component: ImageCompressor,
 });
