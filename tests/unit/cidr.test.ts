@@ -121,6 +121,11 @@ describe("CIDR Utilities", () => {
         "192.168.1.255"
       );
     });
+
+    it("should handle /0 (0.0.0.0/0) broadcast address correctly", () => {
+      // JavaScriptの `1 << 32` は `1` になるバグを修正した特殊ケース
+      expect(calculateBroadcastAddress("0.0.0.0", 0)).toBe("255.255.255.255");
+    });
   });
 
   describe("calculateFirstUsableIP and calculateLastUsableIP", () => {

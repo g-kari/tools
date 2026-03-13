@@ -215,7 +215,7 @@ function parseRdapResponse(data: RdapResponse, domain: string): WhoisResult {
   if (data.nameservers) {
     result.nameServers = data.nameservers
       .map((ns) => ns.ldhName)
-      .filter(Boolean);
+      .filter((ns): ns is string => Boolean(ns));
   }
 
   if (data.entities) {

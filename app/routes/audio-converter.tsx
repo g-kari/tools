@@ -337,7 +337,7 @@ function AudioConverter() {
               accept="audio/*"
               onChange={handleFileChange}
               aria-describedby="file-help"
-              style={{ display: "none" }}
+              className="hidden-file-input"
             />
 
             {sourceFile && (
@@ -388,7 +388,7 @@ function AudioConverter() {
                 <option value="64">64 (最低品質)</option>
               </select>
               {format === "wav" && (
-                <p style={{ fontSize: "12px", color: "var(--md-sys-color-on-surface-variant)", marginTop: "4px" }}>
+                <p className="audio-wav-note">
                   ※ WAV形式ではビットレート設定は使用されません
                 </p>
               )}
@@ -438,25 +438,15 @@ function AudioConverter() {
                 {isLoading ? "読み込み中..." : `変換進捗: ${progress}%`}
               </label>
               <div
-                style={{
-                  width: "100%",
-                  height: "8px",
-                  backgroundColor: "var(--md-sys-color-surface-variant)",
-                  borderRadius: "4px",
-                  overflow: "hidden",
-                }}
+                className="audio-progress-bar"
                 role="progressbar"
                 aria-valuenow={progress}
                 aria-valuemin={0}
                 aria-valuemax={100}
               >
                 <div
-                  style={{
-                    width: `${progress}%`,
-                    height: "100%",
-                    backgroundColor: "var(--md-sys-color-primary)",
-                    transition: "width 0.3s ease",
-                  }}
+                  className="audio-progress-bar-fill"
+                  style={{ "--audio-progress-width": `${progress}%` } as React.CSSProperties}
                 />
               </div>
             </div>
@@ -485,23 +475,18 @@ function AudioConverter() {
           </div>
 
           {convertedUrl && (
-            <div style={{ marginTop: "30px" }}>
+            <div className="audio-result-section">
               <h3 className="section-title">変換結果</h3>
               <audio
                 controls
                 src={convertedUrl}
-                style={{ width: "100%", marginBottom: "12px" }}
+                className="audio-result-player"
                 aria-label="変換されたオーディオのプレビュー"
               />
               <a
                 href={convertedUrl}
                 download={convertedFilename}
-                className="btn-secondary"
-                style={{
-                  display: "inline-block",
-                  textDecoration: "none",
-                  textAlign: "center",
-                }}
+                className="btn-secondary audio-download-link"
                 aria-label={`変換されたファイル ${convertedFilename} をダウンロード`}
               >
                 ダウンロード ({convertedFilename})
