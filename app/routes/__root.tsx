@@ -55,6 +55,8 @@ const navCategories = [
       { path: "/color-picker", label: "カラーピッカー" },
       { path: "/image-to-gif", label: "画像→GIF変換" },
       { path: "/emoji-converter", label: "絵文字変換" },
+      { path: "/discord-emoji", label: "Discord絵文字" },
+      { path: "/discord-sticker", label: "Discordスタンプ" },
     ],
   },
   {
