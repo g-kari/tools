@@ -46,6 +46,7 @@ import { Route as DummyAudioRouteImport } from './routes/dummy-audio'
 import { Route as DnsLookupRouteImport } from './routes/dns-lookup'
 import { Route as DiffRouteImport } from './routes/diff'
 import { Route as DiceRollRouteImport } from './routes/dice-roll'
+import { Route as CronParserRouteImport } from './routes/cron-parser'
 import { Route as ColorPickerRouteImport } from './routes/color-picker'
 import { Route as ColorExtractorRouteImport } from './routes/color-extractor'
 import { Route as CidrRouteImport } from './routes/cidr'
@@ -244,6 +245,11 @@ const DiceRollRoute = DiceRollRouteImport.update({
   path: '/dice-roll',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CronParserRoute = CronParserRouteImport.update({
+  id: '/cron-parser',
+  path: '/cron-parser',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ColorPickerRoute = ColorPickerRouteImport.update({
   id: '/color-picker',
   path: '/color-picker',
@@ -314,6 +320,7 @@ export interface FileRoutesByFullPath {
   '/cidr': typeof CidrRoute
   '/color-extractor': typeof ColorExtractorRoute
   '/color-picker': typeof ColorPickerRoute
+  '/cron-parser': typeof CronParserRoute
   '/dice-roll': typeof DiceRollRoute
   '/diff': typeof DiffRoute
   '/dns-lookup': typeof DnsLookupRoute
@@ -365,6 +372,7 @@ export interface FileRoutesByTo {
   '/cidr': typeof CidrRoute
   '/color-extractor': typeof ColorExtractorRoute
   '/color-picker': typeof ColorPickerRoute
+  '/cron-parser': typeof CronParserRoute
   '/dice-roll': typeof DiceRollRoute
   '/diff': typeof DiffRoute
   '/dns-lookup': typeof DnsLookupRoute
@@ -417,6 +425,7 @@ export interface FileRoutesById {
   '/cidr': typeof CidrRoute
   '/color-extractor': typeof ColorExtractorRoute
   '/color-picker': typeof ColorPickerRoute
+  '/cron-parser': typeof CronParserRoute
   '/dice-roll': typeof DiceRollRoute
   '/diff': typeof DiffRoute
   '/dns-lookup': typeof DnsLookupRoute
@@ -470,6 +479,7 @@ export interface FileRouteTypes {
     | '/cidr'
     | '/color-extractor'
     | '/color-picker'
+    | '/cron-parser'
     | '/dice-roll'
     | '/diff'
     | '/dns-lookup'
@@ -521,6 +531,7 @@ export interface FileRouteTypes {
     | '/cidr'
     | '/color-extractor'
     | '/color-picker'
+    | '/cron-parser'
     | '/dice-roll'
     | '/diff'
     | '/dns-lookup'
@@ -572,6 +583,7 @@ export interface FileRouteTypes {
     | '/cidr'
     | '/color-extractor'
     | '/color-picker'
+    | '/cron-parser'
     | '/dice-roll'
     | '/diff'
     | '/dns-lookup'
@@ -624,6 +636,7 @@ export interface RootRouteChildren {
   CidrRoute: typeof CidrRoute
   ColorExtractorRoute: typeof ColorExtractorRoute
   ColorPickerRoute: typeof ColorPickerRoute
+  CronParserRoute: typeof CronParserRoute
   DiceRollRoute: typeof DiceRollRoute
   DiffRoute: typeof DiffRoute
   DnsLookupRoute: typeof DnsLookupRoute
@@ -928,6 +941,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DiceRollRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/cron-parser': {
+      id: '/cron-parser'
+      path: '/cron-parser'
+      fullPath: '/cron-parser'
+      preLoaderRoute: typeof CronParserRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/color-picker': {
       id: '/color-picker'
       path: '/color-picker'
@@ -1024,6 +1044,7 @@ const rootRouteChildren: RootRouteChildren = {
   CidrRoute: CidrRoute,
   ColorExtractorRoute: ColorExtractorRoute,
   ColorPickerRoute: ColorPickerRoute,
+  CronParserRoute: CronParserRoute,
   DiceRollRoute: DiceRollRoute,
   DiffRoute: DiffRoute,
   DnsLookupRoute: DnsLookupRoute,

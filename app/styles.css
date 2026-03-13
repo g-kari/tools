@@ -6837,3 +6837,102 @@ a:focus-visible {
     grid-template-columns: 1fr;
   }
 }
+
+/* ==============================
+   Cron Parser Styles
+   ============================== */
+
+/** フィールドラベル（分 時 日 月 曜日） */
+.cron-field-labels {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.cron-field-labels span {
+  flex: 1;
+  text-align: center;
+  max-width: 60px;
+}
+
+/** バリデーションエラー表示 */
+.cron-error-message {
+  margin-top: 8px;
+  padding: 10px 14px;
+  background: #fdecea;
+  border-left: 4px solid #c62828;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  color: #c62828;
+}
+
+/** Cron式の日本語説明 */
+.cron-description {
+  margin-top: 8px;
+  padding: 10px 14px;
+  background: var(--md-sys-color-primary-container);
+  border-left: 4px solid var(--md-sys-color-primary);
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: var(--md-sys-color-on-primary-container);
+  font-weight: 500;
+}
+
+/** 次回実行時刻リスト */
+.cron-next-times {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cron-next-time-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: var(--md-sys-color-surface-variant);
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.cron-next-time-item:hover {
+  background: var(--md-sys-color-outline-variant);
+}
+
+.cron-next-time-index {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.cron-next-time-value {
+  font-family: 'Space Mono', 'Roboto Mono', monospace;
+  font-size: 0.9rem;
+  color: var(--md-sys-color-on-surface);
+}
+
+/** 実行予定なし表示 */
+.cron-no-times {
+  padding: 16px;
+  text-align: center;
+  color: var(--md-sys-color-on-surface-variant);
+  background: var(--md-sys-color-surface-variant);
+  border-radius: 4px;
+  font-style: italic;
+}

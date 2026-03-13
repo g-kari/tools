@@ -86,6 +86,7 @@ const navCategories = [
       { path: "/email-dns", label: "メールDNS" },
       { path: "/hash", label: "ハッシュ生成" },
       { path: "/security-headers", label: "セキュリティヘッダー" },
+      { path: "/cron-parser", label: "Cron式パーサー" },
     ],
   },
   {
