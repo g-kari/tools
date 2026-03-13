@@ -114,6 +114,7 @@ const navCategories = [
       { path: "/ip-cidr-check", label: "CIDR範囲チェック" },
       { path: "/ip-converter", label: "IP変換" },
       { path: "/port-check", label: "ポートチェック" },
+      { path: "/chmod", label: "Chmod計算" },
     ],
   },
   {

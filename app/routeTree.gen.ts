@@ -62,6 +62,7 @@ import { Route as ColorPickerRouteImport } from './routes/color-picker'
 import { Route as ColorExtractorRouteImport } from './routes/color-extractor'
 import { Route as ColorContrastRouteImport } from './routes/color-contrast'
 import { Route as CidrRouteImport } from './routes/cidr'
+import { Route as ChmodRouteImport } from './routes/chmod'
 import { Route as CharCountRouteImport } from './routes/char-count'
 import { Route as Base64ImageRouteImport } from './routes/base64-image'
 import { Route as Base64RouteImport } from './routes/base64'
@@ -337,6 +338,11 @@ const CidrRoute = CidrRouteImport.update({
   path: '/cidr',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ChmodRoute = ChmodRouteImport.update({
+  id: '/chmod',
+  path: '/chmod',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CharCountRoute = CharCountRouteImport.update({
   id: '/char-count',
   path: '/char-count',
@@ -389,6 +395,7 @@ export interface FileRoutesByFullPath {
   '/base64': typeof Base64Route
   '/base64-image': typeof Base64ImageRoute
   '/char-count': typeof CharCountRoute
+  '/chmod': typeof ChmodRoute
   '/cidr': typeof CidrRoute
   '/color-contrast': typeof ColorContrastRoute
   '/color-extractor': typeof ColorExtractorRoute
@@ -453,6 +460,7 @@ export interface FileRoutesByTo {
   '/base64': typeof Base64Route
   '/base64-image': typeof Base64ImageRoute
   '/char-count': typeof CharCountRoute
+  '/chmod': typeof ChmodRoute
   '/cidr': typeof CidrRoute
   '/color-contrast': typeof ColorContrastRoute
   '/color-extractor': typeof ColorExtractorRoute
@@ -518,6 +526,7 @@ export interface FileRoutesById {
   '/base64': typeof Base64Route
   '/base64-image': typeof Base64ImageRoute
   '/char-count': typeof CharCountRoute
+  '/chmod': typeof ChmodRoute
   '/cidr': typeof CidrRoute
   '/color-contrast': typeof ColorContrastRoute
   '/color-extractor': typeof ColorExtractorRoute
@@ -584,6 +593,7 @@ export interface FileRouteTypes {
     | '/base64'
     | '/base64-image'
     | '/char-count'
+    | '/chmod'
     | '/cidr'
     | '/color-contrast'
     | '/color-extractor'
@@ -648,6 +658,7 @@ export interface FileRouteTypes {
     | '/base64'
     | '/base64-image'
     | '/char-count'
+    | '/chmod'
     | '/cidr'
     | '/color-contrast'
     | '/color-extractor'
@@ -712,6 +723,7 @@ export interface FileRouteTypes {
     | '/base64'
     | '/base64-image'
     | '/char-count'
+    | '/chmod'
     | '/cidr'
     | '/color-contrast'
     | '/color-extractor'
@@ -777,6 +789,7 @@ export interface RootRouteChildren {
   Base64Route: typeof Base64Route
   Base64ImageRoute: typeof Base64ImageRoute
   CharCountRoute: typeof CharCountRoute
+  ChmodRoute: typeof ChmodRoute
   CidrRoute: typeof CidrRoute
   ColorContrastRoute: typeof ColorContrastRoute
   ColorExtractorRoute: typeof ColorExtractorRoute
@@ -1209,6 +1222,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CidrRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/chmod': {
+      id: '/chmod'
+      path: '/chmod'
+      fullPath: '/chmod'
+      preLoaderRoute: typeof ChmodRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/char-count': {
       id: '/char-count'
       path: '/char-count'
@@ -1281,6 +1301,7 @@ const rootRouteChildren: RootRouteChildren = {
   Base64Route: Base64Route,
   Base64ImageRoute: Base64ImageRoute,
   CharCountRoute: CharCountRoute,
+  ChmodRoute: ChmodRoute,
   CidrRoute: CidrRoute,
   ColorContrastRoute: ColorContrastRoute,
   ColorExtractorRoute: ColorExtractorRoute,

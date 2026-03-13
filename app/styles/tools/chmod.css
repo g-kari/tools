@@ -1,0 +1,393 @@
+/* Chmod計算ツール */
+
+.chmod-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* 入力フィールド（数値・シンボリック） */
+.chmod-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.chmod-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.chmod-input-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+  letter-spacing: 0.02em;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  text-transform: uppercase;
+}
+
+.chmod-input {
+  padding: 0.625rem 0.875rem;
+  border: 1.5px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 1rem;
+  background-color: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  transition: border-color 0.2s, background-color 0.2s;
+  letter-spacing: 0.1em;
+  width: 100%;
+}
+
+.chmod-input:focus {
+  border-color: var(--md-sys-color-primary);
+  background-color: var(--md-sys-color-surface);
+}
+.chmod-input:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.chmod-input.error {
+  border-color: #c62828;
+  background-color: #ffebee;
+}
+
+.chmod-input::placeholder {
+  color: var(--md-sys-color-on-surface-variant);
+  opacity: 0.5;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+}
+
+.chmod-input-error {
+  font-size: 0.8125rem;
+  color: #c62828;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+/* チェックボックスグリッド（Owner/Group/Others） */
+.chmod-grid {
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.chmod-grid-header {
+  display: grid;
+  grid-template-columns: 6rem repeat(3, 1fr);
+  background: var(--md-sys-color-primary-container);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.chmod-grid-header-cell {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-primary-container);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-align: center;
+}
+
+.chmod-grid-header-cell:first-child {
+  text-align: left;
+}
+
+.chmod-grid-row {
+  display: grid;
+  grid-template-columns: 6rem repeat(3, 1fr);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  transition: background-color 0.2s;
+}
+
+.chmod-grid-row:last-child {
+  border-bottom: none;
+}
+
+.chmod-grid-row:hover {
+  background-color: var(--md-sys-color-outline-variant);
+  opacity: 0.6;
+}
+
+.chmod-row-label {
+  padding: 0.625rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  display: flex;
+  align-items: center;
+}
+
+.chmod-checkbox-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.625rem 0.5rem;
+}
+
+.chmod-checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  cursor: pointer;
+}
+
+.chmod-checkbox-item input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+  accent-color: var(--md-sys-color-primary);
+}
+
+.chmod-checkbox-item-label {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  cursor: pointer;
+}
+
+/* 特殊ビットセクション */
+.chmod-special {
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  padding: 0.875rem 1rem;
+}
+
+.chmod-special-title {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.625rem;
+}
+
+.chmod-special-items {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.chmod-special-item {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  cursor: pointer;
+}
+
+.chmod-special-item input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+  accent-color: var(--md-sys-color-primary);
+}
+
+.chmod-special-item-label {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  cursor: pointer;
+}
+
+/* 結果表示エリア */
+.chmod-result {
+  background: var(--md-sys-color-primary-container);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-left: 4px solid var(--md-sys-color-primary);
+  border-radius: 4px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.chmod-result-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.chmod-result-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-primary-container);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  min-width: 5rem;
+  opacity: 0.7;
+}
+
+.chmod-octal {
+  font-size: 2rem;
+  font-weight: 700;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  color: var(--md-sys-color-on-primary-container);
+  letter-spacing: 0.1em;
+}
+
+.chmod-symbolic {
+  font-size: 1.125rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  color: var(--md-sys-color-on-primary-container);
+  letter-spacing: 0.15em;
+}
+
+.chmod-command {
+  font-size: 0.9375rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  color: var(--md-sys-color-on-primary-container);
+  letter-spacing: 0.05em;
+  flex: 1;
+}
+
+.chmod-copy-btn {
+  padding: 0.4rem 0.875rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+
+.chmod-copy-btn:hover {
+  opacity: 0.85;
+}
+
+.chmod-copy-btn:active {
+  opacity: 0.7;
+}
+
+.chmod-copy-btn:focus-visible,
+.chmod-preset-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 3px;
+}
+
+/* プリセットボタン群 */
+.chmod-presets {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.chmod-presets-title {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.chmod-presets-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.chmod-preset-btn {
+  padding: 0.4rem 0.875rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  background-color: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s, opacity 0.2s;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.chmod-preset-btn:hover {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  border-color: var(--md-sys-color-outline);
+}
+
+.chmod-preset-btn:active {
+  opacity: 0.7;
+}
+
+.chmod-preset-value {
+  font-weight: 700;
+  color: var(--md-sys-color-primary);
+}
+
+.chmod-preset-desc {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+@media (max-width: 600px) {
+  .chmod-grid-header {
+    grid-template-columns: 4.5rem repeat(3, 1fr);
+  }
+
+  .chmod-grid-row {
+    grid-template-columns: 4.5rem repeat(3, 1fr);
+  }
+
+  .chmod-grid-header-cell {
+    padding: 0.375rem 0.25rem;
+    font-size: 0.75rem;
+  }
+
+  .chmod-row-label {
+    padding: 0.5rem 0.375rem;
+    font-size: 0.75rem;
+  }
+
+  .chmod-octal {
+    font-size: 1.5rem;
+  }
+
+  .chmod-symbolic {
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
+  }
+
+  .chmod-special-items {
+    gap: 1rem;
+  }
+
+  .chmod-result-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.375rem;
+  }
+
+  .chmod-command {
+    font-size: 0.8125rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chmod-input,
+  .chmod-grid-row,
+  .chmod-copy-btn,
+  .chmod-preset-btn {
+    transition: none;
+  }
+}
