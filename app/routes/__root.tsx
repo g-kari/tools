@@ -22,7 +22,6 @@ const navCategories = [
       { path: "/base64", label: "Base64変換" },
       { path: "/base64-image", label: "Base64画像デコード" },
       { path: "/json", label: "JSON整形" },
-      { path: "/msgpack", label: "MessagePack" },
       { path: "/php-serialize", label: "PHPシリアライズ" },
       { path: "/minify", label: "コード圧縮" },
       { path: "/unit-converter", label: "単位変換" },
@@ -312,6 +311,14 @@ function RootDocument({ children }: { children: ReactNode }) {
               <h1>Web ツール集</h1>
               <p className="subtitle">便利なWebツールを提供します</p>
               <nav className="nav-categories" aria-label="ツールナビゲーション">
+                <Link
+                  to="/top"
+                  className={`nav-home-link ${pathname === "/top" ? "active" : ""}`}
+                  aria-label="ツール一覧ホームへ"
+                >
+                  <span aria-hidden="true">🏠</span>
+                  <span>ホーム</span>
+                </Link>
                 {navCategories.map((category) => (
                   <NavCategory
                     key={category.name}

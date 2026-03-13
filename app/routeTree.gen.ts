@@ -15,6 +15,7 @@ import { Route as UuidRouteImport } from './routes/uuid'
 import { Route as UrlEncodeRouteImport } from './routes/url-encode'
 import { Route as UnitConverterRouteImport } from './routes/unit-converter'
 import { Route as TransparentImageRouteImport } from './routes/transparent-image'
+import { Route as TopRouteImport } from './routes/top'
 import { Route as TextSortRouteImport } from './routes/text-sort'
 import { Route as ServerEnvRouteImport } from './routes/server-env'
 import { Route as SecurityHeadersRouteImport } from './routes/security-headers'
@@ -44,6 +45,8 @@ import { Route as EmailDnsRouteImport } from './routes/email-dns'
 import { Route as DummyImageRouteImport } from './routes/dummy-image'
 import { Route as DummyAudioRouteImport } from './routes/dummy-audio'
 import { Route as DnsLookupRouteImport } from './routes/dns-lookup'
+import { Route as DiscordStickerRouteImport } from './routes/discord-sticker'
+import { Route as DiscordEmojiRouteImport } from './routes/discord-emoji'
 import { Route as DiffRouteImport } from './routes/diff'
 import { Route as DiceRollRouteImport } from './routes/dice-roll'
 import { Route as CronParserRouteImport } from './routes/cron-parser'
@@ -88,6 +91,11 @@ const UnitConverterRoute = UnitConverterRouteImport.update({
 const TransparentImageRoute = TransparentImageRouteImport.update({
   id: '/transparent-image',
   path: '/transparent-image',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TopRoute = TopRouteImport.update({
+  id: '/top',
+  path: '/top',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TextSortRoute = TextSortRouteImport.update({
@@ -235,6 +243,16 @@ const DnsLookupRoute = DnsLookupRouteImport.update({
   path: '/dns-lookup',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DiscordStickerRoute = DiscordStickerRouteImport.update({
+  id: '/discord-sticker',
+  path: '/discord-sticker',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DiscordEmojiRoute = DiscordEmojiRouteImport.update({
+  id: '/discord-emoji',
+  path: '/discord-emoji',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DiffRoute = DiffRouteImport.update({
   id: '/diff',
   path: '/diff',
@@ -323,6 +341,8 @@ export interface FileRoutesByFullPath {
   '/cron-parser': typeof CronParserRoute
   '/dice-roll': typeof DiceRollRoute
   '/diff': typeof DiffRoute
+  '/discord-emoji': typeof DiscordEmojiRoute
+  '/discord-sticker': typeof DiscordStickerRoute
   '/dns-lookup': typeof DnsLookupRoute
   '/dummy-audio': typeof DummyAudioRoute
   '/dummy-image': typeof DummyImageRoute
@@ -352,6 +372,7 @@ export interface FileRoutesByFullPath {
   '/security-headers': typeof SecurityHeadersRoute
   '/server-env': typeof ServerEnvRoute
   '/text-sort': typeof TextSortRoute
+  '/top': typeof TopRoute
   '/transparent-image': typeof TransparentImageRoute
   '/unit-converter': typeof UnitConverterRoute
   '/url-encode': typeof UrlEncodeRoute
@@ -375,6 +396,8 @@ export interface FileRoutesByTo {
   '/cron-parser': typeof CronParserRoute
   '/dice-roll': typeof DiceRollRoute
   '/diff': typeof DiffRoute
+  '/discord-emoji': typeof DiscordEmojiRoute
+  '/discord-sticker': typeof DiscordStickerRoute
   '/dns-lookup': typeof DnsLookupRoute
   '/dummy-audio': typeof DummyAudioRoute
   '/dummy-image': typeof DummyImageRoute
@@ -404,6 +427,7 @@ export interface FileRoutesByTo {
   '/security-headers': typeof SecurityHeadersRoute
   '/server-env': typeof ServerEnvRoute
   '/text-sort': typeof TextSortRoute
+  '/top': typeof TopRoute
   '/transparent-image': typeof TransparentImageRoute
   '/unit-converter': typeof UnitConverterRoute
   '/url-encode': typeof UrlEncodeRoute
@@ -428,6 +452,8 @@ export interface FileRoutesById {
   '/cron-parser': typeof CronParserRoute
   '/dice-roll': typeof DiceRollRoute
   '/diff': typeof DiffRoute
+  '/discord-emoji': typeof DiscordEmojiRoute
+  '/discord-sticker': typeof DiscordStickerRoute
   '/dns-lookup': typeof DnsLookupRoute
   '/dummy-audio': typeof DummyAudioRoute
   '/dummy-image': typeof DummyImageRoute
@@ -457,6 +483,7 @@ export interface FileRoutesById {
   '/security-headers': typeof SecurityHeadersRoute
   '/server-env': typeof ServerEnvRoute
   '/text-sort': typeof TextSortRoute
+  '/top': typeof TopRoute
   '/transparent-image': typeof TransparentImageRoute
   '/unit-converter': typeof UnitConverterRoute
   '/url-encode': typeof UrlEncodeRoute
@@ -482,6 +509,8 @@ export interface FileRouteTypes {
     | '/cron-parser'
     | '/dice-roll'
     | '/diff'
+    | '/discord-emoji'
+    | '/discord-sticker'
     | '/dns-lookup'
     | '/dummy-audio'
     | '/dummy-image'
@@ -511,6 +540,7 @@ export interface FileRouteTypes {
     | '/security-headers'
     | '/server-env'
     | '/text-sort'
+    | '/top'
     | '/transparent-image'
     | '/unit-converter'
     | '/url-encode'
@@ -534,6 +564,8 @@ export interface FileRouteTypes {
     | '/cron-parser'
     | '/dice-roll'
     | '/diff'
+    | '/discord-emoji'
+    | '/discord-sticker'
     | '/dns-lookup'
     | '/dummy-audio'
     | '/dummy-image'
@@ -563,6 +595,7 @@ export interface FileRouteTypes {
     | '/security-headers'
     | '/server-env'
     | '/text-sort'
+    | '/top'
     | '/transparent-image'
     | '/unit-converter'
     | '/url-encode'
@@ -586,6 +619,8 @@ export interface FileRouteTypes {
     | '/cron-parser'
     | '/dice-roll'
     | '/diff'
+    | '/discord-emoji'
+    | '/discord-sticker'
     | '/dns-lookup'
     | '/dummy-audio'
     | '/dummy-image'
@@ -615,6 +650,7 @@ export interface FileRouteTypes {
     | '/security-headers'
     | '/server-env'
     | '/text-sort'
+    | '/top'
     | '/transparent-image'
     | '/unit-converter'
     | '/url-encode'
@@ -639,6 +675,8 @@ export interface RootRouteChildren {
   CronParserRoute: typeof CronParserRoute
   DiceRollRoute: typeof DiceRollRoute
   DiffRoute: typeof DiffRoute
+  DiscordEmojiRoute: typeof DiscordEmojiRoute
+  DiscordStickerRoute: typeof DiscordStickerRoute
   DnsLookupRoute: typeof DnsLookupRoute
   DummyAudioRoute: typeof DummyAudioRoute
   DummyImageRoute: typeof DummyImageRoute
@@ -668,6 +706,7 @@ export interface RootRouteChildren {
   SecurityHeadersRoute: typeof SecurityHeadersRoute
   ServerEnvRoute: typeof ServerEnvRoute
   TextSortRoute: typeof TextSortRoute
+  TopRoute: typeof TopRoute
   TransparentImageRoute: typeof TransparentImageRoute
   UnitConverterRoute: typeof UnitConverterRoute
   UrlEncodeRoute: typeof UrlEncodeRoute
@@ -722,6 +761,13 @@ declare module '@tanstack/react-router' {
       path: '/transparent-image'
       fullPath: '/transparent-image'
       preLoaderRoute: typeof TransparentImageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/top': {
+      id: '/top'
+      path: '/top'
+      fullPath: '/top'
+      preLoaderRoute: typeof TopRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/text-sort': {
@@ -927,6 +973,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DnsLookupRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/discord-sticker': {
+      id: '/discord-sticker'
+      path: '/discord-sticker'
+      fullPath: '/discord-sticker'
+      preLoaderRoute: typeof DiscordStickerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/discord-emoji': {
+      id: '/discord-emoji'
+      path: '/discord-emoji'
+      fullPath: '/discord-emoji'
+      preLoaderRoute: typeof DiscordEmojiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/diff': {
       id: '/diff'
       path: '/diff'
@@ -1047,6 +1107,8 @@ const rootRouteChildren: RootRouteChildren = {
   CronParserRoute: CronParserRoute,
   DiceRollRoute: DiceRollRoute,
   DiffRoute: DiffRoute,
+  DiscordEmojiRoute: DiscordEmojiRoute,
+  DiscordStickerRoute: DiscordStickerRoute,
   DnsLookupRoute: DnsLookupRoute,
   DummyAudioRoute: DummyAudioRoute,
   DummyImageRoute: DummyImageRoute,
@@ -1076,6 +1138,7 @@ const rootRouteChildren: RootRouteChildren = {
   SecurityHeadersRoute: SecurityHeadersRoute,
   ServerEnvRoute: ServerEnvRoute,
   TextSortRoute: TextSortRoute,
+  TopRoute: TopRoute,
   TransparentImageRoute: TransparentImageRoute,
   UnitConverterRoute: UnitConverterRoute,
   UrlEncodeRoute: UrlEncodeRoute,
