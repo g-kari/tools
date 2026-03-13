@@ -1,0 +1,317 @@
+/* ハッシュ生成ツール */
+
+/* 出力形式切り替えタブ */
+.hash-format-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.hash-format-tab {
+  flex: 1;
+  padding: 0.5rem 1rem;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: background 0.2s, color 0.2s;
+}
+
+.hash-format-tab:hover:not(.active) {
+  background: var(--md-sys-color-outline-variant);
+  opacity: 0.85;
+}
+
+.hash-format-tab.active {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+/* ハッシュ結果グリッド */
+.hash-results-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* 各ハッシュ結果アイテム */
+.hash-result-item {
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: border-color 0.2s;
+}
+
+.hash-result-item:hover {
+  border-color: var(--md-sys-color-outline);
+}
+
+/* アルゴリズム名とバッジのヘッダー */
+.hash-result-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.hash-result-algorithm {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--md-sys-color-primary);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+}
+
+/* セキュリティ非推奨バッジ */
+.hash-result-badge {
+  font-size: 0.625rem;
+  padding: 0.125rem 0.375rem;
+  border-radius: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-weight: 500;
+}
+
+.hash-result-badge-deprecated {
+  background: #fff3e0;
+  color: #e65100;
+  border: 1px solid #ffb74d;
+}
+
+/* ハッシュ値表示エリア */
+.hash-result-value-wrapper {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.hash-result-value {
+  flex: 1;
+  background: var(--md-sys-color-surface);
+  padding: 0.5rem 0.75rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.8rem;
+  color: var(--md-sys-color-on-surface);
+  word-break: break-all;
+  line-height: 1.6;
+  min-height: 2.5rem;
+  display: flex;
+  align-items: center;
+  border: none;
+}
+
+.hash-result-value-empty {
+  color: var(--md-sys-color-on-surface-variant);
+  font-style: italic;
+}
+
+/* コピーボタン */
+.hash-copy-btn {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border: none;
+  border-left: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 0;
+  padding: 0.5rem 0.875rem;
+  font-size: 0.75rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, opacity 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.hash-copy-btn:hover:not(:disabled) {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  opacity: 0.85;
+}
+
+.hash-copy-btn:active:not(:disabled) {
+  opacity: 0.7;
+}
+
+.hash-copy-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* 空の状態 */
+.hash-empty-state {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  color: var(--md-sys-color-on-surface-variant);
+  background: var(--md-sys-color-surface-variant);
+  border: 1px dashed var(--md-sys-color-outline);
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.hash-empty-state p {
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* ファイルドロップゾーン */
+.hash-dropzone {
+  border: 2px dashed var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-variant);
+  padding: 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  margin-top: 1rem;
+}
+
+.hash-dropzone:hover,
+.hash-dropzone.dragging {
+  border-color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-primary-container);
+}
+
+.hash-dropzone-label {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.375rem;
+  cursor: pointer;
+}
+
+.hash-dropzone.dragging .hash-dropzone-label {
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.hash-dropzone-icon {
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.hash-dropzone-hint {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-top: 0.25rem;
+}
+
+.hash-file-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  font-size: 0.875rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  margin-top: 0.5rem;
+}
+
+.hash-file-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hash-file-size {
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.hash-file-clear-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--md-sys-color-on-primary-container);
+  font-size: 1rem;
+  padding: 0 0.25rem;
+  flex-shrink: 0;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.hash-file-clear-btn:hover {
+  opacity: 1;
+}
+
+/* ビジー状態（ハッシュ計算中） */
+.hash-result-computing {
+  color: var(--md-sys-color-on-surface-variant);
+  font-style: italic;
+  font-size: 0.8rem;
+}
+
+/* セクション区切り */
+.hash-section-divider {
+  border: none;
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+  margin: 1.5rem 0;
+}
+
+/* 入力タブ（テキスト/ファイル切り替え） */
+.hash-input-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 0.75rem;
+  border-bottom: 2px solid var(--md-sys-color-outline-variant);
+}
+
+.hash-input-tab {
+  padding: 0.5rem 1rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+  transition: color 0.2s, border-color 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+}
+
+.hash-input-tab:hover:not(.active) {
+  color: var(--md-sys-color-on-surface);
+}
+
+.hash-input-tab.active {
+  color: var(--md-sys-color-primary);
+  border-bottom-color: var(--md-sys-color-primary);
+}
+
+/* ハッシュ長の表示 */
+.hash-result-meta {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+}
+
+@media (max-width: 480px) {
+  .hash-result-value {
+    font-size: 0.75rem;
+  }
+
+  .hash-format-tab {
+    font-size: 0.75rem;
+    padding: 0.5rem 0.5rem;
+  }
+}

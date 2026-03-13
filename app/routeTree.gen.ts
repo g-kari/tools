@@ -19,6 +19,7 @@ import { Route as TransparentImageRouteImport } from './routes/transparent-image
 import { Route as TopRouteImport } from './routes/top'
 import { Route as TimestampRouteImport } from './routes/timestamp'
 import { Route as TextSortRouteImport } from './routes/text-sort'
+import { Route as TextCaseRouteImport } from './routes/text-case'
 import { Route as ServerEnvRouteImport } from './routes/server-env'
 import { Route as SecurityHeadersRouteImport } from './routes/security-headers'
 import { Route as RegexCheckerRouteImport } from './routes/regex-checker'
@@ -119,6 +120,11 @@ const TimestampRoute = TimestampRouteImport.update({
 const TextSortRoute = TextSortRouteImport.update({
   id: '/text-sort',
   path: '/text-sort',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TextCaseRoute = TextCaseRouteImport.update({
+  id: '/text-case',
+  path: '/text-case',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ServerEnvRoute = ServerEnvRouteImport.update({
@@ -425,6 +431,7 @@ export interface FileRoutesByFullPath {
   '/regex-checker': typeof RegexCheckerRoute
   '/security-headers': typeof SecurityHeadersRoute
   '/server-env': typeof ServerEnvRoute
+  '/text-case': typeof TextCaseRoute
   '/text-sort': typeof TextSortRoute
   '/timestamp': typeof TimestampRoute
   '/top': typeof TopRoute
@@ -488,6 +495,7 @@ export interface FileRoutesByTo {
   '/regex-checker': typeof RegexCheckerRoute
   '/security-headers': typeof SecurityHeadersRoute
   '/server-env': typeof ServerEnvRoute
+  '/text-case': typeof TextCaseRoute
   '/text-sort': typeof TextSortRoute
   '/timestamp': typeof TimestampRoute
   '/top': typeof TopRoute
@@ -552,6 +560,7 @@ export interface FileRoutesById {
   '/regex-checker': typeof RegexCheckerRoute
   '/security-headers': typeof SecurityHeadersRoute
   '/server-env': typeof ServerEnvRoute
+  '/text-case': typeof TextCaseRoute
   '/text-sort': typeof TextSortRoute
   '/timestamp': typeof TimestampRoute
   '/top': typeof TopRoute
@@ -617,6 +626,7 @@ export interface FileRouteTypes {
     | '/regex-checker'
     | '/security-headers'
     | '/server-env'
+    | '/text-case'
     | '/text-sort'
     | '/timestamp'
     | '/top'
@@ -680,6 +690,7 @@ export interface FileRouteTypes {
     | '/regex-checker'
     | '/security-headers'
     | '/server-env'
+    | '/text-case'
     | '/text-sort'
     | '/timestamp'
     | '/top'
@@ -743,6 +754,7 @@ export interface FileRouteTypes {
     | '/regex-checker'
     | '/security-headers'
     | '/server-env'
+    | '/text-case'
     | '/text-sort'
     | '/timestamp'
     | '/top'
@@ -807,6 +819,7 @@ export interface RootRouteChildren {
   RegexCheckerRoute: typeof RegexCheckerRoute
   SecurityHeadersRoute: typeof SecurityHeadersRoute
   ServerEnvRoute: typeof ServerEnvRoute
+  TextCaseRoute: typeof TextCaseRoute
   TextSortRoute: typeof TextSortRoute
   TimestampRoute: typeof TimestampRoute
   TopRoute: typeof TopRoute
@@ -893,6 +906,13 @@ declare module '@tanstack/react-router' {
       path: '/text-sort'
       fullPath: '/text-sort'
       preLoaderRoute: typeof TextSortRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/text-case': {
+      id: '/text-case'
+      path: '/text-case'
+      fullPath: '/text-case'
+      preLoaderRoute: typeof TextCaseRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/server-env': {
@@ -1303,6 +1323,7 @@ const rootRouteChildren: RootRouteChildren = {
   RegexCheckerRoute: RegexCheckerRoute,
   SecurityHeadersRoute: SecurityHeadersRoute,
   ServerEnvRoute: ServerEnvRoute,
+  TextCaseRoute: TextCaseRoute,
   TextSortRoute: TextSortRoute,
   TimestampRoute: TimestampRoute,
   TopRoute: TopRoute,
