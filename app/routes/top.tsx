@@ -157,6 +157,12 @@ const toolCatalog: ToolCategory[] = [
         description: "テキスト・URLからQRコードを生成",
         icon: "📱",
       },
+      {
+        path: "/lorem-ipsum",
+        label: "Lorem Ipsum",
+        description: "ダミーテキストの生成（段落・単語数・文数対応）",
+        icon: "📝",
+      },
     ],
   },
   {

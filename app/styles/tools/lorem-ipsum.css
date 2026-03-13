@@ -1,0 +1,181 @@
+/* Lorem Ipsum Generator Styles */
+
+.lorem-ipsum-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.lorem-ipsum-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.lorem-ipsum-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.lorem-ipsum-select,
+.lorem-ipsum-input {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background-color: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  font-size: 1rem;
+  transition: border-color 0.2s;
+  max-width: 400px;
+}
+
+.lorem-ipsum-select:focus,
+.lorem-ipsum-input:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  background-color: var(--md-sys-color-surface);
+}
+
+.lorem-ipsum-select:focus-visible,
+.lorem-ipsum-input:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.lorem-ipsum-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background-color: var(--md-sys-color-surface-variant);
+  border-radius: 4px;
+}
+
+.lorem-ipsum-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9375rem;
+  color: var(--md-sys-color-on-surface);
+}
+
+.lorem-ipsum-checkbox {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--md-sys-color-primary);
+  cursor: pointer;
+}
+
+.lorem-ipsum-actions {
+  margin-top: 1rem;
+}
+
+.lorem-ipsum-generate-btn {
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: opacity 0.2s;
+}
+
+.lorem-ipsum-generate-btn:hover {
+  opacity: 0.85;
+}
+
+.lorem-ipsum-generate-btn:active {
+  opacity: 0.7;
+}
+
+.lorem-ipsum-generate-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 3px;
+}
+
+.lorem-ipsum-output-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.lorem-ipsum-output-header .section-title {
+  margin-bottom: 0;
+}
+
+.lorem-ipsum-copy-btn {
+  padding: 0.5rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: var(--md-sys-color-secondary);
+  color: var(--md-sys-color-on-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: opacity 0.2s;
+}
+
+.lorem-ipsum-copy-btn:hover:not(:disabled) {
+  opacity: 0.85;
+}
+
+.lorem-ipsum-copy-btn:active:not(:disabled) {
+  opacity: 0.7;
+}
+
+.lorem-ipsum-copy-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.lorem-ipsum-copy-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 3px;
+}
+
+.lorem-ipsum-output-area {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background-color: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  font-family: 'Space Mono', 'Roboto Mono', monospace;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  resize: vertical;
+  transition: border-color 0.2s;
+}
+
+.lorem-ipsum-output-area:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  background-color: var(--md-sys-color-surface);
+}
+
+.lorem-ipsum-output-area:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+@media (max-width: 480px) {
+  .lorem-ipsum-select,
+  .lorem-ipsum-input {
+    max-width: 100%;
+  }
+
+  .lorem-ipsum-output-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}

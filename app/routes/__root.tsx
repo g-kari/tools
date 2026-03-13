@@ -47,6 +47,7 @@ const navCategories = [
       { path: "/dummy-audio", label: "ダミー音声" },
       { path: "/favicon-generator", label: "Favicon生成" },
       { path: "/qr-code", label: "QRコード" },
+      { path: "/lorem-ipsum", label: "Lorem Ipsum" },
     ],
   },
   {

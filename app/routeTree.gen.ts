@@ -30,6 +30,7 @@ import { Route as NumberBaseRouteImport } from './routes/number-base'
 import { Route as MsgpackRouteImport } from './routes/msgpack'
 import { Route as MinifyRouteImport } from './routes/minify'
 import { Route as MarkdownPreviewRouteImport } from './routes/markdown-preview'
+import { Route as LoremIpsumRouteImport } from './routes/lorem-ipsum'
 import { Route as JwtRouteImport } from './routes/jwt'
 import { Route as JsonRouteImport } from './routes/json'
 import { Route as IpGeolocationRouteImport } from './routes/ip-geolocation'
@@ -53,6 +54,7 @@ import { Route as DiscordStickerRouteImport } from './routes/discord-sticker'
 import { Route as DiscordEmojiRouteImport } from './routes/discord-emoji'
 import { Route as DiffRouteImport } from './routes/diff'
 import { Route as DiceRollRouteImport } from './routes/dice-roll'
+import { Route as CsvJsonRouteImport } from './routes/csv-json'
 import { Route as CronParserRouteImport } from './routes/cron-parser'
 import { Route as ColorPickerRouteImport } from './routes/color-picker'
 import { Route as ColorExtractorRouteImport } from './routes/color-extractor'
@@ -172,6 +174,11 @@ const MarkdownPreviewRoute = MarkdownPreviewRouteImport.update({
   path: '/markdown-preview',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LoremIpsumRoute = LoremIpsumRouteImport.update({
+  id: '/lorem-ipsum',
+  path: '/lorem-ipsum',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const JwtRoute = JwtRouteImport.update({
   id: '/jwt',
   path: '/jwt',
@@ -287,6 +294,11 @@ const DiceRollRoute = DiceRollRouteImport.update({
   path: '/dice-roll',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CsvJsonRoute = CsvJsonRouteImport.update({
+  id: '/csv-json',
+  path: '/csv-json',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CronParserRoute = CronParserRouteImport.update({
   id: '/cron-parser',
   path: '/cron-parser',
@@ -363,6 +375,7 @@ export interface FileRoutesByFullPath {
   '/color-extractor': typeof ColorExtractorRoute
   '/color-picker': typeof ColorPickerRoute
   '/cron-parser': typeof CronParserRoute
+  '/csv-json': typeof CsvJsonRoute
   '/dice-roll': typeof DiceRollRoute
   '/diff': typeof DiffRoute
   '/discord-emoji': typeof DiscordEmojiRoute
@@ -386,6 +399,7 @@ export interface FileRoutesByFullPath {
   '/ip-geolocation': typeof IpGeolocationRoute
   '/json': typeof JsonRoute
   '/jwt': typeof JwtRoute
+  '/lorem-ipsum': typeof LoremIpsumRoute
   '/markdown-preview': typeof MarkdownPreviewRoute
   '/minify': typeof MinifyRoute
   '/msgpack': typeof MsgpackRoute
@@ -422,6 +436,7 @@ export interface FileRoutesByTo {
   '/color-extractor': typeof ColorExtractorRoute
   '/color-picker': typeof ColorPickerRoute
   '/cron-parser': typeof CronParserRoute
+  '/csv-json': typeof CsvJsonRoute
   '/dice-roll': typeof DiceRollRoute
   '/diff': typeof DiffRoute
   '/discord-emoji': typeof DiscordEmojiRoute
@@ -445,6 +460,7 @@ export interface FileRoutesByTo {
   '/ip-geolocation': typeof IpGeolocationRoute
   '/json': typeof JsonRoute
   '/jwt': typeof JwtRoute
+  '/lorem-ipsum': typeof LoremIpsumRoute
   '/markdown-preview': typeof MarkdownPreviewRoute
   '/minify': typeof MinifyRoute
   '/msgpack': typeof MsgpackRoute
@@ -482,6 +498,7 @@ export interface FileRoutesById {
   '/color-extractor': typeof ColorExtractorRoute
   '/color-picker': typeof ColorPickerRoute
   '/cron-parser': typeof CronParserRoute
+  '/csv-json': typeof CsvJsonRoute
   '/dice-roll': typeof DiceRollRoute
   '/diff': typeof DiffRoute
   '/discord-emoji': typeof DiscordEmojiRoute
@@ -505,6 +522,7 @@ export interface FileRoutesById {
   '/ip-geolocation': typeof IpGeolocationRoute
   '/json': typeof JsonRoute
   '/jwt': typeof JwtRoute
+  '/lorem-ipsum': typeof LoremIpsumRoute
   '/markdown-preview': typeof MarkdownPreviewRoute
   '/minify': typeof MinifyRoute
   '/msgpack': typeof MsgpackRoute
@@ -543,6 +561,7 @@ export interface FileRouteTypes {
     | '/color-extractor'
     | '/color-picker'
     | '/cron-parser'
+    | '/csv-json'
     | '/dice-roll'
     | '/diff'
     | '/discord-emoji'
@@ -566,6 +585,7 @@ export interface FileRouteTypes {
     | '/ip-geolocation'
     | '/json'
     | '/jwt'
+    | '/lorem-ipsum'
     | '/markdown-preview'
     | '/minify'
     | '/msgpack'
@@ -602,6 +622,7 @@ export interface FileRouteTypes {
     | '/color-extractor'
     | '/color-picker'
     | '/cron-parser'
+    | '/csv-json'
     | '/dice-roll'
     | '/diff'
     | '/discord-emoji'
@@ -625,6 +646,7 @@ export interface FileRouteTypes {
     | '/ip-geolocation'
     | '/json'
     | '/jwt'
+    | '/lorem-ipsum'
     | '/markdown-preview'
     | '/minify'
     | '/msgpack'
@@ -661,6 +683,7 @@ export interface FileRouteTypes {
     | '/color-extractor'
     | '/color-picker'
     | '/cron-parser'
+    | '/csv-json'
     | '/dice-roll'
     | '/diff'
     | '/discord-emoji'
@@ -684,6 +707,7 @@ export interface FileRouteTypes {
     | '/ip-geolocation'
     | '/json'
     | '/jwt'
+    | '/lorem-ipsum'
     | '/markdown-preview'
     | '/minify'
     | '/msgpack'
@@ -721,6 +745,7 @@ export interface RootRouteChildren {
   ColorExtractorRoute: typeof ColorExtractorRoute
   ColorPickerRoute: typeof ColorPickerRoute
   CronParserRoute: typeof CronParserRoute
+  CsvJsonRoute: typeof CsvJsonRoute
   DiceRollRoute: typeof DiceRollRoute
   DiffRoute: typeof DiffRoute
   DiscordEmojiRoute: typeof DiscordEmojiRoute
@@ -744,6 +769,7 @@ export interface RootRouteChildren {
   IpGeolocationRoute: typeof IpGeolocationRoute
   JsonRoute: typeof JsonRoute
   JwtRoute: typeof JwtRoute
+  LoremIpsumRoute: typeof LoremIpsumRoute
   MarkdownPreviewRoute: typeof MarkdownPreviewRoute
   MinifyRoute: typeof MinifyRoute
   MsgpackRoute: typeof MsgpackRoute
@@ -920,6 +946,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MarkdownPreviewRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/lorem-ipsum': {
+      id: '/lorem-ipsum'
+      path: '/lorem-ipsum'
+      fullPath: '/lorem-ipsum'
+      preLoaderRoute: typeof LoremIpsumRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/jwt': {
       id: '/jwt'
       path: '/jwt'
@@ -1081,6 +1114,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DiceRollRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/csv-json': {
+      id: '/csv-json'
+      path: '/csv-json'
+      fullPath: '/csv-json'
+      preLoaderRoute: typeof CsvJsonRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/cron-parser': {
       id: '/cron-parser'
       path: '/cron-parser'
@@ -1185,6 +1225,7 @@ const rootRouteChildren: RootRouteChildren = {
   ColorExtractorRoute: ColorExtractorRoute,
   ColorPickerRoute: ColorPickerRoute,
   CronParserRoute: CronParserRoute,
+  CsvJsonRoute: CsvJsonRoute,
   DiceRollRoute: DiceRollRoute,
   DiffRoute: DiffRoute,
   DiscordEmojiRoute: DiscordEmojiRoute,
@@ -1208,6 +1249,7 @@ const rootRouteChildren: RootRouteChildren = {
   IpGeolocationRoute: IpGeolocationRoute,
   JsonRoute: JsonRoute,
   JwtRoute: JwtRoute,
+  LoremIpsumRoute: LoremIpsumRoute,
   MarkdownPreviewRoute: MarkdownPreviewRoute,
   MinifyRoute: MinifyRoute,
   MsgpackRoute: MsgpackRoute,
