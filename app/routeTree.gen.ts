@@ -39,6 +39,7 @@ import { Route as MinifyRouteImport } from './routes/minify'
 import { Route as MarkdownPreviewRouteImport } from './routes/markdown-preview'
 import { Route as LoremIpsumRouteImport } from './routes/lorem-ipsum'
 import { Route as JwtRouteImport } from './routes/jwt'
+import { Route as JsonPathRouteImport } from './routes/json-path'
 import { Route as JsonRouteImport } from './routes/json'
 import { Route as IpGeolocationRouteImport } from './routes/ip-geolocation'
 import { Route as IpConverterRouteImport } from './routes/ip-converter'
@@ -226,6 +227,11 @@ const LoremIpsumRoute = LoremIpsumRouteImport.update({
 const JwtRoute = JwtRouteImport.update({
   id: '/jwt',
   path: '/jwt',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JsonPathRoute = JsonPathRouteImport.update({
+  id: '/json-path',
+  path: '/json-path',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JsonRoute = JsonRouteImport.update({
@@ -454,6 +460,7 @@ export interface FileRoutesByFullPath {
   '/ip-converter': typeof IpConverterRoute
   '/ip-geolocation': typeof IpGeolocationRoute
   '/json': typeof JsonRoute
+  '/json-path': typeof JsonPathRoute
   '/jwt': typeof JwtRoute
   '/lorem-ipsum': typeof LoremIpsumRoute
   '/markdown-preview': typeof MarkdownPreviewRoute
@@ -524,6 +531,7 @@ export interface FileRoutesByTo {
   '/ip-converter': typeof IpConverterRoute
   '/ip-geolocation': typeof IpGeolocationRoute
   '/json': typeof JsonRoute
+  '/json-path': typeof JsonPathRoute
   '/jwt': typeof JwtRoute
   '/lorem-ipsum': typeof LoremIpsumRoute
   '/markdown-preview': typeof MarkdownPreviewRoute
@@ -595,6 +603,7 @@ export interface FileRoutesById {
   '/ip-converter': typeof IpConverterRoute
   '/ip-geolocation': typeof IpGeolocationRoute
   '/json': typeof JsonRoute
+  '/json-path': typeof JsonPathRoute
   '/jwt': typeof JwtRoute
   '/lorem-ipsum': typeof LoremIpsumRoute
   '/markdown-preview': typeof MarkdownPreviewRoute
@@ -667,6 +676,7 @@ export interface FileRouteTypes {
     | '/ip-converter'
     | '/ip-geolocation'
     | '/json'
+    | '/json-path'
     | '/jwt'
     | '/lorem-ipsum'
     | '/markdown-preview'
@@ -737,6 +747,7 @@ export interface FileRouteTypes {
     | '/ip-converter'
     | '/ip-geolocation'
     | '/json'
+    | '/json-path'
     | '/jwt'
     | '/lorem-ipsum'
     | '/markdown-preview'
@@ -807,6 +818,7 @@ export interface FileRouteTypes {
     | '/ip-converter'
     | '/ip-geolocation'
     | '/json'
+    | '/json-path'
     | '/jwt'
     | '/lorem-ipsum'
     | '/markdown-preview'
@@ -878,6 +890,7 @@ export interface RootRouteChildren {
   IpConverterRoute: typeof IpConverterRoute
   IpGeolocationRoute: typeof IpGeolocationRoute
   JsonRoute: typeof JsonRoute
+  JsonPathRoute: typeof JsonPathRoute
   JwtRoute: typeof JwtRoute
   LoremIpsumRoute: typeof LoremIpsumRoute
   MarkdownPreviewRoute: typeof MarkdownPreviewRoute
@@ -1124,6 +1137,13 @@ declare module '@tanstack/react-router' {
       path: '/jwt'
       fullPath: '/jwt'
       preLoaderRoute: typeof JwtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/json-path': {
+      id: '/json-path'
+      path: '/json-path'
+      fullPath: '/json-path'
+      preLoaderRoute: typeof JsonPathRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/json': {
@@ -1430,6 +1450,7 @@ const rootRouteChildren: RootRouteChildren = {
   IpConverterRoute: IpConverterRoute,
   IpGeolocationRoute: IpGeolocationRoute,
   JsonRoute: JsonRoute,
+  JsonPathRoute: JsonPathRoute,
   JwtRoute: JwtRoute,
   LoremIpsumRoute: LoremIpsumRoute,
   MarkdownPreviewRoute: MarkdownPreviewRoute,

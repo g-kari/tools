@@ -80,6 +80,12 @@ const toolCatalog: ToolCategory[] = [
         icon: "{ }",
       },
       {
+        path: "/json-path",
+        label: "JSONPath評価",
+        description: "JSONデータにJSONPathクエリを適用して値を抽出・評価",
+        icon: "🔍",
+      },
+      {
         path: "/php-serialize",
         label: "PHPシリアライズ",
         description: "PHPシリアライズ形式とJSONの相互変換",

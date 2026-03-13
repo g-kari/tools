@@ -37,6 +37,7 @@
     "gsap": "^3.14.2",
     "html-react-parser": "^5.2.17",
     "js-yaml": "^4.1.1",
+    "jsonpath-plus": "^10.4.0",
     "jszip": "^3.10.1",
     "lamejs": "^1.2.1",
     "lucide-react": "^0.562.0",

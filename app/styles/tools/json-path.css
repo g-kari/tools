@@ -1,0 +1,164 @@
+/* JSONPath評価ツール */
+.json-path-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.json-path-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.json-path-panel-label {
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--md-sys-color-primary);
+}
+
+.json-path-textarea {
+  width: 100%;
+  min-height: 280px;
+  padding: 0.75rem;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 0;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.json-path-textarea:focus {
+  border-color: var(--md-sys-color-primary);
+}
+
+.json-path-query-section {
+  display: flex;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+
+.json-path-query-input {
+  flex: 1;
+  padding: 0.6rem 0.75rem;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 0;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.json-path-query-input:focus {
+  border-color: var(--md-sys-color-primary);
+}
+
+.json-path-result-area {
+  min-height: 280px;
+  padding: 0.75rem;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  border: 1px solid var(--md-sys-color-outline);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-all;
+  overflow: auto;
+}
+
+.json-path-result-empty {
+  color: var(--md-sys-color-outline);
+  font-style: italic;
+}
+
+.json-path-result-count {
+  font-size: 0.7rem;
+  color: var(--md-sys-color-outline);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.json-path-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.json-path-btn {
+  padding: 0.4rem 0.8rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 1px solid var(--md-sys-color-outline);
+  background: transparent;
+  color: var(--md-sys-color-on-surface);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.json-path-btn:hover:not(:disabled) {
+  background: var(--md-sys-color-surface-variant);
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-primary);
+}
+
+.json-path-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.json-path-btn--primary {
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-primary);
+}
+
+.json-path-btn--primary:hover:not(:disabled) {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+.json-path-examples {
+  margin-top: 0.5rem;
+}
+
+.json-path-example-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.25rem;
+}
+
+.json-path-chip {
+  padding: 0.2rem 0.5rem;
+  background: transparent;
+  border: 1px solid var(--md-sys-color-outline);
+  color: var(--md-sys-color-primary);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.json-path-chip:hover {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  border-color: var(--md-sys-color-primary);
+}
+
+@media (max-width: 768px) {
+  .json-path-layout {
+    grid-template-columns: 1fr;
+  }
+}
