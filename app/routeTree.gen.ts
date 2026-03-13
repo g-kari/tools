@@ -28,6 +28,7 @@ import { Route as PasswordGeneratorRouteImport } from './routes/password-generat
 import { Route as OgpRouteImport } from './routes/ogp'
 import { Route as MsgpackRouteImport } from './routes/msgpack'
 import { Route as MinifyRouteImport } from './routes/minify'
+import { Route as MarkdownPreviewRouteImport } from './routes/markdown-preview'
 import { Route as JwtRouteImport } from './routes/jwt'
 import { Route as JsonRouteImport } from './routes/json'
 import { Route as IpGeolocationRouteImport } from './routes/ip-geolocation'
@@ -158,6 +159,11 @@ const MsgpackRoute = MsgpackRouteImport.update({
 const MinifyRoute = MinifyRouteImport.update({
   id: '/minify',
   path: '/minify',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MarkdownPreviewRoute = MarkdownPreviewRouteImport.update({
+  id: '/markdown-preview',
+  path: '/markdown-preview',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JwtRoute = JwtRouteImport.update({
@@ -374,6 +380,7 @@ export interface FileRoutesByFullPath {
   '/ip-geolocation': typeof IpGeolocationRoute
   '/json': typeof JsonRoute
   '/jwt': typeof JwtRoute
+  '/markdown-preview': typeof MarkdownPreviewRoute
   '/minify': typeof MinifyRoute
   '/msgpack': typeof MsgpackRoute
   '/ogp': typeof OgpRoute
@@ -431,6 +438,7 @@ export interface FileRoutesByTo {
   '/ip-geolocation': typeof IpGeolocationRoute
   '/json': typeof JsonRoute
   '/jwt': typeof JwtRoute
+  '/markdown-preview': typeof MarkdownPreviewRoute
   '/minify': typeof MinifyRoute
   '/msgpack': typeof MsgpackRoute
   '/ogp': typeof OgpRoute
@@ -489,6 +497,7 @@ export interface FileRoutesById {
   '/ip-geolocation': typeof IpGeolocationRoute
   '/json': typeof JsonRoute
   '/jwt': typeof JwtRoute
+  '/markdown-preview': typeof MarkdownPreviewRoute
   '/minify': typeof MinifyRoute
   '/msgpack': typeof MsgpackRoute
   '/ogp': typeof OgpRoute
@@ -548,6 +557,7 @@ export interface FileRouteTypes {
     | '/ip-geolocation'
     | '/json'
     | '/jwt'
+    | '/markdown-preview'
     | '/minify'
     | '/msgpack'
     | '/ogp'
@@ -605,6 +615,7 @@ export interface FileRouteTypes {
     | '/ip-geolocation'
     | '/json'
     | '/jwt'
+    | '/markdown-preview'
     | '/minify'
     | '/msgpack'
     | '/ogp'
@@ -662,6 +673,7 @@ export interface FileRouteTypes {
     | '/ip-geolocation'
     | '/json'
     | '/jwt'
+    | '/markdown-preview'
     | '/minify'
     | '/msgpack'
     | '/ogp'
@@ -720,6 +732,7 @@ export interface RootRouteChildren {
   IpGeolocationRoute: typeof IpGeolocationRoute
   JsonRoute: typeof JsonRoute
   JwtRoute: typeof JwtRoute
+  MarkdownPreviewRoute: typeof MarkdownPreviewRoute
   MinifyRoute: typeof MinifyRoute
   MsgpackRoute: typeof MsgpackRoute
   OgpRoute: typeof OgpRoute
@@ -878,6 +891,13 @@ declare module '@tanstack/react-router' {
       path: '/minify'
       fullPath: '/minify'
       preLoaderRoute: typeof MinifyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/markdown-preview': {
+      id: '/markdown-preview'
+      path: '/markdown-preview'
+      fullPath: '/markdown-preview'
+      preLoaderRoute: typeof MarkdownPreviewRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/jwt': {
@@ -1168,6 +1188,7 @@ const rootRouteChildren: RootRouteChildren = {
   IpGeolocationRoute: IpGeolocationRoute,
   JsonRoute: JsonRoute,
   JwtRoute: JwtRoute,
+  MarkdownPreviewRoute: MarkdownPreviewRoute,
   MinifyRoute: MinifyRoute,
   MsgpackRoute: MsgpackRoute,
   OgpRoute: OgpRoute,
