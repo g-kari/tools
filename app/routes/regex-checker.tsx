@@ -147,7 +147,7 @@ function RegexChecker() {
                   aria-label="正規表現フラグ入力欄"
                   autoComplete="off"
                   spellCheck="false"
-                  style={{ maxWidth: "120px" }}
+                  className="regex-flags-input"
                 />
               </div>
             </div>

@@ -427,7 +427,7 @@ function ImageToGifConverter() {
             accept="image/*"
             onChange={handleFileSelect}
             disabled={isLoading}
-            style={{ display: "none" }}
+            className="visually-hidden-input"
           />
 
           {images.length > 0 && (

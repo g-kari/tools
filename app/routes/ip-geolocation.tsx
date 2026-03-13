@@ -171,6 +171,10 @@ function IpGeolocationLookup() {
   return (
     <>
       <div className="tool-container">
+        <div className="http-warning-notice" role="note">
+          ⚠ このツールは開発・学習目的のみに使用してください。通信は暗号化されていません。
+        </div>
+
         <form
           onSubmit={(e) => e.preventDefault()}
           aria-label="IPアドレス検索フォーム"
