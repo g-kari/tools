@@ -19,6 +19,7 @@ import { Route as TextSortRouteImport } from './routes/text-sort'
 import { Route as ServerEnvRouteImport } from './routes/server-env'
 import { Route as SecurityHeadersRouteImport } from './routes/security-headers'
 import { Route as RegexCheckerRouteImport } from './routes/regex-checker'
+import { Route as PhpSerializeRouteImport } from './routes/php-serialize'
 import { Route as PasswordGeneratorRouteImport } from './routes/password-generator'
 import { Route as OgpRouteImport } from './routes/ogp'
 import { Route as MsgpackRouteImport } from './routes/msgpack'
@@ -103,6 +104,11 @@ const SecurityHeadersRoute = SecurityHeadersRouteImport.update({
 const RegexCheckerRoute = RegexCheckerRouteImport.update({
   id: '/regex-checker',
   path: '/regex-checker',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PhpSerializeRoute = PhpSerializeRouteImport.update({
+  id: '/php-serialize',
+  path: '/php-serialize',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PasswordGeneratorRoute = PasswordGeneratorRouteImport.update({
@@ -313,6 +319,7 @@ export interface FileRoutesByFullPath {
   '/msgpack': typeof MsgpackRoute
   '/ogp': typeof OgpRoute
   '/password-generator': typeof PasswordGeneratorRoute
+  '/php-serialize': typeof PhpSerializeRoute
   '/regex-checker': typeof RegexCheckerRoute
   '/security-headers': typeof SecurityHeadersRoute
   '/server-env': typeof ServerEnvRoute
@@ -360,6 +367,7 @@ export interface FileRoutesByTo {
   '/msgpack': typeof MsgpackRoute
   '/ogp': typeof OgpRoute
   '/password-generator': typeof PasswordGeneratorRoute
+  '/php-serialize': typeof PhpSerializeRoute
   '/regex-checker': typeof RegexCheckerRoute
   '/security-headers': typeof SecurityHeadersRoute
   '/server-env': typeof ServerEnvRoute
@@ -408,6 +416,7 @@ export interface FileRoutesById {
   '/msgpack': typeof MsgpackRoute
   '/ogp': typeof OgpRoute
   '/password-generator': typeof PasswordGeneratorRoute
+  '/php-serialize': typeof PhpSerializeRoute
   '/regex-checker': typeof RegexCheckerRoute
   '/security-headers': typeof SecurityHeadersRoute
   '/server-env': typeof ServerEnvRoute
@@ -457,6 +466,7 @@ export interface FileRouteTypes {
     | '/msgpack'
     | '/ogp'
     | '/password-generator'
+    | '/php-serialize'
     | '/regex-checker'
     | '/security-headers'
     | '/server-env'
@@ -504,6 +514,7 @@ export interface FileRouteTypes {
     | '/msgpack'
     | '/ogp'
     | '/password-generator'
+    | '/php-serialize'
     | '/regex-checker'
     | '/security-headers'
     | '/server-env'
@@ -551,6 +562,7 @@ export interface FileRouteTypes {
     | '/msgpack'
     | '/ogp'
     | '/password-generator'
+    | '/php-serialize'
     | '/regex-checker'
     | '/security-headers'
     | '/server-env'
@@ -599,6 +611,7 @@ export interface RootRouteChildren {
   MsgpackRoute: typeof MsgpackRoute
   OgpRoute: typeof OgpRoute
   PasswordGeneratorRoute: typeof PasswordGeneratorRoute
+  PhpSerializeRoute: typeof PhpSerializeRoute
   RegexCheckerRoute: typeof RegexCheckerRoute
   SecurityHeadersRoute: typeof SecurityHeadersRoute
   ServerEnvRoute: typeof ServerEnvRoute
@@ -685,6 +698,13 @@ declare module '@tanstack/react-router' {
       path: '/regex-checker'
       fullPath: '/regex-checker'
       preLoaderRoute: typeof RegexCheckerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/php-serialize': {
+      id: '/php-serialize'
+      path: '/php-serialize'
+      fullPath: '/php-serialize'
+      preLoaderRoute: typeof PhpSerializeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/password-generator': {
@@ -967,6 +987,7 @@ const rootRouteChildren: RootRouteChildren = {
   MsgpackRoute: MsgpackRoute,
   OgpRoute: OgpRoute,
   PasswordGeneratorRoute: PasswordGeneratorRoute,
+  PhpSerializeRoute: PhpSerializeRoute,
   RegexCheckerRoute: RegexCheckerRoute,
   SecurityHeadersRoute: SecurityHeadersRoute,
   ServerEnvRoute: ServerEnvRoute,
