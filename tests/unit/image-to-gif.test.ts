@@ -6,7 +6,7 @@ vi.mock("@ffmpeg/util", () => ({
   toBlobURL: vi.fn().mockResolvedValue("blob:mock-url"),
 }));
 
-import { loadFFmpeg, convertImagesToGif } from "../../app/routes/image-to-gif";
+import { loadFFmpeg, convertImagesToGif, buildPaletteUseFilter } from "../../app/routes/image-to-gif";
 
 // FFmpegのモック型定義
 interface MockFFmpeg {
@@ -105,7 +105,7 @@ describe("image-to-gif", () => {
       const singleImage = [mockImages[0]];
 
       const onProgress = vi.fn();
-      const result = await convertImagesToGif(ffmpeg as any, singleImage, 10, 0, 80, onProgress);
+      const result = await convertImagesToGif(ffmpeg as any, singleImage, 10, 0, 80, 'floyd_steinberg', 256, onProgress);
 
       expect(result).toBeInstanceOf(Blob);
       expect(ffmpeg.writeFile).toHaveBeenCalledWith("input0.png", expect.any(Uint8Array));
@@ -113,7 +113,7 @@ describe("image-to-gif", () => {
         "-i",
         "input0.png",
         "-vf",
-        "split[s0][s1];[s0]palettegen=max_colors=256:stats_mode=single[p];[s1][p]paletteuse=dither=bayer:bayer_scale=5",
+        "split[s0][s1];[s0]palettegen=max_colors=256:stats_mode=single[p];[s1][p]paletteuse=dither=floyd_steinberg",
         "-loop",
         "0",
         "output.gif",
@@ -126,7 +126,7 @@ describe("image-to-gif", () => {
 
     it("複数画像からアニメーションGIFを生成する", async () => {
       const onProgress = vi.fn();
-      const result = await convertImagesToGif(ffmpeg as any, mockImages, 10, 0, 80, onProgress);
+      const result = await convertImagesToGif(ffmpeg as any, mockImages, 10, 0, 80, 'floyd_steinberg', 256, onProgress);
 
       expect(result).toBeInstanceOf(Blob);
       expect(ffmpeg.writeFile).toHaveBeenCalledWith("input0.png", expect.any(Uint8Array));
@@ -136,7 +136,7 @@ describe("image-to-gif", () => {
           "-loop", "1", "-t", expect.any(String), "-i", "input0.png",
           "-loop", "1", "-t", expect.any(String), "-i", "input1.png",
           "-filter_complex",
-          "concat=n=2:v=1:a=0,fps=10,split[s0][s1];[s0]palettegen=max_colors=256[p];[s1][p]paletteuse=dither=bayer:bayer_scale=5",
+          "concat=n=2:v=1:a=0,fps=10,split[s0][s1];[s0]palettegen=max_colors=256:stats_mode=full[p];[s1][p]paletteuse=dither=floyd_steinberg",
           "-loop",
           "0",
           "output.gif",
@@ -146,7 +146,7 @@ describe("image-to-gif", () => {
     });
 
     it("異なるフレームレートとループ設定で動作する", async () => {
-      const result = await convertImagesToGif(ffmpeg as any, mockImages, 5, 3, 50);
+      const result = await convertImagesToGif(ffmpeg as any, mockImages, 5, 3, 50, 'bayer', 128);
 
       expect(result).toBeInstanceOf(Blob);
       expect(ffmpeg.exec).toHaveBeenCalledWith(
@@ -154,7 +154,7 @@ describe("image-to-gif", () => {
           "-loop", "1", "-t", expect.any(String), "-i", "input0.png",
           "-loop", "1", "-t", expect.any(String), "-i", "input1.png",
           "-filter_complex",
-          "concat=n=2:v=1:a=0,fps=5,split[s0][s1];[s0]palettegen=max_colors=256[p];[s1][p]paletteuse=dither=bayer:bayer_scale=5",
+          `concat=n=2:v=1:a=0,fps=5,split[s0][s1];[s0]palettegen=max_colors=128:stats_mode=full[p];[s1][p]${buildPaletteUseFilter('bayer', 50)}`,
           "-loop",
           "3",
           "output.gif",
@@ -166,7 +166,7 @@ describe("image-to-gif", () => {
       const blob = new Blob(["fake jpeg data"], { type: "image/jpeg" });
       const jpegImages = [new File([blob], "photo.jpg", { type: "image/jpeg" })];
 
-      const result = await convertImagesToGif(ffmpeg as any, jpegImages, 10, 0, 80);
+      const result = await convertImagesToGif(ffmpeg as any, jpegImages, 10, 0, 80, 'floyd_steinberg', 256);
 
       expect(result).toBeInstanceOf(Blob);
       expect(ffmpeg.writeFile).toHaveBeenCalledWith("input0.jpg", expect.any(Uint8Array));
@@ -174,7 +174,7 @@ describe("image-to-gif", () => {
         "-i",
         "input0.jpg",
         "-vf",
-        "split[s0][s1];[s0]palettegen=max_colors=256:stats_mode=single[p];[s1][p]paletteuse=dither=bayer:bayer_scale=5",
+        "split[s0][s1];[s0]palettegen=max_colors=256:stats_mode=single[p];[s1][p]paletteuse=dither=floyd_steinberg",
         "-loop",
         "0",
         "output.gif",
@@ -186,22 +186,44 @@ describe("image-to-gif", () => {
       ffmpeg.writeFile = vi.fn().mockRejectedValue(new Error("Write failed"));
 
       const onProgress = vi.fn();
-      const result = await convertImagesToGif(ffmpeg as any, mockImages, 10, 0, 80, onProgress);
+      const result = await convertImagesToGif(ffmpeg as any, mockImages, 10, 0, 80, 'floyd_steinberg', 256, onProgress);
 
       expect(result).toBeNull();
       expect(onProgress).toHaveBeenCalledWith("GIFの生成に失敗しました");
     });
 
     it("progressコールバックなしでも動作する", async () => {
-      const result = await convertImagesToGif(ffmpeg as any, mockImages, 10, 0, 80);
+      const result = await convertImagesToGif(ffmpeg as any, mockImages, 10, 0, 80, 'floyd_steinberg', 256);
       expect(result).toBeInstanceOf(Blob);
     });
 
     it("正しいMIMEタイプでBlobを生成する", async () => {
-      const result = await convertImagesToGif(ffmpeg as any, mockImages, 10, 0, 80);
+      const result = await convertImagesToGif(ffmpeg as any, mockImages, 10, 0, 80, 'floyd_steinberg', 256);
 
       expect(result).toBeInstanceOf(Blob);
       expect(result?.type).toBe("image/gif");
+    });
+  });
+
+  describe("buildPaletteUseFilter", () => {
+    it("floyd_steinbergモードで正しいフィルターを返す", () => {
+      expect(buildPaletteUseFilter('floyd_steinberg', 80)).toBe("paletteuse=dither=floyd_steinberg");
+    });
+
+    it("sierra2_4aモードで正しいフィルターを返す", () => {
+      expect(buildPaletteUseFilter('sierra2_4a', 80)).toBe("paletteuse=dither=sierra2_4a");
+    });
+
+    it("noneモードで正しいフィルターを返す", () => {
+      expect(buildPaletteUseFilter('none', 80)).toBe("paletteuse=dither=none");
+    });
+
+    it("bayerモードで品質100のときbayer_scale=0を返す", () => {
+      expect(buildPaletteUseFilter('bayer', 100)).toBe("paletteuse=dither=bayer:bayer_scale=0");
+    });
+
+    it("bayerモードで品質1のときbayer_scale=5を返す", () => {
+      expect(buildPaletteUseFilter('bayer', 1)).toBe("paletteuse=dither=bayer:bayer_scale=5");
     });
   });
 });

@@ -29,6 +29,9 @@ interface ImageFile {
   preview: string;
 }
 
+/** ディザリングモードの型定義 */
+export type DitherMode = 'bayer' | 'floyd_steinberg' | 'sierra2_4a' | 'none';
+
 /**
  * FFmpegインスタンスをロードする
  * @param ffmpeg - FFmpegインスタンス
@@ -57,12 +60,32 @@ export async function loadFFmpeg(
 }
 
 /**
+ * ディザリングモードに応じたpaletteuse部分のフィルター文字列を生成する
+ * @param ditherMode - ディザリングモード
+ * @param quality - 画質（1-100、高いほど高画質）
+ * @returns paletteuseフィルター文字列
+ */
+export function buildPaletteUseFilter(ditherMode: DitherMode, quality: number): string {
+  if (ditherMode === 'bayer') {
+    // quality 1-100 → bayer_scale 5-0 (高品質=低スケール)
+    const bayerScale = Math.round((1 - (quality - 1) / 99) * 5);
+    return `paletteuse=dither=bayer:bayer_scale=${bayerScale}`;
+  }
+  if (ditherMode === 'none') {
+    return 'paletteuse=dither=none';
+  }
+  return `paletteuse=dither=${ditherMode}`;
+}
+
+/**
  * 画像ファイルからGIFを生成する
  * @param ffmpeg - FFmpegインスタンス
  * @param images - 画像ファイルの配列
  * @param framerate - フレームレート（fps）
  * @param loop - ループ回数（0=無限ループ）
  * @param quality - 画質（1-100、高いほど高画質）
+ * @param ditherMode - ディザリングモード
+ * @param maxColors - 最大色数（最大256）
  * @param onProgress - 進捗コールバック
  * @returns 生成されたGIFのBlob
  */
@@ -72,6 +95,8 @@ export async function convertImagesToGif(
   framerate: number,
   loop: number,
   quality: number,
+  ditherMode: DitherMode,
+  maxColors: number,
   onProgress?: (message: string) => void
 ): Promise<Blob | null> {
   try {
@@ -86,17 +111,18 @@ export async function convertImagesToGif(
     // GIF生成
     onProgress?.("GIFを生成しています...");
 
-    // 画質パラメータの計算（1-100 を 100-1 に反転、値が小さいほど高画質）
-    const gifQuality = Math.round(101 - quality);
+    const paletteUseFilter = buildPaletteUseFilter(ditherMode, quality);
 
     if (images.length === 1) {
       // 1枚の場合は静止画GIFを作成
       const ext = images[0].name.split(".").pop() || "png";
+      const paletteGenFilter = `palettegen=max_colors=${maxColors}:stats_mode=single`;
+      const vfFilter = `split[s0][s1];[s0]${paletteGenFilter}[p];[s1][p]${paletteUseFilter}`;
       await ffmpeg.exec([
         "-i",
         `input0.${ext}`,
         "-vf",
-        `split[s0][s1];[s0]palettegen=max_colors=256:stats_mode=single[p];[s1][p]paletteuse=dither=bayer:bayer_scale=${gifQuality > 5 ? 5 : gifQuality}`,
+        vfFilter,
         "-loop",
         loop.toString(),
         "output.gif",
@@ -104,13 +130,15 @@ export async function convertImagesToGif(
     } else {
       // 複数枚の場合はアニメーションGIFを作成
       // 各画像を個別に読み込み、concatフィルターで結合
+      const paletteGenFilter = `palettegen=max_colors=${maxColors}:stats_mode=full`;
+      const filterComplex = `concat=n=${images.length}:v=1:a=0,fps=${framerate},split[s0][s1];[s0]${paletteGenFilter}[p];[s1][p]${paletteUseFilter}`;
       await ffmpeg.exec([
         ...images.flatMap((_, i) => {
           const ext = images[i].name.split(".").pop() || "png";
           return ["-loop", "1", "-t", (1/framerate).toString(), "-i", `input${i}.${ext}`];
         }),
         "-filter_complex",
-        `concat=n=${images.length}:v=1:a=0,fps=${framerate},split[s0][s1];[s0]palettegen=max_colors=256[p];[s1][p]paletteuse=dither=bayer:bayer_scale=${gifQuality > 5 ? 5 : gifQuality}`,
+        filterComplex,
         "-loop",
         loop.toString(),
         "output.gif",
@@ -143,17 +171,19 @@ export async function convertImagesToGif(
  * @param framerate - フレームレート
  * @param loop - ループ回数
  * @param quality - 品質（1-100）
+ * @param ditherMode - ディザリングモード
+ * @param maxColors - 最大色数
  * @returns FFmpegコマンド文字列
  */
 export function generateFFmpegCommand(
   images: File[],
   framerate: number,
   loop: number,
-  quality: number
+  quality: number,
+  ditherMode: DitherMode,
+  maxColors: number
 ): string {
-  // 品質パラメータの計算
-  const gifQuality = Math.round(101 - quality);
-  const bayerScale = gifQuality > 5 ? 5 : gifQuality;
+  const paletteUseFilter = buildPaletteUseFilter(ditherMode, quality);
 
   if (images.length === 0) {
     return "# 画像を選択してください";
@@ -162,9 +192,11 @@ export function generateFFmpegCommand(
   if (images.length === 1) {
     // 単一画像の場合
     const ext = images[0].name.split(".").pop() || "png";
-    return `# 単一画像からGIF生成（品質: ${quality}）
+    const paletteGenFilter = `palettegen=max_colors=${maxColors}:stats_mode=single`;
+    const vfFilter = `split[s0][s1];[s0]${paletteGenFilter}[p];[s1][p]${paletteUseFilter}`;
+    return `# 単一画像からGIF生成（品質: ${quality}、ディザリング: ${ditherMode}、最大色数: ${maxColors}）
 ffmpeg -i input.${ext} \\
-  -vf "split[s0][s1];[s0]palettegen=max_colors=256:stats_mode=single[p];[s1][p]paletteuse=dither=bayer:bayer_scale=${bayerScale}" \\
+  -vf "${vfFilter}" \\
   -loop ${loop} \\
   output.gif`;
   } else {
@@ -174,10 +206,13 @@ ffmpeg -i input.${ext} \\
       return `  -loop 1 -t ${(1/framerate).toFixed(4)} -i input${i}.${ext}`;
     }).join(" \\\n");
 
-    return `# 複数画像からアニメーションGIF生成（フレームレート: ${framerate}fps、品質: ${quality}）
+    const paletteGenFilter = `palettegen=max_colors=${maxColors}:stats_mode=full`;
+    const filterComplex = `concat=n=${images.length}:v=1:a=0,fps=${framerate},split[s0][s1];[s0]${paletteGenFilter}[p];[s1][p]${paletteUseFilter}`;
+
+    return `# 複数画像からアニメーションGIF生成（フレームレート: ${framerate}fps、品質: ${quality}、ディザリング: ${ditherMode}、最大色数: ${maxColors}）
 ffmpeg \\
 ${inputLines} \\
-  -filter_complex "concat=n=${images.length}:v=1:a=0,fps=${framerate},split[s0][s1];[s0]palettegen=max_colors=256[p];[s1][p]paletteuse=dither=bayer:bayer_scale=${bayerScale}" \\
+  -filter_complex "${filterComplex}" \\
   -loop ${loop} \\
   output.gif`;
   }
@@ -188,6 +223,8 @@ function ImageToGifConverter() {
   const [framerate, setFramerate] = useState(10);
   const [loop, setLoop] = useState(0);
   const [quality, setQuality] = useState(80);
+  const [ditherMode, setDitherMode] = useState<DitherMode>('floyd_steinberg');
+  const [maxColors, setMaxColors] = useState(256);
   const [isLoading, setIsLoading] = useState(false);
   const [progress, setProgress] = useState("");
   const [outputUrl, setOutputUrl] = useState<string | null>(null);
@@ -301,6 +338,8 @@ function ImageToGifConverter() {
       framerate,
       loop,
       quality,
+      ditherMode,
+      maxColors,
       setProgress
     );
 
@@ -316,7 +355,7 @@ function ImageToGifConverter() {
     }
 
     setIsLoading(false);
-  }, [images, framerate, loop, quality, outputUrl, announceStatus]);
+  }, [images, framerate, loop, quality, ditherMode, maxColors, outputUrl, announceStatus]);
 
   const handleDownload = useCallback(() => {
     if (!outputUrl) return;
@@ -525,6 +564,44 @@ function ImageToGifConverter() {
                 GIFのループ回数を設定
               </span>
             </div>
+
+            <div className="option-group">
+              <label htmlFor="ditherMode">ディザリング</label>
+              <select
+                id="ditherMode"
+                value={ditherMode}
+                onChange={(e) => setDitherMode(e.target.value as DitherMode)}
+                disabled={isLoading}
+                aria-describedby="dither-help"
+              >
+                <option value="floyd_steinberg">Floyd-Steinberg（高品質・推奨）</option>
+                <option value="sierra2_4a">Sierra2 4A（バランス型）</option>
+                <option value="bayer">Bayer（高速）</option>
+                <option value="none">なし（最高速・低品質）</option>
+              </select>
+              <span id="dither-help" className="option-help">
+                ディザリングはGIFの色数制限による見た目の劣化を軽減します
+              </span>
+            </div>
+
+            <div className="option-group">
+              <label htmlFor="maxColors">最大色数</label>
+              <select
+                id="maxColors"
+                value={maxColors}
+                onChange={(e) => setMaxColors(parseInt(e.target.value))}
+                disabled={isLoading}
+                aria-describedby="max-colors-help"
+              >
+                <option value={256}>256色（最高品質）</option>
+                <option value={192}>192色</option>
+                <option value={128}>128色（バランス）</option>
+                <option value={64}>64色（小ファイル）</option>
+              </select>
+              <span id="max-colors-help" className="option-help">
+                色数を増やすと品質が上がりますが、ファイルサイズも増加します
+              </span>
+            </div>
           </div>
 
           <div className="button-group" role="group" aria-label="操作">
@@ -579,7 +656,7 @@ function ImageToGifConverter() {
               ローカル環境でFFmpegを使用する場合は、以下のコマンドで同様の変換が可能です
             </p>
             <pre className="command-output">
-              <code>{generateFFmpegCommand(images.map(img => img.file), framerate, loop, quality)}</code>
+              <code>{generateFFmpegCommand(images.map(img => img.file), framerate, loop, quality, ditherMode, maxColors)}</code>
             </pre>
             <div className="button-group" role="group" aria-label="コマンド操作">
               <Button
@@ -587,7 +664,7 @@ function ImageToGifConverter() {
                 variant="secondary"
                 onClick={() => {
                   navigator.clipboard.writeText(
-                    generateFFmpegCommand(images.map(img => img.file), framerate, loop, quality)
+                    generateFFmpegCommand(images.map(img => img.file), framerate, loop, quality, ditherMode, maxColors)
                   );
                   announceStatus("コマンドをクリップボードにコピーしました");
                 }}
@@ -614,6 +691,8 @@ function ImageToGifConverter() {
                 "フレームレート: 1秒間に表示するフレーム数（複数枚の場合のみ有効）",
                 "品質: GIFの画質（値が大きいほど高品質だがファイルサイズも増加）",
                 "ループ設定: アニメーションの繰り返し回数",
+                "ディザリング: Floyd-SteinbergやSierra2 4Aなど高品質なアルゴリズムが利用可能。色数制限による色の劣化を軽減します",
+                "最大色数: GIFは最大256色まで対応。色数を増やすほど品質が向上しますがファイルサイズも増加します",
               ],
             },
             {
