@@ -65,6 +65,7 @@ import { Route as DiffRouteImport } from './routes/diff'
 import { Route as DiceRollRouteImport } from './routes/dice-roll'
 import { Route as CsvJsonRouteImport } from './routes/csv-json'
 import { Route as CronParserRouteImport } from './routes/cron-parser'
+import { Route as CronRouteImport } from './routes/cron'
 import { Route as ColorPickerRouteImport } from './routes/color-picker'
 import { Route as ColorExtractorRouteImport } from './routes/color-extractor'
 import { Route as ColorContrastRouteImport } from './routes/color-contrast'
@@ -360,6 +361,11 @@ const CronParserRoute = CronParserRouteImport.update({
   path: '/cron-parser',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CronRoute = CronRouteImport.update({
+  id: '/cron',
+  path: '/cron',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ColorPickerRoute = ColorPickerRouteImport.update({
   id: '/color-picker',
   path: '/color-picker',
@@ -442,6 +448,7 @@ export interface FileRoutesByFullPath {
   '/color-contrast': typeof ColorContrastRoute
   '/color-extractor': typeof ColorExtractorRoute
   '/color-picker': typeof ColorPickerRoute
+  '/cron': typeof CronRoute
   '/cron-parser': typeof CronParserRoute
   '/csv-json': typeof CsvJsonRoute
   '/dice-roll': typeof DiceRollRoute
@@ -514,6 +521,7 @@ export interface FileRoutesByTo {
   '/color-contrast': typeof ColorContrastRoute
   '/color-extractor': typeof ColorExtractorRoute
   '/color-picker': typeof ColorPickerRoute
+  '/cron': typeof CronRoute
   '/cron-parser': typeof CronParserRoute
   '/csv-json': typeof CsvJsonRoute
   '/dice-roll': typeof DiceRollRoute
@@ -587,6 +595,7 @@ export interface FileRoutesById {
   '/color-contrast': typeof ColorContrastRoute
   '/color-extractor': typeof ColorExtractorRoute
   '/color-picker': typeof ColorPickerRoute
+  '/cron': typeof CronRoute
   '/cron-parser': typeof CronParserRoute
   '/csv-json': typeof CsvJsonRoute
   '/dice-roll': typeof DiceRollRoute
@@ -661,6 +670,7 @@ export interface FileRouteTypes {
     | '/color-contrast'
     | '/color-extractor'
     | '/color-picker'
+    | '/cron'
     | '/cron-parser'
     | '/csv-json'
     | '/dice-roll'
@@ -733,6 +743,7 @@ export interface FileRouteTypes {
     | '/color-contrast'
     | '/color-extractor'
     | '/color-picker'
+    | '/cron'
     | '/cron-parser'
     | '/csv-json'
     | '/dice-roll'
@@ -805,6 +816,7 @@ export interface FileRouteTypes {
     | '/color-contrast'
     | '/color-extractor'
     | '/color-picker'
+    | '/cron'
     | '/cron-parser'
     | '/csv-json'
     | '/dice-roll'
@@ -878,6 +890,7 @@ export interface RootRouteChildren {
   ColorContrastRoute: typeof ColorContrastRoute
   ColorExtractorRoute: typeof ColorExtractorRoute
   ColorPickerRoute: typeof ColorPickerRoute
+  CronRoute: typeof CronRoute
   CronParserRoute: typeof CronParserRoute
   CsvJsonRoute: typeof CsvJsonRoute
   DiceRollRoute: typeof DiceRollRoute
@@ -1334,6 +1347,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CronParserRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/cron': {
+      id: '/cron'
+      path: '/cron'
+      fullPath: '/cron'
+      preLoaderRoute: typeof CronRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/color-picker': {
       id: '/color-picker'
       path: '/color-picker'
@@ -1446,6 +1466,7 @@ const rootRouteChildren: RootRouteChildren = {
   ColorContrastRoute: ColorContrastRoute,
   ColorExtractorRoute: ColorExtractorRoute,
   ColorPickerRoute: ColorPickerRoute,
+  CronRoute: CronRoute,
   CronParserRoute: CronParserRoute,
   CsvJsonRoute: CsvJsonRoute,
   DiceRollRoute: DiceRollRoute,

@@ -5,6 +5,12 @@ import {
   getNextExecutionTimes,
   describeCronExpression,
 } from '../../app/routes/cron-parser';
+import {
+  parseCron,
+  generateDescription,
+  CRON_PRESETS,
+  CRON_FIELDS,
+} from '../../app/utils/cron';
 
 describe('parseCronField', () => {
   it('should parse wildcard *', () => {
@@ -286,5 +292,103 @@ describe('describeCronExpression', () => {
     expect(result).toContain('金');
     expect(result).toContain('9時');
     expect(result).toContain('に実行');
+  });
+});
+
+// app/utils/cron.ts (croner使用) のテスト
+describe('parseCron (croner)', () => {
+  it('should return isValid=true for valid expression * * * * *', () => {
+    const result = parseCron('* * * * *');
+    expect(result.isValid).toBe(true);
+    expect(result.error).toBeUndefined();
+  });
+
+  it('should return 10 nextRuns for * * * * *', () => {
+    const result = parseCron('* * * * *');
+    expect(result.isValid).toBe(true);
+    expect(result.nextRuns.length).toBe(10);
+  });
+
+  it('should return nextRuns as Date instances', () => {
+    const result = parseCron('0 9 * * *');
+    expect(result.isValid).toBe(true);
+    result.nextRuns.forEach((d) => {
+      expect(d).toBeInstanceOf(Date);
+    });
+  });
+
+  it('should return isValid=false for invalid expression', () => {
+    const result = parseCron('invalid expression');
+    expect(result.isValid).toBe(false);
+    expect(result.error).toBeDefined();
+    expect(result.nextRuns.length).toBe(0);
+  });
+
+  it('should return isValid=false for empty expression', () => {
+    const result = parseCron('');
+    expect(result.isValid).toBe(false);
+    expect(result.error).toBe('Cron式を入力してください');
+  });
+
+  it('should include description for valid expression', () => {
+    const result = parseCron('* * * * *');
+    expect(result.isValid).toBe(true);
+    expect(result.description).toBeTruthy();
+    expect(result.description).toContain('毎分');
+  });
+
+  it('should return 10 nextRuns for all presets', () => {
+    for (const preset of CRON_PRESETS) {
+      const result = parseCron(preset.value);
+      expect(result.isValid).toBe(true);
+      expect(result.nextRuns.length).toBe(10);
+    }
+  });
+
+  it('should have all 5 CRON_FIELDS defined', () => {
+    expect(CRON_FIELDS.length).toBe(5);
+    const names = CRON_FIELDS.map((f) => f.name);
+    expect(names).toContain('minute');
+    expect(names).toContain('hour');
+    expect(names).toContain('day');
+    expect(names).toContain('month');
+    expect(names).toContain('weekday');
+  });
+});
+
+describe('generateDescription', () => {
+  it('should return "毎分実行" for * * * * *', () => {
+    const result = generateDescription('* * * * *');
+    expect(result).toBe('毎分実行');
+  });
+
+  it('should describe */5 * * * * as 5分ごと', () => {
+    const result = generateDescription('*/5 * * * *');
+    expect(result).toContain('5分ごと');
+  });
+
+  it('should describe 0 9 * * * as daily', () => {
+    const result = generateDescription('0 9 * * *');
+    expect(result).toContain('9時');
+    expect(result).toContain('0分');
+    expect(result).toContain('に実行');
+  });
+
+  it('should describe 0 9 * * 1-5 as weekday', () => {
+    const result = generateDescription('0 9 * * 1-5');
+    expect(result).toContain('平日');
+    expect(result).toContain('9時');
+    expect(result).toContain('に実行');
+  });
+
+  it('should describe 0 0 1 * * as monthly', () => {
+    const result = generateDescription('0 0 1 * *');
+    expect(result).toContain('1日');
+    expect(result).toContain('に実行');
+  });
+
+  it('should return "不明なスケジュール" for wrong field count', () => {
+    const result = generateDescription('* * *');
+    expect(result).toBe('不明なスケジュール');
   });
 });
