@@ -21,6 +21,7 @@ const navCategories = [
       { path: "/base64", label: "Base64変換" },
       { path: "/base64-image", label: "Base64画像デコード" },
       { path: "/json", label: "JSON整形" },
+      { path: "/msgpack", label: "MessagePack" },
       { path: "/minify", label: "コード圧縮" },
       { path: "/unit-converter", label: "単位変換" },
       { path: "/audio-converter", label: "オーディオ変換" },
