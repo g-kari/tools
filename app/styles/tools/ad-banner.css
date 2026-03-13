@@ -1,0 +1,46 @@
+/* ad-banner.css - Google AdSense 広告バナーコンポーネントのスタイル */
+
+/** 外側コンテナ */
+.ad-banner-wrapper {
+  margin: 24px 0;
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+/** 「広告」ラベルテキスト（WCAG透明性要件） */
+.ad-banner-label {
+  font-size: 10px;
+  color: var(--md-sys-color-on-surface-variant);
+  text-align: center;
+  padding: 4px;
+}
+
+/** ins要素のコンテナ */
+.ad-banner-content {
+  display: block;
+  min-height: 90px;
+}
+
+/** 横長バナー用 */
+.ad-banner-horizontal {
+  max-width: 728px;
+  margin: 0 auto;
+}
+
+/** 矩形バナー用 */
+.ad-banner-rectangle {
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+/** レスポンシブ用 */
+.ad-banner-responsive {
+  width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ad-banner-wrapper,
+  .ad-banner-content {
+    transition: none;
+    animation: none;
+  }
+}

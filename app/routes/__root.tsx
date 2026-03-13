@@ -9,11 +9,14 @@ import {
 import { type ReactNode, useState, useRef, useCallback, useEffect } from "react";
 import appCss from "../styles.css?url";
 import { ToastProvider } from "../components/Toast";
+import { AdBanner } from "../components/AdBanner";
 import {
   SITE_NAME,
   SITE_BASE_URL,
   SITE_DESCRIPTION,
   SITE_OGP_IMAGE,
+  ADSENSE_PUBLISHER_ID,
+  ADSENSE_SLOT_ID,
 } from "../constants/site";
 
 const navCategories = [
@@ -156,8 +159,21 @@ export const Route = createRootRoute({
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap",
       },
+      {
+        rel: "preconnect",
+        href: "https://pagead2.googlesyndication.com",
+      },
       { rel: "stylesheet", href: appCss },
     ],
+    scripts: ADSENSE_PUBLISHER_ID
+      ? [
+          {
+            src: `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_PUBLISHER_ID}`,
+            async: true,
+            crossOrigin: 'anonymous' as const,
+          },
+        ]
+      : [],
   }),
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
@@ -358,6 +374,7 @@ function RootDocument({ children }: { children: ReactNode }) {
 
             <main id="main-content" role="main">
               {children}
+              <AdBanner adSlot={ADSENSE_SLOT_ID} adType="responsive" />
             </main>
           </div>
 
