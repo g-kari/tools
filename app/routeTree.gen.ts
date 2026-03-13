@@ -21,6 +21,7 @@ import { Route as SecurityHeadersRouteImport } from './routes/security-headers'
 import { Route as RegexCheckerRouteImport } from './routes/regex-checker'
 import { Route as PasswordGeneratorRouteImport } from './routes/password-generator'
 import { Route as OgpRouteImport } from './routes/ogp'
+import { Route as MsgpackRouteImport } from './routes/msgpack'
 import { Route as MinifyRouteImport } from './routes/minify'
 import { Route as JwtRouteImport } from './routes/jwt'
 import { Route as JsonRouteImport } from './routes/json'
@@ -112,6 +113,11 @@ const PasswordGeneratorRoute = PasswordGeneratorRouteImport.update({
 const OgpRoute = OgpRouteImport.update({
   id: '/ogp',
   path: '/ogp',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MsgpackRoute = MsgpackRouteImport.update({
+  id: '/msgpack',
+  path: '/msgpack',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MinifyRoute = MinifyRouteImport.update({
@@ -304,6 +310,7 @@ export interface FileRoutesByFullPath {
   '/json': typeof JsonRoute
   '/jwt': typeof JwtRoute
   '/minify': typeof MinifyRoute
+  '/msgpack': typeof MsgpackRoute
   '/ogp': typeof OgpRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/regex-checker': typeof RegexCheckerRoute
@@ -350,6 +357,7 @@ export interface FileRoutesByTo {
   '/json': typeof JsonRoute
   '/jwt': typeof JwtRoute
   '/minify': typeof MinifyRoute
+  '/msgpack': typeof MsgpackRoute
   '/ogp': typeof OgpRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/regex-checker': typeof RegexCheckerRoute
@@ -397,6 +405,7 @@ export interface FileRoutesById {
   '/json': typeof JsonRoute
   '/jwt': typeof JwtRoute
   '/minify': typeof MinifyRoute
+  '/msgpack': typeof MsgpackRoute
   '/ogp': typeof OgpRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/regex-checker': typeof RegexCheckerRoute
@@ -445,6 +454,7 @@ export interface FileRouteTypes {
     | '/json'
     | '/jwt'
     | '/minify'
+    | '/msgpack'
     | '/ogp'
     | '/password-generator'
     | '/regex-checker'
@@ -491,6 +501,7 @@ export interface FileRouteTypes {
     | '/json'
     | '/jwt'
     | '/minify'
+    | '/msgpack'
     | '/ogp'
     | '/password-generator'
     | '/regex-checker'
@@ -537,6 +548,7 @@ export interface FileRouteTypes {
     | '/json'
     | '/jwt'
     | '/minify'
+    | '/msgpack'
     | '/ogp'
     | '/password-generator'
     | '/regex-checker'
@@ -584,6 +596,7 @@ export interface RootRouteChildren {
   JsonRoute: typeof JsonRoute
   JwtRoute: typeof JwtRoute
   MinifyRoute: typeof MinifyRoute
+  MsgpackRoute: typeof MsgpackRoute
   OgpRoute: typeof OgpRoute
   PasswordGeneratorRoute: typeof PasswordGeneratorRoute
   RegexCheckerRoute: typeof RegexCheckerRoute
@@ -686,6 +699,13 @@ declare module '@tanstack/react-router' {
       path: '/ogp'
       fullPath: '/ogp'
       preLoaderRoute: typeof OgpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/msgpack': {
+      id: '/msgpack'
+      path: '/msgpack'
+      fullPath: '/msgpack'
+      preLoaderRoute: typeof MsgpackRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/minify': {
@@ -944,6 +964,7 @@ const rootRouteChildren: RootRouteChildren = {
   JsonRoute: JsonRoute,
   JwtRoute: JwtRoute,
   MinifyRoute: MinifyRoute,
+  MsgpackRoute: MsgpackRoute,
   OgpRoute: OgpRoute,
   PasswordGeneratorRoute: PasswordGeneratorRoute,
   RegexCheckerRoute: RegexCheckerRoute,
