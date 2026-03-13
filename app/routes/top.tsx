@@ -134,6 +134,12 @@ const toolCatalog: ToolCategory[] = [
         description: "XMLデータの整形・圧縮・構文検証ツール",
         icon: "📋",
       },
+      {
+        path: "/sql",
+        label: "SQLフォーマッター",
+        description: "SQLクエリの整形・圧縮・構文検証ツール",
+        icon: "🗄️",
+      },
     ],
   },
   {

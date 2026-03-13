@@ -22,6 +22,7 @@ import { Route as TomlJsonRouteImport } from './routes/toml-json'
 import { Route as TimestampRouteImport } from './routes/timestamp'
 import { Route as TextSortRouteImport } from './routes/text-sort'
 import { Route as TextCaseRouteImport } from './routes/text-case'
+import { Route as SqlRouteImport } from './routes/sql'
 import { Route as ServerEnvRouteImport } from './routes/server-env'
 import { Route as SecurityHeadersRouteImport } from './routes/security-headers'
 import { Route as RegexCheckerRouteImport } from './routes/regex-checker'
@@ -138,6 +139,11 @@ const TextSortRoute = TextSortRouteImport.update({
 const TextCaseRoute = TextCaseRouteImport.update({
   id: '/text-case',
   path: '/text-case',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SqlRoute = SqlRouteImport.update({
+  id: '/sql',
+  path: '/sql',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ServerEnvRoute = ServerEnvRouteImport.update({
@@ -450,6 +456,7 @@ export interface FileRoutesByFullPath {
   '/regex-checker': typeof RegexCheckerRoute
   '/security-headers': typeof SecurityHeadersRoute
   '/server-env': typeof ServerEnvRoute
+  '/sql': typeof SqlRoute
   '/text-case': typeof TextCaseRoute
   '/text-sort': typeof TextSortRoute
   '/timestamp': typeof TimestampRoute
@@ -517,6 +524,7 @@ export interface FileRoutesByTo {
   '/regex-checker': typeof RegexCheckerRoute
   '/security-headers': typeof SecurityHeadersRoute
   '/server-env': typeof ServerEnvRoute
+  '/sql': typeof SqlRoute
   '/text-case': typeof TextCaseRoute
   '/text-sort': typeof TextSortRoute
   '/timestamp': typeof TimestampRoute
@@ -585,6 +593,7 @@ export interface FileRoutesById {
   '/regex-checker': typeof RegexCheckerRoute
   '/security-headers': typeof SecurityHeadersRoute
   '/server-env': typeof ServerEnvRoute
+  '/sql': typeof SqlRoute
   '/text-case': typeof TextCaseRoute
   '/text-sort': typeof TextSortRoute
   '/timestamp': typeof TimestampRoute
@@ -654,6 +663,7 @@ export interface FileRouteTypes {
     | '/regex-checker'
     | '/security-headers'
     | '/server-env'
+    | '/sql'
     | '/text-case'
     | '/text-sort'
     | '/timestamp'
@@ -721,6 +731,7 @@ export interface FileRouteTypes {
     | '/regex-checker'
     | '/security-headers'
     | '/server-env'
+    | '/sql'
     | '/text-case'
     | '/text-sort'
     | '/timestamp'
@@ -788,6 +799,7 @@ export interface FileRouteTypes {
     | '/regex-checker'
     | '/security-headers'
     | '/server-env'
+    | '/sql'
     | '/text-case'
     | '/text-sort'
     | '/timestamp'
@@ -856,6 +868,7 @@ export interface RootRouteChildren {
   RegexCheckerRoute: typeof RegexCheckerRoute
   SecurityHeadersRoute: typeof SecurityHeadersRoute
   ServerEnvRoute: typeof ServerEnvRoute
+  SqlRoute: typeof SqlRoute
   TextCaseRoute: typeof TextCaseRoute
   TextSortRoute: typeof TextSortRoute
   TimestampRoute: typeof TimestampRoute
@@ -966,6 +979,13 @@ declare module '@tanstack/react-router' {
       path: '/text-case'
       fullPath: '/text-case'
       preLoaderRoute: typeof TextCaseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sql': {
+      id: '/sql'
+      path: '/sql'
+      fullPath: '/sql'
+      preLoaderRoute: typeof SqlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/server-env': {
@@ -1384,6 +1404,7 @@ const rootRouteChildren: RootRouteChildren = {
   RegexCheckerRoute: RegexCheckerRoute,
   SecurityHeadersRoute: SecurityHeadersRoute,
   ServerEnvRoute: ServerEnvRoute,
+  SqlRoute: SqlRoute,
   TextCaseRoute: TextCaseRoute,
   TextSortRoute: TextSortRoute,
   TimestampRoute: TimestampRoute,

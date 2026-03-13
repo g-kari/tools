@@ -1,0 +1,8 @@
+/* SQLフォーマッター専用スタイル */
+
+.sql-textarea {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.875rem;
+  min-height: 200px;
+  tab-size: 2;
+}
