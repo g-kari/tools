@@ -1,60 +1,46 @@
 /* ===== UX Enhancement Styles ===== */
 
-/* Button Ripple Effect */
+/* Button Ripple Effect - disabled for terminal style */
 button {
   position: relative;
   overflow: hidden;
 }
 
 button::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  transition: width 0.3s ease, height 0.3s ease;
-}
-
-button:active::after {
-  width: 200%;
-  height: 200%;
+  content: none;
 }
 
 /* Enhanced Button Hover States */
 .btn-primary {
-  box-shadow: 0 2px 4px rgba(139, 105, 20, 0.2);
+  box-shadow: none;
   transition: all 0.2s ease;
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(139, 105, 20, 0.3);
+  transform: none;
+  box-shadow: none;
   opacity: 1;
 }
 
 .btn-primary:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(139, 105, 20, 0.2);
+  transform: none;
+  box-shadow: none;
 }
 
 .btn-secondary {
-  box-shadow: 0 2px 4px rgba(107, 94, 63, 0.15);
+  box-shadow: none;
   transition: all 0.2s ease;
 }
 
 .btn-secondary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(107, 94, 63, 0.25);
+  transform: none;
+  box-shadow: none;
   opacity: 1;
 }
 
 .btn-clear:hover {
-  background: var(--md-sys-color-outline-variant);
-  transform: translateY(-1px);
+  background: var(--md-sys-color-surface-variant);
+  transform: none;
 }
 
 /* Toast Notification */
@@ -173,7 +159,7 @@ button:active::after {
 /* Enhanced Input Focus */
 textarea:focus,
 input[type="text"]:focus {
-  box-shadow: 0 0 0 3px rgba(139, 105, 20, 0.15);
+  box-shadow: none;
 }
 
 /* Improved Loading Spinner */
@@ -298,27 +284,25 @@ input[type="text"]:focus {
 
 /* Tool Container Enhancement */
 .tool-container {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  transition: box-shadow 0.2s ease;
+  box-shadow: none;
+  transition: none;
 }
 
 .tool-container:hover {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  box-shadow: none;
 }
 
 /* Result Card Animation */
 .result-card {
-  animation: resultFadeIn 0.3s ease-out;
+  animation: resultFadeIn 0.2s ease-out;
 }
 
 @keyframes resultFadeIn {
   from {
     opacity: 0;
-    transform: translateY(8px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
@@ -341,25 +325,33 @@ a:focus-visible {
 /* Animation Keyframes  */
 /* ==================== */
 
+@keyframes terminalBlink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.terminal-cursor::after {
+  content: "█";
+  color: var(--terminal-cursor-color);
+  animation: terminalBlink 1s step-end infinite;
+  margin-left: 2px;
+}
+
 @keyframes fadeInDown {
   from {
     opacity: 0;
-    transform: translateY(-20px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
@@ -374,39 +366,39 @@ a:focus-visible {
 
 /* ナビゲーションのスタガードアニメーション */
 .nav-category:nth-child(1) {
-  animation: fadeIn 0.4s ease-out 0.1s both;
+  animation: fadeIn 0.2s ease-out 0.1s both;
 }
 
 .nav-category:nth-child(2) {
-  animation: fadeIn 0.4s ease-out 0.15s both;
+  animation: fadeIn 0.2s ease-out 0.15s both;
 }
 
 .nav-category:nth-child(3) {
-  animation: fadeIn 0.4s ease-out 0.2s both;
+  animation: fadeIn 0.2s ease-out 0.2s both;
 }
 
 .nav-category:nth-child(4) {
-  animation: fadeIn 0.4s ease-out 0.25s both;
+  animation: fadeIn 0.2s ease-out 0.25s both;
 }
 
 .nav-category:nth-child(5) {
-  animation: fadeIn 0.4s ease-out 0.3s both;
+  animation: fadeIn 0.2s ease-out 0.3s both;
 }
 
 .nav-category:nth-child(6) {
-  animation: fadeIn 0.4s ease-out 0.35s both;
+  animation: fadeIn 0.2s ease-out 0.35s both;
 }
 
 .nav-category:nth-child(7) {
-  animation: fadeIn 0.4s ease-out 0.4s both;
+  animation: fadeIn 0.2s ease-out 0.4s both;
 }
 
 .nav-category:nth-child(8) {
-  animation: fadeIn 0.4s ease-out 0.45s both;
+  animation: fadeIn 0.2s ease-out 0.45s both;
 }
 
 .nav-category:nth-child(9) {
-  animation: fadeIn 0.4s ease-out 0.5s both;
+  animation: fadeIn 0.2s ease-out 0.5s both;
 }
 
 /* ==================== */
@@ -421,7 +413,7 @@ a:focus-visible {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  
+
   button:hover {
     transform: none;
   }
@@ -429,5 +421,9 @@ a:focus-visible {
   textarea:focus,
   input[type="text"]:focus {
     transform: none;
+  }
+
+  .terminal-cursor::after {
+    animation: none;
   }
 }

@@ -1,107 +1,112 @@
 @import "tailwindcss";
 
-/* Tailwind v4 Theme - shadcn/ui colors mapped from Material Design 3 */
+/* Tailwind v4 Theme - Terminal Dark Theme */
 @theme inline {
-  --color-background: hsl(55 100% 97%);
-  --color-foreground: hsl(270 5% 11%);
-  --color-card: hsl(55 100% 97%);
-  --color-card-foreground: hsl(270 5% 11%);
-  --color-popover: hsl(55 100% 97%);
-  --color-popover-foreground: hsl(270 5% 11%);
-  --color-primary: hsl(42 77% 31%);
-  --color-primary-foreground: hsl(0 0% 100%);
-  --color-secondary: hsl(40 26% 33%);
-  --color-secondary-foreground: hsl(0 0% 100%);
-  --color-muted: hsl(270 22% 91%);
-  --color-muted-foreground: hsl(264 6% 32%);
-  --color-accent: hsl(44 100% 85%);
-  --color-accent-foreground: hsl(40 100% 9%);
+  --color-background: #0d1117;
+  --color-foreground: #c9d1d9;
+  --color-card: #0d1117;
+  --color-card-foreground: #c9d1d9;
+  --color-popover: #0d1117;
+  --color-popover-foreground: #c9d1d9;
+  --color-primary: #39d353;
+  --color-primary-foreground: #0d1117;
+  --color-secondary: #e3b341;
+  --color-secondary-foreground: #0d1117;
+  --color-muted: #161b22;
+  --color-muted-foreground: #8b949e;
+  --color-accent: #0f2419;
+  --color-accent-foreground: #39d353;
   --color-destructive: hsl(0 73% 42%);
   --color-destructive-foreground: hsl(0 0% 100%);
   --color-success: hsl(123 46% 34%);
   --color-success-foreground: hsl(0 0% 100%);
-  --color-border: hsl(270 15% 79%);
-  --color-input: hsl(270 15% 79%);
-  --color-ring: hsl(42 77% 31%);
-  --radius: 0.5rem;
+  --color-border: #30363d;
+  --color-input: #30363d;
+  --color-ring: #39d353;
+  --radius: 0px;
 }
 
-/* Material Design 3 - Color System (WCAG AA Compliant) */
+/* Terminal Dark Theme - Color System */
 :root {
-  /* Brand color #ffffef used as surface */
-  --md-sys-color-surface: #ffffef;
-  --md-sys-color-on-surface: #1c1b1e;
-  --md-sys-color-on-surface-variant: #49454e;
+  /* Terminal dark surface */
+  --md-sys-color-surface: #0d1117;
+  --md-sys-color-on-surface: #c9d1d9;
+  --md-sys-color-on-surface-variant: #8b949e;
 
-  /* Primary colors - warm golden brown palette */
-  --md-sys-color-primary: #8b6914;
-  --md-sys-color-on-primary: #ffffff;
-  --md-sys-color-primary-container: #ffedb3;
-  --md-sys-color-on-primary-container: #2d1f00;
+  /* Primary colors - terminal green */
+  --md-sys-color-primary: #39d353;
+  --md-sys-color-on-primary: #0d1117;
+  --md-sys-color-primary-container: #0f2419;
+  --md-sys-color-on-primary-container: #39d353;
 
-  /* Secondary colors - warm earth tones */
-  --md-sys-color-secondary: #6b5e3f;
-  --md-sys-color-on-secondary: #ffffff;
-  --md-sys-color-secondary-container: #f4e7c3;
-  --md-sys-color-on-secondary-container: #231b04;
+  /* Secondary colors - terminal amber */
+  --md-sys-color-secondary: #e3b341;
+  --md-sys-color-on-secondary: #0d1117;
+  --md-sys-color-secondary-container: #1f1a0a;
+  --md-sys-color-on-secondary-container: #e3b341;
 
   /* Neutral colors */
-  --md-sys-color-surface-variant: #e7e0ec;
-  --md-sys-color-outline: #79747e;
-  --md-sys-color-outline-variant: #cac4cf;
+  --md-sys-color-surface-variant: #161b22;
+  --md-sys-color-outline: #30363d;
+  --md-sys-color-outline-variant: #21262d;
 
   /* Error colors */
-  --md-sys-color-error: #ba1a1a;
+  --md-sys-color-error: #f85149;
   --md-sys-color-on-error: #ffffff;
   --md-sys-color-error-container: #ffdad6;
 
   /* Success colors */
-  --md-sys-color-success: #2e7d32;
+  --md-sys-color-success: #3fb950;
   --md-sys-color-on-success: #ffffff;
 
-  /* shadcn/ui CSS Variables - mapped from Material Design 3 */
-  --radius: 0.5rem;
+  /* Terminal-specific variables */
+  --terminal-prompt-color: #39d353;
+  --terminal-cursor-color: #39d353;
+  --terminal-border-char: #30363d;
+
+  /* shadcn/ui CSS Variables - mapped from Terminal Theme */
+  --radius: 0px;
 
   /* Background and foreground (surface colors) */
-  --background: 55 100% 97%; /* #ffffef */
-  --foreground: 270 5% 11%; /* #1c1b1e */
+  --background: #0d1117;
+  --foreground: #c9d1d9;
 
   /* Card */
-  --card: 55 100% 97%;
-  --card-foreground: 270 5% 11%;
+  --card: #0d1117;
+  --card-foreground: #c9d1d9;
 
   /* Popover */
-  --popover: 55 100% 97%;
-  --popover-foreground: 270 5% 11%;
+  --popover: #0d1117;
+  --popover-foreground: #c9d1d9;
 
-  /* Primary - warm golden brown */
-  --primary: 42 77% 31%; /* #8b6914 */
-  --primary-foreground: 0 0% 100%;
+  /* Primary - terminal green */
+  --primary: #39d353;
+  --primary-foreground: #0d1117;
 
-  /* Secondary - warm earth tones */
-  --secondary: 40 26% 33%; /* #6b5e3f */
-  --secondary-foreground: 0 0% 100%;
+  /* Secondary - terminal amber */
+  --secondary: #e3b341;
+  --secondary-foreground: #0d1117;
 
   /* Muted */
-  --muted: 270 22% 91%; /* #e7e0ec */
-  --muted-foreground: 264 6% 32%; /* #49454e */
+  --muted: #161b22;
+  --muted-foreground: #8b949e;
 
   /* Accent */
-  --accent: 44 100% 85%; /* #ffedb3 */
-  --accent-foreground: 40 100% 9%; /* #2d1f00 */
+  --accent: #0f2419;
+  --accent-foreground: #39d353;
 
   /* Destructive - error */
-  --destructive: 0 73% 42%; /* #ba1a1a */
-  --destructive-foreground: 0 0% 100%;
+  --destructive: #f85149;
+  --destructive-foreground: #ffffff;
 
   /* Success */
-  --success: 123 46% 34%; /* #2e7d32 */
-  --success-foreground: 0 0% 100%;
+  --success: #3fb950;
+  --success-foreground: #ffffff;
 
   /* Border and input */
-  --border: 270 15% 79%; /* #cac4cf */
-  --input: 270 15% 79%;
-  --ring: 42 77% 31%; /* primary color */
+  --border: #30363d;
+  --input: #30363d;
+  --ring: #39d353;
 }
 
 /* Material Design - Base Styles */
@@ -112,8 +117,8 @@
 }
 
 body {
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  background: linear-gradient(135deg, #ffffef 0%, #fff9e6 100%);
+  font-family: "JetBrains Mono", "Space Mono", "Courier New", monospace;
+  background: #0d1117;
   min-height: 100vh;
   padding: 20px;
   color: var(--md-sys-color-on-surface);
@@ -121,7 +126,7 @@ body {
   overflow-x: hidden;
 }
 
-/* 背景のノイズテクスチャ（微細なグレイン効果） */
+/* スキャンライン効果 */
 body::before {
   content: "";
   position: fixed;
@@ -129,8 +134,13 @@ body::before {
   left: 0;
   width: 100%;
   height: 100%;
-  opacity: 0.03;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.05) 2px,
+    rgba(0, 0, 0, 0.05) 4px
+  );
   pointer-events: none;
   z-index: 0;
 }
@@ -146,7 +156,7 @@ header {
   text-align: center;
   color: var(--md-sys-color-on-surface);
   margin-bottom: 48px;
-  animation: fadeInDown 0.6s ease-out;
+  animation: fadeInDown 0.2s ease-out;
   position: relative;
   z-index: 100;
 }
@@ -155,11 +165,15 @@ h1 {
   font-size: 2.5rem;
   margin-bottom: 12px;
   font-weight: 600;
-  letter-spacing: -1px;
-  background: linear-gradient(135deg, var(--md-sys-color-primary) 0%, #6b5e3f 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  letter-spacing: 0.05em;
+  color: var(--md-sys-color-primary);
+  font-family: "JetBrains Mono", monospace;
+}
+
+h1::before {
+  content: "$ ";
+  color: var(--terminal-prompt-color);
+  opacity: 0.7;
 }
 
 .subtitle {
