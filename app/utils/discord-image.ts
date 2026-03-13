@@ -54,15 +54,11 @@ function loadImage(file: File): Promise<HTMLImageElement> {
 }
 
 /**
- * CanvasをBlobに変換する
+ * CanvasをPNG形式のBlobに変換する
  * @param canvas - 変換するCanvas要素
- * @param quality - 画質（0.0〜1.0, PNGは無視される）
  * @returns PNG形式のBlob
  */
-function canvasToBlob(
-  canvas: HTMLCanvasElement,
-  quality: number = 1.0
-): Promise<Blob> {
+function canvasToBlob(canvas: HTMLCanvasElement): Promise<Blob> {
   return new Promise((resolve, reject) => {
     canvas.toBlob(
       (blob) => {
@@ -72,8 +68,7 @@ function canvasToBlob(
           reject(new Error("Blobへの変換に失敗しました"));
         }
       },
-      "image/png",
-      quality
+      "image/png"
     );
   });
 }
@@ -125,14 +120,27 @@ async function convertToDiscordEmoji(
     ctx.drawImage(img, 0, 0, destW, destH);
   }
 
-  // PNGで出力。サイズ超過時は品質を下げて再試行（PNGは可逆のため実際にはほぼ効果なし）
-  let blob = await canvasToBlob(canvas, 1.0);
+  // PNGで出力。PNGは可逆圧縮のため quality パラメータは無効。
+  // ファイルサイズが超過する場合はキャンバスの解像度を段階的に縮小して対応する。
+  let blob = await canvasToBlob(canvas);
 
-  // 256KB以下に収まらない場合、段階的に品質を下げて試みる
-  let quality = 0.9;
-  while (blob.size > DISCORD_EMOJI_MAX_BYTES && quality > 0.1) {
-    blob = await canvasToBlob(canvas, quality);
-    quality -= 0.1;
+  if (blob.size > DISCORD_EMOJI_MAX_BYTES) {
+    // 解像度を下げながら再試行（10%ずつ縮小、最大5回）
+    let scale = 0.9;
+    for (let i = 0; i < 5 && blob.size > DISCORD_EMOJI_MAX_BYTES; i++) {
+      const smallCanvas = document.createElement("canvas");
+      const newW = Math.max(1, Math.round(canvas.width * scale));
+      const newH = Math.max(1, Math.round(canvas.height * scale));
+      smallCanvas.width = newW;
+      smallCanvas.height = newH;
+      const smallCtx = smallCanvas.getContext("2d");
+      if (!smallCtx) break;
+      smallCtx.imageSmoothingEnabled = true;
+      smallCtx.imageSmoothingQuality = "high";
+      smallCtx.drawImage(canvas, 0, 0, newW, newH);
+      blob = await canvasToBlob(smallCanvas);
+      scale *= 0.9;
+    }
   }
 
   return blob;
@@ -177,7 +185,7 @@ async function convertToDiscordSticker(img: HTMLImageElement): Promise<Blob> {
 
   ctx.drawImage(img, offsetX, offsetY, destW, destH);
 
-  const blob = await canvasToBlob(canvas, 1.0);
+  const blob = await canvasToBlob(canvas);
 
   if (blob.size > DISCORD_STICKER_MAX_BYTES) {
     throw new Error(

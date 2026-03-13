@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
@@ -9,7 +9,6 @@ import {
   convertToDiscordFormat,
   generateDiscordStickerFilename,
   DISCORD_STICKER_SIZE,
-  DISCORD_STICKER_MAX_BYTES,
 } from "~/utils/discord-image";
 
 export const Route = createFileRoute("/discord-sticker")({
@@ -30,14 +29,18 @@ function DiscordStickerConverter() {
   const [convertedPreview, setConvertedPreview] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { showToast } = useToast();
+  const originalPreviewRef = useRef<string | null>(null);
+  const convertedPreviewRef = useRef<string | null>(null);
 
-  // クリーンアップ
+  // アンマウント時のみ Object URL を解放する
   useEffect(() => {
     return () => {
-      if (originalPreview) URL.revokeObjectURL(originalPreview);
-      if (convertedPreview) URL.revokeObjectURL(convertedPreview);
+      if (originalPreviewRef.current)
+        URL.revokeObjectURL(originalPreviewRef.current);
+      if (convertedPreviewRef.current)
+        URL.revokeObjectURL(convertedPreviewRef.current);
     };
-  }, [originalPreview, convertedPreview]);
+  }, []);
 
   /**
    * ファイル選択時のハンドラー
@@ -48,15 +51,20 @@ function DiscordStickerConverter() {
       const file = files[0];
       if (!file) return;
 
-      if (originalPreview) URL.revokeObjectURL(originalPreview);
-      if (convertedPreview) URL.revokeObjectURL(convertedPreview);
+      if (originalPreviewRef.current)
+        URL.revokeObjectURL(originalPreviewRef.current);
+      if (convertedPreviewRef.current)
+        URL.revokeObjectURL(convertedPreviewRef.current);
 
+      const newPreview = URL.createObjectURL(file);
+      originalPreviewRef.current = newPreview;
+      convertedPreviewRef.current = null;
       setOriginalFile(file);
-      setOriginalPreview(URL.createObjectURL(file));
+      setOriginalPreview(newPreview);
       setConvertedBlob(null);
       setConvertedPreview(null);
     },
-    [originalPreview, convertedPreview]
+    []
   );
 
   /**
@@ -72,9 +80,12 @@ function DiscordStickerConverter() {
         type: "sticker",
       });
 
-      if (convertedPreview) URL.revokeObjectURL(convertedPreview);
+      if (convertedPreviewRef.current)
+        URL.revokeObjectURL(convertedPreviewRef.current);
+      const newConvertedPreview = URL.createObjectURL(blob);
+      convertedPreviewRef.current = newConvertedPreview;
       setConvertedBlob(blob);
-      setConvertedPreview(URL.createObjectURL(blob));
+      setConvertedPreview(newConvertedPreview);
       showToast("Discordスタンプ用に変換しました", "success");
     } catch (err) {
       showToast(
@@ -84,7 +95,7 @@ function DiscordStickerConverter() {
     } finally {
       setIsLoading(false);
     }
-  }, [originalFile, convertedPreview, showToast]);
+  }, [originalFile, showToast]);
 
   /**
    * ダウンロードボタンのハンドラー
@@ -100,15 +111,19 @@ function DiscordStickerConverter() {
    * クリアボタンのハンドラー
    */
   const handleClear = useCallback(() => {
-    if (originalPreview) URL.revokeObjectURL(originalPreview);
-    if (convertedPreview) URL.revokeObjectURL(convertedPreview);
+    if (originalPreviewRef.current)
+      URL.revokeObjectURL(originalPreviewRef.current);
+    if (convertedPreviewRef.current)
+      URL.revokeObjectURL(convertedPreviewRef.current);
+    originalPreviewRef.current = null;
+    convertedPreviewRef.current = null;
 
     setOriginalFile(null);
     setOriginalPreview(null);
     setConvertedBlob(null);
     setConvertedPreview(null);
     showToast("クリアしました", "info");
-  }, [originalPreview, convertedPreview, showToast]);
+  }, [showToast]);
 
   return (
     <div className="tool-container">
@@ -231,13 +246,8 @@ function DiscordStickerConverter() {
                     <span className="discord-converter-result-label">
                       ファイルサイズ
                     </span>
-                    <span
-                      className={`discord-converter-result-value ${convertedBlob.size > DISCORD_STICKER_MAX_BYTES ? "discord-converter-over-limit" : "discord-converter-ok"}`}
-                    >
-                      {formatFileSize(convertedBlob.size)}
-                      {convertedBlob.size > DISCORD_STICKER_MAX_BYTES
-                        ? " ⚠ 512KB超過"
-                        : " ✓ 512KB以下"}
+                    <span className="discord-converter-result-value discord-converter-ok">
+                      {formatFileSize(convertedBlob.size)} ✓ 512KB以下
                     </span>
                   </div>
                   <div className="discord-converter-result-stat">
