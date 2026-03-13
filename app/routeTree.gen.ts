@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as YamlJsonRouteImport } from './routes/yaml-json'
 import { Route as WhoisRouteImport } from './routes/whois'
 import { Route as VideoConverterRouteImport } from './routes/video-converter'
 import { Route as UuidRouteImport } from './routes/uuid'
@@ -69,6 +70,11 @@ import { Route as ApiImageDotsvgRouteImport } from './routes/api/image[.]svg'
 import { Route as ApiImageDotpngRouteImport } from './routes/api/image[.]png'
 import { Route as ApiImageDotjpgRouteImport } from './routes/api/image[.]jpg'
 
+const YamlJsonRoute = YamlJsonRouteImport.update({
+  id: '/yaml-json',
+  path: '/yaml-json',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WhoisRoute = WhoisRouteImport.update({
   id: '/whois',
   path: '/whois',
@@ -421,6 +427,7 @@ export interface FileRoutesByFullPath {
   '/uuid': typeof UuidRoute
   '/video-converter': typeof VideoConverterRoute
   '/whois': typeof WhoisRoute
+  '/yaml-json': typeof YamlJsonRoute
   '/api/image.jpg': typeof ApiImageDotjpgRoute
   '/api/image.png': typeof ApiImageDotpngRoute
   '/api/image.svg': typeof ApiImageDotsvgRoute
@@ -482,6 +489,7 @@ export interface FileRoutesByTo {
   '/uuid': typeof UuidRoute
   '/video-converter': typeof VideoConverterRoute
   '/whois': typeof WhoisRoute
+  '/yaml-json': typeof YamlJsonRoute
   '/api/image.jpg': typeof ApiImageDotjpgRoute
   '/api/image.png': typeof ApiImageDotpngRoute
   '/api/image.svg': typeof ApiImageDotsvgRoute
@@ -544,6 +552,7 @@ export interface FileRoutesById {
   '/uuid': typeof UuidRoute
   '/video-converter': typeof VideoConverterRoute
   '/whois': typeof WhoisRoute
+  '/yaml-json': typeof YamlJsonRoute
   '/api/image.jpg': typeof ApiImageDotjpgRoute
   '/api/image.png': typeof ApiImageDotpngRoute
   '/api/image.svg': typeof ApiImageDotsvgRoute
@@ -607,6 +616,7 @@ export interface FileRouteTypes {
     | '/uuid'
     | '/video-converter'
     | '/whois'
+    | '/yaml-json'
     | '/api/image.jpg'
     | '/api/image.png'
     | '/api/image.svg'
@@ -668,6 +678,7 @@ export interface FileRouteTypes {
     | '/uuid'
     | '/video-converter'
     | '/whois'
+    | '/yaml-json'
     | '/api/image.jpg'
     | '/api/image.png'
     | '/api/image.svg'
@@ -729,6 +740,7 @@ export interface FileRouteTypes {
     | '/uuid'
     | '/video-converter'
     | '/whois'
+    | '/yaml-json'
     | '/api/image.jpg'
     | '/api/image.png'
     | '/api/image.svg'
@@ -791,6 +803,7 @@ export interface RootRouteChildren {
   UuidRoute: typeof UuidRoute
   VideoConverterRoute: typeof VideoConverterRoute
   WhoisRoute: typeof WhoisRoute
+  YamlJsonRoute: typeof YamlJsonRoute
   ApiImageDotjpgRoute: typeof ApiImageDotjpgRoute
   ApiImageDotpngRoute: typeof ApiImageDotpngRoute
   ApiImageDotsvgRoute: typeof ApiImageDotsvgRoute
@@ -799,6 +812,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/yaml-json': {
+      id: '/yaml-json'
+      path: '/yaml-json'
+      fullPath: '/yaml-json'
+      preLoaderRoute: typeof YamlJsonRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/whois': {
       id: '/whois'
       path: '/whois'
@@ -1271,6 +1291,7 @@ const rootRouteChildren: RootRouteChildren = {
   UuidRoute: UuidRoute,
   VideoConverterRoute: VideoConverterRoute,
   WhoisRoute: WhoisRoute,
+  YamlJsonRoute: YamlJsonRoute,
   ApiImageDotjpgRoute: ApiImageDotjpgRoute,
   ApiImageDotpngRoute: ApiImageDotpngRoute,
   ApiImageDotsvgRoute: ApiImageDotsvgRoute,

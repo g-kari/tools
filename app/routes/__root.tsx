@@ -30,6 +30,7 @@ const navCategories = [
       { path: "/base64-image", label: "Base64画像デコード" },
       { path: "/json", label: "JSON整形" },
       { path: "/csv-json", label: "CSV/JSON変換" },
+      { path: "/yaml-json", label: "YAML/JSON変換" },
       { path: "/php-serialize", label: "PHPシリアライズ" },
       { path: "/minify", label: "コード圧縮" },
       { path: "/unit-converter", label: "単位変換" },

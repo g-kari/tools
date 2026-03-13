@@ -115,6 +115,12 @@ const toolCatalog: ToolCategory[] = [
         description: "動画ファイルの形式変換（MP4/WebM等）",
         icon: "🎬",
       },
+      {
+        path: "/yaml-json",
+        label: "YAML/JSON変換",
+        description: "YAMLとJSONの相互変換ツール。設定ファイルの変換に便利。",
+        icon: "🔄",
+      },
     ],
   },
   {
