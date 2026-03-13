@@ -201,6 +201,22 @@ export function isPrivateIP(ip: string): boolean {
 }
 
 /**
+ * Check if an IP address is within a CIDR block
+ * @param ip - IPv4 address string (e.g., "192.168.1.100")
+ * @param cidr - CIDR notation (e.g., "192.168.0.0/24")
+ * @returns true if the IP is within the CIDR range, false otherwise
+ */
+export function isIPInCIDR(ip: string, cidr: string): boolean {
+  if (!isValidIPv4(ip) || !isValidCIDR(cidr)) return false;
+  const [cidrIp, prefixStr] = cidr.split("/");
+  const prefix = parseInt(prefixStr, 10);
+  const mask = prefix === 0 ? 0 : (0xffffffff << (32 - prefix)) >>> 0;
+  const ipInt = ipToInt(ip);
+  const networkInt = ipToInt(cidrIp);
+  return ((ipInt & mask) >>> 0) === ((networkInt & mask) >>> 0);
+}
+
+/**
  * Calculate all information for a CIDR block
  */
 export function calculateCIDR(cidr: string): CIDRResult {

@@ -28,6 +28,7 @@ import { Route as JwtRouteImport } from './routes/jwt'
 import { Route as JsonRouteImport } from './routes/json'
 import { Route as IpGeolocationRouteImport } from './routes/ip-geolocation'
 import { Route as IpConverterRouteImport } from './routes/ip-converter'
+import { Route as IpCidrCheckRouteImport } from './routes/ip-cidr-check'
 import { Route as ImageToGifRouteImport } from './routes/image-to-gif'
 import { Route as ImageResizeRouteImport } from './routes/image-resize'
 import { Route as ImageCropRouteImport } from './routes/image-crop'
@@ -149,6 +150,11 @@ const IpGeolocationRoute = IpGeolocationRouteImport.update({
 const IpConverterRoute = IpConverterRouteImport.update({
   id: '/ip-converter',
   path: '/ip-converter',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IpCidrCheckRoute = IpCidrCheckRouteImport.update({
+  id: '/ip-cidr-check',
+  path: '/ip-cidr-check',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ImageToGifRoute = ImageToGifRouteImport.update({
@@ -311,6 +317,7 @@ export interface FileRoutesByFullPath {
   '/image-crop': typeof ImageCropRoute
   '/image-resize': typeof ImageResizeRoute
   '/image-to-gif': typeof ImageToGifRoute
+  '/ip-cidr-check': typeof IpCidrCheckRoute
   '/ip-converter': typeof IpConverterRoute
   '/ip-geolocation': typeof IpGeolocationRoute
   '/json': typeof JsonRoute
@@ -359,6 +366,7 @@ export interface FileRoutesByTo {
   '/image-crop': typeof ImageCropRoute
   '/image-resize': typeof ImageResizeRoute
   '/image-to-gif': typeof ImageToGifRoute
+  '/ip-cidr-check': typeof IpCidrCheckRoute
   '/ip-converter': typeof IpConverterRoute
   '/ip-geolocation': typeof IpGeolocationRoute
   '/json': typeof JsonRoute
@@ -408,6 +416,7 @@ export interface FileRoutesById {
   '/image-crop': typeof ImageCropRoute
   '/image-resize': typeof ImageResizeRoute
   '/image-to-gif': typeof ImageToGifRoute
+  '/ip-cidr-check': typeof IpCidrCheckRoute
   '/ip-converter': typeof IpConverterRoute
   '/ip-geolocation': typeof IpGeolocationRoute
   '/json': typeof JsonRoute
@@ -458,6 +467,7 @@ export interface FileRouteTypes {
     | '/image-crop'
     | '/image-resize'
     | '/image-to-gif'
+    | '/ip-cidr-check'
     | '/ip-converter'
     | '/ip-geolocation'
     | '/json'
@@ -506,6 +516,7 @@ export interface FileRouteTypes {
     | '/image-crop'
     | '/image-resize'
     | '/image-to-gif'
+    | '/ip-cidr-check'
     | '/ip-converter'
     | '/ip-geolocation'
     | '/json'
@@ -554,6 +565,7 @@ export interface FileRouteTypes {
     | '/image-crop'
     | '/image-resize'
     | '/image-to-gif'
+    | '/ip-cidr-check'
     | '/ip-converter'
     | '/ip-geolocation'
     | '/json'
@@ -603,6 +615,7 @@ export interface RootRouteChildren {
   ImageCropRoute: typeof ImageCropRoute
   ImageResizeRoute: typeof ImageResizeRoute
   ImageToGifRoute: typeof ImageToGifRoute
+  IpCidrCheckRoute: typeof IpCidrCheckRoute
   IpConverterRoute: typeof IpConverterRoute
   IpGeolocationRoute: typeof IpGeolocationRoute
   JsonRoute: typeof JsonRoute
@@ -761,6 +774,13 @@ declare module '@tanstack/react-router' {
       path: '/ip-converter'
       fullPath: '/ip-converter'
       preLoaderRoute: typeof IpConverterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ip-cidr-check': {
+      id: '/ip-cidr-check'
+      path: '/ip-cidr-check'
+      fullPath: '/ip-cidr-check'
+      preLoaderRoute: typeof IpCidrCheckRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/image-to-gif': {
@@ -979,6 +999,7 @@ const rootRouteChildren: RootRouteChildren = {
   ImageCropRoute: ImageCropRoute,
   ImageResizeRoute: ImageResizeRoute,
   ImageToGifRoute: ImageToGifRoute,
+  IpCidrCheckRoute: IpCidrCheckRoute,
   IpConverterRoute: IpConverterRoute,
   IpGeolocationRoute: IpGeolocationRoute,
   JsonRoute: JsonRoute,
