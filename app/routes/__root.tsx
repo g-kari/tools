@@ -26,6 +26,7 @@ const navCategories = [
     items: [
       { path: "/", label: "Unicode変換" },
       { path: "/url-encode", label: "URLエンコード" },
+      { path: "/url-parser", label: "URLパーサー" },
       { path: "/html-encode", label: "HTMLエンコード" },
       { path: "/number-base", label: "数値進数変換" },
       { path: "/msgpack", label: "MessagePack変換" },

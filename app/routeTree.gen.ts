@@ -15,6 +15,7 @@ import { Route as WhoisRouteImport } from './routes/whois'
 import { Route as VideoConverterRouteImport } from './routes/video-converter'
 import { Route as UuidRouteImport } from './routes/uuid'
 import { Route as UserAgentRouteImport } from './routes/user-agent'
+import { Route as UrlParserRouteImport } from './routes/url-parser'
 import { Route as UrlEncodeRouteImport } from './routes/url-encode'
 import { Route as UnitConverterRouteImport } from './routes/unit-converter'
 import { Route as TransparentImageRouteImport } from './routes/transparent-image'
@@ -109,6 +110,11 @@ const UuidRoute = UuidRouteImport.update({
 const UserAgentRoute = UserAgentRouteImport.update({
   id: '/user-agent',
   path: '/user-agent',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UrlParserRoute = UrlParserRouteImport.update({
+  id: '/url-parser',
+  path: '/url-parser',
   getParentRoute: () => rootRouteImport,
 } as any)
 const UrlEncodeRoute = UrlEncodeRouteImport.update({
@@ -499,6 +505,7 @@ export interface FileRoutesByFullPath {
   '/transparent-image': typeof TransparentImageRoute
   '/unit-converter': typeof UnitConverterRoute
   '/url-encode': typeof UrlEncodeRoute
+  '/url-parser': typeof UrlParserRoute
   '/user-agent': typeof UserAgentRoute
   '/uuid': typeof UuidRoute
   '/video-converter': typeof VideoConverterRoute
@@ -572,6 +579,7 @@ export interface FileRoutesByTo {
   '/transparent-image': typeof TransparentImageRoute
   '/unit-converter': typeof UnitConverterRoute
   '/url-encode': typeof UrlEncodeRoute
+  '/url-parser': typeof UrlParserRoute
   '/user-agent': typeof UserAgentRoute
   '/uuid': typeof UuidRoute
   '/video-converter': typeof VideoConverterRoute
@@ -646,6 +654,7 @@ export interface FileRoutesById {
   '/transparent-image': typeof TransparentImageRoute
   '/unit-converter': typeof UnitConverterRoute
   '/url-encode': typeof UrlEncodeRoute
+  '/url-parser': typeof UrlParserRoute
   '/user-agent': typeof UserAgentRoute
   '/uuid': typeof UuidRoute
   '/video-converter': typeof VideoConverterRoute
@@ -721,6 +730,7 @@ export interface FileRouteTypes {
     | '/transparent-image'
     | '/unit-converter'
     | '/url-encode'
+    | '/url-parser'
     | '/user-agent'
     | '/uuid'
     | '/video-converter'
@@ -794,6 +804,7 @@ export interface FileRouteTypes {
     | '/transparent-image'
     | '/unit-converter'
     | '/url-encode'
+    | '/url-parser'
     | '/user-agent'
     | '/uuid'
     | '/video-converter'
@@ -867,6 +878,7 @@ export interface FileRouteTypes {
     | '/transparent-image'
     | '/unit-converter'
     | '/url-encode'
+    | '/url-parser'
     | '/user-agent'
     | '/uuid'
     | '/video-converter'
@@ -941,6 +953,7 @@ export interface RootRouteChildren {
   TransparentImageRoute: typeof TransparentImageRoute
   UnitConverterRoute: typeof UnitConverterRoute
   UrlEncodeRoute: typeof UrlEncodeRoute
+  UrlParserRoute: typeof UrlParserRoute
   UserAgentRoute: typeof UserAgentRoute
   UuidRoute: typeof UuidRoute
   VideoConverterRoute: typeof VideoConverterRoute
@@ -995,6 +1008,13 @@ declare module '@tanstack/react-router' {
       path: '/user-agent'
       fullPath: '/user-agent'
       preLoaderRoute: typeof UserAgentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/url-parser': {
+      id: '/url-parser'
+      path: '/url-parser'
+      fullPath: '/url-parser'
+      preLoaderRoute: typeof UrlParserRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/url-encode': {
@@ -1517,6 +1537,7 @@ const rootRouteChildren: RootRouteChildren = {
   TransparentImageRoute: TransparentImageRoute,
   UnitConverterRoute: UnitConverterRoute,
   UrlEncodeRoute: UrlEncodeRoute,
+  UrlParserRoute: UrlParserRoute,
   UserAgentRoute: UserAgentRoute,
   UuidRoute: UuidRoute,
   VideoConverterRoute: VideoConverterRoute,

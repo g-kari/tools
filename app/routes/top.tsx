@@ -50,6 +50,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🔗",
       },
       {
+        path: "/url-parser",
+        label: "URLパーサー/ビルダー",
+        description:
+          "URLを各コンポーネント（プロトコル、ホスト、パス、クエリパラメータ等）に分解・解析し、各パーツからURLを組み立てる",
+        icon: "🔗",
+      },
+      {
         path: "/html-encode",
         label: "HTMLエンコード",
         description: "HTML特殊文字のエスケープ変換",
