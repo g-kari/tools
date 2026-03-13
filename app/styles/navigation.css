@@ -15,30 +15,33 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 10px 16px;
-  background: var(--md-sys-color-surface-variant);
-  border: 1px solid var(--md-sys-color-outline-variant);
-  border-radius: 4px;
-  color: var(--md-sys-color-on-surface);
+  padding: 8px 12px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid transparent;
+  border-radius: 0;
+  color: var(--md-sys-color-on-surface-variant);
   font-size: 14px;
   font-weight: 500;
+  font-family: "JetBrains Mono", monospace;
   cursor: pointer;
-  transition: background-color 0.2s, border-color 0.2s, opacity 0.2s;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
   min-width: auto;
   text-transform: none;
   letter-spacing: normal;
 }
 
 .nav-category-btn:hover {
-  background: var(--md-sys-color-primary-container);
-  border-color: var(--md-sys-color-primary);
-  opacity: 0.85;
+  background: transparent;
+  border-bottom-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-primary);
+  opacity: 1;
 }
 
 .nav-category-btn.active {
-  background: var(--md-sys-color-primary);
-  color: var(--md-sys-color-on-primary);
-  border-color: var(--md-sys-color-primary);
+  background: transparent;
+  color: var(--md-sys-color-primary);
+  border-bottom: 1px solid var(--md-sys-color-primary);
 }
 
 .nav-category-icon {
@@ -59,14 +62,14 @@
   top: calc(100% + 4px);
   left: 50%;
   transform: translateX(-50%);
-  background: white;
-  border: 1px solid var(--md-sys-color-outline-variant);
-  border-radius: 4px;
+  background: #0d1117;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 0;
   min-width: 160px;
   z-index: 200;
   padding: 8px 0;
   animation: dropdownFadeIn 0.2s ease-out;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
 }
 
 /* 隙間をカバーする透明な領域（ホバー判定を維持） */
@@ -95,13 +98,16 @@
   padding: 10px 16px;
   color: var(--md-sys-color-on-surface);
   text-decoration: none;
-  font-size: 14px;
-  transition: background-color 0.2s, color 0.2s;
+  font-size: 13px;
+  font-family: "JetBrains Mono", monospace;
+  border-left: 2px solid transparent;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
 }
 
 .nav-dropdown-item:hover {
-  background: var(--md-sys-color-primary-container);
-  color: var(--md-sys-color-on-primary-container);
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-primary);
+  border-left-color: var(--md-sys-color-primary);
 }
 
 .nav-dropdown-item.active {
