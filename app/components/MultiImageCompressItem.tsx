@@ -1,6 +1,6 @@
 import { type CompressItem } from "~/types/image-compress";
 import { formatFileSize } from "~/utils/image";
-import { calculateCompressionRatio } from "~/routes/image-compress";
+import { calculateCompressionRatio } from "~/utils/image";
 
 /**
  * MultiImageCompressItemのProps
@@ -48,7 +48,7 @@ export function MultiImageCompressItem({
   return (
     <div
       className={`compress-image-card${isCompressing ? " compress-card-compressing" : ""}${isError ? " compress-card-error" : ""}`}
-      role="article"
+      role="listitem"
       aria-label={`${item.originalFile.name} の圧縮アイテム`}
     >
       {/* サムネイル */}

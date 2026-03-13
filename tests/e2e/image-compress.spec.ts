@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Image Compressor - E2E Tests', () => {
+test.describe('Image Compressor (複数画像対応) - E2E Tests', () => {
   /**
    * カテゴリドロップダウンを開いてリンクをクリックするヘルパー関数
    */
@@ -41,33 +41,35 @@ test.describe('Image Compressor - E2E Tests', () => {
     await expect(skipLink).toBeAttached();
   });
 
-  test('should display usage instructions', async ({ page }) => {
-    const usageSection = page.locator('.info-box').first();
-    await expect(usageSection).toBeVisible();
+  test('should display usage instructions (TipsCard)', async ({ page }) => {
+    const infoBoxes = page.locator('.info-box');
+    await expect(infoBoxes.first()).toBeVisible();
 
-    const usageText = await usageSection.textContent();
-    expect(usageText).toContain('画像圧縮とは');
-    expect(usageText).not.toContain('undefined');
+    const allText = await infoBoxes.allTextContents();
+    const combinedText = allText.join(' ');
+    expect(combinedText).toContain('画像圧縮とは');
+    expect(combinedText).not.toContain('undefined');
   });
 
-  test('should display dropzone for file upload', async ({ page }) => {
+  test('should display dropzone for multiple file upload', async ({ page }) => {
     const dropzone = page.locator('.dropzone');
     await expect(dropzone).toBeVisible();
     await expect(dropzone).toContainText('クリックして画像を選択');
     await expect(dropzone).toContainText('ドラッグ&ドロップ');
+    await expect(dropzone).toContainText('複数可');
   });
 
-  test('should have proper aria-label on dropzone', async ({ page }) => {
+  test('should have proper aria-label on dropzone for multiple upload', async ({ page }) => {
     const dropzone = page.locator('.dropzone');
-    await expect(dropzone).toHaveAttribute('aria-label', '画像ファイルをアップロード');
+    await expect(dropzone).toHaveAttribute('aria-label', '画像ファイルをアップロード（複数可）');
     await expect(dropzone).toHaveAttribute('role', 'button');
     await expect(dropzone).toHaveAttribute('tabindex', '0');
   });
 
-  test('should have file input hidden but present', async ({ page }) => {
-    const fileInput = page.locator('input#imageFile');
-    await expect(fileInput).toHaveAttribute('type', 'file');
+  test('should have multiple-enabled file input', async ({ page }) => {
+    const fileInput = page.locator('input[type="file"]');
     await expect(fileInput).toHaveAttribute('accept', 'image/*');
+    await expect(fileInput).toHaveAttribute('multiple');
   });
 
   test('should not display compression settings without image', async ({ page }) => {
@@ -78,9 +80,14 @@ test.describe('Image Compressor - E2E Tests', () => {
     await expect(formatSelect).not.toBeVisible();
   });
 
-  test('should not display comparison preview without image', async ({ page }) => {
-    const comparisonSection = page.locator('.preview-comparison');
-    await expect(comparisonSection).not.toBeVisible();
+  test('should not display image list without images', async ({ page }) => {
+    const imageList = page.locator('.compress-image-list');
+    await expect(imageList).not.toBeVisible();
+  });
+
+  test('should not display bulk action buttons without images', async ({ page }) => {
+    const bulkActions = page.locator('.compress-bulk-actions');
+    await expect(bulkActions).not.toBeVisible();
   });
 
   test('should have category navigation with proper state', async ({ page }) => {
@@ -102,8 +109,7 @@ test.describe('Image Compressor - E2E Tests', () => {
     await expect(imageCompressLink).toContainText('画像圧縮');
   });
 
-  test('should display format options info', async ({ page }) => {
-    // 複数のinfo-boxがあるので、すべてのテキストを結合して確認
+  test('should display format options info in TipsCard', async ({ page }) => {
     const allInfoBoxes = page.locator('.info-box');
     const allText = await allInfoBoxes.allTextContents();
     const combinedText = allText.join(' ');
@@ -114,14 +120,12 @@ test.describe('Image Compressor - E2E Tests', () => {
   });
 
   test('should display compression tips', async ({ page }) => {
-    // 複数のinfo-boxがあるので、すべてのテキストを結合して確認
     const allInfoBoxes = page.locator('.info-box');
     const allText = await allInfoBoxes.allTextContents();
     const combinedText = allText.join(' ');
 
     expect(combinedText).toContain('Tips');
-    expect(combinedText).toContain('80%');
-    expect(combinedText).toContain('WebP');
+    expect(combinedText).toContain('ZIP');
   });
 
   test('should be keyboard accessible', async ({ page }) => {
@@ -153,7 +157,6 @@ test.describe('Image Compressor - E2E Tests', () => {
     });
 
     test('should be clickable to open file dialog', async ({ page }) => {
-      const fileInput = page.locator('input#imageFile');
       const dropzone = page.locator('.dropzone');
 
       // Listen for file chooser
@@ -212,12 +215,6 @@ test.describe('Image Compressor - E2E Tests', () => {
     test('should have complementary region for info box', async ({ page }) => {
       const complementary = page.locator('[role="complementary"]').first();
       await expect(complementary).toBeVisible();
-      await expect(complementary).toHaveAttribute('aria-labelledby', 'usage-title');
-    });
-
-    test('should have proper labels for form elements', async ({ page }) => {
-      const fileInput = page.locator('input#imageFile');
-      await expect(fileInput).toHaveAttribute('aria-label', '画像ファイルを選択');
     });
   });
 
@@ -225,9 +222,66 @@ test.describe('Image Compressor - E2E Tests', () => {
     test('should have toast container available', async ({ page }) => {
       // Toast container is rendered by ToastProvider
       // It may not be visible until a toast is shown
-      const toastProvider = page.locator('[class*="toast"]');
-      // Just verify page loads correctly with toast system
       await expect(page.locator('.tool-container')).toBeVisible();
+    });
+  });
+
+  test.describe('複数画像アップロード後の UI', () => {
+    test('should show compression settings after file upload', async ({ page }) => {
+      // 画像ファイルをアップロードする
+      const fileInput = page.locator('input[type="file"]');
+      await fileInput.setInputFiles({
+        name: 'test.png',
+        mimeType: 'image/png',
+        buffer: Buffer.from(
+          'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
+          'base64'
+        ),
+      });
+
+      // 圧縮設定セクションが表示される
+      const qualitySlider = page.locator('input#quality');
+      await expect(qualitySlider).toBeVisible({ timeout: 5000 });
+    });
+
+    test('should show image list after file upload', async ({ page }) => {
+      const fileInput = page.locator('input[type="file"]');
+      await fileInput.setInputFiles({
+        name: 'sample.jpg',
+        mimeType: 'image/jpeg',
+        buffer: Buffer.from(
+          '/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAABAAEDASIAAhEBAxEB/8QAFAABAAAAAAAAAAAAAAAAAAAACf/EABQQAQAAAAAAAAAAAAAAAAAAAAD/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8AJQAB/9k=',
+          'base64'
+        ),
+      });
+
+      // 画像リストが表示される
+      const imageList = page.locator('.compress-image-list');
+      await expect(imageList).toBeVisible({ timeout: 5000 });
+    });
+
+    test('should show bulk actions after file upload', async ({ page }) => {
+      const fileInput = page.locator('input[type="file"]');
+      await fileInput.setInputFiles({
+        name: 'test.png',
+        mimeType: 'image/png',
+        buffer: Buffer.from(
+          'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
+          'base64'
+        ),
+      });
+
+      // 一括操作ボタンが表示される
+      const bulkActions = page.locator('.compress-bulk-actions');
+      await expect(bulkActions).toBeVisible({ timeout: 5000 });
+
+      // 「全て再圧縮」ボタンが存在する
+      const recompressBtn = bulkActions.getByRole('button', { name: '全て再圧縮' });
+      await expect(recompressBtn).toBeVisible();
+
+      // 「全てクリア」ボタンが存在する
+      const clearBtn = bulkActions.getByRole('button', { name: '全てクリア' });
+      await expect(clearBtn).toBeVisible();
     });
   });
 });

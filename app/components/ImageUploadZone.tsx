@@ -156,6 +156,7 @@ export function ImageUploadZone({
         onChange={handleInputChange}
         disabled={disabled}
         className="hidden-file-input"
+        tabIndex={-1}
         aria-label="画像ファイルを選択"
       />
     </>

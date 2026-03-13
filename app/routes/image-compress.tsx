@@ -5,7 +5,7 @@ import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
 import { ImageUploadZone } from "~/components/ImageUploadZone";
 import { MultiImageCompressItem } from "~/components/MultiImageCompressItem";
-import { downloadBlob } from "~/utils/image";
+import { downloadBlob, calculateCompressionRatio } from "~/utils/image";
 import { type CompressItem, type OutputFormat } from "~/types/image-compress";
 import JSZip from "jszip";
 
@@ -22,16 +22,7 @@ const FORMAT_OPTIONS: { value: OutputFormat; label: string; mimeType: string }[]
   { value: "png", label: "PNG", mimeType: "image/png" },
 ];
 
-/**
- * 圧縮率を計算する
- * @param originalSize - 元のファイルサイズ（バイト）
- * @param compressedSize - 圧縮後のファイルサイズ（バイト）
- * @returns 圧縮率（パーセント）
- */
-export function calculateCompressionRatio(originalSize: number, compressedSize: number): number {
-  if (originalSize === 0) return 0;
-  return Math.round((1 - compressedSize / originalSize) * 100);
-}
+export { calculateCompressionRatio } from "~/utils/image";
 
 /**
  * 画像を圧縮する
@@ -219,8 +210,13 @@ function ImageCompressor() {
 
       if (blob) {
         const compressedPreviewUrl = URL.createObjectURL(blob);
-        setItems((prev) =>
-          prev.map((i) => {
+        setItems((prev) => {
+          const targetItem = prev.find((i) => i.id === item.id);
+          if (!targetItem) {
+            URL.revokeObjectURL(compressedPreviewUrl);
+            return prev;
+          }
+          return prev.map((i) => {
             if (i.id === item.id) {
               // 古いcompressedPreviewUrlを解放
               if (i.compressedPreviewUrl) {
@@ -234,8 +230,8 @@ function ImageCompressor() {
               };
             }
             return i;
-          })
-        );
+          });
+        });
       } else {
         setItems((prev) =>
           prev.map((i) =>

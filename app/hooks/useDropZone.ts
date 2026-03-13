@@ -80,13 +80,15 @@ export function useDropZone({
 
       // ファイルタイプチェック
       if (acceptType) {
-        const invalidFiles = droppedFiles.filter(
-          (file) => !file.type.startsWith(acceptType)
-        );
+        const validFiles = droppedFiles.filter((file) => file.type.startsWith(acceptType));
+        const invalidFiles = droppedFiles.filter((file) => !file.type.startsWith(acceptType));
         if (invalidFiles.length > 0) {
           onTypeError?.();
-          return;
         }
+        if (validFiles.length === 0) return;
+        const filesToProcess = multiple ? validFiles : [validFiles[0]];
+        onFileSelect(filesToProcess);
+        return;
       }
 
       const filesToProcess = multiple ? droppedFiles : [droppedFiles[0]];
