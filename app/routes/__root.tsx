@@ -35,6 +35,7 @@ const navCategories = [
       { path: "/csv-json", label: "CSV/JSON変換" },
       { path: "/yaml-json", label: "YAML/JSON変換" },
       { path: "/toml-json", label: "TOML/JSON変換" },
+      { path: "/xml", label: "XMLフォーマッター" },
       { path: "/php-serialize", label: "PHPシリアライズ" },
       { path: "/minify", label: "コード圧縮" },
       { path: "/unit-converter", label: "単位変換" },

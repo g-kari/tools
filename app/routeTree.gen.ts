@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as YamlJsonRouteImport } from './routes/yaml-json'
+import { Route as XmlRouteImport } from './routes/xml'
 import { Route as WhoisRouteImport } from './routes/whois'
 import { Route as VideoConverterRouteImport } from './routes/video-converter'
 import { Route as UuidRouteImport } from './routes/uuid'
@@ -17,6 +18,7 @@ import { Route as UrlEncodeRouteImport } from './routes/url-encode'
 import { Route as UnitConverterRouteImport } from './routes/unit-converter'
 import { Route as TransparentImageRouteImport } from './routes/transparent-image'
 import { Route as TopRouteImport } from './routes/top'
+import { Route as TomlJsonRouteImport } from './routes/toml-json'
 import { Route as TimestampRouteImport } from './routes/timestamp'
 import { Route as TextSortRouteImport } from './routes/text-sort'
 import { Route as TextCaseRouteImport } from './routes/text-case'
@@ -78,6 +80,11 @@ const YamlJsonRoute = YamlJsonRouteImport.update({
   path: '/yaml-json',
   getParentRoute: () => rootRouteImport,
 } as any)
+const XmlRoute = XmlRouteImport.update({
+  id: '/xml',
+  path: '/xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WhoisRoute = WhoisRouteImport.update({
   id: '/whois',
   path: '/whois',
@@ -111,6 +118,11 @@ const TransparentImageRoute = TransparentImageRouteImport.update({
 const TopRoute = TopRouteImport.update({
   id: '/top',
   path: '/top',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TomlJsonRoute = TomlJsonRouteImport.update({
+  id: '/toml-json',
+  path: '/toml-json',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TimestampRoute = TimestampRouteImport.update({
@@ -441,6 +453,7 @@ export interface FileRoutesByFullPath {
   '/text-case': typeof TextCaseRoute
   '/text-sort': typeof TextSortRoute
   '/timestamp': typeof TimestampRoute
+  '/toml-json': typeof TomlJsonRoute
   '/top': typeof TopRoute
   '/transparent-image': typeof TransparentImageRoute
   '/unit-converter': typeof UnitConverterRoute
@@ -448,6 +461,7 @@ export interface FileRoutesByFullPath {
   '/uuid': typeof UuidRoute
   '/video-converter': typeof VideoConverterRoute
   '/whois': typeof WhoisRoute
+  '/xml': typeof XmlRoute
   '/yaml-json': typeof YamlJsonRoute
   '/api/image.jpg': typeof ApiImageDotjpgRoute
   '/api/image.png': typeof ApiImageDotpngRoute
@@ -506,6 +520,7 @@ export interface FileRoutesByTo {
   '/text-case': typeof TextCaseRoute
   '/text-sort': typeof TextSortRoute
   '/timestamp': typeof TimestampRoute
+  '/toml-json': typeof TomlJsonRoute
   '/top': typeof TopRoute
   '/transparent-image': typeof TransparentImageRoute
   '/unit-converter': typeof UnitConverterRoute
@@ -513,6 +528,7 @@ export interface FileRoutesByTo {
   '/uuid': typeof UuidRoute
   '/video-converter': typeof VideoConverterRoute
   '/whois': typeof WhoisRoute
+  '/xml': typeof XmlRoute
   '/yaml-json': typeof YamlJsonRoute
   '/api/image.jpg': typeof ApiImageDotjpgRoute
   '/api/image.png': typeof ApiImageDotpngRoute
@@ -572,6 +588,7 @@ export interface FileRoutesById {
   '/text-case': typeof TextCaseRoute
   '/text-sort': typeof TextSortRoute
   '/timestamp': typeof TimestampRoute
+  '/toml-json': typeof TomlJsonRoute
   '/top': typeof TopRoute
   '/transparent-image': typeof TransparentImageRoute
   '/unit-converter': typeof UnitConverterRoute
@@ -579,6 +596,7 @@ export interface FileRoutesById {
   '/uuid': typeof UuidRoute
   '/video-converter': typeof VideoConverterRoute
   '/whois': typeof WhoisRoute
+  '/xml': typeof XmlRoute
   '/yaml-json': typeof YamlJsonRoute
   '/api/image.jpg': typeof ApiImageDotjpgRoute
   '/api/image.png': typeof ApiImageDotpngRoute
@@ -639,6 +657,7 @@ export interface FileRouteTypes {
     | '/text-case'
     | '/text-sort'
     | '/timestamp'
+    | '/toml-json'
     | '/top'
     | '/transparent-image'
     | '/unit-converter'
@@ -646,6 +665,7 @@ export interface FileRouteTypes {
     | '/uuid'
     | '/video-converter'
     | '/whois'
+    | '/xml'
     | '/yaml-json'
     | '/api/image.jpg'
     | '/api/image.png'
@@ -704,6 +724,7 @@ export interface FileRouteTypes {
     | '/text-case'
     | '/text-sort'
     | '/timestamp'
+    | '/toml-json'
     | '/top'
     | '/transparent-image'
     | '/unit-converter'
@@ -711,6 +732,7 @@ export interface FileRouteTypes {
     | '/uuid'
     | '/video-converter'
     | '/whois'
+    | '/xml'
     | '/yaml-json'
     | '/api/image.jpg'
     | '/api/image.png'
@@ -769,6 +791,7 @@ export interface FileRouteTypes {
     | '/text-case'
     | '/text-sort'
     | '/timestamp'
+    | '/toml-json'
     | '/top'
     | '/transparent-image'
     | '/unit-converter'
@@ -776,6 +799,7 @@ export interface FileRouteTypes {
     | '/uuid'
     | '/video-converter'
     | '/whois'
+    | '/xml'
     | '/yaml-json'
     | '/api/image.jpg'
     | '/api/image.png'
@@ -835,6 +859,7 @@ export interface RootRouteChildren {
   TextCaseRoute: typeof TextCaseRoute
   TextSortRoute: typeof TextSortRoute
   TimestampRoute: typeof TimestampRoute
+  TomlJsonRoute: typeof TomlJsonRoute
   TopRoute: typeof TopRoute
   TransparentImageRoute: typeof TransparentImageRoute
   UnitConverterRoute: typeof UnitConverterRoute
@@ -842,6 +867,7 @@ export interface RootRouteChildren {
   UuidRoute: typeof UuidRoute
   VideoConverterRoute: typeof VideoConverterRoute
   WhoisRoute: typeof WhoisRoute
+  XmlRoute: typeof XmlRoute
   YamlJsonRoute: typeof YamlJsonRoute
   ApiImageDotjpgRoute: typeof ApiImageDotjpgRoute
   ApiImageDotpngRoute: typeof ApiImageDotpngRoute
@@ -856,6 +882,13 @@ declare module '@tanstack/react-router' {
       path: '/yaml-json'
       fullPath: '/yaml-json'
       preLoaderRoute: typeof YamlJsonRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/xml': {
+      id: '/xml'
+      path: '/xml'
+      fullPath: '/xml'
+      preLoaderRoute: typeof XmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/whois': {
@@ -905,6 +938,13 @@ declare module '@tanstack/react-router' {
       path: '/top'
       fullPath: '/top'
       preLoaderRoute: typeof TopRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/toml-json': {
+      id: '/toml-json'
+      path: '/toml-json'
+      fullPath: '/toml-json'
+      preLoaderRoute: typeof TomlJsonRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/timestamp': {
@@ -1347,6 +1387,7 @@ const rootRouteChildren: RootRouteChildren = {
   TextCaseRoute: TextCaseRoute,
   TextSortRoute: TextSortRoute,
   TimestampRoute: TimestampRoute,
+  TomlJsonRoute: TomlJsonRoute,
   TopRoute: TopRoute,
   TransparentImageRoute: TransparentImageRoute,
   UnitConverterRoute: UnitConverterRoute,
@@ -1354,6 +1395,7 @@ const rootRouteChildren: RootRouteChildren = {
   UuidRoute: UuidRoute,
   VideoConverterRoute: VideoConverterRoute,
   WhoisRoute: WhoisRoute,
+  XmlRoute: XmlRoute,
   YamlJsonRoute: YamlJsonRoute,
   ApiImageDotjpgRoute: ApiImageDotjpgRoute,
   ApiImageDotpngRoute: ApiImageDotpngRoute,

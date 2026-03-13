@@ -128,6 +128,12 @@ const toolCatalog: ToolCategory[] = [
           "TOMLとJSONの相互変換ツール。Cargo.toml、pyproject.toml等の変換に便利。",
         icon: "🔄",
       },
+      {
+        path: "/xml",
+        label: "XMLフォーマッター",
+        description: "XMLデータの整形・圧縮・構文検証ツール",
+        icon: "📋",
+      },
     ],
   },
   {
