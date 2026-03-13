@@ -22,6 +22,7 @@ import { Route as ServerEnvRouteImport } from './routes/server-env'
 import { Route as SecurityHeadersRouteImport } from './routes/security-headers'
 import { Route as RegexCheckerRouteImport } from './routes/regex-checker'
 import { Route as QrCodeRouteImport } from './routes/qr-code'
+import { Route as PortCheckRouteImport } from './routes/port-check'
 import { Route as PhpSerializeRouteImport } from './routes/php-serialize'
 import { Route as PasswordGeneratorRouteImport } from './routes/password-generator'
 import { Route as OgpRouteImport } from './routes/ogp'
@@ -127,6 +128,11 @@ const RegexCheckerRoute = RegexCheckerRouteImport.update({
 const QrCodeRoute = QrCodeRouteImport.update({
   id: '/qr-code',
   path: '/qr-code',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PortCheckRoute = PortCheckRouteImport.update({
+  id: '/port-check',
+  path: '/port-check',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PhpSerializeRoute = PhpSerializeRouteImport.update({
@@ -373,6 +379,7 @@ export interface FileRoutesByFullPath {
   '/ogp': typeof OgpRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/php-serialize': typeof PhpSerializeRoute
+  '/port-check': typeof PortCheckRoute
   '/qr-code': typeof QrCodeRoute
   '/regex-checker': typeof RegexCheckerRoute
   '/security-headers': typeof SecurityHeadersRoute
@@ -429,6 +436,7 @@ export interface FileRoutesByTo {
   '/ogp': typeof OgpRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/php-serialize': typeof PhpSerializeRoute
+  '/port-check': typeof PortCheckRoute
   '/qr-code': typeof QrCodeRoute
   '/regex-checker': typeof RegexCheckerRoute
   '/security-headers': typeof SecurityHeadersRoute
@@ -486,6 +494,7 @@ export interface FileRoutesById {
   '/ogp': typeof OgpRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/php-serialize': typeof PhpSerializeRoute
+  '/port-check': typeof PortCheckRoute
   '/qr-code': typeof QrCodeRoute
   '/regex-checker': typeof RegexCheckerRoute
   '/security-headers': typeof SecurityHeadersRoute
@@ -544,6 +553,7 @@ export interface FileRouteTypes {
     | '/ogp'
     | '/password-generator'
     | '/php-serialize'
+    | '/port-check'
     | '/qr-code'
     | '/regex-checker'
     | '/security-headers'
@@ -600,6 +610,7 @@ export interface FileRouteTypes {
     | '/ogp'
     | '/password-generator'
     | '/php-serialize'
+    | '/port-check'
     | '/qr-code'
     | '/regex-checker'
     | '/security-headers'
@@ -656,6 +667,7 @@ export interface FileRouteTypes {
     | '/ogp'
     | '/password-generator'
     | '/php-serialize'
+    | '/port-check'
     | '/qr-code'
     | '/regex-checker'
     | '/security-headers'
@@ -713,6 +725,7 @@ export interface RootRouteChildren {
   OgpRoute: typeof OgpRoute
   PasswordGeneratorRoute: typeof PasswordGeneratorRoute
   PhpSerializeRoute: typeof PhpSerializeRoute
+  PortCheckRoute: typeof PortCheckRoute
   QrCodeRoute: typeof QrCodeRoute
   RegexCheckerRoute: typeof RegexCheckerRoute
   SecurityHeadersRoute: typeof SecurityHeadersRoute
@@ -823,6 +836,13 @@ declare module '@tanstack/react-router' {
       path: '/qr-code'
       fullPath: '/qr-code'
       preLoaderRoute: typeof QrCodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/port-check': {
+      id: '/port-check'
+      path: '/port-check'
+      fullPath: '/port-check'
+      preLoaderRoute: typeof PortCheckRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/php-serialize': {
@@ -1153,6 +1173,7 @@ const rootRouteChildren: RootRouteChildren = {
   OgpRoute: OgpRoute,
   PasswordGeneratorRoute: PasswordGeneratorRoute,
   PhpSerializeRoute: PhpSerializeRoute,
+  PortCheckRoute: PortCheckRoute,
   QrCodeRoute: QrCodeRoute,
   RegexCheckerRoute: RegexCheckerRoute,
   SecurityHeadersRoute: SecurityHeadersRoute,
