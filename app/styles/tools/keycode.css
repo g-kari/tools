@@ -1,0 +1,331 @@
+/* キーボードキーコードチェッカー (kc- prefix) */
+
+/* メインレイアウト */
+.kc-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* キャプチャエリア */
+.kc-capture-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+  border: 2px dashed var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: default;
+  transition: border-color 0.2s, background-color 0.2s, color 0.2s;
+  outline: none;
+  user-select: none;
+  text-align: center;
+  padding: 1.5rem;
+  animation: fadeInUp 0.3s ease-out 0.1s both;
+}
+
+.kc-capture-area:focus {
+  border-color: var(--md-sys-color-primary);
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.kc-capture-area.kc-active {
+  border-color: var(--md-sys-color-primary);
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.kc-capture-icon {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 0.5rem;
+  line-height: 1;
+}
+
+.kc-capture-hint {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-top: 0.25rem;
+}
+
+/* キー情報セクション */
+.kc-info-section {
+  animation: fadeInUp 0.3s ease-out 0.2s both;
+}
+
+.kc-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  gap: 1rem;
+}
+
+.kc-section-title {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface);
+  margin: 0;
+}
+
+/* キー表示バッジ */
+.kc-key-display {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.kc-key-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.kc-key-badge.kc-modifier {
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  border-color: var(--md-sys-color-secondary);
+}
+
+.kc-key-badge.kc-main {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border-color: var(--md-sys-color-primary);
+  font-size: 1rem;
+  padding: 0.375rem 1rem;
+}
+
+/* キー情報テーブル */
+.kc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.kc-table-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 40px;
+  align-items: center;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  transition: background-color 0.2s;
+}
+
+.kc-table-row:last-child {
+  border-bottom: none;
+}
+
+.kc-table-row:hover {
+  background-color: var(--md-sys-color-surface-variant);
+}
+
+.kc-table-label {
+  padding: 0.625rem 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-weight: 500;
+}
+
+.kc-table-value {
+  padding: 0.625rem 0.75rem;
+  font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
+  color: var(--md-sys-color-on-surface);
+  word-break: break-all;
+}
+
+.kc-table-value.kc-boolean-true {
+  color: #2e7d32;
+  font-weight: 500;
+}
+
+.kc-table-value.kc-boolean-false {
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* コピーボタン */
+.kc-copy-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.875rem;
+  transition: color 0.2s, background-color 0.2s, border-color 0.2s;
+}
+
+.kc-copy-btn:hover {
+  color: var(--md-sys-color-primary);
+  background-color: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-outline-variant);
+}
+
+.kc-copy-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* 修飾キー状態バッジグループ */
+.kc-modifier-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: var(--md-sys-color-surface-variant);
+  border-radius: 4px;
+  margin-bottom: 0.75rem;
+}
+
+.kc-modifier-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: 4px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface-variant);
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.kc-modifier-badge.kc-active {
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  border-color: var(--md-sys-color-secondary);
+}
+
+/* 履歴セクション */
+.kc-history-section {
+  animation: fadeInUp 0.3s ease-out 0.3s both;
+}
+
+.kc-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.kc-history-item {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface);
+  font-size: 0.8125rem;
+  transition: background-color 0.2s;
+}
+
+.kc-history-item:first-child {
+  background: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+}
+
+.kc-history-key {
+  font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kc-history-code {
+  font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.kc-history-modifiers {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.kc-history-mod-badge {
+  padding: 0.125rem 0.375rem;
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  border-radius: 4px;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* 空状態 */
+.kc-empty-state {
+  text-align: center;
+  color: var(--md-sys-color-on-surface-variant);
+  padding: 2rem 1rem;
+  font-size: 0.875rem;
+}
+
+/* クリアボタンエリア */
+.kc-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+/* prefers-reduced-motion 対応 */
+@media (prefers-reduced-motion: reduce) {
+  .kc-capture-area,
+  .kc-info-section,
+  .kc-history-section,
+  .kc-table-row,
+  .kc-copy-btn,
+  .kc-modifier-badge {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* レスポンシブデザイン */
+@media (max-width: 600px) {
+  .kc-table-row {
+    grid-template-columns: 1fr 1fr 36px;
+  }
+
+  .kc-table-label,
+  .kc-table-value {
+    padding: 0.5rem 0.5rem;
+    font-size: 0.8125rem;
+  }
+
+  .kc-history-item {
+    grid-template-columns: 1fr auto;
+  }
+
+  .kc-history-code {
+    display: none;
+  }
+
+  .kc-section-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
