@@ -58,6 +58,7 @@ import { Route as HashRouteImport } from './routes/hash'
 import { Route as GlobalIpRouteImport } from './routes/global-ip'
 import { Route as GitignoreRouteImport } from './routes/gitignore'
 import { Route as FaviconGeneratorRouteImport } from './routes/favicon-generator'
+import { Route as EnvParserRouteImport } from './routes/env-parser'
 import { Route as EmojiConverterRouteImport } from './routes/emoji-converter'
 import { Route as EmailDnsRouteImport } from './routes/email-dns'
 import { Route as DummyImageRouteImport } from './routes/dummy-image'
@@ -330,6 +331,11 @@ const FaviconGeneratorRoute = FaviconGeneratorRouteImport.update({
   path: '/favicon-generator',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EnvParserRoute = EnvParserRouteImport.update({
+  id: '/env-parser',
+  path: '/env-parser',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EmojiConverterRoute = EmojiConverterRouteImport.update({
   id: '/emoji-converter',
   path: '/emoji-converter',
@@ -484,6 +490,7 @@ export interface FileRoutesByFullPath {
   '/dummy-image': typeof DummyImageRoute
   '/email-dns': typeof EmailDnsRoute
   '/emoji-converter': typeof EmojiConverterRoute
+  '/env-parser': typeof EnvParserRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
   '/gitignore': typeof GitignoreRoute
   '/global-ip': typeof GlobalIpRoute
@@ -561,6 +568,7 @@ export interface FileRoutesByTo {
   '/dummy-image': typeof DummyImageRoute
   '/email-dns': typeof EmailDnsRoute
   '/emoji-converter': typeof EmojiConverterRoute
+  '/env-parser': typeof EnvParserRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
   '/gitignore': typeof GitignoreRoute
   '/global-ip': typeof GlobalIpRoute
@@ -639,6 +647,7 @@ export interface FileRoutesById {
   '/dummy-image': typeof DummyImageRoute
   '/email-dns': typeof EmailDnsRoute
   '/emoji-converter': typeof EmojiConverterRoute
+  '/env-parser': typeof EnvParserRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
   '/gitignore': typeof GitignoreRoute
   '/global-ip': typeof GlobalIpRoute
@@ -718,6 +727,7 @@ export interface FileRouteTypes {
     | '/dummy-image'
     | '/email-dns'
     | '/emoji-converter'
+    | '/env-parser'
     | '/favicon-generator'
     | '/gitignore'
     | '/global-ip'
@@ -795,6 +805,7 @@ export interface FileRouteTypes {
     | '/dummy-image'
     | '/email-dns'
     | '/emoji-converter'
+    | '/env-parser'
     | '/favicon-generator'
     | '/gitignore'
     | '/global-ip'
@@ -872,6 +883,7 @@ export interface FileRouteTypes {
     | '/dummy-image'
     | '/email-dns'
     | '/emoji-converter'
+    | '/env-parser'
     | '/favicon-generator'
     | '/gitignore'
     | '/global-ip'
@@ -950,6 +962,7 @@ export interface RootRouteChildren {
   DummyImageRoute: typeof DummyImageRoute
   EmailDnsRoute: typeof EmailDnsRoute
   EmojiConverterRoute: typeof EmojiConverterRoute
+  EnvParserRoute: typeof EnvParserRoute
   FaviconGeneratorRoute: typeof FaviconGeneratorRoute
   GitignoreRoute: typeof GitignoreRoute
   GlobalIpRoute: typeof GlobalIpRoute
@@ -1350,6 +1363,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FaviconGeneratorRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/env-parser': {
+      id: '/env-parser'
+      path: '/env-parser'
+      fullPath: '/env-parser'
+      preLoaderRoute: typeof EnvParserRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/emoji-converter': {
       id: '/emoji-converter'
       path: '/emoji-converter'
@@ -1558,6 +1578,7 @@ const rootRouteChildren: RootRouteChildren = {
   DummyImageRoute: DummyImageRoute,
   EmailDnsRoute: EmailDnsRoute,
   EmojiConverterRoute: EmojiConverterRoute,
+  EnvParserRoute: EnvParserRoute,
   FaviconGeneratorRoute: FaviconGeneratorRoute,
   GitignoreRoute: GitignoreRoute,
   GlobalIpRoute: GlobalIpRoute,

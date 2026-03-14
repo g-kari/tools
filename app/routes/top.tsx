@@ -57,6 +57,12 @@ const toolCatalog: ToolCategory[] = [
         icon: "🔗",
       },
       {
+        path: "/env-parser",
+        label: ".envパーサー",
+        description: ".envファイルのパース・JSON/YAML/Shellへの変換",
+        icon: "⚙️",
+      },
+      {
         path: "/html-encode",
         label: "HTMLエンコード",
         description: "HTML特殊文字のエスケープ変換",
