@@ -38,6 +38,7 @@ import { Route as NumberBaseRouteImport } from './routes/number-base'
 import { Route as MsgpackRouteImport } from './routes/msgpack'
 import { Route as MorseCodeRouteImport } from './routes/morse-code'
 import { Route as MinifyRouteImport } from './routes/minify'
+import { Route as MarkdownTableRouteImport } from './routes/markdown-table'
 import { Route as MarkdownPreviewRouteImport } from './routes/markdown-preview'
 import { Route as LoremIpsumRouteImport } from './routes/lorem-ipsum'
 import { Route as JwtRouteImport } from './routes/jwt'
@@ -226,6 +227,11 @@ const MorseCodeRoute = MorseCodeRouteImport.update({
 const MinifyRoute = MinifyRouteImport.update({
   id: '/minify',
   path: '/minify',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MarkdownTableRoute = MarkdownTableRouteImport.update({
+  id: '/markdown-table',
+  path: '/markdown-table',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MarkdownPreviewRoute = MarkdownPreviewRouteImport.update({
@@ -490,6 +496,7 @@ export interface FileRoutesByFullPath {
   '/jwt': typeof JwtRoute
   '/lorem-ipsum': typeof LoremIpsumRoute
   '/markdown-preview': typeof MarkdownPreviewRoute
+  '/markdown-table': typeof MarkdownTableRoute
   '/minify': typeof MinifyRoute
   '/morse-code': typeof MorseCodeRoute
   '/msgpack': typeof MsgpackRoute
@@ -565,6 +572,7 @@ export interface FileRoutesByTo {
   '/jwt': typeof JwtRoute
   '/lorem-ipsum': typeof LoremIpsumRoute
   '/markdown-preview': typeof MarkdownPreviewRoute
+  '/markdown-table': typeof MarkdownTableRoute
   '/minify': typeof MinifyRoute
   '/morse-code': typeof MorseCodeRoute
   '/msgpack': typeof MsgpackRoute
@@ -641,6 +649,7 @@ export interface FileRoutesById {
   '/jwt': typeof JwtRoute
   '/lorem-ipsum': typeof LoremIpsumRoute
   '/markdown-preview': typeof MarkdownPreviewRoute
+  '/markdown-table': typeof MarkdownTableRoute
   '/minify': typeof MinifyRoute
   '/morse-code': typeof MorseCodeRoute
   '/msgpack': typeof MsgpackRoute
@@ -718,6 +727,7 @@ export interface FileRouteTypes {
     | '/jwt'
     | '/lorem-ipsum'
     | '/markdown-preview'
+    | '/markdown-table'
     | '/minify'
     | '/morse-code'
     | '/msgpack'
@@ -793,6 +803,7 @@ export interface FileRouteTypes {
     | '/jwt'
     | '/lorem-ipsum'
     | '/markdown-preview'
+    | '/markdown-table'
     | '/minify'
     | '/morse-code'
     | '/msgpack'
@@ -868,6 +879,7 @@ export interface FileRouteTypes {
     | '/jwt'
     | '/lorem-ipsum'
     | '/markdown-preview'
+    | '/markdown-table'
     | '/minify'
     | '/morse-code'
     | '/msgpack'
@@ -944,6 +956,7 @@ export interface RootRouteChildren {
   JwtRoute: typeof JwtRoute
   LoremIpsumRoute: typeof LoremIpsumRoute
   MarkdownPreviewRoute: typeof MarkdownPreviewRoute
+  MarkdownTableRoute: typeof MarkdownTableRoute
   MinifyRoute: typeof MinifyRoute
   MorseCodeRoute: typeof MorseCodeRoute
   MsgpackRoute: typeof MsgpackRoute
@@ -1182,6 +1195,13 @@ declare module '@tanstack/react-router' {
       path: '/minify'
       fullPath: '/minify'
       preLoaderRoute: typeof MinifyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/markdown-table': {
+      id: '/markdown-table'
+      path: '/markdown-table'
+      fullPath: '/markdown-table'
+      preLoaderRoute: typeof MarkdownTableRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/markdown-preview': {
@@ -1536,6 +1556,7 @@ const rootRouteChildren: RootRouteChildren = {
   JwtRoute: JwtRoute,
   LoremIpsumRoute: LoremIpsumRoute,
   MarkdownPreviewRoute: MarkdownPreviewRoute,
+  MarkdownTableRoute: MarkdownTableRoute,
   MinifyRoute: MinifyRoute,
   MorseCodeRoute: MorseCodeRoute,
   MsgpackRoute: MsgpackRoute,

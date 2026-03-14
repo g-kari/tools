@@ -352,6 +352,13 @@ const toolCatalog: ToolCategory[] = [
         description: "User-Agent文字列を解析してブラウザ・OS・デバイス情報を表示",
         icon: "🔍",
       },
+      {
+        path: "/markdown-table",
+        label: "Markdownテーブル生成",
+        description:
+          "CSVやテキストデータからMarkdown形式のテーブルを生成。行・列の追加削除や整列方向の設定が可能",
+        icon: "📊",
+      },
     ],
   },
   {
