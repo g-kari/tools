@@ -186,6 +186,14 @@ function VideoConverter() {
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const statusRef = useRef<HTMLDivElement>(null);
+  const progressBarRef = useRef<HTMLDivElement>(null);
+
+  // progress が変化するたびにプログレスバーの CSS変数を更新する
+  useEffect(() => {
+    if (progressBarRef.current) {
+      progressBarRef.current.style.setProperty("--progress-width", `${progress}%`);
+    }
+  }, [progress]);
 
   /**
    * スクリーンリーダー用のステータスメッセージを通知する
@@ -547,7 +555,14 @@ function VideoConverter() {
           </div>
 
           {isConverting && (
-            <div className="progress-bar" role="progressbar" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100} style={{ "--progress-width": `${progress}%` } as React.CSSProperties}>
+            <div
+              className="progress-bar"
+              role="progressbar"
+              aria-valuenow={progress}
+              aria-valuemin={0}
+              aria-valuemax={100}
+              ref={progressBarRef}
+            >
               <div className="progress-fill" />
             </div>
           )}

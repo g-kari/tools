@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
@@ -147,7 +147,30 @@ function ColorContrast() {
   const [fgHexInput, setFgHexInput] = useState("#000000");
   const [bgHexInput, setBgHexInput] = useState("#ffffff");
 
+  const fgPreviewRef = useRef<HTMLDivElement>(null);
+  const bgPreviewRef = useRef<HTMLDivElement>(null);
+  const contrastPreviewRef = useRef<HTMLDivElement>(null);
+
   const { showToast } = useToast();
+
+  useEffect(() => {
+    if (fgPreviewRef.current) {
+      fgPreviewRef.current.style.setProperty("--preview-color", fgColor);
+    }
+  }, [fgColor]);
+
+  useEffect(() => {
+    if (bgPreviewRef.current) {
+      bgPreviewRef.current.style.setProperty("--preview-color", bgColor);
+    }
+  }, [bgColor]);
+
+  useEffect(() => {
+    if (contrastPreviewRef.current) {
+      contrastPreviewRef.current.style.setProperty("--fg-color", fgColor);
+      contrastPreviewRef.current.style.setProperty("--bg-color", bgColor);
+    }
+  }, [fgColor, bgColor]);
 
   const contrastRatio = calculateContrastRatio(fgColor, bgColor);
   const wcagResult = getWcagResult(contrastRatio);
@@ -242,8 +265,8 @@ function ColorContrast() {
           <div className="contrast-color-block">
             <h2 className="contrast-color-block-title">前景色（テキスト色）</h2>
             <div
+              ref={fgPreviewRef}
               className="contrast-color-preview"
-              style={{ "--preview-color": fgColor } as React.CSSProperties}
               aria-hidden="true"
             />
             <div className="contrast-color-input">
@@ -284,8 +307,8 @@ function ColorContrast() {
           <div className="contrast-color-block">
             <h2 className="contrast-color-block-title">背景色</h2>
             <div
+              ref={bgPreviewRef}
               className="contrast-color-preview"
-              style={{ "--preview-color": bgColor } as React.CSSProperties}
               aria-hidden="true"
             />
             <div className="contrast-color-input">
@@ -410,13 +433,8 @@ function ColorContrast() {
 
           {/* リアルタイムプレビュー */}
           <div
+            ref={contrastPreviewRef}
             className="contrast-preview"
-            style={
-              {
-                "--fg-color": fgColor,
-                "--bg-color": bgColor,
-              } as React.CSSProperties
-            }
             aria-label="カラープレビュー"
           >
             <p className="contrast-preview-text-large">

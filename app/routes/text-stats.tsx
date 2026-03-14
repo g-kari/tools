@@ -214,7 +214,9 @@ function TextStatsPage() {
                     <div className="ts-word-bar-wrap" aria-hidden="true">
                       <div
                         className="ts-word-bar"
-                        style={{ '--ts-bar-width': `${widthPercent}%` } as React.CSSProperties}
+                        ref={(el) => {
+                          if (el) el.style.setProperty("--ts-bar-width", `${widthPercent}%`);
+                        }}
                       />
                     </div>
                     <span className="ts-word-count" aria-label={`${count}回`}>

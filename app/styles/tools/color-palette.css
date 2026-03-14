@@ -112,6 +112,7 @@
   width: 100%;
   aspect-ratio: 1;
   display: block;
+  background-color: var(--swatch-bg);
 }
 
 /* テキスト情報エリア */
