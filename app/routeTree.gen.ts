@@ -86,6 +86,7 @@ import { Route as CronParserRouteImport } from './routes/cron-parser'
 import { Route as CronRouteImport } from './routes/cron'
 import { Route as ColorPickerRouteImport } from './routes/color-picker'
 import { Route as ColorPaletteRouteImport } from './routes/color-palette'
+import { Route as ColorHarmonyRouteImport } from './routes/color-harmony'
 import { Route as ColorExtractorRouteImport } from './routes/color-extractor'
 import { Route as ColorContrastRouteImport } from './routes/color-contrast'
 import { Route as CidrRouteImport } from './routes/cidr'
@@ -487,6 +488,11 @@ const ColorPaletteRoute = ColorPaletteRouteImport.update({
   path: '/color-palette',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ColorHarmonyRoute = ColorHarmonyRouteImport.update({
+  id: '/color-harmony',
+  path: '/color-harmony',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ColorExtractorRoute = ColorExtractorRouteImport.update({
   id: '/color-extractor',
   path: '/color-extractor',
@@ -575,6 +581,7 @@ export interface FileRoutesByFullPath {
   '/cidr': typeof CidrRoute
   '/color-contrast': typeof ColorContrastRoute
   '/color-extractor': typeof ColorExtractorRoute
+  '/color-harmony': typeof ColorHarmonyRoute
   '/color-palette': typeof ColorPaletteRoute
   '/color-picker': typeof ColorPickerRoute
   '/cron': typeof CronRoute
@@ -669,6 +676,7 @@ export interface FileRoutesByTo {
   '/cidr': typeof CidrRoute
   '/color-contrast': typeof ColorContrastRoute
   '/color-extractor': typeof ColorExtractorRoute
+  '/color-harmony': typeof ColorHarmonyRoute
   '/color-palette': typeof ColorPaletteRoute
   '/color-picker': typeof ColorPickerRoute
   '/cron': typeof CronRoute
@@ -764,6 +772,7 @@ export interface FileRoutesById {
   '/cidr': typeof CidrRoute
   '/color-contrast': typeof ColorContrastRoute
   '/color-extractor': typeof ColorExtractorRoute
+  '/color-harmony': typeof ColorHarmonyRoute
   '/color-palette': typeof ColorPaletteRoute
   '/color-picker': typeof ColorPickerRoute
   '/cron': typeof CronRoute
@@ -860,6 +869,7 @@ export interface FileRouteTypes {
     | '/cidr'
     | '/color-contrast'
     | '/color-extractor'
+    | '/color-harmony'
     | '/color-palette'
     | '/color-picker'
     | '/cron'
@@ -954,6 +964,7 @@ export interface FileRouteTypes {
     | '/cidr'
     | '/color-contrast'
     | '/color-extractor'
+    | '/color-harmony'
     | '/color-palette'
     | '/color-picker'
     | '/cron'
@@ -1048,6 +1059,7 @@ export interface FileRouteTypes {
     | '/cidr'
     | '/color-contrast'
     | '/color-extractor'
+    | '/color-harmony'
     | '/color-palette'
     | '/color-picker'
     | '/cron'
@@ -1143,6 +1155,7 @@ export interface RootRouteChildren {
   CidrRoute: typeof CidrRoute
   ColorContrastRoute: typeof ColorContrastRoute
   ColorExtractorRoute: typeof ColorExtractorRoute
+  ColorHarmonyRoute: typeof ColorHarmonyRoute
   ColorPaletteRoute: typeof ColorPaletteRoute
   ColorPickerRoute: typeof ColorPickerRoute
   CronRoute: typeof CronRoute
@@ -1767,6 +1780,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ColorPaletteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/color-harmony': {
+      id: '/color-harmony'
+      path: '/color-harmony'
+      fullPath: '/color-harmony'
+      preLoaderRoute: typeof ColorHarmonyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/color-extractor': {
       id: '/color-extractor'
       path: '/color-extractor'
@@ -1887,6 +1907,7 @@ const rootRouteChildren: RootRouteChildren = {
   CidrRoute: CidrRoute,
   ColorContrastRoute: ColorContrastRoute,
   ColorExtractorRoute: ColorExtractorRoute,
+  ColorHarmonyRoute: ColorHarmonyRoute,
   ColorPaletteRoute: ColorPaletteRoute,
   ColorPickerRoute: ColorPickerRoute,
   CronRoute: CronRoute,

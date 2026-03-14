@@ -1,0 +1,299 @@
+/* カラーハーモニーツール (ch- prefix) */
+
+/* ==================== ページレイアウト ==================== */
+
+.ch-page {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ==================== ベースカラー入力エリア ==================== */
+
+.ch-base-input-row {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.ch-color-picker {
+  width: 3rem;
+  height: 2.5rem;
+  padding: 2px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  cursor: pointer;
+  background: var(--md-sys-color-surface-variant);
+  transition: border-color 0.2s;
+  flex-shrink: 0;
+}
+
+.ch-color-picker:hover {
+  border-color: var(--md-sys-color-outline);
+}
+
+.ch-color-picker:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.ch-hex-input {
+  width: 12rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  font-family: "Roboto Mono", "Courier New", monospace;
+  font-size: 0.875rem;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.ch-hex-input:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-surface);
+}
+
+.ch-base-preview {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 4px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background-color: var(--ch-base-preview-color, #4a90e2);
+  flex-shrink: 0;
+}
+
+.ch-hint-text {
+  display: block;
+  margin-top: 0.375rem;
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* ==================== スキームコンテナ ==================== */
+
+.ch-schemes-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+/* ==================== 各スキームセクション ==================== */
+
+.ch-scheme-section {
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.ch-scheme-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.875rem 1rem;
+  background: var(--md-sys-color-surface-variant);
+  flex-wrap: wrap;
+}
+
+.ch-scheme-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.ch-scheme-title {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.ch-scheme-description {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.ch-export-btn {
+  padding: 0.3125rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border: 1px solid var(--md-sys-color-primary);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.ch-export-btn:hover {
+  opacity: 0.85;
+}
+
+.ch-export-btn:active {
+  opacity: 0.7;
+}
+
+.ch-export-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* ==================== スウォッチリスト ==================== */
+
+.ch-swatch-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 0.625rem;
+  padding: 0.75rem;
+  background: var(--md-sys-color-surface);
+}
+
+/* ==================== カラースウォッチカード ==================== */
+
+.ch-swatch {
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.ch-swatch:hover {
+  border-color: var(--md-sys-color-outline);
+}
+
+.ch-swatch--base {
+  border-color: var(--md-sys-color-primary);
+}
+
+.ch-swatch--base:hover {
+  border-color: var(--md-sys-color-primary);
+}
+
+.ch-swatch-color {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  background-color: var(--ch-swatch-bg, #000000);
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 0.375rem;
+}
+
+.ch-swatch-base-badge {
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--ch-badge-color, #ffffff);
+  background: rgba(0, 0, 0, 0.35);
+  padding: 0.125rem 0.375rem;
+  border-radius: 2px;
+  line-height: 1.5;
+}
+
+.ch-swatch-info {
+  padding: 0.5rem;
+  background: var(--md-sys-color-surface);
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.ch-swatch-codes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.ch-swatch-hex {
+  font-family: "Roboto Mono", "Courier New", monospace;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface);
+}
+
+.ch-swatch-rgb,
+.ch-swatch-hsl {
+  font-family: "Roboto Mono", "Courier New", monospace;
+  font-size: 0.625rem;
+  color: var(--md-sys-color-on-surface-variant);
+  line-height: 1.4;
+  word-break: break-all;
+}
+
+.ch-swatch-copy-btns {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.ch-copy-btn {
+  flex: 1;
+  padding: 0.25rem;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: none;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+  text-align: center;
+}
+
+.ch-copy-btn:hover {
+  background-color: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  border-color: var(--md-sys-color-outline);
+}
+
+.ch-copy-btn:active {
+  opacity: 0.7;
+}
+
+.ch-copy-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* ==================== レスポンシブ ==================== */
+
+@media (max-width: 480px) {
+  .ch-swatch-list {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+
+  .ch-scheme-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .ch-export-btn {
+    width: 100%;
+  }
+}
+
+/* ==================== prefers-reduced-motion ==================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .ch-color-picker,
+  .ch-hex-input,
+  .ch-swatch,
+  .ch-export-btn,
+  .ch-copy-btn {
+    transition: none;
+  }
+}

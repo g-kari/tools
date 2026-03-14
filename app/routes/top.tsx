@@ -165,6 +165,41 @@ const toolCatalog: ToolCategory[] = [
         description: "世界各地のタイムゾーン間で日時を変換",
         icon: "🌍",
       },
+      {
+        path: "/text-encrypt",
+        label: "テキスト暗号化",
+        description:
+          "ROT13・Caesar暗号・Vigenère暗号・Atbash暗号でテキストを暗号化・復号化するツール",
+        icon: "🔒",
+      },
+      {
+        path: "/morse-code",
+        label: "Morse Code変換",
+        description:
+          "テキストとモールス符号（Morse Code）を相互変換するツール。アルファベット・数字・記号対応",
+        icon: "📡",
+      },
+      {
+        path: "/number-base",
+        label: "数値進数変換",
+        description:
+          "2進数・8進数・10進数・16進数の相互変換ツール。任意の欄入力で他が自動更新",
+        icon: "🔢",
+      },
+      {
+        path: "/csv-json",
+        label: "CSV/JSON変換",
+        description:
+          "CSVとJSONの相互変換ツール。ヘッダー行の有無や区切り文字（カンマ・タブ・セミコロン）選択可",
+        icon: "📊",
+      },
+      {
+        path: "/math-eval",
+        label: "数式評価ツール",
+        description:
+          "数式をリアルタイムで評価するツール。四則演算・三角関数・対数・べき乗など多彩な演算に対応",
+        icon: "🧮",
+      },
     ],
   },
   {
@@ -232,6 +267,47 @@ const toolCatalog: ToolCategory[] = [
         description:
           "氏名・メール・電話番号・住所・UUID・IPアドレスなど様々な形式のテストデータを一括生成。JSON/CSV/TSV出力対応。",
         icon: "🎲",
+      },
+      {
+        path: "/json-schema",
+        label: "JSONスキーマ生成",
+        description: "JSONデータからJSON Schema (draft-07) を自動生成するツール",
+        icon: "📋",
+      },
+      {
+        path: "/mermaid",
+        label: "Mermaidプレビュー",
+        description:
+          "Mermaid記法のダイアグラムをリアルタイムでプレビューできるツール。フローチャート、シーケンス図など多数対応",
+        icon: "🔀",
+      },
+      {
+        path: "/jwt-generator",
+        label: "JWT生成",
+        description:
+          "HS256/HS384/HS512アルゴリズムでJWTトークンをブラウザ内で生成するツール",
+        icon: "🔐",
+      },
+      {
+        path: "/ascii-art",
+        label: "ASCIIアート生成",
+        description:
+          "テキストをASCIIアートに変換するツール。Standard、Block、Banner等の5種類フォント対応",
+        icon: "🎨",
+      },
+      {
+        path: "/slug",
+        label: "スラッグ生成",
+        description:
+          "テキストをURLフレンドリーなスラッグに変換するツール。アクセント文字対応、区切り文字・大文字小文字設定可",
+        icon: "🔗",
+      },
+      {
+        path: "/cron",
+        label: "Cron式ビルダー",
+        description:
+          "Cron式を視覚的に構築・編集できるツール。各フィールドをGUIで設定してCron式を生成",
+        icon: "⏰",
       },
     ],
   },
@@ -312,6 +388,20 @@ const toolCatalog: ToolCategory[] = [
         description: "画像をDiscordスタンプサイズ（320x320px）に変換",
         icon: "🏷️",
       },
+      {
+        path: "/color-palette",
+        label: "カラーパレット生成",
+        description:
+          "補色・三色・類似色など配色理論に基づいたカラーパレットを自動生成するツール",
+        icon: "🎨",
+      },
+      {
+        path: "/color-harmony",
+        label: "カラーハーモニー",
+        description:
+          "補色・類似色・トライアド・分割補色・テトラッドを一覧生成するカラーハーモニー配色ツール",
+        icon: "🌈",
+      },
     ],
   },
   {
@@ -347,6 +437,13 @@ const toolCatalog: ToolCategory[] = [
         label: "OGPチェック",
         description: "URLのOpen Graph Protocol情報を確認",
         icon: "🔗",
+      },
+      {
+        path: "/http-status",
+        label: "HTTPステータスコード",
+        description:
+          "HTTPステータスコード（1xx〜5xx）のリファレンス。カテゴリ別フィルタリングとキーワード検索でコードを調べられる",
+        icon: "ℹ️",
       },
     ],
   },
@@ -384,6 +481,27 @@ const toolCatalog: ToolCategory[] = [
         description:
           "CSVやテキストデータからMarkdown形式のテーブルを生成。行・列の追加削除や整列方向の設定が可能",
         icon: "📊",
+      },
+      {
+        path: "/markdown-preview",
+        label: "Markdownプレビュー",
+        description:
+          "Markdownをリアルタイムでプレビューできるツール。見出し、リスト、コードブロック、テーブル等対応",
+        icon: "📝",
+      },
+      {
+        path: "/text-case",
+        label: "テキストケース変換",
+        description:
+          "テキストをcamelCase、PascalCase、snake_case等様々な命名規則に一括変換するツール",
+        icon: "🔤",
+      },
+      {
+        path: "/text-stats",
+        label: "テキスト統計・分析",
+        description:
+          "テキストの詳細な統計情報（単語数・文章数・段落数・読書時間・頻出単語等）をリアルタイム分析",
+        icon: "📈",
       },
     ],
   },
@@ -427,6 +545,20 @@ const toolCatalog: ToolCategory[] = [
         description: "Cron式の解析と次回実行時刻の表示",
         icon: "⏰",
       },
+      {
+        path: "/keycode",
+        label: "キーコードチェック",
+        description:
+          "キーボードキー押下時のイベント情報（key, code, keyCode等）をリアルタイムで確認できるツール",
+        icon: "⌨️",
+      },
+      {
+        path: "/color-contrast",
+        label: "カラーコントラストチェッカー",
+        description:
+          "WCAG 2.1準拠のコントラスト比計算ツール。前景色と背景色の組み合わせをAA・AAAで判定",
+        icon: "🎯",
+      },
     ],
   },
   {
@@ -458,6 +590,12 @@ const toolCatalog: ToolCategory[] = [
           "HTTP APIリクエストを送信してレスポンスを確認。GET/POST/PUT/PATCH/DELETE/HEAD/OPTIONSに対応。カスタムヘッダーとリクエストボディも設定可能。",
         icon: "🔌",
       },
+      {
+        path: "/port-check",
+        label: "ポートチェック",
+        description: "指定したホスト・IPアドレスのポートが開いているか確認するツール",
+        icon: "🔌",
+      },
     ],
   },
   {
@@ -481,6 +619,13 @@ const toolCatalog: ToolCategory[] = [
         label: "ダイスロール",
         description: "各種ダイスのロールシミュレーター",
         icon: "🎲",
+      },
+      {
+        path: "/pomodoro",
+        label: "ポモドーロタイマー",
+        description:
+          "ポモドーロ・テクニックに基づく集中タイマー。25分作業と短い休憩を繰り返して生産性を高める",
+        icon: "⏱️",
       },
     ],
   },
