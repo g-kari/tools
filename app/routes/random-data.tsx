@@ -226,7 +226,7 @@ function RandomDataPage() {
         <h2 className="section-title">生成設定</h2>
         <div className="random-data-settings-row">
           <div className="random-data-settings-group">
-            <label htmlFor="random-data-count" className="random-data-settings-group">
+            <label htmlFor="random-data-count">
               件数（1〜100）
             </label>
             <input
