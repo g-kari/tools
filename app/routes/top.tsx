@@ -214,6 +214,13 @@ const toolCatalog: ToolCategory[] = [
           ".gitignoreファイルを自動生成。言語・フレームワーク・IDEを選択してカスタマイズ。",
         icon: "🚫",
       },
+      {
+        path: "/random-data",
+        label: "ランダムデータ生成",
+        description:
+          "氏名・メール・電話番号・住所・UUID・IPアドレスなど様々な形式のテストデータを一括生成。JSON/CSV/TSV出力対応。",
+        icon: "🎲",
+      },
     ],
   },
   {

@@ -29,6 +29,7 @@ import { Route as SqlRouteImport } from './routes/sql'
 import { Route as ServerEnvRouteImport } from './routes/server-env'
 import { Route as SecurityHeadersRouteImport } from './routes/security-headers'
 import { Route as RegexCheckerRouteImport } from './routes/regex-checker'
+import { Route as RandomDataRouteImport } from './routes/random-data'
 import { Route as QrCodeRouteImport } from './routes/qr-code'
 import { Route as PortCheckRouteImport } from './routes/port-check'
 import { Route as PhpSerializeRouteImport } from './routes/php-serialize'
@@ -182,6 +183,11 @@ const SecurityHeadersRoute = SecurityHeadersRouteImport.update({
 const RegexCheckerRoute = RegexCheckerRouteImport.update({
   id: '/regex-checker',
   path: '/regex-checker',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RandomDataRoute = RandomDataRouteImport.update({
+  id: '/random-data',
+  path: '/random-data',
   getParentRoute: () => rootRouteImport,
 } as any)
 const QrCodeRoute = QrCodeRouteImport.update({
@@ -506,6 +512,7 @@ export interface FileRoutesByFullPath {
   '/php-serialize': typeof PhpSerializeRoute
   '/port-check': typeof PortCheckRoute
   '/qr-code': typeof QrCodeRoute
+  '/random-data': typeof RandomDataRoute
   '/regex-checker': typeof RegexCheckerRoute
   '/security-headers': typeof SecurityHeadersRoute
   '/server-env': typeof ServerEnvRoute
@@ -582,6 +589,7 @@ export interface FileRoutesByTo {
   '/php-serialize': typeof PhpSerializeRoute
   '/port-check': typeof PortCheckRoute
   '/qr-code': typeof QrCodeRoute
+  '/random-data': typeof RandomDataRoute
   '/regex-checker': typeof RegexCheckerRoute
   '/security-headers': typeof SecurityHeadersRoute
   '/server-env': typeof ServerEnvRoute
@@ -659,6 +667,7 @@ export interface FileRoutesById {
   '/php-serialize': typeof PhpSerializeRoute
   '/port-check': typeof PortCheckRoute
   '/qr-code': typeof QrCodeRoute
+  '/random-data': typeof RandomDataRoute
   '/regex-checker': typeof RegexCheckerRoute
   '/security-headers': typeof SecurityHeadersRoute
   '/server-env': typeof ServerEnvRoute
@@ -737,6 +746,7 @@ export interface FileRouteTypes {
     | '/php-serialize'
     | '/port-check'
     | '/qr-code'
+    | '/random-data'
     | '/regex-checker'
     | '/security-headers'
     | '/server-env'
@@ -813,6 +823,7 @@ export interface FileRouteTypes {
     | '/php-serialize'
     | '/port-check'
     | '/qr-code'
+    | '/random-data'
     | '/regex-checker'
     | '/security-headers'
     | '/server-env'
@@ -889,6 +900,7 @@ export interface FileRouteTypes {
     | '/php-serialize'
     | '/port-check'
     | '/qr-code'
+    | '/random-data'
     | '/regex-checker'
     | '/security-headers'
     | '/server-env'
@@ -966,6 +978,7 @@ export interface RootRouteChildren {
   PhpSerializeRoute: typeof PhpSerializeRoute
   PortCheckRoute: typeof PortCheckRoute
   QrCodeRoute: typeof QrCodeRoute
+  RandomDataRoute: typeof RandomDataRoute
   RegexCheckerRoute: typeof RegexCheckerRoute
   SecurityHeadersRoute: typeof SecurityHeadersRoute
   ServerEnvRoute: typeof ServerEnvRoute
@@ -1132,6 +1145,13 @@ declare module '@tanstack/react-router' {
       path: '/regex-checker'
       fullPath: '/regex-checker'
       preLoaderRoute: typeof RegexCheckerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/random-data': {
+      id: '/random-data'
+      path: '/random-data'
+      fullPath: '/random-data'
+      preLoaderRoute: typeof RandomDataRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/qr-code': {
@@ -1566,6 +1586,7 @@ const rootRouteChildren: RootRouteChildren = {
   PhpSerializeRoute: PhpSerializeRoute,
   PortCheckRoute: PortCheckRoute,
   QrCodeRoute: QrCodeRoute,
+  RandomDataRoute: RandomDataRoute,
   RegexCheckerRoute: RegexCheckerRoute,
   SecurityHeadersRoute: SecurityHeadersRoute,
   ServerEnvRoute: ServerEnvRoute,

@@ -1,0 +1,437 @@
+/* Random Data Generator Styles */
+
+/* ===== フィールド選択セクション ===== */
+
+.random-data-field-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.random-data-field-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.5rem;
+}
+
+.random-data-field-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.625rem 0.75rem;
+  border: 1.5px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background-color: var(--md-sys-color-surface-variant);
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+  user-select: none;
+}
+
+.random-data-field-item:hover {
+  border-color: var(--md-sys-color-primary);
+  background-color: var(--md-sys-color-surface);
+}
+
+.random-data-field-item.selected {
+  border-color: var(--md-sys-color-primary);
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.random-data-field-item:focus-within {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.random-data-field-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface);
+  cursor: pointer;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+}
+
+.random-data-field-item.selected .random-data-field-label {
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.random-data-field-label input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--md-sys-color-primary);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.random-data-field-desc {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  line-height: 1.4;
+  padding-left: 1.5rem;
+}
+
+.random-data-field-item.selected .random-data-field-desc {
+  color: var(--md-sys-color-on-primary-container);
+  opacity: 0.8;
+}
+
+/* ===== 生成設定セクション ===== */
+
+.random-data-settings-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end;
+}
+
+.random-data-settings-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.random-data-settings-group label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.random-data-count-input {
+  width: 80px;
+  padding: 0.5rem 0.625rem;
+  border: 1.5px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background-color: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  font-size: 0.9375rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  transition: border-color 0.2s, background-color 0.2s;
+  text-align: right;
+}
+
+.random-data-count-input:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  background-color: var(--md-sys-color-surface);
+}
+
+.random-data-count-input:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.random-data-format-select {
+  padding: 0.5rem 0.625rem;
+  border: 1.5px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background-color: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  font-size: 0.9375rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  cursor: pointer;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.random-data-format-select:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  background-color: var(--md-sys-color-surface);
+}
+
+.random-data-format-select:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* ===== 数値・日付範囲設定 ===== */
+
+.random-data-range-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  padding: 0.75rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background-color: var(--md-sys-color-surface-variant);
+}
+
+.random-data-range-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.random-data-range-row label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+  white-space: nowrap;
+}
+
+.random-data-range-input {
+  width: 100px;
+  padding: 0.4375rem 0.625rem;
+  border: 1.5px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-size: 0.875rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.random-data-range-input:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+}
+
+.random-data-range-input:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* ===== 生成ボタン ===== */
+
+.random-data-generate-btn {
+  padding: 0.75rem 2.25rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: opacity 0.2s;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.random-data-generate-btn:hover:not(:disabled) {
+  opacity: 0.85;
+}
+
+.random-data-generate-btn:active:not(:disabled) {
+  opacity: 0.7;
+}
+
+.random-data-generate-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.random-data-generate-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 3px;
+}
+
+/* ===== プレビューテーブル ===== */
+
+.random-data-preview-wrapper {
+  overflow-x: auto;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.random-data-preview-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.8125rem;
+}
+
+.random-data-preview-table th {
+  padding: 0.625rem 0.875rem;
+  text-align: left;
+  background-color: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-primary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-bottom: 2px solid var(--md-sys-color-outline-variant);
+  white-space: nowrap;
+}
+
+.random-data-preview-table td {
+  padding: 0.5rem 0.875rem;
+  color: var(--md-sys-color-on-surface);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.random-data-preview-table tr:last-child td {
+  border-bottom: none;
+}
+
+.random-data-preview-table tr:nth-child(even) td {
+  background-color: var(--md-sys-color-surface-variant);
+}
+
+.random-data-preview-table tr:hover td {
+  background-color: var(--md-sys-color-primary-container);
+  transition: background-color 0.2s;
+}
+
+/* ===== 出力エリア ===== */
+
+.random-data-output-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.random-data-output-area {
+  width: 100%;
+  min-height: 20rem;
+  padding: 0.875rem 1rem;
+  border: 1.5px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background-color: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  font-family: "JetBrains Mono", "Space Mono", "Courier New", monospace;
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  resize: vertical;
+  transition: border-color 0.2s, background-color 0.2s;
+  box-sizing: border-box;
+}
+
+.random-data-output-area::placeholder {
+  color: var(--md-sys-color-on-surface-variant);
+  opacity: 0.5;
+}
+
+.random-data-output-area:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  background-color: var(--md-sys-color-surface);
+}
+
+.random-data-output-area:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* ===== アクションボタン群 ===== */
+
+.random-data-action-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* ===== ダウンロードボタン ===== */
+
+.random-data-download-btn {
+  padding: 0.5rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1.5px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family: inherit;
+  transition: background-color 0.2s, border-color 0.2s, opacity 0.2s;
+  white-space: nowrap;
+}
+
+.random-data-download-btn:hover:not(:disabled) {
+  background-color: var(--md-sys-color-secondary);
+  color: var(--md-sys-color-on-secondary);
+  border-color: var(--md-sys-color-secondary);
+}
+
+.random-data-download-btn:active:not(:disabled) {
+  opacity: 0.7;
+}
+
+.random-data-download-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.random-data-download-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 3px;
+}
+
+/* ===== レスポンシブ: モバイル ===== */
+
+@media (max-width: 560px) {
+  .random-data-field-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .random-data-settings-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .random-data-settings-group {
+    width: 100%;
+  }
+
+  .random-data-count-input {
+    width: 100%;
+    text-align: left;
+  }
+
+  .random-data-format-select {
+    width: 100%;
+  }
+
+  .random-data-range-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .random-data-range-input {
+    width: 100%;
+  }
+
+  .random-data-generate-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .random-data-action-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .random-data-download-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .random-data-output-area {
+    min-height: 16rem;
+  }
+}
+
+/* ===== モーション軽減設定 ===== */
+
+@media (prefers-reduced-motion: reduce) {
+  .random-data-field-item,
+  .random-data-count-input,
+  .random-data-format-select,
+  .random-data-range-input,
+  .random-data-generate-btn,
+  .random-data-preview-table tr td,
+  .random-data-output-area,
+  .random-data-download-btn {
+    transition: none;
+  }
+}
