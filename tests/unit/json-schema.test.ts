@@ -106,6 +106,13 @@ describe("JSON Schema Generator", () => {
     it("should throw error for whitespace-only input", () => {
       expect(() => generateJsonSchema("   ")).toThrow();
     });
+
+    it("should generate oneOf schema for mixed-type array", () => {
+      const result = JSON.parse(generateJsonSchema('[1, "text", true]'));
+      expect(result.type).toBe("array");
+      expect(result.items.oneOf).toBeDefined();
+      expect(result.items.oneOf).toHaveLength(3);
+    });
   });
 
   describe("getSampleJson", () => {

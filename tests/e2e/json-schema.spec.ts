@@ -72,6 +72,18 @@ test.describe("JSON Schema Generator - E2E Tests", () => {
     await expect(outputArea).toHaveAttribute("aria-label");
   });
 
+  test("should generate schema from valid JSON input", async ({ page }) => {
+    const inputTextarea = page.locator("#jsonInput");
+    await inputTextarea.fill('{"name":"Alice","age":30}');
+
+    const generateButton = page.locator("button", { hasText: "スキーマ生成" });
+    await generateButton.click();
+
+    const outputArea = page.locator('[role="region"][aria-live="polite"]');
+    await expect(outputArea).toContainText('"type": "object"');
+    await expect(outputArea).toContainText('"$schema"');
+  });
+
   test("should have navigation link to JSON Schema generator in category dropdown", async ({
     page,
   }) => {

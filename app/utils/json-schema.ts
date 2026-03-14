@@ -133,16 +133,8 @@ export function generateJsonSchema(jsonText: string): string {
   }
 
   const schema = inferSchema(parsed);
-  schema.$schema = "http://json-schema.org/draft-07/schema#";
 
-  // $schema をルートの先頭に配置するため再構築
-  const ordered: JsonSchemaObject = {
-    $schema: schema.$schema,
-    ...schema,
-  };
-  delete ordered.$schema;
-  ordered.$schema = "http://json-schema.org/draft-07/schema#";
-
+  // $schema をルートの先頭に配置して返す
   const result: JsonSchemaObject = {
     $schema: "http://json-schema.org/draft-07/schema#",
     ...schema,
