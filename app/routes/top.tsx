@@ -630,6 +630,12 @@ const toolCatalog: ToolCategory[] = [
         description: "指定したホスト・IPアドレスのポートが開いているか確認するツール",
         icon: "🔌",
       },
+      {
+        path: "/curl-builder",
+        label: "curlビルダー",
+        description: "GUIでcurlコマンドを組み立てる。HTTPメソッド、ヘッダー、ボディ、各種オプションを設定してコマンドを生成",
+        icon: "🔧",
+      },
     ],
   },
   {

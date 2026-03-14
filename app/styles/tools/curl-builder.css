@@ -1,0 +1,476 @@
+/* curlビルダー - cb- プレフィックス */
+.cb-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.cb-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cb-panel-label {
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--md-sys-color-primary);
+}
+
+/* メソッド・URL行 */
+.cb-method-url-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+
+.cb-method-select {
+  padding: 0.5rem 0.5rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.8rem;
+  border: 1px solid var(--md-sys-color-outline);
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  min-width: 7rem;
+}
+
+.cb-method-select:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.cb-method-select:focus {
+  border-color: var(--md-sys-color-primary);
+}
+
+.cb-url-input {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.8rem;
+  border: 1px solid var(--md-sys-color-outline);
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.cb-url-input:focus {
+  border-color: var(--md-sys-color-primary);
+}
+
+.cb-url-input:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.cb-url-input::placeholder {
+  color: var(--md-sys-color-outline);
+}
+
+/* ヘッダーリスト */
+.cb-section-title {
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--md-sys-color-on-surface-variant);
+  padding: 0.25rem 0;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  margin-top: 0.25rem;
+}
+
+.cb-header-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.cb-header-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.cb-header-checkbox {
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+  accent-color: var(--md-sys-color-primary);
+  flex-shrink: 0;
+}
+
+.cb-header-key {
+  flex: 0 0 35%;
+  padding: 0.35rem 0.5rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.75rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.cb-header-key:focus {
+  border-color: var(--md-sys-color-primary);
+}
+
+.cb-header-key:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.cb-header-value {
+  flex: 1;
+  padding: 0.35rem 0.5rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.75rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.cb-header-value:focus {
+  border-color: var(--md-sys-color-primary);
+}
+
+.cb-header-value:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.cb-header-delete {
+  padding: 0.25rem 0.5rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.7rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.cb-header-delete:hover {
+  border-color: #c62828;
+  color: #c62828;
+  background: transparent;
+}
+
+.cb-header-delete:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.cb-add-header-btn {
+  padding: 0.3rem 0.6rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 1px dashed var(--md-sys-color-outline);
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  transition: all 0.2s;
+  align-self: flex-start;
+}
+
+.cb-add-header-btn:hover {
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-primary);
+}
+
+.cb-add-header-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* ボディタイプ選択 */
+.cb-body-type-group {
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.cb-body-type-btn {
+  flex: 1;
+  padding: 0.35rem 0.5rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: none;
+  border-right: 1px solid var(--md-sys-color-outline-variant);
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cb-body-type-btn:last-child {
+  border-right: none;
+}
+
+.cb-body-type-btn:hover:not(.cb-body-type-btn--active) {
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+}
+
+.cb-body-type-btn--active {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+.cb-body-type-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* ボディテキストエリア */
+.cb-body-textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 0.75rem;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  border: 1px solid var(--md-sys-color-outline);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.cb-body-textarea:focus {
+  border-color: var(--md-sys-color-primary);
+}
+
+.cb-body-textarea:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.cb-body-textarea::placeholder {
+  color: var(--md-sys-color-outline);
+}
+
+/* オプション */
+.cb-options-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.75rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface);
+}
+
+.cb-option-label {
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+}
+
+.cb-option-label input[type="checkbox"] {
+  accent-color: var(--md-sys-color-primary);
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+}
+
+/* 出力ファイル入力 */
+.cb-output-file-input {
+  flex: 1;
+  padding: 0.35rem 0.5rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.75rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.cb-output-file-input:focus {
+  border-color: var(--md-sys-color-primary);
+}
+
+.cb-output-file-input:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.cb-output-file-input::placeholder {
+  color: var(--md-sys-color-outline);
+}
+
+.cb-output-file-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* 出力フォーマット */
+.cb-format-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.cb-format-label {
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.cb-format-option {
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  cursor: pointer;
+}
+
+.cb-format-option input[type="radio"] {
+  accent-color: var(--md-sys-color-primary);
+  cursor: pointer;
+}
+
+/* コマンド出力エリア */
+.cb-output-area {
+  flex: 1;
+  min-height: 200px;
+  padding: 0.75rem;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  border: 1px solid var(--md-sys-color-outline);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  white-space: pre;
+  overflow: auto;
+  word-break: break-all;
+}
+
+.cb-output-empty {
+  color: var(--md-sys-color-outline);
+  font-style: italic;
+  white-space: normal;
+}
+
+/* アクション */
+.cb-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.cb-btn {
+  padding: 0.4rem 0.8rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 1px solid var(--md-sys-color-outline);
+  background: transparent;
+  color: var(--md-sys-color-on-surface);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cb-btn:hover:not(:disabled) {
+  background: var(--md-sys-color-surface-variant);
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-primary);
+}
+
+.cb-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.cb-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.cb-btn--primary {
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-primary);
+}
+
+.cb-btn--primary:hover:not(:disabled) {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+/* サンプル選択 */
+.cb-sample-select {
+  padding: 0.35rem 0.5rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.75rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.cb-sample-select:focus {
+  border-color: var(--md-sys-color-primary);
+}
+
+.cb-sample-select:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+@media (max-width: 768px) {
+  .cb-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .cb-method-url-row {
+    flex-direction: column;
+  }
+
+  .cb-method-select {
+    min-width: unset;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cb-btn,
+  .cb-body-textarea,
+  .cb-url-input,
+  .cb-method-select,
+  .cb-header-key,
+  .cb-header-value,
+  .cb-output-file-input,
+  .cb-sample-select,
+  .cb-body-type-btn,
+  .cb-add-header-btn,
+  .cb-header-delete {
+    transition: none;
+  }
+}

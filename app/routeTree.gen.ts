@@ -83,6 +83,7 @@ import { Route as DiscordStickerRouteImport } from './routes/discord-sticker'
 import { Route as DiscordEmojiRouteImport } from './routes/discord-emoji'
 import { Route as DiffRouteImport } from './routes/diff'
 import { Route as DiceRollRouteImport } from './routes/dice-roll'
+import { Route as CurlBuilderRouteImport } from './routes/curl-builder'
 import { Route as CsvJsonRouteImport } from './routes/csv-json'
 import { Route as CssGradientRouteImport } from './routes/css-gradient'
 import { Route as CssAnimationRouteImport } from './routes/css-animation'
@@ -477,6 +478,11 @@ const DiceRollRoute = DiceRollRouteImport.update({
   path: '/dice-roll',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CurlBuilderRoute = CurlBuilderRouteImport.update({
+  id: '/curl-builder',
+  path: '/curl-builder',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CsvJsonRoute = CsvJsonRouteImport.update({
   id: '/csv-json',
   path: '/csv-json',
@@ -613,6 +619,7 @@ export interface FileRoutesByFullPath {
   '/css-animation': typeof CssAnimationRoute
   '/css-gradient': typeof CssGradientRoute
   '/csv-json': typeof CsvJsonRoute
+  '/curl-builder': typeof CurlBuilderRoute
   '/dice-roll': typeof DiceRollRoute
   '/diff': typeof DiffRoute
   '/discord-emoji': typeof DiscordEmojiRoute
@@ -712,6 +719,7 @@ export interface FileRoutesByTo {
   '/css-animation': typeof CssAnimationRoute
   '/css-gradient': typeof CssGradientRoute
   '/csv-json': typeof CsvJsonRoute
+  '/curl-builder': typeof CurlBuilderRoute
   '/dice-roll': typeof DiceRollRoute
   '/diff': typeof DiffRoute
   '/discord-emoji': typeof DiscordEmojiRoute
@@ -812,6 +820,7 @@ export interface FileRoutesById {
   '/css-animation': typeof CssAnimationRoute
   '/css-gradient': typeof CssGradientRoute
   '/csv-json': typeof CsvJsonRoute
+  '/curl-builder': typeof CurlBuilderRoute
   '/dice-roll': typeof DiceRollRoute
   '/diff': typeof DiffRoute
   '/discord-emoji': typeof DiscordEmojiRoute
@@ -913,6 +922,7 @@ export interface FileRouteTypes {
     | '/css-animation'
     | '/css-gradient'
     | '/csv-json'
+    | '/curl-builder'
     | '/dice-roll'
     | '/diff'
     | '/discord-emoji'
@@ -1012,6 +1022,7 @@ export interface FileRouteTypes {
     | '/css-animation'
     | '/css-gradient'
     | '/csv-json'
+    | '/curl-builder'
     | '/dice-roll'
     | '/diff'
     | '/discord-emoji'
@@ -1111,6 +1122,7 @@ export interface FileRouteTypes {
     | '/css-animation'
     | '/css-gradient'
     | '/csv-json'
+    | '/curl-builder'
     | '/dice-roll'
     | '/diff'
     | '/discord-emoji'
@@ -1211,6 +1223,7 @@ export interface RootRouteChildren {
   CssAnimationRoute: typeof CssAnimationRoute
   CssGradientRoute: typeof CssGradientRoute
   CsvJsonRoute: typeof CsvJsonRoute
+  CurlBuilderRoute: typeof CurlBuilderRoute
   DiceRollRoute: typeof DiceRollRoute
   DiffRoute: typeof DiffRoute
   DiscordEmojiRoute: typeof DiscordEmojiRoute
@@ -1811,6 +1824,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DiceRollRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/curl-builder': {
+      id: '/curl-builder'
+      path: '/curl-builder'
+      fullPath: '/curl-builder'
+      preLoaderRoute: typeof CurlBuilderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/csv-json': {
       id: '/csv-json'
       path: '/csv-json'
@@ -1995,6 +2015,7 @@ const rootRouteChildren: RootRouteChildren = {
   CssAnimationRoute: CssAnimationRoute,
   CssGradientRoute: CssGradientRoute,
   CsvJsonRoute: CsvJsonRoute,
+  CurlBuilderRoute: CurlBuilderRoute,
   DiceRollRoute: DiceRollRoute,
   DiffRoute: DiffRoute,
   DiscordEmojiRoute: DiscordEmojiRoute,

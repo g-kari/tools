@@ -145,6 +145,7 @@ const navCategories = [
       { path: "/port-check", label: "ポートチェック" },
       { path: "/chmod", label: "Chmod計算" },
       { path: "/http-client", label: "HTTP APIテスター" },
+      { path: "/curl-builder", label: "curlビルダー" },
     ],
   },
   {
