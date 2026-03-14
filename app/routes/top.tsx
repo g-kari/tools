@@ -281,6 +281,12 @@ const toolCatalog: ToolCategory[] = [
         icon: "🔷",
       },
       {
+        path: "/json-compare",
+        label: "JSON比較",
+        description: "2つのJSONを並べて比較し、追加・削除・変更されたキーを差分表示するツール",
+        icon: "⇆",
+      },
+      {
         path: "/mermaid",
         label: "Mermaidプレビュー",
         description:
@@ -629,6 +635,12 @@ const toolCatalog: ToolCategory[] = [
         label: "ポートチェック",
         description: "指定したホスト・IPアドレスのポートが開いているか確認するツール",
         icon: "🔌",
+      },
+      {
+        path: "/chmod",
+        label: "Chmod計算",
+        description: "Unixファイルパーミッション（chmod）の数値・シンボル表記を変換・計算するツール",
+        icon: "🔒",
       },
       {
         path: "/curl-builder",
