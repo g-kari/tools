@@ -542,6 +542,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🔓",
       },
       {
+        path: "/totp",
+        label: "TOTP生成",
+        description:
+          "TOTP（Time-based One-Time Password）コードをブラウザ内で生成。Google Authenticator等の2FAコードをシークレットキーから確認。",
+        icon: "🔑",
+      },
+      {
         path: "/email-dns",
         label: "メールDNS",
         description: "メールドメインのDNS設定を確認",
@@ -578,6 +585,13 @@ const toolCatalog: ToolCategory[] = [
         description:
           "WCAG 2.1準拠のコントラスト比計算ツール。前景色と背景色の組み合わせをAA・AAAで判定",
         icon: "🎯",
+      },
+      {
+        path: "/totp",
+        label: "TOTPジェネレーター",
+        description:
+          "RFC 6238準拠のTOTP（時間ベースワンタイムパスワード）をリアルタイム生成するツール",
+        icon: "🔐",
       },
     ],
   },

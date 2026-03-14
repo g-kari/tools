@@ -20,6 +20,7 @@ import { Route as UrlEncodeRouteImport } from './routes/url-encode'
 import { Route as UnitConverterRouteImport } from './routes/unit-converter'
 import { Route as UnicodeRouteImport } from './routes/unicode'
 import { Route as TransparentImageRouteImport } from './routes/transparent-image'
+import { Route as TotpRouteImport } from './routes/totp'
 import { Route as TopRouteImport } from './routes/top'
 import { Route as TomlJsonRouteImport } from './routes/toml-json'
 import { Route as TimezoneRouteImport } from './routes/timezone'
@@ -28,6 +29,7 @@ import { Route as TextStatsRouteImport } from './routes/text-stats'
 import { Route as TextSortRouteImport } from './routes/text-sort'
 import { Route as TextEncryptRouteImport } from './routes/text-encrypt'
 import { Route as TextCaseRouteImport } from './routes/text-case'
+import { Route as SvgOptimizerRouteImport } from './routes/svg-optimizer'
 import { Route as SqlRouteImport } from './routes/sql'
 import { Route as SlugRouteImport } from './routes/slug'
 import { Route as ServerEnvRouteImport } from './routes/server-env'
@@ -160,6 +162,11 @@ const TransparentImageRoute = TransparentImageRouteImport.update({
   path: '/transparent-image',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TotpRoute = TotpRouteImport.update({
+  id: '/totp',
+  path: '/totp',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TopRoute = TopRouteImport.update({
   id: '/top',
   path: '/top',
@@ -198,6 +205,11 @@ const TextEncryptRoute = TextEncryptRouteImport.update({
 const TextCaseRoute = TextCaseRouteImport.update({
   id: '/text-case',
   path: '/text-case',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SvgOptimizerRoute = SvgOptimizerRouteImport.update({
+  id: '/svg-optimizer',
+  path: '/svg-optimizer',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SqlRoute = SqlRouteImport.update({
@@ -654,6 +666,7 @@ export interface FileRoutesByFullPath {
   '/server-env': typeof ServerEnvRoute
   '/slug': typeof SlugRoute
   '/sql': typeof SqlRoute
+  '/svg-optimizer': typeof SvgOptimizerRoute
   '/text-case': typeof TextCaseRoute
   '/text-encrypt': typeof TextEncryptRoute
   '/text-sort': typeof TextSortRoute
@@ -662,6 +675,7 @@ export interface FileRoutesByFullPath {
   '/timezone': typeof TimezoneRoute
   '/toml-json': typeof TomlJsonRoute
   '/top': typeof TopRoute
+  '/totp': typeof TotpRoute
   '/transparent-image': typeof TransparentImageRoute
   '/unicode': typeof UnicodeRoute
   '/unit-converter': typeof UnitConverterRoute
@@ -751,6 +765,7 @@ export interface FileRoutesByTo {
   '/server-env': typeof ServerEnvRoute
   '/slug': typeof SlugRoute
   '/sql': typeof SqlRoute
+  '/svg-optimizer': typeof SvgOptimizerRoute
   '/text-case': typeof TextCaseRoute
   '/text-encrypt': typeof TextEncryptRoute
   '/text-sort': typeof TextSortRoute
@@ -759,6 +774,7 @@ export interface FileRoutesByTo {
   '/timezone': typeof TimezoneRoute
   '/toml-json': typeof TomlJsonRoute
   '/top': typeof TopRoute
+  '/totp': typeof TotpRoute
   '/transparent-image': typeof TransparentImageRoute
   '/unicode': typeof UnicodeRoute
   '/unit-converter': typeof UnitConverterRoute
@@ -849,6 +865,7 @@ export interface FileRoutesById {
   '/server-env': typeof ServerEnvRoute
   '/slug': typeof SlugRoute
   '/sql': typeof SqlRoute
+  '/svg-optimizer': typeof SvgOptimizerRoute
   '/text-case': typeof TextCaseRoute
   '/text-encrypt': typeof TextEncryptRoute
   '/text-sort': typeof TextSortRoute
@@ -857,6 +874,7 @@ export interface FileRoutesById {
   '/timezone': typeof TimezoneRoute
   '/toml-json': typeof TomlJsonRoute
   '/top': typeof TopRoute
+  '/totp': typeof TotpRoute
   '/transparent-image': typeof TransparentImageRoute
   '/unicode': typeof UnicodeRoute
   '/unit-converter': typeof UnitConverterRoute
@@ -948,6 +966,7 @@ export interface FileRouteTypes {
     | '/server-env'
     | '/slug'
     | '/sql'
+    | '/svg-optimizer'
     | '/text-case'
     | '/text-encrypt'
     | '/text-sort'
@@ -956,6 +975,7 @@ export interface FileRouteTypes {
     | '/timezone'
     | '/toml-json'
     | '/top'
+    | '/totp'
     | '/transparent-image'
     | '/unicode'
     | '/unit-converter'
@@ -1045,6 +1065,7 @@ export interface FileRouteTypes {
     | '/server-env'
     | '/slug'
     | '/sql'
+    | '/svg-optimizer'
     | '/text-case'
     | '/text-encrypt'
     | '/text-sort'
@@ -1053,6 +1074,7 @@ export interface FileRouteTypes {
     | '/timezone'
     | '/toml-json'
     | '/top'
+    | '/totp'
     | '/transparent-image'
     | '/unicode'
     | '/unit-converter'
@@ -1142,6 +1164,7 @@ export interface FileRouteTypes {
     | '/server-env'
     | '/slug'
     | '/sql'
+    | '/svg-optimizer'
     | '/text-case'
     | '/text-encrypt'
     | '/text-sort'
@@ -1150,6 +1173,7 @@ export interface FileRouteTypes {
     | '/timezone'
     | '/toml-json'
     | '/top'
+    | '/totp'
     | '/transparent-image'
     | '/unicode'
     | '/unit-converter'
@@ -1240,6 +1264,7 @@ export interface RootRouteChildren {
   ServerEnvRoute: typeof ServerEnvRoute
   SlugRoute: typeof SlugRoute
   SqlRoute: typeof SqlRoute
+  SvgOptimizerRoute: typeof SvgOptimizerRoute
   TextCaseRoute: typeof TextCaseRoute
   TextEncryptRoute: typeof TextEncryptRoute
   TextSortRoute: typeof TextSortRoute
@@ -1248,6 +1273,7 @@ export interface RootRouteChildren {
   TimezoneRoute: typeof TimezoneRoute
   TomlJsonRoute: typeof TomlJsonRoute
   TopRoute: typeof TopRoute
+  TotpRoute: typeof TotpRoute
   TransparentImageRoute: typeof TransparentImageRoute
   UnicodeRoute: typeof UnicodeRoute
   UnitConverterRoute: typeof UnitConverterRoute
@@ -1344,6 +1370,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TransparentImageRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/totp': {
+      id: '/totp'
+      path: '/totp'
+      fullPath: '/totp'
+      preLoaderRoute: typeof TotpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/top': {
       id: '/top'
       path: '/top'
@@ -1398,6 +1431,13 @@ declare module '@tanstack/react-router' {
       path: '/text-case'
       fullPath: '/text-case'
       preLoaderRoute: typeof TextCaseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/svg-optimizer': {
+      id: '/svg-optimizer'
+      path: '/svg-optimizer'
+      fullPath: '/svg-optimizer'
+      preLoaderRoute: typeof SvgOptimizerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sql': {
@@ -2008,6 +2048,7 @@ const rootRouteChildren: RootRouteChildren = {
   ServerEnvRoute: ServerEnvRoute,
   SlugRoute: SlugRoute,
   SqlRoute: SqlRoute,
+  SvgOptimizerRoute: SvgOptimizerRoute,
   TextCaseRoute: TextCaseRoute,
   TextEncryptRoute: TextEncryptRoute,
   TextSortRoute: TextSortRoute,
@@ -2016,6 +2057,7 @@ const rootRouteChildren: RootRouteChildren = {
   TimezoneRoute: TimezoneRoute,
   TomlJsonRoute: TomlJsonRoute,
   TopRoute: TopRoute,
+  TotpRoute: TotpRoute,
   TransparentImageRoute: TransparentImageRoute,
   UnicodeRoute: UnicodeRoute,
   UnitConverterRoute: UnitConverterRoute,

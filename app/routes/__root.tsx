@@ -124,6 +124,7 @@ const navCategories = [
       { path: "/regex-checker", label: "正規表現" },
       { path: "/jwt", label: "JWTデコード" },
       { path: "/jwt-generator", label: "JWT生成" },
+      { path: "/totp", label: "TOTP生成" },
       { path: "/email-dns", label: "メールDNS" },
       { path: "/hash", label: "ハッシュ生成" },
       { path: "/security-headers", label: "セキュリティヘッダー" },

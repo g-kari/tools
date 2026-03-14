@@ -1,0 +1,370 @@
+/* TOTPジェネレーター */
+.tp-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.tp-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.tp-panel-label {
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--md-sys-color-primary);
+}
+
+.tp-secret-input {
+  width: 100%;
+  padding: 0.75rem;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 0;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.9rem;
+  letter-spacing: 0.15em;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.tp-secret-input:focus {
+  border-color: var(--md-sys-color-primary);
+}
+
+.tp-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface);
+}
+
+.tp-options-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.tp-option-label {
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  cursor: pointer;
+}
+
+.tp-select,
+.tp-number-input {
+  padding: 0.25rem 0.5rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.75rem;
+  border: 1px solid var(--md-sys-color-outline);
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.tp-select:focus,
+.tp-number-input:focus {
+  border-color: var(--md-sys-color-primary);
+}
+
+.tp-number-input {
+  width: 5rem;
+}
+
+.tp-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.tp-btn {
+  padding: 0.4rem 0.8rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 1px solid var(--md-sys-color-outline);
+  background: transparent;
+  color: var(--md-sys-color-on-surface);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tp-btn:hover:not(:disabled) {
+  background: var(--md-sys-color-surface-variant);
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-primary);
+}
+
+.tp-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.tp-btn--primary {
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-primary);
+}
+
+.tp-btn--primary:hover:not(:disabled) {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+.tp-code-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 2rem 1rem;
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline);
+  min-height: 160px;
+  justify-content: center;
+}
+
+.tp-code-value {
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  color: var(--md-sys-color-primary);
+}
+
+.tp-code-empty {
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.8rem;
+  color: var(--md-sys-color-outline);
+  font-style: italic;
+}
+
+.tp-timer-bar {
+  width: 100%;
+  height: 4px;
+  background: var(--md-sys-color-outline-variant);
+  overflow: hidden;
+}
+
+.tp-timer-fill {
+  height: 100%;
+  background: var(--md-sys-color-primary);
+  transition: width 1s linear;
+}
+
+.tp-timer-text {
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.tp-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.75rem;
+}
+
+.tp-info-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tp-info-label {
+  opacity: 0.7;
+  min-width: 6rem;
+}
+
+.tp-uri-area {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  border: 1px solid var(--md-sys-color-outline);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.7rem;
+  word-break: break-all;
+  line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+  .tp-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .tp-code-value {
+    font-size: 2rem;
+  }
+}
+
+/* focus-visible スタイル */
+.tp-secret-input:focus-visible,
+.tp-select:focus-visible,
+.tp-number-input:focus-visible,
+.tp-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* prefers-reduced-motion 対応 */
+@media (prefers-reduced-motion: reduce) {
+  .tp-secret-input,
+  .tp-select,
+  .tp-number-input,
+  .tp-btn,
+  .tp-timer-fill {
+    transition: none;
+  }
+}
+
+/* totp- プレフィックスエイリアス（互換性） */
+.totp-secret-wrapper {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  margin-top: 0.5rem;
+  overflow: hidden;
+}
+
+.totp-secret-input {
+  flex: 1;
+  padding: 0.625rem 0.75rem;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  border: none;
+  border-radius: 0;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.875rem;
+  transition: background 0.2s;
+  outline: none;
+  min-width: 0;
+}
+
+.totp-secret-input:focus {
+  background: var(--md-sys-color-surface);
+}
+
+.totp-secret-wrapper:focus-within {
+  border-color: var(--md-sys-color-primary);
+}
+
+.totp-secret-toggle {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border: none;
+  border-left: 1px solid var(--md-sys-color-outline-variant);
+  padding: 0.5rem 0.875rem;
+  font-size: 0.75rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, opacity 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.totp-secret-toggle:hover {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  opacity: 0.85;
+}
+
+.totp-secret-toggle:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.totp-code-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 2rem 1rem;
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline);
+  min-height: 160px;
+  justify-content: center;
+}
+
+.totp-code-value {
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  color: var(--md-sys-color-primary);
+}
+
+.totp-timer-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.totp-timer-bar-bg {
+  width: 100%;
+  height: 4px;
+  background: var(--md-sys-color-outline-variant);
+  overflow: hidden;
+}
+
+.totp-timer-bar {
+  height: 100%;
+  background: var(--md-sys-color-primary);
+  transition: width 1s linear;
+}
+
+.totp-result-section {
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.totp-result-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.totp-uri-section {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.75rem;
+  word-break: break-all;
+  line-height: 1.5;
+  color: var(--md-sys-color-on-surface);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .totp-timer-bar,
+  .totp-secret-input,
+  .totp-secret-toggle {
+    transition: none;
+  }
+}
