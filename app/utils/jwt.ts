@@ -111,3 +111,116 @@ export function decodeJWT(token: string): DecodedJWT {
     throw new Error("JWTのデコードに失敗しました");
   }
 }
+
+// ===== JWT生成ユーティリティ =====
+
+/** JWT署名アルゴリズム */
+export type JwtAlgorithm = "HS256" | "HS384" | "HS512";
+
+/** JWT生成の入力パラメータ */
+export interface JwtGeneratorInput {
+  /** JSONペイロード文字列 */
+  payload: string;
+  /** HMAC署名用シークレット */
+  secret: string;
+  /** 使用するアルゴリズム */
+  algorithm: JwtAlgorithm;
+}
+
+/** JWT生成結果 */
+export interface JwtGeneratorResult {
+  /** 生成されたJWTトークン */
+  token: string;
+  /** フォーマット済みヘッダーJSON */
+  header: string;
+  /** フォーマット済みペイロードJSON（iat追加後） */
+  payload: string;
+}
+
+/**
+ * 文字列をBase64URL形式にエンコードする
+ * @param str エンコードする文字列
+ * @returns Base64URLエンコードされた文字列
+ */
+export function base64UrlEncode(str: string): string {
+  return btoa(str).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+
+/**
+ * HMAC署名を生成する（Web Crypto API使用）
+ * @param algorithm JWTアルゴリズム（HS256/HS384/HS512）
+ * @param secretBytes シークレットのバイト列
+ * @param dataBytes 署名対象データのバイト列
+ * @returns 署名バイト列
+ */
+async function signHmac(
+  algorithm: JwtAlgorithm,
+  secretBytes: Uint8Array,
+  dataBytes: Uint8Array
+): Promise<Uint8Array> {
+  const hashAlgo =
+    algorithm === "HS256"
+      ? "SHA-256"
+      : algorithm === "HS384"
+        ? "SHA-384"
+        : "SHA-512";
+  const key = await crypto.subtle.importKey(
+    "raw",
+    secretBytes,
+    { name: "HMAC", hash: { name: hashAlgo } },
+    false,
+    ["sign"]
+  );
+  const signature = await crypto.subtle.sign("HMAC", key, dataBytes);
+  return new Uint8Array(signature);
+}
+
+/**
+ * JWTトークンを生成する
+ * @param input 生成パラメータ（ペイロード・シークレット・アルゴリズム）
+ * @returns 生成結果（トークン・ヘッダーJSON・ペイロードJSON）
+ * @throws {Error} ペイロードが無効なJSONの場合
+ */
+export async function generateJWT(
+  input: JwtGeneratorInput
+): Promise<JwtGeneratorResult> {
+  // ペイロードのJSONパース
+  let payloadObj: Record<string, unknown>;
+  try {
+    payloadObj = JSON.parse(input.payload);
+  } catch {
+    throw new Error("ペイロードが有効なJSONではありません");
+  }
+
+  // ヘッダー
+  const headerObj = { alg: input.algorithm, typ: "JWT" };
+
+  // iat クレームを自動付与
+  const iat = Math.floor(Date.now() / 1000);
+  const finalPayload = { ...payloadObj, iat };
+
+  // エンコード
+  const headerEncoded = base64UrlEncode(JSON.stringify(headerObj));
+  const payloadEncoded = base64UrlEncode(JSON.stringify(finalPayload));
+  const signingInput = `${headerEncoded}.${payloadEncoded}`;
+
+  // 署名
+  const encoder = new TextEncoder();
+  const secretBytes = encoder.encode(input.secret);
+  const dataBytes = encoder.encode(signingInput);
+  const signatureBytes = await signHmac(input.algorithm, secretBytes, dataBytes);
+
+  // Base64URLエンコード（バイナリ）
+  const signatureBase64 = btoa(String.fromCharCode(...signatureBytes))
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "");
+
+  const token = `${signingInput}.${signatureBase64}`;
+
+  return {
+    token,
+    header: JSON.stringify(headerObj, null, 2),
+    payload: JSON.stringify(finalPayload, null, 2),
+  };
+}

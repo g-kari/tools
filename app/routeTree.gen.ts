@@ -44,6 +44,7 @@ import { Route as MermaidRouteImport } from './routes/mermaid'
 import { Route as MarkdownTableRouteImport } from './routes/markdown-table'
 import { Route as MarkdownPreviewRouteImport } from './routes/markdown-preview'
 import { Route as LoremIpsumRouteImport } from './routes/lorem-ipsum'
+import { Route as JwtGeneratorRouteImport } from './routes/jwt-generator'
 import { Route as JwtRouteImport } from './routes/jwt'
 import { Route as JsonPathRouteImport } from './routes/json-path'
 import { Route as JsonRouteImport } from './routes/json'
@@ -261,6 +262,11 @@ const MarkdownPreviewRoute = MarkdownPreviewRouteImport.update({
 const LoremIpsumRoute = LoremIpsumRouteImport.update({
   id: '/lorem-ipsum',
   path: '/lorem-ipsum',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JwtGeneratorRoute = JwtGeneratorRouteImport.update({
+  id: '/jwt-generator',
+  path: '/jwt-generator',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JwtRoute = JwtRouteImport.update({
@@ -519,6 +525,7 @@ export interface FileRoutesByFullPath {
   '/json': typeof JsonRoute
   '/json-path': typeof JsonPathRoute
   '/jwt': typeof JwtRoute
+  '/jwt-generator': typeof JwtGeneratorRoute
   '/lorem-ipsum': typeof LoremIpsumRoute
   '/markdown-preview': typeof MarkdownPreviewRoute
   '/markdown-table': typeof MarkdownTableRoute
@@ -599,6 +606,7 @@ export interface FileRoutesByTo {
   '/json': typeof JsonRoute
   '/json-path': typeof JsonPathRoute
   '/jwt': typeof JwtRoute
+  '/jwt-generator': typeof JwtGeneratorRoute
   '/lorem-ipsum': typeof LoremIpsumRoute
   '/markdown-preview': typeof MarkdownPreviewRoute
   '/markdown-table': typeof MarkdownTableRoute
@@ -680,6 +688,7 @@ export interface FileRoutesById {
   '/json': typeof JsonRoute
   '/json-path': typeof JsonPathRoute
   '/jwt': typeof JwtRoute
+  '/jwt-generator': typeof JwtGeneratorRoute
   '/lorem-ipsum': typeof LoremIpsumRoute
   '/markdown-preview': typeof MarkdownPreviewRoute
   '/markdown-table': typeof MarkdownTableRoute
@@ -762,6 +771,7 @@ export interface FileRouteTypes {
     | '/json'
     | '/json-path'
     | '/jwt'
+    | '/jwt-generator'
     | '/lorem-ipsum'
     | '/markdown-preview'
     | '/markdown-table'
@@ -842,6 +852,7 @@ export interface FileRouteTypes {
     | '/json'
     | '/json-path'
     | '/jwt'
+    | '/jwt-generator'
     | '/lorem-ipsum'
     | '/markdown-preview'
     | '/markdown-table'
@@ -922,6 +933,7 @@ export interface FileRouteTypes {
     | '/json'
     | '/json-path'
     | '/jwt'
+    | '/jwt-generator'
     | '/lorem-ipsum'
     | '/markdown-preview'
     | '/markdown-table'
@@ -1003,6 +1015,7 @@ export interface RootRouteChildren {
   JsonRoute: typeof JsonRoute
   JsonPathRoute: typeof JsonPathRoute
   JwtRoute: typeof JwtRoute
+  JwtGeneratorRoute: typeof JwtGeneratorRoute
   LoremIpsumRoute: typeof LoremIpsumRoute
   MarkdownPreviewRoute: typeof MarkdownPreviewRoute
   MarkdownTableRoute: typeof MarkdownTableRoute
@@ -1289,6 +1302,13 @@ declare module '@tanstack/react-router' {
       path: '/lorem-ipsum'
       fullPath: '/lorem-ipsum'
       preLoaderRoute: typeof LoremIpsumRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/jwt-generator': {
+      id: '/jwt-generator'
+      path: '/jwt-generator'
+      fullPath: '/jwt-generator'
+      preLoaderRoute: typeof JwtGeneratorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/jwt': {
@@ -1635,6 +1655,7 @@ const rootRouteChildren: RootRouteChildren = {
   JsonRoute: JsonRoute,
   JsonPathRoute: JsonPathRoute,
   JwtRoute: JwtRoute,
+  JwtGeneratorRoute: JwtGeneratorRoute,
   LoremIpsumRoute: LoremIpsumRoute,
   MarkdownPreviewRoute: MarkdownPreviewRoute,
   MarkdownTableRoute: MarkdownTableRoute,

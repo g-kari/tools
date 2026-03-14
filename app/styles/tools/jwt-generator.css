@@ -1,0 +1,156 @@
+/* JWT生成ツール */
+
+/* アルゴリズム選択タブ */
+.jwt-gen-algo-tabs {
+  display: flex;
+  gap: 0;
+  margin-top: 0.5rem;
+  border-bottom: 2px solid var(--md-sys-color-outline-variant);
+}
+
+.jwt-gen-algo-tab {
+  padding: 0.5rem 1.25rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+  transition: color 0.2s, border-color 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+}
+
+.jwt-gen-algo-tab:hover:not(.active) {
+  color: var(--md-sys-color-on-surface);
+}
+
+.jwt-gen-algo-tab.active {
+  color: var(--md-sys-color-primary);
+  border-bottom-color: var(--md-sys-color-primary);
+}
+
+/* シークレット入力ラッパー */
+.jwt-gen-secret-wrapper {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  margin-top: 0.5rem;
+  overflow: hidden;
+}
+
+.jwt-gen-secret-input {
+  flex: 1;
+  padding: 0.625rem 0.75rem;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  border: none;
+  border-radius: 0;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.875rem;
+  transition: background 0.2s, border-color 0.2s;
+  outline: none;
+  min-width: 0;
+}
+
+.jwt-gen-secret-input:focus {
+  background: var(--md-sys-color-surface);
+  outline: none;
+}
+
+.jwt-gen-secret-wrapper:focus-within {
+  border-color: var(--md-sys-color-primary);
+}
+
+/* シークレット表示/非表示トグルボタン */
+.jwt-gen-secret-toggle {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border: none;
+  border-left: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 0;
+  padding: 0.5rem 0.875rem;
+  font-size: 0.75rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, opacity 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.jwt-gen-secret-toggle:hover {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  opacity: 0.85;
+}
+
+.jwt-gen-secret-toggle:active {
+  opacity: 0.7;
+}
+
+/* 結果セクション */
+.jwt-gen-result-section {
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.jwt-gen-result-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* トークン全体表示エリア */
+.jwt-gen-token-value {
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  padding: 0.75rem 1rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.8rem;
+  color: var(--md-sys-color-on-surface);
+  word-break: break-all;
+  line-height: 1.6;
+  border-radius: 4px;
+  transition: border-color 0.2s;
+}
+
+.jwt-gen-token-value:hover {
+  border-color: var(--md-sys-color-outline);
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 480px) {
+  .jwt-gen-algo-tab {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+  }
+
+  .jwt-gen-token-value {
+    font-size: 0.72rem;
+  }
+
+  .jwt-gen-secret-toggle {
+    padding: 0.5rem 0.5rem;
+    font-size: 0.7rem;
+  }
+}
+
+/* prefers-reduced-motion 対応 */
+@media (prefers-reduced-motion: reduce) {
+  .jwt-gen-algo-tab,
+  .jwt-gen-secret-input,
+  .jwt-gen-secret-toggle,
+  .jwt-gen-token-value {
+    transition: none;
+  }
+}
