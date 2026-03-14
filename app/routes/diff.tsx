@@ -10,6 +10,7 @@ import {
   StatusAnnouncer,
 } from "~/hooks/useStatusAnnouncement";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
+import { useClipboard } from "~/hooks/useClipboard";
 
 export const Route = createFileRoute("/diff")({
   head: () => ({
@@ -93,6 +94,12 @@ export function computeDiff(oldText: string, newText: string): DiffLine[] {
   return result;
 }
 
+/** サンプルテキストの定義 */
+const SAMPLE_OLD_TEXT =
+  'function hello(name) {\n  console.log("Hello, " + name);\n  return name;\n}';
+const SAMPLE_NEW_TEXT =
+  'function hello(name, greeting = "Hello") {\n  console.log(greeting + ", " + name + "!");\n  return { name, greeting };\n}';
+
 /**
  * テキスト差分チェッカーコンポーネント
  * 2つのテキストを比較して差分を表示する
@@ -100,6 +107,7 @@ export function computeDiff(oldText: string, newText: string): DiffLine[] {
  */
 function DiffChecker() {
   const { showToast } = useToast();
+  const { copy } = useClipboard();
   const [oldText, setOldText] = useState("");
   const [newText, setNewText] = useState("");
   const [diffResult, setDiffResult] = useState<DiffLine[] | null>(null);
@@ -143,6 +151,37 @@ function DiffChecker() {
     announceStatus("入力と結果をクリアしました");
     oldTextRef.current?.focus();
   }, [announceStatus]);
+
+  /**
+   * サンプルデータを読み込む処理
+   */
+  const handleLoadSample = useCallback(() => {
+    setOldText(SAMPLE_OLD_TEXT);
+    setNewText(SAMPLE_NEW_TEXT);
+    setDiffResult(null);
+    announceStatus("サンプルデータを読み込みました");
+  }, [announceStatus]);
+
+  /**
+   * 差分結果をテキスト形式でクリップボードにコピーする処理
+   */
+  const handleCopyResult = useCallback(async () => {
+    if (!diffResult) return;
+    const text = diffResult
+      .map((line) => {
+        const prefix =
+          line.type === "added" ? "+" : line.type === "removed" ? "-" : " ";
+        return `${prefix} ${line.value}`;
+      })
+      .join("\n");
+    const success = await copy(text);
+    if (success) {
+      showToast("差分結果をコピーしました", "success");
+      announceStatus("差分結果をコピーしました");
+    } else {
+      showToast("コピーに失敗しました", "error");
+    }
+  }, [diffResult, copy, showToast, announceStatus]);
 
   // Ctrl+Enter で差分比較
   useKeyboardShortcut("Enter", handleCompare, { ctrl: true });
@@ -216,11 +255,31 @@ function DiffChecker() {
             >
               クリア
             </Button>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleLoadSample}
+              aria-label="サンプルデータを読み込む"
+            >
+              サンプル読み込み
+            </Button>
           </div>
 
           {diffResult !== null && (
             <div className="converter-section">
-              <h2 className="section-title">差分結果</h2>
+              <div className="diff-result-header">
+                <h2 className="section-title">差分結果</h2>
+                {stats && (stats.added > 0 || stats.removed > 0) && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={handleCopyResult}
+                    aria-label="差分結果をクリップボードにコピー"
+                  >
+                    コピー
+                  </Button>
+                )}
+              </div>
 
               {stats && (stats.added > 0 || stats.removed > 0) && (
                 <div className="diff-stats" aria-label="差分統計">
@@ -245,7 +304,7 @@ function DiffChecker() {
                 >
                   {diffResult.map((line, index) => (
                     <div
-                      key={index}
+                      key={`${line.type}-${index}-${line.value}`}
                       className={`diff-line diff-line-${line.type}`}
                     >
                       <span className="diff-line-prefix" aria-hidden="true">
