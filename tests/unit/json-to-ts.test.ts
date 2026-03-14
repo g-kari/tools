@@ -39,7 +39,7 @@ describe("JSON→TypeScript型変換", () => {
         ...defaultOptions,
         includeNull: false,
       });
-      expect(result).toContain("data: never;");
+      expect(result).toContain("data: unknown;");
     });
 
     it("ネストしたオブジェクトの型生成", () => {

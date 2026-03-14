@@ -70,7 +70,7 @@ function inferType(
   usedNames: Set<string>
 ): string {
   if (value === null) {
-    return options.includeNull ? "null" : "never";
+    return options.includeNull ? "null" : "unknown";
   }
 
   if (typeof value === "string") {
