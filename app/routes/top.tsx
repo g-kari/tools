@@ -207,6 +207,13 @@ const toolCatalog: ToolCategory[] = [
         description: "ダミーテキストの生成（段落・単語数・文数対応）",
         icon: "📝",
       },
+      {
+        path: "/gitignore",
+        label: "Gitignore生成",
+        description:
+          ".gitignoreファイルを自動生成。言語・フレームワーク・IDEを選択してカスタマイズ。",
+        icon: "🚫",
+      },
     ],
   },
   {
