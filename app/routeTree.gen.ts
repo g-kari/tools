@@ -62,6 +62,7 @@ import { Route as ImageCropRouteImport } from './routes/image-crop'
 import { Route as ImageCompressRouteImport } from './routes/image-compress'
 import { Route as ImageBase64RouteImport } from './routes/image-base64'
 import { Route as HttpStatusRouteImport } from './routes/http-status'
+import { Route as HttpClientRouteImport } from './routes/http-client'
 import { Route as HtmlEncodeRouteImport } from './routes/html-encode'
 import { Route as HashRouteImport } from './routes/hash'
 import { Route as GlobalIpRouteImport } from './routes/global-ip'
@@ -363,6 +364,11 @@ const HttpStatusRoute = HttpStatusRouteImport.update({
   path: '/http-status',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HttpClientRoute = HttpClientRouteImport.update({
+  id: '/http-client',
+  path: '/http-client',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HtmlEncodeRoute = HtmlEncodeRouteImport.update({
   id: '/html-encode',
   path: '/html-encode',
@@ -571,6 +577,7 @@ export interface FileRoutesByFullPath {
   '/global-ip': typeof GlobalIpRoute
   '/hash': typeof HashRoute
   '/html-encode': typeof HtmlEncodeRoute
+  '/http-client': typeof HttpClientRoute
   '/http-status': typeof HttpStatusRoute
   '/image-base64': typeof ImageBase64Route
   '/image-compress': typeof ImageCompressRoute
@@ -661,6 +668,7 @@ export interface FileRoutesByTo {
   '/global-ip': typeof GlobalIpRoute
   '/hash': typeof HashRoute
   '/html-encode': typeof HtmlEncodeRoute
+  '/http-client': typeof HttpClientRoute
   '/http-status': typeof HttpStatusRoute
   '/image-base64': typeof ImageBase64Route
   '/image-compress': typeof ImageCompressRoute
@@ -752,6 +760,7 @@ export interface FileRoutesById {
   '/global-ip': typeof GlobalIpRoute
   '/hash': typeof HashRoute
   '/html-encode': typeof HtmlEncodeRoute
+  '/http-client': typeof HttpClientRoute
   '/http-status': typeof HttpStatusRoute
   '/image-base64': typeof ImageBase64Route
   '/image-compress': typeof ImageCompressRoute
@@ -844,6 +853,7 @@ export interface FileRouteTypes {
     | '/global-ip'
     | '/hash'
     | '/html-encode'
+    | '/http-client'
     | '/http-status'
     | '/image-base64'
     | '/image-compress'
@@ -934,6 +944,7 @@ export interface FileRouteTypes {
     | '/global-ip'
     | '/hash'
     | '/html-encode'
+    | '/http-client'
     | '/http-status'
     | '/image-base64'
     | '/image-compress'
@@ -1024,6 +1035,7 @@ export interface FileRouteTypes {
     | '/global-ip'
     | '/hash'
     | '/html-encode'
+    | '/http-client'
     | '/http-status'
     | '/image-base64'
     | '/image-compress'
@@ -1115,6 +1127,7 @@ export interface RootRouteChildren {
   GlobalIpRoute: typeof GlobalIpRoute
   HashRoute: typeof HashRoute
   HtmlEncodeRoute: typeof HtmlEncodeRoute
+  HttpClientRoute: typeof HttpClientRoute
   HttpStatusRoute: typeof HttpStatusRoute
   ImageBase64Route: typeof ImageBase64Route
   ImageCompressRoute: typeof ImageCompressRoute
@@ -1547,6 +1560,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HttpStatusRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/http-client': {
+      id: '/http-client'
+      path: '/http-client'
+      fullPath: '/http-client'
+      preLoaderRoute: typeof HttpClientRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/html-encode': {
       id: '/html-encode'
       path: '/html-encode'
@@ -1827,6 +1847,7 @@ const rootRouteChildren: RootRouteChildren = {
   GlobalIpRoute: GlobalIpRoute,
   HashRoute: HashRoute,
   HtmlEncodeRoute: HtmlEncodeRoute,
+  HttpClientRoute: HttpClientRoute,
   HttpStatusRoute: HttpStatusRoute,
   ImageBase64Route: ImageBase64Route,
   ImageCompressRoute: ImageCompressRoute,
