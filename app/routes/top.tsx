@@ -276,6 +276,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🌈",
       },
       {
+        path: "/css-gradient",
+        label: "CSSグラジェント生成",
+        description:
+          "linear/radial/conicグラジェントをビジュアルエディターで作成。カラーストップを編集してCSSコードを即座に生成。",
+        icon: "🌈",
+      },
+      {
         path: "/image-to-gif",
         label: "画像→GIF変換",
         description: "複数画像からアニメーションGIFを作成",

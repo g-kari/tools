@@ -72,6 +72,7 @@ import { Route as DiscordEmojiRouteImport } from './routes/discord-emoji'
 import { Route as DiffRouteImport } from './routes/diff'
 import { Route as DiceRollRouteImport } from './routes/dice-roll'
 import { Route as CsvJsonRouteImport } from './routes/csv-json'
+import { Route as CssGradientRouteImport } from './routes/css-gradient'
 import { Route as CronParserRouteImport } from './routes/cron-parser'
 import { Route as CronRouteImport } from './routes/cron'
 import { Route as ColorPickerRouteImport } from './routes/color-picker'
@@ -405,6 +406,11 @@ const CsvJsonRoute = CsvJsonRouteImport.update({
   path: '/csv-json',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CssGradientRoute = CssGradientRouteImport.update({
+  id: '/css-gradient',
+  path: '/css-gradient',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CronParserRoute = CronParserRouteImport.update({
   id: '/cron-parser',
   path: '/cron-parser',
@@ -505,6 +511,7 @@ export interface FileRoutesByFullPath {
   '/color-picker': typeof ColorPickerRoute
   '/cron': typeof CronRoute
   '/cron-parser': typeof CronParserRoute
+  '/css-gradient': typeof CssGradientRoute
   '/csv-json': typeof CsvJsonRoute
   '/dice-roll': typeof DiceRollRoute
   '/diff': typeof DiffRoute
@@ -587,6 +594,7 @@ export interface FileRoutesByTo {
   '/color-picker': typeof ColorPickerRoute
   '/cron': typeof CronRoute
   '/cron-parser': typeof CronParserRoute
+  '/css-gradient': typeof CssGradientRoute
   '/csv-json': typeof CsvJsonRoute
   '/dice-roll': typeof DiceRollRoute
   '/diff': typeof DiffRoute
@@ -670,6 +678,7 @@ export interface FileRoutesById {
   '/color-picker': typeof ColorPickerRoute
   '/cron': typeof CronRoute
   '/cron-parser': typeof CronParserRoute
+  '/css-gradient': typeof CssGradientRoute
   '/csv-json': typeof CsvJsonRoute
   '/dice-roll': typeof DiceRollRoute
   '/diff': typeof DiffRoute
@@ -754,6 +763,7 @@ export interface FileRouteTypes {
     | '/color-picker'
     | '/cron'
     | '/cron-parser'
+    | '/css-gradient'
     | '/csv-json'
     | '/dice-roll'
     | '/diff'
@@ -836,6 +846,7 @@ export interface FileRouteTypes {
     | '/color-picker'
     | '/cron'
     | '/cron-parser'
+    | '/css-gradient'
     | '/csv-json'
     | '/dice-roll'
     | '/diff'
@@ -918,6 +929,7 @@ export interface FileRouteTypes {
     | '/color-picker'
     | '/cron'
     | '/cron-parser'
+    | '/css-gradient'
     | '/csv-json'
     | '/dice-roll'
     | '/diff'
@@ -1001,6 +1013,7 @@ export interface RootRouteChildren {
   ColorPickerRoute: typeof ColorPickerRoute
   CronRoute: typeof CronRoute
   CronParserRoute: typeof CronParserRoute
+  CssGradientRoute: typeof CssGradientRoute
   CsvJsonRoute: typeof CsvJsonRoute
   DiceRollRoute: typeof DiceRollRoute
   DiffRoute: typeof DiffRoute
@@ -1513,6 +1526,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CsvJsonRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/css-gradient': {
+      id: '/css-gradient'
+      path: '/css-gradient'
+      fullPath: '/css-gradient'
+      preLoaderRoute: typeof CssGradientRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/cron-parser': {
       id: '/cron-parser'
       path: '/cron-parser'
@@ -1649,6 +1669,7 @@ const rootRouteChildren: RootRouteChildren = {
   ColorPickerRoute: ColorPickerRoute,
   CronRoute: CronRoute,
   CronParserRoute: CronParserRoute,
+  CssGradientRoute: CssGradientRoute,
   CsvJsonRoute: CsvJsonRoute,
   DiceRollRoute: DiceRollRoute,
   DiffRoute: DiffRoute,
