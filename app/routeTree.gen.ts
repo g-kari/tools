@@ -58,6 +58,7 @@ import { Route as JwtRouteImport } from './routes/jwt'
 import { Route as JsonToTsRouteImport } from './routes/json-to-ts'
 import { Route as JsonSchemaRouteImport } from './routes/json-schema'
 import { Route as JsonPathRouteImport } from './routes/json-path'
+import { Route as JsonCompareRouteImport } from './routes/json-compare'
 import { Route as JsonRouteImport } from './routes/json'
 import { Route as IpGeolocationRouteImport } from './routes/ip-geolocation'
 import { Route as IpConverterRouteImport } from './routes/ip-converter'
@@ -352,6 +353,11 @@ const JsonSchemaRoute = JsonSchemaRouteImport.update({
 const JsonPathRoute = JsonPathRouteImport.update({
   id: '/json-path',
   path: '/json-path',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JsonCompareRoute = JsonCompareRouteImport.update({
+  id: '/json-compare',
+  path: '/json-compare',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JsonRoute = JsonRouteImport.update({
@@ -652,6 +658,7 @@ export interface FileRoutesByFullPath {
   '/ip-converter': typeof IpConverterRoute
   '/ip-geolocation': typeof IpGeolocationRoute
   '/json': typeof JsonRoute
+  '/json-compare': typeof JsonCompareRoute
   '/json-path': typeof JsonPathRoute
   '/json-schema': typeof JsonSchemaRoute
   '/json-to-ts': typeof JsonToTsRoute
@@ -753,6 +760,7 @@ export interface FileRoutesByTo {
   '/ip-converter': typeof IpConverterRoute
   '/ip-geolocation': typeof IpGeolocationRoute
   '/json': typeof JsonRoute
+  '/json-compare': typeof JsonCompareRoute
   '/json-path': typeof JsonPathRoute
   '/json-schema': typeof JsonSchemaRoute
   '/json-to-ts': typeof JsonToTsRoute
@@ -855,6 +863,7 @@ export interface FileRoutesById {
   '/ip-converter': typeof IpConverterRoute
   '/ip-geolocation': typeof IpGeolocationRoute
   '/json': typeof JsonRoute
+  '/json-compare': typeof JsonCompareRoute
   '/json-path': typeof JsonPathRoute
   '/json-schema': typeof JsonSchemaRoute
   '/json-to-ts': typeof JsonToTsRoute
@@ -958,6 +967,7 @@ export interface FileRouteTypes {
     | '/ip-converter'
     | '/ip-geolocation'
     | '/json'
+    | '/json-compare'
     | '/json-path'
     | '/json-schema'
     | '/json-to-ts'
@@ -1059,6 +1069,7 @@ export interface FileRouteTypes {
     | '/ip-converter'
     | '/ip-geolocation'
     | '/json'
+    | '/json-compare'
     | '/json-path'
     | '/json-schema'
     | '/json-to-ts'
@@ -1160,6 +1171,7 @@ export interface FileRouteTypes {
     | '/ip-converter'
     | '/ip-geolocation'
     | '/json'
+    | '/json-compare'
     | '/json-path'
     | '/json-schema'
     | '/json-to-ts'
@@ -1262,6 +1274,7 @@ export interface RootRouteChildren {
   IpConverterRoute: typeof IpConverterRoute
   IpGeolocationRoute: typeof IpGeolocationRoute
   JsonRoute: typeof JsonRoute
+  JsonCompareRoute: typeof JsonCompareRoute
   JsonPathRoute: typeof JsonPathRoute
   JsonSchemaRoute: typeof JsonSchemaRoute
   JsonToTsRoute: typeof JsonToTsRoute
@@ -1660,6 +1673,13 @@ declare module '@tanstack/react-router' {
       path: '/json-path'
       fullPath: '/json-path'
       preLoaderRoute: typeof JsonPathRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/json-compare': {
+      id: '/json-compare'
+      path: '/json-compare'
+      fullPath: '/json-compare'
+      preLoaderRoute: typeof JsonCompareRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/json': {
@@ -2062,6 +2082,7 @@ const rootRouteChildren: RootRouteChildren = {
   IpConverterRoute: IpConverterRoute,
   IpGeolocationRoute: IpGeolocationRoute,
   JsonRoute: JsonRoute,
+  JsonCompareRoute: JsonCompareRoute,
   JsonPathRoute: JsonPathRoute,
   JsonSchemaRoute: JsonSchemaRoute,
   JsonToTsRoute: JsonToTsRoute,
