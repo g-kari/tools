@@ -52,7 +52,7 @@
     "tailwindcss": "^4.1.18"
   },
   "devDependencies": {
-    "@cloudflare/vite-plugin": "^1.0.0",
+    "@cloudflare/vite-plugin": "^1.28.0",
     "@cloudflare/workers-types": "^4.20251225.0",
     "@playwright/test": "^1.57.0",
     "@tanstack/router-plugin": "^1.120.3",
@@ -63,13 +63,13 @@
     "@types/react": "^18.3.1",
     "@types/react-dom": "^18.3.1",
     "@vitest/coverage-v8": "^4.0.16",
-    "serve": "^14.2.5",
+    "serve": "^14.2.6",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "vite": "^7.0.0",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^4.0.16",
     "wait-on": "^9.0.3",
-    "wrangler": "^4.54.0"
+    "wrangler": "^4.73.0"
   }
 }
