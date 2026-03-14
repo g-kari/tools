@@ -1,0 +1,105 @@
+/* JSONスキーマジェネレーター */
+.json-schema-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.json-schema-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.json-schema-panel-label {
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--md-sys-color-primary);
+}
+
+.json-schema-textarea {
+  width: 100%;
+  min-height: 320px;
+  padding: 0.75rem;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 0;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.json-schema-textarea:focus {
+  border-color: var(--md-sys-color-primary);
+}
+
+.json-schema-result-area {
+  min-height: 320px;
+  padding: 0.75rem;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  border: 1px solid var(--md-sys-color-outline);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-all;
+  overflow: auto;
+}
+
+.json-schema-result-empty {
+  color: var(--md-sys-color-outline);
+  font-style: italic;
+}
+
+.json-schema-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.json-schema-btn {
+  padding: 0.4rem 0.8rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 1px solid var(--md-sys-color-outline);
+  background: transparent;
+  color: var(--md-sys-color-on-surface);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.json-schema-btn:hover:not(:disabled) {
+  background: var(--md-sys-color-surface-variant);
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-primary);
+}
+
+.json-schema-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.json-schema-btn--primary {
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-primary);
+}
+
+.json-schema-btn--primary:hover:not(:disabled) {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+@media (max-width: 768px) {
+  .json-schema-layout {
+    grid-template-columns: 1fr;
+  }
+}

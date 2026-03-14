@@ -52,6 +52,7 @@ import { Route as LoremIpsumRouteImport } from './routes/lorem-ipsum'
 import { Route as KeycodeRouteImport } from './routes/keycode'
 import { Route as JwtGeneratorRouteImport } from './routes/jwt-generator'
 import { Route as JwtRouteImport } from './routes/jwt'
+import { Route as JsonSchemaRouteImport } from './routes/json-schema'
 import { Route as JsonPathRouteImport } from './routes/json-path'
 import { Route as JsonRouteImport } from './routes/json'
 import { Route as IpGeolocationRouteImport } from './routes/ip-geolocation'
@@ -314,6 +315,11 @@ const JwtGeneratorRoute = JwtGeneratorRouteImport.update({
 const JwtRoute = JwtRouteImport.update({
   id: '/jwt',
   path: '/jwt',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JsonSchemaRoute = JsonSchemaRouteImport.update({
+  id: '/json-schema',
+  path: '/json-schema',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JsonPathRoute = JsonPathRouteImport.update({
@@ -602,6 +608,7 @@ export interface FileRoutesByFullPath {
   '/ip-geolocation': typeof IpGeolocationRoute
   '/json': typeof JsonRoute
   '/json-path': typeof JsonPathRoute
+  '/json-schema': typeof JsonSchemaRoute
   '/jwt': typeof JwtRoute
   '/jwt-generator': typeof JwtGeneratorRoute
   '/keycode': typeof KeycodeRoute
@@ -695,6 +702,7 @@ export interface FileRoutesByTo {
   '/ip-geolocation': typeof IpGeolocationRoute
   '/json': typeof JsonRoute
   '/json-path': typeof JsonPathRoute
+  '/json-schema': typeof JsonSchemaRoute
   '/jwt': typeof JwtRoute
   '/jwt-generator': typeof JwtGeneratorRoute
   '/keycode': typeof KeycodeRoute
@@ -789,6 +797,7 @@ export interface FileRoutesById {
   '/ip-geolocation': typeof IpGeolocationRoute
   '/json': typeof JsonRoute
   '/json-path': typeof JsonPathRoute
+  '/json-schema': typeof JsonSchemaRoute
   '/jwt': typeof JwtRoute
   '/jwt-generator': typeof JwtGeneratorRoute
   '/keycode': typeof KeycodeRoute
@@ -884,6 +893,7 @@ export interface FileRouteTypes {
     | '/ip-geolocation'
     | '/json'
     | '/json-path'
+    | '/json-schema'
     | '/jwt'
     | '/jwt-generator'
     | '/keycode'
@@ -977,6 +987,7 @@ export interface FileRouteTypes {
     | '/ip-geolocation'
     | '/json'
     | '/json-path'
+    | '/json-schema'
     | '/jwt'
     | '/jwt-generator'
     | '/keycode'
@@ -1070,6 +1081,7 @@ export interface FileRouteTypes {
     | '/ip-geolocation'
     | '/json'
     | '/json-path'
+    | '/json-schema'
     | '/jwt'
     | '/jwt-generator'
     | '/keycode'
@@ -1164,6 +1176,7 @@ export interface RootRouteChildren {
   IpGeolocationRoute: typeof IpGeolocationRoute
   JsonRoute: typeof JsonRoute
   JsonPathRoute: typeof JsonPathRoute
+  JsonSchemaRoute: typeof JsonSchemaRoute
   JwtRoute: typeof JwtRoute
   JwtGeneratorRoute: typeof JwtGeneratorRoute
   KeycodeRoute: typeof KeycodeRoute
@@ -1514,6 +1527,13 @@ declare module '@tanstack/react-router' {
       path: '/jwt'
       fullPath: '/jwt'
       preLoaderRoute: typeof JwtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/json-schema': {
+      id: '/json-schema'
+      path: '/json-schema'
+      fullPath: '/json-schema'
+      preLoaderRoute: typeof JsonSchemaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/json-path': {
@@ -1900,6 +1920,7 @@ const rootRouteChildren: RootRouteChildren = {
   IpGeolocationRoute: IpGeolocationRoute,
   JsonRoute: JsonRoute,
   JsonPathRoute: JsonPathRoute,
+  JsonSchemaRoute: JsonSchemaRoute,
   JwtRoute: JwtRoute,
   JwtGeneratorRoute: JwtGeneratorRoute,
   KeycodeRoute: KeycodeRoute,
