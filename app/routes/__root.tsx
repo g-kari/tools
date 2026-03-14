@@ -144,7 +144,10 @@ const navCategories = [
   {
     name: "ゲーム",
     icon: "🎲",
-    items: [{ path: "/dice-roll", label: "ダイスロール" }],
+    items: [
+      { path: "/dice-roll", label: "ダイスロール" },
+      { path: "/pomodoro", label: "ポモドーロタイマー" },
+    ],
   },
 ];
 
