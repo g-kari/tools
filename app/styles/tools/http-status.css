@@ -1,0 +1,315 @@
+/* HTTPステータスコードリファレンス (http-status- prefix) */
+
+/* カテゴリフィルターグループ */
+.http-status-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+/* フィルターボタン */
+.http-status-filter-btn {
+  padding: 0.375rem 0.875rem;
+  background: none;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+  transition: color 0.2s, background-color 0.2s, border-color 0.2s;
+  letter-spacing: 0.03em;
+}
+
+.http-status-filter-btn:hover:not(.active) {
+  color: var(--md-sys-color-on-surface);
+  background-color: var(--md-sys-color-surface-variant);
+  border-color: var(--md-sys-color-outline);
+}
+
+.http-status-filter-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.http-status-filter-btn.active {
+  color: var(--md-sys-color-on-primary-container);
+  background-color: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+}
+
+/* 検索ボックスラッパー */
+.http-status-search {
+  margin-bottom: 0.5rem;
+}
+
+.http-status-search-input {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  font-size: 0.9375rem;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.http-status-search-input:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-surface);
+}
+
+.http-status-search-input::placeholder {
+  color: var(--md-sys-color-on-surface-variant);
+  opacity: 0.7;
+}
+
+/* 件数表示テキスト */
+.http-status-count {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 0.75rem;
+}
+
+/* カードグリッドレイアウト */
+.http-status-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+/* 各ステータスコードカード */
+.http-status-card {
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  padding: 0.875rem;
+  background: var(--md-sys-color-surface);
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.http-status-card:hover {
+  border-color: var(--md-sys-color-outline);
+  background-color: var(--md-sys-color-surface-variant);
+}
+
+.http-status-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+/* コード番号（大きく表示） */
+.http-status-code {
+  font-family: "JetBrains Mono", "Roboto Mono", "Courier New", monospace;
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+/* ステータス名 */
+.http-status-name {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface);
+}
+
+/* 説明文 */
+.http-status-desc {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  line-height: 1.5;
+  flex: 1;
+}
+
+/* カード下部（コピーボタンエリア） */
+.http-status-card-footer {
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* コピーボタン */
+.http-status-copy-btn {
+  padding: 0.3125rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: none;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+  letter-spacing: 0.03em;
+}
+
+.http-status-copy-btn:hover {
+  background-color: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  border-color: var(--md-sys-color-outline);
+}
+
+.http-status-copy-btn:active {
+  opacity: 0.7;
+}
+
+.http-status-copy-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* カテゴリバッジ */
+.http-status-badge {
+  font-family: "JetBrains Mono", "Roboto Mono", "Courier New", monospace;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  padding: 0.125rem 0.4375rem;
+  border-radius: 4px;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+/* カテゴリカラー変数（セマンティックなカスタムプロパティで一元管理） */
+:root {
+  /* 1xx: MD3 secondary トークンを流用 */
+  --http-status-color-1xx: var(--md-sys-color-secondary);
+  --http-status-bg-1xx: var(--md-sys-color-secondary-container);
+  --http-status-text-1xx: var(--md-sys-color-on-secondary-container);
+  /* 2xx: 成功（グリーン系） */
+  --http-status-color-2xx: #2e7d32;
+  --http-status-bg-2xx: #e8f5e9;
+  --http-status-text-2xx: #1b5e20;
+  /* 3xx: MD3 primary トークンを流用（アンバー/ゴールド系） */
+  --http-status-color-3xx: var(--md-sys-color-primary);
+  --http-status-bg-3xx: var(--md-sys-color-primary-container);
+  --http-status-text-3xx: var(--md-sys-color-on-primary-container);
+  /* 4xx: クライアントエラー（オレンジ系） */
+  --http-status-color-4xx: #e65100;
+  --http-status-bg-4xx: #fff3e0;
+  --http-status-text-4xx: #bf360c;
+  /* 5xx: サーバーエラー（レッド系） */
+  --http-status-color-5xx: #c62828;
+  --http-status-bg-5xx: #ffebee;
+  --http-status-text-5xx: #b71c1c;
+}
+
+/* カテゴリ別カラークラス */
+
+/* 1xx - 情報 */
+.http-status-cat-1xx.http-status-code {
+  color: var(--http-status-color-1xx);
+}
+
+.http-status-cat-1xx.http-status-badge {
+  background-color: var(--http-status-bg-1xx);
+  color: var(--http-status-text-1xx);
+}
+
+.http-status-cat-1xx.http-status-card {
+  border-left: 3px solid var(--http-status-color-1xx);
+}
+
+/* 2xx - 成功 */
+.http-status-cat-2xx.http-status-code {
+  color: var(--http-status-color-2xx);
+}
+
+.http-status-cat-2xx.http-status-badge {
+  background-color: var(--http-status-bg-2xx);
+  color: var(--http-status-text-2xx);
+}
+
+.http-status-cat-2xx.http-status-card {
+  border-left: 3px solid var(--http-status-color-2xx);
+}
+
+/* 3xx - リダイレクト */
+.http-status-cat-3xx.http-status-code {
+  color: var(--http-status-color-3xx);
+}
+
+.http-status-cat-3xx.http-status-badge {
+  background-color: var(--http-status-bg-3xx);
+  color: var(--http-status-text-3xx);
+}
+
+.http-status-cat-3xx.http-status-card {
+  border-left: 3px solid var(--http-status-color-3xx);
+}
+
+/* 4xx - クライアントエラー */
+.http-status-cat-4xx.http-status-code {
+  color: var(--http-status-color-4xx);
+}
+
+.http-status-cat-4xx.http-status-badge {
+  background-color: var(--http-status-bg-4xx);
+  color: var(--http-status-text-4xx);
+}
+
+.http-status-cat-4xx.http-status-card {
+  border-left: 3px solid var(--http-status-color-4xx);
+}
+
+/* 5xx - サーバーエラー */
+.http-status-cat-5xx.http-status-code {
+  color: var(--http-status-color-5xx);
+}
+
+.http-status-cat-5xx.http-status-badge {
+  background-color: var(--http-status-bg-5xx);
+  color: var(--http-status-text-5xx);
+}
+
+.http-status-cat-5xx.http-status-card {
+  border-left: 3px solid var(--http-status-color-5xx);
+}
+
+/* 結果なし表示 */
+.http-status-empty {
+  padding: 2rem;
+  text-align: center;
+  color: var(--md-sys-color-on-surface-variant);
+  border: 1px dashed var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+}
+
+.http-status-empty p {
+  margin-bottom: 0.25rem;
+  font-size: 0.9375rem;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 600px) {
+  .http-status-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .http-status-filters {
+    gap: 4px;
+  }
+
+  .http-status-filter-btn {
+    font-size: 0.75rem;
+    padding: 0.3125rem 0.625rem;
+  }
+}
+
+/* モーション低減設定への対応 */
+@media (prefers-reduced-motion: reduce) {
+  .http-status-filter-btn,
+  .http-status-search-input,
+  .http-status-card,
+  .http-status-copy-btn {
+    transition: none;
+  }
+}
