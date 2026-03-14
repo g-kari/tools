@@ -24,6 +24,7 @@ import { Route as TomlJsonRouteImport } from './routes/toml-json'
 import { Route as TimezoneRouteImport } from './routes/timezone'
 import { Route as TimestampRouteImport } from './routes/timestamp'
 import { Route as TextSortRouteImport } from './routes/text-sort'
+import { Route as TextEncryptRouteImport } from './routes/text-encrypt'
 import { Route as TextCaseRouteImport } from './routes/text-case'
 import { Route as SqlRouteImport } from './routes/sql'
 import { Route as SlugRouteImport } from './routes/slug'
@@ -164,6 +165,11 @@ const TimestampRoute = TimestampRouteImport.update({
 const TextSortRoute = TextSortRouteImport.update({
   id: '/text-sort',
   path: '/text-sort',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TextEncryptRoute = TextEncryptRouteImport.update({
+  id: '/text-encrypt',
+  path: '/text-encrypt',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TextCaseRoute = TextCaseRouteImport.update({
@@ -560,6 +566,7 @@ export interface FileRoutesByFullPath {
   '/slug': typeof SlugRoute
   '/sql': typeof SqlRoute
   '/text-case': typeof TextCaseRoute
+  '/text-encrypt': typeof TextEncryptRoute
   '/text-sort': typeof TextSortRoute
   '/timestamp': typeof TimestampRoute
   '/timezone': typeof TimezoneRoute
@@ -643,6 +650,7 @@ export interface FileRoutesByTo {
   '/slug': typeof SlugRoute
   '/sql': typeof SqlRoute
   '/text-case': typeof TextCaseRoute
+  '/text-encrypt': typeof TextEncryptRoute
   '/text-sort': typeof TextSortRoute
   '/timestamp': typeof TimestampRoute
   '/timezone': typeof TimezoneRoute
@@ -727,6 +735,7 @@ export interface FileRoutesById {
   '/slug': typeof SlugRoute
   '/sql': typeof SqlRoute
   '/text-case': typeof TextCaseRoute
+  '/text-encrypt': typeof TextEncryptRoute
   '/text-sort': typeof TextSortRoute
   '/timestamp': typeof TimestampRoute
   '/timezone': typeof TimezoneRoute
@@ -812,6 +821,7 @@ export interface FileRouteTypes {
     | '/slug'
     | '/sql'
     | '/text-case'
+    | '/text-encrypt'
     | '/text-sort'
     | '/timestamp'
     | '/timezone'
@@ -895,6 +905,7 @@ export interface FileRouteTypes {
     | '/slug'
     | '/sql'
     | '/text-case'
+    | '/text-encrypt'
     | '/text-sort'
     | '/timestamp'
     | '/timezone'
@@ -978,6 +989,7 @@ export interface FileRouteTypes {
     | '/slug'
     | '/sql'
     | '/text-case'
+    | '/text-encrypt'
     | '/text-sort'
     | '/timestamp'
     | '/timezone'
@@ -1062,6 +1074,7 @@ export interface RootRouteChildren {
   SlugRoute: typeof SlugRoute
   SqlRoute: typeof SqlRoute
   TextCaseRoute: typeof TextCaseRoute
+  TextEncryptRoute: typeof TextEncryptRoute
   TextSortRoute: typeof TextSortRoute
   TimestampRoute: typeof TimestampRoute
   TimezoneRoute: typeof TimezoneRoute
@@ -1188,6 +1201,13 @@ declare module '@tanstack/react-router' {
       path: '/text-sort'
       fullPath: '/text-sort'
       preLoaderRoute: typeof TextSortRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/text-encrypt': {
+      id: '/text-encrypt'
+      path: '/text-encrypt'
+      fullPath: '/text-encrypt'
+      preLoaderRoute: typeof TextEncryptRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/text-case': {
@@ -1718,6 +1738,7 @@ const rootRouteChildren: RootRouteChildren = {
   SlugRoute: SlugRoute,
   SqlRoute: SqlRoute,
   TextCaseRoute: TextCaseRoute,
+  TextEncryptRoute: TextEncryptRoute,
   TextSortRoute: TextSortRoute,
   TimestampRoute: TimestampRoute,
   TimezoneRoute: TimezoneRoute,

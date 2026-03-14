@@ -106,6 +106,7 @@ const navCategories = [
       { path: "/markdown-table", label: "Markdownテーブル生成" },
       { path: "/slug", label: "スラッグ生成" },
       { path: "/mermaid", label: "Mermaidプレビュー" },
+      { path: "/text-encrypt", label: "テキスト暗号化" },
     ],
   },
   {
