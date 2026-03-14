@@ -508,7 +508,9 @@ function ColorExtractor() {
                 >
                   <div
                     className="color-swatch color-swatch-dynamic"
-                    style={{ "--swatch-color": color.hex } as React.CSSProperties}
+                    ref={(el) => {
+                      if (el) el.style.setProperty("--swatch-color", color.hex);
+                    }}
                     aria-hidden="true"
                   />
                   <div className="color-info">

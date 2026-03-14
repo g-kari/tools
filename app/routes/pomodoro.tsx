@@ -144,6 +144,7 @@ function PomodoroTimer() {
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const statusRef = useRef<HTMLDivElement>(null);
   const statusTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const progressFillRef = useRef<HTMLDivElement>(null);
 
   /** 現在のフェーズの合計秒数を返す */
   const getTotalSeconds = useCallback(
@@ -270,6 +271,13 @@ function PomodoroTimer() {
     };
   }, []);
 
+  // プログレスバーの幅をrefで更新
+  useEffect(() => {
+    if (progressFillRef.current) {
+      progressFillRef.current.style.width = `${progress}%`;
+    }
+  }, [progress]);
+
   const handleStartPause = useCallback(() => {
     setIsRunning((prev) => {
       const next = !prev;
@@ -329,8 +337,8 @@ function PomodoroTimer() {
             aria-label={`進捗: ${Math.round(progress)}%`}
           >
             <div
+              ref={progressFillRef}
               className={`pomodoro-progress-fill ${phase === "work" ? "progress-work" : "progress-break"}`}
-              style={{ width: `${progress}%` } as React.CSSProperties}
             />
           </div>
 

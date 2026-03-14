@@ -362,7 +362,9 @@ function ColorPalette() {
                 >
                   <div
                     className="cp-swatch-color"
-                    style={{ backgroundColor: hex }}
+                    ref={(el) => {
+                      if (el) el.style.setProperty("--swatch-bg", hex);
+                    }}
                     aria-label={`カラー ${hex}`}
                   />
                   <div className="cp-swatch-info">

@@ -259,8 +259,16 @@ function ColorPicker() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const colorPreviewRef = useRef<HTMLDivElement>(null);
 
   const { showToast } = useToast();
+
+  // カラープレビューのCSS変数を更新
+  useEffect(() => {
+    if (colorPreviewRef.current) {
+      colorPreviewRef.current.style.setProperty("--current-color", currentColor);
+    }
+  }, [currentColor]);
 
   // 初期化時にLocalStorageからパレットを読み込み
   useEffect(() => {
@@ -537,8 +545,8 @@ function ColorPicker() {
           {/* カラープレビュー＆ピッカー */}
           <div className="color-picker-header">
             <div
+              ref={colorPreviewRef}
               className="color-preview-compact"
-              style={{ "--current-color": currentColor } as React.CSSProperties}
             >
               <input
                 type="color"
@@ -744,7 +752,9 @@ function ColorPicker() {
                     key={`${color}-${index}`}
                     type="button"
                     className="palette-color-compact"
-                    style={{ "--palette-color": color } as React.CSSProperties}
+                    ref={(el) => {
+                      if (el) el.style.setProperty("--palette-color", color);
+                    }}
                     onClick={() => handleSelectFromPalette(color)}
                     onContextMenu={(e) => {
                       e.preventDefault();
