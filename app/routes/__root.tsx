@@ -102,6 +102,7 @@ const navCategories = [
       { path: "/text-case", label: "テキストケース変換" },
       { path: "/morse-code", label: "Morse Code変換" },
       { path: "/markdown-table", label: "Markdownテーブル生成" },
+      { path: "/slug", label: "スラッグ生成" },
     ],
   },
   {
