@@ -91,6 +91,7 @@ import { Route as ChmodRouteImport } from './routes/chmod'
 import { Route as CharCountRouteImport } from './routes/char-count'
 import { Route as Base64ImageRouteImport } from './routes/base64-image'
 import { Route as Base64RouteImport } from './routes/base64'
+import { Route as BarcodeRouteImport } from './routes/barcode'
 import { Route as AudioConverterRouteImport } from './routes/audio-converter'
 import { Route as AsciiArtRouteImport } from './routes/ascii-art'
 import { Route as IndexRouteImport } from './routes/index'
@@ -509,6 +510,11 @@ const Base64Route = Base64RouteImport.update({
   path: '/base64',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BarcodeRoute = BarcodeRouteImport.update({
+  id: '/barcode',
+  path: '/barcode',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AudioConverterRoute = AudioConverterRouteImport.update({
   id: '/audio-converter',
   path: '/audio-converter',
@@ -549,6 +555,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/ascii-art': typeof AsciiArtRoute
   '/audio-converter': typeof AudioConverterRoute
+  '/barcode': typeof BarcodeRoute
   '/base64': typeof Base64Route
   '/base64-image': typeof Base64ImageRoute
   '/char-count': typeof CharCountRoute
@@ -640,6 +647,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/ascii-art': typeof AsciiArtRoute
   '/audio-converter': typeof AudioConverterRoute
+  '/barcode': typeof BarcodeRoute
   '/base64': typeof Base64Route
   '/base64-image': typeof Base64ImageRoute
   '/char-count': typeof CharCountRoute
@@ -732,6 +740,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/ascii-art': typeof AsciiArtRoute
   '/audio-converter': typeof AudioConverterRoute
+  '/barcode': typeof BarcodeRoute
   '/base64': typeof Base64Route
   '/base64-image': typeof Base64ImageRoute
   '/char-count': typeof CharCountRoute
@@ -825,6 +834,7 @@ export interface FileRouteTypes {
     | '/'
     | '/ascii-art'
     | '/audio-converter'
+    | '/barcode'
     | '/base64'
     | '/base64-image'
     | '/char-count'
@@ -916,6 +926,7 @@ export interface FileRouteTypes {
     | '/'
     | '/ascii-art'
     | '/audio-converter'
+    | '/barcode'
     | '/base64'
     | '/base64-image'
     | '/char-count'
@@ -1007,6 +1018,7 @@ export interface FileRouteTypes {
     | '/'
     | '/ascii-art'
     | '/audio-converter'
+    | '/barcode'
     | '/base64'
     | '/base64-image'
     | '/char-count'
@@ -1099,6 +1111,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AsciiArtRoute: typeof AsciiArtRoute
   AudioConverterRoute: typeof AudioConverterRoute
+  BarcodeRoute: typeof BarcodeRoute
   Base64Route: typeof Base64Route
   Base64ImageRoute: typeof Base64ImageRoute
   CharCountRoute: typeof CharCountRoute
@@ -1763,6 +1776,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Base64RouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/barcode': {
+      id: '/barcode'
+      path: '/barcode'
+      fullPath: '/barcode'
+      preLoaderRoute: typeof BarcodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/audio-converter': {
       id: '/audio-converter'
       path: '/audio-converter'
@@ -1819,6 +1839,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AsciiArtRoute: AsciiArtRoute,
   AudioConverterRoute: AudioConverterRoute,
+  BarcodeRoute: BarcodeRoute,
   Base64Route: Base64Route,
   Base64ImageRoute: Base64ImageRoute,
   CharCountRoute: CharCountRoute,

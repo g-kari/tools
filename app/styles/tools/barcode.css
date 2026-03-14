@@ -1,0 +1,131 @@
+/* ===== Barcode Generator ===== */
+
+/** バーコードSVGを表示するコンテナ */
+.barcode-svg-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 160px;
+  padding: 24px;
+  background-color: var(--md-sys-color-surface-variant);
+  border-radius: 12px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  margin-bottom: 16px;
+}
+
+.barcode-svg-container svg {
+  display: block;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  max-width: 100%;
+  height: auto;
+}
+
+/** バーコードが未生成のときのプレースホルダーテキスト */
+.barcode-placeholder-text {
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.875rem;
+  text-align: center;
+  margin: 0;
+}
+
+/** オプション設定のグリッドレイアウト（2列） */
+.barcode-options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-top: 8px;
+}
+
+/** カラーピッカー入力 */
+.barcode-color-input {
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--md-sys-color-outline-variant);
+  border-radius: 6px;
+  padding: 2px;
+  cursor: pointer;
+  background-color: transparent;
+  flex-shrink: 0;
+}
+
+.barcode-color-input:focus {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/** HEXカラー値テキスト入力 */
+.barcode-hex-input {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 12px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 6px;
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-size: 0.875rem;
+  font-family: 'Space Mono', monospace;
+}
+
+.barcode-hex-input:focus {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+  border-color: var(--md-sys-color-primary);
+}
+
+/** ダウンロードボタンのセクション */
+.barcode-download-section {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/** テキスト表示トグルのラベル */
+.barcode-toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface);
+  user-select: none;
+}
+
+.barcode-toggle-label input[type='checkbox'] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: var(--md-sys-color-primary);
+}
+
+/** バーコード形式の説明テキスト */
+.barcode-format-description {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-top: 4px;
+}
+
+@media (max-width: 600px) {
+  .barcode-options-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .barcode-download-section {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .barcode-download-section .btn-primary,
+  .barcode-download-section .btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .barcode-svg-container svg {
+    box-shadow: none;
+  }
+}

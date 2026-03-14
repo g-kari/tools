@@ -208,6 +208,12 @@ const toolCatalog: ToolCategory[] = [
         icon: "📱",
       },
       {
+        path: "/barcode",
+        label: "バーコード生成",
+        description: "各種バーコード形式を生成・ダウンロード",
+        icon: "▮▮▮",
+      },
+      {
         path: "/lorem-ipsum",
         label: "Lorem Ipsum",
         description: "ダミーテキストの生成（段落・単語数・文数対応）",
