@@ -371,6 +371,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🌈",
       },
       {
+        path: "/css-animation",
+        label: "CSSアニメーション生成",
+        description:
+          "keyframesアニメーションをビジュアルエディターで作成。duration・easing・delay・繰り返し設定を調整してCSSコードを即座に生成。",
+        icon: "✨",
+      },
+      {
         path: "/image-to-gif",
         label: "画像→GIF変換",
         description: "複数画像からアニメーションGIFを作成",

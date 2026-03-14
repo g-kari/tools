@@ -63,6 +63,7 @@
 @import "./styles/tools/color-palette.css";
 @import "./styles/tools/color-harmony.css";
 @import "./styles/tools/css-gradient.css";
+@import "./styles/tools/css-animation.css";
 @import "./styles/tools/text-encrypt.css";
 @import "./styles/tools/http-status.css";
 @import "./styles/tools/pomodoro.css";
