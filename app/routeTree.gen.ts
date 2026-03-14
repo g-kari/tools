@@ -34,6 +34,7 @@ import { Route as RegexCheckerRouteImport } from './routes/regex-checker'
 import { Route as RandomDataRouteImport } from './routes/random-data'
 import { Route as QrCodeRouteImport } from './routes/qr-code'
 import { Route as PortCheckRouteImport } from './routes/port-check'
+import { Route as PomodoroRouteImport } from './routes/pomodoro'
 import { Route as PhpSerializeRouteImport } from './routes/php-serialize'
 import { Route as PasswordGeneratorRouteImport } from './routes/password-generator'
 import { Route as OgpRouteImport } from './routes/ogp'
@@ -216,6 +217,11 @@ const QrCodeRoute = QrCodeRouteImport.update({
 const PortCheckRoute = PortCheckRouteImport.update({
   id: '/port-check',
   path: '/port-check',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PomodoroRoute = PomodoroRouteImport.update({
+  id: '/pomodoro',
+  path: '/pomodoro',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PhpSerializeRoute = PhpSerializeRouteImport.update({
@@ -564,6 +570,7 @@ export interface FileRoutesByFullPath {
   '/ogp': typeof OgpRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/php-serialize': typeof PhpSerializeRoute
+  '/pomodoro': typeof PomodoroRoute
   '/port-check': typeof PortCheckRoute
   '/qr-code': typeof QrCodeRoute
   '/random-data': typeof RandomDataRoute
@@ -649,6 +656,7 @@ export interface FileRoutesByTo {
   '/ogp': typeof OgpRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/php-serialize': typeof PhpSerializeRoute
+  '/pomodoro': typeof PomodoroRoute
   '/port-check': typeof PortCheckRoute
   '/qr-code': typeof QrCodeRoute
   '/random-data': typeof RandomDataRoute
@@ -735,6 +743,7 @@ export interface FileRoutesById {
   '/ogp': typeof OgpRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/php-serialize': typeof PhpSerializeRoute
+  '/pomodoro': typeof PomodoroRoute
   '/port-check': typeof PortCheckRoute
   '/qr-code': typeof QrCodeRoute
   '/random-data': typeof RandomDataRoute
@@ -822,6 +831,7 @@ export interface FileRouteTypes {
     | '/ogp'
     | '/password-generator'
     | '/php-serialize'
+    | '/pomodoro'
     | '/port-check'
     | '/qr-code'
     | '/random-data'
@@ -907,6 +917,7 @@ export interface FileRouteTypes {
     | '/ogp'
     | '/password-generator'
     | '/php-serialize'
+    | '/pomodoro'
     | '/port-check'
     | '/qr-code'
     | '/random-data'
@@ -992,6 +1003,7 @@ export interface FileRouteTypes {
     | '/ogp'
     | '/password-generator'
     | '/php-serialize'
+    | '/pomodoro'
     | '/port-check'
     | '/qr-code'
     | '/random-data'
@@ -1078,6 +1090,7 @@ export interface RootRouteChildren {
   OgpRoute: typeof OgpRoute
   PasswordGeneratorRoute: typeof PasswordGeneratorRoute
   PhpSerializeRoute: typeof PhpSerializeRoute
+  PomodoroRoute: typeof PomodoroRoute
   PortCheckRoute: typeof PortCheckRoute
   QrCodeRoute: typeof QrCodeRoute
   RandomDataRoute: typeof RandomDataRoute
@@ -1284,6 +1297,13 @@ declare module '@tanstack/react-router' {
       path: '/port-check'
       fullPath: '/port-check'
       preLoaderRoute: typeof PortCheckRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pomodoro': {
+      id: '/pomodoro'
+      path: '/pomodoro'
+      fullPath: '/pomodoro'
+      preLoaderRoute: typeof PomodoroRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/php-serialize': {
@@ -1750,6 +1770,7 @@ const rootRouteChildren: RootRouteChildren = {
   OgpRoute: OgpRoute,
   PasswordGeneratorRoute: PasswordGeneratorRoute,
   PhpSerializeRoute: PhpSerializeRoute,
+  PomodoroRoute: PomodoroRoute,
   PortCheckRoute: PortCheckRoute,
   QrCodeRoute: QrCodeRoute,
   RandomDataRoute: RandomDataRoute,
