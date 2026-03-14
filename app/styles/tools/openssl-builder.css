@@ -1,0 +1,392 @@
+/* OpenSSLビルダー - ob- プレフィックス */
+
+/* MD3カラートークン（ローカルオーバーライド不要、グローバルトークンを参照） */
+
+.ob-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.ob-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ob-panel-label {
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--md-sys-color-primary);
+}
+
+/* セクションタイトル */
+.ob-section-title {
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--md-sys-color-on-surface-variant);
+  padding: 0.25rem 0;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  margin-top: 0.25rem;
+}
+
+/* 操作選択 */
+.ob-operation-select {
+  padding: 0.5rem 0.75rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.8rem;
+  border: 1px solid var(--md-sys-color-outline);
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  width: 100%;
+  border-radius: 4px;
+}
+
+.ob-operation-select:focus {
+  border-color: var(--md-sys-color-primary);
+}
+
+.ob-operation-select:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* フィールドグループ */
+.ob-fields-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface);
+  border-radius: 4px;
+}
+
+/* フィールド行 */
+.ob-field-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.ob-field-label {
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.ob-field-input {
+  padding: 0.4rem 0.6rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.8rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.ob-field-input:focus {
+  border-color: var(--md-sys-color-primary);
+}
+
+.ob-field-input:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.ob-field-input::placeholder {
+  color: var(--md-sys-color-outline);
+}
+
+/* セレクト共通 */
+.ob-field-select {
+  padding: 0.4rem 0.6rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.8rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  width: 100%;
+  border-radius: 4px;
+}
+
+.ob-field-select:focus {
+  border-color: var(--md-sys-color-primary);
+}
+
+.ob-field-select:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* サブジェクトグループ */
+.ob-subject-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.75rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface);
+  border-radius: 4px;
+}
+
+.ob-subject-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.ob-subject-key {
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--md-sys-color-primary);
+  flex: 0 0 3.5rem;
+  text-align: right;
+}
+
+.ob-subject-input {
+  flex: 1;
+  padding: 0.35rem 0.5rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.75rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  outline: none;
+  transition: border-color 0.2s;
+  border-radius: 4px;
+}
+
+.ob-subject-input:focus {
+  border-color: var(--md-sys-color-primary);
+}
+
+.ob-subject-input:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.ob-subject-input::placeholder {
+  color: var(--md-sys-color-outline);
+}
+
+/* 出力フォーマット */
+.ob-format-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.ob-format-label {
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.ob-format-option {
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  cursor: pointer;
+}
+
+.ob-format-option input[type="radio"] {
+  accent-color: var(--md-sys-color-primary);
+  cursor: pointer;
+}
+
+/* コマンド出力エリア */
+.ob-output-area {
+  flex: 1;
+  min-height: 200px;
+  padding: 0.75rem;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  border: 1px solid var(--md-sys-color-outline);
+  font-family: 'Roboto Mono', 'Courier New', monospace;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  white-space: pre;
+  overflow: auto;
+  word-break: break-all;
+  border-radius: 4px;
+}
+
+.ob-output-empty {
+  color: var(--md-sys-color-outline);
+  font-style: italic;
+  white-space: normal;
+}
+
+/* アクション */
+.ob-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.ob-btn {
+  padding: 0.4rem 0.8rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 1px solid var(--md-sys-color-outline);
+  background: transparent;
+  color: var(--md-sys-color-on-surface);
+  cursor: pointer;
+  transition: all 0.2s;
+  border-radius: 4px;
+}
+
+.ob-btn:hover:not(:disabled) {
+  background: var(--md-sys-color-surface-variant);
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-primary);
+}
+
+.ob-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.ob-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.ob-btn--primary {
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-primary);
+}
+
+.ob-btn--primary:hover:not(:disabled) {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+/* サンプル選択 */
+.ob-sample-select {
+  padding: 0.35rem 0.5rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.75rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  border-radius: 4px;
+}
+
+.ob-sample-select:focus {
+  border-color: var(--md-sys-color-primary);
+}
+
+.ob-sample-select:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* 日数入力 */
+.ob-days-input {
+  padding: 0.4rem 0.6rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.8rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  outline: none;
+  transition: border-color 0.2s;
+  width: 7rem;
+  border-radius: 4px;
+}
+
+.ob-days-input:focus {
+  border-color: var(--md-sys-color-primary);
+}
+
+.ob-days-input:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* パスフレーズ入力 */
+.ob-passphrase-input {
+  padding: 0.4rem 0.6rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.8rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.ob-passphrase-input:focus {
+  border-color: var(--md-sys-color-primary);
+}
+
+.ob-passphrase-input:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.ob-passphrase-input::placeholder {
+  color: var(--md-sys-color-outline);
+}
+
+@media (max-width: 768px) {
+  .ob-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .ob-subject-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .ob-subject-key {
+    text-align: left;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ob-btn,
+  .ob-field-input,
+  .ob-field-select,
+  .ob-operation-select,
+  .ob-sample-select,
+  .ob-subject-input,
+  .ob-days-input,
+  .ob-passphrase-input {
+    transition: none;
+  }
+}

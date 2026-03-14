@@ -636,6 +636,12 @@ const toolCatalog: ToolCategory[] = [
         description: "GUIでcurlコマンドを組み立てる。HTTPメソッド、ヘッダー、ボディ、各種オプションを設定してコマンドを生成",
         icon: "🔧",
       },
+      {
+        path: "/openssl-builder",
+        label: "OpenSSLビルダー",
+        description: "OpenSSLコマンドをGUIで設定して生成。鍵生成・証明書作成・CSR生成など各種OpenSSL操作に対応",
+        icon: "🔐",
+      },
     ],
   },
   {

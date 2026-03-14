@@ -41,6 +41,7 @@ import { Route as PortCheckRouteImport } from './routes/port-check'
 import { Route as PomodoroRouteImport } from './routes/pomodoro'
 import { Route as PhpSerializeRouteImport } from './routes/php-serialize'
 import { Route as PasswordGeneratorRouteImport } from './routes/password-generator'
+import { Route as OpensslBuilderRouteImport } from './routes/openssl-builder'
 import { Route as OgpRouteImport } from './routes/ogp'
 import { Route as NumberBaseRouteImport } from './routes/number-base'
 import { Route as MsgpackRouteImport } from './routes/msgpack'
@@ -266,6 +267,11 @@ const PhpSerializeRoute = PhpSerializeRouteImport.update({
 const PasswordGeneratorRoute = PasswordGeneratorRouteImport.update({
   id: '/password-generator',
   path: '/password-generator',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OpensslBuilderRoute = OpensslBuilderRouteImport.update({
+  id: '/openssl-builder',
+  path: '/openssl-builder',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OgpRoute = OgpRouteImport.update({
@@ -662,6 +668,7 @@ export interface FileRoutesByFullPath {
   '/msgpack': typeof MsgpackRoute
   '/number-base': typeof NumberBaseRoute
   '/ogp': typeof OgpRoute
+  '/openssl-builder': typeof OpensslBuilderRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/php-serialize': typeof PhpSerializeRoute
   '/pomodoro': typeof PomodoroRoute
@@ -762,6 +769,7 @@ export interface FileRoutesByTo {
   '/msgpack': typeof MsgpackRoute
   '/number-base': typeof NumberBaseRoute
   '/ogp': typeof OgpRoute
+  '/openssl-builder': typeof OpensslBuilderRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/php-serialize': typeof PhpSerializeRoute
   '/pomodoro': typeof PomodoroRoute
@@ -863,6 +871,7 @@ export interface FileRoutesById {
   '/msgpack': typeof MsgpackRoute
   '/number-base': typeof NumberBaseRoute
   '/ogp': typeof OgpRoute
+  '/openssl-builder': typeof OpensslBuilderRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/php-serialize': typeof PhpSerializeRoute
   '/pomodoro': typeof PomodoroRoute
@@ -965,6 +974,7 @@ export interface FileRouteTypes {
     | '/msgpack'
     | '/number-base'
     | '/ogp'
+    | '/openssl-builder'
     | '/password-generator'
     | '/php-serialize'
     | '/pomodoro'
@@ -1065,6 +1075,7 @@ export interface FileRouteTypes {
     | '/msgpack'
     | '/number-base'
     | '/ogp'
+    | '/openssl-builder'
     | '/password-generator'
     | '/php-serialize'
     | '/pomodoro'
@@ -1165,6 +1176,7 @@ export interface FileRouteTypes {
     | '/msgpack'
     | '/number-base'
     | '/ogp'
+    | '/openssl-builder'
     | '/password-generator'
     | '/php-serialize'
     | '/pomodoro'
@@ -1266,6 +1278,7 @@ export interface RootRouteChildren {
   MsgpackRoute: typeof MsgpackRoute
   NumberBaseRoute: typeof NumberBaseRoute
   OgpRoute: typeof OgpRoute
+  OpensslBuilderRoute: typeof OpensslBuilderRoute
   PasswordGeneratorRoute: typeof PasswordGeneratorRoute
   PhpSerializeRoute: typeof PhpSerializeRoute
   PomodoroRoute: typeof PomodoroRoute
@@ -1528,6 +1541,13 @@ declare module '@tanstack/react-router' {
       path: '/password-generator'
       fullPath: '/password-generator'
       preLoaderRoute: typeof PasswordGeneratorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/openssl-builder': {
+      id: '/openssl-builder'
+      path: '/openssl-builder'
+      fullPath: '/openssl-builder'
+      preLoaderRoute: typeof OpensslBuilderRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ogp': {
@@ -2058,6 +2078,7 @@ const rootRouteChildren: RootRouteChildren = {
   MsgpackRoute: MsgpackRoute,
   NumberBaseRoute: NumberBaseRoute,
   OgpRoute: OgpRoute,
+  OpensslBuilderRoute: OpensslBuilderRoute,
   PasswordGeneratorRoute: PasswordGeneratorRoute,
   PhpSerializeRoute: PhpSerializeRoute,
   PomodoroRoute: PomodoroRoute,
