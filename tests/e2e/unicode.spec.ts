@@ -4,7 +4,7 @@ test.describe('Unicode Escape Converter - E2E Tests', () => {
   // タイムアウトはplaywright.config.tsで設定（CI: 30秒, ローカル: 10秒）
 
   test.beforeEach(async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/unicode');
     // Wait for React hydration
     await page.waitForLoadState('networkidle');
   });

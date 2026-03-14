@@ -38,7 +38,7 @@ const toolCatalog: ToolCategory[] = [
     icon: "⇄",
     items: [
       {
-        path: "/",
+        path: "/unicode",
         label: "Unicode変換",
         description: "Unicode文字列のエスケープ/アンエスケープ変換",
         icon: "🔤",

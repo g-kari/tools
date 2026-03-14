@@ -24,7 +24,7 @@ const navCategories = [
     name: "変換",
     icon: "⇄",
     items: [
-      { path: "/", label: "Unicode変換" },
+      { path: "/unicode", label: "Unicode変換" },
       { path: "/url-encode", label: "URLエンコード" },
       { path: "/url-parser", label: "URLパーサー" },
       { path: "/html-encode", label: "HTMLエンコード" },
@@ -217,7 +217,7 @@ function NotFoundComponent() {
         <p className="not-found-message">
           お探しのページは存在しないか、移動した可能性があります。
         </p>
-        <Link to="/" className="not-found-link">
+        <Link to="/top" className="not-found-link">
           ホームに戻る
         </Link>
       </div>

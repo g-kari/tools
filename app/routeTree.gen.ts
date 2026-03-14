@@ -18,6 +18,7 @@ import { Route as UserAgentRouteImport } from './routes/user-agent'
 import { Route as UrlParserRouteImport } from './routes/url-parser'
 import { Route as UrlEncodeRouteImport } from './routes/url-encode'
 import { Route as UnitConverterRouteImport } from './routes/unit-converter'
+import { Route as UnicodeRouteImport } from './routes/unicode'
 import { Route as TransparentImageRouteImport } from './routes/transparent-image'
 import { Route as TopRouteImport } from './routes/top'
 import { Route as TomlJsonRouteImport } from './routes/toml-json'
@@ -143,6 +144,11 @@ const UrlEncodeRoute = UrlEncodeRouteImport.update({
 const UnitConverterRoute = UnitConverterRouteImport.update({
   id: '/unit-converter',
   path: '/unit-converter',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UnicodeRoute = UnicodeRouteImport.update({
+  id: '/unicode',
+  path: '/unicode',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TransparentImageRoute = TransparentImageRouteImport.update({
@@ -629,6 +635,7 @@ export interface FileRoutesByFullPath {
   '/toml-json': typeof TomlJsonRoute
   '/top': typeof TopRoute
   '/transparent-image': typeof TransparentImageRoute
+  '/unicode': typeof UnicodeRoute
   '/unit-converter': typeof UnitConverterRoute
   '/url-encode': typeof UrlEncodeRoute
   '/url-parser': typeof UrlParserRoute
@@ -721,6 +728,7 @@ export interface FileRoutesByTo {
   '/toml-json': typeof TomlJsonRoute
   '/top': typeof TopRoute
   '/transparent-image': typeof TransparentImageRoute
+  '/unicode': typeof UnicodeRoute
   '/unit-converter': typeof UnitConverterRoute
   '/url-encode': typeof UrlEncodeRoute
   '/url-parser': typeof UrlParserRoute
@@ -814,6 +822,7 @@ export interface FileRoutesById {
   '/toml-json': typeof TomlJsonRoute
   '/top': typeof TopRoute
   '/transparent-image': typeof TransparentImageRoute
+  '/unicode': typeof UnicodeRoute
   '/unit-converter': typeof UnitConverterRoute
   '/url-encode': typeof UrlEncodeRoute
   '/url-parser': typeof UrlParserRoute
@@ -908,6 +917,7 @@ export interface FileRouteTypes {
     | '/toml-json'
     | '/top'
     | '/transparent-image'
+    | '/unicode'
     | '/unit-converter'
     | '/url-encode'
     | '/url-parser'
@@ -1000,6 +1010,7 @@ export interface FileRouteTypes {
     | '/toml-json'
     | '/top'
     | '/transparent-image'
+    | '/unicode'
     | '/unit-converter'
     | '/url-encode'
     | '/url-parser'
@@ -1092,6 +1103,7 @@ export interface FileRouteTypes {
     | '/toml-json'
     | '/top'
     | '/transparent-image'
+    | '/unicode'
     | '/unit-converter'
     | '/url-encode'
     | '/url-parser'
@@ -1185,6 +1197,7 @@ export interface RootRouteChildren {
   TomlJsonRoute: typeof TomlJsonRoute
   TopRoute: typeof TopRoute
   TransparentImageRoute: typeof TransparentImageRoute
+  UnicodeRoute: typeof UnicodeRoute
   UnitConverterRoute: typeof UnitConverterRoute
   UrlEncodeRoute: typeof UrlEncodeRoute
   UrlParserRoute: typeof UrlParserRoute
@@ -1263,6 +1276,13 @@ declare module '@tanstack/react-router' {
       path: '/unit-converter'
       fullPath: '/unit-converter'
       preLoaderRoute: typeof UnitConverterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/unicode': {
+      id: '/unicode'
+      path: '/unicode'
+      fullPath: '/unicode'
+      preLoaderRoute: typeof UnicodeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/transparent-image': {
@@ -1913,6 +1933,7 @@ const rootRouteChildren: RootRouteChildren = {
   TomlJsonRoute: TomlJsonRoute,
   TopRoute: TopRoute,
   TransparentImageRoute: TransparentImageRoute,
+  UnicodeRoute: UnicodeRoute,
   UnitConverterRoute: UnitConverterRoute,
   UrlEncodeRoute: UrlEncodeRoute,
   UrlParserRoute: UrlParserRoute,

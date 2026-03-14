@@ -178,8 +178,8 @@ test.describe('Dummy Image Generator - E2E Tests', () => {
   });
 
   test('should navigate to Unicode page via category dropdown', async ({ page }) => {
-    await navigateViaCategory(page, '変換', '/');
-    await expect(page).toHaveURL('/');
+    await navigateViaCategory(page, '変換', '/unicode');
+    await expect(page).toHaveURL('/unicode');
   });
 
   test('should navigate from dummy-audio to dummy-image via category', async ({ page }) => {
