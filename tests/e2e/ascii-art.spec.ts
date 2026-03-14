@@ -105,10 +105,10 @@ test.describe("ASCIIアートジェネレーター", () => {
     );
   });
 
-  test("ASCIIアート出力プレエリアにrole属性がある", async ({ page }) => {
+  test("ASCIIアート出力プレエリアにaria-label属性がある", async ({ page }) => {
     await page.locator("#ascii-input").fill("HI");
     const pre = page.locator(".aa-result-pre");
-    await expect(pre).toHaveAttribute("role", "region");
+    await expect(pre).toHaveAttribute("aria-label", "ASCIIアート出力");
   });
 
   test("行数・文字数の情報が表示される", async ({ page }) => {
