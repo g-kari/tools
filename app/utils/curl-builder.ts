@@ -115,7 +115,7 @@ export function getDefaultConfig(): CurlBuilderConfig {
  */
 export function shellEscapeSingle(str: string): string {
   // シングルクォートを含まず、URLセーフな文字のみならそのまま
-  if (/^[a-zA-Z0-9._\-/:@=&?%#+~,;]+$/.test(str)) {
+  if (/^[a-zA-Z0-9._\-/:@=%#+~,;]+$/.test(str)) {
     return str;
   }
   // シングルクォートでラップし、内部のシングルクォートをエスケープ
