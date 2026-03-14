@@ -415,6 +415,13 @@ const toolCatalog: ToolCategory[] = [
           "補色・類似色・トライアド・分割補色・テトラッドを一覧生成するカラーハーモニー配色ツール",
         icon: "🌈",
       },
+      {
+        path: "/svg-optimizer",
+        label: "SVG最適化",
+        description:
+          "SVGファイルの最適化・圧縮・整形ツール。メタデータ削除、数値精度調整、空白圧縮に対応",
+        icon: "✨",
+      },
     ],
   },
   {

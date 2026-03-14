@@ -86,6 +86,7 @@ const navCategories = [
       { path: "/emoji-converter", label: "絵文字変換" },
       { path: "/discord-emoji", label: "Discord絵文字" },
       { path: "/discord-sticker", label: "Discordスタンプ" },
+      { path: "/svg-optimizer", label: "SVG最適化" },
     ],
   },
   {
