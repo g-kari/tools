@@ -42,6 +42,7 @@ const navCategories = [
       { path: "/php-serialize", label: "PHPシリアライズ" },
       { path: "/minify", label: "コード圧縮" },
       { path: "/unit-converter", label: "単位変換" },
+      { path: "/math-eval", label: "数式評価" },
       { path: "/audio-converter", label: "オーディオ変換" },
       { path: "/video-converter", label: "動画変換" },
       { path: "/timezone", label: "タイムゾーン変換" },

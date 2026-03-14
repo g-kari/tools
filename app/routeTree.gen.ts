@@ -44,6 +44,7 @@ import { Route as MsgpackRouteImport } from './routes/msgpack'
 import { Route as MorseCodeRouteImport } from './routes/morse-code'
 import { Route as MinifyRouteImport } from './routes/minify'
 import { Route as MermaidRouteImport } from './routes/mermaid'
+import { Route as MathEvalRouteImport } from './routes/math-eval'
 import { Route as MarkdownTableRouteImport } from './routes/markdown-table'
 import { Route as MarkdownPreviewRouteImport } from './routes/markdown-preview'
 import { Route as LoremIpsumRouteImport } from './routes/lorem-ipsum'
@@ -270,6 +271,11 @@ const MinifyRoute = MinifyRouteImport.update({
 const MermaidRoute = MermaidRouteImport.update({
   id: '/mermaid',
   path: '/mermaid',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MathEvalRoute = MathEvalRouteImport.update({
+  id: '/math-eval',
+  path: '/math-eval',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MarkdownTableRoute = MarkdownTableRouteImport.update({
@@ -582,6 +588,7 @@ export interface FileRoutesByFullPath {
   '/lorem-ipsum': typeof LoremIpsumRoute
   '/markdown-preview': typeof MarkdownPreviewRoute
   '/markdown-table': typeof MarkdownTableRoute
+  '/math-eval': typeof MathEvalRoute
   '/mermaid': typeof MermaidRoute
   '/minify': typeof MinifyRoute
   '/morse-code': typeof MorseCodeRoute
@@ -671,6 +678,7 @@ export interface FileRoutesByTo {
   '/lorem-ipsum': typeof LoremIpsumRoute
   '/markdown-preview': typeof MarkdownPreviewRoute
   '/markdown-table': typeof MarkdownTableRoute
+  '/math-eval': typeof MathEvalRoute
   '/mermaid': typeof MermaidRoute
   '/minify': typeof MinifyRoute
   '/morse-code': typeof MorseCodeRoute
@@ -761,6 +769,7 @@ export interface FileRoutesById {
   '/lorem-ipsum': typeof LoremIpsumRoute
   '/markdown-preview': typeof MarkdownPreviewRoute
   '/markdown-table': typeof MarkdownTableRoute
+  '/math-eval': typeof MathEvalRoute
   '/mermaid': typeof MermaidRoute
   '/minify': typeof MinifyRoute
   '/morse-code': typeof MorseCodeRoute
@@ -852,6 +861,7 @@ export interface FileRouteTypes {
     | '/lorem-ipsum'
     | '/markdown-preview'
     | '/markdown-table'
+    | '/math-eval'
     | '/mermaid'
     | '/minify'
     | '/morse-code'
@@ -941,6 +951,7 @@ export interface FileRouteTypes {
     | '/lorem-ipsum'
     | '/markdown-preview'
     | '/markdown-table'
+    | '/math-eval'
     | '/mermaid'
     | '/minify'
     | '/morse-code'
@@ -1030,6 +1041,7 @@ export interface FileRouteTypes {
     | '/lorem-ipsum'
     | '/markdown-preview'
     | '/markdown-table'
+    | '/math-eval'
     | '/mermaid'
     | '/minify'
     | '/morse-code'
@@ -1120,6 +1132,7 @@ export interface RootRouteChildren {
   LoremIpsumRoute: typeof LoremIpsumRoute
   MarkdownPreviewRoute: typeof MarkdownPreviewRoute
   MarkdownTableRoute: typeof MarkdownTableRoute
+  MathEvalRoute: typeof MathEvalRoute
   MermaidRoute: typeof MermaidRoute
   MinifyRoute: typeof MinifyRoute
   MorseCodeRoute: typeof MorseCodeRoute
@@ -1406,6 +1419,13 @@ declare module '@tanstack/react-router' {
       path: '/mermaid'
       fullPath: '/mermaid'
       preLoaderRoute: typeof MermaidRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/math-eval': {
+      id: '/math-eval'
+      path: '/math-eval'
+      fullPath: '/math-eval'
+      preLoaderRoute: typeof MathEvalRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/markdown-table': {
@@ -1824,6 +1844,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoremIpsumRoute: LoremIpsumRoute,
   MarkdownPreviewRoute: MarkdownPreviewRoute,
   MarkdownTableRoute: MarkdownTableRoute,
+  MathEvalRoute: MathEvalRoute,
   MermaidRoute: MermaidRoute,
   MinifyRoute: MinifyRoute,
   MorseCodeRoute: MorseCodeRoute,
