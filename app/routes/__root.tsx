@@ -107,6 +107,7 @@ const navCategories = [
       { path: "/slug", label: "スラッグ生成" },
       { path: "/mermaid", label: "Mermaidプレビュー" },
       { path: "/text-encrypt", label: "テキスト暗号化" },
+      { path: "/text-stats", label: "テキスト統計" },
     ],
   },
   {

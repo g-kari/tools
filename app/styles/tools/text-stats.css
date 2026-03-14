@@ -1,0 +1,207 @@
+/* Text Stats Tool Styles - ts- prefix */
+
+/* 入力セクション */
+.ts-textarea {
+  min-height: 200px;
+  resize: vertical;
+}
+
+/* 統計グリッド */
+.ts-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+  animation: fadeInUp 0.3s ease-out both;
+}
+
+.ts-stats-grid--advanced {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+/* 統計カード */
+.ts-stat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  background-color: var(--md-sys-color-surface-variant);
+  border-radius: 12px;
+  text-align: center;
+  gap: 0.25rem;
+  transition: background-color 0.2s;
+}
+
+.ts-stat-card--primary {
+  background-color: var(--md-sys-color-primary-container);
+}
+
+.ts-stat-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.ts-stat-card--primary .ts-stat-label {
+  color: var(--md-sys-color-on-primary-container);
+  opacity: 0.8;
+}
+
+.ts-stat-value {
+  font-size: 1.5rem;
+  font-weight: 500;
+  font-family: 'Space Mono', 'Roboto Mono', monospace;
+  color: var(--md-sys-color-primary);
+  line-height: 1.2;
+}
+
+.ts-stat-value--large {
+  font-size: 1.25rem;
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.ts-stat-desc {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.ts-stat-card--primary .ts-stat-desc {
+  color: var(--md-sys-color-on-primary-container);
+  opacity: 0.75;
+}
+
+/* バッジ */
+.ts-badge {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 0.5rem;
+  padding: 0.125rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border-radius: 100px;
+  vertical-align: middle;
+}
+
+/* 頻出単語リスト */
+.ts-empty-message {
+  color: var(--md-sys-color-on-surface-variant);
+  font-style: italic;
+  padding: 1.5rem 0;
+  text-align: center;
+}
+
+.ts-word-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  animation: fadeInUp 0.3s ease-out 0.1s both;
+}
+
+.ts-word-item {
+  display: grid;
+  grid-template-columns: 2rem 1fr auto auto;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  padding: 0.5rem 0.75rem;
+  background-color: var(--md-sys-color-surface-variant);
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+.ts-word-item:hover {
+  background-color: var(--md-sys-color-secondary-container);
+}
+
+.ts-word-rank {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+  text-align: right;
+}
+
+.ts-word-text {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ts-word-bar-wrap {
+  width: 100px;
+  height: 6px;
+  background-color: var(--md-sys-color-outline-variant);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.ts-word-bar {
+  height: 100%;
+  width: var(--ts-bar-width, 0%);
+  background-color: var(--md-sys-color-primary);
+  border-radius: 3px;
+  transition: width 0.3s ease-out;
+  min-width: 4px;
+}
+
+.ts-word-count {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--md-sys-color-primary);
+  font-family: 'Roboto Mono', monospace;
+  min-width: 2rem;
+  text-align: right;
+}
+
+/* アニメーション */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ts-stats-grid,
+  .ts-word-list,
+  .ts-word-bar {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* レスポンシブ */
+@media (max-width: 480px) {
+  .ts-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .ts-stats-grid--advanced {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .ts-stat-value {
+    font-size: 1.25rem;
+  }
+
+  .ts-word-bar-wrap {
+    width: 60px;
+  }
+
+  .ts-word-item {
+    grid-template-columns: 1.5rem 1fr auto auto;
+    gap: 0.375rem 0.5rem;
+  }
+}
