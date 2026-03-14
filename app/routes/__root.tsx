@@ -122,6 +122,7 @@ const navCategories = [
       { path: "/cron", label: "Cronパーサー (croner)" },
       { path: "/cron-parser", label: "Cron式パーサー" },
       { path: "/user-agent", label: "User-Agent解析" },
+      { path: "/http-status", label: "HTTPステータスコード" },
     ],
   },
   {
