@@ -73,6 +73,18 @@ describe("JSON→TypeScript型変換", () => {
       expect(result).toContain("id: number;");
     });
 
+    it("同質なオブジェクト配列は重複型を生成しない", () => {
+      const result = generateTypeScript(
+        '[{"a":1},{"a":2},{"a":3}]',
+        defaultOptions
+      );
+      // RootItem が1つだけ生成される（RootItem2, RootItem3 は不要）
+      expect(result).toContain("interface RootItem");
+      expect(result).not.toContain("RootItem2");
+      expect(result).not.toContain("RootItem3");
+      expect(result).toContain("type Root = RootItem[];");
+    });
+
     it("空オブジェクト {} の型生成", () => {
       const result = generateTypeScript("{}", defaultOptions);
       expect(result).toContain("Record<string, never>");

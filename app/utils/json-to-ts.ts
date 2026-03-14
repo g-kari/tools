@@ -90,12 +90,32 @@ function inferType(
       return "unknown[]";
     }
 
-    const elementTypes = value.map((item) =>
-      inferType(item, `${typeName}Item`, options, generatedTypes, usedNames)
-    );
+    // 各プリミティブ型を収集しつつ、オブジェクト型は最初の要素のみで推論する
+    const primitiveTypes = new Set<string>();
+    let objectTypeName: string | null = null;
 
-    // 重複を除去
-    const uniqueTypes = [...new Set(elementTypes)];
+    for (const item of value) {
+      if (item !== null && typeof item === "object" && !Array.isArray(item)) {
+        // オブジェクト要素は最初の1つだけを代表として型推論する
+        if (objectTypeName === null) {
+          objectTypeName = inferType(
+            item,
+            `${typeName}Item`,
+            options,
+            generatedTypes,
+            usedNames
+          );
+        }
+      } else {
+        primitiveTypes.add(
+          inferType(item, `${typeName}Item`, options, generatedTypes, usedNames)
+        );
+      }
+    }
+
+    const uniqueTypes: string[] = [];
+    if (objectTypeName !== null) uniqueTypes.push(objectTypeName);
+    uniqueTypes.push(...primitiveTypes);
 
     if (uniqueTypes.length === 1) {
       return `${uniqueTypes[0]}[]`;
@@ -178,13 +198,20 @@ export function generateTypeScript(json: string, options: JsonToTsOptions): stri
     usedNames
   );
 
-  // ルート値がプリミティブまたは配列の場合
+  // ルート値がプリミティブの場合
   if (generatedTypes.length === 0) {
     return `type ${options.rootName} = ${rootType};`;
   }
 
-  // 依存型を先に、ルート型を最後に並べる
+  // 依存型を先に並べる
   const parts = generatedTypes.map((t) => t.body);
+
+  // ルート型がオブジェクト（自身をgeneratedTypesに登録済み）でない場合、
+  // 配列やunion型などのルートエイリアスを末尾に追加する
+  if (rootType !== options.rootName) {
+    parts.push(`type ${options.rootName} = ${rootType};`);
+  }
+
   return parts.join("\n\n");
 }
 
