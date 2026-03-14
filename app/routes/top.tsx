@@ -445,6 +445,13 @@ const toolCatalog: ToolCategory[] = [
         description: "IPアドレスの10進数・16進数・2進数変換",
         icon: "🔄",
       },
+      {
+        path: "/http-client",
+        label: "HTTP APIテスター",
+        description:
+          "HTTP APIリクエストを送信してレスポンスを確認。GET/POST/PUT/PATCH/DELETE/HEAD/OPTIONSに対応。カスタムヘッダーとリクエストボディも設定可能。",
+        icon: "🔌",
+      },
     ],
   },
   {

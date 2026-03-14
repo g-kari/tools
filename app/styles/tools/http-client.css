@@ -1,0 +1,287 @@
+/* HTTP APIテスター ツール スタイル */
+
+/* URL入力行レイアウト */
+.http-client-url-row {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+}
+
+.http-client-method-wrapper {
+  flex: 0 0 auto;
+  min-width: 120px;
+}
+
+.http-client-url-wrapper {
+  flex: 1;
+}
+
+.http-client-send-wrapper {
+  flex: 0 0 auto;
+}
+
+.http-client-send-label {
+  display: block;
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+/* メソッド選択 */
+.http-client-method-select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid var(--md-sys-color-outline-variant);
+  border-radius: 0;
+  font-size: 14px;
+  font-family: "JetBrains Mono", "Space Mono", "Courier New", monospace;
+  font-weight: 700;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  cursor: pointer;
+  transition: border-color 0.2s;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2349454e' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+}
+
+.http-client-method-select:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+}
+
+/* セクションヘッダー（タイトル + 追加ボタン） */
+.http-client-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.http-client-section-header .section-title {
+  margin-bottom: 0;
+}
+
+/* 追加ボタン */
+.http-client-add-btn {
+  padding: 6px 14px;
+  font-size: 13px;
+}
+
+/* ヘッダーリスト */
+.http-client-headers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ヘッダー行 */
+.http-client-header-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.http-client-header-row input {
+  flex: 1;
+}
+
+/* ヘッダー削除ボタン */
+.http-client-remove-btn {
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  font-size: 16px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 0;
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.http-client-remove-btn:hover {
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  opacity: 1;
+}
+
+.http-client-remove-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* リクエストボディテキストエリア */
+.http-client-body-textarea {
+  min-height: 150px;
+  font-family: "JetBrains Mono", "Space Mono", "Courier New", monospace;
+}
+
+/* 送信ボタン行 */
+.http-client-submit-row {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 8px;
+}
+
+/* レスポンスメタ情報行 */
+.http-client-response-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+/* ステータスバッジ */
+.http-client-status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 12px;
+  border-radius: 0;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: "JetBrains Mono", "Space Mono", "Courier New", monospace;
+  letter-spacing: 0;
+}
+
+.http-status-success {
+  background: #1b5e20;
+  color: #a5d6a7;
+}
+
+.http-status-redirect {
+  background: #1a237e;
+  color: #90caf9;
+}
+
+.http-status-client-error {
+  background: #e65100;
+  color: #ffe0b2;
+}
+
+.http-status-server-error {
+  background: #b71c1c;
+  color: #ffcdd2;
+}
+
+.http-status-error {
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* ステータステキスト */
+.http-client-status-text {
+  font-size: 14px;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* レスポンス時間 */
+.http-client-response-time {
+  margin-left: auto;
+  font-size: 13px;
+  font-family: "JetBrains Mono", "Space Mono", "Courier New", monospace;
+  color: var(--md-sys-color-on-surface-variant);
+  background: var(--md-sys-color-surface-variant);
+  padding: 2px 8px;
+  border-radius: 0;
+}
+
+/* タブナビゲーション */
+.http-client-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--md-sys-color-outline-variant);
+  margin-bottom: 16px;
+}
+
+.http-client-tab {
+  padding: 8px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  text-transform: none;
+  letter-spacing: 0;
+  margin-bottom: -2px;
+  border-radius: 0;
+}
+
+.http-client-tab:hover {
+  color: var(--md-sys-color-on-surface);
+  opacity: 1;
+}
+
+.http-client-tab.active {
+  color: var(--md-sys-color-primary);
+  border-bottom-color: var(--md-sys-color-primary);
+}
+
+/* レスポンスボディ */
+.http-client-response-body {
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 0;
+  padding: 16px;
+  overflow-x: auto;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.http-client-response-body code {
+  display: block;
+  font-family: "JetBrains Mono", "Space Mono", "Courier New", monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--md-sys-color-on-surface);
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+/* ボディなしメッセージ */
+.http-client-no-body {
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 14px;
+  padding: 16px;
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  text-align: center;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 640px) {
+  .http-client-url-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .http-client-method-wrapper {
+    min-width: 0;
+  }
+
+  .http-client-send-wrapper {
+    width: 100%;
+  }
+
+  .http-client-send-wrapper .btn-primary {
+    width: 100%;
+  }
+
+  .http-client-send-label {
+    display: none;
+  }
+}

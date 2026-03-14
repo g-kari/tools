@@ -138,6 +138,7 @@ const navCategories = [
       { path: "/ip-converter", label: "IP変換" },
       { path: "/port-check", label: "ポートチェック" },
       { path: "/chmod", label: "Chmod計算" },
+      { path: "/http-client", label: "HTTP APIテスター" },
     ],
   },
   {
