@@ -23,6 +23,7 @@ import { Route as TopRouteImport } from './routes/top'
 import { Route as TomlJsonRouteImport } from './routes/toml-json'
 import { Route as TimezoneRouteImport } from './routes/timezone'
 import { Route as TimestampRouteImport } from './routes/timestamp'
+import { Route as TextStatsRouteImport } from './routes/text-stats'
 import { Route as TextSortRouteImport } from './routes/text-sort'
 import { Route as TextEncryptRouteImport } from './routes/text-encrypt'
 import { Route as TextCaseRouteImport } from './routes/text-case'
@@ -46,6 +47,7 @@ import { Route as MermaidRouteImport } from './routes/mermaid'
 import { Route as MarkdownTableRouteImport } from './routes/markdown-table'
 import { Route as MarkdownPreviewRouteImport } from './routes/markdown-preview'
 import { Route as LoremIpsumRouteImport } from './routes/lorem-ipsum'
+import { Route as KeycodeRouteImport } from './routes/keycode'
 import { Route as JwtGeneratorRouteImport } from './routes/jwt-generator'
 import { Route as JwtRouteImport } from './routes/jwt'
 import { Route as JsonPathRouteImport } from './routes/json-path'
@@ -88,6 +90,7 @@ import { Route as CharCountRouteImport } from './routes/char-count'
 import { Route as Base64ImageRouteImport } from './routes/base64-image'
 import { Route as Base64RouteImport } from './routes/base64'
 import { Route as AudioConverterRouteImport } from './routes/audio-converter'
+import { Route as AsciiArtRouteImport } from './routes/ascii-art'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiImageDotwebpRouteImport } from './routes/api/image[.]webp'
 import { Route as ApiImageDotsvgRouteImport } from './routes/api/image[.]svg'
@@ -162,6 +165,11 @@ const TimezoneRoute = TimezoneRouteImport.update({
 const TimestampRoute = TimestampRouteImport.update({
   id: '/timestamp',
   path: '/timestamp',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TextStatsRoute = TextStatsRouteImport.update({
+  id: '/text-stats',
+  path: '/text-stats',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TextSortRoute = TextSortRouteImport.update({
@@ -277,6 +285,11 @@ const MarkdownPreviewRoute = MarkdownPreviewRouteImport.update({
 const LoremIpsumRoute = LoremIpsumRouteImport.update({
   id: '/lorem-ipsum',
   path: '/lorem-ipsum',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KeycodeRoute = KeycodeRouteImport.update({
+  id: '/keycode',
+  path: '/keycode',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JwtGeneratorRoute = JwtGeneratorRouteImport.update({
@@ -489,6 +502,11 @@ const AudioConverterRoute = AudioConverterRouteImport.update({
   path: '/audio-converter',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AsciiArtRoute = AsciiArtRouteImport.update({
+  id: '/ascii-art',
+  path: '/ascii-art',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -517,6 +535,7 @@ const ApiImageDotjpgRoute = ApiImageDotjpgRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/ascii-art': typeof AsciiArtRoute
   '/audio-converter': typeof AudioConverterRoute
   '/base64': typeof Base64Route
   '/base64-image': typeof Base64ImageRoute
@@ -559,6 +578,7 @@ export interface FileRoutesByFullPath {
   '/json-path': typeof JsonPathRoute
   '/jwt': typeof JwtRoute
   '/jwt-generator': typeof JwtGeneratorRoute
+  '/keycode': typeof KeycodeRoute
   '/lorem-ipsum': typeof LoremIpsumRoute
   '/markdown-preview': typeof MarkdownPreviewRoute
   '/markdown-table': typeof MarkdownTableRoute
@@ -582,6 +602,7 @@ export interface FileRoutesByFullPath {
   '/text-case': typeof TextCaseRoute
   '/text-encrypt': typeof TextEncryptRoute
   '/text-sort': typeof TextSortRoute
+  '/text-stats': typeof TextStatsRoute
   '/timestamp': typeof TimestampRoute
   '/timezone': typeof TimezoneRoute
   '/toml-json': typeof TomlJsonRoute
@@ -603,6 +624,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/ascii-art': typeof AsciiArtRoute
   '/audio-converter': typeof AudioConverterRoute
   '/base64': typeof Base64Route
   '/base64-image': typeof Base64ImageRoute
@@ -645,6 +667,7 @@ export interface FileRoutesByTo {
   '/json-path': typeof JsonPathRoute
   '/jwt': typeof JwtRoute
   '/jwt-generator': typeof JwtGeneratorRoute
+  '/keycode': typeof KeycodeRoute
   '/lorem-ipsum': typeof LoremIpsumRoute
   '/markdown-preview': typeof MarkdownPreviewRoute
   '/markdown-table': typeof MarkdownTableRoute
@@ -668,6 +691,7 @@ export interface FileRoutesByTo {
   '/text-case': typeof TextCaseRoute
   '/text-encrypt': typeof TextEncryptRoute
   '/text-sort': typeof TextSortRoute
+  '/text-stats': typeof TextStatsRoute
   '/timestamp': typeof TimestampRoute
   '/timezone': typeof TimezoneRoute
   '/toml-json': typeof TomlJsonRoute
@@ -690,6 +714,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/ascii-art': typeof AsciiArtRoute
   '/audio-converter': typeof AudioConverterRoute
   '/base64': typeof Base64Route
   '/base64-image': typeof Base64ImageRoute
@@ -732,6 +757,7 @@ export interface FileRoutesById {
   '/json-path': typeof JsonPathRoute
   '/jwt': typeof JwtRoute
   '/jwt-generator': typeof JwtGeneratorRoute
+  '/keycode': typeof KeycodeRoute
   '/lorem-ipsum': typeof LoremIpsumRoute
   '/markdown-preview': typeof MarkdownPreviewRoute
   '/markdown-table': typeof MarkdownTableRoute
@@ -755,6 +781,7 @@ export interface FileRoutesById {
   '/text-case': typeof TextCaseRoute
   '/text-encrypt': typeof TextEncryptRoute
   '/text-sort': typeof TextSortRoute
+  '/text-stats': typeof TextStatsRoute
   '/timestamp': typeof TimestampRoute
   '/timezone': typeof TimezoneRoute
   '/toml-json': typeof TomlJsonRoute
@@ -778,6 +805,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/ascii-art'
     | '/audio-converter'
     | '/base64'
     | '/base64-image'
@@ -820,6 +848,7 @@ export interface FileRouteTypes {
     | '/json-path'
     | '/jwt'
     | '/jwt-generator'
+    | '/keycode'
     | '/lorem-ipsum'
     | '/markdown-preview'
     | '/markdown-table'
@@ -843,6 +872,7 @@ export interface FileRouteTypes {
     | '/text-case'
     | '/text-encrypt'
     | '/text-sort'
+    | '/text-stats'
     | '/timestamp'
     | '/timezone'
     | '/toml-json'
@@ -864,6 +894,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/ascii-art'
     | '/audio-converter'
     | '/base64'
     | '/base64-image'
@@ -906,6 +937,7 @@ export interface FileRouteTypes {
     | '/json-path'
     | '/jwt'
     | '/jwt-generator'
+    | '/keycode'
     | '/lorem-ipsum'
     | '/markdown-preview'
     | '/markdown-table'
@@ -929,6 +961,7 @@ export interface FileRouteTypes {
     | '/text-case'
     | '/text-encrypt'
     | '/text-sort'
+    | '/text-stats'
     | '/timestamp'
     | '/timezone'
     | '/toml-json'
@@ -950,6 +983,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/ascii-art'
     | '/audio-converter'
     | '/base64'
     | '/base64-image'
@@ -992,6 +1026,7 @@ export interface FileRouteTypes {
     | '/json-path'
     | '/jwt'
     | '/jwt-generator'
+    | '/keycode'
     | '/lorem-ipsum'
     | '/markdown-preview'
     | '/markdown-table'
@@ -1015,6 +1050,7 @@ export interface FileRouteTypes {
     | '/text-case'
     | '/text-encrypt'
     | '/text-sort'
+    | '/text-stats'
     | '/timestamp'
     | '/timezone'
     | '/toml-json'
@@ -1037,6 +1073,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AsciiArtRoute: typeof AsciiArtRoute
   AudioConverterRoute: typeof AudioConverterRoute
   Base64Route: typeof Base64Route
   Base64ImageRoute: typeof Base64ImageRoute
@@ -1079,6 +1116,7 @@ export interface RootRouteChildren {
   JsonPathRoute: typeof JsonPathRoute
   JwtRoute: typeof JwtRoute
   JwtGeneratorRoute: typeof JwtGeneratorRoute
+  KeycodeRoute: typeof KeycodeRoute
   LoremIpsumRoute: typeof LoremIpsumRoute
   MarkdownPreviewRoute: typeof MarkdownPreviewRoute
   MarkdownTableRoute: typeof MarkdownTableRoute
@@ -1102,6 +1140,7 @@ export interface RootRouteChildren {
   TextCaseRoute: typeof TextCaseRoute
   TextEncryptRoute: typeof TextEncryptRoute
   TextSortRoute: typeof TextSortRoute
+  TextStatsRoute: typeof TextStatsRoute
   TimestampRoute: typeof TimestampRoute
   TimezoneRoute: typeof TimezoneRoute
   TomlJsonRoute: typeof TomlJsonRoute
@@ -1220,6 +1259,13 @@ declare module '@tanstack/react-router' {
       path: '/timestamp'
       fullPath: '/timestamp'
       preLoaderRoute: typeof TimestampRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/text-stats': {
+      id: '/text-stats'
+      path: '/text-stats'
+      fullPath: '/text-stats'
+      preLoaderRoute: typeof TextStatsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/text-sort': {
@@ -1381,6 +1427,13 @@ declare module '@tanstack/react-router' {
       path: '/lorem-ipsum'
       fullPath: '/lorem-ipsum'
       preLoaderRoute: typeof LoremIpsumRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/keycode': {
+      id: '/keycode'
+      path: '/keycode'
+      fullPath: '/keycode'
+      preLoaderRoute: typeof KeycodeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/jwt-generator': {
@@ -1677,6 +1730,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AudioConverterRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ascii-art': {
+      id: '/ascii-art'
+      path: '/ascii-art'
+      fullPath: '/ascii-art'
+      preLoaderRoute: typeof AsciiArtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -1717,6 +1777,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AsciiArtRoute: AsciiArtRoute,
   AudioConverterRoute: AudioConverterRoute,
   Base64Route: Base64Route,
   Base64ImageRoute: Base64ImageRoute,
@@ -1759,6 +1820,7 @@ const rootRouteChildren: RootRouteChildren = {
   JsonPathRoute: JsonPathRoute,
   JwtRoute: JwtRoute,
   JwtGeneratorRoute: JwtGeneratorRoute,
+  KeycodeRoute: KeycodeRoute,
   LoremIpsumRoute: LoremIpsumRoute,
   MarkdownPreviewRoute: MarkdownPreviewRoute,
   MarkdownTableRoute: MarkdownTableRoute,
@@ -1782,6 +1844,7 @@ const rootRouteChildren: RootRouteChildren = {
   TextCaseRoute: TextCaseRoute,
   TextEncryptRoute: TextEncryptRoute,
   TextSortRoute: TextSortRoute,
+  TextStatsRoute: TextStatsRoute,
   TimestampRoute: TimestampRoute,
   TimezoneRoute: TimezoneRoute,
   TomlJsonRoute: TomlJsonRoute,
