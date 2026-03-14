@@ -275,6 +275,12 @@ const toolCatalog: ToolCategory[] = [
         icon: "📋",
       },
       {
+        path: "/json-to-ts",
+        label: "JSON→TS型変換",
+        description: "JSONデータからTypeScriptのinterface/type定義を自動生成するツール",
+        icon: "🔷",
+      },
+      {
         path: "/mermaid",
         label: "Mermaidプレビュー",
         description:

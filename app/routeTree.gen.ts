@@ -52,6 +52,7 @@ import { Route as LoremIpsumRouteImport } from './routes/lorem-ipsum'
 import { Route as KeycodeRouteImport } from './routes/keycode'
 import { Route as JwtGeneratorRouteImport } from './routes/jwt-generator'
 import { Route as JwtRouteImport } from './routes/jwt'
+import { Route as JsonToTsRouteImport } from './routes/json-to-ts'
 import { Route as JsonSchemaRouteImport } from './routes/json-schema'
 import { Route as JsonPathRouteImport } from './routes/json-path'
 import { Route as JsonRouteImport } from './routes/json'
@@ -316,6 +317,11 @@ const JwtGeneratorRoute = JwtGeneratorRouteImport.update({
 const JwtRoute = JwtRouteImport.update({
   id: '/jwt',
   path: '/jwt',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JsonToTsRoute = JsonToTsRouteImport.update({
+  id: '/json-to-ts',
+  path: '/json-to-ts',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JsonSchemaRoute = JsonSchemaRouteImport.update({
@@ -616,6 +622,7 @@ export interface FileRoutesByFullPath {
   '/json': typeof JsonRoute
   '/json-path': typeof JsonPathRoute
   '/json-schema': typeof JsonSchemaRoute
+  '/json-to-ts': typeof JsonToTsRoute
   '/jwt': typeof JwtRoute
   '/jwt-generator': typeof JwtGeneratorRoute
   '/keycode': typeof KeycodeRoute
@@ -711,6 +718,7 @@ export interface FileRoutesByTo {
   '/json': typeof JsonRoute
   '/json-path': typeof JsonPathRoute
   '/json-schema': typeof JsonSchemaRoute
+  '/json-to-ts': typeof JsonToTsRoute
   '/jwt': typeof JwtRoute
   '/jwt-generator': typeof JwtGeneratorRoute
   '/keycode': typeof KeycodeRoute
@@ -807,6 +815,7 @@ export interface FileRoutesById {
   '/json': typeof JsonRoute
   '/json-path': typeof JsonPathRoute
   '/json-schema': typeof JsonSchemaRoute
+  '/json-to-ts': typeof JsonToTsRoute
   '/jwt': typeof JwtRoute
   '/jwt-generator': typeof JwtGeneratorRoute
   '/keycode': typeof KeycodeRoute
@@ -904,6 +913,7 @@ export interface FileRouteTypes {
     | '/json'
     | '/json-path'
     | '/json-schema'
+    | '/json-to-ts'
     | '/jwt'
     | '/jwt-generator'
     | '/keycode'
@@ -999,6 +1009,7 @@ export interface FileRouteTypes {
     | '/json'
     | '/json-path'
     | '/json-schema'
+    | '/json-to-ts'
     | '/jwt'
     | '/jwt-generator'
     | '/keycode'
@@ -1094,6 +1105,7 @@ export interface FileRouteTypes {
     | '/json'
     | '/json-path'
     | '/json-schema'
+    | '/json-to-ts'
     | '/jwt'
     | '/jwt-generator'
     | '/keycode'
@@ -1190,6 +1202,7 @@ export interface RootRouteChildren {
   JsonRoute: typeof JsonRoute
   JsonPathRoute: typeof JsonPathRoute
   JsonSchemaRoute: typeof JsonSchemaRoute
+  JsonToTsRoute: typeof JsonToTsRoute
   JwtRoute: typeof JwtRoute
   JwtGeneratorRoute: typeof JwtGeneratorRoute
   KeycodeRoute: typeof KeycodeRoute
@@ -1540,6 +1553,13 @@ declare module '@tanstack/react-router' {
       path: '/jwt'
       fullPath: '/jwt'
       preLoaderRoute: typeof JwtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/json-to-ts': {
+      id: '/json-to-ts'
+      path: '/json-to-ts'
+      fullPath: '/json-to-ts'
+      preLoaderRoute: typeof JsonToTsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/json-schema': {
@@ -1942,6 +1962,7 @@ const rootRouteChildren: RootRouteChildren = {
   JsonRoute: JsonRoute,
   JsonPathRoute: JsonPathRoute,
   JsonSchemaRoute: JsonSchemaRoute,
+  JsonToTsRoute: JsonToTsRoute,
   JwtRoute: JwtRoute,
   JwtGeneratorRoute: JwtGeneratorRoute,
   KeycodeRoute: KeycodeRoute,

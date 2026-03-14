@@ -49,6 +49,7 @@
 @import "./styles/tools/morse-code.css";
 @import "./styles/tools/json-path.css";
 @import "./styles/tools/json-schema.css";
+@import "./styles/tools/json-to-ts.css";
 @import "./styles/tools/timezone.css";
 @import "./styles/tools/cron.css";
 @import "./styles/tools/url-parser.css";
