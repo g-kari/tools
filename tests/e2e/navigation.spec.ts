@@ -21,19 +21,19 @@ test.describe('Navigation - E2E Tests', () => {
   }
 
   test('should navigate from Unicode page to WHOIS page via category dropdown', async ({ page }) => {
-    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    await page.goto('/unicode', { waitUntil: 'domcontentloaded' });
     await navigateViaCategory(page, '検索', '/whois');
     await expect(page).toHaveURL('/whois');
   });
 
   test('should navigate from WHOIS page to Unicode page via category dropdown', async ({ page }) => {
     await page.goto('/whois', { waitUntil: 'domcontentloaded' });
-    await navigateViaCategory(page, '変換', '/');
-    await expect(page).toHaveURL('/');
+    await navigateViaCategory(page, '変換', '/unicode');
+    await expect(page).toHaveURL('/unicode');
   });
 
   test('should navigate from Unicode page to IP検索 page via category dropdown', async ({ page }) => {
-    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    await page.goto('/unicode', { waitUntil: 'domcontentloaded' });
     await navigateViaCategory(page, '検索', '/ip-geolocation');
     await expect(page).toHaveURL('/ip-geolocation');
   });
@@ -45,7 +45,7 @@ test.describe('Navigation - E2E Tests', () => {
   });
 
   test('should show active state on category button when on Unicode page', async ({ page }) => {
-    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    await page.goto('/unicode', { waitUntil: 'domcontentloaded' });
     await page.waitForLoadState('networkidle');
     const activeCategory = page.locator('.nav-category-btn.active');
     await expect(activeCategory).toContainText('変換');
@@ -66,7 +66,7 @@ test.describe('Navigation - E2E Tests', () => {
   });
 
   test('should navigate from Unicode page to グローバルIP page via category dropdown', async ({ page }) => {
-    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    await page.goto('/unicode', { waitUntil: 'domcontentloaded' });
     await navigateViaCategory(page, '検索', '/global-ip');
     await expect(page).toHaveURL('/global-ip');
   });
@@ -85,7 +85,7 @@ test.describe('Navigation - E2E Tests', () => {
   });
 
   test('should navigate from Unicode page to UUID生成 page via category dropdown', async ({ page }) => {
-    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    await page.goto('/unicode', { waitUntil: 'domcontentloaded' });
     await navigateViaCategory(page, '生成', '/uuid');
     await expect(page).toHaveURL('/uuid');
   });
@@ -104,7 +104,7 @@ test.describe('Navigation - E2E Tests', () => {
   });
 
   test('should navigate from Unicode page to サーバー環境 page via category dropdown', async ({ page }) => {
-    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    await page.goto('/unicode', { waitUntil: 'domcontentloaded' });
     await navigateViaCategory(page, '情報', '/server-env');
     await expect(page).toHaveURL('/server-env');
   });
@@ -135,7 +135,7 @@ test.describe('Navigation - E2E Tests', () => {
   });
 
   test('should close dropdown after clicking a link', async ({ page }) => {
-    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    await page.goto('/unicode', { waitUntil: 'domcontentloaded' });
 
     // 検索カテゴリをホバー
     const categoryBtn = page.locator('.nav-category-btn', { hasText: '検索' });

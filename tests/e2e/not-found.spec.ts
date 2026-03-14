@@ -34,7 +34,7 @@ test.describe('404 Not Found - E2E Tests', () => {
   test('should navigate to home when clicking the link on 404 page', async ({ page }) => {
     await page.goto('/some/deep/path');
     await page.click('.not-found-link');
-    await expect(page).toHaveURL('/');
+    await expect(page).toHaveURL('/top');
   });
 
   test('should have proper language attribute on 404 page', async ({ page }) => {

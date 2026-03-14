@@ -5,7 +5,7 @@ test.describe('Accessibility - E2E Tests', () => {
 
   test.describe('Main page accessibility', () => {
     test.beforeEach(async ({ page }) => {
-      await page.goto('/', { waitUntil: 'domcontentloaded' });
+      await page.goto('/unicode', { waitUntil: 'domcontentloaded' });
       await page.waitForLoadState('networkidle');
     });
 

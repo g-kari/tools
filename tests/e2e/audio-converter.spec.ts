@@ -191,8 +191,8 @@ test.describe('Audio Converter - E2E Tests', () => {
   });
 
   test('should navigate to other pages via category dropdown', async ({ page }) => {
-    await navigateViaCategory(page, '変換', '/');
-    await expect(page).toHaveURL('/');
+    await navigateViaCategory(page, '変換', '/unicode');
+    await expect(page).toHaveURL('/unicode');
   });
 
   test('should navigate to Base64 page via category dropdown', async ({ page }) => {

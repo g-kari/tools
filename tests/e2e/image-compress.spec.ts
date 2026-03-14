@@ -140,8 +140,8 @@ test.describe('Image Compressor (複数画像対応) - E2E Tests', () => {
   });
 
   test('should navigate to other pages via category dropdown', async ({ page }) => {
-    await navigateViaCategory(page, '変換', '/');
-    await expect(page).toHaveURL('/');
+    await navigateViaCategory(page, '変換', '/unicode');
+    await expect(page).toHaveURL('/unicode');
   });
 
   test.describe('Dropzone interaction', () => {

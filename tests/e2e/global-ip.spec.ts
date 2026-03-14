@@ -69,8 +69,8 @@ test.describe('Global IP Lookup - E2E Tests', () => {
   });
 
   test('should navigate to Unicode page via category dropdown', async ({ page }) => {
-    await navigateViaCategory(page, '変換', '/');
-    await expect(page).toHaveURL('/');
+    await navigateViaCategory(page, '変換', '/unicode');
+    await expect(page).toHaveURL('/unicode');
   });
 
   test('should display either IP address or error message after loading', async ({ page }) => {
