@@ -42,6 +42,7 @@
 @import "./styles/tools/lorem-ipsum.css";
 @import "./styles/tools/text-case.css";
 @import "./styles/tools/hash.css";
+@import "./styles/tools/hmac.css";
 @import "./styles/tools/chmod.css";
 @import "./styles/tools/ad-banner.css";
 @import "./styles/tools/sql.css";
@@ -104,3 +105,7 @@
 @import "./styles/tools/mime-types.css";
 @import "./styles/tools/json-flatten.css";
 @import "./styles/tools/json-lines.css";
+@import "./styles/tools/xml-json.css";
+@import "./styles/tools/semver.css";
+@import "./styles/tools/ulid.css";
+@import "./styles/tools/conventional-commits.css";

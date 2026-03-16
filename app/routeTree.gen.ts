@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as YamlJsonRouteImport } from './routes/yaml-json'
+import { Route as XmlJsonRouteImport } from './routes/xml-json'
 import { Route as XmlRouteImport } from './routes/xml'
 import { Route as WhoisRouteImport } from './routes/whois'
 import { Route as VideoConverterRouteImport } from './routes/video-converter'
@@ -19,6 +20,7 @@ import { Route as UrlParserRouteImport } from './routes/url-parser'
 import { Route as UrlEncodeRouteImport } from './routes/url-encode'
 import { Route as UnitConverterRouteImport } from './routes/unit-converter'
 import { Route as UnicodeRouteImport } from './routes/unicode'
+import { Route as UlidRouteImport } from './routes/ulid'
 import { Route as TypographyScaleRouteImport } from './routes/typography-scale'
 import { Route as TransparentImageRouteImport } from './routes/transparent-image'
 import { Route as TotpRouteImport } from './routes/totp'
@@ -35,6 +37,7 @@ import { Route as SvgOptimizerRouteImport } from './routes/svg-optimizer'
 import { Route as SqlRouteImport } from './routes/sql'
 import { Route as SlugRouteImport } from './routes/slug'
 import { Route as ServerEnvRouteImport } from './routes/server-env'
+import { Route as SemverRouteImport } from './routes/semver'
 import { Route as SecurityHeadersRouteImport } from './routes/security-headers'
 import { Route as RobotsTxtRouteImport } from './routes/robots-txt'
 import { Route as RegexCheckerRouteImport } from './routes/regex-checker'
@@ -80,6 +83,7 @@ import { Route as HttpHeadersRouteImport } from './routes/http-headers'
 import { Route as HttpClientRouteImport } from './routes/http-client'
 import { Route as HtmlToJsxRouteImport } from './routes/html-to-jsx'
 import { Route as HtmlEncodeRouteImport } from './routes/html-encode'
+import { Route as HmacRouteImport } from './routes/hmac'
 import { Route as HexViewerRouteImport } from './routes/hex-viewer'
 import { Route as HashRouteImport } from './routes/hash'
 import { Route as GlobalIpRouteImport } from './routes/global-ip'
@@ -114,6 +118,7 @@ import { Route as CssAnimationRouteImport } from './routes/css-animation'
 import { Route as CronParserRouteImport } from './routes/cron-parser'
 import { Route as CronRouteImport } from './routes/cron'
 import { Route as CookieParserRouteImport } from './routes/cookie-parser'
+import { Route as ConventionalCommitsRouteImport } from './routes/conventional-commits'
 import { Route as ColorPickerRouteImport } from './routes/color-picker'
 import { Route as ColorPaletteRouteImport } from './routes/color-palette'
 import { Route as ColorHarmonyRouteImport } from './routes/color-harmony'
@@ -140,6 +145,11 @@ import { Route as ApiImageDotjpgRouteImport } from './routes/api/image[.]jpg'
 const YamlJsonRoute = YamlJsonRouteImport.update({
   id: '/yaml-json',
   path: '/yaml-json',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const XmlJsonRoute = XmlJsonRouteImport.update({
+  id: '/xml-json',
+  path: '/xml-json',
   getParentRoute: () => rootRouteImport,
 } as any)
 const XmlRoute = XmlRouteImport.update({
@@ -185,6 +195,11 @@ const UnitConverterRoute = UnitConverterRouteImport.update({
 const UnicodeRoute = UnicodeRouteImport.update({
   id: '/unicode',
   path: '/unicode',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UlidRoute = UlidRouteImport.update({
+  id: '/ulid',
+  path: '/ulid',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TypographyScaleRoute = TypographyScaleRouteImport.update({
@@ -265,6 +280,11 @@ const SlugRoute = SlugRouteImport.update({
 const ServerEnvRoute = ServerEnvRouteImport.update({
   id: '/server-env',
   path: '/server-env',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SemverRoute = SemverRouteImport.update({
+  id: '/semver',
+  path: '/semver',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SecurityHeadersRoute = SecurityHeadersRouteImport.update({
@@ -492,6 +512,11 @@ const HtmlEncodeRoute = HtmlEncodeRouteImport.update({
   path: '/html-encode',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HmacRoute = HmacRouteImport.update({
+  id: '/hmac',
+  path: '/hmac',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HexViewerRoute = HexViewerRouteImport.update({
   id: '/hex-viewer',
   path: '/hex-viewer',
@@ -662,6 +687,11 @@ const CookieParserRoute = CookieParserRouteImport.update({
   path: '/cookie-parser',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ConventionalCommitsRoute = ConventionalCommitsRouteImport.update({
+  id: '/conventional-commits',
+  path: '/conventional-commits',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ColorPickerRoute = ColorPickerRouteImport.update({
   id: '/color-picker',
   path: '/color-picker',
@@ -792,6 +822,7 @@ export interface FileRoutesByFullPath {
   '/color-harmony': typeof ColorHarmonyRoute
   '/color-palette': typeof ColorPaletteRoute
   '/color-picker': typeof ColorPickerRoute
+  '/conventional-commits': typeof ConventionalCommitsRoute
   '/cookie-parser': typeof CookieParserRoute
   '/cron': typeof CronRoute
   '/cron-parser': typeof CronParserRoute
@@ -826,6 +857,7 @@ export interface FileRoutesByFullPath {
   '/global-ip': typeof GlobalIpRoute
   '/hash': typeof HashRoute
   '/hex-viewer': typeof HexViewerRoute
+  '/hmac': typeof HmacRoute
   '/html-encode': typeof HtmlEncodeRoute
   '/html-to-jsx': typeof HtmlToJsxRoute
   '/http-client': typeof HttpClientRoute
@@ -871,6 +903,7 @@ export interface FileRoutesByFullPath {
   '/regex-checker': typeof RegexCheckerRoute
   '/robots-txt': typeof RobotsTxtRoute
   '/security-headers': typeof SecurityHeadersRoute
+  '/semver': typeof SemverRoute
   '/server-env': typeof ServerEnvRoute
   '/slug': typeof SlugRoute
   '/sql': typeof SqlRoute
@@ -887,6 +920,7 @@ export interface FileRoutesByFullPath {
   '/totp': typeof TotpRoute
   '/transparent-image': typeof TransparentImageRoute
   '/typography-scale': typeof TypographyScaleRoute
+  '/ulid': typeof UlidRoute
   '/unicode': typeof UnicodeRoute
   '/unit-converter': typeof UnitConverterRoute
   '/url-encode': typeof UrlEncodeRoute
@@ -896,6 +930,7 @@ export interface FileRoutesByFullPath {
   '/video-converter': typeof VideoConverterRoute
   '/whois': typeof WhoisRoute
   '/xml': typeof XmlRoute
+  '/xml-json': typeof XmlJsonRoute
   '/yaml-json': typeof YamlJsonRoute
   '/api/image.jpg': typeof ApiImageDotjpgRoute
   '/api/image.png': typeof ApiImageDotpngRoute
@@ -921,6 +956,7 @@ export interface FileRoutesByTo {
   '/color-harmony': typeof ColorHarmonyRoute
   '/color-palette': typeof ColorPaletteRoute
   '/color-picker': typeof ColorPickerRoute
+  '/conventional-commits': typeof ConventionalCommitsRoute
   '/cookie-parser': typeof CookieParserRoute
   '/cron': typeof CronRoute
   '/cron-parser': typeof CronParserRoute
@@ -955,6 +991,7 @@ export interface FileRoutesByTo {
   '/global-ip': typeof GlobalIpRoute
   '/hash': typeof HashRoute
   '/hex-viewer': typeof HexViewerRoute
+  '/hmac': typeof HmacRoute
   '/html-encode': typeof HtmlEncodeRoute
   '/html-to-jsx': typeof HtmlToJsxRoute
   '/http-client': typeof HttpClientRoute
@@ -1000,6 +1037,7 @@ export interface FileRoutesByTo {
   '/regex-checker': typeof RegexCheckerRoute
   '/robots-txt': typeof RobotsTxtRoute
   '/security-headers': typeof SecurityHeadersRoute
+  '/semver': typeof SemverRoute
   '/server-env': typeof ServerEnvRoute
   '/slug': typeof SlugRoute
   '/sql': typeof SqlRoute
@@ -1016,6 +1054,7 @@ export interface FileRoutesByTo {
   '/totp': typeof TotpRoute
   '/transparent-image': typeof TransparentImageRoute
   '/typography-scale': typeof TypographyScaleRoute
+  '/ulid': typeof UlidRoute
   '/unicode': typeof UnicodeRoute
   '/unit-converter': typeof UnitConverterRoute
   '/url-encode': typeof UrlEncodeRoute
@@ -1025,6 +1064,7 @@ export interface FileRoutesByTo {
   '/video-converter': typeof VideoConverterRoute
   '/whois': typeof WhoisRoute
   '/xml': typeof XmlRoute
+  '/xml-json': typeof XmlJsonRoute
   '/yaml-json': typeof YamlJsonRoute
   '/api/image.jpg': typeof ApiImageDotjpgRoute
   '/api/image.png': typeof ApiImageDotpngRoute
@@ -1051,6 +1091,7 @@ export interface FileRoutesById {
   '/color-harmony': typeof ColorHarmonyRoute
   '/color-palette': typeof ColorPaletteRoute
   '/color-picker': typeof ColorPickerRoute
+  '/conventional-commits': typeof ConventionalCommitsRoute
   '/cookie-parser': typeof CookieParserRoute
   '/cron': typeof CronRoute
   '/cron-parser': typeof CronParserRoute
@@ -1085,6 +1126,7 @@ export interface FileRoutesById {
   '/global-ip': typeof GlobalIpRoute
   '/hash': typeof HashRoute
   '/hex-viewer': typeof HexViewerRoute
+  '/hmac': typeof HmacRoute
   '/html-encode': typeof HtmlEncodeRoute
   '/html-to-jsx': typeof HtmlToJsxRoute
   '/http-client': typeof HttpClientRoute
@@ -1130,6 +1172,7 @@ export interface FileRoutesById {
   '/regex-checker': typeof RegexCheckerRoute
   '/robots-txt': typeof RobotsTxtRoute
   '/security-headers': typeof SecurityHeadersRoute
+  '/semver': typeof SemverRoute
   '/server-env': typeof ServerEnvRoute
   '/slug': typeof SlugRoute
   '/sql': typeof SqlRoute
@@ -1146,6 +1189,7 @@ export interface FileRoutesById {
   '/totp': typeof TotpRoute
   '/transparent-image': typeof TransparentImageRoute
   '/typography-scale': typeof TypographyScaleRoute
+  '/ulid': typeof UlidRoute
   '/unicode': typeof UnicodeRoute
   '/unit-converter': typeof UnitConverterRoute
   '/url-encode': typeof UrlEncodeRoute
@@ -1155,6 +1199,7 @@ export interface FileRoutesById {
   '/video-converter': typeof VideoConverterRoute
   '/whois': typeof WhoisRoute
   '/xml': typeof XmlRoute
+  '/xml-json': typeof XmlJsonRoute
   '/yaml-json': typeof YamlJsonRoute
   '/api/image.jpg': typeof ApiImageDotjpgRoute
   '/api/image.png': typeof ApiImageDotpngRoute
@@ -1182,6 +1227,7 @@ export interface FileRouteTypes {
     | '/color-harmony'
     | '/color-palette'
     | '/color-picker'
+    | '/conventional-commits'
     | '/cookie-parser'
     | '/cron'
     | '/cron-parser'
@@ -1216,6 +1262,7 @@ export interface FileRouteTypes {
     | '/global-ip'
     | '/hash'
     | '/hex-viewer'
+    | '/hmac'
     | '/html-encode'
     | '/html-to-jsx'
     | '/http-client'
@@ -1261,6 +1308,7 @@ export interface FileRouteTypes {
     | '/regex-checker'
     | '/robots-txt'
     | '/security-headers'
+    | '/semver'
     | '/server-env'
     | '/slug'
     | '/sql'
@@ -1277,6 +1325,7 @@ export interface FileRouteTypes {
     | '/totp'
     | '/transparent-image'
     | '/typography-scale'
+    | '/ulid'
     | '/unicode'
     | '/unit-converter'
     | '/url-encode'
@@ -1286,6 +1335,7 @@ export interface FileRouteTypes {
     | '/video-converter'
     | '/whois'
     | '/xml'
+    | '/xml-json'
     | '/yaml-json'
     | '/api/image.jpg'
     | '/api/image.png'
@@ -1311,6 +1361,7 @@ export interface FileRouteTypes {
     | '/color-harmony'
     | '/color-palette'
     | '/color-picker'
+    | '/conventional-commits'
     | '/cookie-parser'
     | '/cron'
     | '/cron-parser'
@@ -1345,6 +1396,7 @@ export interface FileRouteTypes {
     | '/global-ip'
     | '/hash'
     | '/hex-viewer'
+    | '/hmac'
     | '/html-encode'
     | '/html-to-jsx'
     | '/http-client'
@@ -1390,6 +1442,7 @@ export interface FileRouteTypes {
     | '/regex-checker'
     | '/robots-txt'
     | '/security-headers'
+    | '/semver'
     | '/server-env'
     | '/slug'
     | '/sql'
@@ -1406,6 +1459,7 @@ export interface FileRouteTypes {
     | '/totp'
     | '/transparent-image'
     | '/typography-scale'
+    | '/ulid'
     | '/unicode'
     | '/unit-converter'
     | '/url-encode'
@@ -1415,6 +1469,7 @@ export interface FileRouteTypes {
     | '/video-converter'
     | '/whois'
     | '/xml'
+    | '/xml-json'
     | '/yaml-json'
     | '/api/image.jpg'
     | '/api/image.png'
@@ -1440,6 +1495,7 @@ export interface FileRouteTypes {
     | '/color-harmony'
     | '/color-palette'
     | '/color-picker'
+    | '/conventional-commits'
     | '/cookie-parser'
     | '/cron'
     | '/cron-parser'
@@ -1474,6 +1530,7 @@ export interface FileRouteTypes {
     | '/global-ip'
     | '/hash'
     | '/hex-viewer'
+    | '/hmac'
     | '/html-encode'
     | '/html-to-jsx'
     | '/http-client'
@@ -1519,6 +1576,7 @@ export interface FileRouteTypes {
     | '/regex-checker'
     | '/robots-txt'
     | '/security-headers'
+    | '/semver'
     | '/server-env'
     | '/slug'
     | '/sql'
@@ -1535,6 +1593,7 @@ export interface FileRouteTypes {
     | '/totp'
     | '/transparent-image'
     | '/typography-scale'
+    | '/ulid'
     | '/unicode'
     | '/unit-converter'
     | '/url-encode'
@@ -1544,6 +1603,7 @@ export interface FileRouteTypes {
     | '/video-converter'
     | '/whois'
     | '/xml'
+    | '/xml-json'
     | '/yaml-json'
     | '/api/image.jpg'
     | '/api/image.png'
@@ -1570,6 +1630,7 @@ export interface RootRouteChildren {
   ColorHarmonyRoute: typeof ColorHarmonyRoute
   ColorPaletteRoute: typeof ColorPaletteRoute
   ColorPickerRoute: typeof ColorPickerRoute
+  ConventionalCommitsRoute: typeof ConventionalCommitsRoute
   CookieParserRoute: typeof CookieParserRoute
   CronRoute: typeof CronRoute
   CronParserRoute: typeof CronParserRoute
@@ -1604,6 +1665,7 @@ export interface RootRouteChildren {
   GlobalIpRoute: typeof GlobalIpRoute
   HashRoute: typeof HashRoute
   HexViewerRoute: typeof HexViewerRoute
+  HmacRoute: typeof HmacRoute
   HtmlEncodeRoute: typeof HtmlEncodeRoute
   HtmlToJsxRoute: typeof HtmlToJsxRoute
   HttpClientRoute: typeof HttpClientRoute
@@ -1649,6 +1711,7 @@ export interface RootRouteChildren {
   RegexCheckerRoute: typeof RegexCheckerRoute
   RobotsTxtRoute: typeof RobotsTxtRoute
   SecurityHeadersRoute: typeof SecurityHeadersRoute
+  SemverRoute: typeof SemverRoute
   ServerEnvRoute: typeof ServerEnvRoute
   SlugRoute: typeof SlugRoute
   SqlRoute: typeof SqlRoute
@@ -1665,6 +1728,7 @@ export interface RootRouteChildren {
   TotpRoute: typeof TotpRoute
   TransparentImageRoute: typeof TransparentImageRoute
   TypographyScaleRoute: typeof TypographyScaleRoute
+  UlidRoute: typeof UlidRoute
   UnicodeRoute: typeof UnicodeRoute
   UnitConverterRoute: typeof UnitConverterRoute
   UrlEncodeRoute: typeof UrlEncodeRoute
@@ -1674,6 +1738,7 @@ export interface RootRouteChildren {
   VideoConverterRoute: typeof VideoConverterRoute
   WhoisRoute: typeof WhoisRoute
   XmlRoute: typeof XmlRoute
+  XmlJsonRoute: typeof XmlJsonRoute
   YamlJsonRoute: typeof YamlJsonRoute
   ApiImageDotjpgRoute: typeof ApiImageDotjpgRoute
   ApiImageDotpngRoute: typeof ApiImageDotpngRoute
@@ -1688,6 +1753,13 @@ declare module '@tanstack/react-router' {
       path: '/yaml-json'
       fullPath: '/yaml-json'
       preLoaderRoute: typeof YamlJsonRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/xml-json': {
+      id: '/xml-json'
+      path: '/xml-json'
+      fullPath: '/xml-json'
+      preLoaderRoute: typeof XmlJsonRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/xml': {
@@ -1751,6 +1823,13 @@ declare module '@tanstack/react-router' {
       path: '/unicode'
       fullPath: '/unicode'
       preLoaderRoute: typeof UnicodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ulid': {
+      id: '/ulid'
+      path: '/ulid'
+      fullPath: '/ulid'
+      preLoaderRoute: typeof UlidRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/typography-scale': {
@@ -1863,6 +1942,13 @@ declare module '@tanstack/react-router' {
       path: '/server-env'
       fullPath: '/server-env'
       preLoaderRoute: typeof ServerEnvRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/semver': {
+      id: '/semver'
+      path: '/semver'
+      fullPath: '/semver'
+      preLoaderRoute: typeof SemverRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/security-headers': {
@@ -2180,6 +2266,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HtmlEncodeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/hmac': {
+      id: '/hmac'
+      path: '/hmac'
+      fullPath: '/hmac'
+      preLoaderRoute: typeof HmacRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/hex-viewer': {
       id: '/hex-viewer'
       path: '/hex-viewer'
@@ -2418,6 +2511,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CookieParserRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/conventional-commits': {
+      id: '/conventional-commits'
+      path: '/conventional-commits'
+      fullPath: '/conventional-commits'
+      preLoaderRoute: typeof ConventionalCommitsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/color-picker': {
       id: '/color-picker'
       path: '/color-picker'
@@ -2594,6 +2694,7 @@ const rootRouteChildren: RootRouteChildren = {
   ColorHarmonyRoute: ColorHarmonyRoute,
   ColorPaletteRoute: ColorPaletteRoute,
   ColorPickerRoute: ColorPickerRoute,
+  ConventionalCommitsRoute: ConventionalCommitsRoute,
   CookieParserRoute: CookieParserRoute,
   CronRoute: CronRoute,
   CronParserRoute: CronParserRoute,
@@ -2628,6 +2729,7 @@ const rootRouteChildren: RootRouteChildren = {
   GlobalIpRoute: GlobalIpRoute,
   HashRoute: HashRoute,
   HexViewerRoute: HexViewerRoute,
+  HmacRoute: HmacRoute,
   HtmlEncodeRoute: HtmlEncodeRoute,
   HtmlToJsxRoute: HtmlToJsxRoute,
   HttpClientRoute: HttpClientRoute,
@@ -2673,6 +2775,7 @@ const rootRouteChildren: RootRouteChildren = {
   RegexCheckerRoute: RegexCheckerRoute,
   RobotsTxtRoute: RobotsTxtRoute,
   SecurityHeadersRoute: SecurityHeadersRoute,
+  SemverRoute: SemverRoute,
   ServerEnvRoute: ServerEnvRoute,
   SlugRoute: SlugRoute,
   SqlRoute: SqlRoute,
@@ -2689,6 +2792,7 @@ const rootRouteChildren: RootRouteChildren = {
   TotpRoute: TotpRoute,
   TransparentImageRoute: TransparentImageRoute,
   TypographyScaleRoute: TypographyScaleRoute,
+  UlidRoute: UlidRoute,
   UnicodeRoute: UnicodeRoute,
   UnitConverterRoute: UnitConverterRoute,
   UrlEncodeRoute: UrlEncodeRoute,
@@ -2698,6 +2802,7 @@ const rootRouteChildren: RootRouteChildren = {
   VideoConverterRoute: VideoConverterRoute,
   WhoisRoute: WhoisRoute,
   XmlRoute: XmlRoute,
+  XmlJsonRoute: XmlJsonRoute,
   YamlJsonRoute: YamlJsonRoute,
   ApiImageDotjpgRoute: ApiImageDotjpgRoute,
   ApiImageDotpngRoute: ApiImageDotpngRoute,

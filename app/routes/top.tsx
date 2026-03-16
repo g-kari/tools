@@ -182,6 +182,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "📋",
       },
       {
+        path: "/xml-json",
+        label: "XML/JSON変換",
+        description:
+          "XMLとJSONの相互変換ツール。XML→JSON変換（属性・テキスト・ネスト構造対応）とJSON→XML変換が可能。",
+        icon: "🔄",
+      },
+      {
         path: "/sql",
         label: "SQLフォーマッター",
         description: "SQLクエリの整形・圧縮・構文検証ツール",
@@ -281,6 +288,13 @@ const toolCatalog: ToolCategory[] = [
         label: "UUID生成",
         description: "UUID v4のランダム生成",
         icon: "🔑",
+      },
+      {
+        path: "/ulid",
+        label: "ULID生成",
+        description:
+          "辞書順ソート可能な識別子 ULID（Universally Unique Lexicographically Sortable Identifier）を生成。タイムスタンプ埋め込みで時系列順に並ぶ UUID 代替。パーサー機能付き。",
+        icon: "🔢",
       },
       {
         path: "/password-generator",
@@ -735,6 +749,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🔒",
       },
       {
+        path: "/hmac",
+        label: "HMAC 生成",
+        description:
+          "テキストと秘密鍵から HMAC-SHA-256 などの署名値を生成するツール。Webhook 検証・API 認証に対応。HEX/Base64 出力。",
+        icon: "🔏",
+      },
+      {
         path: "/security-headers",
         label: "セキュリティヘッダー",
         description: "WebサイトのHTTPセキュリティヘッダーを確認",
@@ -780,6 +801,20 @@ const toolCatalog: ToolCategory[] = [
         description:
           "CSSセレクターの詳細度（specificity）を計算するツール。IDセレクター・クラス・タイプの (a, b, c) 表記で表示。複数セレクターの比較も可能。",
         icon: "🎯",
+      },
+      {
+        path: "/semver",
+        label: "Semver チェッカー",
+        description:
+          "セマンティックバージョン (Semver) のパース・比較・範囲チェックツール。バージョン文字列の解析、2つのバージョンの大小比較、>=/<=/^/~ などの範囲演算子チェックに対応。",
+        icon: "🏷️",
+      },
+      {
+        path: "/conventional-commits",
+        label: "Conventional Commits",
+        description:
+          "Git コミットメッセージを Conventional Commits 仕様でパース・検証するツール。タイプ・スコープ・BREAKING CHANGE の検出、エラー・警告表示に対応。",
+        icon: "📝",
       },
     ],
   },
