@@ -75,6 +75,7 @@ const navCategories = [
       { path: "/ascii-art", label: "ASCIIアート生成" },
       { path: "/jwt-generator", label: "JWT生成" },
       { path: "/slug", label: "スラッグ生成" },
+      { path: "/typography-scale", label: "タイポグラフィスケール生成" },
     ],
   },
   {

@@ -349,6 +349,13 @@ const toolCatalog: ToolCategory[] = [
           "Cron式を視覚的に構築・編集できるツール。各フィールドをGUIで設定してCron式を生成",
         icon: "⏰",
       },
+      {
+        path: "/typography-scale",
+        label: "タイポグラフィスケール生成",
+        description:
+          "モジュラースケール理論に基づきCSSタイポグラフィスケールを生成。CSS変数・SCSS・JSON・Tailwind形式で出力。Golden Ratio等のプリセット比率対応。",
+        icon: "🔡",
+      },
     ],
   },
   {

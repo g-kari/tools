@@ -19,6 +19,7 @@ import { Route as UrlParserRouteImport } from './routes/url-parser'
 import { Route as UrlEncodeRouteImport } from './routes/url-encode'
 import { Route as UnitConverterRouteImport } from './routes/unit-converter'
 import { Route as UnicodeRouteImport } from './routes/unicode'
+import { Route as TypographyScaleRouteImport } from './routes/typography-scale'
 import { Route as TransparentImageRouteImport } from './routes/transparent-image'
 import { Route as TotpRouteImport } from './routes/totp'
 import { Route as TopRouteImport } from './routes/top'
@@ -73,6 +74,7 @@ import { Route as ImageBase64RouteImport } from './routes/image-base64'
 import { Route as HttpStatusRouteImport } from './routes/http-status'
 import { Route as HttpHeadersRouteImport } from './routes/http-headers'
 import { Route as HttpClientRouteImport } from './routes/http-client'
+import { Route as HtmlToJsxRouteImport } from './routes/html-to-jsx'
 import { Route as HtmlEncodeRouteImport } from './routes/html-encode'
 import { Route as HexViewerRouteImport } from './routes/hex-viewer'
 import { Route as HashRouteImport } from './routes/hash'
@@ -177,6 +179,11 @@ const UnitConverterRoute = UnitConverterRouteImport.update({
 const UnicodeRoute = UnicodeRouteImport.update({
   id: '/unicode',
   path: '/unicode',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TypographyScaleRoute = TypographyScaleRouteImport.update({
+  id: '/typography-scale',
+  path: '/typography-scale',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TransparentImageRoute = TransparentImageRouteImport.update({
@@ -447,6 +454,11 @@ const HttpHeadersRoute = HttpHeadersRouteImport.update({
 const HttpClientRoute = HttpClientRouteImport.update({
   id: '/http-client',
   path: '/http-client',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HtmlToJsxRoute = HtmlToJsxRouteImport.update({
+  id: '/html-to-jsx',
+  path: '/html-to-jsx',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HtmlEncodeRoute = HtmlEncodeRouteImport.update({
@@ -777,6 +789,7 @@ export interface FileRoutesByFullPath {
   '/hash': typeof HashRoute
   '/hex-viewer': typeof HexViewerRoute
   '/html-encode': typeof HtmlEncodeRoute
+  '/html-to-jsx': typeof HtmlToJsxRoute
   '/http-client': typeof HttpClientRoute
   '/http-headers': typeof HttpHeadersRoute
   '/http-status': typeof HttpStatusRoute
@@ -831,6 +844,7 @@ export interface FileRoutesByFullPath {
   '/top': typeof TopRoute
   '/totp': typeof TotpRoute
   '/transparent-image': typeof TransparentImageRoute
+  '/typography-scale': typeof TypographyScaleRoute
   '/unicode': typeof UnicodeRoute
   '/unit-converter': typeof UnitConverterRoute
   '/url-encode': typeof UrlEncodeRoute
@@ -898,6 +912,7 @@ export interface FileRoutesByTo {
   '/hash': typeof HashRoute
   '/hex-viewer': typeof HexViewerRoute
   '/html-encode': typeof HtmlEncodeRoute
+  '/html-to-jsx': typeof HtmlToJsxRoute
   '/http-client': typeof HttpClientRoute
   '/http-headers': typeof HttpHeadersRoute
   '/http-status': typeof HttpStatusRoute
@@ -952,6 +967,7 @@ export interface FileRoutesByTo {
   '/top': typeof TopRoute
   '/totp': typeof TotpRoute
   '/transparent-image': typeof TransparentImageRoute
+  '/typography-scale': typeof TypographyScaleRoute
   '/unicode': typeof UnicodeRoute
   '/unit-converter': typeof UnitConverterRoute
   '/url-encode': typeof UrlEncodeRoute
@@ -1020,6 +1036,7 @@ export interface FileRoutesById {
   '/hash': typeof HashRoute
   '/hex-viewer': typeof HexViewerRoute
   '/html-encode': typeof HtmlEncodeRoute
+  '/html-to-jsx': typeof HtmlToJsxRoute
   '/http-client': typeof HttpClientRoute
   '/http-headers': typeof HttpHeadersRoute
   '/http-status': typeof HttpStatusRoute
@@ -1074,6 +1091,7 @@ export interface FileRoutesById {
   '/top': typeof TopRoute
   '/totp': typeof TotpRoute
   '/transparent-image': typeof TransparentImageRoute
+  '/typography-scale': typeof TypographyScaleRoute
   '/unicode': typeof UnicodeRoute
   '/unit-converter': typeof UnitConverterRoute
   '/url-encode': typeof UrlEncodeRoute
@@ -1143,6 +1161,7 @@ export interface FileRouteTypes {
     | '/hash'
     | '/hex-viewer'
     | '/html-encode'
+    | '/html-to-jsx'
     | '/http-client'
     | '/http-headers'
     | '/http-status'
@@ -1197,6 +1216,7 @@ export interface FileRouteTypes {
     | '/top'
     | '/totp'
     | '/transparent-image'
+    | '/typography-scale'
     | '/unicode'
     | '/unit-converter'
     | '/url-encode'
@@ -1264,6 +1284,7 @@ export interface FileRouteTypes {
     | '/hash'
     | '/hex-viewer'
     | '/html-encode'
+    | '/html-to-jsx'
     | '/http-client'
     | '/http-headers'
     | '/http-status'
@@ -1318,6 +1339,7 @@ export interface FileRouteTypes {
     | '/top'
     | '/totp'
     | '/transparent-image'
+    | '/typography-scale'
     | '/unicode'
     | '/unit-converter'
     | '/url-encode'
@@ -1385,6 +1407,7 @@ export interface FileRouteTypes {
     | '/hash'
     | '/hex-viewer'
     | '/html-encode'
+    | '/html-to-jsx'
     | '/http-client'
     | '/http-headers'
     | '/http-status'
@@ -1439,6 +1462,7 @@ export interface FileRouteTypes {
     | '/top'
     | '/totp'
     | '/transparent-image'
+    | '/typography-scale'
     | '/unicode'
     | '/unit-converter'
     | '/url-encode'
@@ -1507,6 +1531,7 @@ export interface RootRouteChildren {
   HashRoute: typeof HashRoute
   HexViewerRoute: typeof HexViewerRoute
   HtmlEncodeRoute: typeof HtmlEncodeRoute
+  HtmlToJsxRoute: typeof HtmlToJsxRoute
   HttpClientRoute: typeof HttpClientRoute
   HttpHeadersRoute: typeof HttpHeadersRoute
   HttpStatusRoute: typeof HttpStatusRoute
@@ -1561,6 +1586,7 @@ export interface RootRouteChildren {
   TopRoute: typeof TopRoute
   TotpRoute: typeof TotpRoute
   TransparentImageRoute: typeof TransparentImageRoute
+  TypographyScaleRoute: typeof TypographyScaleRoute
   UnicodeRoute: typeof UnicodeRoute
   UnitConverterRoute: typeof UnitConverterRoute
   UrlEncodeRoute: typeof UrlEncodeRoute
@@ -1647,6 +1673,13 @@ declare module '@tanstack/react-router' {
       path: '/unicode'
       fullPath: '/unicode'
       preLoaderRoute: typeof UnicodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/typography-scale': {
+      id: '/typography-scale'
+      path: '/typography-scale'
+      fullPath: '/typography-scale'
+      preLoaderRoute: typeof TypographyScaleRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/transparent-image': {
@@ -2025,6 +2058,13 @@ declare module '@tanstack/react-router' {
       path: '/http-client'
       fullPath: '/http-client'
       preLoaderRoute: typeof HttpClientRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/html-to-jsx': {
+      id: '/html-to-jsx'
+      path: '/html-to-jsx'
+      fullPath: '/html-to-jsx'
+      preLoaderRoute: typeof HtmlToJsxRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/html-encode': {
@@ -2467,6 +2507,7 @@ const rootRouteChildren: RootRouteChildren = {
   HashRoute: HashRoute,
   HexViewerRoute: HexViewerRoute,
   HtmlEncodeRoute: HtmlEncodeRoute,
+  HtmlToJsxRoute: HtmlToJsxRoute,
   HttpClientRoute: HttpClientRoute,
   HttpHeadersRoute: HttpHeadersRoute,
   HttpStatusRoute: HttpStatusRoute,
@@ -2521,6 +2562,7 @@ const rootRouteChildren: RootRouteChildren = {
   TopRoute: TopRoute,
   TotpRoute: TotpRoute,
   TransparentImageRoute: TransparentImageRoute,
+  TypographyScaleRoute: TypographyScaleRoute,
   UnicodeRoute: UnicodeRoute,
   UnitConverterRoute: UnitConverterRoute,
   UrlEncodeRoute: UrlEncodeRoute,
