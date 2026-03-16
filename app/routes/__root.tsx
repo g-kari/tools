@@ -67,6 +67,7 @@ const navCategories = [
       { path: "/barcode", label: "バーコード" },
       { path: "/lorem-ipsum", label: "Lorem Ipsum" },
       { path: "/gitignore", label: "Gitignore生成" },
+      { path: "/robots-txt", label: "robots.txtジェネレーター" },
       { path: "/random-data", label: "ランダムデータ生成" },
       { path: "/ascii-art", label: "ASCIIアート生成" },
     ],

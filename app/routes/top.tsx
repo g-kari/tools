@@ -269,6 +269,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🚫",
       },
       {
+        path: "/robots-txt",
+        label: "robots.txtジェネレーター",
+        description:
+          "robots.txtファイルをGUIで作成。User-agent別のAllow/Disallowルール設定、Crawl-delay、Sitemapを視覚的に編集してコードを即座に生成。",
+        icon: "🤖",
+      },
+      {
         path: "/random-data",
         label: "ランダムデータ生成",
         description:
