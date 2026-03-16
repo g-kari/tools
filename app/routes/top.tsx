@@ -228,6 +228,13 @@ const toolCatalog: ToolCategory[] = [
           "幅・高さからアスペクト比を計算。比から幅・高さを導出。16:9・4:3・1:1などよく使われる比率のプリセット付き。",
         icon: "📐",
       },
+      {
+        path: "/number-format",
+        label: "数値フォーマット",
+        description:
+          "Intl.NumberFormat を使用して数値を各ロケール・通貨・パーセント形式でフォーマット。10言語のロケール別フォーマット比較も可能。",
+        icon: "🔢",
+      },
     ],
   },
   {

@@ -1,0 +1,195 @@
+/* 数値フォーマットツール */
+
+.number-format-input-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.number-format-input-row {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.number-format-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  flex: 1;
+  min-width: 160px;
+}
+
+.number-format-input-group label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+  letter-spacing: 0.02em;
+}
+
+.number-format-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.number-format-option-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.number-format-option-group label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+  letter-spacing: 0.02em;
+}
+
+.number-format-fraction-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.number-format-fraction-row span {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  white-space: nowrap;
+}
+
+.number-format-result-section {
+  margin-bottom: 1.5rem;
+}
+
+.number-format-result-card {
+  padding: 1.25rem 1.5rem;
+  background: var(--md-sys-color-primary-container);
+  border: 2px solid var(--md-sys-color-primary);
+  margin-bottom: 1rem;
+}
+
+.number-format-result-label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-primary-container);
+  opacity: 0.7;
+  margin-bottom: 0.375rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.number-format-result-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--md-sys-color-on-primary-container);
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  word-break: break-all;
+  line-height: 1.2;
+}
+
+.number-format-result-error {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-error);
+  background: var(--md-sys-color-error-container);
+  border: 1px solid var(--md-sys-color-error);
+  padding: 0.625rem 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.number-format-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.number-format-comparison-section {
+  margin-bottom: 1.5rem;
+}
+
+.number-format-comparison-title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.number-format-comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.number-format-comparison-table th {
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  font-weight: 600;
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 2px solid var(--md-sys-color-outline-variant);
+}
+
+.number-format-comparison-table td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  color: var(--md-sys-color-on-surface);
+  vertical-align: middle;
+}
+
+.number-format-comparison-table tr:last-child td {
+  border-bottom: none;
+}
+
+.number-format-comparison-table tr.number-format-row-highlight td {
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  font-weight: 600;
+}
+
+.number-format-locale-code {
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.number-format-locale-name {
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.8125rem;
+}
+
+.number-format-formatted-value {
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.9375rem;
+  text-align: right;
+}
+
+@media (max-width: 640px) {
+  .number-format-input-row {
+    flex-direction: column;
+  }
+
+  .number-format-options {
+    grid-template-columns: 1fr;
+  }
+
+  .number-format-result-value {
+    font-size: 1.5rem;
+  }
+
+  .number-format-comparison-table th:nth-child(2),
+  .number-format-comparison-table td:nth-child(2) {
+    display: none;
+  }
+}

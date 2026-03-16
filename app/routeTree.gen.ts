@@ -46,6 +46,7 @@ import { Route as PhpSerializeRouteImport } from './routes/php-serialize'
 import { Route as PasswordGeneratorRouteImport } from './routes/password-generator'
 import { Route as OpensslBuilderRouteImport } from './routes/openssl-builder'
 import { Route as OgpRouteImport } from './routes/ogp'
+import { Route as NumberFormatRouteImport } from './routes/number-format'
 import { Route as NumberBaseRouteImport } from './routes/number-base'
 import { Route as MsgpackRouteImport } from './routes/msgpack'
 import { Route as MorseCodeRouteImport } from './routes/morse-code'
@@ -62,6 +63,7 @@ import { Route as JwtRouteImport } from './routes/jwt'
 import { Route as JsonToTsRouteImport } from './routes/json-to-ts'
 import { Route as JsonSchemaRouteImport } from './routes/json-schema'
 import { Route as JsonPathRouteImport } from './routes/json-path'
+import { Route as JsonFlattenRouteImport } from './routes/json-flatten'
 import { Route as JsonCompareRouteImport } from './routes/json-compare'
 import { Route as JsonRouteImport } from './routes/json'
 import { Route as IpGeolocationRouteImport } from './routes/ip-geolocation'
@@ -317,6 +319,11 @@ const OgpRoute = OgpRouteImport.update({
   path: '/ogp',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NumberFormatRoute = NumberFormatRouteImport.update({
+  id: '/number-format',
+  path: '/number-format',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const NumberBaseRoute = NumberBaseRouteImport.update({
   id: '/number-base',
   path: '/number-base',
@@ -395,6 +402,11 @@ const JsonSchemaRoute = JsonSchemaRouteImport.update({
 const JsonPathRoute = JsonPathRouteImport.update({
   id: '/json-path',
   path: '/json-path',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JsonFlattenRoute = JsonFlattenRouteImport.update({
+  id: '/json-flatten',
+  path: '/json-flatten',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JsonCompareRoute = JsonCompareRouteImport.update({
@@ -809,6 +821,7 @@ export interface FileRoutesByFullPath {
   '/ip-geolocation': typeof IpGeolocationRoute
   '/json': typeof JsonRoute
   '/json-compare': typeof JsonCompareRoute
+  '/json-flatten': typeof JsonFlattenRoute
   '/json-path': typeof JsonPathRoute
   '/json-schema': typeof JsonSchemaRoute
   '/json-to-ts': typeof JsonToTsRoute
@@ -825,6 +838,7 @@ export interface FileRoutesByFullPath {
   '/morse-code': typeof MorseCodeRoute
   '/msgpack': typeof MsgpackRoute
   '/number-base': typeof NumberBaseRoute
+  '/number-format': typeof NumberFormatRoute
   '/ogp': typeof OgpRoute
   '/openssl-builder': typeof OpensslBuilderRoute
   '/password-generator': typeof PasswordGeneratorRoute
@@ -933,6 +947,7 @@ export interface FileRoutesByTo {
   '/ip-geolocation': typeof IpGeolocationRoute
   '/json': typeof JsonRoute
   '/json-compare': typeof JsonCompareRoute
+  '/json-flatten': typeof JsonFlattenRoute
   '/json-path': typeof JsonPathRoute
   '/json-schema': typeof JsonSchemaRoute
   '/json-to-ts': typeof JsonToTsRoute
@@ -949,6 +964,7 @@ export interface FileRoutesByTo {
   '/morse-code': typeof MorseCodeRoute
   '/msgpack': typeof MsgpackRoute
   '/number-base': typeof NumberBaseRoute
+  '/number-format': typeof NumberFormatRoute
   '/ogp': typeof OgpRoute
   '/openssl-builder': typeof OpensslBuilderRoute
   '/password-generator': typeof PasswordGeneratorRoute
@@ -1058,6 +1074,7 @@ export interface FileRoutesById {
   '/ip-geolocation': typeof IpGeolocationRoute
   '/json': typeof JsonRoute
   '/json-compare': typeof JsonCompareRoute
+  '/json-flatten': typeof JsonFlattenRoute
   '/json-path': typeof JsonPathRoute
   '/json-schema': typeof JsonSchemaRoute
   '/json-to-ts': typeof JsonToTsRoute
@@ -1074,6 +1091,7 @@ export interface FileRoutesById {
   '/morse-code': typeof MorseCodeRoute
   '/msgpack': typeof MsgpackRoute
   '/number-base': typeof NumberBaseRoute
+  '/number-format': typeof NumberFormatRoute
   '/ogp': typeof OgpRoute
   '/openssl-builder': typeof OpensslBuilderRoute
   '/password-generator': typeof PasswordGeneratorRoute
@@ -1184,6 +1202,7 @@ export interface FileRouteTypes {
     | '/ip-geolocation'
     | '/json'
     | '/json-compare'
+    | '/json-flatten'
     | '/json-path'
     | '/json-schema'
     | '/json-to-ts'
@@ -1200,6 +1219,7 @@ export interface FileRouteTypes {
     | '/morse-code'
     | '/msgpack'
     | '/number-base'
+    | '/number-format'
     | '/ogp'
     | '/openssl-builder'
     | '/password-generator'
@@ -1308,6 +1328,7 @@ export interface FileRouteTypes {
     | '/ip-geolocation'
     | '/json'
     | '/json-compare'
+    | '/json-flatten'
     | '/json-path'
     | '/json-schema'
     | '/json-to-ts'
@@ -1324,6 +1345,7 @@ export interface FileRouteTypes {
     | '/morse-code'
     | '/msgpack'
     | '/number-base'
+    | '/number-format'
     | '/ogp'
     | '/openssl-builder'
     | '/password-generator'
@@ -1432,6 +1454,7 @@ export interface FileRouteTypes {
     | '/ip-geolocation'
     | '/json'
     | '/json-compare'
+    | '/json-flatten'
     | '/json-path'
     | '/json-schema'
     | '/json-to-ts'
@@ -1448,6 +1471,7 @@ export interface FileRouteTypes {
     | '/morse-code'
     | '/msgpack'
     | '/number-base'
+    | '/number-format'
     | '/ogp'
     | '/openssl-builder'
     | '/password-generator'
@@ -1557,6 +1581,7 @@ export interface RootRouteChildren {
   IpGeolocationRoute: typeof IpGeolocationRoute
   JsonRoute: typeof JsonRoute
   JsonCompareRoute: typeof JsonCompareRoute
+  JsonFlattenRoute: typeof JsonFlattenRoute
   JsonPathRoute: typeof JsonPathRoute
   JsonSchemaRoute: typeof JsonSchemaRoute
   JsonToTsRoute: typeof JsonToTsRoute
@@ -1573,6 +1598,7 @@ export interface RootRouteChildren {
   MorseCodeRoute: typeof MorseCodeRoute
   MsgpackRoute: typeof MsgpackRoute
   NumberBaseRoute: typeof NumberBaseRoute
+  NumberFormatRoute: typeof NumberFormatRoute
   OgpRoute: typeof OgpRoute
   OpensslBuilderRoute: typeof OpensslBuilderRoute
   PasswordGeneratorRoute: typeof PasswordGeneratorRoute
@@ -1877,6 +1903,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OgpRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/number-format': {
+      id: '/number-format'
+      path: '/number-format'
+      fullPath: '/number-format'
+      preLoaderRoute: typeof NumberFormatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/number-base': {
       id: '/number-base'
       path: '/number-base'
@@ -1987,6 +2020,13 @@ declare module '@tanstack/react-router' {
       path: '/json-path'
       fullPath: '/json-path'
       preLoaderRoute: typeof JsonPathRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/json-flatten': {
+      id: '/json-flatten'
+      path: '/json-flatten'
+      fullPath: '/json-flatten'
+      preLoaderRoute: typeof JsonFlattenRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/json-compare': {
@@ -2541,6 +2581,7 @@ const rootRouteChildren: RootRouteChildren = {
   IpGeolocationRoute: IpGeolocationRoute,
   JsonRoute: JsonRoute,
   JsonCompareRoute: JsonCompareRoute,
+  JsonFlattenRoute: JsonFlattenRoute,
   JsonPathRoute: JsonPathRoute,
   JsonSchemaRoute: JsonSchemaRoute,
   JsonToTsRoute: JsonToTsRoute,
@@ -2557,6 +2598,7 @@ const rootRouteChildren: RootRouteChildren = {
   MorseCodeRoute: MorseCodeRoute,
   MsgpackRoute: MsgpackRoute,
   NumberBaseRoute: NumberBaseRoute,
+  NumberFormatRoute: NumberFormatRoute,
   OgpRoute: OgpRoute,
   OpensslBuilderRoute: OpensslBuilderRoute,
   PasswordGeneratorRoute: PasswordGeneratorRoute,
