@@ -411,6 +411,22 @@
   }
 }
 
+/* Cookie値の表示行（インラインスタイル代替） */
+.cookie-parser-attr-value-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.cookie-parser-attr-value-text {
+  word-break: break-all;
+}
+
+.cookie-parser-attr-value-empty {
+  opacity: 0.6;
+}
+
 /* モーション低減設定への対応 */
 @media (prefers-reduced-motion: reduce) {
   .cookie-parser-tab,

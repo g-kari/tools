@@ -275,9 +275,9 @@ function SetCookieParsedPanel({
         </AttrCard>
 
         <AttrCard label="値 (Value)">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-            <span style={{ wordBreak: 'break-all' }}>
-              {attrs.value || <span style={{ opacity: 0.6 }}>（空）</span>}
+          <div className="cookie-parser-attr-value-row">
+            <span className="cookie-parser-attr-value-text">
+              {attrs.value || <span className="cookie-parser-attr-value-empty">（空）</span>}
             </span>
             {attrs.value && (
               <button
