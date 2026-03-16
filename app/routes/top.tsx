@@ -123,6 +123,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "📐",
       },
       {
+        path: "/css-unit",
+        label: "CSS単位変換",
+        description:
+          "px・rem・em・vw・vh・%・pt・cm・mm・in などの CSS 単位をリアルタイムで相互変換。ベースフォントサイズやビューポートサイズも設定可能。",
+        icon: "📏",
+      },
+      {
         path: "/audio-converter",
         label: "オーディオ変換",
         description: "音声ファイルの形式変換（MP3/WAV/OGG等）",

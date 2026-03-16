@@ -45,6 +45,7 @@ const navCategories = [
       { path: "/php-serialize", label: "PHPシリアライズ" },
       { path: "/minify", label: "コード圧縮" },
       { path: "/unit-converter", label: "単位変換" },
+      { path: "/css-unit", label: "CSS単位変換" },
       { path: "/math-eval", label: "数式評価" },
       { path: "/bitwise", label: "ビット演算計算機" },
       { path: "/audio-converter", label: "オーディオ変換" },

@@ -88,6 +88,7 @@ import { Route as DiffRouteImport } from './routes/diff'
 import { Route as DiceRollRouteImport } from './routes/dice-roll'
 import { Route as CurlBuilderRouteImport } from './routes/curl-builder'
 import { Route as CsvJsonRouteImport } from './routes/csv-json'
+import { Route as CssUnitRouteImport } from './routes/css-unit'
 import { Route as CssTransformRouteImport } from './routes/css-transform'
 import { Route as CssTextShadowRouteImport } from './routes/css-text-shadow'
 import { Route as CssSpecificityRouteImport } from './routes/css-specificity'
@@ -519,6 +520,11 @@ const CsvJsonRoute = CsvJsonRouteImport.update({
   path: '/csv-json',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CssUnitRoute = CssUnitRouteImport.update({
+  id: '/css-unit',
+  path: '/css-unit',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CssTransformRoute = CssTransformRouteImport.update({
   id: '/css-transform',
   path: '/css-transform',
@@ -727,6 +733,7 @@ export interface FileRoutesByFullPath {
   '/css-specificity': typeof CssSpecificityRoute
   '/css-text-shadow': typeof CssTextShadowRoute
   '/css-transform': typeof CssTransformRoute
+  '/css-unit': typeof CssUnitRoute
   '/csv-json': typeof CsvJsonRoute
   '/curl-builder': typeof CurlBuilderRoute
   '/dice-roll': typeof DiceRollRoute
@@ -843,6 +850,7 @@ export interface FileRoutesByTo {
   '/css-specificity': typeof CssSpecificityRoute
   '/css-text-shadow': typeof CssTextShadowRoute
   '/css-transform': typeof CssTransformRoute
+  '/css-unit': typeof CssUnitRoute
   '/csv-json': typeof CsvJsonRoute
   '/curl-builder': typeof CurlBuilderRoute
   '/dice-roll': typeof DiceRollRoute
@@ -960,6 +968,7 @@ export interface FileRoutesById {
   '/css-specificity': typeof CssSpecificityRoute
   '/css-text-shadow': typeof CssTextShadowRoute
   '/css-transform': typeof CssTransformRoute
+  '/css-unit': typeof CssUnitRoute
   '/csv-json': typeof CsvJsonRoute
   '/curl-builder': typeof CurlBuilderRoute
   '/dice-roll': typeof DiceRollRoute
@@ -1078,6 +1087,7 @@ export interface FileRouteTypes {
     | '/css-specificity'
     | '/css-text-shadow'
     | '/css-transform'
+    | '/css-unit'
     | '/csv-json'
     | '/curl-builder'
     | '/dice-roll'
@@ -1194,6 +1204,7 @@ export interface FileRouteTypes {
     | '/css-specificity'
     | '/css-text-shadow'
     | '/css-transform'
+    | '/css-unit'
     | '/csv-json'
     | '/curl-builder'
     | '/dice-roll'
@@ -1310,6 +1321,7 @@ export interface FileRouteTypes {
     | '/css-specificity'
     | '/css-text-shadow'
     | '/css-transform'
+    | '/css-unit'
     | '/csv-json'
     | '/curl-builder'
     | '/dice-roll'
@@ -1427,6 +1439,7 @@ export interface RootRouteChildren {
   CssSpecificityRoute: typeof CssSpecificityRoute
   CssTextShadowRoute: typeof CssTextShadowRoute
   CssTransformRoute: typeof CssTransformRoute
+  CssUnitRoute: typeof CssUnitRoute
   CsvJsonRoute: typeof CsvJsonRoute
   CurlBuilderRoute: typeof CurlBuilderRoute
   DiceRollRoute: typeof DiceRollRoute
@@ -2067,6 +2080,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CsvJsonRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/css-unit': {
+      id: '/css-unit'
+      path: '/css-unit'
+      fullPath: '/css-unit'
+      preLoaderRoute: typeof CssUnitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/css-transform': {
       id: '/css-transform'
       path: '/css-transform'
@@ -2347,6 +2367,7 @@ const rootRouteChildren: RootRouteChildren = {
   CssSpecificityRoute: CssSpecificityRoute,
   CssTextShadowRoute: CssTextShadowRoute,
   CssTransformRoute: CssTransformRoute,
+  CssUnitRoute: CssUnitRoute,
   CsvJsonRoute: CsvJsonRoute,
   CurlBuilderRoute: CurlBuilderRoute,
   DiceRollRoute: DiceRollRoute,
