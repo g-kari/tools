@@ -153,6 +153,8 @@ const navCategories = [
       { path: "/cron-parser", label: "Cron式パーサー" },
       { path: "/user-agent", label: "User-Agent解析" },
       { path: "/http-status", label: "HTTPステータスコード" },
+      { path: "/http-headers", label: "HTTPヘッダーリファレンス" },
+      { path: "/cookie-parser", label: "Cookieパーサー" },
       { path: "/keycode", label: "キーコードチェック" },
       { path: "/color-contrast", label: "カラーコントラストチェッカー" },
       { path: "/color-blind", label: "色覚シミュレーター" },

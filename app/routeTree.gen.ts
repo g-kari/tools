@@ -104,6 +104,7 @@ import { Route as CssBorderRadiusRouteImport } from './routes/css-border-radius'
 import { Route as CssAnimationRouteImport } from './routes/css-animation'
 import { Route as CronParserRouteImport } from './routes/cron-parser'
 import { Route as CronRouteImport } from './routes/cron'
+import { Route as CookieParserRouteImport } from './routes/cookie-parser'
 import { Route as ColorPickerRouteImport } from './routes/color-picker'
 import { Route as ColorPaletteRouteImport } from './routes/color-palette'
 import { Route as ColorHarmonyRouteImport } from './routes/color-harmony'
@@ -602,6 +603,11 @@ const CronRoute = CronRouteImport.update({
   path: '/cron',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CookieParserRoute = CookieParserRouteImport.update({
+  id: '/cookie-parser',
+  path: '/cookie-parser',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ColorPickerRoute = ColorPickerRouteImport.update({
   id: '/color-picker',
   path: '/color-picker',
@@ -732,6 +738,7 @@ export interface FileRoutesByFullPath {
   '/color-harmony': typeof ColorHarmonyRoute
   '/color-palette': typeof ColorPaletteRoute
   '/color-picker': typeof ColorPickerRoute
+  '/cookie-parser': typeof CookieParserRoute
   '/cron': typeof CronRoute
   '/cron-parser': typeof CronParserRoute
   '/css-animation': typeof CssAnimationRoute
@@ -851,6 +858,7 @@ export interface FileRoutesByTo {
   '/color-harmony': typeof ColorHarmonyRoute
   '/color-palette': typeof ColorPaletteRoute
   '/color-picker': typeof ColorPickerRoute
+  '/cookie-parser': typeof CookieParserRoute
   '/cron': typeof CronRoute
   '/cron-parser': typeof CronParserRoute
   '/css-animation': typeof CssAnimationRoute
@@ -971,6 +979,7 @@ export interface FileRoutesById {
   '/color-harmony': typeof ColorHarmonyRoute
   '/color-palette': typeof ColorPaletteRoute
   '/color-picker': typeof ColorPickerRoute
+  '/cookie-parser': typeof CookieParserRoute
   '/cron': typeof CronRoute
   '/cron-parser': typeof CronParserRoute
   '/css-animation': typeof CssAnimationRoute
@@ -1092,6 +1101,7 @@ export interface FileRouteTypes {
     | '/color-harmony'
     | '/color-palette'
     | '/color-picker'
+    | '/cookie-parser'
     | '/cron'
     | '/cron-parser'
     | '/css-animation'
@@ -1211,6 +1221,7 @@ export interface FileRouteTypes {
     | '/color-harmony'
     | '/color-palette'
     | '/color-picker'
+    | '/cookie-parser'
     | '/cron'
     | '/cron-parser'
     | '/css-animation'
@@ -1330,6 +1341,7 @@ export interface FileRouteTypes {
     | '/color-harmony'
     | '/color-palette'
     | '/color-picker'
+    | '/cookie-parser'
     | '/cron'
     | '/cron-parser'
     | '/css-animation'
@@ -1450,6 +1462,7 @@ export interface RootRouteChildren {
   ColorHarmonyRoute: typeof ColorHarmonyRoute
   ColorPaletteRoute: typeof ColorPaletteRoute
   ColorPickerRoute: typeof ColorPickerRoute
+  CookieParserRoute: typeof CookieParserRoute
   CronRoute: typeof CronRoute
   CronParserRoute: typeof CronParserRoute
   CssAnimationRoute: typeof CssAnimationRoute
@@ -2218,6 +2231,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CronRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/cookie-parser': {
+      id: '/cookie-parser'
+      path: '/cookie-parser'
+      fullPath: '/cookie-parser'
+      preLoaderRoute: typeof CookieParserRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/color-picker': {
       id: '/color-picker'
       path: '/color-picker'
@@ -2394,6 +2414,7 @@ const rootRouteChildren: RootRouteChildren = {
   ColorHarmonyRoute: ColorHarmonyRoute,
   ColorPaletteRoute: ColorPaletteRoute,
   ColorPickerRoute: ColorPickerRoute,
+  CookieParserRoute: CookieParserRoute,
   CronRoute: CronRoute,
   CronParserRoute: CronParserRoute,
   CssAnimationRoute: CssAnimationRoute,
