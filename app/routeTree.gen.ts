@@ -72,6 +72,7 @@ import { Route as ImageBase64RouteImport } from './routes/image-base64'
 import { Route as HttpStatusRouteImport } from './routes/http-status'
 import { Route as HttpClientRouteImport } from './routes/http-client'
 import { Route as HtmlEncodeRouteImport } from './routes/html-encode'
+import { Route as HexViewerRouteImport } from './routes/hex-viewer'
 import { Route as HashRouteImport } from './routes/hash'
 import { Route as GlobalIpRouteImport } from './routes/global-ip'
 import { Route as GitignoreRouteImport } from './routes/gitignore'
@@ -440,6 +441,11 @@ const HtmlEncodeRoute = HtmlEncodeRouteImport.update({
   path: '/html-encode',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HexViewerRoute = HexViewerRouteImport.update({
+  id: '/hex-viewer',
+  path: '/hex-viewer',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HashRoute = HashRouteImport.update({
   id: '/hash',
   path: '/hash',
@@ -750,6 +756,7 @@ export interface FileRoutesByFullPath {
   '/gitignore': typeof GitignoreRoute
   '/global-ip': typeof GlobalIpRoute
   '/hash': typeof HashRoute
+  '/hex-viewer': typeof HexViewerRoute
   '/html-encode': typeof HtmlEncodeRoute
   '/http-client': typeof HttpClientRoute
   '/http-status': typeof HttpStatusRoute
@@ -867,6 +874,7 @@ export interface FileRoutesByTo {
   '/gitignore': typeof GitignoreRoute
   '/global-ip': typeof GlobalIpRoute
   '/hash': typeof HashRoute
+  '/hex-viewer': typeof HexViewerRoute
   '/html-encode': typeof HtmlEncodeRoute
   '/http-client': typeof HttpClientRoute
   '/http-status': typeof HttpStatusRoute
@@ -985,6 +993,7 @@ export interface FileRoutesById {
   '/gitignore': typeof GitignoreRoute
   '/global-ip': typeof GlobalIpRoute
   '/hash': typeof HashRoute
+  '/hex-viewer': typeof HexViewerRoute
   '/html-encode': typeof HtmlEncodeRoute
   '/http-client': typeof HttpClientRoute
   '/http-status': typeof HttpStatusRoute
@@ -1104,6 +1113,7 @@ export interface FileRouteTypes {
     | '/gitignore'
     | '/global-ip'
     | '/hash'
+    | '/hex-viewer'
     | '/html-encode'
     | '/http-client'
     | '/http-status'
@@ -1221,6 +1231,7 @@ export interface FileRouteTypes {
     | '/gitignore'
     | '/global-ip'
     | '/hash'
+    | '/hex-viewer'
     | '/html-encode'
     | '/http-client'
     | '/http-status'
@@ -1338,6 +1349,7 @@ export interface FileRouteTypes {
     | '/gitignore'
     | '/global-ip'
     | '/hash'
+    | '/hex-viewer'
     | '/html-encode'
     | '/http-client'
     | '/http-status'
@@ -1456,6 +1468,7 @@ export interface RootRouteChildren {
   GitignoreRoute: typeof GitignoreRoute
   GlobalIpRoute: typeof GlobalIpRoute
   HashRoute: typeof HashRoute
+  HexViewerRoute: typeof HexViewerRoute
   HtmlEncodeRoute: typeof HtmlEncodeRoute
   HttpClientRoute: typeof HttpClientRoute
   HttpStatusRoute: typeof HttpStatusRoute
@@ -1968,6 +1981,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HtmlEncodeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/hex-viewer': {
+      id: '/hex-viewer'
+      path: '/hex-viewer'
+      fullPath: '/hex-viewer'
+      preLoaderRoute: typeof HexViewerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/hash': {
       id: '/hash'
       path: '/hash'
@@ -2384,6 +2404,7 @@ const rootRouteChildren: RootRouteChildren = {
   GitignoreRoute: GitignoreRoute,
   GlobalIpRoute: GlobalIpRoute,
   HashRoute: HashRoute,
+  HexViewerRoute: HexViewerRoute,
   HtmlEncodeRoute: HtmlEncodeRoute,
   HttpClientRoute: HttpClientRoute,
   HttpStatusRoute: HttpStatusRoute,

@@ -48,6 +48,7 @@ const navCategories = [
       { path: "/css-unit", label: "CSS単位変換" },
       { path: "/math-eval", label: "数式評価" },
       { path: "/bitwise", label: "ビット演算計算機" },
+      { path: "/hex-viewer", label: "Hex Viewer" },
       { path: "/audio-converter", label: "オーディオ変換" },
       { path: "/video-converter", label: "動画変換" },
       { path: "/timezone", label: "タイムゾーン変換" },

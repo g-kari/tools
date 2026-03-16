@@ -1,0 +1,330 @@
+/* Hex Viewer ツール */
+
+/* オプションバー */
+.hex-options-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+}
+
+.hex-option-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.hex-option-label {
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.hex-option-select {
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.hex-option-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* 入力モードタブ */
+.hex-input-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.hex-input-tab {
+  flex: 1;
+  padding: 0.5rem 1rem;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+
+.hex-input-tab:hover:not(.active) {
+  background: var(--md-sys-color-outline-variant);
+  opacity: 0.85;
+}
+
+.hex-input-tab.active {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+/* アクションバー */
+.hex-action-bar {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-bottom: 0.75rem;
+}
+
+/* Hexダンプ表示エリア */
+.hex-dump-container {
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface);
+}
+
+.hex-dump-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'JetBrains Mono', 'Space Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 0.8125rem;
+  white-space: nowrap;
+}
+
+.hex-dump-table thead {
+  background: var(--md-sys-color-surface-variant);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.hex-dump-table th {
+  padding: 0.5rem 0.5rem;
+  text-align: center;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.75rem;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.hex-dump-table th.offset-header {
+  text-align: left;
+  padding-left: 1rem;
+  min-width: 7rem;
+}
+
+.hex-dump-table th.ascii-header {
+  text-align: left;
+  border-left: 1px solid var(--md-sys-color-outline-variant);
+  padding-left: 0.75rem;
+}
+
+.hex-dump-table td {
+  padding: 0.25rem 0.375rem;
+  text-align: center;
+  color: var(--md-sys-color-on-surface);
+  vertical-align: middle;
+}
+
+.hex-dump-table tbody tr:nth-child(even) {
+  background: color-mix(in srgb, var(--md-sys-color-surface-variant) 30%, transparent);
+}
+
+.hex-dump-table tbody tr:hover {
+  background: color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent);
+}
+
+/* オフセットセル */
+.hex-offset {
+  color: var(--md-sys-color-tertiary, #6750a4);
+  font-weight: 600;
+  text-align: left !important;
+  padding-left: 1rem !important;
+  user-select: none;
+}
+
+/* 16進数セル */
+.hex-byte {
+  min-width: 2.25rem;
+}
+
+.hex-byte.null-byte {
+  color: var(--md-sys-color-outline);
+  opacity: 0.5;
+}
+
+.hex-byte.ascii-printable {
+  color: var(--md-sys-color-primary);
+}
+
+.hex-byte.ascii-control {
+  color: var(--md-sys-color-error);
+}
+
+.hex-byte.high-byte {
+  color: var(--md-sys-color-secondary, #625b71);
+}
+
+.hex-byte.padding {
+  color: transparent;
+  user-select: none;
+}
+
+/* ASCIIセル */
+.hex-ascii-cell {
+  text-align: left !important;
+  border-left: 1px solid var(--md-sys-color-outline-variant);
+  padding-left: 0.75rem !important;
+  letter-spacing: 0.05em;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* ドロップゾーン */
+.hex-dropzone {
+  border: 2px dashed var(--md-sys-color-outline-variant);
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
+}
+
+.hex-dropzone:hover,
+.hex-dropzone.dragging {
+  border-color: var(--md-sys-color-primary);
+  background: color-mix(in srgb, var(--md-sys-color-primary) 5%, transparent);
+}
+
+.hex-dropzone-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--md-sys-color-on-surface-variant);
+  pointer-events: none;
+}
+
+.hex-dropzone-icon {
+  font-size: 2rem;
+}
+
+.hex-dropzone-hint {
+  font-size: 0.8125rem;
+  opacity: 0.7;
+}
+
+/* ファイル情報 */
+.hex-file-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  margin-top: 0.75rem;
+}
+
+.hex-file-name {
+  flex: 1;
+  font-size: 0.875rem;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hex-file-size {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  white-space: nowrap;
+}
+
+.hex-file-clear-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--md-sys-color-on-surface-variant);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  transition: background 0.2s;
+}
+
+.hex-file-clear-btn:hover {
+  background: color-mix(in srgb, var(--md-sys-color-error) 15%, transparent);
+  color: var(--md-sys-color-error);
+}
+
+/* 空状態 */
+.hex-empty-state {
+  padding: 3rem 1rem;
+  text-align: center;
+  color: var(--md-sys-color-on-surface-variant);
+  border: 1px dashed var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+}
+
+/* データ情報バー */
+.hex-info-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.hex-info-item {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.hex-info-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+}
+
+/* 省略メッセージ */
+.hex-truncated-notice {
+  padding: 0.5rem 1rem;
+  background: color-mix(in srgb, var(--md-sys-color-tertiary, #6750a4) 10%, transparent);
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  text-align: center;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 600px) {
+  .hex-options-bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .hex-dump-table {
+    font-size: 0.75rem;
+  }
+
+  .hex-dump-table td,
+  .hex-dump-table th {
+    padding: 0.25rem 0.25rem;
+  }
+}
