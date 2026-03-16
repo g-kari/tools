@@ -538,6 +538,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🔄",
       },
       {
+        path: "/css-container-query",
+        label: "CSS Container Query ビルダー",
+        description:
+          "CSS Container Queries をビジュアルに構築するツール。container-type・container-name の設定、min-width・max-width・range・aspect-ratio 条件の組み合わせ、ライブプレビューつきで CSS を即座に生成。",
+        icon: "📦",
+      },
+      {
         path: "/image-to-gif",
         label: "画像→GIF変換",
         description: "複数画像からアニメーションGIFを作成",

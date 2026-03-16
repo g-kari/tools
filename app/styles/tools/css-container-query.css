@@ -1,0 +1,398 @@
+/* ── CSS Container Query ビルダー ────────────────────────── */
+
+.ccq-layout {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .ccq-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── セクション ──────────────────────── */
+.ccq-section {
+  background: var(--surface-variant);
+  border: 1px solid var(--outline-variant);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.ccq-section:last-of-type {
+  margin-bottom: 0;
+}
+
+.ccq-section-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 12px 0;
+}
+
+/* ── プロパティ行 ────────────────────── */
+.ccq-prop-row {
+  margin-bottom: 12px;
+}
+
+.ccq-prop-row:last-child {
+  margin-bottom: 0;
+}
+
+.ccq-prop-label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--on-surface-variant);
+  margin-bottom: 4px;
+}
+
+.ccq-input,
+.ccq-select {
+  width: 100%;
+  padding: 7px 10px;
+  border: 1px solid var(--outline-variant);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--on-surface);
+  font-size: 0.875rem;
+  font-family: 'JetBrains Mono', monospace;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+}
+
+.ccq-input:focus,
+.ccq-select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 20%, transparent);
+}
+
+/* ── 条件カード ────────────────────────── */
+.ccq-condition-card {
+  border: 1px solid var(--outline-variant);
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 10px;
+  background: var(--surface);
+  position: relative;
+}
+
+.ccq-condition-card:last-child {
+  margin-bottom: 0;
+}
+
+.ccq-condition-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  gap: 8px;
+}
+
+.ccq-condition-type-select {
+  flex: 1;
+  padding: 5px 8px;
+  border: 1px solid var(--outline-variant);
+  border-radius: 6px;
+  background: var(--surface-variant);
+  color: var(--on-surface);
+  font-size: 0.8rem;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.ccq-condition-type-select:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.ccq-condition-remove {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid var(--error);
+  background: transparent;
+  color: var(--error);
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+
+.ccq-condition-remove:hover {
+  background: color-mix(in srgb, var(--error) 15%, transparent);
+}
+
+.ccq-condition-body {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: center;
+}
+
+.ccq-condition-body.ccq-range {
+  grid-template-columns: 1fr auto 1fr auto;
+}
+
+.ccq-value-input {
+  padding: 5px 8px;
+  border: 1px solid var(--outline-variant);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--on-surface);
+  font-size: 0.875rem;
+  font-family: 'JetBrains Mono', monospace;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.ccq-value-input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.ccq-unit-select {
+  padding: 5px 6px;
+  border: 1px solid var(--outline-variant);
+  border-radius: 6px;
+  background: var(--surface-variant);
+  color: var(--on-surface);
+  font-size: 0.8rem;
+  font-family: 'JetBrains Mono', monospace;
+  min-width: 56px;
+}
+
+.ccq-unit-select:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.ccq-range-sep {
+  font-size: 0.8rem;
+  color: var(--on-surface-variant);
+  padding: 0 2px;
+}
+
+/* 論理演算子バッジ */
+.ccq-logic-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0;
+  padding: 0 4px;
+}
+
+.ccq-logic-line {
+  flex: 1;
+  height: 1px;
+  background: var(--outline-variant);
+}
+
+.ccq-logic-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--primary) 30%, transparent);
+  border-radius: 4px;
+  padding: 1px 6px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.ccq-logic-badge:hover {
+  background: color-mix(in srgb, var(--primary) 20%, transparent);
+}
+
+/* 条件追加ボタン */
+.ccq-add-condition {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 8px;
+  border: 1px dashed var(--primary);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--primary);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.15s;
+  margin-top: 10px;
+}
+
+.ccq-add-condition:hover {
+  background: color-mix(in srgb, var(--primary) 8%, transparent);
+}
+
+/* ── 右パネル ────────────────────────── */
+.ccq-right {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* プレビューセクション */
+.ccq-preview-section {
+  background: var(--surface-variant);
+  border: 1px solid var(--outline-variant);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.ccq-preview-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.ccq-preview-label {
+  font-size: 0.8rem;
+  color: var(--on-surface-variant);
+  white-space: nowrap;
+}
+
+.ccq-preview-slider {
+  flex: 1;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+.ccq-preview-width-badge {
+  font-size: 0.8rem;
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--surface);
+  border: 1px solid var(--outline-variant);
+  border-radius: 6px;
+  padding: 3px 8px;
+  color: var(--on-surface);
+  white-space: nowrap;
+  min-width: 60px;
+  text-align: center;
+}
+
+/* コンテナーラッパー */
+.ccq-preview-wrapper {
+  background: var(--surface);
+  border: 1px dashed var(--outline-variant);
+  border-radius: 8px;
+  padding: 16px;
+  overflow: hidden;
+}
+
+.ccq-preview-outer {
+  transition: width 0.08s;
+  overflow: hidden;
+  border: 2px solid var(--outline);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--primary) 5%, transparent);
+  position: relative;
+}
+
+.ccq-preview-outer-label {
+  position: absolute;
+  top: 4px;
+  left: 8px;
+  font-size: 0.65rem;
+  color: var(--on-surface-variant);
+  font-family: 'JetBrains Mono', monospace;
+  opacity: 0.8;
+}
+
+.ccq-preview-inner {
+  padding: 28px 12px 12px 12px;
+  min-height: 80px;
+}
+
+/* クエリ未満のカード（縦積み） */
+.ccq-preview-card {
+  background: var(--surface);
+  border: 1px solid var(--outline-variant);
+  border-radius: 6px;
+  padding: 12px;
+  font-size: 0.8rem;
+  color: var(--on-surface-variant);
+  margin-bottom: 8px;
+}
+
+.ccq-preview-card:last-child {
+  margin-bottom: 0;
+}
+
+/* クエリ適用時のカード（横並び） */
+.ccq-preview-inner.ccq-query-active {
+  display: flex;
+  gap: 12px;
+}
+
+.ccq-preview-inner.ccq-query-active .ccq-preview-card {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.ccq-preview-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  font-size: 0.8rem;
+}
+
+.ccq-preview-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.ccq-preview-status-dot.active {
+  background: var(--success, #4caf50);
+}
+
+.ccq-preview-status-dot.inactive {
+  background: var(--outline);
+}
+
+.ccq-preview-status-text {
+  color: var(--on-surface-variant);
+}
+
+/* CSS 出力セクション */
+.ccq-css-section {
+  background: var(--surface-variant);
+  border: 1px solid var(--outline-variant);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.ccq-css-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.ccq-css-output {
+  background: var(--surface);
+  border: 1px solid var(--outline-variant);
+  border-radius: 8px;
+  padding: 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  line-height: 1.7;
+  color: var(--on-surface);
+  white-space: pre;
+  overflow-x: auto;
+  margin: 0;
+}

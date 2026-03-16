@@ -60,6 +60,9 @@ const navCategories = [
       { path: "/number-format", label: "数値フォーマット" },
       { path: "/encoding", label: "文字コード変換" },
       { path: "/env-parser", label: ".envパーサー" },
+      { path: "/xml-json", label: "XML/JSON変換" },
+      { path: "/morse-code", label: "Morse Code変換" },
+      { path: "/text-encrypt", label: "テキスト暗号化" },
     ],
   },
   {
@@ -81,6 +84,7 @@ const navCategories = [
       { path: "/jwt-generator", label: "JWT生成" },
       { path: "/slug", label: "スラッグ生成" },
       { path: "/typography-scale", label: "タイポグラフィスケール生成" },
+      { path: "/ulid", label: "ULID生成" },
     ],
   },
   {
@@ -108,6 +112,7 @@ const navCategories = [
       { path: "/css-filter", label: "CSS Filterジェネレーター" },
       { path: "/css-transform", label: "CSS Transformジェネレーター" },
       { path: "/css-clip-path", label: "CSS Clip-pathジェネレーター" },
+      { path: "/css-container-query", label: "CSS Container Query ビルダー" },
       { path: "/css-specificity", label: "CSS詳細度計算機" },
       { path: "/aspect-ratio", label: "アスペクト比計算機" },
       { path: "/image-to-gif", label: "画像→GIF変換" },
@@ -167,6 +172,9 @@ const navCategories = [
       { path: "/keycode", label: "キーコードチェック" },
       { path: "/color-contrast", label: "カラーコントラストチェッカー" },
       { path: "/color-blind", label: "色覚シミュレーター" },
+      { path: "/hmac", label: "HMAC 生成" },
+      { path: "/semver", label: "Semver チェッカー" },
+      { path: "/conventional-commits", label: "Conventional Commits" },
     ],
   },
   {
