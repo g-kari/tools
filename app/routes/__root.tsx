@@ -34,6 +34,7 @@ const navCategories = [
       { path: "/base64-image", label: "Base64画像デコード" },
       { path: "/json", label: "JSON整形" },
       { path: "/json-path", label: "JSONPath評価" },
+      { path: "/json-flatten", label: "JSONフラット化" },
       { path: "/json-schema", label: "JSONスキーマ生成" },
       { path: "/json-to-ts", label: "JSON→TS型変換" },
       { path: "/html-to-jsx", label: "HTML→JSX変換" },

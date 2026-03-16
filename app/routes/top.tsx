@@ -99,6 +99,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🔍",
       },
       {
+        path: "/json-flatten",
+        label: "JSONフラット化",
+        description:
+          "ネストされたJSONをフラットなキー構造に変換・復元するツール。区切り文字・配列処理・最大深さを設定可能。",
+        icon: "⬇️",
+      },
+      {
         path: "/php-serialize",
         label: "PHPシリアライズ",
         description: "PHPシリアライズ形式とJSONの相互変換",
@@ -576,6 +583,13 @@ const toolCatalog: ToolCategory[] = [
           "リクエスト・レスポンスHTTPヘッダーの一覧リファレンス。用途・説明・使用例をカテゴリ別に検索できる",
         icon: "📋",
       },
+      {
+        path: "/mime-types",
+        label: "MIMEタイプリファレンス",
+        description:
+          "MIMEタイプ（Content-Type）の一覧リファレンス。拡張子・カテゴリ別に検索し、ファイルタイプに対応するMIMEタイプを確認できる",
+        icon: "📄",
+      },
     ],
   },
   {
@@ -683,6 +697,13 @@ const toolCatalog: ToolCategory[] = [
         label: "セキュリティヘッダー",
         description: "WebサイトのHTTPセキュリティヘッダーを確認",
         icon: "🛡️",
+      },
+      {
+        path: "/cookie-parser",
+        label: "クッキーパーサー",
+        description:
+          "HTTP Cookie / Set-Cookie ヘッダーを解析し、属性（Expires・Path・SameSite等）を視覚的に確認できるツール",
+        icon: "🍪",
       },
       {
         path: "/cron-parser",
