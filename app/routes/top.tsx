@@ -256,6 +256,20 @@ const toolCatalog: ToolCategory[] = [
           "Intl.NumberFormat を使用して数値を各ロケール・通貨・パーセント形式でフォーマット。10言語のロケール別フォーマット比較も可能。",
         icon: "🔢",
       },
+      {
+        path: "/date-calc",
+        label: "日付計算",
+        description:
+          "2つの日付の差を計算・日付の加算/減算・日付情報の確認ができる日付計算ツール。ISO週番号・曜日・年の何日目かなどを表示。",
+        icon: "📅",
+      },
+      {
+        path: "/encoding",
+        label: "文字コード変換",
+        description:
+          "テキストをUTF-8・Shift_JIS・EUC-JP・ISO-2022-JPなど複数の文字コードに変換し、16進数バイト列を表示。Hexからテキストへの逆変換・自動文字コード検出にも対応。",
+        icon: "🔤",
+      },
     ],
   },
   {

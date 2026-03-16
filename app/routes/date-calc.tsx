@@ -230,11 +230,7 @@ function DateCalcPage() {
               </div>
 
               {/* 合計 */}
-              <div
-                style={{
-                  borderTop: "1px solid var(--md-sys-color-outline-variant)",
-                }}
-              >
+              <div className="date-calc-result-divider">
                 <div className="date-calc-total-row">
                   <span className="date-calc-total-label">合計日数</span>
                   <span className="date-calc-total-value">
@@ -423,7 +419,7 @@ function DateCalcPage() {
               </div>
               <div className="date-info-item">
                 <span className="date-info-label">Unix タイムスタンプ</span>
-                <span className="date-info-value" style={{ fontSize: "0.875rem" }}>
+                <span className="date-info-value date-calc-total-value--sm">
                   {dateInfo.unixTimestamp.toLocaleString()}
                 </span>
               </div>
@@ -455,7 +451,7 @@ function DateCalcPage() {
         />
       </div>
 
-      <StatusAnnouncer ref={statusRef} />
+      <StatusAnnouncer statusRef={statusRef} />
     </>
   );
 }

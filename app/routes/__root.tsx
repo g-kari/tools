@@ -58,6 +58,7 @@ const navCategories = [
       { path: "/timestamp", label: "Unixタイムスタンプ" },
       { path: "/date-calc", label: "日付計算" },
       { path: "/number-format", label: "数値フォーマット" },
+      { path: "/encoding", label: "文字コード変換" },
       { path: "/env-parser", label: ".envパーサー" },
     ],
   },

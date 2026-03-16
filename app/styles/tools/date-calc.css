@@ -331,6 +331,16 @@
   color: var(--md-sys-color-on-surface-variant);
 }
 
+/* 結果内の区切り線 */
+.date-calc-result-divider {
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+}
+
+/* 合計値（小フォント） */
+.date-calc-total-value--sm {
+  font-size: 0.875rem;
+}
+
 /* アニメーション抑制 */
 @media (prefers-reduced-motion: reduce) {
   .date-calc-section {

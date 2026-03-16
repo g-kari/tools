@@ -86,6 +86,7 @@ import { Route as GlobalIpRouteImport } from './routes/global-ip'
 import { Route as GitignoreRouteImport } from './routes/gitignore'
 import { Route as FaviconGeneratorRouteImport } from './routes/favicon-generator'
 import { Route as EnvParserRouteImport } from './routes/env-parser'
+import { Route as EncodingRouteImport } from './routes/encoding'
 import { Route as EmojiConverterRouteImport } from './routes/emoji-converter'
 import { Route as EmailDnsRouteImport } from './routes/email-dns'
 import { Route as DummyImageRouteImport } from './routes/dummy-image'
@@ -521,6 +522,11 @@ const EnvParserRoute = EnvParserRouteImport.update({
   path: '/env-parser',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EncodingRoute = EncodingRouteImport.update({
+  id: '/encoding',
+  path: '/encoding',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EmojiConverterRoute = EmojiConverterRouteImport.update({
   id: '/emoji-converter',
   path: '/emoji-converter',
@@ -813,6 +819,7 @@ export interface FileRoutesByFullPath {
   '/dummy-image': typeof DummyImageRoute
   '/email-dns': typeof EmailDnsRoute
   '/emoji-converter': typeof EmojiConverterRoute
+  '/encoding': typeof EncodingRoute
   '/env-parser': typeof EnvParserRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
   '/gitignore': typeof GitignoreRoute
@@ -941,6 +948,7 @@ export interface FileRoutesByTo {
   '/dummy-image': typeof DummyImageRoute
   '/email-dns': typeof EmailDnsRoute
   '/emoji-converter': typeof EmojiConverterRoute
+  '/encoding': typeof EncodingRoute
   '/env-parser': typeof EnvParserRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
   '/gitignore': typeof GitignoreRoute
@@ -1070,6 +1078,7 @@ export interface FileRoutesById {
   '/dummy-image': typeof DummyImageRoute
   '/email-dns': typeof EmailDnsRoute
   '/emoji-converter': typeof EmojiConverterRoute
+  '/encoding': typeof EncodingRoute
   '/env-parser': typeof EnvParserRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
   '/gitignore': typeof GitignoreRoute
@@ -1200,6 +1209,7 @@ export interface FileRouteTypes {
     | '/dummy-image'
     | '/email-dns'
     | '/emoji-converter'
+    | '/encoding'
     | '/env-parser'
     | '/favicon-generator'
     | '/gitignore'
@@ -1328,6 +1338,7 @@ export interface FileRouteTypes {
     | '/dummy-image'
     | '/email-dns'
     | '/emoji-converter'
+    | '/encoding'
     | '/env-parser'
     | '/favicon-generator'
     | '/gitignore'
@@ -1456,6 +1467,7 @@ export interface FileRouteTypes {
     | '/dummy-image'
     | '/email-dns'
     | '/emoji-converter'
+    | '/encoding'
     | '/env-parser'
     | '/favicon-generator'
     | '/gitignore'
@@ -1585,6 +1597,7 @@ export interface RootRouteChildren {
   DummyImageRoute: typeof DummyImageRoute
   EmailDnsRoute: typeof EmailDnsRoute
   EmojiConverterRoute: typeof EmojiConverterRoute
+  EncodingRoute: typeof EncodingRoute
   EnvParserRoute: typeof EnvParserRoute
   FaviconGeneratorRoute: typeof FaviconGeneratorRoute
   GitignoreRoute: typeof GitignoreRoute
@@ -2209,6 +2222,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EnvParserRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/encoding': {
+      id: '/encoding'
+      path: '/encoding'
+      fullPath: '/encoding'
+      preLoaderRoute: typeof EncodingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/emoji-converter': {
       id: '/emoji-converter'
       path: '/emoji-converter'
@@ -2601,6 +2621,7 @@ const rootRouteChildren: RootRouteChildren = {
   DummyImageRoute: DummyImageRoute,
   EmailDnsRoute: EmailDnsRoute,
   EmojiConverterRoute: EmojiConverterRoute,
+  EncodingRoute: EncodingRoute,
   EnvParserRoute: EnvParserRoute,
   FaviconGeneratorRoute: FaviconGeneratorRoute,
   GitignoreRoute: GitignoreRoute,
