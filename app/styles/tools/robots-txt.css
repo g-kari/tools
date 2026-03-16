@@ -1,5 +1,21 @@
 /* robots.txt ジェネレーター */
 
+/* ルール件数バッジ */
+.robots-rule-count {
+  font-weight: 400;
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-left: 0.5rem;
+}
+
+/* クイック Disallow ヒント */
+.robots-quick-disallow-hint {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 0.75rem;
+  margin-top: 0;
+}
+
 /* プリセットボタン群 */
 .robots-preset-row {
   display: flex;

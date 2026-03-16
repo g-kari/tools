@@ -1,0 +1,167 @@
+/* 色覚シミュレーター スタイル (prefix: cvd-) */
+
+/* SVG フィルター定義要素（非表示） */
+.cvd-svg-filters {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* ---- 元画像セクション ---- */
+.cvd-original-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+}
+
+.cvd-original-header .section-title {
+  margin-bottom: 0;
+}
+
+.cvd-clear-btn {
+  font-size: 0.8125rem;
+  padding: 4px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--outline-variant);
+  background: var(--surface);
+  color: var(--on-surface-variant);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.cvd-clear-btn:hover {
+  background: var(--error-container, #ffdad6);
+  color: var(--on-error-container, #410002);
+  border-color: var(--error, #ba1a1a);
+}
+
+.cvd-original-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--surface-container-lowest);
+  max-height: 420px;
+}
+
+.cvd-original-image {
+  max-width: 100%;
+  max-height: 420px;
+  object-fit: contain;
+  display: block;
+}
+
+/* ---- シミュレーショングリッドのヒント ---- */
+.cvd-grid-hint {
+  font-size: 0.8125rem;
+  color: var(--on-surface-variant);
+  margin: 0 0 var(--space-3);
+}
+
+/* ---- シミュレーショングリッド ---- */
+.cvd-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+}
+
+@media (max-width: 900px) {
+  .cvd-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 580px) {
+  .cvd-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---- シミュレーションカード ---- */
+.cvd-card {
+  background: var(--surface-container);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.cvd-card-header {
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--outline-variant);
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  background: var(--surface-container-high);
+}
+
+.cvd-card-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--on-surface);
+}
+
+.cvd-card-english {
+  font-size: 0.75rem;
+  color: var(--on-surface-variant);
+  font-style: italic;
+}
+
+.cvd-card-image-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-container-lowest);
+  min-height: 140px;
+  overflow: hidden;
+}
+
+.cvd-card-image {
+  max-width: 100%;
+  max-height: 200px;
+  object-fit: contain;
+  display: block;
+}
+
+.cvd-card-desc {
+  font-size: 0.8125rem;
+  color: var(--on-surface-variant);
+  line-height: 1.5;
+  padding: var(--space-2) var(--space-3);
+  margin: 0;
+  flex: 1;
+}
+
+.cvd-download-btn {
+  margin: var(--space-2) var(--space-3) var(--space-3);
+  padding: 6px 16px;
+  font-size: 0.8125rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--outline-variant);
+  background: var(--surface);
+  color: var(--on-surface);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  align-self: flex-start;
+}
+
+.cvd-download-btn:hover {
+  background: var(--primary-container);
+  color: var(--on-primary-container);
+  border-color: var(--primary);
+}
+
+/* ---- モーション軽減 ---- */
+@media (prefers-reduced-motion: reduce) {
+  .cvd-clear-btn,
+  .cvd-download-btn {
+    transition: none;
+  }
+}

@@ -655,6 +655,13 @@ const toolCatalog: ToolCategory[] = [
           "WCAG 2.1準拠のコントラスト比計算ツール。前景色と背景色の組み合わせをAA・AAAで判定",
         icon: "🎯",
       },
+      {
+        path: "/color-blind",
+        label: "色覚シミュレーター",
+        description:
+          "色覚異常シミュレーター。Deuteranopia・Protanopia・Tritanopiaなど6種類の色覚タイプで画像がどのように見えるか確認できるアクセシビリティツール。",
+        icon: "👁️",
+      },
     ],
   },
   {

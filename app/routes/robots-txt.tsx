@@ -328,9 +328,7 @@ function RobotsTxtGenerator() {
         <div className="converter-section">
           <span className="section-title">
             クローラールール
-            <span
-              style={{ fontWeight: 400, fontSize: "0.8125rem", color: "var(--md-sys-color-on-surface-variant)", marginLeft: "0.5rem" }}
-            >
+            <span className="robots-rule-count">
               ({options.rules.length} 件)
             </span>
           </span>
@@ -440,13 +438,7 @@ function RobotsTxtGenerator() {
             <span className="section-title">
               よく使う Disallow パス
             </span>
-            <p
-              style={{
-                fontSize: "0.8125rem",
-                color: "var(--md-sys-color-on-surface-variant)",
-                marginBottom: "0.75rem",
-              }}
-            >
+            <p className="robots-quick-disallow-hint">
               クリックで最初のルールの Disallow に追加します
             </p>
             <div className="robots-preset-row">
