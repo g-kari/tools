@@ -85,3 +85,5 @@
 @import "./styles/tools/css-text-shadow.css";
 @import "./styles/tools/css-border-radius.css";
 @import "./styles/tools/css-filter.css";
+@import "./styles/tools/bitwise.css";
+@import "./styles/tools/css-transform.css";

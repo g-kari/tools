@@ -1,0 +1,324 @@
+/* Bitwise Calculator styles */
+
+.bw-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .bw-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* === 入力パネル === */
+.bw-controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.bw-section {
+  background: var(--surface-container);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+}
+
+.bw-section-title {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-3);
+}
+
+/* 入力グループ */
+.bw-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.bw-input-label {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--on-surface);
+  margin-bottom: var(--space-1);
+}
+
+.bw-input-row {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.bw-base-select {
+  flex-shrink: 0;
+  padding: var(--space-2) var(--space-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--outline-variant);
+  background: var(--surface);
+  color: var(--on-surface);
+  font-size: var(--text-sm);
+  font-family: var(--font-mono);
+  cursor: pointer;
+  min-width: 60px;
+}
+
+.bw-number-input {
+  flex: 1;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--outline-variant);
+  background: var(--surface);
+  color: var(--on-surface);
+  font-size: var(--text-sm);
+  font-family: var(--font-mono);
+}
+
+.bw-number-input.error {
+  border-color: var(--error, #ba1a1a);
+  background: color-mix(in srgb, var(--error, #ba1a1a) 8%, transparent);
+}
+
+.bw-number-input:focus,
+.bw-base-select:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 1px;
+}
+
+.bw-input-error {
+  font-size: var(--text-xs);
+  color: var(--error, #ba1a1a);
+  margin-top: var(--space-1);
+}
+
+/* 数値表現 */
+.bw-repr-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+}
+
+.bw-repr-item {
+  background: var(--surface-container-highest);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-3);
+}
+
+.bw-repr-base {
+  font-size: var(--text-xs);
+  color: var(--on-surface-variant);
+  margin-bottom: 2px;
+}
+
+.bw-repr-value {
+  font-size: var(--text-sm);
+  font-family: var(--font-mono);
+  color: var(--on-surface);
+  word-break: break-all;
+}
+
+/* ビット表示 */
+.bw-bits-section {
+  margin-top: var(--space-3);
+}
+
+.bw-bits-label {
+  font-size: var(--text-xs);
+  color: var(--on-surface-variant);
+  margin-bottom: var(--space-1);
+}
+
+.bw-bits-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.bw-bit {
+  width: 18px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  font-weight: 700;
+  transition: background 0.1s;
+}
+
+.bw-bit-0 {
+  background: var(--surface-container-highest);
+  color: var(--on-surface-variant);
+}
+
+.bw-bit-1 {
+  background: var(--primary);
+  color: var(--on-primary, white);
+}
+
+.bw-bit-sep {
+  width: 4px;
+}
+
+.bw-bit-index {
+  font-size: 9px;
+  color: var(--on-surface-variant);
+  opacity: 0.6;
+  align-self: flex-end;
+}
+
+.bw-popcount {
+  font-size: var(--text-xs);
+  color: var(--on-surface-variant);
+  margin-top: var(--space-1);
+}
+
+/* === 右パネル（結果） === */
+.bw-right {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  position: sticky;
+  top: var(--space-4);
+}
+
+/* 演算結果テーブル */
+.bw-results-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.bw-results-table th {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--on-surface-variant);
+  text-align: left;
+  padding: var(--space-1) var(--space-2);
+  border-bottom: 1px solid var(--outline-variant);
+}
+
+.bw-results-table td {
+  padding: var(--space-2) var(--space-2);
+  font-size: var(--text-sm);
+  border-bottom: 1px solid var(--surface-container-highest);
+  vertical-align: middle;
+}
+
+.bw-results-table tr:last-child td {
+  border-bottom: none;
+}
+
+.bw-results-table tr:hover td {
+  background: var(--surface-container-high);
+}
+
+.bw-op-label {
+  font-weight: 600;
+  color: var(--on-surface);
+}
+
+.bw-op-symbol {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.bw-op-decimal {
+  font-family: var(--font-mono);
+  color: var(--on-surface);
+}
+
+.bw-op-hex {
+  font-family: var(--font-mono);
+  color: var(--on-surface-variant);
+  font-size: var(--text-xs);
+}
+
+.bw-op-desc {
+  font-size: var(--text-xs);
+  color: var(--on-surface-variant);
+}
+
+.bw-op-copy-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-1);
+  border-radius: var(--radius-sm);
+  color: var(--on-surface-variant);
+  font-size: var(--text-xs);
+  white-space: nowrap;
+}
+
+.bw-op-copy-btn:hover {
+  background: var(--surface-container-high);
+  color: var(--primary);
+}
+
+/* シフト演算セクション */
+.bw-shift-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.bw-shift-label {
+  font-size: var(--text-sm);
+  color: var(--on-surface);
+  flex-shrink: 0;
+}
+
+.bw-shift-input {
+  width: 64px;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--outline-variant);
+  background: var(--surface);
+  color: var(--on-surface);
+  font-size: var(--text-sm);
+  font-family: var(--font-mono);
+  text-align: right;
+}
+
+.bw-shift-input:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 1px;
+}
+
+.bw-shift-results {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.bw-shift-result-item {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: var(--space-2);
+  align-items: center;
+  background: var(--surface-container-highest);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-3);
+}
+
+.bw-shift-result-op {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.bw-shift-result-value {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--on-surface);
+}

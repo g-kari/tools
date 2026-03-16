@@ -200,6 +200,13 @@ const toolCatalog: ToolCategory[] = [
           "数式をリアルタイムで評価するツール。四則演算・三角関数・対数・べき乗など多彩な演算に対応",
         icon: "🧮",
       },
+      {
+        path: "/bitwise",
+        label: "ビット演算計算機",
+        description:
+          "AND・OR・XOR・NOT・シフト演算をビジュアルで確認できる計算機。2進数・8進数・10進数・16進数で入力可能。32ビットビット表示付き。",
+        icon: "🔢",
+      },
     ],
   },
   {
@@ -424,6 +431,13 @@ const toolCatalog: ToolCategory[] = [
         description:
           "CSS filterプロパティをビジュアルエディターで作成。blur・brightness・contrast・grayscale・hue-rotate・invert・saturate・sepiaをスライダーで調整。プリセット対応。",
         icon: "🔮",
+      },
+      {
+        path: "/css-transform",
+        label: "CSS Transformジェネレーター",
+        description:
+          "CSS transformプロパティをビジュアルエディターで作成。translate・rotate・scale・skew・perspectiveをスライダーで調整してCSSコードを即座に生成。",
+        icon: "🔄",
       },
       {
         path: "/image-to-gif",

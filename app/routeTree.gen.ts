@@ -87,6 +87,7 @@ import { Route as DiffRouteImport } from './routes/diff'
 import { Route as DiceRollRouteImport } from './routes/dice-roll'
 import { Route as CurlBuilderRouteImport } from './routes/curl-builder'
 import { Route as CsvJsonRouteImport } from './routes/csv-json'
+import { Route as CssTransformRouteImport } from './routes/css-transform'
 import { Route as CssTextShadowRouteImport } from './routes/css-text-shadow'
 import { Route as CssGridRouteImport } from './routes/css-grid'
 import { Route as CssGradientRouteImport } from './routes/css-gradient'
@@ -105,6 +106,7 @@ import { Route as ColorContrastRouteImport } from './routes/color-contrast'
 import { Route as CidrRouteImport } from './routes/cidr'
 import { Route as ChmodRouteImport } from './routes/chmod'
 import { Route as CharCountRouteImport } from './routes/char-count'
+import { Route as BitwiseRouteImport } from './routes/bitwise'
 import { Route as Base64ImageRouteImport } from './routes/base64-image'
 import { Route as Base64RouteImport } from './routes/base64'
 import { Route as BarcodeRouteImport } from './routes/barcode'
@@ -506,6 +508,11 @@ const CsvJsonRoute = CsvJsonRouteImport.update({
   path: '/csv-json',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CssTransformRoute = CssTransformRouteImport.update({
+  id: '/css-transform',
+  path: '/css-transform',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CssTextShadowRoute = CssTextShadowRouteImport.update({
   id: '/css-text-shadow',
   path: '/css-text-shadow',
@@ -596,6 +603,11 @@ const CharCountRoute = CharCountRouteImport.update({
   path: '/char-count',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BitwiseRoute = BitwiseRouteImport.update({
+  id: '/bitwise',
+  path: '/bitwise',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const Base64ImageRoute = Base64ImageRouteImport.update({
   id: '/base64-image',
   path: '/base64-image',
@@ -654,6 +666,7 @@ export interface FileRoutesByFullPath {
   '/barcode': typeof BarcodeRoute
   '/base64': typeof Base64Route
   '/base64-image': typeof Base64ImageRoute
+  '/bitwise': typeof BitwiseRoute
   '/char-count': typeof CharCountRoute
   '/chmod': typeof ChmodRoute
   '/cidr': typeof CidrRoute
@@ -672,6 +685,7 @@ export interface FileRoutesByFullPath {
   '/css-gradient': typeof CssGradientRoute
   '/css-grid': typeof CssGridRoute
   '/css-text-shadow': typeof CssTextShadowRoute
+  '/css-transform': typeof CssTransformRoute
   '/csv-json': typeof CsvJsonRoute
   '/curl-builder': typeof CurlBuilderRoute
   '/dice-roll': typeof DiceRollRoute
@@ -762,6 +776,7 @@ export interface FileRoutesByTo {
   '/barcode': typeof BarcodeRoute
   '/base64': typeof Base64Route
   '/base64-image': typeof Base64ImageRoute
+  '/bitwise': typeof BitwiseRoute
   '/char-count': typeof CharCountRoute
   '/chmod': typeof ChmodRoute
   '/cidr': typeof CidrRoute
@@ -780,6 +795,7 @@ export interface FileRoutesByTo {
   '/css-gradient': typeof CssGradientRoute
   '/css-grid': typeof CssGridRoute
   '/css-text-shadow': typeof CssTextShadowRoute
+  '/css-transform': typeof CssTransformRoute
   '/csv-json': typeof CsvJsonRoute
   '/curl-builder': typeof CurlBuilderRoute
   '/dice-roll': typeof DiceRollRoute
@@ -871,6 +887,7 @@ export interface FileRoutesById {
   '/barcode': typeof BarcodeRoute
   '/base64': typeof Base64Route
   '/base64-image': typeof Base64ImageRoute
+  '/bitwise': typeof BitwiseRoute
   '/char-count': typeof CharCountRoute
   '/chmod': typeof ChmodRoute
   '/cidr': typeof CidrRoute
@@ -889,6 +906,7 @@ export interface FileRoutesById {
   '/css-gradient': typeof CssGradientRoute
   '/css-grid': typeof CssGridRoute
   '/css-text-shadow': typeof CssTextShadowRoute
+  '/css-transform': typeof CssTransformRoute
   '/csv-json': typeof CsvJsonRoute
   '/curl-builder': typeof CurlBuilderRoute
   '/dice-roll': typeof DiceRollRoute
@@ -981,6 +999,7 @@ export interface FileRouteTypes {
     | '/barcode'
     | '/base64'
     | '/base64-image'
+    | '/bitwise'
     | '/char-count'
     | '/chmod'
     | '/cidr'
@@ -999,6 +1018,7 @@ export interface FileRouteTypes {
     | '/css-gradient'
     | '/css-grid'
     | '/css-text-shadow'
+    | '/css-transform'
     | '/csv-json'
     | '/curl-builder'
     | '/dice-roll'
@@ -1089,6 +1109,7 @@ export interface FileRouteTypes {
     | '/barcode'
     | '/base64'
     | '/base64-image'
+    | '/bitwise'
     | '/char-count'
     | '/chmod'
     | '/cidr'
@@ -1107,6 +1128,7 @@ export interface FileRouteTypes {
     | '/css-gradient'
     | '/css-grid'
     | '/css-text-shadow'
+    | '/css-transform'
     | '/csv-json'
     | '/curl-builder'
     | '/dice-roll'
@@ -1197,6 +1219,7 @@ export interface FileRouteTypes {
     | '/barcode'
     | '/base64'
     | '/base64-image'
+    | '/bitwise'
     | '/char-count'
     | '/chmod'
     | '/cidr'
@@ -1215,6 +1238,7 @@ export interface FileRouteTypes {
     | '/css-gradient'
     | '/css-grid'
     | '/css-text-shadow'
+    | '/css-transform'
     | '/csv-json'
     | '/curl-builder'
     | '/dice-roll'
@@ -1306,6 +1330,7 @@ export interface RootRouteChildren {
   BarcodeRoute: typeof BarcodeRoute
   Base64Route: typeof Base64Route
   Base64ImageRoute: typeof Base64ImageRoute
+  BitwiseRoute: typeof BitwiseRoute
   CharCountRoute: typeof CharCountRoute
   ChmodRoute: typeof ChmodRoute
   CidrRoute: typeof CidrRoute
@@ -1324,6 +1349,7 @@ export interface RootRouteChildren {
   CssGradientRoute: typeof CssGradientRoute
   CssGridRoute: typeof CssGridRoute
   CssTextShadowRoute: typeof CssTextShadowRoute
+  CssTransformRoute: typeof CssTransformRoute
   CsvJsonRoute: typeof CsvJsonRoute
   CurlBuilderRoute: typeof CurlBuilderRoute
   DiceRollRoute: typeof DiceRollRoute
@@ -1956,6 +1982,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CsvJsonRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/css-transform': {
+      id: '/css-transform'
+      path: '/css-transform'
+      fullPath: '/css-transform'
+      preLoaderRoute: typeof CssTransformRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/css-text-shadow': {
       id: '/css-text-shadow'
       path: '/css-text-shadow'
@@ -2082,6 +2115,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CharCountRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/bitwise': {
+      id: '/bitwise'
+      path: '/bitwise'
+      fullPath: '/bitwise'
+      preLoaderRoute: typeof BitwiseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/base64-image': {
       id: '/base64-image'
       path: '/base64-image'
@@ -2162,6 +2202,7 @@ const rootRouteChildren: RootRouteChildren = {
   BarcodeRoute: BarcodeRoute,
   Base64Route: Base64Route,
   Base64ImageRoute: Base64ImageRoute,
+  BitwiseRoute: BitwiseRoute,
   CharCountRoute: CharCountRoute,
   ChmodRoute: ChmodRoute,
   CidrRoute: CidrRoute,
@@ -2180,6 +2221,7 @@ const rootRouteChildren: RootRouteChildren = {
   CssGradientRoute: CssGradientRoute,
   CssGridRoute: CssGridRoute,
   CssTextShadowRoute: CssTextShadowRoute,
+  CssTransformRoute: CssTransformRoute,
   CsvJsonRoute: CsvJsonRoute,
   CurlBuilderRoute: CurlBuilderRoute,
   DiceRollRoute: DiceRollRoute,
