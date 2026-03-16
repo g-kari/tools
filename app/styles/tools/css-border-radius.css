@@ -1,0 +1,274 @@
+/* CSS Border Radius Generator スタイル */
+
+.cbr-layout {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: var(--space-4);
+  align-items: start;
+}
+
+@media (max-width: 860px) {
+  .cbr-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---- 左パネル ---- */
+.cbr-controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.cbr-section {
+  background: var(--surface-container);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.cbr-section-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--on-surface);
+  margin: 0;
+}
+
+.cbr-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+/* ---- プリセット ---- */
+.cbr-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.cbr-preset-btn {
+  font-size: 0.78rem;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--outline-variant);
+  background: var(--surface);
+  color: var(--on-surface-variant);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+
+.cbr-preset-btn:hover {
+  background: var(--primary-container);
+  color: var(--on-primary-container);
+  border-color: var(--primary);
+}
+
+/* ---- 単位・モード切替 ---- */
+.cbr-toggle-row {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.cbr-toggle-group {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.cbr-toggle-label {
+  font-size: 0.78rem;
+  color: var(--on-surface-variant);
+  margin-right: var(--space-1);
+}
+
+.cbr-toggle-btn {
+  font-size: 0.78rem;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--outline-variant);
+  background: var(--surface);
+  color: var(--on-surface-variant);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.cbr-toggle-btn--active {
+  background: var(--primary-container);
+  color: var(--on-primary-container);
+  border-color: var(--primary);
+}
+
+/* ---- コーナーグリッド ---- */
+.cbr-corners-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+
+.cbr-corner-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.cbr-corner-label {
+  font-size: 0.78rem;
+  color: var(--on-surface-variant);
+  font-weight: 500;
+}
+
+.cbr-corner-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.cbr-input-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.cbr-input-axis-label {
+  font-size: 0.72rem;
+  color: var(--on-surface-variant);
+  font-family: monospace;
+  min-width: 12px;
+}
+
+.cbr-range {
+  flex: 1;
+  accent-color: var(--primary);
+  height: 4px;
+}
+
+.cbr-range-value {
+  font-size: 0.75rem;
+  color: var(--on-surface-variant);
+  min-width: 38px;
+  text-align: right;
+  font-family: monospace;
+}
+
+.cbr-number-input {
+  width: 56px;
+  padding: 3px 6px;
+  font-size: 0.78rem;
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--on-surface);
+  text-align: right;
+  transition: border-color 0.15s;
+}
+
+.cbr-number-input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+/* ---- 右パネル ---- */
+.cbr-right {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* ---- ライブプレビュー ---- */
+.cbr-preview-section {
+  background: var(--surface-container);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+}
+
+.cbr-preview-canvas {
+  min-height: 220px;
+  border-radius: var(--radius-md);
+  border: 1px dashed var(--outline-variant);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: var(--space-3);
+  background: var(--surface-container-low);
+  padding: var(--space-4);
+}
+
+.cbr-preview-box {
+  width: 160px;
+  height: 120px;
+  background: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-radius 0.25s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.cbr-preview-box-label {
+  font-size: 0.75rem;
+  color: var(--on-primary);
+  font-family: monospace;
+  opacity: 0.8;
+  pointer-events: none;
+  text-align: center;
+  padding: var(--space-1);
+  word-break: break-all;
+}
+
+/* ---- サイズ調整 ---- */
+.cbr-size-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}
+
+.cbr-size-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.cbr-size-label {
+  font-size: 0.75rem;
+  color: var(--on-surface-variant);
+}
+
+/* ---- CSS 出力 ---- */
+.cbr-css-section {
+  background: var(--surface-container);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+}
+
+.cbr-css-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+}
+
+.cbr-css-output {
+  background: var(--surface-container-lowest);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  font-family: monospace;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: var(--on-surface);
+  white-space: pre-wrap;
+  word-break: break-all;
+  overflow-x: auto;
+  min-height: 80px;
+  margin: 0;
+}

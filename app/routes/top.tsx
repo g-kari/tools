@@ -412,6 +412,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "✦",
       },
       {
+        path: "/css-border-radius",
+        label: "CSS Border Radiusジェネレーター",
+        description:
+          "border-radiusをビジュアルエディターで作成。4コーナー独立制御・楕円モード・プリセット対応。円形・ピル型・リーフなど多彩な形状を直感的に試せる。",
+        icon: "⬜",
+      },
+      {
         path: "/image-to-gif",
         label: "画像→GIF変換",
         description: "複数画像からアニメーションGIFを作成",

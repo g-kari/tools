@@ -87,10 +87,12 @@ import { Route as DiffRouteImport } from './routes/diff'
 import { Route as DiceRollRouteImport } from './routes/dice-roll'
 import { Route as CurlBuilderRouteImport } from './routes/curl-builder'
 import { Route as CsvJsonRouteImport } from './routes/csv-json'
+import { Route as CssTextShadowRouteImport } from './routes/css-text-shadow'
 import { Route as CssGridRouteImport } from './routes/css-grid'
 import { Route as CssGradientRouteImport } from './routes/css-gradient'
 import { Route as CssFlexboxRouteImport } from './routes/css-flexbox'
 import { Route as CssBoxShadowRouteImport } from './routes/css-box-shadow'
+import { Route as CssBorderRadiusRouteImport } from './routes/css-border-radius'
 import { Route as CssAnimationRouteImport } from './routes/css-animation'
 import { Route as CronParserRouteImport } from './routes/cron-parser'
 import { Route as CronRouteImport } from './routes/cron'
@@ -503,6 +505,11 @@ const CsvJsonRoute = CsvJsonRouteImport.update({
   path: '/csv-json',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CssTextShadowRoute = CssTextShadowRouteImport.update({
+  id: '/css-text-shadow',
+  path: '/css-text-shadow',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CssGridRoute = CssGridRouteImport.update({
   id: '/css-grid',
   path: '/css-grid',
@@ -521,6 +528,11 @@ const CssFlexboxRoute = CssFlexboxRouteImport.update({
 const CssBoxShadowRoute = CssBoxShadowRouteImport.update({
   id: '/css-box-shadow',
   path: '/css-box-shadow',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CssBorderRadiusRoute = CssBorderRadiusRouteImport.update({
+  id: '/css-border-radius',
+  path: '/css-border-radius',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CssAnimationRoute = CssAnimationRouteImport.update({
@@ -647,10 +659,12 @@ export interface FileRoutesByFullPath {
   '/cron': typeof CronRoute
   '/cron-parser': typeof CronParserRoute
   '/css-animation': typeof CssAnimationRoute
+  '/css-border-radius': typeof CssBorderRadiusRoute
   '/css-box-shadow': typeof CssBoxShadowRoute
   '/css-flexbox': typeof CssFlexboxRoute
   '/css-gradient': typeof CssGradientRoute
   '/css-grid': typeof CssGridRoute
+  '/css-text-shadow': typeof CssTextShadowRoute
   '/csv-json': typeof CsvJsonRoute
   '/curl-builder': typeof CurlBuilderRoute
   '/dice-roll': typeof DiceRollRoute
@@ -752,10 +766,12 @@ export interface FileRoutesByTo {
   '/cron': typeof CronRoute
   '/cron-parser': typeof CronParserRoute
   '/css-animation': typeof CssAnimationRoute
+  '/css-border-radius': typeof CssBorderRadiusRoute
   '/css-box-shadow': typeof CssBoxShadowRoute
   '/css-flexbox': typeof CssFlexboxRoute
   '/css-gradient': typeof CssGradientRoute
   '/css-grid': typeof CssGridRoute
+  '/css-text-shadow': typeof CssTextShadowRoute
   '/csv-json': typeof CsvJsonRoute
   '/curl-builder': typeof CurlBuilderRoute
   '/dice-roll': typeof DiceRollRoute
@@ -858,10 +874,12 @@ export interface FileRoutesById {
   '/cron': typeof CronRoute
   '/cron-parser': typeof CronParserRoute
   '/css-animation': typeof CssAnimationRoute
+  '/css-border-radius': typeof CssBorderRadiusRoute
   '/css-box-shadow': typeof CssBoxShadowRoute
   '/css-flexbox': typeof CssFlexboxRoute
   '/css-gradient': typeof CssGradientRoute
   '/css-grid': typeof CssGridRoute
+  '/css-text-shadow': typeof CssTextShadowRoute
   '/csv-json': typeof CsvJsonRoute
   '/curl-builder': typeof CurlBuilderRoute
   '/dice-roll': typeof DiceRollRoute
@@ -965,10 +983,12 @@ export interface FileRouteTypes {
     | '/cron'
     | '/cron-parser'
     | '/css-animation'
+    | '/css-border-radius'
     | '/css-box-shadow'
     | '/css-flexbox'
     | '/css-gradient'
     | '/css-grid'
+    | '/css-text-shadow'
     | '/csv-json'
     | '/curl-builder'
     | '/dice-roll'
@@ -1070,10 +1090,12 @@ export interface FileRouteTypes {
     | '/cron'
     | '/cron-parser'
     | '/css-animation'
+    | '/css-border-radius'
     | '/css-box-shadow'
     | '/css-flexbox'
     | '/css-gradient'
     | '/css-grid'
+    | '/css-text-shadow'
     | '/csv-json'
     | '/curl-builder'
     | '/dice-roll'
@@ -1175,10 +1197,12 @@ export interface FileRouteTypes {
     | '/cron'
     | '/cron-parser'
     | '/css-animation'
+    | '/css-border-radius'
     | '/css-box-shadow'
     | '/css-flexbox'
     | '/css-gradient'
     | '/css-grid'
+    | '/css-text-shadow'
     | '/csv-json'
     | '/curl-builder'
     | '/dice-roll'
@@ -1281,10 +1305,12 @@ export interface RootRouteChildren {
   CronRoute: typeof CronRoute
   CronParserRoute: typeof CronParserRoute
   CssAnimationRoute: typeof CssAnimationRoute
+  CssBorderRadiusRoute: typeof CssBorderRadiusRoute
   CssBoxShadowRoute: typeof CssBoxShadowRoute
   CssFlexboxRoute: typeof CssFlexboxRoute
   CssGradientRoute: typeof CssGradientRoute
   CssGridRoute: typeof CssGridRoute
+  CssTextShadowRoute: typeof CssTextShadowRoute
   CsvJsonRoute: typeof CsvJsonRoute
   CurlBuilderRoute: typeof CurlBuilderRoute
   DiceRollRoute: typeof DiceRollRoute
@@ -1917,6 +1943,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CsvJsonRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/css-text-shadow': {
+      id: '/css-text-shadow'
+      path: '/css-text-shadow'
+      fullPath: '/css-text-shadow'
+      preLoaderRoute: typeof CssTextShadowRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/css-grid': {
       id: '/css-grid'
       path: '/css-grid'
@@ -1943,6 +1976,13 @@ declare module '@tanstack/react-router' {
       path: '/css-box-shadow'
       fullPath: '/css-box-shadow'
       preLoaderRoute: typeof CssBoxShadowRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/css-border-radius': {
+      id: '/css-border-radius'
+      path: '/css-border-radius'
+      fullPath: '/css-border-radius'
+      preLoaderRoute: typeof CssBorderRadiusRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/css-animation': {
@@ -2113,10 +2153,12 @@ const rootRouteChildren: RootRouteChildren = {
   CronRoute: CronRoute,
   CronParserRoute: CronParserRoute,
   CssAnimationRoute: CssAnimationRoute,
+  CssBorderRadiusRoute: CssBorderRadiusRoute,
   CssBoxShadowRoute: CssBoxShadowRoute,
   CssFlexboxRoute: CssFlexboxRoute,
   CssGradientRoute: CssGradientRoute,
   CssGridRoute: CssGridRoute,
+  CssTextShadowRoute: CssTextShadowRoute,
   CsvJsonRoute: CsvJsonRoute,
   CurlBuilderRoute: CurlBuilderRoute,
   DiceRollRoute: DiceRollRoute,

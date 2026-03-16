@@ -89,6 +89,7 @@ const navCategories = [
       { path: "/css-grid", label: "CSS Gridジェネレーター" },
       { path: "/css-box-shadow", label: "CSS Box Shadowジェネレーター" },
       { path: "/css-text-shadow", label: "CSS Text Shadowジェネレーター" },
+      { path: "/css-border-radius", label: "CSS Border Radiusジェネレーター" },
       { path: "/color-harmony", label: "カラーハーモニー" },
       { path: "/image-to-gif", label: "画像→GIF変換" },
       { path: "/emoji-converter", label: "絵文字変換" },
