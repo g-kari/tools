@@ -140,6 +140,7 @@ import { Route as ColorBlindRouteImport } from './routes/color-blind'
 import { Route as CidrRouteImport } from './routes/cidr'
 import { Route as ChmodRouteImport } from './routes/chmod'
 import { Route as CharCountRouteImport } from './routes/char-count'
+import { Route as CertDecoderRouteImport } from './routes/cert-decoder'
 import { Route as BitwiseRouteImport } from './routes/bitwise'
 import { Route as Base64ImageRouteImport } from './routes/base64-image'
 import { Route as Base64RouteImport } from './routes/base64'
@@ -808,6 +809,11 @@ const CharCountRoute = CharCountRouteImport.update({
   path: '/char-count',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CertDecoderRoute = CertDecoderRouteImport.update({
+  id: '/cert-decoder',
+  path: '/cert-decoder',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BitwiseRoute = BitwiseRouteImport.update({
   id: '/bitwise',
   path: '/bitwise',
@@ -878,6 +884,7 @@ export interface FileRoutesByFullPath {
   '/base64': typeof Base64Route
   '/base64-image': typeof Base64ImageRoute
   '/bitwise': typeof BitwiseRoute
+  '/cert-decoder': typeof CertDecoderRoute
   '/char-count': typeof CharCountRoute
   '/chmod': typeof ChmodRoute
   '/cidr': typeof CidrRoute
@@ -1023,6 +1030,7 @@ export interface FileRoutesByTo {
   '/base64': typeof Base64Route
   '/base64-image': typeof Base64ImageRoute
   '/bitwise': typeof BitwiseRoute
+  '/cert-decoder': typeof CertDecoderRoute
   '/char-count': typeof CharCountRoute
   '/chmod': typeof ChmodRoute
   '/cidr': typeof CidrRoute
@@ -1169,6 +1177,7 @@ export interface FileRoutesById {
   '/base64': typeof Base64Route
   '/base64-image': typeof Base64ImageRoute
   '/bitwise': typeof BitwiseRoute
+  '/cert-decoder': typeof CertDecoderRoute
   '/char-count': typeof CharCountRoute
   '/chmod': typeof ChmodRoute
   '/cidr': typeof CidrRoute
@@ -1316,6 +1325,7 @@ export interface FileRouteTypes {
     | '/base64'
     | '/base64-image'
     | '/bitwise'
+    | '/cert-decoder'
     | '/char-count'
     | '/chmod'
     | '/cidr'
@@ -1461,6 +1471,7 @@ export interface FileRouteTypes {
     | '/base64'
     | '/base64-image'
     | '/bitwise'
+    | '/cert-decoder'
     | '/char-count'
     | '/chmod'
     | '/cidr'
@@ -1606,6 +1617,7 @@ export interface FileRouteTypes {
     | '/base64'
     | '/base64-image'
     | '/bitwise'
+    | '/cert-decoder'
     | '/char-count'
     | '/chmod'
     | '/cidr'
@@ -1752,6 +1764,7 @@ export interface RootRouteChildren {
   Base64Route: typeof Base64Route
   Base64ImageRoute: typeof Base64ImageRoute
   BitwiseRoute: typeof BitwiseRoute
+  CertDecoderRoute: typeof CertDecoderRoute
   CharCountRoute: typeof CharCountRoute
   ChmodRoute: typeof ChmodRoute
   CidrRoute: typeof CidrRoute
@@ -2808,6 +2821,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CharCountRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/cert-decoder': {
+      id: '/cert-decoder'
+      path: '/cert-decoder'
+      fullPath: '/cert-decoder'
+      preLoaderRoute: typeof CertDecoderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/bitwise': {
       id: '/bitwise'
       path: '/bitwise'
@@ -2904,6 +2924,7 @@ const rootRouteChildren: RootRouteChildren = {
   Base64Route: Base64Route,
   Base64ImageRoute: Base64ImageRoute,
   BitwiseRoute: BitwiseRoute,
+  CertDecoderRoute: CertDecoderRoute,
   CharCountRoute: CharCountRoute,
   ChmodRoute: ChmodRoute,
   CidrRoute: CidrRoute,

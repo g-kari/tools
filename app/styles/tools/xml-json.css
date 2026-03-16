@@ -1,0 +1,137 @@
+/* XML/JSON変換ツール スタイル */
+.xml-json-mode-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--md-outline-variant);
+  width: fit-content;
+}
+
+.xml-json-mode-tab {
+  padding: 0.5rem 1.5rem;
+  background: var(--md-surface-container);
+  color: var(--md-on-surface-variant);
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: background 0.15s, color 0.15s;
+}
+
+.xml-json-mode-tab:hover {
+  background: var(--md-surface-container-high);
+}
+
+.xml-json-mode-tab--active {
+  background: var(--md-primary);
+  color: var(--md-on-primary);
+}
+
+.xml-json-io-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  .xml-json-io-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.xml-json-io-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.xml-json-io-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--md-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.xml-json-textarea {
+  width: 100%;
+  min-height: 280px;
+  padding: 0.75rem;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  border: 1px solid var(--md-outline-variant);
+  border-radius: 8px;
+  background: var(--md-surface-container-lowest);
+  color: var(--md-on-surface);
+  resize: vertical;
+  transition: border-color 0.15s;
+  box-sizing: border-box;
+}
+
+.xml-json-textarea:focus {
+  outline: none;
+  border-color: var(--md-primary);
+}
+
+.xml-json-textarea[readonly] {
+  background: var(--md-surface-container);
+  cursor: default;
+}
+
+.xml-json-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.xml-json-btn {
+  padding: 0.5rem 1.25rem;
+  border-radius: 8px;
+  border: 1px solid var(--md-outline);
+  background: var(--md-surface-container);
+  color: var(--md-on-surface);
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background 0.15s;
+}
+
+.xml-json-btn:hover {
+  background: var(--md-surface-container-high);
+}
+
+.xml-json-btn--primary {
+  background: var(--md-primary);
+  color: var(--md-on-primary);
+  border-color: var(--md-primary);
+}
+
+.xml-json-btn--primary:hover {
+  background: var(--md-primary-container);
+  color: var(--md-on-primary-container);
+}
+
+.xml-json-indent-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--md-on-surface-variant);
+  margin-left: auto;
+}
+
+.xml-json-indent-select {
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  border: 1px solid var(--md-outline-variant);
+  background: var(--md-surface-container);
+  color: var(--md-on-surface);
+  font-size: 0.875rem;
+  cursor: pointer;
+}

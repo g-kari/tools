@@ -1,0 +1,178 @@
+/* ULID ジェネレーター */
+
+/* ULID 一覧 */
+.ulid-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ulid-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.625rem 0.875rem;
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.ulid-value {
+  flex: 1;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.875rem;
+  word-break: break-all;
+  color: var(--md-sys-color-on-surface);
+  letter-spacing: 0.03em;
+}
+
+/* タイムスタンプ部・ランダム部をカラーで区別 */
+.ulid-value-ts {
+  color: var(--md-sys-color-primary);
+  font-weight: 700;
+}
+
+.ulid-value-rnd {
+  color: var(--md-sys-color-on-surface);
+}
+
+/* 結果ヘッダー */
+.ulid-result-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+/* オプション行 */
+.ulid-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+}
+
+/* パーサーセクション */
+.ulid-parser-section {
+  margin-top: 2rem;
+}
+
+.ulid-parser-result {
+  margin-top: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.ulid-parser-row {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.375rem 0;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  font-size: 0.875rem;
+  align-items: flex-start;
+}
+
+.ulid-parser-row:last-child {
+  border-bottom: none;
+}
+
+.ulid-parser-label {
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.75rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  min-width: 7rem;
+  flex-shrink: 0;
+  padding-top: 0.125rem;
+}
+
+.ulid-parser-value {
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  color: var(--md-sys-color-on-surface);
+  word-break: break-all;
+  flex: 1;
+}
+
+.ulid-parser-value-ts {
+  color: var(--md-sys-color-primary);
+  font-weight: 700;
+}
+
+.ulid-parser-valid-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  border-radius: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-left: auto;
+}
+
+.ulid-parser-valid-ok {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #a5d6a7;
+}
+
+.ulid-parser-valid-ng {
+  background: #fbe9e7;
+  color: #bf360c;
+  border: 1px solid #ffab91;
+}
+
+.ulid-parser-error {
+  padding: 0.875rem 1rem;
+  background: #fbe9e7;
+  border: 1px solid #ffab91;
+  color: #bf360c;
+  font-size: 0.875rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  margin-top: 0.75rem;
+}
+
+/* 凡例 */
+.ulid-legend {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.ulid-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.ulid-legend-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.ulid-legend-dot-ts {
+  background: var(--md-sys-color-primary);
+}
+
+.ulid-legend-dot-rnd {
+  background: var(--md-sys-color-on-surface);
+}
+
+@media (max-width: 600px) {
+  .ulid-parser-row {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .ulid-parser-label {
+    min-width: auto;
+  }
+}

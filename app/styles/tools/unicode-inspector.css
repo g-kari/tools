@@ -1,0 +1,346 @@
+/* Unicodeコードポイント検査機 (uchi- prefix) */
+
+/* メインレイアウト */
+.uchi-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* 入力エリア */
+.uchi-input-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  animation: fadeInUp 0.3s ease-out 0.1s both;
+}
+
+.uchi-input-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.uchi-textarea {
+  width: 100%;
+  min-height: 100px;
+  resize: vertical;
+  font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
+  font-size: 0.9375rem;
+}
+
+/* 統計バー */
+.uchi-stats-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  animation: fadeInUp 0.3s ease-out 0.15s both;
+}
+
+.uchi-stat-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.uchi-stat-chip-label {
+  opacity: 0.8;
+}
+
+.uchi-stat-chip-value {
+  font-variant-numeric: tabular-nums;
+}
+
+/* フィルター・ツールバー */
+.uchi-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  animation: fadeInUp 0.3s ease-out 0.2s both;
+}
+
+.uchi-filter-input {
+  flex: 1;
+  min-width: 180px;
+}
+
+.uchi-count-label {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  white-space: nowrap;
+}
+
+/* 文字テーブル */
+.uchi-table-wrapper {
+  overflow-x: auto;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 8px;
+  animation: fadeInUp 0.3s ease-out 0.25s both;
+}
+
+.uchi-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  min-width: 640px;
+}
+
+/* テーブルヘッダー */
+.uchi-table-head {
+  background: var(--md-sys-color-surface-variant);
+}
+
+.uchi-table-head th {
+  padding: 0.625rem 0.875rem;
+  text-align: left;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  white-space: nowrap;
+}
+
+/* テーブル行 */
+.uchi-table-row {
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  transition: background-color 0.15s;
+}
+
+.uchi-table-row:last-child {
+  border-bottom: none;
+}
+
+.uchi-table-row:hover {
+  background-color: color-mix(in srgb, var(--md-sys-color-primary) 4%, transparent);
+}
+
+.uchi-table-row td {
+  padding: 0.5rem 0.875rem;
+  vertical-align: middle;
+}
+
+/* 文字プレビューセル */
+.uchi-char-preview {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface-variant);
+  font-size: 1.125rem;
+  line-height: 1;
+  font-family: 'Noto Sans', 'Arial Unicode MS', sans-serif;
+  color: var(--md-sys-color-on-surface);
+}
+
+.uchi-char-preview.uchi-char-control {
+  background: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-on-error-container);
+  font-size: 0.6875rem;
+  font-family: inherit;
+  font-weight: 600;
+}
+
+/* コードポイントセル */
+.uchi-codepoint {
+  font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
+  font-weight: 600;
+  color: var(--md-sys-color-primary);
+  font-size: 0.875rem;
+}
+
+/* モノスペースセル */
+.uchi-mono {
+  font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface);
+}
+
+/* バイト列 */
+.uchi-bytes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.uchi-byte-chip {
+  display: inline-block;
+  padding: 0.125rem 0.375rem;
+  border-radius: 3px;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+/* エンティティセル */
+.uchi-entity {
+  font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-secondary);
+}
+
+.uchi-entity-named {
+  font-weight: 600;
+  color: var(--md-sys-color-tertiary, var(--md-sys-color-secondary));
+}
+
+/* カテゴリバッジ */
+.uchi-category-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.1875rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.uchi-category-Letter {
+  background: color-mix(in srgb, var(--md-sys-color-primary) 15%, transparent);
+  color: var(--md-sys-color-primary);
+}
+
+.uchi-category-Digit {
+  background: color-mix(in srgb, var(--md-sys-color-secondary) 15%, transparent);
+  color: var(--md-sys-color-secondary);
+}
+
+.uchi-category-Symbol {
+  background: color-mix(in srgb, var(--md-sys-color-tertiary, #7c5c00) 15%, transparent);
+  color: var(--md-sys-color-tertiary, #7c5c00);
+}
+
+.uchi-category-Punctuation {
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.uchi-category-Separator {
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.uchi-category-Control {
+  background: color-mix(in srgb, var(--md-sys-color-error) 15%, transparent);
+  color: var(--md-sys-color-error);
+}
+
+.uchi-category-Surrogate {
+  background: color-mix(in srgb, var(--md-sys-color-error) 10%, transparent);
+  color: var(--md-sys-color-error);
+}
+
+.uchi-category-Other {
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* コピーボタン */
+.uchi-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  transition: background-color 0.15s, color 0.15s;
+  flex-shrink: 0;
+}
+
+.uchi-copy-btn:hover {
+  background-color: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-primary);
+}
+
+/* 空の状態 */
+.uchi-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 3rem 1.5rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.9375rem;
+  text-align: center;
+  border: 2px dashed var(--md-sys-color-outline-variant);
+  border-radius: 8px;
+  animation: fadeInUp 0.3s ease-out 0.1s both;
+}
+
+.uchi-empty-icon {
+  font-size: 2.5rem;
+  line-height: 1;
+}
+
+/* コードポイント入力 */
+.uchi-codepoint-input-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.uchi-codepoint-input-row input {
+  flex: 1;
+}
+
+/* ページネーション */
+.uchi-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  animation: fadeInUp 0.3s ease-out 0.3s both;
+}
+
+.uchi-page-info {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  min-width: 100px;
+  text-align: center;
+}
+
+/* 上限警告 */
+.uchi-limit-notice {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1rem;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--md-sys-color-tertiary, #ff9800) 12%, transparent);
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.8125rem;
+}
+
+/* レスポンシブ */
+@media (max-width: 640px) {
+  .uchi-toolbar {
+    gap: 0.5rem;
+  }
+
+  .uchi-table {
+    min-width: 480px;
+  }
+
+  .uchi-table-head th,
+  .uchi-table-row td {
+    padding: 0.5rem 0.625rem;
+  }
+}

@@ -1,0 +1,225 @@
+/* JSON Schema バリデーター */
+.jsv-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.jsv-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.jsv-panel-label {
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--md-sys-color-primary);
+}
+
+.jsv-textarea {
+  width: 100%;
+  min-height: 300px;
+  padding: 0.75rem;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 0;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.jsv-textarea:focus {
+  border-color: var(--md-sys-color-primary);
+}
+
+.jsv-textarea:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 1px;
+}
+
+.jsv-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.jsv-btn {
+  padding: 0.4rem 0.8rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 1px solid var(--md-sys-color-outline);
+  background: transparent;
+  color: var(--md-sys-color-on-surface);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.jsv-btn:hover:not(:disabled) {
+  background: var(--md-sys-color-surface-variant);
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-primary);
+}
+
+.jsv-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.jsv-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 3px;
+}
+
+.jsv-btn--primary {
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-primary);
+}
+
+.jsv-btn--primary:hover:not(:disabled) {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+/* 検証ボタン行 */
+.jsv-validate-row {
+  display: flex;
+  justify-content: center;
+  padding: 0.75rem 0;
+}
+
+/* 結果エリア */
+.jsv-result-section {
+  margin-top: 0.5rem;
+}
+
+.jsv-result-label {
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--md-sys-color-primary);
+  margin-bottom: 0.5rem;
+}
+
+/* 結果バナー */
+.jsv-result-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid;
+  margin-bottom: 0.75rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.85rem;
+}
+
+.jsv-result-banner--valid {
+  background: #e8f5e9;
+  border-color: #2e7d32;
+  color: #1b5e20;
+}
+
+.jsv-result-banner--invalid {
+  background: #ffebee;
+  border-color: #c62828;
+  color: #b71c1c;
+}
+
+.jsv-result-banner-icon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.jsv-result-banner-text {
+  font-weight: 600;
+}
+
+.jsv-result-banner-count {
+  margin-left: auto;
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
+/* エラーリスト */
+.jsv-error-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.jsv-error-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-left: 3px solid #c62828;
+  background: var(--md-sys-color-surface-variant);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.78rem;
+}
+
+.jsv-error-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.jsv-error-path {
+  color: var(--md-sys-color-primary);
+  font-weight: 600;
+  word-break: break-all;
+}
+
+.jsv-error-path-root {
+  color: var(--md-sys-color-on-surface-variant);
+  font-style: italic;
+}
+
+.jsv-error-keyword {
+  display: inline-block;
+  padding: 0.1rem 0.35rem;
+  background: #c62828;
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  border-radius: 2px;
+  white-space: nowrap;
+}
+
+.jsv-error-message {
+  color: var(--md-sys-color-on-surface);
+  line-height: 1.5;
+}
+
+/* 空状態 */
+.jsv-result-empty {
+  padding: 2rem;
+  text-align: center;
+  color: var(--md-sys-color-outline);
+  font-style: italic;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.8rem;
+}
+
+@media (max-width: 768px) {
+  .jsv-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .jsv-textarea {
+    min-height: 200px;
+  }
+}

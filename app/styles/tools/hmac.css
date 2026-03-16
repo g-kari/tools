@@ -1,0 +1,8 @@
+/* HMAC 生成ツール */
+/* hash.css のクラスを共有しているため、専用スタイルは最小限に留める */
+
+/* 秘密鍵の入力フィールドは password 的な扱いのため若干スタイルを調整 */
+#hmac-secret {
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  letter-spacing: 0.05em;
+}

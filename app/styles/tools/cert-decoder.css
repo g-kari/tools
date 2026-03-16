@@ -1,0 +1,334 @@
+/* X.509 証明書デコーダー */
+
+/* 有効期限ステータスバナー */
+.cert-status-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1.25rem;
+  border: 1px solid;
+  margin-bottom: 1.5rem;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.cert-status-banner-valid {
+  background: #0f2419;
+  border-color: #3fb950;
+  color: #3fb950;
+}
+
+.cert-status-banner-warning {
+  background: #1f1a0a;
+  border-color: #e3b341;
+  color: #e3b341;
+}
+
+.cert-status-banner-expired {
+  background: #1a0a0a;
+  border-color: #f85149;
+  color: #f85149;
+}
+
+.cert-status-icon {
+  font-size: 1.125rem;
+  flex-shrink: 0;
+}
+
+.cert-status-text {
+  flex: 1;
+}
+
+.cert-status-days {
+  font-size: 0.75rem;
+  opacity: 0.8;
+  font-weight: 400;
+}
+
+/* 証明書フィールドセクション */
+.cert-section {
+  margin-bottom: 1.5rem;
+}
+
+.cert-section-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--md-sys-color-primary);
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.375rem;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+
+/* フィールド行 */
+.cert-field {
+  display: grid;
+  grid-template-columns: 10rem 1fr;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  align-items: baseline;
+}
+
+.cert-field:last-child {
+  border-bottom: none;
+}
+
+.cert-field-key {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+
+.cert-field-value {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface);
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  word-break: break-all;
+  line-height: 1.5;
+}
+
+.cert-field-value-mono {
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--md-sys-color-primary);
+  word-break: break-all;
+}
+
+/* バッジ類 */
+.cert-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 1px solid;
+  margin-right: 0.375rem;
+  margin-bottom: 0.25rem;
+}
+
+.cert-badge-ca {
+  background: #0f2419;
+  border-color: #3fb950;
+  color: #3fb950;
+}
+
+.cert-badge-end-entity {
+  background: var(--md-sys-color-surface-variant);
+  border-color: var(--md-sys-color-outline-variant);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.cert-badge-deprecated {
+  background: #1a0a0a;
+  border-color: #f85149;
+  color: #f85149;
+}
+
+/* SAN リスト */
+.cert-san-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.cert-san-item {
+  font-size: 0.8125rem;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  color: var(--md-sys-color-on-surface);
+  padding: 0.25rem 0.5rem;
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.cert-san-item-dns::before {
+  content: 'DNS  ';
+  color: var(--md-sys-color-primary);
+  font-weight: 700;
+  font-size: 0.6875rem;
+}
+
+.cert-san-item-email::before {
+  content: 'EMAIL';
+  color: var(--md-sys-color-secondary);
+  font-weight: 700;
+  font-size: 0.6875rem;
+}
+
+.cert-san-item-uri::before {
+  content: 'URI  ';
+  color: var(--md-sys-color-on-surface-variant);
+  font-weight: 700;
+  font-size: 0.6875rem;
+}
+
+.cert-san-item-ip::before {
+  content: 'IP   ';
+  color: #e3b341;
+  font-weight: 700;
+  font-size: 0.6875rem;
+}
+
+/* 鍵用途タグ */
+.cert-usage-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.cert-usage-tag {
+  font-size: 0.6875rem;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  padding: 0.1875rem 0.5rem;
+  background: var(--md-sys-color-primary-container);
+  border: 1px solid var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary-container);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* フィンガープリント */
+.cert-fingerprint-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.cert-fingerprint-item {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+.cert-fingerprint-algo {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  width: 3.5rem;
+  flex-shrink: 0;
+  padding-top: 0.125rem;
+}
+
+.cert-fingerprint-value {
+  font-size: 0.6875rem;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  color: var(--md-sys-color-on-surface-variant);
+  word-break: break-all;
+  line-height: 1.6;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.cert-fingerprint-value:hover {
+  color: var(--md-sys-color-primary);
+}
+
+/* コピーボタン (小) */
+.cert-copy-btn {
+  font-size: 0.6875rem;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  padding: 0.125rem 0.5rem;
+  background: transparent;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  min-width: auto;
+  flex: 0 0 auto;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.cert-copy-btn:hover {
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-primary);
+  background: transparent;
+}
+
+/* 空状態 */
+.cert-empty {
+  padding: 3rem 1.5rem;
+  text-align: center;
+  color: var(--md-sys-color-on-surface-variant);
+  background: var(--md-sys-color-surface-variant);
+  border: 1px dashed var(--md-sys-color-outline);
+  font-size: 0.875rem;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+}
+
+.cert-empty-hint {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+/* エラー */
+.cert-error {
+  padding: 1rem 1.25rem;
+  background: #1a0a0a;
+  border: 1px solid var(--md-sys-color-error);
+  color: var(--md-sys-color-error);
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.875rem;
+}
+
+/* 結果カード全体 */
+.cert-result {
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline);
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+/* サンプル証明書ボタン */
+.cert-sample-btn {
+  font-size: 0.75rem;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  padding: 0.375rem 0.875rem;
+  background: transparent;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  min-width: auto;
+  flex: 0 0 auto;
+  transition: border-color 0.15s, color 0.15s;
+  margin-top: 0.5rem;
+}
+
+.cert-sample-btn:hover {
+  border-color: var(--md-sys-color-secondary);
+  color: var(--md-sys-color-secondary);
+  background: transparent;
+}
+
+/* レスポンシブ */
+@media (max-width: 600px) {
+  .cert-field {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
+
+  .cert-field-key {
+    font-size: 0.6875rem;
+  }
+
+  .cert-fingerprint-item {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+}

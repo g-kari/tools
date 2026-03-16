@@ -185,6 +185,7 @@ const navCategories = [
       { path: "/conventional-commits", label: "Conventional Commits" },
       { path: "/csp-builder", label: "CSP ビルダー" },
       { path: "/pkce", label: "PKCE ジェネレーター" },
+      { path: "/cert-decoder", label: "X.509 証明書デコーダー" },
     ],
   },
   {

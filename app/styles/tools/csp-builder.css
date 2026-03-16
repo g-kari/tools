@@ -1,0 +1,574 @@
+/* CSP ビルダー スタイル */
+
+/* モードタブ */
+.csp-mode-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--md-sys-color-outline-variant);
+  margin-bottom: 1.5rem;
+}
+
+.csp-mode-tab {
+  padding: 0.6rem 1.25rem;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  border: none;
+  background: none;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  transition:
+    color 0.2s,
+    border-color 0.2s;
+}
+
+.csp-mode-tab:hover {
+  color: var(--md-sys-color-primary);
+}
+
+.csp-mode-tab-active {
+  color: var(--md-sys-color-primary);
+  border-bottom-color: var(--md-sys-color-primary);
+}
+
+.csp-mode-tab:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* テンプレートセクション */
+.csp-templates {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.csp-templates-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-right: 0.25rem;
+}
+
+.csp-template-btn {
+  padding: 0.35rem 0.85rem;
+  font-size: 0.8rem;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  border: 1px solid var(--md-sys-color-outline);
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    color 0.15s;
+}
+
+.csp-template-btn:hover {
+  background: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.csp-template-btn-danger {
+  border-color: var(--md-sys-color-error);
+  color: var(--md-sys-color-error);
+}
+
+.csp-template-btn-danger:hover {
+  background: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-on-error-container);
+}
+
+.csp-template-btn:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* カテゴリセクション */
+.csp-category-section {
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.csp-category-heading {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 0.6rem 1rem;
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: var(--md-sys-color-surface-variant);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  color: var(--md-sys-color-primary);
+}
+
+.csp-category-desc {
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.csp-directives-list {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ディレクティブ行 */
+.csp-directive-row {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  transition: background 0.15s;
+}
+
+.csp-directive-row:last-child {
+  border-bottom: none;
+}
+
+.csp-directive-row:hover {
+  background: color-mix(in srgb, var(--md-sys-color-primary) 3%, transparent);
+}
+
+.csp-directive-row-disabled {
+  opacity: 0.5;
+}
+
+.csp-directive-row-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.4rem;
+}
+
+.csp-directive-toggle {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.csp-directive-toggle input[type='checkbox'] {
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+  accent-color: var(--md-sys-color-primary);
+}
+
+.csp-directive-name-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex: 1;
+}
+
+.csp-directive-name {
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--md-sys-color-primary);
+}
+
+.csp-deprecated-badge {
+  font-size: 0.65rem;
+  padding: 0.1rem 0.4rem;
+  background: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-on-error-container);
+  border-radius: 2px;
+  font-weight: 500;
+}
+
+.csp-remove-btn {
+  padding: 0.2rem 0.45rem;
+  font-size: 0.7rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: none;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  line-height: 1;
+  transition:
+    background 0.15s,
+    color 0.15s,
+    border-color 0.15s;
+}
+
+.csp-remove-btn:hover {
+  background: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-on-error-container);
+  border-color: var(--md-sys-color-error);
+}
+
+.csp-remove-btn:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.csp-directive-description {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin: 0 0 0.5rem;
+  padding-left: 1.6rem;
+}
+
+/* ソース入力 */
+.csp-sources-input-wrap {
+  padding-left: 1.6rem;
+}
+
+.csp-sources-input {
+  width: 100%;
+  padding: 0.4rem 0.65rem;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.82rem;
+  border: 1px solid var(--md-sys-color-outline);
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.csp-sources-input:focus {
+  border-color: var(--md-sys-color-primary);
+}
+
+.csp-sources-input:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 1px;
+}
+
+.csp-sources-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ソースチップ（クイック入力） */
+.csp-source-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  padding-left: 1.6rem;
+  margin-top: 0.4rem;
+}
+
+.csp-source-chip {
+  padding: 0.15rem 0.5rem;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.72rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  transition:
+    background 0.12s,
+    color 0.12s,
+    border-color 0.12s;
+}
+
+.csp-source-chip:hover {
+  background: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.csp-source-chip-risky {
+  border-color: var(--md-sys-color-error);
+  color: var(--md-sys-color-error);
+}
+
+.csp-source-chip-risky:hover {
+  background: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-on-error-container);
+}
+
+.csp-source-chip:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* 空ヒント */
+.csp-empty-hint {
+  padding: 1rem;
+  font-size: 0.8rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-style: italic;
+  margin: 0;
+}
+
+/* ディレクティブ追加セクション */
+.csp-add-section {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  border: 1px dashed var(--md-sys-color-outline-variant);
+  background: color-mix(in srgb, var(--md-sys-color-surface-variant) 40%, transparent);
+}
+
+.csp-add-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 0.5rem;
+}
+
+.csp-add-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.csp-add-select {
+  flex: 1;
+  padding: 0.45rem 0.65rem;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.82rem;
+  border: 1px solid var(--md-sys-color-outline);
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.csp-add-select:focus {
+  border-color: var(--md-sys-color-primary);
+}
+
+.csp-add-select:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.csp-add-btn {
+  white-space: nowrap;
+}
+
+/* 出力セクション */
+.csp-output-section {
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.csp-output-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-variant);
+}
+
+.csp-output-header .section-title {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.csp-output-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.csp-multiline-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+}
+
+.csp-multiline-toggle input[type='checkbox'] {
+  accent-color: var(--md-sys-color-primary);
+  cursor: pointer;
+}
+
+.csp-output-box {
+  padding: 1rem;
+  background: var(--md-sys-color-surface);
+  overflow-x: auto;
+}
+
+.csp-output-code {
+  display: block;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.8rem;
+  line-height: 1.7;
+  color: var(--md-sys-color-on-surface);
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.csp-output-empty {
+  padding: 1.5rem 1rem;
+  font-size: 0.82rem;
+  color: var(--md-sys-color-on-surface-variant);
+  text-align: center;
+  font-style: italic;
+}
+
+.csp-http-example {
+  padding: 0.75rem 1rem;
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+  background: color-mix(in srgb, var(--md-sys-color-surface-variant) 50%, transparent);
+}
+
+.csp-http-example-label {
+  font-size: 0.72rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin: 0 0 0.35rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+/* パースセクション */
+.csp-parse-section {
+  margin-bottom: 1.5rem;
+}
+
+.csp-parse-textarea {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  border: 1px solid var(--md-sys-color-outline);
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.csp-parse-textarea:focus {
+  border-color: var(--md-sys-color-primary);
+}
+
+.csp-parse-textarea:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 1px;
+}
+
+.csp-parse-actions {
+  margin-top: 0.75rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* バリデーション結果 */
+.csp-validation-section {
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  overflow: hidden;
+}
+
+.csp-errors-section {
+  margin-bottom: 1rem;
+  border: 1px solid var(--md-sys-color-error);
+  overflow: hidden;
+}
+
+.csp-validation-group {
+  padding: 0.75rem 1rem 1rem;
+}
+
+.csp-validation-group + .csp-validation-group {
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.csp-validation-heading {
+  margin: 0 0 0.6rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+}
+
+.csp-validation-heading-warning {
+  color: var(--md-sys-color-error);
+}
+
+.csp-validation-heading-suggestion {
+  color: var(--md-sys-color-primary);
+}
+
+.csp-validation-heading-error {
+  color: var(--md-sys-color-error);
+  padding: 0.6rem 1rem 0;
+}
+
+.csp-validation-list {
+  margin: 0;
+  padding: 0 0 0 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.csp-validation-item {
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.csp-validation-item-warning {
+  color: var(--md-sys-color-error);
+}
+
+.csp-validation-item-suggestion {
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.csp-validation-item-error {
+  color: var(--md-sys-color-error);
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 640px) {
+  .csp-output-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .csp-add-row {
+    flex-direction: column;
+  }
+
+  .csp-add-btn {
+    align-self: flex-start;
+  }
+
+  .csp-templates {
+    gap: 0.4rem;
+  }
+
+  .csp-source-chips {
+    padding-left: 0;
+  }
+
+  .csp-directive-description {
+    padding-left: 0;
+  }
+
+  .csp-sources-input-wrap {
+    padding-left: 0;
+  }
+}
