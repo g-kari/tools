@@ -105,6 +105,7 @@ import { Route as ColorPickerRouteImport } from './routes/color-picker'
 import { Route as ColorPaletteRouteImport } from './routes/color-palette'
 import { Route as ColorHarmonyRouteImport } from './routes/color-harmony'
 import { Route as ColorExtractorRouteImport } from './routes/color-extractor'
+import { Route as ColorConverterRouteImport } from './routes/color-converter'
 import { Route as ColorContrastRouteImport } from './routes/color-contrast'
 import { Route as ColorBlindRouteImport } from './routes/color-blind'
 import { Route as CidrRouteImport } from './routes/cidr'
@@ -603,6 +604,11 @@ const ColorExtractorRoute = ColorExtractorRouteImport.update({
   path: '/color-extractor',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ColorConverterRoute = ColorConverterRouteImport.update({
+  id: '/color-converter',
+  path: '/color-converter',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ColorContrastRoute = ColorContrastRouteImport.update({
   id: '/color-contrast',
   path: '/color-contrast',
@@ -703,6 +709,7 @@ export interface FileRoutesByFullPath {
   '/cidr': typeof CidrRoute
   '/color-blind': typeof ColorBlindRoute
   '/color-contrast': typeof ColorContrastRoute
+  '/color-converter': typeof ColorConverterRoute
   '/color-extractor': typeof ColorExtractorRoute
   '/color-harmony': typeof ColorHarmonyRoute
   '/color-palette': typeof ColorPaletteRoute
@@ -818,6 +825,7 @@ export interface FileRoutesByTo {
   '/cidr': typeof CidrRoute
   '/color-blind': typeof ColorBlindRoute
   '/color-contrast': typeof ColorContrastRoute
+  '/color-converter': typeof ColorConverterRoute
   '/color-extractor': typeof ColorExtractorRoute
   '/color-harmony': typeof ColorHarmonyRoute
   '/color-palette': typeof ColorPaletteRoute
@@ -934,6 +942,7 @@ export interface FileRoutesById {
   '/cidr': typeof CidrRoute
   '/color-blind': typeof ColorBlindRoute
   '/color-contrast': typeof ColorContrastRoute
+  '/color-converter': typeof ColorConverterRoute
   '/color-extractor': typeof ColorExtractorRoute
   '/color-harmony': typeof ColorHarmonyRoute
   '/color-palette': typeof ColorPaletteRoute
@@ -1051,6 +1060,7 @@ export interface FileRouteTypes {
     | '/cidr'
     | '/color-blind'
     | '/color-contrast'
+    | '/color-converter'
     | '/color-extractor'
     | '/color-harmony'
     | '/color-palette'
@@ -1166,6 +1176,7 @@ export interface FileRouteTypes {
     | '/cidr'
     | '/color-blind'
     | '/color-contrast'
+    | '/color-converter'
     | '/color-extractor'
     | '/color-harmony'
     | '/color-palette'
@@ -1281,6 +1292,7 @@ export interface FileRouteTypes {
     | '/cidr'
     | '/color-blind'
     | '/color-contrast'
+    | '/color-converter'
     | '/color-extractor'
     | '/color-harmony'
     | '/color-palette'
@@ -1397,6 +1409,7 @@ export interface RootRouteChildren {
   CidrRoute: typeof CidrRoute
   ColorBlindRoute: typeof ColorBlindRoute
   ColorContrastRoute: typeof ColorContrastRoute
+  ColorConverterRoute: typeof ColorConverterRoute
   ColorExtractorRoute: typeof ColorExtractorRoute
   ColorHarmonyRoute: typeof ColorHarmonyRoute
   ColorPaletteRoute: typeof ColorPaletteRoute
@@ -2173,6 +2186,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ColorExtractorRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/color-converter': {
+      id: '/color-converter'
+      path: '/color-converter'
+      fullPath: '/color-converter'
+      preLoaderRoute: typeof ColorConverterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/color-contrast': {
       id: '/color-contrast'
       path: '/color-contrast'
@@ -2309,6 +2329,7 @@ const rootRouteChildren: RootRouteChildren = {
   CidrRoute: CidrRoute,
   ColorBlindRoute: ColorBlindRoute,
   ColorContrastRoute: ColorContrastRoute,
+  ColorConverterRoute: ColorConverterRoute,
   ColorExtractorRoute: ColorExtractorRoute,
   ColorHarmonyRoute: ColorHarmonyRoute,
   ColorPaletteRoute: ColorPaletteRoute,
