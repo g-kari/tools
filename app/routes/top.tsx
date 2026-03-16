@@ -398,6 +398,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "⊞",
       },
       {
+        path: "/css-box-shadow",
+        label: "CSS Box Shadowジェネレーター",
+        description:
+          "box-shadowをビジュアルエディターで作成。複数レイヤー・inset・不透明度・プリセット対応。ニューモーフィズムやグロウ効果も直感的に試せる。",
+        icon: "🌑",
+      },
+      {
         path: "/image-to-gif",
         label: "画像→GIF変換",
         description: "複数画像からアニメーションGIFを作成",
