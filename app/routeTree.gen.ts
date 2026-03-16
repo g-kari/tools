@@ -91,6 +91,7 @@ import { Route as CssTextShadowRouteImport } from './routes/css-text-shadow'
 import { Route as CssGridRouteImport } from './routes/css-grid'
 import { Route as CssGradientRouteImport } from './routes/css-gradient'
 import { Route as CssFlexboxRouteImport } from './routes/css-flexbox'
+import { Route as CssFilterRouteImport } from './routes/css-filter'
 import { Route as CssBoxShadowRouteImport } from './routes/css-box-shadow'
 import { Route as CssBorderRadiusRouteImport } from './routes/css-border-radius'
 import { Route as CssAnimationRouteImport } from './routes/css-animation'
@@ -525,6 +526,11 @@ const CssFlexboxRoute = CssFlexboxRouteImport.update({
   path: '/css-flexbox',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CssFilterRoute = CssFilterRouteImport.update({
+  id: '/css-filter',
+  path: '/css-filter',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CssBoxShadowRoute = CssBoxShadowRouteImport.update({
   id: '/css-box-shadow',
   path: '/css-box-shadow',
@@ -661,6 +667,7 @@ export interface FileRoutesByFullPath {
   '/css-animation': typeof CssAnimationRoute
   '/css-border-radius': typeof CssBorderRadiusRoute
   '/css-box-shadow': typeof CssBoxShadowRoute
+  '/css-filter': typeof CssFilterRoute
   '/css-flexbox': typeof CssFlexboxRoute
   '/css-gradient': typeof CssGradientRoute
   '/css-grid': typeof CssGridRoute
@@ -768,6 +775,7 @@ export interface FileRoutesByTo {
   '/css-animation': typeof CssAnimationRoute
   '/css-border-radius': typeof CssBorderRadiusRoute
   '/css-box-shadow': typeof CssBoxShadowRoute
+  '/css-filter': typeof CssFilterRoute
   '/css-flexbox': typeof CssFlexboxRoute
   '/css-gradient': typeof CssGradientRoute
   '/css-grid': typeof CssGridRoute
@@ -876,6 +884,7 @@ export interface FileRoutesById {
   '/css-animation': typeof CssAnimationRoute
   '/css-border-radius': typeof CssBorderRadiusRoute
   '/css-box-shadow': typeof CssBoxShadowRoute
+  '/css-filter': typeof CssFilterRoute
   '/css-flexbox': typeof CssFlexboxRoute
   '/css-gradient': typeof CssGradientRoute
   '/css-grid': typeof CssGridRoute
@@ -985,6 +994,7 @@ export interface FileRouteTypes {
     | '/css-animation'
     | '/css-border-radius'
     | '/css-box-shadow'
+    | '/css-filter'
     | '/css-flexbox'
     | '/css-gradient'
     | '/css-grid'
@@ -1092,6 +1102,7 @@ export interface FileRouteTypes {
     | '/css-animation'
     | '/css-border-radius'
     | '/css-box-shadow'
+    | '/css-filter'
     | '/css-flexbox'
     | '/css-gradient'
     | '/css-grid'
@@ -1199,6 +1210,7 @@ export interface FileRouteTypes {
     | '/css-animation'
     | '/css-border-radius'
     | '/css-box-shadow'
+    | '/css-filter'
     | '/css-flexbox'
     | '/css-gradient'
     | '/css-grid'
@@ -1307,6 +1319,7 @@ export interface RootRouteChildren {
   CssAnimationRoute: typeof CssAnimationRoute
   CssBorderRadiusRoute: typeof CssBorderRadiusRoute
   CssBoxShadowRoute: typeof CssBoxShadowRoute
+  CssFilterRoute: typeof CssFilterRoute
   CssFlexboxRoute: typeof CssFlexboxRoute
   CssGradientRoute: typeof CssGradientRoute
   CssGridRoute: typeof CssGridRoute
@@ -1971,6 +1984,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CssFlexboxRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/css-filter': {
+      id: '/css-filter'
+      path: '/css-filter'
+      fullPath: '/css-filter'
+      preLoaderRoute: typeof CssFilterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/css-box-shadow': {
       id: '/css-box-shadow'
       path: '/css-box-shadow'
@@ -2155,6 +2175,7 @@ const rootRouteChildren: RootRouteChildren = {
   CssAnimationRoute: CssAnimationRoute,
   CssBorderRadiusRoute: CssBorderRadiusRoute,
   CssBoxShadowRoute: CssBoxShadowRoute,
+  CssFilterRoute: CssFilterRoute,
   CssFlexboxRoute: CssFlexboxRoute,
   CssGradientRoute: CssGradientRoute,
   CssGridRoute: CssGridRoute,

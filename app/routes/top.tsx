@@ -419,6 +419,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "⬜",
       },
       {
+        path: "/css-filter",
+        label: "CSS Filterジェネレーター",
+        description:
+          "CSS filterプロパティをビジュアルエディターで作成。blur・brightness・contrast・grayscale・hue-rotate・invert・saturate・sepiaをスライダーで調整。プリセット対応。",
+        icon: "🔮",
+      },
+      {
         path: "/image-to-gif",
         label: "画像→GIF変換",
         description: "複数画像からアニメーションGIFを作成",
