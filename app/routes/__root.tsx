@@ -45,6 +45,7 @@ const navCategories = [
       { path: "/toml-json", label: "TOML/JSON変換" },
       { path: "/xml", label: "XMLフォーマッター" },
       { path: "/sql", label: "SQLフォーマッター" },
+      { path: "/graphql", label: "GraphQL フォーマッター" },
       { path: "/php-serialize", label: "PHPシリアライズ" },
       { path: "/minify", label: "コード圧縮" },
       { path: "/unit-converter", label: "単位変換" },
@@ -61,6 +62,9 @@ const navCategories = [
       { path: "/encoding", label: "文字コード変換" },
       { path: "/env-parser", label: ".envパーサー" },
       { path: "/xml-json", label: "XML/JSON変換" },
+      { path: "/yaml-formatter", label: "YAMLフォーマッター" },
+      { path: "/toml-formatter", label: "TOMLフォーマッター" },
+      { path: "/unicode-inspector", label: "Unicodeコードポイント検査" },
       { path: "/morse-code", label: "Morse Code変換" },
       { path: "/text-encrypt", label: "テキスト暗号化" },
     ],
@@ -85,6 +89,8 @@ const navCategories = [
       { path: "/slug", label: "スラッグ生成" },
       { path: "/typography-scale", label: "タイポグラフィスケール生成" },
       { path: "/ulid", label: "ULID生成" },
+      { path: "/json-schema-validator", label: "JSON Schema バリデーター" },
+      { path: "/mermaid", label: "Mermaidプレビュー" },
     ],
   },
   {
@@ -120,6 +126,8 @@ const navCategories = [
       { path: "/discord-emoji", label: "Discord絵文字" },
       { path: "/discord-sticker", label: "Discordスタンプ" },
       { path: "/svg-optimizer", label: "SVG最適化" },
+      { path: "/color-token", label: "カラートークン生成" },
+      { path: "/css-media-query", label: "CSSメディアクエリビルダー" },
     ],
   },
   {
@@ -175,6 +183,8 @@ const navCategories = [
       { path: "/hmac", label: "HMAC 生成" },
       { path: "/semver", label: "Semver チェッカー" },
       { path: "/conventional-commits", label: "Conventional Commits" },
+      { path: "/csp-builder", label: "CSP ビルダー" },
+      { path: "/pkce", label: "PKCE ジェネレーター" },
     ],
   },
   {
@@ -189,6 +199,7 @@ const navCategories = [
       { path: "/http-client", label: "HTTP APIテスター" },
       { path: "/curl-builder", label: "curlビルダー" },
       { path: "/openssl-builder", label: "OpenSSLビルダー" },
+      { path: "/har", label: "HAR アナライザー" },
     ],
   },
   {

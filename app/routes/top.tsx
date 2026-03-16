@@ -176,11 +176,25 @@ const toolCatalog: ToolCategory[] = [
         icon: "🔄",
       },
       {
+        path: "/yaml-formatter",
+        label: "YAMLフォーマッター",
+        description:
+          "YAMLデータの整形・圧縮・構文検証ツール。インデント幅・キーソートを選択してYAMLを整形。Kubernetes、Docker Compose、GitHub Actions設定ファイルの確認に。",
+        icon: "📋",
+      },
+      {
         path: "/toml-json",
         label: "TOML/JSON変換",
         description:
           "TOMLとJSONの相互変換ツール。Cargo.toml、pyproject.toml等の変換に便利。",
         icon: "🔄",
+      },
+      {
+        path: "/toml-formatter",
+        label: "TOMLフォーマッター",
+        description:
+          "TOMLデータの整形・圧縮・構文検証ツール。Cargo.toml、pyproject.toml、wrangler.tomlなどの設定ファイルの確認・整形に。",
+        icon: "📋",
       },
       {
         path: "/xml",
@@ -200,6 +214,13 @@ const toolCatalog: ToolCategory[] = [
         label: "SQLフォーマッター",
         description: "SQLクエリの整形・圧縮・構文検証ツール",
         icon: "🗄️",
+      },
+      {
+        path: "/graphql",
+        label: "GraphQL フォーマッター",
+        description:
+          "GraphQL クエリ・スキーマの整形・圧縮・構文検証ツール。query/mutation/subscription/type 定義をブラウザ上で整形。",
+        icon: "◈",
       },
       {
         path: "/timezone",
@@ -851,6 +872,20 @@ const toolCatalog: ToolCategory[] = [
           "Git コミットメッセージを Conventional Commits 仕様でパース・検証するツール。タイプ・スコープ・BREAKING CHANGE の検出、エラー・警告表示に対応。",
         icon: "📝",
       },
+      {
+        path: "/csp-builder",
+        label: "CSP ビルダー",
+        description:
+          "Content-Security-Policy ヘッダーをGUIで構築するツール。fetch・document・reporting の各ディレクティブを設定し、CSP 文字列を即座に生成。既存ヘッダーのパース・検証・セキュリティ警告にも対応。",
+        icon: "🛡️",
+      },
+      {
+        path: "/pkce",
+        label: "PKCE ジェネレーター",
+        description:
+          "OAuth 2.0 の PKCE（Proof Key for Code Exchange）に必要な code_verifier と code_challenge を生成。RFC 7636 準拠・S256/plain メソッド対応。ブラウザ内で完結し、値が外部に送信されることはありません。",
+        icon: "🔑",
+      },
     ],
   },
   {
@@ -905,6 +940,12 @@ const toolCatalog: ToolCategory[] = [
         label: "OpenSSLビルダー",
         description: "OpenSSLコマンドをGUIで設定して生成。鍵生成・証明書作成・CSR生成など各種OpenSSL操作に対応",
         icon: "🔐",
+      },
+      {
+        path: "/har",
+        label: "HAR アナライザー",
+        description: "ブラウザDevToolsからエクスポートしたHARファイルを解析。リクエスト一覧・レスポンスサイズ・タイミング・ステータス別統計を可視化。遅いリクエストや大きなリソースを素早く特定できる。",
+        icon: "📊",
       },
     ],
   },
@@ -969,14 +1010,14 @@ export const Route = createFileRoute("/top")({
   head: () => ({
     meta: [
       { title: "ツール一覧 | Web ツール集" },
-      { name: "description", content: "130以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
+      { name: "description", content: "133以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
       { property: "og:title", content: "ツール一覧 | Web ツール集" },
-      { property: "og:description", content: "130以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
+      { property: "og:description", content: "133以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
       { property: "og:url", content: `${SITE_BASE_URL}/top` },
       { property: "og:type", content: "website" },
       { property: "og:image", content: SITE_OGP_IMAGE },
       { name: "twitter:title", content: "ツール一覧 | Web ツール集" },
-      { name: "twitter:description", content: "130以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
+      { name: "twitter:description", content: "133以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
     ],
   }),
   component: TopPage,

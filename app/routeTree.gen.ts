@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as YamlJsonRouteImport } from './routes/yaml-json'
+import { Route as YamlFormatterRouteImport } from './routes/yaml-formatter'
 import { Route as XmlJsonRouteImport } from './routes/xml-json'
 import { Route as XmlRouteImport } from './routes/xml'
 import { Route as WhoisRouteImport } from './routes/whois'
@@ -27,6 +28,7 @@ import { Route as TransparentImageRouteImport } from './routes/transparent-image
 import { Route as TotpRouteImport } from './routes/totp'
 import { Route as TopRouteImport } from './routes/top'
 import { Route as TomlJsonRouteImport } from './routes/toml-json'
+import { Route as TomlFormatterRouteImport } from './routes/toml-formatter'
 import { Route as TimezoneRouteImport } from './routes/timezone'
 import { Route as TimestampRouteImport } from './routes/timestamp'
 import { Route as TextStatsRouteImport } from './routes/text-stats'
@@ -46,6 +48,7 @@ import { Route as RandomDataRouteImport } from './routes/random-data'
 import { Route as QrCodeRouteImport } from './routes/qr-code'
 import { Route as PortCheckRouteImport } from './routes/port-check'
 import { Route as PomodoroRouteImport } from './routes/pomodoro'
+import { Route as PkceRouteImport } from './routes/pkce'
 import { Route as PhpSerializeRouteImport } from './routes/php-serialize'
 import { Route as PasswordGeneratorRouteImport } from './routes/password-generator'
 import { Route as OpensslBuilderRouteImport } from './routes/openssl-builder'
@@ -88,6 +91,8 @@ import { Route as HtmlEncodeRouteImport } from './routes/html-encode'
 import { Route as HmacRouteImport } from './routes/hmac'
 import { Route as HexViewerRouteImport } from './routes/hex-viewer'
 import { Route as HashRouteImport } from './routes/hash'
+import { Route as HarRouteImport } from './routes/har'
+import { Route as GraphqlRouteImport } from './routes/graphql'
 import { Route as GlobalIpRouteImport } from './routes/global-ip'
 import { Route as GitignoreRouteImport } from './routes/gitignore'
 import { Route as FaviconGeneratorRouteImport } from './routes/favicon-generator'
@@ -119,6 +124,7 @@ import { Route as CssClipPathRouteImport } from './routes/css-clip-path'
 import { Route as CssBoxShadowRouteImport } from './routes/css-box-shadow'
 import { Route as CssBorderRadiusRouteImport } from './routes/css-border-radius'
 import { Route as CssAnimationRouteImport } from './routes/css-animation'
+import { Route as CspBuilderRouteImport } from './routes/csp-builder'
 import { Route as CronParserRouteImport } from './routes/cron-parser'
 import { Route as CronRouteImport } from './routes/cron'
 import { Route as CookieParserRouteImport } from './routes/cookie-parser'
@@ -150,6 +156,11 @@ import { Route as ApiImageDotjpgRouteImport } from './routes/api/image[.]jpg'
 const YamlJsonRoute = YamlJsonRouteImport.update({
   id: '/yaml-json',
   path: '/yaml-json',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const YamlFormatterRoute = YamlFormatterRouteImport.update({
+  id: '/yaml-formatter',
+  path: '/yaml-formatter',
   getParentRoute: () => rootRouteImport,
 } as any)
 const XmlJsonRoute = XmlJsonRouteImport.update({
@@ -235,6 +246,11 @@ const TopRoute = TopRouteImport.update({
 const TomlJsonRoute = TomlJsonRouteImport.update({
   id: '/toml-json',
   path: '/toml-json',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TomlFormatterRoute = TomlFormatterRouteImport.update({
+  id: '/toml-formatter',
+  path: '/toml-formatter',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TimezoneRoute = TimezoneRouteImport.update({
@@ -330,6 +346,11 @@ const PortCheckRoute = PortCheckRouteImport.update({
 const PomodoroRoute = PomodoroRouteImport.update({
   id: '/pomodoro',
   path: '/pomodoro',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PkceRoute = PkceRouteImport.update({
+  id: '/pkce',
+  path: '/pkce',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PhpSerializeRoute = PhpSerializeRouteImport.update({
@@ -542,6 +563,16 @@ const HashRoute = HashRouteImport.update({
   path: '/hash',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HarRoute = HarRouteImport.update({
+  id: '/har',
+  path: '/har',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GraphqlRoute = GraphqlRouteImport.update({
+  id: '/graphql',
+  path: '/graphql',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GlobalIpRoute = GlobalIpRouteImport.update({
   id: '/global-ip',
   path: '/global-ip',
@@ -695,6 +726,11 @@ const CssBorderRadiusRoute = CssBorderRadiusRouteImport.update({
 const CssAnimationRoute = CssAnimationRouteImport.update({
   id: '/css-animation',
   path: '/css-animation',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CspBuilderRoute = CspBuilderRouteImport.update({
+  id: '/csp-builder',
+  path: '/csp-builder',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CronParserRoute = CronParserRouteImport.update({
@@ -857,6 +893,7 @@ export interface FileRoutesByFullPath {
   '/cookie-parser': typeof CookieParserRoute
   '/cron': typeof CronRoute
   '/cron-parser': typeof CronParserRoute
+  '/csp-builder': typeof CspBuilderRoute
   '/css-animation': typeof CssAnimationRoute
   '/css-border-radius': typeof CssBorderRadiusRoute
   '/css-box-shadow': typeof CssBoxShadowRoute
@@ -888,6 +925,8 @@ export interface FileRoutesByFullPath {
   '/favicon-generator': typeof FaviconGeneratorRoute
   '/gitignore': typeof GitignoreRoute
   '/global-ip': typeof GlobalIpRoute
+  '/graphql': typeof GraphqlRoute
+  '/har': typeof HarRoute
   '/hash': typeof HashRoute
   '/hex-viewer': typeof HexViewerRoute
   '/hmac': typeof HmacRoute
@@ -930,6 +969,7 @@ export interface FileRoutesByFullPath {
   '/openssl-builder': typeof OpensslBuilderRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/php-serialize': typeof PhpSerializeRoute
+  '/pkce': typeof PkceRoute
   '/pomodoro': typeof PomodoroRoute
   '/port-check': typeof PortCheckRoute
   '/qr-code': typeof QrCodeRoute
@@ -949,6 +989,7 @@ export interface FileRoutesByFullPath {
   '/text-stats': typeof TextStatsRoute
   '/timestamp': typeof TimestampRoute
   '/timezone': typeof TimezoneRoute
+  '/toml-formatter': typeof TomlFormatterRoute
   '/toml-json': typeof TomlJsonRoute
   '/top': typeof TopRoute
   '/totp': typeof TotpRoute
@@ -966,6 +1007,7 @@ export interface FileRoutesByFullPath {
   '/whois': typeof WhoisRoute
   '/xml': typeof XmlRoute
   '/xml-json': typeof XmlJsonRoute
+  '/yaml-formatter': typeof YamlFormatterRoute
   '/yaml-json': typeof YamlJsonRoute
   '/api/image.jpg': typeof ApiImageDotjpgRoute
   '/api/image.png': typeof ApiImageDotpngRoute
@@ -996,6 +1038,7 @@ export interface FileRoutesByTo {
   '/cookie-parser': typeof CookieParserRoute
   '/cron': typeof CronRoute
   '/cron-parser': typeof CronParserRoute
+  '/csp-builder': typeof CspBuilderRoute
   '/css-animation': typeof CssAnimationRoute
   '/css-border-radius': typeof CssBorderRadiusRoute
   '/css-box-shadow': typeof CssBoxShadowRoute
@@ -1027,6 +1070,8 @@ export interface FileRoutesByTo {
   '/favicon-generator': typeof FaviconGeneratorRoute
   '/gitignore': typeof GitignoreRoute
   '/global-ip': typeof GlobalIpRoute
+  '/graphql': typeof GraphqlRoute
+  '/har': typeof HarRoute
   '/hash': typeof HashRoute
   '/hex-viewer': typeof HexViewerRoute
   '/hmac': typeof HmacRoute
@@ -1069,6 +1114,7 @@ export interface FileRoutesByTo {
   '/openssl-builder': typeof OpensslBuilderRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/php-serialize': typeof PhpSerializeRoute
+  '/pkce': typeof PkceRoute
   '/pomodoro': typeof PomodoroRoute
   '/port-check': typeof PortCheckRoute
   '/qr-code': typeof QrCodeRoute
@@ -1088,6 +1134,7 @@ export interface FileRoutesByTo {
   '/text-stats': typeof TextStatsRoute
   '/timestamp': typeof TimestampRoute
   '/timezone': typeof TimezoneRoute
+  '/toml-formatter': typeof TomlFormatterRoute
   '/toml-json': typeof TomlJsonRoute
   '/top': typeof TopRoute
   '/totp': typeof TotpRoute
@@ -1105,6 +1152,7 @@ export interface FileRoutesByTo {
   '/whois': typeof WhoisRoute
   '/xml': typeof XmlRoute
   '/xml-json': typeof XmlJsonRoute
+  '/yaml-formatter': typeof YamlFormatterRoute
   '/yaml-json': typeof YamlJsonRoute
   '/api/image.jpg': typeof ApiImageDotjpgRoute
   '/api/image.png': typeof ApiImageDotpngRoute
@@ -1136,6 +1184,7 @@ export interface FileRoutesById {
   '/cookie-parser': typeof CookieParserRoute
   '/cron': typeof CronRoute
   '/cron-parser': typeof CronParserRoute
+  '/csp-builder': typeof CspBuilderRoute
   '/css-animation': typeof CssAnimationRoute
   '/css-border-radius': typeof CssBorderRadiusRoute
   '/css-box-shadow': typeof CssBoxShadowRoute
@@ -1167,6 +1216,8 @@ export interface FileRoutesById {
   '/favicon-generator': typeof FaviconGeneratorRoute
   '/gitignore': typeof GitignoreRoute
   '/global-ip': typeof GlobalIpRoute
+  '/graphql': typeof GraphqlRoute
+  '/har': typeof HarRoute
   '/hash': typeof HashRoute
   '/hex-viewer': typeof HexViewerRoute
   '/hmac': typeof HmacRoute
@@ -1209,6 +1260,7 @@ export interface FileRoutesById {
   '/openssl-builder': typeof OpensslBuilderRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/php-serialize': typeof PhpSerializeRoute
+  '/pkce': typeof PkceRoute
   '/pomodoro': typeof PomodoroRoute
   '/port-check': typeof PortCheckRoute
   '/qr-code': typeof QrCodeRoute
@@ -1228,6 +1280,7 @@ export interface FileRoutesById {
   '/text-stats': typeof TextStatsRoute
   '/timestamp': typeof TimestampRoute
   '/timezone': typeof TimezoneRoute
+  '/toml-formatter': typeof TomlFormatterRoute
   '/toml-json': typeof TomlJsonRoute
   '/top': typeof TopRoute
   '/totp': typeof TotpRoute
@@ -1245,6 +1298,7 @@ export interface FileRoutesById {
   '/whois': typeof WhoisRoute
   '/xml': typeof XmlRoute
   '/xml-json': typeof XmlJsonRoute
+  '/yaml-formatter': typeof YamlFormatterRoute
   '/yaml-json': typeof YamlJsonRoute
   '/api/image.jpg': typeof ApiImageDotjpgRoute
   '/api/image.png': typeof ApiImageDotpngRoute
@@ -1277,6 +1331,7 @@ export interface FileRouteTypes {
     | '/cookie-parser'
     | '/cron'
     | '/cron-parser'
+    | '/csp-builder'
     | '/css-animation'
     | '/css-border-radius'
     | '/css-box-shadow'
@@ -1308,6 +1363,8 @@ export interface FileRouteTypes {
     | '/favicon-generator'
     | '/gitignore'
     | '/global-ip'
+    | '/graphql'
+    | '/har'
     | '/hash'
     | '/hex-viewer'
     | '/hmac'
@@ -1350,6 +1407,7 @@ export interface FileRouteTypes {
     | '/openssl-builder'
     | '/password-generator'
     | '/php-serialize'
+    | '/pkce'
     | '/pomodoro'
     | '/port-check'
     | '/qr-code'
@@ -1369,6 +1427,7 @@ export interface FileRouteTypes {
     | '/text-stats'
     | '/timestamp'
     | '/timezone'
+    | '/toml-formatter'
     | '/toml-json'
     | '/top'
     | '/totp'
@@ -1386,6 +1445,7 @@ export interface FileRouteTypes {
     | '/whois'
     | '/xml'
     | '/xml-json'
+    | '/yaml-formatter'
     | '/yaml-json'
     | '/api/image.jpg'
     | '/api/image.png'
@@ -1416,6 +1476,7 @@ export interface FileRouteTypes {
     | '/cookie-parser'
     | '/cron'
     | '/cron-parser'
+    | '/csp-builder'
     | '/css-animation'
     | '/css-border-radius'
     | '/css-box-shadow'
@@ -1447,6 +1508,8 @@ export interface FileRouteTypes {
     | '/favicon-generator'
     | '/gitignore'
     | '/global-ip'
+    | '/graphql'
+    | '/har'
     | '/hash'
     | '/hex-viewer'
     | '/hmac'
@@ -1489,6 +1552,7 @@ export interface FileRouteTypes {
     | '/openssl-builder'
     | '/password-generator'
     | '/php-serialize'
+    | '/pkce'
     | '/pomodoro'
     | '/port-check'
     | '/qr-code'
@@ -1508,6 +1572,7 @@ export interface FileRouteTypes {
     | '/text-stats'
     | '/timestamp'
     | '/timezone'
+    | '/toml-formatter'
     | '/toml-json'
     | '/top'
     | '/totp'
@@ -1525,6 +1590,7 @@ export interface FileRouteTypes {
     | '/whois'
     | '/xml'
     | '/xml-json'
+    | '/yaml-formatter'
     | '/yaml-json'
     | '/api/image.jpg'
     | '/api/image.png'
@@ -1555,6 +1621,7 @@ export interface FileRouteTypes {
     | '/cookie-parser'
     | '/cron'
     | '/cron-parser'
+    | '/csp-builder'
     | '/css-animation'
     | '/css-border-radius'
     | '/css-box-shadow'
@@ -1586,6 +1653,8 @@ export interface FileRouteTypes {
     | '/favicon-generator'
     | '/gitignore'
     | '/global-ip'
+    | '/graphql'
+    | '/har'
     | '/hash'
     | '/hex-viewer'
     | '/hmac'
@@ -1628,6 +1697,7 @@ export interface FileRouteTypes {
     | '/openssl-builder'
     | '/password-generator'
     | '/php-serialize'
+    | '/pkce'
     | '/pomodoro'
     | '/port-check'
     | '/qr-code'
@@ -1647,6 +1717,7 @@ export interface FileRouteTypes {
     | '/text-stats'
     | '/timestamp'
     | '/timezone'
+    | '/toml-formatter'
     | '/toml-json'
     | '/top'
     | '/totp'
@@ -1664,6 +1735,7 @@ export interface FileRouteTypes {
     | '/whois'
     | '/xml'
     | '/xml-json'
+    | '/yaml-formatter'
     | '/yaml-json'
     | '/api/image.jpg'
     | '/api/image.png'
@@ -1695,6 +1767,7 @@ export interface RootRouteChildren {
   CookieParserRoute: typeof CookieParserRoute
   CronRoute: typeof CronRoute
   CronParserRoute: typeof CronParserRoute
+  CspBuilderRoute: typeof CspBuilderRoute
   CssAnimationRoute: typeof CssAnimationRoute
   CssBorderRadiusRoute: typeof CssBorderRadiusRoute
   CssBoxShadowRoute: typeof CssBoxShadowRoute
@@ -1726,6 +1799,8 @@ export interface RootRouteChildren {
   FaviconGeneratorRoute: typeof FaviconGeneratorRoute
   GitignoreRoute: typeof GitignoreRoute
   GlobalIpRoute: typeof GlobalIpRoute
+  GraphqlRoute: typeof GraphqlRoute
+  HarRoute: typeof HarRoute
   HashRoute: typeof HashRoute
   HexViewerRoute: typeof HexViewerRoute
   HmacRoute: typeof HmacRoute
@@ -1768,6 +1843,7 @@ export interface RootRouteChildren {
   OpensslBuilderRoute: typeof OpensslBuilderRoute
   PasswordGeneratorRoute: typeof PasswordGeneratorRoute
   PhpSerializeRoute: typeof PhpSerializeRoute
+  PkceRoute: typeof PkceRoute
   PomodoroRoute: typeof PomodoroRoute
   PortCheckRoute: typeof PortCheckRoute
   QrCodeRoute: typeof QrCodeRoute
@@ -1787,6 +1863,7 @@ export interface RootRouteChildren {
   TextStatsRoute: typeof TextStatsRoute
   TimestampRoute: typeof TimestampRoute
   TimezoneRoute: typeof TimezoneRoute
+  TomlFormatterRoute: typeof TomlFormatterRoute
   TomlJsonRoute: typeof TomlJsonRoute
   TopRoute: typeof TopRoute
   TotpRoute: typeof TotpRoute
@@ -1804,6 +1881,7 @@ export interface RootRouteChildren {
   WhoisRoute: typeof WhoisRoute
   XmlRoute: typeof XmlRoute
   XmlJsonRoute: typeof XmlJsonRoute
+  YamlFormatterRoute: typeof YamlFormatterRoute
   YamlJsonRoute: typeof YamlJsonRoute
   ApiImageDotjpgRoute: typeof ApiImageDotjpgRoute
   ApiImageDotpngRoute: typeof ApiImageDotpngRoute
@@ -1818,6 +1896,13 @@ declare module '@tanstack/react-router' {
       path: '/yaml-json'
       fullPath: '/yaml-json'
       preLoaderRoute: typeof YamlJsonRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/yaml-formatter': {
+      id: '/yaml-formatter'
+      path: '/yaml-formatter'
+      fullPath: '/yaml-formatter'
+      preLoaderRoute: typeof YamlFormatterRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/xml-json': {
@@ -1937,6 +2022,13 @@ declare module '@tanstack/react-router' {
       path: '/toml-json'
       fullPath: '/toml-json'
       preLoaderRoute: typeof TomlJsonRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/toml-formatter': {
+      id: '/toml-formatter'
+      path: '/toml-formatter'
+      fullPath: '/toml-formatter'
+      preLoaderRoute: typeof TomlFormatterRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/timezone': {
@@ -2070,6 +2162,13 @@ declare module '@tanstack/react-router' {
       path: '/pomodoro'
       fullPath: '/pomodoro'
       preLoaderRoute: typeof PomodoroRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pkce': {
+      id: '/pkce'
+      path: '/pkce'
+      fullPath: '/pkce'
+      preLoaderRoute: typeof PkceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/php-serialize': {
@@ -2366,6 +2465,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HashRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/har': {
+      id: '/har'
+      path: '/har'
+      fullPath: '/har'
+      preLoaderRoute: typeof HarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/graphql': {
+      id: '/graphql'
+      path: '/graphql'
+      fullPath: '/graphql'
+      preLoaderRoute: typeof GraphqlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/global-ip': {
       id: '/global-ip'
       path: '/global-ip'
@@ -2581,6 +2694,13 @@ declare module '@tanstack/react-router' {
       path: '/css-animation'
       fullPath: '/css-animation'
       preLoaderRoute: typeof CssAnimationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/csp-builder': {
+      id: '/csp-builder'
+      path: '/csp-builder'
+      fullPath: '/csp-builder'
+      preLoaderRoute: typeof CspBuilderRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cron-parser': {
@@ -2799,6 +2919,7 @@ const rootRouteChildren: RootRouteChildren = {
   CookieParserRoute: CookieParserRoute,
   CronRoute: CronRoute,
   CronParserRoute: CronParserRoute,
+  CspBuilderRoute: CspBuilderRoute,
   CssAnimationRoute: CssAnimationRoute,
   CssBorderRadiusRoute: CssBorderRadiusRoute,
   CssBoxShadowRoute: CssBoxShadowRoute,
@@ -2830,6 +2951,8 @@ const rootRouteChildren: RootRouteChildren = {
   FaviconGeneratorRoute: FaviconGeneratorRoute,
   GitignoreRoute: GitignoreRoute,
   GlobalIpRoute: GlobalIpRoute,
+  GraphqlRoute: GraphqlRoute,
+  HarRoute: HarRoute,
   HashRoute: HashRoute,
   HexViewerRoute: HexViewerRoute,
   HmacRoute: HmacRoute,
@@ -2872,6 +2995,7 @@ const rootRouteChildren: RootRouteChildren = {
   OpensslBuilderRoute: OpensslBuilderRoute,
   PasswordGeneratorRoute: PasswordGeneratorRoute,
   PhpSerializeRoute: PhpSerializeRoute,
+  PkceRoute: PkceRoute,
   PomodoroRoute: PomodoroRoute,
   PortCheckRoute: PortCheckRoute,
   QrCodeRoute: QrCodeRoute,
@@ -2891,6 +3015,7 @@ const rootRouteChildren: RootRouteChildren = {
   TextStatsRoute: TextStatsRoute,
   TimestampRoute: TimestampRoute,
   TimezoneRoute: TimezoneRoute,
+  TomlFormatterRoute: TomlFormatterRoute,
   TomlJsonRoute: TomlJsonRoute,
   TopRoute: TopRoute,
   TotpRoute: TotpRoute,
@@ -2908,6 +3033,7 @@ const rootRouteChildren: RootRouteChildren = {
   WhoisRoute: WhoisRoute,
   XmlRoute: XmlRoute,
   XmlJsonRoute: XmlJsonRoute,
+  YamlFormatterRoute: YamlFormatterRoute,
   YamlJsonRoute: YamlJsonRoute,
   ApiImageDotjpgRoute: ApiImageDotjpgRoute,
   ApiImageDotpngRoute: ApiImageDotpngRoute,

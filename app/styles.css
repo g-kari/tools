@@ -43,9 +43,11 @@
 @import "./styles/tools/text-case.css";
 @import "./styles/tools/hash.css";
 @import "./styles/tools/hmac.css";
+@import "./styles/tools/pkce.css";
 @import "./styles/tools/chmod.css";
 @import "./styles/tools/ad-banner.css";
 @import "./styles/tools/sql.css";
+@import "./styles/tools/graphql.css";
 @import "./styles/tools/user-agent.css";
 @import "./styles/tools/morse-code.css";
 @import "./styles/tools/number-format.css";
@@ -112,3 +114,9 @@
 @import "./styles/tools/conventional-commits.css";
 @import "./styles/tools/color-token.css";
 @import "./styles/tools/css-media-query.css";
+@import "./styles/tools/csp-builder.css";
+@import "./styles/tools/encoding.css";
+@import "./styles/tools/date-calc.css";
+@import "./styles/tools/css-container-query.css";
+@import "./styles/tools/har.css";
+@import "./styles/tools/toml-formatter.css";
