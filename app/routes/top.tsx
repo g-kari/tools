@@ -391,6 +391,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "⬛",
       },
       {
+        path: "/css-grid",
+        label: "CSS Gridジェネレーター",
+        description:
+          "CSS Grid のコンテナ・アイテムプロパティをビジュアルで設定し、CSSコードを即座に生成。grid-template-columns・gap・justify-items などを直感的に試せる。",
+        icon: "⊞",
+      },
+      {
         path: "/image-to-gif",
         label: "画像→GIF変換",
         description: "複数画像からアニメーションGIFを作成",
@@ -598,13 +605,6 @@ const toolCatalog: ToolCategory[] = [
         description:
           "WCAG 2.1準拠のコントラスト比計算ツール。前景色と背景色の組み合わせをAA・AAAで判定",
         icon: "🎯",
-      },
-      {
-        path: "/totp",
-        label: "TOTPジェネレーター",
-        description:
-          "RFC 6238準拠のTOTP（時間ベースワンタイムパスワード）をリアルタイム生成するツール",
-        icon: "🔐",
       },
     ],
   },

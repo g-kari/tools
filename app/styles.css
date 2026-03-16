@@ -62,6 +62,7 @@
 @import "./styles/tools/jwt-generator.css";
 @import "./styles/tools/totp.css";
 @import "./styles/tools/color-palette.css";
+
 @import "./styles/tools/color-harmony.css";
 @import "./styles/tools/css-gradient.css";
 @import "./styles/tools/css-animation.css";
@@ -75,8 +76,8 @@
 @import "./styles/tools/http-client.css";
 @import "./styles/tools/barcode.css";
 @import "./styles/tools/svg-optimizer.css";
-@import "./styles/tools/totp.css";
 @import "./styles/tools/curl-builder.css";
 @import "./styles/tools/openssl-builder.css";
 @import "./styles/tools/json-compare.css";
 @import "./styles/tools/css-flexbox.css";
+@import "./styles/tools/css-grid.css";

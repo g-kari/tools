@@ -1,0 +1,275 @@
+/* CSS Gridジェネレーター */
+
+.cg-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 900px) {
+  .cg-layout {
+    grid-template-columns: 320px 1fr;
+    align-items: start;
+  }
+}
+
+/* コントロールパネル */
+.cg-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.cg-section {
+  background: var(--md-sys-color-surface-container-low);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.cg-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.cg-section-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 12px;
+}
+
+/* プロパティ行 */
+.cg-prop-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.cg-prop-row:last-child {
+  margin-bottom: 0;
+}
+
+.cg-prop-label {
+  font-size: 0.8rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-weight: 500;
+}
+
+.cg-prop-label code {
+  font-family: 'Consolas', 'Monaco', monospace;
+  background: var(--md-sys-color-surface-container);
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-size: 0.75rem;
+}
+
+.cg-select {
+  width: 100%;
+  padding: 6px 10px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.cg-select:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+}
+
+.cg-input {
+  width: 100%;
+  padding: 6px 10px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-size: 0.85rem;
+  font-family: 'Consolas', 'Monaco', monospace;
+  transition: border-color 0.15s;
+}
+
+.cg-input:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+}
+
+/* アイテムリスト */
+.cg-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cg-item-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 6px;
+  background: var(--md-sys-color-surface);
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+  gap: 8px;
+}
+
+.cg-item-card:hover {
+  border-color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-surface-container);
+}
+
+.cg-item-card--selected {
+  border-color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-primary-container);
+}
+
+.cg-item-swatch {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.cg-item-name {
+  flex: 1;
+  font-size: 0.85rem;
+  color: var(--md-sys-color-on-surface);
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.cg-item-remove {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--md-sys-color-error);
+  font-size: 1rem;
+  padding: 2px 4px;
+  border-radius: 4px;
+  line-height: 1;
+  opacity: 0.6;
+  transition: opacity 0.15s;
+}
+
+.cg-item-remove:hover {
+  opacity: 1;
+  background: var(--md-sys-color-error-container);
+}
+
+/* 右側エリア */
+.cg-right {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* プレビューエリア */
+.cg-preview-section {
+  background: var(--md-sys-color-surface-container-low);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.cg-preview-wrapper {
+  background: var(--md-sys-color-surface);
+  border: 1px dashed var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  padding: 12px;
+  min-height: 200px;
+  overflow: auto;
+}
+
+.cg-preview-container {
+  min-height: 160px;
+}
+
+.cg-preview-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: white;
+  padding: 8px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: outline 0.1s;
+}
+
+.cg-preview-item--selected {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* CSS出力エリア */
+.cg-css-section {
+  background: var(--md-sys-color-surface-container-low);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.cg-css-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.cg-css-output {
+  background: var(--md-sys-color-surface-container);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  padding: 12px;
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: 0.8rem;
+  color: var(--md-sys-color-on-surface);
+  overflow-x: auto;
+  white-space: pre;
+  line-height: 1.5;
+  min-height: 120px;
+  margin: 0;
+}
+
+/* アイテム詳細パネル */
+.cg-item-detail {
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+  margin-top: 12px;
+  padding-top: 12px;
+}
+
+.cg-item-detail-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--md-sys-color-primary);
+  margin-bottom: 10px;
+}
+
+/* レスポンシブ調整 */
+@media (max-width: 600px) {
+  .cg-section {
+    padding: 12px;
+  }
+
+  .cg-preview-wrapper {
+    min-height: 150px;
+  }
+}

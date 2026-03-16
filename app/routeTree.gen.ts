@@ -87,6 +87,7 @@ import { Route as DiffRouteImport } from './routes/diff'
 import { Route as DiceRollRouteImport } from './routes/dice-roll'
 import { Route as CurlBuilderRouteImport } from './routes/curl-builder'
 import { Route as CsvJsonRouteImport } from './routes/csv-json'
+import { Route as CssGridRouteImport } from './routes/css-grid'
 import { Route as CssGradientRouteImport } from './routes/css-gradient'
 import { Route as CssFlexboxRouteImport } from './routes/css-flexbox'
 import { Route as CssAnimationRouteImport } from './routes/css-animation'
@@ -501,6 +502,11 @@ const CsvJsonRoute = CsvJsonRouteImport.update({
   path: '/csv-json',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CssGridRoute = CssGridRouteImport.update({
+  id: '/css-grid',
+  path: '/css-grid',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CssGradientRoute = CssGradientRouteImport.update({
   id: '/css-gradient',
   path: '/css-gradient',
@@ -637,6 +643,7 @@ export interface FileRoutesByFullPath {
   '/css-animation': typeof CssAnimationRoute
   '/css-flexbox': typeof CssFlexboxRoute
   '/css-gradient': typeof CssGradientRoute
+  '/css-grid': typeof CssGridRoute
   '/csv-json': typeof CsvJsonRoute
   '/curl-builder': typeof CurlBuilderRoute
   '/dice-roll': typeof DiceRollRoute
@@ -740,6 +747,7 @@ export interface FileRoutesByTo {
   '/css-animation': typeof CssAnimationRoute
   '/css-flexbox': typeof CssFlexboxRoute
   '/css-gradient': typeof CssGradientRoute
+  '/css-grid': typeof CssGridRoute
   '/csv-json': typeof CsvJsonRoute
   '/curl-builder': typeof CurlBuilderRoute
   '/dice-roll': typeof DiceRollRoute
@@ -844,6 +852,7 @@ export interface FileRoutesById {
   '/css-animation': typeof CssAnimationRoute
   '/css-flexbox': typeof CssFlexboxRoute
   '/css-gradient': typeof CssGradientRoute
+  '/css-grid': typeof CssGridRoute
   '/csv-json': typeof CsvJsonRoute
   '/curl-builder': typeof CurlBuilderRoute
   '/dice-roll': typeof DiceRollRoute
@@ -949,6 +958,7 @@ export interface FileRouteTypes {
     | '/css-animation'
     | '/css-flexbox'
     | '/css-gradient'
+    | '/css-grid'
     | '/csv-json'
     | '/curl-builder'
     | '/dice-roll'
@@ -1052,6 +1062,7 @@ export interface FileRouteTypes {
     | '/css-animation'
     | '/css-flexbox'
     | '/css-gradient'
+    | '/css-grid'
     | '/csv-json'
     | '/curl-builder'
     | '/dice-roll'
@@ -1155,6 +1166,7 @@ export interface FileRouteTypes {
     | '/css-animation'
     | '/css-flexbox'
     | '/css-gradient'
+    | '/css-grid'
     | '/csv-json'
     | '/curl-builder'
     | '/dice-roll'
@@ -1259,6 +1271,7 @@ export interface RootRouteChildren {
   CssAnimationRoute: typeof CssAnimationRoute
   CssFlexboxRoute: typeof CssFlexboxRoute
   CssGradientRoute: typeof CssGradientRoute
+  CssGridRoute: typeof CssGridRoute
   CsvJsonRoute: typeof CsvJsonRoute
   CurlBuilderRoute: typeof CurlBuilderRoute
   DiceRollRoute: typeof DiceRollRoute
@@ -1891,6 +1904,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CsvJsonRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/css-grid': {
+      id: '/css-grid'
+      path: '/css-grid'
+      fullPath: '/css-grid'
+      preLoaderRoute: typeof CssGridRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/css-gradient': {
       id: '/css-gradient'
       path: '/css-gradient'
@@ -2075,6 +2095,7 @@ const rootRouteChildren: RootRouteChildren = {
   CssAnimationRoute: CssAnimationRoute,
   CssFlexboxRoute: CssFlexboxRoute,
   CssGradientRoute: CssGradientRoute,
+  CssGridRoute: CssGridRoute,
   CsvJsonRoute: CsvJsonRoute,
   CurlBuilderRoute: CurlBuilderRoute,
   DiceRollRoute: DiceRollRoute,
