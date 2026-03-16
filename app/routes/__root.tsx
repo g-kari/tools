@@ -136,6 +136,7 @@ const navCategories = [
       { path: "/mermaid", label: "Mermaidプレビュー" },
       { path: "/text-encrypt", label: "テキスト暗号化" },
       { path: "/text-stats", label: "テキスト統計" },
+      { path: "/text-replace", label: "テキスト置換" },
     ],
   },
   {

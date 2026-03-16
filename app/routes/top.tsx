@@ -621,6 +621,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🔤",
       },
       {
+        path: "/text-replace",
+        label: "テキスト置換",
+        description:
+          "正規表現対応のテキスト検索・置換ツール。大文字小文字区別・全件/1件置換・複数行モードに対応。マッチ箇所をハイライト表示。",
+        icon: "🔄",
+      },
+      {
         path: "/text-stats",
         label: "テキスト統計・分析",
         description:

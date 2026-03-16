@@ -27,6 +27,7 @@ import { Route as TimezoneRouteImport } from './routes/timezone'
 import { Route as TimestampRouteImport } from './routes/timestamp'
 import { Route as TextStatsRouteImport } from './routes/text-stats'
 import { Route as TextSortRouteImport } from './routes/text-sort'
+import { Route as TextReplaceRouteImport } from './routes/text-replace'
 import { Route as TextEncryptRouteImport } from './routes/text-encrypt'
 import { Route as TextCaseRouteImport } from './routes/text-case'
 import { Route as SvgOptimizerRouteImport } from './routes/svg-optimizer'
@@ -216,6 +217,11 @@ const TextStatsRoute = TextStatsRouteImport.update({
 const TextSortRoute = TextSortRouteImport.update({
   id: '/text-sort',
   path: '/text-sort',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TextReplaceRoute = TextReplaceRouteImport.update({
+  id: '/text-replace',
+  path: '/text-replace',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TextEncryptRoute = TextEncryptRouteImport.update({
@@ -816,6 +822,7 @@ export interface FileRoutesByFullPath {
   '/svg-optimizer': typeof SvgOptimizerRoute
   '/text-case': typeof TextCaseRoute
   '/text-encrypt': typeof TextEncryptRoute
+  '/text-replace': typeof TextReplaceRoute
   '/text-sort': typeof TextSortRoute
   '/text-stats': typeof TextStatsRoute
   '/timestamp': typeof TimestampRoute
@@ -936,6 +943,7 @@ export interface FileRoutesByTo {
   '/svg-optimizer': typeof SvgOptimizerRoute
   '/text-case': typeof TextCaseRoute
   '/text-encrypt': typeof TextEncryptRoute
+  '/text-replace': typeof TextReplaceRoute
   '/text-sort': typeof TextSortRoute
   '/text-stats': typeof TextStatsRoute
   '/timestamp': typeof TimestampRoute
@@ -1057,6 +1065,7 @@ export interface FileRoutesById {
   '/svg-optimizer': typeof SvgOptimizerRoute
   '/text-case': typeof TextCaseRoute
   '/text-encrypt': typeof TextEncryptRoute
+  '/text-replace': typeof TextReplaceRoute
   '/text-sort': typeof TextSortRoute
   '/text-stats': typeof TextStatsRoute
   '/timestamp': typeof TimestampRoute
@@ -1179,6 +1188,7 @@ export interface FileRouteTypes {
     | '/svg-optimizer'
     | '/text-case'
     | '/text-encrypt'
+    | '/text-replace'
     | '/text-sort'
     | '/text-stats'
     | '/timestamp'
@@ -1299,6 +1309,7 @@ export interface FileRouteTypes {
     | '/svg-optimizer'
     | '/text-case'
     | '/text-encrypt'
+    | '/text-replace'
     | '/text-sort'
     | '/text-stats'
     | '/timestamp'
@@ -1419,6 +1430,7 @@ export interface FileRouteTypes {
     | '/svg-optimizer'
     | '/text-case'
     | '/text-encrypt'
+    | '/text-replace'
     | '/text-sort'
     | '/text-stats'
     | '/timestamp'
@@ -1540,6 +1552,7 @@ export interface RootRouteChildren {
   SvgOptimizerRoute: typeof SvgOptimizerRoute
   TextCaseRoute: typeof TextCaseRoute
   TextEncryptRoute: typeof TextEncryptRoute
+  TextReplaceRoute: typeof TextReplaceRoute
   TextSortRoute: typeof TextSortRoute
   TextStatsRoute: typeof TextStatsRoute
   TimestampRoute: typeof TimestampRoute
@@ -1690,6 +1703,13 @@ declare module '@tanstack/react-router' {
       path: '/text-sort'
       fullPath: '/text-sort'
       preLoaderRoute: typeof TextSortRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/text-replace': {
+      id: '/text-replace'
+      path: '/text-replace'
+      fullPath: '/text-replace'
+      preLoaderRoute: typeof TextReplaceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/text-encrypt': {
@@ -2492,6 +2512,7 @@ const rootRouteChildren: RootRouteChildren = {
   SvgOptimizerRoute: SvgOptimizerRoute,
   TextCaseRoute: TextCaseRoute,
   TextEncryptRoute: TextEncryptRoute,
+  TextReplaceRoute: TextReplaceRoute,
   TextSortRoute: TextSortRoute,
   TextStatsRoute: TextStatsRoute,
   TimestampRoute: TimestampRoute,
