@@ -157,6 +157,7 @@ const navCategories = [
       { path: "/user-agent", label: "User-Agent解析" },
       { path: "/http-status", label: "HTTPステータスコード" },
       { path: "/http-headers", label: "HTTPヘッダーリファレンス" },
+      { path: "/mime-types", label: "MIMEタイプリファレンス" },
       { path: "/cookie-parser", label: "Cookieパーサー" },
       { path: "/keycode", label: "キーコードチェック" },
       { path: "/color-contrast", label: "カラーコントラストチェッカー" },

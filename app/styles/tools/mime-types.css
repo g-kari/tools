@@ -1,0 +1,331 @@
+/* MIMEタイプリファレンス (mime- prefix) */
+
+/* カテゴリフィルターグループ */
+.mime-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+/* フィルターボタン */
+.mime-filter-btn {
+  padding: 0.375rem 0.875rem;
+  background: none;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  transition: color 0.2s, background-color 0.2s, border-color 0.2s;
+  letter-spacing: 0.03em;
+}
+
+.mime-filter-btn:hover:not(.active) {
+  color: var(--md-sys-color-on-surface);
+  background-color: var(--md-sys-color-surface-variant);
+  border-color: var(--md-sys-color-outline);
+}
+
+.mime-filter-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.mime-filter-btn.active {
+  color: var(--md-sys-color-on-primary-container);
+  background-color: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+}
+
+/* 検索ボックスラッパー */
+.mime-search {
+  margin-bottom: 0.5rem;
+}
+
+.mime-search-input {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  font-size: 0.9375rem;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.mime-search-input:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-surface);
+}
+
+.mime-search-input::placeholder {
+  color: var(--md-sys-color-on-surface-variant);
+  opacity: 0.7;
+}
+
+/* 件数表示テキスト */
+.mime-count {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 0.75rem;
+}
+
+/* カードグリッドレイアウト */
+.mime-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+/* 各MIMEタイプカード */
+.mime-card {
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  padding: 0.875rem;
+  background: var(--md-sys-color-surface);
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.mime-card:hover {
+  border-color: var(--md-sys-color-outline);
+  background-color: var(--md-sys-color-surface-variant);
+}
+
+.mime-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* MIMEタイプ文字列（主表示） */
+.mime-type-value {
+  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+  word-break: break-all;
+  line-height: 1.4;
+}
+
+/* 拡張子タグコンテナ */
+.mime-extensions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 0.125rem;
+}
+
+/* 拡張子タグ */
+.mime-ext-tag {
+  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  padding: 0.125rem 0.375rem;
+  background-color: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 3px;
+  color: var(--md-sys-color-on-surface-variant);
+  letter-spacing: 0.02em;
+}
+
+/* 説明文 */
+.mime-desc {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  line-height: 1.5;
+  flex: 1;
+}
+
+/* カード下部（コピーボタンエリア） */
+.mime-card-footer {
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* コピーボタン */
+.mime-copy-btn {
+  padding: 0.3125rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: none;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+  letter-spacing: 0.03em;
+}
+
+.mime-copy-btn:hover {
+  background-color: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  border-color: var(--md-sys-color-outline);
+}
+
+.mime-copy-btn:active {
+  opacity: 0.7;
+}
+
+.mime-copy-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* カテゴリバッジ */
+.mime-badge {
+  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  padding: 0.125rem 0.4375rem;
+  border-radius: 4px;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+/* カテゴリカラー変数 */
+:root {
+  /* application: primary */
+  --mime-color-application: var(--md-sys-color-primary);
+  --mime-bg-application: var(--md-sys-color-primary-container);
+  --mime-text-application: var(--md-sys-color-on-primary-container);
+  /* text: secondary */
+  --mime-color-text: var(--md-sys-color-secondary);
+  --mime-bg-text: var(--md-sys-color-secondary-container);
+  --mime-text-text: var(--md-sys-color-on-secondary-container);
+  /* image: ピンク/マゼンタ系 */
+  --mime-color-image: #ad1457;
+  --mime-bg-image: #fce4ec;
+  --mime-text-image: #880e4f;
+  /* audio: 紫系 */
+  --mime-color-audio: #6a1b9a;
+  --mime-bg-audio: #f3e5f5;
+  --mime-text-audio: #4a148c;
+  /* video: ティール系 */
+  --mime-color-video: #00695c;
+  --mime-bg-video: #e0f2f1;
+  --mime-text-video: #004d40;
+  /* font: オレンジ系 */
+  --mime-color-font: #e65100;
+  --mime-bg-font: #fff3e0;
+  --mime-text-font: #bf360c;
+  /* multipart: グレー/スレート系 */
+  --mime-color-multipart: #37474f;
+  --mime-bg-multipart: #eceff1;
+  --mime-text-multipart: #263238;
+}
+
+/* カテゴリ別カラークラス */
+
+/* application */
+.mime-cat-application.mime-badge {
+  background-color: var(--mime-bg-application);
+  color: var(--mime-text-application);
+}
+.mime-cat-application.mime-card {
+  border-left: 3px solid var(--mime-color-application);
+}
+
+/* text */
+.mime-cat-text.mime-badge {
+  background-color: var(--mime-bg-text);
+  color: var(--mime-text-text);
+}
+.mime-cat-text.mime-card {
+  border-left: 3px solid var(--mime-color-text);
+}
+
+/* image */
+.mime-cat-image.mime-badge {
+  background-color: var(--mime-bg-image);
+  color: var(--mime-text-image);
+}
+.mime-cat-image.mime-card {
+  border-left: 3px solid var(--mime-color-image);
+}
+
+/* audio */
+.mime-cat-audio.mime-badge {
+  background-color: var(--mime-bg-audio);
+  color: var(--mime-text-audio);
+}
+.mime-cat-audio.mime-card {
+  border-left: 3px solid var(--mime-color-audio);
+}
+
+/* video */
+.mime-cat-video.mime-badge {
+  background-color: var(--mime-bg-video);
+  color: var(--mime-text-video);
+}
+.mime-cat-video.mime-card {
+  border-left: 3px solid var(--mime-color-video);
+}
+
+/* font */
+.mime-cat-font.mime-badge {
+  background-color: var(--mime-bg-font);
+  color: var(--mime-text-font);
+}
+.mime-cat-font.mime-card {
+  border-left: 3px solid var(--mime-color-font);
+}
+
+/* multipart */
+.mime-cat-multipart.mime-badge {
+  background-color: var(--mime-bg-multipart);
+  color: var(--mime-text-multipart);
+}
+.mime-cat-multipart.mime-card {
+  border-left: 3px solid var(--mime-color-multipart);
+}
+
+/* 結果なし表示 */
+.mime-empty {
+  padding: 2rem;
+  text-align: center;
+  color: var(--md-sys-color-on-surface-variant);
+  border: 1px dashed var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+}
+
+.mime-empty p {
+  margin-bottom: 0.25rem;
+  font-size: 0.9375rem;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 600px) {
+  .mime-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mime-filters {
+    gap: 4px;
+  }
+
+  .mime-filter-btn {
+    font-size: 0.6875rem;
+    padding: 0.3125rem 0.5rem;
+  }
+}
+
+/* モーション低減設定への対応 */
+@media (prefers-reduced-motion: reduce) {
+  .mime-filter-btn,
+  .mime-search-input,
+  .mime-card,
+  .mime-copy-btn {
+    transition: none;
+  }
+}

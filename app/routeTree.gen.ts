@@ -50,6 +50,7 @@ import { Route as NumberBaseRouteImport } from './routes/number-base'
 import { Route as MsgpackRouteImport } from './routes/msgpack'
 import { Route as MorseCodeRouteImport } from './routes/morse-code'
 import { Route as MinifyRouteImport } from './routes/minify'
+import { Route as MimeTypesRouteImport } from './routes/mime-types'
 import { Route as MermaidRouteImport } from './routes/mermaid'
 import { Route as MathEvalRouteImport } from './routes/math-eval'
 import { Route as MarkdownTableRouteImport } from './routes/markdown-table'
@@ -334,6 +335,11 @@ const MorseCodeRoute = MorseCodeRouteImport.update({
 const MinifyRoute = MinifyRouteImport.update({
   id: '/minify',
   path: '/minify',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MimeTypesRoute = MimeTypesRouteImport.update({
+  id: '/mime-types',
+  path: '/mime-types',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MermaidRoute = MermaidRouteImport.update({
@@ -814,6 +820,7 @@ export interface FileRoutesByFullPath {
   '/markdown-table': typeof MarkdownTableRoute
   '/math-eval': typeof MathEvalRoute
   '/mermaid': typeof MermaidRoute
+  '/mime-types': typeof MimeTypesRoute
   '/minify': typeof MinifyRoute
   '/morse-code': typeof MorseCodeRoute
   '/msgpack': typeof MsgpackRoute
@@ -937,6 +944,7 @@ export interface FileRoutesByTo {
   '/markdown-table': typeof MarkdownTableRoute
   '/math-eval': typeof MathEvalRoute
   '/mermaid': typeof MermaidRoute
+  '/mime-types': typeof MimeTypesRoute
   '/minify': typeof MinifyRoute
   '/morse-code': typeof MorseCodeRoute
   '/msgpack': typeof MsgpackRoute
@@ -1061,6 +1069,7 @@ export interface FileRoutesById {
   '/markdown-table': typeof MarkdownTableRoute
   '/math-eval': typeof MathEvalRoute
   '/mermaid': typeof MermaidRoute
+  '/mime-types': typeof MimeTypesRoute
   '/minify': typeof MinifyRoute
   '/morse-code': typeof MorseCodeRoute
   '/msgpack': typeof MsgpackRoute
@@ -1186,6 +1195,7 @@ export interface FileRouteTypes {
     | '/markdown-table'
     | '/math-eval'
     | '/mermaid'
+    | '/mime-types'
     | '/minify'
     | '/morse-code'
     | '/msgpack'
@@ -1309,6 +1319,7 @@ export interface FileRouteTypes {
     | '/markdown-table'
     | '/math-eval'
     | '/mermaid'
+    | '/mime-types'
     | '/minify'
     | '/morse-code'
     | '/msgpack'
@@ -1432,6 +1443,7 @@ export interface FileRouteTypes {
     | '/markdown-table'
     | '/math-eval'
     | '/mermaid'
+    | '/mime-types'
     | '/minify'
     | '/morse-code'
     | '/msgpack'
@@ -1556,6 +1568,7 @@ export interface RootRouteChildren {
   MarkdownTableRoute: typeof MarkdownTableRoute
   MathEvalRoute: typeof MathEvalRoute
   MermaidRoute: typeof MermaidRoute
+  MimeTypesRoute: typeof MimeTypesRoute
   MinifyRoute: typeof MinifyRoute
   MorseCodeRoute: typeof MorseCodeRoute
   MsgpackRoute: typeof MsgpackRoute
@@ -1890,6 +1903,13 @@ declare module '@tanstack/react-router' {
       path: '/minify'
       fullPath: '/minify'
       preLoaderRoute: typeof MinifyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mime-types': {
+      id: '/mime-types'
+      path: '/mime-types'
+      fullPath: '/mime-types'
+      preLoaderRoute: typeof MimeTypesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mermaid': {
@@ -2532,6 +2552,7 @@ const rootRouteChildren: RootRouteChildren = {
   MarkdownTableRoute: MarkdownTableRoute,
   MathEvalRoute: MathEvalRoute,
   MermaidRoute: MermaidRoute,
+  MimeTypesRoute: MimeTypesRoute,
   MinifyRoute: MinifyRoute,
   MorseCodeRoute: MorseCodeRoute,
   MsgpackRoute: MsgpackRoute,
