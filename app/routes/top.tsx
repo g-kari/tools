@@ -440,6 +440,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🔮",
       },
       {
+        path: "/css-clip-path",
+        label: "CSS Clip-pathジェネレーター",
+        description:
+          "CSS clip-pathプロパティをビジュアルエディターで作成。inset・circle・ellipse・polygonを操作してCSSコードを生成。三角形・星形など多彩なプリセット形状も利用可能。",
+        icon: "✂️",
+      },
+      {
         path: "/css-transform",
         label: "CSS Transformジェネレーター",
         description:

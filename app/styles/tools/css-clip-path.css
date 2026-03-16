@@ -1,0 +1,329 @@
+/* CSS Clip-path Generator styles */
+
+.clip-path-tabs {
+  display: flex;
+  gap: var(--space-1);
+  margin-bottom: var(--space-4);
+  background: var(--surface-container);
+  border-radius: var(--radius-lg);
+  padding: var(--space-1);
+  width: fit-content;
+}
+
+.clip-path-tab {
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  border: none;
+  background: transparent;
+  color: var(--on-surface-variant);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.clip-path-tab:hover {
+  background: var(--surface-container-high);
+  color: var(--on-surface);
+}
+
+.clip-path-tab.active {
+  background: var(--primary);
+  color: var(--on-primary);
+  font-weight: 600;
+}
+
+.clip-path-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+  align-items: start;
+}
+
+@media (max-width: 960px) {
+  .clip-path-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.clip-path-controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.clip-path-section {
+  background: var(--surface-container);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+}
+
+.clip-path-section-title {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-3);
+}
+
+/* スライダー */
+.clip-path-slider-row {
+  display: grid;
+  grid-template-columns: 9rem 1fr 3.5rem;
+  gap: var(--space-2);
+  align-items: center;
+  margin-bottom: var(--space-2);
+}
+
+.clip-path-slider-label {
+  font-size: var(--text-sm);
+  color: var(--on-surface);
+  white-space: nowrap;
+}
+
+.clip-path-slider {
+  width: 100%;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+.clip-path-slider-value {
+  font-size: var(--text-xs);
+  font-family: var(--font-mono);
+  color: var(--on-surface-variant);
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* polygon 頂点エディター */
+.clip-path-polygon-editor {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.clip-path-polygon-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-1);
+}
+
+.clip-path-label {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--on-surface-variant);
+}
+
+.clip-path-polygon-points {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.clip-path-polygon-point {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--surface-container-high);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+}
+
+.clip-path-point-label {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--primary);
+  min-width: 2rem;
+}
+
+.clip-path-point-axis {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-xs);
+  color: var(--on-surface-variant);
+}
+
+.clip-path-point-input {
+  width: 52px;
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--outline-variant);
+  background: var(--surface);
+  color: var(--on-surface);
+  font-size: var(--text-xs);
+  font-family: var(--font-mono);
+  text-align: right;
+}
+
+.clip-path-point-remove {
+  margin-left: auto;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid var(--outline-variant);
+  background: transparent;
+  color: var(--on-surface-variant);
+  font-size: var(--text-sm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s;
+  flex-shrink: 0;
+}
+
+.clip-path-point-remove:hover:not(:disabled) {
+  background: var(--error-container, #ffb4ab);
+  color: var(--on-error-container, #410002);
+  border-color: transparent;
+}
+
+.clip-path-point-remove:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* プリセット */
+.clip-path-presets {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: var(--space-2);
+}
+
+.clip-path-preset-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--outline-variant);
+  background: var(--surface);
+  color: var(--on-surface);
+  font-size: var(--text-xs);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s;
+}
+
+.clip-path-preset-btn:hover {
+  background: var(--surface-container-high);
+  border-color: var(--primary);
+  transform: translateY(-1px);
+}
+
+.clip-path-preset-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.clip-path-preset-polygon {
+  fill: var(--primary);
+  opacity: 0.8;
+}
+
+/* プレビュー */
+.clip-path-output-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  position: sticky;
+  top: var(--space-4);
+}
+
+.clip-path-preview-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.clip-path-preview-box-container {
+  background: var(--surface-container-highest);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
+
+.clip-path-preview-box {
+  width: 180px;
+  height: 180px;
+  background: linear-gradient(135deg, var(--primary), var(--secondary, var(--tertiary, #80cbc4)));
+  transition: clip-path 0.15s ease;
+}
+
+/* SVG インタラクティブオーバーレイ */
+.clip-path-svg-overlay-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.clip-path-svg-overlay {
+  width: 100%;
+  aspect-ratio: 1;
+  max-height: 200px;
+  background: var(--surface-container);
+  border-radius: var(--radius-md);
+  border: 1px dashed var(--outline-variant);
+  cursor: crosshair;
+  display: block;
+}
+
+.clip-path-svg-polygon {
+  fill: var(--primary);
+  fill-opacity: 0.15;
+  stroke: var(--primary);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 2;
+}
+
+.clip-path-svg-handle {
+  fill: var(--primary);
+  stroke: white;
+  stroke-width: 1;
+  cursor: grab;
+  transition: r 0.1s;
+}
+
+.clip-path-svg-handle:hover,
+.clip-path-svg-handle.active {
+  r: 4;
+  cursor: grabbing;
+  fill: var(--tertiary, var(--secondary));
+}
+
+.clip-path-svg-hint {
+  font-size: var(--text-xs);
+  color: var(--on-surface-variant);
+  text-align: center;
+}
+
+/* CSS 出力 */
+.clip-path-css-output {
+  background: var(--surface-container-highest);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--on-surface);
+  white-space: pre-wrap;
+  word-break: break-all;
+  min-height: 60px;
+  line-height: 1.6;
+  margin-bottom: var(--space-3);
+}
+
+.clip-path-actions {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}

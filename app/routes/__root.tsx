@@ -52,6 +52,8 @@ const navCategories = [
       { path: "/timezone", label: "タイムゾーン変換" },
       { path: "/timestamp", label: "Unixタイムスタンプ" },
       { path: "/env-parser", label: ".envパーサー" },
+      { path: "/math-eval", label: "数式評価ツール" },
+      { path: "/bitwise", label: "ビット演算計算機" },
     ],
   },
   {
@@ -70,6 +72,11 @@ const navCategories = [
       { path: "/robots-txt", label: "robots.txtジェネレーター" },
       { path: "/random-data", label: "ランダムデータ生成" },
       { path: "/ascii-art", label: "ASCIIアート生成" },
+      { path: "/json-schema", label: "JSONスキーマ生成" },
+      { path: "/json-to-ts", label: "JSON→TS型変換" },
+      { path: "/json-compare", label: "JSON比較" },
+      { path: "/jwt-generator", label: "JWT生成" },
+      { path: "/slug", label: "スラッグ生成" },
     ],
   },
   {
@@ -94,6 +101,7 @@ const navCategories = [
       { path: "/css-border-radius", label: "CSS Border Radiusジェネレーター" },
       { path: "/css-filter", label: "CSS Filterジェネレーター" },
       { path: "/css-transform", label: "CSS Transformジェネレーター" },
+      { path: "/css-clip-path", label: "CSS Clip-pathジェネレーター" },
       { path: "/color-harmony", label: "カラーハーモニー" },
       { path: "/image-to-gif", label: "画像→GIF変換" },
       { path: "/emoji-converter", label: "絵文字変換" },
@@ -128,6 +136,8 @@ const navCategories = [
       { path: "/mermaid", label: "Mermaidプレビュー" },
       { path: "/text-encrypt", label: "テキスト暗号化" },
       { path: "/text-stats", label: "テキスト統計" },
+      { path: "/morse-code", label: "Morse Code変換" },
+      { path: "/markdown-table", label: "Markdownテーブル生成" },
     ],
   },
   {
@@ -146,6 +156,10 @@ const navCategories = [
       { path: "/user-agent", label: "User-Agent解析" },
       { path: "/http-status", label: "HTTPステータスコード" },
       { path: "/keycode", label: "キーコードチェック" },
+      { path: "/totp", label: "TOTP生成" },
+      { path: "/jwt-generator", label: "JWT生成" },
+      { path: "/color-contrast", label: "カラーコントラストチェッカー" },
+      { path: "/color-blind", label: "色覚シミュレーター" },
     ],
   },
   {
