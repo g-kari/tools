@@ -106,6 +106,20 @@ const toolCatalog: ToolCategory[] = [
         icon: "⬇️",
       },
       {
+        path: "/json-lines",
+        label: "JSON Lines フォーマッター",
+        description:
+          "JSON Lines（NDJSON）の解析・整形・バリデーション。JSON配列との相互変換も可能。ログファイルやストリーミングAPIのデバッグに便利。",
+        icon: "📄",
+      },
+      {
+        path: "/html-to-jsx",
+        label: "HTML→JSX変換",
+        description:
+          "HTMLをReact JSXに変換するツール。class→className、for→htmlFor などの属性変換に対応。",
+        icon: "⚛️",
+      },
+      {
         path: "/php-serialize",
         label: "PHPシリアライズ",
         description: "PHPシリアライズ形式とJSONの相互変換",
@@ -220,6 +234,13 @@ const toolCatalog: ToolCategory[] = [
         description:
           "AND・OR・XOR・NOT・シフト演算をビジュアルで確認できる計算機。2進数・8進数・10進数・16進数で入力可能。32ビットビット表示付き。",
         icon: "🔢",
+      },
+      {
+        path: "/hex-viewer",
+        label: "Hex Viewer",
+        description:
+          "ファイルやテキストのバイナリデータを16進数・ASCII形式で表示するツール。バイトオフセット・カラーハイライト対応。",
+        icon: "🔬",
       },
       {
         path: "/aspect-ratio",

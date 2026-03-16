@@ -63,6 +63,7 @@ import { Route as JwtRouteImport } from './routes/jwt'
 import { Route as JsonToTsRouteImport } from './routes/json-to-ts'
 import { Route as JsonSchemaRouteImport } from './routes/json-schema'
 import { Route as JsonPathRouteImport } from './routes/json-path'
+import { Route as JsonLinesRouteImport } from './routes/json-lines'
 import { Route as JsonFlattenRouteImport } from './routes/json-flatten'
 import { Route as JsonCompareRouteImport } from './routes/json-compare'
 import { Route as JsonRouteImport } from './routes/json'
@@ -402,6 +403,11 @@ const JsonSchemaRoute = JsonSchemaRouteImport.update({
 const JsonPathRoute = JsonPathRouteImport.update({
   id: '/json-path',
   path: '/json-path',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JsonLinesRoute = JsonLinesRouteImport.update({
+  id: '/json-lines',
+  path: '/json-lines',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JsonFlattenRoute = JsonFlattenRouteImport.update({
@@ -822,6 +828,7 @@ export interface FileRoutesByFullPath {
   '/json': typeof JsonRoute
   '/json-compare': typeof JsonCompareRoute
   '/json-flatten': typeof JsonFlattenRoute
+  '/json-lines': typeof JsonLinesRoute
   '/json-path': typeof JsonPathRoute
   '/json-schema': typeof JsonSchemaRoute
   '/json-to-ts': typeof JsonToTsRoute
@@ -948,6 +955,7 @@ export interface FileRoutesByTo {
   '/json': typeof JsonRoute
   '/json-compare': typeof JsonCompareRoute
   '/json-flatten': typeof JsonFlattenRoute
+  '/json-lines': typeof JsonLinesRoute
   '/json-path': typeof JsonPathRoute
   '/json-schema': typeof JsonSchemaRoute
   '/json-to-ts': typeof JsonToTsRoute
@@ -1075,6 +1083,7 @@ export interface FileRoutesById {
   '/json': typeof JsonRoute
   '/json-compare': typeof JsonCompareRoute
   '/json-flatten': typeof JsonFlattenRoute
+  '/json-lines': typeof JsonLinesRoute
   '/json-path': typeof JsonPathRoute
   '/json-schema': typeof JsonSchemaRoute
   '/json-to-ts': typeof JsonToTsRoute
@@ -1203,6 +1212,7 @@ export interface FileRouteTypes {
     | '/json'
     | '/json-compare'
     | '/json-flatten'
+    | '/json-lines'
     | '/json-path'
     | '/json-schema'
     | '/json-to-ts'
@@ -1329,6 +1339,7 @@ export interface FileRouteTypes {
     | '/json'
     | '/json-compare'
     | '/json-flatten'
+    | '/json-lines'
     | '/json-path'
     | '/json-schema'
     | '/json-to-ts'
@@ -1455,6 +1466,7 @@ export interface FileRouteTypes {
     | '/json'
     | '/json-compare'
     | '/json-flatten'
+    | '/json-lines'
     | '/json-path'
     | '/json-schema'
     | '/json-to-ts'
@@ -1582,6 +1594,7 @@ export interface RootRouteChildren {
   JsonRoute: typeof JsonRoute
   JsonCompareRoute: typeof JsonCompareRoute
   JsonFlattenRoute: typeof JsonFlattenRoute
+  JsonLinesRoute: typeof JsonLinesRoute
   JsonPathRoute: typeof JsonPathRoute
   JsonSchemaRoute: typeof JsonSchemaRoute
   JsonToTsRoute: typeof JsonToTsRoute
@@ -2020,6 +2033,13 @@ declare module '@tanstack/react-router' {
       path: '/json-path'
       fullPath: '/json-path'
       preLoaderRoute: typeof JsonPathRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/json-lines': {
+      id: '/json-lines'
+      path: '/json-lines'
+      fullPath: '/json-lines'
+      preLoaderRoute: typeof JsonLinesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/json-flatten': {
@@ -2582,6 +2602,7 @@ const rootRouteChildren: RootRouteChildren = {
   JsonRoute: JsonRoute,
   JsonCompareRoute: JsonCompareRoute,
   JsonFlattenRoute: JsonFlattenRoute,
+  JsonLinesRoute: JsonLinesRoute,
   JsonPathRoute: JsonPathRoute,
   JsonSchemaRoute: JsonSchemaRoute,
   JsonToTsRoute: JsonToTsRoute,
