@@ -1,0 +1,331 @@
+/* CSS Text Shadow Generator スタイル */
+
+.cts-layout {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: var(--space-4);
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .cts-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---- 左パネル ---- */
+.cts-controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.cts-section {
+  background: var(--surface-container);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.cts-section-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--on-surface);
+  margin: 0;
+}
+
+.cts-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+/* ---- プリセット ---- */
+.cts-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.cts-preset-btn {
+  font-size: 0.78rem;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--outline-variant);
+  background: var(--surface);
+  color: var(--on-surface-variant);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+
+.cts-preset-btn:hover {
+  background: var(--primary-container);
+  color: var(--on-primary-container);
+  border-color: var(--primary);
+}
+
+/* ---- レイヤーリスト ---- */
+.cts-layers-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.cts-layer-card {
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.cts-layer-card--selected {
+  border-color: var(--primary);
+  background: var(--primary-container);
+}
+
+.cts-layer-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 6px 10px;
+}
+
+.cts-layer-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  border: 1px solid var(--outline-variant);
+  flex-shrink: 0;
+}
+
+.cts-layer-name {
+  flex: 1;
+  text-align: left;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--on-surface);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1.4;
+}
+
+.cts-layer-remove {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid var(--outline-variant);
+  background: none;
+  color: var(--error);
+  font-size: 0.85rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+
+.cts-layer-remove:hover {
+  background: var(--error-container);
+}
+
+/* ---- プロパティ編集パネル ---- */
+.cts-layer-detail {
+  border-top: 1px solid var(--outline-variant);
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  background: var(--surface-container-low);
+}
+
+.cts-prop-row {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.cts-prop-label {
+  font-size: 0.78rem;
+  color: var(--on-surface-variant);
+  font-family: monospace;
+  white-space: nowrap;
+}
+
+.cts-input {
+  width: 100%;
+  padding: 4px 8px;
+  font-size: 0.82rem;
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--on-surface);
+  transition: border-color 0.15s;
+  box-sizing: border-box;
+}
+
+.cts-input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+/* color input wrapper */
+.cts-color-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.cts-color-input {
+  width: 40px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--outline-variant);
+  padding: 2px;
+  cursor: pointer;
+  background: none;
+  flex-shrink: 0;
+}
+
+.cts-color-text {
+  flex: 1;
+}
+
+/* range input */
+.cts-range-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.cts-range {
+  flex: 1;
+  accent-color: var(--primary);
+  height: 4px;
+}
+
+.cts-range-value {
+  font-size: 0.78rem;
+  color: var(--on-surface-variant);
+  min-width: 36px;
+  text-align: right;
+  font-family: monospace;
+}
+
+/* ---- 右パネル ---- */
+.cts-right {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* ---- プレビュー ---- */
+.cts-preview-section {
+  background: var(--surface-container);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+}
+
+.cts-preview-bg {
+  min-height: 160px;
+  border-radius: var(--radius-md);
+  border: 1px dashed var(--outline-variant);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: var(--space-3);
+  position: relative;
+  overflow: hidden;
+}
+
+.cts-preview-bg--light {
+  background: #f5f5f5;
+}
+
+.cts-preview-bg--dark {
+  background: #1a1a2e;
+}
+
+.cts-preview-bg--colored {
+  background: linear-gradient(135deg, #e0f2fe, #fce7f3);
+}
+
+.cts-preview-text {
+  font-size: 2.4rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  user-select: none;
+  transition: text-shadow 0.3s ease;
+  color: #ffffff;
+  padding: var(--space-3);
+  text-align: center;
+}
+
+.cts-preview-bg--light .cts-preview-text {
+  color: #1a1a1a;
+}
+
+.cts-preview-bg-switcher {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.cts-bg-option {
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--outline-variant);
+  background: var(--surface);
+  font-size: 0.78rem;
+  color: var(--on-surface-variant);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.cts-bg-option--active {
+  border-color: var(--primary);
+  background: var(--primary-container);
+  color: var(--on-primary-container);
+}
+
+/* ---- CSS出力 ---- */
+.cts-css-section {
+  background: var(--surface-container);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+}
+
+.cts-css-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+}
+
+.cts-css-output {
+  background: var(--surface-container-lowest);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  font-family: monospace;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: var(--on-surface);
+  white-space: pre-wrap;
+  word-break: break-all;
+  overflow-x: auto;
+  min-height: 80px;
+  margin: 0;
+}

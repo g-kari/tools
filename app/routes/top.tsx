@@ -405,6 +405,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🌑",
       },
       {
+        path: "/css-text-shadow",
+        label: "CSS Text Shadowジェネレーター",
+        description:
+          "text-shadowをビジュアルエディターで作成。複数レイヤー・不透明度・プリセット対応。ネオン・エンボス・アウトラインなど多彩なテキスト効果を直感的に試せる。",
+        icon: "✦",
+      },
+      {
         path: "/image-to-gif",
         label: "画像→GIF変換",
         description: "複数画像からアニメーションGIFを作成",
