@@ -322,3 +322,17 @@
   font-size: var(--text-sm);
   color: var(--on-surface);
 }
+
+/* インラインスタイル代替クラス */
+.bw-bit-contents {
+  display: contents;
+}
+
+.bw-bit-hex {
+  color: var(--on-surface-variant);
+  font-size: var(--text-xs);
+}
+
+.bw-bit-visual-item {
+  margin-bottom: var(--space-3);
+}

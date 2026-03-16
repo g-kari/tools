@@ -156,7 +156,7 @@ function OperandPanel({
                   // 8ビットごとにセパレーター
                   const addSep = i > 0 && i % 8 === 0;
                   return (
-                    <span key={i} style={{ display: "contents" }}>
+                    <span key={i} className="bw-bit-contents">
                       {addSep && <span className="bw-bit-sep" aria-hidden="true" />}
                       <span
                         className={`bw-bit bw-bit-${bit}`}
@@ -282,7 +282,7 @@ function BitwiseCalculator() {
                       <span className="bw-shift-result-op">{op}</span>
                       <span className="bw-shift-result-value">
                         {value}{" "}
-                        <span style={{ color: "var(--on-surface-variant)", fontSize: "var(--text-xs)" }}>
+                        <span className="bw-bit-hex">
                           (0x{formatInteger(value, 16).toUpperCase()})
                         </span>
                       </span>
@@ -373,7 +373,7 @@ function BitwiseCalculator() {
                 ].map(({ label, value }) => {
                   const bin = toBinary32(value);
                   return (
-                    <div key={label} style={{ marginBottom: "var(--space-3)" }}>
+                    <div key={label} className="bw-bit-visual-item">
                       <div className="bw-bits-label">
                         {label} = {value}
                       </div>
@@ -385,7 +385,7 @@ function BitwiseCalculator() {
                         {bin.split("").map((bit, i) => {
                           const addSep = i > 0 && i % 8 === 0;
                           return (
-                            <span key={i} style={{ display: "contents" }}>
+                            <span key={i} className="bw-bit-contents">
                               {addSep && (
                                 <span className="bw-bit-sep" aria-hidden="true" />
                               )}

@@ -73,6 +73,7 @@
 @import "./styles/tools/keycode.css";
 @import "./styles/tools/text-stats.css";
 @import "./styles/tools/ascii-art.css";
+@import "./styles/tools/aspect-ratio.css";
 @import "./styles/tools/math-eval.css";
 @import "./styles/tools/http-client.css";
 @import "./styles/tools/barcode.css";

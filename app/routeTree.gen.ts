@@ -34,6 +34,7 @@ import { Route as SqlRouteImport } from './routes/sql'
 import { Route as SlugRouteImport } from './routes/slug'
 import { Route as ServerEnvRouteImport } from './routes/server-env'
 import { Route as SecurityHeadersRouteImport } from './routes/security-headers'
+import { Route as RobotsTxtRouteImport } from './routes/robots-txt'
 import { Route as RegexCheckerRouteImport } from './routes/regex-checker'
 import { Route as RandomDataRouteImport } from './routes/random-data'
 import { Route as QrCodeRouteImport } from './routes/qr-code'
@@ -93,6 +94,7 @@ import { Route as CssGridRouteImport } from './routes/css-grid'
 import { Route as CssGradientRouteImport } from './routes/css-gradient'
 import { Route as CssFlexboxRouteImport } from './routes/css-flexbox'
 import { Route as CssFilterRouteImport } from './routes/css-filter'
+import { Route as CssClipPathRouteImport } from './routes/css-clip-path'
 import { Route as CssBoxShadowRouteImport } from './routes/css-box-shadow'
 import { Route as CssBorderRadiusRouteImport } from './routes/css-border-radius'
 import { Route as CssAnimationRouteImport } from './routes/css-animation'
@@ -103,6 +105,7 @@ import { Route as ColorPaletteRouteImport } from './routes/color-palette'
 import { Route as ColorHarmonyRouteImport } from './routes/color-harmony'
 import { Route as ColorExtractorRouteImport } from './routes/color-extractor'
 import { Route as ColorContrastRouteImport } from './routes/color-contrast'
+import { Route as ColorBlindRouteImport } from './routes/color-blind'
 import { Route as CidrRouteImport } from './routes/cidr'
 import { Route as ChmodRouteImport } from './routes/chmod'
 import { Route as CharCountRouteImport } from './routes/char-count'
@@ -111,6 +114,7 @@ import { Route as Base64ImageRouteImport } from './routes/base64-image'
 import { Route as Base64RouteImport } from './routes/base64'
 import { Route as BarcodeRouteImport } from './routes/barcode'
 import { Route as AudioConverterRouteImport } from './routes/audio-converter'
+import { Route as AspectRatioRouteImport } from './routes/aspect-ratio'
 import { Route as AsciiArtRouteImport } from './routes/ascii-art'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiImageDotwebpRouteImport } from './routes/api/image[.]webp'
@@ -241,6 +245,11 @@ const ServerEnvRoute = ServerEnvRouteImport.update({
 const SecurityHeadersRoute = SecurityHeadersRouteImport.update({
   id: '/security-headers',
   path: '/security-headers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RobotsTxtRoute = RobotsTxtRouteImport.update({
+  id: '/robots-txt',
+  path: '/robots-txt',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RegexCheckerRoute = RegexCheckerRouteImport.update({
@@ -538,6 +547,11 @@ const CssFilterRoute = CssFilterRouteImport.update({
   path: '/css-filter',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CssClipPathRoute = CssClipPathRouteImport.update({
+  id: '/css-clip-path',
+  path: '/css-clip-path',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CssBoxShadowRoute = CssBoxShadowRouteImport.update({
   id: '/css-box-shadow',
   path: '/css-box-shadow',
@@ -588,6 +602,11 @@ const ColorContrastRoute = ColorContrastRouteImport.update({
   path: '/color-contrast',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ColorBlindRoute = ColorBlindRouteImport.update({
+  id: '/color-blind',
+  path: '/color-blind',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CidrRoute = CidrRouteImport.update({
   id: '/cidr',
   path: '/cidr',
@@ -628,6 +647,11 @@ const AudioConverterRoute = AudioConverterRouteImport.update({
   path: '/audio-converter',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AspectRatioRoute = AspectRatioRouteImport.update({
+  id: '/aspect-ratio',
+  path: '/aspect-ratio',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AsciiArtRoute = AsciiArtRouteImport.update({
   id: '/ascii-art',
   path: '/ascii-art',
@@ -662,6 +686,7 @@ const ApiImageDotjpgRoute = ApiImageDotjpgRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/ascii-art': typeof AsciiArtRoute
+  '/aspect-ratio': typeof AspectRatioRoute
   '/audio-converter': typeof AudioConverterRoute
   '/barcode': typeof BarcodeRoute
   '/base64': typeof Base64Route
@@ -670,6 +695,7 @@ export interface FileRoutesByFullPath {
   '/char-count': typeof CharCountRoute
   '/chmod': typeof ChmodRoute
   '/cidr': typeof CidrRoute
+  '/color-blind': typeof ColorBlindRoute
   '/color-contrast': typeof ColorContrastRoute
   '/color-extractor': typeof ColorExtractorRoute
   '/color-harmony': typeof ColorHarmonyRoute
@@ -680,6 +706,7 @@ export interface FileRoutesByFullPath {
   '/css-animation': typeof CssAnimationRoute
   '/css-border-radius': typeof CssBorderRadiusRoute
   '/css-box-shadow': typeof CssBoxShadowRoute
+  '/css-clip-path': typeof CssClipPathRoute
   '/css-filter': typeof CssFilterRoute
   '/css-flexbox': typeof CssFlexboxRoute
   '/css-gradient': typeof CssGradientRoute
@@ -739,6 +766,7 @@ export interface FileRoutesByFullPath {
   '/qr-code': typeof QrCodeRoute
   '/random-data': typeof RandomDataRoute
   '/regex-checker': typeof RegexCheckerRoute
+  '/robots-txt': typeof RobotsTxtRoute
   '/security-headers': typeof SecurityHeadersRoute
   '/server-env': typeof ServerEnvRoute
   '/slug': typeof SlugRoute
@@ -772,6 +800,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/ascii-art': typeof AsciiArtRoute
+  '/aspect-ratio': typeof AspectRatioRoute
   '/audio-converter': typeof AudioConverterRoute
   '/barcode': typeof BarcodeRoute
   '/base64': typeof Base64Route
@@ -780,6 +809,7 @@ export interface FileRoutesByTo {
   '/char-count': typeof CharCountRoute
   '/chmod': typeof ChmodRoute
   '/cidr': typeof CidrRoute
+  '/color-blind': typeof ColorBlindRoute
   '/color-contrast': typeof ColorContrastRoute
   '/color-extractor': typeof ColorExtractorRoute
   '/color-harmony': typeof ColorHarmonyRoute
@@ -790,6 +820,7 @@ export interface FileRoutesByTo {
   '/css-animation': typeof CssAnimationRoute
   '/css-border-radius': typeof CssBorderRadiusRoute
   '/css-box-shadow': typeof CssBoxShadowRoute
+  '/css-clip-path': typeof CssClipPathRoute
   '/css-filter': typeof CssFilterRoute
   '/css-flexbox': typeof CssFlexboxRoute
   '/css-gradient': typeof CssGradientRoute
@@ -849,6 +880,7 @@ export interface FileRoutesByTo {
   '/qr-code': typeof QrCodeRoute
   '/random-data': typeof RandomDataRoute
   '/regex-checker': typeof RegexCheckerRoute
+  '/robots-txt': typeof RobotsTxtRoute
   '/security-headers': typeof SecurityHeadersRoute
   '/server-env': typeof ServerEnvRoute
   '/slug': typeof SlugRoute
@@ -883,6 +915,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/ascii-art': typeof AsciiArtRoute
+  '/aspect-ratio': typeof AspectRatioRoute
   '/audio-converter': typeof AudioConverterRoute
   '/barcode': typeof BarcodeRoute
   '/base64': typeof Base64Route
@@ -891,6 +924,7 @@ export interface FileRoutesById {
   '/char-count': typeof CharCountRoute
   '/chmod': typeof ChmodRoute
   '/cidr': typeof CidrRoute
+  '/color-blind': typeof ColorBlindRoute
   '/color-contrast': typeof ColorContrastRoute
   '/color-extractor': typeof ColorExtractorRoute
   '/color-harmony': typeof ColorHarmonyRoute
@@ -901,6 +935,7 @@ export interface FileRoutesById {
   '/css-animation': typeof CssAnimationRoute
   '/css-border-radius': typeof CssBorderRadiusRoute
   '/css-box-shadow': typeof CssBoxShadowRoute
+  '/css-clip-path': typeof CssClipPathRoute
   '/css-filter': typeof CssFilterRoute
   '/css-flexbox': typeof CssFlexboxRoute
   '/css-gradient': typeof CssGradientRoute
@@ -960,6 +995,7 @@ export interface FileRoutesById {
   '/qr-code': typeof QrCodeRoute
   '/random-data': typeof RandomDataRoute
   '/regex-checker': typeof RegexCheckerRoute
+  '/robots-txt': typeof RobotsTxtRoute
   '/security-headers': typeof SecurityHeadersRoute
   '/server-env': typeof ServerEnvRoute
   '/slug': typeof SlugRoute
@@ -995,6 +1031,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/ascii-art'
+    | '/aspect-ratio'
     | '/audio-converter'
     | '/barcode'
     | '/base64'
@@ -1003,6 +1040,7 @@ export interface FileRouteTypes {
     | '/char-count'
     | '/chmod'
     | '/cidr'
+    | '/color-blind'
     | '/color-contrast'
     | '/color-extractor'
     | '/color-harmony'
@@ -1013,6 +1051,7 @@ export interface FileRouteTypes {
     | '/css-animation'
     | '/css-border-radius'
     | '/css-box-shadow'
+    | '/css-clip-path'
     | '/css-filter'
     | '/css-flexbox'
     | '/css-gradient'
@@ -1072,6 +1111,7 @@ export interface FileRouteTypes {
     | '/qr-code'
     | '/random-data'
     | '/regex-checker'
+    | '/robots-txt'
     | '/security-headers'
     | '/server-env'
     | '/slug'
@@ -1105,6 +1145,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/ascii-art'
+    | '/aspect-ratio'
     | '/audio-converter'
     | '/barcode'
     | '/base64'
@@ -1113,6 +1154,7 @@ export interface FileRouteTypes {
     | '/char-count'
     | '/chmod'
     | '/cidr'
+    | '/color-blind'
     | '/color-contrast'
     | '/color-extractor'
     | '/color-harmony'
@@ -1123,6 +1165,7 @@ export interface FileRouteTypes {
     | '/css-animation'
     | '/css-border-radius'
     | '/css-box-shadow'
+    | '/css-clip-path'
     | '/css-filter'
     | '/css-flexbox'
     | '/css-gradient'
@@ -1182,6 +1225,7 @@ export interface FileRouteTypes {
     | '/qr-code'
     | '/random-data'
     | '/regex-checker'
+    | '/robots-txt'
     | '/security-headers'
     | '/server-env'
     | '/slug'
@@ -1215,6 +1259,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/ascii-art'
+    | '/aspect-ratio'
     | '/audio-converter'
     | '/barcode'
     | '/base64'
@@ -1223,6 +1268,7 @@ export interface FileRouteTypes {
     | '/char-count'
     | '/chmod'
     | '/cidr'
+    | '/color-blind'
     | '/color-contrast'
     | '/color-extractor'
     | '/color-harmony'
@@ -1233,6 +1279,7 @@ export interface FileRouteTypes {
     | '/css-animation'
     | '/css-border-radius'
     | '/css-box-shadow'
+    | '/css-clip-path'
     | '/css-filter'
     | '/css-flexbox'
     | '/css-gradient'
@@ -1292,6 +1339,7 @@ export interface FileRouteTypes {
     | '/qr-code'
     | '/random-data'
     | '/regex-checker'
+    | '/robots-txt'
     | '/security-headers'
     | '/server-env'
     | '/slug'
@@ -1326,6 +1374,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AsciiArtRoute: typeof AsciiArtRoute
+  AspectRatioRoute: typeof AspectRatioRoute
   AudioConverterRoute: typeof AudioConverterRoute
   BarcodeRoute: typeof BarcodeRoute
   Base64Route: typeof Base64Route
@@ -1334,6 +1383,7 @@ export interface RootRouteChildren {
   CharCountRoute: typeof CharCountRoute
   ChmodRoute: typeof ChmodRoute
   CidrRoute: typeof CidrRoute
+  ColorBlindRoute: typeof ColorBlindRoute
   ColorContrastRoute: typeof ColorContrastRoute
   ColorExtractorRoute: typeof ColorExtractorRoute
   ColorHarmonyRoute: typeof ColorHarmonyRoute
@@ -1344,6 +1394,7 @@ export interface RootRouteChildren {
   CssAnimationRoute: typeof CssAnimationRoute
   CssBorderRadiusRoute: typeof CssBorderRadiusRoute
   CssBoxShadowRoute: typeof CssBoxShadowRoute
+  CssClipPathRoute: typeof CssClipPathRoute
   CssFilterRoute: typeof CssFilterRoute
   CssFlexboxRoute: typeof CssFlexboxRoute
   CssGradientRoute: typeof CssGradientRoute
@@ -1403,6 +1454,7 @@ export interface RootRouteChildren {
   QrCodeRoute: typeof QrCodeRoute
   RandomDataRoute: typeof RandomDataRoute
   RegexCheckerRoute: typeof RegexCheckerRoute
+  RobotsTxtRoute: typeof RobotsTxtRoute
   SecurityHeadersRoute: typeof SecurityHeadersRoute
   ServerEnvRoute: typeof ServerEnvRoute
   SlugRoute: typeof SlugRoute
@@ -1609,6 +1661,13 @@ declare module '@tanstack/react-router' {
       path: '/security-headers'
       fullPath: '/security-headers'
       preLoaderRoute: typeof SecurityHeadersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/robots-txt': {
+      id: '/robots-txt'
+      path: '/robots-txt'
+      fullPath: '/robots-txt'
+      preLoaderRoute: typeof RobotsTxtRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/regex-checker': {
@@ -2024,6 +2083,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CssFilterRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/css-clip-path': {
+      id: '/css-clip-path'
+      path: '/css-clip-path'
+      fullPath: '/css-clip-path'
+      preLoaderRoute: typeof CssClipPathRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/css-box-shadow': {
       id: '/css-box-shadow'
       path: '/css-box-shadow'
@@ -2094,6 +2160,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ColorContrastRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/color-blind': {
+      id: '/color-blind'
+      path: '/color-blind'
+      fullPath: '/color-blind'
+      preLoaderRoute: typeof ColorBlindRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/cidr': {
       id: '/cidr'
       path: '/cidr'
@@ -2150,6 +2223,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AudioConverterRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/aspect-ratio': {
+      id: '/aspect-ratio'
+      path: '/aspect-ratio'
+      fullPath: '/aspect-ratio'
+      preLoaderRoute: typeof AspectRatioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/ascii-art': {
       id: '/ascii-art'
       path: '/ascii-art'
@@ -2198,6 +2278,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AsciiArtRoute: AsciiArtRoute,
+  AspectRatioRoute: AspectRatioRoute,
   AudioConverterRoute: AudioConverterRoute,
   BarcodeRoute: BarcodeRoute,
   Base64Route: Base64Route,
@@ -2206,6 +2287,7 @@ const rootRouteChildren: RootRouteChildren = {
   CharCountRoute: CharCountRoute,
   ChmodRoute: ChmodRoute,
   CidrRoute: CidrRoute,
+  ColorBlindRoute: ColorBlindRoute,
   ColorContrastRoute: ColorContrastRoute,
   ColorExtractorRoute: ColorExtractorRoute,
   ColorHarmonyRoute: ColorHarmonyRoute,
@@ -2216,6 +2298,7 @@ const rootRouteChildren: RootRouteChildren = {
   CssAnimationRoute: CssAnimationRoute,
   CssBorderRadiusRoute: CssBorderRadiusRoute,
   CssBoxShadowRoute: CssBoxShadowRoute,
+  CssClipPathRoute: CssClipPathRoute,
   CssFilterRoute: CssFilterRoute,
   CssFlexboxRoute: CssFlexboxRoute,
   CssGradientRoute: CssGradientRoute,
@@ -2275,6 +2358,7 @@ const rootRouteChildren: RootRouteChildren = {
   QrCodeRoute: QrCodeRoute,
   RandomDataRoute: RandomDataRoute,
   RegexCheckerRoute: RegexCheckerRoute,
+  RobotsTxtRoute: RobotsTxtRoute,
   SecurityHeadersRoute: SecurityHeadersRoute,
   ServerEnvRoute: ServerEnvRoute,
   SlugRoute: SlugRoute,
