@@ -95,6 +95,7 @@ import { Route as DiscordStickerRouteImport } from './routes/discord-sticker'
 import { Route as DiscordEmojiRouteImport } from './routes/discord-emoji'
 import { Route as DiffRouteImport } from './routes/diff'
 import { Route as DiceRollRouteImport } from './routes/dice-roll'
+import { Route as DateCalcRouteImport } from './routes/date-calc'
 import { Route as CurlBuilderRouteImport } from './routes/curl-builder'
 import { Route as CsvJsonRouteImport } from './routes/csv-json'
 import { Route as CssUnitRouteImport } from './routes/css-unit'
@@ -565,6 +566,11 @@ const DiceRollRoute = DiceRollRouteImport.update({
   path: '/dice-roll',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DateCalcRoute = DateCalcRouteImport.update({
+  id: '/date-calc',
+  path: '/date-calc',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CurlBuilderRoute = CurlBuilderRouteImport.update({
   id: '/curl-builder',
   path: '/curl-builder',
@@ -797,6 +803,7 @@ export interface FileRoutesByFullPath {
   '/css-unit': typeof CssUnitRoute
   '/csv-json': typeof CsvJsonRoute
   '/curl-builder': typeof CurlBuilderRoute
+  '/date-calc': typeof DateCalcRoute
   '/dice-roll': typeof DiceRollRoute
   '/diff': typeof DiffRoute
   '/discord-emoji': typeof DiscordEmojiRoute
@@ -924,6 +931,7 @@ export interface FileRoutesByTo {
   '/css-unit': typeof CssUnitRoute
   '/csv-json': typeof CsvJsonRoute
   '/curl-builder': typeof CurlBuilderRoute
+  '/date-calc': typeof DateCalcRoute
   '/dice-roll': typeof DiceRollRoute
   '/diff': typeof DiffRoute
   '/discord-emoji': typeof DiscordEmojiRoute
@@ -1052,6 +1060,7 @@ export interface FileRoutesById {
   '/css-unit': typeof CssUnitRoute
   '/csv-json': typeof CsvJsonRoute
   '/curl-builder': typeof CurlBuilderRoute
+  '/date-calc': typeof DateCalcRoute
   '/dice-roll': typeof DiceRollRoute
   '/diff': typeof DiffRoute
   '/discord-emoji': typeof DiscordEmojiRoute
@@ -1181,6 +1190,7 @@ export interface FileRouteTypes {
     | '/css-unit'
     | '/csv-json'
     | '/curl-builder'
+    | '/date-calc'
     | '/dice-roll'
     | '/diff'
     | '/discord-emoji'
@@ -1308,6 +1318,7 @@ export interface FileRouteTypes {
     | '/css-unit'
     | '/csv-json'
     | '/curl-builder'
+    | '/date-calc'
     | '/dice-roll'
     | '/diff'
     | '/discord-emoji'
@@ -1435,6 +1446,7 @@ export interface FileRouteTypes {
     | '/css-unit'
     | '/csv-json'
     | '/curl-builder'
+    | '/date-calc'
     | '/dice-roll'
     | '/diff'
     | '/discord-emoji'
@@ -1563,6 +1575,7 @@ export interface RootRouteChildren {
   CssUnitRoute: typeof CssUnitRoute
   CsvJsonRoute: typeof CsvJsonRoute
   CurlBuilderRoute: typeof CurlBuilderRoute
+  DateCalcRoute: typeof DateCalcRoute
   DiceRollRoute: typeof DiceRollRoute
   DiffRoute: typeof DiffRoute
   DiscordEmojiRoute: typeof DiscordEmojiRoute
@@ -2259,6 +2272,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DiceRollRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/date-calc': {
+      id: '/date-calc'
+      path: '/date-calc'
+      fullPath: '/date-calc'
+      preLoaderRoute: typeof DateCalcRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/curl-builder': {
       id: '/curl-builder'
       path: '/curl-builder'
@@ -2571,6 +2591,7 @@ const rootRouteChildren: RootRouteChildren = {
   CssUnitRoute: CssUnitRoute,
   CsvJsonRoute: CsvJsonRoute,
   CurlBuilderRoute: CurlBuilderRoute,
+  DateCalcRoute: DateCalcRoute,
   DiceRollRoute: DiceRollRoute,
   DiffRoute: DiffRoute,
   DiscordEmojiRoute: DiscordEmojiRoute,
