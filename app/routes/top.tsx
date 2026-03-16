@@ -44,6 +44,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🔤",
       },
       {
+        path: "/unicode-inspector",
+        label: "Unicodeコードポイント検査",
+        description:
+          "テキストの各文字をコードポイント単位で解析。U+XXXX表記・UTF-8バイト列・UTF-16コードユニット・HTMLエンティティ・カテゴリをリアルタイム表示。絵文字・漢字・制御文字にも対応。",
+        icon: "🔬",
+      },
+      {
         path: "/url-encode",
         label: "URLエンコード",
         description: "URL文字列のエンコード/デコード変換",
@@ -366,6 +373,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "📋",
       },
       {
+        path: "/json-schema-validator",
+        label: "JSON Schema バリデーター",
+        description:
+          "JSONデータをJSON Schema (draft-07) に対してバリデーションするツール。type・required・pattern・enum・allOf/anyOf/oneOf など主要なキーワードに対応。エラー箇所をパスで表示。",
+        icon: "✅",
+      },
+      {
         path: "/json-to-ts",
         label: "JSON→TS型変換",
         description: "JSONデータからTypeScriptのinterface/type定義を自動生成するツール",
@@ -545,6 +559,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "📦",
       },
       {
+        path: "/css-media-query",
+        label: "CSSメディアクエリビルダー",
+        description:
+          "メディアクエリを視覚的に構築。ブレイクポイント、デバイス特性、カラースキームなどの条件をGUIで設定し、CSS・SCSS・JSON形式でコードを生成。ライブプレビューつき。",
+        icon: "📐",
+      },
+      {
         path: "/image-to-gif",
         label: "画像→GIF変換",
         description: "複数画像からアニメーションGIFを作成",
@@ -581,6 +602,13 @@ const toolCatalog: ToolCategory[] = [
         description:
           "補色・類似色・トライアド・分割補色・テトラッドを一覧生成するカラーハーモニー配色ツール",
         icon: "🌈",
+      },
+      {
+        path: "/color-token",
+        label: "カラートークン生成",
+        description:
+          "ベースカラーからデザインシステム用のシェードスケール（50〜950）を自動生成。CSS変数・SCSS・Tailwind設定・JSON形式で出力。",
+        icon: "🎨",
       },
       {
         path: "/svg-optimizer",
@@ -941,14 +969,14 @@ export const Route = createFileRoute("/top")({
   head: () => ({
     meta: [
       { title: "ツール一覧 | Web ツール集" },
-      { name: "description", content: "50以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
+      { name: "description", content: "130以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
       { property: "og:title", content: "ツール一覧 | Web ツール集" },
-      { property: "og:description", content: "50以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
+      { property: "og:description", content: "130以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
       { property: "og:url", content: `${SITE_BASE_URL}/top` },
       { property: "og:type", content: "website" },
       { property: "og:image", content: SITE_OGP_IMAGE },
       { name: "twitter:title", content: "ツール一覧 | Web ツール集" },
-      { name: "twitter:description", content: "50以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
+      { name: "twitter:description", content: "130以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
     ],
   }),
   component: TopPage,

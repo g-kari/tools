@@ -1,0 +1,561 @@
+/* CSS メディアクエリ ビルダー (cmq- prefix) */
+
+/* ── 2カラムレイアウト ── */
+.cmq-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .cmq-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── セクションカード ── */
+.cmq-section {
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.cmq-section-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--md-sys-color-primary);
+  margin: 0 0 0.75rem;
+}
+
+/* ── プロパティ行 ── */
+.cmq-prop-row {
+  margin-bottom: 0.75rem;
+}
+
+.cmq-prop-row:last-child {
+  margin-bottom: 0;
+}
+
+.cmq-prop-label {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 0.25rem;
+}
+
+/* ── 入力・セレクト共通 ── */
+.cmq-input,
+.cmq-select {
+  width: 100%;
+  padding: 0.4375rem 0.75rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  font-family: "JetBrains Mono", "Roboto Mono", "Courier New", monospace;
+  font-size: 0.875rem;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.cmq-input:focus,
+.cmq-select:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--md-sys-color-primary) 20%, transparent);
+}
+
+/* ── メディアタイプ切替 ── */
+.cmq-media-type-group {
+  display: flex;
+  gap: 0.375rem;
+  flex-wrap: wrap;
+  margin-top: 0.25rem;
+}
+
+.cmq-media-type-btn {
+  padding: 0.3125rem 0.875rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: none;
+  cursor: pointer;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.cmq-media-type-btn:hover:not(.active) {
+  background: var(--md-sys-color-surface);
+  border-color: var(--md-sys-color-outline);
+  color: var(--md-sys-color-on-surface);
+}
+
+.cmq-media-type-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.cmq-media-type-btn.active {
+  background: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+/* ── 条件カード ── */
+.cmq-condition-card {
+  background: var(--md-sys-color-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 6px;
+  padding: 0.75rem;
+  margin-bottom: 0.375rem;
+}
+
+.cmq-condition-header {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.cmq-condition-type-select {
+  flex: 1;
+  padding: 0.3125rem 0.5rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  font-size: 0.8125rem;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  cursor: pointer;
+}
+
+.cmq-condition-type-select:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+}
+
+.cmq-condition-remove {
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border: 1px solid var(--md-sys-color-error);
+  border-radius: 50%;
+  background: none;
+  color: var(--md-sys-color-error);
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+
+.cmq-condition-remove:hover:not(:disabled) {
+  background: var(--md-sys-color-error-container);
+}
+
+.cmq-condition-remove:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.cmq-condition-remove:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* 条件値入力エリア */
+.cmq-condition-body {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.375rem;
+  align-items: center;
+}
+
+.cmq-condition-body.cmq-ratio {
+  grid-template-columns: 1fr auto 1fr;
+}
+
+.cmq-condition-body.cmq-number-only {
+  grid-template-columns: 1fr;
+}
+
+.cmq-value-input {
+  padding: 0.375rem 0.5rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-family: "JetBrains Mono", "Roboto Mono", monospace;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.cmq-value-input:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+}
+
+.cmq-unit-select {
+  padding: 0.375rem 0.375rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  font-size: 0.8125rem;
+  font-family: "JetBrains Mono", "Roboto Mono", monospace;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  cursor: pointer;
+  min-width: 3.5rem;
+}
+
+.cmq-unit-select:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+}
+
+.cmq-keyword-select {
+  width: 100%;
+  padding: 0.375rem 0.5rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-family: "JetBrains Mono", "Roboto Mono", monospace;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  cursor: pointer;
+}
+
+.cmq-keyword-select:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+}
+
+.cmq-range-sep {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface-variant);
+  text-align: center;
+  padding: 0 2px;
+  white-space: nowrap;
+}
+
+/* 条件プレビュー文字列 */
+.cmq-condition-preview {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  font-family: "JetBrains Mono", "Roboto Mono", "Courier New", monospace;
+  color: var(--md-sys-color-primary);
+  opacity: 0.85;
+}
+
+/* ── 論理演算子バッジ ── */
+.cmq-logic-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.25rem 0;
+}
+
+.cmq-logic-line {
+  flex: 1;
+  height: 1px;
+  background: var(--md-sys-color-outline-variant);
+}
+
+.cmq-logic-badge {
+  padding: 0.125rem 0.625rem;
+  border: 1px solid var(--md-sys-color-primary);
+  border-radius: 999px;
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.cmq-logic-badge:hover {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+.cmq-logic-badge:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* ── ブレイクポイント早見表 ── */
+.cmq-breakpoints-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 0.375rem;
+  margin-top: 0.25rem;
+}
+
+.cmq-breakpoints {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin-top: 0.25rem;
+}
+
+.cmq-bp-item {
+  padding: 0.1875rem 0.5rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: none;
+  font-size: 0.6875rem;
+  font-family: "JetBrains Mono", "Roboto Mono", monospace;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+
+.cmq-bp-item:hover {
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-primary);
+  border-color: var(--md-sys-color-primary);
+}
+
+.cmq-bp-item:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* ── 条件追加ボタン ── */
+.cmq-add-condition {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1.5px dashed var(--md-sys-color-primary);
+  border-radius: 6px;
+  background: none;
+  color: var(--md-sys-color-primary);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+  margin-top: 0.375rem;
+}
+
+.cmq-add-condition:hover {
+  background: color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent);
+}
+
+.cmq-add-condition:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* ── 右パネル ── */
+.cmq-right {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ── プレビューセクション ── */
+.cmq-preview-section {
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+}
+
+.cmq-preview-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.cmq-preview-label {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  white-space: nowrap;
+}
+
+.cmq-preview-slider {
+  flex: 1;
+  min-width: 6rem;
+  accent-color: var(--md-sys-color-primary);
+  cursor: pointer;
+}
+
+.cmq-preview-width-badge {
+  font-family: "JetBrains Mono", "Roboto Mono", monospace;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-primary-container);
+  padding: 0.125rem 0.5rem;
+  border-radius: 4px;
+  white-space: nowrap;
+  min-width: 4rem;
+  text-align: center;
+}
+
+/* プレビューラッパー（スクロール対応） */
+.cmq-preview-wrapper {
+  background: var(--md-sys-color-surface);
+  border: 1px dashed var(--md-sys-color-outline-variant);
+  border-radius: 6px;
+  padding: 0.75rem;
+  overflow-x: auto;
+  margin-bottom: 0.75rem;
+  min-height: 5rem;
+}
+
+/* 仮想ビューポート（幅は --cmq-preview-width CSS カスタムプロパティで制御） */
+.cmq-preview-outer {
+  width: var(--cmq-preview-width, 768px);
+  max-width: 100%;
+  min-width: 160px;
+  transition: width 0.1s ease;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+/* デフォルトのプレビューコンテンツ */
+.cmq-preview-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: var(--md-sys-color-surface-variant);
+  transition: background 0.2s;
+}
+
+/* クエリ適用時のスタイル */
+.cmq-preview-inner.cmq-preview-active {
+  flex-direction: row;
+  background: color-mix(in srgb, var(--md-sys-color-primary) 10%, var(--md-sys-color-surface-variant));
+}
+
+.cmq-preview-card {
+  background: var(--md-sys-color-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8125rem;
+  flex: 1;
+}
+
+/* 適用状態インジケーター */
+.cmq-preview-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.cmq-preview-status-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--md-sys-color-outline);
+  transition: background 0.2s;
+}
+
+.cmq-preview-status-dot.active {
+  background: var(--md-sys-color-primary);
+  box-shadow: 0 0 4px color-mix(in srgb, var(--md-sys-color-primary) 50%, transparent);
+}
+
+/* ── 出力セクション ── */
+.cmq-output-section {
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+}
+
+.cmq-output-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.cmq-output-tabs {
+  display: flex;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+}
+
+.cmq-output-tab {
+  padding: 0.3125rem 0.75rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: none;
+  cursor: pointer;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.cmq-output-tab:hover:not(.active) {
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  border-color: var(--md-sys-color-outline);
+}
+
+.cmq-output-tab:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.cmq-output-tab.active {
+  background: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.cmq-output-pre {
+  margin: 0;
+  padding: 0.75rem;
+  background: var(--md-sys-color-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  font-family: "JetBrains Mono", "Roboto Mono", "Courier New", monospace;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  overflow-x: auto;
+  white-space: pre;
+  color: var(--md-sys-color-on-surface);
+  min-height: 6rem;
+}
+
+/* ── モーション低減 ── */
+@media (prefers-reduced-motion: reduce) {
+  .cmq-media-type-btn,
+  .cmq-condition-card,
+  .cmq-condition-remove,
+  .cmq-add-condition,
+  .cmq-bp-item,
+  .cmq-output-tab,
+  .cmq-preview-outer,
+  .cmq-preview-inner,
+  .cmq-preview-status-dot {
+    transition: none;
+  }
+}

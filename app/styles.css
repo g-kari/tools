@@ -51,6 +51,7 @@
 @import "./styles/tools/number-format.css";
 @import "./styles/tools/json-path.css";
 @import "./styles/tools/json-schema.css";
+@import "./styles/tools/json-schema-validator.css";
 @import "./styles/tools/json-to-ts.css";
 @import "./styles/tools/timezone.css";
 @import "./styles/tools/cron.css";
@@ -109,3 +110,5 @@
 @import "./styles/tools/semver.css";
 @import "./styles/tools/ulid.css";
 @import "./styles/tools/conventional-commits.css";
+@import "./styles/tools/color-token.css";
+@import "./styles/tools/css-media-query.css";

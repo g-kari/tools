@@ -19,6 +19,7 @@ import { Route as UserAgentRouteImport } from './routes/user-agent'
 import { Route as UrlParserRouteImport } from './routes/url-parser'
 import { Route as UrlEncodeRouteImport } from './routes/url-encode'
 import { Route as UnitConverterRouteImport } from './routes/unit-converter'
+import { Route as UnicodeInspectorRouteImport } from './routes/unicode-inspector'
 import { Route as UnicodeRouteImport } from './routes/unicode'
 import { Route as UlidRouteImport } from './routes/ulid'
 import { Route as TypographyScaleRouteImport } from './routes/typography-scale'
@@ -64,6 +65,7 @@ import { Route as KeycodeRouteImport } from './routes/keycode'
 import { Route as JwtGeneratorRouteImport } from './routes/jwt-generator'
 import { Route as JwtRouteImport } from './routes/jwt'
 import { Route as JsonToTsRouteImport } from './routes/json-to-ts'
+import { Route as JsonSchemaValidatorRouteImport } from './routes/json-schema-validator'
 import { Route as JsonSchemaRouteImport } from './routes/json-schema'
 import { Route as JsonPathRouteImport } from './routes/json-path'
 import { Route as JsonLinesRouteImport } from './routes/json-lines'
@@ -107,10 +109,12 @@ import { Route as CssUnitRouteImport } from './routes/css-unit'
 import { Route as CssTransformRouteImport } from './routes/css-transform'
 import { Route as CssTextShadowRouteImport } from './routes/css-text-shadow'
 import { Route as CssSpecificityRouteImport } from './routes/css-specificity'
+import { Route as CssMediaQueryRouteImport } from './routes/css-media-query'
 import { Route as CssGridRouteImport } from './routes/css-grid'
 import { Route as CssGradientRouteImport } from './routes/css-gradient'
 import { Route as CssFlexboxRouteImport } from './routes/css-flexbox'
 import { Route as CssFilterRouteImport } from './routes/css-filter'
+import { Route as CssContainerQueryRouteImport } from './routes/css-container-query'
 import { Route as CssClipPathRouteImport } from './routes/css-clip-path'
 import { Route as CssBoxShadowRouteImport } from './routes/css-box-shadow'
 import { Route as CssBorderRadiusRouteImport } from './routes/css-border-radius'
@@ -119,6 +123,7 @@ import { Route as CronParserRouteImport } from './routes/cron-parser'
 import { Route as CronRouteImport } from './routes/cron'
 import { Route as CookieParserRouteImport } from './routes/cookie-parser'
 import { Route as ConventionalCommitsRouteImport } from './routes/conventional-commits'
+import { Route as ColorTokenRouteImport } from './routes/color-token'
 import { Route as ColorPickerRouteImport } from './routes/color-picker'
 import { Route as ColorPaletteRouteImport } from './routes/color-palette'
 import { Route as ColorHarmonyRouteImport } from './routes/color-harmony'
@@ -190,6 +195,11 @@ const UrlEncodeRoute = UrlEncodeRouteImport.update({
 const UnitConverterRoute = UnitConverterRouteImport.update({
   id: '/unit-converter',
   path: '/unit-converter',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UnicodeInspectorRoute = UnicodeInspectorRouteImport.update({
+  id: '/unicode-inspector',
+  path: '/unicode-inspector',
   getParentRoute: () => rootRouteImport,
 } as any)
 const UnicodeRoute = UnicodeRouteImport.update({
@@ -417,6 +427,11 @@ const JsonToTsRoute = JsonToTsRouteImport.update({
   path: '/json-to-ts',
   getParentRoute: () => rootRouteImport,
 } as any)
+const JsonSchemaValidatorRoute = JsonSchemaValidatorRouteImport.update({
+  id: '/json-schema-validator',
+  path: '/json-schema-validator',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const JsonSchemaRoute = JsonSchemaRouteImport.update({
   id: '/json-schema',
   path: '/json-schema',
@@ -632,6 +647,11 @@ const CssSpecificityRoute = CssSpecificityRouteImport.update({
   path: '/css-specificity',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CssMediaQueryRoute = CssMediaQueryRouteImport.update({
+  id: '/css-media-query',
+  path: '/css-media-query',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CssGridRoute = CssGridRouteImport.update({
   id: '/css-grid',
   path: '/css-grid',
@@ -650,6 +670,11 @@ const CssFlexboxRoute = CssFlexboxRouteImport.update({
 const CssFilterRoute = CssFilterRouteImport.update({
   id: '/css-filter',
   path: '/css-filter',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CssContainerQueryRoute = CssContainerQueryRouteImport.update({
+  id: '/css-container-query',
+  path: '/css-container-query',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CssClipPathRoute = CssClipPathRouteImport.update({
@@ -690,6 +715,11 @@ const CookieParserRoute = CookieParserRouteImport.update({
 const ConventionalCommitsRoute = ConventionalCommitsRouteImport.update({
   id: '/conventional-commits',
   path: '/conventional-commits',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ColorTokenRoute = ColorTokenRouteImport.update({
+  id: '/color-token',
+  path: '/color-token',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ColorPickerRoute = ColorPickerRouteImport.update({
@@ -822,6 +852,7 @@ export interface FileRoutesByFullPath {
   '/color-harmony': typeof ColorHarmonyRoute
   '/color-palette': typeof ColorPaletteRoute
   '/color-picker': typeof ColorPickerRoute
+  '/color-token': typeof ColorTokenRoute
   '/conventional-commits': typeof ConventionalCommitsRoute
   '/cookie-parser': typeof CookieParserRoute
   '/cron': typeof CronRoute
@@ -830,10 +861,12 @@ export interface FileRoutesByFullPath {
   '/css-border-radius': typeof CssBorderRadiusRoute
   '/css-box-shadow': typeof CssBoxShadowRoute
   '/css-clip-path': typeof CssClipPathRoute
+  '/css-container-query': typeof CssContainerQueryRoute
   '/css-filter': typeof CssFilterRoute
   '/css-flexbox': typeof CssFlexboxRoute
   '/css-gradient': typeof CssGradientRoute
   '/css-grid': typeof CssGridRoute
+  '/css-media-query': typeof CssMediaQueryRoute
   '/css-specificity': typeof CssSpecificityRoute
   '/css-text-shadow': typeof CssTextShadowRoute
   '/css-transform': typeof CssTransformRoute
@@ -877,6 +910,7 @@ export interface FileRoutesByFullPath {
   '/json-lines': typeof JsonLinesRoute
   '/json-path': typeof JsonPathRoute
   '/json-schema': typeof JsonSchemaRoute
+  '/json-schema-validator': typeof JsonSchemaValidatorRoute
   '/json-to-ts': typeof JsonToTsRoute
   '/jwt': typeof JwtRoute
   '/jwt-generator': typeof JwtGeneratorRoute
@@ -922,6 +956,7 @@ export interface FileRoutesByFullPath {
   '/typography-scale': typeof TypographyScaleRoute
   '/ulid': typeof UlidRoute
   '/unicode': typeof UnicodeRoute
+  '/unicode-inspector': typeof UnicodeInspectorRoute
   '/unit-converter': typeof UnitConverterRoute
   '/url-encode': typeof UrlEncodeRoute
   '/url-parser': typeof UrlParserRoute
@@ -956,6 +991,7 @@ export interface FileRoutesByTo {
   '/color-harmony': typeof ColorHarmonyRoute
   '/color-palette': typeof ColorPaletteRoute
   '/color-picker': typeof ColorPickerRoute
+  '/color-token': typeof ColorTokenRoute
   '/conventional-commits': typeof ConventionalCommitsRoute
   '/cookie-parser': typeof CookieParserRoute
   '/cron': typeof CronRoute
@@ -964,10 +1000,12 @@ export interface FileRoutesByTo {
   '/css-border-radius': typeof CssBorderRadiusRoute
   '/css-box-shadow': typeof CssBoxShadowRoute
   '/css-clip-path': typeof CssClipPathRoute
+  '/css-container-query': typeof CssContainerQueryRoute
   '/css-filter': typeof CssFilterRoute
   '/css-flexbox': typeof CssFlexboxRoute
   '/css-gradient': typeof CssGradientRoute
   '/css-grid': typeof CssGridRoute
+  '/css-media-query': typeof CssMediaQueryRoute
   '/css-specificity': typeof CssSpecificityRoute
   '/css-text-shadow': typeof CssTextShadowRoute
   '/css-transform': typeof CssTransformRoute
@@ -1011,6 +1049,7 @@ export interface FileRoutesByTo {
   '/json-lines': typeof JsonLinesRoute
   '/json-path': typeof JsonPathRoute
   '/json-schema': typeof JsonSchemaRoute
+  '/json-schema-validator': typeof JsonSchemaValidatorRoute
   '/json-to-ts': typeof JsonToTsRoute
   '/jwt': typeof JwtRoute
   '/jwt-generator': typeof JwtGeneratorRoute
@@ -1056,6 +1095,7 @@ export interface FileRoutesByTo {
   '/typography-scale': typeof TypographyScaleRoute
   '/ulid': typeof UlidRoute
   '/unicode': typeof UnicodeRoute
+  '/unicode-inspector': typeof UnicodeInspectorRoute
   '/unit-converter': typeof UnitConverterRoute
   '/url-encode': typeof UrlEncodeRoute
   '/url-parser': typeof UrlParserRoute
@@ -1091,6 +1131,7 @@ export interface FileRoutesById {
   '/color-harmony': typeof ColorHarmonyRoute
   '/color-palette': typeof ColorPaletteRoute
   '/color-picker': typeof ColorPickerRoute
+  '/color-token': typeof ColorTokenRoute
   '/conventional-commits': typeof ConventionalCommitsRoute
   '/cookie-parser': typeof CookieParserRoute
   '/cron': typeof CronRoute
@@ -1099,10 +1140,12 @@ export interface FileRoutesById {
   '/css-border-radius': typeof CssBorderRadiusRoute
   '/css-box-shadow': typeof CssBoxShadowRoute
   '/css-clip-path': typeof CssClipPathRoute
+  '/css-container-query': typeof CssContainerQueryRoute
   '/css-filter': typeof CssFilterRoute
   '/css-flexbox': typeof CssFlexboxRoute
   '/css-gradient': typeof CssGradientRoute
   '/css-grid': typeof CssGridRoute
+  '/css-media-query': typeof CssMediaQueryRoute
   '/css-specificity': typeof CssSpecificityRoute
   '/css-text-shadow': typeof CssTextShadowRoute
   '/css-transform': typeof CssTransformRoute
@@ -1146,6 +1189,7 @@ export interface FileRoutesById {
   '/json-lines': typeof JsonLinesRoute
   '/json-path': typeof JsonPathRoute
   '/json-schema': typeof JsonSchemaRoute
+  '/json-schema-validator': typeof JsonSchemaValidatorRoute
   '/json-to-ts': typeof JsonToTsRoute
   '/jwt': typeof JwtRoute
   '/jwt-generator': typeof JwtGeneratorRoute
@@ -1191,6 +1235,7 @@ export interface FileRoutesById {
   '/typography-scale': typeof TypographyScaleRoute
   '/ulid': typeof UlidRoute
   '/unicode': typeof UnicodeRoute
+  '/unicode-inspector': typeof UnicodeInspectorRoute
   '/unit-converter': typeof UnitConverterRoute
   '/url-encode': typeof UrlEncodeRoute
   '/url-parser': typeof UrlParserRoute
@@ -1227,6 +1272,7 @@ export interface FileRouteTypes {
     | '/color-harmony'
     | '/color-palette'
     | '/color-picker'
+    | '/color-token'
     | '/conventional-commits'
     | '/cookie-parser'
     | '/cron'
@@ -1235,10 +1281,12 @@ export interface FileRouteTypes {
     | '/css-border-radius'
     | '/css-box-shadow'
     | '/css-clip-path'
+    | '/css-container-query'
     | '/css-filter'
     | '/css-flexbox'
     | '/css-gradient'
     | '/css-grid'
+    | '/css-media-query'
     | '/css-specificity'
     | '/css-text-shadow'
     | '/css-transform'
@@ -1282,6 +1330,7 @@ export interface FileRouteTypes {
     | '/json-lines'
     | '/json-path'
     | '/json-schema'
+    | '/json-schema-validator'
     | '/json-to-ts'
     | '/jwt'
     | '/jwt-generator'
@@ -1327,6 +1376,7 @@ export interface FileRouteTypes {
     | '/typography-scale'
     | '/ulid'
     | '/unicode'
+    | '/unicode-inspector'
     | '/unit-converter'
     | '/url-encode'
     | '/url-parser'
@@ -1361,6 +1411,7 @@ export interface FileRouteTypes {
     | '/color-harmony'
     | '/color-palette'
     | '/color-picker'
+    | '/color-token'
     | '/conventional-commits'
     | '/cookie-parser'
     | '/cron'
@@ -1369,10 +1420,12 @@ export interface FileRouteTypes {
     | '/css-border-radius'
     | '/css-box-shadow'
     | '/css-clip-path'
+    | '/css-container-query'
     | '/css-filter'
     | '/css-flexbox'
     | '/css-gradient'
     | '/css-grid'
+    | '/css-media-query'
     | '/css-specificity'
     | '/css-text-shadow'
     | '/css-transform'
@@ -1416,6 +1469,7 @@ export interface FileRouteTypes {
     | '/json-lines'
     | '/json-path'
     | '/json-schema'
+    | '/json-schema-validator'
     | '/json-to-ts'
     | '/jwt'
     | '/jwt-generator'
@@ -1461,6 +1515,7 @@ export interface FileRouteTypes {
     | '/typography-scale'
     | '/ulid'
     | '/unicode'
+    | '/unicode-inspector'
     | '/unit-converter'
     | '/url-encode'
     | '/url-parser'
@@ -1495,6 +1550,7 @@ export interface FileRouteTypes {
     | '/color-harmony'
     | '/color-palette'
     | '/color-picker'
+    | '/color-token'
     | '/conventional-commits'
     | '/cookie-parser'
     | '/cron'
@@ -1503,10 +1559,12 @@ export interface FileRouteTypes {
     | '/css-border-radius'
     | '/css-box-shadow'
     | '/css-clip-path'
+    | '/css-container-query'
     | '/css-filter'
     | '/css-flexbox'
     | '/css-gradient'
     | '/css-grid'
+    | '/css-media-query'
     | '/css-specificity'
     | '/css-text-shadow'
     | '/css-transform'
@@ -1550,6 +1608,7 @@ export interface FileRouteTypes {
     | '/json-lines'
     | '/json-path'
     | '/json-schema'
+    | '/json-schema-validator'
     | '/json-to-ts'
     | '/jwt'
     | '/jwt-generator'
@@ -1595,6 +1654,7 @@ export interface FileRouteTypes {
     | '/typography-scale'
     | '/ulid'
     | '/unicode'
+    | '/unicode-inspector'
     | '/unit-converter'
     | '/url-encode'
     | '/url-parser'
@@ -1630,6 +1690,7 @@ export interface RootRouteChildren {
   ColorHarmonyRoute: typeof ColorHarmonyRoute
   ColorPaletteRoute: typeof ColorPaletteRoute
   ColorPickerRoute: typeof ColorPickerRoute
+  ColorTokenRoute: typeof ColorTokenRoute
   ConventionalCommitsRoute: typeof ConventionalCommitsRoute
   CookieParserRoute: typeof CookieParserRoute
   CronRoute: typeof CronRoute
@@ -1638,10 +1699,12 @@ export interface RootRouteChildren {
   CssBorderRadiusRoute: typeof CssBorderRadiusRoute
   CssBoxShadowRoute: typeof CssBoxShadowRoute
   CssClipPathRoute: typeof CssClipPathRoute
+  CssContainerQueryRoute: typeof CssContainerQueryRoute
   CssFilterRoute: typeof CssFilterRoute
   CssFlexboxRoute: typeof CssFlexboxRoute
   CssGradientRoute: typeof CssGradientRoute
   CssGridRoute: typeof CssGridRoute
+  CssMediaQueryRoute: typeof CssMediaQueryRoute
   CssSpecificityRoute: typeof CssSpecificityRoute
   CssTextShadowRoute: typeof CssTextShadowRoute
   CssTransformRoute: typeof CssTransformRoute
@@ -1685,6 +1748,7 @@ export interface RootRouteChildren {
   JsonLinesRoute: typeof JsonLinesRoute
   JsonPathRoute: typeof JsonPathRoute
   JsonSchemaRoute: typeof JsonSchemaRoute
+  JsonSchemaValidatorRoute: typeof JsonSchemaValidatorRoute
   JsonToTsRoute: typeof JsonToTsRoute
   JwtRoute: typeof JwtRoute
   JwtGeneratorRoute: typeof JwtGeneratorRoute
@@ -1730,6 +1794,7 @@ export interface RootRouteChildren {
   TypographyScaleRoute: typeof TypographyScaleRoute
   UlidRoute: typeof UlidRoute
   UnicodeRoute: typeof UnicodeRoute
+  UnicodeInspectorRoute: typeof UnicodeInspectorRoute
   UnitConverterRoute: typeof UnitConverterRoute
   UrlEncodeRoute: typeof UrlEncodeRoute
   UrlParserRoute: typeof UrlParserRoute
@@ -1816,6 +1881,13 @@ declare module '@tanstack/react-router' {
       path: '/unit-converter'
       fullPath: '/unit-converter'
       preLoaderRoute: typeof UnitConverterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/unicode-inspector': {
+      id: '/unicode-inspector'
+      path: '/unicode-inspector'
+      fullPath: '/unicode-inspector'
+      preLoaderRoute: typeof UnicodeInspectorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/unicode': {
@@ -2133,6 +2205,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof JsonToTsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/json-schema-validator': {
+      id: '/json-schema-validator'
+      path: '/json-schema-validator'
+      fullPath: '/json-schema-validator'
+      preLoaderRoute: typeof JsonSchemaValidatorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/json-schema': {
       id: '/json-schema'
       path: '/json-schema'
@@ -2434,6 +2513,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CssSpecificityRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/css-media-query': {
+      id: '/css-media-query'
+      path: '/css-media-query'
+      fullPath: '/css-media-query'
+      preLoaderRoute: typeof CssMediaQueryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/css-grid': {
       id: '/css-grid'
       path: '/css-grid'
@@ -2460,6 +2546,13 @@ declare module '@tanstack/react-router' {
       path: '/css-filter'
       fullPath: '/css-filter'
       preLoaderRoute: typeof CssFilterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/css-container-query': {
+      id: '/css-container-query'
+      path: '/css-container-query'
+      fullPath: '/css-container-query'
+      preLoaderRoute: typeof CssContainerQueryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/css-clip-path': {
@@ -2516,6 +2609,13 @@ declare module '@tanstack/react-router' {
       path: '/conventional-commits'
       fullPath: '/conventional-commits'
       preLoaderRoute: typeof ConventionalCommitsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/color-token': {
+      id: '/color-token'
+      path: '/color-token'
+      fullPath: '/color-token'
+      preLoaderRoute: typeof ColorTokenRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/color-picker': {
@@ -2694,6 +2794,7 @@ const rootRouteChildren: RootRouteChildren = {
   ColorHarmonyRoute: ColorHarmonyRoute,
   ColorPaletteRoute: ColorPaletteRoute,
   ColorPickerRoute: ColorPickerRoute,
+  ColorTokenRoute: ColorTokenRoute,
   ConventionalCommitsRoute: ConventionalCommitsRoute,
   CookieParserRoute: CookieParserRoute,
   CronRoute: CronRoute,
@@ -2702,10 +2803,12 @@ const rootRouteChildren: RootRouteChildren = {
   CssBorderRadiusRoute: CssBorderRadiusRoute,
   CssBoxShadowRoute: CssBoxShadowRoute,
   CssClipPathRoute: CssClipPathRoute,
+  CssContainerQueryRoute: CssContainerQueryRoute,
   CssFilterRoute: CssFilterRoute,
   CssFlexboxRoute: CssFlexboxRoute,
   CssGradientRoute: CssGradientRoute,
   CssGridRoute: CssGridRoute,
+  CssMediaQueryRoute: CssMediaQueryRoute,
   CssSpecificityRoute: CssSpecificityRoute,
   CssTextShadowRoute: CssTextShadowRoute,
   CssTransformRoute: CssTransformRoute,
@@ -2749,6 +2852,7 @@ const rootRouteChildren: RootRouteChildren = {
   JsonLinesRoute: JsonLinesRoute,
   JsonPathRoute: JsonPathRoute,
   JsonSchemaRoute: JsonSchemaRoute,
+  JsonSchemaValidatorRoute: JsonSchemaValidatorRoute,
   JsonToTsRoute: JsonToTsRoute,
   JwtRoute: JwtRoute,
   JwtGeneratorRoute: JwtGeneratorRoute,
@@ -2794,6 +2898,7 @@ const rootRouteChildren: RootRouteChildren = {
   TypographyScaleRoute: TypographyScaleRoute,
   UlidRoute: UlidRoute,
   UnicodeRoute: UnicodeRoute,
+  UnicodeInspectorRoute: UnicodeInspectorRoute,
   UnitConverterRoute: UnitConverterRoute,
   UrlEncodeRoute: UrlEncodeRoute,
   UrlParserRoute: UrlParserRoute,
