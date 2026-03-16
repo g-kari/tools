@@ -90,6 +90,7 @@ import { Route as CurlBuilderRouteImport } from './routes/curl-builder'
 import { Route as CsvJsonRouteImport } from './routes/csv-json'
 import { Route as CssTransformRouteImport } from './routes/css-transform'
 import { Route as CssTextShadowRouteImport } from './routes/css-text-shadow'
+import { Route as CssSpecificityRouteImport } from './routes/css-specificity'
 import { Route as CssGridRouteImport } from './routes/css-grid'
 import { Route as CssGradientRouteImport } from './routes/css-gradient'
 import { Route as CssFlexboxRouteImport } from './routes/css-flexbox'
@@ -527,6 +528,11 @@ const CssTextShadowRoute = CssTextShadowRouteImport.update({
   path: '/css-text-shadow',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CssSpecificityRoute = CssSpecificityRouteImport.update({
+  id: '/css-specificity',
+  path: '/css-specificity',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CssGridRoute = CssGridRouteImport.update({
   id: '/css-grid',
   path: '/css-grid',
@@ -711,6 +717,7 @@ export interface FileRoutesByFullPath {
   '/css-flexbox': typeof CssFlexboxRoute
   '/css-gradient': typeof CssGradientRoute
   '/css-grid': typeof CssGridRoute
+  '/css-specificity': typeof CssSpecificityRoute
   '/css-text-shadow': typeof CssTextShadowRoute
   '/css-transform': typeof CssTransformRoute
   '/csv-json': typeof CsvJsonRoute
@@ -825,6 +832,7 @@ export interface FileRoutesByTo {
   '/css-flexbox': typeof CssFlexboxRoute
   '/css-gradient': typeof CssGradientRoute
   '/css-grid': typeof CssGridRoute
+  '/css-specificity': typeof CssSpecificityRoute
   '/css-text-shadow': typeof CssTextShadowRoute
   '/css-transform': typeof CssTransformRoute
   '/csv-json': typeof CsvJsonRoute
@@ -940,6 +948,7 @@ export interface FileRoutesById {
   '/css-flexbox': typeof CssFlexboxRoute
   '/css-gradient': typeof CssGradientRoute
   '/css-grid': typeof CssGridRoute
+  '/css-specificity': typeof CssSpecificityRoute
   '/css-text-shadow': typeof CssTextShadowRoute
   '/css-transform': typeof CssTransformRoute
   '/csv-json': typeof CsvJsonRoute
@@ -1056,6 +1065,7 @@ export interface FileRouteTypes {
     | '/css-flexbox'
     | '/css-gradient'
     | '/css-grid'
+    | '/css-specificity'
     | '/css-text-shadow'
     | '/css-transform'
     | '/csv-json'
@@ -1170,6 +1180,7 @@ export interface FileRouteTypes {
     | '/css-flexbox'
     | '/css-gradient'
     | '/css-grid'
+    | '/css-specificity'
     | '/css-text-shadow'
     | '/css-transform'
     | '/csv-json'
@@ -1284,6 +1295,7 @@ export interface FileRouteTypes {
     | '/css-flexbox'
     | '/css-gradient'
     | '/css-grid'
+    | '/css-specificity'
     | '/css-text-shadow'
     | '/css-transform'
     | '/csv-json'
@@ -1399,6 +1411,7 @@ export interface RootRouteChildren {
   CssFlexboxRoute: typeof CssFlexboxRoute
   CssGradientRoute: typeof CssGradientRoute
   CssGridRoute: typeof CssGridRoute
+  CssSpecificityRoute: typeof CssSpecificityRoute
   CssTextShadowRoute: typeof CssTextShadowRoute
   CssTransformRoute: typeof CssTransformRoute
   CsvJsonRoute: typeof CsvJsonRoute
@@ -2055,6 +2068,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CssTextShadowRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/css-specificity': {
+      id: '/css-specificity'
+      path: '/css-specificity'
+      fullPath: '/css-specificity'
+      preLoaderRoute: typeof CssSpecificityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/css-grid': {
       id: '/css-grid'
       path: '/css-grid'
@@ -2303,6 +2323,7 @@ const rootRouteChildren: RootRouteChildren = {
   CssFlexboxRoute: CssFlexboxRoute,
   CssGradientRoute: CssGradientRoute,
   CssGridRoute: CssGridRoute,
+  CssSpecificityRoute: CssSpecificityRoute,
   CssTextShadowRoute: CssTextShadowRoute,
   CssTransformRoute: CssTransformRoute,
   CsvJsonRoute: CsvJsonRoute,

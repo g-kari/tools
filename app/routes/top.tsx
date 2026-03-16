@@ -676,6 +676,13 @@ const toolCatalog: ToolCategory[] = [
           "色覚異常シミュレーター。Deuteranopia・Protanopia・Tritanopiaなど6種類の色覚タイプで画像がどのように見えるか確認できるアクセシビリティツール。",
         icon: "👁️",
       },
+      {
+        path: "/css-specificity",
+        label: "CSS詳細度計算機",
+        description:
+          "CSSセレクターの詳細度（specificity）を計算するツール。IDセレクター・クラス・タイプの (a, b, c) 表記で表示。複数セレクターの比較も可能。",
+        icon: "🎯",
+      },
     ],
   },
   {
