@@ -1,0 +1,333 @@
+/* HTTPヘッダーリファレンス (http-headers- prefix) */
+
+/* カテゴリカラー変数 */
+:root {
+  /* リクエスト: ブルー系 */
+  --http-headers-color-request: var(--md-sys-color-primary);
+  --http-headers-bg-request: var(--md-sys-color-primary-container);
+  --http-headers-text-request: var(--md-sys-color-on-primary-container);
+  /* レスポンス: グリーン系 */
+  --http-headers-color-response: #2e7d32;
+  --http-headers-bg-response: #e8f5e9;
+  --http-headers-text-response: #1b5e20;
+  /* 共通: セカンダリ */
+  --http-headers-color-general: var(--md-sys-color-secondary);
+  --http-headers-bg-general: var(--md-sys-color-secondary-container);
+  --http-headers-text-general: var(--md-sys-color-on-secondary-container);
+  /* セキュリティ: オレンジ系 */
+  --http-headers-color-security: #e65100;
+  --http-headers-bg-security: #fff3e0;
+  --http-headers-text-security: #bf360c;
+  /* 非推奨: グレー系 */
+  --http-headers-bg-deprecated: var(--md-sys-color-surface-variant);
+  --http-headers-text-deprecated: var(--md-sys-color-on-surface-variant);
+}
+
+/* カテゴリフィルターグループ */
+.http-headers-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+/* フィルターボタン */
+.http-headers-filter-btn {
+  padding: 0.375rem 0.875rem;
+  background: none;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+  transition: color 0.2s, background-color 0.2s, border-color 0.2s;
+  letter-spacing: 0.03em;
+}
+
+.http-headers-filter-btn:hover:not(.active) {
+  color: var(--md-sys-color-on-surface);
+  background-color: var(--md-sys-color-surface-variant);
+  border-color: var(--md-sys-color-outline);
+}
+
+.http-headers-filter-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.http-headers-filter-btn.active {
+  color: var(--md-sys-color-on-primary-container);
+  background-color: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+}
+
+/* 検索ボックスラッパー */
+.http-headers-search {
+  margin-bottom: 0.5rem;
+}
+
+.http-headers-search-input {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  font-size: 0.9375rem;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.http-headers-search-input:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-surface);
+}
+
+.http-headers-search-input::placeholder {
+  color: var(--md-sys-color-on-surface-variant);
+  opacity: 0.7;
+}
+
+/* 件数表示テキスト */
+.http-headers-count {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 0.75rem;
+}
+
+/* カードグリッドレイアウト */
+.http-headers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+/* 各ヘッダーカード */
+.http-headers-card {
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  padding: 0.875rem;
+  background: var(--md-sys-color-surface);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.http-headers-card:hover {
+  border-color: var(--md-sys-color-outline);
+  background-color: var(--md-sys-color-surface-variant);
+}
+
+/* カードヘッダー（ヘッダー名 + バッジ） */
+.http-headers-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* ヘッダー名（モノスペース） */
+.http-headers-name {
+  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  word-break: break-all;
+}
+
+/* バッジコンテナ */
+.http-headers-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+/* カテゴリ・セキュリティバッジ */
+.http-headers-badge {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  padding: 0.125rem 0.4375rem;
+  border-radius: 4px;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+/* セキュリティバッジ */
+.http-headers-badge-security {
+  background-color: var(--http-headers-bg-security);
+  color: var(--http-headers-text-security);
+}
+
+/* 非推奨バッジ */
+.http-headers-badge-deprecated {
+  background-color: var(--http-headers-bg-deprecated);
+  color: var(--http-headers-text-deprecated);
+  text-decoration: line-through;
+}
+
+/* 説明文 */
+.http-headers-desc {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  line-height: 1.55;
+  flex: 1;
+}
+
+/* 使用例ブロック */
+.http-headers-example {
+  background: var(--md-sys-color-surface-variant);
+  border-radius: 4px;
+  padding: 0.5rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.http-headers-example-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.http-headers-example-value {
+  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface);
+  word-break: break-all;
+  line-height: 1.5;
+}
+
+/* カード下部（コピーボタン） */
+.http-headers-card-footer {
+  margin-top: 0.25rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* コピーボタン */
+.http-headers-copy-btn {
+  padding: 0.3125rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: none;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+  letter-spacing: 0.03em;
+}
+
+.http-headers-copy-btn:hover {
+  background-color: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  border-color: var(--md-sys-color-outline);
+}
+
+.http-headers-copy-btn:active {
+  opacity: 0.7;
+}
+
+.http-headers-copy-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* 結果なし表示 */
+.http-headers-empty {
+  padding: 2rem;
+  text-align: center;
+  color: var(--md-sys-color-on-surface-variant);
+  border: 1px dashed var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+}
+
+.http-headers-empty p {
+  margin-bottom: 0.25rem;
+  font-size: 0.9375rem;
+}
+
+/* カテゴリ別カラークラス */
+
+/* リクエスト */
+.http-headers-cat-request.http-headers-name {
+  color: var(--http-headers-color-request);
+}
+
+.http-headers-cat-request.http-headers-badge {
+  background-color: var(--http-headers-bg-request);
+  color: var(--http-headers-text-request);
+}
+
+.http-headers-cat-request.http-headers-card {
+  border-left: 3px solid var(--http-headers-color-request);
+}
+
+/* レスポンス */
+.http-headers-cat-response.http-headers-name {
+  color: var(--http-headers-color-response);
+}
+
+.http-headers-cat-response.http-headers-badge {
+  background-color: var(--http-headers-bg-response);
+  color: var(--http-headers-text-response);
+}
+
+.http-headers-cat-response.http-headers-card {
+  border-left: 3px solid var(--http-headers-color-response);
+}
+
+/* 共通 */
+.http-headers-cat-general.http-headers-name {
+  color: var(--http-headers-color-general);
+}
+
+.http-headers-cat-general.http-headers-badge {
+  background-color: var(--http-headers-bg-general);
+  color: var(--http-headers-text-general);
+}
+
+.http-headers-cat-general.http-headers-card {
+  border-left: 3px solid var(--http-headers-color-general);
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 600px) {
+  .http-headers-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .http-headers-filters {
+    gap: 4px;
+  }
+
+  .http-headers-filter-btn {
+    font-size: 0.75rem;
+    padding: 0.3125rem 0.625rem;
+  }
+
+  .http-headers-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* モーション低減設定への対応 */
+@media (prefers-reduced-motion: reduce) {
+  .http-headers-filter-btn,
+  .http-headers-search-input,
+  .http-headers-card,
+  .http-headers-copy-btn {
+    transition: none;
+  }
+}

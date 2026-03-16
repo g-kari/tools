@@ -70,6 +70,7 @@ import { Route as ImageCropRouteImport } from './routes/image-crop'
 import { Route as ImageCompressRouteImport } from './routes/image-compress'
 import { Route as ImageBase64RouteImport } from './routes/image-base64'
 import { Route as HttpStatusRouteImport } from './routes/http-status'
+import { Route as HttpHeadersRouteImport } from './routes/http-headers'
 import { Route as HttpClientRouteImport } from './routes/http-client'
 import { Route as HtmlEncodeRouteImport } from './routes/html-encode'
 import { Route as HexViewerRouteImport } from './routes/hex-viewer'
@@ -431,6 +432,11 @@ const HttpStatusRoute = HttpStatusRouteImport.update({
   path: '/http-status',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HttpHeadersRoute = HttpHeadersRouteImport.update({
+  id: '/http-headers',
+  path: '/http-headers',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HttpClientRoute = HttpClientRouteImport.update({
   id: '/http-client',
   path: '/http-client',
@@ -759,6 +765,7 @@ export interface FileRoutesByFullPath {
   '/hex-viewer': typeof HexViewerRoute
   '/html-encode': typeof HtmlEncodeRoute
   '/http-client': typeof HttpClientRoute
+  '/http-headers': typeof HttpHeadersRoute
   '/http-status': typeof HttpStatusRoute
   '/image-base64': typeof ImageBase64Route
   '/image-compress': typeof ImageCompressRoute
@@ -877,6 +884,7 @@ export interface FileRoutesByTo {
   '/hex-viewer': typeof HexViewerRoute
   '/html-encode': typeof HtmlEncodeRoute
   '/http-client': typeof HttpClientRoute
+  '/http-headers': typeof HttpHeadersRoute
   '/http-status': typeof HttpStatusRoute
   '/image-base64': typeof ImageBase64Route
   '/image-compress': typeof ImageCompressRoute
@@ -996,6 +1004,7 @@ export interface FileRoutesById {
   '/hex-viewer': typeof HexViewerRoute
   '/html-encode': typeof HtmlEncodeRoute
   '/http-client': typeof HttpClientRoute
+  '/http-headers': typeof HttpHeadersRoute
   '/http-status': typeof HttpStatusRoute
   '/image-base64': typeof ImageBase64Route
   '/image-compress': typeof ImageCompressRoute
@@ -1116,6 +1125,7 @@ export interface FileRouteTypes {
     | '/hex-viewer'
     | '/html-encode'
     | '/http-client'
+    | '/http-headers'
     | '/http-status'
     | '/image-base64'
     | '/image-compress'
@@ -1234,6 +1244,7 @@ export interface FileRouteTypes {
     | '/hex-viewer'
     | '/html-encode'
     | '/http-client'
+    | '/http-headers'
     | '/http-status'
     | '/image-base64'
     | '/image-compress'
@@ -1352,6 +1363,7 @@ export interface FileRouteTypes {
     | '/hex-viewer'
     | '/html-encode'
     | '/http-client'
+    | '/http-headers'
     | '/http-status'
     | '/image-base64'
     | '/image-compress'
@@ -1471,6 +1483,7 @@ export interface RootRouteChildren {
   HexViewerRoute: typeof HexViewerRoute
   HtmlEncodeRoute: typeof HtmlEncodeRoute
   HttpClientRoute: typeof HttpClientRoute
+  HttpHeadersRoute: typeof HttpHeadersRoute
   HttpStatusRoute: typeof HttpStatusRoute
   ImageBase64Route: typeof ImageBase64Route
   ImageCompressRoute: typeof ImageCompressRoute
@@ -1967,6 +1980,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HttpStatusRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/http-headers': {
+      id: '/http-headers'
+      path: '/http-headers'
+      fullPath: '/http-headers'
+      preLoaderRoute: typeof HttpHeadersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/http-client': {
       id: '/http-client'
       path: '/http-client'
@@ -2407,6 +2427,7 @@ const rootRouteChildren: RootRouteChildren = {
   HexViewerRoute: HexViewerRoute,
   HtmlEncodeRoute: HtmlEncodeRoute,
   HttpClientRoute: HttpClientRoute,
+  HttpHeadersRoute: HttpHeadersRoute,
   HttpStatusRoute: HttpStatusRoute,
   ImageBase64Route: ImageBase64Route,
   ImageCompressRoute: ImageCompressRoute,

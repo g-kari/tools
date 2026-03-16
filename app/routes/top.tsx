@@ -512,6 +512,13 @@ const toolCatalog: ToolCategory[] = [
           "SVGファイルの最適化・圧縮・整形ツール。メタデータ削除、数値精度調整、空白圧縮に対応",
         icon: "✨",
       },
+      {
+        path: "/color-converter",
+        label: "カラーフォーマット変換",
+        description:
+          "HEX・RGB・HSL・HSV・CMYK・OKLCHなどカラーフォーマットをリアルタイムで相互変換するツール",
+        icon: "🎨",
+      },
     ],
   },
   {
@@ -554,6 +561,13 @@ const toolCatalog: ToolCategory[] = [
         description:
           "HTTPステータスコード（1xx〜5xx）のリファレンス。カテゴリ別フィルタリングとキーワード検索でコードを調べられる",
         icon: "ℹ️",
+      },
+      {
+        path: "/http-headers",
+        label: "HTTPヘッダーリファレンス",
+        description:
+          "リクエスト・レスポンスHTTPヘッダーの一覧リファレンス。用途・説明・使用例をカテゴリ別に検索できる",
+        icon: "📋",
       },
     ],
   },
