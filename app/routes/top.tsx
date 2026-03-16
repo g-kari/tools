@@ -384,6 +384,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "✨",
       },
       {
+        path: "/css-flexbox",
+        label: "CSSフレックスボックス",
+        description:
+          "flexbox のコンテナ・アイテムプロパティをビジュアルで設定し、CSSコードを即座に生成。justify-content・align-items・flex-wrap などを直感的に試せる。",
+        icon: "⬛",
+      },
+      {
         path: "/image-to-gif",
         label: "画像→GIF変換",
         description: "複数画像からアニメーションGIFを作成",

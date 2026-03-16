@@ -49,6 +49,8 @@ const navCategories = [
       { path: "/audio-converter", label: "オーディオ変換" },
       { path: "/video-converter", label: "動画変換" },
       { path: "/timezone", label: "タイムゾーン変換" },
+      { path: "/timestamp", label: "Unixタイムスタンプ" },
+      { path: "/env-parser", label: ".envパーサー" },
     ],
   },
   {
@@ -83,6 +85,8 @@ const navCategories = [
       { path: "/color-palette", label: "カラーパレット生成" },
       { path: "/css-gradient", label: "CSSグラジェント生成" },
       { path: "/css-animation", label: "CSSアニメーション生成" },
+      { path: "/css-flexbox", label: "CSSフレックスボックス" },
+      { path: "/color-harmony", label: "カラーハーモニー" },
       { path: "/image-to-gif", label: "画像→GIF変換" },
       { path: "/emoji-converter", label: "絵文字変換" },
       { path: "/discord-emoji", label: "Discord絵文字" },

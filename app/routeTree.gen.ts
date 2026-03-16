@@ -88,6 +88,7 @@ import { Route as DiceRollRouteImport } from './routes/dice-roll'
 import { Route as CurlBuilderRouteImport } from './routes/curl-builder'
 import { Route as CsvJsonRouteImport } from './routes/csv-json'
 import { Route as CssGradientRouteImport } from './routes/css-gradient'
+import { Route as CssFlexboxRouteImport } from './routes/css-flexbox'
 import { Route as CssAnimationRouteImport } from './routes/css-animation'
 import { Route as CronParserRouteImport } from './routes/cron-parser'
 import { Route as CronRouteImport } from './routes/cron'
@@ -505,6 +506,11 @@ const CssGradientRoute = CssGradientRouteImport.update({
   path: '/css-gradient',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CssFlexboxRoute = CssFlexboxRouteImport.update({
+  id: '/css-flexbox',
+  path: '/css-flexbox',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CssAnimationRoute = CssAnimationRouteImport.update({
   id: '/css-animation',
   path: '/css-animation',
@@ -629,6 +635,7 @@ export interface FileRoutesByFullPath {
   '/cron': typeof CronRoute
   '/cron-parser': typeof CronParserRoute
   '/css-animation': typeof CssAnimationRoute
+  '/css-flexbox': typeof CssFlexboxRoute
   '/css-gradient': typeof CssGradientRoute
   '/csv-json': typeof CsvJsonRoute
   '/curl-builder': typeof CurlBuilderRoute
@@ -731,6 +738,7 @@ export interface FileRoutesByTo {
   '/cron': typeof CronRoute
   '/cron-parser': typeof CronParserRoute
   '/css-animation': typeof CssAnimationRoute
+  '/css-flexbox': typeof CssFlexboxRoute
   '/css-gradient': typeof CssGradientRoute
   '/csv-json': typeof CsvJsonRoute
   '/curl-builder': typeof CurlBuilderRoute
@@ -834,6 +842,7 @@ export interface FileRoutesById {
   '/cron': typeof CronRoute
   '/cron-parser': typeof CronParserRoute
   '/css-animation': typeof CssAnimationRoute
+  '/css-flexbox': typeof CssFlexboxRoute
   '/css-gradient': typeof CssGradientRoute
   '/csv-json': typeof CsvJsonRoute
   '/curl-builder': typeof CurlBuilderRoute
@@ -938,6 +947,7 @@ export interface FileRouteTypes {
     | '/cron'
     | '/cron-parser'
     | '/css-animation'
+    | '/css-flexbox'
     | '/css-gradient'
     | '/csv-json'
     | '/curl-builder'
@@ -1040,6 +1050,7 @@ export interface FileRouteTypes {
     | '/cron'
     | '/cron-parser'
     | '/css-animation'
+    | '/css-flexbox'
     | '/css-gradient'
     | '/csv-json'
     | '/curl-builder'
@@ -1142,6 +1153,7 @@ export interface FileRouteTypes {
     | '/cron'
     | '/cron-parser'
     | '/css-animation'
+    | '/css-flexbox'
     | '/css-gradient'
     | '/csv-json'
     | '/curl-builder'
@@ -1245,6 +1257,7 @@ export interface RootRouteChildren {
   CronRoute: typeof CronRoute
   CronParserRoute: typeof CronParserRoute
   CssAnimationRoute: typeof CssAnimationRoute
+  CssFlexboxRoute: typeof CssFlexboxRoute
   CssGradientRoute: typeof CssGradientRoute
   CsvJsonRoute: typeof CsvJsonRoute
   CurlBuilderRoute: typeof CurlBuilderRoute
@@ -1885,6 +1898,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CssGradientRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/css-flexbox': {
+      id: '/css-flexbox'
+      path: '/css-flexbox'
+      fullPath: '/css-flexbox'
+      preLoaderRoute: typeof CssFlexboxRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/css-animation': {
       id: '/css-animation'
       path: '/css-animation'
@@ -2053,6 +2073,7 @@ const rootRouteChildren: RootRouteChildren = {
   CronRoute: CronRoute,
   CronParserRoute: CronParserRoute,
   CssAnimationRoute: CssAnimationRoute,
+  CssFlexboxRoute: CssFlexboxRoute,
   CssGradientRoute: CssGradientRoute,
   CsvJsonRoute: CsvJsonRoute,
   CurlBuilderRoute: CurlBuilderRoute,
