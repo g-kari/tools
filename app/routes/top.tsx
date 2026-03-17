@@ -88,6 +88,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🔀",
       },
       {
+        path: "/base32",
+        label: "Base32変換",
+        description:
+          "RFC 4648 準拠の Base32 エンコード・デコード。Standard (A–Z, 2–7) と Base32hex (0–9, A–V) に対応。TOTP シークレットキーの確認に便利。",
+        icon: "🔣",
+      },
+      {
         path: "/base64-image",
         label: "Base64画像デコード",
         description: "Base64エンコード画像のデコードとプレビュー",
@@ -304,6 +311,20 @@ const toolCatalog: ToolCategory[] = [
         description:
           "テキストをUTF-8・Shift_JIS・EUC-JP・ISO-2022-JPなど複数の文字コードに変換し、16進数バイト列を表示。Hexからテキストへの逆変換・自動文字コード検出にも対応。",
         icon: "🔤",
+      },
+      {
+        path: "/ini-parser",
+        label: "INIファイルパーサー",
+        description:
+          "INIファイルのパース・整形・JSON変換ツール。php.ini・.gitconfig・Windows設定ファイルなど各種INI形式に対応。セクション・キー・値をビジュアルで確認。",
+        icon: "⚙️",
+      },
+      {
+        path: "/punycode",
+        label: "Punycode変換 (IDN)",
+        description:
+          "国際化ドメイン名（IDN）のPunycode変換ツール。日本語・中国語・アラビア語などのUnicodeドメインをxn--形式のASCII Compatible Encoding（ACE）に変換。RFC 3492準拠。",
+        icon: "🌐",
       },
     ],
   },
@@ -886,6 +907,13 @@ const toolCatalog: ToolCategory[] = [
           "OAuth 2.0 の PKCE（Proof Key for Code Exchange）に必要な code_verifier と code_challenge を生成。RFC 7636 準拠・S256/plain メソッド対応。ブラウザ内で完結し、値が外部に送信されることはありません。",
         icon: "🔑",
       },
+      {
+        path: "/password-strength",
+        label: "パスワード強度チェッカー",
+        description:
+          "パスワードのエントロピー・クラック時間・文字クラス・パターン検知（連続文字・繰り返し・よく使われるパスワード）を詳細解析。改善アドバイスつき。ブラウザ内完結で外部送信なし。",
+        icon: "🔍",
+      },
     ],
   },
   {
@@ -909,6 +937,13 @@ const toolCatalog: ToolCategory[] = [
         label: "IP変換",
         description: "IPアドレスの10進数・16進数・2進数変換",
         icon: "🔄",
+      },
+      {
+        path: "/ipv6",
+        label: "IPv6解析・変換",
+        description:
+          "IPv6アドレスの展開・圧縮・解析ツール。RFC 5952準拠の圧縮形式変換、アドレスタイプ判定（ループバック・リンクローカル・マルチキャスト等）、IPv4射影アドレスの抽出、2進数表示に対応。",
+        icon: "🌐",
       },
       {
         path: "/http-client",

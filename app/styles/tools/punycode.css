@@ -1,0 +1,294 @@
+/* Punycode エンコーダー/デコーダー */
+
+/* モード切替タブ */
+.pny-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  padding-bottom: 0.5rem;
+}
+
+.pny-tab-btn {
+  padding: 0.375rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid transparent;
+  border-radius: 4px 4px 0 0;
+  cursor: pointer;
+  background: none;
+  color: var(--md-sys-color-on-surface-variant);
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.pny-tab-btn:hover:not(.active) {
+  background-color: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+}
+
+.pny-tab-btn.active {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border-color: var(--md-sys-color-primary);
+}
+
+.pny-tab-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* 入力エリア */
+.pny-input-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: stretch;
+  margin-bottom: 0.75rem;
+}
+
+.pny-input {
+  flex: 1;
+  padding: 0.625rem 0.875rem;
+  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  font-size: 0.9375rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  transition: border-color 0.2s, background 0.2s;
+  min-width: 0;
+}
+
+.pny-input:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-surface);
+}
+
+.pny-input::placeholder {
+  color: var(--md-sys-color-on-surface-variant);
+  opacity: 0.55;
+}
+
+.pny-input.has-error {
+  border-color: var(--md-sys-color-error);
+}
+
+/* エラーメッセージ */
+.pny-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.625rem 0.75rem;
+  border: 1px solid var(--md-sys-color-error);
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--md-sys-color-error) 8%, transparent);
+  color: var(--md-sys-color-error);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  margin-bottom: 0.75rem;
+}
+
+/* サンプルボタン */
+.pny-samples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin-bottom: 1.25rem;
+  align-items: center;
+}
+
+.pny-samples-label {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.pny-sample-btn {
+  padding: 0.25rem 0.625rem;
+  font-size: 0.75rem;
+  font-family: 'JetBrains Mono', monospace;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 100px;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.pny-sample-btn:hover {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border-color: var(--md-sys-color-primary);
+}
+
+.pny-sample-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* アクションボタン行 */
+.pny-action-row {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+}
+
+/* 結果エリア */
+.pny-result-section {
+  margin-bottom: 1.25rem;
+}
+
+.pny-result-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 0.5rem;
+}
+
+.pny-result-value-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.pny-result-value {
+  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--md-sys-color-primary);
+  word-break: break-all;
+  flex: 1;
+  min-width: 0;
+}
+
+.pny-no-change {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-style: italic;
+}
+
+/* コピーボタン */
+.pny-copy-btn {
+  padding: 0.3125rem 0.75rem;
+  font-size: 0.8125rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  transition: background-color 0.15s;
+  flex-shrink: 0;
+}
+
+.pny-copy-btn:hover {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border-color: var(--md-sys-color-primary);
+}
+
+.pny-copy-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* ラベル内訳テーブル */
+.pny-labels-section {
+  margin-bottom: 1.25rem;
+}
+
+.pny-labels-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 0.625rem;
+}
+
+.pny-labels-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+}
+
+.pny-labels-table th {
+  text-align: left;
+  padding: 0.375rem 0.625rem;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  font-weight: 600;
+  border-bottom: 2px solid var(--md-sys-color-outline-variant);
+}
+
+.pny-labels-table td {
+  padding: 0.375rem 0.625rem;
+  font-family: 'JetBrains Mono', monospace;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  color: var(--md-sys-color-on-surface);
+  word-break: break-all;
+}
+
+.pny-labels-table tr:last-child td {
+  border-bottom: none;
+}
+
+.pny-labels-table tr.changed td {
+  background: color-mix(in srgb, var(--md-sys-color-primary) 5%, transparent);
+}
+
+.pny-changed-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.375rem;
+  border-radius: 100px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.pny-unchanged-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.375rem;
+  border-radius: 100px;
+  font-size: 0.6875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+/* レスポンシブ */
+@media (max-width: 600px) {
+  .pny-input-row {
+    flex-direction: column;
+  }
+
+  .pny-action-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .pny-action-row > button {
+    width: 100%;
+  }
+
+  .pny-result-value-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .pny-labels-table th:last-child,
+  .pny-labels-table td:last-child {
+    display: none;
+  }
+}
+
+/* モーション低減 */
+@media (prefers-reduced-motion: reduce) {
+  .pny-tab-btn,
+  .pny-input,
+  .pny-sample-btn,
+  .pny-copy-btn {
+    transition: none;
+  }
+}

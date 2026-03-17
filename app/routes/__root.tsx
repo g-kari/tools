@@ -31,6 +31,7 @@ const navCategories = [
       { path: "/number-base", label: "数値進数変換" },
       { path: "/msgpack", label: "MessagePack変換" },
       { path: "/base64", label: "Base64変換" },
+      { path: "/base32", label: "Base32変換" },
       { path: "/base64-image", label: "Base64画像デコード" },
       { path: "/json", label: "JSON整形" },
       { path: "/json-path", label: "JSONPath評価" },
@@ -67,6 +68,7 @@ const navCategories = [
       { path: "/unicode-inspector", label: "Unicodeコードポイント検査" },
       { path: "/morse-code", label: "Morse Code変換" },
       { path: "/text-encrypt", label: "テキスト暗号化" },
+      { path: "/punycode", label: "Punycode変換 (IDN)" },
     ],
   },
   {
@@ -186,6 +188,7 @@ const navCategories = [
       { path: "/csp-builder", label: "CSP ビルダー" },
       { path: "/pkce", label: "PKCE ジェネレーター" },
       { path: "/cert-decoder", label: "X.509 証明書デコーダー" },
+      { path: "/password-strength", label: "パスワード強度チェッカー" },
     ],
   },
   {
@@ -195,6 +198,7 @@ const navCategories = [
       { path: "/cidr", label: "CIDR計算" },
       { path: "/ip-cidr-check", label: "CIDR範囲チェック" },
       { path: "/ip-converter", label: "IP変換" },
+      { path: "/ipv6", label: "IPv6解析・変換" },
       { path: "/port-check", label: "ポートチェック" },
       { path: "/chmod", label: "Chmod計算" },
       { path: "/http-client", label: "HTTP APIテスター" },

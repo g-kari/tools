@@ -1,0 +1,390 @@
+/* IPv6 アドレスツール */
+
+/* 入力エリア */
+.ipv6-input-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.ipv6-input-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+
+.ipv6-input {
+  flex: 1;
+  padding: 0.625rem 0.875rem;
+  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  font-size: 0.9375rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  transition: border-color 0.2s, background 0.2s;
+  min-width: 0;
+}
+
+.ipv6-input:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-surface);
+}
+
+.ipv6-input::placeholder {
+  color: var(--md-sys-color-on-surface-variant);
+  opacity: 0.55;
+}
+
+.ipv6-input.has-error {
+  border-color: var(--md-sys-color-error);
+}
+
+/* エラーメッセージ */
+.ipv6-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.625rem 0.75rem;
+  border: 1px solid var(--md-sys-color-error);
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--md-sys-color-error) 8%, transparent);
+  color: var(--md-sys-color-error);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+.ipv6-error-icon {
+  flex-shrink: 0;
+  font-size: 1rem;
+}
+
+/* サンプルボタン群 */
+.ipv6-samples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin-bottom: 1.25rem;
+}
+
+.ipv6-samples-label {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  display: flex;
+  align-items: center;
+  margin-right: 0.25rem;
+}
+
+.ipv6-sample-btn {
+  padding: 0.25rem 0.625rem;
+  font-size: 0.75rem;
+  font-family: 'JetBrains Mono', monospace;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 100px;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+  line-height: 1.4;
+}
+
+.ipv6-sample-btn:hover {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border-color: var(--md-sys-color-primary);
+}
+
+.ipv6-sample-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* アドレスタイプバッジ */
+.ipv6-type-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.875rem;
+  border-radius: 100px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.ipv6-type-badge.type-loopback {
+  background: color-mix(in srgb, var(--md-sys-color-tertiary) 15%, transparent);
+  color: var(--md-sys-color-tertiary);
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-tertiary) 40%, transparent);
+}
+
+.ipv6-type-badge.type-link-local {
+  background: color-mix(in srgb, var(--md-sys-color-secondary) 15%, transparent);
+  color: var(--md-sys-color-secondary);
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-secondary) 40%, transparent);
+}
+
+.ipv6-type-badge.type-unique-local {
+  background: color-mix(in srgb, var(--md-sys-color-secondary) 12%, transparent);
+  color: var(--md-sys-color-secondary);
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-secondary) 35%, transparent);
+}
+
+.ipv6-type-badge.type-multicast {
+  background: color-mix(in srgb, #e65100 15%, transparent);
+  color: #bf360c;
+  border: 1px solid color-mix(in srgb, #e65100 35%, transparent);
+}
+
+.ipv6-type-badge.type-ipv4-mapped {
+  background: color-mix(in srgb, var(--md-sys-color-primary) 12%, transparent);
+  color: var(--md-sys-color-primary);
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-primary) 35%, transparent);
+}
+
+.ipv6-type-badge.type-global-unicast,
+.ipv6-type-badge.type-unspecified,
+.ipv6-type-badge.type-ipv4-compatible,
+.ipv6-type-badge.type-documentation,
+.ipv6-type-badge.type-benchmarking {
+  background: color-mix(in srgb, var(--md-sys-color-outline) 12%, transparent);
+  color: var(--md-sys-color-on-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.ipv6-type-description {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 1.25rem;
+  line-height: 1.6;
+}
+
+/* 結果テーブル */
+.ipv6-result-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+  margin-bottom: 1.25rem;
+}
+
+.ipv6-result-table tr {
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.ipv6-result-table tr:last-child {
+  border-bottom: none;
+}
+
+.ipv6-result-table th {
+  width: 9rem;
+  padding: 0.5rem 0.75rem 0.5rem 0;
+  text-align: left;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.ipv6-result-table td {
+  padding: 0.5rem 0;
+  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  color: var(--md-sys-color-on-surface);
+  word-break: break-all;
+}
+
+.ipv6-copy-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.ipv6-copy-btn {
+  padding: 0.2rem 0.5rem;
+  font-size: 0.6875rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 3px;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  transition: background-color 0.15s;
+  flex-shrink: 0;
+}
+
+.ipv6-copy-btn:hover {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border-color: var(--md-sys-color-primary);
+}
+
+.ipv6-copy-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.ipv6-highlight {
+  color: var(--md-sys-color-primary);
+  font-weight: 600;
+}
+
+/* グループビジュアライザー */
+.ipv6-groups-section {
+  margin-bottom: 1.25rem;
+}
+
+.ipv6-groups-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 0.625rem;
+}
+
+.ipv6-groups-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.ipv6-group-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.125rem;
+  padding: 0.375rem 0.5rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface-variant);
+  min-width: 3.5rem;
+}
+
+.ipv6-group-item.zero-group {
+  opacity: 0.45;
+}
+
+.ipv6-group-hex {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+  letter-spacing: 0.05em;
+}
+
+.ipv6-group-label {
+  font-size: 0.625rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* 2進数表示 */
+.ipv6-binary-section {
+  margin-bottom: 1.25rem;
+}
+
+.ipv6-binary-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 0.5rem;
+}
+
+.ipv6-binary-display {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6875rem;
+  line-height: 1.8;
+  color: var(--md-sys-color-on-surface);
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  padding: 0.625rem 0.75rem;
+  overflow-x: auto;
+  white-space: pre;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.5rem;
+}
+
+.ipv6-binary-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.125rem;
+}
+
+.ipv6-binary-bits {
+  font-size: 0.625rem;
+  letter-spacing: 0.05em;
+}
+
+.ipv6-binary-label {
+  font-size: 0.5625rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* IPv4射影情報 */
+.ipv6-ipv4-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.875rem;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-primary) 30%, transparent);
+  margin-bottom: 1rem;
+  font-size: 0.8125rem;
+}
+
+.ipv6-ipv4-badge-label {
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.ipv6-ipv4-badge-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  color: var(--md-sys-color-primary);
+}
+
+/* アクションボタン */
+.ipv6-action-row {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+}
+
+/* レスポンシブ */
+@media (max-width: 600px) {
+  .ipv6-input-row {
+    flex-direction: column;
+  }
+
+  .ipv6-result-table th {
+    width: 7rem;
+  }
+
+  .ipv6-groups-grid {
+    gap: 0.25rem;
+  }
+
+  .ipv6-group-item {
+    min-width: 2.75rem;
+    padding: 0.25rem 0.375rem;
+  }
+
+  .ipv6-action-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ipv6-action-row > button {
+    width: 100%;
+  }
+}
+
+/* モーション低減 */
+@media (prefers-reduced-motion: reduce) {
+  .ipv6-input,
+  .ipv6-sample-btn,
+  .ipv6-copy-btn {
+    transition: none;
+  }
+}

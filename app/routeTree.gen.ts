@@ -46,10 +46,12 @@ import { Route as RobotsTxtRouteImport } from './routes/robots-txt'
 import { Route as RegexCheckerRouteImport } from './routes/regex-checker'
 import { Route as RandomDataRouteImport } from './routes/random-data'
 import { Route as QrCodeRouteImport } from './routes/qr-code'
+import { Route as PunycodeRouteImport } from './routes/punycode'
 import { Route as PortCheckRouteImport } from './routes/port-check'
 import { Route as PomodoroRouteImport } from './routes/pomodoro'
 import { Route as PkceRouteImport } from './routes/pkce'
 import { Route as PhpSerializeRouteImport } from './routes/php-serialize'
+import { Route as PasswordStrengthRouteImport } from './routes/password-strength'
 import { Route as PasswordGeneratorRouteImport } from './routes/password-generator'
 import { Route as OpensslBuilderRouteImport } from './routes/openssl-builder'
 import { Route as OgpRouteImport } from './routes/ogp'
@@ -75,9 +77,11 @@ import { Route as JsonLinesRouteImport } from './routes/json-lines'
 import { Route as JsonFlattenRouteImport } from './routes/json-flatten'
 import { Route as JsonCompareRouteImport } from './routes/json-compare'
 import { Route as JsonRouteImport } from './routes/json'
+import { Route as Ipv6RouteImport } from './routes/ipv6'
 import { Route as IpGeolocationRouteImport } from './routes/ip-geolocation'
 import { Route as IpConverterRouteImport } from './routes/ip-converter'
 import { Route as IpCidrCheckRouteImport } from './routes/ip-cidr-check'
+import { Route as IniParserRouteImport } from './routes/ini-parser'
 import { Route as ImageToGifRouteImport } from './routes/image-to-gif'
 import { Route as ImageResizeRouteImport } from './routes/image-resize'
 import { Route as ImageCropRouteImport } from './routes/image-crop'
@@ -144,6 +148,7 @@ import { Route as CertDecoderRouteImport } from './routes/cert-decoder'
 import { Route as BitwiseRouteImport } from './routes/bitwise'
 import { Route as Base64ImageRouteImport } from './routes/base64-image'
 import { Route as Base64RouteImport } from './routes/base64'
+import { Route as Base32RouteImport } from './routes/base32'
 import { Route as BarcodeRouteImport } from './routes/barcode'
 import { Route as AudioConverterRouteImport } from './routes/audio-converter'
 import { Route as AspectRatioRouteImport } from './routes/aspect-ratio'
@@ -339,6 +344,11 @@ const QrCodeRoute = QrCodeRouteImport.update({
   path: '/qr-code',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PunycodeRoute = PunycodeRouteImport.update({
+  id: '/punycode',
+  path: '/punycode',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PortCheckRoute = PortCheckRouteImport.update({
   id: '/port-check',
   path: '/port-check',
@@ -357,6 +367,11 @@ const PkceRoute = PkceRouteImport.update({
 const PhpSerializeRoute = PhpSerializeRouteImport.update({
   id: '/php-serialize',
   path: '/php-serialize',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PasswordStrengthRoute = PasswordStrengthRouteImport.update({
+  id: '/password-strength',
+  path: '/password-strength',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PasswordGeneratorRoute = PasswordGeneratorRouteImport.update({
@@ -484,6 +499,11 @@ const JsonRoute = JsonRouteImport.update({
   path: '/json',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Ipv6Route = Ipv6RouteImport.update({
+  id: '/ipv6',
+  path: '/ipv6',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IpGeolocationRoute = IpGeolocationRouteImport.update({
   id: '/ip-geolocation',
   path: '/ip-geolocation',
@@ -497,6 +517,11 @@ const IpConverterRoute = IpConverterRouteImport.update({
 const IpCidrCheckRoute = IpCidrCheckRouteImport.update({
   id: '/ip-cidr-check',
   path: '/ip-cidr-check',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IniParserRoute = IniParserRouteImport.update({
+  id: '/ini-parser',
+  path: '/ini-parser',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ImageToGifRoute = ImageToGifRouteImport.update({
@@ -829,6 +854,11 @@ const Base64Route = Base64RouteImport.update({
   path: '/base64',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Base32Route = Base32RouteImport.update({
+  id: '/base32',
+  path: '/base32',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BarcodeRoute = BarcodeRouteImport.update({
   id: '/barcode',
   path: '/barcode',
@@ -881,6 +911,7 @@ export interface FileRoutesByFullPath {
   '/aspect-ratio': typeof AspectRatioRoute
   '/audio-converter': typeof AudioConverterRoute
   '/barcode': typeof BarcodeRoute
+  '/base32': typeof Base32Route
   '/base64': typeof Base64Route
   '/base64-image': typeof Base64ImageRoute
   '/bitwise': typeof BitwiseRoute
@@ -947,9 +978,11 @@ export interface FileRoutesByFullPath {
   '/image-crop': typeof ImageCropRoute
   '/image-resize': typeof ImageResizeRoute
   '/image-to-gif': typeof ImageToGifRoute
+  '/ini-parser': typeof IniParserRoute
   '/ip-cidr-check': typeof IpCidrCheckRoute
   '/ip-converter': typeof IpConverterRoute
   '/ip-geolocation': typeof IpGeolocationRoute
+  '/ipv6': typeof Ipv6Route
   '/json': typeof JsonRoute
   '/json-compare': typeof JsonCompareRoute
   '/json-flatten': typeof JsonFlattenRoute
@@ -975,10 +1008,12 @@ export interface FileRoutesByFullPath {
   '/ogp': typeof OgpRoute
   '/openssl-builder': typeof OpensslBuilderRoute
   '/password-generator': typeof PasswordGeneratorRoute
+  '/password-strength': typeof PasswordStrengthRoute
   '/php-serialize': typeof PhpSerializeRoute
   '/pkce': typeof PkceRoute
   '/pomodoro': typeof PomodoroRoute
   '/port-check': typeof PortCheckRoute
+  '/punycode': typeof PunycodeRoute
   '/qr-code': typeof QrCodeRoute
   '/random-data': typeof RandomDataRoute
   '/regex-checker': typeof RegexCheckerRoute
@@ -1027,6 +1062,7 @@ export interface FileRoutesByTo {
   '/aspect-ratio': typeof AspectRatioRoute
   '/audio-converter': typeof AudioConverterRoute
   '/barcode': typeof BarcodeRoute
+  '/base32': typeof Base32Route
   '/base64': typeof Base64Route
   '/base64-image': typeof Base64ImageRoute
   '/bitwise': typeof BitwiseRoute
@@ -1093,9 +1129,11 @@ export interface FileRoutesByTo {
   '/image-crop': typeof ImageCropRoute
   '/image-resize': typeof ImageResizeRoute
   '/image-to-gif': typeof ImageToGifRoute
+  '/ini-parser': typeof IniParserRoute
   '/ip-cidr-check': typeof IpCidrCheckRoute
   '/ip-converter': typeof IpConverterRoute
   '/ip-geolocation': typeof IpGeolocationRoute
+  '/ipv6': typeof Ipv6Route
   '/json': typeof JsonRoute
   '/json-compare': typeof JsonCompareRoute
   '/json-flatten': typeof JsonFlattenRoute
@@ -1121,10 +1159,12 @@ export interface FileRoutesByTo {
   '/ogp': typeof OgpRoute
   '/openssl-builder': typeof OpensslBuilderRoute
   '/password-generator': typeof PasswordGeneratorRoute
+  '/password-strength': typeof PasswordStrengthRoute
   '/php-serialize': typeof PhpSerializeRoute
   '/pkce': typeof PkceRoute
   '/pomodoro': typeof PomodoroRoute
   '/port-check': typeof PortCheckRoute
+  '/punycode': typeof PunycodeRoute
   '/qr-code': typeof QrCodeRoute
   '/random-data': typeof RandomDataRoute
   '/regex-checker': typeof RegexCheckerRoute
@@ -1174,6 +1214,7 @@ export interface FileRoutesById {
   '/aspect-ratio': typeof AspectRatioRoute
   '/audio-converter': typeof AudioConverterRoute
   '/barcode': typeof BarcodeRoute
+  '/base32': typeof Base32Route
   '/base64': typeof Base64Route
   '/base64-image': typeof Base64ImageRoute
   '/bitwise': typeof BitwiseRoute
@@ -1240,9 +1281,11 @@ export interface FileRoutesById {
   '/image-crop': typeof ImageCropRoute
   '/image-resize': typeof ImageResizeRoute
   '/image-to-gif': typeof ImageToGifRoute
+  '/ini-parser': typeof IniParserRoute
   '/ip-cidr-check': typeof IpCidrCheckRoute
   '/ip-converter': typeof IpConverterRoute
   '/ip-geolocation': typeof IpGeolocationRoute
+  '/ipv6': typeof Ipv6Route
   '/json': typeof JsonRoute
   '/json-compare': typeof JsonCompareRoute
   '/json-flatten': typeof JsonFlattenRoute
@@ -1268,10 +1311,12 @@ export interface FileRoutesById {
   '/ogp': typeof OgpRoute
   '/openssl-builder': typeof OpensslBuilderRoute
   '/password-generator': typeof PasswordGeneratorRoute
+  '/password-strength': typeof PasswordStrengthRoute
   '/php-serialize': typeof PhpSerializeRoute
   '/pkce': typeof PkceRoute
   '/pomodoro': typeof PomodoroRoute
   '/port-check': typeof PortCheckRoute
+  '/punycode': typeof PunycodeRoute
   '/qr-code': typeof QrCodeRoute
   '/random-data': typeof RandomDataRoute
   '/regex-checker': typeof RegexCheckerRoute
@@ -1322,6 +1367,7 @@ export interface FileRouteTypes {
     | '/aspect-ratio'
     | '/audio-converter'
     | '/barcode'
+    | '/base32'
     | '/base64'
     | '/base64-image'
     | '/bitwise'
@@ -1388,9 +1434,11 @@ export interface FileRouteTypes {
     | '/image-crop'
     | '/image-resize'
     | '/image-to-gif'
+    | '/ini-parser'
     | '/ip-cidr-check'
     | '/ip-converter'
     | '/ip-geolocation'
+    | '/ipv6'
     | '/json'
     | '/json-compare'
     | '/json-flatten'
@@ -1416,10 +1464,12 @@ export interface FileRouteTypes {
     | '/ogp'
     | '/openssl-builder'
     | '/password-generator'
+    | '/password-strength'
     | '/php-serialize'
     | '/pkce'
     | '/pomodoro'
     | '/port-check'
+    | '/punycode'
     | '/qr-code'
     | '/random-data'
     | '/regex-checker'
@@ -1468,6 +1518,7 @@ export interface FileRouteTypes {
     | '/aspect-ratio'
     | '/audio-converter'
     | '/barcode'
+    | '/base32'
     | '/base64'
     | '/base64-image'
     | '/bitwise'
@@ -1534,9 +1585,11 @@ export interface FileRouteTypes {
     | '/image-crop'
     | '/image-resize'
     | '/image-to-gif'
+    | '/ini-parser'
     | '/ip-cidr-check'
     | '/ip-converter'
     | '/ip-geolocation'
+    | '/ipv6'
     | '/json'
     | '/json-compare'
     | '/json-flatten'
@@ -1562,10 +1615,12 @@ export interface FileRouteTypes {
     | '/ogp'
     | '/openssl-builder'
     | '/password-generator'
+    | '/password-strength'
     | '/php-serialize'
     | '/pkce'
     | '/pomodoro'
     | '/port-check'
+    | '/punycode'
     | '/qr-code'
     | '/random-data'
     | '/regex-checker'
@@ -1614,6 +1669,7 @@ export interface FileRouteTypes {
     | '/aspect-ratio'
     | '/audio-converter'
     | '/barcode'
+    | '/base32'
     | '/base64'
     | '/base64-image'
     | '/bitwise'
@@ -1680,9 +1736,11 @@ export interface FileRouteTypes {
     | '/image-crop'
     | '/image-resize'
     | '/image-to-gif'
+    | '/ini-parser'
     | '/ip-cidr-check'
     | '/ip-converter'
     | '/ip-geolocation'
+    | '/ipv6'
     | '/json'
     | '/json-compare'
     | '/json-flatten'
@@ -1708,10 +1766,12 @@ export interface FileRouteTypes {
     | '/ogp'
     | '/openssl-builder'
     | '/password-generator'
+    | '/password-strength'
     | '/php-serialize'
     | '/pkce'
     | '/pomodoro'
     | '/port-check'
+    | '/punycode'
     | '/qr-code'
     | '/random-data'
     | '/regex-checker'
@@ -1761,6 +1821,7 @@ export interface RootRouteChildren {
   AspectRatioRoute: typeof AspectRatioRoute
   AudioConverterRoute: typeof AudioConverterRoute
   BarcodeRoute: typeof BarcodeRoute
+  Base32Route: typeof Base32Route
   Base64Route: typeof Base64Route
   Base64ImageRoute: typeof Base64ImageRoute
   BitwiseRoute: typeof BitwiseRoute
@@ -1827,9 +1888,11 @@ export interface RootRouteChildren {
   ImageCropRoute: typeof ImageCropRoute
   ImageResizeRoute: typeof ImageResizeRoute
   ImageToGifRoute: typeof ImageToGifRoute
+  IniParserRoute: typeof IniParserRoute
   IpCidrCheckRoute: typeof IpCidrCheckRoute
   IpConverterRoute: typeof IpConverterRoute
   IpGeolocationRoute: typeof IpGeolocationRoute
+  Ipv6Route: typeof Ipv6Route
   JsonRoute: typeof JsonRoute
   JsonCompareRoute: typeof JsonCompareRoute
   JsonFlattenRoute: typeof JsonFlattenRoute
@@ -1855,10 +1918,12 @@ export interface RootRouteChildren {
   OgpRoute: typeof OgpRoute
   OpensslBuilderRoute: typeof OpensslBuilderRoute
   PasswordGeneratorRoute: typeof PasswordGeneratorRoute
+  PasswordStrengthRoute: typeof PasswordStrengthRoute
   PhpSerializeRoute: typeof PhpSerializeRoute
   PkceRoute: typeof PkceRoute
   PomodoroRoute: typeof PomodoroRoute
   PortCheckRoute: typeof PortCheckRoute
+  PunycodeRoute: typeof PunycodeRoute
   QrCodeRoute: typeof QrCodeRoute
   RandomDataRoute: typeof RandomDataRoute
   RegexCheckerRoute: typeof RegexCheckerRoute
@@ -2163,6 +2228,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof QrCodeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/punycode': {
+      id: '/punycode'
+      path: '/punycode'
+      fullPath: '/punycode'
+      preLoaderRoute: typeof PunycodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/port-check': {
       id: '/port-check'
       path: '/port-check'
@@ -2189,6 +2261,13 @@ declare module '@tanstack/react-router' {
       path: '/php-serialize'
       fullPath: '/php-serialize'
       preLoaderRoute: typeof PhpSerializeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/password-strength': {
+      id: '/password-strength'
+      path: '/password-strength'
+      fullPath: '/password-strength'
+      preLoaderRoute: typeof PasswordStrengthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/password-generator': {
@@ -2366,6 +2445,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof JsonRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ipv6': {
+      id: '/ipv6'
+      path: '/ipv6'
+      fullPath: '/ipv6'
+      preLoaderRoute: typeof Ipv6RouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/ip-geolocation': {
       id: '/ip-geolocation'
       path: '/ip-geolocation'
@@ -2385,6 +2471,13 @@ declare module '@tanstack/react-router' {
       path: '/ip-cidr-check'
       fullPath: '/ip-cidr-check'
       preLoaderRoute: typeof IpCidrCheckRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ini-parser': {
+      id: '/ini-parser'
+      path: '/ini-parser'
+      fullPath: '/ini-parser'
+      preLoaderRoute: typeof IniParserRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/image-to-gif': {
@@ -2849,6 +2942,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Base64RouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/base32': {
+      id: '/base32'
+      path: '/base32'
+      fullPath: '/base32'
+      preLoaderRoute: typeof Base32RouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/barcode': {
       id: '/barcode'
       path: '/barcode'
@@ -2921,6 +3021,7 @@ const rootRouteChildren: RootRouteChildren = {
   AspectRatioRoute: AspectRatioRoute,
   AudioConverterRoute: AudioConverterRoute,
   BarcodeRoute: BarcodeRoute,
+  Base32Route: Base32Route,
   Base64Route: Base64Route,
   Base64ImageRoute: Base64ImageRoute,
   BitwiseRoute: BitwiseRoute,
@@ -2987,9 +3088,11 @@ const rootRouteChildren: RootRouteChildren = {
   ImageCropRoute: ImageCropRoute,
   ImageResizeRoute: ImageResizeRoute,
   ImageToGifRoute: ImageToGifRoute,
+  IniParserRoute: IniParserRoute,
   IpCidrCheckRoute: IpCidrCheckRoute,
   IpConverterRoute: IpConverterRoute,
   IpGeolocationRoute: IpGeolocationRoute,
+  Ipv6Route: Ipv6Route,
   JsonRoute: JsonRoute,
   JsonCompareRoute: JsonCompareRoute,
   JsonFlattenRoute: JsonFlattenRoute,
@@ -3015,10 +3118,12 @@ const rootRouteChildren: RootRouteChildren = {
   OgpRoute: OgpRoute,
   OpensslBuilderRoute: OpensslBuilderRoute,
   PasswordGeneratorRoute: PasswordGeneratorRoute,
+  PasswordStrengthRoute: PasswordStrengthRoute,
   PhpSerializeRoute: PhpSerializeRoute,
   PkceRoute: PkceRoute,
   PomodoroRoute: PomodoroRoute,
   PortCheckRoute: PortCheckRoute,
+  PunycodeRoute: PunycodeRoute,
   QrCodeRoute: QrCodeRoute,
   RandomDataRoute: RandomDataRoute,
   RegexCheckerRoute: RegexCheckerRoute,
