@@ -1,0 +1,363 @@
+/* INIパーサー/フォーマッター */
+
+/* モード切替タブ */
+.ini-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  padding-bottom: 0.5rem;
+}
+
+.ini-tab-btn {
+  padding: 0.375rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid transparent;
+  border-radius: 4px 4px 0 0;
+  cursor: pointer;
+  background: none;
+  color: var(--md-sys-color-on-surface-variant);
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+  letter-spacing: 0.02em;
+}
+
+.ini-tab-btn:hover:not(.active) {
+  background-color: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+}
+
+.ini-tab-btn.active {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border-color: var(--md-sys-color-primary);
+}
+
+.ini-tab-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* オプション行 */
+.ini-options-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.ini-option-label {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  user-select: none;
+}
+
+.ini-option-label input[type='checkbox'] {
+  accent-color: var(--md-sys-color-primary);
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+}
+
+/* テキストエリア共通 */
+.ini-textarea {
+  width: 100%;
+  min-height: 240px;
+  padding: 0.75rem;
+  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  resize: vertical;
+  transition: border-color 0.2s, background 0.2s;
+  box-sizing: border-box;
+}
+
+.ini-textarea:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-surface);
+}
+
+.ini-textarea::placeholder {
+  color: var(--md-sys-color-on-surface-variant);
+  opacity: 0.6;
+}
+
+/* 変換ボタン行 */
+.ini-action-row {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 0.75rem;
+}
+
+/* エラーパネル */
+.ini-errors {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  border: 1px solid var(--md-sys-color-error);
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--md-sys-color-error) 8%, transparent);
+  color: var(--md-sys-color-error);
+  font-size: 0.8125rem;
+}
+
+.ini-errors-title {
+  font-weight: 600;
+  margin-bottom: 0.375rem;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.ini-error-item {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  padding: 0.1875rem 0;
+}
+
+/* ツリービュー */
+.ini-tree {
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--md-sys-color-surface);
+}
+
+.ini-tree-section {
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.ini-tree-section:last-child {
+  border-bottom: none;
+}
+
+.ini-tree-section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 0.875rem;
+  background: var(--md-sys-color-surface-variant);
+  cursor: pointer;
+  user-select: none;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+  transition: background-color 0.15s;
+}
+
+.ini-tree-section-header:hover {
+  background: color-mix(in srgb, var(--md-sys-color-surface-variant) 70%, var(--md-sys-color-primary) 30%);
+}
+
+.ini-tree-section-name {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--md-sys-color-primary);
+}
+
+.ini-tree-section-count {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-left: auto;
+}
+
+.ini-tree-section-toggle {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  transition: transform 0.15s;
+}
+
+.ini-tree-section-toggle.expanded {
+  transform: rotate(90deg);
+}
+
+/* ツリーのキー・値リスト */
+.ini-tree-entries {
+  padding: 0.375rem 0;
+}
+
+.ini-tree-entry {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.3125rem 0.875rem 0.3125rem 1.75rem;
+  font-size: 0.8125rem;
+  transition: background-color 0.1s;
+}
+
+.ini-tree-entry:hover {
+  background: var(--md-sys-color-surface-variant);
+}
+
+.ini-tree-key {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--md-sys-color-secondary);
+  min-width: 30%;
+  max-width: 50%;
+  word-break: break-all;
+  flex-shrink: 0;
+}
+
+.ini-tree-separator {
+  color: var(--md-sys-color-on-surface-variant);
+  flex-shrink: 0;
+}
+
+.ini-tree-value {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--md-sys-color-on-surface);
+  word-break: break-all;
+  flex: 1;
+}
+
+.ini-tree-value-badge {
+  font-size: 0.6875rem;
+  padding: 0.0625rem 0.3125rem;
+  border-radius: 3px;
+  background: var(--md-sys-color-tertiary-container);
+  color: var(--md-sys-color-on-tertiary-container);
+  flex-shrink: 0;
+  align-self: center;
+}
+
+/* 統計パネル */
+.ini-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.ini-stat-card {
+  padding: 0.75rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface-variant);
+  text-align: center;
+}
+
+.ini-stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--md-sys-color-primary);
+  line-height: 1.2;
+}
+
+.ini-stat-label {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-top: 0.25rem;
+}
+
+/* 出力エリアのヘッダー */
+.ini-output-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.ini-output-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+}
+
+/* サンプル挿入ボタン */
+.ini-sample-row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+}
+
+.ini-sample-btn {
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 3px;
+  background: none;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.ini-sample-btn:hover {
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  border-color: var(--md-sys-color-outline);
+}
+
+.ini-sample-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* レスポンシブ */
+@media (max-width: 600px) {
+  .ini-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .ini-options-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .ini-tree-entry {
+    flex-direction: column;
+    gap: 0.125rem;
+    padding-left: 1.25rem;
+  }
+
+  .ini-tree-key {
+    min-width: unset;
+    max-width: unset;
+  }
+}
+
+/* ツリービュー: 空状態 */
+.ini-tree-empty {
+  padding: 1rem;
+  color: var(--md-sys-color-on-surface-variant);
+  text-align: center;
+  font-size: 0.875rem;
+}
+
+/* 入力ラベル（マージンなし） */
+.ini-label-no-margin {
+  margin-bottom: 0;
+}
+
+/* サンプルボタン行ラベル */
+.ini-sample-label {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  align-self: center;
+}
+
+/* モーション低減 */
+@media (prefers-reduced-motion: reduce) {
+  .ini-tab-btn,
+  .ini-tree-section-toggle,
+  .ini-tree-section-header,
+  .ini-tree-entry,
+  .ini-textarea,
+  .ini-sample-btn {
+    transition: none;
+  }
+}

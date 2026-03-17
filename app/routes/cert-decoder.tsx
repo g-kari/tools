@@ -183,7 +183,7 @@ function CertResult({ cert, onCopy }: { cert: CertificateInfo; onCopy: (v: strin
               <span className="cert-badge cert-badge-end-entity">エンドエンティティ</span>
             )}
             {cert.isCA && cert.pathLenConstraint !== undefined && (
-              <span className="cert-field-value" style={{ marginLeft: '0.5rem' }}>
+              <span className="cert-field-value cert-pathlen">
                 pathLen: {cert.pathLenConstraint}
               </span>
             )}
@@ -261,7 +261,7 @@ function CertResult({ cert, onCopy }: { cert: CertificateInfo; onCopy: (v: strin
           <span className="cert-field-value">
             {sigAlgoLabel[cert.signatureAlgorithm] ?? cert.signatureAlgorithm}
             {isDeprecatedSig && (
-              <span className="cert-badge cert-badge-deprecated" style={{ marginLeft: '0.5rem' }}>
+              <span className="cert-badge cert-badge-deprecated cert-badge-deprecated-inline">
                 非推奨
               </span>
             )}
@@ -451,7 +451,7 @@ function CertDecoder() {
             spellCheck={false}
             rows={8}
           />
-          <p id="cert-input-hint" className="text-case-hint" style={{ fontSize: '0.8rem', color: 'var(--md-sys-color-on-surface-variant)', marginTop: '0.25rem' }}>
+          <p id="cert-input-hint" className="cert-input-hint">
             Ctrl+Enter で解析。ブラウザ内で処理されます（外部送信なし）
           </p>
           <button

@@ -316,6 +316,23 @@
   background: transparent;
 }
 
+/* pathLen 表示（CA 証明書用） */
+.cert-pathlen {
+  margin-left: 0.5rem;
+}
+
+/* 非推奨バッジ（署名アルゴリズム欄） */
+.cert-badge-deprecated-inline {
+  margin-left: 0.5rem;
+}
+
+/* 入力ヒントテキスト */
+.cert-input-hint {
+  font-size: 0.8rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-top: 0.25rem;
+}
+
 /* レスポンシブ */
 @media (max-width: 600px) {
   .cert-field {
