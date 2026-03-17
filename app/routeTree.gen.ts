@@ -9,12 +9,14 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as YamlTomlRouteImport } from './routes/yaml-toml'
 import { Route as YamlJsonRouteImport } from './routes/yaml-json'
 import { Route as YamlFormatterRouteImport } from './routes/yaml-formatter'
 import { Route as XmlJsonRouteImport } from './routes/xml-json'
 import { Route as XmlRouteImport } from './routes/xml'
 import { Route as WhoisRouteImport } from './routes/whois'
 import { Route as VideoConverterRouteImport } from './routes/video-converter'
+import { Route as UuidInspectorRouteImport } from './routes/uuid-inspector'
 import { Route as UuidRouteImport } from './routes/uuid'
 import { Route as UserAgentRouteImport } from './routes/user-agent'
 import { Route as UrlParserRouteImport } from './routes/url-parser'
@@ -91,6 +93,7 @@ import { Route as HttpStatusRouteImport } from './routes/http-status'
 import { Route as HttpHeadersRouteImport } from './routes/http-headers'
 import { Route as HttpClientRouteImport } from './routes/http-client'
 import { Route as HtmlToJsxRouteImport } from './routes/html-to-jsx'
+import { Route as HtmlFormatterRouteImport } from './routes/html-formatter'
 import { Route as HtmlEncodeRouteImport } from './routes/html-encode'
 import { Route as HmacRouteImport } from './routes/hmac'
 import { Route as HexViewerRouteImport } from './routes/hex-viewer'
@@ -159,6 +162,11 @@ import { Route as ApiImageDotsvgRouteImport } from './routes/api/image[.]svg'
 import { Route as ApiImageDotpngRouteImport } from './routes/api/image[.]png'
 import { Route as ApiImageDotjpgRouteImport } from './routes/api/image[.]jpg'
 
+const YamlTomlRoute = YamlTomlRouteImport.update({
+  id: '/yaml-toml',
+  path: '/yaml-toml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const YamlJsonRoute = YamlJsonRouteImport.update({
   id: '/yaml-json',
   path: '/yaml-json',
@@ -187,6 +195,11 @@ const WhoisRoute = WhoisRouteImport.update({
 const VideoConverterRoute = VideoConverterRouteImport.update({
   id: '/video-converter',
   path: '/video-converter',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UuidInspectorRoute = UuidInspectorRouteImport.update({
+  id: '/uuid-inspector',
+  path: '/uuid-inspector',
   getParentRoute: () => rootRouteImport,
 } as any)
 const UuidRoute = UuidRouteImport.update({
@@ -567,6 +580,11 @@ const HttpClientRoute = HttpClientRouteImport.update({
 const HtmlToJsxRoute = HtmlToJsxRouteImport.update({
   id: '/html-to-jsx',
   path: '/html-to-jsx',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HtmlFormatterRoute = HtmlFormatterRouteImport.update({
+  id: '/html-formatter',
+  path: '/html-formatter',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HtmlEncodeRoute = HtmlEncodeRouteImport.update({
@@ -969,6 +987,7 @@ export interface FileRoutesByFullPath {
   '/hex-viewer': typeof HexViewerRoute
   '/hmac': typeof HmacRoute
   '/html-encode': typeof HtmlEncodeRoute
+  '/html-formatter': typeof HtmlFormatterRoute
   '/html-to-jsx': typeof HtmlToJsxRoute
   '/http-client': typeof HttpClientRoute
   '/http-headers': typeof HttpHeadersRoute
@@ -1045,12 +1064,14 @@ export interface FileRoutesByFullPath {
   '/url-parser': typeof UrlParserRoute
   '/user-agent': typeof UserAgentRoute
   '/uuid': typeof UuidRoute
+  '/uuid-inspector': typeof UuidInspectorRoute
   '/video-converter': typeof VideoConverterRoute
   '/whois': typeof WhoisRoute
   '/xml': typeof XmlRoute
   '/xml-json': typeof XmlJsonRoute
   '/yaml-formatter': typeof YamlFormatterRoute
   '/yaml-json': typeof YamlJsonRoute
+  '/yaml-toml': typeof YamlTomlRoute
   '/api/image.jpg': typeof ApiImageDotjpgRoute
   '/api/image.png': typeof ApiImageDotpngRoute
   '/api/image.svg': typeof ApiImageDotsvgRoute
@@ -1120,6 +1141,7 @@ export interface FileRoutesByTo {
   '/hex-viewer': typeof HexViewerRoute
   '/hmac': typeof HmacRoute
   '/html-encode': typeof HtmlEncodeRoute
+  '/html-formatter': typeof HtmlFormatterRoute
   '/html-to-jsx': typeof HtmlToJsxRoute
   '/http-client': typeof HttpClientRoute
   '/http-headers': typeof HttpHeadersRoute
@@ -1196,12 +1218,14 @@ export interface FileRoutesByTo {
   '/url-parser': typeof UrlParserRoute
   '/user-agent': typeof UserAgentRoute
   '/uuid': typeof UuidRoute
+  '/uuid-inspector': typeof UuidInspectorRoute
   '/video-converter': typeof VideoConverterRoute
   '/whois': typeof WhoisRoute
   '/xml': typeof XmlRoute
   '/xml-json': typeof XmlJsonRoute
   '/yaml-formatter': typeof YamlFormatterRoute
   '/yaml-json': typeof YamlJsonRoute
+  '/yaml-toml': typeof YamlTomlRoute
   '/api/image.jpg': typeof ApiImageDotjpgRoute
   '/api/image.png': typeof ApiImageDotpngRoute
   '/api/image.svg': typeof ApiImageDotsvgRoute
@@ -1272,6 +1296,7 @@ export interface FileRoutesById {
   '/hex-viewer': typeof HexViewerRoute
   '/hmac': typeof HmacRoute
   '/html-encode': typeof HtmlEncodeRoute
+  '/html-formatter': typeof HtmlFormatterRoute
   '/html-to-jsx': typeof HtmlToJsxRoute
   '/http-client': typeof HttpClientRoute
   '/http-headers': typeof HttpHeadersRoute
@@ -1348,12 +1373,14 @@ export interface FileRoutesById {
   '/url-parser': typeof UrlParserRoute
   '/user-agent': typeof UserAgentRoute
   '/uuid': typeof UuidRoute
+  '/uuid-inspector': typeof UuidInspectorRoute
   '/video-converter': typeof VideoConverterRoute
   '/whois': typeof WhoisRoute
   '/xml': typeof XmlRoute
   '/xml-json': typeof XmlJsonRoute
   '/yaml-formatter': typeof YamlFormatterRoute
   '/yaml-json': typeof YamlJsonRoute
+  '/yaml-toml': typeof YamlTomlRoute
   '/api/image.jpg': typeof ApiImageDotjpgRoute
   '/api/image.png': typeof ApiImageDotpngRoute
   '/api/image.svg': typeof ApiImageDotsvgRoute
@@ -1425,6 +1452,7 @@ export interface FileRouteTypes {
     | '/hex-viewer'
     | '/hmac'
     | '/html-encode'
+    | '/html-formatter'
     | '/html-to-jsx'
     | '/http-client'
     | '/http-headers'
@@ -1501,12 +1529,14 @@ export interface FileRouteTypes {
     | '/url-parser'
     | '/user-agent'
     | '/uuid'
+    | '/uuid-inspector'
     | '/video-converter'
     | '/whois'
     | '/xml'
     | '/xml-json'
     | '/yaml-formatter'
     | '/yaml-json'
+    | '/yaml-toml'
     | '/api/image.jpg'
     | '/api/image.png'
     | '/api/image.svg'
@@ -1576,6 +1606,7 @@ export interface FileRouteTypes {
     | '/hex-viewer'
     | '/hmac'
     | '/html-encode'
+    | '/html-formatter'
     | '/html-to-jsx'
     | '/http-client'
     | '/http-headers'
@@ -1652,12 +1683,14 @@ export interface FileRouteTypes {
     | '/url-parser'
     | '/user-agent'
     | '/uuid'
+    | '/uuid-inspector'
     | '/video-converter'
     | '/whois'
     | '/xml'
     | '/xml-json'
     | '/yaml-formatter'
     | '/yaml-json'
+    | '/yaml-toml'
     | '/api/image.jpg'
     | '/api/image.png'
     | '/api/image.svg'
@@ -1727,6 +1760,7 @@ export interface FileRouteTypes {
     | '/hex-viewer'
     | '/hmac'
     | '/html-encode'
+    | '/html-formatter'
     | '/html-to-jsx'
     | '/http-client'
     | '/http-headers'
@@ -1803,12 +1837,14 @@ export interface FileRouteTypes {
     | '/url-parser'
     | '/user-agent'
     | '/uuid'
+    | '/uuid-inspector'
     | '/video-converter'
     | '/whois'
     | '/xml'
     | '/xml-json'
     | '/yaml-formatter'
     | '/yaml-json'
+    | '/yaml-toml'
     | '/api/image.jpg'
     | '/api/image.png'
     | '/api/image.svg'
@@ -1879,6 +1915,7 @@ export interface RootRouteChildren {
   HexViewerRoute: typeof HexViewerRoute
   HmacRoute: typeof HmacRoute
   HtmlEncodeRoute: typeof HtmlEncodeRoute
+  HtmlFormatterRoute: typeof HtmlFormatterRoute
   HtmlToJsxRoute: typeof HtmlToJsxRoute
   HttpClientRoute: typeof HttpClientRoute
   HttpHeadersRoute: typeof HttpHeadersRoute
@@ -1955,12 +1992,14 @@ export interface RootRouteChildren {
   UrlParserRoute: typeof UrlParserRoute
   UserAgentRoute: typeof UserAgentRoute
   UuidRoute: typeof UuidRoute
+  UuidInspectorRoute: typeof UuidInspectorRoute
   VideoConverterRoute: typeof VideoConverterRoute
   WhoisRoute: typeof WhoisRoute
   XmlRoute: typeof XmlRoute
   XmlJsonRoute: typeof XmlJsonRoute
   YamlFormatterRoute: typeof YamlFormatterRoute
   YamlJsonRoute: typeof YamlJsonRoute
+  YamlTomlRoute: typeof YamlTomlRoute
   ApiImageDotjpgRoute: typeof ApiImageDotjpgRoute
   ApiImageDotpngRoute: typeof ApiImageDotpngRoute
   ApiImageDotsvgRoute: typeof ApiImageDotsvgRoute
@@ -1969,6 +2008,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/yaml-toml': {
+      id: '/yaml-toml'
+      path: '/yaml-toml'
+      fullPath: '/yaml-toml'
+      preLoaderRoute: typeof YamlTomlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/yaml-json': {
       id: '/yaml-json'
       path: '/yaml-json'
@@ -2009,6 +2055,13 @@ declare module '@tanstack/react-router' {
       path: '/video-converter'
       fullPath: '/video-converter'
       preLoaderRoute: typeof VideoConverterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/uuid-inspector': {
+      id: '/uuid-inspector'
+      path: '/uuid-inspector'
+      fullPath: '/uuid-inspector'
+      preLoaderRoute: typeof UuidInspectorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/uuid': {
@@ -2541,6 +2594,13 @@ declare module '@tanstack/react-router' {
       path: '/html-to-jsx'
       fullPath: '/html-to-jsx'
       preLoaderRoute: typeof HtmlToJsxRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/html-formatter': {
+      id: '/html-formatter'
+      path: '/html-formatter'
+      fullPath: '/html-formatter'
+      preLoaderRoute: typeof HtmlFormatterRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/html-encode': {
@@ -3079,6 +3139,7 @@ const rootRouteChildren: RootRouteChildren = {
   HexViewerRoute: HexViewerRoute,
   HmacRoute: HmacRoute,
   HtmlEncodeRoute: HtmlEncodeRoute,
+  HtmlFormatterRoute: HtmlFormatterRoute,
   HtmlToJsxRoute: HtmlToJsxRoute,
   HttpClientRoute: HttpClientRoute,
   HttpHeadersRoute: HttpHeadersRoute,
@@ -3155,12 +3216,14 @@ const rootRouteChildren: RootRouteChildren = {
   UrlParserRoute: UrlParserRoute,
   UserAgentRoute: UserAgentRoute,
   UuidRoute: UuidRoute,
+  UuidInspectorRoute: UuidInspectorRoute,
   VideoConverterRoute: VideoConverterRoute,
   WhoisRoute: WhoisRoute,
   XmlRoute: XmlRoute,
   XmlJsonRoute: XmlJsonRoute,
   YamlFormatterRoute: YamlFormatterRoute,
   YamlJsonRoute: YamlJsonRoute,
+  YamlTomlRoute: YamlTomlRoute,
   ApiImageDotjpgRoute: ApiImageDotjpgRoute,
   ApiImageDotpngRoute: ApiImageDotpngRoute,
   ApiImageDotsvgRoute: ApiImageDotsvgRoute,

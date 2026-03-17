@@ -28,6 +28,7 @@ const navCategories = [
       { path: "/url-encode", label: "URLエンコード" },
       { path: "/url-parser", label: "URLパーサー" },
       { path: "/html-encode", label: "HTMLエンコード" },
+      { path: "/html-formatter", label: "HTMLフォーマッター" },
       { path: "/number-base", label: "数値進数変換" },
       { path: "/msgpack", label: "MessagePack変換" },
       { path: "/base64", label: "Base64変換" },
@@ -43,6 +44,7 @@ const navCategories = [
       { path: "/json-compare", label: "JSON比較" },
       { path: "/csv-json", label: "CSV/JSON変換" },
       { path: "/yaml-json", label: "YAML/JSON変換" },
+      { path: "/yaml-toml", label: "YAML↔TOML変換" },
       { path: "/toml-json", label: "TOML/JSON変換" },
       { path: "/xml", label: "XMLフォーマッター" },
       { path: "/sql", label: "SQLフォーマッター" },
@@ -76,6 +78,7 @@ const navCategories = [
     icon: "✦",
     items: [
       { path: "/uuid", label: "UUID生成" },
+      { path: "/uuid-inspector", label: "UUID解析" },
       { path: "/password-generator", label: "パスワード" },
       { path: "/dummy-image", label: "ダミー画像" },
       { path: "/dummy-audio", label: "ダミー音声" },

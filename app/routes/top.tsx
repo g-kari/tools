@@ -76,6 +76,12 @@ const toolCatalog: ToolCategory[] = [
         icon: "📄",
       },
       {
+        path: "/html-formatter",
+        label: "HTMLフォーマッター",
+        description: "HTML を整形・美化。インデント幅（2/4スペース・タブ）選択対応。",
+        icon: "✨",
+      },
+      {
         path: "/msgpack",
         label: "MessagePack変換",
         description: "MessagePackとJSONの相互変換",
@@ -181,6 +187,12 @@ const toolCatalog: ToolCategory[] = [
         label: "YAML/JSON変換",
         description: "YAMLとJSONの相互変換ツール。設定ファイルの変換に便利。",
         icon: "🔄",
+      },
+      {
+        path: "/yaml-toml",
+        label: "YAML↔TOML変換",
+        description: "YAML と TOML を直接相互変換。Cargo.toml・pyproject.toml の変換に。",
+        icon: "🔃",
       },
       {
         path: "/yaml-formatter",
@@ -337,6 +349,12 @@ const toolCatalog: ToolCategory[] = [
         label: "UUID生成",
         description: "UUID v4のランダム生成",
         icon: "🔑",
+      },
+      {
+        path: "/uuid-inspector",
+        label: "UUID解析",
+        description: "UUID の構造を解析。バージョン (v1〜v8) 判定・タイムスタンプ抽出・バイナリ表示。",
+        icon: "🔍",
       },
       {
         path: "/ulid",
