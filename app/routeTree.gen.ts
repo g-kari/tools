@@ -36,6 +36,7 @@ import { Route as TimestampRouteImport } from './routes/timestamp'
 import { Route as TextStatsRouteImport } from './routes/text-stats'
 import { Route as TextSortRouteImport } from './routes/text-sort'
 import { Route as TextReplaceRouteImport } from './routes/text-replace'
+import { Route as TextLineRouteImport } from './routes/text-line'
 import { Route as TextEncryptRouteImport } from './routes/text-encrypt'
 import { Route as TextCaseRouteImport } from './routes/text-case'
 import { Route as SvgOptimizerRouteImport } from './routes/svg-optimizer'
@@ -128,6 +129,7 @@ import { Route as CssFlexboxRouteImport } from './routes/css-flexbox'
 import { Route as CssFilterRouteImport } from './routes/css-filter'
 import { Route as CssContainerQueryRouteImport } from './routes/css-container-query'
 import { Route as CssClipPathRouteImport } from './routes/css-clip-path'
+import { Route as CssClampRouteImport } from './routes/css-clamp'
 import { Route as CssBoxShadowRouteImport } from './routes/css-box-shadow'
 import { Route as CssBorderRadiusRouteImport } from './routes/css-border-radius'
 import { Route as CssAnimationRouteImport } from './routes/css-animation'
@@ -295,6 +297,11 @@ const TextSortRoute = TextSortRouteImport.update({
 const TextReplaceRoute = TextReplaceRouteImport.update({
   id: '/text-replace',
   path: '/text-replace',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TextLineRoute = TextLineRouteImport.update({
+  id: '/text-line',
+  path: '/text-line',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TextEncryptRoute = TextEncryptRouteImport.update({
@@ -757,6 +764,11 @@ const CssClipPathRoute = CssClipPathRouteImport.update({
   path: '/css-clip-path',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CssClampRoute = CssClampRouteImport.update({
+  id: '/css-clamp',
+  path: '/css-clamp',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CssBoxShadowRoute = CssBoxShadowRouteImport.update({
   id: '/css-box-shadow',
   path: '/css-box-shadow',
@@ -953,6 +965,7 @@ export interface FileRoutesByFullPath {
   '/css-animation': typeof CssAnimationRoute
   '/css-border-radius': typeof CssBorderRadiusRoute
   '/css-box-shadow': typeof CssBoxShadowRoute
+  '/css-clamp': typeof CssClampRoute
   '/css-clip-path': typeof CssClipPathRoute
   '/css-container-query': typeof CssContainerQueryRoute
   '/css-filter': typeof CssFilterRoute
@@ -1045,6 +1058,7 @@ export interface FileRoutesByFullPath {
   '/svg-optimizer': typeof SvgOptimizerRoute
   '/text-case': typeof TextCaseRoute
   '/text-encrypt': typeof TextEncryptRoute
+  '/text-line': typeof TextLineRoute
   '/text-replace': typeof TextReplaceRoute
   '/text-sort': typeof TextSortRoute
   '/text-stats': typeof TextStatsRoute
@@ -1107,6 +1121,7 @@ export interface FileRoutesByTo {
   '/css-animation': typeof CssAnimationRoute
   '/css-border-radius': typeof CssBorderRadiusRoute
   '/css-box-shadow': typeof CssBoxShadowRoute
+  '/css-clamp': typeof CssClampRoute
   '/css-clip-path': typeof CssClipPathRoute
   '/css-container-query': typeof CssContainerQueryRoute
   '/css-filter': typeof CssFilterRoute
@@ -1199,6 +1214,7 @@ export interface FileRoutesByTo {
   '/svg-optimizer': typeof SvgOptimizerRoute
   '/text-case': typeof TextCaseRoute
   '/text-encrypt': typeof TextEncryptRoute
+  '/text-line': typeof TextLineRoute
   '/text-replace': typeof TextReplaceRoute
   '/text-sort': typeof TextSortRoute
   '/text-stats': typeof TextStatsRoute
@@ -1262,6 +1278,7 @@ export interface FileRoutesById {
   '/css-animation': typeof CssAnimationRoute
   '/css-border-radius': typeof CssBorderRadiusRoute
   '/css-box-shadow': typeof CssBoxShadowRoute
+  '/css-clamp': typeof CssClampRoute
   '/css-clip-path': typeof CssClipPathRoute
   '/css-container-query': typeof CssContainerQueryRoute
   '/css-filter': typeof CssFilterRoute
@@ -1354,6 +1371,7 @@ export interface FileRoutesById {
   '/svg-optimizer': typeof SvgOptimizerRoute
   '/text-case': typeof TextCaseRoute
   '/text-encrypt': typeof TextEncryptRoute
+  '/text-line': typeof TextLineRoute
   '/text-replace': typeof TextReplaceRoute
   '/text-sort': typeof TextSortRoute
   '/text-stats': typeof TextStatsRoute
@@ -1418,6 +1436,7 @@ export interface FileRouteTypes {
     | '/css-animation'
     | '/css-border-radius'
     | '/css-box-shadow'
+    | '/css-clamp'
     | '/css-clip-path'
     | '/css-container-query'
     | '/css-filter'
@@ -1510,6 +1529,7 @@ export interface FileRouteTypes {
     | '/svg-optimizer'
     | '/text-case'
     | '/text-encrypt'
+    | '/text-line'
     | '/text-replace'
     | '/text-sort'
     | '/text-stats'
@@ -1572,6 +1592,7 @@ export interface FileRouteTypes {
     | '/css-animation'
     | '/css-border-radius'
     | '/css-box-shadow'
+    | '/css-clamp'
     | '/css-clip-path'
     | '/css-container-query'
     | '/css-filter'
@@ -1664,6 +1685,7 @@ export interface FileRouteTypes {
     | '/svg-optimizer'
     | '/text-case'
     | '/text-encrypt'
+    | '/text-line'
     | '/text-replace'
     | '/text-sort'
     | '/text-stats'
@@ -1726,6 +1748,7 @@ export interface FileRouteTypes {
     | '/css-animation'
     | '/css-border-radius'
     | '/css-box-shadow'
+    | '/css-clamp'
     | '/css-clip-path'
     | '/css-container-query'
     | '/css-filter'
@@ -1818,6 +1841,7 @@ export interface FileRouteTypes {
     | '/svg-optimizer'
     | '/text-case'
     | '/text-encrypt'
+    | '/text-line'
     | '/text-replace'
     | '/text-sort'
     | '/text-stats'
@@ -1881,6 +1905,7 @@ export interface RootRouteChildren {
   CssAnimationRoute: typeof CssAnimationRoute
   CssBorderRadiusRoute: typeof CssBorderRadiusRoute
   CssBoxShadowRoute: typeof CssBoxShadowRoute
+  CssClampRoute: typeof CssClampRoute
   CssClipPathRoute: typeof CssClipPathRoute
   CssContainerQueryRoute: typeof CssContainerQueryRoute
   CssFilterRoute: typeof CssFilterRoute
@@ -1973,6 +1998,7 @@ export interface RootRouteChildren {
   SvgOptimizerRoute: typeof SvgOptimizerRoute
   TextCaseRoute: typeof TextCaseRoute
   TextEncryptRoute: typeof TextEncryptRoute
+  TextLineRoute: typeof TextLineRoute
   TextReplaceRoute: typeof TextReplaceRoute
   TextSortRoute: typeof TextSortRoute
   TextStatsRoute: typeof TextStatsRoute
@@ -2195,6 +2221,13 @@ declare module '@tanstack/react-router' {
       path: '/text-replace'
       fullPath: '/text-replace'
       preLoaderRoute: typeof TextReplaceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/text-line': {
+      id: '/text-line'
+      path: '/text-line'
+      fullPath: '/text-line'
+      preLoaderRoute: typeof TextLineRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/text-encrypt': {
@@ -2841,6 +2874,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CssClipPathRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/css-clamp': {
+      id: '/css-clamp'
+      path: '/css-clamp'
+      fullPath: '/css-clamp'
+      preLoaderRoute: typeof CssClampRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/css-box-shadow': {
       id: '/css-box-shadow'
       path: '/css-box-shadow'
@@ -3105,6 +3145,7 @@ const rootRouteChildren: RootRouteChildren = {
   CssAnimationRoute: CssAnimationRoute,
   CssBorderRadiusRoute: CssBorderRadiusRoute,
   CssBoxShadowRoute: CssBoxShadowRoute,
+  CssClampRoute: CssClampRoute,
   CssClipPathRoute: CssClipPathRoute,
   CssContainerQueryRoute: CssContainerQueryRoute,
   CssFilterRoute: CssFilterRoute,
@@ -3197,6 +3238,7 @@ const rootRouteChildren: RootRouteChildren = {
   SvgOptimizerRoute: SvgOptimizerRoute,
   TextCaseRoute: TextCaseRoute,
   TextEncryptRoute: TextEncryptRoute,
+  TextLineRoute: TextLineRoute,
   TextReplaceRoute: TextReplaceRoute,
   TextSortRoute: TextSortRoute,
   TextStatsRoute: TextStatsRoute,

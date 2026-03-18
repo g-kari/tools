@@ -171,6 +171,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "📏",
       },
       {
+        path: "/css-clamp",
+        label: "CSS Fluid/Clamp 計算機",
+        description:
+          "ビューポート幅に応じてリニア補間する CSS clamp() 値を計算。フォントサイズ・パディングなどの Fluid スタイルを即時プレビューで生成します。",
+        icon: "📐",
+      },
+      {
         path: "/audio-converter",
         label: "オーディオ変換",
         description: "音声ファイルの形式変換（MP3/WAV/OGG等）",
@@ -758,6 +765,13 @@ const toolCatalog: ToolCategory[] = [
         label: "ソート/重複削除",
         description: "テキストの行ソートと重複行削除",
         icon: "📋",
+      },
+      {
+        path: "/text-line",
+        label: "テキスト行操作",
+        description:
+          "トリム・空行削除・行番号付加・プレフィックス/サフィックス追加・逆順・シャッフル・フィルタリングなどのテキスト行操作ツール",
+        icon: "📄",
       },
       {
         path: "/diff",

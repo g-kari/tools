@@ -1,0 +1,156 @@
+/* テキスト行操作ツール (tl- prefix) */
+
+/* ── 2カラムレイアウト ── */
+.tl-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+@media (max-width: 800px) {
+  .tl-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── 操作パネル ── */
+.tl-ops-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.tl-ops-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--md-sys-color-primary);
+  margin: 0 0 0.25rem;
+}
+
+/* ── 操作グループ ── */
+.tl-op-group {
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 8px;
+  padding: 0.875rem 1rem;
+}
+
+.tl-op-btn {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 6px;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-bottom: 0.5rem;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+
+.tl-op-btn:last-child {
+  margin-bottom: 0;
+}
+
+.tl-op-btn:hover {
+  background: var(--md-sys-color-secondary-container);
+  border-color: var(--md-sys-color-secondary);
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+.tl-op-btn:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.tl-op-desc {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-top: 0.25rem;
+  display: block;
+}
+
+/* ── 追加入力付きの操作 ── */
+.tl-op-with-input {
+  margin-bottom: 0.5rem;
+}
+
+.tl-op-with-input:last-child {
+  margin-bottom: 0;
+}
+
+.tl-op-input-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.375rem;
+}
+
+.tl-extra-input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.3125rem 0.625rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-family: "JetBrains Mono", "Roboto Mono", "Courier New", monospace;
+  font-size: 0.875rem;
+}
+
+.tl-extra-input:focus {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 1px;
+  border-color: transparent;
+}
+
+/* ── IO エリア ── */
+.tl-io-area {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.tl-io-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.tl-io-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.tl-io-label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.tl-line-count {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: "JetBrains Mono", "Roboto Mono", "Courier New", monospace;
+}
+
+.tl-line-count-changed {
+  color: var(--md-sys-color-primary);
+  font-weight: 700;
+}
+
+/* ── クリアボタン ── */
+.tl-clear-btn {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.625rem;
+}
