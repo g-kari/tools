@@ -122,3 +122,5 @@
 @import "./styles/tools/toml-formatter.css";
 @import "./styles/tools/nano-id.css";
 @import "./styles/tools/zenkaku.css";
+@import "./styles/tools/basic-auth.css";
+@import "./styles/tools/color-mix.css";

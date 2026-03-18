@@ -143,6 +143,7 @@ import { Route as ConventionalCommitsRouteImport } from './routes/conventional-c
 import { Route as ColorTokenRouteImport } from './routes/color-token'
 import { Route as ColorPickerRouteImport } from './routes/color-picker'
 import { Route as ColorPaletteRouteImport } from './routes/color-palette'
+import { Route as ColorMixRouteImport } from './routes/color-mix'
 import { Route as ColorHarmonyRouteImport } from './routes/color-harmony'
 import { Route as ColorExtractorRouteImport } from './routes/color-extractor'
 import { Route as ColorConverterRouteImport } from './routes/color-converter'
@@ -153,6 +154,7 @@ import { Route as ChmodRouteImport } from './routes/chmod'
 import { Route as CharCountRouteImport } from './routes/char-count'
 import { Route as CertDecoderRouteImport } from './routes/cert-decoder'
 import { Route as BitwiseRouteImport } from './routes/bitwise'
+import { Route as BasicAuthRouteImport } from './routes/basic-auth'
 import { Route as Base64ImageRouteImport } from './routes/base64-image'
 import { Route as Base64RouteImport } from './routes/base64'
 import { Route as Base58RouteImport } from './routes/base58'
@@ -837,6 +839,11 @@ const ColorPaletteRoute = ColorPaletteRouteImport.update({
   path: '/color-palette',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ColorMixRoute = ColorMixRouteImport.update({
+  id: '/color-mix',
+  path: '/color-mix',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ColorHarmonyRoute = ColorHarmonyRouteImport.update({
   id: '/color-harmony',
   path: '/color-harmony',
@@ -885,6 +892,11 @@ const CertDecoderRoute = CertDecoderRouteImport.update({
 const BitwiseRoute = BitwiseRouteImport.update({
   id: '/bitwise',
   path: '/bitwise',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BasicAuthRoute = BasicAuthRouteImport.update({
+  id: '/basic-auth',
+  path: '/basic-auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const Base64ImageRoute = Base64ImageRouteImport.update({
@@ -963,6 +975,7 @@ export interface FileRoutesByFullPath {
   '/base58': typeof Base58Route
   '/base64': typeof Base64Route
   '/base64-image': typeof Base64ImageRoute
+  '/basic-auth': typeof BasicAuthRoute
   '/bitwise': typeof BitwiseRoute
   '/cert-decoder': typeof CertDecoderRoute
   '/char-count': typeof CharCountRoute
@@ -973,6 +986,7 @@ export interface FileRoutesByFullPath {
   '/color-converter': typeof ColorConverterRoute
   '/color-extractor': typeof ColorExtractorRoute
   '/color-harmony': typeof ColorHarmonyRoute
+  '/color-mix': typeof ColorMixRoute
   '/color-palette': typeof ColorPaletteRoute
   '/color-picker': typeof ColorPickerRoute
   '/color-token': typeof ColorTokenRoute
@@ -1122,6 +1136,7 @@ export interface FileRoutesByTo {
   '/base58': typeof Base58Route
   '/base64': typeof Base64Route
   '/base64-image': typeof Base64ImageRoute
+  '/basic-auth': typeof BasicAuthRoute
   '/bitwise': typeof BitwiseRoute
   '/cert-decoder': typeof CertDecoderRoute
   '/char-count': typeof CharCountRoute
@@ -1132,6 +1147,7 @@ export interface FileRoutesByTo {
   '/color-converter': typeof ColorConverterRoute
   '/color-extractor': typeof ColorExtractorRoute
   '/color-harmony': typeof ColorHarmonyRoute
+  '/color-mix': typeof ColorMixRoute
   '/color-palette': typeof ColorPaletteRoute
   '/color-picker': typeof ColorPickerRoute
   '/color-token': typeof ColorTokenRoute
@@ -1282,6 +1298,7 @@ export interface FileRoutesById {
   '/base58': typeof Base58Route
   '/base64': typeof Base64Route
   '/base64-image': typeof Base64ImageRoute
+  '/basic-auth': typeof BasicAuthRoute
   '/bitwise': typeof BitwiseRoute
   '/cert-decoder': typeof CertDecoderRoute
   '/char-count': typeof CharCountRoute
@@ -1292,6 +1309,7 @@ export interface FileRoutesById {
   '/color-converter': typeof ColorConverterRoute
   '/color-extractor': typeof ColorExtractorRoute
   '/color-harmony': typeof ColorHarmonyRoute
+  '/color-mix': typeof ColorMixRoute
   '/color-palette': typeof ColorPaletteRoute
   '/color-picker': typeof ColorPickerRoute
   '/color-token': typeof ColorTokenRoute
@@ -1443,6 +1461,7 @@ export interface FileRouteTypes {
     | '/base58'
     | '/base64'
     | '/base64-image'
+    | '/basic-auth'
     | '/bitwise'
     | '/cert-decoder'
     | '/char-count'
@@ -1453,6 +1472,7 @@ export interface FileRouteTypes {
     | '/color-converter'
     | '/color-extractor'
     | '/color-harmony'
+    | '/color-mix'
     | '/color-palette'
     | '/color-picker'
     | '/color-token'
@@ -1602,6 +1622,7 @@ export interface FileRouteTypes {
     | '/base58'
     | '/base64'
     | '/base64-image'
+    | '/basic-auth'
     | '/bitwise'
     | '/cert-decoder'
     | '/char-count'
@@ -1612,6 +1633,7 @@ export interface FileRouteTypes {
     | '/color-converter'
     | '/color-extractor'
     | '/color-harmony'
+    | '/color-mix'
     | '/color-palette'
     | '/color-picker'
     | '/color-token'
@@ -1761,6 +1783,7 @@ export interface FileRouteTypes {
     | '/base58'
     | '/base64'
     | '/base64-image'
+    | '/basic-auth'
     | '/bitwise'
     | '/cert-decoder'
     | '/char-count'
@@ -1771,6 +1794,7 @@ export interface FileRouteTypes {
     | '/color-converter'
     | '/color-extractor'
     | '/color-harmony'
+    | '/color-mix'
     | '/color-palette'
     | '/color-picker'
     | '/color-token'
@@ -1921,6 +1945,7 @@ export interface RootRouteChildren {
   Base58Route: typeof Base58Route
   Base64Route: typeof Base64Route
   Base64ImageRoute: typeof Base64ImageRoute
+  BasicAuthRoute: typeof BasicAuthRoute
   BitwiseRoute: typeof BitwiseRoute
   CertDecoderRoute: typeof CertDecoderRoute
   CharCountRoute: typeof CharCountRoute
@@ -1931,6 +1956,7 @@ export interface RootRouteChildren {
   ColorConverterRoute: typeof ColorConverterRoute
   ColorExtractorRoute: typeof ColorExtractorRoute
   ColorHarmonyRoute: typeof ColorHarmonyRoute
+  ColorMixRoute: typeof ColorMixRoute
   ColorPaletteRoute: typeof ColorPaletteRoute
   ColorPickerRoute: typeof ColorPickerRoute
   ColorTokenRoute: typeof ColorTokenRoute
@@ -3011,6 +3037,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ColorPaletteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/color-mix': {
+      id: '/color-mix'
+      path: '/color-mix'
+      fullPath: '/color-mix'
+      preLoaderRoute: typeof ColorMixRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/color-harmony': {
       id: '/color-harmony'
       path: '/color-harmony'
@@ -3079,6 +3112,13 @@ declare module '@tanstack/react-router' {
       path: '/bitwise'
       fullPath: '/bitwise'
       preLoaderRoute: typeof BitwiseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/basic-auth': {
+      id: '/basic-auth'
+      path: '/basic-auth'
+      fullPath: '/basic-auth'
+      preLoaderRoute: typeof BasicAuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/base64-image': {
@@ -3185,6 +3225,7 @@ const rootRouteChildren: RootRouteChildren = {
   Base58Route: Base58Route,
   Base64Route: Base64Route,
   Base64ImageRoute: Base64ImageRoute,
+  BasicAuthRoute: BasicAuthRoute,
   BitwiseRoute: BitwiseRoute,
   CertDecoderRoute: CertDecoderRoute,
   CharCountRoute: CharCountRoute,
@@ -3195,6 +3236,7 @@ const rootRouteChildren: RootRouteChildren = {
   ColorConverterRoute: ColorConverterRoute,
   ColorExtractorRoute: ColorExtractorRoute,
   ColorHarmonyRoute: ColorHarmonyRoute,
+  ColorMixRoute: ColorMixRoute,
   ColorPaletteRoute: ColorPaletteRoute,
   ColorPickerRoute: ColorPickerRoute,
   ColorTokenRoute: ColorTokenRoute,

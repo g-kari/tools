@@ -712,6 +712,13 @@ const toolCatalog: ToolCategory[] = [
           "HEX・RGB・HSL・HSV・CMYK・OKLCHなどカラーフォーマットをリアルタイムで相互変換するツール",
         icon: "🎨",
       },
+      {
+        path: "/color-mix",
+        label: "CSS color-mix() プレイグラウンド",
+        description:
+          "CSS color-mix() 関数をインタラクティブに試せるツール。2色・色空間・割合を調整して混合色をリアルタイムプレビュー。CSS Custom Properties でカラースケール出力対応。",
+        icon: "🎨",
+      },
     ],
   },
   {
@@ -973,6 +980,13 @@ const toolCatalog: ToolCategory[] = [
         description:
           "PEM 形式の X.509 証明書を解析し、発行者・有効期限・SAN・公開鍵アルゴリズム・拡張フィールドを人間が読みやすい形式で表示するツール。",
         icon: "📜",
+      },
+      {
+        path: "/basic-auth",
+        label: "HTTP Basic Auth",
+        description:
+          "HTTP Basic認証ヘッダーをエンコード・デコードするツール。ユーザー名とパスワードから Authorization: Basic ヘッダーを生成。curl オプションも表示。ブラウザ内完結でデータは外部に送信されません。",
+        icon: "🔐",
       },
     ],
   },
