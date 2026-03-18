@@ -297,6 +297,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "Ⅻ",
       },
       {
+        path: "/number-words",
+        label: "数値テキスト変換",
+        description:
+          "整数を英語・日本語のテキストに変換するツール。英語基数詞（one hundred twenty-three）・序数詞（twenty-first）・日本語漢数字（百二十三）・読み仮名（ひゃくにじゅうさん）に対応。請求書・法的文書・ローカライズ確認に便利。",
+        icon: "🔢",
+      },
+      {
         path: "/csv-sql",
         label: "CSV→SQL変換",
         description:

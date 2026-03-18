@@ -64,6 +64,7 @@ import { Route as PasswordStrengthRouteImport } from './routes/password-strength
 import { Route as PasswordGeneratorRouteImport } from './routes/password-generator'
 import { Route as OpensslBuilderRouteImport } from './routes/openssl-builder'
 import { Route as OgpRouteImport } from './routes/ogp'
+import { Route as NumberWordsRouteImport } from './routes/number-words'
 import { Route as NumberFormatRouteImport } from './routes/number-format'
 import { Route as NumberBaseRouteImport } from './routes/number-base'
 import { Route as NanoIdRouteImport } from './routes/nano-id'
@@ -449,6 +450,11 @@ const OpensslBuilderRoute = OpensslBuilderRouteImport.update({
 const OgpRoute = OgpRouteImport.update({
   id: '/ogp',
   path: '/ogp',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NumberWordsRoute = NumberWordsRouteImport.update({
+  id: '/number-words',
+  path: '/number-words',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NumberFormatRoute = NumberFormatRouteImport.update({
@@ -1115,6 +1121,7 @@ export interface FileRoutesByFullPath {
   '/nano-id': typeof NanoIdRoute
   '/number-base': typeof NumberBaseRoute
   '/number-format': typeof NumberFormatRoute
+  '/number-words': typeof NumberWordsRoute
   '/ogp': typeof OgpRoute
   '/openssl-builder': typeof OpensslBuilderRoute
   '/password-generator': typeof PasswordGeneratorRoute
@@ -1283,6 +1290,7 @@ export interface FileRoutesByTo {
   '/nano-id': typeof NanoIdRoute
   '/number-base': typeof NumberBaseRoute
   '/number-format': typeof NumberFormatRoute
+  '/number-words': typeof NumberWordsRoute
   '/ogp': typeof OgpRoute
   '/openssl-builder': typeof OpensslBuilderRoute
   '/password-generator': typeof PasswordGeneratorRoute
@@ -1452,6 +1460,7 @@ export interface FileRoutesById {
   '/nano-id': typeof NanoIdRoute
   '/number-base': typeof NumberBaseRoute
   '/number-format': typeof NumberFormatRoute
+  '/number-words': typeof NumberWordsRoute
   '/ogp': typeof OgpRoute
   '/openssl-builder': typeof OpensslBuilderRoute
   '/password-generator': typeof PasswordGeneratorRoute
@@ -1622,6 +1631,7 @@ export interface FileRouteTypes {
     | '/nano-id'
     | '/number-base'
     | '/number-format'
+    | '/number-words'
     | '/ogp'
     | '/openssl-builder'
     | '/password-generator'
@@ -1790,6 +1800,7 @@ export interface FileRouteTypes {
     | '/nano-id'
     | '/number-base'
     | '/number-format'
+    | '/number-words'
     | '/ogp'
     | '/openssl-builder'
     | '/password-generator'
@@ -1958,6 +1969,7 @@ export interface FileRouteTypes {
     | '/nano-id'
     | '/number-base'
     | '/number-format'
+    | '/number-words'
     | '/ogp'
     | '/openssl-builder'
     | '/password-generator'
@@ -2127,6 +2139,7 @@ export interface RootRouteChildren {
   NanoIdRoute: typeof NanoIdRoute
   NumberBaseRoute: typeof NumberBaseRoute
   NumberFormatRoute: typeof NumberFormatRoute
+  NumberWordsRoute: typeof NumberWordsRoute
   OgpRoute: typeof OgpRoute
   OpensslBuilderRoute: typeof OpensslBuilderRoute
   PasswordGeneratorRoute: typeof PasswordGeneratorRoute
@@ -2573,6 +2586,13 @@ declare module '@tanstack/react-router' {
       path: '/ogp'
       fullPath: '/ogp'
       preLoaderRoute: typeof OgpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/number-words': {
+      id: '/number-words'
+      path: '/number-words'
+      fullPath: '/number-words'
+      preLoaderRoute: typeof NumberWordsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/number-format': {
@@ -3463,6 +3483,7 @@ const rootRouteChildren: RootRouteChildren = {
   NanoIdRoute: NanoIdRoute,
   NumberBaseRoute: NumberBaseRoute,
   NumberFormatRoute: NumberFormatRoute,
+  NumberWordsRoute: NumberWordsRoute,
   OgpRoute: OgpRoute,
   OpensslBuilderRoute: OpensslBuilderRoute,
   PasswordGeneratorRoute: PasswordGeneratorRoute,

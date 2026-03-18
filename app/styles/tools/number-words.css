@@ -1,0 +1,220 @@
+/* ====================================
+   Number to Words Converter
+   ==================================== */
+
+.nw-container {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* 入力セクション */
+.nw-input-section {
+  background: var(--md-sys-color-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  padding: 20px;
+  animation: fadeInUp 0.3s ease-out both;
+}
+
+.nw-input-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.nw-input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  font-family: 'Roboto Mono', 'Courier New', monospace;
+  font-size: 1rem;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  transition: border-color 0.2s, background 0.2s;
+  min-width: 0;
+  width: 100%;
+}
+
+.nw-input:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-surface);
+}
+
+.nw-input:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 1px;
+}
+
+/* number input のスピナーを非表示 */
+.nw-input[type='number']::-webkit-inner-spin-button,
+.nw-input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.nw-input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+/* 結果セクション */
+.nw-results-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  animation: fadeInUp 0.3s ease-out 0.05s both;
+}
+
+.nw-result-card {
+  background: var(--md-sys-color-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  transition: border-color 0.2s;
+}
+
+.nw-result-card:hover {
+  border-color: var(--md-sys-color-primary);
+}
+
+.nw-result-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.nw-result-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.nw-result-value {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface);
+  word-break: break-word;
+  line-height: 1.5;
+}
+
+.nw-result-value.nw-value-large {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--md-sys-color-primary);
+}
+
+.nw-result-value.nw-value-japanese {
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--md-sys-color-on-surface);
+}
+
+.nw-result-value.nw-value-reading {
+  font-size: 1rem;
+  letter-spacing: 0.03em;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.nw-result-empty {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  opacity: 0.6;
+  font-style: italic;
+}
+
+/* コピーボタン */
+.nw-copy-button {
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background: var(--md-sys-color-secondary-container);
+  border: none;
+  border-radius: 4px;
+  color: var(--md-sys-color-on-secondary-container);
+  cursor: pointer;
+  transition: background-color 0.2s, opacity 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+  letter-spacing: 0.25px;
+  align-self: flex-start;
+  margin-top: 2px;
+}
+
+.nw-copy-button:hover {
+  opacity: 0.85;
+}
+
+.nw-copy-button:active {
+  opacity: 0.7;
+}
+
+.nw-copy-button:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.nw-copy-button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* エラーメッセージ */
+.nw-error {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-error);
+  background: var(--md-sys-color-error-container);
+  border: 1px solid var(--md-sys-color-error);
+  border-radius: 4px;
+  padding: 8px 12px;
+  margin-top: 8px;
+  margin-bottom: 4px;
+}
+
+/* 範囲情報 */
+.nw-range-note {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-top: 8px;
+}
+
+/* アニメーション抑制 */
+@media (prefers-reduced-motion: reduce) {
+  .nw-input-section,
+  .nw-results-section {
+    animation: none;
+  }
+
+  .nw-input,
+  .nw-result-card,
+  .nw-copy-button {
+    transition: none;
+  }
+}
+
+/* レスポンシブ */
+@media (max-width: 480px) {
+  .nw-result-value.nw-value-japanese {
+    font-size: 1rem;
+  }
+
+  .nw-result-card {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .nw-copy-button {
+    align-self: flex-end;
+  }
+}
