@@ -43,6 +43,7 @@ import { Route as TextLineRouteImport } from './routes/text-line'
 import { Route as TextEncryptRouteImport } from './routes/text-encrypt'
 import { Route as TextCaseRouteImport } from './routes/text-case'
 import { Route as SvgOptimizerRouteImport } from './routes/svg-optimizer'
+import { Route as StringSimilarityRouteImport } from './routes/string-similarity'
 import { Route as StringEscapeRouteImport } from './routes/string-escape'
 import { Route as SshKeyRouteImport } from './routes/ssh-key'
 import { Route as SqlRouteImport } from './routes/sql'
@@ -156,6 +157,7 @@ import { Route as ConventionalCommitsRouteImport } from './routes/conventional-c
 import { Route as ColorTokenRouteImport } from './routes/color-token'
 import { Route as ColorPickerRouteImport } from './routes/color-picker'
 import { Route as ColorPaletteRouteImport } from './routes/color-palette'
+import { Route as ColorNameRouteImport } from './routes/color-name'
 import { Route as ColorMixRouteImport } from './routes/color-mix'
 import { Route as ColorHarmonyRouteImport } from './routes/color-harmony'
 import { Route as ColorExtractorRouteImport } from './routes/color-extractor'
@@ -350,6 +352,11 @@ const TextCaseRoute = TextCaseRouteImport.update({
 const SvgOptimizerRoute = SvgOptimizerRouteImport.update({
   id: '/svg-optimizer',
   path: '/svg-optimizer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StringSimilarityRoute = StringSimilarityRouteImport.update({
+  id: '/string-similarity',
+  path: '/string-similarity',
   getParentRoute: () => rootRouteImport,
 } as any)
 const StringEscapeRoute = StringEscapeRouteImport.update({
@@ -917,6 +924,11 @@ const ColorPaletteRoute = ColorPaletteRouteImport.update({
   path: '/color-palette',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ColorNameRoute = ColorNameRouteImport.update({
+  id: '/color-name',
+  path: '/color-name',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ColorMixRoute = ColorMixRouteImport.update({
   id: '/color-mix',
   path: '/color-mix',
@@ -1065,6 +1077,7 @@ export interface FileRoutesByFullPath {
   '/color-extractor': typeof ColorExtractorRoute
   '/color-harmony': typeof ColorHarmonyRoute
   '/color-mix': typeof ColorMixRoute
+  '/color-name': typeof ColorNameRoute
   '/color-palette': typeof ColorPaletteRoute
   '/color-picker': typeof ColorPickerRoute
   '/color-token': typeof ColorTokenRoute
@@ -1178,6 +1191,7 @@ export interface FileRoutesByFullPath {
   '/sql': typeof SqlRoute
   '/ssh-key': typeof SshKeyRoute
   '/string-escape': typeof StringEscapeRoute
+  '/string-similarity': typeof StringSimilarityRoute
   '/svg-optimizer': typeof SvgOptimizerRoute
   '/text-case': typeof TextCaseRoute
   '/text-encrypt': typeof TextEncryptRoute
@@ -1239,6 +1253,7 @@ export interface FileRoutesByTo {
   '/color-extractor': typeof ColorExtractorRoute
   '/color-harmony': typeof ColorHarmonyRoute
   '/color-mix': typeof ColorMixRoute
+  '/color-name': typeof ColorNameRoute
   '/color-palette': typeof ColorPaletteRoute
   '/color-picker': typeof ColorPickerRoute
   '/color-token': typeof ColorTokenRoute
@@ -1352,6 +1367,7 @@ export interface FileRoutesByTo {
   '/sql': typeof SqlRoute
   '/ssh-key': typeof SshKeyRoute
   '/string-escape': typeof StringEscapeRoute
+  '/string-similarity': typeof StringSimilarityRoute
   '/svg-optimizer': typeof SvgOptimizerRoute
   '/text-case': typeof TextCaseRoute
   '/text-encrypt': typeof TextEncryptRoute
@@ -1414,6 +1430,7 @@ export interface FileRoutesById {
   '/color-extractor': typeof ColorExtractorRoute
   '/color-harmony': typeof ColorHarmonyRoute
   '/color-mix': typeof ColorMixRoute
+  '/color-name': typeof ColorNameRoute
   '/color-palette': typeof ColorPaletteRoute
   '/color-picker': typeof ColorPickerRoute
   '/color-token': typeof ColorTokenRoute
@@ -1527,6 +1544,7 @@ export interface FileRoutesById {
   '/sql': typeof SqlRoute
   '/ssh-key': typeof SshKeyRoute
   '/string-escape': typeof StringEscapeRoute
+  '/string-similarity': typeof StringSimilarityRoute
   '/svg-optimizer': typeof SvgOptimizerRoute
   '/text-case': typeof TextCaseRoute
   '/text-encrypt': typeof TextEncryptRoute
@@ -1590,6 +1608,7 @@ export interface FileRouteTypes {
     | '/color-extractor'
     | '/color-harmony'
     | '/color-mix'
+    | '/color-name'
     | '/color-palette'
     | '/color-picker'
     | '/color-token'
@@ -1703,6 +1722,7 @@ export interface FileRouteTypes {
     | '/sql'
     | '/ssh-key'
     | '/string-escape'
+    | '/string-similarity'
     | '/svg-optimizer'
     | '/text-case'
     | '/text-encrypt'
@@ -1764,6 +1784,7 @@ export interface FileRouteTypes {
     | '/color-extractor'
     | '/color-harmony'
     | '/color-mix'
+    | '/color-name'
     | '/color-palette'
     | '/color-picker'
     | '/color-token'
@@ -1877,6 +1898,7 @@ export interface FileRouteTypes {
     | '/sql'
     | '/ssh-key'
     | '/string-escape'
+    | '/string-similarity'
     | '/svg-optimizer'
     | '/text-case'
     | '/text-encrypt'
@@ -1938,6 +1960,7 @@ export interface FileRouteTypes {
     | '/color-extractor'
     | '/color-harmony'
     | '/color-mix'
+    | '/color-name'
     | '/color-palette'
     | '/color-picker'
     | '/color-token'
@@ -2051,6 +2074,7 @@ export interface FileRouteTypes {
     | '/sql'
     | '/ssh-key'
     | '/string-escape'
+    | '/string-similarity'
     | '/svg-optimizer'
     | '/text-case'
     | '/text-encrypt'
@@ -2113,6 +2137,7 @@ export interface RootRouteChildren {
   ColorExtractorRoute: typeof ColorExtractorRoute
   ColorHarmonyRoute: typeof ColorHarmonyRoute
   ColorMixRoute: typeof ColorMixRoute
+  ColorNameRoute: typeof ColorNameRoute
   ColorPaletteRoute: typeof ColorPaletteRoute
   ColorPickerRoute: typeof ColorPickerRoute
   ColorTokenRoute: typeof ColorTokenRoute
@@ -2226,6 +2251,7 @@ export interface RootRouteChildren {
   SqlRoute: typeof SqlRoute
   SshKeyRoute: typeof SshKeyRoute
   StringEscapeRoute: typeof StringEscapeRoute
+  StringSimilarityRoute: typeof StringSimilarityRoute
   SvgOptimizerRoute: typeof SvgOptimizerRoute
   TextCaseRoute: typeof TextCaseRoute
   TextEncryptRoute: typeof TextEncryptRoute
@@ -2504,6 +2530,13 @@ declare module '@tanstack/react-router' {
       path: '/svg-optimizer'
       fullPath: '/svg-optimizer'
       preLoaderRoute: typeof SvgOptimizerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/string-similarity': {
+      id: '/string-similarity'
+      path: '/string-similarity'
+      fullPath: '/string-similarity'
+      preLoaderRoute: typeof StringSimilarityRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/string-escape': {
@@ -3297,6 +3330,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ColorPaletteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/color-name': {
+      id: '/color-name'
+      path: '/color-name'
+      fullPath: '/color-name'
+      preLoaderRoute: typeof ColorNameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/color-mix': {
       id: '/color-mix'
       path: '/color-mix'
@@ -3497,6 +3537,7 @@ const rootRouteChildren: RootRouteChildren = {
   ColorExtractorRoute: ColorExtractorRoute,
   ColorHarmonyRoute: ColorHarmonyRoute,
   ColorMixRoute: ColorMixRoute,
+  ColorNameRoute: ColorNameRoute,
   ColorPaletteRoute: ColorPaletteRoute,
   ColorPickerRoute: ColorPickerRoute,
   ColorTokenRoute: ColorTokenRoute,
@@ -3610,6 +3651,7 @@ const rootRouteChildren: RootRouteChildren = {
   SqlRoute: SqlRoute,
   SshKeyRoute: SshKeyRoute,
   StringEscapeRoute: StringEscapeRoute,
+  StringSimilarityRoute: StringSimilarityRoute,
   SvgOptimizerRoute: SvgOptimizerRoute,
   TextCaseRoute: TextCaseRoute,
   TextEncryptRoute: TextEncryptRoute,

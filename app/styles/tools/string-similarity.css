@@ -1,0 +1,221 @@
+/* ====================================
+   文字列類似度計算ツール
+   ==================================== */
+
+.strsim-container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ── 入力セクション ── */
+.strsim-input-section {
+  background: var(--md-sys-color-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 8px;
+  animation: fadeInUp 0.3s ease-out both;
+}
+
+.strsim-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.strsim-input-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.strsim-input-label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.strsim-input {
+  padding: 10px 14px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', 'Space Mono', 'Courier New', monospace;
+  font-size: 1rem;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  transition: border-color 0.2s, background 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.strsim-input:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-surface);
+}
+
+.strsim-input:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 1px;
+}
+
+/* ── 結果セクション ── */
+.strsim-results-section {
+  background: var(--md-sys-color-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 8px;
+  animation: fadeInUp 0.3s ease-out 0.05s both;
+}
+
+.strsim-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.strsim-metric-card {
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: border-color 0.2s;
+}
+
+.strsim-metric-card:hover {
+  border-color: var(--md-sys-color-outline);
+}
+
+.strsim-metric-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.strsim-metric-value {
+  font-family: 'JetBrains Mono', 'Space Mono', 'Courier New', monospace;
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: var(--md-sys-color-primary);
+  line-height: 1.2;
+}
+
+.strsim-metric-sub {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-weight: 400;
+}
+
+.strsim-metric-na {
+  color: var(--md-sys-color-on-surface-variant);
+  font-style: italic;
+  font-size: 0.875rem;
+}
+
+/* ── スコアバー ── */
+.strsim-bar-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.strsim-bar-track {
+  flex: 1;
+  height: 6px;
+  background: var(--md-sys-color-outline-variant);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.strsim-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.4s ease, background-color 0.4s;
+}
+
+.strsim-bar-fill.high {
+  background: #22c55e;
+}
+
+.strsim-bar-fill.mid {
+  background: #f59e0b;
+}
+
+.strsim-bar-fill.low {
+  background: #ef4444;
+}
+
+/* ── 同一文字列バナー ── */
+.strsim-identical-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: #dcfce7;
+  border: 1px solid #86efac;
+  border-radius: 4px;
+  color: #15803d;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  margin-top: 12px;
+  animation: fadeInUp 0.2s ease-out both;
+}
+
+@media (prefers-color-scheme: dark) {
+  .strsim-identical-banner {
+    background: #052e16;
+    border-color: #166534;
+    color: #86efac;
+  }
+}
+
+/* ── 空入力プレースホルダー ── */
+.strsim-empty-state {
+  text-align: center;
+  padding: 28px 0;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.9375rem;
+}
+
+/* アニメーション抑制 */
+@media (prefers-reduced-motion: reduce) {
+  .strsim-input-section,
+  .strsim-results-section,
+  .strsim-identical-banner {
+    animation: none;
+  }
+
+  .strsim-bar-fill {
+    transition: none;
+  }
+}
+
+/* レスポンシブ */
+@media (max-width: 600px) {
+  .strsim-inputs {
+    grid-template-columns: 1fr;
+  }
+
+  .strsim-metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .strsim-metric-value {
+    font-size: 1.125rem;
+  }
+}

@@ -911,6 +911,13 @@ const toolCatalog: ToolCategory[] = [
           "テキストの詳細な統計情報（単語数・文章数・段落数・読書時間・頻出単語等）をリアルタイム分析",
         icon: "📈",
       },
+      {
+        path: "/string-similarity",
+        label: "文字列類似度計算",
+        description:
+          "Levenshtein距離・Jaro-Winkler・コサイン類似度・Hamming距離で2つの文字列の類似度をリアルタイム計算。スペルチェック・ファジー検索・NLP用途に。",
+        icon: "≈",
+      },
     ],
   },
   {
