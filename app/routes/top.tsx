@@ -115,6 +115,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "62",
       },
       {
+        path: "/base85",
+        label: "Base85変換",
+        description:
+          "ASCII85 / Z85 形式の Base85 エンコード・デコード。4バイトを5文字に変換し Base64 より約25%効率的。PDF・PostScript・ZeroMQ で使用される Base85 エンコーディング。",
+        icon: "85",
+      },
+      {
         path: "/base32",
         label: "Base32変換",
         description:
@@ -255,6 +262,13 @@ const toolCatalog: ToolCategory[] = [
         label: "XMLフォーマッター",
         description: "XMLデータの整形・圧縮・構文検証ツール",
         icon: "📋",
+      },
+      {
+        path: "/xpath",
+        label: "XPath評価器",
+        description:
+          "XML ドキュメントに対して XPath 1.0 式をブラウザ内で評価するツール。ノードセット・文字列・数値・真偽値の結果表示に対応。サンプル XML と XPath 式付き。",
+        icon: "🔍",
       },
       {
         path: "/xml-json",
