@@ -441,6 +441,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🤖",
       },
       {
+        path: "/seo-meta",
+        label: "SEOメタタグ生成",
+        description:
+          "SEO・OGP・Twitterカードのメタタグを一括生成するツール。基本SEO（title/description/keywords/canonical）・Open Graph・Twitter Cardタグを設定し、Google検索結果プレビューとSNSシェアカードプレビューで確認しながらHTMLコードを出力。",
+        icon: "🔍",
+      },
+      {
         path: "/random-data",
         label: "ランダムデータ生成",
         description:

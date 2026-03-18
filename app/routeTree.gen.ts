@@ -44,6 +44,7 @@ import { Route as SvgOptimizerRouteImport } from './routes/svg-optimizer'
 import { Route as SqlRouteImport } from './routes/sql'
 import { Route as SlugRouteImport } from './routes/slug'
 import { Route as ServerEnvRouteImport } from './routes/server-env'
+import { Route as SeoMetaRouteImport } from './routes/seo-meta'
 import { Route as SemverRouteImport } from './routes/semver'
 import { Route as SecurityHeadersRouteImport } from './routes/security-headers'
 import { Route as RobotsTxtRouteImport } from './routes/robots-txt'
@@ -342,6 +343,11 @@ const SlugRoute = SlugRouteImport.update({
 const ServerEnvRoute = ServerEnvRouteImport.update({
   id: '/server-env',
   path: '/server-env',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SeoMetaRoute = SeoMetaRouteImport.update({
+  id: '/seo-meta',
+  path: '/seo-meta',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SemverRoute = SemverRouteImport.update({
@@ -1086,6 +1092,7 @@ export interface FileRoutesByFullPath {
   '/robots-txt': typeof RobotsTxtRoute
   '/security-headers': typeof SecurityHeadersRoute
   '/semver': typeof SemverRoute
+  '/seo-meta': typeof SeoMetaRoute
   '/server-env': typeof ServerEnvRoute
   '/slug': typeof SlugRoute
   '/sql': typeof SqlRoute
@@ -1247,6 +1254,7 @@ export interface FileRoutesByTo {
   '/robots-txt': typeof RobotsTxtRoute
   '/security-headers': typeof SecurityHeadersRoute
   '/semver': typeof SemverRoute
+  '/seo-meta': typeof SeoMetaRoute
   '/server-env': typeof ServerEnvRoute
   '/slug': typeof SlugRoute
   '/sql': typeof SqlRoute
@@ -1409,6 +1417,7 @@ export interface FileRoutesById {
   '/robots-txt': typeof RobotsTxtRoute
   '/security-headers': typeof SecurityHeadersRoute
   '/semver': typeof SemverRoute
+  '/seo-meta': typeof SeoMetaRoute
   '/server-env': typeof ServerEnvRoute
   '/slug': typeof SlugRoute
   '/sql': typeof SqlRoute
@@ -1572,6 +1581,7 @@ export interface FileRouteTypes {
     | '/robots-txt'
     | '/security-headers'
     | '/semver'
+    | '/seo-meta'
     | '/server-env'
     | '/slug'
     | '/sql'
@@ -1733,6 +1743,7 @@ export interface FileRouteTypes {
     | '/robots-txt'
     | '/security-headers'
     | '/semver'
+    | '/seo-meta'
     | '/server-env'
     | '/slug'
     | '/sql'
@@ -1894,6 +1905,7 @@ export interface FileRouteTypes {
     | '/robots-txt'
     | '/security-headers'
     | '/semver'
+    | '/seo-meta'
     | '/server-env'
     | '/slug'
     | '/sql'
@@ -2056,6 +2068,7 @@ export interface RootRouteChildren {
   RobotsTxtRoute: typeof RobotsTxtRoute
   SecurityHeadersRoute: typeof SecurityHeadersRoute
   SemverRoute: typeof SemverRoute
+  SeoMetaRoute: typeof SeoMetaRoute
   ServerEnvRoute: typeof ServerEnvRoute
   SlugRoute: typeof SlugRoute
   SqlRoute: typeof SqlRoute
@@ -2342,6 +2355,13 @@ declare module '@tanstack/react-router' {
       path: '/server-env'
       fullPath: '/server-env'
       preLoaderRoute: typeof ServerEnvRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/seo-meta': {
+      id: '/seo-meta'
+      path: '/seo-meta'
+      fullPath: '/seo-meta'
+      preLoaderRoute: typeof SeoMetaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/semver': {
@@ -3336,6 +3356,7 @@ const rootRouteChildren: RootRouteChildren = {
   RobotsTxtRoute: RobotsTxtRoute,
   SecurityHeadersRoute: SecurityHeadersRoute,
   SemverRoute: SemverRoute,
+  SeoMetaRoute: SeoMetaRoute,
   ServerEnvRoute: ServerEnvRoute,
   SlugRoute: SlugRoute,
   SqlRoute: SqlRoute,
