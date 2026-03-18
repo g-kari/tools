@@ -1157,6 +1157,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🎲",
       },
       {
+        path: "/typing-speed",
+        label: "タイピング速度測定",
+        description:
+          "タイピング速度（WPM）と精度をリアルタイムで測定するツール。英語・日本語・プログラミングコードに対応。15/30/60/120秒のテスト時間を選択可能。",
+        icon: "⌨️",
+      },
+      {
         path: "/pomodoro",
         label: "ポモドーロタイマー",
         description:
