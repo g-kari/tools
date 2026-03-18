@@ -290,6 +290,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🔢",
       },
       {
+        path: "/roman-numerals",
+        label: "ローマ数字変換",
+        description:
+          "アラビア数字とローマ数字を相互変換するツール。1〜3999の整数に対応。IV・IX・XL・XC・CD・CMなどの減算記法も正しく処理します。",
+        icon: "Ⅻ",
+      },
+      {
         path: "/csv-sql",
         label: "CSV→SQL変換",
         description:

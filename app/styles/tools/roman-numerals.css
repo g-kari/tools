@@ -1,0 +1,222 @@
+/* ====================================
+   Roman Numerals Converter
+   ==================================== */
+
+.roman-container {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.roman-section {
+  background: var(--md-sys-color-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 8px;
+  animation: fadeInUp 0.3s ease-out both;
+}
+
+.roman-section:first-of-type {
+  animation-delay: 0.05s;
+}
+
+.roman-section:last-of-type {
+  animation-delay: 0.1s;
+}
+
+.roman-input-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.roman-input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  font-family: 'Roboto Mono', 'Courier New', monospace;
+  font-size: 1rem;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  transition: border-color 0.2s, background 0.2s;
+  min-width: 0;
+  width: 100%;
+}
+
+.roman-input:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-surface);
+}
+
+.roman-input:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 1px;
+}
+
+/* number input のスピナーを非表示 */
+.roman-input[type="number"]::-webkit-inner-spin-button,
+.roman-input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.roman-input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.roman-result {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  padding: 14px 16px;
+  border: 1px solid var(--md-sys-color-primary-container);
+  border-radius: 4px;
+  background: var(--md-sys-color-primary-container);
+  animation: fadeInUp 0.2s ease-out both;
+}
+
+.roman-result-value {
+  flex: 1;
+  font-family: 'Roboto Mono', 'Courier New', monospace;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-primary-container);
+  letter-spacing: 0.05em;
+  word-break: break-all;
+}
+
+.roman-copy-button {
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background: var(--md-sys-color-secondary-container);
+  border: none;
+  border-radius: 4px;
+  color: var(--md-sys-color-on-secondary-container);
+  cursor: pointer;
+  transition: background-color 0.2s, opacity 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+  letter-spacing: 0.25px;
+}
+
+.roman-copy-button:hover {
+  opacity: 0.85;
+}
+
+.roman-copy-button:active {
+  opacity: 0.7;
+}
+
+.roman-copy-button:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.roman-divider {
+  height: 1px;
+  background: var(--md-sys-color-outline-variant);
+  margin: 12px 0;
+}
+
+/* 基本記号対照表 */
+.roman-reference-section {
+  background: var(--md-sys-color-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  padding: 20px;
+  margin-top: 16px;
+  animation: fadeInUp 0.3s ease-out 0.15s both;
+}
+
+.roman-table-wrapper {
+  overflow-x: auto;
+  margin-top: 12px;
+}
+
+.roman-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.roman-table th {
+  text-align: left;
+  padding: 8px 12px;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid var(--md-sys-color-outline-variant);
+}
+
+.roman-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  color: var(--md-sys-color-on-surface);
+}
+
+.roman-table tr:last-child td {
+  border-bottom: none;
+}
+
+.roman-table tr:hover td {
+  background: var(--md-sys-color-surface-variant);
+}
+
+.roman-table-symbol {
+  font-family: 'Roboto Mono', 'Courier New', monospace;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--md-sys-color-primary);
+}
+
+.roman-table-value {
+  font-family: 'Roboto Mono', 'Courier New', monospace;
+  font-weight: 500;
+}
+
+.roman-table-note {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.roman-table-row-subtractive .roman-table-symbol {
+  color: var(--md-sys-color-secondary);
+}
+
+/* アニメーション抑制 */
+@media (prefers-reduced-motion: reduce) {
+  .roman-section,
+  .roman-reference-section,
+  .roman-result {
+    animation: none;
+  }
+
+  .roman-input,
+  .roman-copy-button {
+    transition: none;
+  }
+}
+
+/* レスポンシブ */
+@media (max-width: 480px) {
+  .roman-result-value {
+    font-size: 1.25rem;
+  }
+
+  .roman-table th,
+  .roman-table td {
+    padding: 6px 8px;
+  }
+}

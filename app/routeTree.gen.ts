@@ -50,6 +50,7 @@ import { Route as ServerEnvRouteImport } from './routes/server-env'
 import { Route as SeoMetaRouteImport } from './routes/seo-meta'
 import { Route as SemverRouteImport } from './routes/semver'
 import { Route as SecurityHeadersRouteImport } from './routes/security-headers'
+import { Route as RomanNumeralsRouteImport } from './routes/roman-numerals'
 import { Route as RobotsTxtRouteImport } from './routes/robots-txt'
 import { Route as RegexCheckerRouteImport } from './routes/regex-checker'
 import { Route as RandomDataRouteImport } from './routes/random-data'
@@ -377,6 +378,11 @@ const SemverRoute = SemverRouteImport.update({
 const SecurityHeadersRoute = SecurityHeadersRouteImport.update({
   id: '/security-headers',
   path: '/security-headers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RomanNumeralsRoute = RomanNumeralsRouteImport.update({
+  id: '/roman-numerals',
+  path: '/roman-numerals',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RobotsTxtRoute = RobotsTxtRouteImport.update({
@@ -1115,6 +1121,7 @@ export interface FileRoutesByFullPath {
   '/random-data': typeof RandomDataRoute
   '/regex-checker': typeof RegexCheckerRoute
   '/robots-txt': typeof RobotsTxtRoute
+  '/roman-numerals': typeof RomanNumeralsRoute
   '/security-headers': typeof SecurityHeadersRoute
   '/semver': typeof SemverRoute
   '/seo-meta': typeof SeoMetaRoute
@@ -1281,6 +1288,7 @@ export interface FileRoutesByTo {
   '/random-data': typeof RandomDataRoute
   '/regex-checker': typeof RegexCheckerRoute
   '/robots-txt': typeof RobotsTxtRoute
+  '/roman-numerals': typeof RomanNumeralsRoute
   '/security-headers': typeof SecurityHeadersRoute
   '/semver': typeof SemverRoute
   '/seo-meta': typeof SeoMetaRoute
@@ -1448,6 +1456,7 @@ export interface FileRoutesById {
   '/random-data': typeof RandomDataRoute
   '/regex-checker': typeof RegexCheckerRoute
   '/robots-txt': typeof RobotsTxtRoute
+  '/roman-numerals': typeof RomanNumeralsRoute
   '/security-headers': typeof SecurityHeadersRoute
   '/semver': typeof SemverRoute
   '/seo-meta': typeof SeoMetaRoute
@@ -1616,6 +1625,7 @@ export interface FileRouteTypes {
     | '/random-data'
     | '/regex-checker'
     | '/robots-txt'
+    | '/roman-numerals'
     | '/security-headers'
     | '/semver'
     | '/seo-meta'
@@ -1782,6 +1792,7 @@ export interface FileRouteTypes {
     | '/random-data'
     | '/regex-checker'
     | '/robots-txt'
+    | '/roman-numerals'
     | '/security-headers'
     | '/semver'
     | '/seo-meta'
@@ -1948,6 +1959,7 @@ export interface FileRouteTypes {
     | '/random-data'
     | '/regex-checker'
     | '/robots-txt'
+    | '/roman-numerals'
     | '/security-headers'
     | '/semver'
     | '/seo-meta'
@@ -2115,6 +2127,7 @@ export interface RootRouteChildren {
   RandomDataRoute: typeof RandomDataRoute
   RegexCheckerRoute: typeof RegexCheckerRoute
   RobotsTxtRoute: typeof RobotsTxtRoute
+  RomanNumeralsRoute: typeof RomanNumeralsRoute
   SecurityHeadersRoute: typeof SecurityHeadersRoute
   SemverRoute: typeof SemverRoute
   SeoMetaRoute: typeof SeoMetaRoute
@@ -2449,6 +2462,13 @@ declare module '@tanstack/react-router' {
       path: '/security-headers'
       fullPath: '/security-headers'
       preLoaderRoute: typeof SecurityHeadersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/roman-numerals': {
+      id: '/roman-numerals'
+      path: '/roman-numerals'
+      fullPath: '/roman-numerals'
+      preLoaderRoute: typeof RomanNumeralsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/robots-txt': {
@@ -3435,6 +3455,7 @@ const rootRouteChildren: RootRouteChildren = {
   RandomDataRoute: RandomDataRoute,
   RegexCheckerRoute: RegexCheckerRoute,
   RobotsTxtRoute: RobotsTxtRoute,
+  RomanNumeralsRoute: RomanNumeralsRoute,
   SecurityHeadersRoute: SecurityHeadersRoute,
   SemverRoute: SemverRoute,
   SeoMetaRoute: SeoMetaRoute,
