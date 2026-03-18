@@ -283,6 +283,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🔢",
       },
       {
+        path: "/csv-sql",
+        label: "CSV→SQL変換",
+        description:
+          "CSVデータからSQL INSERT文を自動生成するツール。MySQL・PostgreSQL・SQLite・SQL Serverに対応。バッチINSERT、NULL変換、数値・ブーリアン自動検出に対応。",
+        icon: "🗄️",
+      },
+      {
         path: "/csv-json",
         label: "CSV/JSON変換",
         description:

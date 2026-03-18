@@ -120,6 +120,7 @@ import { Route as DiffRouteImport } from './routes/diff'
 import { Route as DiceRollRouteImport } from './routes/dice-roll'
 import { Route as DateCalcRouteImport } from './routes/date-calc'
 import { Route as CurlBuilderRouteImport } from './routes/curl-builder'
+import { Route as CsvSqlRouteImport } from './routes/csv-sql'
 import { Route as CsvJsonRouteImport } from './routes/csv-json'
 import { Route as CssUnitRouteImport } from './routes/css-unit'
 import { Route as CssTransformRouteImport } from './routes/css-transform'
@@ -725,6 +726,11 @@ const CurlBuilderRoute = CurlBuilderRouteImport.update({
   path: '/curl-builder',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CsvSqlRoute = CsvSqlRouteImport.update({
+  id: '/csv-sql',
+  path: '/csv-sql',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CsvJsonRoute = CsvJsonRouteImport.update({
   id: '/csv-json',
   path: '/csv-json',
@@ -1017,6 +1023,7 @@ export interface FileRoutesByFullPath {
   '/css-transform': typeof CssTransformRoute
   '/css-unit': typeof CssUnitRoute
   '/csv-json': typeof CsvJsonRoute
+  '/csv-sql': typeof CsvSqlRoute
   '/curl-builder': typeof CurlBuilderRoute
   '/date-calc': typeof DateCalcRoute
   '/dice-roll': typeof DiceRollRoute
@@ -1179,6 +1186,7 @@ export interface FileRoutesByTo {
   '/css-transform': typeof CssTransformRoute
   '/css-unit': typeof CssUnitRoute
   '/csv-json': typeof CsvJsonRoute
+  '/csv-sql': typeof CsvSqlRoute
   '/curl-builder': typeof CurlBuilderRoute
   '/date-calc': typeof DateCalcRoute
   '/dice-roll': typeof DiceRollRoute
@@ -1342,6 +1350,7 @@ export interface FileRoutesById {
   '/css-transform': typeof CssTransformRoute
   '/css-unit': typeof CssUnitRoute
   '/csv-json': typeof CsvJsonRoute
+  '/csv-sql': typeof CsvSqlRoute
   '/curl-builder': typeof CurlBuilderRoute
   '/date-calc': typeof DateCalcRoute
   '/dice-roll': typeof DiceRollRoute
@@ -1506,6 +1515,7 @@ export interface FileRouteTypes {
     | '/css-transform'
     | '/css-unit'
     | '/csv-json'
+    | '/csv-sql'
     | '/curl-builder'
     | '/date-calc'
     | '/dice-roll'
@@ -1668,6 +1678,7 @@ export interface FileRouteTypes {
     | '/css-transform'
     | '/css-unit'
     | '/csv-json'
+    | '/csv-sql'
     | '/curl-builder'
     | '/date-calc'
     | '/dice-roll'
@@ -1830,6 +1841,7 @@ export interface FileRouteTypes {
     | '/css-transform'
     | '/css-unit'
     | '/csv-json'
+    | '/csv-sql'
     | '/curl-builder'
     | '/date-calc'
     | '/dice-roll'
@@ -1993,6 +2005,7 @@ export interface RootRouteChildren {
   CssTransformRoute: typeof CssTransformRoute
   CssUnitRoute: typeof CssUnitRoute
   CsvJsonRoute: typeof CsvJsonRoute
+  CsvSqlRoute: typeof CsvSqlRoute
   CurlBuilderRoute: typeof CurlBuilderRoute
   DateCalcRoute: typeof DateCalcRoute
   DiceRollRoute: typeof DiceRollRoute
@@ -2889,6 +2902,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CurlBuilderRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/csv-sql': {
+      id: '/csv-sql'
+      path: '/csv-sql'
+      fullPath: '/csv-sql'
+      preLoaderRoute: typeof CsvSqlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/csv-json': {
       id: '/csv-json'
       path: '/csv-json'
@@ -3281,6 +3301,7 @@ const rootRouteChildren: RootRouteChildren = {
   CssTransformRoute: CssTransformRoute,
   CssUnitRoute: CssUnitRoute,
   CsvJsonRoute: CsvJsonRoute,
+  CsvSqlRoute: CsvSqlRoute,
   CurlBuilderRoute: CurlBuilderRoute,
   DateCalcRoute: DateCalcRoute,
   DiceRollRoute: DiceRollRoute,
