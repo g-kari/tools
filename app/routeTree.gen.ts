@@ -41,6 +41,7 @@ import { Route as TextLineRouteImport } from './routes/text-line'
 import { Route as TextEncryptRouteImport } from './routes/text-encrypt'
 import { Route as TextCaseRouteImport } from './routes/text-case'
 import { Route as SvgOptimizerRouteImport } from './routes/svg-optimizer'
+import { Route as StringEscapeRouteImport } from './routes/string-escape'
 import { Route as SqlRouteImport } from './routes/sql'
 import { Route as SlugRouteImport } from './routes/slug'
 import { Route as ServerEnvRouteImport } from './routes/server-env'
@@ -329,6 +330,11 @@ const TextCaseRoute = TextCaseRouteImport.update({
 const SvgOptimizerRoute = SvgOptimizerRouteImport.update({
   id: '/svg-optimizer',
   path: '/svg-optimizer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StringEscapeRoute = StringEscapeRouteImport.update({
+  id: '/string-escape',
+  path: '/string-escape',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SqlRoute = SqlRouteImport.update({
@@ -1103,6 +1109,7 @@ export interface FileRoutesByFullPath {
   '/server-env': typeof ServerEnvRoute
   '/slug': typeof SlugRoute
   '/sql': typeof SqlRoute
+  '/string-escape': typeof StringEscapeRoute
   '/svg-optimizer': typeof SvgOptimizerRoute
   '/text-case': typeof TextCaseRoute
   '/text-encrypt': typeof TextEncryptRoute
@@ -1266,6 +1273,7 @@ export interface FileRoutesByTo {
   '/server-env': typeof ServerEnvRoute
   '/slug': typeof SlugRoute
   '/sql': typeof SqlRoute
+  '/string-escape': typeof StringEscapeRoute
   '/svg-optimizer': typeof SvgOptimizerRoute
   '/text-case': typeof TextCaseRoute
   '/text-encrypt': typeof TextEncryptRoute
@@ -1430,6 +1438,7 @@ export interface FileRoutesById {
   '/server-env': typeof ServerEnvRoute
   '/slug': typeof SlugRoute
   '/sql': typeof SqlRoute
+  '/string-escape': typeof StringEscapeRoute
   '/svg-optimizer': typeof SvgOptimizerRoute
   '/text-case': typeof TextCaseRoute
   '/text-encrypt': typeof TextEncryptRoute
@@ -1595,6 +1604,7 @@ export interface FileRouteTypes {
     | '/server-env'
     | '/slug'
     | '/sql'
+    | '/string-escape'
     | '/svg-optimizer'
     | '/text-case'
     | '/text-encrypt'
@@ -1758,6 +1768,7 @@ export interface FileRouteTypes {
     | '/server-env'
     | '/slug'
     | '/sql'
+    | '/string-escape'
     | '/svg-optimizer'
     | '/text-case'
     | '/text-encrypt'
@@ -1921,6 +1932,7 @@ export interface FileRouteTypes {
     | '/server-env'
     | '/slug'
     | '/sql'
+    | '/string-escape'
     | '/svg-optimizer'
     | '/text-case'
     | '/text-encrypt'
@@ -2085,6 +2097,7 @@ export interface RootRouteChildren {
   ServerEnvRoute: typeof ServerEnvRoute
   SlugRoute: typeof SlugRoute
   SqlRoute: typeof SqlRoute
+  StringEscapeRoute: typeof StringEscapeRoute
   SvgOptimizerRoute: typeof SvgOptimizerRoute
   TextCaseRoute: typeof TextCaseRoute
   TextEncryptRoute: typeof TextEncryptRoute
@@ -2347,6 +2360,13 @@ declare module '@tanstack/react-router' {
       path: '/svg-optimizer'
       fullPath: '/svg-optimizer'
       preLoaderRoute: typeof SvgOptimizerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/string-escape': {
+      id: '/string-escape'
+      path: '/string-escape'
+      fullPath: '/string-escape'
+      preLoaderRoute: typeof StringEscapeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sql': {
@@ -3381,6 +3401,7 @@ const rootRouteChildren: RootRouteChildren = {
   ServerEnvRoute: ServerEnvRoute,
   SlugRoute: SlugRoute,
   SqlRoute: SqlRoute,
+  StringEscapeRoute: StringEscapeRoute,
   SvgOptimizerRoute: SvgOptimizerRoute,
   TextCaseRoute: TextCaseRoute,
   TextEncryptRoute: TextEncryptRoute,

@@ -76,6 +76,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "📄",
       },
       {
+        path: "/string-escape",
+        label: "文字列エスケープ",
+        description:
+          "JavaScript・JSON・Python・正規表現・Shell向けの文字列エスケープ/アンエスケープツール。\\n・\\t・\\uXXXX などの特殊文字をリアルタイム変換。",
+        icon: "🔡",
+      },
+      {
         path: "/html-formatter",
         label: "HTMLフォーマッター",
         description: "HTML を整形・美化。インデント幅（2/4スペース・タブ）選択対応。",
