@@ -60,6 +60,7 @@ import { Route as OpensslBuilderRouteImport } from './routes/openssl-builder'
 import { Route as OgpRouteImport } from './routes/ogp'
 import { Route as NumberFormatRouteImport } from './routes/number-format'
 import { Route as NumberBaseRouteImport } from './routes/number-base'
+import { Route as NanoIdRouteImport } from './routes/nano-id'
 import { Route as MsgpackRouteImport } from './routes/msgpack'
 import { Route as MorseCodeRouteImport } from './routes/morse-code'
 import { Route as MinifyRouteImport } from './routes/minify'
@@ -417,6 +418,11 @@ const NumberFormatRoute = NumberFormatRouteImport.update({
 const NumberBaseRoute = NumberBaseRouteImport.update({
   id: '/number-base',
   path: '/number-base',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NanoIdRoute = NanoIdRouteImport.update({
+  id: '/nano-id',
+  path: '/nano-id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MsgpackRoute = MsgpackRouteImport.update({
@@ -1035,6 +1041,7 @@ export interface FileRoutesByFullPath {
   '/minify': typeof MinifyRoute
   '/morse-code': typeof MorseCodeRoute
   '/msgpack': typeof MsgpackRoute
+  '/nano-id': typeof NanoIdRoute
   '/number-base': typeof NumberBaseRoute
   '/number-format': typeof NumberFormatRoute
   '/ogp': typeof OgpRoute
@@ -1191,6 +1198,7 @@ export interface FileRoutesByTo {
   '/minify': typeof MinifyRoute
   '/morse-code': typeof MorseCodeRoute
   '/msgpack': typeof MsgpackRoute
+  '/nano-id': typeof NanoIdRoute
   '/number-base': typeof NumberBaseRoute
   '/number-format': typeof NumberFormatRoute
   '/ogp': typeof OgpRoute
@@ -1348,6 +1356,7 @@ export interface FileRoutesById {
   '/minify': typeof MinifyRoute
   '/morse-code': typeof MorseCodeRoute
   '/msgpack': typeof MsgpackRoute
+  '/nano-id': typeof NanoIdRoute
   '/number-base': typeof NumberBaseRoute
   '/number-format': typeof NumberFormatRoute
   '/ogp': typeof OgpRoute
@@ -1506,6 +1515,7 @@ export interface FileRouteTypes {
     | '/minify'
     | '/morse-code'
     | '/msgpack'
+    | '/nano-id'
     | '/number-base'
     | '/number-format'
     | '/ogp'
@@ -1662,6 +1672,7 @@ export interface FileRouteTypes {
     | '/minify'
     | '/morse-code'
     | '/msgpack'
+    | '/nano-id'
     | '/number-base'
     | '/number-format'
     | '/ogp'
@@ -1818,6 +1829,7 @@ export interface FileRouteTypes {
     | '/minify'
     | '/morse-code'
     | '/msgpack'
+    | '/nano-id'
     | '/number-base'
     | '/number-format'
     | '/ogp'
@@ -1975,6 +1987,7 @@ export interface RootRouteChildren {
   MinifyRoute: typeof MinifyRoute
   MorseCodeRoute: typeof MorseCodeRoute
   MsgpackRoute: typeof MsgpackRoute
+  NanoIdRoute: typeof NanoIdRoute
   NumberBaseRoute: typeof NumberBaseRoute
   NumberFormatRoute: typeof NumberFormatRoute
   OgpRoute: typeof OgpRoute
@@ -2389,6 +2402,13 @@ declare module '@tanstack/react-router' {
       path: '/number-base'
       fullPath: '/number-base'
       preLoaderRoute: typeof NumberBaseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/nano-id': {
+      id: '/nano-id'
+      path: '/nano-id'
+      fullPath: '/nano-id'
+      preLoaderRoute: typeof NanoIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/msgpack': {
@@ -3215,6 +3235,7 @@ const rootRouteChildren: RootRouteChildren = {
   MinifyRoute: MinifyRoute,
   MorseCodeRoute: MorseCodeRoute,
   MsgpackRoute: MsgpackRoute,
+  NanoIdRoute: NanoIdRoute,
   NumberBaseRoute: NumberBaseRoute,
   NumberFormatRoute: NumberFormatRoute,
   OgpRoute: OgpRoute,

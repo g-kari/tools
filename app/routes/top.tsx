@@ -500,6 +500,13 @@ const toolCatalog: ToolCategory[] = [
           "モジュラースケール理論に基づきCSSタイポグラフィスケールを生成。CSS変数・SCSS・JSON・Tailwind形式で出力。Golden Ratio等のプリセット比率対応。",
         icon: "🔡",
       },
+      {
+        path: "/nano-id",
+        label: "Nano ID 生成",
+        description:
+          "URL フレンドリーな短い一意識別子 Nano ID を生成するツール。サイズ・アルファベットをカスタマイズ可能。UUID より短く暗号論的に安全な識別子を生成。",
+        icon: "⚡",
+      },
     ],
   },
   {
@@ -945,6 +952,13 @@ const toolCatalog: ToolCategory[] = [
         description:
           "パスワードのエントロピー・クラック時間・文字クラス・パターン検知（連続文字・繰り返し・よく使われるパスワード）を詳細解析。改善アドバイスつき。ブラウザ内完結で外部送信なし。",
         icon: "🔍",
+      },
+      {
+        path: "/cert-decoder",
+        label: "X.509 証明書デコーダー",
+        description:
+          "PEM 形式の X.509 証明書を解析し、発行者・有効期限・SAN・公開鍵アルゴリズム・拡張フィールドを人間が読みやすい形式で表示するツール。",
+        icon: "📜",
       },
     ],
   },
