@@ -94,6 +94,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🔀",
       },
       {
+        path: "/base58",
+        label: "Base58変換",
+        description:
+          "Bitcoin・IPFS・Solanaで使われるBase58エンコード・デコード。視覚的に紛らわしい文字（0, O, I, l）を除いた58文字を使用。Bitcoin（標準）とFlickrアルファベットに対応。",
+        icon: "₿",
+      },
+      {
         path: "/base32",
         label: "Base32変換",
         description:

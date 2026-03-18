@@ -155,6 +155,7 @@ import { Route as CertDecoderRouteImport } from './routes/cert-decoder'
 import { Route as BitwiseRouteImport } from './routes/bitwise'
 import { Route as Base64ImageRouteImport } from './routes/base64-image'
 import { Route as Base64RouteImport } from './routes/base64'
+import { Route as Base58RouteImport } from './routes/base58'
 import { Route as Base32RouteImport } from './routes/base32'
 import { Route as BarcodeRouteImport } from './routes/barcode'
 import { Route as AudioConverterRouteImport } from './routes/audio-converter'
@@ -896,6 +897,11 @@ const Base64Route = Base64RouteImport.update({
   path: '/base64',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Base58Route = Base58RouteImport.update({
+  id: '/base58',
+  path: '/base58',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const Base32Route = Base32RouteImport.update({
   id: '/base32',
   path: '/base32',
@@ -954,6 +960,7 @@ export interface FileRoutesByFullPath {
   '/audio-converter': typeof AudioConverterRoute
   '/barcode': typeof BarcodeRoute
   '/base32': typeof Base32Route
+  '/base58': typeof Base58Route
   '/base64': typeof Base64Route
   '/base64-image': typeof Base64ImageRoute
   '/bitwise': typeof BitwiseRoute
@@ -1112,6 +1119,7 @@ export interface FileRoutesByTo {
   '/audio-converter': typeof AudioConverterRoute
   '/barcode': typeof BarcodeRoute
   '/base32': typeof Base32Route
+  '/base58': typeof Base58Route
   '/base64': typeof Base64Route
   '/base64-image': typeof Base64ImageRoute
   '/bitwise': typeof BitwiseRoute
@@ -1271,6 +1279,7 @@ export interface FileRoutesById {
   '/audio-converter': typeof AudioConverterRoute
   '/barcode': typeof BarcodeRoute
   '/base32': typeof Base32Route
+  '/base58': typeof Base58Route
   '/base64': typeof Base64Route
   '/base64-image': typeof Base64ImageRoute
   '/bitwise': typeof BitwiseRoute
@@ -1431,6 +1440,7 @@ export interface FileRouteTypes {
     | '/audio-converter'
     | '/barcode'
     | '/base32'
+    | '/base58'
     | '/base64'
     | '/base64-image'
     | '/bitwise'
@@ -1589,6 +1599,7 @@ export interface FileRouteTypes {
     | '/audio-converter'
     | '/barcode'
     | '/base32'
+    | '/base58'
     | '/base64'
     | '/base64-image'
     | '/bitwise'
@@ -1747,6 +1758,7 @@ export interface FileRouteTypes {
     | '/audio-converter'
     | '/barcode'
     | '/base32'
+    | '/base58'
     | '/base64'
     | '/base64-image'
     | '/bitwise'
@@ -1906,6 +1918,7 @@ export interface RootRouteChildren {
   AudioConverterRoute: typeof AudioConverterRoute
   BarcodeRoute: typeof BarcodeRoute
   Base32Route: typeof Base32Route
+  Base58Route: typeof Base58Route
   Base64Route: typeof Base64Route
   Base64ImageRoute: typeof Base64ImageRoute
   BitwiseRoute: typeof BitwiseRoute
@@ -3082,6 +3095,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Base64RouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/base58': {
+      id: '/base58'
+      path: '/base58'
+      fullPath: '/base58'
+      preLoaderRoute: typeof Base58RouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/base32': {
       id: '/base32'
       path: '/base32'
@@ -3162,6 +3182,7 @@ const rootRouteChildren: RootRouteChildren = {
   AudioConverterRoute: AudioConverterRoute,
   BarcodeRoute: BarcodeRoute,
   Base32Route: Base32Route,
+  Base58Route: Base58Route,
   Base64Route: Base64Route,
   Base64ImageRoute: Base64ImageRoute,
   BitwiseRoute: BitwiseRoute,
