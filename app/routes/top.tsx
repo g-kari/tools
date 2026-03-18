@@ -1132,6 +1132,13 @@ const toolCatalog: ToolCategory[] = [
         description: "WebSocketエンドポイントへの接続・メッセージ送受信テストツール。接続状態のモニタリング・メッセージログ・JSON整形表示に対応。",
         icon: "🔌",
       },
+      {
+        path: "/redirect-tracer",
+        label: "リダイレクトトレーサー",
+        description:
+          "URLのHTTPリダイレクトチェーンを可視化するツール。301/302/307/308などのリダイレクトを最大15ホップまで追跡し、各ステータスコード・Location・レスポンス時間を表示します。SEOリダイレクト検証・短縮URL確認に便利。",
+        icon: "↪️",
+      },
     ],
   },
   {

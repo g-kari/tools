@@ -54,6 +54,7 @@ import { Route as SecurityHeadersRouteImport } from './routes/security-headers'
 import { Route as RomanNumeralsRouteImport } from './routes/roman-numerals'
 import { Route as RobotsTxtRouteImport } from './routes/robots-txt'
 import { Route as RegexCheckerRouteImport } from './routes/regex-checker'
+import { Route as RedirectTracerRouteImport } from './routes/redirect-tracer'
 import { Route as RandomDataRouteImport } from './routes/random-data'
 import { Route as QrCodeRouteImport } from './routes/qr-code'
 import { Route as PunycodeRouteImport } from './routes/punycode'
@@ -404,6 +405,11 @@ const RobotsTxtRoute = RobotsTxtRouteImport.update({
 const RegexCheckerRoute = RegexCheckerRouteImport.update({
   id: '/regex-checker',
   path: '/regex-checker',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RedirectTracerRoute = RedirectTracerRouteImport.update({
+  id: '/redirect-tracer',
+  path: '/redirect-tracer',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RandomDataRoute = RandomDataRouteImport.update({
@@ -1160,6 +1166,7 @@ export interface FileRoutesByFullPath {
   '/punycode': typeof PunycodeRoute
   '/qr-code': typeof QrCodeRoute
   '/random-data': typeof RandomDataRoute
+  '/redirect-tracer': typeof RedirectTracerRoute
   '/regex-checker': typeof RegexCheckerRoute
   '/robots-txt': typeof RobotsTxtRoute
   '/roman-numerals': typeof RomanNumeralsRoute
@@ -1333,6 +1340,7 @@ export interface FileRoutesByTo {
   '/punycode': typeof PunycodeRoute
   '/qr-code': typeof QrCodeRoute
   '/random-data': typeof RandomDataRoute
+  '/redirect-tracer': typeof RedirectTracerRoute
   '/regex-checker': typeof RegexCheckerRoute
   '/robots-txt': typeof RobotsTxtRoute
   '/roman-numerals': typeof RomanNumeralsRoute
@@ -1507,6 +1515,7 @@ export interface FileRoutesById {
   '/punycode': typeof PunycodeRoute
   '/qr-code': typeof QrCodeRoute
   '/random-data': typeof RandomDataRoute
+  '/redirect-tracer': typeof RedirectTracerRoute
   '/regex-checker': typeof RegexCheckerRoute
   '/robots-txt': typeof RobotsTxtRoute
   '/roman-numerals': typeof RomanNumeralsRoute
@@ -1682,6 +1691,7 @@ export interface FileRouteTypes {
     | '/punycode'
     | '/qr-code'
     | '/random-data'
+    | '/redirect-tracer'
     | '/regex-checker'
     | '/robots-txt'
     | '/roman-numerals'
@@ -1855,6 +1865,7 @@ export interface FileRouteTypes {
     | '/punycode'
     | '/qr-code'
     | '/random-data'
+    | '/redirect-tracer'
     | '/regex-checker'
     | '/robots-txt'
     | '/roman-numerals'
@@ -2028,6 +2039,7 @@ export interface FileRouteTypes {
     | '/punycode'
     | '/qr-code'
     | '/random-data'
+    | '/redirect-tracer'
     | '/regex-checker'
     | '/robots-txt'
     | '/roman-numerals'
@@ -2202,6 +2214,7 @@ export interface RootRouteChildren {
   PunycodeRoute: typeof PunycodeRoute
   QrCodeRoute: typeof QrCodeRoute
   RandomDataRoute: typeof RandomDataRoute
+  RedirectTracerRoute: typeof RedirectTracerRoute
   RegexCheckerRoute: typeof RegexCheckerRoute
   RobotsTxtRoute: typeof RobotsTxtRoute
   RomanNumeralsRoute: typeof RomanNumeralsRoute
@@ -2568,6 +2581,13 @@ declare module '@tanstack/react-router' {
       path: '/regex-checker'
       fullPath: '/regex-checker'
       preLoaderRoute: typeof RegexCheckerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/redirect-tracer': {
+      id: '/redirect-tracer'
+      path: '/redirect-tracer'
+      fullPath: '/redirect-tracer'
+      preLoaderRoute: typeof RedirectTracerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/random-data': {
@@ -3578,6 +3598,7 @@ const rootRouteChildren: RootRouteChildren = {
   PunycodeRoute: PunycodeRoute,
   QrCodeRoute: QrCodeRoute,
   RandomDataRoute: RandomDataRoute,
+  RedirectTracerRoute: RedirectTracerRoute,
   RegexCheckerRoute: RegexCheckerRoute,
   RobotsTxtRoute: RobotsTxtRoute,
   RomanNumeralsRoute: RomanNumeralsRoute,
