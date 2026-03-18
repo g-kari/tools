@@ -34,6 +34,7 @@ import { Route as TotpRouteImport } from './routes/totp'
 import { Route as TopRouteImport } from './routes/top'
 import { Route as TomlJsonRouteImport } from './routes/toml-json'
 import { Route as TomlFormatterRouteImport } from './routes/toml-formatter'
+import { Route as TokenEstimatorRouteImport } from './routes/token-estimator'
 import { Route as TimezoneRouteImport } from './routes/timezone'
 import { Route as TimestampRouteImport } from './routes/timestamp'
 import { Route as TextStatsRouteImport } from './routes/text-stats'
@@ -310,6 +311,11 @@ const TomlJsonRoute = TomlJsonRouteImport.update({
 const TomlFormatterRoute = TomlFormatterRouteImport.update({
   id: '/toml-formatter',
   path: '/toml-formatter',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TokenEstimatorRoute = TokenEstimatorRouteImport.update({
+  id: '/token-estimator',
+  path: '/token-estimator',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TimezoneRoute = TimezoneRouteImport.update({
@@ -1222,6 +1228,7 @@ export interface FileRoutesByFullPath {
   '/text-stats': typeof TextStatsRoute
   '/timestamp': typeof TimestampRoute
   '/timezone': typeof TimezoneRoute
+  '/token-estimator': typeof TokenEstimatorRoute
   '/toml-formatter': typeof TomlFormatterRoute
   '/toml-json': typeof TomlJsonRoute
   '/top': typeof TopRoute
@@ -1401,6 +1408,7 @@ export interface FileRoutesByTo {
   '/text-stats': typeof TextStatsRoute
   '/timestamp': typeof TimestampRoute
   '/timezone': typeof TimezoneRoute
+  '/token-estimator': typeof TokenEstimatorRoute
   '/toml-formatter': typeof TomlFormatterRoute
   '/toml-json': typeof TomlJsonRoute
   '/top': typeof TopRoute
@@ -1581,6 +1589,7 @@ export interface FileRoutesById {
   '/text-stats': typeof TextStatsRoute
   '/timestamp': typeof TimestampRoute
   '/timezone': typeof TimezoneRoute
+  '/token-estimator': typeof TokenEstimatorRoute
   '/toml-formatter': typeof TomlFormatterRoute
   '/toml-json': typeof TomlJsonRoute
   '/top': typeof TopRoute
@@ -1762,6 +1771,7 @@ export interface FileRouteTypes {
     | '/text-stats'
     | '/timestamp'
     | '/timezone'
+    | '/token-estimator'
     | '/toml-formatter'
     | '/toml-json'
     | '/top'
@@ -1941,6 +1951,7 @@ export interface FileRouteTypes {
     | '/text-stats'
     | '/timestamp'
     | '/timezone'
+    | '/token-estimator'
     | '/toml-formatter'
     | '/toml-json'
     | '/top'
@@ -2120,6 +2131,7 @@ export interface FileRouteTypes {
     | '/text-stats'
     | '/timestamp'
     | '/timezone'
+    | '/token-estimator'
     | '/toml-formatter'
     | '/toml-json'
     | '/top'
@@ -2300,6 +2312,7 @@ export interface RootRouteChildren {
   TextStatsRoute: typeof TextStatsRoute
   TimestampRoute: typeof TimestampRoute
   TimezoneRoute: typeof TimezoneRoute
+  TokenEstimatorRoute: typeof TokenEstimatorRoute
   TomlFormatterRoute: typeof TomlFormatterRoute
   TomlJsonRoute: typeof TomlJsonRoute
   TopRoute: typeof TopRoute
@@ -2506,6 +2519,13 @@ declare module '@tanstack/react-router' {
       path: '/toml-formatter'
       fullPath: '/toml-formatter'
       preLoaderRoute: typeof TomlFormatterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/token-estimator': {
+      id: '/token-estimator'
+      path: '/token-estimator'
+      fullPath: '/token-estimator'
+      preLoaderRoute: typeof TokenEstimatorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/timezone': {
@@ -3724,6 +3744,7 @@ const rootRouteChildren: RootRouteChildren = {
   TextStatsRoute: TextStatsRoute,
   TimestampRoute: TimestampRoute,
   TimezoneRoute: TimezoneRoute,
+  TokenEstimatorRoute: TokenEstimatorRoute,
   TomlFormatterRoute: TomlFormatterRoute,
   TomlJsonRoute: TomlJsonRoute,
   TopRoute: TopRoute,

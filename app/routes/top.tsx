@@ -932,6 +932,13 @@ const toolCatalog: ToolCategory[] = [
           "テキストの可読性をスコア化するツール。英語向けに Flesch Reading Ease・Flesch-Kincaid Grade Level・Gunning Fog Index・SMOG Index を計算。日本語の漢字密度・平均文長にも対応。",
         icon: "📖",
       },
+      {
+        path: "/token-estimator",
+        label: "LLMトークン推定",
+        description:
+          "テキストのLLMトークン数をリアルタイム推定するツール。GPT-4o・Claude 3.5 Sonnet・Gemini 1.5 Proなど主要モデルのトークン数とAPIコストを比較表示。日本語・英語・コードに対応。",
+        icon: "🔢",
+      },
     ],
   },
   {
@@ -1244,14 +1251,14 @@ export const Route = createFileRoute("/top")({
   head: () => ({
     meta: [
       { title: "ツール一覧 | Web ツール集" },
-      { name: "description", content: "134以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
+      { name: "description", content: "135以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
       { property: "og:title", content: "ツール一覧 | Web ツール集" },
-      { property: "og:description", content: "134以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
+      { property: "og:description", content: "135以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
       { property: "og:url", content: `${SITE_BASE_URL}/top` },
       { property: "og:type", content: "website" },
       { property: "og:image", content: SITE_OGP_IMAGE },
       { name: "twitter:title", content: "ツール一覧 | Web ツール集" },
-      { name: "twitter:description", content: "134以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
+      { name: "twitter:description", content: "135以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
     ],
   }),
   component: TopPage,

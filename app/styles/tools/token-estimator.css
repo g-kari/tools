@@ -1,0 +1,270 @@
+/* ============================================================
+   LLM トークン推定ツール スタイル
+   ============================================================ */
+
+.te-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ---------- 入力エリア ---------- */
+.te-input-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.te-char-hint {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  text-align: right;
+}
+
+/* ---------- サマリーカード ---------- */
+.te-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem;
+}
+
+.te-summary-card {
+  background: var(--md-sys-color-surface-container);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.te-summary-card--primary {
+  background: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+}
+
+.te-summary-label {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.te-summary-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface);
+  line-height: 1;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+}
+
+.te-summary-card--primary .te-summary-label,
+.te-summary-card--primary .te-summary-value {
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.te-summary-sub {
+  font-size: 0.7rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* ---------- 文字種内訳 ---------- */
+.te-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.te-breakdown-row {
+  display: grid;
+  grid-template-columns: 100px 1fr 60px;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+}
+
+.te-breakdown-label {
+  color: var(--md-sys-color-on-surface);
+  font-weight: 500;
+}
+
+.te-breakdown-bar-track {
+  height: 8px;
+  background: var(--md-sys-color-surface-container-high);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.te-breakdown-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.te-breakdown-bar-fill--latin {
+  background: var(--md-sys-color-primary);
+}
+
+.te-breakdown-bar-fill--cjk {
+  background: #0097a7;
+}
+
+.te-breakdown-bar-fill--code {
+  background: #7c4dff;
+}
+
+.te-breakdown-bar-fill--other {
+  background: var(--md-sys-color-outline);
+}
+
+.te-breakdown-count {
+  color: var(--md-sys-color-on-surface-variant);
+  text-align: right;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.75rem;
+}
+
+/* ---------- モデル比較テーブル ---------- */
+.te-table-wrap {
+  overflow-x: auto;
+  border-radius: 0.75rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.te-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.te-table thead tr {
+  background: var(--md-sys-color-surface-container);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.te-table th {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.te-table th:not(:first-child) {
+  text-align: right;
+}
+
+.te-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.te-table tr:last-child td {
+  border-bottom: none;
+}
+
+.te-table tbody tr:hover {
+  background: var(--md-sys-color-surface-container-low);
+}
+
+.te-table td:not(:first-child) {
+  text-align: right;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+}
+
+/* プロバイダーバッジ */
+.te-provider-badge {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 0.1em 0.4em;
+  border-radius: 0.25rem;
+  margin-left: 0.35rem;
+  vertical-align: middle;
+}
+
+.te-provider-badge--openai {
+  background: #10a37f22;
+  color: #10a37f;
+  border: 1px solid #10a37f55;
+}
+
+.te-provider-badge--anthropic {
+  background: #cc785522;
+  color: #cc7855;
+  border: 1px solid #cc785555;
+}
+
+.te-provider-badge--google {
+  background: #4285f422;
+  color: #4285f4;
+  border: 1px solid #4285f455;
+}
+
+/* コンテキスト使用率バッジ */
+.te-ctx-ok {
+  color: var(--md-sys-color-primary);
+  font-weight: 600;
+}
+
+.te-ctx-warning {
+  color: #f57c00;
+  font-weight: 600;
+}
+
+.te-ctx-danger {
+  color: #c62828;
+  font-weight: 600;
+}
+
+/* コスト表示 */
+.te-cost-value {
+  color: var(--md-sys-color-on-surface);
+}
+
+/* ---------- 空状態 ---------- */
+.te-empty {
+  padding: 2rem;
+  text-align: center;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.875rem;
+  background: var(--md-sys-color-surface-container-low);
+  border-radius: 0.75rem;
+  border: 1px dashed var(--md-sys-color-outline-variant);
+}
+
+/* ---------- 注意書き ---------- */
+.te-disclaimer {
+  font-size: 0.72rem;
+  color: var(--md-sys-color-on-surface-variant);
+  padding: 0.5rem 0.75rem;
+  background: var(--md-sys-color-surface-container-low);
+  border-radius: 0.5rem;
+  border-left: 3px solid var(--md-sys-color-outline-variant);
+  line-height: 1.5;
+}
+
+/* ---------- レスポンシブ ---------- */
+@media (max-width: 600px) {
+  .te-summary-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .te-table th,
+  .te-table td {
+    padding: 0.6rem 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  .te-breakdown-row {
+    grid-template-columns: 80px 1fr 50px;
+  }
+}
