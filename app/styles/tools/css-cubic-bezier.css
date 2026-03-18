@@ -1,0 +1,337 @@
+/* CSS Cubic Bezier ジェネレーター */
+
+.cb-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px;
+  animation: cb-fade-in-up 0.3s ease-out both;
+}
+
+.cb-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 768px) {
+  .cb-layout {
+    grid-template-columns: 280px 1fr;
+    align-items: start;
+  }
+}
+
+/* SVGビジュアライザー */
+.cb-viz-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cb-svg {
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface-variant);
+  touch-action: none;
+  user-select: none;
+  display: block;
+  overflow: visible;
+}
+
+.cb-grid-line {
+  stroke: var(--md-sys-color-outline-variant);
+  stroke-width: 0.5;
+  opacity: 0.5;
+}
+
+.cb-diagonal {
+  stroke: var(--md-sys-color-outline-variant);
+  stroke-width: 1;
+  stroke-dasharray: 4 4;
+  opacity: 0.7;
+}
+
+.cb-handle-line {
+  stroke: var(--md-sys-color-outline);
+  stroke-width: 1.5;
+  stroke-dasharray: 3 3;
+  opacity: 0.8;
+}
+
+.cb-curve {
+  fill: none;
+  stroke: var(--md-sys-color-primary);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+.cb-anchor {
+  fill: var(--md-sys-color-on-surface);
+  stroke: var(--md-sys-color-surface);
+  stroke-width: 2;
+}
+
+.cb-control {
+  fill: var(--md-sys-color-primary-container);
+  stroke: var(--md-sys-color-primary);
+  stroke-width: 2;
+  transition: fill 0.1s ease, stroke 0.1s ease;
+}
+
+.cb-control:hover,
+.cb-control.dragging {
+  fill: var(--md-sys-color-primary);
+  stroke: var(--md-sys-color-on-primary);
+}
+
+.cb-control-p1 {
+  fill: var(--md-sys-color-tertiary-container);
+  stroke: var(--md-sys-color-tertiary);
+}
+
+.cb-control-p1:hover,
+.cb-control-p1.dragging {
+  fill: var(--md-sys-color-tertiary);
+  stroke: var(--md-sys-color-on-tertiary);
+}
+
+.cb-viz-labels {
+  display: flex;
+  font-size: 0.6875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  padding: 0 4px;
+  max-width: 280px;
+}
+
+/* スライダー */
+.cb-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cb-sliders {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cb-slider-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cb-slider-label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  min-width: 22px;
+}
+
+.cb-label-x1,
+.cb-label-y1 {
+  color: var(--md-sys-color-tertiary);
+}
+
+.cb-label-x2,
+.cb-label-y2 {
+  color: var(--md-sys-color-primary);
+}
+
+.cb-range {
+  flex: 1;
+  accent-color: var(--md-sys-color-primary);
+  height: 4px;
+  cursor: pointer;
+}
+
+.cb-number {
+  width: 62px;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.8125rem;
+  padding: 4px 6px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--md-sys-color-on-surface);
+  text-align: right;
+  transition: border-color 0.2s;
+}
+
+.cb-number:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+}
+
+/* 右パネル */
+.cb-right {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.cb-section-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0;
+}
+
+/* アニメーションプレビュー */
+.cb-preview-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cb-preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cb-preview-track {
+  width: 100%;
+  height: 52px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface-variant);
+  position: relative;
+  overflow: hidden;
+}
+
+.cb-preview-ball {
+  position: absolute;
+  top: 50%;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--md-sys-color-primary);
+  transform: translateY(-50%);
+}
+
+@keyframes cb-slide {
+  from {
+    left: 12px;
+  }
+  to {
+    left: calc(100% - 40px);
+  }
+}
+
+/* CSS出力 */
+.cb-output-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cb-output-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cb-code-block {
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  padding: 16px;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface);
+  white-space: pre-wrap;
+  word-break: break-all;
+  line-height: 1.6;
+  min-height: 80px;
+}
+
+.cb-bezier-value {
+  color: var(--md-sys-color-primary);
+  font-weight: 600;
+}
+
+/* プリセット */
+.cb-presets-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cb-presets-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+@media (min-width: 900px) {
+  .cb-presets-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.cb-preset-btn {
+  padding: 6px 8px;
+  font-size: 0.8125rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cb-preset-btn:hover {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border-color: var(--md-sys-color-primary);
+}
+
+.cb-preset-btn.selected {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border-color: var(--md-sys-color-primary);
+  font-weight: 500;
+}
+
+/* アニメーション */
+@keyframes cb-fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cb-container {
+    animation: none;
+  }
+
+  .cb-control,
+  .cb-number,
+  .cb-preset-btn {
+    transition: none;
+  }
+
+  .cb-preview-ball {
+    animation: none !important;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}

@@ -135,6 +135,7 @@ import { Route as CssGridRouteImport } from './routes/css-grid'
 import { Route as CssGradientRouteImport } from './routes/css-gradient'
 import { Route as CssFlexboxRouteImport } from './routes/css-flexbox'
 import { Route as CssFilterRouteImport } from './routes/css-filter'
+import { Route as CssCubicBezierRouteImport } from './routes/css-cubic-bezier'
 import { Route as CssContainerQueryRouteImport } from './routes/css-container-query'
 import { Route as CssClipPathRouteImport } from './routes/css-clip-path'
 import { Route as CssClampRouteImport } from './routes/css-clamp'
@@ -805,6 +806,11 @@ const CssFilterRoute = CssFilterRouteImport.update({
   path: '/css-filter',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CssCubicBezierRoute = CssCubicBezierRouteImport.update({
+  id: '/css-cubic-bezier',
+  path: '/css-cubic-bezier',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CssContainerQueryRoute = CssContainerQueryRouteImport.update({
   id: '/css-container-query',
   path: '/css-container-query',
@@ -1037,6 +1043,7 @@ export interface FileRoutesByFullPath {
   '/css-clamp': typeof CssClampRoute
   '/css-clip-path': typeof CssClipPathRoute
   '/css-container-query': typeof CssContainerQueryRoute
+  '/css-cubic-bezier': typeof CssCubicBezierRoute
   '/css-filter': typeof CssFilterRoute
   '/css-flexbox': typeof CssFlexboxRoute
   '/css-gradient': typeof CssGradientRoute
@@ -1204,6 +1211,7 @@ export interface FileRoutesByTo {
   '/css-clamp': typeof CssClampRoute
   '/css-clip-path': typeof CssClipPathRoute
   '/css-container-query': typeof CssContainerQueryRoute
+  '/css-cubic-bezier': typeof CssCubicBezierRoute
   '/css-filter': typeof CssFilterRoute
   '/css-flexbox': typeof CssFlexboxRoute
   '/css-gradient': typeof CssGradientRoute
@@ -1372,6 +1380,7 @@ export interface FileRoutesById {
   '/css-clamp': typeof CssClampRoute
   '/css-clip-path': typeof CssClipPathRoute
   '/css-container-query': typeof CssContainerQueryRoute
+  '/css-cubic-bezier': typeof CssCubicBezierRoute
   '/css-filter': typeof CssFilterRoute
   '/css-flexbox': typeof CssFlexboxRoute
   '/css-gradient': typeof CssGradientRoute
@@ -1541,6 +1550,7 @@ export interface FileRouteTypes {
     | '/css-clamp'
     | '/css-clip-path'
     | '/css-container-query'
+    | '/css-cubic-bezier'
     | '/css-filter'
     | '/css-flexbox'
     | '/css-gradient'
@@ -1708,6 +1718,7 @@ export interface FileRouteTypes {
     | '/css-clamp'
     | '/css-clip-path'
     | '/css-container-query'
+    | '/css-cubic-bezier'
     | '/css-filter'
     | '/css-flexbox'
     | '/css-gradient'
@@ -1875,6 +1886,7 @@ export interface FileRouteTypes {
     | '/css-clamp'
     | '/css-clip-path'
     | '/css-container-query'
+    | '/css-cubic-bezier'
     | '/css-filter'
     | '/css-flexbox'
     | '/css-gradient'
@@ -2043,6 +2055,7 @@ export interface RootRouteChildren {
   CssClampRoute: typeof CssClampRoute
   CssClipPathRoute: typeof CssClipPathRoute
   CssContainerQueryRoute: typeof CssContainerQueryRoute
+  CssCubicBezierRoute: typeof CssCubicBezierRoute
   CssFilterRoute: typeof CssFilterRoute
   CssFlexboxRoute: typeof CssFlexboxRoute
   CssGradientRoute: typeof CssGradientRoute
@@ -3059,6 +3072,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CssFilterRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/css-cubic-bezier': {
+      id: '/css-cubic-bezier'
+      path: '/css-cubic-bezier'
+      fullPath: '/css-cubic-bezier'
+      preLoaderRoute: typeof CssCubicBezierRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/css-container-query': {
       id: '/css-container-query'
       path: '/css-container-query'
@@ -3371,6 +3391,7 @@ const rootRouteChildren: RootRouteChildren = {
   CssClampRoute: CssClampRoute,
   CssClipPathRoute: CssClipPathRoute,
   CssContainerQueryRoute: CssContainerQueryRoute,
+  CssCubicBezierRoute: CssCubicBezierRoute,
   CssFilterRoute: CssFilterRoute,
   CssFlexboxRoute: CssFlexboxRoute,
   CssGradientRoute: CssGradientRoute,

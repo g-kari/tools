@@ -612,6 +612,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "✨",
       },
       {
+        path: "/css-cubic-bezier",
+        label: "CSS Cubic Bezier ジェネレーター",
+        description:
+          "CSS cubic-bezier() タイミング関数をビジュアルエディターで作成。制御点をドラッグして調整し、transition・animationに使えるCSSコードを即座に生成。linear/ease/bounce等のプリセット多数。",
+        icon: "〜",
+      },
+      {
         path: "/css-flexbox",
         label: "CSSフレックスボックス",
         description:
