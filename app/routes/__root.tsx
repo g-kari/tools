@@ -85,6 +85,7 @@ const navCategories = [
     name: "生成",
     icon: "✦",
     items: [
+      { path: '/passphrase', label: 'パスフレーズ' },
       { path: "/uuid", label: "UUID生成" },
       { path: "/uuid-inspector", label: "UUID解析" },
       { path: "/password-generator", label: "パスワード" },

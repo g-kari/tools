@@ -1,0 +1,166 @@
+/* パスフレーズ生成ツールのスタイル */
+
+.pp-container {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.pp-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* 区切り文字ボタングループ */
+.pp-separator-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.pp-separator-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4rem 0.9rem;
+  border-radius: 20px;
+  border: 1.5px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+  user-select: none;
+}
+
+.pp-separator-btn:hover {
+  background: var(--md-sys-color-surface-container-high);
+  border-color: var(--md-sys-color-outline);
+}
+
+.pp-separator-btn--active {
+  background: var(--md-sys-color-secondary-container);
+  border-color: var(--md-sys-color-secondary);
+  color: var(--md-sys-color-on-secondary-container);
+  font-weight: 600;
+}
+
+/* 追加オプション */
+.pp-options-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+/* パスフレーズ出力 */
+.pp-output-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.pp-output-input {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  background: var(--md-sys-color-surface-container-low);
+  border: 1.5px solid var(--md-sys-color-outline-variant);
+  border-radius: 8px;
+  color: var(--md-sys-color-on-surface);
+  font-size: 1.1rem;
+  font-family: 'Fira Code', 'Consolas', 'Menlo', monospace;
+  letter-spacing: 0.04em;
+  cursor: default;
+}
+
+.pp-output-input:focus {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+  border-color: var(--md-sys-color-primary);
+}
+
+/* セキュリティ情報 */
+.pp-stats-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.pp-crack-time {
+  color: var(--md-sys-color-primary);
+  font-weight: 600;
+}
+
+/* 生成履歴 */
+.pp-history-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.pp-history-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.pp-history-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.875rem;
+  background: var(--md-sys-color-surface-container);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 6px;
+  justify-content: space-between;
+}
+
+.pp-history-text {
+  font-family: 'Fira Code', 'Consolas', 'Menlo', monospace;
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.pp-history-copy {
+  flex-shrink: 0;
+  padding: 0.2rem 0.6rem;
+  background: transparent;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.pp-history-copy:hover {
+  background: var(--md-sys-color-surface-container-high);
+}
+
+.pp-history-copy:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+@media (max-width: 600px) {
+  .pp-container {
+    padding: 1rem;
+  }
+
+  .pp-output-input {
+    font-size: 0.95rem;
+  }
+
+  .pp-separator-group {
+    gap: 0.4rem;
+  }
+}

@@ -394,6 +394,13 @@ const toolCatalog: ToolCategory[] = [
     icon: "✦",
     items: [
       {
+        path: '/passphrase',
+        label: 'パスフレーズ生成',
+        description:
+          '英単語を組み合わせた記憶しやすいパスフレーズを生成するツール。単語数・区切り文字・大文字化・数字/記号追加を設定可能。エントロピー計算とクラック時間推定付き。',
+        icon: '🗝️',
+      },
+      {
         path: "/uuid",
         label: "UUID生成",
         description: "UUID v4のランダム生成",

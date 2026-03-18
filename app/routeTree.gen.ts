@@ -62,6 +62,7 @@ import { Route as PkceRouteImport } from './routes/pkce'
 import { Route as PhpSerializeRouteImport } from './routes/php-serialize'
 import { Route as PasswordStrengthRouteImport } from './routes/password-strength'
 import { Route as PasswordGeneratorRouteImport } from './routes/password-generator'
+import { Route as PassphraseRouteImport } from './routes/passphrase'
 import { Route as OpensslBuilderRouteImport } from './routes/openssl-builder'
 import { Route as OgpRouteImport } from './routes/ogp'
 import { Route as NumberWordsRouteImport } from './routes/number-words'
@@ -441,6 +442,11 @@ const PasswordStrengthRoute = PasswordStrengthRouteImport.update({
 const PasswordGeneratorRoute = PasswordGeneratorRouteImport.update({
   id: '/password-generator',
   path: '/password-generator',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PassphraseRoute = PassphraseRouteImport.update({
+  id: '/passphrase',
+  path: '/passphrase',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OpensslBuilderRoute = OpensslBuilderRouteImport.update({
@@ -1131,6 +1137,7 @@ export interface FileRoutesByFullPath {
   '/number-words': typeof NumberWordsRoute
   '/ogp': typeof OgpRoute
   '/openssl-builder': typeof OpensslBuilderRoute
+  '/passphrase': typeof PassphraseRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/password-strength': typeof PasswordStrengthRoute
   '/php-serialize': typeof PhpSerializeRoute
@@ -1301,6 +1308,7 @@ export interface FileRoutesByTo {
   '/number-words': typeof NumberWordsRoute
   '/ogp': typeof OgpRoute
   '/openssl-builder': typeof OpensslBuilderRoute
+  '/passphrase': typeof PassphraseRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/password-strength': typeof PasswordStrengthRoute
   '/php-serialize': typeof PhpSerializeRoute
@@ -1472,6 +1480,7 @@ export interface FileRoutesById {
   '/number-words': typeof NumberWordsRoute
   '/ogp': typeof OgpRoute
   '/openssl-builder': typeof OpensslBuilderRoute
+  '/passphrase': typeof PassphraseRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/password-strength': typeof PasswordStrengthRoute
   '/php-serialize': typeof PhpSerializeRoute
@@ -1644,6 +1653,7 @@ export interface FileRouteTypes {
     | '/number-words'
     | '/ogp'
     | '/openssl-builder'
+    | '/passphrase'
     | '/password-generator'
     | '/password-strength'
     | '/php-serialize'
@@ -1814,6 +1824,7 @@ export interface FileRouteTypes {
     | '/number-words'
     | '/ogp'
     | '/openssl-builder'
+    | '/passphrase'
     | '/password-generator'
     | '/password-strength'
     | '/php-serialize'
@@ -1984,6 +1995,7 @@ export interface FileRouteTypes {
     | '/number-words'
     | '/ogp'
     | '/openssl-builder'
+    | '/passphrase'
     | '/password-generator'
     | '/password-strength'
     | '/php-serialize'
@@ -2155,6 +2167,7 @@ export interface RootRouteChildren {
   NumberWordsRoute: typeof NumberWordsRoute
   OgpRoute: typeof OgpRoute
   OpensslBuilderRoute: typeof OpensslBuilderRoute
+  PassphraseRoute: typeof PassphraseRoute
   PasswordGeneratorRoute: typeof PasswordGeneratorRoute
   PasswordStrengthRoute: typeof PasswordStrengthRoute
   PhpSerializeRoute: typeof PhpSerializeRoute
@@ -2585,6 +2598,13 @@ declare module '@tanstack/react-router' {
       path: '/password-generator'
       fullPath: '/password-generator'
       preLoaderRoute: typeof PasswordGeneratorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/passphrase': {
+      id: '/passphrase'
+      path: '/passphrase'
+      fullPath: '/passphrase'
+      preLoaderRoute: typeof PassphraseRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/openssl-builder': {
@@ -3507,6 +3527,7 @@ const rootRouteChildren: RootRouteChildren = {
   NumberWordsRoute: NumberWordsRoute,
   OgpRoute: OgpRoute,
   OpensslBuilderRoute: OpensslBuilderRoute,
+  PassphraseRoute: PassphraseRoute,
   PasswordGeneratorRoute: PasswordGeneratorRoute,
   PasswordStrengthRoute: PasswordStrengthRoute,
   PhpSerializeRoute: PhpSerializeRoute,

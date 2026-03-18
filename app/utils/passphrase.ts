@@ -1,0 +1,241 @@
+/**
+ * パスフレーズ生成ユーティリティ
+ *
+ * 英単語のリストを使用して、記憶しやすく安全なパスフレーズを生成します。
+ * 暗号学的に安全な乱数（crypto.getRandomValues）を使用します。
+ */
+
+/** パスフレーズ生成オプション */
+export interface PassphraseOptions {
+  /** 単語数（3〜8） */
+  wordCount: number;
+  /** 区切り文字 */
+  separator: string;
+  /** 先頭文字を大文字にする */
+  capitalize: boolean;
+  /** 末尾に数字（2桁）を追加する */
+  addNumber: boolean;
+  /** 末尾に記号を追加する */
+  addSymbol: boolean;
+}
+
+/** 区切り文字の選択肢 */
+export const SEPARATOR_OPTIONS = [
+  { value: '-', label: 'ハイフン (-)' },
+  { value: ' ', label: 'スペース ( )' },
+  { value: '_', label: 'アンダースコア (_)' },
+  { value: '.', label: 'ドット (.)' },
+  { value: '', label: 'なし' },
+] as const;
+
+/** 追記可能な記号 */
+const SYMBOLS = '!@#$%^&*';
+
+/**
+ * パスフレーズ生成に使用する英単語リスト（EFF ワードリストをベースにした選択）
+ * 各単語は覚えやすく、スペルが明確なものを厳選
+ */
+export const WORD_LIST: readonly string[] = [
+  // Animals
+  'ant', 'ape', 'bat', 'bear', 'bee', 'bird', 'boar', 'bull', 'cat', 'clam',
+  'cod', 'colt', 'crab', 'crow', 'deer', 'dog', 'dove', 'duck', 'eagle', 'eel',
+  'elk', 'emu', 'fawn', 'fish', 'flea', 'fly', 'frog', 'gull', 'hawk', 'hen',
+  'hog', 'jay', 'lamb', 'lion', 'lynx', 'mink', 'mole', 'moth', 'mule', 'newt',
+  'owl', 'ox', 'pig', 'puma', 'ram', 'rat', 'robin', 'seal', 'slug', 'snail',
+  'snake', 'stag', 'swan', 'toad', 'vole', 'wasp', 'wolf', 'worm', 'wren', 'yak',
+  'camel', 'cobra', 'crane', 'finch', 'gecko', 'goat', 'goose', 'hare', 'heron',
+  'horse', 'hyena', 'kite', 'koala', 'llama', 'moose', 'mouse', 'otter', 'panda',
+  'parrot', 'quail', 'raven', 'shark', 'skunk', 'sloth', 'squid', 'stork', 'swift',
+  'tiger', 'trout', 'turtle', 'viper', 'whale', 'zebra', 'bison', 'coyote', 'dingo',
+  'ferret', 'jackal', 'jaguar', 'lizard', 'magpie', 'marten', 'monkey', 'osprey',
+  'pelican', 'plover', 'rabbit', 'racoon', 'salmon', 'thrush', 'walrus', 'weasel',
+  // Nature & landscape
+  'ash', 'bay', 'beach', 'bog', 'brook', 'cave', 'clay', 'cliff', 'cloud', 'coast',
+  'cove', 'creek', 'dale', 'dune', 'dust', 'fern', 'field', 'flint', 'foam', 'fog',
+  'frost', 'gale', 'glen', 'gust', 'hail', 'heath', 'hill', 'ice', 'isle', 'lake',
+  'lava', 'leaf', 'marsh', 'mist', 'moon', 'moss', 'mud', 'peat', 'pine', 'plain',
+  'pond', 'pool', 'rain', 'reed', 'reef', 'ridge', 'river', 'rock', 'sand', 'sea',
+  'seed', 'sky', 'slate', 'sleet', 'snow', 'soil', 'star', 'stem', 'stone', 'storm',
+  'stream', 'sun', 'surf', 'tide', 'tree', 'vale', 'vine', 'wave', 'weed', 'wind',
+  'wood', 'bark', 'bloom', 'branch', 'atoll', 'delta', 'earth', 'ember', 'flora',
+  'forest', 'grove', 'harbor', 'island', 'jungle', 'lagoon', 'meadow', 'mountain',
+  'ocean', 'prairie', 'rainbow', 'thorn', 'thunder', 'valley', 'volcano', 'willow',
+  // Colors
+  'amber', 'azure', 'black', 'blue', 'brown', 'coral', 'claret', 'crimson', 'cyan',
+  'gold', 'gray', 'green', 'indigo', 'ivory', 'jade', 'lime', 'magenta', 'navy',
+  'olive', 'orange', 'peach', 'pink', 'plum', 'purple', 'red', 'rose', 'ruby',
+  'sage', 'scarlet', 'silver', 'tan', 'teal', 'turquoise', 'violet', 'white', 'yellow',
+  // Food & drink
+  'ale', 'apple', 'basil', 'bean', 'beef', 'bread', 'butter', 'cake', 'carrot',
+  'cheese', 'cherry', 'chili', 'cider', 'cocoa', 'coffee', 'corn', 'cream', 'date',
+  'egg', 'fennel', 'fig', 'flour', 'garlic', 'ginger', 'grape', 'herb', 'honey',
+  'jam', 'juice', 'lemon', 'citrus', 'mango', 'maple', 'melon', 'milk', 'mint',
+  'mushroom', 'mustard', 'nut', 'oat', 'oil', 'onion', 'pasta', 'apricot', 'pear',
+  'pepper', 'pie', 'potato', 'rice', 'salt', 'sauce', 'soup', 'sugar', 'tea',
+  'thyme', 'toast', 'tomato', 'walnut', 'wheat', 'wine', 'yam', 'broth', 'clove',
+  'brine', 'dough', 'feast', 'grain', 'hazel', 'kernel', 'liquor', 'millet', 'noodle',
+  'pickle', 'raisin', 'radish', 'sesame', 'sorbet', 'syrup', 'taffy', 'toffee',
+  // Time & seasons
+  'age', 'autumn', 'century', 'dawn', 'day', 'dusk', 'epoch', 'era', 'evening',
+  'hour', 'moment', 'month', 'morning', 'night', 'noon', 'season', 'second',
+  'spring', 'summer', 'sunrise', 'sunset', 'twilight', 'week', 'winter', 'year',
+  // Places & structures
+  'abbey', 'alley', 'arch', 'arena', 'attic', 'barn', 'bridge', 'cabin', 'castle',
+  'cellar', 'chapel', 'church', 'city', 'crypt', 'den', 'dock', 'dome', 'dungeon',
+  'farm', 'fort', 'gate', 'hall', 'haven', 'home', 'inn', 'keep', 'lane', 'lodge',
+  'manor', 'market', 'mill', 'moat', 'nest', 'palace', 'park', 'path', 'pier',
+  'port', 'road', 'ruin', 'school', 'shore', 'shrine', 'stable', 'street', 'temple',
+  'terrace', 'tower', 'town', 'trail', 'vault', 'village', 'well', 'wharf', 'yard',
+  // Actions (verbs)
+  'blow', 'break', 'build', 'burn', 'call', 'carry', 'cast', 'catch', 'climb',
+  'crawl', 'cross', 'crush', 'dare', 'dash', 'dig', 'dive', 'draw', 'sway',
+  'drive', 'drop', 'fall', 'fetch', 'fight', 'find', 'glide', 'forge', 'freeze',
+  'glow', 'grab', 'grow', 'marshal', 'guide', 'heal', 'hear', 'hide', 'hold', 'hunt',
+  'jump', 'toss', 'kick', 'know', 'land', 'lead', 'leap', 'learn', 'lift', 'look',
+  'march', 'melt', 'move', 'open', 'plant', 'play', 'pull', 'push', 'reach', 'ride',
+  'ring', 'rise', 'roam', 'roll', 'run', 'sail', 'save', 'seek', 'send', 'sing',
+  'sleep', 'slide', 'soar', 'speak', 'spin', 'stand', 'strike', 'swim', 'take',
+  'teach', 'think', 'throw', 'touch', 'track', 'trust', 'turn', 'twist', 'walk',
+  'watch', 'win', 'weave', 'inspire', 'grant', 'greet', 'laugh', 'kindle', 'merge',
+  'paint', 'probe', 'stir', 'quell', 'sense', 'shape', 'share', 'shift', 'shout',
+  'ignite', 'swear', 'sweep', 'swing', 'trace', 'trade', 'train', 'hurdle', 'wield',
+  // Objects & tools
+  'anchor', 'anvil', 'armor', 'arrow', 'axe', 'badge', 'bag', 'barrel', 'bell',
+  'blade', 'book', 'boot', 'bottle', 'bow', 'box', 'cage', 'candle', 'chain',
+  'chest', 'cloak', 'clock', 'coat', 'coin', 'compass', 'crown', 'cup', 'dagger',
+  'drum', 'flag', 'flask', 'gem', 'glass', 'glove', 'hammer', 'harp', 'helm',
+  'hook', 'horn', 'jar', 'key', 'knife', 'lamp', 'lantern', 'lens', 'lock', 'map',
+  'mask', 'mirror', 'net', 'orb', 'quill', 'bead', 'rope', 'sack', 'scroll',
+  'stamp', 'shield', 'spear', 'sphere', 'staff', 'sword', 'torch', 'wand', 'wheel',
+  'cable', 'clasp', 'flute', 'girdle', 'goblet', 'locket', 'mortar', 'mallet',
+  'needle', 'pestle', 'pliers', 'pulley', 'racket', 'satchel', 'scythe', 'sickle',
+  'tackle', 'thimble', 'trowel', 'wrench',
+  // Qualities (adjectives)
+  'bold', 'brave', 'bright', 'calm', 'clean', 'clear', 'cold', 'cool', 'dark',
+  'deep', 'fair', 'fast', 'fierce', 'firm', 'flat', 'free', 'fresh', 'full',
+  'gentle', 'grand', 'hard', 'heavy', 'high', 'keen', 'kind', 'large', 'lucid',
+  'lone', 'long', 'loud', 'low', 'mighty', 'narrow', 'noble', 'old', 'pale',
+  'bleak', 'prime', 'proud', 'pure', 'quiet', 'rare', 'raw', 'rich', 'rough',
+  'round', 'safe', 'sharp', 'short', 'slim', 'slow', 'small', 'soft', 'solid',
+  'steep', 'still', 'strong', 'rapid', 'tall', 'thick', 'thin', 'tight', 'tiny',
+  'true', 'vast', 'warm', 'wide', 'wild', 'wise', 'young', 'agile', 'astute',
+  'blunt', 'brash', 'brittle', 'coarse', 'crisp', 'dense', 'dull', 'durable',
+  'eager', 'elastic', 'faint', 'flimsy', 'fluid', 'frail', 'frigid', 'grim',
+  'hollow', 'humble', 'lofty', 'opaque', 'rigid', 'rugged', 'rustic', 'scarce',
+  'smooth', 'sparse', 'supple', 'sturdy', 'tender', 'vivid',
+  // Abstract concepts & ideas
+  'aura', 'bliss', 'bond', 'chaos', 'charm', 'code', 'artistry', 'curse', 'doom',
+  'reverie', 'current', 'echo', 'edge', 'faith', 'fame', 'fate', 'flaw', 'flow',
+  'flux', 'force', 'form', 'gift', 'grace', 'grief', 'blaze', 'heart', 'honor',
+  'hope', 'icon', 'karma', 'lore', 'luck', 'lure', 'lyric', 'magic', 'mark',
+  'might', 'mind', 'myth', 'oath', 'omen', 'pact', 'peace', 'phase', 'rhythm',
+  'quest', 'realm', 'relic', 'rift', 'risk', 'root', 'rune', 'saga', 'sign',
+  'soul', 'gleam', 'spirit', 'tale', 'theme', 'surge', 'trait', 'truce', 'truth',
+  'valor', 'vision', 'void', 'vow', 'will', 'word', 'world', 'wrath', 'zeal',
+  'axiom', 'cipher', 'creed', 'crest', 'decree', 'emblem', 'enigma', 'essence',
+  'ethos', 'glory', 'herald', 'hymn', 'illusion', 'legacy', 'mantra', 'nexus',
+  'oracle', 'origin', 'pathos', 'precept', 'prism', 'riddle', 'sigil', 'theory',
+  'totem', 'tenet', 'wisdom', 'zenith',
+  // People & roles
+  'ace', 'agent', 'ally', 'angel', 'artist', 'bard', 'captain', 'champion',
+  'chief', 'child', 'coach', 'crew', 'elder', 'envoy', 'farmer', 'friend',
+  'giant', 'sentry', 'heir', 'hero', 'hunter', 'judge', 'king', 'knight', 'lord',
+  'mage', 'maker', 'mentor', 'monk', 'nurse', 'patron', 'pilot', 'prince', 'queen',
+  'ranger', 'rogue', 'pundit', 'scout', 'seeker', 'soldier', 'trader', 'warrior',
+  'wizard', 'archer', 'artisan', 'baron', 'bishop', 'burglar', 'courier', 'hermit',
+  'jester', 'mason', 'mystic', 'outlaw', 'paladin', 'peasant', 'pilgrim', 'porter',
+  'prophet', 'scholar', 'shepherd', 'squire', 'steward', 'tinker', 'trooper',
+  'vagabond', 'veteran', 'warden', 'weaver',
+];
+
+/**
+ * 暗号学的に安全なランダム整数を生成する（モジュロバイアスなし）
+ * @param max - 上限（exclusive）
+ * @returns 0 以上 max 未満のランダムな整数
+ */
+function randomIndex(max: number): number {
+  const maxValid = Math.floor(0xffffffff / max) * max;
+  const buf = new Uint32Array(1);
+  let n: number;
+  do {
+    crypto.getRandomValues(buf);
+    n = buf[0];
+  } while (n >= maxValid);
+  return n % max;
+}
+
+/**
+ * パスフレーズを生成する
+ * @param options - 生成オプション
+ * @returns 生成されたパスフレーズ文字列
+ */
+export function generatePassphrase(options: PassphraseOptions): string {
+  const words: string[] = [];
+  for (let i = 0; i < options.wordCount; i++) {
+    let word = WORD_LIST[randomIndex(WORD_LIST.length)];
+    if (options.capitalize) {
+      word = word.charAt(0).toUpperCase() + word.slice(1);
+    }
+    words.push(word);
+  }
+
+  let passphrase = words.join(options.separator);
+
+  if (options.addNumber) {
+    const num = randomIndex(100).toString().padStart(2, '0');
+    passphrase += num;
+  }
+
+  if (options.addSymbol) {
+    const symbol = SYMBOLS[randomIndex(SYMBOLS.length)];
+    passphrase += symbol;
+  }
+
+  return passphrase;
+}
+
+/**
+ * パスフレーズのエントロピーを計算する（bits）
+ * @param options - 生成オプション
+ * @returns エントロピー（bits）
+ */
+export function calculatePassphraseEntropy(options: PassphraseOptions): number {
+  const wordEntropy = options.wordCount * Math.log2(WORD_LIST.length);
+  const numberEntropy = options.addNumber ? Math.log2(100) : 0;
+  const symbolEntropy = options.addSymbol ? Math.log2(SYMBOLS.length) : 0;
+  return wordEntropy + numberEntropy + symbolEntropy;
+}
+
+/**
+ * エントロピー（bits）から強度情報を返す
+ * @param entropy - エントロピー（bits）
+ * @returns 強度ラベルとスコア（1〜5）
+ */
+export function getEntropyStrength(entropy: number): { label: string; score: 1 | 2 | 3 | 4 | 5 } {
+  if (entropy < 28) return { label: '非常に弱い', score: 1 };
+  if (entropy < 40) return { label: '弱い', score: 2 };
+  if (entropy < 56) return { label: '普通', score: 3 };
+  if (entropy < 72) return { label: '強い', score: 4 };
+  return { label: '非常に強い', score: 5 };
+}
+
+/**
+ * エントロピーからオフラインクラック（10億回/秒）の推定時間を返す
+ * @param entropy - エントロピー（bits）
+ * @returns クラック時間の目安文字列
+ */
+export function estimateCrackTime(entropy: number): string {
+  const guesses = Math.pow(2, entropy);
+  const seconds = guesses / 1e9;
+
+  if (seconds < 1) return '1秒未満';
+  if (seconds < 60) return `約${Math.round(seconds)}秒`;
+  if (seconds < 3600) return `約${Math.round(seconds / 60)}分`;
+  if (seconds < 86400) return `約${Math.round(seconds / 3600)}時間`;
+  if (seconds < 31536000) return `約${Math.round(seconds / 86400)}日`;
+  const years = seconds / 31536000;
+  if (years < 1e6) return `約${Math.round(years).toLocaleString()}年`;
+  if (years < 1e9) return `約${(years / 1e6).toFixed(1)}百万年`;
+  if (years < 1e12) return `約${(years / 1e9).toFixed(1)}十億年`;
+  return '宇宙の年齢を超える';
+}
