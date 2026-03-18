@@ -1,0 +1,126 @@
+/* 全角/半角変換 */
+
+/* 変換方向選択 */
+.zenkaku-direction-group {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+}
+
+.zenkaku-direction-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background: var(--md-sys-color-surface-variant);
+  border: 2px solid var(--md-sys-color-outline);
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  user-select: none;
+}
+
+.zenkaku-direction-option:has(input:checked) {
+  border-color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-primary-container);
+}
+
+.zenkaku-direction-option input[type="radio"] {
+  accent-color: var(--md-sys-color-primary);
+  cursor: pointer;
+}
+
+.zenkaku-direction-label {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+}
+
+.zenkaku-direction-option:has(input:checked) .zenkaku-direction-label {
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.zenkaku-direction-desc {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: "JetBrains Mono", monospace;
+}
+
+/* 変換対象オプション */
+.zenkaku-options {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.zenkaku-option-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.875rem;
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  cursor: pointer;
+  transition: border-color 0.2s;
+  user-select: none;
+}
+
+.zenkaku-option-item:has(input:checked) {
+  border-color: var(--md-sys-color-primary);
+}
+
+.zenkaku-option-item input[type="checkbox"] {
+  accent-color: var(--md-sys-color-primary);
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+}
+
+.zenkaku-option-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+}
+
+.zenkaku-option-desc {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: "JetBrains Mono", monospace;
+}
+
+/* 入出力ヘッダー */
+.zenkaku-io-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.zenkaku-io-header label {
+  margin-bottom: 0;
+}
+
+.zenkaku-char-info {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-weight: 400;
+  margin-left: 0.375rem;
+  font-family: "JetBrains Mono", monospace;
+}
+
+/* コピーボタン */
+.zenkaku-copy-btn {
+  flex: 0 0 auto;
+  min-width: auto;
+  padding: 0.375rem 0.875rem;
+  font-size: 0.875rem;
+}
+
+@media (max-width: 600px) {
+  .zenkaku-direction-group {
+    flex-direction: column;
+  }
+  .zenkaku-options {
+    flex-direction: column;
+  }
+}

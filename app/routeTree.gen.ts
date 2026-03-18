@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ZenkakuRouteImport } from './routes/zenkaku'
 import { Route as YamlTomlRouteImport } from './routes/yaml-toml'
 import { Route as YamlJsonRouteImport } from './routes/yaml-json'
 import { Route as YamlFormatterRouteImport } from './routes/yaml-formatter'
@@ -165,6 +166,11 @@ import { Route as ApiImageDotsvgRouteImport } from './routes/api/image[.]svg'
 import { Route as ApiImageDotpngRouteImport } from './routes/api/image[.]png'
 import { Route as ApiImageDotjpgRouteImport } from './routes/api/image[.]jpg'
 
+const ZenkakuRoute = ZenkakuRouteImport.update({
+  id: '/zenkaku',
+  path: '/zenkaku',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const YamlTomlRoute = YamlTomlRouteImport.update({
   id: '/yaml-toml',
   path: '/yaml-toml',
@@ -1093,6 +1099,7 @@ export interface FileRoutesByFullPath {
   '/yaml-formatter': typeof YamlFormatterRoute
   '/yaml-json': typeof YamlJsonRoute
   '/yaml-toml': typeof YamlTomlRoute
+  '/zenkaku': typeof ZenkakuRoute
   '/api/image.jpg': typeof ApiImageDotjpgRoute
   '/api/image.png': typeof ApiImageDotpngRoute
   '/api/image.svg': typeof ApiImageDotsvgRoute
@@ -1250,6 +1257,7 @@ export interface FileRoutesByTo {
   '/yaml-formatter': typeof YamlFormatterRoute
   '/yaml-json': typeof YamlJsonRoute
   '/yaml-toml': typeof YamlTomlRoute
+  '/zenkaku': typeof ZenkakuRoute
   '/api/image.jpg': typeof ApiImageDotjpgRoute
   '/api/image.png': typeof ApiImageDotpngRoute
   '/api/image.svg': typeof ApiImageDotsvgRoute
@@ -1408,6 +1416,7 @@ export interface FileRoutesById {
   '/yaml-formatter': typeof YamlFormatterRoute
   '/yaml-json': typeof YamlJsonRoute
   '/yaml-toml': typeof YamlTomlRoute
+  '/zenkaku': typeof ZenkakuRoute
   '/api/image.jpg': typeof ApiImageDotjpgRoute
   '/api/image.png': typeof ApiImageDotpngRoute
   '/api/image.svg': typeof ApiImageDotsvgRoute
@@ -1567,6 +1576,7 @@ export interface FileRouteTypes {
     | '/yaml-formatter'
     | '/yaml-json'
     | '/yaml-toml'
+    | '/zenkaku'
     | '/api/image.jpg'
     | '/api/image.png'
     | '/api/image.svg'
@@ -1724,6 +1734,7 @@ export interface FileRouteTypes {
     | '/yaml-formatter'
     | '/yaml-json'
     | '/yaml-toml'
+    | '/zenkaku'
     | '/api/image.jpg'
     | '/api/image.png'
     | '/api/image.svg'
@@ -1881,6 +1892,7 @@ export interface FileRouteTypes {
     | '/yaml-formatter'
     | '/yaml-json'
     | '/yaml-toml'
+    | '/zenkaku'
     | '/api/image.jpg'
     | '/api/image.png'
     | '/api/image.svg'
@@ -2039,6 +2051,7 @@ export interface RootRouteChildren {
   YamlFormatterRoute: typeof YamlFormatterRoute
   YamlJsonRoute: typeof YamlJsonRoute
   YamlTomlRoute: typeof YamlTomlRoute
+  ZenkakuRoute: typeof ZenkakuRoute
   ApiImageDotjpgRoute: typeof ApiImageDotjpgRoute
   ApiImageDotpngRoute: typeof ApiImageDotpngRoute
   ApiImageDotsvgRoute: typeof ApiImageDotsvgRoute
@@ -2047,6 +2060,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/zenkaku': {
+      id: '/zenkaku'
+      path: '/zenkaku'
+      fullPath: '/zenkaku'
+      preLoaderRoute: typeof ZenkakuRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/yaml-toml': {
       id: '/yaml-toml'
       path: '/yaml-toml'
@@ -3287,6 +3307,7 @@ const rootRouteChildren: RootRouteChildren = {
   YamlFormatterRoute: YamlFormatterRoute,
   YamlJsonRoute: YamlJsonRoute,
   YamlTomlRoute: YamlTomlRoute,
+  ZenkakuRoute: ZenkakuRoute,
   ApiImageDotjpgRoute: ApiImageDotjpgRoute,
   ApiImageDotpngRoute: ApiImageDotpngRoute,
   ApiImageDotsvgRoute: ApiImageDotsvgRoute,

@@ -345,6 +345,13 @@ const toolCatalog: ToolCategory[] = [
           "国際化ドメイン名（IDN）のPunycode変換ツール。日本語・中国語・アラビア語などのUnicodeドメインをxn--形式のASCII Compatible Encoding（ACE）に変換。RFC 3492準拠。",
         icon: "🌐",
       },
+      {
+        path: "/zenkaku",
+        label: "全角/半角変換",
+        description:
+          "全角と半角文字の相互変換ツール。英数字・記号・カタカナ・スペースを選択して変換。日本語テキスト処理・フォームデータの正規化に。",
+        icon: "Ａ",
+      },
     ],
   },
   {
