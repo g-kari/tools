@@ -1129,6 +1129,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🔧",
       },
       {
+        path: "/curl-to-fetch",
+        label: "cURL → fetch 変換",
+        description:
+          "cURLコマンドをJavaScript Fetch API または axios のコードに変換するツール。-H / -d / -X / -u などのフラグに対応。ブラウザ内完結。",
+        icon: "⇄",
+      },
+      {
         path: "/openssl-builder",
         label: "OpenSSLビルダー",
         description: "OpenSSLコマンドをGUIで設定して生成。鍵生成・証明書作成・CSR生成など各種OpenSSL操作に対応",

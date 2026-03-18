@@ -1,0 +1,210 @@
+/* cURL → fetch 変換ツール - ctf- プレフィックス */
+
+.ctf-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* セクション */
+.ctf-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* サンプルボタン群 */
+.ctf-samples {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.ctf-samples-label {
+  font-size: 0.8rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-right: 0.25rem;
+}
+
+.ctf-sample-btn {
+  padding: 0.25rem 0.65rem;
+  font-size: 0.78rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 999px;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    color 0.15s;
+  white-space: nowrap;
+}
+
+.ctf-sample-btn:hover {
+  background: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.ctf-sample-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* ラベル */
+.ctf-label {
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--md-sys-color-primary);
+}
+
+/* テキストエリア */
+.ctf-input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.ctf-textarea {
+  width: 100%;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  padding: 0.75rem;
+  border: 1px solid var(--md-sys-color-outline);
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  border-radius: 4px;
+  resize: vertical;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.ctf-textarea:focus {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+  border-color: var(--md-sys-color-primary);
+}
+
+.ctf-textarea--input {
+  min-height: 9rem;
+}
+
+/* オプション */
+.ctf-options {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ctf-option-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.ctf-option-label {
+  font-size: 0.82rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.ctf-radio-label,
+.ctf-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  color: var(--md-sys-color-on-surface);
+  user-select: none;
+}
+
+.ctf-radio,
+.ctf-checkbox {
+  accent-color: var(--md-sys-color-primary);
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+}
+
+/* モードバッジ */
+.ctf-mode-badge {
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.72rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  letter-spacing: 0.04em;
+  vertical-align: middle;
+  margin-left: 0.5rem;
+}
+
+/* 警告メッセージ */
+.ctf-warnings {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.ctf-warning-item {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.82rem;
+  background: var(--md-sys-color-error-container, #ffdad6);
+  color: var(--md-sys-color-on-error-container, #410002);
+  border-radius: 4px;
+  border-left: 3px solid var(--md-sys-color-error, #ba1a1a);
+  line-height: 1.5;
+}
+
+/* コード出力 */
+.ctf-output-wrapper {
+  overflow: hidden;
+  border-radius: 6px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.ctf-code-block {
+  margin: 0;
+  padding: 1rem;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.82rem;
+  line-height: 1.7;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  overflow-x: auto;
+  white-space: pre;
+  min-height: 6rem;
+}
+
+.ctf-placeholder {
+  font-style: italic;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: inherit;
+}
+
+/* レスポンシブ */
+@media (max-width: 640px) {
+  .ctf-container {
+    padding: 0.5rem;
+  }
+
+  .ctf-options {
+    gap: 0.75rem;
+  }
+
+  .ctf-code-block {
+    font-size: 0.76rem;
+  }
+}
