@@ -126,6 +126,7 @@ import { Route as EnvParserRouteImport } from './routes/env-parser'
 import { Route as EncodingRouteImport } from './routes/encoding'
 import { Route as EmojiConverterRouteImport } from './routes/emoji-converter'
 import { Route as EmailDnsRouteImport } from './routes/email-dns'
+import { Route as DurationRouteImport } from './routes/duration'
 import { Route as DummyImageRouteImport } from './routes/dummy-image'
 import { Route as DummyAudioRouteImport } from './routes/dummy-audio'
 import { Route as DnsLookupRouteImport } from './routes/dns-lookup'
@@ -776,6 +777,11 @@ const EmailDnsRoute = EmailDnsRouteImport.update({
   path: '/email-dns',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DurationRoute = DurationRouteImport.update({
+  id: '/duration',
+  path: '/duration',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DummyImageRoute = DummyImageRouteImport.update({
   id: '/dummy-image',
   path: '/dummy-image',
@@ -1158,6 +1164,7 @@ export interface FileRoutesByFullPath {
   '/dns-lookup': typeof DnsLookupRoute
   '/dummy-audio': typeof DummyAudioRoute
   '/dummy-image': typeof DummyImageRoute
+  '/duration': typeof DurationRoute
   '/email-dns': typeof EmailDnsRoute
   '/emoji-converter': typeof EmojiConverterRoute
   '/encoding': typeof EncodingRoute
@@ -1341,6 +1348,7 @@ export interface FileRoutesByTo {
   '/dns-lookup': typeof DnsLookupRoute
   '/dummy-audio': typeof DummyAudioRoute
   '/dummy-image': typeof DummyImageRoute
+  '/duration': typeof DurationRoute
   '/email-dns': typeof EmailDnsRoute
   '/emoji-converter': typeof EmojiConverterRoute
   '/encoding': typeof EncodingRoute
@@ -1525,6 +1533,7 @@ export interface FileRoutesById {
   '/dns-lookup': typeof DnsLookupRoute
   '/dummy-audio': typeof DummyAudioRoute
   '/dummy-image': typeof DummyImageRoute
+  '/duration': typeof DurationRoute
   '/email-dns': typeof EmailDnsRoute
   '/emoji-converter': typeof EmojiConverterRoute
   '/encoding': typeof EncodingRoute
@@ -1710,6 +1719,7 @@ export interface FileRouteTypes {
     | '/dns-lookup'
     | '/dummy-audio'
     | '/dummy-image'
+    | '/duration'
     | '/email-dns'
     | '/emoji-converter'
     | '/encoding'
@@ -1893,6 +1903,7 @@ export interface FileRouteTypes {
     | '/dns-lookup'
     | '/dummy-audio'
     | '/dummy-image'
+    | '/duration'
     | '/email-dns'
     | '/emoji-converter'
     | '/encoding'
@@ -2076,6 +2087,7 @@ export interface FileRouteTypes {
     | '/dns-lookup'
     | '/dummy-audio'
     | '/dummy-image'
+    | '/duration'
     | '/email-dns'
     | '/emoji-converter'
     | '/encoding'
@@ -2260,6 +2272,7 @@ export interface RootRouteChildren {
   DnsLookupRoute: typeof DnsLookupRoute
   DummyAudioRoute: typeof DummyAudioRoute
   DummyImageRoute: typeof DummyImageRoute
+  DurationRoute: typeof DurationRoute
   EmailDnsRoute: typeof EmailDnsRoute
   EmojiConverterRoute: typeof EmojiConverterRoute
   EncodingRoute: typeof EncodingRoute
@@ -3204,6 +3217,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EmailDnsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/duration': {
+      id: '/duration'
+      path: '/duration'
+      fullPath: '/duration'
+      preLoaderRoute: typeof DurationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dummy-image': {
       id: '/dummy-image'
       path: '/dummy-image'
@@ -3716,6 +3736,7 @@ const rootRouteChildren: RootRouteChildren = {
   DnsLookupRoute: DnsLookupRoute,
   DummyAudioRoute: DummyAudioRoute,
   DummyImageRoute: DummyImageRoute,
+  DurationRoute: DurationRoute,
   EmailDnsRoute: EmailDnsRoute,
   EmojiConverterRoute: EmojiConverterRoute,
   EncodingRoute: EncodingRoute,

@@ -193,6 +193,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "⏱️",
       },
       {
+        path: "/duration",
+        label: "時間計算・変換",
+        description:
+          "秒・HH:MM:SS・人間が読めるフォーマット間を相互変換。2つの時間の加算・減算、24fps/30fps/60fps等のフレームレート変換、各単位（日・時・分・秒・ミリ秒）への変換に対応。",
+        icon: "⏳",
+      },
+      {
         path: "/unit-converter",
         label: "単位変換",
         description: "長さ・重さ・温度など各種単位の相互変換",
