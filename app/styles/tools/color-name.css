@@ -1,0 +1,391 @@
+/* ==================== Color Name Finder Styles ==================== */
+
+/* ---- 入力セクション ---- */
+.cn-input-section {
+  margin-bottom: 24px;
+}
+
+.cn-section-title {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--md-sys-color-on-surface-variant);
+  margin: 0 0 12px;
+}
+
+.cn-input-layout {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+/* ---- 入力スウォッチ ---- */
+.cn-input-swatch {
+  position: relative;
+  width: 140px;
+  min-height: 140px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.cn-input-swatch:hover {
+  border-color: var(--md-sys-color-outline);
+}
+
+.cn-exact-name {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  text-align: center;
+  padding: 4px 8px;
+  word-break: break-all;
+  pointer-events: none;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.cn-swatch-hint {
+  font-size: 10px;
+  opacity: 0.7;
+  pointer-events: none;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.cn-native-picker {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* ---- HEX入力フィールド ---- */
+.cn-hex-field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cn-field-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+}
+
+.cn-hex-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 18px;
+  font-weight: 700;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  transition: border-color 0.15s;
+  box-sizing: border-box;
+}
+
+.cn-hex-input:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+}
+
+.cn-hex-input.error {
+  border-color: var(--md-sys-color-error);
+  background: color-mix(
+    in srgb,
+    var(--md-sys-color-error) 8%,
+    var(--md-sys-color-surface-variant)
+  );
+}
+
+.cn-error-msg {
+  font-size: 11px;
+  color: var(--md-sys-color-error);
+}
+
+.cn-input-hint {
+  font-size: 12px;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.cn-input-hint strong {
+  color: var(--md-sys-color-primary);
+}
+
+/* ---- 検索結果セクション ---- */
+.cn-results-section {
+  margin-bottom: 24px;
+}
+
+.cn-results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 10px;
+}
+
+/* ---- 色カード ---- */
+.cn-color-card {
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--md-sys-color-surface-variant);
+  transition:
+    border-color 0.15s,
+    transform 0.1s;
+}
+
+.cn-color-card:hover {
+  border-color: var(--md-sys-color-outline);
+  transform: translateY(-1px);
+}
+
+.cn-color-swatch {
+  width: 64px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 6px;
+  min-height: 80px;
+}
+
+.cn-swatch-hex {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  opacity: 0.85;
+  text-align: center;
+  word-break: break-all;
+  padding: 0 2px;
+}
+
+.cn-color-info {
+  flex: 1;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.cn-color-name-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.cn-color-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface);
+  flex-shrink: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---- 一致度バッジ ---- */
+.cn-match-badge {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 2px 5px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.cn-badge-exact {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+.cn-badge-close {
+  background: var(--md-sys-color-secondary);
+  color: var(--md-sys-color-on-secondary);
+}
+
+.cn-badge-near {
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.cn-badge-far {
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  opacity: 0.7;
+}
+
+/* ---- メタ情報 ---- */
+.cn-color-meta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.cn-delta-e {
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--md-sys-color-primary);
+  font-weight: 600;
+}
+
+.cn-rgb-value {
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* ---- アクションボタン ---- */
+.cn-color-actions {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+
+.cn-copy-btn {
+  padding: 3px 8px;
+  font-size: 10px;
+  font-weight: 500;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  transition: opacity 0.15s;
+  font-family: inherit;
+  letter-spacing: 0.3px;
+}
+
+.cn-copy-btn:hover {
+  opacity: 0.8;
+}
+
+.cn-copy-btn-secondary {
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+/* ---- 全色一覧セクション ---- */
+.cn-all-section {
+  margin-bottom: 24px;
+}
+
+.cn-all-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cn-all-header .cn-section-title {
+  margin-bottom: 0;
+}
+
+.cn-toggle-btn {
+  padding: 4px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  cursor: pointer;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  transition:
+    border-color 0.15s,
+    color 0.15s;
+  font-family: inherit;
+  letter-spacing: 0.3px;
+}
+
+.cn-toggle-btn:hover {
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-primary);
+}
+
+.cn-all-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 4px;
+}
+
+.cn-all-item {
+  border: none;
+  border-radius: 4px;
+  padding: 10px 8px 6px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  min-height: 52px;
+  transition:
+    transform 0.1s,
+    box-shadow 0.1s;
+  font-family: inherit;
+}
+
+.cn-all-item:hover {
+  transform: scale(1.04);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  z-index: 1;
+  position: relative;
+}
+
+.cn-all-item-name {
+  font-size: 9px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  text-align: center;
+  word-break: break-all;
+  line-height: 1.2;
+}
+
+/* ---- レスポンシブ ---- */
+@media (max-width: 600px) {
+  .cn-input-layout {
+    flex-direction: column;
+  }
+
+  .cn-input-swatch {
+    width: 100%;
+    min-height: 100px;
+  }
+
+  .cn-results-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cn-all-grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  }
+}

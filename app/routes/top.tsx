@@ -734,6 +734,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🏷️",
       },
       {
+        path: "/color-name",
+        label: "色名検索",
+        description:
+          "HEXやRGBカラーを入力すると最も近いCSS名前付き色をΔE色差順に表示するツール。140色のCSS色名を網羅。完全一致判定・コピー機能付き。",
+        icon: "🏷️",
+      },
+      {
         path: "/color-palette",
         label: "カラーパレット生成",
         description:
