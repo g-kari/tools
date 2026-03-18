@@ -1,0 +1,53 @@
+/* HTML→Markdown変換ツール */
+
+.html-markdown-top-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.html-markdown-panels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.html-markdown-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.html-markdown-textarea {
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.8125rem;
+  resize: vertical;
+  min-height: 400px;
+}
+
+.html-markdown-hint {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin: 0;
+}
+
+.html-markdown-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .html-markdown-panels {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .html-markdown-actions {
+    flex-direction: column;
+  }
+}

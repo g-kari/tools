@@ -154,6 +154,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "⚛️",
       },
       {
+        path: "/html-markdown",
+        label: "HTML→Markdown変換",
+        description:
+          "HTMLをMarkdown形式にリアルタイム変換するツール。見出し・リスト・テーブル・コードブロック・リンク・画像など主要なHTML要素に対応。コンテンツ移行やブログ執筆に便利。",
+        icon: "📝",
+      },
+      {
         path: "/php-serialize",
         label: "PHPシリアライズ",
         description: "PHPシリアライズ形式とJSONの相互変換",

@@ -104,6 +104,7 @@
 @import "./styles/tools/cookie-parser.css";
 @import "./styles/tools/text-replace.css";
 @import "./styles/tools/html-to-jsx.css";
+@import "./styles/tools/html-markdown.css";
 @import "./styles/tools/typography-scale.css";
 @import "./styles/tools/mime-types.css";
 @import "./styles/tools/json-flatten.css";

@@ -104,6 +104,7 @@ import { Route as HttpStatusRouteImport } from './routes/http-status'
 import { Route as HttpHeadersRouteImport } from './routes/http-headers'
 import { Route as HttpClientRouteImport } from './routes/http-client'
 import { Route as HtmlToJsxRouteImport } from './routes/html-to-jsx'
+import { Route as HtmlMarkdownRouteImport } from './routes/html-markdown'
 import { Route as HtmlFormatterRouteImport } from './routes/html-formatter'
 import { Route as HtmlEncodeRouteImport } from './routes/html-encode'
 import { Route as HmacRouteImport } from './routes/hmac'
@@ -654,6 +655,11 @@ const HtmlToJsxRoute = HtmlToJsxRouteImport.update({
   path: '/html-to-jsx',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HtmlMarkdownRoute = HtmlMarkdownRouteImport.update({
+  id: '/html-markdown',
+  path: '/html-markdown',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HtmlFormatterRoute = HtmlFormatterRouteImport.update({
   id: '/html-formatter',
   path: '/html-formatter',
@@ -1096,6 +1102,7 @@ export interface FileRoutesByFullPath {
   '/hmac': typeof HmacRoute
   '/html-encode': typeof HtmlEncodeRoute
   '/html-formatter': typeof HtmlFormatterRoute
+  '/html-markdown': typeof HtmlMarkdownRoute
   '/html-to-jsx': typeof HtmlToJsxRoute
   '/http-client': typeof HttpClientRoute
   '/http-headers': typeof HttpHeadersRoute
@@ -1267,6 +1274,7 @@ export interface FileRoutesByTo {
   '/hmac': typeof HmacRoute
   '/html-encode': typeof HtmlEncodeRoute
   '/html-formatter': typeof HtmlFormatterRoute
+  '/html-markdown': typeof HtmlMarkdownRoute
   '/html-to-jsx': typeof HtmlToJsxRoute
   '/http-client': typeof HttpClientRoute
   '/http-headers': typeof HttpHeadersRoute
@@ -1439,6 +1447,7 @@ export interface FileRoutesById {
   '/hmac': typeof HmacRoute
   '/html-encode': typeof HtmlEncodeRoute
   '/html-formatter': typeof HtmlFormatterRoute
+  '/html-markdown': typeof HtmlMarkdownRoute
   '/html-to-jsx': typeof HtmlToJsxRoute
   '/http-client': typeof HttpClientRoute
   '/http-headers': typeof HttpHeadersRoute
@@ -1612,6 +1621,7 @@ export interface FileRouteTypes {
     | '/hmac'
     | '/html-encode'
     | '/html-formatter'
+    | '/html-markdown'
     | '/html-to-jsx'
     | '/http-client'
     | '/http-headers'
@@ -1783,6 +1793,7 @@ export interface FileRouteTypes {
     | '/hmac'
     | '/html-encode'
     | '/html-formatter'
+    | '/html-markdown'
     | '/html-to-jsx'
     | '/http-client'
     | '/http-headers'
@@ -1954,6 +1965,7 @@ export interface FileRouteTypes {
     | '/hmac'
     | '/html-encode'
     | '/html-formatter'
+    | '/html-markdown'
     | '/html-to-jsx'
     | '/http-client'
     | '/http-headers'
@@ -2126,6 +2138,7 @@ export interface RootRouteChildren {
   HmacRoute: typeof HmacRoute
   HtmlEncodeRoute: typeof HtmlEncodeRoute
   HtmlFormatterRoute: typeof HtmlFormatterRoute
+  HtmlMarkdownRoute: typeof HtmlMarkdownRoute
   HtmlToJsxRoute: typeof HtmlToJsxRoute
   HttpClientRoute: typeof HttpClientRoute
   HttpHeadersRoute: typeof HttpHeadersRoute
@@ -2894,6 +2907,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HtmlToJsxRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/html-markdown': {
+      id: '/html-markdown'
+      path: '/html-markdown'
+      fullPath: '/html-markdown'
+      preLoaderRoute: typeof HtmlMarkdownRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/html-formatter': {
       id: '/html-formatter'
       path: '/html-formatter'
@@ -3486,6 +3506,7 @@ const rootRouteChildren: RootRouteChildren = {
   HmacRoute: HmacRoute,
   HtmlEncodeRoute: HtmlEncodeRoute,
   HtmlFormatterRoute: HtmlFormatterRoute,
+  HtmlMarkdownRoute: HtmlMarkdownRoute,
   HtmlToJsxRoute: HtmlToJsxRoute,
   HttpClientRoute: HttpClientRoute,
   HttpHeadersRoute: HttpHeadersRoute,

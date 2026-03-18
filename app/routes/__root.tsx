@@ -40,6 +40,7 @@ const navCategories = [
       { path: "/json-schema", label: "JSONスキーマ生成" },
       { path: "/json-to-ts", label: "JSON→TS型変換" },
       { path: "/html-to-jsx", label: "HTML→JSX変換" },
+      { path: "/html-markdown", label: "HTML→Markdown変換" },
       { path: "/json-lines", label: "JSON Lines フォーマッター" },
       { path: "/json-compare", label: "JSON比較" },
       { path: "/csv-json", label: "CSV/JSON変換" },
