@@ -925,6 +925,13 @@ const toolCatalog: ToolCategory[] = [
           "Levenshtein距離・Jaro-Winkler・コサイン類似度・Hamming距離で2つの文字列の類似度をリアルタイム計算。スペルチェック・ファジー検索・NLP用途に。",
         icon: "≈",
       },
+      {
+        path: "/readability",
+        label: "可読性スコア分析",
+        description:
+          "テキストの可読性をスコア化するツール。英語向けに Flesch Reading Ease・Flesch-Kincaid Grade Level・Gunning Fog Index・SMOG Index を計算。日本語の漢字密度・平均文長にも対応。",
+        icon: "📖",
+      },
     ],
   },
   {

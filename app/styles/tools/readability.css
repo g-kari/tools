@@ -1,0 +1,242 @@
+/* Readability Tool Styles - rl- prefix */
+
+/* ゲージ（スコアメーター） */
+.rl-gauge-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.rl-gauge-bar {
+  position: relative;
+  height: 12px;
+  background: var(--md-sys-color-outline-variant);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.rl-gauge-fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.4s ease-out, background-color 0.3s;
+}
+
+.rl-gauge-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* スコアカードグリッド */
+.rl-score-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  animation: rl-fade-in 0.3s ease-out both;
+}
+
+/* スコアカード */
+.rl-score-card {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1.25rem;
+  background-color: var(--md-sys-color-surface-variant);
+  border-radius: 12px;
+  gap: 0.5rem;
+  transition: background-color 0.2s;
+}
+
+.rl-score-card--primary {
+  background-color: var(--md-sys-color-primary-container);
+}
+
+.rl-score-card--secondary {
+  background-color: var(--md-sys-color-secondary-container);
+}
+
+.rl-score-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.rl-score-name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.rl-score-card--primary .rl-score-name {
+  color: var(--md-sys-color-on-primary-container);
+  opacity: 0.8;
+}
+
+.rl-score-card--secondary .rl-score-name {
+  color: var(--md-sys-color-on-secondary-container);
+  opacity: 0.8;
+}
+
+.rl-score-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  border-radius: 100px;
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  white-space: nowrap;
+}
+
+.rl-score-badge--green {
+  background: #388e3c;
+  color: #fff;
+}
+
+.rl-score-badge--blue {
+  background: #1565c0;
+  color: #fff;
+}
+
+.rl-score-badge--orange {
+  background: #f57c00;
+  color: #fff;
+}
+
+.rl-score-badge--red {
+  background: #c62828;
+  color: #fff;
+}
+
+.rl-score-value {
+  font-size: 2rem;
+  font-weight: 500;
+  font-family: 'Space Mono', 'Roboto Mono', monospace;
+  color: var(--md-sys-color-primary);
+  line-height: 1;
+}
+
+.rl-score-card--primary .rl-score-value {
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.rl-score-card--secondary .rl-score-value {
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+.rl-score-desc {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  line-height: 1.4;
+}
+
+.rl-score-card--primary .rl-score-desc {
+  color: var(--md-sys-color-on-primary-container);
+  opacity: 0.75;
+}
+
+.rl-score-card--secondary .rl-score-desc {
+  color: var(--md-sys-color-on-secondary-container);
+  opacity: 0.75;
+}
+
+/* 言語バッジ */
+.rl-lang-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 100px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  background-color: var(--md-sys-color-tertiary-container);
+  color: var(--md-sys-color-on-tertiary-container);
+}
+
+/* 密度バー */
+.rl-density-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.rl-density-row {
+  display: grid;
+  grid-template-columns: 80px 1fr 48px;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.rl-density-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.rl-density-bar-wrap {
+  height: 8px;
+  background: var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.rl-density-bar {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.4s ease-out;
+}
+
+.rl-density-bar--kanji { background: var(--md-sys-color-primary); }
+.rl-density-bar--hiragana { background: var(--md-sys-color-secondary); }
+.rl-density-bar--katakana { background: #7b1fa2; }
+
+.rl-density-value {
+  font-size: 0.8rem;
+  font-weight: 500;
+  font-family: 'Roboto Mono', monospace;
+  color: var(--md-sys-color-on-surface);
+  text-align: right;
+}
+
+/* 空状態 */
+.rl-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-style: italic;
+  text-align: center;
+}
+
+/* アニメーション */
+@keyframes rl-fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rl-gauge-fill,
+  .rl-density-bar,
+  .rl-score-grid {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* レスポンシブ */
+@media (max-width: 480px) {
+  .rl-score-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .rl-score-value {
+    font-size: 1.5rem;
+  }
+  .rl-density-row {
+    grid-template-columns: 64px 1fr 40px;
+  }
+}
