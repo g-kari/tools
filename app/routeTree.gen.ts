@@ -13,6 +13,7 @@ import { Route as ZenkakuRouteImport } from './routes/zenkaku'
 import { Route as YamlTomlRouteImport } from './routes/yaml-toml'
 import { Route as YamlJsonRouteImport } from './routes/yaml-json'
 import { Route as YamlFormatterRouteImport } from './routes/yaml-formatter'
+import { Route as XpathRouteImport } from './routes/xpath'
 import { Route as XmlJsonRouteImport } from './routes/xml-json'
 import { Route as XmlRouteImport } from './routes/xml'
 import { Route as WhoisRouteImport } from './routes/whois'
@@ -61,6 +62,7 @@ import { Route as ReadabilityRouteImport } from './routes/readability'
 import { Route as RandomDataRouteImport } from './routes/random-data'
 import { Route as QrCodeRouteImport } from './routes/qr-code'
 import { Route as PunycodeRouteImport } from './routes/punycode'
+import { Route as PortsRouteImport } from './routes/ports'
 import { Route as PortCheckRouteImport } from './routes/port-check'
 import { Route as PomodoroRouteImport } from './routes/pomodoro'
 import { Route as PkceRouteImport } from './routes/pkce'
@@ -173,6 +175,7 @@ import { Route as CharCountRouteImport } from './routes/char-count'
 import { Route as CertDecoderRouteImport } from './routes/cert-decoder'
 import { Route as BitwiseRouteImport } from './routes/bitwise'
 import { Route as BasicAuthRouteImport } from './routes/basic-auth'
+import { Route as Base85RouteImport } from './routes/base85'
 import { Route as Base64ImageRouteImport } from './routes/base64-image'
 import { Route as Base64RouteImport } from './routes/base64'
 import { Route as Base62RouteImport } from './routes/base62'
@@ -206,6 +209,11 @@ const YamlJsonRoute = YamlJsonRouteImport.update({
 const YamlFormatterRoute = YamlFormatterRouteImport.update({
   id: '/yaml-formatter',
   path: '/yaml-formatter',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const XpathRoute = XpathRouteImport.update({
+  id: '/xpath',
+  path: '/xpath',
   getParentRoute: () => rootRouteImport,
 } as any)
 const XmlJsonRoute = XmlJsonRouteImport.update({
@@ -446,6 +454,11 @@ const QrCodeRoute = QrCodeRouteImport.update({
 const PunycodeRoute = PunycodeRouteImport.update({
   id: '/punycode',
   path: '/punycode',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PortsRoute = PortsRouteImport.update({
+  id: '/ports',
+  path: '/ports',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PortCheckRoute = PortCheckRouteImport.update({
@@ -1008,6 +1021,11 @@ const BasicAuthRoute = BasicAuthRouteImport.update({
   path: '/basic-auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Base85Route = Base85RouteImport.update({
+  id: '/base85',
+  path: '/base85',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const Base64ImageRoute = Base64ImageRouteImport.update({
   id: '/base64-image',
   path: '/base64-image',
@@ -1090,6 +1108,7 @@ export interface FileRoutesByFullPath {
   '/base62': typeof Base62Route
   '/base64': typeof Base64Route
   '/base64-image': typeof Base64ImageRoute
+  '/base85': typeof Base85Route
   '/basic-auth': typeof BasicAuthRoute
   '/bitwise': typeof BitwiseRoute
   '/cert-decoder': typeof CertDecoderRoute
@@ -1202,6 +1221,7 @@ export interface FileRoutesByFullPath {
   '/pkce': typeof PkceRoute
   '/pomodoro': typeof PomodoroRoute
   '/port-check': typeof PortCheckRoute
+  '/ports': typeof PortsRoute
   '/punycode': typeof PunycodeRoute
   '/qr-code': typeof QrCodeRoute
   '/random-data': typeof RandomDataRoute
@@ -1250,6 +1270,7 @@ export interface FileRoutesByFullPath {
   '/whois': typeof WhoisRoute
   '/xml': typeof XmlRoute
   '/xml-json': typeof XmlJsonRoute
+  '/xpath': typeof XpathRoute
   '/yaml-formatter': typeof YamlFormatterRoute
   '/yaml-json': typeof YamlJsonRoute
   '/yaml-toml': typeof YamlTomlRoute
@@ -1270,6 +1291,7 @@ export interface FileRoutesByTo {
   '/base62': typeof Base62Route
   '/base64': typeof Base64Route
   '/base64-image': typeof Base64ImageRoute
+  '/base85': typeof Base85Route
   '/basic-auth': typeof BasicAuthRoute
   '/bitwise': typeof BitwiseRoute
   '/cert-decoder': typeof CertDecoderRoute
@@ -1382,6 +1404,7 @@ export interface FileRoutesByTo {
   '/pkce': typeof PkceRoute
   '/pomodoro': typeof PomodoroRoute
   '/port-check': typeof PortCheckRoute
+  '/ports': typeof PortsRoute
   '/punycode': typeof PunycodeRoute
   '/qr-code': typeof QrCodeRoute
   '/random-data': typeof RandomDataRoute
@@ -1430,6 +1453,7 @@ export interface FileRoutesByTo {
   '/whois': typeof WhoisRoute
   '/xml': typeof XmlRoute
   '/xml-json': typeof XmlJsonRoute
+  '/xpath': typeof XpathRoute
   '/yaml-formatter': typeof YamlFormatterRoute
   '/yaml-json': typeof YamlJsonRoute
   '/yaml-toml': typeof YamlTomlRoute
@@ -1451,6 +1475,7 @@ export interface FileRoutesById {
   '/base62': typeof Base62Route
   '/base64': typeof Base64Route
   '/base64-image': typeof Base64ImageRoute
+  '/base85': typeof Base85Route
   '/basic-auth': typeof BasicAuthRoute
   '/bitwise': typeof BitwiseRoute
   '/cert-decoder': typeof CertDecoderRoute
@@ -1563,6 +1588,7 @@ export interface FileRoutesById {
   '/pkce': typeof PkceRoute
   '/pomodoro': typeof PomodoroRoute
   '/port-check': typeof PortCheckRoute
+  '/ports': typeof PortsRoute
   '/punycode': typeof PunycodeRoute
   '/qr-code': typeof QrCodeRoute
   '/random-data': typeof RandomDataRoute
@@ -1611,6 +1637,7 @@ export interface FileRoutesById {
   '/whois': typeof WhoisRoute
   '/xml': typeof XmlRoute
   '/xml-json': typeof XmlJsonRoute
+  '/xpath': typeof XpathRoute
   '/yaml-formatter': typeof YamlFormatterRoute
   '/yaml-json': typeof YamlJsonRoute
   '/yaml-toml': typeof YamlTomlRoute
@@ -1633,6 +1660,7 @@ export interface FileRouteTypes {
     | '/base62'
     | '/base64'
     | '/base64-image'
+    | '/base85'
     | '/basic-auth'
     | '/bitwise'
     | '/cert-decoder'
@@ -1745,6 +1773,7 @@ export interface FileRouteTypes {
     | '/pkce'
     | '/pomodoro'
     | '/port-check'
+    | '/ports'
     | '/punycode'
     | '/qr-code'
     | '/random-data'
@@ -1793,6 +1822,7 @@ export interface FileRouteTypes {
     | '/whois'
     | '/xml'
     | '/xml-json'
+    | '/xpath'
     | '/yaml-formatter'
     | '/yaml-json'
     | '/yaml-toml'
@@ -1813,6 +1843,7 @@ export interface FileRouteTypes {
     | '/base62'
     | '/base64'
     | '/base64-image'
+    | '/base85'
     | '/basic-auth'
     | '/bitwise'
     | '/cert-decoder'
@@ -1925,6 +1956,7 @@ export interface FileRouteTypes {
     | '/pkce'
     | '/pomodoro'
     | '/port-check'
+    | '/ports'
     | '/punycode'
     | '/qr-code'
     | '/random-data'
@@ -1973,6 +2005,7 @@ export interface FileRouteTypes {
     | '/whois'
     | '/xml'
     | '/xml-json'
+    | '/xpath'
     | '/yaml-formatter'
     | '/yaml-json'
     | '/yaml-toml'
@@ -1993,6 +2026,7 @@ export interface FileRouteTypes {
     | '/base62'
     | '/base64'
     | '/base64-image'
+    | '/base85'
     | '/basic-auth'
     | '/bitwise'
     | '/cert-decoder'
@@ -2105,6 +2139,7 @@ export interface FileRouteTypes {
     | '/pkce'
     | '/pomodoro'
     | '/port-check'
+    | '/ports'
     | '/punycode'
     | '/qr-code'
     | '/random-data'
@@ -2153,6 +2188,7 @@ export interface FileRouteTypes {
     | '/whois'
     | '/xml'
     | '/xml-json'
+    | '/xpath'
     | '/yaml-formatter'
     | '/yaml-json'
     | '/yaml-toml'
@@ -2174,6 +2210,7 @@ export interface RootRouteChildren {
   Base62Route: typeof Base62Route
   Base64Route: typeof Base64Route
   Base64ImageRoute: typeof Base64ImageRoute
+  Base85Route: typeof Base85Route
   BasicAuthRoute: typeof BasicAuthRoute
   BitwiseRoute: typeof BitwiseRoute
   CertDecoderRoute: typeof CertDecoderRoute
@@ -2286,6 +2323,7 @@ export interface RootRouteChildren {
   PkceRoute: typeof PkceRoute
   PomodoroRoute: typeof PomodoroRoute
   PortCheckRoute: typeof PortCheckRoute
+  PortsRoute: typeof PortsRoute
   PunycodeRoute: typeof PunycodeRoute
   QrCodeRoute: typeof QrCodeRoute
   RandomDataRoute: typeof RandomDataRoute
@@ -2334,6 +2372,7 @@ export interface RootRouteChildren {
   WhoisRoute: typeof WhoisRoute
   XmlRoute: typeof XmlRoute
   XmlJsonRoute: typeof XmlJsonRoute
+  XpathRoute: typeof XpathRoute
   YamlFormatterRoute: typeof YamlFormatterRoute
   YamlJsonRoute: typeof YamlJsonRoute
   YamlTomlRoute: typeof YamlTomlRoute
@@ -2372,6 +2411,13 @@ declare module '@tanstack/react-router' {
       path: '/yaml-formatter'
       fullPath: '/yaml-formatter'
       preLoaderRoute: typeof YamlFormatterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/xpath': {
+      id: '/xpath'
+      path: '/xpath'
+      fullPath: '/xpath'
+      preLoaderRoute: typeof XpathRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/xml-json': {
@@ -2708,6 +2754,13 @@ declare module '@tanstack/react-router' {
       path: '/punycode'
       fullPath: '/punycode'
       preLoaderRoute: typeof PunycodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ports': {
+      id: '/ports'
+      path: '/ports'
+      fullPath: '/ports'
+      preLoaderRoute: typeof PortsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/port-check': {
@@ -3494,6 +3547,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BasicAuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/base85': {
+      id: '/base85'
+      path: '/base85'
+      fullPath: '/base85'
+      preLoaderRoute: typeof Base85RouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/base64-image': {
       id: '/base64-image'
       path: '/base64-image'
@@ -3606,6 +3666,7 @@ const rootRouteChildren: RootRouteChildren = {
   Base62Route: Base62Route,
   Base64Route: Base64Route,
   Base64ImageRoute: Base64ImageRoute,
+  Base85Route: Base85Route,
   BasicAuthRoute: BasicAuthRoute,
   BitwiseRoute: BitwiseRoute,
   CertDecoderRoute: CertDecoderRoute,
@@ -3718,6 +3779,7 @@ const rootRouteChildren: RootRouteChildren = {
   PkceRoute: PkceRoute,
   PomodoroRoute: PomodoroRoute,
   PortCheckRoute: PortCheckRoute,
+  PortsRoute: PortsRoute,
   PunycodeRoute: PunycodeRoute,
   QrCodeRoute: QrCodeRoute,
   RandomDataRoute: RandomDataRoute,
@@ -3766,6 +3828,7 @@ const rootRouteChildren: RootRouteChildren = {
   WhoisRoute: WhoisRoute,
   XmlRoute: XmlRoute,
   XmlJsonRoute: XmlJsonRoute,
+  XpathRoute: XpathRoute,
   YamlFormatterRoute: YamlFormatterRoute,
   YamlJsonRoute: YamlJsonRoute,
   YamlTomlRoute: YamlTomlRoute,
