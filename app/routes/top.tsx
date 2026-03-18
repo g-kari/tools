@@ -108,6 +108,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "₿",
       },
       {
+        path: "/base62",
+        label: "Base62変換",
+        description:
+          "[0-9A-Za-z] の 62 文字を使用したエンコード・デコード。URL 短縮サービス・短い一意 ID 生成・YouTube 動画 ID などに使われる英数字のみのエンコード方式。整数モード対応。",
+        icon: "62",
+      },
+      {
         path: "/base32",
         label: "Base32変換",
         description:

@@ -1,0 +1,285 @@
+/* Base62 エンコーダー/デコーダー */
+
+/* モード切替タブ */
+.b62-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  padding-bottom: 0.5rem;
+}
+
+.b62-tab-btn {
+  padding: 0.375rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid transparent;
+  border-radius: 4px 4px 0 0;
+  cursor: pointer;
+  background: none;
+  color: var(--md-sys-color-on-surface-variant);
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.b62-tab-btn:hover:not(.active) {
+  background-color: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+}
+
+.b62-tab-btn.active {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border-color: var(--md-sys-color-primary);
+}
+
+.b62-tab-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* 数値モードタブ */
+.b62-mode-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 1rem;
+}
+
+.b62-mode-btn {
+  padding: 0.25rem 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 20px;
+  cursor: pointer;
+  background: none;
+  color: var(--md-sys-color-on-surface-variant);
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.b62-mode-btn.active {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  border-color: var(--md-sys-color-secondary);
+}
+
+.b62-mode-btn:hover:not(.active) {
+  background-color: var(--md-sys-color-surface-variant);
+}
+
+.b62-mode-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* オプション行 */
+.b62-options-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.b62-fieldset {
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  padding: 0.5rem 0.75rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.b62-legend {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  padding: 0 0.25rem;
+}
+
+.b62-radio-label {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  user-select: none;
+}
+
+.b62-radio-label input[type='radio'] {
+  accent-color: var(--md-sys-color-primary);
+  cursor: pointer;
+}
+
+/* テキストエリア */
+.b62-textarea {
+  width: 100%;
+  min-height: 140px;
+  padding: 0.75rem;
+  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  resize: vertical;
+  transition: border-color 0.2s, background 0.2s;
+  box-sizing: border-box;
+}
+
+.b62-textarea:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-surface);
+}
+
+.b62-textarea::placeholder {
+  color: var(--md-sys-color-on-surface-variant);
+  opacity: 0.6;
+}
+
+.b62-textarea-output {
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  cursor: default;
+}
+
+/* 数値入力 */
+.b62-number-input {
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
+  font-size: 0.875rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  transition: border-color 0.2s, background 0.2s;
+  box-sizing: border-box;
+}
+
+.b62-number-input:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-surface);
+}
+
+.b62-number-input::placeholder {
+  color: var(--md-sys-color-on-surface-variant);
+  opacity: 0.6;
+}
+
+/* アクションボタン行 */
+.b62-action-row {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+/* エラーパネル */
+.b62-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  margin-bottom: 0.75rem;
+  border: 1px solid var(--md-sys-color-error);
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--md-sys-color-error) 8%, transparent);
+  color: var(--md-sys-color-error);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+.b62-error-icon {
+  flex-shrink: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* 出力ヘッダー */
+.b62-output-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.b62-output-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+}
+
+.b62-output-meta {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* 数値モード出力 */
+.b62-number-result {
+  padding: 0.75rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface);
+  font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface);
+  word-break: break-all;
+  margin-bottom: 0.5rem;
+}
+
+/* アルファベット表示 */
+.b62-alphabet-display {
+  padding: 0.625rem 0.75rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface-variant);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  letter-spacing: 0.05em;
+  word-break: break-all;
+  margin-top: 0.5rem;
+}
+
+/* レスポンシブ */
+@media (max-width: 600px) {
+  .b62-fieldset {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .b62-options-row {
+    flex-direction: column;
+  }
+
+  .b62-action-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .b62-action-row > button {
+    width: 100%;
+  }
+
+  .b62-mode-tabs {
+    flex-wrap: wrap;
+  }
+}
+
+/* モーション低減 */
+@media (prefers-reduced-motion: reduce) {
+  .b62-tab-btn,
+  .b62-mode-btn,
+  .b62-textarea,
+  .b62-number-input {
+    transition: none;
+  }
+}

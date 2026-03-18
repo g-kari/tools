@@ -75,6 +75,7 @@ const navCategories = [
       { path: "/punycode", label: "Punycode変換 (IDN)" },
       { path: "/string-escape", label: "文字列エスケープ" },
       { path: "/base58", label: "Base58変換" },
+      { path: "/base62", label: "Base62変換" },
       { path: "/zenkaku", label: "全角/半角変換" },
       { path: "/roman-numerals", label: "ローマ数字変換" },
       { path: "/number-words", label: "数値テキスト変換" },
@@ -147,6 +148,7 @@ const navCategories = [
       { path: "/svg-optimizer", label: "SVG最適化" },
       { path: "/color-token", label: "カラートークン生成" },
       { path: "/css-media-query", label: "CSSメディアクエリビルダー" },
+      { path: "/color-name", label: "色名検索" },
     ],
   },
   {
@@ -177,6 +179,7 @@ const navCategories = [
       { path: "/text-line", label: "テキスト行操作" },
       { path: "/text-stats", label: "テキスト統計" },
       { path: "/text-replace", label: "テキスト置換" },
+      { path: "/string-similarity", label: "文字列類似度計算" },
     ],
   },
   {
@@ -224,6 +227,8 @@ const navCategories = [
       { path: "/chmod", label: "Chmod計算" },
       { path: "/http-client", label: "HTTP APIテスター" },
       { path: "/curl-builder", label: "curlビルダー" },
+      { path: "/curl-to-fetch", label: "cURL → fetch 変換" },
+      { path: "/redirect-tracer", label: "リダイレクトトレーサー" },
       { path: "/openssl-builder", label: "OpenSSLビルダー" },
       { path: "/har", label: "HAR アナライザー" },
       { path: "/websocket", label: "WebSocket テスター" },
@@ -239,6 +244,7 @@ const navCategories = [
     icon: "🎲",
     items: [
       { path: "/dice-roll", label: "ダイスロール" },
+      { path: "/typing-speed", label: "タイピング速度測定" },
       { path: "/pomodoro", label: "ポモドーロタイマー" },
     ],
   },

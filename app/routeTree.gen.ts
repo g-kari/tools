@@ -173,6 +173,7 @@ import { Route as BitwiseRouteImport } from './routes/bitwise'
 import { Route as BasicAuthRouteImport } from './routes/basic-auth'
 import { Route as Base64ImageRouteImport } from './routes/base64-image'
 import { Route as Base64RouteImport } from './routes/base64'
+import { Route as Base62RouteImport } from './routes/base62'
 import { Route as Base58RouteImport } from './routes/base58'
 import { Route as Base32RouteImport } from './routes/base32'
 import { Route as BarcodeRouteImport } from './routes/barcode'
@@ -1005,6 +1006,11 @@ const Base64Route = Base64RouteImport.update({
   path: '/base64',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Base62Route = Base62RouteImport.update({
+  id: '/base62',
+  path: '/base62',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const Base58Route = Base58RouteImport.update({
   id: '/base58',
   path: '/base58',
@@ -1069,6 +1075,7 @@ export interface FileRoutesByFullPath {
   '/barcode': typeof BarcodeRoute
   '/base32': typeof Base32Route
   '/base58': typeof Base58Route
+  '/base62': typeof Base62Route
   '/base64': typeof Base64Route
   '/base64-image': typeof Base64ImageRoute
   '/basic-auth': typeof BasicAuthRoute
@@ -1246,6 +1253,7 @@ export interface FileRoutesByTo {
   '/barcode': typeof BarcodeRoute
   '/base32': typeof Base32Route
   '/base58': typeof Base58Route
+  '/base62': typeof Base62Route
   '/base64': typeof Base64Route
   '/base64-image': typeof Base64ImageRoute
   '/basic-auth': typeof BasicAuthRoute
@@ -1424,6 +1432,7 @@ export interface FileRoutesById {
   '/barcode': typeof BarcodeRoute
   '/base32': typeof Base32Route
   '/base58': typeof Base58Route
+  '/base62': typeof Base62Route
   '/base64': typeof Base64Route
   '/base64-image': typeof Base64ImageRoute
   '/basic-auth': typeof BasicAuthRoute
@@ -1603,6 +1612,7 @@ export interface FileRouteTypes {
     | '/barcode'
     | '/base32'
     | '/base58'
+    | '/base62'
     | '/base64'
     | '/base64-image'
     | '/basic-auth'
@@ -1780,6 +1790,7 @@ export interface FileRouteTypes {
     | '/barcode'
     | '/base32'
     | '/base58'
+    | '/base62'
     | '/base64'
     | '/base64-image'
     | '/basic-auth'
@@ -1957,6 +1968,7 @@ export interface FileRouteTypes {
     | '/barcode'
     | '/base32'
     | '/base58'
+    | '/base62'
     | '/base64'
     | '/base64-image'
     | '/basic-auth'
@@ -2135,6 +2147,7 @@ export interface RootRouteChildren {
   BarcodeRoute: typeof BarcodeRoute
   Base32Route: typeof Base32Route
   Base58Route: typeof Base58Route
+  Base62Route: typeof Base62Route
   Base64Route: typeof Base64Route
   Base64ImageRoute: typeof Base64ImageRoute
   BasicAuthRoute: typeof BasicAuthRoute
@@ -3455,6 +3468,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Base64RouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/base62': {
+      id: '/base62'
+      path: '/base62'
+      fullPath: '/base62'
+      preLoaderRoute: typeof Base62RouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/base58': {
       id: '/base58'
       path: '/base58'
@@ -3543,6 +3563,7 @@ const rootRouteChildren: RootRouteChildren = {
   BarcodeRoute: BarcodeRoute,
   Base32Route: Base32Route,
   Base58Route: Base58Route,
+  Base62Route: Base62Route,
   Base64Route: Base64Route,
   Base64ImageRoute: Base64ImageRoute,
   BasicAuthRoute: BasicAuthRoute,
