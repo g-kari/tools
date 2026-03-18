@@ -1,0 +1,128 @@
+/* SSH鍵生成 スタイル */
+
+.ssh-key-algo-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.ssh-key-algo-btn {
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  border: 1px solid var(--md-sys-color-outline);
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.ssh-key-algo-btn:hover {
+  background: var(--md-sys-color-surface-container-high);
+}
+
+.ssh-key-algo-btn.active {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  border-color: var(--md-sys-color-primary);
+}
+
+.ssh-key-output-section {
+  margin-top: 1rem;
+}
+
+.ssh-key-output-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 0.4rem;
+}
+
+.ssh-key-output-area {
+  font-family: monospace;
+  font-size: 0.8rem;
+  background: var(--md-sys-color-surface-container);
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 8px;
+  padding: 1rem;
+  word-break: break-all;
+  white-space: pre-wrap;
+  min-height: 80px;
+  color: var(--md-sys-color-on-surface);
+}
+
+.ssh-key-output-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+  margin-top: 0.25rem;
+}
+
+.ssh-key-output-row .ssh-key-output-area {
+  flex: 1;
+}
+
+.ssh-key-warning {
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.ssh-key-warning-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.ssh-key-loading {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ssh-key-loading-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--md-sys-color-outline);
+  border-top-color: var(--md-sys-color-primary);
+  border-radius: 50%;
+  animation: ssh-key-spin 0.7s linear infinite;
+}
+
+@keyframes ssh-key-spin {
+  to { transform: rotate(360deg); }
+}
+
+.ssh-key-public-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--md-sys-color-outline);
+  margin-bottom: 0.75rem;
+}
+
+.ssh-key-public-tab {
+  padding: 0.4rem 1rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.ssh-key-public-tab:hover {
+  color: var(--md-sys-color-on-surface);
+}
+
+.ssh-key-public-tab.active {
+  color: var(--md-sys-color-primary);
+  border-bottom-color: var(--md-sys-color-primary);
+}

@@ -1009,6 +1009,13 @@ const toolCatalog: ToolCategory[] = [
           "HTTP Basic認証ヘッダーをエンコード・デコードするツール。ユーザー名とパスワードから Authorization: Basic ヘッダーを生成。curl オプションも表示。ブラウザ内完結でデータは外部に送信されません。",
         icon: "🔐",
       },
+      {
+        path: "/ssh-key",
+        label: "SSH鍵生成",
+        description:
+          "RSA (2048/4096bit) および ECDSA (P-256/P-384) の鍵ペアをブラウザ内で生成。PKCS#8 PEM・OpenSSH形式で出力。秘密鍵は外部に送信されません。",
+        icon: "🔑",
+      },
     ],
   },
   {
@@ -1076,6 +1083,12 @@ const toolCatalog: ToolCategory[] = [
         label: "HAR アナライザー",
         description: "ブラウザDevToolsからエクスポートしたHARファイルを解析。リクエスト一覧・レスポンスサイズ・タイミング・ステータス別統計を可視化。遅いリクエストや大きなリソースを素早く特定できる。",
         icon: "📊",
+      },
+      {
+        path: "/websocket",
+        label: "WebSocket テスター",
+        description: "WebSocketエンドポイントへの接続・メッセージ送受信テストツール。接続状態のモニタリング・メッセージログ・JSON整形表示に対応。",
+        icon: "🔌",
       },
     ],
   },

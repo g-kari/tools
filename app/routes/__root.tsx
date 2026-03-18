@@ -194,6 +194,7 @@ const navCategories = [
       { path: "/pkce", label: "PKCE ジェネレーター" },
       { path: "/cert-decoder", label: "X.509 証明書デコーダー" },
       { path: "/password-strength", label: "パスワード強度チェッカー" },
+      { path: "/ssh-key", label: "SSH鍵生成" },
     ],
   },
   {
@@ -210,6 +211,7 @@ const navCategories = [
       { path: "/curl-builder", label: "curlビルダー" },
       { path: "/openssl-builder", label: "OpenSSLビルダー" },
       { path: "/har", label: "HAR アナライザー" },
+      { path: "/websocket", label: "WebSocket テスター" },
     ],
   },
   {

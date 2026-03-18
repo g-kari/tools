@@ -16,6 +16,7 @@ import { Route as YamlFormatterRouteImport } from './routes/yaml-formatter'
 import { Route as XmlJsonRouteImport } from './routes/xml-json'
 import { Route as XmlRouteImport } from './routes/xml'
 import { Route as WhoisRouteImport } from './routes/whois'
+import { Route as WebsocketRouteImport } from './routes/websocket'
 import { Route as VideoConverterRouteImport } from './routes/video-converter'
 import { Route as UuidInspectorRouteImport } from './routes/uuid-inspector'
 import { Route as UuidRouteImport } from './routes/uuid'
@@ -42,6 +43,7 @@ import { Route as TextEncryptRouteImport } from './routes/text-encrypt'
 import { Route as TextCaseRouteImport } from './routes/text-case'
 import { Route as SvgOptimizerRouteImport } from './routes/svg-optimizer'
 import { Route as StringEscapeRouteImport } from './routes/string-escape'
+import { Route as SshKeyRouteImport } from './routes/ssh-key'
 import { Route as SqlRouteImport } from './routes/sql'
 import { Route as SlugRouteImport } from './routes/slug'
 import { Route as ServerEnvRouteImport } from './routes/server-env'
@@ -207,6 +209,11 @@ const WhoisRoute = WhoisRouteImport.update({
   path: '/whois',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WebsocketRoute = WebsocketRouteImport.update({
+  id: '/websocket',
+  path: '/websocket',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const VideoConverterRoute = VideoConverterRouteImport.update({
   id: '/video-converter',
   path: '/video-converter',
@@ -335,6 +342,11 @@ const SvgOptimizerRoute = SvgOptimizerRouteImport.update({
 const StringEscapeRoute = StringEscapeRouteImport.update({
   id: '/string-escape',
   path: '/string-escape',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SshKeyRoute = SshKeyRouteImport.update({
+  id: '/ssh-key',
+  path: '/ssh-key',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SqlRoute = SqlRouteImport.update({
@@ -1109,6 +1121,7 @@ export interface FileRoutesByFullPath {
   '/server-env': typeof ServerEnvRoute
   '/slug': typeof SlugRoute
   '/sql': typeof SqlRoute
+  '/ssh-key': typeof SshKeyRoute
   '/string-escape': typeof StringEscapeRoute
   '/svg-optimizer': typeof SvgOptimizerRoute
   '/text-case': typeof TextCaseRoute
@@ -1135,6 +1148,7 @@ export interface FileRoutesByFullPath {
   '/uuid': typeof UuidRoute
   '/uuid-inspector': typeof UuidInspectorRoute
   '/video-converter': typeof VideoConverterRoute
+  '/websocket': typeof WebsocketRoute
   '/whois': typeof WhoisRoute
   '/xml': typeof XmlRoute
   '/xml-json': typeof XmlJsonRoute
@@ -1273,6 +1287,7 @@ export interface FileRoutesByTo {
   '/server-env': typeof ServerEnvRoute
   '/slug': typeof SlugRoute
   '/sql': typeof SqlRoute
+  '/ssh-key': typeof SshKeyRoute
   '/string-escape': typeof StringEscapeRoute
   '/svg-optimizer': typeof SvgOptimizerRoute
   '/text-case': typeof TextCaseRoute
@@ -1299,6 +1314,7 @@ export interface FileRoutesByTo {
   '/uuid': typeof UuidRoute
   '/uuid-inspector': typeof UuidInspectorRoute
   '/video-converter': typeof VideoConverterRoute
+  '/websocket': typeof WebsocketRoute
   '/whois': typeof WhoisRoute
   '/xml': typeof XmlRoute
   '/xml-json': typeof XmlJsonRoute
@@ -1438,6 +1454,7 @@ export interface FileRoutesById {
   '/server-env': typeof ServerEnvRoute
   '/slug': typeof SlugRoute
   '/sql': typeof SqlRoute
+  '/ssh-key': typeof SshKeyRoute
   '/string-escape': typeof StringEscapeRoute
   '/svg-optimizer': typeof SvgOptimizerRoute
   '/text-case': typeof TextCaseRoute
@@ -1464,6 +1481,7 @@ export interface FileRoutesById {
   '/uuid': typeof UuidRoute
   '/uuid-inspector': typeof UuidInspectorRoute
   '/video-converter': typeof VideoConverterRoute
+  '/websocket': typeof WebsocketRoute
   '/whois': typeof WhoisRoute
   '/xml': typeof XmlRoute
   '/xml-json': typeof XmlJsonRoute
@@ -1604,6 +1622,7 @@ export interface FileRouteTypes {
     | '/server-env'
     | '/slug'
     | '/sql'
+    | '/ssh-key'
     | '/string-escape'
     | '/svg-optimizer'
     | '/text-case'
@@ -1630,6 +1649,7 @@ export interface FileRouteTypes {
     | '/uuid'
     | '/uuid-inspector'
     | '/video-converter'
+    | '/websocket'
     | '/whois'
     | '/xml'
     | '/xml-json'
@@ -1768,6 +1788,7 @@ export interface FileRouteTypes {
     | '/server-env'
     | '/slug'
     | '/sql'
+    | '/ssh-key'
     | '/string-escape'
     | '/svg-optimizer'
     | '/text-case'
@@ -1794,6 +1815,7 @@ export interface FileRouteTypes {
     | '/uuid'
     | '/uuid-inspector'
     | '/video-converter'
+    | '/websocket'
     | '/whois'
     | '/xml'
     | '/xml-json'
@@ -1932,6 +1954,7 @@ export interface FileRouteTypes {
     | '/server-env'
     | '/slug'
     | '/sql'
+    | '/ssh-key'
     | '/string-escape'
     | '/svg-optimizer'
     | '/text-case'
@@ -1958,6 +1981,7 @@ export interface FileRouteTypes {
     | '/uuid'
     | '/uuid-inspector'
     | '/video-converter'
+    | '/websocket'
     | '/whois'
     | '/xml'
     | '/xml-json'
@@ -2097,6 +2121,7 @@ export interface RootRouteChildren {
   ServerEnvRoute: typeof ServerEnvRoute
   SlugRoute: typeof SlugRoute
   SqlRoute: typeof SqlRoute
+  SshKeyRoute: typeof SshKeyRoute
   StringEscapeRoute: typeof StringEscapeRoute
   SvgOptimizerRoute: typeof SvgOptimizerRoute
   TextCaseRoute: typeof TextCaseRoute
@@ -2123,6 +2148,7 @@ export interface RootRouteChildren {
   UuidRoute: typeof UuidRoute
   UuidInspectorRoute: typeof UuidInspectorRoute
   VideoConverterRoute: typeof VideoConverterRoute
+  WebsocketRoute: typeof WebsocketRoute
   WhoisRoute: typeof WhoisRoute
   XmlRoute: typeof XmlRoute
   XmlJsonRoute: typeof XmlJsonRoute
@@ -2185,6 +2211,13 @@ declare module '@tanstack/react-router' {
       path: '/whois'
       fullPath: '/whois'
       preLoaderRoute: typeof WhoisRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/websocket': {
+      id: '/websocket'
+      path: '/websocket'
+      fullPath: '/websocket'
+      preLoaderRoute: typeof WebsocketRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/video-converter': {
@@ -2367,6 +2400,13 @@ declare module '@tanstack/react-router' {
       path: '/string-escape'
       fullPath: '/string-escape'
       preLoaderRoute: typeof StringEscapeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ssh-key': {
+      id: '/ssh-key'
+      path: '/ssh-key'
+      fullPath: '/ssh-key'
+      preLoaderRoute: typeof SshKeyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sql': {
@@ -3401,6 +3441,7 @@ const rootRouteChildren: RootRouteChildren = {
   ServerEnvRoute: ServerEnvRoute,
   SlugRoute: SlugRoute,
   SqlRoute: SqlRoute,
+  SshKeyRoute: SshKeyRoute,
   StringEscapeRoute: StringEscapeRoute,
   SvgOptimizerRoute: SvgOptimizerRoute,
   TextCaseRoute: TextCaseRoute,
@@ -3427,6 +3468,7 @@ const rootRouteChildren: RootRouteChildren = {
   UuidRoute: UuidRoute,
   UuidInspectorRoute: UuidInspectorRoute,
   VideoConverterRoute: VideoConverterRoute,
+  WebsocketRoute: WebsocketRoute,
   WhoisRoute: WhoisRoute,
   XmlRoute: XmlRoute,
   XmlJsonRoute: XmlJsonRoute,
