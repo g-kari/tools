@@ -1037,6 +1037,13 @@ const toolCatalog: ToolCategory[] = [
           "RSA (2048/4096bit) および ECDSA (P-256/P-384) の鍵ペアをブラウザ内で生成。PKCS#8 PEM・OpenSSH形式で出力。秘密鍵は外部に送信されません。",
         icon: "🔑",
       },
+      {
+        path: "/luhn-check",
+        label: "Luhn / クレジットカード検証",
+        description:
+          "Luhnアルゴリズムでクレジットカード番号の有効性を検証するツール。Visa・Mastercard・Amex・Discover・JCBなどのカード種別を自動判定。テスト用カード番号リスト付き。",
+        icon: "💳",
+      },
     ],
   },
   {
@@ -1174,14 +1181,14 @@ export const Route = createFileRoute("/top")({
   head: () => ({
     meta: [
       { title: "ツール一覧 | Web ツール集" },
-      { name: "description", content: "133以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
+      { name: "description", content: "134以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
       { property: "og:title", content: "ツール一覧 | Web ツール集" },
-      { property: "og:description", content: "133以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
+      { property: "og:description", content: "134以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
       { property: "og:url", content: `${SITE_BASE_URL}/top` },
       { property: "og:type", content: "website" },
       { property: "og:image", content: SITE_OGP_IMAGE },
       { name: "twitter:title", content: "ツール一覧 | Web ツール集" },
-      { name: "twitter:description", content: "133以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
+      { name: "twitter:description", content: "134以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
     ],
   }),
   component: TopPage,

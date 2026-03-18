@@ -76,6 +76,7 @@ import { Route as MermaidRouteImport } from './routes/mermaid'
 import { Route as MathEvalRouteImport } from './routes/math-eval'
 import { Route as MarkdownTableRouteImport } from './routes/markdown-table'
 import { Route as MarkdownPreviewRouteImport } from './routes/markdown-preview'
+import { Route as LuhnCheckRouteImport } from './routes/luhn-check'
 import { Route as LoremIpsumRouteImport } from './routes/lorem-ipsum'
 import { Route as KeycodeRouteImport } from './routes/keycode'
 import { Route as JwtGeneratorRouteImport } from './routes/jwt-generator'
@@ -510,6 +511,11 @@ const MarkdownTableRoute = MarkdownTableRouteImport.update({
 const MarkdownPreviewRoute = MarkdownPreviewRouteImport.update({
   id: '/markdown-preview',
   path: '/markdown-preview',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LuhnCheckRoute = LuhnCheckRouteImport.update({
+  id: '/luhn-check',
+  path: '/luhn-check',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoremIpsumRoute = LoremIpsumRouteImport.update({
@@ -1110,6 +1116,7 @@ export interface FileRoutesByFullPath {
   '/jwt-generator': typeof JwtGeneratorRoute
   '/keycode': typeof KeycodeRoute
   '/lorem-ipsum': typeof LoremIpsumRoute
+  '/luhn-check': typeof LuhnCheckRoute
   '/markdown-preview': typeof MarkdownPreviewRoute
   '/markdown-table': typeof MarkdownTableRoute
   '/math-eval': typeof MathEvalRoute
@@ -1279,6 +1286,7 @@ export interface FileRoutesByTo {
   '/jwt-generator': typeof JwtGeneratorRoute
   '/keycode': typeof KeycodeRoute
   '/lorem-ipsum': typeof LoremIpsumRoute
+  '/luhn-check': typeof LuhnCheckRoute
   '/markdown-preview': typeof MarkdownPreviewRoute
   '/markdown-table': typeof MarkdownTableRoute
   '/math-eval': typeof MathEvalRoute
@@ -1449,6 +1457,7 @@ export interface FileRoutesById {
   '/jwt-generator': typeof JwtGeneratorRoute
   '/keycode': typeof KeycodeRoute
   '/lorem-ipsum': typeof LoremIpsumRoute
+  '/luhn-check': typeof LuhnCheckRoute
   '/markdown-preview': typeof MarkdownPreviewRoute
   '/markdown-table': typeof MarkdownTableRoute
   '/math-eval': typeof MathEvalRoute
@@ -1620,6 +1629,7 @@ export interface FileRouteTypes {
     | '/jwt-generator'
     | '/keycode'
     | '/lorem-ipsum'
+    | '/luhn-check'
     | '/markdown-preview'
     | '/markdown-table'
     | '/math-eval'
@@ -1789,6 +1799,7 @@ export interface FileRouteTypes {
     | '/jwt-generator'
     | '/keycode'
     | '/lorem-ipsum'
+    | '/luhn-check'
     | '/markdown-preview'
     | '/markdown-table'
     | '/math-eval'
@@ -1958,6 +1969,7 @@ export interface FileRouteTypes {
     | '/jwt-generator'
     | '/keycode'
     | '/lorem-ipsum'
+    | '/luhn-check'
     | '/markdown-preview'
     | '/markdown-table'
     | '/math-eval'
@@ -2128,6 +2140,7 @@ export interface RootRouteChildren {
   JwtGeneratorRoute: typeof JwtGeneratorRoute
   KeycodeRoute: typeof KeycodeRoute
   LoremIpsumRoute: typeof LoremIpsumRoute
+  LuhnCheckRoute: typeof LuhnCheckRoute
   MarkdownPreviewRoute: typeof MarkdownPreviewRoute
   MarkdownTableRoute: typeof MarkdownTableRoute
   MathEvalRoute: typeof MathEvalRoute
@@ -2670,6 +2683,13 @@ declare module '@tanstack/react-router' {
       path: '/markdown-preview'
       fullPath: '/markdown-preview'
       preLoaderRoute: typeof MarkdownPreviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/luhn-check': {
+      id: '/luhn-check'
+      path: '/luhn-check'
+      fullPath: '/luhn-check'
+      preLoaderRoute: typeof LuhnCheckRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/lorem-ipsum': {
@@ -3472,6 +3492,7 @@ const rootRouteChildren: RootRouteChildren = {
   JwtGeneratorRoute: JwtGeneratorRoute,
   KeycodeRoute: KeycodeRoute,
   LoremIpsumRoute: LoremIpsumRoute,
+  LuhnCheckRoute: LuhnCheckRoute,
   MarkdownPreviewRoute: MarkdownPreviewRoute,
   MarkdownTableRoute: MarkdownTableRoute,
   MathEvalRoute: MathEvalRoute,
