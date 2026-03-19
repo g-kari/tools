@@ -1,0 +1,279 @@
+/* 統計計算ツール */
+
+.statistics-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* 入力エリア */
+.statistics-input-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.statistics-input-label {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+}
+
+.statistics-textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 0.75rem 1rem;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 0;
+  font-size: 0.9375rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  resize: vertical;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.statistics-textarea:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+}
+
+.statistics-input-hint {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  opacity: 0.8;
+}
+
+/* サンプルボタン */
+.statistics-samples {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.statistics-samples-label {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+}
+
+/* 解析済み件数バッジ */
+.statistics-count-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.75rem;
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  font-size: 0.8125rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+}
+
+/* 結果グリッド */
+.statistics-results {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.statistics-section-title {
+  font-size: 0.75rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 0.5rem;
+}
+
+/* 統計カードグリッド */
+.statistics-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0.5rem;
+}
+
+.statistics-card {
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.statistics-card.highlight {
+  background: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+}
+
+.statistics-card-label {
+  font-size: 0.6875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.statistics-card.highlight .statistics-card-label {
+  color: var(--md-sys-color-on-primary-container);
+  opacity: 0.8;
+}
+
+.statistics-card-value {
+  font-size: 1.125rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  color: var(--md-sys-color-primary);
+  margin: 0;
+  word-break: break-all;
+}
+
+.statistics-card.highlight .statistics-card-value {
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.statistics-card-sub {
+  font-size: 0.6875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  margin: 0;
+}
+
+/* モード（最頻値）が複数の場合 */
+.statistics-mode-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin: 0;
+}
+
+.statistics-mode-tag {
+  padding: 0.125rem 0.5rem;
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  font-size: 0.875rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+}
+
+/* 度数分布テーブル */
+.statistics-freq-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.8125rem;
+}
+
+.statistics-freq-table th {
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  font-weight: 600;
+}
+
+.statistics-freq-table td {
+  padding: 0.4375rem 0.75rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  color: var(--md-sys-color-on-surface);
+}
+
+.statistics-freq-table tr:nth-child(even) td {
+  background: var(--md-sys-color-surface-variant);
+  opacity: 0.6;
+}
+
+/* 度数バー */
+.statistics-freq-bar-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.statistics-freq-bar {
+  height: 0.625rem;
+  background: var(--md-sys-color-primary);
+  min-width: 2px;
+  transition: width 0.3s ease;
+}
+
+.statistics-freq-bar-pct {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  white-space: nowrap;
+}
+
+/* 歪度・尖度の説明 */
+.statistics-interpretation {
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.statistics-interp-row {
+  display: flex;
+  gap: 1rem;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+
+.statistics-interp-key {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  min-width: 80px;
+}
+
+.statistics-interp-value {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+}
+
+/* エラー表示 */
+.statistics-error {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-error);
+  background: var(--md-sys-color-error-container);
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--md-sys-color-error);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+}
+
+/* 空状態 */
+.statistics-empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.875rem;
+}
+
+.statistics-empty-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+  display: block;
+  opacity: 0.4;
+}
+
+/* レスポンシブ */
+@media (max-width: 640px) {
+  .statistics-cards {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  }
+
+  .statistics-freq-table {
+    font-size: 0.75rem;
+  }
+
+  .statistics-freq-table th,
+  .statistics-freq-table td {
+    padding: 0.375rem 0.5rem;
+  }
+}

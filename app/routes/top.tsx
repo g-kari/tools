@@ -388,6 +388,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🧮",
       },
       {
+        path: "/statistics",
+        label: "統計計算ツール",
+        description:
+          "数値データの記述統計を計算するツール。平均・中央値・最頻値・分散・標準偏差・四分位数・歪度・尖度・幾何平均・調和平均・度数分布をブラウザ内で即座に算出。",
+        icon: "📊",
+      },
+      {
         path: "/bitwise",
         label: "ビット演算計算機",
         description:
