@@ -409,6 +409,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "📊",
       },
       {
+        path: "/combinatorics",
+        label: "順列・組合せ計算",
+        description:
+          "順列 nPr・組合せ nCr・階乗 n! をブラウザ内で計算するツール。計算手順のステップ表示、パスカルの三角形の可視化に対応。確率・統計・競技プログラミングに便利。",
+        icon: "₍ₙ₎Cᵣ",
+      },
+      {
         path: "/truth-table",
         label: "論理式真理値表",
         description:

@@ -1,0 +1,364 @@
+/* 順列・組合せ計算ツール */
+
+.combinatorics-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* 入力パネル */
+.combinatorics-input-panel {
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.combinatorics-input-row {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.combinatorics-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.combinatorics-input-label {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.combinatorics-input {
+  width: 5rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  font-size: 1.25rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  text-align: center;
+  transition: border-color 0.2s;
+}
+
+.combinatorics-input:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+}
+
+.combinatorics-input-error {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-error);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  padding: 0.375rem 0.75rem;
+  background: var(--md-sys-color-error-container);
+  border: 1px solid var(--md-sys-color-error);
+}
+
+/* プリセットボタン */
+.combinatorics-presets {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.combinatorics-presets-label {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+}
+
+.combinatorics-preset-btn {
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  background: transparent;
+  color: var(--md-sys-color-primary);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.combinatorics-preset-btn:hover {
+  background: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+}
+
+/* 結果カード */
+.combinatorics-results {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.combinatorics-result-card {
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.combinatorics-result-card.highlight {
+  background: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+}
+
+.combinatorics-result-label {
+  font-size: 0.6875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0;
+}
+
+.combinatorics-result-card.highlight .combinatorics-result-label {
+  color: var(--md-sys-color-on-primary-container);
+  opacity: 0.8;
+}
+
+.combinatorics-result-formula {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  margin: 0;
+}
+
+.combinatorics-result-card.highlight .combinatorics-result-formula {
+  color: var(--md-sys-color-on-primary-container);
+  opacity: 0.7;
+}
+
+.combinatorics-result-value {
+  font-size: 1.5rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  color: var(--md-sys-color-primary);
+  margin: 0;
+  word-break: break-all;
+}
+
+.combinatorics-result-card.highlight .combinatorics-result-value {
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.combinatorics-result-digits {
+  font-size: 0.6875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  margin: 0;
+}
+
+/* 階乗カード */
+.combinatorics-factorials {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0.5rem;
+}
+
+.combinatorics-factorial-card {
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  padding: 0.625rem 0.875rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.combinatorics-factorial-label {
+  font-size: 0.6875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  margin: 0;
+}
+
+.combinatorics-factorial-value {
+  font-size: 0.9375rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  color: var(--md-sys-color-on-surface);
+  margin: 0;
+  word-break: break-all;
+}
+
+/* セクションタイトル */
+.combinatorics-section-title {
+  font-size: 0.75rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 0.5rem;
+}
+
+/* 計算ステップ */
+.combinatorics-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.combinatorics-step {
+  display: grid;
+  grid-template-columns: 7rem 1fr auto;
+  gap: 0.75rem;
+  align-items: baseline;
+  padding: 0.5rem 0.75rem;
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.8125rem;
+}
+
+.combinatorics-step-label {
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.combinatorics-step-formula {
+  color: var(--md-sys-color-on-surface);
+}
+
+.combinatorics-step-result {
+  color: var(--md-sys-color-primary);
+  text-align: right;
+  font-weight: 600;
+}
+
+/* タブ切替 */
+.combinatorics-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.combinatorics-tab {
+  padding: 0.5rem 1rem;
+  font-size: 0.8125rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.combinatorics-tab:hover {
+  color: var(--md-sys-color-on-surface);
+}
+
+.combinatorics-tab.active {
+  color: var(--md-sys-color-primary);
+  border-bottom-color: var(--md-sys-color-primary);
+}
+
+/* パスカルの三角形 */
+.combinatorics-pascal-wrapper {
+  overflow-x: auto;
+}
+
+.combinatorics-pascal-table {
+  min-width: 100%;
+  border-collapse: collapse;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.8125rem;
+}
+
+.combinatorics-pascal-row {
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.combinatorics-pascal-cell {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.25rem;
+  padding: 0.25rem 0.375rem;
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  color: var(--md-sys-color-on-surface);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.75rem;
+  transition: background 0.15s;
+}
+
+.combinatorics-pascal-cell.highlighted {
+  background: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary-container);
+  font-weight: 700;
+}
+
+.combinatorics-pascal-row-label {
+  font-size: 0.6875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  text-align: right;
+  margin-right: 0.5rem;
+  min-width: 2rem;
+  display: inline-block;
+  line-height: 1.75rem;
+}
+
+.combinatorics-pascal-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.combinatorics-pascal-row-wrap {
+  display: flex;
+  align-items: center;
+}
+
+/* 空状態 */
+.combinatorics-empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.875rem;
+}
+
+.combinatorics-empty-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+  display: block;
+  opacity: 0.4;
+}
+
+/* レスポンシブ */
+@media (max-width: 640px) {
+  .combinatorics-results {
+    grid-template-columns: 1fr;
+  }
+
+  .combinatorics-step {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
+
+  .combinatorics-step-result {
+    text-align: left;
+  }
+
+  .combinatorics-pascal-cell {
+    min-width: 1.75rem;
+    font-size: 0.6875rem;
+    padding: 0.2rem 0.25rem;
+  }
+}

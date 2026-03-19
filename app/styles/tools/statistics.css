@@ -197,6 +197,7 @@
   height: 0.625rem;
   background: var(--md-sys-color-primary);
   min-width: 2px;
+  width: var(--bar-width, 2px);
   transition: width 0.3s ease;
 }
 

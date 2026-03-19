@@ -1,5 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router"
+import { createFileRoute } from "@tanstack/react-router";
 import { useState, useMemo, useCallback } from "react";
+import type React from "react";
 import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
@@ -345,9 +346,7 @@ function StatisticsPage() {
                           <div className="statistics-freq-bar-cell">
                             <div
                               className="statistics-freq-bar"
-                              style={{
-                                width: `${(bin.count / maxFreqCount) * 120}px`,
-                              }}
+                              style={{ '--bar-width': `${(bin.count / maxFreqCount) * 120}px` } as React.CSSProperties}
                               role="img"
                               aria-label={`${(bin.relative * 100).toFixed(1)}%`}
                             />

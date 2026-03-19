@@ -172,6 +172,7 @@ import { Route as CronParserRouteImport } from './routes/cron-parser'
 import { Route as CronRouteImport } from './routes/cron'
 import { Route as CookieParserRouteImport } from './routes/cookie-parser'
 import { Route as ConventionalCommitsRouteImport } from './routes/conventional-commits'
+import { Route as CombinatoricsRouteImport } from './routes/combinatorics'
 import { Route as ColorTokenRouteImport } from './routes/color-token'
 import { Route as ColorPickerRouteImport } from './routes/color-picker'
 import { Route as ColorPaletteRouteImport } from './routes/color-palette'
@@ -1021,6 +1022,11 @@ const ConventionalCommitsRoute = ConventionalCommitsRouteImport.update({
   path: '/conventional-commits',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CombinatoricsRoute = CombinatoricsRouteImport.update({
+  id: '/combinatorics',
+  path: '/combinatorics',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ColorTokenRoute = ColorTokenRouteImport.update({
   id: '/color-token',
   path: '/color-token',
@@ -1217,6 +1223,7 @@ export interface FileRoutesByFullPath {
   '/color-palette': typeof ColorPaletteRoute
   '/color-picker': typeof ColorPickerRoute
   '/color-token': typeof ColorTokenRoute
+  '/combinatorics': typeof CombinatoricsRoute
   '/conventional-commits': typeof ConventionalCommitsRoute
   '/cookie-parser': typeof CookieParserRoute
   '/cron': typeof CronRoute
@@ -1415,6 +1422,7 @@ export interface FileRoutesByTo {
   '/color-palette': typeof ColorPaletteRoute
   '/color-picker': typeof ColorPickerRoute
   '/color-token': typeof ColorTokenRoute
+  '/combinatorics': typeof CombinatoricsRoute
   '/conventional-commits': typeof ConventionalCommitsRoute
   '/cookie-parser': typeof CookieParserRoute
   '/cron': typeof CronRoute
@@ -1614,6 +1622,7 @@ export interface FileRoutesById {
   '/color-palette': typeof ColorPaletteRoute
   '/color-picker': typeof ColorPickerRoute
   '/color-token': typeof ColorTokenRoute
+  '/combinatorics': typeof CombinatoricsRoute
   '/conventional-commits': typeof ConventionalCommitsRoute
   '/cookie-parser': typeof CookieParserRoute
   '/cron': typeof CronRoute
@@ -1814,6 +1823,7 @@ export interface FileRouteTypes {
     | '/color-palette'
     | '/color-picker'
     | '/color-token'
+    | '/combinatorics'
     | '/conventional-commits'
     | '/cookie-parser'
     | '/cron'
@@ -2012,6 +2022,7 @@ export interface FileRouteTypes {
     | '/color-palette'
     | '/color-picker'
     | '/color-token'
+    | '/combinatorics'
     | '/conventional-commits'
     | '/cookie-parser'
     | '/cron'
@@ -2210,6 +2221,7 @@ export interface FileRouteTypes {
     | '/color-palette'
     | '/color-picker'
     | '/color-token'
+    | '/combinatorics'
     | '/conventional-commits'
     | '/cookie-parser'
     | '/cron'
@@ -2409,6 +2421,7 @@ export interface RootRouteChildren {
   ColorPaletteRoute: typeof ColorPaletteRoute
   ColorPickerRoute: typeof ColorPickerRoute
   ColorTokenRoute: typeof ColorTokenRoute
+  CombinatoricsRoute: typeof CombinatoricsRoute
   ConventionalCommitsRoute: typeof ConventionalCommitsRoute
   CookieParserRoute: typeof CookieParserRoute
   CronRoute: typeof CronRoute
@@ -3721,6 +3734,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ConventionalCommitsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/combinatorics': {
+      id: '/combinatorics'
+      path: '/combinatorics'
+      fullPath: '/combinatorics'
+      preLoaderRoute: typeof CombinatoricsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/color-token': {
       id: '/color-token'
       path: '/color-token'
@@ -3985,6 +4005,7 @@ const rootRouteChildren: RootRouteChildren = {
   ColorPaletteRoute: ColorPaletteRoute,
   ColorPickerRoute: ColorPickerRoute,
   ColorTokenRoute: ColorTokenRoute,
+  CombinatoricsRoute: CombinatoricsRoute,
   ConventionalCommitsRoute: ConventionalCommitsRoute,
   CookieParserRoute: CookieParserRoute,
   CronRoute: CronRoute,
