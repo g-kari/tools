@@ -261,6 +261,7 @@ const navCategories = [
       { path: "/curl-builder", label: "curlビルダー" },
       { path: "/curl-to-fetch", label: "cURL → fetch 変換" },
       { path: "/docker-run-to-compose", label: "docker run → Compose 変換" },
+      { path: "/nginx-config", label: "Nginx設定ジェネレーター" },
       { path: "/redirect-tracer", label: "リダイレクトトレーサー" },
       { path: "/openssl-builder", label: "OpenSSLビルダー" },
       { path: "/har", label: "HAR アナライザー" },
