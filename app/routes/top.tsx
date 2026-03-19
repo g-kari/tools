@@ -1392,6 +1392,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "⇄",
       },
       {
+        path: "/docker-run-to-compose",
+        label: "docker run → Compose 変換",
+        description:
+          "docker run コマンドを docker-compose.yml 形式に変換するツール。-p / -e / -v / --name / --network などのオプションに対応。ブラウザ内完結。",
+        icon: "🐳",
+      },
+      {
         path: "/openssl-builder",
         label: "OpenSSLビルダー",
         description: "OpenSSLコマンドをGUIで設定して生成。鍵生成・証明書作成・CSR生成など各種OpenSSL操作に対応",

@@ -153,6 +153,7 @@ import { Route as EmailDnsRouteImport } from './routes/email-dns'
 import { Route as DurationRouteImport } from './routes/duration'
 import { Route as DummyImageRouteImport } from './routes/dummy-image'
 import { Route as DummyAudioRouteImport } from './routes/dummy-audio'
+import { Route as DockerRunToComposeRouteImport } from './routes/docker-run-to-compose'
 import { Route as DnsLookupRouteImport } from './routes/dns-lookup'
 import { Route as DiscordStickerRouteImport } from './routes/discord-sticker'
 import { Route as DiscordEmojiRouteImport } from './routes/discord-emoji'
@@ -946,6 +947,11 @@ const DummyAudioRoute = DummyAudioRouteImport.update({
   path: '/dummy-audio',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DockerRunToComposeRoute = DockerRunToComposeRouteImport.update({
+  id: '/docker-run-to-compose',
+  path: '/docker-run-to-compose',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DnsLookupRoute = DnsLookupRouteImport.update({
   id: '/dns-lookup',
   path: '/dns-lookup',
@@ -1376,6 +1382,7 @@ export interface FileRoutesByFullPath {
   '/discord-emoji': typeof DiscordEmojiRoute
   '/discord-sticker': typeof DiscordStickerRoute
   '/dns-lookup': typeof DnsLookupRoute
+  '/docker-run-to-compose': typeof DockerRunToComposeRoute
   '/dummy-audio': typeof DummyAudioRoute
   '/dummy-image': typeof DummyImageRoute
   '/duration': typeof DurationRoute
@@ -1594,6 +1601,7 @@ export interface FileRoutesByTo {
   '/discord-emoji': typeof DiscordEmojiRoute
   '/discord-sticker': typeof DiscordStickerRoute
   '/dns-lookup': typeof DnsLookupRoute
+  '/docker-run-to-compose': typeof DockerRunToComposeRoute
   '/dummy-audio': typeof DummyAudioRoute
   '/dummy-image': typeof DummyImageRoute
   '/duration': typeof DurationRoute
@@ -1813,6 +1821,7 @@ export interface FileRoutesById {
   '/discord-emoji': typeof DiscordEmojiRoute
   '/discord-sticker': typeof DiscordStickerRoute
   '/dns-lookup': typeof DnsLookupRoute
+  '/docker-run-to-compose': typeof DockerRunToComposeRoute
   '/dummy-audio': typeof DummyAudioRoute
   '/dummy-image': typeof DummyImageRoute
   '/duration': typeof DurationRoute
@@ -2033,6 +2042,7 @@ export interface FileRouteTypes {
     | '/discord-emoji'
     | '/discord-sticker'
     | '/dns-lookup'
+    | '/docker-run-to-compose'
     | '/dummy-audio'
     | '/dummy-image'
     | '/duration'
@@ -2251,6 +2261,7 @@ export interface FileRouteTypes {
     | '/discord-emoji'
     | '/discord-sticker'
     | '/dns-lookup'
+    | '/docker-run-to-compose'
     | '/dummy-audio'
     | '/dummy-image'
     | '/duration'
@@ -2469,6 +2480,7 @@ export interface FileRouteTypes {
     | '/discord-emoji'
     | '/discord-sticker'
     | '/dns-lookup'
+    | '/docker-run-to-compose'
     | '/dummy-audio'
     | '/dummy-image'
     | '/duration'
@@ -2688,6 +2700,7 @@ export interface RootRouteChildren {
   DiscordEmojiRoute: typeof DiscordEmojiRoute
   DiscordStickerRoute: typeof DiscordStickerRoute
   DnsLookupRoute: typeof DnsLookupRoute
+  DockerRunToComposeRoute: typeof DockerRunToComposeRoute
   DummyAudioRoute: typeof DummyAudioRoute
   DummyImageRoute: typeof DummyImageRoute
   DurationRoute: typeof DurationRoute
@@ -3848,6 +3861,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DummyAudioRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/docker-run-to-compose': {
+      id: '/docker-run-to-compose'
+      path: '/docker-run-to-compose'
+      fullPath: '/docker-run-to-compose'
+      preLoaderRoute: typeof DockerRunToComposeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dns-lookup': {
       id: '/dns-lookup'
       path: '/dns-lookup'
@@ -4424,6 +4444,7 @@ const rootRouteChildren: RootRouteChildren = {
   DiscordEmojiRoute: DiscordEmojiRoute,
   DiscordStickerRoute: DiscordStickerRoute,
   DnsLookupRoute: DnsLookupRoute,
+  DockerRunToComposeRoute: DockerRunToComposeRoute,
   DummyAudioRoute: DummyAudioRoute,
   DummyImageRoute: DummyImageRoute,
   DurationRoute: DurationRoute,
