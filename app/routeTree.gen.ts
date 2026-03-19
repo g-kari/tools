@@ -53,6 +53,7 @@ import { Route as StringSimilarityRouteImport } from './routes/string-similarity
 import { Route as StringEscapeRouteImport } from './routes/string-escape'
 import { Route as StatisticsRouteImport } from './routes/statistics'
 import { Route as SshKeyRouteImport } from './routes/ssh-key'
+import { Route as SqlToTsRouteImport } from './routes/sql-to-ts'
 import { Route as SqlRouteImport } from './routes/sql'
 import { Route as SlugRouteImport } from './routes/slug'
 import { Route as ServerEnvRouteImport } from './routes/server-env'
@@ -441,6 +442,11 @@ const StatisticsRoute = StatisticsRouteImport.update({
 const SshKeyRoute = SshKeyRouteImport.update({
   id: '/ssh-key',
   path: '/ssh-key',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SqlToTsRoute = SqlToTsRouteImport.update({
+  id: '/sql-to-ts',
+  path: '/sql-to-ts',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SqlRoute = SqlRouteImport.update({
@@ -1455,6 +1461,7 @@ export interface FileRoutesByFullPath {
   '/server-env': typeof ServerEnvRoute
   '/slug': typeof SlugRoute
   '/sql': typeof SqlRoute
+  '/sql-to-ts': typeof SqlToTsRoute
   '/ssh-key': typeof SshKeyRoute
   '/statistics': typeof StatisticsRoute
   '/string-escape': typeof StringEscapeRoute
@@ -1670,6 +1677,7 @@ export interface FileRoutesByTo {
   '/server-env': typeof ServerEnvRoute
   '/slug': typeof SlugRoute
   '/sql': typeof SqlRoute
+  '/sql-to-ts': typeof SqlToTsRoute
   '/ssh-key': typeof SshKeyRoute
   '/statistics': typeof StatisticsRoute
   '/string-escape': typeof StringEscapeRoute
@@ -1886,6 +1894,7 @@ export interface FileRoutesById {
   '/server-env': typeof ServerEnvRoute
   '/slug': typeof SlugRoute
   '/sql': typeof SqlRoute
+  '/sql-to-ts': typeof SqlToTsRoute
   '/ssh-key': typeof SshKeyRoute
   '/statistics': typeof StatisticsRoute
   '/string-escape': typeof StringEscapeRoute
@@ -2103,6 +2112,7 @@ export interface FileRouteTypes {
     | '/server-env'
     | '/slug'
     | '/sql'
+    | '/sql-to-ts'
     | '/ssh-key'
     | '/statistics'
     | '/string-escape'
@@ -2318,6 +2328,7 @@ export interface FileRouteTypes {
     | '/server-env'
     | '/slug'
     | '/sql'
+    | '/sql-to-ts'
     | '/ssh-key'
     | '/statistics'
     | '/string-escape'
@@ -2533,6 +2544,7 @@ export interface FileRouteTypes {
     | '/server-env'
     | '/slug'
     | '/sql'
+    | '/sql-to-ts'
     | '/ssh-key'
     | '/statistics'
     | '/string-escape'
@@ -2749,6 +2761,7 @@ export interface RootRouteChildren {
   ServerEnvRoute: typeof ServerEnvRoute
   SlugRoute: typeof SlugRoute
   SqlRoute: typeof SqlRoute
+  SqlToTsRoute: typeof SqlToTsRoute
   SshKeyRoute: typeof SshKeyRoute
   StatisticsRoute: typeof StatisticsRoute
   StringEscapeRoute: typeof StringEscapeRoute
@@ -3107,6 +3120,13 @@ declare module '@tanstack/react-router' {
       path: '/ssh-key'
       fullPath: '/ssh-key'
       preLoaderRoute: typeof SshKeyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sql-to-ts': {
+      id: '/sql-to-ts'
+      path: '/sql-to-ts'
+      fullPath: '/sql-to-ts'
+      preLoaderRoute: typeof SqlToTsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sql': {
@@ -4461,6 +4481,7 @@ const rootRouteChildren: RootRouteChildren = {
   ServerEnvRoute: ServerEnvRoute,
   SlugRoute: SlugRoute,
   SqlRoute: SqlRoute,
+  SqlToTsRoute: SqlToTsRoute,
   SshKeyRoute: SshKeyRoute,
   StatisticsRoute: StatisticsRoute,
   StringEscapeRoute: StringEscapeRoute,
