@@ -88,6 +88,7 @@ const navCategories = [
       { path: "/unicode-inspector", label: "Unicodeコードポイント検査" },
       { path: "/punycode", label: "Punycode変換 (IDN)" },
       { path: "/string-escape", label: "文字列エスケープ" },
+      { path: "/base36", label: "Base36変換" },
       { path: "/base58", label: "Base58変換" },
       { path: "/base62", label: "Base62変換" },
       { path: "/base85", label: "Base85変換" },

@@ -222,6 +222,7 @@ import { Route as Base64ImageRouteImport } from './routes/base64-image'
 import { Route as Base64RouteImport } from './routes/base64'
 import { Route as Base62RouteImport } from './routes/base62'
 import { Route as Base58RouteImport } from './routes/base58'
+import { Route as Base36RouteImport } from './routes/base36'
 import { Route as Base32RouteImport } from './routes/base32'
 import { Route as Base16RouteImport } from './routes/base16'
 import { Route as BarcodeRouteImport } from './routes/barcode'
@@ -1300,6 +1301,11 @@ const Base58Route = Base58RouteImport.update({
   path: '/base58',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Base36Route = Base36RouteImport.update({
+  id: '/base36',
+  path: '/base36',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const Base32Route = Base32RouteImport.update({
   id: '/base32',
   path: '/base32',
@@ -1370,6 +1376,7 @@ export interface FileRoutesByFullPath {
   '/barcode': typeof BarcodeRoute
   '/base16': typeof Base16Route
   '/base32': typeof Base32Route
+  '/base36': typeof Base36Route
   '/base58': typeof Base58Route
   '/base62': typeof Base62Route
   '/base64': typeof Base64Route
@@ -1597,6 +1604,7 @@ export interface FileRoutesByTo {
   '/barcode': typeof BarcodeRoute
   '/base16': typeof Base16Route
   '/base32': typeof Base32Route
+  '/base36': typeof Base36Route
   '/base58': typeof Base58Route
   '/base62': typeof Base62Route
   '/base64': typeof Base64Route
@@ -1825,6 +1833,7 @@ export interface FileRoutesById {
   '/barcode': typeof BarcodeRoute
   '/base16': typeof Base16Route
   '/base32': typeof Base32Route
+  '/base36': typeof Base36Route
   '/base58': typeof Base58Route
   '/base62': typeof Base62Route
   '/base64': typeof Base64Route
@@ -2054,6 +2063,7 @@ export interface FileRouteTypes {
     | '/barcode'
     | '/base16'
     | '/base32'
+    | '/base36'
     | '/base58'
     | '/base62'
     | '/base64'
@@ -2281,6 +2291,7 @@ export interface FileRouteTypes {
     | '/barcode'
     | '/base16'
     | '/base32'
+    | '/base36'
     | '/base58'
     | '/base62'
     | '/base64'
@@ -2508,6 +2519,7 @@ export interface FileRouteTypes {
     | '/barcode'
     | '/base16'
     | '/base32'
+    | '/base36'
     | '/base58'
     | '/base62'
     | '/base64'
@@ -2736,6 +2748,7 @@ export interface RootRouteChildren {
   BarcodeRoute: typeof BarcodeRoute
   Base16Route: typeof Base16Route
   Base32Route: typeof Base32Route
+  Base36Route: typeof Base36Route
   Base58Route: typeof Base58Route
   Base62Route: typeof Base62Route
   Base64Route: typeof Base64Route
@@ -4448,6 +4461,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Base58RouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/base36': {
+      id: '/base36'
+      path: '/base36'
+      fullPath: '/base36'
+      preLoaderRoute: typeof Base36RouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/base32': {
       id: '/base32'
       path: '/base32'
@@ -4544,6 +4564,7 @@ const rootRouteChildren: RootRouteChildren = {
   BarcodeRoute: BarcodeRoute,
   Base16Route: Base16Route,
   Base32Route: Base32Route,
+  Base36Route: Base36Route,
   Base58Route: Base58Route,
   Base62Route: Base62Route,
   Base64Route: Base64Route,

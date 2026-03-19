@@ -122,6 +122,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🔀",
       },
       {
+        path: "/base36",
+        label: "Base36変換",
+        description:
+          "[0-9a-z] の 36 文字を使用した Base36 エンコード・デコード。JavaScript の Number.toString(36) / parseInt(str, 36) と互換。ライセンスキー・短い ID・タイムスタンプベースの ID 生成に最適。整数モード対応。",
+        icon: "36",
+      },
+      {
         path: "/base58",
         label: "Base58変換",
         description:
