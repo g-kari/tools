@@ -166,6 +166,7 @@ import { Route as CurlToFetchRouteImport } from './routes/curl-to-fetch'
 import { Route as CurlBuilderRouteImport } from './routes/curl-builder'
 import { Route as CsvSqlRouteImport } from './routes/csv-sql'
 import { Route as CsvJsonRouteImport } from './routes/csv-json'
+import { Route as CssVariablesRouteImport } from './routes/css-variables'
 import { Route as CssUnitRouteImport } from './routes/css-unit'
 import { Route as CssTransformRouteImport } from './routes/css-transform'
 import { Route as CssTextShadowRouteImport } from './routes/css-text-shadow'
@@ -1014,6 +1015,11 @@ const CsvJsonRoute = CsvJsonRouteImport.update({
   path: '/csv-json',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CssVariablesRoute = CssVariablesRouteImport.update({
+  id: '/css-variables',
+  path: '/css-variables',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CssUnitRoute = CssUnitRouteImport.update({
   id: '/css-unit',
   path: '/css-unit',
@@ -1384,6 +1390,7 @@ export interface FileRoutesByFullPath {
   '/css-text-shadow': typeof CssTextShadowRoute
   '/css-transform': typeof CssTransformRoute
   '/css-unit': typeof CssUnitRoute
+  '/css-variables': typeof CssVariablesRoute
   '/csv-json': typeof CsvJsonRoute
   '/csv-sql': typeof CsvSqlRoute
   '/curl-builder': typeof CurlBuilderRoute
@@ -1605,6 +1612,7 @@ export interface FileRoutesByTo {
   '/css-text-shadow': typeof CssTextShadowRoute
   '/css-transform': typeof CssTransformRoute
   '/css-unit': typeof CssUnitRoute
+  '/css-variables': typeof CssVariablesRoute
   '/csv-json': typeof CsvJsonRoute
   '/csv-sql': typeof CsvSqlRoute
   '/curl-builder': typeof CurlBuilderRoute
@@ -1827,6 +1835,7 @@ export interface FileRoutesById {
   '/css-text-shadow': typeof CssTextShadowRoute
   '/css-transform': typeof CssTransformRoute
   '/css-unit': typeof CssUnitRoute
+  '/css-variables': typeof CssVariablesRoute
   '/csv-json': typeof CsvJsonRoute
   '/csv-sql': typeof CsvSqlRoute
   '/curl-builder': typeof CurlBuilderRoute
@@ -2050,6 +2059,7 @@ export interface FileRouteTypes {
     | '/css-text-shadow'
     | '/css-transform'
     | '/css-unit'
+    | '/css-variables'
     | '/csv-json'
     | '/csv-sql'
     | '/curl-builder'
@@ -2271,6 +2281,7 @@ export interface FileRouteTypes {
     | '/css-text-shadow'
     | '/css-transform'
     | '/css-unit'
+    | '/css-variables'
     | '/csv-json'
     | '/csv-sql'
     | '/curl-builder'
@@ -2492,6 +2503,7 @@ export interface FileRouteTypes {
     | '/css-text-shadow'
     | '/css-transform'
     | '/css-unit'
+    | '/css-variables'
     | '/csv-json'
     | '/csv-sql'
     | '/curl-builder'
@@ -2714,6 +2726,7 @@ export interface RootRouteChildren {
   CssTextShadowRoute: typeof CssTextShadowRoute
   CssTransformRoute: typeof CssTransformRoute
   CssUnitRoute: typeof CssUnitRoute
+  CssVariablesRoute: typeof CssVariablesRoute
   CsvJsonRoute: typeof CsvJsonRoute
   CsvSqlRoute: typeof CsvSqlRoute
   CurlBuilderRoute: typeof CurlBuilderRoute
@@ -3978,6 +3991,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CsvJsonRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/css-variables': {
+      id: '/css-variables'
+      path: '/css-variables'
+      fullPath: '/css-variables'
+      preLoaderRoute: typeof CssVariablesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/css-unit': {
       id: '/css-unit'
       path: '/css-unit'
@@ -4474,6 +4494,7 @@ const rootRouteChildren: RootRouteChildren = {
   CssTextShadowRoute: CssTextShadowRoute,
   CssTransformRoute: CssTransformRoute,
   CssUnitRoute: CssUnitRoute,
+  CssVariablesRoute: CssVariablesRoute,
   CsvJsonRoute: CsvJsonRoute,
   CsvSqlRoute: CsvSqlRoute,
   CurlBuilderRoute: CurlBuilderRoute,

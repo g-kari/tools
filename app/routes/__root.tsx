@@ -165,6 +165,7 @@ const navCategories = [
       { path: "/css-container-query", label: "CSS Container Query ビルダー" },
       { path: "/css-scroll-snap", label: "CSS Scroll Snap ジェネレーター" },
       { path: "/css-specificity", label: "CSS詳細度計算機" },
+      { path: "/css-variables", label: "CSS変数エクストラクター" },
       { path: "/aspect-ratio", label: "アスペクト比計算機" },
       { path: "/image-to-gif", label: "画像→GIF変換" },
       { path: "/emoji-converter", label: "絵文字変換" },
