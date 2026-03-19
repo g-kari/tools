@@ -82,7 +82,7 @@ function inferSqlType(
   }
 
   // オブジェクト・配列はJSON型またはTEXTで格納
-  if (typeof value === "object" || Array.isArray(value)) {
+  if (typeof value === "object") {
     switch (dialect) {
       case "postgresql":
         return "JSONB";
