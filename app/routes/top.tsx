@@ -367,6 +367,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "📡",
       },
       {
+        path: "/nato-alphabet",
+        label: "NATOフォネティックアルファベット",
+        description:
+          "テキストをNATO/ICAO標準のフォネティックアルファベット（Alpha, Bravo, Charlie...）に変換するツール。パスワードや識別子を電話で正確に伝えるのに便利。A-Z・0-9対応。",
+        icon: "🔤",
+      },
+      {
         path: "/number-base",
         label: "数値進数変換",
         description:

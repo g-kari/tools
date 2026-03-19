@@ -1,0 +1,155 @@
+/* NATOフォネティックアルファベット変換ツール */
+
+.nato-input-area {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.nato-input-hint {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin: 0;
+}
+
+.nato-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* 変換結果カード表示エリア */
+.nato-result-area {
+  margin-bottom: 1.5rem;
+}
+
+.nato-result-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  min-height: 3rem;
+}
+
+.nato-char-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0.75rem;
+  background: var(--md-sys-color-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  min-width: 3.5rem;
+  text-align: center;
+}
+
+.nato-char-card--space {
+  background: var(--md-sys-color-surface-container-low);
+  border-style: dashed;
+  opacity: 0.6;
+}
+
+.nato-char-card--unknown {
+  background: var(--md-sys-color-error-container);
+  border-color: var(--md-sys-color-error);
+}
+
+.nato-char-original {
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--md-sys-color-primary);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.nato-char-phonetic {
+  font-size: 0.6875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-top: 0.25rem;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.nato-char-card--unknown .nato-char-phonetic {
+  color: var(--md-sys-color-on-error-container);
+}
+
+.nato-result-empty {
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.875rem;
+  font-style: italic;
+  padding: 0.5rem 0;
+  align-self: center;
+}
+
+/* テキスト形式の出力エリア */
+.nato-text-output-area {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* リファレンステーブル */
+.nato-reference-section {
+  margin-top: 1.5rem;
+}
+
+.nato-reference-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 0.75rem 0;
+}
+
+.nato-reference-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr));
+  gap: 0.375rem;
+}
+
+.nato-reference-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0.5rem;
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  font-size: 0.8125rem;
+}
+
+.nato-reference-letter {
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-weight: 700;
+  color: var(--md-sys-color-primary);
+  min-width: 1rem;
+  text-align: center;
+}
+
+.nato-reference-word {
+  color: var(--md-sys-color-on-surface);
+}
+
+@media (max-width: 480px) {
+  .nato-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .nato-reference-grid {
+    grid-template-columns: repeat(auto-fill, minmax(6rem, 1fr));
+  }
+
+  .nato-char-card {
+    padding: 0.375rem 0.5rem;
+    min-width: 3rem;
+  }
+}

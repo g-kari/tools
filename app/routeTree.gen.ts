@@ -86,6 +86,7 @@ import { Route as NumberTheoryRouteImport } from './routes/number-theory'
 import { Route as NumberFormatRouteImport } from './routes/number-format'
 import { Route as NumberBaseRouteImport } from './routes/number-base'
 import { Route as NginxConfigRouteImport } from './routes/nginx-config'
+import { Route as NatoAlphabetRouteImport } from './routes/nato-alphabet'
 import { Route as NanoIdRouteImport } from './routes/nano-id'
 import { Route as MsgpackRouteImport } from './routes/msgpack'
 import { Route as MorseCodeRouteImport } from './routes/morse-code'
@@ -614,6 +615,11 @@ const NumberBaseRoute = NumberBaseRouteImport.update({
 const NginxConfigRoute = NginxConfigRouteImport.update({
   id: '/nginx-config',
   path: '/nginx-config',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NatoAlphabetRoute = NatoAlphabetRouteImport.update({
+  id: '/nato-alphabet',
+  path: '/nato-alphabet',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NanoIdRoute = NanoIdRouteImport.update({
@@ -1478,6 +1484,7 @@ export interface FileRoutesByFullPath {
   '/morse-code': typeof MorseCodeRoute
   '/msgpack': typeof MsgpackRoute
   '/nano-id': typeof NanoIdRoute
+  '/nato-alphabet': typeof NatoAlphabetRoute
   '/nginx-config': typeof NginxConfigRoute
   '/number-base': typeof NumberBaseRoute
   '/number-format': typeof NumberFormatRoute
@@ -1701,6 +1708,7 @@ export interface FileRoutesByTo {
   '/morse-code': typeof MorseCodeRoute
   '/msgpack': typeof MsgpackRoute
   '/nano-id': typeof NanoIdRoute
+  '/nato-alphabet': typeof NatoAlphabetRoute
   '/nginx-config': typeof NginxConfigRoute
   '/number-base': typeof NumberBaseRoute
   '/number-format': typeof NumberFormatRoute
@@ -1925,6 +1933,7 @@ export interface FileRoutesById {
   '/morse-code': typeof MorseCodeRoute
   '/msgpack': typeof MsgpackRoute
   '/nano-id': typeof NanoIdRoute
+  '/nato-alphabet': typeof NatoAlphabetRoute
   '/nginx-config': typeof NginxConfigRoute
   '/number-base': typeof NumberBaseRoute
   '/number-format': typeof NumberFormatRoute
@@ -2150,6 +2159,7 @@ export interface FileRouteTypes {
     | '/morse-code'
     | '/msgpack'
     | '/nano-id'
+    | '/nato-alphabet'
     | '/nginx-config'
     | '/number-base'
     | '/number-format'
@@ -2373,6 +2383,7 @@ export interface FileRouteTypes {
     | '/morse-code'
     | '/msgpack'
     | '/nano-id'
+    | '/nato-alphabet'
     | '/nginx-config'
     | '/number-base'
     | '/number-format'
@@ -2596,6 +2607,7 @@ export interface FileRouteTypes {
     | '/morse-code'
     | '/msgpack'
     | '/nano-id'
+    | '/nato-alphabet'
     | '/nginx-config'
     | '/number-base'
     | '/number-format'
@@ -2820,6 +2832,7 @@ export interface RootRouteChildren {
   MorseCodeRoute: typeof MorseCodeRoute
   MsgpackRoute: typeof MsgpackRoute
   NanoIdRoute: typeof NanoIdRoute
+  NatoAlphabetRoute: typeof NatoAlphabetRoute
   NginxConfigRoute: typeof NginxConfigRoute
   NumberBaseRoute: typeof NumberBaseRoute
   NumberFormatRoute: typeof NumberFormatRoute
@@ -3442,6 +3455,13 @@ declare module '@tanstack/react-router' {
       path: '/nginx-config'
       fullPath: '/nginx-config'
       preLoaderRoute: typeof NginxConfigRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/nato-alphabet': {
+      id: '/nato-alphabet'
+      path: '/nato-alphabet'
+      fullPath: '/nato-alphabet'
+      preLoaderRoute: typeof NatoAlphabetRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/nano-id': {
@@ -4596,6 +4616,7 @@ const rootRouteChildren: RootRouteChildren = {
   MorseCodeRoute: MorseCodeRoute,
   MsgpackRoute: MsgpackRoute,
   NanoIdRoute: NanoIdRoute,
+  NatoAlphabetRoute: NatoAlphabetRoute,
   NginxConfigRoute: NginxConfigRoute,
   NumberBaseRoute: NumberBaseRoute,
   NumberFormatRoute: NumberFormatRoute,
