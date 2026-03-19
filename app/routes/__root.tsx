@@ -24,6 +24,7 @@ const navCategories = [
     name: "変換",
     icon: "⇄",
     items: [
+      { path: "/number-theory", label: "数論ツール" },
       { path: "/unicode", label: "Unicode変換" },
       { path: "/url-encode", label: "URLエンコード" },
       { path: "/url-parser", label: "URLパーサー" },
@@ -86,12 +87,16 @@ const navCategories = [
       { path: "/csv-sql", label: "CSV→SQL変換" },
       { path: "/ini-parser", label: "INIファイルパーサー" },
       { path: "/gzip", label: "GZip/Deflate 圧縮・解凍" },
+      { path: "/template", label: "Mustache テンプレート" },
+      { path: "/ascii-table", label: "ASCII テーブル" },
+      { path: "/duration", label: "時間計算・変換" },
     ],
   },
   {
     name: "生成",
     icon: "✦",
     items: [
+      { path: '/html-playground', label: 'HTML/CSS/JS プレイグラウンド' },
       { path: '/passphrase', label: 'パスフレーズ' },
       { path: "/uuid", label: "UUID生成" },
       { path: "/uuid-inspector", label: "UUID解析" },

@@ -38,6 +38,13 @@ const toolCatalog: ToolCategory[] = [
     icon: "⇄",
     items: [
       {
+        path: "/number-theory",
+        label: "数論ツール",
+        description:
+          "GCD（最大公約数）・LCM（最小公倍数）の複数数値計算、素因数分解、素数判定、冪乗mod（base^exp mod m）、モジュラー逆数、オイラーのトーシェント関数 φ(n) を計算。暗号理論・競技プログラミングに便利。",
+        icon: "∑",
+      },
+      {
         path: "/template",
         label: "Mustache テンプレート",
         description:

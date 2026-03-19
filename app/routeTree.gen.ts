@@ -75,6 +75,7 @@ import { Route as PassphraseRouteImport } from './routes/passphrase'
 import { Route as OpensslBuilderRouteImport } from './routes/openssl-builder'
 import { Route as OgpRouteImport } from './routes/ogp'
 import { Route as NumberWordsRouteImport } from './routes/number-words'
+import { Route as NumberTheoryRouteImport } from './routes/number-theory'
 import { Route as NumberFormatRouteImport } from './routes/number-format'
 import { Route as NumberBaseRouteImport } from './routes/number-base'
 import { Route as NanoIdRouteImport } from './routes/nano-id'
@@ -109,6 +110,7 @@ import { Route as ImageResizeRouteImport } from './routes/image-resize'
 import { Route as ImageCropRouteImport } from './routes/image-crop'
 import { Route as ImageCompressRouteImport } from './routes/image-compress'
 import { Route as ImageBase64RouteImport } from './routes/image-base64'
+import { Route as Ieee754RouteImport } from './routes/ieee754'
 import { Route as HttpStatusRouteImport } from './routes/http-status'
 import { Route as HttpHeadersRouteImport } from './routes/http-headers'
 import { Route as HttpClientRouteImport } from './routes/http-client'
@@ -527,6 +529,11 @@ const NumberWordsRoute = NumberWordsRouteImport.update({
   path: '/number-words',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NumberTheoryRoute = NumberTheoryRouteImport.update({
+  id: '/number-theory',
+  path: '/number-theory',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const NumberFormatRoute = NumberFormatRouteImport.update({
   id: '/number-format',
   path: '/number-format',
@@ -695,6 +702,11 @@ const ImageCompressRoute = ImageCompressRouteImport.update({
 const ImageBase64Route = ImageBase64RouteImport.update({
   id: '/image-base64',
   path: '/image-base64',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Ieee754Route = Ieee754RouteImport.update({
+  id: '/ieee754',
+  path: '/ieee754',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HttpStatusRoute = HttpStatusRouteImport.update({
@@ -1217,6 +1229,7 @@ export interface FileRoutesByFullPath {
   '/http-client': typeof HttpClientRoute
   '/http-headers': typeof HttpHeadersRoute
   '/http-status': typeof HttpStatusRoute
+  '/ieee754': typeof Ieee754Route
   '/image-base64': typeof ImageBase64Route
   '/image-compress': typeof ImageCompressRoute
   '/image-crop': typeof ImageCropRoute
@@ -1251,6 +1264,7 @@ export interface FileRoutesByFullPath {
   '/nano-id': typeof NanoIdRoute
   '/number-base': typeof NumberBaseRoute
   '/number-format': typeof NumberFormatRoute
+  '/number-theory': typeof NumberTheoryRoute
   '/number-words': typeof NumberWordsRoute
   '/ogp': typeof OgpRoute
   '/openssl-builder': typeof OpensslBuilderRoute
@@ -1406,6 +1420,7 @@ export interface FileRoutesByTo {
   '/http-client': typeof HttpClientRoute
   '/http-headers': typeof HttpHeadersRoute
   '/http-status': typeof HttpStatusRoute
+  '/ieee754': typeof Ieee754Route
   '/image-base64': typeof ImageBase64Route
   '/image-compress': typeof ImageCompressRoute
   '/image-crop': typeof ImageCropRoute
@@ -1440,6 +1455,7 @@ export interface FileRoutesByTo {
   '/nano-id': typeof NanoIdRoute
   '/number-base': typeof NumberBaseRoute
   '/number-format': typeof NumberFormatRoute
+  '/number-theory': typeof NumberTheoryRoute
   '/number-words': typeof NumberWordsRoute
   '/ogp': typeof OgpRoute
   '/openssl-builder': typeof OpensslBuilderRoute
@@ -1596,6 +1612,7 @@ export interface FileRoutesById {
   '/http-client': typeof HttpClientRoute
   '/http-headers': typeof HttpHeadersRoute
   '/http-status': typeof HttpStatusRoute
+  '/ieee754': typeof Ieee754Route
   '/image-base64': typeof ImageBase64Route
   '/image-compress': typeof ImageCompressRoute
   '/image-crop': typeof ImageCropRoute
@@ -1630,6 +1647,7 @@ export interface FileRoutesById {
   '/nano-id': typeof NanoIdRoute
   '/number-base': typeof NumberBaseRoute
   '/number-format': typeof NumberFormatRoute
+  '/number-theory': typeof NumberTheoryRoute
   '/number-words': typeof NumberWordsRoute
   '/ogp': typeof OgpRoute
   '/openssl-builder': typeof OpensslBuilderRoute
@@ -1787,6 +1805,7 @@ export interface FileRouteTypes {
     | '/http-client'
     | '/http-headers'
     | '/http-status'
+    | '/ieee754'
     | '/image-base64'
     | '/image-compress'
     | '/image-crop'
@@ -1821,6 +1840,7 @@ export interface FileRouteTypes {
     | '/nano-id'
     | '/number-base'
     | '/number-format'
+    | '/number-theory'
     | '/number-words'
     | '/ogp'
     | '/openssl-builder'
@@ -1976,6 +1996,7 @@ export interface FileRouteTypes {
     | '/http-client'
     | '/http-headers'
     | '/http-status'
+    | '/ieee754'
     | '/image-base64'
     | '/image-compress'
     | '/image-crop'
@@ -2010,6 +2031,7 @@ export interface FileRouteTypes {
     | '/nano-id'
     | '/number-base'
     | '/number-format'
+    | '/number-theory'
     | '/number-words'
     | '/ogp'
     | '/openssl-builder'
@@ -2165,6 +2187,7 @@ export interface FileRouteTypes {
     | '/http-client'
     | '/http-headers'
     | '/http-status'
+    | '/ieee754'
     | '/image-base64'
     | '/image-compress'
     | '/image-crop'
@@ -2199,6 +2222,7 @@ export interface FileRouteTypes {
     | '/nano-id'
     | '/number-base'
     | '/number-format'
+    | '/number-theory'
     | '/number-words'
     | '/ogp'
     | '/openssl-builder'
@@ -2355,6 +2379,7 @@ export interface RootRouteChildren {
   HttpClientRoute: typeof HttpClientRoute
   HttpHeadersRoute: typeof HttpHeadersRoute
   HttpStatusRoute: typeof HttpStatusRoute
+  Ieee754Route: typeof Ieee754Route
   ImageBase64Route: typeof ImageBase64Route
   ImageCompressRoute: typeof ImageCompressRoute
   ImageCropRoute: typeof ImageCropRoute
@@ -2389,6 +2414,7 @@ export interface RootRouteChildren {
   NanoIdRoute: typeof NanoIdRoute
   NumberBaseRoute: typeof NumberBaseRoute
   NumberFormatRoute: typeof NumberFormatRoute
+  NumberTheoryRoute: typeof NumberTheoryRoute
   NumberWordsRoute: typeof NumberWordsRoute
   OgpRoute: typeof OgpRoute
   OpensslBuilderRoute: typeof OpensslBuilderRoute
@@ -2925,6 +2951,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NumberWordsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/number-theory': {
+      id: '/number-theory'
+      path: '/number-theory'
+      fullPath: '/number-theory'
+      preLoaderRoute: typeof NumberTheoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/number-format': {
       id: '/number-format'
       path: '/number-format'
@@ -3161,6 +3194,13 @@ declare module '@tanstack/react-router' {
       path: '/image-base64'
       fullPath: '/image-base64'
       preLoaderRoute: typeof ImageBase64RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ieee754': {
+      id: '/ieee754'
+      path: '/ieee754'
+      fullPath: '/ieee754'
+      preLoaderRoute: typeof Ieee754RouteImport
       parentRoute: typeof rootRouteImport
     }
     '/http-status': {
@@ -3859,6 +3899,7 @@ const rootRouteChildren: RootRouteChildren = {
   HttpClientRoute: HttpClientRoute,
   HttpHeadersRoute: HttpHeadersRoute,
   HttpStatusRoute: HttpStatusRoute,
+  Ieee754Route: Ieee754Route,
   ImageBase64Route: ImageBase64Route,
   ImageCompressRoute: ImageCompressRoute,
   ImageCropRoute: ImageCropRoute,
@@ -3893,6 +3934,7 @@ const rootRouteChildren: RootRouteChildren = {
   NanoIdRoute: NanoIdRoute,
   NumberBaseRoute: NumberBaseRoute,
   NumberFormatRoute: NumberFormatRoute,
+  NumberTheoryRoute: NumberTheoryRoute,
   NumberWordsRoute: NumberWordsRoute,
   OgpRoute: OgpRoute,
   OpensslBuilderRoute: OpensslBuilderRoute,
