@@ -142,6 +142,7 @@ import { Route as HarRouteImport } from './routes/har'
 import { Route as GzipRouteImport } from './routes/gzip'
 import { Route as GraphqlRouteImport } from './routes/graphql'
 import { Route as GlobalIpRouteImport } from './routes/global-ip'
+import { Route as GlobTesterRouteImport } from './routes/glob-tester'
 import { Route as GitignoreRouteImport } from './routes/gitignore'
 import { Route as FunctionPlotterRouteImport } from './routes/function-plotter'
 import { Route as FaviconGeneratorRouteImport } from './routes/favicon-generator'
@@ -893,6 +894,11 @@ const GlobalIpRoute = GlobalIpRouteImport.update({
   path: '/global-ip',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GlobTesterRoute = GlobTesterRouteImport.update({
+  id: '/glob-tester',
+  path: '/glob-tester',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GitignoreRoute = GitignoreRouteImport.update({
   id: '/gitignore',
   path: '/gitignore',
@@ -1401,6 +1407,7 @@ export interface FileRoutesByFullPath {
   '/favicon-generator': typeof FaviconGeneratorRoute
   '/function-plotter': typeof FunctionPlotterRoute
   '/gitignore': typeof GitignoreRoute
+  '/glob-tester': typeof GlobTesterRoute
   '/global-ip': typeof GlobalIpRoute
   '/graphql': typeof GraphqlRoute
   '/gzip': typeof GzipRoute
@@ -1621,6 +1628,7 @@ export interface FileRoutesByTo {
   '/favicon-generator': typeof FaviconGeneratorRoute
   '/function-plotter': typeof FunctionPlotterRoute
   '/gitignore': typeof GitignoreRoute
+  '/glob-tester': typeof GlobTesterRoute
   '/global-ip': typeof GlobalIpRoute
   '/graphql': typeof GraphqlRoute
   '/gzip': typeof GzipRoute
@@ -1842,6 +1850,7 @@ export interface FileRoutesById {
   '/favicon-generator': typeof FaviconGeneratorRoute
   '/function-plotter': typeof FunctionPlotterRoute
   '/gitignore': typeof GitignoreRoute
+  '/glob-tester': typeof GlobTesterRoute
   '/global-ip': typeof GlobalIpRoute
   '/graphql': typeof GraphqlRoute
   '/gzip': typeof GzipRoute
@@ -2064,6 +2073,7 @@ export interface FileRouteTypes {
     | '/favicon-generator'
     | '/function-plotter'
     | '/gitignore'
+    | '/glob-tester'
     | '/global-ip'
     | '/graphql'
     | '/gzip'
@@ -2284,6 +2294,7 @@ export interface FileRouteTypes {
     | '/favicon-generator'
     | '/function-plotter'
     | '/gitignore'
+    | '/glob-tester'
     | '/global-ip'
     | '/graphql'
     | '/gzip'
@@ -2504,6 +2515,7 @@ export interface FileRouteTypes {
     | '/favicon-generator'
     | '/function-plotter'
     | '/gitignore'
+    | '/glob-tester'
     | '/global-ip'
     | '/graphql'
     | '/gzip'
@@ -2725,6 +2737,7 @@ export interface RootRouteChildren {
   FaviconGeneratorRoute: typeof FaviconGeneratorRoute
   FunctionPlotterRoute: typeof FunctionPlotterRoute
   GitignoreRoute: typeof GitignoreRoute
+  GlobTesterRoute: typeof GlobTesterRoute
   GlobalIpRoute: typeof GlobalIpRoute
   GraphqlRoute: typeof GraphqlRoute
   GzipRoute: typeof GzipRoute
@@ -3797,6 +3810,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GlobalIpRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/glob-tester': {
+      id: '/glob-tester'
+      path: '/glob-tester'
+      fullPath: '/glob-tester'
+      preLoaderRoute: typeof GlobTesterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/gitignore': {
       id: '/gitignore'
       path: '/gitignore'
@@ -4477,6 +4497,7 @@ const rootRouteChildren: RootRouteChildren = {
   FaviconGeneratorRoute: FaviconGeneratorRoute,
   FunctionPlotterRoute: FunctionPlotterRoute,
   GitignoreRoute: GitignoreRoute,
+  GlobTesterRoute: GlobTesterRoute,
   GlobalIpRoute: GlobalIpRoute,
   GraphqlRoute: GraphqlRoute,
   GzipRoute: GzipRoute,
