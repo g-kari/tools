@@ -304,6 +304,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🌍",
       },
       {
+        path: "/world-clock",
+        label: "ワールドクロック",
+        description:
+          "世界の主要都市の現在時刻をリアルタイム表示するワールドクロック。東京・ニューヨーク・ロンドンなど25都市対応。1秒ごとに自動更新、12h/24h切替、都市のカスタマイズが可能。",
+        icon: "🕐",
+      },
+      {
         path: "/text-encrypt",
         label: "テキスト暗号化",
         description:

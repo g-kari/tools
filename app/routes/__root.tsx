@@ -62,6 +62,7 @@ const navCategories = [
       { path: "/audio-converter", label: "オーディオ変換" },
       { path: "/video-converter", label: "動画変換" },
       { path: "/timezone", label: "タイムゾーン変換" },
+      { path: "/world-clock", label: "ワールドクロック" },
       { path: "/timestamp", label: "Unixタイムスタンプ" },
       { path: "/date-calc", label: "日付計算" },
       { path: "/number-format", label: "数値フォーマット" },

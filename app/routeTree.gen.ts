@@ -16,6 +16,7 @@ import { Route as YamlFormatterRouteImport } from './routes/yaml-formatter'
 import { Route as XpathRouteImport } from './routes/xpath'
 import { Route as XmlJsonRouteImport } from './routes/xml-json'
 import { Route as XmlRouteImport } from './routes/xml'
+import { Route as WorldClockRouteImport } from './routes/world-clock'
 import { Route as WhoisRouteImport } from './routes/whois'
 import { Route as WebsocketRouteImport } from './routes/websocket'
 import { Route as VideoConverterRouteImport } from './routes/video-converter'
@@ -225,6 +226,11 @@ const XmlJsonRoute = XmlJsonRouteImport.update({
 const XmlRoute = XmlRouteImport.update({
   id: '/xml',
   path: '/xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WorldClockRoute = WorldClockRouteImport.update({
+  id: '/world-clock',
+  path: '/world-clock',
   getParentRoute: () => rootRouteImport,
 } as any)
 const WhoisRoute = WhoisRouteImport.update({
@@ -1275,6 +1281,7 @@ export interface FileRoutesByFullPath {
   '/video-converter': typeof VideoConverterRoute
   '/websocket': typeof WebsocketRoute
   '/whois': typeof WhoisRoute
+  '/world-clock': typeof WorldClockRoute
   '/xml': typeof XmlRoute
   '/xml-json': typeof XmlJsonRoute
   '/xpath': typeof XpathRoute
@@ -1459,6 +1466,7 @@ export interface FileRoutesByTo {
   '/video-converter': typeof VideoConverterRoute
   '/websocket': typeof WebsocketRoute
   '/whois': typeof WhoisRoute
+  '/world-clock': typeof WorldClockRoute
   '/xml': typeof XmlRoute
   '/xml-json': typeof XmlJsonRoute
   '/xpath': typeof XpathRoute
@@ -1644,6 +1652,7 @@ export interface FileRoutesById {
   '/video-converter': typeof VideoConverterRoute
   '/websocket': typeof WebsocketRoute
   '/whois': typeof WhoisRoute
+  '/world-clock': typeof WorldClockRoute
   '/xml': typeof XmlRoute
   '/xml-json': typeof XmlJsonRoute
   '/xpath': typeof XpathRoute
@@ -1830,6 +1839,7 @@ export interface FileRouteTypes {
     | '/video-converter'
     | '/websocket'
     | '/whois'
+    | '/world-clock'
     | '/xml'
     | '/xml-json'
     | '/xpath'
@@ -2014,6 +2024,7 @@ export interface FileRouteTypes {
     | '/video-converter'
     | '/websocket'
     | '/whois'
+    | '/world-clock'
     | '/xml'
     | '/xml-json'
     | '/xpath'
@@ -2198,6 +2209,7 @@ export interface FileRouteTypes {
     | '/video-converter'
     | '/websocket'
     | '/whois'
+    | '/world-clock'
     | '/xml'
     | '/xml-json'
     | '/xpath'
@@ -2383,6 +2395,7 @@ export interface RootRouteChildren {
   VideoConverterRoute: typeof VideoConverterRoute
   WebsocketRoute: typeof WebsocketRoute
   WhoisRoute: typeof WhoisRoute
+  WorldClockRoute: typeof WorldClockRoute
   XmlRoute: typeof XmlRoute
   XmlJsonRoute: typeof XmlJsonRoute
   XpathRoute: typeof XpathRoute
@@ -2445,6 +2458,13 @@ declare module '@tanstack/react-router' {
       path: '/xml'
       fullPath: '/xml'
       preLoaderRoute: typeof XmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/world-clock': {
+      id: '/world-clock'
+      path: '/world-clock'
+      fullPath: '/world-clock'
+      preLoaderRoute: typeof WorldClockRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/whois': {
@@ -3847,6 +3867,7 @@ const rootRouteChildren: RootRouteChildren = {
   VideoConverterRoute: VideoConverterRoute,
   WebsocketRoute: WebsocketRoute,
   WhoisRoute: WhoisRoute,
+  WorldClockRoute: WorldClockRoute,
   XmlRoute: XmlRoute,
   XmlJsonRoute: XmlJsonRoute,
   XpathRoute: XpathRoute,

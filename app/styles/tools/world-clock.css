@@ -1,0 +1,316 @@
+/* ワールドクロック */
+
+/* コントロールバー */
+.wc-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.wc-controls-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* 12h/24h トグル */
+.wc-format-toggle {
+  display: flex;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  overflow: hidden;
+}
+
+.wc-format-btn {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.8125rem;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface-variant);
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  border-right: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.wc-format-btn:last-child {
+  border-right: none;
+}
+
+.wc-format-btn.active {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+.wc-format-btn:hover:not(.active) {
+  background: var(--md-sys-color-surface-variant);
+}
+
+/* 都市数バッジ */
+.wc-city-count {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+}
+
+/* 都市セレクターパネル */
+.wc-selector-panel {
+  border: 1px solid var(--md-sys-color-outline-variant);
+  padding: 1rem;
+  margin-bottom: 1.25rem;
+  background: var(--md-sys-color-surface-variant);
+}
+
+.wc-selector-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.wc-selector-title {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+}
+
+.wc-selector-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.wc-text-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-primary);
+  cursor: pointer;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  text-decoration: underline;
+  transition: opacity 0.15s;
+}
+
+.wc-text-btn:hover {
+  opacity: 0.75;
+}
+
+.wc-text-sep {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-outline);
+}
+
+.wc-city-checkboxes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 0.25rem;
+}
+
+.wc-city-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.5rem;
+  cursor: pointer;
+  transition: background 0.15s;
+  border: 1px solid transparent;
+}
+
+.wc-city-checkbox-label:hover {
+  background: var(--md-sys-color-surface);
+  border-color: var(--md-sys-color-outline-variant);
+}
+
+.wc-city-checkbox {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  accent-color: var(--md-sys-color-primary);
+}
+
+.wc-city-name {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface);
+  font-weight: 500;
+}
+
+.wc-city-label-text {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+/* クロックグリッド */
+.wc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+/* クロックカード */
+.wc-card {
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface);
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  transition: border-color 0.2s;
+  position: relative;
+}
+
+.wc-card:hover {
+  border-color: var(--md-sys-color-primary);
+}
+
+.wc-card--local {
+  border-color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-primary-container);
+}
+
+/* カードヘッダー */
+.wc-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.wc-city-title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.wc-local-badge {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  padding: 0.1em 0.45em;
+  border-radius: 2px;
+  letter-spacing: 0.04em;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+}
+
+.wc-offset {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+}
+
+/* 時刻表示 */
+.wc-time {
+  font-size: 2rem;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  color: var(--md-sys-color-on-surface);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 0.375rem 0 0.25rem;
+}
+
+.wc-card--local .wc-time {
+  color: var(--md-sys-color-on-primary-container);
+}
+
+/* 日付・曜日 */
+.wc-date-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.wc-date {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+}
+
+.wc-weekday {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+}
+
+/* 日付差分バッジ */
+.wc-day-diff {
+  display: inline-block;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  padding: 0.1em 0.4em;
+  border-radius: 2px;
+  letter-spacing: 0.04em;
+}
+
+.wc-day-diff--next {
+  background: var(--md-sys-color-tertiary-container);
+  color: var(--md-sys-color-on-tertiary-container);
+}
+
+.wc-day-diff--prev {
+  background: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-on-error-container);
+}
+
+/* 空の状態 */
+.wc-empty {
+  padding: 2.5rem 1rem;
+  text-align: center;
+  color: var(--md-sys-color-on-surface-variant);
+  border: 1px dashed var(--md-sys-color-outline-variant);
+  margin-bottom: 1.25rem;
+}
+
+/* レスポンシブ */
+@media (max-width: 600px) {
+  .wc-controls {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .wc-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .wc-time {
+    font-size: 1.5rem;
+  }
+
+  .wc-city-checkboxes {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 400px) {
+  .wc-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wc-card,
+  .wc-format-btn,
+  .wc-city-checkbox-label,
+  .wc-text-btn {
+    transition: none;
+  }
+}
