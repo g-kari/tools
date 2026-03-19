@@ -84,6 +84,7 @@ const navCategories = [
       { path: "/number-words", label: "数値テキスト変換" },
       { path: "/csv-sql", label: "CSV→SQL変換" },
       { path: "/ini-parser", label: "INIファイルパーサー" },
+      { path: "/gzip", label: "GZip/Deflate 圧縮・解凍" },
     ],
   },
   {

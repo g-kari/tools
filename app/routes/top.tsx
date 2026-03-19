@@ -429,6 +429,13 @@ const toolCatalog: ToolCategory[] = [
           "全角と半角文字の相互変換ツール。英数字・記号・カタカナ・スペースを選択して変換。日本語テキスト処理・フォームデータの正規化に。",
         icon: "Ａ",
       },
+      {
+        path: "/gzip",
+        label: "GZip/Deflate 圧縮・解凍",
+        description:
+          "テキストを gzip・deflate・deflate-raw 形式でブラウザ内圧縮・解凍するツール。圧縮率・サイズ比較表示。Base64エンコードされた圧縮データの解凍にも対応。データは外部送信なし。",
+        icon: "🗜️",
+      },
     ],
   },
   {

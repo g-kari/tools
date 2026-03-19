@@ -119,6 +119,7 @@ import { Route as HmacRouteImport } from './routes/hmac'
 import { Route as HexViewerRouteImport } from './routes/hex-viewer'
 import { Route as HashRouteImport } from './routes/hash'
 import { Route as HarRouteImport } from './routes/har'
+import { Route as GzipRouteImport } from './routes/gzip'
 import { Route as GraphqlRouteImport } from './routes/graphql'
 import { Route as GlobalIpRouteImport } from './routes/global-ip'
 import { Route as GitignoreRouteImport } from './routes/gitignore'
@@ -743,6 +744,11 @@ const HarRoute = HarRouteImport.update({
   path: '/har',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GzipRoute = GzipRouteImport.update({
+  id: '/gzip',
+  path: '/gzip',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GraphqlRoute = GraphqlRouteImport.update({
   id: '/graphql',
   path: '/graphql',
@@ -1179,6 +1185,7 @@ export interface FileRoutesByFullPath {
   '/gitignore': typeof GitignoreRoute
   '/global-ip': typeof GlobalIpRoute
   '/graphql': typeof GraphqlRoute
+  '/gzip': typeof GzipRoute
   '/har': typeof HarRoute
   '/hash': typeof HashRoute
   '/hex-viewer': typeof HexViewerRoute
@@ -1364,6 +1371,7 @@ export interface FileRoutesByTo {
   '/gitignore': typeof GitignoreRoute
   '/global-ip': typeof GlobalIpRoute
   '/graphql': typeof GraphqlRoute
+  '/gzip': typeof GzipRoute
   '/har': typeof HarRoute
   '/hash': typeof HashRoute
   '/hex-viewer': typeof HexViewerRoute
@@ -1550,6 +1558,7 @@ export interface FileRoutesById {
   '/gitignore': typeof GitignoreRoute
   '/global-ip': typeof GlobalIpRoute
   '/graphql': typeof GraphqlRoute
+  '/gzip': typeof GzipRoute
   '/har': typeof HarRoute
   '/hash': typeof HashRoute
   '/hex-viewer': typeof HexViewerRoute
@@ -1737,6 +1746,7 @@ export interface FileRouteTypes {
     | '/gitignore'
     | '/global-ip'
     | '/graphql'
+    | '/gzip'
     | '/har'
     | '/hash'
     | '/hex-viewer'
@@ -1922,6 +1932,7 @@ export interface FileRouteTypes {
     | '/gitignore'
     | '/global-ip'
     | '/graphql'
+    | '/gzip'
     | '/har'
     | '/hash'
     | '/hex-viewer'
@@ -2107,6 +2118,7 @@ export interface FileRouteTypes {
     | '/gitignore'
     | '/global-ip'
     | '/graphql'
+    | '/gzip'
     | '/har'
     | '/hash'
     | '/hex-viewer'
@@ -2293,6 +2305,7 @@ export interface RootRouteChildren {
   GitignoreRoute: typeof GitignoreRoute
   GlobalIpRoute: typeof GlobalIpRoute
   GraphqlRoute: typeof GraphqlRoute
+  GzipRoute: typeof GzipRoute
   HarRoute: typeof HarRoute
   HashRoute: typeof HashRoute
   HexViewerRoute: typeof HexViewerRoute
@@ -3181,6 +3194,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HarRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/gzip': {
+      id: '/gzip'
+      path: '/gzip'
+      fullPath: '/gzip'
+      preLoaderRoute: typeof GzipRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/graphql': {
       id: '/graphql'
       path: '/graphql'
@@ -3765,6 +3785,7 @@ const rootRouteChildren: RootRouteChildren = {
   GitignoreRoute: GitignoreRoute,
   GlobalIpRoute: GlobalIpRoute,
   GraphqlRoute: GraphqlRoute,
+  GzipRoute: GzipRoute,
   HarRoute: HarRoute,
   HashRoute: HashRoute,
   HexViewerRoute: HexViewerRoute,

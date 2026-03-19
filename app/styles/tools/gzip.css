@@ -1,0 +1,233 @@
+/* GZip/Deflate 圧縮・解凍ツール */
+/* クラスプレフィックス: .gz- */
+
+/* モード切替タブ */
+.gz-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  padding-bottom: 0.5rem;
+}
+
+.gz-tab-btn {
+  padding: 0.375rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid transparent;
+  border-radius: 4px 4px 0 0;
+  cursor: pointer;
+  background: none;
+  color: var(--md-sys-color-on-surface-variant);
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.gz-tab-btn:hover:not(.active) {
+  background-color: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+}
+
+.gz-tab-btn.active {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border-color: var(--md-sys-color-primary);
+}
+
+.gz-tab-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* 形式選択オプション */
+.gz-options-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.gz-fieldset {
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  padding: 0.5rem 0.75rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.gz-legend {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  padding: 0 0.25rem;
+}
+
+.gz-radio-label {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  user-select: none;
+}
+
+.gz-radio-label input[type='radio'] {
+  accent-color: var(--md-sys-color-primary);
+  cursor: pointer;
+}
+
+/* テキストエリア */
+.gz-textarea {
+  width: 100%;
+  min-height: 160px;
+  padding: 0.75rem;
+  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  resize: vertical;
+  transition: border-color 0.2s, background 0.2s;
+  box-sizing: border-box;
+}
+
+.gz-textarea:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-surface);
+}
+
+.gz-textarea::placeholder {
+  color: var(--md-sys-color-on-surface-variant);
+  opacity: 0.6;
+}
+
+.gz-textarea-output {
+  background: var(--md-sys-color-surface);
+  cursor: default;
+}
+
+/* アクションボタン行 */
+.gz-action-row {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+/* エラーパネル */
+.gz-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  margin-bottom: 0.75rem;
+  border: 1px solid var(--md-sys-color-error);
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--md-sys-color-error) 8%, transparent);
+  color: var(--md-sys-color-error);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+.gz-error-icon {
+  flex-shrink: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* 出力ヘッダー */
+.gz-output-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.gz-output-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+}
+
+/* 統計カード */
+.gz-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin-bottom: 1rem;
+  padding: 0.875rem 1rem;
+  background: var(--md-sys-color-surface-variant);
+  border-radius: 8px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.gz-stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.gz-stat-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.gz-stat-value {
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
+  color: var(--md-sys-color-on-surface);
+}
+
+.gz-stat-value--positive {
+  color: var(--md-sys-color-primary);
+}
+
+.gz-stat-value--negative {
+  color: var(--md-sys-color-error);
+}
+
+/* レスポンシブ */
+@media (max-width: 600px) {
+  .gz-fieldset {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .gz-options-row {
+    flex-direction: column;
+  }
+
+  .gz-action-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .gz-action-row > button {
+    width: 100%;
+  }
+
+  .gz-stats {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
+
+/* モーション低減 */
+@media (prefers-reduced-motion: reduce) {
+  .gz-tab-btn,
+  .gz-textarea {
+    transition: none;
+  }
+}
