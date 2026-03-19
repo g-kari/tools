@@ -1,0 +1,193 @@
+/* Base16 (Hex) エンコーダー/デコーダー */
+
+/* モード切替タブ */
+.b16-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  padding-bottom: 0.5rem;
+}
+
+.b16-tab-btn {
+  padding: 0.375rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid transparent;
+  border-radius: 4px 4px 0 0;
+  cursor: pointer;
+  background: none;
+  color: var(--md-sys-color-on-surface-variant);
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.b16-tab-btn:hover:not(.active) {
+  background-color: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+}
+
+.b16-tab-btn.active {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border-color: var(--md-sys-color-primary);
+}
+
+.b16-tab-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* オプション行 */
+.b16-options-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.b16-fieldset {
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  padding: 0.5rem 0.75rem 0.5rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.b16-legend {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  padding: 0 0.25rem;
+}
+
+.b16-radio-label {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  user-select: none;
+}
+
+.b16-radio-label input[type='radio'] {
+  accent-color: var(--md-sys-color-primary);
+  cursor: pointer;
+}
+
+/* テキストエリア */
+.b16-textarea {
+  width: 100%;
+  min-height: 160px;
+  padding: 0.75rem;
+  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  resize: vertical;
+  transition: border-color 0.2s, background 0.2s;
+  box-sizing: border-box;
+}
+
+.b16-textarea:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-surface);
+}
+
+.b16-textarea::placeholder {
+  color: var(--md-sys-color-on-surface-variant);
+  opacity: 0.6;
+}
+
+.b16-textarea-output {
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  cursor: default;
+}
+
+/* アクションボタン行 */
+.b16-action-row {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+/* エラーパネル */
+.b16-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  margin-bottom: 0.75rem;
+  border: 1px solid var(--md-sys-color-error);
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--md-sys-color-error) 8%, transparent);
+  color: var(--md-sys-color-error);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+.b16-error-icon {
+  flex-shrink: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* 出力ヘッダー */
+.b16-output-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.b16-output-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+}
+
+.b16-output-meta {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* レスポンシブ */
+@media (max-width: 600px) {
+  .b16-fieldset {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .b16-options-row {
+    flex-direction: column;
+  }
+
+  .b16-action-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .b16-action-row > button {
+    width: 100%;
+  }
+}
+
+/* モーション低減 */
+@media (prefers-reduced-motion: reduce) {
+  .b16-tab-btn,
+  .b16-textarea {
+    transition: none;
+  }
+}

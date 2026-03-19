@@ -33,6 +33,7 @@ const navCategories = [
       { path: "/number-base", label: "数値進数変換" },
       { path: "/msgpack", label: "MessagePack変換" },
       { path: "/base64", label: "Base64変換" },
+      { path: "/base16", label: "Base16 (Hex) 変換" },
       { path: "/base32", label: "Base32変換" },
       { path: "/base64-image", label: "Base64画像デコード" },
       { path: "/json", label: "JSON整形" },
