@@ -145,6 +145,7 @@ import { Route as GraphqlRouteImport } from './routes/graphql'
 import { Route as GlobalIpRouteImport } from './routes/global-ip'
 import { Route as GlobTesterRouteImport } from './routes/glob-tester'
 import { Route as GitignoreRouteImport } from './routes/gitignore'
+import { Route as GithubBadgeRouteImport } from './routes/github-badge'
 import { Route as FunctionPlotterRouteImport } from './routes/function-plotter'
 import { Route as FaviconGeneratorRouteImport } from './routes/favicon-generator'
 import { Route as EnvParserRouteImport } from './routes/env-parser'
@@ -912,6 +913,11 @@ const GitignoreRoute = GitignoreRouteImport.update({
   path: '/gitignore',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GithubBadgeRoute = GithubBadgeRouteImport.update({
+  id: '/github-badge',
+  path: '/github-badge',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FunctionPlotterRoute = FunctionPlotterRouteImport.update({
   id: '/function-plotter',
   path: '/function-plotter',
@@ -1426,6 +1432,7 @@ export interface FileRoutesByFullPath {
   '/env-parser': typeof EnvParserRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
   '/function-plotter': typeof FunctionPlotterRoute
+  '/github-badge': typeof GithubBadgeRoute
   '/gitignore': typeof GitignoreRoute
   '/glob-tester': typeof GlobTesterRoute
   '/global-ip': typeof GlobalIpRoute
@@ -1650,6 +1657,7 @@ export interface FileRoutesByTo {
   '/env-parser': typeof EnvParserRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
   '/function-plotter': typeof FunctionPlotterRoute
+  '/github-badge': typeof GithubBadgeRoute
   '/gitignore': typeof GitignoreRoute
   '/glob-tester': typeof GlobTesterRoute
   '/global-ip': typeof GlobalIpRoute
@@ -1875,6 +1883,7 @@ export interface FileRoutesById {
   '/env-parser': typeof EnvParserRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
   '/function-plotter': typeof FunctionPlotterRoute
+  '/github-badge': typeof GithubBadgeRoute
   '/gitignore': typeof GitignoreRoute
   '/glob-tester': typeof GlobTesterRoute
   '/global-ip': typeof GlobalIpRoute
@@ -2101,6 +2110,7 @@ export interface FileRouteTypes {
     | '/env-parser'
     | '/favicon-generator'
     | '/function-plotter'
+    | '/github-badge'
     | '/gitignore'
     | '/glob-tester'
     | '/global-ip'
@@ -2325,6 +2335,7 @@ export interface FileRouteTypes {
     | '/env-parser'
     | '/favicon-generator'
     | '/function-plotter'
+    | '/github-badge'
     | '/gitignore'
     | '/glob-tester'
     | '/global-ip'
@@ -2549,6 +2560,7 @@ export interface FileRouteTypes {
     | '/env-parser'
     | '/favicon-generator'
     | '/function-plotter'
+    | '/github-badge'
     | '/gitignore'
     | '/glob-tester'
     | '/global-ip'
@@ -2774,6 +2786,7 @@ export interface RootRouteChildren {
   EnvParserRoute: typeof EnvParserRoute
   FaviconGeneratorRoute: typeof FaviconGeneratorRoute
   FunctionPlotterRoute: typeof FunctionPlotterRoute
+  GithubBadgeRoute: typeof GithubBadgeRoute
   GitignoreRoute: typeof GitignoreRoute
   GlobTesterRoute: typeof GlobTesterRoute
   GlobalIpRoute: typeof GlobalIpRoute
@@ -3870,6 +3883,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GitignoreRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/github-badge': {
+      id: '/github-badge'
+      path: '/github-badge'
+      fullPath: '/github-badge'
+      preLoaderRoute: typeof GithubBadgeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/function-plotter': {
       id: '/function-plotter'
       path: '/function-plotter'
@@ -4558,6 +4578,7 @@ const rootRouteChildren: RootRouteChildren = {
   EnvParserRoute: EnvParserRoute,
   FaviconGeneratorRoute: FaviconGeneratorRoute,
   FunctionPlotterRoute: FunctionPlotterRoute,
+  GithubBadgeRoute: GithubBadgeRoute,
   GitignoreRoute: GitignoreRoute,
   GlobTesterRoute: GlobTesterRoute,
   GlobalIpRoute: GlobalIpRoute,
