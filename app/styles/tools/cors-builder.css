@@ -1,0 +1,424 @@
+/* CORS ヘッダービルダー スタイル */
+
+/* セクション共通 */
+.cors-section {
+  margin-bottom: 1.5rem;
+  padding: 1rem 1.25rem;
+  background: var(--md-sys-color-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 0;
+}
+
+.cors-section-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--md-sys-color-primary);
+  margin: 0 0 0.75rem;
+}
+
+/* プリセット */
+.cors-presets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.5rem;
+}
+
+.cors-preset-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  cursor: pointer;
+  text-align: left;
+  border-radius: 0;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+
+.cors-preset-btn:hover {
+  background: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.cors-preset-btn:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.cors-preset-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.cors-preset-desc {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* オリジンモード */
+.cors-origin-modes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.cors-radio-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  cursor: pointer;
+}
+
+.cors-radio-label input[type='radio'] {
+  margin-top: 0.15rem;
+  accent-color: var(--md-sys-color-primary);
+  cursor: pointer;
+}
+
+.cors-radio-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.cors-radio-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface);
+}
+
+.cors-radio-hint {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* 入力フィールド */
+.cors-input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--md-sys-color-outline);
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-size: 0.875rem;
+  font-family: var(--font-mono, monospace);
+  border-radius: 0;
+  box-sizing: border-box;
+}
+
+.cors-input:focus {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 0;
+  border-color: var(--md-sys-color-primary);
+}
+
+.cors-input-sm {
+  width: auto;
+  flex: 1;
+}
+
+.cors-textarea {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--md-sys-color-outline);
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-size: 0.875rem;
+  font-family: var(--font-mono, monospace);
+  border-radius: 0;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.cors-textarea:focus {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 0;
+  border-color: var(--md-sys-color-primary);
+}
+
+/* 警告 */
+.cors-warning {
+  margin-top: 0.75rem;
+  padding: 0.6rem 0.85rem;
+  background: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-on-error-container);
+  border-left: 3px solid var(--md-sys-color-error);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.cors-warning code {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.8em;
+  background: rgba(0, 0, 0, 0.1);
+  padding: 0 0.25em;
+}
+
+/* メソッドグリッド */
+.cors-methods-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.cors-method-badge {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  font-family: var(--font-mono, monospace);
+  letter-spacing: 0.02em;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  cursor: pointer;
+  user-select: none;
+}
+
+.cors-checkbox-label input[type='checkbox']:checked + .cors-method-badge {
+  background: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+/* メソッド色分け */
+.cors-method-get { border-left: 3px solid #4caf50; }
+.cors-method-post { border-left: 3px solid #2196f3; }
+.cors-method-put { border-left: 3px solid #ff9800; }
+.cors-method-delete { border-left: 3px solid #f44336; }
+.cors-method-patch { border-left: 3px solid #9c27b0; }
+.cors-method-options { border-left: 3px solid #607d8b; }
+.cors-method-head { border-left: 3px solid #795548; }
+
+/* チェックボックス */
+.cors-checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.cors-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface);
+}
+
+.cors-checkbox-label input[type='checkbox'] {
+  accent-color: var(--md-sys-color-primary);
+  cursor: pointer;
+  width: 1rem;
+  height: 1rem;
+}
+
+.cors-checkbox-label code {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.8rem;
+  background: var(--md-sys-color-surface-variant);
+  padding: 0.1em 0.4em;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.cors-custom-item {
+  background: var(--md-sys-color-secondary-container);
+  padding: 0.2rem 0.5rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.cors-custom-badge {
+  font-size: 0.7rem;
+  padding: 0.1em 0.4em;
+  background: var(--md-sys-color-tertiary-container);
+  color: var(--md-sys-color-on-tertiary-container);
+}
+
+/* 追加行 */
+.cors-add-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+/* Max-Age */
+.cors-maxage-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.cors-maxage-hint {
+  font-size: 0.85rem;
+  color: var(--md-sys-color-on-surface-variant);
+  min-width: 6rem;
+}
+
+.cors-maxage-presets {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.cors-tag-btn {
+  padding: 0.2rem 0.6rem;
+  font-size: 0.78rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  border-radius: 0;
+  transition: background 0.15s;
+}
+
+.cors-tag-btn:hover {
+  background: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+/* オプション表示 */
+.cors-optional {
+  font-size: 0.75rem;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.cors-hint-text {
+  font-size: 0.8rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin: 0 0 0.6rem;
+}
+
+/* 出力セクション */
+.cors-output-section {
+  border-color: var(--md-sys-color-primary);
+}
+
+.cors-output-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.cors-output-header .cors-section-title {
+  margin: 0;
+}
+
+/* タブ */
+.cors-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  margin-bottom: 1rem;
+  overflow-x: auto;
+}
+
+.cors-tab {
+  padding: 0.45rem 0.9rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s;
+}
+
+.cors-tab:hover {
+  color: var(--md-sys-color-primary);
+}
+
+.cors-tab-active {
+  color: var(--md-sys-color-primary);
+  border-bottom-color: var(--md-sys-color-primary);
+}
+
+/* ヘッダー一覧 */
+.cors-headers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.cors-header-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.4rem 0.6rem;
+  background: var(--md-sys-color-surface-variant);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.85rem;
+  flex-wrap: wrap;
+}
+
+.cors-header-name {
+  color: var(--md-sys-color-primary);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.cors-header-value {
+  color: var(--md-sys-color-on-surface);
+  word-break: break-all;
+}
+
+.cors-empty {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  padding: 0.5rem;
+}
+
+/* コードブロック */
+.cors-code-block {
+  margin: 0;
+  padding: 1rem;
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  overflow-x: auto;
+  white-space: pre;
+  color: var(--md-sys-color-on-surface);
+}
+
+/* レスポンシブ */
+@media (max-width: 600px) {
+  .cors-presets-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cors-origin-modes {
+    flex-direction: column;
+  }
+
+  .cors-add-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .cors-input-sm {
+    width: 100%;
+  }
+
+  .cors-maxage-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

@@ -235,6 +235,7 @@ const navCategories = [
       { path: "/conventional-commits", label: "Conventional Commits" },
       { path: "/cache-control", label: "Cache-Control ビルダー" },
       { path: "/csp-builder", label: "CSP ビルダー" },
+      { path: "/cors-builder", label: "CORS ヘッダービルダー" },
       { path: "/pkce", label: "PKCE ジェネレーター" },
       { path: "/cert-decoder", label: "X.509 証明書デコーダー" },
       { path: "/password-strength", label: "パスワード強度チェッカー" },

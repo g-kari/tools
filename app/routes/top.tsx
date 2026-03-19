@@ -1266,6 +1266,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🛡️",
       },
       {
+        path: "/cors-builder",
+        label: "CORS ヘッダービルダー",
+        description:
+          "Cross-Origin Resource Sharing (CORS) ヘッダーをGUIで構築するツール。許可するオリジン・メソッド・ヘッダーを設定し、Access-Control-* ヘッダーを生成。Express・nginx・Cloudflare Workers 向けの設定コードも出力。",
+        icon: "🌍",
+      },
+      {
         path: "/pkce",
         label: "PKCE ジェネレーター",
         description:

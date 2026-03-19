@@ -184,6 +184,7 @@ import { Route as CssAnimationRouteImport } from './routes/css-animation'
 import { Route as CspBuilderRouteImport } from './routes/csp-builder'
 import { Route as CronParserRouteImport } from './routes/cron-parser'
 import { Route as CronRouteImport } from './routes/cron'
+import { Route as CorsBuilderRouteImport } from './routes/cors-builder'
 import { Route as CookieParserRouteImport } from './routes/cookie-parser'
 import { Route as ConventionalCommitsRouteImport } from './routes/conventional-commits'
 import { Route as CombinatoricsRouteImport } from './routes/combinatorics'
@@ -1099,6 +1100,11 @@ const CronRoute = CronRouteImport.update({
   path: '/cron',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CorsBuilderRoute = CorsBuilderRouteImport.update({
+  id: '/cors-builder',
+  path: '/cors-builder',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CookieParserRoute = CookieParserRouteImport.update({
   id: '/cookie-parser',
   path: '/cookie-parser',
@@ -1331,6 +1337,7 @@ export interface FileRoutesByFullPath {
   '/combinatorics': typeof CombinatoricsRoute
   '/conventional-commits': typeof ConventionalCommitsRoute
   '/cookie-parser': typeof CookieParserRoute
+  '/cors-builder': typeof CorsBuilderRoute
   '/cron': typeof CronRoute
   '/cron-parser': typeof CronParserRoute
   '/csp-builder': typeof CspBuilderRoute
@@ -1547,6 +1554,7 @@ export interface FileRoutesByTo {
   '/combinatorics': typeof CombinatoricsRoute
   '/conventional-commits': typeof ConventionalCommitsRoute
   '/cookie-parser': typeof CookieParserRoute
+  '/cors-builder': typeof CorsBuilderRoute
   '/cron': typeof CronRoute
   '/cron-parser': typeof CronParserRoute
   '/csp-builder': typeof CspBuilderRoute
@@ -1764,6 +1772,7 @@ export interface FileRoutesById {
   '/combinatorics': typeof CombinatoricsRoute
   '/conventional-commits': typeof ConventionalCommitsRoute
   '/cookie-parser': typeof CookieParserRoute
+  '/cors-builder': typeof CorsBuilderRoute
   '/cron': typeof CronRoute
   '/cron-parser': typeof CronParserRoute
   '/csp-builder': typeof CspBuilderRoute
@@ -1982,6 +1991,7 @@ export interface FileRouteTypes {
     | '/combinatorics'
     | '/conventional-commits'
     | '/cookie-parser'
+    | '/cors-builder'
     | '/cron'
     | '/cron-parser'
     | '/csp-builder'
@@ -2198,6 +2208,7 @@ export interface FileRouteTypes {
     | '/combinatorics'
     | '/conventional-commits'
     | '/cookie-parser'
+    | '/cors-builder'
     | '/cron'
     | '/cron-parser'
     | '/csp-builder'
@@ -2414,6 +2425,7 @@ export interface FileRouteTypes {
     | '/combinatorics'
     | '/conventional-commits'
     | '/cookie-parser'
+    | '/cors-builder'
     | '/cron'
     | '/cron-parser'
     | '/csp-builder'
@@ -2631,6 +2643,7 @@ export interface RootRouteChildren {
   CombinatoricsRoute: typeof CombinatoricsRoute
   ConventionalCommitsRoute: typeof ConventionalCommitsRoute
   CookieParserRoute: typeof CookieParserRoute
+  CorsBuilderRoute: typeof CorsBuilderRoute
   CronRoute: typeof CronRoute
   CronParserRoute: typeof CronParserRoute
   CspBuilderRoute: typeof CspBuilderRoute
@@ -4039,6 +4052,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CronRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/cors-builder': {
+      id: '/cors-builder'
+      path: '/cors-builder'
+      fullPath: '/cors-builder'
+      preLoaderRoute: typeof CorsBuilderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/cookie-parser': {
       id: '/cookie-parser'
       path: '/cookie-parser'
@@ -4351,6 +4371,7 @@ const rootRouteChildren: RootRouteChildren = {
   CombinatoricsRoute: CombinatoricsRoute,
   ConventionalCommitsRoute: ConventionalCommitsRoute,
   CookieParserRoute: CookieParserRoute,
+  CorsBuilderRoute: CorsBuilderRoute,
   CronRoute: CronRoute,
   CronParserRoute: CronParserRoute,
   CspBuilderRoute: CspBuilderRoute,
