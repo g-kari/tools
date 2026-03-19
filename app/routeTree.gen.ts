@@ -192,6 +192,7 @@ import { Route as ChmodRouteImport } from './routes/chmod'
 import { Route as CharCountRouteImport } from './routes/char-count'
 import { Route as CertDecoderRouteImport } from './routes/cert-decoder'
 import { Route as CacheControlRouteImport } from './routes/cache-control'
+import { Route as BrainfuckRouteImport } from './routes/brainfuck'
 import { Route as BitwiseRouteImport } from './routes/bitwise'
 import { Route as BasicAuthRouteImport } from './routes/basic-auth'
 import { Route as Base85RouteImport } from './routes/base85'
@@ -1126,6 +1127,11 @@ const CacheControlRoute = CacheControlRouteImport.update({
   path: '/cache-control',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BrainfuckRoute = BrainfuckRouteImport.update({
+  id: '/brainfuck',
+  path: '/brainfuck',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BitwiseRoute = BitwiseRouteImport.update({
   id: '/bitwise',
   path: '/bitwise',
@@ -1232,6 +1238,7 @@ export interface FileRoutesByFullPath {
   '/base85': typeof Base85Route
   '/basic-auth': typeof BasicAuthRoute
   '/bitwise': typeof BitwiseRoute
+  '/brainfuck': typeof BrainfuckRoute
   '/cache-control': typeof CacheControlRoute
   '/cert-decoder': typeof CertDecoderRoute
   '/char-count': typeof CharCountRoute
@@ -1435,6 +1442,7 @@ export interface FileRoutesByTo {
   '/base85': typeof Base85Route
   '/basic-auth': typeof BasicAuthRoute
   '/bitwise': typeof BitwiseRoute
+  '/brainfuck': typeof BrainfuckRoute
   '/cache-control': typeof CacheControlRoute
   '/cert-decoder': typeof CertDecoderRoute
   '/char-count': typeof CharCountRoute
@@ -1639,6 +1647,7 @@ export interface FileRoutesById {
   '/base85': typeof Base85Route
   '/basic-auth': typeof BasicAuthRoute
   '/bitwise': typeof BitwiseRoute
+  '/brainfuck': typeof BrainfuckRoute
   '/cache-control': typeof CacheControlRoute
   '/cert-decoder': typeof CertDecoderRoute
   '/char-count': typeof CharCountRoute
@@ -1844,6 +1853,7 @@ export interface FileRouteTypes {
     | '/base85'
     | '/basic-auth'
     | '/bitwise'
+    | '/brainfuck'
     | '/cache-control'
     | '/cert-decoder'
     | '/char-count'
@@ -2047,6 +2057,7 @@ export interface FileRouteTypes {
     | '/base85'
     | '/basic-auth'
     | '/bitwise'
+    | '/brainfuck'
     | '/cache-control'
     | '/cert-decoder'
     | '/char-count'
@@ -2250,6 +2261,7 @@ export interface FileRouteTypes {
     | '/base85'
     | '/basic-auth'
     | '/bitwise'
+    | '/brainfuck'
     | '/cache-control'
     | '/cert-decoder'
     | '/char-count'
@@ -2454,6 +2466,7 @@ export interface RootRouteChildren {
   Base85Route: typeof Base85Route
   BasicAuthRoute: typeof BasicAuthRoute
   BitwiseRoute: typeof BitwiseRoute
+  BrainfuckRoute: typeof BrainfuckRoute
   CacheControlRoute: typeof CacheControlRoute
   CertDecoderRoute: typeof CertDecoderRoute
   CharCountRoute: typeof CharCountRoute
@@ -3926,6 +3939,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CacheControlRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/brainfuck': {
+      id: '/brainfuck'
+      path: '/brainfuck'
+      fullPath: '/brainfuck'
+      preLoaderRoute: typeof BrainfuckRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/bitwise': {
       id: '/bitwise'
       path: '/bitwise'
@@ -4070,6 +4090,7 @@ const rootRouteChildren: RootRouteChildren = {
   Base85Route: Base85Route,
   BasicAuthRoute: BasicAuthRoute,
   BitwiseRoute: BitwiseRoute,
+  BrainfuckRoute: BrainfuckRoute,
   CacheControlRoute: CacheControlRoute,
   CertDecoderRoute: CertDecoderRoute,
   CharCountRoute: CharCountRoute,

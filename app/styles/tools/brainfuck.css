@@ -1,0 +1,182 @@
+/* Brainfuck インタープリター スタイル */
+
+.brainfuck-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+}
+
+@media (max-width: 768px) {
+  .brainfuck-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.brainfuck-editor {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.brainfuck-code-area {
+  font-family: 'Fira Code', 'Courier New', Courier, monospace;
+  font-size: 0.95rem;
+  min-height: 160px;
+  resize: vertical;
+  letter-spacing: 0.05em;
+}
+
+.brainfuck-input-area {
+  font-family: 'Fira Code', 'Courier New', Courier, monospace;
+  font-size: 0.95rem;
+  min-height: 60px;
+  resize: vertical;
+}
+
+.brainfuck-output {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.brainfuck-result-box {
+  background: var(--surface-variant);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  min-height: 120px;
+  font-family: 'Fira Code', 'Courier New', Courier, monospace;
+  font-size: 0.9rem;
+  white-space: pre-wrap;
+  word-break: break-all;
+  color: var(--on-surface);
+}
+
+.brainfuck-result-box.has-error {
+  border-color: var(--error);
+  background: var(--error-container, #fce8e6);
+  color: var(--on-error-container, #410002);
+}
+
+.brainfuck-result-placeholder {
+  color: var(--on-surface-variant);
+  font-style: italic;
+  font-family: inherit;
+}
+
+.brainfuck-stats {
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.brainfuck-stat-badge {
+  background: var(--secondary-container, #e8def8);
+  color: var(--on-secondary-container, #1d192b);
+  border-radius: 9999px;
+  padding: 2px 10px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.brainfuck-memory-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.brainfuck-memory-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 40px;
+  background: var(--surface-variant);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-sm);
+  padding: 4px 6px;
+  font-size: 0.75rem;
+  font-family: 'Fira Code', 'Courier New', Courier, monospace;
+}
+
+.brainfuck-memory-cell.active {
+  background: var(--primary-container, #d0bcff);
+  border-color: var(--primary);
+  color: var(--on-primary-container, #21005d);
+  font-weight: 700;
+}
+
+.brainfuck-memory-cell.nonzero {
+  background: var(--tertiary-container, #ffd8e4);
+  border-color: var(--tertiary, #7d5260);
+  color: var(--on-tertiary-container, #31111d);
+}
+
+.brainfuck-cell-index {
+  color: var(--on-surface-variant);
+  font-size: 0.65rem;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.brainfuck-cell-value {
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.brainfuck-cell-char {
+  font-size: 0.65rem;
+  color: var(--on-surface-variant);
+  line-height: 1;
+  margin-top: 2px;
+}
+
+.brainfuck-samples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+}
+
+.brainfuck-sample-btn {
+  font-size: 0.8rem;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  border: 1px solid var(--outline-variant);
+  background: var(--surface);
+  color: var(--on-surface);
+  cursor: pointer;
+  transition: background 0.15s;
+  line-height: 1.4;
+}
+
+.brainfuck-sample-btn:hover {
+  background: var(--surface-variant);
+}
+
+.brainfuck-command-ref {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--spacing-xs);
+}
+
+.brainfuck-cmd-item {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: flex-start;
+  padding: var(--spacing-xs) 0;
+}
+
+.brainfuck-cmd-symbol {
+  font-family: 'Fira Code', 'Courier New', Courier, monospace;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--primary);
+  min-width: 20px;
+  text-align: center;
+}
+
+.brainfuck-cmd-desc {
+  font-size: 0.82rem;
+  color: var(--on-surface-variant);
+  line-height: 1.4;
+}
