@@ -864,6 +864,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "📐",
       },
       {
+        path: "/css-scroll-snap",
+        label: "CSS Scroll Snapジェネレーター",
+        description:
+          "CSS Scroll Snap のコンテナ・アイテムプロパティをビジュアルで設定し、CSSコードを即座に生成。scroll-snap-type・scroll-snap-align・scroll-snap-stop などを直感的に試せるオンラインツール。ライブプレビューつき。",
+        icon: "🎯",
+      },
+      {
         path: "/image-to-gif",
         label: "画像→GIF変換",
         description: "複数画像からアニメーションGIFを作成",

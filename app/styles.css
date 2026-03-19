@@ -119,6 +119,7 @@
 @import "./styles/tools/encoding.css";
 @import "./styles/tools/date-calc.css";
 @import "./styles/tools/css-container-query.css";
+@import "./styles/tools/css-scroll-snap.css";
 @import "./styles/tools/har.css";
 @import "./styles/tools/toml-formatter.css";
 @import "./styles/tools/nano-id.css";
