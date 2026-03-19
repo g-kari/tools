@@ -265,6 +265,7 @@ const navCategories = [
       { path: "/dice-roll", label: "ダイスロール" },
       { path: "/typing-speed", label: "タイピング速度測定" },
       { path: "/pomodoro", label: "ポモドーロタイマー" },
+      { path: "/brainfuck", label: "Brainfuck インタープリター" },
     ],
   },
 ];
