@@ -1,0 +1,279 @@
+/* マインスイーパー スタイル */
+
+/* コントロールエリア */
+.ms-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.ms-difficulty-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.ms-difficulty-btn {
+  padding: 0.5rem 1.125rem;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 20px;
+  background-color: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.ms-difficulty-btn:hover {
+  background-color: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+}
+
+.ms-difficulty-btn.active {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  border-color: var(--md-sys-color-primary);
+}
+
+/* ステータスバー（地雷カウント・タイマー・リセット） */
+.ms-status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 520px;
+  margin: 0 auto 1rem;
+  padding: 0.75rem 1rem;
+  background-color: var(--md-sys-color-surface-variant);
+  border-radius: 12px;
+}
+
+.ms-counter {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface-variant);
+  min-width: 3ch;
+  text-align: center;
+  letter-spacing: 0.04em;
+}
+
+.ms-counter.mines {
+  color: var(--md-sys-color-error);
+}
+
+.ms-counter.timer {
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.ms-reset-btn {
+  font-size: 1.375rem;
+  line-height: 1;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background-color: transparent;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    transform 0.1s ease;
+}
+
+.ms-reset-btn:hover {
+  background-color: var(--md-sys-color-surface);
+}
+
+.ms-reset-btn:active {
+  transform: scale(0.9);
+}
+
+/* ゲームボード */
+.ms-board-wrapper {
+  overflow-x: auto;
+  margin: 0 auto 1.5rem;
+  max-width: 100%;
+}
+
+.ms-board {
+  display: inline-grid;
+  gap: 2px;
+  padding: 8px;
+  background-color: var(--md-sys-color-surface-variant);
+  border-radius: 12px;
+  user-select: none;
+}
+
+/* セル */
+.ms-cell {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 700;
+  border-radius: 6px;
+  cursor: pointer;
+  border: none;
+  transition:
+    background-color 0.1s ease,
+    transform 0.08s ease;
+  outline: none;
+  position: relative;
+}
+
+.ms-cell:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 1px;
+  z-index: 1;
+}
+
+/* 未開放セル */
+.ms-cell.hidden {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.ms-cell.hidden:hover {
+  background-color: var(--md-sys-color-secondary-container);
+}
+
+.ms-cell.hidden:active {
+  transform: scale(0.9);
+}
+
+/* フラグ付きセル */
+.ms-cell.flagged {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.ms-cell.flagged:hover {
+  background-color: var(--md-sys-color-secondary-container);
+}
+
+/* 開放済みセル */
+.ms-cell.revealed {
+  background-color: var(--md-sys-color-surface);
+  cursor: default;
+}
+
+/* 数字の色（隣接地雷数） */
+.ms-cell.n1 { color: #1565c0; }
+.ms-cell.n2 { color: #2e7d32; }
+.ms-cell.n3 { color: #c62828; }
+.ms-cell.n4 { color: #4a148c; }
+.ms-cell.n5 { color: #bf360c; }
+.ms-cell.n6 { color: #00838f; }
+.ms-cell.n7 { color: #37474f; }
+.ms-cell.n8 { color: #212121; }
+
+/* ゲームオーバー時の地雷セル */
+.ms-cell.mine-exploded {
+  background-color: var(--md-sys-color-error);
+  color: var(--md-sys-color-on-error);
+  cursor: default;
+  animation: ms-explode 0.3s ease;
+}
+
+.ms-cell.mine-revealed {
+  background-color: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-error);
+  cursor: default;
+}
+
+.ms-cell.mine-wrong-flag {
+  background-color: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-error);
+  cursor: default;
+  text-decoration: line-through;
+}
+
+@keyframes ms-explode {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+/* ゲームオーバー・クリアバナー */
+.ms-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.5rem 2rem;
+  border-radius: 16px;
+  margin: 0 auto 1.5rem;
+  max-width: 360px;
+  text-align: center;
+  animation: ms-result-in 0.35s ease;
+}
+
+.ms-result.win {
+  background-color: var(--md-sys-color-primary-container);
+  border: 2px solid var(--md-sys-color-primary);
+}
+
+.ms-result.lose {
+  background-color: var(--md-sys-color-error-container);
+  border: 2px solid var(--md-sys-color-error);
+}
+
+@keyframes ms-result-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.ms-result-icon {
+  font-size: 2.5rem;
+  line-height: 1;
+}
+
+.ms-result-title {
+  font-size: 1.375rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.ms-result.win .ms-result-title {
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.ms-result.lose .ms-result-title {
+  color: var(--md-sys-color-error);
+}
+
+.ms-result-time {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1rem;
+  margin: 0;
+  opacity: 0.8;
+}
+
+/* レスポンシブ */
+@media (max-width: 480px) {
+  .ms-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ms-difficulty-group {
+    justify-content: center;
+  }
+
+  .ms-cell {
+    width: 28px;
+    height: 28px;
+    font-size: 0.75rem;
+    border-radius: 4px;
+  }
+}

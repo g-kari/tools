@@ -93,6 +93,7 @@ import { Route as NanoIdRouteImport } from './routes/nano-id'
 import { Route as MsgpackRouteImport } from './routes/msgpack'
 import { Route as MorseCodeRouteImport } from './routes/morse-code'
 import { Route as MinifyRouteImport } from './routes/minify'
+import { Route as MinesweeperRouteImport } from './routes/minesweeper'
 import { Route as MimeTypesRouteImport } from './routes/mime-types'
 import { Route as MermaidRouteImport } from './routes/mermaid'
 import { Route as MatrixRouteImport } from './routes/matrix'
@@ -655,6 +656,11 @@ const MorseCodeRoute = MorseCodeRouteImport.update({
 const MinifyRoute = MinifyRouteImport.update({
   id: '/minify',
   path: '/minify',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MinesweeperRoute = MinesweeperRouteImport.update({
+  id: '/minesweeper',
+  path: '/minesweeper',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MimeTypesRoute = MimeTypesRouteImport.update({
@@ -1513,6 +1519,7 @@ export interface FileRoutesByFullPath {
   '/matrix': typeof MatrixRoute
   '/mermaid': typeof MermaidRoute
   '/mime-types': typeof MimeTypesRoute
+  '/minesweeper': typeof MinesweeperRoute
   '/minify': typeof MinifyRoute
   '/morse-code': typeof MorseCodeRoute
   '/msgpack': typeof MsgpackRoute
@@ -1742,6 +1749,7 @@ export interface FileRoutesByTo {
   '/matrix': typeof MatrixRoute
   '/mermaid': typeof MermaidRoute
   '/mime-types': typeof MimeTypesRoute
+  '/minesweeper': typeof MinesweeperRoute
   '/minify': typeof MinifyRoute
   '/morse-code': typeof MorseCodeRoute
   '/msgpack': typeof MsgpackRoute
@@ -1972,6 +1980,7 @@ export interface FileRoutesById {
   '/matrix': typeof MatrixRoute
   '/mermaid': typeof MermaidRoute
   '/mime-types': typeof MimeTypesRoute
+  '/minesweeper': typeof MinesweeperRoute
   '/minify': typeof MinifyRoute
   '/morse-code': typeof MorseCodeRoute
   '/msgpack': typeof MsgpackRoute
@@ -2203,6 +2212,7 @@ export interface FileRouteTypes {
     | '/matrix'
     | '/mermaid'
     | '/mime-types'
+    | '/minesweeper'
     | '/minify'
     | '/morse-code'
     | '/msgpack'
@@ -2432,6 +2442,7 @@ export interface FileRouteTypes {
     | '/matrix'
     | '/mermaid'
     | '/mime-types'
+    | '/minesweeper'
     | '/minify'
     | '/morse-code'
     | '/msgpack'
@@ -2661,6 +2672,7 @@ export interface FileRouteTypes {
     | '/matrix'
     | '/mermaid'
     | '/mime-types'
+    | '/minesweeper'
     | '/minify'
     | '/morse-code'
     | '/msgpack'
@@ -2891,6 +2903,7 @@ export interface RootRouteChildren {
   MatrixRoute: typeof MatrixRoute
   MermaidRoute: typeof MermaidRoute
   MimeTypesRoute: typeof MimeTypesRoute
+  MinesweeperRoute: typeof MinesweeperRoute
   MinifyRoute: typeof MinifyRoute
   MorseCodeRoute: typeof MorseCodeRoute
   MsgpackRoute: typeof MsgpackRoute
@@ -3569,6 +3582,13 @@ declare module '@tanstack/react-router' {
       path: '/minify'
       fullPath: '/minify'
       preLoaderRoute: typeof MinifyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/minesweeper': {
+      id: '/minesweeper'
+      path: '/minesweeper'
+      fullPath: '/minesweeper'
+      preLoaderRoute: typeof MinesweeperRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mime-types': {
@@ -4715,6 +4735,7 @@ const rootRouteChildren: RootRouteChildren = {
   MatrixRoute: MatrixRoute,
   MermaidRoute: MermaidRoute,
   MimeTypesRoute: MimeTypesRoute,
+  MinesweeperRoute: MinesweeperRoute,
   MinifyRoute: MinifyRoute,
   MorseCodeRoute: MorseCodeRoute,
   MsgpackRoute: MsgpackRoute,
