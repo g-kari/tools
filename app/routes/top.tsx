@@ -985,6 +985,72 @@ const toolCatalog: ToolCategory[] = [
     ],
   },
   {
+    name: "カラー",
+    icon: "🎨",
+    items: [
+      {
+        path: "/color-picker",
+        label: "カラーピッカー",
+        description: "色を視覚的に選択し、HEX・RGB・HSL形式でコピーできるカラーピッカー。",
+        icon: "🖌️",
+      },
+      {
+        path: "/color-converter",
+        label: "カラーフォーマット変換",
+        description: "HEX・RGB・HSL・HSV・CMYK・OKLCHなど6種類のカラーフォーマット間をリアルタイムに相互変換。Webデザイン・印刷・CSS設計に活用できるカラーコンバーター。",
+        icon: "🎨",
+      },
+      {
+        path: "/color-palette",
+        label: "カラーパレット生成",
+        description: "補色・三色・類似色など配色理論に基づいたカラーパレットを自動生成するツール。",
+        icon: "🖼️",
+      },
+      {
+        path: "/color-harmony",
+        label: "カラーハーモニー",
+        description: "ベースカラーから補色・類似色・トライアド・分割補色・テトラッドを一覧生成するカラーハーモニー配色ツール。",
+        icon: "🌈",
+      },
+      {
+        path: "/color-token",
+        label: "カラートークン生成",
+        description: "ベースカラーからデザインシステム用のシェードスケール（50〜950）を自動生成するツール。CSS変数・SCSS・Tailwind設定・JSON形式で出力。",
+        icon: "🏷️",
+      },
+      {
+        path: "/color-contrast",
+        label: "カラーコントラストチェッカー",
+        description: "WCAG 2.1準拠のカラーコントラストチェッカー。前景色と背景色のコントラスト比を計算し、AA・AAAの適合性を判定します。",
+        icon: "⚖️",
+      },
+      {
+        path: "/color-blind",
+        label: "色覚シミュレーター",
+        description: "色覚異常シミュレーター。Deuteranopia・Protanopia・Tritanopiaなど6種類の色覚タイプで画像がどのように見えるか確認できるアクセシビリティツール。",
+        icon: "👁️",
+      },
+      {
+        path: "/color-mix",
+        label: "CSS color-mix() プレイグラウンド",
+        description: "CSS color-mix() 関数をインタラクティブに試せるツール。2色を選んで色空間・割合を調整し、混合結果をリアルタイムプレビュー。CSS コードを即座に生成。",
+        icon: "🧪",
+      },
+      {
+        path: "/color-name",
+        label: "色名検索",
+        description: "CSS名前付き色を検索するツール。HEXやRGBカラーを入力すると最も近いCSS色名をΔE色差順に表示。140色のCSS名前付き色を完全収録。",
+        icon: "🔖",
+      },
+      {
+        path: "/color-extractor",
+        label: "画像カラー抽出",
+        description: "画像から主要な色（カラーパレット）を抽出するツール。",
+        icon: "💧",
+      },
+    ],
+  },
+  {
     name: "検索",
     icon: "🔍",
     items: [
