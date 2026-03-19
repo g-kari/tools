@@ -1,0 +1,216 @@
+/* 論理式真理値表ジェネレーター */
+
+.truth-table-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* 入力エリア */
+.truth-table-input-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.truth-table-input-label {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+}
+
+.truth-table-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 0;
+  font-size: 1rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.truth-table-input:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+}
+
+.truth-table-input-hint {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  opacity: 0.8;
+}
+
+/* サンプルボタン列 */
+.truth-table-samples {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.truth-table-samples-label {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+}
+
+/* エラー */
+.truth-table-error {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-error);
+  background: var(--md-sys-color-error-container);
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--md-sys-color-error);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+}
+
+/* 正規化式の表示 */
+.truth-table-expr-display {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--md-sys-color-primary-container);
+  border: 1px solid var(--md-sys-color-primary);
+  flex-wrap: wrap;
+}
+
+.truth-table-expr-label {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-primary-container);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  opacity: 0.8;
+  white-space: nowrap;
+}
+
+.truth-table-expr-value {
+  font-size: 0.9375rem;
+  color: var(--md-sys-color-on-primary-container);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  word-break: break-all;
+}
+
+/* 結果ヘッダー（件数 + 操作ボタン） */
+.truth-table-result {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.truth-table-result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.truth-table-result-info {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+}
+
+.truth-table-result-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* テーブルスクロール */
+.truth-table-scroll {
+  overflow-x: auto;
+}
+
+/* テーブル本体 */
+.truth-table {
+  border-collapse: collapse;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.875rem;
+  min-width: 100%;
+}
+
+.truth-table th {
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  padding: 0.5rem 1.25rem;
+  text-align: center;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.truth-table th.output-col {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border-color: var(--md-sys-color-primary);
+}
+
+.truth-table td {
+  padding: 0.4375rem 1.25rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  text-align: center;
+  color: var(--md-sys-color-on-surface);
+}
+
+.truth-table td.output-col {
+  border-color: var(--md-sys-color-primary);
+  font-weight: 700;
+}
+
+/* 入力列: T=プライマリ色, F=薄い */
+.truth-table td.truth-true {
+  color: var(--md-sys-color-primary);
+}
+
+.truth-table td.truth-false {
+  color: var(--md-sys-color-on-surface-variant);
+  opacity: 0.7;
+}
+
+/* 出力列: T=緑背景, F=グレー背景 */
+.truth-table td.output-true {
+  background: color-mix(
+    in srgb,
+    var(--md-sys-color-primary-container) 50%,
+    transparent
+  );
+  color: var(--md-sys-color-primary);
+}
+
+.truth-table td.output-false {
+  background: color-mix(
+    in srgb,
+    var(--md-sys-color-surface-variant) 50%,
+    transparent
+  );
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* 空状態 */
+.truth-table-empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.875rem;
+}
+
+.truth-table-empty-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+  display: block;
+  opacity: 0.4;
+}
+
+/* レスポンシブ */
+@media (max-width: 640px) {
+  .truth-table th,
+  .truth-table td {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.8125rem;
+  }
+}

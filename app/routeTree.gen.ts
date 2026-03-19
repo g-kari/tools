@@ -31,6 +31,7 @@ import { Route as UnicodeRouteImport } from './routes/unicode'
 import { Route as UlidRouteImport } from './routes/ulid'
 import { Route as TypographyScaleRouteImport } from './routes/typography-scale'
 import { Route as TypingSpeedRouteImport } from './routes/typing-speed'
+import { Route as TruthTableRouteImport } from './routes/truth-table'
 import { Route as TransparentImageRouteImport } from './routes/transparent-image'
 import { Route as TotpRouteImport } from './routes/totp'
 import { Route as TopRouteImport } from './routes/top'
@@ -311,6 +312,11 @@ const TypographyScaleRoute = TypographyScaleRouteImport.update({
 const TypingSpeedRoute = TypingSpeedRouteImport.update({
   id: '/typing-speed',
   path: '/typing-speed',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TruthTableRoute = TruthTableRouteImport.update({
+  id: '/truth-table',
+  path: '/truth-table',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TransparentImageRoute = TransparentImageRouteImport.update({
@@ -1337,6 +1343,7 @@ export interface FileRoutesByFullPath {
   '/top': typeof TopRoute
   '/totp': typeof TotpRoute
   '/transparent-image': typeof TransparentImageRoute
+  '/truth-table': typeof TruthTableRoute
   '/typing-speed': typeof TypingSpeedRoute
   '/typography-scale': typeof TypographyScaleRoute
   '/ulid': typeof UlidRoute
@@ -1532,6 +1539,7 @@ export interface FileRoutesByTo {
   '/top': typeof TopRoute
   '/totp': typeof TotpRoute
   '/transparent-image': typeof TransparentImageRoute
+  '/truth-table': typeof TruthTableRoute
   '/typing-speed': typeof TypingSpeedRoute
   '/typography-scale': typeof TypographyScaleRoute
   '/ulid': typeof UlidRoute
@@ -1728,6 +1736,7 @@ export interface FileRoutesById {
   '/top': typeof TopRoute
   '/totp': typeof TotpRoute
   '/transparent-image': typeof TransparentImageRoute
+  '/truth-table': typeof TruthTableRoute
   '/typing-speed': typeof TypingSpeedRoute
   '/typography-scale': typeof TypographyScaleRoute
   '/ulid': typeof UlidRoute
@@ -1925,6 +1934,7 @@ export interface FileRouteTypes {
     | '/top'
     | '/totp'
     | '/transparent-image'
+    | '/truth-table'
     | '/typing-speed'
     | '/typography-scale'
     | '/ulid'
@@ -2120,6 +2130,7 @@ export interface FileRouteTypes {
     | '/top'
     | '/totp'
     | '/transparent-image'
+    | '/truth-table'
     | '/typing-speed'
     | '/typography-scale'
     | '/ulid'
@@ -2315,6 +2326,7 @@ export interface FileRouteTypes {
     | '/top'
     | '/totp'
     | '/transparent-image'
+    | '/truth-table'
     | '/typing-speed'
     | '/typography-scale'
     | '/ulid'
@@ -2511,6 +2523,7 @@ export interface RootRouteChildren {
   TopRoute: typeof TopRoute
   TotpRoute: typeof TotpRoute
   TransparentImageRoute: typeof TransparentImageRoute
+  TruthTableRoute: typeof TruthTableRoute
   TypingSpeedRoute: typeof TypingSpeedRoute
   TypographyScaleRoute: typeof TypographyScaleRoute
   UlidRoute: typeof UlidRoute
@@ -2693,6 +2706,13 @@ declare module '@tanstack/react-router' {
       path: '/typing-speed'
       fullPath: '/typing-speed'
       preLoaderRoute: typeof TypingSpeedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/truth-table': {
+      id: '/truth-table'
+      path: '/truth-table'
+      fullPath: '/truth-table'
+      preLoaderRoute: typeof TruthTableRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/transparent-image': {
@@ -4063,6 +4083,7 @@ const rootRouteChildren: RootRouteChildren = {
   TopRoute: TopRoute,
   TotpRoute: TotpRoute,
   TransparentImageRoute: TransparentImageRoute,
+  TruthTableRoute: TruthTableRoute,
   TypingSpeedRoute: TypingSpeedRoute,
   TypographyScaleRoute: TypographyScaleRoute,
   UlidRoute: UlidRoute,

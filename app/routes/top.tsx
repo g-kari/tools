@@ -402,6 +402,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "📊",
       },
       {
+        path: "/truth-table",
+        label: "論理式真理値表",
+        description:
+          "ブール論理式から真理値表を生成するツール。AND・OR・NOT・XOR・NAND・NOR・XNOR に対応。A, B, C などの変数を使って式を入力すると全組み合わせの真偽値を一覧表示。CSV 出力対応。",
+        icon: "⊨",
+      },
+      {
         path: "/bitwise",
         label: "ビット演算計算機",
         description:
