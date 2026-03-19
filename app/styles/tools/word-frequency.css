@@ -1,0 +1,306 @@
+/* ====================================
+   Word Frequency Analyzer
+   ==================================== */
+
+.wf-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wf-section {
+  background: var(--md-sys-color-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 8px;
+  animation: fadeInUp 0.3s ease-out both;
+}
+
+/* テキストエリア */
+.wf-textarea {
+  min-height: 180px;
+  resize: vertical;
+}
+
+/* オプション */
+.wf-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.wf-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9375rem;
+  color: var(--md-sys-color-on-surface);
+  cursor: pointer;
+  user-select: none;
+}
+
+.wf-checkbox-label:hover {
+  color: var(--md-sys-color-primary);
+}
+
+.wf-checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--md-sys-color-primary);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* 最小単語長 */
+.wf-min-length-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.wf-min-length-label {
+  font-size: 0.9375rem;
+  color: var(--md-sys-color-on-surface);
+  white-space: nowrap;
+}
+
+.wf-min-length-select {
+  padding: 6px 10px;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.wf-min-length-select:focus {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* サマリーグリッド */
+.wf-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+}
+
+.wf-summary-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  background-color: var(--md-sys-color-primary-container);
+  border-radius: 12px;
+  text-align: center;
+  gap: 0.25rem;
+}
+
+.wf-summary-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-primary-container);
+  opacity: 0.8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.wf-summary-value {
+  font-size: 1.75rem;
+  font-weight: 600;
+  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  color: var(--md-sys-color-on-primary-container);
+  line-height: 1.2;
+}
+
+/* 結果ヘッダー */
+.wf-results-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.wf-results-header .section-title {
+  margin-bottom: 0;
+}
+
+.wf-results-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* 空メッセージ */
+.wf-empty-message {
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.9375rem;
+  text-align: center;
+  padding: 24px 0;
+  margin: 0;
+}
+
+/* テーブル */
+.wf-table-wrapper {
+  overflow-x: auto;
+}
+
+.wf-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.wf-table th {
+  text-align: left;
+  padding: 8px 12px;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid var(--md-sys-color-outline-variant);
+  white-space: nowrap;
+}
+
+.wf-table td {
+  padding: 7px 12px;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  color: var(--md-sys-color-on-surface);
+  vertical-align: middle;
+}
+
+.wf-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.wf-table tbody tr:hover td {
+  background: var(--md-sys-color-surface-variant);
+}
+
+/* 列幅 */
+.wf-th-rank,
+.wf-td-rank {
+  width: 40px;
+  text-align: center;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
+  font-size: 0.8rem;
+}
+
+.wf-th-word,
+.wf-td-word {
+  min-width: 120px;
+  max-width: 240px;
+}
+
+.wf-th-count,
+.wf-td-count {
+  width: 100px;
+  text-align: right;
+  font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
+}
+
+.wf-th-percent,
+.wf-td-percent {
+  width: 80px;
+  text-align: right;
+  font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.wf-th-bar,
+.wf-td-bar {
+  min-width: 120px;
+}
+
+/* 単語表示 */
+.wf-word-display {
+  display: inline-block;
+  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-primary-container);
+  border-radius: 4px;
+  padding: 2px 8px;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+/* 頻度バー */
+.wf-bar-wrap {
+  width: 100%;
+  height: 10px;
+  background: var(--md-sys-color-surface-variant);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.wf-bar {
+  height: 100%;
+  width: var(--wf-bar-width, 0%);
+  background: var(--md-sys-color-primary);
+  border-radius: 5px;
+  transition: width 0.3s ease-out;
+}
+
+/* さらに表示 */
+.wf-load-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 16px 0 4px;
+  flex-wrap: wrap;
+}
+
+.wf-showing-count {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin: 0;
+}
+
+/* アニメーション抑制 */
+@media (prefers-reduced-motion: reduce) {
+  .wf-section {
+    animation: none;
+  }
+
+  .wf-bar {
+    transition: none;
+  }
+}
+
+/* レスポンシブ */
+@media (max-width: 600px) {
+  .wf-results-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .wf-th-bar,
+  .wf-td-bar {
+    display: none;
+  }
+
+  .wf-summary-value {
+    font-size: 1.4rem;
+  }
+
+  .wf-th-rank,
+  .wf-td-rank {
+    display: none;
+  }
+}

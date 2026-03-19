@@ -17,6 +17,7 @@ import { Route as XpathRouteImport } from './routes/xpath'
 import { Route as XmlJsonRouteImport } from './routes/xml-json'
 import { Route as XmlRouteImport } from './routes/xml'
 import { Route as WorldClockRouteImport } from './routes/world-clock'
+import { Route as WordFrequencyRouteImport } from './routes/word-frequency'
 import { Route as WhoisRouteImport } from './routes/whois'
 import { Route as WebsocketRouteImport } from './routes/websocket'
 import { Route as VideoConverterRouteImport } from './routes/video-converter'
@@ -190,6 +191,7 @@ import { Route as ColorContrastRouteImport } from './routes/color-contrast'
 import { Route as ColorBlindRouteImport } from './routes/color-blind'
 import { Route as CidrRouteImport } from './routes/cidr'
 import { Route as ChmodRouteImport } from './routes/chmod'
+import { Route as CharFrequencyRouteImport } from './routes/char-frequency'
 import { Route as CharCountRouteImport } from './routes/char-count'
 import { Route as CertDecoderRouteImport } from './routes/cert-decoder'
 import { Route as CacheControlRouteImport } from './routes/cache-control'
@@ -202,6 +204,7 @@ import { Route as Base64RouteImport } from './routes/base64'
 import { Route as Base62RouteImport } from './routes/base62'
 import { Route as Base58RouteImport } from './routes/base58'
 import { Route as Base32RouteImport } from './routes/base32'
+import { Route as Base16RouteImport } from './routes/base16'
 import { Route as BarcodeRouteImport } from './routes/barcode'
 import { Route as AudioConverterRouteImport } from './routes/audio-converter'
 import { Route as AspectRatioRouteImport } from './routes/aspect-ratio'
@@ -251,6 +254,11 @@ const XmlRoute = XmlRouteImport.update({
 const WorldClockRoute = WorldClockRouteImport.update({
   id: '/world-clock',
   path: '/world-clock',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WordFrequencyRoute = WordFrequencyRouteImport.update({
+  id: '/word-frequency',
+  path: '/word-frequency',
   getParentRoute: () => rootRouteImport,
 } as any)
 const WhoisRoute = WhoisRouteImport.update({
@@ -1118,6 +1126,11 @@ const ChmodRoute = ChmodRouteImport.update({
   path: '/chmod',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CharFrequencyRoute = CharFrequencyRouteImport.update({
+  id: '/char-frequency',
+  path: '/char-frequency',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CharCountRoute = CharCountRouteImport.update({
   id: '/char-count',
   path: '/char-count',
@@ -1178,6 +1191,11 @@ const Base32Route = Base32RouteImport.update({
   path: '/base32',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Base16Route = Base16RouteImport.update({
+  id: '/base16',
+  path: '/base16',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BarcodeRoute = BarcodeRouteImport.update({
   id: '/barcode',
   path: '/barcode',
@@ -1236,6 +1254,7 @@ export interface FileRoutesByFullPath {
   '/aspect-ratio': typeof AspectRatioRoute
   '/audio-converter': typeof AudioConverterRoute
   '/barcode': typeof BarcodeRoute
+  '/base16': typeof Base16Route
   '/base32': typeof Base32Route
   '/base58': typeof Base58Route
   '/base62': typeof Base62Route
@@ -1248,6 +1267,7 @@ export interface FileRoutesByFullPath {
   '/cache-control': typeof CacheControlRoute
   '/cert-decoder': typeof CertDecoderRoute
   '/char-count': typeof CharCountRoute
+  '/char-frequency': typeof CharFrequencyRoute
   '/chmod': typeof ChmodRoute
   '/cidr': typeof CidrRoute
   '/color-blind': typeof ColorBlindRoute
@@ -1421,6 +1441,7 @@ export interface FileRoutesByFullPath {
   '/video-converter': typeof VideoConverterRoute
   '/websocket': typeof WebsocketRoute
   '/whois': typeof WhoisRoute
+  '/word-frequency': typeof WordFrequencyRoute
   '/world-clock': typeof WorldClockRoute
   '/xml': typeof XmlRoute
   '/xml-json': typeof XmlJsonRoute
@@ -1441,6 +1462,7 @@ export interface FileRoutesByTo {
   '/aspect-ratio': typeof AspectRatioRoute
   '/audio-converter': typeof AudioConverterRoute
   '/barcode': typeof BarcodeRoute
+  '/base16': typeof Base16Route
   '/base32': typeof Base32Route
   '/base58': typeof Base58Route
   '/base62': typeof Base62Route
@@ -1453,6 +1475,7 @@ export interface FileRoutesByTo {
   '/cache-control': typeof CacheControlRoute
   '/cert-decoder': typeof CertDecoderRoute
   '/char-count': typeof CharCountRoute
+  '/char-frequency': typeof CharFrequencyRoute
   '/chmod': typeof ChmodRoute
   '/cidr': typeof CidrRoute
   '/color-blind': typeof ColorBlindRoute
@@ -1626,6 +1649,7 @@ export interface FileRoutesByTo {
   '/video-converter': typeof VideoConverterRoute
   '/websocket': typeof WebsocketRoute
   '/whois': typeof WhoisRoute
+  '/word-frequency': typeof WordFrequencyRoute
   '/world-clock': typeof WorldClockRoute
   '/xml': typeof XmlRoute
   '/xml-json': typeof XmlJsonRoute
@@ -1647,6 +1671,7 @@ export interface FileRoutesById {
   '/aspect-ratio': typeof AspectRatioRoute
   '/audio-converter': typeof AudioConverterRoute
   '/barcode': typeof BarcodeRoute
+  '/base16': typeof Base16Route
   '/base32': typeof Base32Route
   '/base58': typeof Base58Route
   '/base62': typeof Base62Route
@@ -1659,6 +1684,7 @@ export interface FileRoutesById {
   '/cache-control': typeof CacheControlRoute
   '/cert-decoder': typeof CertDecoderRoute
   '/char-count': typeof CharCountRoute
+  '/char-frequency': typeof CharFrequencyRoute
   '/chmod': typeof ChmodRoute
   '/cidr': typeof CidrRoute
   '/color-blind': typeof ColorBlindRoute
@@ -1832,6 +1858,7 @@ export interface FileRoutesById {
   '/video-converter': typeof VideoConverterRoute
   '/websocket': typeof WebsocketRoute
   '/whois': typeof WhoisRoute
+  '/word-frequency': typeof WordFrequencyRoute
   '/world-clock': typeof WorldClockRoute
   '/xml': typeof XmlRoute
   '/xml-json': typeof XmlJsonRoute
@@ -1854,6 +1881,7 @@ export interface FileRouteTypes {
     | '/aspect-ratio'
     | '/audio-converter'
     | '/barcode'
+    | '/base16'
     | '/base32'
     | '/base58'
     | '/base62'
@@ -1866,6 +1894,7 @@ export interface FileRouteTypes {
     | '/cache-control'
     | '/cert-decoder'
     | '/char-count'
+    | '/char-frequency'
     | '/chmod'
     | '/cidr'
     | '/color-blind'
@@ -2039,6 +2068,7 @@ export interface FileRouteTypes {
     | '/video-converter'
     | '/websocket'
     | '/whois'
+    | '/word-frequency'
     | '/world-clock'
     | '/xml'
     | '/xml-json'
@@ -2059,6 +2089,7 @@ export interface FileRouteTypes {
     | '/aspect-ratio'
     | '/audio-converter'
     | '/barcode'
+    | '/base16'
     | '/base32'
     | '/base58'
     | '/base62'
@@ -2071,6 +2102,7 @@ export interface FileRouteTypes {
     | '/cache-control'
     | '/cert-decoder'
     | '/char-count'
+    | '/char-frequency'
     | '/chmod'
     | '/cidr'
     | '/color-blind'
@@ -2244,6 +2276,7 @@ export interface FileRouteTypes {
     | '/video-converter'
     | '/websocket'
     | '/whois'
+    | '/word-frequency'
     | '/world-clock'
     | '/xml'
     | '/xml-json'
@@ -2264,6 +2297,7 @@ export interface FileRouteTypes {
     | '/aspect-ratio'
     | '/audio-converter'
     | '/barcode'
+    | '/base16'
     | '/base32'
     | '/base58'
     | '/base62'
@@ -2276,6 +2310,7 @@ export interface FileRouteTypes {
     | '/cache-control'
     | '/cert-decoder'
     | '/char-count'
+    | '/char-frequency'
     | '/chmod'
     | '/cidr'
     | '/color-blind'
@@ -2449,6 +2484,7 @@ export interface FileRouteTypes {
     | '/video-converter'
     | '/websocket'
     | '/whois'
+    | '/word-frequency'
     | '/world-clock'
     | '/xml'
     | '/xml-json'
@@ -2470,6 +2506,7 @@ export interface RootRouteChildren {
   AspectRatioRoute: typeof AspectRatioRoute
   AudioConverterRoute: typeof AudioConverterRoute
   BarcodeRoute: typeof BarcodeRoute
+  Base16Route: typeof Base16Route
   Base32Route: typeof Base32Route
   Base58Route: typeof Base58Route
   Base62Route: typeof Base62Route
@@ -2482,6 +2519,7 @@ export interface RootRouteChildren {
   CacheControlRoute: typeof CacheControlRoute
   CertDecoderRoute: typeof CertDecoderRoute
   CharCountRoute: typeof CharCountRoute
+  CharFrequencyRoute: typeof CharFrequencyRoute
   ChmodRoute: typeof ChmodRoute
   CidrRoute: typeof CidrRoute
   ColorBlindRoute: typeof ColorBlindRoute
@@ -2655,6 +2693,7 @@ export interface RootRouteChildren {
   VideoConverterRoute: typeof VideoConverterRoute
   WebsocketRoute: typeof WebsocketRoute
   WhoisRoute: typeof WhoisRoute
+  WordFrequencyRoute: typeof WordFrequencyRoute
   WorldClockRoute: typeof WorldClockRoute
   XmlRoute: typeof XmlRoute
   XmlJsonRoute: typeof XmlJsonRoute
@@ -2725,6 +2764,13 @@ declare module '@tanstack/react-router' {
       path: '/world-clock'
       fullPath: '/world-clock'
       preLoaderRoute: typeof WorldClockRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/word-frequency': {
+      id: '/word-frequency'
+      path: '/word-frequency'
+      fullPath: '/word-frequency'
+      preLoaderRoute: typeof WordFrequencyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/whois': {
@@ -3938,6 +3984,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ChmodRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/char-frequency': {
+      id: '/char-frequency'
+      path: '/char-frequency'
+      fullPath: '/char-frequency'
+      preLoaderRoute: typeof CharFrequencyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/char-count': {
       id: '/char-count'
       path: '/char-count'
@@ -4022,6 +4075,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Base32RouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/base16': {
+      id: '/base16'
+      path: '/base16'
+      fullPath: '/base16'
+      preLoaderRoute: typeof Base16RouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/barcode': {
       id: '/barcode'
       path: '/barcode'
@@ -4102,6 +4162,7 @@ const rootRouteChildren: RootRouteChildren = {
   AspectRatioRoute: AspectRatioRoute,
   AudioConverterRoute: AudioConverterRoute,
   BarcodeRoute: BarcodeRoute,
+  Base16Route: Base16Route,
   Base32Route: Base32Route,
   Base58Route: Base58Route,
   Base62Route: Base62Route,
@@ -4114,6 +4175,7 @@ const rootRouteChildren: RootRouteChildren = {
   CacheControlRoute: CacheControlRoute,
   CertDecoderRoute: CertDecoderRoute,
   CharCountRoute: CharCountRoute,
+  CharFrequencyRoute: CharFrequencyRoute,
   ChmodRoute: ChmodRoute,
   CidrRoute: CidrRoute,
   ColorBlindRoute: ColorBlindRoute,
@@ -4287,6 +4349,7 @@ const rootRouteChildren: RootRouteChildren = {
   VideoConverterRoute: VideoConverterRoute,
   WebsocketRoute: WebsocketRoute,
   WhoisRoute: WhoisRoute,
+  WordFrequencyRoute: WordFrequencyRoute,
   WorldClockRoute: WorldClockRoute,
   XmlRoute: XmlRoute,
   XmlJsonRoute: XmlJsonRoute,
