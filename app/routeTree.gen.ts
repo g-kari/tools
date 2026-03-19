@@ -194,6 +194,7 @@ import { Route as CookieParserRouteImport } from './routes/cookie-parser'
 import { Route as ConventionalCommitsRouteImport } from './routes/conventional-commits'
 import { Route as CombinatoricsRouteImport } from './routes/combinatorics'
 import { Route as ColorTokenRouteImport } from './routes/color-token'
+import { Route as ColorTemperatureRouteImport } from './routes/color-temperature'
 import { Route as ColorPickerRouteImport } from './routes/color-picker'
 import { Route as ColorPaletteRouteImport } from './routes/color-palette'
 import { Route as ColorNameRouteImport } from './routes/color-name'
@@ -1155,6 +1156,11 @@ const ColorTokenRoute = ColorTokenRouteImport.update({
   path: '/color-token',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ColorTemperatureRoute = ColorTemperatureRouteImport.update({
+  id: '/color-temperature',
+  path: '/color-temperature',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ColorPickerRoute = ColorPickerRouteImport.update({
   id: '/color-picker',
   path: '/color-picker',
@@ -1363,6 +1369,7 @@ export interface FileRoutesByFullPath {
   '/color-name': typeof ColorNameRoute
   '/color-palette': typeof ColorPaletteRoute
   '/color-picker': typeof ColorPickerRoute
+  '/color-temperature': typeof ColorTemperatureRoute
   '/color-token': typeof ColorTokenRoute
   '/combinatorics': typeof CombinatoricsRoute
   '/conventional-commits': typeof ConventionalCommitsRoute
@@ -1585,6 +1592,7 @@ export interface FileRoutesByTo {
   '/color-name': typeof ColorNameRoute
   '/color-palette': typeof ColorPaletteRoute
   '/color-picker': typeof ColorPickerRoute
+  '/color-temperature': typeof ColorTemperatureRoute
   '/color-token': typeof ColorTokenRoute
   '/combinatorics': typeof CombinatoricsRoute
   '/conventional-commits': typeof ConventionalCommitsRoute
@@ -1808,6 +1816,7 @@ export interface FileRoutesById {
   '/color-name': typeof ColorNameRoute
   '/color-palette': typeof ColorPaletteRoute
   '/color-picker': typeof ColorPickerRoute
+  '/color-temperature': typeof ColorTemperatureRoute
   '/color-token': typeof ColorTokenRoute
   '/combinatorics': typeof CombinatoricsRoute
   '/conventional-commits': typeof ConventionalCommitsRoute
@@ -2032,6 +2041,7 @@ export interface FileRouteTypes {
     | '/color-name'
     | '/color-palette'
     | '/color-picker'
+    | '/color-temperature'
     | '/color-token'
     | '/combinatorics'
     | '/conventional-commits'
@@ -2254,6 +2264,7 @@ export interface FileRouteTypes {
     | '/color-name'
     | '/color-palette'
     | '/color-picker'
+    | '/color-temperature'
     | '/color-token'
     | '/combinatorics'
     | '/conventional-commits'
@@ -2476,6 +2487,7 @@ export interface FileRouteTypes {
     | '/color-name'
     | '/color-palette'
     | '/color-picker'
+    | '/color-temperature'
     | '/color-token'
     | '/combinatorics'
     | '/conventional-commits'
@@ -2699,6 +2711,7 @@ export interface RootRouteChildren {
   ColorNameRoute: typeof ColorNameRoute
   ColorPaletteRoute: typeof ColorPaletteRoute
   ColorPickerRoute: typeof ColorPickerRoute
+  ColorTemperatureRoute: typeof ColorTemperatureRoute
   ColorTokenRoute: typeof ColorTokenRoute
   CombinatoricsRoute: typeof CombinatoricsRoute
   ConventionalCommitsRoute: typeof ConventionalCommitsRoute
@@ -4187,6 +4200,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ColorTokenRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/color-temperature': {
+      id: '/color-temperature'
+      path: '/color-temperature'
+      fullPath: '/color-temperature'
+      preLoaderRoute: typeof ColorTemperatureRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/color-picker': {
       id: '/color-picker'
       path: '/color-picker'
@@ -4467,6 +4487,7 @@ const rootRouteChildren: RootRouteChildren = {
   ColorNameRoute: ColorNameRoute,
   ColorPaletteRoute: ColorPaletteRoute,
   ColorPickerRoute: ColorPickerRoute,
+  ColorTemperatureRoute: ColorTemperatureRoute,
   ColorTokenRoute: ColorTokenRoute,
   CombinatoricsRoute: CombinatoricsRoute,
   ConventionalCommitsRoute: ConventionalCommitsRoute,

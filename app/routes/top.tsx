@@ -1048,6 +1048,13 @@ const toolCatalog: ToolCategory[] = [
         description: "画像から主要な色（カラーパレット）を抽出するツール。",
         icon: "💧",
       },
+      {
+        path: "/color-temperature",
+        label: "色温度変換",
+        description:
+          "色温度（ケルビン）をRGB・HEXカラーに変換するツール。ろうそく・白熱灯・昼光色などのプリセットで照明や写真の色味を視覚的に確認できます。",
+        icon: "🌡️",
+      },
     ],
   },
   {

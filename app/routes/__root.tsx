@@ -175,6 +175,7 @@ const navCategories = [
       { path: "/color-token", label: "カラートークン生成" },
       { path: "/css-media-query", label: "CSSメディアクエリビルダー" },
       { path: "/color-name", label: "色名検索" },
+      { path: "/color-temperature", label: "色温度変換" },
     ],
   },
   {
