@@ -44,6 +44,7 @@ const navCategories = [
       { path: "/html-markdown", label: "HTML→Markdown変換" },
       { path: "/json-lines", label: "JSON Lines フォーマッター" },
       { path: "/json-compare", label: "JSON比較" },
+      { path: "/json-merge", label: "JSONマージ" },
       { path: "/csv-json", label: "CSV/JSON変換" },
       { path: "/yaml-json", label: "YAML/JSON変換" },
       { path: "/yaml-toml", label: "YAML↔TOML変換" },

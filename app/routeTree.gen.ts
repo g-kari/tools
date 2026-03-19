@@ -101,6 +101,7 @@ import { Route as JsonToTsRouteImport } from './routes/json-to-ts'
 import { Route as JsonSchemaValidatorRouteImport } from './routes/json-schema-validator'
 import { Route as JsonSchemaRouteImport } from './routes/json-schema'
 import { Route as JsonPathRouteImport } from './routes/json-path'
+import { Route as JsonMergeRouteImport } from './routes/json-merge'
 import { Route as JsonLinesRouteImport } from './routes/json-lines'
 import { Route as JsonFlattenRouteImport } from './routes/json-flatten'
 import { Route as JsonCompareRouteImport } from './routes/json-compare'
@@ -665,6 +666,11 @@ const JsonSchemaRoute = JsonSchemaRouteImport.update({
 const JsonPathRoute = JsonPathRouteImport.update({
   id: '/json-path',
   path: '/json-path',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JsonMergeRoute = JsonMergeRouteImport.update({
+  id: '/json-merge',
+  path: '/json-merge',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JsonLinesRoute = JsonLinesRouteImport.update({
@@ -1295,6 +1301,7 @@ export interface FileRoutesByFullPath {
   '/json-compare': typeof JsonCompareRoute
   '/json-flatten': typeof JsonFlattenRoute
   '/json-lines': typeof JsonLinesRoute
+  '/json-merge': typeof JsonMergeRoute
   '/json-path': typeof JsonPathRoute
   '/json-schema': typeof JsonSchemaRoute
   '/json-schema-validator': typeof JsonSchemaValidatorRoute
@@ -1494,6 +1501,7 @@ export interface FileRoutesByTo {
   '/json-compare': typeof JsonCompareRoute
   '/json-flatten': typeof JsonFlattenRoute
   '/json-lines': typeof JsonLinesRoute
+  '/json-merge': typeof JsonMergeRoute
   '/json-path': typeof JsonPathRoute
   '/json-schema': typeof JsonSchemaRoute
   '/json-schema-validator': typeof JsonSchemaValidatorRoute
@@ -1694,6 +1702,7 @@ export interface FileRoutesById {
   '/json-compare': typeof JsonCompareRoute
   '/json-flatten': typeof JsonFlattenRoute
   '/json-lines': typeof JsonLinesRoute
+  '/json-merge': typeof JsonMergeRoute
   '/json-path': typeof JsonPathRoute
   '/json-schema': typeof JsonSchemaRoute
   '/json-schema-validator': typeof JsonSchemaValidatorRoute
@@ -1895,6 +1904,7 @@ export interface FileRouteTypes {
     | '/json-compare'
     | '/json-flatten'
     | '/json-lines'
+    | '/json-merge'
     | '/json-path'
     | '/json-schema'
     | '/json-schema-validator'
@@ -2094,6 +2104,7 @@ export interface FileRouteTypes {
     | '/json-compare'
     | '/json-flatten'
     | '/json-lines'
+    | '/json-merge'
     | '/json-path'
     | '/json-schema'
     | '/json-schema-validator'
@@ -2293,6 +2304,7 @@ export interface FileRouteTypes {
     | '/json-compare'
     | '/json-flatten'
     | '/json-lines'
+    | '/json-merge'
     | '/json-path'
     | '/json-schema'
     | '/json-schema-validator'
@@ -2493,6 +2505,7 @@ export interface RootRouteChildren {
   JsonCompareRoute: typeof JsonCompareRoute
   JsonFlattenRoute: typeof JsonFlattenRoute
   JsonLinesRoute: typeof JsonLinesRoute
+  JsonMergeRoute: typeof JsonMergeRoute
   JsonPathRoute: typeof JsonPathRoute
   JsonSchemaRoute: typeof JsonSchemaRoute
   JsonSchemaValidatorRoute: typeof JsonSchemaValidatorRoute
@@ -3235,6 +3248,13 @@ declare module '@tanstack/react-router' {
       path: '/json-path'
       fullPath: '/json-path'
       preLoaderRoute: typeof JsonPathRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/json-merge': {
+      id: '/json-merge'
+      path: '/json-merge'
+      fullPath: '/json-merge'
+      preLoaderRoute: typeof JsonMergeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/json-lines': {
@@ -4077,6 +4097,7 @@ const rootRouteChildren: RootRouteChildren = {
   JsonCompareRoute: JsonCompareRoute,
   JsonFlattenRoute: JsonFlattenRoute,
   JsonLinesRoute: JsonLinesRoute,
+  JsonMergeRoute: JsonMergeRoute,
   JsonPathRoute: JsonPathRoute,
   JsonSchemaRoute: JsonSchemaRoute,
   JsonSchemaValidatorRoute: JsonSchemaValidatorRoute,
