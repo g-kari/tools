@@ -132,6 +132,7 @@ const navCategories = [
       { path: "/json-schema-validator", label: "JSON Schema バリデーター" },
       { path: "/seo-meta", label: "SEOメタタグ生成" },
       { path: "/mermaid", label: "Mermaidプレビュー" },
+      { path: "/github-badge", label: "GitHubバッジ生成" },
     ],
   },
   {

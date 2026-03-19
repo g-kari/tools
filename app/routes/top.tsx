@@ -722,6 +722,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🔀",
       },
       {
+        path: "/github-badge",
+        label: "GitHubバッジ生成",
+        description:
+          "shields.io を使った GitHub README バッジを簡単に生成。ラベル・メッセージ・色・スタイル・ロゴをカスタマイズしてMarkdown/HTML/URLをワンクリックコピー。",
+        icon: "🏷️",
+      },
+      {
         path: "/jwt-generator",
         label: "JWT生成",
         description:
