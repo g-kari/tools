@@ -38,6 +38,13 @@ const toolCatalog: ToolCategory[] = [
     icon: "⇄",
     items: [
       {
+        path: "/template",
+        label: "Mustache テンプレート",
+        description:
+          "Mustache 構文のテンプレートを JSON データでリアルタイムレンダリング。{{variable}}・{{#section}}・{{^inverted}} などの構文に対応。設定ファイル生成・コード自動生成・メール文面作成に便利。",
+        icon: "📋",
+      },
+      {
         path: "/unicode",
         label: "Unicode変換",
         description: "Unicode文字列のエスケープ/アンエスケープ変換",

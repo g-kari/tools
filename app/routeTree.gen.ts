@@ -45,6 +45,7 @@ import { Route as TextReplaceRouteImport } from './routes/text-replace'
 import { Route as TextLineRouteImport } from './routes/text-line'
 import { Route as TextEncryptRouteImport } from './routes/text-encrypt'
 import { Route as TextCaseRouteImport } from './routes/text-case'
+import { Route as TemplateRouteImport } from './routes/template'
 import { Route as SvgOptimizerRouteImport } from './routes/svg-optimizer'
 import { Route as StringSimilarityRouteImport } from './routes/string-similarity'
 import { Route as StringEscapeRouteImport } from './routes/string-escape'
@@ -373,6 +374,11 @@ const TextEncryptRoute = TextEncryptRouteImport.update({
 const TextCaseRoute = TextCaseRouteImport.update({
   id: '/text-case',
   path: '/text-case',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TemplateRoute = TemplateRouteImport.update({
+  id: '/template',
+  path: '/template',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SvgOptimizerRoute = SvgOptimizerRouteImport.update({
@@ -1267,6 +1273,7 @@ export interface FileRoutesByFullPath {
   '/string-escape': typeof StringEscapeRoute
   '/string-similarity': typeof StringSimilarityRoute
   '/svg-optimizer': typeof SvgOptimizerRoute
+  '/template': typeof TemplateRoute
   '/text-case': typeof TextCaseRoute
   '/text-encrypt': typeof TextEncryptRoute
   '/text-line': typeof TextLineRoute
@@ -1454,6 +1461,7 @@ export interface FileRoutesByTo {
   '/string-escape': typeof StringEscapeRoute
   '/string-similarity': typeof StringSimilarityRoute
   '/svg-optimizer': typeof SvgOptimizerRoute
+  '/template': typeof TemplateRoute
   '/text-case': typeof TextCaseRoute
   '/text-encrypt': typeof TextEncryptRoute
   '/text-line': typeof TextLineRoute
@@ -1642,6 +1650,7 @@ export interface FileRoutesById {
   '/string-escape': typeof StringEscapeRoute
   '/string-similarity': typeof StringSimilarityRoute
   '/svg-optimizer': typeof SvgOptimizerRoute
+  '/template': typeof TemplateRoute
   '/text-case': typeof TextCaseRoute
   '/text-encrypt': typeof TextEncryptRoute
   '/text-line': typeof TextLineRoute
@@ -1831,6 +1840,7 @@ export interface FileRouteTypes {
     | '/string-escape'
     | '/string-similarity'
     | '/svg-optimizer'
+    | '/template'
     | '/text-case'
     | '/text-encrypt'
     | '/text-line'
@@ -2018,6 +2028,7 @@ export interface FileRouteTypes {
     | '/string-escape'
     | '/string-similarity'
     | '/svg-optimizer'
+    | '/template'
     | '/text-case'
     | '/text-encrypt'
     | '/text-line'
@@ -2205,6 +2216,7 @@ export interface FileRouteTypes {
     | '/string-escape'
     | '/string-similarity'
     | '/svg-optimizer'
+    | '/template'
     | '/text-case'
     | '/text-encrypt'
     | '/text-line'
@@ -2393,6 +2405,7 @@ export interface RootRouteChildren {
   StringEscapeRoute: typeof StringEscapeRoute
   StringSimilarityRoute: typeof StringSimilarityRoute
   SvgOptimizerRoute: typeof SvgOptimizerRoute
+  TemplateRoute: typeof TemplateRoute
   TextCaseRoute: typeof TextCaseRoute
   TextEncryptRoute: typeof TextEncryptRoute
   TextLineRoute: typeof TextLineRoute
@@ -2687,6 +2700,13 @@ declare module '@tanstack/react-router' {
       path: '/text-case'
       fullPath: '/text-case'
       preLoaderRoute: typeof TextCaseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/template': {
+      id: '/template'
+      path: '/template'
+      fullPath: '/template'
+      preLoaderRoute: typeof TemplateRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/svg-optimizer': {
@@ -3881,6 +3901,7 @@ const rootRouteChildren: RootRouteChildren = {
   StringEscapeRoute: StringEscapeRoute,
   StringSimilarityRoute: StringSimilarityRoute,
   SvgOptimizerRoute: SvgOptimizerRoute,
+  TemplateRoute: TemplateRoute,
   TextCaseRoute: TextCaseRoute,
   TextEncryptRoute: TextEncryptRoute,
   TextLineRoute: TextLineRoute,

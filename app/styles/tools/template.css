@@ -1,0 +1,222 @@
+/* Mustache テンプレートエンジン */
+/* クラスプレフィックス: .tmpl- */
+
+/* サンプル選択行 */
+.tmpl-samples-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.tmpl-samples-label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  white-space: nowrap;
+  padding-top: 0.25rem;
+}
+
+.tmpl-samples-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tmpl-sample-btn {
+  padding: 0.25rem 0.75rem;
+  font-size: 0.8125rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 100px;
+  cursor: pointer;
+  background: none;
+  color: var(--md-sys-color-on-surface-variant);
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+
+.tmpl-sample-btn:hover:not(.active) {
+  background-color: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  border-color: var(--md-sys-color-outline);
+}
+
+.tmpl-sample-btn.active {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border-color: var(--md-sys-color-primary);
+  font-weight: 500;
+}
+
+.tmpl-sample-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* 入力グリッド（テンプレートとJSONを横並び） */
+.tmpl-input-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+@media (max-width: 768px) {
+  .tmpl-input-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 入力パネル */
+.tmpl-input-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.tmpl-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.tmpl-panel-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+  cursor: default;
+}
+
+.tmpl-panel-badge {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-secondary-container);
+  background: var(--md-sys-color-secondary-container);
+  padding: 0.125rem 0.5rem;
+  border-radius: 100px;
+  letter-spacing: 0.02em;
+}
+
+.tmpl-char-count {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  opacity: 0.7;
+}
+
+/* テキストエリア */
+.tmpl-textarea {
+  width: 100%;
+  min-height: 220px;
+  padding: 0.75rem;
+  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  font-size: 0.8125rem;
+  line-height: 1.65;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  resize: vertical;
+  transition: border-color 0.2s, background 0.2s;
+  box-sizing: border-box;
+  flex: 1;
+}
+
+.tmpl-textarea:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-surface);
+}
+
+.tmpl-textarea::placeholder {
+  color: var(--md-sys-color-on-surface-variant);
+  opacity: 0.55;
+}
+
+/* アクションボタン行 */
+.tmpl-action-row {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+/* 出力セクション */
+.tmpl-output-section {
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.tmpl-output-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.625rem 1rem;
+  background: var(--md-sys-color-surface-variant);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tmpl-output-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+}
+
+/* 出力 pre */
+.tmpl-output {
+  margin: 0;
+  padding: 1rem;
+  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  font-size: 0.8125rem;
+  line-height: 1.65;
+  color: var(--md-sys-color-on-surface);
+  background: var(--md-sys-color-surface);
+  white-space: pre-wrap;
+  word-break: break-all;
+  min-height: 80px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.tmpl-output-placeholder {
+  color: var(--md-sys-color-on-surface-variant);
+  opacity: 0.55;
+  font-style: italic;
+}
+
+/* エラー表示 */
+.tmpl-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.875rem 1rem;
+  color: var(--md-sys-color-error);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  background: color-mix(in srgb, var(--md-sys-color-error) 8%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--md-sys-color-error) 20%, transparent);
+}
+
+.tmpl-error-icon {
+  flex-shrink: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* モーション低減 */
+@media (prefers-reduced-motion: reduce) {
+  .tmpl-sample-btn,
+  .tmpl-textarea {
+    transition: none;
+  }
+}
