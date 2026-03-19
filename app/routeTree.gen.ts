@@ -132,6 +132,7 @@ import { Route as GzipRouteImport } from './routes/gzip'
 import { Route as GraphqlRouteImport } from './routes/graphql'
 import { Route as GlobalIpRouteImport } from './routes/global-ip'
 import { Route as GitignoreRouteImport } from './routes/gitignore'
+import { Route as FunctionPlotterRouteImport } from './routes/function-plotter'
 import { Route as FaviconGeneratorRouteImport } from './routes/favicon-generator'
 import { Route as EnvParserRouteImport } from './routes/env-parser'
 import { Route as EncodingRouteImport } from './routes/encoding'
@@ -819,6 +820,11 @@ const GitignoreRoute = GitignoreRouteImport.update({
   path: '/gitignore',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FunctionPlotterRoute = FunctionPlotterRouteImport.update({
+  id: '/function-plotter',
+  path: '/function-plotter',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FaviconGeneratorRoute = FaviconGeneratorRouteImport.update({
   id: '/favicon-generator',
   path: '/favicon-generator',
@@ -1243,6 +1249,7 @@ export interface FileRoutesByFullPath {
   '/encoding': typeof EncodingRoute
   '/env-parser': typeof EnvParserRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
+  '/function-plotter': typeof FunctionPlotterRoute
   '/gitignore': typeof GitignoreRoute
   '/global-ip': typeof GlobalIpRoute
   '/graphql': typeof GraphqlRoute
@@ -1439,6 +1446,7 @@ export interface FileRoutesByTo {
   '/encoding': typeof EncodingRoute
   '/env-parser': typeof EnvParserRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
+  '/function-plotter': typeof FunctionPlotterRoute
   '/gitignore': typeof GitignoreRoute
   '/global-ip': typeof GlobalIpRoute
   '/graphql': typeof GraphqlRoute
@@ -1636,6 +1644,7 @@ export interface FileRoutesById {
   '/encoding': typeof EncodingRoute
   '/env-parser': typeof EnvParserRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
+  '/function-plotter': typeof FunctionPlotterRoute
   '/gitignore': typeof GitignoreRoute
   '/global-ip': typeof GlobalIpRoute
   '/graphql': typeof GraphqlRoute
@@ -1834,6 +1843,7 @@ export interface FileRouteTypes {
     | '/encoding'
     | '/env-parser'
     | '/favicon-generator'
+    | '/function-plotter'
     | '/gitignore'
     | '/global-ip'
     | '/graphql'
@@ -2030,6 +2040,7 @@ export interface FileRouteTypes {
     | '/encoding'
     | '/env-parser'
     | '/favicon-generator'
+    | '/function-plotter'
     | '/gitignore'
     | '/global-ip'
     | '/graphql'
@@ -2226,6 +2237,7 @@ export interface FileRouteTypes {
     | '/encoding'
     | '/env-parser'
     | '/favicon-generator'
+    | '/function-plotter'
     | '/gitignore'
     | '/global-ip'
     | '/graphql'
@@ -2423,6 +2435,7 @@ export interface RootRouteChildren {
   EncodingRoute: typeof EncodingRoute
   EnvParserRoute: typeof EnvParserRoute
   FaviconGeneratorRoute: typeof FaviconGeneratorRoute
+  FunctionPlotterRoute: typeof FunctionPlotterRoute
   GitignoreRoute: typeof GitignoreRoute
   GlobalIpRoute: typeof GlobalIpRoute
   GraphqlRoute: typeof GraphqlRoute
@@ -3415,6 +3428,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GitignoreRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/function-plotter': {
+      id: '/function-plotter'
+      path: '/function-plotter'
+      fullPath: '/function-plotter'
+      preLoaderRoute: typeof FunctionPlotterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/favicon-generator': {
       id: '/favicon-generator'
       path: '/favicon-generator'
@@ -3983,6 +4003,7 @@ const rootRouteChildren: RootRouteChildren = {
   EncodingRoute: EncodingRoute,
   EnvParserRoute: EnvParserRoute,
   FaviconGeneratorRoute: FaviconGeneratorRoute,
+  FunctionPlotterRoute: FunctionPlotterRoute,
   GitignoreRoute: GitignoreRoute,
   GlobalIpRoute: GlobalIpRoute,
   GraphqlRoute: GraphqlRoute,

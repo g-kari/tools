@@ -388,6 +388,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🧮",
       },
       {
+        path: "/function-plotter",
+        label: "関数グラフ描画",
+        description:
+          "数学関数のグラフをブラウザ内でリアルタイム描画するツール。sin・cos・tan・log・exp・x^2など最大4関数を重ね描き。ズーム・パン操作、PNG出力に対応。",
+        icon: "📈",
+      },
+      {
         path: "/matrix",
         label: "行列計算ツール",
         description:
