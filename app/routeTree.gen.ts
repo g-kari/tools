@@ -94,6 +94,7 @@ import { Route as MarkdownTableRouteImport } from './routes/markdown-table'
 import { Route as MarkdownPreviewRouteImport } from './routes/markdown-preview'
 import { Route as LuhnCheckRouteImport } from './routes/luhn-check'
 import { Route as LoremIpsumRouteImport } from './routes/lorem-ipsum'
+import { Route as LineEndingRouteImport } from './routes/line-ending'
 import { Route as KeycodeRouteImport } from './routes/keycode'
 import { Route as KanaConvertRouteImport } from './routes/kana-convert'
 import { Route as JwtGeneratorRouteImport } from './routes/jwt-generator'
@@ -632,6 +633,11 @@ const LuhnCheckRoute = LuhnCheckRouteImport.update({
 const LoremIpsumRoute = LoremIpsumRouteImport.update({
   id: '/lorem-ipsum',
   path: '/lorem-ipsum',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LineEndingRoute = LineEndingRouteImport.update({
+  id: '/line-ending',
+  path: '/line-ending',
   getParentRoute: () => rootRouteImport,
 } as any)
 const KeycodeRoute = KeycodeRouteImport.update({
@@ -1316,6 +1322,7 @@ export interface FileRoutesByFullPath {
   '/jwt-generator': typeof JwtGeneratorRoute
   '/kana-convert': typeof KanaConvertRoute
   '/keycode': typeof KeycodeRoute
+  '/line-ending': typeof LineEndingRoute
   '/lorem-ipsum': typeof LoremIpsumRoute
   '/luhn-check': typeof LuhnCheckRoute
   '/markdown-preview': typeof MarkdownPreviewRoute
@@ -1517,6 +1524,7 @@ export interface FileRoutesByTo {
   '/jwt-generator': typeof JwtGeneratorRoute
   '/kana-convert': typeof KanaConvertRoute
   '/keycode': typeof KeycodeRoute
+  '/line-ending': typeof LineEndingRoute
   '/lorem-ipsum': typeof LoremIpsumRoute
   '/luhn-check': typeof LuhnCheckRoute
   '/markdown-preview': typeof MarkdownPreviewRoute
@@ -1719,6 +1727,7 @@ export interface FileRoutesById {
   '/jwt-generator': typeof JwtGeneratorRoute
   '/kana-convert': typeof KanaConvertRoute
   '/keycode': typeof KeycodeRoute
+  '/line-ending': typeof LineEndingRoute
   '/lorem-ipsum': typeof LoremIpsumRoute
   '/luhn-check': typeof LuhnCheckRoute
   '/markdown-preview': typeof MarkdownPreviewRoute
@@ -1922,6 +1931,7 @@ export interface FileRouteTypes {
     | '/jwt-generator'
     | '/kana-convert'
     | '/keycode'
+    | '/line-ending'
     | '/lorem-ipsum'
     | '/luhn-check'
     | '/markdown-preview'
@@ -2123,6 +2133,7 @@ export interface FileRouteTypes {
     | '/jwt-generator'
     | '/kana-convert'
     | '/keycode'
+    | '/line-ending'
     | '/lorem-ipsum'
     | '/luhn-check'
     | '/markdown-preview'
@@ -2324,6 +2335,7 @@ export interface FileRouteTypes {
     | '/jwt-generator'
     | '/kana-convert'
     | '/keycode'
+    | '/line-ending'
     | '/lorem-ipsum'
     | '/luhn-check'
     | '/markdown-preview'
@@ -2526,6 +2538,7 @@ export interface RootRouteChildren {
   JwtGeneratorRoute: typeof JwtGeneratorRoute
   KanaConvertRoute: typeof KanaConvertRoute
   KeycodeRoute: typeof KeycodeRoute
+  LineEndingRoute: typeof LineEndingRoute
   LoremIpsumRoute: typeof LoremIpsumRoute
   LuhnCheckRoute: typeof LuhnCheckRoute
   MarkdownPreviewRoute: typeof MarkdownPreviewRoute
@@ -3212,6 +3225,13 @@ declare module '@tanstack/react-router' {
       path: '/lorem-ipsum'
       fullPath: '/lorem-ipsum'
       preLoaderRoute: typeof LoremIpsumRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/line-ending': {
+      id: '/line-ending'
+      path: '/line-ending'
+      fullPath: '/line-ending'
+      preLoaderRoute: typeof LineEndingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/keycode': {
@@ -4126,6 +4146,7 @@ const rootRouteChildren: RootRouteChildren = {
   JwtGeneratorRoute: JwtGeneratorRoute,
   KanaConvertRoute: KanaConvertRoute,
   KeycodeRoute: KeycodeRoute,
+  LineEndingRoute: LineEndingRoute,
   LoremIpsumRoute: LoremIpsumRoute,
   LuhnCheckRoute: LuhnCheckRoute,
   MarkdownPreviewRoute: MarkdownPreviewRoute,

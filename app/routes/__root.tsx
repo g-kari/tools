@@ -196,6 +196,7 @@ const navCategories = [
       { path: "/string-similarity", label: "文字列類似度計算" },
       { path: "/readability", label: "可読性スコア分析" },
       { path: "/token-estimator", label: "LLMトークン推定" },
+      { path: "/line-ending", label: "改行コード変換" },
     ],
   },
   {
