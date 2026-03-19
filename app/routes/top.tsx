@@ -486,6 +486,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🔤",
       },
       {
+        path: "/encode-chain",
+        label: "エンコードチェーン",
+        description:
+          "テキストに複数のエンコード・変換を連鎖して適用するツール。Base64・URLエンコード・Hex変換・HTMLエスケープなどを組み合わせ、各ステップの結果を可視化。",
+        icon: "⛓️",
+      },
+      {
         path: "/ini-parser",
         label: "INIファイルパーサー",
         description:
@@ -679,6 +686,13 @@ const toolCatalog: ToolCategory[] = [
         label: "JSON→SQL CREATE TABLE生成",
         description: "JSONデータからSQL CREATE TABLE文を自動生成するツール。PostgreSQL・MySQL・SQLiteに対応。",
         icon: "🗄️",
+      },
+      {
+        path: "/sql-to-ts",
+        label: "SQL→TypeScript型変換",
+        description:
+          "SQL CREATE TABLE文からTypeScriptのinterface/type定義を自動生成するツール。PostgreSQL・MySQL・SQLite対応。",
+        icon: "🔷",
       },
       {
         path: "/json-compare",

@@ -146,6 +146,7 @@ import { Route as FunctionPlotterRouteImport } from './routes/function-plotter'
 import { Route as FaviconGeneratorRouteImport } from './routes/favicon-generator'
 import { Route as EnvParserRouteImport } from './routes/env-parser'
 import { Route as EncodingRouteImport } from './routes/encoding'
+import { Route as EncodeChainRouteImport } from './routes/encode-chain'
 import { Route as EmojiConverterRouteImport } from './routes/emoji-converter'
 import { Route as EmailHeaderRouteImport } from './routes/email-header'
 import { Route as EmailDnsRouteImport } from './routes/email-dns'
@@ -910,6 +911,11 @@ const EncodingRoute = EncodingRouteImport.update({
   path: '/encoding',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EncodeChainRoute = EncodeChainRouteImport.update({
+  id: '/encode-chain',
+  path: '/encode-chain',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EmojiConverterRoute = EmojiConverterRouteImport.update({
   id: '/emoji-converter',
   path: '/emoji-converter',
@@ -1376,6 +1382,7 @@ export interface FileRoutesByFullPath {
   '/email-dns': typeof EmailDnsRoute
   '/email-header': typeof EmailHeaderRoute
   '/emoji-converter': typeof EmojiConverterRoute
+  '/encode-chain': typeof EncodeChainRoute
   '/encoding': typeof EncodingRoute
   '/env-parser': typeof EnvParserRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
@@ -1593,6 +1600,7 @@ export interface FileRoutesByTo {
   '/email-dns': typeof EmailDnsRoute
   '/email-header': typeof EmailHeaderRoute
   '/emoji-converter': typeof EmojiConverterRoute
+  '/encode-chain': typeof EncodeChainRoute
   '/encoding': typeof EncodingRoute
   '/env-parser': typeof EnvParserRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
@@ -1811,6 +1819,7 @@ export interface FileRoutesById {
   '/email-dns': typeof EmailDnsRoute
   '/email-header': typeof EmailHeaderRoute
   '/emoji-converter': typeof EmojiConverterRoute
+  '/encode-chain': typeof EncodeChainRoute
   '/encoding': typeof EncodingRoute
   '/env-parser': typeof EnvParserRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
@@ -2030,6 +2039,7 @@ export interface FileRouteTypes {
     | '/email-dns'
     | '/email-header'
     | '/emoji-converter'
+    | '/encode-chain'
     | '/encoding'
     | '/env-parser'
     | '/favicon-generator'
@@ -2247,6 +2257,7 @@ export interface FileRouteTypes {
     | '/email-dns'
     | '/email-header'
     | '/emoji-converter'
+    | '/encode-chain'
     | '/encoding'
     | '/env-parser'
     | '/favicon-generator'
@@ -2464,6 +2475,7 @@ export interface FileRouteTypes {
     | '/email-dns'
     | '/email-header'
     | '/emoji-converter'
+    | '/encode-chain'
     | '/encoding'
     | '/env-parser'
     | '/favicon-generator'
@@ -2682,6 +2694,7 @@ export interface RootRouteChildren {
   EmailDnsRoute: typeof EmailDnsRoute
   EmailHeaderRoute: typeof EmailHeaderRoute
   EmojiConverterRoute: typeof EmojiConverterRoute
+  EncodeChainRoute: typeof EncodeChainRoute
   EncodingRoute: typeof EncodingRoute
   EnvParserRoute: typeof EnvParserRoute
   FaviconGeneratorRoute: typeof FaviconGeneratorRoute
@@ -3786,6 +3799,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EncodingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/encode-chain': {
+      id: '/encode-chain'
+      path: '/encode-chain'
+      fullPath: '/encode-chain'
+      preLoaderRoute: typeof EncodeChainRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/emoji-converter': {
       id: '/emoji-converter'
       path: '/emoji-converter'
@@ -4410,6 +4430,7 @@ const rootRouteChildren: RootRouteChildren = {
   EmailDnsRoute: EmailDnsRoute,
   EmailHeaderRoute: EmailHeaderRoute,
   EmojiConverterRoute: EmojiConverterRoute,
+  EncodeChainRoute: EncodeChainRoute,
   EncodingRoute: EncodingRoute,
   EnvParserRoute: EnvParserRoute,
   FaviconGeneratorRoute: FaviconGeneratorRoute,
