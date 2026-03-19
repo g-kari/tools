@@ -49,6 +49,7 @@ import { Route as TemplateRouteImport } from './routes/template'
 import { Route as SvgOptimizerRouteImport } from './routes/svg-optimizer'
 import { Route as StringSimilarityRouteImport } from './routes/string-similarity'
 import { Route as StringEscapeRouteImport } from './routes/string-escape'
+import { Route as StatisticsRouteImport } from './routes/statistics'
 import { Route as SshKeyRouteImport } from './routes/ssh-key'
 import { Route as SqlRouteImport } from './routes/sql'
 import { Route as SlugRouteImport } from './routes/slug'
@@ -86,6 +87,7 @@ import { Route as MorseCodeRouteImport } from './routes/morse-code'
 import { Route as MinifyRouteImport } from './routes/minify'
 import { Route as MimeTypesRouteImport } from './routes/mime-types'
 import { Route as MermaidRouteImport } from './routes/mermaid'
+import { Route as MatrixRouteImport } from './routes/matrix'
 import { Route as MathEvalRouteImport } from './routes/math-eval'
 import { Route as MarkdownTableRouteImport } from './routes/markdown-table'
 import { Route as MarkdownPreviewRouteImport } from './routes/markdown-preview'
@@ -401,6 +403,11 @@ const StringEscapeRoute = StringEscapeRouteImport.update({
   path: '/string-escape',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StatisticsRoute = StatisticsRouteImport.update({
+  id: '/statistics',
+  path: '/statistics',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SshKeyRoute = SshKeyRouteImport.update({
   id: '/ssh-key',
   path: '/ssh-key',
@@ -584,6 +591,11 @@ const MimeTypesRoute = MimeTypesRouteImport.update({
 const MermaidRoute = MermaidRouteImport.update({
   id: '/mermaid',
   path: '/mermaid',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MatrixRoute = MatrixRouteImport.update({
+  id: '/matrix',
+  path: '/matrix',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MathEvalRoute = MathEvalRouteImport.update({
@@ -1268,6 +1280,7 @@ export interface FileRoutesByFullPath {
   '/markdown-preview': typeof MarkdownPreviewRoute
   '/markdown-table': typeof MarkdownTableRoute
   '/math-eval': typeof MathEvalRoute
+  '/matrix': typeof MatrixRoute
   '/mermaid': typeof MermaidRoute
   '/mime-types': typeof MimeTypesRoute
   '/minify': typeof MinifyRoute
@@ -1305,6 +1318,7 @@ export interface FileRoutesByFullPath {
   '/slug': typeof SlugRoute
   '/sql': typeof SqlRoute
   '/ssh-key': typeof SshKeyRoute
+  '/statistics': typeof StatisticsRoute
   '/string-escape': typeof StringEscapeRoute
   '/string-similarity': typeof StringSimilarityRoute
   '/svg-optimizer': typeof SvgOptimizerRoute
@@ -1461,6 +1475,7 @@ export interface FileRoutesByTo {
   '/markdown-preview': typeof MarkdownPreviewRoute
   '/markdown-table': typeof MarkdownTableRoute
   '/math-eval': typeof MathEvalRoute
+  '/matrix': typeof MatrixRoute
   '/mermaid': typeof MermaidRoute
   '/mime-types': typeof MimeTypesRoute
   '/minify': typeof MinifyRoute
@@ -1498,6 +1513,7 @@ export interface FileRoutesByTo {
   '/slug': typeof SlugRoute
   '/sql': typeof SqlRoute
   '/ssh-key': typeof SshKeyRoute
+  '/statistics': typeof StatisticsRoute
   '/string-escape': typeof StringEscapeRoute
   '/string-similarity': typeof StringSimilarityRoute
   '/svg-optimizer': typeof SvgOptimizerRoute
@@ -1655,6 +1671,7 @@ export interface FileRoutesById {
   '/markdown-preview': typeof MarkdownPreviewRoute
   '/markdown-table': typeof MarkdownTableRoute
   '/math-eval': typeof MathEvalRoute
+  '/matrix': typeof MatrixRoute
   '/mermaid': typeof MermaidRoute
   '/mime-types': typeof MimeTypesRoute
   '/minify': typeof MinifyRoute
@@ -1692,6 +1709,7 @@ export interface FileRoutesById {
   '/slug': typeof SlugRoute
   '/sql': typeof SqlRoute
   '/ssh-key': typeof SshKeyRoute
+  '/statistics': typeof StatisticsRoute
   '/string-escape': typeof StringEscapeRoute
   '/string-similarity': typeof StringSimilarityRoute
   '/svg-optimizer': typeof SvgOptimizerRoute
@@ -1850,6 +1868,7 @@ export interface FileRouteTypes {
     | '/markdown-preview'
     | '/markdown-table'
     | '/math-eval'
+    | '/matrix'
     | '/mermaid'
     | '/mime-types'
     | '/minify'
@@ -1887,6 +1906,7 @@ export interface FileRouteTypes {
     | '/slug'
     | '/sql'
     | '/ssh-key'
+    | '/statistics'
     | '/string-escape'
     | '/string-similarity'
     | '/svg-optimizer'
@@ -2043,6 +2063,7 @@ export interface FileRouteTypes {
     | '/markdown-preview'
     | '/markdown-table'
     | '/math-eval'
+    | '/matrix'
     | '/mermaid'
     | '/mime-types'
     | '/minify'
@@ -2080,6 +2101,7 @@ export interface FileRouteTypes {
     | '/slug'
     | '/sql'
     | '/ssh-key'
+    | '/statistics'
     | '/string-escape'
     | '/string-similarity'
     | '/svg-optimizer'
@@ -2236,6 +2258,7 @@ export interface FileRouteTypes {
     | '/markdown-preview'
     | '/markdown-table'
     | '/math-eval'
+    | '/matrix'
     | '/mermaid'
     | '/mime-types'
     | '/minify'
@@ -2273,6 +2296,7 @@ export interface FileRouteTypes {
     | '/slug'
     | '/sql'
     | '/ssh-key'
+    | '/statistics'
     | '/string-escape'
     | '/string-similarity'
     | '/svg-optimizer'
@@ -2430,6 +2454,7 @@ export interface RootRouteChildren {
   MarkdownPreviewRoute: typeof MarkdownPreviewRoute
   MarkdownTableRoute: typeof MarkdownTableRoute
   MathEvalRoute: typeof MathEvalRoute
+  MatrixRoute: typeof MatrixRoute
   MermaidRoute: typeof MermaidRoute
   MimeTypesRoute: typeof MimeTypesRoute
   MinifyRoute: typeof MinifyRoute
@@ -2467,6 +2492,7 @@ export interface RootRouteChildren {
   SlugRoute: typeof SlugRoute
   SqlRoute: typeof SqlRoute
   SshKeyRoute: typeof SshKeyRoute
+  StatisticsRoute: typeof StatisticsRoute
   StringEscapeRoute: typeof StringEscapeRoute
   StringSimilarityRoute: typeof StringSimilarityRoute
   SvgOptimizerRoute: typeof SvgOptimizerRoute
@@ -2795,6 +2821,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StringEscapeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/statistics': {
+      id: '/statistics'
+      path: '/statistics'
+      fullPath: '/statistics'
+      preLoaderRoute: typeof StatisticsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/ssh-key': {
       id: '/ssh-key'
       path: '/ssh-key'
@@ -3052,6 +3085,13 @@ declare module '@tanstack/react-router' {
       path: '/mermaid'
       fullPath: '/mermaid'
       preLoaderRoute: typeof MermaidRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/matrix': {
+      id: '/matrix'
+      path: '/matrix'
+      fullPath: '/matrix'
+      preLoaderRoute: typeof MatrixRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/math-eval': {
@@ -3966,6 +4006,7 @@ const rootRouteChildren: RootRouteChildren = {
   MarkdownPreviewRoute: MarkdownPreviewRoute,
   MarkdownTableRoute: MarkdownTableRoute,
   MathEvalRoute: MathEvalRoute,
+  MatrixRoute: MatrixRoute,
   MermaidRoute: MermaidRoute,
   MimeTypesRoute: MimeTypesRoute,
   MinifyRoute: MinifyRoute,
@@ -4003,6 +4044,7 @@ const rootRouteChildren: RootRouteChildren = {
   SlugRoute: SlugRoute,
   SqlRoute: SqlRoute,
   SshKeyRoute: SshKeyRoute,
+  StatisticsRoute: StatisticsRoute,
   StringEscapeRoute: StringEscapeRoute,
   StringSimilarityRoute: StringSimilarityRoute,
   SvgOptimizerRoute: SvgOptimizerRoute,

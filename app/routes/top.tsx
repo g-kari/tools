@@ -388,6 +388,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🧮",
       },
       {
+        path: "/matrix",
+        label: "行列計算ツール",
+        description:
+          "行列の加算・減算・乗算・転置・逆行列・行列式・トレース・ランクをブラウザ内で計算。最大 6×6 の行列に対応。数学・線形代数・機械学習・競技プログラミングに便利。",
+        icon: "⊞",
+      },
+      {
         path: "/statistics",
         label: "統計計算ツール",
         description:

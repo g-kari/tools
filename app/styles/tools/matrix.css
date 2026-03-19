@@ -1,0 +1,366 @@
+/* 行列計算ツール */
+
+.matrix-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* モード切替タブ */
+.matrix-mode-tabs {
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.matrix-mode-tab {
+  flex: 1;
+  padding: 0.5rem 1rem;
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  border: none;
+  cursor: pointer;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.8125rem;
+  transition: background 0.15s, color 0.15s;
+}
+
+.matrix-mode-tab:hover {
+  background: var(--md-sys-color-surface-variant);
+}
+
+.matrix-mode-tab.active {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+/* 演算ボタン行 */
+.matrix-ops-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.matrix-op-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem 0.875rem;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  cursor: pointer;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  min-width: 80px;
+}
+
+.matrix-op-btn:hover {
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-surface);
+}
+
+.matrix-op-btn.active {
+  background: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.matrix-op-symbol {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.matrix-op-label {
+  font-size: 0.6875rem;
+  margin-top: 0.1875rem;
+  opacity: 0.8;
+}
+
+/* サンプルボタン行 */
+.matrix-samples-row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.matrix-samples-label {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+}
+
+.matrix-sample-btn {
+  padding: 0.25rem 0.625rem;
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  cursor: pointer;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.75rem;
+  transition: background 0.15s, color 0.15s;
+}
+
+.matrix-sample-btn:hover {
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+}
+
+/* 入力エリア */
+.matrix-inputs {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.matrix-input-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  flex: 1;
+  min-width: 180px;
+}
+
+.matrix-input-block--scalar {
+  flex: 0 0 auto;
+  min-width: 120px;
+}
+
+.matrix-input-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+}
+
+.matrix-size-badge {
+  padding: 0.125rem 0.375rem;
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  font-size: 0.6875rem;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+}
+
+.matrix-textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 0.625rem 0.75rem;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  resize: vertical;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.matrix-textarea:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+}
+
+.matrix-textarea.error {
+  border-color: var(--md-sys-color-error);
+}
+
+.matrix-scalar-input {
+  padding: 0.625rem 0.75rem;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 1.125rem;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.matrix-scalar-input:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+}
+
+.matrix-input-error {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-error);
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+}
+
+/* 演算子区切り */
+.matrix-op-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 2rem;
+  flex: 0 0 auto;
+}
+
+.matrix-op-divider-symbol {
+  font-size: 1.5rem;
+  color: var(--md-sys-color-primary);
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-weight: 700;
+  min-width: 2.5rem;
+  text-align: center;
+}
+
+/* 結果セクション */
+.matrix-result-section {
+  border: 1px solid var(--md-sys-color-outline-variant);
+  padding: 1rem;
+}
+
+.matrix-result-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.matrix-result-title {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.matrix-result-op {
+  color: var(--md-sys-color-primary);
+  font-weight: 700;
+}
+
+.matrix-result-empty {
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.875rem;
+  text-align: center;
+  padding: 1.5rem 0;
+  opacity: 0.6;
+}
+
+.matrix-result-error {
+  color: var(--md-sys-color-error);
+  background: var(--md-sys-color-error-container);
+  padding: 0.5rem 0.75rem;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.875rem;
+}
+
+.matrix-result-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0;
+}
+
+/* スカラー結果（行列式・トレース・ランク） */
+.matrix-scalar-result {
+  text-align: center;
+}
+
+.matrix-scalar-result-value {
+  font-size: 2.5rem;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  color: var(--md-sys-color-primary);
+  font-weight: 700;
+}
+
+/* 行列グリッド表示 */
+.matrix-grid-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.matrix-grid-label {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.matrix-brackets {
+  display: flex;
+  align-items: stretch;
+  gap: 0.25rem;
+}
+
+.matrix-bracket-open,
+.matrix-bracket-close {
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-weight: 300;
+  display: flex;
+  align-items: center;
+}
+
+.matrix-table {
+  border-collapse: separate;
+  border-spacing: 0.375rem 0.25rem;
+}
+
+.matrix-cell {
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.9375rem;
+  color: var(--md-sys-color-on-surface);
+  text-align: right;
+  min-width: 3rem;
+  padding: 0.25rem 0.5rem;
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  white-space: nowrap;
+}
+
+/* プレビューセクション */
+.matrix-preview-section {
+  border: 1px solid var(--md-sys-color-outline-variant);
+  padding: 1rem;
+}
+
+.matrix-preview-title {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 0.75rem;
+}
+
+.matrix-preview-row {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+/* レスポンシブ */
+@media (max-width: 640px) {
+  .matrix-inputs {
+    flex-direction: column;
+  }
+
+  .matrix-op-divider {
+    padding-top: 0;
+    align-self: center;
+  }
+
+  .matrix-op-divider-symbol {
+    transform: rotate(90deg);
+  }
+
+  .matrix-scalar-result-value {
+    font-size: 2rem;
+  }
+}
