@@ -215,6 +215,7 @@ const navCategories = [
       { path: "/jwt", label: "JWTデコード" },
       { path: "/totp", label: "TOTP生成" },
       { path: "/email-dns", label: "メールDNS" },
+      { path: "/email-header", label: "メールヘッダー解析" },
       { path: "/hash", label: "ハッシュ生成" },
       { path: "/security-headers", label: "セキュリティヘッダー" },
       { path: "/cron", label: "Cronパーサー (croner)" },

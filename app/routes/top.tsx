@@ -1158,6 +1158,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "📧",
       },
       {
+        path: "/email-header",
+        label: "メールヘッダー解析",
+        description:
+          "生のメールヘッダーを貼り付けて解析。SPF・DKIM・DMARC認証結果、メール経路（Receivedヘッダー）、スパムスコアをわかりやすく可視化。迷惑メール調査・配信トラブル解析に。",
+        icon: "📨",
+      },
+      {
         path: "/hash",
         label: "ハッシュ生成",
         description: "MD5/SHA-1/SHA-256ハッシュ値を生成",
