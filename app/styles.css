@@ -50,6 +50,7 @@
 @import "./styles/tools/graphql.css";
 @import "./styles/tools/user-agent.css";
 @import "./styles/tools/morse-code.css";
+@import "./styles/tools/nato-alphabet.css";
 @import "./styles/tools/number-format.css";
 @import "./styles/tools/json-path.css";
 @import "./styles/tools/json-pointer.css";
@@ -99,6 +100,7 @@
 @import "./styles/tools/color-blind.css";
 @import "./styles/tools/css-specificity.css";
 @import "./styles/tools/color-converter.css";
+@import "./styles/tools/color-temperature.css";
 @import "./styles/tools/css-unit.css";
 @import "./styles/tools/hex-viewer.css";
 @import "./styles/tools/http-headers.css";

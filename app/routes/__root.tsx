@@ -175,6 +175,7 @@ const navCategories = [
       { path: "/color-token", label: "カラートークン生成" },
       { path: "/css-media-query", label: "CSSメディアクエリビルダー" },
       { path: "/color-name", label: "色名検索" },
+      { path: "/color-temperature", label: "色温度変換" },
     ],
   },
   {
@@ -198,6 +199,7 @@ const navCategories = [
       { path: "/markdown-preview", label: "Markdownプレビュー" },
       { path: "/text-case", label: "テキストケース変換" },
       { path: "/morse-code", label: "Morse Code変換" },
+      { path: "/nato-alphabet", label: "NATOフォネティックアルファベット" },
       { path: "/markdown-table", label: "Markdownテーブル生成" },
       { path: "/text-encrypt", label: "テキスト暗号化" },
       { path: "/text-line", label: "テキスト行操作" },

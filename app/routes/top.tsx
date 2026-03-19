@@ -367,6 +367,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "📡",
       },
       {
+        path: "/nato-alphabet",
+        label: "NATOフォネティックアルファベット",
+        description:
+          "テキストをNATO/ICAO標準のフォネティックアルファベット（Alpha, Bravo, Charlie...）に変換するツール。パスワードや識別子を電話で正確に伝えるのに便利。A-Z・0-9対応。",
+        icon: "🔤",
+      },
+      {
         path: "/number-base",
         label: "数値進数変換",
         description:
@@ -1047,6 +1054,13 @@ const toolCatalog: ToolCategory[] = [
         label: "画像カラー抽出",
         description: "画像から主要な色（カラーパレット）を抽出するツール。",
         icon: "💧",
+      },
+      {
+        path: "/color-temperature",
+        label: "色温度変換",
+        description:
+          "色温度（ケルビン）をRGB・HEXカラーに変換するツール。ろうそく・白熱灯・昼光色などのプリセットで照明や写真の色味を視覚的に確認できます。",
+        icon: "🌡️",
       },
     ],
   },
