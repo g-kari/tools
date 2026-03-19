@@ -1,0 +1,36 @@
+/* JSON Merge Tool */
+
+.json-merge-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.json-merge-option-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.json-merge-option-group span {
+  font-size: 14px;
+  color: var(--md-sys-color-on-surface-variant);
+  white-space: nowrap;
+}
+
+.json-merge-option-group select {
+  width: auto;
+  padding: 6px 12px;
+}
+
+.section-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.section-title-row .section-title {
+  margin-bottom: 0;
+}

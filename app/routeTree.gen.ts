@@ -94,13 +94,16 @@ import { Route as MarkdownTableRouteImport } from './routes/markdown-table'
 import { Route as MarkdownPreviewRouteImport } from './routes/markdown-preview'
 import { Route as LuhnCheckRouteImport } from './routes/luhn-check'
 import { Route as LoremIpsumRouteImport } from './routes/lorem-ipsum'
+import { Route as LineEndingRouteImport } from './routes/line-ending'
 import { Route as KeycodeRouteImport } from './routes/keycode'
+import { Route as KanaConvertRouteImport } from './routes/kana-convert'
 import { Route as JwtGeneratorRouteImport } from './routes/jwt-generator'
 import { Route as JwtRouteImport } from './routes/jwt'
 import { Route as JsonToTsRouteImport } from './routes/json-to-ts'
 import { Route as JsonSchemaValidatorRouteImport } from './routes/json-schema-validator'
 import { Route as JsonSchemaRouteImport } from './routes/json-schema'
 import { Route as JsonPathRouteImport } from './routes/json-path'
+import { Route as JsonMergeRouteImport } from './routes/json-merge'
 import { Route as JsonLinesRouteImport } from './routes/json-lines'
 import { Route as JsonFlattenRouteImport } from './routes/json-flatten'
 import { Route as JsonCompareRouteImport } from './routes/json-compare'
@@ -632,9 +635,19 @@ const LoremIpsumRoute = LoremIpsumRouteImport.update({
   path: '/lorem-ipsum',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LineEndingRoute = LineEndingRouteImport.update({
+  id: '/line-ending',
+  path: '/line-ending',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const KeycodeRoute = KeycodeRouteImport.update({
   id: '/keycode',
   path: '/keycode',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KanaConvertRoute = KanaConvertRouteImport.update({
+  id: '/kana-convert',
+  path: '/kana-convert',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JwtGeneratorRoute = JwtGeneratorRouteImport.update({
@@ -665,6 +678,11 @@ const JsonSchemaRoute = JsonSchemaRouteImport.update({
 const JsonPathRoute = JsonPathRouteImport.update({
   id: '/json-path',
   path: '/json-path',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JsonMergeRoute = JsonMergeRouteImport.update({
+  id: '/json-merge',
+  path: '/json-merge',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JsonLinesRoute = JsonLinesRouteImport.update({
@@ -1295,13 +1313,16 @@ export interface FileRoutesByFullPath {
   '/json-compare': typeof JsonCompareRoute
   '/json-flatten': typeof JsonFlattenRoute
   '/json-lines': typeof JsonLinesRoute
+  '/json-merge': typeof JsonMergeRoute
   '/json-path': typeof JsonPathRoute
   '/json-schema': typeof JsonSchemaRoute
   '/json-schema-validator': typeof JsonSchemaValidatorRoute
   '/json-to-ts': typeof JsonToTsRoute
   '/jwt': typeof JwtRoute
   '/jwt-generator': typeof JwtGeneratorRoute
+  '/kana-convert': typeof KanaConvertRoute
   '/keycode': typeof KeycodeRoute
+  '/line-ending': typeof LineEndingRoute
   '/lorem-ipsum': typeof LoremIpsumRoute
   '/luhn-check': typeof LuhnCheckRoute
   '/markdown-preview': typeof MarkdownPreviewRoute
@@ -1494,13 +1515,16 @@ export interface FileRoutesByTo {
   '/json-compare': typeof JsonCompareRoute
   '/json-flatten': typeof JsonFlattenRoute
   '/json-lines': typeof JsonLinesRoute
+  '/json-merge': typeof JsonMergeRoute
   '/json-path': typeof JsonPathRoute
   '/json-schema': typeof JsonSchemaRoute
   '/json-schema-validator': typeof JsonSchemaValidatorRoute
   '/json-to-ts': typeof JsonToTsRoute
   '/jwt': typeof JwtRoute
   '/jwt-generator': typeof JwtGeneratorRoute
+  '/kana-convert': typeof KanaConvertRoute
   '/keycode': typeof KeycodeRoute
+  '/line-ending': typeof LineEndingRoute
   '/lorem-ipsum': typeof LoremIpsumRoute
   '/luhn-check': typeof LuhnCheckRoute
   '/markdown-preview': typeof MarkdownPreviewRoute
@@ -1694,13 +1718,16 @@ export interface FileRoutesById {
   '/json-compare': typeof JsonCompareRoute
   '/json-flatten': typeof JsonFlattenRoute
   '/json-lines': typeof JsonLinesRoute
+  '/json-merge': typeof JsonMergeRoute
   '/json-path': typeof JsonPathRoute
   '/json-schema': typeof JsonSchemaRoute
   '/json-schema-validator': typeof JsonSchemaValidatorRoute
   '/json-to-ts': typeof JsonToTsRoute
   '/jwt': typeof JwtRoute
   '/jwt-generator': typeof JwtGeneratorRoute
+  '/kana-convert': typeof KanaConvertRoute
   '/keycode': typeof KeycodeRoute
+  '/line-ending': typeof LineEndingRoute
   '/lorem-ipsum': typeof LoremIpsumRoute
   '/luhn-check': typeof LuhnCheckRoute
   '/markdown-preview': typeof MarkdownPreviewRoute
@@ -1895,13 +1922,16 @@ export interface FileRouteTypes {
     | '/json-compare'
     | '/json-flatten'
     | '/json-lines'
+    | '/json-merge'
     | '/json-path'
     | '/json-schema'
     | '/json-schema-validator'
     | '/json-to-ts'
     | '/jwt'
     | '/jwt-generator'
+    | '/kana-convert'
     | '/keycode'
+    | '/line-ending'
     | '/lorem-ipsum'
     | '/luhn-check'
     | '/markdown-preview'
@@ -2094,13 +2124,16 @@ export interface FileRouteTypes {
     | '/json-compare'
     | '/json-flatten'
     | '/json-lines'
+    | '/json-merge'
     | '/json-path'
     | '/json-schema'
     | '/json-schema-validator'
     | '/json-to-ts'
     | '/jwt'
     | '/jwt-generator'
+    | '/kana-convert'
     | '/keycode'
+    | '/line-ending'
     | '/lorem-ipsum'
     | '/luhn-check'
     | '/markdown-preview'
@@ -2293,13 +2326,16 @@ export interface FileRouteTypes {
     | '/json-compare'
     | '/json-flatten'
     | '/json-lines'
+    | '/json-merge'
     | '/json-path'
     | '/json-schema'
     | '/json-schema-validator'
     | '/json-to-ts'
     | '/jwt'
     | '/jwt-generator'
+    | '/kana-convert'
     | '/keycode'
+    | '/line-ending'
     | '/lorem-ipsum'
     | '/luhn-check'
     | '/markdown-preview'
@@ -2493,13 +2529,16 @@ export interface RootRouteChildren {
   JsonCompareRoute: typeof JsonCompareRoute
   JsonFlattenRoute: typeof JsonFlattenRoute
   JsonLinesRoute: typeof JsonLinesRoute
+  JsonMergeRoute: typeof JsonMergeRoute
   JsonPathRoute: typeof JsonPathRoute
   JsonSchemaRoute: typeof JsonSchemaRoute
   JsonSchemaValidatorRoute: typeof JsonSchemaValidatorRoute
   JsonToTsRoute: typeof JsonToTsRoute
   JwtRoute: typeof JwtRoute
   JwtGeneratorRoute: typeof JwtGeneratorRoute
+  KanaConvertRoute: typeof KanaConvertRoute
   KeycodeRoute: typeof KeycodeRoute
+  LineEndingRoute: typeof LineEndingRoute
   LoremIpsumRoute: typeof LoremIpsumRoute
   LuhnCheckRoute: typeof LuhnCheckRoute
   MarkdownPreviewRoute: typeof MarkdownPreviewRoute
@@ -3188,11 +3227,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoremIpsumRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/line-ending': {
+      id: '/line-ending'
+      path: '/line-ending'
+      fullPath: '/line-ending'
+      preLoaderRoute: typeof LineEndingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/keycode': {
       id: '/keycode'
       path: '/keycode'
       fullPath: '/keycode'
       preLoaderRoute: typeof KeycodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kana-convert': {
+      id: '/kana-convert'
+      path: '/kana-convert'
+      fullPath: '/kana-convert'
+      preLoaderRoute: typeof KanaConvertRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/jwt-generator': {
@@ -3235,6 +3288,13 @@ declare module '@tanstack/react-router' {
       path: '/json-path'
       fullPath: '/json-path'
       preLoaderRoute: typeof JsonPathRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/json-merge': {
+      id: '/json-merge'
+      path: '/json-merge'
+      fullPath: '/json-merge'
+      preLoaderRoute: typeof JsonMergeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/json-lines': {
@@ -4077,13 +4137,16 @@ const rootRouteChildren: RootRouteChildren = {
   JsonCompareRoute: JsonCompareRoute,
   JsonFlattenRoute: JsonFlattenRoute,
   JsonLinesRoute: JsonLinesRoute,
+  JsonMergeRoute: JsonMergeRoute,
   JsonPathRoute: JsonPathRoute,
   JsonSchemaRoute: JsonSchemaRoute,
   JsonSchemaValidatorRoute: JsonSchemaValidatorRoute,
   JsonToTsRoute: JsonToTsRoute,
   JwtRoute: JwtRoute,
   JwtGeneratorRoute: JwtGeneratorRoute,
+  KanaConvertRoute: KanaConvertRoute,
   KeycodeRoute: KeycodeRoute,
+  LineEndingRoute: LineEndingRoute,
   LoremIpsumRoute: LoremIpsumRoute,
   LuhnCheckRoute: LuhnCheckRoute,
   MarkdownPreviewRoute: MarkdownPreviewRoute,

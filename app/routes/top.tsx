@@ -493,6 +493,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "Ａ",
       },
       {
+        path: "/kana-convert",
+        label: "仮名・ローマ字変換",
+        description:
+          "ひらがな・カタカナ・ローマ字を相互変換するツール。ヘボン式ローマ字対応。促音・拗音・撥音（ん）の正確な変換をサポート。",
+        icon: "あ",
+      },
+      {
         path: "/gzip",
         label: "GZip/Deflate 圧縮・解凍",
         description:
