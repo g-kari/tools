@@ -1,0 +1,288 @@
+/* ASCII テーブル */
+
+/* コントロールバー */
+.asc-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  align-items: center;
+}
+
+/* フィルターボタングループ */
+.asc-filter-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.asc-filter-btn {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 20px;
+  cursor: pointer;
+  background: none;
+  color: var(--md-sys-color-on-surface-variant);
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+
+.asc-filter-btn:hover:not(.active) {
+  background-color: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+}
+
+.asc-filter-btn.active {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border-color: var(--md-sys-color-primary);
+}
+
+.asc-filter-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* 検索エリア */
+.asc-search-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 180px;
+}
+
+.asc-search-input {
+  width: 100%;
+  padding: 0.375rem 2rem 0.375rem 0.75rem;
+  font-size: 0.875rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  box-sizing: border-box;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.asc-search-input:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-surface);
+}
+
+.asc-search-input::placeholder {
+  color: var(--md-sys-color-on-surface-variant);
+  opacity: 0.6;
+}
+
+.asc-search-clear {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.75rem;
+  padding: 0.25rem;
+  line-height: 1;
+}
+
+.asc-search-clear:hover {
+  color: var(--md-sys-color-on-surface);
+}
+
+/* 件数表示 */
+.asc-count {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 0.5rem;
+}
+
+/* テーブルラッパー */
+.asc-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.asc-table-wrap:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* テーブル */
+.asc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+}
+
+.asc-table th {
+  text-align: left;
+  padding: 0.5rem 0.625rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--md-sys-color-on-surface-variant);
+  background-color: var(--md-sys-color-surface-variant);
+  border-bottom: 2px solid var(--md-sys-color-outline-variant);
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.asc-table td {
+  padding: 0.375rem 0.625rem;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  vertical-align: middle;
+  color: var(--md-sys-color-on-surface);
+}
+
+.asc-row:last-child td {
+  border-bottom: none;
+}
+
+.asc-row:hover td {
+  background-color: color-mix(in srgb, var(--md-sys-color-primary) 5%, transparent);
+}
+
+/* 制御文字行 */
+.asc-row--control {
+  background-color: color-mix(in srgb, var(--md-sys-color-secondary) 4%, transparent);
+}
+
+.asc-row--control:hover td {
+  background-color: color-mix(in srgb, var(--md-sys-color-secondary) 12%, transparent);
+}
+
+/* 等幅フォントセル */
+.asc-cell-mono {
+  font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
+  color: var(--md-sys-color-primary);
+  white-space: nowrap;
+}
+
+/* バイナリセル */
+.asc-cell-bin {
+  font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
+  color: var(--md-sys-color-tertiary);
+  white-space: nowrap;
+  letter-spacing: 0.05em;
+}
+
+/* 文字セル */
+.asc-cell-char {
+  text-align: center;
+  min-width: 3rem;
+}
+
+.asc-char {
+  font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+}
+
+.asc-char--control {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: var(--md-sys-color-secondary);
+  background-color: var(--md-sys-color-secondary-container);
+  padding: 0.125rem 0.25rem;
+  border-radius: 3px;
+  letter-spacing: 0.02em;
+}
+
+/* エンティティセル */
+.asc-cell-entity {
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.75rem;
+}
+
+/* 説明セル */
+.asc-cell-desc {
+  color: var(--md-sys-color-on-surface);
+  min-width: 160px;
+}
+
+/* コピーボタンセル */
+.asc-cell-copy {
+  white-space: nowrap;
+}
+
+.asc-copy-btn {
+  padding: 0.1875rem 0.5rem;
+  font-size: 0.6875rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  cursor: pointer;
+  background: none;
+  color: var(--md-sys-color-on-surface-variant);
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+
+.asc-copy-btn:hover {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border-color: var(--md-sys-color-primary);
+}
+
+.asc-copy-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* 検索結果なし */
+.asc-no-results {
+  text-align: center;
+  padding: 2rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.9375rem;
+  margin-bottom: 1rem;
+}
+
+/* レスポンシブ */
+@media (max-width: 600px) {
+  .asc-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .asc-search-wrap {
+    min-width: 0;
+  }
+
+  .asc-table {
+    font-size: 0.75rem;
+  }
+
+  .asc-table th,
+  .asc-table td {
+    padding: 0.375rem 0.375rem;
+  }
+
+  .asc-cell-desc {
+    min-width: 120px;
+  }
+
+  /* バイナリ列を小さい画面では非表示 */
+  .asc-table th:nth-child(4),
+  .asc-table td:nth-child(4) {
+    display: none;
+  }
+}
+
+/* モーション低減 */
+@media (prefers-reduced-motion: reduce) {
+  .asc-filter-btn,
+  .asc-search-input,
+  .asc-copy-btn {
+    transition: none;
+  }
+}

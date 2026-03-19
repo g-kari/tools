@@ -266,7 +266,7 @@ function DurationPage() {
                     <button
                       type="button"
                       className="btn-secondary"
-                      style={{ marginTop: '0.5rem', fontSize: '0.75rem', padding: '0.25rem 0.5rem' }}
+  
                       onClick={() => handleCopy(convertResult.hms, 'HH:MM:SS')}
                       aria-label="HH:MM:SSをコピー"
                     >
@@ -279,7 +279,7 @@ function DurationPage() {
                     <button
                       type="button"
                       className="btn-secondary"
-                      style={{ marginTop: '0.5rem', fontSize: '0.75rem', padding: '0.25rem 0.5rem' }}
+  
                       onClick={() => handleCopy(convertResult.hmsMs, 'HH:MM:SS.mmm')}
                       aria-label="HH:MM:SS.mmmをコピー"
                     >
@@ -295,7 +295,7 @@ function DurationPage() {
                     <button
                       type="button"
                       className="btn-secondary"
-                      style={{ marginTop: '0.5rem', fontSize: '0.75rem', padding: '0.25rem 0.5rem' }}
+  
                       onClick={() =>
                         handleCopy(convertResult.components.totalSeconds.toString(), '合計秒数')
                       }
@@ -313,7 +313,7 @@ function DurationPage() {
                     <button
                       type="button"
                       className="btn-secondary"
-                      style={{ marginTop: '0.5rem', fontSize: '0.75rem', padding: '0.25rem 0.5rem' }}
+  
                       onClick={() =>
                         handleCopy(
                           convertResult.components.totalMilliseconds.toString(),
@@ -328,15 +328,14 @@ function DurationPage() {
                 </div>
 
                 {/* 人間が読めるフォーマット */}
-                <div className="dur-result-card" style={{ marginBottom: '1rem' }}>
+                <div className="dur-result-card dur-result-card--mb">
                   <span className="dur-result-card-label">読みやすい表示</span>
-                  <span className="dur-result-card-value" style={{ fontSize: '1rem' }}>
+                  <span className="dur-result-card-value dur-result-card-value--text">
                     {convertResult.human}
                   </span>
                   <button
                     type="button"
-                    className="btn-secondary"
-                    style={{ marginTop: '0.5rem', fontSize: '0.75rem', padding: '0.25rem 0.5rem', alignSelf: 'flex-start' }}
+                    className="btn-secondary dur-copy-btn-start"
                     onClick={() => handleCopy(convertResult.human, '読みやすい表示')}
                     aria-label="読みやすい表示をコピー"
                   >
@@ -399,7 +398,7 @@ function DurationPage() {
                   </div>
                   <div className="dur-result-card">
                     <span className="dur-result-card-label">タイムコード</span>
-                    <span className="dur-result-card-value" style={{ fontSize: '1rem' }}>
+                    <span className="dur-result-card-value dur-result-card-value--text">
                       {convertResult.timecode}
                     </span>
                     <span className="dur-result-card-sub">HH:MM:SS:FF</span>
@@ -415,7 +414,7 @@ function DurationPage() {
           <>
             <div className="dur-calc-row">
               <div className="dur-calc-input-wrap">
-                <div className="dur-input-group" style={{ marginBottom: 0 }}>
+                <div className="dur-input-group dur-input-group--no-mb">
                   <label htmlFor="dur-calc-a" className="dur-label">
                     時間 A
                   </label>
@@ -432,8 +431,8 @@ function DurationPage() {
                 </div>
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.25rem' }}>
-                <span className="dur-fps-label" style={{ marginBottom: '0.25rem' }}>演算</span>
+              <div className="dur-calc-op-section">
+                <span className="dur-fps-label">演算</span>
                 <div className="dur-calc-op" role="group" aria-label="演算子選択">
                   <button
                     type="button"
@@ -457,7 +456,7 @@ function DurationPage() {
               </div>
 
               <div className="dur-calc-input-wrap">
-                <div className="dur-input-group" style={{ marginBottom: 0 }}>
+                <div className="dur-input-group dur-input-group--no-mb">
                   <label htmlFor="dur-calc-b" className="dur-label">
                     時間 B
                   </label>
@@ -485,7 +484,7 @@ function DurationPage() {
                     <button
                       type="button"
                       className="btn-secondary"
-                      style={{ marginTop: '0.5rem', fontSize: '0.75rem', padding: '0.25rem 0.5rem' }}
+  
                       onClick={() => handleCopy(calcResult.hms, '計算結果')}
                       aria-label="計算結果をコピー"
                     >
@@ -501,7 +500,7 @@ function DurationPage() {
                   </div>
                   <div className="dur-result-card">
                     <span className="dur-result-card-label">読みやすい表示</span>
-                    <span className="dur-result-card-value" style={{ fontSize: '0.9rem' }}>
+                    <span className="dur-result-card-value dur-result-card-value--sm">
                       {calcResult.human}
                     </span>
                   </div>
@@ -521,7 +520,7 @@ function DurationPage() {
         {tab === 'frames' && (
           <>
             {/* 変換方向 */}
-            <div className="dur-calc-op" role="group" aria-label="変換方向" style={{ marginBottom: '1rem', gap: '0.5rem' }}>
+            <div className="dur-calc-op dur-calc-op--direction" role="group" aria-label="変換方向">
               <button
                 type="button"
                 className={`dur-fps-btn${frameMode === 'toFrames' ? ' active' : ''}`}
@@ -601,7 +600,7 @@ function DurationPage() {
                         <button
                           type="button"
                           className="btn-secondary"
-                          style={{ marginTop: '0.5rem', fontSize: '0.75rem', padding: '0.25rem 0.5rem' }}
+      
                           onClick={() => handleCopy(frameResult.frames.toString(), 'フレーム数')}
                           aria-label="フレーム数をコピー"
                         >
@@ -610,14 +609,14 @@ function DurationPage() {
                       </div>
                       <div className="dur-result-card">
                         <span className="dur-result-card-label">タイムコード</span>
-                        <span className="dur-result-card-value" style={{ fontSize: '1rem' }}>
+                        <span className="dur-result-card-value dur-result-card-value--text">
                           {frameResult.timecode}
                         </span>
                         <span className="dur-result-card-sub">HH:MM:SS:FF</span>
                         <button
                           type="button"
                           className="btn-secondary"
-                          style={{ marginTop: '0.5rem', fontSize: '0.75rem', padding: '0.25rem 0.5rem' }}
+      
                           onClick={() => handleCopy(frameResult.timecode, 'タイムコード')}
                           aria-label="タイムコードをコピー"
                         >
@@ -633,7 +632,7 @@ function DurationPage() {
                         <button
                           type="button"
                           className="btn-secondary"
-                          style={{ marginTop: '0.5rem', fontSize: '0.75rem', padding: '0.25rem 0.5rem' }}
+      
                           onClick={() => handleCopy(frameResult.hms, 'HH:MM:SS')}
                           aria-label="HH:MM:SSをコピー"
                         >
@@ -642,7 +641,7 @@ function DurationPage() {
                       </div>
                       <div className="dur-result-card">
                         <span className="dur-result-card-label">タイムコード</span>
-                        <span className="dur-result-card-value" style={{ fontSize: '1rem' }}>
+                        <span className="dur-result-card-value dur-result-card-value--text">
                           {frameResult.timecode}
                         </span>
                         <span className="dur-result-card-sub">HH:MM:SS:FF</span>
@@ -662,8 +661,7 @@ function DurationPage() {
                         <div className="dur-result-card">
                           <span className="dur-result-card-label">読みやすい表示</span>
                           <span
-                            className="dur-result-card-value"
-                            style={{ fontSize: '0.875rem' }}
+                            className="dur-result-card-value dur-result-card-value--xs"
                           >
                             {frameResult.human as string}
                           </span>

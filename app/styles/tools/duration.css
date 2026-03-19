@@ -360,6 +360,59 @@
   }
 }
 
+/* 結果カード内のコピーボタン共通スタイル */
+.dur-result-card .btn-secondary {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+}
+
+/* コピーボタン（左寄せ） */
+.dur-copy-btn-start {
+  align-self: flex-start;
+}
+
+/* スタンドアロンの結果カード（グリッド外） */
+.dur-result-card--mb {
+  margin-bottom: 1rem;
+}
+
+/* 入力グループ（マージン0） */
+.dur-input-group--no-mb {
+  margin-bottom: 0;
+}
+
+/* 演算子セクションラッパー */
+.dur-calc-op-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.dur-calc-op-section .dur-fps-label {
+  margin-bottom: 0.25rem;
+}
+
+/* フレームタブの変換方向ボタン */
+.dur-calc-op--direction {
+  margin-bottom: 1rem;
+  gap: 0.5rem;
+}
+
+/* 結果値のサイズ修飾子 */
+.dur-result-card-value--text {
+  font-size: 1rem;
+}
+
+.dur-result-card-value--sm {
+  font-size: 0.9rem;
+}
+
+.dur-result-card-value--xs {
+  font-size: 0.875rem;
+}
+
 /* モーション低減 */
 @media (prefers-reduced-motion: reduce) {
   .dur-tab-btn,

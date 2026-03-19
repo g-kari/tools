@@ -189,6 +189,7 @@ import { Route as Base32RouteImport } from './routes/base32'
 import { Route as BarcodeRouteImport } from './routes/barcode'
 import { Route as AudioConverterRouteImport } from './routes/audio-converter'
 import { Route as AspectRatioRouteImport } from './routes/aspect-ratio'
+import { Route as AsciiTableRouteImport } from './routes/ascii-table'
 import { Route as AsciiArtRouteImport } from './routes/ascii-art'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiImageDotwebpRouteImport } from './routes/api/image[.]webp'
@@ -1096,6 +1097,11 @@ const AspectRatioRoute = AspectRatioRouteImport.update({
   path: '/aspect-ratio',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AsciiTableRoute = AsciiTableRouteImport.update({
+  id: '/ascii-table',
+  path: '/ascii-table',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AsciiArtRoute = AsciiArtRouteImport.update({
   id: '/ascii-art',
   path: '/ascii-art',
@@ -1130,6 +1136,7 @@ const ApiImageDotjpgRoute = ApiImageDotjpgRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/ascii-art': typeof AsciiArtRoute
+  '/ascii-table': typeof AsciiTableRoute
   '/aspect-ratio': typeof AspectRatioRoute
   '/audio-converter': typeof AudioConverterRoute
   '/barcode': typeof BarcodeRoute
@@ -1318,6 +1325,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/ascii-art': typeof AsciiArtRoute
+  '/ascii-table': typeof AsciiTableRoute
   '/aspect-ratio': typeof AspectRatioRoute
   '/audio-converter': typeof AudioConverterRoute
   '/barcode': typeof BarcodeRoute
@@ -1507,6 +1515,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/ascii-art': typeof AsciiArtRoute
+  '/ascii-table': typeof AsciiTableRoute
   '/aspect-ratio': typeof AspectRatioRoute
   '/audio-converter': typeof AudioConverterRoute
   '/barcode': typeof BarcodeRoute
@@ -1697,6 +1706,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/ascii-art'
+    | '/ascii-table'
     | '/aspect-ratio'
     | '/audio-converter'
     | '/barcode'
@@ -1885,6 +1895,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/ascii-art'
+    | '/ascii-table'
     | '/aspect-ratio'
     | '/audio-converter'
     | '/barcode'
@@ -2073,6 +2084,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/ascii-art'
+    | '/ascii-table'
     | '/aspect-ratio'
     | '/audio-converter'
     | '/barcode'
@@ -2262,6 +2274,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AsciiArtRoute: typeof AsciiArtRoute
+  AsciiTableRoute: typeof AsciiTableRoute
   AspectRatioRoute: typeof AspectRatioRoute
   AudioConverterRoute: typeof AudioConverterRoute
   BarcodeRoute: typeof BarcodeRoute
@@ -3710,6 +3723,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AspectRatioRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ascii-table': {
+      id: '/ascii-table'
+      path: '/ascii-table'
+      fullPath: '/ascii-table'
+      preLoaderRoute: typeof AsciiTableRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/ascii-art': {
       id: '/ascii-art'
       path: '/ascii-art'
@@ -3758,6 +3778,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AsciiArtRoute: AsciiArtRoute,
+  AsciiTableRoute: AsciiTableRoute,
   AspectRatioRoute: AspectRatioRoute,
   AudioConverterRoute: AudioConverterRoute,
   BarcodeRoute: BarcodeRoute,

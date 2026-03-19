@@ -45,6 +45,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "📋",
       },
       {
+        path: "/ascii-table",
+        label: "ASCII テーブル",
+        description:
+          "ASCII 文字コード 0〜127 の完全リファレンス。10進数・16進数・8進数・2進数・HTML エンティティ・説明を一覧表示。制御文字・印刷可能文字のフィルタリングと検索に対応。",
+        icon: "⌨",
+      },
+      {
         path: "/unicode",
         label: "Unicode変換",
         description: "Unicode文字列のエスケープ/アンエスケープ変換",
@@ -1307,14 +1314,14 @@ export const Route = createFileRoute("/top")({
   head: () => ({
     meta: [
       { title: "ツール一覧 | Web ツール集" },
-      { name: "description", content: "135以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
+      { name: "description", content: "136以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
       { property: "og:title", content: "ツール一覧 | Web ツール集" },
-      { property: "og:description", content: "135以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
+      { property: "og:description", content: "136以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
       { property: "og:url", content: `${SITE_BASE_URL}/top` },
       { property: "og:type", content: "website" },
       { property: "og:image", content: SITE_OGP_IMAGE },
       { name: "twitter:title", content: "ツール一覧 | Web ツール集" },
-      { name: "twitter:description", content: "135以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
+      { name: "twitter:description", content: "136以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
     ],
   }),
   component: TopPage,
