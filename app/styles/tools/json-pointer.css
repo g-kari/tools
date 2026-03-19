@@ -1,0 +1,236 @@
+/* ==============================
+   JSON Pointer Evaluator Styles
+   ============================== */
+
+/** 2カラムレイアウト */
+.json-pointer-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .json-pointer-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/** 各パネルのベーススタイル */
+.json-pointer-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/** パネルラベル */
+.json-pointer-panel-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/** JSON入力テキストエリア */
+.json-pointer-textarea {
+  width: 100%;
+  min-height: 200px;
+  padding: 10px 12px;
+  font-family: 'Space Mono', 'Roboto Mono', monospace;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.json-pointer-textarea:focus {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: -1px;
+}
+
+/** アクションボタン群 */
+.json-pointer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/** 共通ボタンスタイル */
+.json-pointer-btn {
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.json-pointer-btn:hover {
+  background: var(--md-sys-color-surface-variant);
+}
+
+.json-pointer-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.json-pointer-btn--primary {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  border-color: var(--md-sys-color-primary);
+}
+
+.json-pointer-btn--primary:hover {
+  background: var(--md-sys-color-primary);
+  opacity: 0.9;
+}
+
+/** Pointer入力行 */
+.json-pointer-query-section {
+  display: flex;
+  gap: 8px;
+}
+
+.json-pointer-query-input {
+  flex: 1;
+  padding: 6px 10px;
+  font-family: 'Space Mono', 'Roboto Mono', monospace;
+  font-size: 0.9rem;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+}
+
+.json-pointer-query-input:focus {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: -1px;
+}
+
+/** クイック例 */
+.json-pointer-examples {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.json-pointer-example-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.json-pointer-chip {
+  padding: 4px 10px;
+  font-family: 'Space Mono', 'Roboto Mono', monospace;
+  font-size: 0.78rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 16px;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.json-pointer-chip:hover {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border-color: var(--md-sys-color-primary);
+}
+
+/** 評価結果エリア */
+.json-pointer-result-area {
+  flex: 1;
+  min-height: 180px;
+  padding: 12px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface-variant);
+  overflow: auto;
+}
+
+.json-pointer-result-type {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--md-sys-color-primary);
+  margin-bottom: 8px;
+  letter-spacing: 0.3px;
+}
+
+.json-pointer-result-pre {
+  margin: 0;
+  font-family: 'Space Mono', 'Roboto Mono', monospace;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--md-sys-color-on-surface);
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.json-pointer-result-empty {
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.875rem;
+  font-style: italic;
+}
+
+/** Pointer列挙リスト */
+.json-pointer-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 280px;
+  overflow-y: auto;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  padding: 4px;
+  background: var(--md-sys-color-surface);
+}
+
+.json-pointer-list-item {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 8px;
+  align-items: center;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--md-sys-color-on-surface);
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.15s;
+}
+
+.json-pointer-list-item:hover {
+  background: var(--md-sys-color-surface-variant);
+}
+
+.json-pointer-list-path {
+  font-family: 'Space Mono', 'Roboto Mono', monospace;
+  font-size: 0.8rem;
+  color: var(--md-sys-color-primary);
+  word-break: break-all;
+}
+
+.json-pointer-list-type {
+  font-size: 0.72rem;
+  color: var(--md-sys-color-on-surface-variant);
+  white-space: nowrap;
+}
+
+.json-pointer-list-value {
+  font-family: 'Space Mono', 'Roboto Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--md-sys-color-on-surface-variant);
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

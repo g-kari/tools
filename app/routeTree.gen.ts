@@ -106,6 +106,7 @@ import { Route as JsonToTsRouteImport } from './routes/json-to-ts'
 import { Route as JsonToGraphqlRouteImport } from './routes/json-to-graphql'
 import { Route as JsonSchemaValidatorRouteImport } from './routes/json-schema-validator'
 import { Route as JsonSchemaRouteImport } from './routes/json-schema'
+import { Route as JsonPointerRouteImport } from './routes/json-pointer'
 import { Route as JsonPathRouteImport } from './routes/json-path'
 import { Route as JsonMergeRouteImport } from './routes/json-merge'
 import { Route as JsonLinesRouteImport } from './routes/json-lines'
@@ -704,6 +705,11 @@ const JsonSchemaValidatorRoute = JsonSchemaValidatorRouteImport.update({
 const JsonSchemaRoute = JsonSchemaRouteImport.update({
   id: '/json-schema',
   path: '/json-schema',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JsonPointerRoute = JsonPointerRouteImport.update({
+  id: '/json-pointer',
+  path: '/json-pointer',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JsonPathRoute = JsonPathRouteImport.update({
@@ -1388,6 +1394,7 @@ export interface FileRoutesByFullPath {
   '/json-lines': typeof JsonLinesRoute
   '/json-merge': typeof JsonMergeRoute
   '/json-path': typeof JsonPathRoute
+  '/json-pointer': typeof JsonPointerRoute
   '/json-schema': typeof JsonSchemaRoute
   '/json-schema-validator': typeof JsonSchemaValidatorRoute
   '/json-to-graphql': typeof JsonToGraphqlRoute
@@ -1601,6 +1608,7 @@ export interface FileRoutesByTo {
   '/json-lines': typeof JsonLinesRoute
   '/json-merge': typeof JsonMergeRoute
   '/json-path': typeof JsonPathRoute
+  '/json-pointer': typeof JsonPointerRoute
   '/json-schema': typeof JsonSchemaRoute
   '/json-schema-validator': typeof JsonSchemaValidatorRoute
   '/json-to-graphql': typeof JsonToGraphqlRoute
@@ -1815,6 +1823,7 @@ export interface FileRoutesById {
   '/json-lines': typeof JsonLinesRoute
   '/json-merge': typeof JsonMergeRoute
   '/json-path': typeof JsonPathRoute
+  '/json-pointer': typeof JsonPointerRoute
   '/json-schema': typeof JsonSchemaRoute
   '/json-schema-validator': typeof JsonSchemaValidatorRoute
   '/json-to-graphql': typeof JsonToGraphqlRoute
@@ -2030,6 +2039,7 @@ export interface FileRouteTypes {
     | '/json-lines'
     | '/json-merge'
     | '/json-path'
+    | '/json-pointer'
     | '/json-schema'
     | '/json-schema-validator'
     | '/json-to-graphql'
@@ -2243,6 +2253,7 @@ export interface FileRouteTypes {
     | '/json-lines'
     | '/json-merge'
     | '/json-path'
+    | '/json-pointer'
     | '/json-schema'
     | '/json-schema-validator'
     | '/json-to-graphql'
@@ -2456,6 +2467,7 @@ export interface FileRouteTypes {
     | '/json-lines'
     | '/json-merge'
     | '/json-path'
+    | '/json-pointer'
     | '/json-schema'
     | '/json-schema-validator'
     | '/json-to-graphql'
@@ -2670,6 +2682,7 @@ export interface RootRouteChildren {
   JsonLinesRoute: typeof JsonLinesRoute
   JsonMergeRoute: typeof JsonMergeRoute
   JsonPathRoute: typeof JsonPathRoute
+  JsonPointerRoute: typeof JsonPointerRoute
   JsonSchemaRoute: typeof JsonSchemaRoute
   JsonSchemaValidatorRoute: typeof JsonSchemaValidatorRoute
   JsonToGraphqlRoute: typeof JsonToGraphqlRoute
@@ -3452,6 +3465,13 @@ declare module '@tanstack/react-router' {
       path: '/json-schema'
       fullPath: '/json-schema'
       preLoaderRoute: typeof JsonSchemaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/json-pointer': {
+      id: '/json-pointer'
+      path: '/json-pointer'
+      fullPath: '/json-pointer'
+      preLoaderRoute: typeof JsonPointerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/json-path': {
@@ -4366,6 +4386,7 @@ const rootRouteChildren: RootRouteChildren = {
   JsonLinesRoute: JsonLinesRoute,
   JsonMergeRoute: JsonMergeRoute,
   JsonPathRoute: JsonPathRoute,
+  JsonPointerRoute: JsonPointerRoute,
   JsonSchemaRoute: JsonSchemaRoute,
   JsonSchemaValidatorRoute: JsonSchemaValidatorRoute,
   JsonToGraphqlRoute: JsonToGraphqlRoute,

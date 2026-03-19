@@ -43,6 +43,7 @@ const navCategories = [
       { path: "/json-to-ts", label: "JSON→TS型変換" },
       { path: "/json-to-zod", label: "JSON→Zodスキーマ生成" },
       { path: "/json-to-graphql", label: "JSON→GraphQLスキーマ生成" },
+      { path: "/json-pointer", label: "JSON Pointer評価" },
       { path: "/html-to-jsx", label: "HTML→JSX変換" },
       { path: "/html-markdown", label: "HTML→Markdown変換" },
       { path: "/json-lines", label: "JSON Lines フォーマッター" },
