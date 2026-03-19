@@ -191,6 +191,7 @@ import { Route as CssAnimationRouteImport } from './routes/css-animation'
 import { Route as CspBuilderRouteImport } from './routes/csp-builder'
 import { Route as CronParserRouteImport } from './routes/cron-parser'
 import { Route as CronRouteImport } from './routes/cron'
+import { Route as CountdownRouteImport } from './routes/countdown'
 import { Route as CorsBuilderRouteImport } from './routes/cors-builder'
 import { Route as CookieParserRouteImport } from './routes/cookie-parser'
 import { Route as ConventionalCommitsRouteImport } from './routes/conventional-commits'
@@ -1143,6 +1144,11 @@ const CronRoute = CronRouteImport.update({
   path: '/cron',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CountdownRoute = CountdownRouteImport.update({
+  id: '/countdown',
+  path: '/countdown',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CorsBuilderRoute = CorsBuilderRouteImport.update({
   id: '/cors-builder',
   path: '/cors-builder',
@@ -1387,6 +1393,7 @@ export interface FileRoutesByFullPath {
   '/conventional-commits': typeof ConventionalCommitsRoute
   '/cookie-parser': typeof CookieParserRoute
   '/cors-builder': typeof CorsBuilderRoute
+  '/countdown': typeof CountdownRoute
   '/cron': typeof CronRoute
   '/cron-parser': typeof CronParserRoute
   '/csp-builder': typeof CspBuilderRoute
@@ -1612,6 +1619,7 @@ export interface FileRoutesByTo {
   '/conventional-commits': typeof ConventionalCommitsRoute
   '/cookie-parser': typeof CookieParserRoute
   '/cors-builder': typeof CorsBuilderRoute
+  '/countdown': typeof CountdownRoute
   '/cron': typeof CronRoute
   '/cron-parser': typeof CronParserRoute
   '/csp-builder': typeof CspBuilderRoute
@@ -1838,6 +1846,7 @@ export interface FileRoutesById {
   '/conventional-commits': typeof ConventionalCommitsRoute
   '/cookie-parser': typeof CookieParserRoute
   '/cors-builder': typeof CorsBuilderRoute
+  '/countdown': typeof CountdownRoute
   '/cron': typeof CronRoute
   '/cron-parser': typeof CronParserRoute
   '/csp-builder': typeof CspBuilderRoute
@@ -2065,6 +2074,7 @@ export interface FileRouteTypes {
     | '/conventional-commits'
     | '/cookie-parser'
     | '/cors-builder'
+    | '/countdown'
     | '/cron'
     | '/cron-parser'
     | '/csp-builder'
@@ -2290,6 +2300,7 @@ export interface FileRouteTypes {
     | '/conventional-commits'
     | '/cookie-parser'
     | '/cors-builder'
+    | '/countdown'
     | '/cron'
     | '/cron-parser'
     | '/csp-builder'
@@ -2515,6 +2526,7 @@ export interface FileRouteTypes {
     | '/conventional-commits'
     | '/cookie-parser'
     | '/cors-builder'
+    | '/countdown'
     | '/cron'
     | '/cron-parser'
     | '/csp-builder'
@@ -2741,6 +2753,7 @@ export interface RootRouteChildren {
   ConventionalCommitsRoute: typeof ConventionalCommitsRoute
   CookieParserRoute: typeof CookieParserRoute
   CorsBuilderRoute: typeof CorsBuilderRoute
+  CountdownRoute: typeof CountdownRoute
   CronRoute: typeof CronRoute
   CronParserRoute: typeof CronParserRoute
   CspBuilderRoute: typeof CspBuilderRoute
@@ -4205,6 +4218,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CronRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/countdown': {
+      id: '/countdown'
+      path: '/countdown'
+      fullPath: '/countdown'
+      preLoaderRoute: typeof CountdownRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/cors-builder': {
       id: '/cors-builder'
       path: '/cors-builder'
@@ -4533,6 +4553,7 @@ const rootRouteChildren: RootRouteChildren = {
   ConventionalCommitsRoute: ConventionalCommitsRoute,
   CookieParserRoute: CookieParserRoute,
   CorsBuilderRoute: CorsBuilderRoute,
+  CountdownRoute: CountdownRoute,
   CronRoute: CronRoute,
   CronParserRoute: CronParserRoute,
   CspBuilderRoute: CspBuilderRoute,

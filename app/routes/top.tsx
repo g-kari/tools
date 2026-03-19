@@ -1584,6 +1584,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "⏱️",
       },
       {
+        path: "/countdown",
+        label: "カウントダウンタイマー",
+        description:
+          "指定した日時までのカウントダウンを日・時・分・秒でリアルタイム表示。元日・クリスマスなどのプリセット対応。",
+        icon: "⏳",
+      },
+      {
         path: "/random-picker",
         label: "ランダムピッカー",
         description:

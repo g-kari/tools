@@ -1,0 +1,172 @@
+/* カウントダウンタイマー スタイル */
+
+/* 入力セクション */
+.countdown-input-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem;
+  background-color: var(--md-sys-color-surface-variant);
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+}
+
+.countdown-inputs {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.countdown-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.countdown-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.countdown-date-input,
+.countdown-time-input {
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 8px;
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+}
+
+.countdown-date-input:focus,
+.countdown-time-input:focus {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+  border-color: var(--md-sys-color-primary);
+}
+
+/* プリセットボタン */
+.countdown-presets {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.countdown-preset-btn {
+  font-size: 0.875rem;
+  padding: 0.375rem 0.875rem;
+  border-radius: 20px;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.countdown-preset-btn.active {
+  background-color: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+/* カウントダウン表示エリア */
+.countdown-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 2.5rem 2rem;
+  background-color: var(--md-sys-color-surface);
+  border: 2px solid var(--md-sys-color-primary);
+  border-radius: 16px;
+  margin-bottom: 1.5rem;
+  min-height: 180px;
+  justify-content: center;
+}
+
+.countdown-display.expired {
+  border-color: var(--md-sys-color-error);
+}
+
+.countdown-placeholder {
+  font-size: 1rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.countdown-event-label {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--md-sys-color-primary);
+  letter-spacing: 0.02em;
+}
+
+/* カウントダウン数字 */
+.countdown-units {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.countdown-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.countdown-number {
+  font-size: 3.5rem;
+  font-weight: 300;
+  font-family: 'Space Mono', monospace;
+  color: var(--md-sys-color-on-surface);
+  line-height: 1;
+  min-width: 2ch;
+  text-align: center;
+}
+
+.countdown-unit-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.countdown-separator {
+  font-size: 3rem;
+  font-weight: 300;
+  color: var(--md-sys-color-outline);
+  line-height: 1;
+  padding-bottom: 1.5rem;
+}
+
+.countdown-target-info {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* 期限切れ表示 */
+.countdown-expired-text {
+  font-size: 2rem;
+  font-weight: 500;
+  color: var(--md-sys-color-error);
+}
+
+/* レスポンシブ */
+@media (max-width: 480px) {
+  .countdown-display {
+    padding: 1.5rem 1rem;
+  }
+
+  .countdown-number {
+    font-size: 2.5rem;
+  }
+
+  .countdown-separator {
+    font-size: 2rem;
+    padding-bottom: 1rem;
+  }
+
+  .countdown-inputs {
+    flex-direction: column;
+  }
+}
