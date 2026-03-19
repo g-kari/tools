@@ -190,6 +190,7 @@ import { Route as ColorContrastRouteImport } from './routes/color-contrast'
 import { Route as ColorBlindRouteImport } from './routes/color-blind'
 import { Route as CidrRouteImport } from './routes/cidr'
 import { Route as ChmodRouteImport } from './routes/chmod'
+import { Route as CharFrequencyRouteImport } from './routes/char-frequency'
 import { Route as CharCountRouteImport } from './routes/char-count'
 import { Route as CertDecoderRouteImport } from './routes/cert-decoder'
 import { Route as CacheControlRouteImport } from './routes/cache-control'
@@ -1119,6 +1120,11 @@ const ChmodRoute = ChmodRouteImport.update({
   path: '/chmod',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CharFrequencyRoute = CharFrequencyRouteImport.update({
+  id: '/char-frequency',
+  path: '/char-frequency',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CharCountRoute = CharCountRouteImport.update({
   id: '/char-count',
   path: '/char-count',
@@ -1255,6 +1261,7 @@ export interface FileRoutesByFullPath {
   '/cache-control': typeof CacheControlRoute
   '/cert-decoder': typeof CertDecoderRoute
   '/char-count': typeof CharCountRoute
+  '/char-frequency': typeof CharFrequencyRoute
   '/chmod': typeof ChmodRoute
   '/cidr': typeof CidrRoute
   '/color-blind': typeof ColorBlindRoute
@@ -1461,6 +1468,7 @@ export interface FileRoutesByTo {
   '/cache-control': typeof CacheControlRoute
   '/cert-decoder': typeof CertDecoderRoute
   '/char-count': typeof CharCountRoute
+  '/char-frequency': typeof CharFrequencyRoute
   '/chmod': typeof ChmodRoute
   '/cidr': typeof CidrRoute
   '/color-blind': typeof ColorBlindRoute
@@ -1668,6 +1676,7 @@ export interface FileRoutesById {
   '/cache-control': typeof CacheControlRoute
   '/cert-decoder': typeof CertDecoderRoute
   '/char-count': typeof CharCountRoute
+  '/char-frequency': typeof CharFrequencyRoute
   '/chmod': typeof ChmodRoute
   '/cidr': typeof CidrRoute
   '/color-blind': typeof ColorBlindRoute
@@ -1876,6 +1885,7 @@ export interface FileRouteTypes {
     | '/cache-control'
     | '/cert-decoder'
     | '/char-count'
+    | '/char-frequency'
     | '/chmod'
     | '/cidr'
     | '/color-blind'
@@ -2082,6 +2092,7 @@ export interface FileRouteTypes {
     | '/cache-control'
     | '/cert-decoder'
     | '/char-count'
+    | '/char-frequency'
     | '/chmod'
     | '/cidr'
     | '/color-blind'
@@ -2288,6 +2299,7 @@ export interface FileRouteTypes {
     | '/cache-control'
     | '/cert-decoder'
     | '/char-count'
+    | '/char-frequency'
     | '/chmod'
     | '/cidr'
     | '/color-blind'
@@ -2495,6 +2507,7 @@ export interface RootRouteChildren {
   CacheControlRoute: typeof CacheControlRoute
   CertDecoderRoute: typeof CertDecoderRoute
   CharCountRoute: typeof CharCountRoute
+  CharFrequencyRoute: typeof CharFrequencyRoute
   ChmodRoute: typeof ChmodRoute
   CidrRoute: typeof CidrRoute
   ColorBlindRoute: typeof ColorBlindRoute
@@ -3951,6 +3964,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ChmodRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/char-frequency': {
+      id: '/char-frequency'
+      path: '/char-frequency'
+      fullPath: '/char-frequency'
+      preLoaderRoute: typeof CharFrequencyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/char-count': {
       id: '/char-count'
       path: '/char-count'
@@ -4135,6 +4155,7 @@ const rootRouteChildren: RootRouteChildren = {
   CacheControlRoute: CacheControlRoute,
   CertDecoderRoute: CertDecoderRoute,
   CharCountRoute: CharCountRoute,
+  CharFrequencyRoute: CharFrequencyRoute,
   ChmodRoute: ChmodRoute,
   CidrRoute: CidrRoute,
   ColorBlindRoute: ColorBlindRoute,
