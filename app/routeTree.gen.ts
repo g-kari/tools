@@ -101,6 +101,7 @@ import { Route as KeycodeRouteImport } from './routes/keycode'
 import { Route as KanaConvertRouteImport } from './routes/kana-convert'
 import { Route as JwtGeneratorRouteImport } from './routes/jwt-generator'
 import { Route as JwtRouteImport } from './routes/jwt'
+import { Route as JsonToZodRouteImport } from './routes/json-to-zod'
 import { Route as JsonToTsRouteImport } from './routes/json-to-ts'
 import { Route as JsonSchemaValidatorRouteImport } from './routes/json-schema-validator'
 import { Route as JsonSchemaRouteImport } from './routes/json-schema'
@@ -161,6 +162,7 @@ import { Route as CssTransformRouteImport } from './routes/css-transform'
 import { Route as CssTextShadowRouteImport } from './routes/css-text-shadow'
 import { Route as CssSpecificityRouteImport } from './routes/css-specificity'
 import { Route as CssSelectorRouteImport } from './routes/css-selector'
+import { Route as CssScrollSnapRouteImport } from './routes/css-scroll-snap'
 import { Route as CssMediaQueryRouteImport } from './routes/css-media-query'
 import { Route as CssGridRouteImport } from './routes/css-grid'
 import { Route as CssGradientRouteImport } from './routes/css-gradient'
@@ -677,6 +679,11 @@ const JwtRoute = JwtRouteImport.update({
   path: '/jwt',
   getParentRoute: () => rootRouteImport,
 } as any)
+const JsonToZodRoute = JsonToZodRouteImport.update({
+  id: '/json-to-zod',
+  path: '/json-to-zod',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const JsonToTsRoute = JsonToTsRouteImport.update({
   id: '/json-to-ts',
   path: '/json-to-ts',
@@ -975,6 +982,11 @@ const CssSpecificityRoute = CssSpecificityRouteImport.update({
 const CssSelectorRoute = CssSelectorRouteImport.update({
   id: '/css-selector',
   path: '/css-selector',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CssScrollSnapRoute = CssScrollSnapRouteImport.update({
+  id: '/css-scroll-snap',
+  path: '/css-scroll-snap',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CssMediaQueryRoute = CssMediaQueryRouteImport.update({
@@ -1305,6 +1317,7 @@ export interface FileRoutesByFullPath {
   '/css-gradient': typeof CssGradientRoute
   '/css-grid': typeof CssGridRoute
   '/css-media-query': typeof CssMediaQueryRoute
+  '/css-scroll-snap': typeof CssScrollSnapRoute
   '/css-selector': typeof CssSelectorRoute
   '/css-specificity': typeof CssSpecificityRoute
   '/css-text-shadow': typeof CssTextShadowRoute
@@ -1365,6 +1378,7 @@ export interface FileRoutesByFullPath {
   '/json-schema': typeof JsonSchemaRoute
   '/json-schema-validator': typeof JsonSchemaValidatorRoute
   '/json-to-ts': typeof JsonToTsRoute
+  '/json-to-zod': typeof JsonToZodRoute
   '/jwt': typeof JwtRoute
   '/jwt-generator': typeof JwtGeneratorRoute
   '/kana-convert': typeof KanaConvertRoute
@@ -1514,6 +1528,7 @@ export interface FileRoutesByTo {
   '/css-gradient': typeof CssGradientRoute
   '/css-grid': typeof CssGridRoute
   '/css-media-query': typeof CssMediaQueryRoute
+  '/css-scroll-snap': typeof CssScrollSnapRoute
   '/css-selector': typeof CssSelectorRoute
   '/css-specificity': typeof CssSpecificityRoute
   '/css-text-shadow': typeof CssTextShadowRoute
@@ -1574,6 +1589,7 @@ export interface FileRoutesByTo {
   '/json-schema': typeof JsonSchemaRoute
   '/json-schema-validator': typeof JsonSchemaValidatorRoute
   '/json-to-ts': typeof JsonToTsRoute
+  '/json-to-zod': typeof JsonToZodRoute
   '/jwt': typeof JwtRoute
   '/jwt-generator': typeof JwtGeneratorRoute
   '/kana-convert': typeof KanaConvertRoute
@@ -1724,6 +1740,7 @@ export interface FileRoutesById {
   '/css-gradient': typeof CssGradientRoute
   '/css-grid': typeof CssGridRoute
   '/css-media-query': typeof CssMediaQueryRoute
+  '/css-scroll-snap': typeof CssScrollSnapRoute
   '/css-selector': typeof CssSelectorRoute
   '/css-specificity': typeof CssSpecificityRoute
   '/css-text-shadow': typeof CssTextShadowRoute
@@ -1784,6 +1801,7 @@ export interface FileRoutesById {
   '/json-schema': typeof JsonSchemaRoute
   '/json-schema-validator': typeof JsonSchemaValidatorRoute
   '/json-to-ts': typeof JsonToTsRoute
+  '/json-to-zod': typeof JsonToZodRoute
   '/jwt': typeof JwtRoute
   '/jwt-generator': typeof JwtGeneratorRoute
   '/kana-convert': typeof KanaConvertRoute
@@ -1935,6 +1953,7 @@ export interface FileRouteTypes {
     | '/css-gradient'
     | '/css-grid'
     | '/css-media-query'
+    | '/css-scroll-snap'
     | '/css-selector'
     | '/css-specificity'
     | '/css-text-shadow'
@@ -1995,6 +2014,7 @@ export interface FileRouteTypes {
     | '/json-schema'
     | '/json-schema-validator'
     | '/json-to-ts'
+    | '/json-to-zod'
     | '/jwt'
     | '/jwt-generator'
     | '/kana-convert'
@@ -2144,6 +2164,7 @@ export interface FileRouteTypes {
     | '/css-gradient'
     | '/css-grid'
     | '/css-media-query'
+    | '/css-scroll-snap'
     | '/css-selector'
     | '/css-specificity'
     | '/css-text-shadow'
@@ -2204,6 +2225,7 @@ export interface FileRouteTypes {
     | '/json-schema'
     | '/json-schema-validator'
     | '/json-to-ts'
+    | '/json-to-zod'
     | '/jwt'
     | '/jwt-generator'
     | '/kana-convert'
@@ -2353,6 +2375,7 @@ export interface FileRouteTypes {
     | '/css-gradient'
     | '/css-grid'
     | '/css-media-query'
+    | '/css-scroll-snap'
     | '/css-selector'
     | '/css-specificity'
     | '/css-text-shadow'
@@ -2413,6 +2436,7 @@ export interface FileRouteTypes {
     | '/json-schema'
     | '/json-schema-validator'
     | '/json-to-ts'
+    | '/json-to-zod'
     | '/jwt'
     | '/jwt-generator'
     | '/kana-convert'
@@ -2563,6 +2587,7 @@ export interface RootRouteChildren {
   CssGradientRoute: typeof CssGradientRoute
   CssGridRoute: typeof CssGridRoute
   CssMediaQueryRoute: typeof CssMediaQueryRoute
+  CssScrollSnapRoute: typeof CssScrollSnapRoute
   CssSelectorRoute: typeof CssSelectorRoute
   CssSpecificityRoute: typeof CssSpecificityRoute
   CssTextShadowRoute: typeof CssTextShadowRoute
@@ -2623,6 +2648,7 @@ export interface RootRouteChildren {
   JsonSchemaRoute: typeof JsonSchemaRoute
   JsonSchemaValidatorRoute: typeof JsonSchemaValidatorRoute
   JsonToTsRoute: typeof JsonToTsRoute
+  JsonToZodRoute: typeof JsonToZodRoute
   JwtRoute: typeof JwtRoute
   JwtGeneratorRoute: typeof JwtGeneratorRoute
   KanaConvertRoute: typeof KanaConvertRoute
@@ -3367,6 +3393,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof JwtRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/json-to-zod': {
+      id: '/json-to-zod'
+      path: '/json-to-zod'
+      fullPath: '/json-to-zod'
+      preLoaderRoute: typeof JsonToZodRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/json-to-ts': {
       id: '/json-to-ts'
       path: '/json-to-ts'
@@ -3785,6 +3818,13 @@ declare module '@tanstack/react-router' {
       path: '/css-selector'
       fullPath: '/css-selector'
       preLoaderRoute: typeof CssSelectorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/css-scroll-snap': {
+      id: '/css-scroll-snap'
+      path: '/css-scroll-snap'
+      fullPath: '/css-scroll-snap'
+      preLoaderRoute: typeof CssScrollSnapRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/css-media-query': {
@@ -4227,6 +4267,7 @@ const rootRouteChildren: RootRouteChildren = {
   CssGradientRoute: CssGradientRoute,
   CssGridRoute: CssGridRoute,
   CssMediaQueryRoute: CssMediaQueryRoute,
+  CssScrollSnapRoute: CssScrollSnapRoute,
   CssSelectorRoute: CssSelectorRoute,
   CssSpecificityRoute: CssSpecificityRoute,
   CssTextShadowRoute: CssTextShadowRoute,
@@ -4287,6 +4328,7 @@ const rootRouteChildren: RootRouteChildren = {
   JsonSchemaRoute: JsonSchemaRoute,
   JsonSchemaValidatorRoute: JsonSchemaValidatorRoute,
   JsonToTsRoute: JsonToTsRoute,
+  JsonToZodRoute: JsonToZodRoute,
   JwtRoute: JwtRoute,
   JwtGeneratorRoute: JwtGeneratorRoute,
   KanaConvertRoute: KanaConvertRoute,

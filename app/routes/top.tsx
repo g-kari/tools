@@ -663,6 +663,12 @@ const toolCatalog: ToolCategory[] = [
         icon: "🔷",
       },
       {
+        path: "/json-to-zod",
+        label: "JSON→Zodスキーマ生成",
+        description: "JSONデータからZodスキーマを自動生成するツール。optional・nullable対応。",
+        icon: "🛡️",
+      },
+      {
         path: "/json-compare",
         label: "JSON比較",
         description: "2つのJSONを並べて比較し、追加・削除・変更されたキーを差分表示するツール",
