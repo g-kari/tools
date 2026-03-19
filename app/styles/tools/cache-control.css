@@ -1,0 +1,321 @@
+/* Cache-Control ビルダー スタイル */
+
+/* ターゲット切替（レスポンス/リクエスト） */
+.cc-target-section {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  padding: 0.6rem 1rem;
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.cc-target-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.cc-target-radio {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--md-sys-color-on-surface);
+  cursor: pointer;
+}
+
+.cc-target-radio input[type='radio'] {
+  accent-color: var(--md-sys-color-primary);
+  cursor: pointer;
+  width: 1rem;
+  height: 1rem;
+}
+
+/* プリセットセクション */
+.cc-presets-section {
+  margin-bottom: 1.5rem;
+}
+
+.cc-presets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.cc-preset-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  cursor: pointer;
+  text-align: left;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    color 0.15s;
+}
+
+.cc-preset-btn:hover {
+  background: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.cc-preset-btn:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.cc-preset-btn-danger {
+  border-color: var(--md-sys-color-error);
+  color: var(--md-sys-color-error);
+}
+
+.cc-preset-btn-danger:hover {
+  background: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-on-error-container);
+  border-color: var(--md-sys-color-error);
+}
+
+.cc-preset-name {
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.cc-preset-desc {
+  font-size: 0.68rem;
+  color: var(--md-sys-color-on-surface-variant);
+  line-height: 1.3;
+}
+
+.cc-preset-btn:hover .cc-preset-desc {
+  color: var(--md-sys-color-on-primary-container);
+  opacity: 0.8;
+}
+
+.cc-preset-btn-danger .cc-preset-desc {
+  color: var(--md-sys-color-error);
+  opacity: 0.7;
+}
+
+/* ディレクティブ行 */
+.cc-directive-row {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  transition: background 0.15s;
+}
+
+.cc-directive-row:last-child {
+  border-bottom: none;
+}
+
+.cc-directive-row:hover {
+  background: color-mix(in srgb, var(--md-sys-color-primary) 3%, transparent);
+}
+
+.cc-directive-row-disabled {
+  opacity: 0.5;
+}
+
+.cc-directive-row-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.4rem;
+}
+
+.cc-directive-toggle {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.cc-directive-toggle input[type='checkbox'] {
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+  accent-color: var(--md-sys-color-primary);
+}
+
+.cc-directive-name-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  flex-wrap: wrap;
+}
+
+.cc-directive-name {
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--md-sys-color-primary);
+}
+
+.cc-directive-value-badge {
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.72rem;
+  padding: 0.1rem 0.45rem;
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  border-radius: 2px;
+  font-weight: 500;
+}
+
+.cc-remove-btn {
+  padding: 0.2rem 0.45rem;
+  font-size: 0.7rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: none;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  line-height: 1;
+  transition:
+    background 0.15s,
+    color 0.15s,
+    border-color 0.15s;
+}
+
+.cc-remove-btn:hover {
+  background: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-on-error-container);
+  border-color: var(--md-sys-color-error);
+}
+
+.cc-remove-btn:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.cc-directive-description {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin: 0 0 0.5rem;
+  padding-left: 1.6rem;
+  line-height: 1.5;
+}
+
+/* 値入力エリア */
+.cc-value-input-wrap {
+  padding-left: 1.6rem;
+}
+
+.cc-value-label {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 0.3rem;
+  font-weight: 500;
+}
+
+.cc-value-input-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cc-value-input {
+  width: 140px;
+  padding: 0.38rem 0.6rem;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.82rem;
+  border: 1px solid var(--md-sys-color-outline);
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.cc-value-input:focus {
+  border-color: var(--md-sys-color-primary);
+}
+
+.cc-value-input:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 1px;
+}
+
+.cc-value-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* クイック秒数チップ */
+.cc-quick-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.cc-quick-chip {
+  padding: 0.15rem 0.5rem;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.7rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  transition:
+    background 0.12s,
+    color 0.12s,
+    border-color 0.12s;
+}
+
+.cc-quick-chip:hover {
+  background: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.cc-quick-chip-active {
+  background: var(--md-sys-color-primary);
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+.cc-quick-chip-active:hover {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+.cc-quick-chip:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 640px) {
+  .cc-presets-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cc-value-input-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .cc-directive-description {
+    padding-left: 0;
+  }
+
+  .cc-value-input-wrap {
+    padding-left: 0;
+  }
+
+  .cc-quick-chips {
+    margin-top: 0.25rem;
+  }
+}

@@ -1157,6 +1157,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "📝",
       },
       {
+        path: "/cache-control",
+        label: "Cache-Control ビルダー",
+        description:
+          "Cache-Control HTTPヘッダーをGUIで構築・パース・検証するツール。max-age・no-store・no-cache・immutable・stale-while-revalidate など全ディレクティブに対応。よく使うプリセット付き。",
+        icon: "📦",
+      },
+      {
         path: "/csp-builder",
         label: "CSP ビルダー",
         description:

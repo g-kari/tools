@@ -186,6 +186,7 @@ import { Route as CidrRouteImport } from './routes/cidr'
 import { Route as ChmodRouteImport } from './routes/chmod'
 import { Route as CharCountRouteImport } from './routes/char-count'
 import { Route as CertDecoderRouteImport } from './routes/cert-decoder'
+import { Route as CacheControlRouteImport } from './routes/cache-control'
 import { Route as BitwiseRouteImport } from './routes/bitwise'
 import { Route as BasicAuthRouteImport } from './routes/basic-auth'
 import { Route as Base85RouteImport } from './routes/base85'
@@ -1090,6 +1091,11 @@ const CertDecoderRoute = CertDecoderRouteImport.update({
   path: '/cert-decoder',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CacheControlRoute = CacheControlRouteImport.update({
+  id: '/cache-control',
+  path: '/cache-control',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BitwiseRoute = BitwiseRouteImport.update({
   id: '/bitwise',
   path: '/bitwise',
@@ -1196,6 +1202,7 @@ export interface FileRoutesByFullPath {
   '/base85': typeof Base85Route
   '/basic-auth': typeof BasicAuthRoute
   '/bitwise': typeof BitwiseRoute
+  '/cache-control': typeof CacheControlRoute
   '/cert-decoder': typeof CertDecoderRoute
   '/char-count': typeof CharCountRoute
   '/chmod': typeof ChmodRoute
@@ -1393,6 +1400,7 @@ export interface FileRoutesByTo {
   '/base85': typeof Base85Route
   '/basic-auth': typeof BasicAuthRoute
   '/bitwise': typeof BitwiseRoute
+  '/cache-control': typeof CacheControlRoute
   '/cert-decoder': typeof CertDecoderRoute
   '/char-count': typeof CharCountRoute
   '/chmod': typeof ChmodRoute
@@ -1591,6 +1599,7 @@ export interface FileRoutesById {
   '/base85': typeof Base85Route
   '/basic-auth': typeof BasicAuthRoute
   '/bitwise': typeof BitwiseRoute
+  '/cache-control': typeof CacheControlRoute
   '/cert-decoder': typeof CertDecoderRoute
   '/char-count': typeof CharCountRoute
   '/chmod': typeof ChmodRoute
@@ -1790,6 +1799,7 @@ export interface FileRouteTypes {
     | '/base85'
     | '/basic-auth'
     | '/bitwise'
+    | '/cache-control'
     | '/cert-decoder'
     | '/char-count'
     | '/chmod'
@@ -1987,6 +1997,7 @@ export interface FileRouteTypes {
     | '/base85'
     | '/basic-auth'
     | '/bitwise'
+    | '/cache-control'
     | '/cert-decoder'
     | '/char-count'
     | '/chmod'
@@ -2184,6 +2195,7 @@ export interface FileRouteTypes {
     | '/base85'
     | '/basic-auth'
     | '/bitwise'
+    | '/cache-control'
     | '/cert-decoder'
     | '/char-count'
     | '/chmod'
@@ -2382,6 +2394,7 @@ export interface RootRouteChildren {
   Base85Route: typeof Base85Route
   BasicAuthRoute: typeof BasicAuthRoute
   BitwiseRoute: typeof BitwiseRoute
+  CacheControlRoute: typeof CacheControlRoute
   CertDecoderRoute: typeof CertDecoderRoute
   CharCountRoute: typeof CharCountRoute
   ChmodRoute: typeof ChmodRoute
@@ -3806,6 +3819,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CertDecoderRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/cache-control': {
+      id: '/cache-control'
+      path: '/cache-control'
+      fullPath: '/cache-control'
+      preLoaderRoute: typeof CacheControlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/bitwise': {
       id: '/bitwise'
       path: '/bitwise'
@@ -3950,6 +3970,7 @@ const rootRouteChildren: RootRouteChildren = {
   Base85Route: Base85Route,
   BasicAuthRoute: BasicAuthRoute,
   BitwiseRoute: BitwiseRoute,
+  CacheControlRoute: CacheControlRoute,
   CertDecoderRoute: CertDecoderRoute,
   CharCountRoute: CharCountRoute,
   ChmodRoute: ChmodRoute,
