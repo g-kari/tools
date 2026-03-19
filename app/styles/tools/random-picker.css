@@ -1,0 +1,227 @@
+/* Random Picker Styles */
+
+.picker-input-area {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.picker-label {
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface);
+}
+
+.picker-textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: var(--md-sys-color-surface-variant);
+  border: 2px solid transparent;
+  border-radius: 8px;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.9rem;
+  color: var(--md-sys-color-on-surface);
+  resize: vertical;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.picker-textarea:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+}
+
+.picker-count-info {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.picker-total-badge,
+.picker-remaining-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.picker-total-badge {
+  background-color: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.picker-remaining-badge {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.picker-remaining-badge.exhausted {
+  background-color: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-on-error-container);
+}
+
+.picker-options {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.picker-mode-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.picker-mode-label {
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface);
+}
+
+.picker-mode-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.picker-mode-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9375rem;
+  color: var(--md-sys-color-on-surface);
+}
+
+.picker-mode-option input[type="radio"] {
+  accent-color: var(--md-sys-color-primary);
+  width: 1rem;
+  height: 1rem;
+}
+
+.picker-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.picker-btn {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.picker-btn.animating {
+  transform: scale(0.97);
+  opacity: 0.8;
+}
+
+.picker-exhausted-notice {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  background-color: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-on-error-container);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* 抽選結果 */
+.picker-result {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  transition: opacity 0.3s;
+}
+
+.picker-result.animating {
+  opacity: 0.4;
+}
+
+.picker-result-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background-color: var(--md-sys-color-primary-container);
+  border-radius: 12px;
+  animation: picker-slide-in 0.3s ease-out;
+}
+
+@keyframes picker-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.picker-result-rank {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  border-radius: 50%;
+  font-size: 0.875rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.picker-result-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-primary-container);
+}
+
+/* 履歴 */
+.picker-history {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.picker-history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.625rem 1rem;
+  background-color: var(--md-sys-color-surface-variant);
+  border-radius: 8px;
+  gap: 1rem;
+}
+
+.picker-history-items {
+  font-size: 0.9375rem;
+  color: var(--md-sys-color-on-surface);
+  flex: 1;
+}
+
+.picker-history-time {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  white-space: nowrap;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+@media (max-width: 600px) {
+  .picker-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .picker-result-name {
+    font-size: 1.1rem;
+  }
+
+  .picker-history-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
