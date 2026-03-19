@@ -471,6 +471,13 @@ const toolCatalog: ToolCategory[] = [
     icon: "✦",
     items: [
       {
+        path: '/sequences',
+        label: '数列ジェネレーター',
+        description:
+          'フィボナッチ・リュカ・素数・三角数・平方数・立方数・2の冪乗・カタラン数・パドヴァン・等差・等比・コラッツなど12種類の数列を生成。CSV・JSON・改行・タグ形式で出力可能。',
+        icon: '∿',
+      },
+      {
         path: '/html-playground',
         label: 'HTML/CSS/JS プレイグラウンド',
         description:

@@ -97,6 +97,7 @@ const navCategories = [
     icon: "✦",
     items: [
       { path: '/html-playground', label: 'HTML/CSS/JS プレイグラウンド' },
+      { path: '/sequences', label: '数列ジェネレーター' },
       { path: '/passphrase', label: 'パスフレーズ' },
       { path: "/uuid", label: "UUID生成" },
       { path: "/uuid-inspector", label: "UUID解析" },
