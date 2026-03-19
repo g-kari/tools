@@ -202,6 +202,7 @@ import { Route as Base64RouteImport } from './routes/base64'
 import { Route as Base62RouteImport } from './routes/base62'
 import { Route as Base58RouteImport } from './routes/base58'
 import { Route as Base32RouteImport } from './routes/base32'
+import { Route as Base16RouteImport } from './routes/base16'
 import { Route as BarcodeRouteImport } from './routes/barcode'
 import { Route as AudioConverterRouteImport } from './routes/audio-converter'
 import { Route as AspectRatioRouteImport } from './routes/aspect-ratio'
@@ -1178,6 +1179,11 @@ const Base32Route = Base32RouteImport.update({
   path: '/base32',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Base16Route = Base16RouteImport.update({
+  id: '/base16',
+  path: '/base16',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BarcodeRoute = BarcodeRouteImport.update({
   id: '/barcode',
   path: '/barcode',
@@ -1236,6 +1242,7 @@ export interface FileRoutesByFullPath {
   '/aspect-ratio': typeof AspectRatioRoute
   '/audio-converter': typeof AudioConverterRoute
   '/barcode': typeof BarcodeRoute
+  '/base16': typeof Base16Route
   '/base32': typeof Base32Route
   '/base58': typeof Base58Route
   '/base62': typeof Base62Route
@@ -1441,6 +1448,7 @@ export interface FileRoutesByTo {
   '/aspect-ratio': typeof AspectRatioRoute
   '/audio-converter': typeof AudioConverterRoute
   '/barcode': typeof BarcodeRoute
+  '/base16': typeof Base16Route
   '/base32': typeof Base32Route
   '/base58': typeof Base58Route
   '/base62': typeof Base62Route
@@ -1647,6 +1655,7 @@ export interface FileRoutesById {
   '/aspect-ratio': typeof AspectRatioRoute
   '/audio-converter': typeof AudioConverterRoute
   '/barcode': typeof BarcodeRoute
+  '/base16': typeof Base16Route
   '/base32': typeof Base32Route
   '/base58': typeof Base58Route
   '/base62': typeof Base62Route
@@ -1854,6 +1863,7 @@ export interface FileRouteTypes {
     | '/aspect-ratio'
     | '/audio-converter'
     | '/barcode'
+    | '/base16'
     | '/base32'
     | '/base58'
     | '/base62'
@@ -2059,6 +2069,7 @@ export interface FileRouteTypes {
     | '/aspect-ratio'
     | '/audio-converter'
     | '/barcode'
+    | '/base16'
     | '/base32'
     | '/base58'
     | '/base62'
@@ -2264,6 +2275,7 @@ export interface FileRouteTypes {
     | '/aspect-ratio'
     | '/audio-converter'
     | '/barcode'
+    | '/base16'
     | '/base32'
     | '/base58'
     | '/base62'
@@ -2470,6 +2482,7 @@ export interface RootRouteChildren {
   AspectRatioRoute: typeof AspectRatioRoute
   AudioConverterRoute: typeof AudioConverterRoute
   BarcodeRoute: typeof BarcodeRoute
+  Base16Route: typeof Base16Route
   Base32Route: typeof Base32Route
   Base58Route: typeof Base58Route
   Base62Route: typeof Base62Route
@@ -4022,6 +4035,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Base32RouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/base16': {
+      id: '/base16'
+      path: '/base16'
+      fullPath: '/base16'
+      preLoaderRoute: typeof Base16RouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/barcode': {
       id: '/barcode'
       path: '/barcode'
@@ -4102,6 +4122,7 @@ const rootRouteChildren: RootRouteChildren = {
   AspectRatioRoute: AspectRatioRoute,
   AudioConverterRoute: AudioConverterRoute,
   BarcodeRoute: BarcodeRoute,
+  Base16Route: Base16Route,
   Base32Route: Base32Route,
   Base58Route: Base58Route,
   Base62Route: Base62Route,
