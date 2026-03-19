@@ -103,6 +103,7 @@ import { Route as JwtGeneratorRouteImport } from './routes/jwt-generator'
 import { Route as JwtRouteImport } from './routes/jwt'
 import { Route as JsonToZodRouteImport } from './routes/json-to-zod'
 import { Route as JsonToTsRouteImport } from './routes/json-to-ts'
+import { Route as JsonToSqlRouteImport } from './routes/json-to-sql'
 import { Route as JsonToGraphqlRouteImport } from './routes/json-to-graphql'
 import { Route as JsonSchemaValidatorRouteImport } from './routes/json-schema-validator'
 import { Route as JsonSchemaRouteImport } from './routes/json-schema'
@@ -690,6 +691,11 @@ const JsonToZodRoute = JsonToZodRouteImport.update({
 const JsonToTsRoute = JsonToTsRouteImport.update({
   id: '/json-to-ts',
   path: '/json-to-ts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JsonToSqlRoute = JsonToSqlRouteImport.update({
+  id: '/json-to-sql',
+  path: '/json-to-sql',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JsonToGraphqlRoute = JsonToGraphqlRouteImport.update({
@@ -1398,6 +1404,7 @@ export interface FileRoutesByFullPath {
   '/json-schema': typeof JsonSchemaRoute
   '/json-schema-validator': typeof JsonSchemaValidatorRoute
   '/json-to-graphql': typeof JsonToGraphqlRoute
+  '/json-to-sql': typeof JsonToSqlRoute
   '/json-to-ts': typeof JsonToTsRoute
   '/json-to-zod': typeof JsonToZodRoute
   '/jwt': typeof JwtRoute
@@ -1612,6 +1619,7 @@ export interface FileRoutesByTo {
   '/json-schema': typeof JsonSchemaRoute
   '/json-schema-validator': typeof JsonSchemaValidatorRoute
   '/json-to-graphql': typeof JsonToGraphqlRoute
+  '/json-to-sql': typeof JsonToSqlRoute
   '/json-to-ts': typeof JsonToTsRoute
   '/json-to-zod': typeof JsonToZodRoute
   '/jwt': typeof JwtRoute
@@ -1827,6 +1835,7 @@ export interface FileRoutesById {
   '/json-schema': typeof JsonSchemaRoute
   '/json-schema-validator': typeof JsonSchemaValidatorRoute
   '/json-to-graphql': typeof JsonToGraphqlRoute
+  '/json-to-sql': typeof JsonToSqlRoute
   '/json-to-ts': typeof JsonToTsRoute
   '/json-to-zod': typeof JsonToZodRoute
   '/jwt': typeof JwtRoute
@@ -2043,6 +2052,7 @@ export interface FileRouteTypes {
     | '/json-schema'
     | '/json-schema-validator'
     | '/json-to-graphql'
+    | '/json-to-sql'
     | '/json-to-ts'
     | '/json-to-zod'
     | '/jwt'
@@ -2257,6 +2267,7 @@ export interface FileRouteTypes {
     | '/json-schema'
     | '/json-schema-validator'
     | '/json-to-graphql'
+    | '/json-to-sql'
     | '/json-to-ts'
     | '/json-to-zod'
     | '/jwt'
@@ -2471,6 +2482,7 @@ export interface FileRouteTypes {
     | '/json-schema'
     | '/json-schema-validator'
     | '/json-to-graphql'
+    | '/json-to-sql'
     | '/json-to-ts'
     | '/json-to-zod'
     | '/jwt'
@@ -2686,6 +2698,7 @@ export interface RootRouteChildren {
   JsonSchemaRoute: typeof JsonSchemaRoute
   JsonSchemaValidatorRoute: typeof JsonSchemaValidatorRoute
   JsonToGraphqlRoute: typeof JsonToGraphqlRoute
+  JsonToSqlRoute: typeof JsonToSqlRoute
   JsonToTsRoute: typeof JsonToTsRoute
   JsonToZodRoute: typeof JsonToZodRoute
   JwtRoute: typeof JwtRoute
@@ -3444,6 +3457,13 @@ declare module '@tanstack/react-router' {
       path: '/json-to-ts'
       fullPath: '/json-to-ts'
       preLoaderRoute: typeof JsonToTsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/json-to-sql': {
+      id: '/json-to-sql'
+      path: '/json-to-sql'
+      fullPath: '/json-to-sql'
+      preLoaderRoute: typeof JsonToSqlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/json-to-graphql': {
@@ -4390,6 +4410,7 @@ const rootRouteChildren: RootRouteChildren = {
   JsonSchemaRoute: JsonSchemaRoute,
   JsonSchemaValidatorRoute: JsonSchemaValidatorRoute,
   JsonToGraphqlRoute: JsonToGraphqlRoute,
+  JsonToSqlRoute: JsonToSqlRoute,
   JsonToTsRoute: JsonToTsRoute,
   JsonToZodRoute: JsonToZodRoute,
   JwtRoute: JwtRoute,

@@ -675,6 +675,12 @@ const toolCatalog: ToolCategory[] = [
         icon: "◈",
       },
       {
+        path: "/json-to-sql",
+        label: "JSON→SQL CREATE TABLE生成",
+        description: "JSONデータからSQL CREATE TABLE文を自動生成するツール。PostgreSQL・MySQL・SQLiteに対応。",
+        icon: "🗄️",
+      },
+      {
         path: "/json-compare",
         label: "JSON比較",
         description: "2つのJSONを並べて比較し、追加・削除・変更されたキーを差分表示するツール",
