@@ -85,6 +85,7 @@ import { Route as NumberWordsRouteImport } from './routes/number-words'
 import { Route as NumberTheoryRouteImport } from './routes/number-theory'
 import { Route as NumberFormatRouteImport } from './routes/number-format'
 import { Route as NumberBaseRouteImport } from './routes/number-base'
+import { Route as NginxConfigRouteImport } from './routes/nginx-config'
 import { Route as NanoIdRouteImport } from './routes/nano-id'
 import { Route as MsgpackRouteImport } from './routes/msgpack'
 import { Route as MorseCodeRouteImport } from './routes/morse-code'
@@ -141,6 +142,7 @@ import { Route as HarRouteImport } from './routes/har'
 import { Route as GzipRouteImport } from './routes/gzip'
 import { Route as GraphqlRouteImport } from './routes/graphql'
 import { Route as GlobalIpRouteImport } from './routes/global-ip'
+import { Route as GlobTesterRouteImport } from './routes/glob-tester'
 import { Route as GitignoreRouteImport } from './routes/gitignore'
 import { Route as FunctionPlotterRouteImport } from './routes/function-plotter'
 import { Route as FaviconGeneratorRouteImport } from './routes/favicon-generator'
@@ -164,6 +166,7 @@ import { Route as CurlToFetchRouteImport } from './routes/curl-to-fetch'
 import { Route as CurlBuilderRouteImport } from './routes/curl-builder'
 import { Route as CsvSqlRouteImport } from './routes/csv-sql'
 import { Route as CsvJsonRouteImport } from './routes/csv-json'
+import { Route as CssVariablesRouteImport } from './routes/css-variables'
 import { Route as CssUnitRouteImport } from './routes/css-unit'
 import { Route as CssTransformRouteImport } from './routes/css-transform'
 import { Route as CssTextShadowRouteImport } from './routes/css-text-shadow'
@@ -607,6 +610,11 @@ const NumberBaseRoute = NumberBaseRouteImport.update({
   path: '/number-base',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NginxConfigRoute = NginxConfigRouteImport.update({
+  id: '/nginx-config',
+  path: '/nginx-config',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const NanoIdRoute = NanoIdRouteImport.update({
   id: '/nano-id',
   path: '/nano-id',
@@ -887,6 +895,11 @@ const GlobalIpRoute = GlobalIpRouteImport.update({
   path: '/global-ip',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GlobTesterRoute = GlobTesterRouteImport.update({
+  id: '/glob-tester',
+  path: '/glob-tester',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GitignoreRoute = GitignoreRouteImport.update({
   id: '/gitignore',
   path: '/gitignore',
@@ -1000,6 +1013,11 @@ const CsvSqlRoute = CsvSqlRouteImport.update({
 const CsvJsonRoute = CsvJsonRouteImport.update({
   id: '/csv-json',
   path: '/csv-json',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CssVariablesRoute = CssVariablesRouteImport.update({
+  id: '/css-variables',
+  path: '/css-variables',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CssUnitRoute = CssUnitRouteImport.update({
@@ -1372,6 +1390,7 @@ export interface FileRoutesByFullPath {
   '/css-text-shadow': typeof CssTextShadowRoute
   '/css-transform': typeof CssTransformRoute
   '/css-unit': typeof CssUnitRoute
+  '/css-variables': typeof CssVariablesRoute
   '/csv-json': typeof CsvJsonRoute
   '/csv-sql': typeof CsvSqlRoute
   '/curl-builder': typeof CurlBuilderRoute
@@ -1395,6 +1414,7 @@ export interface FileRoutesByFullPath {
   '/favicon-generator': typeof FaviconGeneratorRoute
   '/function-plotter': typeof FunctionPlotterRoute
   '/gitignore': typeof GitignoreRoute
+  '/glob-tester': typeof GlobTesterRoute
   '/global-ip': typeof GlobalIpRoute
   '/graphql': typeof GraphqlRoute
   '/gzip': typeof GzipRoute
@@ -1451,6 +1471,7 @@ export interface FileRoutesByFullPath {
   '/morse-code': typeof MorseCodeRoute
   '/msgpack': typeof MsgpackRoute
   '/nano-id': typeof NanoIdRoute
+  '/nginx-config': typeof NginxConfigRoute
   '/number-base': typeof NumberBaseRoute
   '/number-format': typeof NumberFormatRoute
   '/number-theory': typeof NumberTheoryRoute
@@ -1591,6 +1612,7 @@ export interface FileRoutesByTo {
   '/css-text-shadow': typeof CssTextShadowRoute
   '/css-transform': typeof CssTransformRoute
   '/css-unit': typeof CssUnitRoute
+  '/css-variables': typeof CssVariablesRoute
   '/csv-json': typeof CsvJsonRoute
   '/csv-sql': typeof CsvSqlRoute
   '/curl-builder': typeof CurlBuilderRoute
@@ -1614,6 +1636,7 @@ export interface FileRoutesByTo {
   '/favicon-generator': typeof FaviconGeneratorRoute
   '/function-plotter': typeof FunctionPlotterRoute
   '/gitignore': typeof GitignoreRoute
+  '/glob-tester': typeof GlobTesterRoute
   '/global-ip': typeof GlobalIpRoute
   '/graphql': typeof GraphqlRoute
   '/gzip': typeof GzipRoute
@@ -1670,6 +1693,7 @@ export interface FileRoutesByTo {
   '/morse-code': typeof MorseCodeRoute
   '/msgpack': typeof MsgpackRoute
   '/nano-id': typeof NanoIdRoute
+  '/nginx-config': typeof NginxConfigRoute
   '/number-base': typeof NumberBaseRoute
   '/number-format': typeof NumberFormatRoute
   '/number-theory': typeof NumberTheoryRoute
@@ -1811,6 +1835,7 @@ export interface FileRoutesById {
   '/css-text-shadow': typeof CssTextShadowRoute
   '/css-transform': typeof CssTransformRoute
   '/css-unit': typeof CssUnitRoute
+  '/css-variables': typeof CssVariablesRoute
   '/csv-json': typeof CsvJsonRoute
   '/csv-sql': typeof CsvSqlRoute
   '/curl-builder': typeof CurlBuilderRoute
@@ -1834,6 +1859,7 @@ export interface FileRoutesById {
   '/favicon-generator': typeof FaviconGeneratorRoute
   '/function-plotter': typeof FunctionPlotterRoute
   '/gitignore': typeof GitignoreRoute
+  '/glob-tester': typeof GlobTesterRoute
   '/global-ip': typeof GlobalIpRoute
   '/graphql': typeof GraphqlRoute
   '/gzip': typeof GzipRoute
@@ -1890,6 +1916,7 @@ export interface FileRoutesById {
   '/morse-code': typeof MorseCodeRoute
   '/msgpack': typeof MsgpackRoute
   '/nano-id': typeof NanoIdRoute
+  '/nginx-config': typeof NginxConfigRoute
   '/number-base': typeof NumberBaseRoute
   '/number-format': typeof NumberFormatRoute
   '/number-theory': typeof NumberTheoryRoute
@@ -2032,6 +2059,7 @@ export interface FileRouteTypes {
     | '/css-text-shadow'
     | '/css-transform'
     | '/css-unit'
+    | '/css-variables'
     | '/csv-json'
     | '/csv-sql'
     | '/curl-builder'
@@ -2055,6 +2083,7 @@ export interface FileRouteTypes {
     | '/favicon-generator'
     | '/function-plotter'
     | '/gitignore'
+    | '/glob-tester'
     | '/global-ip'
     | '/graphql'
     | '/gzip'
@@ -2111,6 +2140,7 @@ export interface FileRouteTypes {
     | '/morse-code'
     | '/msgpack'
     | '/nano-id'
+    | '/nginx-config'
     | '/number-base'
     | '/number-format'
     | '/number-theory'
@@ -2251,6 +2281,7 @@ export interface FileRouteTypes {
     | '/css-text-shadow'
     | '/css-transform'
     | '/css-unit'
+    | '/css-variables'
     | '/csv-json'
     | '/csv-sql'
     | '/curl-builder'
@@ -2274,6 +2305,7 @@ export interface FileRouteTypes {
     | '/favicon-generator'
     | '/function-plotter'
     | '/gitignore'
+    | '/glob-tester'
     | '/global-ip'
     | '/graphql'
     | '/gzip'
@@ -2330,6 +2362,7 @@ export interface FileRouteTypes {
     | '/morse-code'
     | '/msgpack'
     | '/nano-id'
+    | '/nginx-config'
     | '/number-base'
     | '/number-format'
     | '/number-theory'
@@ -2470,6 +2503,7 @@ export interface FileRouteTypes {
     | '/css-text-shadow'
     | '/css-transform'
     | '/css-unit'
+    | '/css-variables'
     | '/csv-json'
     | '/csv-sql'
     | '/curl-builder'
@@ -2493,6 +2527,7 @@ export interface FileRouteTypes {
     | '/favicon-generator'
     | '/function-plotter'
     | '/gitignore'
+    | '/glob-tester'
     | '/global-ip'
     | '/graphql'
     | '/gzip'
@@ -2549,6 +2584,7 @@ export interface FileRouteTypes {
     | '/morse-code'
     | '/msgpack'
     | '/nano-id'
+    | '/nginx-config'
     | '/number-base'
     | '/number-format'
     | '/number-theory'
@@ -2690,6 +2726,7 @@ export interface RootRouteChildren {
   CssTextShadowRoute: typeof CssTextShadowRoute
   CssTransformRoute: typeof CssTransformRoute
   CssUnitRoute: typeof CssUnitRoute
+  CssVariablesRoute: typeof CssVariablesRoute
   CsvJsonRoute: typeof CsvJsonRoute
   CsvSqlRoute: typeof CsvSqlRoute
   CurlBuilderRoute: typeof CurlBuilderRoute
@@ -2713,6 +2750,7 @@ export interface RootRouteChildren {
   FaviconGeneratorRoute: typeof FaviconGeneratorRoute
   FunctionPlotterRoute: typeof FunctionPlotterRoute
   GitignoreRoute: typeof GitignoreRoute
+  GlobTesterRoute: typeof GlobTesterRoute
   GlobalIpRoute: typeof GlobalIpRoute
   GraphqlRoute: typeof GraphqlRoute
   GzipRoute: typeof GzipRoute
@@ -2769,6 +2807,7 @@ export interface RootRouteChildren {
   MorseCodeRoute: typeof MorseCodeRoute
   MsgpackRoute: typeof MsgpackRoute
   NanoIdRoute: typeof NanoIdRoute
+  NginxConfigRoute: typeof NginxConfigRoute
   NumberBaseRoute: typeof NumberBaseRoute
   NumberFormatRoute: typeof NumberFormatRoute
   NumberTheoryRoute: typeof NumberTheoryRoute
@@ -3385,6 +3424,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NumberBaseRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/nginx-config': {
+      id: '/nginx-config'
+      path: '/nginx-config'
+      fullPath: '/nginx-config'
+      preLoaderRoute: typeof NginxConfigRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/nano-id': {
       id: '/nano-id'
       path: '/nano-id'
@@ -3777,6 +3823,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GlobalIpRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/glob-tester': {
+      id: '/glob-tester'
+      path: '/glob-tester'
+      fullPath: '/glob-tester'
+      preLoaderRoute: typeof GlobTesterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/gitignore': {
       id: '/gitignore'
       path: '/gitignore'
@@ -3936,6 +3989,13 @@ declare module '@tanstack/react-router' {
       path: '/csv-json'
       fullPath: '/csv-json'
       preLoaderRoute: typeof CsvJsonRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/css-variables': {
+      id: '/css-variables'
+      path: '/css-variables'
+      fullPath: '/css-variables'
+      preLoaderRoute: typeof CssVariablesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/css-unit': {
@@ -4434,6 +4494,7 @@ const rootRouteChildren: RootRouteChildren = {
   CssTextShadowRoute: CssTextShadowRoute,
   CssTransformRoute: CssTransformRoute,
   CssUnitRoute: CssUnitRoute,
+  CssVariablesRoute: CssVariablesRoute,
   CsvJsonRoute: CsvJsonRoute,
   CsvSqlRoute: CsvSqlRoute,
   CurlBuilderRoute: CurlBuilderRoute,
@@ -4457,6 +4518,7 @@ const rootRouteChildren: RootRouteChildren = {
   FaviconGeneratorRoute: FaviconGeneratorRoute,
   FunctionPlotterRoute: FunctionPlotterRoute,
   GitignoreRoute: GitignoreRoute,
+  GlobTesterRoute: GlobTesterRoute,
   GlobalIpRoute: GlobalIpRoute,
   GraphqlRoute: GraphqlRoute,
   GzipRoute: GzipRoute,
@@ -4513,6 +4575,7 @@ const rootRouteChildren: RootRouteChildren = {
   MorseCodeRoute: MorseCodeRoute,
   MsgpackRoute: MsgpackRoute,
   NanoIdRoute: NanoIdRoute,
+  NginxConfigRoute: NginxConfigRoute,
   NumberBaseRoute: NumberBaseRoute,
   NumberFormatRoute: NumberFormatRoute,
   NumberTheoryRoute: NumberTheoryRoute,

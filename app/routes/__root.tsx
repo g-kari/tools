@@ -165,6 +165,7 @@ const navCategories = [
       { path: "/css-container-query", label: "CSS Container Query ビルダー" },
       { path: "/css-scroll-snap", label: "CSS Scroll Snap ジェネレーター" },
       { path: "/css-specificity", label: "CSS詳細度計算機" },
+      { path: "/css-variables", label: "CSS変数エクストラクター" },
       { path: "/aspect-ratio", label: "アスペクト比計算機" },
       { path: "/image-to-gif", label: "画像→GIF変換" },
       { path: "/emoji-converter", label: "絵文字変換" },
@@ -244,6 +245,7 @@ const navCategories = [
       { path: "/ssh-key", label: "SSH鍵生成" },
       { path: "/luhn-check", label: "Luhn / クレジットカード検証" },
       { path: "/css-selector", label: "CSS Selectorテスター" },
+      { path: "/glob-tester", label: "Glob パターンテスター" },
     ],
   },
   {
@@ -261,6 +263,7 @@ const navCategories = [
       { path: "/curl-builder", label: "curlビルダー" },
       { path: "/curl-to-fetch", label: "cURL → fetch 変換" },
       { path: "/docker-run-to-compose", label: "docker run → Compose 変換" },
+      { path: "/nginx-config", label: "Nginx設定ジェネレーター" },
       { path: "/redirect-tracer", label: "リダイレクトトレーサー" },
       { path: "/openssl-builder", label: "OpenSSLビルダー" },
       { path: "/har", label: "HAR アナライザー" },
