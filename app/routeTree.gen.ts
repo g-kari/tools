@@ -172,6 +172,7 @@ import { Route as CssClipPathRouteImport } from './routes/css-clip-path'
 import { Route as CssClampRouteImport } from './routes/css-clamp'
 import { Route as CssBoxShadowRouteImport } from './routes/css-box-shadow'
 import { Route as CssBorderRadiusRouteImport } from './routes/css-border-radius'
+import { Route as CssBackgroundPatternRouteImport } from './routes/css-background-pattern'
 import { Route as CssAnimationRouteImport } from './routes/css-animation'
 import { Route as CspBuilderRouteImport } from './routes/csp-builder'
 import { Route as CronParserRouteImport } from './routes/cron-parser'
@@ -1031,6 +1032,11 @@ const CssBorderRadiusRoute = CssBorderRadiusRouteImport.update({
   path: '/css-border-radius',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CssBackgroundPatternRoute = CssBackgroundPatternRouteImport.update({
+  id: '/css-background-pattern',
+  path: '/css-background-pattern',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CssAnimationRoute = CssAnimationRouteImport.update({
   id: '/css-animation',
   path: '/css-animation',
@@ -1287,6 +1293,7 @@ export interface FileRoutesByFullPath {
   '/cron-parser': typeof CronParserRoute
   '/csp-builder': typeof CspBuilderRoute
   '/css-animation': typeof CssAnimationRoute
+  '/css-background-pattern': typeof CssBackgroundPatternRoute
   '/css-border-radius': typeof CssBorderRadiusRoute
   '/css-box-shadow': typeof CssBoxShadowRoute
   '/css-clamp': typeof CssClampRoute
@@ -1495,6 +1502,7 @@ export interface FileRoutesByTo {
   '/cron-parser': typeof CronParserRoute
   '/csp-builder': typeof CspBuilderRoute
   '/css-animation': typeof CssAnimationRoute
+  '/css-background-pattern': typeof CssBackgroundPatternRoute
   '/css-border-radius': typeof CssBorderRadiusRoute
   '/css-box-shadow': typeof CssBoxShadowRoute
   '/css-clamp': typeof CssClampRoute
@@ -1704,6 +1712,7 @@ export interface FileRoutesById {
   '/cron-parser': typeof CronParserRoute
   '/csp-builder': typeof CspBuilderRoute
   '/css-animation': typeof CssAnimationRoute
+  '/css-background-pattern': typeof CssBackgroundPatternRoute
   '/css-border-radius': typeof CssBorderRadiusRoute
   '/css-box-shadow': typeof CssBoxShadowRoute
   '/css-clamp': typeof CssClampRoute
@@ -1914,6 +1923,7 @@ export interface FileRouteTypes {
     | '/cron-parser'
     | '/csp-builder'
     | '/css-animation'
+    | '/css-background-pattern'
     | '/css-border-radius'
     | '/css-box-shadow'
     | '/css-clamp'
@@ -2122,6 +2132,7 @@ export interface FileRouteTypes {
     | '/cron-parser'
     | '/csp-builder'
     | '/css-animation'
+    | '/css-background-pattern'
     | '/css-border-radius'
     | '/css-box-shadow'
     | '/css-clamp'
@@ -2330,6 +2341,7 @@ export interface FileRouteTypes {
     | '/cron-parser'
     | '/csp-builder'
     | '/css-animation'
+    | '/css-background-pattern'
     | '/css-border-radius'
     | '/css-box-shadow'
     | '/css-clamp'
@@ -2539,6 +2551,7 @@ export interface RootRouteChildren {
   CronParserRoute: typeof CronParserRoute
   CspBuilderRoute: typeof CspBuilderRoute
   CssAnimationRoute: typeof CssAnimationRoute
+  CssBackgroundPatternRoute: typeof CssBackgroundPatternRoute
   CssBorderRadiusRoute: typeof CssBorderRadiusRoute
   CssBoxShadowRoute: typeof CssBoxShadowRoute
   CssClampRoute: typeof CssClampRoute
@@ -3851,6 +3864,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CssBorderRadiusRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/css-background-pattern': {
+      id: '/css-background-pattern'
+      path: '/css-background-pattern'
+      fullPath: '/css-background-pattern'
+      preLoaderRoute: typeof CssBackgroundPatternRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/css-animation': {
       id: '/css-animation'
       path: '/css-animation'
@@ -4195,6 +4215,7 @@ const rootRouteChildren: RootRouteChildren = {
   CronParserRoute: CronParserRoute,
   CspBuilderRoute: CspBuilderRoute,
   CssAnimationRoute: CssAnimationRoute,
+  CssBackgroundPatternRoute: CssBackgroundPatternRoute,
   CssBorderRadiusRoute: CssBorderRadiusRoute,
   CssBoxShadowRoute: CssBoxShadowRoute,
   CssClampRoute: CssClampRoute,

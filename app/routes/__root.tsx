@@ -144,6 +144,7 @@ const navCategories = [
       { path: "/color-harmony", label: "カラーハーモニー" },
       { path: "/color-converter", label: "カラーフォーマット変換" },
       { path: "/css-gradient", label: "CSSグラジェント生成" },
+      { path: "/css-background-pattern", label: "CSS背景パターン生成" },
       { path: "/css-animation", label: "CSSアニメーション生成" },
       { path: "/css-cubic-bezier", label: "CSS Cubic Bezier ジェネレーター" },
       { path: "/color-mix", label: "CSS color-mix() プレイグラウンド" },

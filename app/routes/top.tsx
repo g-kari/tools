@@ -780,6 +780,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "✨",
       },
       {
+        path: "/css-background-pattern",
+        label: "CSS背景パターン生成",
+        description:
+          "CSSの繰り返しグラジェントを使った背景パターン生成ツール。縞模様・水玉・グリッド・市松・斜め縞・ジグザグを色・サイズ・角度で細かく調整できます。",
+        icon: "🔲",
+      },
+      {
         path: "/css-cubic-bezier",
         label: "CSS Cubic Bezier ジェネレーター",
         description:
@@ -855,6 +862,13 @@ const toolCatalog: ToolCategory[] = [
         description:
           "メディアクエリを視覚的に構築。ブレイクポイント、デバイス特性、カラースキームなどの条件をGUIで設定し、CSS・SCSS・JSON形式でコードを生成。ライブプレビューつき。",
         icon: "📐",
+      },
+      {
+        path: "/css-scroll-snap",
+        label: "CSS Scroll Snapジェネレーター",
+        description:
+          "CSS Scroll Snap のコンテナ・アイテムプロパティをビジュアルで設定し、CSSコードを即座に生成。scroll-snap-type・scroll-snap-align・scroll-snap-stop などを直感的に試せるオンラインツール。ライブプレビューつき。",
+        icon: "🎯",
       },
       {
         path: "/image-to-gif",
@@ -1004,6 +1018,13 @@ const toolCatalog: ToolCategory[] = [
         description:
           "テキスト中の文字の出現頻度を分析するツール。各文字の出現回数・割合をビジュアルバーで表示。大文字小文字・スペース・英数字のみなどフィルター対応。CSV出力可能。",
         icon: "📊",
+      },
+      {
+        path: "/word-frequency",
+        label: "単語頻度分析",
+        description:
+          "テキスト中の単語の出現頻度を分析するツール。各単語の出現回数・割合をビジュアルバーで表示。大文字小文字・句読点・ストップワードのフィルター対応。CSV出力可能。",
+        icon: "📈",
       },
       {
         path: "/text-sort",
@@ -1440,14 +1461,14 @@ export const Route = createFileRoute("/top")({
   head: () => ({
     meta: [
       { title: "ツール一覧 | Web ツール集" },
-      { name: "description", content: "136以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
+      { name: "description", content: "200以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
       { property: "og:title", content: "ツール一覧 | Web ツール集" },
-      { property: "og:description", content: "136以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
+      { property: "og:description", content: "200以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
       { property: "og:url", content: `${SITE_BASE_URL}/top` },
       { property: "og:type", content: "website" },
       { property: "og:image", content: SITE_OGP_IMAGE },
       { name: "twitter:title", content: "ツール一覧 | Web ツール集" },
-      { name: "twitter:description", content: "136以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
+      { name: "twitter:description", content: "200以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
     ],
   }),
   component: TopPage,
