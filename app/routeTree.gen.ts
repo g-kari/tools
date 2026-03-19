@@ -103,9 +103,11 @@ import { Route as JwtGeneratorRouteImport } from './routes/jwt-generator'
 import { Route as JwtRouteImport } from './routes/jwt'
 import { Route as JsonToZodRouteImport } from './routes/json-to-zod'
 import { Route as JsonToTsRouteImport } from './routes/json-to-ts'
+import { Route as JsonToSqlRouteImport } from './routes/json-to-sql'
 import { Route as JsonToGraphqlRouteImport } from './routes/json-to-graphql'
 import { Route as JsonSchemaValidatorRouteImport } from './routes/json-schema-validator'
 import { Route as JsonSchemaRouteImport } from './routes/json-schema'
+import { Route as JsonPointerRouteImport } from './routes/json-pointer'
 import { Route as JsonPathRouteImport } from './routes/json-path'
 import { Route as JsonMergeRouteImport } from './routes/json-merge'
 import { Route as JsonLinesRouteImport } from './routes/json-lines'
@@ -691,6 +693,11 @@ const JsonToTsRoute = JsonToTsRouteImport.update({
   path: '/json-to-ts',
   getParentRoute: () => rootRouteImport,
 } as any)
+const JsonToSqlRoute = JsonToSqlRouteImport.update({
+  id: '/json-to-sql',
+  path: '/json-to-sql',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const JsonToGraphqlRoute = JsonToGraphqlRouteImport.update({
   id: '/json-to-graphql',
   path: '/json-to-graphql',
@@ -704,6 +711,11 @@ const JsonSchemaValidatorRoute = JsonSchemaValidatorRouteImport.update({
 const JsonSchemaRoute = JsonSchemaRouteImport.update({
   id: '/json-schema',
   path: '/json-schema',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JsonPointerRoute = JsonPointerRouteImport.update({
+  id: '/json-pointer',
+  path: '/json-pointer',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JsonPathRoute = JsonPathRouteImport.update({
@@ -1388,9 +1400,11 @@ export interface FileRoutesByFullPath {
   '/json-lines': typeof JsonLinesRoute
   '/json-merge': typeof JsonMergeRoute
   '/json-path': typeof JsonPathRoute
+  '/json-pointer': typeof JsonPointerRoute
   '/json-schema': typeof JsonSchemaRoute
   '/json-schema-validator': typeof JsonSchemaValidatorRoute
   '/json-to-graphql': typeof JsonToGraphqlRoute
+  '/json-to-sql': typeof JsonToSqlRoute
   '/json-to-ts': typeof JsonToTsRoute
   '/json-to-zod': typeof JsonToZodRoute
   '/jwt': typeof JwtRoute
@@ -1601,9 +1615,11 @@ export interface FileRoutesByTo {
   '/json-lines': typeof JsonLinesRoute
   '/json-merge': typeof JsonMergeRoute
   '/json-path': typeof JsonPathRoute
+  '/json-pointer': typeof JsonPointerRoute
   '/json-schema': typeof JsonSchemaRoute
   '/json-schema-validator': typeof JsonSchemaValidatorRoute
   '/json-to-graphql': typeof JsonToGraphqlRoute
+  '/json-to-sql': typeof JsonToSqlRoute
   '/json-to-ts': typeof JsonToTsRoute
   '/json-to-zod': typeof JsonToZodRoute
   '/jwt': typeof JwtRoute
@@ -1815,9 +1831,11 @@ export interface FileRoutesById {
   '/json-lines': typeof JsonLinesRoute
   '/json-merge': typeof JsonMergeRoute
   '/json-path': typeof JsonPathRoute
+  '/json-pointer': typeof JsonPointerRoute
   '/json-schema': typeof JsonSchemaRoute
   '/json-schema-validator': typeof JsonSchemaValidatorRoute
   '/json-to-graphql': typeof JsonToGraphqlRoute
+  '/json-to-sql': typeof JsonToSqlRoute
   '/json-to-ts': typeof JsonToTsRoute
   '/json-to-zod': typeof JsonToZodRoute
   '/jwt': typeof JwtRoute
@@ -2030,9 +2048,11 @@ export interface FileRouteTypes {
     | '/json-lines'
     | '/json-merge'
     | '/json-path'
+    | '/json-pointer'
     | '/json-schema'
     | '/json-schema-validator'
     | '/json-to-graphql'
+    | '/json-to-sql'
     | '/json-to-ts'
     | '/json-to-zod'
     | '/jwt'
@@ -2243,9 +2263,11 @@ export interface FileRouteTypes {
     | '/json-lines'
     | '/json-merge'
     | '/json-path'
+    | '/json-pointer'
     | '/json-schema'
     | '/json-schema-validator'
     | '/json-to-graphql'
+    | '/json-to-sql'
     | '/json-to-ts'
     | '/json-to-zod'
     | '/jwt'
@@ -2456,9 +2478,11 @@ export interface FileRouteTypes {
     | '/json-lines'
     | '/json-merge'
     | '/json-path'
+    | '/json-pointer'
     | '/json-schema'
     | '/json-schema-validator'
     | '/json-to-graphql'
+    | '/json-to-sql'
     | '/json-to-ts'
     | '/json-to-zod'
     | '/jwt'
@@ -2670,9 +2694,11 @@ export interface RootRouteChildren {
   JsonLinesRoute: typeof JsonLinesRoute
   JsonMergeRoute: typeof JsonMergeRoute
   JsonPathRoute: typeof JsonPathRoute
+  JsonPointerRoute: typeof JsonPointerRoute
   JsonSchemaRoute: typeof JsonSchemaRoute
   JsonSchemaValidatorRoute: typeof JsonSchemaValidatorRoute
   JsonToGraphqlRoute: typeof JsonToGraphqlRoute
+  JsonToSqlRoute: typeof JsonToSqlRoute
   JsonToTsRoute: typeof JsonToTsRoute
   JsonToZodRoute: typeof JsonToZodRoute
   JwtRoute: typeof JwtRoute
@@ -3433,6 +3459,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof JsonToTsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/json-to-sql': {
+      id: '/json-to-sql'
+      path: '/json-to-sql'
+      fullPath: '/json-to-sql'
+      preLoaderRoute: typeof JsonToSqlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/json-to-graphql': {
       id: '/json-to-graphql'
       path: '/json-to-graphql'
@@ -3452,6 +3485,13 @@ declare module '@tanstack/react-router' {
       path: '/json-schema'
       fullPath: '/json-schema'
       preLoaderRoute: typeof JsonSchemaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/json-pointer': {
+      id: '/json-pointer'
+      path: '/json-pointer'
+      fullPath: '/json-pointer'
+      preLoaderRoute: typeof JsonPointerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/json-path': {
@@ -4366,9 +4406,11 @@ const rootRouteChildren: RootRouteChildren = {
   JsonLinesRoute: JsonLinesRoute,
   JsonMergeRoute: JsonMergeRoute,
   JsonPathRoute: JsonPathRoute,
+  JsonPointerRoute: JsonPointerRoute,
   JsonSchemaRoute: JsonSchemaRoute,
   JsonSchemaValidatorRoute: JsonSchemaValidatorRoute,
   JsonToGraphqlRoute: JsonToGraphqlRoute,
+  JsonToSqlRoute: JsonToSqlRoute,
   JsonToTsRoute: JsonToTsRoute,
   JsonToZodRoute: JsonToZodRoute,
   JwtRoute: JwtRoute,

@@ -52,6 +52,7 @@
 @import "./styles/tools/morse-code.css";
 @import "./styles/tools/number-format.css";
 @import "./styles/tools/json-path.css";
+@import "./styles/tools/json-pointer.css";
 @import "./styles/tools/json-schema.css";
 @import "./styles/tools/json-schema-validator.css";
 @import "./styles/tools/json-to-ts.css";
