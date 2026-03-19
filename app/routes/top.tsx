@@ -1023,6 +1023,13 @@ const toolCatalog: ToolCategory[] = [
     icon: "✓",
     items: [
       {
+        path: "/regex-library",
+        label: "正規表現ライブラリ",
+        description:
+          "よく使われる正規表現パターンのリファレンス。メール・URL・IPアドレス・日付・電話番号・パスワード・日本語など40種類以上のパターンを収録。カテゴリ検索・ライブテスト機能付き。",
+        icon: "📚",
+      },
+      {
         path: "/regex-checker",
         label: "正規表現",
         description: "正規表現のパターンをテスト・検証",

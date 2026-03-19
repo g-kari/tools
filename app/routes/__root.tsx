@@ -199,6 +199,7 @@ const navCategories = [
     name: "検証",
     icon: "✓",
     items: [
+      { path: "/regex-library", label: "正規表現ライブラリ" },
       { path: "/regex-checker", label: "正規表現" },
       { path: "/jwt", label: "JWTデコード" },
       { path: "/jwt-generator", label: "JWT生成" },

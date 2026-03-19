@@ -53,11 +53,13 @@ import { Route as SshKeyRouteImport } from './routes/ssh-key'
 import { Route as SqlRouteImport } from './routes/sql'
 import { Route as SlugRouteImport } from './routes/slug'
 import { Route as ServerEnvRouteImport } from './routes/server-env'
+import { Route as SequencesRouteImport } from './routes/sequences'
 import { Route as SeoMetaRouteImport } from './routes/seo-meta'
 import { Route as SemverRouteImport } from './routes/semver'
 import { Route as SecurityHeadersRouteImport } from './routes/security-headers'
 import { Route as RomanNumeralsRouteImport } from './routes/roman-numerals'
 import { Route as RobotsTxtRouteImport } from './routes/robots-txt'
+import { Route as RegexLibraryRouteImport } from './routes/regex-library'
 import { Route as RegexCheckerRouteImport } from './routes/regex-checker'
 import { Route as RedirectTracerRouteImport } from './routes/redirect-tracer'
 import { Route as ReadabilityRouteImport } from './routes/readability'
@@ -419,6 +421,11 @@ const ServerEnvRoute = ServerEnvRouteImport.update({
   path: '/server-env',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SequencesRoute = SequencesRouteImport.update({
+  id: '/sequences',
+  path: '/sequences',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SeoMetaRoute = SeoMetaRouteImport.update({
   id: '/seo-meta',
   path: '/seo-meta',
@@ -442,6 +449,11 @@ const RomanNumeralsRoute = RomanNumeralsRouteImport.update({
 const RobotsTxtRoute = RobotsTxtRouteImport.update({
   id: '/robots-txt',
   path: '/robots-txt',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegexLibraryRoute = RegexLibraryRouteImport.update({
+  id: '/regex-library',
+  path: '/regex-library',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RegexCheckerRoute = RegexCheckerRouteImport.update({
@@ -1282,11 +1294,13 @@ export interface FileRoutesByFullPath {
   '/readability': typeof ReadabilityRoute
   '/redirect-tracer': typeof RedirectTracerRoute
   '/regex-checker': typeof RegexCheckerRoute
+  '/regex-library': typeof RegexLibraryRoute
   '/robots-txt': typeof RobotsTxtRoute
   '/roman-numerals': typeof RomanNumeralsRoute
   '/security-headers': typeof SecurityHeadersRoute
   '/semver': typeof SemverRoute
   '/seo-meta': typeof SeoMetaRoute
+  '/sequences': typeof SequencesRoute
   '/server-env': typeof ServerEnvRoute
   '/slug': typeof SlugRoute
   '/sql': typeof SqlRoute
@@ -1473,11 +1487,13 @@ export interface FileRoutesByTo {
   '/readability': typeof ReadabilityRoute
   '/redirect-tracer': typeof RedirectTracerRoute
   '/regex-checker': typeof RegexCheckerRoute
+  '/regex-library': typeof RegexLibraryRoute
   '/robots-txt': typeof RobotsTxtRoute
   '/roman-numerals': typeof RomanNumeralsRoute
   '/security-headers': typeof SecurityHeadersRoute
   '/semver': typeof SemverRoute
   '/seo-meta': typeof SeoMetaRoute
+  '/sequences': typeof SequencesRoute
   '/server-env': typeof ServerEnvRoute
   '/slug': typeof SlugRoute
   '/sql': typeof SqlRoute
@@ -1665,11 +1681,13 @@ export interface FileRoutesById {
   '/readability': typeof ReadabilityRoute
   '/redirect-tracer': typeof RedirectTracerRoute
   '/regex-checker': typeof RegexCheckerRoute
+  '/regex-library': typeof RegexLibraryRoute
   '/robots-txt': typeof RobotsTxtRoute
   '/roman-numerals': typeof RomanNumeralsRoute
   '/security-headers': typeof SecurityHeadersRoute
   '/semver': typeof SemverRoute
   '/seo-meta': typeof SeoMetaRoute
+  '/sequences': typeof SequencesRoute
   '/server-env': typeof ServerEnvRoute
   '/slug': typeof SlugRoute
   '/sql': typeof SqlRoute
@@ -1858,11 +1876,13 @@ export interface FileRouteTypes {
     | '/readability'
     | '/redirect-tracer'
     | '/regex-checker'
+    | '/regex-library'
     | '/robots-txt'
     | '/roman-numerals'
     | '/security-headers'
     | '/semver'
     | '/seo-meta'
+    | '/sequences'
     | '/server-env'
     | '/slug'
     | '/sql'
@@ -2049,11 +2069,13 @@ export interface FileRouteTypes {
     | '/readability'
     | '/redirect-tracer'
     | '/regex-checker'
+    | '/regex-library'
     | '/robots-txt'
     | '/roman-numerals'
     | '/security-headers'
     | '/semver'
     | '/seo-meta'
+    | '/sequences'
     | '/server-env'
     | '/slug'
     | '/sql'
@@ -2240,11 +2262,13 @@ export interface FileRouteTypes {
     | '/readability'
     | '/redirect-tracer'
     | '/regex-checker'
+    | '/regex-library'
     | '/robots-txt'
     | '/roman-numerals'
     | '/security-headers'
     | '/semver'
     | '/seo-meta'
+    | '/sequences'
     | '/server-env'
     | '/slug'
     | '/sql'
@@ -2432,11 +2456,13 @@ export interface RootRouteChildren {
   ReadabilityRoute: typeof ReadabilityRoute
   RedirectTracerRoute: typeof RedirectTracerRoute
   RegexCheckerRoute: typeof RegexCheckerRoute
+  RegexLibraryRoute: typeof RegexLibraryRoute
   RobotsTxtRoute: typeof RobotsTxtRoute
   RomanNumeralsRoute: typeof RomanNumeralsRoute
   SecurityHeadersRoute: typeof SecurityHeadersRoute
   SemverRoute: typeof SemverRoute
   SeoMetaRoute: typeof SeoMetaRoute
+  SequencesRoute: typeof SequencesRoute
   ServerEnvRoute: typeof ServerEnvRoute
   SlugRoute: typeof SlugRoute
   SqlRoute: typeof SqlRoute
@@ -2797,6 +2823,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServerEnvRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sequences': {
+      id: '/sequences'
+      path: '/sequences'
+      fullPath: '/sequences'
+      preLoaderRoute: typeof SequencesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/seo-meta': {
       id: '/seo-meta'
       path: '/seo-meta'
@@ -2830,6 +2863,13 @@ declare module '@tanstack/react-router' {
       path: '/robots-txt'
       fullPath: '/robots-txt'
       preLoaderRoute: typeof RobotsTxtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/regex-library': {
+      id: '/regex-library'
+      path: '/regex-library'
+      fullPath: '/regex-library'
+      preLoaderRoute: typeof RegexLibraryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/regex-checker': {
@@ -3952,11 +3992,13 @@ const rootRouteChildren: RootRouteChildren = {
   ReadabilityRoute: ReadabilityRoute,
   RedirectTracerRoute: RedirectTracerRoute,
   RegexCheckerRoute: RegexCheckerRoute,
+  RegexLibraryRoute: RegexLibraryRoute,
   RobotsTxtRoute: RobotsTxtRoute,
   RomanNumeralsRoute: RomanNumeralsRoute,
   SecurityHeadersRoute: SecurityHeadersRoute,
   SemverRoute: SemverRoute,
   SeoMetaRoute: SeoMetaRoute,
+  SequencesRoute: SequencesRoute,
   ServerEnvRoute: ServerEnvRoute,
   SlugRoute: SlugRoute,
   SqlRoute: SqlRoute,
