@@ -1,0 +1,63 @@
+/* CSS Selector テスター */
+
+.css-selector-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.css-selector-preset-btn {
+  padding: 4px 12px;
+  font-size: 0.75rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.css-selector-preset-btn:hover,
+.css-selector-preset-btn:focus-visible {
+  background: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary-container);
+  outline: none;
+}
+
+.css-selector-html-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0;
+}
+
+.css-selector-html-header label {
+  margin-bottom: 0;
+}
+
+.css-selector-sample-btn {
+  font-size: 0.8rem;
+  padding: 4px 10px;
+  background: transparent;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  color: var(--md-sys-color-primary);
+  cursor: pointer;
+  font-family: "Noto Sans JP", sans-serif;
+  transition: all 0.15s ease;
+  margin-bottom: 8px;
+}
+
+.css-selector-sample-btn:hover,
+.css-selector-sample-btn:focus-visible {
+  background: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+  outline: none;
+}
+
+.css-selector-outerhtml {
+  word-break: break-all;
+  font-size: 0.8rem;
+  color: var(--md-sys-color-on-surface-variant);
+}

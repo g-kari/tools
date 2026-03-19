@@ -230,6 +230,7 @@ const navCategories = [
       { path: "/basic-auth", label: "HTTP Basic Auth" },
       { path: "/ssh-key", label: "SSH鍵生成" },
       { path: "/luhn-check", label: "Luhn / クレジットカード検証" },
+      { path: "/css-selector", label: "CSS Selectorテスター" },
     ],
   },
   {
