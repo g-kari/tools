@@ -51,6 +51,7 @@ import { Route as TemplateRouteImport } from './routes/template'
 import { Route as SvgOptimizerRouteImport } from './routes/svg-optimizer'
 import { Route as StringSimilarityRouteImport } from './routes/string-similarity'
 import { Route as StringEscapeRouteImport } from './routes/string-escape'
+import { Route as StopwatchRouteImport } from './routes/stopwatch'
 import { Route as StatisticsRouteImport } from './routes/statistics'
 import { Route as SshKeyRouteImport } from './routes/ssh-key'
 import { Route as SqlToTsRouteImport } from './routes/sql-to-ts'
@@ -191,6 +192,7 @@ import { Route as CssAnimationRouteImport } from './routes/css-animation'
 import { Route as CspBuilderRouteImport } from './routes/csp-builder'
 import { Route as CronParserRouteImport } from './routes/cron-parser'
 import { Route as CronRouteImport } from './routes/cron'
+import { Route as CountdownRouteImport } from './routes/countdown'
 import { Route as CorsBuilderRouteImport } from './routes/cors-builder'
 import { Route as CookieParserRouteImport } from './routes/cookie-parser'
 import { Route as ConventionalCommitsRouteImport } from './routes/conventional-commits'
@@ -220,6 +222,7 @@ import { Route as Base64ImageRouteImport } from './routes/base64-image'
 import { Route as Base64RouteImport } from './routes/base64'
 import { Route as Base62RouteImport } from './routes/base62'
 import { Route as Base58RouteImport } from './routes/base58'
+import { Route as Base36RouteImport } from './routes/base36'
 import { Route as Base32RouteImport } from './routes/base32'
 import { Route as Base16RouteImport } from './routes/base16'
 import { Route as BarcodeRouteImport } from './routes/barcode'
@@ -441,6 +444,11 @@ const StringSimilarityRoute = StringSimilarityRouteImport.update({
 const StringEscapeRoute = StringEscapeRouteImport.update({
   id: '/string-escape',
   path: '/string-escape',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StopwatchRoute = StopwatchRouteImport.update({
+  id: '/stopwatch',
+  path: '/stopwatch',
   getParentRoute: () => rootRouteImport,
 } as any)
 const StatisticsRoute = StatisticsRouteImport.update({
@@ -1143,6 +1151,11 @@ const CronRoute = CronRouteImport.update({
   path: '/cron',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CountdownRoute = CountdownRouteImport.update({
+  id: '/countdown',
+  path: '/countdown',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CorsBuilderRoute = CorsBuilderRouteImport.update({
   id: '/cors-builder',
   path: '/cors-builder',
@@ -1288,6 +1301,11 @@ const Base58Route = Base58RouteImport.update({
   path: '/base58',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Base36Route = Base36RouteImport.update({
+  id: '/base36',
+  path: '/base36',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const Base32Route = Base32RouteImport.update({
   id: '/base32',
   path: '/base32',
@@ -1358,6 +1376,7 @@ export interface FileRoutesByFullPath {
   '/barcode': typeof BarcodeRoute
   '/base16': typeof Base16Route
   '/base32': typeof Base32Route
+  '/base36': typeof Base36Route
   '/base58': typeof Base58Route
   '/base62': typeof Base62Route
   '/base64': typeof Base64Route
@@ -1387,6 +1406,7 @@ export interface FileRoutesByFullPath {
   '/conventional-commits': typeof ConventionalCommitsRoute
   '/cookie-parser': typeof CookieParserRoute
   '/cors-builder': typeof CorsBuilderRoute
+  '/countdown': typeof CountdownRoute
   '/cron': typeof CronRoute
   '/cron-parser': typeof CronParserRoute
   '/csp-builder': typeof CspBuilderRoute
@@ -1527,6 +1547,7 @@ export interface FileRoutesByFullPath {
   '/sql-to-ts': typeof SqlToTsRoute
   '/ssh-key': typeof SshKeyRoute
   '/statistics': typeof StatisticsRoute
+  '/stopwatch': typeof StopwatchRoute
   '/string-escape': typeof StringEscapeRoute
   '/string-similarity': typeof StringSimilarityRoute
   '/svg-optimizer': typeof SvgOptimizerRoute
@@ -1583,6 +1604,7 @@ export interface FileRoutesByTo {
   '/barcode': typeof BarcodeRoute
   '/base16': typeof Base16Route
   '/base32': typeof Base32Route
+  '/base36': typeof Base36Route
   '/base58': typeof Base58Route
   '/base62': typeof Base62Route
   '/base64': typeof Base64Route
@@ -1612,6 +1634,7 @@ export interface FileRoutesByTo {
   '/conventional-commits': typeof ConventionalCommitsRoute
   '/cookie-parser': typeof CookieParserRoute
   '/cors-builder': typeof CorsBuilderRoute
+  '/countdown': typeof CountdownRoute
   '/cron': typeof CronRoute
   '/cron-parser': typeof CronParserRoute
   '/csp-builder': typeof CspBuilderRoute
@@ -1752,6 +1775,7 @@ export interface FileRoutesByTo {
   '/sql-to-ts': typeof SqlToTsRoute
   '/ssh-key': typeof SshKeyRoute
   '/statistics': typeof StatisticsRoute
+  '/stopwatch': typeof StopwatchRoute
   '/string-escape': typeof StringEscapeRoute
   '/string-similarity': typeof StringSimilarityRoute
   '/svg-optimizer': typeof SvgOptimizerRoute
@@ -1809,6 +1833,7 @@ export interface FileRoutesById {
   '/barcode': typeof BarcodeRoute
   '/base16': typeof Base16Route
   '/base32': typeof Base32Route
+  '/base36': typeof Base36Route
   '/base58': typeof Base58Route
   '/base62': typeof Base62Route
   '/base64': typeof Base64Route
@@ -1838,6 +1863,7 @@ export interface FileRoutesById {
   '/conventional-commits': typeof ConventionalCommitsRoute
   '/cookie-parser': typeof CookieParserRoute
   '/cors-builder': typeof CorsBuilderRoute
+  '/countdown': typeof CountdownRoute
   '/cron': typeof CronRoute
   '/cron-parser': typeof CronParserRoute
   '/csp-builder': typeof CspBuilderRoute
@@ -1978,6 +2004,7 @@ export interface FileRoutesById {
   '/sql-to-ts': typeof SqlToTsRoute
   '/ssh-key': typeof SshKeyRoute
   '/statistics': typeof StatisticsRoute
+  '/stopwatch': typeof StopwatchRoute
   '/string-escape': typeof StringEscapeRoute
   '/string-similarity': typeof StringSimilarityRoute
   '/svg-optimizer': typeof SvgOptimizerRoute
@@ -2036,6 +2063,7 @@ export interface FileRouteTypes {
     | '/barcode'
     | '/base16'
     | '/base32'
+    | '/base36'
     | '/base58'
     | '/base62'
     | '/base64'
@@ -2065,6 +2093,7 @@ export interface FileRouteTypes {
     | '/conventional-commits'
     | '/cookie-parser'
     | '/cors-builder'
+    | '/countdown'
     | '/cron'
     | '/cron-parser'
     | '/csp-builder'
@@ -2205,6 +2234,7 @@ export interface FileRouteTypes {
     | '/sql-to-ts'
     | '/ssh-key'
     | '/statistics'
+    | '/stopwatch'
     | '/string-escape'
     | '/string-similarity'
     | '/svg-optimizer'
@@ -2261,6 +2291,7 @@ export interface FileRouteTypes {
     | '/barcode'
     | '/base16'
     | '/base32'
+    | '/base36'
     | '/base58'
     | '/base62'
     | '/base64'
@@ -2290,6 +2321,7 @@ export interface FileRouteTypes {
     | '/conventional-commits'
     | '/cookie-parser'
     | '/cors-builder'
+    | '/countdown'
     | '/cron'
     | '/cron-parser'
     | '/csp-builder'
@@ -2430,6 +2462,7 @@ export interface FileRouteTypes {
     | '/sql-to-ts'
     | '/ssh-key'
     | '/statistics'
+    | '/stopwatch'
     | '/string-escape'
     | '/string-similarity'
     | '/svg-optimizer'
@@ -2486,6 +2519,7 @@ export interface FileRouteTypes {
     | '/barcode'
     | '/base16'
     | '/base32'
+    | '/base36'
     | '/base58'
     | '/base62'
     | '/base64'
@@ -2515,6 +2549,7 @@ export interface FileRouteTypes {
     | '/conventional-commits'
     | '/cookie-parser'
     | '/cors-builder'
+    | '/countdown'
     | '/cron'
     | '/cron-parser'
     | '/csp-builder'
@@ -2655,6 +2690,7 @@ export interface FileRouteTypes {
     | '/sql-to-ts'
     | '/ssh-key'
     | '/statistics'
+    | '/stopwatch'
     | '/string-escape'
     | '/string-similarity'
     | '/svg-optimizer'
@@ -2712,6 +2748,7 @@ export interface RootRouteChildren {
   BarcodeRoute: typeof BarcodeRoute
   Base16Route: typeof Base16Route
   Base32Route: typeof Base32Route
+  Base36Route: typeof Base36Route
   Base58Route: typeof Base58Route
   Base62Route: typeof Base62Route
   Base64Route: typeof Base64Route
@@ -2741,6 +2778,7 @@ export interface RootRouteChildren {
   ConventionalCommitsRoute: typeof ConventionalCommitsRoute
   CookieParserRoute: typeof CookieParserRoute
   CorsBuilderRoute: typeof CorsBuilderRoute
+  CountdownRoute: typeof CountdownRoute
   CronRoute: typeof CronRoute
   CronParserRoute: typeof CronParserRoute
   CspBuilderRoute: typeof CspBuilderRoute
@@ -2881,6 +2919,7 @@ export interface RootRouteChildren {
   SqlToTsRoute: typeof SqlToTsRoute
   SshKeyRoute: typeof SshKeyRoute
   StatisticsRoute: typeof StatisticsRoute
+  StopwatchRoute: typeof StopwatchRoute
   StringEscapeRoute: typeof StringEscapeRoute
   StringSimilarityRoute: typeof StringSimilarityRoute
   SvgOptimizerRoute: typeof SvgOptimizerRoute
@@ -3223,6 +3262,13 @@ declare module '@tanstack/react-router' {
       path: '/string-escape'
       fullPath: '/string-escape'
       preLoaderRoute: typeof StringEscapeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/stopwatch': {
+      id: '/stopwatch'
+      path: '/stopwatch'
+      fullPath: '/stopwatch'
+      preLoaderRoute: typeof StopwatchRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/statistics': {
@@ -4205,6 +4251,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CronRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/countdown': {
+      id: '/countdown'
+      path: '/countdown'
+      fullPath: '/countdown'
+      preLoaderRoute: typeof CountdownRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/cors-builder': {
       id: '/cors-builder'
       path: '/cors-builder'
@@ -4408,6 +4461,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Base58RouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/base36': {
+      id: '/base36'
+      path: '/base36'
+      fullPath: '/base36'
+      preLoaderRoute: typeof Base36RouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/base32': {
       id: '/base32'
       path: '/base32'
@@ -4504,6 +4564,7 @@ const rootRouteChildren: RootRouteChildren = {
   BarcodeRoute: BarcodeRoute,
   Base16Route: Base16Route,
   Base32Route: Base32Route,
+  Base36Route: Base36Route,
   Base58Route: Base58Route,
   Base62Route: Base62Route,
   Base64Route: Base64Route,
@@ -4533,6 +4594,7 @@ const rootRouteChildren: RootRouteChildren = {
   ConventionalCommitsRoute: ConventionalCommitsRoute,
   CookieParserRoute: CookieParserRoute,
   CorsBuilderRoute: CorsBuilderRoute,
+  CountdownRoute: CountdownRoute,
   CronRoute: CronRoute,
   CronParserRoute: CronParserRoute,
   CspBuilderRoute: CspBuilderRoute,
@@ -4673,6 +4735,7 @@ const rootRouteChildren: RootRouteChildren = {
   SqlToTsRoute: SqlToTsRoute,
   SshKeyRoute: SshKeyRoute,
   StatisticsRoute: StatisticsRoute,
+  StopwatchRoute: StopwatchRoute,
   StringEscapeRoute: StringEscapeRoute,
   StringSimilarityRoute: StringSimilarityRoute,
   SvgOptimizerRoute: SvgOptimizerRoute,

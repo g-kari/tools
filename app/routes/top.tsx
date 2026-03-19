@@ -122,6 +122,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🔀",
       },
       {
+        path: "/base36",
+        label: "Base36変換",
+        description:
+          "[0-9a-z] の 36 文字を使用した Base36 エンコード・デコード。JavaScript の Number.toString(36) / parseInt(str, 36) と互換。ライセンスキー・短い ID・タイムスタンプベースの ID 生成に最適。整数モード対応。",
+        icon: "36",
+      },
+      {
         path: "/base58",
         label: "Base58変換",
         description:
@@ -1581,6 +1588,20 @@ const toolCatalog: ToolCategory[] = [
         label: "ポモドーロタイマー",
         description:
           "ポモドーロ・テクニックに基づく集中タイマー。25分作業と短い休憩を繰り返して生産性を高める",
+        icon: "⏱️",
+      },
+      {
+        path: "/countdown",
+        label: "カウントダウンタイマー",
+        description:
+          "指定した日時までのカウントダウンを日・時・分・秒でリアルタイム表示。元日・クリスマスなどのプリセット対応。",
+        icon: "⏳",
+      },
+      {
+        path: "/stopwatch",
+        label: "ストップウォッチ",
+        description:
+          "ミリ秒精度のストップウォッチ。ラップタイムの記録・最速/最遅ラップの強調表示に対応。スポーツ計測・ベンチマークに便利。",
         icon: "⏱️",
       },
       {
