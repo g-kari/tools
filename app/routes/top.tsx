@@ -143,6 +143,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "85",
       },
       {
+        path: "/base16",
+        label: "Base16 (Hex) 変換",
+        description:
+          "テキストを Base16（16進数・Hex）形式にエンコード・デコードするツール。大文字/小文字の切り替えや区切り文字（スペース・コロン・ダッシュ）のオプションに対応。",
+        icon: "16",
+      },
+      {
         path: "/base32",
         label: "Base32変換",
         description:
@@ -180,6 +187,13 @@ const toolCatalog: ToolCategory[] = [
         description:
           "JSON Lines（NDJSON）の解析・整形・バリデーション。JSON配列との相互変換も可能。ログファイルやストリーミングAPIのデバッグに便利。",
         icon: "📄",
+      },
+      {
+        path: "/json-merge",
+        label: "JSONマージ",
+        description:
+          "複数のJSONオブジェクトをディープマージ・シャローマージできるツール。配列の結合戦略（上書き・結合・ユニーク）も選択可能。",
+        icon: "🔀",
       },
       {
         path: "/html-to-jsx",
@@ -498,6 +512,13 @@ const toolCatalog: ToolCategory[] = [
         description:
           "ひらがな・カタカナ・ローマ字を相互変換するツール。ヘボン式ローマ字対応。促音・拗音・撥音（ん）の正確な変換をサポート。",
         icon: "あ",
+      },
+      {
+        path: "/line-ending",
+        label: "改行コード変換",
+        description:
+          "テキストの改行コード（CRLF・LF・CR）を検出して相互変換するツール。Windows（CRLF）・Unix/Linux（LF）・旧Mac（CR）形式に対応。",
+        icon: "↵",
       },
       {
         path: "/gzip",
@@ -978,6 +999,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "📝",
       },
       {
+        path: "/char-frequency",
+        label: "文字頻度分析",
+        description:
+          "テキスト中の文字の出現頻度を分析するツール。各文字の出現回数・割合をビジュアルバーで表示。大文字小文字・スペース・英数字のみなどフィルター対応。CSV出力可能。",
+        icon: "📊",
+      },
+      {
         path: "/text-sort",
         label: "ソート/重複削除",
         description: "テキストの行ソートと重複行削除",
@@ -1154,6 +1182,13 @@ const toolCatalog: ToolCategory[] = [
         label: "CSS詳細度計算機",
         description:
           "CSSセレクターの詳細度（specificity）を計算するツール。IDセレクター・クラス・タイプの (a, b, c) 表記で表示。複数セレクターの比較も可能。",
+        icon: "🎯",
+      },
+      {
+        path: "/css-selector",
+        label: "CSS Selectorテスター",
+        description:
+          "HTMLに対してCSSセレクターをテストし、マッチした要素を確認できるツール。querySelectorAll を使ってリアルタイムでマッチング結果を表示。",
         icon: "🎯",
       },
       {
@@ -1358,6 +1393,20 @@ const toolCatalog: ToolCategory[] = [
         description:
           "ポモドーロ・テクニックに基づく集中タイマー。25分作業と短い休憩を繰り返して生産性を高める",
         icon: "⏱️",
+      },
+      {
+        path: "/random-picker",
+        label: "ランダムピッカー",
+        description:
+          "テキストリストからランダムに項目を抽選するツール。抽選済みを除外する非復元抽出にも対応。くじ引き・当番決めなどに便利。",
+        icon: "🎯",
+      },
+      {
+        path: "/brainfuck",
+        label: "Brainfuck インタープリター",
+        description:
+          "Brainfuck コードをブラウザ上で実行できるオンラインインタープリター。サンプルプログラムとメモリ状態の可視化に対応。",
+        icon: "🧠",
       },
     ],
   },
