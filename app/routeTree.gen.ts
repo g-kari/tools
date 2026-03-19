@@ -144,6 +144,7 @@ import { Route as FaviconGeneratorRouteImport } from './routes/favicon-generator
 import { Route as EnvParserRouteImport } from './routes/env-parser'
 import { Route as EncodingRouteImport } from './routes/encoding'
 import { Route as EmojiConverterRouteImport } from './routes/emoji-converter'
+import { Route as EmailHeaderRouteImport } from './routes/email-header'
 import { Route as EmailDnsRouteImport } from './routes/email-dns'
 import { Route as DurationRouteImport } from './routes/duration'
 import { Route as DummyImageRouteImport } from './routes/dummy-image'
@@ -895,6 +896,11 @@ const EmojiConverterRoute = EmojiConverterRouteImport.update({
   path: '/emoji-converter',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EmailHeaderRoute = EmailHeaderRouteImport.update({
+  id: '/email-header',
+  path: '/email-header',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EmailDnsRoute = EmailDnsRouteImport.update({
   id: '/email-dns',
   path: '/email-dns',
@@ -1343,6 +1349,7 @@ export interface FileRoutesByFullPath {
   '/dummy-image': typeof DummyImageRoute
   '/duration': typeof DurationRoute
   '/email-dns': typeof EmailDnsRoute
+  '/email-header': typeof EmailHeaderRoute
   '/emoji-converter': typeof EmojiConverterRoute
   '/encoding': typeof EncodingRoute
   '/env-parser': typeof EnvParserRoute
@@ -1555,6 +1562,7 @@ export interface FileRoutesByTo {
   '/dummy-image': typeof DummyImageRoute
   '/duration': typeof DurationRoute
   '/email-dns': typeof EmailDnsRoute
+  '/email-header': typeof EmailHeaderRoute
   '/emoji-converter': typeof EmojiConverterRoute
   '/encoding': typeof EncodingRoute
   '/env-parser': typeof EnvParserRoute
@@ -1768,6 +1776,7 @@ export interface FileRoutesById {
   '/dummy-image': typeof DummyImageRoute
   '/duration': typeof DurationRoute
   '/email-dns': typeof EmailDnsRoute
+  '/email-header': typeof EmailHeaderRoute
   '/emoji-converter': typeof EmojiConverterRoute
   '/encoding': typeof EncodingRoute
   '/env-parser': typeof EnvParserRoute
@@ -1982,6 +1991,7 @@ export interface FileRouteTypes {
     | '/dummy-image'
     | '/duration'
     | '/email-dns'
+    | '/email-header'
     | '/emoji-converter'
     | '/encoding'
     | '/env-parser'
@@ -2194,6 +2204,7 @@ export interface FileRouteTypes {
     | '/dummy-image'
     | '/duration'
     | '/email-dns'
+    | '/email-header'
     | '/emoji-converter'
     | '/encoding'
     | '/env-parser'
@@ -2406,6 +2417,7 @@ export interface FileRouteTypes {
     | '/dummy-image'
     | '/duration'
     | '/email-dns'
+    | '/email-header'
     | '/emoji-converter'
     | '/encoding'
     | '/env-parser'
@@ -2619,6 +2631,7 @@ export interface RootRouteChildren {
   DummyImageRoute: typeof DummyImageRoute
   DurationRoute: typeof DurationRoute
   EmailDnsRoute: typeof EmailDnsRoute
+  EmailHeaderRoute: typeof EmailHeaderRoute
   EmojiConverterRoute: typeof EmojiConverterRoute
   EncodingRoute: typeof EncodingRoute
   EnvParserRoute: typeof EnvParserRoute
@@ -3707,6 +3720,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EmojiConverterRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/email-header': {
+      id: '/email-header'
+      path: '/email-header'
+      fullPath: '/email-header'
+      preLoaderRoute: typeof EmailHeaderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/email-dns': {
       id: '/email-dns'
       path: '/email-dns'
@@ -4307,6 +4327,7 @@ const rootRouteChildren: RootRouteChildren = {
   DummyImageRoute: DummyImageRoute,
   DurationRoute: DurationRoute,
   EmailDnsRoute: EmailDnsRoute,
+  EmailHeaderRoute: EmailHeaderRoute,
   EmojiConverterRoute: EmojiConverterRoute,
   EncodingRoute: EncodingRoute,
   EnvParserRoute: EnvParserRoute,
