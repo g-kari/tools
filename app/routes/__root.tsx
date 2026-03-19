@@ -101,6 +101,7 @@ const navCategories = [
       { path: "/template", label: "Mustache テンプレート" },
       { path: "/ascii-table", label: "ASCII テーブル" },
       { path: "/duration", label: "時間計算・変換" },
+      { path: "/encode-chain", label: "エンコードチェーン" },
     ],
   },
   {
