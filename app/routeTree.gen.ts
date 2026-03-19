@@ -112,6 +112,7 @@ import { Route as HttpStatusRouteImport } from './routes/http-status'
 import { Route as HttpHeadersRouteImport } from './routes/http-headers'
 import { Route as HttpClientRouteImport } from './routes/http-client'
 import { Route as HtmlToJsxRouteImport } from './routes/html-to-jsx'
+import { Route as HtmlPlaygroundRouteImport } from './routes/html-playground'
 import { Route as HtmlMarkdownRouteImport } from './routes/html-markdown'
 import { Route as HtmlFormatterRouteImport } from './routes/html-formatter'
 import { Route as HtmlEncodeRouteImport } from './routes/html-encode'
@@ -709,6 +710,11 @@ const HtmlToJsxRoute = HtmlToJsxRouteImport.update({
   path: '/html-to-jsx',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HtmlPlaygroundRoute = HtmlPlaygroundRouteImport.update({
+  id: '/html-playground',
+  path: '/html-playground',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HtmlMarkdownRoute = HtmlMarkdownRouteImport.update({
   id: '/html-markdown',
   path: '/html-markdown',
@@ -1193,6 +1199,7 @@ export interface FileRoutesByFullPath {
   '/html-encode': typeof HtmlEncodeRoute
   '/html-formatter': typeof HtmlFormatterRoute
   '/html-markdown': typeof HtmlMarkdownRoute
+  '/html-playground': typeof HtmlPlaygroundRoute
   '/html-to-jsx': typeof HtmlToJsxRoute
   '/http-client': typeof HttpClientRoute
   '/http-headers': typeof HttpHeadersRoute
@@ -1379,6 +1386,7 @@ export interface FileRoutesByTo {
   '/html-encode': typeof HtmlEncodeRoute
   '/html-formatter': typeof HtmlFormatterRoute
   '/html-markdown': typeof HtmlMarkdownRoute
+  '/html-playground': typeof HtmlPlaygroundRoute
   '/html-to-jsx': typeof HtmlToJsxRoute
   '/http-client': typeof HttpClientRoute
   '/http-headers': typeof HttpHeadersRoute
@@ -1566,6 +1574,7 @@ export interface FileRoutesById {
   '/html-encode': typeof HtmlEncodeRoute
   '/html-formatter': typeof HtmlFormatterRoute
   '/html-markdown': typeof HtmlMarkdownRoute
+  '/html-playground': typeof HtmlPlaygroundRoute
   '/html-to-jsx': typeof HtmlToJsxRoute
   '/http-client': typeof HttpClientRoute
   '/http-headers': typeof HttpHeadersRoute
@@ -1754,6 +1763,7 @@ export interface FileRouteTypes {
     | '/html-encode'
     | '/html-formatter'
     | '/html-markdown'
+    | '/html-playground'
     | '/html-to-jsx'
     | '/http-client'
     | '/http-headers'
@@ -1940,6 +1950,7 @@ export interface FileRouteTypes {
     | '/html-encode'
     | '/html-formatter'
     | '/html-markdown'
+    | '/html-playground'
     | '/html-to-jsx'
     | '/http-client'
     | '/http-headers'
@@ -2126,6 +2137,7 @@ export interface FileRouteTypes {
     | '/html-encode'
     | '/html-formatter'
     | '/html-markdown'
+    | '/html-playground'
     | '/html-to-jsx'
     | '/http-client'
     | '/http-headers'
@@ -2313,6 +2325,7 @@ export interface RootRouteChildren {
   HtmlEncodeRoute: typeof HtmlEncodeRoute
   HtmlFormatterRoute: typeof HtmlFormatterRoute
   HtmlMarkdownRoute: typeof HtmlMarkdownRoute
+  HtmlPlaygroundRoute: typeof HtmlPlaygroundRoute
   HtmlToJsxRoute: typeof HtmlToJsxRoute
   HttpClientRoute: typeof HttpClientRoute
   HttpHeadersRoute: typeof HttpHeadersRoute
@@ -3145,6 +3158,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HtmlToJsxRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/html-playground': {
+      id: '/html-playground'
+      path: '/html-playground'
+      fullPath: '/html-playground'
+      preLoaderRoute: typeof HtmlPlaygroundRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/html-markdown': {
       id: '/html-markdown'
       path: '/html-markdown'
@@ -3793,6 +3813,7 @@ const rootRouteChildren: RootRouteChildren = {
   HtmlEncodeRoute: HtmlEncodeRoute,
   HtmlFormatterRoute: HtmlFormatterRoute,
   HtmlMarkdownRoute: HtmlMarkdownRoute,
+  HtmlPlaygroundRoute: HtmlPlaygroundRoute,
   HtmlToJsxRoute: HtmlToJsxRoute,
   HttpClientRoute: HttpClientRoute,
   HttpHeadersRoute: HttpHeadersRoute,

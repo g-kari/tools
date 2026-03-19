@@ -443,6 +443,13 @@ const toolCatalog: ToolCategory[] = [
     icon: "✦",
     items: [
       {
+        path: '/html-playground',
+        label: 'HTML/CSS/JS プレイグラウンド',
+        description:
+          'HTML・CSS・JavaScript をブラウザ内で編集してリアルタイムにプレビューできるライブエディター。サンドボックス環境で安全に動作。スタンドアロン HTML としてエクスポート可能。',
+        icon: '▶',
+      },
+      {
         path: '/passphrase',
         label: 'パスフレーズ生成',
         description:
