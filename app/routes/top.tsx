@@ -196,6 +196,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🔀",
       },
       {
+        path: "/json-pointer",
+        label: "JSON Pointer評価",
+        description:
+          "JSON Pointer (RFC 6901) を使ってJSONデータから値を抽出・評価できるオンラインツール。ポインター一覧の列挙にも対応。",
+        icon: "📍",
+      },
+      {
         path: "/html-to-jsx",
         label: "HTML→JSX変換",
         description:
@@ -1245,11 +1252,25 @@ const toolCatalog: ToolCategory[] = [
         icon: "🎯",
       },
       {
+        path: "/css-variables",
+        label: "CSS変数エクストラクター",
+        description:
+          "CSSテキストからカスタムプロパティ（CSS変数）を抽出・一覧表示するツール。カラープレビュー付き。CSS・JSON・TypeScript形式でエクスポート可能。",
+        icon: "🎨",
+      },
+      {
         path: "/css-selector",
         label: "CSS Selectorテスター",
         description:
           "HTMLに対してCSSセレクターをテストし、マッチした要素を確認できるツール。querySelectorAll を使ってリアルタイムでマッチング結果を表示。",
         icon: "🎯",
+      },
+      {
+        path: "/glob-tester",
+        label: "Glob パターンテスター",
+        description:
+          "globパターンをリアルタイムでテストするツール。*, **, ?, [abc], {a,b}, !（否定）に対応。.gitignore・webpack・vite設定のパターン検証に。",
+        icon: "🌐",
       },
       {
         path: "/semver",
@@ -1397,6 +1418,13 @@ const toolCatalog: ToolCategory[] = [
         description:
           "docker run コマンドを docker-compose.yml 形式に変換するツール。-p / -e / -v / --name / --network などのオプションに対応。ブラウザ内完結。",
         icon: "🐳",
+      },
+      {
+        path: "/nginx-config",
+        label: "Nginx設定ジェネレーター",
+        description:
+          "Nginx サーバーブロックの設定を GUI で生成。静的サイト・リバースプロキシ・HTTPSリダイレクトに対応。",
+        icon: "⚙️",
       },
       {
         path: "/openssl-builder",
