@@ -145,7 +145,8 @@ describe('YAML Utility Functions', () => {
       expect(typeof result.error).toBe('string');
     });
 
-    it('nullコンテンツでfalseを返す', () => {
+    it('nullコンテンツ(~)はこのツールでは空データとしてfalseを返す', () => {
+      // YAMLの ~ はnullを表す有効な構文だが、このツールではnullを空データとして無効扱い
       const result = validateYaml('~');
       expect(result.valid).toBe(false);
     });

@@ -122,7 +122,8 @@ describe("decodeJWT", () => {
   });
 
   it("不正なBase64URLエンコードのヘッダーでエラーをスローする", () => {
-    expect(() => decodeJWT("!!!.payload.signature")).toThrow();
+    // atob が InvalidCharacterError をスローし、base64UrlDecode がラップして再スロー
+    expect(() => decodeJWT("!!!.payload.signature")).toThrow("デコードエラー");
   });
 
   it("JSONではないヘッダーでエラーをスローする", () => {
