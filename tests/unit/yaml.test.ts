@@ -1,188 +1,169 @@
 import { describe, it, expect } from 'vitest';
 import { formatYaml, minifyYaml, validateYaml } from '../../app/utils/yaml';
 
-describe('formatYaml', () => {
-  describe('基本的な整形', () => {
-    /**
-     * 単純なYAMLを整形するテスト
-     */
-    it('単純なYAMLを整形する', () => {
-      const yamlStr = 'name: Alice\nage: 30';
-      const result = formatYaml(yamlStr);
-      expect(result).toContain('name: Alice');
+describe('YAML Utility Functions', () => {
+  describe('formatYaml', () => {
+    it('シンプルなオブジェクトを整形できる', () => {
+      const input = 'name: 太郎\nage: 30';
+      const result = formatYaml(input);
+      expect(result).toContain('name: 太郎');
       expect(result).toContain('age: 30');
     });
 
-    /**
-     * ネストしたYAMLを整形するテスト
-     */
-    it('ネストしたYAMLを整形する', () => {
-      const yamlStr = 'person:\n  name: Bob\n  address:\n    city: Tokyo';
-      const result = formatYaml(yamlStr);
-      expect(result).toContain('person:');
-      expect(result).toContain('  name: Bob');
+    it('インデント2スペースで整形できる', () => {
+      const input = 'config:\n  port: 3000\n  debug: true';
+      const result = formatYaml(input, 2);
+      expect(result).toContain('config:');
+      expect(result).toContain('  port: 3000');
     });
 
-    /**
-     * 配列を含むYAMLを整形するテスト
-     */
-    it('配列を含むYAMLを整形する', () => {
-      const yamlStr = 'items:\n  - apple\n  - banana\n  - cherry';
-      const result = formatYaml(yamlStr);
+    it('インデント4スペースで整形できる', () => {
+      const input = 'config:\n  port: 3000';
+      const result = formatYaml(input, 4);
+      expect(result).toContain('config:');
+      expect(result).toContain('    port: 3000');
+    });
+
+    it('キーのソートが機能する', () => {
+      const input = 'z: last\na: first\nm: middle';
+      const result = formatYaml(input, 2, true);
+      const aIdx = result.indexOf('a:');
+      const mIdx = result.indexOf('m:');
+      const zIdx = result.indexOf('z:');
+      expect(aIdx).toBeLessThan(mIdx);
+      expect(mIdx).toBeLessThan(zIdx);
+    });
+
+    it('キーのソートなしでは元の順序を維持する', () => {
+      const input = 'z: last\na: first';
+      const result = formatYaml(input, 2, false);
+      const zIdx = result.indexOf('z:');
+      const aIdx = result.indexOf('a:');
+      expect(zIdx).toBeLessThan(aIdx);
+    });
+
+    it('ネストされたオブジェクトを整形できる', () => {
+      const input = 'user:\n  name: 太郎\n  address:\n    city: 東京';
+      const result = formatYaml(input);
+      expect(result).toContain('user:');
+      expect(result).toContain('name: 太郎');
+      expect(result).toContain('address:');
+      expect(result).toContain('city: 東京');
+    });
+
+    it('配列を整形できる', () => {
+      const input = 'items:\n  - apple\n  - banana';
+      const result = formatYaml(input);
       expect(result).toContain('items:');
       expect(result).toContain('- apple');
+      expect(result).toContain('- banana');
     });
 
-    /**
-     * インデント4スペースで整形するテスト
-     */
-    it('インデント4スペースで整形する', () => {
-      const yamlStr = 'parent:\n  child: value';
-      const result = formatYaml(yamlStr, 4);
-      expect(result).toContain('    child: value');
+    it('空文字列でエラーを投げる', () => {
+      expect(() => formatYaml('')).toThrow('YAMLデータが空です');
     });
 
-    /**
-     * キーソートオプションを使用するテスト
-     */
-    it('キーソートオプションでキーをアルファベット順に整形する', () => {
-      const yamlStr = 'zebra: 1\napple: 2\nmango: 3';
-      const result = formatYaml(yamlStr, 2, true);
-      const lines = result.split('\n').filter((l) => l.trim());
-      const keys = lines.map((l) => l.split(':')[0].trim());
-      expect(keys[0]).toBe('apple');
-      expect(keys[1]).toBe('mango');
-      expect(keys[2]).toBe('zebra');
+    it('空白のみでエラーを投げる', () => {
+      expect(() => formatYaml('   ')).toThrow('YAMLデータが空です');
+    });
+
+    it('無効なYAMLでエラーを投げる', () => {
+      expect(() => formatYaml(': invalid: yaml: {')).toThrow();
     });
   });
 
-  describe('エラーケース', () => {
-    /**
-     * 空文字列でエラーをスローするテスト
-     */
-    it('空文字列でエラーをスローする', () => {
-      expect(() => formatYaml('')).toThrow();
-    });
-
-    /**
-     * 空白のみでエラーをスローするテスト
-     */
-    it('空白のみでエラーをスローする', () => {
-      expect(() => formatYaml('   ')).toThrow();
-    });
-
-    /**
-     * 不正なYAMLでエラーをスローするテスト
-     */
-    it('不正なYAML（タブ混在）でエラーをスローする', () => {
-      expect(() => formatYaml('key:\n\t- value')).toThrow();
-    });
-  });
-});
-
-describe('minifyYaml', () => {
-  describe('基本的な圧縮', () => {
-    /**
-     * 整形済みYAMLを圧縮するテスト
-     */
-    it('整形済みYAMLを圧縮してフロースタイルで出力する', () => {
-      const yamlStr = 'name: Alice\nage: 30';
-      const result = minifyYaml(yamlStr);
-      // フロースタイル: {name: Alice, age: 30} のような形式
-      expect(result).toContain('name');
-      expect(result).toContain('Alice');
-      expect(result).toContain('age');
-      expect(result.split('\n').length).toBe(1);
-    });
-
-    /**
-     * ネストしたYAMLを圧縮するテスト
-     */
-    it('ネストしたYAMLを圧縮する', () => {
-      const yamlStr = 'person:\n  name: Bob\n  age: 25';
-      const result = minifyYaml(yamlStr);
+  describe('minifyYaml', () => {
+    it('シンプルなYAMLを圧縮できる', () => {
+      const input = 'name: 太郎\nage: 30';
+      const result = minifyYaml(input);
       expect(result).not.toContain('\n');
+      expect(result).toContain('name');
+      expect(result).toContain('age');
+    });
+
+    it('フロースタイルで出力される', () => {
+      const input = 'key: value';
+      const result = minifyYaml(input);
+      expect(result).toMatch(/\{.*\}/);
+    });
+
+    it('ネストされたオブジェクトを圧縮できる', () => {
+      const input = 'user:\n  name: 太郎\n  age: 30';
+      const result = minifyYaml(input);
+      expect(result).not.toContain('\n');
+      expect(result).toContain('user');
+    });
+
+    it('配列を含むYAMLを圧縮できる', () => {
+      const input = 'items:\n  - apple\n  - banana';
+      const result = minifyYaml(input);
+      expect(result).not.toContain('\n');
+      expect(result).toContain('items');
+    });
+
+    it('空文字列でエラーを投げる', () => {
+      expect(() => minifyYaml('')).toThrow('YAMLデータが空です');
+    });
+
+    it('空白のみでエラーを投げる', () => {
+      expect(() => minifyYaml('   ')).toThrow('YAMLデータが空です');
     });
   });
 
-  describe('エラーケース', () => {
-    /**
-     * 空文字列でエラーをスローするテスト
-     */
-    it('空文字列でエラーをスローする', () => {
-      expect(() => minifyYaml('')).toThrow();
-    });
-  });
-});
-
-describe('validateYaml', () => {
-  describe('有効なYAML', () => {
-    /**
-     * 有効なYAMLがvalid: trueを返すテスト
-     */
-    it('有効なYAMLはvalid: trueを返す', () => {
-      const result = validateYaml('name: Alice\nage: 30');
+  describe('validateYaml', () => {
+    it('有効なYAMLでtrueを返す', () => {
+      const result = validateYaml('name: 太郎\nage: 30');
       expect(result.valid).toBe(true);
       expect(result.error).toBeUndefined();
     });
 
-    /**
-     * ネストしたYAMLが有効なテスト
-     */
-    it('ネストしたYAMLは有効', () => {
-      const yamlStr = 'config:\n  host: localhost\n  port: 3000';
-      const result = validateYaml(yamlStr);
+    it('有効なネストYAMLでtrueを返す', () => {
+      const result = validateYaml('user:\n  name: 太郎\n  address:\n    city: 東京');
       expect(result.valid).toBe(true);
     });
 
-    /**
-     * 配列を含むYAMLが有効なテスト
-     */
-    it('配列を含むYAMLは有効', () => {
-      const yamlStr = 'items:\n  - one\n  - two\n  - three';
-      const result = validateYaml(yamlStr);
+    it('有効な配列YAMLでtrueを返す', () => {
+      const result = validateYaml('items:\n  - apple\n  - banana');
       expect(result.valid).toBe(true);
     });
-  });
 
-  describe('無効なYAML', () => {
-    /**
-     * 空文字列がvalid: falseを返すテスト
-     */
-    it('空文字列はvalid: falseを返す', () => {
+    it('空文字列でfalseを返す', () => {
       const result = validateYaml('');
       expect(result.valid).toBe(false);
-      expect(result.error).toBeTruthy();
+      expect(result.error).toBeDefined();
     });
 
-    /**
-     * タブを使用したYAMLがvalid: falseを返すテスト
-     */
-    it('タブインデントはvalid: falseを返す', () => {
-      const result = validateYaml('key:\n\t- value');
+    it('空白のみでfalseを返す', () => {
+      const result = validateYaml('   ');
       expect(result.valid).toBe(false);
-      expect(result.error).toBeTruthy();
     });
 
-    /**
-     * 重複キーのYAMLが検出されるテスト（js-yamlは最後の値を使用するため有効扱い）
-     */
-    it('通常のYAML文字列は有効と見なされる', () => {
-      const result = validateYaml('key: value\nother: 123');
-      expect(result.valid).toBe(true);
+    it('無効なYAMLでfalseとエラーメッセージを返す', () => {
+      const result = validateYaml(': invalid: yaml: {');
+      expect(result.valid).toBe(false);
+      expect(result.error).toBeDefined();
+      expect(typeof result.error).toBe('string');
+    });
+
+    it('nullコンテンツでfalseを返す', () => {
+      const result = validateYaml('~');
+      expect(result.valid).toBe(false);
     });
   });
-});
 
-describe('ラウンドトリップテスト', () => {
-  /**
-   * format後に同じキー・値が保持されるテスト
-   */
-  it('formatしても同じキー・値が保持される', () => {
-    const original = 'name: Alice\nage: 30\ncity: Tokyo';
-    const formatted = formatYaml(original);
-    // 再度parseして値が一致することを確認
-    const formatted2 = formatYaml(formatted);
-    expect(formatted).toBe(formatted2);
+  describe('ラウンドトリップ変換', () => {
+    it('整形→再整形で同一結果が得られる', () => {
+      const input = 'name: 太郎\nage: 30';
+      const formatted = formatYaml(input);
+      const reFormatted = formatYaml(formatted);
+      expect(reFormatted).toBe(formatted);
+    });
+
+    it('圧縮後もvalidateがtrueを返す', () => {
+      const input = 'user:\n  name: 太郎\n  age: 30';
+      const minified = minifyYaml(input);
+      const validateResult = validateYaml(minified);
+      expect(validateResult.valid).toBe(true);
+    });
   });
 });
