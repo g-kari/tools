@@ -51,6 +51,7 @@ import { Route as TemplateRouteImport } from './routes/template'
 import { Route as SvgOptimizerRouteImport } from './routes/svg-optimizer'
 import { Route as StringSimilarityRouteImport } from './routes/string-similarity'
 import { Route as StringEscapeRouteImport } from './routes/string-escape'
+import { Route as StopwatchRouteImport } from './routes/stopwatch'
 import { Route as StatisticsRouteImport } from './routes/statistics'
 import { Route as SshKeyRouteImport } from './routes/ssh-key'
 import { Route as SqlToTsRouteImport } from './routes/sql-to-ts'
@@ -442,6 +443,11 @@ const StringSimilarityRoute = StringSimilarityRouteImport.update({
 const StringEscapeRoute = StringEscapeRouteImport.update({
   id: '/string-escape',
   path: '/string-escape',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StopwatchRoute = StopwatchRouteImport.update({
+  id: '/stopwatch',
+  path: '/stopwatch',
   getParentRoute: () => rootRouteImport,
 } as any)
 const StatisticsRoute = StatisticsRouteImport.update({
@@ -1534,6 +1540,7 @@ export interface FileRoutesByFullPath {
   '/sql-to-ts': typeof SqlToTsRoute
   '/ssh-key': typeof SshKeyRoute
   '/statistics': typeof StatisticsRoute
+  '/stopwatch': typeof StopwatchRoute
   '/string-escape': typeof StringEscapeRoute
   '/string-similarity': typeof StringSimilarityRoute
   '/svg-optimizer': typeof SvgOptimizerRoute
@@ -1760,6 +1767,7 @@ export interface FileRoutesByTo {
   '/sql-to-ts': typeof SqlToTsRoute
   '/ssh-key': typeof SshKeyRoute
   '/statistics': typeof StatisticsRoute
+  '/stopwatch': typeof StopwatchRoute
   '/string-escape': typeof StringEscapeRoute
   '/string-similarity': typeof StringSimilarityRoute
   '/svg-optimizer': typeof SvgOptimizerRoute
@@ -1987,6 +1995,7 @@ export interface FileRoutesById {
   '/sql-to-ts': typeof SqlToTsRoute
   '/ssh-key': typeof SshKeyRoute
   '/statistics': typeof StatisticsRoute
+  '/stopwatch': typeof StopwatchRoute
   '/string-escape': typeof StringEscapeRoute
   '/string-similarity': typeof StringSimilarityRoute
   '/svg-optimizer': typeof SvgOptimizerRoute
@@ -2215,6 +2224,7 @@ export interface FileRouteTypes {
     | '/sql-to-ts'
     | '/ssh-key'
     | '/statistics'
+    | '/stopwatch'
     | '/string-escape'
     | '/string-similarity'
     | '/svg-optimizer'
@@ -2441,6 +2451,7 @@ export interface FileRouteTypes {
     | '/sql-to-ts'
     | '/ssh-key'
     | '/statistics'
+    | '/stopwatch'
     | '/string-escape'
     | '/string-similarity'
     | '/svg-optimizer'
@@ -2667,6 +2678,7 @@ export interface FileRouteTypes {
     | '/sql-to-ts'
     | '/ssh-key'
     | '/statistics'
+    | '/stopwatch'
     | '/string-escape'
     | '/string-similarity'
     | '/svg-optimizer'
@@ -2894,6 +2906,7 @@ export interface RootRouteChildren {
   SqlToTsRoute: typeof SqlToTsRoute
   SshKeyRoute: typeof SshKeyRoute
   StatisticsRoute: typeof StatisticsRoute
+  StopwatchRoute: typeof StopwatchRoute
   StringEscapeRoute: typeof StringEscapeRoute
   StringSimilarityRoute: typeof StringSimilarityRoute
   SvgOptimizerRoute: typeof SvgOptimizerRoute
@@ -3236,6 +3249,13 @@ declare module '@tanstack/react-router' {
       path: '/string-escape'
       fullPath: '/string-escape'
       preLoaderRoute: typeof StringEscapeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/stopwatch': {
+      id: '/stopwatch'
+      path: '/stopwatch'
+      fullPath: '/stopwatch'
+      preLoaderRoute: typeof StopwatchRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/statistics': {
@@ -4694,6 +4714,7 @@ const rootRouteChildren: RootRouteChildren = {
   SqlToTsRoute: SqlToTsRoute,
   SshKeyRoute: SshKeyRoute,
   StatisticsRoute: StatisticsRoute,
+  StopwatchRoute: StopwatchRoute,
   StringEscapeRoute: StringEscapeRoute,
   StringSimilarityRoute: StringSimilarityRoute,
   SvgOptimizerRoute: SvgOptimizerRoute,

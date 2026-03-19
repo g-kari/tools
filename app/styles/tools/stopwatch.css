@@ -1,0 +1,182 @@
+/* ストップウォッチ スタイル */
+
+/* 時間表示エリア */
+.stopwatch-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2.5rem 2rem;
+  background-color: var(--md-sys-color-surface);
+  border: 2px solid var(--md-sys-color-primary);
+  border-radius: 16px;
+  margin-bottom: 1.5rem;
+}
+
+.stopwatch-time {
+  font-family: 'Space Mono', 'JetBrains Mono', monospace;
+  font-size: 4rem;
+  font-weight: 300;
+  color: var(--md-sys-color-on-surface);
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+/* コントロールボタン */
+.stopwatch-controls {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.stopwatch-btn {
+  min-width: 120px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+
+.stopwatch-btn-start {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+.stopwatch-btn-start:hover {
+  background-color: var(--md-sys-color-primary);
+  opacity: 0.9;
+}
+
+.stopwatch-btn-pause {
+  background-color: var(--md-sys-color-tertiary);
+  color: var(--md-sys-color-on-tertiary);
+}
+
+.stopwatch-btn-pause:hover {
+  background-color: var(--md-sys-color-tertiary);
+  opacity: 0.9;
+}
+
+/* ラップタイム一覧 */
+.stopwatch-laps {
+  background-color: var(--md-sys-color-surface-variant);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+}
+
+.stopwatch-laps-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 0.75rem;
+}
+
+.stopwatch-laps-header {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1.5fr;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.25rem 0.75rem;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  margin-bottom: 0.25rem;
+}
+
+.stopwatch-laps-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.stopwatch-lap-row {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1.5fr;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  font-family: 'Space Mono', 'JetBrains Mono', monospace;
+  font-size: 0.9375rem;
+  transition: background-color 0.15s ease;
+}
+
+.stopwatch-lap-row:hover {
+  background-color: var(--md-sys-color-surface);
+}
+
+.stopwatch-lap-best {
+  color: var(--md-sys-color-primary);
+  background-color: var(--md-sys-color-primary-container);
+}
+
+.stopwatch-lap-best:hover {
+  background-color: var(--md-sys-color-primary-container);
+  opacity: 0.9;
+}
+
+.stopwatch-lap-worst {
+  color: var(--md-sys-color-error);
+  background-color: var(--md-sys-color-error-container);
+}
+
+.stopwatch-lap-worst:hover {
+  background-color: var(--md-sys-color-error-container);
+  opacity: 0.9;
+}
+
+.stopwatch-lap-num {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  color: inherit;
+}
+
+.stopwatch-lap-badge {
+  font-size: 0.6875rem;
+  font-family: inherit;
+  font-weight: 700;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  letter-spacing: 0.03em;
+}
+
+.stopwatch-lap-badge.best {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+.stopwatch-lap-badge.worst {
+  background-color: var(--md-sys-color-error);
+  color: var(--md-sys-color-on-error);
+}
+
+.stopwatch-lap-time {
+  font-weight: 600;
+  color: inherit;
+}
+
+.stopwatch-lap-total {
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.875rem;
+}
+
+/* レスポンシブ */
+@media (max-width: 480px) {
+  .stopwatch-time {
+    font-size: 2.75rem;
+  }
+
+  .stopwatch-btn {
+    min-width: 100px;
+    font-size: 0.875rem;
+  }
+
+  .stopwatch-laps-header,
+  .stopwatch-lap-row {
+    grid-template-columns: 1.2fr 1.5fr 1.5fr;
+  }
+}

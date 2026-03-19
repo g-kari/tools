@@ -292,6 +292,7 @@ const navCategories = [
       { path: "/typing-speed", label: "タイピング速度測定" },
       { path: "/pomodoro", label: "ポモドーロタイマー" },
       { path: "/countdown", label: "カウントダウンタイマー" },
+      { path: "/stopwatch", label: "ストップウォッチ" },
       { path: "/brainfuck", label: "Brainfuck インタープリター" },
       { path: "/random-picker", label: "ランダムピッカー" },
     ],

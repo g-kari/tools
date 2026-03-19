@@ -1591,6 +1591,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "⏳",
       },
       {
+        path: "/stopwatch",
+        label: "ストップウォッチ",
+        description:
+          "ミリ秒精度のストップウォッチ。ラップタイムの記録・最速/最遅ラップの強調表示に対応。スポーツ計測・ベンチマークに便利。",
+        icon: "⏱️",
+      },
+      {
         path: "/random-picker",
         label: "ランダムピッカー",
         description:
