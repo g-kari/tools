@@ -1,0 +1,112 @@
+/* ひらがな・カタカナ・ローマ字変換ツール */
+
+.kana-mode-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.kana-mode-option {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.kana-mode-option:has(input:checked) {
+  background: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+}
+
+.kana-mode-option:hover:not(:has(input:checked)) {
+  background: var(--md-sys-color-surface-variant);
+  border-color: var(--md-sys-color-outline-variant);
+}
+
+.kana-mode-option input[type="radio"] {
+  accent-color: var(--md-sys-color-primary);
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+}
+
+.kana-mode-label {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface);
+  min-width: 12rem;
+}
+
+.kana-mode-desc {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.kana-textarea-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.375rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+}
+
+.kana-textarea {
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 0;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-size: 1rem;
+  font-family: "Noto Sans JP", sans-serif;
+  line-height: 1.6;
+  resize: vertical;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.kana-textarea:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+}
+
+.kana-textarea[readonly] {
+  background: var(--md-sys-color-surface-variant);
+  cursor: default;
+}
+
+.kana-output-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.375rem;
+}
+
+.kana-copy-btn {
+  font-size: 0.8125rem;
+  padding: 0.25rem 0.625rem;
+}
+
+/* レスポンシブ */
+@media (max-width: 600px) {
+  .kana-mode-label {
+    min-width: unset;
+  }
+
+  .kana-mode-desc {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kana-mode-option,
+  .kana-textarea {
+    transition: none;
+  }
+}

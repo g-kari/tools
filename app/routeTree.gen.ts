@@ -95,6 +95,7 @@ import { Route as MarkdownPreviewRouteImport } from './routes/markdown-preview'
 import { Route as LuhnCheckRouteImport } from './routes/luhn-check'
 import { Route as LoremIpsumRouteImport } from './routes/lorem-ipsum'
 import { Route as KeycodeRouteImport } from './routes/keycode'
+import { Route as KanaConvertRouteImport } from './routes/kana-convert'
 import { Route as JwtGeneratorRouteImport } from './routes/jwt-generator'
 import { Route as JwtRouteImport } from './routes/jwt'
 import { Route as JsonToTsRouteImport } from './routes/json-to-ts'
@@ -636,6 +637,11 @@ const LoremIpsumRoute = LoremIpsumRouteImport.update({
 const KeycodeRoute = KeycodeRouteImport.update({
   id: '/keycode',
   path: '/keycode',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KanaConvertRoute = KanaConvertRouteImport.update({
+  id: '/kana-convert',
+  path: '/kana-convert',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JwtGeneratorRoute = JwtGeneratorRouteImport.update({
@@ -1308,6 +1314,7 @@ export interface FileRoutesByFullPath {
   '/json-to-ts': typeof JsonToTsRoute
   '/jwt': typeof JwtRoute
   '/jwt-generator': typeof JwtGeneratorRoute
+  '/kana-convert': typeof KanaConvertRoute
   '/keycode': typeof KeycodeRoute
   '/lorem-ipsum': typeof LoremIpsumRoute
   '/luhn-check': typeof LuhnCheckRoute
@@ -1508,6 +1515,7 @@ export interface FileRoutesByTo {
   '/json-to-ts': typeof JsonToTsRoute
   '/jwt': typeof JwtRoute
   '/jwt-generator': typeof JwtGeneratorRoute
+  '/kana-convert': typeof KanaConvertRoute
   '/keycode': typeof KeycodeRoute
   '/lorem-ipsum': typeof LoremIpsumRoute
   '/luhn-check': typeof LuhnCheckRoute
@@ -1709,6 +1717,7 @@ export interface FileRoutesById {
   '/json-to-ts': typeof JsonToTsRoute
   '/jwt': typeof JwtRoute
   '/jwt-generator': typeof JwtGeneratorRoute
+  '/kana-convert': typeof KanaConvertRoute
   '/keycode': typeof KeycodeRoute
   '/lorem-ipsum': typeof LoremIpsumRoute
   '/luhn-check': typeof LuhnCheckRoute
@@ -1911,6 +1920,7 @@ export interface FileRouteTypes {
     | '/json-to-ts'
     | '/jwt'
     | '/jwt-generator'
+    | '/kana-convert'
     | '/keycode'
     | '/lorem-ipsum'
     | '/luhn-check'
@@ -2111,6 +2121,7 @@ export interface FileRouteTypes {
     | '/json-to-ts'
     | '/jwt'
     | '/jwt-generator'
+    | '/kana-convert'
     | '/keycode'
     | '/lorem-ipsum'
     | '/luhn-check'
@@ -2311,6 +2322,7 @@ export interface FileRouteTypes {
     | '/json-to-ts'
     | '/jwt'
     | '/jwt-generator'
+    | '/kana-convert'
     | '/keycode'
     | '/lorem-ipsum'
     | '/luhn-check'
@@ -2512,6 +2524,7 @@ export interface RootRouteChildren {
   JsonToTsRoute: typeof JsonToTsRoute
   JwtRoute: typeof JwtRoute
   JwtGeneratorRoute: typeof JwtGeneratorRoute
+  KanaConvertRoute: typeof KanaConvertRoute
   KeycodeRoute: typeof KeycodeRoute
   LoremIpsumRoute: typeof LoremIpsumRoute
   LuhnCheckRoute: typeof LuhnCheckRoute
@@ -3206,6 +3219,13 @@ declare module '@tanstack/react-router' {
       path: '/keycode'
       fullPath: '/keycode'
       preLoaderRoute: typeof KeycodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kana-convert': {
+      id: '/kana-convert'
+      path: '/kana-convert'
+      fullPath: '/kana-convert'
+      preLoaderRoute: typeof KanaConvertRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/jwt-generator': {
@@ -4104,6 +4124,7 @@ const rootRouteChildren: RootRouteChildren = {
   JsonToTsRoute: JsonToTsRoute,
   JwtRoute: JwtRoute,
   JwtGeneratorRoute: JwtGeneratorRoute,
+  KanaConvertRoute: KanaConvertRoute,
   KeycodeRoute: KeycodeRoute,
   LoremIpsumRoute: LoremIpsumRoute,
   LuhnCheckRoute: LuhnCheckRoute,

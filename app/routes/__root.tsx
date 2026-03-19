@@ -86,6 +86,7 @@ const navCategories = [
       { path: "/base62", label: "Base62変換" },
       { path: "/base85", label: "Base85変換" },
       { path: "/zenkaku", label: "全角/半角変換" },
+      { path: "/kana-convert", label: "仮名・ローマ字変換" },
       { path: "/roman-numerals", label: "ローマ数字変換" },
       { path: "/number-words", label: "数値テキスト変換" },
       { path: "/csv-sql", label: "CSV→SQL変換" },
