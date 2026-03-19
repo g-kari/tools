@@ -49,6 +49,7 @@ import { Route as TextEncryptRouteImport } from './routes/text-encrypt'
 import { Route as TextCaseRouteImport } from './routes/text-case'
 import { Route as TemplateRouteImport } from './routes/template'
 import { Route as SvgOptimizerRouteImport } from './routes/svg-optimizer'
+import { Route as SudokuRouteImport } from './routes/sudoku'
 import { Route as StringSimilarityRouteImport } from './routes/string-similarity'
 import { Route as StringEscapeRouteImport } from './routes/string-escape'
 import { Route as StopwatchRouteImport } from './routes/stopwatch'
@@ -92,6 +93,7 @@ import { Route as NanoIdRouteImport } from './routes/nano-id'
 import { Route as MsgpackRouteImport } from './routes/msgpack'
 import { Route as MorseCodeRouteImport } from './routes/morse-code'
 import { Route as MinifyRouteImport } from './routes/minify'
+import { Route as MinesweeperRouteImport } from './routes/minesweeper'
 import { Route as MimeTypesRouteImport } from './routes/mime-types'
 import { Route as MermaidRouteImport } from './routes/mermaid'
 import { Route as MatrixRouteImport } from './routes/matrix'
@@ -436,6 +438,11 @@ const SvgOptimizerRoute = SvgOptimizerRouteImport.update({
   path: '/svg-optimizer',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SudokuRoute = SudokuRouteImport.update({
+  id: '/sudoku',
+  path: '/sudoku',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const StringSimilarityRoute = StringSimilarityRouteImport.update({
   id: '/string-similarity',
   path: '/string-similarity',
@@ -649,6 +656,11 @@ const MorseCodeRoute = MorseCodeRouteImport.update({
 const MinifyRoute = MinifyRouteImport.update({
   id: '/minify',
   path: '/minify',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MinesweeperRoute = MinesweeperRouteImport.update({
+  id: '/minesweeper',
+  path: '/minesweeper',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MimeTypesRoute = MimeTypesRouteImport.update({
@@ -1507,6 +1519,7 @@ export interface FileRoutesByFullPath {
   '/matrix': typeof MatrixRoute
   '/mermaid': typeof MermaidRoute
   '/mime-types': typeof MimeTypesRoute
+  '/minesweeper': typeof MinesweeperRoute
   '/minify': typeof MinifyRoute
   '/morse-code': typeof MorseCodeRoute
   '/msgpack': typeof MsgpackRoute
@@ -1550,6 +1563,7 @@ export interface FileRoutesByFullPath {
   '/stopwatch': typeof StopwatchRoute
   '/string-escape': typeof StringEscapeRoute
   '/string-similarity': typeof StringSimilarityRoute
+  '/sudoku': typeof SudokuRoute
   '/svg-optimizer': typeof SvgOptimizerRoute
   '/template': typeof TemplateRoute
   '/text-case': typeof TextCaseRoute
@@ -1735,6 +1749,7 @@ export interface FileRoutesByTo {
   '/matrix': typeof MatrixRoute
   '/mermaid': typeof MermaidRoute
   '/mime-types': typeof MimeTypesRoute
+  '/minesweeper': typeof MinesweeperRoute
   '/minify': typeof MinifyRoute
   '/morse-code': typeof MorseCodeRoute
   '/msgpack': typeof MsgpackRoute
@@ -1778,6 +1793,7 @@ export interface FileRoutesByTo {
   '/stopwatch': typeof StopwatchRoute
   '/string-escape': typeof StringEscapeRoute
   '/string-similarity': typeof StringSimilarityRoute
+  '/sudoku': typeof SudokuRoute
   '/svg-optimizer': typeof SvgOptimizerRoute
   '/template': typeof TemplateRoute
   '/text-case': typeof TextCaseRoute
@@ -1964,6 +1980,7 @@ export interface FileRoutesById {
   '/matrix': typeof MatrixRoute
   '/mermaid': typeof MermaidRoute
   '/mime-types': typeof MimeTypesRoute
+  '/minesweeper': typeof MinesweeperRoute
   '/minify': typeof MinifyRoute
   '/morse-code': typeof MorseCodeRoute
   '/msgpack': typeof MsgpackRoute
@@ -2007,6 +2024,7 @@ export interface FileRoutesById {
   '/stopwatch': typeof StopwatchRoute
   '/string-escape': typeof StringEscapeRoute
   '/string-similarity': typeof StringSimilarityRoute
+  '/sudoku': typeof SudokuRoute
   '/svg-optimizer': typeof SvgOptimizerRoute
   '/template': typeof TemplateRoute
   '/text-case': typeof TextCaseRoute
@@ -2194,6 +2212,7 @@ export interface FileRouteTypes {
     | '/matrix'
     | '/mermaid'
     | '/mime-types'
+    | '/minesweeper'
     | '/minify'
     | '/morse-code'
     | '/msgpack'
@@ -2237,6 +2256,7 @@ export interface FileRouteTypes {
     | '/stopwatch'
     | '/string-escape'
     | '/string-similarity'
+    | '/sudoku'
     | '/svg-optimizer'
     | '/template'
     | '/text-case'
@@ -2422,6 +2442,7 @@ export interface FileRouteTypes {
     | '/matrix'
     | '/mermaid'
     | '/mime-types'
+    | '/minesweeper'
     | '/minify'
     | '/morse-code'
     | '/msgpack'
@@ -2465,6 +2486,7 @@ export interface FileRouteTypes {
     | '/stopwatch'
     | '/string-escape'
     | '/string-similarity'
+    | '/sudoku'
     | '/svg-optimizer'
     | '/template'
     | '/text-case'
@@ -2650,6 +2672,7 @@ export interface FileRouteTypes {
     | '/matrix'
     | '/mermaid'
     | '/mime-types'
+    | '/minesweeper'
     | '/minify'
     | '/morse-code'
     | '/msgpack'
@@ -2693,6 +2716,7 @@ export interface FileRouteTypes {
     | '/stopwatch'
     | '/string-escape'
     | '/string-similarity'
+    | '/sudoku'
     | '/svg-optimizer'
     | '/template'
     | '/text-case'
@@ -2879,6 +2903,7 @@ export interface RootRouteChildren {
   MatrixRoute: typeof MatrixRoute
   MermaidRoute: typeof MermaidRoute
   MimeTypesRoute: typeof MimeTypesRoute
+  MinesweeperRoute: typeof MinesweeperRoute
   MinifyRoute: typeof MinifyRoute
   MorseCodeRoute: typeof MorseCodeRoute
   MsgpackRoute: typeof MsgpackRoute
@@ -2922,6 +2947,7 @@ export interface RootRouteChildren {
   StopwatchRoute: typeof StopwatchRoute
   StringEscapeRoute: typeof StringEscapeRoute
   StringSimilarityRoute: typeof StringSimilarityRoute
+  SudokuRoute: typeof SudokuRoute
   SvgOptimizerRoute: typeof SvgOptimizerRoute
   TemplateRoute: typeof TemplateRoute
   TextCaseRoute: typeof TextCaseRoute
@@ -3250,6 +3276,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SvgOptimizerRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sudoku': {
+      id: '/sudoku'
+      path: '/sudoku'
+      fullPath: '/sudoku'
+      preLoaderRoute: typeof SudokuRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/string-similarity': {
       id: '/string-similarity'
       path: '/string-similarity'
@@ -3549,6 +3582,13 @@ declare module '@tanstack/react-router' {
       path: '/minify'
       fullPath: '/minify'
       preLoaderRoute: typeof MinifyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/minesweeper': {
+      id: '/minesweeper'
+      path: '/minesweeper'
+      fullPath: '/minesweeper'
+      preLoaderRoute: typeof MinesweeperRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mime-types': {
@@ -4695,6 +4735,7 @@ const rootRouteChildren: RootRouteChildren = {
   MatrixRoute: MatrixRoute,
   MermaidRoute: MermaidRoute,
   MimeTypesRoute: MimeTypesRoute,
+  MinesweeperRoute: MinesweeperRoute,
   MinifyRoute: MinifyRoute,
   MorseCodeRoute: MorseCodeRoute,
   MsgpackRoute: MsgpackRoute,
@@ -4738,6 +4779,7 @@ const rootRouteChildren: RootRouteChildren = {
   StopwatchRoute: StopwatchRoute,
   StringEscapeRoute: StringEscapeRoute,
   StringSimilarityRoute: StringSimilarityRoute,
+  SudokuRoute: SudokuRoute,
   SvgOptimizerRoute: SvgOptimizerRoute,
   TemplateRoute: TemplateRoute,
   TextCaseRoute: TextCaseRoute,
