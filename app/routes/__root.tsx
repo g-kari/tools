@@ -296,6 +296,7 @@ const navCategories = [
       { path: "/stopwatch", label: "ストップウォッチ" },
       { path: "/brainfuck", label: "Brainfuck インタープリター" },
       { path: "/random-picker", label: "ランダムピッカー" },
+      { path: "/sudoku", label: "数独ゲーム" },
     ],
   },
 ];

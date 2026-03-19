@@ -49,6 +49,7 @@ import { Route as TextEncryptRouteImport } from './routes/text-encrypt'
 import { Route as TextCaseRouteImport } from './routes/text-case'
 import { Route as TemplateRouteImport } from './routes/template'
 import { Route as SvgOptimizerRouteImport } from './routes/svg-optimizer'
+import { Route as SudokuRouteImport } from './routes/sudoku'
 import { Route as StringSimilarityRouteImport } from './routes/string-similarity'
 import { Route as StringEscapeRouteImport } from './routes/string-escape'
 import { Route as StopwatchRouteImport } from './routes/stopwatch'
@@ -434,6 +435,11 @@ const TemplateRoute = TemplateRouteImport.update({
 const SvgOptimizerRoute = SvgOptimizerRouteImport.update({
   id: '/svg-optimizer',
   path: '/svg-optimizer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SudokuRoute = SudokuRouteImport.update({
+  id: '/sudoku',
+  path: '/sudoku',
   getParentRoute: () => rootRouteImport,
 } as any)
 const StringSimilarityRoute = StringSimilarityRouteImport.update({
@@ -1550,6 +1556,7 @@ export interface FileRoutesByFullPath {
   '/stopwatch': typeof StopwatchRoute
   '/string-escape': typeof StringEscapeRoute
   '/string-similarity': typeof StringSimilarityRoute
+  '/sudoku': typeof SudokuRoute
   '/svg-optimizer': typeof SvgOptimizerRoute
   '/template': typeof TemplateRoute
   '/text-case': typeof TextCaseRoute
@@ -1778,6 +1785,7 @@ export interface FileRoutesByTo {
   '/stopwatch': typeof StopwatchRoute
   '/string-escape': typeof StringEscapeRoute
   '/string-similarity': typeof StringSimilarityRoute
+  '/sudoku': typeof SudokuRoute
   '/svg-optimizer': typeof SvgOptimizerRoute
   '/template': typeof TemplateRoute
   '/text-case': typeof TextCaseRoute
@@ -2007,6 +2015,7 @@ export interface FileRoutesById {
   '/stopwatch': typeof StopwatchRoute
   '/string-escape': typeof StringEscapeRoute
   '/string-similarity': typeof StringSimilarityRoute
+  '/sudoku': typeof SudokuRoute
   '/svg-optimizer': typeof SvgOptimizerRoute
   '/template': typeof TemplateRoute
   '/text-case': typeof TextCaseRoute
@@ -2237,6 +2246,7 @@ export interface FileRouteTypes {
     | '/stopwatch'
     | '/string-escape'
     | '/string-similarity'
+    | '/sudoku'
     | '/svg-optimizer'
     | '/template'
     | '/text-case'
@@ -2465,6 +2475,7 @@ export interface FileRouteTypes {
     | '/stopwatch'
     | '/string-escape'
     | '/string-similarity'
+    | '/sudoku'
     | '/svg-optimizer'
     | '/template'
     | '/text-case'
@@ -2693,6 +2704,7 @@ export interface FileRouteTypes {
     | '/stopwatch'
     | '/string-escape'
     | '/string-similarity'
+    | '/sudoku'
     | '/svg-optimizer'
     | '/template'
     | '/text-case'
@@ -2922,6 +2934,7 @@ export interface RootRouteChildren {
   StopwatchRoute: typeof StopwatchRoute
   StringEscapeRoute: typeof StringEscapeRoute
   StringSimilarityRoute: typeof StringSimilarityRoute
+  SudokuRoute: typeof SudokuRoute
   SvgOptimizerRoute: typeof SvgOptimizerRoute
   TemplateRoute: typeof TemplateRoute
   TextCaseRoute: typeof TextCaseRoute
@@ -3248,6 +3261,13 @@ declare module '@tanstack/react-router' {
       path: '/svg-optimizer'
       fullPath: '/svg-optimizer'
       preLoaderRoute: typeof SvgOptimizerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sudoku': {
+      id: '/sudoku'
+      path: '/sudoku'
+      fullPath: '/sudoku'
+      preLoaderRoute: typeof SudokuRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/string-similarity': {
@@ -4738,6 +4758,7 @@ const rootRouteChildren: RootRouteChildren = {
   StopwatchRoute: StopwatchRoute,
   StringEscapeRoute: StringEscapeRoute,
   StringSimilarityRoute: StringSimilarityRoute,
+  SudokuRoute: SudokuRoute,
   SvgOptimizerRoute: SvgOptimizerRoute,
   TemplateRoute: TemplateRoute,
   TextCaseRoute: TextCaseRoute,

@@ -1,0 +1,282 @@
+/* 数独ゲーム スタイル */
+
+/* 難易度選択 & スタートボタン */
+.sudoku-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.sudoku-difficulty-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.sudoku-difficulty-btn {
+  padding: 0.5rem 1.125rem;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 20px;
+  background-color: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.sudoku-difficulty-btn:hover {
+  background-color: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+}
+
+.sudoku-difficulty-btn.active {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  border-color: var(--md-sys-color-primary);
+}
+
+.sudoku-start-btn {
+  min-width: 140px;
+}
+
+/* タイマー & アクションボタン */
+.sudoku-board-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.sudoku-timer {
+  font-family: 'Space Mono', 'JetBrains Mono', monospace;
+  font-size: 1.75rem;
+  font-weight: 300;
+  color: var(--md-sys-color-on-surface);
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+.sudoku-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.sudoku-hint-btn,
+.sudoku-reset-btn {
+  font-size: 0.875rem;
+}
+
+/* 数独ボード */
+.sudoku-board {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: repeat(9, 1fr);
+  width: 100%;
+  max-width: 480px;
+  aspect-ratio: 1;
+  margin: 0 auto 1.5rem;
+  border: 2px solid var(--md-sys-color-on-surface);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+/* セル */
+.sudoku-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(0.875rem, 3vw, 1.25rem);
+  font-weight: 400;
+  cursor: pointer;
+  border: 0.5px solid var(--md-sys-color-outline-variant);
+  color: var(--md-sys-color-on-surface);
+  background-color: var(--md-sys-color-surface);
+  user-select: none;
+  transition:
+    background-color 0.1s ease,
+    color 0.1s ease;
+  outline: none;
+}
+
+.sudoku-cell:focus {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: -2px;
+  z-index: 1;
+}
+
+/* 3x3ブロック境界（太線） */
+.sudoku-cell.block-left {
+  border-left: 2px solid var(--md-sys-color-on-surface);
+}
+
+.sudoku-cell.block-right {
+  border-right: 2px solid var(--md-sys-color-on-surface);
+}
+
+.sudoku-cell.block-top {
+  border-top: 2px solid var(--md-sys-color-on-surface);
+}
+
+.sudoku-cell.block-bottom {
+  border-bottom: 2px solid var(--md-sys-color-on-surface);
+}
+
+/* 初期値セル */
+.sudoku-cell.given {
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface);
+  background-color: var(--md-sys-color-surface-variant);
+  cursor: default;
+}
+
+/* 選択中セル */
+.sudoku-cell.selected {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.sudoku-cell.given.selected {
+  background-color: var(--md-sys-color-primary-container);
+}
+
+/* 同じ数字のセル */
+.sudoku-cell.same-number {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+/* 競合セル */
+.sudoku-cell.conflict {
+  background-color: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-error);
+}
+
+/* ヒントセル */
+.sudoku-cell.hint {
+  color: var(--md-sys-color-tertiary);
+  font-weight: 600;
+}
+
+/* 数字入力パッド */
+.sudoku-numpad {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.5rem;
+  max-width: 480px;
+  margin: 0 auto 1.5rem;
+}
+
+.sudoku-numpad-btn {
+  padding: 0.625rem 0;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 8px;
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-size: 1.125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.1s ease,
+    transform 0.08s ease;
+}
+
+.sudoku-numpad-btn:hover {
+  background-color: var(--md-sys-color-surface-variant);
+}
+
+.sudoku-numpad-btn:active {
+  transform: scale(0.94);
+}
+
+.sudoku-numpad-clear {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-error);
+  border-color: var(--md-sys-color-error);
+}
+
+.sudoku-numpad-clear:hover {
+  background-color: var(--md-sys-color-error-container);
+}
+
+/* クリアバナー */
+.sudoku-complete {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 2rem;
+  background-color: var(--md-sys-color-primary-container);
+  border: 2px solid var(--md-sys-color-primary);
+  border-radius: 16px;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  animation: sudoku-complete-in 0.4s ease;
+}
+
+@keyframes sudoku-complete-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.sudoku-complete-icon {
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.sudoku-complete-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--md-sys-color-on-primary-container);
+  margin: 0;
+}
+
+.sudoku-complete-time {
+  font-family: 'Space Mono', 'JetBrains Mono', monospace;
+  font-size: 1.125rem;
+  color: var(--md-sys-color-on-primary-container);
+  margin: 0;
+}
+
+/* レスポンシブ */
+@media (max-width: 480px) {
+  .sudoku-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .sudoku-difficulty-group {
+    justify-content: center;
+  }
+
+  .sudoku-start-btn {
+    width: 100%;
+  }
+
+  .sudoku-timer {
+    font-size: 1.375rem;
+  }
+
+  .sudoku-numpad {
+    gap: 0.375rem;
+  }
+
+  .sudoku-numpad-btn {
+    padding: 0.5rem 0;
+    font-size: 1rem;
+  }
+}
