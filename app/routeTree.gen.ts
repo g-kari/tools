@@ -53,6 +53,7 @@ import { Route as StringSimilarityRouteImport } from './routes/string-similarity
 import { Route as StringEscapeRouteImport } from './routes/string-escape'
 import { Route as StatisticsRouteImport } from './routes/statistics'
 import { Route as SshKeyRouteImport } from './routes/ssh-key'
+import { Route as SqlToTsRouteImport } from './routes/sql-to-ts'
 import { Route as SqlRouteImport } from './routes/sql'
 import { Route as SlugRouteImport } from './routes/slug'
 import { Route as ServerEnvRouteImport } from './routes/server-env'
@@ -145,12 +146,14 @@ import { Route as FunctionPlotterRouteImport } from './routes/function-plotter'
 import { Route as FaviconGeneratorRouteImport } from './routes/favicon-generator'
 import { Route as EnvParserRouteImport } from './routes/env-parser'
 import { Route as EncodingRouteImport } from './routes/encoding'
+import { Route as EncodeChainRouteImport } from './routes/encode-chain'
 import { Route as EmojiConverterRouteImport } from './routes/emoji-converter'
 import { Route as EmailHeaderRouteImport } from './routes/email-header'
 import { Route as EmailDnsRouteImport } from './routes/email-dns'
 import { Route as DurationRouteImport } from './routes/duration'
 import { Route as DummyImageRouteImport } from './routes/dummy-image'
 import { Route as DummyAudioRouteImport } from './routes/dummy-audio'
+import { Route as DockerRunToComposeRouteImport } from './routes/docker-run-to-compose'
 import { Route as DnsLookupRouteImport } from './routes/dns-lookup'
 import { Route as DiscordStickerRouteImport } from './routes/discord-sticker'
 import { Route as DiscordEmojiRouteImport } from './routes/discord-emoji'
@@ -183,6 +186,7 @@ import { Route as CssAnimationRouteImport } from './routes/css-animation'
 import { Route as CspBuilderRouteImport } from './routes/csp-builder'
 import { Route as CronParserRouteImport } from './routes/cron-parser'
 import { Route as CronRouteImport } from './routes/cron'
+import { Route as CorsBuilderRouteImport } from './routes/cors-builder'
 import { Route as CookieParserRouteImport } from './routes/cookie-parser'
 import { Route as ConventionalCommitsRouteImport } from './routes/conventional-commits'
 import { Route as CombinatoricsRouteImport } from './routes/combinatorics'
@@ -441,6 +445,11 @@ const StatisticsRoute = StatisticsRouteImport.update({
 const SshKeyRoute = SshKeyRouteImport.update({
   id: '/ssh-key',
   path: '/ssh-key',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SqlToTsRoute = SqlToTsRouteImport.update({
+  id: '/sql-to-ts',
+  path: '/sql-to-ts',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SqlRoute = SqlRouteImport.update({
@@ -903,6 +912,11 @@ const EncodingRoute = EncodingRouteImport.update({
   path: '/encoding',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EncodeChainRoute = EncodeChainRouteImport.update({
+  id: '/encode-chain',
+  path: '/encode-chain',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EmojiConverterRoute = EmojiConverterRouteImport.update({
   id: '/emoji-converter',
   path: '/emoji-converter',
@@ -931,6 +945,11 @@ const DummyImageRoute = DummyImageRouteImport.update({
 const DummyAudioRoute = DummyAudioRouteImport.update({
   id: '/dummy-audio',
   path: '/dummy-audio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DockerRunToComposeRoute = DockerRunToComposeRouteImport.update({
+  id: '/docker-run-to-compose',
+  path: '/docker-run-to-compose',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DnsLookupRoute = DnsLookupRouteImport.update({
@@ -1091,6 +1110,11 @@ const CronParserRoute = CronParserRouteImport.update({
 const CronRoute = CronRouteImport.update({
   id: '/cron',
   path: '/cron',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CorsBuilderRoute = CorsBuilderRouteImport.update({
+  id: '/cors-builder',
+  path: '/cors-builder',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CookieParserRoute = CookieParserRouteImport.update({
@@ -1325,6 +1349,7 @@ export interface FileRoutesByFullPath {
   '/combinatorics': typeof CombinatoricsRoute
   '/conventional-commits': typeof ConventionalCommitsRoute
   '/cookie-parser': typeof CookieParserRoute
+  '/cors-builder': typeof CorsBuilderRoute
   '/cron': typeof CronRoute
   '/cron-parser': typeof CronParserRoute
   '/csp-builder': typeof CspBuilderRoute
@@ -1357,12 +1382,14 @@ export interface FileRoutesByFullPath {
   '/discord-emoji': typeof DiscordEmojiRoute
   '/discord-sticker': typeof DiscordStickerRoute
   '/dns-lookup': typeof DnsLookupRoute
+  '/docker-run-to-compose': typeof DockerRunToComposeRoute
   '/dummy-audio': typeof DummyAudioRoute
   '/dummy-image': typeof DummyImageRoute
   '/duration': typeof DurationRoute
   '/email-dns': typeof EmailDnsRoute
   '/email-header': typeof EmailHeaderRoute
   '/emoji-converter': typeof EmojiConverterRoute
+  '/encode-chain': typeof EncodeChainRoute
   '/encoding': typeof EncodingRoute
   '/env-parser': typeof EnvParserRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
@@ -1455,6 +1482,7 @@ export interface FileRoutesByFullPath {
   '/server-env': typeof ServerEnvRoute
   '/slug': typeof SlugRoute
   '/sql': typeof SqlRoute
+  '/sql-to-ts': typeof SqlToTsRoute
   '/ssh-key': typeof SshKeyRoute
   '/statistics': typeof StatisticsRoute
   '/string-escape': typeof StringEscapeRoute
@@ -1540,6 +1568,7 @@ export interface FileRoutesByTo {
   '/combinatorics': typeof CombinatoricsRoute
   '/conventional-commits': typeof ConventionalCommitsRoute
   '/cookie-parser': typeof CookieParserRoute
+  '/cors-builder': typeof CorsBuilderRoute
   '/cron': typeof CronRoute
   '/cron-parser': typeof CronParserRoute
   '/csp-builder': typeof CspBuilderRoute
@@ -1572,12 +1601,14 @@ export interface FileRoutesByTo {
   '/discord-emoji': typeof DiscordEmojiRoute
   '/discord-sticker': typeof DiscordStickerRoute
   '/dns-lookup': typeof DnsLookupRoute
+  '/docker-run-to-compose': typeof DockerRunToComposeRoute
   '/dummy-audio': typeof DummyAudioRoute
   '/dummy-image': typeof DummyImageRoute
   '/duration': typeof DurationRoute
   '/email-dns': typeof EmailDnsRoute
   '/email-header': typeof EmailHeaderRoute
   '/emoji-converter': typeof EmojiConverterRoute
+  '/encode-chain': typeof EncodeChainRoute
   '/encoding': typeof EncodingRoute
   '/env-parser': typeof EnvParserRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
@@ -1670,6 +1701,7 @@ export interface FileRoutesByTo {
   '/server-env': typeof ServerEnvRoute
   '/slug': typeof SlugRoute
   '/sql': typeof SqlRoute
+  '/sql-to-ts': typeof SqlToTsRoute
   '/ssh-key': typeof SshKeyRoute
   '/statistics': typeof StatisticsRoute
   '/string-escape': typeof StringEscapeRoute
@@ -1756,6 +1788,7 @@ export interface FileRoutesById {
   '/combinatorics': typeof CombinatoricsRoute
   '/conventional-commits': typeof ConventionalCommitsRoute
   '/cookie-parser': typeof CookieParserRoute
+  '/cors-builder': typeof CorsBuilderRoute
   '/cron': typeof CronRoute
   '/cron-parser': typeof CronParserRoute
   '/csp-builder': typeof CspBuilderRoute
@@ -1788,12 +1821,14 @@ export interface FileRoutesById {
   '/discord-emoji': typeof DiscordEmojiRoute
   '/discord-sticker': typeof DiscordStickerRoute
   '/dns-lookup': typeof DnsLookupRoute
+  '/docker-run-to-compose': typeof DockerRunToComposeRoute
   '/dummy-audio': typeof DummyAudioRoute
   '/dummy-image': typeof DummyImageRoute
   '/duration': typeof DurationRoute
   '/email-dns': typeof EmailDnsRoute
   '/email-header': typeof EmailHeaderRoute
   '/emoji-converter': typeof EmojiConverterRoute
+  '/encode-chain': typeof EncodeChainRoute
   '/encoding': typeof EncodingRoute
   '/env-parser': typeof EnvParserRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
@@ -1886,6 +1921,7 @@ export interface FileRoutesById {
   '/server-env': typeof ServerEnvRoute
   '/slug': typeof SlugRoute
   '/sql': typeof SqlRoute
+  '/sql-to-ts': typeof SqlToTsRoute
   '/ssh-key': typeof SshKeyRoute
   '/statistics': typeof StatisticsRoute
   '/string-escape': typeof StringEscapeRoute
@@ -1973,6 +2009,7 @@ export interface FileRouteTypes {
     | '/combinatorics'
     | '/conventional-commits'
     | '/cookie-parser'
+    | '/cors-builder'
     | '/cron'
     | '/cron-parser'
     | '/csp-builder'
@@ -2005,12 +2042,14 @@ export interface FileRouteTypes {
     | '/discord-emoji'
     | '/discord-sticker'
     | '/dns-lookup'
+    | '/docker-run-to-compose'
     | '/dummy-audio'
     | '/dummy-image'
     | '/duration'
     | '/email-dns'
     | '/email-header'
     | '/emoji-converter'
+    | '/encode-chain'
     | '/encoding'
     | '/env-parser'
     | '/favicon-generator'
@@ -2103,6 +2142,7 @@ export interface FileRouteTypes {
     | '/server-env'
     | '/slug'
     | '/sql'
+    | '/sql-to-ts'
     | '/ssh-key'
     | '/statistics'
     | '/string-escape'
@@ -2188,6 +2228,7 @@ export interface FileRouteTypes {
     | '/combinatorics'
     | '/conventional-commits'
     | '/cookie-parser'
+    | '/cors-builder'
     | '/cron'
     | '/cron-parser'
     | '/csp-builder'
@@ -2220,12 +2261,14 @@ export interface FileRouteTypes {
     | '/discord-emoji'
     | '/discord-sticker'
     | '/dns-lookup'
+    | '/docker-run-to-compose'
     | '/dummy-audio'
     | '/dummy-image'
     | '/duration'
     | '/email-dns'
     | '/email-header'
     | '/emoji-converter'
+    | '/encode-chain'
     | '/encoding'
     | '/env-parser'
     | '/favicon-generator'
@@ -2318,6 +2361,7 @@ export interface FileRouteTypes {
     | '/server-env'
     | '/slug'
     | '/sql'
+    | '/sql-to-ts'
     | '/ssh-key'
     | '/statistics'
     | '/string-escape'
@@ -2403,6 +2447,7 @@ export interface FileRouteTypes {
     | '/combinatorics'
     | '/conventional-commits'
     | '/cookie-parser'
+    | '/cors-builder'
     | '/cron'
     | '/cron-parser'
     | '/csp-builder'
@@ -2435,12 +2480,14 @@ export interface FileRouteTypes {
     | '/discord-emoji'
     | '/discord-sticker'
     | '/dns-lookup'
+    | '/docker-run-to-compose'
     | '/dummy-audio'
     | '/dummy-image'
     | '/duration'
     | '/email-dns'
     | '/email-header'
     | '/emoji-converter'
+    | '/encode-chain'
     | '/encoding'
     | '/env-parser'
     | '/favicon-generator'
@@ -2533,6 +2580,7 @@ export interface FileRouteTypes {
     | '/server-env'
     | '/slug'
     | '/sql'
+    | '/sql-to-ts'
     | '/ssh-key'
     | '/statistics'
     | '/string-escape'
@@ -2619,6 +2667,7 @@ export interface RootRouteChildren {
   CombinatoricsRoute: typeof CombinatoricsRoute
   ConventionalCommitsRoute: typeof ConventionalCommitsRoute
   CookieParserRoute: typeof CookieParserRoute
+  CorsBuilderRoute: typeof CorsBuilderRoute
   CronRoute: typeof CronRoute
   CronParserRoute: typeof CronParserRoute
   CspBuilderRoute: typeof CspBuilderRoute
@@ -2651,12 +2700,14 @@ export interface RootRouteChildren {
   DiscordEmojiRoute: typeof DiscordEmojiRoute
   DiscordStickerRoute: typeof DiscordStickerRoute
   DnsLookupRoute: typeof DnsLookupRoute
+  DockerRunToComposeRoute: typeof DockerRunToComposeRoute
   DummyAudioRoute: typeof DummyAudioRoute
   DummyImageRoute: typeof DummyImageRoute
   DurationRoute: typeof DurationRoute
   EmailDnsRoute: typeof EmailDnsRoute
   EmailHeaderRoute: typeof EmailHeaderRoute
   EmojiConverterRoute: typeof EmojiConverterRoute
+  EncodeChainRoute: typeof EncodeChainRoute
   EncodingRoute: typeof EncodingRoute
   EnvParserRoute: typeof EnvParserRoute
   FaviconGeneratorRoute: typeof FaviconGeneratorRoute
@@ -2749,6 +2800,7 @@ export interface RootRouteChildren {
   ServerEnvRoute: typeof ServerEnvRoute
   SlugRoute: typeof SlugRoute
   SqlRoute: typeof SqlRoute
+  SqlToTsRoute: typeof SqlToTsRoute
   SshKeyRoute: typeof SshKeyRoute
   StatisticsRoute: typeof StatisticsRoute
   StringEscapeRoute: typeof StringEscapeRoute
@@ -3107,6 +3159,13 @@ declare module '@tanstack/react-router' {
       path: '/ssh-key'
       fullPath: '/ssh-key'
       preLoaderRoute: typeof SshKeyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sql-to-ts': {
+      id: '/sql-to-ts'
+      path: '/sql-to-ts'
+      fullPath: '/sql-to-ts'
+      preLoaderRoute: typeof SqlToTsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sql': {
@@ -3753,6 +3812,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EncodingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/encode-chain': {
+      id: '/encode-chain'
+      path: '/encode-chain'
+      fullPath: '/encode-chain'
+      preLoaderRoute: typeof EncodeChainRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/emoji-converter': {
       id: '/emoji-converter'
       path: '/emoji-converter'
@@ -3793,6 +3859,13 @@ declare module '@tanstack/react-router' {
       path: '/dummy-audio'
       fullPath: '/dummy-audio'
       preLoaderRoute: typeof DummyAudioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/docker-run-to-compose': {
+      id: '/docker-run-to-compose'
+      path: '/docker-run-to-compose'
+      fullPath: '/docker-run-to-compose'
+      preLoaderRoute: typeof DockerRunToComposeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dns-lookup': {
@@ -4017,6 +4090,13 @@ declare module '@tanstack/react-router' {
       path: '/cron'
       fullPath: '/cron'
       preLoaderRoute: typeof CronRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cors-builder': {
+      id: '/cors-builder'
+      path: '/cors-builder'
+      fullPath: '/cors-builder'
+      preLoaderRoute: typeof CorsBuilderRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cookie-parser': {
@@ -4331,6 +4411,7 @@ const rootRouteChildren: RootRouteChildren = {
   CombinatoricsRoute: CombinatoricsRoute,
   ConventionalCommitsRoute: ConventionalCommitsRoute,
   CookieParserRoute: CookieParserRoute,
+  CorsBuilderRoute: CorsBuilderRoute,
   CronRoute: CronRoute,
   CronParserRoute: CronParserRoute,
   CspBuilderRoute: CspBuilderRoute,
@@ -4363,12 +4444,14 @@ const rootRouteChildren: RootRouteChildren = {
   DiscordEmojiRoute: DiscordEmojiRoute,
   DiscordStickerRoute: DiscordStickerRoute,
   DnsLookupRoute: DnsLookupRoute,
+  DockerRunToComposeRoute: DockerRunToComposeRoute,
   DummyAudioRoute: DummyAudioRoute,
   DummyImageRoute: DummyImageRoute,
   DurationRoute: DurationRoute,
   EmailDnsRoute: EmailDnsRoute,
   EmailHeaderRoute: EmailHeaderRoute,
   EmojiConverterRoute: EmojiConverterRoute,
+  EncodeChainRoute: EncodeChainRoute,
   EncodingRoute: EncodingRoute,
   EnvParserRoute: EnvParserRoute,
   FaviconGeneratorRoute: FaviconGeneratorRoute,
@@ -4461,6 +4544,7 @@ const rootRouteChildren: RootRouteChildren = {
   ServerEnvRoute: ServerEnvRoute,
   SlugRoute: SlugRoute,
   SqlRoute: SqlRoute,
+  SqlToTsRoute: SqlToTsRoute,
   SshKeyRoute: SshKeyRoute,
   StatisticsRoute: StatisticsRoute,
   StringEscapeRoute: StringEscapeRoute,

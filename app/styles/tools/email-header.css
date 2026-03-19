@@ -336,3 +336,48 @@
 .headers-filter-bar {
   margin-bottom: 12px;
 }
+
+/* Authentication details summary */
+.auth-details-summary {
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.auth-raw-pre {
+  margin-top: 8px;
+  font-size: 0.8rem;
+  padding: 12px;
+}
+
+/* Spam score fill (uses CSS custom property for dynamic width) */
+.spam-score-fill {
+  width: var(--spam-score-width, 0%);
+}
+
+/* Spam threshold marker */
+.spam-threshold-marker {
+  left: 50%;
+}
+
+/* Spam tests label spacing */
+.email-header-summary-label--spaced {
+  margin-bottom: 6px;
+}
+
+/* All headers title row */
+.headers-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.email-header-section-title--no-margin {
+  margin-bottom: 0;
+}
+
+/* No data centered */
+.email-header-no-data--center {
+  text-align: center;
+}

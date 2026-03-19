@@ -172,7 +172,8 @@ export function parseAuthResults(headers: ParsedHeader[]): AuthResult | null {
   const raw = authHeader.value;
 
   const extractStatus = (protocol: string): AuthStatus => {
-    const regex = new RegExp(`${protocol}\\s*=\\s*([\\w]+)`, 'i');
+    const escapedProtocol = protocol.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`${escapedProtocol}\\s*=\\s*([\\w]+)`, 'i');
     const match = raw.match(regex);
     if (!match) return 'none';
     const val = match[1].toLowerCase();

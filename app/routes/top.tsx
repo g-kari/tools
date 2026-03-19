@@ -486,6 +486,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🔤",
       },
       {
+        path: "/encode-chain",
+        label: "エンコードチェーン",
+        description:
+          "テキストに複数のエンコード・変換を連鎖して適用するツール。Base64・URLエンコード・Hex変換・HTMLエスケープなどを組み合わせ、各ステップの結果を可視化。",
+        icon: "⛓️",
+      },
+      {
         path: "/ini-parser",
         label: "INIファイルパーサー",
         description:
@@ -679,6 +686,13 @@ const toolCatalog: ToolCategory[] = [
         label: "JSON→SQL CREATE TABLE生成",
         description: "JSONデータからSQL CREATE TABLE文を自動生成するツール。PostgreSQL・MySQL・SQLiteに対応。",
         icon: "🗄️",
+      },
+      {
+        path: "/sql-to-ts",
+        label: "SQL→TypeScript型変換",
+        description:
+          "SQL CREATE TABLE文からTypeScriptのinterface/type定義を自動生成するツール。PostgreSQL・MySQL・SQLite対応。",
+        icon: "🔷",
       },
       {
         path: "/json-compare",
@@ -1266,6 +1280,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🛡️",
       },
       {
+        path: "/cors-builder",
+        label: "CORS ヘッダービルダー",
+        description:
+          "Cross-Origin Resource Sharing (CORS) ヘッダーをGUIで構築するツール。許可するオリジン・メソッド・ヘッダーを設定し、Access-Control-* ヘッダーを生成。Express・nginx・Cloudflare Workers 向けの設定コードも出力。",
+        icon: "🌍",
+      },
+      {
         path: "/pkce",
         label: "PKCE ジェネレーター",
         description:
@@ -1369,6 +1390,13 @@ const toolCatalog: ToolCategory[] = [
         description:
           "cURLコマンドをJavaScript Fetch API または axios のコードに変換するツール。-H / -d / -X / -u などのフラグに対応。ブラウザ内完結。",
         icon: "⇄",
+      },
+      {
+        path: "/docker-run-to-compose",
+        label: "docker run → Compose 変換",
+        description:
+          "docker run コマンドを docker-compose.yml 形式に変換するツール。-p / -e / -v / --name / --network などのオプションに対応。ブラウザ内完結。",
+        icon: "🐳",
       },
       {
         path: "/openssl-builder",

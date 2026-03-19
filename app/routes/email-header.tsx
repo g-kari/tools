@@ -226,12 +226,11 @@ function EmailHeaderAnalyzer() {
                   <AuthBadge protocol="ARC" status={result.auth.arc} />
                 </div>
                 <details>
-                  <summary style={{ cursor: "pointer", fontSize: "0.85rem", color: "var(--md-sys-color-on-surface-variant)" }}>
+                  <summary className="auth-details-summary">
                     生の Authentication-Results を表示
                   </summary>
                   <pre
-                    className="jwt-monospace-output"
-                    style={{ marginTop: "8px", fontSize: "0.8rem", padding: "12px" }}
+                    className="jwt-monospace-output auth-raw-pre"
                     aria-label="Authentication-Results 生テキスト"
                   >
                     {result.auth.raw}
@@ -276,13 +275,10 @@ function EmailHeaderAnalyzer() {
                                 ? "warn"
                                 : "danger"
                           }`}
-                          style={{
-                            width: `${Math.min(100, Math.max(0, ((result.spam.score + result.spam.threshold) / (result.spam.threshold * 2)) * 100))}%`,
-                          }}
+                          style={{ "--spam-score-width": `${Math.min(100, Math.max(0, ((result.spam.score + result.spam.threshold) / (result.spam.threshold * 2)) * 100))}%` } as React.CSSProperties}
                         />
                         <div
                           className="spam-threshold-marker"
-                          style={{ left: "50%" }}
                           title={`閾値: ${result.spam.threshold}`}
                         />
                       </div>
@@ -292,7 +288,7 @@ function EmailHeaderAnalyzer() {
 
                 {result.spam.tests.length > 0 && (
                   <div>
-                    <div className="email-header-summary-label" style={{ marginBottom: "6px" }}>
+                    <div className="email-header-summary-label email-header-summary-label--spaced">
                       適用テスト ({result.spam.tests.length}件)
                     </div>
                     <div className="spam-tests" aria-label="スパムテスト一覧">
@@ -353,8 +349,8 @@ function EmailHeaderAnalyzer() {
 
             {/* All Headers */}
             <div className="result-card">
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
-                <h2 className="email-header-section-title" style={{ marginBottom: 0 }}>
+              <div className="headers-title-row">
+                <h2 className="email-header-section-title email-header-section-title--no-margin">
                   📋 全ヘッダー ({result.headers.length}件)
                 </h2>
                 <Button
@@ -401,7 +397,7 @@ function EmailHeaderAnalyzer() {
                       ))
                     ) : (
                       <tr>
-                        <td colSpan={2} className="email-header-no-data" style={{ textAlign: "center" }}>
+                        <td colSpan={2} className="email-header-no-data email-header-no-data--center">
                           一致するヘッダーが見つかりません
                         </td>
                       </tr>
@@ -414,12 +410,17 @@ function EmailHeaderAnalyzer() {
         )}
 
         <TipsCard
-          tips={[
-            "メールクライアントで「メッセージのソースを表示」または「生のメッセージを表示」を選択してヘッダーをコピーできます",
-            "Gmail では「…」メニュー→「メッセージのソースを表示」でヘッダーを確認できます",
-            "SPF・DKIM・DMARC がすべて pass であればメールの送信元は正規のサーバーです",
-            "Received ヘッダーは下から上の順に読みます（最初に受信したサーバーが最下部）",
-            "X-Spam-Status でスパムフィルターのスコアと適用ルールを確認できます",
+          sections={[
+            {
+              title: "使い方",
+              items: [
+                "メールクライアントで「メッセージのソースを表示」または「生のメッセージを表示」を選択してヘッダーをコピーできます",
+                "Gmail では「…」メニュー→「メッセージのソースを表示」でヘッダーを確認できます",
+                "SPF・DKIM・DMARC がすべて pass であればメールの送信元は正規のサーバーです",
+                "Received ヘッダーは下から上の順に読みます（最初に受信したサーバーが最下部）",
+                "X-Spam-Status でスパムフィルターのスコアと適用ルールを確認できます",
+              ],
+            },
           ]}
         />
       </div>
