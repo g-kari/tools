@@ -58,6 +58,7 @@ const navCategories = [
       { path: "/css-clamp", label: "CSS Fluid/Clamp 計算機" },
       { path: "/math-eval", label: "数式評価" },
       { path: "/bitwise", label: "ビット演算計算機" },
+      { path: "/ieee754", label: "IEEE 754 浮動小数点数" },
       { path: "/hex-viewer", label: "Hex Viewer" },
       { path: "/audio-converter", label: "オーディオ変換" },
       { path: "/video-converter", label: "動画変換" },

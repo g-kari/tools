@@ -388,6 +388,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🔢",
       },
       {
+        path: "/ieee754",
+        label: "IEEE 754 浮動小数点数",
+        description:
+          "IEEE 754浮動小数点数の内部表現をビット単位で可視化するツール。float32（単精度）・float64（倍精度）に対応。符号・指数部・仮数部を対話的に操作。NaN・±Infinity・非正規化数の仕組みも確認できる。",
+        icon: "🔣",
+      },
+      {
         path: "/hex-viewer",
         label: "Hex Viewer",
         description:
