@@ -158,6 +158,7 @@ import { Route as CssUnitRouteImport } from './routes/css-unit'
 import { Route as CssTransformRouteImport } from './routes/css-transform'
 import { Route as CssTextShadowRouteImport } from './routes/css-text-shadow'
 import { Route as CssSpecificityRouteImport } from './routes/css-specificity'
+import { Route as CssSelectorRouteImport } from './routes/css-selector'
 import { Route as CssMediaQueryRouteImport } from './routes/css-media-query'
 import { Route as CssGridRouteImport } from './routes/css-grid'
 import { Route as CssGradientRouteImport } from './routes/css-gradient'
@@ -955,6 +956,11 @@ const CssSpecificityRoute = CssSpecificityRouteImport.update({
   path: '/css-specificity',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CssSelectorRoute = CssSelectorRouteImport.update({
+  id: '/css-selector',
+  path: '/css-selector',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CssMediaQueryRoute = CssMediaQueryRouteImport.update({
   id: '/css-media-query',
   path: '/css-media-query',
@@ -1259,6 +1265,7 @@ export interface FileRoutesByFullPath {
   '/css-gradient': typeof CssGradientRoute
   '/css-grid': typeof CssGridRoute
   '/css-media-query': typeof CssMediaQueryRoute
+  '/css-selector': typeof CssSelectorRoute
   '/css-specificity': typeof CssSpecificityRoute
   '/css-text-shadow': typeof CssTextShadowRoute
   '/css-transform': typeof CssTransformRoute
@@ -1461,6 +1468,7 @@ export interface FileRoutesByTo {
   '/css-gradient': typeof CssGradientRoute
   '/css-grid': typeof CssGridRoute
   '/css-media-query': typeof CssMediaQueryRoute
+  '/css-selector': typeof CssSelectorRoute
   '/css-specificity': typeof CssSpecificityRoute
   '/css-text-shadow': typeof CssTextShadowRoute
   '/css-transform': typeof CssTransformRoute
@@ -1664,6 +1672,7 @@ export interface FileRoutesById {
   '/css-gradient': typeof CssGradientRoute
   '/css-grid': typeof CssGridRoute
   '/css-media-query': typeof CssMediaQueryRoute
+  '/css-selector': typeof CssSelectorRoute
   '/css-specificity': typeof CssSpecificityRoute
   '/css-text-shadow': typeof CssTextShadowRoute
   '/css-transform': typeof CssTransformRoute
@@ -1868,6 +1877,7 @@ export interface FileRouteTypes {
     | '/css-gradient'
     | '/css-grid'
     | '/css-media-query'
+    | '/css-selector'
     | '/css-specificity'
     | '/css-text-shadow'
     | '/css-transform'
@@ -2070,6 +2080,7 @@ export interface FileRouteTypes {
     | '/css-gradient'
     | '/css-grid'
     | '/css-media-query'
+    | '/css-selector'
     | '/css-specificity'
     | '/css-text-shadow'
     | '/css-transform'
@@ -2272,6 +2283,7 @@ export interface FileRouteTypes {
     | '/css-gradient'
     | '/css-grid'
     | '/css-media-query'
+    | '/css-selector'
     | '/css-specificity'
     | '/css-text-shadow'
     | '/css-transform'
@@ -2475,6 +2487,7 @@ export interface RootRouteChildren {
   CssGradientRoute: typeof CssGradientRoute
   CssGridRoute: typeof CssGridRoute
   CssMediaQueryRoute: typeof CssMediaQueryRoute
+  CssSelectorRoute: typeof CssSelectorRoute
   CssSpecificityRoute: typeof CssSpecificityRoute
   CssTextShadowRoute: typeof CssTextShadowRoute
   CssTransformRoute: typeof CssTransformRoute
@@ -3675,6 +3688,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CssSpecificityRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/css-selector': {
+      id: '/css-selector'
+      path: '/css-selector'
+      fullPath: '/css-selector'
+      preLoaderRoute: typeof CssSelectorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/css-media-query': {
       id: '/css-media-query'
       path: '/css-media-query'
@@ -4083,6 +4103,7 @@ const rootRouteChildren: RootRouteChildren = {
   CssGradientRoute: CssGradientRoute,
   CssGridRoute: CssGridRoute,
   CssMediaQueryRoute: CssMediaQueryRoute,
+  CssSelectorRoute: CssSelectorRoute,
   CssSpecificityRoute: CssSpecificityRoute,
   CssTextShadowRoute: CssTextShadowRoute,
   CssTransformRoute: CssTransformRoute,
