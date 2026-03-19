@@ -663,6 +663,18 @@ const toolCatalog: ToolCategory[] = [
         icon: "🔷",
       },
       {
+        path: "/json-to-zod",
+        label: "JSON→Zodスキーマ生成",
+        description: "JSONデータからZodスキーマを自動生成するツール。optional・nullable対応。",
+        icon: "🛡️",
+      },
+      {
+        path: "/json-to-graphql",
+        label: "JSON→GraphQLスキーマ生成",
+        description: "JSONデータからGraphQLスキーマ（SDL形式）を自動生成するツール。type/interface・Non-Null対応。",
+        icon: "◈",
+      },
+      {
         path: "/json-compare",
         label: "JSON比較",
         description: "2つのJSONを並べて比較し、追加・削除・変更されたキーを差分表示するツール",
