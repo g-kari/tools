@@ -113,7 +113,7 @@ const PRESETS: CorsPreset[] = [
 /**
  * CORSヘッダーを生成する
  */
-function buildCorsHeaders(
+export function buildCorsHeaders(
   originMode: OriginMode,
   origins: string,
   methods: HttpMethod[],
@@ -173,7 +173,7 @@ function buildCorsHeaders(
 /**
  * Express.js 向けコードを生成する
  */
-function generateExpressCode(
+export function generateExpressCode(
   originMode: OriginMode,
   origins: string,
   methods: HttpMethod[],
@@ -219,7 +219,7 @@ function generateExpressCode(
 /**
  * nginx 向けコードを生成する
  */
-function generateNginxCode(
+export function generateNginxCode(
   originMode: OriginMode,
   origins: string,
   methods: HttpMethod[],
@@ -284,7 +284,7 @@ function generateNginxCode(
 /**
  * Cloudflare Workers 向けコードを生成する
  */
-function generateWorkersCode(
+export function generateWorkersCode(
   originMode: OriginMode,
   origins: string,
   methods: HttpMethod[],
