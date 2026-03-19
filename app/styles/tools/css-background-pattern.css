@@ -1,0 +1,266 @@
+/* CSS背景パターンジェネレーター */
+
+.cbp-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px;
+  animation: cbp-fade-in-up 0.3s ease-out both;
+}
+
+.cbp-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 768px) {
+  .cbp-layout {
+    grid-template-columns: 340px 1fr;
+    align-items: start;
+  }
+}
+
+/* コントロールパネル */
+.cbp-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.cbp-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cbp-section-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* タイプ選択タブ */
+.cbp-type-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  background: var(--md-sys-color-surface-variant);
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.cbp-type-tab {
+  flex: 1;
+  min-width: calc(33.333% - 4px);
+  padding: 6px 8px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  transition: background-color 0.2s, color 0.2s;
+  text-align: center;
+}
+
+.cbp-type-tab.active {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.cbp-type-tab:hover:not(.active) {
+  opacity: 0.85;
+}
+
+/* カラー設定行 */
+.cbp-color-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cbp-color-label {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  min-width: 60px;
+}
+
+.cbp-color-swatch {
+  width: 32px;
+  height: 32px;
+  padding: 2px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  cursor: pointer;
+  background: transparent;
+  flex-shrink: 0;
+}
+
+.cbp-color-hex {
+  flex: 1;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.8125rem;
+  padding: 4px 8px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--md-sys-color-on-surface);
+  transition: border-color 0.2s;
+}
+
+.cbp-color-hex:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+}
+
+/* オプション行 */
+.cbp-option-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cbp-option-label {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  min-width: 60px;
+}
+
+.cbp-range {
+  flex: 1;
+  accent-color: var(--md-sys-color-primary);
+  height: 4px;
+  cursor: pointer;
+}
+
+.cbp-range-value {
+  font-size: 0.8125rem;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  color: var(--md-sys-color-on-surface);
+  min-width: 44px;
+  text-align: right;
+}
+
+/* プリセット */
+.cbp-presets-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+@media (min-width: 768px) {
+  .cbp-presets-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .cbp-presets-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.cbp-preset-btn {
+  height: 52px;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 0.2s, opacity 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.cbp-preset-btn:hover {
+  opacity: 0.85;
+}
+
+.cbp-preset-btn.selected {
+  border-color: var(--md-sys-color-primary);
+}
+
+.cbp-preset-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  padding: 4px 6px;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+/* プレビューエリア */
+.cbp-preview-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cbp-preview {
+  width: 100%;
+  height: 200px;
+  border-radius: 4px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  transition: background 0.3s ease;
+}
+
+/* CSS出力エリア */
+.cbp-output-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cbp-output-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cbp-output-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.cbp-code-block {
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  padding: 16px;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface);
+  word-break: break-all;
+  white-space: pre-wrap;
+  line-height: 1.6;
+  min-height: 60px;
+}
+
+/* アニメーション */
+@keyframes cbp-fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cbp-container {
+    animation: none;
+  }
+
+  .cbp-preview,
+  .cbp-type-tab,
+  .cbp-color-hex {
+    transition: none;
+  }
+}
