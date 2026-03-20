@@ -29,8 +29,8 @@
     "@radix-ui/react-slot": "^1.2.4",
     "@resvg/resvg-wasm": "^2.6.2",
     "@tailwindcss/vite": "^4.1.18",
-    "@tanstack/react-router": "^1.120.3",
-    "@tanstack/react-start": "^1.120.3",
+    "@tanstack/react-router": "^1.166.18",
+    "@tanstack/react-start": "^1.166.18",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "croner": "^10.0.1",
@@ -52,11 +52,15 @@
     "tailwind-merge": "^3.4.0",
     "tailwindcss": "^4.1.18"
   },
+  "overrides": {
+    "undici": ">=7.24.5",
+    "h3": ">=2.0.1-rc.17"
+  },
   "devDependencies": {
     "@cloudflare/vite-plugin": "^1.28.0",
     "@cloudflare/workers-types": "^4.20251225.0",
     "@playwright/test": "^1.57.0",
-    "@tanstack/router-plugin": "^1.120.3",
+    "@tanstack/router-plugin": "^1.166.14",
     "@types/js-yaml": "^4.0.9",
     "@types/jsbarcode": "^3.11.4",
     "@types/marked": "^5.0.2",
@@ -71,7 +75,7 @@
     "vite": "^7.0.0",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^4.0.16",
-    "wait-on": "^9.0.3",
+    "wait-on": "^9.0.4",
     "wrangler": "^4.73.0"
   }
 }
