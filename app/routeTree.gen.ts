@@ -215,6 +215,7 @@ import { Route as CountdownRouteImport } from './routes/countdown'
 import { Route as CorsBuilderRouteImport } from './routes/cors-builder'
 import { Route as CookieParserRouteImport } from './routes/cookie-parser'
 import { Route as ConventionalCommitsRouteImport } from './routes/conventional-commits'
+import { Route as CompoundInterestRouteImport } from './routes/compound-interest'
 import { Route as CombinatoricsRouteImport } from './routes/combinatorics'
 import { Route as ColorTokenRouteImport } from './routes/color-token'
 import { Route as ColorTemperatureRouteImport } from './routes/color-temperature'
@@ -1288,6 +1289,11 @@ const ConventionalCommitsRoute = ConventionalCommitsRouteImport.update({
   path: '/conventional-commits',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CompoundInterestRoute = CompoundInterestRouteImport.update({
+  id: '/compound-interest',
+  path: '/compound-interest',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CombinatoricsRoute = CombinatoricsRouteImport.update({
   id: '/combinatorics',
   path: '/combinatorics',
@@ -1538,6 +1544,7 @@ export interface FileRoutesByFullPath {
   '/color-temperature': typeof ColorTemperatureRoute
   '/color-token': typeof ColorTokenRoute
   '/combinatorics': typeof CombinatoricsRoute
+  '/compound-interest': typeof CompoundInterestRoute
   '/conventional-commits': typeof ConventionalCommitsRoute
   '/cookie-parser': typeof CookieParserRoute
   '/cors-builder': typeof CorsBuilderRoute
@@ -1788,6 +1795,7 @@ export interface FileRoutesByTo {
   '/color-temperature': typeof ColorTemperatureRoute
   '/color-token': typeof ColorTokenRoute
   '/combinatorics': typeof CombinatoricsRoute
+  '/compound-interest': typeof CompoundInterestRoute
   '/conventional-commits': typeof ConventionalCommitsRoute
   '/cookie-parser': typeof CookieParserRoute
   '/cors-builder': typeof CorsBuilderRoute
@@ -2039,6 +2047,7 @@ export interface FileRoutesById {
   '/color-temperature': typeof ColorTemperatureRoute
   '/color-token': typeof ColorTokenRoute
   '/combinatorics': typeof CombinatoricsRoute
+  '/compound-interest': typeof CompoundInterestRoute
   '/conventional-commits': typeof ConventionalCommitsRoute
   '/cookie-parser': typeof CookieParserRoute
   '/cors-builder': typeof CorsBuilderRoute
@@ -2291,6 +2300,7 @@ export interface FileRouteTypes {
     | '/color-temperature'
     | '/color-token'
     | '/combinatorics'
+    | '/compound-interest'
     | '/conventional-commits'
     | '/cookie-parser'
     | '/cors-builder'
@@ -2541,6 +2551,7 @@ export interface FileRouteTypes {
     | '/color-temperature'
     | '/color-token'
     | '/combinatorics'
+    | '/compound-interest'
     | '/conventional-commits'
     | '/cookie-parser'
     | '/cors-builder'
@@ -2791,6 +2802,7 @@ export interface FileRouteTypes {
     | '/color-temperature'
     | '/color-token'
     | '/combinatorics'
+    | '/compound-interest'
     | '/conventional-commits'
     | '/cookie-parser'
     | '/cors-builder'
@@ -3042,6 +3054,7 @@ export interface RootRouteChildren {
   ColorTemperatureRoute: typeof ColorTemperatureRoute
   ColorTokenRoute: typeof ColorTokenRoute
   CombinatoricsRoute: typeof CombinatoricsRoute
+  CompoundInterestRoute: typeof CompoundInterestRoute
   ConventionalCommitsRoute: typeof ConventionalCommitsRoute
   CookieParserRoute: typeof CookieParserRoute
   CorsBuilderRoute: typeof CorsBuilderRoute
@@ -4698,6 +4711,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ConventionalCommitsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/compound-interest': {
+      id: '/compound-interest'
+      path: '/compound-interest'
+      fullPath: '/compound-interest'
+      preLoaderRoute: typeof CompoundInterestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/combinatorics': {
       id: '/combinatorics'
       path: '/combinatorics'
@@ -5034,6 +5054,7 @@ const rootRouteChildren: RootRouteChildren = {
   ColorTemperatureRoute: ColorTemperatureRoute,
   ColorTokenRoute: ColorTokenRoute,
   CombinatoricsRoute: CombinatoricsRoute,
+  CompoundInterestRoute: CompoundInterestRoute,
   ConventionalCommitsRoute: ConventionalCommitsRoute,
   CookieParserRoute: CookieParserRoute,
   CorsBuilderRoute: CorsBuilderRoute,

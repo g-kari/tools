@@ -1,0 +1,271 @@
+/* 複利計算機 */
+
+.ci-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.ci-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.ci-input-group label {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-weight: 500;
+}
+
+.ci-input-row {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.ci-input-row input[type="number"] {
+  flex: 1;
+  max-width: 14rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-size: 1rem;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.ci-input-row input[type="number"]:focus {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+  border-color: var(--md-sys-color-primary);
+}
+
+.ci-select {
+  flex: 1;
+  max-width: 14rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-size: 1rem;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.ci-select:focus {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+  border-color: var(--md-sys-color-primary);
+}
+
+.ci-input-unit {
+  font-size: 0.9375rem;
+  color: var(--md-sys-color-on-surface-variant);
+  white-space: nowrap;
+}
+
+.ci-error {
+  padding: 0.625rem 1rem;
+  background: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-on-error-container);
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+/* サマリーカード */
+.ci-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.ci-summary-card {
+  background: var(--md-sys-color-surface-variant);
+  border-radius: 8px;
+  padding: 1.125rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.ci-summary-card.primary {
+  background: var(--md-sys-color-primary-container);
+}
+
+.ci-summary-label {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ci-summary-card.primary .ci-summary-label {
+  color: var(--md-sys-color-on-primary-container);
+  opacity: 0.75;
+}
+
+.ci-summary-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface);
+  font-family: "JetBrains Mono", monospace;
+  line-height: 1.2;
+}
+
+.ci-summary-card.primary .ci-summary-value {
+  font-size: 1.75rem;
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.ci-summary-sub {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.ci-summary-card.primary .ci-summary-sub {
+  color: var(--md-sys-color-on-primary-container);
+  opacity: 0.7;
+}
+
+/* 比率バー */
+.ci-ratio-bar {
+  margin-top: 1rem;
+}
+
+.ci-ratio-bar-label {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 0.375rem;
+}
+
+.ci-ratio-track {
+  height: 12px;
+  border-radius: 6px;
+  background: var(--md-sys-color-surface-variant);
+  overflow: hidden;
+}
+
+.ci-ratio-fill-principal {
+  width: var(--ci-principal-ratio, 50%);
+  height: 100%;
+  background: var(--md-sys-color-primary);
+  display: inline-block;
+  border-radius: 6px 0 0 6px;
+}
+
+.ci-ratio-fill-interest {
+  width: var(--ci-interest-ratio, 30%);
+  height: 100%;
+  background: var(--md-sys-color-tertiary);
+  display: inline-block;
+}
+
+.ci-ratio-fill-contribution {
+  width: var(--ci-contribution-ratio, 20%);
+  height: 100%;
+  background: var(--md-sys-color-secondary);
+  display: inline-block;
+  border-radius: 0 6px 6px 0;
+}
+
+.ci-copy-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+/* 年別内訳表 */
+.ci-schedule-section {
+  margin-top: 1rem;
+}
+
+.ci-schedule-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  font-family: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  transition: background 0.15s;
+  margin-bottom: 0.75rem;
+}
+
+.ci-schedule-toggle:hover {
+  background: var(--md-sys-color-surface-variant);
+}
+
+.ci-schedule-table-wrapper {
+  overflow-x: auto;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 6px;
+}
+
+.ci-schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.ci-schedule-table th {
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  padding: 0.5rem 0.75rem;
+  text-align: right;
+  font-weight: 600;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.ci-schedule-table th:first-child {
+  text-align: center;
+}
+
+.ci-schedule-table td {
+  padding: 0.4375rem 0.75rem;
+  text-align: right;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  color: var(--md-sys-color-on-surface);
+}
+
+.ci-schedule-table td:first-child {
+  text-align: center;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.ci-schedule-table tr:last-child td {
+  border-bottom: none;
+}
+
+.ci-schedule-table tr:nth-child(even) td {
+  background: color-mix(
+    in srgb,
+    var(--md-sys-color-surface-variant) 35%,
+    transparent
+  );
+}
+
+.ci-empty-state {
+  padding: 2rem;
+  text-align: center;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.9375rem;
+  background: var(--md-sys-color-surface-variant);
+  border-radius: 6px;
+}
