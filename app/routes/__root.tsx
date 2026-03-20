@@ -108,6 +108,7 @@ const navCategories = [
       { path: "/duration", label: "時間計算・変換" },
       { path: "/encode-chain", label: "エンコードチェーン" },
       { path: "/geohash", label: "Geohash変換" },
+      { path: "/percentage-calculator", label: "パーセンテージ計算機" },
     ],
   },
   {
