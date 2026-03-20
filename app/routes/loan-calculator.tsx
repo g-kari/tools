@@ -268,20 +268,24 @@ function LoanCalculator() {
                   万円）
                 </span>
               </div>
-              <div className="loan-ratio-track" role="img" aria-label={`元金 ${principalRatio.toFixed(1)}%、利息 ${(100 - principalRatio).toFixed(1)}%`}>
-                <span
-                  className="loan-ratio-fill-principal"
-                  style={{ width: `${principalRatio}%` }}
-                />
-                <span
-                  className="loan-ratio-fill-interest"
-                  style={{ width: `${100 - principalRatio}%` }}
-                />
+              <div
+                className="loan-ratio-track"
+                role="img"
+                aria-label={`元金 ${principalRatio.toFixed(1)}%、利息 ${(100 - principalRatio).toFixed(1)}%`}
+                style={
+                  {
+                    "--loan-principal-ratio": `${principalRatio}%`,
+                    "--loan-interest-ratio": `${100 - principalRatio}%`,
+                  } as React.CSSProperties
+                }
+              >
+                <span className="loan-ratio-fill-principal" />
+                <span className="loan-ratio-fill-interest" />
               </div>
             </div>
 
             {/* コピーボタン */}
-            <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", marginTop: "0.5rem" }}>
+            <div className="loan-copy-actions">
               <button
                 className="loan-schedule-toggle"
                 onClick={() =>
