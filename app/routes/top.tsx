@@ -1341,6 +1341,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🔏",
       },
       {
+        path: "/sri-hash",
+        label: "SRI ハッシュ生成",
+        description:
+          "Subresource Integrity (SRI) ハッシュをブラウザ内で生成するツール。SHA-256/384/512 に対応し、CDN リソース改ざん検知用の integrity 属性値と script・link タグの HTML スニペットを即座に生成。",
+        icon: "🔐",
+      },
+      {
         path: "/security-headers",
         label: "セキュリティヘッダー",
         description: "WebサイトのHTTPセキュリティヘッダーを確認",

@@ -254,6 +254,7 @@ const navCategories = [
       { path: "/cookie-parser", label: "Cookieパーサー" },
       { path: "/keycode", label: "キーコードチェック" },
       { path: "/hmac", label: "HMAC 生成" },
+      { path: "/sri-hash", label: "SRI ハッシュ生成" },
       { path: "/semver", label: "Semver チェッカー" },
       { path: "/conventional-commits", label: "Conventional Commits" },
       { path: "/cache-control", label: "Cache-Control ビルダー" },
