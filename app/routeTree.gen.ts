@@ -57,6 +57,7 @@ import { Route as StatisticsRouteImport } from './routes/statistics'
 import { Route as SshKeyRouteImport } from './routes/ssh-key'
 import { Route as SqlToTsRouteImport } from './routes/sql-to-ts'
 import { Route as SqlRouteImport } from './routes/sql'
+import { Route as SnakeRouteImport } from './routes/snake'
 import { Route as SlugRouteImport } from './routes/slug'
 import { Route as ServerEnvRouteImport } from './routes/server-env'
 import { Route as SequencesRouteImport } from './routes/sequences'
@@ -149,6 +150,7 @@ import { Route as GlobalIpRouteImport } from './routes/global-ip'
 import { Route as GlobTesterRouteImport } from './routes/glob-tester'
 import { Route as GitignoreRouteImport } from './routes/gitignore'
 import { Route as GithubBadgeRouteImport } from './routes/github-badge'
+import { Route as Game2048RouteImport } from './routes/game-2048'
 import { Route as FunctionPlotterRouteImport } from './routes/function-plotter'
 import { Route as FaviconGeneratorRouteImport } from './routes/favicon-generator'
 import { Route as EnvParserRouteImport } from './routes/env-parser'
@@ -167,6 +169,7 @@ import { Route as DiscordEmojiRouteImport } from './routes/discord-emoji'
 import { Route as DiffRouteImport } from './routes/diff'
 import { Route as DiceRollRouteImport } from './routes/dice-roll'
 import { Route as DateCalcRouteImport } from './routes/date-calc'
+import { Route as DaijiRouteImport } from './routes/daiji'
 import { Route as CurlToFetchRouteImport } from './routes/curl-to-fetch'
 import { Route as CurlBuilderRouteImport } from './routes/curl-builder'
 import { Route as CsvSqlRouteImport } from './routes/csv-sql'
@@ -176,6 +179,7 @@ import { Route as CssUnitRouteImport } from './routes/css-unit'
 import { Route as CssTransformRouteImport } from './routes/css-transform'
 import { Route as CssTextShadowRouteImport } from './routes/css-text-shadow'
 import { Route as CssSpecificityRouteImport } from './routes/css-specificity'
+import { Route as CssShorthandRouteImport } from './routes/css-shorthand'
 import { Route as CssSelectorRouteImport } from './routes/css-selector'
 import { Route as CssScrollSnapRouteImport } from './routes/css-scroll-snap'
 import { Route as CssMediaQueryRouteImport } from './routes/css-media-query'
@@ -476,6 +480,11 @@ const SqlToTsRoute = SqlToTsRouteImport.update({
 const SqlRoute = SqlRouteImport.update({
   id: '/sql',
   path: '/sql',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SnakeRoute = SnakeRouteImport.update({
+  id: '/snake',
+  path: '/snake',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SlugRoute = SlugRouteImport.update({
@@ -938,6 +947,11 @@ const GithubBadgeRoute = GithubBadgeRouteImport.update({
   path: '/github-badge',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Game2048Route = Game2048RouteImport.update({
+  id: '/game-2048',
+  path: '/game-2048',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FunctionPlotterRoute = FunctionPlotterRouteImport.update({
   id: '/function-plotter',
   path: '/function-plotter',
@@ -1028,6 +1042,11 @@ const DateCalcRoute = DateCalcRouteImport.update({
   path: '/date-calc',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DaijiRoute = DaijiRouteImport.update({
+  id: '/daiji',
+  path: '/daiji',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CurlToFetchRoute = CurlToFetchRouteImport.update({
   id: '/curl-to-fetch',
   path: '/curl-to-fetch',
@@ -1071,6 +1090,11 @@ const CssTextShadowRoute = CssTextShadowRouteImport.update({
 const CssSpecificityRoute = CssSpecificityRouteImport.update({
   id: '/css-specificity',
   path: '/css-specificity',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CssShorthandRoute = CssShorthandRouteImport.update({
+  id: '/css-shorthand',
+  path: '/css-shorthand',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CssSelectorRoute = CssSelectorRouteImport.update({
@@ -1437,6 +1461,7 @@ export interface FileRoutesByFullPath {
   '/css-media-query': typeof CssMediaQueryRoute
   '/css-scroll-snap': typeof CssScrollSnapRoute
   '/css-selector': typeof CssSelectorRoute
+  '/css-shorthand': typeof CssShorthandRoute
   '/css-specificity': typeof CssSpecificityRoute
   '/css-text-shadow': typeof CssTextShadowRoute
   '/css-transform': typeof CssTransformRoute
@@ -1446,6 +1471,7 @@ export interface FileRoutesByFullPath {
   '/csv-sql': typeof CsvSqlRoute
   '/curl-builder': typeof CurlBuilderRoute
   '/curl-to-fetch': typeof CurlToFetchRoute
+  '/daiji': typeof DaijiRoute
   '/date-calc': typeof DateCalcRoute
   '/dice-roll': typeof DiceRollRoute
   '/diff': typeof DiffRoute
@@ -1464,6 +1490,7 @@ export interface FileRoutesByFullPath {
   '/env-parser': typeof EnvParserRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
   '/function-plotter': typeof FunctionPlotterRoute
+  '/game-2048': typeof Game2048Route
   '/github-badge': typeof GithubBadgeRoute
   '/gitignore': typeof GitignoreRoute
   '/glob-tester': typeof GlobTesterRoute
@@ -1556,6 +1583,7 @@ export interface FileRoutesByFullPath {
   '/sequences': typeof SequencesRoute
   '/server-env': typeof ServerEnvRoute
   '/slug': typeof SlugRoute
+  '/snake': typeof SnakeRoute
   '/sql': typeof SqlRoute
   '/sql-to-ts': typeof SqlToTsRoute
   '/ssh-key': typeof SshKeyRoute
@@ -1667,6 +1695,7 @@ export interface FileRoutesByTo {
   '/css-media-query': typeof CssMediaQueryRoute
   '/css-scroll-snap': typeof CssScrollSnapRoute
   '/css-selector': typeof CssSelectorRoute
+  '/css-shorthand': typeof CssShorthandRoute
   '/css-specificity': typeof CssSpecificityRoute
   '/css-text-shadow': typeof CssTextShadowRoute
   '/css-transform': typeof CssTransformRoute
@@ -1676,6 +1705,7 @@ export interface FileRoutesByTo {
   '/csv-sql': typeof CsvSqlRoute
   '/curl-builder': typeof CurlBuilderRoute
   '/curl-to-fetch': typeof CurlToFetchRoute
+  '/daiji': typeof DaijiRoute
   '/date-calc': typeof DateCalcRoute
   '/dice-roll': typeof DiceRollRoute
   '/diff': typeof DiffRoute
@@ -1694,6 +1724,7 @@ export interface FileRoutesByTo {
   '/env-parser': typeof EnvParserRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
   '/function-plotter': typeof FunctionPlotterRoute
+  '/game-2048': typeof Game2048Route
   '/github-badge': typeof GithubBadgeRoute
   '/gitignore': typeof GitignoreRoute
   '/glob-tester': typeof GlobTesterRoute
@@ -1786,6 +1817,7 @@ export interface FileRoutesByTo {
   '/sequences': typeof SequencesRoute
   '/server-env': typeof ServerEnvRoute
   '/slug': typeof SlugRoute
+  '/snake': typeof SnakeRoute
   '/sql': typeof SqlRoute
   '/sql-to-ts': typeof SqlToTsRoute
   '/ssh-key': typeof SshKeyRoute
@@ -1898,6 +1930,7 @@ export interface FileRoutesById {
   '/css-media-query': typeof CssMediaQueryRoute
   '/css-scroll-snap': typeof CssScrollSnapRoute
   '/css-selector': typeof CssSelectorRoute
+  '/css-shorthand': typeof CssShorthandRoute
   '/css-specificity': typeof CssSpecificityRoute
   '/css-text-shadow': typeof CssTextShadowRoute
   '/css-transform': typeof CssTransformRoute
@@ -1907,6 +1940,7 @@ export interface FileRoutesById {
   '/csv-sql': typeof CsvSqlRoute
   '/curl-builder': typeof CurlBuilderRoute
   '/curl-to-fetch': typeof CurlToFetchRoute
+  '/daiji': typeof DaijiRoute
   '/date-calc': typeof DateCalcRoute
   '/dice-roll': typeof DiceRollRoute
   '/diff': typeof DiffRoute
@@ -1925,6 +1959,7 @@ export interface FileRoutesById {
   '/env-parser': typeof EnvParserRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
   '/function-plotter': typeof FunctionPlotterRoute
+  '/game-2048': typeof Game2048Route
   '/github-badge': typeof GithubBadgeRoute
   '/gitignore': typeof GitignoreRoute
   '/glob-tester': typeof GlobTesterRoute
@@ -2017,6 +2052,7 @@ export interface FileRoutesById {
   '/sequences': typeof SequencesRoute
   '/server-env': typeof ServerEnvRoute
   '/slug': typeof SlugRoute
+  '/snake': typeof SnakeRoute
   '/sql': typeof SqlRoute
   '/sql-to-ts': typeof SqlToTsRoute
   '/ssh-key': typeof SshKeyRoute
@@ -2130,6 +2166,7 @@ export interface FileRouteTypes {
     | '/css-media-query'
     | '/css-scroll-snap'
     | '/css-selector'
+    | '/css-shorthand'
     | '/css-specificity'
     | '/css-text-shadow'
     | '/css-transform'
@@ -2139,6 +2176,7 @@ export interface FileRouteTypes {
     | '/csv-sql'
     | '/curl-builder'
     | '/curl-to-fetch'
+    | '/daiji'
     | '/date-calc'
     | '/dice-roll'
     | '/diff'
@@ -2157,6 +2195,7 @@ export interface FileRouteTypes {
     | '/env-parser'
     | '/favicon-generator'
     | '/function-plotter'
+    | '/game-2048'
     | '/github-badge'
     | '/gitignore'
     | '/glob-tester'
@@ -2249,6 +2288,7 @@ export interface FileRouteTypes {
     | '/sequences'
     | '/server-env'
     | '/slug'
+    | '/snake'
     | '/sql'
     | '/sql-to-ts'
     | '/ssh-key'
@@ -2360,6 +2400,7 @@ export interface FileRouteTypes {
     | '/css-media-query'
     | '/css-scroll-snap'
     | '/css-selector'
+    | '/css-shorthand'
     | '/css-specificity'
     | '/css-text-shadow'
     | '/css-transform'
@@ -2369,6 +2410,7 @@ export interface FileRouteTypes {
     | '/csv-sql'
     | '/curl-builder'
     | '/curl-to-fetch'
+    | '/daiji'
     | '/date-calc'
     | '/dice-roll'
     | '/diff'
@@ -2387,6 +2429,7 @@ export interface FileRouteTypes {
     | '/env-parser'
     | '/favicon-generator'
     | '/function-plotter'
+    | '/game-2048'
     | '/github-badge'
     | '/gitignore'
     | '/glob-tester'
@@ -2479,6 +2522,7 @@ export interface FileRouteTypes {
     | '/sequences'
     | '/server-env'
     | '/slug'
+    | '/snake'
     | '/sql'
     | '/sql-to-ts'
     | '/ssh-key'
@@ -2590,6 +2634,7 @@ export interface FileRouteTypes {
     | '/css-media-query'
     | '/css-scroll-snap'
     | '/css-selector'
+    | '/css-shorthand'
     | '/css-specificity'
     | '/css-text-shadow'
     | '/css-transform'
@@ -2599,6 +2644,7 @@ export interface FileRouteTypes {
     | '/csv-sql'
     | '/curl-builder'
     | '/curl-to-fetch'
+    | '/daiji'
     | '/date-calc'
     | '/dice-roll'
     | '/diff'
@@ -2617,6 +2663,7 @@ export interface FileRouteTypes {
     | '/env-parser'
     | '/favicon-generator'
     | '/function-plotter'
+    | '/game-2048'
     | '/github-badge'
     | '/gitignore'
     | '/glob-tester'
@@ -2709,6 +2756,7 @@ export interface FileRouteTypes {
     | '/sequences'
     | '/server-env'
     | '/slug'
+    | '/snake'
     | '/sql'
     | '/sql-to-ts'
     | '/ssh-key'
@@ -2821,6 +2869,7 @@ export interface RootRouteChildren {
   CssMediaQueryRoute: typeof CssMediaQueryRoute
   CssScrollSnapRoute: typeof CssScrollSnapRoute
   CssSelectorRoute: typeof CssSelectorRoute
+  CssShorthandRoute: typeof CssShorthandRoute
   CssSpecificityRoute: typeof CssSpecificityRoute
   CssTextShadowRoute: typeof CssTextShadowRoute
   CssTransformRoute: typeof CssTransformRoute
@@ -2830,6 +2879,7 @@ export interface RootRouteChildren {
   CsvSqlRoute: typeof CsvSqlRoute
   CurlBuilderRoute: typeof CurlBuilderRoute
   CurlToFetchRoute: typeof CurlToFetchRoute
+  DaijiRoute: typeof DaijiRoute
   DateCalcRoute: typeof DateCalcRoute
   DiceRollRoute: typeof DiceRollRoute
   DiffRoute: typeof DiffRoute
@@ -2848,6 +2898,7 @@ export interface RootRouteChildren {
   EnvParserRoute: typeof EnvParserRoute
   FaviconGeneratorRoute: typeof FaviconGeneratorRoute
   FunctionPlotterRoute: typeof FunctionPlotterRoute
+  Game2048Route: typeof Game2048Route
   GithubBadgeRoute: typeof GithubBadgeRoute
   GitignoreRoute: typeof GitignoreRoute
   GlobTesterRoute: typeof GlobTesterRoute
@@ -2940,6 +2991,7 @@ export interface RootRouteChildren {
   SequencesRoute: typeof SequencesRoute
   ServerEnvRoute: typeof ServerEnvRoute
   SlugRoute: typeof SlugRoute
+  SnakeRoute: typeof SnakeRoute
   SqlRoute: typeof SqlRoute
   SqlToTsRoute: typeof SqlToTsRoute
   SshKeyRoute: typeof SshKeyRoute
@@ -3330,6 +3382,13 @@ declare module '@tanstack/react-router' {
       path: '/sql'
       fullPath: '/sql'
       preLoaderRoute: typeof SqlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/snake': {
+      id: '/snake'
+      path: '/snake'
+      fullPath: '/snake'
+      preLoaderRoute: typeof SnakeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/slug': {
@@ -3976,6 +4035,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GithubBadgeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/game-2048': {
+      id: '/game-2048'
+      path: '/game-2048'
+      fullPath: '/game-2048'
+      preLoaderRoute: typeof Game2048RouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/function-plotter': {
       id: '/function-plotter'
       path: '/function-plotter'
@@ -4102,6 +4168,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DateCalcRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/daiji': {
+      id: '/daiji'
+      path: '/daiji'
+      fullPath: '/daiji'
+      preLoaderRoute: typeof DaijiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/curl-to-fetch': {
       id: '/curl-to-fetch'
       path: '/curl-to-fetch'
@@ -4163,6 +4236,13 @@ declare module '@tanstack/react-router' {
       path: '/css-specificity'
       fullPath: '/css-specificity'
       preLoaderRoute: typeof CssSpecificityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/css-shorthand': {
+      id: '/css-shorthand'
+      path: '/css-shorthand'
+      fullPath: '/css-shorthand'
+      preLoaderRoute: typeof CssShorthandRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/css-selector': {
@@ -4653,6 +4733,7 @@ const rootRouteChildren: RootRouteChildren = {
   CssMediaQueryRoute: CssMediaQueryRoute,
   CssScrollSnapRoute: CssScrollSnapRoute,
   CssSelectorRoute: CssSelectorRoute,
+  CssShorthandRoute: CssShorthandRoute,
   CssSpecificityRoute: CssSpecificityRoute,
   CssTextShadowRoute: CssTextShadowRoute,
   CssTransformRoute: CssTransformRoute,
@@ -4662,6 +4743,7 @@ const rootRouteChildren: RootRouteChildren = {
   CsvSqlRoute: CsvSqlRoute,
   CurlBuilderRoute: CurlBuilderRoute,
   CurlToFetchRoute: CurlToFetchRoute,
+  DaijiRoute: DaijiRoute,
   DateCalcRoute: DateCalcRoute,
   DiceRollRoute: DiceRollRoute,
   DiffRoute: DiffRoute,
@@ -4680,6 +4762,7 @@ const rootRouteChildren: RootRouteChildren = {
   EnvParserRoute: EnvParserRoute,
   FaviconGeneratorRoute: FaviconGeneratorRoute,
   FunctionPlotterRoute: FunctionPlotterRoute,
+  Game2048Route: Game2048Route,
   GithubBadgeRoute: GithubBadgeRoute,
   GitignoreRoute: GitignoreRoute,
   GlobTesterRoute: GlobTesterRoute,
@@ -4772,6 +4855,7 @@ const rootRouteChildren: RootRouteChildren = {
   SequencesRoute: SequencesRoute,
   ServerEnvRoute: ServerEnvRoute,
   SlugRoute: SlugRoute,
+  SnakeRoute: SnakeRoute,
   SqlRoute: SqlRoute,
   SqlToTsRoute: SqlToTsRoute,
   SshKeyRoute: SshKeyRoute,

@@ -153,6 +153,7 @@
 @import "./styles/tools/websocket.css";
 @import "./styles/tools/ssh-key.css";
 @import "./styles/tools/roman-numerals.css";
+@import "./styles/tools/daiji.css";
 @import "./styles/tools/css-cubic-bezier.css";
 @import "./styles/tools/number-words.css";
 @import "./styles/tools/luhn-check.css";
@@ -185,3 +186,5 @@
 @import "./styles/tools/base36.css";
 @import "./styles/tools/sudoku.css";
 @import "./styles/tools/minesweeper.css";
+@import "./styles/tools/game-2048.css";
+@import "./styles/tools/snake.css";

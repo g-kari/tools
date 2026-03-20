@@ -262,6 +262,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "📏",
       },
       {
+        path: "/css-shorthand",
+        label: "CSSショートハンド展開",
+        description:
+          "CSS のショートハンドプロパティ（margin・padding・border-radius・flex・gap・place-content など）を個別プロパティに展開、またはロングハンドからショートハンドに圧縮するツール。CSS デバッグや仕様確認に。",
+        icon: "⇄",
+      },
+      {
         path: "/css-clamp",
         label: "CSS Fluid/Clamp 計算機",
         description:
@@ -400,6 +407,13 @@ const toolCatalog: ToolCategory[] = [
         description:
           "整数を英語・日本語のテキストに変換するツール。英語基数詞（one hundred twenty-three）・序数詞（twenty-first）・日本語漢数字（百二十三）・読み仮名（ひゃくにじゅうさん）に対応。請求書・法的文書・ローカライズ確認に便利。",
         icon: "🔢",
+      },
+      {
+        path: "/daiji",
+        label: "大字変換",
+        description:
+          "アラビア数字と大字（壱・弐・参など）を相互変換するツール。小切手・契約書・法的文書などで使用される改ざん防止用の漢数字に対応。壱萬弐仟参佰肆拾伍など日本の公式文書で必要な表記を生成できます。",
+        icon: "壱",
       },
       {
         path: "/csv-sql",
@@ -1631,6 +1645,20 @@ const toolCatalog: ToolCategory[] = [
         description:
           "ブラウザで遊べるマインスイーパー。難易度3段階（初級・中級・上級）、タイマー・地雷カウンター付き。右クリックでフラグを立てられます。",
         icon: "💣",
+      },
+      {
+        path: "/game-2048",
+        label: "2048",
+        description:
+          "ブラウザで遊べる2048パズルゲーム。矢印キーまたはスワイプで同じ数字のタイルを合体させ、2048を目指そう！スコア・ベストスコア記録対応。",
+        icon: "🔢",
+      },
+      {
+        path: "/snake",
+        label: "スネークゲーム",
+        description:
+          "ブラウザで遊べるクラシックなスネークゲーム。矢印キーでヘビを操作して食べ物を集めよう！スコア・ベストスコア記録対応。",
+        icon: "🐍",
       },
     ],
   },
