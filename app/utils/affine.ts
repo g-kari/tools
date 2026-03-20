@@ -114,8 +114,7 @@ export function decodeAffine(text: string, a: number, b: number): string {
 }
 
 /**
- * 有効な全 a 値の総当たり解析結果を返す
- * a=1 の場合のみ b の全26パターンも展開する
+ * 有効な全 a 値 × b の全26パターン（計312通り）の総当たり解析結果を返す
  * @param text 解析するテキスト
  * @returns 各パラメータでのデコード結果配列
  */

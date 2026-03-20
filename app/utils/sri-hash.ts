@@ -78,6 +78,9 @@ export async function computeSriHash(
   };
 }
 
+/** 全サポートアルゴリズムのリスト */
+const ALL_ALGORITHMS: readonly SriAlgorithm[] = ["sha256", "sha384", "sha512"];
+
 /**
  * テキストコンテンツから全アルゴリズムの SRI ハッシュを一括計算する
  * @param text 入力テキスト
@@ -86,9 +89,7 @@ export async function computeSriHash(
 export async function computeAllSriHashes(text: string): Promise<SriResult[]> {
   const encoder = new TextEncoder();
   const data = encoder.encode(text);
-  const algorithms: SriAlgorithm[] = ["sha256", "sha384", "sha512"];
-
-  return Promise.all(algorithms.map((algo) => computeSriHash(algo, data)));
+  return Promise.all(ALL_ALGORITHMS.map((algo) => computeSriHash(algo, data)));
 }
 
 /**
@@ -99,8 +100,7 @@ export async function computeAllSriHashes(text: string): Promise<SriResult[]> {
 export async function computeAllSriHashesFromBytes(
   data: Uint8Array,
 ): Promise<SriResult[]> {
-  const algorithms: SriAlgorithm[] = ["sha256", "sha384", "sha512"];
-  return Promise.all(algorithms.map((algo) => computeSriHash(algo, data)));
+  return Promise.all(ALL_ALGORITHMS.map((algo) => computeSriHash(algo, data)));
 }
 
 /**
