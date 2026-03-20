@@ -159,6 +159,7 @@ import { Route as GlobalIpRouteImport } from './routes/global-ip'
 import { Route as GlobTesterRouteImport } from './routes/glob-tester'
 import { Route as GitignoreRouteImport } from './routes/gitignore'
 import { Route as GithubBadgeRouteImport } from './routes/github-badge'
+import { Route as GeohashRouteImport } from './routes/geohash'
 import { Route as Game2048RouteImport } from './routes/game-2048'
 import { Route as FunctionPlotterRouteImport } from './routes/function-plotter'
 import { Route as FractionRouteImport } from './routes/fraction'
@@ -1005,6 +1006,11 @@ const GithubBadgeRoute = GithubBadgeRouteImport.update({
   path: '/github-badge',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GeohashRoute = GeohashRouteImport.update({
+  id: '/geohash',
+  path: '/geohash',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const Game2048Route = Game2048RouteImport.update({
   id: '/game-2048',
   path: '/game-2048',
@@ -1573,6 +1579,7 @@ export interface FileRoutesByFullPath {
   '/fraction': typeof FractionRoute
   '/function-plotter': typeof FunctionPlotterRoute
   '/game-2048': typeof Game2048Route
+  '/geohash': typeof GeohashRoute
   '/github-badge': typeof GithubBadgeRoute
   '/gitignore': typeof GitignoreRoute
   '/glob-tester': typeof GlobTesterRoute
@@ -1820,6 +1827,7 @@ export interface FileRoutesByTo {
   '/fraction': typeof FractionRoute
   '/function-plotter': typeof FunctionPlotterRoute
   '/game-2048': typeof Game2048Route
+  '/geohash': typeof GeohashRoute
   '/github-badge': typeof GithubBadgeRoute
   '/gitignore': typeof GitignoreRoute
   '/glob-tester': typeof GlobTesterRoute
@@ -2068,6 +2076,7 @@ export interface FileRoutesById {
   '/fraction': typeof FractionRoute
   '/function-plotter': typeof FunctionPlotterRoute
   '/game-2048': typeof Game2048Route
+  '/geohash': typeof GeohashRoute
   '/github-badge': typeof GithubBadgeRoute
   '/gitignore': typeof GitignoreRoute
   '/glob-tester': typeof GlobTesterRoute
@@ -2317,6 +2326,7 @@ export interface FileRouteTypes {
     | '/fraction'
     | '/function-plotter'
     | '/game-2048'
+    | '/geohash'
     | '/github-badge'
     | '/gitignore'
     | '/glob-tester'
@@ -2564,6 +2574,7 @@ export interface FileRouteTypes {
     | '/fraction'
     | '/function-plotter'
     | '/game-2048'
+    | '/geohash'
     | '/github-badge'
     | '/gitignore'
     | '/glob-tester'
@@ -2811,6 +2822,7 @@ export interface FileRouteTypes {
     | '/fraction'
     | '/function-plotter'
     | '/game-2048'
+    | '/geohash'
     | '/github-badge'
     | '/gitignore'
     | '/glob-tester'
@@ -3059,6 +3071,7 @@ export interface RootRouteChildren {
   FractionRoute: typeof FractionRoute
   FunctionPlotterRoute: typeof FunctionPlotterRoute
   Game2048Route: typeof Game2048Route
+  GeohashRoute: typeof GeohashRoute
   GithubBadgeRoute: typeof GithubBadgeRoute
   GitignoreRoute: typeof GitignoreRoute
   GlobTesterRoute: typeof GlobTesterRoute
@@ -4267,6 +4280,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GithubBadgeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/geohash': {
+      id: '/geohash'
+      path: '/geohash'
+      fullPath: '/geohash'
+      preLoaderRoute: typeof GeohashRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/game-2048': {
       id: '/game-2048'
       path: '/game-2048'
@@ -5027,6 +5047,7 @@ const rootRouteChildren: RootRouteChildren = {
   FractionRoute: FractionRoute,
   FunctionPlotterRoute: FunctionPlotterRoute,
   Game2048Route: Game2048Route,
+  GeohashRoute: GeohashRoute,
   GithubBadgeRoute: GithubBadgeRoute,
   GitignoreRoute: GitignoreRoute,
   GlobTesterRoute: GlobTesterRoute,
