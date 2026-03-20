@@ -251,9 +251,10 @@ function SnakeGame() {
         const nextHead = getNextHead(head, directionRef.current);
 
         // 壁・自分自身との衝突チェック
+        // 次フレームで消える末尾を除いた胴体と比較する
         if (
           isWallCollision(nextHead) ||
-          isSelfCollision(nextHead, snakeRef.current)
+          isSelfCollision(nextHead, snakeRef.current.slice(0, -1))
         ) {
           statusRef.current = "over";
           setStatus("over");
@@ -342,7 +343,7 @@ function SnakeGame() {
       const dir = dirMap[e.code];
       if (dir) {
         e.preventDefault();
-        if (isValidDirectionChange(directionRef.current, dir)) {
+        if (isValidDirectionChange(nextDirectionRef.current, dir)) {
           nextDirectionRef.current = dir;
         }
         return;

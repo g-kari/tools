@@ -79,6 +79,14 @@ describe("isSelfCollision", () => {
   it("空の胴体の場合はfalseを返す", () => {
     expect(isSelfCollision({ x: 5, y: 5 }, [])).toBe(false);
   });
+
+  it("末尾（次フレームで消えるセル）を除くと衝突しない", () => {
+    // snake: [head, body, tail] で tail 位置に nextHead が来るケース
+    // slice(0, -1) で tail を除いた場合は false（有効な移動）
+    const tail = { x: 3, y: 5 };
+    const bodyWithoutTail = [{ x: 5, y: 5 }, { x: 4, y: 5 }];
+    expect(isSelfCollision(tail, bodyWithoutTail)).toBe(false);
+  });
 });
 
 describe("isValidDirectionChange", () => {
