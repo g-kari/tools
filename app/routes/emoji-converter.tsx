@@ -585,9 +585,7 @@ function EmojiConverter() {
   // Load FFmpeg when GIF format is selected (for animation support)
   useEffect(() => {
     if (outputFormat === 'gif' && !ffmpegLoaded) {
-      loadFFmpeg(ffmpegRef.current, (msg) => {
-        console.log(msg);
-      }).then((loaded) => {
+      loadFFmpeg(ffmpegRef.current).then((loaded) => {
         setFfmpegLoaded(loaded);
       });
     }
@@ -596,9 +594,7 @@ function EmojiConverter() {
   // Load FFmpeg for animation
   useEffect(() => {
     if (enableAnimation && !ffmpegLoaded) {
-      loadFFmpeg(ffmpegRef.current, (msg) => {
-        console.log(msg);
-      }).then((loaded) => {
+      loadFFmpeg(ffmpegRef.current).then((loaded) => {
         setFfmpegLoaded(loaded);
       });
     }

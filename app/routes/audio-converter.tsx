@@ -52,11 +52,6 @@ async function convertAudioWithFFmpeg(
 ): Promise<{ blob: Blob; filename: string }> {
   const ffmpeg = new FFmpeg();
 
-  // 進捗ログの処理
-  ffmpeg.on("log", ({ message }) => {
-    console.log(message);
-  });
-
   // 進捗の処理
   ffmpeg.on("progress", ({ progress }) => {
     if (onProgress) {
