@@ -64,6 +64,7 @@ import { Route as SqlToTsRouteImport } from './routes/sql-to-ts'
 import { Route as SqlRouteImport } from './routes/sql'
 import { Route as SnakeRouteImport } from './routes/snake'
 import { Route as SlugRouteImport } from './routes/slug'
+import { Route as ShortCodeRouteImport } from './routes/short-code'
 import { Route as ServerEnvRouteImport } from './routes/server-env'
 import { Route as SequencesRouteImport } from './routes/sequences'
 import { Route as SeoMetaRouteImport } from './routes/seo-meta'
@@ -527,6 +528,11 @@ const SnakeRoute = SnakeRouteImport.update({
 const SlugRoute = SlugRouteImport.update({
   id: '/slug',
   path: '/slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShortCodeRoute = ShortCodeRouteImport.update({
+  id: '/short-code',
+  path: '/short-code',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ServerEnvRoute = ServerEnvRouteImport.update({
@@ -1661,6 +1667,7 @@ export interface FileRoutesByFullPath {
   '/seo-meta': typeof SeoMetaRoute
   '/sequences': typeof SequencesRoute
   '/server-env': typeof ServerEnvRoute
+  '/short-code': typeof ShortCodeRoute
   '/slug': typeof SlugRoute
   '/snake': typeof SnakeRoute
   '/sql': typeof SqlRoute
@@ -1907,6 +1914,7 @@ export interface FileRoutesByTo {
   '/seo-meta': typeof SeoMetaRoute
   '/sequences': typeof SequencesRoute
   '/server-env': typeof ServerEnvRoute
+  '/short-code': typeof ShortCodeRoute
   '/slug': typeof SlugRoute
   '/snake': typeof SnakeRoute
   '/sql': typeof SqlRoute
@@ -2154,6 +2162,7 @@ export interface FileRoutesById {
   '/seo-meta': typeof SeoMetaRoute
   '/sequences': typeof SequencesRoute
   '/server-env': typeof ServerEnvRoute
+  '/short-code': typeof ShortCodeRoute
   '/slug': typeof SlugRoute
   '/snake': typeof SnakeRoute
   '/sql': typeof SqlRoute
@@ -2402,6 +2411,7 @@ export interface FileRouteTypes {
     | '/seo-meta'
     | '/sequences'
     | '/server-env'
+    | '/short-code'
     | '/slug'
     | '/snake'
     | '/sql'
@@ -2648,6 +2658,7 @@ export interface FileRouteTypes {
     | '/seo-meta'
     | '/sequences'
     | '/server-env'
+    | '/short-code'
     | '/slug'
     | '/snake'
     | '/sql'
@@ -2894,6 +2905,7 @@ export interface FileRouteTypes {
     | '/seo-meta'
     | '/sequences'
     | '/server-env'
+    | '/short-code'
     | '/slug'
     | '/snake'
     | '/sql'
@@ -3141,6 +3153,7 @@ export interface RootRouteChildren {
   SeoMetaRoute: typeof SeoMetaRoute
   SequencesRoute: typeof SequencesRoute
   ServerEnvRoute: typeof ServerEnvRoute
+  ShortCodeRoute: typeof ShortCodeRoute
   SlugRoute: typeof SlugRoute
   SnakeRoute: typeof SnakeRoute
   SqlRoute: typeof SqlRoute
@@ -3587,6 +3600,13 @@ declare module '@tanstack/react-router' {
       path: '/slug'
       fullPath: '/slug'
       preLoaderRoute: typeof SlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/short-code': {
+      id: '/short-code'
+      path: '/short-code'
+      fullPath: '/short-code'
+      preLoaderRoute: typeof ShortCodeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/server-env': {
@@ -5101,6 +5121,7 @@ const rootRouteChildren: RootRouteChildren = {
   SeoMetaRoute: SeoMetaRoute,
   SequencesRoute: SequencesRoute,
   ServerEnvRoute: ServerEnvRoute,
+  ShortCodeRoute: ShortCodeRoute,
   SlugRoute: SlugRoute,
   SnakeRoute: SnakeRoute,
   SqlRoute: SqlRoute,
