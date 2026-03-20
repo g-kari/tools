@@ -1,0 +1,218 @@
+/* ====================================
+   ISBN バリデーター
+   ==================================== */
+
+.isbn-container {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ── 入力セクション ── */
+.isbn-input-section {
+  background: var(--md-sys-color-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 8px;
+  animation: fadeInUp 0.3s ease-out both;
+}
+
+.isbn-input-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.isbn-input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  font-size: 1.125rem;
+  letter-spacing: 0.08em;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  transition: border-color 0.2s;
+}
+
+.isbn-input:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  box-shadow: 0 0 0 2px var(--md-sys-color-primary-container);
+}
+
+/* ── 結果セクション ── */
+.isbn-result-section {
+  background: var(--md-sys-color-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 8px;
+  animation: fadeInUp 0.3s ease-out both;
+}
+
+.isbn-result-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.isbn-result-badge.valid {
+  background: var(--md-sys-color-tertiary-container);
+  color: var(--md-sys-color-on-tertiary-container);
+}
+
+.isbn-result-badge.invalid {
+  background: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-on-error-container);
+}
+
+.isbn-result-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 480px) {
+  .isbn-result-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.isbn-result-item {
+  background: var(--md-sys-color-surface-variant);
+  border-radius: 4px;
+  padding: 12px;
+}
+
+.isbn-result-label {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 4px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.isbn-result-value {
+  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  font-size: 0.95rem;
+  color: var(--md-sys-color-on-surface);
+  word-break: break-all;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.isbn-result-value.na {
+  color: var(--md-sys-color-on-surface-variant);
+  font-style: italic;
+  font-family: inherit;
+  font-size: 0.875rem;
+}
+
+.isbn-copy-btn {
+  flex-shrink: 0;
+  padding: 2px 8px;
+  font-size: 0.75rem;
+  border-radius: 4px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-primary);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.isbn-copy-btn:hover {
+  background: var(--md-sys-color-primary-container);
+}
+
+/* ── エラー表示 ── */
+.isbn-error-section {
+  background: var(--md-sys-color-error-container);
+  border: 1px solid var(--md-sys-color-error);
+  border-radius: 4px;
+  padding: 14px 16px;
+  margin-bottom: 8px;
+  color: var(--md-sys-color-on-error-container);
+  font-size: 0.875rem;
+  animation: fadeInUp 0.2s ease-out both;
+}
+
+/* ── サンプルセクション ── */
+.isbn-samples-section {
+  background: var(--md-sys-color-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 8px;
+  animation: fadeInUp 0.3s ease-out both;
+}
+
+.isbn-samples-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.isbn-samples-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.isbn-sample-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  background: var(--md-sys-color-surface-variant);
+  cursor: pointer;
+  transition: background 0.15s;
+  border: 1px solid transparent;
+}
+
+.isbn-sample-item:hover {
+  background: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+}
+
+.isbn-sample-label {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  min-width: 120px;
+}
+
+.isbn-sample-code {
+  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface);
+  flex: 1;
+}
+
+.isbn-sample-note {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* ── ボタングループ ── */
+.isbn-button-group {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
