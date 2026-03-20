@@ -57,6 +57,7 @@ import { Route as StatisticsRouteImport } from './routes/statistics'
 import { Route as SshKeyRouteImport } from './routes/ssh-key'
 import { Route as SqlToTsRouteImport } from './routes/sql-to-ts'
 import { Route as SqlRouteImport } from './routes/sql'
+import { Route as SnakeRouteImport } from './routes/snake'
 import { Route as SlugRouteImport } from './routes/slug'
 import { Route as ServerEnvRouteImport } from './routes/server-env'
 import { Route as SequencesRouteImport } from './routes/sequences'
@@ -477,6 +478,11 @@ const SqlToTsRoute = SqlToTsRouteImport.update({
 const SqlRoute = SqlRouteImport.update({
   id: '/sql',
   path: '/sql',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SnakeRoute = SnakeRouteImport.update({
+  id: '/snake',
+  path: '/snake',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SlugRoute = SlugRouteImport.update({
@@ -1563,6 +1569,7 @@ export interface FileRoutesByFullPath {
   '/sequences': typeof SequencesRoute
   '/server-env': typeof ServerEnvRoute
   '/slug': typeof SlugRoute
+  '/snake': typeof SnakeRoute
   '/sql': typeof SqlRoute
   '/sql-to-ts': typeof SqlToTsRoute
   '/ssh-key': typeof SshKeyRoute
@@ -1794,6 +1801,7 @@ export interface FileRoutesByTo {
   '/sequences': typeof SequencesRoute
   '/server-env': typeof ServerEnvRoute
   '/slug': typeof SlugRoute
+  '/snake': typeof SnakeRoute
   '/sql': typeof SqlRoute
   '/sql-to-ts': typeof SqlToTsRoute
   '/ssh-key': typeof SshKeyRoute
@@ -2026,6 +2034,7 @@ export interface FileRoutesById {
   '/sequences': typeof SequencesRoute
   '/server-env': typeof ServerEnvRoute
   '/slug': typeof SlugRoute
+  '/snake': typeof SnakeRoute
   '/sql': typeof SqlRoute
   '/sql-to-ts': typeof SqlToTsRoute
   '/ssh-key': typeof SshKeyRoute
@@ -2259,6 +2268,7 @@ export interface FileRouteTypes {
     | '/sequences'
     | '/server-env'
     | '/slug'
+    | '/snake'
     | '/sql'
     | '/sql-to-ts'
     | '/ssh-key'
@@ -2490,6 +2500,7 @@ export interface FileRouteTypes {
     | '/sequences'
     | '/server-env'
     | '/slug'
+    | '/snake'
     | '/sql'
     | '/sql-to-ts'
     | '/ssh-key'
@@ -2721,6 +2732,7 @@ export interface FileRouteTypes {
     | '/sequences'
     | '/server-env'
     | '/slug'
+    | '/snake'
     | '/sql'
     | '/sql-to-ts'
     | '/ssh-key'
@@ -2953,6 +2965,7 @@ export interface RootRouteChildren {
   SequencesRoute: typeof SequencesRoute
   ServerEnvRoute: typeof ServerEnvRoute
   SlugRoute: typeof SlugRoute
+  SnakeRoute: typeof SnakeRoute
   SqlRoute: typeof SqlRoute
   SqlToTsRoute: typeof SqlToTsRoute
   SshKeyRoute: typeof SshKeyRoute
@@ -3343,6 +3356,13 @@ declare module '@tanstack/react-router' {
       path: '/sql'
       fullPath: '/sql'
       preLoaderRoute: typeof SqlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/snake': {
+      id: '/snake'
+      path: '/snake'
+      fullPath: '/snake'
+      preLoaderRoute: typeof SnakeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/slug': {
@@ -4793,6 +4813,7 @@ const rootRouteChildren: RootRouteChildren = {
   SequencesRoute: SequencesRoute,
   ServerEnvRoute: ServerEnvRoute,
   SlugRoute: SlugRoute,
+  SnakeRoute: SnakeRoute,
   SqlRoute: SqlRoute,
   SqlToTsRoute: SqlToTsRoute,
   SshKeyRoute: SshKeyRoute,

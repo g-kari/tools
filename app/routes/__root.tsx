@@ -299,6 +299,7 @@ const navCategories = [
       { path: "/sudoku", label: "数独ゲーム" },
       { path: "/minesweeper", label: "マインスイーパー" },
       { path: "/game-2048", label: "2048" },
+      { path: "/snake", label: "スネークゲーム" },
     ],
   },
 ];
