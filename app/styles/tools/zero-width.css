@@ -1,0 +1,221 @@
+/* ゼロ幅文字検出・除去ツール */
+
+.zw-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* 入力セクション */
+.zw-input-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.zw-textarea {
+  width: 100%;
+  min-height: 7rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.875rem;
+  padding: 0.75rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 0.5rem;
+  background-color: var(--md-sys-color-surface-container-low);
+  color: var(--md-sys-color-on-surface);
+  resize: vertical;
+  transition: border-color 0.15s;
+}
+
+.zw-textarea:focus {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: -1px;
+  border-color: var(--md-sys-color-primary);
+}
+
+/* ステータスバッジ */
+.zw-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.zw-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.zw-status-badge--clean {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+.zw-status-badge--found {
+  background-color: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-on-error-container);
+}
+
+.zw-status-badge--icon {
+  font-size: 0.875rem;
+}
+
+/* アクションボタン */
+.zw-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* 検出結果セクション */
+.zw-result-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* 検出文字テーブル */
+.zw-table-wrapper {
+  overflow-x: auto;
+  border-radius: 0.5rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.zw-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.zw-table thead {
+  background-color: var(--md-sys-color-surface-container);
+}
+
+.zw-table th {
+  padding: 0.625rem 0.875rem;
+  text-align: left;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  white-space: nowrap;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.zw-table td {
+  padding: 0.625rem 0.875rem;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  vertical-align: top;
+}
+
+.zw-table tr:last-child td {
+  border-bottom: none;
+}
+
+.zw-table tbody tr:hover {
+  background-color: var(--md-sys-color-surface-container-low);
+}
+
+/* コードポイントバッジ */
+.zw-cp-badge {
+  display: inline-block;
+  padding: 0.125rem 0.5rem;
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  border-radius: 0.25rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* カウントバッジ */
+.zw-count-badge {
+  display: inline-block;
+  padding: 0.125rem 0.5rem;
+  background-color: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-on-error-container);
+  border-radius: 9999px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  min-width: 1.75rem;
+  text-align: center;
+}
+
+/* 文字名 */
+.zw-char-name {
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface);
+  display: block;
+}
+
+.zw-char-unicode-name {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  display: block;
+  margin-top: 0.125rem;
+}
+
+/* 位置リスト */
+.zw-positions {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  max-width: 20rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* クリーン済み出力 */
+.zw-clean-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.zw-clean-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.zw-clean-label {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface);
+}
+
+.zw-clean-textarea {
+  width: 100%;
+  min-height: 7rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.875rem;
+  padding: 0.75rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 0.5rem;
+  background-color: var(--md-sys-color-surface-container-lowest);
+  color: var(--md-sys-color-on-surface);
+  resize: vertical;
+}
+
+/* 空状態メッセージ */
+.zw-empty-message {
+  text-align: center;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.9375rem;
+  padding: 2rem 0;
+}
+
+/* レスポンシブ: 小さい画面では位置列を非表示 */
+@media (max-width: 600px) {
+  .zw-table .zw-col-positions {
+    display: none;
+  }
+}

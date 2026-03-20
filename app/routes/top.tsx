@@ -388,6 +388,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🔤",
       },
       {
+        path: "/braille",
+        label: "点字（Braille）変換",
+        description:
+          "テキストをGrade 1 点字（Braille）のUnicode文字に変換するツール。英字・数字・記号に対応。大文字インジケーター・数字インジケーター付き出力。",
+        icon: "⠿",
+      },
+      {
         path: "/number-base",
         label: "数値進数変換",
         description:
@@ -402,6 +409,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "Ⅻ",
       },
       {
+        path: "/wareki",
+        label: "和暦・西暦変換",
+        description:
+          "西暦と和暦（元号）を相互変換するツール。令和・平成・昭和・大正・明治に対応。元号の遷移年（2019・1989・1926・1912年）も正しく処理します。",
+        icon: "🗾",
+      },
+      {
         path: "/number-words",
         label: "数値テキスト変換",
         description:
@@ -414,6 +428,13 @@ const toolCatalog: ToolCategory[] = [
         description:
           "アラビア数字と大字（壱・弐・参など）を相互変換するツール。小切手・契約書・法的文書などで使用される改ざん防止用の漢数字に対応。壱萬弐仟参佰肆拾伍など日本の公式文書で必要な表記を生成できます。",
         icon: "壱",
+      },
+      {
+        path: "/fraction",
+        label: "分数変換",
+        description:
+          "小数と分数を相互変換するツール。0.75→3/4、0.333…→1/3のような変換に対応。最大公約数による自動約分、帯分数（1 と 1/2）表示も可能。",
+        icon: "½",
       },
       {
         path: "/csv-sql",
@@ -576,25 +597,25 @@ const toolCatalog: ToolCategory[] = [
     icon: "✦",
     items: [
       {
-        path: '/sequences',
-        label: '数列ジェネレーター',
+        path: "/sequences",
+        label: "数列ジェネレーター",
         description:
-          'フィボナッチ・リュカ・素数・三角数・平方数・立方数・2の冪乗・カタラン数・パドヴァン・等差・等比・コラッツなど12種類の数列を生成。CSV・JSON・改行・タグ形式で出力可能。',
-        icon: '∿',
+          "フィボナッチ・リュカ・素数・三角数・平方数・立方数・2の冪乗・カタラン数・パドヴァン・等差・等比・コラッツなど12種類の数列を生成。CSV・JSON・改行・タグ形式で出力可能。",
+        icon: "∿",
       },
       {
-        path: '/html-playground',
-        label: 'HTML/CSS/JS プレイグラウンド',
+        path: "/html-playground",
+        label: "HTML/CSS/JS プレイグラウンド",
         description:
-          'HTML・CSS・JavaScript をブラウザ内で編集してリアルタイムにプレビューできるライブエディター。サンドボックス環境で安全に動作。スタンドアロン HTML としてエクスポート可能。',
-        icon: '▶',
+          "HTML・CSS・JavaScript をブラウザ内で編集してリアルタイムにプレビューできるライブエディター。サンドボックス環境で安全に動作。スタンドアロン HTML としてエクスポート可能。",
+        icon: "▶",
       },
       {
-        path: '/passphrase',
-        label: 'パスフレーズ生成',
+        path: "/passphrase",
+        label: "パスフレーズ生成",
         description:
-          '英単語を組み合わせた記憶しやすいパスフレーズを生成するツール。単語数・区切り文字・大文字化・数字/記号追加を設定可能。エントロピー計算とクラック時間推定付き。',
-        icon: '🗝️',
+          "英単語を組み合わせた記憶しやすいパスフレーズを生成するツール。単語数・区切り文字・大文字化・数字/記号追加を設定可能。エントロピー計算とクラック時間推定付き。",
+        icon: "🗝️",
       },
       {
         path: "/uuid",
@@ -1253,6 +1274,13 @@ const toolCatalog: ToolCategory[] = [
         description:
           "テキストのLLMトークン数をリアルタイム推定するツール。GPT-4o・Claude 3.5 Sonnet・Gemini 1.5 Proなど主要モデルのトークン数とAPIコストを比較表示。日本語・英語・コードに対応。",
         icon: "🔢",
+      },
+      {
+        path: "/zero-width",
+        label: "ゼロ幅文字検出・除去",
+        description:
+          "テキストに含まれるゼロ幅スペース・ZWJ・BOM・方向制御文字などの不可視Unicode文字を検出し一括除去するツール。コピペテキストに混入した不可視文字の確認・クリーニングに。",
+        icon: "🔍",
       },
     ],
   },

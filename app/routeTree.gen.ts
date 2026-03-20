@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ZeroWidthRouteImport } from './routes/zero-width'
 import { Route as ZenkakuRouteImport } from './routes/zenkaku'
 import { Route as YamlTomlRouteImport } from './routes/yaml-toml'
 import { Route as YamlJsonRouteImport } from './routes/yaml-json'
@@ -20,6 +21,7 @@ import { Route as WorldClockRouteImport } from './routes/world-clock'
 import { Route as WordFrequencyRouteImport } from './routes/word-frequency'
 import { Route as WhoisRouteImport } from './routes/whois'
 import { Route as WebsocketRouteImport } from './routes/websocket'
+import { Route as WarekiRouteImport } from './routes/wareki'
 import { Route as VideoConverterRouteImport } from './routes/video-converter'
 import { Route as UuidInspectorRouteImport } from './routes/uuid-inspector'
 import { Route as UuidRouteImport } from './routes/uuid'
@@ -80,6 +82,7 @@ import { Route as PortCheckRouteImport } from './routes/port-check'
 import { Route as PomodoroRouteImport } from './routes/pomodoro'
 import { Route as PkceRouteImport } from './routes/pkce'
 import { Route as PhpSerializeRouteImport } from './routes/php-serialize'
+import { Route as PhoneRouteImport } from './routes/phone'
 import { Route as PasswordStrengthRouteImport } from './routes/password-strength'
 import { Route as PasswordGeneratorRouteImport } from './routes/password-generator'
 import { Route as PassphraseRouteImport } from './routes/passphrase'
@@ -133,6 +136,7 @@ import { Route as ImageCropRouteImport } from './routes/image-crop'
 import { Route as ImageCompressRouteImport } from './routes/image-compress'
 import { Route as ImageBase64RouteImport } from './routes/image-base64'
 import { Route as Ieee754RouteImport } from './routes/ieee754'
+import { Route as IbanRouteImport } from './routes/iban'
 import { Route as HttpStatusRouteImport } from './routes/http-status'
 import { Route as HttpHeadersRouteImport } from './routes/http-headers'
 import { Route as HttpClientRouteImport } from './routes/http-client'
@@ -153,6 +157,7 @@ import { Route as GitignoreRouteImport } from './routes/gitignore'
 import { Route as GithubBadgeRouteImport } from './routes/github-badge'
 import { Route as Game2048RouteImport } from './routes/game-2048'
 import { Route as FunctionPlotterRouteImport } from './routes/function-plotter'
+import { Route as FractionRouteImport } from './routes/fraction'
 import { Route as FaviconGeneratorRouteImport } from './routes/favicon-generator'
 import { Route as EnvParserRouteImport } from './routes/env-parser'
 import { Route as EncodingRouteImport } from './routes/encoding'
@@ -222,6 +227,7 @@ import { Route as CharCountRouteImport } from './routes/char-count'
 import { Route as CertDecoderRouteImport } from './routes/cert-decoder'
 import { Route as CacheControlRouteImport } from './routes/cache-control'
 import { Route as BrainfuckRouteImport } from './routes/brainfuck'
+import { Route as BrailleRouteImport } from './routes/braille'
 import { Route as BitwiseRouteImport } from './routes/bitwise'
 import { Route as BasicAuthRouteImport } from './routes/basic-auth'
 import { Route as Base85RouteImport } from './routes/base85'
@@ -243,6 +249,11 @@ import { Route as ApiImageDotsvgRouteImport } from './routes/api/image[.]svg'
 import { Route as ApiImageDotpngRouteImport } from './routes/api/image[.]png'
 import { Route as ApiImageDotjpgRouteImport } from './routes/api/image[.]jpg'
 
+const ZeroWidthRoute = ZeroWidthRouteImport.update({
+  id: '/zero-width',
+  path: '/zero-width',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ZenkakuRoute = ZenkakuRouteImport.update({
   id: '/zenkaku',
   path: '/zenkaku',
@@ -296,6 +307,11 @@ const WhoisRoute = WhoisRouteImport.update({
 const WebsocketRoute = WebsocketRouteImport.update({
   id: '/websocket',
   path: '/websocket',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WarekiRoute = WarekiRouteImport.update({
+  id: '/wareki',
+  path: '/wareki',
   getParentRoute: () => rootRouteImport,
 } as any)
 const VideoConverterRoute = VideoConverterRouteImport.update({
@@ -598,6 +614,11 @@ const PhpSerializeRoute = PhpSerializeRouteImport.update({
   path: '/php-serialize',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PhoneRoute = PhoneRouteImport.update({
+  id: '/phone',
+  path: '/phone',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PasswordStrengthRoute = PasswordStrengthRouteImport.update({
   id: '/password-strength',
   path: '/password-strength',
@@ -863,6 +884,11 @@ const Ieee754Route = Ieee754RouteImport.update({
   path: '/ieee754',
   getParentRoute: () => rootRouteImport,
 } as any)
+const IbanRoute = IbanRouteImport.update({
+  id: '/iban',
+  path: '/iban',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HttpStatusRoute = HttpStatusRouteImport.update({
   id: '/http-status',
   path: '/http-status',
@@ -961,6 +987,11 @@ const Game2048Route = Game2048RouteImport.update({
 const FunctionPlotterRoute = FunctionPlotterRouteImport.update({
   id: '/function-plotter',
   path: '/function-plotter',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FractionRoute = FractionRouteImport.update({
+  id: '/fraction',
+  path: '/fraction',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FaviconGeneratorRoute = FaviconGeneratorRouteImport.update({
@@ -1308,6 +1339,11 @@ const BrainfuckRoute = BrainfuckRouteImport.update({
   path: '/brainfuck',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BrailleRoute = BrailleRouteImport.update({
+  id: '/braille',
+  path: '/braille',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BitwiseRoute = BitwiseRouteImport.update({
   id: '/bitwise',
   path: '/bitwise',
@@ -1426,6 +1462,7 @@ export interface FileRoutesByFullPath {
   '/base85': typeof Base85Route
   '/basic-auth': typeof BasicAuthRoute
   '/bitwise': typeof BitwiseRoute
+  '/braille': typeof BrailleRoute
   '/brainfuck': typeof BrainfuckRoute
   '/cache-control': typeof CacheControlRoute
   '/cert-decoder': typeof CertDecoderRoute
@@ -1495,6 +1532,7 @@ export interface FileRoutesByFullPath {
   '/encoding': typeof EncodingRoute
   '/env-parser': typeof EnvParserRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
+  '/fraction': typeof FractionRoute
   '/function-plotter': typeof FunctionPlotterRoute
   '/game-2048': typeof Game2048Route
   '/github-badge': typeof GithubBadgeRoute
@@ -1515,6 +1553,7 @@ export interface FileRoutesByFullPath {
   '/http-client': typeof HttpClientRoute
   '/http-headers': typeof HttpHeadersRoute
   '/http-status': typeof HttpStatusRoute
+  '/iban': typeof IbanRoute
   '/ieee754': typeof Ieee754Route
   '/image-base64': typeof ImageBase64Route
   '/image-compress': typeof ImageCompressRoute
@@ -1568,6 +1607,7 @@ export interface FileRoutesByFullPath {
   '/passphrase': typeof PassphraseRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/password-strength': typeof PasswordStrengthRoute
+  '/phone': typeof PhoneRoute
   '/php-serialize': typeof PhpSerializeRoute
   '/pkce': typeof PkceRoute
   '/pomodoro': typeof PomodoroRoute
@@ -1628,6 +1668,7 @@ export interface FileRoutesByFullPath {
   '/uuid': typeof UuidRoute
   '/uuid-inspector': typeof UuidInspectorRoute
   '/video-converter': typeof VideoConverterRoute
+  '/wareki': typeof WarekiRoute
   '/websocket': typeof WebsocketRoute
   '/whois': typeof WhoisRoute
   '/word-frequency': typeof WordFrequencyRoute
@@ -1639,6 +1680,7 @@ export interface FileRoutesByFullPath {
   '/yaml-json': typeof YamlJsonRoute
   '/yaml-toml': typeof YamlTomlRoute
   '/zenkaku': typeof ZenkakuRoute
+  '/zero-width': typeof ZeroWidthRoute
   '/api/image.jpg': typeof ApiImageDotjpgRoute
   '/api/image.png': typeof ApiImageDotpngRoute
   '/api/image.svg': typeof ApiImageDotsvgRoute
@@ -1661,6 +1703,7 @@ export interface FileRoutesByTo {
   '/base85': typeof Base85Route
   '/basic-auth': typeof BasicAuthRoute
   '/bitwise': typeof BitwiseRoute
+  '/braille': typeof BrailleRoute
   '/brainfuck': typeof BrainfuckRoute
   '/cache-control': typeof CacheControlRoute
   '/cert-decoder': typeof CertDecoderRoute
@@ -1730,6 +1773,7 @@ export interface FileRoutesByTo {
   '/encoding': typeof EncodingRoute
   '/env-parser': typeof EnvParserRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
+  '/fraction': typeof FractionRoute
   '/function-plotter': typeof FunctionPlotterRoute
   '/game-2048': typeof Game2048Route
   '/github-badge': typeof GithubBadgeRoute
@@ -1750,6 +1794,7 @@ export interface FileRoutesByTo {
   '/http-client': typeof HttpClientRoute
   '/http-headers': typeof HttpHeadersRoute
   '/http-status': typeof HttpStatusRoute
+  '/iban': typeof IbanRoute
   '/ieee754': typeof Ieee754Route
   '/image-base64': typeof ImageBase64Route
   '/image-compress': typeof ImageCompressRoute
@@ -1803,6 +1848,7 @@ export interface FileRoutesByTo {
   '/passphrase': typeof PassphraseRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/password-strength': typeof PasswordStrengthRoute
+  '/phone': typeof PhoneRoute
   '/php-serialize': typeof PhpSerializeRoute
   '/pkce': typeof PkceRoute
   '/pomodoro': typeof PomodoroRoute
@@ -1863,6 +1909,7 @@ export interface FileRoutesByTo {
   '/uuid': typeof UuidRoute
   '/uuid-inspector': typeof UuidInspectorRoute
   '/video-converter': typeof VideoConverterRoute
+  '/wareki': typeof WarekiRoute
   '/websocket': typeof WebsocketRoute
   '/whois': typeof WhoisRoute
   '/word-frequency': typeof WordFrequencyRoute
@@ -1874,6 +1921,7 @@ export interface FileRoutesByTo {
   '/yaml-json': typeof YamlJsonRoute
   '/yaml-toml': typeof YamlTomlRoute
   '/zenkaku': typeof ZenkakuRoute
+  '/zero-width': typeof ZeroWidthRoute
   '/api/image.jpg': typeof ApiImageDotjpgRoute
   '/api/image.png': typeof ApiImageDotpngRoute
   '/api/image.svg': typeof ApiImageDotsvgRoute
@@ -1897,6 +1945,7 @@ export interface FileRoutesById {
   '/base85': typeof Base85Route
   '/basic-auth': typeof BasicAuthRoute
   '/bitwise': typeof BitwiseRoute
+  '/braille': typeof BrailleRoute
   '/brainfuck': typeof BrainfuckRoute
   '/cache-control': typeof CacheControlRoute
   '/cert-decoder': typeof CertDecoderRoute
@@ -1966,6 +2015,7 @@ export interface FileRoutesById {
   '/encoding': typeof EncodingRoute
   '/env-parser': typeof EnvParserRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
+  '/fraction': typeof FractionRoute
   '/function-plotter': typeof FunctionPlotterRoute
   '/game-2048': typeof Game2048Route
   '/github-badge': typeof GithubBadgeRoute
@@ -1986,6 +2036,7 @@ export interface FileRoutesById {
   '/http-client': typeof HttpClientRoute
   '/http-headers': typeof HttpHeadersRoute
   '/http-status': typeof HttpStatusRoute
+  '/iban': typeof IbanRoute
   '/ieee754': typeof Ieee754Route
   '/image-base64': typeof ImageBase64Route
   '/image-compress': typeof ImageCompressRoute
@@ -2039,6 +2090,7 @@ export interface FileRoutesById {
   '/passphrase': typeof PassphraseRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/password-strength': typeof PasswordStrengthRoute
+  '/phone': typeof PhoneRoute
   '/php-serialize': typeof PhpSerializeRoute
   '/pkce': typeof PkceRoute
   '/pomodoro': typeof PomodoroRoute
@@ -2099,6 +2151,7 @@ export interface FileRoutesById {
   '/uuid': typeof UuidRoute
   '/uuid-inspector': typeof UuidInspectorRoute
   '/video-converter': typeof VideoConverterRoute
+  '/wareki': typeof WarekiRoute
   '/websocket': typeof WebsocketRoute
   '/whois': typeof WhoisRoute
   '/word-frequency': typeof WordFrequencyRoute
@@ -2110,6 +2163,7 @@ export interface FileRoutesById {
   '/yaml-json': typeof YamlJsonRoute
   '/yaml-toml': typeof YamlTomlRoute
   '/zenkaku': typeof ZenkakuRoute
+  '/zero-width': typeof ZeroWidthRoute
   '/api/image.jpg': typeof ApiImageDotjpgRoute
   '/api/image.png': typeof ApiImageDotpngRoute
   '/api/image.svg': typeof ApiImageDotsvgRoute
@@ -2134,6 +2188,7 @@ export interface FileRouteTypes {
     | '/base85'
     | '/basic-auth'
     | '/bitwise'
+    | '/braille'
     | '/brainfuck'
     | '/cache-control'
     | '/cert-decoder'
@@ -2203,6 +2258,7 @@ export interface FileRouteTypes {
     | '/encoding'
     | '/env-parser'
     | '/favicon-generator'
+    | '/fraction'
     | '/function-plotter'
     | '/game-2048'
     | '/github-badge'
@@ -2223,6 +2279,7 @@ export interface FileRouteTypes {
     | '/http-client'
     | '/http-headers'
     | '/http-status'
+    | '/iban'
     | '/ieee754'
     | '/image-base64'
     | '/image-compress'
@@ -2276,6 +2333,7 @@ export interface FileRouteTypes {
     | '/passphrase'
     | '/password-generator'
     | '/password-strength'
+    | '/phone'
     | '/php-serialize'
     | '/pkce'
     | '/pomodoro'
@@ -2336,6 +2394,7 @@ export interface FileRouteTypes {
     | '/uuid'
     | '/uuid-inspector'
     | '/video-converter'
+    | '/wareki'
     | '/websocket'
     | '/whois'
     | '/word-frequency'
@@ -2347,6 +2406,7 @@ export interface FileRouteTypes {
     | '/yaml-json'
     | '/yaml-toml'
     | '/zenkaku'
+    | '/zero-width'
     | '/api/image.jpg'
     | '/api/image.png'
     | '/api/image.svg'
@@ -2369,6 +2429,7 @@ export interface FileRouteTypes {
     | '/base85'
     | '/basic-auth'
     | '/bitwise'
+    | '/braille'
     | '/brainfuck'
     | '/cache-control'
     | '/cert-decoder'
@@ -2438,6 +2499,7 @@ export interface FileRouteTypes {
     | '/encoding'
     | '/env-parser'
     | '/favicon-generator'
+    | '/fraction'
     | '/function-plotter'
     | '/game-2048'
     | '/github-badge'
@@ -2458,6 +2520,7 @@ export interface FileRouteTypes {
     | '/http-client'
     | '/http-headers'
     | '/http-status'
+    | '/iban'
     | '/ieee754'
     | '/image-base64'
     | '/image-compress'
@@ -2511,6 +2574,7 @@ export interface FileRouteTypes {
     | '/passphrase'
     | '/password-generator'
     | '/password-strength'
+    | '/phone'
     | '/php-serialize'
     | '/pkce'
     | '/pomodoro'
@@ -2571,6 +2635,7 @@ export interface FileRouteTypes {
     | '/uuid'
     | '/uuid-inspector'
     | '/video-converter'
+    | '/wareki'
     | '/websocket'
     | '/whois'
     | '/word-frequency'
@@ -2582,6 +2647,7 @@ export interface FileRouteTypes {
     | '/yaml-json'
     | '/yaml-toml'
     | '/zenkaku'
+    | '/zero-width'
     | '/api/image.jpg'
     | '/api/image.png'
     | '/api/image.svg'
@@ -2604,6 +2670,7 @@ export interface FileRouteTypes {
     | '/base85'
     | '/basic-auth'
     | '/bitwise'
+    | '/braille'
     | '/brainfuck'
     | '/cache-control'
     | '/cert-decoder'
@@ -2673,6 +2740,7 @@ export interface FileRouteTypes {
     | '/encoding'
     | '/env-parser'
     | '/favicon-generator'
+    | '/fraction'
     | '/function-plotter'
     | '/game-2048'
     | '/github-badge'
@@ -2693,6 +2761,7 @@ export interface FileRouteTypes {
     | '/http-client'
     | '/http-headers'
     | '/http-status'
+    | '/iban'
     | '/ieee754'
     | '/image-base64'
     | '/image-compress'
@@ -2746,6 +2815,7 @@ export interface FileRouteTypes {
     | '/passphrase'
     | '/password-generator'
     | '/password-strength'
+    | '/phone'
     | '/php-serialize'
     | '/pkce'
     | '/pomodoro'
@@ -2806,6 +2876,7 @@ export interface FileRouteTypes {
     | '/uuid'
     | '/uuid-inspector'
     | '/video-converter'
+    | '/wareki'
     | '/websocket'
     | '/whois'
     | '/word-frequency'
@@ -2817,6 +2888,7 @@ export interface FileRouteTypes {
     | '/yaml-json'
     | '/yaml-toml'
     | '/zenkaku'
+    | '/zero-width'
     | '/api/image.jpg'
     | '/api/image.png'
     | '/api/image.svg'
@@ -2840,6 +2912,7 @@ export interface RootRouteChildren {
   Base85Route: typeof Base85Route
   BasicAuthRoute: typeof BasicAuthRoute
   BitwiseRoute: typeof BitwiseRoute
+  BrailleRoute: typeof BrailleRoute
   BrainfuckRoute: typeof BrainfuckRoute
   CacheControlRoute: typeof CacheControlRoute
   CertDecoderRoute: typeof CertDecoderRoute
@@ -2909,6 +2982,7 @@ export interface RootRouteChildren {
   EncodingRoute: typeof EncodingRoute
   EnvParserRoute: typeof EnvParserRoute
   FaviconGeneratorRoute: typeof FaviconGeneratorRoute
+  FractionRoute: typeof FractionRoute
   FunctionPlotterRoute: typeof FunctionPlotterRoute
   Game2048Route: typeof Game2048Route
   GithubBadgeRoute: typeof GithubBadgeRoute
@@ -2929,6 +3003,7 @@ export interface RootRouteChildren {
   HttpClientRoute: typeof HttpClientRoute
   HttpHeadersRoute: typeof HttpHeadersRoute
   HttpStatusRoute: typeof HttpStatusRoute
+  IbanRoute: typeof IbanRoute
   Ieee754Route: typeof Ieee754Route
   ImageBase64Route: typeof ImageBase64Route
   ImageCompressRoute: typeof ImageCompressRoute
@@ -2982,6 +3057,7 @@ export interface RootRouteChildren {
   PassphraseRoute: typeof PassphraseRoute
   PasswordGeneratorRoute: typeof PasswordGeneratorRoute
   PasswordStrengthRoute: typeof PasswordStrengthRoute
+  PhoneRoute: typeof PhoneRoute
   PhpSerializeRoute: typeof PhpSerializeRoute
   PkceRoute: typeof PkceRoute
   PomodoroRoute: typeof PomodoroRoute
@@ -3042,6 +3118,7 @@ export interface RootRouteChildren {
   UuidRoute: typeof UuidRoute
   UuidInspectorRoute: typeof UuidInspectorRoute
   VideoConverterRoute: typeof VideoConverterRoute
+  WarekiRoute: typeof WarekiRoute
   WebsocketRoute: typeof WebsocketRoute
   WhoisRoute: typeof WhoisRoute
   WordFrequencyRoute: typeof WordFrequencyRoute
@@ -3053,6 +3130,7 @@ export interface RootRouteChildren {
   YamlJsonRoute: typeof YamlJsonRoute
   YamlTomlRoute: typeof YamlTomlRoute
   ZenkakuRoute: typeof ZenkakuRoute
+  ZeroWidthRoute: typeof ZeroWidthRoute
   ApiImageDotjpgRoute: typeof ApiImageDotjpgRoute
   ApiImageDotpngRoute: typeof ApiImageDotpngRoute
   ApiImageDotsvgRoute: typeof ApiImageDotsvgRoute
@@ -3061,6 +3139,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/zero-width': {
+      id: '/zero-width'
+      path: '/zero-width'
+      fullPath: '/zero-width'
+      preLoaderRoute: typeof ZeroWidthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/zenkaku': {
       id: '/zenkaku'
       path: '/zenkaku'
@@ -3136,6 +3221,13 @@ declare module '@tanstack/react-router' {
       path: '/websocket'
       fullPath: '/websocket'
       preLoaderRoute: typeof WebsocketRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/wareki': {
+      id: '/wareki'
+      path: '/wareki'
+      fullPath: '/wareki'
+      preLoaderRoute: typeof WarekiRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/video-converter': {
@@ -3558,6 +3650,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PhpSerializeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/phone': {
+      id: '/phone'
+      path: '/phone'
+      fullPath: '/phone'
+      preLoaderRoute: typeof PhoneRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/password-strength': {
       id: '/password-strength'
       path: '/password-strength'
@@ -3929,6 +4028,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Ieee754RouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/iban': {
+      id: '/iban'
+      path: '/iban'
+      fullPath: '/iban'
+      preLoaderRoute: typeof IbanRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/http-status': {
       id: '/http-status'
       path: '/http-status'
@@ -4067,6 +4173,13 @@ declare module '@tanstack/react-router' {
       path: '/function-plotter'
       fullPath: '/function-plotter'
       preLoaderRoute: typeof FunctionPlotterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fraction': {
+      id: '/fraction'
+      path: '/fraction'
+      fullPath: '/fraction'
+      preLoaderRoute: typeof FractionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/favicon-generator': {
@@ -4552,6 +4665,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BrainfuckRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/braille': {
+      id: '/braille'
+      path: '/braille'
+      fullPath: '/braille'
+      preLoaderRoute: typeof BrailleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/bitwise': {
       id: '/bitwise'
       path: '/bitwise'
@@ -4712,6 +4832,7 @@ const rootRouteChildren: RootRouteChildren = {
   Base85Route: Base85Route,
   BasicAuthRoute: BasicAuthRoute,
   BitwiseRoute: BitwiseRoute,
+  BrailleRoute: BrailleRoute,
   BrainfuckRoute: BrainfuckRoute,
   CacheControlRoute: CacheControlRoute,
   CertDecoderRoute: CertDecoderRoute,
@@ -4781,6 +4902,7 @@ const rootRouteChildren: RootRouteChildren = {
   EncodingRoute: EncodingRoute,
   EnvParserRoute: EnvParserRoute,
   FaviconGeneratorRoute: FaviconGeneratorRoute,
+  FractionRoute: FractionRoute,
   FunctionPlotterRoute: FunctionPlotterRoute,
   Game2048Route: Game2048Route,
   GithubBadgeRoute: GithubBadgeRoute,
@@ -4801,6 +4923,7 @@ const rootRouteChildren: RootRouteChildren = {
   HttpClientRoute: HttpClientRoute,
   HttpHeadersRoute: HttpHeadersRoute,
   HttpStatusRoute: HttpStatusRoute,
+  IbanRoute: IbanRoute,
   Ieee754Route: Ieee754Route,
   ImageBase64Route: ImageBase64Route,
   ImageCompressRoute: ImageCompressRoute,
@@ -4854,6 +4977,7 @@ const rootRouteChildren: RootRouteChildren = {
   PassphraseRoute: PassphraseRoute,
   PasswordGeneratorRoute: PasswordGeneratorRoute,
   PasswordStrengthRoute: PasswordStrengthRoute,
+  PhoneRoute: PhoneRoute,
   PhpSerializeRoute: PhpSerializeRoute,
   PkceRoute: PkceRoute,
   PomodoroRoute: PomodoroRoute,
@@ -4914,6 +5038,7 @@ const rootRouteChildren: RootRouteChildren = {
   UuidRoute: UuidRoute,
   UuidInspectorRoute: UuidInspectorRoute,
   VideoConverterRoute: VideoConverterRoute,
+  WarekiRoute: WarekiRoute,
   WebsocketRoute: WebsocketRoute,
   WhoisRoute: WhoisRoute,
   WordFrequencyRoute: WordFrequencyRoute,
@@ -4925,6 +5050,7 @@ const rootRouteChildren: RootRouteChildren = {
   YamlJsonRoute: YamlJsonRoute,
   YamlTomlRoute: YamlTomlRoute,
   ZenkakuRoute: ZenkakuRoute,
+  ZeroWidthRoute: ZeroWidthRoute,
   ApiImageDotjpgRoute: ApiImageDotjpgRoute,
   ApiImageDotpngRoute: ApiImageDotpngRoute,
   ApiImageDotsvgRoute: ApiImageDotsvgRoute,
