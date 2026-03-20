@@ -20,6 +20,7 @@ import { Route as WorldClockRouteImport } from './routes/world-clock'
 import { Route as WordFrequencyRouteImport } from './routes/word-frequency'
 import { Route as WhoisRouteImport } from './routes/whois'
 import { Route as WebsocketRouteImport } from './routes/websocket'
+import { Route as WarekiRouteImport } from './routes/wareki'
 import { Route as VideoConverterRouteImport } from './routes/video-converter'
 import { Route as UuidInspectorRouteImport } from './routes/uuid-inspector'
 import { Route as UuidRouteImport } from './routes/uuid'
@@ -297,6 +298,11 @@ const WhoisRoute = WhoisRouteImport.update({
 const WebsocketRoute = WebsocketRouteImport.update({
   id: '/websocket',
   path: '/websocket',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WarekiRoute = WarekiRouteImport.update({
+  id: '/wareki',
+  path: '/wareki',
   getParentRoute: () => rootRouteImport,
 } as any)
 const VideoConverterRoute = VideoConverterRouteImport.update({
@@ -1635,6 +1641,7 @@ export interface FileRoutesByFullPath {
   '/uuid': typeof UuidRoute
   '/uuid-inspector': typeof UuidInspectorRoute
   '/video-converter': typeof VideoConverterRoute
+  '/wareki': typeof WarekiRoute
   '/websocket': typeof WebsocketRoute
   '/whois': typeof WhoisRoute
   '/word-frequency': typeof WordFrequencyRoute
@@ -1871,6 +1878,7 @@ export interface FileRoutesByTo {
   '/uuid': typeof UuidRoute
   '/uuid-inspector': typeof UuidInspectorRoute
   '/video-converter': typeof VideoConverterRoute
+  '/wareki': typeof WarekiRoute
   '/websocket': typeof WebsocketRoute
   '/whois': typeof WhoisRoute
   '/word-frequency': typeof WordFrequencyRoute
@@ -2108,6 +2116,7 @@ export interface FileRoutesById {
   '/uuid': typeof UuidRoute
   '/uuid-inspector': typeof UuidInspectorRoute
   '/video-converter': typeof VideoConverterRoute
+  '/wareki': typeof WarekiRoute
   '/websocket': typeof WebsocketRoute
   '/whois': typeof WhoisRoute
   '/word-frequency': typeof WordFrequencyRoute
@@ -2346,6 +2355,7 @@ export interface FileRouteTypes {
     | '/uuid'
     | '/uuid-inspector'
     | '/video-converter'
+    | '/wareki'
     | '/websocket'
     | '/whois'
     | '/word-frequency'
@@ -2582,6 +2592,7 @@ export interface FileRouteTypes {
     | '/uuid'
     | '/uuid-inspector'
     | '/video-converter'
+    | '/wareki'
     | '/websocket'
     | '/whois'
     | '/word-frequency'
@@ -2818,6 +2829,7 @@ export interface FileRouteTypes {
     | '/uuid'
     | '/uuid-inspector'
     | '/video-converter'
+    | '/wareki'
     | '/websocket'
     | '/whois'
     | '/word-frequency'
@@ -3055,6 +3067,7 @@ export interface RootRouteChildren {
   UuidRoute: typeof UuidRoute
   UuidInspectorRoute: typeof UuidInspectorRoute
   VideoConverterRoute: typeof VideoConverterRoute
+  WarekiRoute: typeof WarekiRoute
   WebsocketRoute: typeof WebsocketRoute
   WhoisRoute: typeof WhoisRoute
   WordFrequencyRoute: typeof WordFrequencyRoute
@@ -3149,6 +3162,13 @@ declare module '@tanstack/react-router' {
       path: '/websocket'
       fullPath: '/websocket'
       preLoaderRoute: typeof WebsocketRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/wareki': {
+      id: '/wareki'
+      path: '/wareki'
+      fullPath: '/wareki'
+      preLoaderRoute: typeof WarekiRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/video-converter': {
@@ -4935,6 +4955,7 @@ const rootRouteChildren: RootRouteChildren = {
   UuidRoute: UuidRoute,
   UuidInspectorRoute: UuidInspectorRoute,
   VideoConverterRoute: VideoConverterRoute,
+  WarekiRoute: WarekiRoute,
   WebsocketRoute: WebsocketRoute,
   WhoisRoute: WhoisRoute,
   WordFrequencyRoute: WordFrequencyRoute,

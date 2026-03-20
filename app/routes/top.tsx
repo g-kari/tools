@@ -402,6 +402,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "Ⅻ",
       },
       {
+        path: "/wareki",
+        label: "和暦・西暦変換",
+        description:
+          "西暦と和暦（元号）を相互変換するツール。令和・平成・昭和・大正・明治に対応。元号の遷移年（2019・1989・1926・1912年）も正しく処理します。",
+        icon: "🗾",
+      },
+      {
         path: "/number-words",
         label: "数値テキスト変換",
         description:

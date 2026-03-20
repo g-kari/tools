@@ -96,6 +96,7 @@ const navCategories = [
       { path: "/zenkaku", label: "全角/半角変換" },
       { path: "/kana-convert", label: "仮名・ローマ字変換" },
       { path: "/roman-numerals", label: "ローマ数字変換" },
+      { path: "/wareki", label: "和暦・西暦変換" },
       { path: "/number-words", label: "数値テキスト変換" },
       { path: "/daiji", label: "大字変換" },
       { path: "/csv-sql", label: "CSV→SQL変換" },
