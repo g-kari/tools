@@ -239,6 +239,7 @@ import { Route as CaesarRouteImport } from './routes/caesar'
 import { Route as CacheControlRouteImport } from './routes/cache-control'
 import { Route as BrainfuckRouteImport } from './routes/brainfuck'
 import { Route as BrailleRouteImport } from './routes/braille'
+import { Route as BmiCalculatorRouteImport } from './routes/bmi-calculator'
 import { Route as BitwiseRouteImport } from './routes/bitwise'
 import { Route as BasicAuthRouteImport } from './routes/basic-auth'
 import { Route as Base85RouteImport } from './routes/base85'
@@ -1411,6 +1412,11 @@ const BrailleRoute = BrailleRouteImport.update({
   path: '/braille',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BmiCalculatorRoute = BmiCalculatorRouteImport.update({
+  id: '/bmi-calculator',
+  path: '/bmi-calculator',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BitwiseRoute = BitwiseRouteImport.update({
   id: '/bitwise',
   path: '/bitwise',
@@ -1535,6 +1541,7 @@ export interface FileRoutesByFullPath {
   '/base85': typeof Base85Route
   '/basic-auth': typeof BasicAuthRoute
   '/bitwise': typeof BitwiseRoute
+  '/bmi-calculator': typeof BmiCalculatorRoute
   '/braille': typeof BrailleRoute
   '/brainfuck': typeof BrainfuckRoute
   '/cache-control': typeof CacheControlRoute
@@ -1788,6 +1795,7 @@ export interface FileRoutesByTo {
   '/base85': typeof Base85Route
   '/basic-auth': typeof BasicAuthRoute
   '/bitwise': typeof BitwiseRoute
+  '/bmi-calculator': typeof BmiCalculatorRoute
   '/braille': typeof BrailleRoute
   '/brainfuck': typeof BrainfuckRoute
   '/cache-control': typeof CacheControlRoute
@@ -2042,6 +2050,7 @@ export interface FileRoutesById {
   '/base85': typeof Base85Route
   '/basic-auth': typeof BasicAuthRoute
   '/bitwise': typeof BitwiseRoute
+  '/bmi-calculator': typeof BmiCalculatorRoute
   '/braille': typeof BrailleRoute
   '/brainfuck': typeof BrainfuckRoute
   '/cache-control': typeof CacheControlRoute
@@ -2297,6 +2306,7 @@ export interface FileRouteTypes {
     | '/base85'
     | '/basic-auth'
     | '/bitwise'
+    | '/bmi-calculator'
     | '/braille'
     | '/brainfuck'
     | '/cache-control'
@@ -2550,6 +2560,7 @@ export interface FileRouteTypes {
     | '/base85'
     | '/basic-auth'
     | '/bitwise'
+    | '/bmi-calculator'
     | '/braille'
     | '/brainfuck'
     | '/cache-control'
@@ -2803,6 +2814,7 @@ export interface FileRouteTypes {
     | '/base85'
     | '/basic-auth'
     | '/bitwise'
+    | '/bmi-calculator'
     | '/braille'
     | '/brainfuck'
     | '/cache-control'
@@ -3057,6 +3069,7 @@ export interface RootRouteChildren {
   Base85Route: typeof Base85Route
   BasicAuthRoute: typeof BasicAuthRoute
   BitwiseRoute: typeof BitwiseRoute
+  BmiCalculatorRoute: typeof BmiCalculatorRoute
   BrailleRoute: typeof BrailleRoute
   BrainfuckRoute: typeof BrainfuckRoute
   CacheControlRoute: typeof CacheControlRoute
@@ -4905,6 +4918,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BrailleRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/bmi-calculator': {
+      id: '/bmi-calculator'
+      path: '/bmi-calculator'
+      fullPath: '/bmi-calculator'
+      preLoaderRoute: typeof BmiCalculatorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/bitwise': {
       id: '/bitwise'
       path: '/bitwise'
@@ -5073,6 +5093,7 @@ const rootRouteChildren: RootRouteChildren = {
   Base85Route: Base85Route,
   BasicAuthRoute: BasicAuthRoute,
   BitwiseRoute: BitwiseRoute,
+  BmiCalculatorRoute: BmiCalculatorRoute,
   BrailleRoute: BrailleRoute,
   BrainfuckRoute: BrainfuckRoute,
   CacheControlRoute: CacheControlRoute,
