@@ -116,6 +116,7 @@ import { Route as MatrixRouteImport } from './routes/matrix'
 import { Route as MathEvalRouteImport } from './routes/math-eval'
 import { Route as MarkdownTableRouteImport } from './routes/markdown-table'
 import { Route as MarkdownPreviewRouteImport } from './routes/markdown-preview'
+import { Route as MakefileRouteImport } from './routes/makefile'
 import { Route as LuhnCheckRouteImport } from './routes/luhn-check'
 import { Route as LoremIpsumRouteImport } from './routes/lorem-ipsum'
 import { Route as LoanCalculatorRouteImport } from './routes/loan-calculator'
@@ -804,6 +805,11 @@ const MarkdownTableRoute = MarkdownTableRouteImport.update({
 const MarkdownPreviewRoute = MarkdownPreviewRouteImport.update({
   id: '/markdown-preview',
   path: '/markdown-preview',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MakefileRoute = MakefileRouteImport.update({
+  id: '/makefile',
+  path: '/makefile',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LuhnCheckRoute = LuhnCheckRouteImport.update({
@@ -1728,6 +1734,7 @@ export interface FileRoutesByFullPath {
   '/loan-calculator': typeof LoanCalculatorRoute
   '/lorem-ipsum': typeof LoremIpsumRoute
   '/luhn-check': typeof LuhnCheckRoute
+  '/makefile': typeof MakefileRoute
   '/markdown-preview': typeof MarkdownPreviewRoute
   '/markdown-table': typeof MarkdownTableRoute
   '/math-eval': typeof MathEvalRoute
@@ -1991,6 +1998,7 @@ export interface FileRoutesByTo {
   '/loan-calculator': typeof LoanCalculatorRoute
   '/lorem-ipsum': typeof LoremIpsumRoute
   '/luhn-check': typeof LuhnCheckRoute
+  '/makefile': typeof MakefileRoute
   '/markdown-preview': typeof MarkdownPreviewRoute
   '/markdown-table': typeof MarkdownTableRoute
   '/math-eval': typeof MathEvalRoute
@@ -2255,6 +2263,7 @@ export interface FileRoutesById {
   '/loan-calculator': typeof LoanCalculatorRoute
   '/lorem-ipsum': typeof LoremIpsumRoute
   '/luhn-check': typeof LuhnCheckRoute
+  '/makefile': typeof MakefileRoute
   '/markdown-preview': typeof MarkdownPreviewRoute
   '/markdown-table': typeof MarkdownTableRoute
   '/math-eval': typeof MathEvalRoute
@@ -2520,6 +2529,7 @@ export interface FileRouteTypes {
     | '/loan-calculator'
     | '/lorem-ipsum'
     | '/luhn-check'
+    | '/makefile'
     | '/markdown-preview'
     | '/markdown-table'
     | '/math-eval'
@@ -2783,6 +2793,7 @@ export interface FileRouteTypes {
     | '/loan-calculator'
     | '/lorem-ipsum'
     | '/luhn-check'
+    | '/makefile'
     | '/markdown-preview'
     | '/markdown-table'
     | '/math-eval'
@@ -3046,6 +3057,7 @@ export interface FileRouteTypes {
     | '/loan-calculator'
     | '/lorem-ipsum'
     | '/luhn-check'
+    | '/makefile'
     | '/markdown-preview'
     | '/markdown-table'
     | '/math-eval'
@@ -3310,6 +3322,7 @@ export interface RootRouteChildren {
   LoanCalculatorRoute: typeof LoanCalculatorRoute
   LoremIpsumRoute: typeof LoremIpsumRoute
   LuhnCheckRoute: typeof LuhnCheckRoute
+  MakefileRoute: typeof MakefileRoute
   MarkdownPreviewRoute: typeof MarkdownPreviewRoute
   MarkdownTableRoute: typeof MarkdownTableRoute
   MathEvalRoute: typeof MathEvalRoute
@@ -4172,6 +4185,13 @@ declare module '@tanstack/react-router' {
       path: '/markdown-preview'
       fullPath: '/markdown-preview'
       preLoaderRoute: typeof MarkdownPreviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/makefile': {
+      id: '/makefile'
+      path: '/makefile'
+      fullPath: '/makefile'
+      preLoaderRoute: typeof MakefileRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/luhn-check': {
@@ -5406,6 +5426,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoanCalculatorRoute: LoanCalculatorRoute,
   LoremIpsumRoute: LoremIpsumRoute,
   LuhnCheckRoute: LuhnCheckRoute,
+  MakefileRoute: MakefileRoute,
   MarkdownPreviewRoute: MarkdownPreviewRoute,
   MarkdownTableRoute: MarkdownTableRoute,
   MathEvalRoute: MathEvalRoute,

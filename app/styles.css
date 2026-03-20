@@ -61,6 +61,7 @@
 @import "./styles/tools/cron.css";
 @import "./styles/tools/url-parser.css";
 @import "./styles/tools/gitignore.css";
+@import "./styles/tools/makefile.css";
 @import "./styles/tools/robots-txt.css";
 @import "./styles/tools/markdown-table.css";
 @import "./styles/tools/random-data.css";
