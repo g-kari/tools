@@ -155,6 +155,7 @@ import { Route as GitignoreRouteImport } from './routes/gitignore'
 import { Route as GithubBadgeRouteImport } from './routes/github-badge'
 import { Route as Game2048RouteImport } from './routes/game-2048'
 import { Route as FunctionPlotterRouteImport } from './routes/function-plotter'
+import { Route as FractionRouteImport } from './routes/fraction'
 import { Route as FaviconGeneratorRouteImport } from './routes/favicon-generator'
 import { Route as EnvParserRouteImport } from './routes/env-parser'
 import { Route as EncodingRouteImport } from './routes/encoding'
@@ -975,6 +976,11 @@ const FunctionPlotterRoute = FunctionPlotterRouteImport.update({
   path: '/function-plotter',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FractionRoute = FractionRouteImport.update({
+  id: '/fraction',
+  path: '/fraction',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FaviconGeneratorRoute = FaviconGeneratorRouteImport.update({
   id: '/favicon-generator',
   path: '/favicon-generator',
@@ -1507,6 +1513,7 @@ export interface FileRoutesByFullPath {
   '/encoding': typeof EncodingRoute
   '/env-parser': typeof EnvParserRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
+  '/fraction': typeof FractionRoute
   '/function-plotter': typeof FunctionPlotterRoute
   '/game-2048': typeof Game2048Route
   '/github-badge': typeof GithubBadgeRoute
@@ -1744,6 +1751,7 @@ export interface FileRoutesByTo {
   '/encoding': typeof EncodingRoute
   '/env-parser': typeof EnvParserRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
+  '/fraction': typeof FractionRoute
   '/function-plotter': typeof FunctionPlotterRoute
   '/game-2048': typeof Game2048Route
   '/github-badge': typeof GithubBadgeRoute
@@ -1982,6 +1990,7 @@ export interface FileRoutesById {
   '/encoding': typeof EncodingRoute
   '/env-parser': typeof EnvParserRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
+  '/fraction': typeof FractionRoute
   '/function-plotter': typeof FunctionPlotterRoute
   '/game-2048': typeof Game2048Route
   '/github-badge': typeof GithubBadgeRoute
@@ -2221,6 +2230,7 @@ export interface FileRouteTypes {
     | '/encoding'
     | '/env-parser'
     | '/favicon-generator'
+    | '/fraction'
     | '/function-plotter'
     | '/game-2048'
     | '/github-badge'
@@ -2458,6 +2468,7 @@ export interface FileRouteTypes {
     | '/encoding'
     | '/env-parser'
     | '/favicon-generator'
+    | '/fraction'
     | '/function-plotter'
     | '/game-2048'
     | '/github-badge'
@@ -2695,6 +2706,7 @@ export interface FileRouteTypes {
     | '/encoding'
     | '/env-parser'
     | '/favicon-generator'
+    | '/fraction'
     | '/function-plotter'
     | '/game-2048'
     | '/github-badge'
@@ -2933,6 +2945,7 @@ export interface RootRouteChildren {
   EncodingRoute: typeof EncodingRoute
   EnvParserRoute: typeof EnvParserRoute
   FaviconGeneratorRoute: typeof FaviconGeneratorRoute
+  FractionRoute: typeof FractionRoute
   FunctionPlotterRoute: typeof FunctionPlotterRoute
   Game2048Route: typeof Game2048Route
   GithubBadgeRoute: typeof GithubBadgeRoute
@@ -4109,6 +4122,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FunctionPlotterRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/fraction': {
+      id: '/fraction'
+      path: '/fraction'
+      fullPath: '/fraction'
+      preLoaderRoute: typeof FractionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/favicon-generator': {
       id: '/favicon-generator'
       path: '/favicon-generator'
@@ -4821,6 +4841,7 @@ const rootRouteChildren: RootRouteChildren = {
   EncodingRoute: EncodingRoute,
   EnvParserRoute: EnvParserRoute,
   FaviconGeneratorRoute: FaviconGeneratorRoute,
+  FractionRoute: FractionRoute,
   FunctionPlotterRoute: FunctionPlotterRoute,
   Game2048Route: Game2048Route,
   GithubBadgeRoute: GithubBadgeRoute,

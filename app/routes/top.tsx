@@ -423,6 +423,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "壱",
       },
       {
+        path: "/fraction",
+        label: "分数変換",
+        description:
+          "小数と分数を相互変換するツール。0.75→3/4、0.333…→1/3のような変換に対応。最大公約数による自動約分、帯分数（1 と 1/2）表示も可能。",
+        icon: "½",
+      },
+      {
         path: "/csv-sql",
         label: "CSV→SQL変換",
         description:

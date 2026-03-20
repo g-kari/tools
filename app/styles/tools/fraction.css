@@ -1,0 +1,271 @@
+/* ====================================
+   Fraction Converter
+   ==================================== */
+
+.fraction-container {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.fraction-section {
+  background: var(--md-sys-color-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 8px;
+  animation: fadeInUp 0.3s ease-out both;
+}
+
+.fraction-section:first-of-type {
+  animation-delay: 0.05s;
+}
+
+.fraction-section:nth-of-type(2) {
+  animation-delay: 0.1s;
+}
+
+.fraction-section-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 14px;
+}
+
+.fraction-input-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.fraction-input {
+  flex: 1;
+  min-width: 120px;
+  padding: 10px 12px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  font-family: 'Roboto Mono', 'Courier New', monospace;
+  font-size: 1rem;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.fraction-input:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-surface);
+}
+
+.fraction-input:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 1px;
+}
+
+/* 分子・分母用の狭いinput */
+.fraction-input-narrow {
+  flex: 0 0 100px;
+  min-width: 80px;
+  text-align: center;
+}
+
+/* number input のスピナーを非表示 */
+.fraction-input[type="number"]::-webkit-inner-spin-button,
+.fraction-input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.fraction-input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.fraction-slash {
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: var(--md-sys-color-on-surface-variant);
+  flex-shrink: 0;
+}
+
+/* 変換結果 */
+.fraction-result {
+  margin-top: 14px;
+  padding: 14px 16px;
+  border: 1px solid var(--md-sys-color-primary-container);
+  border-radius: 4px;
+  background: var(--md-sys-color-primary-container);
+  animation: fadeInUp 0.2s ease-out both;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fraction-result-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.fraction-result-label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-primary-container);
+  opacity: 0.75;
+  flex-shrink: 0;
+}
+
+/* 視覚的な分数表示（縦積み） */
+.fraction-visual {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Roboto Mono', 'Courier New', monospace;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-primary-container);
+  line-height: 1.2;
+}
+
+.fraction-visual-numerator {
+  padding: 0 8px 3px;
+  border-bottom: 2px solid var(--md-sys-color-on-primary-container);
+  min-width: 2em;
+  text-align: center;
+}
+
+.fraction-visual-denominator {
+  padding: 3px 8px 0;
+  min-width: 2em;
+  text-align: center;
+}
+
+/* 帯分数表示 */
+.fraction-result-mixed {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.fraction-mixed-display {
+  font-family: 'Roboto Mono', 'Courier New', monospace;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-primary-container);
+}
+
+/* 小数結果 */
+.fraction-result-value {
+  font-family: 'Roboto Mono', 'Courier New', monospace;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-primary-container);
+  word-break: break-all;
+}
+
+/* よく使う分数テーブル */
+.fraction-reference-section {
+  background: var(--md-sys-color-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  padding: 20px;
+  margin-top: 8px;
+  animation: fadeInUp 0.3s ease-out 0.15s both;
+}
+
+.fraction-table-wrapper {
+  overflow-x: auto;
+  margin-top: 12px;
+}
+
+.fraction-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.fraction-table th {
+  text-align: left;
+  padding: 8px 12px;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid var(--md-sys-color-outline-variant);
+}
+
+.fraction-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  color: var(--md-sys-color-on-surface);
+}
+
+.fraction-table tr:last-child td {
+  border-bottom: none;
+}
+
+.fraction-table tr:hover td {
+  background: var(--md-sys-color-surface-variant);
+}
+
+.fraction-table-frac {
+  font-family: 'Roboto Mono', 'Courier New', monospace;
+  font-weight: 700;
+  color: var(--md-sys-color-primary);
+  font-size: 1rem;
+}
+
+.fraction-table-decimal {
+  font-family: 'Roboto Mono', 'Courier New', monospace;
+  font-weight: 500;
+}
+
+.fraction-table-percent {
+  font-family: 'Roboto Mono', 'Courier New', monospace;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* アニメーション抑制 */
+@media (prefers-reduced-motion: reduce) {
+  .fraction-section,
+  .fraction-reference-section,
+  .fraction-result {
+    animation: none;
+  }
+
+  .fraction-input {
+    transition: none;
+  }
+}
+
+/* レスポンシブ */
+@media (max-width: 480px) {
+  .fraction-input-row {
+    gap: 6px;
+  }
+
+  .fraction-input-narrow {
+    flex: 0 0 72px;
+    min-width: 64px;
+  }
+
+  .fraction-result-value {
+    font-size: 1.25rem;
+  }
+
+  .fraction-visual {
+    font-size: 1.1rem;
+  }
+
+  .fraction-table th,
+  .fraction-table td {
+    padding: 6px 8px;
+  }
+}
