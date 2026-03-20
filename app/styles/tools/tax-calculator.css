@@ -1,0 +1,179 @@
+/* 消費税計算機 */
+
+.tax-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.tax-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.tax-label {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface);
+}
+
+.tax-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tax-price-input {
+  flex: 1;
+  max-width: 16rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-size: 1.125rem;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.tax-price-input:focus {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+  border-color: var(--md-sys-color-primary);
+}
+
+.tax-unit {
+  font-size: 1rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.tax-rate-fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.tax-rate-fieldset legend {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface);
+  margin-bottom: 0.5rem;
+}
+
+.tax-rate-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.tax-rate-option {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  cursor: pointer;
+}
+
+.tax-rate-option input[type="radio"] {
+  accent-color: var(--md-sys-color-primary);
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+}
+
+.tax-rate-badge {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  font-family: "JetBrains Mono", monospace;
+  color: var(--md-sys-color-primary);
+  min-width: 2.5rem;
+}
+
+.tax-rate-desc {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.tax-result-section {
+  margin-top: 0.25rem;
+}
+
+.tax-result-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 0.75rem;
+}
+
+.tax-result-card {
+  background: var(--md-sys-color-surface-variant);
+  border-radius: 6px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.tax-amount-card {
+  background: color-mix(in srgb, var(--md-sys-color-secondary-container) 60%, var(--md-sys-color-surface-variant));
+}
+
+.tax-total-card {
+  background: var(--md-sys-color-primary-container);
+}
+
+.tax-result-card-label {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tax-total-card .tax-result-card-label {
+  color: var(--md-sys-color-on-primary-container);
+  opacity: 0.7;
+}
+
+.tax-result-card-value {
+  font-size: 1.625rem;
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface);
+  font-family: "JetBrains Mono", monospace;
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+}
+
+.tax-total-card .tax-result-card-value {
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.tax-result-unit {
+  font-size: 0.875rem;
+  font-weight: 400;
+  opacity: 0.7;
+}
+
+.tax-result-copy-btn {
+  align-self: flex-end;
+  padding: 0.25rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: inherit;
+  transition: background 0.15s;
+}
+
+.tax-result-copy-btn:hover {
+  background: color-mix(in srgb, var(--md-sys-color-on-surface) 10%, transparent);
+}
+
+.tax-total-card .tax-result-copy-btn {
+  border-color: var(--md-sys-color-on-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
