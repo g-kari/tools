@@ -211,14 +211,13 @@ describe('validateIsbn（総合）', () => {
   });
 
   it('979プレフィックスのISBN-13（ISBN-10変換不可）', () => {
-    // 9791032309056 はフランスの979プレフィックスISBN-13（値は例示）
-    // チェックデジット再計算して正しいISBN-13を作成: 979103230905?
+    // 9791032309056: チェックデジット計算
     // 979103230905: sum = 9*1+7*3+9*1+1*3+0*1+3*3+2*1+3*3+0*1+9*3+0*1+5*3
-    //             = 9+21+9+3+0+9+2+9+0+27+0+15 = 104, check = (10-(104%10))%10 = (10-4)%10 = 6
+    //             = 9+21+9+3+0+9+2+9+0+27+0+15 = 104, check = (10-4)%10 = 6 → 有効なISBN-13
     const result = validateIsbn('9791032309056');
-    if (result.isValid) {
-      expect(result.isbn10).toBeNull();
-    }
+    expect(result.isValid).toBe(true);
+    expect(result.type).toBe('ISBN-13');
+    expect(result.isbn10).toBeNull();
   });
 
   it('サンプルISBN（097522980X）が有効', () => {
