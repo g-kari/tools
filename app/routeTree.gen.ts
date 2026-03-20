@@ -22,6 +22,7 @@ import { Route as WordFrequencyRouteImport } from './routes/word-frequency'
 import { Route as WhoisRouteImport } from './routes/whois'
 import { Route as WebsocketRouteImport } from './routes/websocket'
 import { Route as WarekiRouteImport } from './routes/wareki'
+import { Route as VigenereRouteImport } from './routes/vigenere'
 import { Route as VideoConverterRouteImport } from './routes/video-converter'
 import { Route as UuidInspectorRouteImport } from './routes/uuid-inspector'
 import { Route as UuidRouteImport } from './routes/uuid'
@@ -225,6 +226,7 @@ import { Route as ChmodRouteImport } from './routes/chmod'
 import { Route as CharFrequencyRouteImport } from './routes/char-frequency'
 import { Route as CharCountRouteImport } from './routes/char-count'
 import { Route as CertDecoderRouteImport } from './routes/cert-decoder'
+import { Route as CaesarRouteImport } from './routes/caesar'
 import { Route as CacheControlRouteImport } from './routes/cache-control'
 import { Route as BrainfuckRouteImport } from './routes/brainfuck'
 import { Route as BrailleRouteImport } from './routes/braille'
@@ -312,6 +314,11 @@ const WebsocketRoute = WebsocketRouteImport.update({
 const WarekiRoute = WarekiRouteImport.update({
   id: '/wareki',
   path: '/wareki',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VigenereRoute = VigenereRouteImport.update({
+  id: '/vigenere',
+  path: '/vigenere',
   getParentRoute: () => rootRouteImport,
 } as any)
 const VideoConverterRoute = VideoConverterRouteImport.update({
@@ -1329,6 +1336,11 @@ const CertDecoderRoute = CertDecoderRouteImport.update({
   path: '/cert-decoder',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CaesarRoute = CaesarRouteImport.update({
+  id: '/caesar',
+  path: '/caesar',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CacheControlRoute = CacheControlRouteImport.update({
   id: '/cache-control',
   path: '/cache-control',
@@ -1465,6 +1477,7 @@ export interface FileRoutesByFullPath {
   '/braille': typeof BrailleRoute
   '/brainfuck': typeof BrainfuckRoute
   '/cache-control': typeof CacheControlRoute
+  '/caesar': typeof CaesarRoute
   '/cert-decoder': typeof CertDecoderRoute
   '/char-count': typeof CharCountRoute
   '/char-frequency': typeof CharFrequencyRoute
@@ -1668,6 +1681,7 @@ export interface FileRoutesByFullPath {
   '/uuid': typeof UuidRoute
   '/uuid-inspector': typeof UuidInspectorRoute
   '/video-converter': typeof VideoConverterRoute
+  '/vigenere': typeof VigenereRoute
   '/wareki': typeof WarekiRoute
   '/websocket': typeof WebsocketRoute
   '/whois': typeof WhoisRoute
@@ -1706,6 +1720,7 @@ export interface FileRoutesByTo {
   '/braille': typeof BrailleRoute
   '/brainfuck': typeof BrainfuckRoute
   '/cache-control': typeof CacheControlRoute
+  '/caesar': typeof CaesarRoute
   '/cert-decoder': typeof CertDecoderRoute
   '/char-count': typeof CharCountRoute
   '/char-frequency': typeof CharFrequencyRoute
@@ -1909,6 +1924,7 @@ export interface FileRoutesByTo {
   '/uuid': typeof UuidRoute
   '/uuid-inspector': typeof UuidInspectorRoute
   '/video-converter': typeof VideoConverterRoute
+  '/vigenere': typeof VigenereRoute
   '/wareki': typeof WarekiRoute
   '/websocket': typeof WebsocketRoute
   '/whois': typeof WhoisRoute
@@ -1948,6 +1964,7 @@ export interface FileRoutesById {
   '/braille': typeof BrailleRoute
   '/brainfuck': typeof BrainfuckRoute
   '/cache-control': typeof CacheControlRoute
+  '/caesar': typeof CaesarRoute
   '/cert-decoder': typeof CertDecoderRoute
   '/char-count': typeof CharCountRoute
   '/char-frequency': typeof CharFrequencyRoute
@@ -2151,6 +2168,7 @@ export interface FileRoutesById {
   '/uuid': typeof UuidRoute
   '/uuid-inspector': typeof UuidInspectorRoute
   '/video-converter': typeof VideoConverterRoute
+  '/vigenere': typeof VigenereRoute
   '/wareki': typeof WarekiRoute
   '/websocket': typeof WebsocketRoute
   '/whois': typeof WhoisRoute
@@ -2191,6 +2209,7 @@ export interface FileRouteTypes {
     | '/braille'
     | '/brainfuck'
     | '/cache-control'
+    | '/caesar'
     | '/cert-decoder'
     | '/char-count'
     | '/char-frequency'
@@ -2394,6 +2413,7 @@ export interface FileRouteTypes {
     | '/uuid'
     | '/uuid-inspector'
     | '/video-converter'
+    | '/vigenere'
     | '/wareki'
     | '/websocket'
     | '/whois'
@@ -2432,6 +2452,7 @@ export interface FileRouteTypes {
     | '/braille'
     | '/brainfuck'
     | '/cache-control'
+    | '/caesar'
     | '/cert-decoder'
     | '/char-count'
     | '/char-frequency'
@@ -2635,6 +2656,7 @@ export interface FileRouteTypes {
     | '/uuid'
     | '/uuid-inspector'
     | '/video-converter'
+    | '/vigenere'
     | '/wareki'
     | '/websocket'
     | '/whois'
@@ -2673,6 +2695,7 @@ export interface FileRouteTypes {
     | '/braille'
     | '/brainfuck'
     | '/cache-control'
+    | '/caesar'
     | '/cert-decoder'
     | '/char-count'
     | '/char-frequency'
@@ -2876,6 +2899,7 @@ export interface FileRouteTypes {
     | '/uuid'
     | '/uuid-inspector'
     | '/video-converter'
+    | '/vigenere'
     | '/wareki'
     | '/websocket'
     | '/whois'
@@ -2915,6 +2939,7 @@ export interface RootRouteChildren {
   BrailleRoute: typeof BrailleRoute
   BrainfuckRoute: typeof BrainfuckRoute
   CacheControlRoute: typeof CacheControlRoute
+  CaesarRoute: typeof CaesarRoute
   CertDecoderRoute: typeof CertDecoderRoute
   CharCountRoute: typeof CharCountRoute
   CharFrequencyRoute: typeof CharFrequencyRoute
@@ -3118,6 +3143,7 @@ export interface RootRouteChildren {
   UuidRoute: typeof UuidRoute
   UuidInspectorRoute: typeof UuidInspectorRoute
   VideoConverterRoute: typeof VideoConverterRoute
+  VigenereRoute: typeof VigenereRoute
   WarekiRoute: typeof WarekiRoute
   WebsocketRoute: typeof WebsocketRoute
   WhoisRoute: typeof WhoisRoute
@@ -3228,6 +3254,13 @@ declare module '@tanstack/react-router' {
       path: '/wareki'
       fullPath: '/wareki'
       preLoaderRoute: typeof WarekiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/vigenere': {
+      id: '/vigenere'
+      path: '/vigenere'
+      fullPath: '/vigenere'
+      preLoaderRoute: typeof VigenereRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/video-converter': {
@@ -4651,6 +4684,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CertDecoderRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/caesar': {
+      id: '/caesar'
+      path: '/caesar'
+      fullPath: '/caesar'
+      preLoaderRoute: typeof CaesarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/cache-control': {
       id: '/cache-control'
       path: '/cache-control'
@@ -4835,6 +4875,7 @@ const rootRouteChildren: RootRouteChildren = {
   BrailleRoute: BrailleRoute,
   BrainfuckRoute: BrainfuckRoute,
   CacheControlRoute: CacheControlRoute,
+  CaesarRoute: CaesarRoute,
   CertDecoderRoute: CertDecoderRoute,
   CharCountRoute: CharCountRoute,
   CharFrequencyRoute: CharFrequencyRoute,
@@ -5038,6 +5079,7 @@ const rootRouteChildren: RootRouteChildren = {
   UuidRoute: UuidRoute,
   UuidInspectorRoute: UuidInspectorRoute,
   VideoConverterRoute: VideoConverterRoute,
+  VigenereRoute: VigenereRoute,
   WarekiRoute: WarekiRoute,
   WebsocketRoute: WebsocketRoute,
   WhoisRoute: WhoisRoute,

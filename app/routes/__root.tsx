@@ -228,6 +228,7 @@ const navCategories = [
       { path: "/line-ending", label: "改行コード変換" },
       { path: "/zero-width", label: "ゼロ幅文字検出・除去" },
       { path: "/caesar", label: "シーザー暗号・ROT13" },
+      { path: "/vigenere", label: "ヴィジュネル暗号" },
     ],
   },
   {
