@@ -98,6 +98,7 @@ import { Route as PasswordStrengthRouteImport } from './routes/password-strength
 import { Route as PasswordGeneratorRouteImport } from './routes/password-generator'
 import { Route as PassphraseRouteImport } from './routes/passphrase'
 import { Route as OpensslBuilderRouteImport } from './routes/openssl-builder'
+import { Route as OgpGeneratorRouteImport } from './routes/ogp-generator'
 import { Route as OgpRouteImport } from './routes/ogp'
 import { Route as NumberWordsRouteImport } from './routes/number-words'
 import { Route as NumberTheoryRouteImport } from './routes/number-theory'
@@ -715,6 +716,11 @@ const PassphraseRoute = PassphraseRouteImport.update({
 const OpensslBuilderRoute = OpensslBuilderRouteImport.update({
   id: '/openssl-builder',
   path: '/openssl-builder',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OgpGeneratorRoute = OgpGeneratorRouteImport.update({
+  id: '/ogp-generator',
+  path: '/ogp-generator',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OgpRoute = OgpRouteImport.update({
@@ -1753,6 +1759,7 @@ export interface FileRoutesByFullPath {
   '/number-theory': typeof NumberTheoryRoute
   '/number-words': typeof NumberWordsRoute
   '/ogp': typeof OgpRoute
+  '/ogp-generator': typeof OgpGeneratorRoute
   '/openssl-builder': typeof OpensslBuilderRoute
   '/passphrase': typeof PassphraseRoute
   '/password-generator': typeof PasswordGeneratorRoute
@@ -2017,6 +2024,7 @@ export interface FileRoutesByTo {
   '/number-theory': typeof NumberTheoryRoute
   '/number-words': typeof NumberWordsRoute
   '/ogp': typeof OgpRoute
+  '/ogp-generator': typeof OgpGeneratorRoute
   '/openssl-builder': typeof OpensslBuilderRoute
   '/passphrase': typeof PassphraseRoute
   '/password-generator': typeof PasswordGeneratorRoute
@@ -2282,6 +2290,7 @@ export interface FileRoutesById {
   '/number-theory': typeof NumberTheoryRoute
   '/number-words': typeof NumberWordsRoute
   '/ogp': typeof OgpRoute
+  '/ogp-generator': typeof OgpGeneratorRoute
   '/openssl-builder': typeof OpensslBuilderRoute
   '/passphrase': typeof PassphraseRoute
   '/password-generator': typeof PasswordGeneratorRoute
@@ -2548,6 +2557,7 @@ export interface FileRouteTypes {
     | '/number-theory'
     | '/number-words'
     | '/ogp'
+    | '/ogp-generator'
     | '/openssl-builder'
     | '/passphrase'
     | '/password-generator'
@@ -2812,6 +2822,7 @@ export interface FileRouteTypes {
     | '/number-theory'
     | '/number-words'
     | '/ogp'
+    | '/ogp-generator'
     | '/openssl-builder'
     | '/passphrase'
     | '/password-generator'
@@ -3076,6 +3087,7 @@ export interface FileRouteTypes {
     | '/number-theory'
     | '/number-words'
     | '/ogp'
+    | '/ogp-generator'
     | '/openssl-builder'
     | '/passphrase'
     | '/password-generator'
@@ -3341,6 +3353,7 @@ export interface RootRouteChildren {
   NumberTheoryRoute: typeof NumberTheoryRoute
   NumberWordsRoute: typeof NumberWordsRoute
   OgpRoute: typeof OgpRoute
+  OgpGeneratorRoute: typeof OgpGeneratorRoute
   OpensslBuilderRoute: typeof OpensslBuilderRoute
   PassphraseRoute: typeof PassphraseRoute
   PasswordGeneratorRoute: typeof PasswordGeneratorRoute
@@ -4059,6 +4072,13 @@ declare module '@tanstack/react-router' {
       path: '/openssl-builder'
       fullPath: '/openssl-builder'
       preLoaderRoute: typeof OpensslBuilderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ogp-generator': {
+      id: '/ogp-generator'
+      path: '/ogp-generator'
+      fullPath: '/ogp-generator'
+      preLoaderRoute: typeof OgpGeneratorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ogp': {
@@ -5445,6 +5465,7 @@ const rootRouteChildren: RootRouteChildren = {
   NumberTheoryRoute: NumberTheoryRoute,
   NumberWordsRoute: NumberWordsRoute,
   OgpRoute: OgpRoute,
+  OgpGeneratorRoute: OgpGeneratorRoute,
   OpensslBuilderRoute: OpensslBuilderRoute,
   PassphraseRoute: PassphraseRoute,
   PasswordGeneratorRoute: PasswordGeneratorRoute,

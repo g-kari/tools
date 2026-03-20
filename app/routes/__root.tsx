@@ -209,6 +209,7 @@ const navCategories = [
       { path: "/ip-geolocation", label: "IP検索" },
       { path: "/global-ip", label: "グローバルIP" },
       { path: "/ogp", label: "OGPチェック" },
+      { path: "/ogp-generator", label: "OGPメタタグ生成" },
     ],
   },
   {
