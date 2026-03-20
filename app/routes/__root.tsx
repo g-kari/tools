@@ -107,6 +107,7 @@ const navCategories = [
       { path: "/ascii-table", label: "ASCII テーブル" },
       { path: "/duration", label: "時間計算・変換" },
       { path: "/encode-chain", label: "エンコードチェーン" },
+      { path: "/geohash", label: "Geohash変換" },
     ],
   },
   {
