@@ -1800,6 +1800,20 @@ const toolCatalog: ToolCategory[] = [
           "Conway's Game of Life（ライフゲーム）シミュレーター。グライダー・ブリンカー・グライダー銃などのプリセットパターン付き。セルをクリックして自由に編集可能。世代・個体数をリアルタイム表示。",
         icon: "🧬",
       },
+      {
+        path: "/wordle",
+        label: "Wordle",
+        description:
+          "5文字の英単語を6回以内に当てるワードルゲーム。緑・黄・灰色のヒントを手がかりに推理しよう。",
+        icon: "🟩",
+      },
+      {
+        path: "/tic-tac-toe",
+        label: "三目並べ",
+        description:
+          "ブラウザで遊べる三目並べ（Tic-Tac-Toe）。CPUとの対戦（かんたん・強い）や2人対戦に対応。ミニマックスAIで最強のCPUに挑戦しよう。",
+        icon: "⭕",
+      },
     ],
   },
 ];

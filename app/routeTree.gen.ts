@@ -46,6 +46,7 @@ import { Route as TomlFormatterRouteImport } from './routes/toml-formatter'
 import { Route as TokenEstimatorRouteImport } from './routes/token-estimator'
 import { Route as TimezoneRouteImport } from './routes/timezone'
 import { Route as TimestampRouteImport } from './routes/timestamp'
+import { Route as TicTacToeRouteImport } from './routes/tic-tac-toe'
 import { Route as TextStatsRouteImport } from './routes/text-stats'
 import { Route as TextSortRouteImport } from './routes/text-sort'
 import { Route as TextReplaceRouteImport } from './routes/text-replace'
@@ -452,6 +453,11 @@ const TimezoneRoute = TimezoneRouteImport.update({
 const TimestampRoute = TimestampRouteImport.update({
   id: '/timestamp',
   path: '/timestamp',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TicTacToeRoute = TicTacToeRouteImport.update({
+  id: '/tic-tac-toe',
+  path: '/tic-tac-toe',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TextStatsRoute = TextStatsRouteImport.update({
@@ -1784,6 +1790,7 @@ export interface FileRoutesByFullPath {
   '/text-replace': typeof TextReplaceRoute
   '/text-sort': typeof TextSortRoute
   '/text-stats': typeof TextStatsRoute
+  '/tic-tac-toe': typeof TicTacToeRoute
   '/timestamp': typeof TimestampRoute
   '/timezone': typeof TimezoneRoute
   '/token-estimator': typeof TokenEstimatorRoute
@@ -2045,6 +2052,7 @@ export interface FileRoutesByTo {
   '/text-replace': typeof TextReplaceRoute
   '/text-sort': typeof TextSortRoute
   '/text-stats': typeof TextStatsRoute
+  '/tic-tac-toe': typeof TicTacToeRoute
   '/timestamp': typeof TimestampRoute
   '/timezone': typeof TimezoneRoute
   '/token-estimator': typeof TokenEstimatorRoute
@@ -2307,6 +2315,7 @@ export interface FileRoutesById {
   '/text-replace': typeof TextReplaceRoute
   '/text-sort': typeof TextSortRoute
   '/text-stats': typeof TextStatsRoute
+  '/tic-tac-toe': typeof TicTacToeRoute
   '/timestamp': typeof TimestampRoute
   '/timezone': typeof TimezoneRoute
   '/token-estimator': typeof TokenEstimatorRoute
@@ -2570,6 +2579,7 @@ export interface FileRouteTypes {
     | '/text-replace'
     | '/text-sort'
     | '/text-stats'
+    | '/tic-tac-toe'
     | '/timestamp'
     | '/timezone'
     | '/token-estimator'
@@ -2831,6 +2841,7 @@ export interface FileRouteTypes {
     | '/text-replace'
     | '/text-sort'
     | '/text-stats'
+    | '/tic-tac-toe'
     | '/timestamp'
     | '/timezone'
     | '/token-estimator'
@@ -3092,6 +3103,7 @@ export interface FileRouteTypes {
     | '/text-replace'
     | '/text-sort'
     | '/text-stats'
+    | '/tic-tac-toe'
     | '/timestamp'
     | '/timezone'
     | '/token-estimator'
@@ -3354,6 +3366,7 @@ export interface RootRouteChildren {
   TextReplaceRoute: typeof TextReplaceRoute
   TextSortRoute: typeof TextSortRoute
   TextStatsRoute: typeof TextStatsRoute
+  TicTacToeRoute: typeof TicTacToeRoute
   TimestampRoute: typeof TimestampRoute
   TimezoneRoute: typeof TimezoneRoute
   TokenEstimatorRoute: typeof TokenEstimatorRoute
@@ -3656,6 +3669,13 @@ declare module '@tanstack/react-router' {
       path: '/timestamp'
       fullPath: '/timestamp'
       preLoaderRoute: typeof TimestampRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tic-tac-toe': {
+      id: '/tic-tac-toe'
+      path: '/tic-tac-toe'
+      fullPath: '/tic-tac-toe'
+      preLoaderRoute: typeof TicTacToeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/text-stats': {
@@ -5434,6 +5454,7 @@ const rootRouteChildren: RootRouteChildren = {
   TextReplaceRoute: TextReplaceRoute,
   TextSortRoute: TextSortRoute,
   TextStatsRoute: TextStatsRoute,
+  TicTacToeRoute: TicTacToeRoute,
   TimestampRoute: TimestampRoute,
   TimezoneRoute: TimezoneRoute,
   TokenEstimatorRoute: TokenEstimatorRoute,
