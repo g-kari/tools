@@ -1,17 +1,31 @@
+/**
+ * パスワード生成オプション
+ */
 export interface PasswordOptions {
+  /** パスワードの文字数 */
   length: number;
+  /** 大文字（A-Z）を含めるか */
   uppercase: boolean;
+  /** 小文字（a-z）を含めるか */
   lowercase: boolean;
+  /** 数字（0-9）を含めるか */
   numbers: boolean;
+  /** 記号（!@#$%^&*など）を含めるか */
   symbols: boolean;
 }
 
+/** 大文字アルファベット文字セット */
 export const UPPERCASE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+/** 小文字アルファベット文字セット */
 export const LOWERCASE_CHARS = "abcdefghijklmnopqrstuvwxyz";
+/** 数字文字セット */
 export const NUMBER_CHARS = "0123456789";
+/** 記号文字セット */
 export const SYMBOL_CHARS = "!@#$%^&*()_+-=[]{}|;:,.<>?";
 
-// Character counts for entropy calculation
+/**
+ * エントロピー計算用の各文字セットの文字数
+ */
 export const CHAR_COUNTS = {
   uppercase: UPPERCASE_CHARS.length, // 26
   lowercase: LOWERCASE_CHARS.length, // 26

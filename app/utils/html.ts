@@ -1,6 +1,9 @@
-// Common HTML utility functions
+/** HTML ユーティリティ関数群 */
 
-// Named HTML entities mapping
+/**
+ * 名前付き HTML エンティティとその対応する文字のマッピング
+ * 特殊文字、記号、通貨記号、数学記号などを含む
+ */
 const HTML_ENTITIES: Record<string, string> = {
   "&amp;": "&",
   "&lt;": "<",
