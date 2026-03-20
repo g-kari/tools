@@ -111,9 +111,9 @@ const navCategories = [
     name: "生成",
     icon: "✦",
     items: [
-      { path: '/html-playground', label: 'HTML/CSS/JS プレイグラウンド' },
-      { path: '/sequences', label: '数列ジェネレーター' },
-      { path: '/passphrase', label: 'パスフレーズ' },
+      { path: "/html-playground", label: "HTML/CSS/JS プレイグラウンド" },
+      { path: "/sequences", label: "数列ジェネレーター" },
+      { path: "/passphrase", label: "パスフレーズ" },
       { path: "/uuid", label: "UUID生成" },
       { path: "/uuid-inspector", label: "UUID解析" },
       { path: "/password-generator", label: "パスワード" },
