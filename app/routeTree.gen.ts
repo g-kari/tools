@@ -47,6 +47,7 @@ import { Route as TextReplaceRouteImport } from './routes/text-replace'
 import { Route as TextLineRouteImport } from './routes/text-line'
 import { Route as TextEncryptRouteImport } from './routes/text-encrypt'
 import { Route as TextCaseRouteImport } from './routes/text-case'
+import { Route as TextBinaryRouteImport } from './routes/text-binary'
 import { Route as TemplateRouteImport } from './routes/template'
 import { Route as SvgOptimizerRouteImport } from './routes/svg-optimizer'
 import { Route as SudokuRouteImport } from './routes/sudoku'
@@ -430,6 +431,11 @@ const TextEncryptRoute = TextEncryptRouteImport.update({
 const TextCaseRoute = TextCaseRouteImport.update({
   id: '/text-case',
   path: '/text-case',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TextBinaryRoute = TextBinaryRouteImport.update({
+  id: '/text-binary',
+  path: '/text-binary',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TemplateRoute = TemplateRouteImport.update({
@@ -1594,6 +1600,7 @@ export interface FileRoutesByFullPath {
   '/sudoku': typeof SudokuRoute
   '/svg-optimizer': typeof SvgOptimizerRoute
   '/template': typeof TemplateRoute
+  '/text-binary': typeof TextBinaryRoute
   '/text-case': typeof TextCaseRoute
   '/text-encrypt': typeof TextEncryptRoute
   '/text-line': typeof TextLineRoute
@@ -1828,6 +1835,7 @@ export interface FileRoutesByTo {
   '/sudoku': typeof SudokuRoute
   '/svg-optimizer': typeof SvgOptimizerRoute
   '/template': typeof TemplateRoute
+  '/text-binary': typeof TextBinaryRoute
   '/text-case': typeof TextCaseRoute
   '/text-encrypt': typeof TextEncryptRoute
   '/text-line': typeof TextLineRoute
@@ -2063,6 +2071,7 @@ export interface FileRoutesById {
   '/sudoku': typeof SudokuRoute
   '/svg-optimizer': typeof SvgOptimizerRoute
   '/template': typeof TemplateRoute
+  '/text-binary': typeof TextBinaryRoute
   '/text-case': typeof TextCaseRoute
   '/text-encrypt': typeof TextEncryptRoute
   '/text-line': typeof TextLineRoute
@@ -2299,6 +2308,7 @@ export interface FileRouteTypes {
     | '/sudoku'
     | '/svg-optimizer'
     | '/template'
+    | '/text-binary'
     | '/text-case'
     | '/text-encrypt'
     | '/text-line'
@@ -2533,6 +2543,7 @@ export interface FileRouteTypes {
     | '/sudoku'
     | '/svg-optimizer'
     | '/template'
+    | '/text-binary'
     | '/text-case'
     | '/text-encrypt'
     | '/text-line'
@@ -2767,6 +2778,7 @@ export interface FileRouteTypes {
     | '/sudoku'
     | '/svg-optimizer'
     | '/template'
+    | '/text-binary'
     | '/text-case'
     | '/text-encrypt'
     | '/text-line'
@@ -3002,6 +3014,7 @@ export interface RootRouteChildren {
   SudokuRoute: typeof SudokuRoute
   SvgOptimizerRoute: typeof SvgOptimizerRoute
   TemplateRoute: typeof TemplateRoute
+  TextBinaryRoute: typeof TextBinaryRoute
   TextCaseRoute: typeof TextCaseRoute
   TextEncryptRoute: typeof TextEncryptRoute
   TextLineRoute: typeof TextLineRoute
@@ -3312,6 +3325,13 @@ declare module '@tanstack/react-router' {
       path: '/text-case'
       fullPath: '/text-case'
       preLoaderRoute: typeof TextCaseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/text-binary': {
+      id: '/text-binary'
+      path: '/text-binary'
+      fullPath: '/text-binary'
+      preLoaderRoute: typeof TextBinaryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/template': {
@@ -4866,6 +4886,7 @@ const rootRouteChildren: RootRouteChildren = {
   SudokuRoute: SudokuRoute,
   SvgOptimizerRoute: SvgOptimizerRoute,
   TemplateRoute: TemplateRoute,
+  TextBinaryRoute: TextBinaryRoute,
   TextCaseRoute: TextCaseRoute,
   TextEncryptRoute: TextEncryptRoute,
   TextLineRoute: TextLineRoute,
