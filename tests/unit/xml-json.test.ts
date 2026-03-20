@@ -117,6 +117,66 @@ describe('jsonToXml', () => {
     expect(result.success).toBe(true);
     expect(result.output).toContain('    ');
   });
+
+  it('should handle null value as self-closing tag', () => {
+    const json = JSON.stringify({ root: { item: null } });
+    const result = jsonToXml(json);
+    expect(result.success).toBe(true);
+    expect(result.output).toContain('<item />');
+  });
+
+  it('should handle boolean and number values', () => {
+    const json = JSON.stringify({ root: { flag: true, count: 42 } });
+    const result = jsonToXml(json);
+    expect(result.success).toBe(true);
+    expect(result.output).toContain('<flag>true</flag>');
+    expect(result.output).toContain('<count>42</count>');
+  });
+
+  it('should handle @attributes with #text (mixed content)', () => {
+    const json = JSON.stringify({
+      root: {
+        item: {
+          '@attributes': { id: '1' },
+          '#text': 'hello world',
+        },
+      },
+    });
+    const result = jsonToXml(json);
+    expect(result.success).toBe(true);
+    expect(result.output).toContain('id="1"');
+    expect(result.output).toContain('hello world');
+    expect(result.output).toContain('<item');
+    expect(result.output).toContain('</item>');
+  });
+
+  it('should escape quotes in attribute values', () => {
+    const json = JSON.stringify({
+      root: {
+        '@attributes': { title: 'say "hello"' },
+      },
+    });
+    const result = jsonToXml(json);
+    expect(result.success).toBe(true);
+    expect(result.output).toContain('&quot;');
+  });
+
+  it('should handle @attributes only (empty element with attributes)', () => {
+    const json = JSON.stringify({
+      root: {
+        '@attributes': { type: 'empty' },
+      },
+    });
+    const result = jsonToXml(json);
+    expect(result.success).toBe(true);
+    expect(result.output).toContain('type="empty"');
+    expect(result.output).toContain('/>');
+  });
+
+  it('should return error for null JSON value at root', () => {
+    const result = jsonToXml('null');
+    expect(result.success).toBe(false);
+  });
 });
 
 describe('getSampleXml', () => {
