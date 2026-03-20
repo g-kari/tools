@@ -388,6 +388,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🔤",
       },
       {
+        path: "/braille",
+        label: "点字（Braille）変換",
+        description:
+          "テキストをGrade 1 点字（Braille）のUnicode文字に変換するツール。英字・数字・記号に対応。大文字インジケーター・数字インジケーター付き出力。",
+        icon: "⠿",
+      },
+      {
         path: "/number-base",
         label: "数値進数変換",
         description:

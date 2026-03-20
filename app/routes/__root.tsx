@@ -214,6 +214,7 @@ const navCategories = [
       { path: "/morse-code", label: "Morse Code変換" },
       { path: "/text-binary", label: "テキスト↔バイナリ変換" },
       { path: "/nato-alphabet", label: "NATOフォネティックアルファベット" },
+      { path: "/braille", label: "点字（Braille）変換" },
       { path: "/markdown-table", label: "Markdownテーブル生成" },
       { path: "/text-encrypt", label: "テキスト暗号化" },
       { path: "/text-line", label: "テキスト行操作" },
