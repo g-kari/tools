@@ -75,6 +75,14 @@ describe('BMI計算ユーティリティ', () => {
       expect(getBmiCategory(40)).toBe('obese3');
       expect(getBmiCategory(50)).toBe('obese3');
     });
+
+    it('NaN は低体重（underweight）として扱う', () => {
+      expect(getBmiCategory(NaN)).toBe('underweight');
+    });
+
+    it('Infinity は低体重（underweight）として扱う', () => {
+      expect(getBmiCategory(Infinity)).toBe('underweight');
+    });
   });
 
   describe('calcIdealWeight', () => {

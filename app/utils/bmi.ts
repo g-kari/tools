@@ -48,10 +48,11 @@ export function calcBmi(weightKg: number, heightCm: number): number {
 
 /**
  * BMI値からカテゴリを判定する（WHO基準）
- * @param bmi - BMI値
+ * @param bmi - BMI値（NaN や Infinity は "underweight" を返す）
  * @returns BMIカテゴリ
  */
 export function getBmiCategory(bmi: number): BmiCategory {
+  if (!isFinite(bmi)) return "underweight";
   if (bmi < 18.5) return "underweight";
   if (bmi < 25) return "normal";
   if (bmi < 30) return "overweight";
