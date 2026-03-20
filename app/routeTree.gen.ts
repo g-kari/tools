@@ -163,6 +163,7 @@ import { Route as HtmlFormatterRouteImport } from './routes/html-formatter'
 import { Route as HtmlEncodeRouteImport } from './routes/html-encode'
 import { Route as HmacRouteImport } from './routes/hmac'
 import { Route as HexViewerRouteImport } from './routes/hex-viewer'
+import { Route as HaversineRouteImport } from './routes/haversine'
 import { Route as HashRouteImport } from './routes/hash'
 import { Route as HarRouteImport } from './routes/har'
 import { Route as HangmanRouteImport } from './routes/hangman'
@@ -1043,6 +1044,11 @@ const HexViewerRoute = HexViewerRouteImport.update({
   path: '/hex-viewer',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HaversineRoute = HaversineRouteImport.update({
+  id: '/haversine',
+  path: '/haversine',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HashRoute = HashRouteImport.update({
   id: '/hash',
   path: '/hash',
@@ -1695,6 +1701,7 @@ export interface FileRoutesByFullPath {
   '/hangman': typeof HangmanRoute
   '/har': typeof HarRoute
   '/hash': typeof HashRoute
+  '/haversine': typeof HaversineRoute
   '/hex-viewer': typeof HexViewerRoute
   '/hmac': typeof HmacRoute
   '/html-encode': typeof HtmlEncodeRoute
@@ -1960,6 +1967,7 @@ export interface FileRoutesByTo {
   '/hangman': typeof HangmanRoute
   '/har': typeof HarRoute
   '/hash': typeof HashRoute
+  '/haversine': typeof HaversineRoute
   '/hex-viewer': typeof HexViewerRoute
   '/hmac': typeof HmacRoute
   '/html-encode': typeof HtmlEncodeRoute
@@ -2226,6 +2234,7 @@ export interface FileRoutesById {
   '/hangman': typeof HangmanRoute
   '/har': typeof HarRoute
   '/hash': typeof HashRoute
+  '/haversine': typeof HaversineRoute
   '/hex-viewer': typeof HexViewerRoute
   '/hmac': typeof HmacRoute
   '/html-encode': typeof HtmlEncodeRoute
@@ -2493,6 +2502,7 @@ export interface FileRouteTypes {
     | '/hangman'
     | '/har'
     | '/hash'
+    | '/haversine'
     | '/hex-viewer'
     | '/hmac'
     | '/html-encode'
@@ -2758,6 +2768,7 @@ export interface FileRouteTypes {
     | '/hangman'
     | '/har'
     | '/hash'
+    | '/haversine'
     | '/hex-viewer'
     | '/hmac'
     | '/html-encode'
@@ -3023,6 +3034,7 @@ export interface FileRouteTypes {
     | '/hangman'
     | '/har'
     | '/hash'
+    | '/haversine'
     | '/hex-viewer'
     | '/hmac'
     | '/html-encode'
@@ -3289,6 +3301,7 @@ export interface RootRouteChildren {
   HangmanRoute: typeof HangmanRoute
   HarRoute: typeof HarRoute
   HashRoute: typeof HashRoute
+  HaversineRoute: typeof HaversineRoute
   HexViewerRoute: typeof HexViewerRoute
   HmacRoute: typeof HmacRoute
   HtmlEncodeRoute: typeof HtmlEncodeRoute
@@ -4529,6 +4542,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HexViewerRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/haversine': {
+      id: '/haversine'
+      path: '/haversine'
+      fullPath: '/haversine'
+      preLoaderRoute: typeof HaversineRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/hash': {
       id: '/hash'
       path: '/hash'
@@ -5401,6 +5421,7 @@ const rootRouteChildren: RootRouteChildren = {
   HangmanRoute: HangmanRoute,
   HarRoute: HarRoute,
   HashRoute: HashRoute,
+  HaversineRoute: HaversineRoute,
   HexViewerRoute: HexViewerRoute,
   HmacRoute: HmacRoute,
   HtmlEncodeRoute: HtmlEncodeRoute,

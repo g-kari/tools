@@ -1,0 +1,174 @@
+/* Haversine距離計算ツール */
+
+.haversine-coord-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
+}
+
+@media (max-width: 480px) {
+  .haversine-coord-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.haversine-coord-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.haversine-coord-label {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-on-surface-variant);
+}
+
+.haversine-preset-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.haversine-preset-label {
+  font-size: var(--font-size-sm);
+  color: var(--color-on-surface-variant);
+  white-space: nowrap;
+  padding-top: 4px;
+}
+
+.haversine-preset-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+}
+
+.haversine-preset-btn {
+  padding: 2px 10px;
+  font-size: var(--font-size-xs);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-outline);
+  background: var(--color-surface-container);
+  color: var(--color-on-surface-variant);
+  cursor: pointer;
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.haversine-preset-btn:hover {
+  background: var(--color-primary-container);
+  color: var(--color-on-primary-container);
+  border-color: var(--color-primary);
+}
+
+.haversine-swap-row {
+  display: flex;
+  justify-content: center;
+  margin: var(--spacing-xs) 0;
+}
+
+.haversine-swap-btn {
+  font-size: var(--font-size-sm);
+}
+
+/* 結果表示エリア */
+.haversine-results {
+  margin-top: var(--spacing-md);
+  background: var(--color-surface-container);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+}
+
+.haversine-result-primary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--spacing-md) 0;
+  border-bottom: 1px solid var(--color-outline-variant);
+  margin-bottom: var(--spacing-md);
+  text-align: center;
+}
+
+.haversine-result-distance-label {
+  font-size: var(--font-size-sm);
+  color: var(--color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.haversine-result-distance-main {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  line-height: 1.2;
+  margin: var(--spacing-xs) 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.haversine-result-distance-sub {
+  font-size: var(--font-size-sm);
+  color: var(--color-on-surface-variant);
+}
+
+.haversine-result-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-sm);
+}
+
+@media (max-width: 480px) {
+  .haversine-result-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.haversine-result-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.haversine-result-label {
+  font-size: var(--font-size-xs);
+  color: var(--color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.haversine-result-value {
+  font-size: var(--font-size-sm);
+  font-family: var(--font-mono);
+  color: var(--color-on-surface);
+  word-break: break-all;
+}
+
+.haversine-bearing-label {
+  font-size: var(--font-size-xs);
+  color: var(--color-on-surface-variant);
+}
+
+/* 入力ヒント */
+.haversine-input-hint {
+  margin-top: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--color-error-container);
+  color: var(--color-on-error-container);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+}
+
+/* 空の状態 */
+.haversine-empty-state {
+  margin-top: var(--spacing-md);
+  padding: var(--spacing-lg);
+  text-align: center;
+  color: var(--color-on-surface-variant);
+  font-size: var(--font-size-sm);
+  background: var(--color-surface-container);
+  border-radius: var(--radius-md);
+}

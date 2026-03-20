@@ -195,6 +195,7 @@
 @import "./styles/tools/fraction.css";
 @import "./styles/tools/phone.css";
 @import "./styles/tools/geohash.css";
+@import "./styles/tools/haversine.css";
 @import "./styles/tools/percentage-calculator.css";
 @import "./styles/tools/loan-calculator.css";
 @import "./styles/tools/compound-interest.css";
