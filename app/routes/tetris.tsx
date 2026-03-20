@@ -311,7 +311,7 @@ function TetrisGame() {
   const frameRef = useRef(0);
   const lastDropRef = useRef(0);
 
-  const { announce, announcerProps } = useStatusAnnouncement();
+  const { statusRef: announcerRef, announceStatus: announce } = useStatusAnnouncement();
 
   useEffect(() => {
     setBestScore(loadBestScore());
@@ -697,7 +697,7 @@ function TetrisGame() {
         ブラウザで遊べるクラシックなテトリスゲーム。ピースを操作してラインを消そう！
       </p>
 
-      <StatusAnnouncer {...announcerProps} />
+      <StatusAnnouncer statusRef={announcerRef} />
 
       <div className="tetris-wrapper">
         {/* スコアヘッダー */}
@@ -819,11 +819,16 @@ function TetrisGame() {
       </div>
 
       <TipsCard
-        tips={[
-          "テトリス（4ライン同時消去）で最大得点を狙おう！",
-          "Iピース（水色）は縦に積み重ねたときに特に効果的です。",
-          "ゴースト（半透明）を見てハードドロップで素早く積もう。",
-          "レベルが上がるとピースの落下速度が上がります。",
+        sections={[
+          {
+            title: "ヒント",
+            items: [
+              "テトリス（4ライン同時消去）で最大得点を狙おう！",
+              "Iピース（水色）は縦に積み重ねたときに特に効果的です。",
+              "ゴースト（半透明）を見てハードドロップで素早く積もう。",
+              "レベルが上がるとピースの落下速度が上がります。",
+            ],
+          },
         ]}
       />
     </div>

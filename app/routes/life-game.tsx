@@ -393,8 +393,7 @@ function LifeGame() {
     const newGrid = createGrid(c, r);
     setGrid(newGrid);
     setGeneration(0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sizeIdx]);
+  }, [sizeIdx, stopSimulation]);
 
   /** 1ステップ進める */
   const step = useCallback(() => {

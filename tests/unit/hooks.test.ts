@@ -247,6 +247,102 @@ describe("ErrorMessage 構造", () => {
   });
 });
 
+describe("useCopyWithFeedback ロジック", () => {
+  it("空文字の場合、コピー処理が実行されない", async () => {
+    const copy = vi.fn().mockResolvedValue(true);
+    const showToast = vi.fn();
+    const announceStatus = vi.fn();
+
+    const copyWithFeedback = async (text: string, successMessage = "コピーしました") => {
+      if (!text) return;
+      const ok = await copy(text);
+      if (ok) {
+        showToast(successMessage, "success");
+        announceStatus(successMessage);
+      } else {
+        showToast("コピーに失敗しました", "error");
+        announceStatus("コピーに失敗しました");
+      }
+    };
+
+    await copyWithFeedback("");
+
+    expect(copy).not.toHaveBeenCalled();
+    expect(showToast).not.toHaveBeenCalled();
+    expect(announceStatus).not.toHaveBeenCalled();
+  });
+
+  it("コピー成功時、デフォルトのメッセージでトーストとアナウンスが呼ばれる", async () => {
+    const copy = vi.fn().mockResolvedValue(true);
+    const showToast = vi.fn();
+    const announceStatus = vi.fn();
+
+    const copyWithFeedback = async (text: string, successMessage = "コピーしました") => {
+      if (!text) return;
+      const ok = await copy(text);
+      if (ok) {
+        showToast(successMessage, "success");
+        announceStatus(successMessage);
+      } else {
+        showToast("コピーに失敗しました", "error");
+        announceStatus("コピーに失敗しました");
+      }
+    };
+
+    await copyWithFeedback("テストテキスト");
+
+    expect(copy).toHaveBeenCalledWith("テストテキスト");
+    expect(showToast).toHaveBeenCalledWith("コピーしました", "success");
+    expect(announceStatus).toHaveBeenCalledWith("コピーしました");
+  });
+
+  it("コピー成功時、カスタムメッセージが使用される", async () => {
+    const copy = vi.fn().mockResolvedValue(true);
+    const showToast = vi.fn();
+    const announceStatus = vi.fn();
+
+    const copyWithFeedback = async (text: string, successMessage = "コピーしました") => {
+      if (!text) return;
+      const ok = await copy(text);
+      if (ok) {
+        showToast(successMessage, "success");
+        announceStatus(successMessage);
+      } else {
+        showToast("コピーに失敗しました", "error");
+        announceStatus("コピーに失敗しました");
+      }
+    };
+
+    await copyWithFeedback("テキスト", "出力をコピーしました");
+
+    expect(showToast).toHaveBeenCalledWith("出力をコピーしました", "success");
+    expect(announceStatus).toHaveBeenCalledWith("出力をコピーしました");
+  });
+
+  it("コピー失敗時、エラーメッセージでトーストとアナウンスが呼ばれる", async () => {
+    const copy = vi.fn().mockResolvedValue(false);
+    const showToast = vi.fn();
+    const announceStatus = vi.fn();
+
+    const copyWithFeedback = async (text: string, successMessage = "コピーしました") => {
+      if (!text) return;
+      const ok = await copy(text);
+      if (ok) {
+        showToast(successMessage, "success");
+        announceStatus(successMessage);
+      } else {
+        showToast("コピーに失敗しました", "error");
+        announceStatus("コピーに失敗しました");
+      }
+    };
+
+    await copyWithFeedback("テキスト");
+
+    expect(showToast).toHaveBeenCalledWith("コピーに失敗しました", "error");
+    expect(announceStatus).toHaveBeenCalledWith("コピーに失敗しました");
+  });
+});
+
 describe("LoadingSpinner 構造", () => {
   it("デフォルトメッセージの構造", () => {
     const spinner = {

@@ -442,9 +442,8 @@ function HangmanGame() {
             },
           ]}
         />
+        <StatusAnnouncer statusRef={statusRef} />
       </div>
-
-      <StatusAnnouncer statusRef={statusRef} />
     </>
   );
 }
