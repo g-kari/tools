@@ -1282,6 +1282,41 @@ const toolCatalog: ToolCategory[] = [
           "テキストに含まれるゼロ幅スペース・ZWJ・BOM・方向制御文字などの不可視Unicode文字を検出し一括除去するツール。コピペテキストに混入した不可視文字の確認・クリーニングに。",
         icon: "🔍",
       },
+      {
+        path: "/text-binary",
+        label: "テキスト ↔ バイナリ変換",
+        description:
+          "テキストを UTF-8 バイト列の2進数（01010101…）に変換、または2進数からテキストに逆変換するツール。日本語・絵文字を含む任意の Unicode 文字に対応。",
+        icon: "🔢",
+      },
+      {
+        path: "/caesar",
+        label: "シーザー暗号・ROT13",
+        description:
+          "シーザー暗号（Caesar cipher）とROT13のエンコード・デコードツール。シフト量を自由に設定でき、全26パターンのブルートフォース解析にも対応。",
+        icon: "🔤",
+      },
+      {
+        path: "/vigenere",
+        label: "ヴィジュネル暗号",
+        description:
+          "ヴィジュネル暗号（Vigenère cipher）のエンコード・デコードツール。キーワードを指定したポリアルファベット換字式暗号の変換に対応。",
+        icon: "🔐",
+      },
+      {
+        path: "/affine",
+        label: "アフィン暗号",
+        description:
+          "アフィン暗号（Affine cipher）のエンコード・デコードツール。乗数 a と加数 b を自由に設定でき、ブルートフォース解析にも対応。シーザー暗号の一般化版。",
+        icon: "🔏",
+      },
+      {
+        path: "/rail-fence",
+        label: "Rail Fence暗号（柵暗号）",
+        description:
+          "Rail Fence暗号（柵暗号）のエンコード・デコードツール。テキストをジグザグパターンで複数のレールに配置して暗号化。レール数を自由に設定でき、ジグザグパターンの可視化にも対応。",
+        icon: "🚧",
+      },
     ],
   },
   {
@@ -1491,6 +1526,20 @@ const toolCatalog: ToolCategory[] = [
         description:
           "Luhnアルゴリズムでクレジットカード番号の有効性を検証するツール。Visa・Mastercard・Amex・Discover・JCBなどのカード種別を自動判定。テスト用カード番号リスト付き。",
         icon: "💳",
+      },
+      {
+        path: "/iban",
+        label: "IBAN バリデーター",
+        description:
+          "MOD-97アルゴリズムでIBAN（国際銀行口座番号）を検証するツール。ドイツ・イギリス・フランス・スペインなど80カ国以上に対応。ブラウザ内完結で入力データは外部送信されません。",
+        icon: "🏦",
+      },
+      {
+        path: "/phone",
+        label: "電話番号フォーマッター",
+        description:
+          "日本の電話番号を入力するとリアルタイムで種別判定・フォーマット変換を行います。ハイフン区切り・国際表記（+81）・E.164形式に対応。携帯・固定・フリーダイヤル・IP電話など全種別対応。",
+        icon: "📞",
       },
     ],
   },
