@@ -135,11 +135,17 @@
   background: var(--md-sys-color-primary-container);
 }
 
+.cg-add-btn {
+  font-size: 0.8rem;
+  padding: 4px 10px;
+}
+
 .cg-item-swatch {
   width: 16px;
   height: 16px;
   border-radius: 3px;
   flex-shrink: 0;
+  background-color: var(--cg-item-color);
 }
 
 .cg-item-name {

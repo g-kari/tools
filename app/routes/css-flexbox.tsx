@@ -359,10 +359,9 @@ function CssFlexboxGenerator() {
                 <Button
                   type="button"
                   variant="outline"
-                  className="btn-secondary"
+                  className="btn-secondary cfb-add-btn"
                   onClick={addItem}
                   aria-label="フレックスアイテムを追加"
-                  style={{ fontSize: "0.8rem", padding: "4px 10px" }}
                 >
                   + 追加
                 </Button>
@@ -377,10 +376,12 @@ function CssFlexboxGenerator() {
                   >
                     <span
                       className="cfb-item-swatch"
-                      style={{
-                        backgroundColor:
-                          ITEM_COLORS[idx % ITEM_COLORS.length],
-                      }}
+                      style={
+                        {
+                          "--cfb-item-color":
+                            ITEM_COLORS[idx % ITEM_COLORS.length],
+                        } as React.CSSProperties
+                      }
                       aria-hidden="true"
                     />
                     <button

@@ -158,11 +158,17 @@
   background: var(--md-sys-color-primary-container);
 }
 
+.cfb-add-btn {
+  font-size: 0.8rem;
+  padding: 4px 10px;
+}
+
 .cfb-item-swatch {
   width: 16px;
   height: 16px;
   border-radius: 3px;
   flex-shrink: 0;
+  background-color: var(--cfb-item-color);
 }
 
 .cfb-item-name {

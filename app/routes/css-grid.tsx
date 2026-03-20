@@ -375,10 +375,9 @@ function CssGridGenerator() {
                 <Button
                   type="button"
                   variant="outline"
-                  className="btn-secondary"
+                  className="btn-secondary cg-add-btn"
                   onClick={addItem}
                   aria-label="グリッドアイテムを追加"
-                  style={{ fontSize: "0.8rem", padding: "4px 10px" }}
                 >
                   + 追加
                 </Button>
@@ -393,10 +392,12 @@ function CssGridGenerator() {
                   >
                     <span
                       className="cg-item-swatch"
-                      style={{
-                        backgroundColor:
-                          ITEM_COLORS[idx % ITEM_COLORS.length],
-                      }}
+                      style={
+                        {
+                          "--cg-item-color":
+                            ITEM_COLORS[idx % ITEM_COLORS.length],
+                        } as React.CSSProperties
+                      }
                       aria-hidden="true"
                     />
                     <button
