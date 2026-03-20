@@ -63,6 +63,7 @@ const navCategories = [
       { path: "/minify", label: "コード圧縮" },
       { path: "/unit-converter", label: "単位変換" },
       { path: "/css-unit", label: "CSS単位変換" },
+      { path: "/css-shorthand", label: "CSSショートハンド展開" },
       { path: "/css-clamp", label: "CSS Fluid/Clamp 計算機" },
       { path: "/math-eval", label: "数式評価" },
       { path: "/statistics", label: "統計計算" },

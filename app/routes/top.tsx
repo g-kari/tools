@@ -262,6 +262,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "📏",
       },
       {
+        path: "/css-shorthand",
+        label: "CSSショートハンド展開",
+        description:
+          "CSS のショートハンドプロパティ（margin・padding・border-radius・flex・gap・place-content など）を個別プロパティに展開、またはロングハンドからショートハンドに圧縮するツール。CSS デバッグや仕様確認に。",
+        icon: "⇄",
+      },
+      {
         path: "/css-clamp",
         label: "CSS Fluid/Clamp 計算機",
         description:

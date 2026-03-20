@@ -179,6 +179,7 @@ import { Route as CssUnitRouteImport } from './routes/css-unit'
 import { Route as CssTransformRouteImport } from './routes/css-transform'
 import { Route as CssTextShadowRouteImport } from './routes/css-text-shadow'
 import { Route as CssSpecificityRouteImport } from './routes/css-specificity'
+import { Route as CssShorthandRouteImport } from './routes/css-shorthand'
 import { Route as CssSelectorRouteImport } from './routes/css-selector'
 import { Route as CssScrollSnapRouteImport } from './routes/css-scroll-snap'
 import { Route as CssMediaQueryRouteImport } from './routes/css-media-query'
@@ -1091,6 +1092,11 @@ const CssSpecificityRoute = CssSpecificityRouteImport.update({
   path: '/css-specificity',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CssShorthandRoute = CssShorthandRouteImport.update({
+  id: '/css-shorthand',
+  path: '/css-shorthand',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CssSelectorRoute = CssSelectorRouteImport.update({
   id: '/css-selector',
   path: '/css-selector',
@@ -1455,6 +1461,7 @@ export interface FileRoutesByFullPath {
   '/css-media-query': typeof CssMediaQueryRoute
   '/css-scroll-snap': typeof CssScrollSnapRoute
   '/css-selector': typeof CssSelectorRoute
+  '/css-shorthand': typeof CssShorthandRoute
   '/css-specificity': typeof CssSpecificityRoute
   '/css-text-shadow': typeof CssTextShadowRoute
   '/css-transform': typeof CssTransformRoute
@@ -1688,6 +1695,7 @@ export interface FileRoutesByTo {
   '/css-media-query': typeof CssMediaQueryRoute
   '/css-scroll-snap': typeof CssScrollSnapRoute
   '/css-selector': typeof CssSelectorRoute
+  '/css-shorthand': typeof CssShorthandRoute
   '/css-specificity': typeof CssSpecificityRoute
   '/css-text-shadow': typeof CssTextShadowRoute
   '/css-transform': typeof CssTransformRoute
@@ -1922,6 +1930,7 @@ export interface FileRoutesById {
   '/css-media-query': typeof CssMediaQueryRoute
   '/css-scroll-snap': typeof CssScrollSnapRoute
   '/css-selector': typeof CssSelectorRoute
+  '/css-shorthand': typeof CssShorthandRoute
   '/css-specificity': typeof CssSpecificityRoute
   '/css-text-shadow': typeof CssTextShadowRoute
   '/css-transform': typeof CssTransformRoute
@@ -2157,6 +2166,7 @@ export interface FileRouteTypes {
     | '/css-media-query'
     | '/css-scroll-snap'
     | '/css-selector'
+    | '/css-shorthand'
     | '/css-specificity'
     | '/css-text-shadow'
     | '/css-transform'
@@ -2390,6 +2400,7 @@ export interface FileRouteTypes {
     | '/css-media-query'
     | '/css-scroll-snap'
     | '/css-selector'
+    | '/css-shorthand'
     | '/css-specificity'
     | '/css-text-shadow'
     | '/css-transform'
@@ -2623,6 +2634,7 @@ export interface FileRouteTypes {
     | '/css-media-query'
     | '/css-scroll-snap'
     | '/css-selector'
+    | '/css-shorthand'
     | '/css-specificity'
     | '/css-text-shadow'
     | '/css-transform'
@@ -2857,6 +2869,7 @@ export interface RootRouteChildren {
   CssMediaQueryRoute: typeof CssMediaQueryRoute
   CssScrollSnapRoute: typeof CssScrollSnapRoute
   CssSelectorRoute: typeof CssSelectorRoute
+  CssShorthandRoute: typeof CssShorthandRoute
   CssSpecificityRoute: typeof CssSpecificityRoute
   CssTextShadowRoute: typeof CssTextShadowRoute
   CssTransformRoute: typeof CssTransformRoute
@@ -4225,6 +4238,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CssSpecificityRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/css-shorthand': {
+      id: '/css-shorthand'
+      path: '/css-shorthand'
+      fullPath: '/css-shorthand'
+      preLoaderRoute: typeof CssShorthandRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/css-selector': {
       id: '/css-selector'
       path: '/css-selector'
@@ -4713,6 +4733,7 @@ const rootRouteChildren: RootRouteChildren = {
   CssMediaQueryRoute: CssMediaQueryRoute,
   CssScrollSnapRoute: CssScrollSnapRoute,
   CssSelectorRoute: CssSelectorRoute,
+  CssShorthandRoute: CssShorthandRoute,
   CssSpecificityRoute: CssSpecificityRoute,
   CssTextShadowRoute: CssTextShadowRoute,
   CssTransformRoute: CssTransformRoute,

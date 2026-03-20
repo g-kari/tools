@@ -1,0 +1,348 @@
+/* ====================================
+   CSS ショートハンド展開ツール
+   ==================================== */
+
+.css-shorthand-container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.css-shorthand-section {
+  background: var(--md-sys-color-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 8px;
+  animation: fadeInUp 0.3s ease-out both;
+}
+
+.css-shorthand-section:first-of-type {
+  animation-delay: 0.05s;
+}
+
+.css-shorthand-section:nth-of-type(2) {
+  animation-delay: 0.1s;
+}
+
+.css-shorthand-property-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.css-shorthand-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.css-shorthand-select {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  font-size: 0.9375rem;
+  font-family: 'Roboto Mono', 'Courier New', monospace;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  min-width: 0;
+}
+
+.css-shorthand-select:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-surface);
+}
+
+.css-shorthand-select:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 1px;
+}
+
+.css-shorthand-description {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 8px;
+}
+
+.css-shorthand-syntax {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 16px;
+}
+
+.css-shorthand-syntax code {
+  font-family: 'Roboto Mono', 'Courier New', monospace;
+  background: var(--md-sys-color-surface-variant);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 0.8125rem;
+}
+
+.css-shorthand-input-row {
+  margin-bottom: 12px;
+}
+
+.css-shorthand-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  font-family: 'Roboto Mono', 'Courier New', monospace;
+  font-size: 0.9375rem;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  transition: border-color 0.2s, background 0.2s;
+  box-sizing: border-box;
+}
+
+.css-shorthand-input:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-surface);
+}
+
+.css-shorthand-input:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 1px;
+}
+
+/* ロングハンド入力グループ */
+.css-shorthand-longhands {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.css-shorthand-longhand-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.css-shorthand-longhand-label {
+  min-width: 200px;
+  flex-shrink: 0;
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.css-shorthand-longhand-label code {
+  font-family: 'Roboto Mono', 'Courier New', monospace;
+  color: var(--md-sys-color-primary);
+  font-size: 0.8125rem;
+}
+
+.css-shorthand-longhand-row .css-shorthand-input {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+/* 結果表示 */
+.css-shorthand-result {
+  margin-top: 16px;
+  border: 1px solid var(--md-sys-color-primary-container);
+  border-radius: 4px;
+  background: var(--md-sys-color-primary-container);
+  overflow: hidden;
+  animation: fadeInUp 0.2s ease-out both;
+}
+
+.css-shorthand-result-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.css-shorthand-result-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.css-shorthand-copy-button {
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background: var(--md-sys-color-secondary-container);
+  border: none;
+  border-radius: 4px;
+  color: var(--md-sys-color-on-secondary-container);
+  cursor: pointer;
+  transition: background-color 0.2s, opacity 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+  letter-spacing: 0.25px;
+}
+
+.css-shorthand-copy-button:hover {
+  opacity: 0.85;
+}
+
+.css-shorthand-copy-button:active {
+  opacity: 0.7;
+}
+
+.css-shorthand-copy-button:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.css-shorthand-result-list {
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.css-shorthand-result-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0;
+  font-family: 'Roboto Mono', 'Courier New', monospace;
+  font-size: 0.9rem;
+  padding: 4px 14px;
+  line-height: 1.5;
+}
+
+/* 圧縮結果は直接 .css-shorthand-result の下 */
+.css-shorthand-result > .css-shorthand-result-item {
+  padding: 12px 14px;
+}
+
+.css-shorthand-prop-name {
+  color: var(--md-sys-color-tertiary);
+  font-weight: 500;
+}
+
+.css-shorthand-colon {
+  color: var(--md-sys-color-on-surface-variant);
+  padding: 0 4px 0 0;
+}
+
+.css-shorthand-prop-value {
+  color: var(--md-sys-color-on-primary-container);
+  font-weight: 600;
+}
+
+.css-shorthand-semicolon {
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* 区切り線 */
+.css-shorthand-divider {
+  height: 1px;
+  background: var(--md-sys-color-outline-variant);
+  margin: 12px 0;
+}
+
+/* 対応プロパティ一覧 */
+.css-shorthand-reference-section {
+  background: var(--md-sys-color-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  padding: 20px;
+  margin-top: 16px;
+  animation: fadeInUp 0.3s ease-out 0.15s both;
+}
+
+.css-shorthand-table-wrapper {
+  overflow-x: auto;
+  margin-top: 12px;
+}
+
+.css-shorthand-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.css-shorthand-table th {
+  text-align: left;
+  padding: 8px 12px;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid var(--md-sys-color-outline-variant);
+}
+
+.css-shorthand-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  color: var(--md-sys-color-on-surface);
+  vertical-align: top;
+}
+
+.css-shorthand-table tr:last-child td {
+  border-bottom: none;
+}
+
+.css-shorthand-table tr:hover td {
+  background: var(--md-sys-color-surface-variant);
+}
+
+.css-shorthand-code {
+  font-family: 'Roboto Mono', 'Courier New', monospace;
+  color: var(--md-sys-color-primary);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.css-shorthand-code--dim {
+  color: var(--md-sys-color-on-surface-variant);
+  font-weight: 400;
+}
+
+/* アニメーション抑制 */
+@media (prefers-reduced-motion: reduce) {
+  .css-shorthand-section,
+  .css-shorthand-reference-section,
+  .css-shorthand-result {
+    animation: none;
+  }
+
+  .css-shorthand-input,
+  .css-shorthand-select,
+  .css-shorthand-copy-button {
+    transition: none;
+  }
+}
+
+/* レスポンシブ */
+@media (max-width: 600px) {
+  .css-shorthand-longhand-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+  }
+
+  .css-shorthand-longhand-label {
+    min-width: unset;
+  }
+
+  .css-shorthand-property-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .css-shorthand-result-item {
+    flex-wrap: wrap;
+  }
+}
