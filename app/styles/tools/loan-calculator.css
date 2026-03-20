@@ -1,0 +1,275 @@
+/* ローン計算機 */
+
+.loan-type-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  flex-wrap: wrap;
+}
+
+.loan-type-btn {
+  flex: 1;
+  min-width: 10rem;
+  padding: 0.625rem 1rem;
+  font-size: 0.8125rem;
+  font-family: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  transition: background 0.2s, color 0.2s;
+  text-align: center;
+}
+
+.loan-type-btn.active {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+.loan-type-btn:hover:not(.active) {
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+.loan-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.loan-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.loan-input-group label {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-weight: 500;
+}
+
+.loan-input-row {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.loan-input-row input[type="number"] {
+  flex: 1;
+  max-width: 14rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-size: 1rem;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.loan-input-row input[type="number"]:focus {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+  border-color: var(--md-sys-color-primary);
+}
+
+.loan-input-unit {
+  font-size: 0.9375rem;
+  color: var(--md-sys-color-on-surface-variant);
+  white-space: nowrap;
+}
+
+.loan-error {
+  padding: 0.625rem 1rem;
+  background: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-on-error-container);
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+/* サマリーカード */
+.loan-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.loan-summary-card {
+  background: var(--md-sys-color-surface-variant);
+  border-radius: 8px;
+  padding: 1.125rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.loan-summary-card.primary {
+  background: var(--md-sys-color-primary-container);
+}
+
+.loan-summary-label {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.loan-summary-card.primary .loan-summary-label {
+  color: var(--md-sys-color-on-primary-container);
+  opacity: 0.75;
+}
+
+.loan-summary-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface);
+  font-family: "JetBrains Mono", monospace;
+  line-height: 1.2;
+}
+
+.loan-summary-card.primary .loan-summary-value {
+  font-size: 1.75rem;
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.loan-summary-sub {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.loan-summary-card.primary .loan-summary-sub {
+  color: var(--md-sys-color-on-primary-container);
+  opacity: 0.7;
+}
+
+/* 返済割合バー */
+.loan-ratio-bar {
+  margin-top: 1rem;
+}
+
+.loan-ratio-bar-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 0.375rem;
+}
+
+.loan-ratio-track {
+  height: 12px;
+  border-radius: 6px;
+  background: var(--md-sys-color-surface-variant);
+  overflow: hidden;
+}
+
+.loan-ratio-fill-principal {
+  height: 100%;
+  background: var(--md-sys-color-primary);
+  display: inline-block;
+  border-radius: 6px 0 0 6px;
+}
+
+.loan-ratio-fill-interest {
+  height: 100%;
+  background: var(--md-sys-color-tertiary);
+  display: inline-block;
+}
+
+/* 返済スケジュール表 */
+.loan-schedule-section {
+  margin-top: 1rem;
+}
+
+.loan-schedule-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  font-family: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  transition: background 0.15s;
+  margin-bottom: 0.75rem;
+}
+
+.loan-schedule-toggle:hover {
+  background: var(--md-sys-color-surface-variant);
+}
+
+.loan-schedule-table-wrapper {
+  overflow-x: auto;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 6px;
+}
+
+.loan-schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.loan-schedule-table th {
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  padding: 0.5rem 0.75rem;
+  text-align: right;
+  font-weight: 600;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.loan-schedule-table th:first-child {
+  text-align: center;
+}
+
+.loan-schedule-table td {
+  padding: 0.4375rem 0.75rem;
+  text-align: right;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  color: var(--md-sys-color-on-surface);
+}
+
+.loan-schedule-table td:first-child {
+  text-align: center;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.loan-schedule-table tr:last-child td {
+  border-bottom: none;
+}
+
+.loan-schedule-table tr:nth-child(even) td {
+  background: color-mix(
+    in srgb,
+    var(--md-sys-color-surface-variant) 35%,
+    transparent
+  );
+}
+
+.loan-schedule-omit {
+  text-align: center !important;
+  color: var(--md-sys-color-on-surface-variant);
+  padding: 0.5rem 0;
+  font-size: 0.75rem;
+  font-family: inherit !important;
+  background: var(--md-sys-color-surface-variant) !important;
+}
+
+.loan-empty-state {
+  padding: 2rem;
+  text-align: center;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.9375rem;
+  background: var(--md-sys-color-surface-variant);
+  border-radius: 6px;
+}
