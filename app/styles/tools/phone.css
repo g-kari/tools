@@ -1,0 +1,303 @@
+/* ====================================
+   日本電話番号フォーマッター
+   ==================================== */
+
+.phone-container {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ── 入力セクション ── */
+.phone-input-section {
+  background: var(--md-sys-color-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 8px;
+  animation: fadeInUp 0.3s ease-out both;
+}
+
+.phone-input-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.phone-input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  font-family: "JetBrains Mono", "Roboto Mono", "Courier New", monospace;
+  font-size: 1.0625rem;
+  letter-spacing: 0.06em;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  transition: border-color 0.2s, background 0.2s;
+  min-width: 0;
+  width: 100%;
+}
+
+.phone-input:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-surface);
+}
+
+.phone-input:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 1px;
+}
+
+/* ── 結果バナー ── */
+.phone-result-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 4px;
+  margin-top: 12px;
+  font-weight: 600;
+  animation: fadeInUp 0.2s ease-out both;
+}
+
+.phone-result-banner.valid {
+  background: #dcfce7;
+  border: 1px solid #86efac;
+  color: #15803d;
+}
+
+.phone-result-banner.invalid {
+  background: #fef2f2;
+  border: 1px solid #fca5a5;
+  color: #b91c1c;
+}
+
+@media (prefers-color-scheme: dark) {
+  .phone-result-banner.valid {
+    background: #052e16;
+    border-color: #166534;
+    color: #86efac;
+  }
+
+  .phone-result-banner.invalid {
+    background: #2d0a0a;
+    border-color: #7f1d1d;
+    color: #fca5a5;
+  }
+}
+
+.phone-result-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.phone-result-text {
+  flex: 1;
+}
+
+.phone-result-title {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.phone-result-subtitle {
+  font-size: 0.8125rem;
+  font-weight: 400;
+  opacity: 0.8;
+  margin-top: 2px;
+  font-family: "JetBrains Mono", "Roboto Mono", "Courier New", monospace;
+}
+
+/* ── フォーマット結果 ── */
+.phone-formats-section {
+  background: var(--md-sys-color-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 8px;
+  animation: fadeInUp 0.3s ease-out 0.05s both;
+}
+
+.phone-formats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.phone-format-card {
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.phone-format-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.phone-format-value {
+  font-family: "JetBrains Mono", "Roboto Mono", "Courier New", monospace;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--md-sys-color-primary);
+  letter-spacing: 0.05em;
+  word-break: break-all;
+  flex: 1;
+}
+
+.phone-copy-btn {
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background: var(--md-sys-color-primary-container);
+  border: none;
+  border-radius: 4px;
+  color: var(--md-sys-color-on-primary-container);
+  cursor: pointer;
+  transition: background-color 0.2s, opacity 0.2s;
+  align-self: flex-start;
+  white-space: nowrap;
+  letter-spacing: 0.25px;
+}
+
+.phone-copy-btn:hover {
+  opacity: 0.85;
+}
+
+.phone-copy-btn:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* ── サンプル番号セクション ── */
+.phone-sample-section {
+  background: var(--md-sys-color-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 8px;
+  animation: fadeInUp 0.3s ease-out 0.1s both;
+}
+
+.phone-sample-note {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-top: 4px;
+  margin-bottom: 0;
+}
+
+.phone-sample-table-wrapper {
+  overflow-x: auto;
+  margin-top: 12px;
+}
+
+.phone-sample-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.phone-sample-table th {
+  text-align: left;
+  padding: 8px 12px;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid var(--md-sys-color-outline-variant);
+}
+
+.phone-sample-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  color: var(--md-sys-color-on-surface);
+}
+
+.phone-sample-table tr:last-child td {
+  border-bottom: none;
+}
+
+.phone-sample-table tr:hover td {
+  background: var(--md-sys-color-surface-variant);
+}
+
+.phone-sample-number {
+  font-family: "JetBrains Mono", "Roboto Mono", "Courier New", monospace;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--md-sys-color-primary);
+  white-space: nowrap;
+}
+
+.phone-use-btn {
+  padding: 3px 8px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background: var(--md-sys-color-secondary-container);
+  border: none;
+  border-radius: 4px;
+  color: var(--md-sys-color-on-secondary-container);
+  cursor: pointer;
+  transition: background-color 0.2s, opacity 0.2s;
+  white-space: nowrap;
+  letter-spacing: 0.25px;
+}
+
+.phone-use-btn:hover {
+  opacity: 0.85;
+}
+
+.phone-use-btn:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* ── アニメーション抑制 ── */
+@media (prefers-reduced-motion: reduce) {
+  .phone-input-section,
+  .phone-formats-section,
+  .phone-sample-section,
+  .phone-result-banner {
+    animation: none;
+  }
+
+  .phone-input,
+  .phone-copy-btn,
+  .phone-use-btn {
+    transition: none;
+  }
+}
+
+/* ── レスポンシブ ── */
+@media (max-width: 600px) {
+  .phone-formats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .phone-format-value {
+    font-size: 0.9375rem;
+  }
+
+  .phone-sample-table th,
+  .phone-sample-table td {
+    padding: 6px 8px;
+    font-size: 0.8125rem;
+  }
+}

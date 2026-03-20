@@ -260,6 +260,7 @@ const navCategories = [
       { path: "/ssh-key", label: "SSH鍵生成" },
       { path: "/luhn-check", label: "Luhn / クレジットカード検証" },
       { path: "/iban", label: "IBAN バリデーター" },
+      { path: "/phone", label: "電話番号フォーマッター" },
       { path: "/css-selector", label: "CSS Selectorテスター" },
       { path: "/glob-tester", label: "Glob パターンテスター" },
     ],

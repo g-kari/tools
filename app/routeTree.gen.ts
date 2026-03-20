@@ -81,6 +81,7 @@ import { Route as PortCheckRouteImport } from './routes/port-check'
 import { Route as PomodoroRouteImport } from './routes/pomodoro'
 import { Route as PkceRouteImport } from './routes/pkce'
 import { Route as PhpSerializeRouteImport } from './routes/php-serialize'
+import { Route as PhoneRouteImport } from './routes/phone'
 import { Route as PasswordStrengthRouteImport } from './routes/password-strength'
 import { Route as PasswordGeneratorRouteImport } from './routes/password-generator'
 import { Route as PassphraseRouteImport } from './routes/passphrase'
@@ -604,6 +605,11 @@ const PkceRoute = PkceRouteImport.update({
 const PhpSerializeRoute = PhpSerializeRouteImport.update({
   id: '/php-serialize',
   path: '/php-serialize',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PhoneRoute = PhoneRouteImport.update({
+  id: '/phone',
+  path: '/phone',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PasswordStrengthRoute = PasswordStrengthRouteImport.update({
@@ -1588,6 +1594,7 @@ export interface FileRoutesByFullPath {
   '/passphrase': typeof PassphraseRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/password-strength': typeof PasswordStrengthRoute
+  '/phone': typeof PhoneRoute
   '/php-serialize': typeof PhpSerializeRoute
   '/pkce': typeof PkceRoute
   '/pomodoro': typeof PomodoroRoute
@@ -1826,6 +1833,7 @@ export interface FileRoutesByTo {
   '/passphrase': typeof PassphraseRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/password-strength': typeof PasswordStrengthRoute
+  '/phone': typeof PhoneRoute
   '/php-serialize': typeof PhpSerializeRoute
   '/pkce': typeof PkceRoute
   '/pomodoro': typeof PomodoroRoute
@@ -2065,6 +2073,7 @@ export interface FileRoutesById {
   '/passphrase': typeof PassphraseRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/password-strength': typeof PasswordStrengthRoute
+  '/phone': typeof PhoneRoute
   '/php-serialize': typeof PhpSerializeRoute
   '/pkce': typeof PkceRoute
   '/pomodoro': typeof PomodoroRoute
@@ -2305,6 +2314,7 @@ export interface FileRouteTypes {
     | '/passphrase'
     | '/password-generator'
     | '/password-strength'
+    | '/phone'
     | '/php-serialize'
     | '/pkce'
     | '/pomodoro'
@@ -2543,6 +2553,7 @@ export interface FileRouteTypes {
     | '/passphrase'
     | '/password-generator'
     | '/password-strength'
+    | '/phone'
     | '/php-serialize'
     | '/pkce'
     | '/pomodoro'
@@ -2781,6 +2792,7 @@ export interface FileRouteTypes {
     | '/passphrase'
     | '/password-generator'
     | '/password-strength'
+    | '/phone'
     | '/php-serialize'
     | '/pkce'
     | '/pomodoro'
@@ -3020,6 +3032,7 @@ export interface RootRouteChildren {
   PassphraseRoute: typeof PassphraseRoute
   PasswordGeneratorRoute: typeof PasswordGeneratorRoute
   PasswordStrengthRoute: typeof PasswordStrengthRoute
+  PhoneRoute: typeof PhoneRoute
   PhpSerializeRoute: typeof PhpSerializeRoute
   PkceRoute: typeof PkceRoute
   PomodoroRoute: typeof PomodoroRoute
@@ -3602,6 +3615,13 @@ declare module '@tanstack/react-router' {
       path: '/php-serialize'
       fullPath: '/php-serialize'
       preLoaderRoute: typeof PhpSerializeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/phone': {
+      id: '/phone'
+      path: '/phone'
+      fullPath: '/phone'
+      preLoaderRoute: typeof PhoneRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/password-strength': {
@@ -4916,6 +4936,7 @@ const rootRouteChildren: RootRouteChildren = {
   PassphraseRoute: PassphraseRoute,
   PasswordGeneratorRoute: PasswordGeneratorRoute,
   PasswordStrengthRoute: PasswordStrengthRoute,
+  PhoneRoute: PhoneRoute,
   PhpSerializeRoute: PhpSerializeRoute,
   PkceRoute: PkceRoute,
   PomodoroRoute: PomodoroRoute,
