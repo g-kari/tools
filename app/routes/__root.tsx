@@ -328,6 +328,7 @@ const navCategories = [
       { path: "/hangman", label: "ハングマン" },
       { path: "/tetris", label: "テトリス" },
       { path: "/life-game", label: "ライフゲーム" },
+      { path: "/wordle", label: "Wordle" },
     ],
   },
 ];

@@ -18,6 +18,7 @@ import { Route as XpathRouteImport } from './routes/xpath'
 import { Route as XmlJsonRouteImport } from './routes/xml-json'
 import { Route as XmlRouteImport } from './routes/xml'
 import { Route as WorldClockRouteImport } from './routes/world-clock'
+import { Route as WordleRouteImport } from './routes/wordle'
 import { Route as WordFrequencyRouteImport } from './routes/word-frequency'
 import { Route as WhoisRouteImport } from './routes/whois'
 import { Route as WebsocketRouteImport } from './routes/websocket'
@@ -311,6 +312,11 @@ const XmlRoute = XmlRouteImport.update({
 const WorldClockRoute = WorldClockRouteImport.update({
   id: '/world-clock',
   path: '/world-clock',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WordleRoute = WordleRouteImport.update({
+  id: '/wordle',
+  path: '/wordle',
   getParentRoute: () => rootRouteImport,
 } as any)
 const WordFrequencyRoute = WordFrequencyRouteImport.update({
@@ -1805,6 +1811,7 @@ export interface FileRoutesByFullPath {
   '/websocket': typeof WebsocketRoute
   '/whois': typeof WhoisRoute
   '/word-frequency': typeof WordFrequencyRoute
+  '/wordle': typeof WordleRoute
   '/world-clock': typeof WorldClockRoute
   '/xml': typeof XmlRoute
   '/xml-json': typeof XmlJsonRoute
@@ -2065,6 +2072,7 @@ export interface FileRoutesByTo {
   '/websocket': typeof WebsocketRoute
   '/whois': typeof WhoisRoute
   '/word-frequency': typeof WordFrequencyRoute
+  '/wordle': typeof WordleRoute
   '/world-clock': typeof WorldClockRoute
   '/xml': typeof XmlRoute
   '/xml-json': typeof XmlJsonRoute
@@ -2326,6 +2334,7 @@ export interface FileRoutesById {
   '/websocket': typeof WebsocketRoute
   '/whois': typeof WhoisRoute
   '/word-frequency': typeof WordFrequencyRoute
+  '/wordle': typeof WordleRoute
   '/world-clock': typeof WorldClockRoute
   '/xml': typeof XmlRoute
   '/xml-json': typeof XmlJsonRoute
@@ -2588,6 +2597,7 @@ export interface FileRouteTypes {
     | '/websocket'
     | '/whois'
     | '/word-frequency'
+    | '/wordle'
     | '/world-clock'
     | '/xml'
     | '/xml-json'
@@ -2848,6 +2858,7 @@ export interface FileRouteTypes {
     | '/websocket'
     | '/whois'
     | '/word-frequency'
+    | '/wordle'
     | '/world-clock'
     | '/xml'
     | '/xml-json'
@@ -3108,6 +3119,7 @@ export interface FileRouteTypes {
     | '/websocket'
     | '/whois'
     | '/word-frequency'
+    | '/wordle'
     | '/world-clock'
     | '/xml'
     | '/xml-json'
@@ -3369,6 +3381,7 @@ export interface RootRouteChildren {
   WebsocketRoute: typeof WebsocketRoute
   WhoisRoute: typeof WhoisRoute
   WordFrequencyRoute: typeof WordFrequencyRoute
+  WordleRoute: typeof WordleRoute
   WorldClockRoute: typeof WorldClockRoute
   XmlRoute: typeof XmlRoute
   XmlJsonRoute: typeof XmlJsonRoute
@@ -3447,6 +3460,13 @@ declare module '@tanstack/react-router' {
       path: '/world-clock'
       fullPath: '/world-clock'
       preLoaderRoute: typeof WorldClockRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/wordle': {
+      id: '/wordle'
+      path: '/wordle'
+      fullPath: '/wordle'
+      preLoaderRoute: typeof WordleRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/word-frequency': {
@@ -5441,6 +5461,7 @@ const rootRouteChildren: RootRouteChildren = {
   WebsocketRoute: WebsocketRoute,
   WhoisRoute: WhoisRoute,
   WordFrequencyRoute: WordFrequencyRoute,
+  WordleRoute: WordleRoute,
   WorldClockRoute: WorldClockRoute,
   XmlRoute: XmlRoute,
   XmlJsonRoute: XmlJsonRoute,
