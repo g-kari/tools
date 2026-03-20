@@ -787,6 +787,22 @@ export const fetchOgp = createServerFn({ method: "GET" })
         });
       }
 
+      // SSRF対策: リダイレクト後の最終URLもプライベートIPチェック
+      if (response.url && response.url !== url) {
+        try {
+          const finalUrl = new URL(response.url);
+          if (isPrivateOrLocalhost(finalUrl.hostname)) {
+            return {
+              fetchedUrl: url,
+              error:
+                "セキュリティ上の理由により、プライベートIPへのリダイレクトは許可されていません",
+            } as OgpData;
+          }
+        } catch {
+          // URLパース失敗は無視
+        }
+      }
+
       if (!response.ok) {
         return {
           fetchedUrl: url,

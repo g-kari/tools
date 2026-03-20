@@ -362,8 +362,17 @@ export function isPrivateOrLocalhost(hostname: string): boolean {
     // 172.16.0.0/12 (プライベート)
     if (a === 172 && b >= 16 && b <= 31) return true;
 
+    // 100.64.0.0/10 (共有アドレス空間 / CGNAT, RFC 6598)
+    if (a === 100 && b >= 64 && b <= 127) return true;
+
+    // 192.0.0.0/24 (IETFプロトコル割り当て)
+    if (a === 192 && b === 0 && c === 0) return true;
+
     // 192.168.0.0/16 (プライベート)
     if (a === 192 && b === 168) return true;
+
+    // 198.18.0.0/15 (ベンチマーク用)
+    if (a === 198 && b >= 18 && b <= 19) return true;
 
     // 224.0.0.0/4 (マルチキャスト)
     if (a >= 224 && a <= 239) return true;
@@ -485,6 +494,20 @@ export const checkSecurityHeaders = createServerFn({ method: "GET" })
         redirect: "follow",
         signal: controller.signal,
       });
+
+      // SSRF対策: リダイレクト後の最終URLもプライベートIPチェック
+      if (response.url && response.url !== url) {
+        try {
+          const finalUrl = new URL(response.url);
+          if (isPrivateOrLocalhost(finalUrl.hostname)) {
+            throw new Error(
+              "セキュリティ上の理由により、プライベートIPへのリダイレクトは許可されていません"
+            );
+          }
+        } catch (e) {
+          if (e instanceof Error) throw e;
+        }
+      }
 
       const headers = response.headers;
 

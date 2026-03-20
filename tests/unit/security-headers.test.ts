@@ -66,6 +66,33 @@ describe("SSRF protection - private IP detection", () => {
     expect(isPrivateOrLocalhost("169.254.169.254")).toBe(true);
   });
 
+  it("should detect CGNAT shared address space - 100.64.0.0/10 (RFC 6598)", () => {
+    expect(isPrivateOrLocalhost("100.64.0.0")).toBe(true);
+    expect(isPrivateOrLocalhost("100.64.0.1")).toBe(true);
+    expect(isPrivateOrLocalhost("100.100.100.100")).toBe(true);
+    expect(isPrivateOrLocalhost("100.127.255.255")).toBe(true);
+    // 範囲外はパブリック
+    expect(isPrivateOrLocalhost("100.63.255.255")).toBe(false);
+    expect(isPrivateOrLocalhost("100.128.0.0")).toBe(false);
+  });
+
+  it("should detect IETF protocol assignment - 192.0.0.0/24", () => {
+    expect(isPrivateOrLocalhost("192.0.0.0")).toBe(true);
+    expect(isPrivateOrLocalhost("192.0.0.1")).toBe(true);
+    expect(isPrivateOrLocalhost("192.0.0.255")).toBe(true);
+    // 隣接レンジはパブリック
+    expect(isPrivateOrLocalhost("192.0.1.0")).toBe(false);
+  });
+
+  it("should detect benchmarking addresses - 198.18.0.0/15", () => {
+    expect(isPrivateOrLocalhost("198.18.0.0")).toBe(true);
+    expect(isPrivateOrLocalhost("198.18.0.1")).toBe(true);
+    expect(isPrivateOrLocalhost("198.19.255.255")).toBe(true);
+    // 範囲外はパブリック
+    expect(isPrivateOrLocalhost("198.17.255.255")).toBe(false);
+    expect(isPrivateOrLocalhost("198.20.0.0")).toBe(false);
+  });
+
   it("should detect IPv6 private addresses", () => {
     expect(isPrivateOrLocalhost("fc00::1")).toBe(true);
     expect(isPrivateOrLocalhost("fd00::1")).toBe(true);
