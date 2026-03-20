@@ -133,6 +133,7 @@ import { Route as ImageCropRouteImport } from './routes/image-crop'
 import { Route as ImageCompressRouteImport } from './routes/image-compress'
 import { Route as ImageBase64RouteImport } from './routes/image-base64'
 import { Route as Ieee754RouteImport } from './routes/ieee754'
+import { Route as IbanRouteImport } from './routes/iban'
 import { Route as HttpStatusRouteImport } from './routes/http-status'
 import { Route as HttpHeadersRouteImport } from './routes/http-headers'
 import { Route as HttpClientRouteImport } from './routes/http-client'
@@ -863,6 +864,11 @@ const Ieee754Route = Ieee754RouteImport.update({
   path: '/ieee754',
   getParentRoute: () => rootRouteImport,
 } as any)
+const IbanRoute = IbanRouteImport.update({
+  id: '/iban',
+  path: '/iban',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HttpStatusRoute = HttpStatusRouteImport.update({
   id: '/http-status',
   path: '/http-status',
@@ -1515,6 +1521,7 @@ export interface FileRoutesByFullPath {
   '/http-client': typeof HttpClientRoute
   '/http-headers': typeof HttpHeadersRoute
   '/http-status': typeof HttpStatusRoute
+  '/iban': typeof IbanRoute
   '/ieee754': typeof Ieee754Route
   '/image-base64': typeof ImageBase64Route
   '/image-compress': typeof ImageCompressRoute
@@ -1750,6 +1757,7 @@ export interface FileRoutesByTo {
   '/http-client': typeof HttpClientRoute
   '/http-headers': typeof HttpHeadersRoute
   '/http-status': typeof HttpStatusRoute
+  '/iban': typeof IbanRoute
   '/ieee754': typeof Ieee754Route
   '/image-base64': typeof ImageBase64Route
   '/image-compress': typeof ImageCompressRoute
@@ -1986,6 +1994,7 @@ export interface FileRoutesById {
   '/http-client': typeof HttpClientRoute
   '/http-headers': typeof HttpHeadersRoute
   '/http-status': typeof HttpStatusRoute
+  '/iban': typeof IbanRoute
   '/ieee754': typeof Ieee754Route
   '/image-base64': typeof ImageBase64Route
   '/image-compress': typeof ImageCompressRoute
@@ -2223,6 +2232,7 @@ export interface FileRouteTypes {
     | '/http-client'
     | '/http-headers'
     | '/http-status'
+    | '/iban'
     | '/ieee754'
     | '/image-base64'
     | '/image-compress'
@@ -2458,6 +2468,7 @@ export interface FileRouteTypes {
     | '/http-client'
     | '/http-headers'
     | '/http-status'
+    | '/iban'
     | '/ieee754'
     | '/image-base64'
     | '/image-compress'
@@ -2693,6 +2704,7 @@ export interface FileRouteTypes {
     | '/http-client'
     | '/http-headers'
     | '/http-status'
+    | '/iban'
     | '/ieee754'
     | '/image-base64'
     | '/image-compress'
@@ -2929,6 +2941,7 @@ export interface RootRouteChildren {
   HttpClientRoute: typeof HttpClientRoute
   HttpHeadersRoute: typeof HttpHeadersRoute
   HttpStatusRoute: typeof HttpStatusRoute
+  IbanRoute: typeof IbanRoute
   Ieee754Route: typeof Ieee754Route
   ImageBase64Route: typeof ImageBase64Route
   ImageCompressRoute: typeof ImageCompressRoute
@@ -3929,6 +3942,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Ieee754RouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/iban': {
+      id: '/iban'
+      path: '/iban'
+      fullPath: '/iban'
+      preLoaderRoute: typeof IbanRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/http-status': {
       id: '/http-status'
       path: '/http-status'
@@ -4801,6 +4821,7 @@ const rootRouteChildren: RootRouteChildren = {
   HttpClientRoute: HttpClientRoute,
   HttpHeadersRoute: HttpHeadersRoute,
   HttpStatusRoute: HttpStatusRoute,
+  IbanRoute: IbanRoute,
   Ieee754Route: Ieee754Route,
   ImageBase64Route: ImageBase64Route,
   ImageCompressRoute: ImageCompressRoute,
