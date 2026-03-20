@@ -1,8 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useState, useCallback, useMemo } from 'react';
-import { useToast } from '~/components/Toast';
-import { useClipboard } from '~/hooks/useClipboard';
-import { StatusAnnouncer, useStatusAnnouncement } from '~/hooks/useStatusAnnouncement';
+import { StatusAnnouncer } from '~/hooks/useStatusAnnouncement';
+import { useCopyWithFeedback } from '~/hooks/useCopyWithFeedback';
 import { TipsCard } from '~/components/TipsCard';
 import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
 import {
@@ -47,9 +46,7 @@ export const Route = createFileRoute('/base32')({
 type Mode = 'encode' | 'decode';
 
 function Base32Converter() {
-  const { showToast } = useToast();
-  const { copy } = useClipboard();
-  const { statusRef, announceStatus } = useStatusAnnouncement();
+  const { statusRef, announceStatus, copyWithFeedback } = useCopyWithFeedback();
 
   const [mode, setMode] = useState<Mode>('encode');
   const [input, setInput] = useState('');
@@ -82,15 +79,8 @@ function Base32Converter() {
   const hasOutput = !!output;
 
   const handleCopyOutput = useCallback(async () => {
-    if (!output) return;
-    const ok = await copy(output);
-    if (ok) {
-      showToast('コピーしました', 'success');
-      announceStatus('出力をコピーしました');
-    } else {
-      showToast('コピーに失敗しました', 'error');
-    }
-  }, [output, copy, showToast, announceStatus]);
+    await copyWithFeedback(output, '出力をコピーしました');
+  }, [output, copyWithFeedback]);
 
   const handleClear = useCallback(() => {
     setInput('');
