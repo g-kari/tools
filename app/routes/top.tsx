@@ -604,6 +604,13 @@ const toolCatalog: ToolCategory[] = [
           "テキストを gzip・deflate・deflate-raw 形式でブラウザ内圧縮・解凍するツール。圧縮率・サイズ比較表示。Base64エンコードされた圧縮データの解凍にも対応。データは外部送信なし。",
         icon: "🗜️",
       },
+      {
+        path: "/geometry",
+        label: "幾何計算機",
+        description:
+          "円・三角形・長方形などの2D図形の面積、球・円柱・直方体などの3D図形の体積・表面積を計算するツール。",
+        icon: "📐",
+      },
     ],
   },
   {
