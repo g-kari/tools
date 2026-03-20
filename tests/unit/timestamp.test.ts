@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import {
   parseTimestamp,
   formatTimestampResult,
@@ -112,50 +112,61 @@ describe("formatTimestampResult", () => {
 });
 
 describe("formatRelativeTime", () => {
-  const nowSeconds = Math.floor(Date.now() / 1000);
+  // 固定タイムスタンプを使い、import の遅延で nowSeconds がずれる問題を防ぐ
+  const fixedNowMs = 1700000000 * 1000;
+  const fixedNowSeconds = 1700000000;
+
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(fixedNowMs);
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
 
   it("30秒前を正しく表示する", () => {
-    const result = formatRelativeTime(nowSeconds - 30);
+    const result = formatRelativeTime(fixedNowSeconds - 30);
     expect(result).toBe("30秒前");
   });
 
   it("5分前を正しく表示する", () => {
-    const result = formatRelativeTime(nowSeconds - 300);
+    const result = formatRelativeTime(fixedNowSeconds - 300);
     expect(result).toBe("5分前");
   });
 
   it("2時間前を正しく表示する", () => {
-    const result = formatRelativeTime(nowSeconds - 7200);
+    const result = formatRelativeTime(fixedNowSeconds - 7200);
     expect(result).toBe("2時間前");
   });
 
   it("3日前を正しく表示する", () => {
-    const result = formatRelativeTime(nowSeconds - 86400 * 3);
+    const result = formatRelativeTime(fixedNowSeconds - 86400 * 3);
     expect(result).toBe("3日前");
   });
 
   it("2ヶ月前を正しく表示する", () => {
-    const result = formatRelativeTime(nowSeconds - 86400 * 60);
+    const result = formatRelativeTime(fixedNowSeconds - 86400 * 60);
     expect(result).toBe("2ヶ月前");
   });
 
   it("1年前を正しく表示する", () => {
-    const result = formatRelativeTime(nowSeconds - 86400 * 365);
+    const result = formatRelativeTime(fixedNowSeconds - 86400 * 365);
     expect(result).toBe("1年前");
   });
 
   it("30秒後を正しく表示する", () => {
-    const result = formatRelativeTime(nowSeconds + 30);
+    const result = formatRelativeTime(fixedNowSeconds + 30);
     expect(result).toBe("30秒後");
   });
 
   it("2時間後を正しく表示する", () => {
-    const result = formatRelativeTime(nowSeconds + 7200);
+    const result = formatRelativeTime(fixedNowSeconds + 7200);
     expect(result).toBe("2時間後");
   });
 
   it("3日後を正しく表示する", () => {
-    const result = formatRelativeTime(nowSeconds + 86400 * 3);
+    const result = formatRelativeTime(fixedNowSeconds + 86400 * 3);
     expect(result).toBe("3日後");
   });
 });

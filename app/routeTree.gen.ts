@@ -149,6 +149,7 @@ import { Route as GlobalIpRouteImport } from './routes/global-ip'
 import { Route as GlobTesterRouteImport } from './routes/glob-tester'
 import { Route as GitignoreRouteImport } from './routes/gitignore'
 import { Route as GithubBadgeRouteImport } from './routes/github-badge'
+import { Route as Game2048RouteImport } from './routes/game-2048'
 import { Route as FunctionPlotterRouteImport } from './routes/function-plotter'
 import { Route as FaviconGeneratorRouteImport } from './routes/favicon-generator'
 import { Route as EnvParserRouteImport } from './routes/env-parser'
@@ -938,6 +939,11 @@ const GithubBadgeRoute = GithubBadgeRouteImport.update({
   path: '/github-badge',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Game2048Route = Game2048RouteImport.update({
+  id: '/game-2048',
+  path: '/game-2048',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FunctionPlotterRoute = FunctionPlotterRouteImport.update({
   id: '/function-plotter',
   path: '/function-plotter',
@@ -1464,6 +1470,7 @@ export interface FileRoutesByFullPath {
   '/env-parser': typeof EnvParserRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
   '/function-plotter': typeof FunctionPlotterRoute
+  '/game-2048': typeof Game2048Route
   '/github-badge': typeof GithubBadgeRoute
   '/gitignore': typeof GitignoreRoute
   '/glob-tester': typeof GlobTesterRoute
@@ -1694,6 +1701,7 @@ export interface FileRoutesByTo {
   '/env-parser': typeof EnvParserRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
   '/function-plotter': typeof FunctionPlotterRoute
+  '/game-2048': typeof Game2048Route
   '/github-badge': typeof GithubBadgeRoute
   '/gitignore': typeof GitignoreRoute
   '/glob-tester': typeof GlobTesterRoute
@@ -1925,6 +1933,7 @@ export interface FileRoutesById {
   '/env-parser': typeof EnvParserRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
   '/function-plotter': typeof FunctionPlotterRoute
+  '/game-2048': typeof Game2048Route
   '/github-badge': typeof GithubBadgeRoute
   '/gitignore': typeof GitignoreRoute
   '/glob-tester': typeof GlobTesterRoute
@@ -2157,6 +2166,7 @@ export interface FileRouteTypes {
     | '/env-parser'
     | '/favicon-generator'
     | '/function-plotter'
+    | '/game-2048'
     | '/github-badge'
     | '/gitignore'
     | '/glob-tester'
@@ -2387,6 +2397,7 @@ export interface FileRouteTypes {
     | '/env-parser'
     | '/favicon-generator'
     | '/function-plotter'
+    | '/game-2048'
     | '/github-badge'
     | '/gitignore'
     | '/glob-tester'
@@ -2617,6 +2628,7 @@ export interface FileRouteTypes {
     | '/env-parser'
     | '/favicon-generator'
     | '/function-plotter'
+    | '/game-2048'
     | '/github-badge'
     | '/gitignore'
     | '/glob-tester'
@@ -2848,6 +2860,7 @@ export interface RootRouteChildren {
   EnvParserRoute: typeof EnvParserRoute
   FaviconGeneratorRoute: typeof FaviconGeneratorRoute
   FunctionPlotterRoute: typeof FunctionPlotterRoute
+  Game2048Route: typeof Game2048Route
   GithubBadgeRoute: typeof GithubBadgeRoute
   GitignoreRoute: typeof GitignoreRoute
   GlobTesterRoute: typeof GlobTesterRoute
@@ -3976,6 +3989,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GithubBadgeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/game-2048': {
+      id: '/game-2048'
+      path: '/game-2048'
+      fullPath: '/game-2048'
+      preLoaderRoute: typeof Game2048RouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/function-plotter': {
       id: '/function-plotter'
       path: '/function-plotter'
@@ -4680,6 +4700,7 @@ const rootRouteChildren: RootRouteChildren = {
   EnvParserRoute: EnvParserRoute,
   FaviconGeneratorRoute: FaviconGeneratorRoute,
   FunctionPlotterRoute: FunctionPlotterRoute,
+  Game2048Route: Game2048Route,
   GithubBadgeRoute: GithubBadgeRoute,
   GitignoreRoute: GitignoreRoute,
   GlobTesterRoute: GlobTesterRoute,
