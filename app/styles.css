@@ -159,6 +159,7 @@
 @import "./styles/tools/number-words.css";
 @import "./styles/tools/luhn-check.css";
 @import "./styles/tools/iban.css";
+@import "./styles/tools/isbn.css";
 @import "./styles/tools/passphrase.css";
 @import "./styles/tools/typing-speed.css";
 @import "./styles/tools/redirect-tracer.css";

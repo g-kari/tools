@@ -133,6 +133,7 @@ import { Route as JsonLinesRouteImport } from './routes/json-lines'
 import { Route as JsonFlattenRouteImport } from './routes/json-flatten'
 import { Route as JsonCompareRouteImport } from './routes/json-compare'
 import { Route as JsonRouteImport } from './routes/json'
+import { Route as IsbnRouteImport } from './routes/isbn'
 import { Route as Ipv6RouteImport } from './routes/ipv6'
 import { Route as IpGeolocationRouteImport } from './routes/ip-geolocation'
 import { Route as IpConverterRouteImport } from './routes/ip-converter'
@@ -881,6 +882,11 @@ const JsonCompareRoute = JsonCompareRouteImport.update({
 const JsonRoute = JsonRouteImport.update({
   id: '/json',
   path: '/json',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IsbnRoute = IsbnRouteImport.update({
+  id: '/isbn',
+  path: '/isbn',
   getParentRoute: () => rootRouteImport,
 } as any)
 const Ipv6Route = Ipv6RouteImport.update({
@@ -1655,6 +1661,7 @@ export interface FileRoutesByFullPath {
   '/ip-converter': typeof IpConverterRoute
   '/ip-geolocation': typeof IpGeolocationRoute
   '/ipv6': typeof Ipv6Route
+  '/isbn': typeof IsbnRoute
   '/json': typeof JsonRoute
   '/json-compare': typeof JsonCompareRoute
   '/json-flatten': typeof JsonFlattenRoute
@@ -1910,6 +1917,7 @@ export interface FileRoutesByTo {
   '/ip-converter': typeof IpConverterRoute
   '/ip-geolocation': typeof IpGeolocationRoute
   '/ipv6': typeof Ipv6Route
+  '/isbn': typeof IsbnRoute
   '/json': typeof JsonRoute
   '/json-compare': typeof JsonCompareRoute
   '/json-flatten': typeof JsonFlattenRoute
@@ -2166,6 +2174,7 @@ export interface FileRoutesById {
   '/ip-converter': typeof IpConverterRoute
   '/ip-geolocation': typeof IpGeolocationRoute
   '/ipv6': typeof Ipv6Route
+  '/isbn': typeof IsbnRoute
   '/json': typeof JsonRoute
   '/json-compare': typeof JsonCompareRoute
   '/json-flatten': typeof JsonFlattenRoute
@@ -2423,6 +2432,7 @@ export interface FileRouteTypes {
     | '/ip-converter'
     | '/ip-geolocation'
     | '/ipv6'
+    | '/isbn'
     | '/json'
     | '/json-compare'
     | '/json-flatten'
@@ -2678,6 +2688,7 @@ export interface FileRouteTypes {
     | '/ip-converter'
     | '/ip-geolocation'
     | '/ipv6'
+    | '/isbn'
     | '/json'
     | '/json-compare'
     | '/json-flatten'
@@ -2933,6 +2944,7 @@ export interface FileRouteTypes {
     | '/ip-converter'
     | '/ip-geolocation'
     | '/ipv6'
+    | '/isbn'
     | '/json'
     | '/json-compare'
     | '/json-flatten'
@@ -3189,6 +3201,7 @@ export interface RootRouteChildren {
   IpConverterRoute: typeof IpConverterRoute
   IpGeolocationRoute: typeof IpGeolocationRoute
   Ipv6Route: typeof Ipv6Route
+  IsbnRoute: typeof IsbnRoute
   JsonRoute: typeof JsonRoute
   JsonCompareRoute: typeof JsonCompareRoute
   JsonFlattenRoute: typeof JsonFlattenRoute
@@ -4187,6 +4200,13 @@ declare module '@tanstack/react-router' {
       path: '/json'
       fullPath: '/json'
       preLoaderRoute: typeof JsonRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/isbn': {
+      id: '/isbn'
+      path: '/isbn'
+      fullPath: '/isbn'
+      preLoaderRoute: typeof IsbnRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ipv6': {
@@ -5221,6 +5241,7 @@ const rootRouteChildren: RootRouteChildren = {
   IpConverterRoute: IpConverterRoute,
   IpGeolocationRoute: IpGeolocationRoute,
   Ipv6Route: Ipv6Route,
+  IsbnRoute: IsbnRoute,
   JsonRoute: JsonRoute,
   JsonCompareRoute: JsonCompareRoute,
   JsonFlattenRoute: JsonFlattenRoute,
