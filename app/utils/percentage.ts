@@ -45,7 +45,7 @@ export function calcPercentChange(from: number, to: number): number | null {
 }
 
 /**
- * Xを整数に増加・減少させた後の値を計算する
+ * Xを指定したパーセンテージ分増加・減少させた後の値を計算する
  * @param base - 元の数値
  * @param percent - 変化させるパーセンテージ（正: 増加、負: 減少）
  * @returns 変化後の値

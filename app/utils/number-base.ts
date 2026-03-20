@@ -69,7 +69,7 @@ export function decimalToBase(decimal: number, base: Base): string {
 }
 
 /**
- * あるいは基数から別の基数へ変換する
+ * ある基数から別の基数へ変換する
  * @param value - 変換元の文字列
  * @param fromBase - 変換元の基数
  * @param toBase - 変換先の基数
