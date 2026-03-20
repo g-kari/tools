@@ -1661,6 +1661,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "⚙️",
       },
       {
+        path: "/makefile",
+        label: "Makefileジェネレーター",
+        description:
+          "Node.js・Python・Go・Rust・C/C++など主要プロジェクト向けのMakefileを自動生成。Docker・リントターゲットのオプション付き。ブラウザ内完結。",
+        icon: "🔨",
+      },
+      {
         path: "/openssl-builder",
         label: "OpenSSLビルダー",
         description: "OpenSSLコマンドをGUIで設定して生成。鍵生成・証明書作成・CSR生成など各種OpenSSL操作に対応",

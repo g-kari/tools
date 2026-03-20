@@ -1,0 +1,251 @@
+/* Makefile Generator Styles */
+
+/* フィールドグループ */
+.makefile-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+/* フィールドラベル */
+.makefile-field-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+}
+
+/* テキスト入力 */
+.makefile-text-input {
+  padding: 0.625rem 0.875rem;
+  border: 1.5px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.9375rem;
+  background-color: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  transition: border-color 0.2s, background-color 0.2s;
+  max-width: 24rem;
+}
+
+.makefile-text-input::placeholder {
+  color: var(--md-sys-color-on-surface-variant);
+  opacity: 0.6;
+}
+
+.makefile-text-input:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  background-color: var(--md-sys-color-surface);
+}
+
+.makefile-text-input:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* フィールドヒント */
+.makefile-field-hint {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin: 0;
+}
+
+/* プロジェクト種別グリッド */
+.makefile-type-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+  gap: 0.625rem;
+}
+
+/* プロジェクト種別アイテム */
+.makefile-type-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid var(--md-sys-color-outline-variant);
+  border-radius: 8px;
+  background-color: var(--md-sys-color-surface-variant);
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s;
+  user-select: none;
+}
+
+.makefile-type-item:hover {
+  border-color: var(--md-sys-color-primary);
+  background-color: var(--md-sys-color-surface);
+}
+
+.makefile-type-item.selected {
+  border-color: var(--md-sys-color-primary);
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.makefile-type-item:focus-within {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* ラジオボタン（視覚的に非表示） */
+.makefile-type-radio {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* プロジェクト種別名 */
+.makefile-type-name {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+}
+
+/* プロジェクト種別説明 */
+.makefile-type-desc {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.makefile-type-item.selected .makefile-type-desc {
+  color: var(--md-sys-color-on-primary-container);
+  opacity: 0.8;
+}
+
+/* オプショングループ */
+.makefile-options-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+/* オプションアイテム */
+.makefile-option-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* オプションチェックボックス */
+.makefile-option-checkbox {
+  width: 1.125rem;
+  height: 1.125rem;
+  accent-color: var(--md-sys-color-primary);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* オプションラベル */
+.makefile-option-label {
+  font-size: 0.9375rem;
+  color: var(--md-sys-color-on-surface);
+}
+
+/* 出力ヘッダー */
+.makefile-output-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.makefile-output-header .section-title {
+  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* プロジェクト種別バッジ */
+.makefile-type-badge {
+  font-size: 0.8125rem;
+  font-weight: 400;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+}
+
+/* アクションボタン群 */
+.makefile-action-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+/* 出力テキストエリア */
+.makefile-output-area {
+  width: 100%;
+  min-height: 24rem;
+  padding: 0.875rem 1rem;
+  border: 1.5px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background-color: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  font-family: "JetBrains Mono", "Space Mono", "Courier New", monospace;
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  resize: vertical;
+  transition: border-color 0.2s, background-color 0.2s;
+  box-sizing: border-box;
+}
+
+.makefile-output-area:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  background-color: var(--md-sys-color-surface);
+}
+
+.makefile-output-area:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* レスポンシブ: モバイル */
+@media (max-width: 560px) {
+  .makefile-type-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .makefile-text-input {
+    max-width: 100%;
+  }
+
+  .makefile-output-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .makefile-action-buttons {
+    width: 100%;
+  }
+
+  .makefile-action-buttons .btn-primary,
+  .makefile-action-buttons .btn-secondary {
+    flex: 1;
+    text-align: center;
+  }
+
+  .makefile-output-area {
+    min-height: 18rem;
+  }
+}
+
+/* モーション軽減設定 */
+@media (prefers-reduced-motion: reduce) {
+  .makefile-text-input,
+  .makefile-type-item,
+  .makefile-output-area {
+    transition: none;
+  }
+}
