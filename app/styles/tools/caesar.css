@@ -1,0 +1,131 @@
+/* シーザー暗号ツール */
+
+.caesar-mode-group {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.caesar-shift-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.caesar-shift-label {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  white-space: nowrap;
+}
+
+.caesar-shift-slider {
+  flex: 1;
+  min-width: 120px;
+  accent-color: var(--md-sys-color-primary);
+}
+
+.caesar-shift-number {
+  width: 4rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--md-sys-color-outline);
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.caesar-shift-number:focus {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 1px;
+}
+
+.caesar-rot13-btn {
+  white-space: nowrap;
+}
+
+.caesar-output {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.9375rem;
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  padding: 1rem;
+  min-height: 5rem;
+  word-break: break-all;
+  white-space: pre-wrap;
+  color: var(--md-sys-color-on-surface);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.caesar-output--empty {
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.875rem;
+}
+
+.caesar-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.caesar-brute-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.caesar-brute-table th {
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  padding: 0.4rem 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  font-weight: 500;
+}
+
+.caesar-brute-table td {
+  padding: 0.35rem 0.75rem;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  color: var(--md-sys-color-on-surface);
+  word-break: break-all;
+}
+
+.caesar-brute-table tr:last-child td {
+  border-bottom: none;
+}
+
+.caesar-brute-table tr:hover td {
+  background: var(--md-sys-color-surface-variant);
+  cursor: pointer;
+}
+
+.caesar-brute-shift {
+  color: var(--md-sys-color-primary);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  .caesar-mode-group {
+    flex-direction: column;
+  }
+
+  .caesar-shift-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .caesar-shift-slider {
+    width: 100%;
+  }
+
+  .caesar-actions {
+    flex-direction: column;
+  }
+}
