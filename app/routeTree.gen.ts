@@ -52,6 +52,7 @@ import { Route as TextLineRouteImport } from './routes/text-line'
 import { Route as TextEncryptRouteImport } from './routes/text-encrypt'
 import { Route as TextCaseRouteImport } from './routes/text-case'
 import { Route as TextBinaryRouteImport } from './routes/text-binary'
+import { Route as TetrisRouteImport } from './routes/tetris'
 import { Route as TemplateRouteImport } from './routes/template'
 import { Route as TaxCalculatorRouteImport } from './routes/tax-calculator'
 import { Route as SvgOptimizerRouteImport } from './routes/svg-optimizer'
@@ -479,6 +480,11 @@ const TextCaseRoute = TextCaseRouteImport.update({
 const TextBinaryRoute = TextBinaryRouteImport.update({
   id: '/text-binary',
   path: '/text-binary',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TetrisRoute = TetrisRouteImport.update({
+  id: '/tetris',
+  path: '/tetris',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TemplateRoute = TemplateRouteImport.update({
@@ -1757,6 +1763,7 @@ export interface FileRoutesByFullPath {
   '/svg-optimizer': typeof SvgOptimizerRoute
   '/tax-calculator': typeof TaxCalculatorRoute
   '/template': typeof TemplateRoute
+  '/tetris': typeof TetrisRoute
   '/text-binary': typeof TextBinaryRoute
   '/text-case': typeof TextCaseRoute
   '/text-encrypt': typeof TextEncryptRoute
@@ -2015,6 +2022,7 @@ export interface FileRoutesByTo {
   '/svg-optimizer': typeof SvgOptimizerRoute
   '/tax-calculator': typeof TaxCalculatorRoute
   '/template': typeof TemplateRoute
+  '/tetris': typeof TetrisRoute
   '/text-binary': typeof TextBinaryRoute
   '/text-case': typeof TextCaseRoute
   '/text-encrypt': typeof TextEncryptRoute
@@ -2274,6 +2282,7 @@ export interface FileRoutesById {
   '/svg-optimizer': typeof SvgOptimizerRoute
   '/tax-calculator': typeof TaxCalculatorRoute
   '/template': typeof TemplateRoute
+  '/tetris': typeof TetrisRoute
   '/text-binary': typeof TextBinaryRoute
   '/text-case': typeof TextCaseRoute
   '/text-encrypt': typeof TextEncryptRoute
@@ -2534,6 +2543,7 @@ export interface FileRouteTypes {
     | '/svg-optimizer'
     | '/tax-calculator'
     | '/template'
+    | '/tetris'
     | '/text-binary'
     | '/text-case'
     | '/text-encrypt'
@@ -2792,6 +2802,7 @@ export interface FileRouteTypes {
     | '/svg-optimizer'
     | '/tax-calculator'
     | '/template'
+    | '/tetris'
     | '/text-binary'
     | '/text-case'
     | '/text-encrypt'
@@ -3050,6 +3061,7 @@ export interface FileRouteTypes {
     | '/svg-optimizer'
     | '/tax-calculator'
     | '/template'
+    | '/tetris'
     | '/text-binary'
     | '/text-case'
     | '/text-encrypt'
@@ -3309,6 +3321,7 @@ export interface RootRouteChildren {
   SvgOptimizerRoute: typeof SvgOptimizerRoute
   TaxCalculatorRoute: typeof TaxCalculatorRoute
   TemplateRoute: typeof TemplateRoute
+  TetrisRoute: typeof TetrisRoute
   TextBinaryRoute: typeof TextBinaryRoute
   TextCaseRoute: typeof TextCaseRoute
   TextEncryptRoute: typeof TextEncryptRoute
@@ -3659,6 +3672,13 @@ declare module '@tanstack/react-router' {
       path: '/text-binary'
       fullPath: '/text-binary'
       preLoaderRoute: typeof TextBinaryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tetris': {
+      id: '/tetris'
+      path: '/tetris'
+      fullPath: '/tetris'
+      preLoaderRoute: typeof TetrisRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/template': {
@@ -5365,6 +5385,7 @@ const rootRouteChildren: RootRouteChildren = {
   SvgOptimizerRoute: SvgOptimizerRoute,
   TaxCalculatorRoute: TaxCalculatorRoute,
   TemplateRoute: TemplateRoute,
+  TetrisRoute: TetrisRoute,
   TextBinaryRoute: TextBinaryRoute,
   TextCaseRoute: TextCaseRoute,
   TextEncryptRoute: TextEncryptRoute,

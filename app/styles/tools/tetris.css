@@ -1,0 +1,164 @@
+/* テトリス スタイル */
+
+.tetris-wrapper {
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+/* ヘッダー（スコア・コントロールエリア） */
+.tetris-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.tetris-scores {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.tetris-score-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--md-sys-color-surface-variant);
+  border-radius: 8px;
+  padding: 0.375rem 0.75rem;
+  min-width: 64px;
+}
+
+.tetris-score-label {
+  font-size: 0.625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.tetris-score-value {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface);
+  line-height: 1.2;
+}
+
+.tetris-controls {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* ゲームエリア（ボード＋サイドパネル） */
+.tetris-game-area {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+/* キャンバスラッパー */
+.tetris-canvas-wrapper {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  flex-shrink: 0;
+  user-select: none;
+  touch-action: none;
+  background-color: #1a1a2e;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+}
+
+.tetris-canvas {
+  display: block;
+}
+
+/* サイドパネル */
+.tetris-side {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.tetris-next-panel {
+  background-color: var(--md-sys-color-surface-variant);
+  border-radius: 12px;
+  padding: 0.75rem;
+  text-align: center;
+}
+
+.tetris-next-label {
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--md-sys-color-on-surface-variant);
+  margin: 0 0 0.5rem;
+  text-transform: uppercase;
+}
+
+.tetris-next-canvas {
+  display: block;
+  border-radius: 8px;
+  background-color: #1a1a2e;
+}
+
+/* 操作説明 */
+.tetris-instructions {
+  text-align: center;
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-top: 0.75rem;
+}
+
+/* オーバーレイ */
+.tetris-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 10;
+}
+
+.tetris-overlay-over {
+  background-color: rgba(20, 20, 40, 0.85);
+}
+
+.tetris-overlay-content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.tetris-overlay-message {
+  font-size: clamp(1.25rem, 5vw, 1.75rem);
+  font-weight: 700;
+  color: #f9f9f9;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  margin: 0;
+}
+
+.tetris-overlay-sub {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.75);
+  margin: 0;
+}
+
+.tetris-overlay-score {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #f9f9f9;
+  margin: 0;
+}
+
+.tetris-overlay-best {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #ffd000;
+  margin: 0;
+}
