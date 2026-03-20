@@ -225,6 +225,7 @@ const navCategories = [
       { path: "/readability", label: "可読性スコア分析" },
       { path: "/token-estimator", label: "LLMトークン推定" },
       { path: "/line-ending", label: "改行コード変換" },
+      { path: "/zero-width", label: "ゼロ幅文字検出・除去" },
     ],
   },
   {

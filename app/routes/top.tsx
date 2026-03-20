@@ -1268,6 +1268,13 @@ const toolCatalog: ToolCategory[] = [
           "テキストのLLMトークン数をリアルタイム推定するツール。GPT-4o・Claude 3.5 Sonnet・Gemini 1.5 Proなど主要モデルのトークン数とAPIコストを比較表示。日本語・英語・コードに対応。",
         icon: "🔢",
       },
+      {
+        path: "/zero-width",
+        label: "ゼロ幅文字検出・除去",
+        description:
+          "テキストに含まれるゼロ幅スペース・ZWJ・BOM・方向制御文字などの不可視Unicode文字を検出し一括除去するツール。コピペテキストに混入した不可視文字の確認・クリーニングに。",
+        icon: "🔍",
+      },
     ],
   },
   {

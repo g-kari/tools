@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ZeroWidthRouteImport } from './routes/zero-width'
 import { Route as ZenkakuRouteImport } from './routes/zenkaku'
 import { Route as YamlTomlRouteImport } from './routes/yaml-toml'
 import { Route as YamlJsonRouteImport } from './routes/yaml-json'
@@ -247,6 +248,11 @@ import { Route as ApiImageDotsvgRouteImport } from './routes/api/image[.]svg'
 import { Route as ApiImageDotpngRouteImport } from './routes/api/image[.]png'
 import { Route as ApiImageDotjpgRouteImport } from './routes/api/image[.]jpg'
 
+const ZeroWidthRoute = ZeroWidthRouteImport.update({
+  id: '/zero-width',
+  path: '/zero-width',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ZenkakuRoute = ZenkakuRouteImport.update({
   id: '/zenkaku',
   path: '/zenkaku',
@@ -1667,6 +1673,7 @@ export interface FileRoutesByFullPath {
   '/yaml-json': typeof YamlJsonRoute
   '/yaml-toml': typeof YamlTomlRoute
   '/zenkaku': typeof ZenkakuRoute
+  '/zero-width': typeof ZeroWidthRoute
   '/api/image.jpg': typeof ApiImageDotjpgRoute
   '/api/image.png': typeof ApiImageDotpngRoute
   '/api/image.svg': typeof ApiImageDotsvgRoute
@@ -1906,6 +1913,7 @@ export interface FileRoutesByTo {
   '/yaml-json': typeof YamlJsonRoute
   '/yaml-toml': typeof YamlTomlRoute
   '/zenkaku': typeof ZenkakuRoute
+  '/zero-width': typeof ZeroWidthRoute
   '/api/image.jpg': typeof ApiImageDotjpgRoute
   '/api/image.png': typeof ApiImageDotpngRoute
   '/api/image.svg': typeof ApiImageDotsvgRoute
@@ -2146,6 +2154,7 @@ export interface FileRoutesById {
   '/yaml-json': typeof YamlJsonRoute
   '/yaml-toml': typeof YamlTomlRoute
   '/zenkaku': typeof ZenkakuRoute
+  '/zero-width': typeof ZeroWidthRoute
   '/api/image.jpg': typeof ApiImageDotjpgRoute
   '/api/image.png': typeof ApiImageDotpngRoute
   '/api/image.svg': typeof ApiImageDotsvgRoute
@@ -2387,6 +2396,7 @@ export interface FileRouteTypes {
     | '/yaml-json'
     | '/yaml-toml'
     | '/zenkaku'
+    | '/zero-width'
     | '/api/image.jpg'
     | '/api/image.png'
     | '/api/image.svg'
@@ -2626,6 +2636,7 @@ export interface FileRouteTypes {
     | '/yaml-json'
     | '/yaml-toml'
     | '/zenkaku'
+    | '/zero-width'
     | '/api/image.jpg'
     | '/api/image.png'
     | '/api/image.svg'
@@ -2865,6 +2876,7 @@ export interface FileRouteTypes {
     | '/yaml-json'
     | '/yaml-toml'
     | '/zenkaku'
+    | '/zero-width'
     | '/api/image.jpg'
     | '/api/image.png'
     | '/api/image.svg'
@@ -3105,6 +3117,7 @@ export interface RootRouteChildren {
   YamlJsonRoute: typeof YamlJsonRoute
   YamlTomlRoute: typeof YamlTomlRoute
   ZenkakuRoute: typeof ZenkakuRoute
+  ZeroWidthRoute: typeof ZeroWidthRoute
   ApiImageDotjpgRoute: typeof ApiImageDotjpgRoute
   ApiImageDotpngRoute: typeof ApiImageDotpngRoute
   ApiImageDotsvgRoute: typeof ApiImageDotsvgRoute
@@ -3113,6 +3126,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/zero-width': {
+      id: '/zero-width'
+      path: '/zero-width'
+      fullPath: '/zero-width'
+      preLoaderRoute: typeof ZeroWidthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/zenkaku': {
       id: '/zenkaku'
       path: '/zenkaku'
@@ -5009,6 +5029,7 @@ const rootRouteChildren: RootRouteChildren = {
   YamlJsonRoute: YamlJsonRoute,
   YamlTomlRoute: YamlTomlRoute,
   ZenkakuRoute: ZenkakuRoute,
+  ZeroWidthRoute: ZeroWidthRoute,
   ApiImageDotjpgRoute: ApiImageDotjpgRoute,
   ApiImageDotpngRoute: ApiImageDotpngRoute,
   ApiImageDotsvgRoute: ApiImageDotsvgRoute,
