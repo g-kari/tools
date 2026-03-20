@@ -210,6 +210,7 @@ const navCategories = [
       { path: "/markdown-preview", label: "Markdownプレビュー" },
       { path: "/text-case", label: "テキストケース変換" },
       { path: "/morse-code", label: "Morse Code変換" },
+      { path: "/text-binary", label: "テキスト↔バイナリ変換" },
       { path: "/nato-alphabet", label: "NATOフォネティックアルファベット" },
       { path: "/markdown-table", label: "Markdownテーブル生成" },
       { path: "/text-encrypt", label: "テキスト暗号化" },
