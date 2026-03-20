@@ -198,7 +198,7 @@ function GcdLcmPanel() {
 
   return (
     <div role="tabpanel" aria-label="GCD / LCM 計算">
-      <p className="number-theory-label" style={{ marginBottom: "0.75rem" }}>
+      <p className="number-theory-desc">
         正の整数を入力して追加し、2つ以上揃えると GCD・LCM を計算します
       </p>
 
@@ -237,7 +237,7 @@ function GcdLcmPanel() {
           </Button>
         )}
       </div>
-      <p id="gcd-lcm-hint" className="number-theory-label" style={{ marginBottom: "0.75rem" }}>
+      <p id="gcd-lcm-hint" className="number-theory-desc">
         Enter キーでも追加できます
       </p>
 
@@ -278,9 +278,8 @@ function GcdLcmPanel() {
               <Button
                 type="button"
                 variant="secondary"
-                className="btn-secondary"
+                className="btn-secondary number-theory-copy-btn"
                 onClick={handleCopyGcd}
-                style={{ marginTop: "0.5rem" }}
               >
                 コピー
               </Button>
@@ -293,9 +292,8 @@ function GcdLcmPanel() {
               <Button
                 type="button"
                 variant="secondary"
-                className="btn-secondary"
+                className="btn-secondary number-theory-copy-btn"
                 onClick={handleCopyLcm}
-                style={{ marginTop: "0.5rem" }}
               >
                 コピー
               </Button>
@@ -385,7 +383,7 @@ function FactorizePanel() {
           クリア
         </Button>
       </div>
-      <p id="factorize-hint" className="number-theory-label" style={{ marginBottom: "0.75rem" }}>
+      <p id="factorize-hint" className="number-theory-desc">
         入力するとリアルタイムで結果が表示されます
       </p>
 
@@ -433,9 +431,8 @@ function FactorizePanel() {
               <Button
                 type="button"
                 variant="secondary"
-                className="btn-secondary"
+                className="btn-secondary number-theory-copy-btn"
                 onClick={handleCopyFactorization}
-                style={{ marginTop: "0.5rem" }}
               >
                 コピー
               </Button>
@@ -500,7 +497,7 @@ function ModPowPanel() {
 
   return (
     <div role="tabpanel" aria-label="冪乗 mod 計算">
-      <p className="number-theory-label" style={{ marginBottom: "0.75rem" }}>
+      <p className="number-theory-desc">
         base^exp mod m を計算します（大きな数にも対応）
       </p>
 
@@ -584,9 +581,8 @@ function ModPowPanel() {
           <Button
             type="button"
             variant="secondary"
-            className="btn-secondary"
+            className="btn-secondary number-theory-copy-btn"
             onClick={handleCopy}
-            style={{ marginTop: "0.5rem" }}
           >
             コピー
           </Button>
@@ -630,7 +626,7 @@ function TotientPanel() {
 
   return (
     <div role="tabpanel" aria-label="モジュラー逆数計算">
-      <p className="number-theory-label" style={{ marginBottom: "0.75rem" }}>
+      <p className="number-theory-desc">
         a × x ≡ 1 (mod m) となる x（モジュラー逆数）を計算します
       </p>
 
@@ -702,9 +698,8 @@ function TotientPanel() {
                 <Button
                   type="button"
                   variant="secondary"
-                  className="btn-secondary"
+                  className="btn-secondary number-theory-copy-btn"
                   onClick={handleCopyInv}
-                  style={{ marginTop: "0.5rem" }}
                 >
                   コピー
                 </Button>

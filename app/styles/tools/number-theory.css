@@ -61,6 +61,17 @@
   font-family: "JetBrains Mono", "Space Mono", monospace;
 }
 
+.number-theory-desc {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  margin-bottom: 0.75rem;
+}
+
+.number-theory-copy-btn {
+  margin-top: 0.5rem;
+}
+
 .number-theory-input {
   padding: 0.5rem 0.75rem;
   background: var(--md-sys-color-surface-variant);
