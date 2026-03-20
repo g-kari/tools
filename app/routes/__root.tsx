@@ -111,6 +111,7 @@ const navCategories = [
       { path: "/percentage-calculator", label: "パーセンテージ計算機" },
       { path: "/loan-calculator", label: "ローン計算機" },
       { path: "/compound-interest", label: "複利計算機" },
+      { path: "/tax-calculator", label: "消費税計算機" },
     ],
   },
   {

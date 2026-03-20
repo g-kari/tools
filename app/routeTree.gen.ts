@@ -52,6 +52,7 @@ import { Route as TextEncryptRouteImport } from './routes/text-encrypt'
 import { Route as TextCaseRouteImport } from './routes/text-case'
 import { Route as TextBinaryRouteImport } from './routes/text-binary'
 import { Route as TemplateRouteImport } from './routes/template'
+import { Route as TaxCalculatorRouteImport } from './routes/tax-calculator'
 import { Route as SvgOptimizerRouteImport } from './routes/svg-optimizer'
 import { Route as SudokuRouteImport } from './routes/sudoku'
 import { Route as StringSimilarityRouteImport } from './routes/string-similarity'
@@ -472,6 +473,11 @@ const TextBinaryRoute = TextBinaryRouteImport.update({
 const TemplateRoute = TemplateRouteImport.update({
   id: '/template',
   path: '/template',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TaxCalculatorRoute = TaxCalculatorRouteImport.update({
+  id: '/tax-calculator',
+  path: '/tax-calculator',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SvgOptimizerRoute = SvgOptimizerRouteImport.update({
@@ -1708,6 +1714,7 @@ export interface FileRoutesByFullPath {
   '/string-similarity': typeof StringSimilarityRoute
   '/sudoku': typeof SudokuRoute
   '/svg-optimizer': typeof SvgOptimizerRoute
+  '/tax-calculator': typeof TaxCalculatorRoute
   '/template': typeof TemplateRoute
   '/text-binary': typeof TextBinaryRoute
   '/text-case': typeof TextCaseRoute
@@ -1959,6 +1966,7 @@ export interface FileRoutesByTo {
   '/string-similarity': typeof StringSimilarityRoute
   '/sudoku': typeof SudokuRoute
   '/svg-optimizer': typeof SvgOptimizerRoute
+  '/tax-calculator': typeof TaxCalculatorRoute
   '/template': typeof TemplateRoute
   '/text-binary': typeof TextBinaryRoute
   '/text-case': typeof TextCaseRoute
@@ -2211,6 +2219,7 @@ export interface FileRoutesById {
   '/string-similarity': typeof StringSimilarityRoute
   '/sudoku': typeof SudokuRoute
   '/svg-optimizer': typeof SvgOptimizerRoute
+  '/tax-calculator': typeof TaxCalculatorRoute
   '/template': typeof TemplateRoute
   '/text-binary': typeof TextBinaryRoute
   '/text-case': typeof TextCaseRoute
@@ -2464,6 +2473,7 @@ export interface FileRouteTypes {
     | '/string-similarity'
     | '/sudoku'
     | '/svg-optimizer'
+    | '/tax-calculator'
     | '/template'
     | '/text-binary'
     | '/text-case'
@@ -2715,6 +2725,7 @@ export interface FileRouteTypes {
     | '/string-similarity'
     | '/sudoku'
     | '/svg-optimizer'
+    | '/tax-calculator'
     | '/template'
     | '/text-binary'
     | '/text-case'
@@ -2966,6 +2977,7 @@ export interface FileRouteTypes {
     | '/string-similarity'
     | '/sudoku'
     | '/svg-optimizer'
+    | '/tax-calculator'
     | '/template'
     | '/text-binary'
     | '/text-case'
@@ -3218,6 +3230,7 @@ export interface RootRouteChildren {
   StringSimilarityRoute: typeof StringSimilarityRoute
   SudokuRoute: typeof SudokuRoute
   SvgOptimizerRoute: typeof SvgOptimizerRoute
+  TaxCalculatorRoute: typeof TaxCalculatorRoute
   TemplateRoute: typeof TemplateRoute
   TextBinaryRoute: typeof TextBinaryRoute
   TextCaseRoute: typeof TextCaseRoute
@@ -3568,6 +3581,13 @@ declare module '@tanstack/react-router' {
       path: '/template'
       fullPath: '/template'
       preLoaderRoute: typeof TemplateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tax-calculator': {
+      id: '/tax-calculator'
+      path: '/tax-calculator'
+      fullPath: '/tax-calculator'
+      preLoaderRoute: typeof TaxCalculatorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/svg-optimizer': {
@@ -5218,6 +5238,7 @@ const rootRouteChildren: RootRouteChildren = {
   StringSimilarityRoute: StringSimilarityRoute,
   SudokuRoute: SudokuRoute,
   SvgOptimizerRoute: SvgOptimizerRoute,
+  TaxCalculatorRoute: TaxCalculatorRoute,
   TemplateRoute: TemplateRoute,
   TextBinaryRoute: TextBinaryRoute,
   TextCaseRoute: TextCaseRoute,
