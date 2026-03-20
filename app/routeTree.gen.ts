@@ -21,6 +21,7 @@ import { Route as WorldClockRouteImport } from './routes/world-clock'
 import { Route as WordFrequencyRouteImport } from './routes/word-frequency'
 import { Route as WhoisRouteImport } from './routes/whois'
 import { Route as WebsocketRouteImport } from './routes/websocket'
+import { Route as WarikanRouteImport } from './routes/warikan'
 import { Route as WarekiRouteImport } from './routes/wareki'
 import { Route as VigenereRouteImport } from './routes/vigenere'
 import { Route as VideoConverterRouteImport } from './routes/video-converter'
@@ -318,6 +319,11 @@ const WhoisRoute = WhoisRouteImport.update({
 const WebsocketRoute = WebsocketRouteImport.update({
   id: '/websocket',
   path: '/websocket',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WarikanRoute = WarikanRouteImport.update({
+  id: '/warikan',
+  path: '/warikan',
   getParentRoute: () => rootRouteImport,
 } as any)
 const WarekiRoute = WarekiRouteImport.update({
@@ -1746,6 +1752,7 @@ export interface FileRoutesByFullPath {
   '/video-converter': typeof VideoConverterRoute
   '/vigenere': typeof VigenereRoute
   '/wareki': typeof WarekiRoute
+  '/warikan': typeof WarikanRoute
   '/websocket': typeof WebsocketRoute
   '/whois': typeof WhoisRoute
   '/word-frequency': typeof WordFrequencyRoute
@@ -1998,6 +2005,7 @@ export interface FileRoutesByTo {
   '/video-converter': typeof VideoConverterRoute
   '/vigenere': typeof VigenereRoute
   '/wareki': typeof WarekiRoute
+  '/warikan': typeof WarikanRoute
   '/websocket': typeof WebsocketRoute
   '/whois': typeof WhoisRoute
   '/word-frequency': typeof WordFrequencyRoute
@@ -2251,6 +2259,7 @@ export interface FileRoutesById {
   '/video-converter': typeof VideoConverterRoute
   '/vigenere': typeof VigenereRoute
   '/wareki': typeof WarekiRoute
+  '/warikan': typeof WarikanRoute
   '/websocket': typeof WebsocketRoute
   '/whois': typeof WhoisRoute
   '/word-frequency': typeof WordFrequencyRoute
@@ -2505,6 +2514,7 @@ export interface FileRouteTypes {
     | '/video-converter'
     | '/vigenere'
     | '/wareki'
+    | '/warikan'
     | '/websocket'
     | '/whois'
     | '/word-frequency'
@@ -2757,6 +2767,7 @@ export interface FileRouteTypes {
     | '/video-converter'
     | '/vigenere'
     | '/wareki'
+    | '/warikan'
     | '/websocket'
     | '/whois'
     | '/word-frequency'
@@ -3009,6 +3020,7 @@ export interface FileRouteTypes {
     | '/video-converter'
     | '/vigenere'
     | '/wareki'
+    | '/warikan'
     | '/websocket'
     | '/whois'
     | '/word-frequency'
@@ -3262,6 +3274,7 @@ export interface RootRouteChildren {
   VideoConverterRoute: typeof VideoConverterRoute
   VigenereRoute: typeof VigenereRoute
   WarekiRoute: typeof WarekiRoute
+  WarikanRoute: typeof WarikanRoute
   WebsocketRoute: typeof WebsocketRoute
   WhoisRoute: typeof WhoisRoute
   WordFrequencyRoute: typeof WordFrequencyRoute
@@ -3364,6 +3377,13 @@ declare module '@tanstack/react-router' {
       path: '/websocket'
       fullPath: '/websocket'
       preLoaderRoute: typeof WebsocketRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/warikan': {
+      id: '/warikan'
+      path: '/warikan'
+      fullPath: '/warikan'
+      preLoaderRoute: typeof WarikanRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/wareki': {
@@ -5270,6 +5290,7 @@ const rootRouteChildren: RootRouteChildren = {
   VideoConverterRoute: VideoConverterRoute,
   VigenereRoute: VigenereRoute,
   WarekiRoute: WarekiRoute,
+  WarikanRoute: WarikanRoute,
   WebsocketRoute: WebsocketRoute,
   WhoisRoute: WhoisRoute,
   WordFrequencyRoute: WordFrequencyRoute,
