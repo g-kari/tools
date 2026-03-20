@@ -1,0 +1,247 @@
+/* Tic-Tac-Toe (三目並べ) Game Styles */
+
+/* 設定エリア */
+.ttt-settings {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.ttt-setting-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ttt-setting-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.ttt-button-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.ttt-mode-btn {
+  padding: 0.5rem 1.25rem;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 20px;
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s,
+    color 0.2s;
+}
+
+.ttt-mode-btn:hover {
+  background-color: var(--md-sys-color-surface-variant);
+  border-color: var(--md-sys-color-primary);
+}
+
+.ttt-mode-btn--active {
+  background-color: var(--md-sys-color-primary);
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+.ttt-mode-btn--active:hover {
+  background-color: var(--md-sys-color-primary);
+}
+
+/* スコアボード */
+.ttt-scoreboard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+.ttt-score-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  min-width: 80px;
+}
+
+.ttt-score-draw-item {
+  opacity: 0.7;
+}
+
+.ttt-score-label {
+  font-size: 0.8rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-weight: 500;
+}
+
+.ttt-score-value {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.ttt-score-x {
+  color: var(--md-sys-color-primary);
+}
+
+.ttt-score-o {
+  color: var(--md-sys-color-error);
+}
+
+/* ゲームステータス */
+.ttt-status {
+  text-align: center;
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  min-height: 1.75rem;
+  color: var(--md-sys-color-on-surface);
+}
+
+/* ゲームボード */
+.ttt-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  width: min(300px, 100%);
+  margin: 0 auto 1.5rem;
+}
+
+/* セル */
+.ttt-cell {
+  aspect-ratio: 1;
+  border: 2px solid var(--md-sys-color-outline-variant);
+  border-radius: 12px;
+  background-color: var(--md-sys-color-surface-variant);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: default;
+  transition:
+    background-color 0.15s,
+    border-color 0.15s,
+    transform 0.1s;
+  font-size: 0;
+}
+
+.ttt-cell--empty {
+  cursor: pointer;
+}
+
+.ttt-cell--empty:hover {
+  background-color: var(--md-sys-color-surface);
+  border-color: var(--md-sys-color-primary);
+  transform: scale(1.03);
+}
+
+.ttt-cell--empty:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.ttt-cell:disabled {
+  cursor: default;
+}
+
+/* X セル */
+.ttt-cell--x {
+  border-color: var(--md-sys-color-primary);
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-primary) 10%,
+    var(--md-sys-color-surface)
+  );
+}
+
+/* O セル */
+.ttt-cell--o {
+  border-color: var(--md-sys-color-error);
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-error) 10%,
+    var(--md-sys-color-surface)
+  );
+}
+
+/* 勝利セル */
+.ttt-cell--win {
+  animation: ttt-win-pulse 0.5s ease-out forwards;
+}
+
+.ttt-cell--win.ttt-cell--x {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-primary) 25%,
+    var(--md-sys-color-surface)
+  );
+  border-color: var(--md-sys-color-primary);
+  border-width: 3px;
+}
+
+.ttt-cell--win.ttt-cell--o {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-error) 25%,
+    var(--md-sys-color-surface)
+  );
+  border-color: var(--md-sys-color-error);
+  border-width: 3px;
+}
+
+@keyframes ttt-win-pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* セル内のシンボル */
+.ttt-cell-symbol {
+  font-size: clamp(1.75rem, 8vw, 2.5rem);
+  font-weight: 800;
+  line-height: 1;
+  user-select: none;
+}
+
+.ttt-cell--x .ttt-cell-symbol {
+  color: var(--md-sys-color-primary);
+}
+
+.ttt-cell--o .ttt-cell-symbol {
+  color: var(--md-sys-color-error);
+}
+
+/* アクションボタン */
+.ttt-actions {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 480px) {
+  .ttt-scoreboard {
+    gap: 1rem;
+  }
+
+  .ttt-score-value {
+    font-size: 1.5rem;
+  }
+
+  .ttt-board {
+    gap: 6px;
+  }
+}
