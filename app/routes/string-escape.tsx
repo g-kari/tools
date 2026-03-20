@@ -240,7 +240,7 @@ function StringEscapeTool() {
               <label htmlFor="string-escape-output" className="section-title">
                 エスケープ済み（出力）
               </label>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <div className="string-escape-header-actions">
                 {currentModeInfo.wrapper && (
                   <span className="string-escape-wrapper-info">
                     {currentModeInfo.wrapper.open}...{currentModeInfo.wrapper.close}
@@ -264,9 +264,8 @@ function StringEscapeTool() {
             {currentModeInfo.supportsUnescape && escapedOutput && (
               <button
                 type="button"
-                className="btn-secondary"
+                className="btn-secondary string-escape-unescape-btn"
                 onClick={handleUnescapeToRaw}
-                style={{ marginTop: '0.5rem', fontSize: '0.8rem' }}
                 aria-label="出力をアンエスケープして入力に反映"
               >
                 ↑ アンエスケープして入力に反映

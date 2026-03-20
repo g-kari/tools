@@ -80,7 +80,7 @@ function BreakdownBar({
       >
         <div
           className={`te-breakdown-bar-fill ${barClass}`}
-          style={{ width: `${pct}%` }}
+          style={{ '--bar-width': `${pct}%` } as React.CSSProperties}
         />
       </div>
       <span className="te-breakdown-count" aria-label={`${label}: ${count}文字`}>

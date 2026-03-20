@@ -82,6 +82,17 @@
   margin-bottom: 0.375rem;
 }
 
+.string-escape-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.string-escape-unescape-btn {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+}
+
 /* モード説明 */
 .string-escape-mode-desc {
   font-size: 0.78rem;
