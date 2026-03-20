@@ -1,0 +1,256 @@
+/* Web App Manifest ジェネレーター スタイル */
+
+/* フォームグリッド（2カラム） */
+.manifest-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 600px) {
+  .manifest-form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* カラーピッカー入力 */
+.manifest-color-field {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.manifest-color-preview {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 4px;
+  border: 1px solid var(--md-sys-color-outline);
+  flex-shrink: 0;
+  cursor: pointer;
+  padding: 0;
+  background: transparent;
+  overflow: hidden;
+}
+
+.manifest-color-preview input[type="color"] {
+  width: 3rem;
+  height: 3rem;
+  transform: translate(-25%, -25%);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  background: transparent;
+}
+
+/* アイコンリスト */
+.manifest-icons-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.manifest-icon-row {
+  display: grid;
+  grid-template-columns: 1fr 7rem 7rem 6rem auto;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+@media (max-width: 700px) {
+  .manifest-icon-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* カテゴリ選択 */
+.manifest-categories-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin-top: 0.5rem;
+}
+
+.manifest-category-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  border-radius: 99px;
+  padding: 0.25rem 0.625rem;
+  font-size: 0.8125rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+}
+
+.manifest-category-chip-remove {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--md-sys-color-on-secondary-container);
+  line-height: 1;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  opacity: 0.7;
+  transition: opacity 0.15s;
+  font-size: 1rem;
+}
+
+.manifest-category-chip-remove:hover {
+  opacity: 1;
+}
+
+/* プレビューセクション（分割表示） */
+.manifest-preview-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+@media (max-width: 700px) {
+  .manifest-preview-section {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* モバイルホーム画面プレビュー */
+.manifest-device-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: var(--md-sys-color-surface-variant);
+  border-radius: 12px;
+}
+
+.manifest-device-frame {
+  width: 160px;
+  height: 280px;
+  border-radius: 20px;
+  background: #1a1a2e;
+  border: 3px solid #333;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.manifest-device-statusbar {
+  height: 20px;
+  background: #111;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 8px;
+  font-size: 8px;
+  color: #aaa;
+  flex-shrink: 0;
+}
+
+.manifest-device-screen {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  gap: 4px;
+  padding: 8px;
+  align-items: start;
+  justify-items: center;
+}
+
+.manifest-app-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  width: 100%;
+}
+
+.manifest-app-icon-box {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.manifest-app-icon-label {
+  font-size: 7px;
+  color: #fff;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 32px;
+}
+
+.manifest-app-icon--featured .manifest-app-icon-box {
+  width: 36px;
+  height: 36px;
+  font-size: 18px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.manifest-preview-caption {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  text-align: center;
+}
+
+/* 出力タブ */
+.manifest-output-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  margin-bottom: 1rem;
+}
+
+.manifest-output-tab {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  cursor: pointer;
+  color: var(--md-sys-color-on-surface-variant);
+  transition: color 0.15s, border-color 0.15s;
+  margin-bottom: -1px;
+}
+
+.manifest-output-tab:hover {
+  color: var(--md-sys-color-on-surface);
+}
+
+.manifest-output-tab--active {
+  color: var(--md-sys-color-primary);
+  border-bottom-color: var(--md-sys-color-primary);
+}
+
+/* 追加ボタン行 */
+.manifest-add-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+
+/* バッジ */
+.manifest-section-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 99px;
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  padding: 0 0.25rem;
+  margin-left: 0.375rem;
+}

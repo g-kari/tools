@@ -22,6 +22,7 @@ import { Route as WordleRouteImport } from './routes/wordle'
 import { Route as WordFrequencyRouteImport } from './routes/word-frequency'
 import { Route as WhoisRouteImport } from './routes/whois'
 import { Route as WebsocketRouteImport } from './routes/websocket'
+import { Route as WebManifestRouteImport } from './routes/web-manifest'
 import { Route as WarikanRouteImport } from './routes/warikan'
 import { Route as WarekiRouteImport } from './routes/wareki'
 import { Route as VigenereRouteImport } from './routes/vigenere'
@@ -339,6 +340,11 @@ const WhoisRoute = WhoisRouteImport.update({
 const WebsocketRoute = WebsocketRouteImport.update({
   id: '/websocket',
   path: '/websocket',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WebManifestRoute = WebManifestRouteImport.update({
+  id: '/web-manifest',
+  path: '/web-manifest',
   getParentRoute: () => rootRouteImport,
 } as any)
 const WarikanRoute = WarikanRouteImport.update({
@@ -1857,6 +1863,7 @@ export interface FileRoutesByFullPath {
   '/vigenere': typeof VigenereRoute
   '/wareki': typeof WarekiRoute
   '/warikan': typeof WarikanRoute
+  '/web-manifest': typeof WebManifestRoute
   '/websocket': typeof WebsocketRoute
   '/whois': typeof WhoisRoute
   '/word-frequency': typeof WordFrequencyRoute
@@ -2125,6 +2132,7 @@ export interface FileRoutesByTo {
   '/vigenere': typeof VigenereRoute
   '/wareki': typeof WarekiRoute
   '/warikan': typeof WarikanRoute
+  '/web-manifest': typeof WebManifestRoute
   '/websocket': typeof WebsocketRoute
   '/whois': typeof WhoisRoute
   '/word-frequency': typeof WordFrequencyRoute
@@ -2394,6 +2402,7 @@ export interface FileRoutesById {
   '/vigenere': typeof VigenereRoute
   '/wareki': typeof WarekiRoute
   '/warikan': typeof WarikanRoute
+  '/web-manifest': typeof WebManifestRoute
   '/websocket': typeof WebsocketRoute
   '/whois': typeof WhoisRoute
   '/word-frequency': typeof WordFrequencyRoute
@@ -2664,6 +2673,7 @@ export interface FileRouteTypes {
     | '/vigenere'
     | '/wareki'
     | '/warikan'
+    | '/web-manifest'
     | '/websocket'
     | '/whois'
     | '/word-frequency'
@@ -2932,6 +2942,7 @@ export interface FileRouteTypes {
     | '/vigenere'
     | '/wareki'
     | '/warikan'
+    | '/web-manifest'
     | '/websocket'
     | '/whois'
     | '/word-frequency'
@@ -3200,6 +3211,7 @@ export interface FileRouteTypes {
     | '/vigenere'
     | '/wareki'
     | '/warikan'
+    | '/web-manifest'
     | '/websocket'
     | '/whois'
     | '/word-frequency'
@@ -3469,6 +3481,7 @@ export interface RootRouteChildren {
   VigenereRoute: typeof VigenereRoute
   WarekiRoute: typeof WarekiRoute
   WarikanRoute: typeof WarikanRoute
+  WebManifestRoute: typeof WebManifestRoute
   WebsocketRoute: typeof WebsocketRoute
   WhoisRoute: typeof WhoisRoute
   WordFrequencyRoute: typeof WordFrequencyRoute
@@ -3579,6 +3592,13 @@ declare module '@tanstack/react-router' {
       path: '/websocket'
       fullPath: '/websocket'
       preLoaderRoute: typeof WebsocketRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/web-manifest': {
+      id: '/web-manifest'
+      path: '/web-manifest'
+      fullPath: '/web-manifest'
+      preLoaderRoute: typeof WebManifestRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/warikan': {
@@ -5605,6 +5625,7 @@ const rootRouteChildren: RootRouteChildren = {
   VigenereRoute: VigenereRoute,
   WarekiRoute: WarekiRoute,
   WarikanRoute: WarikanRoute,
+  WebManifestRoute: WebManifestRoute,
   WebsocketRoute: WebsocketRoute,
   WhoisRoute: WhoisRoute,
   WordFrequencyRoute: WordFrequencyRoute,
