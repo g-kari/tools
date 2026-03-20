@@ -137,7 +137,7 @@ function CharRow({
   return (
     <tr className="uchi-table-row" aria-rowindex={index + 2}>
       {/* # */}
-      <td className="uchi-mono" style={{ color: "var(--md-sys-color-on-surface-variant)" }}>
+      <td className="uchi-mono-muted">
         {index + 1}
       </td>
 
@@ -148,7 +148,7 @@ function CharRow({
 
       {/* コードポイント */}
       <td>
-        <div style={{ display: "flex", alignItems: "center", gap: "0.375rem" }}>
+        <div className="uchi-codepoint-row">
           <span className="uchi-codepoint">{info.codePointHex}</span>
           <button
             type="button"
@@ -160,7 +160,7 @@ function CharRow({
             📋
           </button>
         </div>
-        <div style={{ fontSize: "0.75rem", color: "var(--md-sys-color-on-surface-variant)" }}>
+        <div className="uchi-codepoint-decimal">
           {info.codePoint}
         </div>
       </td>
@@ -186,7 +186,7 @@ function CharRow({
           ))}
           {info.isSurrogatePair && (
             <span
-              style={{ fontSize: "0.7rem", color: "var(--md-sys-color-on-surface-variant)" }}
+              className="uchi-surrogate-label"
               title="サロゲートペア（補助文字）"
             >
               SP
@@ -197,7 +197,7 @@ function CharRow({
 
       {/* HTMLエンティティ */}
       <td>
-        <div style={{ display: "flex", alignItems: "center", gap: "0.25rem", flexWrap: "wrap" }}>
+        <div className="uchi-entity-row">
           {info.namedEntity ? (
             <span className="uchi-entity uchi-entity-named">{info.namedEntity}</span>
           ) : (
@@ -323,7 +323,7 @@ function UnicodeInspector() {
             />
             <p
               id="uchi-input-hint"
-              style={{ fontSize: "0.8125rem", color: "var(--md-sys-color-on-surface-variant)" }}
+              className="uchi-input-hint"
             >
               最大 {MAX_CHARS.toLocaleString()} 文字まで解析できます
             </p>
@@ -393,7 +393,7 @@ function UnicodeInspector() {
                 🔍
               </span>
               <p>テキストを入力するとUnicode情報が表示されます</p>
-              <p style={{ fontSize: "0.8125rem" }}>
+              <p className="uchi-empty-hint">
                 絵文字・漢字・制御文字など、あらゆる文字を解析できます
               </p>
             </div>
@@ -414,8 +414,8 @@ function UnicodeInspector() {
                 >
                   <thead className="uchi-table-head">
                     <tr aria-rowindex={1}>
-                      <th scope="col" style={{ width: "2.5rem" }}>#</th>
-                      <th scope="col" style={{ width: "3rem" }}>文字</th>
+                      <th scope="col" className="uchi-th-index">#</th>
+                      <th scope="col" className="uchi-th-char">文字</th>
                       <th scope="col">コードポイント</th>
                       <th scope="col">UTF-8</th>
                       <th scope="col">UTF-16</th>

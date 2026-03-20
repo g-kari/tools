@@ -329,6 +329,60 @@
   font-size: 0.8125rem;
 }
 
+/* 行番号セル */
+.uchi-mono-muted {
+  font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* コードポイント行レイアウト */
+.uchi-codepoint-row {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+/* コードポイント十進数サブテキスト */
+.uchi-codepoint-decimal {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* サロゲートペアラベル */
+.uchi-surrogate-label {
+  font-size: 0.7rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* エンティティ行レイアウト */
+.uchi-entity-row {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}
+
+/* 入力ヒントテキスト */
+.uchi-input-hint {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* 空の状態サブテキスト */
+.uchi-empty-hint {
+  font-size: 0.8125rem;
+}
+
+/* テーブルヘッダー幅指定 */
+.uchi-th-index {
+  width: 2.5rem;
+}
+
+.uchi-th-char {
+  width: 3rem;
+}
+
 /* レスポンシブ */
 @media (max-width: 640px) {
   .uchi-toolbar {
