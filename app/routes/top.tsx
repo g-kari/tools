@@ -514,6 +514,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "%",
       },
       {
+        path: "/loan-calculator",
+        label: "ローン計算機",
+        description:
+          "住宅・車・教育などのローン返済額をシミュレーション。月々の返済額・総返済額・総利息を計算。元利均等返済・元金均等返済に対応した返済スケジュール表示付き。",
+        icon: "🏦",
+      },
+      {
         path: "/hex-viewer",
         label: "Hex Viewer",
         description:

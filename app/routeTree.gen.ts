@@ -112,6 +112,7 @@ import { Route as MarkdownTableRouteImport } from './routes/markdown-table'
 import { Route as MarkdownPreviewRouteImport } from './routes/markdown-preview'
 import { Route as LuhnCheckRouteImport } from './routes/luhn-check'
 import { Route as LoremIpsumRouteImport } from './routes/lorem-ipsum'
+import { Route as LoanCalculatorRouteImport } from './routes/loan-calculator'
 import { Route as LineEndingRouteImport } from './routes/line-ending'
 import { Route as KeycodeRouteImport } from './routes/keycode'
 import { Route as KanaConvertRouteImport } from './routes/kana-convert'
@@ -770,6 +771,11 @@ const LuhnCheckRoute = LuhnCheckRouteImport.update({
 const LoremIpsumRoute = LoremIpsumRouteImport.update({
   id: '/lorem-ipsum',
   path: '/lorem-ipsum',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoanCalculatorRoute = LoanCalculatorRouteImport.update({
+  id: '/loan-calculator',
+  path: '/loan-calculator',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LineEndingRoute = LineEndingRouteImport.update({
@@ -1634,6 +1640,7 @@ export interface FileRoutesByFullPath {
   '/kana-convert': typeof KanaConvertRoute
   '/keycode': typeof KeycodeRoute
   '/line-ending': typeof LineEndingRoute
+  '/loan-calculator': typeof LoanCalculatorRoute
   '/lorem-ipsum': typeof LoremIpsumRoute
   '/luhn-check': typeof LuhnCheckRoute
   '/markdown-preview': typeof MarkdownPreviewRoute
@@ -1883,6 +1890,7 @@ export interface FileRoutesByTo {
   '/kana-convert': typeof KanaConvertRoute
   '/keycode': typeof KeycodeRoute
   '/line-ending': typeof LineEndingRoute
+  '/loan-calculator': typeof LoanCalculatorRoute
   '/lorem-ipsum': typeof LoremIpsumRoute
   '/luhn-check': typeof LuhnCheckRoute
   '/markdown-preview': typeof MarkdownPreviewRoute
@@ -2133,6 +2141,7 @@ export interface FileRoutesById {
   '/kana-convert': typeof KanaConvertRoute
   '/keycode': typeof KeycodeRoute
   '/line-ending': typeof LineEndingRoute
+  '/loan-calculator': typeof LoanCalculatorRoute
   '/lorem-ipsum': typeof LoremIpsumRoute
   '/luhn-check': typeof LuhnCheckRoute
   '/markdown-preview': typeof MarkdownPreviewRoute
@@ -2384,6 +2393,7 @@ export interface FileRouteTypes {
     | '/kana-convert'
     | '/keycode'
     | '/line-ending'
+    | '/loan-calculator'
     | '/lorem-ipsum'
     | '/luhn-check'
     | '/markdown-preview'
@@ -2633,6 +2643,7 @@ export interface FileRouteTypes {
     | '/kana-convert'
     | '/keycode'
     | '/line-ending'
+    | '/loan-calculator'
     | '/lorem-ipsum'
     | '/luhn-check'
     | '/markdown-preview'
@@ -2882,6 +2893,7 @@ export interface FileRouteTypes {
     | '/kana-convert'
     | '/keycode'
     | '/line-ending'
+    | '/loan-calculator'
     | '/lorem-ipsum'
     | '/luhn-check'
     | '/markdown-preview'
@@ -3132,6 +3144,7 @@ export interface RootRouteChildren {
   KanaConvertRoute: typeof KanaConvertRoute
   KeycodeRoute: typeof KeycodeRoute
   LineEndingRoute: typeof LineEndingRoute
+  LoanCalculatorRoute: typeof LoanCalculatorRoute
   LoremIpsumRoute: typeof LoremIpsumRoute
   LuhnCheckRoute: typeof LuhnCheckRoute
   MarkdownPreviewRoute: typeof MarkdownPreviewRoute
@@ -3962,6 +3975,13 @@ declare module '@tanstack/react-router' {
       path: '/lorem-ipsum'
       fullPath: '/lorem-ipsum'
       preLoaderRoute: typeof LoremIpsumRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/loan-calculator': {
+      id: '/loan-calculator'
+      path: '/loan-calculator'
+      fullPath: '/loan-calculator'
+      preLoaderRoute: typeof LoanCalculatorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/line-ending': {
@@ -5116,6 +5136,7 @@ const rootRouteChildren: RootRouteChildren = {
   KanaConvertRoute: KanaConvertRoute,
   KeycodeRoute: KeycodeRoute,
   LineEndingRoute: LineEndingRoute,
+  LoanCalculatorRoute: LoanCalculatorRoute,
   LoremIpsumRoute: LoremIpsumRoute,
   LuhnCheckRoute: LuhnCheckRoute,
   MarkdownPreviewRoute: MarkdownPreviewRoute,
