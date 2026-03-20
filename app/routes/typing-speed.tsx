@@ -365,7 +365,7 @@ function TypingSpeed() {
             >
               <div
                 className="typing-timer-fill"
-                style={{ width: `${timerPercent}%` }}
+                style={{ '--timer-width': `${timerPercent}%` } as React.CSSProperties}
               />
             </div>
           </div>

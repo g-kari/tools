@@ -285,7 +285,7 @@ function LuhnCheckTool() {
           <h3 id="luhn-test-heading" className="section-title">
             テスト用カード番号
           </h3>
-          <p className="tips-item" style={{ marginBottom: 0 }}>
+          <p className="tips-item luhn-tips-no-margin">
             これらはテスト・開発専用の番号です。実際の決済には使用できません。
           </p>
           <div className="luhn-test-table-wrapper">
