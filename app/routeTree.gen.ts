@@ -169,6 +169,7 @@ import { Route as DiscordEmojiRouteImport } from './routes/discord-emoji'
 import { Route as DiffRouteImport } from './routes/diff'
 import { Route as DiceRollRouteImport } from './routes/dice-roll'
 import { Route as DateCalcRouteImport } from './routes/date-calc'
+import { Route as DaijiRouteImport } from './routes/daiji'
 import { Route as CurlToFetchRouteImport } from './routes/curl-to-fetch'
 import { Route as CurlBuilderRouteImport } from './routes/curl-builder'
 import { Route as CsvSqlRouteImport } from './routes/csv-sql'
@@ -1040,6 +1041,11 @@ const DateCalcRoute = DateCalcRouteImport.update({
   path: '/date-calc',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DaijiRoute = DaijiRouteImport.update({
+  id: '/daiji',
+  path: '/daiji',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CurlToFetchRoute = CurlToFetchRouteImport.update({
   id: '/curl-to-fetch',
   path: '/curl-to-fetch',
@@ -1458,6 +1464,7 @@ export interface FileRoutesByFullPath {
   '/csv-sql': typeof CsvSqlRoute
   '/curl-builder': typeof CurlBuilderRoute
   '/curl-to-fetch': typeof CurlToFetchRoute
+  '/daiji': typeof DaijiRoute
   '/date-calc': typeof DateCalcRoute
   '/dice-roll': typeof DiceRollRoute
   '/diff': typeof DiffRoute
@@ -1690,6 +1697,7 @@ export interface FileRoutesByTo {
   '/csv-sql': typeof CsvSqlRoute
   '/curl-builder': typeof CurlBuilderRoute
   '/curl-to-fetch': typeof CurlToFetchRoute
+  '/daiji': typeof DaijiRoute
   '/date-calc': typeof DateCalcRoute
   '/dice-roll': typeof DiceRollRoute
   '/diff': typeof DiffRoute
@@ -1923,6 +1931,7 @@ export interface FileRoutesById {
   '/csv-sql': typeof CsvSqlRoute
   '/curl-builder': typeof CurlBuilderRoute
   '/curl-to-fetch': typeof CurlToFetchRoute
+  '/daiji': typeof DaijiRoute
   '/date-calc': typeof DateCalcRoute
   '/dice-roll': typeof DiceRollRoute
   '/diff': typeof DiffRoute
@@ -2157,6 +2166,7 @@ export interface FileRouteTypes {
     | '/csv-sql'
     | '/curl-builder'
     | '/curl-to-fetch'
+    | '/daiji'
     | '/date-calc'
     | '/dice-roll'
     | '/diff'
@@ -2389,6 +2399,7 @@ export interface FileRouteTypes {
     | '/csv-sql'
     | '/curl-builder'
     | '/curl-to-fetch'
+    | '/daiji'
     | '/date-calc'
     | '/dice-roll'
     | '/diff'
@@ -2621,6 +2632,7 @@ export interface FileRouteTypes {
     | '/csv-sql'
     | '/curl-builder'
     | '/curl-to-fetch'
+    | '/daiji'
     | '/date-calc'
     | '/dice-roll'
     | '/diff'
@@ -2854,6 +2866,7 @@ export interface RootRouteChildren {
   CsvSqlRoute: typeof CsvSqlRoute
   CurlBuilderRoute: typeof CurlBuilderRoute
   CurlToFetchRoute: typeof CurlToFetchRoute
+  DaijiRoute: typeof DaijiRoute
   DateCalcRoute: typeof DateCalcRoute
   DiceRollRoute: typeof DiceRollRoute
   DiffRoute: typeof DiffRoute
@@ -4142,6 +4155,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DateCalcRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/daiji': {
+      id: '/daiji'
+      path: '/daiji'
+      fullPath: '/daiji'
+      preLoaderRoute: typeof DaijiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/curl-to-fetch': {
       id: '/curl-to-fetch'
       path: '/curl-to-fetch'
@@ -4702,6 +4722,7 @@ const rootRouteChildren: RootRouteChildren = {
   CsvSqlRoute: CsvSqlRoute,
   CurlBuilderRoute: CurlBuilderRoute,
   CurlToFetchRoute: CurlToFetchRoute,
+  DaijiRoute: DaijiRoute,
   DateCalcRoute: DateCalcRoute,
   DiceRollRoute: DiceRollRoute,
   DiffRoute: DiffRoute,

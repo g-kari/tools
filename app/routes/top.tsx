@@ -402,6 +402,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🔢",
       },
       {
+        path: "/daiji",
+        label: "大字変換",
+        description:
+          "アラビア数字と大字（壱・弐・参など）を相互変換するツール。小切手・契約書・法的文書などで使用される改ざん防止用の漢数字に対応。壱萬弐仟参佰肆拾伍など日本の公式文書で必要な表記を生成できます。",
+        icon: "壱",
+      },
+      {
         path: "/csv-sql",
         label: "CSV→SQL変換",
         description:

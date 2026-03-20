@@ -1,0 +1,218 @@
+/* ====================================
+   大字変換ツール
+   ==================================== */
+
+.daiji-container {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.daiji-section {
+  background: var(--md-sys-color-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 8px;
+  animation: fadeInUp 0.3s ease-out both;
+}
+
+.daiji-section:first-of-type {
+  animation-delay: 0.05s;
+}
+
+.daiji-section:last-of-type {
+  animation-delay: 0.1s;
+}
+
+.daiji-input-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.daiji-input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  font-family: 'Noto Sans JP', 'Roboto Mono', sans-serif;
+  font-size: 1rem;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  transition: border-color 0.2s, background 0.2s;
+  min-width: 0;
+  width: 100%;
+}
+
+.daiji-input:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-surface);
+}
+
+.daiji-input:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 1px;
+}
+
+/* number input のスピナーを非表示 */
+.daiji-input[type="number"]::-webkit-inner-spin-button,
+.daiji-input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.daiji-input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.daiji-result {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  padding: 14px 16px;
+  border: 1px solid var(--md-sys-color-primary-container);
+  border-radius: 4px;
+  background: var(--md-sys-color-primary-container);
+  animation: fadeInUp 0.2s ease-out both;
+}
+
+.daiji-result-value {
+  flex: 1;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-primary-container);
+  letter-spacing: 0.1em;
+  word-break: break-all;
+}
+
+.daiji-copy-button {
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background: var(--md-sys-color-secondary-container);
+  border: none;
+  border-radius: 4px;
+  color: var(--md-sys-color-on-secondary-container);
+  cursor: pointer;
+  transition: background-color 0.2s, opacity 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+  letter-spacing: 0.25px;
+}
+
+.daiji-copy-button:hover {
+  opacity: 0.85;
+}
+
+.daiji-copy-button:active {
+  opacity: 0.7;
+}
+
+.daiji-copy-button:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.daiji-divider {
+  height: 1px;
+  background: var(--md-sys-color-outline-variant);
+  margin: 12px 0;
+}
+
+/* 対照表セクション */
+.daiji-reference-section {
+  background: var(--md-sys-color-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  padding: 20px;
+  margin-top: 16px;
+  animation: fadeInUp 0.3s ease-out 0.15s both;
+}
+
+.daiji-table-wrapper {
+  overflow-x: auto;
+  margin-top: 12px;
+}
+
+.daiji-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.daiji-table th {
+  text-align: left;
+  padding: 8px 12px;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid var(--md-sys-color-outline-variant);
+}
+
+.daiji-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  color: var(--md-sys-color-on-surface);
+}
+
+.daiji-table tr:last-child td {
+  border-bottom: none;
+}
+
+.daiji-table tr:hover td {
+  background: var(--md-sys-color-surface-variant);
+}
+
+.daiji-table-daiji {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--md-sys-color-primary);
+}
+
+.daiji-table-arabic {
+  font-family: 'Roboto Mono', 'Courier New', monospace;
+  font-weight: 500;
+}
+
+.daiji-table-reading {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* アニメーション抑制 */
+@media (prefers-reduced-motion: reduce) {
+  .daiji-section,
+  .daiji-reference-section,
+  .daiji-result {
+    animation: none;
+  }
+
+  .daiji-input,
+  .daiji-copy-button {
+    transition: none;
+  }
+}
+
+/* レスポンシブ */
+@media (max-width: 480px) {
+  .daiji-result-value {
+    font-size: 1.25rem;
+  }
+
+  .daiji-table th,
+  .daiji-table td {
+    padding: 6px 8px;
+  }
+}
