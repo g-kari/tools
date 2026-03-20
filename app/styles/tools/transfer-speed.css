@@ -1,0 +1,285 @@
+/* 転送速度・転送時間計算機 */
+
+/* モード切り替えタブ */
+.ts-mode-tabs {
+  display: flex;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.ts-mode-tab {
+  flex: 1;
+  padding: 0.625rem 1rem;
+  font-size: 0.9375rem;
+  font-family: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface-variant);
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+
+.ts-mode-tab:first-child {
+  border-right: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.ts-mode-tab.active {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.ts-mode-tab:hover:not(.active) {
+  background: var(--md-sys-color-surface-variant);
+}
+
+/* フォーム */
+.ts-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* フィールドセット */
+.ts-fieldset {
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+}
+
+.ts-fieldset legend {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  padding: 0 0.375rem;
+}
+
+/* 数値 + 単位の入力行 */
+.ts-input-row {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-top: 0.5rem;
+}
+
+.ts-number-input {
+  flex: 1;
+  max-width: 12rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-size: 1rem;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.ts-number-input:focus {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+  border-color: var(--md-sys-color-primary);
+}
+
+.ts-unit-select {
+  padding: 0.5rem 0.625rem;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-size: 0.9375rem;
+  font-family: inherit;
+  cursor: pointer;
+  min-width: 5.5rem;
+}
+
+.ts-unit-select:focus {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+  border-color: var(--md-sys-color-primary);
+}
+
+.ts-sub-info {
+  margin-top: 0.375rem;
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: "JetBrains Mono", monospace;
+}
+
+/* プリセット選択 */
+.ts-preset-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.ts-preset-label {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  white-space: nowrap;
+}
+
+.ts-preset-select {
+  flex: 1;
+  min-width: 12rem;
+  padding: 0.5rem 0.625rem;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-size: 0.9375rem;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.ts-preset-select:focus {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+  border-color: var(--md-sys-color-primary);
+}
+
+/* 目標時間入力 (時分秒) */
+.ts-time-row {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.ts-time-unit {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.ts-time-input {
+  width: 5rem;
+  padding: 0.5rem 0.625rem;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-size: 1rem;
+  font-family: "JetBrains Mono", monospace;
+  text-align: right;
+}
+
+.ts-time-input:focus {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+  border-color: var(--md-sys-color-primary);
+}
+
+.ts-time-label {
+  font-size: 0.9375rem;
+  color: var(--md-sys-color-on-surface-variant);
+  white-space: nowrap;
+}
+
+/* 結果表示エリア */
+.ts-result {
+  background: var(--md-sys-color-surface-variant);
+  border-radius: 8px;
+  padding: 1.25rem;
+  min-height: 6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.ts-result-placeholder {
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.9375rem;
+  text-align: center;
+  margin: auto;
+}
+
+.ts-result-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.ts-result-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.ts-result-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--md-sys-color-primary);
+  font-family: "JetBrains Mono", monospace;
+  line-height: 1.2;
+  word-break: break-all;
+}
+
+.ts-result-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+  padding-top: 0.75rem;
+}
+
+.ts-detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  font-size: 0.875rem;
+}
+
+.ts-detail-label {
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.ts-detail-value {
+  font-family: "JetBrains Mono", monospace;
+  color: var(--md-sys-color-on-surface);
+  font-weight: 500;
+}
+
+/* コピーボタン */
+.ts-copy-btn {
+  align-self: flex-start;
+  padding: 0.375rem 0.875rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-size: 0.875rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.ts-copy-btn:hover {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border-color: var(--md-sys-color-primary);
+}
+
+/* レスポンシブ */
+@media (max-width: 480px) {
+  .ts-result-value {
+    font-size: 1.5rem;
+  }
+
+  .ts-number-input {
+    max-width: 100%;
+  }
+
+  .ts-input-row {
+    flex-wrap: wrap;
+  }
+}
