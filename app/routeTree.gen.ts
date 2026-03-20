@@ -117,6 +117,7 @@ import { Route as LuhnCheckRouteImport } from './routes/luhn-check'
 import { Route as LoremIpsumRouteImport } from './routes/lorem-ipsum'
 import { Route as LoanCalculatorRouteImport } from './routes/loan-calculator'
 import { Route as LineEndingRouteImport } from './routes/line-ending'
+import { Route as LifeGameRouteImport } from './routes/life-game'
 import { Route as KeycodeRouteImport } from './routes/keycode'
 import { Route as KanaConvertRouteImport } from './routes/kana-convert'
 import { Route as JwtGeneratorRouteImport } from './routes/jwt-generator'
@@ -805,6 +806,11 @@ const LoanCalculatorRoute = LoanCalculatorRouteImport.update({
 const LineEndingRoute = LineEndingRouteImport.update({
   id: '/line-ending',
   path: '/line-ending',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LifeGameRoute = LifeGameRouteImport.update({
+  id: '/life-game',
+  path: '/life-game',
   getParentRoute: () => rootRouteImport,
 } as any)
 const KeycodeRoute = KeycodeRouteImport.update({
@@ -1699,6 +1705,7 @@ export interface FileRoutesByFullPath {
   '/jwt-generator': typeof JwtGeneratorRoute
   '/kana-convert': typeof KanaConvertRoute
   '/keycode': typeof KeycodeRoute
+  '/life-game': typeof LifeGameRoute
   '/line-ending': typeof LineEndingRoute
   '/loan-calculator': typeof LoanCalculatorRoute
   '/lorem-ipsum': typeof LoremIpsumRoute
@@ -1958,6 +1965,7 @@ export interface FileRoutesByTo {
   '/jwt-generator': typeof JwtGeneratorRoute
   '/kana-convert': typeof KanaConvertRoute
   '/keycode': typeof KeycodeRoute
+  '/life-game': typeof LifeGameRoute
   '/line-ending': typeof LineEndingRoute
   '/loan-calculator': typeof LoanCalculatorRoute
   '/lorem-ipsum': typeof LoremIpsumRoute
@@ -2218,6 +2226,7 @@ export interface FileRoutesById {
   '/jwt-generator': typeof JwtGeneratorRoute
   '/kana-convert': typeof KanaConvertRoute
   '/keycode': typeof KeycodeRoute
+  '/life-game': typeof LifeGameRoute
   '/line-ending': typeof LineEndingRoute
   '/loan-calculator': typeof LoanCalculatorRoute
   '/lorem-ipsum': typeof LoremIpsumRoute
@@ -2479,6 +2488,7 @@ export interface FileRouteTypes {
     | '/jwt-generator'
     | '/kana-convert'
     | '/keycode'
+    | '/life-game'
     | '/line-ending'
     | '/loan-calculator'
     | '/lorem-ipsum'
@@ -2738,6 +2748,7 @@ export interface FileRouteTypes {
     | '/jwt-generator'
     | '/kana-convert'
     | '/keycode'
+    | '/life-game'
     | '/line-ending'
     | '/loan-calculator'
     | '/lorem-ipsum'
@@ -2997,6 +3008,7 @@ export interface FileRouteTypes {
     | '/jwt-generator'
     | '/kana-convert'
     | '/keycode'
+    | '/life-game'
     | '/line-ending'
     | '/loan-calculator'
     | '/lorem-ipsum'
@@ -3257,6 +3269,7 @@ export interface RootRouteChildren {
   JwtGeneratorRoute: typeof JwtGeneratorRoute
   KanaConvertRoute: typeof KanaConvertRoute
   KeycodeRoute: typeof KeycodeRoute
+  LifeGameRoute: typeof LifeGameRoute
   LineEndingRoute: typeof LineEndingRoute
   LoanCalculatorRoute: typeof LoanCalculatorRoute
   LoremIpsumRoute: typeof LoremIpsumRoute
@@ -4127,6 +4140,13 @@ declare module '@tanstack/react-router' {
       path: '/line-ending'
       fullPath: '/line-ending'
       preLoaderRoute: typeof LineEndingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/life-game': {
+      id: '/life-game'
+      path: '/life-game'
+      fullPath: '/life-game'
+      preLoaderRoute: typeof LifeGameRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/keycode': {
@@ -5321,6 +5341,7 @@ const rootRouteChildren: RootRouteChildren = {
   JwtGeneratorRoute: JwtGeneratorRoute,
   KanaConvertRoute: KanaConvertRoute,
   KeycodeRoute: KeycodeRoute,
+  LifeGameRoute: LifeGameRoute,
   LineEndingRoute: LineEndingRoute,
   LoanCalculatorRoute: LoanCalculatorRoute,
   LoremIpsumRoute: LoremIpsumRoute,
