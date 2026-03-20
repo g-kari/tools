@@ -97,7 +97,7 @@ function IsbnTool() {
   /** 入力変更時にリアルタイム検証 */
   const handleInputChange = useCallback((value: string) => {
     // 数字・X・ハイフン・スペースのみ許可
-    const sanitized = value.replace(/[^0-9xXhH\-\s]/g, '');
+    const sanitized = value.replace(/[^0-9xX\-\s]/g, '');
     setInput(sanitized);
 
     const trimmed = sanitized.trim();
@@ -167,7 +167,7 @@ function IsbnTool() {
               aria-describedby="isbn-hint"
             />
           </div>
-          <p id="isbn-hint" className="isbn-samples-title" style={{ marginBottom: 0 }}>
+          <p id="isbn-hint" className="isbn-hint-text">
             ISBN-10（10桁）または ISBN-13（13桁）を入力。ハイフンは自動除去されます。
           </p>
           <div className="isbn-button-group">

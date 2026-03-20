@@ -210,6 +210,16 @@
   color: var(--md-sys-color-on-surface-variant);
 }
 
+/* ── 入力ヒントテキスト ── */
+.isbn-hint-text {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
 /* ── ボタングループ ── */
 .isbn-button-group {
   display: flex;
