@@ -225,6 +225,38 @@ describe('unescapeCommon', () => {
     expect(unescapeCommon('\\q')).toBe('\\q');
   });
 
+  it('\\${ をテンプレートリテラルの補間記号に変換する', () => {
+    expect(unescapeCommon('\\${name}')).toBe('${name}');
+  });
+
+  it('\\$ の後に { がない場合は $ を出力する', () => {
+    expect(unescapeCommon('\\$HOME')).toBe('$HOME');
+  });
+
+  it('\\u{XXXXX} 形式の拡張Unicodeを変換する', () => {
+    expect(unescapeCommon('\\u{1F600}')).toBe('\u{1F600}');
+  });
+
+  it('\\u{} に無効な16進数が含まれる場合はそのまま残す', () => {
+    expect(unescapeCommon('\\u{GGG}')).toBe('\\u{GGG}');
+  });
+
+  it('\\u{ に閉じ括弧がない場合はそのまま残す', () => {
+    expect(unescapeCommon('\\u{1F6')).toBe('\\u{1F6');
+  });
+
+  it('\\u に4桁未満の16進数が続く場合はそのまま残す', () => {
+    expect(unescapeCommon('\\u123')).toBe('\\u123');
+  });
+
+  it('\\x に無効な16進数が続く場合はそのまま残す', () => {
+    expect(unescapeCommon('\\xGG')).toBe('\\xGG');
+  });
+
+  it('\\x に文字が2つ未満しかない場合はそのまま残す', () => {
+    expect(unescapeCommon('\\x4')).toBe('\\x4');
+  });
+
   it('複合パターンをアンエスケープする', () => {
     expect(unescapeCommon('Hello, \\"World\\"!\\nNext line')).toBe('Hello, "World"!\nNext line');
   });
@@ -236,6 +268,18 @@ describe('escapeString (統合)', () => {
     expect(escapeString(str, 'js-double')).toBe('a\\"b\'c\\nd');
     expect(escapeString(str, 'js-single')).toBe("a\"b\\'c\\nd");
     expect(escapeString(str, 'json')).toBe('a\\"b\'c\\nd');
+  });
+
+  it('js-templateモードでバッククォートと${をエスケープする', () => {
+    expect(escapeString('`hello ${name}`', 'js-template')).toBe('\\`hello \\${name}\\`');
+  });
+
+  it('python-doubleモードでダブルクォートをエスケープする', () => {
+    expect(escapeString('say "hello"', 'python-double')).toBe('say \\"hello\\"');
+  });
+
+  it('python-singleモードでシングルクォートをエスケープする', () => {
+    expect(escapeString("it's fine", 'python-single')).toBe("it\\'s fine");
   });
 
   it('regexモードで正規表現メタ文字をエスケープする', () => {
