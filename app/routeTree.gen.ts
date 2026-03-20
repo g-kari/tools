@@ -181,7 +181,9 @@ import { Route as Game2048RouteImport } from './routes/game-2048'
 import { Route as FunctionPlotterRouteImport } from './routes/function-plotter'
 import { Route as FractionRouteImport } from './routes/fraction'
 import { Route as FaviconGeneratorRouteImport } from './routes/favicon-generator'
+import { Route as FancyTextRouteImport } from './routes/fancy-text'
 import { Route as EnvParserRouteImport } from './routes/env-parser'
+import { Route as EntropyRouteImport } from './routes/entropy'
 import { Route as EncodingRouteImport } from './routes/encoding'
 import { Route as EncodeChainRouteImport } from './routes/encode-chain'
 import { Route as EmojiConverterRouteImport } from './routes/emoji-converter'
@@ -1137,9 +1139,19 @@ const FaviconGeneratorRoute = FaviconGeneratorRouteImport.update({
   path: '/favicon-generator',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FancyTextRoute = FancyTextRouteImport.update({
+  id: '/fancy-text',
+  path: '/fancy-text',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EnvParserRoute = EnvParserRouteImport.update({
   id: '/env-parser',
   path: '/env-parser',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EntropyRoute = EntropyRouteImport.update({
+  id: '/entropy',
+  path: '/entropy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EncodingRoute = EncodingRouteImport.update({
@@ -1704,7 +1716,9 @@ export interface FileRoutesByFullPath {
   '/emoji-converter': typeof EmojiConverterRoute
   '/encode-chain': typeof EncodeChainRoute
   '/encoding': typeof EncodingRoute
+  '/entropy': typeof EntropyRoute
   '/env-parser': typeof EnvParserRoute
+  '/fancy-text': typeof FancyTextRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
   '/fraction': typeof FractionRoute
   '/function-plotter': typeof FunctionPlotterRoute
@@ -1973,7 +1987,9 @@ export interface FileRoutesByTo {
   '/emoji-converter': typeof EmojiConverterRoute
   '/encode-chain': typeof EncodeChainRoute
   '/encoding': typeof EncodingRoute
+  '/entropy': typeof EntropyRoute
   '/env-parser': typeof EnvParserRoute
+  '/fancy-text': typeof FancyTextRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
   '/fraction': typeof FractionRoute
   '/function-plotter': typeof FunctionPlotterRoute
@@ -2243,7 +2259,9 @@ export interface FileRoutesById {
   '/emoji-converter': typeof EmojiConverterRoute
   '/encode-chain': typeof EncodeChainRoute
   '/encoding': typeof EncodingRoute
+  '/entropy': typeof EntropyRoute
   '/env-parser': typeof EnvParserRoute
+  '/fancy-text': typeof FancyTextRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
   '/fraction': typeof FractionRoute
   '/function-plotter': typeof FunctionPlotterRoute
@@ -2514,7 +2532,9 @@ export interface FileRouteTypes {
     | '/emoji-converter'
     | '/encode-chain'
     | '/encoding'
+    | '/entropy'
     | '/env-parser'
+    | '/fancy-text'
     | '/favicon-generator'
     | '/fraction'
     | '/function-plotter'
@@ -2783,7 +2803,9 @@ export interface FileRouteTypes {
     | '/emoji-converter'
     | '/encode-chain'
     | '/encoding'
+    | '/entropy'
     | '/env-parser'
+    | '/fancy-text'
     | '/favicon-generator'
     | '/fraction'
     | '/function-plotter'
@@ -3052,7 +3074,9 @@ export interface FileRouteTypes {
     | '/emoji-converter'
     | '/encode-chain'
     | '/encoding'
+    | '/entropy'
     | '/env-parser'
+    | '/fancy-text'
     | '/favicon-generator'
     | '/fraction'
     | '/function-plotter'
@@ -3322,7 +3346,9 @@ export interface RootRouteChildren {
   EmojiConverterRoute: typeof EmojiConverterRoute
   EncodeChainRoute: typeof EncodeChainRoute
   EncodingRoute: typeof EncodingRoute
+  EntropyRoute: typeof EntropyRoute
   EnvParserRoute: typeof EnvParserRoute
+  FancyTextRoute: typeof FancyTextRoute
   FaviconGeneratorRoute: typeof FaviconGeneratorRoute
   FractionRoute: typeof FractionRoute
   FunctionPlotterRoute: typeof FunctionPlotterRoute
@@ -4707,11 +4733,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FaviconGeneratorRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/fancy-text': {
+      id: '/fancy-text'
+      path: '/fancy-text'
+      fullPath: '/fancy-text'
+      preLoaderRoute: typeof FancyTextRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/env-parser': {
       id: '/env-parser'
       path: '/env-parser'
       fullPath: '/env-parser'
       preLoaderRoute: typeof EnvParserRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/entropy': {
+      id: '/entropy'
+      path: '/entropy'
+      fullPath: '/entropy'
+      preLoaderRoute: typeof EntropyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/encoding': {
@@ -5466,7 +5506,9 @@ const rootRouteChildren: RootRouteChildren = {
   EmojiConverterRoute: EmojiConverterRoute,
   EncodeChainRoute: EncodeChainRoute,
   EncodingRoute: EncodingRoute,
+  EntropyRoute: EntropyRoute,
   EnvParserRoute: EnvParserRoute,
+  FancyTextRoute: FancyTextRoute,
   FaviconGeneratorRoute: FaviconGeneratorRoute,
   FractionRoute: FractionRoute,
   FunctionPlotterRoute: FunctionPlotterRoute,

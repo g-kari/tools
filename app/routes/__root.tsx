@@ -245,6 +245,7 @@ const navCategories = [
       { path: "/vigenere", label: "ヴィジュネル暗号" },
       { path: "/affine", label: "アフィン暗号" },
       { path: "/rail-fence", label: "Rail Fence暗号（柵暗号）" },
+      { path: "/fancy-text", label: "ファンシーテキスト変換" },
     ],
   },
   {
