@@ -112,6 +112,7 @@ const navCategories = [
       { path: "/loan-calculator", label: "ローン計算機" },
       { path: "/compound-interest", label: "複利計算機" },
       { path: "/tax-calculator", label: "消費税計算機" },
+      { path: "/warikan", label: "割り勘計算機" },
     ],
   },
   {
