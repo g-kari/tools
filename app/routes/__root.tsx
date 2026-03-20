@@ -109,6 +109,7 @@ const navCategories = [
       { path: "/duration", label: "時間計算・変換" },
       { path: "/encode-chain", label: "エンコードチェーン" },
       { path: "/geohash", label: "Geohash変換" },
+      { path: "/haversine", label: "Haversine距離計算" },
       { path: "/percentage-calculator", label: "パーセンテージ計算機" },
       { path: "/loan-calculator", label: "ローン計算機" },
       { path: "/compound-interest", label: "複利計算機" },
