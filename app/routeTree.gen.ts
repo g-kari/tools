@@ -163,6 +163,7 @@ import { Route as GlobalIpRouteImport } from './routes/global-ip'
 import { Route as GlobTesterRouteImport } from './routes/glob-tester'
 import { Route as GitignoreRouteImport } from './routes/gitignore'
 import { Route as GithubBadgeRouteImport } from './routes/github-badge'
+import { Route as GeometryRouteImport } from './routes/geometry'
 import { Route as GeohashRouteImport } from './routes/geohash'
 import { Route as Game2048RouteImport } from './routes/game-2048'
 import { Route as FunctionPlotterRouteImport } from './routes/function-plotter'
@@ -1032,6 +1033,11 @@ const GithubBadgeRoute = GithubBadgeRouteImport.update({
   path: '/github-badge',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GeometryRoute = GeometryRouteImport.update({
+  id: '/geometry',
+  path: '/geometry',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GeohashRoute = GeohashRouteImport.update({
   id: '/geohash',
   path: '/geohash',
@@ -1618,6 +1624,7 @@ export interface FileRoutesByFullPath {
   '/function-plotter': typeof FunctionPlotterRoute
   '/game-2048': typeof Game2048Route
   '/geohash': typeof GeohashRoute
+  '/geometry': typeof GeometryRoute
   '/github-badge': typeof GithubBadgeRoute
   '/gitignore': typeof GitignoreRoute
   '/glob-tester': typeof GlobTesterRoute
@@ -1872,6 +1879,7 @@ export interface FileRoutesByTo {
   '/function-plotter': typeof FunctionPlotterRoute
   '/game-2048': typeof Game2048Route
   '/geohash': typeof GeohashRoute
+  '/geometry': typeof GeometryRoute
   '/github-badge': typeof GithubBadgeRoute
   '/gitignore': typeof GitignoreRoute
   '/glob-tester': typeof GlobTesterRoute
@@ -2127,6 +2135,7 @@ export interface FileRoutesById {
   '/function-plotter': typeof FunctionPlotterRoute
   '/game-2048': typeof Game2048Route
   '/geohash': typeof GeohashRoute
+  '/geometry': typeof GeometryRoute
   '/github-badge': typeof GithubBadgeRoute
   '/gitignore': typeof GitignoreRoute
   '/glob-tester': typeof GlobTesterRoute
@@ -2383,6 +2392,7 @@ export interface FileRouteTypes {
     | '/function-plotter'
     | '/game-2048'
     | '/geohash'
+    | '/geometry'
     | '/github-badge'
     | '/gitignore'
     | '/glob-tester'
@@ -2637,6 +2647,7 @@ export interface FileRouteTypes {
     | '/function-plotter'
     | '/game-2048'
     | '/geohash'
+    | '/geometry'
     | '/github-badge'
     | '/gitignore'
     | '/glob-tester'
@@ -2891,6 +2902,7 @@ export interface FileRouteTypes {
     | '/function-plotter'
     | '/game-2048'
     | '/geohash'
+    | '/geometry'
     | '/github-badge'
     | '/gitignore'
     | '/glob-tester'
@@ -3146,6 +3158,7 @@ export interface RootRouteChildren {
   FunctionPlotterRoute: typeof FunctionPlotterRoute
   Game2048Route: typeof Game2048Route
   GeohashRoute: typeof GeohashRoute
+  GeometryRoute: typeof GeometryRoute
   GithubBadgeRoute: typeof GithubBadgeRoute
   GitignoreRoute: typeof GitignoreRoute
   GlobTesterRoute: typeof GlobTesterRoute
@@ -4386,6 +4399,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GithubBadgeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/geometry': {
+      id: '/geometry'
+      path: '/geometry'
+      fullPath: '/geometry'
+      preLoaderRoute: typeof GeometryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/geohash': {
       id: '/geohash'
       path: '/geohash'
@@ -5170,6 +5190,7 @@ const rootRouteChildren: RootRouteChildren = {
   FunctionPlotterRoute: FunctionPlotterRoute,
   Game2048Route: Game2048Route,
   GeohashRoute: GeohashRoute,
+  GeometryRoute: GeometryRoute,
   GithubBadgeRoute: GithubBadgeRoute,
   GitignoreRoute: GitignoreRoute,
   GlobTesterRoute: GlobTesterRoute,
