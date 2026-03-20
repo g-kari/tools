@@ -563,6 +563,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "⛓️",
       },
       {
+        path: "/quoted-printable",
+        label: "Quoted-Printable",
+        description:
+          "RFC 2045 準拠の Quoted-Printable エンコード・デコード。メール本文の MIME エンコードで使われる QP 形式に変換。日本語などのマルチバイト文字を =XX 形式で表現。",
+        icon: "✉️",
+      },
+      {
         path: "/ini-parser",
         label: "INIファイルパーサー",
         description:

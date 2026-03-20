@@ -84,6 +84,7 @@ import { Route as ReadabilityRouteImport } from './routes/readability'
 import { Route as RandomPickerRouteImport } from './routes/random-picker'
 import { Route as RandomDataRouteImport } from './routes/random-data'
 import { Route as RailFenceRouteImport } from './routes/rail-fence'
+import { Route as QuotedPrintableRouteImport } from './routes/quoted-printable'
 import { Route as QrCodeRouteImport } from './routes/qr-code'
 import { Route as PunycodeRouteImport } from './routes/punycode'
 import { Route as PortsRouteImport } from './routes/ports'
@@ -643,6 +644,11 @@ const RandomDataRoute = RandomDataRouteImport.update({
 const RailFenceRoute = RailFenceRouteImport.update({
   id: '/rail-fence',
   path: '/rail-fence',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const QuotedPrintableRoute = QuotedPrintableRouteImport.update({
+  id: '/quoted-printable',
+  path: '/quoted-printable',
   getParentRoute: () => rootRouteImport,
 } as any)
 const QrCodeRoute = QrCodeRouteImport.update({
@@ -1753,6 +1759,7 @@ export interface FileRoutesByFullPath {
   '/ports': typeof PortsRoute
   '/punycode': typeof PunycodeRoute
   '/qr-code': typeof QrCodeRoute
+  '/quoted-printable': typeof QuotedPrintableRoute
   '/rail-fence': typeof RailFenceRoute
   '/random-data': typeof RandomDataRoute
   '/random-picker': typeof RandomPickerRoute
@@ -2015,6 +2022,7 @@ export interface FileRoutesByTo {
   '/ports': typeof PortsRoute
   '/punycode': typeof PunycodeRoute
   '/qr-code': typeof QrCodeRoute
+  '/quoted-printable': typeof QuotedPrintableRoute
   '/rail-fence': typeof RailFenceRoute
   '/random-data': typeof RandomDataRoute
   '/random-picker': typeof RandomPickerRoute
@@ -2278,6 +2286,7 @@ export interface FileRoutesById {
   '/ports': typeof PortsRoute
   '/punycode': typeof PunycodeRoute
   '/qr-code': typeof QrCodeRoute
+  '/quoted-printable': typeof QuotedPrintableRoute
   '/rail-fence': typeof RailFenceRoute
   '/random-data': typeof RandomDataRoute
   '/random-picker': typeof RandomPickerRoute
@@ -2542,6 +2551,7 @@ export interface FileRouteTypes {
     | '/ports'
     | '/punycode'
     | '/qr-code'
+    | '/quoted-printable'
     | '/rail-fence'
     | '/random-data'
     | '/random-picker'
@@ -2804,6 +2814,7 @@ export interface FileRouteTypes {
     | '/ports'
     | '/punycode'
     | '/qr-code'
+    | '/quoted-printable'
     | '/rail-fence'
     | '/random-data'
     | '/random-picker'
@@ -3066,6 +3077,7 @@ export interface FileRouteTypes {
     | '/ports'
     | '/punycode'
     | '/qr-code'
+    | '/quoted-printable'
     | '/rail-fence'
     | '/random-data'
     | '/random-picker'
@@ -3329,6 +3341,7 @@ export interface RootRouteChildren {
   PortsRoute: typeof PortsRoute
   PunycodeRoute: typeof PunycodeRoute
   QrCodeRoute: typeof QrCodeRoute
+  QuotedPrintableRoute: typeof QuotedPrintableRoute
   RailFenceRoute: typeof RailFenceRoute
   RandomDataRoute: typeof RandomDataRoute
   RandomPickerRoute: typeof RandomPickerRoute
@@ -3935,6 +3948,13 @@ declare module '@tanstack/react-router' {
       path: '/rail-fence'
       fullPath: '/rail-fence'
       preLoaderRoute: typeof RailFenceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/quoted-printable': {
+      id: '/quoted-printable'
+      path: '/quoted-printable'
+      fullPath: '/quoted-printable'
+      preLoaderRoute: typeof QuotedPrintableRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/qr-code': {
@@ -5417,6 +5437,7 @@ const rootRouteChildren: RootRouteChildren = {
   PortsRoute: PortsRoute,
   PunycodeRoute: PunycodeRoute,
   QrCodeRoute: QrCodeRoute,
+  QuotedPrintableRoute: QuotedPrintableRoute,
   RailFenceRoute: RailFenceRoute,
   RandomDataRoute: RandomDataRoute,
   RandomPickerRoute: RandomPickerRoute,
