@@ -1640,6 +1640,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🐳",
       },
       {
+        path: "/dockerfile",
+        label: "Dockerfile ジェネレーター",
+        description:
+          "GUIでDockerfileを生成するツール。FROM・WORKDIR・ARG・ENV・COPY・RUN・EXPOSE・USER・ENTRYPOINT・CMDをフォームで設定。Node.js・Python・Go・Nginxのテンプレートを用意。ブラウザ内完結。",
+        icon: "🐋",
+      },
+      {
         path: "/nginx-config",
         label: "Nginx設定ジェネレーター",
         description:

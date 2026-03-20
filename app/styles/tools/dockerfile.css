@@ -1,0 +1,245 @@
+/* Dockerfile ジェネレーター - df- プレフィックス */
+
+.df-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* テンプレートボタン群 */
+.df-templates {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.df-templates-label {
+  font-size: 0.8rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-right: 0.25rem;
+}
+
+.df-template-btn {
+  padding: 0.25rem 0.65rem;
+  font-size: 0.78rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 999px;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    color 0.15s;
+  white-space: nowrap;
+}
+
+.df-template-btn:hover {
+  background: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.df-template-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* 2カラムレイアウト */
+.df-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+@media (max-width: 768px) {
+  .df-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* セクション */
+.df-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* フォームグループ */
+.df-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* フィールド */
+.df-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.df-label {
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--md-sys-color-primary);
+}
+
+.df-input {
+  width: 100%;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.82rem;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--md-sys-color-outline);
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  border-radius: 4px;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.df-input:focus {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+  border-color: var(--md-sys-color-primary);
+}
+
+/* リストアイテム（ARG / ENV / COPY / RUN / EXPOSE） */
+.df-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.df-list-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.df-list-item .df-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.df-list-sep {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  color: var(--md-sys-color-on-surface-variant);
+  flex-shrink: 0;
+}
+
+/* 削除ボタン */
+.df-remove-btn {
+  flex-shrink: 0;
+  width: 1.75rem;
+  height: 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--md-sys-color-error, #ba1a1a);
+  cursor: pointer;
+  font-size: 0.9rem;
+  line-height: 1;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+
+.df-remove-btn:hover {
+  background: var(--md-sys-color-error-container, #ffdad6);
+  border-color: var(--md-sys-color-error, #ba1a1a);
+}
+
+.df-remove-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* 追加ボタン */
+.df-add-btn {
+  align-self: flex-start;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.78rem;
+  border: 1px dashed var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--md-sys-color-primary);
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+
+.df-add-btn:hover {
+  background: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+}
+
+.df-add-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* プレビューパネル */
+.df-preview-panel {
+  position: sticky;
+  top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.df-preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.df-output-wrapper {
+  overflow: hidden;
+  border-radius: 6px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.df-code-block {
+  margin: 0;
+  padding: 1rem;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.82rem;
+  line-height: 1.7;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  overflow-x: auto;
+  white-space: pre;
+  min-height: 10rem;
+}
+
+.df-placeholder {
+  font-style: italic;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: inherit;
+}
+
+/* レスポンシブ */
+@media (max-width: 640px) {
+  .df-container {
+    padding: 0.5rem;
+  }
+
+  .df-code-block {
+    font-size: 0.76rem;
+  }
+}
