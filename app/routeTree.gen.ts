@@ -61,6 +61,7 @@ import { Route as SvgOptimizerRouteImport } from './routes/svg-optimizer'
 import { Route as SudokuRouteImport } from './routes/sudoku'
 import { Route as StringSimilarityRouteImport } from './routes/string-similarity'
 import { Route as StringEscapeRouteImport } from './routes/string-escape'
+import { Route as StorageConverterRouteImport } from './routes/storage-converter'
 import { Route as StopwatchRouteImport } from './routes/stopwatch'
 import { Route as StatisticsRouteImport } from './routes/statistics'
 import { Route as SshKeyRouteImport } from './routes/ssh-key'
@@ -532,6 +533,11 @@ const StringSimilarityRoute = StringSimilarityRouteImport.update({
 const StringEscapeRoute = StringEscapeRouteImport.update({
   id: '/string-escape',
   path: '/string-escape',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StorageConverterRoute = StorageConverterRouteImport.update({
+  id: '/storage-converter',
+  path: '/storage-converter',
   getParentRoute: () => rootRouteImport,
 } as any)
 const StopwatchRoute = StopwatchRouteImport.update({
@@ -1804,6 +1810,7 @@ export interface FileRoutesByFullPath {
   '/ssh-key': typeof SshKeyRoute
   '/statistics': typeof StatisticsRoute
   '/stopwatch': typeof StopwatchRoute
+  '/storage-converter': typeof StorageConverterRoute
   '/string-escape': typeof StringEscapeRoute
   '/string-similarity': typeof StringSimilarityRoute
   '/sudoku': typeof SudokuRoute
@@ -2070,6 +2077,7 @@ export interface FileRoutesByTo {
   '/ssh-key': typeof SshKeyRoute
   '/statistics': typeof StatisticsRoute
   '/stopwatch': typeof StopwatchRoute
+  '/storage-converter': typeof StorageConverterRoute
   '/string-escape': typeof StringEscapeRoute
   '/string-similarity': typeof StringSimilarityRoute
   '/sudoku': typeof SudokuRoute
@@ -2337,6 +2345,7 @@ export interface FileRoutesById {
   '/ssh-key': typeof SshKeyRoute
   '/statistics': typeof StatisticsRoute
   '/stopwatch': typeof StopwatchRoute
+  '/storage-converter': typeof StorageConverterRoute
   '/string-escape': typeof StringEscapeRoute
   '/string-similarity': typeof StringSimilarityRoute
   '/sudoku': typeof SudokuRoute
@@ -2605,6 +2614,7 @@ export interface FileRouteTypes {
     | '/ssh-key'
     | '/statistics'
     | '/stopwatch'
+    | '/storage-converter'
     | '/string-escape'
     | '/string-similarity'
     | '/sudoku'
@@ -2871,6 +2881,7 @@ export interface FileRouteTypes {
     | '/ssh-key'
     | '/statistics'
     | '/stopwatch'
+    | '/storage-converter'
     | '/string-escape'
     | '/string-similarity'
     | '/sudoku'
@@ -3137,6 +3148,7 @@ export interface FileRouteTypes {
     | '/ssh-key'
     | '/statistics'
     | '/stopwatch'
+    | '/storage-converter'
     | '/string-escape'
     | '/string-similarity'
     | '/sudoku'
@@ -3404,6 +3416,7 @@ export interface RootRouteChildren {
   SshKeyRoute: typeof SshKeyRoute
   StatisticsRoute: typeof StatisticsRoute
   StopwatchRoute: typeof StopwatchRoute
+  StorageConverterRoute: typeof StorageConverterRoute
   StringEscapeRoute: typeof StringEscapeRoute
   StringSimilarityRoute: typeof StringSimilarityRoute
   SudokuRoute: typeof SudokuRoute
@@ -3826,6 +3839,13 @@ declare module '@tanstack/react-router' {
       path: '/string-escape'
       fullPath: '/string-escape'
       preLoaderRoute: typeof StringEscapeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/storage-converter': {
+      id: '/storage-converter'
+      path: '/storage-converter'
+      fullPath: '/storage-converter'
+      preLoaderRoute: typeof StorageConverterRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/stopwatch': {
@@ -5524,6 +5544,7 @@ const rootRouteChildren: RootRouteChildren = {
   SshKeyRoute: SshKeyRoute,
   StatisticsRoute: StatisticsRoute,
   StopwatchRoute: StopwatchRoute,
+  StorageConverterRoute: StorageConverterRoute,
   StringEscapeRoute: StringEscapeRoute,
   StringSimilarityRoute: StringSimilarityRoute,
   SudokuRoute: SudokuRoute,
