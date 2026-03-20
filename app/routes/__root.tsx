@@ -298,6 +298,7 @@ const navCategories = [
       { path: "/random-picker", label: "ランダムピッカー" },
       { path: "/sudoku", label: "数独ゲーム" },
       { path: "/minesweeper", label: "マインスイーパー" },
+      { path: "/game-2048", label: "2048" },
     ],
   },
 ];

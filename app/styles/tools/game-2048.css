@@ -1,0 +1,204 @@
+/* 2048 ゲーム スタイル */
+
+.g2048-wrapper {
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* ヘッダー（スコアエリア） */
+.g2048-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.g2048-scores {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.g2048-score-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--md-sys-color-surface-variant);
+  border-radius: 8px;
+  padding: 0.375rem 1rem;
+  min-width: 72px;
+}
+
+.g2048-score-label {
+  font-size: 0.625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.g2048-score-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface);
+  line-height: 1.2;
+}
+
+/* ゲームボード */
+.g2048-board {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  background-color: var(--md-sys-color-outline-variant);
+  border-radius: 12px;
+  padding: 8px;
+  aspect-ratio: 1 / 1;
+  outline: none;
+  user-select: none;
+  touch-action: none;
+}
+
+.g2048-board:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* セル背景 */
+.g2048-cell {
+  background-color: var(--md-sys-color-surface-variant);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  transition: background-color 0.1s ease;
+}
+
+/* タイル（値あり） */
+.g2048-tile {
+  font-size: clamp(1rem, 4vw, 1.75rem);
+}
+
+/* タイル色（値別） */
+.g2048-tile-2 {
+  background-color: #eee4da;
+  color: #776e65;
+}
+
+.g2048-tile-4 {
+  background-color: #ede0c8;
+  color: #776e65;
+}
+
+.g2048-tile-8 {
+  background-color: #f2b179;
+  color: #f9f6f2;
+}
+
+.g2048-tile-16 {
+  background-color: #f59563;
+  color: #f9f6f2;
+}
+
+.g2048-tile-32 {
+  background-color: #f67c5f;
+  color: #f9f6f2;
+}
+
+.g2048-tile-64 {
+  background-color: #f65e3b;
+  color: #f9f6f2;
+}
+
+.g2048-tile-128 {
+  background-color: #edcf72;
+  color: #f9f6f2;
+  font-size: clamp(0.875rem, 3.5vw, 1.5rem);
+}
+
+.g2048-tile-256 {
+  background-color: #edcc61;
+  color: #f9f6f2;
+  font-size: clamp(0.875rem, 3.5vw, 1.5rem);
+}
+
+.g2048-tile-512 {
+  background-color: #edc850;
+  color: #f9f6f2;
+  font-size: clamp(0.875rem, 3.5vw, 1.5rem);
+}
+
+.g2048-tile-1024 {
+  background-color: #edc53f;
+  color: #f9f6f2;
+  font-size: clamp(0.75rem, 3vw, 1.25rem);
+}
+
+.g2048-tile-2048 {
+  background-color: #edc22e;
+  color: #f9f6f2;
+  font-size: clamp(0.75rem, 3vw, 1.25rem);
+  box-shadow: 0 0 24px 6px rgba(237, 194, 46, 0.6);
+}
+
+.g2048-tile-super {
+  background-color: #3c3a32;
+  color: #f9f6f2;
+  font-size: clamp(0.625rem, 2.5vw, 1rem);
+}
+
+/* 操作説明 */
+.g2048-instructions {
+  text-align: center;
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-top: 0.75rem;
+}
+
+/* オーバーレイ（勝利・ゲームオーバー） */
+.g2048-overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.g2048-overlay-won {
+  background-color: rgba(237, 194, 46, 0.85);
+}
+
+.g2048-overlay-lost {
+  background-color: rgba(119, 110, 101, 0.75);
+}
+
+.g2048-overlay-content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.g2048-overlay-message {
+  font-size: clamp(1.25rem, 5vw, 1.75rem);
+  font-weight: 700;
+  color: #f9f6f2;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  margin: 0;
+}
+
+.g2048-overlay-score {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #f9f6f2;
+  margin: 0;
+}
+
+.g2048-overlay-actions {
+  display: flex;
+  gap: 0.5rem;
+}
