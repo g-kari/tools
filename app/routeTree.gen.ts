@@ -59,6 +59,7 @@ import { Route as StringEscapeRouteImport } from './routes/string-escape'
 import { Route as StopwatchRouteImport } from './routes/stopwatch'
 import { Route as StatisticsRouteImport } from './routes/statistics'
 import { Route as SshKeyRouteImport } from './routes/ssh-key'
+import { Route as SriHashRouteImport } from './routes/sri-hash'
 import { Route as SqlToTsRouteImport } from './routes/sql-to-ts'
 import { Route as SqlRouteImport } from './routes/sql'
 import { Route as SnakeRouteImport } from './routes/snake'
@@ -501,6 +502,11 @@ const StatisticsRoute = StatisticsRouteImport.update({
 const SshKeyRoute = SshKeyRouteImport.update({
   id: '/ssh-key',
   path: '/ssh-key',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SriHashRoute = SriHashRouteImport.update({
+  id: '/sri-hash',
+  path: '/sri-hash',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SqlToTsRoute = SqlToTsRouteImport.update({
@@ -1659,6 +1665,7 @@ export interface FileRoutesByFullPath {
   '/snake': typeof SnakeRoute
   '/sql': typeof SqlRoute
   '/sql-to-ts': typeof SqlToTsRoute
+  '/sri-hash': typeof SriHashRoute
   '/ssh-key': typeof SshKeyRoute
   '/statistics': typeof StatisticsRoute
   '/stopwatch': typeof StopwatchRoute
@@ -1904,6 +1911,7 @@ export interface FileRoutesByTo {
   '/snake': typeof SnakeRoute
   '/sql': typeof SqlRoute
   '/sql-to-ts': typeof SqlToTsRoute
+  '/sri-hash': typeof SriHashRoute
   '/ssh-key': typeof SshKeyRoute
   '/statistics': typeof StatisticsRoute
   '/stopwatch': typeof StopwatchRoute
@@ -2150,6 +2158,7 @@ export interface FileRoutesById {
   '/snake': typeof SnakeRoute
   '/sql': typeof SqlRoute
   '/sql-to-ts': typeof SqlToTsRoute
+  '/sri-hash': typeof SriHashRoute
   '/ssh-key': typeof SshKeyRoute
   '/statistics': typeof StatisticsRoute
   '/stopwatch': typeof StopwatchRoute
@@ -2397,6 +2406,7 @@ export interface FileRouteTypes {
     | '/snake'
     | '/sql'
     | '/sql-to-ts'
+    | '/sri-hash'
     | '/ssh-key'
     | '/statistics'
     | '/stopwatch'
@@ -2642,6 +2652,7 @@ export interface FileRouteTypes {
     | '/snake'
     | '/sql'
     | '/sql-to-ts'
+    | '/sri-hash'
     | '/ssh-key'
     | '/statistics'
     | '/stopwatch'
@@ -2887,6 +2898,7 @@ export interface FileRouteTypes {
     | '/snake'
     | '/sql'
     | '/sql-to-ts'
+    | '/sri-hash'
     | '/ssh-key'
     | '/statistics'
     | '/stopwatch'
@@ -3133,6 +3145,7 @@ export interface RootRouteChildren {
   SnakeRoute: typeof SnakeRoute
   SqlRoute: typeof SqlRoute
   SqlToTsRoute: typeof SqlToTsRoute
+  SriHashRoute: typeof SriHashRoute
   SshKeyRoute: typeof SshKeyRoute
   StatisticsRoute: typeof StatisticsRoute
   StopwatchRoute: typeof StopwatchRoute
@@ -3539,6 +3552,13 @@ declare module '@tanstack/react-router' {
       path: '/ssh-key'
       fullPath: '/ssh-key'
       preLoaderRoute: typeof SshKeyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sri-hash': {
+      id: '/sri-hash'
+      path: '/sri-hash'
+      fullPath: '/sri-hash'
+      preLoaderRoute: typeof SriHashRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sql-to-ts': {
@@ -5085,6 +5105,7 @@ const rootRouteChildren: RootRouteChildren = {
   SnakeRoute: SnakeRoute,
   SqlRoute: SqlRoute,
   SqlToTsRoute: SqlToTsRoute,
+  SriHashRoute: SriHashRoute,
   SshKeyRoute: SshKeyRoute,
   StatisticsRoute: StatisticsRoute,
   StopwatchRoute: StopwatchRoute,

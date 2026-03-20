@@ -1,0 +1,364 @@
+/* SRI Hash Generator ツール */
+
+/* アルゴリズム選択タブ */
+.sri-algo-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid var(--md-sys-color-outline-variant);
+}
+
+.sri-algo-tab {
+  padding: 0.5rem 1rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+  transition: color 0.2s, border-color 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+}
+
+.sri-algo-tab:hover:not(.active) {
+  color: var(--md-sys-color-on-surface);
+}
+
+.sri-algo-tab.active {
+  color: var(--md-sys-color-primary);
+  border-bottom-color: var(--md-sys-color-primary);
+}
+
+/* 入力モードタブ */
+.sri-input-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 0.75rem;
+  border-bottom: 2px solid var(--md-sys-color-outline-variant);
+}
+
+.sri-input-tab {
+  padding: 0.5rem 1rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+  transition: color 0.2s, border-color 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+}
+
+.sri-input-tab:hover:not(.active) {
+  color: var(--md-sys-color-on-surface);
+}
+
+.sri-input-tab.active {
+  color: var(--md-sys-color-primary);
+  border-bottom-color: var(--md-sys-color-primary);
+}
+
+/* ファイルドロップゾーン */
+.sri-dropzone {
+  border: 2px dashed var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-variant);
+  padding: 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  margin-top: 1rem;
+}
+
+.sri-dropzone:hover,
+.sri-dropzone.dragging {
+  border-color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-primary-container);
+}
+
+.sri-dropzone-label {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.375rem;
+  cursor: pointer;
+}
+
+.sri-dropzone.dragging .sri-dropzone-label {
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.sri-dropzone-icon {
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.sri-dropzone-hint {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-top: 0.25rem;
+}
+
+/* ファイル情報 */
+.sri-file-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  font-size: 0.875rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  margin-top: 0.5rem;
+}
+
+.sri-file-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sri-file-size {
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.sri-file-clear-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--md-sys-color-on-primary-container);
+  font-size: 1rem;
+  padding: 0 0.25rem;
+  flex-shrink: 0;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.sri-file-clear-btn:hover {
+  opacity: 1;
+}
+
+/* SRI 結果エリア */
+.sri-results {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* 各 integrity 値 */
+.sri-result-item {
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: border-color 0.2s;
+}
+
+.sri-result-item:hover {
+  border-color: var(--md-sys-color-outline);
+}
+
+.sri-result-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sri-result-algo {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--md-sys-color-primary);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+}
+
+.sri-result-recommended {
+  font-size: 0.625rem;
+  padding: 0.125rem 0.375rem;
+  border-radius: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-weight: 500;
+  background: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #a5d6a7;
+}
+
+.sri-result-value-row {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.sri-result-value {
+  flex: 1;
+  background: var(--md-sys-color-surface);
+  padding: 0.5rem 0.75rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.78rem;
+  color: var(--md-sys-color-on-surface);
+  word-break: break-all;
+  line-height: 1.6;
+  min-height: 2.5rem;
+  display: flex;
+  align-items: center;
+  border: none;
+}
+
+.sri-result-value-empty {
+  color: var(--md-sys-color-on-surface-variant);
+  font-style: italic;
+}
+
+.sri-copy-btn {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border: none;
+  border-left: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 0;
+  padding: 0.5rem 0.875rem;
+  font-size: 0.75rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, opacity 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.sri-copy-btn:hover:not(:disabled) {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  opacity: 0.85;
+}
+
+.sri-copy-btn:active:not(:disabled) {
+  opacity: 0.7;
+}
+
+.sri-copy-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* HTML スニペット */
+.sri-snippet-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.sri-snippet-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  margin-bottom: 0.375rem;
+}
+
+.sri-snippet-block {
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.sri-snippet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface);
+}
+
+.sri-snippet-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--md-sys-color-primary);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.sri-snippet-code {
+  padding: 0.75rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.8rem;
+  color: var(--md-sys-color-on-surface);
+  word-break: break-all;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  background: var(--md-sys-color-surface);
+}
+
+/* crossorigin 選択 */
+.sri-crossorigin-group {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.sri-radio-label {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+}
+
+/* 空の状態 */
+.sri-empty-state {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  color: var(--md-sys-color-on-surface-variant);
+  background: var(--md-sys-color-surface-variant);
+  border: 1px dashed var(--md-sys-color-outline);
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.sri-empty-state p {
+  font-size: 1rem;
+  margin: 0;
+}
+
+@media (max-width: 480px) {
+  .sri-result-value {
+    font-size: 0.72rem;
+  }
+
+  .sri-algo-tab,
+  .sri-input-tab {
+    font-size: 0.75rem;
+    padding: 0.5rem 0.5rem;
+  }
+}
