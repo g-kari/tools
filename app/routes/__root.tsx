@@ -62,6 +62,7 @@ const navCategories = [
       { path: "/php-serialize", label: "PHPシリアライズ" },
       { path: "/minify", label: "コード圧縮" },
       { path: "/unit-converter", label: "単位変換" },
+      { path: "/storage-converter", label: "ストレージ単位変換" },
       { path: "/css-unit", label: "CSS単位変換" },
       { path: "/css-shorthand", label: "CSSショートハンド展開" },
       { path: "/css-clamp", label: "CSS Fluid/Clamp 計算機" },
