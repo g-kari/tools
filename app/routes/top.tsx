@@ -507,6 +507,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🔣",
       },
       {
+        path: "/percentage-calculator",
+        label: "パーセンテージ計算機",
+        description:
+          "「XはYの何%か」「XのY%はいくら」「変化率」「増加・減少後の値」など、よく使うパーセンテージ計算をまとめたツール。割引・税込計算・達成率など日常の計算に便利。",
+        icon: "%",
+      },
+      {
         path: "/hex-viewer",
         label: "Hex Viewer",
         description:

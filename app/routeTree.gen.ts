@@ -87,6 +87,7 @@ import { Route as PomodoroRouteImport } from './routes/pomodoro'
 import { Route as PkceRouteImport } from './routes/pkce'
 import { Route as PhpSerializeRouteImport } from './routes/php-serialize'
 import { Route as PhoneRouteImport } from './routes/phone'
+import { Route as PercentageCalculatorRouteImport } from './routes/percentage-calculator'
 import { Route as PasswordStrengthRouteImport } from './routes/password-strength'
 import { Route as PasswordGeneratorRouteImport } from './routes/password-generator'
 import { Route as PassphraseRouteImport } from './routes/passphrase'
@@ -644,6 +645,11 @@ const PhpSerializeRoute = PhpSerializeRouteImport.update({
 const PhoneRoute = PhoneRouteImport.update({
   id: '/phone',
   path: '/phone',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PercentageCalculatorRoute = PercentageCalculatorRouteImport.update({
+  id: '/percentage-calculator',
+  path: '/percentage-calculator',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PasswordStrengthRoute = PasswordStrengthRouteImport.update({
@@ -1652,6 +1658,7 @@ export interface FileRoutesByFullPath {
   '/passphrase': typeof PassphraseRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/password-strength': typeof PasswordStrengthRoute
+  '/percentage-calculator': typeof PercentageCalculatorRoute
   '/phone': typeof PhoneRoute
   '/php-serialize': typeof PhpSerializeRoute
   '/pkce': typeof PkceRoute
@@ -1900,6 +1907,7 @@ export interface FileRoutesByTo {
   '/passphrase': typeof PassphraseRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/password-strength': typeof PasswordStrengthRoute
+  '/percentage-calculator': typeof PercentageCalculatorRoute
   '/phone': typeof PhoneRoute
   '/php-serialize': typeof PhpSerializeRoute
   '/pkce': typeof PkceRoute
@@ -2149,6 +2157,7 @@ export interface FileRoutesById {
   '/passphrase': typeof PassphraseRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/password-strength': typeof PasswordStrengthRoute
+  '/percentage-calculator': typeof PercentageCalculatorRoute
   '/phone': typeof PhoneRoute
   '/php-serialize': typeof PhpSerializeRoute
   '/pkce': typeof PkceRoute
@@ -2399,6 +2408,7 @@ export interface FileRouteTypes {
     | '/passphrase'
     | '/password-generator'
     | '/password-strength'
+    | '/percentage-calculator'
     | '/phone'
     | '/php-serialize'
     | '/pkce'
@@ -2647,6 +2657,7 @@ export interface FileRouteTypes {
     | '/passphrase'
     | '/password-generator'
     | '/password-strength'
+    | '/percentage-calculator'
     | '/phone'
     | '/php-serialize'
     | '/pkce'
@@ -2895,6 +2906,7 @@ export interface FileRouteTypes {
     | '/passphrase'
     | '/password-generator'
     | '/password-strength'
+    | '/percentage-calculator'
     | '/phone'
     | '/php-serialize'
     | '/pkce'
@@ -3144,6 +3156,7 @@ export interface RootRouteChildren {
   PassphraseRoute: typeof PassphraseRoute
   PasswordGeneratorRoute: typeof PasswordGeneratorRoute
   PasswordStrengthRoute: typeof PasswordStrengthRoute
+  PercentageCalculatorRoute: typeof PercentageCalculatorRoute
   PhoneRoute: typeof PhoneRoute
   PhpSerializeRoute: typeof PhpSerializeRoute
   PkceRoute: typeof PkceRoute
@@ -3774,6 +3787,13 @@ declare module '@tanstack/react-router' {
       path: '/phone'
       fullPath: '/phone'
       preLoaderRoute: typeof PhoneRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/percentage-calculator': {
+      id: '/percentage-calculator'
+      path: '/percentage-calculator'
+      fullPath: '/percentage-calculator'
+      preLoaderRoute: typeof PercentageCalculatorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/password-strength': {
@@ -5120,6 +5140,7 @@ const rootRouteChildren: RootRouteChildren = {
   PassphraseRoute: PassphraseRoute,
   PasswordGeneratorRoute: PasswordGeneratorRoute,
   PasswordStrengthRoute: PasswordStrengthRoute,
+  PercentageCalculatorRoute: PercentageCalculatorRoute,
   PhoneRoute: PhoneRoute,
   PhpSerializeRoute: PhpSerializeRoute,
   PkceRoute: PkceRoute,
