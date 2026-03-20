@@ -38,28 +38,49 @@ const HTML_ENTITIES: Record<string, string> = {
 };
 
 /**
- * Decode HTML entities in a string
- * Supports named entities, decimal numeric references, and hexadecimal numeric references
+ * すべての名前付きエンティティにマッチするプリコンパイル済み正規表現
+ * モジュールロード時に一度だけ生成し、関数呼び出しごとの RegExp 生成コストを排除する
+ */
+const NAMED_ENTITY_REGEX = new RegExp(
+  Object.keys(HTML_ENTITIES)
+    .map((e) => e.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+    .join("|"),
+  "gi"
+);
+
+/**
+ * 小文字化済みエンティティマップ
+ * gi フラグによる大文字小文字を問わないマッチングに対応するため小文字キーで参照する
+ */
+const HTML_ENTITIES_LOWER: Record<string, string> = Object.fromEntries(
+  Object.entries(HTML_ENTITIES).map(([k, v]) => [k.toLowerCase(), v])
+);
+
+/**
+ * 文字列内の HTML エンティティをデコードする
+ * 名前付きエンティティ、十進数数値参照、十六進数数値参照をサポートする
+ * @param text - デコード対象の文字列
+ * @returns デコードされた文字列
  */
 export function decodeHtmlEntities(text: string): string {
-  // First, replace named entities
-  let result = text;
-  for (const [entity, char] of Object.entries(HTML_ENTITIES)) {
-    result = result.replace(new RegExp(entity, "gi"), char);
-  }
+  // 名前付きエンティティをプリコンパイル済み正規表現で一括置換（ループ内 RegExp 生成を回避）
+  let result = text.replace(
+    NAMED_ENTITY_REGEX,
+    (match) => HTML_ENTITIES_LOWER[match.toLowerCase()] ?? match
+  );
 
-  // Replace legacy numeric entities
+  // レガシー数値エンティティの置換
   result = result
     .replace(/&#39;/g, "'")
     .replace(/&#x27;/gi, "'")
     .replace(/&#x2F;/gi, "/");
 
-  // Replace decimal numeric references (&#123;)
+  // 十進数数値参照の置換 (&#123;)
   result = result.replace(/&#(\d+);/g, (_, num) =>
     String.fromCharCode(parseInt(num, 10))
   );
 
-  // Replace hexadecimal numeric references (&#x1A;)
+  // 十六進数数値参照の置換 (&#x1A;)
   result = result.replace(/&#x([0-9a-fA-F]+);/gi, (_, hex) =>
     String.fromCharCode(parseInt(hex, 16))
   );
