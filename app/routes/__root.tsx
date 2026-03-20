@@ -322,6 +322,7 @@ const navCategories = [
       { path: "/minesweeper", label: "マインスイーパー" },
       { path: "/game-2048", label: "2048" },
       { path: "/snake", label: "スネークゲーム" },
+      { path: "/hangman", label: "ハングマン" },
     ],
   },
 ];

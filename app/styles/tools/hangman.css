@@ -1,0 +1,372 @@
+/* Hangman Game Styles */
+
+/* ヘッダーエリア（スコア・カテゴリ・新ゲームボタン） */
+.hangman-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.hangman-score {
+  display: flex;
+  gap: 1rem;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.score-win {
+  color: var(--md-sys-color-primary);
+}
+
+.score-lose {
+  color: var(--md-sys-color-error);
+}
+
+.hangman-category-select {
+  flex: 1;
+  min-width: 140px;
+  max-width: 200px;
+}
+
+.hangman-select {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 8px;
+  background-color: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  font-size: 0.875rem;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  padding-right: 2rem;
+}
+
+.hangman-select:focus {
+  border-color: var(--md-sys-color-primary);
+  box-shadow: 0 0 0 2px var(--md-sys-color-primary-container);
+}
+
+/* ゲームエリア（図と単語の横並び） */
+.hangman-game-area {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* ハングマン図エリア */
+.hangman-drawing-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.hangman-svg {
+  width: 180px;
+  height: 200px;
+  background-color: var(--md-sys-color-surface-variant);
+  border-radius: 12px;
+  padding: 8px;
+}
+
+.hangman-line {
+  stroke: var(--md-sys-color-on-surface);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.hangman-body {
+  stroke: var(--md-sys-color-error);
+  stroke-width: 3;
+  stroke-linecap: round;
+  fill: none;
+  animation: hangman-appear 0.3s ease-out;
+}
+
+@keyframes hangman-appear {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+    transform-origin: center;
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.hangman-mistake-counter {
+  text-align: center;
+}
+
+.mistake-count {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.mistake-max {
+  color: var(--md-sys-color-error);
+  font-weight: 700;
+}
+
+/* 単語エリア */
+.hangman-word-area {
+  flex: 1;
+  min-width: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.hangman-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: var(--md-sys-color-secondary-container);
+  border-radius: 8px;
+}
+
+.hint-label {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+.hint-value {
+  font-weight: 600;
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+/* 単語のマス目表示 */
+.hangman-word {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  min-height: 64px;
+}
+
+.hangman-letter-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 54px;
+  border-bottom: 3px solid var(--md-sys-color-outline);
+  background-color: transparent;
+  position: relative;
+}
+
+.hangman-letter-box.revealed {
+  border-bottom-color: var(--md-sys-color-primary);
+  background-color: var(--md-sys-color-primary-container);
+  border-radius: 4px 4px 0 0;
+  animation: letter-reveal 0.3s ease-out;
+}
+
+@keyframes letter-reveal {
+  from {
+    transform: scale(0.8) translateY(4px);
+    opacity: 0.6;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+.letter-char {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--md-sys-color-on-primary-container);
+  text-transform: uppercase;
+}
+
+/* ゲーム結果表示 */
+.hangman-result {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  animation: result-appear 0.4s ease-out;
+}
+
+@keyframes result-appear {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.result-won {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.result-lost {
+  background-color: var(--md-sys-color-error-container, #ffdad6);
+  color: var(--md-sys-color-on-error-container, #410002);
+}
+
+.result-emoji {
+  font-size: 1.5rem;
+}
+
+.result-text {
+  flex: 1;
+}
+
+/* 不正解文字表示 */
+.hangman-wrong-letters {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 1rem;
+  background-color: var(--md-sys-color-surface-variant);
+  border-radius: 8px;
+}
+
+.wrong-label {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  white-space: nowrap;
+}
+
+.wrong-letters {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--md-sys-color-error);
+  letter-spacing: 0.1em;
+}
+
+/* キーボードエリア */
+.hangman-keyboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.keyboard-row {
+  display: flex;
+  gap: 0.375rem;
+  justify-content: center;
+}
+
+.keyboard-key {
+  width: 40px;
+  height: 48px;
+  border: 1.5px solid var(--md-sys-color-outline);
+  border-radius: 8px;
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  outline: none;
+}
+
+.keyboard-key:hover:not(:disabled) {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border-color: var(--md-sys-color-primary);
+  transform: translateY(-1px);
+}
+
+.keyboard-key:focus-visible {
+  box-shadow: 0 0 0 3px var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+}
+
+.keyboard-key:disabled {
+  cursor: default;
+}
+
+.key-correct {
+  background-color: var(--md-sys-color-primary-container) !important;
+  color: var(--md-sys-color-on-primary-container) !important;
+  border-color: var(--md-sys-color-primary) !important;
+  opacity: 0.8;
+}
+
+.key-wrong {
+  background-color: var(--md-sys-color-error-container, #ffdad6) !important;
+  color: var(--md-sys-color-on-error-container, #410002) !important;
+  border-color: var(--md-sys-color-error) !important;
+  opacity: 0.7;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 640px) {
+  .hangman-game-area {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hangman-word-area {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .hangman-word {
+    justify-content: center;
+  }
+
+  .hangman-header {
+    justify-content: center;
+  }
+
+  .hangman-category-select {
+    max-width: 100%;
+    flex: 1 1 120px;
+  }
+
+  .keyboard-key {
+    width: 32px;
+    height: 40px;
+    font-size: 0.75rem;
+  }
+
+  .keyboard-row {
+    gap: 0.25rem;
+  }
+
+  .hangman-letter-box {
+    width: 36px;
+    height: 46px;
+  }
+
+  .letter-char {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .keyboard-key {
+    width: 28px;
+    height: 36px;
+    font-size: 0.7rem;
+    border-radius: 6px;
+  }
+}
