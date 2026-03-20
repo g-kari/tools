@@ -1752,6 +1752,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "⏱️",
       },
       {
+        path: "/bpm",
+        label: "BPM / タップテンポ",
+        description:
+          "タップしてBPM（テンポ）を計測するツール。スペースキー対応。Larghissimo〜Prestissimoのテンポ記号早見表付き。音楽のテンポ確認・メトロノームのリファレンスに便利。",
+        icon: "🥁",
+      },
+      {
         path: "/random-picker",
         label: "ランダムピッカー",
         description:
