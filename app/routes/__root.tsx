@@ -234,6 +234,7 @@ const navCategories = [
       { path: "/text-stats", label: "テキスト統計" },
       { path: "/char-frequency", label: "文字頻度分析" },
       { path: "/word-frequency", label: "単語頻度分析" },
+      { path: "/entropy", label: "シャノンエントロピー計算" },
       { path: "/text-replace", label: "テキスト置換" },
       { path: "/string-similarity", label: "文字列類似度計算" },
       { path: "/readability", label: "可読性スコア分析" },
