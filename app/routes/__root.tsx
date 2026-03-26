@@ -153,6 +153,7 @@ const navCategories = [
       { path: "/seo-meta", label: "SEOメタタグ生成" },
       { path: "/mermaid", label: "Mermaidプレビュー" },
       { path: "/github-badge", label: "GitHubバッジ生成" },
+      { path: "/vscode-snippet", label: "VSCodeスニペット生成" },
     ],
   },
   {
