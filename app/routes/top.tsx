@@ -721,6 +721,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "⚙️",
       },
       {
+        path: "/gitattributes",
+        label: ".gitattributes生成",
+        description:
+          "改行コード正規化・バイナリ設定・Git LFS・GitHub Linguist ルールを選択して .gitattributes ファイルを自動生成。言語・フレームワーク別のプリセットに対応。",
+        icon: "📝",
+      },
+      {
         path: "/robots-txt",
         label: "robots.txtジェネレーター",
         description:
