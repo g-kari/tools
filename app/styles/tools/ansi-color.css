@@ -1,0 +1,345 @@
+/* ANSIターミナルカラーコードビルダー */
+
+.ansi-color-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ターミナル風プレビューエリア */
+.ansi-color-preview-area {
+  background: #1e1e1e;
+  color: #d4d4d4;
+  border-radius: 6px;
+  padding: 1.25rem 1.5rem;
+  font-family: "JetBrains Mono", "Space Mono", "Courier New", monospace;
+  font-size: 0.9375rem;
+  min-height: 4rem;
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  position: relative;
+}
+
+.ansi-color-preview-area::before {
+  content: "$ ";
+  color: #6bcf6b;
+  font-family: inherit;
+  flex-shrink: 0;
+}
+
+.ansi-color-preview-text {
+  font-family: inherit;
+  font-size: inherit;
+  word-break: break-all;
+  white-space: pre-wrap;
+}
+
+/* スタイルチェックボックスグリッド */
+.ansi-color-style-checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+}
+
+.ansi-color-style-checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface);
+  user-select: none;
+}
+
+.ansi-color-style-checkbox-item input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+  accent-color: var(--md-sys-color-primary);
+}
+
+.ansi-color-style-checkbox-item:hover {
+  color: var(--md-sys-color-primary);
+}
+
+/* 色選択セクション */
+.ansi-color-color-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 0;
+}
+
+.ansi-color-color-section-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0;
+}
+
+/* 色モードタブ */
+.ansi-color-mode-tabs {
+  display: flex;
+  gap: 0.25rem;
+  background: var(--md-sys-color-surface);
+  padding: 0.25rem;
+  border-radius: 4px;
+  width: fit-content;
+}
+
+.ansi-color-mode-tab {
+  padding: 0.375rem 0.875rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  border: none;
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.ansi-color-mode-tab:hover {
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+}
+
+.ansi-color-mode-tab.active {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+/* 標準色スウォッチグリッド */
+.ansi-color-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.ansi-color-swatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 3px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: transform 0.1s, border-color 0.1s;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.ansi-color-swatch:hover {
+  transform: scale(1.15);
+  border-color: var(--md-sys-color-on-surface);
+}
+
+.ansi-color-swatch.selected {
+  border-color: var(--md-sys-color-primary);
+  transform: scale(1.1);
+  box-shadow: 0 0 0 2px var(--md-sys-color-primary);
+}
+
+.ansi-color-swatch-label {
+  font-size: 0.6875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  text-align: center;
+  margin-top: 0.125rem;
+}
+
+.ansi-color-swatches-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 0.5rem;
+}
+
+.ansi-color-swatch-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* RGB入力エリア */
+.ansi-color-rgb-inputs {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.ansi-color-rgb-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.ansi-color-rgb-input-group label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ansi-color-rgb-input-group input[type="number"] {
+  width: 4.5rem;
+  padding: 0.375rem 0.5rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-size: 0.875rem;
+  font-family: "JetBrains Mono", monospace;
+  border-radius: 0;
+  text-align: center;
+}
+
+.ansi-color-rgb-input-group input[type="number"]:focus {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 1px;
+  border-color: var(--md-sys-color-primary);
+}
+
+.ansi-color-color-picker-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.ansi-color-color-picker-group label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ansi-color-color-picker {
+  width: 3rem;
+  height: 2.25rem;
+  padding: 0.125rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface);
+  cursor: pointer;
+  border-radius: 0;
+}
+
+.ansi-color-color-picker:focus {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 1px;
+}
+
+.ansi-color-rgb-preview {
+  width: 2.5rem;
+  height: 2.25rem;
+  border-radius: 3px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  flex-shrink: 0;
+}
+
+/* コード出力エリア */
+.ansi-color-code-output {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* 出力形式タブ */
+.ansi-color-format-tabs {
+  display: flex;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}
+
+.ansi-color-format-tab {
+  padding: 0.375rem 0.875rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface-variant);
+  border-radius: 0;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.ansi-color-format-tab:hover {
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  border-color: var(--md-sys-color-outline);
+}
+
+.ansi-color-format-tab.active {
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  border-color: var(--md-sys-color-secondary);
+}
+
+/* コードブロック */
+.ansi-color-code-block {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 0;
+  padding: 1rem;
+}
+
+.ansi-color-code-block code {
+  flex: 1;
+  font-family: "JetBrains Mono", "Space Mono", "Courier New", monospace;
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface);
+  word-break: break-all;
+  white-space: pre-wrap;
+  line-height: 1.6;
+}
+
+/* コピーボタン */
+.ansi-color-copy-btn {
+  flex-shrink: 0;
+  align-self: flex-start;
+}
+
+/* プレビューテキスト入力 */
+.ansi-color-preview-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ansi-color-preview-input-group label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.ansi-color-preview-input {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-size: 0.9375rem;
+  border-radius: 0;
+  width: 100%;
+}
+
+.ansi-color-preview-input:focus {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 1px;
+  border-color: var(--md-sys-color-primary);
+}
+
+/* セクション見出し */
+.ansi-color-section-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+  margin: 0;
+}

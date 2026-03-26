@@ -275,6 +275,7 @@ import { Route as AudioConverterRouteImport } from './routes/audio-converter'
 import { Route as AspectRatioRouteImport } from './routes/aspect-ratio'
 import { Route as AsciiTableRouteImport } from './routes/ascii-table'
 import { Route as AsciiArtRouteImport } from './routes/ascii-art'
+import { Route as AnsiColorRouteImport } from './routes/ansi-color'
 import { Route as AffineRouteImport } from './routes/affine'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiImageDotwebpRouteImport } from './routes/api/image[.]webp'
@@ -1612,6 +1613,11 @@ const AsciiArtRoute = AsciiArtRouteImport.update({
   path: '/ascii-art',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AnsiColorRoute = AnsiColorRouteImport.update({
+  id: '/ansi-color',
+  path: '/ansi-color',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AffineRoute = AffineRouteImport.update({
   id: '/affine',
   path: '/affine',
@@ -1646,6 +1652,7 @@ const ApiImageDotjpgRoute = ApiImageDotjpgRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/affine': typeof AffineRoute
+  '/ansi-color': typeof AnsiColorRoute
   '/ascii-art': typeof AsciiArtRoute
   '/ascii-table': typeof AsciiTableRoute
   '/aspect-ratio': typeof AspectRatioRoute
@@ -1920,6 +1927,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/affine': typeof AffineRoute
+  '/ansi-color': typeof AnsiColorRoute
   '/ascii-art': typeof AsciiArtRoute
   '/ascii-table': typeof AsciiTableRoute
   '/aspect-ratio': typeof AspectRatioRoute
@@ -2195,6 +2203,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/affine': typeof AffineRoute
+  '/ansi-color': typeof AnsiColorRoute
   '/ascii-art': typeof AsciiArtRoute
   '/ascii-table': typeof AsciiTableRoute
   '/aspect-ratio': typeof AspectRatioRoute
@@ -2471,6 +2480,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/affine'
+    | '/ansi-color'
     | '/ascii-art'
     | '/ascii-table'
     | '/aspect-ratio'
@@ -2745,6 +2755,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/affine'
+    | '/ansi-color'
     | '/ascii-art'
     | '/ascii-table'
     | '/aspect-ratio'
@@ -3019,6 +3030,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/affine'
+    | '/ansi-color'
     | '/ascii-art'
     | '/ascii-table'
     | '/aspect-ratio'
@@ -3294,6 +3306,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AffineRoute: typeof AffineRoute
+  AnsiColorRoute: typeof AnsiColorRoute
   AsciiArtRoute: typeof AsciiArtRoute
   AsciiTableRoute: typeof AsciiTableRoute
   AspectRatioRoute: typeof AspectRatioRoute
@@ -5430,6 +5443,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AsciiArtRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ansi-color': {
+      id: '/ansi-color'
+      path: '/ansi-color'
+      fullPath: '/ansi-color'
+      preLoaderRoute: typeof AnsiColorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/affine': {
       id: '/affine'
       path: '/affine'
@@ -5478,6 +5498,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AffineRoute: AffineRoute,
+  AnsiColorRoute: AnsiColorRoute,
   AsciiArtRoute: AsciiArtRoute,
   AsciiTableRoute: AsciiTableRoute,
   AspectRatioRoute: AspectRatioRoute,
