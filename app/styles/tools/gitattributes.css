@@ -1,0 +1,178 @@
+/* .gitattributes Generator Styles */
+
+/* 検索行（入力フィールド + クリアボタン） */
+.gattr-search-row {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+/* 検索入力フィールド */
+.gattr-search-input {
+  flex: 1;
+  padding: 0.625rem 0.875rem;
+  border: 1.5px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.9375rem;
+  background-color: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  transition:
+    border-color 0.2s,
+    background-color 0.2s;
+}
+
+.gattr-search-input::placeholder {
+  color: var(--md-sys-color-on-surface-variant);
+  opacity: 0.6;
+}
+
+.gattr-search-input:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  background-color: var(--md-sys-color-surface);
+}
+
+.gattr-search-input:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* カテゴリグループコンテナ */
+.gattr-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* カテゴリブロック */
+.gattr-category-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+/* カテゴリタイトル */
+.gattr-category-title {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--md-sys-color-on-surface-variant);
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+
+/* チップグリッド */
+.gattr-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* チップボタン */
+.gattr-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.875rem;
+  border: 1.5px solid var(--md-sys-color-outline-variant);
+  border-radius: 20px;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    color 0.15s;
+  user-select: none;
+}
+
+.gattr-chip:hover {
+  background: var(--md-sys-color-surface-variant);
+  border-color: var(--md-sys-color-primary);
+}
+
+.gattr-chip.active {
+  background: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.gattr-chip:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* チェックマーク */
+.gattr-chip-check {
+  font-size: 0.75rem;
+  line-height: 1;
+}
+
+/* アクション行 */
+.gattr-action-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.gattr-selected-count {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-left: auto;
+}
+
+/* 出力セクション */
+.gattr-output-section {
+  margin-top: 1.5rem;
+}
+
+.gattr-output-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.gattr-output-title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+}
+
+/* 出力プレビュー */
+.gattr-output {
+  width: 100%;
+  min-height: 240px;
+  padding: 1rem;
+  border: 1.5px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background-color: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  white-space: pre;
+  overflow-x: auto;
+  box-sizing: border-box;
+}
+
+.gattr-output-placeholder {
+  color: var(--md-sys-color-on-surface-variant);
+  opacity: 0.5;
+  font-style: italic;
+  font-family: inherit;
+}
+
+/* 検索結果なし */
+.gattr-no-results {
+  text-align: center;
+  padding: 2rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.9375rem;
+}
