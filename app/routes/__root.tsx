@@ -158,6 +158,7 @@ const navCategories = [
       { path: "/mermaid", label: "Mermaidプレビュー" },
       { path: "/github-badge", label: "GitHubバッジ生成" },
       { path: "/vscode-snippet", label: "VSCodeスニペット生成" },
+      { path: "/github-actions", label: "GitHub Actions ビルダー" },
     ],
   },
   {

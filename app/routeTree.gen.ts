@@ -182,6 +182,7 @@ import { Route as GlobalIpRouteImport } from './routes/global-ip'
 import { Route as GlobTesterRouteImport } from './routes/glob-tester'
 import { Route as GitignoreRouteImport } from './routes/gitignore'
 import { Route as GithubBadgeRouteImport } from './routes/github-badge'
+import { Route as GithubActionsRouteImport } from './routes/github-actions'
 import { Route as GitattributesRouteImport } from './routes/gitattributes'
 import { Route as GeometryRouteImport } from './routes/geometry'
 import { Route as GeohashRouteImport } from './routes/geohash'
@@ -1157,6 +1158,11 @@ const GithubBadgeRoute = GithubBadgeRouteImport.update({
   path: '/github-badge',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GithubActionsRoute = GithubActionsRouteImport.update({
+  id: '/github-actions',
+  path: '/github-actions',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GitattributesRoute = GitattributesRouteImport.update({
   id: '/gitattributes',
   path: '/gitattributes',
@@ -1809,6 +1815,7 @@ export interface FileRoutesByFullPath {
   '/geohash': typeof GeohashRoute
   '/geometry': typeof GeometryRoute
   '/gitattributes': typeof GitattributesRoute
+  '/github-actions': typeof GithubActionsRoute
   '/github-badge': typeof GithubBadgeRoute
   '/gitignore': typeof GitignoreRoute
   '/glob-tester': typeof GlobTesterRoute
@@ -2093,6 +2100,7 @@ export interface FileRoutesByTo {
   '/geohash': typeof GeohashRoute
   '/geometry': typeof GeometryRoute
   '/gitattributes': typeof GitattributesRoute
+  '/github-actions': typeof GithubActionsRoute
   '/github-badge': typeof GithubBadgeRoute
   '/gitignore': typeof GitignoreRoute
   '/glob-tester': typeof GlobTesterRoute
@@ -2378,6 +2386,7 @@ export interface FileRoutesById {
   '/geohash': typeof GeohashRoute
   '/geometry': typeof GeometryRoute
   '/gitattributes': typeof GitattributesRoute
+  '/github-actions': typeof GithubActionsRoute
   '/github-badge': typeof GithubBadgeRoute
   '/gitignore': typeof GitignoreRoute
   '/glob-tester': typeof GlobTesterRoute
@@ -2664,6 +2673,7 @@ export interface FileRouteTypes {
     | '/geohash'
     | '/geometry'
     | '/gitattributes'
+    | '/github-actions'
     | '/github-badge'
     | '/gitignore'
     | '/glob-tester'
@@ -2948,6 +2958,7 @@ export interface FileRouteTypes {
     | '/geohash'
     | '/geometry'
     | '/gitattributes'
+    | '/github-actions'
     | '/github-badge'
     | '/gitignore'
     | '/glob-tester'
@@ -3232,6 +3243,7 @@ export interface FileRouteTypes {
     | '/geohash'
     | '/geometry'
     | '/gitattributes'
+    | '/github-actions'
     | '/github-badge'
     | '/gitignore'
     | '/glob-tester'
@@ -3517,6 +3529,7 @@ export interface RootRouteChildren {
   GeohashRoute: typeof GeohashRoute
   GeometryRoute: typeof GeometryRoute
   GitattributesRoute: typeof GitattributesRoute
+  GithubActionsRoute: typeof GithubActionsRoute
   GithubBadgeRoute: typeof GithubBadgeRoute
   GitignoreRoute: typeof GitignoreRoute
   GlobTesterRoute: typeof GlobTesterRoute
@@ -4909,6 +4922,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GithubBadgeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/github-actions': {
+      id: '/github-actions'
+      path: '/github-actions'
+      fullPath: '/github-actions'
+      preLoaderRoute: typeof GithubActionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/gitattributes': {
       id: '/gitattributes'
       path: '/gitattributes'
@@ -5781,6 +5801,7 @@ const rootRouteChildren: RootRouteChildren = {
   GeohashRoute: GeohashRoute,
   GeometryRoute: GeometryRoute,
   GitattributesRoute: GitattributesRoute,
+  GithubActionsRoute: GithubActionsRoute,
   GithubBadgeRoute: GithubBadgeRoute,
   GitignoreRoute: GitignoreRoute,
   GlobTesterRoute: GlobTesterRoute,
