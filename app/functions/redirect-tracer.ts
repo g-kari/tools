@@ -163,7 +163,7 @@ export const traceRedirects = createServerFn({ method: "GET" })
             totalTime: Date.now() - totalStart,
             error: isTimeout
               ? "タイムアウト: サーバーからの応答がありませんでした"
-              : `接続エラー: ${err.message}`,
+              : "接続エラー: ネットワーク接続に失敗しました",
           };
         }
 

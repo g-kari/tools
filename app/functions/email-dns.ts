@@ -635,9 +635,15 @@ export const lookupEmailDNS = createServerFn({ method: "GET" })
     if (!DOMAIN_REGEX.test(data.domain)) {
       throw new Error("無効なドメイン形式です");
     }
+    const trimmedSelector = data.dkimSelector?.trim();
+    if (trimmedSelector !== undefined && trimmedSelector !== "") {
+      if (!/^[a-zA-Z0-9_-]{1,63}$/.test(trimmedSelector)) {
+        throw new Error("無効なDKIMセレクター形式です（英数字・ハイフン・アンダースコアのみ使用可能）");
+      }
+    }
     return {
       domain: data.domain.toLowerCase(),
-      dkimSelector: data.dkimSelector?.trim(),
+      dkimSelector: trimmedSelector || undefined,
     };
   })
   .handler(async ({ data }) => {

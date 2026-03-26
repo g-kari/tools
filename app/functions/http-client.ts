@@ -202,6 +202,25 @@ export const sendHttpRequest = createServerFn({ method: "POST" })
       const response = await fetch(params.url, fetchOptions);
       const responseTime = Date.now() - startTime;
 
+      // SSRF対策: リダイレクト後の最終URLもプライベートIPチェック
+      if (response.url && response.url !== params.url) {
+        try {
+          const finalParsedUrl = new URL(response.url);
+          if (isPrivateOrLocalhost(finalParsedUrl.hostname)) {
+            return {
+              statusCode: 0,
+              statusText: "Error",
+              headers: {},
+              body: "",
+              responseTime,
+              error: "セキュリティ上の理由により、プライベートIPへのリダイレクトは許可されていません",
+            };
+          }
+        } catch {
+          // URLパース失敗は無視
+        }
+      }
+
       const responseHeaders = responseHeadersToObject(response.headers);
 
       // HEADリクエストはボディを持たない
@@ -260,7 +279,7 @@ export const sendHttpRequest = createServerFn({ method: "POST" })
         if (error.name === "AbortError") {
           errorMessage = "タイムアウト: サーバーからの応答が15秒以内にありませんでした";
         } else {
-          errorMessage = `リクエストエラー: ${error.message}`;
+          errorMessage = "リクエストエラー: ネットワーク接続に失敗しました";
         }
       }
 

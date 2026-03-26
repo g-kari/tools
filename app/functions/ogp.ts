@@ -879,7 +879,7 @@ export const fetchOgp = createServerFn({ method: "GET" })
         if (error.name === "AbortError") {
           errorMessage = "タイムアウト: サーバーからの応答がありませんでした";
         } else {
-          errorMessage = `取得エラー: ${error.message}`;
+          errorMessage = "取得エラー: ネットワーク接続に失敗しました";
         }
       }
       return {
