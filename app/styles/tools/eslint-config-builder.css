@@ -1,0 +1,380 @@
+/* ESLint Config Builder Styles */
+
+/* プリセット選択グリッド */
+.eslint-presets {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0.625rem;
+  margin-bottom: 1.5rem;
+}
+
+/* プリセットボタン */
+.eslint-preset-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid var(--md-sys-color-outline-variant);
+  border-radius: 8px;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  cursor: pointer;
+  text-align: left;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+
+.eslint-preset-btn:hover {
+  background: var(--md-sys-color-surface-variant);
+  border-color: var(--md-sys-color-primary);
+}
+
+.eslint-preset-btn.active {
+  background: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.eslint-preset-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.eslint-preset-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.eslint-preset-desc {
+  font-size: 0.75rem;
+  opacity: 0.75;
+  line-height: 1.4;
+}
+
+/* カテゴリタブ */
+.eslint-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin-bottom: 1.25rem;
+}
+
+.eslint-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.875rem;
+  border: 1.5px solid var(--md-sys-color-outline-variant);
+  border-radius: 20px;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    color 0.15s;
+}
+
+.eslint-tab:hover {
+  background: var(--md-sys-color-surface-variant);
+  border-color: var(--md-sys-color-primary);
+}
+
+.eslint-tab.active {
+  background: var(--md-sys-color-secondary-container);
+  border-color: var(--md-sys-color-secondary);
+  color: var(--md-sys-color-on-secondary-container);
+  font-weight: 600;
+}
+
+.eslint-tab:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* オプション一覧 */
+.eslint-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+/* 各オプション行 */
+.eslint-option-row {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 0.75rem 1.25rem;
+  align-items: start;
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 8px;
+  background: var(--md-sys-color-surface);
+  transition: border-color 0.15s;
+}
+
+.eslint-option-row:hover {
+  border-color: var(--md-sys-color-outline);
+}
+
+.eslint-option-row.modified {
+  border-color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-surface-variant);
+}
+
+@media (max-width: 640px) {
+  .eslint-option-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* オプションラベル側 */
+.eslint-option-label-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.eslint-option-key {
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+}
+
+.eslint-option-desc {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  line-height: 1.5;
+}
+
+.eslint-option-recommended {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin-top: 0.25rem;
+}
+
+.eslint-option-badge {
+  font-size: 0.6875rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 10px;
+  background: var(--md-sys-color-tertiary-container);
+  color: var(--md-sys-color-on-tertiary-container);
+  font-weight: 500;
+}
+
+/* オプション入力側 */
+.eslint-option-input-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* トグルスイッチ */
+.eslint-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.eslint-toggle-track {
+  position: relative;
+  width: 40px;
+  height: 22px;
+  border-radius: 11px;
+  background: var(--md-sys-color-surface-variant);
+  border: 1.5px solid var(--md-sys-color-outline);
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+  flex-shrink: 0;
+}
+
+.eslint-toggle-track.checked {
+  background: var(--md-sys-color-primary);
+  border-color: var(--md-sys-color-primary);
+}
+
+.eslint-toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--md-sys-color-outline);
+  transition:
+    transform 0.2s,
+    background 0.2s;
+}
+
+.eslint-toggle-track.checked .eslint-toggle-thumb {
+  transform: translateX(18px);
+  background: var(--md-sys-color-on-primary);
+}
+
+.eslint-toggle input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.eslint-toggle-label {
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* セレクト */
+.eslint-select {
+  padding: 0.5rem 0.75rem;
+  border: 1.5px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.875rem;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  transition:
+    border-color 0.2s,
+    background 0.2s;
+  width: 100%;
+  max-width: 280px;
+}
+
+.eslint-select:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-surface);
+}
+
+.eslint-select:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* 出力エリア */
+.eslint-output-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.625rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.eslint-output-title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+}
+
+.eslint-output {
+  width: 100%;
+  min-height: 200px;
+  padding: 1rem;
+  border: 1.5px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  white-space: pre;
+  overflow-x: auto;
+  box-sizing: border-box;
+  resize: vertical;
+}
+
+/* アクションボタン行 */
+.eslint-action-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* リセットボタン */
+.eslint-reset-btn {
+  padding: 0.5rem 1rem;
+  border: 1.5px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+
+.eslint-reset-btn:hover {
+  background: var(--md-sys-color-surface-variant);
+  border-color: var(--md-sys-color-outline);
+}
+
+.eslint-reset-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* インストールコマンド */
+.eslint-install-section {
+  margin-top: 1.25rem;
+}
+
+.eslint-install-label {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 0.375rem;
+}
+
+.eslint-install-cmd {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface-variant);
+  flex-wrap: wrap;
+}
+
+.eslint-install-code {
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface);
+  flex: 1;
+  word-break: break-all;
+}
+
+.eslint-copy-install-btn {
+  padding: 0.375rem 0.75rem;
+  border: 1.5px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.8125rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+
+.eslint-copy-install-btn:hover {
+  background: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.eslint-copy-install-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}

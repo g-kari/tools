@@ -191,6 +191,7 @@ import { Route as FractionRouteImport } from './routes/fraction'
 import { Route as FaviconGeneratorRouteImport } from './routes/favicon-generator'
 import { Route as FancyTextRouteImport } from './routes/fancy-text'
 import { Route as ExifViewerRouteImport } from './routes/exif-viewer'
+import { Route as EslintConfigBuilderRouteImport } from './routes/eslint-config-builder'
 import { Route as EnvParserRouteImport } from './routes/env-parser'
 import { Route as EntropyRouteImport } from './routes/entropy'
 import { Route as EncodingRouteImport } from './routes/encoding'
@@ -1201,6 +1202,11 @@ const ExifViewerRoute = ExifViewerRouteImport.update({
   path: '/exif-viewer',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EslintConfigBuilderRoute = EslintConfigBuilderRouteImport.update({
+  id: '/eslint-config-builder',
+  path: '/eslint-config-builder',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EnvParserRoute = EnvParserRouteImport.update({
   id: '/env-parser',
   path: '/env-parser',
@@ -1793,6 +1799,7 @@ export interface FileRoutesByFullPath {
   '/encoding': typeof EncodingRoute
   '/entropy': typeof EntropyRoute
   '/env-parser': typeof EnvParserRoute
+  '/eslint-config-builder': typeof EslintConfigBuilderRoute
   '/exif-viewer': typeof ExifViewerRoute
   '/fancy-text': typeof FancyTextRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
@@ -2076,6 +2083,7 @@ export interface FileRoutesByTo {
   '/encoding': typeof EncodingRoute
   '/entropy': typeof EntropyRoute
   '/env-parser': typeof EnvParserRoute
+  '/eslint-config-builder': typeof EslintConfigBuilderRoute
   '/exif-viewer': typeof ExifViewerRoute
   '/fancy-text': typeof FancyTextRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
@@ -2360,6 +2368,7 @@ export interface FileRoutesById {
   '/encoding': typeof EncodingRoute
   '/entropy': typeof EntropyRoute
   '/env-parser': typeof EnvParserRoute
+  '/eslint-config-builder': typeof EslintConfigBuilderRoute
   '/exif-viewer': typeof ExifViewerRoute
   '/fancy-text': typeof FancyTextRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
@@ -2645,6 +2654,7 @@ export interface FileRouteTypes {
     | '/encoding'
     | '/entropy'
     | '/env-parser'
+    | '/eslint-config-builder'
     | '/exif-viewer'
     | '/fancy-text'
     | '/favicon-generator'
@@ -2928,6 +2938,7 @@ export interface FileRouteTypes {
     | '/encoding'
     | '/entropy'
     | '/env-parser'
+    | '/eslint-config-builder'
     | '/exif-viewer'
     | '/fancy-text'
     | '/favicon-generator'
@@ -3211,6 +3222,7 @@ export interface FileRouteTypes {
     | '/encoding'
     | '/entropy'
     | '/env-parser'
+    | '/eslint-config-builder'
     | '/exif-viewer'
     | '/fancy-text'
     | '/favicon-generator'
@@ -3495,6 +3507,7 @@ export interface RootRouteChildren {
   EncodingRoute: typeof EncodingRoute
   EntropyRoute: typeof EntropyRoute
   EnvParserRoute: typeof EnvParserRoute
+  EslintConfigBuilderRoute: typeof EslintConfigBuilderRoute
   ExifViewerRoute: typeof ExifViewerRoute
   FancyTextRoute: typeof FancyTextRoute
   FaviconGeneratorRoute: typeof FaviconGeneratorRoute
@@ -4959,6 +4972,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExifViewerRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/eslint-config-builder': {
+      id: '/eslint-config-builder'
+      path: '/eslint-config-builder'
+      fullPath: '/eslint-config-builder'
+      preLoaderRoute: typeof EslintConfigBuilderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/env-parser': {
       id: '/env-parser'
       path: '/env-parser'
@@ -5751,6 +5771,7 @@ const rootRouteChildren: RootRouteChildren = {
   EncodingRoute: EncodingRoute,
   EntropyRoute: EntropyRoute,
   EnvParserRoute: EnvParserRoute,
+  EslintConfigBuilderRoute: EslintConfigBuilderRoute,
   ExifViewerRoute: ExifViewerRoute,
   FancyTextRoute: FancyTextRoute,
   FaviconGeneratorRoute: FaviconGeneratorRoute,

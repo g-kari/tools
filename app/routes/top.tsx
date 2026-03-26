@@ -742,6 +742,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "✨",
       },
       {
+        path: "/eslint-config-builder",
+        label: "ESLint Config ビルダー",
+        description:
+          "ESLint のオプションを選択して eslint.config.js または .eslintrc.json を自動生成。TypeScript・React・コード品質ルールをプリセットから素早く設定。ESLint 9 のフラット設定形式対応。",
+        icon: "🔍",
+      },
+      {
         path: "/robots-txt",
         label: "robots.txtジェネレーター",
         description:
