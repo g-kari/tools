@@ -1,0 +1,361 @@
+/* GitHub Actions ワークフロービルダー - ga- プレフィックス */
+
+.ga-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* テンプレートボタン群 */
+.ga-templates {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+}
+
+.ga-templates-label {
+  font-size: 0.8rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-right: 0.25rem;
+  white-space: nowrap;
+}
+
+.ga-template-btn {
+  padding: 0.25rem 0.65rem;
+  font-size: 0.78rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 999px;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    color 0.15s;
+  white-space: nowrap;
+}
+
+.ga-template-btn:hover {
+  background: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.ga-template-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* 2カラムレイアウト */
+.ga-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+@media (max-width: 768px) {
+  .ga-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* セクション */
+.ga-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* フォームグループ */
+.ga-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* フィールド */
+.ga-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.ga-label {
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--md-sys-color-primary);
+}
+
+.ga-sublabel {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 0.1rem;
+}
+
+.ga-input {
+  width: 100%;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.82rem;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--md-sys-color-outline);
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  border-radius: 4px;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.ga-input:focus {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+  border-color: var(--md-sys-color-primary);
+}
+
+.ga-select {
+  width: 100%;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.82rem;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--md-sys-color-outline);
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.ga-select:focus {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+  border-color: var(--md-sys-color-primary);
+}
+
+/* トリガー設定 */
+.ga-trigger-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ga-trigger-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.ga-trigger-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ga-trigger-sub {
+  padding-left: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+/* チェックボックス */
+.ga-checkbox {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--md-sys-color-primary);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.ga-checkbox:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.ga-checkbox-label {
+  font-size: 0.85rem;
+  color: var(--md-sys-color-on-surface);
+  cursor: pointer;
+}
+
+.ga-checkbox-label--disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* リストアイテム（ENV / step run）*/
+.ga-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ga-list-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.ga-list-item .ga-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.ga-list-sep {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  color: var(--md-sys-color-on-surface-variant);
+  flex-shrink: 0;
+}
+
+/* 削除ボタン */
+.ga-remove-btn {
+  flex-shrink: 0;
+  width: 1.75rem;
+  height: 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--md-sys-color-error, #ba1a1a);
+  cursor: pointer;
+  font-size: 0.9rem;
+  line-height: 1;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+
+.ga-remove-btn:hover {
+  background: var(--md-sys-color-error-container, #ffdad6);
+  border-color: var(--md-sys-color-error, #ba1a1a);
+}
+
+.ga-remove-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* 追加ボタン */
+.ga-add-btn {
+  align-self: flex-start;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.78rem;
+  border: 1px dashed var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--md-sys-color-primary);
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+
+.ga-add-btn:hover {
+  background: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+}
+
+.ga-add-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* ステップ設定 */
+.ga-step-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 0.5rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 6px;
+  background: var(--md-sys-color-surface);
+}
+
+.ga-step-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ga-step-detail {
+  padding-left: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+/* プレビューパネル */
+.ga-preview-panel {
+  position: sticky;
+  top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.ga-preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.ga-output-wrapper {
+  overflow: hidden;
+  border-radius: 6px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.ga-code-block {
+  margin: 0;
+  padding: 1rem;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.82rem;
+  line-height: 1.7;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  overflow-x: auto;
+  white-space: pre;
+  min-height: 10rem;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.ga-placeholder {
+  font-style: italic;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: inherit;
+}
+
+/* セクションタイトル */
+.ga-section-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+  margin-bottom: 0.25rem;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  padding-bottom: 0.25rem;
+}
+
+/* レスポンシブ */
+@media (max-width: 640px) {
+  .ga-container {
+    padding: 0.5rem;
+  }
+
+  .ga-code-block {
+    font-size: 0.76rem;
+  }
+}
