@@ -16,9 +16,16 @@
 // 型定義
 // ---------------------------------------------------------------------------
 
+/** JSON プリミティブ型 */
+type JsonPrimitive = string | number | boolean | null;
+/** JSON オブジェクト型 */
+type JsonObject = { [key: string]: JsonValue };
+/** JSON 配列型 */
+type JsonArray = JsonValue[];
+/** JSON で表現可能な値の型 */
+type JsonValue = JsonPrimitive | JsonObject | JsonArray;
 /** テンプレートに渡すデータ型 */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type TemplateData = any;
+type TemplateData = JsonValue | undefined;
 
 /** レンダリング結果 */
 export interface RenderResult {
@@ -64,12 +71,11 @@ function lookup(context: TemplateData, key: string): TemplateData {
   if (key === '.') return context;
   if (context === null || context === undefined) return undefined;
   const parts = key.split('.');
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let current: any = context;
+  let current: TemplateData = context;
   for (const part of parts) {
     if (current === null || current === undefined) return undefined;
-    if (typeof current !== 'object') return undefined;
-    current = current[part];
+    if (typeof current !== 'object' || Array.isArray(current)) return undefined;
+    current = (current as JsonObject)[part];
   }
   return current;
 }
