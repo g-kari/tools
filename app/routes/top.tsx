@@ -878,6 +878,12 @@ const toolCatalog: ToolCategory[] = [
         icon: "✂️",
       },
       {
+        path: "/exif-viewer",
+        label: "EXIFビューワー",
+        description: "JPEG画像のEXIFメタデータ（撮影日時・カメラ情報・GPS位置情報など）を表示。プライバシー保護のためEXIFデータを除去してダウンロード可能。",
+        icon: "🔎",
+      },
+      {
         path: "/transparent-image",
         label: "透過画像",
         description: "画像の背景を透過処理",

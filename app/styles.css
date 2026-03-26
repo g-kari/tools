@@ -15,6 +15,7 @@
 @import "./styles/tools/image-resize.css";
 @import "./styles/tools/image-crop.css";
 @import "./styles/tools/image-compress.css";
+@import "./styles/tools/exif-viewer.css";
 @import "./styles/tools/image-to-gif.css";
 @import "./styles/tools/color-picker.css";
 @import "./styles/tools/color-extractor.css";

@@ -40,6 +40,7 @@ import { Route as TypographyScaleRouteImport } from './routes/typography-scale'
 import { Route as TypingSpeedRouteImport } from './routes/typing-speed'
 import { Route as TruthTableRouteImport } from './routes/truth-table'
 import { Route as TransparentImageRouteImport } from './routes/transparent-image'
+import { Route as TransferSpeedRouteImport } from './routes/transfer-speed'
 import { Route as TotpRouteImport } from './routes/totp'
 import { Route as TopRouteImport } from './routes/top'
 import { Route as TomlJsonRouteImport } from './routes/toml-json'
@@ -182,6 +183,7 @@ import { Route as FunctionPlotterRouteImport } from './routes/function-plotter'
 import { Route as FractionRouteImport } from './routes/fraction'
 import { Route as FaviconGeneratorRouteImport } from './routes/favicon-generator'
 import { Route as FancyTextRouteImport } from './routes/fancy-text'
+import { Route as ExifViewerRouteImport } from './routes/exif-viewer'
 import { Route as EnvParserRouteImport } from './routes/env-parser'
 import { Route as EntropyRouteImport } from './routes/entropy'
 import { Route as EncodingRouteImport } from './routes/encoding'
@@ -432,6 +434,11 @@ const TruthTableRoute = TruthTableRouteImport.update({
 const TransparentImageRoute = TransparentImageRouteImport.update({
   id: '/transparent-image',
   path: '/transparent-image',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TransferSpeedRoute = TransferSpeedRouteImport.update({
+  id: '/transfer-speed',
+  path: '/transfer-speed',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TotpRoute = TotpRouteImport.update({
@@ -1144,6 +1151,11 @@ const FancyTextRoute = FancyTextRouteImport.update({
   path: '/fancy-text',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ExifViewerRoute = ExifViewerRouteImport.update({
+  id: '/exif-viewer',
+  path: '/exif-viewer',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EnvParserRoute = EnvParserRouteImport.update({
   id: '/env-parser',
   path: '/env-parser',
@@ -1718,6 +1730,7 @@ export interface FileRoutesByFullPath {
   '/encoding': typeof EncodingRoute
   '/entropy': typeof EntropyRoute
   '/env-parser': typeof EnvParserRoute
+  '/exif-viewer': typeof ExifViewerRoute
   '/fancy-text': typeof FancyTextRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
   '/fraction': typeof FractionRoute
@@ -1860,6 +1873,7 @@ export interface FileRoutesByFullPath {
   '/toml-json': typeof TomlJsonRoute
   '/top': typeof TopRoute
   '/totp': typeof TotpRoute
+  '/transfer-speed': typeof TransferSpeedRoute
   '/transparent-image': typeof TransparentImageRoute
   '/truth-table': typeof TruthTableRoute
   '/typing-speed': typeof TypingSpeedRoute
@@ -1989,6 +2003,7 @@ export interface FileRoutesByTo {
   '/encoding': typeof EncodingRoute
   '/entropy': typeof EntropyRoute
   '/env-parser': typeof EnvParserRoute
+  '/exif-viewer': typeof ExifViewerRoute
   '/fancy-text': typeof FancyTextRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
   '/fraction': typeof FractionRoute
@@ -2131,6 +2146,7 @@ export interface FileRoutesByTo {
   '/toml-json': typeof TomlJsonRoute
   '/top': typeof TopRoute
   '/totp': typeof TotpRoute
+  '/transfer-speed': typeof TransferSpeedRoute
   '/transparent-image': typeof TransparentImageRoute
   '/truth-table': typeof TruthTableRoute
   '/typing-speed': typeof TypingSpeedRoute
@@ -2261,6 +2277,7 @@ export interface FileRoutesById {
   '/encoding': typeof EncodingRoute
   '/entropy': typeof EntropyRoute
   '/env-parser': typeof EnvParserRoute
+  '/exif-viewer': typeof ExifViewerRoute
   '/fancy-text': typeof FancyTextRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
   '/fraction': typeof FractionRoute
@@ -2403,6 +2420,7 @@ export interface FileRoutesById {
   '/toml-json': typeof TomlJsonRoute
   '/top': typeof TopRoute
   '/totp': typeof TotpRoute
+  '/transfer-speed': typeof TransferSpeedRoute
   '/transparent-image': typeof TransparentImageRoute
   '/truth-table': typeof TruthTableRoute
   '/typing-speed': typeof TypingSpeedRoute
@@ -2534,6 +2552,7 @@ export interface FileRouteTypes {
     | '/encoding'
     | '/entropy'
     | '/env-parser'
+    | '/exif-viewer'
     | '/fancy-text'
     | '/favicon-generator'
     | '/fraction'
@@ -2676,6 +2695,7 @@ export interface FileRouteTypes {
     | '/toml-json'
     | '/top'
     | '/totp'
+    | '/transfer-speed'
     | '/transparent-image'
     | '/truth-table'
     | '/typing-speed'
@@ -2805,6 +2825,7 @@ export interface FileRouteTypes {
     | '/encoding'
     | '/entropy'
     | '/env-parser'
+    | '/exif-viewer'
     | '/fancy-text'
     | '/favicon-generator'
     | '/fraction'
@@ -2947,6 +2968,7 @@ export interface FileRouteTypes {
     | '/toml-json'
     | '/top'
     | '/totp'
+    | '/transfer-speed'
     | '/transparent-image'
     | '/truth-table'
     | '/typing-speed'
@@ -3076,6 +3098,7 @@ export interface FileRouteTypes {
     | '/encoding'
     | '/entropy'
     | '/env-parser'
+    | '/exif-viewer'
     | '/fancy-text'
     | '/favicon-generator'
     | '/fraction'
@@ -3218,6 +3241,7 @@ export interface FileRouteTypes {
     | '/toml-json'
     | '/top'
     | '/totp'
+    | '/transfer-speed'
     | '/transparent-image'
     | '/truth-table'
     | '/typing-speed'
@@ -3348,6 +3372,7 @@ export interface RootRouteChildren {
   EncodingRoute: typeof EncodingRoute
   EntropyRoute: typeof EntropyRoute
   EnvParserRoute: typeof EnvParserRoute
+  ExifViewerRoute: typeof ExifViewerRoute
   FancyTextRoute: typeof FancyTextRoute
   FaviconGeneratorRoute: typeof FaviconGeneratorRoute
   FractionRoute: typeof FractionRoute
@@ -3490,6 +3515,7 @@ export interface RootRouteChildren {
   TomlJsonRoute: typeof TomlJsonRoute
   TopRoute: typeof TopRoute
   TotpRoute: typeof TotpRoute
+  TransferSpeedRoute: typeof TransferSpeedRoute
   TransparentImageRoute: typeof TransparentImageRoute
   TruthTableRoute: typeof TruthTableRoute
   TypingSpeedRoute: typeof TypingSpeedRoute
@@ -3744,6 +3770,13 @@ declare module '@tanstack/react-router' {
       path: '/transparent-image'
       fullPath: '/transparent-image'
       preLoaderRoute: typeof TransparentImageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/transfer-speed': {
+      id: '/transfer-speed'
+      path: '/transfer-speed'
+      fullPath: '/transfer-speed'
+      preLoaderRoute: typeof TransferSpeedRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/totp': {
@@ -4740,6 +4773,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FancyTextRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/exif-viewer': {
+      id: '/exif-viewer'
+      path: '/exif-viewer'
+      fullPath: '/exif-viewer'
+      preLoaderRoute: typeof ExifViewerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/env-parser': {
       id: '/env-parser'
       path: '/env-parser'
@@ -5508,6 +5548,7 @@ const rootRouteChildren: RootRouteChildren = {
   EncodingRoute: EncodingRoute,
   EntropyRoute: EntropyRoute,
   EnvParserRoute: EnvParserRoute,
+  ExifViewerRoute: ExifViewerRoute,
   FancyTextRoute: FancyTextRoute,
   FaviconGeneratorRoute: FaviconGeneratorRoute,
   FractionRoute: FractionRoute,
@@ -5650,6 +5691,7 @@ const rootRouteChildren: RootRouteChildren = {
   TomlJsonRoute: TomlJsonRoute,
   TopRoute: TopRoute,
   TotpRoute: TotpRoute,
+  TransferSpeedRoute: TransferSpeedRoute,
   TransparentImageRoute: TransparentImageRoute,
   TruthTableRoute: TruthTableRoute,
   TypingSpeedRoute: TypingSpeedRoute,
