@@ -40,6 +40,7 @@ import { Route as UnicodeRouteImport } from './routes/unicode'
 import { Route as UlidRouteImport } from './routes/ulid'
 import { Route as TypographyScaleRouteImport } from './routes/typography-scale'
 import { Route as TypingSpeedRouteImport } from './routes/typing-speed'
+import { Route as TsconfigBuilderRouteImport } from './routes/tsconfig-builder'
 import { Route as TruthTableRouteImport } from './routes/truth-table'
 import { Route as TransparentImageRouteImport } from './routes/transparent-image'
 import { Route as TransferSpeedRouteImport } from './routes/transfer-speed'
@@ -442,6 +443,11 @@ const TypographyScaleRoute = TypographyScaleRouteImport.update({
 const TypingSpeedRoute = TypingSpeedRouteImport.update({
   id: '/typing-speed',
   path: '/typing-speed',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TsconfigBuilderRoute = TsconfigBuilderRouteImport.update({
+  id: '/tsconfig-builder',
+  path: '/tsconfig-builder',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TruthTableRoute = TruthTableRouteImport.update({
@@ -1930,6 +1936,7 @@ export interface FileRoutesByFullPath {
   '/transfer-speed': typeof TransferSpeedRoute
   '/transparent-image': typeof TransparentImageRoute
   '/truth-table': typeof TruthTableRoute
+  '/tsconfig-builder': typeof TsconfigBuilderRoute
   '/typing-speed': typeof TypingSpeedRoute
   '/typography-scale': typeof TypographyScaleRoute
   '/ulid': typeof UlidRoute
@@ -2211,6 +2218,7 @@ export interface FileRoutesByTo {
   '/transfer-speed': typeof TransferSpeedRoute
   '/transparent-image': typeof TransparentImageRoute
   '/truth-table': typeof TruthTableRoute
+  '/tsconfig-builder': typeof TsconfigBuilderRoute
   '/typing-speed': typeof TypingSpeedRoute
   '/typography-scale': typeof TypographyScaleRoute
   '/ulid': typeof UlidRoute
@@ -2493,6 +2501,7 @@ export interface FileRoutesById {
   '/transfer-speed': typeof TransferSpeedRoute
   '/transparent-image': typeof TransparentImageRoute
   '/truth-table': typeof TruthTableRoute
+  '/tsconfig-builder': typeof TsconfigBuilderRoute
   '/typing-speed': typeof TypingSpeedRoute
   '/typography-scale': typeof TypographyScaleRoute
   '/ulid': typeof UlidRoute
@@ -2776,6 +2785,7 @@ export interface FileRouteTypes {
     | '/transfer-speed'
     | '/transparent-image'
     | '/truth-table'
+    | '/tsconfig-builder'
     | '/typing-speed'
     | '/typography-scale'
     | '/ulid'
@@ -3057,6 +3067,7 @@ export interface FileRouteTypes {
     | '/transfer-speed'
     | '/transparent-image'
     | '/truth-table'
+    | '/tsconfig-builder'
     | '/typing-speed'
     | '/typography-scale'
     | '/ulid'
@@ -3338,6 +3349,7 @@ export interface FileRouteTypes {
     | '/transfer-speed'
     | '/transparent-image'
     | '/truth-table'
+    | '/tsconfig-builder'
     | '/typing-speed'
     | '/typography-scale'
     | '/ulid'
@@ -3620,6 +3632,7 @@ export interface RootRouteChildren {
   TransferSpeedRoute: typeof TransferSpeedRoute
   TransparentImageRoute: typeof TransparentImageRoute
   TruthTableRoute: typeof TruthTableRoute
+  TsconfigBuilderRoute: typeof TsconfigBuilderRoute
   TypingSpeedRoute: typeof TypingSpeedRoute
   TypographyScaleRoute: typeof TypographyScaleRoute
   UlidRoute: typeof UlidRoute
@@ -3874,6 +3887,13 @@ declare module '@tanstack/react-router' {
       path: '/typing-speed'
       fullPath: '/typing-speed'
       preLoaderRoute: typeof TypingSpeedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tsconfig-builder': {
+      id: '/tsconfig-builder'
+      path: '/tsconfig-builder'
+      fullPath: '/tsconfig-builder'
+      preLoaderRoute: typeof TsconfigBuilderRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/truth-table': {
@@ -5860,6 +5880,7 @@ const rootRouteChildren: RootRouteChildren = {
   TransferSpeedRoute: TransferSpeedRoute,
   TransparentImageRoute: TransparentImageRoute,
   TruthTableRoute: TruthTableRoute,
+  TsconfigBuilderRoute: TsconfigBuilderRoute,
   TypingSpeedRoute: TypingSpeedRoute,
   TypographyScaleRoute: TypographyScaleRoute,
   UlidRoute: UlidRoute,
