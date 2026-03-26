@@ -1152,6 +1152,12 @@ const toolCatalog: ToolCategory[] = [
           "色温度（ケルビン）をRGB・HEXカラーに変換するツール。ろうそく・白熱灯・昼光色などのプリセットで照明や写真の色味を視覚的に確認できます。",
         icon: "🌡️",
       },
+      {
+        path: "/tailwind-colors",
+        label: "Tailwind CSS カラー",
+        description: "Tailwind CSS v3の全カラーパレットを一覧表示。カラー名・HEX値で検索・フィルタリングし、任意のHEXコードに最も近いTailwindカラーを検索。クリックでクラス名をコピー。",
+        icon: "🎨",
+      },
     ],
   },
   {

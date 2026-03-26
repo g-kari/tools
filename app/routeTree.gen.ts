@@ -60,6 +60,7 @@ import { Route as TextBinaryRouteImport } from './routes/text-binary'
 import { Route as TetrisRouteImport } from './routes/tetris'
 import { Route as TemplateRouteImport } from './routes/template'
 import { Route as TaxCalculatorRouteImport } from './routes/tax-calculator'
+import { Route as TailwindColorsRouteImport } from './routes/tailwind-colors'
 import { Route as SvgOptimizerRouteImport } from './routes/svg-optimizer'
 import { Route as SudokuRouteImport } from './routes/sudoku'
 import { Route as StringSimilarityRouteImport } from './routes/string-similarity'
@@ -73,6 +74,7 @@ import { Route as SqlToTsRouteImport } from './routes/sql-to-ts'
 import { Route as SqlRouteImport } from './routes/sql'
 import { Route as SnakeRouteImport } from './routes/snake'
 import { Route as SlugRouteImport } from './routes/slug'
+import { Route as SitemapRouteImport } from './routes/sitemap'
 import { Route as ShortCodeRouteImport } from './routes/short-code'
 import { Route as ServerEnvRouteImport } from './routes/server-env'
 import { Route as SequencesRouteImport } from './routes/sequences'
@@ -538,6 +540,11 @@ const TaxCalculatorRoute = TaxCalculatorRouteImport.update({
   path: '/tax-calculator',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TailwindColorsRoute = TailwindColorsRouteImport.update({
+  id: '/tailwind-colors',
+  path: '/tailwind-colors',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SvgOptimizerRoute = SvgOptimizerRouteImport.update({
   id: '/svg-optimizer',
   path: '/svg-optimizer',
@@ -601,6 +608,11 @@ const SnakeRoute = SnakeRouteImport.update({
 const SlugRoute = SlugRouteImport.update({
   id: '/slug',
   path: '/slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapRoute = SitemapRouteImport.update({
+  id: '/sitemap',
+  path: '/sitemap',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ShortCodeRoute = ShortCodeRouteImport.update({
@@ -1855,6 +1867,7 @@ export interface FileRoutesByFullPath {
   '/sequences': typeof SequencesRoute
   '/server-env': typeof ServerEnvRoute
   '/short-code': typeof ShortCodeRoute
+  '/sitemap': typeof SitemapRoute
   '/slug': typeof SlugRoute
   '/snake': typeof SnakeRoute
   '/sql': typeof SqlRoute
@@ -1868,6 +1881,7 @@ export interface FileRoutesByFullPath {
   '/string-similarity': typeof StringSimilarityRoute
   '/sudoku': typeof SudokuRoute
   '/svg-optimizer': typeof SvgOptimizerRoute
+  '/tailwind-colors': typeof TailwindColorsRoute
   '/tax-calculator': typeof TaxCalculatorRoute
   '/template': typeof TemplateRoute
   '/tetris': typeof TetrisRoute
@@ -2130,6 +2144,7 @@ export interface FileRoutesByTo {
   '/sequences': typeof SequencesRoute
   '/server-env': typeof ServerEnvRoute
   '/short-code': typeof ShortCodeRoute
+  '/sitemap': typeof SitemapRoute
   '/slug': typeof SlugRoute
   '/snake': typeof SnakeRoute
   '/sql': typeof SqlRoute
@@ -2143,6 +2158,7 @@ export interface FileRoutesByTo {
   '/string-similarity': typeof StringSimilarityRoute
   '/sudoku': typeof SudokuRoute
   '/svg-optimizer': typeof SvgOptimizerRoute
+  '/tailwind-colors': typeof TailwindColorsRoute
   '/tax-calculator': typeof TaxCalculatorRoute
   '/template': typeof TemplateRoute
   '/tetris': typeof TetrisRoute
@@ -2406,6 +2422,7 @@ export interface FileRoutesById {
   '/sequences': typeof SequencesRoute
   '/server-env': typeof ServerEnvRoute
   '/short-code': typeof ShortCodeRoute
+  '/sitemap': typeof SitemapRoute
   '/slug': typeof SlugRoute
   '/snake': typeof SnakeRoute
   '/sql': typeof SqlRoute
@@ -2419,6 +2436,7 @@ export interface FileRoutesById {
   '/string-similarity': typeof StringSimilarityRoute
   '/sudoku': typeof SudokuRoute
   '/svg-optimizer': typeof SvgOptimizerRoute
+  '/tailwind-colors': typeof TailwindColorsRoute
   '/tax-calculator': typeof TaxCalculatorRoute
   '/template': typeof TemplateRoute
   '/tetris': typeof TetrisRoute
@@ -2683,6 +2701,7 @@ export interface FileRouteTypes {
     | '/sequences'
     | '/server-env'
     | '/short-code'
+    | '/sitemap'
     | '/slug'
     | '/snake'
     | '/sql'
@@ -2696,6 +2715,7 @@ export interface FileRouteTypes {
     | '/string-similarity'
     | '/sudoku'
     | '/svg-optimizer'
+    | '/tailwind-colors'
     | '/tax-calculator'
     | '/template'
     | '/tetris'
@@ -2958,6 +2978,7 @@ export interface FileRouteTypes {
     | '/sequences'
     | '/server-env'
     | '/short-code'
+    | '/sitemap'
     | '/slug'
     | '/snake'
     | '/sql'
@@ -2971,6 +2992,7 @@ export interface FileRouteTypes {
     | '/string-similarity'
     | '/sudoku'
     | '/svg-optimizer'
+    | '/tailwind-colors'
     | '/tax-calculator'
     | '/template'
     | '/tetris'
@@ -3233,6 +3255,7 @@ export interface FileRouteTypes {
     | '/sequences'
     | '/server-env'
     | '/short-code'
+    | '/sitemap'
     | '/slug'
     | '/snake'
     | '/sql'
@@ -3246,6 +3269,7 @@ export interface FileRouteTypes {
     | '/string-similarity'
     | '/sudoku'
     | '/svg-optimizer'
+    | '/tailwind-colors'
     | '/tax-calculator'
     | '/template'
     | '/tetris'
@@ -3509,6 +3533,7 @@ export interface RootRouteChildren {
   SequencesRoute: typeof SequencesRoute
   ServerEnvRoute: typeof ServerEnvRoute
   ShortCodeRoute: typeof ShortCodeRoute
+  SitemapRoute: typeof SitemapRoute
   SlugRoute: typeof SlugRoute
   SnakeRoute: typeof SnakeRoute
   SqlRoute: typeof SqlRoute
@@ -3522,6 +3547,7 @@ export interface RootRouteChildren {
   StringSimilarityRoute: typeof StringSimilarityRoute
   SudokuRoute: typeof SudokuRoute
   SvgOptimizerRoute: typeof SvgOptimizerRoute
+  TailwindColorsRoute: typeof TailwindColorsRoute
   TaxCalculatorRoute: typeof TaxCalculatorRoute
   TemplateRoute: typeof TemplateRoute
   TetrisRoute: typeof TetrisRoute
@@ -3938,6 +3964,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TaxCalculatorRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tailwind-colors': {
+      id: '/tailwind-colors'
+      path: '/tailwind-colors'
+      fullPath: '/tailwind-colors'
+      preLoaderRoute: typeof TailwindColorsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/svg-optimizer': {
       id: '/svg-optimizer'
       path: '/svg-optimizer'
@@ -4027,6 +4060,13 @@ declare module '@tanstack/react-router' {
       path: '/slug'
       fullPath: '/slug'
       preLoaderRoute: typeof SlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap': {
+      id: '/sitemap'
+      path: '/sitemap'
+      fullPath: '/sitemap'
+      preLoaderRoute: typeof SitemapRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/short-code': {
@@ -5701,6 +5741,7 @@ const rootRouteChildren: RootRouteChildren = {
   SequencesRoute: SequencesRoute,
   ServerEnvRoute: ServerEnvRoute,
   ShortCodeRoute: ShortCodeRoute,
+  SitemapRoute: SitemapRoute,
   SlugRoute: SlugRoute,
   SnakeRoute: SnakeRoute,
   SqlRoute: SqlRoute,
@@ -5714,6 +5755,7 @@ const rootRouteChildren: RootRouteChildren = {
   StringSimilarityRoute: StringSimilarityRoute,
   SudokuRoute: SudokuRoute,
   SvgOptimizerRoute: SvgOptimizerRoute,
+  TailwindColorsRoute: TailwindColorsRoute,
   TaxCalculatorRoute: TaxCalculatorRoute,
   TemplateRoute: TemplateRoute,
   TetrisRoute: TetrisRoute,
