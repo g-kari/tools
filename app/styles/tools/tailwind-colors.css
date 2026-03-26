@@ -1,0 +1,300 @@
+/* Tailwind CSS カラーリファレンス */
+
+.twc-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* 検索セクション */
+.twc-search-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.twc-search-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.twc-search-input {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-size: 0.9375rem;
+  border-radius: 0;
+  width: 100%;
+  max-width: 28rem;
+}
+
+.twc-search-input:focus {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 1px;
+  border-color: var(--md-sys-color-primary);
+}
+
+.twc-search-hint {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* 最近似色セクション */
+.twc-nearest-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 0;
+}
+
+.twc-nearest-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+  margin: 0;
+}
+
+.twc-nearest-input-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.twc-nearest-input {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-size: 0.9375rem;
+  font-family: "JetBrains Mono", "Space Mono", "Courier New", monospace;
+  border-radius: 0;
+  width: 10rem;
+}
+
+.twc-nearest-input:focus {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 1px;
+  border-color: var(--md-sys-color-primary);
+}
+
+.twc-nearest-input--error {
+  border-color: var(--md-sys-color-error);
+}
+
+.twc-nearest-input--error:focus {
+  outline-color: var(--md-sys-color-error);
+  border-color: var(--md-sys-color-error);
+}
+
+.twc-nearest-error {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-error);
+}
+
+.twc-nearest-result {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: var(--md-sys-color-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 0;
+  flex-wrap: wrap;
+}
+
+.twc-nearest-swatch-preview {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 4px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  flex-shrink: 0;
+}
+
+.twc-nearest-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.twc-nearest-class {
+  font-family: "JetBrains Mono", "Space Mono", "Courier New", monospace;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+}
+
+.twc-nearest-hex {
+  font-family: "JetBrains Mono", "Space Mono", "Courier New", monospace;
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.twc-nearest-copy-btn {
+  margin-left: auto;
+}
+
+.twc-nearest-placeholder {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-style: italic;
+}
+
+/* カラーグリッド */
+.twc-color-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.twc-no-results {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  padding: 1rem 0;
+  text-align: center;
+}
+
+/* カラー行 */
+.twc-color-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.twc-color-name {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  text-align: right;
+  width: 4.5rem;
+  flex-shrink: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* シェードコンテナ */
+.twc-shades {
+  display: flex;
+  gap: 2px;
+  flex-wrap: nowrap;
+  flex: 1;
+  min-width: 0;
+}
+
+/* 個別スウォッチ */
+.twc-swatch {
+  position: relative;
+  cursor: pointer;
+  flex: 1;
+  min-width: 28px;
+  max-width: 52px;
+}
+
+.twc-swatch:focus {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.twc-swatch-inner {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 3px;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  border: 1px solid transparent;
+}
+
+.twc-swatch:hover .twc-swatch-inner {
+  transform: scaleY(1.15);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.twc-swatch-info {
+  font-size: 0.5625rem;
+  color: var(--md-sys-color-on-surface-variant);
+  text-align: center;
+  margin-top: 2px;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ハイライト（最近似色）*/
+.twc-swatch--highlight .twc-swatch-inner {
+  transform: scaleY(1.2);
+  box-shadow: 0 0 0 2px var(--md-sys-color-primary), 0 2px 8px rgba(0, 0, 0, 0.3);
+  border-color: var(--md-sys-color-primary);
+  border-radius: 3px;
+}
+
+/* ツールチップ */
+.twc-swatch-tooltip {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--md-sys-color-inverse-surface);
+  color: var(--md-sys-color-inverse-on-surface);
+  font-family: "JetBrains Mono", "Space Mono", "Courier New", monospace;
+  font-size: 0.6875rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.twc-swatch-tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 4px solid transparent;
+  border-top-color: var(--md-sys-color-inverse-surface);
+}
+
+.twc-swatch:hover .twc-swatch-tooltip {
+  display: block;
+}
+
+/* モバイル対応 */
+@media (max-width: 640px) {
+  .twc-color-name {
+    width: 3.5rem;
+    font-size: 0.6875rem;
+  }
+
+  .twc-swatch {
+    min-width: 20px;
+  }
+
+  .twc-swatch-info {
+    font-size: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .twc-color-name {
+    width: 3rem;
+    font-size: 0.625rem;
+  }
+
+  .twc-swatch {
+    min-width: 16px;
+  }
+
+  .twc-swatch-info {
+    display: none;
+  }
+}
