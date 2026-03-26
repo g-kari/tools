@@ -2,12 +2,17 @@ import { useEffect } from 'react';
 import { ADSENSE_PUBLISHER_ID } from '../constants/site';
 
 /**
+ * Google AdSense のコマンド引数型
+ * push({}) で初期化する際に使用する
+ */
+type AdSenseCommand = Record<string, unknown>;
+
+/**
  * window.adsbygoogle の型定義
  */
 declare global {
   interface Window {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    adsbygoogle: any[];
+    adsbygoogle: AdSenseCommand[];
   }
 }
 
