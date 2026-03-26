@@ -714,6 +714,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🚫",
       },
       {
+        path: "/editorconfig",
+        label: "EditorConfigジェネレーター",
+        description:
+          "インデント・改行コード・文字エンコードを設定して .editorconfig ファイルを自動生成。Python・Go・Webフロントエンドなどのプリセットとファイルタイプ別オーバーライドに対応。",
+        icon: "⚙️",
+      },
+      {
         path: "/robots-txt",
         label: "robots.txtジェネレーター",
         description:
