@@ -146,3 +146,29 @@
   border-radius: 3px;
   color: var(--on-surface);
 }
+
+.pkce-fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pkce-legend {
+  font-size: var(--text-sm);
+}
+
+.pkce-challenge-actions {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.pkce-verify-section {
+  margin-top: var(--space-8);
+}
+
+.pkce-verify-desc {
+  font-size: var(--text-sm);
+  color: var(--on-surface-variant);
+  margin-bottom: var(--space-4);
+}

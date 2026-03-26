@@ -445,7 +445,7 @@ function IEEE754Visualizer() {
           {/* HEX表現 */}
           <div className="f754-info-card">
             <div className="f754-info-card-title">16進数 (HEX)</div>
-            <div className="f754-info-value" style={{ fontSize: 'var(--text-base)' }}>
+            <div className="f754-info-value f754-info-value-base">
               0x{result.hexRepresentation}
             </div>
             <div className="f754-info-sub">{result.binaryRepresentation.length} bits</div>
@@ -508,8 +508,7 @@ function IEEE754Visualizer() {
                 <span className="f754-breakdown-label">ビット列</span>
                 <div className="f754-breakdown-content">
                   <span
-                    className="f754-breakdown-bits"
-                    style={{ wordBreak: 'break-all', fontSize: 'var(--text-xs)' }}
+                    className="f754-breakdown-bits f754-breakdown-bits-xs"
                   >
                     {result.mantissaBits.slice(0, 24).join('')}
                     {result.mantissaBits.length > 24 ? '...' : ''}
@@ -535,7 +534,7 @@ function IEEE754Visualizer() {
             <div className="f754-info-card-title">数式表現</div>
             <div className="f754-formula">{formula}</div>
             {!result.isNaN && !result.isInfinity && !result.isZero && (
-              <div className="f754-info-sub" style={{ marginTop: 'var(--space-2)' }}>
+              <div className="f754-info-sub f754-info-sub-mt2">
                 (-1)^{result.signBit} × 2^{result.exponentActual} ×{' '}
                 {result.isSubnormal ? '0' : '1'}.fraction
               </div>

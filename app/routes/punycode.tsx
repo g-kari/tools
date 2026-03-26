@@ -352,10 +352,9 @@ function LabelRow({ label, onCopy }: LabelRowProps) {
         {label.changed && (
           <button
             type="button"
-            className="pny-copy-btn"
+            className="pny-copy-btn pny-copy-btn-ml"
             onClick={() => onCopy(label.converted, label.original)}
             aria-label={`${label.original} の変換結果をコピー`}
-            style={{ marginLeft: '0.5rem' }}
           >
             コピー
           </button>

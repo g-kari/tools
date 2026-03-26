@@ -445,7 +445,7 @@ function CssClampTool() {
         </ul>
         <details>
           <summary>計算式</summary>
-          <div className="cfc-formula" style={{ marginTop: "0.5rem" }}>
+          <div className="cfc-formula">
             <div className="cfc-formula-code">
               slope = (maxValue - minValue) / (maxVp - minVp)
               <br />

@@ -173,8 +173,8 @@ function PkceGenerator() {
             <div className="converter-section">
               <div className="pkce-options-row">
                 {/* バイト長 */}
-                <fieldset style={{ border: "none", padding: 0, margin: 0 }}>
-                  <legend className="section-title" style={{ fontSize: "0.875rem" }}>
+                <fieldset className="pkce-fieldset">
+                  <legend className="section-title pkce-legend">
                     code_verifier の長さ
                   </legend>
                   <div
@@ -199,8 +199,8 @@ function PkceGenerator() {
                 </fieldset>
 
                 {/* メソッド */}
-                <fieldset style={{ border: "none", padding: 0, margin: 0 }}>
-                  <legend className="section-title" style={{ fontSize: "0.875rem" }}>
+                <fieldset className="pkce-fieldset">
+                  <legend className="section-title pkce-legend">
                     code_challenge_method
                   </legend>
                   <div
@@ -296,7 +296,7 @@ function PkceGenerator() {
                   <div className="pkce-result-item">
                     <div className="pkce-result-header">
                       <span className="pkce-result-label">code_challenge</span>
-                      <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+                      <div className="pkce-challenge-actions">
                         <span
                           className={`pkce-method-badge${method === "plain" ? " plain" : ""}`}
                           aria-label={`メソッド: ${method}`}
@@ -337,11 +337,11 @@ function PkceGenerator() {
         </section>
 
         {/* 検証セクション */}
-        <section aria-labelledby="verify-section-title" style={{ marginTop: "2rem" }}>
+        <section aria-labelledby="verify-section-title" className="pkce-verify-section">
           <h2 id="verify-section-title" className="section-title">
             code_verifier から code_challenge を計算
           </h2>
-          <p style={{ fontSize: "0.875rem", color: "var(--on-surface-variant)", marginBottom: "1rem" }}>
+          <p className="pkce-verify-desc">
             既存の code_verifier を貼り付けて、対応する code_challenge（S256）を確認できます。
           </p>
           <form
@@ -349,7 +349,7 @@ function PkceGenerator() {
             aria-label="code_verifier 検証フォーム"
           >
             <div className="converter-section">
-              <label htmlFor="verifier-input" className="section-title" style={{ fontSize: "0.875rem" }}>
+              <label htmlFor="verifier-input" className="section-title pkce-legend">
                 code_verifier を入力
               </label>
               <Textarea
