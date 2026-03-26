@@ -40,6 +40,7 @@ import { Route as UnicodeRouteImport } from './routes/unicode'
 import { Route as UlidRouteImport } from './routes/ulid'
 import { Route as TypographyScaleRouteImport } from './routes/typography-scale'
 import { Route as TypingSpeedRouteImport } from './routes/typing-speed'
+import { Route as TsconfigBuilderRouteImport } from './routes/tsconfig-builder'
 import { Route as TruthTableRouteImport } from './routes/truth-table'
 import { Route as TransparentImageRouteImport } from './routes/transparent-image'
 import { Route as TransferSpeedRouteImport } from './routes/transfer-speed'
@@ -180,6 +181,7 @@ import { Route as GlobalIpRouteImport } from './routes/global-ip'
 import { Route as GlobTesterRouteImport } from './routes/glob-tester'
 import { Route as GitignoreRouteImport } from './routes/gitignore'
 import { Route as GithubBadgeRouteImport } from './routes/github-badge'
+import { Route as GitattributesRouteImport } from './routes/gitattributes'
 import { Route as GeometryRouteImport } from './routes/geometry'
 import { Route as GeohashRouteImport } from './routes/geohash'
 import { Route as Game2048RouteImport } from './routes/game-2048'
@@ -195,6 +197,7 @@ import { Route as EncodeChainRouteImport } from './routes/encode-chain'
 import { Route as EmojiConverterRouteImport } from './routes/emoji-converter'
 import { Route as EmailHeaderRouteImport } from './routes/email-header'
 import { Route as EmailDnsRouteImport } from './routes/email-dns'
+import { Route as EditorconfigRouteImport } from './routes/editorconfig'
 import { Route as DurationRouteImport } from './routes/duration'
 import { Route as DummyImageRouteImport } from './routes/dummy-image'
 import { Route as DummyAudioRouteImport } from './routes/dummy-audio'
@@ -440,6 +443,11 @@ const TypographyScaleRoute = TypographyScaleRouteImport.update({
 const TypingSpeedRoute = TypingSpeedRouteImport.update({
   id: '/typing-speed',
   path: '/typing-speed',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TsconfigBuilderRoute = TsconfigBuilderRouteImport.update({
+  id: '/tsconfig-builder',
+  path: '/tsconfig-builder',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TruthTableRoute = TruthTableRouteImport.update({
@@ -1142,6 +1150,11 @@ const GithubBadgeRoute = GithubBadgeRouteImport.update({
   path: '/github-badge',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GitattributesRoute = GitattributesRouteImport.update({
+  id: '/gitattributes',
+  path: '/gitattributes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GeometryRoute = GeometryRouteImport.update({
   id: '/geometry',
   path: '/geometry',
@@ -1215,6 +1228,11 @@ const EmailHeaderRoute = EmailHeaderRouteImport.update({
 const EmailDnsRoute = EmailDnsRouteImport.update({
   id: '/email-dns',
   path: '/email-dns',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EditorconfigRoute = EditorconfigRouteImport.update({
+  id: '/editorconfig',
+  path: '/editorconfig',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DurationRoute = DurationRouteImport.update({
@@ -1761,6 +1779,7 @@ export interface FileRoutesByFullPath {
   '/dummy-audio': typeof DummyAudioRoute
   '/dummy-image': typeof DummyImageRoute
   '/duration': typeof DurationRoute
+  '/editorconfig': typeof EditorconfigRoute
   '/email-dns': typeof EmailDnsRoute
   '/email-header': typeof EmailHeaderRoute
   '/emoji-converter': typeof EmojiConverterRoute
@@ -1776,6 +1795,7 @@ export interface FileRoutesByFullPath {
   '/game-2048': typeof Game2048Route
   '/geohash': typeof GeohashRoute
   '/geometry': typeof GeometryRoute
+  '/gitattributes': typeof GitattributesRoute
   '/github-badge': typeof GithubBadgeRoute
   '/gitignore': typeof GitignoreRoute
   '/glob-tester': typeof GlobTesterRoute
@@ -1916,6 +1936,7 @@ export interface FileRoutesByFullPath {
   '/transfer-speed': typeof TransferSpeedRoute
   '/transparent-image': typeof TransparentImageRoute
   '/truth-table': typeof TruthTableRoute
+  '/tsconfig-builder': typeof TsconfigBuilderRoute
   '/typing-speed': typeof TypingSpeedRoute
   '/typography-scale': typeof TypographyScaleRoute
   '/ulid': typeof UlidRoute
@@ -2040,6 +2061,7 @@ export interface FileRoutesByTo {
   '/dummy-audio': typeof DummyAudioRoute
   '/dummy-image': typeof DummyImageRoute
   '/duration': typeof DurationRoute
+  '/editorconfig': typeof EditorconfigRoute
   '/email-dns': typeof EmailDnsRoute
   '/email-header': typeof EmailHeaderRoute
   '/emoji-converter': typeof EmojiConverterRoute
@@ -2055,6 +2077,7 @@ export interface FileRoutesByTo {
   '/game-2048': typeof Game2048Route
   '/geohash': typeof GeohashRoute
   '/geometry': typeof GeometryRoute
+  '/gitattributes': typeof GitattributesRoute
   '/github-badge': typeof GithubBadgeRoute
   '/gitignore': typeof GitignoreRoute
   '/glob-tester': typeof GlobTesterRoute
@@ -2195,6 +2218,7 @@ export interface FileRoutesByTo {
   '/transfer-speed': typeof TransferSpeedRoute
   '/transparent-image': typeof TransparentImageRoute
   '/truth-table': typeof TruthTableRoute
+  '/tsconfig-builder': typeof TsconfigBuilderRoute
   '/typing-speed': typeof TypingSpeedRoute
   '/typography-scale': typeof TypographyScaleRoute
   '/ulid': typeof UlidRoute
@@ -2320,6 +2344,7 @@ export interface FileRoutesById {
   '/dummy-audio': typeof DummyAudioRoute
   '/dummy-image': typeof DummyImageRoute
   '/duration': typeof DurationRoute
+  '/editorconfig': typeof EditorconfigRoute
   '/email-dns': typeof EmailDnsRoute
   '/email-header': typeof EmailHeaderRoute
   '/emoji-converter': typeof EmojiConverterRoute
@@ -2335,6 +2360,7 @@ export interface FileRoutesById {
   '/game-2048': typeof Game2048Route
   '/geohash': typeof GeohashRoute
   '/geometry': typeof GeometryRoute
+  '/gitattributes': typeof GitattributesRoute
   '/github-badge': typeof GithubBadgeRoute
   '/gitignore': typeof GitignoreRoute
   '/glob-tester': typeof GlobTesterRoute
@@ -2475,6 +2501,7 @@ export interface FileRoutesById {
   '/transfer-speed': typeof TransferSpeedRoute
   '/transparent-image': typeof TransparentImageRoute
   '/truth-table': typeof TruthTableRoute
+  '/tsconfig-builder': typeof TsconfigBuilderRoute
   '/typing-speed': typeof TypingSpeedRoute
   '/typography-scale': typeof TypographyScaleRoute
   '/ulid': typeof UlidRoute
@@ -2601,6 +2628,7 @@ export interface FileRouteTypes {
     | '/dummy-audio'
     | '/dummy-image'
     | '/duration'
+    | '/editorconfig'
     | '/email-dns'
     | '/email-header'
     | '/emoji-converter'
@@ -2616,6 +2644,7 @@ export interface FileRouteTypes {
     | '/game-2048'
     | '/geohash'
     | '/geometry'
+    | '/gitattributes'
     | '/github-badge'
     | '/gitignore'
     | '/glob-tester'
@@ -2756,6 +2785,7 @@ export interface FileRouteTypes {
     | '/transfer-speed'
     | '/transparent-image'
     | '/truth-table'
+    | '/tsconfig-builder'
     | '/typing-speed'
     | '/typography-scale'
     | '/ulid'
@@ -2880,6 +2910,7 @@ export interface FileRouteTypes {
     | '/dummy-audio'
     | '/dummy-image'
     | '/duration'
+    | '/editorconfig'
     | '/email-dns'
     | '/email-header'
     | '/emoji-converter'
@@ -2895,6 +2926,7 @@ export interface FileRouteTypes {
     | '/game-2048'
     | '/geohash'
     | '/geometry'
+    | '/gitattributes'
     | '/github-badge'
     | '/gitignore'
     | '/glob-tester'
@@ -3035,6 +3067,7 @@ export interface FileRouteTypes {
     | '/transfer-speed'
     | '/transparent-image'
     | '/truth-table'
+    | '/tsconfig-builder'
     | '/typing-speed'
     | '/typography-scale'
     | '/ulid'
@@ -3159,6 +3192,7 @@ export interface FileRouteTypes {
     | '/dummy-audio'
     | '/dummy-image'
     | '/duration'
+    | '/editorconfig'
     | '/email-dns'
     | '/email-header'
     | '/emoji-converter'
@@ -3174,6 +3208,7 @@ export interface FileRouteTypes {
     | '/game-2048'
     | '/geohash'
     | '/geometry'
+    | '/gitattributes'
     | '/github-badge'
     | '/gitignore'
     | '/glob-tester'
@@ -3314,6 +3349,7 @@ export interface FileRouteTypes {
     | '/transfer-speed'
     | '/transparent-image'
     | '/truth-table'
+    | '/tsconfig-builder'
     | '/typing-speed'
     | '/typography-scale'
     | '/ulid'
@@ -3439,6 +3475,7 @@ export interface RootRouteChildren {
   DummyAudioRoute: typeof DummyAudioRoute
   DummyImageRoute: typeof DummyImageRoute
   DurationRoute: typeof DurationRoute
+  EditorconfigRoute: typeof EditorconfigRoute
   EmailDnsRoute: typeof EmailDnsRoute
   EmailHeaderRoute: typeof EmailHeaderRoute
   EmojiConverterRoute: typeof EmojiConverterRoute
@@ -3454,6 +3491,7 @@ export interface RootRouteChildren {
   Game2048Route: typeof Game2048Route
   GeohashRoute: typeof GeohashRoute
   GeometryRoute: typeof GeometryRoute
+  GitattributesRoute: typeof GitattributesRoute
   GithubBadgeRoute: typeof GithubBadgeRoute
   GitignoreRoute: typeof GitignoreRoute
   GlobTesterRoute: typeof GlobTesterRoute
@@ -3594,6 +3632,7 @@ export interface RootRouteChildren {
   TransferSpeedRoute: typeof TransferSpeedRoute
   TransparentImageRoute: typeof TransparentImageRoute
   TruthTableRoute: typeof TruthTableRoute
+  TsconfigBuilderRoute: typeof TsconfigBuilderRoute
   TypingSpeedRoute: typeof TypingSpeedRoute
   TypographyScaleRoute: typeof TypographyScaleRoute
   UlidRoute: typeof UlidRoute
@@ -3848,6 +3887,13 @@ declare module '@tanstack/react-router' {
       path: '/typing-speed'
       fullPath: '/typing-speed'
       preLoaderRoute: typeof TypingSpeedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tsconfig-builder': {
+      id: '/tsconfig-builder'
+      path: '/tsconfig-builder'
+      fullPath: '/tsconfig-builder'
+      preLoaderRoute: typeof TsconfigBuilderRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/truth-table': {
@@ -4830,6 +4876,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GithubBadgeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/gitattributes': {
+      id: '/gitattributes'
+      path: '/gitattributes'
+      fullPath: '/gitattributes'
+      preLoaderRoute: typeof GitattributesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/geometry': {
       id: '/geometry'
       path: '/geometry'
@@ -4933,6 +4986,13 @@ declare module '@tanstack/react-router' {
       path: '/email-dns'
       fullPath: '/email-dns'
       preLoaderRoute: typeof EmailDnsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/editorconfig': {
+      id: '/editorconfig'
+      path: '/editorconfig'
+      fullPath: '/editorconfig'
+      preLoaderRoute: typeof EditorconfigRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/duration': {
@@ -5663,6 +5723,7 @@ const rootRouteChildren: RootRouteChildren = {
   DummyAudioRoute: DummyAudioRoute,
   DummyImageRoute: DummyImageRoute,
   DurationRoute: DurationRoute,
+  EditorconfigRoute: EditorconfigRoute,
   EmailDnsRoute: EmailDnsRoute,
   EmailHeaderRoute: EmailHeaderRoute,
   EmojiConverterRoute: EmojiConverterRoute,
@@ -5678,6 +5739,7 @@ const rootRouteChildren: RootRouteChildren = {
   Game2048Route: Game2048Route,
   GeohashRoute: GeohashRoute,
   GeometryRoute: GeometryRoute,
+  GitattributesRoute: GitattributesRoute,
   GithubBadgeRoute: GithubBadgeRoute,
   GitignoreRoute: GitignoreRoute,
   GlobTesterRoute: GlobTesterRoute,
@@ -5818,6 +5880,7 @@ const rootRouteChildren: RootRouteChildren = {
   TransferSpeedRoute: TransferSpeedRoute,
   TransparentImageRoute: TransparentImageRoute,
   TruthTableRoute: TruthTableRoute,
+  TsconfigBuilderRoute: TsconfigBuilderRoute,
   TypingSpeedRoute: TypingSpeedRoute,
   TypographyScaleRoute: TypographyScaleRoute,
   UlidRoute: UlidRoute,

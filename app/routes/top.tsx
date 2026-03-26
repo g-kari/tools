@@ -728,6 +728,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "📝",
       },
       {
+        path: "/tsconfig-builder",
+        label: "tsconfig.jsonビルダー",
+        description:
+          "TypeScript コンパイラオプションをカテゴリ別に選択して tsconfig.json を自動生成。Node.js・Vite・Next.js・ライブラリなどのプリセット対応。strict・module・target・jsx など主要オプションを視覚的に設定。",
+        icon: "🔧",
+      },
+      {
         path: "/robots-txt",
         label: "robots.txtジェネレーター",
         description:
