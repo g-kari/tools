@@ -29,6 +29,7 @@ import { Route as VigenereRouteImport } from './routes/vigenere'
 import { Route as VideoConverterRouteImport } from './routes/video-converter'
 import { Route as UuidInspectorRouteImport } from './routes/uuid-inspector'
 import { Route as UuidRouteImport } from './routes/uuid'
+import { Route as UtmBuilderRouteImport } from './routes/utm-builder'
 import { Route as UserAgentRouteImport } from './routes/user-agent'
 import { Route as UrlParserRouteImport } from './routes/url-parser'
 import { Route as UrlEncodeRouteImport } from './routes/url-encode'
@@ -379,6 +380,11 @@ const UuidInspectorRoute = UuidInspectorRouteImport.update({
 const UuidRoute = UuidRouteImport.update({
   id: '/uuid',
   path: '/uuid',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UtmBuilderRoute = UtmBuilderRouteImport.update({
+  id: '/utm-builder',
+  path: '/utm-builder',
   getParentRoute: () => rootRouteImport,
 } as any)
 const UserAgentRoute = UserAgentRouteImport.update({
@@ -1885,6 +1891,7 @@ export interface FileRoutesByFullPath {
   '/url-encode': typeof UrlEncodeRoute
   '/url-parser': typeof UrlParserRoute
   '/user-agent': typeof UserAgentRoute
+  '/utm-builder': typeof UtmBuilderRoute
   '/uuid': typeof UuidRoute
   '/uuid-inspector': typeof UuidInspectorRoute
   '/video-converter': typeof VideoConverterRoute
@@ -2158,6 +2165,7 @@ export interface FileRoutesByTo {
   '/url-encode': typeof UrlEncodeRoute
   '/url-parser': typeof UrlParserRoute
   '/user-agent': typeof UserAgentRoute
+  '/utm-builder': typeof UtmBuilderRoute
   '/uuid': typeof UuidRoute
   '/uuid-inspector': typeof UuidInspectorRoute
   '/video-converter': typeof VideoConverterRoute
@@ -2432,6 +2440,7 @@ export interface FileRoutesById {
   '/url-encode': typeof UrlEncodeRoute
   '/url-parser': typeof UrlParserRoute
   '/user-agent': typeof UserAgentRoute
+  '/utm-builder': typeof UtmBuilderRoute
   '/uuid': typeof UuidRoute
   '/uuid-inspector': typeof UuidInspectorRoute
   '/video-converter': typeof VideoConverterRoute
@@ -2707,6 +2716,7 @@ export interface FileRouteTypes {
     | '/url-encode'
     | '/url-parser'
     | '/user-agent'
+    | '/utm-builder'
     | '/uuid'
     | '/uuid-inspector'
     | '/video-converter'
@@ -2980,6 +2990,7 @@ export interface FileRouteTypes {
     | '/url-encode'
     | '/url-parser'
     | '/user-agent'
+    | '/utm-builder'
     | '/uuid'
     | '/uuid-inspector'
     | '/video-converter'
@@ -3253,6 +3264,7 @@ export interface FileRouteTypes {
     | '/url-encode'
     | '/url-parser'
     | '/user-agent'
+    | '/utm-builder'
     | '/uuid'
     | '/uuid-inspector'
     | '/video-converter'
@@ -3527,6 +3539,7 @@ export interface RootRouteChildren {
   UrlEncodeRoute: typeof UrlEncodeRoute
   UrlParserRoute: typeof UrlParserRoute
   UserAgentRoute: typeof UserAgentRoute
+  UtmBuilderRoute: typeof UtmBuilderRoute
   UuidRoute: typeof UuidRoute
   UuidInspectorRoute: typeof UuidInspectorRoute
   VideoConverterRoute: typeof VideoConverterRoute
@@ -3693,6 +3706,13 @@ declare module '@tanstack/react-router' {
       path: '/uuid'
       fullPath: '/uuid'
       preLoaderRoute: typeof UuidRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/utm-builder': {
+      id: '/utm-builder'
+      path: '/utm-builder'
+      fullPath: '/utm-builder'
+      preLoaderRoute: typeof UtmBuilderRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/user-agent': {
@@ -5703,6 +5723,7 @@ const rootRouteChildren: RootRouteChildren = {
   UrlEncodeRoute: UrlEncodeRoute,
   UrlParserRoute: UrlParserRoute,
   UserAgentRoute: UserAgentRoute,
+  UtmBuilderRoute: UtmBuilderRoute,
   UuidRoute: UuidRoute,
   UuidInspectorRoute: UuidInspectorRoute,
   VideoConverterRoute: VideoConverterRoute,

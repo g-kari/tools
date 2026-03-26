@@ -1,0 +1,283 @@
+/* UTMパラメータビルダー */
+
+/* モード切替タブ */
+.utm-builder-mode-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 24px;
+  border-bottom: 2px solid var(--md-sys-color-outline);
+}
+
+.utm-builder-mode-tab {
+  padding: 10px 24px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.9rem;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  letter-spacing: 0.05em;
+}
+
+.utm-builder-mode-tab:hover {
+  color: var(--md-sys-color-on-surface);
+}
+
+.utm-builder-mode-tab--active {
+  color: var(--md-sys-color-primary);
+  border-bottom-color: var(--md-sys-color-primary);
+}
+
+/* フォームグリッド */
+.utm-builder-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.utm-builder-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.utm-builder-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--md-sys-color-primary);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-weight: 600;
+}
+
+.utm-builder-label-required::after {
+  content: " *";
+  color: var(--md-sys-color-error);
+}
+
+.utm-builder-input {
+  width: 100%;
+  padding: 10px 14px;
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline);
+  color: var(--md-sys-color-on-surface);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.utm-builder-input:focus {
+  border-color: var(--md-sys-color-primary);
+}
+
+.utm-builder-input::placeholder {
+  color: var(--md-sys-color-outline);
+}
+
+.utm-builder-input--error {
+  border-color: var(--md-sys-color-error);
+}
+
+.utm-builder-hint {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-top: 2px;
+}
+
+/* クイック選択プリセット */
+.utm-builder-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.utm-builder-preset-chip {
+  padding: 3px 10px;
+  background: transparent;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  letter-spacing: 0.03em;
+}
+
+.utm-builder-preset-chip:hover {
+  border-color: var(--md-sys-color-secondary);
+  color: var(--md-sys-color-secondary);
+}
+
+.utm-builder-preset-chip--active {
+  background: var(--md-sys-color-secondary-container);
+  border-color: var(--md-sys-color-secondary);
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+/* 生成結果プレビュー */
+.utm-builder-result {
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline);
+  padding: 16px;
+  margin-top: 8px;
+}
+
+.utm-builder-result-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--md-sys-color-secondary);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  margin-bottom: 8px;
+}
+
+.utm-builder-result-url {
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.875rem;
+  word-break: break-all;
+  color: var(--md-sys-color-on-surface);
+  margin-bottom: 12px;
+  min-height: 1.4em;
+  line-height: 1.6;
+}
+
+.utm-builder-result-url--placeholder {
+  color: var(--md-sys-color-outline);
+  font-style: italic;
+}
+
+.utm-builder-copy-row {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.utm-builder-copy-btn {
+  padding: 8px 20px;
+  background: var(--md-sys-color-primary-container);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  color: var(--md-sys-color-on-primary-container);
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, opacity 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.utm-builder-copy-btn:hover:not(:disabled) {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+.utm-builder-copy-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* パースモード */
+.utm-builder-parse-input-area {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.utm-builder-parse-result {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.utm-builder-parse-result-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 10px;
+}
+
+.utm-builder-parse-card {
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  padding: 12px 14px;
+}
+
+.utm-builder-parse-card-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--md-sys-color-primary);
+  margin-bottom: 4px;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-weight: 600;
+}
+
+.utm-builder-parse-card-value {
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.875rem;
+  word-break: break-all;
+  color: var(--md-sys-color-on-surface);
+  min-height: 1.2em;
+}
+
+.utm-builder-parse-card-value--empty {
+  color: var(--md-sys-color-outline);
+  font-style: italic;
+  font-size: 0.8rem;
+}
+
+.utm-builder-parse-card-desc {
+  font-size: 0.7rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+.utm-builder-base-url-card {
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  padding: 12px 14px;
+  margin-bottom: 10px;
+}
+
+/* バリデーションエラー */
+.utm-builder-error-message {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-error);
+  margin-top: 2px;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+}
+
+/* セクション区切り */
+.utm-builder-section-divider {
+  border: none;
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+  margin: 8px 0;
+}
+
+/* レスポンシブ */
+@media (max-width: 768px) {
+  .utm-builder-parse-result-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .utm-builder-mode-tab {
+    padding: 8px 14px;
+    font-size: 0.8rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .utm-builder-mode-tab,
+  .utm-builder-preset-chip,
+  .utm-builder-copy-btn,
+  .utm-builder-input {
+    transition: none;
+  }
+}

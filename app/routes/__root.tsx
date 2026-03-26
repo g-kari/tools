@@ -28,6 +28,7 @@ const navCategories = [
       { path: "/unicode", label: "Unicode変換" },
       { path: "/url-encode", label: "URLエンコード" },
       { path: "/url-parser", label: "URLパーサー" },
+      { path: "/utm-builder", label: "UTMパラメータビルダー" },
       { path: "/html-encode", label: "HTMLエンコード" },
       { path: "/html-formatter", label: "HTMLフォーマッター" },
       { path: "/number-base", label: "数値進数変換" },
