@@ -49,6 +49,7 @@
 
 .rl-score-card--primary {
   background-color: var(--md-sys-color-primary-container);
+  margin-bottom: 0.5rem;
 }
 
 .rl-score-card--secondary {
@@ -239,4 +240,15 @@
   .rl-density-row {
     grid-template-columns: 64px 1fr 40px;
   }
+}
+
+.rl-input-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.rl-input-header-title {
+  margin-bottom: 0;
 }

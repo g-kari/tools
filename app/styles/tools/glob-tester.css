@@ -132,6 +132,15 @@
   font-weight: 600;
 }
 
+.glob-stat-negated {
+  color: var(--md-sys-color-secondary);
+  font-weight: 600;
+}
+
+.glob-section-mt {
+  margin-top: 1rem;
+}
+
 .glob-results-list {
   list-style: none;
   margin: 0;

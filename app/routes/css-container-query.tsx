@@ -225,15 +225,7 @@ function ConditionCard({
         )}
 
         {/* 生成される条件プレビュー */}
-        <div
-          style={{
-            marginTop: "8px",
-            fontSize: "0.75rem",
-            fontFamily: "'JetBrains Mono', monospace",
-            color: "var(--primary)",
-            opacity: 0.8,
-          }}
-        >
+        <div className="ccq-condition-preview">
           {formatCondition(cond)}
         </div>
       </div>
@@ -419,13 +411,7 @@ function CssContainerQueryBuilder() {
               <div className="ccq-prop-row">
                 <label htmlFor="ccq-container-name" className="ccq-prop-label">
                   <code>container-name</code>
-                  <span
-                    style={{
-                      fontWeight: 400,
-                      marginLeft: 4,
-                      color: "var(--on-surface-variant)",
-                    }}
-                  >
+                  <span className="ccq-optional-label">
                     （省略可）
                   </span>
                 </label>
@@ -516,7 +502,6 @@ function CssContainerQueryBuilder() {
                   rows={5}
                   aria-label="クエリ内で適用する CSS プロパティ"
                   spellCheck={false}
-                  style={{ resize: "vertical", fontFamily: "'JetBrains Mono', monospace" }}
                 />
               </div>
             </section>
@@ -576,13 +561,13 @@ function CssContainerQueryBuilder() {
                   >
                     <div className="ccq-preview-card">
                       <strong>カード 1</strong>
-                      <p style={{ margin: "4px 0 0", fontSize: "0.75rem" }}>
+                      <p>
                         コンテンツ
                       </p>
                     </div>
                     <div className="ccq-preview-card">
                       <strong>カード 2</strong>
-                      <p style={{ margin: "4px 0 0", fontSize: "0.75rem" }}>
+                      <p>
                         コンテンツ
                       </p>
                     </div>

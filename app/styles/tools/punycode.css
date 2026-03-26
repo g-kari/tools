@@ -181,6 +181,10 @@
   flex-shrink: 0;
 }
 
+.pny-copy-btn-ml {
+  margin-left: 0.5rem;
+}
+
 .pny-copy-btn:hover {
   background: var(--md-sys-color-primary-container);
   color: var(--md-sys-color-on-primary-container);

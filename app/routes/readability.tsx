@@ -72,7 +72,7 @@ function EnglishSection({ scores }: { scores: EnglishReadabilityScores }) {
       {/* Flesch Reading Ease ゲージ */}
       <div className="converter-section">
         <h2 className="section-title">Flesch Reading Ease</h2>
-        <div className="rl-score-card rl-score-card--primary" style={{ marginBottom: '0.5rem' }}>
+        <div className="rl-score-card rl-score-card--primary">
           <div className="rl-score-header">
             <span className="rl-score-name">スコア（0〜100）</span>
             <span className="rl-score-badge" data-testid="flesch-label">
@@ -380,10 +380,8 @@ function ReadabilityPage() {
       <div className="tool-container">
         {/* 入力 */}
         <div className="converter-section">
-          <div
-            style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}
-          >
-            <h2 className="section-title" style={{ marginBottom: 0 }}>
+          <div className="rl-input-header">
+            <h2 className="section-title rl-input-header-title">
               テキスト入力
             </h2>
             {result && <LanguageBadge language={result.language} />}

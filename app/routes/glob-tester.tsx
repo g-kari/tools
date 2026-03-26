@@ -190,8 +190,7 @@ function GlobTesterPage(): JSX.Element {
                   </span>
                   {negatedCount > 0 && (
                     <span
-                      className="glob-stat-unmatched"
-                      style={{ color: 'var(--md-sys-color-secondary)' }}
+                      className="glob-stat-negated"
                       aria-label={`否定 ${negatedCount}件`}
                     >
                       ∅ {negatedCount}
@@ -231,7 +230,7 @@ function GlobTesterPage(): JSX.Element {
             )}
           </section>
 
-          <section className="glob-section" style={{ marginTop: '1rem' }} aria-label="構文リファレンス">
+          <section className="glob-section glob-section-mt" aria-label="構文リファレンス">
             <p className="glob-section-title">構文リファレンス</p>
             <dl className="glob-syntax-grid">
               {SYNTAX_REFERENCE.map(({ pattern, desc }) => (

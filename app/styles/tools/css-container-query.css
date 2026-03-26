@@ -66,6 +66,29 @@
   transition: border-color 0.15s;
 }
 
+textarea.ccq-input {
+  resize: vertical;
+}
+
+.ccq-preview-card p {
+  margin: 4px 0 0;
+  font-size: 0.75rem;
+}
+
+.ccq-condition-preview {
+  margin-top: 8px;
+  font-size: 0.75rem;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--primary);
+  opacity: 0.8;
+}
+
+.ccq-optional-label {
+  font-weight: 400;
+  margin-left: 4px;
+  color: var(--on-surface-variant);
+}
+
 .ccq-input:focus,
 .ccq-select:focus {
   outline: none;

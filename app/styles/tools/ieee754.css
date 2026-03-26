@@ -392,6 +392,18 @@
   word-break: break-all;
 }
 
+.f754-breakdown-bits-xs {
+  font-size: var(--text-xs);
+}
+
+.f754-info-value-base {
+  font-size: var(--text-base);
+}
+
+.f754-info-sub-mt2 {
+  margin-top: var(--space-2);
+}
+
 .f754-breakdown-value {
   font-size: var(--text-xs);
   color: var(--on-surface-variant);
