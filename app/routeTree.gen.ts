@@ -95,6 +95,7 @@ import { Route as RailFenceRouteImport } from './routes/rail-fence'
 import { Route as QuotedPrintableRouteImport } from './routes/quoted-printable'
 import { Route as QrCodeRouteImport } from './routes/qr-code'
 import { Route as PunycodeRouteImport } from './routes/punycode'
+import { Route as PrettierConfigBuilderRouteImport } from './routes/prettier-config-builder'
 import { Route as PortsRouteImport } from './routes/ports'
 import { Route as PortCheckRouteImport } from './routes/port-check'
 import { Route as PomodoroRouteImport } from './routes/pomodoro'
@@ -718,6 +719,11 @@ const QrCodeRoute = QrCodeRouteImport.update({
 const PunycodeRoute = PunycodeRouteImport.update({
   id: '/punycode',
   path: '/punycode',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrettierConfigBuilderRoute = PrettierConfigBuilderRouteImport.update({
+  id: '/prettier-config-builder',
+  path: '/prettier-config-builder',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PortsRoute = PortsRouteImport.update({
@@ -1882,6 +1888,7 @@ export interface FileRoutesByFullPath {
   '/pomodoro': typeof PomodoroRoute
   '/port-check': typeof PortCheckRoute
   '/ports': typeof PortsRoute
+  '/prettier-config-builder': typeof PrettierConfigBuilderRoute
   '/punycode': typeof PunycodeRoute
   '/qr-code': typeof QrCodeRoute
   '/quoted-printable': typeof QuotedPrintableRoute
@@ -2164,6 +2171,7 @@ export interface FileRoutesByTo {
   '/pomodoro': typeof PomodoroRoute
   '/port-check': typeof PortCheckRoute
   '/ports': typeof PortsRoute
+  '/prettier-config-builder': typeof PrettierConfigBuilderRoute
   '/punycode': typeof PunycodeRoute
   '/qr-code': typeof QrCodeRoute
   '/quoted-printable': typeof QuotedPrintableRoute
@@ -2447,6 +2455,7 @@ export interface FileRoutesById {
   '/pomodoro': typeof PomodoroRoute
   '/port-check': typeof PortCheckRoute
   '/ports': typeof PortsRoute
+  '/prettier-config-builder': typeof PrettierConfigBuilderRoute
   '/punycode': typeof PunycodeRoute
   '/qr-code': typeof QrCodeRoute
   '/quoted-printable': typeof QuotedPrintableRoute
@@ -2731,6 +2740,7 @@ export interface FileRouteTypes {
     | '/pomodoro'
     | '/port-check'
     | '/ports'
+    | '/prettier-config-builder'
     | '/punycode'
     | '/qr-code'
     | '/quoted-printable'
@@ -3013,6 +3023,7 @@ export interface FileRouteTypes {
     | '/pomodoro'
     | '/port-check'
     | '/ports'
+    | '/prettier-config-builder'
     | '/punycode'
     | '/qr-code'
     | '/quoted-printable'
@@ -3295,6 +3306,7 @@ export interface FileRouteTypes {
     | '/pomodoro'
     | '/port-check'
     | '/ports'
+    | '/prettier-config-builder'
     | '/punycode'
     | '/qr-code'
     | '/quoted-printable'
@@ -3578,6 +3590,7 @@ export interface RootRouteChildren {
   PomodoroRoute: typeof PomodoroRoute
   PortCheckRoute: typeof PortCheckRoute
   PortsRoute: typeof PortsRoute
+  PrettierConfigBuilderRoute: typeof PrettierConfigBuilderRoute
   PunycodeRoute: typeof PunycodeRoute
   QrCodeRoute: typeof QrCodeRoute
   QuotedPrintableRoute: typeof QuotedPrintableRoute
@@ -4272,6 +4285,13 @@ declare module '@tanstack/react-router' {
       path: '/punycode'
       fullPath: '/punycode'
       preLoaderRoute: typeof PunycodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/prettier-config-builder': {
+      id: '/prettier-config-builder'
+      path: '/prettier-config-builder'
+      fullPath: '/prettier-config-builder'
+      preLoaderRoute: typeof PrettierConfigBuilderRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ports': {
@@ -5826,6 +5846,7 @@ const rootRouteChildren: RootRouteChildren = {
   PomodoroRoute: PomodoroRoute,
   PortCheckRoute: PortCheckRoute,
   PortsRoute: PortsRoute,
+  PrettierConfigBuilderRoute: PrettierConfigBuilderRoute,
   PunycodeRoute: PunycodeRoute,
   QrCodeRoute: QrCodeRoute,
   QuotedPrintableRoute: QuotedPrintableRoute,

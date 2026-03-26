@@ -735,6 +735,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🔧",
       },
       {
+        path: "/prettier-config-builder",
+        label: ".prettierrcビルダー",
+        description:
+          "Prettier のオプションを選択して .prettierrc を自動生成。printWidth・semi・singleQuote・trailingComma など主要オプションをカテゴリ別に設定。React・Vue・TypeScript 向けプリセット対応。デフォルト値と異なる設定のみ出力。",
+        icon: "✨",
+      },
+      {
         path: "/robots-txt",
         label: "robots.txtジェネレーター",
         description:
