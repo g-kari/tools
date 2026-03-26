@@ -220,3 +220,5 @@
 @import "./styles/tools/sitemap.css";
 @import "./styles/tools/tailwind-colors.css";
 @import "./styles/tools/vscode-snippet.css";
+@import "./styles/tools/editorconfig.css";
+@import "./styles/tools/css-logical.css";
