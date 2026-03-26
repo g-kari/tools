@@ -1007,6 +1007,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🎯",
       },
       {
+        path: "/css-logical",
+        label: "CSS 論理プロパティ変換",
+        description:
+          "物理的な CSS プロパティ（margin-left, padding-top, width など）を論理プロパティ（margin-inline-start, padding-block-start, inline-size など）に自動変換。RTL 対応・国際化対応のコードベース移行をサポート。",
+        icon: "↔",
+      },
+      {
         path: "/image-to-gif",
         label: "画像→GIF変換",
         description: "複数画像からアニメーションGIFを作成",

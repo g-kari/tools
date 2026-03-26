@@ -1,0 +1,237 @@
+/* CSS 論理プロパティコンバーター スタイル */
+
+.cssl-editor-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+  align-items: start;
+}
+
+@media (max-width: 768px) {
+  .cssl-editor-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cssl-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.cssl-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.cssl-panel-title {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-on-surface);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.cssl-badge {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 7px;
+  border-radius: 10px;
+  background: var(--color-secondary-container);
+  color: var(--color-on-secondary-container);
+}
+
+.cssl-badge--changed {
+  background: var(--color-tertiary-container);
+  color: var(--color-on-tertiary-container);
+}
+
+.cssl-textarea {
+  width: 100%;
+  min-height: 320px;
+  padding: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  line-height: 1.6;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-container-lowest);
+  color: var(--color-on-surface);
+  resize: vertical;
+  transition: border-color 0.15s;
+}
+
+.cssl-textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.cssl-output {
+  width: 100%;
+  min-height: 320px;
+  padding: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  line-height: 1.6;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-container-low);
+  color: var(--color-on-surface);
+  overflow: auto;
+  white-space: pre;
+}
+
+.cssl-output-line {
+  display: block;
+}
+
+.cssl-output-line--changed {
+  background: color-mix(in srgb, var(--color-tertiary-container) 40%, transparent);
+  border-radius: 2px;
+}
+
+.cssl-samples-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin-block-end: var(--space-2);
+}
+
+.cssl-samples-label {
+  font-size: var(--font-size-sm);
+  color: var(--color-on-surface-variant);
+  white-space: nowrap;
+}
+
+.cssl-sample-btn {
+  padding: 4px 12px;
+  font-size: var(--font-size-sm);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 20px;
+  background: transparent;
+  color: var(--color-on-surface-variant);
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s,
+    border-color 0.15s;
+}
+
+.cssl-sample-btn:hover {
+  background: var(--color-surface-container);
+  border-color: var(--color-outline);
+  color: var(--color-on-surface);
+}
+
+.cssl-sample-btn.active {
+  background: var(--color-primary-container);
+  border-color: var(--color-primary);
+  color: var(--color-on-primary-container);
+}
+
+.cssl-action-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  margin-block: var(--space-2);
+}
+
+.cssl-stats {
+  font-size: var(--font-size-xs);
+  color: var(--color-on-surface-variant);
+  text-align: end;
+}
+
+.cssl-stats--active {
+  color: var(--color-tertiary);
+  font-weight: 600;
+}
+
+/* 対応表 */
+.cssl-reference-section {
+  margin-block-start: var(--space-6);
+}
+
+.cssl-reference-title {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-on-surface);
+  margin-block-end: var(--space-3);
+}
+
+.cssl-reference-tabs {
+  display: flex;
+  gap: var(--space-1);
+  margin-block-end: var(--space-3);
+  border-block-end: 1px solid var(--color-outline-variant);
+  overflow-x: auto;
+}
+
+.cssl-ref-tab {
+  padding: 6px 14px;
+  font-size: var(--font-size-sm);
+  border: none;
+  border-block-end: 2px solid transparent;
+  background: none;
+  color: var(--color-on-surface-variant);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s;
+  margin-block-end: -1px;
+}
+
+.cssl-ref-tab:hover {
+  color: var(--color-on-surface);
+}
+
+.cssl-ref-tab.active {
+  color: var(--color-primary);
+  border-block-end-color: var(--color-primary);
+  font-weight: 600;
+}
+
+.cssl-ref-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-sm);
+}
+
+.cssl-ref-table th {
+  padding: 8px 12px;
+  text-align: start;
+  font-weight: 600;
+  color: var(--color-on-surface-variant);
+  border-block-end: 2px solid var(--color-outline-variant);
+  background: var(--color-surface-container-low);
+}
+
+.cssl-ref-table td {
+  padding: 6px 12px;
+  border-block-end: 1px solid var(--color-outline-variant);
+  font-family: var(--font-mono);
+  color: var(--color-on-surface);
+  vertical-align: top;
+}
+
+.cssl-ref-table tr:hover td {
+  background: var(--color-surface-container);
+}
+
+.cssl-ref-table .prop-physical {
+  color: var(--color-on-surface);
+}
+
+.cssl-ref-table .prop-logical {
+  color: var(--color-primary);
+}
+
+.cssl-ref-table .prop-arrow {
+  color: var(--color-on-surface-variant);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  padding-inline: var(--space-1);
+}

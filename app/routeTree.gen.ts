@@ -25,6 +25,7 @@ import { Route as WebsocketRouteImport } from './routes/websocket'
 import { Route as WebManifestRouteImport } from './routes/web-manifest'
 import { Route as WarikanRouteImport } from './routes/warikan'
 import { Route as WarekiRouteImport } from './routes/wareki'
+import { Route as VscodeSnippetRouteImport } from './routes/vscode-snippet'
 import { Route as VigenereRouteImport } from './routes/vigenere'
 import { Route as VideoConverterRouteImport } from './routes/video-converter'
 import { Route as UuidInspectorRouteImport } from './routes/uuid-inspector'
@@ -219,6 +220,7 @@ import { Route as CssShorthandRouteImport } from './routes/css-shorthand'
 import { Route as CssSelectorRouteImport } from './routes/css-selector'
 import { Route as CssScrollSnapRouteImport } from './routes/css-scroll-snap'
 import { Route as CssMediaQueryRouteImport } from './routes/css-media-query'
+import { Route as CssLogicalRouteImport } from './routes/css-logical'
 import { Route as CssGridRouteImport } from './routes/css-grid'
 import { Route as CssGradientRouteImport } from './routes/css-gradient'
 import { Route as CssFlexboxRouteImport } from './routes/css-flexbox'
@@ -363,6 +365,11 @@ const WarikanRoute = WarikanRouteImport.update({
 const WarekiRoute = WarekiRouteImport.update({
   id: '/wareki',
   path: '/wareki',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VscodeSnippetRoute = VscodeSnippetRouteImport.update({
+  id: '/vscode-snippet',
+  path: '/vscode-snippet',
   getParentRoute: () => rootRouteImport,
 } as any)
 const VigenereRoute = VigenereRouteImport.update({
@@ -1335,6 +1342,11 @@ const CssMediaQueryRoute = CssMediaQueryRouteImport.update({
   path: '/css-media-query',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CssLogicalRoute = CssLogicalRouteImport.update({
+  id: '/css-logical',
+  path: '/css-logical',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CssGridRoute = CssGridRouteImport.update({
   id: '/css-grid',
   path: '/css-grid',
@@ -1723,6 +1735,7 @@ export interface FileRoutesByFullPath {
   '/css-flexbox': typeof CssFlexboxRoute
   '/css-gradient': typeof CssGradientRoute
   '/css-grid': typeof CssGridRoute
+  '/css-logical': typeof CssLogicalRoute
   '/css-media-query': typeof CssMediaQueryRoute
   '/css-scroll-snap': typeof CssScrollSnapRoute
   '/css-selector': typeof CssSelectorRoute
@@ -1917,6 +1930,7 @@ export interface FileRoutesByFullPath {
   '/uuid-inspector': typeof UuidInspectorRoute
   '/video-converter': typeof VideoConverterRoute
   '/vigenere': typeof VigenereRoute
+  '/vscode-snippet': typeof VscodeSnippetRoute
   '/wareki': typeof WarekiRoute
   '/warikan': typeof WarikanRoute
   '/web-manifest': typeof WebManifestRoute
@@ -2000,6 +2014,7 @@ export interface FileRoutesByTo {
   '/css-flexbox': typeof CssFlexboxRoute
   '/css-gradient': typeof CssGradientRoute
   '/css-grid': typeof CssGridRoute
+  '/css-logical': typeof CssLogicalRoute
   '/css-media-query': typeof CssMediaQueryRoute
   '/css-scroll-snap': typeof CssScrollSnapRoute
   '/css-selector': typeof CssSelectorRoute
@@ -2194,6 +2209,7 @@ export interface FileRoutesByTo {
   '/uuid-inspector': typeof UuidInspectorRoute
   '/video-converter': typeof VideoConverterRoute
   '/vigenere': typeof VigenereRoute
+  '/vscode-snippet': typeof VscodeSnippetRoute
   '/wareki': typeof WarekiRoute
   '/warikan': typeof WarikanRoute
   '/web-manifest': typeof WebManifestRoute
@@ -2278,6 +2294,7 @@ export interface FileRoutesById {
   '/css-flexbox': typeof CssFlexboxRoute
   '/css-gradient': typeof CssGradientRoute
   '/css-grid': typeof CssGridRoute
+  '/css-logical': typeof CssLogicalRoute
   '/css-media-query': typeof CssMediaQueryRoute
   '/css-scroll-snap': typeof CssScrollSnapRoute
   '/css-selector': typeof CssSelectorRoute
@@ -2472,6 +2489,7 @@ export interface FileRoutesById {
   '/uuid-inspector': typeof UuidInspectorRoute
   '/video-converter': typeof VideoConverterRoute
   '/vigenere': typeof VigenereRoute
+  '/vscode-snippet': typeof VscodeSnippetRoute
   '/wareki': typeof WarekiRoute
   '/warikan': typeof WarikanRoute
   '/web-manifest': typeof WebManifestRoute
@@ -2557,6 +2575,7 @@ export interface FileRouteTypes {
     | '/css-flexbox'
     | '/css-gradient'
     | '/css-grid'
+    | '/css-logical'
     | '/css-media-query'
     | '/css-scroll-snap'
     | '/css-selector'
@@ -2751,6 +2770,7 @@ export interface FileRouteTypes {
     | '/uuid-inspector'
     | '/video-converter'
     | '/vigenere'
+    | '/vscode-snippet'
     | '/wareki'
     | '/warikan'
     | '/web-manifest'
@@ -2834,6 +2854,7 @@ export interface FileRouteTypes {
     | '/css-flexbox'
     | '/css-gradient'
     | '/css-grid'
+    | '/css-logical'
     | '/css-media-query'
     | '/css-scroll-snap'
     | '/css-selector'
@@ -3028,6 +3049,7 @@ export interface FileRouteTypes {
     | '/uuid-inspector'
     | '/video-converter'
     | '/vigenere'
+    | '/vscode-snippet'
     | '/wareki'
     | '/warikan'
     | '/web-manifest'
@@ -3111,6 +3133,7 @@ export interface FileRouteTypes {
     | '/css-flexbox'
     | '/css-gradient'
     | '/css-grid'
+    | '/css-logical'
     | '/css-media-query'
     | '/css-scroll-snap'
     | '/css-selector'
@@ -3305,6 +3328,7 @@ export interface FileRouteTypes {
     | '/uuid-inspector'
     | '/video-converter'
     | '/vigenere'
+    | '/vscode-snippet'
     | '/wareki'
     | '/warikan'
     | '/web-manifest'
@@ -3389,6 +3413,7 @@ export interface RootRouteChildren {
   CssFlexboxRoute: typeof CssFlexboxRoute
   CssGradientRoute: typeof CssGradientRoute
   CssGridRoute: typeof CssGridRoute
+  CssLogicalRoute: typeof CssLogicalRoute
   CssMediaQueryRoute: typeof CssMediaQueryRoute
   CssScrollSnapRoute: typeof CssScrollSnapRoute
   CssSelectorRoute: typeof CssSelectorRoute
@@ -3583,6 +3608,7 @@ export interface RootRouteChildren {
   UuidInspectorRoute: typeof UuidInspectorRoute
   VideoConverterRoute: typeof VideoConverterRoute
   VigenereRoute: typeof VigenereRoute
+  VscodeSnippetRoute: typeof VscodeSnippetRoute
   WarekiRoute: typeof WarekiRoute
   WarikanRoute: typeof WarikanRoute
   WebManifestRoute: typeof WebManifestRoute
@@ -3717,6 +3743,13 @@ declare module '@tanstack/react-router' {
       path: '/wareki'
       fullPath: '/wareki'
       preLoaderRoute: typeof WarekiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/vscode-snippet': {
+      id: '/vscode-snippet'
+      path: '/vscode-snippet'
+      fullPath: '/vscode-snippet'
+      preLoaderRoute: typeof VscodeSnippetRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/vigenere': {
@@ -5077,6 +5110,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CssMediaQueryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/css-logical': {
+      id: '/css-logical'
+      path: '/css-logical'
+      fullPath: '/css-logical'
+      preLoaderRoute: typeof CssLogicalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/css-grid': {
       id: '/css-grid'
       path: '/css-grid'
@@ -5597,6 +5637,7 @@ const rootRouteChildren: RootRouteChildren = {
   CssFlexboxRoute: CssFlexboxRoute,
   CssGradientRoute: CssGradientRoute,
   CssGridRoute: CssGridRoute,
+  CssLogicalRoute: CssLogicalRoute,
   CssMediaQueryRoute: CssMediaQueryRoute,
   CssScrollSnapRoute: CssScrollSnapRoute,
   CssSelectorRoute: CssSelectorRoute,
@@ -5791,6 +5832,7 @@ const rootRouteChildren: RootRouteChildren = {
   UuidInspectorRoute: UuidInspectorRoute,
   VideoConverterRoute: VideoConverterRoute,
   VigenereRoute: VigenereRoute,
+  VscodeSnippetRoute: VscodeSnippetRoute,
   WarekiRoute: WarekiRoute,
   WarikanRoute: WarikanRoute,
   WebManifestRoute: WebManifestRoute,
