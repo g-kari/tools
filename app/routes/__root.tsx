@@ -139,6 +139,7 @@ const navCategories = [
       { path: "/lorem-ipsum", label: "Lorem Ipsum" },
       { path: "/gitignore", label: "Gitignore生成" },
       { path: "/robots-txt", label: "robots.txtジェネレーター" },
+      { path: "/sitemap", label: "Sitemap XMLジェネレーター" },
       { path: "/web-manifest", label: "Web App Manifestジェネレーター" },
       { path: "/random-data", label: "ランダムデータ生成" },
       { path: "/ascii-art", label: "ASCIIアート生成" },
