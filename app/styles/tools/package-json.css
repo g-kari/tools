@@ -1,0 +1,427 @@
+/* package.json ビルダー - pkgjson- プレフィックス */
+
+.pkgjson-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* セクション */
+.pkgjson-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.25rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 8px;
+  background: var(--md-sys-color-surface-variant);
+}
+
+.pkgjson-section-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--md-sys-color-primary);
+  margin: 0 0 0.25rem;
+}
+
+/* フィールド */
+.pkgjson-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+/* ラベル */
+.pkgjson-label {
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--md-sys-color-primary);
+}
+
+/* テキスト入力 */
+.pkgjson-input {
+  width: 100%;
+  font-size: 0.88rem;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--md-sys-color-outline);
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  border-radius: 4px;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.pkgjson-input:focus {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+  border-color: var(--md-sys-color-primary);
+}
+
+/* セレクト */
+.pkgjson-select {
+  width: 100%;
+  font-size: 0.88rem;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--md-sys-color-outline);
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  border-radius: 4px;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.pkgjson-select:focus {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+  border-color: var(--md-sys-color-primary);
+}
+
+/* チェックボックス行 */
+.pkgjson-checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.88rem;
+  color: var(--md-sys-color-on-surface);
+  user-select: none;
+}
+
+.pkgjson-checkbox-row input[type='checkbox'] {
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+  accent-color: var(--md-sys-color-primary);
+}
+
+/* プリセットボタン群 */
+.pkgjson-presets {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.pkgjson-presets-label {
+  font-size: 0.8rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-right: 0.25rem;
+}
+
+.pkgjson-preset-btn {
+  padding: 0.25rem 0.65rem;
+  font-size: 0.78rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 999px;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    color 0.15s;
+  white-space: nowrap;
+}
+
+.pkgjson-preset-btn:hover {
+  background: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.pkgjson-preset-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* フォームグリッド（2カラム） */
+.pkgjson-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.pkgjson-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.75rem;
+}
+
+/* scripts テーブル */
+.pkgjson-scripts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.pkgjson-script-row {
+  display: grid;
+  grid-template-columns: 160px 1fr auto;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.pkgjson-script-key {
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.82rem;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid var(--md-sys-color-outline);
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  border-radius: 4px;
+}
+
+.pkgjson-script-key:focus {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.pkgjson-script-value {
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.82rem;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid var(--md-sys-color-outline);
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  border-radius: 4px;
+}
+
+.pkgjson-script-value:focus {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* テンプレートボタン群 */
+.pkgjson-template-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.25rem;
+}
+
+.pkgjson-template-btn {
+  padding: 0.2rem 0.55rem;
+  font-size: 0.76rem;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  border: 1px dashed var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    color 0.15s;
+}
+
+.pkgjson-template-btn:hover {
+  background: var(--md-sys-color-secondary-container);
+  border-color: var(--md-sys-color-secondary);
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+.pkgjson-template-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* 削除ボタン */
+.pkgjson-remove-btn {
+  padding: 0.35rem 0.6rem;
+  font-size: 0.82rem;
+  border: 1px solid var(--md-sys-color-error);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--md-sys-color-error);
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+
+.pkgjson-remove-btn:hover {
+  background: var(--md-sys-color-error-container);
+}
+
+.pkgjson-remove-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-error);
+  outline-offset: 2px;
+}
+
+/* 追加ボタン */
+.pkgjson-add-btn {
+  align-self: flex-start;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.82rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.pkgjson-add-btn:hover {
+  background: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.pkgjson-add-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* キーワードタグ */
+.pkgjson-keywords-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.pkgjson-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  min-height: 2rem;
+}
+
+.pkgjson-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  font-size: 0.8rem;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+}
+
+.pkgjson-tag-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font-size: 0.9rem;
+  line-height: 1;
+  padding: 0;
+  opacity: 0.7;
+  transition: opacity 0.15s;
+}
+
+.pkgjson-tag-remove:hover {
+  opacity: 1;
+}
+
+.pkgjson-tag-remove:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 1px;
+}
+
+.pkgjson-keyword-input-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.pkgjson-keyword-input {
+  flex: 1;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.82rem;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--md-sys-color-outline);
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  border-radius: 4px;
+}
+
+.pkgjson-keyword-input:focus {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* 出力コードブロック */
+.pkgjson-output-wrapper {
+  overflow: hidden;
+  border-radius: 6px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.pkgjson-code-block {
+  margin: 0;
+  padding: 1rem;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.82rem;
+  line-height: 1.7;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  overflow-x: auto;
+  white-space: pre;
+  min-height: 8rem;
+}
+
+/* アクションボタン行 */
+.pkgjson-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding-top: 0.25rem;
+}
+
+/* ヒントテキスト */
+.pkgjson-hint {
+  font-size: 0.76rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* レスポンシブ */
+@media (max-width: 640px) {
+  .pkgjson-container {
+    padding: 0.5rem;
+  }
+
+  .pkgjson-section {
+    padding: 0.75rem;
+  }
+
+  .pkgjson-code-block {
+    font-size: 0.76rem;
+  }
+
+  .pkgjson-grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .pkgjson-grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .pkgjson-script-row {
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+  }
+
+  .pkgjson-script-row .pkgjson-script-value {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .pkgjson-script-row .pkgjson-remove-btn {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    align-self: center;
+  }
+}

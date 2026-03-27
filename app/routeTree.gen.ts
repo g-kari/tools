@@ -106,6 +106,7 @@ import { Route as PercentageCalculatorRouteImport } from './routes/percentage-ca
 import { Route as PasswordStrengthRouteImport } from './routes/password-strength'
 import { Route as PasswordGeneratorRouteImport } from './routes/password-generator'
 import { Route as PassphraseRouteImport } from './routes/passphrase'
+import { Route as PackageJsonRouteImport } from './routes/package-json'
 import { Route as OpensslBuilderRouteImport } from './routes/openssl-builder'
 import { Route as OgpGeneratorRouteImport } from './routes/ogp-generator'
 import { Route as OgpRouteImport } from './routes/ogp'
@@ -777,6 +778,11 @@ const PasswordGeneratorRoute = PasswordGeneratorRouteImport.update({
 const PassphraseRoute = PassphraseRouteImport.update({
   id: '/passphrase',
   path: '/passphrase',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PackageJsonRoute = PackageJsonRouteImport.update({
+  id: '/package-json',
+  path: '/package-json',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OpensslBuilderRoute = OpensslBuilderRouteImport.update({
@@ -1899,6 +1905,7 @@ export interface FileRoutesByFullPath {
   '/ogp': typeof OgpRoute
   '/ogp-generator': typeof OgpGeneratorRoute
   '/openssl-builder': typeof OpensslBuilderRoute
+  '/package-json': typeof PackageJsonRoute
   '/passphrase': typeof PassphraseRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/password-strength': typeof PasswordStrengthRoute
@@ -2185,6 +2192,7 @@ export interface FileRoutesByTo {
   '/ogp': typeof OgpRoute
   '/ogp-generator': typeof OgpGeneratorRoute
   '/openssl-builder': typeof OpensslBuilderRoute
+  '/package-json': typeof PackageJsonRoute
   '/passphrase': typeof PassphraseRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/password-strength': typeof PasswordStrengthRoute
@@ -2472,6 +2480,7 @@ export interface FileRoutesById {
   '/ogp': typeof OgpRoute
   '/ogp-generator': typeof OgpGeneratorRoute
   '/openssl-builder': typeof OpensslBuilderRoute
+  '/package-json': typeof PackageJsonRoute
   '/passphrase': typeof PassphraseRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/password-strength': typeof PasswordStrengthRoute
@@ -2760,6 +2769,7 @@ export interface FileRouteTypes {
     | '/ogp'
     | '/ogp-generator'
     | '/openssl-builder'
+    | '/package-json'
     | '/passphrase'
     | '/password-generator'
     | '/password-strength'
@@ -3046,6 +3056,7 @@ export interface FileRouteTypes {
     | '/ogp'
     | '/ogp-generator'
     | '/openssl-builder'
+    | '/package-json'
     | '/passphrase'
     | '/password-generator'
     | '/password-strength'
@@ -3332,6 +3343,7 @@ export interface FileRouteTypes {
     | '/ogp'
     | '/ogp-generator'
     | '/openssl-builder'
+    | '/package-json'
     | '/passphrase'
     | '/password-generator'
     | '/password-strength'
@@ -3619,6 +3631,7 @@ export interface RootRouteChildren {
   OgpRoute: typeof OgpRoute
   OgpGeneratorRoute: typeof OgpGeneratorRoute
   OpensslBuilderRoute: typeof OpensslBuilderRoute
+  PackageJsonRoute: typeof PackageJsonRoute
   PassphraseRoute: typeof PassphraseRoute
   PasswordGeneratorRoute: typeof PasswordGeneratorRoute
   PasswordStrengthRoute: typeof PasswordStrengthRoute
@@ -4401,6 +4414,13 @@ declare module '@tanstack/react-router' {
       path: '/passphrase'
       fullPath: '/passphrase'
       preLoaderRoute: typeof PassphraseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/package-json': {
+      id: '/package-json'
+      path: '/package-json'
+      fullPath: '/package-json'
+      preLoaderRoute: typeof PackageJsonRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/openssl-builder': {
@@ -5899,6 +5919,7 @@ const rootRouteChildren: RootRouteChildren = {
   OgpRoute: OgpRoute,
   OgpGeneratorRoute: OgpGeneratorRoute,
   OpensslBuilderRoute: OpensslBuilderRoute,
+  PackageJsonRoute: PackageJsonRoute,
   PassphraseRoute: PassphraseRoute,
   PasswordGeneratorRoute: PasswordGeneratorRoute,
   PasswordStrengthRoute: PasswordStrengthRoute,
