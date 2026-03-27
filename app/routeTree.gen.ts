@@ -256,6 +256,7 @@ import { Route as CookieParserRouteImport } from './routes/cookie-parser'
 import { Route as ConventionalCommitsRouteImport } from './routes/conventional-commits'
 import { Route as CompoundInterestRouteImport } from './routes/compound-interest'
 import { Route as CombinatoricsRouteImport } from './routes/combinatorics'
+import { Route as ColumnarTranspositionRouteImport } from './routes/columnar-transposition'
 import { Route as ColorTokenRouteImport } from './routes/color-token'
 import { Route as ColorTemperatureRouteImport } from './routes/color-temperature'
 import { Route as ColorPickerRouteImport } from './routes/color-picker'
@@ -1539,6 +1540,11 @@ const CombinatoricsRoute = CombinatoricsRouteImport.update({
   path: '/combinatorics',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ColumnarTranspositionRoute = ColumnarTranspositionRouteImport.update({
+  id: '/columnar-transposition',
+  path: '/columnar-transposition',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ColorTokenRoute = ColorTokenRouteImport.update({
   id: '/color-token',
   path: '/color-token',
@@ -1819,6 +1825,7 @@ export interface FileRoutesByFullPath {
   '/color-picker': typeof ColorPickerRoute
   '/color-temperature': typeof ColorTemperatureRoute
   '/color-token': typeof ColorTokenRoute
+  '/columnar-transposition': typeof ColumnarTranspositionRoute
   '/combinatorics': typeof CombinatoricsRoute
   '/compound-interest': typeof CompoundInterestRoute
   '/conventional-commits': typeof ConventionalCommitsRoute
@@ -2115,6 +2122,7 @@ export interface FileRoutesByTo {
   '/color-picker': typeof ColorPickerRoute
   '/color-temperature': typeof ColorTemperatureRoute
   '/color-token': typeof ColorTokenRoute
+  '/columnar-transposition': typeof ColumnarTranspositionRoute
   '/combinatorics': typeof CombinatoricsRoute
   '/compound-interest': typeof CompoundInterestRoute
   '/conventional-commits': typeof ConventionalCommitsRoute
@@ -2412,6 +2420,7 @@ export interface FileRoutesById {
   '/color-picker': typeof ColorPickerRoute
   '/color-temperature': typeof ColorTemperatureRoute
   '/color-token': typeof ColorTokenRoute
+  '/columnar-transposition': typeof ColumnarTranspositionRoute
   '/combinatorics': typeof CombinatoricsRoute
   '/compound-interest': typeof CompoundInterestRoute
   '/conventional-commits': typeof ConventionalCommitsRoute
@@ -2710,6 +2719,7 @@ export interface FileRouteTypes {
     | '/color-picker'
     | '/color-temperature'
     | '/color-token'
+    | '/columnar-transposition'
     | '/combinatorics'
     | '/compound-interest'
     | '/conventional-commits'
@@ -3006,6 +3016,7 @@ export interface FileRouteTypes {
     | '/color-picker'
     | '/color-temperature'
     | '/color-token'
+    | '/columnar-transposition'
     | '/combinatorics'
     | '/compound-interest'
     | '/conventional-commits'
@@ -3302,6 +3313,7 @@ export interface FileRouteTypes {
     | '/color-picker'
     | '/color-temperature'
     | '/color-token'
+    | '/columnar-transposition'
     | '/combinatorics'
     | '/compound-interest'
     | '/conventional-commits'
@@ -3599,6 +3611,7 @@ export interface RootRouteChildren {
   ColorPickerRoute: typeof ColorPickerRoute
   ColorTemperatureRoute: typeof ColorTemperatureRoute
   ColorTokenRoute: typeof ColorTokenRoute
+  ColumnarTranspositionRoute: typeof ColumnarTranspositionRoute
   CombinatoricsRoute: typeof CombinatoricsRoute
   CompoundInterestRoute: typeof CompoundInterestRoute
   ConventionalCommitsRoute: typeof ConventionalCommitsRoute
@@ -5583,6 +5596,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CombinatoricsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/columnar-transposition': {
+      id: '/columnar-transposition'
+      path: '/columnar-transposition'
+      fullPath: '/columnar-transposition'
+      preLoaderRoute: typeof ColumnarTranspositionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/color-token': {
       id: '/color-token'
       path: '/color-token'
@@ -5959,6 +5979,7 @@ const rootRouteChildren: RootRouteChildren = {
   ColorPickerRoute: ColorPickerRoute,
   ColorTemperatureRoute: ColorTemperatureRoute,
   ColorTokenRoute: ColorTokenRoute,
+  ColumnarTranspositionRoute: ColumnarTranspositionRoute,
   CombinatoricsRoute: CombinatoricsRoute,
   CompoundInterestRoute: CompoundInterestRoute,
   ConventionalCommitsRoute: ConventionalCommitsRoute,
