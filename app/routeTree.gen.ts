@@ -231,6 +231,7 @@ import { Route as CssMediaQueryRouteImport } from './routes/css-media-query'
 import { Route as CssLogicalRouteImport } from './routes/css-logical'
 import { Route as CssGridRouteImport } from './routes/css-grid'
 import { Route as CssGradientRouteImport } from './routes/css-gradient'
+import { Route as CssFormatterRouteImport } from './routes/css-formatter'
 import { Route as CssFlexboxRouteImport } from './routes/css-flexbox'
 import { Route as CssFilterRouteImport } from './routes/css-filter'
 import { Route as CssCubicBezierRouteImport } from './routes/css-cubic-bezier'
@@ -1405,6 +1406,11 @@ const CssGradientRoute = CssGradientRouteImport.update({
   path: '/css-gradient',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CssFormatterRoute = CssFormatterRouteImport.update({
+  id: '/css-formatter',
+  path: '/css-formatter',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CssFlexboxRoute = CssFlexboxRouteImport.update({
   id: '/css-flexbox',
   path: '/css-flexbox',
@@ -1781,6 +1787,7 @@ export interface FileRoutesByFullPath {
   '/css-cubic-bezier': typeof CssCubicBezierRoute
   '/css-filter': typeof CssFilterRoute
   '/css-flexbox': typeof CssFlexboxRoute
+  '/css-formatter': typeof CssFormatterRoute
   '/css-gradient': typeof CssGradientRoute
   '/css-grid': typeof CssGridRoute
   '/css-logical': typeof CssLogicalRoute
@@ -2068,6 +2075,7 @@ export interface FileRoutesByTo {
   '/css-cubic-bezier': typeof CssCubicBezierRoute
   '/css-filter': typeof CssFilterRoute
   '/css-flexbox': typeof CssFlexboxRoute
+  '/css-formatter': typeof CssFormatterRoute
   '/css-gradient': typeof CssGradientRoute
   '/css-grid': typeof CssGridRoute
   '/css-logical': typeof CssLogicalRoute
@@ -2356,6 +2364,7 @@ export interface FileRoutesById {
   '/css-cubic-bezier': typeof CssCubicBezierRoute
   '/css-filter': typeof CssFilterRoute
   '/css-flexbox': typeof CssFlexboxRoute
+  '/css-formatter': typeof CssFormatterRoute
   '/css-gradient': typeof CssGradientRoute
   '/css-grid': typeof CssGridRoute
   '/css-logical': typeof CssLogicalRoute
@@ -2645,6 +2654,7 @@ export interface FileRouteTypes {
     | '/css-cubic-bezier'
     | '/css-filter'
     | '/css-flexbox'
+    | '/css-formatter'
     | '/css-gradient'
     | '/css-grid'
     | '/css-logical'
@@ -2932,6 +2942,7 @@ export interface FileRouteTypes {
     | '/css-cubic-bezier'
     | '/css-filter'
     | '/css-flexbox'
+    | '/css-formatter'
     | '/css-gradient'
     | '/css-grid'
     | '/css-logical'
@@ -3219,6 +3230,7 @@ export interface FileRouteTypes {
     | '/css-cubic-bezier'
     | '/css-filter'
     | '/css-flexbox'
+    | '/css-formatter'
     | '/css-gradient'
     | '/css-grid'
     | '/css-logical'
@@ -3507,6 +3519,7 @@ export interface RootRouteChildren {
   CssCubicBezierRoute: typeof CssCubicBezierRoute
   CssFilterRoute: typeof CssFilterRoute
   CssFlexboxRoute: typeof CssFlexboxRoute
+  CssFormatterRoute: typeof CssFormatterRoute
   CssGradientRoute: typeof CssGradientRoute
   CssGridRoute: typeof CssGridRoute
   CssLogicalRoute: typeof CssLogicalRoute
@@ -5291,6 +5304,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CssGradientRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/css-formatter': {
+      id: '/css-formatter'
+      path: '/css-formatter'
+      fullPath: '/css-formatter'
+      preLoaderRoute: typeof CssFormatterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/css-flexbox': {
       id: '/css-flexbox'
       path: '/css-flexbox'
@@ -5795,6 +5815,7 @@ const rootRouteChildren: RootRouteChildren = {
   CssCubicBezierRoute: CssCubicBezierRoute,
   CssFilterRoute: CssFilterRoute,
   CssFlexboxRoute: CssFlexboxRoute,
+  CssFormatterRoute: CssFormatterRoute,
   CssGradientRoute: CssGradientRoute,
   CssGridRoute: CssGridRoute,
   CssLogicalRoute: CssLogicalRoute,
