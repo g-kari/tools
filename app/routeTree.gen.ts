@@ -280,6 +280,7 @@ import { Route as BrailleRouteImport } from './routes/braille'
 import { Route as BpmRouteImport } from './routes/bpm'
 import { Route as BmiCalculatorRouteImport } from './routes/bmi-calculator'
 import { Route as BitwiseRouteImport } from './routes/bitwise'
+import { Route as BifidRouteImport } from './routes/bifid'
 import { Route as BeaufortRouteImport } from './routes/beaufort'
 import { Route as BasicAuthRouteImport } from './routes/basic-auth'
 import { Route as Base85RouteImport } from './routes/base85'
@@ -1660,6 +1661,11 @@ const BitwiseRoute = BitwiseRouteImport.update({
   path: '/bitwise',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BifidRoute = BifidRouteImport.update({
+  id: '/bifid',
+  path: '/bifid',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BeaufortRoute = BeaufortRouteImport.update({
   id: '/beaufort',
   path: '/beaufort',
@@ -1802,6 +1808,7 @@ export interface FileRoutesByFullPath {
   '/base85': typeof Base85Route
   '/basic-auth': typeof BasicAuthRoute
   '/beaufort': typeof BeaufortRoute
+  '/bifid': typeof BifidRoute
   '/bitwise': typeof BitwiseRoute
   '/bmi-calculator': typeof BmiCalculatorRoute
   '/bpm': typeof BpmRoute
@@ -2099,6 +2106,7 @@ export interface FileRoutesByTo {
   '/base85': typeof Base85Route
   '/basic-auth': typeof BasicAuthRoute
   '/beaufort': typeof BeaufortRoute
+  '/bifid': typeof BifidRoute
   '/bitwise': typeof BitwiseRoute
   '/bmi-calculator': typeof BmiCalculatorRoute
   '/bpm': typeof BpmRoute
@@ -2397,6 +2405,7 @@ export interface FileRoutesById {
   '/base85': typeof Base85Route
   '/basic-auth': typeof BasicAuthRoute
   '/beaufort': typeof BeaufortRoute
+  '/bifid': typeof BifidRoute
   '/bitwise': typeof BitwiseRoute
   '/bmi-calculator': typeof BmiCalculatorRoute
   '/bpm': typeof BpmRoute
@@ -2696,6 +2705,7 @@ export interface FileRouteTypes {
     | '/base85'
     | '/basic-auth'
     | '/beaufort'
+    | '/bifid'
     | '/bitwise'
     | '/bmi-calculator'
     | '/bpm'
@@ -2993,6 +3003,7 @@ export interface FileRouteTypes {
     | '/base85'
     | '/basic-auth'
     | '/beaufort'
+    | '/bifid'
     | '/bitwise'
     | '/bmi-calculator'
     | '/bpm'
@@ -3290,6 +3301,7 @@ export interface FileRouteTypes {
     | '/base85'
     | '/basic-auth'
     | '/beaufort'
+    | '/bifid'
     | '/bitwise'
     | '/bmi-calculator'
     | '/bpm'
@@ -3588,6 +3600,7 @@ export interface RootRouteChildren {
   Base85Route: typeof Base85Route
   BasicAuthRoute: typeof BasicAuthRoute
   BeaufortRoute: typeof BeaufortRoute
+  BifidRoute: typeof BifidRoute
   BitwiseRoute: typeof BitwiseRoute
   BmiCalculatorRoute: typeof BmiCalculatorRoute
   BpmRoute: typeof BpmRoute
@@ -5764,6 +5777,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BitwiseRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/bifid': {
+      id: '/bifid'
+      path: '/bifid'
+      fullPath: '/bifid'
+      preLoaderRoute: typeof BifidRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/beaufort': {
       id: '/beaufort'
       path: '/beaufort'
@@ -5956,6 +5976,7 @@ const rootRouteChildren: RootRouteChildren = {
   Base85Route: Base85Route,
   BasicAuthRoute: BasicAuthRoute,
   BeaufortRoute: BeaufortRoute,
+  BifidRoute: BifidRoute,
   BitwiseRoute: BitwiseRoute,
   BmiCalculatorRoute: BmiCalculatorRoute,
   BpmRoute: BpmRoute,

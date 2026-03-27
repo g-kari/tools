@@ -264,6 +264,7 @@ const navCategories = [
       { path: "/scytale", label: "スキュタレー暗号" },
       { path: "/gronsfeld", label: "グロンスフェルト暗号" },
       { path: "/adfgvx", label: "ADFGVX暗号" },
+      { path: "/bifid", label: "Bifid暗号（ビフィド暗号）" },
       { path: "/fancy-text", label: "ファンシーテキスト変換" },
       { path: "/ansi-color", label: "ANSIターミナルカラーコードビルダー" },
     ],

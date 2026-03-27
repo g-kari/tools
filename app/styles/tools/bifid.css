@@ -1,0 +1,147 @@
+/* Bifid暗号ツール */
+
+.bifid-mode-group {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.bifid-key-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.bifid-key-input {
+  flex: 1;
+  min-width: 8rem;
+  max-width: 20rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--md-sys-color-outline);
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+}
+
+.bifid-key-input:focus {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 1px;
+}
+
+.bifid-period-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.bifid-period-label {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  white-space: nowrap;
+}
+
+.bifid-period-input {
+  width: 5rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--md-sys-color-outline);
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.bifid-period-input:focus {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 1px;
+}
+
+.bifid-output {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.9375rem;
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  padding: 1rem;
+  min-height: 5rem;
+  word-break: break-all;
+  white-space: pre-wrap;
+  color: var(--md-sys-color-on-surface);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.bifid-output--empty {
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.875rem;
+}
+
+.bifid-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* ポリュビオス方陣 */
+.bifid-square-wrapper {
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+}
+
+.bifid-square {
+  border-collapse: collapse;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.875rem;
+}
+
+.bifid-square th,
+.bifid-square td {
+  border: 1px solid var(--md-sys-color-outline-variant);
+  padding: 0.35rem 0.6rem;
+  text-align: center;
+  min-width: 2rem;
+}
+
+.bifid-square th {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  font-weight: 700;
+}
+
+.bifid-square td {
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+}
+
+.bifid-square td.bifid-square-key {
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  font-weight: 600;
+}
+
+@media (max-width: 480px) {
+  .bifid-mode-group {
+    flex-direction: column;
+  }
+
+  .bifid-key-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .bifid-key-input {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .bifid-actions {
+    flex-direction: column;
+  }
+}
