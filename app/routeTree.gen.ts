@@ -62,6 +62,7 @@ import { Route as TextBinaryRouteImport } from './routes/text-binary'
 import { Route as TetrisRouteImport } from './routes/tetris'
 import { Route as TemplateRouteImport } from './routes/template'
 import { Route as TaxCalculatorRouteImport } from './routes/tax-calculator'
+import { Route as TapCodeRouteImport } from './routes/tap-code'
 import { Route as TailwindColorsRouteImport } from './routes/tailwind-colors'
 import { Route as SvgOptimizerRouteImport } from './routes/svg-optimizer'
 import { Route as SudokuRouteImport } from './routes/sudoku'
@@ -99,6 +100,7 @@ import { Route as PrettierConfigBuilderRouteImport } from './routes/prettier-con
 import { Route as PortsRouteImport } from './routes/ports'
 import { Route as PortCheckRouteImport } from './routes/port-check'
 import { Route as PomodoroRouteImport } from './routes/pomodoro'
+import { Route as PolybiusRouteImport } from './routes/polybius'
 import { Route as PkceRouteImport } from './routes/pkce'
 import { Route as PhpSerializeRouteImport } from './routes/php-serialize'
 import { Route as PhoneRouteImport } from './routes/phone'
@@ -561,6 +563,11 @@ const TaxCalculatorRoute = TaxCalculatorRouteImport.update({
   path: '/tax-calculator',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TapCodeRoute = TapCodeRouteImport.update({
+  id: '/tap-code',
+  path: '/tap-code',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TailwindColorsRoute = TailwindColorsRouteImport.update({
   id: '/tailwind-colors',
   path: '/tailwind-colors',
@@ -744,6 +751,11 @@ const PortCheckRoute = PortCheckRouteImport.update({
 const PomodoroRoute = PomodoroRouteImport.update({
   id: '/pomodoro',
   path: '/pomodoro',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PolybiusRoute = PolybiusRouteImport.update({
+  id: '/polybius',
+  path: '/polybius',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PkceRoute = PkceRouteImport.update({
@@ -1920,6 +1932,7 @@ export interface FileRoutesByFullPath {
   '/phone': typeof PhoneRoute
   '/php-serialize': typeof PhpSerializeRoute
   '/pkce': typeof PkceRoute
+  '/polybius': typeof PolybiusRoute
   '/pomodoro': typeof PomodoroRoute
   '/port-check': typeof PortCheckRoute
   '/ports': typeof PortsRoute
@@ -1957,6 +1970,7 @@ export interface FileRoutesByFullPath {
   '/sudoku': typeof SudokuRoute
   '/svg-optimizer': typeof SvgOptimizerRoute
   '/tailwind-colors': typeof TailwindColorsRoute
+  '/tap-code': typeof TapCodeRoute
   '/tax-calculator': typeof TaxCalculatorRoute
   '/template': typeof TemplateRoute
   '/tetris': typeof TetrisRoute
@@ -2208,6 +2222,7 @@ export interface FileRoutesByTo {
   '/phone': typeof PhoneRoute
   '/php-serialize': typeof PhpSerializeRoute
   '/pkce': typeof PkceRoute
+  '/polybius': typeof PolybiusRoute
   '/pomodoro': typeof PomodoroRoute
   '/port-check': typeof PortCheckRoute
   '/ports': typeof PortsRoute
@@ -2245,6 +2260,7 @@ export interface FileRoutesByTo {
   '/sudoku': typeof SudokuRoute
   '/svg-optimizer': typeof SvgOptimizerRoute
   '/tailwind-colors': typeof TailwindColorsRoute
+  '/tap-code': typeof TapCodeRoute
   '/tax-calculator': typeof TaxCalculatorRoute
   '/template': typeof TemplateRoute
   '/tetris': typeof TetrisRoute
@@ -2497,6 +2513,7 @@ export interface FileRoutesById {
   '/phone': typeof PhoneRoute
   '/php-serialize': typeof PhpSerializeRoute
   '/pkce': typeof PkceRoute
+  '/polybius': typeof PolybiusRoute
   '/pomodoro': typeof PomodoroRoute
   '/port-check': typeof PortCheckRoute
   '/ports': typeof PortsRoute
@@ -2534,6 +2551,7 @@ export interface FileRoutesById {
   '/sudoku': typeof SudokuRoute
   '/svg-optimizer': typeof SvgOptimizerRoute
   '/tailwind-colors': typeof TailwindColorsRoute
+  '/tap-code': typeof TapCodeRoute
   '/tax-calculator': typeof TaxCalculatorRoute
   '/template': typeof TemplateRoute
   '/tetris': typeof TetrisRoute
@@ -2787,6 +2805,7 @@ export interface FileRouteTypes {
     | '/phone'
     | '/php-serialize'
     | '/pkce'
+    | '/polybius'
     | '/pomodoro'
     | '/port-check'
     | '/ports'
@@ -2824,6 +2843,7 @@ export interface FileRouteTypes {
     | '/sudoku'
     | '/svg-optimizer'
     | '/tailwind-colors'
+    | '/tap-code'
     | '/tax-calculator'
     | '/template'
     | '/tetris'
@@ -3075,6 +3095,7 @@ export interface FileRouteTypes {
     | '/phone'
     | '/php-serialize'
     | '/pkce'
+    | '/polybius'
     | '/pomodoro'
     | '/port-check'
     | '/ports'
@@ -3112,6 +3133,7 @@ export interface FileRouteTypes {
     | '/sudoku'
     | '/svg-optimizer'
     | '/tailwind-colors'
+    | '/tap-code'
     | '/tax-calculator'
     | '/template'
     | '/tetris'
@@ -3363,6 +3385,7 @@ export interface FileRouteTypes {
     | '/phone'
     | '/php-serialize'
     | '/pkce'
+    | '/polybius'
     | '/pomodoro'
     | '/port-check'
     | '/ports'
@@ -3400,6 +3423,7 @@ export interface FileRouteTypes {
     | '/sudoku'
     | '/svg-optimizer'
     | '/tailwind-colors'
+    | '/tap-code'
     | '/tax-calculator'
     | '/template'
     | '/tetris'
@@ -3652,6 +3676,7 @@ export interface RootRouteChildren {
   PhoneRoute: typeof PhoneRoute
   PhpSerializeRoute: typeof PhpSerializeRoute
   PkceRoute: typeof PkceRoute
+  PolybiusRoute: typeof PolybiusRoute
   PomodoroRoute: typeof PomodoroRoute
   PortCheckRoute: typeof PortCheckRoute
   PortsRoute: typeof PortsRoute
@@ -3689,6 +3714,7 @@ export interface RootRouteChildren {
   SudokuRoute: typeof SudokuRoute
   SvgOptimizerRoute: typeof SvgOptimizerRoute
   TailwindColorsRoute: typeof TailwindColorsRoute
+  TapCodeRoute: typeof TapCodeRoute
   TaxCalculatorRoute: typeof TaxCalculatorRoute
   TemplateRoute: typeof TemplateRoute
   TetrisRoute: typeof TetrisRoute
@@ -4121,6 +4147,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TaxCalculatorRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tap-code': {
+      id: '/tap-code'
+      path: '/tap-code'
+      fullPath: '/tap-code'
+      preLoaderRoute: typeof TapCodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/tailwind-colors': {
       id: '/tailwind-colors'
       path: '/tailwind-colors'
@@ -4378,6 +4411,13 @@ declare module '@tanstack/react-router' {
       path: '/pomodoro'
       fullPath: '/pomodoro'
       preLoaderRoute: typeof PomodoroRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/polybius': {
+      id: '/polybius'
+      path: '/polybius'
+      fullPath: '/polybius'
+      preLoaderRoute: typeof PolybiusRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pkce': {
@@ -5948,6 +5988,7 @@ const rootRouteChildren: RootRouteChildren = {
   PhoneRoute: PhoneRoute,
   PhpSerializeRoute: PhpSerializeRoute,
   PkceRoute: PkceRoute,
+  PolybiusRoute: PolybiusRoute,
   PomodoroRoute: PomodoroRoute,
   PortCheckRoute: PortCheckRoute,
   PortsRoute: PortsRoute,
@@ -5985,6 +6026,7 @@ const rootRouteChildren: RootRouteChildren = {
   SudokuRoute: SudokuRoute,
   SvgOptimizerRoute: SvgOptimizerRoute,
   TailwindColorsRoute: TailwindColorsRoute,
+  TapCodeRoute: TapCodeRoute,
   TaxCalculatorRoute: TaxCalculatorRoute,
   TemplateRoute: TemplateRoute,
   TetrisRoute: TetrisRoute,
