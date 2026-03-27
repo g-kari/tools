@@ -1469,6 +1469,13 @@ const toolCatalog: ToolCategory[] = [
           "ADFGVX暗号のエンコード・デコードツール。第一次世界大戦でドイツ軍が使用した2段階暗号。6×6ポリビウス方陣による換字（A-Z+0-9対応）と縦列転置を組み合わせた歴史的な野戦暗号。",
         icon: "🪖",
       },
+      {
+        path: "/columnar-transposition",
+        label: "列転置暗号",
+        description:
+          "列転置暗号（Columnar Transposition Cipher）のエンコード・デコードツール。キーワードのアルファベット順に列を並び替える古典的転置暗号。グリッド可視化・パディング文字設定に対応。第一次・第二次世界大戦でも使用された歴史ある暗号。",
+        icon: "📊",
+      },
     ],
   },
   {
