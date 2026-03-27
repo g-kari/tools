@@ -102,6 +102,7 @@ import { Route as PortsRouteImport } from './routes/ports'
 import { Route as PortCheckRouteImport } from './routes/port-check'
 import { Route as PomodoroRouteImport } from './routes/pomodoro'
 import { Route as PolybiusRouteImport } from './routes/polybius'
+import { Route as PlayfairRouteImport } from './routes/playfair'
 import { Route as PkceRouteImport } from './routes/pkce'
 import { Route as PhpSerializeRouteImport } from './routes/php-serialize'
 import { Route as PhoneRouteImport } from './routes/phone'
@@ -277,6 +278,7 @@ import { Route as BrailleRouteImport } from './routes/braille'
 import { Route as BpmRouteImport } from './routes/bpm'
 import { Route as BmiCalculatorRouteImport } from './routes/bmi-calculator'
 import { Route as BitwiseRouteImport } from './routes/bitwise'
+import { Route as BeaufortRouteImport } from './routes/beaufort'
 import { Route as BasicAuthRouteImport } from './routes/basic-auth'
 import { Route as Base85RouteImport } from './routes/base85'
 import { Route as Base64ImageRouteImport } from './routes/base64-image'
@@ -763,6 +765,11 @@ const PomodoroRoute = PomodoroRouteImport.update({
 const PolybiusRoute = PolybiusRouteImport.update({
   id: '/polybius',
   path: '/polybius',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlayfairRoute = PlayfairRouteImport.update({
+  id: '/playfair',
+  path: '/playfair',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PkceRoute = PkceRouteImport.update({
@@ -1640,6 +1647,11 @@ const BitwiseRoute = BitwiseRouteImport.update({
   path: '/bitwise',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BeaufortRoute = BeaufortRouteImport.update({
+  id: '/beaufort',
+  path: '/beaufort',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BasicAuthRoute = BasicAuthRouteImport.update({
   id: '/basic-auth',
   path: '/basic-auth',
@@ -1770,6 +1782,7 @@ export interface FileRoutesByFullPath {
   '/base64-image': typeof Base64ImageRoute
   '/base85': typeof Base85Route
   '/basic-auth': typeof BasicAuthRoute
+  '/beaufort': typeof BeaufortRoute
   '/bitwise': typeof BitwiseRoute
   '/bmi-calculator': typeof BmiCalculatorRoute
   '/bpm': typeof BpmRoute
@@ -1945,6 +1958,7 @@ export interface FileRoutesByFullPath {
   '/phone': typeof PhoneRoute
   '/php-serialize': typeof PhpSerializeRoute
   '/pkce': typeof PkceRoute
+  '/playfair': typeof PlayfairRoute
   '/polybius': typeof PolybiusRoute
   '/pomodoro': typeof PomodoroRoute
   '/port-check': typeof PortCheckRoute
@@ -2062,6 +2076,7 @@ export interface FileRoutesByTo {
   '/base64-image': typeof Base64ImageRoute
   '/base85': typeof Base85Route
   '/basic-auth': typeof BasicAuthRoute
+  '/beaufort': typeof BeaufortRoute
   '/bitwise': typeof BitwiseRoute
   '/bmi-calculator': typeof BmiCalculatorRoute
   '/bpm': typeof BpmRoute
@@ -2237,6 +2252,7 @@ export interface FileRoutesByTo {
   '/phone': typeof PhoneRoute
   '/php-serialize': typeof PhpSerializeRoute
   '/pkce': typeof PkceRoute
+  '/playfair': typeof PlayfairRoute
   '/polybius': typeof PolybiusRoute
   '/pomodoro': typeof PomodoroRoute
   '/port-check': typeof PortCheckRoute
@@ -2355,6 +2371,7 @@ export interface FileRoutesById {
   '/base64-image': typeof Base64ImageRoute
   '/base85': typeof Base85Route
   '/basic-auth': typeof BasicAuthRoute
+  '/beaufort': typeof BeaufortRoute
   '/bitwise': typeof BitwiseRoute
   '/bmi-calculator': typeof BmiCalculatorRoute
   '/bpm': typeof BpmRoute
@@ -2530,6 +2547,7 @@ export interface FileRoutesById {
   '/phone': typeof PhoneRoute
   '/php-serialize': typeof PhpSerializeRoute
   '/pkce': typeof PkceRoute
+  '/playfair': typeof PlayfairRoute
   '/polybius': typeof PolybiusRoute
   '/pomodoro': typeof PomodoroRoute
   '/port-check': typeof PortCheckRoute
@@ -2649,6 +2667,7 @@ export interface FileRouteTypes {
     | '/base64-image'
     | '/base85'
     | '/basic-auth'
+    | '/beaufort'
     | '/bitwise'
     | '/bmi-calculator'
     | '/bpm'
@@ -2824,6 +2843,7 @@ export interface FileRouteTypes {
     | '/phone'
     | '/php-serialize'
     | '/pkce'
+    | '/playfair'
     | '/polybius'
     | '/pomodoro'
     | '/port-check'
@@ -2941,6 +2961,7 @@ export interface FileRouteTypes {
     | '/base64-image'
     | '/base85'
     | '/basic-auth'
+    | '/beaufort'
     | '/bitwise'
     | '/bmi-calculator'
     | '/bpm'
@@ -3116,6 +3137,7 @@ export interface FileRouteTypes {
     | '/phone'
     | '/php-serialize'
     | '/pkce'
+    | '/playfair'
     | '/polybius'
     | '/pomodoro'
     | '/port-check'
@@ -3233,6 +3255,7 @@ export interface FileRouteTypes {
     | '/base64-image'
     | '/base85'
     | '/basic-auth'
+    | '/beaufort'
     | '/bitwise'
     | '/bmi-calculator'
     | '/bpm'
@@ -3408,6 +3431,7 @@ export interface FileRouteTypes {
     | '/phone'
     | '/php-serialize'
     | '/pkce'
+    | '/playfair'
     | '/polybius'
     | '/pomodoro'
     | '/port-check'
@@ -3526,6 +3550,7 @@ export interface RootRouteChildren {
   Base64ImageRoute: typeof Base64ImageRoute
   Base85Route: typeof Base85Route
   BasicAuthRoute: typeof BasicAuthRoute
+  BeaufortRoute: typeof BeaufortRoute
   BitwiseRoute: typeof BitwiseRoute
   BmiCalculatorRoute: typeof BmiCalculatorRoute
   BpmRoute: typeof BpmRoute
@@ -3701,6 +3726,7 @@ export interface RootRouteChildren {
   PhoneRoute: typeof PhoneRoute
   PhpSerializeRoute: typeof PhpSerializeRoute
   PkceRoute: typeof PkceRoute
+  PlayfairRoute: typeof PlayfairRoute
   PolybiusRoute: typeof PolybiusRoute
   PomodoroRoute: typeof PomodoroRoute
   PortCheckRoute: typeof PortCheckRoute
@@ -4451,6 +4477,13 @@ declare module '@tanstack/react-router' {
       path: '/polybius'
       fullPath: '/polybius'
       preLoaderRoute: typeof PolybiusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/playfair': {
+      id: '/playfair'
+      path: '/playfair'
+      fullPath: '/playfair'
+      preLoaderRoute: typeof PlayfairRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pkce': {
@@ -5678,6 +5711,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BitwiseRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/beaufort': {
+      id: '/beaufort'
+      path: '/beaufort'
+      fullPath: '/beaufort'
+      preLoaderRoute: typeof BeaufortRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/basic-auth': {
       id: '/basic-auth'
       path: '/basic-auth'
@@ -5854,6 +5894,7 @@ const rootRouteChildren: RootRouteChildren = {
   Base64ImageRoute: Base64ImageRoute,
   Base85Route: Base85Route,
   BasicAuthRoute: BasicAuthRoute,
+  BeaufortRoute: BeaufortRoute,
   BitwiseRoute: BitwiseRoute,
   BmiCalculatorRoute: BmiCalculatorRoute,
   BpmRoute: BpmRoute,
@@ -6029,6 +6070,7 @@ const rootRouteChildren: RootRouteChildren = {
   PhoneRoute: PhoneRoute,
   PhpSerializeRoute: PhpSerializeRoute,
   PkceRoute: PkceRoute,
+  PlayfairRoute: PlayfairRoute,
   PolybiusRoute: PolybiusRoute,
   PomodoroRoute: PomodoroRoute,
   PortCheckRoute: PortCheckRoute,
