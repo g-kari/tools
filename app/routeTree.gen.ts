@@ -84,6 +84,7 @@ import { Route as SequencesRouteImport } from './routes/sequences'
 import { Route as SeoMetaRouteImport } from './routes/seo-meta'
 import { Route as SemverRouteImport } from './routes/semver'
 import { Route as SecurityHeadersRouteImport } from './routes/security-headers'
+import { Route as ScytaleRouteImport } from './routes/scytale'
 import { Route as RomanNumeralsRouteImport } from './routes/roman-numerals'
 import { Route as RobotsTxtRouteImport } from './routes/robots-txt'
 import { Route as RegexLibraryRouteImport } from './routes/regex-library'
@@ -287,6 +288,7 @@ import { Route as Base32RouteImport } from './routes/base32'
 import { Route as Base16RouteImport } from './routes/base16'
 import { Route as BarcodeRouteImport } from './routes/barcode'
 import { Route as AudioConverterRouteImport } from './routes/audio-converter'
+import { Route as AtbashRouteImport } from './routes/atbash'
 import { Route as AspectRatioRouteImport } from './routes/aspect-ratio'
 import { Route as AsciiTableRouteImport } from './routes/ascii-table'
 import { Route as AsciiArtRouteImport } from './routes/ascii-art'
@@ -671,6 +673,11 @@ const SemverRoute = SemverRouteImport.update({
 const SecurityHeadersRoute = SecurityHeadersRouteImport.update({
   id: '/security-headers',
   path: '/security-headers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ScytaleRoute = ScytaleRouteImport.update({
+  id: '/scytale',
+  path: '/scytale',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RomanNumeralsRoute = RomanNumeralsRouteImport.update({
@@ -1688,6 +1695,11 @@ const AudioConverterRoute = AudioConverterRouteImport.update({
   path: '/audio-converter',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AtbashRoute = AtbashRouteImport.update({
+  id: '/atbash',
+  path: '/atbash',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AspectRatioRoute = AspectRatioRouteImport.update({
   id: '/aspect-ratio',
   path: '/aspect-ratio',
@@ -1746,6 +1758,7 @@ export interface FileRoutesByFullPath {
   '/ascii-art': typeof AsciiArtRoute
   '/ascii-table': typeof AsciiTableRoute
   '/aspect-ratio': typeof AspectRatioRoute
+  '/atbash': typeof AtbashRoute
   '/audio-converter': typeof AudioConverterRoute
   '/barcode': typeof BarcodeRoute
   '/base16': typeof Base16Route
@@ -1949,6 +1962,7 @@ export interface FileRoutesByFullPath {
   '/regex-library': typeof RegexLibraryRoute
   '/robots-txt': typeof RobotsTxtRoute
   '/roman-numerals': typeof RomanNumeralsRoute
+  '/scytale': typeof ScytaleRoute
   '/security-headers': typeof SecurityHeadersRoute
   '/semver': typeof SemverRoute
   '/seo-meta': typeof SeoMetaRoute
@@ -2036,6 +2050,7 @@ export interface FileRoutesByTo {
   '/ascii-art': typeof AsciiArtRoute
   '/ascii-table': typeof AsciiTableRoute
   '/aspect-ratio': typeof AspectRatioRoute
+  '/atbash': typeof AtbashRoute
   '/audio-converter': typeof AudioConverterRoute
   '/barcode': typeof BarcodeRoute
   '/base16': typeof Base16Route
@@ -2239,6 +2254,7 @@ export interface FileRoutesByTo {
   '/regex-library': typeof RegexLibraryRoute
   '/robots-txt': typeof RobotsTxtRoute
   '/roman-numerals': typeof RomanNumeralsRoute
+  '/scytale': typeof ScytaleRoute
   '/security-headers': typeof SecurityHeadersRoute
   '/semver': typeof SemverRoute
   '/seo-meta': typeof SeoMetaRoute
@@ -2327,6 +2343,7 @@ export interface FileRoutesById {
   '/ascii-art': typeof AsciiArtRoute
   '/ascii-table': typeof AsciiTableRoute
   '/aspect-ratio': typeof AspectRatioRoute
+  '/atbash': typeof AtbashRoute
   '/audio-converter': typeof AudioConverterRoute
   '/barcode': typeof BarcodeRoute
   '/base16': typeof Base16Route
@@ -2530,6 +2547,7 @@ export interface FileRoutesById {
   '/regex-library': typeof RegexLibraryRoute
   '/robots-txt': typeof RobotsTxtRoute
   '/roman-numerals': typeof RomanNumeralsRoute
+  '/scytale': typeof ScytaleRoute
   '/security-headers': typeof SecurityHeadersRoute
   '/semver': typeof SemverRoute
   '/seo-meta': typeof SeoMetaRoute
@@ -2619,6 +2637,7 @@ export interface FileRouteTypes {
     | '/ascii-art'
     | '/ascii-table'
     | '/aspect-ratio'
+    | '/atbash'
     | '/audio-converter'
     | '/barcode'
     | '/base16'
@@ -2822,6 +2841,7 @@ export interface FileRouteTypes {
     | '/regex-library'
     | '/robots-txt'
     | '/roman-numerals'
+    | '/scytale'
     | '/security-headers'
     | '/semver'
     | '/seo-meta'
@@ -2909,6 +2929,7 @@ export interface FileRouteTypes {
     | '/ascii-art'
     | '/ascii-table'
     | '/aspect-ratio'
+    | '/atbash'
     | '/audio-converter'
     | '/barcode'
     | '/base16'
@@ -3112,6 +3133,7 @@ export interface FileRouteTypes {
     | '/regex-library'
     | '/robots-txt'
     | '/roman-numerals'
+    | '/scytale'
     | '/security-headers'
     | '/semver'
     | '/seo-meta'
@@ -3199,6 +3221,7 @@ export interface FileRouteTypes {
     | '/ascii-art'
     | '/ascii-table'
     | '/aspect-ratio'
+    | '/atbash'
     | '/audio-converter'
     | '/barcode'
     | '/base16'
@@ -3402,6 +3425,7 @@ export interface FileRouteTypes {
     | '/regex-library'
     | '/robots-txt'
     | '/roman-numerals'
+    | '/scytale'
     | '/security-headers'
     | '/semver'
     | '/seo-meta'
@@ -3490,6 +3514,7 @@ export interface RootRouteChildren {
   AsciiArtRoute: typeof AsciiArtRoute
   AsciiTableRoute: typeof AsciiTableRoute
   AspectRatioRoute: typeof AspectRatioRoute
+  AtbashRoute: typeof AtbashRoute
   AudioConverterRoute: typeof AudioConverterRoute
   BarcodeRoute: typeof BarcodeRoute
   Base16Route: typeof Base16Route
@@ -3693,6 +3718,7 @@ export interface RootRouteChildren {
   RegexLibraryRoute: typeof RegexLibraryRoute
   RobotsTxtRoute: typeof RobotsTxtRoute
   RomanNumeralsRoute: typeof RomanNumeralsRoute
+  ScytaleRoute: typeof ScytaleRoute
   SecurityHeadersRoute: typeof SecurityHeadersRoute
   SemverRoute: typeof SemverRoute
   SeoMetaRoute: typeof SeoMetaRoute
@@ -4299,6 +4325,13 @@ declare module '@tanstack/react-router' {
       path: '/security-headers'
       fullPath: '/security-headers'
       preLoaderRoute: typeof SecurityHeadersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/scytale': {
+      id: '/scytale'
+      path: '/scytale'
+      fullPath: '/scytale'
+      preLoaderRoute: typeof ScytaleRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/roman-numerals': {
@@ -5722,6 +5755,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AudioConverterRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/atbash': {
+      id: '/atbash'
+      path: '/atbash'
+      fullPath: '/atbash'
+      preLoaderRoute: typeof AtbashRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/aspect-ratio': {
       id: '/aspect-ratio'
       path: '/aspect-ratio'
@@ -5802,6 +5842,7 @@ const rootRouteChildren: RootRouteChildren = {
   AsciiArtRoute: AsciiArtRoute,
   AsciiTableRoute: AsciiTableRoute,
   AspectRatioRoute: AspectRatioRoute,
+  AtbashRoute: AtbashRoute,
   AudioConverterRoute: AudioConverterRoute,
   BarcodeRoute: BarcodeRoute,
   Base16Route: Base16Route,
@@ -6005,6 +6046,7 @@ const rootRouteChildren: RootRouteChildren = {
   RegexLibraryRoute: RegexLibraryRoute,
   RobotsTxtRoute: RobotsTxtRoute,
   RomanNumeralsRoute: RomanNumeralsRoute,
+  ScytaleRoute: ScytaleRoute,
   SecurityHeadersRoute: SecurityHeadersRoute,
   SemverRoute: SemverRoute,
   SeoMetaRoute: SeoMetaRoute,
