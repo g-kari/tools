@@ -183,6 +183,7 @@ import { Route as HashRouteImport } from './routes/hash'
 import { Route as HarRouteImport } from './routes/har'
 import { Route as HangmanRouteImport } from './routes/hangman'
 import { Route as GzipRouteImport } from './routes/gzip'
+import { Route as GronsfeldRouteImport } from './routes/gronsfeld'
 import { Route as GraphqlRouteImport } from './routes/graphql'
 import { Route as GlobalIpRouteImport } from './routes/global-ip'
 import { Route as GlobTesterRouteImport } from './routes/glob-tester'
@@ -1172,6 +1173,11 @@ const GzipRoute = GzipRouteImport.update({
   path: '/gzip',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GronsfeldRoute = GronsfeldRouteImport.update({
+  id: '/gronsfeld',
+  path: '/gronsfeld',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GraphqlRoute = GraphqlRouteImport.update({
   id: '/graphql',
   path: '/graphql',
@@ -1878,6 +1884,7 @@ export interface FileRoutesByFullPath {
   '/glob-tester': typeof GlobTesterRoute
   '/global-ip': typeof GlobalIpRoute
   '/graphql': typeof GraphqlRoute
+  '/gronsfeld': typeof GronsfeldRoute
   '/gzip': typeof GzipRoute
   '/hangman': typeof HangmanRoute
   '/har': typeof HarRoute
@@ -2172,6 +2179,7 @@ export interface FileRoutesByTo {
   '/glob-tester': typeof GlobTesterRoute
   '/global-ip': typeof GlobalIpRoute
   '/graphql': typeof GraphqlRoute
+  '/gronsfeld': typeof GronsfeldRoute
   '/gzip': typeof GzipRoute
   '/hangman': typeof HangmanRoute
   '/har': typeof HarRoute
@@ -2467,6 +2475,7 @@ export interface FileRoutesById {
   '/glob-tester': typeof GlobTesterRoute
   '/global-ip': typeof GlobalIpRoute
   '/graphql': typeof GraphqlRoute
+  '/gronsfeld': typeof GronsfeldRoute
   '/gzip': typeof GzipRoute
   '/hangman': typeof HangmanRoute
   '/har': typeof HarRoute
@@ -2763,6 +2772,7 @@ export interface FileRouteTypes {
     | '/glob-tester'
     | '/global-ip'
     | '/graphql'
+    | '/gronsfeld'
     | '/gzip'
     | '/hangman'
     | '/har'
@@ -3057,6 +3067,7 @@ export interface FileRouteTypes {
     | '/glob-tester'
     | '/global-ip'
     | '/graphql'
+    | '/gronsfeld'
     | '/gzip'
     | '/hangman'
     | '/har'
@@ -3351,6 +3362,7 @@ export interface FileRouteTypes {
     | '/glob-tester'
     | '/global-ip'
     | '/graphql'
+    | '/gronsfeld'
     | '/gzip'
     | '/hangman'
     | '/har'
@@ -3646,6 +3658,7 @@ export interface RootRouteChildren {
   GlobTesterRoute: typeof GlobTesterRoute
   GlobalIpRoute: typeof GlobalIpRoute
   GraphqlRoute: typeof GraphqlRoute
+  GronsfeldRoute: typeof GronsfeldRoute
   GzipRoute: typeof GzipRoute
   HangmanRoute: typeof HangmanRoute
   HarRoute: typeof HarRoute
@@ -5046,6 +5059,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GzipRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/gronsfeld': {
+      id: '/gronsfeld'
+      path: '/gronsfeld'
+      fullPath: '/gronsfeld'
+      preLoaderRoute: typeof GronsfeldRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/graphql': {
       id: '/graphql'
       path: '/graphql'
@@ -5990,6 +6010,7 @@ const rootRouteChildren: RootRouteChildren = {
   GlobTesterRoute: GlobTesterRoute,
   GlobalIpRoute: GlobalIpRoute,
   GraphqlRoute: GraphqlRoute,
+  GronsfeldRoute: GronsfeldRoute,
   GzipRoute: GzipRoute,
   HangmanRoute: HangmanRoute,
   HarRoute: HarRoute,
