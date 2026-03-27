@@ -1,0 +1,347 @@
+/* Apache .htaccess ビルダー - htx- プレフィックス */
+
+.htx-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* セクション */
+.htx-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.25rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 8px;
+  background: var(--md-sys-color-surface-variant);
+}
+
+.htx-section-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--md-sys-color-primary);
+  margin: 0 0 0.25rem;
+}
+
+/* フィールド */
+.htx-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+/* ラベル */
+.htx-label {
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--md-sys-color-primary);
+}
+
+/* テキスト入力 */
+.htx-input {
+  width: 100%;
+  font-size: 0.88rem;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--md-sys-color-outline);
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  border-radius: 4px;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.htx-input:focus {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+  border-color: var(--md-sys-color-primary);
+}
+
+/* セレクト */
+.htx-select {
+  width: 100%;
+  font-size: 0.88rem;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--md-sys-color-outline);
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  border-radius: 4px;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.htx-select:focus {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+  border-color: var(--md-sys-color-primary);
+}
+
+/* チェックボックス行 */
+.htx-checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.88rem;
+  color: var(--md-sys-color-on-surface);
+  user-select: none;
+}
+
+.htx-checkbox-row input[type='checkbox'] {
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+  accent-color: var(--md-sys-color-primary);
+}
+
+/* ラジオグループ */
+.htx-radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* ラジオオプション（ピルスタイルのトグルボタン） */
+.htx-radio-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.85rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    color 0.15s;
+  user-select: none;
+}
+
+.htx-radio-btn input[type='radio'] {
+  display: none;
+}
+
+.htx-radio-btn:hover {
+  background: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.htx-radio-btn:focus-within {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.htx-radio-btn--active {
+  background: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary-container);
+  font-weight: 600;
+}
+
+/* サンプルプリセット */
+.htx-samples {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.htx-samples-label {
+  font-size: 0.8rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-right: 0.25rem;
+}
+
+.htx-sample-btn {
+  padding: 0.25rem 0.65rem;
+  font-size: 0.78rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 999px;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    color 0.15s;
+  white-space: nowrap;
+}
+
+.htx-sample-btn:hover {
+  background: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.htx-sample-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* 出力コードブロック */
+.htx-output-wrapper {
+  overflow: hidden;
+  border-radius: 6px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.htx-code-block {
+  margin: 0;
+  padding: 1rem;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-size: 0.82rem;
+  line-height: 1.7;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  overflow-x: auto;
+  white-space: pre;
+  min-height: 8rem;
+}
+
+.htx-placeholder {
+  font-style: italic;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: inherit;
+}
+
+/* アクションボタン行 */
+.htx-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding-top: 0.25rem;
+}
+
+/* フォームグリッド（2カラム） */
+.htx-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+/* カスタムリダイレクト */
+.htx-redirect-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.htx-redirect-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto auto;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.htx-redirect-type {
+  width: 5rem;
+  font-size: 0.82rem;
+  padding: 0.45rem 0.5rem;
+  border: 1px solid var(--md-sys-color-outline);
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.htx-redirect-type:focus {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.htx-remove-btn {
+  padding: 0.35rem 0.6rem;
+  font-size: 0.82rem;
+  border: 1px solid var(--md-sys-color-error);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--md-sys-color-error);
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+
+.htx-remove-btn:hover {
+  background: var(--md-sys-color-error-container);
+}
+
+.htx-remove-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-error);
+  outline-offset: 2px;
+}
+
+.htx-add-btn {
+  align-self: flex-start;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.82rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.htx-add-btn:hover {
+  background: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.htx-add-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* ヒントテキスト */
+.htx-hint {
+  font-size: 0.76rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* レスポンシブ */
+@media (max-width: 640px) {
+  .htx-container {
+    padding: 0.5rem;
+  }
+
+  .htx-section {
+    padding: 0.75rem;
+  }
+
+  .htx-code-block {
+    font-size: 0.76rem;
+  }
+
+  .htx-grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .htx-redirect-row {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+  }
+
+  .htx-redirect-row .htx-redirect-type {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .htx-redirect-row .htx-remove-btn {
+    grid-column: 2;
+    grid-row: 2;
+    justify-self: end;
+  }
+}
