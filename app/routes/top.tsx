@@ -749,6 +749,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "🔍",
       },
       {
+        path: "/package-json",
+        label: "package.json ビルダー",
+        description:
+          "npm の package.json を GUI で生成するツール。基本情報・scripts・keywords・エントリポイントをフォームで設定。Node.js CLI・Webアプリ・ライブラリ向けプリセット付き。",
+        icon: "📦",
+      },
+      {
         path: "/robots-txt",
         label: "robots.txtジェネレーター",
         description:
