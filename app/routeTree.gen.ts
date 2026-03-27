@@ -297,6 +297,7 @@ import { Route as AsciiTableRouteImport } from './routes/ascii-table'
 import { Route as AsciiArtRouteImport } from './routes/ascii-art'
 import { Route as AnsiColorRouteImport } from './routes/ansi-color'
 import { Route as AffineRouteImport } from './routes/affine'
+import { Route as AdfgvxRouteImport } from './routes/adfgvx'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiImageDotwebpRouteImport } from './routes/api/image[.]webp'
 import { Route as ApiImageDotsvgRouteImport } from './routes/api/image[.]svg'
@@ -1743,6 +1744,11 @@ const AffineRoute = AffineRouteImport.update({
   path: '/affine',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdfgvxRoute = AdfgvxRouteImport.update({
+  id: '/adfgvx',
+  path: '/adfgvx',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -1771,6 +1777,7 @@ const ApiImageDotjpgRoute = ApiImageDotjpgRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/adfgvx': typeof AdfgvxRoute
   '/affine': typeof AffineRoute
   '/ansi-color': typeof AnsiColorRoute
   '/ascii-art': typeof AsciiArtRoute
@@ -2066,6 +2073,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/adfgvx': typeof AdfgvxRoute
   '/affine': typeof AffineRoute
   '/ansi-color': typeof AnsiColorRoute
   '/ascii-art': typeof AsciiArtRoute
@@ -2362,6 +2370,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/adfgvx': typeof AdfgvxRoute
   '/affine': typeof AffineRoute
   '/ansi-color': typeof AnsiColorRoute
   '/ascii-art': typeof AsciiArtRoute
@@ -2659,6 +2668,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/adfgvx'
     | '/affine'
     | '/ansi-color'
     | '/ascii-art'
@@ -2954,6 +2964,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/adfgvx'
     | '/affine'
     | '/ansi-color'
     | '/ascii-art'
@@ -3249,6 +3260,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/adfgvx'
     | '/affine'
     | '/ansi-color'
     | '/ascii-art'
@@ -3545,6 +3557,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdfgvxRoute: typeof AdfgvxRoute
   AffineRoute: typeof AffineRoute
   AnsiColorRoute: typeof AnsiColorRoute
   AsciiArtRoute: typeof AsciiArtRoute
@@ -5857,6 +5870,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AffineRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/adfgvx': {
+      id: '/adfgvx'
+      path: '/adfgvx'
+      fullPath: '/adfgvx'
+      preLoaderRoute: typeof AdfgvxRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -5897,6 +5917,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdfgvxRoute: AdfgvxRoute,
   AffineRoute: AffineRoute,
   AnsiColorRoute: AnsiColorRoute,
   AsciiArtRoute: AsciiArtRoute,

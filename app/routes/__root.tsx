@@ -263,6 +263,7 @@ const navCategories = [
       { path: "/polybius", label: "ポリュビオスの方陣" },
       { path: "/scytale", label: "スキュタレー暗号" },
       { path: "/gronsfeld", label: "グロンスフェルト暗号" },
+      { path: "/adfgvx", label: "ADFGVX暗号" },
       { path: "/fancy-text", label: "ファンシーテキスト変換" },
       { path: "/ansi-color", label: "ANSIターミナルカラーコードビルダー" },
     ],
