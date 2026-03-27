@@ -170,6 +170,7 @@ import { Route as HtmlPlaygroundRouteImport } from './routes/html-playground'
 import { Route as HtmlMarkdownRouteImport } from './routes/html-markdown'
 import { Route as HtmlFormatterRouteImport } from './routes/html-formatter'
 import { Route as HtmlEncodeRouteImport } from './routes/html-encode'
+import { Route as HtaccessBuilderRouteImport } from './routes/htaccess-builder'
 import { Route as HmacRouteImport } from './routes/hmac'
 import { Route as HexViewerRouteImport } from './routes/hex-viewer'
 import { Route as HaversineRouteImport } from './routes/haversine'
@@ -1098,6 +1099,11 @@ const HtmlEncodeRoute = HtmlEncodeRouteImport.update({
   path: '/html-encode',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HtaccessBuilderRoute = HtaccessBuilderRouteImport.update({
+  id: '/htaccess-builder',
+  path: '/htaccess-builder',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HmacRoute = HmacRouteImport.update({
   id: '/hmac',
   path: '/hmac',
@@ -1828,6 +1834,7 @@ export interface FileRoutesByFullPath {
   '/haversine': typeof HaversineRoute
   '/hex-viewer': typeof HexViewerRoute
   '/hmac': typeof HmacRoute
+  '/htaccess-builder': typeof HtaccessBuilderRoute
   '/html-encode': typeof HtmlEncodeRoute
   '/html-formatter': typeof HtmlFormatterRoute
   '/html-markdown': typeof HtmlMarkdownRoute
@@ -2113,6 +2120,7 @@ export interface FileRoutesByTo {
   '/haversine': typeof HaversineRoute
   '/hex-viewer': typeof HexViewerRoute
   '/hmac': typeof HmacRoute
+  '/htaccess-builder': typeof HtaccessBuilderRoute
   '/html-encode': typeof HtmlEncodeRoute
   '/html-formatter': typeof HtmlFormatterRoute
   '/html-markdown': typeof HtmlMarkdownRoute
@@ -2399,6 +2407,7 @@ export interface FileRoutesById {
   '/haversine': typeof HaversineRoute
   '/hex-viewer': typeof HexViewerRoute
   '/hmac': typeof HmacRoute
+  '/htaccess-builder': typeof HtaccessBuilderRoute
   '/html-encode': typeof HtmlEncodeRoute
   '/html-formatter': typeof HtmlFormatterRoute
   '/html-markdown': typeof HtmlMarkdownRoute
@@ -2686,6 +2695,7 @@ export interface FileRouteTypes {
     | '/haversine'
     | '/hex-viewer'
     | '/hmac'
+    | '/htaccess-builder'
     | '/html-encode'
     | '/html-formatter'
     | '/html-markdown'
@@ -2971,6 +2981,7 @@ export interface FileRouteTypes {
     | '/haversine'
     | '/hex-viewer'
     | '/hmac'
+    | '/htaccess-builder'
     | '/html-encode'
     | '/html-formatter'
     | '/html-markdown'
@@ -3256,6 +3267,7 @@ export interface FileRouteTypes {
     | '/haversine'
     | '/hex-viewer'
     | '/hmac'
+    | '/htaccess-builder'
     | '/html-encode'
     | '/html-formatter'
     | '/html-markdown'
@@ -3542,6 +3554,7 @@ export interface RootRouteChildren {
   HaversineRoute: typeof HaversineRoute
   HexViewerRoute: typeof HexViewerRoute
   HmacRoute: typeof HmacRoute
+  HtaccessBuilderRoute: typeof HtaccessBuilderRoute
   HtmlEncodeRoute: typeof HtmlEncodeRoute
   HtmlFormatterRoute: typeof HtmlFormatterRoute
   HtmlMarkdownRoute: typeof HtmlMarkdownRoute
@@ -4838,6 +4851,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HtmlEncodeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/htaccess-builder': {
+      id: '/htaccess-builder'
+      path: '/htaccess-builder'
+      fullPath: '/htaccess-builder'
+      preLoaderRoute: typeof HtaccessBuilderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/hmac': {
       id: '/hmac'
       path: '/hmac'
@@ -5814,6 +5834,7 @@ const rootRouteChildren: RootRouteChildren = {
   HaversineRoute: HaversineRoute,
   HexViewerRoute: HexViewerRoute,
   HmacRoute: HmacRoute,
+  HtaccessBuilderRoute: HtaccessBuilderRoute,
   HtmlEncodeRoute: HtmlEncodeRoute,
   HtmlFormatterRoute: HtmlFormatterRoute,
   HtmlMarkdownRoute: HtmlMarkdownRoute,

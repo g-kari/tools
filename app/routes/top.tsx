@@ -1715,6 +1715,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "⚙️",
       },
       {
+        path: "/htaccess-builder",
+        label: "Apache .htaccessビルダー",
+        description:
+          "Apache .htaccess ファイルを GUI で生成。HTTPS リダイレクト・www リダイレクト・キャッシュ制御・GZIP 圧縮・セキュリティヘッダー・カスタムエラーページに対応。",
+        icon: "🔧",
+      },
+      {
         path: "/makefile",
         label: "Makefileジェネレーター",
         description:
