@@ -321,6 +321,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "📋",
       },
       {
+        path: "/css-formatter",
+        label: "CSSフォーマッター",
+        description:
+          "CSSコードの整形・圧縮・構文検証ツール。インデント幅・プロパティソートを設定してCSSを整形。@media・@keyframes等のネストしたルールにも対応。",
+        icon: "🎨",
+      },
+      {
         path: "/xml",
         label: "XMLフォーマッター",
         description: "XMLデータの整形・圧縮・構文検証ツール",
