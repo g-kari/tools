@@ -4,6 +4,8 @@ import {
   permutation,
   combination,
   calculateCombinatorics,
+  permutationSteps,
+  combinationSteps,
   generatePascalTriangle,
   formatBigInt,
   validateInputs,
@@ -209,5 +211,107 @@ describe("validateInputs", () => {
 
   it("n = MAX_N は許容", () => {
     expect(validateInputs(MAX_N, 0)).toBeNull();
+  });
+
+  it("小数の n はエラー", () => {
+    expect(validateInputs(5.5, 2)).not.toBeNull();
+  });
+
+  it("小数の r はエラー", () => {
+    expect(validateInputs(5, 2.5)).not.toBeNull();
+  });
+});
+
+describe("permutationSteps", () => {
+  it("5P3 のステップ配列を返す", () => {
+    const steps = permutationSteps(5, 3);
+    expect(Array.isArray(steps)).toBe(true);
+    expect(steps.length).toBeGreaterThan(0);
+  });
+
+  it("最初のステップに公式が含まれる", () => {
+    const steps = permutationSteps(5, 3);
+    expect(steps[0].label).toBe("公式");
+    expect(steps[0].formula).toContain("ₙPᵣ");
+  });
+
+  it("n! を展開するステップが含まれる", () => {
+    const steps = permutationSteps(5, 3);
+    const nFactStep = steps.find((s) => s.label === "n! を展開");
+    expect(nFactStep).toBeDefined();
+  });
+
+  it("r === n のとき (n-r)! のステップがない", () => {
+    const steps = permutationSteps(5, 5);
+    const nMinusRStep = steps.find((s) => s.label === "(n − r)! を展開");
+    expect(nMinusRStep).toBeUndefined();
+  });
+
+  it("r < n のとき (n-r)! のステップがある", () => {
+    const steps = permutationSteps(5, 3);
+    const nMinusRStep = steps.find((s) => s.label === "(n − r)! を展開");
+    expect(nMinusRStep).toBeDefined();
+  });
+
+  it("除算ステップが最後に含まれる", () => {
+    const steps = permutationSteps(5, 3);
+    const lastStep = steps[steps.length - 1];
+    expect(lastStep.label).toBe("除算");
+  });
+
+  it("10P4 の結果が 5040 を含む", () => {
+    const steps = permutationSteps(10, 4);
+    const lastStep = steps[steps.length - 1];
+    expect(lastStep.result).toContain("5,040");
+  });
+});
+
+describe("combinationSteps", () => {
+  it("5C3 のステップ配列を返す", () => {
+    const steps = combinationSteps(5, 3);
+    expect(Array.isArray(steps)).toBe(true);
+    expect(steps.length).toBeGreaterThan(0);
+  });
+
+  it("最初のステップに公式が含まれる", () => {
+    const steps = combinationSteps(5, 3);
+    expect(steps[0].label).toBe("公式");
+    expect(steps[0].formula).toContain("ₙCᵣ");
+  });
+
+  it("n! を計算するステップが含まれる", () => {
+    const steps = combinationSteps(5, 3);
+    const nFactStep = steps.find((s) => s.label === "n! を計算");
+    expect(nFactStep).toBeDefined();
+  });
+
+  it("r! を計算するステップが含まれる", () => {
+    const steps = combinationSteps(5, 3);
+    const rFactStep = steps.find((s) => s.label === "r! を計算");
+    expect(rFactStep).toBeDefined();
+  });
+
+  it("(n-r)! を計算するステップが含まれる", () => {
+    const steps = combinationSteps(5, 3);
+    const nMinusRStep = steps.find((s) => s.label === "(n − r)! を計算");
+    expect(nMinusRStep).toBeDefined();
+  });
+
+  it("分母を計算するステップが含まれる", () => {
+    const steps = combinationSteps(5, 3);
+    const denomStep = steps.find((s) => s.label === "分母を計算");
+    expect(denomStep).toBeDefined();
+  });
+
+  it("除算ステップが最後に含まれる", () => {
+    const steps = combinationSteps(5, 3);
+    const lastStep = steps[steps.length - 1];
+    expect(lastStep.label).toBe("除算");
+  });
+
+  it("10C3 の結果が 120 を含む", () => {
+    const steps = combinationSteps(10, 3);
+    const lastStep = steps[steps.length - 1];
+    expect(lastStep.result).toContain("120");
   });
 });
