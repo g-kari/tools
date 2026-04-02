@@ -278,6 +278,7 @@ import { Route as CharCountRouteImport } from './routes/char-count'
 import { Route as CertDecoderRouteImport } from './routes/cert-decoder'
 import { Route as CaesarRouteImport } from './routes/caesar'
 import { Route as CacheControlRouteImport } from './routes/cache-control'
+import { Route as BstVisualizerRouteImport } from './routes/bst-visualizer'
 import { Route as BrainfuckRouteImport } from './routes/brainfuck'
 import { Route as BrailleRouteImport } from './routes/braille'
 import { Route as BpmRouteImport } from './routes/bpm'
@@ -1654,6 +1655,11 @@ const CacheControlRoute = CacheControlRouteImport.update({
   path: '/cache-control',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BstVisualizerRoute = BstVisualizerRouteImport.update({
+  id: '/bst-visualizer',
+  path: '/bst-visualizer',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BrainfuckRoute = BrainfuckRouteImport.update({
   id: '/brainfuck',
   path: '/brainfuck',
@@ -1832,6 +1838,7 @@ export interface FileRoutesByFullPath {
   '/bpm': typeof BpmRoute
   '/braille': typeof BrailleRoute
   '/brainfuck': typeof BrainfuckRoute
+  '/bst-visualizer': typeof BstVisualizerRoute
   '/cache-control': typeof CacheControlRoute
   '/caesar': typeof CaesarRoute
   '/cert-decoder': typeof CertDecoderRoute
@@ -2133,6 +2140,7 @@ export interface FileRoutesByTo {
   '/bpm': typeof BpmRoute
   '/braille': typeof BrailleRoute
   '/brainfuck': typeof BrainfuckRoute
+  '/bst-visualizer': typeof BstVisualizerRoute
   '/cache-control': typeof CacheControlRoute
   '/caesar': typeof CaesarRoute
   '/cert-decoder': typeof CertDecoderRoute
@@ -2435,6 +2443,7 @@ export interface FileRoutesById {
   '/bpm': typeof BpmRoute
   '/braille': typeof BrailleRoute
   '/brainfuck': typeof BrainfuckRoute
+  '/bst-visualizer': typeof BstVisualizerRoute
   '/cache-control': typeof CacheControlRoute
   '/caesar': typeof CaesarRoute
   '/cert-decoder': typeof CertDecoderRoute
@@ -2738,6 +2747,7 @@ export interface FileRouteTypes {
     | '/bpm'
     | '/braille'
     | '/brainfuck'
+    | '/bst-visualizer'
     | '/cache-control'
     | '/caesar'
     | '/cert-decoder'
@@ -3039,6 +3049,7 @@ export interface FileRouteTypes {
     | '/bpm'
     | '/braille'
     | '/brainfuck'
+    | '/bst-visualizer'
     | '/cache-control'
     | '/caesar'
     | '/cert-decoder'
@@ -3340,6 +3351,7 @@ export interface FileRouteTypes {
     | '/bpm'
     | '/braille'
     | '/brainfuck'
+    | '/bst-visualizer'
     | '/cache-control'
     | '/caesar'
     | '/cert-decoder'
@@ -3642,6 +3654,7 @@ export interface RootRouteChildren {
   BpmRoute: typeof BpmRoute
   BrailleRoute: typeof BrailleRoute
   BrainfuckRoute: typeof BrainfuckRoute
+  BstVisualizerRoute: typeof BstVisualizerRoute
   CacheControlRoute: typeof CacheControlRoute
   CaesarRoute: typeof CaesarRoute
   CertDecoderRoute: typeof CertDecoderRoute
@@ -5802,6 +5815,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CacheControlRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/bst-visualizer': {
+      id: '/bst-visualizer'
+      path: '/bst-visualizer'
+      fullPath: '/bst-visualizer'
+      preLoaderRoute: typeof BstVisualizerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/brainfuck': {
       id: '/brainfuck'
       path: '/brainfuck'
@@ -6042,6 +6062,7 @@ const rootRouteChildren: RootRouteChildren = {
   BpmRoute: BpmRoute,
   BrailleRoute: BrailleRoute,
   BrainfuckRoute: BrainfuckRoute,
+  BstVisualizerRoute: BstVisualizerRoute,
   CacheControlRoute: CacheControlRoute,
   CaesarRoute: CaesarRoute,
   CertDecoderRoute: CertDecoderRoute,
