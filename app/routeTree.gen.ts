@@ -196,6 +196,7 @@ import { Route as GeohashRouteImport } from './routes/geohash'
 import { Route as Game2048RouteImport } from './routes/game-2048'
 import { Route as FunctionPlotterRouteImport } from './routes/function-plotter'
 import { Route as FractionRouteImport } from './routes/fraction'
+import { Route as FourSquareRouteImport } from './routes/four-square'
 import { Route as FaviconGeneratorRouteImport } from './routes/favicon-generator'
 import { Route as FancyTextRouteImport } from './routes/fancy-text'
 import { Route as ExifViewerRouteImport } from './routes/exif-viewer'
@@ -1241,6 +1242,11 @@ const FractionRoute = FractionRouteImport.update({
   path: '/fraction',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FourSquareRoute = FourSquareRouteImport.update({
+  id: '/four-square',
+  path: '/four-square',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FaviconGeneratorRoute = FaviconGeneratorRouteImport.update({
   id: '/favicon-generator',
   path: '/favicon-generator',
@@ -1893,6 +1899,7 @@ export interface FileRoutesByFullPath {
   '/exif-viewer': typeof ExifViewerRoute
   '/fancy-text': typeof FancyTextRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
+  '/four-square': typeof FourSquareRoute
   '/fraction': typeof FractionRoute
   '/function-plotter': typeof FunctionPlotterRoute
   '/game-2048': typeof Game2048Route
@@ -2191,6 +2198,7 @@ export interface FileRoutesByTo {
   '/exif-viewer': typeof ExifViewerRoute
   '/fancy-text': typeof FancyTextRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
+  '/four-square': typeof FourSquareRoute
   '/fraction': typeof FractionRoute
   '/function-plotter': typeof FunctionPlotterRoute
   '/game-2048': typeof Game2048Route
@@ -2490,6 +2498,7 @@ export interface FileRoutesById {
   '/exif-viewer': typeof ExifViewerRoute
   '/fancy-text': typeof FancyTextRoute
   '/favicon-generator': typeof FaviconGeneratorRoute
+  '/four-square': typeof FourSquareRoute
   '/fraction': typeof FractionRoute
   '/function-plotter': typeof FunctionPlotterRoute
   '/game-2048': typeof Game2048Route
@@ -2790,6 +2799,7 @@ export interface FileRouteTypes {
     | '/exif-viewer'
     | '/fancy-text'
     | '/favicon-generator'
+    | '/four-square'
     | '/fraction'
     | '/function-plotter'
     | '/game-2048'
@@ -3088,6 +3098,7 @@ export interface FileRouteTypes {
     | '/exif-viewer'
     | '/fancy-text'
     | '/favicon-generator'
+    | '/four-square'
     | '/fraction'
     | '/function-plotter'
     | '/game-2048'
@@ -3386,6 +3397,7 @@ export interface FileRouteTypes {
     | '/exif-viewer'
     | '/fancy-text'
     | '/favicon-generator'
+    | '/four-square'
     | '/fraction'
     | '/function-plotter'
     | '/game-2048'
@@ -3685,6 +3697,7 @@ export interface RootRouteChildren {
   ExifViewerRoute: typeof ExifViewerRoute
   FancyTextRoute: typeof FancyTextRoute
   FaviconGeneratorRoute: typeof FaviconGeneratorRoute
+  FourSquareRoute: typeof FourSquareRoute
   FractionRoute: typeof FractionRoute
   FunctionPlotterRoute: typeof FunctionPlotterRoute
   Game2048Route: typeof Game2048Route
@@ -5189,6 +5202,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FractionRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/four-square': {
+      id: '/four-square'
+      path: '/four-square'
+      fullPath: '/four-square'
+      preLoaderRoute: typeof FourSquareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/favicon-generator': {
       id: '/favicon-generator'
       path: '/favicon-generator'
@@ -6061,6 +6081,7 @@ const rootRouteChildren: RootRouteChildren = {
   ExifViewerRoute: ExifViewerRoute,
   FancyTextRoute: FancyTextRoute,
   FaviconGeneratorRoute: FaviconGeneratorRoute,
+  FourSquareRoute: FourSquareRoute,
   FractionRoute: FractionRoute,
   FunctionPlotterRoute: FunctionPlotterRoute,
   Game2048Route: Game2048Route,
