@@ -1,0 +1,290 @@
+.sort-visualizer {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem;
+  font-family: inherit;
+}
+
+.sort-visualizer__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface, #1c1b1f);
+  margin-bottom: 0.25rem;
+}
+
+.sort-visualizer__description {
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+/* アルゴリズム選択タブ */
+.sort-visualizer__tabs {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.sort-visualizer__tab {
+  padding: 0.4rem 0.9rem;
+  border-radius: 20px;
+  border: 1.5px solid var(--md-sys-color-outline, #79747e);
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition:
+    background 0.15s,
+    color 0.15s,
+    border-color 0.15s;
+}
+
+.sort-visualizer__tab:hover {
+  background: var(--md-sys-color-surface-variant, #e7e0ec);
+}
+
+.sort-visualizer__tab--active {
+  background: var(--md-sys-color-primary, #6750a4);
+  color: var(--md-sys-color-on-primary, #ffffff);
+  border-color: var(--md-sys-color-primary, #6750a4);
+}
+
+/* コントロールパネル */
+.sort-visualizer__controls {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+  padding: 1rem;
+  background: var(--md-sys-color-surface-container-low, #f7f2fa);
+  border-radius: 12px;
+}
+
+.sort-visualizer__control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 120px;
+}
+
+.sort-visualizer__control-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+}
+
+.sort-visualizer__control-value {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-primary, #6750a4);
+  font-weight: 700;
+}
+
+.sort-visualizer__slider {
+  width: 100%;
+  cursor: pointer;
+  accent-color: var(--md-sys-color-primary, #6750a4);
+}
+
+/* ボタン群 */
+.sort-visualizer__buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.sort-visualizer__btn {
+  padding: 0.5rem 1.1rem;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition:
+    background 0.15s,
+    opacity 0.15s;
+}
+
+.sort-visualizer__btn--primary {
+  background: var(--md-sys-color-primary, #6750a4);
+  color: var(--md-sys-color-on-primary, #fff);
+}
+
+.sort-visualizer__btn--primary:hover {
+  opacity: 0.88;
+}
+
+.sort-visualizer__btn--secondary {
+  background: var(--md-sys-color-secondary-container, #e8def8);
+  color: var(--md-sys-color-on-secondary-container, #1d192b);
+}
+
+.sort-visualizer__btn--secondary:hover {
+  opacity: 0.85;
+}
+
+.sort-visualizer__btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* 統計情報 */
+.sort-visualizer__stats {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.sort-visualizer__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background: var(--md-sys-color-surface-container, #ece6f0);
+  border-radius: 10px;
+  min-width: 90px;
+}
+
+.sort-visualizer__stat-label {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+}
+
+.sort-visualizer__stat-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--md-sys-color-primary, #6750a4);
+}
+
+/* ビジュアライザー本体 */
+.sort-visualizer__canvas {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 2px;
+  height: 260px;
+  background: var(--md-sys-color-surface-container-lowest, #ffffff);
+  border: 1.5px solid var(--md-sys-color-outline-variant, #cac4d0);
+  border-radius: 12px;
+  padding: 0.5rem 0.75rem 0;
+  margin-bottom: 1.25rem;
+  overflow: hidden;
+}
+
+.sort-visualizer__bar {
+  flex: 1;
+  min-width: 3px;
+  border-radius: 3px 3px 0 0;
+  transition: height 0.05s ease;
+  background: var(--md-sys-color-primary-container, #eaddff);
+}
+
+.sort-visualizer__bar--comparing {
+  background: var(--md-sys-color-tertiary, #7d5260);
+}
+
+.sort-visualizer__bar--swapping {
+  background: var(--md-sys-color-error, #b3261e);
+}
+
+.sort-visualizer__bar--sorted {
+  background: var(--md-sys-color-secondary, #625b71);
+}
+
+/* 凡例 */
+.sort-visualizer__legend {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+  font-size: 0.8rem;
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+}
+
+.sort-visualizer__legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.sort-visualizer__legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+}
+
+/* 計算量テーブル */
+.sort-visualizer__complexity {
+  padding: 0.75rem 1rem;
+  background: var(--md-sys-color-surface-container-low, #f7f2fa);
+  border-radius: 10px;
+  font-size: 0.85rem;
+}
+
+.sort-visualizer__complexity-title {
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface, #1c1b1f);
+  margin-bottom: 0.5rem;
+}
+
+.sort-visualizer__complexity-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+  text-align: center;
+}
+
+.sort-visualizer__complexity-header {
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+  font-size: 0.78rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant, #cac4d0);
+}
+
+.sort-visualizer__complexity-cell {
+  color: var(--md-sys-color-on-surface, #1c1b1f);
+  font-family: monospace;
+  font-size: 0.82rem;
+}
+
+/* 凡例カラードット */
+.sort-visualizer__legend-dot--normal {
+  background: var(--md-sys-color-primary-container, #eaddff);
+}
+
+.sort-visualizer__legend-dot--comparing {
+  background: var(--md-sys-color-tertiary, #7d5260);
+}
+
+.sort-visualizer__legend-dot--swapping {
+  background: var(--md-sys-color-error, #b3261e);
+}
+
+.sort-visualizer__legend-dot--sorted {
+  background: var(--md-sys-color-secondary, #625b71);
+}
+
+/* 完了メッセージ */
+.sort-visualizer__done {
+  text-align: center;
+  padding: 0.5rem;
+  color: var(--md-sys-color-secondary, #625b71);
+  font-weight: 600;
+  font-size: 0.9rem;
+  animation: sortDoneFade 0.4s ease;
+}
+
+@keyframes sortDoneFade {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

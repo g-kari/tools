@@ -76,6 +76,7 @@ import { Route as SshKeyRouteImport } from './routes/ssh-key'
 import { Route as SriHashRouteImport } from './routes/sri-hash'
 import { Route as SqlToTsRouteImport } from './routes/sql-to-ts'
 import { Route as SqlRouteImport } from './routes/sql'
+import { Route as SortVisualizerRouteImport } from './routes/sort-visualizer'
 import { Route as SnakeRouteImport } from './routes/snake'
 import { Route as SlugRouteImport } from './routes/slug'
 import { Route as SitemapRouteImport } from './routes/sitemap'
@@ -641,6 +642,11 @@ const SqlToTsRoute = SqlToTsRouteImport.update({
 const SqlRoute = SqlRouteImport.update({
   id: '/sql',
   path: '/sql',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SortVisualizerRoute = SortVisualizerRouteImport.update({
+  id: '/sort-visualizer',
+  path: '/sort-visualizer',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SnakeRoute = SnakeRouteImport.update({
@@ -2027,6 +2033,7 @@ export interface FileRoutesByFullPath {
   '/sitemap': typeof SitemapRoute
   '/slug': typeof SlugRoute
   '/snake': typeof SnakeRoute
+  '/sort-visualizer': typeof SortVisualizerRoute
   '/sql': typeof SqlRoute
   '/sql-to-ts': typeof SqlToTsRoute
   '/sri-hash': typeof SriHashRoute
@@ -2327,6 +2334,7 @@ export interface FileRoutesByTo {
   '/sitemap': typeof SitemapRoute
   '/slug': typeof SlugRoute
   '/snake': typeof SnakeRoute
+  '/sort-visualizer': typeof SortVisualizerRoute
   '/sql': typeof SqlRoute
   '/sql-to-ts': typeof SqlToTsRoute
   '/sri-hash': typeof SriHashRoute
@@ -2628,6 +2636,7 @@ export interface FileRoutesById {
   '/sitemap': typeof SitemapRoute
   '/slug': typeof SlugRoute
   '/snake': typeof SnakeRoute
+  '/sort-visualizer': typeof SortVisualizerRoute
   '/sql': typeof SqlRoute
   '/sql-to-ts': typeof SqlToTsRoute
   '/sri-hash': typeof SriHashRoute
@@ -2930,6 +2939,7 @@ export interface FileRouteTypes {
     | '/sitemap'
     | '/slug'
     | '/snake'
+    | '/sort-visualizer'
     | '/sql'
     | '/sql-to-ts'
     | '/sri-hash'
@@ -3230,6 +3240,7 @@ export interface FileRouteTypes {
     | '/sitemap'
     | '/slug'
     | '/snake'
+    | '/sort-visualizer'
     | '/sql'
     | '/sql-to-ts'
     | '/sri-hash'
@@ -3530,6 +3541,7 @@ export interface FileRouteTypes {
     | '/sitemap'
     | '/slug'
     | '/snake'
+    | '/sort-visualizer'
     | '/sql'
     | '/sql-to-ts'
     | '/sri-hash'
@@ -3831,6 +3843,7 @@ export interface RootRouteChildren {
   SitemapRoute: typeof SitemapRoute
   SlugRoute: typeof SlugRoute
   SnakeRoute: typeof SnakeRoute
+  SortVisualizerRoute: typeof SortVisualizerRoute
   SqlRoute: typeof SqlRoute
   SqlToTsRoute: typeof SqlToTsRoute
   SriHashRoute: typeof SriHashRoute
@@ -4373,6 +4386,13 @@ declare module '@tanstack/react-router' {
       path: '/sql'
       fullPath: '/sql'
       preLoaderRoute: typeof SqlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sort-visualizer': {
+      id: '/sort-visualizer'
+      path: '/sort-visualizer'
+      fullPath: '/sort-visualizer'
+      preLoaderRoute: typeof SortVisualizerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/snake': {
@@ -6223,6 +6243,7 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapRoute: SitemapRoute,
   SlugRoute: SlugRoute,
   SnakeRoute: SnakeRoute,
+  SortVisualizerRoute: SortVisualizerRoute,
   SqlRoute: SqlRoute,
   SqlToTsRoute: SqlToTsRoute,
   SriHashRoute: SriHashRoute,
