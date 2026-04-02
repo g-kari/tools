@@ -74,6 +74,7 @@ const navCategories = [
       { path: "/function-plotter", label: "関数グラフ描画" },
       { path: "/combinatorics", label: "順列・組合せ計算" },
       { path: "/geometry", label: "幾何計算機" },
+      { path: "/trig", label: "三角関数計算機" },
       { path: "/truth-table", label: "論理式真理値表" },
       { path: "/bitwise", label: "ビット演算計算機" },
       { path: "/ieee754", label: "IEEE 754 浮動小数点数" },
