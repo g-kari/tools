@@ -1,0 +1,185 @@
+.lissajous {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem;
+  font-family: inherit;
+}
+
+.lissajous__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface, #1c1b1f);
+  margin-bottom: 0.25rem;
+}
+
+.lissajous__description {
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+/* キャンバスエリア */
+.lissajous__canvas-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  background: var(--md-sys-color-surface-variant, #e7e0ec);
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.lissajous__canvas {
+  border-radius: 8px;
+  display: block;
+  max-width: 100%;
+}
+
+/* コントロールパネル */
+.lissajous__controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.lissajous__control-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 600px) {
+  .lissajous__control-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.lissajous__control {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.lissajous__label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface, #1c1b1f);
+}
+
+.lissajous__label-value {
+  font-weight: 700;
+  color: var(--md-sys-color-primary, #6750a4);
+  min-width: 3rem;
+  text-align: right;
+}
+
+.lissajous__slider {
+  width: 100%;
+  accent-color: var(--md-sys-color-primary, #6750a4);
+  cursor: pointer;
+}
+
+/* ボタン */
+.lissajous__btn-row {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.lissajous__btn {
+  padding: 0.5rem 1.25rem;
+  border-radius: 20px;
+  border: none;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    opacity 0.15s;
+}
+
+.lissajous__btn--primary {
+  background: var(--md-sys-color-primary, #6750a4);
+  color: var(--md-sys-color-on-primary, #ffffff);
+}
+
+.lissajous__btn--primary:hover {
+  opacity: 0.88;
+}
+
+.lissajous__btn--secondary {
+  background: var(--md-sys-color-secondary-container, #e8def8);
+  color: var(--md-sys-color-on-secondary-container, #21005d);
+}
+
+.lissajous__btn--secondary:hover {
+  opacity: 0.88;
+}
+
+/* 情報パネル */
+.lissajous__info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--md-sys-color-surface-container-low, #f7f2fa);
+  border-radius: 8px;
+}
+
+.lissajous__info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.lissajous__info-label {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+}
+
+.lissajous__info-value {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface, #1c1b1f);
+  font-family: monospace;
+}
+
+/* 色選択 */
+.lissajous__color-row {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.lissajous__color-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+}
+
+.lissajous__color-input {
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 0;
+  background: none;
+}
+
+/* スピード表示 */
+.lissajous__speed-label {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}

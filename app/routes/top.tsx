@@ -479,6 +479,13 @@ const toolCatalog: ToolCategory[] = [
         icon: "⊞",
       },
       {
+        path: "/lissajous",
+        label: "リサジュー図形ビジュアライザー",
+        description:
+          "リサジュー図形（Lissajous Figure）をリアルタイムでアニメーション描画するツール。周波数比・位相差を自由に変更して美しい曲線を探索できます。",
+        icon: "〰️",
+      },
+      {
         path: "/statistics",
         label: "統計計算ツール",
         description:

@@ -137,6 +137,7 @@ import { Route as MakefileRouteImport } from './routes/makefile'
 import { Route as LuhnCheckRouteImport } from './routes/luhn-check'
 import { Route as LoremIpsumRouteImport } from './routes/lorem-ipsum'
 import { Route as LoanCalculatorRouteImport } from './routes/loan-calculator'
+import { Route as LissajousRouteImport } from './routes/lissajous'
 import { Route as LineEndingRouteImport } from './routes/line-ending'
 import { Route as LifeGameRouteImport } from './routes/life-game'
 import { Route as KeycodeRouteImport } from './routes/keycode'
@@ -948,6 +949,11 @@ const LoremIpsumRoute = LoremIpsumRouteImport.update({
 const LoanCalculatorRoute = LoanCalculatorRouteImport.update({
   id: '/loan-calculator',
   path: '/loan-calculator',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LissajousRoute = LissajousRouteImport.update({
+  id: '/lissajous',
+  path: '/lissajous',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LineEndingRoute = LineEndingRouteImport.update({
@@ -1980,6 +1986,7 @@ export interface FileRoutesByFullPath {
   '/keycode': typeof KeycodeRoute
   '/life-game': typeof LifeGameRoute
   '/line-ending': typeof LineEndingRoute
+  '/lissajous': typeof LissajousRoute
   '/loan-calculator': typeof LoanCalculatorRoute
   '/lorem-ipsum': typeof LoremIpsumRoute
   '/luhn-check': typeof LuhnCheckRoute
@@ -2282,6 +2289,7 @@ export interface FileRoutesByTo {
   '/keycode': typeof KeycodeRoute
   '/life-game': typeof LifeGameRoute
   '/line-ending': typeof LineEndingRoute
+  '/lissajous': typeof LissajousRoute
   '/loan-calculator': typeof LoanCalculatorRoute
   '/lorem-ipsum': typeof LoremIpsumRoute
   '/luhn-check': typeof LuhnCheckRoute
@@ -2585,6 +2593,7 @@ export interface FileRoutesById {
   '/keycode': typeof KeycodeRoute
   '/life-game': typeof LifeGameRoute
   '/line-ending': typeof LineEndingRoute
+  '/lissajous': typeof LissajousRoute
   '/loan-calculator': typeof LoanCalculatorRoute
   '/lorem-ipsum': typeof LoremIpsumRoute
   '/luhn-check': typeof LuhnCheckRoute
@@ -2889,6 +2898,7 @@ export interface FileRouteTypes {
     | '/keycode'
     | '/life-game'
     | '/line-ending'
+    | '/lissajous'
     | '/loan-calculator'
     | '/lorem-ipsum'
     | '/luhn-check'
@@ -3191,6 +3201,7 @@ export interface FileRouteTypes {
     | '/keycode'
     | '/life-game'
     | '/line-ending'
+    | '/lissajous'
     | '/loan-calculator'
     | '/lorem-ipsum'
     | '/luhn-check'
@@ -3493,6 +3504,7 @@ export interface FileRouteTypes {
     | '/keycode'
     | '/life-game'
     | '/line-ending'
+    | '/lissajous'
     | '/loan-calculator'
     | '/lorem-ipsum'
     | '/luhn-check'
@@ -3796,6 +3808,7 @@ export interface RootRouteChildren {
   KeycodeRoute: typeof KeycodeRoute
   LifeGameRoute: typeof LifeGameRoute
   LineEndingRoute: typeof LineEndingRoute
+  LissajousRoute: typeof LissajousRoute
   LoanCalculatorRoute: typeof LoanCalculatorRoute
   LoremIpsumRoute: typeof LoremIpsumRoute
   LuhnCheckRoute: typeof LuhnCheckRoute
@@ -4826,6 +4839,13 @@ declare module '@tanstack/react-router' {
       path: '/loan-calculator'
       fullPath: '/loan-calculator'
       preLoaderRoute: typeof LoanCalculatorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lissajous': {
+      id: '/lissajous'
+      path: '/lissajous'
+      fullPath: '/lissajous'
+      preLoaderRoute: typeof LissajousRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/line-ending': {
@@ -6204,6 +6224,7 @@ const rootRouteChildren: RootRouteChildren = {
   KeycodeRoute: KeycodeRoute,
   LifeGameRoute: LifeGameRoute,
   LineEndingRoute: LineEndingRoute,
+  LissajousRoute: LissajousRoute,
   LoanCalculatorRoute: LoanCalculatorRoute,
   LoremIpsumRoute: LoremIpsumRoute,
   LuhnCheckRoute: LuhnCheckRoute,
