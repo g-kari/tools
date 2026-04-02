@@ -57,24 +57,34 @@ const SERVICE_NAMES: Record<number, string> = {
 
 /** プライベート・内部IPアドレスのパターン */
 const PRIVATE_IP_PATTERNS = [
-  /^127\./,           // ループバック
-  /^10\./,            // プライベート Class A
-  /^172\.(1[6-9]|2\d|3[01])\./, // プライベート Class B
-  /^192\.168\./,      // プライベート Class C
-  /^169\.254\./,      // リンクローカル
-  /^0\.0\.0\.0$/,     // 非ルーティング
+  /^127\./,           // ループバック (127.0.0.0/8)
+  /^10\./,            // プライベート Class A (10.0.0.0/8)
+  /^172\.(1[6-9]|2\d|3[01])\./, // プライベート Class B (172.16.0.0/12)
+  /^192\.168\./,      // プライベート Class C (192.168.0.0/16)
+  /^169\.254\./,      // リンクローカル・メタデータサービス (169.254.0.0/16)
+  /^0\./,             // 非ルーティング (0.0.0.0/8)
+  /^100\.(6[4-9]|[7-9]\d|1[01]\d|12[0-7])\./, // CGNAT (100.64.0.0/10, RFC 6598)
   /^::1$/,            // IPv6ループバック
-  /^fc00:/i,          // IPv6プライベート
-  /^fe80:/i,          // IPv6リンクローカル
+  /^fc[0-9a-f]{2}:/i, // IPv6 ULA (fc00::/7)
+  /^fd[0-9a-f]{2}:/i, // IPv6 ULA (fd00::/8)
+  /^fe[89ab][0-9a-f]:/i, // IPv6リンクローカル (fe80::/10)
+  /^::ffff:/i,        // IPv4マップIPv6アドレス
 ];
 
 /**
- * プライベートIPアドレスかどうかを判定する
+ * プライベートIPアドレスまたはローカルホストかどうかを判定する
  * @param host チェック対象のホスト名またはIPアドレス
- * @returns プライベートIPの場合true
+ * @returns プライベートIPまたはローカルホストの場合true
  */
 export function isPrivateHost(host: string): boolean {
-  return PRIVATE_IP_PATTERNS.some((pattern) => pattern.test(host));
+  const normalized = host.toLowerCase();
+
+  // ローカルホスト名チェック
+  if (normalized === "localhost" || normalized.endsWith(".localhost")) {
+    return true;
+  }
+
+  return PRIVATE_IP_PATTERNS.some((pattern) => pattern.test(normalized));
 }
 
 /**

@@ -155,6 +155,40 @@ describe("isPrivateHost", () => {
   it("IPv6ループバック (::1) をプライベートと判定する", () => {
     expect(isPrivateHost("::1")).toBe(true);
   });
+
+  it("localhost ホスト名をプライベートと判定する", () => {
+    expect(isPrivateHost("localhost")).toBe(true);
+  });
+
+  it("localhost のサブドメインをプライベートと判定する", () => {
+    expect(isPrivateHost("foo.localhost")).toBe(true);
+    expect(isPrivateHost("bar.baz.localhost")).toBe(true);
+  });
+
+  it("CGNAT アドレス (100.64.0.0/10) をプライベートと判定する", () => {
+    expect(isPrivateHost("100.64.0.1")).toBe(true);
+    expect(isPrivateHost("100.127.255.255")).toBe(true);
+    expect(isPrivateHost("100.63.0.1")).toBe(false);
+    expect(isPrivateHost("100.128.0.1")).toBe(false);
+  });
+
+  it("IPv4マップIPv6アドレス (::ffff:) をプライベートと判定する", () => {
+    expect(isPrivateHost("::ffff:192.168.1.1")).toBe(true);
+    expect(isPrivateHost("::FFFF:10.0.0.1")).toBe(true);
+  });
+
+  it("IPv6 ULA (fc00::/7) をプライベートと判定する", () => {
+    expect(isPrivateHost("fc00::1")).toBe(true);
+    expect(isPrivateHost("fd00::1")).toBe(true);
+    expect(isPrivateHost("fdab:cdef::1")).toBe(true);
+  });
+
+  it("IPv6リンクローカル (fe80::/10) をプライベートと判定する", () => {
+    expect(isPrivateHost("fe80::1")).toBe(true);
+    expect(isPrivateHost("fe90::1")).toBe(true);
+    expect(isPrivateHost("fea0::1")).toBe(true);
+    expect(isPrivateHost("feb0::1")).toBe(true);
+  });
 });
 
 describe("getServiceName", () => {
