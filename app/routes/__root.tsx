@@ -359,6 +359,8 @@ const navCategories = [
       { path: "/life-game", label: "ライフゲーム" },
       { path: "/wordle", label: "Wordle" },
       { path: "/tic-tac-toe", label: "三目並べ" },
+      { path: "/sort-visualizer", label: "ソートアルゴリズム可視化" },
+      { path: "/bst-visualizer", label: "二分探索木ビジュアライザー" },
     ],
   },
 ];
