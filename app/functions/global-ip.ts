@@ -1,16 +1,32 @@
+/**
+ * グローバルIPアドレス取得サーバーファンクション
+ *
+ * クライアントのグローバルIPアドレスをCloudflare Workers環境から取得する。
+ * CF-Connecting-IPヘッダーを優先し、フォールバックとしてX-Forwarded-Forを使用する。
+ */
 import { createServerFn } from "@tanstack/react-start";
 import {
   getRequestIP,
   getRequestHeader,
 } from "@tanstack/react-start/server";
 
-// Global IP result type
+/**
+ * グローバルIP取得結果
+ */
 export interface GlobalIpResult {
+  /** 取得したグローバルIPアドレス */
   ip?: string;
+  /** エラーが発生した場合のメッセージ */
   error?: string;
 }
 
-// Server function to get client's global IP address
+/**
+ * クライアントのグローバルIPアドレスを取得するサーバーファンクション
+ *
+ * Cloudflare WorkersのCF-Connecting-IPヘッダーを優先して参照する。
+ * 存在しない場合はgetRequestIPでX-Forwarded-Forを参照する。
+ * @returns グローバルIPアドレスまたはエラーメッセージ
+ */
 export const getGlobalIp = createServerFn({ method: "GET" }).handler(
   async () => {
     try {

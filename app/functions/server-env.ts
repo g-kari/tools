@@ -1,3 +1,10 @@
+/**
+ * サーバー環境情報取得サーバーファンクション
+ *
+ * Cloudflare Workersのリクエストオブジェクトから地理情報・ネットワーク情報・
+ * セキュリティ情報・リクエストヘッダーなどを収集して返す。
+ * セキュリティ上の理由から Cookie・Authorization ヘッダーは除外される。
+ */
 import { createServerFn } from "@tanstack/react-start";
 import {
   getRequest,
@@ -8,10 +15,24 @@ import {
   getRequestIP,
 } from "@tanstack/react-start/server";
 
-// Server environment item type
+/**
+ * サーバー環境情報の1項目
+ */
 export interface EnvItem {
+  /** 項目名（日本語ラベル） */
   key: string;
+  /** 項目の値 */
   value: string;
+  /**
+   * カテゴリ
+   * - `cloudflare-geo`: Cloudflareの地理情報（国・都市など）
+   * - `cloudflare-network`: Cloudflareのネットワーク情報（ASN・CoLoなど）
+   * - `cloudflare-security`: TLS・Botマネジメント情報
+   * - `request-url`: リクエストURL・ホスト・プロトコル
+   * - `request-headers`: 標準HTTPヘッダー
+   * - `request-client-hints`: Client Hintsヘッダー
+   * - `runtime`: ランタイム情報（Cloudflare Workers等）
+   */
   category:
     | "cloudflare-geo"
     | "cloudflare-network"
@@ -22,13 +43,19 @@ export interface EnvItem {
     | "runtime";
 }
 
-// Server environment result type
+/**
+ * サーバー環境情報取得結果
+ */
 export interface ServerEnvResult {
+  /** 取得した環境情報の一覧 */
   items?: EnvItem[];
+  /** エラーが発生した場合のメッセージ */
   error?: string;
 }
 
-// Cloudflare cf object type (partial)
+/**
+ * Cloudflare Workersのcfオブジェクト型（部分的な定義）
+ */
 interface CloudflareCfObject {
   asn?: number;
   asOrganization?: string;
@@ -65,12 +92,20 @@ interface CloudflareCfObject {
   [key: string]: unknown;
 }
 
-// Request with Cloudflare cf property
+/**
+ * Cloudflare Workers環境のRequestオブジェクト（cfプロパティ付き）
+ */
 interface CloudflareRequest extends Request {
   cf?: CloudflareCfObject;
 }
 
-// Server function to get server environment information
+/**
+ * サーバー環境情報を収集して返すサーバーファンクション
+ *
+ * Cloudflare cfオブジェクト・リクエストURL・HTTPヘッダー・
+ * Client Hints・ランタイム情報を収集する。
+ * @returns 環境情報の一覧、またはエラーメッセージ
+ */
 export const getServerEnv = createServerFn({ method: "GET" }).handler(
   async (): Promise<ServerEnvResult> => {
     try {

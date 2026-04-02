@@ -1,29 +1,58 @@
+/**
+ * IPジオロケーション検索サーバーファンクション
+ *
+ * ip-api.com APIを使用してIPアドレスの地理情報を取得する。
+ * IPv4・IPv6の両形式に対応し、入力検証付きのサーバーファンクションを提供する。
+ */
 import { createServerFn } from "@tanstack/react-start";
 
-// IP Geolocation result type
+/**
+ * IPジオロケーション取得結果
+ */
 export interface IpGeolocationResult {
+  /** 検索対象のIPアドレス */
   ip: string;
+  /** 国名 */
   country?: string;
+  /** ISO 3166-1 alpha-2 国コード */
   countryCode?: string;
+  /** 地域コード */
   region?: string;
+  /** 地域名 */
   regionName?: string;
+  /** 都市名 */
   city?: string;
+  /** 郵便番号 */
   zip?: string;
+  /** 緯度 */
   lat?: number;
+  /** 経度 */
   lon?: number;
+  /** タイムゾーン（例: "Asia/Tokyo"） */
   timezone?: string;
+  /** インターネットサービスプロバイダ名 */
   isp?: string;
+  /** 組織名 */
   org?: string;
+  /** AS番号と名前（例: "AS7922 Comcast Cable..."） */
   as?: string;
+  /** AS名 */
   asname?: string;
+  /** 逆引きホスト名 */
   reverse?: string;
+  /** モバイル回線かどうか */
   mobile?: boolean;
+  /** プロキシ・VPN経由かどうか */
   proxy?: boolean;
+  /** ホスティングプロバイダかどうか */
   hosting?: boolean;
+  /** エラーが発生した場合のメッセージ */
   error?: string;
 }
 
-// ip-api.com response type
+/**
+ * ip-api.com APIレスポンス型（内部用）
+ */
 interface IpApiResponse {
   status: "success" | "fail";
   message?: string;
@@ -47,7 +76,11 @@ interface IpApiResponse {
   query?: string;
 }
 
-// Validate IPv4 address
+/**
+ * IPv4アドレスの形式を検証する
+ * @param ip - 検証するIPアドレス文字列
+ * @returns 有効なIPv4形式であればtrue
+ */
 function isValidIPv4(ip: string): boolean {
   const parts = ip.split(".");
   if (parts.length !== 4) return false;
@@ -57,7 +90,11 @@ function isValidIPv4(ip: string): boolean {
   });
 }
 
-// Validate IPv6 address
+/**
+ * IPv6アドレスの形式を検証する
+ * @param ip - 検証するIPアドレス文字列
+ * @returns 有効なIPv6形式であればtrue
+ */
 function isValidIPv6(ip: string): boolean {
   // Reject empty or obviously invalid
   if (!ip || ip.length < 2) return false;
@@ -100,12 +137,20 @@ function isValidIPv6(ip: string): boolean {
   return true;
 }
 
-// Validate IP address (IPv4 or IPv6)
+/**
+ * IPアドレスの形式を検証する（IPv4・IPv6両対応）
+ * @param ip - 検証するIPアドレス文字列
+ * @returns 有効なIPアドレス形式であればtrue
+ */
 function isValidIP(ip: string): boolean {
   return isValidIPv4(ip) || isValidIPv6(ip);
 }
 
-// Query ip-api.com for geolocation data
+/**
+ * ip-api.com APIにジオロケーション情報を問い合わせる
+ * @param ip - 検索対象のIPアドレス
+ * @returns ジオロケーション情報、またはエラーメッセージを含む結果
+ */
 async function queryIpApi(ip: string): Promise<IpGeolocationResult> {
   const fields = [
     "status",
@@ -198,7 +243,13 @@ async function queryIpApi(ip: string): Promise<IpGeolocationResult> {
   }
 }
 
-// Server function for IP geolocation lookup
+/**
+ * IPアドレスのジオロケーション情報を検索するサーバーファンクション
+ *
+ * 入力値をIPv4・IPv6形式で検証し、ip-api.com APIから地理情報を取得する。
+ * プライベートアドレス・予約アドレスはAPIにより検索不可として扱われる。
+ * @throws IPアドレスが空または無効な形式の場合
+ */
 export const lookupIpGeolocation = createServerFn({ method: "GET" })
   .inputValidator((data: string) => {
     const trimmed = data.trim();
