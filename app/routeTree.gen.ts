@@ -42,6 +42,7 @@ import { Route as TypographyScaleRouteImport } from './routes/typography-scale'
 import { Route as TypingSpeedRouteImport } from './routes/typing-speed'
 import { Route as TsconfigBuilderRouteImport } from './routes/tsconfig-builder'
 import { Route as TruthTableRouteImport } from './routes/truth-table'
+import { Route as TrigRouteImport } from './routes/trig'
 import { Route as TransparentImageRouteImport } from './routes/transparent-image'
 import { Route as TransferSpeedRouteImport } from './routes/transfer-speed'
 import { Route as TotpRouteImport } from './routes/totp'
@@ -470,6 +471,11 @@ const TsconfigBuilderRoute = TsconfigBuilderRouteImport.update({
 const TruthTableRoute = TruthTableRouteImport.update({
   id: '/truth-table',
   path: '/truth-table',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TrigRoute = TrigRouteImport.update({
+  id: '/trig',
+  path: '/trig',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TransparentImageRoute = TransparentImageRouteImport.update({
@@ -2054,6 +2060,7 @@ export interface FileRoutesByFullPath {
   '/totp': typeof TotpRoute
   '/transfer-speed': typeof TransferSpeedRoute
   '/transparent-image': typeof TransparentImageRoute
+  '/trig': typeof TrigRoute
   '/truth-table': typeof TruthTableRoute
   '/tsconfig-builder': typeof TsconfigBuilderRoute
   '/typing-speed': typeof TypingSpeedRoute
@@ -2353,6 +2360,7 @@ export interface FileRoutesByTo {
   '/totp': typeof TotpRoute
   '/transfer-speed': typeof TransferSpeedRoute
   '/transparent-image': typeof TransparentImageRoute
+  '/trig': typeof TrigRoute
   '/truth-table': typeof TruthTableRoute
   '/tsconfig-builder': typeof TsconfigBuilderRoute
   '/typing-speed': typeof TypingSpeedRoute
@@ -2653,6 +2661,7 @@ export interface FileRoutesById {
   '/totp': typeof TotpRoute
   '/transfer-speed': typeof TransferSpeedRoute
   '/transparent-image': typeof TransparentImageRoute
+  '/trig': typeof TrigRoute
   '/truth-table': typeof TruthTableRoute
   '/tsconfig-builder': typeof TsconfigBuilderRoute
   '/typing-speed': typeof TypingSpeedRoute
@@ -2954,6 +2963,7 @@ export interface FileRouteTypes {
     | '/totp'
     | '/transfer-speed'
     | '/transparent-image'
+    | '/trig'
     | '/truth-table'
     | '/tsconfig-builder'
     | '/typing-speed'
@@ -3253,6 +3263,7 @@ export interface FileRouteTypes {
     | '/totp'
     | '/transfer-speed'
     | '/transparent-image'
+    | '/trig'
     | '/truth-table'
     | '/tsconfig-builder'
     | '/typing-speed'
@@ -3552,6 +3563,7 @@ export interface FileRouteTypes {
     | '/totp'
     | '/transfer-speed'
     | '/transparent-image'
+    | '/trig'
     | '/truth-table'
     | '/tsconfig-builder'
     | '/typing-speed'
@@ -3852,6 +3864,7 @@ export interface RootRouteChildren {
   TotpRoute: typeof TotpRoute
   TransferSpeedRoute: typeof TransferSpeedRoute
   TransparentImageRoute: typeof TransparentImageRoute
+  TrigRoute: typeof TrigRoute
   TruthTableRoute: typeof TruthTableRoute
   TsconfigBuilderRoute: typeof TsconfigBuilderRoute
   TypingSpeedRoute: typeof TypingSpeedRoute
@@ -4122,6 +4135,13 @@ declare module '@tanstack/react-router' {
       path: '/truth-table'
       fullPath: '/truth-table'
       preLoaderRoute: typeof TruthTableRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/trig': {
+      id: '/trig'
+      path: '/trig'
+      fullPath: '/trig'
+      preLoaderRoute: typeof TrigRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/transparent-image': {
@@ -6236,6 +6256,7 @@ const rootRouteChildren: RootRouteChildren = {
   TotpRoute: TotpRoute,
   TransferSpeedRoute: TransferSpeedRoute,
   TransparentImageRoute: TransparentImageRoute,
+  TrigRoute: TrigRoute,
   TruthTableRoute: TruthTableRoute,
   TsconfigBuilderRoute: TsconfigBuilderRoute,
   TypingSpeedRoute: TypingSpeedRoute,

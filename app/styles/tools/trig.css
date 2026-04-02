@@ -1,0 +1,325 @@
+/* 三角関数計算機 */
+
+.trig-unit-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.trig-unit-row label {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  white-space: nowrap;
+}
+
+.trig-unit-select {
+  padding: 0.4375rem 0.75rem;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-size: 0.9375rem;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.trig-unit-select:focus {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* 入力エリア */
+.trig-input-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.trig-input {
+  flex: 1;
+  min-width: 8rem;
+  max-width: 20rem;
+  padding: 0.5625rem 0.875rem;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-size: 1.125rem;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.trig-input:focus {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+  border-color: var(--md-sys-color-primary);
+}
+
+.trig-input-unit {
+  font-size: 0.9375rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* クイック選択ボタン */
+.trig-quick-label {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 0.5rem;
+}
+
+.trig-quick-row {
+  display: flex;
+  gap: 0.375rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.trig-quick-btn {
+  padding: 0.3125rem 0.625rem;
+  font-size: 0.75rem;
+  font-family: 'JetBrains Mono', monospace;
+  cursor: pointer;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  transition: background 0.15s, color 0.15s;
+}
+
+.trig-quick-btn:hover {
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+.trig-quick-btn.active {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border-color: var(--md-sys-color-primary);
+  font-weight: 600;
+}
+
+/* 変換結果 */
+.trig-conversion-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.75rem;
+}
+
+.trig-conv-card {
+  background: var(--md-sys-color-surface-variant);
+  border-radius: 6px;
+  padding: 0.875rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.trig-conv-card.active {
+  background: var(--md-sys-color-primary-container);
+  border: 1px solid var(--md-sys-color-primary);
+}
+
+.trig-conv-label {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.trig-conv-card.active .trig-conv-label {
+  color: var(--md-sys-color-on-primary-container);
+  opacity: 0.7;
+}
+
+.trig-conv-value {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--md-sys-color-on-surface);
+  word-break: break-all;
+}
+
+.trig-conv-card.active .trig-conv-value {
+  color: var(--md-sys-color-on-primary-container);
+}
+
+/* 三角関数テーブル */
+.trig-section-title {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.trig-values-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  gap: 0.625rem;
+  margin-bottom: 1.75rem;
+}
+
+.trig-val-card {
+  background: var(--md-sys-color-surface-variant);
+  border-radius: 6px;
+  padding: 0.75rem 0.875rem;
+}
+
+.trig-val-name {
+  font-size: 0.875rem;
+  font-style: italic;
+  font-weight: 600;
+  color: var(--md-sys-color-primary);
+  margin-bottom: 0.25rem;
+}
+
+.trig-val-value {
+  font-size: 0.9375rem;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--md-sys-color-on-surface);
+  word-break: break-all;
+}
+
+.trig-val-undefined {
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+  opacity: 0.6;
+  font-style: italic;
+}
+
+/* 逆三角関数 */
+.trig-inverse-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+.trig-inverse-card {
+  background: var(--md-sys-color-surface-variant);
+  border-radius: 6px;
+  padding: 0.875rem 1rem;
+}
+
+.trig-inverse-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--md-sys-color-primary);
+  margin-bottom: 0.625rem;
+}
+
+.trig-inverse-input-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.trig-inverse-input-row label {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant);
+  white-space: nowrap;
+}
+
+.trig-inverse-input {
+  flex: 1;
+  min-width: 5rem;
+  padding: 0.375rem 0.625rem;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-size: 0.9375rem;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.trig-inverse-input:focus {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.trig-inverse-result {
+  font-size: 0.9375rem;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--md-sys-color-on-surface);
+  padding: 0.375rem 0;
+}
+
+.trig-inverse-result-val {
+  font-weight: 600;
+  color: var(--md-sys-color-primary);
+}
+
+.trig-inverse-error {
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-error);
+  padding: 0.25rem 0;
+}
+
+/* よく使う角度テーブル */
+.trig-table-wrapper {
+  overflow-x: auto;
+  border-radius: 6px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  margin-bottom: 1rem;
+}
+
+.trig-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.trig-table th {
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  padding: 0.5rem 0.75rem;
+  text-align: right;
+  font-weight: 600;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.trig-table th:first-child {
+  text-align: left;
+}
+
+.trig-table td {
+  padding: 0.4375rem 0.75rem;
+  text-align: right;
+  color: var(--md-sys-color-on-surface);
+  border-bottom: 1px solid var(--md-sys-color-surface-variant);
+  white-space: nowrap;
+}
+
+.trig-table td:first-child {
+  text-align: left;
+  color: var(--md-sys-color-primary);
+  font-weight: 600;
+}
+
+.trig-table tr:last-child td {
+  border-bottom: none;
+}
+
+.trig-table tr:hover td {
+  background: var(--md-sys-color-surface-variant);
+}
+
+.trig-undef {
+  color: var(--md-sys-color-on-surface-variant);
+  opacity: 0.45;
+}
+
+.trig-inverse-hint {
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.8125rem;
+}
