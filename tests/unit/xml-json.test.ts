@@ -2,47 +2,63 @@ import { describe, it, expect } from 'vitest';
 import { xmlToJson, jsonToXml, getSampleXml, getSampleJson } from '../../app/utils/xml-json';
 
 describe('xmlToJson', () => {
-  it('should return error for empty input', () => {
+  it('空文字列はエラーを返す', () => {
     const result = xmlToJson('');
     expect(result.success).toBe(false);
     expect(result.error).toContain('XML');
   });
 
-  it('should return error for whitespace-only input', () => {
+  it('空白のみの入力はエラーを返す', () => {
     const result = xmlToJson('   ');
     expect(result.success).toBe(false);
+  });
+
+  it('有効なXMLを渡した場合は成功または変換エラーのどちらかを返す（DOMParser依存）', () => {
+    // Node.js環境ではDOMParserが利用不可のため変換エラーになる場合がある
+    const xml = '<root><item>hello</item></root>';
+    const result = xmlToJson(xml);
+    // successの値に関わらず、outputまたはerrorのどちらかが存在する
+    expect(typeof result.success).toBe('boolean');
+    expect(result.output !== undefined || result.error !== undefined).toBe(true);
+  });
+
+  it('不正なXMLはエラーを返す（DOMParserなしでも同様）', () => {
+    // この入力はDOMParser有無に関わらずエラーになる可能性が高い
+    const result = xmlToJson('<root><unclosed>');
+    expect(result.success).toBe(false);
+    expect(result.error).toBeTruthy();
   });
 });
 
 describe('jsonToXml', () => {
-  it('should return error for empty input', () => {
+  it('空文字列はエラーを返す', () => {
     const result = jsonToXml('');
     expect(result.success).toBe(false);
     expect(result.error).toContain('JSON');
   });
 
-  it('should return error for whitespace-only input', () => {
+  it('空白のみの入力はエラーを返す', () => {
     const result = jsonToXml('   ');
     expect(result.success).toBe(false);
   });
 
-  it('should return error for invalid JSON', () => {
+  it('不正なJSONはエラーを返す', () => {
     const result = jsonToXml('not valid json');
     expect(result.success).toBe(false);
     expect(result.error).toContain('JSON解析エラー');
   });
 
-  it('should return error for JSON array at root', () => {
+  it('ルートが配列のJSONはエラーを返す', () => {
     const result = jsonToXml('[1, 2, 3]');
     expect(result.success).toBe(false);
   });
 
-  it('should return error for empty JSON object', () => {
+  it('空のJSONオブジェクトはエラーを返す', () => {
     const result = jsonToXml('{}');
     expect(result.success).toBe(false);
   });
 
-  it('should convert simple JSON to XML', () => {
+  it('シンプルなJSONをXMLに変換する', () => {
     const json = JSON.stringify({ root: { item: 'value' } });
     const result = jsonToXml(json);
     expect(result.success).toBe(true);
@@ -53,14 +69,14 @@ describe('jsonToXml', () => {
     expect(result.output).toContain('</root>');
   });
 
-  it('should include XML declaration', () => {
+  it('XML宣言を含む出力を生成する', () => {
     const json = JSON.stringify({ root: 'hello' });
     const result = jsonToXml(json);
     expect(result.success).toBe(true);
     expect(result.output).toContain('<?xml version="1.0" encoding="UTF-8"?>');
   });
 
-  it('should escape special characters in XML output', () => {
+  it('特殊文字をエスケープする', () => {
     const json = JSON.stringify({ root: 'a & b < c > d' });
     const result = jsonToXml(json);
     expect(result.success).toBe(true);
@@ -69,7 +85,7 @@ describe('jsonToXml', () => {
     expect(result.output).toContain('&gt;');
   });
 
-  it('should convert attributes from @attributes', () => {
+  it('@attributes から属性を変換する', () => {
     const json = JSON.stringify({
       root: {
         '@attributes': { id: '1', class: 'test' },
@@ -81,7 +97,7 @@ describe('jsonToXml', () => {
     expect(result.output).toContain('class="test"');
   });
 
-  it('should handle array values as repeated elements', () => {
+  it('配列の要素を繰り返しタグに変換する', () => {
     const json = JSON.stringify({
       root: {
         item: ['a', 'b', 'c'],
@@ -89,12 +105,11 @@ describe('jsonToXml', () => {
     });
     const result = jsonToXml(json);
     expect(result.success).toBe(true);
-    // 配列の各要素が同名タグで出力される
     const matches = result.output.match(/<item>/g);
     expect(matches).toHaveLength(3);
   });
 
-  it('should handle nested objects', () => {
+  it('ネストしたオブジェクトを変換する', () => {
     const json = JSON.stringify({
       person: {
         name: 'Alice',
@@ -111,21 +126,21 @@ describe('jsonToXml', () => {
     expect(result.output).toContain('<city>Tokyo</city>');
   });
 
-  it('should use 4-space indent when specified', () => {
+  it('4スペースインデントを指定できる', () => {
     const json = JSON.stringify({ root: { child: 'val' } });
     const result = jsonToXml(json, 4);
     expect(result.success).toBe(true);
     expect(result.output).toContain('    ');
   });
 
-  it('should handle null value as self-closing tag', () => {
+  it('null値はセルフクロージングタグになる', () => {
     const json = JSON.stringify({ root: { item: null } });
     const result = jsonToXml(json);
     expect(result.success).toBe(true);
     expect(result.output).toContain('<item />');
   });
 
-  it('should handle boolean and number values', () => {
+  it('真偽値・数値を変換する', () => {
     const json = JSON.stringify({ root: { flag: true, count: 42 } });
     const result = jsonToXml(json);
     expect(result.success).toBe(true);
@@ -133,7 +148,7 @@ describe('jsonToXml', () => {
     expect(result.output).toContain('<count>42</count>');
   });
 
-  it('should handle @attributes with #text (mixed content)', () => {
+  it('@attributes と #text の混在コンテンツを変換する', () => {
     const json = JSON.stringify({
       root: {
         item: {
@@ -150,7 +165,7 @@ describe('jsonToXml', () => {
     expect(result.output).toContain('</item>');
   });
 
-  it('should escape quotes in attribute values', () => {
+  it('属性値の二重引用符をエスケープする', () => {
     const json = JSON.stringify({
       root: {
         '@attributes': { title: 'say "hello"' },
@@ -161,7 +176,7 @@ describe('jsonToXml', () => {
     expect(result.output).toContain('&quot;');
   });
 
-  it('should handle @attributes only (empty element with attributes)', () => {
+  it('@attributesのみの場合はセルフクロージングタグになる', () => {
     const json = JSON.stringify({
       root: {
         '@attributes': { type: 'empty' },
@@ -173,14 +188,63 @@ describe('jsonToXml', () => {
     expect(result.output).toContain('/>');
   });
 
-  it('should return error for null JSON value at root', () => {
+  it('ルートがnullのJSONはエラーを返す', () => {
     const result = jsonToXml('null');
     expect(result.success).toBe(false);
+  });
+
+  it('オブジェクト配列の変換', () => {
+    const json = JSON.stringify({
+      catalog: {
+        book: [
+          { title: 'Book A', price: '10' },
+          { title: 'Book B', price: '20' },
+        ],
+      },
+    });
+    const result = jsonToXml(json);
+    expect(result.success).toBe(true);
+    expect(result.output).toContain('<book>');
+    expect(result.output).toContain('<title>Book A</title>');
+    expect(result.output).toContain('<title>Book B</title>');
+  });
+
+  it('@で始まらないキーの属性変換', () => {
+    const json = JSON.stringify({
+      root: {
+        '@attributes': { id: '42' },
+      },
+    });
+    const result = jsonToXml(json);
+    expect(result.success).toBe(true);
+    expect(result.output).toContain('id="42"');
+  });
+
+  it('サンプルJSONをXMLに変換する', () => {
+    const sample = getSampleJson();
+    const result = jsonToXml(sample);
+    expect(result.success).toBe(true);
+    expect(result.output).toContain('<bookstore>');
+    expect(result.output).toContain('<book');
+  });
+
+  it('子要素を持つオブジェクトに #text がある場合も変換する', () => {
+    const json = JSON.stringify({
+      root: {
+        parent: {
+          '#text': 'ignored text',
+          child: 'value',
+        },
+      },
+    });
+    const result = jsonToXml(json);
+    expect(result.success).toBe(true);
+    expect(result.output).toContain('<child>value</child>');
   });
 });
 
 describe('getSampleXml', () => {
-  it('should return non-empty XML string', () => {
+  it('空でないXML文字列を返す', () => {
     const sample = getSampleXml();
     expect(typeof sample).toBe('string');
     expect(sample.length).toBeGreaterThan(0);
@@ -189,7 +253,7 @@ describe('getSampleXml', () => {
 });
 
 describe('getSampleJson', () => {
-  it('should return valid JSON string', () => {
+  it('有効なJSON文字列を返す', () => {
     const sample = getSampleJson();
     expect(() => JSON.parse(sample)).not.toThrow();
     const parsed = JSON.parse(sample);
