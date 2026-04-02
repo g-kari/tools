@@ -1,3 +1,4 @@
+// @vitest-environment jsdom
 import { describe, it, expect } from 'vitest';
 import { xmlToJson, jsonToXml, getSampleXml, getSampleJson } from '../../app/utils/xml-json';
 
@@ -13,20 +14,118 @@ describe('xmlToJson', () => {
     expect(result.success).toBe(false);
   });
 
-  it('有効なXMLを渡した場合は成功または変換エラーのどちらかを返す（DOMParser依存）', () => {
-    // Node.js環境ではDOMParserが利用不可のため変換エラーになる場合がある
+  it('シンプルなXMLをJSONに変換する', () => {
     const xml = '<root><item>hello</item></root>';
     const result = xmlToJson(xml);
-    // successの値に関わらず、outputまたはerrorのどちらかが存在する
-    expect(typeof result.success).toBe('boolean');
-    expect(result.output !== undefined || result.error !== undefined).toBe(true);
+    expect(result.success).toBe(true);
+    expect(result.output).toContain('"root"');
+    expect(result.output).toContain('"item"');
+    expect(result.output).toContain('hello');
   });
 
-  it('不正なXMLはエラーを返す（DOMParserなしでも同様）', () => {
-    // この入力はDOMParser有無に関わらずエラーになる可能性が高い
+  it('不正なXMLはエラーを返す', () => {
     const result = xmlToJson('<root><unclosed>');
     expect(result.success).toBe(false);
     expect(result.error).toBeTruthy();
+  });
+
+  it('XMLの属性を @attributes として変換する', () => {
+    const xml = '<root><book category="fiction">Harry Potter</book></root>';
+    const result = xmlToJson(xml);
+    expect(result.success).toBe(true);
+    const parsed = JSON.parse(result.output);
+    expect(parsed.root.book['@attributes']['@category']).toBe('fiction');
+  });
+
+  it('同名の子要素が複数あれば配列として変換する', () => {
+    const xml = '<root><item>a</item><item>b</item><item>c</item></root>';
+    const result = xmlToJson(xml);
+    expect(result.success).toBe(true);
+    const parsed = JSON.parse(result.output);
+    expect(Array.isArray(parsed.root.item)).toBe(true);
+    expect(parsed.root.item).toHaveLength(3);
+  });
+
+  it('子要素が1つだけの場合は配列にしない', () => {
+    const xml = '<root><item>only</item></root>';
+    const result = xmlToJson(xml);
+    expect(result.success).toBe(true);
+    const parsed = JSON.parse(result.output);
+    expect(Array.isArray(parsed.root.item)).toBe(false);
+    expect(parsed.root.item).toBe('only');
+  });
+
+  it('空の葉ノードを変換する', () => {
+    const xml = '<root><empty></empty></root>';
+    const result = xmlToJson(xml);
+    expect(result.success).toBe(true);
+    const parsed = JSON.parse(result.output);
+    expect(parsed.root.empty).toBe('');
+  });
+
+  it('ネストした要素を正しく変換する', () => {
+    const xml = '<root><person><name>Alice</name><age>30</age></person></root>';
+    const result = xmlToJson(xml);
+    expect(result.success).toBe(true);
+    const parsed = JSON.parse(result.output);
+    expect(parsed.root.person.name).toBe('Alice');
+    expect(parsed.root.person.age).toBe('30');
+  });
+
+  it('インデント幅0で変換する', () => {
+    const xml = '<root><item>val</item></root>';
+    const result = xmlToJson(xml, 0);
+    expect(result.success).toBe(true);
+    expect(result.output).not.toContain('\n');
+  });
+
+  it('4スペースインデントで整形される', () => {
+    const xml = '<root><item>val</item></root>';
+    const result = xmlToJson(xml, 4);
+    expect(result.success).toBe(true);
+    expect(result.output).toContain('    ');
+  });
+
+  it('属性と子要素を両方持つ要素を変換する', () => {
+    const xml = '<root><book id="1"><title>TypeScript</title></book></root>';
+    const result = xmlToJson(xml);
+    expect(result.success).toBe(true);
+    const parsed = JSON.parse(result.output);
+    expect(parsed.root.book['@attributes']['@id']).toBe('1');
+    expect(parsed.root.book.title).toBe('TypeScript');
+  });
+
+  it('日本語テキストを含むXMLを変換する', () => {
+    const xml = '<root><title>吾輩は猫である</title></root>';
+    const result = xmlToJson(xml);
+    expect(result.success).toBe(true);
+    expect(result.output).toContain('吾輩は猫である');
+  });
+
+  it('XMLプロローグ付きの入力を変換する', () => {
+    const xml = '<?xml version="1.0" encoding="UTF-8"?><root><msg>hi</msg></root>';
+    const result = xmlToJson(xml);
+    expect(result.success).toBe(true);
+    const parsed = JSON.parse(result.output);
+    expect(parsed.root.msg).toBe('hi');
+  });
+
+  it('サンプルXMLを正しく変換する', () => {
+    const sample = getSampleXml();
+    const result = xmlToJson(sample);
+    expect(result.success).toBe(true);
+    const parsed = JSON.parse(result.output);
+    expect(parsed.bookstore).toBeDefined();
+    expect(Array.isArray(parsed.bookstore.book)).toBe(true);
+    expect(parsed.bookstore.book).toHaveLength(2);
+  });
+
+  it('属性のみの要素を変換する', () => {
+    const xml = '<root><item id="42" /></root>';
+    const result = xmlToJson(xml);
+    expect(result.success).toBe(true);
+    const parsed = JSON.parse(result.output);
+    expect(parsed.root.item['@attributes']['@id']).toBe('42');
   });
 });
 
@@ -250,6 +349,25 @@ describe('getSampleXml', () => {
     expect(sample.length).toBeGreaterThan(0);
     expect(sample).toContain('<?xml');
   });
+
+  it('bookstore要素を含む', () => {
+    const sample = getSampleXml();
+    expect(sample).toContain('<bookstore>');
+    expect(sample).toContain('</bookstore>');
+  });
+
+  it('複数のbook要素を含む', () => {
+    const sample = getSampleXml();
+    const matches = sample.match(/<book/g);
+    expect(matches).not.toBeNull();
+    expect(matches!.length).toBeGreaterThanOrEqual(2);
+  });
+
+  it('XMLとして正しくパースできる', () => {
+    const sample = getSampleXml();
+    const result = xmlToJson(sample);
+    expect(result.success).toBe(true);
+  });
 });
 
 describe('getSampleJson', () => {
@@ -258,5 +376,25 @@ describe('getSampleJson', () => {
     expect(() => JSON.parse(sample)).not.toThrow();
     const parsed = JSON.parse(sample);
     expect(typeof parsed).toBe('object');
+  });
+
+  it('bookstoreキーを含む', () => {
+    const sample = getSampleJson();
+    const parsed = JSON.parse(sample);
+    expect(parsed.bookstore).toBeDefined();
+  });
+
+  it('book配列を含む', () => {
+    const sample = getSampleJson();
+    const parsed = JSON.parse(sample);
+    expect(Array.isArray(parsed.bookstore.book)).toBe(true);
+    expect(parsed.bookstore.book).toHaveLength(2);
+  });
+
+  it('XMLに変換できる', () => {
+    const sample = getSampleJson();
+    const result = jsonToXml(sample);
+    expect(result.success).toBe(true);
+    expect(result.output).toContain('<bookstore>');
   });
 });
