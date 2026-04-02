@@ -133,6 +133,7 @@ import { Route as MatrixRouteImport } from './routes/matrix'
 import { Route as MathEvalRouteImport } from './routes/math-eval'
 import { Route as MarkdownTableRouteImport } from './routes/markdown-table'
 import { Route as MarkdownPreviewRouteImport } from './routes/markdown-preview'
+import { Route as MandelbrotRouteImport } from './routes/mandelbrot'
 import { Route as MakefileRouteImport } from './routes/makefile'
 import { Route as LuhnCheckRouteImport } from './routes/luhn-check'
 import { Route as LoremIpsumRouteImport } from './routes/lorem-ipsum'
@@ -929,6 +930,11 @@ const MarkdownTableRoute = MarkdownTableRouteImport.update({
 const MarkdownPreviewRoute = MarkdownPreviewRouteImport.update({
   id: '/markdown-preview',
   path: '/markdown-preview',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MandelbrotRoute = MandelbrotRouteImport.update({
+  id: '/mandelbrot',
+  path: '/mandelbrot',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MakefileRoute = MakefileRouteImport.update({
@@ -1991,6 +1997,7 @@ export interface FileRoutesByFullPath {
   '/lorem-ipsum': typeof LoremIpsumRoute
   '/luhn-check': typeof LuhnCheckRoute
   '/makefile': typeof MakefileRoute
+  '/mandelbrot': typeof MandelbrotRoute
   '/markdown-preview': typeof MarkdownPreviewRoute
   '/markdown-table': typeof MarkdownTableRoute
   '/math-eval': typeof MathEvalRoute
@@ -2294,6 +2301,7 @@ export interface FileRoutesByTo {
   '/lorem-ipsum': typeof LoremIpsumRoute
   '/luhn-check': typeof LuhnCheckRoute
   '/makefile': typeof MakefileRoute
+  '/mandelbrot': typeof MandelbrotRoute
   '/markdown-preview': typeof MarkdownPreviewRoute
   '/markdown-table': typeof MarkdownTableRoute
   '/math-eval': typeof MathEvalRoute
@@ -2598,6 +2606,7 @@ export interface FileRoutesById {
   '/lorem-ipsum': typeof LoremIpsumRoute
   '/luhn-check': typeof LuhnCheckRoute
   '/makefile': typeof MakefileRoute
+  '/mandelbrot': typeof MandelbrotRoute
   '/markdown-preview': typeof MarkdownPreviewRoute
   '/markdown-table': typeof MarkdownTableRoute
   '/math-eval': typeof MathEvalRoute
@@ -2903,6 +2912,7 @@ export interface FileRouteTypes {
     | '/lorem-ipsum'
     | '/luhn-check'
     | '/makefile'
+    | '/mandelbrot'
     | '/markdown-preview'
     | '/markdown-table'
     | '/math-eval'
@@ -3206,6 +3216,7 @@ export interface FileRouteTypes {
     | '/lorem-ipsum'
     | '/luhn-check'
     | '/makefile'
+    | '/mandelbrot'
     | '/markdown-preview'
     | '/markdown-table'
     | '/math-eval'
@@ -3509,6 +3520,7 @@ export interface FileRouteTypes {
     | '/lorem-ipsum'
     | '/luhn-check'
     | '/makefile'
+    | '/mandelbrot'
     | '/markdown-preview'
     | '/markdown-table'
     | '/math-eval'
@@ -3813,6 +3825,7 @@ export interface RootRouteChildren {
   LoremIpsumRoute: typeof LoremIpsumRoute
   LuhnCheckRoute: typeof LuhnCheckRoute
   MakefileRoute: typeof MakefileRoute
+  MandelbrotRoute: typeof MandelbrotRoute
   MarkdownPreviewRoute: typeof MarkdownPreviewRoute
   MarkdownTableRoute: typeof MarkdownTableRoute
   MathEvalRoute: typeof MathEvalRoute
@@ -4811,6 +4824,13 @@ declare module '@tanstack/react-router' {
       path: '/markdown-preview'
       fullPath: '/markdown-preview'
       preLoaderRoute: typeof MarkdownPreviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mandelbrot': {
+      id: '/mandelbrot'
+      path: '/mandelbrot'
+      fullPath: '/mandelbrot'
+      preLoaderRoute: typeof MandelbrotRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/makefile': {
@@ -6229,6 +6249,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoremIpsumRoute: LoremIpsumRoute,
   LuhnCheckRoute: LuhnCheckRoute,
   MakefileRoute: MakefileRoute,
+  MandelbrotRoute: MandelbrotRoute,
   MarkdownPreviewRoute: MarkdownPreviewRoute,
   MarkdownTableRoute: MarkdownTableRoute,
   MathEvalRoute: MathEvalRoute,

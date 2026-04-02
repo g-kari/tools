@@ -1,0 +1,255 @@
+.mandelbrot {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1rem;
+  font-family: inherit;
+}
+
+.mandelbrot__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface, #1c1b1f);
+  margin-bottom: 0.25rem;
+}
+
+.mandelbrot__description {
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+/* キャンバスエリア */
+.mandelbrot__canvas-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: crosshair;
+}
+
+.mandelbrot__canvas {
+  display: block;
+  max-width: 100%;
+  touch-action: none;
+}
+
+.mandelbrot__canvas--rendering {
+  opacity: 0.6;
+}
+
+/* 座標オーバーレイ */
+.mandelbrot__overlay {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0.5rem;
+  background: rgba(0, 0, 0, 0.65);
+  color: #e0e0e0;
+  font-family: monospace;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  pointer-events: none;
+  line-height: 1.6;
+}
+
+/* ローディング */
+.mandelbrot__loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  font-size: 0.875rem;
+  border-radius: 12px;
+  pointer-events: none;
+}
+
+/* コントロールパネル */
+.mandelbrot__controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.mandelbrot__control-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 600px) {
+  .mandelbrot__control-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.mandelbrot__control {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.mandelbrot__label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface, #1c1b1f);
+}
+
+.mandelbrot__label-value {
+  font-weight: 700;
+  color: var(--md-sys-color-primary, #6750a4);
+  min-width: 2.5rem;
+  text-align: right;
+}
+
+.mandelbrot__slider {
+  width: 100%;
+  accent-color: var(--md-sys-color-primary, #6750a4);
+  cursor: pointer;
+}
+
+/* カラースキーム選択 */
+.mandelbrot__scheme-row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.mandelbrot__scheme-btn {
+  padding: 0.375rem 0.875rem;
+  border-radius: 16px;
+  border: 2px solid transparent;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  background: var(--md-sys-color-surface-container, #ece6f0);
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+
+.mandelbrot__scheme-btn--active {
+  background: var(--md-sys-color-primary-container, #eaddff);
+  color: var(--md-sys-color-on-primary-container, #21005d);
+  border-color: var(--md-sys-color-primary, #6750a4);
+}
+
+.mandelbrot__scheme-btn:hover:not(.mandelbrot__scheme-btn--active) {
+  background: var(--md-sys-color-surface-container-high, #e6e0e9);
+}
+
+/* ボタン行 */
+.mandelbrot__btn-row {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.mandelbrot__btn {
+  padding: 0.5rem 1.25rem;
+  border-radius: 20px;
+  border: none;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    opacity 0.15s;
+}
+
+.mandelbrot__btn--primary {
+  background: var(--md-sys-color-primary, #6750a4);
+  color: var(--md-sys-color-on-primary, #ffffff);
+}
+
+.mandelbrot__btn--primary:hover {
+  opacity: 0.88;
+}
+
+.mandelbrot__btn--secondary {
+  background: var(--md-sys-color-secondary-container, #e8def8);
+  color: var(--md-sys-color-on-secondary-container, #21005d);
+}
+
+.mandelbrot__btn--secondary:hover {
+  opacity: 0.88;
+}
+
+/* プリセット */
+.mandelbrot__presets {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.mandelbrot__preset-btn {
+  padding: 0.375rem 0.875rem;
+  border-radius: 16px;
+  border: none;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  background: var(--md-sys-color-tertiary-container, #ffd8e4);
+  color: var(--md-sys-color-on-tertiary-container, #31111d);
+  transition:
+    background 0.15s,
+    opacity 0.15s;
+}
+
+.mandelbrot__preset-btn:hover {
+  opacity: 0.8;
+}
+
+/* 情報パネル */
+.mandelbrot__info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--md-sys-color-surface-container-low, #f7f2fa);
+  border-radius: 8px;
+}
+
+.mandelbrot__info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.mandelbrot__info-label {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+}
+
+.mandelbrot__info-value {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface, #1c1b1f);
+  font-family: monospace;
+}
+
+/* ヒント */
+.mandelbrot__hint {
+  font-size: 0.8rem;
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+}
+
+.mandelbrot__hint-item::before {
+  content: '• ';
+}
