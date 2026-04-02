@@ -1,68 +1,126 @@
+/**
+ * メールDNS設定確認サーバーファンクション
+ *
+ * ドメインのMX・SPF・DMARC・DKIMレコードをCloudflare DNS over HTTPS (DoH)で取得し、
+ * メール送受信設定の検証と改善提案を行う。
+ */
 import { createServerFn } from "@tanstack/react-start";
 
-// Domain validation regex
+/**
+ * ドメイン名のバリデーション用正規表現
+ * RFC 1123に準拠したドメイン名形式を検証する
+ */
 export const DOMAIN_REGEX =
   /^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
 
-// DNS record types
+/**
+ * MXレコード情報
+ */
 export interface MXRecord {
+  /** メールサーバーの優先度（数値が小さいほど優先） */
   priority: number;
+  /** メールサーバーのホスト名 */
   exchange: string;
+  /** メールサーバーのIPアドレス一覧（A/AAAAレコードで解決） */
   ipAddresses?: string[];
+  /** メールサーバーの逆引きホスト名（PTRレコード） */
   ptr?: string[];
+  /** レコードのTTL（秒） */
   ttl?: number;
 }
 
+/**
+ * メールDNS設定確認の総合結果
+ */
 export interface EmailDNSResult {
+  /** 検索対象のドメイン名 */
   domain: string;
+  /** MXレコード情報 */
   mx: {
+    /** MXレコードの一覧（優先度順） */
     records: MXRecord[];
+    /** 取得ステータス */
     status: "success" | "error" | "not_found";
+    /** エラーメッセージ */
     error?: string;
+    /** 設定上の警告メッセージ */
     warnings?: string[];
   };
+  /** SPFレコード情報 */
   spf: {
+    /** SPFレコードのテキスト */
     record?: string;
+    /** 取得ステータス */
     status: "success" | "error" | "not_found";
+    /** エラーメッセージ */
     error?: string;
+    /** SPFの詳細情報と検証結果 */
     details?: {
+      /** SPFバージョン（通常 "v=spf1"） */
       version?: string;
+      /** SPFメカニズムの一覧 */
       mechanisms?: string[];
+      /** SPFレコードが有効かどうか */
       isValid: boolean;
+      /** DNSルックアップ数（上限10） */
       lookupCount?: number;
+      /** 設定上の警告メッセージ */
       warnings?: string[];
+      /** includeで展開されたドメイン一覧 */
       expandedIncludes?: string[];
     };
   };
+  /** DMARCレコード情報 */
   dmarc: {
+    /** DMARCレコードのテキスト */
     record?: string;
+    /** 取得ステータス */
     status: "success" | "error" | "not_found";
+    /** エラーメッセージ */
     error?: string;
+    /** DMARCの詳細情報と検証結果 */
     details?: {
+      /** DMARCポリシー（none/quarantine/reject） */
       policy?: string;
+      /** サブドメインポリシー */
       subdomainPolicy?: string;
+      /** ポリシー適用割合（%） */
       percentage?: number;
+      /** 集計レポート送信先 */
       rua?: string[];
+      /** 障害レポート送信先 */
       ruf?: string[];
+      /** DMARCレコードが有効かどうか */
       isValid: boolean;
+      /** 設定上の警告メッセージ */
       warnings?: string[];
     };
   };
+  /** DKIMレコード情報 */
   dkim?: {
+    /** DKIMセレクタ名 */
     selector: string;
+    /** DKIMレコードのテキスト */
     record?: string;
+    /** 取得ステータス */
     status: "success" | "error" | "not_found";
+    /** エラーメッセージ */
     error?: string;
   };
+  /** 設定改善のための推奨事項 */
   recommendations?: string[];
+  /** SMTPサーバー接続確認コマンド例 */
   smtpCheckInstructions?: {
+    /** telnetコマンド例 */
     telnet: string[];
+    /** curlコマンド例 */
     curl: string[];
+    /** opensslコマンド例 */
     openssl: string[];
   };
 }
 
-// DNS over HTTPS query
+/** Cloudflare DNS over HTTPSエンドポイント */
 const DOH_ENDPOINT = "https://cloudflare-dns.com/dns-query";
 
 interface DoHAnswer {
@@ -77,7 +135,12 @@ interface DoHResponse {
   Answer?: DoHAnswer[];
 }
 
-// Query DNS over HTTPS
+/**
+ * DNS over HTTPS (DoH) でDNSレコードを問い合わせる
+ * @param domain - 問い合わせ対象のドメイン名
+ * @param type - DNSレコードタイプ（"A", "AAAA", "MX", "TXT"など）
+ * @returns DoHレスポンス、または取得失敗の場合はnull
+ */
 async function queryDNS(
   domain: string,
   type: string
@@ -113,7 +176,11 @@ async function queryDNS(
   }
 }
 
-// Parse MX records
+/**
+ * DoHレスポンスからMXレコードを解析する
+ * @param response - DoHレスポンス
+ * @returns MXレコードの一覧（優先度順にソート済み）
+ */
 function parseMXRecords(response: DoHResponse | null): MXRecord[] {
   if (!response || !response.Answer) {
     return [];
@@ -129,7 +196,11 @@ function parseMXRecords(response: DoHResponse | null): MXRecord[] {
   }).sort((a, b) => a.priority - b.priority);
 }
 
-// Resolve IP addresses for a hostname
+/**
+ * ホスト名のIPアドレスを解決する（A/AAAAレコード両方を取得）
+ * @param hostname - 解決対象のホスト名
+ * @returns IPv4・IPv6アドレスの一覧
+ */
 async function resolveIPAddresses(hostname: string): Promise<string[]> {
   const [ipv4Response, ipv6Response] = await Promise.all([
     queryDNS(hostname, "A"),
@@ -149,7 +220,12 @@ async function resolveIPAddresses(hostname: string): Promise<string[]> {
   return ips;
 }
 
-// Get PTR records for an IP address
+/**
+ * IPアドレスのPTRレコード（逆引きホスト名）を取得する
+ * IPv6は未対応（空配列を返す）
+ * @param ip - 逆引き対象のIPアドレス
+ * @returns PTRレコードのホスト名一覧
+ */
 async function getPTRRecords(ip: string): Promise<string[]> {
   // Convert IP to reverse DNS format
   let reverseDomain: string;
@@ -172,7 +248,12 @@ async function getPTRRecords(ip: string): Promise<string[]> {
   return ptrResponse.Answer.map(a => a.data.replace(/\.$/, ''));
 }
 
-// Enrich MX records with IP and PTR information
+/**
+ * MXレコードにIP・PTRレコード情報を付加する
+ * クエリ数を抑えるため、最初のIPのPTRのみを取得する
+ * @param records - MXレコードの一覧
+ * @returns IP・PTR情報を付加したMXレコードの一覧
+ */
 async function enrichMXRecords(records: MXRecord[]): Promise<MXRecord[]> {
   const enrichPromises = records.map(async (record) => {
     const ipAddresses = await resolveIPAddresses(record.exchange);
@@ -194,7 +275,11 @@ async function enrichMXRecords(records: MXRecord[]): Promise<MXRecord[]> {
   return Promise.all(enrichPromises);
 }
 
-// Parse TXT records
+/**
+ * DoHレスポンスからTXTレコードの文字列一覧を取得する
+ * @param response - DoHレスポンス
+ * @returns TXTレコードの文字列一覧（クォート除去済み）
+ */
 function parseTXTRecords(response: DoHResponse | null): string[] {
   if (!response || !response.Answer) {
     return [];
@@ -206,7 +291,18 @@ function parseTXTRecords(response: DoHResponse | null): string[] {
   });
 }
 
-// Validate and expand SPF record
+/**
+ * SPFレコードを検証・展開する
+ *
+ * include:メカニズムを再帰的に展開してDNSルックアップ数を集計する。
+ * 循環参照・深さ超過・タイムアウトを検出して警告を付加する。
+ * @param record - 検証対象のSPFレコード文字列
+ * @param domain - SPFレコードが属するドメイン（循環参照検出用）
+ * @param visitedDomains - 訪問済みドメインのセット（内部再帰用）
+ * @param depth - 現在の再帰深さ（内部再帰用）
+ * @param startTime - 検証開始時刻（タイムアウト管理用）
+ * @returns SPF検証結果（有効性・メカニズム・警告など）
+ */
 async function validateSPF(
   record: string,
   domain: string,
@@ -336,7 +432,11 @@ async function validateSPF(
   };
 }
 
-// Validate DMARC record
+/**
+ * DMARCレコードを解析・検証する
+ * @param record - 検証対象のDMARCレコード文字列
+ * @returns DMARC検証結果（ポリシー・集計レポート先・有効性など）
+ */
 function validateDMARC(record: string): {
   policy?: string;
   subdomainPolicy?: string;
@@ -401,7 +501,12 @@ function validateDMARC(record: string): {
   return result;
 }
 
-// Query email DNS records
+/**
+ * ドメインのメール関連DNS設定（MX・SPF・DMARC・DKIM）を一括取得・検証する
+ * @param domain - 検索対象のドメイン名
+ * @param dkimSelector - DKIMセレクタ名（省略時はDKIM検索をスキップ）
+ * @returns メールDNS設定の総合結果
+ */
 async function queryEmailDNS(
   domain: string,
   dkimSelector?: string
@@ -629,7 +734,13 @@ async function queryEmailDNS(
   return result;
 }
 
-// Server function for email DNS lookup
+/**
+ * ドメインのメール関連DNS設定を検索するサーバーファンクション
+ *
+ * MX・SPF・DMARC・DKIMレコードを一括取得し、設定の検証と改善提案を行う。
+ * DKIMセレクタを指定した場合はDKIMレコードも検索する。
+ * @throws 無効なドメイン形式またはDKIMセレクタ形式の場合
+ */
 export const lookupEmailDNS = createServerFn({ method: "GET" })
   .inputValidator((data: { domain: string; dkimSelector?: string }) => {
     if (!DOMAIN_REGEX.test(data.domain)) {

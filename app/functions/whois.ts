@@ -1,32 +1,63 @@
+/**
+ * WHOIS検索サーバーファンクション
+ *
+ * IANA RDAPブートストラップを使用してTLD別のRDAPサーバーを特定し、
+ * ドメイン登録情報を取得する。フォールバックとしてrdap.orgを利用する。
+ * ブートストラップデータは1時間キャッシュされる。
+ */
 import { createServerFn } from "@tanstack/react-start";
 
-// Contact information
+/**
+ * 連絡先情報（登録者・管理者・技術担当者など）
+ */
 interface ContactInfo {
+  /** 担当者名 */
   name?: string;
+  /** 組織名 */
   organization?: string;
+  /** メールアドレス */
   email?: string;
+  /** 電話番号 */
   phone?: string;
+  /** 住所 */
   address?: string;
 }
 
-// WHOIS API types
+/**
+ * WHOISドメイン情報取得結果
+ */
 export interface WhoisResult {
+  /** 検索対象ドメイン名 */
   domain: string;
+  /** レジストラ名 */
   registrar?: string;
+  /** 登録日時（ISO 8601形式） */
   createdDate?: string;
+  /** 有効期限（ISO 8601形式） */
   expiryDate?: string;
+  /** 最終更新日時（ISO 8601形式） */
   updatedDate?: string;
+  /** ネームサーバー一覧 */
   nameServers?: string[];
+  /** ドメインステータス一覧（EPP状態コード） */
   status?: string[];
+  /** 登録者情報 */
   registrant?: ContactInfo;
+  /** 管理者情報 */
   administrative?: ContactInfo;
+  /** 技術担当者情報 */
   technical?: ContactInfo;
+  /** 請求先情報 */
   billing?: ContactInfo;
+  /** 不正利用報告先情報 */
   abuse?: ContactInfo;
+  /** エラーが発生した場合のメッセージ */
   error?: string;
 }
 
-// RDAP response types
+/**
+ * RDAP APIレスポンス型（内部用）
+ */
 interface RdapResponse {
   ldhName?: string;
   handle?: string;
@@ -58,28 +89,41 @@ interface RdapResponse {
   description?: string[];
 }
 
-// IANA RDAP Bootstrap file URL
+/** IANA RDAPブートストラップファイルのURL */
 const IANA_BOOTSTRAP_URL = "https://data.iana.org/rdap/dns.json";
 
-// Cache for bootstrap data (TLD -> RDAP server URL)
+/** TLD→RDAPサーバーURLのキャッシュ */
 let bootstrapCache: Record<string, string> | null = null;
+/** キャッシュの最終更新時刻（Unixミリ秒） */
 let bootstrapCacheTime = 0;
+/** キャッシュの有効期間（1時間） */
 const CACHE_TTL = 3600000; // 1 hour in milliseconds
 
-// Bootstrap file structure
+/**
+ * IANAブートストラップファイルの構造
+ */
 interface BootstrapFile {
   version: string;
   publication: string;
   services: Array<[string[], string[]]>;
 }
 
-// Function to get TLD from domain
+/**
+ * ドメインからTLD（トップレベルドメイン）を取得する
+ * @param domain - ドメイン名
+ * @returns 小文字のTLD（例: "com", "jp"）
+ */
 function getTld(domain: string): string {
   const parts = domain.split(".");
   return parts[parts.length - 1].toLowerCase();
 }
 
-// Function to fetch and parse IANA bootstrap file
+/**
+ * IANA RDAPブートストラップファイルを取得し、TLD→RDAPサーバーURLのマッピングを返す
+ *
+ * 結果はメモリ内に1時間キャッシュされる。取得失敗時はキャッシュを返す。
+ * @returns TLD（小文字）→RDAPサーバーベースURLのマッピング
+ */
 async function getBootstrapData(): Promise<Record<string, string>> {
   const now = Date.now();
 
@@ -123,7 +167,11 @@ async function getBootstrapData(): Promise<Record<string, string>> {
   }
 }
 
-// Function to query a single RDAP server
+/**
+ * 単一のRDAPサーバーにドメイン情報を問い合わせる
+ * @param url - RDAPエンドポイントURL（ドメイン名含む）
+ * @returns fetchレスポンス
+ */
 async function queryRdapServer(url: string): Promise<Response> {
   return fetch(url, {
     headers: {
@@ -132,7 +180,11 @@ async function queryRdapServer(url: string): Promise<Response> {
   });
 }
 
-// Helper function to parse vCard array into ContactInfo
+/**
+ * vCardの配列形式をContactInfoオブジェクトに変換する
+ * @param vcardArray - RDAPレスポンスのvcardArray（jCard形式）
+ * @returns 連絡先情報、または必要な情報がない場合はundefined
+ */
 function parseVcardToContact(
   vcardArray?: [
     string,
@@ -183,7 +235,12 @@ function parseVcardToContact(
   return contact;
 }
 
-// Parse RDAP response into WhoisResult
+/**
+ * RDAPレスポンスをWhoisResultに変換する
+ * @param data - RDAPサーバーのレスポンスデータ
+ * @param domain - 検索対象のドメイン名（ldhNameが取れない場合のフォールバック）
+ * @returns 整形済みのWHOIS情報
+ */
 function parseRdapResponse(data: RdapResponse, domain: string): WhoisResult {
   const result: WhoisResult = { domain };
 
@@ -264,7 +321,14 @@ function parseRdapResponse(data: RdapResponse, domain: string): WhoisResult {
   return result;
 }
 
-// Function to query RDAP
+/**
+ * RDAPプロトコルでドメイン情報を問い合わせる
+ *
+ * まずIANAブートストラップからTLD固有のRDAPサーバーを試み、
+ * 失敗した場合はrdap.orgにフォールバックする。
+ * @param domain - 検索対象のドメイン名
+ * @returns WHOIS情報、またはエラーメッセージを含む結果
+ */
 async function queryRdap(domain: string): Promise<WhoisResult> {
   const result: WhoisResult = { domain };
   const tld = getTld(domain);
@@ -306,7 +370,13 @@ async function queryRdap(domain: string): Promise<WhoisResult> {
   return result;
 }
 
-// Server function for WHOIS lookup
+/**
+ * ドメインのWHOIS情報を検索するサーバーファンクション
+ *
+ * 入力値をドメイン形式で検証し、RDAPプロトコルで情報を取得する。
+ * 入力は小文字に正規化され、国際化ドメイン名（IDN）はpunycodeで表記される。
+ * @throws 無効なドメイン形式の場合
+ */
 export const lookupWhois = createServerFn({ method: "GET" })
   .inputValidator((data: string) => {
     const domainRegex =
