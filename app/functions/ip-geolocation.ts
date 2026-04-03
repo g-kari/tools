@@ -175,7 +175,7 @@ async function queryIpApi(ip: string): Promise<IpGeolocationResult> {
     "query",
   ].join(",");
 
-  const url = `https://ip-api.com/json/${encodeURIComponent(ip)}?fields=${fields}`;
+  const url = `http://ip-api.com/json/${encodeURIComponent(ip)}?fields=${fields}`;
 
   try {
     const response = await fetch(url, {
