@@ -1,15 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useCallback, useRef, useEffect } from "react";
-import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
-import { useClipboard } from "~/hooks/useClipboard";
+import { StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
+import { useOutputCopy } from "~/hooks/useOutputCopy";
 
 export const Route = createFileRoute("/csv-json")({
   head: () => ({
@@ -180,26 +176,17 @@ export function jsonToCsv(json: string, delimiter: string): string {
  * CSV/JSON相互変換コンポーネント
  */
 function CsvJsonConverter() {
-  const { showToast } = useToast();
+  const { statusRef, announceStatus, showToast, isCopied, handleCopy } =
+    useOutputCopy();
   const [mode, setMode] = useState<ConversionMode>("csv-to-json");
   const [delimiter, setDelimiter] = useState(",");
   const [hasHeader, setHasHeader] = useState(true);
   const [inputText, setInputText] = useState("");
   const [outputText, setOutputText] = useState("");
-  const [isCopied, setIsCopied] = useState(false);
-  const copiedTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
-
-  const { statusRef, announceStatus } = useStatusAnnouncement();
-  const { copy } = useClipboard();
 
   useEffect(() => {
     inputRef.current?.focus();
-    return () => {
-      if (copiedTimeoutRef.current) {
-        clearTimeout(copiedTimeoutRef.current);
-      }
-    };
   }, []);
 
   const handleConvert = useCallback(() => {
@@ -233,22 +220,6 @@ function CsvJsonConverter() {
     announceStatus("入力と出力をクリアしました");
     inputRef.current?.focus();
   }, [announceStatus]);
-
-  const handleCopy = useCallback(async () => {
-    if (!outputText) return;
-    const success = await copy(outputText);
-    if (success) {
-      setIsCopied(true);
-      announceStatus("出力結果をコピーしました");
-      if (copiedTimeoutRef.current) {
-        clearTimeout(copiedTimeoutRef.current);
-      }
-      copiedTimeoutRef.current = setTimeout(() => setIsCopied(false), 2000);
-    } else {
-      announceStatus("コピーに失敗しました");
-      showToast("コピーに失敗しました", "error");
-    }
-  }, [outputText, copy, announceStatus, showToast]);
 
   const handleModeChange = useCallback((newMode: ConversionMode) => {
     setMode(newMode);
@@ -402,7 +373,7 @@ function CsvJsonConverter() {
               <button
                 type="button"
                 className={`number-base-copy-btn${isCopied ? " copied" : ""}`}
-                onClick={handleCopy}
+                onClick={() => handleCopy(outputText)}
                 disabled={!outputText}
                 aria-label="出力結果をクリップボードにコピー"
               >
