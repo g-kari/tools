@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "PreCommit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd /home/gizen/dokodemo-claude/backend/repositories/tools && npm test && npm run build"
+          }
+        ]
+      }
+    ]
+  }
+}
