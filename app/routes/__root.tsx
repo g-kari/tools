@@ -10,6 +10,7 @@ import { type ReactNode, useState, useRef, useCallback, useEffect } from "react"
 import appCss from "../styles.css?url";
 import { ToastProvider } from "../components/Toast";
 import { AdBanner } from "../components/AdBanner";
+import { SearchModal } from "../components/SearchModal";
 import {
   SITE_NAME,
   SITE_BASE_URL,
@@ -573,6 +574,19 @@ function NavCategory({
 
 function RootDocument({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+  // Ctrl+K / Cmd+K でモーダルを開く
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "k") {
+        e.preventDefault();
+        setIsSearchOpen((prev) => !prev);
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   return (
     <html lang="ja">
@@ -601,6 +615,16 @@ function RootDocument({ children }: { children: ReactNode }) {
                 {navCategories.map((category) => (
                   <NavCategory key={category.name} category={category} pathname={pathname} />
                 ))}
+                <button
+                  className="nav-search-btn"
+                  onClick={() => setIsSearchOpen(true)}
+                  aria-label="ツールを検索（Ctrl+K）"
+                  type="button"
+                >
+                  <span aria-hidden="true">🔍</span>
+                  <span>検索</span>
+                  <kbd className="nav-search-shortcut">⌘K</kbd>
+                </button>
               </nav>
             </header>
 
@@ -617,6 +641,8 @@ function RootDocument({ children }: { children: ReactNode }) {
             className="sr-only"
             id="status-message"
           />
+
+          <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
         </ToastProvider>
 
         <Scripts />

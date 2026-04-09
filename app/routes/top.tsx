@@ -5,7 +5,7 @@ import { useState, useMemo } from "react";
 /**
  * ツールアイテムの型定義
  */
-interface ToolItem {
+export interface ToolItem {
   /** ツールのパス */
   path: string;
   /** ツールの表示名 */
@@ -19,7 +19,7 @@ interface ToolItem {
 /**
  * ツールカテゴリの型定義
  */
-interface ToolCategory {
+export interface ToolCategory {
   /** カテゴリ名 */
   name: string;
   /** カテゴリアイコン */
@@ -32,7 +32,7 @@ interface ToolCategory {
  * 全ツールのカタログデータ
  * カテゴリ別に整理されたツール一覧
  */
-const toolCatalog: ToolCategory[] = [
+export const toolCatalog: ToolCategory[] = [
   {
     name: "変換",
     icon: "⇄",
