@@ -953,18 +953,6 @@ const toolCatalog: ToolCategory[] = [
         icon: "✂️",
       },
       {
-        path: "/color-extractor",
-        label: "カラー抽出",
-        description: "画像から主要な色を抽出",
-        icon: "🎨",
-      },
-      {
-        path: "/color-picker",
-        label: "カラーピッカー",
-        description: "カラーコードの選択・変換",
-        icon: "🌈",
-      },
-      {
         path: "/css-gradient",
         label: "CSSグラジェント生成",
         description:
@@ -1101,52 +1089,11 @@ const toolCatalog: ToolCategory[] = [
         icon: "🏷️",
       },
       {
-        path: "/color-name",
-        label: "色名検索",
-        description:
-          "HEXやRGBカラーを入力すると最も近いCSS名前付き色をΔE色差順に表示するツール。140色のCSS色名を網羅。完全一致判定・コピー機能付き。",
-        icon: "🏷️",
-      },
-      {
-        path: "/color-palette",
-        label: "カラーパレット生成",
-        description: "補色・三色・類似色など配色理論に基づいたカラーパレットを自動生成するツール",
-        icon: "🎨",
-      },
-      {
-        path: "/color-harmony",
-        label: "カラーハーモニー",
-        description:
-          "補色・類似色・トライアド・分割補色・テトラッドを一覧生成するカラーハーモニー配色ツール",
-        icon: "🌈",
-      },
-      {
-        path: "/color-token",
-        label: "カラートークン生成",
-        description:
-          "ベースカラーからデザインシステム用のシェードスケール（50〜950）を自動生成。CSS変数・SCSS・Tailwind設定・JSON形式で出力。",
-        icon: "🎨",
-      },
-      {
         path: "/svg-optimizer",
         label: "SVG最適化",
         description:
           "SVGファイルの最適化・圧縮・整形ツール。メタデータ削除、数値精度調整、空白圧縮に対応",
         icon: "✨",
-      },
-      {
-        path: "/color-converter",
-        label: "カラーフォーマット変換",
-        description:
-          "HEX・RGB・HSL・HSV・CMYK・OKLCHなどカラーフォーマットをリアルタイムで相互変換するツール",
-        icon: "🎨",
-      },
-      {
-        path: "/color-mix",
-        label: "CSS color-mix() プレイグラウンド",
-        description:
-          "CSS color-mix() 関数をインタラクティブに試せるツール。2色・色空間・割合を調整して混合色をリアルタイムプレビュー。CSS Custom Properties でカラースケール出力対応。",
-        icon: "🎨",
       },
     ],
   },
@@ -1594,20 +1541,6 @@ const toolCatalog: ToolCategory[] = [
         description:
           "キーボードキー押下時のイベント情報（key, code, keyCode等）をリアルタイムで確認できるツール",
         icon: "⌨️",
-      },
-      {
-        path: "/color-contrast",
-        label: "カラーコントラストチェッカー",
-        description:
-          "WCAG 2.1準拠のコントラスト比計算ツール。前景色と背景色の組み合わせをAA・AAAで判定",
-        icon: "🎯",
-      },
-      {
-        path: "/color-blind",
-        label: "色覚シミュレーター",
-        description:
-          "色覚異常シミュレーター。Deuteranopia・Protanopia・Tritanopiaなど6種類の色覚タイプで画像がどのように見えるか確認できるアクセシビリティツール。",
-        icon: "👁️",
       },
       {
         path: "/css-specificity",

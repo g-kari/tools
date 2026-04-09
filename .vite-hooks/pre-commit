@@ -1,1 +1,1 @@
-vp staged && npm test && npm run build
+/home/gizen/.vite-plus/0.1.16/bin/vp staged && npm test && npm run build
