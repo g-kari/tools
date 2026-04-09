@@ -3,7 +3,7 @@
  * React の useState / useCallback をモックしてドラッグ&ドロップロジックを検証する
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vite-plus/test';
 
 // isDragging 状態を外部で追跡するための変数
 let isDraggingState = false;

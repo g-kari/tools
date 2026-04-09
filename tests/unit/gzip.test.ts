@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect } from 'vite-plus/test';
 import { bytesToBase64, base64ToBytes, compressText, decompressBase64, formatBytes, GZIP_FORMAT_LABELS } from '../../app/utils/gzip';
 
 describe('GZip/Deflate 圧縮・解凍ユーティリティ', () => {

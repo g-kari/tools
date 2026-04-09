@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect } from 'vite-plus/test';
 import { calculateBpm, getTempoLabel, bpmToIntervalMs } from '../../app/routes/bpm';
 
 describe('calculateBpm', () => {

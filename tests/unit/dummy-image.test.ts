@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect } from 'vite-plus/test';
 import { drawDummyImage, generateFilename } from '../../app/routes/dummy-image';
 import { generateSvgImage, parseImageParams, convertSvgToPng, convertPngToJpeg, convertPngToWebp } from '../../app/functions/dummy-image';
 

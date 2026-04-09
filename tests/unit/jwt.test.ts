@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "vite-plus/test";
 import { base64UrlDecode, decodeJWT } from "../../app/utils/jwt";
 
 // テスト用の既知JWTトークン

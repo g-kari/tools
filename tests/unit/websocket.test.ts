@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect } from 'vite-plus/test';
 import { formatTimestamp, parseJsonSafe, isValidWsUrl } from '../../app/routes/websocket';
 
 describe('formatTimestamp', () => {

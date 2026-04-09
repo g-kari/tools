@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect } from 'vite-plus/test';
 import { expandIPv6, compressIPv6, parseIPv6, isValidIPv6 } from '~/utils/ipv6';
 
 describe('expandIPv6', () => {

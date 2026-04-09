@@ -4,16 +4,17 @@
   "type": "module",
   "description": "Collection of useful web tools",
   "scripts": {
-    "dev": "vite",
-    "build": "NODE_OPTIONS=--max-old-space-size=4096 vite build",
-    "preview": "vite preview",
+    "dev": "vp dev",
+    "build": "NODE_OPTIONS=--max-old-space-size=4096 vp build",
+    "preview": "vp preview",
     "deploy": "npm run build && wrangler deploy",
     "cf-typegen": "wrangler types",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage",
+    "test": "vp test run",
+    "test:watch": "vp test",
+    "test:coverage": "vp test run --coverage",
     "test:e2e": "playwright test",
-    "test:screenshot": "playwright test tests/screenshot.spec.ts"
+    "test:screenshot": "playwright test tests/screenshot.spec.ts",
+    "prepare": "vp config"
   },
   "dependencies": {
     "@cf-wasm/photon": "^0.3.4",
@@ -56,7 +57,9 @@
   "overrides": {
     "undici": ">=7.24.5",
     "h3": ">=2.0.1-rc.18",
-    "h3-v2": "npm:h3@>=2.0.1-rc.18"
+    "h3-v2": "npm:h3@>=2.0.1-rc.18",
+    "vite": "npm:@voidzero-dev/vite-plus-core@latest",
+    "vitest": "npm:@voidzero-dev/vite-plus-test@latest"
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "^1.28.0",
@@ -74,10 +77,12 @@
     "jsdom": "^29.0.1",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
-    "vite": "^7.0.0",
+    "vite": "npm:@voidzero-dev/vite-plus-core@latest",
     "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "^4.0.16",
+    "vitest": "npm:@voidzero-dev/vite-plus-test@latest",
     "wait-on": "^9.0.4",
-    "wrangler": "^4.73.0"
-  }
+    "wrangler": "^4.73.0",
+    "vite-plus": "latest"
+  },
+  "packageManager": "npm@11.12.1"
 }

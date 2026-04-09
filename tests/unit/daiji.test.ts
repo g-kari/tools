@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect } from 'vite-plus/test';
 import { toDaiji, fromDaiji } from '../../app/utils/daiji';
 
 describe('toDaiji - アラビア数字 → 大字', () => {

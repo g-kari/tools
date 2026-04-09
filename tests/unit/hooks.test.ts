@@ -3,7 +3,7 @@
  * 注: フックのロジックをテストするため、純粋な関数として抽出してテスト
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vite-plus/test";
 
 describe("useClipboard ロジック", () => {
   const mockWriteText = vi.fn();

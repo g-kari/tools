@@ -1,7 +1,7 @@
 /**
  * 統計計算ユーティリティ テスト
  */
-import { describe, it, expect } from "vitest";
+import { describe, it, expect } from "vite-plus/test";
 import {
   parseNumbers,
   calculateStatistics,

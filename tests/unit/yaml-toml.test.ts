@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect } from 'vite-plus/test';
 import { yamlToToml, tomlToYaml } from '../../app/utils/yaml-toml';
 
 describe('yamlToToml', () => {

@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "vite-plus/test";
 import { gronsfeldEncrypt, gronsfeldDecrypt, normalizeKey, isValidKey } from "../../app/utils/gronsfeld";
 
 describe("gronsfeldEncrypt", () => {

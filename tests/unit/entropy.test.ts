@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect } from "vite-plus/test";
 import { calcEntropy, getEntropyLevel } from "../../app/routes/entropy";
 
 describe("calcEntropy", () => {

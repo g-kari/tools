@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect } from 'vite-plus/test';
 import { applyLineOp, LINE_OPS } from '../../app/utils/text-line';
 
 const SAMPLE = 'apple\nbanana\ncherry\n  grape  \n\nfig';

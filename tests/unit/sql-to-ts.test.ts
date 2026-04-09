@@ -1,4 +1,4 @@
-import { describe, test, expect } from "vitest";
+import { describe, test, expect } from "vite-plus/test";
 import { generateTypeScript, getSampleSql } from "../../app/utils/sql-to-ts";
 
 const defaultOptions = {

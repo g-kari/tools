@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect } from 'vite-plus/test';
 import { formatJson, minifyJson } from '../../app/utils/json';
 
 describe('JSON Formatter Functions', () => {

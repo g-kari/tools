@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect } from "vite-plus/test";
 import { generateTypeScript, getSampleJson } from "../../app/utils/json-to-ts";
 import type { JsonToTsOptions } from "../../app/utils/json-to-ts";
 

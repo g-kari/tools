@@ -3,7 +3,7 @@
  * React の useState / useRef / useCallback / useEffect をモックしてコピーロジックを検証する
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vite-plus/test';
 
 // isCopied 状態を外部で追跡するための変数
 let isCopiedState = false;

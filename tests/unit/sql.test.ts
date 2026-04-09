@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect } from "vite-plus/test";
 
 // ユニットテスト用に関数を直接定義（モジュール解決の問題を避けるため）
 

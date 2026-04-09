@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect } from 'vite-plus/test';
 import { xmlToJson, jsonToXml, getSampleXml, getSampleJson } from '../../app/utils/xml-json';
 
 describe('xmlToJson', () => {

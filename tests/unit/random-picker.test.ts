@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect } from 'vite-plus/test';
 import { parseItems, pickRandom } from '~/routes/random-picker';
 
 describe('parseItems', () => {

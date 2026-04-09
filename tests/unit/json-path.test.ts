@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect } from 'vite-plus/test';
 import { evaluateJsonPath, formatJson, formatResults, getSampleJson } from '../../app/utils/json-path';
 
 describe('JSONPath Utility Functions', () => {

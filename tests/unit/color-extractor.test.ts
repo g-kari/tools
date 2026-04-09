@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll } from "vitest";
+import { describe, it, expect, beforeAll } from "vite-plus/test";
 import { rgbToHex, extractColors, getPixelsFromImageData } from "../../app/routes/color-extractor";
 
 // ImageData polyfill for Node.js environment

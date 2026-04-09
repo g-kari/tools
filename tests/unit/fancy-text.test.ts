@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect } from "vite-plus/test";
 import { FANCY_STYLES, type FancyStyle } from "../../app/routes/fancy-text";
 
 /** スタイルを id で取得するヘルパー */

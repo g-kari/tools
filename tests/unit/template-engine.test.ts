@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect } from 'vite-plus/test';
 import { renderTemplate, TEMPLATE_SAMPLES } from '../../app/utils/template-engine';
 
 describe('Mustache Template Engine', () => {

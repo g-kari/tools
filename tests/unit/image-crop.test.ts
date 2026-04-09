@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect } from "vite-plus/test";
 
 /**
  * ファイルサイズを人間が読みやすい形式にフォーマットする

@@ -3,7 +3,7 @@
  * React の useCallback をモックしてクリップボード操作ロジックを検証する
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vite-plus/test';
 
 // useCallback を透過的に返すようモックする
 vi.mock('react', async () => {

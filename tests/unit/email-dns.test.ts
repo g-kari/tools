@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect } from "vite-plus/test";
 
 // Test DNS record validation logic
 describe("Email DNS Record Validation", () => {

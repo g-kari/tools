@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect } from "vite-plus/test";
 import { generateJsonSchema, getSampleJson } from "../../app/utils/json-schema";
 
 describe("JSON Schema Generator", () => {

@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect } from 'vite-plus/test';
 import { parseUUID, UUID_NIL, UUID_MAX } from '../../app/utils/uuid-inspector';
 
 describe('parseUUID', () => {

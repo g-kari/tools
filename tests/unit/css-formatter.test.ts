@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect } from 'vite-plus/test';
 import { formatCss, minifyCss, validateCss } from '../../app/utils/css-formatter';
 
 describe('formatCss', () => {

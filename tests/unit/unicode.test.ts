@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect } from 'vite-plus/test';
 
 // Unicode conversion utility functions (same as in the app)
 function toUnicodeEscape(text: string): string {

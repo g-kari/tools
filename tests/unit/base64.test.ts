@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect } from 'vite-plus/test';
 
 // Base64 encoding/decoding functions using built-in JavaScript functions
 function base64Encode(text: string): string {

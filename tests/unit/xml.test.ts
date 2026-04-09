@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect } from 'vite-plus/test';
 import { tokenizeXml, formatXml, minifyXml, validateXml } from '../../app/utils/xml';
 
 describe('tokenizeXml', () => {

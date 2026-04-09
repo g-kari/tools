@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect } from 'vite-plus/test';
 import { executeBrainfuck, BRAINFUCK_SAMPLES } from '../../app/utils/brainfuck';
 
 describe('Brainfuck インタープリター', () => {

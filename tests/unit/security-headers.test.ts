@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect } from "vite-plus/test";
 import { isPrivateOrLocalhost } from "../../app/functions/security-headers";
 
 describe("URL validation", () => {

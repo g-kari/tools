@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect } from 'vite-plus/test';
 
 describe('Regex pattern testing', () => {
   function testRegexPattern(pattern: string, flags: string, testString: string): { matches: number; error: string | null } {

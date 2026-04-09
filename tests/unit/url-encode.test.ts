@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect } from 'vite-plus/test';
 
 // URL encoding/decoding functions using built-in JavaScript functions
 function urlEncode(text: string): string {

@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect } from "vite-plus/test";
 import { toRoman, fromRoman } from "../../app/routes/roman-numerals";
 
 describe("toRoman - アラビア数字 → ローマ数字", () => {

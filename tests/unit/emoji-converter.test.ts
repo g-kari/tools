@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach } from "vite-plus/test";
 
 // カテゴリ別デフォルト値のテスト用定義
 const DEFAULT_TEXT_OPTIONS = {
