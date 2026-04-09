@@ -58,7 +58,7 @@ export const Route = createFileRoute("/css-clamp")({
  */
 function CssClampTool() {
   const [config, setConfig] = useState<FluidConfig>(DEFAULT_FLUID_CONFIG);
-  const { announce, statusProps } = useStatusAnnouncement();
+  const { announceStatus, statusRef } = useStatusAnnouncement();
   const { copy } = useClipboard();
 
   const error = useMemo(() => validateFluidConfig(config), [config]);
@@ -67,9 +67,9 @@ function CssClampTool() {
   const handleCopy = useCallback(
     async (text: string, label: string) => {
       await copy(text);
-      announce(`${label} をコピーしました`);
+      announceStatus(`${label} をコピーしました`);
     },
-    [copy, announce],
+    [copy, announceStatus],
   );
 
   const setNum = useCallback(
@@ -141,7 +141,7 @@ function CssClampTool() {
 
   return (
     <div className="tool-container">
-      <StatusAnnouncer {...statusProps} />
+      <StatusAnnouncer statusRef={statusRef} />
 
       <div className="tool-header">
         <h1 className="tool-title">CSS Fluid/Clamp 計算機</h1>
@@ -403,32 +403,20 @@ function CssClampTool() {
       )}
 
       {/* ── Tips ── */}
-      <TipsCard title="使い方">
-        <ul>
-          <li>プリセットから開始するか、値とビューポート幅を直接入力します。</li>
-          <li>
-            単位を <code>px</code> / <code>rem</code> で切り替えられます。
-          </li>
-          <li>
-            生成された <code>clamp()</code> 値をコピーして CSS に貼り付けます。
-          </li>
-          <li>グラフのガイドラインは最小・最大ビューポート幅を示します。</li>
-        </ul>
-        <details>
-          <summary>計算式</summary>
-          <div className="cfc-formula">
-            <div className="cfc-formula-code">
-              slope = (maxValue - minValue) / (maxVp - minVp)
-              <br />
-              intercept = minValue - slope × minVp
-              <br />
-              preferred = slope × 100vw + intercept
-              <br />
-              clamp(minValue, preferred, maxValue)
-            </div>
-          </div>
-        </details>
-      </TipsCard>
+      <TipsCard
+        sections={[
+          {
+            title: "使い方",
+            items: [
+              "プリセットから開始するか、値とビューポート幅を直接入力します。",
+              "単位を px / rem で切り替えられます。",
+              "生成された clamp() 値をコピーして CSS に貼り付けます。",
+              "グラフのガイドラインは最小・最大ビューポート幅を示します。",
+              "計算式: slope = (maxValue - minValue) / (maxVp - minVp), intercept = minValue - slope × minVp, preferred = slope × 100vw + intercept, clamp(minValue, preferred, maxValue)",
+            ],
+          },
+        ]}
+      />
     </div>
   );
 }

@@ -6,6 +6,7 @@ import {
   getSampleExpressions,
   getSupportedFunctions,
   getSupportedConstants,
+  type HistoryEntry,
 } from "../../app/utils/math-eval";
 
 describe("evaluateExpression", () => {
@@ -260,7 +261,7 @@ describe("addToHistory", () => {
   });
 
   it("デフォルトの最大件数（10件）を超えると古いエントリが削除される", () => {
-    let history = [];
+    let history: HistoryEntry[] = [];
     for (let i = 1; i <= 11; i++) {
       history = addToHistory(history, `${i} + 1`, `${i + 1}`);
     }
@@ -269,7 +270,7 @@ describe("addToHistory", () => {
   });
 
   it("カスタム最大件数が適用される", () => {
-    let history = [];
+    let history: HistoryEntry[] = [];
     for (let i = 1; i <= 5; i++) {
       history = addToHistory(history, `${i}`, `${i}`, 3);
     }

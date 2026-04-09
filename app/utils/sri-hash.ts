@@ -66,7 +66,7 @@ export async function computeSriHash(
   data: Uint8Array,
 ): Promise<SriResult> {
   const webCryptoAlgo = ALGO_TO_WEB_CRYPTO[algorithm];
-  const hashBuffer = await crypto.subtle.digest(webCryptoAlgo, data);
+  const hashBuffer = await crypto.subtle.digest(webCryptoAlgo, data as BufferSource);
   const hashBytes = new Uint8Array(hashBuffer);
   const base64Hash = bytesToBase64(hashBytes);
   const integrity = `${algorithm}-${base64Hash}`;

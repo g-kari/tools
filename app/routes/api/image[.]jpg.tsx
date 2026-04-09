@@ -70,7 +70,7 @@ export const Route = createFileRoute("/api/image.jpg")({
       GET: async ({ request }) => {
         try {
           // Cloudflare Workers Cache API
-          const cache = caches.default;
+          const cache = (caches as unknown as { default: Cache }).default;
           const cacheKey = new Request(request.url, { method: "GET" });
 
           // キャッシュをチェック

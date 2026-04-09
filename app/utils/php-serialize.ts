@@ -16,9 +16,15 @@ export type PhpValue =
   | boolean
   | number
   | string
-  | PhpValue[]
-  | Record<string, PhpValue>
+  | PhpValueArray
+  | PhpValueRecord
   | PhpObject;
+
+/** PhpValue の配列型（循環参照回避） */
+export interface PhpValueArray extends Array<PhpValue> {}
+
+/** PhpValue の辞書型（循環参照回避） */
+export interface PhpValueRecord extends Record<string, PhpValue> {}
 
 /**
  * JavaScript値をPHPシリアライズ形式に変換する

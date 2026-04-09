@@ -179,9 +179,10 @@ function PomodoroTimer() {
   const playBeep = useCallback(() => {
     if (typeof window === "undefined") return;
     try {
-      const AudioContext =
+      const AudioContext: typeof window.AudioContext =
         window.AudioContext ||
-        (window as typeof window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+        (window as typeof window & { webkitAudioContext?: typeof window.AudioContext })
+          .webkitAudioContext;
       if (!AudioContext) return;
       const ctx = new AudioContext();
       const oscillator = ctx.createOscillator();

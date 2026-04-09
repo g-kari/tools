@@ -266,9 +266,7 @@ export function generateSql(csv: string, options: CsvSqlOptions): SqlResult | Cs
 /**
  * 型のガード: CsvSqlError かどうかを判定します。
  */
-export function isCsvSqlError(
-  result: SqlResult | CsvSqlError | ParsedCsv  ,
-): result is CsvSqlError {
+export function isCsvSqlError(result: SqlResult | CsvSqlError | ParsedCsv): result is CsvSqlError {
   return (
     "type" in result &&
     ("parse" === (result as CsvSqlError).type || "generate" === (result as CsvSqlError).type)

@@ -424,7 +424,7 @@ function AspectRatioCalculator() {
         </div>
       </div>
 
-      <StatusAnnouncer ref={statusRef} />
+      <StatusAnnouncer statusRef={statusRef} />
     </>
   );
 }

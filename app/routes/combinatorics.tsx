@@ -297,26 +297,20 @@ function CombinatoricsPage() {
           </>
         )}
 
-        <TipsCard>
-          <ul>
-            <li>
-              <strong>順列 nPr</strong>: n 個の中から r 個を
-              <em>順序を区別して</em>選ぶ場合の数。nPr = n! / (n-r)!
-            </li>
-            <li>
-              <strong>組合せ nCr</strong>: n 個の中から r 個を
-              <em>順序を区別せずに</em>選ぶ場合の数。nCr = n! / (r! × (n-r)!)
-            </li>
-            <li>
-              <strong>関係</strong>: nPr = nCr × r!（順列は組合せに並び順を掛けたもの）
-            </li>
-            <li>
-              <strong>パスカルの三角形</strong>: 各セルは左上と右上の値の和。n 行 r 列目の値が ₍ₙ₎Cᵣ
-              に対応する
-            </li>
-            <li>n ≤ {PASCAL_MAX_ROWS} のときパスカルの三角形を表示します</li>
-          </ul>
-        </TipsCard>
+        <TipsCard
+          sections={[
+            {
+              title: "Tips",
+              items: [
+                "順列 nPr: n 個の中から r 個を順序を区別して選ぶ場合の数。nPr = n! / (n-r)!",
+                "組合せ nCr: n 個の中から r 個を順序を区別せずに選ぶ場合の数。nCr = n! / (r! × (n-r)!)",
+                "関係: nPr = nCr × r!（順列は組合せに並び順を掛けたもの）",
+                "パスカルの三角形: 各セルは左上と右上の値の和。n 行 r 列目の値が ₍ₙ₎Cᵣ に対応する",
+                `n ≤ ${PASCAL_MAX_ROWS} のときパスカルの三角形を表示します`,
+              ],
+            },
+          ]}
+        />
       </div>
     </div>
   );

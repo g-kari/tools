@@ -400,7 +400,7 @@ function BitwiseCalculator() {
         </div>
       </div>
 
-      <StatusAnnouncer ref={statusRef} />
+      <StatusAnnouncer statusRef={statusRef} />
     </>
   );
 }

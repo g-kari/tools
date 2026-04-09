@@ -200,26 +200,19 @@ function MakefilePage() {
       </div>
 
       {/* ヒント */}
-      <TipsCard>
-        <ul>
-          <li>
-            <strong>タブ文字必須</strong>:
-            Makefileのレシピ行はスペースではなくタブ文字で始まる必要があります。
-          </li>
-          <li>
-            <strong>.PHONY</strong>: ファイルを生成しないターゲットは<code>.PHONY</code>
-            に登録しましょう。
-          </li>
-          <li>
-            <strong>help ターゲット</strong>:<code>make help</code>
-            で利用可能なターゲット一覧を表示できます。
-          </li>
-          <li>
-            <strong>変数のオーバーライド</strong>: <code>make build APP_NAME=myapp</code>
-            のようにコマンドラインから変数を上書きできます。
-          </li>
-        </ul>
-      </TipsCard>
+      <TipsCard
+        sections={[
+          {
+            title: "Tips",
+            items: [
+              "タブ文字必須: Makefileのレシピ行はスペースではなくタブ文字で始まる必要があります。",
+              ".PHONY: ファイルを生成しないターゲットは .PHONY に登録しましょう。",
+              "help ターゲット: make help で利用可能なターゲット一覧を表示できます。",
+              "変数のオーバーライド: make build APP_NAME=myapp のようにコマンドラインから変数を上書きできます。",
+            ],
+          },
+        ]}
+      />
     </div>
   );
 }

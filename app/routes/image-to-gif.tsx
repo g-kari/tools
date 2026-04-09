@@ -163,7 +163,7 @@ export async function convertImagesToGif(
     await ffmpeg.deleteFile("output.gif");
 
     onProgress?.("GIFの生成が完了しました");
-    return new Blob([data], { type: "image/gif" });
+    return new Blob([data as BlobPart], { type: "image/gif" });
   } catch (error) {
     console.error("Failed to convert images to GIF:", error);
     onProgress?.("GIFの生成に失敗しました");

@@ -229,11 +229,16 @@ function EslintConfigBuilderPage() {
       </div>
 
       <TipsCard
-        tips={[
-          "ESLint 9 以降はフラット設定形式（eslint.config.js）が標準です。新規プロジェクトではフラット設定を推奨します",
-          "Prettier を使用している場合はスタイルルール（セミコロン・引用符・インデント）を ESLint で設定する必要はありません",
-          "TypeScript プロジェクトでは @typescript-eslint/no-unused-vars が no-unused-vars の代わりに使われます",
-          "strictTypeChecked を使うと型情報を活用した高精度なチェックが可能ですが、tsconfig.json の設定が必要です",
+        sections={[
+          {
+            title: "Tips",
+            items: [
+              "ESLint 9 以降はフラット設定形式（eslint.config.js）が標準です。新規プロジェクトではフラット設定を推奨します",
+              "Prettier を使用している場合はスタイルルール（セミコロン・引用符・インデント）を ESLint で設定する必要はありません",
+              "TypeScript プロジェクトでは @typescript-eslint/no-unused-vars が no-unused-vars の代わりに使われます",
+              "strictTypeChecked を使うと型情報を活用した高精度なチェックが可能ですが、tsconfig.json の設定が必要です",
+            ],
+          },
         ]}
       />
 

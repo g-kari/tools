@@ -300,7 +300,7 @@ function PortCheck() {
           </div>
         </form>
 
-        <LoadingSpinner isLoading={isLoading} message="チェック中..." />
+        {isLoading && <LoadingSpinner message="チェック中..." />}
 
         <ErrorMessage message={error} />
 

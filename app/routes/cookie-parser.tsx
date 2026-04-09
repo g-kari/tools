@@ -365,7 +365,7 @@ function CookieParserPage() {
   }, [announceStatus]);
 
   const handleSetCookieClear = useCallback(() => {
-    setSetCookieInput("");
+    setSetCookieHeaderInput("");
     announceStatus("クリアしました");
   }, [announceStatus]);
 

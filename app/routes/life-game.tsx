@@ -370,15 +370,6 @@ function LifeGame() {
     setPopulation(countPopulation(grid));
   }, [grid, drawGrid]);
 
-  /** サイズ変更時にリセット */
-  useEffect(() => {
-    stopSimulation();
-    const { cols: c, rows: r } = GRID_SIZES[sizeIdx];
-    const newGrid = createGrid(c, r);
-    setGrid(newGrid);
-    setGeneration(0);
-  }, [sizeIdx, stopSimulation]);
-
   /** 1ステップ進める */
   const step = useCallback(() => {
     setGrid((prev) => {
@@ -401,6 +392,15 @@ function LifeGame() {
       intervalRef.current = null;
     }
   }, []);
+
+  /** サイズ変更時にリセット */
+  useEffect(() => {
+    stopSimulation();
+    const { cols: c, rows: r } = GRID_SIZES[sizeIdx];
+    const newGrid = createGrid(c, r);
+    setGrid(newGrid);
+    setGeneration(0);
+  }, [sizeIdx, stopSimulation]);
 
   /** 実行中のタイマー管理 */
   useEffect(() => {

@@ -109,7 +109,16 @@ describe("DNS Lookup Utilities", () => {
     });
 
     it("should handle response with no records", () => {
-      const dohResponse = {
+      const dohResponse: {
+        Status: number;
+        TC: boolean;
+        RD: boolean;
+        RA: boolean;
+        AD: boolean;
+        CD: boolean;
+        Question: { name: string; type: number }[];
+        Answer?: { name: string; type: number; TTL: number; data: string }[];
+      } = {
         Status: 0,
         TC: false,
         RD: true,
@@ -263,7 +272,7 @@ describe("DNS Lookup Utilities", () => {
     });
 
     it("should accept input with only domain", () => {
-      const input = {
+      const input: { domain: string; types?: string[] } = {
         domain: "example.com",
       };
 

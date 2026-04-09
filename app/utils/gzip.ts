@@ -139,7 +139,7 @@ export async function decompressBase64(
   const compressedBytes = base64ToBytes(base64);
   const stream = new DecompressionStream(format);
   const writer = stream.writable.getWriter();
-  await writer.write(compressedBytes);
+  await writer.write(compressedBytes as BufferSource);
   await writer.close();
 
   const decompressed = await readAllChunks(stream.readable);

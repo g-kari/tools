@@ -12,7 +12,10 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "types": ["@cloudflare/workers-types", "node"]
+    "types": ["@cloudflare/workers-types", "node"],
+    "paths": {
+      "~/*": ["./app/*"]
+    }
   },
   "include": ["app/**/*", "tests/**/*"],
   "exclude": ["node_modules", "dist"]

@@ -404,8 +404,8 @@ export async function parseCertificate(input: string | Uint8Array): Promise<Cert
 
   // フィンガープリント計算
   const [sha1Buf, sha256Buf] = await Promise.all([
-    crypto.subtle.digest("SHA-1", der),
-    crypto.subtle.digest("SHA-256", der),
+    crypto.subtle.digest("SHA-1", der as BufferSource),
+    crypto.subtle.digest("SHA-256", der as BufferSource),
   ]);
   const sha1 = hexWithColon(bytesToHex(new Uint8Array(sha1Buf)));
   const sha256 = hexWithColon(bytesToHex(new Uint8Array(sha256Buf)));

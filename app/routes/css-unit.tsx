@@ -350,7 +350,7 @@ function CssUnitConverter() {
         />
       </div>
 
-      <StatusAnnouncer ref={statusRef} />
+      <StatusAnnouncer statusRef={statusRef} />
     </>
   );
 }

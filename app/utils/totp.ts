@@ -80,12 +80,12 @@ export function base32Decode(base32: string): Uint8Array {
 async function hmacSha1(key: Uint8Array, message: Uint8Array): Promise<Uint8Array> {
   const cryptoKey = await crypto.subtle.importKey(
     "raw",
-    key,
+    key as BufferSource,
     { name: "HMAC", hash: "SHA-1" },
     false,
     ["sign"],
   );
-  const signature = await crypto.subtle.sign("HMAC", cryptoKey, message);
+  const signature = await crypto.subtle.sign("HMAC", cryptoKey, message.buffer as ArrayBuffer);
   return new Uint8Array(signature);
 }
 
@@ -98,12 +98,12 @@ async function hmacSha1(key: Uint8Array, message: Uint8Array): Promise<Uint8Arra
 async function hmacSha256(key: Uint8Array, message: Uint8Array): Promise<Uint8Array> {
   const cryptoKey = await crypto.subtle.importKey(
     "raw",
-    key,
+    key as BufferSource,
     { name: "HMAC", hash: "SHA-256" },
     false,
     ["sign"],
   );
-  const signature = await crypto.subtle.sign("HMAC", cryptoKey, message);
+  const signature = await crypto.subtle.sign("HMAC", cryptoKey, message.buffer as ArrayBuffer);
   return new Uint8Array(signature);
 }
 
@@ -116,12 +116,12 @@ async function hmacSha256(key: Uint8Array, message: Uint8Array): Promise<Uint8Ar
 async function hmacSha512(key: Uint8Array, message: Uint8Array): Promise<Uint8Array> {
   const cryptoKey = await crypto.subtle.importKey(
     "raw",
-    key,
+    key as BufferSource,
     { name: "HMAC", hash: "SHA-512" },
     false,
     ["sign"],
   );
-  const signature = await crypto.subtle.sign("HMAC", cryptoKey, message);
+  const signature = await crypto.subtle.sign("HMAC", cryptoKey, message.buffer as ArrayBuffer);
   return new Uint8Array(signature);
 }
 
@@ -316,12 +316,12 @@ export async function generateHOTP(
 
   const key = await crypto.subtle.importKey(
     "raw",
-    keyBytes,
+    keyBytes as BufferSource,
     { name: "HMAC", hash: "SHA-1" },
     false,
     ["sign"],
   );
-  const signature = await crypto.subtle.sign("HMAC", key, counterBytes);
+  const signature = await crypto.subtle.sign("HMAC", key, counterBytes.buffer as ArrayBuffer);
   const hmac = new Uint8Array(signature);
 
   // Dynamic Truncation

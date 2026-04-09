@@ -133,7 +133,7 @@ async function convertAudioWithFFmpeg(
   // 出力ファイルを読み込み
   const data = await ffmpeg.readFile(outputName);
   const mimeType = format === "mp3" ? "audio/mpeg" : format === "wav" ? "audio/wav" : "audio/ogg";
-  const blob = new Blob([data], { type: mimeType });
+  const blob = new Blob([data as BlobPart], { type: mimeType });
 
   const filename = `converted.${format}`;
   return { blob, filename };

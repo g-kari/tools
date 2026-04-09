@@ -356,7 +356,7 @@ function CssFilterGenerator() {
           </div>
         </div>
       </div>
-      <StatusAnnouncer ref={statusRef} />
+      <StatusAnnouncer statusRef={statusRef} />
     </>
   );
 }

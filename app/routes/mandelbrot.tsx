@@ -108,6 +108,7 @@ function MandelbrotPage() {
         requestAnimationFrame(renderChunk);
       } else {
         if (thisId === renderIdRef.current) {
+          if (!ctx) return;
           ctx.putImageData(imageData, 0, 0);
           setIsRendering(false);
         }
@@ -295,20 +296,18 @@ function MandelbrotPage() {
         </div>
       </div>
 
-      <TipsCard>
-        <p>
-          <strong>マンデルブロット集合</strong>とは、複素数 c に対して z₀=0、z(n+1)=z(n)²+c
-          の漸化式が発散しない点 c の集合です。
-          境界付近は無限に複雑な自己相似構造（フラクタル）を持ちます。
-        </p>
-        <p>
-          <strong>反復回数が多い</strong>ほど精細な描画になりますが、描画時間も増えます。
-          ズームすると境界の精細さが増すため、反復回数を増やすとより美しい模様が見えます。
-        </p>
-        <p>
-          黒い領域が集合の内部（発散しない点）です。 集合の外の点は発散速度に応じて着色されます。
-        </p>
-      </TipsCard>
+      <TipsCard
+        sections={[
+          {
+            title: "マンデルブロット集合について",
+            items: [
+              "マンデルブロット集合とは、複素数 c に対して z₀=0、z(n+1)=z(n)²+c の漸化式が発散しない点 c の集合です。境界付近は無限に複雑な自己相似構造（フラクタル）を持ちます。",
+              "反復回数が多いほど精細な描画になりますが、描画時間も増えます。ズームすると境界の精細さが増すため、反復回数を増やすとより美しい模様が見えます。",
+              "黒い領域が集合の内部（発散しない点）です。集合の外の点は発散速度に応じて着色されます。",
+            ],
+          },
+        ]}
+      />
     </main>
   );
 }

@@ -222,13 +222,17 @@ function HmacGenerator() {
       </div>
 
       <TipsCard
-        title="HMAC とは"
-        items={[
-          "HMAC（Hash-based Message Authentication Code）はメッセージの完全性と認証を保証する仕組みです",
-          "Webhook 検証（GitHub・Stripe・Slack 等）では HMAC-SHA-256 が広く使われています",
-          "秘密鍵が空の場合でも計算できますが、実用上は必ず秘密鍵を設定してください",
-          "HMAC-SHA-1 はセキュリティ上の理由から非推奨です。新規利用は HMAC-SHA-256 以上を推奨します",
-          "ブラウザ内で計算されるため、メッセージや秘密鍵がサーバーに送信されることはありません",
+        sections={[
+          {
+            title: "HMAC とは",
+            items: [
+              "HMAC（Hash-based Message Authentication Code）はメッセージの完全性と認証を保証する仕組みです",
+              "Webhook 検証（GitHub・Stripe・Slack 等）では HMAC-SHA-256 が広く使われています",
+              "秘密鍵が空の場合でも計算できますが、実用上は必ず秘密鍵を設定してください",
+              "HMAC-SHA-1 はセキュリティ上の理由から非推奨です。新規利用は HMAC-SHA-256 以上を推奨します",
+              "ブラウザ内で計算されるため、メッセージや秘密鍵がサーバーに送信されることはありません",
+            ],
+          },
         ]}
       />
 

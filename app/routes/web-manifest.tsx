@@ -240,7 +240,7 @@ function WebManifestGenerator() {
   const [activeTab, setActiveTab] = useState<"json" | "html">("json");
   const [categoryInput, setCategoryInput] = useState("");
   const { showToast } = useToast();
-  const { announce, statusMessage } = useStatusAnnouncement();
+  const { announceStatus, statusRef } = useStatusAnnouncement();
 
   /** フィールド更新ヘルパー */
   const update = useCallback(
@@ -259,12 +259,12 @@ function WebManifestGenerator() {
   const handleCopy = useCallback(async () => {
     try {
       await navigator.clipboard.writeText(outputText);
-      announce("コピーしました");
+      announceStatus("コピーしました");
       showToast("コピーしました", "success");
     } catch {
       showToast("コピーに失敗しました", "error");
     }
-  }, [outputText, announce, showToast]);
+  }, [outputText, announceStatus, showToast]);
 
   /** ダウンロード */
   const handleDownload = useCallback(() => {
@@ -275,9 +275,9 @@ function WebManifestGenerator() {
     a.download = "manifest.json";
     a.click();
     URL.revokeObjectURL(url);
-    announce("manifest.json をダウンロードしました");
+    announceStatus("manifest.json をダウンロードしました");
     showToast("ダウンロードしました", "success");
-  }, [manifestJson, announce, showToast]);
+  }, [manifestJson, announceStatus, showToast]);
 
   /** アイコン追加 */
   const addIcon = useCallback(() => {
@@ -338,8 +338,8 @@ function WebManifestGenerator() {
   /** リセット */
   const handleReset = useCallback(() => {
     setOptions({ ...DEFAULT_MANIFEST_OPTIONS, icons: createDefaultIcons() });
-    announce("リセットしました");
-  }, [announce]);
+    announceStatus("リセットしました");
+  }, [announceStatus]);
 
   return (
     <div className="tool-container">
@@ -352,7 +352,7 @@ function WebManifestGenerator() {
       </header>
 
       <main id="main-content" role="main">
-        <StatusAnnouncer message={statusMessage} />
+        <StatusAnnouncer statusRef={statusRef} />
 
         <div className="tool-layout-split">
           {/* 左：フォーム */}
@@ -662,29 +662,20 @@ function WebManifestGenerator() {
           </div>
         </div>
 
-        <TipsCard>
-          <ul>
-            <li>
-              <strong>name</strong> はインストール確認ダイアログや、アプリ一覧に表示されます。
-            </li>
-            <li>
-              <strong>short_name</strong>{" "}
-              はホーム画面のアイコン下に表示される短い名前です（10文字程度推奨）。
-            </li>
-            <li>
-              <strong>maskable</strong> アイコンは Android
-              で円形・角丸にトリミングされます。セーフゾーン（中央80%）にコンテンツを収めてください。
-            </li>
-            <li>
-              <strong>standalone</strong>{" "}
-              モードではブラウザのアドレスバーが非表示になり、ネイティブアプリに近い外観になります。
-            </li>
-            <li>
-              <code>{'<link rel="manifest" href="/manifest.json">'}</code> を HTML の{" "}
-              <code>{"<head>"}</code> 内に追加してください。
-            </li>
-          </ul>
-        </TipsCard>
+        <TipsCard
+          sections={[
+            {
+              title: "Tips",
+              items: [
+                "name はインストール確認ダイアログや、アプリ一覧に表示されます。",
+                "short_name はホーム画面のアイコン下に表示される短い名前です（10文字程度推奨）。",
+                "maskable アイコンは Android で円形・角丸にトリミングされます。セーフゾーン（中央80%）にコンテンツを収めてください。",
+                "standalone モードではブラウザのアドレスバーが非表示になり、ネイティブアプリに近い外観になります。",
+                '<link rel="manifest" href="/manifest.json"> を HTML の <head> 内に追加してください。',
+              ],
+            },
+          ]}
+        />
       </main>
     </div>
   );

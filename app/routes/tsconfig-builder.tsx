@@ -300,11 +300,16 @@ function TsConfigBuilderPage() {
       </div>
 
       <TipsCard
-        tips={[
-          "strict を有効にすると noImplicitAny・strictNullChecks などがまとめて有効になります",
-          "Vite や esbuild を使う場合は noEmit と isolatedModules を有効にするのが推奨です",
-          "ライブラリ開発では declaration と declarationMap を有効にして型定義ファイルを生成しましょう",
-          "skipLibCheck を有効にすると依存ライブラリの型エラーを無視でき、ビルドが高速になります",
+        sections={[
+          {
+            title: "Tips",
+            items: [
+              "strict を有効にすると noImplicitAny・strictNullChecks などがまとめて有効になります",
+              "Vite や esbuild を使う場合は noEmit と isolatedModules を有効にするのが推奨です",
+              "ライブラリ開発では declaration と declarationMap を有効にして型定義ファイルを生成しましょう",
+              "skipLibCheck を有効にすると依存ライブラリの型エラーを無視でき、ビルドが高速になります",
+            ],
+          },
         ]}
       />
 

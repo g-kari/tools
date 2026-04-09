@@ -87,12 +87,12 @@ export async function computeHmac(
 ): Promise<Uint8Array> {
   const cryptoKey = await crypto.subtle.importKey(
     "raw",
-    keyData,
+    keyData as BufferSource,
     { name: "HMAC", hash: { name: algorithm } },
     false,
     ["sign"],
   );
-  const signature = await crypto.subtle.sign("HMAC", cryptoKey, messageData);
+  const signature = await crypto.subtle.sign("HMAC", cryptoKey, messageData.buffer as ArrayBuffer);
   return new Uint8Array(signature);
 }
 

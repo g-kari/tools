@@ -162,12 +162,12 @@ async function signHmac(
     algorithm === "HS256" ? "SHA-256" : algorithm === "HS384" ? "SHA-384" : "SHA-512";
   const key = await crypto.subtle.importKey(
     "raw",
-    secretBytes,
+    secretBytes as BufferSource,
     { name: "HMAC", hash: { name: hashAlgo } },
     false,
     ["sign"],
   );
-  const signature = await crypto.subtle.sign("HMAC", key, dataBytes);
+  const signature = await crypto.subtle.sign("HMAC", key, dataBytes.buffer as ArrayBuffer);
   return new Uint8Array(signature);
 }
 

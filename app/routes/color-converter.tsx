@@ -494,7 +494,7 @@ function ColorConverter() {
         />
       </div>
 
-      <StatusAnnouncer ref={statusRef} />
+      <StatusAnnouncer statusRef={statusRef} />
     </>
   );
 }

@@ -177,25 +177,25 @@ describe("HTTPメソッドとボディの関係", () => {
   });
 
   it("POSTメソッドはボディありで使用できる", () => {
-    const method = "POST";
+    const method: string = "POST";
     const hasBody = method !== "GET" && method !== "HEAD";
     expect(hasBody).toBe(true);
   });
 
   it("HEADメソッドはボディなしで使用できる", () => {
-    const method = "HEAD";
+    const method: string = "HEAD";
     const hasBody = method !== "GET" && method !== "HEAD";
     expect(hasBody).toBe(false);
   });
 
   it("PUTメソッドはボディありで使用できる", () => {
-    const method = "PUT";
+    const method: string = "PUT";
     const hasBody = method !== "GET" && method !== "HEAD";
     expect(hasBody).toBe(true);
   });
 
   it("DELETEメソッドはボディありで使用できる", () => {
-    const method = "DELETE";
+    const method: string = "DELETE";
     const hasBody = method !== "GET" && method !== "HEAD";
     expect(hasBody).toBe(true);
   });

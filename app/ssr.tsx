@@ -63,8 +63,13 @@ export default {
     const handler = createStartHandler({
       createRouter,
       getRouterManifest,
-    })(defaultStreamHandler);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any)(
+      // @ts-expect-error - TanStack Start Cloudflare adapter
+      defaultStreamHandler,
+    );
 
+    // @ts-expect-error - TanStack Start Cloudflare adapter
     const response = await handler({
       request,
       cloudflare: { env, ctx },

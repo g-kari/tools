@@ -192,7 +192,7 @@ function HtaccessBuilderPage(): React.ReactElement {
   const [config, setConfig] = useState<HtaccessConfig>(getDefaultConfig());
   const { showToast } = useToast();
   const { copy } = useClipboard();
-  const { announce, announcerProps } = useStatusAnnouncement();
+  const { announceStatus, statusRef } = useStatusAnnouncement();
 
   const output = useMemo(() => generateHtaccess(config), [config]);
 
@@ -207,13 +207,13 @@ function HtaccessBuilderPage(): React.ReactElement {
       errorPages: { ...prev.errorPages, ...preset.errorPages },
       compression: { ...prev.compression, ...preset.compression },
     }));
-    announce("プリセットを適用しました");
+    announceStatus("プリセットを適用しました");
   }
 
   function handleCopy(): void {
     copy(output);
     showToast(".htaccess をクリップボードにコピーしました", "success");
-    announce(".htaccess をクリップボードにコピーしました");
+    announceStatus(".htaccess をクリップボードにコピーしました");
   }
 
   function handleDownload(): void {
@@ -225,7 +225,7 @@ function HtaccessBuilderPage(): React.ReactElement {
     a.click();
     URL.revokeObjectURL(url);
     showToast(".htaccess をダウンロードしました", "success");
-    announce(".htaccess をダウンロードしました");
+    announceStatus(".htaccess をダウンロードしました");
   }
 
   function addRedirect(): void {
@@ -266,7 +266,7 @@ function HtaccessBuilderPage(): React.ReactElement {
 
   return (
     <div className="htx-container">
-      <StatusAnnouncer {...announcerProps} />
+      <StatusAnnouncer statusRef={statusRef} />
 
       <h1 className="tool-title">Apache .htaccess ビルダー</h1>
       <p className="tool-description">

@@ -222,7 +222,7 @@ function IpGeolocationLookup() {
           </div>
         </form>
 
-        <LoadingSpinner isLoading={isLoading} message="検索中..." />
+        {isLoading && <LoadingSpinner message="検索中..." />}
 
         <ErrorMessage message={error} />
 

@@ -536,13 +536,14 @@ async function fetchYouTubeOgp(
     const response = await fetch(oembedUrl, { signal });
 
     if (response.ok) {
-      const data = await response.json();
+      const data = (await response.json()) as Record<string, unknown>;
       // Use thumbnail_url from API if available, otherwise use our fallback
-      const thumbnail = data.thumbnail_url || getYouTubeThumbnailUrl(videoId);
+      const thumbnail =
+        (data.thumbnail_url as string | undefined) || getYouTubeThumbnailUrl(videoId);
       return {
         fetchedUrl: originalUrl,
-        title: data.title || undefined,
-        description: data.author_name ? `${data.author_name} のYouTube動画` : undefined,
+        title: (data.title as string | undefined) || undefined,
+        description: data.author_name ? `${data.author_name as string} のYouTube動画` : undefined,
         image: thumbnail,
         siteName: "YouTube",
         type: "video",
@@ -615,17 +616,21 @@ async function fetchTwitterOgp(
       return fallbackData;
     }
 
-    const text = data.text || "";
-    const authorName = data.user?.name || username;
-    const authorScreenName = data.user?.screen_name || username;
-    const profileImage = data.user?.profile_image_url_https;
+    const d = data as Record<string, unknown>;
+    const text = (d.text as string | undefined) || "";
+    const user = d.user as Record<string, unknown> | undefined;
+    const authorName = (user?.name as string | undefined) || username;
+    const authorScreenName = (user?.screen_name as string | undefined) || username;
+    const profileImage = user?.profile_image_url_https as string | undefined;
 
     // Get media if available
     let image: string | undefined;
-    if (data.mediaDetails && data.mediaDetails.length > 0) {
-      image = data.mediaDetails[0].media_url_https;
-    } else if (data.photos && data.photos.length > 0) {
-      image = data.photos[0].url;
+    const mediaDetails = d.mediaDetails as Array<Record<string, unknown>> | undefined;
+    const photos = d.photos as Array<Record<string, unknown>> | undefined;
+    if (mediaDetails && mediaDetails.length > 0) {
+      image = mediaDetails[0].media_url_https as string | undefined;
+    } else if (photos && photos.length > 0) {
+      image = photos[0].url as string | undefined;
     }
 
     return {

@@ -79,25 +79,25 @@ describe("Video Converter", () => {
     });
 
     it("should map mp4 format to video/mp4 MIME type", () => {
-      const format = "mp4";
+      const format: string = "mp4";
       const mimeType = format === "gif" ? "image/gif" : `video/${format}`;
       expect(mimeType).toBe("video/mp4");
     });
 
     it("should map webm format to video/webm MIME type", () => {
-      const format = "webm";
+      const format: string = "webm";
       const mimeType = format === "gif" ? "image/gif" : `video/${format}`;
       expect(mimeType).toBe("video/webm");
     });
 
     it("should map avi format to video/avi MIME type", () => {
-      const format = "avi";
+      const format: string = "avi";
       const mimeType = format === "gif" ? "image/gif" : `video/${format}`;
       expect(mimeType).toBe("video/avi");
     });
 
     it("should map mov format to video/mov MIME type", () => {
-      const format = "mov";
+      const format: string = "mov";
       const mimeType = format === "gif" ? "image/gif" : `video/${format}`;
       expect(mimeType).toBe("video/mov");
     });
@@ -150,7 +150,7 @@ describe("Video Converter", () => {
     });
 
     it("should add framerate to GIF args when specified", () => {
-      const framerate = "24";
+      const framerate: string = "24";
       const args: string[] = [];
       if (framerate !== "auto") {
         args.push("-r", framerate);
@@ -169,8 +169,8 @@ describe("Video Converter", () => {
     });
 
     it("should add resolution to GIF args when specified", () => {
-      const width = "640";
-      const height = "480";
+      const width: string = "640";
+      const height: string = "480";
       const args: string[] = [];
       if (width !== "auto" && height !== "auto") {
         args.push("-s", `${width}x${height}`);
@@ -212,7 +212,7 @@ describe("Video Converter", () => {
     });
 
     it("should add video bitrate to args when not auto", () => {
-      const videoBitrate = "2000";
+      const videoBitrate: string = "2000";
       const args: string[] = [];
       if (videoBitrate !== "auto") {
         args.push("-b:v", `${videoBitrate}k`);
@@ -231,7 +231,7 @@ describe("Video Converter", () => {
     });
 
     it("should add audio bitrate to args when not auto", () => {
-      const audioBitrate = "128";
+      const audioBitrate: string = "128";
       const args: string[] = [];
       if (audioBitrate !== "auto") {
         args.push("-b:a", `${audioBitrate}k`);

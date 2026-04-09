@@ -336,7 +336,7 @@ function ColorNameFinder() {
         />
       </div>
 
-      <StatusAnnouncer ref={statusRef} />
+      <StatusAnnouncer statusRef={statusRef} />
     </>
   );
 }

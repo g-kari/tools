@@ -273,7 +273,7 @@ function CssClipPathGenerator() {
   const [ellipse, setEllipse] = useState<EllipseState>(DEFAULT_ELLIPSE);
   const [polygon, setPolygon] = useState<PolygonState>(DEFAULT_POLYGON);
 
-  const { status, announce } = useStatusAnnouncement();
+  const { statusRef, announceStatus } = useStatusAnnouncement();
   const { copy } = useClipboard();
 
   const cssCode = useMemo(
@@ -283,24 +283,24 @@ function CssClipPathGenerator() {
 
   const handleCopy = useCallback(async () => {
     await copy(cssCode);
-    announce("CSSコードをコピーしました");
-  }, [copy, cssCode, announce]);
+    announceStatus("CSSコードをコピーしました");
+  }, [copy, cssCode, announceStatus]);
 
   const handleReset = useCallback(() => {
     setInset(DEFAULT_INSET);
     setCircle(DEFAULT_CIRCLE);
     setEllipse(DEFAULT_ELLIPSE);
     setPolygon(DEFAULT_POLYGON);
-    announce("設定をリセットしました");
-  }, [announce]);
+    announceStatus("設定をリセットしました");
+  }, [announceStatus]);
 
   const applyPreset = useCallback(
     (preset: (typeof POLYGON_PRESETS)[0]) => {
       setType("polygon");
       setPolygon({ points: preset.points });
-      announce(`プリセット「${preset.name}」を適用しました`);
+      announceStatus(`プリセット「${preset.name}」を適用しました`);
     },
-    [announce],
+    [announceStatus],
   );
 
   /** inset スライダー変更ハンドラ */
@@ -524,17 +524,22 @@ function CssClipPathGenerator() {
           </section>
 
           {/* ステータスアナウンス */}
-          <StatusAnnouncer status={status} />
+          <StatusAnnouncer statusRef={statusRef} />
         </div>
       </div>
 
       <TipsCard
-        tips={[
-          "polygon() タブではSVGオーバーレイの頂点ハンドルをドラッグして形状を直接編集できます。",
-          "プリセット形状をクリックすると polygon() モードに切り替わり、そのまま頂点を編集できます。",
-          "inset() の「角丸 (round)」スライダーで角丸付き矩形クリッピングが作成できます。",
-          "生成されたCSSは「コピー」ボタンでクリップボードにコピーできます。",
-          "clip-path はWebkitプレフィックスが不要な現代的なCSSプロパティです（-webkit-clip-path は廃止予定）。",
+        sections={[
+          {
+            title: "Tips",
+            items: [
+              "polygon() タブではSVGオーバーレイの頂点ハンドルをドラッグして形状を直接編集できます。",
+              "プリセット形状をクリックすると polygon() モードに切り替わり、そのまま頂点を編集できます。",
+              "inset() の「角丸 (round)」スライダーで角丸付き矩形クリッピングが作成できます。",
+              "生成されたCSSは「コピー」ボタンでクリップボードにコピーできます。",
+              "clip-path はWebkitプレフィックスが不要な現代的なCSSプロパティです（-webkit-clip-path は廃止予定）。",
+            ],
+          },
         ]}
       />
     </div>

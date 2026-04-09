@@ -467,20 +467,18 @@ function CssGradient() {
               </div>
             </div>
 
-            <TipsCard>
-              <p>
-                <strong>Linear:</strong>{" "}
-                角度を指定した直線グラジェント。0degは下から上、90degは左から右。
-              </p>
-              <p>
-                <strong>Radial:</strong>{" "}
-                中心から放射状に広がるグラジェント。CircleとEllipseを選択可能。
-              </p>
-              <p>
-                <strong>Conic:</strong>{" "}
-                中心点を軸に回転するグラジェント。円グラフのような表現に使用。
-              </p>
-            </TipsCard>
+            <TipsCard
+              sections={[
+                {
+                  title: "Tips",
+                  items: [
+                    "Linear: 角度を指定した直線グラジェント。0degは下から上、90degは左から右。",
+                    "Radial: 中心から放射状に広がるグラジェント。CircleとEllipseを選択可能。",
+                    "Conic: 中心点を軸に回転するグラジェント。円グラフのような表現に使用。",
+                  ],
+                },
+              ]}
+            />
           </div>
         </div>
       </div>

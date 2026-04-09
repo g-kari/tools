@@ -56,9 +56,9 @@ function ShortCodeGenerator() {
   const [codes, setCodes] = useState<string[]>([]);
   const [count, setCount] = useState(1);
   const [selectedPreset, setSelectedPreset] = useState<FormatPresetKey>("voucher");
-  const [segmentLength, setSegmentLength] = useState(FORMAT_PRESETS.voucher.segmentLength);
-  const [segmentCount, setSegmentCount] = useState(FORMAT_PRESETS.voucher.segmentCount);
-  const [separator, setSeparator] = useState(FORMAT_PRESETS.voucher.separator);
+  const [segmentLength, setSegmentLength] = useState<number>(FORMAT_PRESETS.voucher.segmentLength);
+  const [segmentCount, setSegmentCount] = useState<number>(FORMAT_PRESETS.voucher.segmentCount);
+  const [separator, setSeparator] = useState<string>(FORMAT_PRESETS.voucher.separator);
   const [charsetKey, setCharsetKey] = useState<CharsetKey>(FORMAT_PRESETS.voucher.charsetKey);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const [copiedAll, setCopiedAll] = useState(false);

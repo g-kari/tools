@@ -166,7 +166,7 @@ function CacheControlPage() {
   const [addDirectiveName, setAddDirectiveName] = useState("");
 
   // ビルド済みヘッダー値
-  const headerValue = buildCacheControl(directives, target);
+  const headerValue = buildCacheControl(directives, target as "request" | "response");
 
   // 検証結果
   const validation = validateCacheControl(directives);
@@ -225,7 +225,10 @@ function CacheControlPage() {
 
   // パース実行
   const handleParse = useCallback(() => {
-    const { directives: parsed, errors } = parseCacheControl(parseInput, target);
+    const { directives: parsed, errors } = parseCacheControl(
+      parseInput,
+      target as "request" | "response",
+    );
     if (parsed.length === 0 && errors.length === 0) {
       showToast("Cache-Control ヘッダー値を入力してください", "error");
       return;

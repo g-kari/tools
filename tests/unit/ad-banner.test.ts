@@ -163,13 +163,13 @@ describe("AdBanner - ロジックテスト", () => {
     });
 
     it("adType='horizontal'の場合にfull-width-responsiveがundefinedになる", () => {
-      const adType = "horizontal";
+      const adType: string = "horizontal";
       const fullWidthResponsive = adType === "responsive" ? "true" : undefined;
       expect(fullWidthResponsive).toBeUndefined();
     });
 
     it("adType='rectangle'の場合にfull-width-responsiveがundefinedになる", () => {
-      const adType = "rectangle";
+      const adType: string = "rectangle";
       const fullWidthResponsive = adType === "responsive" ? "true" : undefined;
       expect(fullWidthResponsive).toBeUndefined();
     });

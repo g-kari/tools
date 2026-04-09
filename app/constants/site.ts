@@ -1,3 +1,4 @@
+/// <reference types="vite/client" />
 /**
  * サイト全体で使用する定数
  */

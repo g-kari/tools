@@ -839,12 +839,17 @@ function CorsBuilderPage() {
       </section>
 
       <TipsCard
-        tips={[
-          "CORSプリフライトリクエスト（OPTIONS）は必ずメソッドに含めてください。",
-          "credentials: true を使う場合、Access-Control-Allow-Origin にワイルドカード * は使えません。",
-          "Access-Control-Max-Age でプリフライトをキャッシュすると、不要なOPTIONSリクエストを削減できます。",
-          "開発環境ではワイルドカードを使っても問題ありませんが、本番環境では必ず特定のオリジンを指定してください。",
-          "Cloudflare Workersではリクエストごとにオリジンを動的に確認するロジックが必要です。",
+        sections={[
+          {
+            title: "Tips",
+            items: [
+              "CORSプリフライトリクエスト（OPTIONS）は必ずメソッドに含めてください。",
+              "credentials: true を使う場合、Access-Control-Allow-Origin にワイルドカード * は使えません。",
+              "Access-Control-Max-Age でプリフライトをキャッシュすると、不要なOPTIONSリクエストを削減できます。",
+              "開発環境ではワイルドカードを使っても問題ありませんが、本番環境では必ず特定のオリジンを指定してください。",
+              "Cloudflare Workersではリクエストごとにオリジンを動的に確認するロジックが必要です。",
+            ],
+          },
         ]}
       />
     </div>

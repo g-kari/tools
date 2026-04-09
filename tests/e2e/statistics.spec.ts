@@ -29,7 +29,7 @@ test.describe("統計計算ツール", () => {
     await page.fill("#stats-input", "1, 2, 3, 4, 5");
     await expect(page.locator(".statistics-section-title").first()).toContainText("基本統計量");
     // カードが存在することを確認
-    await expect(page.locator(".statistics-card")).toHaveCount.greaterThan(0);
+    expect(await page.locator(".statistics-card").count()).toBeGreaterThan(0);
   });
 
   test("度数分布テーブルが表示される", async ({ page }) => {

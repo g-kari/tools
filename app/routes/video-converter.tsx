@@ -159,7 +159,7 @@ export async function convertVideoWithFFmpeg(
   // 出力ファイルを読み込み
   const data = await ffmpeg.readFile(outputName);
   const mimeType = format === "gif" ? "image/gif" : `video/${format}`;
-  const blob = new Blob([data], { type: mimeType });
+  const blob = new Blob([data as BlobPart], { type: mimeType });
 
   // 元のファイル名から拡張子を取得して置き換え
   const originalName = file.name.substring(0, file.name.lastIndexOf("."));

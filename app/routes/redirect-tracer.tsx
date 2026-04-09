@@ -5,7 +5,7 @@ import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { TipsCard } from "~/components/TipsCard";
 import { useToast } from "~/components/Toast";
-import { useStatusAnnouncement } from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import {
   traceRedirects,
   getStatusLabel,
@@ -216,7 +216,7 @@ function RedirectTracer() {
   return (
     <>
       {/* スクリーンリーダー用 ライブリージョン */}
-      <div ref={statusRef} className="sr-only" aria-live="polite" />
+      <StatusAnnouncer statusRef={statusRef} />
 
       <div className="tool-container">
         {/* 入力フォーム */}

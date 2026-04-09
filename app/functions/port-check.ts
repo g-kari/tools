@@ -157,7 +157,6 @@ async function checkPort(
   timeout: number,
 ): Promise<{ isOpen: boolean; responseTime?: number; error?: string }> {
   const start = Date.now();
-  // @ts-expect-error cloudflare:sockets は Cloudflare Workers 固有のモジュール
   const { connect } = await import("cloudflare:sockets");
   const socket = connect({ hostname: host, port });
 

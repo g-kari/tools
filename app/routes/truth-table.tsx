@@ -210,17 +210,20 @@ function TruthTablePage() {
           )
         )}
 
-        <TipsCard>
-          <ul>
-            <li>使用可能な変数: A〜Z（1文字の大文字、小文字も可）</li>
-            <li>
-              AND: &amp;&amp; / &amp; / AND / ∧ ／ OR: || / | / OR / ∨ ／ NOT: ! / ~ / NOT / ¬
-            </li>
-            <li>XOR: ^ / ⊕ / XOR ／ NAND ／ NOR ／ XNOR にも対応</li>
-            <li>変数が増えると行数が 2ⁿ 倍増加します（最大 5 変数 = 32 行）</li>
-            <li>括弧 () で演算の優先順位を明示できます</li>
-          </ul>
-        </TipsCard>
+        <TipsCard
+          sections={[
+            {
+              title: "Tips",
+              items: [
+                "使用可能な変数: A〜Z（1文字の大文字、小文字も可）",
+                "AND: && / & / AND / ∧ ／ OR: || / | / OR / ∨ ／ NOT: ! / ~ / NOT / ¬",
+                "XOR: ^ / ⊕ / XOR ／ NAND ／ NOR ／ XNOR にも対応",
+                "変数が増えると行数が 2ⁿ 倍増加します（最大 5 変数 = 32 行）",
+                "括弧 () で演算の優先順位を明示できます",
+              ],
+            },
+          ]}
+        />
       </div>
     </div>
   );

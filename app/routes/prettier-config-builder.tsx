@@ -265,11 +265,16 @@ function PrettierConfigBuilderPage() {
       </div>
 
       <TipsCard
-        tips={[
-          "デフォルト値と同じオプションは出力に含まれません。変更した設定だけが .prettierrc に反映されます",
-          'Prettier v3 からは trailingComma のデフォルトが "all" に変更されました',
-          'endOfLine を "lf" に固定すると Windows/Mac 間での改行コードの違いを防げます',
-          '.prettierrc の代わりに prettier.config.js や package.json の "prettier" キーでも設定できます',
+        sections={[
+          {
+            title: "Tips",
+            items: [
+              "デフォルト値と同じオプションは出力に含まれません。変更した設定だけが .prettierrc に反映されます",
+              'Prettier v3 からは trailingComma のデフォルトが "all" に変更されました',
+              'endOfLine を "lf" に固定すると Windows/Mac 間での改行コードの違いを防げます',
+              '.prettierrc の代わりに prettier.config.js や package.json の "prettier" キーでも設定できます',
+            ],
+          },
         ]}
       />
 

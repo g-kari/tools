@@ -172,7 +172,7 @@ export async function convertSvgToPng(svg: string): Promise<ArrayBuffer> {
   const resvg = new Resvg(svg, opts);
   const pngData = resvg.render();
   const pngBytes = pngData.asPng();
-  return pngBytes.buffer;
+  return pngBytes.buffer as ArrayBuffer;
 }
 
 /**
@@ -188,7 +188,7 @@ export async function convertPngToJpeg(
   const { PhotonImage } = await import("@cf-wasm/photon");
   const photonImage = PhotonImage.new_from_byteslice(new Uint8Array(pngBuffer));
   const jpegBytes = photonImage.get_bytes_jpeg(quality);
-  return jpegBytes.buffer;
+  return jpegBytes.buffer as ArrayBuffer;
 }
 
 /**
@@ -200,5 +200,5 @@ export async function convertPngToWebp(pngBuffer: ArrayBuffer): Promise<ArrayBuf
   const { PhotonImage } = await import("@cf-wasm/photon");
   const photonImage = PhotonImage.new_from_byteslice(new Uint8Array(pngBuffer));
   const webpBytes = photonImage.get_bytes_webp();
-  return webpBytes.buffer;
+  return webpBytes.buffer as ArrayBuffer;
 }

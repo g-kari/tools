@@ -115,7 +115,7 @@ function ServerEnvPage() {
         <div className="converter-section">
           <h2 className="section-title">サーバー環境情報</h2>
 
-          <LoadingSpinner isLoading={isLoading} message="取得中..." />
+          {isLoading && <LoadingSpinner message="取得中..." />}
 
           <ErrorMessage message={error} />
 

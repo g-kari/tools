@@ -63,7 +63,7 @@ test.describe("転送速度・転送時間計算機 - E2E Tests", () => {
 
   test("プリセット選択で速度が設定される", async ({ page }) => {
     const preset = page.locator("#ts-preset");
-    await preset.selectOption({ label: /Gigabit Ethernet/ });
+    await preset.selectOption({ label: "Gigabit Ethernet (1Gbps)" });
 
     const speedInput = page.locator("#ts-speed");
     const speedValue = await speedInput.inputValue();

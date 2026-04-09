@@ -729,7 +729,9 @@ function EmojiConverter() {
           animationFps,
           animationLoop,
           80, // Quality
-          (msg) => announceStatus(msg),
+          "floyd_steinberg", // ditherMode
+          256, // maxColors
+          (msg: string) => announceStatus(msg),
         );
 
         if (gifBlob) {

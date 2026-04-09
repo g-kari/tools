@@ -270,7 +270,7 @@ export async function computeWebCryptoHash(
   algorithm: string,
   data: Uint8Array,
 ): Promise<Uint8Array> {
-  const hashBuffer = await crypto.subtle.digest(algorithm, data);
+  const hashBuffer = await crypto.subtle.digest(algorithm, data as BufferSource);
   return new Uint8Array(hashBuffer);
 }
 

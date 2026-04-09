@@ -388,24 +388,19 @@ function CssAnimationGenerator() {
               </pre>
             </div>
 
-            <TipsCard>
-              <p>
-                <strong>Duration:</strong>{" "}
-                アニメーション1サイクルの再生時間。短いと素早く、長いとゆっくり動きます。
-              </p>
-              <p>
-                <strong>Timing Function:</strong>{" "}
-                アニメーションの速度変化。easeは自然な加減速、linearは一定速度で動きます。
-              </p>
-              <p>
-                <strong>Fill Mode:</strong> forwards
-                にすると、アニメーション終了後もその状態を維持します。
-              </p>
-              <p>
-                <strong>Direction:</strong> alternate
-                にすると、アニメーションが交互に順方向・逆方向に再生されます。
-              </p>
-            </TipsCard>
+            <TipsCard
+              sections={[
+                {
+                  title: "Tips",
+                  items: [
+                    "Duration: アニメーション1サイクルの再生時間。短いと素早く、長いとゆっくり動きます。",
+                    "Timing Function: アニメーションの速度変化。easeは自然な加減速、linearは一定速度で動きます。",
+                    "Fill Mode: forwards にすると、アニメーション終了後もその状態を維持します。",
+                    "Direction: alternate にすると、アニメーションが交互に順方向・逆方向に再生されます。",
+                  ],
+                },
+              ]}
+            />
           </div>
         </div>
       </div>

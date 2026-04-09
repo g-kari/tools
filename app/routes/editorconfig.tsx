@@ -402,22 +402,19 @@ function EditorConfigPage() {
         </div>
       </section>
 
-      <TipsCard>
-        <ul>
-          <li>
-            <code>.editorconfig</code> はプロジェクトルートに配置します。
-            <code>root = true</code> を設定すると上位ディレクトリを探索しません。
-          </li>
-          <li>VS Code・JetBrains・Vim・Emacs など主要エディタが標準でサポートしています。</li>
-          <li>
-            チームで異なるOSを使う場合、改行コードを統一（<code>lf</code>
-            ）することで Git の差分ノイズを防げます。
-          </li>
-          <li>
-            Go は <code>gofmt</code> がタブを使うため、<code>indent_style = tab</code> が標準です。
-          </li>
-        </ul>
-      </TipsCard>
+      <TipsCard
+        sections={[
+          {
+            title: "Tips",
+            items: [
+              ".editorconfig はプロジェクトルートに配置します。root = true を設定すると上位ディレクトリを探索しません。",
+              "VS Code・JetBrains・Vim・Emacs など主要エディタが標準でサポートしています。",
+              "チームで異なるOSを使う場合、改行コードを統一（lf）することで Git の差分ノイズを防げます。",
+              "Go は gofmt がタブを使うため、indent_style = tab が標準です。",
+            ],
+          },
+        ]}
+      />
     </div>
   );
 }

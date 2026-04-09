@@ -223,42 +223,24 @@ function BpmTapper() {
       </section>
 
       {/* テンポ早見表 */}
-      <TipsCard title="テンポ記号の目安">
-        <div className="bpm-tips-table" role="table" aria-label="テンポ記号早見表">
-          <div className="bpm-tips-row bpm-tips-header" role="row">
-            <span role="columnheader">テンポ記号</span>
-            <span role="columnheader">BPM目安</span>
-            <span role="columnheader">意味</span>
-          </div>
-          {[
-            { label: "Larghissimo", range: "〜39", meaning: "非常に遅く" },
-            { label: "Largo", range: "40〜59", meaning: "広く、遅く" },
-            { label: "Adagio", range: "66〜75", meaning: "ゆっくり" },
-            { label: "Andante", range: "76〜107", meaning: "歩く速さで" },
-            { label: "Moderato", range: "108〜119", meaning: "中くらいの速さ" },
-            { label: "Allegro", range: "120〜155", meaning: "速く、快活に" },
-            { label: "Vivace", range: "156〜175", meaning: "生き生きと" },
-            { label: "Presto", range: "176〜199", meaning: "非常に速く" },
-            { label: "Prestissimo", range: "200〜", meaning: "できる限り速く" },
-          ].map(({ label, range, meaning }) => (
-            <div
-              key={label}
-              className={`bpm-tips-row${isActive && tempoLabel === label ? " bpm-tips-row--active" : ""}`}
-              role="row"
-            >
-              <span role="cell" className="bpm-tips-name">
-                {label}
-              </span>
-              <span role="cell" className="bpm-tips-range">
-                {range}
-              </span>
-              <span role="cell" className="bpm-tips-meaning">
-                {meaning}
-              </span>
-            </div>
-          ))}
-        </div>
-      </TipsCard>
+      <TipsCard
+        sections={[
+          {
+            title: "テンポ記号の目安",
+            items: [
+              "Larghissimo: 〜39 BPM — 非常に遅く",
+              "Largo: 40〜59 BPM — 広く、遅く",
+              "Adagio: 66〜75 BPM — ゆっくり",
+              "Andante: 76〜107 BPM — 歩く速さで",
+              "Moderato: 108〜119 BPM — 中くらいの速さ",
+              "Allegro: 120〜155 BPM — 速く、快活に",
+              "Vivace: 156〜175 BPM — 生き生きと",
+              "Presto: 176〜199 BPM — 非常に速く",
+              "Prestissimo: 200〜 BPM — できる限り速く",
+            ],
+          },
+        ]}
+      />
     </main>
   );
 }

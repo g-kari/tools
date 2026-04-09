@@ -109,6 +109,12 @@ interface StatusAnnouncerProps {
  */
 export function StatusAnnouncer({ statusRef }: StatusAnnouncerProps) {
   return (
-    <div ref={statusRef} role="status" aria-live="polite" aria-atomic="true" className="sr-only" />
+    <div
+      ref={statusRef as React.RefObject<HTMLDivElement>}
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
+      className="sr-only"
+    />
   );
 }

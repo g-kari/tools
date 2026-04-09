@@ -108,7 +108,7 @@ function GlobalIpLookup() {
         <div className="converter-section">
           <h2 className="section-title">あなたのグローバルIPアドレス</h2>
 
-          <LoadingSpinner isLoading={isLoading} message="取得中..." />
+          {isLoading && <LoadingSpinner message="取得中..." />}
 
           <ErrorMessage message={error} />
 

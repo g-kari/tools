@@ -119,7 +119,7 @@ function DiscordEmojiConverter() {
       if (blob.size > DISCORD_EMOJI_MAX_BYTES) {
         showToast(
           `変換後のサイズが${Math.round(blob.size / 1024)}KBです。256KB以下にできませんでした。`,
-          "warning",
+          "info",
         );
       } else {
         showToast("Discord絵文字用に変換しました", "success");

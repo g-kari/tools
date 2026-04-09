@@ -173,7 +173,7 @@ export async function audioBufferToMp3(buffer: AudioBuffer): Promise<Blob> {
     mp3Data.push(new Int8Array(mp3buf));
   }
 
-  return new Blob(mp3Data, { type: "audio/mp3" });
+  return new Blob(mp3Data as BlobPart[], { type: "audio/mp3" });
 }
 
 function writeString(view: DataView, offset: number, str: string): void {

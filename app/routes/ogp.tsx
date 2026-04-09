@@ -403,7 +403,7 @@ function OgpChecker() {
           </div>
         </form>
 
-        <LoadingSpinner isLoading={isLoading} message="取得中..." />
+        {isLoading && <LoadingSpinner message="取得中..." />}
 
         <ErrorMessage message={error} />
 

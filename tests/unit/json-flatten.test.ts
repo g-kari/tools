@@ -4,6 +4,7 @@ import {
   unflattenJson,
   flattenJsonString,
   unflattenJsonString,
+  type JsonValue,
 } from "../../app/utils/json-flatten";
 
 describe("flattenJson", () => {
@@ -168,14 +169,14 @@ describe("フラット化 → アンフラット化のラウンドトリップ",
   it("シンプルなオブジェクトのラウンドトリップ", () => {
     const original = { user: { name: "太郎", age: 30 } };
     const flattened = flattenJson(original);
-    const restored = unflattenJson(flattened as Record<string, unknown>);
+    const restored = unflattenJson(flattened as Record<string, JsonValue>);
     expect(restored).toEqual(original);
   });
 
   it("配列を含むオブジェクトのラウンドトリップ", () => {
     const original = { tags: ["a", "b", "c"] };
     const flattened = flattenJson(original);
-    const restored = unflattenJson(flattened as Record<string, unknown>);
+    const restored = unflattenJson(flattened as Record<string, JsonValue>);
     expect(restored).toEqual(original);
   });
 });

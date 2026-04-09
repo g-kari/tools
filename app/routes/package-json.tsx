@@ -124,7 +124,7 @@ function PackageJsonBuilderPage() {
     (template: ScriptEntry) => {
       setConfig((prev) => {
         if (prev.scripts.some((s) => s.key === template.key)) {
-          showToast(`"${template.key}" は既に追加されています`, "warning");
+          showToast(`"${template.key}" は既に追加されています`, "info");
           return prev;
         }
         return { ...prev, scripts: [...prev.scripts, { ...template }] };
@@ -156,7 +156,7 @@ function PackageJsonBuilderPage() {
     if (!kw) return;
     setConfig((prev) => {
       if (prev.keywords.includes(kw)) {
-        showToast(`"${kw}" は既に追加されています`, "warning");
+        showToast(`"${kw}" は既に追加されています`, "info");
         return prev;
       }
       return { ...prev, keywords: [...prev.keywords, kw] };

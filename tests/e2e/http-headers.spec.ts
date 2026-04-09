@@ -64,7 +64,7 @@ test.describe("HTTPヘッダーリファレンス - E2E Tests", () => {
   test("should show header descriptions", async ({ page }) => {
     const bodyText = await page.textContent("body");
     // Should show descriptions of headers
-    expect(bodyText.length).toBeGreaterThan(1000);
+    expect(bodyText!.length).toBeGreaterThan(1000);
   });
 
   test("should have proper accessibility attributes", async ({ page }) => {

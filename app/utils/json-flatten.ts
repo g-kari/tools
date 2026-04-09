@@ -19,7 +19,13 @@ export interface UnflattenOptions {
   delimiter?: string;
 }
 
-type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };
+export type JsonValue =
+  | string
+  | number
+  | boolean
+  | null
+  | JsonValue[]
+  | { [key: string]: JsonValue };
 
 /**
  * ネストされたJSONオブジェクトをフラットなオブジェクトに変換する

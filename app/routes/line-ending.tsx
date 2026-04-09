@@ -195,11 +195,16 @@ function LineEndingTool() {
       )}
 
       <TipsCard
-        tips={[
-          "CRLF (\\r\\n) は Windows 系のテキストエディタや HTTP ヘッダーで使われます。",
-          "LF (\\n) は Unix / Linux / macOS の標準形式です。Git は通常 LF で管理します。",
-          "CR (\\r) は古い Mac OS (9 以前) の形式で、現在はほぼ使われません。",
-          "混在（Mixed）の場合でも、選択した形式に統一変換できます。",
+        sections={[
+          {
+            title: "Tips",
+            items: [
+              "CRLF (\\r\\n) は Windows 系のテキストエディタや HTTP ヘッダーで使われます。",
+              "LF (\\n) は Unix / Linux / macOS の標準形式です。Git は通常 LF で管理します。",
+              "CR (\\r) は古い Mac OS (9 以前) の形式で、現在はほぼ使われません。",
+              "混在（Mixed）の場合でも、選択した形式に統一変換できます。",
+            ],
+          },
         ]}
       />
     </div>

@@ -394,11 +394,16 @@ function CssShorthand() {
         </section>
 
         <TipsCard
-          tips={[
-            "CSS ショートハンドは複数のプロパティを1行で指定できますが、展開することで各プロパティの値が明確になります。",
-            "margin/padding は 1〜4 値で指定でき、値の数によって上右下左への適用が変わります（1値: 全方向、2値: 上下/左右、3値: 上/左右/下）。",
-            "flex: 1 は flex: 1 1 0 と等価で、flex: auto は flex: 1 1 auto と等価です。",
-            "gap はGrid・Flexboxの両方で使用でき、row-gap と column-gap の一括指定です。",
+          sections={[
+            {
+              title: "Tips",
+              items: [
+                "CSS ショートハンドは複数のプロパティを1行で指定できますが、展開することで各プロパティの値が明確になります。",
+                "margin/padding は 1〜4 値で指定でき、値の数によって上右下左への適用が変わります（1値: 全方向、2値: 上下/左右、3値: 上/左右/下）。",
+                "flex: 1 は flex: 1 1 0 と等価で、flex: auto は flex: 1 1 auto と等価です。",
+                "gap はGrid・Flexboxの両方で使用でき、row-gap と column-gap の一括指定です。",
+              ],
+            },
           ]}
         />
       </div>
