@@ -1,40 +1,7 @@
 import { describe, it, expect } from "vite-plus/test";
+import { isValidIPv4, isValidIPv6, isValidIP } from "../../app/functions/ip-geolocation";
 
 describe("IP address validation", () => {
-  // IPv4 validation
-  function isValidIPv4(ip: string): boolean {
-    const parts = ip.split(".");
-    if (parts.length !== 4) return false;
-    return parts.every((part) => {
-      const num = parseInt(part, 10);
-      return num >= 0 && num <= 255 && part === num.toString();
-    });
-  }
-
-  // IPv6 validation
-  function isValidIPv6(ip: string): boolean {
-    if (!ip || ip.length < 2) return false;
-    if (ip.includes(":::")) return false;
-    if ((ip.startsWith(":") && !ip.startsWith("::")) || (ip.endsWith(":") && !ip.endsWith("::"))) {
-      return false;
-    }
-    const doubleColonCount = (ip.match(/::/g) || []).length;
-    if (doubleColonCount > 1) return false;
-    const groups = ip.split(":");
-    const hasDoubleColon = ip.includes("::");
-    if (!hasDoubleColon && groups.length !== 8) return false;
-    if (hasDoubleColon && groups.length > 9) return false;
-    const hexGroupRegex = /^[0-9a-fA-F]{1,4}$/;
-    for (const group of groups) {
-      if (group === "") {
-        if (!hasDoubleColon) return false;
-        continue;
-      }
-      if (!hexGroupRegex.test(group)) return false;
-    }
-    return true;
-  }
-
   describe("IPv4 validation", () => {
     it("should accept valid IPv4 address", () => {
       expect(isValidIPv4("192.168.1.1")).toBe(true);
@@ -148,6 +115,36 @@ describe("IP address validation", () => {
 
     it("should reject invalid hex characters", () => {
       expect(isValidIPv6("2001:0db8:85a3:gggg:0000:8a2e:0370:7334")).toBe(false);
+    });
+  });
+
+  describe("isValidIP (IPv4 + IPv6)", () => {
+    it("should accept valid IPv4 address", () => {
+      expect(isValidIP("192.168.1.1")).toBe(true);
+    });
+
+    it("should accept valid IPv6 address", () => {
+      expect(isValidIP("2001:db8::1")).toBe(true);
+    });
+
+    it("should accept loopback IPv4", () => {
+      expect(isValidIP("127.0.0.1")).toBe(true);
+    });
+
+    it("should accept loopback IPv6", () => {
+      expect(isValidIP("::1")).toBe(true);
+    });
+
+    it("should reject hostname", () => {
+      expect(isValidIP("example.com")).toBe(false);
+    });
+
+    it("should reject invalid address", () => {
+      expect(isValidIP("not-an-ip")).toBe(false);
+    });
+
+    it("should reject empty string", () => {
+      expect(isValidIP("")).toBe(false);
     });
   });
 });

@@ -81,7 +81,7 @@ interface IpApiResponse {
  * @param ip - 検証するIPアドレス文字列
  * @returns 有効なIPv4形式であればtrue
  */
-function isValidIPv4(ip: string): boolean {
+export function isValidIPv4(ip: string): boolean {
   const parts = ip.split(".");
   if (parts.length !== 4) return false;
   return parts.every((part) => {
@@ -95,7 +95,7 @@ function isValidIPv4(ip: string): boolean {
  * @param ip - 検証するIPアドレス文字列
  * @returns 有効なIPv6形式であればtrue
  */
-function isValidIPv6(ip: string): boolean {
+export function isValidIPv6(ip: string): boolean {
   // Reject empty or obviously invalid
   if (!ip || ip.length < 2) return false;
 
@@ -139,7 +139,7 @@ function isValidIPv6(ip: string): boolean {
  * @param ip - 検証するIPアドレス文字列
  * @returns 有効なIPアドレス形式であればtrue
  */
-function isValidIP(ip: string): boolean {
+export function isValidIP(ip: string): boolean {
   return isValidIPv4(ip) || isValidIPv6(ip);
 }
 
