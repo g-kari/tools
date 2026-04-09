@@ -6,7 +6,7 @@ import type { ToolItem, ToolCategory } from "../routes/top";
 /**
  * カテゴリ情報を付加したツールアイテム
  */
-interface FlatToolItem extends ToolItem {
+export interface FlatToolItem extends ToolItem {
   categoryName: string;
   categoryIcon: string;
 }
@@ -14,7 +14,7 @@ interface FlatToolItem extends ToolItem {
 /**
  * カタログをフラット化してカテゴリ情報を付加する
  */
-function flattenCatalog(catalog: ToolCategory[]): FlatToolItem[] {
+export function flattenCatalog(catalog: ToolCategory[]): FlatToolItem[] {
   return catalog.flatMap((cat) =>
     cat.items.map((item) => ({
       ...item,
@@ -27,7 +27,7 @@ function flattenCatalog(catalog: ToolCategory[]): FlatToolItem[] {
 /**
  * クエリでツールを検索する（ラベル・説明文の全文検索）
  */
-function searchTools(tools: FlatToolItem[], query: string): FlatToolItem[] {
+export function searchTools(tools: FlatToolItem[], query: string): FlatToolItem[] {
   if (!query.trim()) return tools.slice(0, 8);
   const q = query.toLowerCase();
   return tools
