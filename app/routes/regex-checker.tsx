@@ -35,10 +35,48 @@ export const Route = createFileRoute("/regex-checker")({
   component: RegexChecker,
 });
 
-interface RegexMatch {
+export interface RegexMatch {
   fullMatch: string;
   index: number;
   groups: string[];
+}
+
+/**
+ * 正規表現パターンとフラグを使ってテスト文字列にマッチングを実行する
+ * @param pattern 正規表現パターン文字列
+ * @param flags 正規表現フラグ（例: "g", "gi", "m"）
+ * @param testString マッチング対象の文字列
+ * @returns マッチ結果の配列
+ * @throws 無効な正規表現の場合はエラーをスロー
+ */
+export function executeRegex(pattern: string, flags: string, testString: string): RegexMatch[] {
+  const regex = new RegExp(pattern, flags);
+  const foundMatches: RegexMatch[] = [];
+
+  if (flags.includes("g")) {
+    let match;
+    while ((match = regex.exec(testString)) !== null) {
+      foundMatches.push({
+        fullMatch: match[0],
+        index: match.index,
+        groups: match.slice(1),
+      });
+      if (match.index === regex.lastIndex) {
+        regex.lastIndex++;
+      }
+    }
+  } else {
+    const match = regex.exec(testString);
+    if (match) {
+      foundMatches.push({
+        fullMatch: match[0],
+        index: match.index,
+        groups: match.slice(1),
+      });
+    }
+  }
+
+  return foundMatches;
 }
 
 function RegexChecker() {
@@ -72,31 +110,7 @@ function RegexChecker() {
     setIsValid(null);
 
     try {
-      const regex = new RegExp(pattern, flags);
-      const foundMatches: RegexMatch[] = [];
-
-      if (flags.includes("g")) {
-        let match;
-        while ((match = regex.exec(testString)) !== null) {
-          foundMatches.push({
-            fullMatch: match[0],
-            index: match.index,
-            groups: match.slice(1),
-          });
-          if (match.index === regex.lastIndex) {
-            regex.lastIndex++;
-          }
-        }
-      } else {
-        const match = regex.exec(testString);
-        if (match) {
-          foundMatches.push({
-            fullMatch: match[0],
-            index: match.index,
-            groups: match.slice(1),
-          });
-        }
-      }
+      const foundMatches = executeRegex(pattern, flags, testString);
 
       setMatches(foundMatches);
       setIsValid(foundMatches.length > 0);
