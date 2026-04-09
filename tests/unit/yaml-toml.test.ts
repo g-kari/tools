@@ -42,6 +42,12 @@ describe("yamlToToml", () => {
     expect(result).toContain("[package]");
     expect(result).toContain('edition = "2021"');
   });
+
+  it("配列に null を含む YAML は TOML 非対応エラーを投げる", () => {
+    // TOML は配列内の null をサポートしていないため TypeError が発生する
+    const yaml = "arr:\n  - ~\n  - 1\n  - 2";
+    expect(() => yamlToToml(yaml)).toThrow("TOML は null 値をサポートしていません");
+  });
 });
 
 describe("tomlToYaml", () => {
