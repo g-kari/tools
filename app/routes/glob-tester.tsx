@@ -1,31 +1,31 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useState, useMemo } from 'react';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
-import { TipsCard } from '~/components/TipsCard';
-import { matchGlobPatterns } from '../utils/glob-tester';
-import '../styles/tools/glob-tester.css';
+import { createFileRoute } from "@tanstack/react-router";
+import { useState, useMemo } from "react";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
+import { TipsCard } from "~/components/TipsCard";
+import { matchGlobPatterns } from "../utils/glob-tester";
+import "../styles/tools/glob-tester.css";
 
-export const Route = createFileRoute('/glob-tester')({
+export const Route = createFileRoute("/glob-tester")({
   head: () => ({
     meta: [
-      { title: 'Glob パターンテスター | Web ツール集' },
+      { title: "Glob パターンテスター | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          'globパターンをリアルタイムでテストするツール。*, **, ?, [abc], {a,b}, !（否定）に対応。.gitignore・webpack・vite設定のパターン検証に。',
+          "globパターンをリアルタイムでテストするツール。*, **, ?, [abc], {a,b}, !（否定）に対応。.gitignore・webpack・vite設定のパターン検証に。",
       },
-      { property: 'og:title', content: 'Glob パターンテスター | Web ツール集' },
+      { property: "og:title", content: "Glob パターンテスター | Web ツール集" },
       {
-        property: 'og:description',
-        content: 'globパターンをリアルタイムでテスト。*, **, ?, {a,b}, 否定パターンに対応。',
+        property: "og:description",
+        content: "globパターンをリアルタイムでテスト。*, **, ?, {a,b}, 否定パターンに対応。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/glob-tester` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
-      { name: 'twitter:title', content: 'Glob パターンテスター | Web ツール集' },
+      { property: "og:url", content: `${SITE_BASE_URL}/glob-tester` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "Glob パターンテスター | Web ツール集" },
       {
-        name: 'twitter:description',
-        content: 'globパターンをリアルタイムでテスト。.gitignore・webpack・vite設定の検証に。',
+        name: "twitter:description",
+        content: "globパターンをリアルタイムでテスト。.gitignore・webpack・vite設定の検証に。",
       },
     ],
   }),
@@ -41,61 +41,61 @@ interface GlobPreset {
 
 const PRESETS: GlobPreset[] = [
   {
-    label: 'TypeScript ソース',
-    patterns: 'src/**/*.ts\n!src/**/*.d.ts\n!src/**/*.test.ts',
+    label: "TypeScript ソース",
+    patterns: "src/**/*.ts\n!src/**/*.d.ts\n!src/**/*.test.ts",
     paths: [
-      'src/index.ts',
-      'src/utils/helper.ts',
-      'src/types/index.d.ts',
-      'src/utils/helper.test.ts',
-      'src/components/Button.tsx',
-      'dist/index.js',
-    ].join('\n'),
+      "src/index.ts",
+      "src/utils/helper.ts",
+      "src/types/index.d.ts",
+      "src/utils/helper.test.ts",
+      "src/components/Button.tsx",
+      "dist/index.js",
+    ].join("\n"),
   },
   {
-    label: 'node_modules 除外',
-    patterns: '**/*.{js,ts}\n!node_modules/**\n!dist/**',
+    label: "node_modules 除外",
+    patterns: "**/*.{js,ts}\n!node_modules/**\n!dist/**",
     paths: [
-      'src/index.ts',
-      'src/app.js',
-      'node_modules/react/index.js',
-      'dist/bundle.js',
-      'scripts/build.ts',
-    ].join('\n'),
+      "src/index.ts",
+      "src/app.js",
+      "node_modules/react/index.js",
+      "dist/bundle.js",
+      "scripts/build.ts",
+    ].join("\n"),
   },
   {
-    label: '画像ファイル',
-    patterns: '**/*.{png,jpg,jpeg,gif,svg,webp}',
+    label: "画像ファイル",
+    patterns: "**/*.{png,jpg,jpeg,gif,svg,webp}",
     paths: [
-      'public/logo.png',
-      'assets/icons/menu.svg',
-      'src/components/Banner.tsx',
-      'images/hero.jpg',
-      'data/config.json',
-      'static/favicon.ico',
-    ].join('\n'),
+      "public/logo.png",
+      "assets/icons/menu.svg",
+      "src/components/Banner.tsx",
+      "images/hero.jpg",
+      "data/config.json",
+      "static/favicon.ico",
+    ].join("\n"),
   },
   {
-    label: 'テストファイル',
-    patterns: '**/*.{test,spec}.{ts,tsx,js,jsx}\ntests/**',
+    label: "テストファイル",
+    patterns: "**/*.{test,spec}.{ts,tsx,js,jsx}\ntests/**",
     paths: [
-      'src/utils.test.ts',
-      'src/components/Button.spec.tsx',
-      'tests/e2e/navigation.spec.ts',
-      'src/app.ts',
-      '__tests__/index.test.js',
-    ].join('\n'),
+      "src/utils.test.ts",
+      "src/components/Button.spec.tsx",
+      "tests/e2e/navigation.spec.ts",
+      "src/app.ts",
+      "__tests__/index.test.js",
+    ].join("\n"),
   },
 ];
 
 /** 構文リファレンス */
 const SYNTAX_REFERENCE = [
-  { pattern: '*', desc: '/以外の任意の文字列' },
-  { pattern: '**', desc: '/を含む任意の文字列（ディレクトリ横断）' },
-  { pattern: '?', desc: '/以外の任意の1文字' },
-  { pattern: '[abc]', desc: '文字クラス（[a-z], [^abc]も可）' },
-  { pattern: '{a,b}', desc: 'ブレース展開（a または b）' },
-  { pattern: '!pattern', desc: '否定パターン（マッチを除外）' },
+  { pattern: "*", desc: "/以外の任意の文字列" },
+  { pattern: "**", desc: "/を含む任意の文字列（ディレクトリ横断）" },
+  { pattern: "?", desc: "/以外の任意の1文字" },
+  { pattern: "[abc]", desc: "文字クラス（[a-z], [^abc]も可）" },
+  { pattern: "{a,b}", desc: "ブレース展開（a または b）" },
+  { pattern: "!pattern", desc: "否定パターン（マッチを除外）" },
 ];
 
 /** GlobTesterPage コンポーネント */
@@ -105,11 +105,11 @@ function GlobTesterPage(): JSX.Element {
 
   const results = useMemo(() => {
     const patternList = patterns
-      .split('\n')
+      .split("\n")
       .map((p) => p.trim())
       .filter(Boolean);
     const pathList = paths
-      .split('\n')
+      .split("\n")
       .map((p) => p.trim())
       .filter(Boolean);
     if (patternList.length === 0 || pathList.length === 0) return [];
@@ -157,7 +157,7 @@ function GlobTesterPage(): JSX.Element {
               className="glob-textarea"
               value={patterns}
               onChange={(e) => setPatterns(e.target.value)}
-              placeholder={'src/**/*.ts\n!src/**/*.test.ts'}
+              placeholder={"src/**/*.ts\n!src/**/*.test.ts"}
               spellCheck={false}
               aria-label="globパターン入力"
             />
@@ -172,7 +172,7 @@ function GlobTesterPage(): JSX.Element {
               className="glob-textarea"
               value={paths}
               onChange={(e) => setPaths(e.target.value)}
-              placeholder={'src/index.ts\nnode_modules/react/index.js'}
+              placeholder={"src/index.ts\nnode_modules/react/index.js"}
               spellCheck={false}
               aria-label="テストパス入力"
             />
@@ -189,10 +189,7 @@ function GlobTesterPage(): JSX.Element {
                     ✓ {matchedCount}
                   </span>
                   {negatedCount > 0 && (
-                    <span
-                      className="glob-stat-negated"
-                      aria-label={`否定 ${negatedCount}件`}
-                    >
+                    <span className="glob-stat-negated" aria-label={`否定 ${negatedCount}件`}>
                       ∅ {negatedCount}
                     </span>
                   )}
@@ -210,19 +207,19 @@ function GlobTesterPage(): JSX.Element {
                 {results.map((result, idx) => (
                   <li
                     key={idx}
-                    className={`glob-result-item ${result.matched ? 'matched' : result.negated ? 'negated' : 'unmatched'}`}
+                    className={`glob-result-item ${result.matched ? "matched" : result.negated ? "negated" : "unmatched"}`}
                   >
                     <span className="glob-result-icon" aria-hidden="true">
-                      {result.matched ? '✓' : result.negated ? '∅' : '✗'}
+                      {result.matched ? "✓" : result.negated ? "∅" : "✗"}
                     </span>
                     <span className="glob-result-path" title={result.path}>
                       {result.path}
                     </span>
                     <span
-                      className={`glob-result-badge ${result.matched ? 'badge-matched' : result.negated ? 'badge-negated' : 'badge-unmatched'}`}
+                      className={`glob-result-badge ${result.matched ? "badge-matched" : result.negated ? "badge-negated" : "badge-unmatched"}`}
                       aria-hidden="true"
                     >
-                      {result.matched ? 'match' : result.negated ? 'negated' : 'no match'}
+                      {result.matched ? "match" : result.negated ? "negated" : "no match"}
                     </span>
                   </li>
                 ))}
@@ -250,10 +247,10 @@ function GlobTesterPage(): JSX.Element {
 
       <TipsCard
         tips={[
-          '複数のパターンを指定した場合、いずれかにマッチすればマッチとなります',
-          '`!` で始まるパターンは否定パターンです。マッチしたパスを結果から除外します',
-          '`**` は `/` を含む任意のパスにマッチします（例: `src/**/index.ts` → `src/a/b/index.ts`）',
-          '`{ts,tsx}` のようなブレース展開を使うと、複数の拡張子を一度に指定できます',
+          "複数のパターンを指定した場合、いずれかにマッチすればマッチとなります",
+          "`!` で始まるパターンは否定パターンです。マッチしたパスを結果から除外します",
+          "`**` は `/` を含む任意のパスにマッチします（例: `src/**/index.ts` → `src/a/b/index.ts`）",
+          "`{ts,tsx}` のようなブレース展開を使うと、複数の拡張子を一度に指定できます",
         ]}
       />
     </main>

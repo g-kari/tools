@@ -8,16 +8,25 @@ import { TipsCard } from "~/components/TipsCard";
 export const Route = createFileRoute("/color-picker")({
   head: () => ({
     meta: [
-    { title: "カラーピッカー | Web ツール集" },
-    { name: "description", content: "色を視覚的に選択し、HEX・RGB・HSL形式でコピーできるカラーピッカー。" },
-    { property: "og:title", content: "カラーピッカー | Web ツール集" },
-    { property: "og:description", content: "色を視覚的に選択し、HEX・RGB・HSL形式でコピーできるカラーピッカー。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/color-picker` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "カラーピッカー | Web ツール集" },
-    { name: "twitter:description", content: "色を視覚的に選択し、HEX・RGB・HSL形式でコピーできるカラーピッカー。" },
-  ],
+      { title: "カラーピッカー | Web ツール集" },
+      {
+        name: "description",
+        content: "色を視覚的に選択し、HEX・RGB・HSL形式でコピーできるカラーピッカー。",
+      },
+      { property: "og:title", content: "カラーピッカー | Web ツール集" },
+      {
+        property: "og:description",
+        content: "色を視覚的に選択し、HEX・RGB・HSL形式でコピーできるカラーピッカー。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/color-picker` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "カラーピッカー | Web ツール集" },
+      {
+        name: "twitter:description",
+        content: "色を視覚的に選択し、HEX・RGB・HSL形式でコピーできるカラーピッカー。",
+      },
+    ],
   }),
   component: ColorPicker,
 });
@@ -308,7 +317,7 @@ function ColorPicker() {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       updateAllFormats(e.target.value);
     },
-    [updateAllFormats]
+    [updateAllFormats],
   );
 
   // HEX入力からの色変更
@@ -322,7 +331,7 @@ function ColorPicker() {
         updateAllFormats(value);
       }
     },
-    [updateAllFormats]
+    [updateAllFormats],
   );
 
   // RGB入力からの色変更
@@ -334,7 +343,7 @@ function ColorPicker() {
       setRgb(newRgb);
       updateAllFormats(rgbToHex(newRgb));
     },
-    [rgb, updateAllFormats]
+    [rgb, updateAllFormats],
   );
 
   // HSL入力からの色変更
@@ -353,7 +362,7 @@ function ColorPicker() {
       setRgb(newRgb);
       updateAllFormats(rgbToHex(newRgb));
     },
-    [hsl, updateAllFormats]
+    [hsl, updateAllFormats],
   );
 
   // CMYK入力からの色変更
@@ -367,7 +376,7 @@ function ColorPicker() {
       setRgb(newRgb);
       updateAllFormats(rgbToHex(newRgb));
     },
-    [cmyk, updateAllFormats]
+    [cmyk, updateAllFormats],
   );
 
   // コピー機能
@@ -380,7 +389,7 @@ function ColorPicker() {
         showToast("コピーに失敗しました", "error");
       }
     },
-    [showToast]
+    [showToast],
   );
 
   // パレットに色を追加
@@ -403,7 +412,7 @@ function ColorPicker() {
       setPalette(palette.filter((_, i) => i !== index));
       showToast("パレットから削除しました", "info");
     },
-    [palette, showToast]
+    [palette, showToast],
   );
 
   // パレットから色を選択
@@ -412,7 +421,7 @@ function ColorPicker() {
       updateAllFormats(color);
       showToast("色を選択しました", "info");
     },
-    [updateAllFormats, showToast]
+    [updateAllFormats, showToast],
   );
 
   // 画像ファイルの読み込み
@@ -437,7 +446,7 @@ function ColorPicker() {
       };
       reader.readAsDataURL(file);
     },
-    [showToast]
+    [showToast],
   );
 
   // 画像がロードされたらCanvasに描画
@@ -491,7 +500,7 @@ function ColorPicker() {
       updateAllFormats(hex);
       showToast(`色を取得しました: ${hex}`, "success");
     },
-    [updateAllFormats, showToast]
+    [updateAllFormats, showToast],
   );
 
   // 画像のクリア
@@ -533,7 +542,7 @@ function ColorPicker() {
       };
       reader.readAsDataURL(file);
     },
-    [showToast]
+    [showToast],
   );
 
   return (
@@ -544,10 +553,7 @@ function ColorPicker() {
         <div className="color-picker-left">
           {/* カラープレビュー＆ピッカー */}
           <div className="color-picker-header">
-            <div
-              ref={colorPreviewRef}
-              className="color-preview-compact"
-            >
+            <div ref={colorPreviewRef} className="color-preview-compact">
               <input
                 type="color"
                 value={currentColor}
@@ -739,11 +745,7 @@ function ColorPicker() {
                 +
               </Button>
             </div>
-            <div
-              className="palette-container-compact"
-              role="list"
-              aria-label="カラーパレット"
-            >
+            <div className="palette-container-compact" role="list" aria-label="カラーパレット">
               {palette.length === 0 ? (
                 <span className="palette-empty-compact">未登録</span>
               ) : (
@@ -801,11 +803,7 @@ function ColorPicker() {
               </div>
             </div>
 
-            <div
-              className="image-canvas-container"
-              onDragOver={handleDragOver}
-              onDrop={handleDrop}
-            >
+            <div className="image-canvas-container" onDragOver={handleDragOver} onDrop={handleDrop}>
               {imageData ? (
                 <>
                   <img
@@ -824,9 +822,7 @@ function ColorPicker() {
               ) : (
                 <div className="image-placeholder">
                   <span>画像をD&Dまたは選択</span>
-                  <span className="image-placeholder-hint">
-                    クリックで色を取得
-                  </span>
+                  <span className="image-placeholder-hint">クリックで色を取得</span>
                 </div>
               )}
             </div>

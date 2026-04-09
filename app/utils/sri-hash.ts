@@ -97,9 +97,7 @@ export async function computeAllSriHashes(text: string): Promise<SriResult[]> {
  * @param data 入力バイト配列
  * @returns 各アルゴリズムの SRI 結果配列
  */
-export async function computeAllSriHashesFromBytes(
-  data: Uint8Array,
-): Promise<SriResult[]> {
+export async function computeAllSriHashesFromBytes(data: Uint8Array): Promise<SriResult[]> {
   return Promise.all(ALL_ALGORITHMS.map((algo) => computeSriHash(algo, data)));
 }
 

@@ -1,11 +1,14 @@
-import path from "node:path";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import { cloudflare } from "@cloudflare/vite-plugin";
 import tailwindcss from "@tailwindcss/vite";
-import { defineConfig } from "vite";
-import tsconfigPaths from "vite-tsconfig-paths";
+import { defineConfig } from "vite-plus";
 
 export default defineConfig({
+  staged: {
+    "*": "vp check --fix",
+  },
+  fmt: {},
+  lint: { options: { typeAware: true, typeCheck: true } },
   plugins: [
     tanstackStart({
       srcDirectory: "app",
@@ -15,12 +18,12 @@ export default defineConfig({
       configPath: "./wrangler.jsonc",
       viteEnvironment: { name: "ssr" },
     }),
-    tsconfigPaths(),
     tailwindcss(),
   ],
   resolve: {
+    tsconfigPaths: true,
     alias: {
-      "~": path.resolve(__dirname, "./app"),
+      "~": new URL("./app", import.meta.url).pathname,
     },
   },
   server: {

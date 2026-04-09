@@ -1,9 +1,5 @@
 import { describe, expect, it } from "vite-plus/test";
-import {
-  base64UrlEncode,
-  generateJWT,
-  type JwtAlgorithm,
-} from "../../app/utils/jwt";
+import { base64UrlEncode, generateJWT, type JwtAlgorithm } from "../../app/utils/jwt";
 
 describe("base64UrlEncode", () => {
   it("通常の文字列をBase64URLエンコードする", () => {
@@ -94,7 +90,7 @@ describe("generateJWT", () => {
         payload: "not-valid-json",
         secret: "secret",
         algorithm: "HS256",
-      })
+      }),
     ).rejects.toThrow();
   });
 
@@ -105,7 +101,7 @@ describe("generateJWT", () => {
         payload: '{"sub":"test"}',
         secret: "",
         algorithm: "HS256",
-      })
+      }),
     ).rejects.toThrow();
   });
 

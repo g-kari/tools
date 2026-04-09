@@ -10,12 +10,30 @@ describe("formatCountdown", () => {
   });
 
   it("残り0ミリ秒の場合は期限切れになること", () => {
-    expect(formatCountdown(0)).toEqual({ days: 0, hours: 0, minutes: 0, seconds: 0, expired: true });
+    expect(formatCountdown(0)).toEqual({
+      days: 0,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+      expired: true,
+    });
   });
 
   it("負のミリ秒の場合は期限切れになること", () => {
-    expect(formatCountdown(-1)).toEqual({ days: 0, hours: 0, minutes: 0, seconds: 0, expired: true });
-    expect(formatCountdown(-100000)).toEqual({ days: 0, hours: 0, minutes: 0, seconds: 0, expired: true });
+    expect(formatCountdown(-1)).toEqual({
+      days: 0,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+      expired: true,
+    });
+    expect(formatCountdown(-100000)).toEqual({
+      days: 0,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+      expired: true,
+    });
   });
 
   it("残り59秒を正しく変換すること", () => {

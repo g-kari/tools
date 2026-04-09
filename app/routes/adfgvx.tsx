@@ -36,7 +36,8 @@ export const Route = createFileRoute("/adfgvx")({
       { name: "twitter:title", content: "ADFGVX暗号 | Web ツール集" },
       {
         name: "twitter:description",
-        content: "ADFGVX暗号のエンコード・デコードツール。第一次世界大戦でドイツ軍が使用した2段階暗号。",
+        content:
+          "ADFGVX暗号のエンコード・デコードツール。第一次世界大戦でドイツ軍が使用した2段階暗号。",
       },
     ],
   }),
@@ -165,7 +166,11 @@ function AdfgvxCipher() {
               />
             </div>
             {!transKeyValid && transpositionKey.length > 0 && (
-              <p className="adfgvx-key-desc" aria-live="polite" style={{ color: "var(--md-sys-color-error)" }}>
+              <p
+                className="adfgvx-key-desc"
+                aria-live="polite"
+                style={{ color: "var(--md-sys-color-error)" }}
+              >
                 英字を1文字以上含む転置キーを入力してください
               </p>
             )}
@@ -182,11 +187,7 @@ function AdfgvxCipher() {
           </h2>
           <div className="adfgvx-square-wrapper">
             <p className="adfgvx-square-title">行・列ヘッダー: A D F G V X</p>
-            <div
-              className="adfgvx-square"
-              role="grid"
-              aria-label="ポリビウス方陣"
-            >
+            <div className="adfgvx-square" role="grid" aria-label="ポリビウス方陣">
               {/* ヘッダー行 */}
               <div className="adfgvx-square-cell adfgvx-square-cell--corner" role="gridcell" />
               {HEADERS.map((h) => (

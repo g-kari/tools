@@ -92,15 +92,11 @@ function StatisticsPage() {
 
   const stats = useMemo(() => calculateStatistics(numbers), [numbers]);
 
-  const freqDist = useMemo(
-    () => calculateFrequencyDistribution(numbers),
-    [numbers]
-  );
+  const freqDist = useMemo(() => calculateFrequencyDistribution(numbers), [numbers]);
 
   const maxFreqCount = useMemo(
-    () =>
-      freqDist.length > 0 ? Math.max(...freqDist.map((b) => b.count)) : 1,
-    [freqDist]
+    () => (freqDist.length > 0 ? Math.max(...freqDist.map((b) => b.count)) : 1),
+    [freqDist],
   );
 
   const handleSample = useCallback((data: string) => {
@@ -172,9 +168,7 @@ function StatisticsPage() {
                 <div className="statistics-card">
                   <p className="statistics-card-label">最頻値 (Mode)</p>
                   {stats.mode.length > 3 ? (
-                    <p className="statistics-card-value">
-                      {stats.mode.length} 種類
-                    </p>
+                    <p className="statistics-card-value">{stats.mode.length} 種類</p>
                   ) : (
                     <div className="statistics-mode-list">
                       {stats.mode.map((m) => (
@@ -271,18 +265,14 @@ function StatisticsPage() {
                     <div className="statistics-card">
                       <p className="statistics-card-label">歪度 (Skewness)</p>
                       <p className="statistics-card-value">{formatNum(stats.skewness)}</p>
-                      <p className="statistics-card-sub">
-                        {interpretSkewness(stats.skewness)}
-                      </p>
+                      <p className="statistics-card-sub">{interpretSkewness(stats.skewness)}</p>
                     </div>
                   )}
                   {stats.kurtosis !== null && (
                     <div className="statistics-card">
                       <p className="statistics-card-label">尖度 (Kurtosis)</p>
                       <p className="statistics-card-value">{formatNum(stats.kurtosis)}</p>
-                      <p className="statistics-card-sub">
-                        {interpretKurtosis(stats.kurtosis)}
-                      </p>
+                      <p className="statistics-card-sub">{interpretKurtosis(stats.kurtosis)}</p>
                     </div>
                   )}
                 </div>
@@ -297,18 +287,14 @@ function StatisticsPage() {
                   {stats.geometricMean !== null && (
                     <div className="statistics-card">
                       <p className="statistics-card-label">幾何平均</p>
-                      <p className="statistics-card-value">
-                        {formatNum(stats.geometricMean)}
-                      </p>
+                      <p className="statistics-card-value">{formatNum(stats.geometricMean)}</p>
                       <p className="statistics-card-sub">n乗根(積)</p>
                     </div>
                   )}
                   {stats.harmonicMean !== null && (
                     <div className="statistics-card">
                       <p className="statistics-card-label">調和平均</p>
-                      <p className="statistics-card-value">
-                        {formatNum(stats.harmonicMean)}
-                      </p>
+                      <p className="statistics-card-value">{formatNum(stats.harmonicMean)}</p>
                       <p className="statistics-card-sub">n÷(逆数の和)</p>
                     </div>
                   )}
@@ -320,10 +306,7 @@ function StatisticsPage() {
             {freqDist.length > 0 && (
               <div>
                 <p className="statistics-section-title">度数分布</p>
-                <table
-                  className="statistics-freq-table"
-                  aria-label="度数分布表"
-                >
+                <table className="statistics-freq-table" aria-label="度数分布表">
                   <thead>
                     <tr>
                       <th>階級</th>
@@ -346,13 +329,15 @@ function StatisticsPage() {
                           <div className="statistics-freq-bar-cell">
                             <div
                               className="statistics-freq-bar"
-                              style={{ '--bar-width': `${(bin.count / maxFreqCount) * 120}px` } as React.CSSProperties}
+                              style={
+                                {
+                                  "--bar-width": `${(bin.count / maxFreqCount) * 120}px`,
+                                } as React.CSSProperties
+                              }
                               role="img"
                               aria-label={`${(bin.relative * 100).toFixed(1)}%`}
                             />
-                            <span className="statistics-freq-bar-pct">
-                              {bin.count}
-                            </span>
+                            <span className="statistics-freq-bar-pct">{bin.count}</span>
                           </div>
                         </td>
                       </tr>

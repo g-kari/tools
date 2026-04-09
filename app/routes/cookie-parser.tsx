@@ -1,13 +1,10 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
-import { useState, useCallback } from 'react';
-import { useToast } from '../components/Toast';
-import { TipsCard } from '~/components/TipsCard';
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from '~/hooks/useStatusAnnouncement';
-import { useClipboard } from '~/hooks/useClipboard';
+import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
+import { useState, useCallback } from "react";
+import { useToast } from "../components/Toast";
+import { TipsCard } from "~/components/TipsCard";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
+import { useClipboard } from "~/hooks/useClipboard";
 import {
   parseCookieHeader,
   parseSetCookieHeader,
@@ -16,70 +13,62 @@ import {
   getCookieExpiration,
   type CookieEntry,
   type SetCookieAttributes,
-} from '~/utils/cookie-parser';
+} from "~/utils/cookie-parser";
 
-export const Route = createFileRoute('/cookie-parser')({
+export const Route = createFileRoute("/cookie-parser")({
   head: () => ({
     meta: [
-      { title: 'Cookieパーサー | Web ツール集' },
+      { title: "Cookieパーサー | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          'HTTP CookieヘッダーとSet-Cookieヘッダーをパース・解析するツール。Cookie属性（Secure、HttpOnly、SameSite、Expires等）の確認とセキュリティ検証ができます。',
+          "HTTP CookieヘッダーとSet-Cookieヘッダーをパース・解析するツール。Cookie属性（Secure、HttpOnly、SameSite、Expires等）の確認とセキュリティ検証ができます。",
       },
-      { property: 'og:title', content: 'Cookieパーサー | Web ツール集' },
+      { property: "og:title", content: "Cookieパーサー | Web ツール集" },
       {
-        property: 'og:description',
+        property: "og:description",
         content:
-          'HTTP CookieヘッダーとSet-Cookieヘッダーをパース・解析するツール。Cookie属性の確認とセキュリティ検証。',
+          "HTTP CookieヘッダーとSet-Cookieヘッダーをパース・解析するツール。Cookie属性の確認とセキュリティ検証。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/cookie-parser` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
-      { name: 'twitter:title', content: 'Cookieパーサー | Web ツール集' },
+      { property: "og:url", content: `${SITE_BASE_URL}/cookie-parser` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "Cookieパーサー | Web ツール集" },
       {
-        name: 'twitter:description',
-        content:
-          'HTTP CookieヘッダーとSet-Cookieヘッダーをパース・解析するツール。',
+        name: "twitter:description",
+        content: "HTTP CookieヘッダーとSet-Cookieヘッダーをパース・解析するツール。",
       },
     ],
   }),
   component: CookieParserPage,
 });
 
-type ParseMode = 'cookie' | 'set-cookie';
+type ParseMode = "cookie" | "set-cookie";
 
 /** Cookie サンプル（リクエストヘッダー） */
 const COOKIE_SAMPLES = [
-  'session_id=abc123; user_pref=dark; lang=ja',
-  'auth=Bearer%20eyJhbGciOiJIUzI1NiJ9; csrf_token=xyz789; _ga=GA1.1.1234567890',
-  'remember_me=1; theme=light; timezone=Asia%2FTokyo',
+  "session_id=abc123; user_pref=dark; lang=ja",
+  "auth=Bearer%20eyJhbGciOiJIUzI1NiJ9; csrf_token=xyz789; _ga=GA1.1.1234567890",
+  "remember_me=1; theme=light; timezone=Asia%2FTokyo",
 ];
 
 /** Set-Cookie サンプル（レスポンスヘッダー） */
 const SET_COOKIE_SAMPLES = [
-  'sessionId=abc123; Path=/; Domain=example.com; HttpOnly; Secure; SameSite=Strict',
-  'token=eyJhbGciOiJIUzI1NiJ9; Max-Age=3600; Path=/api; Secure; HttpOnly; SameSite=Lax',
-  'prefs=dark-mode; Expires=Mon, 01 Jan 2026 00:00:00 GMT; Path=/; SameSite=Lax',
-  'insecure_cookie=bad_practice; Path=/',
+  "sessionId=abc123; Path=/; Domain=example.com; HttpOnly; Secure; SameSite=Strict",
+  "token=eyJhbGciOiJIUzI1NiJ9; Max-Age=3600; Path=/api; Secure; HttpOnly; SameSite=Lax",
+  "prefs=dark-mode; Expires=Mon, 01 Jan 2026 00:00:00 GMT; Path=/; SameSite=Lax",
+  "insecure_cookie=bad_practice; Path=/",
 ];
 
 /** SameSite属性の説明 */
 const SAMESITE_DESCRIPTIONS: Record<string, string> = {
-  Strict:
-    'Strict - クロスサイトリクエストでは送信されません（最も安全）',
-  Lax: 'Lax - トップレベルナビゲーションのGETリクエストでのみ送信されます',
-  None: 'None - クロスサイトリクエストでも送信されます（Secure必須）',
+  Strict: "Strict - クロスサイトリクエストでは送信されません（最も安全）",
+  Lax: "Lax - トップレベルナビゲーションのGETリクエストでのみ送信されます",
+  None: "None - クロスサイトリクエストでも送信されます（Secure必須）",
 };
 
 /** アトリビュートカード */
-function AttrCard({
-  label,
-  children,
-}: {
-  label: string;
-  children: React.ReactNode;
-}) {
+function AttrCard({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="cookie-parser-attr-card">
       <div className="cookie-parser-attr-key">{label}</div>
@@ -89,13 +78,7 @@ function AttrCard({
 }
 
 /** Cookieリクエストヘッダー解析パネル */
-function CookieParsedPanel({
-  entries,
-  rawHeader,
-}: {
-  entries: CookieEntry[];
-  rawHeader: string;
-}) {
+function CookieParsedPanel({ entries, rawHeader }: { entries: CookieEntry[]; rawHeader: string }) {
   const { showToast } = useToast();
   const { copy } = useClipboard();
   const { announceStatus } = useStatusAnnouncement();
@@ -103,10 +86,10 @@ function CookieParsedPanel({
   const handleCopyAll = useCallback(async () => {
     const success = await copy(rawHeader);
     if (success) {
-      showToast('Cookieヘッダーをコピーしました', 'success');
-      announceStatus('コピーしました');
+      showToast("Cookieヘッダーをコピーしました", "success");
+      announceStatus("コピーしました");
     } else {
-      showToast('コピーに失敗しました', 'error');
+      showToast("コピーに失敗しました", "error");
     }
   }, [rawHeader, copy, showToast, announceStatus]);
 
@@ -114,13 +97,13 @@ function CookieParsedPanel({
     async (value: string, name: string) => {
       const success = await copy(value);
       if (success) {
-        showToast(`${name} の値をコピーしました`, 'success');
+        showToast(`${name} の値をコピーしました`, "success");
         announceStatus(`${name} をコピーしました`);
       } else {
-        showToast('コピーに失敗しました', 'error');
+        showToast("コピーに失敗しました", "error");
       }
     },
-    [copy, showToast, announceStatus]
+    [copy, showToast, announceStatus],
   );
 
   if (entries.length === 0) {
@@ -137,10 +120,7 @@ function CookieParsedPanel({
         {entries.length} 件の Cookie
       </p>
       <div className="cookie-parser-table-wrapper">
-        <table
-          className="cookie-parser-table"
-          aria-label="Cookieエントリー一覧"
-        >
+        <table className="cookie-parser-table" aria-label="Cookieエントリー一覧">
           <thead>
             <tr>
               <th scope="col">名前</th>
@@ -156,13 +136,9 @@ function CookieParsedPanel({
                 </td>
                 <td>
                   {entry.value ? (
-                    <span className="cookie-parser-table-value">
-                      {entry.value}
-                    </span>
+                    <span className="cookie-parser-table-value">{entry.value}</span>
                   ) : (
-                    <span className="cookie-parser-table-value-empty">
-                      （値なし）
-                    </span>
+                    <span className="cookie-parser-table-value-empty">（値なし）</span>
                   )}
                 </td>
                 <td>
@@ -185,9 +161,7 @@ function CookieParsedPanel({
       {/* 生成されたヘッダー */}
       <div className="cookie-parser-generated">
         <div className="cookie-parser-generated-header">
-          <span className="cookie-parser-generated-label">
-            Cookie: ヘッダー
-          </span>
+          <span className="cookie-parser-generated-label">Cookie: ヘッダー</span>
           <button
             type="button"
             className="cookie-parser-copy-btn"
@@ -204,11 +178,7 @@ function CookieParsedPanel({
 }
 
 /** Set-Cookieレスポンスヘッダー解析パネル */
-function SetCookieParsedPanel({
-  attrs,
-}: {
-  attrs: SetCookieAttributes;
-}) {
+function SetCookieParsedPanel({ attrs }: { attrs: SetCookieAttributes }) {
   const { showToast } = useToast();
   const { copy } = useClipboard();
   const { announceStatus } = useStatusAnnouncement();
@@ -220,20 +190,20 @@ function SetCookieParsedPanel({
   const handleCopyHeader = useCallback(async () => {
     const success = await copy(generatedHeader);
     if (success) {
-      showToast('Set-Cookieヘッダーをコピーしました', 'success');
-      announceStatus('コピーしました');
+      showToast("Set-Cookieヘッダーをコピーしました", "success");
+      announceStatus("コピーしました");
     } else {
-      showToast('コピーに失敗しました', 'error');
+      showToast("コピーに失敗しました", "error");
     }
   }, [generatedHeader, copy, showToast, announceStatus]);
 
   const handleCopyValue = useCallback(async () => {
     const success = await copy(attrs.value);
     if (success) {
-      showToast('Cookie値をコピーしました', 'success');
-      announceStatus('コピーしました');
+      showToast("Cookie値をコピーしました", "success");
+      announceStatus("コピーしました");
     } else {
-      showToast('コピーに失敗しました', 'error');
+      showToast("コピーに失敗しました", "error");
     }
   }, [attrs.value, copy, showToast, announceStatus]);
 
@@ -241,18 +211,11 @@ function SetCookieParsedPanel({
     <div aria-live="polite">
       {/* セキュリティ警告 */}
       {warnings.length > 0 && (
-        <div
-          className="cookie-parser-warnings"
-          role="alert"
-          aria-label="セキュリティ警告"
-        >
+        <div className="cookie-parser-warnings" role="alert" aria-label="セキュリティ警告">
           {warnings.map((w, i) => (
-            <div
-              key={i}
-              className={`cookie-parser-warning cookie-parser-warning-${w.level}`}
-            >
+            <div key={i} className={`cookie-parser-warning cookie-parser-warning-${w.level}`}>
               <span className="cookie-parser-warning-icon" aria-hidden="true">
-                {w.level === 'error' ? '🚨' : w.level === 'warning' ? '⚠️' : 'ℹ️'}
+                {w.level === "error" ? "🚨" : w.level === "warning" ? "⚠️" : "ℹ️"}
               </span>
               <span>{w.message}</span>
             </div>
@@ -292,9 +255,7 @@ function SetCookieParsedPanel({
           </div>
         </AttrCard>
 
-        {attrs.path !== undefined && (
-          <AttrCard label="パス (Path)">{attrs.path}</AttrCard>
-        )}
+        {attrs.path !== undefined && <AttrCard label="パス (Path)">{attrs.path}</AttrCard>}
 
         {attrs.domain !== undefined && (
           <AttrCard label="ドメイン (Domain)">{attrs.domain}</AttrCard>
@@ -305,9 +266,7 @@ function SetCookieParsedPanel({
         )}
 
         {attrs.maxAge !== undefined && (
-          <AttrCard label="最大存続時間 (Max-Age)">
-            {attrs.maxAge}秒
-          </AttrCard>
+          <AttrCard label="最大存続時間 (Max-Age)">{attrs.maxAge}秒</AttrCard>
         )}
 
         {attrs.sameSite !== undefined && (
@@ -318,17 +277,17 @@ function SetCookieParsedPanel({
 
         <AttrCard label="Secure">
           <span
-            className={`cookie-parser-attr-val-bool ${attrs.secure ? 'cookie-parser-attr-val-true' : 'cookie-parser-attr-val-false'}`}
+            className={`cookie-parser-attr-val-bool ${attrs.secure ? "cookie-parser-attr-val-true" : "cookie-parser-attr-val-false"}`}
           >
-            {attrs.secure ? '✓ 有効' : '✗ 無効'}
+            {attrs.secure ? "✓ 有効" : "✗ 無効"}
           </span>
         </AttrCard>
 
         <AttrCard label="HttpOnly">
           <span
-            className={`cookie-parser-attr-val-bool ${attrs.httpOnly ? 'cookie-parser-attr-val-true' : 'cookie-parser-attr-val-false'}`}
+            className={`cookie-parser-attr-val-bool ${attrs.httpOnly ? "cookie-parser-attr-val-true" : "cookie-parser-attr-val-false"}`}
           >
-            {attrs.httpOnly ? '✓ 有効' : '✗ 無効'}
+            {attrs.httpOnly ? "✓ 有効" : "✗ 無効"}
           </span>
         </AttrCard>
 
@@ -348,9 +307,7 @@ function SetCookieParsedPanel({
       {/* 生成されたヘッダー */}
       <div className="cookie-parser-generated">
         <div className="cookie-parser-generated-header">
-          <span className="cookie-parser-generated-label">
-            Set-Cookie: ヘッダー
-          </span>
+          <span className="cookie-parser-generated-label">Set-Cookie: ヘッダー</span>
           <button
             type="button"
             className="cookie-parser-copy-btn"
@@ -374,9 +331,9 @@ function CookieParserPage() {
   const { showToast } = useToast();
   const { statusRef, announceStatus } = useStatusAnnouncement();
 
-  const [mode, setMode] = useState<ParseMode>('cookie');
-  const [cookieInput, setCookieInput] = useState('');
-  const [setCookieHeaderInput, setSetCookieHeaderInput] = useState('');
+  const [mode, setMode] = useState<ParseMode>("cookie");
+  const [cookieInput, setCookieInput] = useState("");
+  const [setCookieHeaderInput, setSetCookieHeaderInput] = useState("");
 
   // パース結果
   const cookieEntries = parseCookieHeader(cookieInput);
@@ -386,12 +343,12 @@ function CookieParserPage() {
     (newMode: ParseMode) => {
       setMode(newMode);
       announceStatus(
-        newMode === 'cookie'
-          ? 'CookieリクエストヘッダーモードE切り替えました'
-          : 'Set-CookieレスポンスヘッダーモードE切り替えました'
+        newMode === "cookie"
+          ? "CookieリクエストヘッダーモードE切り替えました"
+          : "Set-CookieレスポンスヘッダーモードE切り替えました",
       );
     },
-    [announceStatus]
+    [announceStatus],
   );
 
   const handleCookieSample = useCallback((sample: string) => {
@@ -403,13 +360,13 @@ function CookieParserPage() {
   }, []);
 
   const handleCookieClear = useCallback(() => {
-    setCookieInput('');
-    announceStatus('クリアしました');
+    setCookieInput("");
+    announceStatus("クリアしました");
   }, [announceStatus]);
 
   const handleSetCookieClear = useCallback(() => {
-    setSetCookieInput('');
-    announceStatus('クリアしました');
+    setSetCookieInput("");
+    announceStatus("クリアしました");
   }, [announceStatus]);
 
   const handleSetCookieParseError = setCookieHeaderInput.trim() && !setCookieAttrs;
@@ -420,16 +377,12 @@ function CookieParserPage() {
         <h2 className="section-title">Cookie パーサー</h2>
 
         {/* モードタブ */}
-        <div
-          className="cookie-parser-tabs"
-          role="tablist"
-          aria-label="解析モード"
-        >
+        <div className="cookie-parser-tabs" role="tablist" aria-label="解析モード">
           <button
             role="tab"
-            aria-selected={mode === 'cookie'}
-            className={`cookie-parser-tab${mode === 'cookie' ? ' active' : ''}`}
-            onClick={() => handleModeChange('cookie')}
+            aria-selected={mode === "cookie"}
+            className={`cookie-parser-tab${mode === "cookie" ? " active" : ""}`}
+            onClick={() => handleModeChange("cookie")}
             id="tab-cookie"
             aria-controls="panel-cookie"
           >
@@ -437,9 +390,9 @@ function CookieParserPage() {
           </button>
           <button
             role="tab"
-            aria-selected={mode === 'set-cookie'}
-            className={`cookie-parser-tab${mode === 'set-cookie' ? ' active' : ''}`}
-            onClick={() => handleModeChange('set-cookie')}
+            aria-selected={mode === "set-cookie"}
+            className={`cookie-parser-tab${mode === "set-cookie" ? " active" : ""}`}
+            onClick={() => handleModeChange("set-cookie")}
             id="tab-set-cookie"
             aria-controls="panel-set-cookie"
           >
@@ -448,12 +401,8 @@ function CookieParserPage() {
         </div>
 
         {/* Cookieリクエストヘッダー モード */}
-        {mode === 'cookie' && (
-          <section
-            id="panel-cookie"
-            role="tabpanel"
-            aria-labelledby="tab-cookie"
-          >
+        {mode === "cookie" && (
+          <section id="panel-cookie" role="tabpanel" aria-labelledby="tab-cookie">
             {/* サンプル */}
             <div className="cookie-parser-samples">
               <span className="cookie-parser-sample-label">サンプル:</span>
@@ -473,10 +422,7 @@ function CookieParserPage() {
 
             {/* 入力 */}
             <div className="cookie-parser-input-area">
-              <label
-                htmlFor="cookie-input"
-                className="cookie-parser-input-label"
-              >
+              <label htmlFor="cookie-input" className="cookie-parser-input-label">
                 Cookie: ヘッダー値
               </label>
               <textarea
@@ -504,21 +450,14 @@ function CookieParserPage() {
 
             {/* 結果 */}
             <div className="cookie-parser-result">
-              <CookieParsedPanel
-                entries={cookieEntries}
-                rawHeader={cookieInput}
-              />
+              <CookieParsedPanel entries={cookieEntries} rawHeader={cookieInput} />
             </div>
           </section>
         )}
 
         {/* Set-Cookieレスポンスヘッダー モード */}
-        {mode === 'set-cookie' && (
-          <section
-            id="panel-set-cookie"
-            role="tabpanel"
-            aria-labelledby="tab-set-cookie"
-          >
+        {mode === "set-cookie" && (
+          <section id="panel-set-cookie" role="tabpanel" aria-labelledby="tab-set-cookie">
             {/* サンプル */}
             <div className="cookie-parser-samples">
               <span className="cookie-parser-sample-label">サンプル:</span>
@@ -538,10 +477,7 @@ function CookieParserPage() {
 
             {/* 入力 */}
             <div className="cookie-parser-input-area">
-              <label
-                htmlFor="set-cookie-input"
-                className="cookie-parser-input-label"
-              >
+              <label htmlFor="set-cookie-input" className="cookie-parser-input-label">
                 Set-Cookie: ヘッダー値
               </label>
               <textarea
@@ -580,11 +516,7 @@ function CookieParserPage() {
                 <SetCookieParsedPanel attrs={setCookieAttrs} />
               ) : (
                 !handleSetCookieParseError && (
-                  <div
-                    className="cookie-parser-empty"
-                    role="status"
-                    aria-live="polite"
-                  >
+                  <div className="cookie-parser-empty" role="status" aria-live="polite">
                     Set-Cookieヘッダーを入力するとパース結果が表示されます
                   </div>
                 )
@@ -596,30 +528,30 @@ function CookieParserPage() {
         <TipsCard
           sections={[
             {
-              title: 'Cookie と Set-Cookie の違い',
+              title: "Cookie と Set-Cookie の違い",
               items: [
-                'Cookie: ヘッダー — ブラウザ→サーバーへ送信するリクエストヘッダー。複数のCookieをセミコロンで区切る',
-                'Set-Cookie: ヘッダー — サーバー→ブラウザへ送信するレスポンスヘッダー。1ヘッダーに1つのCookieを設定する',
-                '複数のCookieをセットするには Set-Cookie: ヘッダーを複数行使用する',
+                "Cookie: ヘッダー — ブラウザ→サーバーへ送信するリクエストヘッダー。複数のCookieをセミコロンで区切る",
+                "Set-Cookie: ヘッダー — サーバー→ブラウザへ送信するレスポンスヘッダー。1ヘッダーに1つのCookieを設定する",
+                "複数のCookieをセットするには Set-Cookie: ヘッダーを複数行使用する",
               ],
             },
             {
-              title: '重要なセキュリティ属性',
+              title: "重要なセキュリティ属性",
               items: [
-                'Secure — HTTPSのみでCookieを送信。セッションCookieには必須',
-                'HttpOnly — JavaScriptからのCookie読み取りを禁止。XSS攻撃対策に有効',
-                'SameSite=Strict — クロスサイトリクエストでCookieを送信しない（最も安全）',
-                'SameSite=Lax — トップレベルナビゲーションのGETのみ送信（推奨デフォルト）',
-                'SameSite=None — クロスサイトでも送信（Secure属性が必須）',
+                "Secure — HTTPSのみでCookieを送信。セッションCookieには必須",
+                "HttpOnly — JavaScriptからのCookie読み取りを禁止。XSS攻撃対策に有効",
+                "SameSite=Strict — クロスサイトリクエストでCookieを送信しない（最も安全）",
+                "SameSite=Lax — トップレベルナビゲーションのGETのみ送信（推奨デフォルト）",
+                "SameSite=None — クロスサイトでも送信（Secure属性が必須）",
               ],
             },
             {
-              title: '有効期限の指定方法',
+              title: "有効期限の指定方法",
               items: [
-                'Max-Age=3600 — 相対的な秒数で指定（優先度高）。3600秒=1時間後に期限切れ',
-                'Expires=日時 — 絶対日時で指定（RFC 7231形式）。Max-Ageが存在する場合は無視される',
-                '両方未指定の場合 — セッションCookie（ブラウザを閉じると削除される）',
-                'Max-Age=0 または負の値 — Cookieを即時削除するために使用',
+                "Max-Age=3600 — 相対的な秒数で指定（優先度高）。3600秒=1時間後に期限切れ",
+                "Expires=日時 — 絶対日時で指定（RFC 7231形式）。Max-Ageが存在する場合は無視される",
+                "両方未指定の場合 — セッションCookie（ブラウザを閉じると削除される）",
+                "Max-Age=0 または負の値 — Cookieを即時削除するために使用",
               ],
             },
           ]}

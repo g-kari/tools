@@ -1,9 +1,5 @@
 import { describe, it, expect } from "vite-plus/test";
-import {
-  calculateWpm,
-  calculateAccuracy,
-  getCharStatuses,
-} from "../../app/routes/typing-speed";
+import { calculateWpm, calculateAccuracy, getCharStatuses } from "../../app/routes/typing-speed";
 
 describe("calculateWpm", () => {
   it("300文字を60秒で入力するとWPM=60", () => {
@@ -63,24 +59,12 @@ describe("calculateAccuracy", () => {
 describe("getCharStatuses", () => {
   it("全て正確に入力したとき全てcorrect", () => {
     const statuses = getCharStatuses("hello", "hello");
-    expect(statuses).toEqual([
-      "correct",
-      "correct",
-      "correct",
-      "correct",
-      "correct",
-    ]);
+    expect(statuses).toEqual(["correct", "correct", "correct", "correct", "correct"]);
   });
 
   it("未入力の文字はpending", () => {
     const statuses = getCharStatuses("hello", "");
-    expect(statuses).toEqual([
-      "pending",
-      "pending",
-      "pending",
-      "pending",
-      "pending",
-    ]);
+    expect(statuses).toEqual(["pending", "pending", "pending", "pending", "pending"]);
   });
 
   it("一部正確、一部ミス、一部未入力", () => {

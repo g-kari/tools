@@ -87,9 +87,7 @@ export const Route = createFileRoute("/api/image.jpg")({
 
           // キャッシュミス: SVG→PNG→JPEGに変換
           const url = new URL(request.url);
-          const { width, height, bgColor, textColor } = parseImageParams(
-            url.searchParams
-          );
+          const { width, height, bgColor, textColor } = parseImageParams(url.searchParams);
           const quality = parseQuality(url.searchParams);
 
           const svg = generateSvgImage(width, height, bgColor, textColor);

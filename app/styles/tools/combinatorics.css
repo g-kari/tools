@@ -85,7 +85,9 @@
   color: var(--md-sys-color-primary);
   border: 1px solid var(--md-sys-color-outline-variant);
   cursor: pointer;
-  transition: background 0.15s, border-color 0.15s;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
 }
 
 .combinatorics-preset-btn:hover {
@@ -251,7 +253,9 @@
   border: none;
   border-bottom: 2px solid transparent;
   cursor: pointer;
-  transition: color 0.15s, border-color 0.15s;
+  transition:
+    color 0.15s,
+    border-color 0.15s;
 }
 
 .combinatorics-tab:hover {

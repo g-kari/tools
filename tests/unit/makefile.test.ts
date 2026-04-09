@@ -39,14 +39,7 @@ describe("getTemplates", () => {
 });
 
 describe("generateMakefile - 共通", () => {
-  const projectTypes: ProjectType[] = [
-    "nodejs",
-    "python",
-    "go",
-    "rust",
-    "c",
-    "cpp",
-  ];
+  const projectTypes: ProjectType[] = ["nodejs", "python", "go", "rust", "c", "cpp"];
 
   for (const projectType of projectTypes) {
     it(`${projectType}: helpターゲットが含まれる`, () => {

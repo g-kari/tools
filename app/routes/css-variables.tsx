@@ -1,43 +1,43 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useState, useMemo, useCallback } from 'react';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
-import { useToast } from '../components/Toast';
+import { createFileRoute } from "@tanstack/react-router";
+import { useState, useMemo, useCallback } from "react";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
+import { useToast } from "../components/Toast";
 import {
   parseCssVariables,
   exportAsCss,
   exportAsJson,
   exportAsJs,
   type CssVariable,
-} from '../utils/css-variables';
-import '../styles/tools/css-variables.css';
+} from "../utils/css-variables";
+import "../styles/tools/css-variables.css";
 
-export const Route = createFileRoute('/css-variables')({
+export const Route = createFileRoute("/css-variables")({
   head: () => ({
     meta: [
-      { title: 'CSS Custom Properties エクストラクター | Web ツール集' },
+      { title: "CSS Custom Properties エクストラクター | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          'CSSテキストからカスタムプロパティ（CSS変数）を抽出・一覧表示するツール。カラープレビュー付き。CSS・JSON・TypeScript形式でエクスポート可能。',
+          "CSSテキストからカスタムプロパティ（CSS変数）を抽出・一覧表示するツール。カラープレビュー付き。CSS・JSON・TypeScript形式でエクスポート可能。",
       },
       {
-        property: 'og:title',
-        content: 'CSS Custom Properties エクストラクター | Web ツール集',
+        property: "og:title",
+        content: "CSS Custom Properties エクストラクター | Web ツール集",
       },
       {
-        property: 'og:description',
-        content: 'CSSからカスタムプロパティを抽出・可視化。カラープレビュー＆多形式エクスポート。',
+        property: "og:description",
+        content: "CSSからカスタムプロパティを抽出・可視化。カラープレビュー＆多形式エクスポート。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/css-variables` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
+      { property: "og:url", content: `${SITE_BASE_URL}/css-variables` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
       {
-        name: 'twitter:title',
-        content: 'CSS Custom Properties エクストラクター | Web ツール集',
+        name: "twitter:title",
+        content: "CSS Custom Properties エクストラクター | Web ツール集",
       },
       {
-        name: 'twitter:description',
-        content: 'CSSからカスタムプロパティを抽出・可視化。',
+        name: "twitter:description",
+        content: "CSSからカスタムプロパティを抽出・可視化。",
       },
     ],
   }),
@@ -47,7 +47,7 @@ export const Route = createFileRoute('/css-variables')({
 /** サンプルCSSデータ */
 const SAMPLES: { label: string; css: string }[] = [
   {
-    label: 'Material Design',
+    label: "Material Design",
     css: `:root {
   --md-sys-color-primary: #6750a4;
   --md-sys-color-on-primary: #ffffff;
@@ -64,7 +64,7 @@ const SAMPLES: { label: string; css: string }[] = [
 }`,
   },
   {
-    label: 'デザイントークン',
+    label: "デザイントークン",
     css: `:root {
   /* スペーシング */
   --spacing-xs: 4px;
@@ -107,7 +107,7 @@ const SAMPLES: { label: string; css: string }[] = [
 }`,
   },
   {
-    label: 'Tailwind風',
+    label: "Tailwind風",
     css: `:root {
   --color-slate-50: #f8fafc;
   --color-slate-100: #f1f5f9;
@@ -129,17 +129,17 @@ const SAMPLES: { label: string; css: string }[] = [
 ];
 
 /** エクスポート形式 */
-type ExportFormat = 'css' | 'json' | 'js';
+type ExportFormat = "css" | "json" | "js";
 
 /**
  * CSS Custom Properties エクストラクターページ
  */
 function CssVariablesPage() {
-  const [input, setInput] = useState('');
-  const [search, setSearch] = useState('');
-  const [selectorFilter, setSelectorFilter] = useState('');
+  const [input, setInput] = useState("");
+  const [search, setSearch] = useState("");
+  const [selectorFilter, setSelectorFilter] = useState("");
   const [colorOnly, setColorOnly] = useState(false);
-  const [exportFormat, setExportFormat] = useState<ExportFormat>('css');
+  const [exportFormat, setExportFormat] = useState<ExportFormat>("css");
   const { showToast } = useToast();
 
   const parseResult = useMemo(() => parseCssVariables(input), [input]);
@@ -159,38 +159,38 @@ function CssVariablesPage() {
   }, [parseResult.variables, search, selectorFilter, colorOnly]);
 
   const exportText = useMemo(() => {
-    if (filtered.length === 0) return '';
+    if (filtered.length === 0) return "";
     switch (exportFormat) {
-      case 'css':
+      case "css":
         return exportAsCss(filtered);
-      case 'json':
+      case "json":
         return exportAsJson(filtered);
-      case 'js':
+      case "js":
         return exportAsJs(filtered);
     }
   }, [filtered, exportFormat]);
 
   const colorCount = useMemo(
     () => parseResult.variables.filter((v) => v.isColor).length,
-    [parseResult.variables]
+    [parseResult.variables],
   );
 
   const copyValue = useCallback(
     (v: CssVariable) => {
       navigator.clipboard
         .writeText(`${v.name}: ${v.value}`)
-        .then(() => showToast(`コピーしました: ${v.name}`, 'success'))
-        .catch(() => showToast('コピーに失敗しました', 'error'));
+        .then(() => showToast(`コピーしました: ${v.name}`, "success"))
+        .catch(() => showToast("コピーに失敗しました", "error"));
     },
-    [showToast]
+    [showToast],
   );
 
   const copyExport = useCallback(() => {
     if (!exportText) return;
     navigator.clipboard
       .writeText(exportText)
-      .then(() => showToast('エクスポートをコピーしました', 'success'))
-      .catch(() => showToast('コピーに失敗しました', 'error'));
+      .then(() => showToast("エクスポートをコピーしました", "success"))
+      .catch(() => showToast("コピーに失敗しました", "error"));
   }, [exportText, showToast]);
 
   const loadSample = useCallback((css: string) => {
@@ -198,9 +198,9 @@ function CssVariablesPage() {
   }, []);
 
   const clear = useCallback(() => {
-    setInput('');
-    setSearch('');
-    setSelectorFilter('');
+    setInput("");
+    setSearch("");
+    setSelectorFilter("");
     setColorOnly(false);
   }, []);
 
@@ -252,15 +252,14 @@ function CssVariablesPage() {
           {parseResult.variables.length > 0 && (
             <div className="css-variables-stats" role="status" aria-live="polite">
               <span className="css-variables-stat">
-                変数:{' '}
+                変数:{" "}
                 <span className="css-variables-stat-value">{parseResult.variables.length}</span>
               </span>
               <span className="css-variables-stat">
                 カラー: <span className="css-variables-stat-value">{colorCount}</span>
               </span>
               <span className="css-variables-stat">
-                セレクター:{' '}
-                <span className="css-variables-stat-value">{allSelectors.length}</span>
+                セレクター: <span className="css-variables-stat-value">{allSelectors.length}</span>
               </span>
               {filtered.length !== parseResult.variables.length && (
                 <span className="css-variables-stat">
@@ -290,12 +289,12 @@ function CssVariablesPage() {
                 <option value="">全セレクター</option>
                 {allSelectors.map((sel) => (
                   <option key={sel} value={sel}>
-                    {sel.length > 24 ? sel.slice(0, 24) + '…' : sel}
+                    {sel.length > 24 ? sel.slice(0, 24) + "…" : sel}
                   </option>
                 ))}
               </select>
               <button
-                className={`css-variables-btn${colorOnly ? ' css-variables-btn--primary' : ''}`}
+                className={`css-variables-btn${colorOnly ? " css-variables-btn--primary" : ""}`}
                 onClick={() => setColorOnly((v) => !v)}
                 type="button"
                 aria-pressed={colorOnly}
@@ -308,19 +307,22 @@ function CssVariablesPage() {
           {/* 変数リスト */}
           {parseResult.variables.length === 0 ? (
             <div className="css-variables-empty" aria-label="結果なし">
-              CSSを左に貼り付けると<br />
+              CSSを左に貼り付けると
+              <br />
               カスタムプロパティを抽出します
             </div>
           ) : filtered.length === 0 ? (
-            <div className="css-variables-empty">
-              フィルター条件に一致する変数がありません
-            </div>
+            <div className="css-variables-empty">フィルター条件に一致する変数がありません</div>
           ) : (
             <div className="css-variables-list" role="list" aria-label="抽出された変数一覧">
               {filtered.map((v, i) => (
-                <div key={`${v.selector}|${v.name}|${i}`} className="css-variables-item" role="listitem">
+                <div
+                  key={`${v.selector}|${v.name}|${i}`}
+                  className="css-variables-item"
+                  role="listitem"
+                >
                   <div
-                    className={`css-variables-swatch${v.colorValue ? ' css-variables-swatch--color' : ''}`}
+                    className={`css-variables-swatch${v.colorValue ? " css-variables-swatch--color" : ""}`}
                     style={v.colorValue ? { backgroundColor: v.colorValue } : undefined}
                     aria-hidden="true"
                     title={v.isColor ? v.value : undefined}
@@ -353,17 +355,21 @@ function CssVariablesPage() {
           {/* エクスポート */}
           {filtered.length > 0 && (
             <div className="css-variables-export">
-              <div className="css-variables-export-tabs" role="tablist" aria-label="エクスポート形式">
-                {(['css', 'json', 'js'] as ExportFormat[]).map((fmt) => (
+              <div
+                className="css-variables-export-tabs"
+                role="tablist"
+                aria-label="エクスポート形式"
+              >
+                {(["css", "json", "js"] as ExportFormat[]).map((fmt) => (
                   <button
                     key={fmt}
-                    className={`css-variables-export-tab${exportFormat === fmt ? ' css-variables-export-tab--active' : ''}`}
+                    className={`css-variables-export-tab${exportFormat === fmt ? " css-variables-export-tab--active" : ""}`}
                     onClick={() => setExportFormat(fmt)}
                     type="button"
                     role="tab"
                     aria-selected={exportFormat === fmt}
                   >
-                    {fmt === 'css' ? 'CSS' : fmt === 'json' ? 'JSON' : 'TypeScript'}
+                    {fmt === "css" ? "CSS" : fmt === "json" ? "JSON" : "TypeScript"}
                   </button>
                 ))}
               </div>

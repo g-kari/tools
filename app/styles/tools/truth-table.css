@@ -173,20 +173,12 @@
 
 /* 出力列: T=緑背景, F=グレー背景 */
 .truth-table td.output-true {
-  background: color-mix(
-    in srgb,
-    var(--md-sys-color-primary-container) 50%,
-    transparent
-  );
+  background: color-mix(in srgb, var(--md-sys-color-primary-container) 50%, transparent);
   color: var(--md-sys-color-primary);
 }
 
 .truth-table td.output-false {
-  background: color-mix(
-    in srgb,
-    var(--md-sys-color-surface-variant) 50%,
-    transparent
-  );
+  background: color-mix(in srgb, var(--md-sys-color-surface-variant) 50%, transparent);
   color: var(--md-sys-color-on-surface-variant);
 }
 

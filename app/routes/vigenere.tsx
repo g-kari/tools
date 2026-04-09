@@ -95,10 +95,12 @@ function VigenereCipher() {
     (newMode: Mode) => {
       setMode(newMode);
       announceStatus(
-        newMode === "encode" ? "エンコードモードに切り替えました" : "デコードモードに切り替えました"
+        newMode === "encode"
+          ? "エンコードモードに切り替えました"
+          : "デコードモードに切り替えました",
       );
     },
-    [announceStatus]
+    [announceStatus],
   );
 
   const isEmpty = inputText.length === 0;
@@ -168,7 +170,12 @@ function VigenereCipher() {
               <p className="vigenere-key-visual-title">キー文字（シフト量）:</p>
               <div className="vigenere-key-chars" role="list">
                 {normalizedKey.split("").map((char, i) => (
-                  <div key={i} className="vigenere-key-char" role="listitem" aria-label={`${char}: シフト${char.charCodeAt(0) - 65}`}>
+                  <div
+                    key={i}
+                    className="vigenere-key-char"
+                    role="listitem"
+                    aria-label={`${char}: シフト${char.charCodeAt(0) - 65}`}
+                  >
                     <span className="vigenere-key-char-inner">
                       <span>{char}</span>
                       <span className="vigenere-key-char-shift">+{char.charCodeAt(0) - 65}</span>
@@ -259,7 +266,7 @@ function VigenereCipher() {
               items: [
                 "英字のみがキーワードに基づいてシフトされ、数字・記号・日本語はそのまま保持されます",
                 "キーワードの各文字が順番にシフト量（A=0, B=1 … Z=25）として使用されます",
-                "例: キー「KEY」でテキスト「ABC」→ A+K(+10)=K, B+E(+4)=F, C+Y(+24)=A(26%26=0) → \"KFA\"",
+                '例: キー「KEY」でテキスト「ABC」→ A+K(+10)=K, B+E(+4)=F, C+Y(+24)=A(26%26=0) → "KFA"',
                 "シーザー暗号より解読が難しいですが、現代の暗号としては使用しないでください",
                 "CTFやパズル、歴史的な暗号学の学習などに活用できます",
               ],

@@ -51,7 +51,7 @@
 .ts-stat-value {
   font-size: 1.5rem;
   font-weight: 500;
-  font-family: 'Space Mono', 'Roboto Mono', monospace;
+  font-family: "Space Mono", "Roboto Mono", monospace;
   color: var(--md-sys-color-primary);
   line-height: 1.2;
 }
@@ -126,7 +126,7 @@
 }
 
 .ts-word-text {
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
   font-size: 0.9rem;
   font-weight: 500;
   color: var(--md-sys-color-on-surface);
@@ -156,7 +156,7 @@
   font-size: 0.8rem;
   font-weight: 500;
   color: var(--md-sys-color-primary);
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
   min-width: 2rem;
   text-align: right;
 }

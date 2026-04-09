@@ -148,8 +148,7 @@ export function calculateStatistics(numbers: number[]): StatisticsResult | null 
   let skewness: number | null = null;
   if (n >= 3 && stddevSample > 0) {
     const cubedDiffs = meanDiffs.reduce((acc, d) => acc + d ** 3, 0);
-    skewness =
-      (n / ((n - 1) * (n - 2))) * (cubedDiffs / stddevSample ** 3);
+    skewness = (n / ((n - 1) * (n - 2))) * (cubedDiffs / stddevSample ** 3);
   }
 
   // 尖度 (Excess kurtosis, sample)
@@ -209,10 +208,7 @@ export function calculateStatistics(numbers: number[]): StatisticsResult | null 
  * @param bins - ビン数 (省略時はスタージェスの公式)
  * @returns 度数分布のビン配列
  */
-export function calculateFrequencyDistribution(
-  numbers: number[],
-  bins?: number
-): FrequencyBin[] {
+export function calculateFrequencyDistribution(numbers: number[], bins?: number): FrequencyBin[] {
   if (numbers.length === 0) return [];
 
   const sorted = [...numbers].sort((a, b) => a - b);

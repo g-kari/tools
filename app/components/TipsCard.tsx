@@ -43,7 +43,9 @@ export function TipsCard({ sections }: TipsCardProps) {
           key={section.title}
           className={`tips-card info-box p-6 ${index > 0 ? "mt-4" : ""}`}
           role="complementary"
-          aria-labelledby={index === 0 ? "usage-title" : index === 1 ? "about-tool-title" : undefined}
+          aria-labelledby={
+            index === 0 ? "usage-title" : index === 1 ? "about-tool-title" : undefined
+          }
         >
           <h3
             id={index === 0 ? "usage-title" : index === 1 ? "about-tool-title" : undefined}

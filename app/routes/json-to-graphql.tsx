@@ -4,10 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { useToast } from "../components/Toast";
 import { TipsCard } from "~/components/TipsCard";
 import { ErrorMessage } from "~/components/ErrorMessage";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 import { generateGraphQLSchema, getSampleJson } from "../utils/json-to-graphql";
 
@@ -17,8 +14,7 @@ export const Route = createFileRoute("/json-to-graphql")({
       { title: "JSON→GraphQLスキーマ生成 | Web ツール集" },
       {
         name: "description",
-        content:
-          "JSONデータからGraphQLスキーマ（SDL形式）を自動生成できるオンラインツール。",
+        content: "JSONデータからGraphQLスキーマ（SDL形式）を自動生成できるオンラインツール。",
       },
       {
         property: "og:title",
@@ -26,8 +22,7 @@ export const Route = createFileRoute("/json-to-graphql")({
       },
       {
         property: "og:description",
-        content:
-          "JSONデータからGraphQLスキーマ（SDL形式）を自動生成できるオンラインツール。",
+        content: "JSONデータからGraphQLスキーマ（SDL形式）を自動生成できるオンラインツール。",
       },
       { property: "og:url", content: `${SITE_BASE_URL}/json-to-graphql` },
       { property: "og:type", content: "website" },
@@ -38,8 +33,7 @@ export const Route = createFileRoute("/json-to-graphql")({
       },
       {
         name: "twitter:description",
-        content:
-          "JSONデータからGraphQLスキーマ（SDL形式）を自動生成できるオンラインツール。",
+        content: "JSONデータからGraphQLスキーマ（SDL形式）を自動生成できるオンラインツール。",
       },
     ],
   }),
@@ -76,8 +70,7 @@ function JsonToGraphQLConverter() {
       announceStatus("スキーマを生成しました");
       showToast("スキーマを生成しました", "success");
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "エラーが発生しました";
+      const message = err instanceof Error ? err.message : "エラーが発生しました";
       setError(message);
       announceStatus("エラー: " + message);
       showToast(message, "error");
@@ -124,10 +117,7 @@ function JsonToGraphQLConverter() {
   return (
     <>
       <div className="tool-container">
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          aria-label="JSON→GraphQLスキーマ生成フォーム"
-        >
+        <form onSubmit={(e) => e.preventDefault()} aria-label="JSON→GraphQLスキーマ生成フォーム">
           <div className="jts-layout">
             {/* 左パネル: JSON入力 */}
             <div className="jts-panel">

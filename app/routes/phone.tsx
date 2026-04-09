@@ -4,16 +4,9 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
-import {
-  parsePhone,
-  SAMPLE_PHONE_NUMBERS,
-  type PhoneResult,
-} from "../utils/phone";
+import { parsePhone, SAMPLE_PHONE_NUMBERS, type PhoneResult } from "../utils/phone";
 
 export const Route = createFileRoute("/phone")({
   head: () => ({
@@ -86,7 +79,7 @@ function PhoneFormatter() {
       inputRef.current?.focus();
       announceStatus(`サンプル番号を入力しました: ${number}`);
     },
-    [announceStatus]
+    [announceStatus],
   );
 
   const handleCopy = useCallback(
@@ -99,7 +92,7 @@ function PhoneFormatter() {
         showToast("コピーに失敗しました", "error");
       }
     },
-    [copy, showToast, announceStatus]
+    [copy, showToast, announceStatus],
   );
 
   useEffect(() => {
@@ -113,10 +106,7 @@ function PhoneFormatter() {
     <>
       <div className="phone-container">
         {/* 入力セクション */}
-        <section
-          className="phone-input-section"
-          aria-labelledby="phone-heading"
-        >
+        <section className="phone-input-section" aria-labelledby="phone-heading">
           <h2 id="phone-heading" className="section-title">
             日本電話番号フォーマッター
           </h2>
@@ -166,9 +156,7 @@ function PhoneFormatter() {
               aria-live="polite"
               aria-label="電話番号検証結果"
             >
-              <span className="phone-result-icon">
-                {result.isValid ? "✓" : "✗"}
-              </span>
+              <span className="phone-result-icon">{result.isValid ? "✓" : "✗"}</span>
               <div className="phone-result-text">
                 <div className="phone-result-title">
                   {result.errorMessage
@@ -187,10 +175,7 @@ function PhoneFormatter() {
 
         {/* フォーマット結果 */}
         {showFormats && (
-          <section
-            className="phone-formats-section"
-            aria-labelledby="phone-formats-heading"
-          >
+          <section className="phone-formats-section" aria-labelledby="phone-formats-heading">
             <h3 id="phone-formats-heading" className="section-title">
               フォーマット結果
             </h3>
@@ -242,10 +227,7 @@ function PhoneFormatter() {
         )}
 
         {/* サンプル番号 */}
-        <section
-          className="phone-sample-section"
-          aria-labelledby="phone-sample-heading"
-        >
+        <section className="phone-sample-section" aria-labelledby="phone-sample-heading">
           <h3 id="phone-sample-heading" className="section-title">
             サンプル番号
           </h3>
@@ -253,10 +235,7 @@ function PhoneFormatter() {
             これらはテスト・デモ用のサンプル番号です。実際の電話番号ではありません。
           </p>
           <div className="phone-sample-table-wrapper">
-            <table
-              className="phone-sample-table"
-              aria-label="サンプル電話番号一覧"
-            >
+            <table className="phone-sample-table" aria-label="サンプル電話番号一覧">
               <thead>
                 <tr>
                   <th scope="col">種別</th>

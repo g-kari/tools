@@ -1,9 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useMemo, useCallback } from "react";
-import {
-  StatusAnnouncer,
-  useStatusAnnouncement,
-} from "~/hooks/useStatusAnnouncement";
+import { StatusAnnouncer, useStatusAnnouncement } from "~/hooks/useStatusAnnouncement";
 import { TipsCard } from "~/components/TipsCard";
 import { useClipboard } from "~/hooks/useClipboard";
 import { useToast } from "~/components/Toast";
@@ -81,7 +78,7 @@ function PathList({
       updated[index] = value;
       onUpdate(ruleId, type, updated);
     },
-    [paths, ruleId, type, onUpdate]
+    [paths, ruleId, type, onUpdate],
   );
 
   const handleRemove = useCallback(
@@ -89,7 +86,7 @@ function PathList({
       const updated = paths.filter((_, i) => i !== index);
       onUpdate(ruleId, type, updated);
     },
-    [paths, ruleId, type, onUpdate]
+    [paths, ruleId, type, onUpdate],
   );
 
   const handleAdd = useCallback(() => {
@@ -143,28 +140,23 @@ function RobotsTxtGenerator() {
   const { showToast } = useToast();
   const { statusRef, announceStatus } = useStatusAnnouncement();
 
-  const [options, setOptions] = useState<RobotsTxtOptions>(() =>
-    createAllowAllPreset()
-  );
+  const [options, setOptions] = useState<RobotsTxtOptions>(() => createAllowAllPreset());
 
   const output = useMemo(() => generateRobotsTxt(options), [options]);
 
   // ルール更新ヘルパー
-  const updateRule = useCallback(
-    (ruleId: string, updater: (rule: CrawlerRule) => CrawlerRule) => {
-      setOptions((prev) => ({
-        ...prev,
-        rules: prev.rules.map((r) => (r.id === ruleId ? updater(r) : r)),
-      }));
-    },
-    []
-  );
+  const updateRule = useCallback((ruleId: string, updater: (rule: CrawlerRule) => CrawlerRule) => {
+    setOptions((prev) => ({
+      ...prev,
+      rules: prev.rules.map((r) => (r.id === ruleId ? updater(r) : r)),
+    }));
+  }, []);
 
   const handleUserAgentChange = useCallback(
     (ruleId: string, value: string) => {
       updateRule(ruleId, (r) => ({ ...r, userAgent: value }));
     },
-    [updateRule]
+    [updateRule],
   );
 
   const handleUserAgentSelect = useCallback(
@@ -173,14 +165,14 @@ function RobotsTxtGenerator() {
         updateRule(ruleId, (r) => ({ ...r, userAgent: value }));
       }
     },
-    [updateRule]
+    [updateRule],
   );
 
   const handlePathsUpdate = useCallback(
     (ruleId: string, type: "allow" | "disallow", paths: string[]) => {
       updateRule(ruleId, (r) => ({ ...r, [type]: paths }));
     },
-    [updateRule]
+    [updateRule],
   );
 
   const handleCrawlDelayChange = useCallback(
@@ -191,7 +183,7 @@ function RobotsTxtGenerator() {
         crawlDelay: value === "" || isNaN(num) || num <= 0 ? null : num,
       }));
     },
-    [updateRule]
+    [updateRule],
   );
 
   const handleAddRule = useCallback(() => {
@@ -246,7 +238,7 @@ function RobotsTxtGenerator() {
       setOptions(preset);
       announceStatus("プリセットを適用しました");
     },
-    [announceStatus]
+    [announceStatus],
   );
 
   // クイック Disallow 追加（最初のルールに追加）
@@ -261,7 +253,7 @@ function RobotsTxtGenerator() {
         }));
       }
     },
-    [options.rules, updateRule]
+    [options.rules, updateRule],
   );
 
   // コピー
@@ -328,29 +320,19 @@ function RobotsTxtGenerator() {
         <div className="converter-section">
           <span className="section-title">
             クローラールール
-            <span className="robots-rule-count">
-              ({options.rules.length} 件)
-            </span>
+            <span className="robots-rule-count">({options.rules.length} 件)</span>
           </span>
 
           <div className="robots-rules-list" aria-label="クローラールール一覧">
             {options.rules.map((rule, index) => (
-              <div
-                key={rule.id}
-                className="robots-rule-card"
-                aria-label={`ルール ${index + 1}`}
-              >
+              <div key={rule.id} className="robots-rule-card" aria-label={`ルール ${index + 1}`}>
                 {/* ヘッダー: User-agent */}
                 <div className="robots-rule-header">
-                  <span className="robots-rule-index">
-                    #{index + 1} User-agent:
-                  </span>
+                  <span className="robots-rule-index">#{index + 1} User-agent:</span>
                   <input
                     type="text"
                     value={rule.userAgent}
-                    onChange={(e) =>
-                      handleUserAgentChange(rule.id, e.target.value)
-                    }
+                    onChange={(e) => handleUserAgentChange(rule.id, e.target.value)}
                     className="robots-ua-input"
                     placeholder="*"
                     aria-label={`ルール ${index + 1} のユーザーエージェント`}
@@ -358,9 +340,7 @@ function RobotsTxtGenerator() {
                   <select
                     className="robots-ua-select"
                     value=""
-                    onChange={(e) =>
-                      handleUserAgentSelect(rule.id, e.target.value)
-                    }
+                    onChange={(e) => handleUserAgentSelect(rule.id, e.target.value)}
                     aria-label="よく使うユーザーエージェントを選択"
                   >
                     <option value="">よく使う▾</option>
@@ -399,10 +379,7 @@ function RobotsTxtGenerator() {
 
                 {/* Crawl-delay */}
                 <div className="robots-crawl-delay-row">
-                  <label
-                    htmlFor={`crawl-delay-${rule.id}`}
-                    className="robots-crawl-delay-label"
-                  >
+                  <label htmlFor={`crawl-delay-${rule.id}`} className="robots-crawl-delay-label">
                     Crawl-delay:
                   </label>
                   <input
@@ -410,9 +387,7 @@ function RobotsTxtGenerator() {
                     type="number"
                     min="1"
                     value={rule.crawlDelay ?? ""}
-                    onChange={(e) =>
-                      handleCrawlDelayChange(rule.id, e.target.value)
-                    }
+                    onChange={(e) => handleCrawlDelayChange(rule.id, e.target.value)}
                     className="robots-crawl-delay-input"
                     placeholder="なし"
                     aria-label={`ルール ${index + 1} のクロール遅延（秒）`}
@@ -423,11 +398,7 @@ function RobotsTxtGenerator() {
             ))}
           </div>
 
-          <button
-            type="button"
-            className="robots-add-rule-btn"
-            onClick={handleAddRule}
-          >
+          <button type="button" className="robots-add-rule-btn" onClick={handleAddRule}>
             + ルールを追加
           </button>
         </div>
@@ -435,9 +406,7 @@ function RobotsTxtGenerator() {
         {/* クイック Disallow */}
         {options.rules.length > 0 && (
           <div className="converter-section">
-            <span className="section-title">
-              よく使う Disallow パス
-            </span>
+            <span className="section-title">よく使う Disallow パス</span>
             <p className="robots-quick-disallow-hint">
               クリックで最初のルールの Disallow に追加します
             </p>
@@ -486,11 +455,7 @@ function RobotsTxtGenerator() {
               );
             })}
           </div>
-          <button
-            type="button"
-            className="robots-add-sitemap-btn"
-            onClick={handleAddSitemap}
-          >
+          <button type="button" className="robots-add-sitemap-btn" onClick={handleAddSitemap}>
             + Sitemap URLを追加
           </button>
         </div>

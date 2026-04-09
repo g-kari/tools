@@ -27,7 +27,6 @@ describe("URL validation", () => {
 });
 
 describe("SSRF protection - private IP detection", () => {
-
   it("should detect localhost", () => {
     expect(isPrivateOrLocalhost("localhost")).toBe(true);
     expect(isPrivateOrLocalhost("test.localhost")).toBe(true);
@@ -308,9 +307,7 @@ describe("Referrer-Policy validation logic", () => {
     ];
 
     expect(secureValues.includes("no-referrer")).toBe(true);
-    expect(secureValues.includes("strict-origin-when-cross-origin")).toBe(
-      true
-    );
+    expect(secureValues.includes("strict-origin-when-cross-origin")).toBe(true);
   });
 
   it("should detect insecure value", () => {

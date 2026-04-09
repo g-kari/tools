@@ -35,18 +35,14 @@ describe("JSON Schema Generator", () => {
     });
 
     it("should generate schema for object with properties", () => {
-      const result = JSON.parse(
-        generateJsonSchema('{"name":"Alice","age":30}')
-      );
+      const result = JSON.parse(generateJsonSchema('{"name":"Alice","age":30}'));
       expect(result.type).toBe("object");
       expect(result.properties.name.type).toBe("string");
       expect(result.properties.age.type).toBe("integer");
     });
 
     it("should generate schema for nested object", () => {
-      const result = JSON.parse(
-        generateJsonSchema('{"user":{"name":"Bob","score":9.5}}')
-      );
+      const result = JSON.parse(generateJsonSchema('{"user":{"name":"Bob","score":9.5}}'));
       expect(result.properties.user.type).toBe("object");
       expect(result.properties.user.properties.name.type).toBe("string");
       expect(result.properties.user.properties.score.type).toBe("number");
@@ -65,17 +61,13 @@ describe("JSON Schema Generator", () => {
     });
 
     it("should generate schema for object array", () => {
-      const result = JSON.parse(
-        generateJsonSchema('[{"id":1},{"id":2}]')
-      );
+      const result = JSON.parse(generateJsonSchema('[{"id":1},{"id":2}]'));
       expect(result.type).toBe("array");
       expect(result.items.type).toBe("object");
     });
 
     it("should mark all object properties as required", () => {
-      const result = JSON.parse(
-        generateJsonSchema('{"name":"Alice","age":30,"active":true}')
-      );
+      const result = JSON.parse(generateJsonSchema('{"name":"Alice","age":30,"active":true}'));
       expect(result.required).toContain("name");
       expect(result.required).toContain("age");
       expect(result.required).toContain("active");
@@ -127,7 +119,7 @@ describe("JSON Schema Generator", () => {
       expect(parsed).not.toBeNull();
       const values = Object.values(parsed);
       const hasNested = values.some(
-        (v) => typeof v === "object" && v !== null && !Array.isArray(v)
+        (v) => typeof v === "object" && v !== null && !Array.isArray(v),
       );
       expect(hasNested).toBe(true);
     });

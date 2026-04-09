@@ -89,7 +89,7 @@
   font-size: 2rem;
   font-weight: 700;
   color: var(--md-sys-color-on-primary-container);
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   word-break: break-all;
   line-height: 1.2;
 }
@@ -159,7 +159,7 @@
 }
 
 .number-format-locale-code {
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   font-size: 0.8125rem;
   color: var(--md-sys-color-on-surface-variant);
 }
@@ -170,7 +170,7 @@
 }
 
 .number-format-formatted-value {
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   font-size: 0.9375rem;
   text-align: right;
 }

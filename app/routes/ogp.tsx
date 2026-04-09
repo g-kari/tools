@@ -7,24 +7,30 @@ import { Input } from "~/components/ui/input";
 import { TipsCard } from "~/components/TipsCard";
 import { ErrorMessage } from "~/components/ErrorMessage";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 
 export const Route = createFileRoute("/ogp")({
   head: () => ({
     meta: [
-    { title: "OGPチェッカー | Web ツール集" },
-    { name: "description", content: "URLのOpen Graph Protocol情報を取得・プレビュー表示するツール。" },
-    { property: "og:title", content: "OGPチェッカー | Web ツール集" },
-    { property: "og:description", content: "URLのOpen Graph Protocol情報を取得・プレビュー表示するツール。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/ogp` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "OGPチェッカー | Web ツール集" },
-    { name: "twitter:description", content: "URLのOpen Graph Protocol情報を取得・プレビュー表示するツール。" },
-  ],
+      { title: "OGPチェッカー | Web ツール集" },
+      {
+        name: "description",
+        content: "URLのOpen Graph Protocol情報を取得・プレビュー表示するツール。",
+      },
+      { property: "og:title", content: "OGPチェッカー | Web ツール集" },
+      {
+        property: "og:description",
+        content: "URLのOpen Graph Protocol情報を取得・プレビュー表示するツール。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/ogp` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "OGPチェッカー | Web ツール集" },
+      {
+        name: "twitter:description",
+        content: "URLのOpen Graph Protocol情報を取得・プレビュー表示するツール。",
+      },
+    ],
   }),
   component: OgpChecker,
 });
@@ -63,8 +69,7 @@ function OgpChecker() {
       setResult(data);
       announceStatus("OGP情報を取得しました");
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "通信エラーが発生しました";
+      const message = err instanceof Error ? err.message : "通信エラーが発生しました";
       setError(message);
       announceStatus("エラー: " + message);
     } finally {
@@ -94,12 +99,7 @@ function OgpChecker() {
   };
 
   const getDescription = (data: OgpData): string => {
-    return (
-      data.description ||
-      data.twitterDescription ||
-      data.metaDescription ||
-      "説明なし"
-    );
+    return data.description || data.twitterDescription || data.metaDescription || "説明なし";
   };
 
   const getImage = (data: OgpData): string | undefined => {
@@ -369,10 +369,7 @@ function OgpChecker() {
   return (
     <>
       <div className="tool-container">
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          aria-label="OGPチェックフォーム"
-        >
+        <form onSubmit={(e) => e.preventDefault()} aria-label="OGPチェックフォーム">
           <div className="converter-section">
             <div className="search-form-row">
               <div className="search-input-wrapper">

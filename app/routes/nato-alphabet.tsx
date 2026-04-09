@@ -1,20 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import {
-  StatusAnnouncer,
-  useStatusAnnouncement,
-} from "~/hooks/useStatusAnnouncement";
+import { StatusAnnouncer, useStatusAnnouncement } from "~/hooks/useStatusAnnouncement";
 import { TipsCard } from "~/components/TipsCard";
 import { useClipboard } from "~/hooks/useClipboard";
 import { useToast } from "~/components/Toast";
 import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
-import {
-  NATO_ALPHABET_MAP,
-  textToNato,
-  textToNatoString,
-} from "../utils/nato-alphabet";
+import { NATO_ALPHABET_MAP, textToNato, textToNatoString } from "../utils/nato-alphabet";
 
 export const Route = createFileRoute("/nato-alphabet")({
   head: () => ({
@@ -58,10 +51,7 @@ function NatoAlphabetConverter() {
   const natoResults = useMemo(() => textToNato(inputText), [inputText]);
 
   /** テキスト形式の変換結果 */
-  const natoString = useMemo(
-    () => textToNatoString(inputText),
-    [inputText]
-  );
+  const natoString = useMemo(() => textToNatoString(inputText), [inputText]);
 
   const handleCopy = async () => {
     if (!natoString) return;
@@ -133,9 +123,7 @@ function NatoAlphabetConverter() {
             aria-live="polite"
           >
             {natoResults.length === 0 ? (
-              <span className="nato-result-empty">
-                テキストを入力すると変換結果が表示されます
-              </span>
+              <span className="nato-result-empty">テキストを入力すると変換結果が表示されます</span>
             ) : (
               natoResults.map((result, index) => (
                 <div
@@ -143,25 +131,17 @@ function NatoAlphabetConverter() {
                   className={[
                     "nato-char-card",
                     result.isSpace ? "nato-char-card--space" : "",
-                    !result.isSpace && result.phonetic === null
-                      ? "nato-char-card--unknown"
-                      : "",
+                    !result.isSpace && result.phonetic === null ? "nato-char-card--unknown" : "",
                   ]
                     .filter(Boolean)
                     .join(" ")}
                   title={
-                    result.isSpace
-                      ? "スペース"
-                      : (result.phonetic ?? `未対応: ${result.char}`)
+                    result.isSpace ? "スペース" : (result.phonetic ?? `未対応: ${result.char}`)
                   }
                 >
-                  <span className="nato-char-original">
-                    {result.isSpace ? "␣" : result.char}
-                  </span>
+                  <span className="nato-char-original">{result.isSpace ? "␣" : result.char}</span>
                   <span className="nato-char-phonetic">
-                    {result.isSpace
-                      ? "(space)"
-                      : (result.phonetic ?? "—")}
+                    {result.isSpace ? "(space)" : (result.phonetic ?? "—")}
                   </span>
                 </div>
               ))
@@ -187,13 +167,8 @@ function NatoAlphabetConverter() {
 
         {/* リファレンステーブル */}
         <div className="nato-reference-section">
-          <p className="nato-reference-title">
-            NATOフォネティックアルファベット一覧
-          </p>
-          <div
-            className="nato-reference-grid"
-            aria-label="NATOフォネティックアルファベット対応表"
-          >
+          <p className="nato-reference-title">NATOフォネティックアルファベット一覧</p>
+          <div className="nato-reference-grid" aria-label="NATOフォネティックアルファベット対応表">
             {REFERENCE_ENTRIES.map(([letter, phonetic]) => (
               <div key={letter} className="nato-reference-item">
                 <span className="nato-reference-letter">{letter}</span>

@@ -87,9 +87,7 @@ export function toBinary32(n: number): string {
  * 2進数文字列を4ビットごとにスペース区切りで表示する
  */
 export function formatBinaryGroups(bin32: string): string {
-  return bin32
-    .match(/.{1,4}/g)!
-    .join(" ");
+  return bin32.match(/.{1,4}/g)!.join(" ");
 }
 
 /**
@@ -156,7 +154,7 @@ export function computeResults(a: number, b: number): BitwiseResult[] {
  */
 export function computeShift(
   value: number,
-  shiftAmount: number
+  shiftAmount: number,
 ): {
   leftShift: number;
   rightShift: number;

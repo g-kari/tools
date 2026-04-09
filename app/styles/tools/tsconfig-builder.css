@@ -139,7 +139,7 @@
 }
 
 .tsconfig-option-key {
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   font-size: 0.875rem;
   font-weight: 600;
   color: var(--md-sys-color-on-surface);
@@ -226,7 +226,7 @@
 }
 
 .tsconfig-toggle-label {
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   font-size: 0.8125rem;
   color: var(--md-sys-color-on-surface-variant);
 }
@@ -237,7 +237,7 @@
   padding: 0.5rem 0.75rem;
   border: 1.5px solid var(--md-sys-color-outline-variant);
   border-radius: 4px;
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   font-size: 0.875rem;
   background: var(--md-sys-color-surface-variant);
   color: var(--md-sys-color-on-surface);
@@ -277,7 +277,7 @@
   border-radius: 14px;
   background: var(--md-sys-color-surface);
   color: var(--md-sys-color-on-surface);
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   font-size: 0.75rem;
   cursor: pointer;
   user-select: none;
@@ -325,7 +325,7 @@
   border-radius: 4px;
   background: var(--md-sys-color-surface-variant);
   color: var(--md-sys-color-on-surface);
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   font-size: 0.8125rem;
   line-height: 1.7;
   white-space: pre;

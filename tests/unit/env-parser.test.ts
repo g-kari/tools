@@ -1,10 +1,5 @@
 import { describe, it, expect } from "vite-plus/test";
-import {
-  parseEnv,
-  toJSON,
-  toYAML,
-  toExports,
-} from "../../app/utils/env-parser";
+import { parseEnv, toJSON, toYAML, toExports } from "../../app/utils/env-parser";
 import type { EnvEntry } from "../../app/utils/env-parser";
 
 // ===== テストスイート =====
@@ -52,9 +47,7 @@ describe("parseEnv", () => {
     });
 
     it("複数のコメント行がある場合もスキップされる", () => {
-      const result = parseEnv(
-        "# comment 1\n# comment 2\nKEY=VALUE\n# comment 3",
-      );
+      const result = parseEnv("# comment 1\n# comment 2\nKEY=VALUE\n# comment 3");
       expect(result.entries).toHaveLength(1);
     });
 
@@ -116,13 +109,9 @@ describe("parseEnv", () => {
 
   describe("値にURLやコロンを含むケース", () => {
     it("URLを値に含む場合をパースできる", () => {
-      const result = parseEnv(
-        "DATABASE_URL=postgresql://user:pass@localhost:5432/db",
-      );
+      const result = parseEnv("DATABASE_URL=postgresql://user:pass@localhost:5432/db");
       expect(result.entries[0].key).toBe("DATABASE_URL");
-      expect(result.entries[0].value).toBe(
-        "postgresql://user:pass@localhost:5432/db",
-      );
+      expect(result.entries[0].value).toBe("postgresql://user:pass@localhost:5432/db");
     });
 
     it("値に=を含む場合は最初の=で分割される", () => {
@@ -205,9 +194,7 @@ describe("toJSON", () => {
   });
 
   it("特殊文字を含む値もJSON変換できる", () => {
-    const entries: EnvEntry[] = [
-      { key: "URL", value: "https://example.com/path?q=1&r=2" },
-    ];
+    const entries: EnvEntry[] = [{ key: "URL", value: "https://example.com/path?q=1&r=2" }];
     const result = toJSON(entries);
     const parsed = JSON.parse(result);
     expect(parsed.URL).toBe("https://example.com/path?q=1&r=2");
@@ -236,9 +223,7 @@ describe("toYAML", () => {
   });
 
   it("コロンを含む値はクォートされる", () => {
-    const entries: EnvEntry[] = [
-      { key: "URL", value: "http://example.com" },
-    ];
+    const entries: EnvEntry[] = [{ key: "URL", value: "http://example.com" }];
     const result = toYAML(entries);
     expect(result).toContain('"');
   });
@@ -289,7 +274,7 @@ describe("toExports", () => {
     expect(result).toContain("C:\\\\path\\\\to\\\\file");
   });
 
-  it("空値はexport KEY=\"\"になる", () => {
+  it('空値はexport KEY=""になる', () => {
     const entries: EnvEntry[] = [{ key: "EMPTY", value: "" }];
     const result = toExports(entries);
     expect(result).toBe('export EMPTY=""');
@@ -298,8 +283,7 @@ describe("toExports", () => {
 
 describe("ラウンドトリップ変換", () => {
   it("parseEnvしてtoJSONするとJSON.parseできる", () => {
-    const input =
-      "DATABASE_URL=postgresql://localhost/db\nAPI_KEY=secret123\nDEBUG=true";
+    const input = "DATABASE_URL=postgresql://localhost/db\nAPI_KEY=secret123\nDEBUG=true";
     const result = parseEnv(input);
     const json = toJSON(result.entries);
     const parsed = JSON.parse(json);
@@ -309,7 +293,7 @@ describe("ラウンドトリップ変換", () => {
   });
 
   it("クォート付き入力をparseしてtoJSONすると正しい値になる", () => {
-    const input = 'KEY="hello world"\nOTHER=\'simple\'';
+    const input = "KEY=\"hello world\"\nOTHER='simple'";
     const result = parseEnv(input);
     const json = toJSON(result.entries);
     const parsed = JSON.parse(json);

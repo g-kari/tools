@@ -17,19 +17,10 @@ export type AnimationType =
 export type SlideDirection = "up" | "down" | "left" | "right";
 
 /** タイミング関数 */
-export type TimingFunction =
-  | "ease"
-  | "linear"
-  | "ease-in"
-  | "ease-out"
-  | "ease-in-out";
+export type TimingFunction = "ease" | "linear" | "ease-in" | "ease-out" | "ease-in-out";
 
 /** アニメーション方向 */
-export type AnimationDirection =
-  | "normal"
-  | "reverse"
-  | "alternate"
-  | "alternate-reverse";
+export type AnimationDirection = "normal" | "reverse" | "alternate" | "alternate-reverse";
 
 /** フィルモード */
 export type FillMode = "none" | "forwards" | "backwards" | "both";
@@ -56,12 +47,7 @@ const VALID_ANIMATION_TYPES: readonly AnimationType[] = [
   "pulse",
   "flip",
 ];
-const VALID_SLIDE_DIRECTIONS: readonly SlideDirection[] = [
-  "up",
-  "down",
-  "left",
-  "right",
-];
+const VALID_SLIDE_DIRECTIONS: readonly SlideDirection[] = ["up", "down", "left", "right"];
 const VALID_TIMING_FUNCTIONS: readonly TimingFunction[] = [
   "ease",
   "linear",
@@ -75,12 +61,7 @@ const VALID_DIRECTIONS: readonly AnimationDirection[] = [
   "alternate",
   "alternate-reverse",
 ];
-const VALID_FILL_MODES: readonly FillMode[] = [
-  "none",
-  "forwards",
-  "backwards",
-  "both",
-];
+const VALID_FILL_MODES: readonly FillMode[] = ["none", "forwards", "backwards", "both"];
 
 /**
  * アニメーション設定を許可リストで検証する
@@ -103,18 +84,10 @@ function validateConfig(config: AnimationConfig): void {
   if (!VALID_FILL_MODES.includes(config.fillMode)) {
     throw new Error(`Invalid fill mode: ${config.fillMode}`);
   }
-  if (
-    typeof config.duration !== "number" ||
-    config.duration < 0.1 ||
-    config.duration > 10
-  ) {
+  if (typeof config.duration !== "number" || config.duration < 0.1 || config.duration > 10) {
     throw new Error(`Invalid duration: ${config.duration}`);
   }
-  if (
-    typeof config.delay !== "number" ||
-    config.delay < 0 ||
-    config.delay > 5
-  ) {
+  if (typeof config.delay !== "number" || config.delay < 0 || config.delay > 5) {
     throw new Error(`Invalid delay: ${config.delay}`);
   }
 }
@@ -231,8 +204,7 @@ export function generateAnimationProperty(config: AnimationConfig): string {
       : config.iterationCount > 1
         ? ` ${config.iterationCount}`
         : "";
-  const direction =
-    config.direction !== "normal" ? ` ${config.direction}` : "";
+  const direction = config.direction !== "normal" ? ` ${config.direction}` : "";
   const fillMode = config.fillMode !== "none" ? ` ${config.fillMode}` : "";
 
   return `${name} ${duration} ${timing}${delay}${iteration}${direction}${fillMode}`;

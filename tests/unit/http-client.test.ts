@@ -17,9 +17,7 @@ describe("isValidUrl", () => {
   });
 
   it("パスやクエリパラメータを含むURLを有効と判定する", () => {
-    expect(isValidUrl("https://api.example.com/v1/users?page=1&limit=10")).toBe(
-      true
-    );
+    expect(isValidUrl("https://api.example.com/v1/users?page=1&limit=10")).toBe(true);
   });
 
   it("ftpスキームのURLを無効と判定する", () => {
@@ -82,9 +80,7 @@ describe("headersArrayToObject", () => {
   });
 
   it("キーと値の前後空白をトリムする", () => {
-    const headers: HttpHeader[] = [
-      { key: "  Content-Type  ", value: "  application/json  " },
-    ];
+    const headers: HttpHeader[] = [{ key: "  Content-Type  ", value: "  application/json  " }];
     const result = headersArrayToObject(headers);
     expect(result).toEqual({ "Content-Type": "application/json" });
   });
@@ -103,9 +99,7 @@ describe("formatResponseBody", () => {
   it("有効なJSONを整形する", () => {
     const input = '{"name":"test","value":123}';
     const result = formatResponseBody(input);
-    expect(result).toBe(
-      JSON.stringify(JSON.parse(input), null, 2)
-    );
+    expect(result).toBe(JSON.stringify(JSON.parse(input), null, 2));
   });
 
   it("配列のJSONを整形する", () => {

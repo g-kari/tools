@@ -60,7 +60,9 @@
   border: none;
   border-radius: 20px;
   cursor: pointer;
-  transition: background-color 0.15s, opacity 0.15s;
+  transition:
+    background-color 0.15s,
+    opacity 0.15s;
   letter-spacing: 0.25px;
   white-space: nowrap;
 }
@@ -106,7 +108,9 @@
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.15s, opacity 0.15s;
+  transition:
+    background-color 0.15s,
+    opacity 0.15s;
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -171,13 +175,13 @@
 }
 
 .port-check-table-cell-port {
-  font-family: 'Space Mono', 'Courier New', monospace;
+  font-family: "Space Mono", "Courier New", monospace;
   font-weight: 600;
   color: var(--md-sys-color-primary);
 }
 
 .port-check-table-cell-time {
-  font-family: 'Space Mono', 'Courier New', monospace;
+  font-family: "Space Mono", "Courier New", monospace;
   font-size: 0.8125rem;
   color: var(--md-sys-color-on-surface-variant);
 }

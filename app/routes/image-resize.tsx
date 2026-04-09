@@ -16,16 +16,25 @@ import {
 export const Route = createFileRoute("/image-resize")({
   head: () => ({
     meta: [
-    { title: "画像リサイズ | Web ツール集" },
-    { name: "description", content: "画像を任意サイズにリサイズするブラウザ上で動作するツール。" },
-    { property: "og:title", content: "画像リサイズ | Web ツール集" },
-    { property: "og:description", content: "画像を任意サイズにリサイズするブラウザ上で動作するツール。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/image-resize` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "画像リサイズ | Web ツール集" },
-    { name: "twitter:description", content: "画像を任意サイズにリサイズするブラウザ上で動作するツール。" },
-  ],
+      { title: "画像リサイズ | Web ツール集" },
+      {
+        name: "description",
+        content: "画像を任意サイズにリサイズするブラウザ上で動作するツール。",
+      },
+      { property: "og:title", content: "画像リサイズ | Web ツール集" },
+      {
+        property: "og:description",
+        content: "画像を任意サイズにリサイズするブラウザ上で動作するツール。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/image-resize` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "画像リサイズ | Web ツール集" },
+      {
+        name: "twitter:description",
+        content: "画像を任意サイズにリサイズするブラウザ上で動作するツール。",
+      },
+    ],
   }),
   component: ImageResizer,
 });
@@ -87,7 +96,7 @@ export async function resizeImage(
   file: File,
   width: number,
   height: number,
-  cropArea?: CropArea
+  cropArea?: CropArea,
 ): Promise<Blob | null> {
   return new Promise((resolve) => {
     const img = new Image();
@@ -121,7 +130,7 @@ export async function resizeImage(
           0,
           0,
           width,
-          height
+          height,
         );
       } else {
         // 通常のリサイズ
@@ -138,7 +147,7 @@ export async function resizeImage(
       canvas.toBlob(
         (blob) => resolve(blob),
         mimeType,
-        0.92 // JPEG/WebPの場合の画質
+        0.92, // JPEG/WebPの場合の画質
       );
     };
 
@@ -159,7 +168,12 @@ export async function resizeImage(
  * @param isCropped - トリミングされたか
  * @returns 新しいファイル名
  */
-export function generateFilename(originalName: string, width: number, height: number, isCropped: boolean = false): string {
+export function generateFilename(
+  originalName: string,
+  width: number,
+  height: number,
+  isCropped: boolean = false,
+): string {
   const ext = originalName.match(/\.[^/.]+$/)?.[0] || ".png";
   const nameWithoutExt = originalName.replace(/\.[^/.]+$/, "");
   const suffix = isCropped ? "_cropped" : "_resized";
@@ -169,7 +183,10 @@ export function generateFilename(originalName: string, width: number, height: nu
 function ImageResizer() {
   const [originalFile, setOriginalFile] = useState<File | null>(null);
   const [originalPreview, setOriginalPreview] = useState<string | null>(null);
-  const [originalDimensions, setOriginalDimensions] = useState<{ width: number; height: number } | null>(null);
+  const [originalDimensions, setOriginalDimensions] = useState<{
+    width: number;
+    height: number;
+  } | null>(null);
   const [resizedBlob, setResizedBlob] = useState<Blob | null>(null);
   const [resizedPreview, setResizedPreview] = useState<string | null>(null);
   const [width, setWidth] = useState<number>(0);
@@ -186,7 +203,7 @@ function ImageResizer() {
   const [dragStart, setDragStart] = useState<{ x: number; y: number } | null>(null);
   const [imageLoaded, setImageLoaded] = useState(false);
   // ドラッグモード: 'create' = 新規作成, 'move' = 移動
-  const [dragMode, setDragMode] = useState<'create' | 'move'>('create');
+  const [dragMode, setDragMode] = useState<"create" | "move">("create");
 
   const cropCanvasRef = useRef<HTMLCanvasElement>(null);
   const imageElementRef = useRef<HTMLImageElement | null>(null);
@@ -298,7 +315,7 @@ function ImageResizer() {
         cropArea.x * scale,
         cropArea.y * scale,
         cropArea.width * scale,
-        cropArea.height * scale
+        cropArea.height * scale,
       );
       ctx.drawImage(
         img,
@@ -309,7 +326,7 @@ function ImageResizer() {
         cropArea.x * scale,
         cropArea.y * scale,
         cropArea.width * scale,
-        cropArea.height * scale
+        cropArea.height * scale,
       );
 
       // 選択範囲の枠を描画
@@ -319,145 +336,165 @@ function ImageResizer() {
         cropArea.x * scale,
         cropArea.y * scale,
         cropArea.width * scale,
-        cropArea.height * scale
+        cropArea.height * scale,
       );
     }
   }, [enableCrop, imageLoaded, cropArea]);
 
   // 座標を取得する共通関数（マウス・タッチ両対応）
-  const getEventCoordinates = useCallback((
-    e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement> | MouseEvent | TouchEvent
-  ): { x: number; y: number } | null => {
-    if (!cropCanvasRef.current) return null;
+  const getEventCoordinates = useCallback(
+    (
+      e:
+        | React.MouseEvent<HTMLCanvasElement>
+        | React.TouchEvent<HTMLCanvasElement>
+        | MouseEvent
+        | TouchEvent,
+    ): { x: number; y: number } | null => {
+      if (!cropCanvasRef.current) return null;
 
-    const canvas = cropCanvasRef.current;
-    const rect = canvas.getBoundingClientRect();
-    const scale = canvasScaleRef.current;
+      const canvas = cropCanvasRef.current;
+      const rect = canvas.getBoundingClientRect();
+      const scale = canvasScaleRef.current;
 
-    let clientX: number;
-    let clientY: number;
+      let clientX: number;
+      let clientY: number;
 
-    if ('touches' in e) {
-      if (e.touches.length === 0) return null;
-      clientX = e.touches[0].clientX;
-      clientY = e.touches[0].clientY;
-    } else {
-      clientX = e.clientX;
-      clientY = e.clientY;
-    }
-
-    return {
-      x: (clientX - rect.left) / scale,
-      y: (clientY - rect.top) / scale,
-    };
-  }, []);
-
-  // 既存の選択範囲内かどうかを判定
-  const isInsideCropArea = useCallback((x: number, y: number): boolean => {
-    if (!cropArea) return false;
-    return (
-      x >= cropArea.x &&
-      x <= cropArea.x + cropArea.width &&
-      y >= cropArea.y &&
-      y <= cropArea.y + cropArea.height
-    );
-  }, [cropArea]);
-
-  // ドラッグ開始の共通処理
-  const handleDragStart = useCallback((
-    e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>
-  ) => {
-    if (!enableCrop || !originalDimensions) return;
-
-    // タッチイベントの場合はスクロールを防止
-    if ('touches' in e) {
-      e.preventDefault();
-    }
-
-    const coords = getEventCoordinates(e);
-    if (!coords) return;
-
-    // 既存の選択範囲内をクリックした場合は移動モード
-    if (isInsideCropArea(coords.x, coords.y)) {
-      setDragMode('move');
-    } else {
-      setDragMode('create');
-    }
-
-    setIsDraggingCrop(true);
-    setDragStart(coords);
-  }, [enableCrop, originalDimensions, getEventCoordinates, isInsideCropArea]);
-
-  // ドラッグ中の共通処理
-  const handleDragMove = useCallback((
-    e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>
-  ) => {
-    if (!isDraggingCrop || !dragStart || !originalDimensions) return;
-
-    // タッチイベントの場合はスクロールを防止
-    if ('touches' in e) {
-      e.preventDefault();
-    }
-
-    const coords = getEventCoordinates(e);
-    if (!coords) return;
-
-    const minSize = 10;
-
-    if (dragMode === 'move' && cropArea) {
-      // 移動モード: 選択範囲を移動
-      const deltaX = coords.x - dragStart.x;
-      const deltaY = coords.y - dragStart.y;
-
-      let newX = cropArea.x + deltaX;
-      let newY = cropArea.y + deltaY;
-
-      // 画像範囲内に制限
-      newX = Math.max(0, Math.min(newX, originalDimensions.width - cropArea.width));
-      newY = Math.max(0, Math.min(newY, originalDimensions.height - cropArea.height));
-
-      setCropArea({
-        ...cropArea,
-        x: newX,
-        y: newY,
-      });
-
-      // ドラッグ開始位置を更新（差分計算のため）
-      setDragStart(coords);
-    } else {
-      // 作成モード: 新しい選択範囲を作成
-      const x = Math.min(dragStart.x, coords.x);
-      const y = Math.min(dragStart.y, coords.y);
-      let newWidth = Math.abs(coords.x - dragStart.x);
-      let newHeight = Math.abs(coords.y - dragStart.y);
-
-      if (newWidth < minSize || newHeight < minSize) return;
-
-      // アスペクト比を適用
-      if (cropAspectRatio !== null && cropAspectRatio > 0) {
-        if (newWidth / newHeight > cropAspectRatio) {
-          newWidth = newHeight * cropAspectRatio;
-        } else {
-          newHeight = newWidth / cropAspectRatio;
-        }
+      if ("touches" in e) {
+        if (e.touches.length === 0) return null;
+        clientX = e.touches[0].clientX;
+        clientY = e.touches[0].clientY;
+      } else {
+        clientX = e.clientX;
+        clientY = e.clientY;
       }
 
-      // 画像範囲内に制限
-      const clampedX = Math.max(0, Math.min(x, originalDimensions.width - newWidth));
-      const clampedY = Math.max(0, Math.min(y, originalDimensions.height - newHeight));
-      const clampedWidth = Math.min(newWidth, originalDimensions.width - clampedX);
-      const clampedHeight = Math.min(newHeight, originalDimensions.height - clampedY);
+      return {
+        x: (clientX - rect.left) / scale,
+        y: (clientY - rect.top) / scale,
+      };
+    },
+    [],
+  );
 
-      if (clampedWidth < minSize || clampedHeight < minSize) return;
+  // 既存の選択範囲内かどうかを判定
+  const isInsideCropArea = useCallback(
+    (x: number, y: number): boolean => {
+      if (!cropArea) return false;
+      return (
+        x >= cropArea.x &&
+        x <= cropArea.x + cropArea.width &&
+        y >= cropArea.y &&
+        y <= cropArea.y + cropArea.height
+      );
+    },
+    [cropArea],
+  );
 
-      setCropArea({
-        x: clampedX,
-        y: clampedY,
-        width: clampedWidth,
-        height: clampedHeight,
-      });
-    }
-  }, [isDraggingCrop, dragStart, originalDimensions, cropAspectRatio, dragMode, cropArea, getEventCoordinates]);
+  // ドラッグ開始の共通処理
+  const handleDragStart = useCallback(
+    (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+      if (!enableCrop || !originalDimensions) return;
+
+      // タッチイベントの場合はスクロールを防止
+      if ("touches" in e) {
+        e.preventDefault();
+      }
+
+      const coords = getEventCoordinates(e);
+      if (!coords) return;
+
+      // 既存の選択範囲内をクリックした場合は移動モード
+      if (isInsideCropArea(coords.x, coords.y)) {
+        setDragMode("move");
+      } else {
+        setDragMode("create");
+      }
+
+      setIsDraggingCrop(true);
+      setDragStart(coords);
+    },
+    [enableCrop, originalDimensions, getEventCoordinates, isInsideCropArea],
+  );
+
+  // ドラッグ中の共通処理
+  const handleDragMove = useCallback(
+    (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+      if (!isDraggingCrop || !dragStart || !originalDimensions) return;
+
+      // タッチイベントの場合はスクロールを防止
+      if ("touches" in e) {
+        e.preventDefault();
+      }
+
+      const coords = getEventCoordinates(e);
+      if (!coords) return;
+
+      const minSize = 10;
+
+      if (dragMode === "move" && cropArea) {
+        // 移動モード: 選択範囲を移動
+        const deltaX = coords.x - dragStart.x;
+        const deltaY = coords.y - dragStart.y;
+
+        let newX = cropArea.x + deltaX;
+        let newY = cropArea.y + deltaY;
+
+        // 画像範囲内に制限
+        newX = Math.max(0, Math.min(newX, originalDimensions.width - cropArea.width));
+        newY = Math.max(0, Math.min(newY, originalDimensions.height - cropArea.height));
+
+        setCropArea({
+          ...cropArea,
+          x: newX,
+          y: newY,
+        });
+
+        // ドラッグ開始位置を更新（差分計算のため）
+        setDragStart(coords);
+      } else {
+        // 作成モード: 新しい選択範囲を作成
+        const x = Math.min(dragStart.x, coords.x);
+        const y = Math.min(dragStart.y, coords.y);
+        let newWidth = Math.abs(coords.x - dragStart.x);
+        let newHeight = Math.abs(coords.y - dragStart.y);
+
+        if (newWidth < minSize || newHeight < minSize) return;
+
+        // アスペクト比を適用
+        if (cropAspectRatio !== null && cropAspectRatio > 0) {
+          if (newWidth / newHeight > cropAspectRatio) {
+            newWidth = newHeight * cropAspectRatio;
+          } else {
+            newHeight = newWidth / cropAspectRatio;
+          }
+        }
+
+        // 画像範囲内に制限
+        const clampedX = Math.max(0, Math.min(x, originalDimensions.width - newWidth));
+        const clampedY = Math.max(0, Math.min(y, originalDimensions.height - newHeight));
+        const clampedWidth = Math.min(newWidth, originalDimensions.width - clampedX);
+        const clampedHeight = Math.min(newHeight, originalDimensions.height - clampedY);
+
+        if (clampedWidth < minSize || clampedHeight < minSize) return;
+
+        setCropArea({
+          x: clampedX,
+          y: clampedY,
+          width: clampedWidth,
+          height: clampedHeight,
+        });
+      }
+    },
+    [
+      isDraggingCrop,
+      dragStart,
+      originalDimensions,
+      cropAspectRatio,
+      dragMode,
+      cropArea,
+      getEventCoordinates,
+    ],
+  );
 
   // ドラッグ終了の共通処理
   const handleDragEnd = useCallback(() => {
@@ -477,7 +514,7 @@ function ImageResizer() {
 
       const minSize = 10;
 
-      if (dragMode === 'move' && cropArea) {
+      if (dragMode === "move" && cropArea) {
         const deltaX = coords.x - dragStart.x;
         const deltaY = coords.y - dragStart.y;
 
@@ -531,18 +568,26 @@ function ImageResizer() {
       setDragStart(null);
     };
 
-    window.addEventListener('mousemove', handleGlobalMove);
-    window.addEventListener('mouseup', handleGlobalEnd);
-    window.addEventListener('touchmove', handleGlobalMove, { passive: false });
-    window.addEventListener('touchend', handleGlobalEnd);
+    window.addEventListener("mousemove", handleGlobalMove);
+    window.addEventListener("mouseup", handleGlobalEnd);
+    window.addEventListener("touchmove", handleGlobalMove, { passive: false });
+    window.addEventListener("touchend", handleGlobalEnd);
 
     return () => {
-      window.removeEventListener('mousemove', handleGlobalMove);
-      window.removeEventListener('mouseup', handleGlobalEnd);
-      window.removeEventListener('touchmove', handleGlobalMove);
-      window.removeEventListener('touchend', handleGlobalEnd);
+      window.removeEventListener("mousemove", handleGlobalMove);
+      window.removeEventListener("mouseup", handleGlobalEnd);
+      window.removeEventListener("touchmove", handleGlobalMove);
+      window.removeEventListener("touchend", handleGlobalEnd);
     };
-  }, [isDraggingCrop, dragStart, originalDimensions, cropAspectRatio, dragMode, cropArea, getEventCoordinates]);
+  }, [
+    isDraggingCrop,
+    dragStart,
+    originalDimensions,
+    cropAspectRatio,
+    dragMode,
+    cropArea,
+    getEventCoordinates,
+  ]);
 
   // 幅変更時のハンドラー
   const handleWidthChange = useCallback(
@@ -556,7 +601,7 @@ function ImageResizer() {
         setHeight(clampDimension(newHeight));
       }
     },
-    [maintainAspectRatio, originalDimensions, aspectRatio]
+    [maintainAspectRatio, originalDimensions, aspectRatio],
   );
 
   // 高さ変更時のハンドラー
@@ -571,7 +616,7 @@ function ImageResizer() {
         setWidth(clampDimension(newWidth));
       }
     },
-    [maintainAspectRatio, originalDimensions, aspectRatio]
+    [maintainAspectRatio, originalDimensions, aspectRatio],
   );
 
   // アスペクト比維持トグル時のハンドラー
@@ -590,7 +635,7 @@ function ImageResizer() {
         }
       }
     },
-    [originalDimensions, width, height, aspectRatio, lastChanged]
+    [originalDimensions, width, height, aspectRatio, lastChanged],
   );
 
   // プリセット選択ハンドラー
@@ -607,7 +652,7 @@ function ImageResizer() {
       }
       setLastChanged("width");
     },
-    [maintainAspectRatio, originalDimensions, aspectRatio]
+    [maintainAspectRatio, originalDimensions, aspectRatio],
   );
 
   const handleFileSelect = useCallback(
@@ -633,7 +678,7 @@ function ImageResizer() {
       };
       img.src = preview;
     },
-    [originalPreview, resizedPreview, showToast]
+    [originalPreview, resizedPreview, showToast],
   );
 
   const handleResize = useCallback(async () => {
@@ -643,14 +688,22 @@ function ImageResizer() {
     }
 
     setIsLoading(true);
-    const blob = await resizeImage(originalFile, width, height, enableCrop && cropArea ? cropArea : undefined);
+    const blob = await resizeImage(
+      originalFile,
+      width,
+      height,
+      enableCrop && cropArea ? cropArea : undefined,
+    );
     setIsLoading(false);
 
     if (blob) {
       if (resizedPreview) URL.revokeObjectURL(resizedPreview);
       setResizedBlob(blob);
       setResizedPreview(URL.createObjectURL(blob));
-      showToast(enableCrop ? "画像をトリミング・リサイズしました" : "画像をリサイズしました", "success");
+      showToast(
+        enableCrop ? "画像をトリミング・リサイズしました" : "画像をリサイズしました",
+        "success",
+      );
     } else {
       showToast("画像の処理に失敗しました", "error");
     }
@@ -659,7 +712,12 @@ function ImageResizer() {
   const handleDownload = useCallback(() => {
     if (!resizedBlob || !originalFile) return;
 
-    const filename = generateFilename(originalFile.name, width, height, enableCrop && cropArea !== null);
+    const filename = generateFilename(
+      originalFile.name,
+      width,
+      height,
+      enableCrop && cropArea !== null,
+    );
     downloadBlob(resizedBlob, filename);
     showToast("ダウンロードを開始しました", "success");
   }, [resizedBlob, originalFile, width, height, enableCrop, cropArea, showToast]);
@@ -709,9 +767,7 @@ function ImageResizer() {
             sections={[
               {
                 title: "画像リサイズ・トリミングツールとは",
-                items: [
-                  "画像の幅と高さを変更したり、必要な部分だけを切り出せるツールです",
-                ],
+                items: ["画像の幅と高さを変更したり、必要な部分だけを切り出せるツールです"],
               },
               {
                 title: "使い方",
@@ -750,7 +806,9 @@ function ImageResizer() {
               {originalDimensions && (
                 <div className="image-source-info">
                   <span>{originalFile?.name}</span>
-                  <span>{originalDimensions.width} × {originalDimensions.height} px</span>
+                  <span>
+                    {originalDimensions.width} × {originalDimensions.height} px
+                  </span>
                   <span>{formatFileSize(originalFile?.size || 0)}</span>
                 </div>
               )}
@@ -811,8 +869,11 @@ function ImageResizer() {
               </label>
 
               {sizeChangePercent !== 0 && (
-                <p className={`help-text ${sizeChangePercent > 0 ? "size-increase" : "size-decrease"}`}>
-                  サイズ変更: {sizeChangePercent > 0 ? "+" : ""}{sizeChangePercent}%
+                <p
+                  className={`help-text ${sizeChangePercent > 0 ? "size-increase" : "size-decrease"}`}
+                >
+                  サイズ変更: {sizeChangePercent > 0 ? "+" : ""}
+                  {sizeChangePercent}%
                 </p>
               )}
             </div>
@@ -867,7 +928,7 @@ function ImageResizer() {
                 <div className="crop-canvas-container">
                   <canvas
                     ref={cropCanvasRef}
-                    className={`crop-canvas ${cropArea ? 'has-selection' : ''}`}
+                    className={`crop-canvas ${cropArea ? "has-selection" : ""}`}
                     onMouseDown={handleDragStart}
                     onMouseMove={handleDragMove}
                     onMouseUp={handleDragEnd}
@@ -879,13 +940,19 @@ function ImageResizer() {
                 </div>
 
                 <p className="help-text">
-                  {cropArea ? "選択範囲をドラッグで移動、範囲外をドラッグで新規作成" : "画像をドラッグして範囲を選択"}
+                  {cropArea
+                    ? "選択範囲をドラッグで移動、範囲外をドラッグで新規作成"
+                    : "画像をドラッグして範囲を選択"}
                 </p>
 
                 {cropArea && (
                   <div className="crop-result-info">
-                    <span>選択範囲: {Math.round(cropArea.width)} × {Math.round(cropArea.height)} px</span>
-                    <span>位置: ({Math.round(cropArea.x)}, {Math.round(cropArea.y)})</span>
+                    <span>
+                      選択範囲: {Math.round(cropArea.width)} × {Math.round(cropArea.height)} px
+                    </span>
+                    <span>
+                      位置: ({Math.round(cropArea.x)}, {Math.round(cropArea.y)})
+                    </span>
                   </div>
                 )}
               </>
@@ -899,7 +966,7 @@ function ImageResizer() {
                 onClick={handleResize}
                 disabled={isLoading || width < MIN_DIMENSION || height < MIN_DIMENSION}
               >
-                {isLoading ? "処理中..." : (enableCrop ? "トリミング&リサイズ" : "リサイズ")}
+                {isLoading ? "処理中..." : enableCrop ? "トリミング&リサイズ" : "リサイズ"}
               </Button>
             </div>
           </div>
@@ -908,24 +975,23 @@ function ImageResizer() {
             <div className="converter-section">
               <h2 className="section-title">リサイズ結果</h2>
               <div className="crop-result-preview">
-                <img
-                  src={resizedPreview}
-                  alt="リサイズ結果"
-                  className="crop-result-image"
-                />
+                <img src={resizedPreview} alt="リサイズ結果" className="crop-result-image" />
                 <div className="crop-result-info">
-                  <span>{width} × {height} px</span>
+                  <span>
+                    {width} × {height} px
+                  </span>
                   <span>{formatFileSize(resizedBlob.size)}</span>
-                  <span className={resizedBlob.size < originalFile.size ? "size-decrease" : "size-increase"}>
+                  <span
+                    className={
+                      resizedBlob.size < originalFile.size ? "size-decrease" : "size-increase"
+                    }
+                  >
                     {resizedBlob.size < originalFile.size ? "▼" : "▲"}
                     {Math.abs(Math.round((1 - resizedBlob.size / originalFile.size) * 100))}%
                   </span>
                 </div>
               </div>
-              <Button
-                type="button"
-                onClick={handleDownload}
-              >
+              <Button type="button" onClick={handleDownload}>
                 ダウンロード
               </Button>
             </div>

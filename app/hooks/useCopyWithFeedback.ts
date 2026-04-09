@@ -66,7 +66,7 @@ export function useCopyWithFeedback(): UseCopyWithFeedbackReturn {
         announceStatus("コピーに失敗しました");
       }
     },
-    [copy, showToast, announceStatus]
+    [copy, showToast, announceStatus],
   );
 
   return { statusRef, announceStatus, copyWithFeedback };

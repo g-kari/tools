@@ -6,11 +6,7 @@
 /**
  * Web App Manifest のディスプレイモード
  */
-export type DisplayMode =
-  | "standalone"
-  | "fullscreen"
-  | "minimal-ui"
-  | "browser";
+export type DisplayMode = "standalone" | "fullscreen" | "minimal-ui" | "browser";
 
 /**
  * Web App Manifest のオリエンテーション
@@ -125,7 +121,11 @@ export const DEFAULT_MANIFEST_OPTIONS: ManifestOptions = {
  * ディスプレイモードの選択肢
  */
 export const DISPLAY_MODES: { value: DisplayMode; label: string; description: string }[] = [
-  { value: "standalone", label: "standalone", description: "ネイティブアプリ風（ブラウザUI非表示）" },
+  {
+    value: "standalone",
+    label: "standalone",
+    description: "ネイティブアプリ風（ブラウザUI非表示）",
+  },
   { value: "fullscreen", label: "fullscreen", description: "全画面（ステータスバーも非表示）" },
   { value: "minimal-ui", label: "minimal-ui", description: "最小限のブラウザUI" },
   { value: "browser", label: "browser", description: "通常のブラウザ表示" },

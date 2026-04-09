@@ -120,10 +120,7 @@ function isValidDomain(domain: string): boolean {
  * console.log(result.records); // [{ name: "example.com", type: 1, TTL: 3600, data: "93.184.216.34" }]
  * ```
  */
-async function queryDoh(
-  domain: string,
-  recordType: DnsRecordType
-): Promise<DnsTypeResult> {
+async function queryDoh(domain: string, recordType: DnsRecordType): Promise<DnsTypeResult> {
   const typeNumber = DNS_TYPE_MAP[recordType];
   const result: DnsTypeResult = {
     type: recordType,
@@ -216,8 +213,8 @@ export const lookupDns = createServerFn({ method: "GET" })
 
     let types = defaultTypes;
     if (Array.isArray(input.types) && input.types.length > 0) {
-      types = input.types.filter((t): t is DnsRecordType =>
-        typeof t === "string" && t in DNS_TYPE_MAP
+      types = input.types.filter(
+        (t): t is DnsRecordType => typeof t === "string" && t in DNS_TYPE_MAP,
       );
       if (types.length === 0) {
         types = defaultTypes;
@@ -230,9 +227,7 @@ export const lookupDns = createServerFn({ method: "GET" })
     const { domain, types = ["A", "AAAA", "CNAME", "MX", "TXT", "NS"] } = data;
 
     // Query all requested record types in parallel
-    const results = await Promise.all(
-      types.map((type) => queryDoh(domain, type))
-    );
+    const results = await Promise.all(types.map((type) => queryDoh(domain, type)));
 
     return {
       domain,

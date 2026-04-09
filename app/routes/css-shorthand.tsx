@@ -1,43 +1,40 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
-import { useState, useCallback, useEffect, useRef } from 'react';
-import { useToast } from '../components/Toast';
-import { Button } from '~/components/ui/button';
-import { TipsCard } from '~/components/TipsCard';
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from '~/hooks/useStatusAnnouncement';
+import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
+import { useState, useCallback, useEffect, useRef } from "react";
+import { useToast } from "../components/Toast";
+import { Button } from "~/components/ui/button";
+import { TipsCard } from "~/components/TipsCard";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import {
   SHORTHAND_DEFINITIONS,
   expandShorthand,
   collapseShorthand,
   type LonghandProperty,
-} from '../utils/css-shorthand';
-import '../styles/tools/css-shorthand.css';
+} from "../utils/css-shorthand";
+import "../styles/tools/css-shorthand.css";
 
-export const Route = createFileRoute('/css-shorthand')({
+export const Route = createFileRoute("/css-shorthand")({
   head: () => ({
     meta: [
-      { title: 'CSSショートハンド展開 | Web ツール集' },
+      { title: "CSSショートハンド展開 | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          'CSS のショートハンドプロパティ（margin・padding・border-radius・flex・gap など）を個別プロパティに展開、またはロングハンドからショートハンドに圧縮するツール。',
+          "CSS のショートハンドプロパティ（margin・padding・border-radius・flex・gap など）を個別プロパティに展開、またはロングハンドからショートハンドに圧縮するツール。",
       },
-      { property: 'og:title', content: 'CSSショートハンド展開 | Web ツール集' },
+      { property: "og:title", content: "CSSショートハンド展開 | Web ツール集" },
       {
-        property: 'og:description',
+        property: "og:description",
         content:
-          'CSS ショートハンドと個別プロパティを相互変換するツール。margin・padding・border-radius・flex・gap など対応。',
+          "CSS ショートハンドと個別プロパティを相互変換するツール。margin・padding・border-radius・flex・gap など対応。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/css-shorthand` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
-      { name: 'twitter:title', content: 'CSSショートハンド展開 | Web ツール集' },
+      { property: "og:url", content: `${SITE_BASE_URL}/css-shorthand` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "CSSショートハンド展開 | Web ツール集" },
       {
-        name: 'twitter:description',
-        content: 'CSS ショートハンドと個別プロパティを相互変換するツール。',
+        name: "twitter:description",
+        content: "CSS ショートハンドと個別プロパティを相互変換するツール。",
       },
     ],
   }),
@@ -53,7 +50,7 @@ function CssShorthand() {
 
   // 展開モードの状態
   const [expandProperty, setExpandProperty] = useState(SHORTHAND_DEFINITIONS[0].name);
-  const [expandInput, setExpandInput] = useState('');
+  const [expandInput, setExpandInput] = useState("");
   const [expandResult, setExpandResult] = useState<LonghandProperty[] | null>(null);
 
   // 圧縮モードの状態
@@ -65,7 +62,7 @@ function CssShorthand() {
 
   const handleExpandPropertyChange = useCallback((property: string) => {
     setExpandProperty(property);
-    setExpandInput('');
+    setExpandInput("");
     setExpandResult(null);
   }, []);
 
@@ -78,15 +75,15 @@ function CssShorthand() {
   const handleExpand = useCallback(() => {
     const trimmed = expandInput.trim();
     if (!trimmed) {
-      showToast('値を入力してください', 'error');
-      announceStatus('エラー: 値を入力してください');
+      showToast("値を入力してください", "error");
+      announceStatus("エラー: 値を入力してください");
       expandInputRef.current?.focus();
       return;
     }
     const result = expandShorthand(expandProperty, trimmed);
     if (!result) {
-      showToast('展開できませんでした。値を確認してください', 'error');
-      announceStatus('エラー: 展開できませんでした');
+      showToast("展開できませんでした。値を確認してください", "error");
+      announceStatus("エラー: 展開できませんでした");
       return;
     }
     setExpandResult(result);
@@ -99,8 +96,8 @@ function CssShorthand() {
 
     const emptyLonghands = def.longhands.filter((lh) => !collapseInputs[lh]?.trim());
     if (emptyLonghands.length > 0) {
-      showToast('全てのプロパティ値を入力してください', 'error');
-      announceStatus('エラー: 未入力のプロパティがあります');
+      showToast("全てのプロパティ値を入力してください", "error");
+      announceStatus("エラー: 未入力のプロパティがあります");
       return;
     }
 
@@ -111,8 +108,8 @@ function CssShorthand() {
 
     const result = collapseShorthand(collapseProperty, cleanedInputs);
     if (!result) {
-      showToast('圧縮できませんでした', 'error');
-      announceStatus('エラー: 圧縮できませんでした');
+      showToast("圧縮できませんでした", "error");
+      announceStatus("エラー: 圧縮できませんでした");
       return;
     }
     setCollapseResult(result);
@@ -121,13 +118,13 @@ function CssShorthand() {
 
   const handleCopyExpanded = useCallback(async () => {
     if (!expandResult) return;
-    const css = expandResult.map((lh) => `${lh.property}: ${lh.value};`).join('\n');
+    const css = expandResult.map((lh) => `${lh.property}: ${lh.value};`).join("\n");
     try {
       await navigator.clipboard.writeText(css);
-      showToast('展開結果をコピーしました', 'success');
-      announceStatus('展開結果をクリップボードにコピーしました');
+      showToast("展開結果をコピーしました", "success");
+      announceStatus("展開結果をクリップボードにコピーしました");
     } catch {
-      showToast('コピーに失敗しました', 'error');
+      showToast("コピーに失敗しました", "error");
     }
   }, [expandResult, showToast, announceStatus]);
 
@@ -136,10 +133,10 @@ function CssShorthand() {
     const css = `${collapseProperty}: ${collapseResult};`;
     try {
       await navigator.clipboard.writeText(css);
-      showToast('圧縮結果をコピーしました', 'success');
-      announceStatus('圧縮結果をクリップボードにコピーしました');
+      showToast("圧縮結果をコピーしました", "success");
+      announceStatus("圧縮結果をクリップボードにコピーしました");
     } catch {
-      showToast('コピーに失敗しました', 'error');
+      showToast("コピーに失敗しました", "error");
     }
   }, [collapseResult, collapseProperty, showToast, announceStatus]);
 
@@ -195,9 +192,9 @@ function CssShorthand() {
               value={expandInput}
               onChange={(e) => setExpandInput(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === 'Enter') handleExpand();
+                if (e.key === "Enter") handleExpand();
               }}
-              placeholder={`例: ${expandDef.example.split(': ')[1]}`}
+              placeholder={`例: ${expandDef.example.split(": ")[1]}`}
               aria-label={`${expandProperty} のショートハンド値`}
               aria-describedby="expand-input-help"
             />
@@ -220,10 +217,10 @@ function CssShorthand() {
               variant="outline"
               className="btn-clear"
               onClick={() => {
-                setExpandInput('');
+                setExpandInput("");
                 setExpandResult(null);
                 expandInputRef.current?.focus();
-                announceStatus('クリアしました');
+                announceStatus("クリアしました");
               }}
               aria-label="入力と結果をクリア"
             >
@@ -232,11 +229,7 @@ function CssShorthand() {
           </div>
 
           {expandResult && (
-            <div
-              className="css-shorthand-result"
-              aria-live="polite"
-              aria-label="展開結果"
-            >
+            <div className="css-shorthand-result" aria-live="polite" aria-label="展開結果">
               <div className="css-shorthand-result-header">
                 <span className="css-shorthand-result-label">展開結果</span>
                 <button
@@ -298,22 +291,17 @@ function CssShorthand() {
           >
             {collapseDef.longhands.map((lh) => (
               <div key={lh} className="css-shorthand-longhand-row">
-                <label
-                  htmlFor={`collapse-${lh}`}
-                  className="css-shorthand-longhand-label"
-                >
+                <label htmlFor={`collapse-${lh}`} className="css-shorthand-longhand-label">
                   <code>{lh}</code>
                 </label>
                 <input
                   id={`collapse-${lh}`}
                   type="text"
                   className="css-shorthand-input"
-                  value={collapseInputs[lh] ?? ''}
-                  onChange={(e) =>
-                    setCollapseInputs((prev) => ({ ...prev, [lh]: e.target.value }))
-                  }
+                  value={collapseInputs[lh] ?? ""}
+                  onChange={(e) => setCollapseInputs((prev) => ({ ...prev, [lh]: e.target.value }))}
                   onKeyDown={(e) => {
-                    if (e.key === 'Enter') handleCollapse();
+                    if (e.key === "Enter") handleCollapse();
                   }}
                   placeholder="値を入力"
                   aria-label={`${lh} の値`}
@@ -338,7 +326,7 @@ function CssShorthand() {
               onClick={() => {
                 setCollapseInputs({});
                 setCollapseResult(null);
-                announceStatus('クリアしました');
+                announceStatus("クリアしました");
               }}
               aria-label="入力と結果をクリア"
             >
@@ -347,11 +335,7 @@ function CssShorthand() {
           </div>
 
           {collapseResult && (
-            <div
-              className="css-shorthand-result"
-              aria-live="polite"
-              aria-label="圧縮結果"
-            >
+            <div className="css-shorthand-result" aria-live="polite" aria-label="圧縮結果">
               <div className="css-shorthand-result-header">
                 <span className="css-shorthand-result-label">圧縮結果</span>
                 <button
@@ -374,10 +358,7 @@ function CssShorthand() {
         </section>
 
         {/* 対応プロパティ一覧 */}
-        <section
-          className="css-shorthand-reference-section"
-          aria-labelledby="reference-heading"
-        >
+        <section className="css-shorthand-reference-section" aria-labelledby="reference-heading">
           <h2 id="reference-heading" className="section-title">
             対応ショートハンド一覧
           </h2>
@@ -414,10 +395,10 @@ function CssShorthand() {
 
         <TipsCard
           tips={[
-            'CSS ショートハンドは複数のプロパティを1行で指定できますが、展開することで各プロパティの値が明確になります。',
-            'margin/padding は 1〜4 値で指定でき、値の数によって上右下左への適用が変わります（1値: 全方向、2値: 上下/左右、3値: 上/左右/下）。',
-            'flex: 1 は flex: 1 1 0 と等価で、flex: auto は flex: 1 1 auto と等価です。',
-            'gap はGrid・Flexboxの両方で使用でき、row-gap と column-gap の一括指定です。',
+            "CSS ショートハンドは複数のプロパティを1行で指定できますが、展開することで各プロパティの値が明確になります。",
+            "margin/padding は 1〜4 値で指定でき、値の数によって上右下左への適用が変わります（1値: 全方向、2値: 上下/左右、3値: 上/左右/下）。",
+            "flex: 1 は flex: 1 1 0 と等価で、flex: auto は flex: 1 1 auto と等価です。",
+            "gap はGrid・Flexboxの両方で使用でき、row-gap と column-gap の一括指定です。",
           ]}
         />
       </div>

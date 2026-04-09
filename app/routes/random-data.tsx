@@ -72,7 +72,7 @@ function RandomDataPage() {
 
   const handleFieldToggle = useCallback((type: FieldType) => {
     setSelectedFields((prev) =>
-      prev.includes(type) ? prev.filter((f) => f !== type) : [...prev, type]
+      prev.includes(type) ? prev.filter((f) => f !== type) : [...prev, type],
     );
   }, []);
 
@@ -161,8 +161,7 @@ function RandomDataPage() {
   useKeyboardShortcut("Enter", handleGenerate, { ctrl: true });
 
   // プレビューテーブルのヘッダーキー一覧
-  const previewHeaders =
-    previewRows.length > 0 ? Object.keys(previewRows[0]) : [];
+  const previewHeaders = previewRows.length > 0 ? Object.keys(previewRows[0]) : [];
 
   return (
     <div className="tool-container">
@@ -211,9 +210,7 @@ function RandomDataPage() {
                     />
                     {config.label}
                   </span>
-                  <span className="random-data-field-desc">
-                    {config.description}
-                  </span>
+                  <span className="random-data-field-desc">{config.description}</span>
                 </label>
               );
             })}
@@ -226,9 +223,7 @@ function RandomDataPage() {
         <h2 className="section-title">生成設定</h2>
         <div className="random-data-settings-row">
           <div className="random-data-settings-group">
-            <label htmlFor="random-data-count">
-              件数（1〜100）
-            </label>
+            <label htmlFor="random-data-count">件数（1〜100）</label>
             <input
               id="random-data-count"
               type="number"
@@ -236,16 +231,12 @@ function RandomDataPage() {
               min={1}
               max={100}
               value={count}
-              onChange={(e) =>
-                setCount(Math.min(100, Math.max(1, parseInt(e.target.value) || 1)))
-              }
+              onChange={(e) => setCount(Math.min(100, Math.max(1, parseInt(e.target.value) || 1)))}
               aria-label="生成件数"
             />
           </div>
           <div className="random-data-settings-group">
-            <label htmlFor="random-data-format">
-              フォーマット
-            </label>
+            <label htmlFor="random-data-format">フォーマット</label>
             <select
               id="random-data-format"
               className="random-data-format-select"
@@ -361,14 +352,9 @@ function RandomDataPage() {
       {/* プレビューテーブル（JSON形式のみ） */}
       {output && format === "json" && previewRows.length > 0 && (
         <div className="converter-section">
-          <h2 className="section-title">
-            プレビュー（最大10件）
-          </h2>
+          <h2 className="section-title">プレビュー（最大10件）</h2>
           <div className="random-data-preview-wrapper">
-            <table
-              className="random-data-preview-table"
-              aria-label="生成データプレビュー"
-            >
+            <table className="random-data-preview-table" aria-label="生成データプレビュー">
               <thead>
                 <tr>
                   {previewHeaders.map((header) => (

@@ -70,12 +70,9 @@ function OgpGenerator() {
 
   const isEmpty = output.trim().length === 0;
 
-  const handleChange = useCallback(
-    <K extends keyof OgpInput>(key: K, value: OgpInput[K]) => {
-      setInput((prev) => ({ ...prev, [key]: value }));
-    },
-    []
-  );
+  const handleChange = useCallback(<K extends keyof OgpInput>(key: K, value: OgpInput[K]) => {
+    setInput((prev) => ({ ...prev, [key]: value }));
+  }, []);
 
   const handleCopy = useCallback(async () => {
     if (!output) return;
@@ -94,11 +91,7 @@ function OgpGenerator() {
   }, [announceStatus]);
 
   const hasInput =
-    input.title ||
-    input.description ||
-    input.url ||
-    input.imageUrl ||
-    input.siteName;
+    input.title || input.description || input.url || input.imageUrl || input.siteName;
 
   return (
     <>
@@ -287,9 +280,7 @@ function OgpGenerator() {
                     id="ogp-twitter-card"
                     className="ogp-select"
                     value={input.twitterCard}
-                    onChange={(e) =>
-                      handleChange("twitterCard", e.target.value as TwitterCardType)
-                    }
+                    onChange={(e) => handleChange("twitterCard", e.target.value as TwitterCardType)}
                     aria-label="Twitter Card タイプを選択"
                   >
                     {TWITTER_CARD_TYPES.map((type) => (
@@ -354,13 +345,9 @@ function OgpGenerator() {
                 </div>
                 <div className="ogp-preview-body">
                   {(input.siteName || input.url) && (
-                    <p className="ogp-preview-site">
-                      {input.siteName || input.url}
-                    </p>
+                    <p className="ogp-preview-site">{input.siteName || input.url}</p>
                   )}
-                  {input.title && (
-                    <p className="ogp-preview-title">{input.title}</p>
-                  )}
+                  {input.title && <p className="ogp-preview-title">{input.title}</p>}
                   {input.description && (
                     <p className="ogp-preview-description">{input.description}</p>
                   )}
@@ -381,9 +368,7 @@ function OgpGenerator() {
             aria-label={`OGP メタタグ出力: ${isEmpty ? "（出力なし）" : output}`}
             role="region"
           >
-            {isEmpty
-              ? "上のフォームに情報を入力すると、OGP メタタグが生成されます"
-              : output}
+            {isEmpty ? "上のフォームに情報を入力すると、OGP メタタグが生成されます" : output}
           </pre>
         </section>
 

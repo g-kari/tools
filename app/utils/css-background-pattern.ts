@@ -6,13 +6,7 @@
  */
 
 /** パターン種類 */
-export type PatternType =
-  | 'stripes'
-  | 'dots'
-  | 'grid'
-  | 'checkerboard'
-  | 'diagonal'
-  | 'zigzag';
+export type PatternType = "stripes" | "dots" | "grid" | "checkerboard" | "diagonal" | "zigzag";
 
 /** パターン設定 */
 export interface PatternConfig {
@@ -99,7 +93,7 @@ export function generateGrid(config: PatternConfig): PatternResult {
     `repeating-linear-gradient(0deg, transparent, transparent ${gap}px, ${color1} ${gap}px, ${color1} ${size}px)`,
     `repeating-linear-gradient(90deg, transparent, transparent ${gap}px, ${color1} ${gap}px, ${color1} ${size}px)`,
     color2,
-  ].join(', ');
+  ].join(", ");
   return { background, fullCSS: buildFullCSS(background) };
 }
 
@@ -143,7 +137,7 @@ export function generateZigzag(config: PatternConfig): PatternResult {
     `repeating-linear-gradient(225deg, ${color1} 25%, transparent 25%) -${half}px 0`,
     `repeating-linear-gradient(315deg, ${color1} 25%, transparent 25%)`,
     `repeating-linear-gradient(45deg, ${color1} 25%, transparent 25%) ${color2}`,
-  ].join(', ');
+  ].join(", ");
   const backgroundSize = `${size}px ${half}px`;
   return { background, backgroundSize, fullCSS: buildFullCSS(background, backgroundSize) };
 }
@@ -156,17 +150,17 @@ export function generateZigzag(config: PatternConfig): PatternResult {
  */
 export function generatePatternCSS(config: PatternConfig): PatternResult {
   switch (config.type) {
-    case 'stripes':
+    case "stripes":
       return generateStripes(config);
-    case 'diagonal':
+    case "diagonal":
       return generateDiagonal(config);
-    case 'grid':
+    case "grid":
       return generateGrid(config);
-    case 'checkerboard':
+    case "checkerboard":
       return generateCheckerboard(config);
-    case 'dots':
+    case "dots":
       return generateDots(config);
-    case 'zigzag':
+    case "zigzag":
       return generateZigzag(config);
   }
 }
@@ -178,9 +172,9 @@ export function generatePatternCSS(config: PatternConfig): PatternResult {
  */
 export function createDefaultConfig(): PatternConfig {
   return {
-    type: 'stripes',
-    color1: '#3b82f6',
-    color2: '#f8fafc',
+    type: "stripes",
+    color1: "#3b82f6",
+    color2: "#f8fafc",
     size: 20,
     angle: 45,
     lineWidth: 4,
@@ -191,27 +185,75 @@ export function createDefaultConfig(): PatternConfig {
 /** パターンプリセット一覧 */
 export const PATTERN_PRESETS: PatternPreset[] = [
   {
-    name: '青縞',
-    config: { type: 'stripes', color1: '#3b82f6', color2: '#eff6ff', size: 20, angle: 45, lineWidth: 4, dotRadius: 30 },
+    name: "青縞",
+    config: {
+      type: "stripes",
+      color1: "#3b82f6",
+      color2: "#eff6ff",
+      size: 20,
+      angle: 45,
+      lineWidth: 4,
+      dotRadius: 30,
+    },
   },
   {
-    name: 'ドット',
-    config: { type: 'dots', color1: '#8b5cf6', color2: '#faf5ff', size: 24, angle: 0, lineWidth: 4, dotRadius: 25 },
+    name: "ドット",
+    config: {
+      type: "dots",
+      color1: "#8b5cf6",
+      color2: "#faf5ff",
+      size: 24,
+      angle: 0,
+      lineWidth: 4,
+      dotRadius: 25,
+    },
   },
   {
-    name: 'グリッド',
-    config: { type: 'grid', color1: '#64748b', color2: '#f8fafc', size: 24, angle: 0, lineWidth: 1, dotRadius: 30 },
+    name: "グリッド",
+    config: {
+      type: "grid",
+      color1: "#64748b",
+      color2: "#f8fafc",
+      size: 24,
+      angle: 0,
+      lineWidth: 1,
+      dotRadius: 30,
+    },
   },
   {
-    name: '市松',
-    config: { type: 'checkerboard', color1: '#334155', color2: '#f8fafc', size: 24, angle: 0, lineWidth: 4, dotRadius: 30 },
+    name: "市松",
+    config: {
+      type: "checkerboard",
+      color1: "#334155",
+      color2: "#f8fafc",
+      size: 24,
+      angle: 0,
+      lineWidth: 4,
+      dotRadius: 30,
+    },
   },
   {
-    name: '斜め縞',
-    config: { type: 'diagonal', color1: '#f59e0b', color2: '#fffbeb', size: 20, angle: 45, lineWidth: 5, dotRadius: 30 },
+    name: "斜め縞",
+    config: {
+      type: "diagonal",
+      color1: "#f59e0b",
+      color2: "#fffbeb",
+      size: 20,
+      angle: 45,
+      lineWidth: 5,
+      dotRadius: 30,
+    },
   },
   {
-    name: 'ジグザグ',
-    config: { type: 'zigzag', color1: '#ec4899', color2: '#fdf2f8', size: 20, angle: 0, lineWidth: 4, dotRadius: 30 },
+    name: "ジグザグ",
+    config: {
+      type: "zigzag",
+      color1: "#ec4899",
+      color2: "#fdf2f8",
+      size: 20,
+      angle: 0,
+      lineWidth: 4,
+      dotRadius: 30,
+    },
   },
 ];

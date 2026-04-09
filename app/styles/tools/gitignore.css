@@ -18,7 +18,9 @@
   font-size: 0.9375rem;
   background-color: var(--md-sys-color-surface-variant);
   color: var(--md-sys-color-on-surface);
-  transition: border-color 0.2s, background-color 0.2s;
+  transition:
+    border-color 0.2s,
+    background-color 0.2s;
 }
 
 .gitignore-search-input::placeholder {
@@ -87,7 +89,9 @@
   border-radius: 4px;
   background-color: var(--md-sys-color-surface-variant);
   cursor: pointer;
-  transition: background-color 0.15s, border-color 0.15s;
+  transition:
+    background-color 0.15s,
+    border-color 0.15s;
   font-size: 0.875rem;
   color: var(--md-sys-color-on-surface);
   user-select: none;
@@ -177,7 +181,9 @@
   font-size: 0.8125rem;
   line-height: 1.7;
   resize: vertical;
-  transition: border-color 0.2s, background-color 0.2s;
+  transition:
+    border-color 0.2s,
+    background-color 0.2s;
   box-sizing: border-box;
 }
 

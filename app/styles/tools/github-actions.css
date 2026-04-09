@@ -88,7 +88,7 @@
 }
 
 .ga-label {
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -103,7 +103,7 @@
 
 .ga-input {
   width: 100%;
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   font-size: 0.82rem;
   padding: 0.5rem 0.65rem;
   border: 1px solid var(--md-sys-color-outline);
@@ -122,7 +122,7 @@
 
 .ga-select {
   width: 100%;
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   font-size: 0.82rem;
   padding: 0.5rem 0.65rem;
   border: 1px solid var(--md-sys-color-outline);
@@ -210,7 +210,7 @@
 }
 
 .ga-list-sep {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.8rem;
   color: var(--md-sys-color-on-surface-variant);
   flex-shrink: 0;
@@ -321,7 +321,7 @@
 .ga-code-block {
   margin: 0;
   padding: 1rem;
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   font-size: 0.82rem;
   line-height: 1.7;
   background: var(--md-sys-color-surface-variant);

@@ -4,17 +4,9 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { useToast } from "../components/Toast";
 import { TipsCard } from "~/components/TipsCard";
 import { ErrorMessage } from "~/components/ErrorMessage";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
-import {
-  evaluateJsonPath,
-  formatJson,
-  formatResults,
-  getSampleJson,
-} from "../utils/json-path";
+import { evaluateJsonPath, formatJson, formatResults, getSampleJson } from "../utils/json-path";
 
 export const Route = createFileRoute("/json-path")({
   head: () => ({
@@ -22,14 +14,12 @@ export const Route = createFileRoute("/json-path")({
       { title: "JSONPath評価 | Web ツール集" },
       {
         name: "description",
-        content:
-          "JSONデータにJSONPathクエリを適用して値を抽出・評価できるオンラインツール。",
+        content: "JSONデータにJSONPathクエリを適用して値を抽出・評価できるオンラインツール。",
       },
       { property: "og:title", content: "JSONPath評価 | Web ツール集" },
       {
         property: "og:description",
-        content:
-          "JSONデータにJSONPathクエリを適用して値を抽出・評価できるオンラインツール。",
+        content: "JSONデータにJSONPathクエリを適用して値を抽出・評価できるオンラインツール。",
       },
       { property: "og:url", content: `${SITE_BASE_URL}/json-path` },
       { property: "og:type", content: "website" },
@@ -37,8 +27,7 @@ export const Route = createFileRoute("/json-path")({
       { name: "twitter:title", content: "JSONPath評価 | Web ツール集" },
       {
         name: "twitter:description",
-        content:
-          "JSONデータにJSONPathクエリを適用して値を抽出・評価できるオンラインツール。",
+        content: "JSONデータにJSONPathクエリを適用して値を抽出・評価できるオンラインツール。",
       },
     ],
   }),
@@ -78,9 +67,7 @@ function JsonPathEvaluator() {
       setResults(found);
       setResultText(formatResults(found));
       const msg =
-        found.length === 0
-          ? "一致する値がありません"
-          : `${found.length}件の結果が見つかりました`;
+        found.length === 0 ? "一致する値がありません" : `${found.length}件の結果が見つかりました`;
       announceStatus(msg);
       showToast(msg, found.length === 0 ? "error" : "success");
     } catch (err) {
@@ -148,7 +135,7 @@ function JsonPathEvaluator() {
       setPathQuery(example);
       announceStatus(`JSONPath式を設定しました: ${example}`);
     },
-    [announceStatus]
+    [announceStatus],
   );
 
   // Ctrl+Enter で評価
@@ -161,10 +148,7 @@ function JsonPathEvaluator() {
   return (
     <>
       <div className="tool-container">
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          aria-label="JSONPath評価フォーム"
-        >
+        <form onSubmit={(e) => e.preventDefault()} aria-label="JSONPath評価フォーム">
           <div className="json-path-layout">
             {/* 左パネル: JSON入力 */}
             <div className="json-path-panel">
@@ -242,7 +226,11 @@ function JsonPathEvaluator() {
 
               <div className="json-path-examples">
                 <span className="json-path-panel-label">クイック例</span>
-                <div className="json-path-example-chips" role="group" aria-label="JSONPathクイック例">
+                <div
+                  className="json-path-example-chips"
+                  role="group"
+                  aria-label="JSONPathクイック例"
+                >
                   {EXAMPLE_PATHS.map((example) => (
                     <button
                       key={example}
@@ -271,9 +259,7 @@ function JsonPathEvaluator() {
                   <>
                     {results !== null && (
                       <div className="json-path-result-count">
-                        {results.length === 0
-                          ? "0件の結果"
-                          : `${results.length}件の結果`}
+                        {results.length === 0 ? "0件の結果" : `${results.length}件の結果`}
                       </div>
                     )}
                     {resultText}

@@ -107,7 +107,7 @@ function regularPolygon(
   cx: number,
   cy: number,
   r: number,
-  startAngle = -90
+  startAngle = -90,
 ): PolygonPoint[] {
   return Array.from({ length: n }, (_, i) => {
     const angle = ((startAngle + (360 / n) * i) * Math.PI) / 180;
@@ -124,11 +124,7 @@ function regularPolygon(
  * @param outerR - 外側半径 (%)
  * @param innerR - 内側半径 (%)
  */
-function starPolygon(
-  points: number,
-  outerR: number,
-  innerR: number
-): PolygonPoint[] {
+function starPolygon(points: number, outerR: number, innerR: number): PolygonPoint[] {
   return Array.from({ length: points * 2 }, (_, i) => {
     const angle = ((i * 180) / points - 90) * (Math.PI / 180);
     const r = i % 2 === 0 ? outerR : innerR;
@@ -282,7 +278,7 @@ export function generateClipPathCSS(
   inset: InsetState,
   circle: CircleState,
   ellipse: EllipseState,
-  polygon: PolygonState
+  polygon: PolygonState,
 ): string {
   switch (type) {
     case "inset":
@@ -310,7 +306,7 @@ export function generateClipPathValue(
   inset: InsetState,
   circle: CircleState,
   ellipse: EllipseState,
-  polygon: PolygonState
+  polygon: PolygonState,
 ): string {
   switch (type) {
     case "inset":

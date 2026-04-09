@@ -58,38 +58,204 @@ export interface LoremIpsumOptions {
 
 /** ラテン語ワードリスト */
 const LATIN_WORDS = [
-  "lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "adipiscing",
-  "elit", "sed", "do", "eiusmod", "tempor", "incididunt", "ut", "labore",
-  "et", "dolore", "magna", "aliqua", "enim", "ad", "minim", "veniam",
-  "quis", "nostrud", "exercitation", "ullamco", "laboris", "nisi", "aliquip",
-  "ex", "ea", "commodo", "consequat", "duis", "aute", "irure", "in",
-  "reprehenderit", "voluptate", "velit", "esse", "cillum", "fugiat", "nulla",
-  "pariatur", "excepteur", "sint", "occaecat", "cupidatat", "non", "proident",
-  "sunt", "culpa", "qui", "officia", "deserunt", "mollit", "anim", "id",
-  "est", "laborum", "perspiciatis", "unde", "omnis", "iste", "natus",
-  "accusantium", "doloremque", "laudantium", "totam", "rem", "aperiam",
-  "eaque", "ipsa", "ab", "illo", "inventore", "veritatis", "architecto",
-  "beatae", "vitae", "dicta", "explicabo", "nemo", "ipsam", "quia",
-  "voluptas", "aspernatur", "odit", "fugit", "consequuntur", "magni",
-  "dolores", "ratione", "sequi", "nesciunt", "neque", "porro",
+  "lorem",
+  "ipsum",
+  "dolor",
+  "sit",
+  "amet",
+  "consectetur",
+  "adipiscing",
+  "elit",
+  "sed",
+  "do",
+  "eiusmod",
+  "tempor",
+  "incididunt",
+  "ut",
+  "labore",
+  "et",
+  "dolore",
+  "magna",
+  "aliqua",
+  "enim",
+  "ad",
+  "minim",
+  "veniam",
+  "quis",
+  "nostrud",
+  "exercitation",
+  "ullamco",
+  "laboris",
+  "nisi",
+  "aliquip",
+  "ex",
+  "ea",
+  "commodo",
+  "consequat",
+  "duis",
+  "aute",
+  "irure",
+  "in",
+  "reprehenderit",
+  "voluptate",
+  "velit",
+  "esse",
+  "cillum",
+  "fugiat",
+  "nulla",
+  "pariatur",
+  "excepteur",
+  "sint",
+  "occaecat",
+  "cupidatat",
+  "non",
+  "proident",
+  "sunt",
+  "culpa",
+  "qui",
+  "officia",
+  "deserunt",
+  "mollit",
+  "anim",
+  "id",
+  "est",
+  "laborum",
+  "perspiciatis",
+  "unde",
+  "omnis",
+  "iste",
+  "natus",
+  "accusantium",
+  "doloremque",
+  "laudantium",
+  "totam",
+  "rem",
+  "aperiam",
+  "eaque",
+  "ipsa",
+  "ab",
+  "illo",
+  "inventore",
+  "veritatis",
+  "architecto",
+  "beatae",
+  "vitae",
+  "dicta",
+  "explicabo",
+  "nemo",
+  "ipsam",
+  "quia",
+  "voluptas",
+  "aspernatur",
+  "odit",
+  "fugit",
+  "consequuntur",
+  "magni",
+  "dolores",
+  "ratione",
+  "sequi",
+  "nesciunt",
+  "neque",
+  "porro",
 ];
 
 /** 日本語ダミーテキストワードリスト */
 const JAPANESE_WORDS = [
-  "吾輩", "猫", "名前", "まだ", "ない", "どこで", "生まれた", "見当",
-  "がつかぬ", "薄暗い", "じめじめ", "した", "所", "ニャーニャー", "泣いていた",
-  "いう", "事", "だけ", "記憶している", "吾輩はここで", "始めて", "人間",
-  "というものを", "見た", "しかも", "あとで", "聞くと", "それは", "書生",
-  "という", "人間中で", "一番", "獰悪な", "種族", "であった", "この書生",
-  "というのは", "時々", "我々を", "捕えて", "煮て食う", "という話", "である",
-  "しかし", "その時", "別に", "恐しいという", "感じは", "しなかった",
-  "ただ", "彼の", "掌に", "載せられて", "ふわりと", "した時", "何だか",
-  "ふわふわ", "した感じが", "あった", "ばかり", "であった", "掌の上",
-  "少し", "落ちついて", "書生の顔を", "見た", "何だか", "非常に大きな",
-  "もので", "あるという", "感じが", "した", "第一", "毛を以て", "装飾",
-  "されべき", "はず", "顔が", "つるつる", "して", "まるで", "薬缶",
-  "後", "わかった", "事", "人間", "顔の一部", "毎日", "顔の表面",
-  "剃り取って", "いるのか", "それとも", "元来", "そういう", "もの",
+  "吾輩",
+  "猫",
+  "名前",
+  "まだ",
+  "ない",
+  "どこで",
+  "生まれた",
+  "見当",
+  "がつかぬ",
+  "薄暗い",
+  "じめじめ",
+  "した",
+  "所",
+  "ニャーニャー",
+  "泣いていた",
+  "いう",
+  "事",
+  "だけ",
+  "記憶している",
+  "吾輩はここで",
+  "始めて",
+  "人間",
+  "というものを",
+  "見た",
+  "しかも",
+  "あとで",
+  "聞くと",
+  "それは",
+  "書生",
+  "という",
+  "人間中で",
+  "一番",
+  "獰悪な",
+  "種族",
+  "であった",
+  "この書生",
+  "というのは",
+  "時々",
+  "我々を",
+  "捕えて",
+  "煮て食う",
+  "という話",
+  "である",
+  "しかし",
+  "その時",
+  "別に",
+  "恐しいという",
+  "感じは",
+  "しなかった",
+  "ただ",
+  "彼の",
+  "掌に",
+  "載せられて",
+  "ふわりと",
+  "した時",
+  "何だか",
+  "ふわふわ",
+  "した感じが",
+  "あった",
+  "ばかり",
+  "であった",
+  "掌の上",
+  "少し",
+  "落ちついて",
+  "書生の顔を",
+  "見た",
+  "何だか",
+  "非常に大きな",
+  "もので",
+  "あるという",
+  "感じが",
+  "した",
+  "第一",
+  "毛を以て",
+  "装飾",
+  "されべき",
+  "はず",
+  "顔が",
+  "つるつる",
+  "して",
+  "まるで",
+  "薬缶",
+  "後",
+  "わかった",
+  "事",
+  "人間",
+  "顔の一部",
+  "毎日",
+  "顔の表面",
+  "剃り取って",
+  "いるのか",
+  "それとも",
+  "元来",
+  "そういう",
+  "もの",
 ];
 
 /**
@@ -169,15 +335,8 @@ export function wrapWithHtmlTags(paragraphs: string[]): string {
  * @returns 生成されたテキスト
  */
 export function generateLoremIpsum(options: LoremIpsumOptions): string {
-  const {
-    mode,
-    paragraphCount,
-    wordCount,
-    sentenceCount,
-    language,
-    wrapHtml,
-    startWithLorem,
-  } = options;
+  const { mode, paragraphCount, wordCount, sentenceCount, language, wrapHtml, startWithLorem } =
+    options;
 
   const isLatin = language === "latin";
   const paragraphFn = isLatin ? generateLatinParagraph : generateJapaneseParagraph;
@@ -194,9 +353,7 @@ export function generateLoremIpsum(options: LoremIpsumOptions): string {
       generatedWords.push(randomElement(words));
     }
     const trimmed = generatedWords.slice(0, wordCount);
-    const text = isLatin
-      ? trimmed.join(" ") + "."
-      : trimmed.join("") + "。";
+    const text = isLatin ? trimmed.join(" ") + "." : trimmed.join("") + "。";
     paragraphs = [text.charAt(0).toUpperCase() + text.slice(1)];
   } else if (mode === "sentences") {
     // 指定文数の段落を生成
@@ -214,9 +371,7 @@ export function generateLoremIpsum(options: LoremIpsumOptions): string {
   if (startWithLorem && isLatin && paragraphs.length > 0) {
     const loremStart =
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
-    const rest = paragraphs[0]
-      .replace(/^[A-Z]/, "")
-      .trim();
+    const rest = paragraphs[0].replace(/^[A-Z]/, "").trim();
     paragraphs[0] = loremStart + (rest ? " " + rest : "");
   }
 
@@ -303,9 +458,7 @@ function LoremIpsumPage() {
                 max={20}
                 value={paragraphCount}
                 onChange={(e) =>
-                  setParagraphCount(
-                    Math.min(20, Math.max(1, parseInt(e.target.value) || 1))
-                  )
+                  setParagraphCount(Math.min(20, Math.max(1, parseInt(e.target.value) || 1)))
                 }
                 aria-label="段落数"
               />
@@ -325,9 +478,7 @@ function LoremIpsumPage() {
                 min={1}
                 max={10000}
                 value={wordCount}
-                onChange={(e) =>
-                  setWordCount(Math.max(1, parseInt(e.target.value) || 1))
-                }
+                onChange={(e) => setWordCount(Math.max(1, parseInt(e.target.value) || 1))}
                 aria-label="単語数"
               />
             </div>
@@ -346,9 +497,7 @@ function LoremIpsumPage() {
                 min={1}
                 max={1000}
                 value={sentenceCount}
-                onChange={(e) =>
-                  setSentenceCount(Math.max(1, parseInt(e.target.value) || 1))
-                }
+                onChange={(e) => setSentenceCount(Math.max(1, parseInt(e.target.value) || 1))}
                 aria-label="文数"
               />
             </div>

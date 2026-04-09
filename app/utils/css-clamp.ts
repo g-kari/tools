@@ -6,7 +6,7 @@
  */
 
 /** 値の単位 */
-export type FluidUnit = 'px' | 'rem';
+export type FluidUnit = "px" | "rem";
 
 /** Fluid 値の設定 */
 export interface FluidConfig {
@@ -60,35 +60,77 @@ export const DEFAULT_FLUID_CONFIG: FluidConfig = {
   maxValue: 24,
   minViewport: 320,
   maxViewport: 1280,
-  unit: 'px',
+  unit: "px",
   remBase: 16,
 };
 
 /** プリセット一覧 */
 export const FLUID_PRESETS: FluidPreset[] = [
   {
-    label: '本文フォント (16→18px)',
-    config: { minValue: 16, maxValue: 18, minViewport: 320, maxViewport: 1280, unit: 'px', remBase: 16 },
+    label: "本文フォント (16→18px)",
+    config: {
+      minValue: 16,
+      maxValue: 18,
+      minViewport: 320,
+      maxViewport: 1280,
+      unit: "px",
+      remBase: 16,
+    },
   },
   {
-    label: '見出し h1 (28→48px)',
-    config: { minValue: 28, maxValue: 48, minViewport: 375, maxViewport: 1440, unit: 'px', remBase: 16 },
+    label: "見出し h1 (28→48px)",
+    config: {
+      minValue: 28,
+      maxValue: 48,
+      minViewport: 375,
+      maxViewport: 1440,
+      unit: "px",
+      remBase: 16,
+    },
   },
   {
-    label: '見出し h2 (22→36px)',
-    config: { minValue: 22, maxValue: 36, minViewport: 375, maxViewport: 1440, unit: 'px', remBase: 16 },
+    label: "見出し h2 (22→36px)",
+    config: {
+      minValue: 22,
+      maxValue: 36,
+      minViewport: 375,
+      maxViewport: 1440,
+      unit: "px",
+      remBase: 16,
+    },
   },
   {
-    label: 'パディング (16→48px)',
-    config: { minValue: 16, maxValue: 48, minViewport: 320, maxViewport: 1280, unit: 'px', remBase: 16 },
+    label: "パディング (16→48px)",
+    config: {
+      minValue: 16,
+      maxValue: 48,
+      minViewport: 320,
+      maxViewport: 1280,
+      unit: "px",
+      remBase: 16,
+    },
   },
   {
-    label: 'ギャップ (8→24px)',
-    config: { minValue: 8, maxValue: 24, minViewport: 320, maxViewport: 1440, unit: 'px', remBase: 16 },
+    label: "ギャップ (8→24px)",
+    config: {
+      minValue: 8,
+      maxValue: 24,
+      minViewport: 320,
+      maxViewport: 1440,
+      unit: "px",
+      remBase: 16,
+    },
   },
   {
-    label: 'rem: フォント (1→1.5rem)',
-    config: { minValue: 1, maxValue: 1.5, minViewport: 320, maxViewport: 1280, unit: 'rem', remBase: 16 },
+    label: "rem: フォント (1→1.5rem)",
+    config: {
+      minValue: 1,
+      maxValue: 1.5,
+      minViewport: 320,
+      maxViewport: 1280,
+      unit: "rem",
+      remBase: 16,
+    },
   },
 ];
 
@@ -104,7 +146,7 @@ function roundTo(n: number, decimals: number): number {
  * px 値を指定単位の文字列にフォーマットする
  */
 function formatValue(px: number, unit: FluidUnit, remBase: number): string {
-  if (unit === 'rem') {
+  if (unit === "rem") {
     return `${roundTo(px / remBase, 4)}rem`;
   }
   return `${roundTo(px, 2)}px`;
@@ -123,8 +165,8 @@ export function calculateFluid(config: FluidConfig): FluidResult {
   const { minValue, maxValue, minViewport, maxViewport, unit, remBase } = config;
 
   // px に変換して計算
-  const minPx = unit === 'rem' ? minValue * remBase : minValue;
-  const maxPx = unit === 'rem' ? maxValue * remBase : maxValue;
+  const minPx = unit === "rem" ? minValue * remBase : minValue;
+  const maxPx = unit === "rem" ? maxValue * remBase : maxValue;
 
   // リニア補間の傾き（px/px = 無次元）
   const slope = (maxPx - minPx) / (maxViewport - minViewport);
@@ -134,7 +176,7 @@ export function calculateFluid(config: FluidConfig): FluidResult {
   // 傾きを vw 係数として表示（slope * 100vw の係数）
   const slopePct = roundTo(slope * 100, 4);
   const interceptRounded = roundTo(yInterceptPx, 4);
-  const interceptSign = interceptRounded >= 0 ? ' + ' : ' - ';
+  const interceptSign = interceptRounded >= 0 ? " + " : " - ";
   const interceptStr = formatValue(Math.abs(yInterceptPx), unit, remBase);
 
   const minStr = formatValue(minPx, unit, remBase);
@@ -170,16 +212,16 @@ export function calculateFluid(config: FluidConfig): FluidResult {
  */
 export function validateFluidConfig(config: FluidConfig): string | null {
   if (config.minViewport <= 0 || config.maxViewport <= 0) {
-    return 'ビューポート幅は正の値が必要です';
+    return "ビューポート幅は正の値が必要です";
   }
   if (config.minViewport >= config.maxViewport) {
-    return '最大ビューポートは最小ビューポートより大きい必要があります';
+    return "最大ビューポートは最小ビューポートより大きい必要があります";
   }
   if (config.remBase <= 0) {
-    return 'rem の基準フォントサイズは正の値が必要です';
+    return "rem の基準フォントサイズは正の値が必要です";
   }
   if (config.minValue === config.maxValue) {
-    return '最小値と最大値が同じです（fluid にはなりません）';
+    return "最小値と最大値が同じです（fluid にはなりません）";
   }
   return null;
 }

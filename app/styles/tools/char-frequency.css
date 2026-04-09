@@ -85,7 +85,7 @@
 .cf-summary-value {
   font-size: 1.75rem;
   font-weight: 600;
-  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  font-family: "JetBrains Mono", "Roboto Mono", "Courier New", monospace;
   color: var(--md-sys-color-on-primary-container);
   line-height: 1.2;
 }
@@ -169,14 +169,14 @@
 .cf-td-count {
   width: 100px;
   text-align: right;
-  font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
+  font-family: "JetBrains Mono", "Roboto Mono", monospace;
 }
 
 .cf-th-percent,
 .cf-td-percent {
   width: 80px;
   text-align: right;
-  font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
+  font-family: "JetBrains Mono", "Roboto Mono", monospace;
   color: var(--md-sys-color-on-surface-variant);
 }
 
@@ -188,7 +188,7 @@
 /* 文字表示 */
 .cf-char-display {
   display: inline-block;
-  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  font-family: "JetBrains Mono", "Roboto Mono", "Courier New", monospace;
   font-size: 1rem;
   font-weight: 700;
   color: var(--md-sys-color-primary);

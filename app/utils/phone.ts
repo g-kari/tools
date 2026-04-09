@@ -64,10 +64,10 @@ export function normalizePhone(input: string): string {
 export function classifyPhone(digits: string): PhoneType {
   if (/^(110|119|118)$/.test(digits)) return "emergency";
   if (/^(0120|0800)/.test(digits)) return "freephone";
-  if (/^0570/.test(digits)) return "navi_dial";
-  if (/^050/.test(digits)) return "ip_phone";
+  if (digits.startsWith('0570')) return "navi_dial";
+  if (digits.startsWith('050')) return "ip_phone";
   if (/^0[789]0/.test(digits)) return "mobile";
-  if (/^0/.test(digits)) return "landline";
+  if (digits.startsWith('0')) return "landline";
   return "unknown";
 }
 

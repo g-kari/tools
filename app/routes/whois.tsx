@@ -8,24 +8,27 @@ import { Input } from "~/components/ui/input";
 import { TipsCard } from "~/components/TipsCard";
 import { ErrorMessage } from "~/components/ErrorMessage";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 
 export const Route = createFileRoute("/whois")({
   head: () => ({
     meta: [
-    { title: "WHOIS検索 | Web ツール集" },
-    { name: "description", content: "ドメイン名のWHOIS情報を検索・表示するオンラインツール。" },
-    { property: "og:title", content: "WHOIS検索 | Web ツール集" },
-    { property: "og:description", content: "ドメイン名のWHOIS情報を検索・表示するオンラインツール。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/whois` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "WHOIS検索 | Web ツール集" },
-    { name: "twitter:description", content: "ドメイン名のWHOIS情報を検索・表示するオンラインツール。" },
-  ],
+      { title: "WHOIS検索 | Web ツール集" },
+      { name: "description", content: "ドメイン名のWHOIS情報を検索・表示するオンラインツール。" },
+      { property: "og:title", content: "WHOIS検索 | Web ツール集" },
+      {
+        property: "og:description",
+        content: "ドメイン名のWHOIS情報を検索・表示するオンラインツール。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/whois` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "WHOIS検索 | Web ツール集" },
+      {
+        name: "twitter:description",
+        content: "ドメイン名のWHOIS情報を検索・表示するオンラインツール。",
+      },
+    ],
   }),
   component: WhoisLookup,
 });
@@ -83,8 +86,7 @@ function WhoisLookup() {
       return;
     }
 
-    const domainRegex =
-      /^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
+    const domainRegex = /^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
     if (!domainRegex.test(domain.trim())) {
       setError("無効なドメイン形式です");
       announceStatus("エラー: 無効なドメイン形式です");
@@ -109,8 +111,7 @@ function WhoisLookup() {
       setResult(data);
       announceStatus("検索が完了しました");
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "通信エラーが発生しました";
+      const message = err instanceof Error ? err.message : "通信エラーが発生しました";
       setError(message);
       announceStatus("エラー: " + message);
     } finally {
@@ -120,10 +121,7 @@ function WhoisLookup() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (
-        e.key === "Enter" &&
-        (e.target as HTMLElement)?.id === "domainInput"
-      ) {
+      if (e.key === "Enter" && (e.target as HTMLElement)?.id === "domainInput") {
         e.preventDefault();
         handleSearch();
       }
@@ -207,10 +205,7 @@ function WhoisLookup() {
   return (
     <>
       <div className="tool-container">
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          aria-label="WHOIS検索フォーム"
-        >
+        <form onSubmit={(e) => e.preventDefault()} aria-label="WHOIS検索フォーム">
           <div className="converter-section">
             <div className="search-form-row">
               <div className="search-input-wrapper">

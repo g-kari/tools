@@ -3,23 +3,29 @@ import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useCallback, useEffect, useRef } from "react";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 
 export const Route = createFileRoute("/hangman")({
   head: () => ({
     meta: [
       { title: "ハングマン | Web ツール集" },
-      { name: "description", content: "単語を推測するハングマンゲーム。英単語カテゴリを選んで挑戦しよう。" },
+      {
+        name: "description",
+        content: "単語を推測するハングマンゲーム。英単語カテゴリを選んで挑戦しよう。",
+      },
       { property: "og:title", content: "ハングマン | Web ツール集" },
-      { property: "og:description", content: "単語を推測するハングマンゲーム。英単語カテゴリを選んで挑戦しよう。" },
+      {
+        property: "og:description",
+        content: "単語を推測するハングマンゲーム。英単語カテゴリを選んで挑戦しよう。",
+      },
       { property: "og:url", content: `${SITE_BASE_URL}/hangman` },
       { property: "og:type", content: "website" },
       { property: "og:image", content: SITE_OGP_IMAGE },
       { name: "twitter:title", content: "ハングマン | Web ツール集" },
-      { name: "twitter:description", content: "単語を推測するハングマンゲーム。英単語カテゴリを選んで挑戦しよう。" },
+      {
+        name: "twitter:description",
+        content: "単語を推測するハングマンゲーム。英単語カテゴリを選んで挑戦しよう。",
+      },
     ],
   }),
   component: HangmanGame,
@@ -47,36 +53,103 @@ const WORD_CATEGORIES: WordCategory[] = [
     name: "プログラミング",
     hint: "プログラミング用語",
     words: [
-      "ARRAY", "BINARY", "CLASS", "DEBUG", "ENUM", "FLOAT", "GRAPH",
-      "HASH", "INDEX", "LOOP", "MERGE", "NODE", "OBJECT", "PARSE",
-      "QUERY", "REGEX", "STACK", "TOKEN", "UNION", "VALUE",
+      "ARRAY",
+      "BINARY",
+      "CLASS",
+      "DEBUG",
+      "ENUM",
+      "FLOAT",
+      "GRAPH",
+      "HASH",
+      "INDEX",
+      "LOOP",
+      "MERGE",
+      "NODE",
+      "OBJECT",
+      "PARSE",
+      "QUERY",
+      "REGEX",
+      "STACK",
+      "TOKEN",
+      "UNION",
+      "VALUE",
     ],
   },
   {
     name: "動物",
     hint: "動物の名前（英語）",
     words: [
-      "BEAR", "CRANE", "DOLPHIN", "EAGLE", "FALCON", "GIRAFFE", "HORSE",
-      "IGUANA", "JAGUAR", "KOALA", "LEMUR", "MONKEY", "NARWHAL", "OCTOPUS",
-      "PANDA", "RABBIT", "SALMON", "TIGER", "TURTLE", "WOLF",
+      "BEAR",
+      "CRANE",
+      "DOLPHIN",
+      "EAGLE",
+      "FALCON",
+      "GIRAFFE",
+      "HORSE",
+      "IGUANA",
+      "JAGUAR",
+      "KOALA",
+      "LEMUR",
+      "MONKEY",
+      "NARWHAL",
+      "OCTOPUS",
+      "PANDA",
+      "RABBIT",
+      "SALMON",
+      "TIGER",
+      "TURTLE",
+      "WOLF",
     ],
   },
   {
     name: "国名",
     hint: "国の名前（英語）",
     words: [
-      "BRAZIL", "CANADA", "DENMARK", "EGYPT", "FRANCE", "GERMANY", "GREECE",
-      "INDIA", "ITALY", "JAPAN", "KENYA", "MEXICO", "NORWAY", "POLAND",
-      "RUSSIA", "SPAIN", "SWEDEN", "TURKEY", "UKRAINE",
+      "BRAZIL",
+      "CANADA",
+      "DENMARK",
+      "EGYPT",
+      "FRANCE",
+      "GERMANY",
+      "GREECE",
+      "INDIA",
+      "ITALY",
+      "JAPAN",
+      "KENYA",
+      "MEXICO",
+      "NORWAY",
+      "POLAND",
+      "RUSSIA",
+      "SPAIN",
+      "SWEDEN",
+      "TURKEY",
+      "UKRAINE",
     ],
   },
   {
     name: "食べ物",
     hint: "食べ物の名前（英語）",
     words: [
-      "APPLE", "BREAD", "CARROT", "DONUT", "EGGS", "FRIES", "GRAPE",
-      "HONEY", "ICECREAM", "JUICE", "KIWI", "LEMON", "MANGO", "NOODLE",
-      "ORANGE", "PIZZA", "QUICHE", "RICE", "SALAD", "TACO",
+      "APPLE",
+      "BREAD",
+      "CARROT",
+      "DONUT",
+      "EGGS",
+      "FRIES",
+      "GRAPE",
+      "HONEY",
+      "ICECREAM",
+      "JUICE",
+      "KIWI",
+      "LEMON",
+      "MANGO",
+      "NOODLE",
+      "ORANGE",
+      "PIZZA",
+      "QUICHE",
+      "RICE",
+      "SALAD",
+      "TACO",
     ],
   },
 ];
@@ -87,9 +160,8 @@ const WORD_CATEGORIES: WordCategory[] = [
  * @returns 選択された単語とカテゴリのインデックス
  */
 export function selectWord(categoryIndex: number): { word: string; catIndex: number } {
-  const catIndex = categoryIndex >= 0
-    ? categoryIndex
-    : Math.floor(Math.random() * WORD_CATEGORIES.length);
+  const catIndex =
+    categoryIndex >= 0 ? categoryIndex : Math.floor(Math.random() * WORD_CATEGORIES.length);
   const category = WORD_CATEGORIES[catIndex];
   const word = category.words[Math.floor(Math.random() * category.words.length)];
   return { word, catIndex };
@@ -122,11 +194,7 @@ export function getMaskedWord(word: string, guessed: Set<string>): string[] {
  * @param mistakes - ミス数
  * @returns ゲームの状態
  */
-export function getGameStatus(
-  word: string,
-  guessed: Set<string>,
-  mistakes: number
-): GameStatus {
+export function getGameStatus(word: string, guessed: Set<string>, mistakes: number): GameStatus {
   if (mistakes >= MAX_MISTAKES) return "lost";
   if (word.split("").every((letter) => guessed.has(letter))) return "won";
   return "playing";
@@ -162,29 +230,17 @@ function HangmanDrawing({ mistakes }: { mistakes: number }) {
       <line x1="130" y1="20" x2="130" y2="50" className="hangman-line" />
 
       {/* 頭（1ミス目） */}
-      {mistakes >= 1 && (
-        <circle cx="130" cy="65" r="15" className="hangman-body" />
-      )}
+      {mistakes >= 1 && <circle cx="130" cy="65" r="15" className="hangman-body" />}
       {/* 胴体（2ミス目） */}
-      {mistakes >= 2 && (
-        <line x1="130" y1="80" x2="130" y2="140" className="hangman-body" />
-      )}
+      {mistakes >= 2 && <line x1="130" y1="80" x2="130" y2="140" className="hangman-body" />}
       {/* 左腕（3ミス目） */}
-      {mistakes >= 3 && (
-        <line x1="130" y1="95" x2="105" y2="120" className="hangman-body" />
-      )}
+      {mistakes >= 3 && <line x1="130" y1="95" x2="105" y2="120" className="hangman-body" />}
       {/* 右腕（4ミス目） */}
-      {mistakes >= 4 && (
-        <line x1="130" y1="95" x2="155" y2="120" className="hangman-body" />
-      )}
+      {mistakes >= 4 && <line x1="130" y1="95" x2="155" y2="120" className="hangman-body" />}
       {/* 左足（5ミス目） */}
-      {mistakes >= 5 && (
-        <line x1="130" y1="140" x2="105" y2="170" className="hangman-body" />
-      )}
+      {mistakes >= 5 && <line x1="130" y1="140" x2="105" y2="170" className="hangman-body" />}
       {/* 右足（6ミス目） */}
-      {mistakes >= 6 && (
-        <line x1="130" y1="140" x2="155" y2="170" className="hangman-body" />
-      )}
+      {mistakes >= 6 && <line x1="130" y1="140" x2="155" y2="170" className="hangman-body" />}
     </svg>
   );
 }
@@ -210,7 +266,9 @@ function HangmanGame() {
     setGuessed(new Set());
     setMistakes(0);
     setGameStatus("playing");
-    announceStatus(`新しいゲーム開始。カテゴリ: ${WORD_CATEGORIES[newCatIndex].name}。${newWord.length}文字の単語。`);
+    announceStatus(
+      `新しいゲーム開始。カテゴリ: ${WORD_CATEGORIES[newCatIndex].name}。${newWord.length}文字の単語。`,
+    );
   }, [categoryIndex, announceStatus]);
 
   /** 初回マウント時にゲーム開始 */
@@ -262,7 +320,7 @@ function HangmanGame() {
         announceStatus(`不正解。残り${MAX_MISTAKES - newMistakes}回。`);
       }
     },
-    [gameStatus, guessed, word, mistakes, announceStatus]
+    [gameStatus, guessed, word, mistakes, announceStatus],
   );
 
   /** キーボード入力のハンドラー */
@@ -342,11 +400,7 @@ function HangmanGame() {
             </div>
 
             {/* 単語表示 */}
-            <div
-              className="hangman-word"
-              role="group"
-              aria-label={`単語: ${maskedWord.join(" ")}`}
-            >
+            <div className="hangman-word" role="group" aria-label={`単語: ${maskedWord.join(" ")}`}>
               {maskedWord.map((letter, i) => (
                 <div
                   key={i}
@@ -383,7 +437,10 @@ function HangmanGame() {
 
             {/* 誤答文字 */}
             {wrongLetters.length > 0 && (
-              <div className="hangman-wrong-letters" aria-label={`不正解の文字: ${wrongLetters.join(", ")}`}>
+              <div
+                className="hangman-wrong-letters"
+                aria-label={`不正解の文字: ${wrongLetters.join(", ")}`}
+              >
                 <span className="wrong-label">不正解:</span>
                 <span className="wrong-letters">{wrongLetters.join("  ")}</span>
               </div>

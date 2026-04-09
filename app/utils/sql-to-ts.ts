@@ -33,52 +33,46 @@ interface ColumnInfo {
 function sqlTypeToTs(sqlType: string, dateAsDate: boolean): string {
   const upper = sqlType.toUpperCase().trim();
   const base = upper
-    .replace(/\(.*?\)/g, '')
-    .replace(/\s+/g, ' ')
+    .replace(/\(.*?\)/g, "")
+    .replace(/\s+/g, " ")
     .trim();
 
   if (
     /^(TEXT|VARCHAR|CHAR|NCHAR|NVARCHAR|CLOB|TINYTEXT|MEDIUMTEXT|LONGTEXT|CHARACTER VARYING|CHARACTER|STRING|CITEXT|NAME)$/.test(
-      base
+      base,
     )
   )
-    return 'string';
+    return "string";
 
   if (
     /^(INTEGER|INT|BIGINT|SMALLINT|TINYINT|MEDIUMINT|INT2|INT4|INT8|SERIAL|BIGSERIAL|SMALLSERIAL|NUMBER|OID|XID)$/.test(
-      base
+      base,
     )
   )
-    return 'number';
+    return "number";
 
-  if (
-    /^(REAL|DOUBLE|FLOAT|DECIMAL|NUMERIC|MONEY|DOUBLE PRECISION|FLOAT4|FLOAT8)$/.test(
-      base
-    )
-  )
-    return 'number';
+  if (/^(REAL|DOUBLE|FLOAT|DECIMAL|NUMERIC|MONEY|DOUBLE PRECISION|FLOAT4|FLOAT8)$/.test(base))
+    return "number";
 
-  if (/^(BOOLEAN|BOOL|BIT)$/.test(base)) return 'boolean';
+  if (/^(BOOLEAN|BOOL|BIT)$/.test(base)) return "boolean";
 
-  if (/^(JSON|JSONB)$/.test(base)) return 'Record<string, unknown>';
+  if (/^(JSON|JSONB)$/.test(base)) return "Record<string, unknown>";
 
   if (
     /^(TIMESTAMP|DATE|DATETIME|TIME|TIMESTAMPTZ|TIMETZ|TIMESTAMP WITH TIME ZONE|TIMESTAMP WITHOUT TIME ZONE|TIME WITH TIME ZONE)$/.test(
-      base
+      base,
     )
   )
-    return dateAsDate ? 'Date' : 'string';
+    return dateAsDate ? "Date" : "string";
 
-  if (
-    /^(BLOB|BINARY|VARBINARY|BYTEA|LONGBLOB|MEDIUMBLOB|TINYBLOB)$/.test(base)
-  )
-    return 'Uint8Array';
+  if (/^(BLOB|BINARY|VARBINARY|BYTEA|LONGBLOB|MEDIUMBLOB|TINYBLOB)$/.test(base))
+    return "Uint8Array";
 
-  if (/^(UUID)$/.test(base)) return 'string';
+  if (/^(UUID)$/.test(base)) return "string";
 
-  if (base.endsWith('[]') || /^(ARRAY)$/.test(base)) return 'unknown[]';
+  if (base.endsWith("[]") || /^(ARRAY)$/.test(base)) return "unknown[]";
 
-  return 'unknown';
+  return "unknown";
 }
 
 /**
@@ -89,14 +83,14 @@ function sqlTypeToTs(sqlType: string, dateAsDate: boolean): string {
 function splitTopLevel(str: string): string[] {
   const result: string[] = [];
   let depth = 0;
-  let current = '';
+  let current = "";
 
   for (const ch of str) {
-    if (ch === '(') depth++;
-    else if (ch === ')') depth--;
-    else if (ch === ',' && depth === 0) {
+    if (ch === "(") depth++;
+    else if (ch === ")") depth--;
+    else if (ch === "," && depth === 0) {
       result.push(current.trim());
-      current = '';
+      current = "";
       continue;
     }
     current += ch;
@@ -111,9 +105,7 @@ function splitTopLevel(str: string): string[] {
  * @returns camelCaseに変換された文字列
  */
 function toCamelCase(str: string): string {
-  return str
-    .toLowerCase()
-    .replace(/_([a-z0-9])/g, (_, c: string) => c.toUpperCase());
+  return str.toLowerCase().replace(/_([a-z0-9])/g, (_, c: string) => c.toUpperCase());
 }
 
 /**
@@ -126,7 +118,7 @@ function toPascalCase(tableName: string): string {
     .split(/[_\s]+/)
     .filter(Boolean)
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
-    .join('');
+    .join("");
 }
 
 /**
@@ -140,27 +132,20 @@ function parseColumn(line: string, dateAsDate: boolean): ColumnInfo | null {
   if (!trimmed) return null;
 
   // テーブル制約はスキップ
-  if (
-    /^(PRIMARY\s+KEY|FOREIGN\s+KEY|UNIQUE|INDEX|KEY|CHECK|CONSTRAINT)\b/i.test(
-      trimmed
-    )
-  )
+  if (/^(PRIMARY\s+KEY|FOREIGN\s+KEY|UNIQUE|INDEX|KEY|CHECK|CONSTRAINT)\b/i.test(trimmed))
     return null;
 
   // カラム名を抽出（クォート付きまたは非クォート）
-  const nameMatch = trimmed.match(
-    /^`([^`]+)`|^"([^"]+)"|^\[([^\]]+)\]|^([a-zA-Z_]\w*)/
-  );
+  const nameMatch = trimmed.match(/^`([^`]+)`|^"([^"]+)"|^\[([^\]]+)\]|^([a-zA-Z_]\w*)/);
   if (!nameMatch) return null;
-  const rawName =
-    nameMatch[1] ?? nameMatch[2] ?? nameMatch[3] ?? nameMatch[4];
+  const rawName = nameMatch[1] ?? nameMatch[2] ?? nameMatch[3] ?? nameMatch[4];
 
   // カラム名以降を取得
   const rest = trimmed.slice(nameMatch[0].length).trim();
 
   // SQLの型を抽出（複合型に対応: DOUBLE PRECISION, CHARACTER VARYING, etc.）
   const typeMatch = rest.match(
-    /^(DOUBLE\s+PRECISION|CHARACTER\s+VARYING|TIMESTAMP\s+(?:WITH(?:OUT)?\s+TIME\s+ZONE)|TIME\s+WITH\s+TIME\s+ZONE|[\w]+(?:\s*\([^)]*\))?(?:\[\])?)/i
+    /^(DOUBLE\s+PRECISION|CHARACTER\s+VARYING|TIMESTAMP\s+(?:WITH(?:OUT)?\s+TIME\s+ZONE)|TIME\s+WITH\s+TIME\s+ZONE|[\w]+(?:\s*\([^)]*\))?(?:\[\])?)/i,
   );
   if (!typeMatch) return null;
   const sqlType = typeMatch[1];
@@ -187,25 +172,23 @@ export function generateTypeScript(sql: string, options: SqlToTsOptions): string
   const { useInterface, nullableAsOptional, dateAsDate } = options;
 
   const trimmed = sql.trim();
-  if (!trimmed) throw new Error('SQLを入力してください');
+  if (!trimmed) throw new Error("SQLを入力してください");
 
-  const normalized = trimmed.replace(/\r\n/g, '\n');
+  const normalized = trimmed.replace(/\r\n/g, "\n");
 
   // テーブル名を抽出
   const tableNameMatch = normalized.match(
-    /CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?(?:`([^`]+)`|"([^"]+)"|(\w+))/i
+    /CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?(?:`([^`]+)`|"([^"]+)"|(\w+))/i,
   );
-  if (!tableNameMatch) throw new Error('CREATE TABLE文が見つかりません');
-  const rawTableName =
-    tableNameMatch[1] ?? tableNameMatch[2] ?? tableNameMatch[3];
+  if (!tableNameMatch) throw new Error("CREATE TABLE文が見つかりません");
+  const rawTableName = tableNameMatch[1] ?? tableNameMatch[2] ?? tableNameMatch[3];
 
   const typeName = toPascalCase(rawTableName);
 
   // ボディを抽出（最初の(から最後の)まで）
-  const bodyStart = normalized.indexOf('(');
-  const bodyEnd = normalized.lastIndexOf(')');
-  if (bodyStart === -1 || bodyEnd === -1)
-    throw new Error('カラム定義が見つかりません');
+  const bodyStart = normalized.indexOf("(");
+  const bodyEnd = normalized.lastIndexOf(")");
+  if (bodyStart === -1 || bodyEnd === -1) throw new Error("カラム定義が見つかりません");
   const body = normalized.slice(bodyStart + 1, bodyEnd);
 
   // カラム定義を分割・解析
@@ -216,7 +199,7 @@ export function generateTypeScript(sql: string, options: SqlToTsOptions): string
     if (col) columns.push(col);
   }
 
-  if (columns.length === 0) throw new Error('カラムが見つかりません');
+  if (columns.length === 0) throw new Error("カラムが見つかりません");
 
   // TypeScript型定義を生成
   const lines: string[] = [];
@@ -228,14 +211,14 @@ export function generateTypeScript(sql: string, options: SqlToTsOptions): string
   }
 
   for (const col of columns) {
-    const optional = nullableAsOptional && col.isNullable ? '?' : '';
-    const nullable = !nullableAsOptional && col.isNullable ? ' | null' : '';
+    const optional = nullableAsOptional && col.isNullable ? "?" : "";
+    const nullable = !nullableAsOptional && col.isNullable ? " | null" : "";
     lines.push(`  ${col.name}${optional}: ${col.tsType}${nullable};`);
   }
 
-  lines.push('}');
+  lines.push("}");
 
-  return lines.join('\n');
+  return lines.join("\n");
 }
 
 /**

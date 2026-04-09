@@ -88,7 +88,7 @@ describe("generateMarkdown", () => {
     };
     const lines = generateMarkdown(table).split("\n");
     // :-- または :--- など :で始まる形式
-    expect(lines[1]).toMatch(/:\-+\s/);
+    expect(lines[1]).toMatch(/:-+\s/);
     expect(lines[1]).not.toMatch(/:.*:/);
   });
 
@@ -108,7 +108,7 @@ describe("generateMarkdown", () => {
     };
     const lines = generateMarkdown(table).split("\n");
     // --: または ---: など :で終わる形式
-    expect(lines[1]).toMatch(/\s\-+:/);
+    expect(lines[1]).toMatch(/\s-+:/);
     expect(lines[1]).not.toMatch(/:.*:/);
   });
 

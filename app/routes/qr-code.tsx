@@ -5,10 +5,7 @@ import QRCode from "qrcode";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import {
   type QrSize,
   type QrErrorCorrectionLevel,
@@ -21,26 +18,33 @@ import {
 export const Route = createFileRoute("/qr-code")({
   head: () => ({
     meta: [
-    { title: "QRコード生成 | Web ツール集" },
-    { name: "description", content: "テキストやURLからQRコードを即座に生成・ダウンロードできるツール。" },
-    { property: "og:title", content: "QRコード生成 | Web ツール集" },
-    { property: "og:description", content: "テキストやURLからQRコードを即座に生成・ダウンロードできるツール。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/qr-code` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "QRコード生成 | Web ツール集" },
-    { name: "twitter:description", content: "テキストやURLからQRコードを即座に生成・ダウンロードできるツール。" },
-  ],
+      { title: "QRコード生成 | Web ツール集" },
+      {
+        name: "description",
+        content: "テキストやURLからQRコードを即座に生成・ダウンロードできるツール。",
+      },
+      { property: "og:title", content: "QRコード生成 | Web ツール集" },
+      {
+        property: "og:description",
+        content: "テキストやURLからQRコードを即座に生成・ダウンロードできるツール。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/qr-code` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "QRコード生成 | Web ツール集" },
+      {
+        name: "twitter:description",
+        content: "テキストやURLからQRコードを即座に生成・ダウンロードできるツール。",
+      },
+    ],
   }),
   component: QrCodeGenerator,
 });
 
-const SIZE_OPTIONS: { value: QrSize; label: string }[] = QR_SIZES.map(
-  (size) => ({
-    value: size,
-    label: `${getQrSizeLabel(size)}`,
-  })
-);
+const SIZE_OPTIONS: { value: QrSize; label: string }[] = QR_SIZES.map((size) => ({
+  value: size,
+  label: `${getQrSizeLabel(size)}`,
+}));
 
 const ERROR_CORRECTION_OPTIONS: {
   value: QrErrorCorrectionLevel;
@@ -78,11 +82,7 @@ function QrCodeGenerator() {
 
     if (!validateQrInput(text)) {
       setHasQr(false);
-      setError(
-        text.length === 0
-          ? null
-          : "入力が長すぎます。4296文字以内で入力してください。"
-      );
+      setError(text.length === 0 ? null : "入力が長すぎます。4296文字以内で入力してください。");
       const ctx = canvasRef.current.getContext("2d");
       if (ctx) {
         canvasRef.current.width = size;
@@ -164,9 +164,7 @@ function QrCodeGenerator() {
         return;
       }
 
-      await navigator.clipboard.write([
-        new ClipboardItem({ "image/png": blob }),
-      ]);
+      await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
       announceStatus("QRコードをクリップボードにコピーしました");
     } catch (err) {
       console.error("Clipboard write failed:", err);
@@ -220,9 +218,7 @@ function QrCodeGenerator() {
               <select
                 id="qr-error-level"
                 value={errorLevel}
-                onChange={(e) =>
-                  setErrorLevel(e.target.value as QrErrorCorrectionLevel)
-                }
+                onChange={(e) => setErrorLevel(e.target.value as QrErrorCorrectionLevel)}
                 aria-describedby="qr-error-level-help"
               >
                 {ERROR_CORRECTION_OPTIONS.map((opt) => (
@@ -300,11 +296,7 @@ function QrCodeGenerator() {
           <div className="qr-canvas-container" aria-label="QRコードプレビューエリア">
             <canvas
               ref={canvasRef}
-              aria-label={
-                hasQr
-                  ? `QRコード: ${text}`
-                  : "QRコードがここに表示されます"
-              }
+              aria-label={hasQr ? `QRコード: ${text}` : "QRコードがここに表示されます"}
               role="img"
             />
             {text.length === 0 && (

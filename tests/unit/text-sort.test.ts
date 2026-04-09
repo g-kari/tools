@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vite-plus/test';
+import { describe, it, expect } from "vite-plus/test";
 
 /**
  * テキスト行を昇順ソート
@@ -6,7 +6,7 @@ import { describe, it, expect } from 'vite-plus/test';
  * @returns 昇順ソートされた行の配列
  */
 function sortAscending(lines: string[]): string[] {
-  return lines.sort((a, b) => a.localeCompare(b, 'ja'));
+  return lines.sort((a, b) => a.localeCompare(b, "ja"));
 }
 
 /**
@@ -15,7 +15,7 @@ function sortAscending(lines: string[]): string[] {
  * @returns 降順ソートされた行の配列
  */
 function sortDescending(lines: string[]): string[] {
-  return lines.sort((a, b) => b.localeCompare(a, 'ja'));
+  return lines.sort((a, b) => b.localeCompare(a, "ja"));
 }
 
 /**
@@ -34,141 +34,141 @@ function removeDuplicates(lines: string[]): string[] {
  */
 function sortAndRemoveDuplicates(lines: string[]): string[] {
   const unique = Array.from(new Set(lines));
-  return unique.sort((a, b) => a.localeCompare(b, 'ja'));
+  return unique.sort((a, b) => a.localeCompare(b, "ja"));
 }
 
-describe('Text Sort Functions', () => {
-  describe('sortAscending', () => {
-    it('should sort English words in ascending order', () => {
-      const input = ['cherry', 'apple', 'banana'];
+describe("Text Sort Functions", () => {
+  describe("sortAscending", () => {
+    it("should sort English words in ascending order", () => {
+      const input = ["cherry", "apple", "banana"];
       const result = sortAscending(input);
-      expect(result).toEqual(['apple', 'banana', 'cherry']);
+      expect(result).toEqual(["apple", "banana", "cherry"]);
     });
 
-    it('should sort Japanese words in ascending order', () => {
-      const input = ['りんご', 'みかん', 'バナナ'];
+    it("should sort Japanese words in ascending order", () => {
+      const input = ["りんご", "みかん", "バナナ"];
       const result = sortAscending(input);
-      expect(result).toEqual(['バナナ', 'みかん', 'りんご']);
+      expect(result).toEqual(["バナナ", "みかん", "りんご"]);
     });
 
-    it('should sort numbers as strings', () => {
-      const input = ['10', '2', '1', '20'];
+    it("should sort numbers as strings", () => {
+      const input = ["10", "2", "1", "20"];
       const result = sortAscending(input);
-      expect(result).toEqual(['1', '10', '2', '20']);
+      expect(result).toEqual(["1", "10", "2", "20"]);
     });
 
-    it('should handle empty array', () => {
+    it("should handle empty array", () => {
       const input: string[] = [];
       const result = sortAscending(input);
       expect(result).toEqual([]);
     });
 
-    it('should handle single item', () => {
-      const input = ['only'];
+    it("should handle single item", () => {
+      const input = ["only"];
       const result = sortAscending(input);
-      expect(result).toEqual(['only']);
+      expect(result).toEqual(["only"]);
     });
 
-    it('should handle mixed case', () => {
-      const input = ['Apple', 'banana', 'Cherry'];
+    it("should handle mixed case", () => {
+      const input = ["Apple", "banana", "Cherry"];
       const result = sortAscending(input);
-      expect(result[0]).toBe('Apple');
+      expect(result[0]).toBe("Apple");
     });
   });
 
-  describe('sortDescending', () => {
-    it('should sort English words in descending order', () => {
-      const input = ['apple', 'banana', 'cherry'];
+  describe("sortDescending", () => {
+    it("should sort English words in descending order", () => {
+      const input = ["apple", "banana", "cherry"];
       const result = sortDescending(input);
-      expect(result).toEqual(['cherry', 'banana', 'apple']);
+      expect(result).toEqual(["cherry", "banana", "apple"]);
     });
 
-    it('should sort Japanese words in descending order', () => {
-      const input = ['バナナ', 'みかん', 'りんご'];
+    it("should sort Japanese words in descending order", () => {
+      const input = ["バナナ", "みかん", "りんご"];
       const result = sortDescending(input);
-      expect(result).toEqual(['りんご', 'みかん', 'バナナ']);
+      expect(result).toEqual(["りんご", "みかん", "バナナ"]);
     });
 
-    it('should handle empty array', () => {
+    it("should handle empty array", () => {
       const input: string[] = [];
       const result = sortDescending(input);
       expect(result).toEqual([]);
     });
   });
 
-  describe('removeDuplicates', () => {
-    it('should remove duplicate lines', () => {
-      const input = ['apple', 'banana', 'apple', 'cherry', 'banana'];
+  describe("removeDuplicates", () => {
+    it("should remove duplicate lines", () => {
+      const input = ["apple", "banana", "apple", "cherry", "banana"];
       const result = removeDuplicates(input);
       expect(result).toHaveLength(3);
-      expect(result).toContain('apple');
-      expect(result).toContain('banana');
-      expect(result).toContain('cherry');
+      expect(result).toContain("apple");
+      expect(result).toContain("banana");
+      expect(result).toContain("cherry");
     });
 
-    it('should handle no duplicates', () => {
-      const input = ['apple', 'banana', 'cherry'];
+    it("should handle no duplicates", () => {
+      const input = ["apple", "banana", "cherry"];
       const result = removeDuplicates(input);
-      expect(result).toEqual(['apple', 'banana', 'cherry']);
+      expect(result).toEqual(["apple", "banana", "cherry"]);
     });
 
-    it('should handle all duplicates', () => {
-      const input = ['apple', 'apple', 'apple'];
+    it("should handle all duplicates", () => {
+      const input = ["apple", "apple", "apple"];
       const result = removeDuplicates(input);
-      expect(result).toEqual(['apple']);
+      expect(result).toEqual(["apple"]);
     });
 
-    it('should handle empty array', () => {
+    it("should handle empty array", () => {
       const input: string[] = [];
       const result = removeDuplicates(input);
       expect(result).toEqual([]);
     });
 
-    it('should preserve order of first occurrence', () => {
-      const input = ['c', 'b', 'a', 'b', 'c'];
+    it("should preserve order of first occurrence", () => {
+      const input = ["c", "b", "a", "b", "c"];
       const result = removeDuplicates(input);
-      expect(result).toEqual(['c', 'b', 'a']);
+      expect(result).toEqual(["c", "b", "a"]);
     });
 
-    it('should handle Japanese text duplicates', () => {
-      const input = ['りんご', 'バナナ', 'りんご', 'みかん'];
+    it("should handle Japanese text duplicates", () => {
+      const input = ["りんご", "バナナ", "りんご", "みかん"];
       const result = removeDuplicates(input);
       expect(result).toHaveLength(3);
-      expect(result).toContain('りんご');
-      expect(result).toContain('バナナ');
-      expect(result).toContain('みかん');
+      expect(result).toContain("りんご");
+      expect(result).toContain("バナナ");
+      expect(result).toContain("みかん");
     });
   });
 
-  describe('sortAndRemoveDuplicates', () => {
-    it('should sort and remove duplicates', () => {
-      const input = ['cherry', 'apple', 'banana', 'apple', 'cherry'];
+  describe("sortAndRemoveDuplicates", () => {
+    it("should sort and remove duplicates", () => {
+      const input = ["cherry", "apple", "banana", "apple", "cherry"];
       const result = sortAndRemoveDuplicates(input);
-      expect(result).toEqual(['apple', 'banana', 'cherry']);
+      expect(result).toEqual(["apple", "banana", "cherry"]);
     });
 
-    it('should work with Japanese text', () => {
-      const input = ['りんご', 'みかん', 'バナナ', 'りんご', 'みかん'];
+    it("should work with Japanese text", () => {
+      const input = ["りんご", "みかん", "バナナ", "りんご", "みかん"];
       const result = sortAndRemoveDuplicates(input);
-      expect(result).toEqual(['バナナ', 'みかん', 'りんご']);
+      expect(result).toEqual(["バナナ", "みかん", "りんご"]);
     });
 
-    it('should handle empty array', () => {
+    it("should handle empty array", () => {
       const input: string[] = [];
       const result = sortAndRemoveDuplicates(input);
       expect(result).toEqual([]);
     });
 
-    it('should handle single item', () => {
-      const input = ['only'];
+    it("should handle single item", () => {
+      const input = ["only"];
       const result = sortAndRemoveDuplicates(input);
-      expect(result).toEqual(['only']);
+      expect(result).toEqual(["only"]);
     });
 
-    it('should handle all same items', () => {
-      const input = ['same', 'same', 'same'];
+    it("should handle all same items", () => {
+      const input = ["same", "same", "same"];
       const result = sortAndRemoveDuplicates(input);
-      expect(result).toEqual(['same']);
+      expect(result).toEqual(["same"]);
     });
   });
 });

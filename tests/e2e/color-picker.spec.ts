@@ -42,14 +42,12 @@ test.describe("Color Picker", () => {
 
     // Preview should have a background color
     const backgroundColor = await colorPreview.evaluate(
-      (el) => window.getComputedStyle(el).backgroundColor
+      (el) => window.getComputedStyle(el).backgroundColor,
     );
     expect(backgroundColor).toBeTruthy();
   });
 
-  test("should update all formats when HEX input is changed", async ({
-    page,
-  }) => {
+  test("should update all formats when HEX input is changed", async ({ page }) => {
     // Use HEX input to set color
     const hexInput = page.locator(".hex-input-compact");
     await hexInput.clear();
@@ -74,9 +72,7 @@ test.describe("Color Picker", () => {
     await expect(hslL).toHaveValue("50");
   });
 
-  test("should update all formats when HEX input changes with blur", async ({
-    page,
-  }) => {
+  test("should update all formats when HEX input changes with blur", async ({ page }) => {
     const hexInput = page.locator(".hex-input-compact");
     await hexInput.clear();
     await hexInput.fill("#00FF00");
@@ -146,9 +142,7 @@ test.describe("Color Picker", () => {
     await copyButton.click();
 
     // Verify clipboard content
-    const clipboardText = await page.evaluate(() =>
-      navigator.clipboard.readText()
-    );
+    const clipboardText = await page.evaluate(() => navigator.clipboard.readText());
     expect(clipboardText).toBe("#123456");
   });
 
@@ -168,9 +162,7 @@ test.describe("Color Picker", () => {
     await copyButton.click();
 
     // Verify clipboard content
-    const clipboardText = await page.evaluate(() =>
-      navigator.clipboard.readText()
-    );
+    const clipboardText = await page.evaluate(() => navigator.clipboard.readText());
     expect(clipboardText).toBe("rgb(255, 0, 0)");
   });
 
@@ -213,9 +205,7 @@ test.describe("Color Picker", () => {
     await expect(paletteColors).toHaveCount(1);
   });
 
-  test("should remove color from palette with right-click", async ({
-    page,
-  }) => {
+  test("should remove color from palette with right-click", async ({ page }) => {
     // Add a color to palette using HEX input
     const hexInput = page.locator(".hex-input-compact");
     await hexInput.clear();
@@ -325,12 +315,8 @@ test.describe("Color Picker", () => {
   test("should display info box with tips", async ({ page }) => {
     // Check info-box sections
     await expect(page.locator(".info-box").first()).toBeVisible();
-    await expect(
-      page.getByRole("heading", { name: "カラーピッカーとは" })
-    ).toBeVisible();
-    await expect(
-      page.getByRole("heading", { name: "カラー形式について" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "カラーピッカーとは" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "カラー形式について" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Tips" })).toBeVisible();
   });
 

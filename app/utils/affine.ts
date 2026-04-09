@@ -27,9 +27,7 @@ const MODULAR_INVERSES: Readonly<Record<number, number>> = {
 /**
  * mod 26 において有効な a の値一覧（26 と互いに素な値）
  */
-export const VALID_A_VALUES: ReadonlyArray<number> = [
-  1, 3, 5, 7, 9, 11, 15, 17, 19, 21, 23, 25,
-];
+export const VALID_A_VALUES: ReadonlyArray<number> = [1, 3, 5, 7, 9, 11, 15, 17, 19, 21, 23, 25];
 
 /**
  * a の値が有効かどうかを検証する（26 と互いに素かどうか）
@@ -51,10 +49,10 @@ function encodeChar(char: string, a: number, b: number): string {
   const code = char.charCodeAt(0);
   if (code >= 65 && code <= 90) {
     const x = code - 65;
-    return String.fromCharCode((((a * x + b) % 26) + 26) % 26 + 65);
+    return String.fromCharCode(((((a * x + b) % 26) + 26) % 26) + 65);
   } else if (code >= 97 && code <= 122) {
     const x = code - 97;
-    return String.fromCharCode((((a * x + b) % 26) + 26) % 26 + 97);
+    return String.fromCharCode(((((a * x + b) % 26) + 26) % 26) + 97);
   }
   return char;
 }
@@ -72,10 +70,10 @@ function decodeChar(char: string, a: number, b: number): string {
   const code = char.charCodeAt(0);
   if (code >= 65 && code <= 90) {
     const y = code - 65;
-    return String.fromCharCode((((aInv * (y - b)) % 26) + 26) % 26 + 65);
+    return String.fromCharCode(((((aInv * (y - b)) % 26) + 26) % 26) + 65);
   } else if (code >= 97 && code <= 122) {
     const y = code - 97;
-    return String.fromCharCode((((aInv * (y - b)) % 26) + 26) % 26 + 97);
+    return String.fromCharCode(((((aInv * (y - b)) % 26) + 26) % 26) + 97);
   }
   return char;
 }
@@ -118,9 +116,7 @@ export function decodeAffine(text: string, a: number, b: number): string {
  * @param text 解析するテキスト
  * @returns 各パラメータでのデコード結果配列
  */
-export function bruteForceAffine(
-  text: string
-): Array<{ a: number; b: number; result: string }> {
+export function bruteForceAffine(text: string): Array<{ a: number; b: number; result: string }> {
   const results: Array<{ a: number; b: number; result: string }> = [];
   for (const a of VALID_A_VALUES) {
     for (let b = 0; b < 26; b++) {

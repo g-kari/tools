@@ -34,9 +34,7 @@ describe("getNextHead", () => {
 describe("isWallCollision", () => {
   it("グリッド内はfalseを返す", () => {
     expect(isWallCollision({ x: 0, y: 0 })).toBe(false);
-    expect(isWallCollision({ x: GRID_SIZE - 1, y: GRID_SIZE - 1 })).toBe(
-      false
-    );
+    expect(isWallCollision({ x: GRID_SIZE - 1, y: GRID_SIZE - 1 })).toBe(false);
     expect(isWallCollision({ x: 10, y: 10 })).toBe(false);
   });
 
@@ -84,7 +82,10 @@ describe("isSelfCollision", () => {
     // snake: [head, body, tail] で tail 位置に nextHead が来るケース
     // slice(0, -1) で tail を除いた場合は false（有効な移動）
     const tail = { x: 3, y: 5 };
-    const bodyWithoutTail = [{ x: 5, y: 5 }, { x: 4, y: 5 }];
+    const bodyWithoutTail = [
+      { x: 5, y: 5 },
+      { x: 4, y: 5 },
+    ];
     expect(isSelfCollision(tail, bodyWithoutTail)).toBe(false);
   });
 });

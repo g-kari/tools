@@ -1,7 +1,7 @@
-import Encoding from 'encoding-japanese';
+import Encoding from "encoding-japanese";
 
 /** サポートする文字コードの種類 */
-export type EncodingName = 'UTF8' | 'SJIS' | 'EUCJP' | 'JIS' | 'UTF16BE';
+export type EncodingName = "UTF8" | "SJIS" | "EUCJP" | "JIS" | "UTF16BE";
 
 /** 文字コードのラベル定義 */
 export interface EncodingInfo {
@@ -15,11 +15,11 @@ export interface EncodingInfo {
 
 /** サポートする文字コード一覧 */
 export const SUPPORTED_ENCODINGS: EncodingInfo[] = [
-  { code: 'UTF8', label: 'UTF-8', alias: 'Unicode (UTF-8)' },
-  { code: 'SJIS', label: 'Shift_JIS', alias: 'CP932 / Windows-31J' },
-  { code: 'EUCJP', label: 'EUC-JP', alias: 'Extended Unix Code' },
-  { code: 'JIS', label: 'ISO-2022-JP', alias: 'JIS / メールJIS' },
-  { code: 'UTF16BE', label: 'UTF-16 BE', alias: 'Unicode (UTF-16 Big Endian)' },
+  { code: "UTF8", label: "UTF-8", alias: "Unicode (UTF-8)" },
+  { code: "SJIS", label: "Shift_JIS", alias: "CP932 / Windows-31J" },
+  { code: "EUCJP", label: "EUC-JP", alias: "Extended Unix Code" },
+  { code: "JIS", label: "ISO-2022-JP", alias: "JIS / メールJIS" },
+  { code: "UTF16BE", label: "UTF-16 BE", alias: "Unicode (UTF-16 Big Endian)" },
 ];
 
 /** エンコード変換の結果 */
@@ -51,7 +51,7 @@ export function encodeText(text: string, encoding: EncodingName): Uint8Array {
   // 対象エンコーディングに変換
   const converted = Encoding.convert(unicodeArray, {
     to: encoding,
-    from: 'UNICODE',
+    from: "UNICODE",
   });
 
   return new Uint8Array(converted);
@@ -63,16 +63,13 @@ export function encodeText(text: string, encoding: EncodingName): Uint8Array {
  * @param encoding - デコード元の文字コード（省略時は自動検出）
  * @returns デコードされた文字列
  */
-export function decodeBytes(
-  bytes: Uint8Array,
-  encoding?: EncodingName
-): string {
-  if (!bytes.length) return '';
+export function decodeBytes(bytes: Uint8Array, encoding?: EncodingName): string {
+  if (!bytes.length) return "";
 
-  const from = encoding ?? (Encoding.detect(bytes) as EncodingName) ?? 'UTF8';
+  const from = encoding ?? (Encoding.detect(bytes) as EncodingName) ?? "UTF8";
 
   const unicodeArray = Encoding.convert(Array.from(bytes), {
-    to: 'UNICODE',
+    to: "UNICODE",
     from,
   });
 
@@ -86,8 +83,8 @@ export function decodeBytes(
  */
 export function toHexString(bytes: Uint8Array): string {
   return Array.from(bytes)
-    .map((b) => b.toString(16).toUpperCase().padStart(2, '0'))
-    .join(' ');
+    .map((b) => b.toString(16).toUpperCase().padStart(2, "0"))
+    .join(" ");
 }
 
 /**
@@ -96,7 +93,7 @@ export function toHexString(bytes: Uint8Array): string {
  * @returns Uint8Array のバイト列。変換に失敗した場合は null
  */
 export function hexToBytes(hex: string): Uint8Array | null {
-  const cleaned = hex.replace(/[\s:,\n]/g, '');
+  const cleaned = hex.replace(/[\s:,\n]/g, "");
   if (!cleaned) return new Uint8Array(0);
   if (cleaned.length % 2 !== 0) return null;
   if (!/^[0-9a-fA-F]+$/.test(cleaned)) return null;
@@ -115,21 +112,21 @@ export function hexToBytes(hex: string): Uint8Array | null {
  */
 export function detectEncoding(bytes: Uint8Array): EncodingName {
   const detected = Encoding.detect(bytes);
-  if (!detected || detected === false) return 'UTF8';
+  if (!detected || detected === false) return "UTF8";
 
   // encoding-japanese の検出結果をサポートコードにマッピング
   switch (detected) {
-    case 'SJIS':
-      return 'SJIS';
-    case 'EUCJP':
-      return 'EUCJP';
-    case 'JIS':
-      return 'JIS';
-    case 'UTF16':
-    case 'UTF16BE':
-      return 'UTF16BE';
+    case "SJIS":
+      return "SJIS";
+    case "EUCJP":
+      return "EUCJP";
+    case "JIS":
+      return "JIS";
+    case "UTF16":
+    case "UTF16BE":
+      return "UTF16BE";
     default:
-      return 'UTF8';
+      return "UTF8";
   }
 }
 
@@ -149,12 +146,12 @@ export function encodeToAll(text: string): EncodeResult[] {
         hex: toHexString(bytes),
       };
     } catch (e) {
-      const error = e instanceof Error ? e.message : '変換エラー';
+      const error = e instanceof Error ? e.message : "変換エラー";
       return {
         encoding: enc,
         bytes: new Uint8Array(0),
         byteCount: 0,
-        hex: '',
+        hex: "",
         error,
       };
     }

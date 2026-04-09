@@ -20,9 +20,7 @@ test.describe("数独ゲーム (/sudoku)", () => {
   });
 
   test("ゲームスタートボタンが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("button", { name: "ゲームスタート" })
-    ).toBeVisible();
+    await expect(page.getByRole("button", { name: "ゲームスタート" })).toBeVisible();
   });
 
   test("デフォルトで「簡単」が選択されている", async ({ page }) => {
@@ -36,7 +34,7 @@ test.describe("数独ゲーム (/sudoku)", () => {
     await expect(mediumBtn).toHaveAttribute("aria-pressed", "true");
     await expect(page.getByRole("button", { name: "簡単" })).toHaveAttribute(
       "aria-pressed",
-      "false"
+      "false",
     );
   });
 
@@ -63,9 +61,7 @@ test.describe("数独ゲーム (/sudoku)", () => {
 
   test("スタート後にリセットボタンが表示される", async ({ page }) => {
     await page.getByRole("button", { name: "ゲームスタート" }).click();
-    await expect(
-      page.getByRole("button", { name: "リセット" })
-    ).toBeVisible();
+    await expect(page.getByRole("button", { name: "リセット" })).toBeVisible();
   });
 
   test("セルをクリックすると選択状態になる", async ({ page }) => {
@@ -84,24 +80,16 @@ test.describe("数独ゲーム (/sudoku)", () => {
     await expect(numpad).toBeVisible();
   });
 
-  test("スタート後のボタンテキストが「新しいゲーム」に変わる", async ({
-    page,
-  }) => {
+  test("スタート後のボタンテキストが「新しいゲーム」に変わる", async ({ page }) => {
     await page.getByRole("button", { name: "ゲームスタート" }).click();
-    await expect(
-      page.getByRole("button", { name: "新しいゲーム" })
-    ).toBeVisible();
+    await expect(page.getByRole("button", { name: "新しいゲーム" })).toBeVisible();
   });
 
-  test("ナビゲーションのゲームカテゴリに数独ゲームが含まれる", async ({
-    page,
-  }) => {
+  test("ナビゲーションのゲームカテゴリに数独ゲームが含まれる", async ({ page }) => {
     const nav = page.getByRole("navigation", { name: "ツールナビゲーション" });
     // ゲームカテゴリボタンをホバー
     const gameCategory = nav.getByRole("button", { name: /ゲーム/ });
     await gameCategory.hover();
-    await expect(
-      page.getByRole("menuitem", { name: "数独ゲーム" })
-    ).toBeVisible();
+    await expect(page.getByRole("menuitem", { name: "数独ゲーム" })).toBeVisible();
   });
 });

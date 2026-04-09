@@ -6,7 +6,7 @@
  */
 
 /** サポートする圧縮形式 */
-export type GzipFormat = 'gzip' | 'deflate' | 'deflate-raw';
+export type GzipFormat = "gzip" | "deflate" | "deflate-raw";
 
 /** 圧縮結果 */
 export interface CompressResult {
@@ -72,7 +72,7 @@ async function readAllChunks(readable: ReadableStream<Uint8Array>): Promise<Uint
  * @returns Base64文字列
  */
 export function bytesToBase64(bytes: Uint8Array): string {
-  let binary = '';
+  let binary = "";
   for (let i = 0; i < bytes.length; i++) {
     binary += String.fromCharCode(bytes[i]!);
   }
@@ -85,12 +85,12 @@ export function bytesToBase64(bytes: Uint8Array): string {
  * @throws {Error} 無効な Base64 文字列の場合
  */
 export function base64ToBytes(base64: string): Uint8Array {
-  const cleaned = base64.replace(/\s/g, '');
+  const cleaned = base64.replace(/\s/g, "");
   let binary: string;
   try {
     binary = atob(cleaned);
   } catch {
-    throw new Error('無効な Base64 文字列です');
+    throw new Error("無効な Base64 文字列です");
   }
   const bytes = new Uint8Array(binary.length);
   for (let i = 0; i < binary.length; i++) {
@@ -143,7 +143,7 @@ export async function decompressBase64(
   await writer.close();
 
   const decompressed = await readAllChunks(stream.readable);
-  const text = new TextDecoder('utf-8', { fatal: true }).decode(decompressed);
+  const text = new TextDecoder("utf-8", { fatal: true }).decode(decompressed);
 
   return {
     text,
@@ -166,7 +166,7 @@ export function formatBytes(bytes: number): string {
 
 /** 圧縮形式の表示ラベル */
 export const GZIP_FORMAT_LABELS: Record<GzipFormat, string> = {
-  gzip: 'gzip',
-  deflate: 'deflate (zlib)',
-  'deflate-raw': 'deflate-raw',
+  gzip: "gzip",
+  deflate: "deflate (zlib)",
+  "deflate-raw": "deflate-raw",
 };

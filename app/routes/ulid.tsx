@@ -3,10 +3,7 @@ import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useCallback, useRef, useEffect } from "react";
 import { useToast } from "../components/Toast";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 import { generateULID, parseULID, type ULIDParsed } from "~/utils/ulid";
 
@@ -53,11 +50,7 @@ function ULIDDisplay({ ulid }: { ulid: string }) {
 function ParseResult({ parsed }: { parsed: ULIDParsed }) {
   if (!parsed.valid) {
     return (
-      <div
-        className="ulid-parser-error"
-        role="alert"
-        aria-live="polite"
-      >
+      <div className="ulid-parser-error" role="alert" aria-live="polite">
         {parsed.error}
       </div>
     );
@@ -83,18 +76,13 @@ function ParseResult({ parsed }: { parsed: ULIDParsed }) {
           <span className="ulid-parser-value-ts">{parsed.timestampPart}</span>
           {parsed.randomnessPart}
         </span>
-        <span
-          className="ulid-parser-valid-badge ulid-parser-valid-ok"
-          aria-label="有効な ULID"
-        >
+        <span className="ulid-parser-valid-badge ulid-parser-valid-ok" aria-label="有効な ULID">
           ✓ 有効
         </span>
       </div>
       <div className="ulid-parser-row">
         <span className="ulid-parser-label">タイムスタンプ</span>
-        <span className="ulid-parser-value ulid-parser-value-ts">
-          {parsed.timestampPart}
-        </span>
+        <span className="ulid-parser-value ulid-parser-value-ts">{parsed.timestampPart}</span>
       </div>
       <div className="ulid-parser-row">
         <span className="ulid-parser-label">ランダム</span>
@@ -128,9 +116,7 @@ function ULIDGenerator() {
   const [copiedAll, setCopiedAll] = useState(false);
 
   const [parseInput, setParseInput] = useState("");
-  const parsedResult: ULIDParsed | null = parseInput.trim()
-    ? parseULID(parseInput)
-    : null;
+  const parsedResult: ULIDParsed | null = parseInput.trim() ? parseULID(parseInput) : null;
 
   const copiedTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const copiedAllTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -145,7 +131,7 @@ function ULIDGenerator() {
 
   const formatULID = useCallback(
     (ulid: string) => (lowercase ? ulid.toLowerCase() : ulid),
-    [lowercase]
+    [lowercase],
   );
 
   const handleGenerate = useCallback(() => {
@@ -171,7 +157,7 @@ function ULIDGenerator() {
         showToast("コピーに失敗しました", "error");
       }
     },
-    [ulids, formatULID, copy, announceStatus, showToast]
+    [ulids, formatULID, copy, announceStatus, showToast],
   );
 
   const handleCopyAll = useCallback(async () => {
@@ -225,9 +211,7 @@ function ULIDGenerator() {
                   max={100}
                   value={count}
                   onChange={(e) =>
-                    setCount(
-                      Math.max(1, Math.min(100, parseInt(e.target.value) || 1))
-                    )
+                    setCount(Math.max(1, Math.min(100, parseInt(e.target.value) || 1)))
                   }
                   aria-describedby="ulid-count-help"
                   className="w-20"
@@ -268,11 +252,7 @@ function ULIDGenerator() {
               <div className="ulid-result-header">
                 <h2 className="section-title">生成結果</h2>
                 {ulids.length > 1 && (
-                  <button
-                    type="button"
-                    className="btn-secondary"
-                    onClick={handleCopyAll}
-                  >
+                  <button type="button" className="btn-secondary" onClick={handleCopyAll}>
                     {copiedAll ? "コピーしました" : "すべてコピー"}
                   </button>
                 )}
@@ -289,12 +269,7 @@ function ULIDGenerator() {
                 </span>
               </div>
 
-              <div
-                className="ulid-list"
-                role="list"
-                aria-live="polite"
-                aria-label="生成した ULID"
-              >
+              <div className="ulid-list" role="list" aria-live="polite" aria-label="生成した ULID">
                 {ulids.map((ulid, index) => (
                   <div key={index} className="ulid-item" role="listitem">
                     {lowercase ? (

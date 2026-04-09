@@ -1,46 +1,42 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
-import { useState, useMemo } from 'react';
-import { useToast } from '../components/Toast';
-import { Button } from '~/components/ui/button';
-import { TipsCard } from '~/components/TipsCard';
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from '~/hooks/useStatusAnnouncement';
-import { useClipboard } from '~/hooks/useClipboard';
-import { convertDockerRun } from '../utils/docker-run-to-compose';
-import '../styles/tools/docker-run-to-compose.css';
+import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
+import { useState, useMemo } from "react";
+import { useToast } from "../components/Toast";
+import { Button } from "~/components/ui/button";
+import { TipsCard } from "~/components/TipsCard";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
+import { useClipboard } from "~/hooks/useClipboard";
+import { convertDockerRun } from "../utils/docker-run-to-compose";
+import "../styles/tools/docker-run-to-compose.css";
 
-export const Route = createFileRoute('/docker-run-to-compose')({
+export const Route = createFileRoute("/docker-run-to-compose")({
   head: () => ({
     meta: [
-      { title: 'docker run → Compose 変換 | Web ツール集' },
+      { title: "docker run → Compose 変換 | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          'docker run コマンドを docker-compose.yml 形式に変換するツール。-p / -e / -v / --name などのオプションに対応。ブラウザ内完結。',
+          "docker run コマンドを docker-compose.yml 形式に変換するツール。-p / -e / -v / --name などのオプションに対応。ブラウザ内完結。",
       },
       {
-        property: 'og:title',
-        content: 'docker run → Compose 変換 | Web ツール集',
+        property: "og:title",
+        content: "docker run → Compose 変換 | Web ツール集",
       },
       {
-        property: 'og:description',
+        property: "og:description",
         content:
-          'docker run コマンドを docker-compose.yml に変換。ポート・環境変数・ボリューム・ネットワークに対応。',
+          "docker run コマンドを docker-compose.yml に変換。ポート・環境変数・ボリューム・ネットワークに対応。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/docker-run-to-compose` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
+      { property: "og:url", content: `${SITE_BASE_URL}/docker-run-to-compose` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
       {
-        name: 'twitter:title',
-        content: 'docker run → Compose 変換 | Web ツール集',
+        name: "twitter:title",
+        content: "docker run → Compose 変換 | Web ツール集",
       },
       {
-        name: 'twitter:description',
-        content:
-          'docker run コマンドを docker-compose.yml に変換するツール。',
+        name: "twitter:description",
+        content: "docker run コマンドを docker-compose.yml に変換するツール。",
       },
     ],
   }),
@@ -50,7 +46,7 @@ export const Route = createFileRoute('/docker-run-to-compose')({
 /** サンプル docker run コマンド集 */
 const SAMPLES = [
   {
-    label: 'Nginx',
+    label: "Nginx",
     value: `docker run -d \\
   --name nginx \\
   -p 80:80 \\
@@ -60,7 +56,7 @@ const SAMPLES = [
   nginx:latest`,
   },
   {
-    label: 'PostgreSQL',
+    label: "PostgreSQL",
     value: `docker run -d \\
   --name postgres \\
   -e POSTGRES_USER=admin \\
@@ -72,7 +68,7 @@ const SAMPLES = [
   postgres:16`,
   },
   {
-    label: 'Redis',
+    label: "Redis",
     value: `docker run -d \\
   --name redis \\
   -p 6379:6379 \\
@@ -81,7 +77,7 @@ const SAMPLES = [
   redis:7-alpine`,
   },
   {
-    label: 'Node.js アプリ',
+    label: "Node.js アプリ",
     value: `docker run -d \\
   --name myapp \\
   -p 3000:3000 \\
@@ -102,7 +98,7 @@ function DockerRunToComposePage() {
   const { copy } = useClipboard();
   const { statusRef, announceStatus } = useStatusAnnouncement();
 
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
 
   const result = useMemo(() => {
     if (!input.trim()) return null;
@@ -110,24 +106,24 @@ function DockerRunToComposePage() {
   }, [input]);
 
   const handleClear = () => {
-    setInput('');
-    announceStatus('入力をクリアしました');
+    setInput("");
+    announceStatus("入力をクリアしました");
   };
 
   const handleCopy = async () => {
     if (!result?.yaml) return;
     const success = await copy(result.yaml);
     if (success) {
-      showToast('YAMLをコピーしました', 'success');
-      announceStatus('YAMLをコピーしました');
+      showToast("YAMLをコピーしました", "success");
+      announceStatus("YAMLをコピーしました");
     } else {
-      showToast('コピーに失敗しました', 'error');
+      showToast("コピーに失敗しました", "error");
     }
   };
 
   const handleSample = (value: string) => {
     setInput(value);
-    announceStatus('サンプルを読み込みました');
+    announceStatus("サンプルを読み込みました");
   };
 
   return (
@@ -241,43 +237,43 @@ function DockerRunToComposePage() {
         <TipsCard
           sections={[
             {
-              title: '使い方',
+              title: "使い方",
               items: [
                 'docker run コマンドをそのまま貼り付けてください（"docker run" の有無は問いません）',
-                'バックスラッシュ改行（\\）による複数行のコマンドにも対応しています',
-                '「サンプル」ボタンで典型的なパターンをすぐに試せます',
-                '「コピー」ボタンで生成された YAML をクリップボードにコピーできます',
+                "バックスラッシュ改行（\\）による複数行のコマンドにも対応しています",
+                "「サンプル」ボタンで典型的なパターンをすぐに試せます",
+                "「コピー」ボタンで生成された YAML をクリップボードにコピーできます",
               ],
             },
             {
-              title: '対応オプション',
+              title: "対応オプション",
               items: [
-                '--name : コンテナ名 → container_name',
-                '-p / --publish : ポートマッピング → ports',
-                '-e / --env : 環境変数 → environment',
-                '-v / --volume : ボリューム → volumes',
-                '--network : ネットワーク → networks',
-                '--restart : 再起動ポリシー → restart',
-                '-d / --detach : バックグラウンド実行（省略）',
-                '-it : インタラクティブTTY → tty + stdin_open',
-                '-w / --workdir : 作業ディレクトリ → working_dir',
-                '--entrypoint : エントリーポイント → entrypoint',
-                '-u / --user : ユーザー → user',
-                '-m / --memory : メモリ制限 → deploy.resources.limits',
-                '--cpus : CPU制限 → deploy.resources.limits',
-                '--privileged : 特権モード → privileged',
-                '--read-only : 読み取り専用 → read_only',
-                '--cap-add / --cap-drop : ケーパビリティ → cap_add / cap_drop',
+                "--name : コンテナ名 → container_name",
+                "-p / --publish : ポートマッピング → ports",
+                "-e / --env : 環境変数 → environment",
+                "-v / --volume : ボリューム → volumes",
+                "--network : ネットワーク → networks",
+                "--restart : 再起動ポリシー → restart",
+                "-d / --detach : バックグラウンド実行（省略）",
+                "-it : インタラクティブTTY → tty + stdin_open",
+                "-w / --workdir : 作業ディレクトリ → working_dir",
+                "--entrypoint : エントリーポイント → entrypoint",
+                "-u / --user : ユーザー → user",
+                "-m / --memory : メモリ制限 → deploy.resources.limits",
+                "--cpus : CPU制限 → deploy.resources.limits",
+                "--privileged : 特権モード → privileged",
+                "--read-only : 読み取り専用 → read_only",
+                "--cap-add / --cap-drop : ケーパビリティ → cap_add / cap_drop",
               ],
             },
             {
-              title: '注意点',
+              title: "注意点",
               items: [
-                '--env-file は docker-compose の env_file フィールドへの手動変換が必要です',
-                '--link は非推奨です。docker-compose のネットワーク機能を使用してください',
-                '--rm はdocker-composeでは通常使用しません',
-                'ネットワークを指定した場合、外部ネットワークとして networks セクションが追加されます',
-                'memory / cpus は Swarm モードの deploy.resources 形式で出力されます',
+                "--env-file は docker-compose の env_file フィールドへの手動変換が必要です",
+                "--link は非推奨です。docker-compose のネットワーク機能を使用してください",
+                "--rm はdocker-composeでは通常使用しません",
+                "ネットワークを指定した場合、外部ネットワークとして networks セクションが追加されます",
+                "memory / cpus は Swarm モードの deploy.resources 形式で出力されます",
               ],
             },
           ]}

@@ -7,7 +7,7 @@ test.describe("Image Crop - E2E Tests", () => {
   async function navigateViaCategory(
     page: import("@playwright/test").Page,
     categoryName: string,
-    linkHref: string
+    linkHref: string,
   ) {
     const categoryBtn = page.locator(".nav-category-btn", {
       hasText: categoryName,
@@ -96,9 +96,7 @@ test.describe("Image Crop - E2E Tests", () => {
     await expect(heading).toBeVisible();
   });
 
-  test("should have keyboard navigation support on dropzone", async ({
-    page,
-  }) => {
+  test("should have keyboard navigation support on dropzone", async ({ page }) => {
     const dropzone = page.locator(".dropzone");
     await dropzone.focus();
     await expect(dropzone).toBeFocused();
@@ -206,10 +204,7 @@ test.describe("Image Crop - E2E Tests", () => {
     await expect(page).toHaveTitle(/画像トリミング/);
 
     const viewport = await page.locator('meta[name="viewport"]');
-    await expect(viewport).toHaveAttribute(
-      "content",
-      "width=device-width, initial-scale=1.0"
-    );
+    await expect(viewport).toHaveAttribute("content", "width=device-width, initial-scale=1.0");
   });
 
   test("should display upload icon in dropzone", async ({ page }) => {
@@ -233,9 +228,9 @@ test.describe("Image Crop - E2E Tests", () => {
     await expect(usageTitle).toBeVisible();
 
     // 複数のinfo-boxがあるので、すべてのテキストを結合して確認
-    const allInfoBoxes = page.locator('.info-box');
+    const allInfoBoxes = page.locator(".info-box");
     const allText = await allInfoBoxes.allTextContents();
-    const combinedText = allText.join(' ');
+    const combinedText = allText.join(" ");
     expect(combinedText).toContain("使い方");
     expect(combinedText).toContain("機能");
   });

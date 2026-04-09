@@ -7,9 +7,7 @@ test.describe("カラーコントラストチェッカー", () => {
 
   test("ページが正しく表示される", async ({ page }) => {
     await expect(page).toHaveTitle(/カラーコントラストチェッカー/);
-    await expect(
-      page.getByRole("heading", { name: "前景色（テキスト色）" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "前景色（テキスト色）" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "背景色" })).toBeVisible();
   });
 
@@ -74,9 +72,7 @@ test.describe("カラーコントラストチェッカー", () => {
     await expect(page.getByRole("columnheader", { name: "判定" })).toBeVisible();
   });
 
-  test("黒と白のデフォルトでWCAG AAとAAAがすべてPassになる", async ({
-    page,
-  }) => {
+  test("黒と白のデフォルトでWCAG AAとAAAがすべてPassになる", async ({ page }) => {
     const passElements = page.locator(".wcag-pass");
     const passCount = await passElements.count();
     expect(passCount).toBe(4); // すべての行がPass
@@ -111,9 +107,7 @@ test.describe("カラーコントラストチェッカー", () => {
   });
 
   test("TipsCardが表示される", async ({ page }) => {
-    await expect(
-      page.getByText("カラーコントラストチェッカーとは")
-    ).toBeVisible();
+    await expect(page.getByText("カラーコントラストチェッカーとは")).toBeVisible();
     await expect(page.getByText("WCAG基準について")).toBeVisible();
   });
 });

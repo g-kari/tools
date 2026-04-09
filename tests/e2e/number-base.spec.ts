@@ -35,9 +35,7 @@ test.describe("数値進数変換 - E2Eテスト", () => {
     await expect(page.locator("#hexadecimal")).toBeVisible();
   });
 
-  test("10進数に値を入力すると他のフィールドが更新される", async ({
-    page,
-  }) => {
+  test("10進数に値を入力すると他のフィールドが更新される", async ({ page }) => {
     const decimalInput = page.locator("#decimal");
     await decimalInput.fill("10");
 
@@ -55,9 +53,7 @@ test.describe("数値進数変換 - E2Eテスト", () => {
     await expect(page.locator("#hexadecimal")).toHaveValue("F");
   });
 
-  test("16進数に値を入力すると他のフィールドが更新される", async ({
-    page,
-  }) => {
+  test("16進数に値を入力すると他のフィールドが更新される", async ({ page }) => {
     const hexInput = page.locator("#hexadecimal");
     await hexInput.fill("FF");
 

@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { ADSENSE_PUBLISHER_ID } from '../constants/site';
+import { useEffect } from "react";
+import { ADSENSE_PUBLISHER_ID } from "../constants/site";
 
 /**
  * Google AdSense のコマンド引数型
@@ -23,7 +23,7 @@ interface AdBannerProps {
   /** Google AdSenseのスロットID */
   adSlot: string;
   /** 広告タイプ。デフォルト: 'responsive' */
-  adType?: 'horizontal' | 'rectangle' | 'responsive';
+  adType?: "horizontal" | "rectangle" | "responsive";
   /** アクセシビリティラベル。デフォルト: '広告' */
   ariaLabel?: string;
   /** 追加CSSクラス */
@@ -35,15 +35,15 @@ interface AdBannerProps {
  * @param adType - 広告タイプ
  * @returns CSSクラス名
  */
-function getAdTypeClass(adType: NonNullable<AdBannerProps['adType']>): string {
+function getAdTypeClass(adType: NonNullable<AdBannerProps["adType"]>): string {
   switch (adType) {
-    case 'horizontal':
-      return 'ad-banner-horizontal';
-    case 'rectangle':
-      return 'ad-banner-rectangle';
-    case 'responsive':
+    case "horizontal":
+      return "ad-banner-horizontal";
+    case "rectangle":
+      return "ad-banner-rectangle";
+    case "responsive":
     default:
-      return 'ad-banner-responsive';
+      return "ad-banner-responsive";
   }
 }
 
@@ -52,15 +52,15 @@ function getAdTypeClass(adType: NonNullable<AdBannerProps['adType']>): string {
  * @param adType - 広告タイプ
  * @returns data-ad-format の値
  */
-function getAdFormat(adType: NonNullable<AdBannerProps['adType']>): string {
+function getAdFormat(adType: NonNullable<AdBannerProps["adType"]>): string {
   switch (adType) {
-    case 'horizontal':
-      return 'horizontal';
-    case 'rectangle':
-      return 'rectangle';
-    case 'responsive':
+    case "horizontal":
+      return "horizontal";
+    case "rectangle":
+      return "rectangle";
+    case "responsive":
     default:
-      return 'auto';
+      return "auto";
   }
 }
 
@@ -80,8 +80,8 @@ function getAdFormat(adType: NonNullable<AdBannerProps['adType']>): string {
  */
 export function AdBanner({
   adSlot,
-  adType = 'responsive',
-  ariaLabel = '広告',
+  adType = "responsive",
+  ariaLabel = "広告",
   className,
 }: AdBannerProps): JSX.Element | null {
   useEffect(() => {
@@ -101,13 +101,10 @@ export function AdBanner({
 
   const typeClass = getAdTypeClass(adType);
   const adFormat = getAdFormat(adType);
-  const wrapperClass = ['ad-banner-wrapper', className].filter(Boolean).join(' ');
+  const wrapperClass = ["ad-banner-wrapper", className].filter(Boolean).join(" ");
 
   return (
-    <div
-      aria-label={ariaLabel}
-      className={wrapperClass}
-    >
+    <div aria-label={ariaLabel} className={wrapperClass}>
       <p className="ad-banner-label">広告</p>
       <div className={`ad-banner-content ${typeClass}`}>
         <ins
@@ -115,7 +112,7 @@ export function AdBanner({
           data-ad-client={ADSENSE_PUBLISHER_ID}
           data-ad-slot={adSlot}
           data-ad-format={adFormat}
-          data-full-width-responsive={adType === 'responsive' ? 'true' : undefined}
+          data-full-width-responsive={adType === "responsive" ? "true" : undefined}
         />
       </div>
     </div>

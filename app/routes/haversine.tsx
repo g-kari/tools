@@ -4,10 +4,7 @@ import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 import {
   calcHaversine,
@@ -45,8 +42,7 @@ export const Route = createFileRoute("/haversine")({
       },
       {
         name: "twitter:description",
-        content:
-          "緯度・経度から2地点間の大円距離と方位角をHaversine公式で計算するツール。",
+        content: "緯度・経度から2地点間の大円距離と方位角をHaversine公式で計算するツール。",
       },
     ],
   }),
@@ -139,8 +135,7 @@ function HaversineTool() {
 
   const isFromValid = fromLatLng !== null;
   const isToValid = toLatLng !== null;
-  const hasAnyInput =
-    from.lat !== "" || from.lng !== "" || to.lat !== "" || to.lng !== "";
+  const hasAnyInput = from.lat !== "" || from.lng !== "" || to.lat !== "" || to.lng !== "";
 
   return (
     <>
@@ -300,12 +295,7 @@ function HaversineTool() {
 
         {/* 結果表示 */}
         {result ? (
-          <div
-            className="haversine-results"
-            role="region"
-            aria-label="計算結果"
-            aria-live="polite"
-          >
+          <div className="haversine-results" role="region" aria-label="計算結果" aria-live="polite">
             <div className="haversine-result-primary">
               <span className="haversine-result-distance-label">距離</span>
               <span className="haversine-result-distance-main">
@@ -319,21 +309,15 @@ function HaversineTool() {
             <div className="haversine-result-grid">
               <div className="haversine-result-item">
                 <span className="haversine-result-label">km</span>
-                <code className="haversine-result-value">
-                  {result.distanceKm.toFixed(6)}
-                </code>
+                <code className="haversine-result-value">{result.distanceKm.toFixed(6)}</code>
               </div>
               <div className="haversine-result-item">
                 <span className="haversine-result-label">マイル</span>
-                <code className="haversine-result-value">
-                  {result.distanceMiles.toFixed(6)}
-                </code>
+                <code className="haversine-result-value">{result.distanceMiles.toFixed(6)}</code>
               </div>
               <div className="haversine-result-item">
                 <span className="haversine-result-label">m</span>
-                <code className="haversine-result-value">
-                  {result.distanceMeters.toFixed(3)}
-                </code>
+                <code className="haversine-result-value">{result.distanceMeters.toFixed(3)}</code>
               </div>
               <div className="haversine-result-item">
                 <span className="haversine-result-label">初期方位角</span>
@@ -346,9 +330,7 @@ function HaversineTool() {
               </div>
               <div className="haversine-result-item">
                 <span className="haversine-result-label">終着方位角</span>
-                <code className="haversine-result-value">
-                  {result.finalBearingDeg.toFixed(2)}°
-                </code>
+                <code className="haversine-result-value">{result.finalBearingDeg.toFixed(2)}°</code>
               </div>
             </div>
           </div>

@@ -209,7 +209,9 @@
   background: var(--md-sys-color-surface-variant);
   border: 1px solid var(--md-sys-color-outline-variant);
   cursor: pointer;
-  transition: border-color 0.2s, background 0.2s;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
   position: relative;
 }
 
@@ -301,7 +303,9 @@
   border: 1px solid var(--md-sys-color-outline-variant);
   color: var(--md-sys-color-on-surface-variant);
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
 }
 
 .semver-range-op-chip:hover {

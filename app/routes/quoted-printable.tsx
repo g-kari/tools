@@ -5,10 +5,7 @@ import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useCopyWithFeedback } from "~/hooks/useCopyWithFeedback";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 
@@ -173,9 +170,7 @@ export function decodeQP(encoded: string): string {
     }
   }
 
-  return new TextDecoder("utf-8", { fatal: false }).decode(
-    new Uint8Array(bytes)
-  );
+  return new TextDecoder("utf-8", { fatal: false }).decode(new Uint8Array(bytes));
 }
 
 /**
@@ -187,8 +182,7 @@ function QuotedPrintablePage() {
   const [outputText, setOutputText] = useState("");
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
-  const { statusRef, announceStatus, copyWithFeedback } =
-    useCopyWithFeedback();
+  const { statusRef, announceStatus, copyWithFeedback } = useCopyWithFeedback();
 
   const handleEncode = useCallback(() => {
     if (!inputText) {
@@ -245,10 +239,7 @@ function QuotedPrintablePage() {
   return (
     <>
       <div className="tool-container">
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          aria-label="Quoted-Printableフォーム"
-        >
+        <form onSubmit={(e) => e.preventDefault()} aria-label="Quoted-Printableフォーム">
           <div className="converter-section">
             <label htmlFor="inputText" className="section-title">
               入力テキスト
@@ -258,9 +249,7 @@ function QuotedPrintablePage() {
               ref={inputRef}
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
-              placeholder={
-                "変換したいテキストを入力してください...\n例: こんにちは 世界"
-              }
+              placeholder={"変換したいテキストを入力してください...\n例: こんにちは 世界"}
               aria-describedby="input-help"
               aria-label="変換元のテキスト入力欄"
             />

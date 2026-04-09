@@ -28,9 +28,7 @@ test.describe("Char Frequency Analyzer - E2E Tests", () => {
     await expect(emptyMessage).toContainText("テキストを入力すると");
   });
 
-  test("should show total chars and unique chars of 0 initially", async ({
-    page,
-  }) => {
+  test("should show total chars and unique chars of 0 initially", async ({ page }) => {
     await expect(page.locator('[data-testid="total-chars"]')).toHaveText("0");
     await expect(page.locator('[data-testid="unique-chars"]')).toHaveText("0");
   });
@@ -51,9 +49,7 @@ test.describe("Char Frequency Analyzer - E2E Tests", () => {
     await expect(table).toBeVisible();
   });
 
-  test("should display correct frequency for repeated character", async ({
-    page,
-  }) => {
+  test("should display correct frequency for repeated character", async ({ page }) => {
     const textarea = page.locator('textarea[aria-label="分析対象のテキスト"]');
     await textarea.fill("aab");
 
@@ -61,9 +57,7 @@ test.describe("Char Frequency Analyzer - E2E Tests", () => {
     await expect(rows).toHaveCount(2);
   });
 
-  test("should toggle sort order between frequency and character", async ({
-    page,
-  }) => {
+  test("should toggle sort order between frequency and character", async ({ page }) => {
     const textarea = page.locator('textarea[aria-label="分析対象のテキスト"]');
     await textarea.fill("cab");
 
@@ -77,34 +71,26 @@ test.describe("Char Frequency Analyzer - E2E Tests", () => {
     await expect(sortButton).toContainText("頻度順");
   });
 
-  test("should filter spaces when ignoreSpaces is checked", async ({
-    page,
-  }) => {
+  test("should filter spaces when ignoreSpaces is checked", async ({ page }) => {
     const textarea = page.locator('textarea[aria-label="分析対象のテキスト"]');
     await textarea.fill("a b");
 
     await expect(page.locator('[data-testid="unique-chars"]')).toHaveText("3");
 
-    const ignoreSpaces = page.locator(
-      'input[aria-label="スペース・改行を除外"]'
-    );
+    const ignoreSpaces = page.locator('input[aria-label="スペース・改行を除外"]');
     await ignoreSpaces.check();
 
     await expect(page.locator('[data-testid="unique-chars"]')).toHaveText("2");
     await expect(page.locator('[data-testid="total-chars"]')).toHaveText("2");
   });
 
-  test("should combine upper and lower case when ignoreCase is checked", async ({
-    page,
-  }) => {
+  test("should combine upper and lower case when ignoreCase is checked", async ({ page }) => {
     const textarea = page.locator('textarea[aria-label="分析対象のテキスト"]');
     await textarea.fill("Aa");
 
     await expect(page.locator('[data-testid="unique-chars"]')).toHaveText("2");
 
-    const ignoreCase = page.locator(
-      'input[aria-label="大文字・小文字を区別しない"]'
-    );
+    const ignoreCase = page.locator('input[aria-label="大文字・小文字を区別しない"]');
     await ignoreCase.check();
 
     await expect(page.locator('[data-testid="unique-chars"]')).toHaveText("1");
@@ -114,13 +100,9 @@ test.describe("Char Frequency Analyzer - E2E Tests", () => {
     const textarea = page.locator('textarea[aria-label="分析対象のテキスト"]');
     await textarea.fill("hello");
 
-    await expect(
-      page.locator('[data-testid="total-chars"]')
-    ).not.toHaveText("0");
+    await expect(page.locator('[data-testid="total-chars"]')).not.toHaveText("0");
 
-    const clearButton = page.locator(
-      'button[aria-label="入力テキストをクリア"]'
-    );
+    const clearButton = page.locator('button[aria-label="入力テキストをクリア"]');
     await clearButton.click();
 
     await expect(textarea).toHaveValue("");
@@ -128,15 +110,11 @@ test.describe("Char Frequency Analyzer - E2E Tests", () => {
   });
 
   test("should disable clear button when input is empty", async ({ page }) => {
-    const clearButton = page.locator(
-      'button[aria-label="入力テキストをクリア"]'
-    );
+    const clearButton = page.locator('button[aria-label="入力テキストをクリア"]');
     await expect(clearButton).toBeDisabled();
   });
 
-  test("should disable CSV copy button when there are no results", async ({
-    page,
-  }) => {
+  test("should disable CSV copy button when there are no results", async ({ page }) => {
     const csvButton = page.locator('[data-testid="copy-csv-button"]');
     await expect(csvButton).toBeDisabled();
   });
@@ -191,9 +169,7 @@ test.describe("Top page - Char Frequency tool listing", () => {
     await expect(link).toContainText("文字頻度分析");
   });
 
-  test("should navigate to /char-frequency when clicking the tool card", async ({
-    page,
-  }) => {
+  test("should navigate to /char-frequency when clicking the tool card", async ({ page }) => {
     const link = page.locator('a[href="/char-frequency"]').first();
     await link.click();
 

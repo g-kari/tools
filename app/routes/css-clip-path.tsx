@@ -3,10 +3,7 @@ import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useCallback, useMemo } from "react";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 import {
   type ClipPathType,
@@ -100,12 +97,10 @@ function PolygonEditor({
 }) {
   const updatePoint = useCallback(
     (index: number, axis: "x" | "y", value: number) => {
-      const newPoints = state.points.map((p, i) =>
-        i === index ? { ...p, [axis]: value } : p
-      );
+      const newPoints = state.points.map((p, i) => (i === index ? { ...p, [axis]: value } : p));
       onChange({ points: newPoints });
     },
-    [state.points, onChange]
+    [state.points, onChange],
   );
 
   const addPoint = useCallback(() => {
@@ -118,19 +113,14 @@ function PolygonEditor({
       if (state.points.length <= 3) return;
       onChange({ points: state.points.filter((_, i) => i !== index) });
     },
-    [state.points, onChange]
+    [state.points, onChange],
   );
 
   return (
     <div className="clip-path-polygon-editor">
       <div className="clip-path-polygon-header">
         <span className="clip-path-label">頂点リスト</span>
-        <Button
-          onClick={addPoint}
-          size="sm"
-          variant="outline"
-          aria-label="頂点を追加"
-        >
+        <Button onClick={addPoint} size="sm" variant="outline" aria-label="頂点を追加">
           + 追加
         </Button>
       </div>
@@ -146,9 +136,7 @@ function PolygonEditor({
                 max={100}
                 step={1}
                 value={point.x}
-                onChange={(e) =>
-                  updatePoint(index, "x", Number(e.target.value))
-                }
+                onChange={(e) => updatePoint(index, "x", Number(e.target.value))}
                 className="clip-path-point-input"
                 aria-label={`頂点${index + 1} X座標`}
               />
@@ -162,9 +150,7 @@ function PolygonEditor({
                 max={100}
                 step={1}
                 value={point.y}
-                onChange={(e) =>
-                  updatePoint(index, "y", Number(e.target.value))
-                }
+                onChange={(e) => updatePoint(index, "y", Number(e.target.value))}
                 className="clip-path-point-input"
                 aria-label={`頂点${index + 1} Y座標`}
               />
@@ -206,7 +192,7 @@ function ClipPathPreview({
 
   const clipValue = useMemo(
     () => generateClipPathValue(type, inset, circle, ellipse, polygon),
-    [type, inset, circle, ellipse, polygon]
+    [type, inset, circle, ellipse, polygon],
   );
 
   const handleSvgMouseMove = useCallback(
@@ -219,12 +205,10 @@ function ClipPathPreview({
         x: Math.max(0, Math.min(100, x)),
         y: Math.max(0, Math.min(100, y)),
       };
-      const newPoints = polygon.points.map((p, i) =>
-        i === draggingIndex ? clamped : p
-      );
+      const newPoints = polygon.points.map((p, i) => (i === draggingIndex ? clamped : p));
       onPolygonChange({ points: newPoints });
     },
-    [draggingIndex, type, polygon.points, onPolygonChange]
+    [draggingIndex, type, polygon.points, onPolygonChange],
   );
 
   const handleSvgMouseUp = useCallback(() => {
@@ -235,11 +219,7 @@ function ClipPathPreview({
     <div className="clip-path-preview-wrapper">
       {/* CSS clip-path を適用した実際のプレビューボックス */}
       <div className="clip-path-preview-box-container">
-        <div
-          className="clip-path-preview-box"
-          style={{ clipPath: clipValue }}
-          aria-hidden="true"
-        />
+        <div className="clip-path-preview-box" style={{ clipPath: clipValue }} aria-hidden="true" />
       </div>
 
       {/* polygon 編集用 SVG オーバーレイ */}
@@ -278,9 +258,7 @@ function ClipPathPreview({
               />
             ))}
           </svg>
-          <p className="clip-path-svg-hint">
-            ドラッグで頂点を移動できます
-          </p>
+          <p className="clip-path-svg-hint">ドラッグで頂点を移動できます</p>
         </div>
       )}
     </div>
@@ -300,7 +278,7 @@ function CssClipPathGenerator() {
 
   const cssCode = useMemo(
     () => generateClipPathCSS(type, inset, circle, ellipse, polygon),
-    [type, inset, circle, ellipse, polygon]
+    [type, inset, circle, ellipse, polygon],
   );
 
   const handleCopy = useCallback(async () => {
@@ -316,35 +294,29 @@ function CssClipPathGenerator() {
     announce("設定をリセットしました");
   }, [announce]);
 
-  const applyPreset = useCallback((preset: (typeof POLYGON_PRESETS)[0]) => {
-    setType("polygon");
-    setPolygon({ points: preset.points });
-    announce(`プリセット「${preset.name}」を適用しました`);
-  }, [announce]);
+  const applyPreset = useCallback(
+    (preset: (typeof POLYGON_PRESETS)[0]) => {
+      setType("polygon");
+      setPolygon({ points: preset.points });
+      announce(`プリセット「${preset.name}」を適用しました`);
+    },
+    [announce],
+  );
 
   /** inset スライダー変更ハンドラ */
-  const handleInsetChange = useCallback(
-    (key: keyof InsetState, value: number) => {
-      setInset((prev) => ({ ...prev, [key]: value }));
-    },
-    []
-  );
+  const handleInsetChange = useCallback((key: keyof InsetState, value: number) => {
+    setInset((prev) => ({ ...prev, [key]: value }));
+  }, []);
 
   /** circle スライダー変更ハンドラ */
-  const handleCircleChange = useCallback(
-    (key: keyof CircleState, value: number) => {
-      setCircle((prev) => ({ ...prev, [key]: value }));
-    },
-    []
-  );
+  const handleCircleChange = useCallback((key: keyof CircleState, value: number) => {
+    setCircle((prev) => ({ ...prev, [key]: value }));
+  }, []);
 
   /** ellipse スライダー変更ハンドラ */
-  const handleEllipseChange = useCallback(
-    (key: keyof EllipseState, value: number) => {
-      setEllipse((prev) => ({ ...prev, [key]: value }));
-    },
-    []
-  );
+  const handleEllipseChange = useCallback((key: keyof EllipseState, value: number) => {
+    setEllipse((prev) => ({ ...prev, [key]: value }));
+  }, []);
 
   const TAB_TYPES: { value: ClipPathType; label: string }[] = [
     { value: "polygon", label: "polygon()" },
@@ -358,18 +330,13 @@ function CssClipPathGenerator() {
       <div className="tool-header">
         <h2 className="tool-title">CSS Clip-path ジェネレーター</h2>
         <p className="tool-description">
-          CSS <code>clip-path</code>{" "}
-          プロパティをビジュアルエディターで作成します。
+          CSS <code>clip-path</code> プロパティをビジュアルエディターで作成します。
           inset・circle・ellipse・polygon に対応し、プリセット形状も利用できます。
         </p>
       </div>
 
       {/* タブ切り替え */}
-      <div
-        className="clip-path-tabs"
-        role="tablist"
-        aria-label="clip-pathの種類"
-      >
+      <div className="clip-path-tabs" role="tablist" aria-label="clip-pathの種類">
         {TAB_TYPES.map((tab) => (
           <button
             key={tab.value}
@@ -389,19 +356,13 @@ function CssClipPathGenerator() {
         <div className="clip-path-controls">
           {/* inset コントロール */}
           {type === "inset" && (
-            <section
-              className="clip-path-section"
-              aria-labelledby="inset-heading"
-            >
+            <section className="clip-path-section" aria-labelledby="inset-heading">
               <h3 id="inset-heading" className="clip-path-section-title">
                 inset() 設定
               </h3>
               {INSET_SLIDERS.map((slider) => (
                 <div key={slider.key} className="clip-path-slider-row">
-                  <label
-                    htmlFor={`inset-${slider.key}`}
-                    className="clip-path-slider-label"
-                  >
+                  <label htmlFor={`inset-${slider.key}`} className="clip-path-slider-label">
                     {slider.label}
                   </label>
                   <input
@@ -412,10 +373,7 @@ function CssClipPathGenerator() {
                     step={slider.step}
                     value={inset[slider.key as keyof InsetState]}
                     onChange={(e) =>
-                      handleInsetChange(
-                        slider.key as keyof InsetState,
-                        Number(e.target.value)
-                      )
+                      handleInsetChange(slider.key as keyof InsetState, Number(e.target.value))
                     }
                     className="clip-path-slider"
                   />
@@ -430,19 +388,13 @@ function CssClipPathGenerator() {
 
           {/* circle コントロール */}
           {type === "circle" && (
-            <section
-              className="clip-path-section"
-              aria-labelledby="circle-heading"
-            >
+            <section className="clip-path-section" aria-labelledby="circle-heading">
               <h3 id="circle-heading" className="clip-path-section-title">
                 circle() 設定
               </h3>
               {CIRCLE_SLIDERS.map((slider) => (
                 <div key={slider.key} className="clip-path-slider-row">
-                  <label
-                    htmlFor={`circle-${slider.key}`}
-                    className="clip-path-slider-label"
-                  >
+                  <label htmlFor={`circle-${slider.key}`} className="clip-path-slider-label">
                     {slider.label}
                   </label>
                   <input
@@ -453,10 +405,7 @@ function CssClipPathGenerator() {
                     step={slider.step}
                     value={circle[slider.key as keyof CircleState]}
                     onChange={(e) =>
-                      handleCircleChange(
-                        slider.key as keyof CircleState,
-                        Number(e.target.value)
-                      )
+                      handleCircleChange(slider.key as keyof CircleState, Number(e.target.value))
                     }
                     className="clip-path-slider"
                   />
@@ -471,19 +420,13 @@ function CssClipPathGenerator() {
 
           {/* ellipse コントロール */}
           {type === "ellipse" && (
-            <section
-              className="clip-path-section"
-              aria-labelledby="ellipse-heading"
-            >
+            <section className="clip-path-section" aria-labelledby="ellipse-heading">
               <h3 id="ellipse-heading" className="clip-path-section-title">
                 ellipse() 設定
               </h3>
               {ELLIPSE_SLIDERS.map((slider) => (
                 <div key={slider.key} className="clip-path-slider-row">
-                  <label
-                    htmlFor={`ellipse-${slider.key}`}
-                    className="clip-path-slider-label"
-                  >
+                  <label htmlFor={`ellipse-${slider.key}`} className="clip-path-slider-label">
                     {slider.label}
                   </label>
                   <input
@@ -494,10 +437,7 @@ function CssClipPathGenerator() {
                     step={slider.step}
                     value={ellipse[slider.key as keyof EllipseState]}
                     onChange={(e) =>
-                      handleEllipseChange(
-                        slider.key as keyof EllipseState,
-                        Number(e.target.value)
-                      )
+                      handleEllipseChange(slider.key as keyof EllipseState, Number(e.target.value))
                     }
                     className="clip-path-slider"
                   />
@@ -512,10 +452,7 @@ function CssClipPathGenerator() {
 
           {/* polygon コントロール */}
           {type === "polygon" && (
-            <section
-              className="clip-path-section"
-              aria-labelledby="polygon-heading"
-            >
+            <section className="clip-path-section" aria-labelledby="polygon-heading">
               <h3 id="polygon-heading" className="clip-path-section-title">
                 polygon() 設定
               </h3>
@@ -524,10 +461,7 @@ function CssClipPathGenerator() {
           )}
 
           {/* polygon プリセット */}
-          <section
-            className="clip-path-section"
-            aria-labelledby="presets-heading"
-          >
+          <section className="clip-path-section" aria-labelledby="presets-heading">
             <h3 id="presets-heading" className="clip-path-section-title">
               プリセット形状
             </h3>
@@ -541,15 +475,9 @@ function CssClipPathGenerator() {
                   type="button"
                   aria-label={`${preset.name}を適用`}
                 >
-                  <svg
-                    viewBox="0 0 100 100"
-                    className="clip-path-preset-icon"
-                    aria-hidden="true"
-                  >
+                  <svg viewBox="0 0 100 100" className="clip-path-preset-icon" aria-hidden="true">
                     <polygon
-                      points={preset.points
-                        .map((p) => `${p.x},${p.y}`)
-                        .join(" ")}
+                      points={preset.points.map((p) => `${p.x},${p.y}`).join(" ")}
                       className="clip-path-preset-polygon"
                     />
                   </svg>
@@ -578,10 +506,7 @@ function CssClipPathGenerator() {
           </section>
 
           {/* CSS 出力 */}
-          <section
-            className="clip-path-section"
-            aria-labelledby="css-output-heading"
-          >
+          <section className="clip-path-section" aria-labelledby="css-output-heading">
             <h3 id="css-output-heading" className="clip-path-section-title">
               生成された CSS
             </h3>
@@ -592,11 +517,7 @@ function CssClipPathGenerator() {
               <Button onClick={handleCopy} aria-label="CSSコードをコピー">
                 コピー
               </Button>
-              <Button
-                onClick={handleReset}
-                variant="outline"
-                aria-label="設定をリセット"
-              >
+              <Button onClick={handleReset} variant="outline" aria-label="設定をリセット">
                 リセット
               </Button>
             </div>

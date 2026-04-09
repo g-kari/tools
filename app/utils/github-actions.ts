@@ -4,11 +4,11 @@
 
 /** ワークフロートリガーの種類 */
 export type WorkflowTriggerType =
-  | 'push'
-  | 'pull_request'
-  | 'workflow_dispatch'
-  | 'schedule'
-  | 'release';
+  | "push"
+  | "pull_request"
+  | "workflow_dispatch"
+  | "schedule"
+  | "release";
 
 /** ブランチ条件付きトリガー設定 */
 export interface TriggerBranches {
@@ -24,25 +24,25 @@ export interface ScheduleCron {
 
 /** ジョブを実行するOSランナー */
 export type RunnerOS =
-  | 'ubuntu-latest'
-  | 'macos-latest'
-  | 'windows-latest'
-  | 'ubuntu-22.04'
-  | 'ubuntu-20.04';
+  | "ubuntu-latest"
+  | "macos-latest"
+  | "windows-latest"
+  | "ubuntu-22.04"
+  | "ubuntu-20.04";
 
 /** ステップの種類 */
 export type StepType =
-  | 'checkout'
-  | 'setup-node'
-  | 'setup-python'
-  | 'setup-go'
-  | 'cache'
-  | 'run'
-  | 'upload-artifact'
-  | 'download-artifact'
-  | 'docker-login'
-  | 'docker-build-push'
-  | 'deploy-pages';
+  | "checkout"
+  | "setup-node"
+  | "setup-python"
+  | "setup-go"
+  | "cache"
+  | "run"
+  | "upload-artifact"
+  | "download-artifact"
+  | "docker-login"
+  | "docker-build-push"
+  | "deploy-pages";
 
 /** ステップの設定 */
 export interface StepConfig {
@@ -120,13 +120,13 @@ export interface WorkflowTemplate {
 /** GitHub Actions ワークフローテンプレート一覧 */
 export const GITHUB_ACTIONS_TEMPLATES: WorkflowTemplate[] = [
   {
-    label: 'Node.js CI',
-    description: 'Node.js プロジェクトのCI（lint・test・build）',
+    label: "Node.js CI",
+    description: "Node.js プロジェクトのCI（lint・test・build）",
     config: {
-      name: 'Node.js CI',
+      name: "Node.js CI",
       triggers: {
-        push: { branches: ['main'] },
-        pull_request: { branches: ['main'] },
+        push: { branches: ["main"] },
+        pull_request: { branches: ["main"] },
         workflow_dispatch: false,
         schedule: null,
         release: false,
@@ -134,16 +134,16 @@ export const GITHUB_ACTIONS_TEMPLATES: WorkflowTemplate[] = [
       globalEnv: [],
       jobs: [
         {
-          id: 'build',
-          name: 'Build and Test',
-          runsOn: 'ubuntu-latest',
+          id: "build",
+          name: "Build and Test",
+          runsOn: "ubuntu-latest",
           steps: [
-            { type: 'checkout', enabled: true },
-            { type: 'setup-node', enabled: true, nodeVersion: '20' },
-            { type: 'run', enabled: true, command: 'npm ci' },
-            { type: 'run', enabled: true, command: 'npm run lint' },
-            { type: 'run', enabled: true, command: 'npm test' },
-            { type: 'run', enabled: true, command: 'npm run build' },
+            { type: "checkout", enabled: true },
+            { type: "setup-node", enabled: true, nodeVersion: "20" },
+            { type: "run", enabled: true, command: "npm ci" },
+            { type: "run", enabled: true, command: "npm run lint" },
+            { type: "run", enabled: true, command: "npm test" },
+            { type: "run", enabled: true, command: "npm run build" },
           ],
           env: [],
         },
@@ -151,13 +151,13 @@ export const GITHUB_ACTIONS_TEMPLATES: WorkflowTemplate[] = [
     },
   },
   {
-    label: 'Python CI',
-    description: 'Python プロジェクトのCI（pytest）',
+    label: "Python CI",
+    description: "Python プロジェクトのCI（pytest）",
     config: {
-      name: 'Python CI',
+      name: "Python CI",
       triggers: {
-        push: { branches: ['main'] },
-        pull_request: { branches: ['main'] },
+        push: { branches: ["main"] },
+        pull_request: { branches: ["main"] },
         workflow_dispatch: false,
         schedule: null,
         release: false,
@@ -165,18 +165,18 @@ export const GITHUB_ACTIONS_TEMPLATES: WorkflowTemplate[] = [
       globalEnv: [],
       jobs: [
         {
-          id: 'test',
-          name: 'Test',
-          runsOn: 'ubuntu-latest',
+          id: "test",
+          name: "Test",
+          runsOn: "ubuntu-latest",
           steps: [
-            { type: 'checkout', enabled: true },
-            { type: 'setup-python', enabled: true, pythonVersion: '3.11' },
+            { type: "checkout", enabled: true },
+            { type: "setup-python", enabled: true, pythonVersion: "3.11" },
             {
-              type: 'run',
+              type: "run",
               enabled: true,
-              command: 'pip install -r requirements.txt',
+              command: "pip install -r requirements.txt",
             },
-            { type: 'run', enabled: true, command: 'pytest' },
+            { type: "run", enabled: true, command: "pytest" },
           ],
           env: [],
         },
@@ -184,12 +184,12 @@ export const GITHUB_ACTIONS_TEMPLATES: WorkflowTemplate[] = [
     },
   },
   {
-    label: 'Docker Build & Push',
-    description: 'Docker イメージのビルドとGHCRへのプッシュ',
+    label: "Docker Build & Push",
+    description: "Docker イメージのビルドとGHCRへのプッシュ",
     config: {
-      name: 'Docker Build and Push',
+      name: "Docker Build and Push",
       triggers: {
-        push: { branches: ['main'] },
+        push: { branches: ["main"] },
         pull_request: null,
         workflow_dispatch: false,
         schedule: null,
@@ -198,20 +198,20 @@ export const GITHUB_ACTIONS_TEMPLATES: WorkflowTemplate[] = [
       globalEnv: [],
       jobs: [
         {
-          id: 'build-push',
-          name: 'Build and Push Docker Image',
-          runsOn: 'ubuntu-latest',
+          id: "build-push",
+          name: "Build and Push Docker Image",
+          runsOn: "ubuntu-latest",
           steps: [
-            { type: 'checkout', enabled: true },
+            { type: "checkout", enabled: true },
             {
-              type: 'docker-login',
+              type: "docker-login",
               enabled: true,
-              registry: 'ghcr.io',
+              registry: "ghcr.io",
             },
             {
-              type: 'docker-build-push',
+              type: "docker-build-push",
               enabled: true,
-              imageName: 'ghcr.io/${{ github.repository }}',
+              imageName: "ghcr.io/${{ github.repository }}",
             },
           ],
           env: [],
@@ -220,12 +220,12 @@ export const GITHUB_ACTIONS_TEMPLATES: WorkflowTemplate[] = [
     },
   },
   {
-    label: 'Cloudflare Workers Deploy',
-    description: 'Cloudflare Workers へのデプロイ',
+    label: "Cloudflare Workers Deploy",
+    description: "Cloudflare Workers へのデプロイ",
     config: {
-      name: 'Deploy to Cloudflare Workers',
+      name: "Deploy to Cloudflare Workers",
       triggers: {
-        push: { branches: ['main'] },
+        push: { branches: ["main"] },
         pull_request: null,
         workflow_dispatch: true,
         schedule: null,
@@ -234,24 +234,21 @@ export const GITHUB_ACTIONS_TEMPLATES: WorkflowTemplate[] = [
       globalEnv: [],
       jobs: [
         {
-          id: 'deploy',
-          name: 'Deploy',
-          runsOn: 'ubuntu-latest',
+          id: "deploy",
+          name: "Deploy",
+          runsOn: "ubuntu-latest",
           steps: [
-            { type: 'checkout', enabled: true },
-            { type: 'setup-node', enabled: true, nodeVersion: '20' },
-            { type: 'run', enabled: true, command: 'npm ci' },
-            { type: 'run', enabled: true, command: 'npm run build' },
+            { type: "checkout", enabled: true },
+            { type: "setup-node", enabled: true, nodeVersion: "20" },
+            { type: "run", enabled: true, command: "npm ci" },
+            { type: "run", enabled: true, command: "npm run build" },
             {
-              type: 'run',
+              type: "run",
               enabled: true,
-              command:
-                'npx wrangler deploy --env production',
+              command: "npx wrangler deploy --env production",
             },
           ],
-          env: [
-            { key: 'CLOUDFLARE_API_TOKEN', value: '${{ secrets.CLOUDFLARE_API_TOKEN }}' },
-          ],
+          env: [{ key: "CLOUDFLARE_API_TOKEN", value: "${{ secrets.CLOUDFLARE_API_TOKEN }}" }],
         },
       ],
     },
@@ -264,10 +261,10 @@ export const GITHUB_ACTIONS_TEMPLATES: WorkflowTemplate[] = [
  */
 export function defaultWorkflowConfig(): WorkflowConfig {
   return {
-    name: 'CI',
+    name: "CI",
     triggers: {
-      push: { branches: ['main'] },
-      pull_request: { branches: ['main'] },
+      push: { branches: ["main"] },
+      pull_request: { branches: ["main"] },
       workflow_dispatch: false,
       schedule: null,
       release: false,
@@ -275,14 +272,14 @@ export function defaultWorkflowConfig(): WorkflowConfig {
     globalEnv: [],
     jobs: [
       {
-        id: 'build',
-        name: 'Build',
-        runsOn: 'ubuntu-latest',
+        id: "build",
+        name: "Build",
+        runsOn: "ubuntu-latest",
         steps: [
-          { type: 'checkout', enabled: true },
-          { type: 'setup-node', enabled: true, nodeVersion: '20' },
-          { type: 'run', enabled: true, command: 'npm ci' },
-          { type: 'run', enabled: false, command: '' },
+          { type: "checkout", enabled: true },
+          { type: "setup-node", enabled: true, nodeVersion: "20" },
+          { type: "run", enabled: true, command: "npm ci" },
+          { type: "run", enabled: false, command: "" },
         ],
         env: [],
       },
@@ -297,86 +294,83 @@ export function defaultWorkflowConfig(): WorkflowConfig {
  * @returns YAMLステップ文字列（複数行）
  */
 function generateStep(step: StepConfig, indent: number): string {
-  const pad = ' '.repeat(indent);
-  const pad2 = ' '.repeat(indent + 2);
+  const pad = " ".repeat(indent);
+  const pad2 = " ".repeat(indent + 2);
 
   switch (step.type) {
-    case 'checkout':
-      return [
-        `${pad}- name: Checkout code`,
-        `${pad2}uses: actions/checkout@v4`,
-      ].join('\n');
+    case "checkout":
+      return [`${pad}- name: Checkout code`, `${pad2}uses: actions/checkout@v4`].join("\n");
 
-    case 'setup-node': {
-      const ver = step.nodeVersion || '20';
+    case "setup-node": {
+      const ver = step.nodeVersion || "20";
       return [
         `${pad}- name: Setup Node.js`,
         `${pad2}uses: actions/setup-node@v4`,
         `${pad2}with:`,
         `${pad2}  node-version: '${ver}'`,
-      ].join('\n');
+      ].join("\n");
     }
 
-    case 'setup-python': {
-      const ver = step.pythonVersion || '3.11';
+    case "setup-python": {
+      const ver = step.pythonVersion || "3.11";
       return [
         `${pad}- name: Setup Python`,
         `${pad2}uses: actions/setup-python@v5`,
         `${pad2}with:`,
         `${pad2}  python-version: '${ver}'`,
-      ].join('\n');
+      ].join("\n");
     }
 
-    case 'setup-go': {
-      const ver = step.goVersion || '1.22';
+    case "setup-go": {
+      const ver = step.goVersion || "1.22";
       return [
         `${pad}- name: Setup Go`,
         `${pad2}uses: actions/setup-go@v5`,
         `${pad2}with:`,
         `${pad2}  go-version: '${ver}'`,
-      ].join('\n');
+      ].join("\n");
     }
 
-    case 'cache': {
-      const key = step.cacheKey || 'node-modules-${{ hashFiles(\'**/package-lock.json\') }}';
+    case "cache": {
+      const key = step.cacheKey || "node-modules-${{ hashFiles('**/package-lock.json') }}";
       return [
         `${pad}- name: Cache dependencies`,
         `${pad2}uses: actions/cache@v4`,
         `${pad2}with:`,
         `${pad2}  path: node_modules`,
         `${pad2}  key: ${key}`,
-      ].join('\n');
+      ].join("\n");
     }
 
-    case 'run': {
+    case "run": {
       const cmd = step.command || 'echo "No command specified"';
-      return [`${pad}- name: Run command`, `${pad2}run: ${cmd}`].join('\n');
+      return [`${pad}- name: Run command`, `${pad2}run: ${cmd}`].join("\n");
     }
 
-    case 'upload-artifact': {
-      const name = step.artifactName || 'artifact';
-      const path = step.artifactPath || 'dist/';
+    case "upload-artifact": {
+      const name = step.artifactName || "artifact";
+      const path = step.artifactPath || "dist/";
       return [
         `${pad}- name: Upload artifact`,
         `${pad2}uses: actions/upload-artifact@v4`,
         `${pad2}with:`,
         `${pad2}  name: ${name}`,
         `${pad2}  path: ${path}`,
-      ].join('\n');
+      ].join("\n");
     }
 
-    case 'download-artifact': {
-      const name = step.artifactName || 'artifact';
+    case "download-artifact": {
+      const name = step.artifactName || "artifact";
       return [
         `${pad}- name: Download artifact`,
         `${pad2}uses: actions/download-artifact@v4`,
         `${pad2}with:`,
         `${pad2}  name: ${name}`,
-      ].join('\n');
+      ].join("\n");
     }
 
-    case 'docker-login': {
-      const registry = step.registry || 'ghcr.io';
+    case "docker-login": {
+      const registry = step.registry || "ghcr.io";
       return [
         `${pad}- name: Login to ${registry}`,
         `${pad2}uses: docker/login-action@v3`,
@@ -384,11 +378,11 @@ function generateStep(step: StepConfig, indent: number): string {
         `${pad2}  registry: ${registry}`,
         `${pad2}  username: \${{ github.actor }}`,
         `${pad2}  password: \${{ secrets.GITHUB_TOKEN }}`,
-      ].join('\n');
+      ].join("\n");
     }
 
-    case 'docker-build-push': {
-      const image = step.imageName || 'ghcr.io/${{ github.repository }}';
+    case "docker-build-push": {
+      const image = step.imageName || "ghcr.io/${{ github.repository }}";
       return [
         `${pad}- name: Build and push Docker image`,
         `${pad2}uses: docker/build-push-action@v5`,
@@ -396,17 +390,16 @@ function generateStep(step: StepConfig, indent: number): string {
         `${pad2}  context: .`,
         `${pad2}  push: true`,
         `${pad2}  tags: ${image}:latest`,
-      ].join('\n');
+      ].join("\n");
     }
 
-    case 'deploy-pages':
-      return [
-        `${pad}- name: Deploy to GitHub Pages`,
-        `${pad2}uses: actions/deploy-pages@v4`,
-      ].join('\n');
+    case "deploy-pages":
+      return [`${pad}- name: Deploy to GitHub Pages`, `${pad2}uses: actions/deploy-pages@v4`].join(
+        "\n",
+      );
 
     default:
-      return '';
+      return "";
   }
 }
 
@@ -424,13 +417,13 @@ function generateJob(job: JobConfig): string {
   // ジョブ環境変数
   const validEnv = (job.env ?? []).filter((e) => e.key.trim());
   if (validEnv.length > 0) {
-    lines.push('    env:');
+    lines.push("    env:");
     for (const e of validEnv) {
       lines.push(`      ${e.key}: ${e.value}`);
     }
   }
 
-  lines.push('    steps:');
+  lines.push("    steps:");
 
   const enabledSteps = job.steps.filter((s) => s.enabled);
   for (const step of enabledSteps) {
@@ -440,7 +433,7 @@ function generateJob(job: JobConfig): string {
     }
   }
 
-  return lines.join('\n');
+  return lines.join("\n");
 }
 
 /**
@@ -452,18 +445,18 @@ export function generateWorkflow(config: WorkflowConfig): string {
   const lines: string[] = [];
 
   // name
-  const name = config.name.trim() || 'CI';
+  const name = config.name.trim() || "CI";
   lines.push(`name: ${name}`);
-  lines.push('');
+  lines.push("");
 
   // on トリガー
-  lines.push('on:');
+  lines.push("on:");
   const { triggers } = config;
 
   if (triggers.push) {
-    lines.push('  push:');
+    lines.push("  push:");
     if (triggers.push.branches.length > 0) {
-      lines.push('    branches:');
+      lines.push("    branches:");
       for (const b of triggers.push.branches) {
         if (b.trim()) lines.push(`      - ${b.trim()}`);
       }
@@ -471,9 +464,9 @@ export function generateWorkflow(config: WorkflowConfig): string {
   }
 
   if (triggers.pull_request) {
-    lines.push('  pull_request:');
+    lines.push("  pull_request:");
     if (triggers.pull_request.branches.length > 0) {
-      lines.push('    branches:');
+      lines.push("    branches:");
       for (const b of triggers.pull_request.branches) {
         if (b.trim()) lines.push(`      - ${b.trim()}`);
       }
@@ -481,36 +474,36 @@ export function generateWorkflow(config: WorkflowConfig): string {
   }
 
   if (triggers.workflow_dispatch) {
-    lines.push('  workflow_dispatch:');
+    lines.push("  workflow_dispatch:");
   }
 
   if (triggers.schedule) {
-    lines.push('  schedule:');
+    lines.push("  schedule:");
     lines.push(`    - cron: '${triggers.schedule.cron}'`);
   }
 
   if (triggers.release) {
-    lines.push('  release:');
-    lines.push('    types: [published]');
+    lines.push("  release:");
+    lines.push("    types: [published]");
   }
 
-  lines.push('');
+  lines.push("");
 
   // グローバル環境変数
   const validGlobalEnv = config.globalEnv.filter((e) => e.key.trim());
   if (validGlobalEnv.length > 0) {
-    lines.push('env:');
+    lines.push("env:");
     for (const e of validGlobalEnv) {
       lines.push(`  ${e.key}: ${e.value}`);
     }
-    lines.push('');
+    lines.push("");
   }
 
   // ジョブ
-  lines.push('jobs:');
+  lines.push("jobs:");
   for (const job of config.jobs) {
     lines.push(generateJob(job));
   }
 
-  return lines.join('\n');
+  return lines.join("\n");
 }

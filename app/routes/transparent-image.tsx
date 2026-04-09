@@ -8,16 +8,16 @@ import { TipsCard } from "~/components/TipsCard";
 export const Route = createFileRoute("/transparent-image")({
   head: () => ({
     meta: [
-    { title: "背景透過ツール | Web ツール集" },
-    { name: "description", content: "画像の背景を透過（透明化）するオンラインツール。" },
-    { property: "og:title", content: "背景透過ツール | Web ツール集" },
-    { property: "og:description", content: "画像の背景を透過（透明化）するオンラインツール。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/transparent-image` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "背景透過ツール | Web ツール集" },
-    { name: "twitter:description", content: "画像の背景を透過（透明化）するオンラインツール。" },
-  ],
+      { title: "背景透過ツール | Web ツール集" },
+      { name: "description", content: "画像の背景を透過（透明化）するオンラインツール。" },
+      { property: "og:title", content: "背景透過ツール | Web ツール集" },
+      { property: "og:description", content: "画像の背景を透過（透明化）するオンラインツール。" },
+      { property: "og:url", content: `${SITE_BASE_URL}/transparent-image` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "背景透過ツール | Web ツール集" },
+      { name: "twitter:description", content: "画像の背景を透過（透明化）するオンラインツール。" },
+    ],
   }),
   component: TransparentImageProcessor,
 });
@@ -83,7 +83,7 @@ export function colorDistance(color1: RgbColor, color2: RgbColor): number {
 export function makeColorTransparent(
   imageData: ImageData,
   targetColor: RgbColor,
-  tolerance: number
+  tolerance: number,
 ): ImageData {
   const data = imageData.data;
   const maxDistance = (tolerance / 100) * 441.67; // 最大距離は√(255²+255²+255²) ≈ 441.67
@@ -99,9 +99,10 @@ export function makeColorTransparent(
 
     if (distance <= maxDistance) {
       // 透過度を距離に応じて計算（近いほど透明）
-      const alpha = distance <= maxDistance * 0.5
-        ? 0
-        : Math.round(((distance - maxDistance * 0.5) / (maxDistance * 0.5)) * 255);
+      const alpha =
+        distance <= maxDistance * 0.5
+          ? 0
+          : Math.round(((distance - maxDistance * 0.5) / (maxDistance * 0.5)) * 255);
       data[i + 3] = alpha;
     }
   }
@@ -120,7 +121,7 @@ export function drawCheckerboard(
   ctx: CanvasRenderingContext2D,
   width: number,
   height: number,
-  cellSize: number = CHECKERBOARD_SIZE
+  cellSize: number = CHECKERBOARD_SIZE,
 ): void {
   ctx.fillStyle = "#ffffff";
   ctx.fillRect(0, 0, width, height);
@@ -155,7 +156,9 @@ function TransparentImageProcessor() {
   const [isLoading, setIsLoading] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [isPickingColor, setIsPickingColor] = useState(false);
-  const [imageDimensions, setImageDimensions] = useState<{ width: number; height: number } | null>(null);
+  const [imageDimensions, setImageDimensions] = useState<{ width: number; height: number } | null>(
+    null,
+  );
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const originalCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -192,7 +195,13 @@ function TransparentImageProcessor() {
 
   // 透過処理を実行してプレビューを更新
   const processImage = useCallback(() => {
-    if (!originalCanvasRef.current || !previewCanvasRef.current || !imageRef.current || !imageDimensions) return;
+    if (
+      !originalCanvasRef.current ||
+      !previewCanvasRef.current ||
+      !imageRef.current ||
+      !imageDimensions
+    )
+      return;
 
     const originalCanvas = originalCanvasRef.current;
     const previewCanvas = previewCanvasRef.current;
@@ -263,7 +272,7 @@ function TransparentImageProcessor() {
       };
       img.src = preview;
     },
-    [originalPreview, showToast]
+    [originalPreview, showToast],
   );
 
   const handleInputChange = useCallback(
@@ -273,7 +282,7 @@ function TransparentImageProcessor() {
         handleFileSelect(file);
       }
     },
-    [handleFileSelect]
+    [handleFileSelect],
   );
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
@@ -296,7 +305,7 @@ function TransparentImageProcessor() {
         handleFileSelect(file);
       }
     },
-    [handleFileSelect]
+    [handleFileSelect],
   );
 
   // 画像クリックで色を取得
@@ -318,7 +327,7 @@ function TransparentImageProcessor() {
       setIsPickingColor(false);
       showToast(`色を選択しました: ${hex}`, "success");
     },
-    [isPickingColor, showToast]
+    [isPickingColor, showToast],
   );
 
   // 透過画像を生成してダウンロード
@@ -350,29 +359,26 @@ function TransparentImageProcessor() {
     const processedData = makeColorTransparent(imageData, rgbTarget, tolerance);
     ctx.putImageData(processedData, 0, 0);
 
-    canvas.toBlob(
-      (blob) => {
-        if (blob) {
-          setProcessedBlob(blob);
-          const url = URL.createObjectURL(blob);
-          const filename = generateFilename(originalFile.name);
+    canvas.toBlob((blob) => {
+      if (blob) {
+        setProcessedBlob(blob);
+        const url = URL.createObjectURL(blob);
+        const filename = generateFilename(originalFile.name);
 
-          const a = document.createElement("a");
-          a.href = url;
-          a.download = filename;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          URL.revokeObjectURL(url);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
 
-          showToast("透過画像をダウンロードしました", "success");
-        } else {
-          showToast("画像の生成に失敗しました", "error");
-        }
-        setIsLoading(false);
-      },
-      "image/png"
-    );
+        showToast("透過画像をダウンロードしました", "success");
+      } else {
+        showToast("画像の生成に失敗しました", "error");
+      }
+      setIsLoading(false);
+    }, "image/png");
   }, [originalFile, targetColor, tolerance, imageDimensions, showToast]);
 
   const handleClear = useCallback(() => {
@@ -431,9 +437,7 @@ function TransparentImageProcessor() {
                   <polyline points="17 8 12 3 7 8" />
                   <line x1="12" y1="3" x2="12" y2="15" />
                 </svg>
-                <p className="dropzone-text">
-                  クリックして画像を選択、またはドラッグ&ドロップ
-                </p>
+                <p className="dropzone-text">クリックして画像を選択、またはドラッグ&ドロップ</p>
                 <p className="dropzone-hint">PNG, JPEG, WebP など</p>
               </div>
             </div>
@@ -460,124 +464,123 @@ function TransparentImageProcessor() {
             ]}
           />
         </>
-      ) : imageDimensions && (
-        /* 画像選択後：設定を上、プレビューを下に配置 */
-        <>
-          {/* 設定バー：横並び */}
-          <div className="transparent-controls-bar">
-            <div className="transparent-control-item">
-              <label className="transparent-control-label">透過色</label>
-              <div className="transparent-color-row">
+      ) : (
+        imageDimensions && (
+          /* 画像選択後：設定を上、プレビューを下に配置 */
+          <>
+            {/* 設定バー：横並び */}
+            <div className="transparent-controls-bar">
+              <div className="transparent-control-item">
+                <label className="transparent-control-label">透過色</label>
+                <div className="transparent-color-row">
+                  <input
+                    type="color"
+                    id="targetColor"
+                    value={targetColor}
+                    onChange={(e) => setTargetColor(e.target.value)}
+                    disabled={isLoading}
+                    className="transparent-color-input"
+                  />
+                  <input
+                    type="text"
+                    value={targetColor}
+                    onChange={(e) => setTargetColor(e.target.value)}
+                    pattern="^#[0-9A-Fa-f]{6}$"
+                    aria-label="透過色のHEX値"
+                    disabled={isLoading}
+                    className="transparent-hex-input"
+                  />
+                  <button
+                    type="button"
+                    className={`transparent-pick-btn ${isPickingColor ? "active" : ""}`}
+                    onClick={() => setIsPickingColor(!isPickingColor)}
+                    disabled={isLoading}
+                    title="画像から色を選択"
+                  >
+                    {isPickingColor ? "選択中" : "画像から"}
+                  </button>
+                </div>
+              </div>
+
+              <div className="transparent-control-item transparent-tolerance-item">
+                <label className="transparent-control-label">
+                  許容範囲: <strong>{tolerance}%</strong>
+                </label>
                 <input
-                  type="color"
-                  id="targetColor"
-                  value={targetColor}
-                  onChange={(e) => setTargetColor(e.target.value)}
+                  type="range"
+                  id="tolerance"
+                  min="0"
+                  max="100"
+                  value={tolerance}
+                  onChange={(e) => setTolerance(parseInt(e.target.value))}
                   disabled={isLoading}
-                  className="transparent-color-input"
+                  className="transparent-slider"
                 />
-                <input
-                  type="text"
-                  value={targetColor}
-                  onChange={(e) => setTargetColor(e.target.value)}
-                  pattern="^#[0-9A-Fa-f]{6}$"
-                  aria-label="透過色のHEX値"
-                  disabled={isLoading}
-                  className="transparent-hex-input"
-                />
-                <button
+              </div>
+
+              <div className="transparent-control-item transparent-actions-item">
+                <Button type="button" onClick={handleDownload} disabled={isLoading}>
+                  {isLoading ? "処理中..." : "ダウンロード"}
+                </Button>
+                <Button
                   type="button"
-                  className={`transparent-pick-btn ${isPickingColor ? "active" : ""}`}
-                  onClick={() => setIsPickingColor(!isPickingColor)}
+                  variant="secondary"
+                  className="btn-clear"
+                  onClick={handleClear}
                   disabled={isLoading}
-                  title="画像から色を選択"
                 >
-                  {isPickingColor ? "選択中" : "画像から"}
-                </button>
+                  クリア
+                </Button>
               </div>
             </div>
 
-            <div className="transparent-control-item transparent-tolerance-item">
-              <label className="transparent-control-label">
-                許容範囲: <strong>{tolerance}%</strong>
-              </label>
-              <input
-                type="range"
-                id="tolerance"
-                min="0"
-                max="100"
-                value={tolerance}
-                onChange={(e) => setTolerance(parseInt(e.target.value))}
-                disabled={isLoading}
-                className="transparent-slider"
-              />
-            </div>
-
-            <div className="transparent-control-item transparent-actions-item">
-              <Button
-                type="button"
-                onClick={handleDownload}
-                disabled={isLoading}
-              >
-                {isLoading ? "処理中..." : "ダウンロード"}
-              </Button>
-              <Button
-                type="button"
-                variant="secondary"
-                className="btn-clear"
-                onClick={handleClear}
-                disabled={isLoading}
-              >
-                クリア
-              </Button>
-            </div>
-          </div>
-
-          {/* プレビュー：横並びで大きく表示 */}
-          <div className="transparent-preview-area">
-            <div className="transparent-preview-panel">
-              <span className="transparent-preview-label">
-                元画像 {isPickingColor && <span className="picking-hint">(クリックで色選択)</span>}
-              </span>
-              <div className="transparent-canvas-wrapper">
-                <canvas
-                  ref={originalCanvasRef}
-                  className={`preview-canvas ${isPickingColor ? "picking-color" : ""}`}
-                  onClick={handleCanvasClick}
-                  aria-label="元画像プレビュー"
-                />
+            {/* プレビュー：横並びで大きく表示 */}
+            <div className="transparent-preview-area">
+              <div className="transparent-preview-panel">
+                <span className="transparent-preview-label">
+                  元画像{" "}
+                  {isPickingColor && <span className="picking-hint">(クリックで色選択)</span>}
+                </span>
+                <div className="transparent-canvas-wrapper">
+                  <canvas
+                    ref={originalCanvasRef}
+                    className={`preview-canvas ${isPickingColor ? "picking-color" : ""}`}
+                    onClick={handleCanvasClick}
+                    aria-label="元画像プレビュー"
+                  />
+                </div>
+              </div>
+              <div className="transparent-preview-panel">
+                <span className="transparent-preview-label">透過後</span>
+                <div className="transparent-canvas-wrapper transparent-preview-bg">
+                  <canvas
+                    ref={previewCanvasRef}
+                    className="preview-canvas"
+                    aria-label="透過後プレビュー"
+                  />
+                </div>
               </div>
             </div>
-            <div className="transparent-preview-panel">
-              <span className="transparent-preview-label">透過後</span>
-              <div className="transparent-canvas-wrapper transparent-preview-bg">
-                <canvas
-                  ref={previewCanvasRef}
-                  className="preview-canvas"
-                  aria-label="透過後プレビュー"
-                />
-              </div>
+            <div className="transparent-image-meta">
+              {imageDimensions.width} × {imageDimensions.height} px
             </div>
-          </div>
-          <div className="transparent-image-meta">
-            {imageDimensions.width} × {imageDimensions.height} px
-          </div>
 
-          {/* Tips */}
-          <TipsCard
-            sections={[
-              {
-                title: "Tips",
-                items: [
-                  "「画像から」ボタンを押して元画像をクリックすると色を直接選択できます",
-                  "許容範囲を上げると、選択した色に近い色も透過されます",
-                  "チェッカーボードパターンは透明度を視覚化するためのものです",
-                  "出力形式はPNG（透過対応）です",
-                ],
-              },
-            ]}
-          />
-        </>
+            {/* Tips */}
+            <TipsCard
+              sections={[
+                {
+                  title: "Tips",
+                  items: [
+                    "「画像から」ボタンを押して元画像をクリックすると色を直接選択できます",
+                    "許容範囲を上げると、選択した色に近い色も透過されます",
+                    "チェッカーボードパターンは透明度を視覚化するためのものです",
+                    "出力形式はPNG（透過対応）です",
+                  ],
+                },
+              ]}
+            />
+          </>
+        )
       )}
 
       <input

@@ -1,10 +1,5 @@
 import { describe, test, expect, beforeAll } from "vite-plus/test";
-import {
-  clampByte,
-  applyMatrix3x3,
-  applySimulation,
-  CVD_INFOS,
-} from "../../app/utils/color-blind";
+import { clampByte, applyMatrix3x3, applySimulation, CVD_INFOS } from "../../app/utils/color-blind";
 
 // Node.js 環境では ImageData が未定義のためポリフィルを適用する
 beforeAll(() => {
@@ -14,11 +9,7 @@ beforeAll(() => {
       width: number;
       height: number;
 
-      constructor(
-        data: Uint8ClampedArray | number,
-        width: number,
-        height?: number
-      ) {
+      constructor(data: Uint8ClampedArray | number, width: number, height?: number) {
         if (data instanceof Uint8ClampedArray) {
           this.data = data;
           this.width = width;
@@ -66,18 +57,14 @@ describe("applyMatrix3x3", () => {
   });
 
   test("全色盲変換（グレースケール）でRGB値が同一になる", () => {
-    const achroma = [
-      0.2126, 0.7152, 0.0722, 0.2126, 0.7152, 0.0722, 0.2126, 0.7152, 0.0722,
-    ];
+    const achroma = [0.2126, 0.7152, 0.0722, 0.2126, 0.7152, 0.0722, 0.2126, 0.7152, 0.0722];
     const [r, g, b] = applyMatrix3x3(255, 0, 0, achroma);
     expect(r).toBe(g);
     expect(g).toBe(b);
   });
 
   test("純粋な赤に対する輝度計算が正しい", () => {
-    const achroma = [
-      0.2126, 0.7152, 0.0722, 0.2126, 0.7152, 0.0722, 0.2126, 0.7152, 0.0722,
-    ];
+    const achroma = [0.2126, 0.7152, 0.0722, 0.2126, 0.7152, 0.0722, 0.2126, 0.7152, 0.0722];
     const [r] = applyMatrix3x3(255, 0, 0, achroma);
     // 0.2126 * 255 ≈ 54.2 → 54
     expect(r).toBe(54);
@@ -167,9 +154,7 @@ describe("applySimulation", () => {
   test("全色盲変換では RGB 値が同一になる", () => {
     const data = new Uint8ClampedArray([200, 100, 50, 255]);
     const imageData = new ImageData(data, 1, 1);
-    const achroMatrix = CVD_INFOS.find(
-      (i) => i.id === "achromatopsia"
-    )!.matrix3x3;
+    const achroMatrix = CVD_INFOS.find((i) => i.id === "achromatopsia")!.matrix3x3;
     const result = applySimulation(imageData, achroMatrix);
     expect(result.data[0]).toBe(result.data[1]);
     expect(result.data[1]).toBe(result.data[2]);

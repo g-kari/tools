@@ -9,7 +9,8 @@ import type { SvgOptimizerOptions } from "../../app/utils/svg-optimizer";
 
 const defaultOptions: SvgOptimizerOptions = getDefaultOptions();
 
-const minimalSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><circle cx="50" cy="50" r="40" fill="red" /></svg>';
+const minimalSvg =
+  '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><circle cx="50" cy="50" r="40" fill="red" /></svg>';
 
 describe("SVGオプティマイザー", () => {
   describe("optimizeSvg", () => {
@@ -50,7 +51,8 @@ describe("SVGオプティマイザー", () => {
     });
 
     it("コメントを削除する", () => {
-      const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><!-- comment --><circle cx="50" cy="50" r="40" /></svg>';
+      const svg =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><!-- comment --><circle cx="50" cy="50" r="40" /></svg>';
       const result = optimizeSvg(svg, {
         ...defaultOptions,
         removeMetadata: true,
@@ -59,7 +61,8 @@ describe("SVGオプティマイザー", () => {
     });
 
     it("コメントを保持する（メタデータ削除無効時）", () => {
-      const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><!-- comment --><circle cx="50" cy="50" r="40" /></svg>';
+      const svg =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><!-- comment --><circle cx="50" cy="50" r="40" /></svg>';
       const result = optimizeSvg(svg, {
         ...defaultOptions,
         removeMetadata: false,
@@ -68,7 +71,8 @@ describe("SVGオプティマイザー", () => {
     });
 
     it("metadata要素を削除する", () => {
-      const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><metadata><title>Test</title></metadata><circle cx="50" cy="50" r="40" /></svg>';
+      const svg =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><metadata><title>Test</title></metadata><circle cx="50" cy="50" r="40" /></svg>';
       const result = optimizeSvg(svg, {
         ...defaultOptions,
         removeMetadata: true,
@@ -77,7 +81,8 @@ describe("SVGオプティマイザー", () => {
     });
 
     it("inkscape名前空間属性を削除する", () => {
-      const svg = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="100" height="100"><g inkscape:label="Layer 1"><circle cx="50" cy="50" r="40" /></g></svg>';
+      const svg =
+        '<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="100" height="100"><g inkscape:label="Layer 1"><circle cx="50" cy="50" r="40" /></g></svg>';
       const result = optimizeSvg(svg, {
         ...defaultOptions,
         removeMetadata: true,
@@ -86,7 +91,8 @@ describe("SVGオプティマイザー", () => {
     });
 
     it("デフォルト属性を削除する", () => {
-      const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><circle cx="50" cy="50" r="40" opacity="1" display="inline" /></svg>';
+      const svg =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><circle cx="50" cy="50" r="40" opacity="1" display="inline" /></svg>';
       const result = optimizeSvg(svg, {
         ...defaultOptions,
         removeUnusedAttrs: true,
@@ -96,7 +102,8 @@ describe("SVGオプティマイザー", () => {
     });
 
     it("デフォルト属性を保持する（オプション無効時）", () => {
-      const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><circle cx="50" cy="50" r="40" opacity="1" /></svg>';
+      const svg =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><circle cx="50" cy="50" r="40" opacity="1" /></svg>';
       const result = optimizeSvg(svg, {
         ...defaultOptions,
         removeUnusedAttrs: false,
@@ -105,7 +112,8 @@ describe("SVGオプティマイザー", () => {
     });
 
     it("空のグループ要素を削除する", () => {
-      const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><g></g><circle cx="50" cy="50" r="40" /></svg>';
+      const svg =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><g></g><circle cx="50" cy="50" r="40" /></svg>';
       const result = optimizeSvg(svg, {
         ...defaultOptions,
         removeEmptyGroups: true,
@@ -114,7 +122,8 @@ describe("SVGオプティマイザー", () => {
     });
 
     it("数値の精度を調整する", () => {
-      const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><circle cx="50.12345" cy="50.98765" r="40.111" /></svg>';
+      const svg =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><circle cx="50.12345" cy="50.98765" r="40.111" /></svg>';
       const result = optimizeSvg(svg, {
         ...defaultOptions,
         precision: 1,
@@ -133,7 +142,8 @@ describe("SVGオプティマイザー", () => {
     });
 
     it("prettify=falseで圧縮出力する", () => {
-      const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">\n  <circle cx="50" cy="50" r="40" />\n</svg>';
+      const svg =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">\n  <circle cx="50" cy="50" r="40" />\n</svg>';
       const result = optimizeSvg(svg, {
         ...defaultOptions,
         prettify: false,
@@ -142,26 +152,24 @@ describe("SVGオプティマイザー", () => {
     });
 
     it("DOCTYPE宣言を削除する", () => {
-      const svg = '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">' + minimalSvg;
+      const svg =
+        '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">' +
+        minimalSvg;
       const result = optimizeSvg(svg, defaultOptions);
       expect(result.output).not.toContain("DOCTYPE");
     });
 
     it("空文字列でエラーをスローする", () => {
-      expect(() => optimizeSvg("", defaultOptions)).toThrow(
-        "SVGコードを入力してください"
-      );
+      expect(() => optimizeSvg("", defaultOptions)).toThrow("SVGコードを入力してください");
     });
 
     it("空白のみの入力でエラーをスローする", () => {
-      expect(() => optimizeSvg("   ", defaultOptions)).toThrow(
-        "SVGコードを入力してください"
-      );
+      expect(() => optimizeSvg("   ", defaultOptions)).toThrow("SVGコードを入力してください");
     });
 
     it("無効なSVGでエラーをスローする", () => {
       expect(() => optimizeSvg("<div>not svg</div>", defaultOptions)).toThrow(
-        "有効なSVGコードではありません"
+        "有効なSVGコードではありません",
       );
     });
 

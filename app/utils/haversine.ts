@@ -60,14 +60,7 @@ export function toDeg(rad: number): number {
  * @returns 有効な場合 true
  */
 export function isValidLatLng(lat: number, lng: number): boolean {
-  return (
-    isFinite(lat) &&
-    isFinite(lng) &&
-    lat >= -90 &&
-    lat <= 90 &&
-    lng >= -180 &&
-    lng <= 180
-  );
+  return isFinite(lat) && isFinite(lng) && lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180;
 }
 
 /**
@@ -114,9 +107,7 @@ export function calcHaversine(from: LatLng, to: LatLng): HaversineResult {
   const dLat = toRad(to.lat - from.lat);
   const dLng = toRad(to.lng - from.lng);
 
-  const a =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLng / 2) ** 2;
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLng / 2) ** 2;
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
   const distanceKm = EARTH_RADIUS_KM * c;
@@ -125,20 +116,16 @@ export function calcHaversine(from: LatLng, to: LatLng): HaversineResult {
 
   // 初期方位角
   const y = Math.sin(dLng) * Math.cos(lat2);
-  const x =
-    Math.cos(lat1) * Math.sin(lat2) -
-    Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLng);
+  const x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLng);
   const bearingRad = Math.atan2(y, x);
   const bearingDeg = ((toDeg(bearingRad) % 360) + 360) % 360;
 
   // 終着方位角（逆方位を180度反転）
   const yFinal = Math.sin(-dLng) * Math.cos(lat1);
   const xFinal =
-    Math.cos(lat2) * Math.sin(lat1) -
-    Math.sin(lat2) * Math.cos(lat1) * Math.cos(-dLng);
+    Math.cos(lat2) * Math.sin(lat1) - Math.sin(lat2) * Math.cos(lat1) * Math.cos(-dLng);
   const finalBearingRad = Math.atan2(yFinal, xFinal);
-  const finalBearingDeg =
-    ((toDeg(finalBearingRad) + 180) % 360 + 360) % 360;
+  const finalBearingDeg = (((toDeg(finalBearingRad) + 180) % 360) + 360) % 360;
 
   const { abbr, label } = bearingToLabel(bearingDeg);
 

@@ -106,10 +106,7 @@ export function combination(n: number, r: number): bigint {
  * @param r - 選ぶ数
  * @returns 計算結果
  */
-export function calculateCombinatorics(
-  n: number,
-  r: number
-): CombinatoricsResult {
+export function calculateCombinatorics(n: number, r: number): CombinatoricsResult {
   const nFact = factorial(n);
   const rFact = factorial(r);
   const nMinusRFact = factorial(n - r);

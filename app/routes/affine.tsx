@@ -97,10 +97,10 @@ function AffineCipher() {
           ? "エンコードモードに切り替えました"
           : newMode === "decode"
             ? "デコードモードに切り替えました"
-            : "ブルートフォース解析モードに切り替えました"
+            : "ブルートフォース解析モードに切り替えました",
       );
     },
-    [announceStatus]
+    [announceStatus],
   );
 
   const handleParamBChange = useCallback((value: number) => {
@@ -153,11 +153,18 @@ function AffineCipher() {
             <div className="affine-formula-box" aria-label="暗号化式">
               {mode === "encode" ? (
                 <>
-                  暗号化: <strong>E(x) = ({paramA}x + {paramB}) mod 26</strong>
+                  暗号化:{" "}
+                  <strong>
+                    E(x) = ({paramA}x + {paramB}) mod 26
+                  </strong>
                 </>
               ) : (
                 <>
-                  復号: <strong>D(x) = {VALID_A_VALUES.includes(paramA) ? getModInverse(paramA) : "?"} × (x − {paramB}) mod 26</strong>
+                  復号:{" "}
+                  <strong>
+                    D(x) = {VALID_A_VALUES.includes(paramA) ? getModInverse(paramA) : "?"} × (x −{" "}
+                    {paramB}) mod 26
+                  </strong>
                 </>
               )}
             </div>
@@ -301,11 +308,7 @@ function AffineCipher() {
         )}
 
         {isBrute && isEmpty && (
-          <div
-            className="affine-output affine-output--empty"
-            role="status"
-            aria-live="polite"
-          >
+          <div className="affine-output affine-output--empty" role="status" aria-live="polite">
             入力すると全312パターンのデコード結果が表示されます
           </div>
         )}
@@ -344,8 +347,18 @@ function AffineCipher() {
  */
 function getModInverse(a: number): number {
   const inverses: Record<number, number> = {
-    1: 1, 3: 9, 5: 21, 7: 15, 9: 3, 11: 19,
-    15: 7, 17: 23, 19: 11, 21: 5, 23: 17, 25: 25,
+    1: 1,
+    3: 9,
+    5: 21,
+    7: 15,
+    9: 3,
+    11: 19,
+    15: 7,
+    17: 23,
+    19: 11,
+    21: 5,
+    23: 17,
+    25: 25,
   };
   return inverses[a] ?? 1;
 }

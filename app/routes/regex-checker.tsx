@@ -6,25 +6,31 @@ import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import { TipsCard } from "~/components/TipsCard";
 import { ErrorMessage } from "~/components/ErrorMessage";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 
 export const Route = createFileRoute("/regex-checker")({
   head: () => ({
     meta: [
-    { title: "正規表現チェッカー | Web ツール集" },
-    { name: "description", content: "正規表現のテスト・検証・マッチング確認ができるオンラインツール。" },
-    { property: "og:title", content: "正規表現チェッカー | Web ツール集" },
-    { property: "og:description", content: "正規表現のテスト・検証・マッチング確認ができるオンラインツール。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/regex-checker` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "正規表現チェッカー | Web ツール集" },
-    { name: "twitter:description", content: "正規表現のテスト・検証・マッチング確認ができるオンラインツール。" },
-  ],
+      { title: "正規表現チェッカー | Web ツール集" },
+      {
+        name: "description",
+        content: "正規表現のテスト・検証・マッチング確認ができるオンラインツール。",
+      },
+      { property: "og:title", content: "正規表現チェッカー | Web ツール集" },
+      {
+        property: "og:description",
+        content: "正規表現のテスト・検証・マッチング確認ができるオンラインツール。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/regex-checker` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "正規表現チェッカー | Web ツール集" },
+      {
+        name: "twitter:description",
+        content: "正規表現のテスト・検証・マッチング確認ができるオンラインツール。",
+      },
+    ],
   }),
   component: RegexChecker,
 });
@@ -97,7 +103,7 @@ function RegexChecker() {
       announceStatus(
         foundMatches.length > 0
           ? `${foundMatches.length}件のマッチが見つかりました`
-          : "マッチが見つかりませんでした"
+          : "マッチが見つかりませんでした",
       );
     } catch (err) {
       const message = err instanceof Error ? err.message : "無効な正規表現です";

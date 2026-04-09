@@ -13,7 +13,9 @@
   background: var(--md-sys-color-surface-variant);
   color: var(--md-sys-color-on-surface-variant);
   cursor: pointer;
-  transition: border-color 0.2s, background 0.2s;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
   text-align: center;
   margin-bottom: 1.5rem;
 }
@@ -66,7 +68,7 @@
   font-size: 1.4rem;
   font-weight: 700;
   color: var(--md-sys-color-primary);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   line-height: 1.2;
   margin-bottom: 0.25rem;
 }
@@ -159,7 +161,11 @@
 }
 
 .har-table th.sortable:hover {
-  background: color-mix(in srgb, var(--md-sys-color-primary) 10%, var(--md-sys-color-surface-variant));
+  background: color-mix(
+    in srgb,
+    var(--md-sys-color-primary) 10%,
+    var(--md-sys-color-surface-variant)
+  );
   color: var(--md-sys-color-primary);
 }
 
@@ -194,7 +200,7 @@
   border-radius: 4px;
   font-size: 0.75rem;
   font-weight: 600;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   white-space: nowrap;
 }
 
@@ -225,7 +231,7 @@
   border-radius: 3px;
   font-size: 0.7rem;
   font-weight: 700;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   text-transform: uppercase;
   white-space: nowrap;
 }
@@ -286,7 +292,7 @@
 
 .har-timing-bar-value {
   font-size: 0.75rem;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   white-space: nowrap;
   color: var(--md-sys-color-on-surface);
 }
@@ -297,7 +303,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.75rem;
   color: var(--md-sys-color-on-surface);
 }
@@ -306,7 +312,7 @@
 .har-num-cell {
   color: var(--md-sys-color-on-surface-variant);
   font-size: 0.75rem;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   text-align: right;
   min-width: 32px;
 }
@@ -368,6 +374,6 @@
 
 .har-file-size {
   color: var(--md-sys-color-on-surface-variant);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.75rem;
 }

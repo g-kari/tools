@@ -7,7 +7,7 @@ test.describe("アスペクト比計算機ページ", () => {
 
   test("ページタイトルが表示される", async ({ page }) => {
     await expect(
-      page.getByRole("heading", { name: "幅・高さからアスペクト比を計算" })
+      page.getByRole("heading", { name: "幅・高さからアスペクト比を計算" }),
     ).toBeVisible();
   });
 
@@ -31,17 +31,13 @@ test.describe("アスペクト比計算機ページ", () => {
   test("1280x960 で 4:3 が表示される", async ({ page }) => {
     await page.getByLabel("幅（ピクセル）").fill("1280");
     await page.getByLabel("高さ（ピクセル）").fill("960");
-    await expect(
-      page.getByRole("region", { name: "アスペクト比の計算結果" })
-    ).toContainText("4:3");
+    await expect(page.getByRole("region", { name: "アスペクト比の計算結果" })).toContainText("4:3");
   });
 
   test("正方形（100x100）で 1:1 が表示される", async ({ page }) => {
     await page.getByLabel("幅（ピクセル）").fill("100");
     await page.getByLabel("高さ（ピクセル）").fill("100");
-    await expect(
-      page.getByRole("region", { name: "アスペクト比の計算結果" })
-    ).toContainText("1:1");
+    await expect(page.getByRole("region", { name: "アスペクト比の計算結果" })).toContainText("1:1");
   });
 
   test("小数値も表示される", async ({ page }) => {
@@ -52,21 +48,15 @@ test.describe("アスペクト比計算機ページ", () => {
   });
 
   test("コピーボタンが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("button", { name: /アスペクト比.*をコピー/ })
-    ).toBeVisible();
+    await expect(page.getByRole("button", { name: /アスペクト比.*をコピー/ })).toBeVisible();
   });
 
   test("アスペクト比プリセットセクションが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "よく使われる比率" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "よく使われる比率" })).toBeVisible();
   });
 
   test("16:9 プリセットが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("button", { name: /16:9/ })
-    ).toBeVisible();
+    await expect(page.getByRole("button", { name: /16:9/ })).toBeVisible();
   });
 
   test("プリセットをクリックすると比率が更新される", async ({ page }) => {
@@ -76,15 +66,11 @@ test.describe("アスペクト比計算機ページ", () => {
   });
 
   test("比→寸法変換セクションが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "アスペクト比から寸法を計算" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "アスペクト比から寸法を計算" })).toBeVisible();
   });
 
   test("幅1920で高さ1080が計算される", async ({ page }) => {
-    await expect(
-      page.getByLabel(/高さ: 1080px/)
-    ).toBeVisible();
+    await expect(page.getByLabel(/高さ: 1080px/)).toBeVisible();
   });
 
   test("Tipsカードが表示される", async ({ page }) => {
@@ -93,9 +79,7 @@ test.describe("アスペクト比計算機ページ", () => {
   });
 
   test("プレビューセクションが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "プレビュー" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "プレビュー" })).toBeVisible();
   });
 
   test("比率入力を変更できる", async ({ page }) => {

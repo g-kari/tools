@@ -5,22 +5,22 @@
  */
 
 /** 角度の単位 */
-export type AngleUnit = 'deg' | 'rad' | 'grad' | 'turn';
+export type AngleUnit = "deg" | "rad" | "grad" | "turn";
 
 /** 角度単位のラベル */
 export const ANGLE_UNIT_LABELS: Record<AngleUnit, string> = {
-  deg: '度 (°)',
-  rad: 'ラジアン (rad)',
-  grad: 'グラジアン (grad)',
-  turn: '回転 (turn)',
+  deg: "度 (°)",
+  rad: "ラジアン (rad)",
+  grad: "グラジアン (grad)",
+  turn: "回転 (turn)",
 };
 
 /** 角度単位の短縮形 */
 export const ANGLE_UNIT_SHORT: Record<AngleUnit, string> = {
-  deg: '°',
-  rad: 'rad',
-  grad: 'grad',
-  turn: 'turn',
+  deg: "°",
+  rad: "rad",
+  grad: "grad",
+  turn: "turn",
 };
 
 /**
@@ -31,13 +31,13 @@ export const ANGLE_UNIT_SHORT: Record<AngleUnit, string> = {
  */
 export function toDegrees(value: number, unit: AngleUnit): number {
   switch (unit) {
-    case 'deg':
+    case "deg":
       return value;
-    case 'rad':
+    case "rad":
       return (value * 180) / Math.PI;
-    case 'grad':
+    case "grad":
       return value * 0.9;
-    case 'turn':
+    case "turn":
       return value * 360;
   }
 }
@@ -50,13 +50,13 @@ export function toDegrees(value: number, unit: AngleUnit): number {
  */
 export function fromDegrees(degrees: number, unit: AngleUnit): number {
   switch (unit) {
-    case 'deg':
+    case "deg":
       return degrees;
-    case 'rad':
+    case "rad":
       return (degrees * Math.PI) / 180;
-    case 'grad':
+    case "grad":
       return degrees / 0.9;
-    case 'turn':
+    case "turn":
       return degrees / 360;
   }
 }
@@ -118,7 +118,7 @@ export function calcTrigValues(degrees: number): TrigValues {
 /**
  * 逆三角関数の入力タイプ
  */
-export type InverseTrigFn = 'asin' | 'acos' | 'atan' | 'atan2';
+export type InverseTrigFn = "asin" | "acos" | "atan" | "atan2";
 
 /**
  * 逆三角関数を計算して度で返す
@@ -127,21 +127,17 @@ export type InverseTrigFn = 'asin' | 'acos' | 'atan' | 'atan2';
  * @param y atan2の場合のx成分
  * @returns 角度 (度)、範囲外の場合は null
  */
-export function calcInverseTrig(
-  fn: InverseTrigFn,
-  x: number,
-  y?: number,
-): number | null {
+export function calcInverseTrig(fn: InverseTrigFn, x: number, y?: number): number | null {
   switch (fn) {
-    case 'asin':
+    case "asin":
       if (x < -1 || x > 1) return null;
       return (Math.asin(x) * 180) / Math.PI;
-    case 'acos':
+    case "acos":
       if (x < -1 || x > 1) return null;
       return (Math.acos(x) * 180) / Math.PI;
-    case 'atan':
+    case "atan":
       return (Math.atan(x) * 180) / Math.PI;
-    case 'atan2':
+    case "atan2":
       if (y === undefined) return null;
       return (Math.atan2(x, y) * 180) / Math.PI;
   }
@@ -154,11 +150,11 @@ export function calcInverseTrig(
  * @returns フォーマットされた文字列
  */
 export function formatTrigValue(value: number | null, precision = 8): string {
-  if (value === null) return '未定義';
-  if (!isFinite(value)) return '∞';
+  if (value === null) return "未定義";
+  if (!isFinite(value)) return "∞";
   // 非常に小さい値はゼロに丸める
-  if (Math.abs(value) < EPSILON) return '0';
-  return value.toPrecision(precision).replace(/\.?0+$/, '');
+  if (Math.abs(value) < EPSILON) return "0";
+  return value.toPrecision(precision).replace(/\.?0+$/, "");
 }
 
 /**
@@ -168,13 +164,13 @@ export function formatTrigValue(value: number | null, precision = 8): string {
  * @returns フォーマットされた文字列
  */
 export function formatAngle(value: number, precision = 10): string {
-  if (!isFinite(value)) return '∞';
-  if (isNearZero(value)) return '0';
+  if (!isFinite(value)) return "∞";
+  if (isNearZero(value)) return "0";
   // 整数に近い値はそのまま表示
   if (Math.abs(value - Math.round(value)) < EPSILON) {
     return String(Math.round(value));
   }
-  return value.toPrecision(precision).replace(/\.?0+$/, '');
+  return value.toPrecision(precision).replace(/\.?0+$/, "");
 }
 
 /**
@@ -186,15 +182,15 @@ export const COMMON_ANGLES_DEG = [0, 30, 45, 60, 90, 120, 135, 150, 180, 270, 36
  * よく使う角度の分数表現 (rad)
  */
 export const COMMON_ANGLE_RAD_LABELS: Record<number, string> = {
-  0: '0',
-  30: 'π/6',
-  45: 'π/4',
-  60: 'π/3',
-  90: 'π/2',
-  120: '2π/3',
-  135: '3π/4',
-  150: '5π/6',
-  180: 'π',
-  270: '3π/2',
-  360: '2π',
+  0: "0",
+  30: "π/6",
+  45: "π/4",
+  60: "π/3",
+  90: "π/2",
+  120: "2π/3",
+  135: "3π/4",
+  150: "5π/6",
+  180: "π",
+  270: "3π/2",
+  360: "2π",
 };

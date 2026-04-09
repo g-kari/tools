@@ -6,25 +6,31 @@ import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
 import { ErrorMessage } from "~/components/ErrorMessage";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 
 export const Route = createFileRoute("/global-ip")({
   head: () => ({
     meta: [
-    { title: "グローバルIP確認 | Web ツール集" },
-    { name: "description", content: "アクセス元のグローバルIPアドレスを即座に確認できるツール。" },
-    { property: "og:title", content: "グローバルIP確認 | Web ツール集" },
-    { property: "og:description", content: "アクセス元のグローバルIPアドレスを即座に確認できるツール。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/global-ip` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "グローバルIP確認 | Web ツール集" },
-    { name: "twitter:description", content: "アクセス元のグローバルIPアドレスを即座に確認できるツール。" },
-  ],
+      { title: "グローバルIP確認 | Web ツール集" },
+      {
+        name: "description",
+        content: "アクセス元のグローバルIPアドレスを即座に確認できるツール。",
+      },
+      { property: "og:title", content: "グローバルIP確認 | Web ツール集" },
+      {
+        property: "og:description",
+        content: "アクセス元のグローバルIPアドレスを即座に確認できるツール。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/global-ip` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "グローバルIP確認 | Web ツール集" },
+      {
+        name: "twitter:description",
+        content: "アクセス元のグローバルIPアドレスを即座に確認できるツール。",
+      },
+    ],
   }),
   component: GlobalIpLookup,
 });
@@ -67,8 +73,7 @@ function GlobalIpLookup() {
       setResult(data);
       announceStatus("IPアドレスを取得しました: " + data.ip);
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "通信エラーが発生しました";
+      const message = err instanceof Error ? err.message : "通信エラーが発生しました";
       setError(message);
       announceStatus("エラー: " + message);
     } finally {

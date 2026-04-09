@@ -69,9 +69,7 @@ function TapCodeTool() {
 
   const output = useMemo(() => {
     if (!inputText) return "";
-    return mode === "encode"
-      ? encodeTapCode(inputText, format)
-      : decodeTapCode(inputText, format);
+    return mode === "encode" ? encodeTapCode(inputText, format) : decodeTapCode(inputText, format);
   }, [inputText, mode, format]);
 
   const handleCopy = useCallback(async () => {
@@ -96,10 +94,10 @@ function TapCodeTool() {
       announceStatus(
         newMode === "encode"
           ? "エンコードモードに切り替えました"
-          : "デコードモードに切り替えました"
+          : "デコードモードに切り替えました",
       );
     },
-    [announceStatus]
+    [announceStatus],
   );
 
   const handleFormatChange = useCallback(
@@ -109,7 +107,7 @@ function TapCodeTool() {
       const label = FORMAT_OPTIONS.find((o) => o.value === newFormat)?.label ?? newFormat;
       announceStatus(`${label}に切り替えました`);
     },
-    [announceStatus]
+    [announceStatus],
   );
 
   const isEmpty = inputText.length === 0;
@@ -185,10 +183,7 @@ function TapCodeTool() {
               <tbody>
                 {grid.map((row, rowIdx) => (
                   <tr key={rowIdx}>
-                    <td
-                      className="tap-code-grid-cell--header"
-                      aria-label={`行${rowIdx + 1}`}
-                    >
+                    <td className="tap-code-grid-cell--header" aria-label={`行${rowIdx + 1}`}>
                       {rowIdx + 1}
                     </td>
                     {row.map((cell, colIdx) => (

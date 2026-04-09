@@ -47,10 +47,7 @@ export const DEFAULT_SLUG_OPTIONS: SlugOptions = {
  * generateSlug("café") // => "cafe"
  * generateSlug("こんにちは World") // => "world"
  */
-export function generateSlug(
-  input: string,
-  options: SlugOptions = DEFAULT_SLUG_OPTIONS
-): string {
+export function generateSlug(input: string, options: SlugOptions = DEFAULT_SLUG_OPTIONS): string {
   // 1. 空文字列ガード
   if (!input) return "";
 
@@ -66,7 +63,7 @@ export function generateSlug(
   // 4. CJK文字の除去（ひらがな、カタカナ、漢字、全角記号など）をスペースに変換
   result = result.replace(
     /[\u3000-\u9fff\uff00-\uffef\u3400-\u4dbf\u{20000}-\u{2a6df}\u{2a700}-\u{2b73f}]/gu,
-    " "
+    " ",
   );
 
   // 5. 英数字以外の記号除去（スペース・ハイフン・アンダースコア以外）
@@ -76,10 +73,7 @@ export function generateSlug(
   result = result.replace(/[\s\-_]+/g, sep);
 
   // 7. 先頭・末尾のトリム（セパレーター文字を含む）
-  result = result.replace(
-    new RegExp(`^[${escapedSep}]+|[${escapedSep}]+$`, "g"),
-    ""
-  );
+  result = result.replace(new RegExp(`^[${escapedSep}]+|[${escapedSep}]+$`, "g"), "");
 
   // 8. 大文字小文字変換
   if (options.lowercase) {

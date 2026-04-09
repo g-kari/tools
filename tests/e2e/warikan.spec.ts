@@ -15,9 +15,7 @@ test.describe("割り勘計算機", () => {
   });
 
   test("初期状態でエンプティステートが表示される", async ({ page }) => {
-    await expect(
-      page.getByText("合計金額と人数を入力すると割り勘が計算されます")
-    ).toBeVisible();
+    await expect(page.getByText("合計金額と人数を入力すると割り勘が計算されます")).toBeVisible();
   });
 
   test("合計金額・人数の入力欄が表示される", async ({ page }) => {
@@ -32,9 +30,7 @@ test.describe("割り勘計算機", () => {
     await expect(page.getByText("3,750")).toBeVisible();
   });
 
-  test("3人で10,000円の割り勘（切り上げ・切り捨て）が表示される", async ({
-    page,
-  }) => {
+  test("3人で10,000円の割り勘（切り上げ・切り捨て）が表示される", async ({ page }) => {
     await page.getByLabel("合計金額を入力").fill("10000");
     await page.getByLabel("人数を入力").fill("3");
     await expect(page.getByText("3,334")).toBeVisible();

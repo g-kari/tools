@@ -58,17 +58,13 @@ test.describe("ASCIIアートジェネレーター", () => {
     await expect(page.locator("#ascii-input-hint")).toBeVisible();
   });
 
-  test("20文字以内の入力で文字数カウントが正しく表示される", async ({
-    page,
-  }) => {
+  test("20文字以内の入力で文字数カウントが正しく表示される", async ({ page }) => {
     await page.locator("#ascii-input").fill("HELLO");
     const hintText = await page.locator("#ascii-input-hint").textContent();
     expect(hintText).toContain("5/20");
   });
 
-  test("maxLength属性により20文字を超えた入力が切り捨てられる", async ({
-    page,
-  }) => {
+  test("maxLength属性により20文字を超えた入力が切り捨てられる", async ({ page }) => {
     const input = page.locator("#ascii-input");
     await input.fill("ABCDEFGHIJKLMNOPQRSTUVWXYZ"); // 26文字
     const value = await input.inputValue();
@@ -84,10 +80,7 @@ test.describe("ASCIIアートジェネレーター", () => {
 
   test("フォントセレクトにaria-label属性がある", async ({ page }) => {
     const select = page.locator("#aa-font-select");
-    await expect(select).toHaveAttribute(
-      "aria-label",
-      "ASCIIアートのフォントスタイルを選択"
-    );
+    await expect(select).toHaveAttribute("aria-label", "ASCIIアートのフォントスタイルを選択");
   });
 
   test("結果エリアにaria-live属性がある", async ({ page }) => {
@@ -99,10 +92,7 @@ test.describe("ASCIIアートジェネレーター", () => {
   test("結果エリアにaria-label属性がある", async ({ page }) => {
     await page.locator("#ascii-input").fill("HI");
     const resultWrapper = page.locator(".aa-result-wrapper");
-    await expect(resultWrapper).toHaveAttribute(
-      "aria-label",
-      "ASCIIアート変換結果"
-    );
+    await expect(resultWrapper).toHaveAttribute("aria-label", "ASCIIアート変換結果");
   });
 
   test("ASCIIアート出力プレエリアにaria-label属性がある", async ({ page }) => {
@@ -118,9 +108,7 @@ test.describe("ASCIIアートジェネレーター", () => {
     expect(charInfo).toMatch(/\d+ 行 \/ \d+ 文字/);
   });
 
-  test("入力のaria-describedby属性がヒント要素を参照している", async ({
-    page,
-  }) => {
+  test("入力のaria-describedby属性がヒント要素を参照している", async ({ page }) => {
     const input = page.locator("#ascii-input");
     await expect(input).toHaveAttribute("aria-describedby", "ascii-input-hint");
   });

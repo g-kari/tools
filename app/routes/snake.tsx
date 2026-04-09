@@ -76,12 +76,7 @@ export function getNextHead(head: Point, direction: Direction): Point {
  * @returns 衝突している場合 true
  */
 export function isWallCollision(point: Point): boolean {
-  return (
-    point.x < 0 ||
-    point.x >= GRID_SIZE ||
-    point.y < 0 ||
-    point.y >= GRID_SIZE
-  );
+  return point.x < 0 || point.x >= GRID_SIZE || point.y < 0 || point.y >= GRID_SIZE;
 }
 
 /**
@@ -100,10 +95,7 @@ export function isSelfCollision(head: Point, body: Point[]): boolean {
  * @param next - 次の方向
  * @returns 有効な方向変更の場合 true
  */
-export function isValidDirectionChange(
-  current: Direction,
-  next: Direction
-): boolean {
+export function isValidDirectionChange(current: Direction, next: Direction): boolean {
   if (current === "up" && next === "down") return false;
   if (current === "down" && next === "up") return false;
   if (current === "left" && next === "right") return false;
@@ -209,7 +201,7 @@ function SnakeGame() {
       food.y * CELL_SIZE + CELL_SIZE / 2,
       CELL_SIZE / 2 - 2,
       0,
-      Math.PI * 2
+      Math.PI * 2,
     );
     ctx.fill();
     ctx.shadowBlur = 0;
@@ -219,9 +211,7 @@ function SnakeGame() {
     snake.forEach((cell, index) => {
       const isHead = index === 0;
       const green = isHead ? 55 : Math.max(30, 45 - index);
-      ctx.fillStyle = isHead
-        ? "#4ecdc4"
-        : `hsl(155, 60%, ${green}%)`;
+      ctx.fillStyle = isHead ? "#4ecdc4" : `hsl(155, 60%, ${green}%)`;
       ctx.shadowColor = isHead ? "#4ecdc4" : "transparent";
       ctx.shadowBlur = isHead ? 6 : 0;
       const pad = isHead ? 1 : 2;
@@ -229,7 +219,7 @@ function SnakeGame() {
         cell.x * CELL_SIZE + pad,
         cell.y * CELL_SIZE + pad,
         CELL_SIZE - pad * 2,
-        CELL_SIZE - pad * 2
+        CELL_SIZE - pad * 2,
       );
     });
     ctx.shadowBlur = 0;
@@ -252,10 +242,7 @@ function SnakeGame() {
 
         // 壁・自分自身との衝突チェック
         // 次フレームで消える末尾を除いた胴体と比較する
-        if (
-          isWallCollision(nextHead) ||
-          isSelfCollision(nextHead, snakeRef.current.slice(0, -1))
-        ) {
+        if (isWallCollision(nextHead) || isSelfCollision(nextHead, snakeRef.current.slice(0, -1))) {
           statusRef.current = "over";
           setStatus("over");
           const finalScore = scoreRef.current;
@@ -269,9 +256,7 @@ function SnakeGame() {
         }
 
         // 食べ物を食べたか確認
-        const ate =
-          nextHead.x === foodRef.current.x &&
-          nextHead.y === foodRef.current.y;
+        const ate = nextHead.x === foodRef.current.x && nextHead.y === foodRef.current.y;
 
         // スネーク更新
         const newSnake = [nextHead, ...snakeRef.current];
@@ -290,7 +275,7 @@ function SnakeGame() {
 
       frameRef.current = requestAnimationFrame(gameLoop);
     },
-    [draw, getInterval]
+    [draw, getInterval],
   );
 
   /** ゲーム開始 */
@@ -350,10 +335,7 @@ function SnakeGame() {
       }
       if (e.code === "Space") {
         e.preventDefault();
-        if (
-          statusRef.current === "playing" ||
-          statusRef.current === "paused"
-        ) {
+        if (statusRef.current === "playing" || statusRef.current === "paused") {
           togglePause();
         }
       }
@@ -375,25 +357,17 @@ function SnakeGame() {
     <div className="tool-container">
       <div className="tool-header">
         <h1 className="tool-title">スネークゲーム</h1>
-        <p className="tool-description">
-          ヘビを操作して食べ物を集め、できるだけ長く生き残ろう！
-        </p>
+        <p className="tool-description">ヘビを操作して食べ物を集め、できるだけ長く生き残ろう！</p>
       </div>
 
       <div className="snake-wrapper">
         <div className="snake-header">
           <div className="snake-scores">
-            <div
-              className="snake-score-card"
-              aria-label={`スコア: ${score}`}
-            >
+            <div className="snake-score-card" aria-label={`スコア: ${score}`}>
               <span className="snake-score-label">スコア</span>
               <span className="snake-score-value">{score}</span>
             </div>
-            <div
-              className="snake-score-card"
-              aria-label={`ベストスコア: ${bestScore}`}
-            >
+            <div className="snake-score-card" aria-label={`ベストスコア: ${bestScore}`}>
               <span className="snake-score-label">ベスト</span>
               <span className="snake-score-value">{bestScore}</span>
             </div>
@@ -410,20 +384,14 @@ function SnakeGame() {
             )}
             <Button
               onClick={startGame}
-              aria-label={
-                status === "idle" ? "ゲームスタート" : "新しいゲーム"
-              }
+              aria-label={status === "idle" ? "ゲームスタート" : "新しいゲーム"}
             >
               {status === "idle" ? "ゲームスタート" : "新しいゲーム"}
             </Button>
           </div>
         </div>
 
-        <div
-          className="snake-canvas-wrapper"
-          role="application"
-          aria-label="スネークゲームボード"
-        >
+        <div className="snake-canvas-wrapper" role="application" aria-label="スネークゲームボード">
           <canvas
             ref={canvasRef}
             width={GRID_SIZE * CELL_SIZE}
@@ -436,9 +404,7 @@ function SnakeGame() {
             <div className="snake-overlay" role="status">
               <div className="snake-overlay-content">
                 <p className="snake-overlay-message">🐍</p>
-                <p className="snake-overlay-sub">
-                  ゲームスタートボタンでスタート
-                </p>
+                <p className="snake-overlay-sub">ゲームスタートボタンでスタート</p>
               </div>
             </div>
           )}
@@ -453,11 +419,7 @@ function SnakeGame() {
           )}
 
           {status === "over" && (
-            <div
-              className="snake-overlay snake-overlay-over"
-              role="status"
-              aria-live="polite"
-            >
+            <div className="snake-overlay snake-overlay-over" role="status" aria-live="polite">
               <div className="snake-overlay-content">
                 <p className="snake-overlay-message">💀 ゲームオーバー</p>
                 <p className="snake-overlay-score">スコア: {score}</p>
@@ -467,9 +429,7 @@ function SnakeGame() {
           )}
         </div>
 
-        <p className="snake-instructions">
-          矢印キー / WASD で操作 ・ スペースキーで一時停止
-        </p>
+        <p className="snake-instructions">矢印キー / WASD で操作 ・ スペースキーで一時停止</p>
       </div>
 
       <TipsCard

@@ -22,22 +22,63 @@ export interface HtmlFormatResult {
 
 /** void 要素（子を持てない要素） */
 const VOID_TAGS = new Set([
-  'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input',
-  'link', 'meta', 'param', 'source', 'track', 'wbr',
+  "area",
+  "base",
+  "br",
+  "col",
+  "embed",
+  "hr",
+  "img",
+  "input",
+  "link",
+  "meta",
+  "param",
+  "source",
+  "track",
+  "wbr",
 ]);
 
 /** インライン要素（改行を挿入しない） */
 const INLINE_TAGS = new Set([
-  'a', 'abbr', 'acronym', 'b', 'bdo', 'big', 'br', 'button', 'cite',
-  'code', 'dfn', 'em', 'i', 'img', 'input', 'kbd', 'label', 'map',
-  'object', 'output', 'q', 's', 'samp', 'select', 'small', 'span',
-  'strong', 'sub', 'sup', 'time', 'tt', 'u', 'var',
+  "a",
+  "abbr",
+  "acronym",
+  "b",
+  "bdo",
+  "big",
+  "br",
+  "button",
+  "cite",
+  "code",
+  "dfn",
+  "em",
+  "i",
+  "img",
+  "input",
+  "kbd",
+  "label",
+  "map",
+  "object",
+  "output",
+  "q",
+  "s",
+  "samp",
+  "select",
+  "small",
+  "span",
+  "strong",
+  "sub",
+  "sup",
+  "time",
+  "tt",
+  "u",
+  "var",
 ]);
 
 /** 内容をそのまま保持する要素 */
-const RAW_TAGS = new Set(['pre', 'script', 'style', 'textarea']);
+const RAW_TAGS = new Set(["pre", "script", "style", "textarea"]);
 
-type TokenKind = 'doctype' | 'comment' | 'open' | 'close' | 'void' | 'text';
+type TokenKind = "doctype" | "comment" | "open" | "close" | "void" | "text";
 
 interface HtmlToken {
   kind: TokenKind;
@@ -55,40 +96,43 @@ function tokenize(html: string): HtmlToken[] {
 
   while (pos < len) {
     // テキストノード
-    if (html[pos] !== '<') {
-      const end = html.indexOf('<', pos);
+    if (html[pos] !== "<") {
+      const end = html.indexOf("<", pos);
       const raw = end === -1 ? html.slice(pos) : html.slice(pos, end);
       const text = raw.trim();
-      if (text) tokens.push({ kind: 'text', raw: text });
+      if (text) tokens.push({ kind: "text", raw: text });
       pos += raw.length;
       continue;
     }
 
     // コメント
-    if (html.startsWith('<!--', pos)) {
-      const end = html.indexOf('-->', pos + 4);
+    if (html.startsWith("<!--", pos)) {
+      const end = html.indexOf("-->", pos + 4);
       const raw = end === -1 ? html.slice(pos) : html.slice(pos, end + 3);
-      tokens.push({ kind: 'comment', raw });
+      tokens.push({ kind: "comment", raw });
       pos += raw.length;
       continue;
     }
 
     // DOCTYPE
-    if (html.slice(pos, pos + 9).toLowerCase() === '<!doctype') {
-      const end = html.indexOf('>', pos);
+    if (html.slice(pos, pos + 9).toLowerCase() === "<!doctype") {
+      const end = html.indexOf(">", pos);
       const raw = end === -1 ? html.slice(pos) : html.slice(pos, end + 1);
-      tokens.push({ kind: 'doctype', raw });
+      tokens.push({ kind: "doctype", raw });
       pos += raw.length;
       continue;
     }
 
     // 終了タグ
-    if (html[pos + 1] === '/') {
-      const end = html.indexOf('>', pos);
-      if (end === -1) { pos++; continue; }
+    if (html[pos + 1] === "/") {
+      const end = html.indexOf(">", pos);
+      if (end === -1) {
+        pos++;
+        continue;
+      }
       const raw = html.slice(pos, end + 1);
       const tag = raw.slice(2, -1).trim().split(/[\s>]/)[0].toLowerCase();
-      tokens.push({ kind: 'close', raw, tag });
+      tokens.push({ kind: "close", raw, tag });
       pos += raw.length;
       continue;
     }
@@ -103,18 +147,25 @@ function tokenize(html: string): HtmlToken[] {
           if (ch === inStr) inStr = null;
         } else if (ch === '"' || ch === "'") {
           inStr = ch;
-        } else if (ch === '>') {
+        } else if (ch === ">") {
           break;
         }
         end++;
       }
-      if (end >= len) { pos++; continue; }
+      if (end >= len) {
+        pos++;
+        continue;
+      }
       const raw = html.slice(pos, end + 1);
       const m = raw.slice(1).match(/^([a-z][a-z0-9:-]*)/i);
-      if (!m) { tokens.push({ kind: 'text', raw }); pos += raw.length; continue; }
+      if (!m) {
+        tokens.push({ kind: "text", raw });
+        pos += raw.length;
+        continue;
+      }
       const tag = m[1].toLowerCase();
-      const isSelfClose = raw.endsWith('/>') || VOID_TAGS.has(tag);
-      tokens.push({ kind: isSelfClose ? 'void' : 'open', raw, tag });
+      const isSelfClose = raw.endsWith("/>") || VOID_TAGS.has(tag);
+      tokens.push({ kind: isSelfClose ? "void" : "open", raw, tag });
       pos += raw.length;
     }
   }
@@ -133,9 +184,9 @@ export function formatHTML(
   options: Partial<HtmlFormatOptions> = {},
 ): HtmlFormatResult {
   const opts: HtmlFormatOptions = { indentSize: 2, useTabs: false, ...options };
-  if (!html.trim()) return { formatted: '', elementCount: 0, tokenCount: 0 };
+  if (!html.trim()) return { formatted: "", elementCount: 0, tokenCount: 0 };
 
-  const unit = opts.useTabs ? '\t' : ' '.repeat(opts.indentSize);
+  const unit = opts.useTabs ? "\t" : " ".repeat(opts.indentSize);
   const tokens = tokenize(html);
   const lines: string[] = [];
   let level = 0;
@@ -146,11 +197,11 @@ export function formatHTML(
   const inRaw = () => stack.length > 0 && RAW_TAGS.has(stack[stack.length - 1]);
 
   for (const t of tokens) {
-    if (t.kind === 'doctype') {
+    if (t.kind === "doctype") {
       lines.push(t.raw);
-    } else if (t.kind === 'comment') {
+    } else if (t.kind === "comment") {
       lines.push(ind() + t.raw);
-    } else if (t.kind === 'open') {
+    } else if (t.kind === "open") {
       elementCount++;
       const tag = t.tag!;
       const inline = INLINE_TAGS.has(tag);
@@ -161,10 +212,10 @@ export function formatHTML(
         if (!inline) level++;
       }
       stack.push(tag);
-    } else if (t.kind === 'void') {
+    } else if (t.kind === "void") {
       elementCount++;
       lines.push(inRaw() ? t.raw : ind() + t.raw);
-    } else if (t.kind === 'close') {
+    } else if (t.kind === "close") {
       const tag = t.tag!;
       const inline = INLINE_TAGS.has(tag);
       if (inRaw()) {
@@ -181,7 +232,7 @@ export function formatHTML(
     }
   }
 
-  return { formatted: lines.join('\n'), elementCount, tokenCount: tokens.length };
+  return { formatted: lines.join("\n"), elementCount, tokenCount: tokens.length };
 }
 
 /** サンプル HTML（圧縮状態） */

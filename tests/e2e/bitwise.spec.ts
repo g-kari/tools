@@ -6,33 +6,23 @@ test.describe("ビット演算計算機ページ", () => {
   });
 
   test("ページタイトルが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "ビット演算計算機" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "ビット演算計算機" })).toBeVisible();
   });
 
   test("入力Aセクションが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "入力 A" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "入力 A" })).toBeVisible();
   });
 
   test("入力Bセクションが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "入力 B" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "入力 B" })).toBeVisible();
   });
 
   test("演算結果セクションが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "演算結果（A op B）" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "演算結果（A op B）" })).toBeVisible();
   });
 
   test("シフト演算セクションが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "シフト演算（A）" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "シフト演算（A）" })).toBeVisible();
   });
 
   test("デフォルト値 A=42, B=15 が入力されている", async ({ page }) => {
@@ -90,9 +80,7 @@ test.describe("ビット演算計算機ページ", () => {
   });
 
   test("32ビットビット表示が表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "ビット演算ビジュアル" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "ビット演算ビジュアル" })).toBeVisible();
   });
 
   test("シフト量を変更できる", async ({ page }) => {

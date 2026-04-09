@@ -93,9 +93,7 @@ test.describe("HARアナライザー", () => {
     await expect(uploadZone).toContainText(".har ファイルをドロップ");
   });
 
-  test("有効なHARファイルをアップロードするとサマリーが表示される", async ({
-    page,
-  }) => {
+  test("有効なHARファイルをアップロードするとサマリーが表示される", async ({ page }) => {
     await page.goto("/har");
 
     const filePath = createTempHarFile();
@@ -108,9 +106,7 @@ test.describe("HARアナライザー", () => {
       await expect(page.locator(".har-summary-grid")).toBeVisible();
 
       // リクエスト数が表示される
-      await expect(page.locator(".har-summary-card").first()).toContainText(
-        "2"
-      );
+      await expect(page.locator(".har-summary-card").first()).toContainText("2");
 
       // テーブルが表示される
       await expect(page.locator(".har-table-wrapper")).toBeVisible();

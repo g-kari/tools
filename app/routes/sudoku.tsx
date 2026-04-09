@@ -77,7 +77,7 @@ export function isValidPlacement(
   board: SudokuBoard,
   row: number,
   col: number,
-  num: number
+  num: number,
 ): boolean {
   // 行チェック
   for (let c = 0; c < 9; c++) {
@@ -133,10 +133,7 @@ export function solveSudoku(board: SudokuBoard): boolean {
  * @example
  * const { puzzle, solution } = generateSudoku("easy");
  */
-export function generateSudoku(
-  difficulty: Difficulty,
-  maxAttempts = 3
-): SudokuPuzzle {
+export function generateSudoku(difficulty: Difficulty, maxAttempts = 3): SudokuPuzzle {
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
     const board = createEmptyBoard();
     // 対角線の3つの独立した3x3ブロックを先に埋める（バックトラッキング高速化）
@@ -147,9 +144,7 @@ export function generateSudoku(
     const puzzle = board.map((row) => [...row]);
 
     const removeCount = REMOVE_COUNTS[difficulty];
-    const positions = shuffleArray(
-      Array.from({ length: 81 }, (_, i) => i)
-    ).slice(0, removeCount);
+    const positions = shuffleArray(Array.from({ length: 81 }, (_, i) => i)).slice(0, removeCount);
 
     for (const pos of positions) {
       puzzle[Math.floor(pos / 9)][pos % 9] = 0;
@@ -172,14 +167,14 @@ export function generateSudoku(
  */
 export function getConflictCells(
   puzzle: SudokuBoard,
-  userValues: Map<string, CellValue>
+  userValues: Map<string, CellValue>,
 ): Set<string> {
   // 合算盤面を構築
   const board: SudokuBoard = puzzle.map((row, r) =>
     row.map((cell, c) => {
       if (cell !== 0) return cell;
       return userValues.get(`${r}-${c}`)?.value ?? 0;
-    })
+    }),
   );
 
   const conflicts = new Set<string>();
@@ -206,10 +201,7 @@ export function getConflictCells(
  * @example
  * const done = isBoardComplete(puzzle, userValues);
  */
-export function isBoardComplete(
-  puzzle: SudokuBoard,
-  userValues: Map<string, CellValue>
-): boolean {
+export function isBoardComplete(puzzle: SudokuBoard, userValues: Map<string, CellValue>): boolean {
   // 全セルが埋まっているか
   for (let row = 0; row < 9; row++) {
     for (let col = 0; col < 9; col++) {
@@ -267,11 +259,7 @@ function shuffleArray<T>(arr: T[]): T[] {
  * @param blockRow - ブロックの開始行（0, 3, 6）
  * @param blockCol - ブロックの開始列（0, 3, 6）
  */
-function fillBlock(
-  board: SudokuBoard,
-  blockRow: number,
-  blockCol: number
-): void {
+function fillBlock(board: SudokuBoard, blockRow: number, blockCol: number): void {
   const nums = shuffleArray([1, 2, 3, 4, 5, 6, 7, 8, 9]);
   let idx = 0;
   for (let r = blockRow; r < blockRow + 3; r++) {
@@ -303,12 +291,8 @@ const HINT_MAX = 3;
  */
 function SudokuGame() {
   const [puzzle, setPuzzle] = useState<SudokuPuzzle | null>(null);
-  const [userValues, setUserValues] = useState<Map<string, CellValue>>(
-    new Map()
-  );
-  const [selectedCell, setSelectedCell] = useState<[number, number] | null>(
-    null
-  );
+  const [userValues, setUserValues] = useState<Map<string, CellValue>>(new Map());
+  const [selectedCell, setSelectedCell] = useState<[number, number] | null>(null);
   const [difficulty, setDifficulty] = useState<Difficulty>("easy");
   const [conflictCells, setConflictCells] = useState<Set<string>>(new Set());
   const [isComplete, setIsComplete] = useState(false);
@@ -387,7 +371,7 @@ function SudokuGame() {
         setIsRunning(false);
       }
     },
-    [puzzle, userValues, isComplete]
+    [puzzle, userValues, isComplete],
   );
 
   const handleStart = () => {
@@ -419,18 +403,14 @@ function SudokuGame() {
     const emptyCells: [number, number][] = [];
     for (let r = 0; r < 9; r++) {
       for (let c = 0; c < 9; c++) {
-        if (
-          puzzle.puzzle[r][c] === 0 &&
-          !userValues.has(`${r}-${c}`)
-        ) {
+        if (puzzle.puzzle[r][c] === 0 && !userValues.has(`${r}-${c}`)) {
           emptyCells.push([r, c]);
         }
       }
     }
     if (emptyCells.length === 0) return;
 
-    const [r, c] =
-      emptyCells[Math.floor(Math.random() * emptyCells.length)];
+    const [r, c] = emptyCells[Math.floor(Math.random() * emptyCells.length)];
     const next = new Map(userValues);
     next.set(`${r}-${c}`, {
       value: puzzle.solution[r][c],
@@ -451,8 +431,8 @@ function SudokuGame() {
 
   const selectedValue =
     selectedCell && puzzle
-      ? (puzzle.puzzle[selectedCell[0]][selectedCell[1]] ||
-          userValues.get(`${selectedCell[0]}-${selectedCell[1]}`)?.value)
+      ? puzzle.puzzle[selectedCell[0]][selectedCell[1]] ||
+        userValues.get(`${selectedCell[0]}-${selectedCell[1]}`)?.value
       : null;
 
   return (
@@ -515,22 +495,14 @@ function SudokuGame() {
           </div>
 
           {/* 数独ボード */}
-          <div
-            ref={boardRef}
-            className="sudoku-board"
-            role="grid"
-            aria-label="数独ボード"
-          >
+          <div ref={boardRef} className="sudoku-board" role="grid" aria-label="数独ボード">
             {puzzle.puzzle.map((row, rowIdx) =>
               row.map((cell, colIdx) => {
                 const key = `${rowIdx}-${colIdx}`;
                 const userCell = userValues.get(key);
-                const displayValue =
-                  cell !== 0 ? cell : (userCell?.value ?? null);
+                const displayValue = cell !== 0 ? cell : (userCell?.value ?? null);
                 const isGiven = cell !== 0;
-                const isSelected =
-                  selectedCell?.[0] === rowIdx &&
-                  selectedCell?.[1] === colIdx;
+                const isSelected = selectedCell?.[0] === rowIdx && selectedCell?.[1] === colIdx;
                 const isConflict = conflictCells.has(key);
                 const isHint = userCell?.isHint ?? false;
                 const isSameNumber =
@@ -572,17 +544,13 @@ function SudokuGame() {
                     {displayValue ?? ""}
                   </div>
                 );
-              })
+              }),
             )}
           </div>
 
           {/* 数字入力パッド */}
           {!isComplete && (
-            <div
-              className="sudoku-numpad"
-              role="group"
-              aria-label="数字入力パッド"
-            >
+            <div className="sudoku-numpad" role="group" aria-label="数字入力パッド">
               {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => (
                 <button
                   key={n}
@@ -613,17 +581,10 @@ function SudokuGame() {
 
           {/* クリアバナー */}
           {isComplete && (
-            <div
-              className="sudoku-complete"
-              role="status"
-              aria-live="assertive"
-              aria-atomic="true"
-            >
+            <div className="sudoku-complete" role="status" aria-live="assertive" aria-atomic="true">
               <span className="sudoku-complete-icon">🎉</span>
               <p className="sudoku-complete-title">クリア！</p>
-              <p className="sudoku-complete-time">
-                タイム: {formatTime(elapsedSeconds)}
-              </p>
+              <p className="sudoku-complete-time">タイム: {formatTime(elapsedSeconds)}</p>
               <Button className="sudoku-start-btn" onClick={handleStart}>
                 もう一度
               </Button>

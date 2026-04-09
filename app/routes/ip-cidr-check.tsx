@@ -16,24 +16,30 @@ import {
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
 import { ErrorMessage } from "~/components/ErrorMessage";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 
 export const Route = createFileRoute("/ip-cidr-check")({
   head: () => ({
     meta: [
-    { title: "IP/CIDRチェック | Web ツール集" },
-    { name: "description", content: "IPアドレスが指定したCIDRブロックの範囲内かどうかを確認するツール。" },
-    { property: "og:title", content: "IP/CIDRチェック | Web ツール集" },
-    { property: "og:description", content: "IPアドレスが指定したCIDRブロックの範囲内かどうかを確認するツール。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/ip-cidr-check` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "IP/CIDRチェック | Web ツール集" },
-    { name: "twitter:description", content: "IPアドレスが指定したCIDRブロックの範囲内かどうかを確認するツール。" },
-  ],
+      { title: "IP/CIDRチェック | Web ツール集" },
+      {
+        name: "description",
+        content: "IPアドレスが指定したCIDRブロックの範囲内かどうかを確認するツール。",
+      },
+      { property: "og:title", content: "IP/CIDRチェック | Web ツール集" },
+      {
+        property: "og:description",
+        content: "IPアドレスが指定したCIDRブロックの範囲内かどうかを確認するツール。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/ip-cidr-check` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "IP/CIDRチェック | Web ツール集" },
+      {
+        name: "twitter:description",
+        content: "IPアドレスが指定したCIDRブロックの範囲内かどうかを確認するツール。",
+      },
+    ],
   }),
   component: IPCIDRCheck,
 });
@@ -140,7 +146,7 @@ function IPCIDRCheck() {
     const invalidCIDRs = cidrLines.filter((cidr) => !isValidCIDR(cidr));
     if (invalidCIDRs.length > 0) {
       setError(
-        `無効なCIDR表記があります: ${invalidCIDRs.slice(0, 3).join(", ")}${invalidCIDRs.length > 3 ? " ..." : ""}`
+        `無効なCIDR表記があります: ${invalidCIDRs.slice(0, 3).join(", ")}${invalidCIDRs.length > 3 ? " ..." : ""}`,
       );
       announceStatus("エラー: 無効なCIDR表記があります");
       setResults(null);
@@ -164,10 +170,7 @@ function IPCIDRCheck() {
           const [cidrIp, prefixStr] = cidr.split("/");
           const prefix = parseInt(prefixStr, 10);
           const networkAddress = calculateNetworkAddress(cidrIp, prefix);
-          const broadcastAddress = calculateBroadcastAddress(
-            networkAddress,
-            prefix
-          );
+          const broadcastAddress = calculateBroadcastAddress(networkAddress, prefix);
           return { cidr, networkAddress, broadcastAddress };
         });
 
@@ -179,9 +182,7 @@ function IPCIDRCheck() {
     });
 
     const validResults = checkResults.filter((r) => r.isValid);
-    const matchedCount = validResults.filter(
-      (r) => r.matchedCIDRs.length > 0
-    ).length;
+    const matchedCount = validResults.filter((r) => r.matchedCIDRs.length > 0).length;
 
     setResults(checkResults);
     setSummary({
@@ -191,7 +192,7 @@ function IPCIDRCheck() {
     });
     setError(null);
     announceStatus(
-      `チェック完了: ${checkResults.length}件中${matchedCount}件がCIDRにマッチしました`
+      `チェック完了: ${checkResults.length}件中${matchedCount}件がCIDRにマッチしました`,
     );
   }, [ipInput, cidrInput, announceStatus]);
 
@@ -228,15 +229,10 @@ function IPCIDRCheck() {
   return (
     <>
       <div className="tool-container">
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          aria-label="CIDR範囲チェックフォーム"
-        >
+        <form onSubmit={(e) => e.preventDefault()} aria-label="CIDR範囲チェックフォーム">
           <div className="cidr-check-inputs">
             <div className="converter-section">
-              <label htmlFor="ipListInput">
-                IPアドレス（1行に1つ）
-              </label>
+              <label htmlFor="ipListInput">IPアドレス（1行に1つ）</label>
               <textarea
                 id="ipListInput"
                 ref={ipTextareaRef}
@@ -255,9 +251,7 @@ function IPCIDRCheck() {
             </div>
 
             <div className="converter-section">
-              <label htmlFor="cidrListInput">
-                CIDRブロック（1行に1つ）
-              </label>
+              <label htmlFor="cidrListInput">CIDRブロック（1行に1つ）</label>
               <textarea
                 id="cidrListInput"
                 value={cidrInput}
@@ -293,9 +287,7 @@ function IPCIDRCheck() {
               クリア
             </Button>
           </div>
-          <p className="keyboard-hint">
-            Ctrl+Enter でチェック実行
-          </p>
+          <p className="keyboard-hint">Ctrl+Enter でチェック実行</p>
         </form>
 
         <ErrorMessage message={error} id="cidr-check-error" />
@@ -348,17 +340,13 @@ function IPCIDRCheck() {
                     <div className="cidr-check-item-header">
                       <span className="cidr-check-ip">{result.ip}</span>
                       {!result.isValid ? (
-                        <span className="cidr-check-badge unmatched">
-                          無効なIP
-                        </span>
+                        <span className="cidr-check-badge unmatched">無効なIP</span>
                       ) : result.matchedCIDRs.length > 0 ? (
                         <span className="cidr-check-badge matched">
                           {result.matchedCIDRs.length}件マッチ
                         </span>
                       ) : (
-                        <span className="cidr-check-badge unmatched">
-                          非マッチ
-                        </span>
+                        <span className="cidr-check-badge unmatched">非マッチ</span>
                       )}
                     </div>
 

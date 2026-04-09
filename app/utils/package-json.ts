@@ -40,7 +40,7 @@ export interface PackageJsonConfig {
     /** プライベートパッケージか */
     private: boolean;
     /** モジュール形式 */
-    type: 'commonjs' | 'module' | '';
+    type: "commonjs" | "module" | "";
   };
   /** エントリポイント */
   entries: {
@@ -59,30 +59,33 @@ export interface PackageJsonConfig {
 
 /** よく使うスクリプトのテンプレート一覧 */
 export const SCRIPT_TEMPLATES: ScriptEntry[] = [
-  { key: 'build', value: 'tsc' },
-  { key: 'test', value: 'vitest' },
-  { key: 'start', value: 'node dist/index.js' },
-  { key: 'dev', value: 'tsx src/index.ts' },
-  { key: 'lint', value: 'eslint src' },
-  { key: 'format', value: 'prettier --write src' },
-  { key: 'typecheck', value: 'tsc --noEmit' },
+  { key: "build", value: "tsc" },
+  { key: "test", value: "vitest" },
+  { key: "start", value: "node dist/index.js" },
+  { key: "dev", value: "tsx src/index.ts" },
+  { key: "lint", value: "eslint src" },
+  { key: "format", value: "prettier --write src" },
+  { key: "typecheck", value: "tsc --noEmit" },
 ];
 
 /** ライセンスの選択肢 */
 export const LICENSE_OPTIONS = [
-  'MIT',
-  'Apache-2.0',
-  'GPL-3.0',
-  'BSD-3-Clause',
-  'ISC',
-  'UNLICENSED',
+  "MIT",
+  "Apache-2.0",
+  "GPL-3.0",
+  "BSD-3-Clause",
+  "ISC",
+  "UNLICENSED",
 ] as const;
 
 /** モジュール形式の選択肢 */
-export const MODULE_TYPE_OPTIONS: Array<{ value: PackageJsonConfig['basic']['type']; label: string }> = [
-  { value: '', label: '指定なし' },
-  { value: 'commonjs', label: 'CommonJS (require)' },
-  { value: 'module', label: 'ES Module (import)' },
+export const MODULE_TYPE_OPTIONS: Array<{
+  value: PackageJsonConfig["basic"]["type"];
+  label: string;
+}> = [
+  { value: "", label: "指定なし" },
+  { value: "commonjs", label: "CommonJS (require)" },
+  { value: "module", label: "ES Module (import)" },
 ];
 
 /** プリセット定義 */
@@ -92,96 +95,96 @@ export const PRESETS: Array<{
   config: Partial<PackageJsonConfig>;
 }> = [
   {
-    label: 'シンプル（最小構成）',
-    description: '最低限の設定',
+    label: "シンプル（最小構成）",
+    description: "最低限の設定",
     config: {
       basic: {
-        name: 'my-package',
-        version: '1.0.0',
-        description: '',
-        author: { name: '', email: '', url: '' },
-        license: 'MIT',
+        name: "my-package",
+        version: "1.0.0",
+        description: "",
+        author: { name: "", email: "", url: "" },
+        license: "MIT",
         private: false,
-        type: '',
+        type: "",
       },
-      entries: { main: '', module: '', types: '' },
-      scripts: [{ key: 'test', value: 'echo "Error: no test specified" && exit 1' }],
+      entries: { main: "", module: "", types: "" },
+      scripts: [{ key: "test", value: 'echo "Error: no test specified" && exit 1' }],
       keywords: [],
     },
   },
   {
-    label: 'Node.js CLI ツール',
-    description: 'コマンドラインツール向け',
+    label: "Node.js CLI ツール",
+    description: "コマンドラインツール向け",
     config: {
       basic: {
-        name: 'my-cli',
-        version: '0.1.0',
-        description: 'A command-line tool',
-        author: { name: '', email: '', url: '' },
-        license: 'MIT',
+        name: "my-cli",
+        version: "0.1.0",
+        description: "A command-line tool",
+        author: { name: "", email: "", url: "" },
+        license: "MIT",
         private: false,
-        type: 'module',
+        type: "module",
       },
-      entries: { main: 'dist/index.js', module: '', types: 'dist/index.d.ts' },
+      entries: { main: "dist/index.js", module: "", types: "dist/index.d.ts" },
       scripts: [
-        { key: 'build', value: 'tsc' },
-        { key: 'dev', value: 'tsx src/index.ts' },
-        { key: 'test', value: 'vitest' },
-        { key: 'lint', value: 'eslint src' },
-        { key: 'typecheck', value: 'tsc --noEmit' },
+        { key: "build", value: "tsc" },
+        { key: "dev", value: "tsx src/index.ts" },
+        { key: "test", value: "vitest" },
+        { key: "lint", value: "eslint src" },
+        { key: "typecheck", value: "tsc --noEmit" },
       ],
-      keywords: ['cli'],
+      keywords: ["cli"],
     },
   },
   {
-    label: 'Webアプリ（React + Vite）',
-    description: 'フロントエンドアプリ向け',
+    label: "Webアプリ（React + Vite）",
+    description: "フロントエンドアプリ向け",
     config: {
       basic: {
-        name: 'my-app',
-        version: '0.1.0',
-        description: 'A React web application',
-        author: { name: '', email: '', url: '' },
-        license: 'MIT',
+        name: "my-app",
+        version: "0.1.0",
+        description: "A React web application",
+        author: { name: "", email: "", url: "" },
+        license: "MIT",
         private: true,
-        type: 'module',
+        type: "module",
       },
-      entries: { main: '', module: '', types: '' },
+      entries: { main: "", module: "", types: "" },
       scripts: [
-        { key: 'dev', value: 'vite' },
-        { key: 'build', value: 'tsc && vite build' },
-        { key: 'preview', value: 'vite preview' },
-        { key: 'test', value: 'vitest' },
-        { key: 'lint', value: 'eslint src' },
-        { key: 'typecheck', value: 'tsc --noEmit' },
+        { key: "dev", value: "vite" },
+        { key: "build", value: "tsc && vite build" },
+        { key: "preview", value: "vite preview" },
+        { key: "test", value: "vitest" },
+        { key: "lint", value: "eslint src" },
+        { key: "typecheck", value: "tsc --noEmit" },
       ],
       keywords: [],
     },
   },
   {
-    label: 'ライブラリ（TypeScript）',
-    description: 'npm 公開ライブラリ向け',
+    label: "ライブラリ（TypeScript）",
+    description: "npm 公開ライブラリ向け",
     config: {
       basic: {
-        name: 'my-library',
-        version: '0.1.0',
-        description: 'A TypeScript library',
-        author: { name: '', email: '', url: '' },
-        license: 'MIT',
+        name: "my-library",
+        version: "0.1.0",
+        description: "A TypeScript library",
+        author: { name: "", email: "", url: "" },
+        license: "MIT",
         private: false,
-        type: 'module',
+        type: "module",
       },
       entries: {
-        main: 'dist/index.cjs',
-        module: 'dist/index.js',
-        types: 'dist/index.d.ts',
+        main: "dist/index.cjs",
+        module: "dist/index.js",
+        types: "dist/index.d.ts",
       },
       scripts: [
-        { key: 'build', value: 'vite build' },
-        { key: 'test', value: 'vitest' },
-        { key: 'lint', value: 'eslint src' },
-        { key: 'typecheck', value: 'tsc --noEmit' },
-        { key: 'prepublishOnly', value: 'npm run build' },
+        { key: "build", value: "vite build" },
+        { key: "test", value: "vitest" },
+        { key: "lint", value: "eslint src" },
+        { key: "typecheck", value: "tsc --noEmit" },
+        { key: "prepublishOnly", value: "npm run build" },
       ],
       keywords: [],
     },
@@ -195,15 +198,15 @@ export const PRESETS: Array<{
 export function getDefaultConfig(): PackageJsonConfig {
   return {
     basic: {
-      name: '',
-      version: '1.0.0',
-      description: '',
-      author: { name: '', email: '', url: '' },
-      license: 'MIT',
+      name: "",
+      version: "1.0.0",
+      description: "",
+      author: { name: "", email: "", url: "" },
+      license: "MIT",
       private: false,
-      type: '',
+      type: "",
     },
-    entries: { main: '', module: '', types: '' },
+    entries: { main: "", module: "", types: "" },
     scripts: [],
     keywords: [],
   };
@@ -215,7 +218,7 @@ export function getDefaultConfig(): PackageJsonConfig {
  * @returns フォーマット済みの author 文字列、または空文字
  */
 export function formatAuthor(author: PackageAuthor): string {
-  if (!author.name) return '';
+  if (!author.name) return "";
   let result = author.name;
   if (author.email) result += ` <${author.email}>`;
   if (author.url) result += ` (${author.url})`;
@@ -247,7 +250,7 @@ export function generatePackageJson(config: PackageJsonConfig): string {
   // scripts
   if (config.scripts.length > 0) {
     obj.scripts = Object.fromEntries(
-      config.scripts.filter((s) => s.key).map((s) => [s.key, s.value])
+      config.scripts.filter((s) => s.key).map((s) => [s.key, s.value]),
     );
   }
 

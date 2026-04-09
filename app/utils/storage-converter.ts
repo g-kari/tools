@@ -120,10 +120,7 @@ export interface StorageConversionResult {
  * @param fromUnitId 入力単位のID
  * @returns 各単位への変換結果
  */
-export function convertStorage(
-  value: number,
-  fromUnitId: string
-): StorageConversionResult[] {
+export function convertStorage(value: number, fromUnitId: string): StorageConversionResult[] {
   if (isNaN(value) || !isFinite(value) || value < 0) return [];
 
   const fromUnit = STORAGE_UNITS.find((u) => u.id === fromUnitId);
@@ -177,10 +174,7 @@ export function getStorageUnit(id: string): StorageUnit | undefined {
 }
 
 /** グループ別に単位を分類したマップ */
-export const STORAGE_UNIT_GROUPS: Record<
-  StorageUnit["group"],
-  StorageUnit[]
-> = {
+export const STORAGE_UNIT_GROUPS: Record<StorageUnit["group"], StorageUnit[]> = {
   bits: STORAGE_UNITS.filter((u) => u.group === "bits"),
   decimal: STORAGE_UNITS.filter((u) => u.group === "decimal"),
   binary: STORAGE_UNITS.filter((u) => u.group === "binary"),

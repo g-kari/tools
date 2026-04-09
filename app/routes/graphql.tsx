@@ -1,46 +1,43 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
-import { useState, useCallback, useRef, useEffect } from 'react';
-import { useToast } from '../components/Toast';
-import { Button } from '~/components/ui/button';
-import { Textarea } from '~/components/ui/textarea';
-import { TipsCard } from '~/components/TipsCard';
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from '~/hooks/useStatusAnnouncement';
-import { useClipboard } from '~/hooks/useClipboard';
-import { formatGraphQL, minifyGraphQL, validateGraphQL } from '~/utils/graphql';
+import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
+import { useState, useCallback, useRef, useEffect } from "react";
+import { useToast } from "../components/Toast";
+import { Button } from "~/components/ui/button";
+import { Textarea } from "~/components/ui/textarea";
+import { TipsCard } from "~/components/TipsCard";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
+import { useClipboard } from "~/hooks/useClipboard";
+import { formatGraphQL, minifyGraphQL, validateGraphQL } from "~/utils/graphql";
 
-export const Route = createFileRoute('/graphql')({
+export const Route = createFileRoute("/graphql")({
   head: () => ({
     meta: [
-      { title: 'GraphQL フォーマッター | Web ツール集' },
+      { title: "GraphQL フォーマッター | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          'GraphQL クエリ・スキーマの整形・圧縮・構文検証ツール。query/mutation/subscription/type定義をブラウザ上で簡単に整形できます。',
+          "GraphQL クエリ・スキーマの整形・圧縮・構文検証ツール。query/mutation/subscription/type定義をブラウザ上で簡単に整形できます。",
       },
       {
-        property: 'og:title',
-        content: 'GraphQL フォーマッター | Web ツール集',
+        property: "og:title",
+        content: "GraphQL フォーマッター | Web ツール集",
       },
       {
-        property: 'og:description',
+        property: "og:description",
         content:
-          'GraphQL クエリ・スキーマの整形・圧縮・構文検証ツール。query/mutation/subscription/type定義をブラウザ上で簡単に整形できます。',
+          "GraphQL クエリ・スキーマの整形・圧縮・構文検証ツール。query/mutation/subscription/type定義をブラウザ上で簡単に整形できます。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/graphql` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
+      { property: "og:url", content: `${SITE_BASE_URL}/graphql` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
       {
-        name: 'twitter:title',
-        content: 'GraphQL フォーマッター | Web ツール集',
+        name: "twitter:title",
+        content: "GraphQL フォーマッター | Web ツール集",
       },
       {
-        name: 'twitter:description',
+        name: "twitter:description",
         content:
-          'GraphQL クエリ・スキーマの整形・圧縮・構文検証ツール。query/mutation/subscription/type定義をブラウザ上で整形できます。',
+          "GraphQL クエリ・スキーマの整形・圧縮・構文検証ツール。query/mutation/subscription/type定義をブラウザ上で整形できます。",
       },
     ],
   }),
@@ -48,7 +45,7 @@ export const Route = createFileRoute('/graphql')({
 });
 
 /** 操作モードの型定義 */
-type Mode = 'format' | 'minify' | 'validate';
+type Mode = "format" | "minify" | "validate";
 
 const graphqlPlaceholder = `query GetUser($id: ID!) {
   user(id: $id) {
@@ -72,10 +69,10 @@ const graphqlPlaceholder = `query GetUser($id: ID!) {
  */
 function GraphqlFormatter() {
   const { showToast } = useToast();
-  const [mode, setMode] = useState<Mode>('format');
+  const [mode, setMode] = useState<Mode>("format");
   const [indent, setIndent] = useState<2 | 4>(2);
-  const [inputText, setInputText] = useState('');
-  const [outputText, setOutputText] = useState('');
+  const [inputText, setInputText] = useState("");
+  const [outputText, setOutputText] = useState("");
   const [isCopied, setIsCopied] = useState(false);
   const copiedTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -94,42 +91,42 @@ function GraphqlFormatter() {
 
   const handleProcess = useCallback(() => {
     if (!inputText.trim()) {
-      announceStatus('エラー: テキストを入力してください');
-      showToast('テキストを入力してください', 'error');
+      announceStatus("エラー: テキストを入力してください");
+      showToast("テキストを入力してください", "error");
       inputRef.current?.focus();
       return;
     }
 
     try {
-      if (mode === 'format') {
+      if (mode === "format") {
         const result = formatGraphQL(inputText, indent);
         setOutputText(result);
-        announceStatus('GraphQL の整形が完了しました');
-      } else if (mode === 'minify') {
+        announceStatus("GraphQL の整形が完了しました");
+      } else if (mode === "minify") {
         const result = minifyGraphQL(inputText);
         setOutputText(result);
-        announceStatus('GraphQL の圧縮が完了しました');
+        announceStatus("GraphQL の圧縮が完了しました");
       } else {
         const result = validateGraphQL(inputText);
         if (result.valid) {
-          setOutputText('✓ 有効な GraphQL です');
-          announceStatus('GraphQL は有効です');
+          setOutputText("✓ 有効な GraphQL です");
+          announceStatus("GraphQL は有効です");
         } else {
           setOutputText(`✗ エラー: ${result.error}`);
           announceStatus(`GraphQL が無効です: ${result.error}`);
         }
       }
     } catch (err) {
-      const message = err instanceof Error ? err.message : '処理に失敗しました';
+      const message = err instanceof Error ? err.message : "処理に失敗しました";
       announceStatus(`エラー: ${message}`);
-      showToast(message, 'error');
+      showToast(message, "error");
     }
   }, [inputText, mode, indent, announceStatus, showToast]);
 
   const handleClear = useCallback(() => {
-    setInputText('');
-    setOutputText('');
-    announceStatus('入力と出力をクリアしました');
+    setInputText("");
+    setOutputText("");
+    announceStatus("入力と出力をクリアしました");
     inputRef.current?.focus();
   }, [announceStatus]);
 
@@ -138,25 +135,24 @@ function GraphqlFormatter() {
     const success = await copy(outputText);
     if (success) {
       setIsCopied(true);
-      announceStatus('出力結果をコピーしました');
+      announceStatus("出力結果をコピーしました");
       if (copiedTimeoutRef.current) {
         clearTimeout(copiedTimeoutRef.current);
       }
       copiedTimeoutRef.current = setTimeout(() => setIsCopied(false), 2000);
     } else {
-      announceStatus('コピーに失敗しました');
-      showToast('コピーに失敗しました', 'error');
+      announceStatus("コピーに失敗しました");
+      showToast("コピーに失敗しました", "error");
     }
   }, [outputText, copy, announceStatus, showToast]);
 
   const handleModeChange = useCallback((newMode: Mode) => {
     setMode(newMode);
-    setInputText('');
-    setOutputText('');
+    setInputText("");
+    setOutputText("");
   }, []);
 
-  const processLabel =
-    mode === 'format' ? '整形' : mode === 'minify' ? '圧縮' : '検証';
+  const processLabel = mode === "format" ? "整形" : mode === "minify" ? "圧縮" : "検証";
 
   return (
     <>
@@ -168,18 +164,14 @@ function GraphqlFormatter() {
           <div className="converter-section">
             <fieldset className="csv-json-mode-fieldset">
               <legend className="section-title">操作モード</legend>
-              <div
-                className="csv-json-mode-group"
-                role="group"
-                aria-label="操作モード選択"
-              >
+              <div className="csv-json-mode-group" role="group" aria-label="操作モード選択">
                 <label className="format-option">
                   <input
                     type="radio"
                     name="mode"
                     value="format"
-                    checked={mode === 'format'}
-                    onChange={() => handleModeChange('format')}
+                    checked={mode === "format"}
+                    onChange={() => handleModeChange("format")}
                     aria-label="GraphQL を整形する"
                   />
                   <span className="format-label">整形</span>
@@ -189,8 +181,8 @@ function GraphqlFormatter() {
                     type="radio"
                     name="mode"
                     value="minify"
-                    checked={mode === 'minify'}
-                    onChange={() => handleModeChange('minify')}
+                    checked={mode === "minify"}
+                    onChange={() => handleModeChange("minify")}
                     aria-label="GraphQL を圧縮する"
                   />
                   <span className="format-label">圧縮</span>
@@ -200,8 +192,8 @@ function GraphqlFormatter() {
                     type="radio"
                     name="mode"
                     value="validate"
-                    checked={mode === 'validate'}
-                    onChange={() => handleModeChange('validate')}
+                    checked={mode === "validate"}
+                    onChange={() => handleModeChange("validate")}
                     aria-label="GraphQL を検証する"
                   />
                   <span className="format-label">検証</span>
@@ -210,14 +202,11 @@ function GraphqlFormatter() {
             </fieldset>
           </div>
 
-          {mode === 'format' && (
+          {mode === "format" && (
             <div className="converter-section">
               <div className="csv-json-options">
                 <div className="option-group">
-                  <span
-                    className="section-title"
-                    id="graphql-indent-option-label"
-                  >
+                  <span className="section-title" id="graphql-indent-option-label">
                     インデント幅
                   </span>
                   <div
@@ -295,16 +284,16 @@ function GraphqlFormatter() {
           <div className="output-section">
             <div className="csv-json-output-header">
               <label htmlFor="outputText" className="section-title">
-                {mode === 'validate' ? '検証結果' : '出力'}
+                {mode === "validate" ? "検証結果" : "出力"}
               </label>
               <button
                 type="button"
-                className={`number-base-copy-btn${isCopied ? ' copied' : ''}`}
+                className={`number-base-copy-btn${isCopied ? " copied" : ""}`}
                 onClick={handleCopy}
                 disabled={!outputText}
                 aria-label="出力結果をクリップボードにコピー"
               >
-                {isCopied ? 'コピー済' : 'コピー'}
+                {isCopied ? "コピー済" : "コピー"}
               </button>
             </div>
             <Textarea
@@ -312,14 +301,12 @@ function GraphqlFormatter() {
               value={outputText}
               readOnly
               placeholder={
-                mode === 'validate'
-                  ? '検証結果がここに表示されます...'
-                  : '処理結果がここに表示されます...'
+                mode === "validate"
+                  ? "検証結果がここに表示されます..."
+                  : "処理結果がここに表示されます..."
               }
               aria-label={
-                mode === 'validate'
-                  ? 'GraphQL 検証結果の出力欄'
-                  : 'GraphQL 処理結果の出力欄'
+                mode === "validate" ? "GraphQL 検証結果の出力欄" : "GraphQL 処理結果の出力欄"
               }
               aria-live="polite"
               className="csv-json-textarea graphql-textarea"
@@ -330,22 +317,22 @@ function GraphqlFormatter() {
         <TipsCard
           sections={[
             {
-              title: '使い方',
+              title: "使い方",
               items: [
-                '操作モードを「整形」「圧縮」「検証」から選択します',
-                '整形モードではインデント幅（2または4スペース）を選択できます',
-                '入力欄に GraphQL クエリやスキーマを貼り付けてボタンを押します',
-                '出力結果は「コピー」ボタンでクリップボードにコピーできます',
+                "操作モードを「整形」「圧縮」「検証」から選択します",
+                "整形モードではインデント幅（2または4スペース）を選択できます",
+                "入力欄に GraphQL クエリやスキーマを貼り付けてボタンを押します",
+                "出力結果は「コピー」ボタンでクリップボードにコピーできます",
               ],
             },
             {
-              title: '対応する GraphQL',
+              title: "対応する GraphQL",
               items: [
-                'クエリ操作: query / mutation / subscription（名前付き・無名両対応）',
-                'フラグメント: fragment ... on TypeName { ... }',
-                'インラインフラグメント: ... on TypeName { ... }',
-                'スキーマ定義: type / interface / enum / union / input / scalar / directive',
-                '変数・引数・ディレクティブ（@include, @skip など）に対応',
+                "クエリ操作: query / mutation / subscription（名前付き・無名両対応）",
+                "フラグメント: fragment ... on TypeName { ... }",
+                "インラインフラグメント: ... on TypeName { ... }",
+                "スキーマ定義: type / interface / enum / union / input / scalar / directive",
+                "変数・引数・ディレクティブ（@include, @skip など）に対応",
               ],
             },
           ]}

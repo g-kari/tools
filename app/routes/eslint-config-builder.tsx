@@ -1,8 +1,8 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useState, useMemo, useCallback, useId } from 'react';
-import { useToast } from '~/components/Toast';
-import { TipsCard } from '~/components/TipsCard';
-import { useClipboard } from '~/hooks/useClipboard';
+import { createFileRoute } from "@tanstack/react-router";
+import { useState, useMemo, useCallback, useId } from "react";
+import { useToast } from "~/components/Toast";
+import { TipsCard } from "~/components/TipsCard";
+import { useClipboard } from "~/hooks/useClipboard";
 import {
   ESLINT_CATEGORIES,
   ESLINT_PRESETS,
@@ -11,38 +11,38 @@ import {
   getConfigFileName,
   getDefaultValues,
   type EslintOption,
-} from '~/utils/eslint-config-builder';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '~/constants/site';
-import '~/styles/tools/eslint-config-builder.css';
+} from "~/utils/eslint-config-builder";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "~/constants/site";
+import "~/styles/tools/eslint-config-builder.css";
 
-export const Route = createFileRoute('/eslint-config-builder')({
+export const Route = createFileRoute("/eslint-config-builder")({
   head: () => ({
     meta: [
-      { title: 'ESLint Config ビルダー | Web ツール集' },
+      { title: "ESLint Config ビルダー | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          'ESLint の設定をカテゴリ別に選択して eslint.config.js または .eslintrc.json を自動生成。TypeScript・React・コード品質ルールをプリセットから素早く設定。ESLint 9 のフラット設定形式に対応。',
+          "ESLint の設定をカテゴリ別に選択して eslint.config.js または .eslintrc.json を自動生成。TypeScript・React・コード品質ルールをプリセットから素早く設定。ESLint 9 のフラット設定形式に対応。",
       },
       {
-        property: 'og:title',
-        content: 'ESLint Config ビルダー | Web ツール集',
+        property: "og:title",
+        content: "ESLint Config ビルダー | Web ツール集",
       },
       {
-        property: 'og:description',
+        property: "og:description",
         content:
-          'ESLint オプションを選択して eslint.config.js / .eslintrc.json を自動生成。TypeScript・React プリセット対応。',
+          "ESLint オプションを選択して eslint.config.js / .eslintrc.json を自動生成。TypeScript・React プリセット対応。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/eslint-config-builder` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
+      { property: "og:url", content: `${SITE_BASE_URL}/eslint-config-builder` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
       {
-        name: 'twitter:title',
-        content: 'ESLint Config ビルダー | Web ツール集',
+        name: "twitter:title",
+        content: "ESLint Config ビルダー | Web ツール集",
       },
       {
-        name: 'twitter:description',
-        content: 'ESLint オプションをカテゴリ別に設定して設定ファイルを自動生成',
+        name: "twitter:description",
+        content: "ESLint オプションをカテゴリ別に設定して設定ファイルを自動生成",
       },
     ],
   }),
@@ -68,10 +68,10 @@ function BooleanToggle({
         checked={value}
         onChange={(e) => onChange(e.target.checked)}
       />
-      <span className={`eslint-toggle-track${value ? ' checked' : ''}`}>
+      <span className={`eslint-toggle-track${value ? " checked" : ""}`}>
         <span className="eslint-toggle-thumb" />
       </span>
-      <span className="eslint-toggle-label">{value ? 'true' : 'false'}</span>
+      <span className="eslint-toggle-label">{value ? "true" : "false"}</span>
     </label>
   );
 }
@@ -121,7 +121,7 @@ function OptionRow({
   const isModified = value !== defaultValue;
 
   return (
-    <div className={`eslint-option-row${isModified ? ' modified' : ''}`}>
+    <div className={`eslint-option-row${isModified ? " modified" : ""}`}>
       <div className="eslint-option-label-col">
         <span className="eslint-option-key">{option.key}</span>
         <span className="eslint-option-desc">{option.description}</span>
@@ -136,14 +136,14 @@ function OptionRow({
         )}
       </div>
       <div className="eslint-option-input-col">
-        {option.type === 'boolean' && (
+        {option.type === "boolean" && (
           <BooleanToggle
             optionKey={option.key}
             value={value as boolean}
             onChange={(v) => onChange(option.key, v)}
           />
         )}
-        {option.type === 'enum' && (
+        {option.type === "enum" && (
           <EnumSelect
             optionKey={option.key}
             value={value as string}
@@ -184,38 +184,38 @@ function EslintConfigBuilderPage() {
       const defaults = getDefaultValues();
       setValues({ ...defaults, ...preset.values });
       setActivePreset(presetId);
-      showToast(`プリセット「${preset.label}」を適用しました`, 'success');
+      showToast(`プリセット「${preset.label}」を適用しました`, "success");
     },
-    [showToast]
+    [showToast],
   );
 
   const handleReset = useCallback(() => {
     setValues(getDefaultValues());
     setActivePreset(null);
-    showToast('設定をリセットしました', 'info');
+    showToast("設定をリセットしました", "info");
   }, [showToast]);
 
   const handleCopyConfig = useCallback(async () => {
     const success = await copy(output);
     if (success) {
-      showToast('クリップボードにコピーしました', 'success');
+      showToast("クリップボードにコピーしました", "success");
     } else {
-      showToast('コピーに失敗しました', 'error');
+      showToast("コピーに失敗しました", "error");
     }
   }, [copy, output, showToast]);
 
   const handleCopyInstall = useCallback(async () => {
     const success = await copy(installCmd);
     if (success) {
-      showToast('インストールコマンドをコピーしました', 'success');
+      showToast("インストールコマンドをコピーしました", "success");
     } else {
-      showToast('コピーに失敗しました', 'error');
+      showToast("コピーに失敗しました", "error");
     }
   }, [copy, installCmd, showToast]);
 
   const currentCategory = useMemo(
     () => ESLINT_CATEGORIES.find((c) => c.id === activeCategory),
-    [activeCategory]
+    [activeCategory],
   );
 
   return (
@@ -223,17 +223,17 @@ function EslintConfigBuilderPage() {
       <div className="tool-header">
         <h1 className="tool-title">ESLint Config ビルダー</h1>
         <p className="tool-description">
-          ESLint のオプションを選択して設定ファイルを生成します。
-          ESLint 9 のフラット設定形式（eslint.config.js）とレガシー形式（.eslintrc.json）に対応しています。
+          ESLint のオプションを選択して設定ファイルを生成します。 ESLint 9
+          のフラット設定形式（eslint.config.js）とレガシー形式（.eslintrc.json）に対応しています。
         </p>
       </div>
 
       <TipsCard
         tips={[
-          'ESLint 9 以降はフラット設定形式（eslint.config.js）が標準です。新規プロジェクトではフラット設定を推奨します',
-          'Prettier を使用している場合はスタイルルール（セミコロン・引用符・インデント）を ESLint で設定する必要はありません',
-          'TypeScript プロジェクトでは @typescript-eslint/no-unused-vars が no-unused-vars の代わりに使われます',
-          'strictTypeChecked を使うと型情報を活用した高精度なチェックが可能ですが、tsconfig.json の設定が必要です',
+          "ESLint 9 以降はフラット設定形式（eslint.config.js）が標準です。新規プロジェクトではフラット設定を推奨します",
+          "Prettier を使用している場合はスタイルルール（セミコロン・引用符・インデント）を ESLint で設定する必要はありません",
+          "TypeScript プロジェクトでは @typescript-eslint/no-unused-vars が no-unused-vars の代わりに使われます",
+          "strictTypeChecked を使うと型情報を活用した高精度なチェックが可能ですが、tsconfig.json の設定が必要です",
         ]}
       />
 
@@ -247,7 +247,7 @@ function EslintConfigBuilderPage() {
             <button
               key={preset.id}
               type="button"
-              className={`eslint-preset-btn${activePreset === preset.id ? ' active' : ''}`}
+              className={`eslint-preset-btn${activePreset === preset.id ? " active" : ""}`}
               onClick={() => handlePreset(preset.id)}
               aria-pressed={activePreset === preset.id}
             >
@@ -272,7 +272,7 @@ function EslintConfigBuilderPage() {
               type="button"
               role="tab"
               aria-selected={activeCategory === cat.id}
-              className={`eslint-tab${activeCategory === cat.id ? ' active' : ''}`}
+              className={`eslint-tab${activeCategory === cat.id ? " active" : ""}`}
               onClick={() => setActiveCategory(cat.id)}
             >
               <span aria-hidden="true">{cat.icon}</span>
@@ -308,11 +308,7 @@ function EslintConfigBuilderPage() {
             {fileName}
           </h2>
           <div className="eslint-action-row">
-            <button
-              type="button"
-              className="eslint-reset-btn"
-              onClick={handleReset}
-            >
+            <button type="button" className="eslint-reset-btn" onClick={handleReset}>
               リセット
             </button>
             <button

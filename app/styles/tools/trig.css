@@ -49,7 +49,7 @@
   background: var(--md-sys-color-surface);
   color: var(--md-sys-color-on-surface);
   font-size: 1.125rem;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
 }
 
 .trig-input:focus {
@@ -80,13 +80,15 @@
 .trig-quick-btn {
   padding: 0.3125rem 0.625rem;
   font-size: 0.75rem;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   cursor: pointer;
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: 4px;
   background: var(--md-sys-color-surface-variant);
   color: var(--md-sys-color-on-surface-variant);
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
 }
 
 .trig-quick-btn:hover {
@@ -138,7 +140,7 @@
 .trig-conv-value {
   font-size: 1.0625rem;
   font-weight: 600;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   color: var(--md-sys-color-on-surface);
   word-break: break-all;
 }
@@ -181,7 +183,7 @@
 
 .trig-val-value {
   font-size: 0.9375rem;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   color: var(--md-sys-color-on-surface);
   word-break: break-all;
 }
@@ -237,7 +239,7 @@
   background: var(--md-sys-color-surface);
   color: var(--md-sys-color-on-surface);
   font-size: 0.9375rem;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
 }
 
 .trig-inverse-input:focus {
@@ -247,7 +249,7 @@
 
 .trig-inverse-result {
   font-size: 0.9375rem;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   color: var(--md-sys-color-on-surface);
   padding: 0.375rem 0;
 }
@@ -275,7 +277,7 @@
   width: 100%;
   border-collapse: collapse;
   font-size: 0.8125rem;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
 }
 
 .trig-table th {

@@ -58,15 +58,10 @@ function GitignorePage() {
     return allTemplates.filter((t) => t.label.toLowerCase().includes(q));
   }, [allTemplates, searchQuery]);
 
-  const output = useMemo(
-    () => generateGitignoreContent(selectedIds),
-    [selectedIds]
-  );
+  const output = useMemo(() => generateGitignoreContent(selectedIds), [selectedIds]);
 
   const handleToggle = (id: string) => {
-    setSelectedIds((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
-    );
+    setSelectedIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
   };
 
   const handleClear = () => {
@@ -135,21 +130,13 @@ function GitignorePage() {
         </div>
 
         {/* カテゴリ別チェックボックス */}
-        <div
-          className="gitignore-categories"
-          role="group"
-          aria-label="テンプレートカテゴリ"
-        >
+        <div className="gitignore-categories" role="group" aria-label="テンプレートカテゴリ">
           {CATEGORY_ORDER.map((category: GitignoreCategory) => {
-            const items = filteredTemplates.filter(
-              (t) => t.category === category
-            );
+            const items = filteredTemplates.filter((t) => t.category === category);
             if (items.length === 0) return null;
             return (
               <div key={category} className="gitignore-category-block">
-                <h3 className="gitignore-category-title">
-                  {getCategoryLabel(category)}
-                </h3>
+                <h3 className="gitignore-category-title">{getCategoryLabel(category)}</h3>
                 <div className="gitignore-template-grid">
                   {items.map((template) => (
                     <label
@@ -163,9 +150,7 @@ function GitignorePage() {
                         onChange={() => handleToggle(template.id)}
                         aria-label={`${template.label}を選択`}
                       />
-                      <span className="gitignore-template-label">
-                        {template.label}
-                      </span>
+                      <span className="gitignore-template-label">{template.label}</span>
                     </label>
                   ))}
                 </div>
@@ -174,11 +159,7 @@ function GitignorePage() {
           })}
 
           {filteredTemplates.length === 0 && (
-            <p
-              className="gitignore-no-results"
-              role="status"
-              aria-live="polite"
-            >
+            <p className="gitignore-no-results" role="status" aria-live="polite">
               「{searchQuery}」に一致するテンプレートが見つかりませんでした
             </p>
           )}
@@ -191,9 +172,7 @@ function GitignorePage() {
           <h2 className="section-title">
             生成された .gitignore
             {selectedIds.length > 0 && (
-              <span className="gitignore-selected-count">
-                （{selectedIds.length} 件選択中）
-              </span>
+              <span className="gitignore-selected-count">（{selectedIds.length} 件選択中）</span>
             )}
           </h2>
           <div className="gitignore-action-buttons">

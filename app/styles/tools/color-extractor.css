@@ -80,13 +80,13 @@
 .color-hex {
   font-size: 1.125rem;
   font-weight: 600;
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
   color: var(--md-sys-color-on-surface);
 }
 
 .color-rgb {
   font-size: 0.875rem;
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
   color: var(--md-sys-color-on-surface-variant);
 }
 
@@ -111,4 +111,3 @@
     width: 100%;
   }
 }
-

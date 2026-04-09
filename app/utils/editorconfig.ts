@@ -10,12 +10,7 @@ export type IndentStyle = "space" | "tab";
 export type EndOfLine = "lf" | "crlf" | "cr";
 
 /** 文字エンコーディング */
-export type Charset =
-  | "utf-8"
-  | "utf-8-bom"
-  | "utf-16be"
-  | "utf-16le"
-  | "latin1";
+export type Charset = "utf-8" | "utf-8-bom" | "utf-16be" | "utf-16le" | "latin1";
 
 /** ファイルタイプ設定 */
 export interface FileTypeConfig {
@@ -259,7 +254,7 @@ export const PRESETS: Preset[] = [
  */
 export function generateEditorConfig(
   global: EditorConfigGlobal,
-  overrides: Record<string, FileTypeOverride>
+  overrides: Record<string, FileTypeOverride>,
 ): string {
   const lines: string[] = [];
 
@@ -273,12 +268,8 @@ export function generateEditorConfig(
   lines.push(`indent_size = ${global.indentSize}`);
   lines.push(`end_of_line = ${global.endOfLine}`);
   lines.push(`charset = ${global.charset}`);
-  lines.push(
-    `trim_trailing_whitespace = ${global.trimTrailingWhitespace ? "true" : "false"}`
-  );
-  lines.push(
-    `insert_final_newline = ${global.insertFinalNewline ? "true" : "false"}`
-  );
+  lines.push(`trim_trailing_whitespace = ${global.trimTrailingWhitespace ? "true" : "false"}`);
+  lines.push(`insert_final_newline = ${global.insertFinalNewline ? "true" : "false"}`);
 
   for (const fileType of FILE_TYPES) {
     const override = overrides[fileType.pattern];
@@ -286,16 +277,10 @@ export function generateEditorConfig(
 
     const sectionLines: string[] = [];
 
-    if (
-      override.overrideIndentStyle &&
-      override.indentStyle !== global.indentStyle
-    ) {
+    if (override.overrideIndentStyle && override.indentStyle !== global.indentStyle) {
       sectionLines.push(`indent_style = ${override.indentStyle}`);
     }
-    if (
-      override.overrideIndentSize &&
-      override.indentSize !== global.indentSize
-    ) {
+    if (override.overrideIndentSize && override.indentSize !== global.indentSize) {
       sectionLines.push(`indent_size = ${override.indentSize}`);
     }
 
@@ -314,9 +299,7 @@ export function generateEditorConfig(
  * @param fileType ファイルタイプ設定
  * @returns デフォルトオーバーライド設定
  */
-export function createDefaultOverride(
-  fileType: FileTypeConfig
-): FileTypeOverride {
+export function createDefaultOverride(fileType: FileTypeConfig): FileTypeOverride {
   return {
     enabled: false,
     overrideIndentStyle: true,

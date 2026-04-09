@@ -3,10 +3,7 @@ import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 
 export const Route = createFileRoute("/tetris")({
   head: () => ({
@@ -115,9 +112,7 @@ const BEST_SCORE_KEY = "tetris-best-score";
  * @returns BOARD_HEIGHT x BOARD_WIDTH のゼロ配列
  */
 export function createBoard(): Board {
-  return Array.from({ length: BOARD_HEIGHT }, () =>
-    Array(BOARD_WIDTH).fill(0)
-  );
+  return Array.from({ length: BOARD_HEIGHT }, () => Array(BOARD_WIDTH).fill(0));
 }
 
 /**
@@ -137,9 +132,7 @@ export function getRandomPieceType(): TetrominoType {
 export function rotatePiece(shape: number[][]): number[][] {
   const rows = shape.length;
   const cols = shape[0].length;
-  const rotated: number[][] = Array.from({ length: cols }, () =>
-    Array(rows).fill(0)
-  );
+  const rotated: number[][] = Array.from({ length: cols }, () => Array(rows).fill(0));
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
       rotated[c][rows - 1 - r] = shape[r][c];
@@ -155,11 +148,7 @@ export function rotatePiece(shape: number[][]): number[][] {
  * @param pos - 配置位置
  * @returns 配置可能な場合 true
  */
-export function isValidPosition(
-  board: Board,
-  shape: number[][],
-  pos: Position
-): boolean {
+export function isValidPosition(board: Board, shape: number[][], pos: Position): boolean {
   for (let r = 0; r < shape.length; r++) {
     for (let c = 0; c < shape[r].length; c++) {
       if (!shape[r][c]) continue;
@@ -185,7 +174,7 @@ export function placePiece(
   board: Board,
   shape: number[][],
   pos: Position,
-  type: TetrominoType
+  type: TetrominoType,
 ): Board {
   const newBoard = board.map((row) => [...row]);
   for (let r = 0; r < shape.length; r++) {
@@ -212,9 +201,7 @@ export function clearLines(board: Board): {
 } {
   const remaining = board.filter((row) => row.some((cell) => cell === 0));
   const linesCleared = BOARD_HEIGHT - remaining.length;
-  const emptyRows = Array.from({ length: linesCleared }, () =>
-    Array(BOARD_WIDTH).fill(0)
-  );
+  const emptyRows = Array.from({ length: linesCleared }, () => Array(BOARD_WIDTH).fill(0));
   return { board: [...emptyRows, ...remaining], linesCleared };
 }
 
@@ -254,11 +241,7 @@ export function getDropSpeed(level: number): number {
  * @param pos - 現在のピース位置
  * @returns ゴーストピースのY座標
  */
-export function getGhostY(
-  board: Board,
-  shape: number[][],
-  pos: Position
-): number {
+export function getGhostY(board: Board, shape: number[][], pos: Position): number {
   let ghostY = pos.y;
   while (isValidPosition(board, shape, { x: pos.x, y: ghostY + 1 })) {
     ghostY++;
@@ -329,12 +312,8 @@ function TetrisGame() {
 
     const shape = TETROMINOES[type];
     const color = TETROMINO_COLORS[type];
-    const offsetX = Math.floor(
-      (canvas.width - shape[0].length * NEXT_CELL_SIZE) / 2
-    );
-    const offsetY = Math.floor(
-      (canvas.height - shape.length * NEXT_CELL_SIZE) / 2
-    );
+    const offsetX = Math.floor((canvas.width - shape[0].length * NEXT_CELL_SIZE) / 2);
+    const offsetY = Math.floor((canvas.height - shape.length * NEXT_CELL_SIZE) / 2);
 
     for (let r = 0; r < shape.length; r++) {
       for (let c = 0; c < shape[r].length; c++) {
@@ -417,24 +396,14 @@ function TetrisGame() {
       for (let r = 0; r < current.shape.length; r++) {
         for (let c = 0; c < current.shape[r].length; c++) {
           if (!current.shape[r][c]) continue;
-          drawCell(
-            ctx,
-            (current.pos.x + c) * CELL_SIZE,
-            (current.pos.y + r) * CELL_SIZE,
-            color
-          );
+          drawCell(ctx, (current.pos.x + c) * CELL_SIZE, (current.pos.y + r) * CELL_SIZE, color);
         }
       }
     }
   }, []);
 
   /** セルを描画するヘルパー */
-  function drawCell(
-    ctx: CanvasRenderingContext2D,
-    x: number,
-    y: number,
-    color: string
-  ): void {
+  function drawCell(ctx: CanvasRenderingContext2D, x: number, y: number, color: string): void {
     ctx.fillStyle = color;
     ctx.fillRect(x + 1, y + 1, CELL_SIZE - 2, CELL_SIZE - 2);
     ctx.fillStyle = "rgba(255,255,255,0.28)";
@@ -499,12 +468,7 @@ function TetrisGame() {
           currentRef.current = { ...current, pos: newPos };
         } else {
           // ピースを固定する
-          const newBoard = placePiece(
-            boardRef.current,
-            current.shape,
-            current.pos,
-            current.type
-          );
+          const newBoard = placePiece(boardRef.current, current.shape, current.pos, current.type);
           const { board: clearedBoard, linesCleared } = clearLines(newBoard);
           boardRef.current = clearedBoard;
           currentRef.current = null;
@@ -529,7 +493,7 @@ function TetrisGame() {
 
       frameRef.current = requestAnimationFrame(gameLoop);
     },
-    [draw, spawnPiece]
+    [draw, spawnPiece],
   );
 
   /** ゲーム開始 */
@@ -652,7 +616,7 @@ function TetrisGame() {
             boardRef.current,
             current.shape,
             { x: current.pos.x, y: ghostY },
-            current.type
+            current.type,
           );
           const { board: clearedBoard, linesCleared } = clearLines(newBoard);
           boardRef.current = clearedBoard;
@@ -707,23 +671,15 @@ function TetrisGame() {
               <span className="tetris-score-label">SCORE</span>
               <span className="tetris-score-value">{score.toLocaleString()}</span>
             </div>
-            <div
-              className="tetris-score-card"
-              aria-label={`ベストスコア: ${bestScore}`}
-            >
+            <div className="tetris-score-card" aria-label={`ベストスコア: ${bestScore}`}>
               <span className="tetris-score-label">BEST</span>
-              <span className="tetris-score-value">
-                {bestScore.toLocaleString()}
-              </span>
+              <span className="tetris-score-value">{bestScore.toLocaleString()}</span>
             </div>
             <div className="tetris-score-card" aria-label={`レベル: ${level}`}>
               <span className="tetris-score-label">LEVEL</span>
               <span className="tetris-score-value">{level}</span>
             </div>
-            <div
-              className="tetris-score-card"
-              aria-label={`ライン: ${totalLines}`}
-            >
+            <div className="tetris-score-card" aria-label={`ライン: ${totalLines}`}>
               <span className="tetris-score-label">LINES</span>
               <span className="tetris-score-value">{totalLines}</span>
             </div>
@@ -761,16 +717,12 @@ function TetrisGame() {
 
             {/* オーバーレイ */}
             {status !== "playing" && (
-              <div
-                className={`tetris-overlay${status === "over" ? " tetris-overlay-over" : ""}`}
-              >
+              <div className={`tetris-overlay${status === "over" ? " tetris-overlay-over" : ""}`}>
                 <div className="tetris-overlay-content">
                   {status === "idle" && (
                     <>
                       <p className="tetris-overlay-message">テトリス</p>
-                      <p className="tetris-overlay-sub">
-                        ゲームスタートを押してプレイ！
-                      </p>
+                      <p className="tetris-overlay-sub">ゲームスタートを押してプレイ！</p>
                       <Button onClick={startGame}>ゲームスタート</Button>
                     </>
                   )}
@@ -783,9 +735,7 @@ function TetrisGame() {
                   {status === "over" && (
                     <>
                       <p className="tetris-overlay-message">ゲームオーバー</p>
-                      <p className="tetris-overlay-score">
-                        スコア: {score.toLocaleString()}
-                      </p>
+                      <p className="tetris-overlay-score">スコア: {score.toLocaleString()}</p>
                       {score >= bestScore && score > 0 && (
                         <p className="tetris-overlay-best">🏆 ベスト更新！</p>
                       )}

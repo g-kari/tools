@@ -2,20 +2,20 @@
  * SQLトークンの型定義
  */
 export type SqlTokenType =
-  | 'keyword'
-  | 'identifier'
-  | 'quoted_identifier'
-  | 'string'
-  | 'number'
-  | 'operator'
-  | 'comma'
-  | 'semicolon'
-  | 'lparen'
-  | 'rparen'
-  | 'dot'
-  | 'line_comment'
-  | 'block_comment'
-  | 'unknown';
+  | "keyword"
+  | "identifier"
+  | "quoted_identifier"
+  | "string"
+  | "number"
+  | "operator"
+  | "comma"
+  | "semicolon"
+  | "lparen"
+  | "rparen"
+  | "dot"
+  | "line_comment"
+  | "block_comment"
+  | "unknown";
 
 export interface SqlToken {
   type: SqlTokenType;
@@ -24,19 +24,77 @@ export interface SqlToken {
 
 /** SQLキーワードセット */
 const SQL_KEYWORDS = new Set([
-  'SELECT', 'FROM', 'WHERE', 'AND', 'OR', 'NOT',
-  'JOIN', 'LEFT', 'RIGHT', 'INNER', 'OUTER', 'FULL', 'CROSS',
-  'ON', 'AS', 'GROUP', 'BY', 'ORDER', 'HAVING', 'LIMIT', 'OFFSET',
-  'INSERT', 'INTO', 'VALUES', 'UPDATE', 'SET', 'DELETE',
-  'CREATE', 'ALTER', 'DROP', 'TABLE', 'VIEW', 'INDEX',
-  'UNION', 'EXCEPT', 'INTERSECT', 'ALL', 'DISTINCT',
-  'CASE', 'WHEN', 'THEN', 'ELSE', 'END',
-  'NULL', 'IS', 'IN', 'EXISTS', 'LIKE', 'BETWEEN', 'ILIKE',
-  'ASC', 'DESC', 'NULLS', 'FIRST', 'LAST',
-  'PRIMARY', 'KEY', 'FOREIGN', 'REFERENCES', 'UNIQUE',
-  'IF', 'WITH', 'RECURSIVE', 'RETURNING', 'USING',
-  'TRUE', 'FALSE', 'DEFAULT', 'CONSTRAINT',
-  'NATURAL', 'STRAIGHT_JOIN',
+  "SELECT",
+  "FROM",
+  "WHERE",
+  "AND",
+  "OR",
+  "NOT",
+  "JOIN",
+  "LEFT",
+  "RIGHT",
+  "INNER",
+  "OUTER",
+  "FULL",
+  "CROSS",
+  "ON",
+  "AS",
+  "GROUP",
+  "BY",
+  "ORDER",
+  "HAVING",
+  "LIMIT",
+  "OFFSET",
+  "INSERT",
+  "INTO",
+  "VALUES",
+  "UPDATE",
+  "SET",
+  "DELETE",
+  "CREATE",
+  "ALTER",
+  "DROP",
+  "TABLE",
+  "VIEW",
+  "INDEX",
+  "UNION",
+  "EXCEPT",
+  "INTERSECT",
+  "ALL",
+  "DISTINCT",
+  "CASE",
+  "WHEN",
+  "THEN",
+  "ELSE",
+  "END",
+  "NULL",
+  "IS",
+  "IN",
+  "EXISTS",
+  "LIKE",
+  "BETWEEN",
+  "ILIKE",
+  "ASC",
+  "DESC",
+  "NULLS",
+  "FIRST",
+  "LAST",
+  "PRIMARY",
+  "KEY",
+  "FOREIGN",
+  "REFERENCES",
+  "UNIQUE",
+  "IF",
+  "WITH",
+  "RECURSIVE",
+  "RETURNING",
+  "USING",
+  "TRUE",
+  "FALSE",
+  "DEFAULT",
+  "CONSTRAINT",
+  "NATURAL",
+  "STRAIGHT_JOIN",
 ]);
 
 /**
@@ -59,30 +117,30 @@ export function tokenizeSql(sql: string): SqlToken[] {
     }
 
     // ブロックコメント /* ... */
-    if (sql.startsWith('/*', i)) {
-      const end = sql.indexOf('*/', i + 2);
+    if (sql.startsWith("/*", i)) {
+      const end = sql.indexOf("*/", i + 2);
       if (end === -1) {
-        throw new Error('ブロックコメントが閉じられていません');
+        throw new Error("ブロックコメントが閉じられていません");
       }
-      tokens.push({ type: 'block_comment', value: sql.slice(i, end + 2) });
+      tokens.push({ type: "block_comment", value: sql.slice(i, end + 2) });
       i = end + 2;
       continue;
     }
 
     // 行コメント -- ...
-    if (sql.startsWith('--', i)) {
-      const end = sql.indexOf('\n', i + 2);
+    if (sql.startsWith("--", i)) {
+      const end = sql.indexOf("\n", i + 2);
       const lineEnd = end === -1 ? len : end;
-      tokens.push({ type: 'line_comment', value: sql.slice(i, lineEnd).trim() });
+      tokens.push({ type: "line_comment", value: sql.slice(i, lineEnd).trim() });
       i = end === -1 ? len : end + 1;
       continue;
     }
 
     // 行コメント # ... (MySQL)
-    if (ch === '#') {
-      const end = sql.indexOf('\n', i + 1);
+    if (ch === "#") {
+      const end = sql.indexOf("\n", i + 1);
       const lineEnd = end === -1 ? len : end;
-      tokens.push({ type: 'line_comment', value: sql.slice(i, lineEnd).trim() });
+      tokens.push({ type: "line_comment", value: sql.slice(i, lineEnd).trim() });
       i = end === -1 ? len : end + 1;
       continue;
     }
@@ -91,7 +149,7 @@ export function tokenizeSql(sql: string): SqlToken[] {
     if (ch === "'") {
       let j = i + 1;
       while (j < len) {
-        if (sql[j] === "'" && sql[j - 1] !== '\\') {
+        if (sql[j] === "'" && sql[j - 1] !== "\\") {
           // エスケープされていないクォート
           if (sql[j + 1] === "'") {
             // SQL標準のエスケープ ''
@@ -103,20 +161,20 @@ export function tokenizeSql(sql: string): SqlToken[] {
         j++;
       }
       if (j >= len) {
-        throw new Error('文字列リテラルが閉じられていません');
+        throw new Error("文字列リテラルが閉じられていません");
       }
-      tokens.push({ type: 'string', value: sql.slice(i, j + 1) });
+      tokens.push({ type: "string", value: sql.slice(i, j + 1) });
       i = j + 1;
       continue;
     }
 
     // バッククォート識別子 (MySQL)
-    if (ch === '`') {
-      const end = sql.indexOf('`', i + 1);
+    if (ch === "`") {
+      const end = sql.indexOf("`", i + 1);
       if (end === -1) {
-        throw new Error('バッククォート識別子が閉じられていません');
+        throw new Error("バッククォート識別子が閉じられていません");
       }
-      tokens.push({ type: 'quoted_identifier', value: sql.slice(i, end + 1) });
+      tokens.push({ type: "quoted_identifier", value: sql.slice(i, end + 1) });
       i = end + 1;
       continue;
     }
@@ -125,51 +183,51 @@ export function tokenizeSql(sql: string): SqlToken[] {
     if (ch === '"') {
       const end = sql.indexOf('"', i + 1);
       if (end === -1) {
-        throw new Error('ダブルクォート識別子が閉じられていません');
+        throw new Error("ダブルクォート識別子が閉じられていません");
       }
-      tokens.push({ type: 'quoted_identifier', value: sql.slice(i, end + 1) });
+      tokens.push({ type: "quoted_identifier", value: sql.slice(i, end + 1) });
       i = end + 1;
       continue;
     }
 
     // 括弧
-    if (ch === '(') {
-      tokens.push({ type: 'lparen', value: '(' });
+    if (ch === "(") {
+      tokens.push({ type: "lparen", value: "(" });
       i++;
       continue;
     }
-    if (ch === ')') {
-      tokens.push({ type: 'rparen', value: ')' });
+    if (ch === ")") {
+      tokens.push({ type: "rparen", value: ")" });
       i++;
       continue;
     }
 
     // カンマ
-    if (ch === ',') {
-      tokens.push({ type: 'comma', value: ',' });
+    if (ch === ",") {
+      tokens.push({ type: "comma", value: "," });
       i++;
       continue;
     }
 
     // セミコロン
-    if (ch === ';') {
-      tokens.push({ type: 'semicolon', value: ';' });
+    if (ch === ";") {
+      tokens.push({ type: "semicolon", value: ";" });
       i++;
       continue;
     }
 
     // ドット
-    if (ch === '.') {
-      tokens.push({ type: 'dot', value: '.' });
+    if (ch === ".") {
+      tokens.push({ type: "dot", value: "." });
       i++;
       continue;
     }
 
     // 数値
-    if (/[0-9]/.test(ch) || (ch === '.' && /[0-9]/.test(sql[i + 1] ?? ''))) {
+    if (/[0-9]/.test(ch) || (ch === "." && /[0-9]/.test(sql[i + 1] ?? ""))) {
       let j = i;
       while (j < len && /[0-9]/.test(sql[j])) j++;
-      if (j < len && sql[j] === '.') {
+      if (j < len && sql[j] === ".") {
         j++;
         while (j < len && /[0-9]/.test(sql[j])) j++;
       }
@@ -179,7 +237,7 @@ export function tokenizeSql(sql: string): SqlToken[] {
         if (j < len && /[+-]/.test(sql[j])) j++;
         while (j < len && /[0-9]/.test(sql[j])) j++;
       }
-      tokens.push({ type: 'number', value: sql.slice(i, j) });
+      tokens.push({ type: "number", value: sql.slice(i, j) });
       i = j;
       continue;
     }
@@ -191,9 +249,9 @@ export function tokenizeSql(sql: string): SqlToken[] {
       const word = sql.slice(i, j);
       const upper = word.toUpperCase();
       if (SQL_KEYWORDS.has(upper)) {
-        tokens.push({ type: 'keyword', value: upper });
+        tokens.push({ type: "keyword", value: upper });
       } else {
-        tokens.push({ type: 'identifier', value: word });
+        tokens.push({ type: "identifier", value: word });
       }
       i = j;
       continue;
@@ -203,25 +261,25 @@ export function tokenizeSql(sql: string): SqlToken[] {
     if (/[<>=!+\-*/%|&^~]/.test(ch)) {
       // 複合演算子
       const two = sql.slice(i, i + 2);
-      if (['<>', '<=', '>=', '!=', ':=', '||', '&&', '<<', '>>'].includes(two)) {
-        tokens.push({ type: 'operator', value: two });
+      if (["<>", "<=", ">=", "!=", ":=", "||", "&&", "<<", ">>"].includes(two)) {
+        tokens.push({ type: "operator", value: two });
         i += 2;
         continue;
       }
-      tokens.push({ type: 'operator', value: ch });
+      tokens.push({ type: "operator", value: ch });
       i++;
       continue;
     }
 
     // コロン (PostgreSQL パラメータ等)
-    if (ch === ':') {
-      tokens.push({ type: 'operator', value: ch });
+    if (ch === ":") {
+      tokens.push({ type: "operator", value: ch });
       i++;
       continue;
     }
 
     // 不明文字
-    tokens.push({ type: 'unknown', value: ch });
+    tokens.push({ type: "unknown", value: ch });
     i++;
   }
 
@@ -230,44 +288,44 @@ export function tokenizeSql(sql: string): SqlToken[] {
 
 /** トップレベルで改行すべきキーワードシーケンス（長い順に並べて先にマッチさせる） */
 const TOP_LEVEL_SEQUENCES: string[][] = [
-  ['LEFT', 'OUTER', 'JOIN'],
-  ['RIGHT', 'OUTER', 'JOIN'],
-  ['FULL', 'OUTER', 'JOIN'],
-  ['LEFT', 'JOIN'],
-  ['RIGHT', 'JOIN'],
-  ['INNER', 'JOIN'],
-  ['FULL', 'JOIN'],
-  ['CROSS', 'JOIN'],
-  ['NATURAL', 'JOIN'],
-  ['STRAIGHT_JOIN'],
-  ['GROUP', 'BY'],
-  ['ORDER', 'BY'],
-  ['UNION', 'ALL'],
-  ['INSERT', 'INTO'],
-  ['DELETE', 'FROM'],
-  ['CREATE', 'TABLE'],
-  ['ALTER', 'TABLE'],
-  ['DROP', 'TABLE'],
-  ['SELECT'],
-  ['FROM'],
-  ['WHERE'],
-  ['ON'],
-  ['JOIN'],
-  ['HAVING'],
-  ['LIMIT'],
-  ['OFFSET'],
-  ['UNION'],
-  ['EXCEPT'],
-  ['INTERSECT'],
-  ['SET'],
-  ['VALUES'],
-  ['UPDATE'],
-  ['WITH'],
-  ['RETURNING'],
+  ["LEFT", "OUTER", "JOIN"],
+  ["RIGHT", "OUTER", "JOIN"],
+  ["FULL", "OUTER", "JOIN"],
+  ["LEFT", "JOIN"],
+  ["RIGHT", "JOIN"],
+  ["INNER", "JOIN"],
+  ["FULL", "JOIN"],
+  ["CROSS", "JOIN"],
+  ["NATURAL", "JOIN"],
+  ["STRAIGHT_JOIN"],
+  ["GROUP", "BY"],
+  ["ORDER", "BY"],
+  ["UNION", "ALL"],
+  ["INSERT", "INTO"],
+  ["DELETE", "FROM"],
+  ["CREATE", "TABLE"],
+  ["ALTER", "TABLE"],
+  ["DROP", "TABLE"],
+  ["SELECT"],
+  ["FROM"],
+  ["WHERE"],
+  ["ON"],
+  ["JOIN"],
+  ["HAVING"],
+  ["LIMIT"],
+  ["OFFSET"],
+  ["UNION"],
+  ["EXCEPT"],
+  ["INTERSECT"],
+  ["SET"],
+  ["VALUES"],
+  ["UPDATE"],
+  ["WITH"],
+  ["RETURNING"],
 ];
 
 /** WHERE 句内でインデントつき改行するキーワード */
-const INDENT_KEYWORDS = new Set(['AND', 'OR']);
+const INDENT_KEYWORDS = new Set(["AND", "OR"]);
 
 /**
  * SQLをフォーマット（整形）する。
@@ -278,20 +336,20 @@ const INDENT_KEYWORDS = new Set(['AND', 'OR']);
  */
 export function formatSql(sql: string, indentSize: number = 2): string {
   if (!sql.trim()) {
-    throw new Error('SQL文字列が空です');
+    throw new Error("SQL文字列が空です");
   }
 
   const tokens = tokenizeSql(sql);
-  const indent = ' '.repeat(indentSize);
+  const indent = " ".repeat(indentSize);
   const lines: string[] = [];
-  let currentLine = '';
+  let currentLine = "";
   let depth = 0; // 括弧の深さ
   let i = 0;
 
   /**
    * 現在行をflushして次の行を開始する
    */
-  function flushLine(nextPrefix: string = ''): void {
+  function flushLine(nextPrefix: string = ""): void {
     const trimmed = currentLine.trimEnd();
     if (trimmed) {
       lines.push(trimmed);
@@ -313,8 +371,8 @@ export function formatSql(sql: string, indentSize: number = 2): string {
         // コメントや空白トークンをスキップ
         while (
           i + offset < tokens.length &&
-          (tokens[i + offset].type === 'line_comment' ||
-           tokens[i + offset].type === 'block_comment')
+          (tokens[i + offset].type === "line_comment" ||
+            tokens[i + offset].type === "block_comment")
         ) {
           offset++;
         }
@@ -323,7 +381,7 @@ export function formatSql(sql: string, indentSize: number = 2): string {
           break;
         }
         const tok = tokens[i + offset];
-        if (tok.type !== 'keyword' || tok.value !== seq[ki]) {
+        if (tok.type !== "keyword" || tok.value !== seq[ki]) {
           match = false;
           break;
         }
@@ -341,17 +399,17 @@ export function formatSql(sql: string, indentSize: number = 2): string {
     const token = tokens[i];
 
     // コメントはそのまま出力
-    if (token.type === 'line_comment' || token.type === 'block_comment') {
-      flushLine(currentLine.trimEnd() ? currentLine + ' ' : '');
+    if (token.type === "line_comment" || token.type === "block_comment") {
+      flushLine(currentLine.trimEnd() ? currentLine + " " : "");
       currentLine += token.value;
       i++;
       continue;
     }
 
     // セミコロン
-    if (token.type === 'semicolon') {
-      currentLine += ';';
-      flushLine('');
+    if (token.type === "semicolon") {
+      currentLine += ";";
+      flushLine("");
       i++;
       continue;
     }
@@ -359,87 +417,83 @@ export function formatSql(sql: string, indentSize: number = 2): string {
     // トップレベルキーワードシーケンスのチェック
     const seq = matchTopLevel();
     if (seq) {
-      flushLine('');
-      currentLine = seq.join(' ');
+      flushLine("");
+      currentLine = seq.join(" ");
       i += seq.length;
       continue;
     }
 
     // WHERE内でのAND/OR（depth=0の場合のみ）
-    if (
-      depth === 0 &&
-      token.type === 'keyword' &&
-      INDENT_KEYWORDS.has(token.value)
-    ) {
-      flushLine('');
+    if (depth === 0 && token.type === "keyword" && INDENT_KEYWORDS.has(token.value)) {
+      flushLine("");
       currentLine = indent + token.value;
       i++;
       continue;
     }
 
     // 括弧を開く
-    if (token.type === 'lparen') {
+    if (token.type === "lparen") {
       depth++;
-      currentLine += '(';
+      currentLine += "(";
       i++;
       continue;
     }
 
     // 括弧を閉じる
-    if (token.type === 'rparen') {
+    if (token.type === "rparen") {
       depth = Math.max(0, depth - 1);
-      currentLine += ')';
+      currentLine += ")";
       i++;
       continue;
     }
 
     // カンマ：depth=0では改行してインデント
-    if (token.type === 'comma') {
+    if (token.type === "comma") {
       if (depth === 0) {
-        currentLine += ',';
+        currentLine += ",";
         flushLine(indent);
       } else {
-        currentLine += ', ';
+        currentLine += ", ";
       }
       i++;
       continue;
     }
 
     // ドット（テーブル.カラムの間はスペースなし）
-    if (token.type === 'dot') {
-      currentLine += '.';
+    if (token.type === "dot") {
+      currentLine += ".";
       i++;
       continue;
     }
 
     // 演算子はスペースで囲む
-    if (token.type === 'operator') {
+    if (token.type === "operator") {
       // 直前の文字がスペースでなければスペースを追加
-      if (currentLine.length > 0 && !currentLine.endsWith(' ')) {
-        currentLine += ' ';
+      if (currentLine.length > 0 && !currentLine.endsWith(" ")) {
+        currentLine += " ";
       }
       currentLine += token.value;
       // 次のトークンがドットでなければスペース
       const next = tokens[i + 1];
-      if (next && next.type !== 'dot' && next.type !== 'rparen') {
-        currentLine += ' ';
+      if (next && next.type !== "dot" && next.type !== "rparen") {
+        currentLine += " ";
       }
       i++;
       continue;
     }
 
     // その他のトークン（キーワード、識別子、文字列、数値）
-    if (currentLine.length > 0 && !currentLine.endsWith(' ') && !currentLine.endsWith('(')) {
-      currentLine += ' ';
+    if (currentLine.length > 0 && !currentLine.endsWith(" ") && !currentLine.endsWith("(")) {
+      currentLine += " ";
     }
     currentLine += token.value;
     i++;
   }
 
   // 最終行をflush
-  flushLine('');
+  flushLine("");
 
-  return lines.join('\n');
+  return lines.join("\n");
 }
 
 /**
@@ -450,7 +504,7 @@ export function formatSql(sql: string, indentSize: number = 2): string {
  */
 export function minifySql(sql: string): string {
   if (!sql.trim()) {
-    throw new Error('SQL文字列が空です');
+    throw new Error("SQL文字列が空です");
   }
 
   const tokens = tokenizeSql(sql);
@@ -462,20 +516,20 @@ export function minifySql(sql: string): string {
     const next = i < tokens.length - 1 ? tokens[i + 1] : null;
 
     // コメントはスキップ
-    if (token.type === 'line_comment' || token.type === 'block_comment') {
+    if (token.type === "line_comment" || token.type === "block_comment") {
       continue;
     }
 
     // 括弧、カンマ、セミコロンの前後はスペース不要
     if (
-      token.type === 'lparen' ||
-      token.type === 'rparen' ||
-      token.type === 'comma' ||
-      token.type === 'semicolon' ||
-      token.type === 'dot'
+      token.type === "lparen" ||
+      token.type === "rparen" ||
+      token.type === "comma" ||
+      token.type === "semicolon" ||
+      token.type === "dot"
     ) {
       // 直前のスペースを除去
-      if (parts.length > 0 && parts[parts.length - 1] === ' ') {
+      if (parts.length > 0 && parts[parts.length - 1] === " ") {
         parts.pop();
       }
       parts.push(token.value);
@@ -485,31 +539,31 @@ export function minifySql(sql: string): string {
     // 次がドット、括弧閉じの場合はスペース不要
     const needsSpaceAfter =
       next &&
-      next.type !== 'dot' &&
-      next.type !== 'rparen' &&
-      next.type !== 'comma' &&
-      next.type !== 'semicolon';
+      next.type !== "dot" &&
+      next.type !== "rparen" &&
+      next.type !== "comma" &&
+      next.type !== "semicolon";
 
     // 直前がドット、括弧開きの場合はスペース不要
     const needsSpaceBefore =
       prev &&
-      prev.type !== 'dot' &&
-      prev.type !== 'lparen' &&
-      prev.type !== 'line_comment' &&
-      prev.type !== 'block_comment';
+      prev.type !== "dot" &&
+      prev.type !== "lparen" &&
+      prev.type !== "line_comment" &&
+      prev.type !== "block_comment";
 
-    if (needsSpaceBefore && parts.length > 0 && parts[parts.length - 1] !== ' ') {
-      parts.push(' ');
+    if (needsSpaceBefore && parts.length > 0 && parts[parts.length - 1] !== " ") {
+      parts.push(" ");
     }
 
     parts.push(token.value);
 
     if (needsSpaceAfter) {
-      parts.push(' ');
+      parts.push(" ");
     }
   }
 
-  return parts.join('').trim();
+  return parts.join("").trim();
 }
 
 /**
@@ -520,7 +574,7 @@ export function minifySql(sql: string): string {
  */
 export function validateSql(sql: string): { valid: boolean; error?: string } {
   if (!sql.trim()) {
-    return { valid: false, error: 'SQL文字列が空です' };
+    return { valid: false, error: "SQL文字列が空です" };
   }
 
   let tokens: SqlToken[];
@@ -529,18 +583,18 @@ export function validateSql(sql: string): { valid: boolean; error?: string } {
   } catch (err) {
     return {
       valid: false,
-      error: err instanceof Error ? err.message : 'SQL解析エラーが発生しました',
+      error: err instanceof Error ? err.message : "SQL解析エラーが発生しました",
     };
   }
 
   // 括弧の対応チェック
   let depth = 0;
   for (const token of tokens) {
-    if (token.type === 'lparen') depth++;
-    if (token.type === 'rparen') {
+    if (token.type === "lparen") depth++;
+    if (token.type === "rparen") {
       depth--;
       if (depth < 0) {
-        return { valid: false, error: '対応する開き括弧のない閉じ括弧があります' };
+        return { valid: false, error: "対応する開き括弧のない閉じ括弧があります" };
       }
     }
   }
@@ -549,11 +603,24 @@ export function validateSql(sql: string): { valid: boolean; error?: string } {
   }
 
   // 基本的なSQL構造チェック（DML/DDLの先頭キーワード確認）
-  const firstKeyword = tokens.find((t) => t.type === 'keyword');
+  const firstKeyword = tokens.find((t) => t.type === "keyword");
   const validStartKeywords = new Set([
-    'SELECT', 'INSERT', 'UPDATE', 'DELETE', 'CREATE',
-    'ALTER', 'DROP', 'WITH', 'EXPLAIN', 'SHOW', 'DESCRIBE',
-    'BEGIN', 'COMMIT', 'ROLLBACK', 'GRANT', 'REVOKE',
+    "SELECT",
+    "INSERT",
+    "UPDATE",
+    "DELETE",
+    "CREATE",
+    "ALTER",
+    "DROP",
+    "WITH",
+    "EXPLAIN",
+    "SHOW",
+    "DESCRIBE",
+    "BEGIN",
+    "COMMIT",
+    "ROLLBACK",
+    "GRANT",
+    "REVOKE",
   ]);
 
   if (firstKeyword && !validStartKeywords.has(firstKeyword.value)) {

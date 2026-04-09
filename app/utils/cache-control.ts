@@ -6,12 +6,12 @@
 /**
  * Cache-Control ディレクティブの値の種類
  */
-export type DirectiveValueType = 'none' | 'number' | 'optional-number';
+export type DirectiveValueType = "none" | "number" | "optional-number";
 
 /**
  * Cache-Control ディレクティブの適用対象
  */
-export type DirectiveTarget = 'response' | 'request' | 'both';
+export type DirectiveTarget = "response" | "request" | "both";
 
 /**
  * Cache-Control ディレクティブの定義情報
@@ -70,155 +70,166 @@ export interface CacheControlValidationResult {
 /** レスポンス用ディレクティブ一覧 */
 export const RESPONSE_DIRECTIVES: CacheControlDirectiveInfo[] = [
   {
-    name: 'max-age',
-    description: 'レスポンスが新鮮とみなされる最大秒数。この時間を過ぎると再検証が必要になります。',
-    target: 'response',
-    valueType: 'number',
-    unit: '秒',
+    name: "max-age",
+    description: "レスポンスが新鮮とみなされる最大秒数。この時間を過ぎると再検証が必要になります。",
+    target: "response",
+    valueType: "number",
+    unit: "秒",
     defaultValue: 3600,
-    example: 'max-age=3600',
+    example: "max-age=3600",
   },
   {
-    name: 's-maxage',
-    description: '共有キャッシュ（CDN等）における最大秒数。max-age を上書きします。',
-    target: 'response',
-    valueType: 'number',
-    unit: '秒',
+    name: "s-maxage",
+    description: "共有キャッシュ（CDN等）における最大秒数。max-age を上書きします。",
+    target: "response",
+    valueType: "number",
+    unit: "秒",
     defaultValue: 86400,
-    example: 's-maxage=86400',
+    example: "s-maxage=86400",
   },
   {
-    name: 'no-cache',
-    description: 'キャッシュを使用する前に必ずオリジンサーバーで再検証が必要。ETag/Last-Modified を使った条件付きリクエストを強制します。',
-    target: 'response',
-    valueType: 'none',
-    example: 'no-cache',
+    name: "no-cache",
+    description:
+      "キャッシュを使用する前に必ずオリジンサーバーで再検証が必要。ETag/Last-Modified を使った条件付きリクエストを強制します。",
+    target: "response",
+    valueType: "none",
+    example: "no-cache",
   },
   {
-    name: 'no-store',
-    description: 'レスポンスをいかなるキャッシュにも保存しません。機密情報（ログイン後のページ、個人情報等）に適しています。',
-    target: 'response',
-    valueType: 'none',
-    example: 'no-store',
+    name: "no-store",
+    description:
+      "レスポンスをいかなるキャッシュにも保存しません。機密情報（ログイン後のページ、個人情報等）に適しています。",
+    target: "response",
+    valueType: "none",
+    example: "no-store",
   },
   {
-    name: 'public',
-    description: '共有キャッシュ（CDN、プロキシ等）にキャッシュ可能。通常は認証不要のパブリックコンテンツに使用します。',
-    target: 'response',
-    valueType: 'none',
-    example: 'public',
+    name: "public",
+    description:
+      "共有キャッシュ（CDN、プロキシ等）にキャッシュ可能。通常は認証不要のパブリックコンテンツに使用します。",
+    target: "response",
+    valueType: "none",
+    example: "public",
   },
   {
-    name: 'private',
-    description: 'ブラウザキャッシュにのみ保存可能。CDN・プロキシなどの共有キャッシュには保存されません。',
-    target: 'response',
-    valueType: 'none',
-    example: 'private',
+    name: "private",
+    description:
+      "ブラウザキャッシュにのみ保存可能。CDN・プロキシなどの共有キャッシュには保存されません。",
+    target: "response",
+    valueType: "none",
+    example: "private",
   },
   {
-    name: 'must-revalidate',
-    description: 'キャッシュが古くなった場合、必ずオリジンサーバーで再検証しなければなりません。オフライン時のキャッシュ利用を防ぎます。',
-    target: 'response',
-    valueType: 'none',
-    example: 'must-revalidate',
+    name: "must-revalidate",
+    description:
+      "キャッシュが古くなった場合、必ずオリジンサーバーで再検証しなければなりません。オフライン時のキャッシュ利用を防ぎます。",
+    target: "response",
+    valueType: "none",
+    example: "must-revalidate",
   },
   {
-    name: 'proxy-revalidate',
-    description: '共有キャッシュ（プロキシ等）に対して、古くなった場合の再検証を要求します（must-revalidate の共有キャッシュ版）。',
-    target: 'response',
-    valueType: 'none',
-    example: 'proxy-revalidate',
+    name: "proxy-revalidate",
+    description:
+      "共有キャッシュ（プロキシ等）に対して、古くなった場合の再検証を要求します（must-revalidate の共有キャッシュ版）。",
+    target: "response",
+    valueType: "none",
+    example: "proxy-revalidate",
   },
   {
-    name: 'immutable',
-    description: 'レスポンスが新鮮な間は変更されないことを示します。ブラウザが条件付きリクエストを行うのを防ぎ、パフォーマンスを向上させます（コンテンツハッシュ付きアセットに最適）。',
-    target: 'response',
-    valueType: 'none',
-    example: 'immutable',
+    name: "immutable",
+    description:
+      "レスポンスが新鮮な間は変更されないことを示します。ブラウザが条件付きリクエストを行うのを防ぎ、パフォーマンスを向上させます（コンテンツハッシュ付きアセットに最適）。",
+    target: "response",
+    valueType: "none",
+    example: "immutable",
   },
   {
-    name: 'stale-while-revalidate',
-    description: '古いレスポンスを返しつつ、バックグラウンドで非同期に再検証します（RFC 5861）。UX向上のため短い秒数を推奨します。',
-    target: 'response',
-    valueType: 'number',
-    unit: '秒',
+    name: "stale-while-revalidate",
+    description:
+      "古いレスポンスを返しつつ、バックグラウンドで非同期に再検証します（RFC 5861）。UX向上のため短い秒数を推奨します。",
+    target: "response",
+    valueType: "number",
+    unit: "秒",
     defaultValue: 60,
-    example: 'stale-while-revalidate=60',
+    example: "stale-while-revalidate=60",
   },
   {
-    name: 'stale-if-error',
-    description: 'オリジンサーバーがエラー（5xx）を返した場合に、指定秒数まで古いレスポンスを使用します（RFC 5861）。',
-    target: 'response',
-    valueType: 'number',
-    unit: '秒',
+    name: "stale-if-error",
+    description:
+      "オリジンサーバーがエラー（5xx）を返した場合に、指定秒数まで古いレスポンスを使用します（RFC 5861）。",
+    target: "response",
+    valueType: "number",
+    unit: "秒",
     defaultValue: 86400,
-    example: 'stale-if-error=86400',
+    example: "stale-if-error=86400",
   },
   {
-    name: 'no-transform',
-    description: 'プロキシがレスポンスを変換（圧縮・形式変換等）することを禁止します。',
-    target: 'response',
-    valueType: 'none',
-    example: 'no-transform',
+    name: "no-transform",
+    description: "プロキシがレスポンスを変換（圧縮・形式変換等）することを禁止します。",
+    target: "response",
+    valueType: "none",
+    example: "no-transform",
   },
 ];
 
 /** リクエスト用ディレクティブ一覧 */
 export const REQUEST_DIRECTIVES: CacheControlDirectiveInfo[] = [
   {
-    name: 'max-age',
-    description: 'この秒数より古いキャッシュは受け入れません。',
-    target: 'request',
-    valueType: 'number',
-    unit: '秒',
+    name: "max-age",
+    description: "この秒数より古いキャッシュは受け入れません。",
+    target: "request",
+    valueType: "number",
+    unit: "秒",
     defaultValue: 0,
-    example: 'max-age=0',
+    example: "max-age=0",
   },
   {
-    name: 'max-stale',
-    description: '指定秒数まで古いレスポンスを受け入れます。値省略時は任意の古さを許可します。',
-    target: 'request',
-    valueType: 'optional-number',
-    unit: '秒',
+    name: "max-stale",
+    description: "指定秒数まで古いレスポンスを受け入れます。値省略時は任意の古さを許可します。",
+    target: "request",
+    valueType: "optional-number",
+    unit: "秒",
     defaultValue: 3600,
-    example: 'max-stale=3600',
+    example: "max-stale=3600",
   },
   {
-    name: 'min-fresh',
-    description: 'この秒数以上新鮮なレスポンスのみ受け入れます。',
-    target: 'request',
-    valueType: 'number',
-    unit: '秒',
+    name: "min-fresh",
+    description: "この秒数以上新鮮なレスポンスのみ受け入れます。",
+    target: "request",
+    valueType: "number",
+    unit: "秒",
     defaultValue: 60,
-    example: 'min-fresh=60',
+    example: "min-fresh=60",
   },
   {
-    name: 'no-cache',
-    description: 'キャッシュに保存されたレスポンスを使用せず、オリジンサーバーからの新鮮なレスポンスを要求します。',
-    target: 'request',
-    valueType: 'none',
-    example: 'no-cache',
+    name: "no-cache",
+    description:
+      "キャッシュに保存されたレスポンスを使用せず、オリジンサーバーからの新鮮なレスポンスを要求します。",
+    target: "request",
+    valueType: "none",
+    example: "no-cache",
   },
   {
-    name: 'no-store',
-    description: 'キャッシュがリクエスト・レスポンスを保存することを禁止します。',
-    target: 'request',
-    valueType: 'none',
-    example: 'no-store',
+    name: "no-store",
+    description: "キャッシュがリクエスト・レスポンスを保存することを禁止します。",
+    target: "request",
+    valueType: "none",
+    example: "no-store",
   },
   {
-    name: 'no-transform',
-    description: 'プロキシがリクエストを変換することを禁止します。',
-    target: 'request',
-    valueType: 'none',
-    example: 'no-transform',
+    name: "no-transform",
+    description: "プロキシがリクエストを変換することを禁止します。",
+    target: "request",
+    valueType: "none",
+    example: "no-transform",
   },
   {
-    name: 'only-if-cached',
-    description: 'キャッシュにある場合のみレスポンスを要求します。ネットワークアクセスを行わず、キャッシュがなければ504を返します。',
-    target: 'request',
-    valueType: 'none',
-    example: 'only-if-cached',
+    name: "only-if-cached",
+    description:
+      "キャッシュにある場合のみレスポンスを要求します。ネットワークアクセスを行わず、キャッシュがなければ504を返します。",
+    target: "request",
+    valueType: "none",
+    example: "only-if-cached",
   },
 ];
 
@@ -253,7 +264,7 @@ export function findRequestDirectiveInfo(name: string): CacheControlDirectiveInf
  */
 export function parseCacheControl(
   headerValue: string,
-  target: 'response' | 'request' = 'response',
+  target: "response" | "request" = "response",
 ): ParsedCacheControl {
   const directives: CacheControlDirectiveEntry[] = [];
   const errors: string[] = [];
@@ -263,16 +274,22 @@ export function parseCacheControl(
   }
 
   const seen = new Set<string>();
-  const tokens = headerValue.split(',').map((t) => t.trim()).filter(Boolean);
+  const tokens = headerValue
+    .split(",")
+    .map((t) => t.trim())
+    .filter(Boolean);
 
   for (const token of tokens) {
-    const eqIdx = token.indexOf('=');
+    const eqIdx = token.indexOf("=");
     let name: string;
     let rawValue: string | undefined;
 
     if (eqIdx !== -1) {
       name = token.slice(0, eqIdx).trim().toLowerCase();
-      rawValue = token.slice(eqIdx + 1).trim().replace(/^"(.*)"$/, '$1');
+      rawValue = token
+        .slice(eqIdx + 1)
+        .trim()
+        .replace(/^"(.*)"$/, "$1");
     } else {
       name = token.toLowerCase();
       rawValue = undefined;
@@ -284,7 +301,7 @@ export function parseCacheControl(
     }
     seen.add(name);
 
-    const allDirs = target === 'response' ? RESPONSE_DIRECTIVES : REQUEST_DIRECTIVES;
+    const allDirs = target === "response" ? RESPONSE_DIRECTIVES : REQUEST_DIRECTIVES;
     const info = allDirs.find((d) => d.name === name);
 
     let value: number | undefined;
@@ -297,7 +314,7 @@ export function parseCacheControl(
       }
     }
 
-    if (info && info.valueType === 'number' && value === undefined) {
+    if (info && info.valueType === "number" && value === undefined) {
       errors.push(`ディレクティブ "${name}" には秒数の値が必要です（例: ${name}=3600）。`);
     }
 
@@ -315,10 +332,10 @@ export function parseCacheControl(
  */
 export function buildCacheControl(
   directives: CacheControlDirectiveEntry[],
-  target: 'response' | 'request' = 'response',
+  target: "response" | "request" = "response",
 ): string {
   const parts: string[] = [];
-  const allDirs = target === 'response' ? RESPONSE_DIRECTIVES : REQUEST_DIRECTIVES;
+  const allDirs = target === "response" ? RESPONSE_DIRECTIVES : REQUEST_DIRECTIVES;
 
   for (const entry of directives) {
     if (!entry.enabled) continue;
@@ -326,9 +343,9 @@ export function buildCacheControl(
 
     const info = allDirs.find((d) => d.name === entry.name);
 
-    if (!info || info.valueType === 'none') {
+    if (!info || info.valueType === "none") {
       parts.push(entry.name);
-    } else if (info.valueType === 'optional-number') {
+    } else if (info.valueType === "optional-number") {
       if (entry.value !== undefined) {
         parts.push(`${entry.name}=${entry.value}`);
       } else {
@@ -341,7 +358,7 @@ export function buildCacheControl(
     }
   }
 
-  return parts.join(', ');
+  return parts.join(", ");
 }
 
 /**
@@ -359,77 +376,87 @@ export function validateCacheControl(
   const names = new Set(enabled.map((d) => d.name));
 
   // no-store と他のディレクティブの競合チェック
-  if (names.has('no-store') && names.size > 1) {
-    const others = enabled.filter((d) => d.name !== 'no-store').map((d) => d.name);
+  if (names.has("no-store") && names.size > 1) {
+    const others = enabled.filter((d) => d.name !== "no-store").map((d) => d.name);
     warnings.push(
-      `"no-store" が設定されている場合、他のディレクティブ（${others.join(', ')}）は無視されます。no-store はキャッシュを完全に無効化します。`,
+      `"no-store" が設定されている場合、他のディレクティブ（${others.join(", ")}）は無視されます。no-store はキャッシュを完全に無効化します。`,
     );
   }
 
   // public と private の競合チェック
-  if (names.has('public') && names.has('private')) {
+  if (names.has("public") && names.has("private")) {
     warnings.push('"public" と "private" は同時に指定できません。どちらか一方を選択してください。');
   }
 
   // no-cache と no-store の重複指定チェック
-  if (names.has('no-cache') && names.has('no-store')) {
+  if (names.has("no-cache") && names.has("no-store")) {
     suggestions.push(
       '"no-cache" と "no-store" が両方指定されています。機密情報には "no-store" のみで十分です。',
     );
   }
 
   // max-age=0 と no-cache の冗長チェック
-  const maxAge = enabled.find((d) => d.name === 'max-age');
-  if (maxAge?.value === 0 && names.has('no-cache')) {
+  const maxAge = enabled.find((d) => d.name === "max-age");
+  if (maxAge?.value === 0 && names.has("no-cache")) {
     suggestions.push(
       '"max-age=0" と "no-cache" が両方指定されています。"no-cache" のみで再検証を強制できます。',
     );
   }
 
   // immutable と no-cache/max-age=0 の矛盾チェック
-  if (names.has('immutable') && names.has('no-cache')) {
+  if (names.has("immutable") && names.has("no-cache")) {
     warnings.push(
       '"immutable" と "no-cache" は矛盾します。immutable は変更がないことを示しますが、no-cache は毎回再検証を要求します。',
     );
   }
 
-  if (names.has('immutable') && maxAge?.value === 0) {
+  if (names.has("immutable") && maxAge?.value === 0) {
     warnings.push(
       '"immutable" と "max-age=0" は矛盾します。immutable は十分に長い max-age（例: 1年 = 31536000）と組み合わせてください。',
     );
   }
 
   // immutable には長い max-age を推奨
-  if (names.has('immutable') && maxAge !== undefined && maxAge.value !== undefined && maxAge.value < 86400) {
+  if (
+    names.has("immutable") &&
+    maxAge !== undefined &&
+    maxAge.value !== undefined &&
+    maxAge.value < 86400
+  ) {
     suggestions.push(
       `"immutable" が設定されていますが、max-age が ${maxAge.value} 秒と短めです。immutable はコンテンツハッシュ付きアセットに使用し、max-age=31536000（1年）のような長い値と組み合わせることを推奨します。`,
     );
   }
 
   // must-revalidate と stale-while-revalidate の競合
-  if (names.has('must-revalidate') && names.has('stale-while-revalidate')) {
+  if (names.has("must-revalidate") && names.has("stale-while-revalidate")) {
     warnings.push(
       '"must-revalidate" と "stale-while-revalidate" は競合する場合があります。must-revalidate は古いレスポンスの使用を禁止しますが、stale-while-revalidate は古いレスポンスを返すことを許可します。',
     );
   }
 
   // private と s-maxage の競合
-  if (names.has('private') && names.has('s-maxage')) {
+  if (names.has("private") && names.has("s-maxage")) {
     warnings.push(
       '"private" が設定されている場合、"s-maxage" は共有キャッシュに適用されません。s-maxage を削除するか、"public" に変更することを検討してください。',
     );
   }
 
   // s-maxage なしで CDN キャッシュを設定している場合の提案
-  if (names.has('public') && !names.has('s-maxage') && names.has('max-age')) {
+  if (names.has("public") && !names.has("s-maxage") && names.has("max-age")) {
     suggestions.push(
       '"public" と "max-age" が設定されています。CDN/プロキシに異なるキャッシュ時間を設定したい場合は "s-maxage" を追加することを検討してください。',
     );
   }
 
   // no-cache なしで動的コンテンツに max-age が大きい場合の提案
-  if (maxAge !== undefined && maxAge.value !== undefined && maxAge.value > 86400 && !names.has('no-cache')) {
-    if (!names.has('immutable') && !names.has('public')) {
+  if (
+    maxAge !== undefined &&
+    maxAge.value !== undefined &&
+    maxAge.value > 86400 &&
+    !names.has("no-cache")
+  ) {
+    if (!names.has("immutable") && !names.has("public")) {
       suggestions.push(
         `"max-age=${maxAge.value}" と設定されています（${Math.round(maxAge.value / 86400)} 日）。頻繁に更新されるコンテンツの場合は "no-cache" または "must-revalidate" と ETag を組み合わせることを検討してください。`,
       );
@@ -458,62 +485,60 @@ export interface CacheControlPreset {
  */
 export const RESPONSE_PRESETS: CacheControlPreset[] = [
   {
-    name: 'キャッシュなし（機密情報）',
-    description: 'キャッシュを完全に禁止します',
-    useCase: 'ログイン後のページ・個人情報・認証コンテンツ',
+    name: "キャッシュなし（機密情報）",
+    description: "キャッシュを完全に禁止します",
+    useCase: "ログイン後のページ・個人情報・認証コンテンツ",
+    directives: [{ name: "no-store", enabled: true }],
+  },
+  {
+    name: "再検証必須（動的コンテンツ）",
+    description: "キャッシュはするが毎回再検証を要求します",
+    useCase: "HTMLページ・動的に変わるAPI・頻繁に更新されるデータ",
     directives: [
-      { name: 'no-store', enabled: true },
+      { name: "no-cache", enabled: true },
+      { name: "private", enabled: true },
     ],
   },
   {
-    name: '再検証必須（動的コンテンツ）',
-    description: 'キャッシュはするが毎回再検証を要求します',
-    useCase: 'HTMLページ・動的に変わるAPI・頻繁に更新されるデータ',
+    name: "短期キャッシュ（1時間）",
+    description: "1時間キャッシュします",
+    useCase: "準動的なコンテンツ・数時間有効なAPI",
     directives: [
-      { name: 'no-cache', enabled: true },
-      { name: 'private', enabled: true },
+      { name: "public", enabled: true },
+      { name: "max-age", enabled: true, value: 3600 },
+      { name: "stale-while-revalidate", enabled: true, value: 60 },
     ],
   },
   {
-    name: '短期キャッシュ（1時間）',
-    description: '1時間キャッシュします',
-    useCase: '準動的なコンテンツ・数時間有効なAPI',
+    name: "中期キャッシュ（1日）",
+    description: "1日キャッシュします",
+    useCase: "変更頻度の低いAPIレスポンス・画像等のメディア",
     directives: [
-      { name: 'public', enabled: true },
-      { name: 'max-age', enabled: true, value: 3600 },
-      { name: 'stale-while-revalidate', enabled: true, value: 60 },
+      { name: "public", enabled: true },
+      { name: "max-age", enabled: true, value: 86400 },
+      { name: "s-maxage", enabled: true, value: 604800 },
+      { name: "stale-while-revalidate", enabled: true, value: 3600 },
     ],
   },
   {
-    name: '中期キャッシュ（1日）',
-    description: '1日キャッシュします',
-    useCase: '変更頻度の低いAPIレスポンス・画像等のメディア',
+    name: "長期キャッシュ（コンテンツハッシュ付き）",
+    description: "1年間キャッシュします（ファイル名にハッシュを含む場合）",
+    useCase: "JS/CSS/フォント等のビルド済みアセット（ファイル名に content hash を含む）",
     directives: [
-      { name: 'public', enabled: true },
-      { name: 'max-age', enabled: true, value: 86400 },
-      { name: 's-maxage', enabled: true, value: 604800 },
-      { name: 'stale-while-revalidate', enabled: true, value: 3600 },
+      { name: "public", enabled: true },
+      { name: "max-age", enabled: true, value: 31536000 },
+      { name: "immutable", enabled: true },
     ],
   },
   {
-    name: '長期キャッシュ（コンテンツハッシュ付き）',
-    description: '1年間キャッシュします（ファイル名にハッシュを含む場合）',
-    useCase: 'JS/CSS/フォント等のビルド済みアセット（ファイル名に content hash を含む）',
+    name: "SWR パターン（Stale-While-Revalidate）",
+    description: "古いデータを即座に返しつつバックグラウンドで更新します",
+    useCase: "UX重視のコンテンツ・SWR/React Query 等と組み合わせる",
     directives: [
-      { name: 'public', enabled: true },
-      { name: 'max-age', enabled: true, value: 31536000 },
-      { name: 'immutable', enabled: true },
-    ],
-  },
-  {
-    name: 'SWR パターン（Stale-While-Revalidate）',
-    description: '古いデータを即座に返しつつバックグラウンドで更新します',
-    useCase: 'UX重視のコンテンツ・SWR/React Query 等と組み合わせる',
-    directives: [
-      { name: 'public', enabled: true },
-      { name: 'max-age', enabled: true, value: 60 },
-      { name: 'stale-while-revalidate', enabled: true, value: 600 },
-      { name: 'stale-if-error', enabled: true, value: 86400 },
+      { name: "public", enabled: true },
+      { name: "max-age", enabled: true, value: 60 },
+      { name: "stale-while-revalidate", enabled: true, value: 600 },
+      { name: "stale-if-error", enabled: true, value: 86400 },
     ],
   },
 ];
@@ -524,7 +549,7 @@ export const RESPONSE_PRESETS: CacheControlPreset[] = [
  * @returns 人間が読みやすい文字列（例: "1時間", "7日"）
  */
 export function formatSeconds(seconds: number): string {
-  if (seconds === 0) return '0秒';
+  if (seconds === 0) return "0秒";
   if (seconds < 60) return `${seconds}秒`;
   if (seconds < 3600) {
     const m = Math.floor(seconds / 60);

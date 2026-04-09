@@ -193,7 +193,10 @@ describe("generateTOTP", () => {
   it("同一期間内は同じコードを返す", async () => {
     const timestamp = 1500000000;
     const code1 = await generateTOTP(RFC6238_SECRET_BASE32, { period: 30, timestamp });
-    const code2 = await generateTOTP(RFC6238_SECRET_BASE32, { period: 30, timestamp: timestamp + 1 });
+    const code2 = await generateTOTP(RFC6238_SECRET_BASE32, {
+      period: 30,
+      timestamp: timestamp + 1,
+    });
     expect(code1).toBe(code2);
   });
 
@@ -413,7 +416,7 @@ describe("generateTotp (旧API)", () => {
 
   it("空のシークレットはエラーをスローする", async () => {
     await expect(
-      generateTotp({ secret: "", period: 30, digits: 6, algorithm: "SHA-1" })
+      generateTotp({ secret: "", period: 30, digits: 6, algorithm: "SHA-1" }),
     ).rejects.toThrow();
   });
 

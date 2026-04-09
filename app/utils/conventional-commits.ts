@@ -352,9 +352,7 @@ export function parseConventionalCommit(message: string): ParsedCommit {
 /**
  * コミットタイプの情報を取得する
  */
-export function getCommitTypeInfo(
-  type: string
-): (typeof COMMIT_TYPES)[number] | null {
+export function getCommitTypeInfo(type: string): (typeof COMMIT_TYPES)[number] | null {
   return COMMIT_TYPES.find((t) => t.type === type) ?? null;
 }
 

@@ -39,83 +39,59 @@ describe("validateCompoundInterestParams", () => {
   });
 
   it("元本が0の場合はエラーを返す", () => {
-    expect(
-      validateCompoundInterestParams({ ...baseParams, principal: 0 })
-    ).not.toBeNull();
+    expect(validateCompoundInterestParams({ ...baseParams, principal: 0 })).not.toBeNull();
   });
 
   it("元本が負の場合はエラーを返す", () => {
-    expect(
-      validateCompoundInterestParams({ ...baseParams, principal: -1 })
-    ).not.toBeNull();
+    expect(validateCompoundInterestParams({ ...baseParams, principal: -1 })).not.toBeNull();
   });
 
   it("元本がNaNの場合はエラーを返す", () => {
-    expect(
-      validateCompoundInterestParams({ ...baseParams, principal: NaN })
-    ).not.toBeNull();
+    expect(validateCompoundInterestParams({ ...baseParams, principal: NaN })).not.toBeNull();
   });
 
   it("年利率が負の場合はエラーを返す", () => {
-    expect(
-      validateCompoundInterestParams({ ...baseParams, annualRate: -0.1 })
-    ).not.toBeNull();
+    expect(validateCompoundInterestParams({ ...baseParams, annualRate: -0.1 })).not.toBeNull();
   });
 
   it("年利率が100%超の場合はエラーを返す", () => {
-    expect(
-      validateCompoundInterestParams({ ...baseParams, annualRate: 101 })
-    ).not.toBeNull();
+    expect(validateCompoundInterestParams({ ...baseParams, annualRate: 101 })).not.toBeNull();
   });
 
   it("年利率が0は有効", () => {
-    expect(
-      validateCompoundInterestParams({ ...baseParams, annualRate: 0 })
-    ).toBeNull();
+    expect(validateCompoundInterestParams({ ...baseParams, annualRate: 0 })).toBeNull();
   });
 
   it("運用期間が0の場合はエラーを返す", () => {
-    expect(
-      validateCompoundInterestParams({ ...baseParams, termYears: 0 })
-    ).not.toBeNull();
+    expect(validateCompoundInterestParams({ ...baseParams, termYears: 0 })).not.toBeNull();
   });
 
   it("運用期間が小数の場合はエラーを返す", () => {
-    expect(
-      validateCompoundInterestParams({ ...baseParams, termYears: 1.5 })
-    ).not.toBeNull();
+    expect(validateCompoundInterestParams({ ...baseParams, termYears: 1.5 })).not.toBeNull();
   });
 
   it("運用期間が101年の場合はエラーを返す", () => {
-    expect(
-      validateCompoundInterestParams({ ...baseParams, termYears: 101 })
-    ).not.toBeNull();
+    expect(validateCompoundInterestParams({ ...baseParams, termYears: 101 })).not.toBeNull();
   });
 
   it("運用期間が100年は有効", () => {
-    expect(
-      validateCompoundInterestParams({ ...baseParams, termYears: 100 })
-    ).toBeNull();
+    expect(validateCompoundInterestParams({ ...baseParams, termYears: 100 })).toBeNull();
   });
 
   it("追加積立金が負の場合はエラーを返す", () => {
     expect(
-      validateCompoundInterestParams({ ...baseParams, additionalContribution: -1 })
+      validateCompoundInterestParams({ ...baseParams, additionalContribution: -1 }),
     ).not.toBeNull();
   });
 
   it("追加積立金が0は有効", () => {
-    expect(
-      validateCompoundInterestParams({ ...baseParams, additionalContribution: 0 })
-    ).toBeNull();
+    expect(validateCompoundInterestParams({ ...baseParams, additionalContribution: 0 })).toBeNull();
   });
 });
 
 describe("calcCompoundInterest - 基本計算", () => {
   it("バリデーションエラーがある場合は null を返す", () => {
-    expect(
-      calcCompoundInterest({ ...baseParams, principal: 0 })
-    ).toBeNull();
+    expect(calcCompoundInterest({ ...baseParams, principal: 0 })).toBeNull();
   });
 
   it("年利0%の場合は元本のみ（追加積立なし）", () => {
@@ -128,10 +104,7 @@ describe("calcCompoundInterest - 基本計算", () => {
   it("結果の整合性: finalAmount = totalPrincipal + totalInterest", () => {
     const result = calcCompoundInterest(baseParams);
     expect(result).not.toBeNull();
-    expect(result!.finalAmount).toBeCloseTo(
-      result!.totalPrincipal + result!.totalInterest,
-      -1
-    );
+    expect(result!.finalAmount).toBeCloseTo(result!.totalPrincipal + result!.totalInterest, -1);
   });
 
   it("元本100万円・年利5%・10年（毎月複利）の最終残高が概算値に近い", () => {
@@ -208,8 +181,8 @@ describe("calcCompoundInterest - 年次スナップショット", () => {
 describe("calcCompoundInterest - 複利頻度比較", () => {
   it("毎月複利 > 四半期複利 > 半年複利 > 年複利（年利 > 0）", () => {
     const freqs = ["monthly", "quarterly", "semi-annually", "annually"] as const;
-    const results = freqs.map((f) =>
-      calcCompoundInterest({ ...baseParams, frequency: f })!.finalAmount
+    const results = freqs.map(
+      (f) => calcCompoundInterest({ ...baseParams, frequency: f })!.finalAmount,
     );
     for (let i = 0; i < results.length - 1; i++) {
       expect(results[i]).toBeGreaterThanOrEqual(results[i + 1]);

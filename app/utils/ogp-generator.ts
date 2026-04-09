@@ -23,12 +23,7 @@ export const OGP_TYPES = [
 export type OgpType = (typeof OGP_TYPES)[number];
 
 /** Twitter Card タイプ */
-export const TWITTER_CARD_TYPES = [
-  "summary",
-  "summary_large_image",
-  "app",
-  "player",
-] as const;
+export const TWITTER_CARD_TYPES = ["summary", "summary_large_image", "app", "player"] as const;
 
 /** Twitter Card タイプ */
 export type TwitterCardType = (typeof TWITTER_CARD_TYPES)[number];
@@ -152,9 +147,7 @@ export function generateOgpTags(input: OgpInput): string {
       lines.push(generateTwitterTag("twitter:image", input.imageUrl));
     }
     if (input.twitterSite) {
-      const site = input.twitterSite.startsWith("@")
-        ? input.twitterSite
-        : `@${input.twitterSite}`;
+      const site = input.twitterSite.startsWith("@") ? input.twitterSite : `@${input.twitterSite}`;
       lines.push(generateTwitterTag("twitter:site", site));
     }
     if (input.twitterCreator) {

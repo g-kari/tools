@@ -50,11 +50,13 @@
   padding: 10px 12px;
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: 4px;
-  font-family: 'Roboto Mono', 'Courier New', monospace;
+  font-family: "Roboto Mono", "Courier New", monospace;
   font-size: 1rem;
   background: var(--md-sys-color-surface-variant);
   color: var(--md-sys-color-on-surface);
-  transition: border-color 0.2s, background 0.2s;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
 }
 
 .fraction-input:focus {
@@ -125,7 +127,7 @@
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  font-family: 'Roboto Mono', 'Courier New', monospace;
+  font-family: "Roboto Mono", "Courier New", monospace;
   font-size: 1.25rem;
   font-weight: 600;
   color: var(--md-sys-color-on-primary-container);
@@ -153,7 +155,7 @@
 }
 
 .fraction-mixed-display {
-  font-family: 'Roboto Mono', 'Courier New', monospace;
+  font-family: "Roboto Mono", "Courier New", monospace;
   font-size: 1rem;
   font-weight: 500;
   color: var(--md-sys-color-on-primary-container);
@@ -161,7 +163,7 @@
 
 /* 小数結果 */
 .fraction-result-value {
-  font-family: 'Roboto Mono', 'Courier New', monospace;
+  font-family: "Roboto Mono", "Courier New", monospace;
   font-size: 1.5rem;
   font-weight: 600;
   color: var(--md-sys-color-on-primary-container);
@@ -216,19 +218,19 @@
 }
 
 .fraction-table-frac {
-  font-family: 'Roboto Mono', 'Courier New', monospace;
+  font-family: "Roboto Mono", "Courier New", monospace;
   font-weight: 700;
   color: var(--md-sys-color-primary);
   font-size: 1rem;
 }
 
 .fraction-table-decimal {
-  font-family: 'Roboto Mono', 'Courier New', monospace;
+  font-family: "Roboto Mono", "Courier New", monospace;
   font-weight: 500;
 }
 
 .fraction-table-percent {
-  font-family: 'Roboto Mono', 'Courier New', monospace;
+  font-family: "Roboto Mono", "Courier New", monospace;
   color: var(--md-sys-color-on-surface-variant);
 }
 

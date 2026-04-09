@@ -40,20 +40,14 @@ describe("generateZodSchema", () => {
   });
 
   test("オブジェクト配列が z.array(z.object(...)) を生成する", () => {
-    const result = generateZodSchema(
-      '{"users": [{"name": "Alice"}]}',
-      defaultOptions
-    );
+    const result = generateZodSchema('{"users": [{"name": "Alice"}]}', defaultOptions);
     expect(result).toContain("z.array(z.object(");
     expect(result).toContain("users:");
     expect(result).toContain("z.string()");
   });
 
   test("ネストされたオブジェクトが z.object() をネストして生成する", () => {
-    const result = generateZodSchema(
-      '{"address": {"city": "Tokyo"}}',
-      defaultOptions
-    );
+    const result = generateZodSchema('{"address": {"city": "Tokyo"}}', defaultOptions);
     expect(result).toContain("address:");
     expect(result).toContain("z.object(");
     expect(result).toContain("city:");
@@ -118,21 +112,15 @@ describe("generateZodSchema", () => {
   });
 
   test("無効なJSONでエラーをスローする", () => {
-    expect(() => generateZodSchema("invalid json", defaultOptions)).toThrow(
-      "無効なJSON形式です"
-    );
+    expect(() => generateZodSchema("invalid json", defaultOptions)).toThrow("無効なJSON形式です");
   });
 
   test("空文字列でエラーをスローする", () => {
-    expect(() => generateZodSchema("", defaultOptions)).toThrow(
-      "JSONを入力してください"
-    );
+    expect(() => generateZodSchema("", defaultOptions)).toThrow("JSONを入力してください");
   });
 
   test("空白のみの文字列でエラーをスローする", () => {
-    expect(() => generateZodSchema("   ", defaultOptions)).toThrow(
-      "JSONを入力してください"
-    );
+    expect(() => generateZodSchema("   ", defaultOptions)).toThrow("JSONを入力してください");
   });
 
   test("カスタムルート変数名が出力に使用される", () => {
@@ -209,7 +197,7 @@ describe("getSampleJson", () => {
     const sample = getSampleJson();
     const parsed = JSON.parse(sample) as Record<string, unknown>;
     const hasObject = Object.values(parsed).some(
-      (v) => typeof v === "object" && v !== null && !Array.isArray(v)
+      (v) => typeof v === "object" && v !== null && !Array.isArray(v),
     );
     expect(hasObject).toBe(true);
   });

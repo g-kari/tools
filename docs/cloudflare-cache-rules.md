@@ -15,6 +15,7 @@ Cloudflareはデフォルトで拡張子を持つ静的ファイル（`.jpg`, `.
 ### 2. Cache Rulesに移動
 
 左側のメニューから以下の順に移動:
+
 ```
 Caching → Cache Rules
 ```
@@ -38,6 +39,7 @@ Rule name: Dummy Image API Cache
 **Value:** `/api/image.`
 
 または、Expression Builderで以下を入力:
+
 ```
 (starts_with(http.request.uri.path, "/api/image."))
 ```
@@ -67,6 +69,7 @@ curl -I "https://your-domain.workers.dev/api/image.svg?w=800&h=600"
 ```
 
 以下のヘッダーを確認:
+
 - `cf-cache-status`: `HIT` であればCDNキャッシュから配信されています
   - `MISS`: キャッシュにない（初回リクエスト）
   - `HIT`: キャッシュから配信

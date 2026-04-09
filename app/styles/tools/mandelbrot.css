@@ -251,5 +251,5 @@
 }
 
 .mandelbrot__hint-item::before {
-  content: '• ';
+  content: "• ";
 }

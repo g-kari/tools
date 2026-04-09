@@ -181,9 +181,7 @@ describe("getCurrentDatetimeLocal", () => {
     const after = new Date();
 
     const resultDate = new Date(result + ":00");
-    expect(resultDate.getTime()).toBeGreaterThanOrEqual(
-      before.getTime() - 60000
-    );
+    expect(resultDate.getTime()).toBeGreaterThanOrEqual(before.getTime() - 60000);
     expect(resultDate.getTime()).toBeLessThanOrEqual(after.getTime() + 60000);
   });
 });

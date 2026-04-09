@@ -3,16 +3,9 @@ import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useMemo, useCallback } from "react";
 import { useToast } from "../components/Toast";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import "../styles/tools/curl-builder.css";
-import {
-  buildCurlCommand,
-  getDefaultConfig,
-  SAMPLE_CONFIGS,
-} from "../utils/curl-builder";
+import { buildCurlCommand, getDefaultConfig, SAMPLE_CONFIGS } from "../utils/curl-builder";
 import type {
   CurlBuilderConfig,
   HttpMethod,
@@ -53,15 +46,7 @@ export const Route = createFileRoute("/curl-builder")({
   component: CurlBuilderPage,
 });
 
-const HTTP_METHODS: HttpMethod[] = [
-  "GET",
-  "POST",
-  "PUT",
-  "PATCH",
-  "DELETE",
-  "HEAD",
-  "OPTIONS",
-];
+const HTTP_METHODS: HttpMethod[] = ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"];
 
 const BODY_TYPES: { value: BodyType; label: string }[] = [
   { value: "none", label: "None" },
@@ -82,25 +67,22 @@ function CurlBuilderPage() {
 
   const curlCommand = useMemo(() => buildCurlCommand(config), [config]);
 
-  const updateConfig = useCallback(
-    (updates: Partial<CurlBuilderConfig>) => {
-      setConfig((prev) => ({ ...prev, ...updates }));
-    },
-    []
-  );
+  const updateConfig = useCallback((updates: Partial<CurlBuilderConfig>) => {
+    setConfig((prev) => ({ ...prev, ...updates }));
+  }, []);
 
   const handleMethodChange = useCallback(
     (method: HttpMethod) => {
       updateConfig({ method });
     },
-    [updateConfig]
+    [updateConfig],
   );
 
   const handleUrlChange = useCallback(
     (url: string) => {
       updateConfig({ url });
     },
-    [updateConfig]
+    [updateConfig],
   );
 
   const handleAddHeader = useCallback(() => {
@@ -127,26 +109,24 @@ function CurlBuilderPage() {
     (id: string, field: keyof Header, value: string | boolean) => {
       setConfig((prev) => ({
         ...prev,
-        headers: prev.headers.map((h) =>
-          h.id === id ? { ...h, [field]: value } : h
-        ),
+        headers: prev.headers.map((h) => (h.id === id ? { ...h, [field]: value } : h)),
       }));
     },
-    []
+    [],
   );
 
   const handleBodyTypeChange = useCallback(
     (bodyType: BodyType) => {
       updateConfig({ bodyType });
     },
-    [updateConfig]
+    [updateConfig],
   );
 
   const handleBodyChange = useCallback(
     (body: string) => {
       updateConfig({ body });
     },
-    [updateConfig]
+    [updateConfig],
   );
 
   const handleOptionChange = useCallback(
@@ -156,14 +136,14 @@ function CurlBuilderPage() {
         options: { ...prev.options, [option]: value },
       }));
     },
-    []
+    [],
   );
 
   const handleFormatChange = useCallback(
     (outputFormat: OutputFormat) => {
       updateConfig({ outputFormat });
     },
-    [updateConfig]
+    [updateConfig],
   );
 
   const handleLoadSample = useCallback(
@@ -174,7 +154,7 @@ function CurlBuilderPage() {
         showToast(`サンプル「${sampleKey}」を読み込みました`, "success");
       }
     },
-    [announceStatus, showToast]
+    [announceStatus, showToast],
   );
 
   const handleClear = useCallback(() => {
@@ -227,9 +207,7 @@ function CurlBuilderPage() {
               <select
                 className="cb-method-select"
                 value={config.method}
-                onChange={(e) =>
-                  handleMethodChange(e.target.value as HttpMethod)
-                }
+                onChange={(e) => handleMethodChange(e.target.value as HttpMethod)}
                 aria-label="HTTPメソッド選択"
               >
                 {HTTP_METHODS.map((m) => (
@@ -250,29 +228,21 @@ function CurlBuilderPage() {
 
             {/* ヘッダー */}
             <span className="cb-section-title">ヘッダー</span>
-            <div
-              className="cb-header-list"
-              role="group"
-              aria-label="HTTPヘッダー一覧"
-            >
+            <div className="cb-header-list" role="group" aria-label="HTTPヘッダー一覧">
               {config.headers.map((header) => (
                 <div key={header.id} className="cb-header-row">
                   <input
                     type="checkbox"
                     className="cb-header-checkbox"
                     checked={header.enabled}
-                    onChange={(e) =>
-                      handleHeaderChange(header.id, "enabled", e.target.checked)
-                    }
+                    onChange={(e) => handleHeaderChange(header.id, "enabled", e.target.checked)}
                     aria-label={`ヘッダー「${header.key || "無題"}」を有効にする`}
                   />
                   <input
                     type="text"
                     className="cb-header-key"
                     value={header.key}
-                    onChange={(e) =>
-                      handleHeaderChange(header.id, "key", e.target.value)
-                    }
+                    onChange={(e) => handleHeaderChange(header.id, "key", e.target.value)}
                     placeholder="Header-Name"
                     aria-label="ヘッダー名"
                   />
@@ -280,9 +250,7 @@ function CurlBuilderPage() {
                     type="text"
                     className="cb-header-value"
                     value={header.value}
-                    onChange={(e) =>
-                      handleHeaderChange(header.id, "value", e.target.value)
-                    }
+                    onChange={(e) => handleHeaderChange(header.id, "value", e.target.value)}
                     placeholder="value"
                     aria-label="ヘッダー値"
                   />
@@ -308,11 +276,7 @@ function CurlBuilderPage() {
 
             {/* ボディタイプ */}
             <span className="cb-section-title">ボディ</span>
-            <div
-              className="cb-body-type-group"
-              role="group"
-              aria-label="ボディタイプ選択"
-            >
+            <div className="cb-body-type-group" role="group" aria-label="ボディタイプ選択">
               {BODY_TYPES.map((bt) => (
                 <button
                   key={bt.value}
@@ -340,18 +304,12 @@ function CurlBuilderPage() {
 
             {/* オプション */}
             <span className="cb-section-title">オプション</span>
-            <div
-              className="cb-options-group"
-              role="group"
-              aria-label="curlオプション"
-            >
+            <div className="cb-options-group" role="group" aria-label="curlオプション">
               <label className="cb-option-label">
                 <input
                   type="checkbox"
                   checked={config.options.verbose}
-                  onChange={(e) =>
-                    handleOptionChange("verbose", e.target.checked)
-                  }
+                  onChange={(e) => handleOptionChange("verbose", e.target.checked)}
                 />
                 -v 詳細出力（verbose）
               </label>
@@ -359,9 +317,7 @@ function CurlBuilderPage() {
                 <input
                   type="checkbox"
                   checked={config.options.silent}
-                  onChange={(e) =>
-                    handleOptionChange("silent", e.target.checked)
-                  }
+                  onChange={(e) => handleOptionChange("silent", e.target.checked)}
                 />
                 -s サイレントモード（silent）
               </label>
@@ -369,9 +325,7 @@ function CurlBuilderPage() {
                 <input
                   type="checkbox"
                   checked={config.options.compressed}
-                  onChange={(e) =>
-                    handleOptionChange("compressed", e.target.checked)
-                  }
+                  onChange={(e) => handleOptionChange("compressed", e.target.checked)}
                 />
                 --compressed 圧縮レスポンスを受け入れる
               </label>
@@ -379,9 +333,7 @@ function CurlBuilderPage() {
                 <input
                   type="checkbox"
                   checked={config.options.followRedirects}
-                  onChange={(e) =>
-                    handleOptionChange("followRedirects", e.target.checked)
-                  }
+                  onChange={(e) => handleOptionChange("followRedirects", e.target.checked)}
                 />
                 -L リダイレクトを追従
               </label>
@@ -389,9 +341,7 @@ function CurlBuilderPage() {
                 <input
                   type="checkbox"
                   checked={config.options.insecure}
-                  onChange={(e) =>
-                    handleOptionChange("insecure", e.target.checked)
-                  }
+                  onChange={(e) => handleOptionChange("insecure", e.target.checked)}
                 />
                 -k SSL証明書の検証をスキップ
               </label>
@@ -404,9 +354,7 @@ function CurlBuilderPage() {
                   type="text"
                   className="cb-output-file-input"
                   value={config.options.outputFile}
-                  onChange={(e) =>
-                    handleOptionChange("outputFile", e.target.value)
-                  }
+                  onChange={(e) => handleOptionChange("outputFile", e.target.value)}
                   placeholder="output.json"
                   aria-label="出力ファイルパス"
                 />
@@ -479,9 +427,7 @@ function CurlBuilderPage() {
               {config.url.trim() ? (
                 curlCommand
               ) : (
-                <span className="cb-output-empty">
-                  URLを入力するとcurlコマンドが生成されます
-                </span>
+                <span className="cb-output-empty">URLを入力するとcurlコマンドが生成されます</span>
               )}
             </pre>
 

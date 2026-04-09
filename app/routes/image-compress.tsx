@@ -13,16 +13,25 @@ import JSZip from "jszip";
 export const Route = createFileRoute("/image-compress")({
   head: () => ({
     meta: [
-    { title: "画像圧縮ツール | Web ツール集" },
-    { name: "description", content: "PNG・JPEG画像をブラウザ上で圧縮・最適化。複数ファイル対応・ZIP一括ダウンロード。" },
-    { property: "og:title", content: "画像圧縮ツール | Web ツール集" },
-    { property: "og:description", content: "PNG・JPEG画像をブラウザ上で圧縮・最適化。複数ファイル対応・ZIP一括ダウンロード。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/image-compress` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "画像圧縮ツール | Web ツール集" },
-    { name: "twitter:description", content: "PNG・JPEG画像をブラウザ上で圧縮・最適化。複数ファイル対応・ZIP一括ダウンロード。" },
-  ],
+      { title: "画像圧縮ツール | Web ツール集" },
+      {
+        name: "description",
+        content: "PNG・JPEG画像をブラウザ上で圧縮・最適化。複数ファイル対応・ZIP一括ダウンロード。",
+      },
+      { property: "og:title", content: "画像圧縮ツール | Web ツール集" },
+      {
+        property: "og:description",
+        content: "PNG・JPEG画像をブラウザ上で圧縮・最適化。複数ファイル対応・ZIP一括ダウンロード。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/image-compress` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "画像圧縮ツール | Web ツール集" },
+      {
+        name: "twitter:description",
+        content: "PNG・JPEG画像をブラウザ上で圧縮・最適化。複数ファイル対応・ZIP一括ダウンロード。",
+      },
+    ],
   }),
   component: ImageCompressor,
 });
@@ -45,7 +54,7 @@ export { calculateCompressionRatio } from "~/utils/image";
 export async function compressImage(
   file: File,
   quality: number,
-  format: OutputFormat
+  format: OutputFormat,
 ): Promise<Blob | null> {
   return new Promise((resolve) => {
     const img = new Image();
@@ -77,11 +86,7 @@ export async function compressImage(
       // PNGは画質パラメータを無視
       const qualityParam = format === "png" ? undefined : quality;
 
-      canvas.toBlob(
-        (blob) => resolve(blob),
-        mimeType,
-        qualityParam
-      );
+      canvas.toBlob((blob) => resolve(blob), mimeType, qualityParam);
     };
 
     img.onerror = () => {
@@ -113,9 +118,7 @@ export function generateFilename(originalName: string, format: OutputFormat): st
 export function filterDuplicateFiles(existingItems: CompressItem[], newFiles: File[]): File[] {
   return newFiles.filter((newFile) => {
     return !existingItems.some(
-      (item) =>
-        item.originalFile.name === newFile.name &&
-        item.originalFile.size === newFile.size
+      (item) => item.originalFile.name === newFile.name && item.originalFile.size === newFile.size,
     );
   });
 }
@@ -159,21 +162,16 @@ export function getTotalCompressionSummary(items: CompressItem[]): {
   compressedTotal: number;
   ratio: number;
 } {
-  const doneItems = items.filter(
-    (item) => item.status === "done" && item.compressedBlob !== null
-  );
+  const doneItems = items.filter((item) => item.status === "done" && item.compressedBlob !== null);
 
   if (doneItems.length === 0) {
     return { originalTotal: 0, compressedTotal: 0, ratio: 0 };
   }
 
-  const originalTotal = doneItems.reduce(
-    (sum, item) => sum + item.originalFile.size,
-    0
-  );
+  const originalTotal = doneItems.reduce((sum, item) => sum + item.originalFile.size, 0);
   const compressedTotal = doneItems.reduce(
     (sum, item) => sum + (item.compressedBlob?.size ?? 0),
-    0
+    0,
   );
   const ratio = calculateCompressionRatio(originalTotal, compressedTotal);
 
@@ -211,11 +209,7 @@ function ImageCompressor() {
   const compressItem = useCallback(
     async (item: CompressItem, currentQuality: number, currentFormat: OutputFormat) => {
       // compressingに更新
-      setItems((prev) =>
-        prev.map((i) =>
-          i.id === item.id ? { ...i, status: "compressing" } : i
-        )
-      );
+      setItems((prev) => prev.map((i) => (i.id === item.id ? { ...i, status: "compressing" } : i)));
 
       const blob = await compressImage(item.originalFile, currentQuality / 100, currentFormat);
 
@@ -246,14 +240,12 @@ function ImageCompressor() {
       } else {
         setItems((prev) =>
           prev.map((i) =>
-            i.id === item.id
-              ? { ...i, status: "error", error: "圧縮に失敗しました" }
-              : i
-          )
+            i.id === item.id ? { ...i, status: "error", error: "圧縮に失敗しました" } : i,
+          ),
         );
       }
     },
-    []
+    [],
   );
 
   /**
@@ -269,10 +261,7 @@ function ImageCompressor() {
       }
 
       if (uniqueFiles.length < files.length) {
-        showToast(
-          `${files.length - uniqueFiles.length}件の重複ファイルをスキップしました`,
-          "info"
-        );
+        showToast(`${files.length - uniqueFiles.length}件の重複ファイルをスキップしました`, "info");
       }
 
       // 新しいアイテムを作成
@@ -284,13 +273,11 @@ function ImageCompressor() {
       setItems((prev) => [...prev, ...newItems]);
 
       // 即座に並列圧縮開始
-      await Promise.all(
-        newItems.map((item) => compressItem(item, quality, format))
-      );
+      await Promise.all(newItems.map((item) => compressItem(item, quality, format)));
 
       showToast(`${uniqueFiles.length}件の画像を圧縮しました`, "success");
     },
-    [items, quality, format, compressItem, showToast]
+    [items, quality, format, compressItem, showToast],
   );
 
   /**
@@ -299,13 +286,9 @@ function ImageCompressor() {
   const handleCompressAll = useCallback(async () => {
     if (items.length === 0) return;
 
-    const pendingItems = items.filter(
-      (item) => item.status !== "compressing"
-    );
+    const pendingItems = items.filter((item) => item.status !== "compressing");
 
-    await Promise.all(
-      pendingItems.map((item) => compressItem(item, quality, format))
-    );
+    await Promise.all(pendingItems.map((item) => compressItem(item, quality, format)));
 
     showToast("全画像を再圧縮しました", "success");
   }, [items, quality, format, compressItem, showToast]);
@@ -314,9 +297,7 @@ function ImageCompressor() {
    * 完了アイテムをZIPにまとめてダウンロードする
    */
   const handleDownloadZip = useCallback(async () => {
-    const doneItems = items.filter(
-      (item) => item.status === "done" && item.compressedBlob
-    );
+    const doneItems = items.filter((item) => item.status === "done" && item.compressedBlob);
 
     if (doneItems.length === 0) {
       showToast("ダウンロード可能な画像がありません", "error");
@@ -346,27 +327,24 @@ function ImageCompressor() {
       downloadBlob(item.compressedBlob, filename);
       showToast("ダウンロードを開始しました", "success");
     },
-    [items, format, showToast]
+    [items, format, showToast],
   );
 
   /**
    * 個別削除
    */
-  const handleRemoveItem = useCallback(
-    (id: string) => {
-      setItems((prev) => {
-        const item = prev.find((i) => i.id === id);
-        if (item) {
-          URL.revokeObjectURL(item.previewUrl);
-          if (item.compressedPreviewUrl) {
-            URL.revokeObjectURL(item.compressedPreviewUrl);
-          }
+  const handleRemoveItem = useCallback((id: string) => {
+    setItems((prev) => {
+      const item = prev.find((i) => i.id === id);
+      if (item) {
+        URL.revokeObjectURL(item.previewUrl);
+        if (item.compressedPreviewUrl) {
+          URL.revokeObjectURL(item.compressedPreviewUrl);
         }
-        return prev.filter((i) => i.id !== id);
-      });
-    },
-    []
-  );
+      }
+      return prev.filter((i) => i.id !== id);
+    });
+  }, []);
 
   /**
    * 全アイテムをクリア
@@ -456,12 +434,18 @@ function ImageCompressor() {
               <div className="compression-stats" aria-label="圧縮統計">
                 <div className="stat-item">
                   <span className="stat-label">完了枚数</span>
-                  <span className="stat-value">{doneCount} / {items.length}</span>
+                  <span className="stat-value">
+                    {doneCount} / {items.length}
+                  </span>
                 </div>
-                <div className="stat-item stat-arrow" aria-hidden="true">→</div>
+                <div className="stat-item stat-arrow" aria-hidden="true">
+                  →
+                </div>
                 <div className="stat-item">
                   <span className="stat-label">削減率（平均）</span>
-                  <span className={`stat-value ${summary.ratio > 0 ? "stat-positive" : "stat-negative"}`}>
+                  <span
+                    className={`stat-value ${summary.ratio > 0 ? "stat-positive" : "stat-negative"}`}
+                  >
                     {summary.ratio > 0 ? `-${summary.ratio}%` : `+${Math.abs(summary.ratio)}%`}
                   </span>
                 </div>
@@ -500,9 +484,7 @@ function ImageCompressor() {
         {/* 画像グリッド */}
         {items.length > 0 && (
           <div className="converter-section">
-            <h2 className="section-title">
-              圧縮画像一覧 ({items.length}件)
-            </h2>
+            <h2 className="section-title">圧縮画像一覧 ({items.length}件)</h2>
             <div className="compress-image-list" role="list" aria-label="圧縮画像リスト">
               {items.map((item) => (
                 <MultiImageCompressItem

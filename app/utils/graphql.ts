@@ -2,15 +2,15 @@
  * GraphQL トークンの型定義
  */
 export type GraphQLTokenType =
-  | 'name'
-  | 'string'
-  | 'block_string'
-  | 'integer'
-  | 'float'
-  | 'punctuation'
-  | 'spread'
-  | 'comment'
-  | 'unknown';
+  | "name"
+  | "string"
+  | "block_string"
+  | "integer"
+  | "float"
+  | "punctuation"
+  | "spread"
+  | "comment"
+  | "unknown";
 
 export interface GraphQLToken {
   type: GraphQLTokenType;
@@ -38,10 +38,10 @@ export function tokenizeGraphQL(input: string): GraphQLToken[] {
     }
 
     // コメント # ...
-    if (ch === '#') {
-      const end = input.indexOf('\n', i + 1);
+    if (ch === "#") {
+      const end = input.indexOf("\n", i + 1);
       const lineEnd = end === -1 ? len : end;
-      tokens.push({ type: 'comment', value: input.slice(i, lineEnd).trim() });
+      tokens.push({ type: "comment", value: input.slice(i, lineEnd).trim() });
       i = end === -1 ? len : end + 1;
       continue;
     }
@@ -50,9 +50,9 @@ export function tokenizeGraphQL(input: string): GraphQLToken[] {
     if (input.startsWith('"""', i)) {
       const end = input.indexOf('"""', i + 3);
       if (end === -1) {
-        throw new Error('ブロック文字列リテラルが閉じられていません');
+        throw new Error("ブロック文字列リテラルが閉じられていません");
       }
-      tokens.push({ type: 'block_string', value: input.slice(i, end + 3) });
+      tokens.push({ type: "block_string", value: input.slice(i, end + 3) });
       i = end + 3;
       continue;
     }
@@ -61,38 +61,38 @@ export function tokenizeGraphQL(input: string): GraphQLToken[] {
     if (ch === '"') {
       let j = i + 1;
       while (j < len && input[j] !== '"') {
-        if (input[j] === '\\') j++; // エスケープシーケンスをスキップ
+        if (input[j] === "\\") j++; // エスケープシーケンスをスキップ
         j++;
       }
       if (j >= len) {
-        throw new Error('文字列リテラルが閉じられていません');
+        throw new Error("文字列リテラルが閉じられていません");
       }
-      tokens.push({ type: 'string', value: input.slice(i, j + 1) });
+      tokens.push({ type: "string", value: input.slice(i, j + 1) });
       i = j + 1;
       continue;
     }
 
     // スプレッド演算子 ...
-    if (input.startsWith('...', i)) {
-      tokens.push({ type: 'spread', value: '...' });
+    if (input.startsWith("...", i)) {
+      tokens.push({ type: "spread", value: "..." });
       i += 3;
       continue;
     }
 
     // 記号（句読点）
-    if ('{}()[]!|=@:$&'.includes(ch)) {
-      tokens.push({ type: 'punctuation', value: ch });
+    if ("{}()[]!|=@:$&".includes(ch)) {
+      tokens.push({ type: "punctuation", value: ch });
       i++;
       continue;
     }
 
     // 数値（整数・浮動小数点）
-    if (/[0-9]/.test(ch) || (ch === '-' && i + 1 < len && /[0-9]/.test(input[i + 1]))) {
+    if (/[0-9]/.test(ch) || (ch === "-" && i + 1 < len && /[0-9]/.test(input[i + 1]))) {
       let j = i;
-      if (input[j] === '-') j++;
+      if (input[j] === "-") j++;
       while (j < len && /[0-9]/.test(input[j])) j++;
       let isFloat = false;
-      if (j < len && input[j] === '.') {
+      if (j < len && input[j] === ".") {
         isFloat = true;
         j++;
         while (j < len && /[0-9]/.test(input[j])) j++;
@@ -104,7 +104,7 @@ export function tokenizeGraphQL(input: string): GraphQLToken[] {
         while (j < len && /[0-9]/.test(input[j])) j++;
       }
       tokens.push({
-        type: isFloat ? 'float' : 'integer',
+        type: isFloat ? "float" : "integer",
         value: input.slice(i, j),
       });
       i = j;
@@ -115,13 +115,13 @@ export function tokenizeGraphQL(input: string): GraphQLToken[] {
     if (/[a-zA-Z_]/.test(ch)) {
       let j = i;
       while (j < len && /[a-zA-Z0-9_]/.test(input[j])) j++;
-      tokens.push({ type: 'name', value: input.slice(i, j) });
+      tokens.push({ type: "name", value: input.slice(i, j) });
       i = j;
       continue;
     }
 
     // 未知の文字
-    tokens.push({ type: 'unknown', value: ch });
+    tokens.push({ type: "unknown", value: ch });
     i++;
   }
 
@@ -143,21 +143,15 @@ function appendWithSpacing(current: string, token: GraphQLToken): string {
   // 前のトークンの後にスペースが不要なケース
   // ただし `... on` のインラインフラグメントでは `on` の前にスペースが必要
   const noSpaceAfterPrev =
-    lastChar === '(' ||
-    lastChar === '[' ||
-    lastChar === '@' ||
-    lastChar === '$' ||
-    (current.endsWith('...') && v !== 'on');
+    lastChar === "(" ||
+    lastChar === "[" ||
+    lastChar === "@" ||
+    lastChar === "$" ||
+    (current.endsWith("...") && v !== "on");
 
   // このトークンの前にスペースが不要なケース
   const noSpaceBeforeCurr =
-    v === '!' ||
-    v === ')' ||
-    v === ']' ||
-    v === ':' ||
-    v === '|' ||
-    v === '(' ||
-    v === '[';
+    v === "!" || v === ")" || v === "]" || v === ":" || v === "|" || v === "(" || v === "[";
 
   if (noSpaceAfterPrev) {
     return current + v;
@@ -165,7 +159,7 @@ function appendWithSpacing(current: string, token: GraphQLToken): string {
   if (noSpaceBeforeCurr) {
     return current.trimEnd() + v;
   }
-  return current + ' ' + v;
+  return current + " " + v;
 }
 
 /**
@@ -177,14 +171,14 @@ function appendWithSpacing(current: string, token: GraphQLToken): string {
  */
 export function formatGraphQL(input: string, indentSize: number = 2): string {
   if (!input.trim()) {
-    throw new Error('GraphQL 文字列が空です');
+    throw new Error("GraphQL 文字列が空です");
   }
 
   const tokens = tokenizeGraphQL(input);
-  const ind = ' '.repeat(indentSize);
+  const ind = " ".repeat(indentSize);
   const lines: string[] = [];
   let depth = 0;
-  let current = ''; // 現在の行バッファ
+  let current = ""; // 現在の行バッファ
   let argDepth = 0; // ( ) [ ] の深さ
   let prevToken: GraphQLToken | null = null;
 
@@ -193,12 +187,12 @@ export function formatGraphQL(input: string, indentSize: number = 2): string {
     if (trimmed) {
       lines.push(ind.repeat(depth) + trimmed);
     }
-    current = '';
+    current = "";
   }
 
   for (const token of tokens) {
     // コメント処理
-    if (token.type === 'comment') {
+    if (token.type === "comment") {
       flushCurrent();
       lines.push(ind.repeat(depth) + token.value);
       prevToken = token;
@@ -206,31 +200,30 @@ export function formatGraphQL(input: string, indentSize: number = 2): string {
     }
 
     // 括弧の深さを追跡
-    if (token.type === 'punctuation') {
-      if (token.value === '(' || token.value === '[') argDepth++;
-      else if (token.value === ')' || token.value === ']')
-        argDepth = Math.max(0, argDepth - 1);
+    if (token.type === "punctuation") {
+      if (token.value === "(" || token.value === "[") argDepth++;
+      else if (token.value === ")" || token.value === "]") argDepth = Math.max(0, argDepth - 1);
     }
 
     // 開き波括弧 { → 選択セット開始
-    if (token.type === 'punctuation' && token.value === '{') {
+    if (token.type === "punctuation" && token.value === "{") {
       const trimmed = current.trim();
       if (trimmed) {
-        lines.push(ind.repeat(depth) + trimmed + ' {');
+        lines.push(ind.repeat(depth) + trimmed + " {");
       } else {
-        lines.push(ind.repeat(depth) + '{');
+        lines.push(ind.repeat(depth) + "{");
       }
-      current = '';
+      current = "";
       depth++;
       prevToken = token;
       continue;
     }
 
     // 閉じ波括弧 } → 選択セット終了
-    if (token.type === 'punctuation' && token.value === '}') {
+    if (token.type === "punctuation" && token.value === "}") {
       flushCurrent();
       depth = Math.max(0, depth - 1);
-      lines.push(ind.repeat(depth) + '}');
+      lines.push(ind.repeat(depth) + "}");
       prevToken = token;
       continue;
     }
@@ -245,13 +238,13 @@ export function formatGraphQL(input: string, indentSize: number = 2): string {
     if (
       depth > 0 &&
       argDepth === 0 &&
-      (token.type === 'name' || token.type === 'spread') &&
-      current.trim() !== '' &&
+      (token.type === "name" || token.type === "spread") &&
+      current.trim() !== "" &&
       prevToken !== null &&
-      !(prevToken.type === 'punctuation' && prevToken.value === ':') &&
-      !(prevToken.type === 'punctuation' && prevToken.value === '@') &&
-      !(prevToken.type === 'name' && prevToken.value === 'on') &&
-      !(prevToken.type === 'spread')
+      !(prevToken.type === "punctuation" && prevToken.value === ":") &&
+      !(prevToken.type === "punctuation" && prevToken.value === "@") &&
+      !(prevToken.type === "name" && prevToken.value === "on") &&
+      !(prevToken.type === "spread")
     ) {
       flushCurrent();
     }
@@ -263,7 +256,7 @@ export function formatGraphQL(input: string, indentSize: number = 2): string {
 
   flushCurrent();
 
-  return lines.join('\n');
+  return lines.join("\n");
 }
 
 /**
@@ -274,7 +267,7 @@ export function formatGraphQL(input: string, indentSize: number = 2): string {
  */
 export function minifyGraphQL(input: string): string {
   if (!input.trim()) {
-    throw new Error('GraphQL 文字列が空です');
+    throw new Error("GraphQL 文字列が空です");
   }
 
   const tokens = tokenizeGraphQL(input);
@@ -285,46 +278,46 @@ export function minifyGraphQL(input: string): string {
     const prev = i > 0 ? tokens[i - 1] : null;
 
     // コメントはスキップ
-    if (token.type === 'comment') continue;
+    if (token.type === "comment") continue;
 
     const v = token.value;
 
     // 前のトークンの後にスペース不要なケース
     const noSpaceAfterPrev =
       !prev ||
-      prev.type === 'comment' ||
-      (prev.type === 'punctuation' &&
-        (prev.value === '(' ||
-          prev.value === '[' ||
-          prev.value === '{' ||
-          prev.value === '@' ||
-          prev.value === '$'));
+      prev.type === "comment" ||
+      (prev.type === "punctuation" &&
+        (prev.value === "(" ||
+          prev.value === "[" ||
+          prev.value === "{" ||
+          prev.value === "@" ||
+          prev.value === "$"));
 
     // このトークンの前にスペース不要なケース
     const noSpaceBeforeCurr =
-      token.type === 'punctuation' &&
-      (v === ')' ||
-        v === ']' ||
-        v === '}' ||
-        v === '!' ||
-        v === ':' ||
-        v === '|' ||
-        v === '{' ||
-        v === '(' ||
-        v === '[' ||
-        v === '@');
+      token.type === "punctuation" &&
+      (v === ")" ||
+        v === "]" ||
+        v === "}" ||
+        v === "!" ||
+        v === ":" ||
+        v === "|" ||
+        v === "{" ||
+        v === "(" ||
+        v === "[" ||
+        v === "@");
 
     if (!noSpaceAfterPrev && !noSpaceBeforeCurr && parts.length > 0) {
       const lastPart = parts[parts.length - 1];
-      if (lastPart !== ' ') {
-        parts.push(' ');
+      if (lastPart !== " ") {
+        parts.push(" ");
       }
     }
 
     parts.push(v);
   }
 
-  return parts.join('').trim();
+  return parts.join("").trim();
 }
 
 /**
@@ -335,7 +328,7 @@ export function minifyGraphQL(input: string): string {
  */
 export function validateGraphQL(input: string): { valid: boolean; error?: string } {
   if (!input.trim()) {
-    return { valid: false, error: 'GraphQL 文字列が空です' };
+    return { valid: false, error: "GraphQL 文字列が空です" };
   }
 
   let tokens: GraphQLToken[];
@@ -344,7 +337,7 @@ export function validateGraphQL(input: string): { valid: boolean; error?: string
   } catch (err) {
     return {
       valid: false,
-      error: err instanceof Error ? err.message : 'GraphQL 解析エラーが発生しました',
+      error: err instanceof Error ? err.message : "GraphQL 解析エラーが発生しました",
     };
   }
 
@@ -354,24 +347,24 @@ export function validateGraphQL(input: string): { valid: boolean; error?: string
   let bracketDepth = 0;
 
   for (const token of tokens) {
-    if (token.type === 'punctuation') {
-      if (token.value === '{') braceDepth++;
-      else if (token.value === '}') {
+    if (token.type === "punctuation") {
+      if (token.value === "{") braceDepth++;
+      else if (token.value === "}") {
         braceDepth--;
         if (braceDepth < 0) {
-          return { valid: false, error: '対応する開き括弧のない閉じ波括弧 `}` があります' };
+          return { valid: false, error: "対応する開き括弧のない閉じ波括弧 `}` があります" };
         }
-      } else if (token.value === '(') parenDepth++;
-      else if (token.value === ')') {
+      } else if (token.value === "(") parenDepth++;
+      else if (token.value === ")") {
         parenDepth--;
         if (parenDepth < 0) {
-          return { valid: false, error: '対応する開き括弧のない閉じ括弧 `)` があります' };
+          return { valid: false, error: "対応する開き括弧のない閉じ括弧 `)` があります" };
         }
-      } else if (token.value === '[') bracketDepth++;
-      else if (token.value === ']') {
+      } else if (token.value === "[") bracketDepth++;
+      else if (token.value === "]") {
         bracketDepth--;
         if (bracketDepth < 0) {
-          return { valid: false, error: '対応する開き括弧のない閉じ角括弧 `]` があります' };
+          return { valid: false, error: "対応する開き括弧のない閉じ角括弧 `]` があります" };
         }
       }
     }
@@ -397,33 +390,30 @@ export function validateGraphQL(input: string): { valid: boolean; error?: string
   }
 
   // 先頭の意味のあるトークンをチェック（有効な GraphQL ドキュメントの開始を確認）
-  const firstMeaningful = tokens.find((t) => t.type !== 'comment');
+  const firstMeaningful = tokens.find((t) => t.type !== "comment");
   if (!firstMeaningful) {
-    return { valid: false, error: 'コメントのみのドキュメントは無効です' };
+    return { valid: false, error: "コメントのみのドキュメントは無効です" };
   }
 
   const validStartNames = new Set([
-    'query',
-    'mutation',
-    'subscription',
-    'fragment',
-    'schema',
-    'type',
-    'interface',
-    'enum',
-    'union',
-    'input',
-    'scalar',
-    'directive',
-    'extend',
+    "query",
+    "mutation",
+    "subscription",
+    "fragment",
+    "schema",
+    "type",
+    "interface",
+    "enum",
+    "union",
+    "input",
+    "scalar",
+    "directive",
+    "extend",
   ]);
 
-  if (firstMeaningful.type === 'punctuation' && firstMeaningful.value === '{') {
+  if (firstMeaningful.type === "punctuation" && firstMeaningful.value === "{") {
     // 無名クエリ（省略記法）→ 有効
-  } else if (
-    firstMeaningful.type === 'name' &&
-    !validStartNames.has(firstMeaningful.value)
-  ) {
+  } else if (firstMeaningful.type === "name" && !validStartNames.has(firstMeaningful.value)) {
     return {
       valid: false,
       error: `GraphQL ドキュメントの開始キーワードが不正です: "${firstMeaningful.value}"`,

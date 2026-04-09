@@ -65,9 +65,7 @@ test.describe("ストレージ単位変換 - E2Eテスト", () => {
     expect(resultsText).toContain("1073741824");
   });
 
-  test("アクセシビリティ: セクションのラベルが設定されている", async ({
-    page,
-  }) => {
+  test("アクセシビリティ: セクションのラベルが設定されている", async ({ page }) => {
     const inputSection = page.locator('[aria-labelledby="sc-input-heading"]');
     await expect(inputSection).toBeVisible();
   });

@@ -48,6 +48,8 @@ test.describe("ボーフォート暗号ページ", () => {
   test("キーが空の場合は変換されない", async ({ page }) => {
     await page.locator("#beaufort-key-input").fill("");
     await page.locator("#beaufort-input").fill("HELLO");
-    await expect(page.locator("#beaufort-output")).toContainText("有効なキーワードを入力してください");
+    await expect(page.locator("#beaufort-output")).toContainText(
+      "有効なキーワードを入力してください",
+    );
   });
 });

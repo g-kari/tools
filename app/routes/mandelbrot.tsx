@@ -1,7 +1,7 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
-import { TipsCard } from '~/components/TipsCard';
+import { createFileRoute } from "@tanstack/react-router";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
+import { TipsCard } from "~/components/TipsCard";
 import {
   type MandelbrotViewport,
   type ColorScheme,
@@ -12,30 +12,30 @@ import {
   zoomViewport,
   getZoomLevel,
   MANDELBROT_PRESETS,
-} from '~/utils/mandelbrot';
-import '../styles/tools/mandelbrot.css';
+} from "~/utils/mandelbrot";
+import "../styles/tools/mandelbrot.css";
 
-export const Route = createFileRoute('/mandelbrot')({
+export const Route = createFileRoute("/mandelbrot")({
   head: () => ({
     meta: [
-      { title: 'マンデルブロット集合ビジュアライザー | Web ツール集' },
+      { title: "マンデルブロット集合ビジュアライザー | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          'マンデルブロット集合をインタラクティブに探索できるビジュアライザー。クリックでズームイン、右クリックでズームアウト。カラースキームや最大反復回数を変更して美しいフラクタル図形を発見しよう。',
+          "マンデルブロット集合をインタラクティブに探索できるビジュアライザー。クリックでズームイン、右クリックでズームアウト。カラースキームや最大反復回数を変更して美しいフラクタル図形を発見しよう。",
       },
       {
-        property: 'og:title',
-        content: 'マンデルブロット集合ビジュアライザー | Web ツール集',
+        property: "og:title",
+        content: "マンデルブロット集合ビジュアライザー | Web ツール集",
       },
       {
-        property: 'og:description',
+        property: "og:description",
         content:
-          'マンデルブロット集合をインタラクティブに探索。クリックでズームイン・アウトしてフラクタルの無限の複雑さを体験。',
+          "マンデルブロット集合をインタラクティブに探索。クリックでズームイン・アウトしてフラクタルの無限の複雑さを体験。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/mandelbrot` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
+      { property: "og:url", content: `${SITE_BASE_URL}/mandelbrot` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
     ],
   }),
   component: MandelbrotPage,
@@ -46,11 +46,11 @@ const CANVAS_HEIGHT = 500;
 const ZOOM_FACTOR = 3;
 
 const COLOR_SCHEMES: Array<{ value: ColorScheme; label: string }> = [
-  { value: 'classic', label: 'クラシック' },
-  { value: 'fire', label: 'ファイア' },
-  { value: 'ocean', label: 'オーシャン' },
-  { value: 'grayscale', label: 'グレー' },
-  { value: 'neon', label: 'ネオン' },
+  { value: "classic", label: "クラシック" },
+  { value: "fire", label: "ファイア" },
+  { value: "ocean", label: "オーシャン" },
+  { value: "grayscale", label: "グレー" },
+  { value: "neon", label: "ネオン" },
 ];
 
 /**
@@ -62,63 +62,60 @@ function MandelbrotPage() {
 
   const [viewport, setViewport] = useState<MandelbrotViewport>(DEFAULT_VIEWPORT);
   const [maxIter, setMaxIter] = useState(128);
-  const [colorScheme, setColorScheme] = useState<ColorScheme>('classic');
+  const [colorScheme, setColorScheme] = useState<ColorScheme>("classic");
   const [isRendering, setIsRendering] = useState(false);
   const [hoverCoord, setHoverCoord] = useState<[number, number] | null>(null);
   const [zoomLevel, setZoomLevel] = useState(1);
 
   /** キャンバスに描画する */
-  const render = useCallback(
-    (vp: MandelbrotViewport, iter: number, scheme: ColorScheme) => {
-      const canvas = canvasRef.current;
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-      if (!ctx) return;
+  const render = useCallback((vp: MandelbrotViewport, iter: number, scheme: ColorScheme) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
 
-      const thisId = ++renderIdRef.current;
-      setIsRendering(true);
+    const thisId = ++renderIdRef.current;
+    setIsRendering(true);
 
-      const w = canvas.width;
-      const h = canvas.height;
-      const imageData = ctx.createImageData(w, h);
-      const data = imageData.data;
+    const w = canvas.width;
+    const h = canvas.height;
+    const imageData = ctx.createImageData(w, h);
+    const data = imageData.data;
 
-      // チャンク単位で非同期描画してUIをブロックしない
-      const CHUNK = 20;
-      let row = 0;
+    // チャンク単位で非同期描画してUIをブロックしない
+    const CHUNK = 20;
+    let row = 0;
 
-      function renderChunk() {
-        if (thisId !== renderIdRef.current) return; // 古いレンダーはキャンセル
+    function renderChunk() {
+      if (thisId !== renderIdRef.current) return; // 古いレンダーはキャンセル
 
-        const endRow = Math.min(row + CHUNK, h);
-        for (let py = row; py < endRow; py++) {
-          for (let px = 0; px < w; px++) {
-            const [cx, cy] = screenToComplex(px, py, vp, w, h);
-            const smooth = mandelbrotSmooth(cx, cy, iter);
-            const [r, g, b] = iterationsToColor(smooth, iter, scheme);
-            const idx = (py * w + px) * 4;
-            data[idx] = r;
-            data[idx + 1] = g;
-            data[idx + 2] = b;
-            data[idx + 3] = 255;
-          }
-        }
-        row = endRow;
-
-        if (row < h) {
-          requestAnimationFrame(renderChunk);
-        } else {
-          if (thisId === renderIdRef.current) {
-            ctx.putImageData(imageData, 0, 0);
-            setIsRendering(false);
-          }
+      const endRow = Math.min(row + CHUNK, h);
+      for (let py = row; py < endRow; py++) {
+        for (let px = 0; px < w; px++) {
+          const [cx, cy] = screenToComplex(px, py, vp, w, h);
+          const smooth = mandelbrotSmooth(cx, cy, iter);
+          const [r, g, b] = iterationsToColor(smooth, iter, scheme);
+          const idx = (py * w + px) * 4;
+          data[idx] = r;
+          data[idx + 1] = g;
+          data[idx + 2] = b;
+          data[idx + 3] = 255;
         }
       }
+      row = endRow;
 
-      renderChunk();
-    },
-    []
-  );
+      if (row < h) {
+        requestAnimationFrame(renderChunk);
+      } else {
+        if (thisId === renderIdRef.current) {
+          ctx.putImageData(imageData, 0, 0);
+          setIsRendering(false);
+        }
+      }
+    }
+
+    renderChunk();
+  }, []);
 
   useEffect(() => {
     render(viewport, maxIter, colorScheme);
@@ -136,7 +133,7 @@ function MandelbrotPage() {
       const [cx, cy] = screenToComplex(px, py, viewport, canvas.width, canvas.height);
       setViewport(zoomViewport(cx, cy, viewport, ZOOM_FACTOR));
     },
-    [viewport]
+    [viewport],
   );
 
   /** 右クリックでズームアウト */
@@ -151,7 +148,7 @@ function MandelbrotPage() {
       const [cx, cy] = screenToComplex(px, py, viewport, canvas.width, canvas.height);
       setViewport(zoomViewport(cx, cy, viewport, 1 / ZOOM_FACTOR));
     },
-    [viewport]
+    [viewport],
   );
 
   /** マウス移動で座標を表示 */
@@ -164,7 +161,7 @@ function MandelbrotPage() {
       const py = ((e.clientY - rect.top) / rect.height) * canvas.height;
       setHoverCoord(screenToComplex(px, py, viewport, canvas.width, canvas.height));
     },
-    [viewport]
+    [viewport],
   );
 
   const handleMouseLeave = useCallback(() => {
@@ -194,7 +191,7 @@ function MandelbrotPage() {
           ref={canvasRef}
           width={CANVAS_WIDTH}
           height={CANVAS_HEIGHT}
-          className={`mandelbrot__canvas${isRendering ? ' mandelbrot__canvas--rendering' : ''}`}
+          className={`mandelbrot__canvas${isRendering ? " mandelbrot__canvas--rendering" : ""}`}
           onClick={handleClick}
           onContextMenu={handleContextMenu}
           onMouseMove={handleMouseMove}
@@ -261,7 +258,7 @@ function MandelbrotPage() {
             {COLOR_SCHEMES.map(({ value, label }) => (
               <button
                 key={value}
-                className={`mandelbrot__scheme-btn${colorScheme === value ? ' mandelbrot__scheme-btn--active' : ''}`}
+                className={`mandelbrot__scheme-btn${colorScheme === value ? " mandelbrot__scheme-btn--active" : ""}`}
                 onClick={() => setColorScheme(value)}
                 aria-pressed={colorScheme === value}
               >
@@ -292,10 +289,7 @@ function MandelbrotPage() {
 
         {/* リセット */}
         <div className="mandelbrot__btn-row">
-          <button
-            className="mandelbrot__btn mandelbrot__btn--secondary"
-            onClick={handleReset}
-          >
+          <button className="mandelbrot__btn mandelbrot__btn--secondary" onClick={handleReset}>
             リセット
           </button>
         </div>
@@ -312,8 +306,7 @@ function MandelbrotPage() {
           ズームすると境界の精細さが増すため、反復回数を増やすとより美しい模様が見えます。
         </p>
         <p>
-          黒い領域が集合の内部（発散しない点）です。
-          集合の外の点は発散速度に応じて着色されます。
+          黒い領域が集合の内部（発散しない点）です。 集合の外の点は発散速度に応じて着色されます。
         </p>
       </TipsCard>
     </main>

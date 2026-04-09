@@ -1,9 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useMemo, useCallback } from "react";
-import {
-  StatusAnnouncer,
-  useStatusAnnouncement,
-} from "~/hooks/useStatusAnnouncement";
+import { StatusAnnouncer, useStatusAnnouncement } from "~/hooks/useStatusAnnouncement";
 import { TipsCard } from "~/components/TipsCard";
 import { useClipboard } from "~/hooks/useClipboard";
 import { useToast } from "~/components/Toast";
@@ -31,8 +28,7 @@ export const Route = createFileRoute("/ascii-art")({
       },
       {
         property: "og:description",
-        content:
-          "テキストをASCIIアートに変換するツール。複数フォントスタイル対応。",
+        content: "テキストをASCIIアートに変換するツール。複数フォントスタイル対応。",
       },
       { property: "og:url", content: `${SITE_BASE_URL}/ascii-art` },
       { property: "og:type", content: "website" },
@@ -59,7 +55,7 @@ function AsciiArtGenerator() {
 
   const result = useMemo(
     () => generateAsciiArt(inputText, selectedFont),
-    [inputText, selectedFont]
+    [inputText, selectedFont],
   );
 
   const hasInput = inputText.trim().length > 0;
@@ -128,18 +124,11 @@ function AsciiArtGenerator() {
         </div>
 
         {canConvert ? (
-          <div
-            className="aa-result-wrapper"
-            aria-label="ASCIIアート変換結果"
-            aria-live="polite"
-          >
+          <div className="aa-result-wrapper" aria-label="ASCIIアート変換結果" aria-live="polite">
             <div className="aa-result-header">
               <span className="aa-result-label">結果</span>
             </div>
-            <pre
-              className="aa-result-pre"
-              aria-label="ASCIIアート出力"
-            >
+            <pre className="aa-result-pre" aria-label="ASCIIアート出力">
               {result.text}
             </pre>
             <div className="aa-action-row">

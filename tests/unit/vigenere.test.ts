@@ -1,10 +1,5 @@
 import { describe, expect, it } from "vite-plus/test";
-import {
-  encodeVigenere,
-  decodeVigenere,
-  normalizeKey,
-  isValidKey,
-} from "../../app/utils/vigenere";
+import { encodeVigenere, decodeVigenere, normalizeKey, isValidKey } from "../../app/utils/vigenere";
 
 describe("normalizeKey", () => {
   it("英字のみのキーをそのまま大文字に変換する", () => {

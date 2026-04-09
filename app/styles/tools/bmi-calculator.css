@@ -73,7 +73,11 @@
 }
 
 .bmi-result-card--secondary {
-  background: color-mix(in srgb, var(--md-sys-color-secondary-container) 60%, var(--md-sys-color-surface-variant));
+  background: color-mix(
+    in srgb,
+    var(--md-sys-color-secondary-container) 60%,
+    var(--md-sys-color-surface-variant)
+  );
 }
 
 .bmi-result-label {

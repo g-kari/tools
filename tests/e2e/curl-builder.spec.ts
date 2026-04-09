@@ -6,9 +6,7 @@ test.describe("curlコマンドビルダー", () => {
   });
 
   test("ページタイトルが表示される", async ({ page }) => {
-    await expect(page.locator("h1.tool-title")).toContainText(
-      "curlコマンドビルダー"
-    );
+    await expect(page.locator("h1.tool-title")).toContainText("curlコマンドビルダー");
   });
 
   test("ページの説明が表示される", async ({ page }) => {
@@ -80,9 +78,7 @@ test.describe("curlコマンドビルダー", () => {
     await expect(page.locator(".cb-body-type-group")).toBeVisible();
   });
 
-  test("JSONボディタイプを選択するとテキストエリアが表示される", async ({
-    page,
-  }) => {
+  test("JSONボディタイプを選択するとテキストエリアが表示される", async ({ page }) => {
     const jsonBtn = page.locator(".cb-body-type-btn", { hasText: "JSON" });
     await jsonBtn.click();
     const textarea = page.locator(".cb-body-textarea");

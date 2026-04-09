@@ -3,10 +3,7 @@ import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useEffect, useRef, useCallback, type DragEvent } from "react";
 import { useToast } from "../components/Toast";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 
 export const Route = createFileRoute("/hash")({
@@ -68,22 +65,54 @@ function md5Cmn(q: number, a: number, b: number, x: number, s: number, t: number
 }
 
 /** MD5のFF関数 */
-export function md5Ff(a: number, b: number, c: number, d: number, x: number, s: number, t: number): number {
+export function md5Ff(
+  a: number,
+  b: number,
+  c: number,
+  d: number,
+  x: number,
+  s: number,
+  t: number,
+): number {
   return md5Cmn((b & c) | (~b & d), a, b, x, s, t);
 }
 
 /** MD5のGG関数 */
-export function md5Gg(a: number, b: number, c: number, d: number, x: number, s: number, t: number): number {
+export function md5Gg(
+  a: number,
+  b: number,
+  c: number,
+  d: number,
+  x: number,
+  s: number,
+  t: number,
+): number {
   return md5Cmn((b & d) | (c & ~d), a, b, x, s, t);
 }
 
 /** MD5のHH関数 */
-export function md5Hh(a: number, b: number, c: number, d: number, x: number, s: number, t: number): number {
+export function md5Hh(
+  a: number,
+  b: number,
+  c: number,
+  d: number,
+  x: number,
+  s: number,
+  t: number,
+): number {
   return md5Cmn(b ^ c ^ d, a, b, x, s, t);
 }
 
 /** MD5のII関数 */
-export function md5Ii(a: number, b: number, c: number, d: number, x: number, s: number, t: number): number {
+export function md5Ii(
+  a: number,
+  b: number,
+  c: number,
+  d: number,
+  x: number,
+  s: number,
+  t: number,
+): number {
   return md5Cmn(c ^ (b | ~d), a, b, x, s, t);
 }
 
@@ -110,7 +139,10 @@ export function computeMd5Bytes(data: Uint8Array): Uint8Array {
 
   for (let i = 0; i < wordArray.length; i += 16) {
     const k = wordArray.slice(i, i + 16);
-    const aa = a, bb = b, cc = c, dd = d;
+    const aa = a,
+      bb = b,
+      cc = c,
+      dd = d;
 
     // Round 1
     a = md5Ff(a, b, c, d, k[0], 7, -680876936);
@@ -234,7 +266,10 @@ export function bytesToBase64(bytes: Uint8Array): string {
  * @param data 入力バイト配列
  * @returns ハッシュのバイト列
  */
-export async function computeWebCryptoHash(algorithm: string, data: Uint8Array): Promise<Uint8Array> {
+export async function computeWebCryptoHash(
+  algorithm: string,
+  data: Uint8Array,
+): Promise<Uint8Array> {
   const hashBuffer = await crypto.subtle.digest(algorithm, data);
   return new Uint8Array(hashBuffer);
 }
@@ -339,9 +374,6 @@ export function formatFileSize(bytes: number): string {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
-
-
-
 /**
  * ハッシュ生成ツールコンポーネント
  * MD5（自前実装）+ SHA-1/SHA-256/SHA-384/SHA-512（Web Crypto API）を
@@ -423,14 +455,17 @@ function HashGenerator() {
     setHashResults([]);
   }, []);
 
-  const handleFileDrop = useCallback((e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setIsDragging(false);
-    const files = Array.from(e.dataTransfer.files);
-    if (files.length > 0) {
-      handleFileSelect(files);
-    }
-  }, [handleFileSelect]);
+  const handleFileDrop = useCallback(
+    (e: DragEvent<HTMLDivElement>) => {
+      e.preventDefault();
+      setIsDragging(false);
+      const files = Array.from(e.dataTransfer.files);
+      if (files.length > 0) {
+        handleFileSelect(files);
+      }
+    },
+    [handleFileSelect],
+  );
 
   const handleDragOver = useCallback((e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -442,16 +477,19 @@ function HashGenerator() {
     setIsDragging(false);
   }, []);
 
-  const handleCopy = useCallback(async (value: string, label: string) => {
-    if (!value) return;
-    const success = await copy(value);
-    if (success) {
-      showToast(`${label} をコピーしました`, "success");
-      announceStatus(`${label} をコピーしました`);
-    } else {
-      showToast("コピーに失敗しました", "error");
-    }
-  }, [copy, showToast, announceStatus]);
+  const handleCopy = useCallback(
+    async (value: string, label: string) => {
+      if (!value) return;
+      const success = await copy(value);
+      if (success) {
+        showToast(`${label} をコピーしました`, "success");
+        announceStatus(`${label} をコピーしました`);
+      } else {
+        showToast("コピーに失敗しました", "error");
+      }
+    },
+    [copy, showToast, announceStatus],
+  );
 
   const handleClearFile = useCallback(() => {
     setSelectedFile(null);
@@ -640,7 +678,9 @@ function HashGenerator() {
                     </code>
                     <button
                       className="hash-copy-btn"
-                      onClick={() => handleCopy(value, `${algo.label} (${outputFormat.toUpperCase()})`)}
+                      onClick={() =>
+                        handleCopy(value, `${algo.label} (${outputFormat.toUpperCase()})`)
+                      }
                       disabled={isEmpty || isComputing}
                       aria-label={`${algo.label} のハッシュ値をコピー`}
                     >
@@ -648,9 +688,7 @@ function HashGenerator() {
                     </button>
                   </div>
                   {!isEmpty && !isComputing && (
-                    <div className="hash-result-meta">
-                      {value.length} 文字
-                    </div>
+                    <div className="hash-result-meta">{value.length} 文字</div>
                   )}
                 </div>
               );

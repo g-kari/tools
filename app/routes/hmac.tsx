@@ -3,17 +3,9 @@ import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useToast } from "../components/Toast";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
-import {
-  computeAllHmacs,
-  textToBytes,
-  type HmacResult,
-  type HmacOutputFormat,
-} from "~/utils/hmac";
+import { computeAllHmacs, textToBytes, type HmacResult, type HmacOutputFormat } from "~/utils/hmac";
 
 export const Route = createFileRoute("/hmac")({
   head: () => ({
@@ -104,7 +96,7 @@ function HmacGenerator() {
         showToast("コピーに失敗しました", "error");
       }
     },
-    [copy, showToast, announceStatus]
+    [copy, showToast, announceStatus],
   );
 
   const handleClear = useCallback(() => {
@@ -190,17 +182,11 @@ function HmacGenerator() {
         )}
 
         {!isComputing && hasInput && hmacResults.length > 0 && (
-          <div
-            className="hash-results-grid"
-            aria-label="HMAC 計算結果"
-            aria-live="polite"
-          >
+          <div className="hash-results-grid" aria-label="HMAC 計算結果" aria-live="polite">
             {hmacResults.map((result) => (
               <div key={result.algorithmName} className="hash-result-item">
                 <div className="hash-result-header">
-                  <span className="hash-result-algorithm">
-                    {result.algorithmName}
-                  </span>
+                  <span className="hash-result-algorithm">{result.algorithmName}</span>
                   {result.deprecated && (
                     <span
                       className="hash-result-badge hash-result-badge-deprecated"
@@ -216,9 +202,7 @@ function HmacGenerator() {
                   <button
                     type="button"
                     className="hash-copy-btn"
-                    onClick={() =>
-                      handleCopy(result.value, result.algorithmName)
-                    }
+                    onClick={() => handleCopy(result.value, result.algorithmName)}
                     aria-label={`${result.algorithmName} の値をコピー`}
                     disabled={!result.value}
                   >

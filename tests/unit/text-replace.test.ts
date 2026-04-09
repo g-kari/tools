@@ -178,12 +178,10 @@ describe("replaceText", () => {
   });
 
   it("正規表現バックリファレンスを使った置換", () => {
-    const result = replaceText(
-      "2024-01-15",
-      "(\\d{4})-(\\d{2})-(\\d{2})",
-      "$3/$2/$1",
-      { ...defaultOptions, useRegex: true }
-    );
+    const result = replaceText("2024-01-15", "(\\d{4})-(\\d{2})-(\\d{2})", "$3/$2/$1", {
+      ...defaultOptions,
+      useRegex: true,
+    });
     expect(result.output).toBe("15/01/2024");
     expect(result.matchCount).toBe(1);
   });

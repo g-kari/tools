@@ -10,8 +10,7 @@ import { createServerFn } from "@tanstack/react-start";
  * ドメイン名のバリデーション用正規表現
  * RFC 1123に準拠したドメイン名形式を検証する
  */
-export const DOMAIN_REGEX =
-  /^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
+export const DOMAIN_REGEX = /^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
 
 /**
  * MXレコード情報
@@ -141,10 +140,7 @@ interface DoHResponse {
  * @param type - DNSレコードタイプ（"A", "AAAA", "MX", "TXT"など）
  * @returns DoHレスポンス、または取得失敗の場合はnull
  */
-async function queryDNS(
-  domain: string,
-  type: string
-): Promise<DoHResponse | null> {
+async function queryDNS(domain: string, type: string): Promise<DoHResponse | null> {
   try {
     const url = new URL(DOH_ENDPOINT);
     url.searchParams.set("name", domain);
@@ -210,11 +206,11 @@ async function resolveIPAddresses(hostname: string): Promise<string[]> {
   const ips: string[] = [];
 
   if (ipv4Response?.Answer) {
-    ips.push(...ipv4Response.Answer.map(a => a.data));
+    ips.push(...ipv4Response.Answer.map((a) => a.data));
   }
 
   if (ipv6Response?.Answer) {
-    ips.push(...ipv6Response.Answer.map(a => a.data));
+    ips.push(...ipv6Response.Answer.map((a) => a.data));
   }
 
   return ips;
@@ -230,12 +226,12 @@ async function getPTRRecords(ip: string): Promise<string[]> {
   // Convert IP to reverse DNS format
   let reverseDomain: string;
 
-  if (ip.includes(':')) {
+  if (ip.includes(":")) {
     // IPv6 - skip for simplicity
     return [];
   } else {
     // IPv4
-    const parts = ip.split('.');
+    const parts = ip.split(".");
     reverseDomain = `${parts[3]}.${parts[2]}.${parts[1]}.${parts[0]}.in-addr.arpa`;
   }
 
@@ -245,7 +241,7 @@ async function getPTRRecords(ip: string): Promise<string[]> {
     return [];
   }
 
-  return ptrResponse.Answer.map(a => a.data.replace(/\.$/, ''));
+  return ptrResponse.Answer.map((a) => a.data.replace(/\.$/, ""));
 }
 
 /**
@@ -308,7 +304,7 @@ async function validateSPF(
   domain: string,
   visitedDomains: Set<string> = new Set(),
   depth: number = 0,
-  startTime?: number
+  startTime?: number,
 ): Promise<{
   version?: string;
   mechanisms?: string[];
@@ -393,7 +389,7 @@ async function validateSPF(
             includeDomain,
             visitedDomains,
             depth + 1,
-            st
+            st,
           );
           lookupCount += expanded.lookupCount || 0;
           if (expanded.warnings) {
@@ -507,10 +503,7 @@ function validateDMARC(record: string): {
  * @param dkimSelector - DKIMセレクタ名（省略時はDKIM検索をスキップ）
  * @returns メールDNS設定の総合結果
  */
-async function queryEmailDNS(
-  domain: string,
-  dkimSelector?: string
-): Promise<EmailDNSResult> {
+async function queryEmailDNS(domain: string, dkimSelector?: string): Promise<EmailDNSResult> {
   const result: EmailDNSResult = {
     domain,
     mx: {
@@ -619,9 +612,7 @@ async function queryEmailDNS(
   if (dmarcResult.status === "fulfilled") {
     try {
       const dmarcRecords = parseTXTRecords(dmarcResult.value);
-      const dmarcRecord = dmarcRecords.find((record) =>
-        record.startsWith("v=DMARC1")
-      );
+      const dmarcRecord = dmarcRecords.find((record) => record.startsWith("v=DMARC1"));
 
       if (dmarcRecord) {
         const details = validateDMARC(dmarcRecord);
@@ -639,8 +630,7 @@ async function queryEmailDNS(
     } catch (err) {
       result.dmarc = {
         status: "error",
-        error:
-          err instanceof Error ? err.message : "DMARCレコードの取得に失敗しました",
+        error: err instanceof Error ? err.message : "DMARCレコードの取得に失敗しました",
       };
     }
   } else {
@@ -654,9 +644,7 @@ async function queryEmailDNS(
   if (dkimSelector && dkimResult.status === "fulfilled" && dkimResult.value) {
     try {
       const dkimRecords = parseTXTRecords(dkimResult.value);
-      const dkimRecord = dkimRecords.find((record) =>
-        record.includes("v=DKIM1")
-      );
+      const dkimRecord = dkimRecords.find((record) => record.includes("v=DKIM1"));
 
       if (dkimRecord) {
         result.dkim = {
@@ -675,8 +663,7 @@ async function queryEmailDNS(
       result.dkim = {
         selector: dkimSelector,
         status: "error",
-        error:
-          err instanceof Error ? err.message : "DKIMレコードの取得に失敗しました",
+        error: err instanceof Error ? err.message : "DKIMレコードの取得に失敗しました",
       };
     }
   } else if (dkimSelector && dkimResult.status === "rejected") {
@@ -698,12 +685,18 @@ async function queryEmailDNS(
     recommendations.push("DMARCレコードを設定してください");
   }
 
-  if (result.mx.status === "success" && result.spf.status === "success" && result.dmarc.status === "success") {
+  if (
+    result.mx.status === "success" &&
+    result.spf.status === "success" &&
+    result.dmarc.status === "success"
+  ) {
     recommendations.push("基本的なメール認証設定は完了しています");
   }
 
   if (!dkimSelector) {
-    recommendations.push("DKIMセレクタを指定してDKIM検証を実行してください（例: default, google, selector1）");
+    recommendations.push(
+      "DKIMセレクタを指定してDKIM検証を実行してください（例: default, google, selector1）",
+    );
   }
 
   result.recommendations = recommendations.length > 0 ? recommendations : undefined;
@@ -713,11 +706,7 @@ async function queryEmailDNS(
     const firstMX = result.mx.records[0].exchange;
 
     result.smtpCheckInstructions = {
-      telnet: [
-        `telnet ${firstMX} 25`,
-        "EHLO example.com",
-        "QUIT",
-      ],
+      telnet: [`telnet ${firstMX} 25`, "EHLO example.com", "QUIT"],
       curl: [
         `curl -v --url 'smtp://${firstMX}:25' --mail-from 'test@example.com' --mail-rcpt 'recipient@${domain}' -T /dev/null 2>&1 | grep -E '(STARTTLS|250|220)'`,
       ],
@@ -749,7 +738,9 @@ export const lookupEmailDNS = createServerFn({ method: "GET" })
     const trimmedSelector = data.dkimSelector?.trim();
     if (trimmedSelector !== undefined && trimmedSelector !== "") {
       if (!/^[a-zA-Z0-9_-]{1,63}$/.test(trimmedSelector)) {
-        throw new Error("無効なDKIMセレクター形式です（英数字・ハイフン・アンダースコアのみ使用可能）");
+        throw new Error(
+          "無効なDKIMセレクター形式です（英数字・ハイフン・アンダースコアのみ使用可能）",
+        );
       }
     }
     return {

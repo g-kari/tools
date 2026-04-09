@@ -33,12 +33,14 @@
   padding: 10px 14px;
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: 4px;
-  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  font-family: "JetBrains Mono", "Roboto Mono", "Courier New", monospace;
   font-size: 1.125rem;
   letter-spacing: 0.08em;
   background: var(--md-sys-color-surface-variant);
   color: var(--md-sys-color-on-surface);
-  transition: border-color 0.2s, background 0.2s;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
   min-width: 0;
   width: 100%;
 }
@@ -148,7 +150,7 @@
 }
 
 .luhn-detail-value {
-  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  font-family: "JetBrains Mono", "Roboto Mono", "Courier New", monospace;
   font-size: 0.9375rem;
   font-weight: 600;
   color: var(--md-sys-color-on-surface);
@@ -174,7 +176,7 @@
 }
 
 .luhn-formatted-display {
-  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  font-family: "JetBrains Mono", "Roboto Mono", "Courier New", monospace;
   font-size: 1.25rem;
   font-weight: 600;
   color: var(--md-sys-color-primary);
@@ -237,7 +239,7 @@
 }
 
 .luhn-test-number {
-  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  font-family: "JetBrains Mono", "Roboto Mono", "Courier New", monospace;
   font-size: 0.875rem;
   font-weight: 600;
   color: var(--md-sys-color-primary);
@@ -253,7 +255,9 @@
   border-radius: 4px;
   color: var(--md-sys-color-on-secondary-container);
   cursor: pointer;
-  transition: background-color 0.2s, opacity 0.2s;
+  transition:
+    background-color 0.2s,
+    opacity 0.2s;
   white-space: nowrap;
   letter-spacing: 0.25px;
 }

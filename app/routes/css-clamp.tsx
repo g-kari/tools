@@ -3,10 +3,7 @@ import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useMemo, useCallback } from "react";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 import {
   type FluidConfig,
@@ -33,8 +30,7 @@ export const Route = createFileRoute("/css-clamp")({
       },
       {
         property: "og:description",
-        content:
-          "CSS clamp() の Fluid 値を計算。ビューポート幅でリニア補間する値を即時生成。",
+        content: "CSS clamp() の Fluid 値を計算。ビューポート幅でリニア補間する値を即時生成。",
       },
       { property: "og:url", content: `${SITE_BASE_URL}/css-clamp` },
       { property: "og:type", content: "website" },
@@ -45,8 +41,7 @@ export const Route = createFileRoute("/css-clamp")({
       },
       {
         name: "twitter:description",
-        content:
-          "CSS clamp() の Fluid 値を計算。ビューポート幅でリニア補間する値を即時生成。",
+        content: "CSS clamp() の Fluid 値を計算。ビューポート幅でリニア補間する値を即時生成。",
       },
     ],
   }),
@@ -67,17 +62,14 @@ function CssClampTool() {
   const { copy } = useClipboard();
 
   const error = useMemo(() => validateFluidConfig(config), [config]);
-  const result = useMemo(
-    () => (error ? null : calculateFluid(config)),
-    [config, error]
-  );
+  const result = useMemo(() => (error ? null : calculateFluid(config)), [config, error]);
 
   const handleCopy = useCallback(
     async (text: string, label: string) => {
       await copy(text);
       announce(`${label} をコピーしました`);
     },
-    [copy, announce]
+    [copy, announce],
   );
 
   const setNum = useCallback(
@@ -85,7 +77,7 @@ function CssClampTool() {
       const v = parseFloat(e.target.value);
       if (!isNaN(v)) setConfig((c) => ({ ...c, [field]: v }));
     },
-    []
+    [],
   );
 
   // SVG グラフのパラメータ
@@ -109,12 +101,13 @@ function CssClampTool() {
     const vRange = vMax - vMin || 1;
 
     const toX = (vp: number) => padL + ((vp - vMin) / vRange) * graphW;
-    const toY = (val: number) =>
-      padT + graphH - ((val - valMin) / valRange) * graphH;
+    const toY = (val: number) => padT + graphH - ((val - valMin) / valRange) * graphH;
 
     // セグメントに分割（クランプ部分とフルイド部分を分ける）
     const path = pts
-      .map((p, i) => `${i === 0 ? "M" : "L"} ${toX(p.viewport).toFixed(1)} ${toY(p.value).toFixed(1)}`)
+      .map(
+        (p, i) => `${i === 0 ? "M" : "L"} ${toX(p.viewport).toFixed(1)} ${toY(p.value).toFixed(1)}`,
+      )
       .join(" ");
 
     // ビューポートのガイドライン位置
@@ -153,8 +146,7 @@ function CssClampTool() {
       <div className="tool-header">
         <h1 className="tool-title">CSS Fluid/Clamp 計算機</h1>
         <p className="tool-description">
-          ビューポート幅に応じてリニア補間する CSS{" "}
-          <code>clamp()</code> 値を計算します。
+          ビューポート幅に応じてリニア補間する CSS <code>clamp()</code> 値を計算します。
           フォントサイズ・パディング・マージンなどのレスポンシブな Fluid
           スタイルを即時生成できます。
         </p>
@@ -306,13 +298,7 @@ function CssClampTool() {
                 role="img"
               >
                 {/* 軸 */}
-                <line
-                  className="cfc-graph-axis"
-                  x1={padL}
-                  y1={padT}
-                  x2={padL}
-                  y2={padT + graphH}
-                />
+                <line className="cfc-graph-axis" x1={padL} y1={padT} x2={padL} y2={padT + graphH} />
                 <line
                   className="cfc-graph-axis"
                   x1={padL}
@@ -354,20 +340,10 @@ function CssClampTool() {
                 >
                   {config.maxViewport}px
                 </text>
-                <text
-                  className="cfc-graph-label"
-                  x={padL - 4}
-                  y={padT + graphH}
-                  textAnchor="end"
-                >
+                <text className="cfc-graph-label" x={padL - 4} y={padT + graphH} textAnchor="end">
                   {graphData.fmtVal(graphData.valMin)}
                 </text>
-                <text
-                  className="cfc-graph-label"
-                  x={padL - 4}
-                  y={padT + 4}
-                  textAnchor="end"
-                >
+                <text className="cfc-graph-label" x={padL - 4} y={padT + 4} textAnchor="end">
                   {graphData.fmtVal(graphData.valMax)}
                 </text>
               </svg>
@@ -404,18 +380,13 @@ function CssClampTool() {
               <thead>
                 <tr>
                   <th>ビューポート幅</th>
-                  <th>
-                    値 ({config.unit})
-                  </th>
+                  <th>値 ({config.unit})</th>
                   <th>状態</th>
                 </tr>
               </thead>
               <tbody>
                 {result.points.map((pt) => (
-                  <tr
-                    key={pt.viewport}
-                    className={pt.clamped ? "cfc-row-clamped" : ""}
-                  >
+                  <tr key={pt.viewport} className={pt.clamped ? "cfc-row-clamped" : ""}>
                     <td>{pt.viewport}px</td>
                     <td>
                       {config.unit === "rem"

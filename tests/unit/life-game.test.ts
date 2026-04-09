@@ -188,7 +188,7 @@ describe("applyPattern", () => {
     const grid = applyPattern(50, 30, pattern);
     // 全セルがグリッド内に収まっていること
     grid.forEach((row) =>
-      row.forEach((cell) => expect(cell === true || cell === false).toBe(true))
+      row.forEach((cell) => expect(cell === true || cell === false).toBe(true)),
     );
     expect(countPopulation(grid)).toBeGreaterThan(0);
   });

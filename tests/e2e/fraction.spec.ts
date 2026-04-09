@@ -22,9 +22,7 @@ test.describe("Fraction Converter - E2E Tests", () => {
     await expect(input).toBeEnabled();
   });
 
-  test("should display numerator and denominator input fields", async ({
-    page,
-  }) => {
+  test("should display numerator and denominator input fields", async ({ page }) => {
     await expect(page.locator("#numerator-input")).toBeVisible();
     await expect(page.locator("#denominator-input")).toBeVisible();
   });
@@ -69,9 +67,7 @@ test.describe("Fraction Converter - E2E Tests", () => {
     await expect(result).toContainText("0.75");
   });
 
-  test("should show error toast when decimal input is empty", async ({
-    page,
-  }) => {
+  test("should show error toast when decimal input is empty", async ({ page }) => {
     await page.locator('button[aria-label="小数を分数に変換"]').click();
 
     const toast = page.locator(".toast");
@@ -98,17 +94,12 @@ test.describe("Fraction Converter - E2E Tests", () => {
     await expect(toast).toContainText("分子を入力してください");
   });
 
-  test("should clear decimal result when clear button is clicked", async ({
-    page,
-  }) => {
+  test("should clear decimal result when clear button is clicked", async ({ page }) => {
     await page.locator("#decimal-input").fill("0.75");
     await page.locator('button[aria-label="小数を分数に変換"]').click();
     await expect(page.locator(".fraction-result").first()).toBeVisible();
 
-    await page
-      .locator('button[aria-label="入力と結果をクリア"]')
-      .first()
-      .click();
+    await page.locator('button[aria-label="入力と結果をクリア"]').first().click();
 
     await expect(page.locator(".fraction-result").first()).not.toBeVisible();
     await expect(page.locator("#decimal-input")).toHaveValue("");
@@ -135,12 +126,8 @@ test.describe("Fraction Converter - E2E Tests", () => {
   });
 
   test("should have accessible section headings", async ({ page }) => {
-    await expect(
-      page.locator("#decimal-to-fraction-heading")
-    ).toBeVisible();
-    await expect(
-      page.locator("#fraction-to-decimal-heading")
-    ).toBeVisible();
+    await expect(page.locator("#decimal-to-fraction-heading")).toBeVisible();
+    await expect(page.locator("#fraction-to-decimal-heading")).toBeVisible();
   });
 });
 
@@ -156,9 +143,7 @@ test.describe("Top page - Fraction tool listing", () => {
     await expect(link).toContainText("分数変換");
   });
 
-  test("should navigate to /fraction when clicking the tool card", async ({
-    page,
-  }) => {
+  test("should navigate to /fraction when clicking the tool card", async ({ page }) => {
     const link = page.locator('a[href="/fraction"]');
     await link.click();
     await expect(page).toHaveURL("/fraction");

@@ -3,10 +3,7 @@ import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useCallback, useMemo } from "react";
 import { useToast } from "../components/Toast";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 import {
   simplifyRatio,
@@ -32,8 +29,7 @@ export const Route = createFileRoute("/aspect-ratio")({
       },
       {
         property: "og:description",
-        content:
-          "幅・高さからアスペクト比を計算。比から幅・高さを導出。プリセット対応。",
+        content: "幅・高さからアスペクト比を計算。比から幅・高さを導出。プリセット対応。",
       },
       { property: "og:url", content: `${SITE_BASE_URL}/aspect-ratio` },
       { property: "og:type", content: "website" },
@@ -55,13 +51,7 @@ const PREVIEW_MAX_W = 200;
 const PREVIEW_MAX_H = 120;
 
 /** アスペクト比のビジュアルプレビュー */
-function AspectRatioPreview({
-  ratioW,
-  ratioH,
-}: {
-  ratioW: number;
-  ratioH: number;
-}) {
+function AspectRatioPreview({ ratioW, ratioH }: { ratioW: number; ratioH: number }) {
   let displayW = PREVIEW_MAX_W;
   let displayH = PREVIEW_MAX_H;
 
@@ -77,10 +67,7 @@ function AspectRatioPreview({
   }
 
   return (
-    <div
-      className="ar-preview-wrapper"
-      aria-label={`${ratioW}:${ratioH} のアスペクト比プレビュー`}
-    >
+    <div className="ar-preview-wrapper" aria-label={`${ratioW}:${ratioH} のアスペクト比プレビュー`}>
       <div
         className="ar-preview-box"
         style={
@@ -123,10 +110,7 @@ function AspectRatioCalculator() {
 
   // 幅・高さから比を計算
   const parsedWidth = useMemo(() => parsePositiveInt(widthInput), [widthInput]);
-  const parsedHeight = useMemo(
-    () => parsePositiveInt(heightInput),
-    [heightInput]
-  );
+  const parsedHeight = useMemo(() => parsePositiveInt(heightInput), [heightInput]);
 
   const simplifiedRatio = useMemo(() => {
     if (parsedWidth === null || parsedHeight === null) return null;
@@ -139,28 +123,17 @@ function AspectRatioCalculator() {
   }, [simplifiedRatio]);
 
   // セクション2: カスタム比
-  const parsedCustomW = useMemo(
-    () => parsePositiveInt(customRatioW),
-    [customRatioW]
-  );
-  const parsedCustomH = useMemo(
-    () => parsePositiveInt(customRatioH),
-    [customRatioH]
-  );
-  const parsedDimension = useMemo(
-    () => parsePositiveInt(dimensionInput),
-    [dimensionInput]
-  );
+  const parsedCustomW = useMemo(() => parsePositiveInt(customRatioW), [customRatioW]);
+  const parsedCustomH = useMemo(() => parsePositiveInt(customRatioH), [customRatioH]);
+  const parsedDimension = useMemo(() => parsePositiveInt(dimensionInput), [dimensionInput]);
 
   const calcHeight = useMemo(() => {
-    if (parsedDimension === null || parsedCustomW === null || parsedCustomH === null)
-      return null;
+    if (parsedDimension === null || parsedCustomW === null || parsedCustomH === null) return null;
     return calcHeightFromWidth(parsedDimension, parsedCustomW, parsedCustomH);
   }, [parsedDimension, parsedCustomW, parsedCustomH]);
 
   const calcWidth = useMemo(() => {
-    if (parsedDimension === null || parsedCustomW === null || parsedCustomH === null)
-      return null;
+    if (parsedDimension === null || parsedCustomW === null || parsedCustomH === null) return null;
     return calcWidthFromHeight(parsedDimension, parsedCustomW, parsedCustomH);
   }, [parsedDimension, parsedCustomW, parsedCustomH]);
 
@@ -187,7 +160,7 @@ function AspectRatioCalculator() {
         showToast("コピーに失敗しました", "error");
       }
     },
-    [copy, announceStatus, showToast]
+    [copy, announceStatus, showToast],
   );
 
   const handlePresetClick = useCallback((preset: AspectRatioPreset) => {
@@ -222,7 +195,9 @@ function AspectRatioCalculator() {
                     aria-invalid={parsedWidth === null && widthInput !== ""}
                   />
                 </div>
-                <div className="ar-input-sep" aria-hidden="true">×</div>
+                <div className="ar-input-sep" aria-hidden="true">
+                  ×
+                </div>
                 <div className="ar-field">
                   <label htmlFor="ar-height-input">高さ（px）</label>
                   <input
@@ -240,11 +215,7 @@ function AspectRatioCalculator() {
               </div>
 
               {simplifiedRatio !== null ? (
-                <div
-                  className="ar-result"
-                  role="region"
-                  aria-label="アスペクト比の計算結果"
-                >
+                <div className="ar-result" role="region" aria-label="アスペクト比の計算結果">
                   <div>
                     <div
                       className="ar-result-ratio"
@@ -253,9 +224,7 @@ function AspectRatioCalculator() {
                       {simplifiedRatio[0]}:{simplifiedRatio[1]}
                     </div>
                     {decimalRatio !== null && (
-                      <div className="ar-result-decimal">
-                        ≈ {decimalRatio.toFixed(4)}
-                      </div>
+                      <div className="ar-result-decimal">≈ {decimalRatio.toFixed(4)}</div>
                     )}
                   </div>
                   <button
@@ -268,9 +237,7 @@ function AspectRatioCalculator() {
                   </button>
                 </div>
               ) : (
-                <p className="ar-placeholder">
-                  幅と高さに正の整数を入力してください
-                </p>
+                <p className="ar-placeholder">幅と高さに正の整数を入力してください</p>
               )}
             </section>
 
@@ -279,11 +246,7 @@ function AspectRatioCalculator() {
               <h2 className="ar-section-title" id="ar-presets-title">
                 よく使われる比率
               </h2>
-              <div
-                className="ar-presets-grid"
-                role="list"
-                aria-label="アスペクト比プリセット"
-              >
+              <div className="ar-presets-grid" role="list" aria-label="アスペクト比プリセット">
                 {ASPECT_RATIO_PRESETS.map((preset) => (
                   <button
                     key={preset.label}
@@ -310,10 +273,7 @@ function AspectRatioCalculator() {
                 <h2 className="ar-section-title" id="ar-preview-title">
                   プレビュー
                 </h2>
-                <AspectRatioPreview
-                  ratioW={simplifiedRatio[0]}
-                  ratioH={simplifiedRatio[1]}
-                />
+                <AspectRatioPreview ratioW={simplifiedRatio[0]} ratioH={simplifiedRatio[1]} />
               </section>
             )}
 
@@ -323,11 +283,7 @@ function AspectRatioCalculator() {
                 アスペクト比から寸法を計算
               </h2>
 
-              <div
-                className="ar-convert-ratio-row"
-                role="group"
-                aria-label="アスペクト比の入力"
-              >
+              <div className="ar-convert-ratio-row" role="group" aria-label="アスペクト比の入力">
                 <span className="ar-convert-ratio-sep" aria-hidden="true">
                   比率:
                 </span>
@@ -362,15 +318,8 @@ function AspectRatioCalculator() {
 
               <div className="ar-convert-rows">
                 {/* 幅を入力 → 高さを計算 */}
-                <div
-                  className="ar-convert-row"
-                  role="group"
-                  aria-label="幅から高さを計算"
-                >
-                  <label
-                    className="ar-convert-row-label"
-                    htmlFor="ar-convert-dim"
-                  >
+                <div className="ar-convert-row" role="group" aria-label="幅から高さを計算">
+                  <label className="ar-convert-row-label" htmlFor="ar-convert-dim">
                     幅:
                   </label>
                   <input
@@ -386,10 +335,7 @@ function AspectRatioCalculator() {
                   <button
                     type="button"
                     className="ar-copy-btn"
-                    onClick={() =>
-                      calcHeight !== null &&
-                      handleCopyDimension(calcHeight, "高さ")
-                    }
+                    onClick={() => calcHeight !== null && handleCopyDimension(calcHeight, "高さ")}
                     disabled={calcHeight === null}
                     aria-label={
                       calcHeight !== null
@@ -405,26 +351,15 @@ function AspectRatioCalculator() {
                   className="ar-convert-result highlight"
                   aria-live="polite"
                   aria-label={
-                    calcHeight !== null
-                      ? `高さ: ${calcHeight}px`
-                      : "高さを計算できません"
+                    calcHeight !== null ? `高さ: ${calcHeight}px` : "高さを計算できません"
                   }
                 >
-                  {calcHeight !== null
-                    ? `高さ: ${calcHeight}px`
-                    : "—"}
+                  {calcHeight !== null ? `高さ: ${calcHeight}px` : "—"}
                 </div>
 
                 {/* 高さを入力 → 幅を計算 */}
-                <div
-                  className="ar-convert-row"
-                  role="group"
-                  aria-label="高さから幅を計算"
-                >
-                  <label
-                    className="ar-convert-row-label"
-                    htmlFor="ar-convert-dim-h"
-                  >
+                <div className="ar-convert-row" role="group" aria-label="高さから幅を計算">
+                  <label className="ar-convert-row-label" htmlFor="ar-convert-dim-h">
                     高さ:
                   </label>
                   <input
@@ -440,10 +375,7 @@ function AspectRatioCalculator() {
                   <button
                     type="button"
                     className="ar-copy-btn"
-                    onClick={() =>
-                      calcWidth !== null &&
-                      handleCopyDimension(calcWidth, "幅")
-                    }
+                    onClick={() => calcWidth !== null && handleCopyDimension(calcWidth, "幅")}
                     disabled={calcWidth === null}
                     aria-label={
                       calcWidth !== null
@@ -458,15 +390,9 @@ function AspectRatioCalculator() {
                 <div
                   className="ar-convert-result highlight"
                   aria-live="polite"
-                  aria-label={
-                    calcWidth !== null
-                      ? `幅: ${calcWidth}px`
-                      : "幅を計算できません"
-                  }
+                  aria-label={calcWidth !== null ? `幅: ${calcWidth}px` : "幅を計算できません"}
                 >
-                  {calcWidth !== null
-                    ? `幅: ${calcWidth}px`
-                    : "—"}
+                  {calcWidth !== null ? `幅: ${calcWidth}px` : "—"}
                 </div>
               </div>
             </section>

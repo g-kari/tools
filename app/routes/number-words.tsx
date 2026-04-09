@@ -1,45 +1,41 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
-import { useState, useCallback, useEffect, useRef } from 'react';
-import { useToast } from '../components/Toast';
-import { Button } from '~/components/ui/button';
-import { TipsCard } from '~/components/TipsCard';
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from '~/hooks/useStatusAnnouncement';
-import { useKeyboardShortcut } from '~/hooks/useKeyboardShortcut';
+import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
+import { useState, useCallback, useEffect, useRef } from "react";
+import { useToast } from "../components/Toast";
+import { Button } from "~/components/ui/button";
+import { TipsCard } from "~/components/TipsCard";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
+import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 import {
   toWordsEnglish,
   toWordsEnglishOrdinal,
   toWordsJapanese,
   toWordsJapaneseReading,
   NUMBER_WORDS_MAX,
-} from '../utils/number-words';
+} from "../utils/number-words";
 
-export const Route = createFileRoute('/number-words')({
+export const Route = createFileRoute("/number-words")({
   head: () => ({
     meta: [
-      { title: '数値テキスト変換 | Web ツール集' },
+      { title: "数値テキスト変換 | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          '整数を英語・日本語のテキストに変換するツール。英語基数詞（one hundred twenty-three）・序数詞（first, second）・日本語漢数字（百二十三）・読み仮名（ひゃくにじゅうさん）に対応。',
+          "整数を英語・日本語のテキストに変換するツール。英語基数詞（one hundred twenty-three）・序数詞（first, second）・日本語漢数字（百二十三）・読み仮名（ひゃくにじゅうさん）に対応。",
       },
-      { property: 'og:title', content: '数値テキスト変換 | Web ツール集' },
+      { property: "og:title", content: "数値テキスト変換 | Web ツール集" },
       {
-        property: 'og:description',
+        property: "og:description",
         content:
-          '整数を英語・日本語のテキストに変換するツール。英語基数詞・序数詞・日本語漢数字・読み仮名に対応。',
+          "整数を英語・日本語のテキストに変換するツール。英語基数詞・序数詞・日本語漢数字・読み仮名に対応。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/number-words` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
-      { name: 'twitter:title', content: '数値テキスト変換 | Web ツール集' },
+      { property: "og:url", content: `${SITE_BASE_URL}/number-words` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "数値テキスト変換 | Web ツール集" },
       {
-        name: 'twitter:description',
-        content:
-          '整数を英語・日本語のテキストに変換するツール。',
+        name: "twitter:description",
+        content: "整数を英語・日本語のテキストに変換するツール。",
       },
     ],
   }),
@@ -87,7 +83,7 @@ function ResultRow({
       <div className="nw-result-content">
         <div className="nw-result-label">{label}</div>
         {value ? (
-          <div className={`nw-result-value ${valueClass ?? ''}`}>{value}</div>
+          <div className={`nw-result-value ${valueClass ?? ""}`}>{value}</div>
         ) : (
           <div className="nw-result-empty">—</div>
         )}
@@ -110,9 +106,9 @@ function ResultRow({
  */
 function NumberWordsConverter() {
   const { showToast } = useToast();
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
   const [result, setResult] = useState<ConversionResult | null>(null);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const inputRef = useRef<HTMLInputElement>(null);
   const { statusRef, announceStatus } = useStatusAnnouncement();
@@ -120,18 +116,18 @@ function NumberWordsConverter() {
   const handleConvert = useCallback(() => {
     const trimmed = input.trim();
     if (!trimmed) {
-      setError('数値を入力してください');
+      setError("数値を入力してください");
       setResult(null);
-      announceStatus('エラー: 数値を入力してください');
+      announceStatus("エラー: 数値を入力してください");
       inputRef.current?.focus();
       return;
     }
 
     const n = Number(trimmed);
     if (!Number.isInteger(n) || isNaN(n)) {
-      setError('整数を入力してください');
+      setError("整数を入力してください");
       setResult(null);
-      announceStatus('エラー: 整数を入力してください');
+      announceStatus("エラー: 整数を入力してください");
       inputRef.current?.focus();
       return;
     }
@@ -139,73 +135,67 @@ function NumberWordsConverter() {
     if (Math.abs(n) > NUMBER_WORDS_MAX) {
       setError(`サポート範囲外です（最大: ±${NUMBER_WORDS_MAX.toLocaleString()}）`);
       setResult(null);
-      announceStatus('エラー: サポート範囲外の数値です');
+      announceStatus("エラー: サポート範囲外の数値です");
       inputRef.current?.focus();
       return;
     }
 
     const converted = convert(trimmed);
     if (!converted) {
-      setError('変換に失敗しました');
+      setError("変換に失敗しました");
       setResult(null);
       return;
     }
 
-    setError('');
+    setError("");
     setResult(converted);
-    announceStatus('変換完了');
+    announceStatus("変換完了");
   }, [input, announceStatus]);
 
   const handleCopy = useCallback(
     async (text: string) => {
       try {
         await navigator.clipboard.writeText(text);
-        showToast('コピーしました', 'success');
-        announceStatus('クリップボードにコピーしました');
+        showToast("コピーしました", "success");
+        announceStatus("クリップボードにコピーしました");
       } catch {
-        showToast('コピーに失敗しました', 'error');
+        showToast("コピーに失敗しました", "error");
       }
     },
-    [showToast, announceStatus]
+    [showToast, announceStatus],
   );
 
   const handleClear = useCallback(() => {
-    setInput('');
+    setInput("");
     setResult(null);
-    setError('');
+    setError("");
     inputRef.current?.focus();
-    announceStatus('クリアしました');
+    announceStatus("クリアしました");
   }, [announceStatus]);
 
   // Ctrl+Enter で変換
-  useKeyboardShortcut('Enter', handleConvert, { ctrl: true });
+  useKeyboardShortcut("Enter", handleConvert, { ctrl: true });
 
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
 
   // 入力変更時にリアルタイム変換
-  const handleInputChange = useCallback(
-    (value: string) => {
-      setInput(value);
-      setError('');
-      if (value.trim()) {
-        const converted = convert(value);
-        setResult(converted);
-      } else {
-        setResult(null);
-      }
-    },
-    []
-  );
+  const handleInputChange = useCallback((value: string) => {
+    setInput(value);
+    setError("");
+    if (value.trim()) {
+      const converted = convert(value);
+      setResult(converted);
+    } else {
+      setResult(null);
+    }
+  }, []);
 
   return (
     <>
       <div className="nw-container">
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          aria-label="数値テキスト変換フォーム"
-        >
+        <form onSubmit={(e) => e.preventDefault()} aria-label="数値テキスト変換フォーム">
           {/* 入力セクション */}
           <section className="nw-input-section" aria-labelledby="nw-heading">
             <h2 id="nw-heading" className="section-title">
@@ -265,11 +255,7 @@ function NumberWordsConverter() {
         </form>
 
         {/* 結果セクション */}
-        <div
-          className="nw-results-section"
-          aria-live="polite"
-          aria-label="変換結果"
-        >
+        <div className="nw-results-section" aria-live="polite" aria-label="変換結果">
           <ResultRow
             label="英語 基数詞 (Cardinal)"
             value={result?.enCardinal ?? null}
@@ -298,30 +284,30 @@ function NumberWordsConverter() {
         <TipsCard
           sections={[
             {
-              title: '使い方',
+              title: "使い方",
               items: [
-                '入力欄に整数を入力すると英語・日本語に自動変換されます',
-                '「変換」ボタンまたは Ctrl+Enter でも変換できます',
-                '各結果の「コピー」ボタンでクリップボードにコピーできます',
-                '負の整数も英語変換に対応しています（例: -42 → negative forty-two）',
+                "入力欄に整数を入力すると英語・日本語に自動変換されます",
+                "「変換」ボタンまたは Ctrl+Enter でも変換できます",
+                "各結果の「コピー」ボタンでクリップボードにコピーできます",
+                "負の整数も英語変換に対応しています（例: -42 → negative forty-two）",
               ],
             },
             {
-              title: '活用例',
-                items: [
-                  '請求書・領収書の金額を英語テキストで記載する場合',
-                  '法的文書での数値の書き言葉表現',
-                  '多言語対応アプリのローカライズ確認',
-                  '日本語教育・英語学習での数値表現の確認',
-                  '序数詞（1st, 2nd, 3rd...）の正確なスペル確認',
-                ],
+              title: "活用例",
+              items: [
+                "請求書・領収書の金額を英語テキストで記載する場合",
+                "法的文書での数値の書き言葉表現",
+                "多言語対応アプリのローカライズ確認",
+                "日本語教育・英語学習での数値表現の確認",
+                "序数詞（1st, 2nd, 3rd...）の正確なスペル確認",
+              ],
             },
             {
-              title: '日本語の読みのルール',
+              title: "日本語の読みのルール",
               items: [
-                '百の音便変化: 三百=さんびゃく, 六百=ろっぴゃく, 八百=はっぴゃく',
-                '千の音便変化: 三千=さんぜん, 八千=はっせん',
-                '「一千」は「せん」、「一百」は「ひゃく」と省略されます',
+                "百の音便変化: 三百=さんびゃく, 六百=ろっぴゃく, 八百=はっぴゃく",
+                "千の音便変化: 三千=さんぜん, 八千=はっせん",
+                "「一千」は「せん」、「一百」は「ひゃく」と省略されます",
               ],
             },
           ]}

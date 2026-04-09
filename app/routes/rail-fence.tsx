@@ -25,8 +25,7 @@ export const Route = createFileRoute("/rail-fence")({
       },
       {
         property: "og:description",
-        content:
-          "Rail Fence暗号のエンコード・デコードツール。ジグザグパターンの可視化に対応。",
+        content: "Rail Fence暗号のエンコード・デコードツール。ジグザグパターンの可視化に対応。",
       },
       { property: "og:url", content: `${SITE_BASE_URL}/rail-fence` },
       { property: "og:type", content: "website" },
@@ -100,10 +99,10 @@ function RailFenceCipher() {
       announceStatus(
         newMode === "encode"
           ? "エンコードモードに切り替えました"
-          : "デコードモードに切り替えました"
+          : "デコードモードに切り替えました",
       );
     },
-    [announceStatus]
+    [announceStatus],
   );
 
   const handleToggleViz = useCallback(() => {
@@ -242,11 +241,7 @@ function RailFenceCipher() {
             <h2 id="rail-fence-viz-heading" className="section-title">
               ジグザグパターン可視化
             </h2>
-            <div
-              className="rail-fence-viz"
-              role="region"
-              aria-label="Rail Fenceジグザグパターン"
-            >
+            <div className="rail-fence-viz" role="region" aria-label="Rail Fenceジグザグパターン">
               {vizLines.map((line, i) => (
                 <div key={i} className="rail-fence-viz-row">
                   <span className="rail-fence-viz-rail-label" aria-label={`レール${i + 1}`}>
@@ -261,7 +256,7 @@ function RailFenceCipher() {
                       <span key={j} className="rail-fence-viz-dot" aria-hidden="true">
                         ·
                       </span>
-                    )
+                    ),
                   )}
                 </div>
               ))}

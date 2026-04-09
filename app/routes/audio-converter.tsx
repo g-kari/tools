@@ -10,16 +10,25 @@ import { TipsCard } from "~/components/TipsCard";
 export const Route = createFileRoute("/audio-converter")({
   head: () => ({
     meta: [
-    { title: "音声変換ツール | Web ツール集" },
-    { name: "description", content: "音声ファイルをMP3・WAV・OGG等の形式に変換するオンラインツール。" },
-    { property: "og:title", content: "音声変換ツール | Web ツール集" },
-    { property: "og:description", content: "音声ファイルをMP3・WAV・OGG等の形式に変換するオンラインツール。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/audio-converter` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "音声変換ツール | Web ツール集" },
-    { name: "twitter:description", content: "音声ファイルをMP3・WAV・OGG等の形式に変換するオンラインツール。" },
-  ],
+      { title: "音声変換ツール | Web ツール集" },
+      {
+        name: "description",
+        content: "音声ファイルをMP3・WAV・OGG等の形式に変換するオンラインツール。",
+      },
+      { property: "og:title", content: "音声変換ツール | Web ツール集" },
+      {
+        property: "og:description",
+        content: "音声ファイルをMP3・WAV・OGG等の形式に変換するオンラインツール。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/audio-converter` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "音声変換ツール | Web ツール集" },
+      {
+        name: "twitter:description",
+        content: "音声ファイルをMP3・WAV・OGG等の形式に変換するオンラインツール。",
+      },
+    ],
   }),
   component: AudioConverter,
 });
@@ -48,7 +57,7 @@ async function convertAudioWithFFmpeg(
   file: File,
   format: "mp3" | "wav" | "ogg",
   options: ConversionOptions,
-  onProgress?: (progress: number) => void
+  onProgress?: (progress: number) => void,
 ): Promise<{ blob: Blob; filename: string }> {
   const ffmpeg = new FFmpeg();
 
@@ -123,12 +132,7 @@ async function convertAudioWithFFmpeg(
 
   // 出力ファイルを読み込み
   const data = await ffmpeg.readFile(outputName);
-  const mimeType =
-    format === "mp3"
-      ? "audio/mpeg"
-      : format === "wav"
-        ? "audio/wav"
-        : "audio/ogg";
+  const mimeType = format === "mp3" ? "audio/mpeg" : format === "wav" ? "audio/wav" : "audio/ogg";
   const blob = new Blob([data], { type: mimeType });
 
   const filename = `converted.${format}`;
@@ -181,7 +185,7 @@ function AudioConverter() {
         announceStatus(`ファイル ${file.name} を選択しました`);
       }
     },
-    [announceStatus]
+    [announceStatus],
   );
 
   const handleConvert = useCallback(async () => {
@@ -205,16 +209,11 @@ function AudioConverter() {
       };
 
       // ffmpeg.wasmを使用して変換
-      const { blob, filename } = await convertAudioWithFFmpeg(
-        sourceFile,
-        format,
-        options,
-        (p) => {
-          setProgress(p);
-          setIsLoading(false);
-          announceStatus(`変換中... ${p}%`);
-        }
-      );
+      const { blob, filename } = await convertAudioWithFFmpeg(sourceFile, format, options, (p) => {
+        setProgress(p);
+        setIsLoading(false);
+        announceStatus(`変換中... ${p}%`);
+      });
 
       // Blob URLを作成
       if (convertedUrl) {
@@ -231,7 +230,7 @@ function AudioConverter() {
       announceStatus("エラー: 変換に失敗しました");
       showToast(
         `変換に失敗しました: ${error instanceof Error ? error.message : "不明なエラー"}`,
-        "error"
+        "error",
       );
     } finally {
       setIsConverting(false);
@@ -270,30 +269,30 @@ function AudioConverter() {
     setIsDragging(false);
   }, []);
 
-  const handleDrop = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
+  const handleDrop = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      setIsDragging(false);
 
-    const droppedFile = e.dataTransfer.files[0];
-    if (droppedFile) {
-      if (!droppedFile.type.startsWith("audio/")) {
-        announceStatus("エラー: オーディオファイルをドロップしてください");
-        return;
+      const droppedFile = e.dataTransfer.files[0];
+      if (droppedFile) {
+        if (!droppedFile.type.startsWith("audio/")) {
+          announceStatus("エラー: オーディオファイルをドロップしてください");
+          return;
+        }
+        setSourceFile(droppedFile);
+        setConvertedUrl("");
+        setProgress(0);
+        announceStatus(`ファイル ${droppedFile.name} を選択しました`);
       }
-      setSourceFile(droppedFile);
-      setConvertedUrl("");
-      setProgress(0);
-      announceStatus(`ファイル ${droppedFile.name} を選択しました`);
-    }
-  }, [announceStatus]);
+    },
+    [announceStatus],
+  );
 
   return (
     <>
       <div className="tool-container">
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          aria-label="オーディオ変換フォーム"
-        >
+        <form onSubmit={(e) => e.preventDefault()} aria-label="オーディオ変換フォーム">
           <div className="converter-section">
             <h2 className="section-title">ファイル選択</h2>
 
@@ -329,9 +328,7 @@ function AudioConverter() {
                   <polyline points="17 8 12 3 7 8" />
                   <line x1="12" y1="3" x2="12" y2="15" />
                 </svg>
-                <p className="dropzone-text">
-                  クリックして音声を選択、またはドラッグ&ドロップ
-                </p>
+                <p className="dropzone-text">クリックして音声を選択、またはドラッグ&ドロップ</p>
                 <p className="dropzone-hint">MP3, WAV, OGG, AAC, FLAC など</p>
               </div>
             </div>
@@ -348,7 +345,8 @@ function AudioConverter() {
 
             {sourceFile && (
               <div className="selected-file" role="status">
-                <strong>選択中:</strong> {sourceFile.name} ({(sourceFile.size / 1024).toFixed(2)} KB)
+                <strong>選択中:</strong> {sourceFile.name} ({(sourceFile.size / 1024).toFixed(2)}{" "}
+                KB)
               </div>
             )}
           </div>
@@ -360,9 +358,7 @@ function AudioConverter() {
             <select
               id="outputFormat"
               value={format}
-              onChange={(e) =>
-                setFormat(e.target.value as "mp3" | "wav" | "ogg")
-              }
+              onChange={(e) => setFormat(e.target.value as "mp3" | "wav" | "ogg")}
               aria-label="出力フォーマットを選択"
               disabled={isConverting}
             >
@@ -376,9 +372,7 @@ function AudioConverter() {
             <h3 className="section-title">変換オプション</h3>
 
             <div className="option-group">
-              <label htmlFor="bitrate">
-                ビットレート (kbps)
-              </label>
+              <label htmlFor="bitrate">ビットレート (kbps)</label>
               <select
                 id="bitrate"
                 value={bitrate}
@@ -394,16 +388,12 @@ function AudioConverter() {
                 <option value="64">64 (最低品質)</option>
               </select>
               {format === "wav" && (
-                <p className="audio-wav-note">
-                  ※ WAV形式ではビットレート設定は使用されません
-                </p>
+                <p className="audio-wav-note">※ WAV形式ではビットレート設定は使用されません</p>
               )}
             </div>
 
             <div className="option-group">
-              <label htmlFor="sampleRate">
-                サンプリングレート (Hz)
-              </label>
+              <label htmlFor="sampleRate">サンプリングレート (Hz)</label>
               <select
                 id="sampleRate"
                 value={sampleRate}
@@ -422,9 +412,7 @@ function AudioConverter() {
             </div>
 
             <div className="option-group">
-              <label htmlFor="channels">
-                チャンネル
-              </label>
+              <label htmlFor="channels">チャンネル</label>
               <select
                 id="channels"
                 value={channels}

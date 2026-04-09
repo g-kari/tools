@@ -4,10 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { useToast } from "../components/Toast";
 import { TipsCard } from "~/components/TipsCard";
 import { ErrorMessage } from "~/components/ErrorMessage";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import {
   generateTotp,
   getSampleSecret,
@@ -22,14 +19,12 @@ export const Route = createFileRoute("/totp")({
       { title: "TOTPジェネレーター | Web ツール集" },
       {
         name: "description",
-        content:
-          "RFC 6238準拠のTOTP（時間ベースワンタイムパスワード）を生成するオンラインツール。",
+        content: "RFC 6238準拠のTOTP（時間ベースワンタイムパスワード）を生成するオンラインツール。",
       },
       { property: "og:title", content: "TOTPジェネレーター | Web ツール集" },
       {
         property: "og:description",
-        content:
-          "RFC 6238準拠のTOTP（時間ベースワンタイムパスワード）を生成するオンラインツール。",
+        content: "RFC 6238準拠のTOTP（時間ベースワンタイムパスワード）を生成するオンラインツール。",
       },
       { property: "og:url", content: `${SITE_BASE_URL}/totp` },
       { property: "og:type", content: "website" },
@@ -37,8 +32,7 @@ export const Route = createFileRoute("/totp")({
       { name: "twitter:title", content: "TOTPジェネレーター | Web ツール集" },
       {
         name: "twitter:description",
-        content:
-          "RFC 6238準拠のTOTP（時間ベースワンタイムパスワード）を生成するオンラインツール。",
+        content: "RFC 6238準拠のTOTP（時間ベースワンタイムパスワード）を生成するオンラインツール。",
       },
     ],
   }),
@@ -54,9 +48,7 @@ function TotpGeneratorPage() {
   const [secret, setSecret] = useState("");
   const [period, setPeriod] = useState(30);
   const [digits, setDigits] = useState(6);
-  const [algorithm, setAlgorithm] = useState<"SHA-1" | "SHA-256" | "SHA-512">(
-    "SHA-1"
-  );
+  const [algorithm, setAlgorithm] = useState<"SHA-1" | "SHA-256" | "SHA-512">("SHA-1");
   const [totpResult, setTotpResult] = useState<TotpResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isRunning, setIsRunning] = useState(false);
@@ -80,8 +72,7 @@ function TotpGeneratorPage() {
       setRemaining(result.remaining);
       setError(null);
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "エラーが発生しました";
+      const message = err instanceof Error ? err.message : "エラーが発生しました";
       setError(message);
       setTotpResult(null);
       setIsRunning(false);
@@ -103,8 +94,7 @@ function TotpGeneratorPage() {
       announceStatus("TOTP生成を開始しました");
       showToast("TOTP生成を開始しました", "success");
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "エラーが発生しました";
+      const message = err instanceof Error ? err.message : "エラーが発生しました";
       setError(message);
       showToast(message, "error");
     }
@@ -196,18 +186,16 @@ function TotpGeneratorPage() {
     secretRef.current?.focus();
   }, []);
 
-  const timerPercent =
-    totpResult && period > 0 ? (remaining / period) * 100 : 0;
+  const timerPercent = totpResult && period > 0 ? (remaining / period) * 100 : 0;
 
-  const otpauthUri =
-    secret.trim()
-      ? generateOtpauthUri(secret, "WebTools", "user@example.com", {
-          secret,
-          period,
-          digits,
-          algorithm,
-        })
-      : "";
+  const otpauthUri = secret.trim()
+    ? generateOtpauthUri(secret, "WebTools", "user@example.com", {
+        secret,
+        period,
+        digits,
+        algorithm,
+      })
+    : "";
 
   return (
     <>
@@ -217,10 +205,7 @@ function TotpGeneratorPage() {
           RFC 6238準拠のTOTP（時間ベースワンタイムパスワード）をブラウザ内で生成します。Google
           Authenticator等の2FAコードをシークレットキーから確認できます。
         </p>
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          aria-label="TOTPジェネレーターフォーム"
-        >
+        <form onSubmit={(e) => e.preventDefault()} aria-label="TOTPジェネレーターフォーム">
           <div className="tp-layout">
             {/* 左パネル: 秘密鍵入力・オプション */}
             <div className="tp-panel">
@@ -243,11 +228,7 @@ function TotpGeneratorPage() {
               </span>
 
               {/* オプション設定 */}
-              <div
-                className="tp-options"
-                role="group"
-                aria-label="TOTP生成オプション"
-              >
+              <div className="tp-options" role="group" aria-label="TOTP生成オプション">
                 <div className="tp-options-row">
                   <label className="tp-option-label" htmlFor="tp-period">
                     期間（秒）:
@@ -260,9 +241,7 @@ function TotpGeneratorPage() {
                     max="120"
                     value={period}
                     onChange={(e) =>
-                      setPeriod(
-                        Math.max(10, Math.min(120, parseInt(e.target.value) || 30))
-                      )
+                      setPeriod(Math.max(10, Math.min(120, parseInt(e.target.value) || 30)))
                     }
                     aria-label="タイムステップ期間（秒）"
                   />
@@ -292,9 +271,7 @@ function TotpGeneratorPage() {
                     className="tp-select"
                     value={algorithm}
                     onChange={(e) =>
-                      setAlgorithm(
-                        e.target.value as "SHA-1" | "SHA-256" | "SHA-512"
-                      )
+                      setAlgorithm(e.target.value as "SHA-1" | "SHA-256" | "SHA-512")
                     }
                     aria-label="ハッシュアルゴリズム"
                   >
@@ -399,9 +376,7 @@ function TotpGeneratorPage() {
                         }}
                       />
                     </div>
-                    <span className="tp-timer-text">
-                      残り {remaining} 秒
-                    </span>
+                    <span className="tp-timer-text">残り {remaining} 秒</span>
                   </>
                 ) : (
                   <span className="tp-code-empty">

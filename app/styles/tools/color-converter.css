@@ -42,7 +42,7 @@
 }
 
 .ccv-swatch-label {
-  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-family: "JetBrains Mono", "Courier New", monospace;
   font-size: 15px;
   font-weight: 600;
   letter-spacing: 1px;
@@ -106,7 +106,7 @@
 
 .ccv-format-value {
   flex: 1;
-  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-family: "JetBrains Mono", "Courier New", monospace;
   font-size: 12px;
   color: var(--md-sys-color-on-surface);
   overflow: hidden;
@@ -159,7 +159,7 @@
   padding: 5px 6px;
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: 4px;
-  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-family: "JetBrains Mono", "Courier New", monospace;
   font-size: 12px;
   background: var(--md-sys-color-surface);
   color: var(--md-sys-color-on-surface);
@@ -179,7 +179,7 @@
   margin: 0;
 }
 
-.ccv-num-input[type='number'] {
+.ccv-num-input[type="number"] {
   -moz-appearance: textfield;
 }
 
@@ -195,7 +195,7 @@
   padding: 6px 10px;
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: 4px;
-  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-family: "JetBrains Mono", "Courier New", monospace;
   font-size: 14px;
   font-weight: 600;
   background: var(--md-sys-color-surface);

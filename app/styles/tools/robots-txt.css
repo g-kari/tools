@@ -44,7 +44,10 @@
   font-size: 0.75rem;
   font-family: "JetBrains Mono", "Space Mono", monospace;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s,
+    border-color 0.15s;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   white-space: nowrap;
@@ -133,7 +136,9 @@
   font-size: 0.75rem;
   font-family: "JetBrains Mono", "Space Mono", monospace;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
   margin-left: auto;
   white-space: nowrap;
 }
@@ -233,7 +238,9 @@
   font-size: 0.75rem;
   font-family: "JetBrains Mono", "Space Mono", monospace;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
   margin-top: 0.25rem;
   align-self: flex-start;
 }
@@ -296,7 +303,9 @@
   font-size: 0.875rem;
   font-family: "JetBrains Mono", "Space Mono", monospace;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
   text-align: center;
   margin-bottom: 1.5rem;
 }
@@ -368,7 +377,9 @@
   font-size: 0.75rem;
   font-family: "JetBrains Mono", "Space Mono", monospace;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
   align-self: flex-start;
 }
 

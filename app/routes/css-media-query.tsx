@@ -3,10 +3,7 @@ import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useCallback, useMemo, useRef, useEffect } from "react";
 import { useToast } from "../components/Toast";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 import {
   type MediaCondition,
@@ -51,8 +48,7 @@ export const Route = createFileRoute("/css-media-query")({
       },
       {
         name: "twitter:description",
-        content:
-          "CSSメディアクエリをビジュアルに構築するツール。ライブプレビューつき。",
+        content: "CSSメディアクエリをビジュアルに構築するツール。ライブプレビューつき。",
       },
     ],
   }),
@@ -133,9 +129,7 @@ function MediaConditionCard({
               className="cmq-value-input"
               value={cond.ratioW}
               min={1}
-              onChange={(e) =>
-                onChange(cond.id, { ratioW: Number(e.target.value) })
-              }
+              onChange={(e) => onChange(cond.id, { ratioW: Number(e.target.value) })}
               aria-label="アスペクト比の幅"
             />
             <span className="cmq-range-sep" aria-hidden="true">
@@ -146,9 +140,7 @@ function MediaConditionCard({
               className="cmq-value-input"
               value={cond.ratioH}
               min={1}
-              onChange={(e) =>
-                onChange(cond.id, { ratioH: Number(e.target.value) })
-              }
+              onChange={(e) => onChange(cond.id, { ratioH: Number(e.target.value) })}
               aria-label="アスペクト比の高さ"
             />
           </div>
@@ -174,9 +166,7 @@ function MediaConditionCard({
               className="cmq-value-input"
               value={cond.value}
               min={0}
-              onChange={(e) =>
-                onChange(cond.id, { value: Number(e.target.value) })
-              }
+              onChange={(e) => onChange(cond.id, { value: Number(e.target.value) })}
               aria-label="値"
             />
           </div>
@@ -188,17 +178,13 @@ function MediaConditionCard({
               className="cmq-value-input"
               value={cond.value}
               min={0}
-              onChange={(e) =>
-                onChange(cond.id, { value: Number(e.target.value) })
-              }
+              onChange={(e) => onChange(cond.id, { value: Number(e.target.value) })}
               aria-label="値"
             />
             <select
               className="cmq-unit-select"
               value={cond.unit}
-              onChange={(e) =>
-                onChange(cond.id, { unit: e.target.value as MediaUnit })
-              }
+              onChange={(e) => onChange(cond.id, { unit: e.target.value as MediaUnit })}
               aria-label="単位"
             >
               {UNITS.map((u) => (
@@ -243,10 +229,7 @@ function CssMediaQueryBuilder() {
   /** プレビュー幅を CSS カスタムプロパティとして反映（インラインスタイル禁止ルール対応） */
   const previewOuterRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    previewOuterRef.current?.style.setProperty(
-      "--cmq-preview-width",
-      `${previewWidth}px`
-    );
+    previewOuterRef.current?.style.setProperty("--cmq-preview-width", `${previewWidth}px`);
   }, [previewWidth]);
 
   /** ルール全体を部分更新する */
@@ -255,17 +238,12 @@ function CssMediaQueryBuilder() {
   }, []);
 
   /** 個別条件を更新する */
-  const updateCondition = useCallback(
-    (id: string, updates: Partial<MediaCondition>) => {
-      setRule((prev) => ({
-        ...prev,
-        conditions: prev.conditions.map((c) =>
-          c.id === id ? { ...c, ...updates } : c
-        ),
-      }));
-    },
-    []
-  );
+  const updateCondition = useCallback((id: string, updates: Partial<MediaCondition>) => {
+    setRule((prev) => ({
+      ...prev,
+      conditions: prev.conditions.map((c) => (c.id === id ? { ...c, ...updates } : c)),
+    }));
+  }, []);
 
   /** 条件を追加する */
   const addCondition = useCallback(() => {
@@ -289,7 +267,7 @@ function CssMediaQueryBuilder() {
       });
       announceStatus("条件を削除しました");
     },
-    [announceStatus]
+    [announceStatus],
   );
 
   /** ブレイクポイントを最初の length 条件に適用する */
@@ -304,7 +282,7 @@ function CssMediaQueryBuilder() {
       });
       announceStatus(`ブレイクポイント ${value}${unit} を適用しました`);
     },
-    [announceStatus]
+    [announceStatus],
   );
 
   /** 設定をリセットする */
@@ -328,15 +306,9 @@ function CssMediaQueryBuilder() {
     }
   }, [copy, rule, outputType, showToast, announceStatus]);
 
-  const outputText = useMemo(
-    () => formatMediaQueryOutput(rule, outputType),
-    [rule, outputType]
-  );
+  const outputText = useMemo(() => formatMediaQueryOutput(rule, outputType), [rule, outputType]);
 
-  const queryActive = useMemo(
-    () => checkMediaQueryMatch(rule, previewWidth),
-    [rule, previewWidth]
-  );
+  const queryActive = useMemo(() => checkMediaQueryMatch(rule, previewWidth), [rule, previewWidth]);
 
   return (
     <>
@@ -349,11 +321,7 @@ function CssMediaQueryBuilder() {
               <h2 className="cmq-section-title" id="cmq-media-type-title">
                 メディアタイプ
               </h2>
-              <div
-                className="cmq-media-type-group"
-                role="group"
-                aria-label="メディアタイプを選択"
-              >
+              <div className="cmq-media-type-group" role="group" aria-label="メディアタイプを選択">
                 {MEDIA_TYPES.map((t) => (
                   <button
                     key={t.value}
@@ -398,10 +366,7 @@ function CssMediaQueryBuilder() {
               <p className="cmq-breakpoints-title">
                 ブレイクポイント早見表（クリックで条件1に適用）
               </p>
-              <div
-                className="cmq-breakpoints"
-                aria-label="一般的なブレイクポイント一覧"
-              >
+              <div className="cmq-breakpoints" aria-label="一般的なブレイクポイント一覧">
                 {COMMON_BREAKPOINTS.map((bp) => (
                   <button
                     key={`${bp.value}${bp.unit}`}
@@ -469,10 +434,7 @@ function CssMediaQueryBuilder() {
           {/* ── 右パネル: プレビュー + 出力 ── */}
           <div className="cmq-right">
             {/* ライブプレビュー */}
-            <section
-              className="cmq-preview-section"
-              aria-labelledby="cmq-preview-title"
-            >
+            <section className="cmq-preview-section" aria-labelledby="cmq-preview-title">
               <h2 className="cmq-section-title" id="cmq-preview-title">
                 ライブプレビュー
               </h2>
@@ -502,9 +464,7 @@ function CssMediaQueryBuilder() {
                   className="cmq-preview-outer"
                   aria-label={`仮想ビューポート（幅 ${previewWidth}px）`}
                 >
-                  <div
-                    className={`cmq-preview-inner${queryActive ? " cmq-preview-active" : ""}`}
-                  >
+                  <div className={`cmq-preview-inner${queryActive ? " cmq-preview-active" : ""}`}>
                     <div className="cmq-preview-card">
                       <strong>カード 1</strong>
                       <p className="cmq-preview-card-body">コンテンツ</p>
@@ -518,11 +478,7 @@ function CssMediaQueryBuilder() {
               </div>
 
               {/* 適用状態 */}
-              <div
-                className="cmq-preview-status"
-                role="status"
-                aria-live="polite"
-              >
+              <div className="cmq-preview-status" role="status" aria-live="polite">
                 <span
                   className={`cmq-preview-status-dot ${queryActive ? "active" : "inactive"}`}
                   aria-hidden="true"
@@ -536,10 +492,7 @@ function CssMediaQueryBuilder() {
             </section>
 
             {/* 出力 */}
-            <section
-              className="cmq-output-section"
-              aria-labelledby="cmq-output-title"
-            >
+            <section className="cmq-output-section" aria-labelledby="cmq-output-title">
               <div className="cmq-output-header">
                 <h2 className="cmq-section-title" id="cmq-output-title">
                   生成コード
@@ -555,11 +508,7 @@ function CssMediaQueryBuilder() {
               </div>
 
               {/* フォーマットタブ */}
-              <div
-                className="cmq-output-tabs"
-                role="tablist"
-                aria-label="出力フォーマット"
-              >
+              <div className="cmq-output-tabs" role="tablist" aria-label="出力フォーマット">
                 {OUTPUT_TYPES.map((t) => (
                   <button
                     key={t.value}

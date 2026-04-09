@@ -68,11 +68,7 @@ function NumberTheoryTool() {
       <h2 className="section-title">数論ツール</h2>
 
       {/* タブ切り替え */}
-      <div
-        className="number-theory-tabs"
-        role="tablist"
-        aria-label="数論ツールのタブ"
-      >
+      <div className="number-theory-tabs" role="tablist" aria-label="数論ツールのタブ">
         {TABS.map((tab) => (
           <button
             key={tab.id}
@@ -173,7 +169,7 @@ function GcdLcmPanel() {
     (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key === "Enter") addNumber();
     },
-    [addNumber]
+    [addNumber],
   );
 
   const result = useMemo(() => {
@@ -272,7 +268,10 @@ function GcdLcmPanel() {
           <div className="number-theory-result-grid">
             <div className="number-theory-result-card">
               <p className="number-theory-result-title">GCD（最大公約数）</p>
-              <p className="number-theory-result-value" aria-label={`GCD: ${result.gcd.toString()}`}>
+              <p
+                className="number-theory-result-value"
+                aria-label={`GCD: ${result.gcd.toString()}`}
+              >
                 {result.gcd.toString()}
               </p>
               <Button
@@ -286,7 +285,10 @@ function GcdLcmPanel() {
             </div>
             <div className="number-theory-result-card">
               <p className="number-theory-result-title">LCM（最小公倍数）</p>
-              <p className="number-theory-result-value" aria-label={`LCM: ${result.lcm.toString()}`}>
+              <p
+                className="number-theory-result-value"
+                aria-label={`LCM: ${result.lcm.toString()}`}
+              >
                 {result.lcm.toString()}
               </p>
               <Button
@@ -348,7 +350,7 @@ function FactorizePanel() {
         // フォームのデフォルト動作のみ（計算はリアルタイム）
       }
     },
-    [error]
+    [error],
   );
 
   return (
@@ -477,12 +479,7 @@ function ModPowPanel() {
     const exp = parseBigInt(expStr);
     const mod = parseBigInt(modStr);
     if (base === null || exp === null || mod === null) return null;
-    if (
-      baseStr.trim() === "" ||
-      expStr.trim() === "" ||
-      modStr.trim() === ""
-    )
-      return null;
+    if (baseStr.trim() === "" || expStr.trim() === "" || modStr.trim() === "") return null;
     if (exp < 0n) return { error: "指数は0以上の整数を入力してください" };
     if (mod <= 0n) return { error: "法(mod)は正の整数を入力してください" };
     const value = modPow(base, exp, mod);
@@ -497,9 +494,7 @@ function ModPowPanel() {
 
   return (
     <div role="tabpanel" aria-label="冪乗 mod 計算">
-      <p className="number-theory-desc">
-        base^exp mod m を計算します（大きな数にも対応）
-      </p>
+      <p className="number-theory-desc">base^exp mod m を計算します（大きな数にも対応）</p>
 
       <div className="number-theory-input-row">
         <div className="number-theory-input-group">
@@ -575,8 +570,8 @@ function ModPowPanel() {
             {result.value.toString()}
           </p>
           <p className="number-theory-result-sub">
-            {result.base.toString()}^{result.exp.toString()} mod{" "}
-            {result.mod.toString()} = {result.value.toString()}
+            {result.base.toString()}^{result.exp.toString()} mod {result.mod.toString()} ={" "}
+            {result.value.toString()}
           </p>
           <Button
             type="button"
@@ -626,9 +621,7 @@ function TotientPanel() {
 
   return (
     <div role="tabpanel" aria-label="モジュラー逆数計算">
-      <p className="number-theory-desc">
-        a × x ≡ 1 (mod m) となる x（モジュラー逆数）を計算します
-      </p>
+      <p className="number-theory-desc">a × x ≡ 1 (mod m) となる x（モジュラー逆数）を計算します</p>
 
       <div className="number-theory-input-row">
         <div className="number-theory-input-group">
@@ -692,8 +685,8 @@ function TotientPanel() {
                   {result.inv.toString()}
                 </p>
                 <p className="number-theory-result-sub">
-                  {result.normalizedA.toString()} × {result.inv.toString()} ≡ 1
-                  (mod {result.m.toString()})
+                  {result.normalizedA.toString()} × {result.inv.toString()} ≡ 1 (mod{" "}
+                  {result.m.toString()})
                 </p>
                 <Button
                   type="button"
@@ -708,8 +701,8 @@ function TotientPanel() {
               <>
                 <p className="number-theory-result-value">存在しない</p>
                 <p className="number-theory-result-sub">
-                  gcd({result.normalizedA.toString()}, {result.m.toString()}) ≠
-                  1 のため逆数が存在しません
+                  gcd({result.normalizedA.toString()}, {result.m.toString()}) ≠ 1
+                  のため逆数が存在しません
                 </p>
               </>
             )}

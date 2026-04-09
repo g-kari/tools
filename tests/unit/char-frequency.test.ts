@@ -1,9 +1,5 @@
 import { describe, it, expect } from "vite-plus/test";
-import {
-  analyzeCharFrequency,
-  sortEntries,
-  entriesToCsv,
-} from "../../app/routes/char-frequency";
+import { analyzeCharFrequency, sortEntries, entriesToCsv } from "../../app/routes/char-frequency";
 import type { CharFrequencyOptions } from "../../app/routes/char-frequency";
 
 const defaultOptions: CharFrequencyOptions = {

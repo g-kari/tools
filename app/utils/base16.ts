@@ -4,10 +4,10 @@
  */
 
 /** 大文字/小文字の出力オプション */
-export type Base16Case = 'upper' | 'lower';
+export type Base16Case = "upper" | "lower";
 
 /** 区切り文字オプション */
-export type Base16Delimiter = 'none' | 'space' | 'colon' | 'dash';
+export type Base16Delimiter = "none" | "space" | "colon" | "dash";
 
 /** エンコード結果 */
 export interface Base16EncodeResult {
@@ -30,10 +30,10 @@ export interface Base16DecodeErrorResult {
 }
 
 const DELIMITERS: Record<Base16Delimiter, string> = {
-  none: '',
-  space: ' ',
-  colon: ':',
-  dash: '-',
+  none: "",
+  space: " ",
+  colon: ":",
+  dash: "-",
 };
 
 /**
@@ -45,8 +45,8 @@ const DELIMITERS: Record<Base16Delimiter, string> = {
  */
 export function encodeBase16(
   text: string,
-  letterCase: Base16Case = 'upper',
-  delimiter: Base16Delimiter = 'none',
+  letterCase: Base16Case = "upper",
+  delimiter: Base16Delimiter = "none",
 ): Base16EncodeResult {
   const encoder = new TextEncoder();
   const bytes = encoder.encode(text);
@@ -62,15 +62,15 @@ export function encodeBase16(
  */
 export function encodeBase16Bytes(
   bytes: Uint8Array,
-  letterCase: Base16Case = 'upper',
-  delimiter: Base16Delimiter = 'none',
+  letterCase: Base16Case = "upper",
+  delimiter: Base16Delimiter = "none",
 ): Base16EncodeResult {
   const sep = DELIMITERS[delimiter];
   const parts: string[] = [];
 
   for (const byte of bytes) {
-    const hex = byte.toString(16).padStart(2, '0');
-    parts.push(letterCase === 'upper' ? hex.toUpperCase() : hex);
+    const hex = byte.toString(16).padStart(2, "0");
+    parts.push(letterCase === "upper" ? hex.toUpperCase() : hex);
   }
 
   const encoded = parts.join(sep);
@@ -86,15 +86,13 @@ export function encodeBase16Bytes(
  * @param hex - デコードする16進数文字列
  * @returns デコード結果またはエラー
  */
-export function decodeBase16(
-  hex: string,
-): Base16DecodeResult | Base16DecodeErrorResult {
+export function decodeBase16(hex: string): Base16DecodeResult | Base16DecodeErrorResult {
   // 空白・コロン・ダッシュ区切りを除去して正規化
-  const normalized = hex.replace(/[\s:_-]/g, '').toLowerCase();
+  const normalized = hex.replace(/[\s:_-]/g, "").toLowerCase();
 
   if (normalized.length === 0) {
     const bytes = new Uint8Array(0);
-    return { success: true, decoded: '', bytes };
+    return { success: true, decoded: "", bytes };
   }
 
   const validationError = validateBase16(normalized);
@@ -108,13 +106,14 @@ export function decodeBase16(
   }
 
   try {
-    const decoder = new TextDecoder('utf-8', { fatal: true });
+    const decoder = new TextDecoder("utf-8", { fatal: true });
     const decoded = decoder.decode(bytes);
     return { success: true, decoded, bytes };
   } catch {
     return {
       success: false,
-      error: '有効な UTF-8 テキストにデコードできません。バイナリデータが含まれている可能性があります。',
+      error:
+        "有効な UTF-8 テキストにデコードできません。バイナリデータが含まれている可能性があります。",
     };
   }
 }
@@ -126,7 +125,7 @@ export function decodeBase16(
  * @returns エラーメッセージ、または null（有効な場合）
  */
 export function validateBase16(hex: string, raw?: string): string | null {
-  const normalized = (raw !== undefined ? raw : hex).replace(/[\s:_-]/g, '').toLowerCase();
+  const normalized = (raw !== undefined ? raw : hex).replace(/[\s:_-]/g, "").toLowerCase();
 
   if (normalized.length % 2 !== 0) {
     return `文字数が奇数です（${normalized.length} 文字）。16進数は2文字で1バイトを表します。`;

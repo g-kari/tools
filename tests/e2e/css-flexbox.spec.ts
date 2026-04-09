@@ -7,14 +7,12 @@ test.describe("CSSフレックスボックスジェネレーターページ", ()
 
   test("ページタイトルが表示される", async ({ page }) => {
     await expect(
-      page.getByRole("heading", { name: "CSSフレックスボックスジェネレーター" })
+      page.getByRole("heading", { name: "CSSフレックスボックスジェネレーター" }),
     ).toBeVisible();
   });
 
   test("コンテナプロパティセクションが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "コンテナプロパティ" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "コンテナプロパティ" })).toBeVisible();
   });
 
   test("flex-direction セレクトが存在する", async ({ page }) => {
@@ -59,9 +57,7 @@ test.describe("CSSフレックスボックスジェネレーターページ", ()
   });
 
   test("プレビューエリアが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "ライブプレビュー" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "ライブプレビュー" })).toBeVisible();
     await expect(page.locator(".cfb-preview-container")).toBeVisible();
   });
 
@@ -71,9 +67,7 @@ test.describe("CSSフレックスボックスジェネレーターページ", ()
   });
 
   test("CSS出力エリアが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "生成 CSS" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "生成 CSS" })).toBeVisible();
     await expect(page.locator(".cfb-css-output")).toBeVisible();
   });
 
@@ -94,9 +88,7 @@ test.describe("CSSフレックスボックスジェネレーターページ", ()
     await expect(cssOutput).toContainText("justify-content: center;");
   });
 
-  test("flex-wrap を wrap に変更すると align-content が表示される", async ({
-    page,
-  }) => {
+  test("flex-wrap を wrap に変更すると align-content が表示される", async ({ page }) => {
     await page.getByLabel("flex-wrap の値").selectOption("wrap");
     await expect(page.getByLabel("align-content の値")).toBeVisible();
   });
@@ -115,9 +107,7 @@ test.describe("CSSフレックスボックスジェネレーターページ", ()
   });
 
   test("コピーボタンが存在する", async ({ page }) => {
-    await expect(
-      page.getByLabel("生成されたCSSをクリップボードにコピー")
-    ).toBeVisible();
+    await expect(page.getByLabel("生成されたCSSをクリップボードにコピー")).toBeVisible();
   });
 
   test("リセットボタンでデフォルト状態に戻る", async ({ page }) => {

@@ -7,13 +7,14 @@
  */
 
 /** Base62 アルファベット（標準: 0-9A-Za-z） */
-const BASE62_ALPHABET = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+const BASE62_ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
 /** Base62 アルファベット（小文字優先: 0-9a-zA-Z） */
-const BASE62_ALPHABET_LOWER_FIRST = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+const BASE62_ALPHABET_LOWER_FIRST =
+  "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 /** Base62 アルファベット種別 */
-export type Base62Variant = 'standard' | 'lower-first';
+export type Base62Variant = "standard" | "lower-first";
 
 /** Base62 エンコード結果 */
 export interface Base62EncodeResult {
@@ -45,7 +46,7 @@ export interface Base62DecodeResult {
  * バリアントに対応するアルファベット文字列を返す
  */
 function getAlphabet(variant: Base62Variant): string {
-  return variant === 'lower-first' ? BASE62_ALPHABET_LOWER_FIRST : BASE62_ALPHABET;
+  return variant === "lower-first" ? BASE62_ALPHABET_LOWER_FIRST : BASE62_ALPHABET;
 }
 
 /**
@@ -71,7 +72,7 @@ function buildLookup(alphabet: string): Map<string, number> {
  */
 export function encodeBase62(
   text: string,
-  variant: Base62Variant = 'standard',
+  variant: Base62Variant = "standard",
 ): Base62EncodeResult {
   const bytes = new TextEncoder().encode(text);
   return encodeBase62Bytes(bytes, variant);
@@ -85,12 +86,12 @@ export function encodeBase62(
  */
 export function encodeBase62Bytes(
   bytes: Uint8Array,
-  variant: Base62Variant = 'standard',
+  variant: Base62Variant = "standard",
 ): Base62EncodeResult {
   const alphabet = getAlphabet(variant);
 
   if (bytes.length === 0) {
-    return { encoded: '', inputBytes: 0, outputLength: 0 };
+    return { encoded: "", inputBytes: 0, outputLength: 0 };
   }
 
   // 先頭の 0x00 バイトをカウント（'0' で表現）
@@ -125,7 +126,7 @@ export function encodeBase62Bytes(
     digits
       .reverse()
       .map((d) => alphabet[d])
-      .join('');
+      .join("");
 
   return {
     encoded: result,
@@ -141,12 +142,12 @@ export function encodeBase62Bytes(
  * @param variant - アルファベット種別
  * @returns エンコード結果文字列
  */
-export function encodeIntBase62(n: bigint, variant: Base62Variant = 'standard'): string {
+export function encodeIntBase62(n: bigint, variant: Base62Variant = "standard"): string {
   const alphabet = getAlphabet(variant);
-  if (n < 0n) throw new RangeError('負の整数はエンコードできません');
+  if (n < 0n) throw new RangeError("負の整数はエンコードできません");
   if (n === 0n) return alphabet[0];
 
-  let result = '';
+  let result = "";
   let remaining = n;
   while (remaining > 0n) {
     result = alphabet[Number(remaining % 62n)] + result;
@@ -161,7 +162,7 @@ export function encodeIntBase62(n: bigint, variant: Base62Variant = 'standard'):
  * @param variant - アルファベット種別
  * @returns デコードされた非負整数
  */
-export function decodeIntBase62(encoded: string, variant: Base62Variant = 'standard'): bigint {
+export function decodeIntBase62(encoded: string, variant: Base62Variant = "standard"): bigint {
   const alphabet = getAlphabet(variant);
   const lookup = buildLookup(alphabet);
   let result = 0n;
@@ -185,23 +186,23 @@ export function decodeIntBase62(encoded: string, variant: Base62Variant = 'stand
  */
 export function decodeBase62(
   encoded: string,
-  variant: Base62Variant = 'standard',
+  variant: Base62Variant = "standard",
 ): Base62DecodeResult {
   const alphabet = getAlphabet(variant);
   const lookup = buildLookup(alphabet);
 
   // 空白を除去
-  const cleaned = encoded.replace(/\s/g, '');
+  const cleaned = encoded.replace(/\s/g, "");
 
   if (cleaned.length === 0) {
-    return { decoded: '', bytes: new Uint8Array(0), success: true };
+    return { decoded: "", bytes: new Uint8Array(0), success: true };
   }
 
   // 文字バリデーション
   for (const ch of cleaned) {
     if (!lookup.has(ch)) {
       return {
-        decoded: '',
+        decoded: "",
         bytes: new Uint8Array(0),
         success: false,
         error: `無効な文字が含まれています: '${ch}' （使用可能: ${alphabet}）`,
@@ -244,13 +245,13 @@ export function decodeBase62(
 
   // UTF-8 変換を試みる
   try {
-    const decoded = new TextDecoder('utf-8', { fatal: true }).decode(outputBytes);
+    const decoded = new TextDecoder("utf-8", { fatal: true }).decode(outputBytes);
     return { decoded, bytes: outputBytes, success: true };
   } catch {
     // バイナリデータは hex 表現で返す
     const hexStr = Array.from(outputBytes)
-      .map((b) => b.toString(16).padStart(2, '0'))
-      .join(' ');
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join(" ");
     return { decoded: hexStr, bytes: outputBytes, success: true };
   }
 }
@@ -265,12 +266,9 @@ export function decodeBase62(
  * @param variant - アルファベット種別
  * @returns エラーメッセージ（問題なければ null）
  */
-export function validateBase62(
-  input: string,
-  variant: Base62Variant = 'standard',
-): string | null {
+export function validateBase62(input: string, variant: Base62Variant = "standard"): string | null {
   const alphabet = getAlphabet(variant);
-  const cleaned = input.replace(/\s/g, '');
+  const cleaned = input.replace(/\s/g, "");
 
   if (cleaned.length === 0) return null;
 

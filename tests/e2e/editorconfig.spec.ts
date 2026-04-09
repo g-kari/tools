@@ -10,18 +10,12 @@ test.describe("EditorConfig ジェネレーター", () => {
   });
 
   test("セクション見出しが表示される", async ({ page }) => {
+    await expect(page.getByRole("heading", { name: "プリセット" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "グローバル設定" })).toBeVisible();
     await expect(
-      page.getByRole("heading", { name: "プリセット" })
+      page.getByRole("heading", { name: "ファイルタイプ別オーバーライド" }),
     ).toBeVisible();
-    await expect(
-      page.getByRole("heading", { name: "グローバル設定" })
-    ).toBeVisible();
-    await expect(
-      page.getByRole("heading", { name: "ファイルタイプ別オーバーライド" })
-    ).toBeVisible();
-    await expect(
-      page.getByRole("heading", { name: /生成された .editorconfig/ })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: /生成された .editorconfig/ })).toBeVisible();
   });
 
   test("デフォルトで出力に [*] セクションが含まれる", async ({ page }) => {
@@ -35,17 +29,13 @@ test.describe("EditorConfig ジェネレーター", () => {
 
   test("プリセットボタンが存在する", async ({ page }) => {
     await expect(
-      page.getByRole("button", { name: /プリセット「Webフロントエンド標準」を適用/ })
+      page.getByRole("button", { name: /プリセット「Webフロントエンド標準」を適用/ }),
     ).toBeVisible();
-    await expect(
-      page.getByRole("button", { name: /プリセット「Go標準」を適用/ })
-    ).toBeVisible();
+    await expect(page.getByRole("button", { name: /プリセット「Go標準」を適用/ })).toBeVisible();
   });
 
   test("Go プリセットを適用するとタブインデントになる", async ({ page }) => {
-    await page
-      .getByRole("button", { name: /プリセット「Go標準」を適用/ })
-      .click();
+    await page.getByRole("button", { name: /プリセット「Go標準」を適用/ }).click();
     const output = page.getByRole("textbox", {
       name: "生成された .editorconfig の内容",
     });
@@ -53,9 +43,7 @@ test.describe("EditorConfig ジェネレーター", () => {
   });
 
   test("Windowsプリセットを適用すると CRLF になる", async ({ page }) => {
-    await page
-      .getByRole("button", { name: /プリセット「Windowsフレンドリー」を適用/ })
-      .click();
+    await page.getByRole("button", { name: /プリセット「Windowsフレンドリー」を適用/ }).click();
     const output = page.getByRole("textbox", {
       name: "生成された .editorconfig の内容",
     });
@@ -66,7 +54,7 @@ test.describe("EditorConfig ジェネレーター", () => {
     await expect(
       page.getByRole("button", {
         name: ".editorconfig の内容をクリップボードにコピー",
-      })
+      }),
     ).toBeVisible();
   });
 
@@ -74,21 +62,17 @@ test.describe("EditorConfig ジェネレーター", () => {
     await expect(
       page.getByRole("button", {
         name: ".editorconfig ファイルをダウンロード",
-      })
+      }),
     ).toBeVisible();
   });
 
   test("リセットボタンが存在する", async ({ page }) => {
-    await expect(
-      page.getByRole("button", { name: "設定をリセット" })
-    ).toBeVisible();
+    await expect(page.getByRole("button", { name: "設定をリセット" })).toBeVisible();
   });
 
   test("リセット後にデフォルト設定に戻る", async ({ page }) => {
     // Goプリセットを適用してから
-    await page
-      .getByRole("button", { name: /プリセット「Go標準」を適用/ })
-      .click();
+    await page.getByRole("button", { name: /プリセット「Go標準」を適用/ }).click();
     // リセット
     await page.getByRole("button", { name: "設定をリセット" }).click();
     const output = page.getByRole("textbox", {

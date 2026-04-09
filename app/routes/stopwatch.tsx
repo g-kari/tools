@@ -70,10 +70,7 @@ export function formatElapsed(ms: number): string {
  * @param laps - 全ラップ一覧
  * @returns "best" | "worst" | "normal"
  */
-export function getLapRating(
-  lapMs: number,
-  laps: LapTime[]
-): "best" | "worst" | "normal" {
+export function getLapRating(lapMs: number, laps: LapTime[]): "best" | "worst" | "normal" {
   if (laps.length < 2) return "normal";
   const times = laps.map((l) => l.lapMs);
   const min = Math.min(...times);
@@ -132,10 +129,7 @@ function Stopwatch() {
   const handleLap = () => {
     const prevTotal = laps.length > 0 ? laps[laps.length - 1].totalMs : 0;
     const lapMs = elapsed - prevTotal;
-    setLaps((prev) => [
-      ...prev,
-      { lap: prev.length + 1, lapMs, totalMs: elapsed },
-    ]);
+    setLaps((prev) => [...prev, { lap: prev.length + 1, lapMs, totalMs: elapsed }]);
   };
 
   useEffect(() => {
@@ -239,9 +233,7 @@ function Stopwatch() {
                   #{l.lap}
                 </span>
                 <span className="stopwatch-lap-time">{formatElapsed(l.lapMs)}</span>
-                <span className="stopwatch-lap-total">
-                  {formatElapsed(l.totalMs)}
-                </span>
+                <span className="stopwatch-lap-total">{formatElapsed(l.totalMs)}</span>
               </li>
             ))}
           </ol>

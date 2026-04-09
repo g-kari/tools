@@ -178,9 +178,7 @@ export function generateRobotsTxt(options: RobotsTxtOptions): string {
     }
   }
 
-  const validSitemaps = options.sitemaps.filter((url) =>
-    isValidSitemapUrl(url)
-  );
+  const validSitemaps = options.sitemaps.filter((url) => isValidSitemapUrl(url));
   for (const sitemap of validSitemaps) {
     sections.push(`Sitemap: ${sitemap}`);
   }

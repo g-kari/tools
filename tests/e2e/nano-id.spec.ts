@@ -56,9 +56,7 @@ test.describe("Nano ID ジェネレーター", () => {
   test("複数生成時に「すべてコピー」ボタンが表示される", async ({ page }) => {
     await page.locator("#nanoid-count").fill("3");
     await page.getByRole("button", { name: "Nano ID 生成" }).click();
-    await expect(
-      page.getByRole("button", { name: "すべてコピー" })
-    ).toBeVisible();
+    await expect(page.getByRole("button", { name: "すべてコピー" })).toBeVisible();
   });
 
   test("プリセット選択が存在する", async ({ page }) => {
@@ -78,9 +76,7 @@ test.describe("Nano ID ジェネレーター", () => {
     expect(text).toContain("エントロピー");
   });
 
-  test("アクセシビリティ: 生成フォームに aria-label がある", async ({
-    page,
-  }) => {
+  test("アクセシビリティ: 生成フォームに aria-label がある", async ({ page }) => {
     const form = page.locator('[aria-label="Nano ID 生成フォーム"]');
     await expect(form).toBeVisible();
   });

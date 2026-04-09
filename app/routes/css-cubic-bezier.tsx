@@ -83,14 +83,8 @@ function CssCubicBezier() {
   const svgRef = useRef<SVGSVGElement>(null);
   const { showToast } = useToast();
 
-  const bezierCSS = useMemo(
-    () => formatCubicBezier(x1, y1, x2, y2),
-    [x1, y1, x2, y2]
-  );
-  const fullCSS = useMemo(
-    () => generateTimingFunctionCSS(x1, y1, x2, y2),
-    [x1, y1, x2, y2]
-  );
+  const bezierCSS = useMemo(() => formatCubicBezier(x1, y1, x2, y2), [x1, y1, x2, y2]);
+  const fullCSS = useMemo(() => generateTimingFunctionCSS(x1, y1, x2, y2), [x1, y1, x2, y2]);
 
   /** プリセット適用 */
   const applyPreset = useCallback((preset: BezierPreset, index: number) => {
@@ -103,61 +97,50 @@ function CssCubicBezier() {
   }, []);
 
   /** 制御点のポインターダウン: ポインターキャプチャを設定 */
-  const handleControlPointerDown = useCallback(
-    (e: React.PointerEvent<SVGCircleElement>) => {
-      e.preventDefault();
-      (e.currentTarget as SVGCircleElement).setPointerCapture(e.pointerId);
-    },
-    []
-  );
+  const handleControlPointerDown = useCallback((e: React.PointerEvent<SVGCircleElement>) => {
+    e.preventDefault();
+    (e.currentTarget as SVGCircleElement).setPointerCapture(e.pointerId);
+  }, []);
 
   /** SVGポインターを[0,1]空間座標に変換するヘルパー */
-  const clientToNorm = useCallback(
-    (clientX: number, clientY: number): [number, number] => {
-      if (!svgRef.current) return [0, 0];
-      const rect = svgRef.current.getBoundingClientRect();
-      const scaleX = SVG_W / rect.width;
-      const scaleY = SVG_H / rect.height;
-      const svgX = (clientX - rect.left) * scaleX;
-      const svgY = (clientY - rect.top) * scaleY;
-      return fromSVG(svgX, svgY);
-    },
-    []
-  );
+  const clientToNorm = useCallback((clientX: number, clientY: number): [number, number] => {
+    if (!svgRef.current) return [0, 0];
+    const rect = svgRef.current.getBoundingClientRect();
+    const scaleX = SVG_W / rect.width;
+    const scaleY = SVG_H / rect.height;
+    const svgX = (clientX - rect.left) * scaleX;
+    const svgY = (clientY - rect.top) * scaleY;
+    return fromSVG(svgX, svgY);
+  }, []);
 
   /** 制御点P1のポインタームーブ */
   const handleP1Move = useCallback(
     (e: React.PointerEvent<SVGCircleElement>) => {
-      if (!(e.currentTarget as SVGCircleElement).hasPointerCapture(e.pointerId))
-        return;
+      if (!(e.currentTarget as SVGCircleElement).hasPointerCapture(e.pointerId)) return;
       const [nx, ny] = clientToNorm(e.clientX, e.clientY);
       setX1(round3(clamp(nx, 0, 1)));
       setY1(round3(ny));
       setSelectedPreset(null);
     },
-    [clientToNorm]
+    [clientToNorm],
   );
 
   /** 制御点P2のポインタームーブ */
   const handleP2Move = useCallback(
     (e: React.PointerEvent<SVGCircleElement>) => {
-      if (!(e.currentTarget as SVGCircleElement).hasPointerCapture(e.pointerId))
-        return;
+      if (!(e.currentTarget as SVGCircleElement).hasPointerCapture(e.pointerId)) return;
       const [nx, ny] = clientToNorm(e.clientX, e.clientY);
       setX2(round3(clamp(nx, 0, 1)));
       setY2(round3(ny));
       setSelectedPreset(null);
     },
-    [clientToNorm]
+    [clientToNorm],
   );
 
   /** ポインターアップ: キャプチャを解放 */
-  const handleControlPointerUp = useCallback(
-    (e: React.PointerEvent<SVGCircleElement>) => {
-      (e.currentTarget as SVGCircleElement).releasePointerCapture(e.pointerId);
-    },
-    []
-  );
+  const handleControlPointerUp = useCallback((e: React.PointerEvent<SVGCircleElement>) => {
+    (e.currentTarget as SVGCircleElement).releasePointerCapture(e.pointerId);
+  }, []);
 
   /** ベジェ曲線のSVGパスを生成 */
   const bezierPath = useMemo(() => {
@@ -190,8 +173,8 @@ function CssCubicBezier() {
         <h1 className="tool-title">CSS Cubic Bezier ジェネレーター</h1>
         <p className="tool-description">
           ビジュアルエディターでCSS cubic-bezier() タイミング関数を作成します。
-          グラフ上の制御点をドラッグするか、スライダーで値を調整し、
-          CSS transition・animation に使えるコードを生成してください。
+          グラフ上の制御点をドラッグするか、スライダーで値を調整し、 CSS transition・animation
+          に使えるコードを生成してください。
         </p>
 
         <div className="cb-layout">
@@ -212,48 +195,18 @@ function CssCubicBezier() {
                   const [, gy] = toSVG(0, v);
                   return (
                     <g key={v}>
-                      <line
-                        x1={gx}
-                        y1={PAD}
-                        x2={gx}
-                        y2={PAD + DRAW_H}
-                        className="cb-grid-line"
-                      />
-                      <line
-                        x1={PAD}
-                        y1={gy}
-                        x2={PAD + DRAW_W}
-                        y2={gy}
-                        className="cb-grid-line"
-                      />
+                      <line x1={gx} y1={PAD} x2={gx} y2={PAD + DRAW_H} className="cb-grid-line" />
+                      <line x1={PAD} y1={gy} x2={PAD + DRAW_W} y2={gy} className="cb-grid-line" />
                     </g>
                   );
                 })}
 
                 {/* 対角線 (linear の参照線) */}
-                <line
-                  x1={p0x}
-                  y1={p0y}
-                  x2={p3x}
-                  y2={p3y}
-                  className="cb-diagonal"
-                />
+                <line x1={p0x} y1={p0y} x2={p3x} y2={p3y} className="cb-diagonal" />
 
                 {/* ハンドル線（アンカー→制御点） */}
-                <line
-                  x1={p0x}
-                  y1={p0y}
-                  x2={p1x}
-                  y2={p1y}
-                  className="cb-handle-line"
-                />
-                <line
-                  x1={p3x}
-                  y1={p3y}
-                  x2={p2x}
-                  y2={p2y}
-                  className="cb-handle-line"
-                />
+                <line x1={p0x} y1={p0y} x2={p1x} y2={p1y} className="cb-handle-line" />
+                <line x1={p3x} y1={p3y} x2={p2x} y2={p2y} className="cb-handle-line" />
 
                 {/* ベジェ曲線本体 */}
                 <path d={bezierPath} className="cb-curve" />
@@ -527,16 +480,14 @@ function CssCubicBezier() {
 
             <TipsCard>
               <p>
-                <strong>制御点X (x1, x2):</strong>{" "}
-                0〜1の範囲で指定。時間軸の制御点位置です。
+                <strong>制御点X (x1, x2):</strong> 0〜1の範囲で指定。時間軸の制御点位置です。
               </p>
               <p>
                 <strong>制御点Y (y1, y2):</strong>{" "}
                 0〜1の範囲外も指定可能。バウンスや戻り効果に使えます。
               </p>
               <p>
-                <strong>ドラッグ操作:</strong>{" "}
-                グラフ上の●をドラッグして制御点を直接調整できます。
+                <strong>ドラッグ操作:</strong> グラフ上の●をドラッグして制御点を直接調整できます。
               </p>
             </TipsCard>
           </div>

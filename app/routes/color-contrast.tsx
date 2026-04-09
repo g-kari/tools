@@ -45,9 +45,7 @@ export const Route = createFileRoute("/color-contrast")({
  * @param hex - HEX形式の色文字列（#付き または #なし）
  * @returns RGBオブジェクト、または無効な場合はnull
  */
-export function hexToRgb(
-  hex: string
-): { r: number; g: number; b: number } | null {
+export function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
   const cleanHex = hex.replace(/^#/, "");
   const result = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(cleanHex);
   if (!result) return null;
@@ -78,11 +76,7 @@ function linearize(c: number): number {
  * @param b - 青チャンネル（0から255）
  * @returns 相対輝度（0から1）
  */
-export function calculateRelativeLuminance(
-  r: number,
-  g: number,
-  b: number
-): number {
+export function calculateRelativeLuminance(r: number, g: number, b: number): number {
   const R = linearize(r);
   const G = linearize(g);
   const B = linearize(b);
@@ -178,60 +172,48 @@ function ColorContrast() {
   /**
    * 前景色のカラーピッカーが変更されたときの処理
    */
-  const handleFgColorChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = e.target.value;
-      setFgColor(value);
-      setFgHexInput(value);
-    },
-    []
-  );
+  const handleFgColorChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setFgColor(value);
+    setFgHexInput(value);
+  }, []);
 
   /**
    * 背景色のカラーピッカーが変更されたときの処理
    */
-  const handleBgColorChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = e.target.value;
-      setBgColor(value);
-      setBgHexInput(value);
-    },
-    []
-  );
+  const handleBgColorChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setBgColor(value);
+    setBgHexInput(value);
+  }, []);
 
   /**
    * 前景色のHEX入力が変更されたときの処理
    */
-  const handleFgHexInput = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      let value = e.target.value;
-      setFgHexInput(value);
-      if (!value.startsWith("#")) {
-        value = "#" + value;
-      }
-      if (/^#[0-9A-Fa-f]{6}$/.test(value)) {
-        setFgColor(value);
-      }
-    },
-    []
-  );
+  const handleFgHexInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value;
+    setFgHexInput(value);
+    if (!value.startsWith("#")) {
+      value = "#" + value;
+    }
+    if (/^#[0-9A-Fa-f]{6}$/.test(value)) {
+      setFgColor(value);
+    }
+  }, []);
 
   /**
    * 背景色のHEX入力が変更されたときの処理
    */
-  const handleBgHexInput = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      let value = e.target.value;
-      setBgHexInput(value);
-      if (!value.startsWith("#")) {
-        value = "#" + value;
-      }
-      if (/^#[0-9A-Fa-f]{6}$/.test(value)) {
-        setBgColor(value);
-      }
-    },
-    []
-  );
+  const handleBgHexInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value;
+    setBgHexInput(value);
+    if (!value.startsWith("#")) {
+      value = "#" + value;
+    }
+    if (/^#[0-9A-Fa-f]{6}$/.test(value)) {
+      setBgColor(value);
+    }
+  }, []);
 
   /**
    * 前景色と背景色を入れ替える処理
@@ -264,11 +246,7 @@ function ColorContrast() {
           {/* 前景色（テキスト色）入力 */}
           <div className="contrast-color-block">
             <h2 className="contrast-color-block-title">前景色（テキスト色）</h2>
-            <div
-              ref={fgPreviewRef}
-              className="contrast-color-preview"
-              aria-hidden="true"
-            />
+            <div ref={fgPreviewRef} className="contrast-color-preview" aria-hidden="true" />
             <div className="contrast-color-input">
               <input
                 type="color"
@@ -306,11 +284,7 @@ function ColorContrast() {
           {/* 背景色入力 */}
           <div className="contrast-color-block">
             <h2 className="contrast-color-block-title">背景色</h2>
-            <div
-              ref={bgPreviewRef}
-              className="contrast-color-preview"
-              aria-hidden="true"
-            />
+            <div ref={bgPreviewRef} className="contrast-color-preview" aria-hidden="true" />
             <div className="contrast-color-input">
               <input
                 type="color"
@@ -357,11 +331,7 @@ function ColorContrast() {
           {/* WCAG判定テーブル */}
           <div className="wcag-table-container" aria-live="polite">
             <h2 className="wcag-table-title">WCAG 2.1 判定</h2>
-            <table
-              className="wcag-table"
-              role="table"
-              aria-label="WCAG 2.1 適合性判定"
-            >
+            <table className="wcag-table" role="table" aria-label="WCAG 2.1 適合性判定">
               <thead>
                 <tr>
                   <th scope="col">基準</th>
@@ -403,9 +373,7 @@ function ColorContrast() {
                   <td>7:1</td>
                   <td>
                     <span
-                      className={
-                        wcagResult.normalAAA ? "wcag-pass" : "wcag-fail"
-                      }
+                      className={wcagResult.normalAAA ? "wcag-pass" : "wcag-fail"}
                       aria-label={wcagResult.normalAAA ? "適合" : "不適合"}
                     >
                       {wcagResult.normalAAA ? "Pass" : "Fail"}
@@ -418,9 +386,7 @@ function ColorContrast() {
                   <td>4.5:1</td>
                   <td>
                     <span
-                      className={
-                        wcagResult.largeAAA ? "wcag-pass" : "wcag-fail"
-                      }
+                      className={wcagResult.largeAAA ? "wcag-pass" : "wcag-fail"}
                       aria-label={wcagResult.largeAAA ? "適合" : "不適合"}
                     >
                       {wcagResult.largeAAA ? "Pass" : "Fail"}
@@ -432,20 +398,12 @@ function ColorContrast() {
           </div>
 
           {/* リアルタイムプレビュー */}
-          <div
-            ref={contrastPreviewRef}
-            className="contrast-preview"
-            aria-label="カラープレビュー"
-          >
-            <p className="contrast-preview-text-large">
-              大テキストのサンプル（18pt以上）
-            </p>
+          <div ref={contrastPreviewRef} className="contrast-preview" aria-label="カラープレビュー">
+            <p className="contrast-preview-text-large">大テキストのサンプル（18pt以上）</p>
             <p className="contrast-preview-text">
               通常テキストのサンプル。この文章はコントラストチェックのプレビューです。
             </p>
-            <p className="contrast-preview-text">
-              The quick brown fox jumps over the lazy dog.
-            </p>
+            <p className="contrast-preview-text">The quick brown fox jumps over the lazy dog.</p>
           </div>
         </div>
       </div>

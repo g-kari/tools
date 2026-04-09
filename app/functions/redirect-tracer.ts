@@ -101,9 +101,7 @@ export const traceRedirects = createServerFn({ method: "GET" })
     const trimmedUrl = data.trim();
 
     // プロトコルが省略されている場合は https:// を補完
-    const urlWithProtocol = trimmedUrl.match(/^https?:\/\//)
-      ? trimmedUrl
-      : `https://${trimmedUrl}`;
+    const urlWithProtocol = trimmedUrl.match(/^https?:\/\//) ? trimmedUrl : `https://${trimmedUrl}`;
 
     if (!isValidUrl(urlWithProtocol)) {
       throw new Error("無効なURL形式です");
@@ -113,7 +111,7 @@ export const traceRedirects = createServerFn({ method: "GET" })
     const parsedUrl = new URL(urlWithProtocol);
     if (isPrivateOrLocalhost(parsedUrl.hostname)) {
       throw new Error(
-        "セキュリティ上の理由により、ローカルホストやプライベートIPアドレスへのアクセスはできません"
+        "セキュリティ上の理由により、ローカルホストやプライベートIPアドレスへのアクセスはできません",
       );
     }
 
@@ -140,8 +138,7 @@ export const traceRedirects = createServerFn({ method: "GET" })
             headers: {
               "User-Agent":
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-              Accept:
-                "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+              Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
               "Accept-Language": "ja,en-US;q=0.9,en;q=0.8",
             },
           });

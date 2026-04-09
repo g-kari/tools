@@ -14,9 +14,7 @@ test.describe("スネークゲーム (/snake)", () => {
   });
 
   test("ゲームスタートボタンが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("button", { name: "ゲームスタート" })
-    ).toBeVisible();
+    await expect(page.getByRole("button", { name: "ゲームスタート" })).toBeVisible();
   });
 
   test("スコアが表示される", async ({ page }) => {
@@ -24,9 +22,7 @@ test.describe("スネークゲーム (/snake)", () => {
   });
 
   test("ベストスコアが表示される", async ({ page }) => {
-    await expect(
-      page.locator('[aria-label*="ベストスコア"]')
-    ).toBeVisible();
+    await expect(page.locator('[aria-label*="ベストスコア"]')).toBeVisible();
   });
 
   test("キャンバスが表示される", async ({ page }) => {
@@ -39,16 +35,12 @@ test.describe("スネークゲーム (/snake)", () => {
 
   test("ゲーム開始後に新しいゲームボタンが表示される", async ({ page }) => {
     await page.getByRole("button", { name: "ゲームスタート" }).click();
-    await expect(
-      page.getByRole("button", { name: "新しいゲーム" })
-    ).toBeVisible();
+    await expect(page.getByRole("button", { name: "新しいゲーム" })).toBeVisible();
   });
 
   test("ゲーム開始後に一時停止ボタンが表示される", async ({ page }) => {
     await page.getByRole("button", { name: "ゲームスタート" }).click();
-    await expect(
-      page.getByRole("button", { name: "一時停止" })
-    ).toBeVisible();
+    await expect(page.getByRole("button", { name: "一時停止" })).toBeVisible();
   });
 
   test("一時停止ボタンをクリックすると再開ボタンになる", async ({ page }) => {
@@ -61,25 +53,17 @@ test.describe("スネークゲーム (/snake)", () => {
     await page.getByRole("button", { name: "ゲームスタート" }).click();
     await page.getByRole("button", { name: "一時停止" }).click();
     await page.getByRole("button", { name: "再開" }).click();
-    await expect(
-      page.getByRole("button", { name: "一時停止" })
-    ).toBeVisible();
+    await expect(page.getByRole("button", { name: "一時停止" })).toBeVisible();
   });
 
   test("ゲームボードのaria-labelが設定されている", async ({ page }) => {
-    await expect(
-      page.getByRole("application", { name: "スネークゲームボード" })
-    ).toBeVisible();
+    await expect(page.getByRole("application", { name: "スネークゲームボード" })).toBeVisible();
   });
 
-  test("ナビゲーションのゲームカテゴリにスネークが含まれる", async ({
-    page,
-  }) => {
+  test("ナビゲーションのゲームカテゴリにスネークが含まれる", async ({ page }) => {
     const nav = page.getByRole("navigation", { name: "ツールナビゲーション" });
     const gameCategory = nav.getByRole("button", { name: /ゲーム/ });
     await gameCategory.hover();
-    await expect(
-      page.getByRole("menuitem", { name: "スネークゲーム" })
-    ).toBeVisible();
+    await expect(page.getByRole("menuitem", { name: "スネークゲーム" })).toBeVisible();
   });
 });

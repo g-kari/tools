@@ -8,7 +8,7 @@ export interface IsbnResult {
   /** 入力から数字（またはX）のみ抽出した文字列 */
   raw: string;
   /** ISBN種別（10桁 or 13桁） */
-  type: 'ISBN-10' | 'ISBN-13' | null;
+  type: "ISBN-10" | "ISBN-13" | null;
   /** チェックサムの有効性 */
   isValid: boolean;
   /** 桁数の有効性 */
@@ -34,17 +34,17 @@ export interface IsbnResult {
  * @example calcIsbn10Check('030640615') // 'X'
  */
 export function calcIsbn10Check(digits: string): string {
-  if (digits.length !== 9) return '';
+  if (digits.length !== 9) return "";
   let sum = 0;
   for (let i = 0; i < 9; i++) {
     const d = parseInt(digits[i], 10);
-    if (isNaN(d)) return '';
+    if (isNaN(d)) return "";
     sum += d * (10 - i);
   }
   const remainder = sum % 11;
   const check = 11 - remainder;
-  if (check === 10) return 'X';
-  if (check === 11) return '0';
+  if (check === 10) return "X";
+  if (check === 11) return "0";
   return check.toString();
 }
 
@@ -55,11 +55,11 @@ export function calcIsbn10Check(digits: string): string {
  * @example calcIsbn13Check('978030640615') // '7'
  */
 export function calcIsbn13Check(digits: string): string {
-  if (digits.length !== 12) return '';
+  if (digits.length !== 12) return "";
   let sum = 0;
   for (let i = 0; i < 12; i++) {
     const d = parseInt(digits[i], 10);
-    if (isNaN(d)) return '';
+    if (isNaN(d)) return "";
     sum += d * (i % 2 === 0 ? 1 : 3);
   }
   const check = (10 - (sum % 10)) % 10;
@@ -103,7 +103,7 @@ export function validateIsbn13(digits: string): boolean {
 export function isbn10ToIsbn13(isbn10: string): string | null {
   const digits = isbn10.toUpperCase();
   if (!validateIsbn10(digits)) return null;
-  const body = '978' + digits.slice(0, 9);
+  const body = "978" + digits.slice(0, 9);
   const check = calcIsbn13Check(body);
   return body + check;
 }
@@ -115,7 +115,7 @@ export function isbn10ToIsbn13(isbn10: string): string | null {
  */
 export function isbn13ToIsbn10(isbn13: string): string | null {
   if (!validateIsbn13(isbn13)) return null;
-  if (!isbn13.startsWith('978')) return null;
+  if (!isbn13.startsWith("978")) return null;
   const body = isbn13.slice(3, 12);
   const check = calcIsbn10Check(body);
   return body + check;
@@ -147,7 +147,7 @@ export function formatIsbnWithHyphens(isbn: string): string {
  */
 export function extractIsbnDigits(input: string): string {
   // ハイフン・スペース・ダッシュを除去して数字とXのみ残す
-  return input.replace(/[\s\-–—]/g, '').toUpperCase();
+  return input.replace(/[\s\-–—]/g, "").toUpperCase();
 }
 
 /**
@@ -160,22 +160,22 @@ export function validateIsbn(input: string): IsbnResult {
 
   if (raw.length === 0) {
     return {
-      raw: '',
+      raw: "",
       type: null,
       isValid: false,
       isValidLength: false,
-      formatted: '',
-      formattedWithHyphens: '',
+      formatted: "",
+      formattedWithHyphens: "",
       isbn10: null,
       isbn13: null,
-      checkDigit: '',
-      error: 'ISBNを入力してください',
+      checkDigit: "",
+      error: "ISBNを入力してください",
     };
   }
 
   // X が末尾以外にある場合はエラー
   const xPositions = [...raw].reduce<number[]>((acc, c, i) => {
-    if (c === 'X') acc.push(i);
+    if (c === "X") acc.push(i);
     return acc;
   }, []);
   if (xPositions.some((pos) => pos !== raw.length - 1)) {
@@ -188,8 +188,8 @@ export function validateIsbn(input: string): IsbnResult {
       formattedWithHyphens: raw,
       isbn10: null,
       isbn13: null,
-      checkDigit: '',
-      error: 'X（チェックデジット）はISBN-10の末尾にのみ使用できます',
+      checkDigit: "",
+      error: "X（チェックデジット）はISBN-10の末尾にのみ使用できます",
     };
   }
 
@@ -204,8 +204,8 @@ export function validateIsbn(input: string): IsbnResult {
       formattedWithHyphens: raw,
       isbn10: null,
       isbn13: null,
-      checkDigit: '',
-      error: '数字（0-9）またはX（ISBN-10のチェックデジット）のみ入力できます',
+      checkDigit: "",
+      error: "数字（0-9）またはX（ISBN-10のチェックデジット）のみ入力できます",
     };
   }
 
@@ -222,7 +222,7 @@ export function validateIsbn(input: string): IsbnResult {
       formattedWithHyphens: raw,
       isbn10: null,
       isbn13: null,
-      checkDigit: raw[raw.length - 1] ?? '',
+      checkDigit: raw[raw.length - 1] ?? "",
       error: `桁数が不正です（${len}桁）。ISBN-10は10桁、ISBN-13は13桁である必要があります`,
     };
   }
@@ -233,7 +233,7 @@ export function validateIsbn(input: string): IsbnResult {
     const expectedCheck = calcIsbn10Check(raw.slice(0, 9));
     return {
       raw,
-      type: 'ISBN-10',
+      type: "ISBN-10",
       isValid,
       isValidLength: true,
       formatted: raw.toUpperCase(),
@@ -253,7 +253,7 @@ export function validateIsbn(input: string): IsbnResult {
   const expectedCheck = calcIsbn13Check(raw.slice(0, 12));
   return {
     raw,
-    type: 'ISBN-13',
+    type: "ISBN-13",
     isValid,
     isValidLength: true,
     formatted: raw,
@@ -274,23 +274,23 @@ export const SAMPLE_ISBNS: ReadonlyArray<{
   note: string;
 }> = [
   {
-    label: 'ISBN-13（有効）',
-    isbn: '9784873119038',
-    note: 'プログラミングTypeScript（オライリー）',
+    label: "ISBN-13（有効）",
+    isbn: "9784873119038",
+    note: "プログラミングTypeScript（オライリー）",
   },
   {
-    label: 'ISBN-13（有効）',
-    isbn: '9784621303252',
-    note: 'Clean Code（丸善出版）',
+    label: "ISBN-13（有効）",
+    isbn: "9784621303252",
+    note: "Clean Code（丸善出版）",
   },
   {
-    label: 'ISBN-10（有効）',
-    isbn: '4873119030',
-    note: 'プログラミングTypeScript（ISBN-10）',
+    label: "ISBN-10（有効）",
+    isbn: "4873119030",
+    note: "プログラミングTypeScript（ISBN-10）",
   },
   {
-    label: 'ISBN-10（X終端）',
-    isbn: '097522980X',
-    note: 'チェックデジットがXの例（The Pragmatic Programmer）',
+    label: "ISBN-10（X終端）",
+    isbn: "097522980X",
+    note: "チェックデジットがXの例（The Pragmatic Programmer）",
   },
 ];

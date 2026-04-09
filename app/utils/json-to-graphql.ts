@@ -45,7 +45,7 @@ function inferGraphQLType(
   value: unknown,
   typeName: string,
   options: JsonToGraphQLOptions,
-  typeDefsMap: Map<string, string[]>
+  typeDefsMap: Map<string, string[]>,
 ): string {
   if (value === null) {
     return "String";
@@ -93,7 +93,7 @@ function collectTypeDef(
   obj: Record<string, unknown>,
   typeName: string,
   options: JsonToGraphQLOptions,
-  typeDefsMap: Map<string, string[]>
+  typeDefsMap: Map<string, string[]>,
 ): void {
   if (typeDefsMap.has(typeName)) {
     return;
@@ -122,10 +122,7 @@ function collectTypeDef(
  * @returns GraphQLスキーマ定義文字列（SDL形式）
  * @throws {Error} 空文字列または無効なJSON形式の場合にエラーをスローする
  */
-export function generateGraphQLSchema(
-  json: string,
-  options: JsonToGraphQLOptions
-): string {
+export function generateGraphQLSchema(json: string, options: JsonToGraphQLOptions): string {
   if (!json.trim()) {
     throw new Error("JSONを入力してください");
   }
@@ -142,11 +139,7 @@ export function generateGraphQLSchema(
   const typeDefsMap = new Map<string, string[]>();
 
   // ルートが配列の場合は最初の要素を使う
-  const rootValue = Array.isArray(parsed)
-    ? parsed.length > 0
-      ? parsed[0]
-      : {}
-    : parsed;
+  const rootValue = Array.isArray(parsed) ? (parsed.length > 0 ? parsed[0] : {}) : parsed;
 
   if (typeof rootValue !== "object" || rootValue === null) {
     // プリミティブなルートの場合
@@ -155,12 +148,7 @@ export function generateGraphQLSchema(
     return `${keyword} ${rootTypeName} {\n  value: ${fieldType}${nn}\n}`;
   }
 
-  collectTypeDef(
-    rootValue as Record<string, unknown>,
-    rootTypeName,
-    options,
-    typeDefsMap
-  );
+  collectTypeDef(rootValue as Record<string, unknown>, rootTypeName, options, typeDefsMap);
 
   // ルート型を最後に出力するため、順序を整える
   const entries = Array.from(typeDefsMap.entries());
@@ -168,9 +156,7 @@ export function generateGraphQLSchema(
   const dependentTypes = entries.filter(([name]) => name !== rootTypeName);
   const rootEntry = entries.find(([name]) => name === rootTypeName);
 
-  const orderedEntries = rootEntry
-    ? [...dependentTypes, rootEntry]
-    : dependentTypes;
+  const orderedEntries = rootEntry ? [...dependentTypes, rootEntry] : dependentTypes;
 
   const blocks = orderedEntries.map(([name, fields]) => {
     if (fields.length === 0) {

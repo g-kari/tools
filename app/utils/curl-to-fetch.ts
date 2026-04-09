@@ -23,7 +23,7 @@ export interface ParsedCurl {
 /** 変換オプション */
 export interface ConvertOptions {
   /** 出力ライブラリ */
-  mode: 'fetch' | 'axios';
+  mode: "fetch" | "axios";
   /** TypeScriptの型注釈を追加するか */
   typescript: boolean;
 }
@@ -47,7 +47,7 @@ export interface ConvertResult {
  */
 export function tokenize(command: string): string[] {
   // バックスラッシュ＋改行（行継続）を空白に置換
-  const normalized = command.replace(/\\\n/g, ' ').trim();
+  const normalized = command.replace(/\\\n/g, " ").trim();
 
   const tokens: string[] = [];
   let i = 0;
@@ -59,31 +59,31 @@ export function tokenize(command: string): string[] {
 
     const ch = normalized[i];
 
-    if (ch === '$' && normalized[i + 1] === "'") {
+    if (ch === "$" && normalized[i + 1] === "'") {
       // ANSI-Cクォート $'...' の処理
       i += 2;
-      let s = '';
+      let s = "";
       while (i < normalized.length && normalized[i] !== "'") {
-        if (normalized[i] === '\\') {
+        if (normalized[i] === "\\") {
           i++;
           switch (normalized[i]) {
-            case 'n':
-              s += '\n';
+            case "n":
+              s += "\n";
               break;
-            case 't':
-              s += '\t';
+            case "t":
+              s += "\t";
               break;
-            case 'r':
-              s += '\r';
+            case "r":
+              s += "\r";
               break;
             case "'":
               s += "'";
               break;
-            case '\\':
-              s += '\\';
+            case "\\":
+              s += "\\";
               break;
             default:
-              s += '\\' + (normalized[i] ?? '');
+              s += "\\" + (normalized[i] ?? "");
           }
         } else {
           s += normalized[i];
@@ -95,7 +95,7 @@ export function tokenize(command: string): string[] {
     } else if (ch === "'") {
       // シングルクォート: エスケープなし
       i++;
-      let s = '';
+      let s = "";
       while (i < normalized.length && normalized[i] !== "'") {
         s += normalized[i++];
       }
@@ -104,28 +104,28 @@ export function tokenize(command: string): string[] {
     } else if (ch === '"') {
       // ダブルクォート: バックスラッシュエスケープあり
       i++;
-      let s = '';
+      let s = "";
       while (i < normalized.length && normalized[i] !== '"') {
-        if (normalized[i] === '\\' && i + 1 < normalized.length) {
+        if (normalized[i] === "\\" && i + 1 < normalized.length) {
           i++;
           switch (normalized[i]) {
-            case 'n':
-              s += '\n';
+            case "n":
+              s += "\n";
               break;
-            case 't':
-              s += '\t';
+            case "t":
+              s += "\t";
               break;
-            case 'r':
-              s += '\r';
+            case "r":
+              s += "\r";
               break;
             case '"':
               s += '"';
               break;
-            case '\\':
-              s += '\\';
+            case "\\":
+              s += "\\";
               break;
             default:
-              s += '\\' + normalized[i];
+              s += "\\" + normalized[i];
           }
         } else {
           s += normalized[i];
@@ -136,7 +136,7 @@ export function tokenize(command: string): string[] {
       tokens.push(s);
     } else {
       // クォートなしトークン（空白で区切られるまで）
-      let s = '';
+      let s = "";
       while (i < normalized.length && !/\s/.test(normalized[i])) {
         s += normalized[i++];
       }
@@ -163,11 +163,11 @@ export function parseCurl(command: string): {
   let idx = 0;
 
   // "curl" コマンド名をスキップ
-  if (tokens[0]?.toLowerCase() === 'curl') idx++;
+  if (tokens[0]?.toLowerCase() === "curl") idx++;
 
   const result: ParsedCurl = {
-    method: 'GET',
-    url: '',
+    method: "GET",
+    url: "",
     headers: {},
     body: null,
     followRedirects: false,
@@ -179,135 +179,132 @@ export function parseCurl(command: string): {
   while (idx < tokens.length) {
     const token = tokens[idx];
 
-    if (token === '-X' || token === '--request') {
+    if (token === "-X" || token === "--request") {
       idx++;
       const method = tokens[idx];
       if (method) {
         result.method = method.toUpperCase();
         hasExplicitMethod = true;
       }
-    } else if (token === '-H' || token === '--header') {
+    } else if (token === "-H" || token === "--header") {
       idx++;
-      const header = tokens[idx] ?? '';
-      const colonIdx = header.indexOf(':');
+      const header = tokens[idx] ?? "";
+      const colonIdx = header.indexOf(":");
       if (colonIdx > -1) {
         const name = header.slice(0, colonIdx).trim();
         const value = header.slice(colonIdx + 1).trim();
         result.headers[name] = value;
       }
     } else if (
-      token === '-d' ||
-      token === '--data' ||
-      token === '--data-raw' ||
-      token === '--data-ascii'
+      token === "-d" ||
+      token === "--data" ||
+      token === "--data-raw" ||
+      token === "--data-ascii"
     ) {
       idx++;
-      result.body = tokens[idx] ?? '';
-      if (!hasExplicitMethod) result.method = 'POST';
-    } else if (token === '--data-binary') {
+      result.body = tokens[idx] ?? "";
+      if (!hasExplicitMethod) result.method = "POST";
+    } else if (token === "--data-binary") {
       idx++;
-      result.body = tokens[idx] ?? '';
-      if (!hasExplicitMethod) result.method = 'POST';
+      result.body = tokens[idx] ?? "";
+      if (!hasExplicitMethod) result.method = "POST";
       warnings.push(
-        '--data-binary は fetch では body: として扱います。バイナリデータの場合は手動で調整してください。'
+        "--data-binary は fetch では body: として扱います。バイナリデータの場合は手動で調整してください。",
       );
-    } else if (token === '--data-urlencode') {
+    } else if (token === "--data-urlencode") {
       idx++;
-      const raw = tokens[idx] ?? '';
+      const raw = tokens[idx] ?? "";
       // name=value 形式の URL エンコード
-      if (!hasExplicitMethod) result.method = 'POST';
-      const encodedParts = raw.includes('=')
+      if (!hasExplicitMethod) result.method = "POST";
+      const encodedParts = raw.includes("=")
         ? (() => {
-            const eqIdx = raw.indexOf('=');
+            const eqIdx = raw.indexOf("=");
             const name = encodeURIComponent(raw.slice(0, eqIdx));
             const value = encodeURIComponent(raw.slice(eqIdx + 1));
             return `${name}=${value}`;
           })()
         : encodeURIComponent(raw);
       result.body = result.body ? `${result.body}&${encodedParts}` : encodedParts;
-      if (!result.headers['Content-Type']) {
-        result.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+      if (!result.headers["Content-Type"]) {
+        result.headers["Content-Type"] = "application/x-www-form-urlencoded";
       }
-    } else if (token === '--json') {
+    } else if (token === "--json") {
       // --json は -d と -H Content-Type: application/json の組み合わせ
       idx++;
-      result.body = tokens[idx] ?? '';
-      if (!hasExplicitMethod) result.method = 'POST';
-      result.headers['Content-Type'] ??= 'application/json';
-      result.headers['Accept'] ??= 'application/json';
-    } else if (token === '-u' || token === '--user') {
+      result.body = tokens[idx] ?? "";
+      if (!hasExplicitMethod) result.method = "POST";
+      result.headers["Content-Type"] ??= "application/json";
+      result.headers["Accept"] ??= "application/json";
+    } else if (token === "-u" || token === "--user") {
       idx++;
-      const userpass = tokens[idx] ?? '';
-      result.headers['Authorization'] = `Basic ${btoa(userpass)}`;
-    } else if (token === '-b' || token === '--cookie') {
+      const userpass = tokens[idx] ?? "";
+      result.headers["Authorization"] = `Basic ${btoa(userpass)}`;
+    } else if (token === "-b" || token === "--cookie") {
       idx++;
-      result.headers['Cookie'] = tokens[idx] ?? '';
-    } else if (token === '-A' || token === '--user-agent') {
+      result.headers["Cookie"] = tokens[idx] ?? "";
+    } else if (token === "-A" || token === "--user-agent") {
       idx++;
-      result.headers['User-Agent'] = tokens[idx] ?? '';
-    } else if (token === '-e' || token === '--referer') {
+      result.headers["User-Agent"] = tokens[idx] ?? "";
+    } else if (token === "-e" || token === "--referer") {
       idx++;
-      result.headers['Referer'] = tokens[idx] ?? '';
-    } else if (token === '--compressed') {
-      result.headers['Accept-Encoding'] ??= 'gzip, deflate, br';
-    } else if (token === '-L' || token === '--location') {
+      result.headers["Referer"] = tokens[idx] ?? "";
+    } else if (token === "--compressed") {
+      result.headers["Accept-Encoding"] ??= "gzip, deflate, br";
+    } else if (token === "-L" || token === "--location") {
       result.followRedirects = true;
-    } else if (token === '-k' || token === '--insecure') {
+    } else if (token === "-k" || token === "--insecure") {
       result.insecure = true;
       warnings.push(
-        '--insecure (SSL検証スキップ) は ブラウザの fetch では設定できません。Node.js では https.Agent の rejectUnauthorized: false が必要です。'
+        "--insecure (SSL検証スキップ) は ブラウザの fetch では設定できません。Node.js では https.Agent の rejectUnauthorized: false が必要です。",
       );
-    } else if (token === '--oauth2-bearer') {
+    } else if (token === "--oauth2-bearer") {
       idx++;
-      result.headers['Authorization'] = `Bearer ${tokens[idx] ?? ''}`;
+      result.headers["Authorization"] = `Bearer ${tokens[idx] ?? ""}`;
     } else if (
-      token === '-s' ||
-      token === '--silent' ||
-      token === '-v' ||
-      token === '--verbose' ||
-      token === '-i' ||
-      token === '--include' ||
-      token === '-I' ||
-      token === '--head' ||
-      token === '-f' ||
-      token === '--fail' ||
-      token === '-o' ||
-      token === '--output' ||
-      token === '-w' ||
-      token === '--write-out' ||
-      token === '--retry' ||
-      token === '--max-time' ||
-      token === '-m' ||
-      token === '--connect-timeout' ||
-      token === '--limit-rate' ||
-      token === '-c' ||
-      token === '--cookie-jar'
+      token === "-s" ||
+      token === "--silent" ||
+      token === "-v" ||
+      token === "--verbose" ||
+      token === "-i" ||
+      token === "--include" ||
+      token === "-I" ||
+      token === "--head" ||
+      token === "-f" ||
+      token === "--fail" ||
+      token === "-o" ||
+      token === "--output" ||
+      token === "-w" ||
+      token === "--write-out" ||
+      token === "--retry" ||
+      token === "--max-time" ||
+      token === "-m" ||
+      token === "--connect-timeout" ||
+      token === "--limit-rate" ||
+      token === "-c" ||
+      token === "--cookie-jar"
     ) {
       // 値を持つフラグ or 値不要なフラグをスキップ
-      if (
-        token === '-I' ||
-        token === '--head'
-      ) {
-        result.method = 'HEAD';
+      if (token === "-I" || token === "--head") {
+        result.method = "HEAD";
         hasExplicitMethod = true;
       }
       const valueFlags = [
-        '-o',
-        '--output',
-        '-w',
-        '--write-out',
-        '--retry',
-        '--max-time',
-        '-m',
-        '--connect-timeout',
-        '--limit-rate',
-        '-c',
-        '--cookie-jar',
+        "-o",
+        "--output",
+        "-w",
+        "--write-out",
+        "--retry",
+        "--max-time",
+        "-m",
+        "--connect-timeout",
+        "--limit-rate",
+        "-c",
+        "--cookie-jar",
       ];
       if (valueFlags.includes(token)) {
         idx++; // 値をスキップ
       }
-    } else if (!token.startsWith('-')) {
+    } else if (!token.startsWith("-")) {
       // URL の候補（クォートなし、フラグでない）
       if (!result.url) {
         result.url = token;
@@ -330,7 +327,7 @@ export function parseCurl(command: string): {
  * @returns エスケープ済み文字列
  */
 function escapeStr(s: string): string {
-  return s.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+  return s.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
 }
 
 /**
@@ -340,14 +337,11 @@ function escapeStr(s: string): string {
  * @param indent インデント文字列
  * @returns コード文字列
  */
-function buildHeadersCode(
-  headers: Record<string, string>,
-  indent: string
-): string {
+function buildHeadersCode(headers: Record<string, string>, indent: string): string {
   const entries = Object.entries(headers);
-  if (entries.length === 0) return '';
+  if (entries.length === 0) return "";
   const lines = entries.map(([k, v]) => `${indent}  '${k}': '${escapeStr(v)}'`);
-  return `${indent}headers: {\n${lines.join(',\n')},\n${indent}}`;
+  return `${indent}headers: {\n${lines.join(",\n")},\n${indent}}`;
 }
 
 /**
@@ -360,24 +354,20 @@ function buildHeadersCode(
  * @param mode 'fetch' | 'axios'
  * @returns コード文字列
  */
-function buildBodyCode(
-  body: string,
-  indent: string,
-  mode: 'fetch' | 'axios'
-): string {
+function buildBodyCode(body: string, indent: string, mode: "fetch" | "axios"): string {
   // JSON として解析を試みる
   try {
     const parsed = JSON.parse(body);
     const jsonStr = JSON.stringify(parsed, null, 2)
-      .split('\n')
-      .join('\n' + indent + '  ');
-    if (mode === 'axios') {
+      .split("\n")
+      .join("\n" + indent + "  ");
+    if (mode === "axios") {
       return `${indent}data: ${jsonStr}`;
     }
     return `${indent}body: JSON.stringify(${jsonStr})`;
   } catch {
     // JSON でなければ文字列として扱う
-    if (mode === 'axios') {
+    if (mode === "axios") {
       return `${indent}data: '${escapeStr(body)}'`;
     }
     return `${indent}body: '${escapeStr(body)}'`;
@@ -393,13 +383,13 @@ function buildBodyCode(
  */
 export function toFetchCode(parsed: ParsedCurl, opts: ConvertOptions): string {
   const { method, url, headers, body, followRedirects } = parsed;
-  const indent = '  ';
+  const indent = "  ";
   const lines: string[] = [];
 
   // init オブジェクトのプロパティを収集
   const initProps: string[] = [];
 
-  if (method !== 'GET') {
+  if (method !== "GET") {
     initProps.push(`${indent}method: '${method}'`);
   }
 
@@ -407,35 +397,35 @@ export function toFetchCode(parsed: ParsedCurl, opts: ConvertOptions): string {
   if (headerCode) initProps.push(headerCode);
 
   if (body !== null) {
-    initProps.push(buildBodyCode(body, indent, 'fetch'));
+    initProps.push(buildBodyCode(body, indent, "fetch"));
   }
 
   if (followRedirects) {
     initProps.push(`${indent}redirect: 'follow'`);
   }
 
-  const displayUrl = url || 'https://example.com/api';
-  const typeAnnotation = opts.typescript ? ': Response' : '';
+  const displayUrl = url || "https://example.com/api";
+  const typeAnnotation = opts.typescript ? ": Response" : "";
 
   if (initProps.length === 0) {
     lines.push(`const response${typeAnnotation} = await fetch('${displayUrl}');`);
   } else {
     lines.push(`const response${typeAnnotation} = await fetch('${displayUrl}', {`);
     for (let i = 0; i < initProps.length; i++) {
-      lines.push(initProps[i] + (i < initProps.length - 1 ? ',' : ','));
+      lines.push(initProps[i] + (i < initProps.length - 1 ? "," : ","));
     }
-    lines.push('});');
+    lines.push("});");
   }
 
-  lines.push('');
-  lines.push('if (!response.ok) {');
+  lines.push("");
+  lines.push("if (!response.ok) {");
   lines.push(`${indent}throw new Error(\`HTTP error! status: \${response.status}\`);`);
-  lines.push('}');
-  lines.push('');
-  lines.push('const data = await response.json();');
-  lines.push('console.log(data);');
+  lines.push("}");
+  lines.push("");
+  lines.push("const data = await response.json();");
+  lines.push("console.log(data);");
 
-  return lines.join('\n');
+  return lines.join("\n");
 }
 
 /**
@@ -447,15 +437,15 @@ export function toFetchCode(parsed: ParsedCurl, opts: ConvertOptions): string {
  */
 export function toAxiosCode(parsed: ParsedCurl, opts: ConvertOptions): string {
   const { method, url, headers, body } = parsed;
-  const indent = '  ';
+  const indent = "  ";
   const lines: string[] = [];
 
   // axios のインポート
   lines.push("import axios from 'axios';");
-  lines.push('');
+  lines.push("");
 
   const configProps: string[] = [];
-  const displayUrl = url || 'https://example.com/api';
+  const displayUrl = url || "https://example.com/api";
 
   configProps.push(`${indent}method: '${method.toLowerCase()}'`);
   configProps.push(`${indent}url: '${displayUrl}'`);
@@ -464,20 +454,20 @@ export function toAxiosCode(parsed: ParsedCurl, opts: ConvertOptions): string {
   if (headerCode) configProps.push(headerCode);
 
   if (body !== null) {
-    configProps.push(buildBodyCode(body, indent, 'axios'));
+    configProps.push(buildBodyCode(body, indent, "axios"));
   }
 
-  const typeAnnotation = opts.typescript ? '<unknown>' : '';
+  const typeAnnotation = opts.typescript ? "<unknown>" : "";
 
   lines.push(`const response = await axios${typeAnnotation}({`);
   for (let i = 0; i < configProps.length; i++) {
-    lines.push(configProps[i] + (i < configProps.length - 1 ? ',' : ','));
+    lines.push(configProps[i] + (i < configProps.length - 1 ? "," : ","));
   }
-  lines.push('});');
-  lines.push('');
-  lines.push('console.log(response.data);');
+  lines.push("});");
+  lines.push("");
+  lines.push("console.log(response.data);");
 
-  return lines.join('\n');
+  return lines.join("\n");
 }
 
 /**
@@ -489,15 +479,12 @@ export function toAxiosCode(parsed: ParsedCurl, opts: ConvertOptions): string {
  */
 export function convertCurl(command: string, opts: ConvertOptions): ConvertResult {
   if (!command.trim()) {
-    return { code: '', warnings: [] };
+    return { code: "", warnings: [] };
   }
 
   const { parsed, warnings } = parseCurl(command);
 
-  const code =
-    opts.mode === 'axios'
-      ? toAxiosCode(parsed, opts)
-      : toFetchCode(parsed, opts);
+  const code = opts.mode === "axios" ? toAxiosCode(parsed, opts) : toFetchCode(parsed, opts);
 
   return { code, warnings };
 }

@@ -18,7 +18,9 @@
   color: var(--md-sys-color-on-surface-variant);
   border-bottom: 2px solid transparent;
   margin-bottom: -1px;
-  transition: color 0.15s, border-color 0.15s;
+  transition:
+    color 0.15s,
+    border-color 0.15s;
 }
 
 .geometry-tab:hover {
@@ -123,7 +125,11 @@
 }
 
 .geometry-result-card--secondary {
-  background: color-mix(in srgb, var(--md-sys-color-secondary-container) 60%, var(--md-sys-color-surface-variant));
+  background: color-mix(
+    in srgb,
+    var(--md-sys-color-secondary-container) 60%,
+    var(--md-sys-color-surface-variant)
+  );
 }
 
 .geometry-result-label {

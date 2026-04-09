@@ -1,50 +1,46 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
-import { useState, useCallback, useMemo } from 'react';
-import { useToast } from '../components/Toast';
-import { TipsCard } from '~/components/TipsCard';
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from '~/hooks/useStatusAnnouncement';
-import { useClipboard } from '~/hooks/useClipboard';
+import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
+import { useState, useCallback, useMemo } from "react";
+import { useToast } from "../components/Toast";
+import { TipsCard } from "~/components/TipsCard";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
+import { useClipboard } from "~/hooks/useClipboard";
 import {
   generatePatternCSS,
   createDefaultConfig,
   PATTERN_PRESETS,
   type PatternConfig,
   type PatternType,
-} from '~/utils/css-background-pattern';
+} from "~/utils/css-background-pattern";
 
-export const Route = createFileRoute('/css-background-pattern')({
+export const Route = createFileRoute("/css-background-pattern")({
   head: () => ({
     meta: [
-      { title: 'CSS背景パターン生成 | Web ツール集' },
+      { title: "CSS背景パターン生成 | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          'CSSの繰り返しグラジェントを使った背景パターン生成ツール。縞模様・水玉・グリッド・市松・斜め縞・ジグザグを色・サイズ・角度で細かく調整できます。',
+          "CSSの繰り返しグラジェントを使った背景パターン生成ツール。縞模様・水玉・グリッド・市松・斜め縞・ジグザグを色・サイズ・角度で細かく調整できます。",
       },
       {
-        property: 'og:title',
-        content: 'CSS背景パターン生成 | Web ツール集',
+        property: "og:title",
+        content: "CSS背景パターン生成 | Web ツール集",
       },
       {
-        property: 'og:description',
+        property: "og:description",
         content:
-          'CSSの繰り返しグラジェントを使った背景パターン生成ツール。縞模様・水玉・グリッド・市松・斜め縞・ジグザグ対応。',
+          "CSSの繰り返しグラジェントを使った背景パターン生成ツール。縞模様・水玉・グリッド・市松・斜め縞・ジグザグ対応。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/css-background-pattern` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
+      { property: "og:url", content: `${SITE_BASE_URL}/css-background-pattern` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
       {
-        name: 'twitter:title',
-        content: 'CSS背景パターン生成 | Web ツール集',
+        name: "twitter:title",
+        content: "CSS背景パターン生成 | Web ツール集",
       },
       {
-        name: 'twitter:description',
-        content:
-          'CSSの繰り返しグラジェントで背景パターンを生成。6種類のパターンに対応。',
+        name: "twitter:description",
+        content: "CSSの繰り返しグラジェントで背景パターンを生成。6種類のパターンに対応。",
       },
     ],
   }),
@@ -52,12 +48,12 @@ export const Route = createFileRoute('/css-background-pattern')({
 });
 
 const PATTERN_TYPES: { id: PatternType; label: string }[] = [
-  { id: 'stripes', label: '縞模様' },
-  { id: 'diagonal', label: '斜め縞' },
-  { id: 'grid', label: 'グリッド' },
-  { id: 'checkerboard', label: '市松' },
-  { id: 'dots', label: '水玉' },
-  { id: 'zigzag', label: 'ジグザグ' },
+  { id: "stripes", label: "縞模様" },
+  { id: "diagonal", label: "斜め縞" },
+  { id: "grid", label: "グリッド" },
+  { id: "checkerboard", label: "市松" },
+  { id: "dots", label: "水玉" },
+  { id: "zigzag", label: "ジグザグ" },
 ];
 
 const HEX_PATTERN = /^#[0-9A-Fa-f]{6}$/;
@@ -79,27 +75,21 @@ function CssBackgroundPattern() {
     setSelectedPreset(null);
   }, []);
 
-  const handleColor1Change = useCallback(
-    (value: string) => {
-      setColor1Hex(value);
-      if (HEX_PATTERN.test(value)) {
-        setConfig((prev) => ({ ...prev, color1: value }));
-        setSelectedPreset(null);
-      }
-    },
-    []
-  );
+  const handleColor1Change = useCallback((value: string) => {
+    setColor1Hex(value);
+    if (HEX_PATTERN.test(value)) {
+      setConfig((prev) => ({ ...prev, color1: value }));
+      setSelectedPreset(null);
+    }
+  }, []);
 
-  const handleColor2Change = useCallback(
-    (value: string) => {
-      setColor2Hex(value);
-      if (HEX_PATTERN.test(value)) {
-        setConfig((prev) => ({ ...prev, color2: value }));
-        setSelectedPreset(null);
-      }
-    },
-    []
-  );
+  const handleColor2Change = useCallback((value: string) => {
+    setColor2Hex(value);
+    if (HEX_PATTERN.test(value)) {
+      setConfig((prev) => ({ ...prev, color2: value }));
+      setSelectedPreset(null);
+    }
+  }, []);
 
   const handleSizeChange = useCallback((size: number) => {
     setConfig((prev) => ({ ...prev, size }));
@@ -121,28 +111,32 @@ function CssBackgroundPattern() {
     setSelectedPreset(null);
   }, []);
 
-  const handlePresetSelect = useCallback((index: number) => {
-    const preset = PATTERN_PRESETS[index];
-    setConfig(preset.config);
-    setColor1Hex(preset.config.color1);
-    setColor2Hex(preset.config.color2);
-    setSelectedPreset(index);
-    announceStatus(`プリセット「${preset.name}」を適用しました`);
-  }, [announceStatus]);
+  const handlePresetSelect = useCallback(
+    (index: number) => {
+      const preset = PATTERN_PRESETS[index];
+      setConfig(preset.config);
+      setColor1Hex(preset.config.color1);
+      setColor2Hex(preset.config.color2);
+      setSelectedPreset(index);
+      announceStatus(`プリセット「${preset.name}」を適用しました`);
+    },
+    [announceStatus],
+  );
 
   const handleCopyCSS = useCallback(async () => {
     const success = await copy(patternResult.fullCSS);
     if (success) {
-      announceStatus('CSSをコピーしました');
-      showToast('CSSをコピーしました', 'success');
+      announceStatus("CSSをコピーしました");
+      showToast("CSSをコピーしました", "success");
     } else {
-      showToast('コピーに失敗しました', 'error');
+      showToast("コピーに失敗しました", "error");
     }
   }, [patternResult.fullCSS, copy, announceStatus, showToast]);
 
-  const showAngle = config.type === 'stripes' || config.type === 'diagonal';
-  const showLineWidth = config.type === 'stripes' || config.type === 'diagonal' || config.type === 'grid';
-  const showDotRadius = config.type === 'dots';
+  const showAngle = config.type === "stripes" || config.type === "diagonal";
+  const showLineWidth =
+    config.type === "stripes" || config.type === "diagonal" || config.type === "grid";
+  const showDotRadius = config.type === "dots";
 
   const previewStyle: React.CSSProperties = {
     background: patternResult.background,
@@ -158,18 +152,14 @@ function CssBackgroundPattern() {
             {/* パターンタイプ選択 */}
             <div className="cbp-section">
               <p className="cbp-section-title">パターン種類</p>
-              <div
-                className="cbp-type-tabs"
-                role="tablist"
-                aria-label="パターン種類の選択"
-              >
+              <div className="cbp-type-tabs" role="tablist" aria-label="パターン種類の選択">
                 {PATTERN_TYPES.map((pt) => (
                   <button
                     key={pt.id}
                     type="button"
                     role="tab"
                     aria-selected={config.type === pt.id}
-                    className={`cbp-type-tab${config.type === pt.id ? ' active' : ''}`}
+                    className={`cbp-type-tab${config.type === pt.id ? " active" : ""}`}
                     onClick={() => handleTypeChange(pt.id)}
                   >
                     {pt.label}
@@ -186,7 +176,7 @@ function CssBackgroundPattern() {
                 <input
                   type="color"
                   className="cbp-color-swatch"
-                  value={HEX_PATTERN.test(color1Hex) ? color1Hex : '#000000'}
+                  value={HEX_PATTERN.test(color1Hex) ? color1Hex : "#000000"}
                   onChange={(e) => handleColor1Change(e.target.value)}
                   aria-label="カラー1のカラーピッカー"
                 />
@@ -206,7 +196,7 @@ function CssBackgroundPattern() {
                 <input
                   type="color"
                   className="cbp-color-swatch"
-                  value={HEX_PATTERN.test(color2Hex) ? color2Hex : '#ffffff'}
+                  value={HEX_PATTERN.test(color2Hex) ? color2Hex : "#ffffff"}
                   onChange={(e) => handleColor2Change(e.target.value)}
                   aria-label="カラー2のカラーピッカー"
                 />
@@ -298,13 +288,15 @@ function CssBackgroundPattern() {
                   const presetResult = generatePatternCSS(preset.config);
                   const btnStyle: React.CSSProperties = {
                     background: presetResult.background,
-                    ...(presetResult.backgroundSize ? { backgroundSize: presetResult.backgroundSize } : {}),
+                    ...(presetResult.backgroundSize
+                      ? { backgroundSize: presetResult.backgroundSize }
+                      : {}),
                   };
                   return (
                     <button
                       key={preset.name}
                       type="button"
-                      className={`cbp-preset-btn${selectedPreset === index ? ' selected' : ''}`}
+                      className={`cbp-preset-btn${selectedPreset === index ? " selected" : ""}`}
                       style={btnStyle}
                       onClick={() => handlePresetSelect(index)}
                       aria-pressed={selectedPreset === index}
@@ -352,24 +344,24 @@ function CssBackgroundPattern() {
             <TipsCard
               sections={[
                 {
-                  title: '対応するパターン種類',
+                  title: "対応するパターン種類",
                   items: [
-                    '縞模様 (stripes): repeating-linear-gradient で均等な縞を生成',
-                    '斜め縞 (diagonal): 角度を変えた repeating-linear-gradient',
-                    'グリッド (grid): 水平と垂直の2重グラジェントで格子状に',
-                    '市松 (checkerboard): repeating-conic-gradient でモダンなチェッカー模様',
-                    '水玉 (dots): radial-gradient でドット模様',
-                    'ジグザグ (zigzag): 4方向の repeating-linear-gradient を重ねて生成',
+                    "縞模様 (stripes): repeating-linear-gradient で均等な縞を生成",
+                    "斜め縞 (diagonal): 角度を変えた repeating-linear-gradient",
+                    "グリッド (grid): 水平と垂直の2重グラジェントで格子状に",
+                    "市松 (checkerboard): repeating-conic-gradient でモダンなチェッカー模様",
+                    "水玉 (dots): radial-gradient でドット模様",
+                    "ジグザグ (zigzag): 4方向の repeating-linear-gradient を重ねて生成",
                   ],
                 },
                 {
-                  title: '使い方のコツ',
+                  title: "使い方のコツ",
                   items: [
-                    'サイズを大きくするとパターンが粗くなり、小さくすると細かくなります',
-                    '角度スライダーで縞の方向を変えられます（縞模様・斜め縞のみ）',
-                    '背景色にはカラー2が使われ、パターンにはカラー1が使われます',
-                    '生成されたCSSをそのままスタイルシートに貼り付けて使用できます',
-                    'background-size を省略した場合、サイズは自動計算されます',
+                    "サイズを大きくするとパターンが粗くなり、小さくすると細かくなります",
+                    "角度スライダーで縞の方向を変えられます（縞模様・斜め縞のみ）",
+                    "背景色にはカラー2が使われ、パターンにはカラー1が使われます",
+                    "生成されたCSSをそのままスタイルシートに貼り付けて使用できます",
+                    "background-size を省略した場合、サイズは自動計算されます",
                   ],
                 },
               ]}

@@ -26,7 +26,7 @@
 }
 
 .number-base-label-prefix {
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
   font-size: 0.75rem;
   color: var(--md-sys-color-on-surface-variant);
   opacity: 0.7;
@@ -44,11 +44,13 @@
   padding: 0.625rem 0.875rem;
   border: 1.5px solid var(--md-sys-color-outline-variant);
   border-radius: 8px;
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
   font-size: 1rem;
   background-color: var(--md-sys-color-surface-variant);
   color: var(--md-sys-color-on-surface);
-  transition: border-color 0.2s, background-color 0.2s;
+  transition:
+    border-color 0.2s,
+    background-color 0.2s;
   letter-spacing: 0.05em;
 }
 
@@ -67,7 +69,7 @@
   color: var(--md-sys-color-on-surface-variant);
   opacity: 0.5;
   font-size: 0.875rem;
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
 }
 
 .number-base-copy-btn {
@@ -79,7 +81,9 @@
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.2s, opacity 0.2s;
+  transition:
+    background-color 0.2s,
+    opacity 0.2s;
   white-space: nowrap;
   min-width: 5rem;
 }
@@ -117,7 +121,9 @@
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.2s, opacity 0.2s;
+  transition:
+    background-color 0.2s,
+    opacity 0.2s;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }

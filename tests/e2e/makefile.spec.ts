@@ -11,33 +11,25 @@ test.describe("Makefileジェネレーター", () => {
 
   test("セクションタイトルが表示される", async ({ page }) => {
     await expect(page.getByRole("heading", { name: "設定" })).toBeVisible();
-    await expect(
-      page.getByRole("heading", { name: /生成された Makefile/ })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: /生成された Makefile/ })).toBeVisible();
   });
 
   test("プロジェクト種別のラジオボタンが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("radio", { name: /Node\.js/ })
-    ).toBeVisible();
+    await expect(page.getByRole("radio", { name: /Node\.js/ })).toBeVisible();
     await expect(page.getByRole("radio", { name: /Python/ })).toBeVisible();
     await expect(page.getByRole("radio", { name: /Go/ })).toBeVisible();
     await expect(page.getByRole("radio", { name: /Rust/ })).toBeVisible();
   });
 
   test("アプリケーション名入力フィールドが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("textbox", { name: "アプリケーション名" })
-    ).toBeVisible();
+    await expect(page.getByRole("textbox", { name: "アプリケーション名" })).toBeVisible();
   });
 
   test("オプションのチェックボックスが表示される", async ({ page }) => {
     await expect(
-      page.getByRole("checkbox", { name: /リント・フォーマットターゲットを含む/ })
+      page.getByRole("checkbox", { name: /リント・フォーマットターゲットを含む/ }),
     ).toBeVisible();
-    await expect(
-      page.getByRole("checkbox", { name: /Dockerターゲットを含む/ })
-    ).toBeVisible();
+    await expect(page.getByRole("checkbox", { name: /Dockerターゲットを含む/ })).toBeVisible();
   });
 
   test("初期状態でNode.jsが選択されている", async ({ page }) => {
@@ -87,9 +79,7 @@ test.describe("Makefileジェネレーター", () => {
     await expect(output).toContainText("myapp");
   });
 
-  test("Dockerオプションを有効にするとdocker-buildターゲットが追加される", async ({
-    page,
-  }) => {
+  test("Dockerオプションを有効にするとdocker-buildターゲットが追加される", async ({ page }) => {
     const dockerCheckbox = page.getByRole("checkbox", {
       name: /Dockerターゲットを含む/,
     });
@@ -101,9 +91,7 @@ test.describe("Makefileジェネレーター", () => {
     await expect(output).toContainText("docker run");
   });
 
-  test("Dockerオプションを無効にするとdocker-buildターゲットが削除される", async ({
-    page,
-  }) => {
+  test("Dockerオプションを無効にするとdocker-buildターゲットが削除される", async ({ page }) => {
     const dockerCheckbox = page.getByRole("checkbox", {
       name: /Dockerターゲットを含む/,
     });
@@ -131,14 +119,12 @@ test.describe("Makefileジェネレーター", () => {
 
   test("コピーボタンが存在する", async ({ page }) => {
     await expect(
-      page.getByRole("button", { name: "Makefileをクリップボードにコピー" })
+      page.getByRole("button", { name: "Makefileをクリップボードにコピー" }),
     ).toBeVisible();
   });
 
   test("ダウンロードボタンが存在する", async ({ page }) => {
-    await expect(
-      page.getByRole("button", { name: "Makefileをダウンロード" })
-    ).toBeVisible();
+    await expect(page.getByRole("button", { name: "Makefileをダウンロード" })).toBeVisible();
   });
 
   test("TipsCardが表示される", async ({ page }) => {

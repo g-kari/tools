@@ -15,16 +15,25 @@ import {
 export const Route = createFileRoute("/discord-sticker")({
   head: () => ({
     meta: [
-    { title: "Discordスタンプコンバーター | Web ツール集" },
-    { name: "description", content: "PNG/JPG画像をDiscordスタンプサイズ（320x320px・512KB以下）に変換するツール。" },
-    { property: "og:title", content: "Discordスタンプコンバーター | Web ツール集" },
-    { property: "og:description", content: "PNG/JPG画像をDiscordスタンプサイズ（320x320px・512KB以下）に変換するツール。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/discord-sticker` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "Discordスタンプコンバーター | Web ツール集" },
-    { name: "twitter:description", content: "PNG/JPG画像をDiscordスタンプサイズ（320x320px・512KB以下）に変換するツール。" },
-  ],
+      { title: "Discordスタンプコンバーター | Web ツール集" },
+      {
+        name: "description",
+        content: "PNG/JPG画像をDiscordスタンプサイズ（320x320px・512KB以下）に変換するツール。",
+      },
+      { property: "og:title", content: "Discordスタンプコンバーター | Web ツール集" },
+      {
+        property: "og:description",
+        content: "PNG/JPG画像をDiscordスタンプサイズ（320x320px・512KB以下）に変換するツール。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/discord-sticker` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "Discordスタンプコンバーター | Web ツール集" },
+      {
+        name: "twitter:description",
+        content: "PNG/JPG画像をDiscordスタンプサイズ（320x320px・512KB以下）に変換するツール。",
+      },
+    ],
   }),
   component: DiscordStickerConverter,
 });
@@ -46,10 +55,8 @@ function DiscordStickerConverter() {
   // アンマウント時のみ Object URL を解放する
   useEffect(() => {
     return () => {
-      if (originalPreviewRef.current)
-        URL.revokeObjectURL(originalPreviewRef.current);
-      if (convertedPreviewRef.current)
-        URL.revokeObjectURL(convertedPreviewRef.current);
+      if (originalPreviewRef.current) URL.revokeObjectURL(originalPreviewRef.current);
+      if (convertedPreviewRef.current) URL.revokeObjectURL(convertedPreviewRef.current);
     };
   }, []);
 
@@ -57,26 +64,21 @@ function DiscordStickerConverter() {
    * ファイル選択時のハンドラー
    * @param files - 選択されたファイルの配列
    */
-  const handleFileSelect = useCallback(
-    (files: File[]) => {
-      const file = files[0];
-      if (!file) return;
+  const handleFileSelect = useCallback((files: File[]) => {
+    const file = files[0];
+    if (!file) return;
 
-      if (originalPreviewRef.current)
-        URL.revokeObjectURL(originalPreviewRef.current);
-      if (convertedPreviewRef.current)
-        URL.revokeObjectURL(convertedPreviewRef.current);
+    if (originalPreviewRef.current) URL.revokeObjectURL(originalPreviewRef.current);
+    if (convertedPreviewRef.current) URL.revokeObjectURL(convertedPreviewRef.current);
 
-      const newPreview = URL.createObjectURL(file);
-      originalPreviewRef.current = newPreview;
-      convertedPreviewRef.current = null;
-      setOriginalFile(file);
-      setOriginalPreview(newPreview);
-      setConvertedBlob(null);
-      setConvertedPreview(null);
-    },
-    []
-  );
+    const newPreview = URL.createObjectURL(file);
+    originalPreviewRef.current = newPreview;
+    convertedPreviewRef.current = null;
+    setOriginalFile(file);
+    setOriginalPreview(newPreview);
+    setConvertedBlob(null);
+    setConvertedPreview(null);
+  }, []);
 
   /**
    * 変換ボタンのハンドラー
@@ -91,18 +93,14 @@ function DiscordStickerConverter() {
         type: "sticker",
       });
 
-      if (convertedPreviewRef.current)
-        URL.revokeObjectURL(convertedPreviewRef.current);
+      if (convertedPreviewRef.current) URL.revokeObjectURL(convertedPreviewRef.current);
       const newConvertedPreview = URL.createObjectURL(blob);
       convertedPreviewRef.current = newConvertedPreview;
       setConvertedBlob(blob);
       setConvertedPreview(newConvertedPreview);
       showToast("Discordスタンプ用に変換しました", "success");
     } catch (err) {
-      showToast(
-        err instanceof Error ? err.message : "変換に失敗しました",
-        "error"
-      );
+      showToast(err instanceof Error ? err.message : "変換に失敗しました", "error");
     } finally {
       setIsLoading(false);
     }
@@ -122,10 +120,8 @@ function DiscordStickerConverter() {
    * クリアボタンのハンドラー
    */
   const handleClear = useCallback(() => {
-    if (originalPreviewRef.current)
-      URL.revokeObjectURL(originalPreviewRef.current);
-    if (convertedPreviewRef.current)
-      URL.revokeObjectURL(convertedPreviewRef.current);
+    if (originalPreviewRef.current) URL.revokeObjectURL(originalPreviewRef.current);
+    if (convertedPreviewRef.current) URL.revokeObjectURL(convertedPreviewRef.current);
     originalPreviewRef.current = null;
     convertedPreviewRef.current = null;
 
@@ -144,9 +140,7 @@ function DiscordStickerConverter() {
             <h2 className="section-title">画像選択</h2>
             <ImageUploadZone
               onFileSelect={handleFileSelect}
-              onTypeError={() =>
-                showToast("画像ファイルを選択してください", "error")
-              }
+              onTypeError={() => showToast("画像ファイルを選択してください", "error")}
               hint="PNG, JPEG, WebP など（透過PNGを推奨）"
               ariaLabel="Discordスタンプに変換する画像をアップロード"
               inputId="discordStickerFile"
@@ -196,18 +190,11 @@ function DiscordStickerConverter() {
                 />
               )}
               <div className="discord-converter-info">
-                <span className="discord-converter-filename">
-                  {originalFile.name}
-                </span>
+                <span className="discord-converter-filename">{originalFile.name}</span>
                 <span>{formatFileSize(originalFile.size)}</span>
               </div>
             </div>
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={handleClear}
-              disabled={isLoading}
-            >
+            <Button type="button" variant="secondary" onClick={handleClear} disabled={isLoading}>
               別の画像を選択
             </Button>
           </div>
@@ -223,11 +210,7 @@ function DiscordStickerConverter() {
 
           <div className="converter-section">
             <div className="button-group" role="group" aria-label="操作ボタン">
-              <Button
-                type="button"
-                onClick={handleConvert}
-                disabled={isLoading}
-              >
+              <Button type="button" onClick={handleConvert} disabled={isLoading}>
                 {isLoading ? "変換中..." : "変換"}
               </Button>
             </div>
@@ -246,17 +229,13 @@ function DiscordStickerConverter() {
                 </div>
                 <div className="discord-converter-result-info">
                   <div className="discord-converter-result-stat">
-                    <span className="discord-converter-result-label">
-                      サイズ
-                    </span>
+                    <span className="discord-converter-result-label">サイズ</span>
                     <span className="discord-converter-result-value">
                       {DISCORD_STICKER_SIZE}×{DISCORD_STICKER_SIZE}px
                     </span>
                   </div>
                   <div className="discord-converter-result-stat">
-                    <span className="discord-converter-result-label">
-                      ファイルサイズ
-                    </span>
+                    <span className="discord-converter-result-label">ファイルサイズ</span>
                     <span className="discord-converter-result-value discord-converter-ok">
                       {formatFileSize(convertedBlob.size)} ✓ 512KB以下
                     </span>

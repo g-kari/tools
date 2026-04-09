@@ -70,21 +70,21 @@ test.describe("OGP Checker - E2E Tests", () => {
   });
 
   test("should have category navigation with OGP link", async ({ page }) => {
-    const navCategories = page.locator('.nav-categories');
+    const navCategories = page.locator(".nav-categories");
     await expect(navCategories).toBeVisible();
 
     // 検索カテゴリがアクティブであることを確認
-    const activeCategory = page.locator('.nav-category-btn.active');
-    await expect(activeCategory).toContainText('検索');
+    const activeCategory = page.locator(".nav-category-btn.active");
+    await expect(activeCategory).toContainText("検索");
 
     // カテゴリをホバーしてOGPリンクを確認
-    const categoryBtn = page.locator('.nav-category-btn', { hasText: '検索' });
+    const categoryBtn = page.locator(".nav-category-btn", { hasText: "検索" });
     await categoryBtn.hover();
-    const dropdown = page.locator('.nav-dropdown');
+    const dropdown = page.locator(".nav-dropdown");
     await expect(dropdown).toBeVisible();
     const ogpLink = dropdown.locator('a[href="/ogp"]');
     await expect(ogpLink).toBeVisible();
-    await expect(ogpLink).toContainText('OGP');
+    await expect(ogpLink).toContainText("OGP");
   });
 
   test("should focus on URL input on page load", async ({ page }) => {

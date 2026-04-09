@@ -40,11 +40,13 @@
   padding: 10px 12px;
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: 4px;
-  font-family: 'Noto Sans JP', 'Roboto Mono', sans-serif;
+  font-family: "Noto Sans JP", "Roboto Mono", sans-serif;
   font-size: 1rem;
   background: var(--md-sys-color-surface-variant);
   color: var(--md-sys-color-on-surface);
-  transition: border-color 0.2s, background 0.2s;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
   min-width: 0;
   width: 100%;
 }
@@ -85,7 +87,7 @@
 
 .daiji-result-value {
   flex: 1;
-  font-family: 'Noto Sans JP', sans-serif;
+  font-family: "Noto Sans JP", sans-serif;
   font-size: 1.5rem;
   font-weight: 600;
   color: var(--md-sys-color-on-primary-container);
@@ -102,7 +104,9 @@
   border-radius: 4px;
   color: var(--md-sys-color-on-secondary-container);
   cursor: pointer;
-  transition: background-color 0.2s, opacity 0.2s;
+  transition:
+    background-color 0.2s,
+    opacity 0.2s;
   white-space: nowrap;
   flex-shrink: 0;
   letter-spacing: 0.25px;
@@ -175,14 +179,14 @@
 }
 
 .daiji-table-daiji {
-  font-family: 'Noto Sans JP', sans-serif;
+  font-family: "Noto Sans JP", sans-serif;
   font-size: 1.1rem;
   font-weight: 700;
   color: var(--md-sys-color-primary);
 }
 
 .daiji-table-arabic {
-  font-family: 'Roboto Mono', 'Courier New', monospace;
+  font-family: "Roboto Mono", "Courier New", monospace;
   font-weight: 500;
 }
 

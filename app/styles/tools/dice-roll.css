@@ -22,7 +22,7 @@
 }
 
 .notation-value {
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
   font-size: 1.125rem;
   font-weight: 600;
   color: var(--md-sys-color-primary);
@@ -145,7 +145,7 @@
 }
 
 .dice-expression code {
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
   font-size: 1rem;
   color: var(--md-sys-color-on-surface-variant);
 }
@@ -169,7 +169,7 @@
 .history-notation {
   font-weight: 600;
   color: var(--md-sys-color-primary);
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
   min-width: 60px;
 }
 
@@ -181,7 +181,7 @@
 }
 
 .history-results {
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
   font-size: 0.875rem;
   color: var(--md-sys-color-on-surface-variant);
 }
@@ -229,4 +229,3 @@
     font-size: 1.5rem;
   }
 }
-

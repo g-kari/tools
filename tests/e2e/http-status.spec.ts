@@ -7,7 +7,7 @@ test.describe("HTTP Status Code Reference - E2E Tests", () => {
   async function navigateViaCategory(
     page: import("@playwright/test").Page,
     categoryName: string,
-    linkHref: string
+    linkHref: string,
   ) {
     const categoryBtn = page.locator(".nav-category-btn", {
       hasText: categoryName,
@@ -175,9 +175,7 @@ test.describe("HTTP Status Code Reference - E2E Tests", () => {
     await expect(toast).toBeVisible({ timeout: 3000 });
   });
 
-  test("should display cards with code, name, and description", async ({
-    page,
-  }) => {
+  test("should display cards with code, name, and description", async ({ page }) => {
     const firstCard = page.locator(".http-status-card").first();
 
     const code = firstCard.locator(".http-status-code");
@@ -210,9 +208,7 @@ test.describe("HTTP Status Code Reference - E2E Tests", () => {
     await expect(name).toContainText("OK");
   });
 
-  test("should display 500 Internal Server Error in the list", async ({
-    page,
-  }) => {
+  test("should display 500 Internal Server Error in the list", async ({ page }) => {
     const searchInput = page.locator("#http-status-search-input");
     await searchInput.fill("500");
 
@@ -250,9 +246,7 @@ test.describe("HTTP Status Code Reference - E2E Tests", () => {
     expect(filteredText).not.toBe(initialText);
   });
 
-  test("should clear search when clicking 'all' category after search", async ({
-    page,
-  }) => {
+  test("should clear search when clicking 'all' category after search", async ({ page }) => {
     // 検索
     const searchInput = page.locator("#http-status-search-input");
     await searchInput.fill("404");

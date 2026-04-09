@@ -48,13 +48,9 @@ test.describe("HTTP APIテスター - E2Eテスト", () => {
     await expect(addButton).toBeVisible();
   });
 
-  test("ヘッダーの追加ボタンをクリックするとヘッダー行が増える", async ({
-    page,
-  }) => {
+  test("ヘッダーの追加ボタンをクリックするとヘッダー行が増える", async ({ page }) => {
     const addButton = page.locator("button", { hasText: "+ 追加" });
-    const initialRows = await page
-      .locator(".http-client-header-row")
-      .count();
+    const initialRows = await page.locator(".http-client-header-row").count();
 
     await addButton.click();
 
@@ -62,9 +58,7 @@ test.describe("HTTP APIテスター - E2Eテスト", () => {
     expect(newRows).toBe(initialRows + 1);
   });
 
-  test("URLを入力せずに送信するとエラーメッセージが表示される", async ({
-    page,
-  }) => {
+  test("URLを入力せずに送信するとエラーメッセージが表示される", async ({ page }) => {
     const urlInput = page.locator("#httpUrl");
     await urlInput.fill("");
 
@@ -76,9 +70,7 @@ test.describe("HTTP APIテスター - E2Eテスト", () => {
     await expect(errorMessage).toContainText("URL");
   });
 
-  test("GETメソッドではリクエストボディ入力が表示されない", async ({
-    page,
-  }) => {
+  test("GETメソッドではリクエストボディ入力が表示されない", async ({ page }) => {
     const methodSelect = page.locator("#httpMethod");
     await methodSelect.selectOption("GET");
 
@@ -86,9 +78,7 @@ test.describe("HTTP APIテスター - E2Eテスト", () => {
     await expect(bodyTextarea).not.toBeVisible();
   });
 
-  test("POSTメソッドではリクエストボディ入力が表示される", async ({
-    page,
-  }) => {
+  test("POSTメソッドではリクエストボディ入力が表示される", async ({ page }) => {
     const methodSelect = page.locator("#httpMethod");
     await methodSelect.selectOption("POST");
 
@@ -96,9 +86,7 @@ test.describe("HTTP APIテスター - E2Eテスト", () => {
     await expect(bodyTextarea).toBeVisible();
   });
 
-  test("HEADメソッドではリクエストボディ入力が表示されない", async ({
-    page,
-  }) => {
+  test("HEADメソッドではリクエストボディ入力が表示されない", async ({ page }) => {
     const methodSelect = page.locator("#httpMethod");
     await methodSelect.selectOption("HEAD");
 
@@ -121,9 +109,7 @@ test.describe("HTTP APIテスター - E2Eテスト", () => {
     await expect(responseSection).toContainText("レスポンス");
   });
 
-  test("httpbin.orgへのGETリクエストで200ステータスが返る", async ({
-    page,
-  }) => {
+  test("httpbin.orgへのGETリクエストで200ステータスが返る", async ({ page }) => {
     const urlInput = page.locator("#httpUrl");
     const sendButton = page.locator("button.btn-primary").first();
 
@@ -135,9 +121,7 @@ test.describe("HTTP APIテスター - E2Eテスト", () => {
     await expect(statusBadge).toContainText("200");
   });
 
-  test("レスポンスのボディタブとヘッダータブが切り替えられる", async ({
-    page,
-  }) => {
+  test("レスポンスのボディタブとヘッダータブが切り替えられる", async ({ page }) => {
     const urlInput = page.locator("#httpUrl");
     const sendButton = page.locator("button.btn-primary").first();
 
@@ -181,9 +165,7 @@ test.describe("HTTP APIテスター - E2Eテスト", () => {
     expect(combinedText).toContain("使い方");
   });
 
-  test("ナビゲーションのネットワークカテゴリにHTTP APIテスターが存在する", async ({
-    page,
-  }) => {
+  test("ナビゲーションのネットワークカテゴリにHTTP APIテスターが存在する", async ({ page }) => {
     await page.goto("/");
     const categoryBtn = page.locator(".nav-category-btn", {
       hasText: "ネットワーク",
@@ -196,9 +178,7 @@ test.describe("HTTP APIテスター - E2Eテスト", () => {
     await expect(httpClientLink).toContainText("HTTP APIテスター");
   });
 
-  test("ネットワークカテゴリからHTTP APIテスターに遷移できる", async ({
-    page,
-  }) => {
+  test("ネットワークカテゴリからHTTP APIテスターに遷移できる", async ({ page }) => {
     await page.goto("/");
     const categoryBtn = page.locator(".nav-category-btn", {
       hasText: "ネットワーク",

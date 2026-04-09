@@ -4,14 +4,7 @@ import { isPrivateOrLocalhost } from "./security-headers";
 /**
  * HTTPリクエストのメソッド種別
  */
-export type HttpMethod =
-  | "GET"
-  | "POST"
-  | "PUT"
-  | "PATCH"
-  | "DELETE"
-  | "HEAD"
-  | "OPTIONS";
+export type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "HEAD" | "OPTIONS";
 
 /**
  * HTTPリクエストのカスタムヘッダー
@@ -75,9 +68,7 @@ export function isValidUrl(urlString: string): boolean {
  * @param headers - ヘッダーの配列
  * @returns ヘッダーオブジェクト
  */
-export function headersArrayToObject(
-  headers: HttpHeader[]
-): Record<string, string> {
+export function headersArrayToObject(headers: HttpHeader[]): Record<string, string> {
   const result: Record<string, string> = {};
   for (const header of headers) {
     const key = header.key.trim();
@@ -109,9 +100,7 @@ export function formatResponseBody(body: string): string {
  * @param headers - Fetch APIのHeadersオブジェクト
  * @returns ヘッダーのキーバリューオブジェクト
  */
-export function responseHeadersToObject(
-  headers: Headers
-): Record<string, string> {
+export function responseHeadersToObject(headers: Headers): Record<string, string> {
   const result: Record<string, string> = {};
   headers.forEach((value, key) => {
     result[key] = value;
@@ -136,9 +125,7 @@ export const sendHttpRequest = createServerFn({ method: "POST" })
     }
 
     const trimmedUrl = params.url.trim();
-    const urlWithProtocol = trimmedUrl.match(/^https?:\/\//)
-      ? trimmedUrl
-      : `https://${trimmedUrl}`;
+    const urlWithProtocol = trimmedUrl.match(/^https?:\/\//) ? trimmedUrl : `https://${trimmedUrl}`;
 
     if (!isValidUrl(urlWithProtocol)) {
       throw new Error("無効なURL形式です。http://またはhttps://で始まるURLを入力してください");
@@ -148,19 +135,11 @@ export const sendHttpRequest = createServerFn({ method: "POST" })
     const parsedUrl = new URL(urlWithProtocol);
     if (isPrivateOrLocalhost(parsedUrl.hostname)) {
       throw new Error(
-        "セキュリティ上の理由により、ローカルホストやプライベートIPアドレスへのアクセスはできません"
+        "セキュリティ上の理由により、ローカルホストやプライベートIPアドレスへのアクセスはできません",
       );
     }
 
-    const validMethods: HttpMethod[] = [
-      "GET",
-      "POST",
-      "PUT",
-      "PATCH",
-      "DELETE",
-      "HEAD",
-      "OPTIONS",
-    ];
+    const validMethods: HttpMethod[] = ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"];
     const method = (params.method || "GET").toUpperCase() as HttpMethod;
     if (!validMethods.includes(method)) {
       throw new Error(`無効なHTTPメソッドです: ${method}`);
@@ -191,11 +170,7 @@ export const sendHttpRequest = createServerFn({ method: "POST" })
       };
 
       // GETとHEADはボディを持てない
-      if (
-        params.body &&
-        params.method !== "GET" &&
-        params.method !== "HEAD"
-      ) {
+      if (params.body && params.method !== "GET" && params.method !== "HEAD") {
         fetchOptions.body = params.body;
       }
 
@@ -213,7 +188,8 @@ export const sendHttpRequest = createServerFn({ method: "POST" })
               headers: {},
               body: "",
               responseTime,
-              error: "セキュリティ上の理由により、プライベートIPへのリダイレクトは許可されていません",
+              error:
+                "セキュリティ上の理由により、プライベートIPへのリダイレクトは許可されていません",
             };
           }
         } catch {

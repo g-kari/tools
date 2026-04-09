@@ -1,9 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useMemo, useCallback } from "react";
-import {
-  StatusAnnouncer,
-  useStatusAnnouncement,
-} from "~/hooks/useStatusAnnouncement";
+import { StatusAnnouncer, useStatusAnnouncement } from "~/hooks/useStatusAnnouncement";
 import { TipsCard } from "~/components/TipsCard";
 import { useToast } from "~/components/Toast";
 import { useClipboard } from "~/hooks/useClipboard";
@@ -49,8 +46,7 @@ export const Route = createFileRoute("/transfer-speed")({
       },
       {
         name: "twitter:description",
-        content:
-          "ファイルサイズと回線速度から転送時間を計算します。各種プリセット付き。",
+        content: "ファイルサイズと回線速度から転送時間を計算します。各種プリセット付き。",
       },
     ],
   }),
@@ -58,15 +54,7 @@ export const Route = createFileRoute("/transfer-speed")({
 });
 
 const SIZE_UNITS: SizeUnit[] = ["B", "KB", "MB", "GB", "TB"];
-const SPEED_UNITS: SpeedUnit[] = [
-  "bps",
-  "Kbps",
-  "Mbps",
-  "Gbps",
-  "KBps",
-  "MBps",
-  "GBps",
-];
+const SPEED_UNITS: SpeedUnit[] = ["bps", "Kbps", "Mbps", "Gbps", "KBps", "MBps", "GBps"];
 
 /**
  * 転送速度・転送時間計算機コンポーネント
@@ -130,29 +118,26 @@ function TransferSpeedCalculator() {
   }, [mode, bytes, targetTotalSeconds]);
 
   /** プリセット選択時の処理 */
-  const handlePresetChange = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      const key = e.target.value;
-      setPresetKey(key);
-      if (!key) return;
-      const preset = SPEED_PRESETS.find((p) => p.name === key);
-      if (!preset) return;
-      const mbps = preset.bps / 1_000_000;
-      if (preset.bps >= 1_000_000_000) {
-        const gbps = preset.bps / 1_000_000_000;
-        setSpeedStr(gbps % 1 === 0 ? String(gbps) : gbps.toFixed(2));
-        setSpeedUnit("Gbps");
-      } else if (mbps >= 1) {
-        setSpeedStr(mbps % 1 === 0 ? String(mbps) : mbps.toFixed(1));
-        setSpeedUnit("Mbps");
-      } else {
-        const kbps = preset.bps / 1_000;
-        setSpeedStr(kbps % 1 === 0 ? String(kbps) : kbps.toFixed(1));
-        setSpeedUnit("Kbps");
-      }
-    },
-    []
-  );
+  const handlePresetChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
+    const key = e.target.value;
+    setPresetKey(key);
+    if (!key) return;
+    const preset = SPEED_PRESETS.find((p) => p.name === key);
+    if (!preset) return;
+    const mbps = preset.bps / 1_000_000;
+    if (preset.bps >= 1_000_000_000) {
+      const gbps = preset.bps / 1_000_000_000;
+      setSpeedStr(gbps % 1 === 0 ? String(gbps) : gbps.toFixed(2));
+      setSpeedUnit("Gbps");
+    } else if (mbps >= 1) {
+      setSpeedStr(mbps % 1 === 0 ? String(mbps) : mbps.toFixed(1));
+      setSpeedUnit("Mbps");
+    } else {
+      const kbps = preset.bps / 1_000;
+      setSpeedStr(kbps % 1 === 0 ? String(kbps) : kbps.toFixed(1));
+      setSpeedUnit("Kbps");
+    }
+  }, []);
 
   /** 結果コピー */
   const handleCopy = useCallback(async () => {
@@ -195,11 +180,7 @@ function TransferSpeedCalculator() {
 
       <div className="tool-container">
         {/* モード切り替え */}
-        <div
-          className="ts-mode-tabs"
-          role="tablist"
-          aria-label="計算モード選択"
-        >
+        <div className="ts-mode-tabs" role="tablist" aria-label="計算モード選択">
           <button
             type="button"
             role="tab"
@@ -254,7 +235,9 @@ function TransferSpeedCalculator() {
               </select>
             </div>
             {bytes !== null && (
-              <p className="ts-sub-info">{formatFileSize(bytes)} ({bytes.toLocaleString()} バイト)</p>
+              <p className="ts-sub-info">
+                {formatFileSize(bytes)} ({bytes.toLocaleString()} バイト)
+              </p>
             )}
           </fieldset>
 
@@ -305,17 +288,15 @@ function TransferSpeedCalculator() {
                   className="ts-preset-select"
                 >
                   <option value="">— プリセットから選択 —</option>
-                  {Array.from(presetGroups.entries()).map(
-                    ([category, presets]) => (
-                      <optgroup key={category} label={category}>
-                        {presets.map((p) => (
-                          <option key={p.name} value={p.name}>
-                            {p.name}
-                          </option>
-                        ))}
-                      </optgroup>
-                    )
-                  )}
+                  {Array.from(presetGroups.entries()).map(([category, presets]) => (
+                    <optgroup key={category} label={category}>
+                      {presets.map((p) => (
+                        <option key={p.name} value={p.name}>
+                          {p.name}
+                        </option>
+                      ))}
+                    </optgroup>
+                  ))}
                 </select>
               </div>
             </fieldset>
@@ -373,10 +354,7 @@ function TransferSpeedCalculator() {
 
           {/* 結果表示: 転送時間 */}
           {mode === "time" && (
-            <div
-              className={`ts-result${timeResult ? " visible" : ""}`}
-              aria-live="polite"
-            >
+            <div className={`ts-result${timeResult ? " visible" : ""}`} aria-live="polite">
               {timeResult ? (
                 <>
                   <div className="ts-result-main">
@@ -415,26 +393,19 @@ function TransferSpeedCalculator() {
                   </button>
                 </>
               ) : (
-                <p className="ts-result-placeholder">
-                  ファイルサイズと転送速度を入力してください
-                </p>
+                <p className="ts-result-placeholder">ファイルサイズと転送速度を入力してください</p>
               )}
             </div>
           )}
 
           {/* 結果表示: 必要速度 */}
           {mode === "speed" && (
-            <div
-              className={`ts-result${speedResult ? " visible" : ""}`}
-              aria-live="polite"
-            >
+            <div className={`ts-result${speedResult ? " visible" : ""}`} aria-live="polite">
               {speedResult ? (
                 <>
                   <div className="ts-result-main">
                     <span className="ts-result-label">必要な転送速度</span>
-                    <span className="ts-result-value">
-                      {formatSpeed(speedResult.bps)}
-                    </span>
+                    <span className="ts-result-value">{formatSpeed(speedResult.bps)}</span>
                   </div>
                   <div className="ts-result-details">
                     <div className="ts-detail-item">
@@ -447,15 +418,11 @@ function TransferSpeedCalculator() {
                     </div>
                     <div className="ts-detail-item">
                       <span className="ts-detail-label">Mbps</span>
-                      <span className="ts-detail-value">
-                        {speedResult.mbps.toFixed(4)} Mbps
-                      </span>
+                      <span className="ts-detail-value">{speedResult.mbps.toFixed(4)} Mbps</span>
                     </div>
                     <div className="ts-detail-item">
                       <span className="ts-detail-label">MB/s</span>
-                      <span className="ts-detail-value">
-                        {speedResult.mBps.toFixed(4)} MB/s
-                      </span>
+                      <span className="ts-detail-value">{speedResult.mBps.toFixed(4)} MB/s</span>
                     </div>
                   </div>
                   <button

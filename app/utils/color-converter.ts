@@ -64,7 +64,7 @@ export interface ColorFormats {
  * @returns RGBオブジェクト、無効な場合はnull
  */
 export function hexToRgb(hex: string): RgbColor | null {
-  const clean = hex.replace('#', '').trim();
+  const clean = hex.replace("#", "").trim();
   let r: number, g: number, b: number;
 
   if (clean.length === 3) {
@@ -90,7 +90,7 @@ export function hexToRgb(hex: string): RgbColor | null {
  */
 export function rgbToHex(rgb: RgbColor): string {
   const clamp = (n: number) => Math.round(Math.max(0, Math.min(255, n)));
-  const toHex = (n: number) => clamp(n).toString(16).padStart(2, '0');
+  const toHex = (n: number) => clamp(n).toString(16).padStart(2, "0");
   return `#${toHex(rgb.r)}${toHex(rgb.g)}${toHex(rgb.b)}`.toUpperCase();
 }
 

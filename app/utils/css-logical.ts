@@ -11,68 +11,68 @@
  */
 export const PROPERTY_MAP: Record<string, string> = {
   // margin
-  'margin-top': 'margin-block-start',
-  'margin-bottom': 'margin-block-end',
-  'margin-left': 'margin-inline-start',
-  'margin-right': 'margin-inline-end',
+  "margin-top": "margin-block-start",
+  "margin-bottom": "margin-block-end",
+  "margin-left": "margin-inline-start",
+  "margin-right": "margin-inline-end",
   // padding
-  'padding-top': 'padding-block-start',
-  'padding-bottom': 'padding-block-end',
-  'padding-left': 'padding-inline-start',
-  'padding-right': 'padding-inline-end',
+  "padding-top": "padding-block-start",
+  "padding-bottom": "padding-block-end",
+  "padding-left": "padding-inline-start",
+  "padding-right": "padding-inline-end",
   // border shorthand
-  'border-top': 'border-block-start',
-  'border-bottom': 'border-block-end',
-  'border-left': 'border-inline-start',
-  'border-right': 'border-inline-end',
+  "border-top": "border-block-start",
+  "border-bottom": "border-block-end",
+  "border-left": "border-inline-start",
+  "border-right": "border-inline-end",
   // border-width
-  'border-top-width': 'border-block-start-width',
-  'border-bottom-width': 'border-block-end-width',
-  'border-left-width': 'border-inline-start-width',
-  'border-right-width': 'border-inline-end-width',
+  "border-top-width": "border-block-start-width",
+  "border-bottom-width": "border-block-end-width",
+  "border-left-width": "border-inline-start-width",
+  "border-right-width": "border-inline-end-width",
   // border-color
-  'border-top-color': 'border-block-start-color',
-  'border-bottom-color': 'border-block-end-color',
-  'border-left-color': 'border-inline-start-color',
-  'border-right-color': 'border-inline-end-color',
+  "border-top-color": "border-block-start-color",
+  "border-bottom-color": "border-block-end-color",
+  "border-left-color": "border-inline-start-color",
+  "border-right-color": "border-inline-end-color",
   // border-style
-  'border-top-style': 'border-block-start-style',
-  'border-bottom-style': 'border-block-end-style',
-  'border-left-style': 'border-inline-start-style',
-  'border-right-style': 'border-inline-end-style',
+  "border-top-style": "border-block-start-style",
+  "border-bottom-style": "border-block-end-style",
+  "border-left-style": "border-inline-start-style",
+  "border-right-style": "border-inline-end-style",
   // border-radius
-  'border-top-left-radius': 'border-start-start-radius',
-  'border-top-right-radius': 'border-start-end-radius',
-  'border-bottom-left-radius': 'border-end-start-radius',
-  'border-bottom-right-radius': 'border-end-end-radius',
+  "border-top-left-radius": "border-start-start-radius",
+  "border-top-right-radius": "border-start-end-radius",
+  "border-bottom-left-radius": "border-end-start-radius",
+  "border-bottom-right-radius": "border-end-end-radius",
   // sizing
-  'width': 'inline-size',
-  'height': 'block-size',
-  'min-width': 'min-inline-size',
-  'min-height': 'min-block-size',
-  'max-width': 'max-inline-size',
-  'max-height': 'max-block-size',
+  width: "inline-size",
+  height: "block-size",
+  "min-width": "min-inline-size",
+  "min-height": "min-block-size",
+  "max-width": "max-inline-size",
+  "max-height": "max-block-size",
   // position inset
-  'top': 'inset-block-start',
-  'bottom': 'inset-block-end',
-  'left': 'inset-inline-start',
-  'right': 'inset-inline-end',
+  top: "inset-block-start",
+  bottom: "inset-block-end",
+  left: "inset-inline-start",
+  right: "inset-inline-end",
   // overflow
-  'overflow-x': 'overflow-inline',
-  'overflow-y': 'overflow-block',
+  "overflow-x": "overflow-inline",
+  "overflow-y": "overflow-block",
   // overscroll-behavior
-  'overscroll-behavior-x': 'overscroll-behavior-inline',
-  'overscroll-behavior-y': 'overscroll-behavior-block',
+  "overscroll-behavior-x": "overscroll-behavior-inline",
+  "overscroll-behavior-y": "overscroll-behavior-block",
 };
 
 /**
  * 特定のプロパティの値も変換が必要なマッピング
  */
 export const VALUE_MAP: Record<string, Record<string, string>> = {
-  float: { left: 'inline-start', right: 'inline-end' },
-  'text-align': { left: 'start', right: 'end' },
-  resize: { horizontal: 'inline', vertical: 'block' },
-  clear: { left: 'inline-start', right: 'inline-end' },
+  float: { left: "inline-start", right: "inline-end" },
+  "text-align": { left: "start", right: "end" },
+  resize: { horizontal: "inline", vertical: "block" },
+  clear: { left: "inline-start", right: "inline-end" },
 };
 
 /**
@@ -110,16 +110,16 @@ export function convertCssLine(line: string): ConvertedLine {
   const trimmed = line.trim();
   if (
     !trimmed ||
-    trimmed.startsWith('//') ||
-    trimmed.startsWith('/*') ||
-    trimmed.startsWith('*') ||
-    !trimmed.includes(':')
+    trimmed.startsWith("//") ||
+    trimmed.startsWith("/*") ||
+    trimmed.startsWith("*") ||
+    !trimmed.includes(":")
   ) {
     return { original: line, converted: line, changed: false };
   }
 
   // プロパティと値を分割（最初の : で分割）
-  const colonIdx = trimmed.indexOf(':');
+  const colonIdx = trimmed.indexOf(":");
   const prop = trimmed.slice(0, colonIdx).trim();
   const rest = trimmed.slice(colonIdx + 1); // ": value;" の部分
 
@@ -127,7 +127,7 @@ export function convertCssLine(line: string): ConvertedLine {
   const logicalProp = PROPERTY_MAP[prop];
   if (logicalProp) {
     const indentMatch = line.match(/^(\s*)/);
-    const indent = indentMatch ? indentMatch[1] : '';
+    const indent = indentMatch ? indentMatch[1] : "";
     const converted = `${indent}${logicalProp}:${rest}`;
     return { original: line, converted, changed: true };
   }
@@ -136,14 +136,14 @@ export function convertCssLine(line: string): ConvertedLine {
   const valueMapping = VALUE_MAP[prop];
   if (valueMapping) {
     // 値部分（セミコロン前）を取り出す
-    const valueRaw = rest.replace(/;.*$/, '').trim();
+    const valueRaw = rest.replace(/;.*$/, "").trim();
     const newValue = valueMapping[valueRaw];
     if (newValue) {
-      const hasSemicolon = rest.includes(';');
-      const comment = rest.includes('/*') ? rest.slice(rest.indexOf('/*')) : '';
+      const hasSemicolon = rest.includes(";");
+      const comment = rest.includes("/*") ? rest.slice(rest.indexOf("/*")) : "";
       const indentMatch = line.match(/^(\s*)/);
-      const indent = indentMatch ? indentMatch[1] : '';
-      const converted = `${indent}${prop}: ${newValue}${hasSemicolon ? ';' : ''}${comment ? ' ' + comment : ''}`;
+      const indent = indentMatch ? indentMatch[1] : "";
+      const converted = `${indent}${prop}: ${newValue}${hasSemicolon ? ";" : ""}${comment ? " " + comment : ""}`;
       return { original: line, converted, changed: true };
     }
   }
@@ -158,10 +158,10 @@ export function convertCssLine(line: string): ConvertedLine {
  * @returns 変換結果
  */
 export function convertCss(css: string): ConvertResult {
-  const lines = css.split('\n');
+  const lines = css.split("\n");
   const convertedLines = lines.map(convertCssLine);
   const changedCount = convertedLines.filter((l) => l.changed).length;
-  const output = convertedLines.map((l) => l.converted).join('\n');
+  const output = convertedLines.map((l) => l.converted).join("\n");
 
   return { output, lines: convertedLines, changedCount };
 }
@@ -171,7 +171,7 @@ export function convertCss(css: string): ConvertResult {
  */
 export const CSS_SAMPLES: { label: string; css: string }[] = [
   {
-    label: 'カードコンポーネント',
+    label: "カードコンポーネント",
     css: `.card {
   width: 320px;
   min-height: 200px;
@@ -191,7 +191,7 @@ export const CSS_SAMPLES: { label: string; css: string }[] = [
 }`,
   },
   {
-    label: 'フォームレイアウト',
+    label: "フォームレイアウト",
     css: `.form-field {
   max-width: 480px;
   margin-bottom: 16px;
@@ -216,7 +216,7 @@ export const CSS_SAMPLES: { label: string; css: string }[] = [
 }`,
   },
   {
-    label: 'ポジション指定',
+    label: "ポジション指定",
     css: `.overlay {
   position: absolute;
   top: 0;

@@ -76,33 +76,23 @@ describe("Base64画像デコード - ユーティリティ関数", () => {
 
   describe("getMimeTypeFromDataUri", () => {
     it("PNGのMIMEタイプを正しく抽出する", () => {
-      expect(getMimeTypeFromDataUri("data:image/png;base64,AAAA")).toBe(
-        "image/png"
-      );
+      expect(getMimeTypeFromDataUri("data:image/png;base64,AAAA")).toBe("image/png");
     });
 
     it("JPEGのMIMEタイプを正しく抽出する", () => {
-      expect(getMimeTypeFromDataUri("data:image/jpeg;base64,AAAA")).toBe(
-        "image/jpeg"
-      );
+      expect(getMimeTypeFromDataUri("data:image/jpeg;base64,AAAA")).toBe("image/jpeg");
     });
 
     it("GIFのMIMEタイプを正しく抽出する", () => {
-      expect(getMimeTypeFromDataUri("data:image/gif;base64,AAAA")).toBe(
-        "image/gif"
-      );
+      expect(getMimeTypeFromDataUri("data:image/gif;base64,AAAA")).toBe("image/gif");
     });
 
     it("WebPのMIMEタイプを正しく抽出する", () => {
-      expect(getMimeTypeFromDataUri("data:image/webp;base64,AAAA")).toBe(
-        "image/webp"
-      );
+      expect(getMimeTypeFromDataUri("data:image/webp;base64,AAAA")).toBe("image/webp");
     });
 
     it("SVGのMIMEタイプを正しく抽出する", () => {
-      expect(getMimeTypeFromDataUri("data:image/svg+xml;base64,AAAA")).toBe(
-        "image/svg+xml"
-      );
+      expect(getMimeTypeFromDataUri("data:image/svg+xml;base64,AAAA")).toBe("image/svg+xml");
     });
 
     it("無効なData URIに対してデフォルト値を返す", () => {
@@ -117,35 +107,21 @@ describe("Base64画像デコード - ユーティリティ関数", () => {
     });
 
     it("指定したMIMEタイプでData URIを生成する", () => {
-      expect(pureBase64ToDataUri("AAAA", "image/jpeg")).toBe(
-        "data:image/jpeg;base64,AAAA"
-      );
-      expect(pureBase64ToDataUri("AAAA", "image/gif")).toBe(
-        "data:image/gif;base64,AAAA"
-      );
-      expect(pureBase64ToDataUri("AAAA", "image/webp")).toBe(
-        "data:image/webp;base64,AAAA"
-      );
-      expect(pureBase64ToDataUri("AAAA", "image/svg+xml")).toBe(
-        "data:image/svg+xml;base64,AAAA"
-      );
+      expect(pureBase64ToDataUri("AAAA", "image/jpeg")).toBe("data:image/jpeg;base64,AAAA");
+      expect(pureBase64ToDataUri("AAAA", "image/gif")).toBe("data:image/gif;base64,AAAA");
+      expect(pureBase64ToDataUri("AAAA", "image/webp")).toBe("data:image/webp;base64,AAAA");
+      expect(pureBase64ToDataUri("AAAA", "image/svg+xml")).toBe("data:image/svg+xml;base64,AAAA");
     });
 
     it("前後のスペースをトリムする", () => {
-      expect(pureBase64ToDataUri("  AAAA  ")).toBe(
-        "data:image/png;base64,AAAA"
-      );
+      expect(pureBase64ToDataUri("  AAAA  ")).toBe("data:image/png;base64,AAAA");
     });
   });
 
   describe("dataUriToPureBase64", () => {
     it("Data URIからBase64部分を正しく抽出する", () => {
-      expect(dataUriToPureBase64("data:image/png;base64,iVBORw0KGgo=")).toBe(
-        "iVBORw0KGgo="
-      );
-      expect(dataUriToPureBase64("data:image/jpeg;base64,/9j/4AAQ==")).toBe(
-        "/9j/4AAQ=="
-      );
+      expect(dataUriToPureBase64("data:image/png;base64,iVBORw0KGgo=")).toBe("iVBORw0KGgo=");
+      expect(dataUriToPureBase64("data:image/jpeg;base64,/9j/4AAQ==")).toBe("/9j/4AAQ==");
     });
 
     it("無効なData URIに対して空文字列を返す", () => {
@@ -162,13 +138,7 @@ describe("Base64画像デコード - ユーティリティ関数", () => {
 
     it("各MIMEタイプで往復変換が一致する", () => {
       const base64 = "R0lGOD==";
-      const mimeTypes = [
-        "image/png",
-        "image/jpeg",
-        "image/gif",
-        "image/webp",
-        "image/svg+xml",
-      ];
+      const mimeTypes = ["image/png", "image/jpeg", "image/gif", "image/webp", "image/svg+xml"];
       mimeTypes.forEach((mime) => {
         const dataUri = pureBase64ToDataUri(base64, mime);
         const extracted = dataUriToPureBase64(dataUri);

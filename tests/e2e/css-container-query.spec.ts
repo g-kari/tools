@@ -10,17 +10,13 @@ test.describe("CSS Container Query ビルダー", () => {
   });
 
   test("コンテナー設定パネルが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "コンテナー定義" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "コンテナー定義" })).toBeVisible();
     await expect(page.getByLabel("コンテナーの CSS セレクタ")).toBeVisible();
     await expect(page.getByLabel("container-type の値")).toBeVisible();
   });
 
   test("クエリ条件パネルが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "クエリ条件" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "クエリ条件" })).toBeVisible();
     await expect(page.getByLabel("条件 1 のタイプ")).toBeVisible();
   });
 
@@ -31,9 +27,7 @@ test.describe("CSS Container Query ビルダー", () => {
     expect(css).toContain("@container");
   });
 
-  test("コンテナーセレクタを変更すると CSS が更新される", async ({
-    page,
-  }) => {
+  test("コンテナーセレクタを変更すると CSS が更新される", async ({ page }) => {
     const selectorInput = page.getByLabel("コンテナーの CSS セレクタ");
     await selectorInput.clear();
     await selectorInput.fill(".my-wrapper");
@@ -54,17 +48,13 @@ test.describe("CSS Container Query ビルダー", () => {
     expect(css).toContain("@container sidebar");
   });
 
-  test("条件タイプを max-width に変更すると CSS が更新される", async ({
-    page,
-  }) => {
+  test("条件タイプを max-width に変更すると CSS が更新される", async ({ page }) => {
     await page.getByLabel("条件 1 のタイプ").selectOption("max-width");
     const css = await page.getByLabel("生成された CSS コード").textContent();
     expect(css).toContain("max-width:");
   });
 
-  test("条件タイプを width-range に変更すると範囲式が生成される", async ({
-    page,
-  }) => {
+  test("条件タイプを width-range に変更すると範囲式が生成される", async ({ page }) => {
     await page.getByLabel("条件 1 のタイプ").selectOption("width-range");
     const css = await page.getByLabel("生成された CSS コード").textContent();
     expect(css).toMatch(/\d+px <= width <= \d+px/);
@@ -83,16 +73,12 @@ test.describe("CSS Container Query ビルダー", () => {
     });
     await expect(logicBadge).toBeVisible();
     await logicBadge.click();
-    await expect(
-      page.getByRole("button", { name: /論理演算子: or/ })
-    ).toBeVisible();
+    await expect(page.getByRole("button", { name: /論理演算子: or/ })).toBeVisible();
     const css = await page.getByLabel("生成された CSS コード").textContent();
     expect(css).toContain(" or ");
   });
 
-  test("ターゲットセレクタを変更すると CSS が更新される", async ({
-    page,
-  }) => {
+  test("ターゲットセレクタを変更すると CSS が更新される", async ({ page }) => {
     const targetInput = page.getByLabel("クエリ内のターゲットセレクタ");
     await targetInput.clear();
     await targetInput.fill(".my-card");
@@ -114,9 +100,7 @@ test.describe("CSS Container Query ビルダー", () => {
 
   test("CSS コピーボタンが動作する", async ({ page }) => {
     await page.context().grantPermissions(["clipboard-read", "clipboard-write"]);
-    await page
-      .getByRole("button", { name: "生成された CSS をクリップボードにコピー" })
-      .click();
+    await page.getByRole("button", { name: "生成された CSS をクリップボードにコピー" }).click();
     // トースト通知を確認
     await expect(page.getByText("CSS をコピーしました")).toBeVisible();
   });
@@ -133,9 +117,7 @@ test.describe("CSS Container Query ビルダー", () => {
   });
 
   test("TipsCard が表示される", async ({ page }) => {
-    await expect(
-      page.getByText("CSS Container Queries とは")
-    ).toBeVisible();
+    await expect(page.getByText("CSS Container Queries とは")).toBeVisible();
   });
 
   test("アクセシビリティ: ページにランドマークが存在する", async ({ page }) => {

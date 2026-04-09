@@ -94,7 +94,7 @@ export function toYAML(entries: EnvEntry[]): string {
   return entries
     .map(({ key, value }) => {
       const needsQuote =
-        /[:#{}\[\],&*?|<>=!%@`]/.test(value) ||
+        /[:#{}[\],&*?|<>=!%@`]/.test(value) ||
         value === "" ||
         /^\s|\s$/.test(value) ||
         value.includes("\n") ||
@@ -114,9 +114,6 @@ export function toYAML(entries: EnvEntry[]): string {
  */
 export function toExports(entries: EnvEntry[]): string {
   return entries
-    .map(
-      ({ key, value }) =>
-        `export ${key}="${value.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"`,
-    )
+    .map(({ key, value }) => `export ${key}="${value.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"`)
     .join("\n");
 }

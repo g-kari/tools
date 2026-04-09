@@ -28,9 +28,7 @@ test.describe("Word Frequency Analyzer - E2E Tests", () => {
     await expect(emptyMessage).toContainText("テキストを入力すると");
   });
 
-  test("should show total words and unique words of 0 initially", async ({
-    page,
-  }) => {
+  test("should show total words and unique words of 0 initially", async ({ page }) => {
     await expect(page.locator('[data-testid="total-words"]')).toHaveText("0");
     await expect(page.locator('[data-testid="unique-words"]')).toHaveText("0");
   });
@@ -62,9 +60,7 @@ test.describe("Word Frequency Analyzer - E2E Tests", () => {
     await expect(page.locator('[data-testid="total-words"]')).toHaveText("0");
   });
 
-  test("should toggle sort between frequency and word order", async ({
-    page,
-  }) => {
+  test("should toggle sort between frequency and word order", async ({ page }) => {
     const textarea = page.locator('textarea[aria-label="分析対象のテキスト"]');
     await textarea.fill("cat dog cat bird dog cat");
 

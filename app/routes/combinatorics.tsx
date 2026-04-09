@@ -104,10 +104,7 @@ function CombinatoricsPage() {
     return combinationSteps(n, r);
   }, [result, n, r]);
 
-  const pascalRows = useMemo(
-    () => generatePascalTriangle(Math.min(PASCAL_MAX_ROWS, n + 1)),
-    [n]
-  );
+  const pascalRows = useMemo(() => generatePascalTriangle(Math.min(PASCAL_MAX_ROWS, n + 1)), [n]);
 
   const handlePreset = useCallback((preset: { n: number; r: number }) => {
     setNInput(String(preset.n));
@@ -187,33 +184,21 @@ function CombinatoricsPage() {
             {/* 主要結果 */}
             <div className="combinatorics-results">
               <div className="combinatorics-result-card highlight">
-                <p className="combinatorics-result-label">
-                  組合せ (nCr) — 順序なし
-                </p>
+                <p className="combinatorics-result-label">組合せ (nCr) — 順序なし</p>
                 <p className="combinatorics-result-formula">
                   ₍{n}₎C₍{r}₎ = {n}! / ({r}! × {n - r}!)
                 </p>
-                <p className="combinatorics-result-value">
-                  {formatBigInt(result.combination)}
-                </p>
-                <p className="combinatorics-result-digits">
-                  {digitCount(result.combination)} 桁
-                </p>
+                <p className="combinatorics-result-value">{formatBigInt(result.combination)}</p>
+                <p className="combinatorics-result-digits">{digitCount(result.combination)} 桁</p>
               </div>
 
               <div className="combinatorics-result-card highlight">
-                <p className="combinatorics-result-label">
-                  順列 (nPr) — 順序あり
-                </p>
+                <p className="combinatorics-result-label">順列 (nPr) — 順序あり</p>
                 <p className="combinatorics-result-formula">
                   ₍{n}₎P₍{r}₎ = {n}! / {n - r}!
                 </p>
-                <p className="combinatorics-result-value">
-                  {formatBigInt(result.permutation)}
-                </p>
-                <p className="combinatorics-result-digits">
-                  {digitCount(result.permutation)} 桁
-                </p>
+                <p className="combinatorics-result-value">{formatBigInt(result.permutation)}</p>
+                <p className="combinatorics-result-digits">{digitCount(result.permutation)} 桁</p>
               </div>
             </div>
 
@@ -223,19 +208,17 @@ function CombinatoricsPage() {
               <div className="combinatorics-factorials">
                 <div className="combinatorics-factorial-card">
                   <p className="combinatorics-factorial-label">{n}!</p>
-                  <p className="combinatorics-factorial-value">
-                    {formatBigInt(result.nFactorial)}
-                  </p>
+                  <p className="combinatorics-factorial-value">{formatBigInt(result.nFactorial)}</p>
                 </div>
                 <div className="combinatorics-factorial-card">
                   <p className="combinatorics-factorial-label">{r}!</p>
-                  <p className="combinatorics-factorial-value">
-                    {formatBigInt(result.rFactorial)}
-                  </p>
+                  <p className="combinatorics-factorial-value">{formatBigInt(result.rFactorial)}</p>
                 </div>
                 {n - r !== r && (
                   <div className="combinatorics-factorial-card">
-                    <p className="combinatorics-factorial-label">({n}-{r})! = {n - r}!</p>
+                    <p className="combinatorics-factorial-label">
+                      ({n}-{r})! = {n - r}!
+                    </p>
                     <p className="combinatorics-factorial-value">
                       {formatBigInt(result.nMinusRFactorial)}
                     </p>
@@ -270,52 +253,30 @@ function CombinatoricsPage() {
               <div
                 className="combinatorics-steps"
                 role="region"
-                aria-label={
-                  activeTab === "combination"
-                    ? "組合せの計算手順"
-                    : "順列の計算手順"
-                }
+                aria-label={activeTab === "combination" ? "組合せの計算手順" : "順列の計算手順"}
               >
-                {(activeTab === "combination" ? combSteps : permSteps).map(
-                  (step, i) => (
-                    <div key={i} className="combinatorics-step">
-                      <span className="combinatorics-step-label">
-                        {step.label}
-                      </span>
-                      <span className="combinatorics-step-formula">
-                        {step.formula}
-                      </span>
-                      <span className="combinatorics-step-result">
-                        = {step.result}
-                      </span>
-                    </div>
-                  )
-                )}
+                {(activeTab === "combination" ? combSteps : permSteps).map((step, i) => (
+                  <div key={i} className="combinatorics-step">
+                    <span className="combinatorics-step-label">{step.label}</span>
+                    <span className="combinatorics-step-formula">{step.formula}</span>
+                    <span className="combinatorics-step-result">= {step.result}</span>
+                  </div>
+                ))}
               </div>
             </div>
 
             {/* パスカルの三角形 */}
             {n <= PASCAL_MAX_ROWS && (
               <div>
-                <p className="combinatorics-section-title">
-                  パスカルの三角形（0 〜 {n} 行目）
-                </p>
+                <p className="combinatorics-section-title">パスカルの三角形（0 〜 {n} 行目）</p>
                 <p className="combinatorics-input-hint">
                   ハイライトされたセルが ₍{n}₎C₍{r}₎ = {formatBigInt(result.combination)} の位置です
                 </p>
                 <div className="combinatorics-pascal-wrapper">
-                  <div
-                    className="combinatorics-pascal-container"
-                    aria-label="パスカルの三角形"
-                  >
+                  <div className="combinatorics-pascal-container" aria-label="パスカルの三角形">
                     {pascalRows.map((row) => (
-                      <div
-                        key={row.rowIndex}
-                        className="combinatorics-pascal-row-wrap"
-                      >
-                        <span className="combinatorics-pascal-row-label">
-                          n={row.rowIndex}
-                        </span>
+                      <div key={row.rowIndex} className="combinatorics-pascal-row-wrap">
+                        <span className="combinatorics-pascal-row-label">n={row.rowIndex}</span>
                         <div className="combinatorics-pascal-row">
                           {row.values.map((val, j) => (
                             <span
@@ -350,8 +311,8 @@ function CombinatoricsPage() {
               <strong>関係</strong>: nPr = nCr × r!（順列は組合せに並び順を掛けたもの）
             </li>
             <li>
-              <strong>パスカルの三角形</strong>: 各セルは左上と右上の値の和。n 行 r
-              列目の値が ₍ₙ₎Cᵣ に対応する
+              <strong>パスカルの三角形</strong>: 各セルは左上と右上の値の和。n 行 r 列目の値が ₍ₙ₎Cᵣ
+              に対応する
             </li>
             <li>n ≤ {PASCAL_MAX_ROWS} のときパスカルの三角形を表示します</li>
           </ul>

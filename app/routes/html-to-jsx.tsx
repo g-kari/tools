@@ -1,29 +1,29 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useState, useMemo, useCallback } from 'react';
-import { useClipboard } from '~/hooks/useClipboard';
-import { useToast } from '~/components/Toast';
-import { TipsCard } from '~/components/TipsCard';
-import { convertHtmlToJsx } from '~/utils/html-to-jsx';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
+import { createFileRoute } from "@tanstack/react-router";
+import { useState, useMemo, useCallback } from "react";
+import { useClipboard } from "~/hooks/useClipboard";
+import { useToast } from "~/components/Toast";
+import { TipsCard } from "~/components/TipsCard";
+import { convertHtmlToJsx } from "~/utils/html-to-jsx";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 
-export const Route = createFileRoute('/html-to-jsx')({
+export const Route = createFileRoute("/html-to-jsx")({
   head: () => ({
     meta: [
-      { title: 'HTML→JSX変換 | Web ツール集' },
+      { title: "HTML→JSX変換 | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          'HTMLをReact JSXに変換するツール。class→className、style文字列→オブジェクト、イベントハンドラのcamelCase変換、void要素の自己閉じ等に対応。リアルタイム変換。',
+          "HTMLをReact JSXに変換するツール。class→className、style文字列→オブジェクト、イベントハンドラのcamelCase変換、void要素の自己閉じ等に対応。リアルタイム変換。",
       },
-      { property: 'og:title', content: 'HTML→JSX変換 | Web ツール集' },
+      { property: "og:title", content: "HTML→JSX変換 | Web ツール集" },
       {
-        property: 'og:description',
+        property: "og:description",
         content:
-          'HTMLをReact JSXに変換するツール。class→className、style文字列→オブジェクト、イベントハンドラのcamelCase変換、void要素の自己閉じ等に対応。',
+          "HTMLをReact JSXに変換するツール。class→className、style文字列→オブジェクト、イベントハンドラのcamelCase変換、void要素の自己閉じ等に対応。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/html-to-jsx` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
+      { property: "og:url", content: `${SITE_BASE_URL}/html-to-jsx` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
     ],
   }),
   component: HtmlToJsxPage,
@@ -60,7 +60,7 @@ const SAMPLE_HTML = `<div class="container" onclick="handleClick()">
  * HTMLマークアップをReact JSX構文にリアルタイム変換する
  */
 function HtmlToJsxPage() {
-  const [inputHtml, setInputHtml] = useState('');
+  const [inputHtml, setInputHtml] = useState("");
   const { copy } = useClipboard();
   const { showToast } = useToast();
 
@@ -71,14 +71,14 @@ function HtmlToJsxPage() {
     if (!result.output) return;
     const success = await copy(result.output);
     if (success) {
-      showToast('JSXをコピーしました', 'success');
+      showToast("JSXをコピーしました", "success");
     } else {
-      showToast('コピーに失敗しました', 'error');
+      showToast("コピーに失敗しました", "error");
     }
   }, [result.output, copy, showToast]);
 
   const handleClear = useCallback(() => {
-    setInputHtml('');
+    setInputHtml("");
   }, []);
 
   const handleLoadSample = useCallback(() => {
@@ -160,12 +160,7 @@ function HtmlToJsxPage() {
 
       {/* 変換内容リスト */}
       {result.changes.length > 0 && (
-        <div
-          className="html-to-jsx-changes"
-          role="status"
-          aria-live="polite"
-          aria-label="変換内容"
-        >
+        <div className="html-to-jsx-changes" role="status" aria-live="polite" aria-label="変換内容">
           <h3 className="html-to-jsx-changes-title">変換内容</h3>
           <ul className="html-to-jsx-changes-list">
             {result.changes.map((change) => (
@@ -181,32 +176,32 @@ function HtmlToJsxPage() {
       <TipsCard
         sections={[
           {
-            title: '変換される内容',
+            title: "変換される内容",
             items: [
-              'class → className（CSSクラス属性の変換）',
-              'for → htmlFor（label要素のfor属性）',
-              'onclick → onClick、onchange → onChange 等（イベントハンドラのcamelCase変換）',
-              'tabindex → tabIndex、readonly → readOnly、maxlength → maxLength 等',
-              '<br>、<img>、<input> 等のvoid要素を自己閉じタグに変換（<br />）',
-              'HTMLコメント → JSXコメント（<!-- --> → {/* */}）',
+              "class → className（CSSクラス属性の変換）",
+              "for → htmlFor（label要素のfor属性）",
+              "onclick → onClick、onchange → onChange 等（イベントハンドラのcamelCase変換）",
+              "tabindex → tabIndex、readonly → readOnly、maxlength → maxLength 等",
+              "<br>、<img>、<input> 等のvoid要素を自己閉じタグに変換（<br />）",
+              "HTMLコメント → JSXコメント（<!-- --> → {/* */}）",
             ],
           },
           {
-            title: 'style属性の変換',
+            title: "style属性の変換",
             items: [
-              'style="color: red" → style={{ color: \'red\' }}',
-              'CSSプロパティ名をcamelCaseに変換（font-size → fontSize、background-color → backgroundColor）',
-              'ベンダープレフィックス（-webkit-、-moz- 等）も正しくcamelCase変換',
-              '純粋な数値はクォートなしで出力（zIndex: 10 等）',
+              "style=\"color: red\" → style={{ color: 'red' }}",
+              "CSSプロパティ名をcamelCaseに変換（font-size → fontSize、background-color → backgroundColor）",
+              "ベンダープレフィックス（-webkit-、-moz- 等）も正しくcamelCase変換",
+              "純粋な数値はクォートなしで出力（zIndex: 10 等）",
             ],
           },
           {
-            title: '注意事項',
+            title: "注意事項",
             items: [
-              'このツールは構文的な変換のみ行います。ロジックは変換しません',
-              'JSXの式埋め込み（{variable} 等）には対応していません',
-              'コンポーネント名の変換（大文字始まり）は行いません',
-              '複雑なHTML（テンプレートエンジン構文等）は正確に変換できない場合があります',
+              "このツールは構文的な変換のみ行います。ロジックは変換しません",
+              "JSXの式埋め込み（{variable} 等）には対応していません",
+              "コンポーネント名の変換（大文字始まり）は行いません",
+              "複雑なHTML（テンプレートエンジン構文等）は正確に変換できない場合があります",
             ],
           },
         ]}

@@ -1,7 +1,7 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
-import { TipsCard } from '~/components/TipsCard';
+import { createFileRoute } from "@tanstack/react-router";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
+import { TipsCard } from "~/components/TipsCard";
 import {
   type SortAlgorithm,
   type SortStep,
@@ -9,58 +9,52 @@ import {
   ALGORITHM_COMPLEXITY,
   generateArray,
   getSortSteps,
-} from '~/utils/sort-visualizer';
-import '../styles/tools/sort-visualizer.css';
+} from "~/utils/sort-visualizer";
+import "../styles/tools/sort-visualizer.css";
 
-export const Route = createFileRoute('/sort-visualizer')({
+export const Route = createFileRoute("/sort-visualizer")({
   head: () => ({
     meta: [
-      { title: 'ソートアルゴリズム可視化 | Web ツール集' },
+      { title: "ソートアルゴリズム可視化 | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          'バブルソート・選択ソート・挿入ソート・マージソート・クイックソートをアニメーションで可視化するツール。比較・交換の過程をリアルタイム表示。',
+          "バブルソート・選択ソート・挿入ソート・マージソート・クイックソートをアニメーションで可視化するツール。比較・交換の過程をリアルタイム表示。",
       },
       {
-        property: 'og:title',
-        content: 'ソートアルゴリズム可視化 | Web ツール集',
+        property: "og:title",
+        content: "ソートアルゴリズム可視化 | Web ツール集",
       },
       {
-        property: 'og:description',
+        property: "og:description",
         content:
-          'バブルソート・選択ソート・挿入ソート・マージソート・クイックソートをアニメーションで可視化するツール。',
+          "バブルソート・選択ソート・挿入ソート・マージソート・クイックソートをアニメーションで可視化するツール。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/sort-visualizer` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
+      { property: "og:url", content: `${SITE_BASE_URL}/sort-visualizer` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
       {
-        name: 'twitter:title',
-        content: 'ソートアルゴリズム可視化 | Web ツール集',
+        name: "twitter:title",
+        content: "ソートアルゴリズム可視化 | Web ツール集",
       },
       {
-        name: 'twitter:description',
+        name: "twitter:description",
         content:
-          'バブルソート・選択ソート・挿入ソート・マージソート・クイックソートをアニメーションで可視化。',
+          "バブルソート・選択ソート・挿入ソート・マージソート・クイックソートをアニメーションで可視化。",
       },
     ],
   }),
   component: SortVisualizerPage,
 });
 
-const ALGORITHMS: SortAlgorithm[] = [
-  'bubble',
-  'selection',
-  'insertion',
-  'merge',
-  'quick',
-];
+const ALGORITHMS: SortAlgorithm[] = ["bubble", "selection", "insertion", "merge", "quick"];
 
 const SPEED_LABELS: Record<number, string> = {
-  1: '超遅',
-  2: '遅い',
-  3: '普通',
-  4: '速い',
-  5: '超速',
+  1: "超遅",
+  2: "遅い",
+  3: "普通",
+  4: "速い",
+  5: "超速",
 };
 
 /** スピード値からアニメーション間隔(ms)を計算 */
@@ -69,25 +63,20 @@ function speedToDelay(speed: number): number {
 }
 
 /** SortStep からバーの状態を返す */
-function getBarState(
-  step: SortStep,
-  idx: number
-): 'comparing' | 'swapping' | 'sorted' | 'normal' {
-  if (step.swapping.includes(idx)) return 'swapping';
-  if (step.comparing.includes(idx)) return 'comparing';
-  if (step.sorted.includes(idx)) return 'sorted';
-  return 'normal';
+function getBarState(step: SortStep, idx: number): "comparing" | "swapping" | "sorted" | "normal" {
+  if (step.swapping.includes(idx)) return "swapping";
+  if (step.comparing.includes(idx)) return "comparing";
+  if (step.sorted.includes(idx)) return "sorted";
+  return "normal";
 }
 
 function SortVisualizerPage(): React.JSX.Element {
-  const [algorithm, setAlgorithm] = useState<SortAlgorithm>('bubble');
+  const [algorithm, setAlgorithm] = useState<SortAlgorithm>("bubble");
   const [arraySize, setArraySize] = useState(40);
   const [speed, setSpeed] = useState(3);
   const [array, setArray] = useState<number[]>(() => generateArray(40));
   const [currentStep, setCurrentStep] = useState<SortStep | null>(null);
-  const [status, setStatus] = useState<'idle' | 'running' | 'paused' | 'done'>(
-    'idle'
-  );
+  const [status, setStatus] = useState<"idle" | "running" | "paused" | "done">("idle");
   const [stepCount, setStepCount] = useState(0);
   const [totalSteps, setTotalSteps] = useState(0);
 
@@ -109,7 +98,7 @@ function SortVisualizerPage(): React.JSX.Element {
     const newArr = generateArray(arraySize);
     setArray(newArr);
     setCurrentStep(null);
-    setStatus('idle');
+    setStatus("idle");
     setStepCount(0);
     setTotalSteps(0);
     stepsRef.current = [];
@@ -126,7 +115,7 @@ function SortVisualizerPage(): React.JSX.Element {
     const steps = stepsRef.current;
     const idx = stepIdxRef.current;
     if (idx >= steps.length) {
-      setStatus('done');
+      setStatus("done");
       return;
     }
     setCurrentStep(steps[idx]);
@@ -141,24 +130,24 @@ function SortVisualizerPage(): React.JSX.Element {
     stepsRef.current = steps;
     stepIdxRef.current = 0;
     setTotalSteps(steps.length);
-    setStatus('running');
+    setStatus("running");
     runNextStep();
   }, [algorithm, array, runNextStep]);
 
   const pause = useCallback(() => {
     stopTimer();
-    setStatus('paused');
+    setStatus("paused");
   }, [stopTimer]);
 
   const resume = useCallback(() => {
-    setStatus('running');
+    setStatus("running");
     runNextStep();
   }, [runNextStep]);
 
   const reset = useCallback(() => {
     stopTimer();
     setCurrentStep(null);
-    setStatus('idle');
+    setStatus("idle");
     setStepCount(0);
     setTotalSteps(0);
     stepsRef.current = [];
@@ -186,12 +175,12 @@ function SortVisualizerPage(): React.JSX.Element {
             key={alg}
             role="tab"
             aria-selected={algorithm === alg}
-            className={`sort-visualizer__tab${algorithm === alg ? ' sort-visualizer__tab--active' : ''}`}
+            className={`sort-visualizer__tab${algorithm === alg ? " sort-visualizer__tab--active" : ""}`}
             onClick={() => {
               setAlgorithm(alg);
               reset();
             }}
-            disabled={status === 'running'}
+            disabled={status === "running"}
           >
             {ALGORITHM_LABELS[alg]}
           </button>
@@ -202,8 +191,7 @@ function SortVisualizerPage(): React.JSX.Element {
       <div className="sort-visualizer__controls">
         <div className="sort-visualizer__control-group">
           <span className="sort-visualizer__control-label">
-            配列サイズ{' '}
-            <span className="sort-visualizer__control-value">{arraySize}</span>
+            配列サイズ <span className="sort-visualizer__control-value">{arraySize}</span>
           </span>
           <input
             type="range"
@@ -212,16 +200,13 @@ function SortVisualizerPage(): React.JSX.Element {
             max={80}
             value={arraySize}
             onChange={(e) => setArraySize(Number(e.target.value))}
-            disabled={status === 'running' || status === 'paused'}
+            disabled={status === "running" || status === "paused"}
             aria-label="配列サイズ"
           />
         </div>
         <div className="sort-visualizer__control-group">
           <span className="sort-visualizer__control-label">
-            速度{' '}
-            <span className="sort-visualizer__control-value">
-              {SPEED_LABELS[speed]}
-            </span>
+            速度 <span className="sort-visualizer__control-value">{SPEED_LABELS[speed]}</span>
           </span>
           <input
             type="range"
@@ -234,15 +219,12 @@ function SortVisualizerPage(): React.JSX.Element {
           />
         </div>
         <div className="sort-visualizer__buttons">
-          {status === 'idle' && (
-            <button
-              className="sort-visualizer__btn sort-visualizer__btn--primary"
-              onClick={start}
-            >
+          {status === "idle" && (
+            <button className="sort-visualizer__btn sort-visualizer__btn--primary" onClick={start}>
               ▶ 開始
             </button>
           )}
-          {status === 'running' && (
+          {status === "running" && (
             <button
               className="sort-visualizer__btn sort-visualizer__btn--secondary"
               onClick={pause}
@@ -250,15 +232,12 @@ function SortVisualizerPage(): React.JSX.Element {
               ⏸ 一時停止
             </button>
           )}
-          {status === 'paused' && (
-            <button
-              className="sort-visualizer__btn sort-visualizer__btn--primary"
-              onClick={resume}
-            >
+          {status === "paused" && (
+            <button className="sort-visualizer__btn sort-visualizer__btn--primary" onClick={resume}>
               ▶ 再開
             </button>
           )}
-          {status === 'done' && (
+          {status === "done" && (
             <button
               className="sort-visualizer__btn sort-visualizer__btn--primary"
               onClick={shuffle}
@@ -269,11 +248,11 @@ function SortVisualizerPage(): React.JSX.Element {
           <button
             className="sort-visualizer__btn sort-visualizer__btn--secondary"
             onClick={shuffle}
-            disabled={status === 'running'}
+            disabled={status === "running"}
           >
             🔀 シャッフル
           </button>
-          {(status === 'paused' || status === 'running') && (
+          {(status === "paused" || status === "running") && (
             <button
               className="sort-visualizer__btn sort-visualizer__btn--secondary"
               onClick={reset}
@@ -303,13 +282,9 @@ function SortVisualizerPage(): React.JSX.Element {
       </div>
 
       {/* 棒グラフ */}
-      <div
-        className="sort-visualizer__canvas"
-        role="img"
-        aria-label="ソートアルゴリズムの可視化"
-      >
+      <div className="sort-visualizer__canvas" role="img" aria-label="ソートアルゴリズムの可視化">
         {displayArray.map((val, idx) => {
-          const state = currentStep ? getBarState(currentStep, idx) : 'normal';
+          const state = currentStep ? getBarState(currentStep, idx) : "normal";
           return (
             <div
               key={idx}
@@ -342,7 +317,7 @@ function SortVisualizerPage(): React.JSX.Element {
       </div>
 
       {/* 完了メッセージ */}
-      {status === 'done' && (
+      {status === "done" && (
         <p className="sort-visualizer__done">
           ✅ ソート完了！ {stepCount} ステップで整列しました。
         </p>
@@ -358,28 +333,20 @@ function SortVisualizerPage(): React.JSX.Element {
           <div className="sort-visualizer__complexity-header">平均</div>
           <div className="sort-visualizer__complexity-header">最悪</div>
           <div className="sort-visualizer__complexity-header">空間</div>
-          <div className="sort-visualizer__complexity-cell">
-            {complexity.best}
-          </div>
-          <div className="sort-visualizer__complexity-cell">
-            {complexity.average}
-          </div>
-          <div className="sort-visualizer__complexity-cell">
-            {complexity.worst}
-          </div>
-          <div className="sort-visualizer__complexity-cell">
-            {complexity.space}
-          </div>
+          <div className="sort-visualizer__complexity-cell">{complexity.best}</div>
+          <div className="sort-visualizer__complexity-cell">{complexity.average}</div>
+          <div className="sort-visualizer__complexity-cell">{complexity.worst}</div>
+          <div className="sort-visualizer__complexity-cell">{complexity.space}</div>
         </div>
       </div>
 
       <TipsCard
         tips={[
-          '「開始」ボタンでアニメーションを開始し、「一時停止」でいつでも停止できます',
-          '速度スライダーで「超遅」に設定すると比較・交換の各ステップをじっくり観察できます',
-          'バブルソートと選択ソートは O(n²) のため配列サイズが大きいほど遅くなります',
-          'マージソートとクイックソートは O(n log n) で効率的ですが、クイックソートは最悪 O(n²) になる場合があります',
-          '挿入ソートはほぼ整列済みの配列に対して最良 O(n) と高速です',
+          "「開始」ボタンでアニメーションを開始し、「一時停止」でいつでも停止できます",
+          "速度スライダーで「超遅」に設定すると比較・交換の各ステップをじっくり観察できます",
+          "バブルソートと選択ソートは O(n²) のため配列サイズが大きいほど遅くなります",
+          "マージソートとクイックソートは O(n log n) で効率的ですが、クイックソートは最悪 O(n²) になる場合があります",
+          "挿入ソートはほぼ整列済みの配列に対して最良 O(n) と高速です",
         ]}
       />
     </div>

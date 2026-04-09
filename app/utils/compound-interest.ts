@@ -6,11 +6,7 @@
  */
 
 /** 複利計算頻度 */
-export type CompoundFrequency =
-  | "monthly"
-  | "quarterly"
-  | "semi-annually"
-  | "annually";
+export type CompoundFrequency = "monthly" | "quarterly" | "semi-annually" | "annually";
 
 /** 複利計算パラメータ */
 export interface CompoundInterestParams {
@@ -61,9 +57,7 @@ export interface CompoundInterestResult {
  * @param frequency - 複利計算頻度
  * @returns 年間期間数
  */
-export function frequencyToPeriodsPerYear(
-  frequency: CompoundFrequency
-): number {
+export function frequencyToPeriodsPerYear(frequency: CompoundFrequency): number {
   switch (frequency) {
     case "monthly":
       return 12;
@@ -99,9 +93,7 @@ export function frequencyLabel(frequency: CompoundFrequency): string {
  * @param params - 複利計算パラメータ
  * @returns エラーメッセージ（問題なければ null）
  */
-export function validateCompoundInterestParams(
-  params: CompoundInterestParams
-): string | null {
+export function validateCompoundInterestParams(params: CompoundInterestParams): string | null {
   if (!isFinite(params.principal) || params.principal <= 0) {
     return "元本は 0 より大きい数値を入力してください";
   }
@@ -111,11 +103,7 @@ export function validateCompoundInterestParams(
   if (params.annualRate > 100) {
     return "年利率は 100% 以下にしてください";
   }
-  if (
-    !isFinite(params.termYears) ||
-    params.termYears <= 0 ||
-    !Number.isInteger(params.termYears)
-  ) {
+  if (!isFinite(params.termYears) || params.termYears <= 0 || !Number.isInteger(params.termYears)) {
     return "運用期間は 1 年以上の整数を入力してください";
   }
   if (params.termYears > 100) {
@@ -140,7 +128,7 @@ export function validateCompoundInterestParams(
  * @returns 計算結果（バリデーションエラーの場合は null）
  */
 export function calcCompoundInterest(
-  params: CompoundInterestParams
+  params: CompoundInterestParams,
 ): CompoundInterestResult | null {
   const error = validateCompoundInterestParams(params);
   if (error) return null;
@@ -162,15 +150,14 @@ export function calcCompoundInterest(
 
     // 積立部分
     const contributionPart =
-      r === 0
-        ? additionalContribution * n
-        : additionalContribution * (rn - 1) / r;
+      r === 0 ? additionalContribution * n : (additionalContribution * (rn - 1)) / r;
 
     const balance = Math.round(principalPart + contributionPart);
     cumulativeContribution = additionalContribution * n;
     const principalTotal = Math.round(principal + cumulativeContribution);
     const interestTotal = balance - principalTotal;
-    const yearlyInterest = balance - Math.round(prevBalance + additionalContribution * periodsPerYear);
+    const yearlyInterest =
+      balance - Math.round(prevBalance + additionalContribution * periodsPerYear);
 
     yearlySnapshots.push({
       year,
@@ -185,9 +172,7 @@ export function calcCompoundInterest(
 
   const lastSnapshot = yearlySnapshots[yearlySnapshots.length - 1];
   const finalAmount = lastSnapshot?.balance ?? principal;
-  const totalContribution = Math.round(
-    additionalContribution * periodsPerYear * termYears
-  );
+  const totalContribution = Math.round(additionalContribution * periodsPerYear * termYears);
   const totalPrincipal = Math.round(principal + totalContribution);
   const totalInterest = finalAmount - totalPrincipal;
 

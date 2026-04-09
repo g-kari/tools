@@ -1,9 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import {
-  StatusAnnouncer,
-  useStatusAnnouncement,
-} from "~/hooks/useStatusAnnouncement";
+import { StatusAnnouncer, useStatusAnnouncement } from "~/hooks/useStatusAnnouncement";
 import { TipsCard } from "~/components/TipsCard";
 import { useClipboard } from "~/hooks/useClipboard";
 import { useToast } from "~/components/Toast";
@@ -114,9 +111,7 @@ function ansiStyleToCss(style: AnsiStyle): React.CSSProperties {
   if (style.dim) css.opacity = 0.5;
   if (style.italic) css.fontStyle = "italic";
   if (style.underline) {
-    css.textDecoration = style.strikethrough
-      ? "underline line-through"
-      : "underline";
+    css.textDecoration = style.strikethrough ? "underline line-through" : "underline";
   } else if (style.strikethrough) {
     css.textDecoration = "line-through";
   }
@@ -213,7 +208,7 @@ function AnsiColorBuilder() {
   /** 現在のスタイル（fgColor/bgColorを含む）を算出する */
   const currentStyle = useMemo(
     (): AnsiStyle => ({ ...style, fgColor, bgColor }),
-    [style, fgColor, bgColor]
+    [style, fgColor, bgColor],
   );
 
   /** プレビュー用CSSスタイル */
@@ -222,7 +217,7 @@ function AnsiColorBuilder() {
   /** 生成コード文字列 */
   const generatedCode = useMemo(
     () => generateShellCode(currentStyle, previewText, selectedFormat),
-    [currentStyle, previewText, selectedFormat]
+    [currentStyle, previewText, selectedFormat],
   );
 
   /** スタイルチェックボックスのトグル */
@@ -309,7 +304,11 @@ function AnsiColorBuilder() {
           {/* ターミナルプレビュー */}
           <section aria-label="プレビュー">
             <p className="ansi-color-section-label">プレビュー</p>
-            <div className="ansi-color-preview-area" role="img" aria-label={`プレビュー: ${previewText}`}>
+            <div
+              className="ansi-color-preview-area"
+              role="img"
+              aria-label={`プレビュー: ${previewText}`}
+            >
               <span className="ansi-color-preview-text" style={previewCss}>
                 {previewText || "Hello, World!"}
               </span>
@@ -381,24 +380,18 @@ function AnsiColorBuilder() {
             </p>
             <div className="ansi-color-code-output">
               {/* 出力形式タブ */}
-              <div
-                className="ansi-color-format-tabs"
-                role="tablist"
-                aria-label="出力形式選択"
-              >
-                {(Object.entries(FORMAT_LABELS) as [EscapeFormat, string][]).map(
-                  ([fmt, label]) => (
-                    <button
-                      key={fmt}
-                      role="tab"
-                      aria-selected={selectedFormat === fmt}
-                      className={`ansi-color-format-tab${selectedFormat === fmt ? " active" : ""}`}
-                      onClick={() => setSelectedFormat(fmt)}
-                    >
-                      {label}
-                    </button>
-                  )
-                )}
+              <div className="ansi-color-format-tabs" role="tablist" aria-label="出力形式選択">
+                {(Object.entries(FORMAT_LABELS) as [EscapeFormat, string][]).map(([fmt, label]) => (
+                  <button
+                    key={fmt}
+                    role="tab"
+                    aria-selected={selectedFormat === fmt}
+                    className={`ansi-color-format-tab${selectedFormat === fmt ? " active" : ""}`}
+                    onClick={() => setSelectedFormat(fmt)}
+                  >
+                    {label}
+                  </button>
+                ))}
               </div>
 
               {/* コードブロック */}
@@ -511,20 +504,13 @@ function ColorSection({
   const headingId = `ansi-color-${idPrefix}-heading`;
 
   return (
-    <section
-      className="ansi-color-color-section"
-      aria-labelledby={headingId}
-    >
+    <section className="ansi-color-color-section" aria-labelledby={headingId}>
       <p id={headingId} className="ansi-color-color-section-title">
         {title}
       </p>
 
       {/* モードタブ */}
-      <div
-        className="ansi-color-mode-tabs"
-        role="tablist"
-        aria-label={`${title}のモード選択`}
-      >
+      <div className="ansi-color-mode-tabs" role="tablist" aria-label={`${title}のモード選択`}>
         {(["none", "standard", "custom"] as ColorMode[]).map((m) => (
           <button
             key={m}
@@ -540,11 +526,7 @@ function ColorSection({
 
       {/* 標準16色スウォッチ */}
       {mode === "standard" && (
-        <div
-          className="ansi-color-swatches-grid"
-          role="listbox"
-          aria-label="標準16色から選択"
-        >
+        <div className="ansi-color-swatches-grid" role="listbox" aria-label="標準16色から選択">
           {STANDARD_COLORS.map((color, index) => (
             <div key={color.fg} className="ansi-color-swatch-item">
               <button
@@ -573,9 +555,7 @@ function ColorSection({
               min={0}
               max={255}
               value={rgb.r}
-              onChange={(e) =>
-                onRgbChange({ ...rgb, r: clampRgb(Number(e.target.value)) })
-              }
+              onChange={(e) => onRgbChange({ ...rgb, r: clampRgb(Number(e.target.value)) })}
               aria-label="赤チャンネル (0-255)"
             />
           </div>
@@ -587,9 +567,7 @@ function ColorSection({
               min={0}
               max={255}
               value={rgb.g}
-              onChange={(e) =>
-                onRgbChange({ ...rgb, g: clampRgb(Number(e.target.value)) })
-              }
+              onChange={(e) => onRgbChange({ ...rgb, g: clampRgb(Number(e.target.value)) })}
               aria-label="緑チャンネル (0-255)"
             />
           </div>
@@ -601,9 +579,7 @@ function ColorSection({
               min={0}
               max={255}
               value={rgb.b}
-              onChange={(e) =>
-                onRgbChange({ ...rgb, b: clampRgb(Number(e.target.value)) })
-              }
+              onChange={(e) => onRgbChange({ ...rgb, b: clampRgb(Number(e.target.value)) })}
               aria-label="青チャンネル (0-255)"
             />
           </div>

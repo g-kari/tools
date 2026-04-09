@@ -38,7 +38,7 @@ export interface ParseJsonLinesResult {
  * @returns 解析結果
  */
 export function parseJsonLines(text: string): ParseJsonLinesResult {
-  const rawLines = text.split('\n');
+  const rawLines = text.split("\n");
   const lines: JsonLine[] = [];
   let validCount = 0;
   let errorCount = 0;
@@ -65,7 +65,7 @@ export function parseJsonLines(text: string): ParseJsonLinesResult {
         lineNumber: index + 1,
         raw: trimmed,
         parsed: null,
-        error: err instanceof Error ? err.message : '無効なJSON',
+        error: err instanceof Error ? err.message : "無効なJSON",
         isValid: false,
       });
       errorCount++;
@@ -83,13 +83,13 @@ export function parseJsonLines(text: string): ParseJsonLinesResult {
  * @returns 整形済みテキスト（各行が複数行に展開される）
  */
 export function formatJsonLines(text: string, indent = 2): string {
-  const lines = text.split('\n');
+  const lines = text.split("\n");
   const result: string[] = [];
 
   for (const line of lines) {
     const trimmed = line.trim();
     if (!trimmed) {
-      result.push('');
+      result.push("");
       continue;
     }
     try {
@@ -100,11 +100,11 @@ export function formatJsonLines(text: string, indent = 2): string {
   }
 
   // 末尾の連続する空行を除去
-  while (result.length > 0 && result[result.length - 1] === '') {
+  while (result.length > 0 && result[result.length - 1] === "") {
     result.pop();
   }
 
-  return result.join('\n');
+  return result.join("\n");
 }
 
 /**
@@ -117,10 +117,10 @@ export function minifyJsonLines(text: string): string {
   // 複数行 JSON（整形済み）を1行ずつに圧縮するため、
   // まず全体を連結して行ごとに分割するのではなく、
   // JSON オブジェクト/配列の境界を検出して分割する
-  const lines = text.split('\n');
+  const lines = text.split("\n");
   const result: string[] = [];
 
-  let buffer = '';
+  let buffer = "";
 
   for (const line of lines) {
     const trimmed = line.trim();
@@ -129,7 +129,7 @@ export function minifyJsonLines(text: string): string {
       if (buffer) {
         try {
           result.push(JSON.stringify(JSON.parse(buffer)));
-          buffer = '';
+          buffer = "";
         } catch {
           // まだ不完全な JSON の可能性
         }
@@ -137,12 +137,12 @@ export function minifyJsonLines(text: string): string {
       continue;
     }
 
-    buffer = buffer ? buffer + ' ' + trimmed : trimmed;
+    buffer = buffer ? buffer + " " + trimmed : trimmed;
 
     // バッファが有効な JSON かチェック
     try {
       result.push(JSON.stringify(JSON.parse(buffer)));
-      buffer = '';
+      buffer = "";
     } catch {
       // まだ不完全 → バッファを継続
     }
@@ -157,7 +157,7 @@ export function minifyJsonLines(text: string): string {
     }
   }
 
-  return result.join('\n');
+  return result.join("\n");
 }
 
 /**
@@ -169,7 +169,7 @@ export function minifyJsonLines(text: string): string {
  * @throws 無効な行がある場合にエラーをスロー
  */
 export function jsonLinesToJsonArray(text: string, indent = 2): string {
-  const lines = text.split('\n');
+  const lines = text.split("\n");
   const items: unknown[] = [];
 
   for (let i = 0; i < lines.length; i++) {
@@ -179,7 +179,7 @@ export function jsonLinesToJsonArray(text: string, indent = 2): string {
       items.push(JSON.parse(trimmed));
     } catch (err) {
       throw new Error(
-        `行 ${i + 1} の JSON が無効です: ${err instanceof Error ? err.message : '解析エラー'}`
+        `行 ${i + 1} の JSON が無効です: ${err instanceof Error ? err.message : "解析エラー"}`,
       );
     }
   }
@@ -200,13 +200,13 @@ export function jsonArrayToJsonLines(text: string): string {
     parsed = JSON.parse(text);
   } catch (err) {
     throw new Error(
-      `JSON の解析に失敗しました: ${err instanceof Error ? err.message : '解析エラー'}`
+      `JSON の解析に失敗しました: ${err instanceof Error ? err.message : "解析エラー"}`,
     );
   }
 
   if (!Array.isArray(parsed)) {
-    throw new Error('入力はJSON配列（[ ... ]）である必要があります');
+    throw new Error("入力はJSON配列（[ ... ]）である必要があります");
   }
 
-  return (parsed as unknown[]).map((item) => JSON.stringify(item)).join('\n');
+  return (parsed as unknown[]).map((item) => JSON.stringify(item)).join("\n");
 }

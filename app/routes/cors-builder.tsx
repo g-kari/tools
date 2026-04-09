@@ -1,33 +1,33 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useState, useCallback, useMemo } from 'react';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
-import { useToast } from '../components/Toast';
-import { TipsCard } from '~/components/TipsCard';
-import { useClipboard } from '~/hooks/useClipboard';
-import '../styles/tools/cors-builder.css';
+import { createFileRoute } from "@tanstack/react-router";
+import { useState, useCallback, useMemo } from "react";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
+import { useToast } from "../components/Toast";
+import { TipsCard } from "~/components/TipsCard";
+import { useClipboard } from "~/hooks/useClipboard";
+import "../styles/tools/cors-builder.css";
 
-export const Route = createFileRoute('/cors-builder')({
+export const Route = createFileRoute("/cors-builder")({
   head: () => ({
     meta: [
-      { title: 'CORS ヘッダービルダー | Web ツール集' },
+      { title: "CORS ヘッダービルダー | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          'Cross-Origin Resource Sharing (CORS) ヘッダーをGUIで構築するツール。許可するオリジン・メソッド・ヘッダーを設定し、Access-Control-* ヘッダーを生成。Express・nginx・Apache・Cloudflare Workers 向けの設定コードも出力。',
+          "Cross-Origin Resource Sharing (CORS) ヘッダーをGUIで構築するツール。許可するオリジン・メソッド・ヘッダーを設定し、Access-Control-* ヘッダーを生成。Express・nginx・Apache・Cloudflare Workers 向けの設定コードも出力。",
       },
-      { property: 'og:title', content: 'CORS ヘッダービルダー | Web ツール集' },
+      { property: "og:title", content: "CORS ヘッダービルダー | Web ツール集" },
       {
-        property: 'og:description',
+        property: "og:description",
         content:
-          'CORS ヘッダーをGUIで構築。許可オリジン・メソッド・ヘッダーを設定し、各種フレームワーク向けのコードを生成。',
+          "CORS ヘッダーをGUIで構築。許可オリジン・メソッド・ヘッダーを設定し、各種フレームワーク向けのコードを生成。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/cors-builder` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
-      { name: 'twitter:title', content: 'CORS ヘッダービルダー | Web ツール集' },
+      { property: "og:url", content: `${SITE_BASE_URL}/cors-builder` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "CORS ヘッダービルダー | Web ツール集" },
       {
-        name: 'twitter:description',
-        content: 'CORS ヘッダーをGUIで構築。各種フレームワーク向けのコードも生成。',
+        name: "twitter:description",
+        content: "CORS ヘッダーをGUIで構築。各種フレームワーク向けのコードも生成。",
       },
     ],
   }),
@@ -35,30 +35,30 @@ export const Route = createFileRoute('/cors-builder')({
 });
 
 /** オリジンモード */
-type OriginMode = 'wildcard' | 'specific' | 'list';
+type OriginMode = "wildcard" | "specific" | "list";
 
 /** HTTPメソッド */
-const HTTP_METHODS = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS', 'HEAD'] as const;
+const HTTP_METHODS = ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD"] as const;
 type HttpMethod = (typeof HTTP_METHODS)[number];
 
 /** よく使うリクエストヘッダー */
 const COMMON_REQUEST_HEADERS = [
-  'Content-Type',
-  'Authorization',
-  'Accept',
-  'X-Requested-With',
-  'X-CSRF-Token',
-  'X-API-Key',
-  'Cache-Control',
+  "Content-Type",
+  "Authorization",
+  "Accept",
+  "X-Requested-With",
+  "X-CSRF-Token",
+  "X-API-Key",
+  "Cache-Control",
 ];
 
 /** よく使うレスポンスヘッダー（Expose用） */
 const COMMON_EXPOSE_HEADERS = [
-  'X-Request-Id',
-  'X-Rate-Limit-Remaining',
-  'X-Rate-Limit-Reset',
-  'X-Total-Count',
-  'Link',
+  "X-Request-Id",
+  "X-Rate-Limit-Remaining",
+  "X-Rate-Limit-Reset",
+  "X-Total-Count",
+  "Link",
 ];
 
 /** CORSプリセット定義 */
@@ -76,34 +76,34 @@ interface CorsPreset {
 
 const PRESETS: CorsPreset[] = [
   {
-    label: '公開API',
-    description: '誰でもアクセス可能なパブリックAPI',
-    originMode: 'wildcard',
-    origins: '*',
-    methods: ['GET', 'POST', 'OPTIONS'],
-    headers: ['Content-Type', 'Accept'],
+    label: "公開API",
+    description: "誰でもアクセス可能なパブリックAPI",
+    originMode: "wildcard",
+    origins: "*",
+    methods: ["GET", "POST", "OPTIONS"],
+    headers: ["Content-Type", "Accept"],
     credentials: false,
     maxAge: 86400,
     exposeHeaders: [],
   },
   {
-    label: 'プライベートAPI',
-    description: '特定オリジンのみ許可する認証付きAPI',
-    originMode: 'specific',
-    origins: 'https://example.com',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    headers: ['Content-Type', 'Authorization', 'X-Requested-With'],
+    label: "プライベートAPI",
+    description: "特定オリジンのみ許可する認証付きAPI",
+    originMode: "specific",
+    origins: "https://example.com",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    headers: ["Content-Type", "Authorization", "X-Requested-With"],
     credentials: true,
     maxAge: 3600,
-    exposeHeaders: ['X-Request-Id'],
+    exposeHeaders: ["X-Request-Id"],
   },
   {
-    label: '開発環境',
-    description: 'ローカル開発用（全許可）',
-    originMode: 'wildcard',
-    origins: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS', 'HEAD'],
-    headers: ['Content-Type', 'Authorization', 'Accept', 'X-Requested-With'],
+    label: "開発環境",
+    description: "ローカル開発用（全許可）",
+    originMode: "wildcard",
+    origins: "*",
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD"],
+    headers: ["Content-Type", "Authorization", "Accept", "X-Requested-With"],
     credentials: false,
     maxAge: 0,
     exposeHeaders: [],
@@ -120,51 +120,51 @@ export function buildCorsHeaders(
   headers: string[],
   credentials: boolean,
   maxAge: number,
-  exposeHeaders: string[]
+  exposeHeaders: string[],
 ): Record<string, string> {
   const result: Record<string, string> = {};
 
   // Access-Control-Allow-Origin
-  if (originMode === 'wildcard') {
-    result['Access-Control-Allow-Origin'] = '*';
-  } else if (originMode === 'specific') {
+  if (originMode === "wildcard") {
+    result["Access-Control-Allow-Origin"] = "*";
+  } else if (originMode === "specific") {
     const trimmed = origins.trim();
-    if (trimmed) result['Access-Control-Allow-Origin'] = trimmed;
+    if (trimmed) result["Access-Control-Allow-Origin"] = trimmed;
   } else {
     // list mode: use first origin as representative (runtime must reflect)
     const list = origins
-      .split('\n')
+      .split("\n")
       .map((o) => o.trim())
       .filter(Boolean);
     if (list.length > 0) {
-      result['Access-Control-Allow-Origin'] = list[0];
-      result['Vary'] = 'Origin';
+      result["Access-Control-Allow-Origin"] = list[0];
+      result["Vary"] = "Origin";
     }
   }
 
   // Access-Control-Allow-Methods
   if (methods.length > 0) {
-    result['Access-Control-Allow-Methods'] = methods.join(', ');
+    result["Access-Control-Allow-Methods"] = methods.join(", ");
   }
 
   // Access-Control-Allow-Headers
   if (headers.length > 0) {
-    result['Access-Control-Allow-Headers'] = headers.join(', ');
+    result["Access-Control-Allow-Headers"] = headers.join(", ");
   }
 
   // Access-Control-Allow-Credentials
   if (credentials) {
-    result['Access-Control-Allow-Credentials'] = 'true';
+    result["Access-Control-Allow-Credentials"] = "true";
   }
 
   // Access-Control-Max-Age
   if (maxAge > 0) {
-    result['Access-Control-Max-Age'] = String(maxAge);
+    result["Access-Control-Max-Age"] = String(maxAge);
   }
 
   // Access-Control-Expose-Headers
   if (exposeHeaders.length > 0) {
-    result['Access-Control-Expose-Headers'] = exposeHeaders.join(', ');
+    result["Access-Control-Expose-Headers"] = exposeHeaders.join(", ");
   }
 
   return result;
@@ -180,21 +180,21 @@ export function generateExpressCode(
   headers: string[],
   credentials: boolean,
   maxAge: number,
-  exposeHeaders: string[]
+  exposeHeaders: string[],
 ): string {
   const originList =
-    originMode === 'list'
+    originMode === "list"
       ? origins
-          .split('\n')
+          .split("\n")
           .map((o) => o.trim())
           .filter(Boolean)
       : null;
 
   const originValue =
-    originMode === 'wildcard'
+    originMode === "wildcard"
       ? "'*'"
       : originList
-        ? `[${originList.map((o) => `'${o}'`).join(', ')}]`
+        ? `[${originList.map((o) => `'${o}'`).join(", ")}]`
         : `'${origins.trim()}'`;
 
   const lines = [
@@ -202,18 +202,18 @@ export function generateExpressCode(
     ``,
     `app.use(cors({`,
     `  origin: ${originValue},`,
-    `  methods: [${methods.map((m) => `'${m}'`).join(', ')}],`,
-    `  allowedHeaders: [${headers.map((h) => `'${h}'`).join(', ')}],`,
+    `  methods: [${methods.map((m) => `'${m}'`).join(", ")}],`,
+    `  allowedHeaders: [${headers.map((h) => `'${h}'`).join(", ")}],`,
   ];
 
   if (credentials) lines.push(`  credentials: true,`);
   if (maxAge > 0) lines.push(`  maxAge: ${maxAge},`);
   if (exposeHeaders.length > 0) {
-    lines.push(`  exposedHeaders: [${exposeHeaders.map((h) => `'${h}'`).join(', ')}],`);
+    lines.push(`  exposedHeaders: [${exposeHeaders.map((h) => `'${h}'`).join(", ")}],`);
   }
 
   lines.push(`}));`);
-  return lines.join('\n');
+  return lines.join("\n");
 }
 
 /**
@@ -226,19 +226,19 @@ export function generateNginxCode(
   headers: string[],
   credentials: boolean,
   maxAge: number,
-  exposeHeaders: string[]
+  exposeHeaders: string[],
 ): string {
   const originList =
-    originMode === 'list'
+    originMode === "list"
       ? origins
-          .split('\n')
+          .split("\n")
           .map((o) => o.trim())
           .filter(Boolean)
       : null;
 
-  const lines: string[] = ['# nginx CORS 設定', 'location / {'];
+  const lines: string[] = ["# nginx CORS 設定", "location / {"];
 
-  if (originMode === 'wildcard') {
+  if (originMode === "wildcard") {
     lines.push(`  add_header 'Access-Control-Allow-Origin' '*' always;`);
   } else if (originList && originList.length > 1) {
     lines.push(`  # 複数オリジンは map を使用`);
@@ -249,18 +249,12 @@ export function generateNginxCode(
     lines.push(`  add_header 'Access-Control-Allow-Origin' $cors_origin always;`);
     lines.push(`  add_header 'Vary' 'Origin' always;`);
   } else {
-    lines.push(
-      `  add_header 'Access-Control-Allow-Origin' '${origins.trim()}' always;`
-    );
+    lines.push(`  add_header 'Access-Control-Allow-Origin' '${origins.trim()}' always;`);
   }
 
-  lines.push(
-    `  add_header 'Access-Control-Allow-Methods' '${methods.join(', ')}' always;`
-  );
+  lines.push(`  add_header 'Access-Control-Allow-Methods' '${methods.join(", ")}' always;`);
   if (headers.length > 0) {
-    lines.push(
-      `  add_header 'Access-Control-Allow-Headers' '${headers.join(', ')}' always;`
-    );
+    lines.push(`  add_header 'Access-Control-Allow-Headers' '${headers.join(", ")}' always;`);
   }
   if (credentials) {
     lines.push(`  add_header 'Access-Control-Allow-Credentials' 'true' always;`);
@@ -270,7 +264,7 @@ export function generateNginxCode(
   }
   if (exposeHeaders.length > 0) {
     lines.push(
-      `  add_header 'Access-Control-Expose-Headers' '${exposeHeaders.join(', ')}' always;`
+      `  add_header 'Access-Control-Expose-Headers' '${exposeHeaders.join(", ")}' always;`,
     );
   }
 
@@ -278,7 +272,7 @@ export function generateNginxCode(
   lines.push(`    return 204;`);
   lines.push(`  }`);
   lines.push(`}`);
-  return lines.join('\n');
+  return lines.join("\n");
 }
 
 /**
@@ -291,12 +285,12 @@ export function generateWorkersCode(
   headers: string[],
   credentials: boolean,
   maxAge: number,
-  exposeHeaders: string[]
+  exposeHeaders: string[],
 ): string {
   const originList =
-    originMode === 'list'
+    originMode === "list"
       ? origins
-          .split('\n')
+          .split("\n")
           .map((o) => o.trim())
           .filter(Boolean)
       : null;
@@ -308,13 +302,11 @@ export function generateWorkersCode(
     ``,
   ];
 
-  if (originMode === 'wildcard') {
+  if (originMode === "wildcard") {
     lines.push(`    const allowedOrigin = '*';`);
   } else if (originList && originList.length > 1) {
-    lines.push(`    const allowedOrigins = [${originList.map((o) => `'${o}'`).join(', ')}];`);
-    lines.push(
-      `    const allowedOrigin = allowedOrigins.includes(origin) ? origin : '';`
-    );
+    lines.push(`    const allowedOrigins = [${originList.map((o) => `'${o}'`).join(", ")}];`);
+    lines.push(`    const allowedOrigin = allowedOrigins.includes(origin) ? origin : '';`);
   } else {
     lines.push(`    const allowedOrigin = '${origins.trim()}';`);
   }
@@ -323,8 +315,8 @@ export function generateWorkersCode(
     ``,
     `    const corsHeaders = {`,
     `      'Access-Control-Allow-Origin': allowedOrigin,`,
-    `      'Access-Control-Allow-Methods': '${methods.join(', ')}',`,
-    `      'Access-Control-Allow-Headers': '${headers.join(', ')}',`
+    `      'Access-Control-Allow-Methods': '${methods.join(", ")}',`,
+    `      'Access-Control-Allow-Headers': '${headers.join(", ")}',`,
   );
 
   if (credentials) {
@@ -334,7 +326,7 @@ export function generateWorkersCode(
     lines.push(`      'Access-Control-Max-Age': '${maxAge}',`);
   }
   if (exposeHeaders.length > 0) {
-    lines.push(`      'Access-Control-Expose-Headers': '${exposeHeaders.join(', ')}',`);
+    lines.push(`      'Access-Control-Expose-Headers': '${exposeHeaders.join(", ")}',`);
   }
 
   lines.push(
@@ -350,10 +342,10 @@ export function generateWorkersCode(
     `    Object.entries(corsHeaders).forEach(([k, v]) => newResponse.headers.set(k, v));`,
     `    return newResponse;`,
     `  },`,
-    `};`
+    `};`,
   );
 
-  return lines.join('\n');
+  return lines.join("\n");
 }
 
 /** CORSビルダーページ */
@@ -362,19 +354,15 @@ function CorsBuilderPage() {
   const { copy } = useClipboard();
 
   // オリジン設定
-  const [originMode, setOriginMode] = useState<OriginMode>('wildcard');
-  const [origins, setOrigins] = useState('');
+  const [originMode, setOriginMode] = useState<OriginMode>("wildcard");
+  const [origins, setOrigins] = useState("");
 
   // メソッド設定
-  const [selectedMethods, setSelectedMethods] = useState<HttpMethod[]>([
-    'GET',
-    'POST',
-    'OPTIONS',
-  ]);
+  const [selectedMethods, setSelectedMethods] = useState<HttpMethod[]>(["GET", "POST", "OPTIONS"]);
 
   // ヘッダー設定
-  const [selectedHeaders, setSelectedHeaders] = useState<string[]>(['Content-Type']);
-  const [customHeader, setCustomHeader] = useState('');
+  const [selectedHeaders, setSelectedHeaders] = useState<string[]>(["Content-Type"]);
+  const [customHeader, setCustomHeader] = useState("");
 
   // クレデンシャル
   const [credentials, setCredentials] = useState(false);
@@ -385,24 +373,24 @@ function CorsBuilderPage() {
 
   // Expose-Headers
   const [selectedExposeHeaders, setSelectedExposeHeaders] = useState<string[]>([]);
-  const [customExposeHeader, setCustomExposeHeader] = useState('');
+  const [customExposeHeader, setCustomExposeHeader] = useState("");
 
   // 出力タブ
-  const [activeTab, setActiveTab] = useState<'headers' | 'express' | 'nginx' | 'workers'>(
-    'headers'
+  const [activeTab, setActiveTab] = useState<"headers" | "express" | "nginx" | "workers">(
+    "headers",
   );
 
   /** メソッドのトグル */
   const toggleMethod = useCallback((method: HttpMethod) => {
     setSelectedMethods((prev) =>
-      prev.includes(method) ? prev.filter((m) => m !== method) : [...prev, method]
+      prev.includes(method) ? prev.filter((m) => m !== method) : [...prev, method],
     );
   }, []);
 
   /** ヘッダーのトグル */
   const toggleHeader = useCallback((header: string) => {
     setSelectedHeaders((prev) =>
-      prev.includes(header) ? prev.filter((h) => h !== header) : [...prev, header]
+      prev.includes(header) ? prev.filter((h) => h !== header) : [...prev, header],
     );
   }, []);
 
@@ -413,13 +401,13 @@ function CorsBuilderPage() {
     if (!selectedHeaders.includes(trimmed)) {
       setSelectedHeaders((prev) => [...prev, trimmed]);
     }
-    setCustomHeader('');
+    setCustomHeader("");
   }, [customHeader, selectedHeaders]);
 
   /** Expose-Headersのトグル */
   const toggleExposeHeader = useCallback((header: string) => {
     setSelectedExposeHeaders((prev) =>
-      prev.includes(header) ? prev.filter((h) => h !== header) : [...prev, header]
+      prev.includes(header) ? prev.filter((h) => h !== header) : [...prev, header],
     );
   }, []);
 
@@ -430,7 +418,7 @@ function CorsBuilderPage() {
     if (!selectedExposeHeaders.includes(trimmed)) {
       setSelectedExposeHeaders((prev) => [...prev, trimmed]);
     }
-    setCustomExposeHeader('');
+    setCustomExposeHeader("");
   }, [customExposeHeader, selectedExposeHeaders]);
 
   /** プリセット適用 */
@@ -457,7 +445,7 @@ function CorsBuilderPage() {
         selectedHeaders,
         credentials,
         effectiveMaxAge,
-        selectedExposeHeaders
+        selectedExposeHeaders,
       ),
     [
       originMode,
@@ -467,17 +455,17 @@ function CorsBuilderPage() {
       credentials,
       effectiveMaxAge,
       selectedExposeHeaders,
-    ]
+    ],
   );
 
   /** 出力テキスト */
   const outputText = useMemo(() => {
-    if (activeTab === 'headers') {
+    if (activeTab === "headers") {
       return Object.entries(corsHeaders)
         .map(([k, v]) => `${k}: ${v}`)
-        .join('\n');
+        .join("\n");
     }
-    if (activeTab === 'express') {
+    if (activeTab === "express") {
       return generateExpressCode(
         originMode,
         origins,
@@ -485,10 +473,10 @@ function CorsBuilderPage() {
         selectedHeaders,
         credentials,
         effectiveMaxAge,
-        selectedExposeHeaders
+        selectedExposeHeaders,
       );
     }
-    if (activeTab === 'nginx') {
+    if (activeTab === "nginx") {
       return generateNginxCode(
         originMode,
         origins,
@@ -496,7 +484,7 @@ function CorsBuilderPage() {
         selectedHeaders,
         credentials,
         effectiveMaxAge,
-        selectedExposeHeaders
+        selectedExposeHeaders,
       );
     }
     return generateWorkersCode(
@@ -506,7 +494,7 @@ function CorsBuilderPage() {
       selectedHeaders,
       credentials,
       effectiveMaxAge,
-      selectedExposeHeaders
+      selectedExposeHeaders,
     );
   }, [
     activeTab,
@@ -523,11 +511,11 @@ function CorsBuilderPage() {
   /** コピー処理 */
   const handleCopy = useCallback(async () => {
     await copy(outputText);
-    showToast('コピーしました', 'success');
+    showToast("コピーしました", "success");
   }, [copy, outputText, showToast]);
 
   /** credentials と wildcard の競合警告 */
-  const credentialsWarning = credentials && originMode === 'wildcard';
+  const credentialsWarning = credentials && originMode === "wildcard";
 
   return (
     <div className="tool-container">
@@ -565,9 +553,9 @@ function CorsBuilderPage() {
         <div className="cors-origin-modes">
           {(
             [
-              { value: 'wildcard', label: 'ワイルドカード (*)', hint: '全オリジンを許可' },
-              { value: 'specific', label: '特定オリジン', hint: '1つのオリジンを指定' },
-              { value: 'list', label: 'オリジンリスト', hint: '複数オリジン（実行時に動的判定）' },
+              { value: "wildcard", label: "ワイルドカード (*)", hint: "全オリジンを許可" },
+              { value: "specific", label: "特定オリジン", hint: "1つのオリジンを指定" },
+              { value: "list", label: "オリジンリスト", hint: "複数オリジン（実行時に動的判定）" },
             ] as const
           ).map((mode) => (
             <label key={mode.value} className="cors-radio-label">
@@ -586,7 +574,7 @@ function CorsBuilderPage() {
           ))}
         </div>
 
-        {originMode === 'specific' && (
+        {originMode === "specific" && (
           <input
             type="text"
             className="cors-input"
@@ -596,10 +584,10 @@ function CorsBuilderPage() {
             aria-label="許可するオリジン"
           />
         )}
-        {originMode === 'list' && (
+        {originMode === "list" && (
           <textarea
             className="cors-textarea"
-            placeholder={'https://example.com\nhttps://app.example.com'}
+            placeholder={"https://example.com\nhttps://app.example.com"}
             value={origins}
             onChange={(e) => setOrigins(e.target.value)}
             rows={3}
@@ -608,9 +596,7 @@ function CorsBuilderPage() {
         )}
         {credentialsWarning && (
           <p className="cors-warning" role="alert">
-            ⚠{' '}
-            <strong>警告:</strong>{' '}
-            <code>Access-Control-Allow-Credentials: true</code> と{' '}
+            ⚠ <strong>警告:</strong> <code>Access-Control-Allow-Credentials: true</code> と{" "}
             <code>Access-Control-Allow-Origin: *</code> の組み合わせはブラウザに拒否されます。
             クレデンシャルを使用する場合は特定オリジンを指定してください。
           </p>
@@ -659,11 +645,7 @@ function CorsBuilderPage() {
             .filter((h) => !COMMON_REQUEST_HEADERS.includes(h))
             .map((header) => (
               <label key={header} className="cors-checkbox-label cors-custom-item">
-                <input
-                  type="checkbox"
-                  checked
-                  onChange={() => toggleHeader(header)}
-                />
+                <input type="checkbox" checked onChange={() => toggleHeader(header)} />
                 <code>{header}</code>
                 <span className="cors-custom-badge">カスタム</span>
               </label>
@@ -676,7 +658,7 @@ function CorsBuilderPage() {
             placeholder="カスタムヘッダー名"
             value={customHeader}
             onChange={(e) => setCustomHeader(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && addCustomHeader()}
+            onKeyDown={(e) => e.key === "Enter" && addCustomHeader()}
             aria-label="カスタムリクエストヘッダーを追加"
           />
           <button type="button" className="btn-secondary" onClick={addCustomHeader}>
@@ -696,9 +678,7 @@ function CorsBuilderPage() {
             checked={credentials}
             onChange={(e) => setCredentials(e.target.checked)}
           />
-          <span>
-            Cookie・Authorization ヘッダーなどのクレデンシャルを含むリクエストを許可する
-          </span>
+          <span>Cookie・Authorization ヘッダーなどのクレデンシャルを含むリクエストを許可する</span>
         </label>
       </section>
 
@@ -727,15 +707,14 @@ function CorsBuilderPage() {
               aria-label="Max-Age（秒）"
             />
             <span className="cors-maxage-hint">
-              秒
-              {maxAge >= 3600 && ` (${Math.round(maxAge / 3600)}時間)`}
+              秒{maxAge >= 3600 && ` (${Math.round(maxAge / 3600)}時間)`}
               {maxAge > 0 && maxAge < 3600 && ` (${Math.round(maxAge / 60)}分)`}
             </span>
             <div className="cors-maxage-presets">
               {[
-                { label: '1時間', value: 3600 },
-                { label: '1日', value: 86400 },
-                { label: '1週間', value: 604800 },
+                { label: "1時間", value: 3600 },
+                { label: "1日", value: 86400 },
+                { label: "1週間", value: 604800 },
               ].map((p) => (
                 <button
                   key={p.label}
@@ -774,11 +753,7 @@ function CorsBuilderPage() {
             .filter((h) => !COMMON_EXPOSE_HEADERS.includes(h))
             .map((header) => (
               <label key={header} className="cors-checkbox-label cors-custom-item">
-                <input
-                  type="checkbox"
-                  checked
-                  onChange={() => toggleExposeHeader(header)}
-                />
+                <input type="checkbox" checked onChange={() => toggleExposeHeader(header)} />
                 <code>{header}</code>
                 <span className="cors-custom-badge">カスタム</span>
               </label>
@@ -791,7 +766,7 @@ function CorsBuilderPage() {
             placeholder="カスタムヘッダー名"
             value={customExposeHeader}
             onChange={(e) => setCustomExposeHeader(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && addCustomExposeHeader()}
+            onKeyDown={(e) => e.key === "Enter" && addCustomExposeHeader()}
             aria-label="カスタム公開ヘッダーを追加"
           />
           <button type="button" className="btn-secondary" onClick={addCustomExposeHeader}>
@@ -820,10 +795,10 @@ function CorsBuilderPage() {
         <div className="cors-tabs" role="tablist" aria-label="出力形式">
           {(
             [
-              { id: 'headers', label: 'HTTPヘッダー' },
-              { id: 'express', label: 'Express.js' },
-              { id: 'nginx', label: 'nginx' },
-              { id: 'workers', label: 'CF Workers' },
+              { id: "headers", label: "HTTPヘッダー" },
+              { id: "express", label: "Express.js" },
+              { id: "nginx", label: "nginx" },
+              { id: "workers", label: "CF Workers" },
             ] as const
           ).map((tab) => (
             <button
@@ -831,7 +806,7 @@ function CorsBuilderPage() {
               type="button"
               role="tab"
               aria-selected={activeTab === tab.id}
-              className={`cors-tab ${activeTab === tab.id ? 'cors-tab-active' : ''}`}
+              className={`cors-tab ${activeTab === tab.id ? "cors-tab-active" : ""}`}
               onClick={() => setActiveTab(tab.id)}
             >
               {tab.label}
@@ -840,7 +815,7 @@ function CorsBuilderPage() {
         </div>
 
         {/* ヘッダー一覧（バッジ表示） */}
-        {activeTab === 'headers' && (
+        {activeTab === "headers" && (
           <div className="cors-headers-list">
             {Object.entries(corsHeaders).length === 0 ? (
               <p className="cors-empty">設定を選択するとヘッダーが生成されます。</p>
@@ -856,7 +831,7 @@ function CorsBuilderPage() {
         )}
 
         {/* コードブロック */}
-        {activeTab !== 'headers' && (
+        {activeTab !== "headers" && (
           <pre className="cors-code-block">
             <code>{outputText}</code>
           </pre>
@@ -865,11 +840,11 @@ function CorsBuilderPage() {
 
       <TipsCard
         tips={[
-          'CORSプリフライトリクエスト（OPTIONS）は必ずメソッドに含めてください。',
-          'credentials: true を使う場合、Access-Control-Allow-Origin にワイルドカード * は使えません。',
-          'Access-Control-Max-Age でプリフライトをキャッシュすると、不要なOPTIONSリクエストを削減できます。',
-          '開発環境ではワイルドカードを使っても問題ありませんが、本番環境では必ず特定のオリジンを指定してください。',
-          'Cloudflare Workersではリクエストごとにオリジンを動的に確認するロジックが必要です。',
+          "CORSプリフライトリクエスト（OPTIONS）は必ずメソッドに含めてください。",
+          "credentials: true を使う場合、Access-Control-Allow-Origin にワイルドカード * は使えません。",
+          "Access-Control-Max-Age でプリフライトをキャッシュすると、不要なOPTIONSリクエストを削減できます。",
+          "開発環境ではワイルドカードを使っても問題ありませんが、本番環境では必ず特定のオリジンを指定してください。",
+          "Cloudflare Workersではリクエストごとにオリジンを動的に確認するロジックが必要です。",
         ]}
       />
     </div>

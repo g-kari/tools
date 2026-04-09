@@ -78,7 +78,7 @@ export function generateTransformValue(state: TransformState): string {
   if (state.skewX !== 0) parts.push(`skewX(${state.skewX}deg)`);
   if (state.skewY !== 0) parts.push(`skewY(${state.skewY}deg)`);
 
-  return parts.length === 0 ? 'none' : parts.join(' ');
+  return parts.length === 0 ? "none" : parts.join(" ");
 }
 
 /**
@@ -97,7 +97,7 @@ export function generateFullCSS(state: TransformState): string {
   lines.push(`  transform: ${transformValue};`);
   lines.push(`}`);
 
-  return lines.join('\n');
+  return lines.join("\n");
 }
 
 /**
@@ -125,39 +125,39 @@ export function isDefaultState(state: TransformState): boolean {
 /** プリセット一覧 */
 export const TRANSFORM_PRESETS: TransformPreset[] = [
   {
-    label: '右移動',
+    label: "右移動",
     state: { ...createDefaultState(), translateX: 50 },
   },
   {
-    label: '右回転',
+    label: "右回転",
     state: { ...createDefaultState(), rotateZ: 45 },
   },
   {
-    label: '縮小',
+    label: "縮小",
     state: { ...createDefaultState(), scaleX: 0.5, scaleY: 0.5 },
   },
   {
-    label: '拡大',
+    label: "拡大",
     state: { ...createDefaultState(), scaleX: 1.5, scaleY: 1.5 },
   },
   {
-    label: 'スキュー',
+    label: "スキュー",
     state: { ...createDefaultState(), skewX: 20, skewY: 10 },
   },
   {
-    label: 'X軸回転',
+    label: "X軸回転",
     state: { ...createDefaultState(), rotateX: 45, perspective: 600 },
   },
   {
-    label: 'Y軸回転',
+    label: "Y軸回転",
     state: { ...createDefaultState(), rotateY: 45, perspective: 600 },
   },
   {
-    label: 'フリップ',
+    label: "フリップ",
     state: { ...createDefaultState(), rotateY: 180 },
   },
   {
-    label: '複合変形',
+    label: "複合変形",
     state: { ...createDefaultState(), translateX: 20, rotateZ: 15, scaleX: 1.2, scaleY: 1.2 },
   },
 ];

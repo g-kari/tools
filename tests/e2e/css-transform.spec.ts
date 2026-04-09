@@ -6,15 +6,11 @@ test.describe("CSS Transformジェネレーターページ", () => {
   });
 
   test("ページタイトルが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "CSS Transformジェネレーター" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "CSS Transformジェネレーター" })).toBeVisible();
   });
 
   test("プリセットセクションが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "プリセット" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "プリセット" })).toBeVisible();
   });
 
   test("プリセットボタンが複数表示される", async ({ page }) => {
@@ -23,39 +19,27 @@ test.describe("CSS Transformジェネレーターページ", () => {
   });
 
   test("移動セクションが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "移動 (translate)" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "移動 (translate)" })).toBeVisible();
   });
 
   test("回転セクションが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "回転 (rotate)" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "回転 (rotate)" })).toBeVisible();
   });
 
   test("拡縮セクションが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "拡縮 (scale)" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "拡縮 (scale)" })).toBeVisible();
   });
 
   test("傾斜セクションが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "傾斜 (skew)" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "傾斜 (skew)" })).toBeVisible();
   });
 
   test("遠近法セクションが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "遠近法 (perspective)" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "遠近法 (perspective)" })).toBeVisible();
   });
 
   test("ライブプレビューが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "ライブプレビュー" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "ライブプレビュー" })).toBeVisible();
     await expect(page.locator(".ct-preview-canvas")).toBeVisible();
   });
 
@@ -65,9 +49,7 @@ test.describe("CSS Transformジェネレーターページ", () => {
   });
 
   test("CSS出力エリアが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "生成 CSS" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "生成 CSS" })).toBeVisible();
     await expect(page.locator(".ct-css-output")).toBeVisible();
   });
 
@@ -105,9 +87,7 @@ test.describe("CSS Transformジェネレーターページ", () => {
   });
 
   test("リセットボタンが表示される", async ({ page }) => {
-    await expect(
-      page.getByLabel("すべての設定をリセット")
-    ).toBeVisible();
+    await expect(page.getByLabel("すべての設定をリセット")).toBeVisible();
   });
 
   test("プリセット適用後にリセットで none に戻る", async ({ page }) => {
@@ -120,9 +100,7 @@ test.describe("CSS Transformジェネレーターページ", () => {
   });
 
   test("コピーボタンが存在する", async ({ page }) => {
-    await expect(
-      page.getByLabel("生成されたCSSをクリップボードにコピー")
-    ).toBeVisible();
+    await expect(page.getByLabel("生成されたCSSをクリップボードにコピー")).toBeVisible();
   });
 
   test("ページにTipsカードが表示される", async ({ page }) => {

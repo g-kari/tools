@@ -1,4 +1,4 @@
-import { encode, decode } from '@msgpack/msgpack';
+import { encode, decode } from "@msgpack/msgpack";
 
 /**
  * JSONをMessagePackのhex文字列にエンコードする
@@ -9,8 +9,8 @@ export function encodeToMsgpack(jsonStr: string): { hex: string; bytes: number }
   const obj = JSON.parse(jsonStr);
   const bytes = encode(obj);
   const hex = Array.from(bytes)
-    .map((b) => b.toString(16).padStart(2, '0'))
-    .join(' ');
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join(" ");
   return { hex, bytes: bytes.length };
 }
 
@@ -20,14 +20,14 @@ export function encodeToMsgpack(jsonStr: string): { hex: string; bytes: number }
  * @returns 整形されたJSON文字列
  */
 export function decodeFromMsgpack(hexStr: string): string {
-  const cleaned = hexStr.trim().replace(/\s+/g, ' ');
-  if (!cleaned) throw new Error('入力が空です');
+  const cleaned = hexStr.trim().replace(/\s+/g, " ");
+  if (!cleaned) throw new Error("入力が空です");
   const bytes = Uint8Array.from(
-    cleaned.split(' ').map((h) => {
+    cleaned.split(" ").map((h) => {
       const n = parseInt(h, 16);
       if (!/^[0-9a-fA-F]{2}$/.test(h)) throw new Error(`無効な16進数: ${h}`);
       return n;
-    })
+    }),
   );
   const obj = decode(bytes);
   return JSON.stringify(obj, null, 2);

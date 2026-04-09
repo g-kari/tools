@@ -32,7 +32,10 @@
   cursor: pointer;
   background: none;
   color: var(--md-sys-color-on-surface-variant);
-  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+  transition:
+    background-color 0.15s,
+    color 0.15s,
+    border-color 0.15s;
   white-space: nowrap;
 }
 
@@ -113,7 +116,7 @@
   width: 100%;
   min-height: 220px;
   padding: 0.75rem;
-  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  font-family: "JetBrains Mono", "Roboto Mono", "Courier New", monospace;
   font-size: 0.8125rem;
   line-height: 1.65;
   border: 1px solid var(--md-sys-color-outline-variant);
@@ -121,7 +124,9 @@
   background: var(--md-sys-color-surface-variant);
   color: var(--md-sys-color-on-surface);
   resize: vertical;
-  transition: border-color 0.2s, background 0.2s;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
   box-sizing: border-box;
   flex: 1;
 }
@@ -175,7 +180,7 @@
 .tmpl-output {
   margin: 0;
   padding: 1rem;
-  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  font-family: "JetBrains Mono", "Roboto Mono", "Courier New", monospace;
   font-size: 0.8125rem;
   line-height: 1.65;
   color: var(--md-sys-color-on-surface);
@@ -202,7 +207,7 @@
   color: var(--md-sys-color-error);
   font-size: 0.8125rem;
   line-height: 1.5;
-  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  font-family: "JetBrains Mono", "Roboto Mono", "Courier New", monospace;
   background: color-mix(in srgb, var(--md-sys-color-error) 8%, transparent);
   border-bottom: 1px solid color-mix(in srgb, var(--md-sys-color-error) 20%, transparent);
 }

@@ -63,29 +63,17 @@ describe("getLapRating", () => {
   });
 
   it("3件のうち中間は normal を返すこと", () => {
-    const laps: LapTime[] = [
-      makeLap(1, 5000),
-      makeLap(2, 3000),
-      makeLap(3, 4000),
-    ];
+    const laps: LapTime[] = [makeLap(1, 5000), makeLap(2, 3000), makeLap(3, 4000)];
     expect(getLapRating(4000, laps)).toBe("normal");
   });
 
   it("3件のうち最速は best を返すこと", () => {
-    const laps: LapTime[] = [
-      makeLap(1, 5000),
-      makeLap(2, 3000),
-      makeLap(3, 4000),
-    ];
+    const laps: LapTime[] = [makeLap(1, 5000), makeLap(2, 3000), makeLap(3, 4000)];
     expect(getLapRating(3000, laps)).toBe("best");
   });
 
   it("3件のうち最遅は worst を返すこと", () => {
-    const laps: LapTime[] = [
-      makeLap(1, 5000),
-      makeLap(2, 3000),
-      makeLap(3, 4000),
-    ];
+    const laps: LapTime[] = [makeLap(1, 5000), makeLap(2, 3000), makeLap(3, 4000)];
     expect(getLapRating(5000, laps)).toBe("worst");
   });
 
@@ -94,11 +82,7 @@ describe("getLapRating", () => {
   });
 
   it("全ラップが同じタイムの場合は best を返すこと（min === max）", () => {
-    const laps: LapTime[] = [
-      makeLap(1, 5000),
-      makeLap(2, 5000),
-      makeLap(3, 5000),
-    ];
+    const laps: LapTime[] = [makeLap(1, 5000), makeLap(2, 5000), makeLap(3, 5000)];
     // min === max === lapMs なので best
     expect(getLapRating(5000, laps)).toBe("best");
   });

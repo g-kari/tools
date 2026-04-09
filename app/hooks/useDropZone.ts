@@ -94,7 +94,7 @@ export function useDropZone({
       const filesToProcess = multiple ? droppedFiles : [droppedFiles[0]];
       onFileSelect(filesToProcess);
     },
-    [onFileSelect, acceptType, onTypeError, multiple]
+    [onFileSelect, acceptType, onTypeError, multiple],
   );
 
   return {

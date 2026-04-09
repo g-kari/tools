@@ -95,13 +95,7 @@ export function generateDescription(expression: string): string {
   const [min, hour, day, month, weekday] = parts;
 
   // 毎分
-  if (
-    min === "*" &&
-    hour === "*" &&
-    day === "*" &&
-    month === "*" &&
-    weekday === "*"
-  ) {
+  if (min === "*" && hour === "*" && day === "*" && month === "*" && weekday === "*") {
     return "毎分実行";
   }
 
@@ -130,7 +124,7 @@ export function generateDescription(expression: string): string {
       const dayStr = dayNums
         .map((d) => {
           const n = parseInt(d);
-          return isNaN(n) ? d : days[n % 7] ?? d;
+          return isNaN(n) ? d : (days[n % 7] ?? d);
         })
         .join("・");
       base = `毎週${dayStr}曜 ${hourStr}${minStr}に実行`;

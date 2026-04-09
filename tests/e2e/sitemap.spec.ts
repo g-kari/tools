@@ -90,9 +90,7 @@ test.describe("Sitemap XMLジェネレーター - E2Eテスト", () => {
     await expect(xmlOutput).toContainText("<changefreq>weekly</changefreq>");
   });
 
-  test("優先度チェックボックスで優先度フィールドが有効になる", async ({
-    page,
-  }) => {
+  test("優先度チェックボックスで優先度フィールドが有効になる", async ({ page }) => {
     const locInput = page.locator('input[type="url"]').first();
     await locInput.fill("https://example.com/");
 

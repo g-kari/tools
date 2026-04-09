@@ -1,39 +1,39 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useState, useCallback } from 'react';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
+import { createFileRoute } from "@tanstack/react-router";
+import { useState, useCallback } from "react";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import {
   compressText,
   decompressBase64,
   formatBytes,
   GZIP_FORMAT_LABELS,
   type GzipFormat,
-} from '../utils/gzip';
-import { TipsCard } from '~/components/TipsCard';
-import { useClipboard } from '~/hooks/useClipboard';
-import '../styles/tools/gzip.css';
+} from "../utils/gzip";
+import { TipsCard } from "~/components/TipsCard";
+import { useClipboard } from "~/hooks/useClipboard";
+import "../styles/tools/gzip.css";
 
-export const Route = createFileRoute('/gzip')({
+export const Route = createFileRoute("/gzip")({
   head: () => ({
     meta: [
-      { title: 'GZip/Deflate 圧縮・解凍 | Web ツール集' },
+      { title: "GZip/Deflate 圧縮・解凍 | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          'テキストを gzip・deflate・deflate-raw 形式でブラウザ内圧縮・解凍するツール。圧縮率・サイズ比較表示。Base64でエンコードされた圧縮データの解凍にも対応。',
+          "テキストを gzip・deflate・deflate-raw 形式でブラウザ内圧縮・解凍するツール。圧縮率・サイズ比較表示。Base64でエンコードされた圧縮データの解凍にも対応。",
       },
-      { property: 'og:title', content: 'GZip/Deflate 圧縮・解凍 | Web ツール集' },
+      { property: "og:title", content: "GZip/Deflate 圧縮・解凍 | Web ツール集" },
       {
-        property: 'og:description',
+        property: "og:description",
         content:
-          'テキストを gzip・deflate・deflate-raw 形式でブラウザ内圧縮・解凍。圧縮率・サイズ比較表示。',
+          "テキストを gzip・deflate・deflate-raw 形式でブラウザ内圧縮・解凍。圧縮率・サイズ比較表示。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/gzip` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
-      { name: 'twitter:title', content: 'GZip/Deflate 圧縮・解凍 | Web ツール集' },
+      { property: "og:url", content: `${SITE_BASE_URL}/gzip` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "GZip/Deflate 圧縮・解凍 | Web ツール集" },
       {
-        name: 'twitter:description',
-        content: 'テキストを gzip/deflate でブラウザ内圧縮・解凍。圧縮率・サイズ比較表示。',
+        name: "twitter:description",
+        content: "テキストを gzip/deflate でブラウザ内圧縮・解凍。圧縮率・サイズ比較表示。",
       },
     ],
   }),
@@ -41,34 +41,34 @@ export const Route = createFileRoute('/gzip')({
 });
 
 /** 操作モード */
-type Mode = 'compress' | 'decompress';
+type Mode = "compress" | "decompress";
 
 /**
  * GZip/Deflate 圧縮・解凍ページ
  */
 function GzipPage() {
-  const [mode, setMode] = useState<Mode>('compress');
-  const [format, setFormat] = useState<GzipFormat>('gzip');
+  const [mode, setMode] = useState<Mode>("compress");
+  const [format, setFormat] = useState<GzipFormat>("gzip");
 
   // 圧縮モード
-  const [compressInput, setCompressInput] = useState('');
-  const [compressOutput, setCompressOutput] = useState('');
+  const [compressInput, setCompressInput] = useState("");
+  const [compressOutput, setCompressOutput] = useState("");
   const [compressStats, setCompressStats] = useState<{
     originalSize: number;
     compressedSize: number;
     ratio: number;
   } | null>(null);
-  const [compressError, setCompressError] = useState('');
+  const [compressError, setCompressError] = useState("");
   const [isCompressing, setIsCompressing] = useState(false);
 
   // 解凍モード
-  const [decompressInput, setDecompressInput] = useState('');
-  const [decompressOutput, setDecompressOutput] = useState('');
+  const [decompressInput, setDecompressInput] = useState("");
+  const [decompressOutput, setDecompressOutput] = useState("");
   const [decompressStats, setDecompressStats] = useState<{
     compressedSize: number;
     decompressedSize: number;
   } | null>(null);
-  const [decompressError, setDecompressError] = useState('');
+  const [decompressError, setDecompressError] = useState("");
   const [isDecompressing, setIsDecompressing] = useState(false);
 
   const { copy } = useClipboard();
@@ -77,12 +77,12 @@ function GzipPage() {
   // 圧縮処理
   // -------------------------------------------------------------------------
   const handleCompress = useCallback(async () => {
-    setCompressError('');
-    setCompressOutput('');
+    setCompressError("");
+    setCompressOutput("");
     setCompressStats(null);
 
     if (!compressInput.trim()) {
-      setCompressError('圧縮するテキストを入力してください');
+      setCompressError("圧縮するテキストを入力してください");
       return;
     }
 
@@ -96,29 +96,29 @@ function GzipPage() {
         ratio: result.ratio,
       });
     } catch (err) {
-      setCompressError(err instanceof Error ? err.message : '圧縮中にエラーが発生しました');
+      setCompressError(err instanceof Error ? err.message : "圧縮中にエラーが発生しました");
     } finally {
       setIsCompressing(false);
     }
   }, [compressInput, format]);
 
   const handleClearCompress = useCallback(() => {
-    setCompressInput('');
-    setCompressOutput('');
+    setCompressInput("");
+    setCompressOutput("");
     setCompressStats(null);
-    setCompressError('');
+    setCompressError("");
   }, []);
 
   // -------------------------------------------------------------------------
   // 解凍処理
   // -------------------------------------------------------------------------
   const handleDecompress = useCallback(async () => {
-    setDecompressError('');
-    setDecompressOutput('');
+    setDecompressError("");
+    setDecompressOutput("");
     setDecompressStats(null);
 
     if (!decompressInput.trim()) {
-      setDecompressError('解凍する Base64 データを入力してください');
+      setDecompressError("解凍する Base64 データを入力してください");
       return;
     }
 
@@ -132,7 +132,9 @@ function GzipPage() {
       });
     } catch (err) {
       setDecompressError(
-        err instanceof Error ? err.message : '解凍中にエラーが発生しました。形式が一致しているか確認してください。',
+        err instanceof Error
+          ? err.message
+          : "解凍中にエラーが発生しました。形式が一致しているか確認してください。",
       );
     } finally {
       setIsDecompressing(false);
@@ -140,10 +142,10 @@ function GzipPage() {
   }, [decompressInput, format]);
 
   const handleClearDecompress = useCallback(() => {
-    setDecompressInput('');
-    setDecompressOutput('');
+    setDecompressInput("");
+    setDecompressOutput("");
     setDecompressStats(null);
-    setDecompressError('');
+    setDecompressError("");
   }, []);
 
   // -------------------------------------------------------------------------
@@ -159,9 +161,9 @@ function GzipPage() {
         <button
           type="button"
           role="tab"
-          className={`gz-tab-btn${mode === 'compress' ? ' active' : ''}`}
-          onClick={() => setMode('compress')}
-          aria-selected={mode === 'compress'}
+          className={`gz-tab-btn${mode === "compress" ? " active" : ""}`}
+          onClick={() => setMode("compress")}
+          aria-selected={mode === "compress"}
           aria-controls="gz-panel-compress"
         >
           🗜️ 圧縮
@@ -169,9 +171,9 @@ function GzipPage() {
         <button
           type="button"
           role="tab"
-          className={`gz-tab-btn${mode === 'decompress' ? ' active' : ''}`}
-          onClick={() => setMode('decompress')}
-          aria-selected={mode === 'decompress'}
+          className={`gz-tab-btn${mode === "decompress" ? " active" : ""}`}
+          onClick={() => setMode("decompress")}
+          aria-selected={mode === "decompress"}
           aria-controls="gz-panel-decompress"
         >
           📂 解凍
@@ -182,7 +184,7 @@ function GzipPage() {
       <div className="gz-options-row">
         <fieldset className="gz-fieldset">
           <legend className="gz-legend">圧縮形式</legend>
-          {(['gzip', 'deflate', 'deflate-raw'] as GzipFormat[]).map((f) => (
+          {(["gzip", "deflate", "deflate-raw"] as GzipFormat[]).map((f) => (
             <label key={f} className="gz-radio-label">
               <input
                 type="radio"
@@ -199,7 +201,7 @@ function GzipPage() {
       </div>
 
       {/* ========== 圧縮パネル ========== */}
-      {mode === 'compress' && (
+      {mode === "compress" && (
         <div id="gz-panel-compress" role="tabpanel" aria-label="圧縮パネル">
           <div className="form-group">
             <label className="form-label" htmlFor="gz-compress-input">
@@ -224,7 +226,7 @@ function GzipPage() {
               disabled={isCompressing}
               aria-busy={isCompressing}
             >
-              {isCompressing ? '圧縮中...' : '圧縮する'}
+              {isCompressing ? "圧縮中..." : "圧縮する"}
             </button>
             <button type="button" className="btn-secondary" onClick={handleClearCompress}>
               クリア
@@ -233,7 +235,9 @@ function GzipPage() {
 
           {compressError && (
             <div className="gz-error" role="alert" aria-live="assertive">
-              <span className="gz-error-icon" aria-hidden="true">⚠️</span>
+              <span className="gz-error-icon" aria-hidden="true">
+                ⚠️
+              </span>
               <span>{compressError}</span>
             </div>
           )}
@@ -245,9 +249,7 @@ function GzipPage() {
                 <div className="gz-stats" aria-label="圧縮統計">
                   <div className="gz-stat-item">
                     <span className="gz-stat-label">元サイズ</span>
-                    <span className="gz-stat-value">
-                      {formatBytes(compressStats.originalSize)}
-                    </span>
+                    <span className="gz-stat-value">{formatBytes(compressStats.originalSize)}</span>
                   </div>
                   <div className="gz-stat-item">
                     <span className="gz-stat-label">圧縮後</span>
@@ -258,9 +260,9 @@ function GzipPage() {
                   <div className="gz-stat-item">
                     <span className="gz-stat-label">圧縮率</span>
                     <span
-                      className={`gz-stat-value${isPositiveRatio ? ' gz-stat-value--positive' : ' gz-stat-value--negative'}`}
+                      className={`gz-stat-value${isPositiveRatio ? " gz-stat-value--positive" : " gz-stat-value--negative"}`}
                     >
-                      {isPositiveRatio ? '-' : '+'}
+                      {isPositiveRatio ? "-" : "+"}
                       {Math.abs(Number(ratioPercent))}%
                     </span>
                   </div>
@@ -296,7 +298,7 @@ function GzipPage() {
       )}
 
       {/* ========== 解凍パネル ========== */}
-      {mode === 'decompress' && (
+      {mode === "decompress" && (
         <div id="gz-panel-decompress" role="tabpanel" aria-label="解凍パネル">
           <div className="form-group">
             <label className="form-label" htmlFor="gz-decompress-input">
@@ -321,7 +323,7 @@ function GzipPage() {
               disabled={isDecompressing}
               aria-busy={isDecompressing}
             >
-              {isDecompressing ? '解凍中...' : '解凍する'}
+              {isDecompressing ? "解凍中..." : "解凍する"}
             </button>
             <button type="button" className="btn-secondary" onClick={handleClearDecompress}>
               クリア
@@ -330,7 +332,9 @@ function GzipPage() {
 
           {decompressError && (
             <div className="gz-error" role="alert" aria-live="assertive">
-              <span className="gz-error-icon" aria-hidden="true">⚠️</span>
+              <span className="gz-error-icon" aria-hidden="true">
+                ⚠️
+              </span>
               <span>{decompressError}</span>
             </div>
           )}
@@ -386,21 +390,21 @@ function GzipPage() {
       <TipsCard
         sections={[
           {
-            title: '使い方',
+            title: "使い方",
             items: [
-              '「圧縮」タブ: テキストを入力して形式を選び「圧縮する」をクリック。結果は Base64 で表示されます',
-              '「解凍」タブ: Base64 形式の圧縮データを入力して「解凍する」をクリック',
-              '圧縮形式は gzip・deflate (zlib)・deflate-raw から選択できます',
-              '圧縮率が負の値（+X%）の場合、元データより大きくなっています（短いテキストや既圧縮データに多い）',
+              "「圧縮」タブ: テキストを入力して形式を選び「圧縮する」をクリック。結果は Base64 で表示されます",
+              "「解凍」タブ: Base64 形式の圧縮データを入力して「解凍する」をクリック",
+              "圧縮形式は gzip・deflate (zlib)・deflate-raw から選択できます",
+              "圧縮率が負の値（+X%）の場合、元データより大きくなっています（短いテキストや既圧縮データに多い）",
             ],
           },
           {
-            title: '各形式の違い',
+            title: "各形式の違い",
             items: [
-              'gzip: 最も広く使われる形式。HTTP Content-Encoding や .gz ファイルに対応',
-              'deflate (zlib): RFC 1950 準拠。zlib ヘッダー付きの deflate 圧縮',
-              'deflate-raw: RFC 1951 準拠。ヘッダーなしの生 deflate ストリーム',
-              'すべてブラウザ内で処理されるため、データが外部に送信されることはありません',
+              "gzip: 最も広く使われる形式。HTTP Content-Encoding や .gz ファイルに対応",
+              "deflate (zlib): RFC 1950 準拠。zlib ヘッダー付きの deflate 圧縮",
+              "deflate-raw: RFC 1951 準拠。ヘッダーなしの生 deflate ストリーム",
+              "すべてブラウザ内で処理されるため、データが外部に送信されることはありません",
             ],
           },
         ]}

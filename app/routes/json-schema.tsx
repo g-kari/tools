@@ -4,10 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { useToast } from "../components/Toast";
 import { TipsCard } from "~/components/TipsCard";
 import { ErrorMessage } from "~/components/ErrorMessage";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 import { generateJsonSchema, getSampleJson } from "../utils/json-schema";
 
@@ -17,14 +14,12 @@ export const Route = createFileRoute("/json-schema")({
       { title: "JSONスキーマ生成 | Web ツール集" },
       {
         name: "description",
-        content:
-          "JSONデータからJSON Schema (draft-07) を自動生成できるオンラインツール。",
+        content: "JSONデータからJSON Schema (draft-07) を自動生成できるオンラインツール。",
       },
       { property: "og:title", content: "JSONスキーマ生成 | Web ツール集" },
       {
         property: "og:description",
-        content:
-          "JSONデータからJSON Schema (draft-07) を自動生成できるオンラインツール。",
+        content: "JSONデータからJSON Schema (draft-07) を自動生成できるオンラインツール。",
       },
       { property: "og:url", content: `${SITE_BASE_URL}/json-schema` },
       { property: "og:type", content: "website" },
@@ -32,8 +27,7 @@ export const Route = createFileRoute("/json-schema")({
       { name: "twitter:title", content: "JSONスキーマ生成 | Web ツール集" },
       {
         name: "twitter:description",
-        content:
-          "JSONデータからJSON Schema (draft-07) を自動生成できるオンラインツール。",
+        content: "JSONデータからJSON Schema (draft-07) を自動生成できるオンラインツール。",
       },
     ],
   }),
@@ -110,10 +104,7 @@ function JsonSchemaGenerator() {
   return (
     <>
       <div className="tool-container">
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          aria-label="JSONスキーマ生成フォーム"
-        >
+        <form onSubmit={(e) => e.preventDefault()} aria-label="JSONスキーマ生成フォーム">
           <div className="json-schema-layout">
             {/* 左パネル: JSON入力 */}
             <div className="json-schema-panel">

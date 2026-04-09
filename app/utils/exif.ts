@@ -20,154 +20,154 @@ const EXIF_TYPES = {
 /** IFD タグの定義 */
 const TAGS: Record<number, string> = {
   // 基本情報
-  0x010f: 'メーカー',
-  0x0110: 'モデル',
-  0x0112: '向き',
-  0x011a: 'X解像度',
-  0x011b: 'Y解像度',
-  0x0128: '解像度単位',
-  0x0131: 'ソフトウェア',
-  0x0132: '更新日時',
-  0x013b: '作成者',
-  0x013e: '白色点',
-  0x013f: '原色色度',
-  0x0213: 'YCbCr配置',
-  0x0214: '基準黒白',
-  0x8298: '著作権',
+  0x010f: "メーカー",
+  0x0110: "モデル",
+  0x0112: "向き",
+  0x011a: "X解像度",
+  0x011b: "Y解像度",
+  0x0128: "解像度単位",
+  0x0131: "ソフトウェア",
+  0x0132: "更新日時",
+  0x013b: "作成者",
+  0x013e: "白色点",
+  0x013f: "原色色度",
+  0x0213: "YCbCr配置",
+  0x0214: "基準黒白",
+  0x8298: "著作権",
   // Exif IFD ポインタ
-  0x8769: 'ExifIFDポインタ',
-  0x8825: 'GPSIFDポインタ',
+  0x8769: "ExifIFDポインタ",
+  0x8825: "GPSIFDポインタ",
 };
 
 /** Exif IFD タグの定義 */
 const EXIF_TAGS: Record<number, string> = {
-  0x829a: '露出時間',
-  0x829d: 'F値',
-  0x8822: '露出プログラム',
-  0x8824: 'スペクトル感度',
-  0x8827: 'ISO感度',
-  0x8828: 'オプトカル条件',
-  0x9000: 'Exifバージョン',
-  0x9003: '撮影日時',
-  0x9004: 'デジタル化日時',
-  0x9101: 'コンポーネント設定',
-  0x9102: '平均輝度',
-  0x9201: 'シャッタースピード',
-  0x9202: '絞り値',
-  0x9203: '輝度値',
-  0x9204: '露出補正値',
-  0x9205: '最大絞り値',
-  0x9206: '被写体距離',
-  0x9207: '測光モード',
-  0x9208: '光源',
-  0x9209: 'フラッシュ',
-  0x920a: '焦点距離',
-  0x9286: 'ユーザーコメント',
-  0x9290: 'サブ秒時刻',
-  0x9291: '撮影サブ秒時刻',
-  0x9292: 'デジタル化サブ秒時刻',
-  0xa000: 'FlashPixバージョン',
-  0xa001: '色空間',
-  0xa002: '有効画像幅',
-  0xa003: '有効画像高さ',
-  0xa004: '関連音声ファイル',
-  0xa005: '相互運用IFDポインタ',
-  0xa20e: '焦点面X解像度',
-  0xa20f: '焦点面Y解像度',
-  0xa210: '焦点面解像度単位',
-  0xa215: '露出インデックス',
-  0xa217: '撮影方法',
-  0xa300: 'ファイルソース',
-  0xa301: 'シーンタイプ',
-  0xa302: 'CFAパターン',
-  0xa401: 'カスタム画像処理',
-  0xa402: '露出モード',
-  0xa403: 'ホワイトバランス',
-  0xa404: 'デジタルズーム倍率',
-  0xa405: '35mm換算焦点距離',
-  0xa406: 'シーン撮影タイプ',
-  0xa407: 'ゲインコントロール',
-  0xa408: 'コントラスト',
-  0xa409: '彩度',
-  0xa40a: 'シャープネス',
-  0xa40b: 'デバイス設定説明',
-  0xa40c: '被写体距離範囲',
-  0xa420: '画像固有ID',
-  0xa430: 'カメラオーナー名',
-  0xa431: 'ボディシリアル番号',
-  0xa432: 'レンズ仕様',
-  0xa433: 'レンズメーカー',
-  0xa434: 'レンズモデル',
-  0xa435: 'レンズシリアル番号',
+  0x829a: "露出時間",
+  0x829d: "F値",
+  0x8822: "露出プログラム",
+  0x8824: "スペクトル感度",
+  0x8827: "ISO感度",
+  0x8828: "オプトカル条件",
+  0x9000: "Exifバージョン",
+  0x9003: "撮影日時",
+  0x9004: "デジタル化日時",
+  0x9101: "コンポーネント設定",
+  0x9102: "平均輝度",
+  0x9201: "シャッタースピード",
+  0x9202: "絞り値",
+  0x9203: "輝度値",
+  0x9204: "露出補正値",
+  0x9205: "最大絞り値",
+  0x9206: "被写体距離",
+  0x9207: "測光モード",
+  0x9208: "光源",
+  0x9209: "フラッシュ",
+  0x920a: "焦点距離",
+  0x9286: "ユーザーコメント",
+  0x9290: "サブ秒時刻",
+  0x9291: "撮影サブ秒時刻",
+  0x9292: "デジタル化サブ秒時刻",
+  0xa000: "FlashPixバージョン",
+  0xa001: "色空間",
+  0xa002: "有効画像幅",
+  0xa003: "有効画像高さ",
+  0xa004: "関連音声ファイル",
+  0xa005: "相互運用IFDポインタ",
+  0xa20e: "焦点面X解像度",
+  0xa20f: "焦点面Y解像度",
+  0xa210: "焦点面解像度単位",
+  0xa215: "露出インデックス",
+  0xa217: "撮影方法",
+  0xa300: "ファイルソース",
+  0xa301: "シーンタイプ",
+  0xa302: "CFAパターン",
+  0xa401: "カスタム画像処理",
+  0xa402: "露出モード",
+  0xa403: "ホワイトバランス",
+  0xa404: "デジタルズーム倍率",
+  0xa405: "35mm換算焦点距離",
+  0xa406: "シーン撮影タイプ",
+  0xa407: "ゲインコントロール",
+  0xa408: "コントラスト",
+  0xa409: "彩度",
+  0xa40a: "シャープネス",
+  0xa40b: "デバイス設定説明",
+  0xa40c: "被写体距離範囲",
+  0xa420: "画像固有ID",
+  0xa430: "カメラオーナー名",
+  0xa431: "ボディシリアル番号",
+  0xa432: "レンズ仕様",
+  0xa433: "レンズメーカー",
+  0xa434: "レンズモデル",
+  0xa435: "レンズシリアル番号",
 };
 
 /** GPS タグの定義 */
 const GPS_TAGS: Record<number, string> = {
-  0x0000: 'GPSバージョン',
-  0x0001: '緯度基準',
-  0x0002: '緯度',
-  0x0003: '経度基準',
-  0x0004: '経度',
-  0x0005: '高度基準',
-  0x0006: '高度',
-  0x0007: 'GPS時刻',
-  0x0008: 'GPS衛星',
-  0x0009: 'GPS状態',
-  0x000a: '測位方法',
-  0x000b: 'GPS精度',
-  0x000c: '速度単位',
-  0x000d: '速度',
-  0x000e: '移動方位基準',
-  0x000f: '移動方位',
-  0x0010: 'イメージ方向基準',
-  0x0011: 'イメージ方向',
-  0x0012: '地図基準系',
-  0x0013: '目標地点基準',
-  0x0014: '目標地点緯度',
-  0x0015: '目標地点緯度基準',
-  0x0016: '目標地点経度',
-  0x001b: 'GPS処理方法',
-  0x001c: 'GPS地域情報',
-  0x001d: 'GPS日付',
-  0x001e: 'GPS測位精度',
-  0x001f: 'GPS水平精度',
+  0x0000: "GPSバージョン",
+  0x0001: "緯度基準",
+  0x0002: "緯度",
+  0x0003: "経度基準",
+  0x0004: "経度",
+  0x0005: "高度基準",
+  0x0006: "高度",
+  0x0007: "GPS時刻",
+  0x0008: "GPS衛星",
+  0x0009: "GPS状態",
+  0x000a: "測位方法",
+  0x000b: "GPS精度",
+  0x000c: "速度単位",
+  0x000d: "速度",
+  0x000e: "移動方位基準",
+  0x000f: "移動方位",
+  0x0010: "イメージ方向基準",
+  0x0011: "イメージ方向",
+  0x0012: "地図基準系",
+  0x0013: "目標地点基準",
+  0x0014: "目標地点緯度",
+  0x0015: "目標地点緯度基準",
+  0x0016: "目標地点経度",
+  0x001b: "GPS処理方法",
+  0x001c: "GPS地域情報",
+  0x001d: "GPS日付",
+  0x001e: "GPS測位精度",
+  0x001f: "GPS水平精度",
 };
 
 /** 露出プログラムの値ラベル */
 const EXPOSURE_PROGRAMS: Record<number, string> = {
-  0: '未定義',
-  1: 'マニュアル',
-  2: '通常プログラム',
-  3: '絞り優先',
-  4: 'シャッター優先',
-  5: '被写界深度優先',
-  6: 'スポーツ',
-  7: 'ポートレート',
-  8: '風景',
+  0: "未定義",
+  1: "マニュアル",
+  2: "通常プログラム",
+  3: "絞り優先",
+  4: "シャッター優先",
+  5: "被写界深度優先",
+  6: "スポーツ",
+  7: "ポートレート",
+  8: "風景",
 };
 
 /** 測光モードの値ラベル */
 const METERING_MODES: Record<number, string> = {
-  0: '未知',
-  1: '平均',
-  2: '中央部重点平均',
-  3: 'スポット',
-  4: 'マルチスポット',
-  5: '多分割',
-  6: '部分',
-  255: 'その他',
+  0: "未知",
+  1: "平均",
+  2: "中央部重点平均",
+  3: "スポット",
+  4: "マルチスポット",
+  5: "多分割",
+  6: "部分",
+  255: "その他",
 };
 
 /** 向きの値ラベル */
 const ORIENTATIONS: Record<number, string> = {
-  1: '正常',
-  2: '水平反転',
-  3: '180度回転',
-  4: '垂直反転',
-  5: '左上から右下に反転して90度時計回り',
-  6: '90度時計回り',
-  7: '右上から左下に反転して90度時計回り',
-  8: '90度反時計回り',
+  1: "正常",
+  2: "水平反転",
+  3: "180度回転",
+  4: "垂直反転",
+  5: "左上から右下に反転して90度時計回り",
+  6: "90度時計回り",
+  7: "右上から左下に反転して90度時計回り",
+  8: "90度反時計回り",
 };
 
 /** EXIF エントリの型 */
@@ -179,7 +179,7 @@ export interface ExifEntry {
   /** 値（表示用） */
   value: string;
   /** カテゴリ */
-  category: 'basic' | 'camera' | 'datetime' | 'gps' | 'other';
+  category: "basic" | "camera" | "datetime" | "gps" | "other";
 }
 
 /** GPS 座標の型 */
@@ -237,7 +237,7 @@ function readValue(
   type: number,
   count: number,
   tiffBase: number,
-  littleEndian: boolean
+  littleEndian: boolean,
 ): string {
   const typeSize: Record<number, number> = {
     [EXIF_TYPES.BYTE]: 1,
@@ -267,7 +267,7 @@ function readValue(
         if (code === 0) break;
         chars.push(String.fromCharCode(code));
       }
-      return chars.join('').trim();
+      return chars.join("").trim();
     }
 
     if (type === EXIF_TYPES.SHORT) {
@@ -276,7 +276,7 @@ function readValue(
       for (let i = 0; i < Math.min(count, 4); i++) {
         vals.push(readUint16(view, dataOffset + i * 2, littleEndian));
       }
-      return vals.join(', ');
+      return vals.join(", ");
     }
 
     if (type === EXIF_TYPES.LONG) {
@@ -285,7 +285,7 @@ function readValue(
       for (let i = 0; i < Math.min(count, 4); i++) {
         vals.push(readUint32(view, dataOffset + i * 4, littleEndian));
       }
-      return vals.join(', ');
+      return vals.join(", ");
     }
 
     if (type === EXIF_TYPES.RATIONAL) {
@@ -294,14 +294,14 @@ function readValue(
         const num = readUint32(view, dataOffset + i * 8, littleEndian);
         const den = readUint32(view, dataOffset + i * 8 + 4, littleEndian);
         if (den === 0) {
-          results.push('0');
+          results.push("0");
         } else if (num % den === 0) {
           results.push(String(num / den));
         } else {
           results.push(`${num}/${den}`);
         }
       }
-      return results.join(', ');
+      return results.join(", ");
     }
 
     if (type === EXIF_TYPES.SRATIONAL) {
@@ -310,12 +310,12 @@ function readValue(
         const num = view.getInt32(dataOffset + i * 8, littleEndian);
         const den = view.getInt32(dataOffset + i * 8 + 4, littleEndian);
         if (den === 0) {
-          results.push('0');
+          results.push("0");
         } else {
           results.push((num / den).toFixed(2));
         }
       }
-      return results.join(', ');
+      return results.join(", ");
     }
 
     if (type === EXIF_TYPES.SLONG) {
@@ -328,13 +328,13 @@ function readValue(
       for (let i = 0; i < Math.min(count, 8); i++) {
         vals.push(view.getUint8(dataOffset + i));
       }
-      return vals.join('.');
+      return vals.join(".");
     }
   } catch {
     // 範囲外アクセスは無視
   }
 
-  return '(解析不可)';
+  return "(解析不可)";
 }
 
 /**
@@ -346,8 +346,10 @@ function readValue(
  */
 function rationalsToDegrees(view: DataView, offset: number, littleEndian: boolean): number {
   const deg = readUint32(view, offset, littleEndian) / readUint32(view, offset + 4, littleEndian);
-  const min = readUint32(view, offset + 8, littleEndian) / readUint32(view, offset + 12, littleEndian);
-  const sec = readUint32(view, offset + 16, littleEndian) / readUint32(view, offset + 20, littleEndian);
+  const min =
+    readUint32(view, offset + 8, littleEndian) / readUint32(view, offset + 12, littleEndian);
+  const sec =
+    readUint32(view, offset + 16, littleEndian) / readUint32(view, offset + 20, littleEndian);
   return deg + min / 60 + sec / 3600;
 }
 
@@ -366,7 +368,7 @@ function parseIFD(
   tiffBase: number,
   littleEndian: boolean,
   tagMap: Record<number, string>,
-  category: ExifEntry['category']
+  category: ExifEntry["category"],
 ): { entries: ExifEntry[]; exifIFDOffset: number | null; gpsIFDOffset: number | null } {
   const entries: ExifEntry[] = [];
   let exifIFDOffset: number | null = null;
@@ -401,31 +403,32 @@ function parseIFD(
       let displayValue = rawValue;
 
       // 特定タグの値を人間が読みやすい形式に変換
-      if (tagId === 0x0112 && category === 'basic') {
+      if (tagId === 0x0112 && category === "basic") {
         displayValue = ORIENTATIONS[parseInt(rawValue)] ?? rawValue;
       } else if (tagId === 0x8822) {
         displayValue = EXPOSURE_PROGRAMS[parseInt(rawValue)] ?? rawValue;
       } else if (tagId === 0x9207) {
         displayValue = METERING_MODES[parseInt(rawValue)] ?? rawValue;
       } else if (tagId === 0xa001) {
-        displayValue = parseInt(rawValue) === 1 ? 'sRGB' : parseInt(rawValue) === 65535 ? '未較正' : rawValue;
+        displayValue =
+          parseInt(rawValue) === 1 ? "sRGB" : parseInt(rawValue) === 65535 ? "未較正" : rawValue;
       } else if (tagId === 0xa402) {
-        const modes: Record<number, string> = { 0: '自動', 1: 'マニュアル', 2: '自動ブラケット' };
+        const modes: Record<number, string> = { 0: "自動", 1: "マニュアル", 2: "自動ブラケット" };
         displayValue = modes[parseInt(rawValue)] ?? rawValue;
       } else if (tagId === 0xa403) {
-        displayValue = parseInt(rawValue) === 0 ? '自動' : 'マニュアル';
+        displayValue = parseInt(rawValue) === 0 ? "自動" : "マニュアル";
       } else if (tagId === 0x9209) {
         const flashVal = parseInt(rawValue);
         if (!isNaN(flashVal)) {
           const fired = (flashVal & 0x01) !== 0;
-          displayValue = fired ? 'フラッシュ発光' : 'フラッシュ未発光';
+          displayValue = fired ? "フラッシュ発光" : "フラッシュ未発光";
         }
       } else if (tagId === 0x829a) {
         // 露出時間を分数形式に変換
-        if (rawValue.includes('/')) {
-          const parts = rawValue.split('/');
-          const num = parseInt(parts[0] ?? '0');
-          const den = parseInt(parts[1] ?? '1');
+        if (rawValue.includes("/")) {
+          const parts = rawValue.split("/");
+          const num = parseInt(parts[0] ?? "0");
+          const den = parseInt(parts[1] ?? "1");
           if (num !== 0 && den !== 0) {
             if (den / num >= 1) {
               displayValue = `1/${Math.round(den / num)} 秒`;
@@ -436,20 +439,20 @@ function parseIFD(
         }
       } else if (tagId === 0x829d) {
         // F値に f/ プレフィックスを追加
-        if (rawValue.includes('/')) {
-          const parts = rawValue.split('/');
-          const num = parseFloat(parts[0] ?? '0');
-          const den = parseFloat(parts[1] ?? '1');
+        if (rawValue.includes("/")) {
+          const parts = rawValue.split("/");
+          const num = parseFloat(parts[0] ?? "0");
+          const den = parseFloat(parts[1] ?? "1");
           if (den !== 0) {
             displayValue = `f/${(num / den).toFixed(1)}`;
           }
         }
       } else if (tagId === 0x920a) {
         // 焦点距離に mm を追加
-        if (rawValue.includes('/')) {
-          const parts = rawValue.split('/');
-          const num = parseFloat(parts[0] ?? '0');
-          const den = parseFloat(parts[1] ?? '1');
+        if (rawValue.includes("/")) {
+          const parts = rawValue.split("/");
+          const num = parseFloat(parts[0] ?? "0");
+          const den = parseFloat(parts[1] ?? "1");
           if (den !== 0) {
             displayValue = `${(num / den).toFixed(1)} mm`;
           }
@@ -457,18 +460,26 @@ function parseIFD(
       } else if (tagId === 0xa405) {
         displayValue = `${rawValue} mm`;
       } else if (tagId === 0x0128 || tagId === 0xa210) {
-        const units: Record<number, string> = { 1: '単位なし', 2: 'インチ', 3: 'センチメートル' };
+        const units: Record<number, string> = { 1: "単位なし", 2: "インチ", 3: "センチメートル" };
         displayValue = units[parseInt(rawValue)] ?? rawValue;
       }
 
       // カテゴリを決定
-      let entryCategory: ExifEntry['category'] = category;
+      let entryCategory: ExifEntry["category"] = category;
       if (tagId === 0x9003 || tagId === 0x9004 || tagId === 0x0132) {
-        entryCategory = 'datetime';
-      } else if (tagId === 0x010f || tagId === 0x0110 || tagId === 0x0131 ||
-                 tagId === 0xa430 || tagId === 0xa431 || tagId === 0xa432 ||
-                 tagId === 0xa433 || tagId === 0xa434 || tagId === 0xa435) {
-        entryCategory = 'camera';
+        entryCategory = "datetime";
+      } else if (
+        tagId === 0x010f ||
+        tagId === 0x0110 ||
+        tagId === 0x0131 ||
+        tagId === 0xa430 ||
+        tagId === 0xa431 ||
+        tagId === 0xa432 ||
+        tagId === 0xa433 ||
+        tagId === 0xa434 ||
+        tagId === 0xa435
+      ) {
+        entryCategory = "camera";
       }
 
       entries.push({
@@ -496,13 +507,13 @@ function parseGpsIFD(
   view: DataView,
   gpsIFDOffset: number,
   tiffBase: number,
-  littleEndian: boolean
+  littleEndian: boolean,
 ): { entries: ExifEntry[]; gps: GpsCoordinate } {
   const entries: ExifEntry[] = [];
   let latitude: number | null = null;
   let longitude: number | null = null;
-  let latRef = 'N';
-  let lonRef = 'E';
+  let latRef = "N";
+  let lonRef = "E";
 
   try {
     const entryCount = readUint16(view, tiffBase + gpsIFDOffset, littleEndian);
@@ -524,14 +535,24 @@ function parseGpsIFD(
         // 緯度基準
         const ref = String.fromCharCode(view.getUint8(valueOffset));
         latRef = ref;
-        entries.push({ tag: tagName, tagId, value: ref === 'N' ? '北緯' : '南緯', category: 'gps' });
+        entries.push({
+          tag: tagName,
+          tagId,
+          value: ref === "N" ? "北緯" : "南緯",
+          category: "gps",
+        });
         continue;
       }
       if (tagId === 0x0003) {
         // 経度基準
         const ref = String.fromCharCode(view.getUint8(valueOffset));
         lonRef = ref;
-        entries.push({ tag: tagName, tagId, value: ref === 'E' ? '東経' : '西経', category: 'gps' });
+        entries.push({
+          tag: tagName,
+          tagId,
+          value: ref === "E" ? "東経" : "西経",
+          category: "gps",
+        });
         continue;
       }
 
@@ -544,7 +565,7 @@ function parseGpsIFD(
           tag: tagName,
           tagId,
           value: `${deg.toFixed(6)}°`,
-          category: 'gps',
+          category: "gps",
         });
         continue;
       }
@@ -557,7 +578,7 @@ function parseGpsIFD(
           tag: tagName,
           tagId,
           value: `${deg.toFixed(6)}°`,
-          category: 'gps',
+          category: "gps",
         });
         continue;
       }
@@ -566,21 +587,21 @@ function parseGpsIFD(
         const dataOffset = tiffBase + readUint32(view, valueOffset, littleEndian);
         const num = readUint32(view, dataOffset, littleEndian);
         const den = readUint32(view, dataOffset + 4, littleEndian);
-        const altitude = den !== 0 ? (num / den).toFixed(1) : '0';
-        entries.push({ tag: tagName, tagId, value: `${altitude} m`, category: 'gps' });
+        const altitude = den !== 0 ? (num / den).toFixed(1) : "0";
+        entries.push({ tag: tagName, tagId, value: `${altitude} m`, category: "gps" });
         continue;
       }
 
       const rawValue = readValue(view, valueOffset, type, count, tiffBase, littleEndian);
-      entries.push({ tag: tagName, tagId, value: rawValue, category: 'gps' });
+      entries.push({ tag: tagName, tagId, value: rawValue, category: "gps" });
     }
   } catch {
     // GPS 解析エラーは無視
   }
 
   // GPS 座標に符号を適用
-  if (latitude !== null && latRef === 'S') latitude = -latitude;
-  if (longitude !== null && lonRef === 'W') longitude = -longitude;
+  if (latitude !== null && latRef === "S") latitude = -latitude;
+  if (longitude !== null && lonRef === "W") longitude = -longitude;
 
   const mapsUrl =
     latitude !== null && longitude !== null
@@ -614,9 +635,9 @@ function findApp1Segment(buffer: ArrayBuffer): { offset: number; length: number 
           view.getUint8(offset + 4),
           view.getUint8(offset + 5),
           view.getUint8(offset + 6),
-          view.getUint8(offset + 7)
+          view.getUint8(offset + 7),
         );
-        if (exifHeader === 'Exif') {
+        if (exifHeader === "Exif") {
           return { offset, length: segmentLength + 2 };
         }
       }
@@ -700,14 +721,11 @@ export function parseExif(buffer: ArrayBuffer): ExifData {
   const ifd0Offset = readUint32(view, tiffBase + 4, littleEndian);
 
   // IFD0 を解析
-  const { entries: ifd0Entries, exifIFDOffset, gpsIFDOffset } = parseIFD(
-    view,
-    ifd0Offset,
-    tiffBase,
-    littleEndian,
-    { ...TAGS },
-    'basic'
-  );
+  const {
+    entries: ifd0Entries,
+    exifIFDOffset,
+    gpsIFDOffset,
+  } = parseIFD(view, ifd0Offset, tiffBase, littleEndian, { ...TAGS }, "basic");
 
   let allEntries: ExifEntry[] = [...ifd0Entries];
   let gps: GpsCoordinate = { latitude: null, longitude: null, mapsUrl: null };
@@ -720,7 +738,7 @@ export function parseExif(buffer: ArrayBuffer): ExifData {
       tiffBase,
       littleEndian,
       EXIF_TAGS,
-      'other'
+      "other",
     );
     allEntries = [...allEntries, ...exifEntries];
   }
@@ -731,7 +749,7 @@ export function parseExif(buffer: ArrayBuffer): ExifData {
       view,
       gpsIFDOffset,
       tiffBase,
-      littleEndian
+      littleEndian,
     );
     allEntries = [...allEntries, ...gpsEntries];
     gps = gpsData;
@@ -805,7 +823,7 @@ export function stripExif(buffer: ArrayBuffer): Blob | null {
     pos += seg.byteLength;
   }
 
-  return new Blob([result], { type: 'image/jpeg' });
+  return new Blob([result], { type: "image/jpeg" });
 }
 
 /**
@@ -821,11 +839,11 @@ export function groupEntriesByCategory(entries: ExifEntry[]): {
   other: ExifEntry[];
 } {
   return {
-    camera: entries.filter((e) => e.category === 'camera'),
-    datetime: entries.filter((e) => e.category === 'datetime'),
-    gps: entries.filter((e) => e.category === 'gps'),
-    basic: entries.filter((e) => e.category === 'basic'),
-    other: entries.filter((e) => e.category === 'other'),
+    camera: entries.filter((e) => e.category === "camera"),
+    datetime: entries.filter((e) => e.category === "datetime"),
+    gps: entries.filter((e) => e.category === "gps"),
+    basic: entries.filter((e) => e.category === "basic"),
+    other: entries.filter((e) => e.category === "other"),
   };
 }
 
@@ -835,8 +853,11 @@ export function groupEntriesByCategory(entries: ExifEntry[]): {
  * @returns JPEG の場合は true
  */
 export function isJpegFile(file: File): boolean {
-  return file.type === 'image/jpeg' || file.name.toLowerCase().endsWith('.jpg') ||
-    file.name.toLowerCase().endsWith('.jpeg');
+  return (
+    file.type === "image/jpeg" ||
+    file.name.toLowerCase().endsWith(".jpg") ||
+    file.name.toLowerCase().endsWith(".jpeg")
+  );
 }
 
 /**

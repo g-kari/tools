@@ -1,39 +1,42 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { useToast } from '../components/Toast';
-import { TipsCard } from '~/components/TipsCard';
-import { ErrorMessage } from '~/components/ErrorMessage';
-import { useStatusAnnouncement, StatusAnnouncer } from '~/hooks/useStatusAnnouncement';
-import { useKeyboardShortcut } from '~/hooks/useKeyboardShortcut';
+import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { useToast } from "../components/Toast";
+import { TipsCard } from "~/components/TipsCard";
+import { ErrorMessage } from "~/components/ErrorMessage";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
+import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 import {
   evaluateJsonPointer,
   enumeratePointers,
   getSampleJson,
   EXAMPLE_POINTERS,
   type PointerEntry,
-} from '../utils/json-pointer';
+} from "../utils/json-pointer";
 
-export const Route = createFileRoute('/json-pointer')({
+export const Route = createFileRoute("/json-pointer")({
   head: () => ({
     meta: [
-      { title: 'JSON Pointer評価 | Web ツール集' },
+      { title: "JSON Pointer評価 | Web ツール集" },
       {
-        name: 'description',
-        content: 'JSON Pointer (RFC 6901) を使ってJSONデータから値を抽出・評価できるオンラインツール。',
+        name: "description",
+        content:
+          "JSON Pointer (RFC 6901) を使ってJSONデータから値を抽出・評価できるオンラインツール。",
       },
-      { property: 'og:title', content: 'JSON Pointer評価 | Web ツール集' },
+      { property: "og:title", content: "JSON Pointer評価 | Web ツール集" },
       {
-        property: 'og:description',
-        content: 'JSON Pointer (RFC 6901) を使ってJSONデータから値を抽出・評価できるオンラインツール。',
+        property: "og:description",
+        content:
+          "JSON Pointer (RFC 6901) を使ってJSONデータから値を抽出・評価できるオンラインツール。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/json-pointer` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
-      { name: 'twitter:title', content: 'JSON Pointer評価 | Web ツール集' },
+      { property: "og:url", content: `${SITE_BASE_URL}/json-pointer` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "JSON Pointer評価 | Web ツール集" },
       {
-        name: 'twitter:description',
-        content: 'JSON Pointer (RFC 6901) を使ってJSONデータから値を抽出・評価できるオンラインツール。',
+        name: "twitter:description",
+        content:
+          "JSON Pointer (RFC 6901) を使ってJSONデータから値を抽出・評価できるオンラインツール。",
       },
     ],
   }),
@@ -46,10 +49,10 @@ export const Route = createFileRoute('/json-pointer')({
  */
 function JsonPointerEvaluator() {
   const { showToast } = useToast();
-  const [jsonText, setJsonText] = useState('');
-  const [pointerInput, setPointerInput] = useState('');
-  const [resultText, setResultText] = useState('');
-  const [resultType, setResultType] = useState('');
+  const [jsonText, setJsonText] = useState("");
+  const [pointerInput, setPointerInput] = useState("");
+  const [resultText, setResultText] = useState("");
+  const [resultType, setResultType] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [pointerList, setPointerList] = useState<PointerEntry[]>([]);
   const jsonRef = useRef<HTMLTextAreaElement>(null);
@@ -59,8 +62,8 @@ function JsonPointerEvaluator() {
   /** JSON Pointerを評価して結果を表示する */
   const handleEvaluate = useCallback(() => {
     setError(null);
-    setResultText('');
-    setResultType('');
+    setResultText("");
+    setResultType("");
 
     try {
       const result = evaluateJsonPointer(jsonText, pointerInput);
@@ -68,12 +71,12 @@ function JsonPointerEvaluator() {
       setResultType(result.type);
       const msg = `評価完了 (型: ${result.type})`;
       announceStatus(msg);
-      showToast(msg, 'success');
+      showToast(msg, "success");
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'エラーが発生しました';
+      const message = err instanceof Error ? err.message : "エラーが発生しました";
       setError(message);
-      announceStatus('エラー: ' + message);
-      showToast(message, 'error');
+      announceStatus("エラー: " + message);
+      showToast(message, "error");
     }
   }, [jsonText, pointerInput, announceStatus, showToast]);
 
@@ -87,66 +90,66 @@ function JsonPointerEvaluator() {
       setPointerList(entries);
       const msg = `${entries.length}件のJSON Pointerを列挙しました`;
       announceStatus(msg);
-      showToast(msg, 'success');
+      showToast(msg, "success");
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'エラーが発生しました';
+      const message = err instanceof Error ? err.message : "エラーが発生しました";
       setError(message);
-      announceStatus('エラー: ' + message);
-      showToast(message, 'error');
+      announceStatus("エラー: " + message);
+      showToast(message, "error");
     }
   }, [jsonText, announceStatus, showToast]);
 
   /** サンプルJSONを読み込む */
   const handleLoadSample = useCallback(() => {
     setJsonText(getSampleJson());
-    setPointerInput('/store/book/0/title');
-    setResultText('');
-    setResultType('');
+    setPointerInput("/store/book/0/title");
+    setResultText("");
+    setResultType("");
     setError(null);
     setPointerList([]);
-    announceStatus('サンプルJSONを読み込みました');
-    showToast('サンプルJSONを読み込みました', 'success');
+    announceStatus("サンプルJSONを読み込みました");
+    showToast("サンプルJSONを読み込みました", "success");
   }, [announceStatus, showToast]);
 
   /** 入力・結果をすべてクリアする */
   const handleClear = useCallback(() => {
-    setJsonText('');
-    setPointerInput('');
-    setResultText('');
-    setResultType('');
+    setJsonText("");
+    setPointerInput("");
+    setResultText("");
+    setResultType("");
     setError(null);
     setPointerList([]);
-    announceStatus('入力と結果をクリアしました');
+    announceStatus("入力と結果をクリアしました");
     jsonRef.current?.focus();
   }, [announceStatus]);
 
   /** 結果をクリップボードにコピーする */
   const handleCopyResult = useCallback(async () => {
     if (!resultText) {
-      showToast('コピーする結果がありません', 'error');
+      showToast("コピーする結果がありません", "error");
       return;
     }
     try {
       await navigator.clipboard.writeText(resultText);
-      announceStatus('結果をクリップボードにコピーしました');
-      showToast('結果をコピーしました', 'success');
+      announceStatus("結果をクリップボードにコピーしました");
+      showToast("結果をコピーしました", "success");
     } catch {
-      showToast('コピーに失敗しました', 'error');
+      showToast("コピーに失敗しました", "error");
     }
   }, [resultText, announceStatus, showToast]);
 
   /** 列挙されたポインターをクリックして入力欄に設定する */
   const handlePointerSelect = useCallback(
     (pointer: string) => {
-      const actual = pointer === '""' ? '' : pointer;
+      const actual = pointer === '""' ? "" : pointer;
       setPointerInput(actual);
-      announceStatus(`JSON Pointerを設定しました: ${actual || '(ルート)'}`);
+      announceStatus(`JSON Pointerを設定しました: ${actual || "(ルート)"}`);
     },
-    [announceStatus]
+    [announceStatus],
   );
 
   // Ctrl+Enter で評価
-  useKeyboardShortcut('Enter', handleEvaluate, { ctrl: true });
+  useKeyboardShortcut("Enter", handleEvaluate, { ctrl: true });
 
   useEffect(() => {
     jsonRef.current?.focus();
@@ -212,7 +215,7 @@ function JsonPointerEvaluator() {
                   className="json-pointer-query-input"
                   value={pointerInput}
                   onChange={(e) => setPointerInput(e.target.value)}
-                  placeholder='例: /store/book/0/title （ルートは空文字）'
+                  placeholder="例: /store/book/0/title （ルートは空文字）"
                   aria-label="JSON Pointer入力欄"
                   aria-describedby="pointer-input-help"
                   spellCheck={false}
@@ -233,14 +236,18 @@ function JsonPointerEvaluator() {
 
               <div className="json-pointer-examples">
                 <span className="json-pointer-panel-label">クイック例</span>
-                <div className="json-pointer-example-chips" role="group" aria-label="JSON Pointerクイック例">
+                <div
+                  className="json-pointer-example-chips"
+                  role="group"
+                  aria-label="JSON Pointerクイック例"
+                >
                   {EXAMPLE_POINTERS.map((ex) => (
                     <button
                       key={ex.pointer}
                       type="button"
                       className="json-pointer-chip"
                       onClick={() => setPointerInput(ex.pointer)}
-                      aria-label={`JSON Pointerを「${ex.pointer || '(ルート)'}」に設定する`}
+                      aria-label={`JSON Pointerを「${ex.pointer || "(ルート)"}」に設定する`}
                       title={ex.label}
                     >
                       {ex.pointer || '""'}
@@ -267,8 +274,8 @@ function JsonPointerEvaluator() {
                 ) : (
                   <span className="json-pointer-result-empty">
                     {error
-                      ? 'エラーが発生しました'
-                      : 'JSONとJSON Pointerを入力して「評価」ボタンを押してください'}
+                      ? "エラーが発生しました"
+                      : "JSONとJSON Pointerを入力して「評価」ボタンを押してください"}
                   </span>
                 )}
               </div>
@@ -290,11 +297,7 @@ function JsonPointerEvaluator() {
                   <span className="json-pointer-panel-label">
                     列挙されたPointer ({pointerList.length}件)
                   </span>
-                  <div
-                    className="json-pointer-list"
-                    role="list"
-                    aria-label="JSON Pointerの一覧"
-                  >
+                  <div className="json-pointer-list" role="list" aria-label="JSON Pointerの一覧">
                     {pointerList.map((entry) => (
                       <button
                         key={entry.pointer}
@@ -321,25 +324,25 @@ function JsonPointerEvaluator() {
         <TipsCard
           sections={[
             {
-              title: '使い方',
+              title: "使い方",
               items: [
-                '「JSON入力」欄にJSONデータを入力します',
-                '「サンプル読込」ボタンでサンプルデータを読み込めます',
-                '「JSON Pointer」欄にポインター式を入力します（例: /store/book/0）',
-                '「評価」ボタンまたはCtrl+Enterで評価を実行します',
-                '「Pointer列挙」ボタンでドキュメント内のすべてのパスを表示できます',
-                '列挙されたPointerをクリックすると入力欄に設定できます',
+                "「JSON入力」欄にJSONデータを入力します",
+                "「サンプル読込」ボタンでサンプルデータを読み込めます",
+                "「JSON Pointer」欄にポインター式を入力します（例: /store/book/0）",
+                "「評価」ボタンまたはCtrl+Enterで評価を実行します",
+                "「Pointer列挙」ボタンでドキュメント内のすべてのパスを表示できます",
+                "列挙されたPointerをクリックすると入力欄に設定できます",
               ],
             },
             {
-              title: 'JSON Pointerの構文 (RFC 6901)',
+              title: "JSON Pointerの構文 (RFC 6901)",
               items: [
                 '/foo/bar - オブジェクトキー "foo" → "bar" を辿る',
-                '/array/0 - 配列の0番目の要素',
+                "/array/0 - 配列の0番目の要素",
                 '"" (空文字) - ルートドキュメント全体を参照',
                 '~1 はスラッシュ "/" のエスケープ',
                 '~0 はチルダ "~" のエスケープ',
-                'JSONPath ($...) とは異なりシンプルな単一値の取得に特化',
+                "JSONPath ($...) とは異なりシンプルな単一値の取得に特化",
               ],
             },
           ]}

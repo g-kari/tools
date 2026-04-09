@@ -37,13 +37,7 @@ function encodeInteger(buf: EncodeBuffer, n: number): void {
     buf.bytes.push(0xcd, (n >> 8) & 0xff, n & 0xff);
   } else if (n >= 65536 && n <= 4294967295) {
     // uint32
-    buf.bytes.push(
-      0xce,
-      (n >>> 24) & 0xff,
-      (n >>> 16) & 0xff,
-      (n >>> 8) & 0xff,
-      n & 0xff
-    );
+    buf.bytes.push(0xce, (n >>> 24) & 0xff, (n >>> 16) & 0xff, (n >>> 8) & 0xff, n & 0xff);
   } else if (n >= -128 && n <= -33) {
     // int8
     buf.bytes.push(0xd0, n & 0xff);
@@ -52,13 +46,7 @@ function encodeInteger(buf: EncodeBuffer, n: number): void {
     buf.bytes.push(0xd1, (n >> 8) & 0xff, n & 0xff);
   } else if (n >= -2147483648 && n <= -32769) {
     // int32
-    buf.bytes.push(
-      0xd2,
-      (n >> 24) & 0xff,
-      (n >> 16) & 0xff,
-      (n >> 8) & 0xff,
-      n & 0xff
-    );
+    buf.bytes.push(0xd2, (n >> 24) & 0xff, (n >> 16) & 0xff, (n >> 8) & 0xff, n & 0xff);
   } else {
     // float64
     encodeFloat64(buf, n);
@@ -100,13 +88,7 @@ function encodeString(buf: EncodeBuffer, s: string): void {
     buf.bytes.push(0xda, (len >> 8) & 0xff, len & 0xff);
   } else if (len <= 4294967295) {
     // str32
-    buf.bytes.push(
-      0xdb,
-      (len >>> 24) & 0xff,
-      (len >>> 16) & 0xff,
-      (len >> 8) & 0xff,
-      len & 0xff
-    );
+    buf.bytes.push(0xdb, (len >>> 24) & 0xff, (len >>> 16) & 0xff, (len >> 8) & 0xff, len & 0xff);
   } else {
     throw new Error("文字列が長すぎます");
   }
@@ -132,13 +114,7 @@ function encodeArray(buf: EncodeBuffer, arr: unknown[]): void {
     buf.bytes.push(0xdc, (len >> 8) & 0xff, len & 0xff);
   } else {
     // array32
-    buf.bytes.push(
-      0xdd,
-      (len >>> 24) & 0xff,
-      (len >>> 16) & 0xff,
-      (len >> 8) & 0xff,
-      len & 0xff
-    );
+    buf.bytes.push(0xdd, (len >>> 24) & 0xff, (len >>> 16) & 0xff, (len >> 8) & 0xff, len & 0xff);
   }
 
   for (const item of arr) {
@@ -163,13 +139,7 @@ function encodeMap(buf: EncodeBuffer, obj: Record<string, unknown>): void {
     buf.bytes.push(0xde, (len >> 8) & 0xff, len & 0xff);
   } else {
     // map32
-    buf.bytes.push(
-      0xdf,
-      (len >>> 24) & 0xff,
-      (len >>> 16) & 0xff,
-      (len >> 8) & 0xff,
-      len & 0xff
-    );
+    buf.bytes.push(0xdf, (len >>> 24) & 0xff, (len >>> 16) & 0xff, (len >> 8) & 0xff, len & 0xff);
   }
 
   for (const key of keys) {

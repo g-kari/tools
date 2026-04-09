@@ -17,7 +17,8 @@
       "mcp__taskmaster-ai__get_tasks",
       "mcp__taskmaster-ai__parse_prd",
       "Bash(npx shadcn@latest add:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(chmod +x:*)"
     ]
   }
 }

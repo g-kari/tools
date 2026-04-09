@@ -4,16 +4,99 @@
 
 /** 英語ストップワード一覧 */
 const STOP_WORDS_EN = new Set([
-  'a', 'an', 'the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for',
-  'of', 'with', 'by', 'from', 'is', 'are', 'was', 'were', 'be', 'been',
-  'being', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would',
-  'could', 'should', 'may', 'might', 'shall', 'can', 'not', 'no', 'nor',
-  'so', 'yet', 'both', 'either', 'neither', 'as', 'if', 'then', 'than',
-  'that', 'this', 'these', 'those', 'it', 'its', 'i', 'me', 'my', 'we',
-  'our', 'you', 'your', 'he', 'she', 'his', 'her', 'they', 'their', 'them',
-  'what', 'which', 'who', 'whom', 'when', 'where', 'why', 'how', 'all',
-  'each', 'every', 'more', 'most', 'other', 'some', 'such', 'into', 'up',
-  'out', 'about', 'after', 'before', 'between', 'through', 'during',
+  "a",
+  "an",
+  "the",
+  "and",
+  "or",
+  "but",
+  "in",
+  "on",
+  "at",
+  "to",
+  "for",
+  "of",
+  "with",
+  "by",
+  "from",
+  "is",
+  "are",
+  "was",
+  "were",
+  "be",
+  "been",
+  "being",
+  "have",
+  "has",
+  "had",
+  "do",
+  "does",
+  "did",
+  "will",
+  "would",
+  "could",
+  "should",
+  "may",
+  "might",
+  "shall",
+  "can",
+  "not",
+  "no",
+  "nor",
+  "so",
+  "yet",
+  "both",
+  "either",
+  "neither",
+  "as",
+  "if",
+  "then",
+  "than",
+  "that",
+  "this",
+  "these",
+  "those",
+  "it",
+  "its",
+  "i",
+  "me",
+  "my",
+  "we",
+  "our",
+  "you",
+  "your",
+  "he",
+  "she",
+  "his",
+  "her",
+  "they",
+  "their",
+  "them",
+  "what",
+  "which",
+  "who",
+  "whom",
+  "when",
+  "where",
+  "why",
+  "how",
+  "all",
+  "each",
+  "every",
+  "more",
+  "most",
+  "other",
+  "some",
+  "such",
+  "into",
+  "up",
+  "out",
+  "about",
+  "after",
+  "before",
+  "between",
+  "through",
+  "during",
 ]);
 
 /** テキスト統計の型定義 */
@@ -57,7 +140,7 @@ export function countChars(text: string): number {
  * @returns 文字数（スペース除く）
  */
 export function countCharsNoSpaces(text: string): number {
-  return [...text.replace(/\s/g, '')].length;
+  return [...text.replace(/\s/g, "")].length;
 }
 
 /**
@@ -67,10 +150,12 @@ export function countCharsNoSpaces(text: string): number {
  */
 export function tokenizeWords(text: string): string[] {
   const trimmed = text.trim();
-  if (trimmed === '') return [];
+  if (trimmed === "") return [];
   return trimmed
     .split(/\s+/)
-    .map((w) => w.replace(/^[^\w\u3040-\u30FF\u4E00-\u9FFF]+|[^\w\u3040-\u30FF\u4E00-\u9FFF]+$/g, ''))
+    .map((w) =>
+      w.replace(/^[^\w\u3040-\u30FF\u4E00-\u9FFF]+|[^\w\u3040-\u30FF\u4E00-\u9FFF]+$/g, ""),
+    )
     .filter((w) => w.length > 0);
 }
 
@@ -90,10 +175,8 @@ export function countWords(text: string): number {
  */
 export function countSentences(text: string): number {
   const trimmed = text.trim();
-  if (trimmed === '') return 0;
-  const sentences = trimmed
-    .split(/[.!?。！？]+/)
-    .filter((s) => s.trim().length > 0);
+  if (trimmed === "") return 0;
+  const sentences = trimmed.split(/[.!?。！？]+/).filter((s) => s.trim().length > 0);
   return sentences.length;
 }
 
@@ -103,7 +186,7 @@ export function countSentences(text: string): number {
  * @returns 段落数
  */
 export function countParagraphs(text: string): number {
-  if (text.trim() === '') return 0;
+  if (text.trim() === "") return 0;
   return text.split(/\n\s*\n/).filter((p) => p.trim().length > 0).length;
 }
 
@@ -113,7 +196,7 @@ export function countParagraphs(text: string): number {
  * @returns 行数
  */
 export function countLines(text: string): number {
-  if (text === '') return 0;
+  if (text === "") return 0;
   return text.split(/\r\n|\r|\n/).length;
 }
 
@@ -170,10 +253,7 @@ export function getAverageSentenceLength(text: string): number {
  * @param limit - 取得件数（デフォルト: 10）
  * @returns 単語と出現回数の配列（頻度降順）
  */
-export function getTopWords(
-  text: string,
-  limit = 10
-): Array<{ word: string; count: number }> {
+export function getTopWords(text: string, limit = 10): Array<{ word: string; count: number }> {
   const words = tokenizeWords(text).map((w) => w.toLowerCase());
   const freq = new Map<string, number>();
 
@@ -217,7 +297,7 @@ export function analyzeText(text: string): TextStats {
  * @returns フォーマット済み文字列（例: "1分30秒"）
  */
 export function formatReadingTime(seconds: number): string {
-  if (seconds === 0) return '0秒';
+  if (seconds === 0) return "0秒";
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = seconds % 60;
   if (minutes === 0) return `${remainingSeconds}秒`;

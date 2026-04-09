@@ -6,10 +6,7 @@
  */
 
 import { createFileRoute } from "@tanstack/react-router";
-import {
-  generateSvgImage,
-  parseImageParams,
-} from "../../functions/dummy-image";
+import { generateSvgImage, parseImageParams } from "../../functions/dummy-image";
 
 /**
  * キャッシュ用のレスポンスヘッダーを生成
@@ -73,9 +70,7 @@ export const Route = createFileRoute("/api/image.svg")({
 
           // キャッシュミス: SVGを生成
           const url = new URL(request.url);
-          const { width, height, bgColor, textColor } = parseImageParams(
-            url.searchParams
-          );
+          const { width, height, bgColor, textColor } = parseImageParams(url.searchParams);
           const svg = generateSvgImage(width, height, bgColor, textColor);
 
           const response = new Response(svg, {

@@ -5,11 +5,7 @@ import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
 import { useToast } from "~/components/Toast";
 import { useClipboard } from "~/hooks/useClipboard";
-import {
-  SEQUENCE_DEFINITIONS,
-  generateSequence,
-  type SequenceType,
-} from "../utils/sequences";
+import { SEQUENCE_DEFINITIONS, generateSequence, type SequenceType } from "../utils/sequences";
 
 export const Route = createFileRoute("/sequences")({
   head: () => ({
@@ -55,18 +51,14 @@ function SequencesPage() {
   const { showToast } = useToast();
 
   const selectedDef = useMemo(
-    () =>
-      SEQUENCE_DEFINITIONS.find((d) => d.id === selectedType) ??
-      SEQUENCE_DEFINITIONS[0],
-    [selectedType]
+    () => SEQUENCE_DEFINITIONS.find((d) => d.id === selectedType) ?? SEQUENCE_DEFINITIONS[0],
+    [selectedType],
   );
 
   // パラメーターのデフォルト値を初期化
   const effectiveParams = useMemo(() => {
     if (!selectedDef.hasParams || !selectedDef.paramDefaults) return [];
-    return selectedDef.paramDefaults.map((def, i) =>
-      params[i] !== undefined ? params[i] : def
-    );
+    return selectedDef.paramDefaults.map((def, i) => (params[i] !== undefined ? params[i] : def));
   }, [selectedDef, params]);
 
   /** 数列の生成 */
@@ -98,9 +90,7 @@ function SequencesPage() {
     const nums = sequence;
     const last = nums[nums.length - 1];
     const max = nums.reduce((a, b) => (BigInt(a) > BigInt(b) ? a : b));
-    const evenCount = nums.filter(
-      (n) => BigInt(n) % 2n === 0n
-    ).length;
+    const evenCount = nums.filter((n) => BigInt(n) % 2n === 0n).length;
     const oddCount = nums.length - evenCount;
     return {
       count: nums.length,
@@ -111,14 +101,11 @@ function SequencesPage() {
     };
   }, [sequence, selectedType]);
 
-  const handleTypeSelect = useCallback(
-    (type: SequenceType) => {
-      setSelectedType(type);
-      setParams([]);
-      // Collatz の場合はデフォルト開始値をリセット
-    },
-    []
-  );
+  const handleTypeSelect = useCallback((type: SequenceType) => {
+    setSelectedType(type);
+    setParams([]);
+    // Collatz の場合はデフォルト開始値をリセット
+  }, []);
 
   const handleParamChange = useCallback((index: number, value: string) => {
     const n = Number(value);
@@ -133,10 +120,7 @@ function SequencesPage() {
 
   const handleCopy = useCallback(async () => {
     const ok = await copy(outputText);
-    showToast(
-      ok ? "数列をコピーしました" : "コピーに失敗しました",
-      ok ? "success" : "error"
-    );
+    showToast(ok ? "数列をコピーしました" : "コピーに失敗しました", ok ? "success" : "error");
   }, [outputText, copy, showToast]);
 
   const isCollatz = selectedType === "collatz";
@@ -201,10 +185,7 @@ function SequencesPage() {
             {selectedDef.hasParams &&
               selectedDef.paramLabels?.map((label, i) => (
                 <div key={i} className="sequences-control-group">
-                  <label
-                    htmlFor={`seq-param-${i}`}
-                    className="sequences-control-label"
-                  >
+                  <label htmlFor={`seq-param-${i}`} className="sequences-control-label">
                     {label}
                   </label>
                   <input
@@ -222,11 +203,7 @@ function SequencesPage() {
             {/* 出力フォーマット */}
             <div className="sequences-control-group">
               <span className="sequences-control-label">出力形式</span>
-              <div
-                className="sequences-format-tabs"
-                role="group"
-                aria-label="出力形式を選択"
-              >
+              <div className="sequences-format-tabs" role="group" aria-label="出力形式を選択">
                 {(
                   [
                     { id: "csv" as const, label: "CSV" },
@@ -252,12 +229,8 @@ function SequencesPage() {
           {/* Collatz 統計 */}
           {isCollatz && stats?.evenCount !== null && (
             <div className="sequences-collatz-info">
-              <span className="sequences-collatz-badge even">
-                偶数ステップ: {stats?.evenCount}
-              </span>
-              <span className="sequences-collatz-badge odd">
-                奇数ステップ: {stats?.oddCount}
-              </span>
+              <span className="sequences-collatz-badge even">偶数ステップ: {stats?.evenCount}</span>
+              <span className="sequences-collatz-badge odd">奇数ステップ: {stats?.oddCount}</span>
             </div>
           )}
 
@@ -283,11 +256,7 @@ function SequencesPage() {
 
             {/* 出力 */}
             {outputFormat === "tags" ? (
-              <div
-                className="sequences-tags"
-                role="list"
-                aria-label="数列の各項"
-              >
+              <div className="sequences-tags" role="list" aria-label="数列の各項">
                 {sequence.map((val, i) => (
                   <span key={i} className="sequences-tag" role="listitem">
                     <span className="sequences-tag-index">{i + 1}</span>

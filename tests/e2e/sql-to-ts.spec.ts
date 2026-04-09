@@ -35,7 +35,7 @@ test.describe("SQL→TypeScript型変換 - E2E Tests", () => {
   test("型変換ボタンが機能する", async ({ page }) => {
     const inputTextarea = page.locator("#sqlInput");
     await inputTextarea.fill(
-      "CREATE TABLE users (id INTEGER NOT NULL, name VARCHAR(255) NOT NULL);"
+      "CREATE TABLE users (id INTEGER NOT NULL, name VARCHAR(255) NOT NULL);",
     );
 
     const generateButton = page.locator("button", { hasText: "型変換" });
@@ -65,9 +65,7 @@ test.describe("SQL→TypeScript型変換 - E2E Tests", () => {
 
   test("interface/typeラジオボタンが機能する", async ({ page }) => {
     const inputTextarea = page.locator("#sqlInput");
-    await inputTextarea.fill(
-      "CREATE TABLE items (id INTEGER NOT NULL);"
-    );
+    await inputTextarea.fill("CREATE TABLE items (id INTEGER NOT NULL);");
 
     const typeRadio = page.locator('input[type="radio"]').nth(1);
     await typeRadio.check();

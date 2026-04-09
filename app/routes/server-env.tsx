@@ -1,33 +1,35 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useEffect, useCallback } from "react";
-import {
-  getServerEnv,
-  type ServerEnvResult,
-  type EnvItem,
-} from "../functions/server-env";
+import { getServerEnv, type ServerEnvResult, type EnvItem } from "../functions/server-env";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
 import { ErrorMessage } from "~/components/ErrorMessage";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 
 export const Route = createFileRoute("/server-env")({
   head: () => ({
     meta: [
-    { title: "サーバー環境情報 | Web ツール集" },
-    { name: "description", content: "アクセス時のサーバー環境・リクエスト情報を表示するツール。" },
-    { property: "og:title", content: "サーバー環境情報 | Web ツール集" },
-    { property: "og:description", content: "アクセス時のサーバー環境・リクエスト情報を表示するツール。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/server-env` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "サーバー環境情報 | Web ツール集" },
-    { name: "twitter:description", content: "アクセス時のサーバー環境・リクエスト情報を表示するツール。" },
-  ],
+      { title: "サーバー環境情報 | Web ツール集" },
+      {
+        name: "description",
+        content: "アクセス時のサーバー環境・リクエスト情報を表示するツール。",
+      },
+      { property: "og:title", content: "サーバー環境情報 | Web ツール集" },
+      {
+        property: "og:description",
+        content: "アクセス時のサーバー環境・リクエスト情報を表示するツール。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/server-env` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "サーバー環境情報 | Web ツール集" },
+      {
+        name: "twitter:description",
+        content: "アクセス時のサーバー環境・リクエスト情報を表示するツール。",
+      },
+    ],
   }),
   component: ServerEnvPage,
 });
@@ -57,8 +59,7 @@ function ServerEnvPage() {
       setResult(data);
       announceStatus("サーバー環境情報を取得しました");
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "通信エラーが発生しました";
+      const message = err instanceof Error ? err.message : "通信エラーが発生しました";
       setError(message);
       announceStatus("エラー: " + message);
     } finally {
@@ -127,14 +128,9 @@ function ServerEnvPage() {
                     groups[category] &&
                     groups[category].length > 0 && (
                       <div key={category} className="env-category">
-                        <h3 className="env-category-title">
-                          {categoryLabels[category]}
-                        </h3>
+                        <h3 className="env-category-title">{categoryLabels[category]}</h3>
                         <div className="env-table-wrapper">
-                          <table
-                            className="env-table"
-                            aria-label={categoryLabels[category]}
-                          >
+                          <table className="env-table" aria-label={categoryLabels[category]}>
                             <thead>
                               <tr>
                                 <th scope="col">項目</th>
@@ -152,7 +148,7 @@ function ServerEnvPage() {
                           </table>
                         </div>
                       </div>
-                    )
+                    ),
                 );
               })()}
 
@@ -196,9 +192,7 @@ function ServerEnvPage() {
             },
             {
               title: "セキュリティについて",
-              items: [
-                "Cookie、Authorization、API Keyなどの機密性の高いヘッダーは表示されません",
-              ],
+              items: ["Cookie、Authorization、API Keyなどの機密性の高いヘッダーは表示されません"],
             },
           ]}
         />

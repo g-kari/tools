@@ -16,16 +16,25 @@ import { useClipboard } from "~/hooks/useClipboard";
 export const Route = createFileRoute("/base64-image")({
   head: () => ({
     meta: [
-    { title: "Base64画像デコード | Web ツール集" },
-    { name: "description", content: "Base64文字列またはData URIを画像としてプレビュー・変換するツール。" },
-    { property: "og:title", content: "Base64画像デコード | Web ツール集" },
-    { property: "og:description", content: "Base64文字列またはData URIを画像としてプレビュー・変換するツール。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/base64-image` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "Base64画像デコード | Web ツール集" },
-    { name: "twitter:description", content: "Base64文字列またはData URIを画像としてプレビュー・変換するツール。" },
-  ],
+      { title: "Base64画像デコード | Web ツール集" },
+      {
+        name: "description",
+        content: "Base64文字列またはData URIを画像としてプレビュー・変換するツール。",
+      },
+      { property: "og:title", content: "Base64画像デコード | Web ツール集" },
+      {
+        property: "og:description",
+        content: "Base64文字列またはData URIを画像としてプレビュー・変換するツール。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/base64-image` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "Base64画像デコード | Web ツール集" },
+      {
+        name: "twitter:description",
+        content: "Base64文字列またはData URIを画像としてプレビュー・変換するツール。",
+      },
+    ],
   }),
   component: Base64ImageDecoder,
 });
@@ -82,10 +91,7 @@ export function getMimeTypeFromDataUri(dataUri: string): string {
  * @param mimeType - MIMEタイプ（デフォルト: "image/png"）
  * @returns Data URI文字列
  */
-export function pureBase64ToDataUri(
-  base64: string,
-  mimeType: string = "image/png"
-): string {
+export function pureBase64ToDataUri(base64: string, mimeType: string = "image/png"): string {
   return `data:${mimeType};base64,${base64.trim()}`;
 }
 
@@ -116,15 +122,12 @@ function Base64ImageDecoder() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   /** 入力変化時のハンドラ */
-  const handleInputChange = useCallback(
-    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      setDecodeInput(e.target.value);
-      setDecodeError("");
-      setDecodePreview("");
-      setDetectedMimeType("");
-    },
-    []
-  );
+  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setDecodeInput(e.target.value);
+    setDecodeError("");
+    setDecodePreview("");
+    setDetectedMimeType("");
+  }, []);
 
   /** Base64をデコードして画像プレビューを表示する */
   const handleDecode = useCallback(() => {
@@ -147,7 +150,8 @@ function Base64ImageDecoder() {
       mimeType = decodeMimeType;
       dataUri = pureBase64ToDataUri(trimmed, mimeType);
     } else {
-      const errMsg = "有効なBase64文字列またはData URI（data:image/...;base64,...）を入力してください";
+      const errMsg =
+        "有効なBase64文字列またはData URI（data:image/...;base64,...）を入力してください";
       setDecodeError(errMsg);
       announceStatus(`エラー: ${errMsg}`);
       showToast("無効なBase64文字列です", "error");
@@ -209,7 +213,7 @@ function Base64ImageDecoder() {
         handleDecode();
       }
     },
-    [handleDecode]
+    [handleDecode],
   );
 
   return (
@@ -247,7 +251,9 @@ function Base64ImageDecoder() {
             value={decodeInput}
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
-            placeholder={"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...\nまたはピュアBase64文字列"}
+            placeholder={
+              "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...\nまたはピュアBase64文字列"
+            }
             aria-label="デコードするBase64文字列または Data URI"
             aria-describedby={decodeError ? "decode-error-msg" : "decode-hint"}
             aria-invalid={!!decodeError}
@@ -259,12 +265,7 @@ function Base64ImageDecoder() {
           </p>
 
           {decodeError && (
-            <p
-              id="decode-error-msg"
-              className="error-message"
-              role="alert"
-              aria-live="assertive"
-            >
+            <p id="decode-error-msg" className="error-message" role="alert" aria-live="assertive">
               {decodeError}
             </p>
           )}
@@ -305,17 +306,10 @@ function Base64ImageDecoder() {
               )}
 
               <div className="base64-decode-preview">
-                <img
-                  src={decodePreview}
-                  alt="Base64デコードされた画像のプレビュー"
-                />
+                <img src={decodePreview} alt="Base64デコードされた画像のプレビュー" />
               </div>
 
-              <div
-                className="button-group"
-                role="group"
-                aria-label="デコード結果の操作"
-              >
+              <div className="button-group" role="group" aria-label="デコード結果の操作">
                 <Button
                   type="button"
                   className="btn-copy"

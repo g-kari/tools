@@ -5,10 +5,7 @@ import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 import { formatXml, minifyXml, validateXml } from "~/utils/xml";
 
@@ -111,8 +108,7 @@ function XmlFormatter() {
         }
       }
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "処理に失敗しました";
+      const message = err instanceof Error ? err.message : "処理に失敗しました";
       announceStatus(`エラー: ${message}`);
       showToast(message, "error");
     }
@@ -147,12 +143,7 @@ function XmlFormatter() {
     setOutputText("");
   }, []);
 
-  const processLabel =
-    mode === "format"
-      ? "整形"
-      : mode === "minify"
-        ? "圧縮"
-        : "検証";
+  const processLabel = mode === "format" ? "整形" : mode === "minify" ? "圧縮" : "検証";
 
   return (
     <>
@@ -164,11 +155,7 @@ function XmlFormatter() {
           <div className="converter-section">
             <fieldset className="csv-json-mode-fieldset">
               <legend className="section-title">操作モード</legend>
-              <div
-                className="csv-json-mode-group"
-                role="group"
-                aria-label="操作モード選択"
-              >
+              <div className="csv-json-mode-group" role="group" aria-label="操作モード選択">
                 <label className="format-option">
                   <input
                     type="radio"
@@ -309,11 +296,7 @@ function XmlFormatter() {
                   ? "検証結果がここに表示されます..."
                   : "処理結果がここに表示されます..."
               }
-              aria-label={
-                mode === "validate"
-                  ? "XML検証結果の出力欄"
-                  : "XML処理結果の出力欄"
-              }
+              aria-label={mode === "validate" ? "XML検証結果の出力欄" : "XML処理結果の出力欄"}
               aria-live="polite"
               className="csv-json-textarea"
             />
@@ -335,7 +318,7 @@ function XmlFormatter() {
               title: "XMLについて",
               items: [
                 "XMLはeXtensible Markup Languageの略で、データの構造化・交換に広く使われるフォーマットです",
-                "<?xml version=\"1.0\" encoding=\"UTF-8\"?> のような宣言から始めることが推奨されます",
+                '<?xml version="1.0" encoding="UTF-8"?> のような宣言から始めることが推奨されます',
                 "タグは必ず開きタグと閉じタグを対応させるか、<br/> のようにセルフクロージング形式で記述します",
                 "検証モードではタグの対応関係とルート要素の唯一性をチェックします",
               ],

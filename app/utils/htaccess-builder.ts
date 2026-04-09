@@ -28,7 +28,7 @@ export interface HtaccessConfig {
     /** HTTP → HTTPS リダイレクト */
     httpsRedirect: boolean;
     /** www なし → www あり リダイレクト */
-    wwwRedirect: 'none' | 'add-www' | 'remove-www';
+    wwwRedirect: "none" | "add-www" | "remove-www";
     /** カスタムリダイレクト一覧 */
     customRedirects: Array<{
       /** リダイレクト元パス */
@@ -36,7 +36,7 @@ export interface HtaccessConfig {
       /** リダイレクト先 URL */
       to: string;
       /** リダイレクトタイプ */
-      type: '301' | '302';
+      type: "301" | "302";
     }>;
   };
   /** キャッシュ制御設定 */
@@ -59,7 +59,7 @@ export interface HtaccessConfig {
     /** 機密ファイルへのアクセスを禁止する */
     blockSensitiveFiles: boolean;
     /** X-Frame-Options ヘッダー */
-    xFrameOptions: 'DENY' | 'SAMEORIGIN' | 'none';
+    xFrameOptions: "DENY" | "SAMEORIGIN" | "none";
     /** X-Content-Type-Options ヘッダーを付与するか */
     xContentTypeOptions: boolean;
     /** X-XSS-Protection ヘッダーを付与するか */
@@ -93,39 +93,39 @@ export interface HtaccessConfig {
 export function getDefaultConfig(): HtaccessConfig {
   return {
     basic: {
-      directoryIndex: 'index.html index.php',
+      directoryIndex: "index.html index.php",
       options: {
         noIndexes: true,
         followSymLinks: true,
       },
-      charset: 'UTF-8',
+      charset: "UTF-8",
     },
     redirect: {
       httpsRedirect: true,
-      wwwRedirect: 'none',
+      wwwRedirect: "none",
       customRedirects: [],
     },
     cache: {
       enabled: true,
-      images: '1 month',
-      cssJs: '1 week',
-      html: '1 day',
-      fonts: '1 year',
+      images: "1 month",
+      cssJs: "1 week",
+      html: "1 day",
+      fonts: "1 year",
     },
     security: {
       blockHtaccess: true,
       blockSensitiveFiles: true,
-      xFrameOptions: 'SAMEORIGIN',
+      xFrameOptions: "SAMEORIGIN",
       xContentTypeOptions: true,
       xssProtection: true,
-      referrerPolicy: 'strict-origin-when-cross-origin',
+      referrerPolicy: "strict-origin-when-cross-origin",
       serverSignature: true,
       noEtag: false,
     },
     errorPages: {
-      e404: '',
-      e500: '',
-      e403: '',
+      e404: "",
+      e500: "",
+      e403: "",
     },
     compression: {
       enabled: true,
@@ -136,18 +136,18 @@ export function getDefaultConfig(): HtaccessConfig {
 /**
  * .htaccess の基本設定セクションを生成する
  */
-function buildBasicSection(config: HtaccessConfig['basic']): string[] {
-  const lines: string[] = ['# ── 基本設定 ──────────────────────────────────'];
+function buildBasicSection(config: HtaccessConfig["basic"]): string[] {
+  const lines: string[] = ["# ── 基本設定 ──────────────────────────────────"];
 
   if (config.directoryIndex) {
     lines.push(`DirectoryIndex ${config.directoryIndex}`);
   }
 
   const opts: string[] = [];
-  if (config.options.followSymLinks) opts.push('+FollowSymLinks');
-  if (config.options.noIndexes) opts.push('-Indexes');
+  if (config.options.followSymLinks) opts.push("+FollowSymLinks");
+  if (config.options.noIndexes) opts.push("-Indexes");
   if (opts.length > 0) {
-    lines.push(`Options ${opts.join(' ')}`);
+    lines.push(`Options ${opts.join(" ")}`);
   }
 
   if (config.charset) {
@@ -160,68 +160,62 @@ function buildBasicSection(config: HtaccessConfig['basic']): string[] {
 /**
  * リダイレクト設定セクションを生成する
  */
-function buildRedirectSection(config: HtaccessConfig['redirect']): string[] {
+function buildRedirectSection(config: HtaccessConfig["redirect"]): string[] {
   const lines: string[] = [];
   const hasHttps = config.httpsRedirect;
-  const hasWww = config.wwwRedirect !== 'none';
+  const hasWww = config.wwwRedirect !== "none";
   const hasCustom = config.customRedirects.length > 0;
 
   if (!hasHttps && !hasWww && !hasCustom) return lines;
 
-  lines.push('', '# ── リダイレクト ─────────────────────────────────');
-  lines.push('<IfModule mod_rewrite.c>');
-  lines.push('  RewriteEngine On');
+  lines.push("", "# ── リダイレクト ─────────────────────────────────");
+  lines.push("<IfModule mod_rewrite.c>");
+  lines.push("  RewriteEngine On");
 
   if (hasHttps) {
-    lines.push('');
-    lines.push('  # HTTP → HTTPS リダイレクト');
-    lines.push('  RewriteCond %{HTTPS} off');
-    lines.push('  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]');
+    lines.push("");
+    lines.push("  # HTTP → HTTPS リダイレクト");
+    lines.push("  RewriteCond %{HTTPS} off");
+    lines.push("  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]");
   }
 
-  if (config.wwwRedirect === 'add-www') {
-    lines.push('');
-    lines.push('  # www なし → www あり リダイレクト');
-    lines.push('  RewriteCond %{HTTP_HOST} !^www\\. [NC]');
-    lines.push(
-      '  RewriteRule ^ https://www.%{HTTP_HOST}%{REQUEST_URI} [R=301,L]'
-    );
-  } else if (config.wwwRedirect === 'remove-www') {
-    lines.push('');
-    lines.push('  # www あり → www なし リダイレクト');
-    lines.push('  RewriteCond %{HTTP_HOST} ^www\\.(.+)$ [NC]');
-    lines.push(
-      '  RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]'
-    );
+  if (config.wwwRedirect === "add-www") {
+    lines.push("");
+    lines.push("  # www なし → www あり リダイレクト");
+    lines.push("  RewriteCond %{HTTP_HOST} !^www\\. [NC]");
+    lines.push("  RewriteRule ^ https://www.%{HTTP_HOST}%{REQUEST_URI} [R=301,L]");
+  } else if (config.wwwRedirect === "remove-www") {
+    lines.push("");
+    lines.push("  # www あり → www なし リダイレクト");
+    lines.push("  RewriteCond %{HTTP_HOST} ^www\\.(.+)$ [NC]");
+    lines.push("  RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]");
   }
 
   if (hasCustom) {
-    lines.push('');
-    lines.push('  # カスタムリダイレクト');
+    lines.push("");
+    lines.push("  # カスタムリダイレクト");
     for (const r of config.customRedirects) {
       if (r.from && r.to) {
-        lines.push(
-          `  Redirect ${r.type} ${r.from} ${r.to}`
-        );
+        lines.push(`  Redirect ${r.type} ${r.from} ${r.to}`);
       }
     }
   }
 
-  lines.push('</IfModule>');
+  lines.push("</IfModule>");
   return lines;
 }
 
 /**
  * キャッシュ制御セクションを生成する
  */
-function buildCacheSection(config: HtaccessConfig['cache']): string[] {
+function buildCacheSection(config: HtaccessConfig["cache"]): string[] {
   if (!config.enabled) return [];
 
   const lines: string[] = [
-    '',
-    '# ── キャッシュ制御 ────────────────────────────────',
-    '<IfModule mod_expires.c>',
-    '  ExpiresActive On',
+    "",
+    "# ── キャッシュ制御 ────────────────────────────────",
+    "<IfModule mod_expires.c>",
+    "  ExpiresActive On",
     '  ExpiresDefault "access plus 1 hour"',
   ];
 
@@ -236,12 +230,8 @@ function buildCacheSection(config: HtaccessConfig['cache']): string[] {
 
   if (config.cssJs) {
     lines.push(`  ExpiresByType text/css "access plus ${config.cssJs}"`);
-    lines.push(
-      `  ExpiresByType application/javascript "access plus ${config.cssJs}"`
-    );
-    lines.push(
-      `  ExpiresByType text/javascript "access plus ${config.cssJs}"`
-    );
+    lines.push(`  ExpiresByType application/javascript "access plus ${config.cssJs}"`);
+    lines.push(`  ExpiresByType text/javascript "access plus ${config.cssJs}"`);
   }
 
   if (config.html) {
@@ -249,97 +239,84 @@ function buildCacheSection(config: HtaccessConfig['cache']): string[] {
   }
 
   if (config.fonts) {
-    lines.push(
-      `  ExpiresByType font/woff2 "access plus ${config.fonts}"`
-    );
-    lines.push(
-      `  ExpiresByType font/woff "access plus ${config.fonts}"`
-    );
-    lines.push(
-      `  ExpiresByType application/font-woff2 "access plus ${config.fonts}"`
-    );
+    lines.push(`  ExpiresByType font/woff2 "access plus ${config.fonts}"`);
+    lines.push(`  ExpiresByType font/woff "access plus ${config.fonts}"`);
+    lines.push(`  ExpiresByType application/font-woff2 "access plus ${config.fonts}"`);
   }
 
-  lines.push('</IfModule>');
+  lines.push("</IfModule>");
   return lines;
 }
 
 /**
  * GZIP 圧縮セクションを生成する
  */
-function buildCompressionSection(
-  config: HtaccessConfig['compression']
-): string[] {
+function buildCompressionSection(config: HtaccessConfig["compression"]): string[] {
   if (!config.enabled) return [];
 
   return [
-    '',
-    '# ── GZIP 圧縮 ────────────────────────────────────',
-    '<IfModule mod_deflate.c>',
-    '  AddOutputFilterByType DEFLATE text/plain',
-    '  AddOutputFilterByType DEFLATE text/html',
-    '  AddOutputFilterByType DEFLATE text/css',
-    '  AddOutputFilterByType DEFLATE application/javascript',
-    '  AddOutputFilterByType DEFLATE application/json',
-    '  AddOutputFilterByType DEFLATE image/svg+xml',
-    '  AddOutputFilterByType DEFLATE application/xml',
-    '  AddOutputFilterByType DEFLATE font/woff2',
-    '  AddOutputFilterByType DEFLATE font/woff',
-    '</IfModule>',
+    "",
+    "# ── GZIP 圧縮 ────────────────────────────────────",
+    "<IfModule mod_deflate.c>",
+    "  AddOutputFilterByType DEFLATE text/plain",
+    "  AddOutputFilterByType DEFLATE text/html",
+    "  AddOutputFilterByType DEFLATE text/css",
+    "  AddOutputFilterByType DEFLATE application/javascript",
+    "  AddOutputFilterByType DEFLATE application/json",
+    "  AddOutputFilterByType DEFLATE image/svg+xml",
+    "  AddOutputFilterByType DEFLATE application/xml",
+    "  AddOutputFilterByType DEFLATE font/woff2",
+    "  AddOutputFilterByType DEFLATE font/woff",
+    "</IfModule>",
   ];
 }
 
 /**
  * セキュリティ設定セクションを生成する
  */
-function buildSecuritySection(config: HtaccessConfig['security']): string[] {
-  const lines: string[] = [
-    '',
-    '# ── セキュリティ ─────────────────────────────────',
-  ];
+function buildSecuritySection(config: HtaccessConfig["security"]): string[] {
+  const lines: string[] = ["", "# ── セキュリティ ─────────────────────────────────"];
 
   if (config.blockHtaccess) {
-    lines.push('# .htaccess へのアクセス禁止');
+    lines.push("# .htaccess へのアクセス禁止");
     lines.push('<Files ".htaccess">');
-    lines.push('  Require all denied');
-    lines.push('</Files>');
+    lines.push("  Require all denied");
+    lines.push("</Files>");
   }
 
   if (config.blockSensitiveFiles) {
-    lines.push('');
-    lines.push('# 機密ファイルへのアクセス禁止');
-    lines.push(
-      '<FilesMatch "\\.(env|log|ini|conf|bak|sql|sh|py)$">'
-    );
-    lines.push('  Require all denied');
-    lines.push('</FilesMatch>');
+    lines.push("");
+    lines.push("# 機密ファイルへのアクセス禁止");
+    lines.push('<FilesMatch "\\.(env|log|ini|conf|bak|sql|sh|py)$">');
+    lines.push("  Require all denied");
+    lines.push("</FilesMatch>");
   }
 
   if (config.serverSignature) {
-    lines.push('');
-    lines.push('# サーバー情報の非表示');
-    lines.push('ServerSignature Off');
+    lines.push("");
+    lines.push("# サーバー情報の非表示");
+    lines.push("ServerSignature Off");
   }
 
   if (config.noEtag) {
-    lines.push('');
-    lines.push('# ETag を無効化');
-    lines.push('FileETag None');
-    lines.push('Header unset ETag');
+    lines.push("");
+    lines.push("# ETag を無効化");
+    lines.push("FileETag None");
+    lines.push("Header unset ETag");
   }
 
   const hasHeaders =
-    config.xFrameOptions !== 'none' ||
+    config.xFrameOptions !== "none" ||
     config.xContentTypeOptions ||
     config.xssProtection ||
     config.referrerPolicy;
 
   if (hasHeaders) {
-    lines.push('');
-    lines.push('# セキュリティヘッダー');
-    lines.push('<IfModule mod_headers.c>');
+    lines.push("");
+    lines.push("# セキュリティヘッダー");
+    lines.push("<IfModule mod_headers.c>");
 
-    if (config.xFrameOptions !== 'none') {
+    if (config.xFrameOptions !== "none") {
       lines.push(`  Header always set X-Frame-Options "${config.xFrameOptions}"`);
     }
     if (config.xContentTypeOptions) {
@@ -349,12 +326,10 @@ function buildSecuritySection(config: HtaccessConfig['security']): string[] {
       lines.push('  Header always set X-XSS-Protection "1; mode=block"');
     }
     if (config.referrerPolicy) {
-      lines.push(
-        `  Header always set Referrer-Policy "${config.referrerPolicy}"`
-      );
+      lines.push(`  Header always set Referrer-Policy "${config.referrerPolicy}"`);
     }
 
-    lines.push('</IfModule>');
+    lines.push("</IfModule>");
   }
 
   return lines;
@@ -363,17 +338,15 @@ function buildSecuritySection(config: HtaccessConfig['security']): string[] {
 /**
  * カスタムエラーページセクションを生成する
  */
-function buildErrorPagesSection(
-  config: HtaccessConfig['errorPages']
-): string[] {
+function buildErrorPagesSection(config: HtaccessConfig["errorPages"]): string[] {
   const lines: string[] = [];
-  const has404 = config.e404.trim() !== '';
-  const has500 = config.e500.trim() !== '';
-  const has403 = config.e403.trim() !== '';
+  const has404 = config.e404.trim() !== "";
+  const has500 = config.e500.trim() !== "";
+  const has403 = config.e403.trim() !== "";
 
   if (!has404 && !has500 && !has403) return lines;
 
-  lines.push('', '# ── カスタムエラーページ ─────────────────────────');
+  lines.push("", "# ── カスタムエラーページ ─────────────────────────");
 
   if (has403) lines.push(`ErrorDocument 403 ${config.e403.trim()}`);
   if (has404) lines.push(`ErrorDocument 404 ${config.e404.trim()}`);
@@ -398,8 +371,5 @@ export function generateHtaccess(config: HtaccessConfig): string {
     buildErrorPagesSection(config.errorPages),
   ];
 
-  return sections
-    .flat()
-    .join('\n')
-    .trim();
+  return sections.flat().join("\n").trim();
 }

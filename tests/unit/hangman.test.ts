@@ -1,10 +1,5 @@
 import { describe, it, expect } from "vite-plus/test";
-import {
-  selectWord,
-  isLetterInWord,
-  getMaskedWord,
-  getGameStatus,
-} from "../../app/routes/hangman";
+import { selectWord, isLetterInWord, getMaskedWord, getGameStatus } from "../../app/routes/hangman";
 
 describe("ハングマンゲーム", () => {
   describe("selectWord", () => {
@@ -77,9 +72,9 @@ describe("ハングマンゲーム", () => {
 
     it("重複文字が正しく処理される", () => {
       const result = getMaskedWord("ARRAY", new Set(["A", "R"]));
-      expect(result).toEqual(["A", "R", "R", "A", "Y"].map((l) =>
-        ["A", "R"].includes(l) ? l : "_"
-      ));
+      expect(result).toEqual(
+        ["A", "R", "R", "A", "Y"].map((l) => (["A", "R"].includes(l) ? l : "_")),
+      );
     });
 
     it("空の単語では空配列を返す", () => {

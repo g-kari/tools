@@ -6,11 +6,7 @@ import { StatusAnnouncer, useStatusAnnouncement } from "../hooks/useStatusAnnoun
 import { TipsCard } from "../components/TipsCard";
 import { Button } from "~/components/ui/button";
 import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
-import {
-  detectZeroWidthChars,
-  removeZeroWidthChars,
-  formatCodePoint,
-} from "../utils/zero-width";
+import { detectZeroWidthChars, removeZeroWidthChars, formatCodePoint } from "../utils/zero-width";
 import "../styles/tools/zero-width.css";
 
 export const Route = createFileRoute("/zero-width")({
@@ -34,8 +30,7 @@ export const Route = createFileRoute("/zero-width")({
       { name: "twitter:title", content: "ゼロ幅文字検出・除去 | Web ツール集" },
       {
         name: "twitter:description",
-        content:
-          "テキストに含まれる不可視Unicode文字を検出・除去するツール。",
+        content: "テキストに含まれる不可視Unicode文字を検出・除去するツール。",
       },
     ],
   }),
@@ -58,7 +53,7 @@ function ZeroWidthTool() {
 
   const cleanedText = useMemo(
     () => (result.hasZeroWidthChars ? removeZeroWidthChars(inputText) : inputText),
-    [inputText, result.hasZeroWidthChars]
+    [inputText, result.hasZeroWidthChars],
   );
 
   const handleLoadSample = useCallback(() => {
@@ -114,12 +109,16 @@ function ZeroWidthTool() {
             <div className="zw-status" aria-live="polite" aria-atomic="true">
               {result.hasZeroWidthChars ? (
                 <span className="zw-status-badge zw-status-badge--found">
-                  <span className="zw-status-badge--icon" aria-hidden="true">⚠</span>
+                  <span className="zw-status-badge--icon" aria-hidden="true">
+                    ⚠
+                  </span>
                   {result.totalCount}件のゼロ幅文字を検出（{result.detected.length}種類）
                 </span>
               ) : (
                 <span className="zw-status-badge zw-status-badge--clean">
-                  <span className="zw-status-badge--icon" aria-hidden="true">✓</span>
+                  <span className="zw-status-badge--icon" aria-hidden="true">
+                    ✓
+                  </span>
                   ゼロ幅文字は検出されませんでした
                 </span>
               )}
@@ -174,16 +173,16 @@ function ZeroWidthTool() {
                       <th scope="col">コードポイント</th>
                       <th scope="col">文字名</th>
                       <th scope="col">件数</th>
-                      <th scope="col" className="zw-col-positions">位置</th>
+                      <th scope="col" className="zw-col-positions">
+                        位置
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
                     {result.detected.map(({ def, count, positions }) => (
                       <tr key={def.codePoint}>
                         <td>
-                          <span className="zw-cp-badge">
-                            {formatCodePoint(def.codePoint)}
-                          </span>
+                          <span className="zw-cp-badge">{formatCodePoint(def.codePoint)}</span>
                         </td>
                         <td>
                           <span className="zw-char-name">{def.name}</span>

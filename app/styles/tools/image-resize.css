@@ -70,7 +70,9 @@
   font-family: "Space Mono", monospace;
   background: var(--md-sys-color-surface-variant);
   color: var(--md-sys-color-on-surface);
-  transition: border-color 0.2s, background-color 0.2s;
+  transition:
+    border-color 0.2s,
+    background-color 0.2s;
 }
 
 .size-input-group input[type="number"]:focus {
@@ -405,4 +407,3 @@
 .crop-canvas.has-selection {
   cursor: move;
 }
-

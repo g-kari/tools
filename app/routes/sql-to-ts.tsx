@@ -4,10 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { useToast } from "../components/Toast";
 import { TipsCard } from "~/components/TipsCard";
 import { ErrorMessage } from "~/components/ErrorMessage";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 import { generateTypeScript, getSampleSql } from "../utils/sql-to-ts";
 
@@ -76,8 +73,7 @@ function SqlToTsConverter() {
       announceStatus("型定義を生成しました");
       showToast("型定義を生成しました", "success");
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "エラーが発生しました";
+      const message = err instanceof Error ? err.message : "エラーが発生しました";
       setError(message);
       announceStatus("エラー: " + message);
       showToast(message, "error");
@@ -124,10 +120,7 @@ function SqlToTsConverter() {
   return (
     <>
       <div className="tool-container">
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          aria-label="SQL→TypeScript型変換フォーム"
-        >
+        <form onSubmit={(e) => e.preventDefault()} aria-label="SQL→TypeScript型変換フォーム">
           <div className="jts-layout">
             {/* 左パネル: SQL入力 */}
             <div className="jts-panel">
@@ -138,7 +131,9 @@ function SqlToTsConverter() {
                 className="jts-textarea"
                 value={sqlText}
                 onChange={(e) => setSqlText(e.target.value)}
-                placeholder={"SQL CREATE TABLE文を入力してください...\n例: CREATE TABLE users (\n  id INTEGER NOT NULL,\n  name VARCHAR(255) NOT NULL\n);"}
+                placeholder={
+                  "SQL CREATE TABLE文を入力してください...\n例: CREATE TABLE users (\n  id INTEGER NOT NULL,\n  name VARCHAR(255) NOT NULL\n);"
+                }
                 aria-label="SQL入力欄"
                 aria-describedby="stts-input-help"
                 spellCheck={false}

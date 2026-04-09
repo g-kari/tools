@@ -3,16 +3,9 @@ import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useMemo, useCallback } from "react";
 import { useToast } from "../components/Toast";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import "../styles/tools/openssl-builder.css";
-import {
-  buildOpenSslCommand,
-  getDefaultConfig,
-  SAMPLE_CONFIGS,
-} from "../utils/openssl-builder";
+import { buildOpenSslCommand, getDefaultConfig, SAMPLE_CONFIGS } from "../utils/openssl-builder";
 import type {
   OpenSslConfig,
   OpenSslOperation,
@@ -90,40 +83,31 @@ function OpenSslBuilderPage() {
 
   const [config, setConfig] = useState<OpenSslConfig>(getDefaultConfig());
 
-  const opensslCommand = useMemo(
-    () => buildOpenSslCommand(config),
-    [config]
-  );
+  const opensslCommand = useMemo(() => buildOpenSslCommand(config), [config]);
 
-  const updateConfig = useCallback(
-    (updates: Partial<OpenSslConfig>) => {
-      setConfig((prev) => ({ ...prev, ...updates }));
-    },
-    []
-  );
+  const updateConfig = useCallback((updates: Partial<OpenSslConfig>) => {
+    setConfig((prev) => ({ ...prev, ...updates }));
+  }, []);
 
-  const updateSubject = useCallback(
-    (field: keyof OpenSslConfig["subject"], value: string) => {
-      setConfig((prev) => ({
-        ...prev,
-        subject: { ...prev.subject, [field]: value },
-      }));
-    },
-    []
-  );
+  const updateSubject = useCallback((field: keyof OpenSslConfig["subject"], value: string) => {
+    setConfig((prev) => ({
+      ...prev,
+      subject: { ...prev.subject, [field]: value },
+    }));
+  }, []);
 
   const handleOperationChange = useCallback(
     (operation: OpenSslOperation) => {
       updateConfig({ operation });
     },
-    [updateConfig]
+    [updateConfig],
   );
 
   const handleFormatChange = useCallback(
     (outputFormat: OutputFormat) => {
       updateConfig({ outputFormat });
     },
-    [updateConfig]
+    [updateConfig],
   );
 
   const handleLoadSample = useCallback(
@@ -134,7 +118,7 @@ function OpenSslBuilderPage() {
         showToast(`サンプル「${sampleKey}」を読み込みました`, "success");
       }
     },
-    [announceStatus, showToast]
+    [announceStatus, showToast],
   );
 
   const handleClear = useCallback(() => {
@@ -152,8 +136,7 @@ function OpenSslBuilderPage() {
     }
   }, [opensslCommand, announceStatus, showToast]);
 
-  const showSubjectFields =
-    config.operation === "req-x509" || config.operation === "req-csr";
+  const showSubjectFields = config.operation === "req-x509" || config.operation === "req-csr";
   const showRsaFields = config.operation === "genrsa";
   const showEcFields = config.operation === "ecparam";
   const showPassphrase =
@@ -164,16 +147,13 @@ function OpenSslBuilderPage() {
     config.operation === "req-x509" ||
     config.operation === "req-csr" ||
     config.operation === "pkcs12";
-  const showInputCert =
-    config.operation === "x509-view" || config.operation === "pkcs12";
-  const showOutputKey =
-    config.operation === "genrsa" || config.operation === "ecparam";
+  const showInputCert = config.operation === "x509-view" || config.operation === "pkcs12";
+  const showOutputKey = config.operation === "genrsa" || config.operation === "ecparam";
   const showOutputCert = config.operation === "req-x509";
   const showOutputCsr = config.operation === "req-csr";
   const showOutputPkcs12 = config.operation === "pkcs12";
   const showDays = config.operation === "req-x509";
-  const showHashAlgorithm =
-    config.operation === "req-x509" || config.operation === "req-csr";
+  const showHashAlgorithm = config.operation === "req-x509" || config.operation === "req-csr";
 
   return (
     <>
@@ -197,9 +177,7 @@ function OpenSslBuilderPage() {
                 id="ob-operation"
                 className="ob-operation-select"
                 value={config.operation}
-                onChange={(e) =>
-                  handleOperationChange(e.target.value as OpenSslOperation)
-                }
+                onChange={(e) => handleOperationChange(e.target.value as OpenSslOperation)}
                 aria-label="OpenSSL操作の種類を選択"
               >
                 {OPERATIONS.map((op) => (
@@ -249,9 +227,7 @@ function OpenSslBuilderPage() {
                     id="ob-ec-curve"
                     className="ob-field-select"
                     value={config.ecCurve}
-                    onChange={(e) =>
-                      updateConfig({ ecCurve: e.target.value as EcCurve })
-                    }
+                    onChange={(e) => updateConfig({ ecCurve: e.target.value as EcCurve })}
                     aria-label="楕円曲線を選択"
                   >
                     {EC_CURVES.map((curve) => (
@@ -278,9 +254,7 @@ function OpenSslBuilderPage() {
                     type="text"
                     className="ob-field-input"
                     value={config.outputKeyFile}
-                    onChange={(e) =>
-                      updateConfig({ outputKeyFile: e.target.value })
-                    }
+                    onChange={(e) => updateConfig({ outputKeyFile: e.target.value })}
                     placeholder="private.key"
                     aria-label="出力鍵ファイルのパス"
                   />
@@ -297,9 +271,7 @@ function OpenSslBuilderPage() {
                     type="text"
                     className="ob-field-input"
                     value={config.inputKeyFile}
-                    onChange={(e) =>
-                      updateConfig({ inputKeyFile: e.target.value })
-                    }
+                    onChange={(e) => updateConfig({ inputKeyFile: e.target.value })}
                     placeholder="private.key"
                     aria-label="入力鍵ファイルのパス"
                   />
@@ -316,9 +288,7 @@ function OpenSslBuilderPage() {
                     type="text"
                     className="ob-field-input"
                     value={config.inputCertFile}
-                    onChange={(e) =>
-                      updateConfig({ inputCertFile: e.target.value })
-                    }
+                    onChange={(e) => updateConfig({ inputCertFile: e.target.value })}
                     placeholder="certificate.crt"
                     aria-label="入力証明書ファイルのパス"
                   />
@@ -335,9 +305,7 @@ function OpenSslBuilderPage() {
                     type="text"
                     className="ob-field-input"
                     value={config.outputCertFile}
-                    onChange={(e) =>
-                      updateConfig({ outputCertFile: e.target.value })
-                    }
+                    onChange={(e) => updateConfig({ outputCertFile: e.target.value })}
                     placeholder="certificate.crt"
                     aria-label="出力証明書ファイルのパス"
                   />
@@ -354,9 +322,7 @@ function OpenSslBuilderPage() {
                     type="text"
                     className="ob-field-input"
                     value={config.outputCsrFile}
-                    onChange={(e) =>
-                      updateConfig({ outputCsrFile: e.target.value })
-                    }
+                    onChange={(e) => updateConfig({ outputCsrFile: e.target.value })}
                     placeholder="server.csr"
                     aria-label="出力CSRファイルのパス"
                   />
@@ -373,9 +339,7 @@ function OpenSslBuilderPage() {
                     type="text"
                     className="ob-field-input"
                     value={config.outputPkcs12File}
-                    onChange={(e) =>
-                      updateConfig({ outputPkcs12File: e.target.value })
-                    }
+                    onChange={(e) => updateConfig({ outputPkcs12File: e.target.value })}
                     placeholder="bundle.p12"
                     aria-label="出力PKCS12ファイルのパス"
                   />
@@ -396,9 +360,7 @@ function OpenSslBuilderPage() {
                     type="password"
                     className="ob-passphrase-input"
                     value={config.passphrase}
-                    onChange={(e) =>
-                      updateConfig({ passphrase: e.target.value })
-                    }
+                    onChange={(e) => updateConfig({ passphrase: e.target.value })}
                     placeholder="省略可（設定するとAES-256で暗号化）"
                     aria-label="鍵ファイルのパスフレーズ"
                   />
@@ -458,7 +420,9 @@ function OpenSslBuilderPage() {
               <div className="ob-subject-group">
                 <span className="ob-section-title">サブジェクト情報</span>
                 <div className="ob-subject-row">
-                  <span className="ob-subject-key" aria-hidden="true">CN</span>
+                  <span className="ob-subject-key" aria-hidden="true">
+                    CN
+                  </span>
                   <input
                     type="text"
                     className="ob-subject-input"
@@ -469,7 +433,9 @@ function OpenSslBuilderPage() {
                   />
                 </div>
                 <div className="ob-subject-row">
-                  <span className="ob-subject-key" aria-hidden="true">O</span>
+                  <span className="ob-subject-key" aria-hidden="true">
+                    O
+                  </span>
                   <input
                     type="text"
                     className="ob-subject-input"
@@ -480,7 +446,9 @@ function OpenSslBuilderPage() {
                   />
                 </div>
                 <div className="ob-subject-row">
-                  <span className="ob-subject-key" aria-hidden="true">OU</span>
+                  <span className="ob-subject-key" aria-hidden="true">
+                    OU
+                  </span>
                   <input
                     type="text"
                     className="ob-subject-input"
@@ -491,7 +459,9 @@ function OpenSslBuilderPage() {
                   />
                 </div>
                 <div className="ob-subject-row">
-                  <span className="ob-subject-key" aria-hidden="true">C</span>
+                  <span className="ob-subject-key" aria-hidden="true">
+                    C
+                  </span>
                   <input
                     type="text"
                     className="ob-subject-input"
@@ -503,7 +473,9 @@ function OpenSslBuilderPage() {
                   />
                 </div>
                 <div className="ob-subject-row">
-                  <span className="ob-subject-key" aria-hidden="true">ST</span>
+                  <span className="ob-subject-key" aria-hidden="true">
+                    ST
+                  </span>
                   <input
                     type="text"
                     className="ob-subject-input"
@@ -514,7 +486,9 @@ function OpenSslBuilderPage() {
                   />
                 </div>
                 <div className="ob-subject-row">
-                  <span className="ob-subject-key" aria-hidden="true">L</span>
+                  <span className="ob-subject-key" aria-hidden="true">
+                    L
+                  </span>
                   <input
                     type="text"
                     className="ob-subject-input"
@@ -525,7 +499,9 @@ function OpenSslBuilderPage() {
                   />
                 </div>
                 <div className="ob-subject-row">
-                  <span className="ob-subject-key" aria-hidden="true">Mail</span>
+                  <span className="ob-subject-key" aria-hidden="true">
+                    Mail
+                  </span>
                   <input
                     type="email"
                     className="ob-subject-input"
@@ -539,11 +515,7 @@ function OpenSslBuilderPage() {
             )}
 
             {/* 出力フォーマット */}
-            <div
-              className="ob-format-group"
-              role="group"
-              aria-label="出力フォーマット"
-            >
+            <div className="ob-format-group" role="group" aria-label="出力フォーマット">
               <span className="ob-format-label">フォーマット:</span>
               <label className="ob-format-option">
                 <input

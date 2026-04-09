@@ -84,9 +84,7 @@ test.describe("TOML/JSON変換 - E2Eテスト", () => {
    * コピーボタンが出力なしで無効になっていることを確認するテスト
    */
   test("コピーボタンが出力なしで無効になっている", async ({ page }) => {
-    const copyBtn = page.locator(
-      'button[aria-label="出力結果をクリップボードにコピー"]'
-    );
+    const copyBtn = page.locator('button[aria-label="出力結果をクリップボードにコピー"]');
     await expect(copyBtn).toBeDisabled();
   });
 

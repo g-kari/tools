@@ -4,10 +4,7 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 import {
   seirekiToWareki,
@@ -31,8 +28,7 @@ export const Route = createFileRoute("/wareki")({
       { property: "og:title", content: "和暦・西暦変換 | Web ツール集" },
       {
         property: "og:description",
-        content:
-          "西暦と和暦（元号）を相互変換するツール。令和・平成・昭和・大正・明治に対応。",
+        content: "西暦と和暦（元号）を相互変換するツール。令和・平成・昭和・大正・明治に対応。",
       },
       { property: "og:url", content: `${SITE_BASE_URL}/wareki` },
       { property: "og:type", content: "website" },
@@ -134,7 +130,7 @@ function WarekiConverter() {
         showToast("コピーに失敗しました", "error");
       }
     },
-    [showToast, announceStatus]
+    [showToast, announceStatus],
   );
 
   const handleClearWestern = useCallback(() => {
@@ -160,15 +156,9 @@ function WarekiConverter() {
   return (
     <>
       <div className="wareki-container">
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          aria-label="和暦・西暦変換フォーム"
-        >
+        <form onSubmit={(e) => e.preventDefault()} aria-label="和暦・西暦変換フォーム">
           {/* 西暦 → 和暦 */}
-          <section
-            className="wareki-section"
-            aria-labelledby="western-to-wareki-heading"
-          >
+          <section className="wareki-section" aria-labelledby="western-to-wareki-heading">
             <h2 id="western-to-wareki-heading" className="section-title">
               西暦 → 和暦（元号）
             </h2>
@@ -212,11 +202,7 @@ function WarekiConverter() {
               </Button>
             </div>
             {westernResults.length > 0 && (
-              <div
-                className="wareki-results"
-                aria-live="polite"
-                aria-label="変換結果"
-              >
+              <div className="wareki-results" aria-live="polite" aria-label="変換結果">
                 {westernResults.map((result) => (
                   <div
                     key={`${result.eraName}-${result.year}`}
@@ -224,7 +210,8 @@ function WarekiConverter() {
                   >
                     <div>
                       <div className="wareki-result-value">
-                        {result.eraName}{result.year}年
+                        {result.eraName}
+                        {result.year}年
                       </div>
                       {result.isTransitionYear && (
                         <div className="wareki-result-note">
@@ -235,12 +222,7 @@ function WarekiConverter() {
                     <button
                       type="button"
                       className="wareki-copy-button"
-                      onClick={() =>
-                        handleCopy(
-                          `${result.eraName}${result.year}年`,
-                          "和暦"
-                        )
-                      }
+                      onClick={() => handleCopy(`${result.eraName}${result.year}年`, "和暦")}
                       aria-label={`${result.eraName}${result.year}年 をコピー`}
                     >
                       コピー
@@ -254,10 +236,7 @@ function WarekiConverter() {
           <div className="wareki-divider" role="separator" aria-hidden="true" />
 
           {/* 和暦 → 西暦 */}
-          <section
-            className="wareki-section"
-            aria-labelledby="wareki-to-western-heading"
-          >
+          <section className="wareki-section" aria-labelledby="wareki-to-western-heading">
             <h2 id="wareki-to-western-heading" className="section-title">
               和暦（元号） → 西暦
             </h2>
@@ -320,11 +299,7 @@ function WarekiConverter() {
               </Button>
             </div>
             {eraResult !== null && (
-              <div
-                className="wareki-results"
-                aria-live="polite"
-                aria-label="変換結果"
-              >
+              <div className="wareki-results" aria-live="polite" aria-label="変換結果">
                 <div className="wareki-result-item">
                   <div className="wareki-result-value">{eraResult}年</div>
                   <button
@@ -342,10 +317,7 @@ function WarekiConverter() {
         </form>
 
         {/* 元号一覧表 */}
-        <section
-          className="wareki-reference-section"
-          aria-labelledby="era-reference-heading"
-        >
+        <section className="wareki-reference-section" aria-labelledby="era-reference-heading">
           <h2 id="era-reference-heading" className="section-title">
             元号一覧
           </h2>
@@ -365,19 +337,14 @@ function WarekiConverter() {
                     <td className="wareki-table-era">
                       {era.name}
                       {era.endYear === null && (
-                        <span
-                          className="wareki-table-current"
-                          aria-label="現在の元号"
-                        >
+                        <span className="wareki-table-current" aria-label="現在の元号">
                           現在
                         </span>
                       )}
                     </td>
                     <td className="wareki-table-romaji">{era.romaji}</td>
                     <td>西暦 = {era.startYear - 1} + 元号年</td>
-                    <td className="wareki-table-period">
-                      {getEraPeriod(era)}
-                    </td>
+                    <td className="wareki-table-period">{getEraPeriod(era)}</td>
                   </tr>
                 ))}
               </tbody>

@@ -3,10 +3,7 @@ import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useCallback } from "react";
 import { useToast } from "../components/Toast";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 import {
   convertText,
@@ -31,8 +28,7 @@ export const Route = createFileRoute("/zenkaku")({
       },
       {
         property: "og:description",
-        content:
-          "全角と半角の相互変換ツール。英数字・記号・カタカナ・スペースを選択して変換。",
+        content: "全角と半角の相互変換ツール。英数字・記号・カタカナ・スペースを選択して変換。",
       },
       { property: "og:url", content: `${SITE_BASE_URL}/zenkaku` },
       { property: "og:type", content: "website" },
@@ -80,7 +76,7 @@ function ZenkakuConverter() {
         setOutput("");
       }
     },
-    [direction, options]
+    [direction, options],
   );
 
   const handleDirectionChange = useCallback(
@@ -91,7 +87,7 @@ function ZenkakuConverter() {
         setOutput(result);
       }
     },
-    [input, options]
+    [input, options],
   );
 
   const handleOptionChange = useCallback(
@@ -103,13 +99,12 @@ function ZenkakuConverter() {
         setOutput(result);
       }
     },
-    [input, direction, options]
+    [input, direction, options],
   );
 
   const handleSwap = useCallback(() => {
     setInput(output);
-    const newDirection: ConversionDirection =
-      direction === "toHankaku" ? "toZenkaku" : "toHankaku";
+    const newDirection: ConversionDirection = direction === "toHankaku" ? "toZenkaku" : "toHankaku";
     setDirection(newDirection);
     if (output) {
       const result = convertText(output, newDirection, options);
@@ -205,11 +200,7 @@ function ZenkakuConverter() {
           <div className="zenkaku-io-header">
             <label htmlFor="zenkaku-input">
               入力テキスト
-              {stats && (
-                <span className="zenkaku-char-info">
-                  （{stats.total} 文字）
-                </span>
-              )}
+              {stats && <span className="zenkaku-char-info">（{stats.total} 文字）</span>}
             </label>
           </div>
           <textarea
@@ -229,12 +220,7 @@ function ZenkakuConverter() {
 
         {/* ボタン */}
         <div className="button-group" role="group" aria-label="操作">
-          <button
-            type="button"
-            className="btn-primary"
-            onClick={handleConvert}
-            disabled={!input}
-          >
+          <button type="button" className="btn-primary" onClick={handleConvert} disabled={!input}>
             変換
           </button>
           <button
@@ -263,9 +249,7 @@ function ZenkakuConverter() {
               <label htmlFor="zenkaku-output">
                 変換結果
                 {outputStats && (
-                  <span className="zenkaku-char-info">
-                    （{outputStats.total} 文字）
-                  </span>
+                  <span className="zenkaku-char-info">（{outputStats.total} 文字）</span>
                 )}
               </label>
               <button

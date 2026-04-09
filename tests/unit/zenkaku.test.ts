@@ -47,7 +47,9 @@ describe("toHankaku", () => {
   });
 
   it("alphanumericオプションが false の場合は英数字を変換しない", () => {
-    expect(toHankaku("ＡＢＣ１２３", { ...DEFAULT_OPTIONS, alphanumeric: false })).toBe("ＡＢＣ１２３");
+    expect(toHankaku("ＡＢＣ１２３", { ...DEFAULT_OPTIONS, alphanumeric: false })).toBe(
+      "ＡＢＣ１２３",
+    );
   });
 
   it("symbolsオプションが false の場合は記号を変換しない", () => {

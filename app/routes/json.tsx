@@ -7,25 +7,31 @@ import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import { TipsCard } from "~/components/TipsCard";
 import { ErrorMessage } from "~/components/ErrorMessage";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 
 export const Route = createFileRoute("/json")({
   head: () => ({
     meta: [
-    { title: "JSON整形・検証 | Web ツール集" },
-    { name: "description", content: "JSONデータの整形・バリデーション・圧縮ができるオンラインツール。" },
-    { property: "og:title", content: "JSON整形・検証 | Web ツール集" },
-    { property: "og:description", content: "JSONデータの整形・バリデーション・圧縮ができるオンラインツール。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/json` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "JSON整形・検証 | Web ツール集" },
-    { name: "twitter:description", content: "JSONデータの整形・バリデーション・圧縮ができるオンラインツール。" },
-  ],
+      { title: "JSON整形・検証 | Web ツール集" },
+      {
+        name: "description",
+        content: "JSONデータの整形・バリデーション・圧縮ができるオンラインツール。",
+      },
+      { property: "og:title", content: "JSON整形・検証 | Web ツール集" },
+      {
+        property: "og:description",
+        content: "JSONデータの整形・バリデーション・圧縮ができるオンラインツール。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/json` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "JSON整形・検証 | Web ツール集" },
+      {
+        name: "twitter:description",
+        content: "JSONデータの整形・バリデーション・圧縮ができるオンラインツール。",
+      },
+    ],
   }),
   component: JsonFormatter,
 });
@@ -103,10 +109,7 @@ function JsonFormatter() {
   return (
     <>
       <div className="tool-container">
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          aria-label="JSONフォーマットフォーム"
-        >
+        <form onSubmit={(e) => e.preventDefault()} aria-label="JSONフォーマットフォーム">
           <div className="converter-section">
             <label htmlFor="inputText" className="section-title">
               入力JSON

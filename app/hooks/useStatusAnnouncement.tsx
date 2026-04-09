@@ -49,9 +49,7 @@ interface UseStatusAnnouncementReturn {
  * }
  * ```
  */
-export function useStatusAnnouncement(
-  timeout = 3000
-): UseStatusAnnouncementReturn {
+export function useStatusAnnouncement(timeout = 3000): UseStatusAnnouncementReturn {
   const statusRef = useRef<HTMLDivElement | null>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -83,7 +81,7 @@ export function useStatusAnnouncement(
         }, timeout);
       }
     },
-    [timeout]
+    [timeout],
   );
 
   return { statusRef, announceStatus };
@@ -111,12 +109,6 @@ interface StatusAnnouncerProps {
  */
 export function StatusAnnouncer({ statusRef }: StatusAnnouncerProps) {
   return (
-    <div
-      ref={statusRef}
-      role="status"
-      aria-live="polite"
-      aria-atomic="true"
-      className="sr-only"
-    />
+    <div ref={statusRef} role="status" aria-live="polite" aria-atomic="true" className="sr-only" />
   );
 }

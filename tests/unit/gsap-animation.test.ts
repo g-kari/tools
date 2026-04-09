@@ -2,7 +2,7 @@
  * GSAP Animation Engine Tests
  */
 
-import { describe, it, expect } from 'vite-plus/test';
+import { describe, it, expect } from "vite-plus/test";
 import {
   createEffectTimeline,
   sampleTimeline,
@@ -11,16 +11,15 @@ import {
   type GSAPAnimationConfig,
   type GSAPEasingType,
   type EasingDirection,
-} from '~/utils/gsapAnimationEngine';
+} from "~/utils/gsapAnimationEngine";
 
-describe('gsapAnimationEngine', () => {
-
-  describe('createEffectTimeline', () => {
-    it('should create a timeline for bounce effect', () => {
+describe("gsapAnimationEngine", () => {
+  describe("createEffectTimeline", () => {
+    it("should create a timeline for bounce effect", () => {
       const config: GSAPAnimationConfig = {
-        effect: 'bounce',
-        easing: 'bounce',
-        easingDirection: 'out',
+        effect: "bounce",
+        easing: "bounce",
+        easingDirection: "out",
         fps: 12,
         duration: 1.0,
         loop: 0,
@@ -32,16 +31,23 @@ describe('gsapAnimationEngine', () => {
       expect(timeline.data.proxy).toBeDefined();
     });
 
-    it('should create timelines for all effect types', () => {
-      const effects: Array<GSAPAnimationConfig['effect']> = [
-        'bounce', 'shake', 'rotate', 'pulse', 'fade', 'slide', 'wobble', 'pop'
+    it("should create timelines for all effect types", () => {
+      const effects: Array<GSAPAnimationConfig["effect"]> = [
+        "bounce",
+        "shake",
+        "rotate",
+        "pulse",
+        "fade",
+        "slide",
+        "wobble",
+        "pop",
       ];
 
-      effects.forEach(effect => {
+      effects.forEach((effect) => {
         const config: GSAPAnimationConfig = {
           effect,
-          easing: 'bounce',
-          easingDirection: 'out',
+          easing: "bounce",
+          easingDirection: "out",
           fps: 12,
           duration: 1.0,
           loop: 0,
@@ -54,12 +60,12 @@ describe('gsapAnimationEngine', () => {
     });
   });
 
-  describe('sampleTimeline', () => {
-    it('should sample correct number of frames', () => {
+  describe("sampleTimeline", () => {
+    it("should sample correct number of frames", () => {
       const config: GSAPAnimationConfig = {
-        effect: 'bounce',
-        easing: 'bounce',
-        easingDirection: 'out',
+        effect: "bounce",
+        easing: "bounce",
+        easingDirection: "out",
         fps: 12,
         duration: 1.0,
         loop: 0,
@@ -72,11 +78,11 @@ describe('gsapAnimationEngine', () => {
       expect(samples).toHaveLength(frameCount);
     });
 
-    it('should have correct start and end values for bounce', () => {
+    it("should have correct start and end values for bounce", () => {
       const config: GSAPAnimationConfig = {
-        effect: 'bounce',
-        easing: 'bounce',
-        easingDirection: 'out',
+        effect: "bounce",
+        easing: "bounce",
+        easingDirection: "out",
         fps: 12,
         duration: 1.0,
         loop: 0,
@@ -97,22 +103,21 @@ describe('gsapAnimationEngine', () => {
     });
   });
 
-
-  describe('Label functions', () => {
-    it('should return correct labels for easing types', () => {
-      expect(getGSAPEasingLabel('bounce')).toBe('バウンス');
-      expect(getGSAPEasingLabel('elastic')).toBe('エラスティック');
-      expect(getGSAPEasingLabel('back')).toBe('バック');
-      expect(getGSAPEasingLabel('expo')).toBe('エクスポ');
-      expect(getGSAPEasingLabel('circ')).toBe('サーク');
-      expect(getGSAPEasingLabel('sine')).toBe('サイン');
-      expect(getGSAPEasingLabel('power2')).toBe('パワー2');
+  describe("Label functions", () => {
+    it("should return correct labels for easing types", () => {
+      expect(getGSAPEasingLabel("bounce")).toBe("バウンス");
+      expect(getGSAPEasingLabel("elastic")).toBe("エラスティック");
+      expect(getGSAPEasingLabel("back")).toBe("バック");
+      expect(getGSAPEasingLabel("expo")).toBe("エクスポ");
+      expect(getGSAPEasingLabel("circ")).toBe("サーク");
+      expect(getGSAPEasingLabel("sine")).toBe("サイン");
+      expect(getGSAPEasingLabel("power2")).toBe("パワー2");
     });
 
-    it('should return correct labels for easing directions', () => {
-      expect(getEasingDirectionLabel('in')).toBe('イン');
-      expect(getEasingDirectionLabel('out')).toBe('アウト');
-      expect(getEasingDirectionLabel('inOut')).toBe('イン-アウト');
+    it("should return correct labels for easing directions", () => {
+      expect(getEasingDirectionLabel("in")).toBe("イン");
+      expect(getEasingDirectionLabel("out")).toBe("アウト");
+      expect(getEasingDirectionLabel("inOut")).toBe("イン-アウト");
     });
   });
 });

@@ -1,9 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import {
-  StatusAnnouncer,
-  useStatusAnnouncement,
-} from "~/hooks/useStatusAnnouncement";
+import { StatusAnnouncer, useStatusAnnouncement } from "~/hooks/useStatusAnnouncement";
 import { TipsCard } from "~/components/TipsCard";
 import { useClipboard } from "~/hooks/useClipboard";
 import { useToast } from "~/components/Toast";
@@ -24,8 +21,7 @@ export const Route = createFileRoute("/text-encrypt")({
       { title: "テキスト暗号化 | Web ツール集" },
       {
         name: "description",
-        content:
-          "ROT13・Caesar暗号・Vigenère暗号・Atbash暗号でテキストを暗号化・復号化するツール",
+        content: "ROT13・Caesar暗号・Vigenère暗号・Atbash暗号でテキストを暗号化・復号化するツール",
       },
       {
         property: "og:title",
@@ -33,8 +29,7 @@ export const Route = createFileRoute("/text-encrypt")({
       },
       {
         property: "og:description",
-        content:
-          "ROT13・Caesar暗号・Vigenère暗号・Atbash暗号でテキストを暗号化・復号化するツール",
+        content: "ROT13・Caesar暗号・Vigenère暗号・Atbash暗号でテキストを暗号化・復号化するツール",
       },
       { property: "og:url", content: `${SITE_BASE_URL}/text-encrypt` },
       { property: "og:type", content: "website" },
@@ -125,9 +120,7 @@ function TextEncryptTool() {
         </div>
 
         {/* 暗号方式の説明 */}
-        <p className="text-encrypt-cipher-desc">
-          {getCipherDescription(cipher)}
-        </p>
+        <p className="text-encrypt-cipher-desc">{getCipherDescription(cipher)}</p>
 
         {/* Caesar暗号のシフト数設定 */}
         {cipher === "caesar" && (
@@ -172,11 +165,7 @@ function TextEncryptTool() {
 
         {/* 操作モード選択（ROT13/Atbash以外） */}
         {!isSelfInverse && (
-          <div
-            className="text-encrypt-mode-buttons"
-            role="group"
-            aria-label="操作モード選択"
-          >
+          <div className="text-encrypt-mode-buttons" role="group" aria-label="操作モード選択">
             <Button
               variant={mode === "encrypt" ? "default" : "outline"}
               onClick={() => {
@@ -203,13 +192,23 @@ function TextEncryptTool() {
         {/* 入力エリア */}
         <div className="text-encrypt-input-area">
           <label htmlFor="text-encrypt-input" className="section-title">
-            {isSelfInverse ? "入力テキスト" : mode === "encrypt" ? "暗号化するテキスト" : "復号化するテキスト"}
+            {isSelfInverse
+              ? "入力テキスト"
+              : mode === "encrypt"
+                ? "暗号化するテキスト"
+                : "復号化するテキスト"}
           </label>
           <Textarea
             id="text-encrypt-input"
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
-            placeholder={isSelfInverse ? "変換するテキストを入力..." : mode === "encrypt" ? "暗号化したいテキストを入力..." : "復号化したいテキストを入力..."}
+            placeholder={
+              isSelfInverse
+                ? "変換するテキストを入力..."
+                : mode === "encrypt"
+                  ? "暗号化したいテキストを入力..."
+                  : "復号化したいテキストを入力..."
+            }
             rows={5}
             aria-label="入力テキスト"
           />

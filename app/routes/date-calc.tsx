@@ -3,10 +3,7 @@ import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useCallback, useMemo } from "react";
 import { useToast } from "../components/Toast";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 import "../styles/tools/date-calc.css";
 import {
@@ -31,8 +28,7 @@ export const Route = createFileRoute("/date-calc")({
       { property: "og:title", content: "日付計算ツール | Web ツール集" },
       {
         property: "og:description",
-        content:
-          "2つの日付の差を計算・日付の加算/減算・日付情報の確認ができる日付計算ツール。",
+        content: "2つの日付の差を計算・日付の加算/減算・日付情報の確認ができる日付計算ツール。",
       },
       { property: "og:url", content: `${SITE_BASE_URL}/date-calc` },
       { property: "og:type", content: "website" },
@@ -119,10 +115,7 @@ function DateCalcPage() {
     <>
       <div className="date-calc-container">
         {/* ── 日付差計算 ── */}
-        <section
-          className="date-calc-section"
-          aria-labelledby="diff-section-title"
-        >
+        <section className="date-calc-section" aria-labelledby="diff-section-title">
           <h2 className="date-calc-section-title" id="diff-section-title">
             日付差計算
           </h2>
@@ -199,33 +192,23 @@ function DateCalcPage() {
                 </div>
                 <div className="date-calc-result-item">
                   <span className="date-calc-result-label">ヶ月</span>
-                  <span className="date-calc-result-value">
-                    {diffResult.months}
-                  </span>
+                  <span className="date-calc-result-value">{diffResult.months}</span>
                 </div>
                 <div className="date-calc-result-item">
                   <span className="date-calc-result-label">日</span>
-                  <span className="date-calc-result-value">
-                    {diffResult.days}
-                  </span>
+                  <span className="date-calc-result-value">{diffResult.days}</span>
                 </div>
                 <div className="date-calc-result-item">
                   <span className="date-calc-result-label">時</span>
-                  <span className="date-calc-result-value">
-                    {diffResult.hours}
-                  </span>
+                  <span className="date-calc-result-value">{diffResult.hours}</span>
                 </div>
                 <div className="date-calc-result-item">
                   <span className="date-calc-result-label">分</span>
-                  <span className="date-calc-result-value">
-                    {diffResult.minutes}
-                  </span>
+                  <span className="date-calc-result-value">{diffResult.minutes}</span>
                 </div>
                 <div className="date-calc-result-item">
                   <span className="date-calc-result-label">秒</span>
-                  <span className="date-calc-result-value">
-                    {diffResult.seconds}
-                  </span>
+                  <span className="date-calc-result-value">{diffResult.seconds}</span>
                 </div>
               </div>
 
@@ -261,10 +244,7 @@ function DateCalcPage() {
         </section>
 
         {/* ── 日付加算/減算 ── */}
-        <section
-          className="date-calc-section"
-          aria-labelledby="arith-section-title"
-        >
+        <section className="date-calc-section" aria-labelledby="arith-section-title">
           <h2 className="date-calc-section-title" id="arith-section-title">
             日付の加算 / 減算
           </h2>
@@ -335,9 +315,7 @@ function DateCalcPage() {
               <div className="date-calc-result-header">計算結果</div>
               <div className="date-calc-total-row">
                 <span className="date-calc-total-label">結果</span>
-                <span className="date-calc-total-value">
-                  {formatDateJa(arithResult)}
-                </span>
+                <span className="date-calc-total-value">{formatDateJa(arithResult)}</span>
                 <button
                   type="button"
                   className="date-calc-now-btn"
@@ -352,10 +330,7 @@ function DateCalcPage() {
         </section>
 
         {/* ── 日付情報 ── */}
-        <section
-          className="date-calc-section"
-          aria-labelledby="info-section-title"
-        >
+        <section className="date-calc-section" aria-labelledby="info-section-title">
           <h2 className="date-calc-section-title" id="info-section-title">
             日付情報
           </h2>
@@ -393,15 +368,11 @@ function DateCalcPage() {
               </div>
               <div className="date-info-item">
                 <span className="date-info-label">ISO 週番号</span>
-                <span className="date-info-value">
-                  第 {dateInfo.weekNumber} 週
-                </span>
+                <span className="date-info-value">第 {dateInfo.weekNumber} 週</span>
               </div>
               <div className="date-info-item">
                 <span className="date-info-label">年の何日目</span>
-                <span className="date-info-value">
-                  {dateInfo.dayOfYear} 日目
-                </span>
+                <span className="date-info-value">{dateInfo.dayOfYear} 日目</span>
               </div>
               <div className="date-info-item">
                 <span className="date-info-label">四半期</span>
@@ -413,9 +384,7 @@ function DateCalcPage() {
               </div>
               <div className="date-info-item">
                 <span className="date-info-label">閏年</span>
-                <span className="date-info-value">
-                  {dateInfo.isLeapYear ? "✓ 閏年" : "平年"}
-                </span>
+                <span className="date-info-value">{dateInfo.isLeapYear ? "✓ 閏年" : "平年"}</span>
               </div>
               <div className="date-info-item">
                 <span className="date-info-label">Unix タイムスタンプ</span>

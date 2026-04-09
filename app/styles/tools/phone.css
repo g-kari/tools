@@ -38,7 +38,9 @@
   letter-spacing: 0.06em;
   background: var(--md-sys-color-surface-variant);
   color: var(--md-sys-color-on-surface);
-  transition: border-color 0.2s, background 0.2s;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
   min-width: 0;
   width: 100%;
 }
@@ -169,7 +171,9 @@
   border-radius: 4px;
   color: var(--md-sys-color-on-primary-container);
   cursor: pointer;
-  transition: background-color 0.2s, opacity 0.2s;
+  transition:
+    background-color 0.2s,
+    opacity 0.2s;
   align-self: flex-start;
   white-space: nowrap;
   letter-spacing: 0.25px;
@@ -255,7 +259,9 @@
   border-radius: 4px;
   color: var(--md-sys-color-on-secondary-container);
   cursor: pointer;
-  transition: background-color 0.2s, opacity 0.2s;
+  transition:
+    background-color 0.2s,
+    opacity 0.2s;
   white-space: nowrap;
   letter-spacing: 0.25px;
 }

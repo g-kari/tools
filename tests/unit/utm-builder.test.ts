@@ -1,9 +1,5 @@
 import { describe, it, expect } from "vite-plus/test";
-import {
-  isValidUrl,
-  buildUtmUrl,
-  parseUtmUrl,
-} from "../../app/utils/utm";
+import { isValidUrl, buildUtmUrl, parseUtmUrl } from "../../app/utils/utm";
 
 describe("isValidUrl", () => {
   it("httpsのURLは有効", () => {
@@ -109,9 +105,7 @@ describe("buildUtmUrl", () => {
 
 describe("parseUtmUrl", () => {
   it("UTMパラメータを含むURLを正しく解析する", () => {
-    const { baseUrl, params } = parseUtmUrl(
-      "https://example.com?utm_source=google&utm_medium=cpc"
-    );
+    const { baseUrl, params } = parseUtmUrl("https://example.com?utm_source=google&utm_medium=cpc");
     expect(params.source).toBe("google");
     expect(params.medium).toBe("cpc");
     expect(baseUrl).not.toContain("utm_source");
@@ -120,7 +114,7 @@ describe("parseUtmUrl", () => {
 
   it("全UTMパラメータが解析される", () => {
     const { params } = parseUtmUrl(
-      "https://example.com?utm_source=google&utm_medium=cpc&utm_campaign=spring&utm_term=shoes&utm_content=logo"
+      "https://example.com?utm_source=google&utm_medium=cpc&utm_campaign=spring&utm_term=shoes&utm_content=logo",
     );
     expect(params.source).toBe("google");
     expect(params.medium).toBe("cpc");
@@ -135,9 +129,7 @@ describe("parseUtmUrl", () => {
   });
 
   it("非UTMクエリパラメータはベースURLに残る", () => {
-    const { baseUrl } = parseUtmUrl(
-      "https://example.com?ref=home&utm_source=google"
-    );
+    const { baseUrl } = parseUtmUrl("https://example.com?ref=home&utm_source=google");
     expect(baseUrl).toContain("ref=home");
     expect(baseUrl).not.toContain("utm_source");
   });

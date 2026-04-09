@@ -1,14 +1,10 @@
-import { describe, it, expect, beforeAll } from 'vite-plus/test';
-import {
-  generatePassword,
-  calculateStrength,
-  CHAR_COUNTS,
-} from '../../app/utils/password';
+import { describe, it, expect, beforeAll } from "vite-plus/test";
+import { generatePassword, calculateStrength, CHAR_COUNTS } from "../../app/utils/password";
 
 // Mock crypto.getRandomValues for Node.js environment
 beforeAll(() => {
   if (!globalThis.crypto) {
-    const nodeCrypto = require('crypto');
+    const nodeCrypto = require("crypto");
     globalThis.crypto = {
       getRandomValues: (array: Uint32Array) => {
         const bytes = nodeCrypto.randomBytes(array.length * 4);
@@ -21,8 +17,8 @@ beforeAll(() => {
   }
 });
 
-describe('Password generation', () => {
-  it('should generate password with specified length', () => {
+describe("Password generation", () => {
+  it("should generate password with specified length", () => {
     const password = generatePassword({
       length: 16,
       uppercase: true,
@@ -33,7 +29,7 @@ describe('Password generation', () => {
     expect(password.length).toBe(16);
   });
 
-  it('should generate password with only uppercase characters', () => {
+  it("should generate password with only uppercase characters", () => {
     const password = generatePassword({
       length: 20,
       uppercase: true,
@@ -45,7 +41,7 @@ describe('Password generation', () => {
     expect(/^[A-Z]+$/.test(password)).toBe(true);
   });
 
-  it('should generate password with only lowercase characters', () => {
+  it("should generate password with only lowercase characters", () => {
     const password = generatePassword({
       length: 20,
       uppercase: false,
@@ -57,7 +53,7 @@ describe('Password generation', () => {
     expect(/^[a-z]+$/.test(password)).toBe(true);
   });
 
-  it('should generate password with only numbers', () => {
+  it("should generate password with only numbers", () => {
     const password = generatePassword({
       length: 20,
       uppercase: false,
@@ -69,7 +65,7 @@ describe('Password generation', () => {
     expect(/^[0-9]+$/.test(password)).toBe(true);
   });
 
-  it('should generate password with mixed characters', () => {
+  it("should generate password with mixed characters", () => {
     const password = generatePassword({
       length: 100,
       uppercase: true,
@@ -84,7 +80,7 @@ describe('Password generation', () => {
     expect(/[0-9]/.test(password)).toBe(true);
   });
 
-  it('should return empty string when no character type is selected', () => {
+  it("should return empty string when no character type is selected", () => {
     const password = generatePassword({
       length: 16,
       uppercase: false,
@@ -95,7 +91,7 @@ describe('Password generation', () => {
     expect(password).toBe("");
   });
 
-  it('should handle minimum length', () => {
+  it("should handle minimum length", () => {
     const password = generatePassword({
       length: 4,
       uppercase: true,
@@ -106,7 +102,7 @@ describe('Password generation', () => {
     expect(password.length).toBe(4);
   });
 
-  it('should handle maximum length', () => {
+  it("should handle maximum length", () => {
     const password = generatePassword({
       length: 128,
       uppercase: true,
@@ -117,7 +113,7 @@ describe('Password generation', () => {
     expect(password.length).toBe(128);
   });
 
-  it('should generate different passwords on each call', () => {
+  it("should generate different passwords on each call", () => {
     const options = {
       length: 32,
       uppercase: true,
@@ -132,8 +128,8 @@ describe('Password generation', () => {
   });
 });
 
-describe('Password strength calculation', () => {
-  it('should return empty for empty password', () => {
+describe("Password strength calculation", () => {
+  it("should return empty for empty password", () => {
     const result = calculateStrength("", {
       length: 0,
       uppercase: true,
@@ -208,8 +204,8 @@ describe('Password strength calculation', () => {
   });
 });
 
-describe('Character counts', () => {
-  it('should have correct character counts for entropy calculation', () => {
+describe("Character counts", () => {
+  it("should have correct character counts for entropy calculation", () => {
     expect(CHAR_COUNTS.uppercase).toBe(26);
     expect(CHAR_COUNTS.lowercase).toBe(26);
     expect(CHAR_COUNTS.numbers).toBe(10);

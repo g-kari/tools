@@ -1,8 +1,5 @@
 import { describe, it, expect } from "vite-plus/test";
-import {
-  parseConventionalCommit,
-  getCommitTypeInfo,
-} from "../../app/utils/conventional-commits";
+import { parseConventionalCommit, getCommitTypeInfo } from "../../app/utils/conventional-commits";
 
 describe("parseConventionalCommit - 空入力", () => {
   it("空文字列は無効", () => {
@@ -68,9 +65,7 @@ describe("parseConventionalCommit - ヘッダー行のパース", () => {
       const result = parseConventionalCommit(`${type}: some change`);
       expect(result.valid).toBe(true);
       expect(result.type).toBe(type);
-      expect(result.warnings.some((w) => w.code === "UNKNOWN_TYPE")).toBe(
-        false
-      );
+      expect(result.warnings.some((w) => w.code === "UNKNOWN_TYPE")).toBe(false);
     }
   });
 
@@ -83,9 +78,7 @@ describe("parseConventionalCommit - ヘッダー行のパース", () => {
   it("セパレーターなしは無効", () => {
     const result = parseConventionalCommit("feat add feature");
     expect(result.valid).toBe(false);
-    expect(result.errors.some((e) => e.code === "MISSING_SEPARATOR")).toBe(
-      true
-    );
+    expect(result.errors.some((e) => e.code === "MISSING_SEPARATOR")).toBe(true);
   });
 
   it("大文字始まりのタイプは無効", () => {
@@ -103,34 +96,26 @@ describe("parseConventionalCommit - ヘッダー行のパース", () => {
 describe("parseConventionalCommit - 警告", () => {
   it("説明が大文字始まりで警告", () => {
     const result = parseConventionalCommit("feat: Add new feature");
-    expect(result.warnings.some((w) => w.code === "DESCRIPTION_UPPERCASE")).toBe(
-      true
-    );
+    expect(result.warnings.some((w) => w.code === "DESCRIPTION_UPPERCASE")).toBe(true);
   });
 
   it("説明がピリオド終わりで警告", () => {
     const result = parseConventionalCommit("feat: add new feature.");
-    expect(result.warnings.some((w) => w.code === "DESCRIPTION_PERIOD")).toBe(
-      true
-    );
+    expect(result.warnings.some((w) => w.code === "DESCRIPTION_PERIOD")).toBe(true);
   });
 
   it("ヘッダー行が72文字超で警告", () => {
     const longDesc = "a".repeat(70);
     const result = parseConventionalCommit(`feat: ${longDesc}`);
     expect(
-      result.warnings.some(
-        (w) => w.code === "HEADER_LONG" || w.code === "HEADER_TOO_LONG"
-      )
+      result.warnings.some((w) => w.code === "HEADER_LONG" || w.code === "HEADER_TOO_LONG"),
     ).toBe(true);
   });
 
   it("ヘッダーとボディの間に空行がないと警告", () => {
     const msg = "feat: add feature\nThis is the body";
     const result = parseConventionalCommit(msg);
-    expect(
-      result.warnings.some((w) => w.code === "MISSING_BLANK_LINE_AFTER_HEADER")
-    ).toBe(true);
+    expect(result.warnings.some((w) => w.code === "MISSING_BLANK_LINE_AFTER_HEADER")).toBe(true);
   });
 });
 
@@ -143,8 +128,7 @@ describe("parseConventionalCommit - ボディパース", () => {
   });
 
   it("複数段落のボディを保持する", () => {
-    const msg =
-      "fix: handle error\n\nFirst paragraph.\n\nSecond paragraph.";
+    const msg = "fix: handle error\n\nFirst paragraph.\n\nSecond paragraph.";
     const result = parseConventionalCommit(msg);
     expect(result.body).toContain("First paragraph.");
     expect(result.body).toContain("Second paragraph.");
@@ -201,9 +185,7 @@ describe("parseConventionalCommit - フッターパース", () => {
     const withMark = parseConventionalCommit("feat!: breaking");
     expect(withMark.isBreaking).toBe(true);
 
-    const withFooter = parseConventionalCommit(
-      `feat: change\n\nBREAKING CHANGE: something`
-    );
+    const withFooter = parseConventionalCommit(`feat: change\n\nBREAKING CHANGE: something`);
     expect(withFooter.isBreaking).toBe(true);
 
     const normal = parseConventionalCommit("fix: bug");

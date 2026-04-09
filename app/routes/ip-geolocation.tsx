@@ -1,34 +1,37 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useEffect, useRef, useCallback } from "react";
-import {
-  lookupIpGeolocation,
-  type IpGeolocationResult,
-} from "../functions/ip-geolocation";
+import { lookupIpGeolocation, type IpGeolocationResult } from "../functions/ip-geolocation";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { TipsCard } from "~/components/TipsCard";
 import { ErrorMessage } from "~/components/ErrorMessage";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 
 export const Route = createFileRoute("/ip-geolocation")({
   head: () => ({
     meta: [
-    { title: "IPジオロケーション | Web ツール集" },
-    { name: "description", content: "IPアドレスから地理情報（国・都市・ISP等）を取得するオンラインツール。" },
-    { property: "og:title", content: "IPジオロケーション | Web ツール集" },
-    { property: "og:description", content: "IPアドレスから地理情報（国・都市・ISP等）を取得するオンラインツール。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/ip-geolocation` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "IPジオロケーション | Web ツール集" },
-    { name: "twitter:description", content: "IPアドレスから地理情報（国・都市・ISP等）を取得するオンラインツール。" },
-  ],
+      { title: "IPジオロケーション | Web ツール集" },
+      {
+        name: "description",
+        content: "IPアドレスから地理情報（国・都市・ISP等）を取得するオンラインツール。",
+      },
+      { property: "og:title", content: "IPジオロケーション | Web ツール集" },
+      {
+        property: "og:description",
+        content: "IPアドレスから地理情報（国・都市・ISP等）を取得するオンラインツール。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/ip-geolocation` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "IPジオロケーション | Web ツール集" },
+      {
+        name: "twitter:description",
+        content: "IPアドレスから地理情報（国・都市・ISP等）を取得するオンラインツール。",
+      },
+    ],
   }),
   component: IpGeolocationLookup,
 });
@@ -68,8 +71,7 @@ function IpGeolocationLookup() {
       setResult(data);
       announceStatus("検索が完了しました");
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "通信エラーが発生しました";
+      const message = err instanceof Error ? err.message : "通信エラーが発生しました";
       setError(message);
       announceStatus("エラー: " + message);
     } finally {
@@ -186,10 +188,7 @@ function IpGeolocationLookup() {
           ⚠ このツールは開発・学習目的のみに使用してください。通信は暗号化されていません。
         </div>
 
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          aria-label="IPアドレス検索フォーム"
-        >
+        <form onSubmit={(e) => e.preventDefault()} aria-label="IPアドレス検索フォーム">
           <div className="converter-section">
             <div className="search-form-row">
               <div className="search-input-wrapper">

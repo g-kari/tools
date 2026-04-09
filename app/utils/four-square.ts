@@ -4,7 +4,7 @@
  */
 
 /** 標準アルファベット方陣（J を除く25文字） */
-const STANDARD_SQUARE: string[] = 'ABCDEFGHIKLMNOPQRSTUVWXYZ'.split('');
+const STANDARD_SQUARE: string[] = "ABCDEFGHIKLMNOPQRSTUVWXYZ".split("");
 
 /**
  * キーワードから5×5のポリュビオス方陣を構築する
@@ -13,11 +13,11 @@ const STANDARD_SQUARE: string[] = 'ABCDEFGHIKLMNOPQRSTUVWXYZ'.split('');
  * @returns 5×5の文字グリッド（2次元配列）
  */
 export function buildFourSquareGrid(key: string): string[][] {
-  const upper = key.toUpperCase().replace(/J/g, 'I');
+  const upper = key.toUpperCase().replace(/J/g, "I");
   const seen = new Set<string>();
   const letters: string[] = [];
 
-  for (const ch of upper + 'ABCDEFGHIKLMNOPQRSTUVWXYZ') {
+  for (const ch of upper + "ABCDEFGHIKLMNOPQRSTUVWXYZ") {
     if (/[A-Z]/.test(ch) && !seen.has(ch)) {
       seen.add(ch);
       letters.push(ch);
@@ -60,10 +60,13 @@ export function findInGrid(grid: string[][], ch: string): [number, number] {
  * @returns 暗号化されたテキスト（スペース区切りのダイグラフ）
  */
 export function fourSquareEncrypt(text: string, key1: string, key2: string): string {
-  const plain = text.toUpperCase().replace(/J/g, 'I').replace(/[^A-Z]/g, '');
-  if (!plain) return '';
+  const plain = text
+    .toUpperCase()
+    .replace(/J/g, "I")
+    .replace(/[^A-Z]/g, "");
+  if (!plain) return "";
 
-  const padded = plain.length % 2 === 0 ? plain : plain + 'X';
+  const padded = plain.length % 2 === 0 ? plain : plain + "X";
 
   // 四方陣の構築
   const topLeft = buildStandardGrid(); // 平文用（左上）
@@ -85,7 +88,7 @@ export function fourSquareEncrypt(text: string, key1: string, key2: string): str
     result.push(topRight[r1][c2] + bottomLeft[r2][c1]);
   }
 
-  return result.join(' ');
+  return result.join(" ");
 }
 
 /**
@@ -96,8 +99,11 @@ export function fourSquareEncrypt(text: string, key1: string, key2: string): str
  * @returns 復号化されたテキスト（大文字）
  */
 export function fourSquareDecrypt(text: string, key1: string, key2: string): string {
-  const cipher = text.toUpperCase().replace(/J/g, 'I').replace(/[^A-Z]/g, '');
-  if (!cipher || cipher.length % 2 !== 0) return '';
+  const cipher = text
+    .toUpperCase()
+    .replace(/J/g, "I")
+    .replace(/[^A-Z]/g, "");
+  if (!cipher || cipher.length % 2 !== 0) return "";
 
   // 四方陣の構築
   const topLeft = buildStandardGrid(); // 平文用（左上）
@@ -119,7 +125,7 @@ export function fourSquareDecrypt(text: string, key1: string, key2: string): str
     result.push(topLeft[r1][c1] + bottomRight[r2][c2]);
   }
 
-  return result.join(' ');
+  return result.join(" ");
 }
 
 /**
@@ -134,12 +140,15 @@ export function getFourSquareDigraphs(
   text: string,
   key1: string,
   key2: string,
-  mode: 'encrypt' | 'decrypt'
+  mode: "encrypt" | "decrypt",
 ): Array<{ input: string; output: string }> {
-  if (mode === 'encrypt') {
-    const plain = text.toUpperCase().replace(/J/g, 'I').replace(/[^A-Z]/g, '');
+  if (mode === "encrypt") {
+    const plain = text
+      .toUpperCase()
+      .replace(/J/g, "I")
+      .replace(/[^A-Z]/g, "");
     if (!plain) return [];
-    const padded = plain.length % 2 === 0 ? plain : plain + 'X';
+    const padded = plain.length % 2 === 0 ? plain : plain + "X";
 
     const topLeft = buildStandardGrid();
     const topRight = buildFourSquareGrid(key1);
@@ -157,7 +166,10 @@ export function getFourSquareDigraphs(
     }
     return pairs;
   } else {
-    const cipher = text.toUpperCase().replace(/J/g, 'I').replace(/[^A-Z]/g, '');
+    const cipher = text
+      .toUpperCase()
+      .replace(/J/g, "I")
+      .replace(/[^A-Z]/g, "");
     if (!cipher || cipher.length % 2 !== 0) return [];
 
     const topLeft = buildStandardGrid();

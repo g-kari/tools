@@ -1,13 +1,10 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
-import { useState, useCallback, useRef, type DragEvent } from 'react';
-import { useToast } from '../components/Toast';
-import { TipsCard } from '~/components/TipsCard';
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from '~/hooks/useStatusAnnouncement';
-import { useClipboard } from '~/hooks/useClipboard';
+import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
+import { useState, useCallback, useRef, type DragEvent } from "react";
+import { useToast } from "../components/Toast";
+import { TipsCard } from "~/components/TipsCard";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
+import { useClipboard } from "~/hooks/useClipboard";
 import {
   toHexRows,
   toHexDumpText,
@@ -16,31 +13,30 @@ import {
   DEFAULT_HEX_OPTIONS,
   type HexViewerOptions,
   type HexRow,
-} from '~/utils/hex-viewer';
+} from "~/utils/hex-viewer";
 
-export const Route = createFileRoute('/hex-viewer')({
+export const Route = createFileRoute("/hex-viewer")({
   head: () => ({
     meta: [
-      { title: 'Hex Viewer | Web ツール集' },
+      { title: "Hex Viewer | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          'テキストやファイルを16進数（hex）ダンプ形式で表示するツール。バイナリデータの解析、ファイルヘッダーの確認、プロトコルデバッグに活用できます。',
+          "テキストやファイルを16進数（hex）ダンプ形式で表示するツール。バイナリデータの解析、ファイルヘッダーの確認、プロトコルデバッグに活用できます。",
       },
-      { property: 'og:title', content: 'Hex Viewer | Web ツール集' },
+      { property: "og:title", content: "Hex Viewer | Web ツール集" },
       {
-        property: 'og:description',
+        property: "og:description",
         content:
-          'テキストやファイルを16進数（hex）ダンプ形式で表示するツール。バイナリデータの解析に活用できます。',
+          "テキストやファイルを16進数（hex）ダンプ形式で表示するツール。バイナリデータの解析に活用できます。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/hex-viewer` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
-      { name: 'twitter:title', content: 'Hex Viewer | Web ツール集' },
+      { property: "og:url", content: `${SITE_BASE_URL}/hex-viewer` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "Hex Viewer | Web ツール集" },
       {
-        name: 'twitter:description',
-        content:
-          'テキストやファイルを16進数（hex）ダンプ形式で表示するツール。',
+        name: "twitter:description",
+        content: "テキストやファイルを16進数（hex）ダンプ形式で表示するツール。",
       },
     ],
   }),
@@ -49,20 +45,14 @@ export const Route = createFileRoute('/hex-viewer')({
 
 /** バイト値の表示クラスを返す */
 function getByteClass(byte: number): string {
-  if (byte === 0x00) return 'null-byte';
-  if (byte >= 0x20 && byte <= 0x7e) return 'ascii-printable';
-  if (byte < 0x20 || byte === 0x7f) return 'ascii-control';
-  return 'high-byte';
+  if (byte === 0x00) return "null-byte";
+  if (byte >= 0x20 && byte <= 0x7e) return "ascii-printable";
+  if (byte < 0x20 || byte === 0x7f) return "ascii-control";
+  return "high-byte";
 }
 
 /** Hex ダンプテーブルのヘッダー */
-function HexTableHeader({
-  bytesPerRow,
-  uppercase,
-}: {
-  bytesPerRow: number;
-  uppercase: boolean;
-}) {
+function HexTableHeader({ bytesPerRow, uppercase }: { bytesPerRow: number; uppercase: boolean }) {
   return (
     <thead>
       <tr>
@@ -77,7 +67,7 @@ function HexTableHeader({
 }
 
 function byteIndexToHex(i: number, uppercase: boolean): string {
-  const s = i.toString(16).padStart(2, '0');
+  const s = i.toString(16).padStart(2, "0");
   return uppercase ? s.toUpperCase() : s;
 }
 
@@ -93,7 +83,7 @@ function HexTableRow({
   rawData: Uint8Array;
   bytesPerRow: number;
 }) {
-  const offsetStr = row.offset.toString(16).padStart(8, '0');
+  const offsetStr = row.offset.toString(16).padStart(8, "0");
   const displayOffset = uppercase ? offsetStr.toUpperCase() : offsetStr;
 
   return (
@@ -101,13 +91,10 @@ function HexTableRow({
       <td className="hex-offset">{displayOffset}</td>
       {row.hexBytes.map((hex, i) => {
         const byteValue = rawData[row.offset + i];
-        const isPadding = hex === '';
+        const isPadding = hex === "";
         return (
-          <td
-            key={i}
-            className={`hex-byte ${isPadding ? 'padding' : getByteClass(byteValue)}`}
-          >
-            {isPadding ? '\u00A0\u00A0' : hex}
+          <td key={i} className={`hex-byte ${isPadding ? "padding" : getByteClass(byteValue)}`}>
+            {isPadding ? "\u00A0\u00A0" : hex}
           </td>
         );
       })}
@@ -125,8 +112,8 @@ function HexViewerPage() {
   const { copy } = useClipboard();
   const { statusRef, announceStatus } = useStatusAnnouncement();
 
-  const [inputMode, setInputMode] = useState<'text' | 'file'>('text');
-  const [inputText, setInputText] = useState('');
+  const [inputMode, setInputMode] = useState<"text" | "file">("text");
+  const [inputText, setInputText] = useState("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [fileData, setFileData] = useState<Uint8Array | null>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -137,9 +124,9 @@ function HexViewerPage() {
 
   // 表示データの決定
   const rawData: Uint8Array | null =
-    inputMode === 'text' && inputText
+    inputMode === "text" && inputText
       ? textToBytes(inputText)
-      : inputMode === 'file'
+      : inputMode === "file"
         ? fileData
         : null;
 
@@ -169,7 +156,7 @@ function HexViewerPage() {
         handleFileSelect(files);
       }
     },
-    [handleFileSelect]
+    [handleFileSelect],
   );
 
   const handleDragOver = useCallback((e: DragEvent<HTMLDivElement>) => {
@@ -186,16 +173,16 @@ function HexViewerPage() {
     setSelectedFile(null);
     setFileData(null);
     if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+      fileInputRef.current.value = "";
     }
   }, []);
 
-  const handleInputModeChange = useCallback((mode: 'text' | 'file') => {
+  const handleInputModeChange = useCallback((mode: "text" | "file") => {
     setInputMode(mode);
     setSelectedFile(null);
     setFileData(null);
     if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+      fileInputRef.current.value = "";
     }
   }, []);
 
@@ -204,10 +191,10 @@ function HexViewerPage() {
     const text = toHexDumpText(rawData, options);
     const success = await copy(text);
     if (success) {
-      showToast('Hexダンプをコピーしました', 'success');
-      announceStatus('Hexダンプをコピーしました');
+      showToast("Hexダンプをコピーしました", "success");
+      announceStatus("Hexダンプをコピーしました");
     } else {
-      showToast('コピーに失敗しました', 'error');
+      showToast("コピーに失敗しました", "error");
     }
   }, [rawData, options, copy, showToast, announceStatus]);
 
@@ -217,31 +204,27 @@ function HexViewerPage() {
     <>
       <div className="tool-container">
         {/* 入力モード切り替えタブ */}
-        <div
-          className="hex-input-tabs"
-          role="tablist"
-          aria-label="入力モード"
-        >
+        <div className="hex-input-tabs" role="tablist" aria-label="入力モード">
           <button
             role="tab"
-            aria-selected={inputMode === 'text'}
-            className={`hex-input-tab ${inputMode === 'text' ? 'active' : ''}`}
-            onClick={() => handleInputModeChange('text')}
+            aria-selected={inputMode === "text"}
+            className={`hex-input-tab ${inputMode === "text" ? "active" : ""}`}
+            onClick={() => handleInputModeChange("text")}
           >
             テキスト
           </button>
           <button
             role="tab"
-            aria-selected={inputMode === 'file'}
-            className={`hex-input-tab ${inputMode === 'file' ? 'active' : ''}`}
-            onClick={() => handleInputModeChange('file')}
+            aria-selected={inputMode === "file"}
+            className={`hex-input-tab ${inputMode === "file" ? "active" : ""}`}
+            onClick={() => handleInputModeChange("file")}
           >
             ファイル
           </button>
         </div>
 
         {/* テキスト入力 */}
-        {inputMode === 'text' && (
+        {inputMode === "text" && (
           <div className="converter-section">
             <label htmlFor="hex-input" className="section-title">
               入力テキスト
@@ -261,11 +244,11 @@ function HexViewerPage() {
         )}
 
         {/* ファイル入力 */}
-        {inputMode === 'file' && (
+        {inputMode === "file" && (
           <div className="converter-section">
             <span className="section-title">ファイル選択</span>
             <div
-              className={`hex-dropzone ${isDragging ? 'dragging' : ''}`}
+              className={`hex-dropzone ${isDragging ? "dragging" : ""}`}
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
               onDrop={handleFileDrop}
@@ -274,7 +257,7 @@ function HexViewerPage() {
               tabIndex={0}
               aria-label="ファイルをドロップするか、クリックして選択"
               onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
+                if (e.key === "Enter" || e.key === " ") {
                   e.preventDefault();
                   fileInputRef.current?.click();
                 }
@@ -283,9 +266,7 @@ function HexViewerPage() {
               <span className="hex-dropzone-label" aria-hidden="true">
                 <span className="hex-dropzone-icon">📂</span>
                 <span>ファイルをドロップ</span>
-                <span className="hex-dropzone-hint">
-                  またはクリックして選択（最大 64KB 表示）
-                </span>
+                <span className="hex-dropzone-hint">またはクリックして選択（最大 64KB 表示）</span>
               </span>
             </div>
             <input
@@ -305,9 +286,7 @@ function HexViewerPage() {
                 <span className="hex-file-name" title={selectedFile.name}>
                   {selectedFile.name}
                 </span>
-                <span className="hex-file-size">
-                  {formatFileSize(selectedFile.size)}
-                </span>
+                <span className="hex-file-size">{formatFileSize(selectedFile.size)}</span>
                 <button
                   className="hex-file-clear-btn"
                   onClick={handleClearFile}
@@ -362,9 +341,7 @@ function HexViewerPage() {
           <div className="hex-info-bar" aria-label="データ情報">
             <div className="hex-info-item">
               <span>サイズ:</span>
-              <span className="hex-info-value">
-                {formatFileSize(rawData.length)}
-              </span>
+              <span className="hex-info-value">{formatFileSize(rawData.length)}</span>
               <span>({rawData.length.toLocaleString()} バイト)</span>
             </div>
             <div className="hex-info-item">
@@ -391,10 +368,7 @@ function HexViewerPage() {
         {hasData ? (
           <div className="hex-dump-container" role="region" aria-label="Hexダンプ表示">
             <table className="hex-dump-table" aria-label="16進数ダンプ">
-              <HexTableHeader
-                bytesPerRow={options.bytesPerRow}
-                uppercase={options.uppercase}
-              />
+              <HexTableHeader bytesPerRow={options.bytesPerRow} uppercase={options.uppercase} />
               <tbody>
                 {hexRows.map((row) => (
                   <HexTableRow
@@ -409,7 +383,7 @@ function HexViewerPage() {
             </table>
             {isTruncated && (
               <div className="hex-truncated-notice" role="note">
-                ⚠ 表示サイズ上限（64KB）に達したため、以降のデータは省略されています（合計:{' '}
+                ⚠ 表示サイズ上限（64KB）に達したため、以降のデータは省略されています（合計:{" "}
                 {formatFileSize(rawData.length)}）
               </div>
             )}
@@ -417,9 +391,9 @@ function HexViewerPage() {
         ) : (
           <div className="hex-empty-state" aria-live="polite">
             <p>
-              {inputMode === 'text'
-                ? 'テキストを入力すると16進数ダンプが表示されます'
-                : 'ファイルを選択すると16進数ダンプが表示されます'}
+              {inputMode === "text"
+                ? "テキストを入力すると16進数ダンプが表示されます"
+                : "ファイルを選択すると16進数ダンプが表示されます"}
             </p>
           </div>
         )}
@@ -427,31 +401,31 @@ function HexViewerPage() {
         <TipsCard
           sections={[
             {
-              title: '使い方',
+              title: "使い方",
               items: [
-                '「テキスト」タブ: テキストを入力するとUTF-8バイト列としてhexダンプ表示',
-                '「ファイル」タブ: ファイルをドロップまたは選択してhexダンプ表示（最大64KB）',
-                '1行のバイト数は 8 / 16 / 32 から選択可能',
-                '「大文字表示」で A-F を大文字にする',
-                '「Hexダンプをコピー」でxxd形式のテキストをコピー',
+                "「テキスト」タブ: テキストを入力するとUTF-8バイト列としてhexダンプ表示",
+                "「ファイル」タブ: ファイルをドロップまたは選択してhexダンプ表示（最大64KB）",
+                "1行のバイト数は 8 / 16 / 32 から選択可能",
+                "「大文字表示」で A-F を大文字にする",
+                "「Hexダンプをコピー」でxxd形式のテキストをコピー",
               ],
             },
             {
-              title: '色分けの意味',
+              title: "色分けの意味",
               items: [
-                '紫色: ASCII表示可能文字（0x20〜0x7E）',
-                '赤色: 制御文字・非表示文字（0x00〜0x1F, 0x7F）',
-                'グレー: NULL バイト（0x00）',
-                '青紫色: 高位バイト（0x80〜0xFF、UTF-8マルチバイトなど）',
+                "紫色: ASCII表示可能文字（0x20〜0x7E）",
+                "赤色: 制御文字・非表示文字（0x00〜0x1F, 0x7F）",
+                "グレー: NULL バイト（0x00）",
+                "青紫色: 高位バイト（0x80〜0xFF、UTF-8マルチバイトなど）",
               ],
             },
             {
-              title: '活用例',
+              title: "活用例",
               items: [
-                'ファイルのマジックナンバー確認（PNG: 89 50 4E 47、PDF: 25 50 44 46）',
-                'バイナリプロトコルのデバッグ',
-                '文字エンコードの確認（UTF-8マルチバイト文字の構造）',
-                'ファイルヘッダーの解析',
+                "ファイルのマジックナンバー確認（PNG: 89 50 4E 47、PDF: 25 50 44 46）",
+                "バイナリプロトコルのデバッグ",
+                "文字エンコードの確認（UTF-8マルチバイト文字の構造）",
+                "ファイルヘッダーの解析",
               ],
             },
           ]}

@@ -295,7 +295,7 @@ export function buildOpenSslCommand(config: OpenSslConfig): string {
  * サンプル設定の定義
  */
 export const SAMPLE_CONFIGS: Record<string, OpenSslConfig> = {
-  "RSA鍵生成": {
+  RSA鍵生成: {
     operation: "genrsa",
     rsaKeySize: 2048,
     ecCurve: "prime256v1",
@@ -311,7 +311,7 @@ export const SAMPLE_CONFIGS: Record<string, OpenSslConfig> = {
     hashAlgorithm: "sha256",
     outputFormat: "multiline",
   },
-  "自己署名証明書": {
+  自己署名証明書: {
     operation: "req-x509",
     rsaKeySize: 2048,
     ecCurve: "prime256v1",
@@ -335,7 +335,7 @@ export const SAMPLE_CONFIGS: Record<string, OpenSslConfig> = {
     hashAlgorithm: "sha256",
     outputFormat: "multiline",
   },
-  "CSR生成": {
+  CSR生成: {
     operation: "req-csr",
     rsaKeySize: 2048,
     ecCurve: "prime256v1",
@@ -375,7 +375,7 @@ export const SAMPLE_CONFIGS: Record<string, OpenSslConfig> = {
     hashAlgorithm: "sha256",
     outputFormat: "multiline",
   },
-  "PKCS12変換": {
+  PKCS12変換: {
     operation: "pkcs12",
     rsaKeySize: 2048,
     ecCurve: "prime256v1",

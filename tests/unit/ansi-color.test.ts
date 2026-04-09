@@ -25,7 +25,7 @@ describe("ANSIカラーコードユーティリティ", () => {
           ...DEFAULT_STYLE,
           fgColor: { type: "standard", code: 31 }, // 赤
         },
-        "Hello"
+        "Hello",
       );
       expect(result).toBe("\x1b[31mHello\x1b[0m");
     });
@@ -36,7 +36,7 @@ describe("ANSIカラーコードユーティリティ", () => {
           ...DEFAULT_STYLE,
           fgColor: { type: "rgb", r: 255, g: 128, b: 0 },
         },
-        "Hello"
+        "Hello",
       );
       expect(result).toBe("\x1b[38;2;255;128;0mHello\x1b[0m");
     });
@@ -47,7 +47,7 @@ describe("ANSIカラーコードユーティリティ", () => {
           ...DEFAULT_STYLE,
           bgColor: { type: "standard", code: 41 }, // 赤背景
         },
-        "Hello"
+        "Hello",
       );
       // 標準色の背景色は code + 10 = 41 + 10 = 51 …ではなく、
       // colorToCodes で isBackground=true のとき code + 10 する
@@ -64,7 +64,7 @@ describe("ANSIカラーコードユーティリティ", () => {
           underline: true,
           fgColor: { type: "standard", code: 32 }, // 緑
         },
-        "Hello"
+        "Hello",
       );
       expect(result).toBe("\x1b[1;4;32mHello\x1b[0m");
     });
@@ -77,56 +77,32 @@ describe("ANSIカラーコードユーティリティ", () => {
 
   describe("generateShellCode", () => {
     it("bashエスケープ形式のコードを生成する", () => {
-      const result = generateShellCode(
-        { ...DEFAULT_STYLE, bold: true },
-        "Hello",
-        "bash"
-      );
+      const result = generateShellCode({ ...DEFAULT_STYLE, bold: true }, "Hello", "bash");
       expect(result).toBe('echo -e "\\e[1mHello\\e[0m"');
     });
 
     it("bash-octalエスケープ形式のコードを生成する", () => {
-      const result = generateShellCode(
-        { ...DEFAULT_STYLE, bold: true },
-        "Hello",
-        "bash-octal"
-      );
+      const result = generateShellCode({ ...DEFAULT_STYLE, bold: true }, "Hello", "bash-octal");
       expect(result).toBe('echo -e "\\033[1mHello\\033[0m"');
     });
 
     it("Python形式のコードを生成する", () => {
-      const result = generateShellCode(
-        { ...DEFAULT_STYLE, bold: true },
-        "Hello",
-        "python"
-      );
+      const result = generateShellCode({ ...DEFAULT_STYLE, bold: true }, "Hello", "python");
       expect(result).toBe('print(f"\\x1b[1mHello\\x1b[0m")');
     });
 
     it("Node.js (unicode) 形式のコードを生成する", () => {
-      const result = generateShellCode(
-        { ...DEFAULT_STYLE, bold: true },
-        "Hello",
-        "unicode"
-      );
+      const result = generateShellCode({ ...DEFAULT_STYLE, bold: true }, "Hello", "unicode");
       expect(result).toBe('console.log("\\u001b[1mHello\\u001b[0m")');
     });
 
     it("スタイルなしの場合は引用符付きテキストを返す", () => {
-      const result = generateShellCode(
-        { ...DEFAULT_STYLE },
-        "Hello",
-        "bash"
-      );
+      const result = generateShellCode({ ...DEFAULT_STYLE }, "Hello", "bash");
       expect(result).toBe('"Hello"');
     });
 
     it("テキストが空の場合はデフォルトテキストを使用する", () => {
-      const result = generateShellCode(
-        { ...DEFAULT_STYLE, bold: true },
-        "",
-        "bash"
-      );
+      const result = generateShellCode({ ...DEFAULT_STYLE, bold: true }, "", "bash");
       expect(result).toContain("Hello, World!");
     });
   });

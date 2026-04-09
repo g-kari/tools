@@ -71,10 +71,7 @@ interface RdapResponse {
   }>;
   entities?: Array<{
     roles?: string[];
-    vcardArray?: [
-      string,
-      Array<[string, Record<string, unknown>, string, string | string[]]>,
-    ];
+    vcardArray?: [string, Array<[string, Record<string, unknown>, string, string | string[]]>];
     publicIds?: Array<{
       type: string;
       identifier: string;
@@ -186,10 +183,7 @@ async function queryRdapServer(url: string): Promise<Response> {
  * @returns 連絡先情報、または必要な情報がない場合はundefined
  */
 function parseVcardToContact(
-  vcardArray?: [
-    string,
-    Array<[string, Record<string, unknown>, string, string | string[]]>,
-  ]
+  vcardArray?: [string, Array<[string, Record<string, unknown>, string, string | string[]]>],
 ): ContactInfo | undefined {
   if (!vcardArray || !vcardArray[1]) {
     return undefined;
@@ -207,11 +201,7 @@ function parseVcardToContact(
         break;
       case "org":
         contact.organization =
-          typeof value === "string"
-            ? value
-            : Array.isArray(value)
-              ? value[0]
-              : undefined;
+          typeof value === "string" ? value : Array.isArray(value) ? value[0] : undefined;
         break;
       case "email":
         contact.email = typeof value === "string" ? value : undefined;
@@ -281,17 +271,13 @@ function parseRdapResponse(data: RdapResponse, domain: string): WhoisResult {
 
       if (roles.includes("registrar")) {
         if (entity.vcardArray && entity.vcardArray[1]) {
-          const fnEntry = entity.vcardArray[1].find(
-            (entry) => entry[0] === "fn"
-          );
+          const fnEntry = entity.vcardArray[1].find((entry) => entry[0] === "fn");
           if (fnEntry) {
             result.registrar = fnEntry[3] as string;
           }
         }
         if (!result.registrar && entity.publicIds) {
-          const ianaId = entity.publicIds.find(
-            (id) => id.type === "IANA Registrar ID"
-          );
+          const ianaId = entity.publicIds.find((id) => id.type === "IANA Registrar ID");
           if (ianaId) {
             result.registrar = `IANA ID: ${ianaId.identifier}`;
           }
@@ -337,9 +323,7 @@ async function queryRdap(domain: string): Promise<WhoisResult> {
   const serversToTry: string[] = [];
 
   if (bootstrap[tld]) {
-    serversToTry.push(
-      `${bootstrap[tld]}/domain/${encodeURIComponent(domain)}`
-    );
+    serversToTry.push(`${bootstrap[tld]}/domain/${encodeURIComponent(domain)}`);
   }
 
   serversToTry.push(`https://rdap.org/domain/${encodeURIComponent(domain)}`);
@@ -379,8 +363,7 @@ async function queryRdap(domain: string): Promise<WhoisResult> {
  */
 export const lookupWhois = createServerFn({ method: "GET" })
   .inputValidator((data: string) => {
-    const domainRegex =
-      /^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
+    const domainRegex = /^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
     if (!domainRegex.test(data)) {
       throw new Error("無効なドメイン形式です");
     }

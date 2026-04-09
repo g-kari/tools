@@ -1,9 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useMemo, useCallback } from "react";
-import {
-  StatusAnnouncer,
-  useStatusAnnouncement,
-} from "~/hooks/useStatusAnnouncement";
+import { StatusAnnouncer, useStatusAnnouncement } from "~/hooks/useStatusAnnouncement";
 import { TipsCard } from "~/components/TipsCard";
 import { useToast } from "~/components/Toast";
 import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
@@ -48,8 +45,7 @@ const MAX_VISIBLE_ROWS = 24;
  * ローン計算機ページコンポーネント
  */
 function LoanCalculator() {
-  const [repaymentType, setRepaymentType] =
-    useState<RepaymentType>("equal-payment");
+  const [repaymentType, setRepaymentType] = useState<RepaymentType>("equal-payment");
   const [principalStr, setPrincipalStr] = useState("3000");
   const [rateStr, setRateStr] = useState("1.5");
   const [termStr, setTermStr] = useState("35");
@@ -65,10 +61,7 @@ function LoanCalculator() {
     return { principal, annualRate, termYears, type: repaymentType };
   }, [principalStr, rateStr, termStr, repaymentType]);
 
-  const validationError = useMemo(
-    () => validateLoanParams(params),
-    [params]
-  );
+  const validationError = useMemo(() => validateLoanParams(params), [params]);
 
   const result = useMemo(() => {
     if (validationError) return null;
@@ -86,7 +79,7 @@ function LoanCalculator() {
         showToast(`${label}をコピーしました`, "success");
       });
     },
-    [showToast]
+    [showToast],
   );
 
   /** 返済スケジュールの表示行（長い場合は省略） */
@@ -99,8 +92,7 @@ function LoanCalculator() {
     return [...head, "omit", ...tail];
   }, [result]);
 
-  const isInputReady =
-    principalStr !== "" && rateStr !== "" && termStr !== "";
+  const isInputReady = principalStr !== "" && rateStr !== "" && termStr !== "";
 
   return (
     <>
@@ -111,11 +103,7 @@ function LoanCalculator() {
 
       <div className="tool-container">
         {/* 返済方式タブ */}
-        <div
-          className="loan-type-tabs"
-          role="tablist"
-          aria-label="返済方式選択"
-        >
+        <div className="loan-type-tabs" role="tablist" aria-label="返済方式選択">
           <button
             className={`loan-type-btn${repaymentType === "equal-payment" ? " active" : ""}`}
             role="tab"
@@ -201,16 +189,10 @@ function LoanCalculator() {
         {/* 計算結果 */}
         {result ? (
           <>
-            <div
-              className="loan-summary"
-              aria-live="polite"
-              aria-label="計算結果"
-            >
+            <div className="loan-summary" aria-live="polite" aria-label="計算結果">
               <div className="loan-summary-card primary">
                 <span className="loan-summary-label">
-                  {repaymentType === "equal-payment"
-                    ? "月々の返済額"
-                    : "初回月々返済額"}
+                  {repaymentType === "equal-payment" ? "月々の返済額" : "初回月々返済額"}
                 </span>
                 <span
                   className="loan-summary-value"
@@ -227,13 +209,9 @@ function LoanCalculator() {
                   className="loan-summary-value"
                   aria-label={`総返済額 ${formatYen(result.totalPayment)}`}
                 >
-                  {Math.round(result.totalPayment / 10000).toLocaleString(
-                    "ja-JP"
-                  )}
+                  {Math.round(result.totalPayment / 10000).toLocaleString("ja-JP")}
                 </span>
-                <span className="loan-summary-sub">
-                  万円（{formatYen(result.totalPayment)}）
-                </span>
+                <span className="loan-summary-sub">万円（{formatYen(result.totalPayment)}）</span>
               </div>
 
               <div className="loan-summary-card">
@@ -242,13 +220,9 @@ function LoanCalculator() {
                   className="loan-summary-value"
                   aria-label={`総利息 ${formatYen(result.totalInterest)}`}
                 >
-                  {Math.round(result.totalInterest / 10000).toLocaleString(
-                    "ja-JP"
-                  )}
+                  {Math.round(result.totalInterest / 10000).toLocaleString("ja-JP")}
                 </span>
-                <span className="loan-summary-sub">
-                  万円（{formatYen(result.totalInterest)}）
-                </span>
+                <span className="loan-summary-sub">万円（{formatYen(result.totalInterest)}）</span>
               </div>
             </div>
 
@@ -257,15 +231,11 @@ function LoanCalculator() {
               <div className="loan-ratio-bar-label">
                 <span>
                   元金 {principalRatio.toFixed(1)}%（
-                  {Math.round(params.principal / 10000).toLocaleString("ja-JP")}{" "}
-                  万円）
+                  {Math.round(params.principal / 10000).toLocaleString("ja-JP")} 万円）
                 </span>
                 <span>
                   利息 {(100 - principalRatio).toFixed(1)}%（
-                  {Math.round(result.totalInterest / 10000).toLocaleString(
-                    "ja-JP"
-                  )}{" "}
-                  万円）
+                  {Math.round(result.totalInterest / 10000).toLocaleString("ja-JP")} 万円）
                 </span>
               </div>
               <div
@@ -291,7 +261,7 @@ function LoanCalculator() {
                 onClick={() =>
                   handleCopy(
                     `月々返済額: ${formatYen(result.monthlyPayment)}\n総返済額: ${formatYen(result.totalPayment)}\n総利息: ${formatYen(result.totalInterest)}`,
-                    "計算結果"
+                    "計算結果",
                   )
                 }
                 aria-label="計算結果をクリップボードにコピー"
@@ -340,20 +310,12 @@ function LoanCalculator() {
                         ) : (
                           <tr key={idx}>
                             <td>{row.month}</td>
-                            <td>
-                              {row.payment.toLocaleString("ja-JP")}
-                            </td>
-                            <td>
-                              {row.principalPart.toLocaleString("ja-JP")}
-                            </td>
-                            <td>
-                              {row.interestPart.toLocaleString("ja-JP")}
-                            </td>
-                            <td>
-                              {row.balance.toLocaleString("ja-JP")}
-                            </td>
+                            <td>{row.payment.toLocaleString("ja-JP")}</td>
+                            <td>{row.principalPart.toLocaleString("ja-JP")}</td>
+                            <td>{row.interestPart.toLocaleString("ja-JP")}</td>
+                            <td>{row.balance.toLocaleString("ja-JP")}</td>
                           </tr>
-                        )
+                        ),
                       )}
                     </tbody>
                   </table>

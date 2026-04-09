@@ -103,10 +103,12 @@ function ScytaleTool() {
     (newMode: Mode) => {
       setMode(newMode);
       announceStatus(
-        newMode === "encode" ? "エンコードモードに切り替えました" : "デコードモードに切り替えました"
+        newMode === "encode"
+          ? "エンコードモードに切り替えました"
+          : "デコードモードに切り替えました",
       );
     },
-    [announceStatus]
+    [announceStatus],
   );
 
   const handleDiameterChange = useCallback(
@@ -117,7 +119,7 @@ function ScytaleTool() {
         announceStatus(`直径を ${val} に変更しました`);
       }
     },
-    [announceStatus]
+    [announceStatus],
   );
 
   const isEmpty = inputText.length === 0;
@@ -195,9 +197,7 @@ function ScytaleTool() {
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
             placeholder={
-              mode === "encode"
-                ? "暗号化するテキストを入力"
-                : "スキュタレー暗号文を入力"
+              mode === "encode" ? "暗号化するテキストを入力" : "スキュタレー暗号文を入力"
             }
             rows={4}
             aria-label="スキュタレー暗号の入力テキスト"
@@ -248,10 +248,7 @@ function ScytaleTool() {
             <div className="scytale-grids">
               <div className="scytale-grid-wrapper">
                 <div className="scytale-grid-title">平文グリッド（行方向に書き込み）</div>
-                <table
-                  className="scytale-grid scytale-grid--plain"
-                  aria-label="平文グリッド"
-                >
+                <table className="scytale-grid scytale-grid--plain" aria-label="平文グリッド">
                   <tbody>
                     {plainGrid.map((row, rowIdx) => (
                       <tr key={rowIdx}>
@@ -272,10 +269,7 @@ function ScytaleTool() {
 
               <div className="scytale-grid-wrapper">
                 <div className="scytale-grid-title">暗号グリッド（列方向に読み取り）</div>
-                <table
-                  className="scytale-grid scytale-grid--cipher"
-                  aria-label="暗号グリッド"
-                >
+                <table className="scytale-grid scytale-grid--cipher" aria-label="暗号グリッド">
                   <tbody>
                     {cipherGrid.map((row, rowIdx) => (
                       <tr key={rowIdx}>

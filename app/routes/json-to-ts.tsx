@@ -4,10 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { useToast } from "../components/Toast";
 import { TipsCard } from "~/components/TipsCard";
 import { ErrorMessage } from "~/components/ErrorMessage";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 import { generateTypeScript, getSampleJson } from "../utils/json-to-ts";
 
@@ -17,8 +14,7 @@ export const Route = createFileRoute("/json-to-ts")({
       { title: "JSON→TypeScript型変換 | Web ツール集" },
       {
         name: "description",
-        content:
-          "JSONデータからTypeScriptのinterface/type定義を自動生成できるオンラインツール。",
+        content: "JSONデータからTypeScriptのinterface/type定義を自動生成できるオンラインツール。",
       },
       {
         property: "og:title",
@@ -26,8 +22,7 @@ export const Route = createFileRoute("/json-to-ts")({
       },
       {
         property: "og:description",
-        content:
-          "JSONデータからTypeScriptのinterface/type定義を自動生成できるオンラインツール。",
+        content: "JSONデータからTypeScriptのinterface/type定義を自動生成できるオンラインツール。",
       },
       { property: "og:url", content: `${SITE_BASE_URL}/json-to-ts` },
       { property: "og:type", content: "website" },
@@ -38,8 +33,7 @@ export const Route = createFileRoute("/json-to-ts")({
       },
       {
         name: "twitter:description",
-        content:
-          "JSONデータからTypeScriptのinterface/type定義を自動生成できるオンラインツール。",
+        content: "JSONデータからTypeScriptのinterface/type定義を自動生成できるオンラインツール。",
       },
     ],
   }),
@@ -78,8 +72,7 @@ function JsonToTsConverter() {
       announceStatus("型定義を生成しました");
       showToast("型定義を生成しました", "success");
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "エラーが発生しました";
+      const message = err instanceof Error ? err.message : "エラーが発生しました";
       setError(message);
       announceStatus("エラー: " + message);
       showToast(message, "error");
@@ -126,10 +119,7 @@ function JsonToTsConverter() {
   return (
     <>
       <div className="tool-container">
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          aria-label="JSON→TypeScript型変換フォーム"
-        >
+        <form onSubmit={(e) => e.preventDefault()} aria-label="JSON→TypeScript型変換フォーム">
           <div className="jts-layout">
             {/* 左パネル: JSON入力 */}
             <div className="jts-panel">

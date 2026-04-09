@@ -45,7 +45,7 @@
 .stat-value {
   font-size: 1.25rem;
   font-weight: 500;
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
   color: var(--md-sys-color-on-surface);
 }
 
@@ -198,7 +198,7 @@
 
 .compress-size-value {
   color: var(--md-sys-color-on-surface);
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
 }
 
 .compress-size-arrow {
@@ -212,7 +212,7 @@
   border-radius: 12px;
   font-size: 0.75rem;
   font-weight: 600;
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
   align-self: flex-start;
 }
 
@@ -252,7 +252,9 @@
   font-weight: 500;
   cursor: pointer;
   border: none;
-  transition: background-color 0.15s ease, opacity 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    opacity 0.15s ease;
 }
 
 .compress-action-btn:disabled {
@@ -340,4 +342,3 @@
     transition: none;
   }
 }
-

@@ -34,9 +34,7 @@ test.describe("JSON比較ツール (/json-compare)", () => {
     await expect(clearBtn).toBeVisible();
   });
 
-  test("サンプル読込で両方のテキストエリアにJSONが入力される", async ({
-    page,
-  }) => {
+  test("サンプル読込で両方のテキストエリアにJSONが入力される", async ({ page }) => {
     await page.getByRole("button", { name: "サンプルJSONを読み込む" }).click();
     const leftValue = await page.locator("#leftJson").inputValue();
     const rightValue = await page.locator("#rightJson").inputValue();

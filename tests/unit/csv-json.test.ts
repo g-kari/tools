@@ -107,7 +107,10 @@ describe("jsonToCsv", () => {
 
   describe("配列の配列の変換", () => {
     it("配列の配列をCSVに変換する（ヘッダー行なし）", () => {
-      const json = JSON.stringify([["1", "2"], ["3", "4"]]);
+      const json = JSON.stringify([
+        ["1", "2"],
+        ["3", "4"],
+      ]);
       const result = jsonToCsv(json, ",");
       expect(result).toBe("1,2\n3,4");
     });
@@ -120,7 +123,7 @@ describe("jsonToCsv", () => {
 
     it("配列でないJSONでエラーをスローする", () => {
       expect(() => jsonToCsv('{"a": 1}', ",")).toThrow(
-        "JSONはオブジェクトの配列または配列の配列である必要があります"
+        "JSONはオブジェクトの配列または配列の配列である必要があります",
       );
     });
 
@@ -130,7 +133,7 @@ describe("jsonToCsv", () => {
 
     it("プリミティブの配列でエラーをスローする", () => {
       expect(() => jsonToCsv("[1, 2, 3]", ",")).toThrow(
-        "JSONはオブジェクトの配列または配列の配列である必要があります"
+        "JSONはオブジェクトの配列または配列の配列である必要があります",
       );
     });
   });

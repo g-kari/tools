@@ -8,8 +8,7 @@
  */
 
 /** デフォルトのアルファベット（URL セーフ、64 文字） */
-export const DEFAULT_ALPHABET =
-  "useandom-26T198340PX75pxJACKVERYMINDBUSHWOLF_GQZbfghjklqvwyzrict";
+export const DEFAULT_ALPHABET = "useandom-26T198340PX75pxJACKVERYMINDBUSHWOLF_GQZbfghjklqvwyzrict";
 
 /** デフォルトの ID サイズ */
 export const DEFAULT_SIZE = 21;
@@ -56,7 +55,7 @@ export type PresetKey = keyof typeof PRESET_ALPHABETS;
  */
 export function generateNanoId(
   size: number = DEFAULT_SIZE,
-  alphabet: string = DEFAULT_ALPHABET
+  alphabet: string = DEFAULT_ALPHABET,
 ): string {
   if (alphabet.length === 0) {
     throw new Error("アルファベットを 1 文字以上指定してください");
@@ -95,7 +94,7 @@ export function generateNanoId(
 export function calculateCollisionProbability(
   size: number,
   alphabet: string,
-  count: number = 1_000_000
+  count: number = 1_000_000,
 ): string {
   const combinations = Math.pow(alphabet.length, size);
   // Birthday problem approximation: P ≈ n² / (2 * N)

@@ -26,7 +26,7 @@ test.describe("ゼロ幅文字検出・除去ページ", () => {
     await page.locator("#zw-input").fill("Hello World");
     await expect(page.locator("[data-testid='zw-clean-message']")).toBeVisible();
     await expect(page.locator("[data-testid='zw-clean-message']")).toContainText(
-      "ゼロ幅文字・不可視文字は見つかりませんでした"
+      "ゼロ幅文字・不可視文字は見つかりませんでした",
     );
   });
 
@@ -45,9 +45,7 @@ test.describe("ゼロ幅文字検出・除去ページ", () => {
 
   test("サンプル読み込み後に検出結果テーブルが表示される", async ({ page }) => {
     await page.getByRole("button", { name: "サンプル" }).click();
-    await expect(
-      page.locator("table[aria-label='検出されたゼロ幅文字の一覧']")
-    ).toBeVisible();
+    await expect(page.locator("table[aria-label='検出されたゼロ幅文字の一覧']")).toBeVisible();
   });
 
   test("サンプル読み込み後にクリーン済みテキストエリアが表示される", async ({ page }) => {
@@ -82,8 +80,6 @@ test.describe("ゼロ幅文字検出・除去ページ", () => {
 
   test("テキスト未入力時は検出結果セクションが表示されない", async ({ page }) => {
     await expect(page.locator("#zw-clean-output")).not.toBeVisible();
-    await expect(
-      page.locator("table[aria-label='検出されたゼロ幅文字の一覧']")
-    ).not.toBeVisible();
+    await expect(page.locator("table[aria-label='検出されたゼロ幅文字の一覧']")).not.toBeVisible();
   });
 });

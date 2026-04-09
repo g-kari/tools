@@ -44,9 +44,7 @@ export function bodyToLines(body: string): string[] {
  * @param snippets スニペット定義の配列
  * @returns 整形済み JSON 文字列
  */
-export function generateVscodeSnippetJson(
-  snippets: SnippetDefinition[]
-): GenerateResult {
+export function generateVscodeSnippetJson(snippets: SnippetDefinition[]): GenerateResult {
   const obj: Record<string, VscodeSnippetEntry> = {};
 
   for (const snippet of snippets) {

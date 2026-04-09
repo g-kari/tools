@@ -62,7 +62,7 @@
 }
 
 .cg-prop-label code {
-  font-family: 'Consolas', 'Monaco', monospace;
+  font-family: "Consolas", "Monaco", monospace;
   background: var(--md-sys-color-surface-container);
   padding: 1px 4px;
   border-radius: 3px;
@@ -94,7 +94,7 @@
   background: var(--md-sys-color-surface);
   color: var(--md-sys-color-on-surface);
   font-size: 0.85rem;
-  font-family: 'Consolas', 'Monaco', monospace;
+  font-family: "Consolas", "Monaco", monospace;
   transition: border-color 0.15s;
 }
 
@@ -245,7 +245,7 @@
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: 4px;
   padding: 12px;
-  font-family: 'Consolas', 'Monaco', monospace;
+  font-family: "Consolas", "Monaco", monospace;
   font-size: 0.8rem;
   color: var(--md-sys-color-on-surface);
   overflow-x: auto;

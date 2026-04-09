@@ -79,9 +79,7 @@ describe("computeSriHash", () => {
     const data = new Uint8Array(0);
     const result = await computeSriHash("sha256", data);
     expect(result.hash).toBe("47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=");
-    expect(result.integrity).toBe(
-      "sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=",
-    );
+    expect(result.integrity).toBe("sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=");
   });
 });
 
@@ -97,9 +95,7 @@ describe("computeAllSriHashes", () => {
   it("各結果に正しい integrity 値が含まれる", async () => {
     const results = await computeAllSriHashes("test content");
     for (const result of results) {
-      expect(result.integrity).toMatch(
-        /^(sha256|sha384|sha512)-[A-Za-z0-9+/]+=*$/,
-      );
+      expect(result.integrity).toMatch(/^(sha256|sha384|sha512)-[A-Za-z0-9+/]+=*$/);
     }
   });
 
@@ -122,9 +118,7 @@ describe("computeAllSriHashesFromBytes", () => {
   it("テキストと同一バイト列から同じハッシュが生成される", async () => {
     const text = "consistency check";
     const textResults = await computeAllSriHashes(text);
-    const byteResults = await computeAllSriHashesFromBytes(
-      new TextEncoder().encode(text),
-    );
+    const byteResults = await computeAllSriHashesFromBytes(new TextEncoder().encode(text));
     for (let i = 0; i < 3; i++) {
       expect(textResults[i].integrity).toBe(byteResults[i].integrity);
     }

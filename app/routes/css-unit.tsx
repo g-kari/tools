@@ -1,13 +1,10 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
-import { useState, useMemo, useCallback } from 'react';
-import { useToast } from '../components/Toast';
-import { TipsCard } from '~/components/TipsCard';
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from '~/hooks/useStatusAnnouncement';
-import { useClipboard } from '~/hooks/useClipboard';
+import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
+import { useState, useMemo, useCallback } from "react";
+import { useToast } from "../components/Toast";
+import { TipsCard } from "~/components/TipsCard";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
+import { useClipboard } from "~/hooks/useClipboard";
 import {
   CSS_UNITS,
   DEFAULT_CONTEXT,
@@ -15,30 +12,29 @@ import {
   formatCssValue,
   type CssUnitId,
   type CssConversionContext,
-} from '~/utils/css-unit';
+} from "~/utils/css-unit";
 
-export const Route = createFileRoute('/css-unit')({
+export const Route = createFileRoute("/css-unit")({
   head: () => ({
     meta: [
-      { title: 'CSS単位変換 | Web ツール集' },
+      { title: "CSS単位変換 | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          'px・rem・em・vw・vh・%・pt・cm・mm・in などの CSS 単位をリアルタイムで相互変換。ベースフォントサイズやビューポートサイズも設定可能。',
+          "px・rem・em・vw・vh・%・pt・cm・mm・in などの CSS 単位をリアルタイムで相互変換。ベースフォントサイズやビューポートサイズも設定可能。",
       },
-      { property: 'og:title', content: 'CSS単位変換 | Web ツール集' },
+      { property: "og:title", content: "CSS単位変換 | Web ツール集" },
       {
-        property: 'og:description',
-        content:
-          'CSS 単位（px/rem/em/vw/vh/%/pt/cm/mm/in）をリアルタイム相互変換するツール。',
+        property: "og:description",
+        content: "CSS 単位（px/rem/em/vw/vh/%/pt/cm/mm/in）をリアルタイム相互変換するツール。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/css-unit` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
-      { name: 'twitter:title', content: 'CSS単位変換 | Web ツール集' },
+      { property: "og:url", content: `${SITE_BASE_URL}/css-unit` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "CSS単位変換 | Web ツール集" },
       {
-        name: 'twitter:description',
-        content: 'CSS 単位をリアルタイムで相互変換するツール。',
+        name: "twitter:description",
+        content: "CSS 単位をリアルタイムで相互変換するツール。",
       },
     ],
   }),
@@ -47,7 +43,7 @@ export const Route = createFileRoute('/css-unit')({
 
 /** 数値入力のパース（正の有限数のみ許可） */
 function parsePositiveNumber(s: string): number | null {
-  if (s.trim() === '') return null;
+  if (s.trim() === "") return null;
   const n = parseFloat(s);
   if (!Number.isFinite(n) || n <= 0) return null;
   return n;
@@ -55,7 +51,7 @@ function parsePositiveNumber(s: string): number | null {
 
 /** 入力値のパース（任意の有限数を許可） */
 function parseFiniteNumber(s: string): number | null {
-  if (s.trim() === '') return null;
+  if (s.trim() === "") return null;
   const n = parseFloat(s);
   if (!Number.isFinite(n)) return null;
   return n;
@@ -67,29 +63,26 @@ function CssUnitConverter() {
   const { announceStatus, statusRef } = useStatusAnnouncement();
 
   // 入力値と変換元単位
-  const [inputValue, setInputValue] = useState('16');
-  const [fromUnit, setFromUnit] = useState<CssUnitId>('px');
+  const [inputValue, setInputValue] = useState("16");
+  const [fromUnit, setFromUnit] = useState<CssUnitId>("px");
 
   // 設定パネルの開閉
   const [settingsOpen, setSettingsOpen] = useState(false);
 
   // コンテキスト設定
-  const [rootFontSizeStr, setRootFontSizeStr] = useState('16');
-  const [parentFontSizeStr, setParentFontSizeStr] = useState('16');
-  const [viewportWidthStr, setViewportWidthStr] = useState('1920');
-  const [viewportHeightStr, setViewportHeightStr] = useState('1080');
-  const [parentSizeStr, setParentSizeStr] = useState('1000');
+  const [rootFontSizeStr, setRootFontSizeStr] = useState("16");
+  const [parentFontSizeStr, setParentFontSizeStr] = useState("16");
+  const [viewportWidthStr, setViewportWidthStr] = useState("1920");
+  const [viewportHeightStr, setViewportHeightStr] = useState("1080");
+  const [parentSizeStr, setParentSizeStr] = useState("1000");
 
   // コンテキストオブジェクト
   const ctx: CssConversionContext = useMemo(
     () => ({
       rootFontSize: parsePositiveNumber(rootFontSizeStr) ?? DEFAULT_CONTEXT.rootFontSize,
-      parentFontSize:
-        parsePositiveNumber(parentFontSizeStr) ?? DEFAULT_CONTEXT.parentFontSize,
-      viewportWidth:
-        parsePositiveNumber(viewportWidthStr) ?? DEFAULT_CONTEXT.viewportWidth,
-      viewportHeight:
-        parsePositiveNumber(viewportHeightStr) ?? DEFAULT_CONTEXT.viewportHeight,
+      parentFontSize: parsePositiveNumber(parentFontSizeStr) ?? DEFAULT_CONTEXT.parentFontSize,
+      viewportWidth: parsePositiveNumber(viewportWidthStr) ?? DEFAULT_CONTEXT.viewportWidth,
+      viewportHeight: parsePositiveNumber(viewportHeightStr) ?? DEFAULT_CONTEXT.viewportHeight,
       parentSize: parsePositiveNumber(parentSizeStr) ?? DEFAULT_CONTEXT.parentSize,
     }),
     [rootFontSizeStr, parentFontSizeStr, viewportWidthStr, viewportHeightStr, parentSizeStr],
@@ -109,23 +102,20 @@ function CssUnitConverter() {
       const text = `${formatCssValue(value)}${unitId}`;
       const success = await copy(text);
       if (success) {
-        showToast(`${text} をコピーしました`, 'success');
+        showToast(`${text} をコピーしました`, "success");
         announceStatus(`${text} をコピーしました`);
       } else {
-        showToast('コピーに失敗しました', 'error');
+        showToast("コピーに失敗しました", "error");
       }
     },
     [copy, showToast, announceStatus],
   );
 
-  const handleUnitClick = useCallback(
-    (unitId: CssUnitId, value: number | null) => {
-      if (value === null) return;
-      setFromUnit(unitId);
-      setInputValue(formatCssValue(value));
-    },
-    [],
-  );
+  const handleUnitClick = useCallback((unitId: CssUnitId, value: number | null) => {
+    if (value === null) return;
+    setFromUnit(unitId);
+    setInputValue(formatCssValue(value));
+  }, []);
 
   return (
     <>
@@ -154,7 +144,7 @@ function CssUnitConverter() {
                 <button
                   key={u.id}
                   type="button"
-                  className={`css-unit-tab${fromUnit === u.id ? ' active' : ''}`}
+                  className={`css-unit-tab${fromUnit === u.id ? " active" : ""}`}
                   onClick={() => setFromUnit(u.id)}
                   aria-pressed={fromUnit === u.id}
                   aria-label={`${u.name}: ${u.description}`}
@@ -175,7 +165,7 @@ function CssUnitConverter() {
           <summary className="css-unit-settings-summary">
             <span>⚙ 設定（コンテキスト依存単位の基準値）</span>
             <span className="css-unit-settings-arrow" aria-hidden="true">
-              {settingsOpen ? '▲' : '▼'}
+              {settingsOpen ? "▲" : "▼"}
             </span>
           </summary>
           <div className="css-unit-settings-grid">
@@ -273,11 +263,7 @@ function CssUnitConverter() {
 
         {/* 変換結果グリッド */}
         {results !== null ? (
-          <div
-            className="css-unit-results"
-            role="list"
-            aria-label="CSS 単位変換結果"
-          >
+          <div className="css-unit-results" role="list" aria-label="CSS 単位変換結果">
             {CSS_UNITS.map((unit) => {
               const value = results[unit.id];
               const formatted = value !== null ? formatCssValue(value) : null;
@@ -286,7 +272,7 @@ function CssUnitConverter() {
               return (
                 <div
                   key={unit.id}
-                  className={`css-unit-result-item${isActive ? ' active' : ''}`}
+                  className={`css-unit-result-item${isActive ? " active" : ""}`}
                   role="listitem"
                 >
                   <div className="css-unit-result-header">
@@ -311,13 +297,11 @@ function CssUnitConverter() {
                       aria-label={
                         formatted !== null
                           ? `${formatted}${unit.id} をクリックして入力欄に設定`
-                          : '計算できません'
+                          : "計算できません"
                       }
                       title="クリックすると入力欄にセット"
                     >
-                      <code>
-                        {formatted !== null ? `${formatted}${unit.id}` : '—'}
-                      </code>
+                      <code>{formatted !== null ? `${formatted}${unit.id}` : "—"}</code>
                     </button>
                     <button
                       type="button"
@@ -342,24 +326,24 @@ function CssUnitConverter() {
         <TipsCard
           sections={[
             {
-              title: '使い方',
+              title: "使い方",
               items: [
-                '「値」に数値を入力し、変換元の単位を選択すると全単位への変換結果を一覧表示します',
-                '結果の値をクリックすると、その値を入力欄に反映して別単位から再変換できます',
-                '「コピー」ボタンで「値+単位」をクリップボードにコピーします',
-                '「設定」を開くと rem・em・vw・vh・% の基準値を変更できます',
+                "「値」に数値を入力し、変換元の単位を選択すると全単位への変換結果を一覧表示します",
+                "結果の値をクリックすると、その値を入力欄に反映して別単位から再変換できます",
+                "「コピー」ボタンで「値+単位」をクリップボードにコピーします",
+                "「設定」を開くと rem・em・vw・vh・% の基準値を変更できます",
               ],
             },
             {
-              title: '単位の説明',
+              title: "単位の説明",
               items: [
-                'px — 画面のピクセル数。最も基本的な絶対単位',
-                'rem — ルート要素（html）のフォントサイズ基準（通常 16px）',
-                'em — 親要素のフォントサイズ基準（ネスト構造に注意）',
-                'vw / vh — ビューポートの幅 / 高さの 1%',
-                '% — 親要素のサイズの 1%',
-                'pt / pc — 印刷用単位（1pt ≈ 1.333px、1pc = 16px）',
-                'cm / mm / in — 実際の物理的な長さ（96dpi 基準）',
+                "px — 画面のピクセル数。最も基本的な絶対単位",
+                "rem — ルート要素（html）のフォントサイズ基準（通常 16px）",
+                "em — 親要素のフォントサイズ基準（ネスト構造に注意）",
+                "vw / vh — ビューポートの幅 / 高さの 1%",
+                "% — 親要素のサイズの 1%",
+                "pt / pc — 印刷用単位（1pt ≈ 1.333px、1pc = 16px）",
+                "cm / mm / in — 実際の物理的な長さ（96dpi 基準）",
               ],
             },
           ]}

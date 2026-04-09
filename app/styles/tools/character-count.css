@@ -23,7 +23,7 @@
 .count-value {
   font-size: 1.5rem;
   font-weight: 500;
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
   color: var(--md-sys-color-primary);
 }
 
@@ -36,4 +36,3 @@
     font-size: 1.25rem;
   }
 }
-

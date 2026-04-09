@@ -103,10 +103,7 @@ function isValidIPv6(ip: string): boolean {
   if (ip.includes(":::")) return false;
 
   // Reject leading/trailing single colons (but allow :: at start/end)
-  if (
-    (ip.startsWith(":") && !ip.startsWith("::")) ||
-    (ip.endsWith(":") && !ip.endsWith("::"))
-  ) {
+  if ((ip.startsWith(":") && !ip.startsWith("::")) || (ip.endsWith(":") && !ip.endsWith("::"))) {
     return false;
   }
 
@@ -188,8 +185,7 @@ async function queryIpApi(ip: string): Promise<IpGeolocationResult> {
       if (response.status === 429) {
         return {
           ip,
-          error:
-            "リクエスト制限に達しました。しばらく待ってから再度お試しください",
+          error: "リクエスト制限に達しました。しばらく待ってから再度お試しください",
         };
       }
       return {
@@ -237,8 +233,7 @@ async function queryIpApi(ip: string): Promise<IpGeolocationResult> {
   } catch (err) {
     return {
       ip,
-      error:
-        err instanceof Error ? err.message : "通信エラーが発生しました",
+      error: err instanceof Error ? err.message : "通信エラーが発生しました",
     };
   }
 }

@@ -154,7 +154,10 @@ describe("fromRoman - ローマ数字 → アラビア数字", () => {
 
 describe("toRoman と fromRoman の往復変換", () => {
   it("1〜3999の全整数で往復変換が一致する（代表値）", () => {
-    const testValues = [1, 2, 3, 4, 5, 9, 10, 14, 40, 49, 50, 90, 99, 100, 399, 400, 499, 500, 899, 900, 999, 1000, 1999, 2000, 2024, 3000, 3999];
+    const testValues = [
+      1, 2, 3, 4, 5, 9, 10, 14, 40, 49, 50, 90, 99, 100, 399, 400, 499, 500, 899, 900, 999, 1000,
+      1999, 2000, 2024, 3000, 3999,
+    ];
     for (const n of testValues) {
       const roman = toRoman(n);
       expect(roman).not.toBeNull();

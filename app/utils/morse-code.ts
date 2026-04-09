@@ -8,64 +8,64 @@
  * A-Z, 0-9, および基本的な記号をサポート
  */
 export const MORSE_CODE_MAP: Record<string, string> = {
-  A: '.-',
-  B: '-...',
-  C: '-.-.',
-  D: '-..',
-  E: '.',
-  F: '..-.',
-  G: '--.',
-  H: '....',
-  I: '..',
-  J: '.---',
-  K: '-.-',
-  L: '.-..',
-  M: '--',
-  N: '-.',
-  O: '---',
-  P: '.--.',
-  Q: '--.-',
-  R: '.-.',
-  S: '...',
-  T: '-',
-  U: '..-',
-  V: '...-',
-  W: '.--',
-  X: '-..-',
-  Y: '-.--',
-  Z: '--..',
-  '0': '-----',
-  '1': '.----',
-  '2': '..---',
-  '3': '...--',
-  '4': '....-',
-  '5': '.....',
-  '6': '-....',
-  '7': '--...',
-  '8': '---..',
-  '9': '----.',
-  '.': '.-.-.-',
-  ',': '--..--',
-  '?': '..--..',
-  "'": '.----.',
-  '!': '-.-.--',
-  '/': '-..-.',
-  '(': '-.--.',
-  ')': '-.--.-',
-  '&': '.-...',
-  ':': '---...',
-  ';': '-.-.-.',
-  '=': '-...-',
-  '+': '.-.-.',
-  '-': '-....-',
-  _: '..--.-',
-  '"': '.-..-.',
-  $: '...-..-',
-  '@': '.--.-.',
+  A: ".-",
+  B: "-...",
+  C: "-.-.",
+  D: "-..",
+  E: ".",
+  F: "..-.",
+  G: "--.",
+  H: "....",
+  I: "..",
+  J: ".---",
+  K: "-.-",
+  L: ".-..",
+  M: "--",
+  N: "-.",
+  O: "---",
+  P: ".--.",
+  Q: "--.-",
+  R: ".-.",
+  S: "...",
+  T: "-",
+  U: "..-",
+  V: "...-",
+  W: ".--",
+  X: "-..-",
+  Y: "-.--",
+  Z: "--..",
+  "0": "-----",
+  "1": ".----",
+  "2": "..---",
+  "3": "...--",
+  "4": "....-",
+  "5": ".....",
+  "6": "-....",
+  "7": "--...",
+  "8": "---..",
+  "9": "----.",
+  ".": ".-.-.-",
+  ",": "--..--",
+  "?": "..--..",
+  "'": ".----.",
+  "!": "-.-.--",
+  "/": "-..-.",
+  "(": "-.--.",
+  ")": "-.--.-",
+  "&": ".-...",
+  ":": "---...",
+  ";": "-.-.-.",
+  "=": "-...-",
+  "+": ".-.-.",
+  "-": "-....-",
+  _: "..--.-",
+  '"': ".-..-.",
+  $: "...-..-",
+  "@": ".--.-.",
   // スペースは実際には textToMorse の特別ケース処理で "/" に変換される。
   // このエントリは REVERSE_MORSE_MAP の自動生成から除外されないが、
   // morseToText では "/" を単語区切りとして直接扱うため実質的に使われない。
-  ' ': '/',
+  " ": "/",
 };
 
 /**
@@ -73,7 +73,7 @@ export const MORSE_CODE_MAP: Record<string, string> = {
  * MORSE_CODE_MAPから自動生成
  */
 export const REVERSE_MORSE_MAP: Record<string, string> = Object.fromEntries(
-  Object.entries(MORSE_CODE_MAP).map(([char, morse]) => [morse, char])
+  Object.entries(MORSE_CODE_MAP).map(([char, morse]) => [morse, char]),
 );
 
 /**
@@ -82,7 +82,7 @@ export const REVERSE_MORSE_MAP: Record<string, string> = Object.fromEntries(
  * @returns Morse Code文字列（文字間はスペース、単語間は " / "）
  */
 export function textToMorse(text: string): string {
-  if (!text) return '';
+  if (!text) return "";
 
   const upperText = text.toUpperCase();
   const result: string[] = [];
@@ -90,11 +90,11 @@ export function textToMorse(text: string): string {
   for (let i = 0; i < upperText.length; i++) {
     const char = upperText[i];
 
-    if (char === ' ') {
+    if (char === " ") {
       // 単語区切りは "/"
       // 直前に既に文字が追加されている場合のみ追加
-      if (result.length > 0 && result[result.length - 1] !== '/') {
-        result.push('/');
+      if (result.length > 0 && result[result.length - 1] !== "/") {
+        result.push("/");
       }
     } else {
       const morse = MORSE_CODE_MAP[char];
@@ -102,12 +102,12 @@ export function textToMorse(text: string): string {
         result.push(morse);
       } else {
         // 変換できない文字は "?" で表す
-        result.push('?');
+        result.push("?");
       }
     }
   }
 
-  return result.join(' ');
+  return result.join(" ");
 }
 
 /**
@@ -116,7 +116,7 @@ export function textToMorse(text: string): string {
  * @returns テキスト文字列
  */
 export function morseToText(morse: string): string {
-  if (!morse.trim()) return '';
+  if (!morse.trim()) return "";
 
   // 単語区切り "/" で分割
   const words = morse.split(/\s*\/\s*/);
@@ -137,16 +137,16 @@ export function morseToText(morse: string): string {
         wordChars.push(char);
       } else {
         // 変換できないモールス符号は "?" で表す
-        wordChars.push('?');
+        wordChars.push("?");
       }
     }
 
     if (wordChars.length > 0) {
-      result.push(wordChars.join(''));
+      result.push(wordChars.join(""));
     }
   }
 
-  return result.join(' ');
+  return result.join(" ");
 }
 
 /**

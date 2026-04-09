@@ -61,11 +61,7 @@ export function validateLoanParams(params: LoanParams): string | null {
   if (params.annualRate > 100) {
     return "年利率は 100% 以下にしてください";
   }
-  if (
-    !isFinite(params.termYears) ||
-    params.termYears <= 0 ||
-    !Number.isInteger(params.termYears)
-  ) {
+  if (!isFinite(params.termYears) || params.termYears <= 0 || !Number.isInteger(params.termYears)) {
     return "返済期間は 1 年以上の整数を入力してください";
   }
   if (params.termYears > 50) {
@@ -85,7 +81,7 @@ export function validateLoanParams(params: LoanParams): string | null {
 export function calcEqualPaymentMonthly(
   principal: number,
   monthlyRate: number,
-  totalMonths: number
+  totalMonths: number,
 ): number {
   if (monthlyRate === 0) {
     return principal / totalMonths;
@@ -103,11 +99,7 @@ export function calcEqualPaymentMonthly(
 function buildEqualPaymentSchedule(params: LoanParams): PaymentSchedule[] {
   const totalMonths = params.termYears * 12;
   const monthlyRate = params.annualRate / 100 / 12;
-  const monthlyPayment = calcEqualPaymentMonthly(
-    params.principal,
-    monthlyRate,
-    totalMonths
-  );
+  const monthlyPayment = calcEqualPaymentMonthly(params.principal, monthlyRate, totalMonths);
 
   const schedule: PaymentSchedule[] = [];
   let balance = params.principal;
@@ -154,8 +146,7 @@ function buildEqualPrincipalSchedule(params: LoanParams): PaymentSchedule[] {
 
   for (let month = 1; month <= totalMonths; month++) {
     const interestPart = balance * monthlyRate;
-    const principalPart =
-      month === totalMonths ? balance : monthlyPrincipal;
+    const principalPart = month === totalMonths ? balance : monthlyPrincipal;
     const payment = principalPart + interestPart;
 
     balance = Math.max(0, balance - principalPart);

@@ -1,40 +1,40 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useState, useCallback, useMemo } from 'react';
-import { useToast } from '~/components/Toast';
-import { useClipboard } from '~/hooks/useClipboard';
-import { StatusAnnouncer, useStatusAnnouncement } from '~/hooks/useStatusAnnouncement';
-import { TipsCard } from '~/components/TipsCard';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
+import { createFileRoute } from "@tanstack/react-router";
+import { useState, useCallback, useMemo } from "react";
+import { useToast } from "~/components/Toast";
+import { useClipboard } from "~/hooks/useClipboard";
+import { StatusAnnouncer, useStatusAnnouncement } from "~/hooks/useStatusAnnouncement";
+import { TipsCard } from "~/components/TipsCard";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import {
   generateSql,
   isCsvSqlError,
   DEFAULT_OPTIONS,
   type CsvSqlOptions,
   type SqlDialect,
-} from '~/utils/csv-sql';
-import '../styles/tools/csv-sql.css';
+} from "~/utils/csv-sql";
+import "../styles/tools/csv-sql.css";
 
-export const Route = createFileRoute('/csv-sql')({
+export const Route = createFileRoute("/csv-sql")({
   head: () => ({
     meta: [
-      { title: 'CSV → SQL INSERT文ジェネレーター | Web ツール集' },
+      { title: "CSV → SQL INSERT文ジェネレーター | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          'CSVデータからSQL INSERT文を自動生成するツール。MySQL・PostgreSQL・SQLite・SQL Server に対応。バッチINSERT、NULL変換、数値・ブーリアン自動検出に対応。',
+          "CSVデータからSQL INSERT文を自動生成するツール。MySQL・PostgreSQL・SQLite・SQL Server に対応。バッチINSERT、NULL変換、数値・ブーリアン自動検出に対応。",
       },
-      { property: 'og:title', content: 'CSV → SQL INSERT文ジェネレーター | Web ツール集' },
+      { property: "og:title", content: "CSV → SQL INSERT文ジェネレーター | Web ツール集" },
       {
-        property: 'og:description',
-        content: 'CSVデータからSQL INSERT文を自動生成。MySQL・PostgreSQL・SQLite・SQL Server対応。',
+        property: "og:description",
+        content: "CSVデータからSQL INSERT文を自動生成。MySQL・PostgreSQL・SQLite・SQL Server対応。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/csv-sql` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
-      { name: 'twitter:title', content: 'CSV → SQL INSERT文ジェネレーター | Web ツール集' },
+      { property: "og:url", content: `${SITE_BASE_URL}/csv-sql` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "CSV → SQL INSERT文ジェネレーター | Web ツール集" },
       {
-        name: 'twitter:description',
-        content: 'CSVデータからSQL INSERT文を自動生成。MySQL・PostgreSQL・SQLite・SQL Server対応。',
+        name: "twitter:description",
+        content: "CSVデータからSQL INSERT文を自動生成。MySQL・PostgreSQL・SQLite・SQL Server対応。",
       },
     ],
   }),
@@ -61,7 +61,7 @@ function CsvSqlGenerator() {
   const { copy } = useClipboard();
   const { statusRef, announceStatus } = useStatusAnnouncement();
 
-  const [csvInput, setCsvInput] = useState('');
+  const [csvInput, setCsvInput] = useState("");
   const [options, setOptions] = useState<CsvSqlOptions>({ ...DEFAULT_OPTIONS });
 
   // SQL 生成（リアルタイム）
@@ -71,7 +71,7 @@ function CsvSqlGenerator() {
   }, [csvInput, options]);
 
   const isError = result !== null && isCsvSqlError(result);
-  const sqlOutput = result !== null && !isCsvSqlError(result) ? result.sql : '';
+  const sqlOutput = result !== null && !isCsvSqlError(result) ? result.sql : "";
 
   const handleOptionChange = useCallback(
     <K extends keyof CsvSqlOptions>(key: K, value: CsvSqlOptions[K]) => {
@@ -84,21 +84,21 @@ function CsvSqlGenerator() {
     if (!sqlOutput) return;
     const ok = await copy(sqlOutput);
     if (ok) {
-      showToast('SQL をコピーしました', 'success');
-      announceStatus('SQL をクリップボードにコピーしました');
+      showToast("SQL をコピーしました", "success");
+      announceStatus("SQL をクリップボードにコピーしました");
     } else {
-      showToast('コピーに失敗しました', 'error');
+      showToast("コピーに失敗しました", "error");
     }
   }, [sqlOutput, copy, showToast, announceStatus]);
 
   const handleClear = useCallback(() => {
-    setCsvInput('');
-    announceStatus('入力をクリアしました');
+    setCsvInput("");
+    announceStatus("入力をクリアしました");
   }, [announceStatus]);
 
   const handleLoadSample = useCallback(() => {
     setCsvInput(SAMPLE_CSV);
-    announceStatus('サンプルデータを読み込みました');
+    announceStatus("サンプルデータを読み込みました");
   }, [announceStatus]);
 
   return (
@@ -116,7 +116,7 @@ function CsvSqlGenerator() {
               type="text"
               className="csv-sql-input"
               value={options.tableName}
-              onChange={(e) => handleOptionChange('tableName', e.target.value)}
+              onChange={(e) => handleOptionChange("tableName", e.target.value)}
               placeholder="my_table"
               aria-label="テーブル名"
             />
@@ -131,7 +131,7 @@ function CsvSqlGenerator() {
               id="csv-sql-dialect"
               className="csv-sql-select"
               value={options.dialect}
-              onChange={(e) => handleOptionChange('dialect', e.target.value as SqlDialect)}
+              onChange={(e) => handleOptionChange("dialect", e.target.value as SqlDialect)}
               aria-label="SQLダイアレクト"
             >
               <option value="mysql">MySQL</option>
@@ -154,7 +154,7 @@ function CsvSqlGenerator() {
               min={1}
               max={1000}
               onChange={(e) =>
-                handleOptionChange('batchSize', Math.max(1, parseInt(e.target.value, 10) || 1))
+                handleOptionChange("batchSize", Math.max(1, parseInt(e.target.value, 10) || 1))
               }
               aria-label="バッチサイズ"
             />
@@ -167,7 +167,7 @@ function CsvSqlGenerator() {
             <input
               type="checkbox"
               checked={options.hasHeader}
-              onChange={(e) => handleOptionChange('hasHeader', e.target.checked)}
+              onChange={(e) => handleOptionChange("hasHeader", e.target.checked)}
               aria-label="1行目をヘッダーとして使用"
             />
             1行目をヘッダーとして使用
@@ -176,7 +176,7 @@ function CsvSqlGenerator() {
             <input
               type="checkbox"
               checked={options.convertNull}
-              onChange={(e) => handleOptionChange('convertNull', e.target.checked)}
+              onChange={(e) => handleOptionChange("convertNull", e.target.checked)}
               aria-label="空値・NULLをSQL NULLに変換"
             />
             空値・NULL を SQL NULL に変換
@@ -185,7 +185,7 @@ function CsvSqlGenerator() {
             <input
               type="checkbox"
               checked={options.detectNumbers}
-              onChange={(e) => handleOptionChange('detectNumbers', e.target.checked)}
+              onChange={(e) => handleOptionChange("detectNumbers", e.target.checked)}
               aria-label="数値を自動検出"
             />
             数値を自動検出（クォートなし）
@@ -194,7 +194,7 @@ function CsvSqlGenerator() {
             <input
               type="checkbox"
               checked={options.detectBooleans}
-              onChange={(e) => handleOptionChange('detectBooleans', e.target.checked)}
+              onChange={(e) => handleOptionChange("detectBooleans", e.target.checked)}
               aria-label="ブーリアンを自動検出"
             />
             ブーリアン (true/false) を自動検出
@@ -211,7 +211,9 @@ function CsvSqlGenerator() {
             className="csv-sql-textarea"
             value={csvInput}
             onChange={(e) => setCsvInput(e.target.value)}
-            placeholder={'id,name,email\n1,田中太郎,taro@example.com\n2,佐藤花子,hanako@example.com'}
+            placeholder={
+              "id,name,email\n1,田中太郎,taro@example.com\n2,佐藤花子,hanako@example.com"
+            }
             spellCheck={false}
             aria-label="CSV入力"
           />
@@ -281,38 +283,38 @@ function CsvSqlGenerator() {
         <TipsCard
           sections={[
             {
-              title: 'CSV 形式について',
+              title: "CSV 形式について",
               items: [
-                '1行目はヘッダー行として列名に使用されます（設定で無効化可能）',
-                'ダブルクォートで囲まれたフィールドはカンマ・改行を含めることができます',
+                "1行目はヘッダー行として列名に使用されます（設定で無効化可能）",
+                "ダブルクォートで囲まれたフィールドはカンマ・改行を含めることができます",
                 '連続するダブルクォート ("") はエスケープされた引用符として扱われます',
-                'Excel・Google Sheetsからコピーしたデータもそのまま貼り付けできます',
+                "Excel・Google Sheetsからコピーしたデータもそのまま貼り付けできます",
               ],
             },
             {
-              title: 'NULL 変換について',
+              title: "NULL 変換について",
               items: [
                 '空セル・"null"・"NULL"・"N/A"・"nil" は SQL NULL に変換されます',
-                '「NULL 変換」オプションを無効にすると、すべて文字列として扱われます',
-                '数値自動検出が有効な場合、数値はクォートなしで出力されます',
+                "「NULL 変換」オプションを無効にすると、すべて文字列として扱われます",
+                "数値自動検出が有効な場合、数値はクォートなしで出力されます",
               ],
             },
             {
-              title: 'バッチ INSERT について',
+              title: "バッチ INSERT について",
               items: [
-                'バッチサイズ = 1: 各行が個別の INSERT 文になります',
-                'バッチサイズ > 1: 複数行をひとつの INSERT VALUES (...), (...) にまとめます',
-                'バッチ INSERT はパフォーマンスが向上しますが、1エラーで行全体が失敗します',
-                'MySQL では最大パケットサイズ（max_allowed_packet）に注意が必要です',
+                "バッチサイズ = 1: 各行が個別の INSERT 文になります",
+                "バッチサイズ > 1: 複数行をひとつの INSERT VALUES (...), (...) にまとめます",
+                "バッチ INSERT はパフォーマンスが向上しますが、1エラーで行全体が失敗します",
+                "MySQL では最大パケットサイズ（max_allowed_packet）に注意が必要です",
               ],
             },
             {
-              title: 'ダイアレクト別の違い',
+              title: "ダイアレクト別の違い",
               items: [
-                'MySQL: 識別子にバッククォート (`) を使用',
+                "MySQL: 識別子にバッククォート (`) を使用",
                 'PostgreSQL・SQLite: 識別子に二重引用符 (") を使用',
-                'SQL Server: 識別子に角括弧 ([]) を使用',
-                'MySQL では TRUE/FALSE の代わりに 1/0 を使用します',
+                "SQL Server: 識別子に角括弧 ([]) を使用",
+                "MySQL では TRUE/FALSE の代わりに 1/0 を使用します",
               ],
             },
           ]}

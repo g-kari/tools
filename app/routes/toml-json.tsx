@@ -75,16 +75,14 @@ export function jsonToToml(jsonStr: string): string {
   }
   if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
     throw new Error(
-      "JSONのルートはオブジェクト（{}）である必要があります。配列やプリミティブ値は変換できません"
+      "JSONのルートはオブジェクト（{}）である必要があります。配列やプリミティブ値は変換できません",
     );
   }
   try {
     return TOML.stringify(parsed as Record<string, unknown>);
   } catch (err) {
     if (err instanceof TypeError && err.message.includes("null")) {
-      throw new Error(
-        "TOMLはnull値をサポートしていません。null値を除去してから変換してください"
-      );
+      throw new Error("TOMLはnull値をサポートしていません。null値を除去してから変換してください");
     }
     throw err;
   }
@@ -94,8 +92,7 @@ export function jsonToToml(jsonStr: string): string {
  * TOML↔JSON相互変換コンポーネント
  */
 function TomlJsonConverter() {
-  const { statusRef, announceStatus, showToast, isCopied, handleCopy } =
-    useOutputCopy();
+  const { statusRef, announceStatus, showToast, isCopied, handleCopy } = useOutputCopy();
   const [mode, setMode] = useState<ConversionMode>("toml-to-json");
   const [indent, setIndent] = useState<2 | 4>(2);
   const [inputText, setInputText] = useState("");
@@ -124,8 +121,7 @@ function TomlJsonConverter() {
       }
       setOutputText(result);
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "変換に失敗しました";
+      const message = err instanceof Error ? err.message : "変換に失敗しました";
       announceStatus(`エラー: ${message}`);
       showToast(message, "error");
     }
@@ -144,8 +140,7 @@ function TomlJsonConverter() {
     setOutputText("");
   }, []);
 
-  const convertLabel =
-    mode === "toml-to-json" ? "TOML → JSON 変換" : "JSON → TOML 変換";
+  const convertLabel = mode === "toml-to-json" ? "TOML → JSON 変換" : "JSON → TOML 変換";
 
   const tomlPlaceholder =
     '[package]\nname = "my-app"\nversion = "1.0.0"\n\n[dependencies]\ntokio = "1.0"';
@@ -153,18 +148,11 @@ function TomlJsonConverter() {
   return (
     <>
       <div className="tool-container">
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          aria-label="TOML/JSON変換フォーム"
-        >
+        <form onSubmit={(e) => e.preventDefault()} aria-label="TOML/JSON変換フォーム">
           <div className="converter-section">
             <fieldset className="csv-json-mode-fieldset">
               <legend className="section-title">変換モード</legend>
-              <div
-                className="csv-json-mode-group"
-                role="group"
-                aria-label="変換モード選択"
-              >
+              <div className="csv-json-mode-group" role="group" aria-label="変換モード選択">
                 <label className="format-option">
                   <input
                     type="radio"
@@ -241,9 +229,7 @@ function TomlJsonConverter() {
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               placeholder={
-                mode === "toml-to-json"
-                  ? tomlPlaceholder
-                  : '{"name":"my-app","version":"1.0.0"}'
+                mode === "toml-to-json" ? tomlPlaceholder : '{"name":"my-app","version":"1.0.0"}'
               }
               aria-describedby="input-help"
               aria-label={
@@ -300,11 +286,7 @@ function TomlJsonConverter() {
               value={outputText}
               readOnly
               placeholder="変換結果がここに表示されます..."
-              aria-label={
-                mode === "toml-to-json"
-                  ? "JSON変換結果の出力欄"
-                  : "TOML変換結果の出力欄"
-              }
+              aria-label={mode === "toml-to-json" ? "JSON変換結果の出力欄" : "TOML変換結果の出力欄"}
               aria-live="polite"
               className="csv-json-textarea"
             />

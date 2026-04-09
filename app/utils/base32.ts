@@ -6,7 +6,7 @@
  */
 
 /** Base32 エンコード方式 */
-export type Base32Variant = 'standard' | 'hex';
+export type Base32Variant = "standard" | "hex";
 
 /** Base32 エンコード結果 */
 export interface Base32EncodeResult {
@@ -35,10 +35,10 @@ export interface Base32DecodeResult {
 // ---------------------------------------------------------------------------
 
 /** RFC 4648 Standard Base32 アルファベット (A–Z, 2–7) */
-const STANDARD_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+const STANDARD_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
 
 /** RFC 4648 Base32hex アルファベット (0–9, A–V) */
-const HEX_ALPHABET = '0123456789ABCDEFGHIJKLMNOPQRSTUV';
+const HEX_ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUV";
 
 // ---------------------------------------------------------------------------
 // 内部ヘルパー
@@ -68,7 +68,7 @@ function buildLookup(alphabet: string): Record<string, number> {
  */
 export function encodeBase32(
   text: string,
-  variant: Base32Variant = 'standard',
+  variant: Base32Variant = "standard",
   padding = true,
 ): Base32EncodeResult {
   const bytes = new TextEncoder().encode(text);
@@ -84,11 +84,11 @@ export function encodeBase32(
  */
 export function encodeBase32Bytes(
   bytes: Uint8Array,
-  variant: Base32Variant = 'standard',
+  variant: Base32Variant = "standard",
   padding = true,
 ): Base32EncodeResult {
-  const alphabet = variant === 'hex' ? HEX_ALPHABET : STANDARD_ALPHABET;
-  let result = '';
+  const alphabet = variant === "hex" ? HEX_ALPHABET : STANDARD_ALPHABET;
+  let result = "";
 
   // 5バイトを8文字（40ビット → 8×5ビット）に変換
   for (let i = 0; i < bytes.length; i += 5) {
@@ -118,7 +118,7 @@ export function encodeBase32Bytes(
   if (remainder !== 0) {
     result = result.slice(0, result.length - TRIM_COUNTS[remainder]);
     if (padding) {
-      result += '='.repeat(PAD_COUNTS[remainder]);
+      result += "=".repeat(PAD_COUNTS[remainder]);
     }
   }
 
@@ -141,23 +141,23 @@ export function encodeBase32Bytes(
  */
 export function decodeBase32(
   encoded: string,
-  variant: Base32Variant = 'standard',
+  variant: Base32Variant = "standard",
 ): Base32DecodeResult {
-  const alphabet = variant === 'hex' ? HEX_ALPHABET : STANDARD_ALPHABET;
+  const alphabet = variant === "hex" ? HEX_ALPHABET : STANDARD_ALPHABET;
   const lookup = buildLookup(alphabet);
 
   // パディング・空白を除去して大文字に正規化
-  const cleaned = encoded.toUpperCase().replace(/=+$/, '').replace(/\s/g, '');
+  const cleaned = encoded.toUpperCase().replace(/=+$/, "").replace(/\s/g, "");
 
   if (cleaned.length === 0) {
-    return { decoded: '', bytes: new Uint8Array(0), success: true };
+    return { decoded: "", bytes: new Uint8Array(0), success: true };
   }
 
   // 文字バリデーション
   for (const ch of cleaned) {
     if (lookup[ch] === undefined) {
       return {
-        decoded: '',
+        decoded: "",
         bytes: new Uint8Array(0),
         success: false,
         error: `無効な文字が含まれています: '${ch}' （使用可能: ${alphabet}）`,
@@ -170,7 +170,7 @@ export function decodeBase32(
 
   for (let i = 0; i < cleaned.length; i += 8) {
     const remaining = Math.min(8, cleaned.length - i);
-    const c = Array.from({ length: 8 }, (_, j) => lookup[cleaned[i + j] ?? ''] ?? 0);
+    const c = Array.from({ length: 8 }, (_, j) => lookup[cleaned[i + j] ?? ""] ?? 0);
 
     // 常に byte0 を出力
     outputBytes.push((c[0] << 3) | (c[1] >> 2));
@@ -197,13 +197,13 @@ export function decodeBase32(
 
   // UTF-8 変換を試みる
   try {
-    const decoded = new TextDecoder('utf-8', { fatal: true }).decode(bytes);
+    const decoded = new TextDecoder("utf-8", { fatal: true }).decode(bytes);
     return { decoded, bytes, success: true };
   } catch {
     // バイナリデータの場合は hex 表現で返す
     const hexStr = Array.from(bytes)
-      .map((b) => b.toString(16).padStart(2, '0'))
-      .join(' ');
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join(" ");
     return { decoded: hexStr, bytes, success: true };
   }
 }
@@ -218,9 +218,9 @@ export function decodeBase32(
  * @param variant - エンコード方式
  * @returns エラーメッセージ（問題なければ null）
  */
-export function validateBase32(input: string, variant: Base32Variant = 'standard'): string | null {
-  const alphabet = variant === 'hex' ? HEX_ALPHABET : STANDARD_ALPHABET;
-  const cleaned = input.toUpperCase().replace(/=+$/, '').replace(/\s/g, '');
+export function validateBase32(input: string, variant: Base32Variant = "standard"): string | null {
+  const alphabet = variant === "hex" ? HEX_ALPHABET : STANDARD_ALPHABET;
+  const cleaned = input.toUpperCase().replace(/=+$/, "").replace(/\s/g, "");
 
   if (cleaned.length === 0) return null;
 

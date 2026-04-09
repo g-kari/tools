@@ -1,8 +1,5 @@
 import { describe, expect, it } from "vite-plus/test";
-import {
-  bigIntToBase,
-  parseStringToBigInt,
-} from "../../app/utils/numberBase";
+import { bigIntToBase, parseStringToBigInt } from "../../app/utils/numberBase";
 
 describe("bigIntToBase", () => {
   describe("2進数変換", () => {

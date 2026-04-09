@@ -62,8 +62,7 @@ describe("generateCodeVerifier", () => {
 describe("generateCodeChallengeS256", () => {
   it("既知の code_verifier に対して正しい code_challenge を返す", async () => {
     // RFC 7636 Appendix B の例
-    const verifier =
-      "dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk";
+    const verifier = "dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk";
     const challenge = await generateCodeChallengeS256(verifier);
     expect(challenge).toBe("E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM");
   });

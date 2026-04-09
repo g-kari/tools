@@ -1,9 +1,5 @@
 import { describe, expect, it } from "vite-plus/test";
-import {
-  encodeRailFence,
-  decodeRailFence,
-  visualizeRailFence,
-} from "../../app/utils/rail-fence";
+import { encodeRailFence, decodeRailFence, visualizeRailFence } from "../../app/utils/rail-fence";
 
 describe("encodeRailFence", () => {
   describe("基本的な変換", () => {
@@ -75,9 +71,7 @@ describe("decodeRailFence", () => {
   });
 
   it("レール3でデコードできる（古典的な例）", () => {
-    expect(decodeRailFence("WECRLACERDSOEEFEATNEAIVDEO", 3)).toBe(
-      "WEAREDISCOVEREDFLEEAATONCE"
-    );
+    expect(decodeRailFence("WECRLACERDSOEEFEATNEAIVDEO", 3)).toBe("WEAREDISCOVEREDFLEEAATONCE");
   });
 
   it("レール数1の場合はそのまま返す", () => {
@@ -142,7 +136,7 @@ describe("visualizeRailFence", () => {
     const result = visualizeRailFence(text, 3);
     const totalChars = result.reduce(
       (sum, row) => sum + row.split("").filter((c) => c !== "·").length,
-      0
+      0,
     );
     expect(totalChars).toBe(text.length);
   });

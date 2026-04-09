@@ -13,7 +13,7 @@ export function buildColumnOrder(key: string): number[] {
   const upper = key.toUpperCase();
   const indexed = Array.from(upper).map((char, i) => ({ char, i }));
   const sorted = [...indexed].sort((a, b) =>
-    a.char !== b.char ? a.char.localeCompare(b.char) : a.i - b.i
+    a.char !== b.char ? a.char.localeCompare(b.char) : a.i - b.i,
   );
   const order = new Array<number>(upper.length);
   sorted.forEach(({ i }, rank) => {
@@ -29,7 +29,7 @@ export function buildColumnOrder(key: string): number[] {
  * @param padChar 不足セルを埋めるパディング文字（デフォルト: 'X'）
  * @returns エンコードされた暗号文（パディングを含む）
  */
-export function encodeColumnar(text: string, key: string, padChar = 'X'): string {
+export function encodeColumnar(text: string, key: string, padChar = "X"): string {
   if (!key || key.length === 0 || text.length === 0) return text;
 
   const keyLen = key.length;
@@ -49,7 +49,7 @@ export function encodeColumnar(text: string, key: string, padChar = 'X'): string
     rankToCol[rank] = col;
   });
 
-  let result = '';
+  let result = "";
   for (let rank = 0; rank < keyLen; rank++) {
     const col = rankToCol[rank];
     for (let r = 0; r < rows; r++) {
@@ -68,7 +68,7 @@ export function encodeColumnar(text: string, key: string, padChar = 'X'): string
  * @param padChar パディング文字（末尾から除去される）
  * @returns デコードされた平文（末尾パディング除去済み）
  */
-export function decodeColumnar(text: string, key: string, padChar = 'X'): string {
+export function decodeColumnar(text: string, key: string, padChar = "X"): string {
   if (!key || key.length === 0 || text.length === 0) return text;
 
   const keyLen = key.length;
@@ -90,7 +90,7 @@ export function decodeColumnar(text: string, key: string, padChar = 'X'): string
   }
 
   // 行優先で読み出す
-  let result = '';
+  let result = "";
   for (let r = 0; r < rows; r++) {
     for (let col = 0; col < keyLen; col++) {
       const ch = columns[col]?.[r];
@@ -101,7 +101,7 @@ export function decodeColumnar(text: string, key: string, padChar = 'X'): string
   }
 
   // 末尾のパディング文字を除去（列転置暗号の標準的な復号処理）
-  const pad = padChar.toUpperCase()[0] ?? 'X';
+  const pad = padChar.toUpperCase()[0] ?? "X";
   let end = result.length;
   while (end > 0 && result[end - 1] === pad) {
     end--;
@@ -119,7 +119,7 @@ export function decodeColumnar(text: string, key: string, padChar = 'X'): string
 export function buildGrid(
   text: string,
   key: string,
-  padChar = 'X'
+  padChar = "X",
 ): { char: string; isPad: boolean }[][] {
   if (!key || !text) return [];
 
@@ -132,6 +132,6 @@ export function buildGrid(
       const idx = r * keyLen + c;
       const char = padded[idx] ?? padChar;
       return { char, isPad: idx >= text.length };
-    })
+    }),
   );
 }

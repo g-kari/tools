@@ -5,20 +5,20 @@
 
 /** 自己閉じタグにすべきvoid要素 */
 const VOID_ELEMENTS = new Set([
-  'area',
-  'base',
-  'br',
-  'col',
-  'embed',
-  'hr',
-  'img',
-  'input',
-  'link',
-  'meta',
-  'param',
-  'source',
-  'track',
-  'wbr',
+  "area",
+  "base",
+  "br",
+  "col",
+  "embed",
+  "hr",
+  "img",
+  "input",
+  "link",
+  "meta",
+  "param",
+  "source",
+  "track",
+  "wbr",
 ]);
 
 /**
@@ -26,32 +26,32 @@ const VOID_ELEMENTS = new Set([
  * イベントハンドラは別途処理するため含まない
  */
 const ATTR_NAME_MAP: Record<string, string> = {
-  class: 'className',
-  for: 'htmlFor',
-  tabindex: 'tabIndex',
-  readonly: 'readOnly',
-  maxlength: 'maxLength',
-  minlength: 'minLength',
-  cellpadding: 'cellPadding',
-  cellspacing: 'cellSpacing',
-  colspan: 'colSpan',
-  rowspan: 'rowSpan',
-  frameborder: 'frameBorder',
-  allowfullscreen: 'allowFullScreen',
-  autocomplete: 'autoComplete',
-  autofocus: 'autoFocus',
-  autoplay: 'autoPlay',
-  crossorigin: 'crossOrigin',
-  enctype: 'encType',
-  hreflang: 'hrefLang',
-  accesskey: 'accessKey',
-  contenteditable: 'contentEditable',
-  spellcheck: 'spellCheck',
-  usemap: 'useMap',
-  novalidate: 'noValidate',
-  srcdoc: 'srcDoc',
-  srcset: 'srcSet',
-  inputmode: 'inputMode',
+  class: "className",
+  for: "htmlFor",
+  tabindex: "tabIndex",
+  readonly: "readOnly",
+  maxlength: "maxLength",
+  minlength: "minLength",
+  cellpadding: "cellPadding",
+  cellspacing: "cellSpacing",
+  colspan: "colSpan",
+  rowspan: "rowSpan",
+  frameborder: "frameBorder",
+  allowfullscreen: "allowFullScreen",
+  autocomplete: "autoComplete",
+  autofocus: "autoFocus",
+  autoplay: "autoPlay",
+  crossorigin: "crossOrigin",
+  enctype: "encType",
+  hreflang: "hrefLang",
+  accesskey: "accessKey",
+  contenteditable: "contentEditable",
+  spellcheck: "spellCheck",
+  usemap: "useMap",
+  novalidate: "noValidate",
+  srcdoc: "srcDoc",
+  srcset: "srcSet",
+  inputmode: "inputMode",
 };
 
 /**
@@ -62,8 +62,8 @@ const ATTR_NAME_MAP: Record<string, string> = {
 export function cssPropertyToCamelCase(property: string): string {
   const trimmed = property.trim();
   // ベンダープレフィックス: -webkit-xxx → WebkitXxx
-  if (trimmed.startsWith('-')) {
-    const parts = trimmed.slice(1).split('-');
+  if (trimmed.startsWith("-")) {
+    const parts = trimmed.slice(1).split("-");
     if (parts.length === 0 || !parts[0]) return trimmed;
     return (
       parts[0].charAt(0).toUpperCase() +
@@ -71,7 +71,7 @@ export function cssPropertyToCamelCase(property: string): string {
       parts
         .slice(1)
         .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
-        .join('')
+        .join("")
     );
   }
   return trimmed.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase());
@@ -83,9 +83,12 @@ export function cssPropertyToCamelCase(property: string): string {
  * @returns JSXのstyleオブジェクト記法（例: "{{ color: 'red', fontSize: '14px' }}"）
  */
 export function convertStyleValue(styleStr: string): string {
-  const declarations = styleStr.split(';').map((d) => d.trim()).filter(Boolean);
+  const declarations = styleStr
+    .split(";")
+    .map((d) => d.trim())
+    .filter(Boolean);
   const props = declarations.flatMap((decl) => {
-    const colonIdx = decl.indexOf(':');
+    const colonIdx = decl.indexOf(":");
     if (colonIdx === -1) return [];
     const prop = decl.slice(0, colonIdx).trim();
     const val = decl.slice(colonIdx + 1).trim();
@@ -96,10 +99,10 @@ export function convertStyleValue(styleStr: string): string {
       return [`${camelProp}: ${val}`];
     }
     // シングルクォートをエスケープ
-    const escapedVal = val.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+    const escapedVal = val.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
     return [`${camelProp}: '${escapedVal}'`];
   });
-  return `{{ ${props.join(', ')} }}`;
+  return `{{ ${props.join(", ")} }}`;
 }
 
 /**
@@ -109,7 +112,7 @@ export function convertStyleValue(styleStr: string): string {
  */
 export function convertEventName(name: string): string {
   if (/^on[a-z]/.test(name)) {
-    return 'on' + name.charAt(2).toUpperCase() + name.slice(3);
+    return "on" + name.charAt(2).toUpperCase() + name.slice(3);
   }
   return name;
 }
@@ -137,7 +140,7 @@ function convertAttr(name: string, value: string | null): string {
   const jsxName = convertAttrName(name);
 
   // style属性の特別処理
-  if (lower === 'style' && value !== null) {
+  if (lower === "style" && value !== null) {
     return `${jsxName}=${convertStyleValue(value)}`;
   }
 
@@ -147,13 +150,13 @@ function convertAttr(name: string, value: string | null): string {
   }
 
   // 空文字
-  if (value === '') {
+  if (value === "") {
     return `${jsxName}=""`;
   }
 
   // boolean文字列
-  if (value === 'true') return `${jsxName}={true}`;
-  if (value === 'false') return `${jsxName}={false}`;
+  if (value === "true") return `${jsxName}={true}`;
+  if (value === "false") return `${jsxName}={false}`;
 
   // 通常の文字列
   return `${jsxName}="${value}"`;
@@ -203,7 +206,7 @@ export function convertHtmlToJsx(html: string): HtmlToJsxResult {
 
   // 1. HTMLコメントをJSXコメントに変換
   result = result.replace(/<!--([\s\S]*?)-->/g, (_, content: string) => {
-    inc('comment');
+    inc("comment");
     return `{/*${content}*/}`;
   });
 
@@ -215,12 +218,12 @@ export function convertHtmlToJsx(html: string): HtmlToJsxResult {
       _match: string,
       tagName: string,
       attrsStr: string | undefined,
-      selfClose: string | undefined
+      selfClose: string | undefined,
     ) => {
       const isSelfClosed = !!selfClose;
       const isVoid = VOID_ELEMENTS.has(tagName.toLowerCase());
 
-      let convertedAttrs = '';
+      let convertedAttrs = "";
 
       if (attrsStr) {
         // 属性をパース（クォート内を考慮）
@@ -242,25 +245,25 @@ export function convertHtmlToJsx(html: string): HtmlToJsxResult {
           const lower = name.toLowerCase();
 
           // 変更カウント
-          if (lower === 'class') {
-            inc('class');
-          } else if (lower === 'for') {
-            inc('for');
-          } else if (lower === 'style' && value) {
-            inc('style');
+          if (lower === "class") {
+            inc("class");
+          } else if (lower === "for") {
+            inc("for");
+          } else if (lower === "style" && value) {
+            inc("style");
           } else if (/^on[a-z]/.test(lower)) {
             const jsxName = convertEventName(lower);
-            if (jsxName !== lower) inc('event');
+            if (jsxName !== lower) inc("event");
           } else if (ATTR_NAME_MAP[lower] && ATTR_NAME_MAP[lower] !== name) {
-            inc('attr');
+            inc("attr");
           }
 
-          convertedAttrs += ' ' + convertAttr(name, value);
+          convertedAttrs += " " + convertAttr(name, value);
         }
       }
 
       if (isVoid) {
-        if (!isSelfClosed) inc('void');
+        if (!isSelfClosed) inc("void");
         return `<${tagName}${convertedAttrs} />`;
       }
 
@@ -269,59 +272,59 @@ export function convertHtmlToJsx(html: string): HtmlToJsxResult {
       }
 
       return `<${tagName}${convertedAttrs}>`;
-    }
+    },
   );
 
   // 変更点リストを構築
   const changes: ConversionChange[] = [];
 
-  if (counts['class']) {
+  if (counts["class"]) {
     changes.push({
-      type: 'class',
+      type: "class",
       description: `class → className`,
-      count: counts['class'],
+      count: counts["class"],
     });
   }
-  if (counts['for']) {
+  if (counts["for"]) {
     changes.push({
-      type: 'for',
+      type: "for",
       description: `for → htmlFor`,
-      count: counts['for'],
+      count: counts["for"],
     });
   }
-  if (counts['event']) {
+  if (counts["event"]) {
     changes.push({
-      type: 'event',
+      type: "event",
       description: `イベントハンドラ camelCase変換（onclick → onClick 等）`,
-      count: counts['event'],
+      count: counts["event"],
     });
   }
-  if (counts['attr']) {
+  if (counts["attr"]) {
     changes.push({
-      type: 'attr',
+      type: "attr",
       description: `属性名の変換（tabindex → tabIndex、readonly → readOnly 等）`,
-      count: counts['attr'],
+      count: counts["attr"],
     });
   }
-  if (counts['style']) {
+  if (counts["style"]) {
     changes.push({
-      type: 'style',
+      type: "style",
       description: `style 文字列 → オブジェクト記法（style="..." → style={{...}}）`,
-      count: counts['style'],
+      count: counts["style"],
     });
   }
-  if (counts['void']) {
+  if (counts["void"]) {
     changes.push({
-      type: 'void',
+      type: "void",
       description: `void要素の自己閉じ（<br> → <br /> 等）`,
-      count: counts['void'],
+      count: counts["void"],
     });
   }
-  if (counts['comment']) {
+  if (counts["comment"]) {
     changes.push({
-      type: 'comment',
+      type: "comment",
       description: `HTMLコメント → JSXコメント（<!-- --> → {/* */}）`,
-      count: counts['comment'],
+      count: counts["comment"],
     });
   }
 

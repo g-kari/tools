@@ -51,7 +51,7 @@ export interface RangeCheckResult {
  * @returns パース済み Semver オブジェクト
  */
 export function parseSemver(version: string): SemverParsed {
-  const trimmed = version.trim().replace(/^[vV]/, '');
+  const trimmed = version.trim().replace(/^[vV]/, "");
   const match = SEMVER_REGEX.exec(trimmed);
 
   if (!match) {
@@ -84,8 +84,8 @@ export function parseSemver(version: string): SemverParsed {
  * @returns -1/0/1
  */
 function comparePrerelease(a: string, b: string): CompareResult {
-  const aParts = a.split('.');
-  const bParts = b.split('.');
+  const aParts = a.split(".");
+  const bParts = b.split(".");
   const len = Math.max(aParts.length, bParts.length);
 
   for (let i = 0; i < len; i++) {
@@ -167,19 +167,19 @@ export function incrementMajor(v: SemverParsed): string {
  */
 export function satisfiesRange(version: SemverParsed, range: string): RangeCheckResult {
   if (!version.valid) {
-    return { satisfied: null, error: 'バージョンが無効です' };
+    return { satisfied: null, error: "バージョンが無効です" };
   }
 
   const trimmed = range.trim();
 
   const operators: Array<{ prefix: string; fn: (r: SemverParsed) => boolean }> = [
-    { prefix: '>=', fn: (r) => compareSemver(version, r) >= 0 },
-    { prefix: '>', fn: (r) => compareSemver(version, r) > 0 },
-    { prefix: '<=', fn: (r) => compareSemver(version, r) <= 0 },
-    { prefix: '<', fn: (r) => compareSemver(version, r) < 0 },
-    { prefix: '=', fn: (r) => compareSemver(version, r) === 0 },
+    { prefix: ">=", fn: (r) => compareSemver(version, r) >= 0 },
+    { prefix: ">", fn: (r) => compareSemver(version, r) > 0 },
+    { prefix: "<=", fn: (r) => compareSemver(version, r) <= 0 },
+    { prefix: "<", fn: (r) => compareSemver(version, r) < 0 },
+    { prefix: "=", fn: (r) => compareSemver(version, r) === 0 },
     {
-      prefix: '^',
+      prefix: "^",
       fn: (r) => {
         // ^ 互換性: 左端の非ゼロ部分が同じで、かつ r 以上
         if (compareSemver(version, r) < 0) return false;
@@ -189,7 +189,7 @@ export function satisfiesRange(version: SemverParsed, range: string): RangeCheck
       },
     },
     {
-      prefix: '~',
+      prefix: "~",
       fn: (r) => {
         // ~ パッチ互換: major.minor が同じで r 以上
         if (compareSemver(version, r) < 0) return false;

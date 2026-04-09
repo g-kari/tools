@@ -1,9 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useMemo, useCallback } from "react";
-import {
-  StatusAnnouncer,
-  useStatusAnnouncement,
-} from "~/hooks/useStatusAnnouncement";
+import { StatusAnnouncer, useStatusAnnouncement } from "~/hooks/useStatusAnnouncement";
 import { TipsCard } from "~/components/TipsCard";
 import { useToast } from "~/components/Toast";
 import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
@@ -63,10 +60,7 @@ function CompoundInterestCalculator() {
     return { principal, annualRate, termYears, frequency, additionalContribution };
   }, [principalStr, rateStr, termStr, frequency, contributionStr]);
 
-  const validationError = useMemo(
-    () => validateCompoundInterestParams(params),
-    [params]
-  );
+  const validationError = useMemo(() => validateCompoundInterestParams(params), [params]);
 
   const result = useMemo(() => {
     if (validationError) return null;
@@ -104,10 +98,7 @@ function CompoundInterestCalculator() {
   }, [result, showToast]);
 
   const isInputReady =
-    principalStr !== "" &&
-    rateStr !== "" &&
-    termStr !== "" &&
-    contributionStr !== "";
+    principalStr !== "" && rateStr !== "" && termStr !== "" && contributionStr !== "";
 
   return (
     <>
@@ -179,9 +170,7 @@ function CompoundInterestCalculator() {
                 id="ci-frequency"
                 className="ci-select"
                 value={frequency}
-                onChange={(e) =>
-                  setFrequency(e.target.value as CompoundFrequency)
-                }
+                onChange={(e) => setFrequency(e.target.value as CompoundFrequency)}
                 aria-label="複利計算頻度"
               >
                 <option value="monthly">毎月（月複利）</option>
@@ -193,9 +182,7 @@ function CompoundInterestCalculator() {
           </div>
 
           <div className="ci-input-group">
-            <label htmlFor="ci-contribution">
-              追加積立金（{frequencyLabel(frequency)}ごと）
-            </label>
+            <label htmlFor="ci-contribution">追加積立金（{frequencyLabel(frequency)}ごと）</label>
             <div className="ci-input-row">
               <input
                 id="ci-contribution"
@@ -207,9 +194,7 @@ function CompoundInterestCalculator() {
                 placeholder="例: 10000"
                 aria-label={`追加積立金（円/${frequencyLabel(frequency)}）`}
               />
-              <span className="ci-input-unit">
-                円 / {frequencyLabel(frequency)}
-              </span>
+              <span className="ci-input-unit">円 / {frequencyLabel(frequency)}</span>
             </div>
           </div>
 
@@ -223,24 +208,16 @@ function CompoundInterestCalculator() {
         {/* 計算結果 */}
         {result ? (
           <>
-            <div
-              className="ci-summary"
-              aria-live="polite"
-              aria-label="計算結果"
-            >
+            <div className="ci-summary" aria-live="polite" aria-label="計算結果">
               <div className="ci-summary-card primary">
                 <span className="ci-summary-label">最終残高</span>
                 <span
                   className="ci-summary-value"
                   aria-label={`最終残高 ${formatYen(result.finalAmount)}`}
                 >
-                  {Math.round(result.finalAmount / 10000).toLocaleString(
-                    "ja-JP"
-                  )}
+                  {Math.round(result.finalAmount / 10000).toLocaleString("ja-JP")}
                 </span>
-                <span className="ci-summary-sub">
-                  万円（{formatYen(result.finalAmount)}）
-                </span>
+                <span className="ci-summary-sub">万円（{formatYen(result.finalAmount)}）</span>
               </div>
 
               <div className="ci-summary-card">
@@ -249,13 +226,9 @@ function CompoundInterestCalculator() {
                   className="ci-summary-value"
                   aria-label={`元本合計 ${formatYen(result.totalPrincipal)}`}
                 >
-                  {Math.round(result.totalPrincipal / 10000).toLocaleString(
-                    "ja-JP"
-                  )}
+                  {Math.round(result.totalPrincipal / 10000).toLocaleString("ja-JP")}
                 </span>
-                <span className="ci-summary-sub">
-                  万円（{formatYen(result.totalPrincipal)}）
-                </span>
+                <span className="ci-summary-sub">万円（{formatYen(result.totalPrincipal)}）</span>
               </div>
 
               <div className="ci-summary-card">
@@ -264,13 +237,9 @@ function CompoundInterestCalculator() {
                   className="ci-summary-value"
                   aria-label={`総利息 ${formatYen(result.totalInterest)}`}
                 >
-                  {Math.round(result.totalInterest / 10000).toLocaleString(
-                    "ja-JP"
-                  )}
+                  {Math.round(result.totalInterest / 10000).toLocaleString("ja-JP")}
                 </span>
-                <span className="ci-summary-sub">
-                  万円（{formatYen(result.totalInterest)}）
-                </span>
+                <span className="ci-summary-sub">万円（{formatYen(result.totalInterest)}）</span>
               </div>
             </div>
 
@@ -279,26 +248,17 @@ function CompoundInterestCalculator() {
               <div className="ci-ratio-bar-label">
                 <span>
                   元本 {principalRatio.toFixed(1)}%（
-                  {Math.round(result.initialPrincipal / 10000).toLocaleString(
-                    "ja-JP"
-                  )}{" "}
-                  万円）
+                  {Math.round(result.initialPrincipal / 10000).toLocaleString("ja-JP")} 万円）
                 </span>
                 {result.totalContribution > 0 && (
                   <span>
                     積立 {contributionRatio.toFixed(1)}%（
-                    {Math.round(
-                      result.totalContribution / 10000
-                    ).toLocaleString("ja-JP")}{" "}
-                    万円）
+                    {Math.round(result.totalContribution / 10000).toLocaleString("ja-JP")} 万円）
                   </span>
                 )}
                 <span>
                   利息 {interestRatio.toFixed(1)}%（
-                  {Math.round(result.totalInterest / 10000).toLocaleString(
-                    "ja-JP"
-                  )}{" "}
-                  万円）
+                  {Math.round(result.totalInterest / 10000).toLocaleString("ja-JP")} 万円）
                 </span>
               </div>
               <div

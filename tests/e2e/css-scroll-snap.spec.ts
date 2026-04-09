@@ -7,14 +7,12 @@ test.describe("CSS Scroll Snapジェネレーターページ", () => {
 
   test("ページタイトルが表示される", async ({ page }) => {
     await expect(
-      page.getByRole("heading", { name: "CSS Scroll Snapジェネレーター" })
+      page.getByRole("heading", { name: "CSS Scroll Snapジェネレーター" }),
     ).toBeVisible();
   });
 
   test("プリセットセクションが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "プリセット" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "プリセット" })).toBeVisible();
   });
 
   test("プリセットボタンが複数表示される", async ({ page }) => {
@@ -23,27 +21,19 @@ test.describe("CSS Scroll Snapジェネレーターページ", () => {
   });
 
   test("コンテナ設定セクションが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "コンテナ設定" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "コンテナ設定" })).toBeVisible();
   });
 
   test("アイテム設定セクションが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "アイテム設定" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "アイテム設定" })).toBeVisible();
   });
 
   test("ライブプレビューセクションが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "ライブプレビュー" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "ライブプレビュー" })).toBeVisible();
   });
 
   test("生成CSSセクションが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "生成 CSS" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "生成 CSS" })).toBeVisible();
   });
 
   test("方向のトグルボタンが表示される", async ({ page }) => {
@@ -64,16 +54,14 @@ test.describe("CSS Scroll Snapジェネレーターページ", () => {
   });
 
   test("リセットボタンが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("button", { name: "すべての設定をリセット" })
-    ).toBeVisible();
+    await expect(page.getByRole("button", { name: "すべての設定をリセット" })).toBeVisible();
   });
 
   test("コピーボタンが表示される", async ({ page }) => {
     await expect(
       page.getByRole("button", {
         name: "生成されたCSSをクリップボードにコピー",
-      })
+      }),
     ).toBeVisible();
   });
 

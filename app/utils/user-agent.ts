@@ -34,7 +34,9 @@ export interface UserAgentInfo {
  * @returns Botであればtrue
  */
 function detectBot(ua: string): boolean {
-  return /bot|crawler|spider|scraper|curl|wget|python|java|Go-http-client|libwww|httpunit|nutch|phpcrawl|biglotron|teoma|convera|gigabot|ia_archiver|webmon|httrack|grub\.org|netresearchserver|speedy|fluffy|findlinks|panscient|ips-agent|yanga|cyberpatrol|postrank|buzzbot|mlbot|perman|yandex|blekkobot|syntryx/i.test(ua);
+  return /bot|crawler|spider|scraper|curl|wget|python|java|Go-http-client|libwww|httpunit|nutch|phpcrawl|biglotron|teoma|convera|gigabot|ia_archiver|webmon|httrack|grub\.org|netresearchserver|speedy|fluffy|findlinks|panscient|ips-agent|yanga|cyberpatrol|postrank|buzzbot|mlbot|perman|yandex|blekkobot|syntryx/i.test(
+    ua,
+  );
 }
 
 /**
@@ -55,7 +57,9 @@ function detectTablet(ua: string): boolean {
  * @returns モバイルであればtrue
  */
 function detectMobile(ua: string): boolean {
-  return /Mobile|Android.*Mobile|iPhone|iPod|BlackBerry|IEMobile|Opera Mini|Windows Phone|webOS/i.test(ua);
+  return /Mobile|Android.*Mobile|iPhone|iPod|BlackBerry|IEMobile|Opera Mini|Windows Phone|webOS/i.test(
+    ua,
+  );
 }
 
 /**

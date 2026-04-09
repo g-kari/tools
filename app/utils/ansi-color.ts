@@ -25,9 +25,9 @@ export interface AnsiStyle {
  * - rgb: Truecolor (R, G, B 各0-255)
  */
 export type AnsiColorType =
-  | { type: 'standard'; code: number }
-  | { type: '256'; code: number }
-  | { type: 'rgb'; r: number; g: number; b: number };
+  | { type: "standard"; code: number }
+  | { type: "256"; code: number }
+  | { type: "rgb"; r: number; g: number; b: number };
 
 /** ANSIカラー型エイリアス */
 export type AnsiColor = AnsiColorType;
@@ -50,23 +50,23 @@ export const DEFAULT_STYLE: AnsiStyle = {
  * fg: 前景色コード, bg: 背景色コード, hex: 参考HEXカラー
  */
 export const STANDARD_COLORS = [
-  { name: '黒', fg: 30, bg: 40, hex: '#000000' },
-  { name: '赤', fg: 31, bg: 41, hex: '#cc0000' },
-  { name: '緑', fg: 32, bg: 42, hex: '#4e9a06' },
-  { name: '黄', fg: 33, bg: 43, hex: '#c4a000' },
-  { name: '青', fg: 34, bg: 44, hex: '#3465a4' },
-  { name: 'マゼンタ', fg: 35, bg: 45, hex: '#75507b' },
-  { name: 'シアン', fg: 36, bg: 46, hex: '#06989a' },
-  { name: '白', fg: 37, bg: 47, hex: '#d3d7cf' },
+  { name: "黒", fg: 30, bg: 40, hex: "#000000" },
+  { name: "赤", fg: 31, bg: 41, hex: "#cc0000" },
+  { name: "緑", fg: 32, bg: 42, hex: "#4e9a06" },
+  { name: "黄", fg: 33, bg: 43, hex: "#c4a000" },
+  { name: "青", fg: 34, bg: 44, hex: "#3465a4" },
+  { name: "マゼンタ", fg: 35, bg: 45, hex: "#75507b" },
+  { name: "シアン", fg: 36, bg: 46, hex: "#06989a" },
+  { name: "白", fg: 37, bg: 47, hex: "#d3d7cf" },
   // Bright variants (90-97)
-  { name: '明黒（灰）', fg: 90, bg: 100, hex: '#555753' },
-  { name: '明赤', fg: 91, bg: 101, hex: '#ef2929' },
-  { name: '明緑', fg: 92, bg: 102, hex: '#8ae234' },
-  { name: '明黄', fg: 93, bg: 103, hex: '#fce94f' },
-  { name: '明青', fg: 94, bg: 104, hex: '#729fcf' },
-  { name: '明マゼンタ', fg: 95, bg: 105, hex: '#ad7fa8' },
-  { name: '明シアン', fg: 96, bg: 106, hex: '#34e2e2' },
-  { name: '明白', fg: 97, bg: 107, hex: '#eeeeec' },
+  { name: "明黒（灰）", fg: 90, bg: 100, hex: "#555753" },
+  { name: "明赤", fg: 91, bg: 101, hex: "#ef2929" },
+  { name: "明緑", fg: 92, bg: 102, hex: "#8ae234" },
+  { name: "明黄", fg: 93, bg: 103, hex: "#fce94f" },
+  { name: "明青", fg: 94, bg: 104, hex: "#729fcf" },
+  { name: "明マゼンタ", fg: 95, bg: 105, hex: "#ad7fa8" },
+  { name: "明シアン", fg: 96, bg: 106, hex: "#34e2e2" },
+  { name: "明白", fg: 97, bg: 107, hex: "#eeeeec" },
 ] as const;
 
 /**
@@ -77,11 +77,11 @@ export const STANDARD_COLORS = [
  */
 function colorToCodes(color: AnsiColor, isBackground: boolean): number[] {
   switch (color.type) {
-    case 'standard':
+    case "standard":
       return [color.code + (isBackground ? 10 : 0)];
-    case '256':
+    case "256":
       return [isBackground ? 48 : 38, 5, color.code];
-    case 'rgb':
+    case "rgb":
       return [isBackground ? 48 : 38, 2, color.r, color.g, color.b];
   }
 }
@@ -122,8 +122,8 @@ export function applyAnsiStyle(style: AnsiStyle, text: string): string {
 
   if (codes.length === 0) return text;
 
-  const ESC = '\x1b';
-  const openSeq = `${ESC}[${codes.join(';')}m`;
+  const ESC = "\x1b";
+  const openSeq = `${ESC}[${codes.join(";")}m`;
   const closeSeq = `${ESC}[0m`;
 
   return `${openSeq}${text}${closeSeq}`;
@@ -137,7 +137,7 @@ export function applyAnsiStyle(style: AnsiStyle, text: string): string {
  * - python: `\x1b` 形式（Python）
  * - unicode: `\u001b` 形式（Node.js / JavaScript）
  */
-export type EscapeFormat = 'bash' | 'bash-octal' | 'raw' | 'python' | 'unicode';
+export type EscapeFormat = "bash" | "bash-octal" | "raw" | "python" | "unicode";
 
 /**
  * シェルスクリプト等で使用するエスケープ文字列を取得する
@@ -147,16 +147,16 @@ export type EscapeFormat = 'bash' | 'bash-octal' | 'raw' | 'python' | 'unicode';
  */
 export function getEscapeChar(format: EscapeFormat): string {
   switch (format) {
-    case 'bash':
-      return '\\e';
-    case 'bash-octal':
-      return '\\033';
-    case 'raw':
-      return '\x1b';
-    case 'python':
-      return '\\x1b';
-    case 'unicode':
-      return '\\u001b';
+    case "bash":
+      return "\\e";
+    case "bash-octal":
+      return "\\033";
+    case "raw":
+      return "\x1b";
+    case "python":
+      return "\\x1b";
+    case "unicode":
+      return "\\u001b";
   }
 }
 
@@ -174,11 +174,7 @@ export function getEscapeChar(format: EscapeFormat): string {
  * // 'echo -e "\\e[1mHello\\e[0m"'
  * ```
  */
-export function generateShellCode(
-  style: AnsiStyle,
-  text: string,
-  format: EscapeFormat
-): string {
+export function generateShellCode(style: AnsiStyle, text: string, format: EscapeFormat): string {
   const codes: number[] = [];
 
   if (style.bold) codes.push(1);
@@ -199,23 +195,23 @@ export function generateShellCode(
     codes.push(...bgCodes);
   }
 
-  if (codes.length === 0) return `"${text || 'Hello, World!'}"`;
+  if (codes.length === 0) return `"${text || "Hello, World!"}"`;
 
   const esc = getEscapeChar(format);
-  const displayText = text || 'Hello, World!';
+  const displayText = text || "Hello, World!";
 
   switch (format) {
-    case 'bash':
-    case 'bash-octal':
-      return `echo -e "${esc}[${codes.join(';')}m${displayText}${esc}[0m"`;
-    case 'python':
-      return `print(f"${esc}[${codes.join(';')}m${displayText}${esc}[0m")`;
-    case 'unicode':
-      return `console.log("${esc}[${codes.join(';')}m${displayText}${esc}[0m")`;
-    case 'raw':
-      return `\x1b[${codes.join(';')}m${displayText}\x1b[0m`;
+    case "bash":
+    case "bash-octal":
+      return `echo -e "${esc}[${codes.join(";")}m${displayText}${esc}[0m"`;
+    case "python":
+      return `print(f"${esc}[${codes.join(";")}m${displayText}${esc}[0m")`;
+    case "unicode":
+      return `console.log("${esc}[${codes.join(";")}m${displayText}${esc}[0m")`;
+    case "raw":
+      return `\x1b[${codes.join(";")}m${displayText}\x1b[0m`;
     default:
-      return `"${esc}[${codes.join(';')}m${displayText}${esc}[0m"`;
+      return `"${esc}[${codes.join(";")}m${displayText}${esc}[0m"`;
   }
 }
 
@@ -232,10 +228,8 @@ export function generateShellCode(
  * hexToRgb('invalid'); // null
  * ```
  */
-export function hexToRgb(
-  hex: string
-): { r: number; g: number; b: number } | null {
-  const clean = hex.replace('#', '');
+export function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
+  const clean = hex.replace("#", "");
   if (!/^[0-9a-fA-F]{6}$/.test(clean)) return null;
   return {
     r: parseInt(clean.slice(0, 2), 16),
@@ -260,8 +254,5 @@ export function hexToRgb(
  * ```
  */
 export function rgbToHex(r: number, g: number, b: number): string {
-  return (
-    '#' +
-    [r, g, b].map((v) => v.toString(16).padStart(2, '0')).join('')
-  );
+  return "#" + [r, g, b].map((v) => v.toString(16).padStart(2, "0")).join("");
 }

@@ -38,7 +38,7 @@
 
 /* ラベル */
 .htx-label {
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -95,7 +95,7 @@
   user-select: none;
 }
 
-.htx-checkbox-row input[type='checkbox'] {
+.htx-checkbox-row input[type="checkbox"] {
   width: 1rem;
   height: 1rem;
   cursor: pointer;
@@ -128,7 +128,7 @@
   user-select: none;
 }
 
-.htx-radio-btn input[type='radio'] {
+.htx-radio-btn input[type="radio"] {
   display: none;
 }
 
@@ -200,7 +200,7 @@
 .htx-code-block {
   margin: 0;
   padding: 1rem;
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   font-size: 0.82rem;
   line-height: 1.7;
   background: var(--md-sys-color-surface-variant);

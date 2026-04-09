@@ -113,7 +113,7 @@
 .wf-summary-value {
   font-size: 1.75rem;
   font-weight: 600;
-  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  font-family: "JetBrains Mono", "Roboto Mono", "Courier New", monospace;
   color: var(--md-sys-color-on-primary-container);
   line-height: 1.2;
 }
@@ -192,7 +192,7 @@
   width: 40px;
   text-align: center;
   color: var(--md-sys-color-on-surface-variant);
-  font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
+  font-family: "JetBrains Mono", "Roboto Mono", monospace;
   font-size: 0.8rem;
 }
 
@@ -206,14 +206,14 @@
 .wf-td-count {
   width: 100px;
   text-align: right;
-  font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
+  font-family: "JetBrains Mono", "Roboto Mono", monospace;
 }
 
 .wf-th-percent,
 .wf-td-percent {
   width: 80px;
   text-align: right;
-  font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
+  font-family: "JetBrains Mono", "Roboto Mono", monospace;
   color: var(--md-sys-color-on-surface-variant);
 }
 
@@ -225,7 +225,7 @@
 /* 単語表示 */
 .wf-word-display {
   display: inline-block;
-  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  font-family: "JetBrains Mono", "Roboto Mono", "Courier New", monospace;
   font-size: 0.9rem;
   font-weight: 600;
   color: var(--md-sys-color-primary);

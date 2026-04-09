@@ -46,7 +46,7 @@ interface ShortcutOptions {
 export function useKeyboardShortcut(
   key: string,
   callback: () => void,
-  options: ShortcutOptions = {}
+  options: ShortcutOptions = {},
 ): void {
   const { ctrl = false, meta = false, shift = false, alt = false, disabled = false } = options;
 
@@ -72,7 +72,7 @@ export function useKeyboardShortcut(
       event.preventDefault();
       callback();
     },
-    [key, callback, ctrl, meta, shift, alt, disabled]
+    [key, callback, ctrl, meta, shift, alt, disabled],
   );
 
   useEffect(() => {
@@ -103,13 +103,19 @@ export function useKeyboardShortcuts(
     key: string;
     callback: () => void;
     options?: ShortcutOptions;
-  }>
+  }>,
 ): void {
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
       for (const shortcut of shortcuts) {
         const { key, callback, options = {} } = shortcut;
-        const { ctrl = false, meta = false, shift = false, alt = false, disabled = false } = options;
+        const {
+          ctrl = false,
+          meta = false,
+          shift = false,
+          alt = false,
+          disabled = false,
+        } = options;
 
         if (disabled) continue;
 
@@ -130,7 +136,7 @@ export function useKeyboardShortcuts(
         return;
       }
     },
-    [shortcuts]
+    [shortcuts],
   );
 
   useEffect(() => {

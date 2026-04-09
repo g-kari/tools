@@ -182,11 +182,7 @@ function reverseColumnTranspose(text: string, key: string): string {
  * @param transpositionKey 縦列転置のキーワード（英字のみ）
  * @returns 暗号化されたテキスト（ADFGVX文字列）
  */
-export function adfgvxEncrypt(
-  text: string,
-  polybiusKey: string,
-  transpositionKey: string
-): string {
+export function adfgvxEncrypt(text: string, polybiusKey: string, transpositionKey: string): string {
   const square = createPolybiusSquare(polybiusKey);
   const normalizedTransKey = transpositionKey.toUpperCase().replace(/[^A-Z]/g, "");
 
@@ -218,11 +214,7 @@ export function adfgvxEncrypt(
  * @param transpositionKey 縦列転置のキーワード（英字のみ）
  * @returns 復号化されたテキスト（大文字英数字）
  */
-export function adfgvxDecrypt(
-  text: string,
-  polybiusKey: string,
-  transpositionKey: string
-): string {
+export function adfgvxDecrypt(text: string, polybiusKey: string, transpositionKey: string): string {
   const square = createPolybiusSquare(polybiusKey);
   const normalizedTransKey = transpositionKey.toUpperCase().replace(/[^A-Z]/g, "");
 

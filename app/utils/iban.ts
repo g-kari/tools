@@ -15,85 +15,85 @@ export interface IbanCountry {
 
 /** IBAN対応国一覧（ISO 13616-1:2020準拠） */
 export const IBAN_COUNTRIES: ReadonlyArray<IbanCountry> = [
-  { code: 'AD', name: 'アンドラ', length: 24 },
-  { code: 'AE', name: 'アラブ首長国連邦', length: 23 },
-  { code: 'AL', name: 'アルバニア', length: 28 },
-  { code: 'AT', name: 'オーストリア', length: 20 },
-  { code: 'AZ', name: 'アゼルバイジャン', length: 28 },
-  { code: 'BA', name: 'ボスニア・ヘルツェゴビナ', length: 20 },
-  { code: 'BE', name: 'ベルギー', length: 16 },
-  { code: 'BG', name: 'ブルガリア', length: 22 },
-  { code: 'BH', name: 'バーレーン', length: 22 },
-  { code: 'BR', name: 'ブラジル', length: 29 },
-  { code: 'BY', name: 'ベラルーシ', length: 28 },
-  { code: 'CH', name: 'スイス', length: 21 },
-  { code: 'CR', name: 'コスタリカ', length: 22 },
-  { code: 'CY', name: 'キプロス', length: 28 },
-  { code: 'CZ', name: 'チェコ', length: 24 },
-  { code: 'DE', name: 'ドイツ', length: 22 },
-  { code: 'DK', name: 'デンマーク', length: 18 },
-  { code: 'DO', name: 'ドミニカ共和国', length: 28 },
-  { code: 'EE', name: 'エストニア', length: 20 },
-  { code: 'EG', name: 'エジプト', length: 29 },
-  { code: 'ES', name: 'スペイン', length: 24 },
-  { code: 'FI', name: 'フィンランド', length: 18 },
-  { code: 'FO', name: 'フェロー諸島', length: 18 },
-  { code: 'FR', name: 'フランス', length: 27 },
-  { code: 'GB', name: 'イギリス', length: 22 },
-  { code: 'GE', name: 'ジョージア', length: 22 },
-  { code: 'GI', name: 'ジブラルタル', length: 23 },
-  { code: 'GL', name: 'グリーンランド', length: 18 },
-  { code: 'GR', name: 'ギリシャ', length: 27 },
-  { code: 'GT', name: 'グアテマラ', length: 28 },
-  { code: 'HR', name: 'クロアチア', length: 21 },
-  { code: 'HU', name: 'ハンガリー', length: 28 },
-  { code: 'IE', name: 'アイルランド', length: 22 },
-  { code: 'IL', name: 'イスラエル', length: 23 },
-  { code: 'IQ', name: 'イラク', length: 23 },
-  { code: 'IS', name: 'アイスランド', length: 26 },
-  { code: 'IT', name: 'イタリア', length: 27 },
-  { code: 'JO', name: 'ヨルダン', length: 30 },
-  { code: 'KW', name: 'クウェート', length: 30 },
-  { code: 'KZ', name: 'カザフスタン', length: 20 },
-  { code: 'LB', name: 'レバノン', length: 28 },
-  { code: 'LC', name: 'セントルシア', length: 32 },
-  { code: 'LI', name: 'リヒテンシュタイン', length: 21 },
-  { code: 'LT', name: 'リトアニア', length: 20 },
-  { code: 'LU', name: 'ルクセンブルク', length: 20 },
-  { code: 'LV', name: 'ラトビア', length: 21 },
-  { code: 'LY', name: 'リビア', length: 25 },
-  { code: 'MC', name: 'モナコ', length: 27 },
-  { code: 'MD', name: 'モルドバ', length: 24 },
-  { code: 'ME', name: 'モンテネグロ', length: 22 },
-  { code: 'MK', name: '北マケドニア', length: 19 },
-  { code: 'MR', name: 'モーリタニア', length: 27 },
-  { code: 'MT', name: 'マルタ', length: 31 },
-  { code: 'MU', name: 'モーリシャス', length: 30 },
-  { code: 'NL', name: 'オランダ', length: 18 },
-  { code: 'NO', name: 'ノルウェー', length: 15 },
-  { code: 'PK', name: 'パキスタン', length: 24 },
-  { code: 'PL', name: 'ポーランド', length: 28 },
-  { code: 'PS', name: 'パレスチナ', length: 29 },
-  { code: 'PT', name: 'ポルトガル', length: 25 },
-  { code: 'QA', name: 'カタール', length: 29 },
-  { code: 'RO', name: 'ルーマニア', length: 24 },
-  { code: 'RS', name: 'セルビア', length: 22 },
-  { code: 'SA', name: 'サウジアラビア', length: 24 },
-  { code: 'SC', name: 'セーシェル', length: 31 },
-  { code: 'SD', name: 'スーダン', length: 18 },
-  { code: 'SE', name: 'スウェーデン', length: 24 },
-  { code: 'SI', name: 'スロベニア', length: 19 },
-  { code: 'SK', name: 'スロバキア', length: 24 },
-  { code: 'SM', name: 'サンマリノ', length: 27 },
-  { code: 'ST', name: 'サントメ・プリンシペ', length: 25 },
-  { code: 'SV', name: 'エルサルバドル', length: 28 },
-  { code: 'TL', name: '東ティモール', length: 23 },
-  { code: 'TN', name: 'チュニジア', length: 24 },
-  { code: 'TR', name: 'トルコ', length: 26 },
-  { code: 'UA', name: 'ウクライナ', length: 29 },
-  { code: 'VA', name: 'バチカン市国', length: 22 },
-  { code: 'VG', name: '英領バージン諸島', length: 24 },
-  { code: 'XK', name: 'コソボ', length: 20 },
+  { code: "AD", name: "アンドラ", length: 24 },
+  { code: "AE", name: "アラブ首長国連邦", length: 23 },
+  { code: "AL", name: "アルバニア", length: 28 },
+  { code: "AT", name: "オーストリア", length: 20 },
+  { code: "AZ", name: "アゼルバイジャン", length: 28 },
+  { code: "BA", name: "ボスニア・ヘルツェゴビナ", length: 20 },
+  { code: "BE", name: "ベルギー", length: 16 },
+  { code: "BG", name: "ブルガリア", length: 22 },
+  { code: "BH", name: "バーレーン", length: 22 },
+  { code: "BR", name: "ブラジル", length: 29 },
+  { code: "BY", name: "ベラルーシ", length: 28 },
+  { code: "CH", name: "スイス", length: 21 },
+  { code: "CR", name: "コスタリカ", length: 22 },
+  { code: "CY", name: "キプロス", length: 28 },
+  { code: "CZ", name: "チェコ", length: 24 },
+  { code: "DE", name: "ドイツ", length: 22 },
+  { code: "DK", name: "デンマーク", length: 18 },
+  { code: "DO", name: "ドミニカ共和国", length: 28 },
+  { code: "EE", name: "エストニア", length: 20 },
+  { code: "EG", name: "エジプト", length: 29 },
+  { code: "ES", name: "スペイン", length: 24 },
+  { code: "FI", name: "フィンランド", length: 18 },
+  { code: "FO", name: "フェロー諸島", length: 18 },
+  { code: "FR", name: "フランス", length: 27 },
+  { code: "GB", name: "イギリス", length: 22 },
+  { code: "GE", name: "ジョージア", length: 22 },
+  { code: "GI", name: "ジブラルタル", length: 23 },
+  { code: "GL", name: "グリーンランド", length: 18 },
+  { code: "GR", name: "ギリシャ", length: 27 },
+  { code: "GT", name: "グアテマラ", length: 28 },
+  { code: "HR", name: "クロアチア", length: 21 },
+  { code: "HU", name: "ハンガリー", length: 28 },
+  { code: "IE", name: "アイルランド", length: 22 },
+  { code: "IL", name: "イスラエル", length: 23 },
+  { code: "IQ", name: "イラク", length: 23 },
+  { code: "IS", name: "アイスランド", length: 26 },
+  { code: "IT", name: "イタリア", length: 27 },
+  { code: "JO", name: "ヨルダン", length: 30 },
+  { code: "KW", name: "クウェート", length: 30 },
+  { code: "KZ", name: "カザフスタン", length: 20 },
+  { code: "LB", name: "レバノン", length: 28 },
+  { code: "LC", name: "セントルシア", length: 32 },
+  { code: "LI", name: "リヒテンシュタイン", length: 21 },
+  { code: "LT", name: "リトアニア", length: 20 },
+  { code: "LU", name: "ルクセンブルク", length: 20 },
+  { code: "LV", name: "ラトビア", length: 21 },
+  { code: "LY", name: "リビア", length: 25 },
+  { code: "MC", name: "モナコ", length: 27 },
+  { code: "MD", name: "モルドバ", length: 24 },
+  { code: "ME", name: "モンテネグロ", length: 22 },
+  { code: "MK", name: "北マケドニア", length: 19 },
+  { code: "MR", name: "モーリタニア", length: 27 },
+  { code: "MT", name: "マルタ", length: 31 },
+  { code: "MU", name: "モーリシャス", length: 30 },
+  { code: "NL", name: "オランダ", length: 18 },
+  { code: "NO", name: "ノルウェー", length: 15 },
+  { code: "PK", name: "パキスタン", length: 24 },
+  { code: "PL", name: "ポーランド", length: 28 },
+  { code: "PS", name: "パレスチナ", length: 29 },
+  { code: "PT", name: "ポルトガル", length: 25 },
+  { code: "QA", name: "カタール", length: 29 },
+  { code: "RO", name: "ルーマニア", length: 24 },
+  { code: "RS", name: "セルビア", length: 22 },
+  { code: "SA", name: "サウジアラビア", length: 24 },
+  { code: "SC", name: "セーシェル", length: 31 },
+  { code: "SD", name: "スーダン", length: 18 },
+  { code: "SE", name: "スウェーデン", length: 24 },
+  { code: "SI", name: "スロベニア", length: 19 },
+  { code: "SK", name: "スロバキア", length: 24 },
+  { code: "SM", name: "サンマリノ", length: 27 },
+  { code: "ST", name: "サントメ・プリンシペ", length: 25 },
+  { code: "SV", name: "エルサルバドル", length: 28 },
+  { code: "TL", name: "東ティモール", length: 23 },
+  { code: "TN", name: "チュニジア", length: 24 },
+  { code: "TR", name: "トルコ", length: 26 },
+  { code: "UA", name: "ウクライナ", length: 29 },
+  { code: "VA", name: "バチカン市国", length: 22 },
+  { code: "VG", name: "英領バージン諸島", length: 24 },
+  { code: "XK", name: "コソボ", length: 20 },
 ];
 
 /** IBAN検証の結果 */
@@ -140,7 +140,7 @@ function mod97(numStr: string): number {
  */
 function ibanToNumericString(iban: string): string {
   return iban
-    .split('')
+    .split("")
     .map((char) => {
       const code = char.charCodeAt(0);
       if (code >= 65 && code <= 90) {
@@ -148,7 +148,7 @@ function ibanToNumericString(iban: string): string {
       }
       return char;
     })
-    .join('');
+    .join("");
 }
 
 /**
@@ -158,7 +158,7 @@ function ibanToNumericString(iban: string): string {
  * @example formatIban('DE89370400440532013000') // 'DE89 3704 0044 0532 0130 00'
  */
 export function formatIban(iban: string): string {
-  return iban.match(/.{1,4}/g)?.join(' ') ?? iban;
+  return iban.match(/.{1,4}/g)?.join(" ") ?? iban;
 }
 
 /**
@@ -168,7 +168,7 @@ export function formatIban(iban: string): string {
  * @example validateIban('DE89 3704 0044 0532 0130 00') // { isValid: true, ... }
  */
 export function validateIban(input: string): IbanResult {
-  const normalized = input.replace(/[\s\-]/g, '').toUpperCase();
+  const normalized = input.replace(/[\s-]/g, "").toUpperCase();
   const formatted = formatIban(normalized);
 
   if (normalized.length < 5) {
@@ -181,7 +181,7 @@ export function validateIban(input: string): IbanResult {
       bban: normalized.slice(4),
       country: null,
       isValidLength: false,
-      errorMessage: '文字数が不足しています（最低5文字必要）',
+      errorMessage: "文字数が不足しています（最低5文字必要）",
     };
   }
 
@@ -202,7 +202,7 @@ export function validateIban(input: string): IbanResult {
       bban,
       country,
       isValidLength: false,
-      errorMessage: '英数字以外の文字が含まれています',
+      errorMessage: "英数字以外の文字が含まれています",
     };
   }
 
@@ -239,12 +239,12 @@ export const TEST_IBAN_NUMBERS: ReadonlyArray<{
   iban: string;
   note: string;
 }> = [
-  { country: 'ドイツ', iban: 'DE89370400440532013000', note: '22桁' },
-  { country: 'イギリス', iban: 'GB29NWBK60161331926819', note: '22桁' },
-  { country: 'フランス', iban: 'FR7630006000011234567890189', note: '27桁' },
-  { country: 'スペイン', iban: 'ES9121000418450200051332', note: '24桁' },
-  { country: 'オランダ', iban: 'NL91ABNA0417164300', note: '18桁' },
-  { country: 'スイス', iban: 'CH9300762011623852957', note: '21桁' },
-  { country: 'ベルギー', iban: 'BE68539007547034', note: '16桁' },
-  { country: 'イタリア', iban: 'IT60X0542811101000000123456', note: '27桁' },
+  { country: "ドイツ", iban: "DE89370400440532013000", note: "22桁" },
+  { country: "イギリス", iban: "GB29NWBK60161331926819", note: "22桁" },
+  { country: "フランス", iban: "FR7630006000011234567890189", note: "27桁" },
+  { country: "スペイン", iban: "ES9121000418450200051332", note: "24桁" },
+  { country: "オランダ", iban: "NL91ABNA0417164300", note: "18桁" },
+  { country: "スイス", iban: "CH9300762011623852957", note: "21桁" },
+  { country: "ベルギー", iban: "BE68539007547034", note: "16桁" },
+  { country: "イタリア", iban: "IT60X0542811101000000123456", note: "27桁" },
 ];

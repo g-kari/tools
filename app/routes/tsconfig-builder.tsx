@@ -1,47 +1,46 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useState, useMemo, useCallback, useId } from 'react';
-import { useToast } from '~/components/Toast';
-import { TipsCard } from '~/components/TipsCard';
-import { useClipboard } from '~/hooks/useClipboard';
+import { createFileRoute } from "@tanstack/react-router";
+import { useState, useMemo, useCallback, useId } from "react";
+import { useToast } from "~/components/Toast";
+import { TipsCard } from "~/components/TipsCard";
+import { useClipboard } from "~/hooks/useClipboard";
 import {
   TSCONFIG_CATEGORIES,
   TSCONFIG_PRESETS,
   generateTsConfig,
   getDefaultValues,
   type TsConfigOption,
-} from '~/utils/tsconfig-builder';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '~/constants/site';
-import '~/styles/tools/tsconfig-builder.css';
+} from "~/utils/tsconfig-builder";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "~/constants/site";
+import "~/styles/tools/tsconfig-builder.css";
 
-export const Route = createFileRoute('/tsconfig-builder')({
+export const Route = createFileRoute("/tsconfig-builder")({
   head: () => ({
     meta: [
-      { title: 'tsconfig.json ビルダー | Web ツール集' },
+      { title: "tsconfig.json ビルダー | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          'TypeScript のコンパイラオプションを選択して tsconfig.json を自動生成。Node.js・Vite・Next.js・ライブラリなどのプリセットに対応。strict・module・target・jsx など主要オプションをカテゴリ別に設定できます。',
+          "TypeScript のコンパイラオプションを選択して tsconfig.json を自動生成。Node.js・Vite・Next.js・ライブラリなどのプリセットに対応。strict・module・target・jsx など主要オプションをカテゴリ別に設定できます。",
       },
       {
-        property: 'og:title',
-        content: 'tsconfig.json ビルダー | Web ツール集',
+        property: "og:title",
+        content: "tsconfig.json ビルダー | Web ツール集",
       },
       {
-        property: 'og:description',
+        property: "og:description",
         content:
-          'TypeScript コンパイラオプションを選択して tsconfig.json を自動生成。プリセット対応。',
+          "TypeScript コンパイラオプションを選択して tsconfig.json を自動生成。プリセット対応。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/tsconfig-builder` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
+      { property: "og:url", content: `${SITE_BASE_URL}/tsconfig-builder` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
       {
-        name: 'twitter:title',
-        content: 'tsconfig.json ビルダー | Web ツール集',
+        name: "twitter:title",
+        content: "tsconfig.json ビルダー | Web ツール集",
       },
       {
-        name: 'twitter:description',
-        content:
-          'TypeScript コンパイラオプションをカテゴリ別に設定して tsconfig.json を生成',
+        name: "twitter:description",
+        content: "TypeScript コンパイラオプションをカテゴリ別に設定して tsconfig.json を生成",
       },
     ],
   }),
@@ -67,10 +66,10 @@ function BooleanToggle({
         checked={value}
         onChange={(e) => onChange(e.target.checked)}
       />
-      <span className={`tsconfig-toggle-track${value ? ' checked' : ''}`}>
+      <span className={`tsconfig-toggle-track${value ? " checked" : ""}`}>
         <span className="tsconfig-toggle-thumb" />
       </span>
-      <span className="tsconfig-toggle-label">{value ? 'true' : 'false'}</span>
+      <span className="tsconfig-toggle-label">{value ? "true" : "false"}</span>
     </label>
   );
 }
@@ -125,7 +124,7 @@ function MultiCheckList({
         onChange([...value, item]);
       }
     },
-    [value, onChange]
+    [value, onChange],
   );
 
   return (
@@ -134,7 +133,7 @@ function MultiCheckList({
         <button
           key={c}
           type="button"
-          className={`tsconfig-check-chip${value.includes(c) ? ' selected' : ''}`}
+          className={`tsconfig-check-chip${value.includes(c) ? " selected" : ""}`}
           onClick={() => toggle(c)}
           aria-pressed={value.includes(c)}
         >
@@ -181,16 +180,16 @@ function OptionRow({
   onChange: (key: string, val: unknown) => void;
 }) {
   const isEnabled =
-    option.type === 'boolean'
+    option.type === "boolean"
       ? (value as boolean)
-      : option.type === 'string'
-        ? (value as string) !== ''
-        : option.type === 'list'
+      : option.type === "string"
+        ? (value as string) !== ""
+        : option.type === "list"
           ? (value as string[]).length > 0
           : true;
 
   return (
-    <div className={`tsconfig-option-row${isEnabled ? ' enabled' : ''}`}>
+    <div className={`tsconfig-option-row${isEnabled ? " enabled" : ""}`}>
       <div className="tsconfig-option-label-col">
         <span className="tsconfig-option-key">{option.key}</span>
         <span className="tsconfig-option-desc">{option.description}</span>
@@ -205,14 +204,14 @@ function OptionRow({
         )}
       </div>
       <div className="tsconfig-option-input-col">
-        {option.type === 'boolean' && (
+        {option.type === "boolean" && (
           <BooleanToggle
             optionKey={option.key}
             value={value as boolean}
             onChange={(v) => onChange(option.key, v)}
           />
         )}
-        {option.type === 'enum' && (
+        {option.type === "enum" && (
           <EnumSelect
             optionKey={option.key}
             value={value as string}
@@ -220,7 +219,7 @@ function OptionRow({
             onChange={(v) => onChange(option.key, v)}
           />
         )}
-        {option.type === 'list' && (
+        {option.type === "list" && (
           <MultiCheckList
             optionKey={option.key}
             value={value as string[]}
@@ -228,7 +227,7 @@ function OptionRow({
             onChange={(v) => onChange(option.key, v)}
           />
         )}
-        {option.type === 'string' && (
+        {option.type === "string" && (
           <StringInput
             optionKey={option.key}
             value={value as string}
@@ -258,33 +257,36 @@ function TsConfigBuilderPage() {
     setValues((prev) => ({ ...prev, [key]: val }));
   }, []);
 
-  const handlePreset = useCallback((presetId: string) => {
-    const preset = TSCONFIG_PRESETS.find((p) => p.id === presetId);
-    if (!preset) return;
-    const defaults = getDefaultValues();
-    setValues({ ...defaults, ...preset.values });
-    setActivePreset(presetId);
-    showToast(`プリセット「${preset.label}」を適用しました`, 'success');
-  }, [showToast]);
+  const handlePreset = useCallback(
+    (presetId: string) => {
+      const preset = TSCONFIG_PRESETS.find((p) => p.id === presetId);
+      if (!preset) return;
+      const defaults = getDefaultValues();
+      setValues({ ...defaults, ...preset.values });
+      setActivePreset(presetId);
+      showToast(`プリセット「${preset.label}」を適用しました`, "success");
+    },
+    [showToast],
+  );
 
   const handleReset = useCallback(() => {
     setValues(getDefaultValues());
     setActivePreset(null);
-    showToast('設定をリセットしました', 'info');
+    showToast("設定をリセットしました", "info");
   }, [showToast]);
 
   const handleCopy = useCallback(async () => {
     const success = await copy(output);
     if (success) {
-      showToast('クリップボードにコピーしました', 'success');
+      showToast("クリップボードにコピーしました", "success");
     } else {
-      showToast('コピーに失敗しました', 'error');
+      showToast("コピーに失敗しました", "error");
     }
   }, [copy, output, showToast]);
 
   const currentCategory = useMemo(
     () => TSCONFIG_CATEGORIES.find((c) => c.id === activeCategory),
-    [activeCategory]
+    [activeCategory],
   );
 
   return (
@@ -299,10 +301,10 @@ function TsConfigBuilderPage() {
 
       <TipsCard
         tips={[
-          'strict を有効にすると noImplicitAny・strictNullChecks などがまとめて有効になります',
-          'Vite や esbuild を使う場合は noEmit と isolatedModules を有効にするのが推奨です',
-          'ライブラリ開発では declaration と declarationMap を有効にして型定義ファイルを生成しましょう',
-          'skipLibCheck を有効にすると依存ライブラリの型エラーを無視でき、ビルドが高速になります',
+          "strict を有効にすると noImplicitAny・strictNullChecks などがまとめて有効になります",
+          "Vite や esbuild を使う場合は noEmit と isolatedModules を有効にするのが推奨です",
+          "ライブラリ開発では declaration と declarationMap を有効にして型定義ファイルを生成しましょう",
+          "skipLibCheck を有効にすると依存ライブラリの型エラーを無視でき、ビルドが高速になります",
         ]}
       />
 
@@ -316,7 +318,7 @@ function TsConfigBuilderPage() {
             <button
               key={preset.id}
               type="button"
-              className={`tsconfig-preset-btn${activePreset === preset.id ? ' active' : ''}`}
+              className={`tsconfig-preset-btn${activePreset === preset.id ? " active" : ""}`}
               onClick={() => handlePreset(preset.id)}
               aria-pressed={activePreset === preset.id}
             >
@@ -341,7 +343,7 @@ function TsConfigBuilderPage() {
               type="button"
               role="tab"
               aria-selected={activeCategory === cat.id}
-              className={`tsconfig-tab${activeCategory === cat.id ? ' active' : ''}`}
+              className={`tsconfig-tab${activeCategory === cat.id ? " active" : ""}`}
               onClick={() => setActiveCategory(cat.id)}
             >
               <span aria-hidden="true">{cat.icon}</span>
@@ -376,11 +378,7 @@ function TsConfigBuilderPage() {
             tsconfig.json
           </h2>
           <div className="tsconfig-action-row">
-            <button
-              type="button"
-              className="tsconfig-reset-btn"
-              onClick={handleReset}
-            >
+            <button type="button" className="tsconfig-reset-btn" onClick={handleReset}>
               リセット
             </button>
             <button

@@ -83,9 +83,7 @@ describe("generateRuleBlock", () => {
       disallow: ["/private/"],
     });
     const result = generateRuleBlock(rule);
-    expect(result).toBe(
-      "User-agent: Googlebot\nAllow: /public/\nDisallow: /private/"
-    );
+    expect(result).toBe("User-agent: Googlebot\nAllow: /public/\nDisallow: /private/");
   });
 
   it("Crawl-delay を含むルールを生成する", () => {
@@ -136,9 +134,7 @@ describe("generateRobotsTxt", () => {
       ],
       sitemaps: [],
     });
-    expect(result).toBe(
-      "User-agent: *\nDisallow: /admin/\n\nUser-agent: Googlebot\nAllow: /"
-    );
+    expect(result).toBe("User-agent: *\nDisallow: /admin/\n\nUser-agent: Googlebot\nAllow: /");
   });
 
   it("Sitemap を含む robots.txt を生成する", () => {
@@ -146,9 +142,7 @@ describe("generateRobotsTxt", () => {
       rules: [makeRule()],
       sitemaps: ["https://example.com/sitemap.xml"],
     });
-    expect(result).toBe(
-      "User-agent: *\n\nSitemap: https://example.com/sitemap.xml"
-    );
+    expect(result).toBe("User-agent: *\n\nSitemap: https://example.com/sitemap.xml");
   });
 
   it("無効なサイトマップ URL はスキップする", () => {

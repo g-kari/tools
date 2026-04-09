@@ -32,7 +32,10 @@
   color: var(--md-sys-color-on-surface-variant);
   font-size: 0.875rem;
   cursor: pointer;
-  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+  transition:
+    background-color 0.15s,
+    border-color 0.15s,
+    color 0.15s;
   user-select: none;
 }
 
@@ -70,7 +73,7 @@
   border-radius: 8px;
   color: var(--md-sys-color-on-surface);
   font-size: 1.1rem;
-  font-family: 'Fira Code', 'Consolas', 'Menlo', monospace;
+  font-family: "Fira Code", "Consolas", "Menlo", monospace;
   letter-spacing: 0.04em;
   cursor: default;
 }
@@ -121,7 +124,7 @@
 }
 
 .pp-history-text {
-  font-family: 'Fira Code', 'Consolas', 'Menlo', monospace;
+  font-family: "Fira Code", "Consolas", "Menlo", monospace;
   font-size: 0.875rem;
   color: var(--md-sys-color-on-surface-variant);
   overflow: hidden;

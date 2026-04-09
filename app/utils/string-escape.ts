@@ -5,14 +5,14 @@
 
 /** エスケープモードの型定義 */
 export type EscapeMode =
-  | 'js-double'
-  | 'js-single'
-  | 'js-template'
-  | 'json'
-  | 'python-double'
-  | 'python-single'
-  | 'regex'
-  | 'shell';
+  | "js-double"
+  | "js-single"
+  | "js-template"
+  | "json"
+  | "python-double"
+  | "python-single"
+  | "regex"
+  | "shell";
 
 /** エスケープモードのメタ情報 */
 export interface EscapeModeInfo {
@@ -31,57 +31,57 @@ export interface EscapeModeInfo {
 /** 利用可能なエスケープモード一覧 */
 export const ESCAPE_MODES: EscapeModeInfo[] = [
   {
-    id: 'js-double',
-    label: 'JS (ダブルクォート)',
-    description: 'JavaScriptのダブルクォート文字列リテラル用にエスケープ',
+    id: "js-double",
+    label: "JS (ダブルクォート)",
+    description: "JavaScriptのダブルクォート文字列リテラル用にエスケープ",
     wrapper: { open: '"', close: '"' },
     supportsUnescape: true,
   },
   {
-    id: 'js-single',
-    label: 'JS (シングルクォート)',
-    description: 'JavaScriptのシングルクォート文字列リテラル用にエスケープ',
+    id: "js-single",
+    label: "JS (シングルクォート)",
+    description: "JavaScriptのシングルクォート文字列リテラル用にエスケープ",
     wrapper: { open: "'", close: "'" },
     supportsUnescape: true,
   },
   {
-    id: 'js-template',
-    label: 'JS (テンプレートリテラル)',
-    description: 'JavaScriptのテンプレートリテラル用にエスケープ（バッククォート・${）',
-    wrapper: { open: '`', close: '`' },
+    id: "js-template",
+    label: "JS (テンプレートリテラル)",
+    description: "JavaScriptのテンプレートリテラル用にエスケープ（バッククォート・${）",
+    wrapper: { open: "`", close: "`" },
     supportsUnescape: true,
   },
   {
-    id: 'json',
-    label: 'JSON',
-    description: 'JSON文字列値用にエスケープ（RFC 8259準拠）',
+    id: "json",
+    label: "JSON",
+    description: "JSON文字列値用にエスケープ（RFC 8259準拠）",
     wrapper: { open: '"', close: '"' },
     supportsUnescape: true,
   },
   {
-    id: 'python-double',
-    label: 'Python (ダブルクォート)',
-    description: 'Pythonのダブルクォート文字列リテラル用にエスケープ',
+    id: "python-double",
+    label: "Python (ダブルクォート)",
+    description: "Pythonのダブルクォート文字列リテラル用にエスケープ",
     wrapper: { open: '"', close: '"' },
     supportsUnescape: true,
   },
   {
-    id: 'python-single',
-    label: 'Python (シングルクォート)',
-    description: 'Pythonのシングルクォート文字列リテラル用にエスケープ',
+    id: "python-single",
+    label: "Python (シングルクォート)",
+    description: "Pythonのシングルクォート文字列リテラル用にエスケープ",
     wrapper: { open: "'", close: "'" },
     supportsUnescape: true,
   },
   {
-    id: 'regex',
-    label: '正規表現',
-    description: '正規表現のメタ文字をエスケープして文字通りにマッチさせる',
+    id: "regex",
+    label: "正規表現",
+    description: "正規表現のメタ文字をエスケープして文字通りにマッチさせる",
     supportsUnescape: false,
   },
   {
-    id: 'shell',
-    label: 'Shell (Bash)',
-    description: 'Bashシェルのシングルクォート方式でエスケープ',
+    id: "shell",
+    label: "Shell (Bash)",
+    description: "Bashシェルのシングルクォート方式でエスケープ",
     wrapper: { open: "'", close: "'" },
     supportsUnescape: false,
   },
@@ -94,14 +94,14 @@ export const ESCAPE_MODES: EscapeModeInfo[] = [
  */
 export function escapeJsDouble(str: string): string {
   return str
-    .replace(/\\/g, '\\\\')
+    .replace(/\\/g, "\\\\")
     .replace(/"/g, '\\"')
-    .replace(/\n/g, '\\n')
-    .replace(/\r/g, '\\r')
-    .replace(/\t/g, '\\t')
-    .replace(/\0/g, '\\0')
-    .replace(/\u2028/g, '\\u2028')
-    .replace(/\u2029/g, '\\u2029');
+    .replace(/\n/g, "\\n")
+    .replace(/\r/g, "\\r")
+    .replace(/\t/g, "\\t")
+    .replace(/\0/g, "\\0")
+    .replace(/\u2028/g, "\\u2028")
+    .replace(/\u2029/g, "\\u2029");
 }
 
 /**
@@ -111,14 +111,14 @@ export function escapeJsDouble(str: string): string {
  */
 export function escapeJsSingle(str: string): string {
   return str
-    .replace(/\\/g, '\\\\')
+    .replace(/\\/g, "\\\\")
     .replace(/'/g, "\\'")
-    .replace(/\n/g, '\\n')
-    .replace(/\r/g, '\\r')
-    .replace(/\t/g, '\\t')
-    .replace(/\0/g, '\\0')
-    .replace(/\u2028/g, '\\u2028')
-    .replace(/\u2029/g, '\\u2029');
+    .replace(/\n/g, "\\n")
+    .replace(/\r/g, "\\r")
+    .replace(/\t/g, "\\t")
+    .replace(/\0/g, "\\0")
+    .replace(/\u2028/g, "\\u2028")
+    .replace(/\u2029/g, "\\u2029");
 }
 
 /**
@@ -127,10 +127,7 @@ export function escapeJsSingle(str: string): string {
  * @returns エスケープ済み文字列
  */
 export function escapeJsTemplate(str: string): string {
-  return str
-    .replace(/\\/g, '\\\\')
-    .replace(/`/g, '\\`')
-    .replace(/\$\{/g, '\\${');
+  return str.replace(/\\/g, "\\\\").replace(/`/g, "\\`").replace(/\$\{/g, "\\${");
 }
 
 /**
@@ -150,12 +147,12 @@ export function escapeJson(str: string): string {
  */
 export function escapePythonDouble(str: string): string {
   return str
-    .replace(/\\/g, '\\\\')
+    .replace(/\\/g, "\\\\")
     .replace(/"/g, '\\"')
-    .replace(/\n/g, '\\n')
-    .replace(/\r/g, '\\r')
-    .replace(/\t/g, '\\t')
-    .replace(/\0/g, '\\0');
+    .replace(/\n/g, "\\n")
+    .replace(/\r/g, "\\r")
+    .replace(/\t/g, "\\t")
+    .replace(/\0/g, "\\0");
 }
 
 /**
@@ -165,12 +162,12 @@ export function escapePythonDouble(str: string): string {
  */
 export function escapePythonSingle(str: string): string {
   return str
-    .replace(/\\/g, '\\\\')
+    .replace(/\\/g, "\\\\")
     .replace(/'/g, "\\'")
-    .replace(/\n/g, '\\n')
-    .replace(/\r/g, '\\r')
-    .replace(/\t/g, '\\t')
-    .replace(/\0/g, '\\0');
+    .replace(/\n/g, "\\n")
+    .replace(/\r/g, "\\r")
+    .replace(/\t/g, "\\t")
+    .replace(/\0/g, "\\0");
 }
 
 /**
@@ -179,7 +176,7 @@ export function escapePythonSingle(str: string): string {
  * @returns エスケープ済み文字列
  */
 export function escapeRegex(str: string): string {
-  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 /**
@@ -200,30 +197,30 @@ export function escapeShell(str: string): string {
  * @returns アンエスケープ済み文字列
  */
 export function unescapeCommon(str: string): string {
-  let result = '';
+  let result = "";
   let i = 0;
   while (i < str.length) {
-    if (str[i] === '\\' && i + 1 < str.length) {
+    if (str[i] === "\\" && i + 1 < str.length) {
       const next = str[i + 1];
       switch (next) {
-        case 'n':
-          result += '\n';
+        case "n":
+          result += "\n";
           i += 2;
           break;
-        case 'r':
-          result += '\r';
+        case "r":
+          result += "\r";
           i += 2;
           break;
-        case 't':
-          result += '\t';
+        case "t":
+          result += "\t";
           i += 2;
           break;
-        case '0':
-          result += '\0';
+        case "0":
+          result += "\0";
           i += 2;
           break;
-        case '\\':
-          result += '\\';
+        case "\\":
+          result += "\\";
           i += 2;
           break;
         case '"':
@@ -234,24 +231,24 @@ export function unescapeCommon(str: string): string {
           result += "'";
           i += 2;
           break;
-        case '`':
-          result += '`';
+        case "`":
+          result += "`";
           i += 2;
           break;
-        case '$':
+        case "$":
           // \${ のケース
-          if (str[i + 2] === '{') {
-            result += '${';
+          if (str[i + 2] === "{") {
+            result += "${";
             i += 3;
           } else {
-            result += '$';
+            result += "$";
             i += 2;
           }
           break;
-        case 'u': {
+        case "u": {
           // \uXXXX または \u{XXXXX}
-          if (str[i + 2] === '{') {
-            const end = str.indexOf('}', i + 3);
+          if (str[i + 2] === "{") {
+            const end = str.indexOf("}", i + 3);
             if (end !== -1) {
               const hex = str.slice(i + 3, end);
               if (/^[0-9a-fA-F]+$/.test(hex)) {
@@ -259,35 +256,35 @@ export function unescapeCommon(str: string): string {
                 result += String.fromCodePoint(codePoint);
                 i = end + 1;
               } else {
-                result += '\\u';
+                result += "\\u";
                 i += 2;
               }
             } else {
-              result += '\\u';
+              result += "\\u";
               i += 2;
             }
           } else if (i + 5 < str.length && /^[0-9a-fA-F]{4}$/.test(str.slice(i + 2, i + 6))) {
             result += String.fromCharCode(parseInt(str.slice(i + 2, i + 6), 16));
             i += 6;
           } else {
-            result += '\\u';
+            result += "\\u";
             i += 2;
           }
           break;
         }
-        case 'x': {
+        case "x": {
           // \xXX
           if (i + 3 < str.length && /^[0-9a-fA-F]{2}$/.test(str.slice(i + 2, i + 4))) {
             result += String.fromCharCode(parseInt(str.slice(i + 2, i + 4), 16));
             i += 4;
           } else {
-            result += '\\x';
+            result += "\\x";
             i += 2;
           }
           break;
         }
         default:
-          result += '\\' + next;
+          result += "\\" + next;
           i += 2;
           break;
       }
@@ -307,21 +304,21 @@ export function unescapeCommon(str: string): string {
  */
 export function escapeString(str: string, mode: EscapeMode): string {
   switch (mode) {
-    case 'js-double':
+    case "js-double":
       return escapeJsDouble(str);
-    case 'js-single':
+    case "js-single":
       return escapeJsSingle(str);
-    case 'js-template':
+    case "js-template":
       return escapeJsTemplate(str);
-    case 'json':
+    case "json":
       return escapeJson(str);
-    case 'python-double':
+    case "python-double":
       return escapePythonDouble(str);
-    case 'python-single':
+    case "python-single":
       return escapePythonSingle(str);
-    case 'regex':
+    case "regex":
       return escapeRegex(str);
-    case 'shell':
+    case "shell":
       return escapeShell(str);
   }
 }

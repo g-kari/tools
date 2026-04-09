@@ -14,11 +14,7 @@ export type OgType =
   | "video.movie";
 
 /** Twitterカードタイプ */
-export type TwitterCard =
-  | "summary"
-  | "summary_large_image"
-  | "app"
-  | "player";
+export type TwitterCard = "summary" | "summary_large_image" | "app" | "player";
 
 /** Robotsディレクティブ */
 export type RobotsDirective =
@@ -84,37 +80,24 @@ export function escapeHtmlAttr(str: string): string {
  * @param indent インデント文字列
  * @returns メタタグのHTML文字列（配列）
  */
-export function generateBasicMetaTags(
-  data: BasicSeoData,
-  indent = "  "
-): string[] {
+export function generateBasicMetaTags(data: BasicSeoData, indent = "  "): string[] {
   const tags: string[] = [];
 
   if (data.title) {
     tags.push(`${indent}<title>${escapeHtmlAttr(data.title)}</title>`);
   }
   if (data.description) {
-    tags.push(
-      `${indent}<meta name="description" content="${escapeHtmlAttr(data.description)}">`
-    );
+    tags.push(`${indent}<meta name="description" content="${escapeHtmlAttr(data.description)}">`);
   }
   if (data.keywords) {
-    tags.push(
-      `${indent}<meta name="keywords" content="${escapeHtmlAttr(data.keywords)}">`
-    );
+    tags.push(`${indent}<meta name="keywords" content="${escapeHtmlAttr(data.keywords)}">`);
   }
   if (data.author) {
-    tags.push(
-      `${indent}<meta name="author" content="${escapeHtmlAttr(data.author)}">`
-    );
+    tags.push(`${indent}<meta name="author" content="${escapeHtmlAttr(data.author)}">`);
   }
-  tags.push(
-    `${indent}<meta name="robots" content="${escapeHtmlAttr(data.robots)}">`
-  );
+  tags.push(`${indent}<meta name="robots" content="${escapeHtmlAttr(data.robots)}">`);
   if (data.canonicalUrl) {
-    tags.push(
-      `${indent}<link rel="canonical" href="${escapeHtmlAttr(data.canonicalUrl)}">`
-    );
+    tags.push(`${indent}<link rel="canonical" href="${escapeHtmlAttr(data.canonicalUrl)}">`);
   }
 
   return tags;
@@ -129,38 +112,26 @@ export function generateBasicMetaTags(
 export function generateOgTags(data: OgData, indent = "  "): string[] {
   const tags: string[] = [];
 
-  tags.push(
-    `${indent}<meta property="og:type" content="${escapeHtmlAttr(data.type)}">`
-  );
+  tags.push(`${indent}<meta property="og:type" content="${escapeHtmlAttr(data.type)}">`);
   if (data.title) {
-    tags.push(
-      `${indent}<meta property="og:title" content="${escapeHtmlAttr(data.title)}">`
-    );
+    tags.push(`${indent}<meta property="og:title" content="${escapeHtmlAttr(data.title)}">`);
   }
   if (data.description) {
     tags.push(
-      `${indent}<meta property="og:description" content="${escapeHtmlAttr(data.description)}">`
+      `${indent}<meta property="og:description" content="${escapeHtmlAttr(data.description)}">`,
     );
   }
   if (data.url) {
-    tags.push(
-      `${indent}<meta property="og:url" content="${escapeHtmlAttr(data.url)}">`
-    );
+    tags.push(`${indent}<meta property="og:url" content="${escapeHtmlAttr(data.url)}">`);
   }
   if (data.image) {
-    tags.push(
-      `${indent}<meta property="og:image" content="${escapeHtmlAttr(data.image)}">`
-    );
+    tags.push(`${indent}<meta property="og:image" content="${escapeHtmlAttr(data.image)}">`);
   }
   if (data.siteName) {
-    tags.push(
-      `${indent}<meta property="og:site_name" content="${escapeHtmlAttr(data.siteName)}">`
-    );
+    tags.push(`${indent}<meta property="og:site_name" content="${escapeHtmlAttr(data.siteName)}">`);
   }
   if (data.locale) {
-    tags.push(
-      `${indent}<meta property="og:locale" content="${escapeHtmlAttr(data.locale)}">`
-    );
+    tags.push(`${indent}<meta property="og:locale" content="${escapeHtmlAttr(data.locale)}">`);
   }
 
   return tags;
@@ -172,39 +143,26 @@ export function generateOgTags(data: OgData, indent = "  "): string[] {
  * @param indent インデント文字列
  * @returns メタタグのHTML文字列（配列）
  */
-export function generateTwitterTags(
-  data: TwitterData,
-  indent = "  "
-): string[] {
+export function generateTwitterTags(data: TwitterData, indent = "  "): string[] {
   const tags: string[] = [];
 
-  tags.push(
-    `${indent}<meta name="twitter:card" content="${escapeHtmlAttr(data.card)}">`
-  );
+  tags.push(`${indent}<meta name="twitter:card" content="${escapeHtmlAttr(data.card)}">`);
   if (data.title) {
-    tags.push(
-      `${indent}<meta name="twitter:title" content="${escapeHtmlAttr(data.title)}">`
-    );
+    tags.push(`${indent}<meta name="twitter:title" content="${escapeHtmlAttr(data.title)}">`);
   }
   if (data.description) {
     tags.push(
-      `${indent}<meta name="twitter:description" content="${escapeHtmlAttr(data.description)}">`
+      `${indent}<meta name="twitter:description" content="${escapeHtmlAttr(data.description)}">`,
     );
   }
   if (data.image) {
-    tags.push(
-      `${indent}<meta name="twitter:image" content="${escapeHtmlAttr(data.image)}">`
-    );
+    tags.push(`${indent}<meta name="twitter:image" content="${escapeHtmlAttr(data.image)}">`);
   }
   if (data.site) {
-    tags.push(
-      `${indent}<meta name="twitter:site" content="${escapeHtmlAttr(data.site)}">`
-    );
+    tags.push(`${indent}<meta name="twitter:site" content="${escapeHtmlAttr(data.site)}">`);
   }
   if (data.creator) {
-    tags.push(
-      `${indent}<meta name="twitter:creator" content="${escapeHtmlAttr(data.creator)}">`
-    );
+    tags.push(`${indent}<meta name="twitter:creator" content="${escapeHtmlAttr(data.creator)}">`);
   }
 
   return tags;
@@ -218,7 +176,7 @@ export function generateTwitterTags(
  */
 export function generateAllMetaTags(
   data: SeoMetaData,
-  options: { includeBasic: boolean; includeOg: boolean; includeTwitter: boolean }
+  options: { includeBasic: boolean; includeOg: boolean; includeTwitter: boolean },
 ): string {
   const lines: string[] = [];
 
@@ -266,10 +224,7 @@ export function truncateTitle(title: string, maxLength = 60): string {
  * @param description description文字列
  * @returns 切り詰め後の文字列
  */
-export function truncateDescription(
-  description: string,
-  maxLength = 160
-): string {
+export function truncateDescription(description: string, maxLength = 160): string {
   if (description.length <= maxLength) return description;
   return description.slice(0, maxLength - 1) + "…";
 }

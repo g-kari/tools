@@ -39,23 +39,19 @@ export function isValidCIDR(cidr: string): boolean {
 export function ipToInt(ip: string): number {
   const parts = ip.split(".");
   return (
-    (parseInt(parts[0], 10) << 24) |
-    (parseInt(parts[1], 10) << 16) |
-    (parseInt(parts[2], 10) << 8) |
-    parseInt(parts[3], 10)
-  ) >>> 0; // Use unsigned right shift to ensure positive number
+    ((parseInt(parts[0], 10) << 24) |
+      (parseInt(parts[1], 10) << 16) |
+      (parseInt(parts[2], 10) << 8) |
+      parseInt(parts[3], 10)) >>>
+    0
+  ); // Use unsigned right shift to ensure positive number
 }
 
 /**
  * Convert 32-bit integer to IPv4 address string
  */
 export function intToIp(int: number): string {
-  return [
-    (int >>> 24) & 0xff,
-    (int >>> 16) & 0xff,
-    (int >>> 8) & 0xff,
-    int & 0xff,
-  ].join(".");
+  return [(int >>> 24) & 0xff, (int >>> 16) & 0xff, (int >>> 8) & 0xff, int & 0xff].join(".");
 }
 
 /**
@@ -80,10 +76,7 @@ export function calculateNetworkAddress(ip: string, prefix: number): string {
 /**
  * Calculate broadcast address from network address and prefix
  */
-export function calculateBroadcastAddress(
-  networkAddress: string,
-  prefix: number
-): string {
+export function calculateBroadcastAddress(networkAddress: string, prefix: number): string {
   const networkInt = ipToInt(networkAddress);
   const hostBits = 32 - prefix;
   // JavaScriptのビット演算は32ビット符号付き整数のため、
@@ -150,7 +143,7 @@ export interface CIDRResult {
  */
 export function calculateWildcardMask(subnetMask: string): string {
   const maskInt = ipToInt(subnetMask);
-  const wildcardInt = (~maskInt) >>> 0;
+  const wildcardInt = ~maskInt >>> 0;
   return intToIp(wildcardInt);
 }
 
@@ -159,9 +152,7 @@ export function calculateWildcardMask(subnetMask: string): string {
  */
 export function subnetMaskToBinary(subnetMask: string): string {
   const parts = subnetMask.split(".");
-  return parts
-    .map((part) => parseInt(part, 10).toString(2).padStart(8, "0"))
-    .join(".");
+  return parts.map((part) => parseInt(part, 10).toString(2).padStart(8, "0")).join(".");
 }
 
 /**
@@ -186,16 +177,13 @@ export function isPrivateIP(ip: string): boolean {
   const ipInt = ipToInt(ip);
 
   // 10.0.0.0/8
-  if (ipInt >= ipToInt("10.0.0.0") && ipInt <= ipToInt("10.255.255.255"))
-    return true;
+  if (ipInt >= ipToInt("10.0.0.0") && ipInt <= ipToInt("10.255.255.255")) return true;
 
   // 172.16.0.0/12
-  if (ipInt >= ipToInt("172.16.0.0") && ipInt <= ipToInt("172.31.255.255"))
-    return true;
+  if (ipInt >= ipToInt("172.16.0.0") && ipInt <= ipToInt("172.31.255.255")) return true;
 
   // 192.168.0.0/16
-  if (ipInt >= ipToInt("192.168.0.0") && ipInt <= ipToInt("192.168.255.255"))
-    return true;
+  if (ipInt >= ipToInt("192.168.0.0") && ipInt <= ipToInt("192.168.255.255")) return true;
 
   return false;
 }
@@ -213,7 +201,7 @@ export function isIPInCIDR(ip: string, cidr: string): boolean {
   const mask = prefix === 0 ? 0 : (0xffffffff << (32 - prefix)) >>> 0;
   const ipInt = ipToInt(ip);
   const networkInt = ipToInt(cidrIp);
-  return ((ipInt & mask) >>> 0) === ((networkInt & mask) >>> 0);
+  return (ipInt & mask) >>> 0 === (networkInt & mask) >>> 0;
 }
 
 /**
@@ -231,13 +219,9 @@ export function calculateCIDR(cidr: string): CIDRResult {
   const broadcastAddress = calculateBroadcastAddress(networkAddress, prefix);
   const subnetMask = prefixToSubnetMask(prefix);
   const firstUsableIP =
-    prefix === 32 || prefix === 31
-      ? networkAddress
-      : calculateFirstUsableIP(networkAddress);
+    prefix === 32 || prefix === 31 ? networkAddress : calculateFirstUsableIP(networkAddress);
   const lastUsableIP =
-    prefix === 32 || prefix === 31
-      ? broadcastAddress
-      : calculateLastUsableIP(broadcastAddress);
+    prefix === 32 || prefix === 31 ? broadcastAddress : calculateLastUsableIP(broadcastAddress);
   const totalHosts = calculateTotalHosts(prefix);
   const usableHosts = calculateUsableHosts(prefix);
   const wildcardMask = calculateWildcardMask(subnetMask);

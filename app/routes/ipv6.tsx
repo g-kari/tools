@@ -1,35 +1,35 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useState, useCallback, useMemo } from 'react';
-import { useToast } from '~/components/Toast';
-import { useClipboard } from '~/hooks/useClipboard';
-import { StatusAnnouncer, useStatusAnnouncement } from '~/hooks/useStatusAnnouncement';
-import { TipsCard } from '~/components/TipsCard';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
-import { parseIPv6, type IPv6Info, type IPv6AddressType } from '~/utils/ipv6';
-import '../styles/tools/ipv6.css';
+import { createFileRoute } from "@tanstack/react-router";
+import { useState, useCallback, useMemo } from "react";
+import { useToast } from "~/components/Toast";
+import { useClipboard } from "~/hooks/useClipboard";
+import { StatusAnnouncer, useStatusAnnouncement } from "~/hooks/useStatusAnnouncement";
+import { TipsCard } from "~/components/TipsCard";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
+import { parseIPv6, type IPv6Info, type IPv6AddressType } from "~/utils/ipv6";
+import "../styles/tools/ipv6.css";
 
-export const Route = createFileRoute('/ipv6')({
+export const Route = createFileRoute("/ipv6")({
   head: () => ({
     meta: [
-      { title: 'IPv6アドレス解析・変換 | Web ツール集' },
+      { title: "IPv6アドレス解析・変換 | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          'IPv6アドレスを展開・圧縮・解析するオンラインツール。RFC 5952 準拠の圧縮形式変換、アドレスタイプ判定（ループバック・リンクローカル・マルチキャスト等）、IPv4射影アドレスの抽出、2進数表示に対応。',
+          "IPv6アドレスを展開・圧縮・解析するオンラインツール。RFC 5952 準拠の圧縮形式変換、アドレスタイプ判定（ループバック・リンクローカル・マルチキャスト等）、IPv4射影アドレスの抽出、2進数表示に対応。",
       },
-      { property: 'og:title', content: 'IPv6アドレス解析・変換 | Web ツール集' },
+      { property: "og:title", content: "IPv6アドレス解析・変換 | Web ツール集" },
       {
-        property: 'og:description',
+        property: "og:description",
         content:
-          'IPv6アドレスの展開・圧縮・解析ツール。アドレスタイプ判定、IPv4射影抽出、2進数表示対応。',
+          "IPv6アドレスの展開・圧縮・解析ツール。アドレスタイプ判定、IPv4射影抽出、2進数表示対応。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/ipv6` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
-      { name: 'twitter:title', content: 'IPv6アドレス解析・変換 | Web ツール集' },
+      { property: "og:url", content: `${SITE_BASE_URL}/ipv6` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "IPv6アドレス解析・変換 | Web ツール集" },
       {
-        name: 'twitter:description',
-        content: 'IPv6アドレスの展開・圧縮・解析。アドレスタイプ判定・IPv4射影抽出対応。',
+        name: "twitter:description",
+        content: "IPv6アドレスの展開・圧縮・解析。アドレスタイプ判定・IPv4射影抽出対応。",
       },
     ],
   }),
@@ -41,13 +41,13 @@ export const Route = createFileRoute('/ipv6')({
 // ---------------------------------------------------------------------------
 
 const SAMPLES: { label: string; value: string }[] = [
-  { label: 'ループバック', value: '::1' },
-  { label: 'リンクローカル', value: 'fe80::1' },
-  { label: 'グローバル', value: '2001:db8::1' },
-  { label: 'IPv4射影', value: '::ffff:192.168.1.1' },
-  { label: 'マルチキャスト', value: 'ff02::1' },
-  { label: '未指定', value: '::' },
-  { label: 'フル形式', value: '2001:0db8:0000:0000:0000:0000:0000:0001' },
+  { label: "ループバック", value: "::1" },
+  { label: "リンクローカル", value: "fe80::1" },
+  { label: "グローバル", value: "2001:db8::1" },
+  { label: "IPv4射影", value: "::ffff:192.168.1.1" },
+  { label: "マルチキャスト", value: "ff02::1" },
+  { label: "未指定", value: "::" },
+  { label: "フル形式", value: "2001:0db8:0000:0000:0000:0000:0000:0001" },
 ];
 
 // ---------------------------------------------------------------------------
@@ -55,16 +55,16 @@ const SAMPLES: { label: string; value: string }[] = [
 // ---------------------------------------------------------------------------
 
 const TYPE_CLASS: Record<IPv6AddressType, string> = {
-  loopback: 'type-loopback',
-  'link-local': 'type-link-local',
-  'unique-local': 'type-unique-local',
-  multicast: 'type-multicast',
-  'ipv4-mapped': 'type-ipv4-mapped',
-  'ipv4-compatible': 'type-ipv4-compatible',
-  unspecified: 'type-unspecified',
-  documentation: 'type-documentation',
-  benchmarking: 'type-benchmarking',
-  'global-unicast': 'type-global-unicast',
+  loopback: "type-loopback",
+  "link-local": "type-link-local",
+  "unique-local": "type-unique-local",
+  multicast: "type-multicast",
+  "ipv4-mapped": "type-ipv4-mapped",
+  "ipv4-compatible": "type-ipv4-compatible",
+  unspecified: "type-unspecified",
+  documentation: "type-documentation",
+  benchmarking: "type-benchmarking",
+  "global-unicast": "type-global-unicast",
 };
 
 // ---------------------------------------------------------------------------
@@ -76,14 +76,14 @@ function IPv6Tool() {
   const { copy } = useClipboard();
   const { statusRef, announceStatus } = useStatusAnnouncement();
 
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
 
   const { result, error } = useMemo<{ result: IPv6Info | null; error: string | null }>(() => {
     if (!input.trim()) return { result: null, error: null };
     try {
       return { result: parseIPv6(input), error: null };
     } catch (e) {
-      return { result: null, error: e instanceof Error ? e.message : '解析に失敗しました' };
+      return { result: null, error: e instanceof Error ? e.message : "解析に失敗しました" };
     }
   }, [input]);
 
@@ -91,10 +91,10 @@ function IPv6Tool() {
     async (text: string, label: string) => {
       const ok = await copy(text);
       if (ok) {
-        showToast('コピーしました', 'success');
+        showToast("コピーしました", "success");
         announceStatus(`${label}をコピーしました`);
       } else {
-        showToast('コピーに失敗しました', 'error');
+        showToast("コピーに失敗しました", "error");
       }
     },
     [copy, showToast, announceStatus],
@@ -109,8 +109,8 @@ function IPv6Tool() {
   );
 
   const handleClear = useCallback(() => {
-    setInput('');
-    announceStatus('入力をクリアしました');
+    setInput("");
+    announceStatus("入力をクリアしました");
   }, [announceStatus]);
 
   return (
@@ -125,13 +125,13 @@ function IPv6Tool() {
             <input
               id="ipv6-input"
               type="text"
-              className={`ipv6-input${error ? ' has-error' : ''}`}
+              className={`ipv6-input${error ? " has-error" : ""}`}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="例: 2001:db8::1 または ::ffff:192.168.1.1"
               aria-label="IPv6アドレス入力"
               aria-invalid={!!error}
-              aria-describedby={error ? 'ipv6-error' : undefined}
+              aria-describedby={error ? "ipv6-error" : undefined}
               spellCheck={false}
               autoComplete="off"
             />
@@ -193,7 +193,7 @@ interface IPv6ResultProps {
 }
 
 function IPv6Result({ result, onCopy }: IPv6ResultProps) {
-  const typeClass = TYPE_CLASS[result.type] ?? 'type-global-unicast';
+  const typeClass = TYPE_CLASS[result.type] ?? "type-global-unicast";
 
   return (
     <section aria-label="解析結果">
@@ -212,7 +212,7 @@ function IPv6Result({ result, onCopy }: IPv6ResultProps) {
           <button
             type="button"
             className="ipv6-copy-btn"
-            onClick={() => onCopy(result.ipv4Mapped!, 'IPv4アドレス')}
+            onClick={() => onCopy(result.ipv4Mapped!, "IPv4アドレス")}
             aria-label={`IPv4アドレス ${result.ipv4Mapped} をコピー`}
           >
             コピー
@@ -223,25 +223,10 @@ function IPv6Result({ result, onCopy }: IPv6ResultProps) {
       {/* 変換結果テーブル */}
       <table className="ipv6-result-table" aria-label="アドレス変換結果">
         <tbody>
-          <ResultRow
-            label="圧縮形式"
-            value={result.compressed}
-            highlight
-            onCopy={onCopy}
-          />
-          <ResultRow
-            label="展開形式"
-            value={result.expanded}
-            onCopy={onCopy}
-          />
-          <ResultRow
-            label="16進数"
-            value={result.hexadecimal}
-            onCopy={onCopy}
-          />
-          {result.scopeId && (
-            <ResultRow label="ゾーン ID" value={result.scopeId} onCopy={onCopy} />
-          )}
+          <ResultRow label="圧縮形式" value={result.compressed} highlight onCopy={onCopy} />
+          <ResultRow label="展開形式" value={result.expanded} onCopy={onCopy} />
+          <ResultRow label="16進数" value={result.hexadecimal} onCopy={onCopy} />
+          {result.scopeId && <ResultRow label="ゾーン ID" value={result.scopeId} onCopy={onCopy} />}
         </tbody>
       </table>
 
@@ -252,7 +237,7 @@ function IPv6Result({ result, onCopy }: IPv6ResultProps) {
           {result.groups.map((group, i) => (
             <div
               key={i}
-              className={`ipv6-group-item${group === '0000' ? ' zero-group' : ''}`}
+              className={`ipv6-group-item${group === "0000" ? " zero-group" : ""}`}
               role="listitem"
               aria-label={`グループ${i + 1}: ${group}`}
             >
@@ -280,32 +265,32 @@ function IPv6Result({ result, onCopy }: IPv6ResultProps) {
       <TipsCard
         sections={[
           {
-            title: 'IPv6 アドレスの基本',
+            title: "IPv6 アドレスの基本",
             items: [
-              '128ビット = 16進数8グループ（各16ビット）をコロンで区切る',
-              '連続するゼログループは :: で省略可能（1回のみ）',
-              '各グループの先頭ゼロは省略可能（0000 → 0）',
-              'RFC 5952 で最短表記ルールが定義されている',
+              "128ビット = 16進数8グループ（各16ビット）をコロンで区切る",
+              "連続するゼログループは :: で省略可能（1回のみ）",
+              "各グループの先頭ゼロは省略可能（0000 → 0）",
+              "RFC 5952 で最短表記ルールが定義されている",
             ],
           },
           {
-            title: '代表的なアドレスタイプ',
+            title: "代表的なアドレスタイプ",
             items: [
-              '::1/128 — ループバック（自ホスト宛）',
-              ':: /128 — 未指定アドレス',
-              'fe80::/10 — リンクローカル（セグメント内通信）',
-              'fc00::/7 — ユニークローカル（プライベート）',
-              'ff00::/8 — マルチキャスト',
-              '2000::/3 — グローバルユニキャスト（インターネット）',
-              '::ffff:0:0/96 — IPv4射影アドレス',
+              "::1/128 — ループバック（自ホスト宛）",
+              ":: /128 — 未指定アドレス",
+              "fe80::/10 — リンクローカル（セグメント内通信）",
+              "fc00::/7 — ユニークローカル（プライベート）",
+              "ff00::/8 — マルチキャスト",
+              "2000::/3 — グローバルユニキャスト（インターネット）",
+              "::ffff:0:0/96 — IPv4射影アドレス",
             ],
           },
           {
-            title: 'IPv4射影アドレスとは',
+            title: "IPv4射影アドレスとは",
             items: [
-              '::ffff:x.x.x.x 形式でIPv4アドレスをIPv6で表現',
-              'デュアルスタック環境でIPv4クライアントをIPv6ソケットで受け付ける際に使用',
-              'Linuxの /proc/net/tcp6 などで確認できる',
+              "::ffff:x.x.x.x 形式でIPv4アドレスをIPv6で表現",
+              "デュアルスタック環境でIPv4クライアントをIPv6ソケットで受け付ける際に使用",
+              "Linuxの /proc/net/tcp6 などで確認できる",
             ],
           },
         ]}
@@ -331,7 +316,7 @@ function ResultRow({ label, value, highlight, onCopy }: ResultRowProps) {
       <th scope="row">{label}</th>
       <td>
         <div className="ipv6-copy-cell">
-          <span className={highlight ? 'ipv6-highlight' : undefined}>{value}</span>
+          <span className={highlight ? "ipv6-highlight" : undefined}>{value}</span>
           <button
             type="button"
             className="ipv6-copy-btn"

@@ -32,9 +32,7 @@ test.describe("シャノンエントロピー計算機", () => {
     await expect(page.locator(".entropy-sample-btn").first()).toBeVisible();
   });
 
-  test("サンプルボタンをクリックするとテキストエリアに値が入る", async ({
-    page,
-  }) => {
+  test("サンプルボタンをクリックするとテキストエリアに値が入る", async ({ page }) => {
     await page.locator(".entropy-sample-btn").first().click();
     const textarea = page.locator("#entropy-input");
     await expect(textarea).not.toHaveValue("");

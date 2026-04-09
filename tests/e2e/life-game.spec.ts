@@ -36,17 +36,11 @@ test.describe("ライフゲーム - E2Eテスト", () => {
     const statArea = page.locator(".life-game-stats");
     await expect(statArea).toBeVisible();
 
-    const genBefore = await page
-      .locator(".life-game-stat-value")
-      .first()
-      .textContent();
+    const genBefore = await page.locator(".life-game-stat-value").first().textContent();
 
     await page.click("button:has-text('ステップ')");
 
-    const genAfter = await page
-      .locator(".life-game-stat-value")
-      .first()
-      .textContent();
+    const genAfter = await page.locator(".life-game-stat-value").first().textContent();
 
     expect(Number(genAfter)).toBeGreaterThan(Number(genBefore));
   });
@@ -55,10 +49,7 @@ test.describe("ライフゲーム - E2Eテスト", () => {
     await page.click("button:has-text('ランダム')");
     await page.click("button:has-text('クリア')");
     // 世代が0にリセットされる
-    const genValue = await page
-      .locator(".life-game-stat-value")
-      .first()
-      .textContent();
+    const genValue = await page.locator(".life-game-stat-value").first().textContent();
     expect(genValue).toBe("0");
   });
 
@@ -85,10 +76,7 @@ test.describe("ライフゲーム - E2Eテスト", () => {
     await expect(gliderBtn).toBeVisible();
     await gliderBtn.click();
     // グライダーは5セル
-    const popValue = await page
-      .locator(".life-game-stat-value")
-      .nth(1)
-      .textContent();
+    const popValue = await page.locator(".life-game-stat-value").nth(1).textContent();
     expect(Number(popValue)).toBe(5);
   });
 
@@ -111,9 +99,7 @@ test.describe("ライフゲーム - E2Eテスト", () => {
     await expect(checkbox).not.toBeChecked();
   });
 
-  test("統計情報（世代・個体数・グリッドサイズ）が表示される", async ({
-    page,
-  }) => {
+  test("統計情報（世代・個体数・グリッドサイズ）が表示される", async ({ page }) => {
     const statLabels = page.locator(".life-game-stat-label");
     await expect(statLabels.nth(0)).toHaveText("世代");
     await expect(statLabels.nth(1)).toHaveText("個体数");
@@ -125,9 +111,7 @@ test.describe("ライフゲーム - E2Eテスト", () => {
     await expect(tips).toBeVisible();
   });
 
-  test("シミュレーション中はステップ・ランダム・クリアが無効になる", async ({
-    page,
-  }) => {
+  test("シミュレーション中はステップ・ランダム・クリアが無効になる", async ({ page }) => {
     await page.click("button:has-text('ランダム')");
     await page.click("button:has-text('開始')");
     const stepBtn = page.locator("button:has-text('ステップ')");

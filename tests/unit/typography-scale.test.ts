@@ -244,9 +244,7 @@ describe("generateOutput", () => {
   });
 
   it("tailwind フォーマットで generateTailwindOutput と同じ出力", () => {
-    expect(generateOutput(steps, "tailwind")).toBe(
-      generateTailwindOutput(steps)
-    );
+    expect(generateOutput(steps, "tailwind")).toBe(generateTailwindOutput(steps));
   });
 });
 

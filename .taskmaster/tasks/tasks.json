@@ -269,9 +269,7 @@
       "lastModified": "2026-01-02T09:27:13.799Z",
       "taskCount": 20,
       "completedCount": 6,
-      "tags": [
-        "master"
-      ]
+      "tags": ["master"]
     }
   }
 }

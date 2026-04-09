@@ -102,7 +102,9 @@
   color: var(--md-sys-color-on-surface-variant);
   border-radius: 3px;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
 }
 
 .ansi-color-mode-tab:hover {
@@ -128,7 +130,9 @@
   border-radius: 3px;
   cursor: pointer;
   border: 2px solid transparent;
-  transition: transform 0.1s, border-color 0.1s;
+  transition:
+    transform 0.1s,
+    border-color 0.1s;
   position: relative;
   flex-shrink: 0;
 }
@@ -264,7 +268,10 @@
   color: var(--md-sys-color-on-surface-variant);
   border-radius: 0;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s,
+    border-color 0.15s;
   font-family: "JetBrains Mono", monospace;
 }
 

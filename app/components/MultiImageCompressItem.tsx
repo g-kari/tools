@@ -39,10 +39,7 @@ export function MultiImageCompressItem({
 
   const compressionRatio =
     isDone && item.compressedBlob
-      ? calculateCompressionRatio(
-          item.originalFile.size,
-          item.compressedBlob.size
-        )
+      ? calculateCompressionRatio(item.originalFile.size, item.compressedBlob.size)
       : null;
 
   return (
@@ -87,9 +84,7 @@ export function MultiImageCompressItem({
 
         <div className="compress-image-sizes" aria-label="ファイルサイズ情報">
           <span className="compress-size-label">元:</span>
-          <span className="compress-size-value">
-            {formatFileSize(item.originalFile.size)}
-          </span>
+          <span className="compress-size-value">{formatFileSize(item.originalFile.size)}</span>
 
           {isDone && item.compressedBlob && (
             <>
@@ -110,9 +105,7 @@ export function MultiImageCompressItem({
             className={`compress-ratio-badge ${compressionRatio > 0 ? "compress-ratio-positive" : "compress-ratio-negative"}`}
             aria-label={`削減率: ${compressionRatio > 0 ? `-${compressionRatio}%` : `+${Math.abs(compressionRatio)}%`}`}
           >
-            {compressionRatio > 0
-              ? `-${compressionRatio}%`
-              : `+${Math.abs(compressionRatio)}%`}
+            {compressionRatio > 0 ? `-${compressionRatio}%` : `+${Math.abs(compressionRatio)}%`}
           </div>
         )}
 
@@ -125,11 +118,7 @@ export function MultiImageCompressItem({
 
         {/* エラー表示 */}
         {isError && (
-          <p
-            className="compress-error-text"
-            role="alert"
-            aria-live="assertive"
-          >
+          <p className="compress-error-text" role="alert" aria-live="assertive">
             {item.error ?? "圧縮に失敗しました"}
           </p>
         )}

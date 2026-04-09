@@ -4,10 +4,7 @@ import { useState, useCallback, useMemo } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 import {
   type BorderRadiusState,
@@ -78,29 +75,23 @@ function CssBorderRadiusGenerator() {
   const { showToast } = useToast();
 
   /** 生成された CSS プロパティ値 */
-  const borderRadiusValue = useMemo(
-    () => generateBorderRadiusValue(state),
-    [state]
-  );
+  const borderRadiusValue = useMemo(() => generateBorderRadiusValue(state), [state]);
 
   /** 生成された CSS コード全体 */
   const generatedCSS = useMemo(() => generateFullCSS(state), [state]);
 
   /** コーナーの値を更新する */
-  const updateCorner = useCallback(
-    (key: CornerKey, axis: "h" | "v", value: number) => {
-      setState((prev) => ({
-        ...prev,
-        [key]: {
-          ...prev[key],
-          [axis]: value,
-          // 非楕円モードでは h/v を同期
-          ...(axis === "h" && !prev.elliptic ? { v: value } : {}),
-        },
-      }));
-    },
-    []
-  );
+  const updateCorner = useCallback((key: CornerKey, axis: "h" | "v", value: number) => {
+    setState((prev) => ({
+      ...prev,
+      [key]: {
+        ...prev[key],
+        [axis]: value,
+        // 非楕円モードでは h/v を同期
+        ...(axis === "h" && !prev.elliptic ? { v: value } : {}),
+      },
+    }));
+  }, []);
 
   /** 単位を変更する */
   const setUnit = useCallback((unit: "px" | "%") => {
@@ -141,7 +132,7 @@ function CssBorderRadiusGenerator() {
       }));
       announceStatus(`「${preset.label}」プリセットを適用しました`);
     },
-    [announceStatus]
+    [announceStatus],
   );
 
   /** リセットする */
@@ -171,10 +162,7 @@ function CssBorderRadiusGenerator() {
           {/* 左側: コントロールパネル */}
           <div className="cbr-controls" aria-label="角丸設定パネル">
             {/* プリセット */}
-            <section
-              className="cbr-section"
-              aria-labelledby="cbr-presets-title"
-            >
+            <section className="cbr-section" aria-labelledby="cbr-presets-title">
               <h2 className="cbr-section-title" id="cbr-presets-title">
                 プリセット
               </h2>
@@ -194,20 +182,13 @@ function CssBorderRadiusGenerator() {
             </section>
 
             {/* 単位・モード設定 */}
-            <section
-              className="cbr-section"
-              aria-labelledby="cbr-options-title"
-            >
+            <section className="cbr-section" aria-labelledby="cbr-options-title">
               <h2 className="cbr-section-title" id="cbr-options-title">
                 オプション
               </h2>
               <div className="cbr-toggle-row">
                 <span className="cbr-toggle-label">単位:</span>
-                <div
-                  className="cbr-toggle-group"
-                  role="group"
-                  aria-label="単位の選択"
-                >
+                <div className="cbr-toggle-group" role="group" aria-label="単位の選択">
                   {(["px", "%"] as const).map((u) => (
                     <button
                       key={u}
@@ -234,10 +215,7 @@ function CssBorderRadiusGenerator() {
             </section>
 
             {/* コーナー設定 */}
-            <section
-              className="cbr-section"
-              aria-labelledby="cbr-corners-title"
-            >
+            <section className="cbr-section" aria-labelledby="cbr-corners-title">
               <div className="cbr-section-header">
                 <h2 className="cbr-section-title" id="cbr-corners-title">
                   コーナー設定
@@ -253,11 +231,7 @@ function CssBorderRadiusGenerator() {
                 </Button>
               </div>
 
-              <div
-                className="cbr-corners-grid"
-                role="group"
-                aria-label="各コーナーの角丸設定"
-              >
+              <div className="cbr-corners-grid" role="group" aria-label="各コーナーの角丸設定">
                 {CORNER_DEFS.map(({ key, label }) => {
                   const corner = state[key];
                   return (
@@ -267,10 +241,7 @@ function CssBorderRadiusGenerator() {
                         {/* 水平 */}
                         <div className="cbr-input-row">
                           {state.elliptic && (
-                            <span
-                              className="cbr-input-axis-label"
-                              aria-hidden="true"
-                            >
+                            <span className="cbr-input-axis-label" aria-hidden="true">
                               H
                             </span>
                           )}
@@ -281,9 +252,7 @@ function CssBorderRadiusGenerator() {
                             step={1}
                             value={corner.h}
                             className="cbr-range"
-                            onChange={(e) =>
-                              updateCorner(key, "h", Number(e.target.value))
-                            }
+                            onChange={(e) => updateCorner(key, "h", Number(e.target.value))}
                             aria-label={`${label}${state.elliptic ? " 水平" : ""}の角丸`}
                           />
                           <input
@@ -293,26 +262,21 @@ function CssBorderRadiusGenerator() {
                             value={corner.h}
                             className="cbr-number-input"
                             onChange={(e) => {
-                              const v = Math.max(
-                                0,
-                                Math.min(maxValue, Number(e.target.value))
-                              );
+                              const v = Math.max(0, Math.min(maxValue, Number(e.target.value)));
                               updateCorner(key, "h", v);
                             }}
                             aria-label={`${label}${state.elliptic ? " 水平" : ""}の角丸の数値入力`}
                           />
                           <span className="cbr-range-value" aria-hidden="true">
-                            {corner.h}{state.unit}
+                            {corner.h}
+                            {state.unit}
                           </span>
                         </div>
 
                         {/* 垂直（楕円モード時のみ） */}
                         {state.elliptic && (
                           <div className="cbr-input-row">
-                            <span
-                              className="cbr-input-axis-label"
-                              aria-hidden="true"
-                            >
+                            <span className="cbr-input-axis-label" aria-hidden="true">
                               V
                             </span>
                             <input
@@ -322,9 +286,7 @@ function CssBorderRadiusGenerator() {
                               step={1}
                               value={corner.v}
                               className="cbr-range"
-                              onChange={(e) =>
-                                updateCorner(key, "v", Number(e.target.value))
-                              }
+                              onChange={(e) => updateCorner(key, "v", Number(e.target.value))}
                               aria-label={`${label} 垂直の角丸`}
                             />
                             <input
@@ -334,19 +296,14 @@ function CssBorderRadiusGenerator() {
                               value={corner.v}
                               className="cbr-number-input"
                               onChange={(e) => {
-                                const v = Math.max(
-                                  0,
-                                  Math.min(maxValue, Number(e.target.value))
-                                );
+                                const v = Math.max(0, Math.min(maxValue, Number(e.target.value)));
                                 updateCorner(key, "v", v);
                               }}
                               aria-label={`${label} 垂直の角丸の数値入力`}
                             />
-                            <span
-                              className="cbr-range-value"
-                              aria-hidden="true"
-                            >
-                              {corner.v}{state.unit}
+                            <span className="cbr-range-value" aria-hidden="true">
+                              {corner.v}
+                              {state.unit}
                             </span>
                           </div>
                         )}
@@ -361,10 +318,7 @@ function CssBorderRadiusGenerator() {
           {/* 右側: プレビュー + CSS 出力 */}
           <div className="cbr-right">
             {/* ライブプレビュー */}
-            <section
-              className="cbr-preview-section"
-              aria-labelledby="cbr-preview-title"
-            >
+            <section className="cbr-preview-section" aria-labelledby="cbr-preview-title">
               <h2 className="cbr-section-title" id="cbr-preview-title">
                 ライブプレビュー
               </h2>
@@ -387,9 +341,7 @@ function CssBorderRadiusGenerator() {
               {/* プレビューサイズ調整 */}
               <div className="cbr-size-row">
                 <div className="cbr-size-item">
-                  <span className="cbr-size-label">
-                    幅: {previewWidth}px
-                  </span>
+                  <span className="cbr-size-label">幅: {previewWidth}px</span>
                   <input
                     type="range"
                     min={40}
@@ -401,9 +353,7 @@ function CssBorderRadiusGenerator() {
                   />
                 </div>
                 <div className="cbr-size-item">
-                  <span className="cbr-size-label">
-                    高さ: {previewHeight}px
-                  </span>
+                  <span className="cbr-size-label">高さ: {previewHeight}px</span>
                   <input
                     type="range"
                     min={40}
@@ -418,10 +368,7 @@ function CssBorderRadiusGenerator() {
             </section>
 
             {/* CSS 出力 */}
-            <section
-              className="cbr-css-section"
-              aria-labelledby="cbr-css-output-title"
-            >
+            <section className="cbr-css-section" aria-labelledby="cbr-css-output-title">
               <div className="cbr-css-header">
                 <h2 className="cbr-section-title" id="cbr-css-output-title">
                   生成 CSS
@@ -435,11 +382,7 @@ function CssBorderRadiusGenerator() {
                   コピー
                 </Button>
               </div>
-              <pre
-                className="cbr-css-output"
-                aria-label="生成されたCSSコード"
-                aria-live="polite"
-              >
+              <pre className="cbr-css-output" aria-label="生成されたCSSコード" aria-live="polite">
                 {generatedCSS}
               </pre>
             </section>

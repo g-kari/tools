@@ -49,7 +49,7 @@ const DEFAULT_MEMORY_SIZE = 30_000;
 export function executeBrainfuck(
   code: string,
   input: string,
-  options: BrainfuckOptions = {}
+  options: BrainfuckOptions = {},
 ): BrainfuckResult {
   const maxSteps = options.maxSteps ?? DEFAULT_MAX_STEPS;
   const memorySize = options.memorySize ?? DEFAULT_MEMORY_SIZE;
@@ -57,15 +57,15 @@ export function executeBrainfuck(
   const memory = new Uint8Array(memorySize);
   let pointer = 0;
   let inputIndex = 0;
-  let output = '';
+  let output = "";
   let steps = 0;
 
   // ブラケットのジャンプテーブルを事前計算（高速化）
   const jumpTable = buildJumpTable(code);
   if (jumpTable === null) {
     return {
-      output: '',
-      error: 'ブラケットが対応していません（[ と ] の数が一致しません）',
+      output: "",
+      error: "ブラケットが対応していません（[ と ] の数が一致しません）",
       steps: 0,
       memory: Array.from(memory.slice(0, 20)),
       pointer: 0,
@@ -88,34 +88,34 @@ export function executeBrainfuck(
     const cmd = code[ip];
 
     switch (cmd) {
-      case '>':
+      case ">":
         pointer = (pointer + 1) % memorySize;
         break;
-      case '<':
+      case "<":
         pointer = (pointer - 1 + memorySize) % memorySize;
         break;
-      case '+':
+      case "+":
         memory[pointer] = (memory[pointer] + 1) & 0xff;
         break;
-      case '-':
+      case "-":
         memory[pointer] = (memory[pointer] - 1 + 256) & 0xff;
         break;
-      case '.':
+      case ".":
         output += String.fromCharCode(memory[pointer]);
         break;
-      case ',':
+      case ",":
         if (inputIndex < input.length) {
           memory[pointer] = input.charCodeAt(inputIndex++) & 0xff;
         } else {
           memory[pointer] = 0;
         }
         break;
-      case '[':
+      case "[":
         if (memory[pointer] === 0) {
           ip = jumpTable[ip];
         }
         break;
-      case ']':
+      case "]":
         if (memory[pointer] !== 0) {
           ip = jumpTable[ip];
         }
@@ -146,9 +146,9 @@ function buildJumpTable(code: string): Record<number, number> | null {
   const stack: number[] = [];
 
   for (let i = 0; i < code.length; i++) {
-    if (code[i] === '[') {
+    if (code[i] === "[") {
       stack.push(i);
-    } else if (code[i] === ']') {
+    } else if (code[i] === "]") {
       if (stack.length === 0) return null;
       const open = stack.pop()!;
       table[open] = i;
@@ -169,33 +169,33 @@ export const BRAINFUCK_SAMPLES: Array<{
   description: string;
 }> = [
   {
-    name: 'Hello, World!',
-    code: '++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.',
-    input: '',
-    description: '古典的な Hello, World! プログラム',
+    name: "Hello, World!",
+    code: "++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.",
+    input: "",
+    description: "古典的な Hello, World! プログラム",
   },
   {
-    name: 'Cat プログラム',
-    code: ',[.,]',
-    input: 'Hello!',
-    description: '入力をそのまま出力する（Catプログラム）',
+    name: "Cat プログラム",
+    code: ",[.,]",
+    input: "Hello!",
+    description: "入力をそのまま出力する（Catプログラム）",
   },
   {
-    name: '2+3 の計算',
-    code: '++>+++[<+>-]<.',
-    input: '',
-    description: '2+3=5 を計算してASCIIコードとして出力',
+    name: "2+3 の計算",
+    code: "++>+++[<+>-]<.",
+    input: "",
+    description: "2+3=5 を計算してASCIIコードとして出力",
   },
   {
-    name: 'ROT13 変換',
-    code: '-,+[-[>>++++[>++++++++<-]<+<-[>+>[->]-[<<<]>>-]<[-<[>+<-]>>++++++[<++++++++>-]<-.[-]<<[-]<<[->]<]>[-]+>--[-[<->+++[-]]]<[++++++++++++<[>-[>+>>]>[+[<+>-]>+>>]<<<<<-]>[-]+>--[-[<->+++[-]]]<[>>+<[-]>>[<<+>>-]>>]<<]>>[-]<]<[->]<]',
-    input: 'Hello World',
-    description: 'ROT13 エンコード/デコード変換',
+    name: "ROT13 変換",
+    code: "-,+[-[>>++++[>++++++++<-]<+<-[>+>[->]-[<<<]>>-]<[-<[>+<-]>>++++++[<++++++++>-]<-.[-]<<[-]<<[->]<]>[-]+>--[-[<->+++[-]]]<[++++++++++++<[>-[>+>>]>[+[<+>-]>+>>]<<<<<-]>[-]+>--[-[<->+++[-]]]<[>>+<[-]>>[<<+>>-]>>]<<]>>[-]<]<[->]<]",
+    input: "Hello World",
+    description: "ROT13 エンコード/デコード変換",
   },
   {
-    name: 'FizzBuzz (1-20)',
-    code: '++++[>+++++<-]>[>+>+>+>+<<<<-]>>>>+++++>++++++++[-<++++<++++<++<---->>>>]<<<[->-[>+>>]>[[-]<[>+<-]>>[<<+>>-]>[-]]<<]>[-]<[-]>>[<+>-]<+<[>>-<<-]>[>>]<<[[-]<]<[<]>[.>]<[<]>[>]<<[-]<[-]>++++++[-<++++++++>]<-.[-]++++++++++.',
-    input: '',
-    description: 'FizzBuzz (1〜20)',
+    name: "FizzBuzz (1-20)",
+    code: "++++[>+++++<-]>[>+>+>+>+<<<<-]>>>>+++++>++++++++[-<++++<++++<++<---->>>>]<<<[->-[>+>>]>[[-]<[>+<-]>>[<<+>>-]>[-]]<<]>[-]<[-]>>[<+>-]<+<[>>-<<-]>[>>]<<[[-]<]<[<]>[.>]<[<]>[>]<<[-]<[-]>++++++[-<++++++++>]<-.[-]++++++++++.",
+    input: "",
+    description: "FizzBuzz (1〜20)",
   },
 ];

@@ -1,9 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState, useCallback } from "react";
-import {
-  StatusAnnouncer,
-  useStatusAnnouncement,
-} from "~/hooks/useStatusAnnouncement";
+import { StatusAnnouncer, useStatusAnnouncement } from "~/hooks/useStatusAnnouncement";
 import { TipsCard } from "~/components/TipsCard";
 import { useClipboard } from "~/hooks/useClipboard";
 import { useToast } from "~/components/Toast";
@@ -49,12 +46,10 @@ export const Route = createFileRoute("/timezone")({
  * 指定した日時を複数のタイムゾーンに一括変換する
  */
 function TimezoneConverter() {
-  const [datetimeLocal, setDatetimeLocal] = useState<string>(
-    getCurrentDatetimeLocal
-  );
+  const [datetimeLocal, setDatetimeLocal] = useState<string>(getCurrentDatetimeLocal);
   const [sourceTimezone, setSourceTimezone] = useState<string>("Asia/Tokyo");
   const [selectedTimezones, setSelectedTimezones] = useState<Set<string>>(
-    () => new Set(DEFAULT_SELECTED_TIMEZONES)
+    () => new Set(DEFAULT_SELECTED_TIMEZONES),
   );
 
   const { statusRef, announceStatus } = useStatusAnnouncement();
@@ -70,7 +65,7 @@ function TimezoneConverter() {
   /** 選択済みタイムゾーン一覧（TIMEZONES順を維持） */
   const targetTimezones = useMemo(
     () => TIMEZONES.filter((tz) => selectedTimezones.has(tz.id)),
-    [selectedTimezones]
+    [selectedTimezones],
   );
 
   /** 変換結果 */
@@ -114,10 +109,7 @@ function TimezoneConverter() {
   const handleCopyAll = useCallback(async () => {
     if (results.length === 0) return;
     const text = results
-      .map(
-        (r) =>
-          `${r.timezone.city} (${r.timezone.label})\t${r.datetime}\t${r.offset}`
-      )
+      .map((r) => `${r.timezone.city} (${r.timezone.label})\t${r.datetime}\t${r.offset}`)
       .join("\n");
     const success = await copy(text);
     if (success) {
@@ -142,10 +134,7 @@ function TimezoneConverter() {
         <h2 className="section-title">タイムゾーン変換</h2>
 
         {/* 日時入力セクション */}
-        <section
-          className="timezone-input-section"
-          aria-label="変換元の日時入力"
-        >
+        <section className="timezone-input-section" aria-label="変換元の日時入力">
           <div className="timezone-input-row">
             <div className="timezone-field">
               <label htmlFor="timezone-datetime" className="timezone-label">
@@ -178,11 +167,7 @@ function TimezoneConverter() {
               </select>
             </div>
             <div className="timezone-field timezone-field--button">
-              <Button
-                variant="outline"
-                onClick={handleSetNow}
-                aria-label="現在時刻をセット"
-              >
+              <Button variant="outline" onClick={handleSetNow} aria-label="現在時刻をセット">
                 現在時刻
               </Button>
             </div>
@@ -193,10 +178,7 @@ function TimezoneConverter() {
         </section>
 
         {/* タイムゾーン選択セクション */}
-        <section
-          className="timezone-select-section"
-          aria-label="変換先タイムゾーン選択"
-        >
+        <section className="timezone-select-section" aria-label="変換先タイムゾーン選択">
           <div className="timezone-select-header">
             <span className="section-title">変換先タイムゾーン</span>
             <div className="timezone-select-actions">
@@ -235,9 +217,7 @@ function TimezoneConverter() {
                   onChange={() => handleToggleTimezone(tz.id)}
                 />
                 <span className="timezone-checkbox-city">{tz.city}</span>
-                <span className="timezone-checkbox-label-text">
-                  {tz.label}
-                </span>
+                <span className="timezone-checkbox-label-text">{tz.label}</span>
               </label>
             ))}
           </div>
@@ -280,25 +260,12 @@ function TimezoneConverter() {
                 </thead>
                 <tbody>
                   {results.map((result) => (
-                    <tr
-                      key={result.timezone.id}
-                      className="timezone-result-row"
-                    >
-                      <td className="timezone-td timezone-td--city">
-                        {result.timezone.city}
-                      </td>
-                      <td className="timezone-td timezone-td--label">
-                        {result.timezone.label}
-                      </td>
-                      <td className="timezone-td timezone-td--date">
-                        {result.date}
-                      </td>
-                      <td className="timezone-td timezone-td--time">
-                        {result.time}
-                      </td>
-                      <td className="timezone-td timezone-td--offset">
-                        {result.offset}
-                      </td>
+                    <tr key={result.timezone.id} className="timezone-result-row">
+                      <td className="timezone-td timezone-td--city">{result.timezone.city}</td>
+                      <td className="timezone-td timezone-td--label">{result.timezone.label}</td>
+                      <td className="timezone-td timezone-td--date">{result.date}</td>
+                      <td className="timezone-td timezone-td--time">{result.time}</td>
+                      <td className="timezone-td timezone-td--offset">{result.offset}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -323,11 +290,7 @@ function TimezoneConverter() {
           >
             全結果コピー
           </Button>
-          <Button
-            variant="outline"
-            onClick={handleClear}
-            aria-label="入力をリセット"
-          >
+          <Button variant="outline" onClick={handleClear} aria-label="入力をリセット">
             リセット
           </Button>
         </div>

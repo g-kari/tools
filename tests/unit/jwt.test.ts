@@ -76,9 +76,7 @@ describe("decodeJWT", () => {
 
   it("署名部分がそのまま返される", () => {
     const result = decodeJWT(KNOWN_JWT);
-    expect(result.signature).toBe(
-      "SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
-    );
+    expect(result.signature).toBe("SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c");
   });
 
   it("headerRawに生のJSON文字列が含まれる", () => {
@@ -128,9 +126,7 @@ describe("decodeJWT", () => {
 
   it("JSONではないヘッダーでエラーをスローする", () => {
     // "notjson" をBase64URLエンコードすると "bm90anNvbg"
-    expect(() =>
-      decodeJWT("bm90anNvbg.eyJzdWIiOiJ0ZXN0In0.signature")
-    ).toThrow();
+    expect(() => decodeJWT("bm90anNvbg.eyJzdWIiOiJ0ZXN0In0.signature")).toThrow();
   });
 
   it("expクレームを含むJWTをデコードする", () => {

@@ -75,18 +75,13 @@ function SitemapPage() {
         return "有効なURLを入力してください（http:// または https:// で始まるURL）";
       return null;
     },
-    [touched]
+    [touched],
   );
 
   /** エントリのフィールドを更新 */
-  const updateEntry = useCallback(
-    (id: string, updates: Partial<SitemapEntry>) => {
-      setEntries((prev) =>
-        prev.map((e) => (e.id === id ? { ...e, ...updates } : e))
-      );
-    },
-    []
-  );
+  const updateEntry = useCallback((id: string, updates: Partial<SitemapEntry>) => {
+    setEntries((prev) => prev.map((e) => (e.id === id ? { ...e, ...updates } : e)));
+  }, []);
 
   /** エントリを追加 */
   const addEntry = useCallback(() => {
@@ -111,7 +106,7 @@ function SitemapPage() {
   /** 有効なエントリのみ（URLが入力されているもの） */
   const validEntries = useMemo(
     () => entries.filter((e) => e.loc.trim() && isValidSitemapUrl(e.loc)),
-    [entries]
+    [entries],
   );
 
   /** 生成されたXML */
@@ -154,12 +149,10 @@ function SitemapPage() {
         {/* エントリ統計 */}
         <div className="sitemap-stats" aria-live="polite">
           <span className="sitemap-stat-item">
-            エントリ数:{" "}
-            <span className="sitemap-stat-value">{entries.length}</span>
+            エントリ数: <span className="sitemap-stat-value">{entries.length}</span>
           </span>
           <span className="sitemap-stat-item">
-            有効なURL:{" "}
-            <span className="sitemap-stat-value">{validEntries.length}</span>
+            有効なURL: <span className="sitemap-stat-value">{validEntries.length}</span>
           </span>
         </div>
 
@@ -180,11 +173,7 @@ function SitemapPage() {
         </div>
 
         {/* エントリ追加ボタン */}
-        <button
-          className="sitemap-add-btn"
-          onClick={addEntry}
-          aria-label="URLエントリを追加"
-        >
+        <button className="sitemap-add-btn" onClick={addEntry} aria-label="URLエントリを追加">
           + URLを追加
         </button>
       </section>
@@ -212,12 +201,7 @@ function SitemapPage() {
             </button>
           </div>
         </div>
-        <div
-          className="sitemap-xml-output"
-          role="region"
-          aria-label="XML出力"
-          aria-live="polite"
-        >
+        <div className="sitemap-xml-output" role="region" aria-label="XML出力" aria-live="polite">
           {generatedXml ? (
             generatedXml
           ) : (
@@ -300,7 +284,7 @@ function EntryCard({
         onUpdate(entry.id, { priority: val });
       }
     },
-    [entry.id, onUpdate]
+    [entry.id, onUpdate],
   );
 
   const handleLastmodChange = useCallback(
@@ -308,7 +292,7 @@ function EntryCard({
       const normalized = normalizeDate(e.target.value);
       onUpdate(entry.id, { lastmod: normalized || e.target.value });
     },
-    [entry.id, onUpdate]
+    [entry.id, onUpdate],
   );
 
   return (
@@ -438,9 +422,7 @@ function EntryCard({
               {hasPriority ? formatPriority(priorityValue) : "—"}
             </span>
           </div>
-          <span className="sitemap-hint">
-            チェックを入れると優先度を設定できます（0.0〜1.0）
-          </span>
+          <span className="sitemap-hint">チェックを入れると優先度を設定できます（0.0〜1.0）</span>
         </div>
       </div>
     </div>

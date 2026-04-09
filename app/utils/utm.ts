@@ -30,10 +30,10 @@ export interface UtmParams {
  * isValidUrl("not-a-url") // => false
  */
 export function isValidUrl(url: string): boolean {
-  if (!url || url.trim() === '') return false;
+  if (!url || url.trim() === "") return false;
   try {
     const parsed = new URL(url);
-    return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+    return parsed.protocol === "http:" || parsed.protocol === "https:";
   } catch {
     return false;
   }
@@ -54,26 +54,26 @@ export function isValidUrl(url: string): boolean {
  * // => "https://example.com?utm_source=google&utm_medium=cpc"
  */
 export function buildUtmUrl(baseUrl: string, params: Partial<UtmParams>): string {
-  if (!baseUrl || baseUrl.trim() === '') return '';
+  if (!baseUrl || baseUrl.trim() === "") return "";
 
   let url: URL;
   try {
     url = new URL(baseUrl);
   } catch {
-    return '';
+    return "";
   }
 
   const utmMapping: Array<[keyof UtmParams, string]> = [
-    ['source', 'utm_source'],
-    ['medium', 'utm_medium'],
-    ['campaign', 'utm_campaign'],
-    ['term', 'utm_term'],
-    ['content', 'utm_content'],
+    ["source", "utm_source"],
+    ["medium", "utm_medium"],
+    ["campaign", "utm_campaign"],
+    ["term", "utm_term"],
+    ["content", "utm_content"],
   ];
 
   for (const [key, paramName] of utmMapping) {
     const value = params[key];
-    if (value && value.trim() !== '') {
+    if (value && value.trim() !== "") {
       url.searchParams.set(paramName, value.trim());
     }
   }
@@ -92,8 +92,8 @@ export function buildUtmUrl(baseUrl: string, params: Partial<UtmParams>): string
  * // => { baseUrl: "https://example.com", params: { source: "google", medium: "cpc" } }
  */
 export function parseUtmUrl(url: string): { baseUrl: string; params: Partial<UtmParams> } {
-  const empty = { baseUrl: '', params: {} };
-  if (!url || url.trim() === '') return empty;
+  const empty = { baseUrl: "", params: {} };
+  if (!url || url.trim() === "") return empty;
 
   let parsed: URL;
   try {
@@ -104,11 +104,11 @@ export function parseUtmUrl(url: string): { baseUrl: string; params: Partial<Utm
 
   const params: Partial<UtmParams> = {};
 
-  const source = parsed.searchParams.get('utm_source');
-  const medium = parsed.searchParams.get('utm_medium');
-  const campaign = parsed.searchParams.get('utm_campaign');
-  const term = parsed.searchParams.get('utm_term');
-  const content = parsed.searchParams.get('utm_content');
+  const source = parsed.searchParams.get("utm_source");
+  const medium = parsed.searchParams.get("utm_medium");
+  const campaign = parsed.searchParams.get("utm_campaign");
+  const term = parsed.searchParams.get("utm_term");
+  const content = parsed.searchParams.get("utm_content");
 
   if (source) params.source = source;
   if (medium) params.medium = medium;
@@ -118,11 +118,11 @@ export function parseUtmUrl(url: string): { baseUrl: string; params: Partial<Utm
 
   // ベースURLはUTMパラメータを除去したもの
   const baseUrl = new URL(parsed.toString());
-  baseUrl.searchParams.delete('utm_source');
-  baseUrl.searchParams.delete('utm_medium');
-  baseUrl.searchParams.delete('utm_campaign');
-  baseUrl.searchParams.delete('utm_term');
-  baseUrl.searchParams.delete('utm_content');
+  baseUrl.searchParams.delete("utm_source");
+  baseUrl.searchParams.delete("utm_medium");
+  baseUrl.searchParams.delete("utm_campaign");
+  baseUrl.searchParams.delete("utm_term");
+  baseUrl.searchParams.delete("utm_content");
 
   return { baseUrl: baseUrl.toString(), params };
 }

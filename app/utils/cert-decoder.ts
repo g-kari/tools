@@ -7,50 +7,50 @@
 /** OID → 名前マッピング */
 const OID_MAP: Record<string, string> = {
   // Subject/Issuer 属性
-  '2.5.4.3': 'CN',
-  '2.5.4.4': 'SN',
-  '2.5.4.5': 'serialNumber',
-  '2.5.4.6': 'C',
-  '2.5.4.7': 'L',
-  '2.5.4.8': 'ST',
-  '2.5.4.9': 'streetAddress',
-  '2.5.4.10': 'O',
-  '2.5.4.11': 'OU',
-  '2.5.4.17': 'postalCode',
-  '1.2.840.113549.1.9.1': 'emailAddress',
+  "2.5.4.3": "CN",
+  "2.5.4.4": "SN",
+  "2.5.4.5": "serialNumber",
+  "2.5.4.6": "C",
+  "2.5.4.7": "L",
+  "2.5.4.8": "ST",
+  "2.5.4.9": "streetAddress",
+  "2.5.4.10": "O",
+  "2.5.4.11": "OU",
+  "2.5.4.17": "postalCode",
+  "1.2.840.113549.1.9.1": "emailAddress",
   // 署名アルゴリズム
-  '1.2.840.113549.1.1.1': 'rsaEncryption',
-  '1.2.840.113549.1.1.4': 'md5WithRSAEncryption',
-  '1.2.840.113549.1.1.5': 'sha1WithRSAEncryption',
-  '1.2.840.113549.1.1.11': 'sha256WithRSAEncryption',
-  '1.2.840.113549.1.1.12': 'sha384WithRSAEncryption',
-  '1.2.840.113549.1.1.13': 'sha512WithRSAEncryption',
-  '1.2.840.10045.2.1': 'ecPublicKey',
-  '1.2.840.10045.4.3.1': 'ecdsa-with-SHA224',
-  '1.2.840.10045.4.3.2': 'ecdsa-with-SHA256',
-  '1.2.840.10045.4.3.3': 'ecdsa-with-SHA384',
-  '1.2.840.10045.4.3.4': 'ecdsa-with-SHA512',
-  '1.3.101.112': 'Ed25519',
-  '1.3.101.113': 'Ed448',
+  "1.2.840.113549.1.1.1": "rsaEncryption",
+  "1.2.840.113549.1.1.4": "md5WithRSAEncryption",
+  "1.2.840.113549.1.1.5": "sha1WithRSAEncryption",
+  "1.2.840.113549.1.1.11": "sha256WithRSAEncryption",
+  "1.2.840.113549.1.1.12": "sha384WithRSAEncryption",
+  "1.2.840.113549.1.1.13": "sha512WithRSAEncryption",
+  "1.2.840.10045.2.1": "ecPublicKey",
+  "1.2.840.10045.4.3.1": "ecdsa-with-SHA224",
+  "1.2.840.10045.4.3.2": "ecdsa-with-SHA256",
+  "1.2.840.10045.4.3.3": "ecdsa-with-SHA384",
+  "1.2.840.10045.4.3.4": "ecdsa-with-SHA512",
+  "1.3.101.112": "Ed25519",
+  "1.3.101.113": "Ed448",
   // EC 曲線
-  '1.2.840.10045.3.1.7': 'P-256',
-  '1.3.132.0.34': 'P-384',
-  '1.3.132.0.35': 'P-521',
+  "1.2.840.10045.3.1.7": "P-256",
+  "1.3.132.0.34": "P-384",
+  "1.3.132.0.35": "P-521",
   // 拡張
-  '2.5.29.14': 'subjectKeyIdentifier',
-  '2.5.29.15': 'keyUsage',
-  '2.5.29.17': 'subjectAltName',
-  '2.5.29.19': 'basicConstraints',
-  '2.5.29.31': 'cRLDistributionPoints',
-  '2.5.29.32': 'certificatePolicies',
-  '2.5.29.35': 'authorityKeyIdentifier',
-  '2.5.29.37': 'extendedKeyUsage',
-  '1.3.6.1.5.5.7.1.1': 'authorityInfoAccess',
-  '1.3.6.1.5.5.7.3.1': 'id-kp-serverAuth',
-  '1.3.6.1.5.5.7.3.2': 'id-kp-clientAuth',
-  '1.3.6.1.5.5.7.3.3': 'id-kp-codeSigning',
-  '1.3.6.1.5.5.7.3.4': 'id-kp-emailProtection',
-  '1.3.6.1.5.5.7.3.8': 'id-kp-timeStamping',
+  "2.5.29.14": "subjectKeyIdentifier",
+  "2.5.29.15": "keyUsage",
+  "2.5.29.17": "subjectAltName",
+  "2.5.29.19": "basicConstraints",
+  "2.5.29.31": "cRLDistributionPoints",
+  "2.5.29.32": "certificatePolicies",
+  "2.5.29.35": "authorityKeyIdentifier",
+  "2.5.29.37": "extendedKeyUsage",
+  "1.3.6.1.5.5.7.1.1": "authorityInfoAccess",
+  "1.3.6.1.5.5.7.3.1": "id-kp-serverAuth",
+  "1.3.6.1.5.5.7.3.2": "id-kp-clientAuth",
+  "1.3.6.1.5.5.7.3.3": "id-kp-codeSigning",
+  "1.3.6.1.5.5.7.3.4": "id-kp-emailProtection",
+  "1.3.6.1.5.5.7.3.8": "id-kp-timeStamping",
 };
 
 /** 識別名 (Distinguished Name) */
@@ -123,7 +123,7 @@ const T_GENTIME = 0x18;
 const T_BMPSTR = 0x1e;
 
 // 使用していない定数を suppress するため型アサーション
-void T_BOOL, void T_SET, void T_UTF8STR, void T_PRINTSTR, void T_IA5STR, void T_BMPSTR;
+(void T_BOOL, void T_SET, void T_UTF8STR, void T_PRINTSTR, void T_IA5STR, void T_BMPSTR);
 
 interface AsnNode {
   tag: number;
@@ -162,7 +162,7 @@ function readChildren(d: Uint8Array, start: number, end: number): AsnNode[] {
 export function decodeOid(d: Uint8Array, start: number, end: number): string {
   const parts: number[] = [];
   let i = start;
-  if (i >= end) return '';
+  if (i >= end) return "";
   const first = d[i++];
   parts.push(Math.floor(first / 40), first % 40);
   while (i < end) {
@@ -174,13 +174,13 @@ export function decodeOid(d: Uint8Array, start: number, end: number): string {
     } while (b & 0x80);
     parts.push(v);
   }
-  return parts.join('.');
+  return parts.join(".");
 }
 
 /** DER 文字列ノードをデコードする */
 function decodeStr(d: Uint8Array, tag: number, start: number, end: number): string {
   const slice = d.slice(start, end);
-  if (tag === 0x1e /* BMPString */) return new TextDecoder('utf-16be').decode(slice);
+  if (tag === 0x1e /* BMPString */) return new TextDecoder("utf-16be").decode(slice);
   return new TextDecoder().decode(slice);
 }
 
@@ -215,13 +215,13 @@ export function decodeTime(d: Uint8Array, tag: number, start: number, end: numbe
 /** バイト列を16進数文字列に変換する */
 export function bytesToHex(b: Uint8Array): string {
   return Array.from(b)
-    .map((x) => x.toString(16).padStart(2, '0'))
-    .join('');
+    .map((x) => x.toString(16).padStart(2, "0"))
+    .join("");
 }
 
 /** 16進数文字列をコロン区切りにフォーマットする */
 export function hexWithColon(hex: string): string {
-  return (hex.match(/.{1,2}/g) ?? []).join(':');
+  return (hex.match(/.{1,2}/g) ?? []).join(":");
 }
 
 /** Name (RDN の SEQUENCE) を解析する */
@@ -271,11 +271,11 @@ function parseSAN(d: Uint8Array, start: number, end: number): string[] {
       case 7: {
         const bytes = d.slice(n.valueStart, n.valueEnd);
         if (bytes.length === 4) {
-          result.push(Array.from(bytes).join('.'));
+          result.push(Array.from(bytes).join("."));
         } else if (bytes.length === 16) {
           const hex = bytesToHex(bytes);
           const parts = hex.match(/.{1,4}/g) ?? [];
-          result.push(parts.join(':'));
+          result.push(parts.join(":"));
         }
         break;
       }
@@ -287,15 +287,15 @@ function parseSAN(d: Uint8Array, start: number, end: number): string[] {
 /** KeyUsage 拡張を解析する */
 function parseKeyUsage(d: Uint8Array, start: number, end: number): string[] {
   const NAMES = [
-    'digitalSignature',
-    'nonRepudiation',
-    'keyEncipherment',
-    'dataEncipherment',
-    'keyAgreement',
-    'keyCertSign',
-    'cRLSign',
-    'encipherOnly',
-    'decipherOnly',
+    "digitalSignature",
+    "nonRepudiation",
+    "keyEncipherment",
+    "dataEncipherment",
+    "keyAgreement",
+    "keyCertSign",
+    "cRLSign",
+    "encipherOnly",
+    "decipherOnly",
   ];
   const result: string[] = [];
   if (start + 1 >= end) return result;
@@ -370,9 +370,9 @@ function parseBasicConstraints(
  */
 export function pemToDer(pem: string): Uint8Array {
   const b64 = pem
-    .replace(/-----BEGIN [^-]+-----/g, '')
-    .replace(/-----END [^-]+-----/g, '')
-    .replace(/\s/g, '');
+    .replace(/-----BEGIN [^-]+-----/g, "")
+    .replace(/-----END [^-]+-----/g, "")
+    .replace(/\s/g, "");
   const bin = atob(b64);
   const bytes = new Uint8Array(bin.length);
   for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
@@ -387,27 +387,25 @@ export function pemToDer(pem: string): Uint8Array {
 export async function parseCertificate(input: string | Uint8Array): Promise<CertificateInfo> {
   let der: Uint8Array;
 
-  if (typeof input === 'string') {
+  if (typeof input === "string") {
     const trimmed = input.trim();
     try {
       der = pemToDer(trimmed);
     } catch {
-      throw new Error(
-        'PEM 証明書のデコードに失敗しました。正しい PEM 形式か確認してください。',
-      );
+      throw new Error("PEM 証明書のデコードに失敗しました。正しい PEM 形式か確認してください。");
     }
   } else {
     der = input;
   }
 
   if (der.length < 4) {
-    throw new Error('証明書データが短すぎます');
+    throw new Error("証明書データが短すぎます");
   }
 
   // フィンガープリント計算
   const [sha1Buf, sha256Buf] = await Promise.all([
-    crypto.subtle.digest('SHA-1', der),
-    crypto.subtle.digest('SHA-256', der),
+    crypto.subtle.digest("SHA-1", der),
+    crypto.subtle.digest("SHA-256", der),
   ]);
   const sha1 = hexWithColon(bytesToHex(new Uint8Array(sha1Buf)));
   const sha256 = hexWithColon(bytesToHex(new Uint8Array(sha256Buf)));
@@ -415,21 +413,19 @@ export async function parseCertificate(input: string | Uint8Array): Promise<Cert
   // --- DER 解析 ---
   const certNode = readNode(der, 0);
   if (certNode.tag !== T_SEQ) {
-    throw new Error(
-      '有効な X.509 証明書ではありません（外側は SEQUENCE である必要があります）',
-    );
+    throw new Error("有効な X.509 証明書ではありません（外側は SEQUENCE である必要があります）");
   }
 
   const certChildren = readChildren(der, certNode.valueStart, certNode.valueEnd);
-  if (certChildren.length < 3) throw new Error('証明書の構造が不正です');
+  if (certChildren.length < 3) throw new Error("証明書の構造が不正です");
 
   // TBSCertificate
   const tbsNode = certChildren[0];
-  if (tbsNode.tag !== T_SEQ) throw new Error('TBSCertificate が見つかりません');
+  if (tbsNode.tag !== T_SEQ) throw new Error("TBSCertificate が見つかりません");
 
   // signatureAlgorithm (outer)
   const sigAlgNode = certChildren[1];
-  let signatureAlgorithm = 'unknown';
+  let signatureAlgorithm = "unknown";
   if (sigAlgNode.tag === T_SEQ) {
     const algChildren = readChildren(der, sigAlgNode.valueStart, sigAlgNode.valueEnd);
     if (algChildren.length > 0 && algChildren[0].tag === T_OID) {
@@ -440,12 +436,12 @@ export async function parseCertificate(input: string | Uint8Array): Promise<Cert
 
   // --- TBSCertificate を解析 ---
   let version = 1;
-  let serialNumber = '';
+  let serialNumber = "";
   let issuer: DistinguishedName = {};
   let validFrom = new Date();
   let validTo = new Date();
   let subject: DistinguishedName = {};
-  let publicKeyAlgorithm = 'unknown';
+  let publicKeyAlgorithm = "unknown";
   let publicKeySize: number | undefined;
   let publicKeyCurve: string | undefined;
   let sans: string[] = [];
@@ -521,24 +517,24 @@ export async function parseCertificate(input: string | Uint8Array): Promise<Cert
 
         // EC 曲線情報
         if (
-          algOid === '1.2.840.10045.2.1' &&
+          algOid === "1.2.840.10045.2.1" &&
           algChildren.length > 1 &&
           algChildren[1].tag === T_OID
         ) {
           const curveOid = decodeOid(der, algChildren[1].valueStart, algChildren[1].valueEnd);
           publicKeyCurve = OID_MAP[curveOid] ?? curveOid;
-          if (curveOid === '1.2.840.10045.3.1.7') publicKeySize = 256;
-          else if (curveOid === '1.3.132.0.34') publicKeySize = 384;
-          else if (curveOid === '1.3.132.0.35') publicKeySize = 521;
+          if (curveOid === "1.2.840.10045.3.1.7") publicKeySize = 256;
+          else if (curveOid === "1.3.132.0.34") publicKeySize = 384;
+          else if (curveOid === "1.3.132.0.35") publicKeySize = 521;
         }
 
         // Ed25519 / Ed448
-        if (algOid === '1.3.101.112') {
-          publicKeyAlgorithm = 'Ed25519';
+        if (algOid === "1.3.101.112") {
+          publicKeyAlgorithm = "Ed25519";
           publicKeySize = 256;
         }
-        if (algOid === '1.3.101.113') {
-          publicKeyAlgorithm = 'Ed448';
+        if (algOid === "1.3.101.113") {
+          publicKeyAlgorithm = "Ed448";
           publicKeySize = 448;
         }
       }
@@ -546,7 +542,7 @@ export async function parseCertificate(input: string | Uint8Array): Promise<Cert
 
     // RSA 鍵長を modulus から算出
     if (
-      publicKeyAlgorithm === 'rsaEncryption' &&
+      publicKeyAlgorithm === "rsaEncryption" &&
       spkiChildren.length >= 2 &&
       spkiChildren[1].tag === T_BITS
     ) {
@@ -568,7 +564,10 @@ export async function parseCertificate(input: string | Uint8Array): Promise<Cert
   }
 
   // issuerUniqueID [1], subjectUniqueID [2] をスキップ
-  while (idx < tbsChildren.length && (tbsChildren[idx].tag === 0xa1 || tbsChildren[idx].tag === 0xa2)) {
+  while (
+    idx < tbsChildren.length &&
+    (tbsChildren[idx].tag === 0xa1 || tbsChildren[idx].tag === 0xa2)
+  ) {
     idx++;
   }
 
@@ -606,22 +605,22 @@ export async function parseCertificate(input: string | Uint8Array): Promise<Cert
       const extValNode = readNode(der, octetNode.valueStart);
 
       switch (oid) {
-        case '2.5.29.17': // subjectAltName
+        case "2.5.29.17": // subjectAltName
           if (extValNode.tag === T_SEQ) {
             sans = parseSAN(der, extValNode.valueStart, extValNode.valueEnd);
           }
           break;
-        case '2.5.29.15': // keyUsage
+        case "2.5.29.15": // keyUsage
           if (extValNode.tag === T_BITS) {
             keyUsage = parseKeyUsage(der, extValNode.valueStart, extValNode.valueEnd);
           }
           break;
-        case '2.5.29.37': // extendedKeyUsage
+        case "2.5.29.37": // extendedKeyUsage
           if (extValNode.tag === T_SEQ) {
             extendedKeyUsage = parseEKU(der, extValNode.valueStart, extValNode.valueEnd);
           }
           break;
-        case '2.5.29.19': // basicConstraints
+        case "2.5.29.19": // basicConstraints
           if (extValNode.tag === T_SEQ) {
             const bc = parseBasicConstraints(der, extValNode.valueStart, extValNode.valueEnd);
             isCA = bc.isCA;
@@ -633,9 +632,7 @@ export async function parseCertificate(input: string | Uint8Array): Promise<Cert
   }
 
   const now = new Date();
-  const daysUntilExpiry = Math.floor(
-    (validTo.getTime() - now.getTime()) / (1000 * 60 * 60 * 24),
-  );
+  const daysUntilExpiry = Math.floor((validTo.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
   const isExpired = now > validTo;
 
   return {
@@ -662,7 +659,7 @@ export async function parseCertificate(input: string | Uint8Array): Promise<Cert
 
 /** DistinguishedName を人間が読みやすい文字列に変換する */
 export function formatDN(dn: DistinguishedName): string {
-  const order = ['CN', 'O', 'OU', 'L', 'ST', 'C'];
+  const order = ["CN", "O", "OU", "L", "ST", "C"];
   const parts: string[] = [];
   for (const key of order) {
     if (dn[key]) parts.push(`${key}=${dn[key]}`);
@@ -671,5 +668,5 @@ export function formatDN(dn: DistinguishedName): string {
   for (const [key, val] of Object.entries(dn)) {
     if (!order.includes(key) && val) parts.push(`${key}=${val}`);
   }
-  return parts.join(', ');
+  return parts.join(", ");
 }

@@ -25,21 +25,15 @@ describe("validateLoanParams", () => {
     });
 
     it("借入金額が負のときエラーを返す", () => {
-      expect(
-        validateLoanParams({ ...validParams, principal: -100000 })
-      ).not.toBeNull();
+      expect(validateLoanParams({ ...validParams, principal: -100000 })).not.toBeNull();
     });
 
     it("借入金額が Infinity のときエラーを返す", () => {
-      expect(
-        validateLoanParams({ ...validParams, principal: Infinity })
-      ).not.toBeNull();
+      expect(validateLoanParams({ ...validParams, principal: Infinity })).not.toBeNull();
     });
 
     it("借入金額が NaN のときエラーを返す", () => {
-      expect(
-        validateLoanParams({ ...validParams, principal: NaN })
-      ).not.toBeNull();
+      expect(validateLoanParams({ ...validParams, principal: NaN })).not.toBeNull();
     });
   });
 
@@ -53,21 +47,15 @@ describe("validateLoanParams", () => {
     });
 
     it("年利率が 100 を超えるときエラーを返す", () => {
-      expect(
-        validateLoanParams({ ...validParams, annualRate: 101 })
-      ).not.toBeNull();
+      expect(validateLoanParams({ ...validParams, annualRate: 101 })).not.toBeNull();
     });
 
     it("年利率が負のときエラーを返す", () => {
-      expect(
-        validateLoanParams({ ...validParams, annualRate: -1 })
-      ).not.toBeNull();
+      expect(validateLoanParams({ ...validParams, annualRate: -1 })).not.toBeNull();
     });
 
     it("年利率が NaN のときエラーを返す", () => {
-      expect(
-        validateLoanParams({ ...validParams, annualRate: NaN })
-      ).not.toBeNull();
+      expect(validateLoanParams({ ...validParams, annualRate: NaN })).not.toBeNull();
     });
   });
 
@@ -81,27 +69,19 @@ describe("validateLoanParams", () => {
     });
 
     it("返済期間が 51 年のときエラーを返す", () => {
-      expect(
-        validateLoanParams({ ...validParams, termYears: 51 })
-      ).not.toBeNull();
+      expect(validateLoanParams({ ...validParams, termYears: 51 })).not.toBeNull();
     });
 
     it("返済期間が 0 のときエラーを返す", () => {
-      expect(
-        validateLoanParams({ ...validParams, termYears: 0 })
-      ).not.toBeNull();
+      expect(validateLoanParams({ ...validParams, termYears: 0 })).not.toBeNull();
     });
 
     it("返済期間が小数のときエラーを返す", () => {
-      expect(
-        validateLoanParams({ ...validParams, termYears: 1.5 })
-      ).not.toBeNull();
+      expect(validateLoanParams({ ...validParams, termYears: 1.5 })).not.toBeNull();
     });
 
     it("返済期間が負のときエラーを返す", () => {
-      expect(
-        validateLoanParams({ ...validParams, termYears: -1 })
-      ).not.toBeNull();
+      expect(validateLoanParams({ ...validParams, termYears: -1 })).not.toBeNull();
     });
   });
 });
@@ -162,10 +142,7 @@ describe("calcLoan", () => {
 
     it("総返済額 = 総利息 + 借入金額", () => {
       const result = calcLoan(params)!;
-      expect(result.totalPayment).toBeCloseTo(
-        result.totalInterest + params.principal,
-        -1
-      );
+      expect(result.totalPayment).toBeCloseTo(result.totalInterest + params.principal, -1);
     });
 
     it("最終月の残高が 0 になる", () => {
@@ -228,10 +205,7 @@ describe("calcLoan", () => {
 
     it("総返済額 = 総利息 + 借入金額", () => {
       const result = calcLoan(params)!;
-      expect(result.totalPayment).toBeCloseTo(
-        result.totalInterest + params.principal,
-        -1
-      );
+      expect(result.totalPayment).toBeCloseTo(result.totalInterest + params.principal, -1);
     });
   });
 

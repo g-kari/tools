@@ -9,16 +9,25 @@ import { TipsCard } from "~/components/TipsCard";
 export const Route = createFileRoute("/email-dns")({
   head: () => ({
     meta: [
-    { title: "メールDNS検証 | Web ツール集" },
-    { name: "description", content: "ドメインのSPF・DKIM・DMARCレコードを確認するメールセキュリティ検証ツール。" },
-    { property: "og:title", content: "メールDNS検証 | Web ツール集" },
-    { property: "og:description", content: "ドメインのSPF・DKIM・DMARCレコードを確認するメールセキュリティ検証ツール。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/email-dns` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "メールDNS検証 | Web ツール集" },
-    { name: "twitter:description", content: "ドメインのSPF・DKIM・DMARCレコードを確認するメールセキュリティ検証ツール。" },
-  ],
+      { title: "メールDNS検証 | Web ツール集" },
+      {
+        name: "description",
+        content: "ドメインのSPF・DKIM・DMARCレコードを確認するメールセキュリティ検証ツール。",
+      },
+      { property: "og:title", content: "メールDNS検証 | Web ツール集" },
+      {
+        property: "og:description",
+        content: "ドメインのSPF・DKIM・DMARCレコードを確認するメールセキュリティ検証ツール。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/email-dns` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "メールDNS検証 | Web ツール集" },
+      {
+        name: "twitter:description",
+        content: "ドメインのSPF・DKIM・DMARCレコードを確認するメールセキュリティ検証ツール。",
+      },
+    ],
   }),
   component: EmailDNSChecker,
 });
@@ -74,8 +83,7 @@ function EmailDNSChecker() {
       setResult(data);
       announceStatus("検証が完了しました");
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "通信エラーが発生しました";
+      const message = err instanceof Error ? err.message : "通信エラーが発生しました";
       setError(message);
       announceStatus("エラー: " + message);
     } finally {
@@ -83,12 +91,15 @@ function EmailDNSChecker() {
     }
   }, [domain, dkimSelector, announceStatus]);
 
-  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      handleCheck();
-    }
-  }, [handleCheck]);
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        handleCheck();
+      }
+    },
+    [handleCheck],
+  );
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -119,10 +130,7 @@ function EmailDNSChecker() {
   return (
     <>
       <div className="tool-container">
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          aria-label="メールDNS検証フォーム"
-        >
+        <form onSubmit={(e) => e.preventDefault()} aria-label="メールDNS検証フォーム">
           <div className="converter-section">
             <div className="search-form-row">
               <div className="search-input-wrapper">
@@ -142,9 +150,7 @@ function EmailDNSChecker() {
                 />
               </div>
               <div className="search-input-wrapper">
-                <label htmlFor="dkimSelectorInput">
-                  DKIMセレクタ（オプション）
-                </label>
+                <label htmlFor="dkimSelectorInput">DKIMセレクタ（オプション）</label>
                 <input
                   type="text"
                   id="dkimSelectorInput"
@@ -200,9 +206,7 @@ function EmailDNSChecker() {
             <div className="result-card" aria-live="polite">
               <div className="dns-record-header">
                 <h3>
-                  <span
-                    className={`status-icon ${getStatusClass(result.mx.status)}`}
-                  >
+                  <span className={`status-icon ${getStatusClass(result.mx.status)}`}>
                     {getStatusIcon(result.mx.status)}
                   </span>
                   MXレコード（メールサーバー）
@@ -226,13 +230,9 @@ function EmailDNSChecker() {
                           <td>{record.priority}</td>
                           <td className="monospace">{record.exchange}</td>
                           <td className="monospace">
-                            {record.ipAddresses
-                              ? record.ipAddresses.join(", ")
-                              : "-"}
+                            {record.ipAddresses ? record.ipAddresses.join(", ") : "-"}
                           </td>
-                          <td className="monospace">
-                            {record.ptr ? record.ptr.join(", ") : "-"}
-                          </td>
+                          <td className="monospace">{record.ptr ? record.ptr.join(", ") : "-"}</td>
                           <td>{record.ttl || "-"}</td>
                         </tr>
                       ))}
@@ -249,18 +249,14 @@ function EmailDNSChecker() {
                   )}
                 </div>
               )}
-              {result.mx.error && (
-                <div className="dns-record-error">{result.mx.error}</div>
-              )}
+              {result.mx.error && <div className="dns-record-error">{result.mx.error}</div>}
             </div>
 
             {/* SPF Record */}
             <div className="result-card" aria-live="polite">
               <div className="dns-record-header">
                 <h3>
-                  <span
-                    className={`status-icon ${getStatusClass(result.spf.status)}`}
-                  >
+                  <span className={`status-icon ${getStatusClass(result.spf.status)}`}>
                     {getStatusIcon(result.spf.status)}
                   </span>
                   SPFレコード（送信元認証）
@@ -270,17 +266,13 @@ function EmailDNSChecker() {
                 <div className="dns-record-content">
                   <div className="result-row">
                     <div className="result-label">レコード</div>
-                    <div className="result-value monospace">
-                      {result.spf.record}
-                    </div>
+                    <div className="result-value monospace">{result.spf.record}</div>
                   </div>
                   {result.spf.details && (
                     <>
                       <div className="result-row">
                         <div className="result-label">バージョン</div>
-                        <div className="result-value">
-                          {result.spf.details.version || "-"}
-                        </div>
+                        <div className="result-value">{result.spf.details.version || "-"}</div>
                       </div>
                       <div className="result-row">
                         <div className="result-label">有効性</div>
@@ -291,9 +283,7 @@ function EmailDNSChecker() {
                       {result.spf.details.lookupCount !== undefined && (
                         <div className="result-row">
                           <div className="result-label">DNSルックアップ回数</div>
-                          <div className="result-value">
-                            {result.spf.details.lookupCount}/10
-                          </div>
+                          <div className="result-value">{result.spf.details.lookupCount}/10</div>
                         </div>
                       )}
                       {result.spf.details.mechanisms &&
@@ -322,32 +312,27 @@ function EmailDNSChecker() {
                             </div>
                           </div>
                         )}
-                      {result.spf.details.warnings &&
-                        result.spf.details.warnings.length > 0 && (
-                          <div className="dns-warnings">
-                            {result.spf.details.warnings.map((warning, idx) => (
-                              <div key={idx} className="warning-item">
-                                ⚠ {warning}
-                              </div>
-                            ))}
-                          </div>
-                        )}
+                      {result.spf.details.warnings && result.spf.details.warnings.length > 0 && (
+                        <div className="dns-warnings">
+                          {result.spf.details.warnings.map((warning, idx) => (
+                            <div key={idx} className="warning-item">
+                              ⚠ {warning}
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </>
                   )}
                 </div>
               )}
-              {result.spf.error && (
-                <div className="dns-record-error">{result.spf.error}</div>
-              )}
+              {result.spf.error && <div className="dns-record-error">{result.spf.error}</div>}
             </div>
 
             {/* DMARC Record */}
             <div className="result-card" aria-live="polite">
               <div className="dns-record-header">
                 <h3>
-                  <span
-                    className={`status-icon ${getStatusClass(result.dmarc.status)}`}
-                  >
+                  <span className={`status-icon ${getStatusClass(result.dmarc.status)}`}>
                     {getStatusIcon(result.dmarc.status)}
                   </span>
                   DMARCレコード（ポリシー設定）
@@ -357,9 +342,7 @@ function EmailDNSChecker() {
                 <div className="dns-record-content">
                   <div className="result-row">
                     <div className="result-label">レコード</div>
-                    <div className="result-value monospace">
-                      {result.dmarc.record}
-                    </div>
+                    <div className="result-value monospace">{result.dmarc.record}</div>
                   </div>
                   {result.dmarc.details && (
                     <>
@@ -372,53 +355,45 @@ function EmailDNSChecker() {
                       {result.dmarc.details.policy && (
                         <div className="result-row">
                           <div className="result-label">ポリシー</div>
-                          <div className="result-value">
-                            {result.dmarc.details.policy}
-                          </div>
+                          <div className="result-value">{result.dmarc.details.policy}</div>
                         </div>
                       )}
                       {result.dmarc.details.subdomainPolicy && (
                         <div className="result-row">
                           <div className="result-label">サブドメインポリシー</div>
-                          <div className="result-value">
-                            {result.dmarc.details.subdomainPolicy}
-                          </div>
+                          <div className="result-value">{result.dmarc.details.subdomainPolicy}</div>
                         </div>
                       )}
                       {result.dmarc.details.percentage !== undefined && (
                         <div className="result-row">
                           <div className="result-label">適用率</div>
-                          <div className="result-value">
-                            {result.dmarc.details.percentage}%
+                          <div className="result-value">{result.dmarc.details.percentage}%</div>
+                        </div>
+                      )}
+                      {result.dmarc.details.rua && result.dmarc.details.rua.length > 0 && (
+                        <div className="result-row">
+                          <div className="result-label">集計レポート送信先 (rua)</div>
+                          <div className="result-value list">
+                            {result.dmarc.details.rua.map((r, i) => (
+                              <span key={i} className="monospace">
+                                {r}
+                              </span>
+                            ))}
                           </div>
                         </div>
                       )}
-                      {result.dmarc.details.rua &&
-                        result.dmarc.details.rua.length > 0 && (
-                          <div className="result-row">
-                            <div className="result-label">集計レポート送信先 (rua)</div>
-                            <div className="result-value list">
-                              {result.dmarc.details.rua.map((r, i) => (
-                                <span key={i} className="monospace">
-                                  {r}
-                                </span>
-                              ))}
-                            </div>
+                      {result.dmarc.details.ruf && result.dmarc.details.ruf.length > 0 && (
+                        <div className="result-row">
+                          <div className="result-label">失敗レポート送信先 (ruf)</div>
+                          <div className="result-value list">
+                            {result.dmarc.details.ruf.map((r, i) => (
+                              <span key={i} className="monospace">
+                                {r}
+                              </span>
+                            ))}
                           </div>
-                        )}
-                      {result.dmarc.details.ruf &&
-                        result.dmarc.details.ruf.length > 0 && (
-                          <div className="result-row">
-                            <div className="result-label">失敗レポート送信先 (ruf)</div>
-                            <div className="result-value list">
-                              {result.dmarc.details.ruf.map((r, i) => (
-                                <span key={i} className="monospace">
-                                  {r}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                        )}
+                        </div>
+                      )}
                       {result.dmarc.details.warnings &&
                         result.dmarc.details.warnings.length > 0 && (
                           <div className="dns-warnings">
@@ -433,9 +408,7 @@ function EmailDNSChecker() {
                   )}
                 </div>
               )}
-              {result.dmarc.error && (
-                <div className="dns-record-error">{result.dmarc.error}</div>
-              )}
+              {result.dmarc.error && <div className="dns-record-error">{result.dmarc.error}</div>}
             </div>
 
             {/* DKIM Record */}
@@ -443,9 +416,7 @@ function EmailDNSChecker() {
               <div className="result-card" aria-live="polite">
                 <div className="dns-record-header">
                   <h3>
-                    <span
-                      className={`status-icon ${getStatusClass(result.dkim.status)}`}
-                    >
+                    <span className={`status-icon ${getStatusClass(result.dkim.status)}`}>
                       {getStatusIcon(result.dkim.status)}
                     </span>
                     DKIMレコード（署名検証）
@@ -455,21 +426,15 @@ function EmailDNSChecker() {
                   <div className="dns-record-content">
                     <div className="result-row">
                       <div className="result-label">セレクタ</div>
-                      <div className="result-value monospace">
-                        {result.dkim.selector}
-                      </div>
+                      <div className="result-value monospace">{result.dkim.selector}</div>
                     </div>
                     <div className="result-row">
                       <div className="result-label">レコード</div>
-                      <div className="result-value monospace word-break">
-                        {result.dkim.record}
-                      </div>
+                      <div className="result-value monospace word-break">{result.dkim.record}</div>
                     </div>
                   </div>
                 )}
-                {result.dkim.error && (
-                  <div className="dns-record-error">{result.dkim.error}</div>
-                )}
+                {result.dkim.error && <div className="dns-record-error">{result.dkim.error}</div>}
               </div>
             )}
 
@@ -488,25 +453,19 @@ function EmailDNSChecker() {
             {/* SMTP Check Instructions */}
             {result.smtpCheckInstructions && (
               <div className="result-card smtp-instructions-card">
-                <h3 className="section-title">
-                  SMTP接続チェック（ローカル確認方法）
-                </h3>
+                <h3 className="section-title">SMTP接続チェック（ローカル確認方法）</h3>
                 <p className="smtp-instructions-intro">
                   以下のコマンドをターミナルで実行して、メールサーバーへの接続とTLS対応を確認できます：
                 </p>
 
                 <div className="smtp-check-section">
                   <h4>Telnetでの基本チェック</h4>
-                  <pre className="code-block">
-                    {result.smtpCheckInstructions.telnet.join("\n")}
-                  </pre>
+                  <pre className="code-block">{result.smtpCheckInstructions.telnet.join("\n")}</pre>
                 </div>
 
                 <div className="smtp-check-section">
                   <h4>curlでのSMTPチェック</h4>
-                  <pre className="code-block">
-                    {result.smtpCheckInstructions.curl.join("\n")}
-                  </pre>
+                  <pre className="code-block">{result.smtpCheckInstructions.curl.join("\n")}</pre>
                 </div>
 
                 <div className="smtp-check-section">

@@ -159,10 +159,7 @@ export function formatSpeed(bps: number): string {
  * @param bps - 転送速度（bps）
  * @returns 転送時間計算結果、無効な入力の場合は null
  */
-export function calcTransferTime(
-  bytes: number,
-  bps: number
-): TransferResult | null {
+export function calcTransferTime(bytes: number, bps: number): TransferResult | null {
   if (!isFinite(bytes) || bytes <= 0) return null;
   if (!isFinite(bps) || bps <= 0) return null;
 
@@ -180,10 +177,7 @@ export function calcTransferTime(
  * @param seconds - 目標時間（秒）
  * @returns 必要な転送速度計算結果、無効な入力の場合は null
  */
-export function calcRequiredSpeed(
-  bytes: number,
-  seconds: number
-): SpeedResult | null {
+export function calcRequiredSpeed(bytes: number, seconds: number): SpeedResult | null {
   if (!isFinite(bytes) || bytes <= 0) return null;
   if (!isFinite(seconds) || seconds <= 0) return null;
 

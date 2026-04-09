@@ -48,7 +48,7 @@ export function applyMatrix3x3(
   r: number,
   g: number,
   b: number,
-  m: readonly number[]
+  m: readonly number[],
 ): [number, number, number] {
   return [
     clampByte(m[0] * r + m[1] * g + m[2] * b),
@@ -64,11 +64,7 @@ export function applyMatrix3x3(
  * @param t - A の重み (0〜1)
  * @returns 補間結果の行列
  */
-function blendMatrices(
-  a: readonly number[],
-  b: readonly number[],
-  t: number
-): number[] {
+function blendMatrices(a: readonly number[], b: readonly number[], t: number): number[] {
   return a.map((v, i) => v * t + b[i] * (1 - t));
 }
 
@@ -91,16 +87,13 @@ const IDENTITY = [1, 0, 0, 0, 1, 0, 0, 0, 1] as const;
 
 // Machado 2009 による完全二色覚の変換行列
 const DEUT_FULL = [
-  0.367322, 0.860646, -0.227968, 0.280085, 0.672501, 0.047413, -0.01182,
-  0.04294, 0.968881,
+  0.367322, 0.860646, -0.227968, 0.280085, 0.672501, 0.047413, -0.01182, 0.04294, 0.968881,
 ] as const;
 const PROT_FULL = [
-  0.152286, 1.052583, -0.204868, 0.114503, 0.786281, 0.099216, -0.003882,
-  -0.048116, 1.051998,
+  0.152286, 1.052583, -0.204868, 0.114503, 0.786281, 0.099216, -0.003882, -0.048116, 1.051998,
 ] as const;
 const TRIT_FULL = [
-  1.255528, -0.076749, -0.178779, -0.078411, 0.930809, 0.147602, 0.004733,
-  0.691367, 0.3039,
+  1.255528, -0.076749, -0.178779, -0.078411, 0.930809, 0.147602, 0.004733, 0.691367, 0.3039,
 ] as const;
 
 // 部分的な色覚異常（完全二色覚を 60% 適用）
@@ -108,9 +101,7 @@ const DEUT_PARTIAL = blendMatrices(DEUT_FULL, IDENTITY, 0.6);
 const PROT_PARTIAL = blendMatrices(PROT_FULL, IDENTITY, 0.6);
 
 // 全色盲（輝度のみ）
-const ACHRO = [
-  0.2126, 0.7152, 0.0722, 0.2126, 0.7152, 0.0722, 0.2126, 0.7152, 0.0722,
-] as const;
+const ACHRO = [0.2126, 0.7152, 0.0722, 0.2126, 0.7152, 0.0722, 0.2126, 0.7152, 0.0722] as const;
 
 /** 色覚異常シミュレーション一覧 */
 export const CVD_INFOS: readonly CvdInfo[] = [
@@ -127,8 +118,7 @@ export const CVD_INFOS: readonly CvdInfo[] = [
     id: "protanopia",
     label: "第一色覚異常（赤）",
     english: "Protanopia",
-    description:
-      "赤色の感受性が欠如。赤と緑の区別が困難で、赤が暗く見える。男性の約2%が該当。",
+    description: "赤色の感受性が欠如。赤と緑の区別が困難で、赤が暗く見える。男性の約2%が該当。",
     matrix3x3: PROT_FULL,
     svgMatrix: toSvgMatrix(PROT_FULL),
   },
@@ -136,8 +126,7 @@ export const CVD_INFOS: readonly CvdInfo[] = [
     id: "tritanopia",
     label: "第三色覚異常（青）",
     english: "Tritanopia",
-    description:
-      "青色の感受性が欠如。青と黄色の区別が困難。非常に稀な色覚異常（約0.01%）。",
+    description: "青色の感受性が欠如。青と黄色の区別が困難。非常に稀な色覚異常（約0.01%）。",
     matrix3x3: TRIT_FULL,
     svgMatrix: toSvgMatrix(TRIT_FULL),
   },
@@ -145,8 +134,7 @@ export const CVD_INFOS: readonly CvdInfo[] = [
     id: "deuteranomaly",
     label: "第二色覚弱（緑）",
     english: "Deuteranomaly",
-    description:
-      "緑色の感受性が弱い（部分的）。男性の約5%が該当する最も多い色覚異常の形態。",
+    description: "緑色の感受性が弱い（部分的）。男性の約5%が該当する最も多い色覚異常の形態。",
     matrix3x3: DEUT_PARTIAL,
     svgMatrix: toSvgMatrix(DEUT_PARTIAL),
   },
@@ -162,8 +150,7 @@ export const CVD_INFOS: readonly CvdInfo[] = [
     id: "achromatopsia",
     label: "全色盲",
     english: "Achromatopsia",
-    description:
-      "色の識別が全くできない。世界人口の約0.003%が該当する極めて稀な状態。",
+    description: "色の識別が全くできない。世界人口の約0.003%が該当する極めて稀な状態。",
     matrix3x3: ACHRO,
     svgMatrix: toSvgMatrix(ACHRO),
   },
@@ -176,10 +163,7 @@ export const CVD_INFOS: readonly CvdInfo[] = [
  * @param matrix - 3×3 変換行列（行優先、9要素）
  * @returns 変換後の ImageData
  */
-export function applySimulation(
-  imageData: ImageData,
-  matrix: readonly number[]
-): ImageData {
+export function applySimulation(imageData: ImageData, matrix: readonly number[]): ImageData {
   const src = imageData.data;
   const dst = new Uint8ClampedArray(src.length);
   for (let i = 0; i < src.length; i += 4) {
@@ -201,7 +185,7 @@ export function applySimulation(
  * @returns ImageData と画像のサイズ
  */
 export async function fileToImageData(
-  file: File
+  file: File,
 ): Promise<{ imageData: ImageData; width: number; height: number }> {
   return new Promise((resolve, reject) => {
     const url = URL.createObjectURL(file);

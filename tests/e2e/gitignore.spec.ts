@@ -10,12 +10,8 @@ test.describe("Gitignoreジェネレーター", () => {
   });
 
   test("セクションタイトルが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "テンプレート選択" })
-    ).toBeVisible();
-    await expect(
-      page.getByRole("heading", { name: /生成された .gitignore/ })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "テンプレート選択" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: /生成された .gitignore/ })).toBeVisible();
   });
 
   test("検索入力フィールドが表示される", async ({ page }) => {
@@ -83,9 +79,7 @@ test.describe("Gitignoreジェネレーター", () => {
     await expect(copyBtn).toBeEnabled();
   });
 
-  test("テンプレート選択後にダウンロードボタンが有効になる", async ({
-    page,
-  }) => {
+  test("テンプレート選択後にダウンロードボタンが有効になる", async ({ page }) => {
     await page.getByLabel("Node.jsを選択").check();
     const downloadBtn = page.getByRole("button", { name: /ダウンロード/ });
     await expect(downloadBtn).toBeEnabled();
@@ -97,20 +91,14 @@ test.describe("Gitignoreジェネレーター", () => {
     await expect(page.getByLabel("Node.jsを選択")).not.toBeVisible();
   });
 
-  test("存在しない検索語で「見つかりませんでした」が表示される", async ({
-    page,
-  }) => {
-    await page
-      .getByPlaceholder("テンプレートを検索...")
-      .fill("existnothing12345");
+  test("存在しない検索語で「見つかりませんでした」が表示される", async ({ page }) => {
+    await page.getByPlaceholder("テンプレートを検索...").fill("existnothing12345");
     await expect(page.getByRole("status")).toContainText(
-      "一致するテンプレートが見つかりませんでした"
+      "一致するテンプレートが見つかりませんでした",
     );
   });
 
-  test("ナビゲーションからGitignoreページにアクセスできる", async ({
-    page,
-  }) => {
+  test("ナビゲーションからGitignoreページにアクセスできる", async ({ page }) => {
     await page.goto("/");
     await page.getByRole("link", { name: "Gitignore生成" }).first().click();
     await expect(page).toHaveURL(/\/gitignore/);

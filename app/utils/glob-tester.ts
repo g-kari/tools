@@ -26,7 +26,7 @@ export interface GlobMatchResult {
  * 正規表現の特殊文字をエスケープする
  */
 function escapeRegex(str: string): string {
-  return str.replace(/[.+^${}()|[\]\\]/g, '\\$&');
+  return str.replace(/[.+^${}()|[\]\\]/g, "\\$&");
 }
 
 /**
@@ -35,15 +35,15 @@ function escapeRegex(str: string): string {
  * ネストには非対応（シンプルな展開のみ）
  */
 export function expandBraces(pattern: string): string[] {
-  const braceStart = pattern.indexOf('{');
+  const braceStart = pattern.indexOf("{");
   if (braceStart === -1) return [pattern];
 
-  const braceEnd = pattern.indexOf('}', braceStart);
+  const braceEnd = pattern.indexOf("}", braceStart);
   if (braceEnd === -1) return [pattern];
 
   const prefix = pattern.slice(0, braceStart);
   const suffix = pattern.slice(braceEnd + 1);
-  const alts = pattern.slice(braceStart + 1, braceEnd).split(',');
+  const alts = pattern.slice(braceStart + 1, braceEnd).split(",");
 
   const results: string[] = [];
   for (const alt of alts) {
@@ -58,63 +58,63 @@ export function expandBraces(pattern: string): string[] {
  */
 export function globPatternToRegex(pattern: string): RegExp {
   // 先頭の `./` を除去して正規化
-  const normalized = pattern.replace(/^\.\//u, '');
+  const normalized = pattern.replace(/^\.\//u, "");
 
-  let source = '';
+  let source = "";
   let i = 0;
 
   while (i < normalized.length) {
     const c = normalized[i];
 
-    if (c === '\\' && i + 1 < normalized.length) {
+    if (c === "\\" && i + 1 < normalized.length) {
       // エスケープ
       source += escapeRegex(normalized[i + 1]);
       i += 2;
       continue;
     }
 
-    if (c === '*') {
-      if (normalized[i + 1] === '*') {
+    if (c === "*") {
+      if (normalized[i + 1] === "*") {
         // `**` はスラッシュを含む任意の文字列
         const prev = normalized[i - 1];
         const next = normalized[i + 2];
-        if ((prev === '/' || prev === undefined) && (next === '/' || next === undefined)) {
+        if ((prev === "/" || prev === undefined) && (next === "/" || next === undefined)) {
           // `/**/` や `**/` や `/**` のケース: ゼロ個以上のディレクトリセグメントにマッチ
-          if (next === '/') {
-            source += '(?:.+/)?';
+          if (next === "/") {
+            source += "(?:.+/)?";
             i += 3; // `**/` をスキップ
             continue;
           } else {
-            source += '.*';
+            source += ".*";
           }
         } else {
-          source += '.*';
+          source += ".*";
         }
         i += 2;
       } else {
         // `*` は `/` 以外の任意の文字列
-        source += '[^/]*';
+        source += "[^/]*";
         i++;
       }
       continue;
     }
 
-    if (c === '?') {
-      source += '[^/]';
+    if (c === "?") {
+      source += "[^/]";
       i++;
       continue;
     }
 
-    if (c === '[') {
+    if (c === "[") {
       // 文字クラス: `[`, `[^`, `[!` をそのまま通す
-      const end = normalized.indexOf(']', i + 1);
+      const end = normalized.indexOf("]", i + 1);
       if (end === -1) {
-        source += '\\[';
+        source += "\\[";
       } else {
         let charClass = normalized.slice(i, end + 1);
         // `[!...]` → `[^...]` に変換（globの否定構文）
-        if (charClass[1] === '!') {
-          charClass = '[^' + charClass.slice(2);
+        if (charClass[1] === "!") {
+          charClass = "[^" + charClass.slice(2);
         }
         source += charClass;
         i = end + 1;
@@ -129,7 +129,7 @@ export function globPatternToRegex(pattern: string): RegExp {
     i++;
   }
 
-  return new RegExp(`^${source}$`, 'u');
+  return new RegExp(`^${source}$`, "u");
 }
 
 /**
@@ -140,7 +140,7 @@ export function matchSinglePattern(pattern: string, path: string): boolean {
   return expanded.some((p) => {
     const regex = globPatternToRegex(p);
     // パスの先頭の `./` を除去して比較
-    const normalized = path.replace(/^\.\//u, '');
+    const normalized = path.replace(/^\.\//u, "");
     return regex.test(normalized);
   });
 }
@@ -152,9 +152,9 @@ export function matchSinglePattern(pattern: string, path: string): boolean {
  * `!` で始まるパターンは否定パターンとして扱われ、マッチした場合に除外される。
  */
 export function matchGlobPatterns(patterns: string[], paths: string[]): GlobMatchResult[] {
-  const positivePatterns = patterns.filter((p) => p.trim() && !p.startsWith('!'));
+  const positivePatterns = patterns.filter((p) => p.trim() && !p.startsWith("!"));
   const negativePatterns = patterns
-    .filter((p) => p.trim() && p.startsWith('!'))
+    .filter((p) => p.trim() && p.startsWith("!"))
     .map((p) => p.slice(1));
 
   return paths

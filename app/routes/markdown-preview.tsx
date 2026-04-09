@@ -5,10 +5,7 @@ import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 import { Marked } from "marked";
@@ -131,10 +128,7 @@ const parseOptions: HTMLReactParserOptions = {
         }
         // javascript: / data: スキームのURL属性を無効化（大文字小文字を区別しない）
         if (
-          (attr === "href" ||
-            attr === "src" ||
-            attr === "action" ||
-            attr === "data") &&
+          (attr === "href" || attr === "src" || attr === "action" || attr === "data") &&
           /^(javascript:|data:)/i.test(attribs[attr] ?? "")
         ) {
           attribs[attr] = "#";
@@ -305,9 +299,7 @@ function MarkdownPreview() {
               className="markdown-preview-content"
             >
               {previewHtml ? (
-                <div className="markdown-preview-inner">
-                  {parse(previewHtml, parseOptions)}
-                </div>
+                <div className="markdown-preview-inner">{parse(previewHtml, parseOptions)}</div>
               ) : (
                 <p className="markdown-preview-placeholder">
                   左側のエリアにMarkdownを入力するとプレビューが表示されます

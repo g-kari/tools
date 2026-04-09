@@ -17,13 +17,15 @@
 .ipv6-input {
   flex: 1;
   padding: 0.625rem 0.875rem;
-  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  font-family: "JetBrains Mono", "Roboto Mono", "Courier New", monospace;
   font-size: 0.9375rem;
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: 4px;
   background: var(--md-sys-color-surface-variant);
   color: var(--md-sys-color-on-surface);
-  transition: border-color 0.2s, background 0.2s;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
   min-width: 0;
 }
 
@@ -80,13 +82,16 @@
 .ipv6-sample-btn {
   padding: 0.25rem 0.625rem;
   font-size: 0.75rem;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: 100px;
   background: var(--md-sys-color-surface-variant);
   color: var(--md-sys-color-on-surface-variant);
   cursor: pointer;
-  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+  transition:
+    background-color 0.15s,
+    color 0.15s,
+    border-color 0.15s;
   line-height: 1.4;
 }
 
@@ -188,7 +193,7 @@
 
 .ipv6-result-table td {
   padding: 0.5rem 0;
-  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  font-family: "JetBrains Mono", "Roboto Mono", "Courier New", monospace;
   color: var(--md-sys-color-on-surface);
   word-break: break-all;
 }
@@ -263,7 +268,7 @@
 }
 
 .ipv6-group-hex {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.875rem;
   font-weight: 600;
   color: var(--md-sys-color-on-surface);
@@ -288,7 +293,7 @@
 }
 
 .ipv6-binary-display {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.6875rem;
   line-height: 1.8;
   color: var(--md-sys-color-on-surface);
@@ -338,7 +343,7 @@
 }
 
 .ipv6-ipv4-badge-value {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-weight: 600;
   color: var(--md-sys-color-primary);
 }

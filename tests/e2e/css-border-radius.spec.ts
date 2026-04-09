@@ -7,14 +7,12 @@ test.describe("CSS Border Radiusジェネレーターページ", () => {
 
   test("ページタイトルが表示される", async ({ page }) => {
     await expect(
-      page.getByRole("heading", { name: "CSS Border Radiusジェネレーター" })
+      page.getByRole("heading", { name: "CSS Border Radiusジェネレーター" }),
     ).toBeVisible();
   });
 
   test("プリセットセクションが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "プリセット" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "プリセット" })).toBeVisible();
   });
 
   test("プリセットボタンが複数表示される", async ({ page }) => {
@@ -23,9 +21,7 @@ test.describe("CSS Border Radiusジェネレーターページ", () => {
   });
 
   test("オプションセクションが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "オプション" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "オプション" })).toBeVisible();
   });
 
   test("単位 px ボタンが表示される", async ({ page }) => {
@@ -37,15 +33,11 @@ test.describe("CSS Border Radiusジェネレーターページ", () => {
   });
 
   test("楕円モードボタンが表示される", async ({ page }) => {
-    await expect(
-      page.getByLabel("楕円モード（水平・垂直を独立制御）")
-    ).toBeVisible();
+    await expect(page.getByLabel("楕円モード（水平・垂直を独立制御）")).toBeVisible();
   });
 
   test("コーナー設定セクションが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "コーナー設定" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "コーナー設定" })).toBeVisible();
   });
 
   test("4コーナーのラベルが表示される", async ({ page }) => {
@@ -56,16 +48,12 @@ test.describe("CSS Border Radiusジェネレーターページ", () => {
   });
 
   test("プレビューセクションが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "ライブプレビュー" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "ライブプレビュー" })).toBeVisible();
     await expect(page.locator(".cbr-preview-box")).toBeVisible();
   });
 
   test("CSS出力エリアが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "生成 CSS" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "生成 CSS" })).toBeVisible();
     await expect(page.locator(".cbr-css-output")).toBeVisible();
   });
 
@@ -93,17 +81,15 @@ test.describe("CSS Border Radiusジェネレーターページ", () => {
 
   test("単位を % に切り替えられる", async ({ page }) => {
     await page.getByLabel("単位: %").click();
-    await expect(page.getByLabel("単位: %")).toHaveAttribute(
-      "aria-pressed",
-      "true"
-    );
+    await expect(page.getByLabel("単位: %")).toHaveAttribute("aria-pressed", "true");
   });
 
   test("楕円モードを ON にできる", async ({ page }) => {
     await page.getByLabel("楕円モード（水平・垂直を独立制御）").click();
-    await expect(
-      page.getByLabel("楕円モード（水平・垂直を独立制御）")
-    ).toHaveAttribute("aria-pressed", "true");
+    await expect(page.getByLabel("楕円モード（水平・垂直を独立制御）")).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
   });
 
   test("楕円モード ON で H/V ラベルが表示される", async ({ page }) => {
@@ -114,15 +100,11 @@ test.describe("CSS Border Radiusジェネレーターページ", () => {
   });
 
   test("リセットボタンが表示される", async ({ page }) => {
-    await expect(
-      page.getByLabel("すべての設定をリセット")
-    ).toBeVisible();
+    await expect(page.getByLabel("すべての設定をリセット")).toBeVisible();
   });
 
   test("コピーボタンが存在する", async ({ page }) => {
-    await expect(
-      page.getByLabel("生成されたCSSをクリップボードにコピー")
-    ).toBeVisible();
+    await expect(page.getByLabel("生成されたCSSをクリップボードにコピー")).toBeVisible();
   });
 
   test("プレビュー幅スライダーが表示される", async ({ page }) => {

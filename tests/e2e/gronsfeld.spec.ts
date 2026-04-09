@@ -57,12 +57,16 @@ test.describe("グロンスフェルト暗号ページ", () => {
   test("キーが空の場合は変換されない", async ({ page }) => {
     await page.locator("#gronsfeld-key-input").fill("");
     await page.locator("#gronsfeld-input").fill("HELLO");
-    await expect(page.locator("#gronsfeld-output")).toContainText("有効な数字キーを入力してください");
+    await expect(page.locator("#gronsfeld-output")).toContainText(
+      "有効な数字キーを入力してください",
+    );
   });
 
   test("英字のみのキーは無効と判定される", async ({ page }) => {
     await page.locator("#gronsfeld-key-input").fill("ABC");
     await page.locator("#gronsfeld-input").fill("HELLO");
-    await expect(page.locator("#gronsfeld-output")).toContainText("有効な数字キーを入力してください");
+    await expect(page.locator("#gronsfeld-output")).toContainText(
+      "有効な数字キーを入力してください",
+    );
   });
 });

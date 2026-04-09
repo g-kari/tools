@@ -3,10 +3,7 @@ import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useCallback, useMemo } from "react";
 import { useToast } from "../components/Toast";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 import {
   type ContainerConfig,
@@ -50,8 +47,7 @@ export const Route = createFileRoute("/css-container-query")({
       },
       {
         name: "twitter:description",
-        content:
-          "CSS Container Queries をビジュアルに構築するツール。ライブプレビューつき。",
+        content: "CSS Container Queries をビジュアルに構築するツール。ライブプレビューつき。",
       },
     ],
   }),
@@ -96,8 +92,7 @@ function ConditionCard({
 }) {
   const isRange = cond.type === "width-range";
   const isRatio = cond.type === "aspect-ratio";
-  const isHeightType =
-    cond.type === "min-height" || cond.type === "max-height";
+  const isHeightType = cond.type === "min-height" || cond.type === "max-height";
 
   return (
     <>
@@ -107,18 +102,14 @@ function ConditionCard({
           <select
             className="ccq-condition-type-select"
             value={cond.type}
-            onChange={(e) =>
-              onChange(cond.id, { type: e.target.value as ConditionType })
-            }
+            onChange={(e) => onChange(cond.id, { type: e.target.value as ConditionType })}
             aria-label={`条件 ${index + 1} のタイプ`}
           >
-            {(Object.keys(CONDITION_TYPE_LABELS) as ConditionType[]).map(
-              (t) => (
-                <option key={t} value={t}>
-                  {CONDITION_TYPE_LABELS[t]}
-                </option>
-              )
-            )}
+            {(Object.keys(CONDITION_TYPE_LABELS) as ConditionType[]).map((t) => (
+              <option key={t} value={t}>
+                {CONDITION_TYPE_LABELS[t]}
+              </option>
+            ))}
           </select>
           <button
             type="button"
@@ -139,9 +130,7 @@ function ConditionCard({
               className="ccq-value-input"
               value={cond.ratioW}
               min={1}
-              onChange={(e) =>
-                onChange(cond.id, { ratioW: Number(e.target.value) })
-              }
+              onChange={(e) => onChange(cond.id, { ratioW: Number(e.target.value) })}
               aria-label="アスペクト比の幅"
             />
             <span className="ccq-range-sep">/</span>
@@ -150,9 +139,7 @@ function ConditionCard({
               className="ccq-value-input"
               value={cond.ratioH}
               min={1}
-              onChange={(e) =>
-                onChange(cond.id, { ratioH: Number(e.target.value) })
-              }
+              onChange={(e) => onChange(cond.id, { ratioH: Number(e.target.value) })}
               aria-label="アスペクト比の高さ"
             />
             <span className="ccq-range-sep" aria-hidden="true" />
@@ -164,9 +151,7 @@ function ConditionCard({
               className="ccq-value-input"
               value={cond.value}
               min={0}
-              onChange={(e) =>
-                onChange(cond.id, { value: Number(e.target.value) })
-              }
+              onChange={(e) => onChange(cond.id, { value: Number(e.target.value) })}
               aria-label="最小幅"
             />
             <span className="ccq-range-sep">〜</span>
@@ -175,17 +160,13 @@ function ConditionCard({
               className="ccq-value-input"
               value={cond.maxValue}
               min={0}
-              onChange={(e) =>
-                onChange(cond.id, { maxValue: Number(e.target.value) })
-              }
+              onChange={(e) => onChange(cond.id, { maxValue: Number(e.target.value) })}
               aria-label="最大幅"
             />
             <select
               className="ccq-unit-select"
               value={cond.unit}
-              onChange={(e) =>
-                onChange(cond.id, { unit: e.target.value as CssUnit })
-              }
+              onChange={(e) => onChange(cond.id, { unit: e.target.value as CssUnit })}
               aria-label="単位"
             >
               {UNITS.filter((u) => u !== "%").map((u) => (
@@ -202,17 +183,13 @@ function ConditionCard({
               className="ccq-value-input"
               value={cond.value}
               min={0}
-              onChange={(e) =>
-                onChange(cond.id, { value: Number(e.target.value) })
-              }
+              onChange={(e) => onChange(cond.id, { value: Number(e.target.value) })}
               aria-label="値"
             />
             <select
               className="ccq-unit-select"
               value={cond.unit}
-              onChange={(e) =>
-                onChange(cond.id, { unit: e.target.value as CssUnit })
-              }
+              onChange={(e) => onChange(cond.id, { unit: e.target.value as CssUnit })}
               aria-label="単位"
             >
               {(isHeightType ? UNITS : UNITS).map((u) => (
@@ -225,9 +202,7 @@ function ConditionCard({
         )}
 
         {/* 生成される条件プレビュー */}
-        <div className="ccq-condition-preview">
-          {formatCondition(cond)}
-        </div>
+        <div className="ccq-condition-preview">{formatCondition(cond)}</div>
       </div>
 
       {/* 論理演算子バッジ（最後の条件には表示しない） */}
@@ -256,9 +231,7 @@ function CssContainerQueryBuilder() {
   const { copy } = useClipboard();
   const { statusRef, announceStatus } = useStatusAnnouncement();
 
-  const [containerConfig, setContainerConfig] = useState<ContainerConfig>(
-    defaultContainerConfig
-  );
+  const [containerConfig, setContainerConfig] = useState<ContainerConfig>(defaultContainerConfig);
   const [queryConfig, setQueryConfig] = useState<QueryConfig>(defaultQueryConfig);
   const [previewWidth, setPreviewWidth] = useState(300);
 
@@ -273,17 +246,12 @@ function CssContainerQueryBuilder() {
   }, []);
 
   /** 条件を更新する */
-  const updateCondition = useCallback(
-    (id: string, updates: Partial<QueryCondition>) => {
-      setQueryConfig((prev) => ({
-        ...prev,
-        conditions: prev.conditions.map((c) =>
-          c.id === id ? { ...c, ...updates } : c
-        ),
-      }));
-    },
-    []
-  );
+  const updateCondition = useCallback((id: string, updates: Partial<QueryCondition>) => {
+    setQueryConfig((prev) => ({
+      ...prev,
+      conditions: prev.conditions.map((c) => (c.id === id ? { ...c, ...updates } : c)),
+    }));
+  }, []);
 
   /** 条件を追加する */
   const addCondition = useCallback(() => {
@@ -304,7 +272,7 @@ function CssContainerQueryBuilder() {
       });
       announceStatus("条件を削除しました");
     },
-    [announceStatus]
+    [announceStatus],
   );
 
   /** 論理演算子を切り替える */
@@ -337,17 +305,12 @@ function CssContainerQueryBuilder() {
 
   const generatedCSS = useMemo(
     () => generateFullCSS(containerConfig, queryConfig),
-    [containerConfig, queryConfig]
+    [containerConfig, queryConfig],
   );
 
   const queryActive = useMemo(
-    () =>
-      checkAllConditions(
-        queryConfig.conditions,
-        queryConfig.logicalOp,
-        previewWidth
-      ),
-    [queryConfig.conditions, queryConfig.logicalOp, previewWidth]
+    () => checkAllConditions(queryConfig.conditions, queryConfig.logicalOp, previewWidth),
+    [queryConfig.conditions, queryConfig.logicalOp, previewWidth],
   );
 
   return (
@@ -357,10 +320,7 @@ function CssContainerQueryBuilder() {
           {/* ── 左パネル: 設定 ── */}
           <div aria-label="コンテナークエリ設定パネル">
             {/* コンテナー定義 */}
-            <section
-              className="ccq-section"
-              aria-labelledby="ccq-container-title"
-            >
+            <section className="ccq-section" aria-labelledby="ccq-container-title">
               <h2 className="ccq-section-title" id="ccq-container-title">
                 コンテナー定義
               </h2>
@@ -374,9 +334,7 @@ function CssContainerQueryBuilder() {
                   type="text"
                   className="ccq-input"
                   value={containerConfig.containerSelector}
-                  onChange={(e) =>
-                    updateContainer({ containerSelector: e.target.value })
-                  }
+                  onChange={(e) => updateContainer({ containerSelector: e.target.value })}
                   placeholder=".container"
                   aria-label="コンテナーの CSS セレクタ"
                   spellCheck={false}
@@ -398,31 +356,25 @@ function CssContainerQueryBuilder() {
                   }
                   aria-label="container-type の値"
                 >
-                  {(Object.keys(CONTAINER_TYPE_LABELS) as ContainerType[]).map(
-                    (t) => (
-                      <option key={t} value={t}>
-                        {CONTAINER_TYPE_LABELS[t]}
-                      </option>
-                    )
-                  )}
+                  {(Object.keys(CONTAINER_TYPE_LABELS) as ContainerType[]).map((t) => (
+                    <option key={t} value={t}>
+                      {CONTAINER_TYPE_LABELS[t]}
+                    </option>
+                  ))}
                 </select>
               </div>
 
               <div className="ccq-prop-row">
                 <label htmlFor="ccq-container-name" className="ccq-prop-label">
                   <code>container-name</code>
-                  <span className="ccq-optional-label">
-                    （省略可）
-                  </span>
+                  <span className="ccq-optional-label">（省略可）</span>
                 </label>
                 <input
                   id="ccq-container-name"
                   type="text"
                   className="ccq-input"
                   value={containerConfig.containerName}
-                  onChange={(e) =>
-                    updateContainer({ containerName: e.target.value })
-                  }
+                  onChange={(e) => updateContainer({ containerName: e.target.value })}
                   placeholder="例: sidebar"
                   aria-label="container-name の値"
                   spellCheck={false}
@@ -431,10 +383,7 @@ function CssContainerQueryBuilder() {
             </section>
 
             {/* クエリ条件 */}
-            <section
-              className="ccq-section"
-              aria-labelledby="ccq-conditions-title"
-            >
+            <section className="ccq-section" aria-labelledby="ccq-conditions-title">
               <h2 className="ccq-section-title" id="ccq-conditions-title">
                 クエリ条件
               </h2>
@@ -463,10 +412,7 @@ function CssContainerQueryBuilder() {
             </section>
 
             {/* クエリ内容 */}
-            <section
-              className="ccq-section"
-              aria-labelledby="ccq-inner-title"
-            >
+            <section className="ccq-section" aria-labelledby="ccq-inner-title">
               <h2 className="ccq-section-title" id="ccq-inner-title">
                 クエリ内のスタイル
               </h2>
@@ -480,9 +426,7 @@ function CssContainerQueryBuilder() {
                   type="text"
                   className="ccq-input"
                   value={queryConfig.targetSelector}
-                  onChange={(e) =>
-                    updateQuery({ targetSelector: e.target.value })
-                  }
+                  onChange={(e) => updateQuery({ targetSelector: e.target.value })}
                   placeholder=".card"
                   aria-label="クエリ内のターゲットセレクタ"
                   spellCheck={false}
@@ -520,10 +464,7 @@ function CssContainerQueryBuilder() {
           {/* ── 右パネル: プレビュー + CSS 出力 ── */}
           <div className="ccq-right">
             {/* ライブプレビュー */}
-            <section
-              className="ccq-preview-section"
-              aria-labelledby="ccq-preview-title"
-            >
+            <section className="ccq-preview-section" aria-labelledby="ccq-preview-title">
               <h2 className="ccq-section-title" id="ccq-preview-title">
                 ライブプレビュー
               </h2>
@@ -556,31 +497,21 @@ function CssContainerQueryBuilder() {
                   <span className="ccq-preview-outer-label">
                     {containerConfig.containerSelector || ".container"}
                   </span>
-                  <div
-                    className={`ccq-preview-inner${queryActive ? " ccq-query-active" : ""}`}
-                  >
+                  <div className={`ccq-preview-inner${queryActive ? " ccq-query-active" : ""}`}>
                     <div className="ccq-preview-card">
                       <strong>カード 1</strong>
-                      <p>
-                        コンテンツ
-                      </p>
+                      <p>コンテンツ</p>
                     </div>
                     <div className="ccq-preview-card">
                       <strong>カード 2</strong>
-                      <p>
-                        コンテンツ
-                      </p>
+                      <p>コンテンツ</p>
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* クエリ適用状態 */}
-              <div
-                className="ccq-preview-status"
-                role="status"
-                aria-live="polite"
-              >
+              <div className="ccq-preview-status" role="status" aria-live="polite">
                 <span
                   className={`ccq-preview-status-dot ${queryActive ? "active" : "inactive"}`}
                   aria-hidden="true"
@@ -594,10 +525,7 @@ function CssContainerQueryBuilder() {
             </section>
 
             {/* 生成 CSS */}
-            <section
-              className="ccq-css-section"
-              aria-labelledby="ccq-css-title"
-            >
+            <section className="ccq-css-section" aria-labelledby="ccq-css-title">
               <div className="ccq-css-header">
                 <h2 className="ccq-section-title" id="ccq-css-title">
                   生成 CSS
@@ -611,11 +539,7 @@ function CssContainerQueryBuilder() {
                   コピー
                 </button>
               </div>
-              <pre
-                className="ccq-css-output"
-                aria-label="生成された CSS コード"
-                aria-live="polite"
-              >
+              <pre className="ccq-css-output" aria-label="生成された CSS コード" aria-live="polite">
                 {generatedCSS}
               </pre>
             </section>

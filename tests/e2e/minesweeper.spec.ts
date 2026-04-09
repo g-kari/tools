@@ -20,9 +20,7 @@ test.describe("マインスイーパー (/minesweeper)", () => {
   });
 
   test("ゲームスタートボタンが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("button", { name: "ゲームスタート" })
-    ).toBeVisible();
+    await expect(page.getByRole("button", { name: "ゲームスタート" })).toBeVisible();
   });
 
   test("デフォルトで「初級」が選択されている", async ({ page }) => {
@@ -36,15 +34,13 @@ test.describe("マインスイーパー (/minesweeper)", () => {
     await expect(mediumBtn).toHaveAttribute("aria-pressed", "true");
     await expect(page.getByRole("button", { name: "初級" })).toHaveAttribute(
       "aria-pressed",
-      "false"
+      "false",
     );
   });
 
   test("ゲームスタートでボードが表示される", async ({ page }) => {
     await page.getByRole("button", { name: "ゲームスタート" }).click();
-    await expect(
-      page.getByRole("grid", { name: "マインスイーパーボード" })
-    ).toBeVisible();
+    await expect(page.getByRole("grid", { name: "マインスイーパーボード" })).toBeVisible();
   });
 
   test("初級スタートで81個のセルが表示される", async ({ page }) => {
@@ -55,9 +51,7 @@ test.describe("マインスイーパー (/minesweeper)", () => {
 
   test("スタート後にステータスバーが表示される", async ({ page }) => {
     await page.getByRole("button", { name: "ゲームスタート" }).click();
-    await expect(
-      page.getByRole("region", { name: "ゲームステータス" })
-    ).toBeVisible();
+    await expect(page.getByRole("region", { name: "ゲームステータス" })).toBeVisible();
   });
 
   test("スタート後にタイマーが表示される", async ({ page }) => {
@@ -65,13 +59,9 @@ test.describe("マインスイーパー (/minesweeper)", () => {
     await expect(page.locator("time")).toBeVisible();
   });
 
-  test("スタート後のボタンテキストが「新しいゲーム」に変わる", async ({
-    page,
-  }) => {
+  test("スタート後のボタンテキストが「新しいゲーム」に変わる", async ({ page }) => {
     await page.getByRole("button", { name: "ゲームスタート" }).click();
-    await expect(
-      page.getByRole("button", { name: "新しいゲーム" })
-    ).toBeVisible();
+    await expect(page.getByRole("button", { name: "新しいゲーム" })).toBeVisible();
   });
 
   test("セルをクリックすると周囲が開放される", async ({ page }) => {
@@ -92,14 +82,10 @@ test.describe("マインスイーパー (/minesweeper)", () => {
     await expect(revealedCells).toHaveCount(0);
   });
 
-  test("ナビゲーションのゲームカテゴリにマインスイーパーが含まれる", async ({
-    page,
-  }) => {
+  test("ナビゲーションのゲームカテゴリにマインスイーパーが含まれる", async ({ page }) => {
     const nav = page.getByRole("navigation", { name: "ツールナビゲーション" });
     const gameCategory = nav.getByRole("button", { name: /ゲーム/ });
     await gameCategory.hover();
-    await expect(
-      page.getByRole("menuitem", { name: "マインスイーパー" })
-    ).toBeVisible();
+    await expect(page.getByRole("menuitem", { name: "マインスイーパー" })).toBeVisible();
   });
 });

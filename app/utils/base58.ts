@@ -10,7 +10,7 @@
  */
 
 /** Base58 アルファベット種別 */
-export type Base58Alphabet = 'bitcoin' | 'flickr';
+export type Base58Alphabet = "bitcoin" | "flickr";
 
 /** Base58 エンコード結果 */
 export interface Base58EncodeResult {
@@ -39,10 +39,10 @@ export interface Base58DecodeResult {
 // ---------------------------------------------------------------------------
 
 /** Bitcoin Base58 アルファベット */
-const BITCOIN_ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+const BITCOIN_ALPHABET = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
 
 /** Flickr Base58 アルファベット */
-const FLICKR_ALPHABET = '123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ';
+const FLICKR_ALPHABET = "123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ";
 
 // ---------------------------------------------------------------------------
 // 内部ヘルパー
@@ -52,7 +52,7 @@ const FLICKR_ALPHABET = '123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVW
  * アルファベット文字列を選択する
  */
 function getAlphabet(variant: Base58Alphabet): string {
-  return variant === 'flickr' ? FLICKR_ALPHABET : BITCOIN_ALPHABET;
+  return variant === "flickr" ? FLICKR_ALPHABET : BITCOIN_ALPHABET;
 }
 
 /**
@@ -78,7 +78,7 @@ function buildLookup(alphabet: string): Map<string, number> {
  */
 export function encodeBase58(
   text: string,
-  variant: Base58Alphabet = 'bitcoin',
+  variant: Base58Alphabet = "bitcoin",
 ): Base58EncodeResult {
   const bytes = new TextEncoder().encode(text);
   return encodeBase58Bytes(bytes, variant);
@@ -92,13 +92,13 @@ export function encodeBase58(
  */
 export function encodeBase58Bytes(
   bytes: Uint8Array,
-  variant: Base58Alphabet = 'bitcoin',
+  variant: Base58Alphabet = "bitcoin",
 ): Base58EncodeResult {
   const alphabet = getAlphabet(variant);
 
   // 空バイト列の早期リターン
   if (bytes.length === 0) {
-    return { encoded: '', inputBytes: 0, outputLength: 0 };
+    return { encoded: "", inputBytes: 0, outputLength: 0 };
   }
 
   // 先頭の 0x00 バイトをカウント（'1' で表現）
@@ -134,7 +134,7 @@ export function encodeBase58Bytes(
     digits
       .reverse()
       .map((d) => alphabet[d])
-      .join('');
+      .join("");
 
   return {
     encoded: result,
@@ -155,23 +155,23 @@ export function encodeBase58Bytes(
  */
 export function decodeBase58(
   encoded: string,
-  variant: Base58Alphabet = 'bitcoin',
+  variant: Base58Alphabet = "bitcoin",
 ): Base58DecodeResult {
   const alphabet = getAlphabet(variant);
   const lookup = buildLookup(alphabet);
 
   // 空白を除去
-  const cleaned = encoded.replace(/\s/g, '');
+  const cleaned = encoded.replace(/\s/g, "");
 
   if (cleaned.length === 0) {
-    return { decoded: '', bytes: new Uint8Array(0), success: true };
+    return { decoded: "", bytes: new Uint8Array(0), success: true };
   }
 
   // 文字バリデーション
   for (const ch of cleaned) {
     if (!lookup.has(ch)) {
       return {
-        decoded: '',
+        decoded: "",
         bytes: new Uint8Array(0),
         success: false,
         error: `無効な文字が含まれています: '${ch}' （使用可能: ${alphabet}）`,
@@ -214,13 +214,13 @@ export function decodeBase58(
 
   // UTF-8 変換を試みる
   try {
-    const decoded = new TextDecoder('utf-8', { fatal: true }).decode(outputBytes);
+    const decoded = new TextDecoder("utf-8", { fatal: true }).decode(outputBytes);
     return { decoded, bytes: outputBytes, success: true };
   } catch {
     // バイナリデータは hex 表現で返す
     const hexStr = Array.from(outputBytes)
-      .map((b) => b.toString(16).padStart(2, '0'))
-      .join(' ');
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join(" ");
     return { decoded: hexStr, bytes: outputBytes, success: true };
   }
 }
@@ -235,12 +235,9 @@ export function decodeBase58(
  * @param variant - アルファベット種別
  * @returns エラーメッセージ（問題なければ null）
  */
-export function validateBase58(
-  input: string,
-  variant: Base58Alphabet = 'bitcoin',
-): string | null {
+export function validateBase58(input: string, variant: Base58Alphabet = "bitcoin"): string | null {
   const alphabet = getAlphabet(variant);
-  const cleaned = input.replace(/\s/g, '');
+  const cleaned = input.replace(/\s/g, "");
 
   if (cleaned.length === 0) return null;
 

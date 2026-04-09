@@ -96,6 +96,6 @@ export function decodePolybius(text: string, key: string = ""): string {
 export function getSquareGrid(key: string = ""): string[][] {
   const square = buildSquare(key);
   return Array.from({ length: 5 }, (_, row) =>
-    Array.from({ length: 5 }, (_, col) => square[row * 5 + col] ?? "")
+    Array.from({ length: 5 }, (_, col) => square[row * 5 + col] ?? ""),
   );
 }

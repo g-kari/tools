@@ -1,42 +1,41 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useState, useCallback, useMemo } from 'react';
-import { useToast } from '~/components/Toast';
-import { useClipboard } from '~/hooks/useClipboard';
-import { StatusAnnouncer, useStatusAnnouncement } from '~/hooks/useStatusAnnouncement';
-import { TipsCard } from '~/components/TipsCard';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
+import { createFileRoute } from "@tanstack/react-router";
+import { useState, useCallback, useMemo } from "react";
+import { useToast } from "~/components/Toast";
+import { useClipboard } from "~/hooks/useClipboard";
+import { StatusAnnouncer, useStatusAnnouncement } from "~/hooks/useStatusAnnouncement";
+import { TipsCard } from "~/components/TipsCard";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import {
   encodeDomain,
   decodeDomain,
   autoConvertDomain,
   type PunycodeResult,
   type LabelInfo,
-} from '~/utils/punycode';
-import '../styles/tools/punycode.css';
+} from "~/utils/punycode";
+import "../styles/tools/punycode.css";
 
-export const Route = createFileRoute('/punycode')({
+export const Route = createFileRoute("/punycode")({
   head: () => ({
     meta: [
-      { title: 'Punycode変換 (IDN) | Web ツール集' },
+      { title: "Punycode変換 (IDN) | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          '国際化ドメイン名 (IDN) の Punycode 変換ツール。日本語・中国語・アラビア語などの Unicode ドメインを xn-- 形式の ASCII Compatible Encoding (ACE) に変換。RFC 3492 準拠。',
+          "国際化ドメイン名 (IDN) の Punycode 変換ツール。日本語・中国語・アラビア語などの Unicode ドメインを xn-- 形式の ASCII Compatible Encoding (ACE) に変換。RFC 3492 準拠。",
       },
-      { property: 'og:title', content: 'Punycode変換 (IDN) | Web ツール集' },
+      { property: "og:title", content: "Punycode変換 (IDN) | Web ツール集" },
       {
-        property: 'og:description',
+        property: "og:description",
         content:
-          'IDN の Punycode 変換。Unicode ⇄ ACE (xn--) 相互変換。日本語・中国語ドメイン対応。RFC 3492 準拠。',
+          "IDN の Punycode 変換。Unicode ⇄ ACE (xn--) 相互変換。日本語・中国語ドメイン対応。RFC 3492 準拠。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/punycode` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
-      { name: 'twitter:title', content: 'Punycode変換 (IDN) | Web ツール集' },
+      { property: "og:url", content: `${SITE_BASE_URL}/punycode` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "Punycode変換 (IDN) | Web ツール集" },
       {
-        name: 'twitter:description',
-        content:
-          '国際化ドメイン名の Punycode 変換ツール。Unicode ⇄ ACE 相互変換、RFC 3492 準拠。',
+        name: "twitter:description",
+        content: "国際化ドメイン名の Punycode 変換ツール。Unicode ⇄ ACE 相互変換、RFC 3492 準拠。",
       },
     ],
   }),
@@ -47,21 +46,21 @@ export const Route = createFileRoute('/punycode')({
 // サンプル
 // ---------------------------------------------------------------------------
 
-type Mode = 'encode' | 'decode' | 'auto';
+type Mode = "encode" | "decode" | "auto";
 
 const ENCODE_SAMPLES = [
-  { label: '日本語', value: '日本語.jp' },
-  { label: 'ドイツ語', value: 'münchen.de' },
-  { label: '中国語', value: '中文.com' },
-  { label: '韓国語', value: '한국.kr' },
-  { label: 'アラビア語', value: 'مثال.com' },
+  { label: "日本語", value: "日本語.jp" },
+  { label: "ドイツ語", value: "münchen.de" },
+  { label: "中国語", value: "中文.com" },
+  { label: "韓国語", value: "한국.kr" },
+  { label: "アラビア語", value: "مثال.com" },
 ];
 
 const DECODE_SAMPLES = [
-  { label: '日本語', value: 'xn--wgv71a119e.jp' },
-  { label: 'ドイツ語', value: 'xn--mnchen-3ya.de' },
-  { label: '中国語', value: 'xn--fiq228c.com' },
-  { label: '韓国語', value: 'xn--3e0b707e.kr' },
+  { label: "日本語", value: "xn--wgv71a119e.jp" },
+  { label: "ドイツ語", value: "xn--mnchen-3ya.de" },
+  { label: "中国語", value: "xn--fiq228c.com" },
+  { label: "韓国語", value: "xn--3e0b707e.kr" },
 ];
 
 // ---------------------------------------------------------------------------
@@ -73,23 +72,23 @@ function PunycodeConverter() {
   const { copy } = useClipboard();
   const { statusRef, announceStatus } = useStatusAnnouncement();
 
-  const [mode, setMode] = useState<Mode>('auto');
-  const [input, setInput] = useState('');
+  const [mode, setMode] = useState<Mode>("auto");
+  const [input, setInput] = useState("");
 
   const { result, error } = useMemo<{ result: PunycodeResult | null; error: string | null }>(() => {
     if (!input.trim()) return { result: null, error: null };
     try {
       let r: PunycodeResult;
-      if (mode === 'encode') {
+      if (mode === "encode") {
         r = encodeDomain(input);
-      } else if (mode === 'decode') {
+      } else if (mode === "decode") {
         r = decodeDomain(input);
       } else {
         r = autoConvertDomain(input).result;
       }
       return { result: r, error: null };
     } catch (e) {
-      return { result: null, error: e instanceof Error ? e.message : '変換に失敗しました' };
+      return { result: null, error: e instanceof Error ? e.message : "変換に失敗しました" };
     }
   }, [mode, input]);
 
@@ -97,10 +96,10 @@ function PunycodeConverter() {
     async (text: string, label: string) => {
       const ok = await copy(text);
       if (ok) {
-        showToast('コピーしました', 'success');
+        showToast("コピーしました", "success");
         announceStatus(`${label}をコピーしました`);
       } else {
-        showToast('コピーに失敗しました', 'error');
+        showToast("コピーに失敗しました", "error");
       }
     },
     [copy, showToast, announceStatus],
@@ -115,25 +114,25 @@ function PunycodeConverter() {
   );
 
   const handleClear = useCallback(() => {
-    setInput('');
-    announceStatus('入力をクリアしました');
+    setInput("");
+    announceStatus("入力をクリアしました");
   }, [announceStatus]);
 
   const handleModeChange = useCallback(
     (newMode: Mode) => {
       setMode(newMode);
-      setInput('');
+      setInput("");
       const labels: Record<Mode, string> = {
-        encode: 'エンコード（Unicode→Punycode）',
-        decode: 'デコード（Punycode→Unicode）',
-        auto: '自動変換',
+        encode: "エンコード（Unicode→Punycode）",
+        decode: "デコード（Punycode→Unicode）",
+        auto: "自動変換",
       };
       announceStatus(`${labels[newMode]}モードに切り替えました`);
     },
     [announceStatus],
   );
 
-  const samples = mode === 'decode' ? DECODE_SAMPLES : ENCODE_SAMPLES;
+  const samples = mode === "decode" ? DECODE_SAMPLES : ENCODE_SAMPLES;
 
   return (
     <>
@@ -142,16 +141,16 @@ function PunycodeConverter() {
         <div className="pny-tabs" role="tablist" aria-label="変換モード">
           {(
             [
-              { id: 'auto', label: '自動' },
-              { id: 'encode', label: 'エンコード' },
-              { id: 'decode', label: 'デコード' },
+              { id: "auto", label: "自動" },
+              { id: "encode", label: "エンコード" },
+              { id: "decode", label: "デコード" },
             ] as const
           ).map(({ id, label }) => (
             <button
               key={id}
               role="tab"
               aria-selected={mode === id}
-              className={`pny-tab-btn${mode === id ? ' active' : ''}`}
+              className={`pny-tab-btn${mode === id ? " active" : ""}`}
               onClick={() => handleModeChange(id)}
             >
               {label}
@@ -162,27 +161,23 @@ function PunycodeConverter() {
         {/* 入力 */}
         <div className="converter-section">
           <label htmlFor="pny-input" className="section-title">
-            {mode === 'decode' ? 'Punycode ドメイン (ACE 形式)' : 'ドメイン名'}
+            {mode === "decode" ? "Punycode ドメイン (ACE 形式)" : "ドメイン名"}
           </label>
           <div className="pny-input-row">
             <input
               id="pny-input"
               type="text"
-              className={`pny-input${error ? ' has-error' : ''}`}
+              className={`pny-input${error ? " has-error" : ""}`}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder={
-                mode === 'decode'
-                  ? 'xn--wgv71a119e.jp'
-                  : mode === 'encode'
-                    ? '日本語.jp'
-                    : '日本語.jp または xn--wgv71a119e.jp'
+                mode === "decode"
+                  ? "xn--wgv71a119e.jp"
+                  : mode === "encode"
+                    ? "日本語.jp"
+                    : "日本語.jp または xn--wgv71a119e.jp"
               }
-              aria-label={
-                mode === 'decode'
-                  ? 'Punycodeドメイン入力'
-                  : 'Unicodeドメイン入力'
-              }
+              aria-label={mode === "decode" ? "Punycodeドメイン入力" : "Unicodeドメイン入力"}
               aria-invalid={!!error}
               spellCheck={false}
               autoComplete="off"
@@ -226,42 +221,36 @@ function PunycodeConverter() {
         </div>
 
         {/* 結果 */}
-        {result && (
-          <PunycodeResult
-            result={result}
-            mode={mode}
-            onCopy={handleCopy}
-          />
-        )}
+        {result && <PunycodeResult result={result} mode={mode} onCopy={handleCopy} />}
 
         <TipsCard
           sections={[
             {
-              title: 'Punycode / IDN について',
+              title: "Punycode / IDN について",
               items: [
-                'IDN (Internationalized Domain Name) は非ASCII文字を含むドメイン名',
-                'Punycode (RFC 3492) は IDN を ASCII 互換形式 (ACE) に変換する仕組み',
+                "IDN (Internationalized Domain Name) は非ASCII文字を含むドメイン名",
+                "Punycode (RFC 3492) は IDN を ASCII 互換形式 (ACE) に変換する仕組み",
                 'ACE 形式は "xn--" プレフィックス + Bootstring エンコード文字列',
-                'DNS プロトコルは ASCII のみのため、IDN は内部的に ACE 形式で処理される',
+                "DNS プロトコルは ASCII のみのため、IDN は内部的に ACE 形式で処理される",
               ],
             },
             {
-              title: '変換例',
+              title: "変換例",
               items: [
-                '日本語.jp → xn--wgv71a119e.jp',
-                'münchen.de → xn--mnchen-3ya.de',
-                '中文.com → xn--fiq228c.com',
-                'مثال.com → xn--mgbh0fb.com',
-                'example.com → 変換不要 (純粋 ASCII)',
+                "日本語.jp → xn--wgv71a119e.jp",
+                "münchen.de → xn--mnchen-3ya.de",
+                "中文.com → xn--fiq228c.com",
+                "مثال.com → xn--mgbh0fb.com",
+                "example.com → 変換不要 (純粋 ASCII)",
               ],
             },
             {
-              title: '用途',
+              title: "用途",
               items: [
-                'メールアドレスのドメイン部分の検証',
-                'DNS 設定での ACE 形式確認',
-                'IDN 対応サービスのデバッグ',
-                'Certificate Subject Alternative Name の確認',
+                "メールアドレスのドメイン部分の検証",
+                "DNS 設定での ACE 形式確認",
+                "IDN 対応サービスのデバッグ",
+                "Certificate Subject Alternative Name の確認",
               ],
             },
           ]}
@@ -283,8 +272,7 @@ interface PunycodeResultProps {
 }
 
 function PunycodeResult({ result, mode, onCopy }: PunycodeResultProps) {
-  const outputLabel =
-    mode === 'decode' ? 'Unicode ドメイン' : 'ACE (Punycode) 形式';
+  const outputLabel = mode === "decode" ? "Unicode ドメイン" : "ACE (Punycode) 形式";
 
   return (
     <section aria-label="変換結果" className="pny-result-section">
@@ -345,10 +333,10 @@ interface LabelRowProps {
 
 function LabelRow({ label, onCopy }: LabelRowProps) {
   return (
-    <tr className={label.changed ? 'changed' : ''}>
-      <td>{label.original || '(空)'}</td>
+    <tr className={label.changed ? "changed" : ""}>
+      <td>{label.original || "(空)"}</td>
       <td>
-        <span>{label.converted || '(空)'}</span>
+        <span>{label.converted || "(空)"}</span>
         {label.changed && (
           <button
             type="button"

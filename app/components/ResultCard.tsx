@@ -51,12 +51,7 @@ interface ResultCardProps {
  * />
  * ```
  */
-export function ResultCard({
-  rows,
-  title,
-  id,
-  ariaLive = "polite",
-}: ResultCardProps) {
+export function ResultCard({ rows, title, id, ariaLive = "polite" }: ResultCardProps) {
   return (
     <section {...(id ? { "aria-labelledby": id } : {})} aria-live={ariaLive}>
       {title && (
@@ -76,7 +71,7 @@ export function ResultCard({
                   ))}
                 </ul>
               ) : (
-                row.value ?? row.fallback ?? "-"
+                (row.value ?? row.fallback ?? "-")
               )}
             </div>
           </div>
@@ -103,7 +98,7 @@ export function ResultRow({ label, value, isList, fallback }: ResultRow) {
             ))}
           </ul>
         ) : (
-          value ?? fallback ?? "-"
+          (value ?? fallback ?? "-")
         )}
       </div>
     </div>

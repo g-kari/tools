@@ -21,9 +21,7 @@ test.describe("和暦・西暦変換 (/wareki) - E2E Tests", () => {
     await expect(result).toContainText("令和6年");
   });
 
-  test("2019年（令和・平成の遷移年）は2つの結果を表示する", async ({
-    page,
-  }) => {
+  test("2019年（令和・平成の遷移年）は2つの結果を表示する", async ({ page }) => {
     await page.locator("#western-input").fill("2019");
     await page.locator("button", { hasText: "→ 和暦に変換" }).click();
 

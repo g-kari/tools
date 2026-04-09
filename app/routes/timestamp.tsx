@@ -4,25 +4,22 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 
 export const Route = createFileRoute("/timestamp")({
   head: () => ({
     meta: [
-    { title: "Unixタイムスタンプ変換 | Web ツール集" },
-    { name: "description", content: "Unixタイムスタンプと日時の相互変換ツール。" },
-    { property: "og:title", content: "Unixタイムスタンプ変換 | Web ツール集" },
-    { property: "og:description", content: "Unixタイムスタンプと日時の相互変換ツール。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/timestamp` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "Unixタイムスタンプ変換 | Web ツール集" },
-    { name: "twitter:description", content: "Unixタイムスタンプと日時の相互変換ツール。" },
-  ],
+      { title: "Unixタイムスタンプ変換 | Web ツール集" },
+      { name: "description", content: "Unixタイムスタンプと日時の相互変換ツール。" },
+      { property: "og:title", content: "Unixタイムスタンプ変換 | Web ツール集" },
+      { property: "og:description", content: "Unixタイムスタンプと日時の相互変換ツール。" },
+      { property: "og:url", content: `${SITE_BASE_URL}/timestamp` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "Unixタイムスタンプ変換 | Web ツール集" },
+      { name: "twitter:description", content: "Unixタイムスタンプと日時の相互変換ツール。" },
+    ],
   }),
   component: TimestampConverter,
 });
@@ -33,9 +30,7 @@ export const Route = createFileRoute("/timestamp")({
  * @param input - 入力文字列（数値文字列）
  * @returns 秒とミリ秒のオブジェクト、または無効な場合はnull
  */
-export function parseTimestamp(
-  input: string
-): { seconds: number; milliseconds: number } | null {
+export function parseTimestamp(input: string): { seconds: number; milliseconds: number } | null {
   const trimmed = input.trim();
   if (!trimmed) return null;
 
@@ -213,7 +208,7 @@ function TimestampConverter() {
         showToast("コピーに失敗しました", "error");
       }
     },
-    [showToast, announceStatus]
+    [showToast, announceStatus],
   );
 
   // Ctrl+Enter でタイムスタンプ→日時変換
@@ -228,10 +223,7 @@ function TimestampConverter() {
       <div className="timestamp-container">
         <form onSubmit={(e) => e.preventDefault()} aria-label="タイムスタンプ変換フォーム">
           {/* タイムスタンプ → 日時 */}
-          <section
-            className="timestamp-section"
-            aria-labelledby="ts-to-date-heading"
-          >
+          <section className="timestamp-section" aria-labelledby="ts-to-date-heading">
             <h2 id="ts-to-date-heading" className="section-title">
               タイムスタンプ → 日時
             </h2>
@@ -278,11 +270,7 @@ function TimestampConverter() {
             </div>
 
             {tsResult && (
-              <div
-                className="timestamp-result"
-                aria-live="polite"
-                aria-label="変換結果"
-              >
+              <div className="timestamp-result" aria-live="polite" aria-label="変換結果">
                 <div className="timestamp-result-row">
                   <span className="timestamp-result-label">UTC</span>
                   <span className="timestamp-result-value">{tsResult.utc}</span>
@@ -309,23 +297,16 @@ function TimestampConverter() {
                 </div>
                 <div className="timestamp-result-row">
                   <span className="timestamp-result-label">相対</span>
-                  <span className="timestamp-result-value">
-                    {tsResult.relative}
-                  </span>
+                  <span className="timestamp-result-value">{tsResult.relative}</span>
                 </div>
                 <div className="timestamp-result-row">
                   <span className="timestamp-result-label">秒</span>
-                  <span className="timestamp-result-value">
-                    {tsResult.seconds}
-                  </span>
+                  <span className="timestamp-result-value">{tsResult.seconds}</span>
                   <button
                     type="button"
                     className="timestamp-copy-button"
                     onClick={() =>
-                      handleCopyToClipboard(
-                        String(tsResult.seconds),
-                        "秒タイムスタンプ"
-                      )
+                      handleCopyToClipboard(String(tsResult.seconds), "秒タイムスタンプ")
                     }
                     aria-label="秒タイムスタンプをコピー"
                   >
@@ -334,17 +315,12 @@ function TimestampConverter() {
                 </div>
                 <div className="timestamp-result-row">
                   <span className="timestamp-result-label">ミリ秒</span>
-                  <span className="timestamp-result-value">
-                    {tsResult.milliseconds}
-                  </span>
+                  <span className="timestamp-result-value">{tsResult.milliseconds}</span>
                   <button
                     type="button"
                     className="timestamp-copy-button"
                     onClick={() =>
-                      handleCopyToClipboard(
-                        String(tsResult.milliseconds),
-                        "ミリ秒タイムスタンプ"
-                      )
+                      handleCopyToClipboard(String(tsResult.milliseconds), "ミリ秒タイムスタンプ")
                     }
                     aria-label="ミリ秒タイムスタンプをコピー"
                   >
@@ -358,10 +334,7 @@ function TimestampConverter() {
           <div className="timestamp-divider" role="separator" aria-hidden="true" />
 
           {/* 日時 → タイムスタンプ */}
-          <section
-            className="timestamp-section"
-            aria-labelledby="date-to-ts-heading"
-          >
+          <section className="timestamp-section" aria-labelledby="date-to-ts-heading">
             <h2 id="date-to-ts-heading" className="section-title">
               日時 → タイムスタンプ
             </h2>
@@ -396,24 +369,15 @@ function TimestampConverter() {
             </div>
 
             {dateResult && (
-              <div
-                className="timestamp-result"
-                aria-live="polite"
-                aria-label="変換結果"
-              >
+              <div className="timestamp-result" aria-live="polite" aria-label="変換結果">
                 <div className="timestamp-result-row">
                   <span className="timestamp-result-label">秒</span>
-                  <span className="timestamp-result-value">
-                    {dateResult.seconds}
-                  </span>
+                  <span className="timestamp-result-value">{dateResult.seconds}</span>
                   <button
                     type="button"
                     className="timestamp-copy-button"
                     onClick={() =>
-                      handleCopyToClipboard(
-                        String(dateResult.seconds),
-                        "秒タイムスタンプ"
-                      )
+                      handleCopyToClipboard(String(dateResult.seconds), "秒タイムスタンプ")
                     }
                     aria-label="秒タイムスタンプをコピー"
                   >
@@ -422,17 +386,12 @@ function TimestampConverter() {
                 </div>
                 <div className="timestamp-result-row">
                   <span className="timestamp-result-label">ミリ秒</span>
-                  <span className="timestamp-result-value">
-                    {dateResult.milliseconds}
-                  </span>
+                  <span className="timestamp-result-value">{dateResult.milliseconds}</span>
                   <button
                     type="button"
                     className="timestamp-copy-button"
                     onClick={() =>
-                      handleCopyToClipboard(
-                        String(dateResult.milliseconds),
-                        "ミリ秒タイムスタンプ"
-                      )
+                      handleCopyToClipboard(String(dateResult.milliseconds), "ミリ秒タイムスタンプ")
                     }
                     aria-label="ミリ秒タイムスタンプをコピー"
                   >

@@ -4,10 +4,7 @@ import { useState, useCallback, useRef } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 import {
   generateAllMetaTags,
@@ -131,7 +128,7 @@ function SeoMetaTool() {
 
   const generatedCode = generateAllMetaTags(
     { basic, og, twitter },
-    { includeBasic, includeOg, includeTwitter }
+    { includeBasic, includeOg, includeTwitter },
   );
 
   const handleCopy = useCallback(async () => {
@@ -183,11 +180,7 @@ function SeoMetaTool() {
     <>
       <div className="tool-container">
         {/* タブ */}
-        <div
-          className="hash-input-tabs"
-          role="tablist"
-          aria-label="設定タブ"
-        >
+        <div className="hash-input-tabs" role="tablist" aria-label="設定タブ">
           <button
             role="tab"
             aria-selected={activeTab === "basic"}
@@ -235,49 +228,35 @@ function SeoMetaTool() {
           <div className="converter-section">
             <div className="seo-meta-form">
               <div className="seo-meta-field">
-                <label
-                  htmlFor="seo-title"
-                  className="seo-meta-label"
-                >
+                <label htmlFor="seo-title" className="seo-meta-label">
                   ページタイトル
                   <span className="seo-meta-char-count">
                     {basic.title.length}/60
-                    {basic.title.length > 60 && (
-                      <span className="seo-meta-over"> 超過</span>
-                    )}
+                    {basic.title.length > 60 && <span className="seo-meta-over"> 超過</span>}
                   </span>
                 </label>
                 <input
                   id="seo-title"
                   type="text"
                   value={basic.title}
-                  onChange={(e) =>
-                    setBasic((p) => ({ ...p, title: e.target.value }))
-                  }
+                  onChange={(e) => setBasic((p) => ({ ...p, title: e.target.value }))}
                   placeholder="例: ページタイトル | サイト名"
                   aria-label="ページタイトル入力（推奨60文字以内）"
                 />
               </div>
 
               <div className="seo-meta-field">
-                <label
-                  htmlFor="seo-description"
-                  className="seo-meta-label"
-                >
+                <label htmlFor="seo-description" className="seo-meta-label">
                   メタ説明（description）
                   <span className="seo-meta-char-count">
                     {basic.description.length}/160
-                    {basic.description.length > 160 && (
-                      <span className="seo-meta-over"> 超過</span>
-                    )}
+                    {basic.description.length > 160 && <span className="seo-meta-over"> 超過</span>}
                   </span>
                 </label>
                 <textarea
                   id="seo-description"
                   value={basic.description}
-                  onChange={(e) =>
-                    setBasic((p) => ({ ...p, description: e.target.value }))
-                  }
+                  onChange={(e) => setBasic((p) => ({ ...p, description: e.target.value }))}
                   placeholder="例: このページの内容を160文字以内で説明します。"
                   rows={3}
                   aria-label="メタ説明入力（推奨160文字以内）"
@@ -292,9 +271,7 @@ function SeoMetaTool() {
                   id="seo-keywords"
                   type="text"
                   value={basic.keywords}
-                  onChange={(e) =>
-                    setBasic((p) => ({ ...p, keywords: e.target.value }))
-                  }
+                  onChange={(e) => setBasic((p) => ({ ...p, keywords: e.target.value }))}
                   placeholder="例: キーワード1, キーワード2, キーワード3"
                   aria-label="メタキーワード入力（カンマ区切り）"
                 />
@@ -308,9 +285,7 @@ function SeoMetaTool() {
                   id="seo-author"
                   type="text"
                   value={basic.author}
-                  onChange={(e) =>
-                    setBasic((p) => ({ ...p, author: e.target.value }))
-                  }
+                  onChange={(e) => setBasic((p) => ({ ...p, author: e.target.value }))}
                   placeholder="例: 山田 太郎"
                   aria-label="著者名入力"
                 />
@@ -324,9 +299,7 @@ function SeoMetaTool() {
                   id="seo-canonical"
                   type="text"
                   value={basic.canonicalUrl}
-                  onChange={(e) =>
-                    setBasic((p) => ({ ...p, canonicalUrl: e.target.value }))
-                  }
+                  onChange={(e) => setBasic((p) => ({ ...p, canonicalUrl: e.target.value }))}
                   placeholder="例: https://example.com/page"
                   aria-label="正規URL入力"
                 />
@@ -382,9 +355,7 @@ function SeoMetaTool() {
                   id="og-title"
                   type="text"
                   value={og.title}
-                  onChange={(e) =>
-                    setOg((p) => ({ ...p, title: e.target.value }))
-                  }
+                  onChange={(e) => setOg((p) => ({ ...p, title: e.target.value }))}
                   placeholder="SNSシェア時に表示されるタイトル"
                   aria-label="og:title入力"
                 />
@@ -397,9 +368,7 @@ function SeoMetaTool() {
                 <textarea
                   id="og-description"
                   value={og.description}
-                  onChange={(e) =>
-                    setOg((p) => ({ ...p, description: e.target.value }))
-                  }
+                  onChange={(e) => setOg((p) => ({ ...p, description: e.target.value }))}
                   placeholder="SNSシェア時に表示される説明文"
                   rows={3}
                   aria-label="og:description入力"
@@ -414,9 +383,7 @@ function SeoMetaTool() {
                   id="og-url"
                   type="text"
                   value={og.url}
-                  onChange={(e) =>
-                    setOg((p) => ({ ...p, url: e.target.value }))
-                  }
+                  onChange={(e) => setOg((p) => ({ ...p, url: e.target.value }))}
                   placeholder="例: https://example.com/page"
                   aria-label="og:url入力"
                 />
@@ -430,9 +397,7 @@ function SeoMetaTool() {
                   id="og-image"
                   type="text"
                   value={og.image}
-                  onChange={(e) =>
-                    setOg((p) => ({ ...p, image: e.target.value }))
-                  }
+                  onChange={(e) => setOg((p) => ({ ...p, image: e.target.value }))}
                   placeholder="例: https://example.com/ogp.png（推奨: 1200×630px）"
                   aria-label="og:image URL入力"
                 />
@@ -445,9 +410,7 @@ function SeoMetaTool() {
                 <select
                   id="og-type"
                   value={og.type}
-                  onChange={(e) =>
-                    setOg((p) => ({ ...p, type: e.target.value as OgType }))
-                  }
+                  onChange={(e) => setOg((p) => ({ ...p, type: e.target.value as OgType }))}
                   aria-label="og:type選択"
                 >
                   {OG_TYPES.map((t) => (
@@ -466,9 +429,7 @@ function SeoMetaTool() {
                   id="og-site-name"
                   type="text"
                   value={og.siteName}
-                  onChange={(e) =>
-                    setOg((p) => ({ ...p, siteName: e.target.value }))
-                  }
+                  onChange={(e) => setOg((p) => ({ ...p, siteName: e.target.value }))}
                   placeholder="例: サイト名"
                   aria-label="og:site_name入力"
                 />
@@ -482,9 +443,7 @@ function SeoMetaTool() {
                   id="og-locale"
                   type="text"
                   value={og.locale}
-                  onChange={(e) =>
-                    setOg((p) => ({ ...p, locale: e.target.value }))
-                  }
+                  onChange={(e) => setOg((p) => ({ ...p, locale: e.target.value }))}
                   placeholder="例: ja_JP"
                   aria-label="og:locale入力"
                 />
@@ -540,9 +499,7 @@ function SeoMetaTool() {
                   id="twitter-title"
                   type="text"
                   value={twitter.title}
-                  onChange={(e) =>
-                    setTwitter((p) => ({ ...p, title: e.target.value }))
-                  }
+                  onChange={(e) => setTwitter((p) => ({ ...p, title: e.target.value }))}
                   placeholder="Twitter/Xでシェア時のタイトル"
                   aria-label="twitter:title入力"
                 />
@@ -555,9 +512,7 @@ function SeoMetaTool() {
                 <textarea
                   id="twitter-description"
                   value={twitter.description}
-                  onChange={(e) =>
-                    setTwitter((p) => ({ ...p, description: e.target.value }))
-                  }
+                  onChange={(e) => setTwitter((p) => ({ ...p, description: e.target.value }))}
                   placeholder="Twitter/Xでシェア時の説明文"
                   rows={3}
                   aria-label="twitter:description入力"
@@ -572,9 +527,7 @@ function SeoMetaTool() {
                   id="twitter-image"
                   type="text"
                   value={twitter.image}
-                  onChange={(e) =>
-                    setTwitter((p) => ({ ...p, image: e.target.value }))
-                  }
+                  onChange={(e) => setTwitter((p) => ({ ...p, image: e.target.value }))}
                   placeholder="例: https://example.com/card.png"
                   aria-label="twitter:image URL入力"
                 />
@@ -588,9 +541,7 @@ function SeoMetaTool() {
                   id="twitter-site"
                   type="text"
                   value={twitter.site}
-                  onChange={(e) =>
-                    setTwitter((p) => ({ ...p, site: e.target.value }))
-                  }
+                  onChange={(e) => setTwitter((p) => ({ ...p, site: e.target.value }))}
                   placeholder="例: @example"
                   aria-label="twitter:site入力"
                 />
@@ -604,9 +555,7 @@ function SeoMetaTool() {
                   id="twitter-creator"
                   type="text"
                   value={twitter.creator}
-                  onChange={(e) =>
-                    setTwitter((p) => ({ ...p, creator: e.target.value }))
-                  }
+                  onChange={(e) => setTwitter((p) => ({ ...p, creator: e.target.value }))}
                   placeholder="例: @author"
                   aria-label="twitter:creator入力"
                 />
@@ -621,10 +570,7 @@ function SeoMetaTool() {
             {/* Google 検索結果プレビュー */}
             <div className="seo-preview-section">
               <h3 className="seo-preview-heading">🔍 Google 検索結果プレビュー</h3>
-              <div
-                className="seo-search-preview"
-                aria-label="Google検索結果プレビュー"
-              >
+              <div className="seo-search-preview" aria-label="Google検索結果プレビュー">
                 <div className="seo-search-url">
                   {previewUrl
                     ? previewUrl
@@ -639,7 +585,7 @@ function SeoMetaTool() {
                 <div className="seo-search-description">
                   {truncateDescription(
                     previewDescription ||
-                      "メタ説明が未入力です。検索エンジンはページのコンテンツから自動生成する場合があります。"
+                      "メタ説明が未入力です。検索エンジンはページのコンテンツから自動生成する場合があります。",
                   )}
                 </div>
               </div>
@@ -648,10 +594,7 @@ function SeoMetaTool() {
             {/* OGPカードプレビュー */}
             <div className="seo-preview-section">
               <h3 className="seo-preview-heading">📱 SNSシェアカードプレビュー</h3>
-              <div
-                className="seo-ogp-card"
-                aria-label="OGPカードプレビュー"
-              >
+              <div className="seo-ogp-card" aria-label="OGPカードプレビュー">
                 {og.image ? (
                   <div className="seo-ogp-image-wrapper">
                     <img
@@ -671,17 +614,11 @@ function SeoMetaTool() {
                 )}
                 <div className="seo-ogp-body">
                   <div className="seo-ogp-domain">
-                    {og.url
-                      ? og.url.replace(/^https?:\/\//, "").split("/")[0]
-                      : "example.com"}
+                    {og.url ? og.url.replace(/^https?:\/\//, "").split("/")[0] : "example.com"}
                   </div>
-                  <div className="seo-ogp-title">
-                    {og.title || basic.title || "タイトル未入力"}
-                  </div>
+                  <div className="seo-ogp-title">{og.title || basic.title || "タイトル未入力"}</div>
                   <div className="seo-ogp-description">
-                    {og.description ||
-                      basic.description ||
-                      "説明文未入力"}
+                    {og.description || basic.description || "説明文未入力"}
                   </div>
                 </div>
               </div>
@@ -703,8 +640,7 @@ function SeoMetaTool() {
                           alt="Twitterカード画像プレビュー"
                           className="seo-twitter-image"
                           onError={(e) => {
-                            (e.target as HTMLImageElement).style.display =
-                              "none";
+                            (e.target as HTMLImageElement).style.display = "none";
                           }}
                         />
                       </div>
@@ -716,9 +652,7 @@ function SeoMetaTool() {
                     <div className="seo-ogp-body">
                       <div className="seo-ogp-domain">
                         {og.url || basic.canonicalUrl
-                          ? (og.url || basic.canonicalUrl)
-                              .replace(/^https?:\/\//, "")
-                              .split("/")[0]
+                          ? (og.url || basic.canonicalUrl).replace(/^https?:\/\//, "").split("/")[0]
                           : "example.com"}
                       </div>
                       <div className="seo-ogp-title">
@@ -740,29 +674,21 @@ function SeoMetaTool() {
                           src={twitter.image || og.image}
                           alt="Twitterカード画像プレビュー"
                           onError={(e) => {
-                            (e.target as HTMLImageElement).style.display =
-                              "none";
+                            (e.target as HTMLImageElement).style.display = "none";
                           }}
                         />
                       ) : (
-                        <span className="seo-twitter-summary-placeholder">
-                          📄
-                        </span>
+                        <span className="seo-twitter-summary-placeholder">📄</span>
                       )}
                     </div>
                     <div className="seo-ogp-body">
                       <div className="seo-ogp-domain">
                         {og.url || basic.canonicalUrl
-                          ? (og.url || basic.canonicalUrl)
-                              .replace(/^https?:\/\//, "")
-                              .split("/")[0]
+                          ? (og.url || basic.canonicalUrl).replace(/^https?:\/\//, "").split("/")[0]
                           : "example.com"}
                       </div>
                       <div className="seo-ogp-title">
-                        {twitter.title ||
-                          og.title ||
-                          basic.title ||
-                          "タイトル未入力"}
+                        {twitter.title || og.title || basic.title || "タイトル未入力"}
                       </div>
                       <div className="seo-ogp-description">
                         {twitter.description ||

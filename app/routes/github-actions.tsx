@@ -1,14 +1,11 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
-import { useState, useMemo, useCallback } from 'react';
-import { useToast } from '../components/Toast';
-import { Button } from '~/components/ui/button';
-import { TipsCard } from '~/components/TipsCard';
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from '~/hooks/useStatusAnnouncement';
-import { useClipboard } from '~/hooks/useClipboard';
+import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
+import { useState, useMemo, useCallback } from "react";
+import { useToast } from "../components/Toast";
+import { Button } from "~/components/ui/button";
+import { TipsCard } from "~/components/TipsCard";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
+import { useClipboard } from "~/hooks/useClipboard";
 import {
   generateWorkflow,
   defaultWorkflowConfig,
@@ -17,38 +14,37 @@ import {
   type JobConfig,
   type StepConfig,
   type RunnerOS,
-} from '../utils/github-actions';
-import '../styles/tools/github-actions.css';
+} from "../utils/github-actions";
+import "../styles/tools/github-actions.css";
 
-export const Route = createFileRoute('/github-actions')({
+export const Route = createFileRoute("/github-actions")({
   head: () => ({
     meta: [
-      { title: 'GitHub Actions ワークフロービルダー | Web ツール集' },
+      { title: "GitHub Actions ワークフロービルダー | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          'GUIでGitHub Actions ワークフローYAMLを生成するツール。トリガー・ジョブ・ステップをフォームで設定するだけでworkflow.ymlを自動生成。Node.js・Python・Docker・Cloudflare Workersのテンプレートを用意。ブラウザ内完結。',
+          "GUIでGitHub Actions ワークフローYAMLを生成するツール。トリガー・ジョブ・ステップをフォームで設定するだけでworkflow.ymlを自動生成。Node.js・Python・Docker・Cloudflare Workersのテンプレートを用意。ブラウザ内完結。",
       },
       {
-        property: 'og:title',
-        content: 'GitHub Actions ワークフロービルダー | Web ツール集',
+        property: "og:title",
+        content: "GitHub Actions ワークフロービルダー | Web ツール集",
       },
       {
-        property: 'og:description',
+        property: "og:description",
         content:
-          'GUIでGitHub Actions ワークフローYAMLを生成。Node.js・Python・Docker・Cloudflare Workersのテンプレートを用意。ブラウザ内完結。',
+          "GUIでGitHub Actions ワークフローYAMLを生成。Node.js・Python・Docker・Cloudflare Workersのテンプレートを用意。ブラウザ内完結。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/github-actions` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
+      { property: "og:url", content: `${SITE_BASE_URL}/github-actions` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
       {
-        name: 'twitter:title',
-        content: 'GitHub Actions ワークフロービルダー | Web ツール集',
+        name: "twitter:title",
+        content: "GitHub Actions ワークフロービルダー | Web ツール集",
       },
       {
-        name: 'twitter:description',
-        content:
-          'GUIでGitHub Actions ワークフローYAMLを生成するツール。ブラウザ内完結。',
+        name: "twitter:description",
+        content: "GUIでGitHub Actions ワークフローYAMLを生成するツール。ブラウザ内完結。",
       },
     ],
   }),
@@ -57,11 +53,11 @@ export const Route = createFileRoute('/github-actions')({
 
 /** runner OS の選択肢 */
 const RUNNER_OPTIONS: { value: RunnerOS; label: string }[] = [
-  { value: 'ubuntu-latest', label: 'ubuntu-latest' },
-  { value: 'ubuntu-22.04', label: 'ubuntu-22.04' },
-  { value: 'ubuntu-20.04', label: 'ubuntu-20.04' },
-  { value: 'macos-latest', label: 'macos-latest' },
-  { value: 'windows-latest', label: 'windows-latest' },
+  { value: "ubuntu-latest", label: "ubuntu-latest" },
+  { value: "ubuntu-22.04", label: "ubuntu-22.04" },
+  { value: "ubuntu-20.04", label: "ubuntu-20.04" },
+  { value: "macos-latest", label: "macos-latest" },
+  { value: "windows-latest", label: "windows-latest" },
 ];
 
 /**
@@ -72,22 +68,15 @@ function GithubActionsPage() {
   const { copy } = useClipboard();
   const { statusRef, announceStatus } = useStatusAnnouncement();
 
-  const [config, setConfig] = useState<WorkflowConfig>(
-    defaultWorkflowConfig()
-  );
+  const [config, setConfig] = useState<WorkflowConfig>(defaultWorkflowConfig());
 
   const result = useMemo(() => generateWorkflow(config), [config]);
 
-  const update = useCallback(
-    <K extends keyof WorkflowConfig>(key: K, value: WorkflowConfig[K]) => {
-      setConfig((prev) => ({ ...prev, [key]: value }));
-    },
-    []
-  );
+  const update = useCallback(<K extends keyof WorkflowConfig>(key: K, value: WorkflowConfig[K]) => {
+    setConfig((prev) => ({ ...prev, [key]: value }));
+  }, []);
 
-  const handleTemplate = (
-    template: (typeof GITHUB_ACTIONS_TEMPLATES)[number]
-  ) => {
+  const handleTemplate = (template: (typeof GITHUB_ACTIONS_TEMPLATES)[number]) => {
     setConfig(template.config);
     announceStatus(`${template.label}テンプレートを読み込みました`);
   };
@@ -96,25 +85,25 @@ function GithubActionsPage() {
     if (!result) return;
     const success = await copy(result);
     if (success) {
-      showToast('ワークフローをコピーしました', 'success');
-      announceStatus('ワークフローをコピーしました');
+      showToast("ワークフローをコピーしました", "success");
+      announceStatus("ワークフローをコピーしました");
     } else {
-      showToast('コピーに失敗しました', 'error');
+      showToast("コピーに失敗しました", "error");
     }
   };
 
   const handleReset = () => {
     setConfig(defaultWorkflowConfig());
-    announceStatus('設定をリセットしました');
+    announceStatus("設定をリセットしました");
   };
 
   // --- トリガー操作 ---
   const setPushBranches = (val: string) => {
     const branches = val
-      .split(',')
+      .split(",")
       .map((b) => b.trim())
       .filter(Boolean);
-    update('triggers', {
+    update("triggers", {
       ...config.triggers,
       push: branches.length > 0 ? { branches } : { branches: [val] },
     });
@@ -122,53 +111,52 @@ function GithubActionsPage() {
 
   const setPullRequestBranches = (val: string) => {
     const branches = val
-      .split(',')
+      .split(",")
       .map((b) => b.trim())
       .filter(Boolean);
-    update('triggers', {
+    update("triggers", {
       ...config.triggers,
-      pull_request:
-        branches.length > 0 ? { branches } : { branches: [val] },
+      pull_request: branches.length > 0 ? { branches } : { branches: [val] },
     });
   };
 
   const togglePush = (checked: boolean) => {
-    update('triggers', {
+    update("triggers", {
       ...config.triggers,
-      push: checked ? { branches: ['main'] } : null,
+      push: checked ? { branches: ["main"] } : null,
     });
   };
 
   const togglePullRequest = (checked: boolean) => {
-    update('triggers', {
+    update("triggers", {
       ...config.triggers,
-      pull_request: checked ? { branches: ['main'] } : null,
+      pull_request: checked ? { branches: ["main"] } : null,
     });
   };
 
   const toggleWorkflowDispatch = (checked: boolean) => {
-    update('triggers', {
+    update("triggers", {
       ...config.triggers,
       workflow_dispatch: checked,
     });
   };
 
   const toggleSchedule = (checked: boolean) => {
-    update('triggers', {
+    update("triggers", {
       ...config.triggers,
-      schedule: checked ? { cron: '0 0 * * *' } : null,
+      schedule: checked ? { cron: "0 0 * * *" } : null,
     });
   };
 
   const setScheduleCron = (cron: string) => {
-    update('triggers', {
+    update("triggers", {
       ...config.triggers,
       schedule: { cron },
     });
   };
 
   const toggleRelease = (checked: boolean) => {
-    update('triggers', {
+    update("triggers", {
       ...config.triggers,
       release: checked,
     });
@@ -176,21 +164,21 @@ function GithubActionsPage() {
 
   // --- ジョブ操作（メイン1ジョブ） ---
   const mainJob: JobConfig = config.jobs[0] ?? {
-    id: 'build',
-    name: 'Build',
-    runsOn: 'ubuntu-latest',
-    steps: [{ type: 'checkout', enabled: true }],
+    id: "build",
+    name: "Build",
+    runsOn: "ubuntu-latest",
+    steps: [{ type: "checkout", enabled: true }],
     env: [],
   };
 
   const updateJob = (patch: Partial<JobConfig>) => {
     const updated = { ...mainJob, ...patch };
-    update('jobs', [updated]);
+    update("jobs", [updated]);
   };
 
   // --- 環境変数操作 ---
   const addJobEnv = () => {
-    updateJob({ env: [...(mainJob.env ?? []), { key: '', value: '' }] });
+    updateJob({ env: [...(mainJob.env ?? []), { key: "", value: "" }] });
   };
 
   const removeJobEnv = (i: number) => {
@@ -199,44 +187,34 @@ function GithubActionsPage() {
     });
   };
 
-  const updateJobEnv = (
-    i: number,
-    patch: Partial<{ key: string; value: string }>
-  ) => {
+  const updateJobEnv = (i: number, patch: Partial<{ key: string; value: string }>) => {
     updateJob({
-      env: (mainJob.env ?? []).map((e, idx) =>
-        idx === i ? { ...e, ...patch } : e
-      ),
+      env: (mainJob.env ?? []).map((e, idx) => (idx === i ? { ...e, ...patch } : e)),
     });
   };
 
   // --- グローバル環境変数操作 ---
   const addGlobalEnv = () => {
-    update('globalEnv', [...config.globalEnv, { key: '', value: '' }]);
+    update("globalEnv", [...config.globalEnv, { key: "", value: "" }]);
   };
 
   const removeGlobalEnv = (i: number) => {
     update(
-      'globalEnv',
-      config.globalEnv.filter((_, idx) => idx !== i)
+      "globalEnv",
+      config.globalEnv.filter((_, idx) => idx !== i),
     );
   };
 
-  const updateGlobalEnv = (
-    i: number,
-    patch: Partial<{ key: string; value: string }>
-  ) => {
+  const updateGlobalEnv = (i: number, patch: Partial<{ key: string; value: string }>) => {
     update(
-      'globalEnv',
-      config.globalEnv.map((e, idx) => (idx === i ? { ...e, ...patch } : e))
+      "globalEnv",
+      config.globalEnv.map((e, idx) => (idx === i ? { ...e, ...patch } : e)),
     );
   };
 
   // --- ステップ操作 ---
   const updateStep = (i: number, patch: Partial<StepConfig>) => {
-    const newSteps = mainJob.steps.map((s, idx) =>
-      idx === i ? { ...s, ...patch } : s
-    );
+    const newSteps = mainJob.steps.map((s, idx) => (idx === i ? { ...s, ...patch } : s));
     updateJob({ steps: newSteps });
   };
 
@@ -245,33 +223,29 @@ function GithubActionsPage() {
   };
 
   const addRunStep = () => {
-    const runSteps = mainJob.steps.filter((s) => s.type === 'run');
+    const runSteps = mainJob.steps.filter((s) => s.type === "run");
     if (runSteps.length >= 5) {
-      showToast('runステップは最大5つまでです', 'error');
+      showToast("runステップは最大5つまでです", "error");
       return;
     }
     updateJob({
-      steps: [
-        ...mainJob.steps,
-        { type: 'run', enabled: true, command: '' },
-      ],
+      steps: [...mainJob.steps, { type: "run", enabled: true, command: "" }],
     });
   };
 
   const removeRunStep = (i: number) => {
     const step = mainJob.steps[i];
-    if (!step || step.type !== 'run') return;
+    if (!step || step.type !== "run") return;
     updateJob({ steps: mainJob.steps.filter((_, idx) => idx !== i) });
   };
 
   // 固定ステップとrunステップを分けて扱う
-  const getStepByType = (type: StepConfig['type']) =>
-    mainJob.steps.find((s) => s.type === type);
+  const getStepByType = (type: StepConfig["type"]) => mainJob.steps.find((s) => s.type === type);
 
-  const getStepIndexByType = (type: StepConfig['type']) =>
+  const getStepIndexByType = (type: StepConfig["type"]) =>
     mainJob.steps.findIndex((s) => s.type === type);
 
-  const toggleFixedStep = (type: StepConfig['type'], checked: boolean) => {
+  const toggleFixedStep = (type: StepConfig["type"], checked: boolean) => {
     const idx = getStepIndexByType(type);
     if (idx >= 0) {
       updateStep(idx, { enabled: checked });
@@ -282,10 +256,7 @@ function GithubActionsPage() {
     }
   };
 
-  const updateFixedStep = (
-    type: StepConfig['type'],
-    patch: Partial<StepConfig>
-  ) => {
+  const updateFixedStep = (type: StepConfig["type"], patch: Partial<StepConfig>) => {
     const idx = getStepIndexByType(type);
     if (idx >= 0) {
       updateStep(idx, patch);
@@ -294,17 +265,13 @@ function GithubActionsPage() {
 
   const runSteps = mainJob.steps
     .map((s, i) => ({ step: s, idx: i }))
-    .filter(({ step }) => step.type === 'run');
+    .filter(({ step }) => step.type === "run");
 
   return (
     <>
       <div className="ga-container">
         {/* テンプレート選択 */}
-        <div
-          className="ga-templates"
-          role="group"
-          aria-label="テンプレートを読み込む"
-        >
+        <div className="ga-templates" role="group" aria-label="テンプレートを読み込む">
           <span className="ga-templates-label">テンプレート：</span>
           {GITHUB_ACTIONS_TEMPLATES.map((t) => (
             <button
@@ -323,10 +290,7 @@ function GithubActionsPage() {
         {/* メインレイアウト */}
         <div className="ga-layout">
           {/* 左: フォーム */}
-          <section
-            className="ga-section"
-            aria-label="GitHub Actions ワークフロー設定フォーム"
-          >
+          <section className="ga-section" aria-label="GitHub Actions ワークフロー設定フォーム">
             {/* ワークフロー名 */}
             <div className="ga-field">
               <label className="ga-label" htmlFor="ga-name">
@@ -337,7 +301,7 @@ function GithubActionsPage() {
                 type="text"
                 className="ga-input"
                 value={config.name}
-                onChange={(e) => update('name', e.target.value)}
+                onChange={(e) => update("name", e.target.value)}
                 placeholder="CI"
                 aria-label="ワークフロー名"
                 spellCheck={false}
@@ -359,22 +323,17 @@ function GithubActionsPage() {
                       onChange={(e) => togglePush(e.target.checked)}
                       aria-label="pushトリガーを有効にする"
                     />
-                    <label
-                      htmlFor="ga-trigger-push"
-                      className="ga-checkbox-label"
-                    >
+                    <label htmlFor="ga-trigger-push" className="ga-checkbox-label">
                       push
                     </label>
                   </div>
                   {config.triggers.push !== null && (
                     <div className="ga-trigger-sub">
-                      <span className="ga-sublabel">
-                        対象ブランチ（カンマ区切り）
-                      </span>
+                      <span className="ga-sublabel">対象ブランチ（カンマ区切り）</span>
                       <input
                         type="text"
                         className="ga-input"
-                        value={config.triggers.push.branches.join(', ')}
+                        value={config.triggers.push.branches.join(", ")}
                         onChange={(e) => setPushBranches(e.target.value)}
                         placeholder="main, develop"
                         aria-label="pushトリガー対象ブランチ"
@@ -395,25 +354,18 @@ function GithubActionsPage() {
                       onChange={(e) => togglePullRequest(e.target.checked)}
                       aria-label="pull_requestトリガーを有効にする"
                     />
-                    <label
-                      htmlFor="ga-trigger-pr"
-                      className="ga-checkbox-label"
-                    >
+                    <label htmlFor="ga-trigger-pr" className="ga-checkbox-label">
                       pull_request
                     </label>
                   </div>
                   {config.triggers.pull_request !== null && (
                     <div className="ga-trigger-sub">
-                      <span className="ga-sublabel">
-                        対象ブランチ（カンマ区切り）
-                      </span>
+                      <span className="ga-sublabel">対象ブランチ（カンマ区切り）</span>
                       <input
                         type="text"
                         className="ga-input"
-                        value={config.triggers.pull_request.branches.join(', ')}
-                        onChange={(e) =>
-                          setPullRequestBranches(e.target.value)
-                        }
+                        value={config.triggers.pull_request.branches.join(", ")}
+                        onChange={(e) => setPullRequestBranches(e.target.value)}
                         placeholder="main"
                         aria-label="pull_requestトリガー対象ブランチ"
                         spellCheck={false}
@@ -429,15 +381,10 @@ function GithubActionsPage() {
                     id="ga-trigger-dispatch"
                     className="ga-checkbox"
                     checked={config.triggers.workflow_dispatch}
-                    onChange={(e) =>
-                      toggleWorkflowDispatch(e.target.checked)
-                    }
+                    onChange={(e) => toggleWorkflowDispatch(e.target.checked)}
                     aria-label="workflow_dispatchトリガーを有効にする"
                   />
-                  <label
-                    htmlFor="ga-trigger-dispatch"
-                    className="ga-checkbox-label"
-                  >
+                  <label htmlFor="ga-trigger-dispatch" className="ga-checkbox-label">
                     workflow_dispatch（手動実行）
                   </label>
                 </div>
@@ -453,10 +400,7 @@ function GithubActionsPage() {
                       onChange={(e) => toggleSchedule(e.target.checked)}
                       aria-label="scheduleトリガーを有効にする"
                     />
-                    <label
-                      htmlFor="ga-trigger-schedule"
-                      className="ga-checkbox-label"
-                    >
+                    <label htmlFor="ga-trigger-schedule" className="ga-checkbox-label">
                       schedule（定期実行）
                     </label>
                   </div>
@@ -486,10 +430,7 @@ function GithubActionsPage() {
                     onChange={(e) => toggleRelease(e.target.checked)}
                     aria-label="releaseトリガーを有効にする"
                   />
-                  <label
-                    htmlFor="ga-trigger-release"
-                    className="ga-checkbox-label"
-                  >
+                  <label htmlFor="ga-trigger-release" className="ga-checkbox-label">
                     release（リリース時）
                   </label>
                 </div>
@@ -506,9 +447,7 @@ function GithubActionsPage() {
                       type="text"
                       className="ga-input"
                       value={e.key}
-                      onChange={(ev) =>
-                        updateGlobalEnv(i, { key: ev.target.value })
-                      }
+                      onChange={(ev) => updateGlobalEnv(i, { key: ev.target.value })}
                       placeholder="変数名"
                       aria-label={`グローバル環境変数 ${i + 1} の変数名`}
                       spellCheck={false}
@@ -518,9 +457,7 @@ function GithubActionsPage() {
                       type="text"
                       className="ga-input"
                       value={e.value}
-                      onChange={(ev) =>
-                        updateGlobalEnv(i, { value: ev.target.value })
-                      }
+                      onChange={(ev) => updateGlobalEnv(i, { value: ev.target.value })}
                       placeholder="値"
                       aria-label={`グローバル環境変数 ${i + 1} の値`}
                       spellCheck={false}
@@ -575,9 +512,7 @@ function GithubActionsPage() {
                     id="ga-job-runner"
                     className="ga-select"
                     value={mainJob.runsOn}
-                    onChange={(e) =>
-                      updateJob({ runsOn: e.target.value as RunnerOS })
-                    }
+                    onChange={(e) => updateJob({ runsOn: e.target.value as RunnerOS })}
                     aria-label="Runner OS の選択"
                   >
                     {RUNNER_OPTIONS.map((opt) => (
@@ -598,9 +533,7 @@ function GithubActionsPage() {
                           type="text"
                           className="ga-input"
                           value={e.key}
-                          onChange={(ev) =>
-                            updateJobEnv(i, { key: ev.target.value })
-                          }
+                          onChange={(ev) => updateJobEnv(i, { key: ev.target.value })}
                           placeholder="変数名"
                           aria-label={`ジョブ環境変数 ${i + 1} の変数名`}
                           spellCheck={false}
@@ -610,9 +543,7 @@ function GithubActionsPage() {
                           type="text"
                           className="ga-input"
                           value={e.value}
-                          onChange={(ev) =>
-                            updateJobEnv(i, { value: ev.target.value })
-                          }
+                          onChange={(ev) => updateJobEnv(i, { value: ev.target.value })}
                           placeholder="値"
                           aria-label={`ジョブ環境変数 ${i + 1} の値`}
                           spellCheck={false}
@@ -663,8 +594,8 @@ function GithubActionsPage() {
 
               {/* setup-node */}
               {(() => {
-                const step = getStepByType('setup-node');
-                const idx = getStepIndexByType('setup-node');
+                const step = getStepByType("setup-node");
+                const idx = getStepIndexByType("setup-node");
                 const enabled = step?.enabled ?? false;
                 return (
                   <div className="ga-step-group">
@@ -674,15 +605,10 @@ function GithubActionsPage() {
                         id="ga-step-node"
                         className="ga-checkbox"
                         checked={enabled}
-                        onChange={(e) =>
-                          toggleFixedStep('setup-node', e.target.checked)
-                        }
+                        onChange={(e) => toggleFixedStep("setup-node", e.target.checked)}
                         aria-label="setup-node ステップを有効にする"
                       />
-                      <label
-                        htmlFor="ga-step-node"
-                        className="ga-checkbox-label"
-                      >
+                      <label htmlFor="ga-step-node" className="ga-checkbox-label">
                         actions/setup-node
                       </label>
                     </div>
@@ -692,9 +618,9 @@ function GithubActionsPage() {
                         <input
                           type="text"
                           className="ga-input"
-                          value={step?.nodeVersion ?? '20'}
+                          value={step?.nodeVersion ?? "20"}
                           onChange={(e) =>
-                            updateFixedStep('setup-node', {
+                            updateFixedStep("setup-node", {
                               nodeVersion: e.target.value,
                             })
                           }
@@ -710,8 +636,8 @@ function GithubActionsPage() {
 
               {/* setup-python */}
               {(() => {
-                const step = getStepByType('setup-python');
-                const idx = getStepIndexByType('setup-python');
+                const step = getStepByType("setup-python");
+                const idx = getStepIndexByType("setup-python");
                 const enabled = step?.enabled ?? false;
                 return (
                   <div className="ga-step-group">
@@ -721,15 +647,10 @@ function GithubActionsPage() {
                         id="ga-step-python"
                         className="ga-checkbox"
                         checked={enabled}
-                        onChange={(e) =>
-                          toggleFixedStep('setup-python', e.target.checked)
-                        }
+                        onChange={(e) => toggleFixedStep("setup-python", e.target.checked)}
                         aria-label="setup-python ステップを有効にする"
                       />
-                      <label
-                        htmlFor="ga-step-python"
-                        className="ga-checkbox-label"
-                      >
+                      <label htmlFor="ga-step-python" className="ga-checkbox-label">
                         actions/setup-python
                       </label>
                     </div>
@@ -739,9 +660,9 @@ function GithubActionsPage() {
                         <input
                           type="text"
                           className="ga-input"
-                          value={step?.pythonVersion ?? '3.11'}
+                          value={step?.pythonVersion ?? "3.11"}
                           onChange={(e) =>
-                            updateFixedStep('setup-python', {
+                            updateFixedStep("setup-python", {
                               pythonVersion: e.target.value,
                             })
                           }
@@ -757,8 +678,8 @@ function GithubActionsPage() {
 
               {/* cache */}
               {(() => {
-                const step = getStepByType('cache');
-                const idx = getStepIndexByType('cache');
+                const step = getStepByType("cache");
+                const idx = getStepIndexByType("cache");
                 const enabled = step?.enabled ?? false;
                 return (
                   <div className="ga-step-group">
@@ -768,15 +689,10 @@ function GithubActionsPage() {
                         id="ga-step-cache"
                         className="ga-checkbox"
                         checked={enabled}
-                        onChange={(e) =>
-                          toggleFixedStep('cache', e.target.checked)
-                        }
+                        onChange={(e) => toggleFixedStep("cache", e.target.checked)}
                         aria-label="cache ステップを有効にする"
                       />
-                      <label
-                        htmlFor="ga-step-cache"
-                        className="ga-checkbox-label"
-                      >
+                      <label htmlFor="ga-step-cache" className="ga-checkbox-label">
                         actions/cache
                       </label>
                     </div>
@@ -791,7 +707,7 @@ function GithubActionsPage() {
                             "node-modules-${{ hashFiles('**/package-lock.json') }}"
                           }
                           onChange={(e) =>
-                            updateFixedStep('cache', {
+                            updateFixedStep("cache", {
                               cacheKey: e.target.value,
                             })
                           }
@@ -807,8 +723,8 @@ function GithubActionsPage() {
 
               {/* upload-artifact */}
               {(() => {
-                const step = getStepByType('upload-artifact');
-                const idx = getStepIndexByType('upload-artifact');
+                const step = getStepByType("upload-artifact");
+                const idx = getStepIndexByType("upload-artifact");
                 const enabled = step?.enabled ?? false;
                 return (
                   <div className="ga-step-group">
@@ -818,15 +734,10 @@ function GithubActionsPage() {
                         id="ga-step-artifact"
                         className="ga-checkbox"
                         checked={enabled}
-                        onChange={(e) =>
-                          toggleFixedStep('upload-artifact', e.target.checked)
-                        }
+                        onChange={(e) => toggleFixedStep("upload-artifact", e.target.checked)}
                         aria-label="upload-artifact ステップを有効にする"
                       />
-                      <label
-                        htmlFor="ga-step-artifact"
-                        className="ga-checkbox-label"
-                      >
+                      <label htmlFor="ga-step-artifact" className="ga-checkbox-label">
                         actions/upload-artifact
                       </label>
                     </div>
@@ -836,9 +747,9 @@ function GithubActionsPage() {
                         <input
                           type="text"
                           className="ga-input"
-                          value={step?.artifactName ?? 'artifact'}
+                          value={step?.artifactName ?? "artifact"}
                           onChange={(e) =>
-                            updateFixedStep('upload-artifact', {
+                            updateFixedStep("upload-artifact", {
                               artifactName: e.target.value,
                             })
                           }
@@ -850,9 +761,9 @@ function GithubActionsPage() {
                         <input
                           type="text"
                           className="ga-input"
-                          value={step?.artifactPath ?? 'dist/'}
+                          value={step?.artifactPath ?? "dist/"}
                           onChange={(e) =>
-                            updateFixedStep('upload-artifact', {
+                            updateFixedStep("upload-artifact", {
                               artifactPath: e.target.value,
                             })
                           }
@@ -868,19 +779,15 @@ function GithubActionsPage() {
 
               {/* run ステップ */}
               <div className="ga-field">
-                <span className="ga-sublabel">
-                  run コマンド（最大5つ）
-                </span>
+                <span className="ga-sublabel">run コマンド（最大5つ）</span>
                 <div className="ga-list" aria-label="runコマンド一覧">
                   {runSteps.map(({ step, idx }) => (
                     <div key={idx} className="ga-list-item">
                       <input
                         type="text"
                         className="ga-input"
-                        value={step.command ?? ''}
-                        onChange={(e) =>
-                          updateStep(idx, { command: e.target.value })
-                        }
+                        value={step.command ?? ""}
+                        onChange={(e) => updateStep(idx, { command: e.target.value })}
                         placeholder="npm run build"
                         aria-label={`runコマンド ${idx + 1}`}
                         spellCheck={false}
@@ -907,7 +814,6 @@ function GithubActionsPage() {
                   </button>
                 )}
               </div>
-
             </div>
 
             {/* リセット */}
@@ -949,9 +855,7 @@ function GithubActionsPage() {
                 {result ? (
                   <code>{result}</code>
                 ) : (
-                  <span className="ga-placeholder">
-                    設定を入力するとワークフローが生成されます
-                  </span>
+                  <span className="ga-placeholder">設定を入力するとワークフローが生成されます</span>
                 )}
               </pre>
             </div>
@@ -961,31 +865,31 @@ function GithubActionsPage() {
         <TipsCard
           sections={[
             {
-              title: '使い方',
+              title: "使い方",
               items: [
-                'テンプレートボタンで代表的な設定を素早く読み込めます',
-                'トリガー・ジョブ・ステップを設定すると右のプレビューにYAMLがリアルタイム生成されます',
-                '「コピー」ボタンで生成されたワークフローをクリップボードにコピーできます',
-                '生成されたYAMLを .github/workflows/ci.yml として保存してください',
+                "テンプレートボタンで代表的な設定を素早く読み込めます",
+                "トリガー・ジョブ・ステップを設定すると右のプレビューにYAMLがリアルタイム生成されます",
+                "「コピー」ボタンで生成されたワークフローをクリップボードにコピーできます",
+                "生成されたYAMLを .github/workflows/ci.yml として保存してください",
               ],
             },
             {
-              title: 'トリガーの説明',
+              title: "トリガーの説明",
               items: [
-                'push: 指定ブランチへのpush時に実行',
-                'pull_request: 指定ブランチへのPR時に実行',
-                'workflow_dispatch: GitHubのUIから手動実行',
-                'schedule: cron式で定期実行（UTC時刻）',
-                'release: リリース公開時に実行',
+                "push: 指定ブランチへのpush時に実行",
+                "pull_request: 指定ブランチへのPR時に実行",
+                "workflow_dispatch: GitHubのUIから手動実行",
+                "schedule: cron式で定期実行（UTC時刻）",
+                "release: リリース公開時に実行",
               ],
             },
             {
-              title: 'テンプレート一覧',
+              title: "テンプレート一覧",
               items: [
-                'Node.js CI: lint・test・buildを実行するCI',
-                'Python CI: pytestでテストを実行するCI',
-                'Docker Build & Push: GHCRへDockerイメージをプッシュ',
-                'Cloudflare Workers Deploy: wranglerでデプロイ',
+                "Node.js CI: lint・test・buildを実行するCI",
+                "Python CI: pytestでテストを実行するCI",
+                "Docker Build & Push: GHCRへDockerイメージをプッシュ",
+                "Cloudflare Workers Deploy: wranglerでデプロイ",
               ],
             },
           ]}

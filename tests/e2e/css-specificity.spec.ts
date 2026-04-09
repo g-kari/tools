@@ -6,9 +6,7 @@ test.describe("CSS詳細度計算機ページ", () => {
   });
 
   test("ページタイトルが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "セレクターを入力" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "セレクターを入力" })).toBeVisible();
   });
 
   test("セレクター入力フィールドが表示される", async ({ page }) => {
@@ -26,15 +24,11 @@ test.describe("CSS詳細度計算機ページ", () => {
   });
 
   test("IDセレクターの数が表示される", async ({ page }) => {
-    await expect(
-      page.getByLabel("IDセレクター: 1")
-    ).toBeVisible();
+    await expect(page.getByLabel("IDセレクター: 1")).toBeVisible();
   });
 
   test("コピーボタンが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("button", { name: /詳細度.*をコピー/ })
-    ).toBeVisible();
+    await expect(page.getByRole("button", { name: /詳細度.*をコピー/ })).toBeVisible();
   });
 
   test("セレクターを変更すると詳細度が更新される", async ({ page }) => {
@@ -55,9 +49,7 @@ test.describe("CSS詳細度計算機ページ", () => {
 
   test("タブ切り替えができる", async ({ page }) => {
     await page.getByRole("tab", { name: "比較モード" }).click();
-    await expect(
-      page.getByRole("heading", { name: "セレクターを比較" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "セレクターを比較" })).toBeVisible();
   });
 
   test("比較モードにデフォルトセレクターが表示される", async ({ page }) => {
@@ -87,9 +79,7 @@ test.describe("CSS詳細度計算機ページ", () => {
   });
 
   test("サンプルセレクターが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "セレクターサンプル" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "セレクターサンプル" })).toBeVisible();
   });
 
   test("サンプルをクリックすると入力欄に反映される", async ({ page }) => {

@@ -5,25 +5,31 @@ import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 
 export const Route = createFileRoute("/base64")({
   head: () => ({
     meta: [
-    { title: "Base64エンコード・デコード | Web ツール集" },
-    { name: "description", content: "テキストをBase64形式にエンコード・デコードするオンラインツール。" },
-    { property: "og:title", content: "Base64エンコード・デコード | Web ツール集" },
-    { property: "og:description", content: "テキストをBase64形式にエンコード・デコードするオンラインツール。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/base64` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "Base64エンコード・デコード | Web ツール集" },
-    { name: "twitter:description", content: "テキストをBase64形式にエンコード・デコードするオンラインツール。" },
-  ],
+      { title: "Base64エンコード・デコード | Web ツール集" },
+      {
+        name: "description",
+        content: "テキストをBase64形式にエンコード・デコードするオンラインツール。",
+      },
+      { property: "og:title", content: "Base64エンコード・デコード | Web ツール集" },
+      {
+        property: "og:description",
+        content: "テキストをBase64形式にエンコード・デコードするオンラインツール。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/base64` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "Base64エンコード・デコード | Web ツール集" },
+      {
+        name: "twitter:description",
+        content: "テキストをBase64形式にエンコード・デコードするオンラインツール。",
+      },
+    ],
   }),
   component: Base64Converter,
 });
@@ -87,10 +93,7 @@ function Base64Converter() {
   return (
     <>
       <div className="tool-container">
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          aria-label="Base64変換フォーム"
-        >
+        <form onSubmit={(e) => e.preventDefault()} aria-label="Base64変換フォーム">
           <div className="converter-section">
             <label htmlFor="inputText" className="section-title">
               入力テキスト

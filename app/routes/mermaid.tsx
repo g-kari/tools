@@ -5,10 +5,7 @@ import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 
 export const Route = createFileRoute("/mermaid")({
@@ -259,8 +256,7 @@ function MermaidPreview() {
         setErrorMessage("");
       } catch (err) {
         if (currentRender !== renderCountRef.current) return;
-        const message =
-          err instanceof Error ? err.message : "描画に失敗しました";
+        const message = err instanceof Error ? err.message : "描画に失敗しました";
         setErrorMessage(message);
         setSvgContent("");
       } finally {
@@ -285,7 +281,7 @@ function MermaidPreview() {
       announceStatus(`${label}のサンプルを挿入しました`);
       inputRef.current?.focus();
     },
-    [announceStatus]
+    [announceStatus],
   );
 
   /** SVGをファイルとしてエクスポートダウンロードする */
@@ -399,24 +395,14 @@ function MermaidPreview() {
               aria-busy={isRendering}
               className="mermaid-preview-area"
             >
-              {isRendering && (
-                <p className="mermaid-status-message">
-                  描画中...
-                </p>
-              )}
+              {isRendering && <p className="mermaid-status-message">描画中...</p>}
               {!isRendering && errorMessage && (
-                <div
-                  className="mermaid-error"
-                  role="alert"
-                  aria-label="Mermaid構文エラー"
-                >
+                <div className="mermaid-error" role="alert" aria-label="Mermaid構文エラー">
                   <p className="mermaid-error-title">構文エラー</p>
                   <pre className="mermaid-error-body">{errorMessage}</pre>
                 </div>
               )}
-              {!isRendering && svgContent && !errorMessage && (
-                <MermaidSvgOutput svg={svgContent} />
-              )}
+              {!isRendering && svgContent && !errorMessage && <MermaidSvgOutput svg={svgContent} />}
               {!isRendering && !svgContent && !errorMessage && (
                 <p className="mermaid-placeholder">
                   左側のエリアにMermaid記法を入力するとプレビューが表示されます

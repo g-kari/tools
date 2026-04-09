@@ -43,7 +43,7 @@
 .cidr-summary-stat-value {
   font-size: 1.75rem;
   font-weight: 600;
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
   color: var(--md-sys-color-on-surface);
   line-height: 1;
 }
@@ -102,7 +102,7 @@
 }
 
 .cidr-check-ip {
-  font-family: 'Space Mono', 'Courier New', monospace;
+  font-family: "Space Mono", "Courier New", monospace;
   font-size: 1rem;
   font-weight: 500;
   color: var(--md-sys-color-on-surface);
@@ -150,7 +150,7 @@
 }
 
 .cidr-match-block {
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
   font-size: 0.875rem;
   color: var(--md-sys-color-success, #2e7d32);
   font-weight: 500;
@@ -159,7 +159,7 @@
 .cidr-match-range {
   font-size: 0.8rem;
   color: var(--md-sys-color-on-surface-variant);
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
 }
 
 .cidr-no-match-message {
@@ -193,4 +193,3 @@
     transition: none;
   }
 }
-

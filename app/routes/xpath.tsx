@@ -1,40 +1,35 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useState, useCallback, useEffect } from 'react';
-import { useToast } from '~/components/Toast';
-import { useClipboard } from '~/hooks/useClipboard';
-import { StatusAnnouncer, useStatusAnnouncement } from '~/hooks/useStatusAnnouncement';
-import { TipsCard } from '~/components/TipsCard';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
-import {
-  evaluateXPath,
-  XPATH_EXAMPLES,
-  SAMPLE_XML,
-  type XPathEvalResult,
-} from '~/utils/xpath';
-import '../styles/tools/xpath.css';
+import { createFileRoute } from "@tanstack/react-router";
+import { useState, useCallback, useEffect } from "react";
+import { useToast } from "~/components/Toast";
+import { useClipboard } from "~/hooks/useClipboard";
+import { StatusAnnouncer, useStatusAnnouncement } from "~/hooks/useStatusAnnouncement";
+import { TipsCard } from "~/components/TipsCard";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
+import { evaluateXPath, XPATH_EXAMPLES, SAMPLE_XML, type XPathEvalResult } from "~/utils/xpath";
+import "../styles/tools/xpath.css";
 
-export const Route = createFileRoute('/xpath')({
+export const Route = createFileRoute("/xpath")({
   head: () => ({
     meta: [
-      { title: 'XPath 評価器 | Web ツール集' },
+      { title: "XPath 評価器 | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          'XML ドキュメントに対して XPath 1.0 式をブラウザ内で評価するオンラインツール。ノードセット・文字列・数値・真偽値の結果表示に対応。サンプル XML と XPath 式を提供。',
+          "XML ドキュメントに対して XPath 1.0 式をブラウザ内で評価するオンラインツール。ノードセット・文字列・数値・真偽値の結果表示に対応。サンプル XML と XPath 式を提供。",
       },
-      { property: 'og:title', content: 'XPath 評価器 | Web ツール集' },
+      { property: "og:title", content: "XPath 評価器 | Web ツール集" },
       {
-        property: 'og:description',
+        property: "og:description",
         content:
-          'XML に対して XPath 1.0 式を評価するオンラインツール。ノードセット・文字列・数値・真偽値の結果表示に対応。',
+          "XML に対して XPath 1.0 式を評価するオンラインツール。ノードセット・文字列・数値・真偽値の結果表示に対応。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/xpath` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
-      { name: 'twitter:title', content: 'XPath 評価器 | Web ツール集' },
+      { property: "og:url", content: `${SITE_BASE_URL}/xpath` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "XPath 評価器 | Web ツール集" },
       {
-        name: 'twitter:description',
-        content: 'XML に対して XPath 1.0 式を評価するオンラインツール。',
+        name: "twitter:description",
+        content: "XML に対して XPath 1.0 式を評価するオンラインツール。",
       },
     ],
   }),
@@ -50,8 +45,8 @@ function XPathEvaluator() {
   const { copy } = useClipboard();
   const { statusRef, announceStatus } = useStatusAnnouncement();
 
-  const [xml, setXml] = useState('');
-  const [expression, setExpression] = useState('');
+  const [xml, setXml] = useState("");
+  const [expression, setExpression] = useState("");
   const [result, setResult] = useState<XPathEvalResult | null>(null);
   const [isClient, setIsClient] = useState(false);
 
@@ -64,26 +59,26 @@ function XPathEvaluator() {
   const handleEvaluate = useCallback(() => {
     if (!isClient) return;
     if (!xml.trim()) {
-      showToast('XML を入力してください', 'error');
+      showToast("XML を入力してください", "error");
       return;
     }
     if (!expression.trim()) {
-      showToast('XPath 式を入力してください', 'error');
+      showToast("XPath 式を入力してください", "error");
       return;
     }
     const evalResult = evaluateXPath({ xml, expression });
     setResult(evalResult);
-    if (evalResult.type === 'error') {
-      announceStatus('XPath 評価エラー');
+    if (evalResult.type === "error") {
+      announceStatus("XPath 評価エラー");
     } else {
-      announceStatus('XPath 評価完了');
+      announceStatus("XPath 評価完了");
     }
   }, [isClient, xml, expression, showToast, announceStatus]);
 
   // Enter キーで評価
   const handleExpressionKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (e.key === 'Enter') {
+      if (e.key === "Enter") {
         handleEvaluate();
       }
     },
@@ -108,63 +103,63 @@ function XPathEvaluator() {
   // サンプル XML をロード
   const handleLoadSample = useCallback(() => {
     setXml(SAMPLE_XML);
-    setExpression('//book/title/text()');
+    setExpression("//book/title/text()");
     setResult(null);
-    announceStatus('サンプル XML を読み込みました');
+    announceStatus("サンプル XML を読み込みました");
   }, [announceStatus]);
 
   // 結果をコピー
   const handleCopyResult = useCallback(async () => {
-    if (!result || result.type === 'error') return;
-    let text = '';
-    if (result.type === 'string') text = result.stringValue ?? '';
-    else if (result.type === 'number') text = String(result.numberValue);
-    else if (result.type === 'boolean') text = String(result.booleanValue);
-    else if (result.type === 'nodeset') {
-      text = (result.nodes ?? []).map((n) => n.value).join('\n');
+    if (!result || result.type === "error") return;
+    let text = "";
+    if (result.type === "string") text = result.stringValue ?? "";
+    else if (result.type === "number") text = String(result.numberValue);
+    else if (result.type === "boolean") text = String(result.booleanValue);
+    else if (result.type === "nodeset") {
+      text = (result.nodes ?? []).map((n) => n.value).join("\n");
     }
     const ok = await copy(text);
     if (ok) {
-      showToast('コピーしました', 'success');
-      announceStatus('結果をコピーしました');
+      showToast("コピーしました", "success");
+      announceStatus("結果をコピーしました");
     } else {
-      showToast('コピーに失敗しました', 'error');
+      showToast("コピーに失敗しました", "error");
     }
   }, [result, copy, showToast, announceStatus]);
 
   // 結果タイプのバッジクラス
   function getTypeBadgeClass(type: string): string {
     switch (type) {
-      case 'nodeset':
-        return 'xpath-result-type-badge xpath-result-type-nodeset';
-      case 'string':
-        return 'xpath-result-type-badge xpath-result-type-string';
-      case 'number':
-        return 'xpath-result-type-badge xpath-result-type-number';
-      case 'boolean':
-        return 'xpath-result-type-badge xpath-result-type-boolean';
+      case "nodeset":
+        return "xpath-result-type-badge xpath-result-type-nodeset";
+      case "string":
+        return "xpath-result-type-badge xpath-result-type-string";
+      case "number":
+        return "xpath-result-type-badge xpath-result-type-number";
+      case "boolean":
+        return "xpath-result-type-badge xpath-result-type-boolean";
       default:
-        return 'xpath-result-type-badge';
+        return "xpath-result-type-badge";
     }
   }
 
   // 結果タイプ表示名
   function getTypeLabel(type: string): string {
     switch (type) {
-      case 'nodeset':
-        return 'nodeset';
-      case 'string':
-        return 'string';
-      case 'number':
-        return 'number';
-      case 'boolean':
-        return 'boolean';
+      case "nodeset":
+        return "nodeset";
+      case "string":
+        return "string";
+      case "number":
+        return "number";
+      case "boolean":
+        return "boolean";
       default:
         return type;
     }
   }
 
-  const hasValidResult = result !== null && result.type !== 'error';
+  const hasValidResult = result !== null && result.type !== "error";
 
   return (
     <>
@@ -212,7 +207,7 @@ function XPathEvaluator() {
                 <div className="xpath-placeholder">
                   XPath 式を入力して「評価」ボタンを押してください
                 </div>
-              ) : result.type === 'error' ? (
+              ) : result.type === "error" ? (
                 <div className="xpath-error" role="alert">
                   <span className="xpath-error-icon" aria-hidden="true">
                     ⚠
@@ -223,20 +218,20 @@ function XPathEvaluator() {
                 <>
                   <div className="xpath-result-header">
                     <span className="xpath-result-title">結果</span>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
                       <span className={getTypeBadgeClass(result.type)}>
                         {getTypeLabel(result.type)}
                       </span>
-                      {result.type === 'nodeset' && (
+                      {result.type === "nodeset" && (
                         <span className="xpath-result-meta">{result.nodeCount} 件</span>
                       )}
                     </div>
                   </div>
                   <div className="xpath-result-body">
-                    {result.type === 'string' && (
+                    {result.type === "string" && (
                       <div className="xpath-scalar-result">
-                        {result.stringValue === '' ? (
-                          <span style={{ color: 'var(--md-sys-color-on-surface-variant)' }}>
+                        {result.stringValue === "" ? (
+                          <span style={{ color: "var(--md-sys-color-on-surface-variant)" }}>
                             （空文字列）
                           </span>
                         ) : (
@@ -244,15 +239,15 @@ function XPathEvaluator() {
                         )}
                       </div>
                     )}
-                    {result.type === 'number' && (
+                    {result.type === "number" && (
                       <div className="xpath-scalar-result">{result.numberValue}</div>
                     )}
-                    {result.type === 'boolean' && (
+                    {result.type === "boolean" && (
                       <div className="xpath-scalar-result">
-                        {result.booleanValue ? 'true' : 'false'}
+                        {result.booleanValue ? "true" : "false"}
                       </div>
                     )}
-                    {result.type === 'nodeset' && (
+                    {result.type === "nodeset" && (
                       <>
                         {result.nodes!.length === 0 ? (
                           <div className="xpath-empty-result">
@@ -350,34 +345,34 @@ function XPathEvaluator() {
         <TipsCard
           sections={[
             {
-              title: 'XPath 1.0 の基本',
+              title: "XPath 1.0 の基本",
               items: [
-                '//element: 文書全体から element を検索（子孫軸）',
-                '/root/child: ルートから child を検索（絶対パス）',
-                '@attribute: 属性を選択',
-                'text(): テキストノードを選択',
-                '[条件]: 述語でフィルタリング（例: [1] は最初の要素）',
+                "//element: 文書全体から element を検索（子孫軸）",
+                "/root/child: ルートから child を検索（絶対パス）",
+                "@attribute: 属性を選択",
+                "text(): テキストノードを選択",
+                "[条件]: 述語でフィルタリング（例: [1] は最初の要素）",
               ],
             },
             {
-              title: 'よく使う関数',
+              title: "よく使う関数",
               items: [
-                'count(//elem): 要素の個数を返す（数値型）',
-                'string(//elem): 要素のテキスト内容を返す（文字列型）',
-                'contains(str, substr): 文字列に部分文字列が含まれるか（真偽値型）',
-                'starts-with(str, prefix): 文字列がプレフィックスで始まるか',
-                'normalize-space(str): 前後の空白を除去し連続空白を1つに正規化',
-                'last(): コンテキストノード集合の最後のインデックス',
-                'position(): コンテキストノードの位置',
+                "count(//elem): 要素の個数を返す（数値型）",
+                "string(//elem): 要素のテキスト内容を返す（文字列型）",
+                "contains(str, substr): 文字列に部分文字列が含まれるか（真偽値型）",
+                "starts-with(str, prefix): 文字列がプレフィックスで始まるか",
+                "normalize-space(str): 前後の空白を除去し連続空白を1つに正規化",
+                "last(): コンテキストノード集合の最後のインデックス",
+                "position(): コンテキストノードの位置",
               ],
             },
             {
-              title: '結果の型',
+              title: "結果の型",
               items: [
-                'nodeset: 要素・属性・テキストノードなどのノード集合',
-                'string: 文字列値（string() 関数など）',
-                'number: 数値（count()・計算式など）',
-                'boolean: 真偽値（contains()・比較演算など）',
+                "nodeset: 要素・属性・テキストノードなどのノード集合",
+                "string: 文字列値（string() 関数など）",
+                "number: 数値（count()・計算式など）",
+                "boolean: 真偽値（contains()・比較演算など）",
               ],
             },
           ]}

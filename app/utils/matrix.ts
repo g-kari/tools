@@ -37,11 +37,11 @@ export interface MatrixOpResult {
 export function parseMatrix(text: string): MatrixParseResult {
   const lines = text
     .trim()
-    .split('\n')
-    .filter((l) => l.trim() !== '');
+    .split("\n")
+    .filter((l) => l.trim() !== "");
 
   if (lines.length === 0) {
-    return { matrix: null, rows: 0, cols: 0, error: 'データが入力されていません' };
+    return { matrix: null, rows: 0, cols: 0, error: "データが入力されていません" };
   }
 
   const matrix: Matrix = [];
@@ -51,7 +51,7 @@ export function parseMatrix(text: string): MatrixParseResult {
     const values = line
       .trim()
       .split(/[\s\t,]+/)
-      .filter((s) => s !== '');
+      .filter((s) => s !== "");
     if (cols === -1) {
       cols = values.length;
     } else if (values.length !== cols) {
@@ -64,13 +64,13 @@ export function parseMatrix(text: string): MatrixParseResult {
     }
     const row: number[] = values.map((v) => parseFloat(v));
     if (row.some((n) => isNaN(n))) {
-      return { matrix: null, rows: 0, cols: 0, error: '数値以外の値が含まれています' };
+      return { matrix: null, rows: 0, cols: 0, error: "数値以外の値が含まれています" };
     }
     matrix.push(row);
   }
 
   if (cols === 0) {
-    return { matrix: null, rows: 0, cols: 0, error: '列数が 0 です' };
+    return { matrix: null, rows: 0, cols: 0, error: "列数が 0 です" };
   }
 
   return { matrix, rows: matrix.length, cols, error: null };
@@ -177,7 +177,7 @@ export function matrixDeterminant(a: Matrix): MatrixOpResult {
     return {
       result: null,
       scalar: null,
-      error: '正方行列でなければ行列式を計算できません',
+      error: "正方行列でなければ行列式を計算できません",
     };
   }
   if (n === 1) return { result: null, scalar: a[0][0], error: null };
@@ -231,7 +231,7 @@ export function matrixInverse(a: Matrix): MatrixOpResult {
     return {
       result: null,
       scalar: null,
-      error: '正方行列でなければ逆行列を計算できません',
+      error: "正方行列でなければ逆行列を計算できません",
     };
   }
 
@@ -255,7 +255,7 @@ export function matrixInverse(a: Matrix): MatrixOpResult {
       return {
         result: null,
         scalar: null,
-        error: '逆行列が存在しません（特異行列）',
+        error: "逆行列が存在しません（特異行列）",
       };
     }
 
@@ -274,9 +274,7 @@ export function matrixInverse(a: Matrix): MatrixOpResult {
   }
 
   // 右半分が逆行列、数値誤差を丸める
-  const result: Matrix = m.map((row) =>
-    row.slice(n).map((v) => Math.round(v * 1e10) / 1e10),
-  );
+  const result: Matrix = m.map((row) => row.slice(n).map((v) => Math.round(v * 1e10) / 1e10));
   return { result, scalar: null, error: null };
 }
 
@@ -289,7 +287,7 @@ export function matrixTrace(a: Matrix): MatrixOpResult {
     return {
       result: null,
       scalar: null,
-      error: '正方行列でなければトレースを計算できません',
+      error: "正方行列でなければトレースを計算できません",
     };
   }
   const trace = a.reduce((sum, row, i) => sum + row[i], 0);

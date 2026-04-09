@@ -206,7 +206,9 @@
   width: 100%;
   aspect-ratio: 1 / 1;
   border-radius: 3px;
-  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  transition:
+    transform 0.1s ease,
+    box-shadow 0.1s ease;
   border: 1px solid transparent;
 }
 
@@ -230,7 +232,9 @@
 /* ハイライト（最近似色）*/
 .twc-swatch--highlight .twc-swatch-inner {
   transform: scaleY(1.2);
-  box-shadow: 0 0 0 2px var(--md-sys-color-primary), 0 2px 8px rgba(0, 0, 0, 0.3);
+  box-shadow:
+    0 0 0 2px var(--md-sys-color-primary),
+    0 2px 8px rgba(0, 0, 0, 0.3);
   border-color: var(--md-sys-color-primary);
   border-radius: 3px;
 }

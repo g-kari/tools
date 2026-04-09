@@ -113,10 +113,7 @@ export function generateScale(options: GenerateScaleOptions): ScaleStep[] {
  */
 export function generateCssOutput(steps: ScaleStep[]): string {
   const vars = steps
-    .map(
-      (s) =>
-        `  ${s.varName}: ${s.sizeRem.toFixed(4)}rem; /* ${s.sizePx.toFixed(2)}px */`
-    )
+    .map((s) => `  ${s.varName}: ${s.sizeRem.toFixed(4)}rem; /* ${s.sizePx.toFixed(2)}px */`)
     .join("\n");
   return `:root {\n${vars}\n}`;
 }
@@ -128,10 +125,7 @@ export function generateCssOutput(steps: ScaleStep[]): string {
  */
 export function generateScssOutput(steps: ScaleStep[]): string {
   return steps
-    .map(
-      (s) =>
-        `$type-${s.label}: ${s.sizeRem.toFixed(4)}rem; // ${s.sizePx.toFixed(2)}px`
-    )
+    .map((s) => `$type-${s.label}: ${s.sizeRem.toFixed(4)}rem; // ${s.sizePx.toFixed(2)}px`)
     .join("\n");
 }
 
@@ -158,10 +152,7 @@ export function generateJsonOutput(steps: ScaleStep[]): string {
  */
 export function generateTailwindOutput(steps: ScaleStep[]): string {
   const entries = steps
-    .map(
-      (s) =>
-        `      "${s.label}": "${s.sizeRem.toFixed(4)}rem", // ${s.sizePx.toFixed(2)}px`
-    )
+    .map((s) => `      "${s.label}": "${s.sizeRem.toFixed(4)}rem", // ${s.sizePx.toFixed(2)}px`)
     .join("\n");
   return `// tailwind.config.js\nmodule.exports = {\n  theme: {\n    extend: {\n      fontSize: {\n${entries}\n      },\n    },\n  },\n};`;
 }

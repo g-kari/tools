@@ -39,16 +39,14 @@ export interface OgpData {
  */
 export function extractCharsetFromHtml(html: string): string | null {
   // HTML5 format: <meta charset="UTF-8">
-  const html5Match = html.match(
-    /<meta\s+charset\s*=\s*["']?([a-zA-Z0-9_-]+)["']?/i
-  );
+  const html5Match = html.match(/<meta\s+charset\s*=\s*["']?([a-zA-Z0-9_-]+)["']?/i);
   if (html5Match) {
     return html5Match[1].toLowerCase();
   }
 
   // HTML4 format: <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   const html4Match = html.match(
-    /<meta\s+http-equiv\s*=\s*["']?content-type["']?[^>]+content\s*=\s*["'][^"']*charset=([a-zA-Z0-9_-]+)/i
+    /<meta\s+http-equiv\s*=\s*["']?content-type["']?[^>]+content\s*=\s*["'][^"']*charset=([a-zA-Z0-9_-]+)/i,
   );
   if (html4Match) {
     return html4Match[1].toLowerCase();
@@ -56,7 +54,7 @@ export function extractCharsetFromHtml(html: string): string | null {
 
   // Reversed attribute order
   const reversedMatch = html.match(
-    /<meta\s+content\s*=\s*["'][^"']*charset=([a-zA-Z0-9_-]+)[^>]+http-equiv\s*=\s*["']?content-type["']?/i
+    /<meta\s+content\s*=\s*["'][^"']*charset=([a-zA-Z0-9_-]+)[^>]+http-equiv\s*=\s*["']?content-type["']?/i,
   );
   if (reversedMatch) {
     return reversedMatch[1].toLowerCase();
@@ -68,9 +66,7 @@ export function extractCharsetFromHtml(html: string): string | null {
 /**
  * Extract charset from Content-Type header
  */
-export function extractCharsetFromContentType(
-  contentType: string
-): string | null {
+export function extractCharsetFromContentType(contentType: string): string | null {
   const match = contentType.match(/charset=([a-zA-Z0-9_-]+)/i);
   return match ? match[1].toLowerCase() : null;
 }
@@ -133,9 +129,7 @@ function isJapaneseCharset(charset: string): boolean {
 /**
  * Convert encoding-japanese encoding code to normalized charset name
  */
-function encodingCodeToCharset(
-  code: ReturnType<typeof Encoding.detect>
-): string {
+function encodingCodeToCharset(code: ReturnType<typeof Encoding.detect>): string {
   switch (code) {
     case "SJIS":
       return "shift_jis";
@@ -172,9 +166,7 @@ export function detectEncodingFromBytes(bytes: Uint8Array): string {
 /**
  * Convert charset name to encoding-japanese encoding type
  */
-function charsetToEncodingType(
-  charset: string
-): "SJIS" | "EUCJP" | "JIS" | "UTF8" | null {
+function charsetToEncodingType(charset: string): "SJIS" | "EUCJP" | "JIS" | "UTF8" | null {
   switch (charset) {
     case "shift_jis":
       return "SJIS";
@@ -196,7 +188,7 @@ function charsetToEncodingType(
  */
 export async function decodeHtmlWithCharset(
   arrayBuffer: ArrayBuffer,
-  charset: string
+  charset: string,
 ): Promise<string> {
   const normalizedCharset = normalizeCharset(charset);
   const bytes = new Uint8Array(arrayBuffer);
@@ -293,7 +285,7 @@ export function parseOgpFromHtml(html: string, url: string): OgpData {
   // Supports various attribute orderings and formats
   const getMetaContent = (
     propertyOrName: string,
-    isProperty: boolean = true
+    isProperty: boolean = true,
   ): string | undefined => {
     const attr = isProperty ? "property" : "name";
     const escapedProp = propertyOrName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -303,35 +295,17 @@ export function parseOgpFromHtml(html: string, url: string): OgpData {
     // Supports: single/double quotes with proper quote matching
     const patterns = [
       // property/name="..." content="..." (double quotes)
-      new RegExp(
-        `<meta[^>]+${attr}\\s*=\\s*"${escapedProp}"[^>]+content\\s*=\\s*"([^"]*)"`,
-        "is"
-      ),
+      new RegExp(`<meta[^>]+${attr}\\s*=\\s*"${escapedProp}"[^>]+content\\s*=\\s*"([^"]*)"`, "is"),
       // property/name='...' content='...' (single quotes)
-      new RegExp(
-        `<meta[^>]+${attr}\\s*=\\s*'${escapedProp}'[^>]+content\\s*=\\s*'([^']*)'`,
-        "is"
-      ),
+      new RegExp(`<meta[^>]+${attr}\\s*=\\s*'${escapedProp}'[^>]+content\\s*=\\s*'([^']*)'`, "is"),
       // content="..." property/name="..." (double quotes, reversed)
-      new RegExp(
-        `<meta[^>]+content\\s*=\\s*"([^"]*)"[^>]+${attr}\\s*=\\s*"${escapedProp}"`,
-        "is"
-      ),
+      new RegExp(`<meta[^>]+content\\s*=\\s*"([^"]*)"[^>]+${attr}\\s*=\\s*"${escapedProp}"`, "is"),
       // content='...' property/name='...' (single quotes, reversed)
-      new RegExp(
-        `<meta[^>]+content\\s*=\\s*'([^']*)'[^>]+${attr}\\s*=\\s*'${escapedProp}'`,
-        "is"
-      ),
+      new RegExp(`<meta[^>]+content\\s*=\\s*'([^']*)'[^>]+${attr}\\s*=\\s*'${escapedProp}'`, "is"),
       // Mixed: property/name="..." content='...'
-      new RegExp(
-        `<meta[^>]+${attr}\\s*=\\s*"${escapedProp}"[^>]+content\\s*=\\s*'([^']*)'`,
-        "is"
-      ),
+      new RegExp(`<meta[^>]+${attr}\\s*=\\s*"${escapedProp}"[^>]+content\\s*=\\s*'([^']*)'`, "is"),
       // Mixed: property/name='...' content="..."
-      new RegExp(
-        `<meta[^>]+${attr}\\s*=\\s*'${escapedProp}'[^>]+content\\s*=\\s*"([^"]*)"`,
-        "is"
-      ),
+      new RegExp(`<meta[^>]+${attr}\\s*=\\s*'${escapedProp}'[^>]+content\\s*=\\s*"([^"]*)"`, "is"),
     ];
 
     for (const regex of patterns) {
@@ -400,10 +374,7 @@ const BROWSER_USER_AGENTS = [
 ];
 
 // Fetch with bot User-Agent to get OGP data
-async function fetchWithBotUserAgent(
-  url: string,
-  signal: AbortSignal
-): Promise<Response | null> {
+async function fetchWithBotUserAgent(url: string, signal: AbortSignal): Promise<Response | null> {
   const parsedUrl = new URL(url);
 
   // Try bot User-Agents first
@@ -412,8 +383,7 @@ async function fetchWithBotUserAgent(
       const response = await fetch(url, {
         headers: {
           "User-Agent": userAgent,
-          Accept:
-            "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+          Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
           "Accept-Language": "ja,en-US;q=0.9,en;q=0.8",
           Referer: `${parsedUrl.protocol}//${parsedUrl.host}/`,
         },
@@ -466,16 +436,7 @@ async function fetchWithBotUserAgent(
 
 // Check if URL points to an image
 function isImageUrl(url: string): boolean {
-  const imageExtensions = [
-    ".jpg",
-    ".jpeg",
-    ".png",
-    ".gif",
-    ".webp",
-    ".svg",
-    ".bmp",
-    ".ico",
-  ];
+  const imageExtensions = [".jpg", ".jpeg", ".png", ".gif", ".webp", ".svg", ".bmp", ".ico"];
   try {
     const pathname = new URL(url).pathname.toLowerCase();
     return imageExtensions.some((ext) => pathname.endsWith(ext));
@@ -494,10 +455,7 @@ function extractYouTubeVideoId(url: string): string | null {
   try {
     const urlObj = new URL(url);
     // youtube.com/watch?v=VIDEO_ID
-    if (
-      urlObj.hostname === "www.youtube.com" ||
-      urlObj.hostname === "youtube.com"
-    ) {
+    if (urlObj.hostname === "www.youtube.com" || urlObj.hostname === "youtube.com") {
       const videoId = urlObj.searchParams.get("v");
       if (videoId) return videoId;
 
@@ -571,7 +529,7 @@ function getYouTubeThumbnailUrl(videoId: string): string {
 async function fetchYouTubeOgp(
   videoId: string,
   originalUrl: string,
-  signal: AbortSignal
+  signal: AbortSignal,
 ): Promise<OgpData> {
   try {
     const oembedUrl = `https://noembed.com/embed?url=https://www.youtube.com/watch?v=${videoId}`;
@@ -580,14 +538,11 @@ async function fetchYouTubeOgp(
     if (response.ok) {
       const data = await response.json();
       // Use thumbnail_url from API if available, otherwise use our fallback
-      const thumbnail =
-        data.thumbnail_url || getYouTubeThumbnailUrl(videoId);
+      const thumbnail = data.thumbnail_url || getYouTubeThumbnailUrl(videoId);
       return {
         fetchedUrl: originalUrl,
         title: data.title || undefined,
-        description: data.author_name
-          ? `${data.author_name} のYouTube動画`
-          : undefined,
+        description: data.author_name ? `${data.author_name} のYouTube動画` : undefined,
         image: thumbnail,
         siteName: "YouTube",
         type: "video",
@@ -615,7 +570,7 @@ async function fetchTwitterOgp(
   username: string,
   statusId: string,
   originalUrl: string,
-  signal: AbortSignal
+  signal: AbortSignal,
 ): Promise<OgpData> {
   // Create fallback data first
   const fallbackData: OgpData = {
@@ -632,8 +587,7 @@ async function fetchTwitterOgp(
     const syndicationUrl = `https://cdn.syndication.twimg.com/tweet-result?id=${statusId}&token=0`;
     const response = await fetch(syndicationUrl, {
       headers: {
-        "User-Agent":
-          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
         Accept: "application/json",
       },
       signal,
@@ -644,9 +598,7 @@ async function fetchTwitterOgp(
       // 404: Tweet not found or deleted
       // 403: Access denied
       // Other: API changes or rate limiting
-      console.warn(
-        `Twitter syndication API returned ${response.status} for status ${statusId}`
-      );
+      console.warn(`Twitter syndication API returned ${response.status} for status ${statusId}`);
       return fallbackData;
     }
 
@@ -706,9 +658,7 @@ export const fetchOgp = createServerFn({ method: "GET" })
     const trimmedUrl = data.trim();
 
     // Add https:// if protocol is missing
-    const urlWithProtocol = trimmedUrl.match(/^https?:\/\//)
-      ? trimmedUrl
-      : `https://${trimmedUrl}`;
+    const urlWithProtocol = trimmedUrl.match(/^https?:\/\//) ? trimmedUrl : `https://${trimmedUrl}`;
 
     if (!isValidUrl(urlWithProtocol)) {
       throw new Error("無効なURL形式です");
@@ -718,7 +668,7 @@ export const fetchOgp = createServerFn({ method: "GET" })
     const parsedUrl = new URL(urlWithProtocol);
     if (isPrivateOrLocalhost(parsedUrl.hostname)) {
       throw new Error(
-        "セキュリティ上の理由により、ローカルホストやプライベートIPアドレスへのアクセスはできません"
+        "セキュリティ上の理由により、ローカルホストやプライベートIPアドレスへのアクセスはできません",
       );
     }
 
@@ -736,11 +686,7 @@ export const fetchOgp = createServerFn({ method: "GET" })
       const youtubeVideoId = extractYouTubeVideoId(url);
       if (youtubeVideoId) {
         // Keep timeout active during async operation, clear in finally
-        const result = await fetchYouTubeOgp(
-          youtubeVideoId,
-          url,
-          controller.signal
-        );
+        const result = await fetchYouTubeOgp(youtubeVideoId, url, controller.signal);
         return result;
       }
 
@@ -752,7 +698,7 @@ export const fetchOgp = createServerFn({ method: "GET" })
           twitterStatus.username,
           twitterStatus.statusId,
           url,
-          controller.signal
+          controller.signal,
         );
         return result;
       }
@@ -822,10 +768,7 @@ export const fetchOgp = createServerFn({ method: "GET" })
         } as OgpData;
       }
 
-      if (
-        !contentType.includes("text/html") &&
-        !contentType.includes("application/xhtml+xml")
-      ) {
+      if (!contentType.includes("text/html") && !contentType.includes("application/xhtml+xml")) {
         return {
           fetchedUrl: url,
           error: `HTMLではないコンテンツです (${contentType || "不明な形式"})`,

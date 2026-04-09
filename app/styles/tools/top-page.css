@@ -15,7 +15,10 @@
   font-size: 14px;
   font-weight: 500;
   text-decoration: none;
-  transition: background-color 0.2s, border-color 0.2s, opacity 0.2s;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s,
+    opacity 0.2s;
   white-space: nowrap;
 }
 
@@ -104,7 +107,9 @@
   font-size: 16px;
   padding: 4px 8px;
   border-radius: 4px;
-  transition: color 0.2s, background-color 0.2s;
+  transition:
+    color 0.2s,
+    background-color 0.2s;
 }
 
 .top-search-clear:hover {
@@ -133,11 +138,21 @@
   animation: fadeInUp 0.3s ease-out both;
 }
 
-.top-category-section:nth-child(3) { animation-delay: 0.05s; }
-.top-category-section:nth-child(4) { animation-delay: 0.1s; }
-.top-category-section:nth-child(5) { animation-delay: 0.15s; }
-.top-category-section:nth-child(6) { animation-delay: 0.2s; }
-.top-category-section:nth-child(7) { animation-delay: 0.25s; }
+.top-category-section:nth-child(3) {
+  animation-delay: 0.05s;
+}
+.top-category-section:nth-child(4) {
+  animation-delay: 0.1s;
+}
+.top-category-section:nth-child(5) {
+  animation-delay: 0.15s;
+}
+.top-category-section:nth-child(6) {
+  animation-delay: 0.2s;
+}
+.top-category-section:nth-child(7) {
+  animation-delay: 0.25s;
+}
 
 .top-category-heading {
   display: flex;
@@ -178,7 +193,9 @@
   border-radius: 8px;
   text-decoration: none;
   color: var(--md-sys-color-on-surface);
-  transition: background-color 0.2s, border-color 0.2s;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s;
 }
 
 .top-tool-card:hover {

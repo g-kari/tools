@@ -5,10 +5,7 @@ import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 
 export const Route = createFileRoute("/char-frequency")({
   head: () => ({
@@ -71,7 +68,7 @@ export interface CharFrequencyResult {
  */
 export function analyzeCharFrequency(
   text: string,
-  options: CharFrequencyOptions
+  options: CharFrequencyOptions,
 ): CharFrequencyResult {
   if (!text) {
     return { entries: [], totalChars: 0, uniqueChars: 0 };
@@ -84,23 +81,15 @@ export function analyzeCharFrequency(
     if (options.ignoreSpaces && /\s/.test(char)) {
       continue;
     }
-    if (
-      options.lettersAndNumbersOnly &&
-      !/[a-zA-Z0-9\u3041-\u9FFF]/.test(char)
-    ) {
+    if (options.lettersAndNumbersOnly && !/[a-zA-Z0-9\u3041-\u9FFF]/.test(char)) {
       continue;
     }
     frequencyMap.set(char, (frequencyMap.get(char) ?? 0) + 1);
   }
 
-  const totalChars = Array.from(frequencyMap.values()).reduce(
-    (sum, count) => sum + count,
-    0
-  );
+  const totalChars = Array.from(frequencyMap.values()).reduce((sum, count) => sum + count, 0);
 
-  const entries: CharFrequencyEntry[] = Array.from(
-    frequencyMap.entries()
-  ).map(([char, count]) => ({
+  const entries: CharFrequencyEntry[] = Array.from(frequencyMap.entries()).map(([char, count]) => ({
     char,
     count,
     percentage: totalChars > 0 ? (count / totalChars) * 100 : 0,
@@ -121,13 +110,11 @@ export function analyzeCharFrequency(
  */
 export function sortEntries(
   entries: CharFrequencyEntry[],
-  sortBy: "frequency" | "char"
+  sortBy: "frequency" | "char",
 ): CharFrequencyEntry[] {
   const copy = [...entries];
   if (sortBy === "frequency") {
-    return copy.sort(
-      (a, b) => b.count - a.count || a.char.localeCompare(b.char)
-    );
+    return copy.sort((a, b) => b.count - a.count || a.char.localeCompare(b.char));
   }
   return copy.sort((a, b) => a.char.localeCompare(b.char));
 }
@@ -140,8 +127,7 @@ export function sortEntries(
 export function entriesToCsv(entries: CharFrequencyEntry[]): string {
   const header = "文字,出現回数,割合(%)";
   const rows = entries.map(
-    (e) =>
-      `"${e.char === '"' ? '""' : e.char}",${e.count},${e.percentage.toFixed(2)}`
+    (e) => `"${e.char === '"' ? '""' : e.char}",${e.count},${e.percentage.toFixed(2)}`,
   );
   return "\uFEFF" + [header, ...rows].join("\n");
 }
@@ -165,14 +151,11 @@ function CharFrequencyPage() {
   });
   const [sortBy, setSortBy] = useState<SortBy>("frequency");
 
-  const result = useMemo(
-    () => analyzeCharFrequency(text, options),
-    [text, options]
-  );
+  const result = useMemo(() => analyzeCharFrequency(text, options), [text, options]);
 
   const sortedEntries = useMemo(
     () => sortEntries(result.entries, sortBy),
-    [result.entries, sortBy]
+    [result.entries, sortBy],
   );
 
   const maxCount = sortedEntries[0]?.count ?? 1;
@@ -183,12 +166,9 @@ function CharFrequencyPage() {
     announceStatus("クリアしました");
   }, [announceStatus]);
 
-  const handleOptionChange = useCallback(
-    (key: keyof CharFrequencyOptions) => {
-      setOptions((prev) => ({ ...prev, [key]: !prev[key] }));
-    },
-    []
-  );
+  const handleOptionChange = useCallback((key: keyof CharFrequencyOptions) => {
+    setOptions((prev) => ({ ...prev, [key]: !prev[key] }));
+  }, []);
 
   const handleSortToggle = useCallback(() => {
     setSortBy((prev) => (prev === "frequency" ? "char" : "frequency"));
@@ -318,20 +298,12 @@ function CharFrequencyPage() {
             <h2 id="cf-results-heading" className="section-title">
               頻度分析結果
             </h2>
-            <div
-              className="cf-results-actions"
-              role="group"
-              aria-label="結果の操作"
-            >
+            <div className="cf-results-actions" role="group" aria-label="結果の操作">
               <Button
                 type="button"
                 variant="outline"
                 onClick={handleSortToggle}
-                aria-label={
-                  sortBy === "frequency"
-                    ? "文字コード順に切り替え"
-                    : "頻度順に切り替え"
-                }
+                aria-label={sortBy === "frequency" ? "文字コード順に切り替え" : "頻度順に切り替え"}
                 aria-pressed={sortBy === "char"}
                 data-testid="sort-toggle"
               >
@@ -351,11 +323,7 @@ function CharFrequencyPage() {
           </div>
 
           {!hasResults ? (
-            <p
-              className="cf-empty-message"
-              role="status"
-              data-testid="empty-message"
-            >
+            <p className="cf-empty-message" role="status" data-testid="empty-message">
               {isEmpty
                 ? "テキストを入力すると文字の頻度が表示されます"
                 : "オプションの条件に一致する文字がありません"}
@@ -385,9 +353,7 @@ function CharFrequencyPage() {
                 </thead>
                 <tbody>
                   {sortedEntries.map((entry) => {
-                    const barWidthPercent = Math.round(
-                      (entry.count / maxCount) * 100
-                    );
+                    const barWidthPercent = Math.round((entry.count / maxCount) * 100);
                     return (
                       <tr key={entry.char} className="cf-tr">
                         <td className="cf-td-char">
@@ -412,22 +378,15 @@ function CharFrequencyPage() {
                                   : entry.char}
                           </span>
                         </td>
-                        <td className="cf-td-count">
-                          {entry.count.toLocaleString()}
-                        </td>
-                        <td className="cf-td-percent">
-                          {entry.percentage.toFixed(2)}%
-                        </td>
+                        <td className="cf-td-count">{entry.count.toLocaleString()}</td>
+                        <td className="cf-td-percent">{entry.percentage.toFixed(2)}%</td>
                         <td className="cf-td-bar" aria-hidden="true">
                           <div className="cf-bar-wrap">
                             <div
                               className="cf-bar"
                               ref={(el) => {
                                 if (el)
-                                  el.style.setProperty(
-                                    "--cf-bar-width",
-                                    `${barWidthPercent}%`
-                                  );
+                                  el.style.setProperty("--cf-bar-width", `${barWidthPercent}%`);
                               }}
                             />
                           </div>

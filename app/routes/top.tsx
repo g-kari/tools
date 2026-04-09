@@ -309,8 +309,7 @@ const toolCatalog: ToolCategory[] = [
       {
         path: "/toml-json",
         label: "TOML/JSON変換",
-        description:
-          "TOMLとJSONの相互変換ツール。Cargo.toml、pyproject.toml等の変換に便利。",
+        description: "TOMLとJSONの相互変換ツール。Cargo.toml、pyproject.toml等の変換に便利。",
         icon: "🔄",
       },
       {
@@ -404,8 +403,7 @@ const toolCatalog: ToolCategory[] = [
       {
         path: "/number-base",
         label: "数値進数変換",
-        description:
-          "2進数・8進数・10進数・16進数の相互変換ツール。任意の欄入力で他が自動更新",
+        description: "2進数・8進数・10進数・16進数の相互変換ツール。任意の欄入力で他が自動更新",
         icon: "🔢",
       },
       {
@@ -668,7 +666,8 @@ const toolCatalog: ToolCategory[] = [
       {
         path: "/uuid-inspector",
         label: "UUID解析",
-        description: "UUID の構造を解析。バージョン (v1〜v8) 判定・タイムスタンプ抽出・バイナリ表示。",
+        description:
+          "UUID の構造を解析。バージョン (v1〜v8) 判定・タイムスタンプ抽出・バイナリ表示。",
         icon: "🔍",
       },
       {
@@ -818,13 +817,15 @@ const toolCatalog: ToolCategory[] = [
       {
         path: "/json-to-graphql",
         label: "JSON→GraphQLスキーマ生成",
-        description: "JSONデータからGraphQLスキーマ（SDL形式）を自動生成するツール。type/interface・Non-Null対応。",
+        description:
+          "JSONデータからGraphQLスキーマ（SDL形式）を自動生成するツール。type/interface・Non-Null対応。",
         icon: "◈",
       },
       {
         path: "/json-to-sql",
         label: "JSON→SQL CREATE TABLE生成",
-        description: "JSONデータからSQL CREATE TABLE文を自動生成するツール。PostgreSQL・MySQL・SQLiteに対応。",
+        description:
+          "JSONデータからSQL CREATE TABLE文を自動生成するツール。PostgreSQL・MySQL・SQLiteに対応。",
         icon: "🗄️",
       },
       {
@@ -857,8 +858,7 @@ const toolCatalog: ToolCategory[] = [
       {
         path: "/jwt-generator",
         label: "JWT生成",
-        description:
-          "HS256/HS384/HS512アルゴリズムでJWTトークンをブラウザ内で生成するツール",
+        description: "HS256/HS384/HS512アルゴリズムでJWTトークンをブラウザ内で生成するツール",
         icon: "🔐",
       },
       {
@@ -936,7 +936,8 @@ const toolCatalog: ToolCategory[] = [
       {
         path: "/exif-viewer",
         label: "EXIFビューワー",
-        description: "JPEG画像のEXIFメタデータ（撮影日時・カメラ情報・GPS位置情報など）を表示。プライバシー保護のためEXIFデータを除去してダウンロード可能。",
+        description:
+          "JPEG画像のEXIFメタデータ（撮影日時・カメラ情報・GPS位置情報など）を表示。プライバシー保護のためEXIFデータを除去してダウンロード可能。",
         icon: "🔎",
       },
       {
@@ -1109,8 +1110,7 @@ const toolCatalog: ToolCategory[] = [
       {
         path: "/color-palette",
         label: "カラーパレット生成",
-        description:
-          "補色・三色・類似色など配色理論に基づいたカラーパレットを自動生成するツール",
+        description: "補色・三色・類似色など配色理論に基づいたカラーパレットを自動生成するツール",
         icon: "🎨",
       },
       {
@@ -1163,7 +1163,8 @@ const toolCatalog: ToolCategory[] = [
       {
         path: "/color-converter",
         label: "カラーフォーマット変換",
-        description: "HEX・RGB・HSL・HSV・CMYK・OKLCHなど6種類のカラーフォーマット間をリアルタイムに相互変換。Webデザイン・印刷・CSS設計に活用できるカラーコンバーター。",
+        description:
+          "HEX・RGB・HSL・HSV・CMYK・OKLCHなど6種類のカラーフォーマット間をリアルタイムに相互変換。Webデザイン・印刷・CSS設計に活用できるカラーコンバーター。",
         icon: "🎨",
       },
       {
@@ -1175,37 +1176,43 @@ const toolCatalog: ToolCategory[] = [
       {
         path: "/color-harmony",
         label: "カラーハーモニー",
-        description: "ベースカラーから補色・類似色・トライアド・分割補色・テトラッドを一覧生成するカラーハーモニー配色ツール。",
+        description:
+          "ベースカラーから補色・類似色・トライアド・分割補色・テトラッドを一覧生成するカラーハーモニー配色ツール。",
         icon: "🌈",
       },
       {
         path: "/color-token",
         label: "カラートークン生成",
-        description: "ベースカラーからデザインシステム用のシェードスケール（50〜950）を自動生成するツール。CSS変数・SCSS・Tailwind設定・JSON形式で出力。",
+        description:
+          "ベースカラーからデザインシステム用のシェードスケール（50〜950）を自動生成するツール。CSS変数・SCSS・Tailwind設定・JSON形式で出力。",
         icon: "🏷️",
       },
       {
         path: "/color-contrast",
         label: "カラーコントラストチェッカー",
-        description: "WCAG 2.1準拠のカラーコントラストチェッカー。前景色と背景色のコントラスト比を計算し、AA・AAAの適合性を判定します。",
+        description:
+          "WCAG 2.1準拠のカラーコントラストチェッカー。前景色と背景色のコントラスト比を計算し、AA・AAAの適合性を判定します。",
         icon: "⚖️",
       },
       {
         path: "/color-blind",
         label: "色覚シミュレーター",
-        description: "色覚異常シミュレーター。Deuteranopia・Protanopia・Tritanopiaなど6種類の色覚タイプで画像がどのように見えるか確認できるアクセシビリティツール。",
+        description:
+          "色覚異常シミュレーター。Deuteranopia・Protanopia・Tritanopiaなど6種類の色覚タイプで画像がどのように見えるか確認できるアクセシビリティツール。",
         icon: "👁️",
       },
       {
         path: "/color-mix",
         label: "CSS color-mix() プレイグラウンド",
-        description: "CSS color-mix() 関数をインタラクティブに試せるツール。2色を選んで色空間・割合を調整し、混合結果をリアルタイムプレビュー。CSS コードを即座に生成。",
+        description:
+          "CSS color-mix() 関数をインタラクティブに試せるツール。2色を選んで色空間・割合を調整し、混合結果をリアルタイムプレビュー。CSS コードを即座に生成。",
         icon: "🧪",
       },
       {
         path: "/color-name",
         label: "色名検索",
-        description: "CSS名前付き色を検索するツール。HEXやRGBカラーを入力すると最も近いCSS色名をΔE色差順に表示。140色のCSS名前付き色を完全収録。",
+        description:
+          "CSS名前付き色を検索するツール。HEXやRGBカラーを入力すると最も近いCSS色名をΔE色差順に表示。140色のCSS名前付き色を完全収録。",
         icon: "🔖",
       },
       {
@@ -1224,7 +1231,8 @@ const toolCatalog: ToolCategory[] = [
       {
         path: "/tailwind-colors",
         label: "Tailwind CSS カラー",
-        description: "Tailwind CSS v3の全カラーパレットを一覧表示。カラー名・HEX値で検索・フィルタリングし、任意のHEXコードに最も近いTailwindカラーを検索。クリックでクラス名をコピー。",
+        description:
+          "Tailwind CSS v3の全カラーパレットを一覧表示。カラー名・HEX値で検索・フィルタリングし、任意のHEXコードに最も近いTailwindカラーを検索。クリックでクラス名をコピー。",
         icon: "🎨",
       },
     ],
@@ -1767,13 +1775,15 @@ const toolCatalog: ToolCategory[] = [
       {
         path: "/chmod",
         label: "Chmod計算",
-        description: "Unixファイルパーミッション（chmod）の数値・シンボル表記を変換・計算するツール",
+        description:
+          "Unixファイルパーミッション（chmod）の数値・シンボル表記を変換・計算するツール",
         icon: "🔒",
       },
       {
         path: "/curl-builder",
         label: "curlビルダー",
-        description: "GUIでcurlコマンドを組み立てる。HTTPメソッド、ヘッダー、ボディ、各種オプションを設定してコマンドを生成",
+        description:
+          "GUIでcurlコマンドを組み立てる。HTTPメソッド、ヘッダー、ボディ、各種オプションを設定してコマンドを生成",
         icon: "🔧",
       },
       {
@@ -1821,19 +1831,22 @@ const toolCatalog: ToolCategory[] = [
       {
         path: "/openssl-builder",
         label: "OpenSSLビルダー",
-        description: "OpenSSLコマンドをGUIで設定して生成。鍵生成・証明書作成・CSR生成など各種OpenSSL操作に対応",
+        description:
+          "OpenSSLコマンドをGUIで設定して生成。鍵生成・証明書作成・CSR生成など各種OpenSSL操作に対応",
         icon: "🔐",
       },
       {
         path: "/har",
         label: "HAR アナライザー",
-        description: "ブラウザDevToolsからエクスポートしたHARファイルを解析。リクエスト一覧・レスポンスサイズ・タイミング・ステータス別統計を可視化。遅いリクエストや大きなリソースを素早く特定できる。",
+        description:
+          "ブラウザDevToolsからエクスポートしたHARファイルを解析。リクエスト一覧・レスポンスサイズ・タイミング・ステータス別統計を可視化。遅いリクエストや大きなリソースを素早く特定できる。",
         icon: "📊",
       },
       {
         path: "/websocket",
         label: "WebSocket テスター",
-        description: "WebSocketエンドポイントへの接続・メッセージ送受信テストツール。接続状態のモニタリング・メッセージログ・JSON整形表示に対応。",
+        description:
+          "WebSocketエンドポイントへの接続・メッセージ送受信テストツール。接続状態のモニタリング・メッセージログ・JSON整形表示に対応。",
         icon: "🔌",
       },
       {
@@ -2010,10 +2023,7 @@ const toolCatalog: ToolCategory[] = [
  * @param query - 検索クエリ文字列
  * @returns フィルタリング後のカタログ（アイテムが0のカテゴリは除外）
  */
-export function filterCatalog(
-  catalog: ToolCategory[],
-  query: string
-): ToolCategory[] {
+export function filterCatalog(catalog: ToolCategory[], query: string): ToolCategory[] {
   if (!query.trim()) return catalog;
   const q = query.toLowerCase();
   return catalog
@@ -2021,8 +2031,7 @@ export function filterCatalog(
       ...category,
       items: category.items.filter(
         (item) =>
-          item.label.toLowerCase().includes(q) ||
-          item.description.toLowerCase().includes(q)
+          item.label.toLowerCase().includes(q) || item.description.toLowerCase().includes(q),
       ),
     }))
     .filter((category) => category.items.length > 0);
@@ -2032,14 +2041,26 @@ export const Route = createFileRoute("/top")({
   head: () => ({
     meta: [
       { title: "ツール一覧 | Web ツール集" },
-      { name: "description", content: "200以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
+      {
+        name: "description",
+        content:
+          "200以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。",
+      },
       { property: "og:title", content: "ツール一覧 | Web ツール集" },
-      { property: "og:description", content: "200以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
+      {
+        property: "og:description",
+        content:
+          "200以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。",
+      },
       { property: "og:url", content: `${SITE_BASE_URL}/top` },
       { property: "og:type", content: "website" },
       { property: "og:image", content: SITE_OGP_IMAGE },
       { name: "twitter:title", content: "ツール一覧 | Web ツール集" },
-      { name: "twitter:description", content: "200以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。" },
+      {
+        name: "twitter:description",
+        content:
+          "200以上のWebツールをカテゴリ別に一覧表示。開発・デザイン・ネットワーク等のツールを網羅。",
+      },
     ],
   }),
   component: TopPage,
@@ -2052,28 +2073,17 @@ export const Route = createFileRoute("/top")({
 function TopPage() {
   const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredCatalog = useMemo(
-    () => filterCatalog(toolCatalog, searchQuery),
-    [searchQuery]
-  );
+  const filteredCatalog = useMemo(() => filterCatalog(toolCatalog, searchQuery), [searchQuery]);
 
-  const totalCount = toolCatalog.reduce(
-    (acc, cat) => acc + cat.items.length,
-    0
-  );
-  const filteredCount = filteredCatalog.reduce(
-    (acc, cat) => acc + cat.items.length,
-    0
-  );
+  const totalCount = toolCatalog.reduce((acc, cat) => acc + cat.items.length, 0);
+  const filteredCount = filteredCatalog.reduce((acc, cat) => acc + cat.items.length, 0);
 
   return (
     <div className="top-page-container">
       {/* ページヘッダー */}
       <div className="top-page-header">
         <h2 className="top-page-title">ツール一覧</h2>
-        <p className="top-page-subtitle">
-          {totalCount} 個のツールが利用可能です
-        </p>
+        <p className="top-page-subtitle">{totalCount} 個のツールが利用可能です</p>
       </div>
 
       {/* 検索バー */}
@@ -2104,11 +2114,7 @@ function TopPage() {
 
       {/* 検索結果カウント */}
       {searchQuery && (
-        <p
-          className="top-search-result-count"
-          aria-live="polite"
-          role="status"
-        >
+        <p className="top-search-result-count" aria-live="polite" role="status">
           {filteredCount} 件のツールが見つかりました
         </p>
       )}
@@ -2120,30 +2126,20 @@ function TopPage() {
           className="top-category-section"
           aria-labelledby={`cat-${category.name}`}
         >
-          <h3
-            id={`cat-${category.name}`}
-            className="top-category-heading"
-          >
+          <h3 id={`cat-${category.name}`} className="top-category-heading">
             <span aria-hidden="true">{category.icon}</span>
             {category.name}
             <span className="top-category-count">{category.items.length}</span>
           </h3>
           <div className="top-tool-grid" role="list">
             {category.items.map((tool) => (
-              <Link
-                key={tool.path}
-                to={tool.path}
-                className="top-tool-card"
-                role="listitem"
-              >
+              <Link key={tool.path} to={tool.path} className="top-tool-card" role="listitem">
                 <span className="top-tool-icon" aria-hidden="true">
                   {tool.icon}
                 </span>
                 <div className="top-tool-info">
                   <span className="top-tool-name">{tool.label}</span>
-                  <span className="top-tool-description">
-                    {tool.description}
-                  </span>
+                  <span className="top-tool-description">{tool.description}</span>
                 </div>
               </Link>
             ))}
@@ -2155,11 +2151,7 @@ function TopPage() {
       {filteredCatalog.length === 0 && (
         <div className="top-no-results" role="status" aria-live="polite">
           <p>「{searchQuery}」に一致するツールが見つかりませんでした</p>
-          <button
-            onClick={() => setSearchQuery("")}
-            type="button"
-            className="btn-primary"
-          >
+          <button onClick={() => setSearchQuery("")} type="button" className="btn-primary">
             検索をクリア
           </button>
         </div>

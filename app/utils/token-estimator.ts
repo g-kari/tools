@@ -70,57 +70,57 @@ const CHARS_PER_TOKEN = {
  */
 export const LLM_MODELS: ModelInfo[] = [
   {
-    name: 'GPT-4o',
-    provider: 'OpenAI',
+    name: "GPT-4o",
+    provider: "OpenAI",
     inputPricePer1M: 2.5,
     outputPricePer1M: 10.0,
     contextWindow: 128_000,
   },
   {
-    name: 'GPT-4o mini',
-    provider: 'OpenAI',
+    name: "GPT-4o mini",
+    provider: "OpenAI",
     inputPricePer1M: 0.15,
     outputPricePer1M: 0.6,
     contextWindow: 128_000,
   },
   {
-    name: 'GPT-3.5 Turbo',
-    provider: 'OpenAI',
+    name: "GPT-3.5 Turbo",
+    provider: "OpenAI",
     inputPricePer1M: 0.5,
     outputPricePer1M: 1.5,
     contextWindow: 16_385,
   },
   {
-    name: 'Claude 3.5 Sonnet',
-    provider: 'Anthropic',
+    name: "Claude 3.5 Sonnet",
+    provider: "Anthropic",
     inputPricePer1M: 3.0,
     outputPricePer1M: 15.0,
     contextWindow: 200_000,
   },
   {
-    name: 'Claude 3 Haiku',
-    provider: 'Anthropic',
+    name: "Claude 3 Haiku",
+    provider: "Anthropic",
     inputPricePer1M: 0.25,
     outputPricePer1M: 1.25,
     contextWindow: 200_000,
   },
   {
-    name: 'Claude 3 Opus',
-    provider: 'Anthropic',
+    name: "Claude 3 Opus",
+    provider: "Anthropic",
     inputPricePer1M: 15.0,
     outputPricePer1M: 75.0,
     contextWindow: 200_000,
   },
   {
-    name: 'Gemini 1.5 Pro',
-    provider: 'Google',
+    name: "Gemini 1.5 Pro",
+    provider: "Google",
     inputPricePer1M: 1.25,
     outputPricePer1M: 5.0,
     contextWindow: 2_000_000,
   },
   {
-    name: 'Gemini 1.5 Flash',
-    provider: 'Google',
+    name: "Gemini 1.5 Flash",
+    provider: "Google",
     inputPricePer1M: 0.075,
     outputPricePer1M: 0.3,
     contextWindow: 1_000_000,
@@ -192,7 +192,7 @@ export function estimateTokens(text: string): number {
  * @returns 単語数
  */
 function countWords(text: string): number {
-  return text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+  return text.trim() === "" ? 0 : text.trim().split(/\s+/).length;
 }
 
 /**
@@ -248,8 +248,8 @@ export function analyzeTokens(text: string): TokenAnalysisResult {
  * @returns フォーマット済み文字列
  */
 export function formatCost(usd: number): string {
-  if (usd === 0) return '$0.000000';
-  if (usd < 0.000001) return '< $0.000001';
+  if (usd === 0) return "$0.000000";
+  if (usd < 0.000001) return "< $0.000001";
   if (usd < 0.01) return `$${usd.toFixed(6)}`;
   if (usd < 1) return `$${usd.toFixed(4)}`;
   return `$${usd.toFixed(3)}`;
@@ -261,7 +261,7 @@ export function formatCost(usd: number): string {
  * @returns CSSクラス名
  */
 export function getContextUsageClass(usage: number): string {
-  if (usage >= 0.9) return 'te-ctx-danger';
-  if (usage >= 0.7) return 'te-ctx-warning';
-  return 'te-ctx-ok';
+  if (usage >= 0.9) return "te-ctx-danger";
+  if (usage >= 0.7) return "te-ctx-warning";
+  return "te-ctx-ok";
 }

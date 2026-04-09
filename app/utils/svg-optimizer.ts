@@ -88,22 +88,16 @@ function removeMetadataElements(svg: string): string {
   // エディタ固有の名前空間属性を削除（xmlns:inkscape, xmlns:sodipodi等）
   result = result.replace(
     /\s+xmlns:(inkscape|sodipodi|dc|cc|rdf|sketch|illustrator)="[^"]*"/gi,
-    ""
+    "",
   );
   // inkscape/sodipodi固有の属性を削除
-  result = result.replace(
-    /\s+(inkscape|sodipodi|sketch|illustrator):[a-z-]+="[^"]*"/gi,
-    ""
-  );
+  result = result.replace(/\s+(inkscape|sodipodi|sketch|illustrator):[a-z-]+="[^"]*"/gi, "");
   // <sodipodi:...>...</sodipodi:...> を削除
   result = result.replace(/<sodipodi:[^>]*\/>/gi, "");
   result = result.replace(/<sodipodi:[^>]*>[\s\S]*?<\/sodipodi:[^>]*>/gi, "");
   // <dc:...>, <cc:...>, <rdf:...> 要素を削除
   result = result.replace(/<(dc|cc|rdf):[^>]*\/>/gi, "");
-  result = result.replace(
-    /<(dc|cc|rdf):[^>]*>[\s\S]*?<\/(dc|cc|rdf):[^>]*>/gi,
-    ""
-  );
+  result = result.replace(/<(dc|cc|rdf):[^>]*>[\s\S]*?<\/(dc|cc|rdf):[^>]*>/gi, "");
   return result;
 }
 
@@ -159,14 +153,11 @@ function removeEmptyGroupElements(svg: string): string {
  */
 function adjustPrecision(svg: string, precision: number): string {
   // path の d 属性内の数値精度を調整
-  return svg.replace(
-    /\b(\d+\.\d{3,})\b/g,
-    (match) => {
-      const num = parseFloat(match);
-      if (isNaN(num)) return match;
-      return num.toFixed(precision).replace(/\.?0+$/, "") || "0";
-    }
-  );
+  return svg.replace(/\b(\d+\.\d{3,})\b/g, (match) => {
+    const num = parseFloat(match);
+    if (isNaN(num)) return match;
+    return num.toFixed(precision).replace(/\.?0+$/, "") || "0";
+  });
 }
 
 /**
@@ -239,10 +230,7 @@ function validateSvg(input: string): boolean {
  * @returns 最適化結果
  * @throws {Error} 入力が空またはSVGでない場合にエラーをスローする
  */
-export function optimizeSvg(
-  svgInput: string,
-  options: SvgOptimizerOptions
-): SvgOptimizeResult {
+export function optimizeSvg(svgInput: string, options: SvgOptimizerOptions): SvgOptimizeResult {
   if (!svgInput.trim()) {
     throw new Error("SVGコードを入力してください");
   }
@@ -292,8 +280,7 @@ export function optimizeSvg(
   const optimizedSize = new TextEncoder().encode(result).length;
   const reductionPercent =
     originalSize > 0
-      ? Math.round(((originalSize - optimizedSize) / originalSize) * 10000) /
-        100
+      ? Math.round(((originalSize - optimizedSize) / originalSize) * 10000) / 100
       : 0;
 
   return {

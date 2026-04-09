@@ -7,12 +7,10 @@ test.describe("リダイレクトトレーサー (/redirect-tracer)", () => {
 
   test("ページが正しく表示される", async ({ page }) => {
     await expect(
-      page.getByRole("heading", { name: "リダイレクトトレーサー" }).first()
+      page.getByRole("heading", { name: "リダイレクトトレーサー" }).first(),
     ).toBeVisible();
     await expect(page.getByLabel("URLを入力")).toBeVisible();
-    await expect(
-      page.getByRole("button", { name: "トレース" })
-    ).toBeVisible();
+    await expect(page.getByRole("button", { name: "トレース" })).toBeVisible();
   });
 
   test("ページタイトルが正しい", async ({ page }) => {
@@ -37,9 +35,7 @@ test.describe("リダイレクトトレーサー (/redirect-tracer)", () => {
     await expect(page.getByText("活用シーン")).toBeVisible();
   });
 
-  test("ツールカタログからリダイレクトトレーサーへのリンクが存在する", async ({
-    page,
-  }) => {
+  test("ツールカタログからリダイレクトトレーサーへのリンクが存在する", async ({ page }) => {
     await page.goto("/top");
     const link = page.getByRole("link", { name: "リダイレクトトレーサー" });
     await expect(link).toBeVisible();

@@ -51,9 +51,7 @@ describe("generateNanoId", () => {
   });
 
   it("連続生成で異なる値を返す", () => {
-    const results = new Set(
-      Array.from({ length: 20 }, () => generateNanoId())
-    );
+    const results = new Set(Array.from({ length: 20 }, () => generateNanoId()));
     expect(results.size).toBe(20);
   });
 

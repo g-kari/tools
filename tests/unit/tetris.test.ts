@@ -98,16 +98,12 @@ describe("isValidPosition", () => {
 
   it("右端を超えると無効", () => {
     const shape = TETROMINOES[3]; // 3列幅
-    expect(isValidPosition(board, shape, { x: BOARD_WIDTH - 2, y: 5 })).toBe(
-      false
-    );
+    expect(isValidPosition(board, shape, { x: BOARD_WIDTH - 2, y: 5 })).toBe(false);
   });
 
   it("下端を超えると無効", () => {
     const shape = TETROMINOES[2]; // O (2行)
-    expect(isValidPosition(board, shape, { x: 4, y: BOARD_HEIGHT })).toBe(
-      false
-    );
+    expect(isValidPosition(board, shape, { x: 4, y: BOARD_HEIGHT })).toBe(false);
   });
 
   it("他のピースと重なると無効", () => {
@@ -115,9 +111,7 @@ describe("isValidPosition", () => {
     filledBoard[5][4] = 1; // (4,5)に配置済みセル
     const shape = TETROMINOES[2]; // O: (x,y),(x+1,y),(x,y+1),(x+1,y+1)
     // Tピースの(1,1)が(4,5)に当たる位置に配置
-    expect(isValidPosition(filledBoard, TETROMINOES[3], { x: 3, y: 4 })).toBe(
-      false
-    );
+    expect(isValidPosition(filledBoard, TETROMINOES[3], { x: 3, y: 4 })).toBe(false);
   });
 
   it("Y座標がマイナス（盤外上部）でも有効な場合がある", () => {
@@ -189,9 +183,7 @@ describe("clearLines", () => {
     const { board: result, linesCleared } = clearLines(board);
     expect(linesCleared).toBe(4);
     expect(result.length).toBe(BOARD_HEIGHT);
-    expect(result.slice(0, 4).every((row) => row.every((c) => c === 0))).toBe(
-      true
-    );
+    expect(result.slice(0, 4).every((row) => row.every((c) => c === 0))).toBe(true);
   });
 
   it("未完成ラインは保持される", () => {

@@ -33,22 +33,14 @@ describe("STORAGE_UNITS", () => {
 
   it("SI単位が10の累乗であること", () => {
     expect(STORAGE_UNITS.find((u) => u.id === "KB")?.bytesPerUnit).toBe(1_000);
-    expect(STORAGE_UNITS.find((u) => u.id === "MB")?.bytesPerUnit).toBe(
-      1_000_000
-    );
-    expect(STORAGE_UNITS.find((u) => u.id === "GB")?.bytesPerUnit).toBe(
-      1_000_000_000
-    );
+    expect(STORAGE_UNITS.find((u) => u.id === "MB")?.bytesPerUnit).toBe(1_000_000);
+    expect(STORAGE_UNITS.find((u) => u.id === "GB")?.bytesPerUnit).toBe(1_000_000_000);
   });
 
   it("IEC単位が2の累乗であること", () => {
     expect(STORAGE_UNITS.find((u) => u.id === "KiB")?.bytesPerUnit).toBe(1024);
-    expect(STORAGE_UNITS.find((u) => u.id === "MiB")?.bytesPerUnit).toBe(
-      1024 ** 2
-    );
-    expect(STORAGE_UNITS.find((u) => u.id === "GiB")?.bytesPerUnit).toBe(
-      1024 ** 3
-    );
+    expect(STORAGE_UNITS.find((u) => u.id === "MiB")?.bytesPerUnit).toBe(1024 ** 2);
+    expect(STORAGE_UNITS.find((u) => u.id === "GiB")?.bytesPerUnit).toBe(1024 ** 3);
   });
 });
 

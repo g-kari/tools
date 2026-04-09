@@ -50,9 +50,7 @@ test.describe("PHP シリアライズ/アンシリアライズ - E2E Tests", () 
     expect(output).toContain("i:30;");
   });
 
-  test("should unserialize PHP string to JSON (round-trip)", async ({
-    page,
-  }) => {
+  test("should unserialize PHP string to JSON (round-trip)", async ({ page }) => {
     const inputTextarea = page.locator("#inputText");
     const outputTextarea = page.locator("#outputText");
     const serializeButton = page.locator("button.btn-primary").first();
@@ -122,9 +120,7 @@ test.describe("PHP シリアライズ/アンシリアライズ - E2E Tests", () 
     await expect(errorMessage).toBeVisible();
   });
 
-  test("should show error for invalid PHP serialize string on unserialize", async ({
-    page,
-  }) => {
+  test("should show error for invalid PHP serialize string on unserialize", async ({ page }) => {
     const inputTextarea = page.locator("#inputText");
     const unserializeButton = page.locator("button.btn-secondary").first();
 

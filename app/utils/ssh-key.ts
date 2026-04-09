@@ -4,7 +4,7 @@
  */
 
 /** サポートする鍵アルゴリズムの識別子 */
-export type KeyAlgorithmId = 'RSA-2048' | 'RSA-4096' | 'ECDSA-P256' | 'ECDSA-P384';
+export type KeyAlgorithmId = "RSA-2048" | "RSA-4096" | "ECDSA-P256" | "ECDSA-P384";
 
 /** 生成された鍵ペアの情報 */
 export interface SshKeyPair {
@@ -26,7 +26,7 @@ export interface SshKeyPair {
  * @returns Base64エンコードされた文字列
  */
 export function uint8ToBase64(bytes: Uint8Array): string {
-  let binary = '';
+  let binary = "";
   for (let i = 0; i < bytes.length; i++) {
     binary += String.fromCharCode(bytes[i]);
   }
@@ -40,8 +40,8 @@ export function uint8ToBase64(bytes: Uint8Array): string {
  */
 export function base64UrlToUint8(base64url: string): Uint8Array {
   // Base64URL → Base64 に変換
-  const base64 = base64url.replace(/-/g, '+').replace(/_/g, '/');
-  const padded = base64.padEnd(base64.length + ((4 - (base64.length % 4)) % 4), '=');
+  const base64 = base64url.replace(/-/g, "+").replace(/_/g, "/");
+  const padded = base64.padEnd(base64.length + ((4 - (base64.length % 4)) % 4), "=");
   const binary = atob(padded);
   const bytes = new Uint8Array(binary.length);
   for (let i = 0; i < binary.length; i++) {
@@ -59,7 +59,7 @@ export function base64UrlToUint8(base64url: string): Uint8Array {
 export function toPem(bytes: Uint8Array, type: string): string {
   const base64 = uint8ToBase64(bytes);
   const lines = base64.match(/.{1,64}/g) ?? [];
-  return `-----BEGIN ${type}-----\n${lines.join('\n')}\n-----END ${type}-----`;
+  return `-----BEGIN ${type}-----\n${lines.join("\n")}\n-----END ${type}-----`;
 }
 
 /**
@@ -93,28 +93,27 @@ export function writeLengthPrefixedString(s: string): Uint8Array {
  */
 export function buildRsaOpenSshPublicKey(jwk: JsonWebKey): string {
   if (!jwk.e || !jwk.n) {
-    throw new Error('Invalid RSA JWK: missing e or n');
+    throw new Error("Invalid RSA JWK: missing e or n");
   }
 
   const exponentBytes = base64UrlToUint8(jwk.e);
   const modulusBytes = base64UrlToUint8(jwk.n);
 
   // MSBが立っている場合は先頭に0x00を追加（正の多倍長整数）
-  const exponent = exponentBytes[0] >= 0x80
-    ? new Uint8Array([0x00, ...exponentBytes])
-    : exponentBytes;
-  const modulus = modulusBytes[0] >= 0x80
-    ? new Uint8Array([0x00, ...modulusBytes])
-    : modulusBytes;
+  const exponent =
+    exponentBytes[0] >= 0x80 ? new Uint8Array([0x00, ...exponentBytes]) : exponentBytes;
+  const modulus = modulusBytes[0] >= 0x80 ? new Uint8Array([0x00, ...modulusBytes]) : modulusBytes;
 
-  const keyType = writeLengthPrefixedString('ssh-rsa');
+  const keyType = writeLengthPrefixedString("ssh-rsa");
   const expPart = writeLengthPrefixed(exponent);
   const modPart = writeLengthPrefixed(modulus);
 
   const total = new Uint8Array(keyType.length + expPart.length + modPart.length);
   let offset = 0;
-  total.set(keyType, offset); offset += keyType.length;
-  total.set(expPart, offset); offset += expPart.length;
+  total.set(keyType, offset);
+  offset += keyType.length;
+  total.set(expPart, offset);
+  offset += expPart.length;
   total.set(modPart, offset);
 
   return `ssh-rsa ${uint8ToBase64(total)}`;
@@ -127,13 +126,13 @@ export function buildRsaOpenSshPublicKey(jwk: JsonWebKey): string {
  * @param curve - 楕円曲線の種類
  * @returns OpenSSH公開鍵文字列（"ecdsa-sha2-nistp256 ..."等の形式）
  */
-export function buildEcdsaOpenSshPublicKey(jwk: JsonWebKey, curve: 'P-256' | 'P-384'): string {
+export function buildEcdsaOpenSshPublicKey(jwk: JsonWebKey, curve: "P-256" | "P-384"): string {
   if (!jwk.x || !jwk.y) {
-    throw new Error('Invalid ECDSA JWK: missing x or y');
+    throw new Error("Invalid ECDSA JWK: missing x or y");
   }
 
-  const keyType = curve === 'P-256' ? 'ecdsa-sha2-nistp256' : 'ecdsa-sha2-nistp384';
-  const curveName = curve === 'P-256' ? 'nistp256' : 'nistp384';
+  const keyType = curve === "P-256" ? "ecdsa-sha2-nistp256" : "ecdsa-sha2-nistp384";
+  const curveName = curve === "P-256" ? "nistp256" : "nistp384";
 
   const xBytes = base64UrlToUint8(jwk.x);
   const yBytes = base64UrlToUint8(jwk.y);
@@ -150,8 +149,10 @@ export function buildEcdsaOpenSshPublicKey(jwk: JsonWebKey, curve: 'P-256' | 'P-
 
   const total = new Uint8Array(keyTypePart.length + curveNamePart.length + pointPart.length);
   let offset = 0;
-  total.set(keyTypePart, offset); offset += keyTypePart.length;
-  total.set(curveNamePart, offset); offset += curveNamePart.length;
+  total.set(keyTypePart, offset);
+  offset += keyTypePart.length;
+  total.set(curveNamePart, offset);
+  offset += curveNamePart.length;
   total.set(pointPart, offset);
 
   return `${keyType} ${uint8ToBase64(total)}`;
@@ -168,31 +169,31 @@ export async function generateKeyPair(algorithmId: KeyAlgorithmId): Promise<SshK
   let keyUsages: KeyUsage[];
 
   switch (algorithmId) {
-    case 'RSA-2048':
+    case "RSA-2048":
       algorithm = {
-        name: 'RSASSA-PKCS1-v1_5',
+        name: "RSASSA-PKCS1-v1_5",
         modulusLength: 2048,
         publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
-        hash: 'SHA-256',
+        hash: "SHA-256",
       };
-      keyUsages = ['sign', 'verify'];
+      keyUsages = ["sign", "verify"];
       break;
-    case 'RSA-4096':
+    case "RSA-4096":
       algorithm = {
-        name: 'RSASSA-PKCS1-v1_5',
+        name: "RSASSA-PKCS1-v1_5",
         modulusLength: 4096,
         publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
-        hash: 'SHA-256',
+        hash: "SHA-256",
       };
-      keyUsages = ['sign', 'verify'];
+      keyUsages = ["sign", "verify"];
       break;
-    case 'ECDSA-P256':
-      algorithm = { name: 'ECDSA', namedCurve: 'P-256' };
-      keyUsages = ['sign', 'verify'];
+    case "ECDSA-P256":
+      algorithm = { name: "ECDSA", namedCurve: "P-256" };
+      keyUsages = ["sign", "verify"];
       break;
-    case 'ECDSA-P384':
-      algorithm = { name: 'ECDSA', namedCurve: 'P-384' };
-      keyUsages = ['sign', 'verify'];
+    case "ECDSA-P384":
+      algorithm = { name: "ECDSA", namedCurve: "P-384" };
+      keyUsages = ["sign", "verify"];
       break;
     default:
       throw new Error(`Unsupported algorithm: ${algorithmId}`);
@@ -201,21 +202,21 @@ export async function generateKeyPair(algorithmId: KeyAlgorithmId): Promise<SshK
   const keyPair = await window.crypto.subtle.generateKey(algorithm, true, keyUsages);
 
   const [privateKeyDer, publicKeyDer, publicKeyJwk] = await Promise.all([
-    window.crypto.subtle.exportKey('pkcs8', keyPair.privateKey),
-    window.crypto.subtle.exportKey('spki', keyPair.publicKey),
-    window.crypto.subtle.exportKey('jwk', keyPair.publicKey),
+    window.crypto.subtle.exportKey("pkcs8", keyPair.privateKey),
+    window.crypto.subtle.exportKey("spki", keyPair.publicKey),
+    window.crypto.subtle.exportKey("jwk", keyPair.publicKey),
   ]);
 
-  const privateKeyPem = toPem(new Uint8Array(privateKeyDer), 'PRIVATE KEY');
-  const publicKeyPem = toPem(new Uint8Array(publicKeyDer), 'PUBLIC KEY');
+  const privateKeyPem = toPem(new Uint8Array(privateKeyDer), "PRIVATE KEY");
+  const publicKeyPem = toPem(new Uint8Array(publicKeyDer), "PUBLIC KEY");
 
   let publicKeyOpenSsh: string;
-  if (algorithmId === 'RSA-2048' || algorithmId === 'RSA-4096') {
+  if (algorithmId === "RSA-2048" || algorithmId === "RSA-4096") {
     publicKeyOpenSsh = buildRsaOpenSshPublicKey(publicKeyJwk);
-  } else if (algorithmId === 'ECDSA-P256') {
-    publicKeyOpenSsh = buildEcdsaOpenSshPublicKey(publicKeyJwk, 'P-256');
+  } else if (algorithmId === "ECDSA-P256") {
+    publicKeyOpenSsh = buildEcdsaOpenSshPublicKey(publicKeyJwk, "P-256");
   } else {
-    publicKeyOpenSsh = buildEcdsaOpenSshPublicKey(publicKeyJwk, 'P-384');
+    publicKeyOpenSsh = buildEcdsaOpenSshPublicKey(publicKeyJwk, "P-384");
   }
 
   return {

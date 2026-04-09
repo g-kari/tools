@@ -1,4 +1,4 @@
-import * as yaml from 'js-yaml';
+import * as yaml from "js-yaml";
 
 /**
  * YAML文字列を整形（インデント付き）する。
@@ -8,17 +8,13 @@ import * as yaml from 'js-yaml';
  * @returns 整形されたYAML文字列
  * @throws {Error} YAML文字列が空または不正な場合
  */
-export function formatYaml(
-  yamlStr: string,
-  indent: number = 2,
-  sortKeys: boolean = false,
-): string {
+export function formatYaml(yamlStr: string, indent: number = 2, sortKeys: boolean = false): string {
   if (!yamlStr.trim()) {
-    throw new Error('YAMLデータが空です');
+    throw new Error("YAMLデータが空です");
   }
   const parsed = yaml.load(yamlStr);
   if (parsed === null || parsed === undefined) {
-    throw new Error('YAMLデータが空です');
+    throw new Error("YAMLデータが空です");
   }
   return yaml.dump(parsed, {
     indent,
@@ -35,11 +31,11 @@ export function formatYaml(
  */
 export function minifyYaml(yamlStr: string): string {
   if (!yamlStr.trim()) {
-    throw new Error('YAMLデータが空です');
+    throw new Error("YAMLデータが空です");
   }
   const parsed = yaml.load(yamlStr);
   if (parsed === null || parsed === undefined) {
-    throw new Error('YAMLデータが空です');
+    throw new Error("YAMLデータが空です");
   }
   return yaml
     .dump(parsed, {
@@ -56,18 +52,18 @@ export function minifyYaml(yamlStr: string): string {
  */
 export function validateYaml(yamlStr: string): { valid: boolean; error?: string } {
   if (!yamlStr.trim()) {
-    return { valid: false, error: 'YAMLデータが空です' };
+    return { valid: false, error: "YAMLデータが空です" };
   }
   try {
     const parsed = yaml.load(yamlStr);
     if (parsed === null || parsed === undefined) {
-      return { valid: false, error: 'YAMLデータが空または内容がありません' };
+      return { valid: false, error: "YAMLデータが空または内容がありません" };
     }
     return { valid: true };
   } catch (err) {
     return {
       valid: false,
-      error: err instanceof Error ? err.message : 'YAML解析エラーが発生しました',
+      error: err instanceof Error ? err.message : "YAML解析エラーが発生しました",
     };
   }
 }

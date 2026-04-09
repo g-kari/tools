@@ -47,7 +47,7 @@ export function base64UrlDecode(str: string): string {
       decoded
         .split("")
         .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
-        .join("")
+        .join(""),
     );
   } catch (error) {
     throw new Error("Base64URLデコードに失敗しました");
@@ -156,20 +156,16 @@ export function base64UrlEncode(str: string): string {
 async function signHmac(
   algorithm: JwtAlgorithm,
   secretBytes: Uint8Array,
-  dataBytes: Uint8Array
+  dataBytes: Uint8Array,
 ): Promise<Uint8Array> {
   const hashAlgo =
-    algorithm === "HS256"
-      ? "SHA-256"
-      : algorithm === "HS384"
-        ? "SHA-384"
-        : "SHA-512";
+    algorithm === "HS256" ? "SHA-256" : algorithm === "HS384" ? "SHA-384" : "SHA-512";
   const key = await crypto.subtle.importKey(
     "raw",
     secretBytes,
     { name: "HMAC", hash: { name: hashAlgo } },
     false,
-    ["sign"]
+    ["sign"],
   );
   const signature = await crypto.subtle.sign("HMAC", key, dataBytes);
   return new Uint8Array(signature);
@@ -181,9 +177,7 @@ async function signHmac(
  * @returns 生成結果（トークン・ヘッダーJSON・ペイロードJSON）
  * @throws {Error} ペイロードが無効なJSONの場合
  */
-export async function generateJWT(
-  input: JwtGeneratorInput
-): Promise<JwtGeneratorResult> {
+export async function generateJWT(input: JwtGeneratorInput): Promise<JwtGeneratorResult> {
   // ペイロードのJSONパース
   let payloadObj: Record<string, unknown>;
   try {

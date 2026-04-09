@@ -4,10 +4,7 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { useToast } from "../components/Toast";
 import { TipsCard } from "~/components/TipsCard";
 import { ErrorMessage } from "~/components/ErrorMessage";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 import {
   compareJson,
@@ -77,7 +74,7 @@ function JsonCompare() {
       setResult(compareResult);
       const { added, removed, changed, unchanged } = compareResult.summary;
       announceStatus(
-        `比較完了: 追加${added}件、削除${removed}件、変更${changed}件、変更なし${unchanged}件`
+        `比較完了: 追加${added}件、削除${removed}件、変更${changed}件、変更なし${unchanged}件`,
       );
       showToast("比較が完了しました", "success");
     } catch (err) {
@@ -136,10 +133,7 @@ function JsonCompare() {
   return (
     <>
       <div className="tool-container">
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          aria-label="JSON比較フォーム"
-        >
+        <form onSubmit={(e) => e.preventDefault()} aria-label="JSON比較フォーム">
           {/* 入力パネル */}
           <div className="jc-layout">
             {/* 左パネル */}
@@ -284,10 +278,7 @@ function JsonCompare() {
 
               {/* 差分テーブル */}
               {result.nodes.length > 0 ? (
-                <table
-                  className="jc-diff-table"
-                  aria-label="JSON差分テーブル"
-                >
+                <table className="jc-diff-table" aria-label="JSON差分テーブル">
                   <thead>
                     <tr>
                       <th scope="col">パス</th>
@@ -298,26 +289,15 @@ function JsonCompare() {
                   </thead>
                   <tbody>
                     {result.nodes.map((node) => (
-                      <tr
-                        key={node.path}
-                        className={`jc-row--${node.type}`}
-                      >
+                      <tr key={node.path} className={`jc-row--${node.type}`}>
                         <td className="jc-path">{node.path || "(root)"}</td>
                         <td>
                           <span className={`jc-type-badge jc-type--${node.type}`}>
                             {DIFF_TYPE_LABELS[node.type]}
                           </span>
                         </td>
-                        <td>
-                          {node.type === "added"
-                            ? "—"
-                            : (node.leftDisplay ?? "—")}
-                        </td>
-                        <td>
-                          {node.type === "removed"
-                            ? "—"
-                            : (node.rightDisplay ?? "—")}
-                        </td>
+                        <td>{node.type === "added" ? "—" : (node.leftDisplay ?? "—")}</td>
+                        <td>{node.type === "removed" ? "—" : (node.rightDisplay ?? "—")}</td>
                       </tr>
                     ))}
                   </tbody>

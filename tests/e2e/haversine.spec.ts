@@ -36,16 +36,12 @@ test.describe("Haversine距離計算 - E2Eテスト", () => {
     const results = page.locator(".haversine-results");
     await expect(results).toBeVisible();
 
-    const distanceText = await page
-      .locator(".haversine-result-distance-main")
-      .textContent();
+    const distanceText = await page.locator(".haversine-result-distance-main").textContent();
     expect(distanceText).toMatch(/4[0-9]{2}\.\d+ km/);
   });
 
   test("プリセットボタンで座標が入力される", async ({ page }) => {
-    const presetBtns = page.locator(
-      '[aria-label*="出発地を東京 (東京都庁)に設定"]'
-    );
+    const presetBtns = page.locator('[aria-label*="出発地を東京 (東京都庁)に設定"]');
     await presetBtns.click();
 
     const latValue = await page.locator("#from-lat").inputValue();
@@ -99,9 +95,7 @@ test.describe("Haversine距離計算 - E2Eテスト", () => {
     expect(resultsText).toMatch(/E|東/);
   });
 
-  test("アクセシビリティ: ランドマークとラベルが設定されている", async ({
-    page,
-  }) => {
+  test("アクセシビリティ: ランドマークとラベルが設定されている", async ({ page }) => {
     const fromSection = page.locator('[aria-labelledby="from-heading"]');
     await expect(fromSection).toBeVisible();
 

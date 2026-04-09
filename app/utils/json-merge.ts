@@ -37,7 +37,7 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
 function mergeArrays(
   target: unknown[],
   source: unknown[],
-  strategy: ArrayMergeStrategy
+  strategy: ArrayMergeStrategy,
 ): unknown[] {
   switch (strategy) {
     case "concat":
@@ -46,9 +46,7 @@ function mergeArrays(
       const merged = [...target, ...source];
       return merged.filter(
         (item, index) =>
-          merged.findIndex(
-            (other) => JSON.stringify(other) === JSON.stringify(item)
-          ) === index
+          merged.findIndex((other) => JSON.stringify(other) === JSON.stringify(item)) === index,
       );
     }
     case "replace":
@@ -63,11 +61,7 @@ function mergeArrays(
  * @param source - マージ元
  * @param options - マージオプション
  */
-function mergeValues(
-  target: unknown,
-  source: unknown,
-  options: MergeOptions
-): unknown {
+function mergeValues(target: unknown, source: unknown, options: MergeOptions): unknown {
   if (!options.deep) {
     if (isPlainObject(target) && isPlainObject(source)) {
       return { ...target, ...source };
@@ -104,7 +98,7 @@ function mergeValues(
  */
 export function mergeJsonStrings(
   jsonStrings: string[],
-  options: MergeOptions = DEFAULT_MERGE_OPTIONS
+  options: MergeOptions = DEFAULT_MERGE_OPTIONS,
 ): string {
   if (jsonStrings.length === 0) {
     throw new Error("マージするJSONを1つ以上入力してください");
@@ -142,7 +136,7 @@ export function getSampleJsonPair(): [string, string] {
         hobbies: ["読書", "旅行"],
       },
       null,
-      2
+      2,
     ),
     JSON.stringify(
       {
@@ -155,7 +149,7 @@ export function getSampleJsonPair(): [string, string] {
         hobbies: ["料理", "旅行"],
       },
       null,
-      2
+      2,
     ),
   ];
 }

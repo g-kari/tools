@@ -25,7 +25,10 @@
   cursor: pointer;
   background: none;
   color: var(--md-sys-color-on-surface-variant);
-  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+  transition:
+    background-color 0.15s,
+    color 0.15s,
+    border-color 0.15s;
   white-space: nowrap;
 }
 
@@ -61,7 +64,9 @@
   background: var(--md-sys-color-surface-variant);
   color: var(--md-sys-color-on-surface);
   box-sizing: border-box;
-  transition: border-color 0.2s, background 0.2s;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
 }
 
 .asc-search-input:focus {
@@ -162,14 +167,14 @@
 
 /* 等幅フォントセル */
 .asc-cell-mono {
-  font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
+  font-family: "JetBrains Mono", "Roboto Mono", monospace;
   color: var(--md-sys-color-primary);
   white-space: nowrap;
 }
 
 /* バイナリセル */
 .asc-cell-bin {
-  font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
+  font-family: "JetBrains Mono", "Roboto Mono", monospace;
   color: var(--md-sys-color-tertiary);
   white-space: nowrap;
   letter-spacing: 0.05em;
@@ -182,7 +187,7 @@
 }
 
 .asc-char {
-  font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
+  font-family: "JetBrains Mono", "Roboto Mono", monospace;
   font-size: 1rem;
   font-weight: 600;
   color: var(--md-sys-color-on-surface);
@@ -223,7 +228,10 @@
   cursor: pointer;
   background: none;
   color: var(--md-sys-color-on-surface-variant);
-  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+  transition:
+    background-color 0.15s,
+    color 0.15s,
+    border-color 0.15s;
   white-space: nowrap;
 }
 

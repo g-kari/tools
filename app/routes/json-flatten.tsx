@@ -7,10 +7,7 @@ import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import { TipsCard } from "~/components/TipsCard";
 import { ErrorMessage } from "~/components/ErrorMessage";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 
 export const Route = createFileRoute("/json-flatten")({
@@ -132,15 +129,7 @@ function JsonFlattenPage() {
       announceStatus("エラー: " + message);
       showToast(message, "error");
     }
-  }, [
-    inputText,
-    mode,
-    delimiter,
-    flattenArrays,
-    maxDepth,
-    announceStatus,
-    showToast,
-  ]);
+  }, [inputText, mode, delimiter, flattenArrays, maxDepth, announceStatus, showToast]);
 
   const handleClear = useCallback(() => {
     setInputText("");
@@ -179,11 +168,7 @@ function JsonFlattenPage() {
     <>
       <div className="tool-container">
         {/* モード切り替え */}
-        <div
-          className="button-group"
-          role="group"
-          aria-label="変換モード選択"
-        >
+        <div className="button-group" role="group" aria-label="変換モード選択">
           <Button
             type="button"
             className={mode === "flatten" ? "btn-primary" : "btn-secondary"}
@@ -212,10 +197,7 @@ function JsonFlattenPage() {
           </Button>
         </div>
 
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          aria-label="JSONフラット化フォーム"
-        >
+        <form onSubmit={(e) => e.preventDefault()} aria-label="JSONフラット化フォーム">
           {/* オプション設定 */}
           <div className="converter-section">
             <fieldset className="options-fieldset">
@@ -267,9 +249,7 @@ function JsonFlattenPage() {
                         min={0}
                         max={20}
                         value={maxDepth}
-                        onChange={(e) =>
-                          setMaxDepth(Math.max(0, Number(e.target.value)))
-                        }
+                        onChange={(e) => setMaxDepth(Math.max(0, Number(e.target.value)))}
                         className="option-input-number"
                         aria-label="フラット化する最大深さ（0は無制限）"
                       />
@@ -283,9 +263,7 @@ function JsonFlattenPage() {
           {/* 入力エリア */}
           <div className="converter-section">
             <label htmlFor="inputText" className="section-title">
-              {mode === "flatten"
-                ? "入力 JSON（ネストあり）"
-                : "入力 JSON（フラット）"}
+              {mode === "flatten" ? "入力 JSON（ネストあり）" : "入力 JSON（フラット）"}
             </label>
             <Textarea
               id="inputText"
@@ -298,11 +276,7 @@ function JsonFlattenPage() {
                   : 'フラットなJSONを入力してください...\n例: {"user.name": "太郎", "user.age": 30}'
               }
               aria-describedby="input-help"
-              aria-label={
-                mode === "flatten"
-                  ? "ネストされたJSON入力欄"
-                  : "フラットなJSON入力欄"
-              }
+              aria-label={mode === "flatten" ? "ネストされたJSON入力欄" : "フラットなJSON入力欄"}
             />
             <span id="input-help" className="sr-only">
               {mode === "flatten"
@@ -317,9 +291,7 @@ function JsonFlattenPage() {
               type="button"
               className="btn-primary"
               onClick={handleConvert}
-              aria-label={
-                mode === "flatten" ? "JSONをフラット化" : "JSONをアンフラット化"
-              }
+              aria-label={mode === "flatten" ? "JSONをフラット化" : "JSONをアンフラット化"}
             >
               {mode === "flatten" ? "フラット化" : "アンフラット化"}
             </Button>
@@ -349,9 +321,7 @@ function JsonFlattenPage() {
           <div className="output-section">
             <div className="output-header">
               <label htmlFor="outputText" className="section-title">
-                {mode === "flatten"
-                  ? "出力 JSON（フラット）"
-                  : "出力 JSON（ネストあり）"}
+                {mode === "flatten" ? "出力 JSON（フラット）" : "出力 JSON（ネストあり）"}
               </label>
               {outputText && (
                 <Button
@@ -381,7 +351,7 @@ function JsonFlattenPage() {
             {
               title: "フラット化とは",
               items: [
-                'ネストされたJSONを「親キー.子キー」形式のフラットな構造に変換します',
+                "ネストされたJSONを「親キー.子キー」形式のフラットな構造に変換します",
                 '例: {"user":{"name":"太郎"}} → {"user.name":"太郎"}',
                 "配列は数値インデックスキーでフラット化されます",
                 '例: {"tags":["a","b"]} → {"tags.0":"a","tags.1":"b"}',

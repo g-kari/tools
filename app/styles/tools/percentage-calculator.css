@@ -19,7 +19,9 @@
   border: none;
   background: var(--md-sys-color-surface-variant);
   color: var(--md-sys-color-on-surface-variant);
-  transition: background 0.2s, color 0.2s;
+  transition:
+    background 0.2s,
+    color 0.2s;
   text-align: center;
 }
 

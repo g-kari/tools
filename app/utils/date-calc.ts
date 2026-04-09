@@ -32,15 +32,7 @@ export interface DateInfo {
 }
 
 const DAY_NAMES_JA = ["日", "月", "火", "水", "木", "金", "土"];
-const DAY_NAMES_EN = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-];
+const DAY_NAMES_EN = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
 /**
  * 2つの日付の差を計算する
@@ -110,7 +102,7 @@ export function addDuration(
   date: Date,
   amount: number,
   unit: DurationUnit,
-  operation: DateOperation
+  operation: DateOperation,
 ): Date {
   const result = new Date(date);
   const n = operation === "add" ? amount : -amount;
@@ -158,19 +150,13 @@ export function getDateInfo(date: Date): DateInfo {
   const week1 = new Date(d.getFullYear(), 0, 4);
   const weekNumber =
     1 +
-    Math.round(
-      ((d.getTime() - week1.getTime()) / 86400000 -
-        3 +
-        ((week1.getDay() + 6) % 7)) /
-        7
-    );
+    Math.round(((d.getTime() - week1.getTime()) / 86400000 - 3 + ((week1.getDay() + 6) % 7)) / 7);
 
   // 四半期
   const quarter = Math.ceil((month + 1) / 3);
 
   // 閏年
-  const isLeapYear =
-    (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+  const isLeapYear = (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
 
   // 月の日数
   const daysInMonth = new Date(year, month + 1, 0).getDate();

@@ -10,9 +10,7 @@ test.describe("タイムゾーン変換ページ", () => {
   });
 
   test("見出しが表示されること", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "タイムゾーン変換" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "タイムゾーン変換" })).toBeVisible();
   });
 
   test("日時入力フィールドが表示されること", async ({ page }) => {
@@ -24,9 +22,7 @@ test.describe("タイムゾーン変換ページ", () => {
   });
 
   test("「現在時刻」ボタンが表示されること", async ({ page }) => {
-    await expect(
-      page.getByRole("button", { name: "現在時刻" })
-    ).toBeVisible();
+    await expect(page.getByRole("button", { name: "現在時刻" })).toBeVisible();
   });
 
   test("変換結果テーブルが表示されること", async ({ page }) => {
@@ -47,9 +43,7 @@ test.describe("タイムゾーン変換ページ", () => {
     expect(value).not.toBe("2020-01-01T00:00");
   });
 
-  test("「すべて選択」ボタンですべてのチェックボックスがオンになること", async ({
-    page,
-  }) => {
+  test("「すべて選択」ボタンですべてのチェックボックスがオンになること", async ({ page }) => {
     await page.getByRole("button", { name: "すべてのタイムゾーンを選択" }).click();
     const checkboxes = page.locator(".timezone-checkbox");
     const count = await checkboxes.count();
@@ -58,9 +52,7 @@ test.describe("タイムゾーン変換ページ", () => {
     }
   });
 
-  test("「すべて解除」ボタンですべてのチェックボックスがオフになること", async ({
-    page,
-  }) => {
+  test("「すべて解除」ボタンですべてのチェックボックスがオフになること", async ({ page }) => {
     await page.getByRole("button", { name: "すべての選択を解除" }).click();
     const checkboxes = page.locator(".timezone-checkbox");
     const count = await checkboxes.count();
@@ -69,18 +61,14 @@ test.describe("タイムゾーン変換ページ", () => {
     }
   });
 
-  test("「すべて解除」後に空状態メッセージが表示されること", async ({
-    page,
-  }) => {
+  test("「すべて解除」後に空状態メッセージが表示されること", async ({ page }) => {
     await page.getByRole("button", { name: "すべての選択を解除" }).click();
-    await expect(
-      page.getByText("変換先タイムゾーンを1つ以上選択してください")
-    ).toBeVisible();
+    await expect(page.getByText("変換先タイムゾーンを1つ以上選択してください")).toBeVisible();
   });
 
   test("「全結果コピー」ボタンが存在すること", async ({ page }) => {
     await expect(
-      page.getByRole("button", { name: "変換結果をすべてクリップボードにコピー" })
+      page.getByRole("button", { name: "変換結果をすべてクリップボードにコピー" }),
     ).toBeVisible();
   });
 
@@ -92,13 +80,9 @@ test.describe("タイムゾーン変換ページ", () => {
     expect(value).not.toBe("2020-01-01T00:00");
   });
 
-  test("チェックボックスをオフにするとその結果が消えること", async ({
-    page,
-  }) => {
+  test("チェックボックスをオフにするとその結果が消えること", async ({ page }) => {
     // 東京のチェックボックスをオフにする
-    const tokyoCheckbox = page.locator(
-      '.timezone-checkbox[aria-label*="東京"]'
-    );
+    const tokyoCheckbox = page.locator('.timezone-checkbox[aria-label*="東京"]');
     if (await tokyoCheckbox.isChecked()) {
       await tokyoCheckbox.uncheck();
       const rows = page.locator(".timezone-result-row");

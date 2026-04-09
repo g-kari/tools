@@ -9,16 +9,25 @@ import { TipsCard } from "~/components/TipsCard";
 export const Route = createFileRoute("/video-converter")({
   head: () => ({
     meta: [
-    { title: "動画変換ツール | Web ツール集" },
-    { name: "description", content: "動画ファイルをMP4・WebM・GIF等の形式に変換するオンラインツール。" },
-    { property: "og:title", content: "動画変換ツール | Web ツール集" },
-    { property: "og:description", content: "動画ファイルをMP4・WebM・GIF等の形式に変換するオンラインツール。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/video-converter` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "動画変換ツール | Web ツール集" },
-    { name: "twitter:description", content: "動画ファイルをMP4・WebM・GIF等の形式に変換するオンラインツール。" },
-  ],
+      { title: "動画変換ツール | Web ツール集" },
+      {
+        name: "description",
+        content: "動画ファイルをMP4・WebM・GIF等の形式に変換するオンラインツール。",
+      },
+      { property: "og:title", content: "動画変換ツール | Web ツール集" },
+      {
+        property: "og:description",
+        content: "動画ファイルをMP4・WebM・GIF等の形式に変換するオンラインツール。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/video-converter` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "動画変換ツール | Web ツール集" },
+      {
+        name: "twitter:description",
+        content: "動画ファイルをMP4・WebM・GIF等の形式に変換するオンラインツール。",
+      },
+    ],
   }),
   component: VideoConverter,
 });
@@ -55,13 +64,13 @@ export async function convertVideoWithFFmpeg(
   file: File,
   format: "mp4" | "webm" | "avi" | "mov" | "gif",
   options: ConversionOptions,
-  onProgress?: (progress: number) => void
+  onProgress?: (progress: number) => void,
 ): Promise<{ blob: Blob; filename: string }> {
   // ファイルサイズチェック（ブラウザメモリ制限を考慮して500MB以下を推奨）
   const MAX_FILE_SIZE = 500 * 1024 * 1024; // 500MB
   if (file.size > MAX_FILE_SIZE) {
     throw new Error(
-      `ファイルサイズが大きすぎます。${MAX_FILE_SIZE / 1024 / 1024}MB以下のファイルを選択してください。`
+      `ファイルサイズが大きすぎます。${MAX_FILE_SIZE / 1024 / 1024}MB以下のファイルを選択してください。`,
     );
   }
 
@@ -213,7 +222,7 @@ function VideoConverter() {
         announceStatus(`ファイルを選択しました: ${selectedFile.name}`);
       }
     },
-    [announceStatus]
+    [announceStatus],
   );
 
   /**
@@ -238,12 +247,7 @@ function VideoConverter() {
         audioCodec,
       };
 
-      const result = await convertVideoWithFFmpeg(
-        file,
-        format,
-        options,
-        setProgress
-      );
+      const result = await convertVideoWithFFmpeg(file, format, options, setProgress);
 
       setConvertedBlob(result.blob);
       setConvertedFilename(result.filename);
@@ -319,19 +323,22 @@ function VideoConverter() {
   /**
    * ドロップ時のハンドラー
    */
-  const handleDrop = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
+  const handleDrop = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      setIsDragging(false);
 
-    const droppedFile = e.dataTransfer.files[0];
-    if (droppedFile && droppedFile.type.startsWith("video/")) {
-      setFile(droppedFile);
-      setConvertedBlob(null);
-      announceStatus(`ファイルを選択しました: ${droppedFile.name}`);
-    } else {
-      announceStatus("動画ファイルをドロップしてください");
-    }
-  }, [announceStatus]);
+      const droppedFile = e.dataTransfer.files[0];
+      if (droppedFile && droppedFile.type.startsWith("video/")) {
+        setFile(droppedFile);
+        setConvertedBlob(null);
+        announceStatus(`ファイルを選択しました: ${droppedFile.name}`);
+      } else {
+        announceStatus("動画ファイルをドロップしてください");
+      }
+    },
+    [announceStatus],
+  );
 
   // コーデックの選択肢をフォーマットに応じて更新
   useEffect(() => {
@@ -403,9 +410,7 @@ function VideoConverter() {
                 <polyline points="17 8 12 3 7 8" />
                 <line x1="12" y1="3" x2="12" y2="15" />
               </svg>
-              <p className="dropzone-text">
-                クリックして動画を選択、またはドラッグ&ドロップ
-              </p>
+              <p className="dropzone-text">クリックして動画を選択、またはドラッグ&ドロップ</p>
               <p className="dropzone-hint">MP4, WebM, AVI, MOV など</p>
             </div>
           </div>
@@ -531,11 +536,7 @@ function VideoConverter() {
           </div>
 
           <div className="button-group" role="group" aria-label="操作">
-            <Button
-              type="button"
-              onClick={handleConvert}
-              disabled={!file || isConverting}
-            >
+            <Button type="button" onClick={handleConvert} disabled={!file || isConverting}>
               {isConverting ? `変換中... ${progress}%` : "変換"}
             </Button>
             <Button
@@ -577,10 +578,7 @@ function VideoConverter() {
             </div>
 
             <div className="button-group" role="group" aria-label="ダウンロード">
-              <Button
-                type="button"
-                onClick={handleDownload}
-              >
+              <Button type="button" onClick={handleDownload}>
                 ダウンロード
               </Button>
             </div>

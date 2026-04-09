@@ -45,7 +45,9 @@
   color: var(--md-sys-color-on-surface);
   font-size: 1.125rem;
   font-family: inherit;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
   box-sizing: border-box;
 }
 
@@ -79,7 +81,9 @@
   background-color: var(--md-sys-color-surface-variant);
   border-radius: 12px;
   border: 1px solid transparent;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
 }
 
 .fancy-text-card:hover {

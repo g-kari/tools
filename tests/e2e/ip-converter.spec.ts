@@ -40,9 +40,7 @@ test.describe("IP Converter - E2E Tests", () => {
 
     const errorMessage = page.locator(".error-message");
     await expect(errorMessage).toBeVisible();
-    await expect(errorMessage).toContainText(
-      "IPアドレスまたは数値を入力してください"
-    );
+    await expect(errorMessage).toContainText("IPアドレスまたは数値を入力してください");
   });
 
   test("should convert decimal IP address correctly", async ({ page }) => {
@@ -147,7 +145,7 @@ test.describe("IP Converter - E2E Tests", () => {
     const ipInput = page.locator("#ipInput");
     await expect(ipInput).toHaveAttribute(
       "placeholder",
-      /192\.168\.1\.1|C0\.A8\.01\.01|3232235777/
+      /192\.168\.1\.1|C0\.A8\.01\.01|3232235777/,
     );
   });
 
@@ -190,15 +188,9 @@ test.describe("IP Converter - E2E Tests", () => {
     await page.waitForSelector(".result-card", { state: "visible" });
 
     // Check for all three sections
-    await expect(
-      page.locator("#decimal-title", { hasText: "10進数表記" })
-    ).toBeVisible();
-    await expect(
-      page.locator("#hex-title", { hasText: "16進数表記" })
-    ).toBeVisible();
-    await expect(
-      page.locator("#binary-title", { hasText: "2進数表記" })
-    ).toBeVisible();
+    await expect(page.locator("#decimal-title", { hasText: "10進数表記" })).toBeVisible();
+    await expect(page.locator("#hex-title", { hasText: "16進数表記" })).toBeVisible();
+    await expect(page.locator("#binary-title", { hasText: "2進数表記" })).toBeVisible();
   });
 
   test("should have copy buttons for values", async ({ page }) => {

@@ -1,9 +1,5 @@
 import { describe, it, expect } from "vite-plus/test";
-import {
-  generateSlug,
-  isValidSlug,
-  DEFAULT_SLUG_OPTIONS,
-} from "../../app/utils/slug";
+import { generateSlug, isValidSlug, DEFAULT_SLUG_OPTIONS } from "../../app/utils/slug";
 
 describe("generateSlug", () => {
   it("空文字列を返す（入力が空の場合）", () => {
@@ -35,14 +31,14 @@ describe("generateSlug", () => {
       generateSlug("Hello World", {
         ...DEFAULT_SLUG_OPTIONS,
         separator: "underscore",
-      })
+      }),
     ).toBe("hello_world");
   });
 
   it('lowercase: false で "Hello World" を "Hello-World" に変換する', () => {
-    expect(
-      generateSlug("Hello World", { ...DEFAULT_SLUG_OPTIONS, lowercase: false })
-    ).toBe("Hello-World");
+    expect(generateSlug("Hello World", { ...DEFAULT_SLUG_OPTIONS, lowercase: false })).toBe(
+      "Hello-World",
+    );
   });
 
   it("maxLength: 10 で文字列を切り詰める", () => {
@@ -87,9 +83,7 @@ describe("generateSlug", () => {
   });
 
   it('maxLength後のセパレーターを除去する（"hello-world" maxLength:6 → "hello"）', () => {
-    expect(
-      generateSlug("hello-world", { ...DEFAULT_SLUG_OPTIONS, maxLength: 6 })
-    ).toBe("hello");
+    expect(generateSlug("hello-world", { ...DEFAULT_SLUG_OPTIONS, maxLength: 6 })).toBe("hello");
   });
 });
 

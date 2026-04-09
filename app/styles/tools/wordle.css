@@ -47,13 +47,28 @@
 }
 
 @keyframes wordle-shake {
-  0%, 100% { transform: translateX(0); }
-  15% { transform: translateX(-6px); }
-  30% { transform: translateX(6px); }
-  45% { transform: translateX(-5px); }
-  60% { transform: translateX(5px); }
-  75% { transform: translateX(-3px); }
-  90% { transform: translateX(3px); }
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  15% {
+    transform: translateX(-6px);
+  }
+  30% {
+    transform: translateX(6px);
+  }
+  45% {
+    transform: translateX(-5px);
+  }
+  60% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-3px);
+  }
+  90% {
+    transform: translateX(3px);
+  }
 }
 
 /* 各マス */
@@ -63,7 +78,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 1.75rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -86,9 +101,15 @@
 }
 
 @keyframes wordle-pop {
-  0% { transform: scale(0.9); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(0.9);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .wordle-cell-correct {
@@ -115,24 +136,40 @@
 /* 評価済みマスのアニメーション：各列を順番に反転 */
 .wordle-row > .wordle-cell-correct:nth-child(1),
 .wordle-row > .wordle-cell-present:nth-child(1),
-.wordle-row > .wordle-cell-absent:nth-child(1) { animation-delay: 0ms; }
+.wordle-row > .wordle-cell-absent:nth-child(1) {
+  animation-delay: 0ms;
+}
 .wordle-row > .wordle-cell-correct:nth-child(2),
 .wordle-row > .wordle-cell-present:nth-child(2),
-.wordle-row > .wordle-cell-absent:nth-child(2) { animation-delay: 100ms; }
+.wordle-row > .wordle-cell-absent:nth-child(2) {
+  animation-delay: 100ms;
+}
 .wordle-row > .wordle-cell-correct:nth-child(3),
 .wordle-row > .wordle-cell-present:nth-child(3),
-.wordle-row > .wordle-cell-absent:nth-child(3) { animation-delay: 200ms; }
+.wordle-row > .wordle-cell-absent:nth-child(3) {
+  animation-delay: 200ms;
+}
 .wordle-row > .wordle-cell-correct:nth-child(4),
 .wordle-row > .wordle-cell-present:nth-child(4),
-.wordle-row > .wordle-cell-absent:nth-child(4) { animation-delay: 300ms; }
+.wordle-row > .wordle-cell-absent:nth-child(4) {
+  animation-delay: 300ms;
+}
 .wordle-row > .wordle-cell-correct:nth-child(5),
 .wordle-row > .wordle-cell-present:nth-child(5),
-.wordle-row > .wordle-cell-absent:nth-child(5) { animation-delay: 400ms; }
+.wordle-row > .wordle-cell-absent:nth-child(5) {
+  animation-delay: 400ms;
+}
 
 @keyframes wordle-flip {
-  0% { transform: rotateX(0); }
-  50% { transform: rotateX(-90deg); }
-  100% { transform: rotateX(0); }
+  0% {
+    transform: rotateX(0);
+  }
+  50% {
+    transform: rotateX(-90deg);
+  }
+  100% {
+    transform: rotateX(0);
+  }
 }
 
 /* ゲーム結果バナー */
@@ -194,11 +231,13 @@
   padding: 0 6px;
   border: none;
   border-radius: 4px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.8rem;
   font-weight: 700;
   cursor: pointer;
-  transition: opacity 0.1s ease, transform 0.1s ease;
+  transition:
+    opacity 0.1s ease,
+    transform 0.1s ease;
   background-color: var(--md-sys-color-surface-variant);
   color: var(--md-sys-color-on-surface-variant);
   user-select: none;

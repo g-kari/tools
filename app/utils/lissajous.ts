@@ -43,10 +43,7 @@ export function degToRad(degrees: number): number {
  * @param params - リサジューパラメータ
  * @returns キャンバス正規化座標 (-1 〜 1)
  */
-export function calcLissajousPoint(
-  t: number,
-  params: LissajousParams
-): LissajousPoint {
+export function calcLissajousPoint(t: number, params: LissajousParams): LissajousPoint {
   const delta = degToRad(params.phaseDeg);
   return {
     x: params.amplitude * Math.sin(params.freqX * t + delta),
@@ -62,7 +59,7 @@ export function calcLissajousPoint(
  */
 export function generateLissajousPoints(
   params: LissajousParams,
-  steps: number = 2000
+  steps: number = 2000,
 ): LissajousPoint[] {
   const points: LissajousPoint[] = [];
   const totalPeriod = 2 * Math.PI * lcm(params.freqX, params.freqY);
@@ -119,15 +116,11 @@ export function formatFreqRatio(freqX: number, freqY: number): string {
  * @param phaseDeg - 位相差（度）
  * @returns 図形の説明文字列
  */
-export function describeLissajous(
-  freqX: number,
-  freqY: number,
-  phaseDeg: number
-): string {
+export function describeLissajous(freqX: number, freqY: number, phaseDeg: number): string {
   if (freqX === freqY) {
-    if (phaseDeg === 0 || phaseDeg === 180) return '斜線（直線）';
-    if (phaseDeg === 90 || phaseDeg === 270) return '円';
-    return '楕円';
+    if (phaseDeg === 0 || phaseDeg === 180) return "斜線（直線）";
+    if (phaseDeg === 90 || phaseDeg === 270) return "円";
+    return "楕円";
   }
   const ratio = formatFreqRatio(freqX, freqY);
   return `リサジュー図形 (${ratio})`;

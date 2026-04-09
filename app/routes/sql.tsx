@@ -5,10 +5,7 @@ import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 import { formatSql, minifySql, validateSql } from "~/utils/sql";
 
@@ -114,8 +111,7 @@ function SqlFormatter() {
         }
       }
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "処理に失敗しました";
+      const message = err instanceof Error ? err.message : "処理に失敗しました";
       announceStatus(`エラー: ${message}`);
       showToast(message, "error");
     }
@@ -150,8 +146,7 @@ function SqlFormatter() {
     setOutputText("");
   }, []);
 
-  const processLabel =
-    mode === "format" ? "整形" : mode === "minify" ? "圧縮" : "検証";
+  const processLabel = mode === "format" ? "整形" : mode === "minify" ? "圧縮" : "検証";
 
   return (
     <>
@@ -163,11 +158,7 @@ function SqlFormatter() {
           <div className="converter-section">
             <fieldset className="csv-json-mode-fieldset">
               <legend className="section-title">操作モード</legend>
-              <div
-                className="csv-json-mode-group"
-                role="group"
-                aria-label="操作モード選択"
-              >
+              <div className="csv-json-mode-group" role="group" aria-label="操作モード選択">
                 <label className="format-option">
                   <input
                     type="radio"
@@ -308,11 +299,7 @@ function SqlFormatter() {
                   ? "検証結果がここに表示されます..."
                   : "処理結果がここに表示されます..."
               }
-              aria-label={
-                mode === "validate"
-                  ? "SQL検証結果の出力欄"
-                  : "SQL処理結果の出力欄"
-              }
+              aria-label={mode === "validate" ? "SQL検証結果の出力欄" : "SQL処理結果の出力欄"}
               aria-live="polite"
               className="csv-json-textarea sql-textarea"
             />

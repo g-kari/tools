@@ -65,7 +65,7 @@
   background-color: var(--md-sys-color-surface);
   color: var(--md-sys-color-on-surface);
   font-size: 0.875rem;
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
 }
 
 .barcode-hex-input:focus {
@@ -93,7 +93,7 @@
   user-select: none;
 }
 
-.barcode-toggle-label input[type='checkbox'] {
+.barcode-toggle-label input[type="checkbox"] {
   width: 16px;
   height: 16px;
   cursor: pointer;

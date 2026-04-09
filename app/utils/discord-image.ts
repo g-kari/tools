@@ -60,16 +60,13 @@ function loadImage(file: File): Promise<HTMLImageElement> {
  */
 function canvasToBlob(canvas: HTMLCanvasElement): Promise<Blob> {
   return new Promise((resolve, reject) => {
-    canvas.toBlob(
-      (blob) => {
-        if (blob) {
-          resolve(blob);
-        } else {
-          reject(new Error("Blobへの変換に失敗しました"));
-        }
-      },
-      "image/png"
-    );
+    canvas.toBlob((blob) => {
+      if (blob) {
+        resolve(blob);
+      } else {
+        reject(new Error("Blobへの変換に失敗しました"));
+      }
+    }, "image/png");
   });
 }
 
@@ -83,10 +80,7 @@ function canvasToBlob(canvas: HTMLCanvasElement): Promise<Blob> {
  * @param mode - リサイズモード ('fit' | 'crop')
  * @returns 変換後のBlob
  */
-async function convertToDiscordEmoji(
-  img: HTMLImageElement,
-  mode: "fit" | "crop"
-): Promise<Blob> {
+async function convertToDiscordEmoji(img: HTMLImageElement, mode: "fit" | "crop"): Promise<Blob> {
   const MAX = DISCORD_EMOJI_MAX_SIZE;
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
@@ -189,7 +183,7 @@ async function convertToDiscordSticker(img: HTMLImageElement): Promise<Blob> {
 
   if (blob.size > DISCORD_STICKER_MAX_BYTES) {
     throw new Error(
-      `変換後のファイルサイズ（${Math.round(blob.size / 1024)}KB）が512KBを超えています。より小さな画像を使用してください。`
+      `変換後のファイルサイズ（${Math.round(blob.size / 1024)}KB）が512KBを超えています。より小さな画像を使用してください。`,
     );
   }
 
@@ -205,7 +199,7 @@ async function convertToDiscordSticker(img: HTMLImageElement): Promise<Blob> {
  */
 export async function convertToDiscordFormat(
   file: File,
-  options: DiscordImageOptions
+  options: DiscordImageOptions,
 ): Promise<Blob> {
   const img = await loadImage(file);
 

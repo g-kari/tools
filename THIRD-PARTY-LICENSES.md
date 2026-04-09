@@ -5,6 +5,7 @@
 ## Dependencies (本番依存関係)
 
 ### React
+
 - **パッケージ名**: react
 - **バージョン**: ^18.3.1
 - **ライセンス**: MIT
@@ -12,6 +13,7 @@
 - **リポジトリ**: https://github.com/facebook/react
 
 ### React DOM
+
 - **パッケージ名**: react-dom
 - **バージョン**: ^18.3.1
 - **ライセンス**: MIT
@@ -19,6 +21,7 @@
 - **リポジトリ**: https://github.com/facebook/react
 
 ### TanStack React Router
+
 - **パッケージ名**: @tanstack/react-router
 - **バージョン**: ^1.120.3
 - **ライセンス**: MIT
@@ -26,6 +29,7 @@
 - **リポジトリ**: https://github.com/TanStack/router
 
 ### TanStack React Start
+
 - **パッケージ名**: @tanstack/react-start
 - **バージョン**: ^1.120.3
 - **ライセンス**: MIT
@@ -35,6 +39,7 @@
 ## DevDependencies (開発依存関係)
 
 ### Cloudflare Vite Plugin
+
 - **パッケージ名**: @cloudflare/vite-plugin
 - **バージョン**: ^1.0.0
 - **ライセンス**: MIT
@@ -42,6 +47,7 @@
 - **リポジトリ**: https://github.com/cloudflare/workers-sdk
 
 ### Cloudflare Workers Types
+
 - **パッケージ名**: @cloudflare/workers-types
 - **バージョン**: ^4.20251225.0
 - **ライセンス**: MIT OR Apache-2.0
@@ -49,6 +55,7 @@
 - **リポジトリ**: https://github.com/cloudflare/workers-types
 
 ### Playwright Test
+
 - **パッケージ名**: @playwright/test
 - **バージョン**: ^1.57.0
 - **ライセンス**: Apache-2.0
@@ -56,6 +63,7 @@
 - **リポジトリ**: https://github.com/microsoft/playwright
 
 ### TanStack Router Plugin
+
 - **パッケージ名**: @tanstack/router-plugin
 - **バージョン**: ^1.120.3
 - **ライセンス**: MIT
@@ -63,6 +71,7 @@
 - **リポジトリ**: https://github.com/TanStack/router
 
 ### TypeScript Type Definitions for Node.js
+
 - **パッケージ名**: @types/node
 - **バージョン**: ^25.0.3
 - **ライセンス**: MIT
@@ -70,6 +79,7 @@
 - **リポジトリ**: https://github.com/DefinitelyTyped/DefinitelyTyped
 
 ### TypeScript Type Definitions for React
+
 - **パッケージ名**: @types/react
 - **バージョン**: ^18.3.1
 - **ライセンス**: MIT
@@ -77,6 +87,7 @@
 - **リポジトリ**: https://github.com/DefinitelyTyped/DefinitelyTyped
 
 ### TypeScript Type Definitions for React DOM
+
 - **パッケージ名**: @types/react-dom
 - **バージョン**: ^18.3.1
 - **ライセンス**: MIT
@@ -84,6 +95,7 @@
 - **リポジトリ**: https://github.com/DefinitelyTyped/DefinitelyTyped
 
 ### Vitest Coverage V8
+
 - **パッケージ名**: @vitest/coverage-v8
 - **バージョン**: ^4.0.16
 - **ライセンス**: MIT
@@ -91,6 +103,7 @@
 - **リポジトリ**: https://github.com/vitest-dev/vitest
 
 ### Serve
+
 - **パッケージ名**: serve
 - **バージョン**: ^14.2.5
 - **ライセンス**: MIT
@@ -98,6 +111,7 @@
 - **リポジトリ**: https://github.com/vercel/serve
 
 ### tsx
+
 - **パッケージ名**: tsx
 - **バージョン**: ^4.21.0
 - **ライセンス**: MIT
@@ -105,6 +119,7 @@
 - **リポジトリ**: https://github.com/privatenumber/tsx
 
 ### TypeScript
+
 - **パッケージ名**: typescript
 - **バージョン**: ^5.9.3
 - **ライセンス**: Apache-2.0
@@ -112,6 +127,7 @@
 - **リポジトリ**: https://github.com/microsoft/TypeScript
 
 ### Vite
+
 - **パッケージ名**: vite
 - **バージョン**: ^7.0.0
 - **ライセンス**: MIT
@@ -119,6 +135,7 @@
 - **リポジトリ**: https://github.com/vitejs/vite
 
 ### vite-tsconfig-paths
+
 - **パッケージ名**: vite-tsconfig-paths
 - **バージョン**: ^5.1.4
 - **ライセンス**: MIT
@@ -126,6 +143,7 @@
 - **リポジトリ**: https://github.com/aleclarson/vite-tsconfig-paths
 
 ### Vitest
+
 - **パッケージ名**: vitest
 - **バージョン**: ^4.0.16
 - **ライセンス**: MIT
@@ -133,6 +151,7 @@
 - **リポジトリ**: https://github.com/vitest-dev/vitest
 
 ### wait-on
+
 - **パッケージ名**: wait-on
 - **バージョン**: ^9.0.3
 - **ライセンス**: MIT
@@ -140,6 +159,7 @@
 - **リポジトリ**: https://github.com/jeffbski/wait-on
 
 ### Wrangler
+
 - **パッケージ名**: wrangler
 - **バージョン**: 4.54.0
 - **ライセンス**: MIT OR Apache-2.0
@@ -279,4 +299,4 @@ END OF TERMS AND CONDITIONS
 
 ---
 
-*This file was last updated: 2025-12-28*
+_This file was last updated: 2025-12-28_

@@ -8,9 +8,7 @@ test.describe("タイポグラフィスケール生成 - E2Eテスト", () => {
     await page.waitForLoadState("networkidle");
   });
 
-  test("ページが正常にロードされる（undefinedが表示されない）", async ({
-    page,
-  }) => {
+  test("ページが正常にロードされる（undefinedが表示されない）", async ({ page }) => {
     const bodyText = await page.textContent("body");
     expect(bodyText).not.toContain("undefined");
   });
@@ -26,9 +24,7 @@ test.describe("タイポグラフィスケール生成 - E2Eテスト", () => {
     await expect(page.locator("#steps-down")).toBeVisible();
   });
 
-  test("デフォルトで基準フォントサイズが16pxになっている", async ({
-    page,
-  }) => {
+  test("デフォルトで基準フォントサイズが16pxになっている", async ({ page }) => {
     const baseSizeInput = page.locator("#base-size");
     await expect(baseSizeInput).toHaveValue("16");
   });
@@ -82,9 +78,7 @@ test.describe("タイポグラフィスケール生成 - E2Eテスト", () => {
     expect(parsed).toHaveProperty("typography");
   });
 
-  test("Tailwindタブをクリックするとtailwind形式に切り替わる", async ({
-    page,
-  }) => {
+  test("Tailwindタブをクリックするとtailwind形式に切り替わる", async ({ page }) => {
     const tailwindTab = page.locator(".type-scale-format-tab", {
       hasText: "Tailwind",
     });
@@ -126,9 +120,7 @@ test.describe("タイポグラフィスケール生成 - E2Eテスト", () => {
     expect(newValue).not.toBe(initialValue);
   });
 
-  test("基準フォントサイズを変更するとプレビューが更新される", async ({
-    page,
-  }) => {
+  test("基準フォントサイズを変更するとプレビューが更新される", async ({ page }) => {
     const output = page.locator("[data-testid='output-code']");
     const initialValue = await output.inputValue();
 
@@ -154,9 +146,7 @@ test.describe("タイポグラフィスケール生成 - E2Eテスト", () => {
     await expect(page.locator('[role="main"]')).toBeVisible();
   });
 
-  test("アクセシビリティ: カスタム比率チェックボックスが動作する", async ({
-    page,
-  }) => {
+  test("アクセシビリティ: カスタム比率チェックボックスが動作する", async ({ page }) => {
     const checkbox = page.locator('input[type="checkbox"]', {
       hasText: "",
     });

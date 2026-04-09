@@ -5,12 +5,12 @@
  */
 
 /** 改行コードの種類 */
-export type LineEnding = 'CRLF' | 'LF' | 'CR';
+export type LineEnding = "CRLF" | "LF" | "CR";
 
 /** 改行コードの検出結果 */
 export interface LineEndingInfo {
   /** 検出された改行コードの種類（混在の場合は "Mixed"） */
-  type: LineEnding | 'Mixed' | 'None';
+  type: LineEnding | "Mixed" | "None";
   /** CRLF (\r\n) の個数 */
   crlfCount: number;
   /** LF のみ (\n) の個数 */
@@ -28,32 +28,32 @@ export interface LineEndingInfo {
  */
 export function detectLineEnding(text: string): LineEndingInfo {
   if (text.length === 0) {
-    return { type: 'None', crlfCount: 0, lfCount: 0, crCount: 0, lineCount: 0 };
+    return { type: "None", crlfCount: 0, lfCount: 0, crCount: 0, lineCount: 0 };
   }
 
   // CRLF を先に数えてから LF/CR を数える（順序重要）
   const crlfCount = (text.match(/\r\n/g) ?? []).length;
   // CRLF を除いた残りの \n
-  const lfCount = (text.replace(/\r\n/g, '').match(/\n/g) ?? []).length;
+  const lfCount = (text.replace(/\r\n/g, "").match(/\n/g) ?? []).length;
   // CRLF を除いた残りの \r
-  const crCount = (text.replace(/\r\n/g, '').match(/\r/g) ?? []).length;
+  const crCount = (text.replace(/\r\n/g, "").match(/\r/g) ?? []).length;
 
   const totalNewlines = crlfCount + lfCount + crCount;
   const lineCount = totalNewlines + 1;
 
-  let type: LineEndingInfo['type'];
+  let type: LineEndingInfo["type"];
   if (totalNewlines === 0) {
-    type = 'None';
+    type = "None";
   } else {
     const typesPresent = [crlfCount > 0, lfCount > 0, crCount > 0].filter(Boolean).length;
     if (typesPresent > 1) {
-      type = 'Mixed';
+      type = "Mixed";
     } else if (crlfCount > 0) {
-      type = 'CRLF';
+      type = "CRLF";
     } else if (lfCount > 0) {
-      type = 'LF';
+      type = "LF";
     } else {
-      type = 'CR';
+      type = "CR";
     }
   }
 
@@ -68,27 +68,27 @@ export function detectLineEnding(text: string): LineEndingInfo {
  */
 export function convertLineEnding(text: string, to: LineEnding): string {
   // まずすべての改行を \n に正規化してから変換
-  const normalized = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  const normalized = text.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
   switch (to) {
-    case 'CRLF':
-      return normalized.replace(/\n/g, '\r\n');
-    case 'LF':
+    case "CRLF":
+      return normalized.replace(/\n/g, "\r\n");
+    case "LF":
       return normalized;
-    case 'CR':
-      return normalized.replace(/\n/g, '\r');
+    case "CR":
+      return normalized.replace(/\n/g, "\r");
   }
 }
 
 /** 改行コードの表示名マップ */
 export const LINE_ENDING_LABELS: Record<LineEnding, string> = {
-  CRLF: 'CRLF (\\r\\n) — Windows',
-  LF: 'LF (\\n) — Unix / macOS',
-  CR: 'CR (\\r) — 旧 Mac',
+  CRLF: "CRLF (\\r\\n) — Windows",
+  LF: "LF (\\n) — Unix / macOS",
+  CR: "CR (\\r) — 旧 Mac",
 };
 
 /** 改行コードの短縮表示名 */
 export const LINE_ENDING_SHORT: Record<LineEnding, string> = {
-  CRLF: 'CRLF',
-  LF: 'LF',
-  CR: 'CR',
+  CRLF: "CRLF",
+  LF: "LF",
+  CR: "CR",
 };

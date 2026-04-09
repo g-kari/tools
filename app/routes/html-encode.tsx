@@ -5,25 +5,34 @@ import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 
 export const Route = createFileRoute("/html-encode")({
   head: () => ({
     meta: [
-    { title: "HTMLエスケープ変換 | Web ツール集" },
-    { name: "description", content: "HTML特殊文字（&amp;, &lt;, &gt;, &quot;）のエスケープ・アンエスケープ変換ツール。" },
-    { property: "og:title", content: "HTMLエスケープ変換 | Web ツール集" },
-    { property: "og:description", content: "HTML特殊文字（&amp;, &lt;, &gt;, &quot;）のエスケープ・アンエスケープ変換ツール。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/html-encode` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "HTMLエスケープ変換 | Web ツール集" },
-    { name: "twitter:description", content: "HTML特殊文字（&amp;, &lt;, &gt;, &quot;）のエスケープ・アンエスケープ変換ツール。" },
-  ],
+      { title: "HTMLエスケープ変換 | Web ツール集" },
+      {
+        name: "description",
+        content:
+          "HTML特殊文字（&amp;, &lt;, &gt;, &quot;）のエスケープ・アンエスケープ変換ツール。",
+      },
+      { property: "og:title", content: "HTMLエスケープ変換 | Web ツール集" },
+      {
+        property: "og:description",
+        content:
+          "HTML特殊文字（&amp;, &lt;, &gt;, &quot;）のエスケープ・アンエスケープ変換ツール。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/html-encode` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "HTMLエスケープ変換 | Web ツール集" },
+      {
+        name: "twitter:description",
+        content:
+          "HTML特殊文字（&amp;, &lt;, &gt;, &quot;）のエスケープ・アンエスケープ変換ツール。",
+      },
+    ],
   }),
   component: HtmlEncoder,
 });
@@ -51,9 +60,7 @@ function htmlEncode(text: string): string {
  */
 function htmlDecode(text: string): string {
   return text
-    .replace(/&#x([0-9a-fA-F]+);/g, (_, hex) =>
-      String.fromCodePoint(parseInt(hex, 16))
-    )
+    .replace(/&#x([0-9a-fA-F]+);/g, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
     .replace(/&#(\d+);/g, (_, code) => String.fromCodePoint(Number(code)))
     .replace(/&quot;/g, '"')
     .replace(/&#39;/g, "'")
@@ -126,10 +133,7 @@ function HtmlEncoder() {
   return (
     <>
       <div className="tool-container">
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          aria-label="HTMLエンコードフォーム"
-        >
+        <form onSubmit={(e) => e.preventDefault()} aria-label="HTMLエンコードフォーム">
           <div className="converter-section">
             <label htmlFor="inputText" className="section-title">
               入力テキスト

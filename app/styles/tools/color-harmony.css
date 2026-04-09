@@ -48,7 +48,9 @@
   font-size: 0.875rem;
   background: var(--md-sys-color-surface-variant);
   color: var(--md-sys-color-on-surface);
-  transition: border-color 0.2s, background 0.2s;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
 }
 
 .ch-hex-input:focus {
@@ -250,7 +252,10 @@
   background: none;
   color: var(--md-sys-color-on-surface-variant);
   cursor: pointer;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s;
   text-align: center;
 }
 

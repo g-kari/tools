@@ -3,10 +3,7 @@ import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useCallback, useRef, useEffect } from "react";
 import { useToast } from "../components/Toast";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 import {
   generateShortCodes,
@@ -59,16 +56,10 @@ function ShortCodeGenerator() {
   const [codes, setCodes] = useState<string[]>([]);
   const [count, setCount] = useState(1);
   const [selectedPreset, setSelectedPreset] = useState<FormatPresetKey>("voucher");
-  const [segmentLength, setSegmentLength] = useState(
-    FORMAT_PRESETS.voucher.segmentLength
-  );
-  const [segmentCount, setSegmentCount] = useState(
-    FORMAT_PRESETS.voucher.segmentCount
-  );
+  const [segmentLength, setSegmentLength] = useState(FORMAT_PRESETS.voucher.segmentLength);
+  const [segmentCount, setSegmentCount] = useState(FORMAT_PRESETS.voucher.segmentCount);
   const [separator, setSeparator] = useState(FORMAT_PRESETS.voucher.separator);
-  const [charsetKey, setCharsetKey] = useState<CharsetKey>(
-    FORMAT_PRESETS.voucher.charsetKey
-  );
+  const [charsetKey, setCharsetKey] = useState<CharsetKey>(FORMAT_PRESETS.voucher.charsetKey);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const [copiedAll, setCopiedAll] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -107,7 +98,7 @@ function ShortCodeGenerator() {
           alphabet: CHARSETS[charsetKey].value,
           addLuhn: false,
         },
-        count
+        count,
       );
       setCodes(generated);
       setCopiedIndex(null);
@@ -130,7 +121,7 @@ function ShortCodeGenerator() {
         showToast("コピーに失敗しました", "error");
       }
     },
-    [codes, copy, announceStatus, showToast]
+    [codes, copy, announceStatus, showToast],
   );
 
   const handleCopyAll = useCallback(async () => {
@@ -188,18 +179,14 @@ function ShortCodeGenerator() {
                 <select
                   id="format-preset"
                   value={selectedPreset}
-                  onChange={(e) =>
-                    handlePresetChange(e.target.value as FormatPresetKey)
-                  }
+                  onChange={(e) => handlePresetChange(e.target.value as FormatPresetKey)}
                   className="select-input"
                 >
-                  {(Object.keys(FORMAT_PRESETS) as FormatPresetKey[]).map(
-                    (key) => (
-                      <option key={key} value={key}>
-                        {FORMAT_PRESETS[key].label}
-                      </option>
-                    )
-                  )}
+                  {(Object.keys(FORMAT_PRESETS) as FormatPresetKey[]).map((key) => (
+                    <option key={key} value={key}>
+                      {FORMAT_PRESETS[key].label}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
@@ -219,9 +206,7 @@ function ShortCodeGenerator() {
                   max={20}
                   value={segmentLength}
                   onChange={(e) => {
-                    setSegmentLength(
-                      Math.max(1, Math.min(20, parseInt(e.target.value) || 1))
-                    );
+                    setSegmentLength(Math.max(1, Math.min(20, parseInt(e.target.value) || 1)));
                     setSelectedPreset("custom");
                   }}
                   className="w-20"
@@ -241,9 +226,7 @@ function ShortCodeGenerator() {
                   max={8}
                   value={segmentCount}
                   onChange={(e) => {
-                    setSegmentCount(
-                      Math.max(1, Math.min(8, parseInt(e.target.value) || 1))
-                    );
+                    setSegmentCount(Math.max(1, Math.min(8, parseInt(e.target.value) || 1)));
                     setSelectedPreset("custom");
                   }}
                   className="w-20"
@@ -298,9 +281,7 @@ function ShortCodeGenerator() {
                   max={100}
                   value={count}
                   onChange={(e) =>
-                    setCount(
-                      Math.max(1, Math.min(100, parseInt(e.target.value) || 1))
-                    )
+                    setCount(Math.max(1, Math.min(100, parseInt(e.target.value) || 1)))
                   }
                   className="w-20"
                 />
@@ -346,11 +327,7 @@ function ShortCodeGenerator() {
               <div className="nanoid-result-header">
                 <h2 className="section-title">生成結果</h2>
                 {codes.length > 1 && (
-                  <button
-                    type="button"
-                    className="btn-secondary"
-                    onClick={handleCopyAll}
-                  >
+                  <button type="button" className="btn-secondary" onClick={handleCopyAll}>
                     {copiedAll ? "コピーしました" : "すべてコピー"}
                   </button>
                 )}

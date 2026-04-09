@@ -60,15 +60,11 @@ describe("round3", () => {
 
 describe("formatCubicBezier", () => {
   it("cubic-bezier() 文字列を生成する", () => {
-    expect(formatCubicBezier(0.25, 0.1, 0.25, 1)).toBe(
-      "cubic-bezier(0.25, 0.1, 0.25, 1)"
-    );
+    expect(formatCubicBezier(0.25, 0.1, 0.25, 1)).toBe("cubic-bezier(0.25, 0.1, 0.25, 1)");
   });
 
   it("ease プリセット相当の値を生成する", () => {
-    expect(formatCubicBezier(0.25, 0.1, 0.25, 1)).toBe(
-      "cubic-bezier(0.25, 0.1, 0.25, 1)"
-    );
+    expect(formatCubicBezier(0.25, 0.1, 0.25, 1)).toBe("cubic-bezier(0.25, 0.1, 0.25, 1)");
   });
 
   it("linear 相当 (0, 0, 1, 1) を生成する", () => {
@@ -112,7 +108,9 @@ describe("generateTimingFunctionCSS", () => {
   it("両行に同じcubic-bezier値を含む", () => {
     const result = generateTimingFunctionCSS(0.42, 0, 0.58, 1);
     const bezier = "cubic-bezier(0.42, 0, 0.58, 1)";
-    const occurrences = (result.match(new RegExp(bezier.replace("(", "\\(").replace(")", "\\)"), "g")) ?? []).length;
+    const occurrences = (
+      result.match(new RegExp(bezier.replace("(", "\\(").replace(")", "\\)"), "g")) ?? []
+    ).length;
     expect(occurrences).toBe(2);
   });
 });

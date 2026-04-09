@@ -21,9 +21,7 @@ test.describe("SQLフォーマッター", () => {
   });
 
   test("整形モードでSQLを整形できる", async ({ page }) => {
-    await page.locator("#inputText").fill(
-      "SELECT id, name FROM users WHERE age > 18"
-    );
+    await page.locator("#inputText").fill("SELECT id, name FROM users WHERE age > 18");
     await page.getByRole("button", { name: "SQL 整形" }).click();
     const output = await page.locator("#outputText").inputValue();
     expect(output).toContain("SELECT");
@@ -35,9 +33,7 @@ test.describe("SQLフォーマッター", () => {
 
   test("圧縮モードでSQLを圧縮できる", async ({ page }) => {
     await page.getByRole("radio", { name: "SQLを圧縮する" }).click();
-    await page.locator("#inputText").fill(
-      "SELECT\n  id,\n  name\nFROM users\nWHERE age > 18"
-    );
+    await page.locator("#inputText").fill("SELECT\n  id,\n  name\nFROM users\nWHERE age > 18");
     await page.getByRole("button", { name: "SQL 圧縮" }).click();
     const output = await page.locator("#outputText").inputValue();
     // 1行に圧縮されている
@@ -47,9 +43,7 @@ test.describe("SQLフォーマッター", () => {
 
   test("検証モードで有効なSQLを検証できる", async ({ page }) => {
     await page.getByRole("radio", { name: "SQLを検証する" }).click();
-    await page.locator("#inputText").fill(
-      "SELECT id FROM users WHERE age > 18"
-    );
+    await page.locator("#inputText").fill("SELECT id FROM users WHERE age > 18");
     await page.getByRole("button", { name: "SQL 検証" }).click();
     const output = await page.locator("#outputText").inputValue();
     expect(output).toContain("✓");
@@ -57,9 +51,7 @@ test.describe("SQLフォーマッター", () => {
 
   test("検証モードで無効なSQLを検出できる", async ({ page }) => {
     await page.getByRole("radio", { name: "SQLを検証する" }).click();
-    await page.locator("#inputText").fill(
-      "SELECT id FROM users WHERE age > 18)"
-    );
+    await page.locator("#inputText").fill("SELECT id FROM users WHERE age > 18)");
     await page.getByRole("button", { name: "SQL 検証" }).click();
     const output = await page.locator("#outputText").inputValue();
     expect(output).toContain("✗");
@@ -80,7 +72,7 @@ test.describe("SQLフォーマッター", () => {
 
   test("コピーボタンが存在する", async ({ page }) => {
     await expect(
-      page.getByRole("button", { name: "出力結果をクリップボードにコピー" })
+      page.getByRole("button", { name: "出力結果をクリップボードにコピー" }),
     ).toBeVisible();
   });
 
@@ -93,12 +85,8 @@ test.describe("SQLフォーマッター", () => {
   });
 
   test("インデント幅オプションが表示される（整形モード）", async ({ page }) => {
-    await expect(
-      page.getByRole("radio", { name: "インデント2スペース" })
-    ).toBeVisible();
-    await expect(
-      page.getByRole("radio", { name: "インデント4スペース" })
-    ).toBeVisible();
+    await expect(page.getByRole("radio", { name: "インデント2スペース" })).toBeVisible();
+    await expect(page.getByRole("radio", { name: "インデント4スペース" })).toBeVisible();
   });
 
   test("ヒントカードが表示される", async ({ page }) => {

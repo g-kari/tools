@@ -54,7 +54,7 @@
 }
 
 .ms-counter {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--md-sys-color-on-surface-variant);
@@ -168,14 +168,30 @@
 }
 
 /* 数字の色（隣接地雷数） */
-.ms-cell.n1 { color: #1565c0; }
-.ms-cell.n2 { color: #2e7d32; }
-.ms-cell.n3 { color: #c62828; }
-.ms-cell.n4 { color: #4a148c; }
-.ms-cell.n5 { color: #bf360c; }
-.ms-cell.n6 { color: #00838f; }
-.ms-cell.n7 { color: #37474f; }
-.ms-cell.n8 { color: #212121; }
+.ms-cell.n1 {
+  color: #1565c0;
+}
+.ms-cell.n2 {
+  color: #2e7d32;
+}
+.ms-cell.n3 {
+  color: #c62828;
+}
+.ms-cell.n4 {
+  color: #4a148c;
+}
+.ms-cell.n5 {
+  color: #bf360c;
+}
+.ms-cell.n6 {
+  color: #00838f;
+}
+.ms-cell.n7 {
+  color: #37474f;
+}
+.ms-cell.n8 {
+  color: #212121;
+}
 
 /* ゲームオーバー時の地雷セル */
 .ms-cell.mine-exploded {
@@ -199,9 +215,15 @@
 }
 
 @keyframes ms-explode {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.2); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 /* ゲームオーバー・クリアバナー */
@@ -229,8 +251,14 @@
 }
 
 @keyframes ms-result-in {
-  from { opacity: 0; transform: translateY(-8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .ms-result-icon {
@@ -253,7 +281,7 @@
 }
 
 .ms-result-time {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 1rem;
   margin: 0;
   opacity: 0.8;

@@ -98,9 +98,7 @@ test.describe("JSON→Zodスキーマ生成 - E2E Tests", () => {
   });
 
   test("import文を追加オプションが機能する", async ({ page }) => {
-    const importCheckbox = page
-      .locator("label", { hasText: "import文を追加" })
-      .locator("input");
+    const importCheckbox = page.locator("label", { hasText: "import文を追加" }).locator("input");
     // デフォルトでチェック済みのはず
     await expect(importCheckbox).toBeChecked();
 

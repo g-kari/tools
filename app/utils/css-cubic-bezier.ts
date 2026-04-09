@@ -48,12 +48,7 @@ export function round3(value: number): number {
  * @param y2 - 制御点2のY座標
  * @returns cubic-bezier() 文字列
  */
-export function formatCubicBezier(
-  x1: number,
-  y1: number,
-  x2: number,
-  y2: number
-): string {
+export function formatCubicBezier(x1: number, y1: number, x2: number, y2: number): string {
   return `cubic-bezier(${round3(x1)}, ${round3(y1)}, ${round3(x2)}, ${round3(y2)})`;
 }
 
@@ -65,12 +60,7 @@ export function formatCubicBezier(
  * @param y2 - 制御点2のY座標
  * @returns CSS宣言文字列
  */
-export function generateTimingFunctionCSS(
-  x1: number,
-  y1: number,
-  x2: number,
-  y2: number
-): string {
+export function generateTimingFunctionCSS(x1: number, y1: number, x2: number, y2: number): string {
   const fn = formatCubicBezier(x1, y1, x2, y2);
   return `transition-timing-function: ${fn};\nanimation-timing-function: ${fn};`;
 }
@@ -90,7 +80,7 @@ export function computeBezierPoint(
   x1: number,
   y1: number,
   x2: number,
-  y2: number
+  y2: number,
 ): { x: number; y: number } {
   const mt = 1 - t;
   const x = 3 * mt * mt * t * x1 + 3 * mt * t * t * x2 + t * t * t;

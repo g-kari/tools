@@ -64,28 +64,25 @@ function BackgroundRemoval() {
     };
   }, []);
 
-  const handleFileSelect = useCallback(
-    async (files: File[]) => {
-      const file = files[0];
-      if (!file) return;
+  const handleFileSelect = useCallback(async (files: File[]) => {
+    const file = files[0];
+    if (!file) return;
 
-      // 既存のURLをクリーンアップ
-      if (originalUrlRef.current) URL.revokeObjectURL(originalUrlRef.current);
-      if (resultUrlRef.current) URL.revokeObjectURL(resultUrlRef.current);
+    // 既存のURLをクリーンアップ
+    if (originalUrlRef.current) URL.revokeObjectURL(originalUrlRef.current);
+    if (resultUrlRef.current) URL.revokeObjectURL(resultUrlRef.current);
 
-      const url = URL.createObjectURL(file);
-      originalUrlRef.current = url;
-      resultUrlRef.current = null;
+    const url = URL.createObjectURL(file);
+    originalUrlRef.current = url;
+    resultUrlRef.current = null;
 
-      setOriginalFile(file);
-      setOriginalUrl(url);
-      setResultBlob(null);
-      setResultUrl(null);
-      setStatus("idle");
-      setProgress(null);
-    },
-    []
-  );
+    setOriginalFile(file);
+    setOriginalUrl(url);
+    setResultBlob(null);
+    setResultUrl(null);
+    setStatus("idle");
+    setProgress(null);
+  }, []);
 
   const handleRemoveBackground = useCallback(async () => {
     if (!originalFile) return;
@@ -144,9 +141,7 @@ function BackgroundRemoval() {
 
   // プログレスのパーセント計算
   const progressPercent =
-    progress && progress.total > 0
-      ? Math.round((progress.value / progress.total) * 100)
-      : 0;
+    progress && progress.total > 0 ? Math.round((progress.value / progress.total) * 100) : 0;
 
   const progressLabel = (() => {
     if (!progress) return "処理中...";
@@ -177,19 +172,11 @@ function BackgroundRemoval() {
       {originalFile && (
         <div className="converter-section">
           <div className="bg-removal-actions">
-            <Button
-              type="button"
-              onClick={handleRemoveBackground}
-              disabled={isLoading}
-            >
+            <Button type="button" onClick={handleRemoveBackground} disabled={isLoading}>
               {isLoading ? "処理中..." : "背景を除去"}
             </Button>
             {status === "done" && resultBlob && (
-              <Button
-                type="button"
-                variant="secondary"
-                onClick={handleDownload}
-              >
+              <Button type="button" variant="secondary" onClick={handleDownload}>
                 PNG でダウンロード
               </Button>
             )}
@@ -218,9 +205,7 @@ function BackgroundRemoval() {
             <div className="bg-removal-panel">
               <span className="bg-removal-panel-label">元画像</span>
               <div className="bg-removal-image-wrapper">
-                {originalUrl && (
-                  <img src={originalUrl} alt="元画像" />
-                )}
+                {originalUrl && <img src={originalUrl} alt="元画像" />}
               </div>
             </div>
 
@@ -233,9 +218,7 @@ function BackgroundRemoval() {
                 {/* プログレスオーバーレイ */}
                 {isLoading && (
                   <div className="bg-removal-progress-overlay" aria-live="polite">
-                    <span className="bg-removal-progress-text">
-                      {progressLabel}
-                    </span>
+                    <span className="bg-removal-progress-text">{progressLabel}</span>
                     <div
                       className="bg-removal-progress-bar-wrapper"
                       role="progressbar"
@@ -249,17 +232,13 @@ function BackgroundRemoval() {
                       />
                     </div>
                     {progress && progress.total > 0 && (
-                      <span className="bg-removal-progress-text">
-                        {progressPercent}%
-                      </span>
+                      <span className="bg-removal-progress-text">{progressPercent}%</span>
                     )}
                   </div>
                 )}
 
                 {/* 結果画像 */}
-                {status === "done" && resultUrl && (
-                  <img src={resultUrl} alt="背景除去後" />
-                )}
+                {status === "done" && resultUrl && <img src={resultUrl} alt="背景除去後" />}
 
                 {/* プレースホルダー */}
                 {status === "idle" && (

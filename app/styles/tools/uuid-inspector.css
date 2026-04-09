@@ -11,14 +11,16 @@
 .uuid-input {
   flex: 1;
   padding: 0.625rem 0.875rem;
-  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  font-family: "JetBrains Mono", "Roboto Mono", "Courier New", monospace;
   font-size: 0.9375rem;
   letter-spacing: 0.04em;
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: 4px;
   background: var(--md-sys-color-surface-variant);
   color: var(--md-sys-color-on-surface);
-  transition: border-color 0.2s, background 0.2s;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
   min-width: 0;
 }
 
@@ -49,13 +51,16 @@
 .uuid-sample-btn {
   padding: 0.25rem 0.625rem;
   font-size: 0.75rem;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: 100px;
   background: var(--md-sys-color-surface-variant);
   color: var(--md-sys-color-on-surface-variant);
   cursor: pointer;
-  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+  transition:
+    background-color 0.15s,
+    color 0.15s,
+    border-color 0.15s;
 }
 
 .uuid-sample-btn:hover {
@@ -110,7 +115,7 @@
 }
 
 .uuid-normalized {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.9375rem;
   font-weight: 600;
   color: var(--md-sys-color-primary);
@@ -126,7 +131,7 @@
   border-radius: 100px;
   font-size: 0.6875rem;
   font-weight: 700;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   flex-shrink: 0;
@@ -171,7 +176,7 @@
   font-size: 0.75rem;
   font-weight: 600;
   color: var(--md-sys-color-on-surface-variant);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   min-width: 8rem;
@@ -180,7 +185,7 @@
 }
 
 .uuid-meta-value {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   color: var(--md-sys-color-on-surface);
   word-break: break-all;
   flex: 1;
@@ -220,7 +225,9 @@
   list-style: none;
 }
 
-.uuid-fields-title::-webkit-details-marker { display: none; }
+.uuid-fields-title::-webkit-details-marker {
+  display: none;
+}
 
 .uuid-fields-section[open] .uuid-fields-title,
 .uuid-binary-section[open] .uuid-fields-title {
@@ -247,21 +254,31 @@
 }
 
 /* フィールドカラーコーディング */
-.uuid-field-f1 { background: color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent); }
-.uuid-field-f2 { background: color-mix(in srgb, var(--md-sys-color-secondary) 8%, transparent); }
-.uuid-field-f3 { background: color-mix(in srgb, var(--md-sys-color-tertiary, #6750a4) 8%, transparent); }
-.uuid-field-f4 { background: color-mix(in srgb, var(--md-sys-color-error) 6%, transparent); }
-.uuid-field-f5 { background: color-mix(in srgb, var(--md-sys-color-on-surface) 4%, transparent); }
+.uuid-field-f1 {
+  background: color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent);
+}
+.uuid-field-f2 {
+  background: color-mix(in srgb, var(--md-sys-color-secondary) 8%, transparent);
+}
+.uuid-field-f3 {
+  background: color-mix(in srgb, var(--md-sys-color-tertiary, #6750a4) 8%, transparent);
+}
+.uuid-field-f4 {
+  background: color-mix(in srgb, var(--md-sys-color-error) 6%, transparent);
+}
+.uuid-field-f5 {
+  background: color-mix(in srgb, var(--md-sys-color-on-surface) 4%, transparent);
+}
 
 .uuid-field-label {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.75rem;
   color: var(--md-sys-color-on-surface-variant);
   font-weight: 600;
 }
 
 .uuid-field-value {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.875rem;
   font-weight: 600;
   color: var(--md-sys-color-on-surface);
@@ -294,14 +311,14 @@
 }
 
 .uuid-byte-hex {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.75rem;
   font-weight: 700;
   color: var(--md-sys-color-primary);
 }
 
 .uuid-byte-bin {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.5rem;
   color: var(--md-sys-color-on-surface-variant);
   letter-spacing: 0.05em;

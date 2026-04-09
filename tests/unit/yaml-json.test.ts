@@ -40,8 +40,7 @@ describe("yamlToJson", () => {
      * オブジェクトと配列が混在する複合構造をJSONに変換するテスト
      */
     it("複合構造（オブジェクト+配列）をJSONに変換する", () => {
-      const yaml =
-        "users:\n  - name: 田中\n    age: 30\n  - name: 佐藤\n    age: 25";
+      const yaml = "users:\n  - name: 田中\n    age: 30\n  - name: 佐藤\n    age: 25";
       const result = JSON.parse(yamlToJson(yaml));
       expect(result).toEqual({
         users: [
@@ -103,8 +102,7 @@ describe("yamlToJson", () => {
      * コメント付きYAMLを変換するとコメントが除去されるテスト
      */
     it("コメント付きYAMLを変換するとコメントが除去される", () => {
-      const yaml =
-        "# これはコメントです\nname: 田中 # インラインコメント\nage: 30";
+      const yaml = "# これはコメントです\nname: 田中 # インラインコメント\nage: 30";
       const result = JSON.parse(yamlToJson(yaml));
       expect(result).toEqual({ name: "田中", age: 30 });
     });

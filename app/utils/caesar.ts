@@ -59,9 +59,7 @@ export function rot13(text: string): string {
  * @param text 解析するテキスト
  * @returns 各シフト量でのデコード結果配列
  */
-export function bruteForce(
-  text: string
-): Array<{ shift: number; result: string }> {
+export function bruteForce(text: string): Array<{ shift: number; result: string }> {
   return Array.from({ length: 26 }, (_, i) => ({
     shift: i,
     result: decodeCaesar(text, i),

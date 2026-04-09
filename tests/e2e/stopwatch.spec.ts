@@ -39,9 +39,7 @@ test.describe("Stopwatch - E2E Tests", () => {
     await expect(lapBtn).toBeDisabled();
   });
 
-  test("should disable reset button when not running with no elapsed time", async ({
-    page,
-  }) => {
+  test("should disable reset button when not running with no elapsed time", async ({ page }) => {
     const resetBtn = page.locator('[aria-label="リセット"]');
     await expect(resetBtn).toBeDisabled();
   });
@@ -95,9 +93,7 @@ test.describe("Stopwatch - E2E Tests", () => {
     await page.locator('[aria-label="リセット"]').click();
 
     await expect(page.locator(".stopwatch-time")).toHaveText("00:00.000");
-    await expect(page.locator('[aria-label="計測開始"]')).toContainText(
-      "スタート"
-    );
+    await expect(page.locator('[aria-label="計測開始"]')).toContainText("スタート");
     await expect(page.locator(".stopwatch-laps")).not.toBeVisible();
   });
 
@@ -118,9 +114,7 @@ test.describe("Stopwatch - E2E Tests", () => {
     await expect(activeCategory).toContainText("ゲーム");
   });
 
-  test("should show stopwatch link in game category dropdown", async ({
-    page,
-  }) => {
+  test("should show stopwatch link in game category dropdown", async ({ page }) => {
     const categoryBtn = page.locator(".nav-category-btn", {
       hasText: "ゲーム",
     });

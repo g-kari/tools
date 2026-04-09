@@ -20,7 +20,7 @@
 
 .markdown-preview-textarea {
   min-height: 400px;
-  font-family: 'Roboto Mono', 'Courier New', monospace;
+  font-family: "Roboto Mono", "Courier New", monospace;
   font-size: 14px;
   line-height: 1.6;
   resize: vertical;
@@ -55,9 +55,18 @@
   color: var(--md-sys-color-on-surface);
 }
 
-.markdown-preview-inner h1 { font-size: 1.75rem; font-weight: 300; }
-.markdown-preview-inner h2 { font-size: 1.4rem; border-bottom: 1px solid var(--md-sys-color-outline-variant); padding-bottom: 4px; }
-.markdown-preview-inner h3 { font-size: 1.2rem; }
+.markdown-preview-inner h1 {
+  font-size: 1.75rem;
+  font-weight: 300;
+}
+.markdown-preview-inner h2 {
+  font-size: 1.4rem;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  padding-bottom: 4px;
+}
+.markdown-preview-inner h3 {
+  font-size: 1.2rem;
+}
 
 .markdown-preview-inner p {
   margin-bottom: 12px;
@@ -74,7 +83,7 @@
 }
 
 .markdown-preview-inner code {
-  font-family: 'Roboto Mono', 'Courier New', monospace;
+  font-family: "Roboto Mono", "Courier New", monospace;
   font-size: 0.875em;
   background: var(--md-sys-color-primary-container);
   color: var(--md-sys-color-on-primary-container);

@@ -393,7 +393,7 @@ describe("emoji-converter", () => {
       const minZoom = 10;
       const maxZoom = 400;
       const defaultZoom = 100;
-      
+
       expect(defaultZoom).toBeGreaterThanOrEqual(minZoom);
       expect(defaultZoom).toBeLessThanOrEqual(maxZoom);
     });
@@ -403,7 +403,7 @@ describe("emoji-converter", () => {
       const minPan = -100;
       const maxPan = 100;
       const defaultPan = 0;
-      
+
       expect(defaultPan).toBeGreaterThanOrEqual(minPan);
       expect(defaultPan).toBeLessThanOrEqual(maxPan);
     });
@@ -440,14 +440,14 @@ describe("emoji-converter", () => {
     it("ズームイン操作が正しく動作する", () => {
       let zoom = 100;
       const zoomIn = () => Math.min(400, zoom + 10);
-      
+
       zoom = zoomIn();
       expect(zoom).toBe(110);
-      
+
       zoom = 390;
       zoom = zoomIn();
       expect(zoom).toBe(400);
-      
+
       zoom = 400;
       zoom = zoomIn();
       expect(zoom).toBe(400); // 上限
@@ -456,14 +456,14 @@ describe("emoji-converter", () => {
     it("ズームアウト操作が正しく動作する", () => {
       let zoom = 100;
       const zoomOut = () => Math.max(10, zoom - 10);
-      
+
       zoom = zoomOut();
       expect(zoom).toBe(90);
-      
+
       zoom = 20;
       zoom = zoomOut();
       expect(zoom).toBe(10);
-      
+
       zoom = 10;
       zoom = zoomOut();
       expect(zoom).toBe(10); // 下限

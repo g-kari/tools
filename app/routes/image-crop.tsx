@@ -10,16 +10,22 @@ import { formatFileSize, downloadBlob } from "~/utils/image";
 export const Route = createFileRoute("/image-crop")({
   head: () => ({
     meta: [
-    { title: "画像トリミング | Web ツール集" },
-    { name: "description", content: "画像を自由にトリミング（切り抜き）するオンラインツール。" },
-    { property: "og:title", content: "画像トリミング | Web ツール集" },
-    { property: "og:description", content: "画像を自由にトリミング（切り抜き）するオンラインツール。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/image-crop` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "画像トリミング | Web ツール集" },
-    { name: "twitter:description", content: "画像を自由にトリミング（切り抜き）するオンラインツール。" },
-  ],
+      { title: "画像トリミング | Web ツール集" },
+      { name: "description", content: "画像を自由にトリミング（切り抜き）するオンラインツール。" },
+      { property: "og:title", content: "画像トリミング | Web ツール集" },
+      {
+        property: "og:description",
+        content: "画像を自由にトリミング（切り抜き）するオンラインツール。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/image-crop` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "画像トリミング | Web ツール集" },
+      {
+        name: "twitter:description",
+        content: "画像を自由にトリミング（切り抜き）するオンラインツール。",
+      },
+    ],
   }),
   component: ImageCropper,
 });
@@ -45,17 +51,7 @@ interface AspectRatioPreset {
 /**
  * リサイズハンドルの位置
  */
-type ResizeHandle =
-  | "nw"
-  | "ne"
-  | "sw"
-  | "se"
-  | "n"
-  | "s"
-  | "e"
-  | "w"
-  | "move"
-  | null;
+type ResizeHandle = "nw" | "ne" | "sw" | "se" | "n" | "s" | "e" | "w" | "move" | null;
 
 /**
  * アスペクト比プリセット
@@ -69,7 +65,6 @@ const ASPECT_RATIO_PRESETS: AspectRatioPreset[] = [
   { label: "2:3", ratio: 2 / 3 },
 ];
 
-
 /**
  * 画像をトリミングする
  * @param file - トリミングする画像ファイル
@@ -82,7 +77,7 @@ async function cropImage(
   file: File,
   cropArea: CropArea,
   originalWidth: number,
-  originalHeight: number
+  originalHeight: number,
 ): Promise<Blob | null> {
   return new Promise((resolve) => {
     const img = new Image();
@@ -115,7 +110,7 @@ async function cropImage(
         0,
         0,
         cropArea.width,
-        cropArea.height
+        cropArea.height,
       );
 
       // 元のファイル形式を保持
@@ -127,7 +122,7 @@ async function cropImage(
       canvas.toBlob(
         (blob) => resolve(blob),
         mimeType,
-        0.95 // 高品質
+        0.95, // 高品質
       );
     };
 
@@ -171,9 +166,7 @@ function ImageCropper() {
   });
   const [aspectRatio, setAspectRatio] = useState<number | null>(null);
   const [activeHandle, setActiveHandle] = useState<ResizeHandle>(null);
-  const [dragStart, setDragStart] = useState<{ x: number; y: number } | null>(
-    null
-  );
+  const [dragStart, setDragStart] = useState<{ x: number; y: number } | null>(null);
   const [initialCropArea, setInitialCropArea] = useState<CropArea | null>(null);
   const [showGrid, setShowGrid] = useState(true);
 
@@ -224,9 +217,8 @@ function ImageCropper() {
       };
       img.src = previewUrl;
     },
-    [originalPreview, croppedPreview, showToast]
+    [originalPreview, croppedPreview, showToast],
   );
-
 
   /**
    * クリア処理
@@ -275,7 +267,7 @@ function ImageCropper() {
         };
       });
     },
-    [originalDimensions]
+    [originalDimensions],
   );
 
   /**
@@ -292,7 +284,10 @@ function ImageCropper() {
         newArea.x = Math.max(0, Math.min(newArea.x, originalDimensions.width - newArea.width));
         newArea.y = Math.max(0, Math.min(newArea.y, originalDimensions.height - newArea.height));
         newArea.width = Math.max(1, Math.min(newArea.width, originalDimensions.width - newArea.x));
-        newArea.height = Math.max(1, Math.min(newArea.height, originalDimensions.height - newArea.y));
+        newArea.height = Math.max(
+          1,
+          Math.min(newArea.height, originalDimensions.height - newArea.y),
+        );
 
         // アスペクト比を維持
         if (aspectRatio !== null) {
@@ -306,7 +301,7 @@ function ImageCropper() {
         return newArea;
       });
     },
-    [originalDimensions, aspectRatio]
+    [originalDimensions, aspectRatio],
   );
 
   /**
@@ -331,7 +326,7 @@ function ImageCropper() {
       setDragStart({ x, y });
       setInitialCropArea({ ...cropArea });
     },
-    [cropArea, originalDimensions]
+    [cropArea, originalDimensions],
   );
 
   /**
@@ -359,11 +354,11 @@ function ImageCropper() {
         // 移動
         newCropArea.x = Math.max(
           0,
-          Math.min(initialCropArea.x + dx, originalDimensions.width - cropArea.width)
+          Math.min(initialCropArea.x + dx, originalDimensions.width - cropArea.width),
         );
         newCropArea.y = Math.max(
           0,
-          Math.min(initialCropArea.y + dy, originalDimensions.height - cropArea.height)
+          Math.min(initialCropArea.y + dy, originalDimensions.height - cropArea.height),
         );
       } else {
         // リサイズ
@@ -373,13 +368,21 @@ function ImageCropper() {
           dx,
           dy,
           aspectRatio,
-          originalDimensions
+          originalDimensions,
         );
       }
 
       setCropArea(newCropArea);
     },
-    [activeHandle, dragStart, initialCropArea, aspectRatio, originalDimensions, cropArea.width, cropArea.height]
+    [
+      activeHandle,
+      dragStart,
+      initialCropArea,
+      aspectRatio,
+      originalDimensions,
+      cropArea.width,
+      cropArea.height,
+    ],
   );
 
   /**
@@ -407,7 +410,7 @@ function ImageCropper() {
         originalFile,
         cropArea,
         originalDimensions.width,
-        originalDimensions.height
+        originalDimensions.height,
       );
 
       if (!blob) {
@@ -472,7 +475,7 @@ function ImageCropper() {
         cropArea.x * scale,
         cropArea.y * scale,
         cropArea.width * scale,
-        cropArea.height * scale
+        cropArea.height * scale,
       );
       ctx.drawImage(
         img,
@@ -483,7 +486,7 @@ function ImageCropper() {
         cropArea.x * scale,
         cropArea.y * scale,
         cropArea.width * scale,
-        cropArea.height * scale
+        cropArea.height * scale,
       );
 
       // トリミング範囲の枠線
@@ -493,7 +496,7 @@ function ImageCropper() {
         cropArea.x * scale,
         cropArea.y * scale,
         cropArea.width * scale,
-        cropArea.height * scale
+        cropArea.height * scale,
       );
 
       // グリッド線（三分割法）
@@ -545,9 +548,7 @@ function ImageCropper() {
             sections={[
               {
                 title: "画像トリミングツールとは",
-                items: [
-                  "画像の一部を切り取って保存できるツールです",
-                ],
+                items: ["画像の一部を切り取って保存できるツールです"],
               },
               {
                 title: "使い方",
@@ -585,7 +586,9 @@ function ImageCropper() {
               {originalDimensions && (
                 <div className="image-source-info">
                   <span>{originalFile?.name}</span>
-                  <span>{originalDimensions.width} × {originalDimensions.height} px</span>
+                  <span>
+                    {originalDimensions.width} × {originalDimensions.height} px
+                  </span>
                   <span>{formatFileSize(originalFile?.size || 0)}</span>
                 </div>
               )}
@@ -638,9 +641,7 @@ function ImageCropper() {
                   min="0"
                   max={originalDimensions ? originalDimensions.width - cropArea.width : 0}
                   value={Math.round(cropArea.x)}
-                  onChange={(e) =>
-                    handleCropInputChange("x", Number.parseInt(e.target.value) || 0)
-                  }
+                  onChange={(e) => handleCropInputChange("x", Number.parseInt(e.target.value) || 0)}
                   disabled={isLoading}
                 />
                 <span className="input-unit">px</span>
@@ -654,9 +655,7 @@ function ImageCropper() {
                   min="0"
                   max={originalDimensions ? originalDimensions.height - cropArea.height : 0}
                   value={Math.round(cropArea.y)}
-                  onChange={(e) =>
-                    handleCropInputChange("y", Number.parseInt(e.target.value) || 0)
-                  }
+                  onChange={(e) => handleCropInputChange("y", Number.parseInt(e.target.value) || 0)}
                   disabled={isLoading}
                 />
                 <span className="input-unit">px</span>
@@ -709,18 +708,12 @@ function ImageCropper() {
                 aria-label="トリミング範囲を調整"
               />
             </div>
-            <p className="help-text">
-              ドラッグで移動、角や辺のハンドルでリサイズできます
-            </p>
+            <p className="help-text">ドラッグで移動、角や辺のハンドルでリサイズできます</p>
           </div>
 
           <div className="converter-section">
             <div className="button-group" role="group" aria-label="操作ボタン">
-              <Button
-                type="button"
-                onClick={handleCrop}
-                disabled={isLoading}
-              >
+              <Button type="button" onClick={handleCrop} disabled={isLoading}>
                 {isLoading ? "処理中..." : "トリミングを実行"}
               </Button>
             </div>
@@ -730,11 +723,7 @@ function ImageCropper() {
             <div className="converter-section">
               <h2 className="section-title">トリミング結果</h2>
               <div className="crop-result-preview">
-                <img
-                  src={croppedPreview}
-                  alt="トリミング結果"
-                  className="crop-result-image"
-                />
+                <img src={croppedPreview} alt="トリミング結果" className="crop-result-image" />
                 <div className="crop-result-info">
                   <span>
                     {Math.round(cropArea.width)} × {Math.round(cropArea.height)} px
@@ -742,10 +731,7 @@ function ImageCropper() {
                   <span>{formatFileSize(croppedBlob.size)}</span>
                 </div>
               </div>
-              <Button
-                type="button"
-                onClick={handleDownload}
-              >
+              <Button type="button" onClick={handleDownload}>
                 ダウンロード
               </Button>
             </div>
@@ -765,7 +751,6 @@ function ImageCropper() {
           />
         </>
       )}
-
     </div>
   );
 }
@@ -773,43 +758,22 @@ function ImageCropper() {
 /**
  * 指定位置にあるハンドルを取得
  */
-function getHandleAtPosition(
-  x: number,
-  y: number,
-  cropArea: CropArea
-): ResizeHandle {
+function getHandleAtPosition(x: number, y: number, cropArea: CropArea): ResizeHandle {
   const handleSize = 10;
   const { x: cx, y: cy, width, height } = cropArea;
 
   // 四隅のハンドル
-  if (
-    Math.abs(x - cx) < handleSize &&
-    Math.abs(y - cy) < handleSize
-  )
-    return "nw";
-  if (
-    Math.abs(x - (cx + width)) < handleSize &&
-    Math.abs(y - cy) < handleSize
-  )
-    return "ne";
-  if (
-    Math.abs(x - cx) < handleSize &&
-    Math.abs(y - (cy + height)) < handleSize
-  )
-    return "sw";
-  if (
-    Math.abs(x - (cx + width)) < handleSize &&
-    Math.abs(y - (cy + height)) < handleSize
-  )
+  if (Math.abs(x - cx) < handleSize && Math.abs(y - cy) < handleSize) return "nw";
+  if (Math.abs(x - (cx + width)) < handleSize && Math.abs(y - cy) < handleSize) return "ne";
+  if (Math.abs(x - cx) < handleSize && Math.abs(y - (cy + height)) < handleSize) return "sw";
+  if (Math.abs(x - (cx + width)) < handleSize && Math.abs(y - (cy + height)) < handleSize)
     return "se";
 
   // 辺のハンドル
   if (Math.abs(y - cy) < handleSize && x > cx && x < cx + width) return "n";
-  if (Math.abs(y - (cy + height)) < handleSize && x > cx && x < cx + width)
-    return "s";
+  if (Math.abs(y - (cy + height)) < handleSize && x > cx && x < cx + width) return "s";
   if (Math.abs(x - cx) < handleSize && y > cy && y < cy + height) return "w";
-  if (Math.abs(x - (cx + width)) < handleSize && y > cy && y < cy + height)
-    return "e";
+  if (Math.abs(x - (cx + width)) < handleSize && y > cy && y < cy + height) return "e";
 
   // 範囲内（移動）
   if (x > cx && x < cx + width && y > cy && y < cy + height) return "move";
@@ -826,7 +790,7 @@ function resizeCropArea(
   dx: number,
   dy: number,
   aspectRatio: number | null,
-  bounds: { width: number; height: number }
+  bounds: { width: number; height: number },
 ): CropArea {
   let newArea = { ...initial };
 
@@ -843,10 +807,7 @@ function resizeCropArea(
       break;
     case "ne":
       newArea.y = Math.max(0, initial.y + dy);
-      newArea.width = Math.min(
-        bounds.width - initial.x,
-        initial.width + dx
-      );
+      newArea.width = Math.min(bounds.width - initial.x, initial.width + dx);
       newArea.height = initial.height - (newArea.y - initial.y);
       if (aspectRatio !== null) {
         newArea.height = newArea.width / aspectRatio;
@@ -856,23 +817,14 @@ function resizeCropArea(
     case "sw":
       newArea.x = Math.max(0, initial.x + dx);
       newArea.width = initial.width - (newArea.x - initial.x);
-      newArea.height = Math.min(
-        bounds.height - initial.y,
-        initial.height + dy
-      );
+      newArea.height = Math.min(bounds.height - initial.y, initial.height + dy);
       if (aspectRatio !== null) {
         newArea.height = newArea.width / aspectRatio;
       }
       break;
     case "se":
-      newArea.width = Math.min(
-        bounds.width - initial.x,
-        initial.width + dx
-      );
-      newArea.height = Math.min(
-        bounds.height - initial.y,
-        initial.height + dy
-      );
+      newArea.width = Math.min(bounds.width - initial.x, initial.width + dx);
+      newArea.height = Math.min(bounds.height - initial.y, initial.height + dy);
       if (aspectRatio !== null) {
         newArea.height = newArea.width / aspectRatio;
       }
@@ -885,10 +837,7 @@ function resizeCropArea(
       }
       break;
     case "s":
-      newArea.height = Math.min(
-        bounds.height - initial.y,
-        initial.height + dy
-      );
+      newArea.height = Math.min(bounds.height - initial.y, initial.height + dy);
       if (aspectRatio !== null) {
         newArea.width = newArea.height * aspectRatio;
       }
@@ -901,10 +850,7 @@ function resizeCropArea(
       }
       break;
     case "e":
-      newArea.width = Math.min(
-        bounds.width - initial.x,
-        initial.width + dx
-      );
+      newArea.width = Math.min(bounds.width - initial.x, initial.width + dx);
       if (aspectRatio !== null) {
         newArea.height = newArea.width / aspectRatio;
       }
@@ -935,11 +881,7 @@ function resizeCropArea(
 /**
  * リサイズハンドルを描画
  */
-function drawResizeHandles(
-  ctx: CanvasRenderingContext2D,
-  cropArea: CropArea,
-  scale: number
-) {
+function drawResizeHandles(ctx: CanvasRenderingContext2D, cropArea: CropArea, scale: number) {
   const handleSize = 8;
   const { x, y, width, height } = cropArea;
 
@@ -959,17 +901,7 @@ function drawResizeHandles(
   ];
 
   for (const handle of handles) {
-    ctx.fillRect(
-      handle.x - handleSize / 2,
-      handle.y - handleSize / 2,
-      handleSize,
-      handleSize
-    );
-    ctx.strokeRect(
-      handle.x - handleSize / 2,
-      handle.y - handleSize / 2,
-      handleSize,
-      handleSize
-    );
+    ctx.fillRect(handle.x - handleSize / 2, handle.y - handleSize / 2, handleSize, handleSize);
+    ctx.strokeRect(handle.x - handleSize / 2, handle.y - handleSize / 2, handleSize, handleSize);
   }
 }

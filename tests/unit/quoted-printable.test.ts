@@ -1,8 +1,5 @@
 import { describe, it, expect } from "vite-plus/test";
-import {
-  encodeQP,
-  decodeQP,
-} from "../../app/routes/quoted-printable";
+import { encodeQP, decodeQP } from "../../app/routes/quoted-printable";
 
 describe("Quoted-Printable Encoding / Decoding", () => {
   describe("encodeQP", () => {

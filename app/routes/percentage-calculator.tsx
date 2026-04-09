@@ -1,9 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useMemo, useCallback } from "react";
-import {
-  StatusAnnouncer,
-  useStatusAnnouncement,
-} from "~/hooks/useStatusAnnouncement";
+import { StatusAnnouncer, useStatusAnnouncement } from "~/hooks/useStatusAnnouncement";
 import { TipsCard } from "~/components/TipsCard";
 import { useClipboard } from "~/hooks/useClipboard";
 import { useToast } from "~/components/Toast";
@@ -104,9 +101,11 @@ function PercentageCalculator() {
     if (!pcFrom || !pcTo) return { value: "", isPositive: true, error: null };
     const from = parseFloat(pcFrom);
     const to = parseFloat(pcTo);
-    if (isNaN(from) || isNaN(to)) return { value: "", isPositive: true, error: "有効な数値を入力してください" };
+    if (isNaN(from) || isNaN(to))
+      return { value: "", isPositive: true, error: "有効な数値を入力してください" };
     const result = calcPercentChange(from, to);
-    if (result === null) return { value: "", isPositive: true, error: "変化前の値に0は指定できません" };
+    if (result === null)
+      return { value: "", isPositive: true, error: "変化前の値に0は指定できません" };
     return {
       value: formatResult(result),
       isPositive: result >= 0,
@@ -129,10 +128,14 @@ function PercentageCalculator() {
 
   const currentResult = useMemo(() => {
     switch (mode) {
-      case "what-percent": return whatPercentResult.value;
-      case "percent-of": return percentOfResult.value;
-      case "percent-change": return percentChangeResult.value;
-      case "increase-decrease": return increaseDecreaseResult.value;
+      case "what-percent":
+        return whatPercentResult.value;
+      case "percent-of":
+        return percentOfResult.value;
+      case "percent-change":
+        return percentChangeResult.value;
+      case "increase-decrease":
+        return increaseDecreaseResult.value;
     }
   }, [mode, whatPercentResult, percentOfResult, percentChangeResult, increaseDecreaseResult]);
 
@@ -157,11 +160,7 @@ function PercentageCalculator() {
   return (
     <>
       <div className="tool-container">
-        <div
-          className="percentage-tabs"
-          role="tablist"
-          aria-label="計算モード選択"
-        >
+        <div className="percentage-tabs" role="tablist" aria-label="計算モード選択">
           {tabs.map((tab) => (
             <button
               key={tab.mode}
@@ -203,7 +202,9 @@ function PercentageCalculator() {
                 />
               </div>
               {whatPercentResult.error && (
-                <div className="percentage-error" role="alert">{whatPercentResult.error}</div>
+                <div className="percentage-error" role="alert">
+                  {whatPercentResult.error}
+                </div>
               )}
               {whatPercentResult.value ? (
                 <div className="percentage-result-block" aria-live="polite">
@@ -212,7 +213,11 @@ function PercentageCalculator() {
                     {whatPercentResult.value}
                     <span className="percentage-result-unit">%</span>
                   </div>
-                  <button className="percentage-copy-btn" onClick={handleCopy} aria-label="結果をコピー">
+                  <button
+                    className="percentage-copy-btn"
+                    onClick={handleCopy}
+                    aria-label="結果をコピー"
+                  >
                     コピー
                   </button>
                 </div>
@@ -256,15 +261,19 @@ function PercentageCalculator() {
                 <span className="percentage-unit">%</span>
               </div>
               {percentOfResult.error && (
-                <div className="percentage-error" role="alert">{percentOfResult.error}</div>
+                <div className="percentage-error" role="alert">
+                  {percentOfResult.error}
+                </div>
               )}
               {percentOfResult.value ? (
                 <div className="percentage-result-block" aria-live="polite">
                   <span className="percentage-result-label">X の Y% は</span>
-                  <div className="percentage-result-value">
-                    {percentOfResult.value}
-                  </div>
-                  <button className="percentage-copy-btn" onClick={handleCopy} aria-label="結果をコピー">
+                  <div className="percentage-result-value">{percentOfResult.value}</div>
+                  <button
+                    className="percentage-copy-btn"
+                    onClick={handleCopy}
+                    aria-label="結果をコピー"
+                  >
                     コピー
                   </button>
                 </div>
@@ -307,7 +316,9 @@ function PercentageCalculator() {
                 />
               </div>
               {percentChangeResult.error && (
-                <div className="percentage-error" role="alert">{percentChangeResult.error}</div>
+                <div className="percentage-error" role="alert">
+                  {percentChangeResult.error}
+                </div>
               )}
               {percentChangeResult.value ? (
                 <div className="percentage-result-block" aria-live="polite">
@@ -315,10 +326,15 @@ function PercentageCalculator() {
                     変化率は {percentChangeResult.isPositive ? "▲ 増加" : "▼ 減少"}
                   </span>
                   <div className="percentage-result-value">
-                    {percentChangeResult.isPositive ? "+" : ""}{percentChangeResult.value}
+                    {percentChangeResult.isPositive ? "+" : ""}
+                    {percentChangeResult.value}
                     <span className="percentage-result-unit">%</span>
                   </div>
-                  <button className="percentage-copy-btn" onClick={handleCopy} aria-label="結果をコピー">
+                  <button
+                    className="percentage-copy-btn"
+                    onClick={handleCopy}
+                    aria-label="結果をコピー"
+                  >
                     コピー
                   </button>
                 </div>
@@ -336,7 +352,9 @@ function PercentageCalculator() {
         {/* 増加・減少 */}
         {mode === "increase-decrease" && (
           <section aria-label="増加・減少後の値を計算">
-            <p className="percentage-formula">X × ( 1 + Y ÷ 100 ) = ? &nbsp;（減少はYにマイナス値を入力）</p>
+            <p className="percentage-formula">
+              X × ( 1 + Y ÷ 100 ) = ? &nbsp;（減少はYにマイナス値を入力）
+            </p>
             <div className="percentage-form">
               <div className="percentage-input-row">
                 <label htmlFor="id-base">X =</label>
@@ -362,17 +380,21 @@ function PercentageCalculator() {
                 <span className="percentage-unit">%（増加は正、減少は負）</span>
               </div>
               {increaseDecreaseResult.error && (
-                <div className="percentage-error" role="alert">{increaseDecreaseResult.error}</div>
+                <div className="percentage-error" role="alert">
+                  {increaseDecreaseResult.error}
+                </div>
               )}
               {increaseDecreaseResult.value ? (
                 <div className="percentage-result-block" aria-live="polite">
                   <span className="percentage-result-label">
                     {parseFloat(idPercent) >= 0 ? "増加" : "減少"}後の値
                   </span>
-                  <div className="percentage-result-value">
-                    {increaseDecreaseResult.value}
-                  </div>
-                  <button className="percentage-copy-btn" onClick={handleCopy} aria-label="結果をコピー">
+                  <div className="percentage-result-value">{increaseDecreaseResult.value}</div>
+                  <button
+                    className="percentage-copy-btn"
+                    onClick={handleCopy}
+                    aria-label="結果をコピー"
+                  >
                     コピー
                   </button>
                 </div>

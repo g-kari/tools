@@ -16,7 +16,9 @@
   background: var(--md-sys-color-surface-variant);
   border: 2px solid var(--md-sys-color-outline);
   cursor: pointer;
-  transition: border-color 0.2s, background 0.2s;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
   user-select: none;
 }
 

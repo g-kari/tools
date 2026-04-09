@@ -39,9 +39,7 @@ test.describe("HMAC 生成 - E2E Tests", () => {
     await expect(emptyState).toBeVisible();
   });
 
-  test("should compute HMAC when message and key are entered", async ({
-    page,
-  }) => {
+  test("should compute HMAC when message and key are entered", async ({ page }) => {
     await page.locator("#hmac-message").fill("Hello");
     await page.locator("#hmac-secret").fill("secret");
     // デバウンスを待つ
@@ -74,9 +72,7 @@ test.describe("HMAC 生成 - E2E Tests", () => {
   });
 
   test("should switch to Base64 format", async ({ page }) => {
-    const base64Tab = page
-      .locator('[role="tab"]')
-      .filter({ hasText: "Base64" });
+    const base64Tab = page.locator('[role="tab"]').filter({ hasText: "Base64" });
     await base64Tab.click();
     await expect(base64Tab).toHaveAttribute("aria-selected", "true");
     await page.locator("#hmac-message").fill("test");

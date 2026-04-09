@@ -5,11 +5,7 @@ import { describe, it, expect } from "vite-plus/test";
  */
 
 /** 要素情報のビルドセレクター文字列を生成する */
-function buildElementSelectorString(
-  tagName: string,
-  id: string,
-  classes: string[]
-): string {
+function buildElementSelectorString(tagName: string, id: string, classes: string[]): string {
   let selector = tagName;
   if (id) selector += `#${id}`;
   if (classes.length > 0) selector += `.${classes.join(".")}`;
@@ -56,15 +52,13 @@ describe("CSS Selector - buildElementSelectorString", () => {
   });
 
   it("クラスを含むセレクター", () => {
-    expect(buildElementSelectorString("span", "", ["foo", "bar"])).toBe(
-      "span.foo.bar"
-    );
+    expect(buildElementSelectorString("span", "", ["foo", "bar"])).toBe("span.foo.bar");
   });
 
   it("ID・クラス両方含むセレクター", () => {
-    expect(
-      buildElementSelectorString("a", "link1", ["active", "primary"])
-    ).toBe("a#link1.active.primary");
+    expect(buildElementSelectorString("a", "link1", ["active", "primary"])).toBe(
+      "a#link1.active.primary",
+    );
   });
 
   it("クラスが1つの場合", () => {

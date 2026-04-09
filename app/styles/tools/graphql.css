@@ -1,7 +1,7 @@
 /* GraphQL フォーマッター専用スタイル */
 
 .graphql-textarea {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: "Courier New", Courier, monospace;
   font-size: 0.875rem;
   min-height: 200px;
   tab-size: 2;

@@ -407,7 +407,7 @@ export const Route = createRootRoute({
           {
             src: `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_PUBLISHER_ID}`,
             async: true,
-            crossOrigin: 'anonymous' as const,
+            crossOrigin: "anonymous" as const,
           },
         ]
       : [],
@@ -478,52 +478,51 @@ function NavCategory({
     }
   }, [isOpen, focusedIndex]);
 
-  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    if (!isOpen) {
-      // ドロップダウンが閉じている場合
-      if (e.key === "ArrowDown" || e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        setIsOpen(true);
-        setFocusedIndex(0);
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (!isOpen) {
+        // ドロップダウンが閉じている場合
+        if (e.key === "ArrowDown" || e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          setIsOpen(true);
+          setFocusedIndex(0);
+        }
+        return;
       }
-      return;
-    }
 
-    // ドロップダウンが開いている場合
-    switch (e.key) {
-      case "ArrowDown":
-        e.preventDefault();
-        setFocusedIndex((prev) =>
-          prev < category.items.length - 1 ? prev + 1 : 0
-        );
-        break;
-      case "ArrowUp":
-        e.preventDefault();
-        setFocusedIndex((prev) =>
-          prev > 0 ? prev - 1 : category.items.length - 1
-        );
-        break;
-      case "Escape":
-        e.preventDefault();
-        setIsOpen(false);
-        setFocusedIndex(-1);
-        buttonRef.current?.focus();
-        break;
-      case "Tab":
-        // Tabでドロップダウンを閉じる
-        setIsOpen(false);
-        setFocusedIndex(-1);
-        break;
-      case "Home":
-        e.preventDefault();
-        setFocusedIndex(0);
-        break;
-      case "End":
-        e.preventDefault();
-        setFocusedIndex(category.items.length - 1);
-        break;
-    }
-  }, [isOpen, category.items.length]);
+      // ドロップダウンが開いている場合
+      switch (e.key) {
+        case "ArrowDown":
+          e.preventDefault();
+          setFocusedIndex((prev) => (prev < category.items.length - 1 ? prev + 1 : 0));
+          break;
+        case "ArrowUp":
+          e.preventDefault();
+          setFocusedIndex((prev) => (prev > 0 ? prev - 1 : category.items.length - 1));
+          break;
+        case "Escape":
+          e.preventDefault();
+          setIsOpen(false);
+          setFocusedIndex(-1);
+          buttonRef.current?.focus();
+          break;
+        case "Tab":
+          // Tabでドロップダウンを閉じる
+          setIsOpen(false);
+          setFocusedIndex(-1);
+          break;
+        case "Home":
+          e.preventDefault();
+          setFocusedIndex(0);
+          break;
+        case "End":
+          e.preventDefault();
+          setFocusedIndex(category.items.length - 1);
+          break;
+      }
+    },
+    [isOpen, category.items.length],
+  );
 
   const handleClose = useCallback(() => {
     setIsOpen(false);
@@ -600,11 +599,7 @@ function RootDocument({ children }: { children: ReactNode }) {
                   <span>ホーム</span>
                 </Link>
                 {navCategories.map((category) => (
-                  <NavCategory
-                    key={category.name}
-                    category={category}
-                    pathname={pathname}
-                  />
+                  <NavCategory key={category.name} category={category} pathname={pathname} />
                 ))}
               </nav>
             </header>

@@ -95,7 +95,7 @@ export function createEmptyBoard(rows: number, cols: number): Board {
       state: "hidden" as CellState,
       adjacentMines: 0,
       isExploded: false,
-    }))
+    })),
   );
 }
 
@@ -115,7 +115,7 @@ export function placeMines(
   cols: number,
   mineCount: number,
   safeRow: number,
-  safeCol: number
+  safeCol: number,
 ): Board {
   const board = createEmptyBoard(rows, cols);
 
@@ -181,7 +181,7 @@ export function countAdjacentMines(
   row: number,
   col: number,
   rows: number,
-  cols: number
+  cols: number,
 ): number {
   let count = 0;
   for (let dr = -1; dr <= 1; dr++) {
@@ -212,7 +212,7 @@ export function revealCell(
   row: number,
   col: number,
   rows: number,
-  cols: number
+  cols: number,
 ): void {
   const stack: [number, number][] = [[row, col]];
   while (stack.length > 0) {
@@ -226,13 +226,7 @@ export function revealCell(
           if (dr === 0 && dc === 0) continue;
           const nr = r + dr;
           const nc = c + dc;
-          if (
-            nr >= 0 &&
-            nr < rows &&
-            nc >= 0 &&
-            nc < cols &&
-            board[nr][nc].state === "hidden"
-          ) {
+          if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && board[nr][nc].state === "hidden") {
             stack.push([nr, nc]);
           }
         }
@@ -341,7 +335,7 @@ function Minesweeper() {
       setSelectedCell(null);
       isFirstClickRef.current = true;
     },
-    [difficulty]
+    [difficulty],
   );
 
   // 難易度変更時にゲームをリセット
@@ -364,13 +358,7 @@ function Minesweeper() {
       // 初回クリック時に地雷を配置
       if (isFirstClickRef.current) {
         isFirstClickRef.current = false;
-        currentBoard = placeMines(
-          config.rows,
-          config.cols,
-          config.mines,
-          row,
-          col
-        );
+        currentBoard = placeMines(config.rows, config.cols, config.mines, row, col);
         setStatus("playing");
       }
 
@@ -416,7 +404,7 @@ function Minesweeper() {
         setBoard(currentBoard);
       }
     },
-    [board, difficulty, status]
+    [board, difficulty, status],
   );
 
   const handleRightClick = useCallback(
@@ -438,7 +426,7 @@ function Minesweeper() {
       }
       setBoard(newBoard);
     },
-    [board, status]
+    [board, status],
   );
 
   // キーボードナビゲーション
@@ -448,9 +436,7 @@ function Minesweeper() {
       const config = DIFFICULTY_CONFIGS[difficulty];
 
       if (!selectedCell) {
-        if (
-          ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)
-        ) {
+        if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)) {
           e.preventDefault();
           setSelectedCell([0, 0]);
         }
@@ -491,16 +477,13 @@ function Minesweeper() {
     <div className="tool-container">
       <h1 className="tool-title">マインスイーパー</h1>
       <p className="tool-description">
-        地雷を踏まずに全てのセルを開放するゲームです。数字は隣接する地雷の数を示しています。右クリック（またはキーボードの F キー）でフラグを立てて地雷をマークできます。
+        地雷を踏まずに全てのセルを開放するゲームです。数字は隣接する地雷の数を示しています。右クリック（またはキーボードの
+        F キー）でフラグを立てて地雷をマークできます。
       </p>
 
       {/* 難易度選択 */}
       <section className="ms-controls" aria-label="ゲーム設定">
-        <div
-          className="ms-difficulty-group"
-          role="group"
-          aria-label="難易度選択"
-        >
+        <div className="ms-difficulty-group" role="group" aria-label="難易度選択">
           {(["easy", "medium", "hard"] as Difficulty[]).map((d) => (
             <button
               key={d}
@@ -512,9 +495,7 @@ function Minesweeper() {
             </button>
           ))}
         </div>
-        <Button onClick={() => startGame()}>
-          {board ? "新しいゲーム" : "ゲームスタート"}
-        </Button>
+        <Button onClick={() => startGame()}>{board ? "新しいゲーム" : "ゲームスタート"}</Button>
       </section>
 
       {/* ステータスバー */}
@@ -554,12 +535,7 @@ function Minesweeper() {
 
           {/* クリア・ゲームオーバーバナー */}
           {status === "won" && (
-            <div
-              className="ms-result win"
-              role="status"
-              aria-live="assertive"
-              aria-atomic="true"
-            >
+            <div className="ms-result win" role="status" aria-live="assertive" aria-atomic="true">
               <span className="ms-result-icon">🎉</span>
               <p className="ms-result-title">クリア！</p>
               <p className="ms-result-time">タイム: {formatTime(elapsedSeconds)}</p>
@@ -567,12 +543,7 @@ function Minesweeper() {
             </div>
           )}
           {status === "lost" && (
-            <div
-              className="ms-result lose"
-              role="status"
-              aria-live="assertive"
-              aria-atomic="true"
-            >
+            <div className="ms-result lose" role="status" aria-live="assertive" aria-atomic="true">
               <span className="ms-result-icon">💣</span>
               <p className="ms-result-title">ゲームオーバー</p>
               <p className="ms-result-time">タイム: {formatTime(elapsedSeconds)}</p>
@@ -592,9 +563,7 @@ function Minesweeper() {
             >
               {board.map((row, rowIdx) =>
                 row.map((cell, colIdx) => {
-                  const isSelected =
-                    selectedCell?.[0] === rowIdx &&
-                    selectedCell?.[1] === colIdx;
+                  const isSelected = selectedCell?.[0] === rowIdx && selectedCell?.[1] === colIdx;
                   const cellClass = getCellClass(cell, isSelected);
                   const cellLabel = getCellAriaLabel(cell, rowIdx, colIdx);
 
@@ -604,9 +573,7 @@ function Minesweeper() {
                       className={cellClass}
                       role="gridcell"
                       aria-label={cellLabel}
-                      aria-pressed={
-                        cell.state === "flagged" ? true : undefined
-                      }
+                      aria-pressed={cell.state === "flagged" ? true : undefined}
                       tabIndex={
                         isSelected
                           ? 0
@@ -626,7 +593,7 @@ function Minesweeper() {
                       {getCellContent(cell)}
                     </button>
                   );
-                })
+                }),
               )}
             </div>
           </div>

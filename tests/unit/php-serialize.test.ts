@@ -1,8 +1,5 @@
 import { describe, it, expect } from "vite-plus/test";
-import {
-  phpSerialize,
-  phpUnserialize,
-} from "../../app/utils/php-serialize";
+import { phpSerialize, phpUnserialize } from "../../app/utils/php-serialize";
 
 describe("phpSerialize", () => {
   it("should serialize null", () => {
@@ -47,9 +44,7 @@ describe("phpSerialize", () => {
   });
 
   it("should serialize indexed array", () => {
-    expect(phpSerialize([1, 2, 3])).toBe(
-      "a:3:{i:0;i:1;i:1;i:2;i:2;i:3;}"
-    );
+    expect(phpSerialize([1, 2, 3])).toBe("a:3:{i:0;i:1;i:1;i:2;i:2;i:3;}");
   });
 
   it("should serialize associative array (plain object)", () => {
@@ -74,9 +69,7 @@ describe("phpSerialize", () => {
       __className: "User",
       properties: { id: 1, name: "Alice" },
     });
-    expect(result).toBe(
-      'O:4:"User":2:{s:2:"id";i:1;s:4:"name";s:5:"Alice";}'
-    );
+    expect(result).toBe('O:4:"User":2:{s:2:"id";i:1;s:4:"name";s:5:"Alice";}');
   });
 });
 
@@ -118,15 +111,11 @@ describe("phpUnserialize", () => {
   });
 
   it("should unserialize indexed array", () => {
-    expect(phpUnserialize("a:3:{i:0;i:1;i:1;i:2;i:2;i:3;}")).toEqual([
-      1, 2, 3,
-    ]);
+    expect(phpUnserialize("a:3:{i:0;i:1;i:1;i:2;i:2;i:3;}")).toEqual([1, 2, 3]);
   });
 
   it("should unserialize associative array as object", () => {
-    const result = phpUnserialize(
-      'a:2:{s:4:"name";s:5:"Alice";s:3:"age";i:30;}'
-    );
+    const result = phpUnserialize('a:2:{s:4:"name";s:5:"Alice";s:3:"age";i:30;}');
     expect(result).toEqual({ name: "Alice", age: 30 });
   });
 

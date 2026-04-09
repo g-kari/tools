@@ -11,7 +11,9 @@
   border: 2px solid var(--md-sys-color-primary);
   border-radius: 16px;
   margin-bottom: 1.5rem;
-  transition: border-color 0.15s ease, background-color 0.15s ease;
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease;
 }
 
 .bpm-display {
@@ -31,7 +33,7 @@
 }
 
 .bpm-value {
-  font-family: 'Space Mono', 'JetBrains Mono', monospace;
+  font-family: "Space Mono", "JetBrains Mono", monospace;
   font-size: 5rem;
   font-weight: 300;
   color: var(--md-sys-color-primary);
@@ -41,7 +43,7 @@
 }
 
 .bpm-unit {
-  font-family: 'Space Mono', 'JetBrains Mono', monospace;
+  font-family: "Space Mono", "JetBrains Mono", monospace;
   font-size: 1.5rem;
   font-weight: 400;
   color: var(--md-sys-color-on-surface-variant);
@@ -67,7 +69,7 @@
 
 .bpm-interval {
   font-size: 0.875rem;
-  font-family: 'Space Mono', 'JetBrains Mono', monospace;
+  font-family: "Space Mono", "JetBrains Mono", monospace;
   color: var(--md-sys-color-on-surface-variant);
   background-color: var(--md-sys-color-surface-variant);
   padding: 0.2rem 0.6rem;
@@ -97,7 +99,10 @@
   cursor: pointer;
   font-size: 1.125rem;
   font-weight: 600;
-  transition: background-color 0.1s ease, transform 0.08s ease, box-shadow 0.1s ease;
+  transition:
+    background-color 0.1s ease,
+    transform 0.08s ease,
+    box-shadow 0.1s ease;
   user-select: none;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
@@ -143,7 +148,7 @@
 }
 
 .bpm-tap-count-num {
-  font-family: 'Space Mono', 'JetBrains Mono', monospace;
+  font-family: "Space Mono", "JetBrains Mono", monospace;
   font-size: 2rem;
   font-weight: 600;
   color: var(--md-sys-color-on-surface);
@@ -202,7 +207,7 @@
 }
 
 .bpm-tips-range {
-  font-family: 'Space Mono', 'JetBrains Mono', monospace;
+  font-family: "Space Mono", "JetBrains Mono", monospace;
   font-size: 0.8125rem;
   color: var(--md-sys-color-primary);
 }

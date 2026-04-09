@@ -7,16 +7,22 @@ import { TipsCard } from "~/components/TipsCard";
 export const Route = createFileRoute("/color-extractor")({
   head: () => ({
     meta: [
-    { title: "画像カラー抽出 | Web ツール集" },
-    { name: "description", content: "画像から主要な色（カラーパレット）を抽出するツール。" },
-    { property: "og:title", content: "画像カラー抽出 | Web ツール集" },
-    { property: "og:description", content: "画像から主要な色（カラーパレット）を抽出するツール。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/color-extractor` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "画像カラー抽出 | Web ツール集" },
-    { name: "twitter:description", content: "画像から主要な色（カラーパレット）を抽出するツール。" },
-  ],
+      { title: "画像カラー抽出 | Web ツール集" },
+      { name: "description", content: "画像から主要な色（カラーパレット）を抽出するツール。" },
+      { property: "og:title", content: "画像カラー抽出 | Web ツール集" },
+      {
+        property: "og:description",
+        content: "画像から主要な色（カラーパレット）を抽出するツール。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/color-extractor` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "画像カラー抽出 | Web ツール集" },
+      {
+        name: "twitter:description",
+        content: "画像から主要な色（カラーパレット）を抽出するツール。",
+      },
+    ],
   }),
   component: ColorExtractor,
 });
@@ -37,10 +43,16 @@ interface Color {
  * @returns HEXカラーコード
  */
 export function rgbToHex(r: number, g: number, b: number): string {
-  return "#" + [r, g, b].map((x) => {
-    const hex = Math.round(x).toString(16);
-    return hex.length === 1 ? "0" + hex : hex;
-  }).join("").toUpperCase();
+  return (
+    "#" +
+    [r, g, b]
+      .map((x) => {
+        const hex = Math.round(x).toString(16);
+        return hex.length === 1 ? "0" + hex : hex;
+      })
+      .join("")
+      .toUpperCase()
+  );
 }
 
 /**
@@ -49,12 +61,11 @@ export function rgbToHex(r: number, g: number, b: number): string {
  * @param c2 - 色2
  * @returns ユークリッド距離
  */
-function colorDistance(c1: { r: number; g: number; b: number }, c2: { r: number; g: number; b: number }): number {
-  return Math.sqrt(
-    Math.pow(c1.r - c2.r, 2) +
-    Math.pow(c1.g - c2.g, 2) +
-    Math.pow(c1.b - c2.b, 2)
-  );
+function colorDistance(
+  c1: { r: number; g: number; b: number },
+  c2: { r: number; g: number; b: number },
+): number {
+  return Math.sqrt(Math.pow(c1.r - c2.r, 2) + Math.pow(c1.g - c2.g, 2) + Math.pow(c1.b - c2.b, 2));
 }
 
 /**
@@ -67,7 +78,7 @@ function colorDistance(c1: { r: number; g: number; b: number }, c2: { r: number;
 export function extractColors(
   pixels: { r: number; g: number; b: number }[],
   k: number,
-  maxIterations: number = 10
+  maxIterations: number = 10,
 ): Color[] {
   if (pixels.length === 0) return [];
 
@@ -104,7 +115,9 @@ export function extractColors(
     clusters.forEach((cluster, i) => {
       if (cluster.length === 0) return;
 
-      let sumR = 0, sumG = 0, sumB = 0;
+      let sumR = 0,
+        sumG = 0,
+        sumB = 0;
       cluster.forEach((pixelIndex) => {
         sumR += pixels[pixelIndex].r;
         sumG += pixels[pixelIndex].g;
@@ -128,24 +141,26 @@ export function extractColors(
   }
 
   // 結果を整形（カウント順にソート）
-  return centers.map((center, i) => ({
-    r: center.r,
-    g: center.g,
-    b: center.b,
-    hex: rgbToHex(center.r, center.g, center.b),
-    count: pixels.filter((pixel) => {
-      let minDist = Infinity;
-      let clusterIndex = 0;
-      centers.forEach((c, j) => {
-        const dist = colorDistance(pixel, c);
-        if (dist < minDist) {
-          minDist = dist;
-          clusterIndex = j;
-        }
-      });
-      return clusterIndex === i;
-    }).length,
-  })).sort((a, b) => b.count - a.count);
+  return centers
+    .map((center, i) => ({
+      r: center.r,
+      g: center.g,
+      b: center.b,
+      hex: rgbToHex(center.r, center.g, center.b),
+      count: pixels.filter((pixel) => {
+        let minDist = Infinity;
+        let clusterIndex = 0;
+        centers.forEach((c, j) => {
+          const dist = colorDistance(pixel, c);
+          if (dist < minDist) {
+            minDist = dist;
+            clusterIndex = j;
+          }
+        });
+        return clusterIndex === i;
+      }).length,
+    }))
+    .sort((a, b) => b.count - a.count);
 }
 
 /**
@@ -156,7 +171,7 @@ export function extractColors(
  */
 export function getPixelsFromImageData(
   imageData: ImageData,
-  sampleRate: number = 10
+  sampleRate: number = 10,
 ): { r: number; g: number; b: number }[] {
   const pixels: { r: number; g: number; b: number }[] = [];
   const data = imageData.data;
@@ -243,87 +258,93 @@ function ColorExtractor() {
     }
   }, [imageSrc]);
 
-  const processImage = useCallback(async (file: File) => {
-    if (!file.type.startsWith("image/")) {
-      announceStatus("画像ファイルを選択してください");
-      return;
-    }
+  const processImage = useCallback(
+    async (file: File) => {
+      if (!file.type.startsWith("image/")) {
+        announceStatus("画像ファイルを選択してください");
+        return;
+      }
 
-    setIsProcessing(true);
-    setColors([]);
+      setIsProcessing(true);
+      setColors([]);
 
-    try {
-      // 画像を読み込む
-      const img = new Image();
-      const objectUrl = URL.createObjectURL(file);
+      try {
+        // 画像を読み込む
+        const img = new Image();
+        const objectUrl = URL.createObjectURL(file);
 
-      img.onload = () => {
-        // 画像をrefに保存（後でcanvasに描画するため）
-        loadedImageRef.current = img;
+        img.onload = () => {
+          // 画像をrefに保存（後でcanvasに描画するため）
+          loadedImageRef.current = img;
 
-        // 一時的なcanvasでピクセルデータを取得
-        const tempCanvas = document.createElement("canvas");
-        const tempCtx = tempCanvas.getContext("2d");
-        if (!tempCtx) {
-          URL.revokeObjectURL(objectUrl);
-          setIsProcessing(false);
-          return;
-        }
-
-        // キャンバスサイズを画像に合わせる（最大800px）
-        const maxSize = 800;
-        let width = img.width;
-        let height = img.height;
-
-        if (width > maxSize || height > maxSize) {
-          if (width > height) {
-            height = (height * maxSize) / width;
-            width = maxSize;
-          } else {
-            width = (width * maxSize) / height;
-            height = maxSize;
+          // 一時的なcanvasでピクセルデータを取得
+          const tempCanvas = document.createElement("canvas");
+          const tempCtx = tempCanvas.getContext("2d");
+          if (!tempCtx) {
+            URL.revokeObjectURL(objectUrl);
+            setIsProcessing(false);
+            return;
           }
-        }
 
-        tempCanvas.width = width;
-        tempCanvas.height = height;
+          // キャンバスサイズを画像に合わせる（最大800px）
+          const maxSize = 800;
+          let width = img.width;
+          let height = img.height;
 
-        // 画像を描画
-        tempCtx.drawImage(img, 0, 0, width, height);
+          if (width > maxSize || height > maxSize) {
+            if (width > height) {
+              height = (height * maxSize) / width;
+              width = maxSize;
+            } else {
+              width = (width * maxSize) / height;
+              height = maxSize;
+            }
+          }
 
-        // ピクセルデータを取得
-        const imageData = tempCtx.getImageData(0, 0, width, height);
-        const pixels = getPixelsFromImageData(imageData, 10);
+          tempCanvas.width = width;
+          tempCanvas.height = height;
 
-        // カラーを抽出
-        const extractedColors = extractColors(pixels, colorCount);
-        setColors(extractedColors);
-        // imageSrcを設定すると、useEffectでcanvasに描画される
-        setImageSrc(objectUrl);
+          // 画像を描画
+          tempCtx.drawImage(img, 0, 0, width, height);
+
+          // ピクセルデータを取得
+          const imageData = tempCtx.getImageData(0, 0, width, height);
+          const pixels = getPixelsFromImageData(imageData, 10);
+
+          // カラーを抽出
+          const extractedColors = extractColors(pixels, colorCount);
+          setColors(extractedColors);
+          // imageSrcを設定すると、useEffectでcanvasに描画される
+          setImageSrc(objectUrl);
+          setIsProcessing(false);
+          announceStatus(`${extractedColors.length}色を抽出しました`);
+        };
+
+        img.onerror = () => {
+          announceStatus("画像の読み込みに失敗しました");
+          setIsProcessing(false);
+          URL.revokeObjectURL(objectUrl);
+        };
+
+        img.src = objectUrl;
+      } catch (error) {
+        console.error("Image processing error:", error);
+        announceStatus("画像の処理中にエラーが発生しました");
         setIsProcessing(false);
-        announceStatus(`${extractedColors.length}色を抽出しました`);
-      };
+      }
+    },
+    [colorCount, announceStatus],
+  );
 
-      img.onerror = () => {
-        announceStatus("画像の読み込みに失敗しました");
-        setIsProcessing(false);
-        URL.revokeObjectURL(objectUrl);
-      };
-
-      img.src = objectUrl;
-    } catch (error) {
-      console.error("Image processing error:", error);
-      announceStatus("画像の処理中にエラーが発生しました");
-      setIsProcessing(false);
-    }
-  }, [colorCount, announceStatus]);
-
-  const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      processImage(file);
-    }
-  }, [processImage]);
+  const handleFileSelect = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (file) {
+        processImage(file);
+      }
+    },
+    [processImage],
+  );
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -335,15 +356,18 @@ function ColorExtractor() {
     setIsDragging(false);
   }, []);
 
-  const handleDrop = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
+  const handleDrop = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      setIsDragging(false);
 
-    const file = e.dataTransfer.files[0];
-    if (file) {
-      processImage(file);
-    }
-  }, [processImage]);
+      const file = e.dataTransfer.files[0];
+      if (file) {
+        processImage(file);
+      }
+    },
+    [processImage],
+  );
 
   const handleColorCountChange = useCallback((value: number) => {
     setColorCount(Math.max(2, Math.min(20, value)));
@@ -367,21 +391,30 @@ function ColorExtractor() {
     announceStatus(`${extractedColors.length}色を抽出しました`);
   }, [imageSrc, colorCount, announceStatus]);
 
-  const handleCopyColor = useCallback((hex: string) => {
-    navigator.clipboard.writeText(hex).then(() => {
-      announceStatus(`${hex} をコピーしました`);
-    }).catch(() => {
-      announceStatus("コピーに失敗しました");
-    });
-  }, [announceStatus]);
+  const handleCopyColor = useCallback(
+    (hex: string) => {
+      navigator.clipboard
+        .writeText(hex)
+        .then(() => {
+          announceStatus(`${hex} をコピーしました`);
+        })
+        .catch(() => {
+          announceStatus("コピーに失敗しました");
+        });
+    },
+    [announceStatus],
+  );
 
   const handleCopyAllColors = useCallback(() => {
     const allColors = colors.map((c) => c.hex).join(", ");
-    navigator.clipboard.writeText(allColors).then(() => {
-      announceStatus("すべての色をコピーしました");
-    }).catch(() => {
-      announceStatus("コピーに失敗しました");
-    });
+    navigator.clipboard
+      .writeText(allColors)
+      .then(() => {
+        announceStatus("すべての色をコピーしました");
+      })
+      .catch(() => {
+        announceStatus("コピーに失敗しました");
+      });
   }, [colors, announceStatus]);
 
   return (
@@ -422,9 +455,7 @@ function ColorExtractor() {
                 <polyline points="17 8 12 3 7 8" />
                 <line x1="12" y1="3" x2="12" y2="15" />
               </svg>
-              <p className="dropzone-text">
-                クリックして画像を選択、またはドラッグ&ドロップ
-              </p>
+              <p className="dropzone-text">クリックして画像を選択、またはドラッグ&ドロップ</p>
               <p className="dropzone-hint">PNG, JPEG, WebP, GIF対応</p>
             </div>
           </div>
@@ -469,7 +500,9 @@ function ColorExtractor() {
         </div>
 
         {/* Canvas always exists in DOM for processing, parent controls visibility */}
-        <div className={`converter-section preview-section${imageSrc ? "" : " color-extractor-canvas-hidden"}`}>
+        <div
+          className={`converter-section preview-section${imageSrc ? "" : " color-extractor-canvas-hidden"}`}
+        >
           <h2 className="section-title">プレビュー</h2>
           <div className="preview-container">
             <canvas ref={canvasRef} aria-label="アップロードされた画像" />
@@ -519,7 +552,11 @@ function ColorExtractor() {
                       RGB({Math.round(color.r)}, {Math.round(color.g)}, {Math.round(color.b)})
                     </div>
                     <div className="color-usage">
-                      使用率: {((color.count / colors.reduce((sum, c) => sum + c.count, 0)) * 100).toFixed(1)}%
+                      使用率:{" "}
+                      {((color.count / colors.reduce((sum, c) => sum + c.count, 0)) * 100).toFixed(
+                        1,
+                      )}
+                      %
                     </div>
                   </div>
                 </div>
@@ -566,7 +603,6 @@ function ColorExtractor() {
         aria-atomic="true"
         className="sr-only"
       />
-
     </>
   );
 }

@@ -6,9 +6,7 @@ test.describe("Base64画像デコード - E2Eテスト", () => {
     await page.waitForLoadState("networkidle");
   });
 
-  test("ページロード時にundefinedコンテンツが表示されない", async ({
-    page,
-  }) => {
+  test("ページロード時にundefinedコンテンツが表示されない", async ({ page }) => {
     const bodyText = await page.textContent("body");
     expect(bodyText).not.toContain("undefined");
   });
@@ -41,9 +39,7 @@ test.describe("Base64画像デコード - E2Eテスト", () => {
     await expect(clearBtn).toBeVisible();
   });
 
-  test("空入力でデコードするとエラートーストが表示される", async ({
-    page,
-  }) => {
+  test("空入力でデコードするとエラートーストが表示される", async ({ page }) => {
     const decodeBtn = page.locator("button", { hasText: "デコード" });
     await decodeBtn.click();
 

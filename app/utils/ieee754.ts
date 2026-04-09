@@ -5,7 +5,7 @@
  */
 
 /** 浮動小数点数の精度 */
-export type FloatPrecision = 'float32' | 'float64';
+export type FloatPrecision = "float32" | "float64";
 
 /** IEEE 754 解析結果 */
 export interface IEEE754Result {
@@ -71,8 +71,8 @@ export function analyzeFloat32(value: number): IEEE754Result {
   const mantissaFraction = mantissaRaw / 2 ** 23;
   const exponentActual = isSubnormal ? 1 - exponentBias : exponentRaw - exponentBias;
 
-  const hexRepresentation = bits.toString(16).padStart(8, '0').toUpperCase();
-  const binaryRepresentation = bits.toString(2).padStart(32, '0');
+  const hexRepresentation = bits.toString(16).padStart(8, "0").toUpperCase();
+  const binaryRepresentation = bits.toString(2).padStart(32, "0");
 
   return {
     signBit,
@@ -90,7 +90,7 @@ export function analyzeFloat32(value: number): IEEE754Result {
     hexRepresentation,
     binaryRepresentation,
     decimalValue: view.getFloat32(0, false),
-    precision: 'float32',
+    precision: "float32",
   };
 }
 
@@ -129,11 +129,11 @@ export function analyzeFloat64(value: number): IEEE754Result {
   const mantissaFraction = Number(mantissaRawBigInt) / 2 ** 52;
   const exponentActual = isSubnormal ? 1 - exponentBias : exponentRaw - exponentBias;
 
-  const hexHigh = highBits.toString(16).padStart(8, '0').toUpperCase();
-  const hexLow = lowBits.toString(16).padStart(8, '0').toUpperCase();
+  const hexHigh = highBits.toString(16).padStart(8, "0").toUpperCase();
+  const hexLow = lowBits.toString(16).padStart(8, "0").toUpperCase();
   const hexRepresentation = hexHigh + hexLow;
   const binaryRepresentation =
-    highBits.toString(2).padStart(32, '0') + lowBits.toString(2).padStart(32, '0');
+    highBits.toString(2).padStart(32, "0") + lowBits.toString(2).padStart(32, "0");
 
   return {
     signBit,
@@ -151,7 +151,7 @@ export function analyzeFloat64(value: number): IEEE754Result {
     hexRepresentation,
     binaryRepresentation,
     decimalValue: value,
-    precision: 'float64',
+    precision: "float64",
   };
 }
 
@@ -162,10 +162,10 @@ export function analyzeFloat64(value: number): IEEE754Result {
  * @returns 変換された数値
  */
 export function bitsToNumber(bits: number[], precision: FloatPrecision): number {
-  const buf = new ArrayBuffer(precision === 'float32' ? 4 : 8);
+  const buf = new ArrayBuffer(precision === "float32" ? 4 : 8);
   const view = new DataView(buf);
 
-  if (precision === 'float32') {
+  if (precision === "float32") {
     let uint32 = 0;
     for (let i = 0; i < 32; i++) {
       if (bits[i]) uint32 = (uint32 | (1 << (31 - i))) >>> 0;
@@ -194,14 +194,14 @@ export function bitsToNumber(bits: number[], precision: FloatPrecision): number 
  * @returns 変換された数値
  */
 export function hexToNumber(hex: string, precision: FloatPrecision): number {
-  const clean = hex.replace(/[\s_]/g, '').replace(/^0x/i, '');
-  const expectedLength = precision === 'float32' ? 8 : 16;
-  const padded = clean.padStart(expectedLength, '0').slice(-expectedLength);
+  const clean = hex.replace(/[\s_]/g, "").replace(/^0x/i, "");
+  const expectedLength = precision === "float32" ? 8 : 16;
+  const padded = clean.padStart(expectedLength, "0").slice(-expectedLength);
 
-  const buf = new ArrayBuffer(precision === 'float32' ? 4 : 8);
+  const buf = new ArrayBuffer(precision === "float32" ? 4 : 8);
   const view = new DataView(buf);
 
-  if (precision === 'float32') {
+  if (precision === "float32") {
     const uint32 = parseInt(padded, 16);
     view.setUint32(0, uint32, false);
     return view.getFloat32(0, false);
@@ -218,18 +218,18 @@ export function hexToNumber(hex: string, precision: FloatPrecision): number {
  * @returns 数式文字列
  */
 export function getFormula(result: IEEE754Result): string {
-  if (result.isNaN) return 'NaN';
-  if (result.isInfinity) return result.signBit === 1 ? '-∞' : '+∞';
-  if (result.isZero) return result.signBit === 1 ? '-0' : '0';
+  if (result.isNaN) return "NaN";
+  if (result.isInfinity) return result.signBit === 1 ? "-∞" : "+∞";
+  if (result.isZero) return result.signBit === 1 ? "-0" : "0";
 
-  const signStr = result.signBit === 1 ? '(-1)' : '(+1)';
+  const signStr = result.signBit === 1 ? "(-1)" : "(+1)";
   const expStr = `2^${result.exponentActual}`;
 
   if (result.isSubnormal) {
-    return `${signStr} × ${expStr} × 0.${result.mantissaBits.join('')}₂`;
+    return `${signStr} × ${expStr} × 0.${result.mantissaBits.join("")}₂`;
   }
 
-  return `${signStr} × ${expStr} × 1.${result.mantissaBits.join('')}₂`;
+  return `${signStr} × ${expStr} × 1.${result.mantissaBits.join("")}₂`;
 }
 
 /**
@@ -238,11 +238,12 @@ export function getFormula(result: IEEE754Result): string {
  * @returns 説明文字列（null = 通常の数値）
  */
 export function getSpecialValueLabel(result: IEEE754Result): string | null {
-  if (result.isNaN) return 'NaN（非数）';
-  if (result.isInfinity) return result.signBit === 1 ? '-Infinity（負の無限大）' : '+Infinity（正の無限大）';
-  if (result.isNegativeZero) return '-0（負のゼロ）';
-  if (result.isZero) return '+0（ゼロ）';
-  if (result.isSubnormal) return '非正規化数（Subnormal）';
+  if (result.isNaN) return "NaN（非数）";
+  if (result.isInfinity)
+    return result.signBit === 1 ? "-Infinity（負の無限大）" : "+Infinity（正の無限大）";
+  if (result.isNegativeZero) return "-0（負のゼロ）";
+  if (result.isZero) return "+0（ゼロ）";
+  if (result.isSubnormal) return "非正規化数（Subnormal）";
   return null;
 }
 
@@ -250,34 +251,34 @@ export function getSpecialValueLabel(result: IEEE754Result): string | null {
  * よく使う定数の16進表現テーブル（float32）
  */
 export const FLOAT32_PRESETS: { label: string; value: number }[] = [
-  { label: '0', value: 0 },
-  { label: '-0', value: -0 },
-  { label: '1', value: 1 },
-  { label: '-1', value: -1 },
-  { label: '0.1', value: 0.1 },
-  { label: '0.5', value: 0.5 },
-  { label: 'π (pi)', value: Math.PI },
-  { label: 'MAX', value: 3.4028235e38 },
-  { label: 'MIN_POS', value: 1.1754944e-38 },
-  { label: '+Infinity', value: Infinity },
-  { label: '-Infinity', value: -Infinity },
-  { label: 'NaN', value: NaN },
+  { label: "0", value: 0 },
+  { label: "-0", value: -0 },
+  { label: "1", value: 1 },
+  { label: "-1", value: -1 },
+  { label: "0.1", value: 0.1 },
+  { label: "0.5", value: 0.5 },
+  { label: "π (pi)", value: Math.PI },
+  { label: "MAX", value: 3.4028235e38 },
+  { label: "MIN_POS", value: 1.1754944e-38 },
+  { label: "+Infinity", value: Infinity },
+  { label: "-Infinity", value: -Infinity },
+  { label: "NaN", value: NaN },
 ];
 
 /**
  * よく使う定数のテーブル（float64）
  */
 export const FLOAT64_PRESETS: { label: string; value: number }[] = [
-  { label: '0', value: 0 },
-  { label: '-0', value: -0 },
-  { label: '1', value: 1 },
-  { label: '-1', value: -1 },
-  { label: '0.1', value: 0.1 },
-  { label: '0.1 + 0.2', value: 0.1 + 0.2 },
-  { label: 'π (pi)', value: Math.PI },
-  { label: 'e', value: Math.E },
-  { label: 'MAX_SAFE_INT', value: Number.MAX_SAFE_INTEGER },
-  { label: '+Infinity', value: Infinity },
-  { label: '-Infinity', value: -Infinity },
-  { label: 'NaN', value: NaN },
+  { label: "0", value: 0 },
+  { label: "-0", value: -0 },
+  { label: "1", value: 1 },
+  { label: "-1", value: -1 },
+  { label: "0.1", value: 0.1 },
+  { label: "0.1 + 0.2", value: 0.1 + 0.2 },
+  { label: "π (pi)", value: Math.PI },
+  { label: "e", value: Math.E },
+  { label: "MAX_SAFE_INT", value: Number.MAX_SAFE_INTEGER },
+  { label: "+Infinity", value: Infinity },
+  { label: "-Infinity", value: -Infinity },
+  { label: "NaN", value: NaN },
 ];

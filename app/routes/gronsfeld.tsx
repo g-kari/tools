@@ -58,9 +58,7 @@ function GronsfeldCipher() {
 
   const output = useMemo(() => {
     if (!inputText || !keyValid) return "";
-    return mode === "encrypt"
-      ? gronsfeldEncrypt(inputText, key)
-      : gronsfeldDecrypt(inputText, key);
+    return mode === "encrypt" ? gronsfeldEncrypt(inputText, key) : gronsfeldDecrypt(inputText, key);
   }, [inputText, key, keyValid, mode]);
 
   const handleCopy = useCallback(async () => {
@@ -177,9 +175,7 @@ function GronsfeldCipher() {
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
             placeholder={
-              mode === "encrypt"
-                ? "暗号化するテキストを入力"
-                : "復号化するテキストを入力"
+              mode === "encrypt" ? "暗号化するテキストを入力" : "復号化するテキストを入力"
             }
             rows={4}
             aria-label="グロンスフェルト暗号の入力テキスト"

@@ -149,7 +149,7 @@
   border-radius: 4px;
   background-color: var(--md-sys-color-surface-variant);
   color: var(--md-sys-color-on-surface);
-  font-family: 'Space Mono', 'Roboto Mono', monospace;
+  font-family: "Space Mono", "Roboto Mono", monospace;
   font-size: 0.875rem;
   line-height: 1.6;
   resize: vertical;

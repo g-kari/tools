@@ -4,10 +4,7 @@ import { useState, useCallback, useMemo } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 
 export const Route = createFileRoute("/color-mix")({
@@ -92,7 +89,7 @@ export function buildColorMixCss(
   colorSpace: string,
   color1: string,
   percentage1: number,
-  color2: string
+  color2: string,
 ): string {
   const p2 = 100 - percentage1;
   return `color-mix(in ${colorSpace}, ${color1} ${percentage1}%, ${color2} ${p2}%)`;
@@ -103,9 +100,7 @@ export function buildColorMixCss(
  * @param hex HEXカラー文字列（#rrggbb）
  * @returns RGBオブジェクト、失敗時はnull
  */
-export function hexToRgb(
-  hex: string
-): { r: number; g: number; b: number } | null {
+export function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result
     ? {
@@ -123,11 +118,7 @@ export function hexToRgb(
  * @param percentage1 色1の割合 (0-100)
  * @returns 混合色のHEX文字列
  */
-export function mixColorsRgb(
-  hex1: string,
-  hex2: string,
-  percentage1: number
-): string {
+export function mixColorsRgb(hex1: string, hex2: string, percentage1: number): string {
   const c1 = hexToRgb(hex1);
   const c2 = hexToRgb(hex2);
   if (!c1 || !c2) return "#808080";
@@ -143,7 +134,7 @@ export function buildCssVariablesCode(
   colorSpace: ColorSpaceValue,
   color1: string,
   percentage: number,
-  color2: string
+  color2: string,
 ): string {
   const lines: string[] = [];
   const steps = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
@@ -151,11 +142,11 @@ export function buildCssVariablesCode(
   for (const pct of steps) {
     const p2 = 100 - pct;
     lines.push(
-      `  --color-mix-${pct}: color-mix(in ${colorSpace}, ${color1} ${pct}%, ${color2} ${p2}%);`
+      `  --color-mix-${pct}: color-mix(in ${colorSpace}, ${color1} ${pct}%, ${color2} ${p2}%);`,
     );
   }
   lines.push(
-    `  --color-mix-custom: color-mix(in ${colorSpace}, ${color1} ${percentage}%, ${color2} ${100 - percentage}%);`
+    `  --color-mix-custom: color-mix(in ${colorSpace}, ${color1} ${percentage}%, ${color2} ${100 - percentage}%);`,
   );
   lines.push("}");
   return lines.join("\n");
@@ -190,17 +181,17 @@ function ColorMixTool() {
 
   const colorMixCss = useMemo(
     () => buildColorMixCss(colorSpace, color1, percentage, color2),
-    [colorSpace, color1, percentage, color2]
+    [colorSpace, color1, percentage, color2],
   );
 
   const fallbackMixColor = useMemo(
     () => mixColorsRgb(color1, color2, percentage),
-    [color1, color2, percentage]
+    [color1, color2, percentage],
   );
 
   const cssVariablesCode = useMemo(
     () => buildCssVariablesCode(colorSpace, color1, percentage, color2),
-    [colorSpace, color1, percentage, color2]
+    [colorSpace, color1, percentage, color2],
   );
 
   /** グラデーションのステップを計算（プレビュー用） */
@@ -238,14 +229,11 @@ function ColorMixTool() {
     announceStatus("色を入れ替えました");
   }, [color1, color2, announceStatus]);
 
-  const handlePreset = useCallback(
-    (preset: (typeof PRESET_PAIRS)[number]) => {
-      setColor1(preset.color1);
-      setColor2(preset.color2);
-      setPercentage(50);
-    },
-    []
-  );
+  const handlePreset = useCallback((preset: (typeof PRESET_PAIRS)[number]) => {
+    setColor1(preset.color1);
+    setColor2(preset.color2);
+    setPercentage(50);
+  }, []);
 
   return (
     <>
@@ -349,8 +337,7 @@ function ColorMixTool() {
           {/* 割合スライダー */}
           <div className="color-mix-percentage-section">
             <label htmlFor="color-mix-percentage" className="color-mix-label">
-              色1の割合: <strong>{percentage}%</strong> / 色2:{" "}
-              <strong>{100 - percentage}%</strong>
+              色1の割合: <strong>{percentage}%</strong> / 色2: <strong>{100 - percentage}%</strong>
             </label>
             <input
               id="color-mix-percentage"
@@ -372,11 +359,7 @@ function ColorMixTool() {
           {/* 色空間選択 */}
           <div className="color-mix-colorspace-section">
             <span className="color-mix-label">色空間</span>
-            <div
-              className="color-mix-colorspace-grid"
-              role="group"
-              aria-label="色空間の選択"
-            >
+            <div className="color-mix-colorspace-grid" role="group" aria-label="色空間の選択">
               {COLOR_SPACES.map((cs) => (
                 <button
                   key={cs.value}

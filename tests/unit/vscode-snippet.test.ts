@@ -12,11 +12,7 @@ describe("bodyToLines", () => {
   });
 
   it("複数行を分割する", () => {
-    expect(bodyToLines("line1\nline2\nline3")).toEqual([
-      "line1",
-      "line2",
-      "line3",
-    ]);
+    expect(bodyToLines("line1\nline2\nline3")).toEqual(["line1", "line2", "line3"]);
   });
 
   it("空文字列は配列1要素を返す", () => {
@@ -54,19 +50,12 @@ describe("generateVscodeSnippetJson", () => {
       scope: "",
     };
 
-    const { json, snippetCount } = generateVscodeSnippetJson([
-      baseSnippet,
-      snippet2,
-    ]);
+    const { json, snippetCount } = generateVscodeSnippetJson([baseSnippet, snippet2]);
     const parsed = JSON.parse(json);
 
     expect(snippetCount).toBe(2);
     expect(parsed["arrow function"]).toBeDefined();
-    expect(parsed["arrow function"].body).toEqual([
-      "const $1 = ($2) => {",
-      "  $3",
-      "};",
-    ]);
+    expect(parsed["arrow function"].body).toEqual(["const $1 = ($2) => {", "  $3", "};"]);
   });
 
   it("description が空のとき description フィールドを含まない", () => {

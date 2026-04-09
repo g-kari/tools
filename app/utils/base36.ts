@@ -8,13 +8,13 @@
  */
 
 /** Base36 アルファベット（小文字標準） */
-const BASE36_ALPHABET_LOWER = '0123456789abcdefghijklmnopqrstuvwxyz';
+const BASE36_ALPHABET_LOWER = "0123456789abcdefghijklmnopqrstuvwxyz";
 
 /** Base36 アルファベット（大文字） */
-const BASE36_ALPHABET_UPPER = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+const BASE36_ALPHABET_UPPER = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 /** Base36 アルファベット種別 */
-export type Base36Variant = 'lower' | 'upper';
+export type Base36Variant = "lower" | "upper";
 
 /** Base36 エンコード結果 */
 export interface Base36EncodeResult {
@@ -46,7 +46,7 @@ export interface Base36DecodeResult {
  * バリアントに対応するアルファベット文字列を返す
  */
 function getAlphabet(variant: Base36Variant): string {
-  return variant === 'upper' ? BASE36_ALPHABET_UPPER : BASE36_ALPHABET_LOWER;
+  return variant === "upper" ? BASE36_ALPHABET_UPPER : BASE36_ALPHABET_LOWER;
 }
 
 /**
@@ -72,10 +72,7 @@ function buildLookup(variant: Base36Variant): Map<string, number> {
  * @param variant - 出力アルファベット種別
  * @returns エンコード結果
  */
-export function encodeBase36(
-  text: string,
-  variant: Base36Variant = 'lower',
-): Base36EncodeResult {
+export function encodeBase36(text: string, variant: Base36Variant = "lower"): Base36EncodeResult {
   const bytes = new TextEncoder().encode(text);
   return encodeBase36Bytes(bytes, variant);
 }
@@ -88,12 +85,12 @@ export function encodeBase36(
  */
 export function encodeBase36Bytes(
   bytes: Uint8Array,
-  variant: Base36Variant = 'lower',
+  variant: Base36Variant = "lower",
 ): Base36EncodeResult {
   const alphabet = getAlphabet(variant);
 
   if (bytes.length === 0) {
-    return { encoded: '', inputBytes: 0, outputLength: 0 };
+    return { encoded: "", inputBytes: 0, outputLength: 0 };
   }
 
   // 先頭の 0x00 バイトをカウント
@@ -128,7 +125,7 @@ export function encodeBase36Bytes(
     digits
       .reverse()
       .map((d) => alphabet[d])
-      .join('');
+      .join("");
 
   return {
     encoded: result,
@@ -148,12 +145,12 @@ export function encodeBase36Bytes(
  * @param variant - 出力アルファベット種別
  * @returns エンコード結果文字列
  */
-export function encodeIntBase36(n: bigint, variant: Base36Variant = 'lower'): string {
+export function encodeIntBase36(n: bigint, variant: Base36Variant = "lower"): string {
   const alphabet = getAlphabet(variant);
-  if (n < 0n) throw new RangeError('負の整数はエンコードできません');
+  if (n < 0n) throw new RangeError("負の整数はエンコードできません");
   if (n === 0n) return alphabet[0];
 
-  let result = '';
+  let result = "";
   let remaining = n;
   while (remaining > 0n) {
     result = alphabet[Number(remaining % 36n)] + result;
@@ -168,7 +165,7 @@ export function encodeIntBase36(n: bigint, variant: Base36Variant = 'lower'): st
  * @returns デコードされた非負整数
  */
 export function decodeIntBase36(encoded: string): bigint {
-  const lookup = buildLookup('lower');
+  const lookup = buildLookup("lower");
   let result = 0n;
   for (const ch of encoded.toLowerCase()) {
     const val = lookup.get(ch);
@@ -188,18 +185,18 @@ export function decodeIntBase36(encoded: string): bigint {
  * @returns デコード結果
  */
 export function decodeBase36(encoded: string): Base36DecodeResult {
-  const lookup = buildLookup('lower');
-  const cleaned = encoded.replace(/\s/g, '').toLowerCase();
+  const lookup = buildLookup("lower");
+  const cleaned = encoded.replace(/\s/g, "").toLowerCase();
 
   if (cleaned.length === 0) {
-    return { decoded: '', bytes: new Uint8Array(0), success: true };
+    return { decoded: "", bytes: new Uint8Array(0), success: true };
   }
 
   // 文字バリデーション
   for (const ch of cleaned) {
     if (!lookup.has(ch)) {
       return {
-        decoded: '',
+        decoded: "",
         bytes: new Uint8Array(0),
         success: false,
         error: `無効な文字が含まれています: '${ch}' （使用可能: 0-9a-z）`,
@@ -209,7 +206,7 @@ export function decodeBase36(encoded: string): Base36DecodeResult {
 
   // 先頭の '0' （= 0x00 バイト）をカウント
   let leadingZeros = 0;
-  while (leadingZeros < cleaned.length && cleaned[leadingZeros] === '0') {
+  while (leadingZeros < cleaned.length && cleaned[leadingZeros] === "0") {
     leadingZeros++;
   }
 
@@ -241,12 +238,12 @@ export function decodeBase36(encoded: string): Base36DecodeResult {
 
   // UTF-8 変換を試みる
   try {
-    const decoded = new TextDecoder('utf-8', { fatal: true }).decode(outputBytes);
+    const decoded = new TextDecoder("utf-8", { fatal: true }).decode(outputBytes);
     return { decoded, bytes: outputBytes, success: true };
   } catch {
     const hexStr = Array.from(outputBytes)
-      .map((b) => b.toString(16).padStart(2, '0'))
-      .join(' ');
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join(" ");
     return { decoded: hexStr, bytes: outputBytes, success: true };
   }
 }
@@ -261,7 +258,7 @@ export function decodeBase36(encoded: string): Base36DecodeResult {
  * @returns エラーメッセージ（問題なければ null）
  */
 export function validateBase36(input: string): string | null {
-  const cleaned = input.replace(/\s/g, '');
+  const cleaned = input.replace(/\s/g, "");
   if (cleaned.length === 0) return null;
 
   for (const ch of cleaned) {

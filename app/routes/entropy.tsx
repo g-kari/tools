@@ -4,10 +4,7 @@ import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 
 export const Route = createFileRoute("/entropy")({
   head: () => ({
@@ -142,10 +139,7 @@ function EntropyCalculator() {
 
   const result = useMemo(() => calcEntropy(input), [input]);
 
-  const level = useMemo(
-    () => (result ? getEntropyLevel(result.normalized) : null),
-    [result]
-  );
+  const level = useMemo(() => (result ? getEntropyLevel(result.normalized) : null), [result]);
 
   const handleCopy = useCallback(
     async (text: string, label: string) => {
@@ -157,14 +151,17 @@ function EntropyCalculator() {
         showToast("コピーに失敗しました", "error");
       }
     },
-    [showToast, announceStatus]
+    [showToast, announceStatus],
   );
 
-  const handleSample = useCallback((text: string) => {
-    setInput(text);
-    setShowAll(false);
-    announceStatus("サンプルテキストを設定しました");
-  }, [announceStatus]);
+  const handleSample = useCallback(
+    (text: string) => {
+      setInput(text);
+      setShowAll(false);
+      announceStatus("サンプルテキストを設定しました");
+    },
+    [announceStatus],
+  );
 
   const displayFreqs = showAll ? result?.frequencies : result?.frequencies.slice(0, 10);
 
@@ -215,16 +212,12 @@ function EntropyCalculator() {
             <div className="entropy-stats-grid">
               <div className="entropy-stat-card entropy-stat-card--primary">
                 <span className="entropy-stat-label">エントロピー</span>
-                <span className="entropy-stat-value">
-                  {result.entropy.toFixed(4)}
-                </span>
+                <span className="entropy-stat-value">{result.entropy.toFixed(4)}</span>
                 <span className="entropy-stat-unit">bits/文字</span>
               </div>
               <div className="entropy-stat-card">
                 <span className="entropy-stat-label">合計情報量</span>
-                <span className="entropy-stat-value">
-                  {result.totalBits.toFixed(2)}
-                </span>
+                <span className="entropy-stat-value">{result.totalBits.toFixed(2)}</span>
                 <span className="entropy-stat-unit">bits</span>
               </div>
               <div className="entropy-stat-card">
@@ -239,16 +232,12 @@ function EntropyCalculator() {
               </div>
               <div className="entropy-stat-card">
                 <span className="entropy-stat-label">最大エントロピー</span>
-                <span className="entropy-stat-value">
-                  {result.maxEntropy.toFixed(4)}
-                </span>
+                <span className="entropy-stat-value">{result.maxEntropy.toFixed(4)}</span>
                 <span className="entropy-stat-unit">bits/文字</span>
               </div>
               <div className="entropy-stat-card">
                 <span className="entropy-stat-label">正規化エントロピー</span>
-                <span className="entropy-stat-value">
-                  {(result.normalized * 100).toFixed(1)}%
-                </span>
+                <span className="entropy-stat-value">{(result.normalized * 100).toFixed(1)}%</span>
                 <span className="entropy-stat-unit">（0〜100%）</span>
               </div>
             </div>
@@ -257,9 +246,7 @@ function EntropyCalculator() {
             <div className="entropy-level-section" aria-label="エントロピーレベル">
               <div className="entropy-level-header">
                 <span className="entropy-level-title">ランダム性レベル</span>
-                <span className={`entropy-level-badge ${level.cls}`}>
-                  {level.label}
-                </span>
+                <span className={`entropy-level-badge ${level.cls}`}>{level.label}</span>
               </div>
               <div
                 className="entropy-gauge"
@@ -289,7 +276,7 @@ function EntropyCalculator() {
                 onClick={() =>
                   handleCopy(
                     `エントロピー: ${result.entropy.toFixed(4)} bits/文字\n合計情報量: ${result.totalBits.toFixed(2)} bits\n文字数: ${result.charCount}\nユニーク文字数: ${result.uniqueChars}\n最大エントロピー: ${result.maxEntropy.toFixed(4)} bits/文字\n正規化: ${(result.normalized * 100).toFixed(1)}%`,
-                    "計算結果"
+                    "計算結果",
                   )
                 }
                 aria-label="計算結果をコピー"
@@ -299,18 +286,12 @@ function EntropyCalculator() {
             </div>
 
             {/* 文字頻度テーブル */}
-            <section
-              className="entropy-freq-section"
-              aria-labelledby="entropy-freq-heading"
-            >
+            <section className="entropy-freq-section" aria-labelledby="entropy-freq-heading">
               <h2 id="entropy-freq-heading" className="section-title">
                 文字出現頻度
               </h2>
               <div className="entropy-table-wrapper">
-                <table
-                  className="entropy-table"
-                  aria-label="文字出現頻度テーブル"
-                >
+                <table className="entropy-table" aria-label="文字出現頻度テーブル">
                   <thead>
                     <tr>
                       <th scope="col">文字</th>
@@ -323,13 +304,9 @@ function EntropyCalculator() {
                   <tbody>
                     {displayFreqs?.map(({ char, count, probability, bits }) => (
                       <tr key={char}>
-                        <td className="entropy-table-char">
-                          {displayChar(char)}
-                        </td>
+                        <td className="entropy-table-char">{displayChar(char)}</td>
                         <td className="entropy-table-num">{count}</td>
-                        <td className="entropy-table-num">
-                          {(probability * 100).toFixed(2)}%
-                        </td>
+                        <td className="entropy-table-num">{(probability * 100).toFixed(2)}%</td>
                         <td className="entropy-table-num">{bits.toFixed(4)}</td>
                         <td className="entropy-table-bar-cell">
                           <div
@@ -354,9 +331,7 @@ function EntropyCalculator() {
                   aria-expanded={showAll}
                   aria-controls="entropy-freq-table"
                 >
-                  {showAll
-                    ? "折りたたむ"
-                    : `さらに ${result.frequencies.length - 10} 文字を表示`}
+                  {showAll ? "折りたたむ" : `さらに ${result.frequencies.length - 10} 文字を表示`}
                 </Button>
               )}
             </section>

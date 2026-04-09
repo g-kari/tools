@@ -1,10 +1,10 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useState, useMemo } from 'react';
-import { useClipboard } from '~/hooks/useClipboard';
-import { useToast } from '~/components/Toast';
-import { Button } from '~/components/ui/button';
-import { TipsCard } from '~/components/TipsCard';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
+import { createFileRoute } from "@tanstack/react-router";
+import { useState, useMemo } from "react";
+import { useClipboard } from "~/hooks/useClipboard";
+import { useToast } from "~/components/Toast";
+import { Button } from "~/components/ui/button";
+import { TipsCard } from "~/components/TipsCard";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import {
   type BadgeConfig,
   type BadgeStyle,
@@ -14,84 +14,84 @@ import {
   generateBadgeUrl,
   generateBadgeMarkdown,
   generateBadgeHtml,
-} from '../utils/github-badge';
+} from "../utils/github-badge";
 
-export const Route = createFileRoute('/github-badge')({
+export const Route = createFileRoute("/github-badge")({
   head: () => ({
     meta: [
-      { title: 'GitHubバッジジェネレーター | Web ツール集' },
+      { title: "GitHubバッジジェネレーター | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          'shields.io を使った GitHub README バッジを簡単に生成。ラベル・メッセージ・色・スタイル・ロゴをカスタマイズしてMarkdown/HTML/URLをワンクリックコピー。',
+          "shields.io を使った GitHub README バッジを簡単に生成。ラベル・メッセージ・色・スタイル・ロゴをカスタマイズしてMarkdown/HTML/URLをワンクリックコピー。",
       },
       {
-        property: 'og:title',
-        content: 'GitHubバッジジェネレーター | Web ツール集',
+        property: "og:title",
+        content: "GitHubバッジジェネレーター | Web ツール集",
       },
       {
-        property: 'og:description',
+        property: "og:description",
         content:
-          'shields.io を使った GitHub README バッジを簡単に生成。ラベル・メッセージ・色・スタイル・ロゴをカスタマイズしてMarkdown/HTML/URLをワンクリックコピー。',
+          "shields.io を使った GitHub README バッジを簡単に生成。ラベル・メッセージ・色・スタイル・ロゴをカスタマイズしてMarkdown/HTML/URLをワンクリックコピー。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/github-badge` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
+      { property: "og:url", content: `${SITE_BASE_URL}/github-badge` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
     ],
   }),
   component: GithubBadgeGenerator,
 });
 
 /** コピー対象のタブ */
-type CopyTab = 'markdown' | 'html' | 'url';
+type CopyTab = "markdown" | "html" | "url";
 
 /** プリセットバッジ */
 const PRESET_BADGES: { label: string; config: BadgeConfig }[] = [
   {
-    label: 'MIT License',
+    label: "MIT License",
     config: {
-      label: 'license',
-      message: 'MIT',
-      color: 'yellow',
-      style: 'flat',
+      label: "license",
+      message: "MIT",
+      color: "yellow",
+      style: "flat",
     },
   },
   {
-    label: 'Build Passing',
+    label: "Build Passing",
     config: {
-      label: 'build',
-      message: 'passing',
-      color: 'brightgreen',
-      style: 'flat',
+      label: "build",
+      message: "passing",
+      color: "brightgreen",
+      style: "flat",
     },
   },
   {
-    label: 'TypeScript',
+    label: "TypeScript",
     config: {
-      label: '',
-      message: 'TypeScript',
-      color: '3178c6',
-      style: 'flat',
-      logo: 'typescript',
-      logoColor: 'white',
+      label: "",
+      message: "TypeScript",
+      color: "3178c6",
+      style: "flat",
+      logo: "typescript",
+      logoColor: "white",
     },
   },
   {
-    label: 'PRs Welcome',
+    label: "PRs Welcome",
     config: {
-      label: 'PRs',
-      message: 'welcome',
-      color: 'brightgreen',
-      style: 'flat',
+      label: "PRs",
+      message: "welcome",
+      color: "brightgreen",
+      style: "flat",
     },
   },
   {
-    label: 'Version',
+    label: "Version",
     config: {
-      label: 'version',
-      message: '1.0.0',
-      color: 'blue',
-      style: 'flat',
+      label: "version",
+      message: "1.0.0",
+      color: "blue",
+      style: "flat",
     },
   },
 ];
@@ -100,27 +100,38 @@ const PRESET_BADGES: { label: string; config: BadgeConfig }[] = [
  * GitHubバッジジェネレーターコンポーネント
  */
 function GithubBadgeGenerator() {
-  const [label, setLabel] = useState('build');
-  const [message, setMessage] = useState('passing');
-  const [color, setColor] = useState('brightgreen');
-  const [labelColor, setLabelColor] = useState('');
-  const [style, setStyle] = useState<BadgeStyle>('flat');
-  const [logo, setLogo] = useState('');
-  const [logoColor, setLogoColor] = useState('');
-  const [linkUrl, setLinkUrl] = useState('');
-  const [activeTab, setActiveTab] = useState<CopyTab>('markdown');
+  const [label, setLabel] = useState("build");
+  const [message, setMessage] = useState("passing");
+  const [color, setColor] = useState("brightgreen");
+  const [labelColor, setLabelColor] = useState("");
+  const [style, setStyle] = useState<BadgeStyle>("flat");
+  const [logo, setLogo] = useState("");
+  const [logoColor, setLogoColor] = useState("");
+  const [linkUrl, setLinkUrl] = useState("");
+  const [activeTab, setActiveTab] = useState<CopyTab>("markdown");
   const [imgError, setImgError] = useState(false);
 
   const { copy } = useClipboard();
   const { showToast } = useToast();
 
   const config: BadgeConfig = useMemo(
-    () => ({ label, message, color, labelColor: labelColor || undefined, style, logo: logo || undefined, logoColor: logoColor || undefined }),
-    [label, message, color, labelColor, style, logo, logoColor]
+    () => ({
+      label,
+      message,
+      color,
+      labelColor: labelColor || undefined,
+      style,
+      logo: logo || undefined,
+      logoColor: logoColor || undefined,
+    }),
+    [label, message, color, labelColor, style, logo, logoColor],
   );
 
   const badgeUrl = useMemo(() => generateBadgeUrl(config), [config]);
-  const markdown = useMemo(() => generateBadgeMarkdown(config, linkUrl || undefined), [config, linkUrl]);
+  const markdown = useMemo(
+    () => generateBadgeMarkdown(config, linkUrl || undefined),
+    [config, linkUrl],
+  );
   const html = useMemo(() => generateBadgeHtml(config, linkUrl || undefined), [config, linkUrl]);
 
   const outputMap: Record<CopyTab, string> = {
@@ -133,17 +144,17 @@ function GithubBadgeGenerator() {
     const text = outputMap[activeTab];
     if (!text) return;
     const success = await copy(text);
-    showToast(success ? 'コピーしました' : 'コピーに失敗しました', success ? 'success' : 'error');
+    showToast(success ? "コピーしました" : "コピーに失敗しました", success ? "success" : "error");
   };
 
   const applyPreset = (presetConfig: BadgeConfig) => {
     setLabel(presetConfig.label);
     setMessage(presetConfig.message);
     setColor(presetConfig.color);
-    setLabelColor(presetConfig.labelColor ?? '');
+    setLabelColor(presetConfig.labelColor ?? "");
     setStyle(presetConfig.style);
-    setLogo(presetConfig.logo ?? '');
-    setLogoColor(presetConfig.logoColor ?? '');
+    setLogo(presetConfig.logo ?? "");
+    setLogoColor(presetConfig.logoColor ?? "");
     setImgError(false);
   };
 
@@ -181,7 +192,10 @@ function GithubBadgeGenerator() {
               type="text"
               className="github-badge-input"
               value={label}
-              onChange={(e) => { setLabel(e.target.value); setImgError(false); }}
+              onChange={(e) => {
+                setLabel(e.target.value);
+                setImgError(false);
+              }}
               placeholder="例: build, license, version"
             />
           </div>
@@ -196,7 +210,10 @@ function GithubBadgeGenerator() {
               type="text"
               className="github-badge-input"
               value={message}
-              onChange={(e) => { setMessage(e.target.value); setImgError(false); }}
+              onChange={(e) => {
+                setMessage(e.target.value);
+                setImgError(false);
+              }}
               placeholder="例: passing, MIT, 1.0.0"
             />
           </div>
@@ -212,16 +229,22 @@ function GithubBadgeGenerator() {
                 type="text"
                 className="github-badge-input github-badge-input--color"
                 value={color}
-                onChange={(e) => { setColor(e.target.value); setImgError(false); }}
+                onChange={(e) => {
+                  setColor(e.target.value);
+                  setImgError(false);
+                }}
                 placeholder="例: brightgreen, #ff0000"
               />
               <div className="github-badge-color-swatches" role="group" aria-label="色のプリセット">
                 {BADGE_COLORS.map((c) => (
                   <button
                     key={c.value}
-                    className={`github-badge-swatch ${color === c.value ? 'github-badge-swatch--active' : ''}`}
-                    style={{ '--swatch-color': c.hex } as React.CSSProperties}
-                    onClick={() => { setColor(c.value); setImgError(false); }}
+                    className={`github-badge-swatch ${color === c.value ? "github-badge-swatch--active" : ""}`}
+                    style={{ "--swatch-color": c.hex } as React.CSSProperties}
+                    onClick={() => {
+                      setColor(c.value);
+                      setImgError(false);
+                    }}
                     title={c.label}
                     aria-label={c.label}
                     aria-pressed={color === c.value}
@@ -241,7 +264,10 @@ function GithubBadgeGenerator() {
               type="text"
               className="github-badge-input"
               value={labelColor}
-              onChange={(e) => { setLabelColor(e.target.value); setImgError(false); }}
+              onChange={(e) => {
+                setLabelColor(e.target.value);
+                setImgError(false);
+              }}
               placeholder="例: grey, #333333"
             />
           </div>
@@ -255,7 +281,10 @@ function GithubBadgeGenerator() {
               id="badge-style"
               className="github-badge-select"
               value={style}
-              onChange={(e) => { setStyle(e.target.value as BadgeStyle); setImgError(false); }}
+              onChange={(e) => {
+                setStyle(e.target.value as BadgeStyle);
+                setImgError(false);
+              }}
             >
               {BADGE_STYLES.map((s) => (
                 <option key={s.value} value={s.value}>
@@ -275,7 +304,10 @@ function GithubBadgeGenerator() {
                 id="badge-logo"
                 className="github-badge-select"
                 value={logo}
-                onChange={(e) => { setLogo(e.target.value); setImgError(false); }}
+                onChange={(e) => {
+                  setLogo(e.target.value);
+                  setImgError(false);
+                }}
               >
                 {POPULAR_LOGOS.map((l) => (
                   <option key={l.value} value={l.value}>
@@ -287,7 +319,10 @@ function GithubBadgeGenerator() {
                 type="text"
                 className="github-badge-input"
                 value={logo}
-                onChange={(e) => { setLogo(e.target.value); setImgError(false); }}
+                onChange={(e) => {
+                  setLogo(e.target.value);
+                  setImgError(false);
+                }}
                 placeholder="または直接入力（例: react）"
                 aria-label="ロゴ名を直接入力"
               />
@@ -304,7 +339,10 @@ function GithubBadgeGenerator() {
               type="text"
               className="github-badge-input"
               value={logoColor}
-              onChange={(e) => { setLogoColor(e.target.value); setImgError(false); }}
+              onChange={(e) => {
+                setLogoColor(e.target.value);
+                setImgError(false);
+              }}
               placeholder="例: white, #ffffff"
             />
           </div>
@@ -339,7 +377,9 @@ function GithubBadgeGenerator() {
             />
           ) : (
             <span className="github-badge-preview-empty">
-              {imgError ? '画像の読み込みに失敗しました' : 'メッセージを入力するとプレビューが表示されます'}
+              {imgError
+                ? "画像の読み込みに失敗しました"
+                : "メッセージを入力するとプレビューが表示されます"}
             </span>
           )}
         </div>
@@ -348,21 +388,21 @@ function GithubBadgeGenerator() {
       {/* 出力 */}
       <div className="github-badge-output-section">
         <div className="github-badge-output-tabs" role="tablist" aria-label="出力形式">
-          {(['markdown', 'html', 'url'] as CopyTab[]).map((tab) => (
+          {(["markdown", "html", "url"] as CopyTab[]).map((tab) => (
             <button
               key={tab}
               role="tab"
               aria-selected={activeTab === tab}
-              className={`github-badge-tab ${activeTab === tab ? 'github-badge-tab--active' : ''}`}
+              className={`github-badge-tab ${activeTab === tab ? "github-badge-tab--active" : ""}`}
               onClick={() => setActiveTab(tab)}
             >
-              {tab === 'markdown' ? 'Markdown' : tab === 'html' ? 'HTML' : 'URL'}
+              {tab === "markdown" ? "Markdown" : tab === "html" ? "HTML" : "URL"}
             </button>
           ))}
         </div>
         <div className="github-badge-output-body" role="tabpanel">
           <pre className="github-badge-output-code" aria-label={`${activeTab}出力`}>
-            <code>{outputMap[activeTab] || '（メッセージを入力してください）'}</code>
+            <code>{outputMap[activeTab] || "（メッセージを入力してください）"}</code>
           </pre>
           <Button
             variant="default"
@@ -378,30 +418,30 @@ function GithubBadgeGenerator() {
       <TipsCard
         sections={[
           {
-            title: '使い方',
+            title: "使い方",
             items: [
-              'ラベル（左側）とメッセージ（右側）にテキストを入力します',
-              '色・スタイル・ロゴを設定してバッジをカスタマイズします',
-              'プレビューでリアルタイムに確認できます',
-              'Markdown / HTML / URL タブから目的の形式をコピーします',
+              "ラベル（左側）とメッセージ（右側）にテキストを入力します",
+              "色・スタイル・ロゴを設定してバッジをカスタマイズします",
+              "プレビューでリアルタイムに確認できます",
+              "Markdown / HTML / URL タブから目的の形式をコピーします",
             ],
           },
           {
-            title: 'ヒント',
+            title: "ヒント",
             items: [
-              'プリセットから素早くよく使うバッジを生成できます',
-              'ロゴには Simple Icons（simpleicons.org）のアイコン名を使用します',
-              '色は色名（brightgreen など）または HEX コード（#ff0000）が使えます',
-              'リンク先URLを設定するとバッジにハイパーリンクが付きます',
+              "プリセットから素早くよく使うバッジを生成できます",
+              "ロゴには Simple Icons（simpleicons.org）のアイコン名を使用します",
+              "色は色名（brightgreen など）または HEX コード（#ff0000）が使えます",
+              "リンク先URLを設定するとバッジにハイパーリンクが付きます",
             ],
           },
           {
-            title: 'shields.io について',
+            title: "shields.io について",
             items: [
-              'shields.io は GitHub READMEで広く使われるバッジサービスです',
-              '生成したURLは shields.io のサーバーから画像が配信されます',
-              'for-the-badge スタイルは大きめのデザインで存在感があります',
-              '動的バッジ（CI/CD連携など）は shields.io 公式ドキュメントを参照してください',
+              "shields.io は GitHub READMEで広く使われるバッジサービスです",
+              "生成したURLは shields.io のサーバーから画像が配信されます",
+              "for-the-badge スタイルは大きめのデザインで存在感があります",
+              "動的バッジ（CI/CD連携など）は shields.io 公式ドキュメントを参照してください",
             ],
           },
         ]}

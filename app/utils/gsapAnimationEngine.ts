@@ -3,11 +3,19 @@
  * Provides professional easing functions and timeline sampling for Canvas/GIF output
  */
 
-import gsap from 'gsap';
+import gsap from "gsap";
 
-export type GSAPEasingType = 'bounce' | 'elastic' | 'back' | 'expo' | 'circ' | 'sine' | 'power2';
-export type EasingDirection = 'in' | 'out' | 'inOut';
-export type AnimationEffectType = 'bounce' | 'shake' | 'rotate' | 'pulse' | 'fade' | 'slide' | 'wobble' | 'pop';
+export type GSAPEasingType = "bounce" | "elastic" | "back" | "expo" | "circ" | "sine" | "power2";
+export type EasingDirection = "in" | "out" | "inOut";
+export type AnimationEffectType =
+  | "bounce"
+  | "shake"
+  | "rotate"
+  | "pulse"
+  | "fade"
+  | "slide"
+  | "wobble"
+  | "pop";
 
 /**
  * Configuration for GSAP animation
@@ -16,9 +24,9 @@ export interface GSAPAnimationConfig {
   effect: AnimationEffectType;
   easing: GSAPEasingType;
   easingDirection: EasingDirection;
-  fps: number;           // 6-30
-  duration: number;      // 0.3-3.0秒
-  loop: number;          // 0=無限
+  fps: number; // 6-30
+  duration: number; // 0.3-3.0秒
+  loop: number; // 0=無限
 }
 
 /**
@@ -26,12 +34,12 @@ export interface GSAPAnimationConfig {
  * Values are then applied to canvas transformations
  */
 export interface AnimationProxy {
-  x: number;           // X translation (percentage of canvas width)
-  y: number;           // Y translation (percentage of canvas height)
-  rotation: number;    // Rotation in degrees
-  scaleX: number;      // X scale factor
-  scaleY: number;      // Y scale factor
-  opacity: number;     // Opacity 0-1
+  x: number; // X translation (percentage of canvas width)
+  y: number; // Y translation (percentage of canvas height)
+  rotation: number; // Rotation in degrees
+  scaleX: number; // X scale factor
+  scaleY: number; // Y scale factor
+  opacity: number; // Opacity 0-1
 }
 
 /**
@@ -73,41 +81,47 @@ export function createEffectTimeline(config: GSAPAnimationConfig): gsap.core.Tim
   timeline.data = { proxy };
 
   switch (config.effect) {
-    case 'bounce':
+    case "bounce":
       // Bounce up and down
-      timeline.to(proxy, {
-        y: -20,
-        ease: 'power2.out',
-        duration: config.duration * 0.5,
-      }).to(proxy, {
-        y: 0,
-        ease: ease,
-        duration: config.duration * 0.5,
-      });
+      timeline
+        .to(proxy, {
+          y: -20,
+          ease: "power2.out",
+          duration: config.duration * 0.5,
+        })
+        .to(proxy, {
+          y: 0,
+          ease: ease,
+          duration: config.duration * 0.5,
+        });
       break;
 
-    case 'shake':
+    case "shake":
       // Shake horizontally with multiple oscillations
-      timeline.to(proxy, {
-        x: 5,
-        ease: ease,
-        duration: config.duration * 0.25,
-      }).to(proxy, {
-        x: -5,
-        ease: ease,
-        duration: config.duration * 0.25,
-      }).to(proxy, {
-        x: 3,
-        ease: ease,
-        duration: config.duration * 0.25,
-      }).to(proxy, {
-        x: 0,
-        ease: ease,
-        duration: config.duration * 0.25,
-      });
+      timeline
+        .to(proxy, {
+          x: 5,
+          ease: ease,
+          duration: config.duration * 0.25,
+        })
+        .to(proxy, {
+          x: -5,
+          ease: ease,
+          duration: config.duration * 0.25,
+        })
+        .to(proxy, {
+          x: 3,
+          ease: ease,
+          duration: config.duration * 0.25,
+        })
+        .to(proxy, {
+          x: 0,
+          ease: ease,
+          duration: config.duration * 0.25,
+        });
       break;
 
-    case 'rotate':
+    case "rotate":
       // 360 degree rotation
       timeline.to(proxy, {
         rotation: 360,
@@ -116,79 +130,93 @@ export function createEffectTimeline(config: GSAPAnimationConfig): gsap.core.Tim
       });
       break;
 
-    case 'pulse':
+    case "pulse":
       // Scale in and out
-      timeline.to(proxy, {
-        scaleX: 1.2,
-        scaleY: 1.2,
-        ease: ease,
-        duration: config.duration * 0.5,
-      }).to(proxy, {
-        scaleX: 1,
-        scaleY: 1,
-        ease: ease,
-        duration: config.duration * 0.5,
-      });
+      timeline
+        .to(proxy, {
+          scaleX: 1.2,
+          scaleY: 1.2,
+          ease: ease,
+          duration: config.duration * 0.5,
+        })
+        .to(proxy, {
+          scaleX: 1,
+          scaleY: 1,
+          ease: ease,
+          duration: config.duration * 0.5,
+        });
       break;
 
-    case 'fade':
+    case "fade":
       // Fade out and in
-      timeline.to(proxy, {
-        opacity: 0.3,
-        ease: ease,
-        duration: config.duration * 0.5,
-      }).to(proxy, {
-        opacity: 1,
-        ease: ease,
-        duration: config.duration * 0.5,
-      });
+      timeline
+        .to(proxy, {
+          opacity: 0.3,
+          ease: ease,
+          duration: config.duration * 0.5,
+        })
+        .to(proxy, {
+          opacity: 1,
+          ease: ease,
+          duration: config.duration * 0.5,
+        });
       break;
 
-    case 'slide':
+    case "slide":
       // Slide from left to right
-      timeline.to(proxy, {
-        x: 50,
-        ease: ease,
-        duration: config.duration * 0.5,
-      }).to(proxy, {
-        x: 0,
-        ease: ease,
-        duration: config.duration * 0.5,
-      });
+      timeline
+        .to(proxy, {
+          x: 50,
+          ease: ease,
+          duration: config.duration * 0.5,
+        })
+        .to(proxy, {
+          x: 0,
+          ease: ease,
+          duration: config.duration * 0.5,
+        });
       break;
 
-    case 'wobble':
+    case "wobble":
       // Wobble rotation
-      timeline.to(proxy, {
-        rotation: 15,
-        ease: ease,
-        duration: config.duration * 0.25,
-      }).to(proxy, {
-        rotation: -15,
-        ease: ease,
-        duration: config.duration * 0.25,
-      }).to(proxy, {
-        rotation: 10,
-        ease: ease,
-        duration: config.duration * 0.25,
-      }).to(proxy, {
-        rotation: 0,
-        ease: ease,
-        duration: config.duration * 0.25,
-      });
+      timeline
+        .to(proxy, {
+          rotation: 15,
+          ease: ease,
+          duration: config.duration * 0.25,
+        })
+        .to(proxy, {
+          rotation: -15,
+          ease: ease,
+          duration: config.duration * 0.25,
+        })
+        .to(proxy, {
+          rotation: 10,
+          ease: ease,
+          duration: config.duration * 0.25,
+        })
+        .to(proxy, {
+          rotation: 0,
+          ease: ease,
+          duration: config.duration * 0.25,
+        });
       break;
 
-    case 'pop':
+    case "pop":
       // Pop in from 0 to overshoot
-      timeline.fromTo(proxy, {
-        scaleX: 0,
-        scaleY: 0,
-      }, {
-        scaleX: 1,
-        scaleY: 1,
-        ease: ease,
-        duration: config.duration,
-      });
+      timeline.fromTo(
+        proxy,
+        {
+          scaleX: 0,
+          scaleY: 0,
+        },
+        {
+          scaleX: 1,
+          scaleY: 1,
+          ease: ease,
+          duration: config.duration,
+        },
+      );
       break;
   }
 
@@ -201,10 +229,7 @@ export function createEffectTimeline(config: GSAPAnimationConfig): gsap.core.Tim
  * @param frameCount - Number of frames to sample
  * @returns Array of proxy states at each frame
  */
-export function sampleTimeline(
-  timeline: gsap.core.Timeline,
-  frameCount: number
-): AnimationProxy[] {
+export function sampleTimeline(timeline: gsap.core.Timeline, frameCount: number): AnimationProxy[] {
   const samples: AnimationProxy[] = [];
   const proxy = timeline.data.proxy as AnimationProxy;
 
@@ -234,12 +259,12 @@ export function sampleTimeline(
  */
 export function applyProxyToCanvas(
   baseCanvas: HTMLCanvasElement,
-  proxy: AnimationProxy
+  proxy: AnimationProxy,
 ): HTMLCanvasElement {
-  const canvas = document.createElement('canvas');
+  const canvas = document.createElement("canvas");
   canvas.width = baseCanvas.width;
   canvas.height = baseCanvas.height;
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext("2d");
 
   if (!ctx) return canvas;
 
@@ -266,13 +291,7 @@ export function applyProxyToCanvas(
   ctx.globalAlpha = proxy.opacity;
 
   // Draw image centered
-  ctx.drawImage(
-    baseCanvas,
-    -canvas.width / 2,
-    -canvas.height / 2,
-    canvas.width,
-    canvas.height
-  );
+  ctx.drawImage(baseCanvas, -canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height);
 
   ctx.restore();
 
@@ -287,7 +306,7 @@ export function applyProxyToCanvas(
  */
 export function generateGSAPAnimationFrames(
   baseCanvas: HTMLCanvasElement,
-  config: GSAPAnimationConfig
+  config: GSAPAnimationConfig,
 ): HTMLCanvasElement[] {
   const frameCount = Math.max(Math.round(config.fps * config.duration), 2);
 
@@ -313,13 +332,13 @@ export function generateGSAPAnimationFrames(
  */
 export function getGSAPEasingLabel(easing: GSAPEasingType): string {
   const labels: Record<GSAPEasingType, string> = {
-    bounce: 'バウンス',
-    elastic: 'エラスティック',
-    back: 'バック',
-    expo: 'エクスポ',
-    circ: 'サーク',
-    sine: 'サイン',
-    power2: 'パワー2',
+    bounce: "バウンス",
+    elastic: "エラスティック",
+    back: "バック",
+    expo: "エクスポ",
+    circ: "サーク",
+    sine: "サイン",
+    power2: "パワー2",
   };
   return labels[easing];
 }
@@ -331,9 +350,9 @@ export function getGSAPEasingLabel(easing: GSAPEasingType): string {
  */
 export function getEasingDirectionLabel(direction: EasingDirection): string {
   const labels: Record<EasingDirection, string> = {
-    in: 'イン',
-    out: 'アウト',
-    inOut: 'イン-アウト',
+    in: "イン",
+    out: "アウト",
+    inOut: "イン-アウト",
   };
   return labels[direction];
 }

@@ -4,10 +4,7 @@ import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 import {
   convertStorage,
@@ -45,8 +42,7 @@ export const Route = createFileRoute("/storage-converter")({
       },
       {
         name: "twitter:description",
-        content:
-          "bit・B・KB・MB・GB・TB・PBとKiB・MiB・GiB・TiB・PiBを相互変換するツール。",
+        content: "bit・B・KB・MB・GB・TB・PBとKiB・MiB・GiB・TiB・PiBを相互変換するツール。",
       },
     ],
   }),
@@ -105,7 +101,7 @@ function StorageConverterTool() {
         showToast("コピーに失敗しました", "error");
       }
     },
-    [resultMap, copy, announceStatus, showToast]
+    [resultMap, copy, announceStatus, showToast],
   );
 
   const handleCopyAll = useCallback(async () => {
@@ -128,8 +124,7 @@ function StorageConverterTool() {
   }, [conversionResults, copy, announceStatus, showToast]);
 
   const hasInput = inputValue.trim() !== "";
-  const isInvalid =
-    hasInput && (numericValue === null || numericValue < 0);
+  const isInvalid = hasInput && (numericValue === null || numericValue < 0);
 
   return (
     <>
@@ -212,11 +207,7 @@ function StorageConverterTool() {
 
         {/* 変換結果 */}
         {conversionResults.length > 0 ? (
-          <section
-            className="sc-results"
-            aria-label="変換結果"
-            aria-live="polite"
-          >
+          <section className="sc-results" aria-label="変換結果" aria-live="polite">
             {GROUP_ORDER.map((group) => {
               const units = STORAGE_UNIT_GROUPS[group];
               return (
@@ -224,8 +215,7 @@ function StorageConverterTool() {
                   <div className="sc-group-header">{GROUP_LABELS[group]}</div>
                   {units.map((unit) => {
                     const value = resultMap[unit.id];
-                    const formatted =
-                      value !== undefined ? formatStorageValue(value) : "—";
+                    const formatted = value !== undefined ? formatStorageValue(value) : "—";
                     const isCurrent = unit.id === selectedUnit;
                     return (
                       <div
@@ -236,9 +226,7 @@ function StorageConverterTool() {
                         <span className="sc-unit-abbr" title={unit.label}>
                           {unit.abbr}
                         </span>
-                        <span className="sc-unit-value">
-                          {formatted}
-                        </span>
+                        <span className="sc-unit-value">{formatted}</span>
                         <button
                           type="button"
                           className="sc-copy-btn"
@@ -255,12 +243,10 @@ function StorageConverterTool() {
               );
             })}
           </section>
-        ) : (
-          hasInput && isInvalid ? null : (
-            <div className="sc-empty-state" aria-live="polite">
-              数値と単位を入力すると全ての単位への変換結果が表示されます
-            </div>
-          )
+        ) : hasInput && isInvalid ? null : (
+          <div className="sc-empty-state" aria-live="polite">
+            数値と単位を入力すると全ての単位への変換結果が表示されます
+          </div>
         )}
 
         <TipsCard

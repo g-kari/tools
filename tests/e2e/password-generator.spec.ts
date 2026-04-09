@@ -1,42 +1,46 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from "@playwright/test";
 
-test.describe('Password Generator - E2E Tests', () => {
+test.describe("Password Generator - E2E Tests", () => {
   // タイムアウトはplaywright.config.tsで設定（CI: 30秒, ローカル: 10秒）
 
   /**
    * カテゴリドロップダウンを開いてリンクをクリックするヘルパー関数
    */
-  async function navigateViaCategory(page: import('@playwright/test').Page, categoryName: string, linkHref: string) {
-    const categoryBtn = page.locator('.nav-category-btn', { hasText: categoryName });
+  async function navigateViaCategory(
+    page: import("@playwright/test").Page,
+    categoryName: string,
+    linkHref: string,
+  ) {
+    const categoryBtn = page.locator(".nav-category-btn", { hasText: categoryName });
     await categoryBtn.hover();
-    const dropdown = page.locator('.nav-dropdown');
+    const dropdown = page.locator(".nav-dropdown");
     await expect(dropdown).toBeVisible();
     const link = dropdown.locator(`a[href="${linkHref}"]`);
     await link.click();
   }
 
   test.beforeEach(async ({ page }) => {
-    await page.goto('/password-generator', { waitUntil: 'domcontentloaded' });
+    await page.goto("/password-generator", { waitUntil: "domcontentloaded" });
     // Wait for password to be generated (indicates page is ready)
-    await page.waitForSelector('#passwordOutput');
+    await page.waitForSelector("#passwordOutput");
   });
 
   test('should load the page without "undefined" content', async ({ page }) => {
-    const bodyText = await page.textContent('body');
-    expect(bodyText).not.toContain('undefined');
-    expect(bodyText).not.toBe('undefined');
+    const bodyText = await page.textContent("body");
+    expect(bodyText).not.toContain("undefined");
+    expect(bodyText).not.toBe("undefined");
   });
 
-  test('should display the correct page title', async ({ page }) => {
+  test("should display the correct page title", async ({ page }) => {
     await expect(page).toHaveTitle(/パスワード/);
   });
 
-  test('should have password length slider', async ({ page }) => {
-    const slider = page.locator('#passwordLength');
+  test("should have password length slider", async ({ page }) => {
+    const slider = page.locator("#passwordLength");
     await expect(slider).toBeVisible();
   });
 
-  test('should have character type checkboxes', async ({ page }) => {
+  test("should have character type checkboxes", async ({ page }) => {
     const uppercaseCheckbox = page.locator('input[aria-label="大文字を含める"]');
     const lowercaseCheckbox = page.locator('input[aria-label="小文字を含める"]');
     const numbersCheckbox = page.locator('input[aria-label="数字を含める"]');
@@ -48,29 +52,29 @@ test.describe('Password Generator - E2E Tests', () => {
     await expect(symbolsCheckbox).toBeVisible();
   });
 
-  test('should have generate, copy, and clear buttons', async ({ page }) => {
-    const generateButton = page.locator('button.btn-primary');
-    const copyButton = page.locator('button.btn-secondary');
-    const clearButton = page.locator('button.btn-clear');
+  test("should have generate, copy, and clear buttons", async ({ page }) => {
+    const generateButton = page.locator("button.btn-primary");
+    const copyButton = page.locator("button.btn-secondary");
+    const clearButton = page.locator("button.btn-clear");
 
     await expect(generateButton).toBeVisible();
-    await expect(generateButton).toContainText('生成');
+    await expect(generateButton).toContainText("生成");
     await expect(copyButton).toBeVisible();
-    await expect(copyButton).toContainText('コピー');
+    await expect(copyButton).toContainText("コピー");
     await expect(clearButton).toBeVisible();
-    await expect(clearButton).toContainText('クリア');
+    await expect(clearButton).toContainText("クリア");
   });
 
-  test('should generate password on page load', async ({ page }) => {
-    const passwordOutput = page.locator('#passwordOutput');
+  test("should generate password on page load", async ({ page }) => {
+    const passwordOutput = page.locator("#passwordOutput");
     await expect(passwordOutput).toBeVisible();
     const value = await passwordOutput.inputValue();
     expect(value.length).toBeGreaterThan(0);
   });
 
-  test('should generate new password when generate button is clicked', async ({ page }) => {
-    const passwordOutput = page.locator('#passwordOutput');
-    const generateButton = page.locator('button.btn-primary');
+  test("should generate new password when generate button is clicked", async ({ page }) => {
+    const passwordOutput = page.locator("#passwordOutput");
+    const generateButton = page.locator("button.btn-primary");
 
     const firstPassword = await passwordOutput.inputValue();
     expect(firstPassword.length).toBeGreaterThan(0);
@@ -84,9 +88,9 @@ test.describe('Password Generator - E2E Tests', () => {
     expect(secondPassword).not.toBe(firstPassword);
   });
 
-  test('should clear password when clear button is clicked', async ({ page }) => {
-    const passwordOutput = page.locator('#passwordOutput');
-    const clearButton = page.locator('button.btn-clear');
+  test("should clear password when clear button is clicked", async ({ page }) => {
+    const passwordOutput = page.locator("#passwordOutput");
+    const clearButton = page.locator("button.btn-clear");
 
     // Make sure there's a password first
     const initialValue = await passwordOutput.inputValue();
@@ -94,28 +98,28 @@ test.describe('Password Generator - E2E Tests', () => {
 
     await clearButton.click();
     const clearedValue = await passwordOutput.inputValue();
-    expect(clearedValue).toBe('');
+    expect(clearedValue).toBe("");
   });
 
-  test('should change password length when slider is adjusted', async ({ page }) => {
-    const slider = page.locator('#passwordLength');
-    const generateButton = page.locator('button.btn-primary');
-    const passwordOutput = page.locator('#passwordOutput');
+  test("should change password length when slider is adjusted", async ({ page }) => {
+    const slider = page.locator("#passwordLength");
+    const generateButton = page.locator("button.btn-primary");
+    const passwordOutput = page.locator("#passwordOutput");
 
     // Set to minimum length (4)
-    await slider.fill('4');
+    await slider.fill("4");
     await generateButton.click();
     const shortPassword = await passwordOutput.inputValue();
     expect(shortPassword.length).toBe(4);
 
     // Set to a longer length
-    await slider.fill('32');
+    await slider.fill("32");
     await generateButton.click();
     const longPassword = await passwordOutput.inputValue();
     expect(longPassword.length).toBe(32);
   });
 
-  test('should show toast when no character type is selected', async ({ page }) => {
+  test("should show toast when no character type is selected", async ({ page }) => {
     // Expand the collapsible section first
     const collapsibleHeader = page.locator('.collapsible-header[aria-controls="advanced-options"]');
     await collapsibleHeader.click();
@@ -124,7 +128,7 @@ test.describe('Password Generator - E2E Tests', () => {
     const uppercaseCheckbox = page.locator('input[aria-label="大文字を含める"]');
     const lowercaseCheckbox = page.locator('input[aria-label="小文字を含める"]');
     const numbersCheckbox = page.locator('input[aria-label="数字を含める"]');
-    const generateButton = page.locator('button.btn-primary');
+    const generateButton = page.locator("button.btn-primary");
 
     // Uncheck all default checked boxes
     await uppercaseCheckbox.uncheck();
@@ -134,12 +138,14 @@ test.describe('Password Generator - E2E Tests', () => {
     await generateButton.click();
 
     // Check for error toast notification (use .toast-error to avoid strict mode violation)
-    const toast = page.locator('.toast-error');
+    const toast = page.locator(".toast-error");
     await expect(toast).toBeVisible();
-    await expect(toast).toContainText('少なくとも1つの文字種を選択してください');
+    await expect(toast).toContainText("少なくとも1つの文字種を選択してください");
   });
 
-  test('should generate password with only uppercase when only uppercase is selected', async ({ page }) => {
+  test("should generate password with only uppercase when only uppercase is selected", async ({
+    page,
+  }) => {
     // Expand the collapsible section first
     const collapsibleHeader = page.locator('.collapsible-header[aria-controls="advanced-options"]');
     await collapsibleHeader.click();
@@ -147,8 +153,8 @@ test.describe('Password Generator - E2E Tests', () => {
 
     const lowercaseCheckbox = page.locator('input[aria-label="小文字を含める"]');
     const numbersCheckbox = page.locator('input[aria-label="数字を含める"]');
-    const generateButton = page.locator('button.btn-primary');
-    const passwordOutput = page.locator('#passwordOutput');
+    const generateButton = page.locator("button.btn-primary");
+    const passwordOutput = page.locator("#passwordOutput");
 
     // Keep only uppercase checked
     await lowercaseCheckbox.uncheck();
@@ -159,61 +165,65 @@ test.describe('Password Generator - E2E Tests', () => {
     expect(/^[A-Z]+$/.test(password)).toBe(true);
   });
 
-  test('should display password strength indicator', async ({ page }) => {
-    const strengthSection = page.locator('#strength-title');
+  test("should display password strength indicator", async ({ page }) => {
+    const strengthSection = page.locator("#strength-title");
     await expect(strengthSection).toBeVisible();
-    await expect(strengthSection).toContainText('パスワード強度');
+    await expect(strengthSection).toContainText("パスワード強度");
   });
 
-  test('should have proper accessibility attributes', async ({ page }) => {
+  test("should have proper accessibility attributes", async ({ page }) => {
     await expect(page.locator('[role="banner"]')).toBeVisible();
     await expect(page.locator('[role="main"]')).toBeVisible();
-    const skipLink = page.locator('.skip-link');
+    const skipLink = page.locator(".skip-link");
     await expect(skipLink).toBeAttached();
   });
 
-  test('should display usage instructions', async ({ page }) => {
-    const usageSection = page.locator('.info-box').first();
+  test("should display usage instructions", async ({ page }) => {
+    const usageSection = page.locator(".info-box").first();
     await expect(usageSection).toBeVisible();
 
     // 複数のinfo-boxがあるので、すべてのテキストを結合して確認
-    const allInfoBoxes = page.locator('.info-box');
+    const allInfoBoxes = page.locator(".info-box");
     const allText = await allInfoBoxes.allTextContents();
-    const combinedText = allText.join(' ');
+    const combinedText = allText.join(" ");
 
-    expect(combinedText).toContain('使い方');
-    expect(combinedText).toContain('セキュリティのヒント');
-    expect(combinedText).not.toContain('undefined');
+    expect(combinedText).toContain("使い方");
+    expect(combinedText).toContain("セキュリティのヒント");
+    expect(combinedText).not.toContain("undefined");
   });
 
-  test('should have navigation link to password generator in category dropdown', async ({ page }) => {
-    await page.goto('/');
-    const categoryBtn = page.locator('.nav-category-btn', { hasText: '生成' });
+  test("should have navigation link to password generator in category dropdown", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    const categoryBtn = page.locator(".nav-category-btn", { hasText: "生成" });
     await categoryBtn.hover();
-    const dropdown = page.locator('.nav-dropdown');
+    const dropdown = page.locator(".nav-dropdown");
     await expect(dropdown).toBeVisible();
     const passwordLink = dropdown.locator('a[href="/password-generator"]');
     await expect(passwordLink).toBeVisible();
-    await expect(passwordLink).toContainText('パスワード');
+    await expect(passwordLink).toContainText("パスワード");
   });
 
-  test('should navigate to password generator from other pages via category', async ({ page }) => {
-    await page.goto('/');
-    await navigateViaCategory(page, '生成', '/password-generator');
-    await expect(page).toHaveURL('/password-generator');
+  test("should navigate to password generator from other pages via category", async ({ page }) => {
+    await page.goto("/");
+    await navigateViaCategory(page, "生成", "/password-generator");
+    await expect(page).toHaveURL("/password-generator");
   });
 
-  test('should show active state on category button when on password-generator page', async ({ page }) => {
-    const activeCategory = page.locator('.nav-category-btn.active');
-    await expect(activeCategory).toContainText('生成');
+  test("should show active state on category button when on password-generator page", async ({
+    page,
+  }) => {
+    const activeCategory = page.locator(".nav-category-btn.active");
+    await expect(activeCategory).toContainText("生成");
   });
 
-  test('should copy password text changes when copy is successful', async ({ page, context }) => {
+  test("should copy password text changes when copy is successful", async ({ page, context }) => {
     // Grant clipboard permissions
-    await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+    await context.grantPermissions(["clipboard-read", "clipboard-write"]);
 
-    const copyButton = page.locator('button.btn-secondary');
-    const passwordOutput = page.locator('#passwordOutput');
+    const copyButton = page.locator("button.btn-secondary");
+    const passwordOutput = page.locator("#passwordOutput");
 
     // Make sure there's a password
     const password = await passwordOutput.inputValue();
@@ -222,6 +232,6 @@ test.describe('Password Generator - E2E Tests', () => {
     await copyButton.click();
 
     // Check button text changes to indicate success
-    await expect(copyButton).toContainText('コピーしました');
+    await expect(copyButton).toContainText("コピーしました");
   });
 });

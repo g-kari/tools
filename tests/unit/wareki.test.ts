@@ -202,9 +202,7 @@ describe("seirekiToWareki と warekiToSeireki の往復変換", () => {
       expect(western).toBe(expectedWestern);
 
       const results = seirekiToWareki(expectedWestern);
-      const match = results.find(
-        (r) => r.eraName === eraName && r.year === eraYear
-      );
+      const match = results.find((r) => r.eraName === eraName && r.year === eraYear);
       expect(match).toBeDefined();
     }
   });

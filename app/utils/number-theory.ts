@@ -5,8 +5,16 @@
 
 /** 上付き数字の対応表 */
 const SUPERSCRIPTS: Record<string, string> = {
-  '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴',
-  '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹',
+  "0": "⁰",
+  "1": "¹",
+  "2": "²",
+  "3": "³",
+  "4": "⁴",
+  "5": "⁵",
+  "6": "⁶",
+  "7": "⁷",
+  "8": "⁸",
+  "9": "⁹",
 };
 
 /**
@@ -15,7 +23,11 @@ const SUPERSCRIPTS: Record<string, string> = {
  * @returns 上付き文字列
  */
 function toSuperscript(n: number): string {
-  return n.toString().split('').map(d => SUPERSCRIPTS[d] ?? d).join('');
+  return n
+    .toString()
+    .split("")
+    .map((d) => SUPERSCRIPTS[d] ?? d)
+    .join("");
 }
 
 /**
@@ -127,8 +139,8 @@ export function factorizationToString(n: bigint): string {
   if (n <= 1n) return n.toString();
   const factorization = primeFactorization(n);
   return [...factorization.entries()]
-    .map(([p, e]) => e === 1 ? p.toString() : `${p}${toSuperscript(e)}`)
-    .join(' × ');
+    .map(([p, e]) => (e === 1 ? p.toString() : `${p}${toSuperscript(e)}`))
+    .join(" × ");
 }
 
 /**
@@ -201,7 +213,7 @@ export function modInverse(a: bigint, m: bigint): bigint | null {
  */
 export function parseBigInt(s: string): bigint | null {
   const trimmed = s.trim();
-  if (trimmed === '' || !/^-?\d+$/.test(trimmed)) return null;
+  if (trimmed === "" || !/^-?\d+$/.test(trimmed)) return null;
   try {
     return BigInt(trimmed);
   } catch {

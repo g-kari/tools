@@ -1,17 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useMemo, useCallback } from "react";
-import {
-  StatusAnnouncer,
-  useStatusAnnouncement,
-} from "~/hooks/useStatusAnnouncement";
+import { StatusAnnouncer, useStatusAnnouncement } from "~/hooks/useStatusAnnouncement";
 import { TipsCard } from "~/components/TipsCard";
 import { useClipboard } from "~/hooks/useClipboard";
 import { useToast } from "~/components/Toast";
 import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
-import {
-  calcWarikan,
-  formatYenWarikan,
-} from "~/utils/warikan";
+import { calcWarikan, formatYenWarikan } from "~/utils/warikan";
 
 export const Route = createFileRoute("/warikan")({
   head: () => ({
@@ -56,14 +50,7 @@ function WarikanCalculator() {
     const n = parseInt(people, 10);
     const tip = parseFloat(tipRate);
 
-    if (
-      isNaN(total) ||
-      total < 0 ||
-      isNaN(n) ||
-      n < 2 ||
-      isNaN(tip) ||
-      tip < 0
-    ) {
+    if (isNaN(total) || total < 0 || isNaN(n) || n < 2 || isNaN(tip) || tip < 0) {
       return null;
     }
 
@@ -80,7 +67,7 @@ function WarikanCalculator() {
         showToast("コピーに失敗しました", "error");
       }
     },
-    [copy, showToast, announceStatus]
+    [copy, showToast, announceStatus],
   );
 
   const peopleCount = parseInt(people, 10);
@@ -153,24 +140,20 @@ function WarikanCalculator() {
           {result ? (
             <div className="warikan-result-section" aria-live="polite">
               <div className="warikan-result-main">
-                <span className="warikan-result-main-label">
-                  一人あたり（切り上げ）
-                </span>
+                <span className="warikan-result-main-label">一人あたり（切り上げ）</span>
                 <div className="warikan-result-main-value">
                   {formatYenWarikan(result.perPersonCeil)}
                   <span className="warikan-result-main-unit">円</span>
                 </div>
                 {result.remainder > 0 && (
                   <span className="warikan-result-sub-note">
-                    ※ {peopleCount - 1}人が {formatYenWarikan(result.perPersonCeil)}円、
-                    1人が {formatYenWarikan(result.perPersonCeil - result.remainder)}円
+                    ※ {peopleCount - 1}人が {formatYenWarikan(result.perPersonCeil)}円、 1人が{" "}
+                    {formatYenWarikan(result.perPersonCeil - result.remainder)}円
                   </span>
                 )}
                 <button
                   className="warikan-main-copy-btn"
-                  onClick={() =>
-                    handleCopy(result.perPersonCeil, "一人あたり金額（切り上げ）")
-                  }
+                  onClick={() => handleCopy(result.perPersonCeil, "一人あたり金額（切り上げ）")}
                   aria-label="一人あたり金額をコピー"
                 >
                   コピー
@@ -179,18 +162,14 @@ function WarikanCalculator() {
 
               <div className="warikan-result-grid">
                 <div className="warikan-result-card">
-                  <span className="warikan-result-card-label">
-                    一人あたり（切り捨て）
-                  </span>
+                  <span className="warikan-result-card-label">一人あたり（切り捨て）</span>
                   <div className="warikan-result-card-value">
                     {formatYenWarikan(result.perPersonFloor)}
                     <span className="warikan-result-card-unit">円</span>
                   </div>
                   <button
                     className="warikan-result-copy-btn"
-                    onClick={() =>
-                      handleCopy(result.perPersonFloor, "一人あたり金額（切り捨て）")
-                    }
+                    onClick={() => handleCopy(result.perPersonFloor, "一人あたり金額（切り捨て）")}
                     aria-label="一人あたり金額（切り捨て）をコピー"
                   >
                     コピー
@@ -214,18 +193,14 @@ function WarikanCalculator() {
 
                 {result.tipAmount > 0 && (
                   <div className="warikan-result-card">
-                    <span className="warikan-result-card-label">
-                      チップ額（{tipRate}%）
-                    </span>
+                    <span className="warikan-result-card-label">チップ額（{tipRate}%）</span>
                     <div className="warikan-result-card-value">
                       {formatYenWarikan(result.tipAmount)}
                       <span className="warikan-result-card-unit">円</span>
                     </div>
                     <button
                       className="warikan-result-copy-btn"
-                      onClick={() =>
-                        handleCopy(result.tipAmount, "チップ額")
-                      }
+                      onClick={() => handleCopy(result.tipAmount, "チップ額")}
                       aria-label="チップ額をコピー"
                     >
                       コピー

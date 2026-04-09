@@ -4,12 +4,7 @@ import { useToast } from "~/components/Toast";
 import { useClipboard } from "~/hooks/useClipboard";
 import { TipsCard } from "~/components/TipsCard";
 import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
-import {
-  buildUtmUrl,
-  parseUtmUrl,
-  isValidUrl,
-  type UtmParams,
-} from "~/utils/utm";
+import { buildUtmUrl, parseUtmUrl, isValidUrl, type UtmParams } from "~/utils/utm";
 
 export const Route = createFileRoute("/utm-builder")({
   head: () => ({
@@ -49,20 +44,11 @@ const SOURCE_PRESETS = [
 ];
 
 /** メディアのクイック選択プリセット */
-const MEDIUM_PRESETS = [
-  "cpc",
-  "organic",
-  "email",
-  "social",
-  "referral",
-  "display",
-  "affiliate",
-];
+const MEDIUM_PRESETS = ["cpc", "organic", "email", "social", "referral", "display", "affiliate"];
 
 /** UTMパラメータの説明 */
 const UTM_DESCRIPTIONS: Record<keyof UtmParams, string> = {
-  source:
-    "トラフィックの送信元（例: google, newsletter, facebook）",
+  source: "トラフィックの送信元（例: google, newsletter, facebook）",
   medium: "マーケティングメディア（例: cpc, email, social）",
   campaign: "キャンペーン名（例: spring_sale, product_launch）",
   term: "有料検索で使用したキーワード（例: running+shoes）",
@@ -77,11 +63,7 @@ function UtmBuilderPage() {
 
   return (
     <div className="tool-container">
-      <div
-        className="utm-builder-mode-tabs"
-        role="tablist"
-        aria-label="モード切替"
-      >
+      <div className="utm-builder-mode-tabs" role="tablist" aria-label="モード切替">
         <button
           className={`utm-builder-mode-tab${mode === "build" ? " utm-builder-mode-tab--active" : ""}`}
           role="tab"
@@ -156,17 +138,14 @@ function BuildMode() {
   const [content, setContent] = useState("");
   const [touched, setTouched] = useState({ baseUrl: false, source: false, medium: false });
 
-  const baseUrlError = touched.baseUrl && baseUrl && !isValidUrl(baseUrl)
-    ? "有効なURLを入力してください（http:// または https:// で始まるURL）"
-    : null;
+  const baseUrlError =
+    touched.baseUrl && baseUrl && !isValidUrl(baseUrl)
+      ? "有効なURLを入力してください（http:// または https:// で始まるURL）"
+      : null;
 
-  const sourceError = touched.source && !source.trim()
-    ? "utm_source は必須項目です"
-    : null;
+  const sourceError = touched.source && !source.trim() ? "utm_source は必須項目です" : null;
 
-  const mediumError = touched.medium && !medium.trim()
-    ? "utm_medium は必須項目です"
-    : null;
+  const mediumError = touched.medium && !medium.trim() ? "utm_medium は必須項目です" : null;
 
   const generatedUrl = useMemo(() => {
     if (!baseUrl.trim() || !source.trim() || !medium.trim()) return "";
@@ -386,7 +365,7 @@ function ParseMode() {
     return parseUtmUrl(inputUrl.trim());
   }, [inputUrl]);
 
-  const hasResult = parseResult !== null && parseResult.baseUrl !== '';
+  const hasResult = parseResult !== null && parseResult.baseUrl !== "";
 
   return (
     <div className="utm-builder-parse-input-area">
@@ -409,21 +388,13 @@ function ParseMode() {
       </div>
 
       {inputUrl.trim() && (
-        <div
-          className="utm-builder-parse-result"
-          aria-live="polite"
-          aria-label="解析結果"
-        >
+        <div className="utm-builder-parse-result" aria-live="polite" aria-label="解析結果">
           {hasResult ? (
             <>
               <div className="utm-builder-base-url-card">
                 <div className="utm-builder-parse-card-label">ベースURL</div>
-                <div className="utm-builder-parse-card-value">
-                  {parseResult.baseUrl}
-                </div>
-                <div className="utm-builder-parse-card-desc">
-                  UTMパラメータを除いたURL
-                </div>
+                <div className="utm-builder-parse-card-value">{parseResult.baseUrl}</div>
+                <div className="utm-builder-parse-card-desc">UTMパラメータを除いたURL</div>
               </div>
 
               <div className="utm-builder-parse-result-grid">

@@ -75,7 +75,7 @@ export function generatePassword(options: PasswordOptions): string {
  */
 export function calculateStrength(
   password: string,
-  options: PasswordOptions
+  options: PasswordOptions,
 ): { score: number; label: string } {
   if (password.length === 0) return { score: 0, label: "" };
 

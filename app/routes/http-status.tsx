@@ -3,10 +3,7 @@ import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useCallback } from "react";
 import { useToast } from "../components/Toast";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 
 export const Route = createFileRoute("/http-status")({
@@ -351,15 +348,13 @@ export const HTTP_STATUS_CODES: HttpStatusCode[] = [
   {
     code: 507,
     name: "Insufficient Storage",
-    description:
-      "リクエストを完了するために必要な表現を保存できなかったことを示します（WebDAV）。",
+    description: "リクエストを完了するために必要な表現を保存できなかったことを示します（WebDAV）。",
     category: "5xx",
   },
   {
     code: 508,
     name: "Loop Detected",
-    description:
-      "リクエストの処理中に無限ループを検出したことを示します（WebDAV）。",
+    description: "リクエストの処理中に無限ループを検出したことを示します（WebDAV）。",
     category: "5xx",
   },
   {
@@ -377,9 +372,7 @@ export const HTTP_STATUS_CODES: HttpStatusCode[] = [
  * @returns カテゴリ文字列（例: "2xx"）
  * @note 100未満または500以上のコードはフォールバックとして "5xx" を返します
  */
-export function getStatusCategory(
-  code: number
-): "1xx" | "2xx" | "3xx" | "4xx" | "5xx" {
+export function getStatusCategory(code: number): "1xx" | "2xx" | "3xx" | "4xx" | "5xx" {
   if (code >= 100 && code < 200) return "1xx";
   if (code >= 200 && code < 300) return "2xx";
   if (code >= 300 && code < 400) return "3xx";
@@ -443,7 +436,7 @@ export function getCategoryColor(category: string): string {
 export function filterStatusCodes(
   codes: HttpStatusCode[],
   query: string,
-  category: string
+  category: string,
 ): HttpStatusCode[] {
   const lowerQuery = query.toLowerCase().trim();
 
@@ -477,11 +470,7 @@ function HttpStatusPage() {
   const { statusRef, announceStatus } = useStatusAnnouncement();
   const { copy } = useClipboard();
 
-  const filteredCodes = filterStatusCodes(
-    HTTP_STATUS_CODES,
-    searchQuery,
-    selectedCategory
-  );
+  const filteredCodes = filterStatusCodes(HTTP_STATUS_CODES, searchQuery, selectedCategory);
 
   /**
    * コード番号をクリップボードにコピーする
@@ -498,7 +487,7 @@ function HttpStatusPage() {
         announceStatus("コピーに失敗しました");
       }
     },
-    [copy, showToast, announceStatus]
+    [copy, showToast, announceStatus],
   );
 
   /**
@@ -509,22 +498,19 @@ function HttpStatusPage() {
     (category: string) => {
       setSelectedCategory(category);
       announceStatus(
-        `${getCategoryLabel(category)} でフィルタリング。${filterStatusCodes(HTTP_STATUS_CODES, searchQuery, category).length} 件表示`
+        `${getCategoryLabel(category)} でフィルタリング。${filterStatusCodes(HTTP_STATUS_CODES, searchQuery, category).length} 件表示`,
       );
     },
-    [searchQuery, announceStatus]
+    [searchQuery, announceStatus],
   );
 
   /**
    * 検索クエリを更新する
    * @param query - 検索クエリ
    */
-  const handleSearchChange = useCallback(
-    (query: string) => {
-      setSearchQuery(query);
-    },
-    []
-  );
+  const handleSearchChange = useCallback((query: string) => {
+    setSearchQuery(query);
+  }, []);
 
   return (
     <>
@@ -532,11 +518,7 @@ function HttpStatusPage() {
         <h2 className="section-title">HTTPステータスコード リファレンス</h2>
 
         {/* カテゴリフィルタ */}
-        <div
-          className="http-status-filters"
-          role="group"
-          aria-label="カテゴリフィルター"
-        >
+        <div className="http-status-filters" role="group" aria-label="カテゴリフィルター">
           {CATEGORIES.map((cat) => (
             <button
               key={cat}
@@ -567,22 +549,13 @@ function HttpStatusPage() {
         </div>
 
         {/* 件数表示 */}
-        <p
-          className="http-status-count"
-          role="status"
-          aria-live="polite"
-          aria-atomic="true"
-        >
+        <p className="http-status-count" role="status" aria-live="polite" aria-atomic="true">
           {filteredCodes.length} 件 / 全 {HTTP_STATUS_CODES.length} 件
         </p>
 
         {/* グリッド表示 */}
         {filteredCodes.length > 0 ? (
-          <div
-            className="http-status-grid"
-            role="list"
-            aria-label="HTTPステータスコード一覧"
-          >
+          <div className="http-status-grid" role="list" aria-label="HTTPステータスコード一覧">
             {filteredCodes.map((item) => (
               <article
                 key={item.code}

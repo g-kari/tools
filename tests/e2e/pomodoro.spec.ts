@@ -9,7 +9,7 @@ test.describe("Pomodoro Timer - E2E Tests", () => {
   async function navigateViaCategory(
     page: import("@playwright/test").Page,
     categoryName: string,
-    linkHref: string
+    linkHref: string,
   ) {
     const categoryBtn = page.locator(".nav-category-btn", {
       hasText: categoryName,
@@ -44,17 +44,13 @@ test.describe("Pomodoro Timer - E2E Tests", () => {
     await expect(skipLink).toBeAttached();
   });
 
-  test("should display the timer showing 25:00 by default", async ({
-    page,
-  }) => {
+  test("should display the timer showing 25:00 by default", async ({ page }) => {
     const timerDisplay = page.locator(".pomodoro-time");
     await expect(timerDisplay).toBeVisible();
     await expect(timerDisplay).toContainText("25:00");
   });
 
-  test("should display the work phase indicator by default", async ({
-    page,
-  }) => {
+  test("should display the work phase indicator by default", async ({ page }) => {
     const phaseIndicator = page.locator(".pomodoro-phase-indicator");
     await expect(phaseIndicator).toBeVisible();
     await expect(phaseIndicator).toHaveClass(/phase-work/);
@@ -126,9 +122,7 @@ test.describe("Pomodoro Timer - E2E Tests", () => {
     await expect(longBreakInput).toHaveValue("15");
   });
 
-  test("should update timer display when work minutes is changed", async ({
-    page,
-  }) => {
+  test("should update timer display when work minutes is changed", async ({ page }) => {
     const workInput = page.locator("input#work-minutes");
     await workInput.fill("10");
     await workInput.blur();
@@ -146,9 +140,7 @@ test.describe("Pomodoro Timer - E2E Tests", () => {
     expect(infoText).not.toContain("undefined");
   });
 
-  test("should have category navigation with game category active", async ({
-    page,
-  }) => {
+  test("should have category navigation with game category active", async ({ page }) => {
     const navCategories = page.locator(".nav-categories");
     await expect(navCategories).toBeVisible();
 
@@ -157,9 +149,7 @@ test.describe("Pomodoro Timer - E2E Tests", () => {
     await expect(activeCategory).toContainText("ゲーム");
   });
 
-  test("should show ポモドーロタイマー link in game category dropdown", async ({
-    page,
-  }) => {
+  test("should show ポモドーロタイマー link in game category dropdown", async ({ page }) => {
     const categoryBtn = page.locator(".nav-category-btn", {
       hasText: "ゲーム",
     });
@@ -171,9 +161,7 @@ test.describe("Pomodoro Timer - E2E Tests", () => {
     await expect(pomodoroLink).toContainText("ポモドーロタイマー");
   });
 
-  test("should navigate to dice-roll page via category dropdown", async ({
-    page,
-  }) => {
+  test("should navigate to dice-roll page via category dropdown", async ({ page }) => {
     await navigateViaCategory(page, "ゲーム", "/dice-roll");
     await expect(page).toHaveURL("/dice-roll");
   });

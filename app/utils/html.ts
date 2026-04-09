@@ -45,7 +45,7 @@ const NAMED_ENTITY_REGEX = new RegExp(
   Object.keys(HTML_ENTITIES)
     .map((e) => e.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
     .join("|"),
-  "gi"
+  "gi",
 );
 
 /**
@@ -53,7 +53,7 @@ const NAMED_ENTITY_REGEX = new RegExp(
  * gi フラグによる大文字小文字を問わないマッチングに対応するため小文字キーで参照する
  */
 const HTML_ENTITIES_LOWER: Record<string, string> = Object.fromEntries(
-  Object.entries(HTML_ENTITIES).map(([k, v]) => [k.toLowerCase(), v])
+  Object.entries(HTML_ENTITIES).map(([k, v]) => [k.toLowerCase(), v]),
 );
 
 /**
@@ -66,7 +66,7 @@ export function decodeHtmlEntities(text: string): string {
   // 名前付きエンティティをプリコンパイル済み正規表現で一括置換（ループ内 RegExp 生成を回避）
   let result = text.replace(
     NAMED_ENTITY_REGEX,
-    (match) => HTML_ENTITIES_LOWER[match.toLowerCase()] ?? match
+    (match) => HTML_ENTITIES_LOWER[match.toLowerCase()] ?? match,
   );
 
   // レガシー数値エンティティの置換
@@ -76,13 +76,11 @@ export function decodeHtmlEntities(text: string): string {
     .replace(/&#x2F;/gi, "/");
 
   // 十進数数値参照の置換 (&#123;)
-  result = result.replace(/&#(\d+);/g, (_, num) =>
-    String.fromCharCode(parseInt(num, 10))
-  );
+  result = result.replace(/&#(\d+);/g, (_, num) => String.fromCharCode(parseInt(num, 10)));
 
   // 十六進数数値参照の置換 (&#x1A;)
   result = result.replace(/&#x([0-9a-fA-F]+);/gi, (_, hex) =>
-    String.fromCharCode(parseInt(hex, 16))
+    String.fromCharCode(parseInt(hex, 16)),
   );
 
   return result;

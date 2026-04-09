@@ -1,17 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
-import {
-  useState,
-  useCallback,
-  useRef,
-  type DragEvent,
-} from "react";
+import { useState, useCallback, useRef, type DragEvent } from "react";
 import { useToast } from "../components/Toast";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import {
   parseHar,
   analyzeHar,
@@ -136,20 +128,18 @@ function HarAnalyzer() {
           setSortKey("index");
           setSortOrder("asc");
           announceStatus(
-            `HARファイルを読み込みました。${result.totalRequests}件のリクエストが見つかりました。`
+            `HARファイルを読み込みました。${result.totalRequests}件のリクエストが見つかりました。`,
           );
         } catch (err) {
           showToast(
-            err instanceof Error
-              ? err.message
-              : "HARファイルの解析に失敗しました",
-            "error"
+            err instanceof Error ? err.message : "HARファイルの解析に失敗しました",
+            "error",
           );
         }
       };
       reader.readAsText(file);
     },
-    [showToast, announceStatus]
+    [showToast, announceStatus],
   );
 
   const handleDrop = useCallback(
@@ -159,7 +149,7 @@ function HarAnalyzer() {
       const file = e.dataTransfer.files[0];
       if (file) loadFile(file);
     },
-    [loadFile]
+    [loadFile],
   );
 
   const handleDragOver = useCallback((e: DragEvent<HTMLDivElement>) => {
@@ -177,22 +167,19 @@ function HarAnalyzer() {
       const file = e.target.files?.[0];
       if (file) loadFile(file);
     },
-    [loadFile]
+    [loadFile],
   );
 
   const handleZoneClick = useCallback(() => {
     fileInputRef.current?.click();
   }, []);
 
-  const handleZoneKeyDown = useCallback(
-    (e: React.KeyboardEvent) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        fileInputRef.current?.click();
-      }
-    },
-    []
-  );
+  const handleZoneKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      fileInputRef.current?.click();
+    }
+  }, []);
 
   const handleClear = useCallback(() => {
     setHarFile(null);
@@ -212,22 +199,17 @@ function HarAnalyzer() {
         setSortOrder("desc");
       }
     },
-    [sortKey]
+    [sortKey],
   );
 
   // コンテンツタイプ一覧（フィルター用）
-  const contentTypeOptions =
-    analysis ? Object.keys(analysis.contentTypeDistribution).sort() : [];
+  const contentTypeOptions = analysis ? Object.keys(analysis.contentTypeDistribution).sort() : [];
 
   // エントリーのフィルタリングとソート
   const filteredEntries: { entry: HarEntry; originalIndex: number }[] = [];
   if (harFile) {
     harFile.log.entries.forEach((entry, idx) => {
-      if (
-        filterMethod !== "all" &&
-        entry.request.method.toUpperCase() !== filterMethod
-      )
-        return;
+      if (filterMethod !== "all" && entry.request.method.toUpperCase() !== filterMethod) return;
       if (filterStatus !== "all") {
         const statusGroup = `${Math.floor(entry.response.status / 100)}xx`;
         if (statusGroup !== filterStatus) return;
@@ -259,10 +241,7 @@ function HarAnalyzer() {
   }
 
   // タイミング最大値（バー表示用）
-  const maxTime =
-    harFile
-      ? Math.max(...harFile.log.entries.map((e) => e.time ?? 0), 1)
-      : 1;
+  const maxTime = harFile ? Math.max(...harFile.log.entries.map((e) => e.time ?? 0), 1) : 1;
 
   const sortIcon = (key: SortKey): string => {
     if (sortKey !== key) return "↕";
@@ -294,12 +273,8 @@ function HarAnalyzer() {
             <span className="har-upload-zone-icon" aria-hidden="true">
               📊
             </span>
-            <span className="har-upload-zone-text">
-              .har ファイルをドロップ
-            </span>
-            <span className="har-upload-zone-hint">
-              またはクリックして選択
-            </span>
+            <span className="har-upload-zone-text">.har ファイルをドロップ</span>
+            <span className="har-upload-zone-hint">またはクリックして選択</span>
           </div>
         )}
 
@@ -330,21 +305,13 @@ function HarAnalyzer() {
             </div>
 
             {/* サマリーグリッド */}
-            <div
-              className="har-summary-grid"
-              role="region"
-              aria-label="解析サマリー"
-            >
+            <div className="har-summary-grid" role="region" aria-label="解析サマリー">
               <div className="har-summary-card">
-                <div className="har-summary-card-value">
-                  {analysis.totalRequests}
-                </div>
+                <div className="har-summary-card-value">{analysis.totalRequests}</div>
                 <div className="har-summary-card-label">リクエスト数</div>
               </div>
               <div className="har-summary-card">
-                <div className="har-summary-card-value">
-                  {formatBytes(analysis.totalSize)}
-                </div>
+                <div className="har-summary-card-value">{formatBytes(analysis.totalSize)}</div>
                 <div className="har-summary-card-label">総サイズ</div>
               </div>
               <div className="har-summary-card">
@@ -354,27 +321,19 @@ function HarAnalyzer() {
                 <div className="har-summary-card-label">転送サイズ</div>
               </div>
               <div className="har-summary-card">
-                <div className="har-summary-card-value">
-                  {formatDuration(analysis.totalTime)}
-                </div>
+                <div className="har-summary-card-value">{formatDuration(analysis.totalTime)}</div>
                 <div className="har-summary-card-label">総時間</div>
               </div>
               <div
                 className={`har-summary-card${analysis.errorCount > 0 ? " har-summary-card-error" : ""}`}
               >
-                <div className="har-summary-card-value">
-                  {analysis.errorCount}
-                </div>
+                <div className="har-summary-card-value">{analysis.errorCount}</div>
                 <div className="har-summary-card-label">エラー数</div>
               </div>
             </div>
 
             {/* フィルターバー */}
-            <div
-              className="har-filter-bar"
-              role="group"
-              aria-label="リクエストフィルター"
-            >
+            <div className="har-filter-bar" role="group" aria-label="リクエストフィルター">
               <label className="har-filter-label" htmlFor="filter-method">
                 メソッド
               </label>
@@ -410,10 +369,7 @@ function HarAnalyzer() {
 
               {contentTypeOptions.length > 0 && (
                 <>
-                  <label
-                    className="har-filter-label"
-                    htmlFor="filter-content-type"
-                  >
+                  <label className="har-filter-label" htmlFor="filter-content-type">
                     種別
                   </label>
                   <select
@@ -491,33 +447,23 @@ function HarAnalyzer() {
                       const time = entry.time ?? 0;
                       const mimeType = entry.response.content.mimeType ?? "";
                       const typeLabel = getContentTypeLabel(mimeType);
-                      const timePercent = Math.min(
-                        (time / maxTime) * 100,
-                        100
-                      );
+                      const timePercent = Math.min((time / maxTime) * 100, 100);
 
                       return (
                         <tr key={originalIndex}>
                           <td className="har-num-cell">{originalIndex}</td>
                           <td>
-                            <span
-                              className={`har-method-badge ${getMethodClass(method)}`}
-                            >
+                            <span className={`har-method-badge ${getMethodClass(method)}`}>
                               {method}
                             </span>
                           </td>
                           <td>
-                            <span
-                              className="har-url-cell"
-                              title={url}
-                            >
+                            <span className="har-url-cell" title={url}>
                               {url}
                             </span>
                           </td>
                           <td>
-                            <span
-                              className={`har-status-badge ${getStatusClass(status)}`}
-                            >
+                            <span className={`har-status-badge ${getStatusClass(status)}`}>
                               {status}
                             </span>
                           </td>
@@ -532,9 +478,7 @@ function HarAnalyzer() {
                                   role="presentation"
                                 />
                               </div>
-                              <span className="har-timing-bar-value">
-                                {formatDuration(time)}
-                              </span>
+                              <span className="har-timing-bar-value">{formatDuration(time)}</span>
                             </div>
                           </td>
                         </tr>

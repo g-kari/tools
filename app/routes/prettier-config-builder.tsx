@@ -1,46 +1,45 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useState, useMemo, useCallback, useId } from 'react';
-import { useToast } from '~/components/Toast';
-import { TipsCard } from '~/components/TipsCard';
-import { useClipboard } from '~/hooks/useClipboard';
+import { createFileRoute } from "@tanstack/react-router";
+import { useState, useMemo, useCallback, useId } from "react";
+import { useToast } from "~/components/Toast";
+import { TipsCard } from "~/components/TipsCard";
+import { useClipboard } from "~/hooks/useClipboard";
 import {
   PRETTIER_CATEGORIES,
   PRETTIER_PRESETS,
   generatePrettierConfig,
   getDefaultValues,
   type PrettierOption,
-} from '~/utils/prettier-config-builder';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '~/constants/site';
-import '~/styles/tools/prettier-config-builder.css';
+} from "~/utils/prettier-config-builder";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "~/constants/site";
+import "~/styles/tools/prettier-config-builder.css";
 
-export const Route = createFileRoute('/prettier-config-builder')({
+export const Route = createFileRoute("/prettier-config-builder")({
   head: () => ({
     meta: [
-      { title: '.prettierrc ビルダー | Web ツール集' },
+      { title: ".prettierrc ビルダー | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          'Prettier のオプションを選択して .prettierrc を自動生成。printWidth・semi・singleQuote・trailingComma など主要オプションをカテゴリ別に設定。React・Vue・TypeScript 向けプリセット対応。',
+          "Prettier のオプションを選択して .prettierrc を自動生成。printWidth・semi・singleQuote・trailingComma など主要オプションをカテゴリ別に設定。React・Vue・TypeScript 向けプリセット対応。",
       },
       {
-        property: 'og:title',
-        content: '.prettierrc ビルダー | Web ツール集',
+        property: "og:title",
+        content: ".prettierrc ビルダー | Web ツール集",
       },
       {
-        property: 'og:description',
-        content:
-          'Prettier オプションを選択して .prettierrc を自動生成。プリセット対応。',
+        property: "og:description",
+        content: "Prettier オプションを選択して .prettierrc を自動生成。プリセット対応。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/prettier-config-builder` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
+      { property: "og:url", content: `${SITE_BASE_URL}/prettier-config-builder` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
       {
-        name: 'twitter:title',
-        content: '.prettierrc ビルダー | Web ツール集',
+        name: "twitter:title",
+        content: ".prettierrc ビルダー | Web ツール集",
       },
       {
-        name: 'twitter:description',
-        content: 'Prettier オプションをカテゴリ別に設定して .prettierrc を生成',
+        name: "twitter:description",
+        content: "Prettier オプションをカテゴリ別に設定して .prettierrc を生成",
       },
     ],
   }),
@@ -66,10 +65,10 @@ function BooleanToggle({
         checked={value}
         onChange={(e) => onChange(e.target.checked)}
       />
-      <span className={`prettier-toggle-track${value ? ' checked' : ''}`}>
+      <span className={`prettier-toggle-track${value ? " checked" : ""}`}>
         <span className="prettier-toggle-thumb" />
       </span>
-      <span className="prettier-toggle-label">{value ? 'true' : 'false'}</span>
+      <span className="prettier-toggle-label">{value ? "true" : "false"}</span>
     </label>
   );
 }
@@ -84,9 +83,9 @@ function NumberInput({
   value: number;
   onChange: (v: number) => void;
 }) {
-  const step = optionKey === 'printWidth' ? 10 : 1;
-  const min = optionKey === 'printWidth' ? 40 : 1;
-  const max = optionKey === 'printWidth' ? 200 : 8;
+  const step = optionKey === "printWidth" ? 10 : 1;
+  const min = optionKey === "printWidth" ? 40 : 1;
+  const max = optionKey === "printWidth" ? 200 : 8;
 
   return (
     <div className="prettier-number-input" role="group" aria-label={optionKey}>
@@ -160,7 +159,7 @@ function OptionRow({
   const isModified = value !== defaultValue;
 
   return (
-    <div className={`prettier-option-row${isModified ? ' modified' : ''}`}>
+    <div className={`prettier-option-row${isModified ? " modified" : ""}`}>
       <div className="prettier-option-label-col">
         <span className="prettier-option-key">{option.key}</span>
         <span className="prettier-option-desc">{option.description}</span>
@@ -175,21 +174,21 @@ function OptionRow({
         )}
       </div>
       <div className="prettier-option-input-col">
-        {option.type === 'boolean' && (
+        {option.type === "boolean" && (
           <BooleanToggle
             optionKey={option.key}
             value={value as boolean}
             onChange={(v) => onChange(option.key, v)}
           />
         )}
-        {option.type === 'number' && (
+        {option.type === "number" && (
           <NumberInput
             optionKey={option.key}
             value={value as number}
             onChange={(v) => onChange(option.key, v)}
           />
         )}
-        {option.type === 'enum' && (
+        {option.type === "enum" && (
           <EnumSelect
             optionKey={option.key}
             value={value as string}
@@ -210,8 +209,8 @@ function PrettierConfigBuilderPage() {
   const { copy } = useClipboard();
 
   const defaultValues = useMemo(() => getDefaultValues(), []);
-  const [values, setValues] = useState<Record<string, boolean | number | string>>(
-    () => getDefaultValues()
+  const [values, setValues] = useState<Record<string, boolean | number | string>>(() =>
+    getDefaultValues(),
   );
   const [activeCategory, setActiveCategory] = useState(PRETTIER_CATEGORIES[0].id);
   const [activePreset, setActivePreset] = useState<string | null>(null);
@@ -230,29 +229,29 @@ function PrettierConfigBuilderPage() {
       const defaults = getDefaultValues();
       setValues({ ...defaults, ...preset.values });
       setActivePreset(presetId);
-      showToast(`プリセット「${preset.label}」を適用しました`, 'success');
+      showToast(`プリセット「${preset.label}」を適用しました`, "success");
     },
-    [showToast]
+    [showToast],
   );
 
   const handleReset = useCallback(() => {
     setValues(getDefaultValues());
     setActivePreset(null);
-    showToast('設定をリセットしました', 'info');
+    showToast("設定をリセットしました", "info");
   }, [showToast]);
 
   const handleCopy = useCallback(async () => {
     const success = await copy(output);
     if (success) {
-      showToast('クリップボードにコピーしました', 'success');
+      showToast("クリップボードにコピーしました", "success");
     } else {
-      showToast('コピーに失敗しました', 'error');
+      showToast("コピーに失敗しました", "error");
     }
   }, [copy, output, showToast]);
 
   const currentCategory = useMemo(
     () => PRETTIER_CATEGORIES.find((c) => c.id === activeCategory),
-    [activeCategory]
+    [activeCategory],
   );
 
   return (
@@ -267,7 +266,7 @@ function PrettierConfigBuilderPage() {
 
       <TipsCard
         tips={[
-          'デフォルト値と同じオプションは出力に含まれません。変更した設定だけが .prettierrc に反映されます',
+          "デフォルト値と同じオプションは出力に含まれません。変更した設定だけが .prettierrc に反映されます",
           'Prettier v3 からは trailingComma のデフォルトが "all" に変更されました',
           'endOfLine を "lf" に固定すると Windows/Mac 間での改行コードの違いを防げます',
           '.prettierrc の代わりに prettier.config.js や package.json の "prettier" キーでも設定できます',
@@ -284,7 +283,7 @@ function PrettierConfigBuilderPage() {
             <button
               key={preset.id}
               type="button"
-              className={`prettier-preset-btn${activePreset === preset.id ? ' active' : ''}`}
+              className={`prettier-preset-btn${activePreset === preset.id ? " active" : ""}`}
               onClick={() => handlePreset(preset.id)}
               aria-pressed={activePreset === preset.id}
             >
@@ -309,7 +308,7 @@ function PrettierConfigBuilderPage() {
               type="button"
               role="tab"
               aria-selected={activeCategory === cat.id}
-              className={`prettier-tab${activeCategory === cat.id ? ' active' : ''}`}
+              className={`prettier-tab${activeCategory === cat.id ? " active" : ""}`}
               onClick={() => setActiveCategory(cat.id)}
             >
               <span aria-hidden="true">{cat.icon}</span>
@@ -345,11 +344,7 @@ function PrettierConfigBuilderPage() {
             .prettierrc
           </h2>
           <div className="prettier-action-row">
-            <button
-              type="button"
-              className="prettier-reset-btn"
-              onClick={handleReset}
-            >
+            <button type="button" className="prettier-reset-btn" onClick={handleReset}>
               リセット
             </button>
             <button
@@ -362,7 +357,7 @@ function PrettierConfigBuilderPage() {
             </button>
           </div>
         </div>
-        {output === '{}' ? (
+        {output === "{}" ? (
           <p className="prettier-empty-msg">
             すべてデフォルト値のため .prettierrc は空です（{}）。変更したオプションが出力されます。
           </p>

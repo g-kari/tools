@@ -36,7 +36,7 @@ export interface SetCookieAttributes {
 }
 
 /** セキュリティ警告の重要度 */
-export type WarningLevel = 'error' | 'warning' | 'info';
+export type WarningLevel = "error" | "warning" | "info";
 
 /** セキュリティ警告 */
 export interface SecurityWarning {
@@ -55,13 +55,13 @@ export function parseCookieHeader(header: string): CookieEntry[] {
   if (!header.trim()) return [];
 
   return header
-    .split(';')
+    .split(";")
     .map((pair) => pair.trim())
     .filter((pair) => pair.length > 0)
     .map((pair) => {
-      const eqIndex = pair.indexOf('=');
+      const eqIndex = pair.indexOf("=");
       if (eqIndex === -1) {
-        return { name: pair.trim(), value: '' };
+        return { name: pair.trim(), value: "" };
       }
       return {
         name: pair.slice(0, eqIndex).trim(),
@@ -76,27 +76,25 @@ export function parseCookieHeader(header: string): CookieEntry[] {
  * @param header - Set-Cookie: ヘッダー値（"name=value; Path=/; ..."形式）
  * @returns パースされたSet-Cookie属性、またはパース失敗時にnull
  */
-export function parseSetCookieHeader(
-  header: string
-): SetCookieAttributes | null {
+export function parseSetCookieHeader(header: string): SetCookieAttributes | null {
   if (!header.trim()) return null;
 
   const parts = header
-    .split(';')
+    .split(";")
     .map((p) => p.trim())
     .filter((p) => p.length > 0);
   if (parts.length === 0) return null;
 
   // 最初のセグメントが "name=value"
   const firstPart = parts[0];
-  const eqIndex = firstPart.indexOf('=');
+  const eqIndex = firstPart.indexOf("=");
 
   let name: string;
   let value: string;
 
   if (eqIndex === -1) {
     name = firstPart.trim();
-    value = '';
+    value = "";
   } else {
     name = firstPart.slice(0, eqIndex).trim();
     value = firstPart.slice(eqIndex + 1).trim();
@@ -115,33 +113,30 @@ export function parseSetCookieHeader(
   // 残りの属性をパース
   for (let i = 1; i < parts.length; i++) {
     const part = parts[i];
-    const eqIdx = part.indexOf('=');
-    const attrKey = (eqIdx === -1 ? part : part.slice(0, eqIdx))
-      .trim()
-      .toLowerCase();
+    const eqIdx = part.indexOf("=");
+    const attrKey = (eqIdx === -1 ? part : part.slice(0, eqIdx)).trim().toLowerCase();
     const attrVal = eqIdx === -1 ? undefined : part.slice(eqIdx + 1).trim();
 
     switch (attrKey) {
-      case 'expires':
+      case "expires":
         result.expires = attrVal;
         break;
-      case 'max-age':
-        result.maxAge =
-          attrVal !== undefined ? Number(attrVal) : undefined;
+      case "max-age":
+        result.maxAge = attrVal !== undefined ? Number(attrVal) : undefined;
         break;
-      case 'domain':
+      case "domain":
         result.domain = attrVal;
         break;
-      case 'path':
+      case "path":
         result.path = attrVal;
         break;
-      case 'secure':
+      case "secure":
         result.secure = true;
         break;
-      case 'httponly':
+      case "httponly":
         result.httpOnly = true;
         break;
-      case 'samesite':
+      case "samesite":
         result.sameSite = attrVal;
         break;
       default:
@@ -164,7 +159,7 @@ export function buildCookieHeader(entries: CookieEntry[]): string {
   return entries
     .filter((e) => e.name.trim())
     .map((e) => (e.value ? `${e.name}=${e.value}` : e.name))
-    .join('; ');
+    .join("; ");
 }
 
 /**
@@ -182,10 +177,10 @@ export function buildSetCookieHeader(attrs: SetCookieAttributes): string {
   if (attrs.expires !== undefined) parts.push(`Expires=${attrs.expires}`);
   if (attrs.maxAge !== undefined) parts.push(`Max-Age=${attrs.maxAge}`);
   if (attrs.sameSite !== undefined) parts.push(`SameSite=${attrs.sameSite}`);
-  if (attrs.secure) parts.push('Secure');
-  if (attrs.httpOnly) parts.push('HttpOnly');
+  if (attrs.secure) parts.push("Secure");
+  if (attrs.httpOnly) parts.push("HttpOnly");
 
-  return parts.join('; ');
+  return parts.join("; ");
 }
 
 /**
@@ -193,52 +188,43 @@ export function buildSetCookieHeader(attrs: SetCookieAttributes): string {
  * @param attrs - Set-Cookie属性
  * @returns セキュリティ警告の配列
  */
-export function getCookieSecurityWarnings(
-  attrs: SetCookieAttributes
-): SecurityWarning[] {
+export function getCookieSecurityWarnings(attrs: SetCookieAttributes): SecurityWarning[] {
   const warnings: SecurityWarning[] = [];
 
   if (!attrs.secure) {
     warnings.push({
-      level: 'warning',
+      level: "warning",
       message:
-        'Secure属性が設定されていません。HTTPSのみで送信されるようにSecure属性を追加することを推奨します。',
+        "Secure属性が設定されていません。HTTPSのみで送信されるようにSecure属性を追加することを推奨します。",
     });
   }
 
   if (!attrs.httpOnly) {
     warnings.push({
-      level: 'warning',
+      level: "warning",
       message:
-        'HttpOnly属性が設定されていません。JavaScriptからCookieにアクセスできる状態です。セッションCookieにはHttpOnly属性の付与を推奨します。',
+        "HttpOnly属性が設定されていません。JavaScriptからCookieにアクセスできる状態です。セッションCookieにはHttpOnly属性の付与を推奨します。",
     });
   }
 
   if (!attrs.sameSite) {
     warnings.push({
-      level: 'warning',
+      level: "warning",
       message:
-        'SameSite属性が設定されていません。CSRF攻撃のリスクがあります。SameSite=Lax またはSameSite=Strictを推奨します。',
+        "SameSite属性が設定されていません。CSRF攻撃のリスクがあります。SameSite=Lax またはSameSite=Strictを推奨します。",
     });
-  } else if (
-    attrs.sameSite.toLowerCase() === 'none' &&
-    !attrs.secure
-  ) {
+  } else if (attrs.sameSite.toLowerCase() === "none" && !attrs.secure) {
     warnings.push({
-      level: 'error',
+      level: "error",
       message:
-        'SameSite=Noneを使用する場合はSecure属性が必須です。Secure属性がないとブラウザに拒否されます。',
+        "SameSite=Noneを使用する場合はSecure属性が必須です。Secure属性がないとブラウザに拒否されます。",
     });
   }
 
-  if (
-    attrs.maxAge !== undefined &&
-    attrs.expires !== undefined
-  ) {
+  if (attrs.maxAge !== undefined && attrs.expires !== undefined) {
     warnings.push({
-      level: 'info',
-      message:
-        'Max-AgeとExpires両方が指定されています。Max-Ageが優先されます。',
+      level: "info",
+      message: "Max-AgeとExpires両方が指定されています。Max-Ageが優先されます。",
     });
   }
 
@@ -250,11 +236,9 @@ export function getCookieSecurityWarnings(
  * @param attrs - Set-Cookie属性
  * @returns 期限の説明文字列、または期限未設定の場合null
  */
-export function getCookieExpiration(
-  attrs: SetCookieAttributes
-): string | null {
+export function getCookieExpiration(attrs: SetCookieAttributes): string | null {
   if (attrs.maxAge !== undefined) {
-    if (attrs.maxAge <= 0) return 'セッション終了時または即時削除';
+    if (attrs.maxAge <= 0) return "セッション終了時または即時削除";
     const seconds = attrs.maxAge;
     if (seconds < 60) return `${seconds}秒後`;
     if (seconds < 3600) return `${Math.floor(seconds / 60)}分後`;
@@ -266,10 +250,9 @@ export function getCookieExpiration(
       const date = new Date(attrs.expires);
       if (!isNaN(date.getTime())) {
         const diff = date.getTime() - Date.now();
-        if (diff < 0) return '期限切れ';
+        if (diff < 0) return "期限切れ";
         const days = Math.floor(diff / 86400000);
-        if (days > 0)
-          return `約${days}日後 (${date.toLocaleDateString('ja-JP')})`;
+        if (days > 0) return `約${days}日後 (${date.toLocaleDateString("ja-JP")})`;
         const hours = Math.floor(diff / 3600000);
         if (hours > 0) return `約${hours}時間後`;
         return `約${Math.floor(diff / 60000)}分後`;

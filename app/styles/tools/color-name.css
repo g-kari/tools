@@ -42,7 +42,7 @@
 }
 
 .cn-exact-name {
-  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-family: "JetBrains Mono", "Courier New", monospace;
   font-size: 11px;
   font-weight: 700;
   text-align: center;
@@ -56,7 +56,7 @@
   font-size: 10px;
   opacity: 0.7;
   pointer-events: none;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
 }
 
 .cn-native-picker {
@@ -89,7 +89,7 @@
   padding: 10px 14px;
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: 4px;
-  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-family: "JetBrains Mono", "Courier New", monospace;
   font-size: 18px;
   font-weight: 700;
   background: var(--md-sys-color-surface-variant);
@@ -107,11 +107,7 @@
 
 .cn-hex-input.error {
   border-color: var(--md-sys-color-error);
-  background: color-mix(
-    in srgb,
-    var(--md-sys-color-error) 8%,
-    var(--md-sys-color-surface-variant)
-  );
+  background: color-mix(in srgb, var(--md-sys-color-error) 8%, var(--md-sys-color-surface-variant));
 }
 
 .cn-error-msg {
@@ -122,7 +118,7 @@
 .cn-input-hint {
   font-size: 12px;
   color: var(--md-sys-color-on-surface-variant);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
 }
 
 .cn-input-hint strong {
@@ -169,7 +165,7 @@
 }
 
 .cn-swatch-hex {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 8px;
   font-weight: 600;
   letter-spacing: 0.3px;
@@ -196,7 +192,7 @@
 }
 
 .cn-color-name {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 12px;
   font-weight: 700;
   color: var(--md-sys-color-on-surface);
@@ -250,14 +246,14 @@
 
 .cn-delta-e {
   font-size: 11px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   color: var(--md-sys-color-primary);
   font-weight: 600;
 }
 
 .cn-rgb-value {
   font-size: 10px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   color: var(--md-sys-color-on-surface-variant);
 }
 
@@ -363,7 +359,7 @@
 
 .cn-all-item-name {
   font-size: 9px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-weight: 600;
   text-align: center;
   word-break: break-all;

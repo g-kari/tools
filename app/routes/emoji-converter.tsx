@@ -13,24 +13,30 @@ import {
   type GSAPEasingType,
   type EasingDirection,
 } from "~/utils/animationEffects";
-import {
-  getGSAPEasingLabel,
-  getEasingDirectionLabel,
-} from "~/utils/gsapAnimationEngine";
+import { getGSAPEasingLabel, getEasingDirectionLabel } from "~/utils/gsapAnimationEngine";
 
 export const Route = createFileRoute("/emoji-converter")({
   head: () => ({
     meta: [
-    { title: "絵文字変換ツール | Web ツール集" },
-    { name: "description", content: "絵文字のUnicodeコードポイント変換や各種形式への変換ツール。" },
-    { property: "og:title", content: "絵文字変換ツール | Web ツール集" },
-    { property: "og:description", content: "絵文字のUnicodeコードポイント変換や各種形式への変換ツール。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/emoji-converter` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "絵文字変換ツール | Web ツール集" },
-    { name: "twitter:description", content: "絵文字のUnicodeコードポイント変換や各種形式への変換ツール。" },
-  ],
+      { title: "絵文字変換ツール | Web ツール集" },
+      {
+        name: "description",
+        content: "絵文字のUnicodeコードポイント変換や各種形式への変換ツール。",
+      },
+      { property: "og:title", content: "絵文字変換ツール | Web ツール集" },
+      {
+        property: "og:description",
+        content: "絵文字のUnicodeコードポイント変換や各種形式への変換ツール。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/emoji-converter` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "絵文字変換ツール | Web ツール集" },
+      {
+        name: "twitter:description",
+        content: "絵文字のUnicodeコードポイント変換や各種形式への変換ツール。",
+      },
+    ],
   }),
   component: EmojiConverter,
 });
@@ -90,7 +96,10 @@ interface EditOptions {
 }
 
 /** テキスト埋め込みのデフォルト値 */
-const DEFAULT_TEXT_OPTIONS: Pick<EditOptions, "text" | "fontSize" | "textColor" | "textX" | "textY"> = {
+const DEFAULT_TEXT_OPTIONS: Pick<
+  EditOptions,
+  "text" | "fontSize" | "textColor" | "textX" | "textY"
+> = {
   text: "",
   fontSize: 24,
   textColor: "#FFFFFF",
@@ -139,10 +148,7 @@ const DEFAULT_EDIT_OPTIONS: EditOptions = {
  * @param size - リサイズ後のサイズ（正方形）
  * @returns リサイズ後の画像を含むcanvas
  */
-export async function resizeImage(
-  file: File,
-  size: number
-): Promise<HTMLCanvasElement> {
+export async function resizeImage(file: File, size: number): Promise<HTMLCanvasElement> {
   return new Promise((resolve, reject) => {
     const img = new Image();
     const canvas = document.createElement("canvas");
@@ -187,7 +193,7 @@ export async function resizeImage(
  */
 export function applyEditOptions(
   sourceCanvas: HTMLCanvasElement,
-  options: EditOptions
+  options: EditOptions,
 ): HTMLCanvasElement {
   const canvas = document.createElement("canvas");
   canvas.width = sourceCanvas.width;
@@ -212,22 +218,12 @@ export function applyEditOptions(
   }
 
   // 元の画像を描画
-  ctx.drawImage(
-    sourceCanvas,
-    -canvas.width / 2,
-    -canvas.height / 2,
-    canvas.width,
-    canvas.height
-  );
+  ctx.drawImage(sourceCanvas, -canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height);
 
   ctx.restore();
 
   // フィルター適用
-  if (
-    options.brightness !== 100 ||
-    options.contrast !== 100 ||
-    options.saturation !== 100
-  ) {
+  if (options.brightness !== 100 || options.contrast !== 100 || options.saturation !== 100) {
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     applyFilters(imageData, options);
     ctx.putImageData(imageData, 0, 0);
@@ -246,7 +242,7 @@ export function applyEditOptions(
       options.borderWidth / 2,
       options.borderWidth / 2,
       canvas.width - options.borderWidth,
-      canvas.height - options.borderWidth
+      canvas.height - options.borderWidth,
     );
   }
 
@@ -313,7 +309,7 @@ function applyTransparency(
   ctx: CanvasRenderingContext2D,
   width: number,
   height: number,
-  color: string
+  color: string,
 ): void {
   const imageData = ctx.getImageData(0, 0, width, height);
   const data = imageData.data;
@@ -356,7 +352,7 @@ export async function canvasToBlobWithLimit(
   canvas: HTMLCanvasElement,
   format: OutputFormat,
   quality: number,
-  maxSize: number
+  maxSize: number,
 ): Promise<Blob | null> {
   const mimeType = FORMAT_MIME_TYPES[format];
 
@@ -406,16 +402,16 @@ function EmojiConverter() {
 
   // Animation state
   const [enableAnimation, setEnableAnimation] = useState(false);
-  const [animationEffect, setAnimationEffect] = useState<AnimationEffectType>('bounce');
-  const [animationSpeed, setAnimationSpeed] = useState<AnimationSpeed>('normal');
+  const [animationEffect, setAnimationEffect] = useState<AnimationEffectType>("bounce");
+  const [animationSpeed, setAnimationSpeed] = useState<AnimationSpeed>("normal");
   const [animationLoop, setAnimationLoop] = useState<number>(0); // 0 = infinite
   const [animationFps, setAnimationFps] = useState<number>(12);
   const [isAnimationPlaying, setIsAnimationPlaying] = useState(false);
   const [ffmpegLoaded, setFfmpegLoaded] = useState(false);
   // GSAP animation settings
   const [useGSAP, setUseGSAP] = useState(true);
-  const [gsapEasing, setGsapEasing] = useState<GSAPEasingType>('bounce');
-  const [easingDirection, setEasingDirection] = useState<EasingDirection>('out');
+  const [gsapEasing, setGsapEasing] = useState<GSAPEasingType>("bounce");
+  const [easingDirection, setEasingDirection] = useState<EasingDirection>("out");
   const [animationDuration, setAnimationDuration] = useState<number>(1.0);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -435,9 +431,9 @@ function EmojiConverter() {
   // Check browser support for image formats
   const checkFormatSupport = useCallback((format: OutputFormat): boolean => {
     // GIF is always supported (generated via FFmpeg)
-    if (format === 'gif') return true;
+    if (format === "gif") return true;
 
-    const canvas = document.createElement('canvas');
+    const canvas = document.createElement("canvas");
     canvas.width = 1;
     canvas.height = 1;
     const mimeType = FORMAT_MIME_TYPES[format];
@@ -468,7 +464,6 @@ function EmojiConverter() {
     ctx.drawImage(processedImageRef.current, 0, 0);
     ctx.restore();
   }, []);
-
 
   // 画像処理とプレビュー更新
   const processImage = useCallback(async () => {
@@ -516,7 +511,16 @@ function EmojiConverter() {
     } finally {
       setIsProcessing(false);
     }
-  }, [file, platform, outputFormat, outputQuality, editOptions, enableAnimation, updatePreviewCanvas, announceStatus]);
+  }, [
+    file,
+    platform,
+    outputFormat,
+    outputQuality,
+    editOptions,
+    enableAnimation,
+    updatePreviewCanvas,
+    announceStatus,
+  ]);
 
   // ファイルまたは編集オプション変更時に画像を処理
   useEffect(() => {
@@ -544,7 +548,7 @@ function EmojiConverter() {
         announceStatus("画像ファイルを選択してください");
       }
     },
-    [announceStatus]
+    [announceStatus],
   );
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
@@ -565,7 +569,7 @@ function EmojiConverter() {
       const droppedFile = e.dataTransfer.files[0];
       handleFileChange(droppedFile);
     },
-    [handleFileChange]
+    [handleFileChange],
   );
 
   const handleDropzoneClick = useCallback(() => {
@@ -579,12 +583,12 @@ function EmojiConverter() {
         handleDropzoneClick();
       }
     },
-    [handleDropzoneClick]
+    [handleDropzoneClick],
   );
 
   // Load FFmpeg when GIF format is selected (for animation support)
   useEffect(() => {
-    if (outputFormat === 'gif' && !ffmpegLoaded) {
+    if (outputFormat === "gif" && !ffmpegLoaded) {
       loadFFmpeg(ffmpegRef.current).then((loaded) => {
         setFfmpegLoaded(loaded);
       });
@@ -622,7 +626,17 @@ function EmojiConverter() {
       animationFramesRef.current = frames;
       setIsAnimationPlaying(true);
     }
-  }, [enableAnimation, animationEffect, animationSpeed, animationLoop, animationFps, useGSAP, gsapEasing, easingDirection, animationDuration]);
+  }, [
+    enableAnimation,
+    animationEffect,
+    animationSpeed,
+    animationLoop,
+    animationFps,
+    useGSAP,
+    gsapEasing,
+    easingDirection,
+    animationDuration,
+  ]);
 
   // Generate animation when enabled or settings change
   useEffect(() => {
@@ -655,7 +669,7 @@ function EmojiConverter() {
       if (!canvasRef.current || animationFramesRef.current.length === 0) return;
 
       const canvas = canvasRef.current;
-      const ctx = canvas.getContext('2d');
+      const ctx = canvas.getContext("2d");
       if (!ctx) return;
 
       // Clear and draw current frame
@@ -699,11 +713,11 @@ function EmojiConverter() {
         for (let i = 0; i < animationFramesRef.current.length; i++) {
           const frameCanvas = animationFramesRef.current[i];
           const blob = await new Promise<Blob | null>((resolve) => {
-            frameCanvas.toBlob((b) => resolve(b), 'image/png');
+            frameCanvas.toBlob((b) => resolve(b), "image/png");
           });
 
           if (blob) {
-            const file = new File([blob], `frame${i}.png`, { type: 'image/png' });
+            const file = new File([blob], `frame${i}.png`, { type: "image/png" });
             frameFiles.push(file);
           }
         }
@@ -715,7 +729,7 @@ function EmojiConverter() {
           animationFps,
           animationLoop,
           80, // Quality
-          (msg) => announceStatus(msg)
+          (msg) => announceStatus(msg),
         );
 
         if (gifBlob) {
@@ -748,7 +762,15 @@ function EmojiConverter() {
     } finally {
       setIsProcessing(false);
     }
-  }, [previewUrl, outputFormat, enableAnimation, ffmpegLoaded, animationFps, animationLoop, announceStatus]);
+  }, [
+    previewUrl,
+    outputFormat,
+    enableAnimation,
+    ffmpegLoaded,
+    animationFps,
+    animationLoop,
+    announceStatus,
+  ]);
 
   const handleReset = useCallback(() => {
     setFile(null);
@@ -794,26 +816,16 @@ function EmojiConverter() {
     announceStatus("全ての編集設定をリセットしました");
   }, [announceStatus]);
 
-  const updateEditOption = <K extends keyof EditOptions>(
-    key: K,
-    value: EditOptions[K]
-  ) => {
+  const updateEditOption = <K extends keyof EditOptions>(key: K, value: EditOptions[K]) => {
     setEditOptions((prev) => ({ ...prev, [key]: value }));
   };
 
   return (
     <div className="tool-container">
       <h1>絵文字コンバーター</h1>
-      <p className="page-subtitle">
-        Discord・Slack用の絵文字を作成（画像編集機能付き）
-      </p>
+      <p className="page-subtitle">Discord・Slack用の絵文字を作成（画像編集機能付き）</p>
 
-      <div
-        ref={statusRef}
-        role="status"
-        aria-live="polite"
-        className="sr-only"
-      />
+      <div ref={statusRef} role="status" aria-live="polite" className="sr-only" />
 
       <div className="converter-section">
         {/* ファイル選択 */}
@@ -835,9 +847,7 @@ function EmojiConverter() {
               <div className="upload-icon" aria-hidden="true">
                 📁
               </div>
-              <p className="dropzone-text">
-                クリックして画像を選択、またはドラッグ&ドロップ
-              </p>
+              <p className="dropzone-text">クリックして画像を選択、またはドラッグ&ドロップ</p>
               <p className="dropzone-hint">PNG, JPEG, GIF対応</p>
             </div>
 
@@ -910,7 +920,7 @@ function EmojiConverter() {
                         const newFormat = e.target.value as OutputFormat;
                         setOutputFormat(newFormat);
                         // Enable animation automatically when GIF is selected
-                        if (newFormat === 'gif') {
+                        if (newFormat === "gif") {
                           setEnableAnimation(true);
                         }
                       }}
@@ -941,147 +951,158 @@ function EmojiConverter() {
                 onChange={(e) => setOutputQuality(parseFloat(e.target.value))}
                 className="slider"
               />
-              <small className="help-text">
-                品質を下げるとファイルサイズが小さくなります
-              </small>
+              <small className="help-text">品質を下げるとファイルサイズが小さくなります</small>
             </div>
           )}
         </section>
 
         {/* アニメーション設定 */}
-        {outputFormat === 'gif' && (
+        {outputFormat === "gif" && (
           <section className="section">
             <h2 className="section-title">アニメーション</h2>
-              <div className="form-group">
-                <label className="label">エフェクト</label>
-                <div className="format-selector">
-                  {(['bounce', 'shake', 'rotate', 'pulse', 'fade', 'slide', 'wobble', 'pop'] as AnimationEffectType[]).map((effect) => (
-                    <label key={effect} className="format-option">
-                      <input
-                        type="radio"
-                        name="animationEffect"
-                        value={effect}
-                        checked={animationEffect === effect}
-                        onChange={(e) => setAnimationEffect(e.target.value as AnimationEffectType)}
-                      />
-                      <span className="format-label">
-                        {getAnimationEffectLabel(effect)}
-                      </span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              {/* GSAP イージング設定 */}
-              <div className="form-group">
-                <label className="label">イージング</label>
-                <div className="format-selector">
-                  {(['bounce', 'elastic', 'back', 'expo', 'circ', 'sine', 'power2'] as GSAPEasingType[]).map((easing) => (
-                    <label key={easing} className="format-option">
-                      <input
-                        type="radio"
-                        name="gsapEasing"
-                        value={easing}
-                        checked={gsapEasing === easing}
-                        onChange={(e) => setGsapEasing(e.target.value as GSAPEasingType)}
-                      />
-                      <span className="format-label">
-                        {getGSAPEasingLabel(easing)}
-                      </span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              {/* イージング方向 */}
-              <div className="form-group">
-                <label htmlFor="easingDirection" className="label">
-                  イージング方向: {getEasingDirectionLabel(easingDirection)}
-                </label>
-                <div className="format-selector">
-                  {(['in', 'out', 'inOut'] as EasingDirection[]).map((direction) => (
-                    <label key={direction} className="format-option">
-                      <input
-                        type="radio"
-                        name="easingDirection"
-                        value={direction}
-                        checked={easingDirection === direction}
-                        onChange={(e) => setEasingDirection(e.target.value as EasingDirection)}
-                      />
-                      <span className="format-label">
-                        {getEasingDirectionLabel(direction)}
-                      </span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              <div className="form-group-horizontal">
-                <div className="form-group">
-                  <label htmlFor="animationDuration" className="label">
-                    アニメーション時間: {animationDuration.toFixed(1)}秒
+            <div className="form-group">
+              <label className="label">エフェクト</label>
+              <div className="format-selector">
+                {(
+                  [
+                    "bounce",
+                    "shake",
+                    "rotate",
+                    "pulse",
+                    "fade",
+                    "slide",
+                    "wobble",
+                    "pop",
+                  ] as AnimationEffectType[]
+                ).map((effect) => (
+                  <label key={effect} className="format-option">
+                    <input
+                      type="radio"
+                      name="animationEffect"
+                      value={effect}
+                      checked={animationEffect === effect}
+                      onChange={(e) => setAnimationEffect(e.target.value as AnimationEffectType)}
+                    />
+                    <span className="format-label">{getAnimationEffectLabel(effect)}</span>
                   </label>
-                  <input
-                    type="range"
-                    id="animationDuration"
-                    min="0.3"
-                    max="3.0"
-                    step="0.1"
-                    value={animationDuration}
-                    onChange={(e) => setAnimationDuration(parseFloat(e.target.value))}
-                    className="slider"
-                  />
-                  <small className="help-text">
-                    1サイクルの長さ
-                  </small>
-                </div>
+                ))}
+              </div>
+            </div>
 
-                <div className="form-group">
-                  <label htmlFor="animationFps" className="label">
-                    フレームレート: {animationFps} FPS
+            {/* GSAP イージング設定 */}
+            <div className="form-group">
+              <label className="label">イージング</label>
+              <div className="format-selector">
+                {(
+                  [
+                    "bounce",
+                    "elastic",
+                    "back",
+                    "expo",
+                    "circ",
+                    "sine",
+                    "power2",
+                  ] as GSAPEasingType[]
+                ).map((easing) => (
+                  <label key={easing} className="format-option">
+                    <input
+                      type="radio"
+                      name="gsapEasing"
+                      value={easing}
+                      checked={gsapEasing === easing}
+                      onChange={(e) => setGsapEasing(e.target.value as GSAPEasingType)}
+                    />
+                    <span className="format-label">{getGSAPEasingLabel(easing)}</span>
                   </label>
-                  <input
-                    type="range"
-                    id="animationFps"
-                    min="6"
-                    max="30"
-                    step="1"
-                    value={animationFps}
-                    onChange={(e) => setAnimationFps(parseInt(e.target.value))}
-                    className="slider"
-                  />
-                  <small className="help-text">
-                    FPSが高いほど滑らかですがファイルサイズが大きくなります
-                  </small>
-                </div>
+                ))}
+              </div>
+            </div>
+
+            {/* イージング方向 */}
+            <div className="form-group">
+              <label htmlFor="easingDirection" className="label">
+                イージング方向: {getEasingDirectionLabel(easingDirection)}
+              </label>
+              <div className="format-selector">
+                {(["in", "out", "inOut"] as EasingDirection[]).map((direction) => (
+                  <label key={direction} className="format-option">
+                    <input
+                      type="radio"
+                      name="easingDirection"
+                      value={direction}
+                      checked={easingDirection === direction}
+                      onChange={(e) => setEasingDirection(e.target.value as EasingDirection)}
+                    />
+                    <span className="format-label">{getEasingDirectionLabel(direction)}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <div className="form-group-horizontal">
+              <div className="form-group">
+                <label htmlFor="animationDuration" className="label">
+                  アニメーション時間: {animationDuration.toFixed(1)}秒
+                </label>
+                <input
+                  type="range"
+                  id="animationDuration"
+                  min="0.3"
+                  max="3.0"
+                  step="0.1"
+                  value={animationDuration}
+                  onChange={(e) => setAnimationDuration(parseFloat(e.target.value))}
+                  className="slider"
+                />
+                <small className="help-text">1サイクルの長さ</small>
               </div>
 
               <div className="form-group">
-                <label htmlFor="animationLoop" className="label">
-                  ループ回数
+                <label htmlFor="animationFps" className="label">
+                  フレームレート: {animationFps} FPS
                 </label>
-                <select
-                  id="animationLoop"
-                  value={animationLoop}
-                  onChange={(e) => setAnimationLoop(parseInt(e.target.value))}
-                  className="select"
-                >
-                  <option value="0">無限ループ</option>
-                  <option value="1">1回</option>
-                  <option value="2">2回</option>
-                  <option value="3">3回</option>
-                  <option value="5">5回</option>
-                  <option value="10">10回</option>
-                </select>
+                <input
+                  type="range"
+                  id="animationFps"
+                  min="6"
+                  max="30"
+                  step="1"
+                  value={animationFps}
+                  onChange={(e) => setAnimationFps(parseInt(e.target.value))}
+                  className="slider"
+                />
+                <small className="help-text">
+                  FPSが高いほど滑らかですがファイルサイズが大きくなります
+                </small>
               </div>
+            </div>
 
-              {!ffmpegLoaded && (
-                <div className="info-box">
-                  <p>⏳ FFmpegを読み込んでいます...</p>
-                </div>
-              )}
-            </section>
-          )}
+            <div className="form-group">
+              <label htmlFor="animationLoop" className="label">
+                ループ回数
+              </label>
+              <select
+                id="animationLoop"
+                value={animationLoop}
+                onChange={(e) => setAnimationLoop(parseInt(e.target.value))}
+                className="select"
+              >
+                <option value="0">無限ループ</option>
+                <option value="1">1回</option>
+                <option value="2">2回</option>
+                <option value="3">3回</option>
+                <option value="5">5回</option>
+                <option value="10">10回</option>
+              </select>
+            </div>
+
+            {!ffmpegLoaded && (
+              <div className="info-box">
+                <p>⏳ FFmpegを読み込んでいます...</p>
+              </div>
+            )}
+          </section>
+        )}
 
         {/* 編集オプションとプレビューを横並び */}
         {file && (
@@ -1101,349 +1122,329 @@ function EmojiConverter() {
                   </button>
                 </div>
 
-            <div className="edit-options-grid">
-            {/* テキスト埋め込み */}
-            <details className="details">
-              <summary className="details-summary">
-                <span>テキスト埋め込み</span>
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    resetTextOptions();
-                  }}
-                  className="reset-section-button"
-                  aria-label="テキスト設定をリセット"
-                >
-                  リセット
-                </button>
-              </summary>
-              <div className="details-content">
-                <div className="form-group">
-                  <label htmlFor="text" className="label">
-                    テキスト
-                  </label>
-                  <input
-                    id="text"
-                    type="text"
-                    value={editOptions.text}
-                    onChange={(e) => updateEditOption("text", e.target.value)}
-                    className="input"
-                    placeholder="絵文字に表示するテキスト"
-                  />
-                </div>
+                <div className="edit-options-grid">
+                  {/* テキスト埋め込み */}
+                  <details className="details">
+                    <summary className="details-summary">
+                      <span>テキスト埋め込み</span>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          resetTextOptions();
+                        }}
+                        className="reset-section-button"
+                        aria-label="テキスト設定をリセット"
+                      >
+                        リセット
+                      </button>
+                    </summary>
+                    <div className="details-content">
+                      <div className="form-group">
+                        <label htmlFor="text" className="label">
+                          テキスト
+                        </label>
+                        <input
+                          id="text"
+                          type="text"
+                          value={editOptions.text}
+                          onChange={(e) => updateEditOption("text", e.target.value)}
+                          className="input"
+                          placeholder="絵文字に表示するテキスト"
+                        />
+                      </div>
 
-                <div className="form-group">
-                  <label htmlFor="fontSize" className="label">
-                    フォントサイズ: {editOptions.fontSize}px
-                  </label>
-                  <input
-                    id="fontSize"
-                    type="range"
-                    min="8"
-                    max="64"
-                    value={editOptions.fontSize}
-                    onChange={(e) =>
-                      updateEditOption("fontSize", Number(e.target.value))
-                    }
-                    className="range"
-                  />
-                </div>
+                      <div className="form-group">
+                        <label htmlFor="fontSize" className="label">
+                          フォントサイズ: {editOptions.fontSize}px
+                        </label>
+                        <input
+                          id="fontSize"
+                          type="range"
+                          min="8"
+                          max="64"
+                          value={editOptions.fontSize}
+                          onChange={(e) => updateEditOption("fontSize", Number(e.target.value))}
+                          className="range"
+                        />
+                      </div>
 
-                <div className="form-group">
-                  <label htmlFor="textColor" className="label">
-                    テキスト色
-                  </label>
-                  <input
-                    id="textColor"
-                    type="color"
-                    value={editOptions.textColor}
-                    onChange={(e) => updateEditOption("textColor", e.target.value)}
-                    className="color-input"
-                  />
-                </div>
+                      <div className="form-group">
+                        <label htmlFor="textColor" className="label">
+                          テキスト色
+                        </label>
+                        <input
+                          id="textColor"
+                          type="color"
+                          value={editOptions.textColor}
+                          onChange={(e) => updateEditOption("textColor", e.target.value)}
+                          className="color-input"
+                        />
+                      </div>
 
-                <div className="form-group">
-                  <label htmlFor="textX" className="label">
-                    X位置: {editOptions.textX}%
-                  </label>
-                  <input
-                    id="textX"
-                    type="range"
-                    min="0"
-                    max="100"
-                    value={editOptions.textX}
-                    onChange={(e) =>
-                      updateEditOption("textX", Number(e.target.value))
-                    }
-                    className="range"
-                  />
-                </div>
+                      <div className="form-group">
+                        <label htmlFor="textX" className="label">
+                          X位置: {editOptions.textX}%
+                        </label>
+                        <input
+                          id="textX"
+                          type="range"
+                          min="0"
+                          max="100"
+                          value={editOptions.textX}
+                          onChange={(e) => updateEditOption("textX", Number(e.target.value))}
+                          className="range"
+                        />
+                      </div>
 
-                <div className="form-group">
-                  <label htmlFor="textY" className="label">
-                    Y位置: {editOptions.textY}%
-                  </label>
-                  <input
-                    id="textY"
-                    type="range"
-                    min="0"
-                    max="100"
-                    value={editOptions.textY}
-                    onChange={(e) =>
-                      updateEditOption("textY", Number(e.target.value))
-                    }
-                    className="range"
-                  />
-                </div>
-              </div>
-            </details>
-
-            {/* 回転・反転 */}
-            <details className="details">
-              <summary className="details-summary">
-                <span>回転・反転</span>
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    resetTransformOptions();
-                  }}
-                  className="reset-section-button"
-                  aria-label="回転・反転設定をリセット"
-                >
-                  リセット
-                </button>
-              </summary>
-              <div className="details-content">
-                <div className="form-group">
-                  <label htmlFor="rotation" className="label">
-                    回転: {editOptions.rotation}°
-                  </label>
-                  <input
-                    id="rotation"
-                    type="range"
-                    min="0"
-                    max="360"
-                    value={editOptions.rotation}
-                    onChange={(e) =>
-                      updateEditOption("rotation", Number(e.target.value))
-                    }
-                    className="range"
-                  />
-                </div>
-
-                <div className="checkbox-group">
-                  <label className="md3-checkbox-wrapper">
-                    <input
-                      type="checkbox"
-                      checked={editOptions.flipH}
-                      onChange={(e) => updateEditOption("flipH", e.target.checked)}
-                    />
-                    <span className="md3-checkbox" />
-                    <span className="md3-checkbox-label">左右反転</span>
-                  </label>
-
-                  <label className="md3-checkbox-wrapper">
-                    <input
-                      type="checkbox"
-                      checked={editOptions.flipV}
-                      onChange={(e) => updateEditOption("flipV", e.target.checked)}
-                    />
-                    <span className="md3-checkbox" />
-                    <span className="md3-checkbox-label">上下反転</span>
-                  </label>
-                </div>
-              </div>
-            </details>
-
-            {/* フィルター */}
-            <details className="details">
-              <summary className="details-summary">
-                <span>フィルター</span>
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    resetFilterOptions();
-                  }}
-                  className="reset-section-button"
-                  aria-label="フィルター設定をリセット"
-                >
-                  リセット
-                </button>
-              </summary>
-              <div className="details-content">
-                <div className="form-group">
-                  <label htmlFor="brightness" className="label">
-                    明るさ: {editOptions.brightness}%
-                  </label>
-                  <input
-                    id="brightness"
-                    type="range"
-                    min="0"
-                    max="200"
-                    value={editOptions.brightness}
-                    onChange={(e) =>
-                      updateEditOption("brightness", Number(e.target.value))
-                    }
-                    className="range"
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="contrast" className="label">
-                    コントラスト: {editOptions.contrast}%
-                  </label>
-                  <input
-                    id="contrast"
-                    type="range"
-                    min="0"
-                    max="200"
-                    value={editOptions.contrast}
-                    onChange={(e) =>
-                      updateEditOption("contrast", Number(e.target.value))
-                    }
-                    className="range"
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="saturation" className="label">
-                    彩度: {editOptions.saturation}%
-                  </label>
-                  <input
-                    id="saturation"
-                    type="range"
-                    min="0"
-                    max="200"
-                    value={editOptions.saturation}
-                    onChange={(e) =>
-                      updateEditOption("saturation", Number(e.target.value))
-                    }
-                    className="range"
-                  />
-                </div>
-              </div>
-            </details>
-
-            {/* 透過処理 */}
-            <details className="details">
-              <summary className="details-summary">
-                <span>透過処理</span>
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    resetTransparentOptions();
-                  }}
-                  className="reset-section-button"
-                  aria-label="透過設定をリセット"
-                >
-                  リセット
-                </button>
-              </summary>
-              <div className="details-content">
-                <div className="checkbox-group">
-                  <label className="md3-checkbox-wrapper">
-                    <input
-                      type="checkbox"
-                      checked={editOptions.transparent}
-                      onChange={(e) =>
-                        updateEditOption("transparent", e.target.checked)
-                      }
-                    />
-                    <span className="md3-checkbox" />
-                    <span className="md3-checkbox-label">指定色を透過</span>
-                  </label>
-                </div>
-
-                {editOptions.transparent && (
-                  <div className="form-group">
-                    <label htmlFor="transparentColor" className="label">
-                      透過する色
-                    </label>
-                    <input
-                      id="transparentColor"
-                      type="color"
-                      value={editOptions.transparentColor}
-                      onChange={(e) =>
-                        updateEditOption("transparentColor", e.target.value)
-                      }
-                      className="color-input"
-                    />
-                  </div>
-                )}
-              </div>
-            </details>
-
-            {/* 枠線 */}
-            <details className="details">
-              <summary className="details-summary">
-                <span>枠線</span>
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    resetBorderOptions();
-                  }}
-                  className="reset-section-button"
-                  aria-label="枠線設定をリセット"
-                >
-                  リセット
-                </button>
-              </summary>
-              <div className="details-content">
-                <div className="checkbox-group">
-                  <label className="md3-checkbox-wrapper">
-                    <input
-                      type="checkbox"
-                      checked={editOptions.border}
-                      onChange={(e) => updateEditOption("border", e.target.checked)}
-                    />
-                    <span className="md3-checkbox" />
-                    <span className="md3-checkbox-label">枠線を追加</span>
-                  </label>
-                </div>
-
-                {editOptions.border && (
-                  <>
-                    <div className="form-group">
-                      <label htmlFor="borderWidth" className="label">
-                        枠線の太さ: {editOptions.borderWidth}px
-                      </label>
-                      <input
-                        id="borderWidth"
-                        type="range"
-                        min="1"
-                        max="10"
-                        value={editOptions.borderWidth}
-                        onChange={(e) =>
-                          updateEditOption("borderWidth", Number(e.target.value))
-                        }
-                        className="range"
-                      />
+                      <div className="form-group">
+                        <label htmlFor="textY" className="label">
+                          Y位置: {editOptions.textY}%
+                        </label>
+                        <input
+                          id="textY"
+                          type="range"
+                          min="0"
+                          max="100"
+                          value={editOptions.textY}
+                          onChange={(e) => updateEditOption("textY", Number(e.target.value))}
+                          className="range"
+                        />
+                      </div>
                     </div>
+                  </details>
 
-                    <div className="form-group">
-                      <label htmlFor="borderColor" className="label">
-                        枠線の色
-                      </label>
-                      <input
-                        id="borderColor"
-                        type="color"
-                        value={editOptions.borderColor}
-                        onChange={(e) =>
-                          updateEditOption("borderColor", e.target.value)
-                        }
-                        className="color-input"
-                      />
+                  {/* 回転・反転 */}
+                  <details className="details">
+                    <summary className="details-summary">
+                      <span>回転・反転</span>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          resetTransformOptions();
+                        }}
+                        className="reset-section-button"
+                        aria-label="回転・反転設定をリセット"
+                      >
+                        リセット
+                      </button>
+                    </summary>
+                    <div className="details-content">
+                      <div className="form-group">
+                        <label htmlFor="rotation" className="label">
+                          回転: {editOptions.rotation}°
+                        </label>
+                        <input
+                          id="rotation"
+                          type="range"
+                          min="0"
+                          max="360"
+                          value={editOptions.rotation}
+                          onChange={(e) => updateEditOption("rotation", Number(e.target.value))}
+                          className="range"
+                        />
+                      </div>
+
+                      <div className="checkbox-group">
+                        <label className="md3-checkbox-wrapper">
+                          <input
+                            type="checkbox"
+                            checked={editOptions.flipH}
+                            onChange={(e) => updateEditOption("flipH", e.target.checked)}
+                          />
+                          <span className="md3-checkbox" />
+                          <span className="md3-checkbox-label">左右反転</span>
+                        </label>
+
+                        <label className="md3-checkbox-wrapper">
+                          <input
+                            type="checkbox"
+                            checked={editOptions.flipV}
+                            onChange={(e) => updateEditOption("flipV", e.target.checked)}
+                          />
+                          <span className="md3-checkbox" />
+                          <span className="md3-checkbox-label">上下反転</span>
+                        </label>
+                      </div>
                     </div>
-                  </>
-                )}
-              </div>
-            </details>
-            </div>
+                  </details>
+
+                  {/* フィルター */}
+                  <details className="details">
+                    <summary className="details-summary">
+                      <span>フィルター</span>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          resetFilterOptions();
+                        }}
+                        className="reset-section-button"
+                        aria-label="フィルター設定をリセット"
+                      >
+                        リセット
+                      </button>
+                    </summary>
+                    <div className="details-content">
+                      <div className="form-group">
+                        <label htmlFor="brightness" className="label">
+                          明るさ: {editOptions.brightness}%
+                        </label>
+                        <input
+                          id="brightness"
+                          type="range"
+                          min="0"
+                          max="200"
+                          value={editOptions.brightness}
+                          onChange={(e) => updateEditOption("brightness", Number(e.target.value))}
+                          className="range"
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <label htmlFor="contrast" className="label">
+                          コントラスト: {editOptions.contrast}%
+                        </label>
+                        <input
+                          id="contrast"
+                          type="range"
+                          min="0"
+                          max="200"
+                          value={editOptions.contrast}
+                          onChange={(e) => updateEditOption("contrast", Number(e.target.value))}
+                          className="range"
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <label htmlFor="saturation" className="label">
+                          彩度: {editOptions.saturation}%
+                        </label>
+                        <input
+                          id="saturation"
+                          type="range"
+                          min="0"
+                          max="200"
+                          value={editOptions.saturation}
+                          onChange={(e) => updateEditOption("saturation", Number(e.target.value))}
+                          className="range"
+                        />
+                      </div>
+                    </div>
+                  </details>
+
+                  {/* 透過処理 */}
+                  <details className="details">
+                    <summary className="details-summary">
+                      <span>透過処理</span>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          resetTransparentOptions();
+                        }}
+                        className="reset-section-button"
+                        aria-label="透過設定をリセット"
+                      >
+                        リセット
+                      </button>
+                    </summary>
+                    <div className="details-content">
+                      <div className="checkbox-group">
+                        <label className="md3-checkbox-wrapper">
+                          <input
+                            type="checkbox"
+                            checked={editOptions.transparent}
+                            onChange={(e) => updateEditOption("transparent", e.target.checked)}
+                          />
+                          <span className="md3-checkbox" />
+                          <span className="md3-checkbox-label">指定色を透過</span>
+                        </label>
+                      </div>
+
+                      {editOptions.transparent && (
+                        <div className="form-group">
+                          <label htmlFor="transparentColor" className="label">
+                            透過する色
+                          </label>
+                          <input
+                            id="transparentColor"
+                            type="color"
+                            value={editOptions.transparentColor}
+                            onChange={(e) => updateEditOption("transparentColor", e.target.value)}
+                            className="color-input"
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </details>
+
+                  {/* 枠線 */}
+                  <details className="details">
+                    <summary className="details-summary">
+                      <span>枠線</span>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          resetBorderOptions();
+                        }}
+                        className="reset-section-button"
+                        aria-label="枠線設定をリセット"
+                      >
+                        リセット
+                      </button>
+                    </summary>
+                    <div className="details-content">
+                      <div className="checkbox-group">
+                        <label className="md3-checkbox-wrapper">
+                          <input
+                            type="checkbox"
+                            checked={editOptions.border}
+                            onChange={(e) => updateEditOption("border", e.target.checked)}
+                          />
+                          <span className="md3-checkbox" />
+                          <span className="md3-checkbox-label">枠線を追加</span>
+                        </label>
+                      </div>
+
+                      {editOptions.border && (
+                        <>
+                          <div className="form-group">
+                            <label htmlFor="borderWidth" className="label">
+                              枠線の太さ: {editOptions.borderWidth}px
+                            </label>
+                            <input
+                              id="borderWidth"
+                              type="range"
+                              min="1"
+                              max="10"
+                              value={editOptions.borderWidth}
+                              onChange={(e) =>
+                                updateEditOption("borderWidth", Number(e.target.value))
+                              }
+                              className="range"
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <label htmlFor="borderColor" className="label">
+                              枠線の色
+                            </label>
+                            <input
+                              id="borderColor"
+                              type="color"
+                              value={editOptions.borderColor}
+                              onChange={(e) => updateEditOption("borderColor", e.target.value)}
+                              className="color-input"
+                            />
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </details>
+                </div>
               </section>
             </div>
 
@@ -1452,37 +1453,37 @@ function EmojiConverter() {
               <section className="section">
                 <h2 className="section-title">プレビュー</h2>
 
-            <div className="preview-container">
-              <canvas
-                ref={canvasRef}
-                className="preview-canvas"
-                aria-label="編集後の絵文字プレビュー"
-              />
-            </div>
+                <div className="preview-container">
+                  <canvas
+                    ref={canvasRef}
+                    className="preview-canvas"
+                    aria-label="編集後の絵文字プレビュー"
+                  />
+                </div>
 
-            <div className="file-size-info">
-              <p>
-                ファイルサイズ: {(fileSize / 1024).toFixed(1)} KB /{" "}
-                {(PLATFORM_LIMITS[platform].maxSize / 1024).toFixed(0)} KB
-              </p>
-              {fileSize > PLATFORM_LIMITS[platform].maxSize && (
-                <p className="error-text">容量制限を超えています</p>
-              )}
-            </div>
+                <div className="file-size-info">
+                  <p>
+                    ファイルサイズ: {(fileSize / 1024).toFixed(1)} KB /{" "}
+                    {(PLATFORM_LIMITS[platform].maxSize / 1024).toFixed(0)} KB
+                  </p>
+                  {fileSize > PLATFORM_LIMITS[platform].maxSize && (
+                    <p className="error-text">容量制限を超えています</p>
+                  )}
+                </div>
 
-            <div className="button-group">
-              <button
-                onClick={handleDownload}
-                disabled={isProcessing || !previewUrl}
-                className="button button-primary btn-primary"
-              >
-                {isProcessing ? "処理中..." : "ダウンロード"}
-              </button>
+                <div className="button-group">
+                  <button
+                    onClick={handleDownload}
+                    disabled={isProcessing || !previewUrl}
+                    className="button button-primary btn-primary"
+                  >
+                    {isProcessing ? "処理中..." : "ダウンロード"}
+                  </button>
 
-              <button onClick={handleReset} className="button button-secondary btn-clear">
-                リセット
-              </button>
-            </div>
+                  <button onClick={handleReset} className="button button-secondary btn-clear">
+                    リセット
+                  </button>
+                </div>
               </section>
             </div>
           </div>

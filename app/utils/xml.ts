@@ -2,12 +2,12 @@
  * XMLトークンの型定義
  */
 type XmlToken =
-  | { type: 'open'; name: string; attrs: string; selfClose: boolean }
-  | { type: 'close'; name: string }
-  | { type: 'text'; value: string }
-  | { type: 'comment'; value: string }
-  | { type: 'declaration'; value: string }
-  | { type: 'cdata'; value: string };
+  | { type: "open"; name: string; attrs: string; selfClose: boolean }
+  | { type: "close"; name: string }
+  | { type: "text"; value: string }
+  | { type: "comment"; value: string }
+  | { type: "declaration"; value: string }
+  | { type: "cdata"; value: string };
 
 /**
  * XML文字列をトークンの配列に分解する。
@@ -17,7 +17,7 @@ type XmlToken =
  */
 export function tokenizeXml(xml: string): XmlToken[] {
   if (!xml.trim()) {
-    throw new Error('XML文字列が空です');
+    throw new Error("XML文字列が空です");
   }
 
   const tokens: XmlToken[] = [];
@@ -25,65 +25,63 @@ export function tokenizeXml(xml: string): XmlToken[] {
   const len = xml.length;
 
   while (i < len) {
-    if (xml[i] === '<') {
+    if (xml[i] === "<") {
       // コメント
-      if (xml.startsWith('<!--', i)) {
-        const end = xml.indexOf('-->', i + 4);
+      if (xml.startsWith("<!--", i)) {
+        const end = xml.indexOf("-->", i + 4);
         if (end === -1) {
-          throw new Error('コメントが閉じられていません');
+          throw new Error("コメントが閉じられていません");
         }
         const value = xml.slice(i + 4, end);
-        tokens.push({ type: 'comment', value });
+        tokens.push({ type: "comment", value });
         i = end + 3;
         continue;
       }
 
       // CDATA
-      if (xml.startsWith('<![CDATA[', i)) {
-        const end = xml.indexOf(']]>', i + 9);
+      if (xml.startsWith("<![CDATA[", i)) {
+        const end = xml.indexOf("]]>", i + 9);
         if (end === -1) {
-          throw new Error('CDATAセクションが閉じられていません');
+          throw new Error("CDATAセクションが閉じられていません");
         }
         const value = xml.slice(i + 9, end);
-        tokens.push({ type: 'cdata', value });
+        tokens.push({ type: "cdata", value });
         i = end + 3;
         continue;
       }
 
       // 宣言（<?...?>）
-      if (xml.startsWith('<?', i)) {
-        const end = xml.indexOf('?>', i + 2);
+      if (xml.startsWith("<?", i)) {
+        const end = xml.indexOf("?>", i + 2);
         if (end === -1) {
-          throw new Error('宣言タグが閉じられていません');
+          throw new Error("宣言タグが閉じられていません");
         }
         const value = xml.slice(i + 2, end);
-        tokens.push({ type: 'declaration', value });
+        tokens.push({ type: "declaration", value });
         i = end + 2;
         continue;
       }
 
       // 閉じタグ
-      if (xml[i + 1] === '/') {
-        const end = xml.indexOf('>', i + 2);
+      if (xml[i + 1] === "/") {
+        const end = xml.indexOf(">", i + 2);
         if (end === -1) {
-          throw new Error('閉じタグが正しく閉じられていません');
+          throw new Error("閉じタグが正しく閉じられていません");
         }
         const name = xml.slice(i + 2, end).trim();
-        tokens.push({ type: 'close', name });
+        tokens.push({ type: "close", name });
         i = end + 1;
         continue;
       }
 
       // 開きタグまたはセルフクロージングタグ
-      const end = xml.indexOf('>', i + 1);
+      const end = xml.indexOf(">", i + 1);
       if (end === -1) {
-        throw new Error('開きタグが正しく閉じられていません');
+        throw new Error("開きタグが正しく閉じられていません");
       }
       const tagContent = xml.slice(i + 1, end);
-      const selfClose = tagContent.endsWith('/');
-      const innerContent = selfClose
-        ? tagContent.slice(0, -1).trim()
-        : tagContent.trim();
+      const selfClose = tagContent.endsWith("/");
+      const innerContent = selfClose ? tagContent.slice(0, -1).trim() : tagContent.trim();
 
       // タグ名と属性を分離
       const spaceIdx = innerContent.search(/\s/);
@@ -91,27 +89,27 @@ export function tokenizeXml(xml: string): XmlToken[] {
       let attrs: string;
       if (spaceIdx === -1) {
         name = innerContent;
-        attrs = '';
+        attrs = "";
       } else {
         name = innerContent.slice(0, spaceIdx);
         attrs = innerContent.slice(spaceIdx + 1).trim();
       }
 
       if (!name) {
-        throw new Error('タグ名が空です');
+        throw new Error("タグ名が空です");
       }
 
-      tokens.push({ type: 'open', name, attrs, selfClose });
+      tokens.push({ type: "open", name, attrs, selfClose });
       i = end + 1;
       continue;
     }
 
     // テキストノード
-    const next = xml.indexOf('<', i);
+    const next = xml.indexOf("<", i);
     const textEnd = next === -1 ? len : next;
     const value = xml.slice(i, textEnd);
     if (value) {
-      tokens.push({ type: 'text', value });
+      tokens.push({ type: "text", value });
     }
     i = textEnd;
   }
@@ -128,11 +126,11 @@ export function tokenizeXml(xml: string): XmlToken[] {
  */
 export function formatXml(xml: string, indent: number = 2): string {
   if (!xml.trim()) {
-    throw new Error('XML文字列が空です');
+    throw new Error("XML文字列が空です");
   }
 
   const tokens = tokenizeXml(xml);
-  const indentStr = ' '.repeat(indent);
+  const indentStr = " ".repeat(indent);
   const lines: string[] = [];
   let depth = 0;
 
@@ -147,65 +145,65 @@ export function formatXml(xml: string, indent: number = 2): string {
   while (i < tokens.length) {
     const token = tokens[i];
 
-    if (token.type === 'declaration') {
+    if (token.type === "declaration") {
       lines.push(`<?${token.value}?>`);
       i++;
       continue;
     }
 
-    if (token.type === 'comment') {
+    if (token.type === "comment") {
       lines.push(`${getIndent(depth)}<!--${token.value}-->`);
       i++;
       continue;
     }
 
-    if (token.type === 'cdata') {
+    if (token.type === "cdata") {
       lines.push(`${getIndent(depth)}<![CDATA[${token.value}]]>`);
       i++;
       continue;
     }
 
-    if (token.type === 'open' && !token.selfClose) {
+    if (token.type === "open" && !token.selfClose) {
       // 次のトークンがテキストで、その次が閉じタグ → インライン表示
       const nextToken = tokens[i + 1];
       const afterNext = tokens[i + 2];
       if (
         nextToken &&
-        nextToken.type === 'text' &&
+        nextToken.type === "text" &&
         afterNext &&
-        afterNext.type === 'close' &&
+        afterNext.type === "close" &&
         afterNext.name === token.name
       ) {
-        const attrsStr = token.attrs ? ` ${token.attrs}` : '';
+        const attrsStr = token.attrs ? ` ${token.attrs}` : "";
         lines.push(
-          `${getIndent(depth)}<${token.name}${attrsStr}>${nextToken.value}</${token.name}>`
+          `${getIndent(depth)}<${token.name}${attrsStr}>${nextToken.value}</${token.name}>`,
         );
         i += 3;
         continue;
       }
 
-      const attrsStr = token.attrs ? ` ${token.attrs}` : '';
+      const attrsStr = token.attrs ? ` ${token.attrs}` : "";
       lines.push(`${getIndent(depth)}<${token.name}${attrsStr}>`);
       depth++;
       i++;
       continue;
     }
 
-    if (token.type === 'open' && token.selfClose) {
-      const attrsStr = token.attrs ? ` ${token.attrs}` : '';
+    if (token.type === "open" && token.selfClose) {
+      const attrsStr = token.attrs ? ` ${token.attrs}` : "";
       lines.push(`${getIndent(depth)}<${token.name}${attrsStr}/>`);
       i++;
       continue;
     }
 
-    if (token.type === 'close') {
+    if (token.type === "close") {
       depth = Math.max(0, depth - 1);
       lines.push(`${getIndent(depth)}</${token.name}>`);
       i++;
       continue;
     }
 
-    if (token.type === 'text') {
+    if (token.type === "text") {
       const trimmed = token.value.trim();
       if (trimmed) {
         lines.push(`${getIndent(depth)}${trimmed}`);
@@ -217,7 +215,7 @@ export function formatXml(xml: string, indent: number = 2): string {
     i++;
   }
 
-  return lines.join('\n');
+  return lines.join("\n");
 }
 
 /**
@@ -228,17 +226,14 @@ export function formatXml(xml: string, indent: number = 2): string {
  */
 export function minifyXml(xml: string): string {
   if (!xml.trim()) {
-    throw new Error('XML文字列が空です');
+    throw new Error("XML文字列が空です");
   }
 
   // tokenizeXmlで構文チェックを行う
   tokenizeXml(xml);
 
   // タグ間の空白・改行を除去
-  return xml
-    .replace(/>\s+</g, '><')
-    .replace(/^\s+/, '')
-    .replace(/\s+$/, '');
+  return xml.replace(/>\s+</g, "><").replace(/^\s+/, "").replace(/\s+$/, "");
 }
 
 /**
@@ -249,7 +244,7 @@ export function minifyXml(xml: string): string {
  */
 export function validateXml(xml: string): { valid: boolean; error?: string } {
   if (!xml.trim()) {
-    return { valid: false, error: 'XML文字列が空です' };
+    return { valid: false, error: "XML文字列が空です" };
   }
 
   let tokens: XmlToken[];
@@ -258,7 +253,7 @@ export function validateXml(xml: string): { valid: boolean; error?: string } {
   } catch (err) {
     return {
       valid: false,
-      error: err instanceof Error ? err.message : 'XML解析エラーが発生しました',
+      error: err instanceof Error ? err.message : "XML解析エラーが発生しました",
     };
   }
 
@@ -266,32 +261,32 @@ export function validateXml(xml: string): { valid: boolean; error?: string } {
   let rootCount = 0;
 
   for (const token of tokens) {
-    if (token.type === 'declaration' || token.type === 'comment' || token.type === 'cdata') {
+    if (token.type === "declaration" || token.type === "comment" || token.type === "cdata") {
       continue;
     }
 
-    if (token.type === 'open' && !token.selfClose) {
+    if (token.type === "open" && !token.selfClose) {
       if (stack.length === 0) {
         rootCount++;
         if (rootCount > 1) {
-          return { valid: false, error: 'ルート要素は1つでなければなりません' };
+          return { valid: false, error: "ルート要素は1つでなければなりません" };
         }
       }
       stack.push(token.name);
       continue;
     }
 
-    if (token.type === 'open' && token.selfClose) {
+    if (token.type === "open" && token.selfClose) {
       if (stack.length === 0) {
         rootCount++;
         if (rootCount > 1) {
-          return { valid: false, error: 'ルート要素は1つでなければなりません' };
+          return { valid: false, error: "ルート要素は1つでなければなりません" };
         }
       }
       continue;
     }
 
-    if (token.type === 'close') {
+    if (token.type === "close") {
       if (stack.length === 0) {
         return {
           valid: false,
@@ -318,7 +313,7 @@ export function validateXml(xml: string): { valid: boolean; error?: string } {
   }
 
   if (rootCount === 0) {
-    return { valid: false, error: 'ルート要素が存在しません' };
+    return { valid: false, error: "ルート要素が存在しません" };
   }
 
   return { valid: true };

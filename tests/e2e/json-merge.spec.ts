@@ -23,10 +23,10 @@ test.describe("JSON Merge Tool - E2E Tests", () => {
   });
 
   test("should have merge and other action buttons", async ({ page }) => {
-    await expect(page.locator('button.btn-primary')).toBeVisible();
-    await expect(page.locator('button.btn-primary')).toContainText("マージ");
-    await expect(page.locator('button.btn-secondary').first()).toBeVisible();
-    await expect(page.locator('button.btn-clear')).toBeVisible();
+    await expect(page.locator("button.btn-primary")).toBeVisible();
+    await expect(page.locator("button.btn-primary")).toContainText("マージ");
+    await expect(page.locator("button.btn-secondary").first()).toBeVisible();
+    await expect(page.locator("button.btn-clear")).toBeVisible();
   });
 
   test("should merge two JSON objects", async ({ page }) => {
@@ -54,18 +54,14 @@ test.describe("JSON Merge Tool - E2E Tests", () => {
     await expect(inputs).toHaveCount(3);
   });
 
-  test("should show delete button when there are more than 2 inputs", async ({
-    page,
-  }) => {
+  test("should show delete button when there are more than 2 inputs", async ({ page }) => {
     await expect(page.locator("button.btn-remove")).toHaveCount(0);
     const addBtn = page.locator("button", { hasText: "+ JSON追加" });
     await addBtn.click();
     await expect(page.locator("button.btn-remove")).toHaveCount(3);
   });
 
-  test("should show error when less than 2 JSONs provided", async ({
-    page,
-  }) => {
+  test("should show error when less than 2 JSONs provided", async ({ page }) => {
     await page.locator("button.btn-primary").click();
     const errorEl = page.locator('[role="alert"], .error-message, [aria-live="assertive"]');
     await expect(errorEl.first()).toBeVisible();
@@ -89,12 +85,8 @@ test.describe("JSON Merge Tool - E2E Tests", () => {
 
   test("should merge with deep merge option", async ({ page }) => {
     await page.locator("select").first().selectOption("deep");
-    await page
-      .locator("#json-input-0")
-      .fill('{"user": {"name": "太郎", "age": 30}}');
-    await page
-      .locator("#json-input-1")
-      .fill('{"user": {"age": 31, "email": "taro@example.com"}}');
+    await page.locator("#json-input-0").fill('{"user": {"name": "太郎", "age": 30}}');
+    await page.locator("#json-input-1").fill('{"user": {"age": 31, "email": "taro@example.com"}}');
     await page.locator("button.btn-primary").click();
     const output = await page.locator("#outputText").inputValue();
     const parsed = JSON.parse(output);

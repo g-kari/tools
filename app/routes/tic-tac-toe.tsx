@@ -2,10 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SITE_BASE_URL, SITE_OGP_IMAGE } from "~/constants/site";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 
 export const Route = createFileRoute("/tic-tac-toe")({
   head: () => ({
@@ -133,7 +130,7 @@ export function minimax(
   board: Board,
   depth: number,
   isMaximizing: boolean,
-  aiPlayer: Player
+  aiPlayer: Player,
 ): number {
   const humanPlayer: Player = aiPlayer === "O" ? "X" : "O";
   const result = getGameResult(board);
@@ -173,11 +170,7 @@ export function minimax(
  * @param difficulty - 難易度
  * @returns AIが選択したセルのインデックス（空きなければ -1）
  */
-export function getAIMove(
-  board: Board,
-  aiPlayer: Player,
-  difficulty: Difficulty
-): number {
+export function getAIMove(board: Board, aiPlayer: Player, difficulty: Difficulty): number {
   const moves = getAvailableMoves(board);
   if (moves.length === 0) return -1;
 
@@ -231,12 +224,7 @@ function TicTacToeGame() {
 
   const handleCellClick = useCallback(
     (index: number) => {
-      if (
-        gameStatus !== "playing" ||
-        board[index] !== null ||
-        isThinking.current
-      )
-        return;
+      if (gameStatus !== "playing" || board[index] !== null || isThinking.current) return;
       if (gameMode === "vs-cpu" && currentPlayer === cpuPlayer) return;
 
       const newBoard = [...board] as Board;
@@ -252,9 +240,7 @@ function TicTacToeGame() {
           ...prev,
           [result.winner!.toLowerCase()]: prev[result.winner!.toLowerCase() as keyof Score] + 1,
         }));
-        announceStatus(
-          `${result.winner === humanPlayer ? "あなた" : "CPU"} の勝利です！`
-        );
+        announceStatus(`${result.winner === humanPlayer ? "あなた" : "CPU"} の勝利です！`);
         return;
       }
       if (result.status === "draw") {
@@ -266,7 +252,7 @@ function TicTacToeGame() {
 
       setCurrentPlayer((prev) => (prev === "X" ? "O" : "X"));
     },
-    [board, currentPlayer, gameMode, gameStatus, announceStatus, cpuPlayer, humanPlayer]
+    [board, currentPlayer, gameMode, gameStatus, announceStatus, cpuPlayer, humanPlayer],
   );
 
   // CPU の思考処理
@@ -320,7 +306,7 @@ function TicTacToeGame() {
       resetGame();
       setScore({ x: 0, o: 0, draw: 0 });
     },
-    [resetGame]
+    [resetGame],
   );
 
   const handleDifficultyChange = useCallback(
@@ -329,13 +315,11 @@ function TicTacToeGame() {
       resetGame();
       setScore({ x: 0, o: 0, draw: 0 });
     },
-    [resetGame]
+    [resetGame],
   );
 
   const isCpuThinking =
-    gameMode === "vs-cpu" &&
-    currentPlayer === cpuPlayer &&
-    gameStatus === "playing";
+    gameMode === "vs-cpu" && currentPlayer === cpuPlayer && gameStatus === "playing";
 
   const statusText = (() => {
     if (gameStatus === "won") {
@@ -347,9 +331,7 @@ function TicTacToeGame() {
     if (gameStatus === "draw") return "引き分け！🤝";
     if (isCpuThinking) return "CPUが考え中...";
     if (gameMode === "vs-cpu") {
-      return currentPlayer === humanPlayer
-        ? "あなたのターン（X）"
-        : "CPUのターン（O）";
+      return currentPlayer === humanPlayer ? "あなたのターン（X）" : "CPUのターン（O）";
     }
     return `プレイヤー ${currentPlayer} のターン`;
   })();
@@ -413,9 +395,7 @@ function TicTacToeGame() {
         <div className="converter-section">
           <div className="ttt-scoreboard" aria-label="スコア">
             <div className="ttt-score-item">
-              <span className="ttt-score-label">
-                {gameMode === "vs-cpu" ? "あなた (X)" : "X"}
-              </span>
+              <span className="ttt-score-label">{gameMode === "vs-cpu" ? "あなた (X)" : "X"}</span>
               <span className="ttt-score-value ttt-score-x" aria-label={`X: ${score.x}勝`}>
                 {score.x}
               </span>
@@ -427,9 +407,7 @@ function TicTacToeGame() {
               </span>
             </div>
             <div className="ttt-score-item">
-              <span className="ttt-score-label">
-                {gameMode === "vs-cpu" ? "CPU (O)" : "O"}
-              </span>
+              <span className="ttt-score-label">{gameMode === "vs-cpu" ? "CPU (O)" : "O"}</span>
               <span className="ttt-score-value ttt-score-o" aria-label={`O: ${score.o}勝`}>
                 {score.o}
               </span>
@@ -443,11 +421,7 @@ function TicTacToeGame() {
             {statusText}
           </div>
 
-          <div
-            className="ttt-board"
-            role="grid"
-            aria-label="三目並べボード"
-          >
+          <div className="ttt-board" role="grid" aria-label="三目並べボード">
             {board.map((cell, index) => {
               const isWinCell = winLine?.includes(index) ?? false;
               const row = Math.floor(index / 3) + 1;
@@ -461,9 +435,7 @@ function TicTacToeGame() {
                     cell === "X" ? "ttt-cell--x" : "",
                     cell === "O" ? "ttt-cell--o" : "",
                     isWinCell ? "ttt-cell--win" : "",
-                    !cell && gameStatus === "playing" && !isCpuThinking
-                      ? "ttt-cell--empty"
-                      : "",
+                    !cell && gameStatus === "playing" && !isCpuThinking ? "ttt-cell--empty" : "",
                   ]
                     .filter(Boolean)
                     .join(" ")}
@@ -477,7 +449,11 @@ function TicTacToeGame() {
                   aria-label={`${row}行${col}列: ${cell ?? "空き"}`}
                   role="gridcell"
                 >
-                  {cell && <span className="ttt-cell-symbol" aria-hidden="true">{cell}</span>}
+                  {cell && (
+                    <span className="ttt-cell-symbol" aria-hidden="true">
+                      {cell}
+                    </span>
+                  )}
                 </button>
               );
             })}

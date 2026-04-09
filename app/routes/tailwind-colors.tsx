@@ -1,9 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useMemo, useCallback, useId } from "react";
-import {
-  StatusAnnouncer,
-  useStatusAnnouncement,
-} from "~/hooks/useStatusAnnouncement";
+import { StatusAnnouncer, useStatusAnnouncement } from "~/hooks/useStatusAnnouncement";
 import { TipsCard } from "~/components/TipsCard";
 import { useClipboard } from "~/hooks/useClipboard";
 import { useToast } from "~/components/Toast";
@@ -69,9 +66,7 @@ function TailwindColorsPage() {
       // HEXで一致するシェードを持つカラー名のみ表示
       return allNames.filter((colorName) => {
         const shades = TAILWIND_COLORS[colorName];
-        return Object.values(shades).some((hex) =>
-          hex.toLowerCase().includes(hexQuery)
-        );
+        return Object.values(shades).some((hex) => hex.toLowerCase().includes(hexQuery));
       });
     }
 
@@ -108,7 +103,7 @@ function TailwindColorsPage() {
         showToast("コピーに失敗しました", "error");
       }
     },
-    [copy, showToast, announceStatus]
+    [copy, showToast, announceStatus],
   );
 
   /** HEX値をコピーする */
@@ -122,7 +117,7 @@ function TailwindColorsPage() {
         showToast("コピーに失敗しました", "error");
       }
     },
-    [copy, showToast, announceStatus]
+    [copy, showToast, announceStatus],
   );
 
   return (
@@ -196,9 +191,7 @@ function TailwindColorsPage() {
                   colorName={colorName}
                   shades={TAILWIND_COLORS[colorName]}
                   highlightShade={
-                    nearestResult?.colorName === colorName
-                      ? nearestResult.shade
-                      : null
+                    nearestResult?.colorName === colorName ? nearestResult.shade : null
                   }
                   searchQuery={normalizedQuery}
                   onCopyClass={handleCopyClass}
@@ -306,12 +299,7 @@ interface ColorRowProps {
 }
 
 /** カラーファミリーの行コンポーネント */
-function ColorRow({
-  colorName,
-  shades,
-  highlightShade,
-  onCopyClass,
-}: ColorRowProps) {
+function ColorRow({ colorName, shades, highlightShade, onCopyClass }: ColorRowProps) {
   return (
     <div className="twc-color-row" role="listitem" aria-label={`${colorName} カラーファミリー`}>
       <span className="twc-color-name" title={colorName}>
@@ -369,7 +357,7 @@ function SwatchButton({
         onCopyClass(colorName, shade);
       }
     },
-    [colorName, shade, onCopyClass]
+    [colorName, shade, onCopyClass],
   );
 
   return (
@@ -381,11 +369,7 @@ function SwatchButton({
       onKeyDown={handleKeyDown}
       aria-label={`${className} (${hex}) をコピー`}
     >
-      <div
-        className="twc-swatch-inner"
-        style={{ backgroundColor: hex }}
-        aria-hidden="true"
-      />
+      <div className="twc-swatch-inner" style={{ backgroundColor: hex }} aria-hidden="true" />
       <div className="twc-swatch-info" aria-hidden="true">
         {shade}
       </div>

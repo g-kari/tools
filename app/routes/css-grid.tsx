@@ -4,10 +4,7 @@ import { useState, useCallback, useMemo } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 import {
   type GridContainerConfig,
@@ -129,9 +126,7 @@ const ALIGN_SELF_OPTIONS: {
  * コンテナ・アイテムのプロパティをビジュアルに設定し、CSSコードを生成する
  */
 function CssGridGenerator() {
-  const [container, setContainer] = useState<GridContainerConfig>(
-    defaultContainerConfig
-  );
+  const [container, setContainer] = useState<GridContainerConfig>(defaultContainerConfig);
   const [items, setItems] = useState<GridItemConfig[]>(createDefaultItems());
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
@@ -140,24 +135,18 @@ function CssGridGenerator() {
   const { showToast } = useToast();
 
   /** 生成されたCSS */
-  const generatedCSS = useMemo(
-    () => generateFullCSS(container, items),
-    [container, items]
-  );
+  const generatedCSS = useMemo(() => generateFullCSS(container, items), [container, items]);
 
   /** プレビュー用のコンテナスタイル */
   const previewContainerStyle = useMemo(
     () => getContainerStyles(container) as React.CSSProperties,
-    [container]
+    [container],
   );
 
   /** コンテナプロパティを更新する */
-  const updateContainer = useCallback(
-    (updates: Partial<GridContainerConfig>) => {
-      setContainer((prev) => ({ ...prev, ...updates }));
-    },
-    []
-  );
+  const updateContainer = useCallback((updates: Partial<GridContainerConfig>) => {
+    setContainer((prev) => ({ ...prev, ...updates }));
+  }, []);
 
   /** アイテムを追加する */
   const addItem = useCallback(() => {
@@ -178,18 +167,13 @@ function CssGridGenerator() {
       if (selectedItemId === id) setSelectedItemId(null);
       announceStatus(`${label}を削除しました`);
     },
-    [items.length, selectedItemId, announceStatus, showToast]
+    [items.length, selectedItemId, announceStatus, showToast],
   );
 
   /** アイテムのプロパティを更新する */
-  const updateItem = useCallback(
-    (id: string, updates: Partial<GridItemConfig>) => {
-      setItems((prev) =>
-        prev.map((item) => (item.id === id ? { ...item, ...updates } : item))
-      );
-    },
-    []
-  );
+  const updateItem = useCallback((id: string, updates: Partial<GridItemConfig>) => {
+    setItems((prev) => prev.map((item) => (item.id === id ? { ...item, ...updates } : item)));
+  }, []);
 
   /** 設定をリセットする */
   const handleReset = useCallback(() => {
@@ -233,9 +217,7 @@ function CssGridGenerator() {
                   type="text"
                   className="cg-input"
                   value={container.gridTemplateColumns}
-                  onChange={(e) =>
-                    updateContainer({ gridTemplateColumns: e.target.value })
-                  }
+                  onChange={(e) => updateContainer({ gridTemplateColumns: e.target.value })}
                   placeholder="例: repeat(3, 1fr), 1fr 2fr 1fr"
                   aria-label="grid-template-columns の値"
                 />
@@ -250,9 +232,7 @@ function CssGridGenerator() {
                   type="text"
                   className="cg-input"
                   value={container.gridTemplateRows}
-                  onChange={(e) =>
-                    updateContainer({ gridTemplateRows: e.target.value })
-                  }
+                  onChange={(e) => updateContainer({ gridTemplateRows: e.target.value })}
                   placeholder="例: auto, 100px auto 100px"
                   aria-label="grid-template-rows の値"
                 />
@@ -394,8 +374,7 @@ function CssGridGenerator() {
                       className="cg-item-swatch"
                       style={
                         {
-                          "--cg-item-color":
-                            ITEM_COLORS[idx % ITEM_COLORS.length],
+                          "--cg-item-color": ITEM_COLORS[idx % ITEM_COLORS.length],
                         } as React.CSSProperties
                       }
                       aria-hidden="true"
@@ -403,11 +382,7 @@ function CssGridGenerator() {
                     <button
                       type="button"
                       className="cg-item-name"
-                      onClick={() =>
-                        setSelectedItemId(
-                          selectedItemId === item.id ? null : item.id
-                        )
-                      }
+                      onClick={() => setSelectedItemId(selectedItemId === item.id ? null : item.id)}
                       aria-expanded={selectedItemId === item.id}
                       aria-label={`${item.label}のプロパティを${selectedItemId === item.id ? "閉じる" : "開く"}`}
                     >
@@ -428,15 +403,10 @@ function CssGridGenerator() {
               {/* 選択中アイテムのプロパティ */}
               {selectedItem && (
                 <div className="cg-item-detail" aria-label={`${selectedItem.label}のプロパティ`}>
-                  <p className="cg-item-detail-title">
-                    {selectedItem.label} のプロパティ
-                  </p>
+                  <p className="cg-item-detail-title">{selectedItem.label} のプロパティ</p>
 
                   <div className="cg-prop-row">
-                    <label
-                      htmlFor={`cg-grid-column-${selectedItem.id}`}
-                      className="cg-prop-label"
-                    >
+                    <label htmlFor={`cg-grid-column-${selectedItem.id}`} className="cg-prop-label">
                       <code>grid-column</code>
                     </label>
                     <input
@@ -455,10 +425,7 @@ function CssGridGenerator() {
                   </div>
 
                   <div className="cg-prop-row">
-                    <label
-                      htmlFor={`cg-grid-row-${selectedItem.id}`}
-                      className="cg-prop-label"
-                    >
+                    <label htmlFor={`cg-grid-row-${selectedItem.id}`} className="cg-prop-label">
                       <code>grid-row</code>
                     </label>
                     <input
@@ -477,10 +444,7 @@ function CssGridGenerator() {
                   </div>
 
                   <div className="cg-prop-row">
-                    <label
-                      htmlFor={`cg-justify-self-${selectedItem.id}`}
-                      className="cg-prop-label"
-                    >
+                    <label htmlFor={`cg-justify-self-${selectedItem.id}`} className="cg-prop-label">
                       <code>justify-self</code>
                     </label>
                     <select
@@ -503,10 +467,7 @@ function CssGridGenerator() {
                   </div>
 
                   <div className="cg-prop-row">
-                    <label
-                      htmlFor={`cg-align-self-${selectedItem.id}`}
-                      className="cg-prop-label"
-                    >
+                    <label htmlFor={`cg-align-self-${selectedItem.id}`} className="cg-prop-label">
                       <code>align-self</code>
                     </label>
                     <select
@@ -546,10 +507,7 @@ function CssGridGenerator() {
           {/* 右側: プレビュー + CSS出力 */}
           <div className="cg-right">
             {/* ライブプレビュー */}
-            <section
-              className="cg-preview-section"
-              aria-labelledby="cg-preview-title"
-            >
+            <section className="cg-preview-section" aria-labelledby="cg-preview-title">
               <h2 className="cg-section-title" id="cg-preview-title">
                 ライブプレビュー
               </h2>
@@ -568,18 +526,14 @@ function CssGridGenerator() {
                         className={`cg-preview-item${selectedItemId === item.id ? " cg-preview-item--selected" : ""}`}
                         style={{ ...itemStyle, backgroundColor: bgColor }}
                         onClick={() =>
-                          setSelectedItemId(
-                            selectedItemId === item.id ? null : item.id
-                          )
+                          setSelectedItemId(selectedItemId === item.id ? null : item.id)
                         }
                         role="button"
                         tabIndex={0}
                         onKeyDown={(e) => {
                           if (e.key === "Enter" || e.key === " ") {
                             e.preventDefault();
-                            setSelectedItemId(
-                              selectedItemId === item.id ? null : item.id
-                            );
+                            setSelectedItemId(selectedItemId === item.id ? null : item.id);
                           }
                         }}
                         aria-label={`${item.label}（クリックで選択）`}
@@ -594,10 +548,7 @@ function CssGridGenerator() {
             </section>
 
             {/* CSS出力 */}
-            <section
-              className="cg-css-section"
-              aria-labelledby="cg-css-output-title"
-            >
+            <section className="cg-css-section" aria-labelledby="cg-css-output-title">
               <div className="cg-css-header">
                 <h2 className="cg-section-title" id="cg-css-output-title">
                   生成 CSS

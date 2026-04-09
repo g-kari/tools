@@ -126,7 +126,9 @@
   font-weight: 500;
   color: var(--md-sys-color-on-surface-variant);
   font-family: inherit;
-  transition: color 0.2s, border-color 0.2s;
+  transition:
+    color 0.2s,
+    border-color 0.2s;
   letter-spacing: 0.02em;
 }
 

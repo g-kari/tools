@@ -6,19 +6,19 @@
  */
 
 /** スクロール方向 */
-export type ScrollDirection = 'x' | 'y' | 'both' | 'block' | 'inline';
+export type ScrollDirection = "x" | "y" | "both" | "block" | "inline";
 
 /** スナップの厳密さ */
-export type ScrollSnapStrictness = 'mandatory' | 'proximity';
+export type ScrollSnapStrictness = "mandatory" | "proximity";
 
 /** アイテムのアライン */
-export type ScrollSnapAlign = 'none' | 'start' | 'center' | 'end';
+export type ScrollSnapAlign = "none" | "start" | "center" | "end";
 
 /** スナップストップ */
-export type ScrollSnapStop = 'normal' | 'always';
+export type ScrollSnapStop = "normal" | "always";
 
 /** overflow の値 */
-export type ScrollOverflow = 'auto' | 'scroll';
+export type ScrollOverflow = "auto" | "scroll";
 
 /** Scroll Snap コンテナ設定 */
 export interface ScrollSnapContainerConfig {
@@ -64,15 +64,13 @@ export interface ScrollSnapPreset {
  * @param config - コンテナ設定
  * @returns CSS プロパティ文字列の配列
  */
-export function generateContainerProperties(
-  config: ScrollSnapContainerConfig
-): string[] {
+export function generateContainerProperties(config: ScrollSnapContainerConfig): string[] {
   const props: string[] = [];
 
   const overflowProp =
-    config.direction === 'x' || config.direction === 'inline'
+    config.direction === "x" || config.direction === "inline"
       ? `overflow-x: ${config.overflow};`
-      : config.direction === 'y' || config.direction === 'block'
+      : config.direction === "y" || config.direction === "block"
         ? `overflow-y: ${config.overflow};`
         : `overflow: ${config.overflow};`;
   props.push(overflowProp);
@@ -92,16 +90,14 @@ export function generateContainerProperties(
  * @param config - アイテム設定
  * @returns CSS プロパティ文字列の配列
  */
-export function generateItemProperties(
-  config: ScrollSnapItemConfig
-): string[] {
+export function generateItemProperties(config: ScrollSnapItemConfig): string[] {
   const props: string[] = [];
 
-  if (config.align !== 'none') {
+  if (config.align !== "none") {
     props.push(`scroll-snap-align: ${config.align};`);
   }
 
-  if (config.stop === 'always') {
+  if (config.stop === "always") {
     props.push(`scroll-snap-stop: always;`);
   }
 
@@ -118,11 +114,9 @@ export function generateItemProperties(
  * @param config - コンテナ設定
  * @returns CSS コード文字列
  */
-export function generateContainerCSS(
-  config: ScrollSnapContainerConfig
-): string {
+export function generateContainerCSS(config: ScrollSnapContainerConfig): string {
   const props = generateContainerProperties(config);
-  return `.scroll-container {\n${props.map((p) => `  ${p}`).join('\n')}\n}`;
+  return `.scroll-container {\n${props.map((p) => `  ${p}`).join("\n")}\n}`;
 }
 
 /**
@@ -136,7 +130,7 @@ export function generateItemCSS(config: ScrollSnapItemConfig): string {
   if (props.length === 0) {
     return `.scroll-item {\n  /* スナップ設定なし */\n}`;
   }
-  return `.scroll-item {\n${props.map((p) => `  ${p}`).join('\n')}\n}`;
+  return `.scroll-item {\n${props.map((p) => `  ${p}`).join("\n")}\n}`;
 }
 
 /**
@@ -157,14 +151,14 @@ export function generateFullCSS(config: ScrollSnapConfig): string {
 export function createDefaultConfig(): ScrollSnapConfig {
   return {
     container: {
-      direction: 'x',
-      strictness: 'mandatory',
-      overflow: 'scroll',
+      direction: "x",
+      strictness: "mandatory",
+      overflow: "scroll",
       scrollPadding: 0,
     },
     item: {
-      align: 'start',
-      stop: 'normal',
+      align: "start",
+      stop: "normal",
       scrollMargin: 0,
     },
   };
@@ -173,75 +167,75 @@ export function createDefaultConfig(): ScrollSnapConfig {
 /** プリセット一覧 */
 export const SCROLL_SNAP_PRESETS: ScrollSnapPreset[] = [
   {
-    name: '横スライダー',
+    name: "横スライダー",
     config: {
       container: {
-        direction: 'x',
-        strictness: 'mandatory',
-        overflow: 'scroll',
+        direction: "x",
+        strictness: "mandatory",
+        overflow: "scroll",
         scrollPadding: 0,
       },
-      item: { align: 'start', stop: 'normal', scrollMargin: 0 },
+      item: { align: "start", stop: "normal", scrollMargin: 0 },
     },
   },
   {
-    name: '縦スクロール',
+    name: "縦スクロール",
     config: {
       container: {
-        direction: 'y',
-        strictness: 'mandatory',
-        overflow: 'scroll',
+        direction: "y",
+        strictness: "mandatory",
+        overflow: "scroll",
         scrollPadding: 0,
       },
-      item: { align: 'start', stop: 'normal', scrollMargin: 0 },
+      item: { align: "start", stop: "normal", scrollMargin: 0 },
     },
   },
   {
-    name: 'センタースナップ',
+    name: "センタースナップ",
     config: {
       container: {
-        direction: 'x',
-        strictness: 'mandatory',
-        overflow: 'scroll',
+        direction: "x",
+        strictness: "mandatory",
+        overflow: "scroll",
         scrollPadding: 16,
       },
-      item: { align: 'center', stop: 'normal', scrollMargin: 0 },
+      item: { align: "center", stop: "normal", scrollMargin: 0 },
     },
   },
   {
-    name: '必ず止まる',
+    name: "必ず止まる",
     config: {
       container: {
-        direction: 'x',
-        strictness: 'mandatory',
-        overflow: 'scroll',
+        direction: "x",
+        strictness: "mandatory",
+        overflow: "scroll",
         scrollPadding: 0,
       },
-      item: { align: 'start', stop: 'always', scrollMargin: 0 },
+      item: { align: "start", stop: "always", scrollMargin: 0 },
     },
   },
   {
-    name: 'ソフトスナップ',
+    name: "ソフトスナップ",
     config: {
       container: {
-        direction: 'x',
-        strictness: 'proximity',
-        overflow: 'scroll',
+        direction: "x",
+        strictness: "proximity",
+        overflow: "scroll",
         scrollPadding: 0,
       },
-      item: { align: 'start', stop: 'normal', scrollMargin: 0 },
+      item: { align: "start", stop: "normal", scrollMargin: 0 },
     },
   },
   {
-    name: '余白付きスナップ',
+    name: "余白付きスナップ",
     config: {
       container: {
-        direction: 'x',
-        strictness: 'mandatory',
-        overflow: 'scroll',
+        direction: "x",
+        strictness: "mandatory",
+        overflow: "scroll",
         scrollPadding: 24,
       },
-      item: { align: 'start', stop: 'normal', scrollMargin: 8 },
+      item: { align: "start", stop: "normal", scrollMargin: 8 },
     },
   },
 ];

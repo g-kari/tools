@@ -78,7 +78,7 @@
   cursor: pointer;
 }
 
-.cors-radio-label input[type='radio'] {
+.cors-radio-label input[type="radio"] {
   margin-top: 0.15rem;
   accent-color: var(--md-sys-color-primary);
   cursor: pointer;
@@ -183,20 +183,34 @@
   user-select: none;
 }
 
-.cors-checkbox-label input[type='checkbox']:checked + .cors-method-badge {
+.cors-checkbox-label input[type="checkbox"]:checked + .cors-method-badge {
   background: var(--md-sys-color-primary-container);
   border-color: var(--md-sys-color-primary);
   color: var(--md-sys-color-on-primary-container);
 }
 
 /* メソッド色分け */
-.cors-method-get { border-left: 3px solid #4caf50; }
-.cors-method-post { border-left: 3px solid #2196f3; }
-.cors-method-put { border-left: 3px solid #ff9800; }
-.cors-method-delete { border-left: 3px solid #f44336; }
-.cors-method-patch { border-left: 3px solid #9c27b0; }
-.cors-method-options { border-left: 3px solid #607d8b; }
-.cors-method-head { border-left: 3px solid #795548; }
+.cors-method-get {
+  border-left: 3px solid #4caf50;
+}
+.cors-method-post {
+  border-left: 3px solid #2196f3;
+}
+.cors-method-put {
+  border-left: 3px solid #ff9800;
+}
+.cors-method-delete {
+  border-left: 3px solid #f44336;
+}
+.cors-method-patch {
+  border-left: 3px solid #9c27b0;
+}
+.cors-method-options {
+  border-left: 3px solid #607d8b;
+}
+.cors-method-head {
+  border-left: 3px solid #795548;
+}
 
 /* チェックボックス */
 .cors-checkboxes {
@@ -215,7 +229,7 @@
   color: var(--md-sys-color-on-surface);
 }
 
-.cors-checkbox-label input[type='checkbox'] {
+.cors-checkbox-label input[type="checkbox"] {
   accent-color: var(--md-sys-color-primary);
   cursor: pointer;
   width: 1rem;

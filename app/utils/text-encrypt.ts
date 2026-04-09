@@ -6,7 +6,7 @@
 /**
  * 暗号方式の型定義
  */
-export type CipherType = 'rot13' | 'caesar' | 'vigenere' | 'atbash';
+export type CipherType = "rot13" | "caesar" | "vigenere" | "atbash";
 
 /**
  * 暗号化オプションの型定義
@@ -26,7 +26,7 @@ export interface CipherOptions {
  */
 export function rot13(text: string): string {
   return text.replace(/[a-zA-Z]/g, (char) => {
-    const base = char >= 'a' ? 97 : 65;
+    const base = char >= "a" ? 97 : 65;
     return String.fromCharCode(((char.charCodeAt(0) - base + 13) % 26) + base);
   });
 }
@@ -41,10 +41,8 @@ export function rot13(text: string): string {
 export function caesarEncrypt(text: string, shift: number): string {
   const normalizedShift = ((shift % 26) + 26) % 26;
   return text.replace(/[a-zA-Z]/g, (char) => {
-    const base = char >= 'a' ? 97 : 65;
-    return String.fromCharCode(
-      ((char.charCodeAt(0) - base + normalizedShift) % 26) + base
-    );
+    const base = char >= "a" ? 97 : 65;
+    return String.fromCharCode(((char.charCodeAt(0) - base + normalizedShift) % 26) + base);
   });
 }
 
@@ -67,17 +65,15 @@ export function caesarDecrypt(text: string, shift: number): string {
  * @returns 暗号化されたテキスト（キーが空の場合は元のテキストを返す）
  */
 export function vigenereEncrypt(text: string, key: string): string {
-  const cleanKey = key.toUpperCase().replace(/[^A-Z]/g, '');
+  const cleanKey = key.toUpperCase().replace(/[^A-Z]/g, "");
   if (!cleanKey) return text;
 
   let keyIndex = 0;
   return text.replace(/[a-zA-Z]/g, (char) => {
-    const base = char >= 'a' ? 97 : 65;
+    const base = char >= "a" ? 97 : 65;
     const shift = cleanKey.charCodeAt(keyIndex % cleanKey.length) - 65;
     keyIndex++;
-    return String.fromCharCode(
-      ((char.charCodeAt(0) - base + shift) % 26) + base
-    );
+    return String.fromCharCode(((char.charCodeAt(0) - base + shift) % 26) + base);
   });
 }
 
@@ -89,17 +85,15 @@ export function vigenereEncrypt(text: string, key: string): string {
  * @returns 復号化されたテキスト（キーが空の場合は元のテキストを返す）
  */
 export function vigenereDecrypt(text: string, key: string): string {
-  const cleanKey = key.toUpperCase().replace(/[^A-Z]/g, '');
+  const cleanKey = key.toUpperCase().replace(/[^A-Z]/g, "");
   if (!cleanKey) return text;
 
   let keyIndex = 0;
   return text.replace(/[a-zA-Z]/g, (char) => {
-    const base = char >= 'a' ? 97 : 65;
+    const base = char >= "a" ? 97 : 65;
     const shift = cleanKey.charCodeAt(keyIndex % cleanKey.length) - 65;
     keyIndex++;
-    return String.fromCharCode(
-      ((char.charCodeAt(0) - base - shift + 26) % 26) + base
-    );
+    return String.fromCharCode(((char.charCodeAt(0) - base - shift + 26) % 26) + base);
   });
 }
 
@@ -112,7 +106,7 @@ export function vigenereDecrypt(text: string, key: string): string {
  */
 export function atbash(text: string): string {
   return text.replace(/[a-zA-Z]/g, (char) => {
-    const base = char >= 'a' ? 97 : 65;
+    const base = char >= "a" ? 97 : 65;
     return String.fromCharCode(25 - (char.charCodeAt(0) - base) + base);
   });
 }
@@ -124,19 +118,15 @@ export function atbash(text: string): string {
  * @param options - 追加オプション（shift: Caesar暗号のシフト数、key: Vigenère暗号のキー）
  * @returns 暗号化されたテキスト
  */
-export function encryptText(
-  text: string,
-  cipher: CipherType,
-  options: CipherOptions = {}
-): string {
+export function encryptText(text: string, cipher: CipherType, options: CipherOptions = {}): string {
   switch (cipher) {
-    case 'rot13':
+    case "rot13":
       return rot13(text);
-    case 'caesar':
+    case "caesar":
       return caesarEncrypt(text, options.shift ?? 3);
-    case 'vigenere':
-      return vigenereEncrypt(text, options.key ?? '');
-    case 'atbash':
+    case "vigenere":
+      return vigenereEncrypt(text, options.key ?? "");
+    case "atbash":
       return atbash(text);
   }
 }
@@ -148,19 +138,15 @@ export function encryptText(
  * @param options - 追加オプション（shift: Caesar暗号のシフト数、key: Vigenère暗号のキー）
  * @returns 復号化されたテキスト
  */
-export function decryptText(
-  text: string,
-  cipher: CipherType,
-  options: CipherOptions = {}
-): string {
+export function decryptText(text: string, cipher: CipherType, options: CipherOptions = {}): string {
   switch (cipher) {
-    case 'rot13':
+    case "rot13":
       return rot13(text);
-    case 'caesar':
+    case "caesar":
       return caesarDecrypt(text, options.shift ?? 3);
-    case 'vigenere':
-      return vigenereDecrypt(text, options.key ?? '');
-    case 'atbash':
+    case "vigenere":
+      return vigenereDecrypt(text, options.key ?? "");
+    case "atbash":
       return atbash(text);
   }
 }
@@ -172,10 +158,10 @@ export function decryptText(
  */
 export function getCipherLabel(cipher: CipherType): string {
   const labels: Record<CipherType, string> = {
-    rot13: 'ROT13',
-    caesar: 'Caesar暗号',
-    vigenere: 'Vigenère暗号',
-    atbash: 'Atbash暗号',
+    rot13: "ROT13",
+    caesar: "Caesar暗号",
+    vigenere: "Vigenère暗号",
+    atbash: "Atbash暗号",
   };
   return labels[cipher];
 }
@@ -187,10 +173,10 @@ export function getCipherLabel(cipher: CipherType): string {
  */
 export function getCipherDescription(cipher: CipherType): string {
   const descriptions: Record<CipherType, string> = {
-    rot13: 'アルファベットを13文字シフト（暗号化と復号化が同じ操作）',
-    caesar: '任意のシフト数でアルファベットをシフト',
-    vigenere: 'キーワードを使った多表式換字暗号',
-    atbash: 'アルファベットを逆順にマッピング（A↔Z, B↔Y）',
+    rot13: "アルファベットを13文字シフト（暗号化と復号化が同じ操作）",
+    caesar: "任意のシフト数でアルファベットをシフト",
+    vigenere: "キーワードを使った多表式換字暗号",
+    atbash: "アルファベットを逆順にマッピング（A↔Z, B↔Y）",
   };
   return descriptions[cipher];
 }

@@ -6,24 +6,30 @@ import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 
 export const Route = createFileRoute("/user-agent")({
   head: () => ({
     meta: [
       { title: "User-Agentパーサー | Web ツール集" },
-      { name: "description", content: "User-Agent文字列を解析してブラウザ・OS・デバイス情報を表示するオンラインツール。" },
+      {
+        name: "description",
+        content: "User-Agent文字列を解析してブラウザ・OS・デバイス情報を表示するオンラインツール。",
+      },
       { property: "og:title", content: "User-Agentパーサー | Web ツール集" },
-      { property: "og:description", content: "User-Agent文字列を解析してブラウザ・OS・デバイス情報を表示するオンラインツール。" },
+      {
+        property: "og:description",
+        content: "User-Agent文字列を解析してブラウザ・OS・デバイス情報を表示するオンラインツール。",
+      },
       { property: "og:url", content: `${SITE_BASE_URL}/user-agent` },
       { property: "og:type", content: "website" },
       { property: "og:image", content: SITE_OGP_IMAGE },
       { name: "twitter:title", content: "User-Agentパーサー | Web ツール集" },
-      { name: "twitter:description", content: "User-Agent文字列を解析してブラウザ・OS・デバイス情報を表示するオンラインツール。" },
+      {
+        name: "twitter:description",
+        content: "User-Agent文字列を解析してブラウザ・OS・デバイス情報を表示するオンラインツール。",
+      },
     ],
   }),
   component: UserAgentParser,

@@ -1,49 +1,42 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
-import { useState, useMemo } from 'react';
-import { useToast } from '../components/Toast';
-import { Button } from '~/components/ui/button';
-import { TipsCard } from '~/components/TipsCard';
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from '~/hooks/useStatusAnnouncement';
-import { useClipboard } from '~/hooks/useClipboard';
-import {
-  generateHtaccess,
-  getDefaultConfig,
-  type HtaccessConfig,
-} from '../utils/htaccess-builder';
-import '../styles/tools/htaccess-builder.css';
+import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
+import { useState, useMemo } from "react";
+import { useToast } from "../components/Toast";
+import { Button } from "~/components/ui/button";
+import { TipsCard } from "~/components/TipsCard";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
+import { useClipboard } from "~/hooks/useClipboard";
+import { generateHtaccess, getDefaultConfig, type HtaccessConfig } from "../utils/htaccess-builder";
+import "../styles/tools/htaccess-builder.css";
 
-export const Route = createFileRoute('/htaccess-builder')({
+export const Route = createFileRoute("/htaccess-builder")({
   head: () => ({
     meta: [
-      { title: 'Apache .htaccess ビルダー | Web ツール集' },
+      { title: "Apache .htaccess ビルダー | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          'Apache .htaccess ファイルを GUI で生成。HTTPS リダイレクト・キャッシュ制御・セキュリティヘッダー・カスタムエラーページに対応。',
+          "Apache .htaccess ファイルを GUI で生成。HTTPS リダイレクト・キャッシュ制御・セキュリティヘッダー・カスタムエラーページに対応。",
       },
       {
-        property: 'og:title',
-        content: 'Apache .htaccess ビルダー | Web ツール集',
+        property: "og:title",
+        content: "Apache .htaccess ビルダー | Web ツール集",
       },
       {
-        property: 'og:description',
+        property: "og:description",
         content:
-          'Apache .htaccess ファイルを GUI で生成。HTTPS リダイレクト・キャッシュ制御・セキュリティヘッダー・カスタムエラーページに対応。',
+          "Apache .htaccess ファイルを GUI で生成。HTTPS リダイレクト・キャッシュ制御・セキュリティヘッダー・カスタムエラーページに対応。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/htaccess-builder` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
+      { property: "og:url", content: `${SITE_BASE_URL}/htaccess-builder` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
       {
-        name: 'twitter:title',
-        content: 'Apache .htaccess ビルダー | Web ツール集',
+        name: "twitter:title",
+        content: "Apache .htaccess ビルダー | Web ツール集",
       },
       {
-        name: 'twitter:description',
-        content: 'Apache .htaccess ファイルを GUI で生成するツール。',
+        name: "twitter:description",
+        content: "Apache .htaccess ファイルを GUI で生成するツール。",
       },
     ],
   }),
@@ -56,142 +49,142 @@ const SAMPLES: Array<{
   config: Partial<HtaccessConfig>;
 }> = [
   {
-    label: '静的サイト (HTTPS + セキュリティ)',
+    label: "静的サイト (HTTPS + セキュリティ)",
     config: {
       basic: {
-        directoryIndex: 'index.html',
+        directoryIndex: "index.html",
         options: { noIndexes: true, followSymLinks: true },
-        charset: 'UTF-8',
+        charset: "UTF-8",
       },
       redirect: {
         httpsRedirect: true,
-        wwwRedirect: 'none',
+        wwwRedirect: "none",
         customRedirects: [],
       },
       cache: {
         enabled: true,
-        images: '1 month',
-        cssJs: '1 week',
-        html: '1 day',
-        fonts: '1 year',
+        images: "1 month",
+        cssJs: "1 week",
+        html: "1 day",
+        fonts: "1 year",
       },
       security: {
         blockHtaccess: true,
         blockSensitiveFiles: true,
-        xFrameOptions: 'SAMEORIGIN',
+        xFrameOptions: "SAMEORIGIN",
         xContentTypeOptions: true,
         xssProtection: true,
-        referrerPolicy: 'strict-origin-when-cross-origin',
+        referrerPolicy: "strict-origin-when-cross-origin",
         serverSignature: true,
         noEtag: false,
       },
       compression: { enabled: true },
-      errorPages: { e404: '/404.html', e500: '/500.html', e403: '' },
+      errorPages: { e404: "/404.html", e500: "/500.html", e403: "" },
     },
   },
   {
-    label: 'WordPress',
+    label: "WordPress",
     config: {
       basic: {
-        directoryIndex: 'index.php index.html',
+        directoryIndex: "index.php index.html",
         options: { noIndexes: true, followSymLinks: true },
-        charset: 'UTF-8',
+        charset: "UTF-8",
       },
       redirect: {
         httpsRedirect: true,
-        wwwRedirect: 'remove-www',
+        wwwRedirect: "remove-www",
         customRedirects: [],
       },
       cache: {
         enabled: true,
-        images: '1 month',
-        cssJs: '1 week',
-        html: '1 hour',
-        fonts: '1 year',
+        images: "1 month",
+        cssJs: "1 week",
+        html: "1 hour",
+        fonts: "1 year",
       },
       security: {
         blockHtaccess: true,
         blockSensitiveFiles: true,
-        xFrameOptions: 'SAMEORIGIN',
+        xFrameOptions: "SAMEORIGIN",
         xContentTypeOptions: true,
         xssProtection: false,
-        referrerPolicy: 'strict-origin-when-cross-origin',
+        referrerPolicy: "strict-origin-when-cross-origin",
         serverSignature: true,
         noEtag: true,
       },
       compression: { enabled: true },
-      errorPages: { e404: '', e500: '', e403: '' },
+      errorPages: { e404: "", e500: "", e403: "" },
     },
   },
   {
-    label: 'セキュリティのみ',
+    label: "セキュリティのみ",
     config: {
       basic: {
-        directoryIndex: 'index.html',
+        directoryIndex: "index.html",
         options: { noIndexes: true, followSymLinks: false },
-        charset: 'UTF-8',
+        charset: "UTF-8",
       },
       redirect: {
         httpsRedirect: false,
-        wwwRedirect: 'none',
+        wwwRedirect: "none",
         customRedirects: [],
       },
       cache: {
         enabled: false,
-        images: '1 month',
-        cssJs: '1 week',
-        html: '1 day',
-        fonts: '1 year',
+        images: "1 month",
+        cssJs: "1 week",
+        html: "1 day",
+        fonts: "1 year",
       },
       security: {
         blockHtaccess: true,
         blockSensitiveFiles: true,
-        xFrameOptions: 'DENY',
+        xFrameOptions: "DENY",
         xContentTypeOptions: true,
         xssProtection: true,
-        referrerPolicy: 'no-referrer',
+        referrerPolicy: "no-referrer",
         serverSignature: true,
         noEtag: true,
       },
       compression: { enabled: false },
-      errorPages: { e404: '', e500: '', e403: '' },
+      errorPages: { e404: "", e500: "", e403: "" },
     },
   },
 ];
 
 /** www リダイレクトオプション */
 const WWW_REDIRECT_OPTIONS: Array<{
-  value: HtaccessConfig['redirect']['wwwRedirect'];
+  value: HtaccessConfig["redirect"]["wwwRedirect"];
   label: string;
 }> = [
-  { value: 'none', label: 'なし' },
-  { value: 'add-www', label: 'www を追加' },
-  { value: 'remove-www', label: 'www を削除' },
+  { value: "none", label: "なし" },
+  { value: "add-www", label: "www を追加" },
+  { value: "remove-www", label: "www を削除" },
 ];
 
 /** X-Frame-Options オプション */
 const X_FRAME_OPTIONS: Array<{
-  value: HtaccessConfig['security']['xFrameOptions'];
+  value: HtaccessConfig["security"]["xFrameOptions"];
   label: string;
 }> = [
-  { value: 'none', label: 'なし' },
-  { value: 'SAMEORIGIN', label: 'SAMEORIGIN（同一オリジンのみ許可）' },
-  { value: 'DENY', label: 'DENY（全て拒否）' },
+  { value: "none", label: "なし" },
+  { value: "SAMEORIGIN", label: "SAMEORIGIN（同一オリジンのみ許可）" },
+  { value: "DENY", label: "DENY（全て拒否）" },
 ];
 
 /** キャッシュ期間オプション */
 const CACHE_DURATION_OPTIONS = [
-  '1 hour',
-  '6 hours',
-  '12 hours',
-  '1 day',
-  '3 days',
-  '1 week',
-  '2 weeks',
-  '1 month',
-  '3 months',
-  '6 months',
-  '1 year',
+  "1 hour",
+  "6 hours",
+  "12 hours",
+  "1 day",
+  "3 days",
+  "1 week",
+  "2 weeks",
+  "1 month",
+  "3 months",
+  "6 months",
+  "1 year",
 ];
 
 /** .htaccess ビルダーページコンポーネント */
@@ -207,32 +200,32 @@ function HtaccessBuilderPage(): React.ReactElement {
     setConfig((prev) => ({
       ...prev,
       ...preset,
-      basic: { ...prev.basic, ...(preset.basic ?? {}) },
-      redirect: { ...prev.redirect, ...(preset.redirect ?? {}) },
-      cache: { ...prev.cache, ...(preset.cache ?? {}) },
-      security: { ...prev.security, ...(preset.security ?? {}) },
-      errorPages: { ...prev.errorPages, ...(preset.errorPages ?? {}) },
-      compression: { ...prev.compression, ...(preset.compression ?? {}) },
+      basic: { ...prev.basic, ...preset.basic },
+      redirect: { ...prev.redirect, ...preset.redirect },
+      cache: { ...prev.cache, ...preset.cache },
+      security: { ...prev.security, ...preset.security },
+      errorPages: { ...prev.errorPages, ...preset.errorPages },
+      compression: { ...prev.compression, ...preset.compression },
     }));
-    announce('プリセットを適用しました');
+    announce("プリセットを適用しました");
   }
 
   function handleCopy(): void {
     copy(output);
-    showToast('.htaccess をクリップボードにコピーしました', 'success');
-    announce('.htaccess をクリップボードにコピーしました');
+    showToast(".htaccess をクリップボードにコピーしました", "success");
+    announce(".htaccess をクリップボードにコピーしました");
   }
 
   function handleDownload(): void {
-    const blob = new Blob([output], { type: 'text/plain' });
+    const blob = new Blob([output], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
-    a.download = '.htaccess';
+    a.download = ".htaccess";
     a.click();
     URL.revokeObjectURL(url);
-    showToast('.htaccess をダウンロードしました', 'success');
-    announce('.htaccess をダウンロードしました');
+    showToast(".htaccess をダウンロードしました", "success");
+    announce(".htaccess をダウンロードしました");
   }
 
   function addRedirect(): void {
@@ -240,25 +233,22 @@ function HtaccessBuilderPage(): React.ReactElement {
       ...prev,
       redirect: {
         ...prev.redirect,
-        customRedirects: [
-          ...prev.redirect.customRedirects,
-          { from: '', to: '', type: '301' },
-        ],
+        customRedirects: [...prev.redirect.customRedirects, { from: "", to: "", type: "301" }],
       },
     }));
   }
 
   function updateRedirect(
     index: number,
-    field: keyof HtaccessConfig['redirect']['customRedirects'][number],
-    value: string
+    field: keyof HtaccessConfig["redirect"]["customRedirects"][number],
+    value: string,
   ): void {
     setConfig((prev) => ({
       ...prev,
       redirect: {
         ...prev.redirect,
         customRedirects: prev.redirect.customRedirects.map((r, i) =>
-          i === index ? { ...r, [field]: value } : r
+          i === index ? { ...r, [field]: value } : r,
         ),
       },
     }));
@@ -269,9 +259,7 @@ function HtaccessBuilderPage(): React.ReactElement {
       ...prev,
       redirect: {
         ...prev.redirect,
-        customRedirects: prev.redirect.customRedirects.filter(
-          (_, i) => i !== index
-        ),
+        customRedirects: prev.redirect.customRedirects.filter((_, i) => i !== index),
       },
     }));
   }
@@ -282,7 +270,8 @@ function HtaccessBuilderPage(): React.ReactElement {
 
       <h1 className="tool-title">Apache .htaccess ビルダー</h1>
       <p className="tool-description">
-        Apache .htaccess ファイルを GUI で生成します。HTTPS リダイレクト・キャッシュ制御・セキュリティヘッダー・カスタムエラーページに対応しています。
+        Apache .htaccess ファイルを GUI で生成します。HTTPS
+        リダイレクト・キャッシュ制御・セキュリティヘッダー・カスタムエラーページに対応しています。
       </p>
 
       {/* プリセット */}
@@ -415,7 +404,7 @@ function HtaccessBuilderPage(): React.ReactElement {
             {WWW_REDIRECT_OPTIONS.map((opt) => (
               <label
                 key={opt.value}
-                className={`htx-radio-btn${config.redirect.wwwRedirect === opt.value ? ' htx-radio-btn--active' : ''}`}
+                className={`htx-radio-btn${config.redirect.wwwRedirect === opt.value ? " htx-radio-btn--active" : ""}`}
               >
                 <input
                   type="radio"
@@ -447,7 +436,7 @@ function HtaccessBuilderPage(): React.ReactElement {
                   className="htx-input"
                   type="text"
                   value={r.from}
-                  onChange={(e) => updateRedirect(i, 'from', e.target.value)}
+                  onChange={(e) => updateRedirect(i, "from", e.target.value)}
                   placeholder="/old-path"
                   aria-label={`リダイレクト元 ${i + 1}`}
                 />
@@ -455,20 +444,14 @@ function HtaccessBuilderPage(): React.ReactElement {
                   className="htx-input"
                   type="text"
                   value={r.to}
-                  onChange={(e) => updateRedirect(i, 'to', e.target.value)}
+                  onChange={(e) => updateRedirect(i, "to", e.target.value)}
                   placeholder="https://example.com/new"
                   aria-label={`リダイレクト先 ${i + 1}`}
                 />
                 <select
                   className="htx-redirect-type"
                   value={r.type}
-                  onChange={(e) =>
-                    updateRedirect(
-                      i,
-                      'type',
-                      e.target.value as '301' | '302'
-                    )
-                  }
+                  onChange={(e) => updateRedirect(i, "type", e.target.value as "301" | "302")}
                   aria-label={`リダイレクトタイプ ${i + 1}`}
                 >
                   <option value="301">301</option>
@@ -485,11 +468,7 @@ function HtaccessBuilderPage(): React.ReactElement {
               </div>
             ))}
           </div>
-          <button
-            className="htx-add-btn"
-            type="button"
-            onClick={addRedirect}
-          >
+          <button className="htx-add-btn" type="button" onClick={addRedirect}>
             + リダイレクトを追加
           </button>
         </div>
@@ -517,17 +496,14 @@ function HtaccessBuilderPage(): React.ReactElement {
           <div className="htx-grid-2">
             {(
               [
-                { key: 'images', label: '画像' },
-                { key: 'cssJs', label: 'CSS / JS' },
-                { key: 'html', label: 'HTML' },
-                { key: 'fonts', label: 'フォント' },
+                { key: "images", label: "画像" },
+                { key: "cssJs", label: "CSS / JS" },
+                { key: "html", label: "HTML" },
+                { key: "fonts", label: "フォント" },
               ] as const
             ).map(({ key, label }) => (
               <div className="htx-field" key={key}>
-                <label
-                  className="htx-label"
-                  htmlFor={`htx-cache-${key}`}
-                >
+                <label className="htx-label" htmlFor={`htx-cache-${key}`}>
                   {label}
                 </label>
                 <select
@@ -658,8 +634,7 @@ function HtaccessBuilderPage(): React.ReactElement {
                 ...prev,
                 security: {
                   ...prev.security,
-                  xFrameOptions: e.target
-                    .value as HtaccessConfig['security']['xFrameOptions'],
+                  xFrameOptions: e.target.value as HtaccessConfig["security"]["xFrameOptions"],
                 },
               }))
             }
@@ -727,17 +702,11 @@ function HtaccessBuilderPage(): React.ReactElement {
           >
             <option value="">なし</option>
             <option value="no-referrer">no-referrer</option>
-            <option value="no-referrer-when-downgrade">
-              no-referrer-when-downgrade
-            </option>
+            <option value="no-referrer-when-downgrade">no-referrer-when-downgrade</option>
             <option value="strict-origin">strict-origin</option>
-            <option value="strict-origin-when-cross-origin">
-              strict-origin-when-cross-origin
-            </option>
+            <option value="strict-origin-when-cross-origin">strict-origin-when-cross-origin</option>
             <option value="origin">origin</option>
-            <option value="origin-when-cross-origin">
-              origin-when-cross-origin
-            </option>
+            <option value="origin-when-cross-origin">origin-when-cross-origin</option>
             <option value="same-origin">same-origin</option>
             <option value="unsafe-url">unsafe-url</option>
           </select>
@@ -749,15 +718,13 @@ function HtaccessBuilderPage(): React.ReactElement {
         <h2 className="htx-section-title" id="htx-error-title">
           カスタムエラーページ
         </h2>
-        <p className="htx-hint">
-          空欄のエラーコードはデフォルトのエラーページが使用されます。
-        </p>
+        <p className="htx-hint">空欄のエラーコードはデフォルトのエラーページが使用されます。</p>
         <div className="htx-grid-2">
           {(
             [
-              { key: 'e403', label: '403 Forbidden' },
-              { key: 'e404', label: '404 Not Found' },
-              { key: 'e500', label: '500 Internal Server Error' },
+              { key: "e403", label: "403 Forbidden" },
+              { key: "e404", label: "404 Not Found" },
+              { key: "e500", label: "500 Internal Server Error" },
             ] as const
           ).map(({ key, label }) => (
             <div className="htx-field" key={key}>
@@ -793,9 +760,7 @@ function HtaccessBuilderPage(): React.ReactElement {
         <div className="htx-output-wrapper">
           <pre className="htx-code-block" aria-label=".htaccess 出力">
             {output || (
-              <span className="htx-placeholder">
-                設定を変更すると .htaccess が生成されます
-              </span>
+              <span className="htx-placeholder">設定を変更すると .htaccess が生成されます</span>
             )}
           </pre>
         </div>
@@ -810,20 +775,20 @@ function HtaccessBuilderPage(): React.ReactElement {
       <TipsCard
         sections={[
           {
-            title: '.htaccess とは',
+            title: ".htaccess とは",
             items: [
-              '.htaccess は Apache HTTP サーバーのディレクトリ単位の設定ファイルです。',
-              'サーバー全体の設定を変更せずに、特定のディレクトリのみの動作を制御できます。',
-              'レンタルサーバーなどで広く利用されており、リダイレクトやアクセス制御に使われます。',
+              ".htaccess は Apache HTTP サーバーのディレクトリ単位の設定ファイルです。",
+              "サーバー全体の設定を変更せずに、特定のディレクトリのみの動作を制御できます。",
+              "レンタルサーバーなどで広く利用されており、リダイレクトやアクセス制御に使われます。",
             ],
           },
           {
-            title: '使い方',
+            title: "使い方",
             items: [
-              '各セクションで設定を入力すると、下部の出力エリアにリアルタイムで .htaccess が生成されます。',
-              'プリセットを選択すると、よく使われる設定を一括で適用できます。',
-              '「ダウンロード」ボタンで .htaccess ファイルとして保存できます。',
-              '生成した .htaccess は、Web サーバーのドキュメントルートに配置してください。',
+              "各セクションで設定を入力すると、下部の出力エリアにリアルタイムで .htaccess が生成されます。",
+              "プリセットを選択すると、よく使われる設定を一括で適用できます。",
+              "「ダウンロード」ボタンで .htaccess ファイルとして保存できます。",
+              "生成した .htaccess は、Web サーバーのドキュメントルートに配置してください。",
             ],
           },
         ]}

@@ -4,10 +4,7 @@ import { useState, useCallback, useMemo } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 import {
   type TextShadowLayer,
@@ -65,12 +62,8 @@ const BG_OPTIONS: { id: BgMode; label: string }[] = [
  * 複数レイヤーのtext-shadowをビジュアルに設定し、CSSコードを生成する
  */
 function CssTextShadowGenerator() {
-  const [layers, setLayers] = useState<TextShadowLayer[]>([
-    createDefaultLayer(0),
-  ]);
-  const [selectedId, setSelectedId] = useState<string | null>(
-    () => createDefaultLayer(0).id
-  );
+  const [layers, setLayers] = useState<TextShadowLayer[]>([createDefaultLayer(0)]);
+  const [selectedId, setSelectedId] = useState<string | null>(() => createDefaultLayer(0).id);
   const [bgMode, setBgMode] = useState<BgMode>("dark");
 
   const { copy } = useClipboard();
@@ -81,10 +74,7 @@ function CssTextShadowGenerator() {
   const generatedCSS = useMemo(() => generateFullCSS(layers), [layers]);
 
   /** プレビューの text-shadow 値 */
-  const previewShadow = useMemo(
-    () => generateTextShadowValue(layers),
-    [layers]
-  );
+  const previewShadow = useMemo(() => generateTextShadowValue(layers), [layers]);
 
   /** 選択中レイヤー */
   const selectedLayer = layers.find((l) => l.id === selectedId) ?? null;
@@ -108,18 +98,13 @@ function CssTextShadowGenerator() {
       if (selectedId === id) setSelectedId(null);
       announceStatus("レイヤーを削除しました");
     },
-    [layers.length, selectedId, announceStatus, showToast]
+    [layers.length, selectedId, announceStatus, showToast],
   );
 
   /** 選択中レイヤーのプロパティを更新する */
-  const updateLayer = useCallback(
-    (id: string, updates: Partial<TextShadowLayer>) => {
-      setLayers((prev) =>
-        prev.map((l) => (l.id === id ? { ...l, ...updates } : l))
-      );
-    },
-    []
-  );
+  const updateLayer = useCallback((id: string, updates: Partial<TextShadowLayer>) => {
+    setLayers((prev) => prev.map((l) => (l.id === id ? { ...l, ...updates } : l)));
+  }, []);
 
   /** プリセットを適用する */
   const applyPreset = useCallback(
@@ -134,7 +119,7 @@ function CssTextShadowGenerator() {
       setSelectedId(newLayers[0]?.id ?? null);
       announceStatus(`「${preset.label}」プリセットを適用しました`);
     },
-    [announceStatus]
+    [announceStatus],
   );
 
   /** リセットする */
@@ -163,10 +148,7 @@ function CssTextShadowGenerator() {
           {/* 左側: コントロールパネル */}
           <div className="cts-controls" aria-label="テキストシャドウ設定パネル">
             {/* プリセット */}
-            <section
-              className="cts-section"
-              aria-labelledby="cts-presets-title"
-            >
+            <section className="cts-section" aria-labelledby="cts-presets-title">
               <h2 className="cts-section-title" id="cts-presets-title">
                 プリセット
               </h2>
@@ -186,10 +168,7 @@ function CssTextShadowGenerator() {
             </section>
 
             {/* レイヤーリスト */}
-            <section
-              className="cts-section"
-              aria-labelledby="cts-layers-title"
-            >
+            <section className="cts-section" aria-labelledby="cts-layers-title">
               <div className="cts-section-header">
                 <h2 className="cts-section-title" id="cts-layers-title">
                   シャドウレイヤー ({layers.length})
@@ -205,11 +184,7 @@ function CssTextShadowGenerator() {
                 </Button>
               </div>
 
-              <div
-                className="cts-layers-list"
-                role="list"
-                aria-label="シャドウレイヤー一覧"
-              >
+              <div className="cts-layers-list" role="list" aria-label="シャドウレイヤー一覧">
                 {layers.map((layer, idx) => (
                   <div
                     key={layer.id}
@@ -225,11 +200,7 @@ function CssTextShadowGenerator() {
                       <button
                         type="button"
                         className="cts-layer-name"
-                        onClick={() =>
-                          setSelectedId(
-                            selectedId === layer.id ? null : layer.id
-                          )
-                        }
+                        onClick={() => setSelectedId(selectedId === layer.id ? null : layer.id)}
                         aria-expanded={selectedId === layer.id}
                         aria-label={`レイヤー${idx + 1}のプロパティを${selectedId === layer.id ? "閉じる" : "開く"}`}
                       >
@@ -252,10 +223,7 @@ function CssTextShadowGenerator() {
                       >
                         {/* offset-x */}
                         <div className="cts-prop-row">
-                          <label
-                            htmlFor={`cts-ox-${layer.id}`}
-                            className="cts-prop-label"
-                          >
+                          <label htmlFor={`cts-ox-${layer.id}`} className="cts-prop-label">
                             offset-x
                           </label>
                           <div className="cts-range-row">
@@ -273,18 +241,13 @@ function CssTextShadowGenerator() {
                               }
                               aria-label="水平オフセット"
                             />
-                            <span className="cts-range-value">
-                              {selectedLayer.offsetX}px
-                            </span>
+                            <span className="cts-range-value">{selectedLayer.offsetX}px</span>
                           </div>
                         </div>
 
                         {/* offset-y */}
                         <div className="cts-prop-row">
-                          <label
-                            htmlFor={`cts-oy-${layer.id}`}
-                            className="cts-prop-label"
-                          >
+                          <label htmlFor={`cts-oy-${layer.id}`} className="cts-prop-label">
                             offset-y
                           </label>
                           <div className="cts-range-row">
@@ -302,18 +265,13 @@ function CssTextShadowGenerator() {
                               }
                               aria-label="垂直オフセット"
                             />
-                            <span className="cts-range-value">
-                              {selectedLayer.offsetY}px
-                            </span>
+                            <span className="cts-range-value">{selectedLayer.offsetY}px</span>
                           </div>
                         </div>
 
                         {/* blur */}
                         <div className="cts-prop-row">
-                          <label
-                            htmlFor={`cts-blur-${layer.id}`}
-                            className="cts-prop-label"
-                          >
+                          <label htmlFor={`cts-blur-${layer.id}`} className="cts-prop-label">
                             blur-radius
                           </label>
                           <div className="cts-range-row">
@@ -331,18 +289,13 @@ function CssTextShadowGenerator() {
                               }
                               aria-label="ぼかし半径"
                             />
-                            <span className="cts-range-value">
-                              {selectedLayer.blur}px
-                            </span>
+                            <span className="cts-range-value">{selectedLayer.blur}px</span>
                           </div>
                         </div>
 
                         {/* color */}
                         <div className="cts-prop-row">
-                          <label
-                            htmlFor={`cts-color-text-${layer.id}`}
-                            className="cts-prop-label"
-                          >
+                          <label htmlFor={`cts-color-text-${layer.id}`} className="cts-prop-label">
                             color
                           </label>
                           <div className="cts-color-row">
@@ -350,9 +303,7 @@ function CssTextShadowGenerator() {
                               type="color"
                               className="cts-color-input"
                               value={selectedLayer.color}
-                              onChange={(e) =>
-                                updateLayer(layer.id, { color: e.target.value })
-                              }
+                              onChange={(e) => updateLayer(layer.id, { color: e.target.value })}
                               aria-label="影の色（カラーピッカー）"
                             />
                             <input
@@ -360,9 +311,7 @@ function CssTextShadowGenerator() {
                               type="text"
                               className="cts-input cts-color-text"
                               value={selectedLayer.color}
-                              onChange={(e) =>
-                                updateLayer(layer.id, { color: e.target.value })
-                              }
+                              onChange={(e) => updateLayer(layer.id, { color: e.target.value })}
                               placeholder="#000000"
                               aria-label="影の色（16進数）"
                             />
@@ -371,10 +320,7 @@ function CssTextShadowGenerator() {
 
                         {/* opacity */}
                         <div className="cts-prop-row">
-                          <label
-                            htmlFor={`cts-opacity-${layer.id}`}
-                            className="cts-prop-label"
-                          >
+                          <label htmlFor={`cts-opacity-${layer.id}`} className="cts-prop-label">
                             opacity
                           </label>
                           <div className="cts-range-row">
@@ -392,9 +338,7 @@ function CssTextShadowGenerator() {
                               }
                               aria-label="不透明度"
                             />
-                            <span className="cts-range-value">
-                              {selectedLayer.opacity}%
-                            </span>
+                            <span className="cts-range-value">{selectedLayer.opacity}%</span>
                           </div>
                         </div>
                       </div>
@@ -418,10 +362,7 @@ function CssTextShadowGenerator() {
           {/* 右側: プレビュー + CSS出力 */}
           <div className="cts-right">
             {/* ライブプレビュー */}
-            <section
-              className="cts-preview-section"
-              aria-labelledby="cts-preview-title"
-            >
+            <section className="cts-preview-section" aria-labelledby="cts-preview-title">
               <h2 className="cts-section-title" id="cts-preview-title">
                 ライブプレビュー
               </h2>
@@ -434,11 +375,7 @@ function CssTextShadowGenerator() {
                   Text Shadow
                 </p>
               </div>
-              <div
-                className="cts-preview-bg-switcher"
-                role="group"
-                aria-label="背景色を選択"
-              >
+              <div className="cts-preview-bg-switcher" role="group" aria-label="背景色を選択">
                 {BG_OPTIONS.map((opt) => (
                   <button
                     key={opt.id}
@@ -455,10 +392,7 @@ function CssTextShadowGenerator() {
             </section>
 
             {/* CSS出力 */}
-            <section
-              className="cts-css-section"
-              aria-labelledby="cts-css-output-title"
-            >
+            <section className="cts-css-section" aria-labelledby="cts-css-output-title">
               <div className="cts-css-header">
                 <h2 className="cts-section-title" id="cts-css-output-title">
                   生成 CSS
@@ -472,11 +406,7 @@ function CssTextShadowGenerator() {
                   コピー
                 </Button>
               </div>
-              <pre
-                className="cts-css-output"
-                aria-label="生成されたCSSコード"
-                aria-live="polite"
-              >
+              <pre className="cts-css-output" aria-label="生成されたCSSコード" aria-live="polite">
                 {generatedCSS}
               </pre>
             </section>

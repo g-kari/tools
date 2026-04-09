@@ -28,11 +28,7 @@ export interface JsonToSqlOptions {
  * @param isNull - null値かどうか
  * @returns SQL型名文字列
  */
-function inferSqlType(
-  value: unknown,
-  dialect: SqlDialect,
-  isNull: boolean
-): string {
+function inferSqlType(value: unknown, dialect: SqlDialect, isNull: boolean): string {
   if (isNull || value === null) {
     return dialect === "postgresql" ? "TEXT" : "TEXT";
   }
@@ -146,10 +142,7 @@ function buildIdColumn(dialect: SqlDialect): string {
  * @returns SQL CREATE TABLE文字列
  * @throws {Error} 空文字列または無効なJSON形式の場合にエラーをスローする
  */
-export function generateSqlCreateTable(
-  json: string,
-  options: JsonToSqlOptions
-): string {
+export function generateSqlCreateTable(json: string, options: JsonToSqlOptions): string {
   if (!json.trim()) {
     throw new Error("JSONを入力してください");
   }
@@ -162,23 +155,14 @@ export function generateSqlCreateTable(
   }
 
   // ルートが配列の場合は最初の要素を使用
-  const rootValue = Array.isArray(parsed)
-    ? parsed.length > 0
-      ? parsed[0]
-      : {}
-    : parsed;
+  const rootValue = Array.isArray(parsed) ? (parsed.length > 0 ? parsed[0] : {}) : parsed;
 
   if (typeof rootValue !== "object" || rootValue === null) {
-    throw new Error(
-      "JSONのルートはオブジェクト（{}）または配列（[{}]）である必要があります"
-    );
+    throw new Error("JSONのルートはオブジェクト（{}）または配列（[{}]）である必要があります");
   }
 
   const obj = rootValue as Record<string, unknown>;
-  const tableName = (options.tableName || "my_table").replace(
-    /[^a-zA-Z0-9_]/g,
-    "_"
-  );
+  const tableName = (options.tableName || "my_table").replace(/[^a-zA-Z0-9_]/g, "_");
   const { dialect, notNull, addId } = options;
 
   const columnLines: string[] = [];
@@ -208,8 +192,7 @@ export function generateSqlCreateTable(
     sqlite: "-- SQLite",
   };
 
-  const tableIdent =
-    dialect === "mysql" ? `\`${tableName}\`` : `"${tableName}"`;
+  const tableIdent = dialect === "mysql" ? `\`${tableName}\`` : `"${tableName}"`;
 
   const lines = [
     `${dialectComment[dialect]}`,

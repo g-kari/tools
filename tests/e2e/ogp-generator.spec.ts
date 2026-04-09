@@ -25,9 +25,7 @@ test.describe("OGPメタタグジェネレーターページ", () => {
     await expect(page.locator("#ogp-output")).toBeVisible();
   });
 
-  test("初期状態では出力エリアにプレースホルダーが表示される", async ({
-    page,
-  }) => {
+  test("初期状態では出力エリアにプレースホルダーが表示される", async ({ page }) => {
     const output = await page.locator("#ogp-output").textContent();
     expect(output).toContain("OGP メタタグが生成されます");
   });
@@ -46,9 +44,7 @@ test.describe("OGPメタタグジェネレーターページ", () => {
     expect(output).toContain("https://example.com");
   });
 
-  test("説明文を入力すると og:description タグが生成される", async ({
-    page,
-  }) => {
+  test("説明文を入力すると og:description タグが生成される", async ({ page }) => {
     await page.locator("#ogp-description").fill("テストの説明です");
     const output = await page.locator("#ogp-output").textContent();
     expect(output).toContain("og:description");
@@ -76,26 +72,20 @@ test.describe("OGPメタタグジェネレーターページ", () => {
     expect(output).toContain("ja_JP");
   });
 
-  test("Twitter Card が有効なとき twitter:card タグが生成される", async ({
-    page,
-  }) => {
+  test("Twitter Card が有効なとき twitter:card タグが生成される", async ({ page }) => {
     await page.locator("#ogp-title").fill("Test");
     const output = await page.locator("#ogp-output").textContent();
     expect(output).toContain("twitter:card");
   });
 
-  test("Twitter Card を無効化すると twitter タグが生成されない", async ({
-    page,
-  }) => {
+  test("Twitter Card を無効化すると twitter タグが生成されない", async ({ page }) => {
     await page.locator("#ogp-twitter-enable").uncheck();
     await page.locator("#ogp-title").fill("Test");
     const output = await page.locator("#ogp-output").textContent();
     expect(output).not.toContain("twitter:");
   });
 
-  test("Twitter Card を無効化すると Twitter フィールドが非表示になる", async ({
-    page,
-  }) => {
+  test("Twitter Card を無効化すると Twitter フィールドが非表示になる", async ({ page }) => {
     await page.locator("#ogp-twitter-enable").uncheck();
     await expect(page.locator("#ogp-twitter-card")).not.toBeVisible();
     await expect(page.locator("#ogp-twitter-site")).not.toBeVisible();

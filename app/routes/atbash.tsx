@@ -58,7 +58,12 @@ function AtbashTool() {
 
   // Get set of uppercase letters present in the input for highlighting
   const activeLetters = useMemo(() => {
-    return new Set(inputText.toUpperCase().replace(/[^A-Z]/g, "").split(""));
+    return new Set(
+      inputText
+        .toUpperCase()
+        .replace(/[^A-Z]/g, "")
+        .split(""),
+    );
   }, [inputText]);
 
   const handleCopy = useCallback(async () => {

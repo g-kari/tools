@@ -35,8 +35,7 @@ export const Route = createFileRoute("/line-ending")({
       { name: "twitter:title", content: "改行コード変換 | Web ツール集" },
       {
         name: "twitter:description",
-        content:
-          "テキストの改行コード（CRLF・LF・CR）を検出して相互変換するツール。",
+        content: "テキストの改行コード（CRLF・LF・CR）を検出して相互変換するツール。",
       },
     ],
   }),
@@ -64,10 +63,7 @@ function LineEndingTool() {
   const [target, setTarget] = useState<LineEnding>("LF");
 
   const info = useMemo(() => detectLineEnding(input), [input]);
-  const output = useMemo(
-    () => (input ? convertLineEnding(input, target) : ""),
-    [input, target]
-  );
+  const output = useMemo(() => (input ? convertLineEnding(input, target) : ""), [input, target]);
 
   const handleCopy = useCallback(async () => {
     if (!output) return;

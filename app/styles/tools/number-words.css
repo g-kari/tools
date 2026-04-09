@@ -32,11 +32,13 @@
   padding: 10px 12px;
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: 4px;
-  font-family: 'Roboto Mono', 'Courier New', monospace;
+  font-family: "Roboto Mono", "Courier New", monospace;
   font-size: 1rem;
   background: var(--md-sys-color-surface-variant);
   color: var(--md-sys-color-on-surface);
-  transition: border-color 0.2s, background 0.2s;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
   min-width: 0;
   width: 100%;
 }
@@ -53,13 +55,13 @@
 }
 
 /* number input のスピナーを非表示 */
-.nw-input[type='number']::-webkit-inner-spin-button,
-.nw-input[type='number']::-webkit-outer-spin-button {
+.nw-input[type="number"]::-webkit-inner-spin-button,
+.nw-input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-.nw-input[type='number'] {
+.nw-input[type="number"] {
   -moz-appearance: textfield;
 }
 
@@ -144,7 +146,9 @@
   border-radius: 4px;
   color: var(--md-sys-color-on-secondary-container);
   cursor: pointer;
-  transition: background-color 0.2s, opacity 0.2s;
+  transition:
+    background-color 0.2s,
+    opacity 0.2s;
   white-space: nowrap;
   flex-shrink: 0;
   letter-spacing: 0.25px;

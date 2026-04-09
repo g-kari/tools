@@ -4,10 +4,7 @@ import { useState, useCallback, useMemo } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 import {
   type FilterState,
@@ -137,12 +134,9 @@ function CssFilterGenerator() {
   const generatedCSS = useMemo(() => generateFullCSS(state), [state]);
 
   /** スライダー値を更新する */
-  const updateValue = useCallback(
-    (key: keyof FilterState, value: number) => {
-      setState((prev) => ({ ...prev, [key]: value }));
-    },
-    []
-  );
+  const updateValue = useCallback((key: keyof FilterState, value: number) => {
+    setState((prev) => ({ ...prev, [key]: value }));
+  }, []);
 
   /** プリセットを適用する */
   const applyPreset = useCallback(
@@ -152,7 +146,7 @@ function CssFilterGenerator() {
       setState(preset.state);
       announceStatus(`「${preset.label}」プリセットを適用しました`);
     },
-    [announceStatus]
+    [announceStatus],
   );
 
   /** リセットする */
@@ -179,10 +173,7 @@ function CssFilterGenerator() {
           {/* 左側: コントロールパネル */}
           <div className="cfl-controls" aria-label="フィルター設定パネル">
             {/* プリセット */}
-            <section
-              className="cfl-section"
-              aria-labelledby="cfl-presets-title"
-            >
+            <section className="cfl-section" aria-labelledby="cfl-presets-title">
               <h2 className="cfl-section-title" id="cfl-presets-title">
                 プリセット
               </h2>
@@ -202,10 +193,7 @@ function CssFilterGenerator() {
             </section>
 
             {/* スライダー設定 */}
-            <section
-              className="cfl-section"
-              aria-labelledby="cfl-sliders-title"
-            >
+            <section className="cfl-section" aria-labelledby="cfl-sliders-title">
               <h2 className="cfl-section-title" id="cfl-sliders-title">
                 フィルター設定
               </h2>
@@ -215,10 +203,7 @@ function CssFilterGenerator() {
                   return (
                     <div key={def.key} className="cfl-slider-item">
                       <div className="cfl-slider-header">
-                        <label
-                          htmlFor={`cfl-slider-${def.key}`}
-                          className="cfl-slider-label"
-                        >
+                        <label htmlFor={`cfl-slider-${def.key}`} className="cfl-slider-label">
                           {def.label}
                         </label>
                         <span className="cfl-slider-value">
@@ -236,9 +221,7 @@ function CssFilterGenerator() {
                           step={def.step}
                           value={value}
                           aria-label={`${def.label} ${value}${def.unit}`}
-                          onChange={(e) =>
-                            updateValue(def.key, Number(e.target.value))
-                          }
+                          onChange={(e) => updateValue(def.key, Number(e.target.value))}
                         />
                         <input
                           type="number"
@@ -278,15 +261,9 @@ function CssFilterGenerator() {
           {/* 右側: プレビュー + 出力 */}
           <div className="cfl-right">
             {/* ライブプレビュー */}
-            <section
-              className="cfl-preview-section"
-              aria-labelledby="cfl-preview-title"
-            >
+            <section className="cfl-preview-section" aria-labelledby="cfl-preview-title">
               <div className="cfl-preview-header">
-                <h2
-                  className="cfl-preview-section-title"
-                  id="cfl-preview-title"
-                >
+                <h2 className="cfl-preview-section-title" id="cfl-preview-title">
                   プレビュー
                 </h2>
                 {/* 背景切替 */}
@@ -333,27 +310,16 @@ function CssFilterGenerator() {
             </section>
 
             {/* CSS 出力 */}
-            <section
-              className="cfl-css-section"
-              aria-labelledby="cfl-css-title"
-            >
+            <section className="cfl-css-section" aria-labelledby="cfl-css-title">
               <div className="cfl-css-header">
                 <h2 className="cfl-section-title" id="cfl-css-title">
                   生成 CSS
                 </h2>
-                <Button
-                  size="sm"
-                  onClick={handleCopyCSS}
-                  aria-label="CSSをクリップボードにコピー"
-                >
+                <Button size="sm" onClick={handleCopyCSS} aria-label="CSSをクリップボードにコピー">
                   コピー
                 </Button>
               </div>
-              <pre
-                className="cfl-css-output"
-                aria-label="生成されたCSSコード"
-                aria-live="polite"
-              >
+              <pre className="cfl-css-output" aria-label="生成されたCSSコード" aria-live="polite">
                 {generatedCSS}
               </pre>
             </section>

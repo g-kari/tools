@@ -46,8 +46,7 @@ export const Route = createFileRoute("/editorconfig")({
       },
       {
         name: "twitter:description",
-        content:
-          ".editorconfig ファイルを簡単生成。プリセット・ファイルタイプ別設定に対応。",
+        content: ".editorconfig ファイルを簡単生成。プリセット・ファイルタイプ別設定に対応。",
       },
     ],
   }),
@@ -83,9 +82,7 @@ function GlobalSettingsForm({
           <select
             id={indentStyleId}
             value={g.indentStyle}
-            onChange={(e) =>
-              onChange({ ...g, indentStyle: e.target.value as IndentStyle })
-            }
+            onChange={(e) => onChange({ ...g, indentStyle: e.target.value as IndentStyle })}
           >
             <option value="space">スペース</option>
             <option value="tab">タブ</option>
@@ -98,9 +95,7 @@ function GlobalSettingsForm({
           <select
             id={indentSizeId}
             value={g.indentSize}
-            onChange={(e) =>
-              onChange({ ...g, indentSize: Number(e.target.value) })
-            }
+            onChange={(e) => onChange({ ...g, indentSize: Number(e.target.value) })}
           >
             {[1, 2, 3, 4, 6, 8].map((n) => (
               <option key={n} value={n}>
@@ -116,9 +111,7 @@ function GlobalSettingsForm({
           <select
             id={eolId}
             value={g.endOfLine}
-            onChange={(e) =>
-              onChange({ ...g, endOfLine: e.target.value as EndOfLine })
-            }
+            onChange={(e) => onChange({ ...g, endOfLine: e.target.value as EndOfLine })}
           >
             <option value="lf">LF（Unix / macOS）</option>
             <option value="crlf">CRLF（Windows）</option>
@@ -132,9 +125,7 @@ function GlobalSettingsForm({
           <select
             id={charsetId}
             value={g.charset}
-            onChange={(e) =>
-              onChange({ ...g, charset: e.target.value as Charset })
-            }
+            onChange={(e) => onChange({ ...g, charset: e.target.value as Charset })}
           >
             <option value="utf-8">UTF-8</option>
             <option value="utf-8-bom">UTF-8 BOM</option>
@@ -168,9 +159,7 @@ function GlobalSettingsForm({
             id={trimId}
             type="checkbox"
             checked={g.trimTrailingWhitespace}
-            onChange={(e) =>
-              onChange({ ...g, trimTrailingWhitespace: e.target.checked })
-            }
+            onChange={(e) => onChange({ ...g, trimTrailingWhitespace: e.target.checked })}
             aria-label="trim_trailing_whitespace を有効にする"
           />
         </div>
@@ -183,9 +172,7 @@ function GlobalSettingsForm({
             id={finalNewlineId}
             type="checkbox"
             checked={g.insertFinalNewline}
-            onChange={(e) =>
-              onChange({ ...g, insertFinalNewline: e.target.checked })
-            }
+            onChange={(e) => onChange({ ...g, insertFinalNewline: e.target.checked })}
             aria-label="insert_final_newline を有効にする"
           />
         </div>
@@ -202,17 +189,11 @@ function EditorConfigPage() {
   const [global, setGlobal] = useState<EditorConfigGlobal>(DEFAULT_GLOBAL);
 
   // ファイルタイプ別オーバーライド設定（パターンをキーとするマップ）
-  const [overrides, setOverrides] = useState<Record<string, FileTypeOverride>>(
-    () =>
-      Object.fromEntries(
-        FILE_TYPES.map((ft) => [ft.pattern, createDefaultOverride(ft)])
-      )
+  const [overrides, setOverrides] = useState<Record<string, FileTypeOverride>>(() =>
+    Object.fromEntries(FILE_TYPES.map((ft) => [ft.pattern, createDefaultOverride(ft)])),
   );
 
-  const output = useMemo(
-    () => generateEditorConfig(global, overrides),
-    [global, overrides]
-  );
+  const output = useMemo(() => generateEditorConfig(global, overrides), [global, overrides]);
 
   const handlePreset = useCallback(
     (presetIdx: number) => {
@@ -220,18 +201,15 @@ function EditorConfigPage() {
       setGlobal(applyPreset(preset));
       showToast(`プリセット「${preset.name}」を適用しました`, "success");
     },
-    [showToast]
+    [showToast],
   );
 
-  const handleOverrideToggle = useCallback(
-    (pattern: string, enabled: boolean) => {
-      setOverrides((prev) => ({
-        ...prev,
-        [pattern]: { ...prev[pattern], enabled },
-      }));
-    },
-    []
-  );
+  const handleOverrideToggle = useCallback((pattern: string, enabled: boolean) => {
+    setOverrides((prev) => ({
+      ...prev,
+      [pattern]: { ...prev[pattern], enabled },
+    }));
+  }, []);
 
   const handleOverrideChange = useCallback(
     (pattern: string, field: keyof FileTypeOverride, value: unknown) => {
@@ -240,7 +218,7 @@ function EditorConfigPage() {
         [pattern]: { ...prev[pattern], [field]: value },
       }));
     },
-    []
+    [],
   );
 
   const handleCopy = useCallback(async () => {
@@ -266,9 +244,7 @@ function EditorConfigPage() {
   const handleReset = useCallback(() => {
     setGlobal(DEFAULT_GLOBAL);
     setOverrides(
-      Object.fromEntries(
-        FILE_TYPES.map((ft) => [ft.pattern, createDefaultOverride(ft)])
-      )
+      Object.fromEntries(FILE_TYPES.map((ft) => [ft.pattern, createDefaultOverride(ft)])),
     );
     showToast("設定をリセットしました", "info");
   }, [showToast]);
@@ -277,9 +253,8 @@ function EditorConfigPage() {
     <div className="tool-container editorconfig-container">
       <h1 className="tool-title">EditorConfig ジェネレーター</h1>
       <p className="tool-description">
-        インデント・改行コード・文字エンコードなどを設定して{" "}
-        <code>.editorconfig</code> ファイルを生成します。
-        ファイルタイプ別のオーバーライドも設定できます。
+        インデント・改行コード・文字エンコードなどを設定して <code>.editorconfig</code>{" "}
+        ファイルを生成します。 ファイルタイプ別のオーバーライドも設定できます。
       </p>
 
       {/* プリセット */}
@@ -296,12 +271,8 @@ function EditorConfigPage() {
               onClick={() => handlePreset(idx)}
               aria-label={`プリセット「${preset.name}」を適用`}
             >
-              <span className="editorconfig-preset-btn-name">
-                {preset.name}
-              </span>
-              <span className="editorconfig-preset-btn-desc">
-                {preset.description}
-              </span>
+              <span className="editorconfig-preset-btn-name">{preset.name}</span>
+              <span className="editorconfig-preset-btn-desc">{preset.description}</span>
             </button>
           ))}
         </div>
@@ -311,10 +282,7 @@ function EditorConfigPage() {
       <GlobalSettingsForm global={global} onChange={setGlobal} />
 
       {/* ファイルタイプ別設定 */}
-      <section
-        className="tool-section"
-        aria-labelledby="filetypes-section-heading"
-      >
+      <section className="tool-section" aria-labelledby="filetypes-section-heading">
         <h2 id="filetypes-section-heading" className="tool-section-title">
           ファイルタイプ別オーバーライド
         </h2>
@@ -344,17 +312,13 @@ function EditorConfigPage() {
                       <input
                         type="checkbox"
                         checked={ov.enabled}
-                        onChange={(e) =>
-                          handleOverrideToggle(ft.pattern, e.target.checked)
-                        }
+                        onChange={(e) => handleOverrideToggle(ft.pattern, e.target.checked)}
                         aria-label={`${ft.label} のオーバーライドを有効にする`}
                       />
                     </td>
                     <td>{ft.label}</td>
                     <td>
-                      <code className="editorconfig-pattern-code">
-                        {ft.pattern}
-                      </code>
+                      <code className="editorconfig-pattern-code">{ft.pattern}</code>
                     </td>
                     <td>
                       <select
@@ -364,7 +328,7 @@ function EditorConfigPage() {
                           handleOverrideChange(
                             ft.pattern,
                             "indentStyle",
-                            e.target.value as IndentStyle
+                            e.target.value as IndentStyle,
                           )
                         }
                         aria-label={`${ft.label} のインデントスタイル`}
@@ -378,11 +342,7 @@ function EditorConfigPage() {
                         value={ov.indentSize}
                         disabled={!ov.enabled}
                         onChange={(e) =>
-                          handleOverrideChange(
-                            ft.pattern,
-                            "indentSize",
-                            Number(e.target.value)
-                          )
+                          handleOverrideChange(ft.pattern, "indentSize", Number(e.target.value))
                         }
                         aria-label={`${ft.label} のインデントサイズ`}
                       >
@@ -446,19 +406,15 @@ function EditorConfigPage() {
         <ul>
           <li>
             <code>.editorconfig</code> はプロジェクトルートに配置します。
-            <code>root = true</code>{" "}
-            を設定すると上位ディレクトリを探索しません。
+            <code>root = true</code> を設定すると上位ディレクトリを探索しません。
           </li>
-          <li>
-            VS Code・JetBrains・Vim・Emacs など主要エディタが標準でサポートしています。
-          </li>
+          <li>VS Code・JetBrains・Vim・Emacs など主要エディタが標準でサポートしています。</li>
           <li>
             チームで異なるOSを使う場合、改行コードを統一（<code>lf</code>
             ）することで Git の差分ノイズを防げます。
           </li>
           <li>
-            Go は <code>gofmt</code> がタブを使うため、<code>indent_style =
-            tab</code> が標準です。
+            Go は <code>gofmt</code> がタブを使うため、<code>indent_style = tab</code> が標準です。
           </li>
         </ul>
       </TipsCard>

@@ -76,16 +76,10 @@ export function minifyCSS(code: string): string {
   result = result.replace(/\s*([{}:;,>+~])\s*/g, "$1");
 
   // 0の単位を削除 (0px -> 0)
-  result = result.replace(
-    /(\s|:)0(px|em|rem|%|vh|vw|vmin|vmax|pt|pc|cm|mm|in|ex|ch)/g,
-    "$10"
-  );
+  result = result.replace(/(\s|:)0(px|em|rem|%|vh|vw|vmin|vmax|pt|pc|cm|mm|in|ex|ch)/g, "$10");
 
   // カラーコードの短縮 (#ffffff -> #fff)
-  result = result.replace(
-    /#([0-9a-f])\1([0-9a-f])\2([0-9a-f])\3/gi,
-    "#$1$2$3"
-  );
+  result = result.replace(/#([0-9a-f])\1([0-9a-f])\2([0-9a-f])\3/gi, "#$1$2$3");
 
   return result.trim();
 }
@@ -148,8 +142,6 @@ export function minifyJSON(code: string): string {
     const parsed = JSON.parse(code);
     return JSON.stringify(parsed);
   } catch (err) {
-    throw new Error(
-      `JSON構文エラー: ${err instanceof Error ? err.message : "不明なエラー"}`
-    );
+    throw new Error(`JSON構文エラー: ${err instanceof Error ? err.message : "不明なエラー"}`);
   }
 }

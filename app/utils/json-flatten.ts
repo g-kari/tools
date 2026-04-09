@@ -19,13 +19,7 @@ export interface UnflattenOptions {
   delimiter?: string;
 }
 
-type JsonValue =
-  | string
-  | number
-  | boolean
-  | null
-  | JsonValue[]
-  | { [key: string]: JsonValue };
+type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };
 
 /**
  * ネストされたJSONオブジェクトをフラットなオブジェクトに変換する
@@ -35,7 +29,7 @@ type JsonValue =
  */
 export function flattenJson(
   obj: JsonValue,
-  options: FlattenOptions = {}
+  options: FlattenOptions = {},
 ): Record<string, JsonValue> {
   const { delimiter = ".", flattenArrays = true, maxDepth = 0 } = options;
   const result: Record<string, JsonValue> = {};
@@ -95,7 +89,7 @@ export function flattenJson(
  */
 export function unflattenJson(
   obj: Record<string, JsonValue>,
-  options: UnflattenOptions = {}
+  options: UnflattenOptions = {},
 ): JsonValue {
   const { delimiter = "." } = options;
 
@@ -124,10 +118,7 @@ export function unflattenJson(
           if (!isNextNumeric) {
             current[part] = { ...(current[part] as JsonValue[]) };
           }
-        } else if (
-          typeof current[part] === "object" &&
-          current[part] !== null
-        ) {
+        } else if (typeof current[part] === "object" && current[part] !== null) {
           if (isNextNumeric && !Array.isArray(current[part])) {
             // keep as object
           }
@@ -186,10 +177,7 @@ function convertArrays(obj: Record<string, JsonValue>): JsonValue {
  * @returns フラット化されたJSON文字列
  * @throws {SyntaxError} 無効なJSONの場合
  */
-export function flattenJsonString(
-  jsonString: string,
-  options: FlattenOptions = {}
-): string {
+export function flattenJsonString(jsonString: string, options: FlattenOptions = {}): string {
   const parsed = JSON.parse(jsonString) as JsonValue;
   const flattened = flattenJson(parsed, options);
   return JSON.stringify(flattened, null, 2);
@@ -202,10 +190,7 @@ export function flattenJsonString(
  * @returns アンフラット化されたJSON文字列
  * @throws {SyntaxError} 無効なJSONの場合
  */
-export function unflattenJsonString(
-  jsonString: string,
-  options: UnflattenOptions = {}
-): string {
+export function unflattenJsonString(jsonString: string, options: UnflattenOptions = {}): string {
   const parsed = JSON.parse(jsonString) as Record<string, JsonValue>;
   if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
     throw new Error("フラット化されたJSONはオブジェクト形式である必要があります");

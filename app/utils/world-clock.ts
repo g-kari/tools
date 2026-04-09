@@ -18,7 +18,7 @@ export interface ClockData {
 }
 
 /** 曜日の日本語ラベル */
-const WEEKDAY_LABELS = ['日', '月', '火', '水', '木', '金', '土'] as const;
+const WEEKDAY_LABELS = ["日", "月", "火", "水", "木", "金", "土"] as const;
 
 /**
  * 指定タイムゾーンの現在時刻データを取得する
@@ -35,21 +35,21 @@ export function getClockData(
   localTimezone: string,
 ): ClockData {
   // --- 時刻 ---
-  const timeFmt = new Intl.DateTimeFormat('ja-JP', {
+  const timeFmt = new Intl.DateTimeFormat("ja-JP", {
     timeZone: timezone,
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
     hour12,
   });
   const time = timeFmt.format(now);
 
   // --- 日付 ---
-  const datePartsFormatter = new Intl.DateTimeFormat('en', {
+  const datePartsFormatter = new Intl.DateTimeFormat("en", {
     timeZone: timezone,
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
   });
   const dateParts = Object.fromEntries(
     datePartsFormatter.formatToParts(now).map((p) => [p.type, p.value]),
@@ -57,29 +57,29 @@ export function getClockData(
   const date = `${dateParts.year}/${dateParts.month}/${dateParts.day}`;
 
   // --- 曜日 ---
-  const weekdayFmt = new Intl.DateTimeFormat('ja-JP', {
+  const weekdayFmt = new Intl.DateTimeFormat("ja-JP", {
     timeZone: timezone,
-    weekday: 'short',
+    weekday: "short",
   });
   const weekdayRaw = weekdayFmt.format(now); // "木曜日" など
   const weekday = weekdayRaw.charAt(0); // "木"
 
   // --- UTCオフセット ---
-  const offsetFmt = new Intl.DateTimeFormat('en', {
+  const offsetFmt = new Intl.DateTimeFormat("en", {
     timeZone: timezone,
-    timeZoneName: 'shortOffset',
+    timeZoneName: "shortOffset",
   });
   const offsetParts = offsetFmt.formatToParts(now);
-  const offset = offsetParts.find((p) => p.type === 'timeZoneName')?.value ?? 'UTC';
+  const offset = offsetParts.find((p) => p.type === "timeZoneName")?.value ?? "UTC";
 
   // --- 日付差分（ローカルとの比較） ---
-  const localDateStr = new Intl.DateTimeFormat('sv-SE', { timeZone: localTimezone }).format(now);
-  const tzDateStr = new Intl.DateTimeFormat('sv-SE', { timeZone: timezone }).format(now);
+  const localDateStr = new Intl.DateTimeFormat("sv-SE", { timeZone: localTimezone }).format(now);
+  const tzDateStr = new Intl.DateTimeFormat("sv-SE", { timeZone: timezone }).format(now);
   const localDay = new Date(localDateStr).getTime();
   const tzDay = new Date(tzDateStr).getTime();
   const diffMs = tzDay - localDay;
   const diffDays = Math.round(diffMs / (1000 * 60 * 60 * 24));
-  const dayDiff: ClockData['dayDiff'] = diffDays > 0 ? 1 : diffDays < 0 ? -1 : 0;
+  const dayDiff: ClockData["dayDiff"] = diffDays > 0 ? 1 : diffDays < 0 ? -1 : 0;
 
   return { time, date, weekday, offset, dayDiff };
 }
@@ -92,7 +92,7 @@ export function getLocalTimezone(): string {
   try {
     return Intl.DateTimeFormat().resolvedOptions().timeZone;
   } catch {
-    return 'UTC';
+    return "UTC";
   }
 }
 
@@ -102,5 +102,5 @@ export function getLocalTimezone(): string {
  * @returns 曜日略称（"日", "月", ...）
  */
 export function weekdayLabel(dayOfWeek: number): string {
-  return WEEKDAY_LABELS[dayOfWeek] ?? '';
+  return WEEKDAY_LABELS[dayOfWeek] ?? "";
 }

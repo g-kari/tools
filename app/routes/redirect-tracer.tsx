@@ -71,20 +71,13 @@ function getStatusBadgeClass(statusCode: number): string {
  * @returns クリップボードコピー用のテキスト
  */
 function formatResultAsText(result: RedirectTraceResult): string {
-  const lines: string[] = [
-    "=== URLリダイレクトトレース ===",
-    "",
-  ];
+  const lines: string[] = ["=== URLリダイレクトトレース ===", ""];
 
   result.hops.forEach((hop, i) => {
     const isFinal = i === result.hops.length - 1;
     const isRedirect = isRedirectStatus(hop.statusCode) && !!hop.location;
-    lines.push(
-      `[${i + 1}${isFinal && !isRedirect ? " 最終" : ""}] ${hop.url}`
-    );
-    lines.push(
-      `    ステータス: ${hop.statusCode} ${getStatusLabel(hop.statusCode)}`
-    );
+    lines.push(`[${i + 1}${isFinal && !isRedirect ? " 最終" : ""}] ${hop.url}`);
+    lines.push(`    ステータス: ${hop.statusCode} ${getStatusLabel(hop.statusCode)}`);
     lines.push(`    レスポンス時間: ${hop.responseTime}ms`);
     if (hop.location) {
       lines.push(`    Location: ${hop.location}`);
@@ -101,15 +94,7 @@ function formatResultAsText(result: RedirectTraceResult): string {
 }
 
 /** 1ホップ分の表示コンポーネント */
-function HopCard({
-  hop,
-  index,
-  isFinal,
-}: {
-  hop: RedirectHop;
-  index: number;
-  isFinal: boolean;
-}) {
+function HopCard({ hop, index, isFinal }: { hop: RedirectHop; index: number; isFinal: boolean }) {
   const isRedirect = isRedirectStatus(hop.statusCode) && !!hop.location;
 
   return (
@@ -132,9 +117,7 @@ function HopCard({
           className={getStatusBadgeClass(hop.statusCode)}
           aria-label={`ステータス: ${hop.statusCode} ${getStatusLabel(hop.statusCode)}`}
         >
-          {hop.statusCode === 0
-            ? "エラー"
-            : `${hop.statusCode} ${getStatusLabel(hop.statusCode)}`}
+          {hop.statusCode === 0 ? "エラー" : `${hop.statusCode} ${getStatusLabel(hop.statusCode)}`}
         </span>
 
         <span
@@ -148,9 +131,7 @@ function HopCard({
       {hop.location && (
         <div className="redirect-tracer-hop-location">
           <span className="redirect-tracer-hop-location-label">Location:</span>
-          <span className="redirect-tracer-hop-location-url">
-            {hop.location}
-          </span>
+          <span className="redirect-tracer-hop-location-url">{hop.location}</span>
         </div>
       )}
     </div>
@@ -185,21 +166,18 @@ function RedirectTracer() {
 
       const hopCount = data.hops.length;
       const redirectCount = data.hops.filter(
-        (h) => isRedirectStatus(h.statusCode) && !!h.location
+        (h) => isRedirectStatus(h.statusCode) && !!h.location,
       ).length;
 
       if (data.error) {
-        announceStatus(
-          `トレース完了 (エラー): ${hopCount}ホップ, ${redirectCount}リダイレクト`
-        );
+        announceStatus(`トレース完了 (エラー): ${hopCount}ホップ, ${redirectCount}リダイレクト`);
       } else {
         announceStatus(
-          `トレース完了: ${hopCount}ホップ, ${redirectCount}リダイレクト, ${data.totalTime}ms`
+          `トレース完了: ${hopCount}ホップ, ${redirectCount}リダイレクト, ${data.totalTime}ms`,
         );
       }
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "トレースに失敗しました";
+      const message = err instanceof Error ? err.message : "トレースに失敗しました";
       showToast(message, "error");
       announceStatus("エラー: " + message);
     } finally {
@@ -233,8 +211,7 @@ function RedirectTracer() {
   }, []);
 
   const redirectCount =
-    result?.hops.filter((h) => isRedirectStatus(h.statusCode) && !!h.location)
-      .length ?? 0;
+    result?.hops.filter((h) => isRedirectStatus(h.statusCode) && !!h.location).length ?? 0;
 
   return (
     <>
@@ -243,10 +220,7 @@ function RedirectTracer() {
 
       <div className="tool-container">
         {/* 入力フォーム */}
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          aria-label="リダイレクトトレースフォーム"
-        >
+        <form onSubmit={(e) => e.preventDefault()} aria-label="リダイレクトトレースフォーム">
           <div className="converter-section">
             <div className="redirect-tracer-form-group">
               <label htmlFor="urlInput">トレースするURL</label>
@@ -272,9 +246,7 @@ function RedirectTracer() {
                   {isLoading ? "トレース中..." : "トレース"}
                 </Button>
               </div>
-              <p className="input-hint">
-                Ctrl+Enter でトレース実行 / HTTP・HTTPS に対応
-              </p>
+              <p className="input-hint">Ctrl+Enter でトレース実行 / HTTP・HTTPS に対応</p>
             </div>
           </div>
         </form>
@@ -294,10 +266,7 @@ function RedirectTracer() {
               </button>
             </div>
 
-            <div
-              className="redirect-tracer-result-meta"
-              aria-label="トレースのサマリー"
-            >
+            <div className="redirect-tracer-result-meta" aria-label="トレースのサマリー">
               <span>
                 <strong>ホップ数:</strong> {result.hops.length}
               </span>
@@ -310,11 +279,7 @@ function RedirectTracer() {
             </div>
 
             {/* ホップチェーン */}
-            <div
-              className="redirect-tracer-chain"
-              role="list"
-              aria-label="リダイレクトチェーン"
-            >
+            <div className="redirect-tracer-chain" role="list" aria-label="リダイレクトチェーン">
               {result.hops.map((hop, i) => {
                 const isFinal = i === result.hops.length - 1;
                 const isLast = i === result.hops.length - 1;
@@ -322,10 +287,7 @@ function RedirectTracer() {
                   <div key={`${hop.url}-${i}`}>
                     <HopCard hop={hop} index={i} isFinal={isFinal} />
                     {!isLast && (
-                      <div
-                        className="redirect-tracer-arrow"
-                        aria-hidden="true"
-                      >
+                      <div className="redirect-tracer-arrow" aria-hidden="true">
                         ↓
                       </div>
                     )}
@@ -348,14 +310,9 @@ function RedirectTracer() {
 
             {/* 最終到達URLバナー（エラーなし・リダイレクトあり） */}
             {!result.error && redirectCount > 0 && (
-              <div
-                className="redirect-tracer-final"
-                aria-label={`最終到達URL: ${result.finalUrl}`}
-              >
+              <div className="redirect-tracer-final" aria-label={`最終到達URL: ${result.finalUrl}`}>
                 <span className="redirect-tracer-final-label">最終URL:</span>
-                <span className="redirect-tracer-final-url">
-                  {result.finalUrl}
-                </span>
+                <span className="redirect-tracer-final-url">{result.finalUrl}</span>
               </div>
             )}
           </div>

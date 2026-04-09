@@ -179,9 +179,7 @@ function CountdownTimer() {
   return (
     <main className="tool-layout">
       <h1 className="tool-title">カウントダウンタイマー</h1>
-      <p className="tool-description">
-        指定した日時までのカウントダウンを表示します。
-      </p>
+      <p className="tool-description">指定した日時までのカウントダウンを表示します。</p>
 
       {/* 入力セクション */}
       <section className="countdown-input-section" aria-label="カウントダウン設定">
@@ -256,17 +254,23 @@ function CountdownTimer() {
                 <span className="countdown-number">{countdown.days}</span>
                 <span className="countdown-unit-label">日</span>
               </div>
-              <span className="countdown-separator" aria-hidden="true">:</span>
+              <span className="countdown-separator" aria-hidden="true">
+                :
+              </span>
               <div className="countdown-unit">
                 <span className="countdown-number">{pad(countdown.hours)}</span>
                 <span className="countdown-unit-label">時間</span>
               </div>
-              <span className="countdown-separator" aria-hidden="true">:</span>
+              <span className="countdown-separator" aria-hidden="true">
+                :
+              </span>
               <div className="countdown-unit">
                 <span className="countdown-number">{pad(countdown.minutes)}</span>
                 <span className="countdown-unit-label">分</span>
               </div>
-              <span className="countdown-separator" aria-hidden="true">:</span>
+              <span className="countdown-separator" aria-hidden="true">
+                :
+              </span>
               <div className="countdown-unit">
                 <span className="countdown-number">{pad(countdown.seconds)}</span>
                 <span className="countdown-unit-label">秒</span>

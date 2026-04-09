@@ -4,10 +4,7 @@ import { useState, useCallback, useMemo } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 import {
   type FlexContainerConfig,
@@ -122,9 +119,7 @@ const ALIGN_SELF_OPTIONS: {
  * コンテナ・アイテムのプロパティをビジュアルに設定し、CSSコードを生成する
  */
 function CssFlexboxGenerator() {
-  const [container, setContainer] = useState<FlexContainerConfig>(
-    defaultContainerConfig
-  );
+  const [container, setContainer] = useState<FlexContainerConfig>(defaultContainerConfig);
   const [items, setItems] = useState<FlexItemConfig[]>(createDefaultItems());
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
@@ -133,24 +128,18 @@ function CssFlexboxGenerator() {
   const { showToast } = useToast();
 
   /** 生成されたCSS */
-  const generatedCSS = useMemo(
-    () => generateFullCSS(container, items),
-    [container, items]
-  );
+  const generatedCSS = useMemo(() => generateFullCSS(container, items), [container, items]);
 
   /** プレビュー用のコンテナスタイル */
   const previewContainerStyle = useMemo(
     () => getContainerStyles(container) as React.CSSProperties,
-    [container]
+    [container],
   );
 
   /** コンテナプロパティを更新する */
-  const updateContainer = useCallback(
-    (updates: Partial<FlexContainerConfig>) => {
-      setContainer((prev) => ({ ...prev, ...updates }));
-    },
-    []
-  );
+  const updateContainer = useCallback((updates: Partial<FlexContainerConfig>) => {
+    setContainer((prev) => ({ ...prev, ...updates }));
+  }, []);
 
   /** アイテムを追加する */
   const addItem = useCallback(() => {
@@ -171,18 +160,13 @@ function CssFlexboxGenerator() {
       if (selectedItemId === id) setSelectedItemId(null);
       announceStatus(`${label}を削除しました`);
     },
-    [items.length, selectedItemId, announceStatus, showToast]
+    [items.length, selectedItemId, announceStatus, showToast],
   );
 
   /** アイテムのプロパティを更新する */
-  const updateItem = useCallback(
-    (id: string, updates: Partial<FlexItemConfig>) => {
-      setItems((prev) =>
-        prev.map((item) => (item.id === id ? { ...item, ...updates } : item))
-      );
-    },
-    []
-  );
+  const updateItem = useCallback((id: string, updates: Partial<FlexItemConfig>) => {
+    setItems((prev) => prev.map((item) => (item.id === id ? { ...item, ...updates } : item)));
+  }, []);
 
   /** 設定をリセットする */
   const handleReset = useCallback(() => {
@@ -378,8 +362,7 @@ function CssFlexboxGenerator() {
                       className="cfb-item-swatch"
                       style={
                         {
-                          "--cfb-item-color":
-                            ITEM_COLORS[idx % ITEM_COLORS.length],
+                          "--cfb-item-color": ITEM_COLORS[idx % ITEM_COLORS.length],
                         } as React.CSSProperties
                       }
                       aria-hidden="true"
@@ -387,11 +370,7 @@ function CssFlexboxGenerator() {
                     <button
                       type="button"
                       className="cfb-item-name"
-                      onClick={() =>
-                        setSelectedItemId(
-                          selectedItemId === item.id ? null : item.id
-                        )
-                      }
+                      onClick={() => setSelectedItemId(selectedItemId === item.id ? null : item.id)}
                       aria-expanded={selectedItemId === item.id}
                       aria-label={`${item.label}のプロパティを${selectedItemId === item.id ? "閉じる" : "開く"}`}
                     >
@@ -412,15 +391,10 @@ function CssFlexboxGenerator() {
               {/* 選択中アイテムのプロパティ */}
               {selectedItem && (
                 <div className="cfb-item-detail" aria-label={`${selectedItem.label}のプロパティ`}>
-                  <p className="cfb-item-detail-title">
-                    {selectedItem.label} のプロパティ
-                  </p>
+                  <p className="cfb-item-detail-title">{selectedItem.label} のプロパティ</p>
 
                   <div className="cfb-prop-row">
-                    <label
-                      htmlFor={`flex-grow-${selectedItem.id}`}
-                      className="cfb-prop-label"
-                    >
+                    <label htmlFor={`flex-grow-${selectedItem.id}`} className="cfb-prop-label">
                       <code>flex-grow</code>
                     </label>
                     <div className="cfb-number-row">
@@ -442,10 +416,7 @@ function CssFlexboxGenerator() {
                   </div>
 
                   <div className="cfb-prop-row">
-                    <label
-                      htmlFor={`flex-shrink-${selectedItem.id}`}
-                      className="cfb-prop-label"
-                    >
+                    <label htmlFor={`flex-shrink-${selectedItem.id}`} className="cfb-prop-label">
                       <code>flex-shrink</code>
                     </label>
                     <div className="cfb-number-row">
@@ -467,10 +438,7 @@ function CssFlexboxGenerator() {
                   </div>
 
                   <div className="cfb-prop-row">
-                    <label
-                      htmlFor={`flex-basis-${selectedItem.id}`}
-                      className="cfb-prop-label"
-                    >
+                    <label htmlFor={`flex-basis-${selectedItem.id}`} className="cfb-prop-label">
                       <code>flex-basis</code>
                     </label>
                     <input
@@ -489,10 +457,7 @@ function CssFlexboxGenerator() {
                   </div>
 
                   <div className="cfb-prop-row">
-                    <label
-                      htmlFor={`align-self-${selectedItem.id}`}
-                      className="cfb-prop-label"
-                    >
+                    <label htmlFor={`align-self-${selectedItem.id}`} className="cfb-prop-label">
                       <code>align-self</code>
                     </label>
                     <select
@@ -515,10 +480,7 @@ function CssFlexboxGenerator() {
                   </div>
 
                   <div className="cfb-prop-row">
-                    <label
-                      htmlFor={`order-${selectedItem.id}`}
-                      className="cfb-prop-label"
-                    >
+                    <label htmlFor={`order-${selectedItem.id}`} className="cfb-prop-label">
                       <code>order</code>
                     </label>
                     <div className="cfb-number-row">
@@ -556,10 +518,7 @@ function CssFlexboxGenerator() {
           {/* 右側: プレビュー + CSS出力 */}
           <div className="cfb-right">
             {/* ライブプレビュー */}
-            <section
-              className="cfb-preview-section"
-              aria-labelledby="preview-title"
-            >
+            <section className="cfb-preview-section" aria-labelledby="preview-title">
               <h2 className="cfb-section-title" id="preview-title">
                 ライブプレビュー
               </h2>
@@ -578,18 +537,14 @@ function CssFlexboxGenerator() {
                         className={`cfb-preview-item${selectedItemId === item.id ? " cfb-preview-item--selected" : ""}`}
                         style={itemStyle}
                         onClick={() =>
-                          setSelectedItemId(
-                            selectedItemId === item.id ? null : item.id
-                          )
+                          setSelectedItemId(selectedItemId === item.id ? null : item.id)
                         }
                         role="button"
                         tabIndex={0}
                         onKeyDown={(e) => {
                           if (e.key === "Enter" || e.key === " ") {
                             e.preventDefault();
-                            setSelectedItemId(
-                              selectedItemId === item.id ? null : item.id
-                            );
+                            setSelectedItemId(selectedItemId === item.id ? null : item.id);
                           }
                         }}
                         aria-label={`${item.label}（クリックで選択）`}
@@ -604,10 +559,7 @@ function CssFlexboxGenerator() {
             </section>
 
             {/* CSS出力 */}
-            <section
-              className="cfb-css-section"
-              aria-labelledby="css-output-title"
-            >
+            <section className="cfb-css-section" aria-labelledby="css-output-title">
               <div className="cfb-css-header">
                 <h2 className="cfb-section-title" id="css-output-title">
                   生成 CSS

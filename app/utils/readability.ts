@@ -64,29 +64,29 @@ export interface JapaneseReadabilityScores {
 /** 可読性分析結果 */
 export interface ReadabilityResult {
   /** 検出された言語 */
-  language: 'english' | 'japanese' | 'mixed';
+  language: "english" | "japanese" | "mixed";
   english: EnglishReadabilityScores | null;
   japanese: JapaneseReadabilityScores | null;
 }
 
 /** Flesch Reading Ease のラベルマッピング */
 const FLESCH_LABELS: Array<{ min: number; label: string; description: string }> = [
-  { min: 90, label: '非常に簡単', description: '小学4-5年生レベル' },
-  { min: 80, label: '簡単', description: '一般的な読者向け' },
-  { min: 70, label: 'やや簡単', description: '中学生レベル' },
-  { min: 60, label: '標準', description: '高校生レベル' },
-  { min: 50, label: 'やや難しい', description: '大学受験レベル' },
-  { min: 30, label: '難しい', description: '大卒レベル' },
-  { min: 0, label: '非常に難しい', description: '専門家レベル' },
+  { min: 90, label: "非常に簡単", description: "小学4-5年生レベル" },
+  { min: 80, label: "簡単", description: "一般的な読者向け" },
+  { min: 70, label: "やや簡単", description: "中学生レベル" },
+  { min: 60, label: "標準", description: "高校生レベル" },
+  { min: 50, label: "やや難しい", description: "大学受験レベル" },
+  { min: 30, label: "難しい", description: "大卒レベル" },
+  { min: 0, label: "非常に難しい", description: "専門家レベル" },
 ];
 
 /** 日本語難易度ラベルマッピング */
 const JP_DIFFICULTY_LABELS: Array<{ min: number; label: string }> = [
-  { min: 80, label: '非常に難しい' },
-  { min: 60, label: '難しい' },
-  { min: 40, label: '標準' },
-  { min: 20, label: '簡単' },
-  { min: 0, label: '非常に簡単' },
+  { min: 80, label: "非常に難しい" },
+  { min: 60, label: "難しい" },
+  { min: 40, label: "標準" },
+  { min: 20, label: "簡単" },
+  { min: 0, label: "非常に簡単" },
 ];
 
 /**
@@ -95,22 +95,22 @@ const JP_DIFFICULTY_LABELS: Array<{ min: number; label: string }> = [
  * @returns 推定音節数（最低1）
  */
 export function countSyllables(word: string): number {
-  const w = word.toLowerCase().replace(/[^a-z]/g, '');
+  const w = word.toLowerCase().replace(/[^a-z]/g, "");
   if (w.length === 0) return 0;
   if (w.length <= 3) return 1;
 
   // サイレントeを除去
-  let normalized = w.replace(/e$/, '');
+  let normalized = w.replace(/e$/, "");
 
   // 母音グループをカウント
   const vowelGroups = normalized.match(/[aeiouy]+/g);
   let count = vowelGroups ? vowelGroups.length : 1;
 
   // 特定の接尾辞の補正
-  if (w.endsWith('le') && w.length > 2 && !/[aeiouy]/.test(w[w.length - 3])) {
+  if (w.endsWith("le") && w.length > 2 && !/[aeiouy]/.test(w[w.length - 3])) {
     count += 1;
   }
-  if (w.endsWith('es') || w.endsWith('ed')) {
+  if (w.endsWith("es") || w.endsWith("ed")) {
     // 必要に応じて補正（ここでは単純化）
   }
 
@@ -138,7 +138,7 @@ function splitEnglishSentences(text: string): string[] {
 function tokenizeEnglish(text: string): string[] {
   return text
     .split(/\s+/)
-    .map((w) => w.replace(/[^a-zA-Z'-]/g, ''))
+    .map((w) => w.replace(/[^a-zA-Z'-]/g, ""))
     .filter((w) => w.length > 0);
 }
 
@@ -153,7 +153,7 @@ export function getFleschLabel(score: number): { label: string; description: str
       return { label: entry.label, description: entry.description };
     }
   }
-  return { label: '非常に難しい', description: '専門家レベル' };
+  return { label: "非常に難しい", description: "専門家レベル" };
 }
 
 /**
@@ -167,7 +167,7 @@ export function getJapaneseDifficultyLabel(score: number): string {
       return entry.label;
     }
   }
-  return '非常に簡単';
+  return "非常に簡単";
 }
 
 /**
@@ -197,14 +197,12 @@ export function analyzeEnglishReadability(text: string): EnglishReadabilityScore
   const avgSyllablesPerWord = totalSyllables / wordCount;
 
   // Flesch Reading Ease
-  const fleschReadingEase =
-    206.835 - 1.015 * avgWordsPerSentence - 84.6 * avgSyllablesPerWord;
+  const fleschReadingEase = 206.835 - 1.015 * avgWordsPerSentence - 84.6 * avgSyllablesPerWord;
   const clampedFlesch = Math.max(0, Math.min(100, fleschReadingEase));
   const fleschInfo = getFleschLabel(clampedFlesch);
 
   // Flesch-Kincaid Grade Level
-  const fleschKincaidGrade =
-    0.39 * avgWordsPerSentence + 11.8 * avgSyllablesPerWord - 15.59;
+  const fleschKincaidGrade = 0.39 * avgWordsPerSentence + 11.8 * avgSyllablesPerWord - 15.59;
 
   // Gunning Fog Index
   const gunningFog = 0.4 * (avgWordsPerSentence + 100 * (complexWordCount / wordCount));
@@ -251,7 +249,7 @@ function splitJapaneseSentences(text: string): string[] {
 export function analyzeJapaneseReadability(text: string): JapaneseReadabilityScores | null {
   const sentences = splitJapaneseSentences(text);
   // 空白・改行を除いた文字
-  const chars = [...text.replace(/[\s\r\n]/g, '')];
+  const chars = [...text.replace(/[\s\r\n]/g, "")];
   const charCount = chars.length;
 
   if (sentences.length === 0 || charCount === 0) return null;
@@ -274,7 +272,7 @@ export function analyzeJapaneseReadability(text: string): JapaneseReadabilitySco
   // 漢字密度（高いほど難しい）と平均文長（長いほど難しい）から算出
   const kanjiWeight = Math.min(100, kanjiDensity * 2);
   const sentenceLengthWeight = Math.min(100, avgCharsPerSentence * 1.5);
-  const difficultyScore = Math.round((kanjiWeight * 0.6 + sentenceLengthWeight * 0.4));
+  const difficultyScore = Math.round(kanjiWeight * 0.6 + sentenceLengthWeight * 0.4);
   const clampedDifficulty = Math.max(0, Math.min(100, difficultyScore));
 
   return {
@@ -295,23 +293,23 @@ export function analyzeJapaneseReadability(text: string): JapaneseReadabilitySco
  * @param text - 入力テキスト
  * @returns 検出された言語
  */
-export function detectLanguage(text: string): 'english' | 'japanese' | 'mixed' {
+export function detectLanguage(text: string): "english" | "japanese" | "mixed" {
   const trimmed = text.trim();
-  if (trimmed.length === 0) return 'english';
+  if (trimmed.length === 0) return "english";
 
   const chars = [...trimmed];
   const japaneseChars = chars.filter((c) =>
-    /[\u3040-\u30FF\u4E00-\u9FFF\u3400-\u4DBF]/.test(c)
+    /[\u3040-\u30FF\u4E00-\u9FFF\u3400-\u4DBF]/.test(c),
   ).length;
   const englishChars = chars.filter((c) => /[a-zA-Z]/.test(c)).length;
   const total = japaneseChars + englishChars;
 
-  if (total === 0) return 'english';
+  if (total === 0) return "english";
 
   const jpRatio = japaneseChars / total;
-  if (jpRatio >= 0.7) return 'japanese';
-  if (jpRatio >= 0.2) return 'mixed';
-  return 'english';
+  if (jpRatio >= 0.7) return "japanese";
+  if (jpRatio >= 0.2) return "mixed";
+  return "english";
 }
 
 /**
@@ -323,14 +321,10 @@ export function analyzeReadability(text: string): ReadabilityResult {
   const language = detectLanguage(text);
 
   const english =
-    language === 'english' || language === 'mixed'
-      ? analyzeEnglishReadability(text)
-      : null;
+    language === "english" || language === "mixed" ? analyzeEnglishReadability(text) : null;
 
   const japanese =
-    language === 'japanese' || language === 'mixed'
-      ? analyzeJapaneseReadability(text)
-      : null;
+    language === "japanese" || language === "mixed" ? analyzeJapaneseReadability(text) : null;
 
   return { language, english, japanese };
 }

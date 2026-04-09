@@ -17,7 +17,9 @@
   font-size: 0.875rem;
   font-family: "JetBrains Mono", "Space Mono", monospace;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
+  transition:
+    background 0.2s,
+    color 0.2s;
   text-align: center;
   letter-spacing: 0.02em;
 }
@@ -88,7 +90,10 @@
   font-size: 0.875rem;
   font-family: "JetBrains Mono", "Space Mono", monospace;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s, opacity 0.2s;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    opacity 0.2s;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }

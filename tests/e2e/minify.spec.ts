@@ -9,9 +9,7 @@ test.describe("Minify Tool", () => {
     await expect(page).toHaveTitle("コード圧縮ツール (Minify)");
 
     // Check main heading
-    await expect(page.locator(".tool-container h1")).toContainText(
-      "コード圧縮ツール"
-    );
+    await expect(page.locator(".tool-container h1")).toContainText("コード圧縮ツール");
 
     // Check page subtitle
     await expect(page.locator(".page-subtitle")).toBeVisible();
@@ -21,7 +19,7 @@ test.describe("Minify Tool", () => {
 
     // Check file upload button
     await expect(
-      page.locator('label[for="fileInput"]:has-text("ファイルから読み込む")')
+      page.locator('label[for="fileInput"]:has-text("ファイルから読み込む")'),
     ).toBeVisible();
 
     // Check input textarea
@@ -150,9 +148,7 @@ test.describe("Minify Tool", () => {
 
     // Check error message
     await expect(page.locator(".error-message")).toBeVisible();
-    await expect(page.locator(".error-message")).toContainText(
-      "コードを入力してください"
-    );
+    await expect(page.locator(".error-message")).toContainText("コードを入力してください");
   });
 
   test("should show error for invalid JSON", async ({ page }) => {
@@ -186,9 +182,7 @@ test.describe("Minify Tool", () => {
     await page.click('button:has-text("コピー")');
 
     // Verify clipboard content
-    const clipboardText = await page.evaluate(() =>
-      navigator.clipboard.readText()
-    );
+    const clipboardText = await page.evaluate(() => navigator.clipboard.readText());
     expect(clipboardText).toContain("function");
     expect(clipboardText).toContain("return");
   });
@@ -213,10 +207,7 @@ test.describe("Minify Tool", () => {
   test("should switch between code types", async ({ page }) => {
     // Start with JavaScript
     await expect(page.locator("#codeType")).toHaveValue("javascript");
-    await expect(page.locator("#input")).toHaveAttribute(
-      "placeholder",
-      /JAVASCRIPT/i
-    );
+    await expect(page.locator("#input")).toHaveAttribute("placeholder", /JAVASCRIPT/i);
 
     // Switch to CSS
     await page.selectOption("#codeType", "css");
@@ -224,17 +215,11 @@ test.describe("Minify Tool", () => {
 
     // Switch to HTML
     await page.selectOption("#codeType", "html");
-    await expect(page.locator("#input")).toHaveAttribute(
-      "placeholder",
-      /HTML/i
-    );
+    await expect(page.locator("#input")).toHaveAttribute("placeholder", /HTML/i);
 
     // Switch to JSON
     await page.selectOption("#codeType", "json");
-    await expect(page.locator("#input")).toHaveAttribute(
-      "placeholder",
-      /JSON/i
-    );
+    await expect(page.locator("#input")).toHaveAttribute("placeholder", /JSON/i);
   });
 
   test("should calculate compression ratio", async ({ page }) => {
@@ -257,25 +242,19 @@ test.describe("Minify Tool", () => {
 
   test("should have proper accessibility attributes", async ({ page }) => {
     // Check code type selector
-    await expect(page.locator("#codeType")).toHaveAttribute(
-      "aria-label",
-      "圧縮するコードのタイプ"
-    );
+    await expect(page.locator("#codeType")).toHaveAttribute("aria-label", "圧縮するコードのタイプ");
 
     // Check input textarea
-    await expect(page.locator("#input")).toHaveAttribute(
-      "aria-label",
-      "圧縮する元のコード"
-    );
+    await expect(page.locator("#input")).toHaveAttribute("aria-label", "圧縮する元のコード");
 
     // Check buttons
     await expect(page.locator('button:has-text("圧縮")')).toHaveAttribute(
       "aria-label",
-      "コードを圧縮"
+      "コードを圧縮",
     );
     await expect(page.locator('button:has-text("クリア")')).toHaveAttribute(
       "aria-label",
-      "すべてクリア"
+      "すべてクリア",
     );
   });
 
@@ -293,7 +272,7 @@ test.describe("Minify Tool", () => {
       function func${i}() {
         console.log("Function ${i}");
       }
-    `
+    `,
       )
       .join("\n");
 
@@ -309,9 +288,7 @@ test.describe("Minify Tool", () => {
     expect(output.length).toBeLessThan(largeCode.length);
   });
 
-  test("should load file when file upload button is clicked", async ({
-    page,
-  }) => {
+  test("should load file when file upload button is clicked", async ({ page }) => {
     // Create a test file content
     const testCode = "function test() { return true; }";
 

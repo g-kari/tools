@@ -68,10 +68,7 @@ export interface TestResult {
  * calculateWpm(300, 60) // 60 WPM
  * calculateWpm(0, 30)   // 0
  */
-export function calculateWpm(
-  correctChars: number,
-  elapsedSeconds: number
-): number {
+export function calculateWpm(correctChars: number, elapsedSeconds: number): number {
   if (elapsedSeconds <= 0 || correctChars <= 0) return 0;
   return Math.round(correctChars / 5 / (elapsedSeconds / 60));
 }
@@ -85,10 +82,7 @@ export function calculateWpm(
  * calculateAccuracy(90, 100) // 90
  * calculateAccuracy(0, 0)    // 100
  */
-export function calculateAccuracy(
-  correctChars: number,
-  totalTyped: number
-): number {
+export function calculateAccuracy(correctChars: number, totalTyped: number): number {
   if (totalTyped <= 0) return 100;
   return Math.round((correctChars / totalTyped) * 100);
 }
@@ -150,9 +144,7 @@ export const Route = createFileRoute("/typing-speed")({
  * - Escキーでキャンセル
  */
 function TypingSpeed() {
-  const [testState, setTestState] = useState<"idle" | "running" | "completed">(
-    "idle"
-  );
+  const [testState, setTestState] = useState<"idle" | "running" | "completed">("idle");
   const [duration, setDuration] = useState<Duration>(60);
   const [category, setCategory] = useState<Category>("english");
   const [textIndex, setTextIndex] = useState(0);
@@ -170,24 +162,17 @@ function TypingSpeed() {
   }, [category, textIndex]);
 
   /** 各文字の状態 */
-  const charStatuses = useMemo(
-    () => getCharStatuses(targetText, typed),
-    [targetText, typed]
-  );
+  const charStatuses = useMemo(() => getCharStatuses(targetText, typed), [targetText, typed]);
 
   /** 正確な文字数 */
   const correctChars = useMemo(
     () => charStatuses.filter((s) => s === "correct").length,
-    [charStatuses]
+    [charStatuses],
   );
 
   const incorrectChars = typed.length - correctChars;
-  const elapsedSeconds = Math.max(
-    1,
-    (Date.now() - startTimeRef.current) / 1000
-  );
-  const realtimeWpm =
-    testState === "running" ? calculateWpm(correctChars, elapsedSeconds) : 0;
+  const elapsedSeconds = Math.max(1, (Date.now() - startTimeRef.current) / 1000);
+  const realtimeWpm = testState === "running" ? calculateWpm(correctChars, elapsedSeconds) : 0;
   const realtimeAccuracy = calculateAccuracy(correctChars, typed.length);
 
   /** テスト結果を保存する */
@@ -211,7 +196,7 @@ function TypingSpeed() {
         ...prev.slice(0, 4),
       ]);
     },
-    [targetText, duration, category]
+    [targetText, duration, category],
   );
 
   /** タイマー（runningのときだけ動く） */
@@ -265,7 +250,7 @@ function TypingSpeed() {
         setTestState("completed");
       }
     },
-    [testState, targetText, saveResult]
+    [testState, targetText, saveResult],
   );
 
   /** キーボードショートカット */
@@ -273,7 +258,7 @@ function TypingSpeed() {
     (e: React.KeyboardEvent) => {
       if (e.key === "Escape") resetTest();
     },
-    [resetTest]
+    [resetTest],
   );
 
   /** idleのときdurationに合わせてtimeLeftを更新 */
@@ -295,11 +280,7 @@ function TypingSpeed() {
           <div className="typing-settings">
             <div className="typing-setting-group">
               <label>テスト時間:</label>
-              <div
-                className="preset-buttons"
-                role="group"
-                aria-label="テスト時間選択"
-              >
+              <div className="preset-buttons" role="group" aria-label="テスト時間選択">
                 {DURATIONS.map((d) => (
                   <button
                     key={d}
@@ -316,31 +297,25 @@ function TypingSpeed() {
             </div>
             <div className="typing-setting-group">
               <label>テキスト:</label>
-              <div
-                className="preset-buttons"
-                role="group"
-                aria-label="テキスト種類選択"
-              >
-                {(Object.entries(CATEGORIES) as [Category, string][]).map(
-                  ([key, label]) => (
-                    <button
-                      key={key}
-                      type="button"
-                      className={`btn-preset ${category === key ? "active" : ""}`}
-                      onClick={() => {
-                        setCategory(key);
-                        setTyped("");
-                        setTextIndex(0);
-                        setTimeLeft(duration);
-                        setTestState("idle");
-                      }}
-                      disabled={testState === "running"}
-                      aria-pressed={category === key}
-                    >
-                      {label}
-                    </button>
-                  )
-                )}
+              <div className="preset-buttons" role="group" aria-label="テキスト種類選択">
+                {(Object.entries(CATEGORIES) as [Category, string][]).map(([key, label]) => (
+                  <button
+                    key={key}
+                    type="button"
+                    className={`btn-preset ${category === key ? "active" : ""}`}
+                    onClick={() => {
+                      setCategory(key);
+                      setTyped("");
+                      setTextIndex(0);
+                      setTimeLeft(duration);
+                      setTestState("idle");
+                    }}
+                    disabled={testState === "running"}
+                    aria-pressed={category === key}
+                  >
+                    {label}
+                  </button>
+                ))}
               </div>
             </div>
           </div>
@@ -365,7 +340,7 @@ function TypingSpeed() {
             >
               <div
                 className="typing-timer-fill"
-                style={{ '--timer-width': `${timerPercent}%` } as React.CSSProperties}
+                style={{ "--timer-width": `${timerPercent}%` } as React.CSSProperties}
               />
             </div>
           </div>
@@ -386,9 +361,7 @@ function TypingSpeed() {
                 <span className="typing-stat-label">精度</span>
               </div>
               <div className="typing-stat">
-                <span className="typing-stat-value typing-count-correct">
-                  {correctChars}
-                </span>
+                <span className="typing-stat-value typing-count-correct">{correctChars}</span>
                 <span className="typing-stat-label">正確</span>
               </div>
               <div className="typing-stat">
@@ -408,9 +381,7 @@ function TypingSpeed() {
           <div className="converter-section">
             <div
               className={`typing-text-display ${testState === "running" ? "typing-display-active" : ""}`}
-              onClick={() =>
-                testState === "running" && inputRef.current?.focus()
-              }
+              onClick={() => testState === "running" && inputRef.current?.focus()}
               aria-label="タイピングテキスト"
               role="presentation"
             >
@@ -452,11 +423,7 @@ function TypingSpeed() {
 
             <div className="typing-actions">
               {testState === "idle" && (
-                <Button
-                  type="button"
-                  className="btn-large btn-primary"
-                  onClick={startTest}
-                >
+                <Button type="button" className="btn-large btn-primary" onClick={startTest}>
                   テスト開始
                 </Button>
               )}
@@ -475,17 +442,13 @@ function TypingSpeed() {
             <h2 className="section-title">結果</h2>
             <div className="typing-result-card">
               <div className="typing-result-wpm-block">
-                <span className="typing-result-wpm-value">
-                  {results[0].wpm}
-                </span>
+                <span className="typing-result-wpm-value">{results[0].wpm}</span>
                 <span className="typing-result-wpm-label">WPM</span>
               </div>
               <div className="typing-result-stats">
                 <div className="typing-result-stat">
                   <span className="typing-result-stat-label">精度</span>
-                  <span className="typing-result-stat-value">
-                    {results[0].accuracy}%
-                  </span>
+                  <span className="typing-result-stat-value">{results[0].accuracy}%</span>
                 </div>
                 <div className="typing-result-stat">
                   <span className="typing-result-stat-label">正確な文字</span>
@@ -503,18 +466,12 @@ function TypingSpeed() {
                 </div>
                 <div className="typing-result-stat">
                   <span className="typing-result-stat-label">時間</span>
-                  <span className="typing-result-stat-value">
-                    {results[0].duration}秒
-                  </span>
+                  <span className="typing-result-stat-value">{results[0].duration}秒</span>
                 </div>
               </div>
             </div>
             <div className="typing-actions">
-              <Button
-                type="button"
-                className="btn-large btn-primary"
-                onClick={resetTest}
-              >
+              <Button type="button" className="btn-large btn-primary" onClick={resetTest}>
                 もう一度
               </Button>
             </div>
@@ -527,15 +484,9 @@ function TypingSpeed() {
             <h2 className="section-title">直近の結果</h2>
             <div className="typing-history" role="list">
               {results.map((result) => (
-                <div
-                  key={result.timestamp}
-                  className="typing-history-item"
-                  role="listitem"
-                >
+                <div key={result.timestamp} className="typing-history-item" role="listitem">
                   <span className="typing-history-wpm">{result.wpm} WPM</span>
-                  <span className="typing-history-accuracy">
-                    {result.accuracy}%
-                  </span>
+                  <span className="typing-history-accuracy">{result.accuracy}%</span>
                   <span className="typing-history-meta">
                     {result.duration}秒 &bull; {CATEGORIES[result.category]}
                   </span>

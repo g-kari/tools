@@ -43,9 +43,7 @@ test.describe("Color Palette Generator - E2E Tests", () => {
     expect(count).toBeGreaterThan(0);
   });
 
-  test("アルゴリズムタブをクリックするとパレットが更新されること", async ({
-    page,
-  }) => {
+  test("アルゴリズムタブをクリックするとパレットが更新されること", async ({ page }) => {
     // 三色タブをクリック
     const triadicTab = page.locator(".cp-algo-tab", { hasText: "三色" });
     await triadicTab.click();
@@ -100,9 +98,7 @@ test.describe("Color Palette Generator - E2E Tests", () => {
     await expect(tipsCard).toBeVisible();
   });
 
-  test("ナビゲーションに「カラーパレット生成」リンクが存在すること", async ({
-    page,
-  }) => {
+  test("ナビゲーションに「カラーパレット生成」リンクが存在すること", async ({ page }) => {
     const categoryBtn = page.locator(".nav-category-btn", { hasText: "画像" });
     await categoryBtn.hover();
     const dropdown = page.locator(".nav-dropdown");

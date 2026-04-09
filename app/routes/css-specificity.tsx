@@ -3,10 +3,7 @@ import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useCallback, useMemo } from "react";
 import { useToast } from "../components/Toast";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 import {
   calculateSpecificity,
@@ -29,8 +26,7 @@ export const Route = createFileRoute("/css-specificity")({
       { property: "og:title", content: "CSS詳細度計算機 | Web ツール集" },
       {
         property: "og:description",
-        content:
-          "CSSセレクターの詳細度を計算・比較。(a, b, c) 表記でビジュアル表示。",
+        content: "CSSセレクターの詳細度を計算・比較。(a, b, c) 表記でビジュアル表示。",
       },
       { property: "og:url", content: `${SITE_BASE_URL}/css-specificity` },
       { property: "og:type", content: "website" },
@@ -49,17 +45,11 @@ export const Route = createFileRoute("/css-specificity")({
 });
 
 /** 詳細度の棒グラフ（ビジュアル表示） */
-function SpecificityBar({
-  spec,
-  maxValue,
-}: {
-  spec: SpecificityValue;
-  maxValue: number;
-}) {
+function SpecificityBar({ spec, maxValue }: { spec: SpecificityValue; maxValue: number }) {
   const safeMax = Math.max(maxValue, 1);
   const total = specificityToNumber(spec);
-  const idsW = spec.ids > 0 ? Math.max((spec.ids * 10000 / safeMax) * 100, 4) : 0;
-  const classesW = spec.classes > 0 ? Math.max((spec.classes * 100 / safeMax) * 100, 2) : 0;
+  const idsW = spec.ids > 0 ? Math.max(((spec.ids * 10000) / safeMax) * 100, 4) : 0;
+  const classesW = spec.classes > 0 ? Math.max(((spec.classes * 100) / safeMax) * 100, 2) : 0;
   const typesW = spec.types > 0 ? Math.max((spec.types / safeMax) * 100, 1) : 0;
 
   return (
@@ -99,13 +89,23 @@ function SpecificityBadge({ spec }: { spec: SpecificityValue }) {
         <span className="cssp-badge-value">{spec.ids}</span>
         <span className="cssp-badge-label">ID</span>
       </div>
-      <div className="cssp-badge-sep" aria-hidden="true">,</div>
-      <div className="cssp-badge-cell cssp-badge-classes" aria-label={`クラス・属性・擬似クラス: ${spec.classes}`}>
+      <div className="cssp-badge-sep" aria-hidden="true">
+        ,
+      </div>
+      <div
+        className="cssp-badge-cell cssp-badge-classes"
+        aria-label={`クラス・属性・擬似クラス: ${spec.classes}`}
+      >
         <span className="cssp-badge-value">{spec.classes}</span>
         <span className="cssp-badge-label">クラス</span>
       </div>
-      <div className="cssp-badge-sep" aria-hidden="true">,</div>
-      <div className="cssp-badge-cell cssp-badge-types" aria-label={`タイプ・擬似要素: ${spec.types}`}>
+      <div className="cssp-badge-sep" aria-hidden="true">
+        ,
+      </div>
+      <div
+        className="cssp-badge-cell cssp-badge-types"
+        aria-label={`タイプ・擬似要素: ${spec.types}`}
+      >
         <span className="cssp-badge-value">{spec.types}</span>
         <span className="cssp-badge-label">タイプ</span>
       </div>
@@ -182,10 +182,7 @@ function CssSpecificityCalculator() {
   const { showToast } = useToast();
 
   // シングルモード
-  const singleSpec = useMemo(
-    () => calculateSpecificity(singleInput),
-    [singleInput]
-  );
+  const singleSpec = useMemo(() => calculateSpecificity(singleInput), [singleInput]);
   const singleSpecStr = specificityToString(singleSpec);
 
   const handleCopySingle = useCallback(async () => {
@@ -201,12 +198,12 @@ function CssSpecificityCalculator() {
   // 比較モード
   const compareSpecs = useMemo(
     () => compareSelectors.map((sel) => calculateSpecificity(sel)),
-    [compareSelectors]
+    [compareSelectors],
   );
 
   const maxCompareValue = useMemo(
     () => Math.max(...compareSpecs.map(specificityToNumber), 1),
-    [compareSpecs]
+    [compareSpecs],
   );
 
   const highestIndex = useMemo(() => {
@@ -243,7 +240,7 @@ function CssSpecificityCalculator() {
         showToast("コピーに失敗しました", "error");
       }
     },
-    [copy, announceStatus, showToast]
+    [copy, announceStatus, showToast],
   );
 
   const handleSampleClick = useCallback(
@@ -256,16 +253,13 @@ function CssSpecificityCalculator() {
         }
       }
     },
-    [activeTab, compareSelectors]
+    [activeTab, compareSelectors],
   );
 
   // サンプルセレクターのソート済みリスト（詳細度の高い順）
   const sortedSamples = useMemo(() => {
     return [...SPECIFICITY_SAMPLES].sort((a, b) =>
-      compareSpecificity(
-        calculateSpecificity(b.selector),
-        calculateSpecificity(a.selector)
-      )
+      compareSpecificity(calculateSpecificity(b.selector), calculateSpecificity(a.selector)),
     );
   }, []);
 
@@ -299,10 +293,7 @@ function CssSpecificityCalculator() {
 
             {/* 単一セレクターモード */}
             {activeTab === "single" && (
-              <section
-                className="cssp-panel"
-                aria-labelledby="cssp-single-title"
-              >
+              <section className="cssp-panel" aria-labelledby="cssp-single-title">
                 <h2 className="cssp-section-title" id="cssp-single-title">
                   セレクターを入力
                 </h2>
@@ -319,16 +310,10 @@ function CssSpecificityCalculator() {
                 </div>
 
                 {singleInput.trim() ? (
-                  <div
-                    className="cssp-single-result"
-                    role="region"
-                    aria-label="詳細度の計算結果"
-                  >
+                  <div className="cssp-single-result" role="region" aria-label="詳細度の計算結果">
                     <SpecificityBadge spec={singleSpec} />
                     <div className="cssp-single-notation">
-                      <span className="cssp-notation-text">
-                        {singleSpecStr}
-                      </span>
+                      <span className="cssp-notation-text">{singleSpecStr}</span>
                       <button
                         type="button"
                         className="cssp-btn-copy"
@@ -340,63 +325,45 @@ function CssSpecificityCalculator() {
                     </div>
 
                     {/* 内訳 */}
-                    <div
-                      className="cssp-breakdown"
-                      aria-label="詳細度の内訳"
-                    >
+                    <div className="cssp-breakdown" aria-label="詳細度の内訳">
                       <div className="cssp-breakdown-item">
                         <span className="cssp-breakdown-dot dot-ids" aria-hidden="true" />
                         <span className="cssp-breakdown-label">
                           IDセレクター <code>#id</code>
                         </span>
-                        <span className="cssp-breakdown-count">
-                          {singleSpec.ids}
-                        </span>
+                        <span className="cssp-breakdown-count">{singleSpec.ids}</span>
                       </div>
                       <div className="cssp-breakdown-item">
                         <span className="cssp-breakdown-dot dot-classes" aria-hidden="true" />
                         <span className="cssp-breakdown-label">
                           クラス・属性・擬似クラス <code>.class [attr] :hover</code>
                         </span>
-                        <span className="cssp-breakdown-count">
-                          {singleSpec.classes}
-                        </span>
+                        <span className="cssp-breakdown-count">{singleSpec.classes}</span>
                       </div>
                       <div className="cssp-breakdown-item">
                         <span className="cssp-breakdown-dot dot-types" aria-hidden="true" />
                         <span className="cssp-breakdown-label">
                           タイプ・擬似要素 <code>div ::before</code>
                         </span>
-                        <span className="cssp-breakdown-count">
-                          {singleSpec.types}
-                        </span>
+                        <span className="cssp-breakdown-count">{singleSpec.types}</span>
                       </div>
                     </div>
                   </div>
                 ) : (
-                  <p className="cssp-placeholder">
-                    CSSセレクターを入力してください
-                  </p>
+                  <p className="cssp-placeholder">CSSセレクターを入力してください</p>
                 )}
               </section>
             )}
 
             {/* 比較モード */}
             {activeTab === "compare" && (
-              <section
-                className="cssp-panel"
-                aria-labelledby="cssp-compare-title"
-              >
+              <section className="cssp-panel" aria-labelledby="cssp-compare-title">
                 <h2 className="cssp-section-title" id="cssp-compare-title">
                   セレクターを比較
                 </h2>
 
                 {/* 新しいセレクター追加 */}
-                <div
-                  className="cssp-add-row"
-                  role="group"
-                  aria-label="セレクターを追加"
-                >
+                <div className="cssp-add-row" role="group" aria-label="セレクターを追加">
                   <input
                     type="text"
                     className="cssp-selector-input"
@@ -438,11 +405,7 @@ function CssSpecificityCalculator() {
 
                 {/* セレクター一覧 */}
                 {compareSelectors.length > 0 ? (
-                  <div
-                    className="cssp-compare-list"
-                    role="list"
-                    aria-label="比較セレクター一覧"
-                  >
+                  <div className="cssp-compare-list" role="list" aria-label="比較セレクター一覧">
                     {compareSelectors.map((sel, i) => (
                       <div role="listitem" key={`${sel}-${i}`}>
                         <SelectorRow
@@ -457,9 +420,7 @@ function CssSpecificityCalculator() {
                     ))}
                   </div>
                 ) : (
-                  <p className="cssp-placeholder">
-                    比較するセレクターを追加してください
-                  </p>
+                  <p className="cssp-placeholder">比較するセレクターを追加してください</p>
                 )}
               </section>
             )}
@@ -485,12 +446,8 @@ function CssSpecificityCalculator() {
                         onClick={() => handleSampleClick(sample.selector)}
                         aria-label={`${sample.selector} を使用（詳細度: ${specificityToString(spec)}）`}
                       >
-                        <code className="cssp-sample-selector">
-                          {sample.selector}
-                        </code>
-                        <span className="cssp-sample-spec">
-                          {specificityToString(spec)}
-                        </span>
+                        <code className="cssp-sample-selector">{sample.selector}</code>
+                        <span className="cssp-sample-spec">{specificityToString(spec)}</span>
                       </button>
                     </li>
                   );

@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll } from 'vite-plus/test';
+import { describe, it, expect, beforeAll } from "vite-plus/test";
 import {
   randomInt,
   randomElement,
@@ -18,13 +18,13 @@ import {
   generateMAC,
   generateRandomData,
   FIELD_CONFIGS,
-} from '../../app/utils/random-data';
+} from "../../app/utils/random-data";
 
 // Node.js環境でcrypto.getRandomValuesが利用できない場合のポリフィル
 beforeAll(() => {
-  if (typeof globalThis.crypto === 'undefined' || !globalThis.crypto.getRandomValues) {
+  if (typeof globalThis.crypto === "undefined" || !globalThis.crypto.getRandomValues) {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const nodeCrypto = require('crypto');
+    const nodeCrypto = require("crypto");
     globalThis.crypto = {
       getRandomValues: <T extends ArrayBufferView>(array: T): T => {
         const buf = nodeCrypto.randomBytes(array.byteLength);
@@ -35,8 +35,8 @@ beforeAll(() => {
   }
 });
 
-describe('randomInt', () => {
-  it('min以上max以下の整数を返すこと', () => {
+describe("randomInt", () => {
+  it("min以上max以下の整数を返すこと", () => {
     for (let i = 0; i < 100; i++) {
       const val = randomInt(1, 10);
       expect(val).toBeGreaterThanOrEqual(1);
@@ -44,117 +44,113 @@ describe('randomInt', () => {
     }
   });
 
-  it('min === max のとき固定値を返すこと', () => {
+  it("min === max のとき固定値を返すこと", () => {
     expect(randomInt(5, 5)).toBe(5);
   });
 
-  it('整数を返すこと', () => {
+  it("整数を返すこと", () => {
     const val = randomInt(0, 100);
     expect(Number.isInteger(val)).toBe(true);
   });
 });
 
-describe('randomElement', () => {
-  it('配列の要素を返すこと', () => {
-    const arr = ['a', 'b', 'c'];
+describe("randomElement", () => {
+  it("配列の要素を返すこと", () => {
+    const arr = ["a", "b", "c"];
     const val = randomElement(arr);
     expect(arr).toContain(val);
   });
 
-  it('長さ1の配列の唯一の要素を返すこと', () => {
-    expect(randomElement(['only'])).toBe('only');
+  it("長さ1の配列の唯一の要素を返すこと", () => {
+    expect(randomElement(["only"])).toBe("only");
   });
 });
 
-describe('generateJapaneseName', () => {
-  it('スペースで区切られた姓名を返すこと', () => {
+describe("generateJapaneseName", () => {
+  it("スペースで区切られた姓名を返すこと", () => {
     const name = generateJapaneseName();
     expect(name).toMatch(/^.+ .+$/);
   });
 
-  it('文字列を返すこと', () => {
-    expect(typeof generateJapaneseName()).toBe('string');
+  it("文字列を返すこと", () => {
+    expect(typeof generateJapaneseName()).toBe("string");
   });
 });
 
-describe('generateEnglishName', () => {
-  it('スペースで区切られた名姓を返すこと', () => {
+describe("generateEnglishName", () => {
+  it("スペースで区切られた名姓を返すこと", () => {
     const name = generateEnglishName();
-    const parts = name.split(' ');
+    const parts = name.split(" ");
     expect(parts).toHaveLength(2);
     expect(parts[0].length).toBeGreaterThan(0);
     expect(parts[1].length).toBeGreaterThan(0);
   });
 });
 
-describe('generateEmail', () => {
-  it('@を含むメールアドレスを返すこと', () => {
+describe("generateEmail", () => {
+  it("@を含むメールアドレスを返すこと", () => {
     const email = generateEmail();
-    expect(email).toContain('@');
+    expect(email).toContain("@");
   });
 
-  it('有効なメール形式であること', () => {
+  it("有効なメール形式であること", () => {
     const email = generateEmail();
     expect(email).toMatch(/^[a-z.0-9]+@[a-z.]+\.[a-z]+$/);
   });
 });
 
-describe('generateJapanesePhone', () => {
-  it('ハイフン区切りの電話番号形式であること', () => {
+describe("generateJapanesePhone", () => {
+  it("ハイフン区切りの電話番号形式であること", () => {
     const phone = generateJapanesePhone();
     expect(phone).toMatch(/^\d{3}-\d{4}-\d{4}$/);
   });
 
-  it('090/080/070/050のいずれかで始まること', () => {
+  it("090/080/070/050のいずれかで始まること", () => {
     const phone = generateJapanesePhone();
-    expect(['090', '080', '070', '050']).toContain(phone.slice(0, 3));
+    expect(["090", "080", "070", "050"]).toContain(phone.slice(0, 3));
   });
 });
 
-describe('generateJapaneseAddress', () => {
-  it('文字列を返すこと', () => {
+describe("generateJapaneseAddress", () => {
+  it("文字列を返すこと", () => {
     const addr = generateJapaneseAddress();
-    expect(typeof addr).toBe('string');
+    expect(typeof addr).toBe("string");
     expect(addr.length).toBeGreaterThan(0);
   });
 
-  it('ハイフンを含む番地を含むこと', () => {
+  it("ハイフンを含む番地を含むこと", () => {
     const addr = generateJapaneseAddress();
     expect(addr).toMatch(/-/);
   });
 });
 
-describe('generateCompanyName', () => {
-  it('会社種別を含む名前を返すこと', () => {
+describe("generateCompanyName", () => {
+  it("会社種別を含む名前を返すこと", () => {
     const name = generateCompanyName();
     const hasType =
-      name.includes('株式会社') ||
-      name.includes('有限会社') ||
-      name.includes('合同会社');
+      name.includes("株式会社") || name.includes("有限会社") || name.includes("合同会社");
     expect(hasType).toBe(true);
   });
 });
 
-describe('generateUUID', () => {
-  it('UUID v4形式の文字列を返すこと', () => {
+describe("generateUUID", () => {
+  it("UUID v4形式の文字列を返すこと", () => {
     const uuid = generateUUID();
-    expect(uuid).toMatch(
-      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
-    );
+    expect(uuid).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i);
   });
 
-  it('36文字（ハイフン含む）であること', () => {
+  it("36文字（ハイフン含む）であること", () => {
     expect(generateUUID()).toHaveLength(36);
   });
 
-  it('生成するたびに異なるUUIDを返すこと', () => {
+  it("生成するたびに異なるUUIDを返すこと", () => {
     const uuids = new Set(Array.from({ length: 100 }, () => generateUUID()));
     expect(uuids.size).toBe(100);
   });
 });
 
-describe('generateNumber', () => {
-  it('指定範囲内の整数を返すこと', () => {
+describe("generateNumber", () => {
+  it("指定範囲内の整数を返すこと", () => {
     for (let i = 0; i < 50; i++) {
       const val = generateNumber({ min: 10, max: 20 });
       expect(val).toBeGreaterThanOrEqual(10);
@@ -162,18 +158,18 @@ describe('generateNumber', () => {
     }
   });
 
-  it('整数を返すこと', () => {
+  it("整数を返すこと", () => {
     expect(Number.isInteger(generateNumber({ min: 0, max: 100 }))).toBe(true);
   });
 });
 
-describe('generateDate', () => {
-  it('YYYY-MM-DD形式の日付を返すこと', () => {
+describe("generateDate", () => {
+  it("YYYY-MM-DD形式の日付を返すこと", () => {
     const date = generateDate({ startYear: 2000, endYear: 2025 });
     expect(date).toMatch(/^\d{4}-\d{2}-\d{2}$/);
   });
 
-  it('有効な日付であること', () => {
+  it("有効な日付であること", () => {
     for (let i = 0; i < 50; i++) {
       const date = generateDate({ startYear: 2000, endYear: 2025 });
       const parsed = new Date(date);
@@ -181,7 +177,7 @@ describe('generateDate', () => {
     }
   });
 
-  it('指定年の範囲内であること', () => {
+  it("指定年の範囲内であること", () => {
     for (let i = 0; i < 20; i++) {
       const date = generateDate({ startYear: 2010, endYear: 2015 });
       const year = parseInt(date.slice(0, 4));
@@ -190,7 +186,7 @@ describe('generateDate', () => {
     }
   });
 
-  it('閏年の2月29日を正しく処理すること', () => {
+  it("閏年の2月29日を正しく処理すること", () => {
     // 閏年のみを許可する範囲で生成して有効日付であることを確認
     for (let i = 0; i < 100; i++) {
       const date = generateDate({ startYear: 2000, endYear: 2024 });
@@ -200,45 +196,45 @@ describe('generateDate', () => {
   });
 });
 
-describe('generateLoremIpsum', () => {
-  it('文字列を返すこと', () => {
+describe("generateLoremIpsum", () => {
+  it("文字列を返すこと", () => {
     const text = generateLoremIpsum();
-    expect(typeof text).toBe('string');
+    expect(typeof text).toBe("string");
     expect(text.length).toBeGreaterThan(0);
   });
 
-  it('大文字で始まりピリオドで終わること', () => {
+  it("大文字で始まりピリオドで終わること", () => {
     const text = generateLoremIpsum();
     expect(text[0]).toBe(text[0].toUpperCase());
-    expect(text.endsWith('.')).toBe(true);
+    expect(text.endsWith(".")).toBe(true);
   });
 
-  it('5〜15単語を含むこと', () => {
+  it("5〜15単語を含むこと", () => {
     for (let i = 0; i < 20; i++) {
       const text = generateLoremIpsum();
       // ピリオドを除いた単語数を数える
-      const wordCount = text.replace('.', '').trim().split(' ').length;
+      const wordCount = text.replace(".", "").trim().split(" ").length;
       expect(wordCount).toBeGreaterThanOrEqual(5);
       expect(wordCount).toBeLessThanOrEqual(15);
     }
   });
 });
 
-describe('generateColor', () => {
-  it('#RRGGBBの6桁16進数カラーコードを返すこと', () => {
+describe("generateColor", () => {
+  it("#RRGGBBの6桁16進数カラーコードを返すこと", () => {
     const color = generateColor();
     expect(color).toMatch(/^#[0-9a-f]{6}$/i);
   });
 
-  it('#で始まること', () => {
+  it("#で始まること", () => {
     expect(generateColor()).toMatch(/^#/);
   });
 });
 
-describe('generateIPv4', () => {
-  it('ドット区切り4オクテット形式であること', () => {
+describe("generateIPv4", () => {
+  it("ドット区切り4オクテット形式であること", () => {
     const ip = generateIPv4();
-    const parts = ip.split('.');
+    const parts = ip.split(".");
     expect(parts).toHaveLength(4);
     parts.forEach((p) => {
       const n = parseInt(p);
@@ -248,66 +244,66 @@ describe('generateIPv4', () => {
   });
 });
 
-describe('generateIPv6', () => {
-  it('コロン区切り8グループの完全形式であること', () => {
+describe("generateIPv6", () => {
+  it("コロン区切り8グループの完全形式であること", () => {
     const ip = generateIPv6();
-    const groups = ip.split(':');
+    const groups = ip.split(":");
     expect(groups).toHaveLength(8);
     groups.forEach((g) => {
       expect(g).toMatch(/^[0-9a-f]{4}$/);
     });
   });
 
-  it('小文字hexであること', () => {
+  it("小文字hexであること", () => {
     const ip = generateIPv6();
     expect(ip).toBe(ip.toLowerCase());
   });
 });
 
-describe('generateMAC', () => {
-  it('コロン区切り6グループのMACアドレス形式であること', () => {
+describe("generateMAC", () => {
+  it("コロン区切り6グループのMACアドレス形式であること", () => {
     const mac = generateMAC();
-    const groups = mac.split(':');
+    const groups = mac.split(":");
     expect(groups).toHaveLength(6);
     groups.forEach((g) => {
       expect(g).toMatch(/^[0-9A-F]{2}$/);
     });
   });
 
-  it('大文字hexであること', () => {
+  it("大文字hexであること", () => {
     const mac = generateMAC();
     expect(mac).toBe(mac.toUpperCase());
   });
 });
 
-describe('generateRandomData', () => {
-  it('fieldsが空の場合は空文字列を返すこと', () => {
+describe("generateRandomData", () => {
+  it("fieldsが空の場合は空文字列を返すこと", () => {
     const result = generateRandomData({
       fields: [],
       count: 10,
-      format: 'json',
+      format: "json",
       numberOptions: { min: 1, max: 100 },
       dateOptions: { startYear: 2000, endYear: 2025 },
     });
-    expect(result).toBe('');
+    expect(result).toBe("");
   });
 
-  it('countが0の場合は空文字列を返すこと', () => {
+  it("countが0の場合は空文字列を返すこと", () => {
     const result = generateRandomData({
-      fields: ['uuid'],
+      fields: ["uuid"],
       count: 0,
-      format: 'json',
+      format: "json",
       numberOptions: { min: 1, max: 100 },
       dateOptions: { startYear: 2000, endYear: 2025 },
     });
-    expect(result).toBe('');
+    expect(result).toBe("");
   });
 
-  it('JSON形式で指定件数のレコードを返すこと', () => {
+  it("JSON形式で指定件数のレコードを返すこと", () => {
     const result = generateRandomData({
-      fields: ['uuid', 'email'],
+      fields: ["uuid", "email"],
       count: 5,
-      format: 'json',
+      format: "json",
       numberOptions: { min: 1, max: 100 },
       dateOptions: { startYear: 2000, endYear: 2025 },
     });
@@ -316,52 +312,52 @@ describe('generateRandomData', () => {
     expect(parsed).toHaveLength(5);
   });
 
-  it('JSON形式で各レコードが選択フィールドのラベルをキーに持つこと', () => {
+  it("JSON形式で各レコードが選択フィールドのラベルをキーに持つこと", () => {
     const result = generateRandomData({
-      fields: ['uuid'],
+      fields: ["uuid"],
       count: 3,
-      format: 'json',
+      format: "json",
       numberOptions: { min: 1, max: 100 },
       dateOptions: { startYear: 2000, endYear: 2025 },
     });
     const parsed = JSON.parse(result);
-    expect(Object.keys(parsed[0])).toContain('UUID');
+    expect(Object.keys(parsed[0])).toContain("UUID");
   });
 
-  it('CSV形式でヘッダー行+データ行を返すこと', () => {
+  it("CSV形式でヘッダー行+データ行を返すこと", () => {
     const result = generateRandomData({
-      fields: ['email', 'uuid'],
+      fields: ["email", "uuid"],
       count: 3,
-      format: 'csv',
+      format: "csv",
       numberOptions: { min: 1, max: 100 },
       dateOptions: { startYear: 2000, endYear: 2025 },
     });
-    const lines = result.split('\n');
+    const lines = result.split("\n");
     expect(lines).toHaveLength(4); // ヘッダー + 3行
-    expect(lines[0]).toContain('メールアドレス');
-    expect(lines[0]).toContain('UUID');
+    expect(lines[0]).toContain("メールアドレス");
+    expect(lines[0]).toContain("UUID");
   });
 
-  it('TSV形式でタブ区切りを返すこと', () => {
+  it("TSV形式でタブ区切りを返すこと", () => {
     const result = generateRandomData({
-      fields: ['uuid', 'email'],
+      fields: ["uuid", "email"],
       count: 2,
-      format: 'tsv',
+      format: "tsv",
       numberOptions: { min: 1, max: 100 },
       dateOptions: { startYear: 2000, endYear: 2025 },
     });
-    const lines = result.split('\n');
+    const lines = result.split("\n");
     // ヘッダー行にタブが含まれること（2フィールド以上）
-    expect(lines[0]).toContain('\t');
+    expect(lines[0]).toContain("\t");
     expect(lines).toHaveLength(3); // ヘッダー + 2行
   });
 
-  it('全フィールドタイプで正しく生成できること', () => {
+  it("全フィールドタイプで正しく生成できること", () => {
     const allFields = FIELD_CONFIGS.map((c) => c.type);
     const result = generateRandomData({
       fields: allFields,
       count: 1,
-      format: 'json',
+      format: "json",
       numberOptions: { min: 1, max: 100 },
       dateOptions: { startYear: 2000, endYear: 2025 },
     });
@@ -371,12 +367,12 @@ describe('generateRandomData', () => {
   });
 });
 
-describe('FIELD_CONFIGS', () => {
-  it('14種類のフィールド設定が存在すること', () => {
+describe("FIELD_CONFIGS", () => {
+  it("14種類のフィールド設定が存在すること", () => {
     expect(FIELD_CONFIGS).toHaveLength(14);
   });
 
-  it('各フィールド設定がtype/label/descriptionを持つこと', () => {
+  it("各フィールド設定がtype/label/descriptionを持つこと", () => {
     FIELD_CONFIGS.forEach((config) => {
       expect(config.type).toBeTruthy();
       expect(config.label).toBeTruthy();

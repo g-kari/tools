@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vite-plus/test";
-import { buildSquare, encodePolybius, decodePolybius, getSquareGrid } from "../../app/utils/polybius";
+import {
+  buildSquare,
+  encodePolybius,
+  decodePolybius,
+  getSquareGrid,
+} from "../../app/utils/polybius";
 
 describe("buildSquare", () => {
   describe("デフォルト（キーなし）", () => {

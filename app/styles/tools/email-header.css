@@ -69,18 +69,45 @@
   font-family: "Space Mono", monospace;
 }
 
-.auth-pass .auth-card-status { color: #1b8a4c; }
-.auth-fail .auth-card-status { color: var(--md-sys-color-error); }
-.auth-softfail .auth-card-status { color: #c67b00; }
-.auth-neutral .auth-card-status { color: var(--md-sys-color-on-surface-variant); }
-.auth-none .auth-card-status { color: var(--md-sys-color-on-surface-variant); opacity: 0.6; }
-.auth-unknown .auth-card-status { color: var(--md-sys-color-on-surface-variant); }
+.auth-pass .auth-card-status {
+  color: #1b8a4c;
+}
+.auth-fail .auth-card-status {
+  color: var(--md-sys-color-error);
+}
+.auth-softfail .auth-card-status {
+  color: #c67b00;
+}
+.auth-neutral .auth-card-status {
+  color: var(--md-sys-color-on-surface-variant);
+}
+.auth-none .auth-card-status {
+  color: var(--md-sys-color-on-surface-variant);
+  opacity: 0.6;
+}
+.auth-unknown .auth-card-status {
+  color: var(--md-sys-color-on-surface-variant);
+}
 
-.auth-pass { border-color: #1b8a4c; background: #f0fdf4; }
-.auth-fail { border-color: var(--md-sys-color-error); background: var(--md-sys-color-error-container); }
-.auth-softfail { border-color: #c67b00; background: #fffbeb; }
-.auth-neutral { border-color: var(--md-sys-color-outline); }
-.auth-none { border-color: var(--md-sys-color-outline-variant); opacity: 0.7; }
+.auth-pass {
+  border-color: #1b8a4c;
+  background: #f0fdf4;
+}
+.auth-fail {
+  border-color: var(--md-sys-color-error);
+  background: var(--md-sys-color-error-container);
+}
+.auth-softfail {
+  border-color: #c67b00;
+  background: #fffbeb;
+}
+.auth-neutral {
+  border-color: var(--md-sys-color-outline);
+}
+.auth-none {
+  border-color: var(--md-sys-color-outline-variant);
+  opacity: 0.7;
+}
 
 /* Routing Section */
 .routing-timeline {
@@ -217,9 +244,15 @@
   transition: width 0.3s ease;
 }
 
-.spam-score-fill.safe { background: #1b8a4c; }
-.spam-score-fill.warn { background: #c67b00; }
-.spam-score-fill.danger { background: var(--md-sys-color-error); }
+.spam-score-fill.safe {
+  background: #1b8a4c;
+}
+.spam-score-fill.warn {
+  background: #c67b00;
+}
+.spam-score-fill.danger {
+  background: var(--md-sys-color-error);
+}
 
 .spam-threshold-marker {
   position: absolute;

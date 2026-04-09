@@ -4,23 +4,32 @@ import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import { TipsCard } from "~/components/TipsCard";
 import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
-import {
-  analyzeText,
-  formatReadingTime,
-} from "../utils/text-stats";
+import { analyzeText, formatReadingTime } from "../utils/text-stats";
 
 export const Route = createFileRoute("/text-stats")({
   head: () => ({
     meta: [
       { title: "テキスト統計・分析 | Web ツール集" },
-      { name: "description", content: "テキストの詳細な統計情報（単語数・文章数・段落数・読書時間・頻出単語など）をリアルタイムで分析するツール。" },
+      {
+        name: "description",
+        content:
+          "テキストの詳細な統計情報（単語数・文章数・段落数・読書時間・頻出単語など）をリアルタイムで分析するツール。",
+      },
       { property: "og:title", content: "テキスト統計・分析 | Web ツール集" },
-      { property: "og:description", content: "テキストの詳細な統計情報（単語数・文章数・段落数・読書時間・頻出単語など）をリアルタイムで分析するツール。" },
+      {
+        property: "og:description",
+        content:
+          "テキストの詳細な統計情報（単語数・文章数・段落数・読書時間・頻出単語など）をリアルタイムで分析するツール。",
+      },
       { property: "og:url", content: `${SITE_BASE_URL}/text-stats` },
       { property: "og:type", content: "website" },
       { property: "og:image", content: SITE_OGP_IMAGE },
       { name: "twitter:title", content: "テキスト統計・分析 | Web ツール集" },
-      { name: "twitter:description", content: "テキストの詳細な統計情報（単語数・文章数・段落数・読書時間・頻出単語など）をリアルタイムで分析するツール。" },
+      {
+        name: "twitter:description",
+        content:
+          "テキストの詳細な統計情報（単語数・文章数・段落数・読書時間・頻出単語など）をリアルタイムで分析するツール。",
+      },
     ],
   }),
   component: TextStatsPage,
@@ -146,15 +155,10 @@ function TextStatsPage() {
             {basicStats.map((stat) => (
               <div key={stat.testId} className="ts-stat-card">
                 <span className="ts-stat-label">{stat.label}</span>
-                <span
-                  className="ts-stat-value"
-                  data-testid={stat.testId}
-                >
+                <span className="ts-stat-value" data-testid={stat.testId}>
                   {stat.value}
                 </span>
-                {stat.description && (
-                  <span className="ts-stat-desc">{stat.description}</span>
-                )}
+                {stat.description && <span className="ts-stat-desc">{stat.description}</span>}
               </div>
             ))}
           </div>
@@ -173,15 +177,10 @@ function TextStatsPage() {
             {advancedStats.map((stat) => (
               <div key={stat.testId} className="ts-stat-card ts-stat-card--primary">
                 <span className="ts-stat-label">{stat.label}</span>
-                <span
-                  className="ts-stat-value ts-stat-value--large"
-                  data-testid={stat.testId}
-                >
+                <span className="ts-stat-value ts-stat-value--large" data-testid={stat.testId}>
                   {stat.value}
                 </span>
-                {stat.description && (
-                  <span className="ts-stat-desc">{stat.description}</span>
-                )}
+                {stat.description && <span className="ts-stat-desc">{stat.description}</span>}
               </div>
             ))}
           </div>

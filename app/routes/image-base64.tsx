@@ -12,16 +12,25 @@ import { useClipboard } from "~/hooks/useClipboard";
 export const Route = createFileRoute("/image-base64")({
   head: () => ({
     meta: [
-    { title: "画像→Base64変換 | Web ツール集" },
-    { name: "description", content: "画像ファイルをBase64文字列またはData URIに変換するツール。" },
-    { property: "og:title", content: "画像→Base64変換 | Web ツール集" },
-    { property: "og:description", content: "画像ファイルをBase64文字列またはData URIに変換するツール。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/image-base64` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "画像→Base64変換 | Web ツール集" },
-    { name: "twitter:description", content: "画像ファイルをBase64文字列またはData URIに変換するツール。" },
-  ],
+      { title: "画像→Base64変換 | Web ツール集" },
+      {
+        name: "description",
+        content: "画像ファイルをBase64文字列またはData URIに変換するツール。",
+      },
+      { property: "og:title", content: "画像→Base64変換 | Web ツール集" },
+      {
+        property: "og:description",
+        content: "画像ファイルをBase64文字列またはData URIに変換するツール。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/image-base64` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "画像→Base64変換 | Web ツール集" },
+      {
+        name: "twitter:description",
+        content: "画像ファイルをBase64文字列またはData URIに変換するツール。",
+      },
+    ],
   }),
   component: ImageBase64Converter,
 });
@@ -127,7 +136,9 @@ function ImageBase64Converter() {
   const [base64Data, setBase64Data] = useState<string>("");
   const [outputFormat, setOutputFormat] = useState<OutputFormat>("dataUrl");
   const [isLoading, setIsLoading] = useState(false);
-  const [imageDimensions, setImageDimensions] = useState<{ width: number; height: number } | null>(null);
+  const [imageDimensions, setImageDimensions] = useState<{ width: number; height: number } | null>(
+    null,
+  );
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { showToast } = useToast();
@@ -161,7 +172,7 @@ function ImageBase64Converter() {
         setIsLoading(false);
       }
     },
-    [showToast]
+    [showToast],
   );
 
   const handleCopy = useCallback(async () => {
@@ -225,7 +236,9 @@ function ImageBase64Converter() {
                 {imageDimensions && (
                   <div className="info-item">
                     <span className="info-label">解像度</span>
-                    <span className="info-value">{imageDimensions.width} × {imageDimensions.height} px</span>
+                    <span className="info-value">
+                      {imageDimensions.width} × {imageDimensions.height} px
+                    </span>
                   </div>
                 )}
               </div>
@@ -240,11 +253,7 @@ function ImageBase64Converter() {
                     <span className="loading-text">読み込み中...</span>
                   </div>
                 ) : preview ? (
-                  <img
-                    src={preview}
-                    alt="プレビュー"
-                    className="base64-preview-image"
-                  />
+                  <img src={preview} alt="プレビュー" className="base64-preview-image" />
                 ) : null}
               </div>
             </div>
@@ -299,11 +308,7 @@ function ImageBase64Converter() {
               />
 
               <div className="button-group" role="group" aria-label="操作">
-                <Button
-                  type="button"
-                  onClick={handleCopy}
-                  disabled={isLoading || !base64Data}
-                >
+                <Button type="button" onClick={handleCopy} disabled={isLoading || !base64Data}>
                   コピー
                 </Button>
                 <Button

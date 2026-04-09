@@ -1,10 +1,5 @@
 import { describe, expect, it } from "vite-plus/test";
-import {
-  encodeCaesar,
-  decodeCaesar,
-  rot13,
-  bruteForce,
-} from "../../app/utils/caesar";
+import { encodeCaesar, decodeCaesar, rot13, bruteForce } from "../../app/utils/caesar";
 
 describe("encodeCaesar", () => {
   describe("基本的な英字変換", () => {

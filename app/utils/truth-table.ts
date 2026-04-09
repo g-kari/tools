@@ -13,17 +13,17 @@
 
 /** トークン種別 */
 type TokenKind =
-  | 'VAR'
-  | 'AND'
-  | 'OR'
-  | 'NOT'
-  | 'XOR'
-  | 'NAND'
-  | 'NOR'
-  | 'XNOR'
-  | 'LPAREN'
-  | 'RPAREN'
-  | 'EOF';
+  | "VAR"
+  | "AND"
+  | "OR"
+  | "NOT"
+  | "XOR"
+  | "NAND"
+  | "NOR"
+  | "XNOR"
+  | "LPAREN"
+  | "RPAREN"
+  | "EOF";
 
 /** 字句トークン */
 interface Token {
@@ -33,10 +33,10 @@ interface Token {
 
 /** ASTノード */
 type ASTNode =
-  | { op: 'VAR'; name: string }
-  | { op: 'NOT'; operand: ASTNode }
+  | { op: "VAR"; name: string }
+  | { op: "NOT"; operand: ASTNode }
   | {
-      op: 'AND' | 'OR' | 'XOR' | 'NAND' | 'NOR' | 'XNOR';
+      op: "AND" | "OR" | "XOR" | "NAND" | "NOR" | "XNOR";
       left: ASTNode;
       right: ASTNode;
     };
@@ -84,38 +84,38 @@ export function tokenize(expr: string): Token[] {
 
     // アルファベット始まり: キーワード or 変数
     if (/[A-Za-z]/.test(ch)) {
-      let word = '';
+      let word = "";
       while (i < expr.length && /[A-Za-z0-9_]/.test(expr[i])) {
         word += expr[i++];
       }
       const upper = word.toUpperCase();
       switch (upper) {
-        case 'AND':
-          tokens.push({ kind: 'AND', value: 'AND' });
+        case "AND":
+          tokens.push({ kind: "AND", value: "AND" });
           break;
-        case 'OR':
-          tokens.push({ kind: 'OR', value: 'OR' });
+        case "OR":
+          tokens.push({ kind: "OR", value: "OR" });
           break;
-        case 'NOT':
-          tokens.push({ kind: 'NOT', value: 'NOT' });
+        case "NOT":
+          tokens.push({ kind: "NOT", value: "NOT" });
           break;
-        case 'XOR':
-          tokens.push({ kind: 'XOR', value: 'XOR' });
+        case "XOR":
+          tokens.push({ kind: "XOR", value: "XOR" });
           break;
-        case 'NAND':
-          tokens.push({ kind: 'NAND', value: 'NAND' });
+        case "NAND":
+          tokens.push({ kind: "NAND", value: "NAND" });
           break;
-        case 'NOR':
-          tokens.push({ kind: 'NOR', value: 'NOR' });
+        case "NOR":
+          tokens.push({ kind: "NOR", value: "NOR" });
           break;
-        case 'XNOR':
-          tokens.push({ kind: 'XNOR', value: 'XNOR' });
+        case "XNOR":
+          tokens.push({ kind: "XNOR", value: "XNOR" });
           break;
         default:
           // 1文字ずつ変数として扱う
           for (const c of upper) {
             if (/[A-Z]/.test(c)) {
-              tokens.push({ kind: 'VAR', value: c });
+              tokens.push({ kind: "VAR", value: c });
             }
           }
       }
@@ -124,52 +124,52 @@ export function tokenize(expr: string): Token[] {
 
     // 記号演算子
     switch (ch) {
-      case '(':
-        tokens.push({ kind: 'LPAREN', value: '(' });
+      case "(":
+        tokens.push({ kind: "LPAREN", value: "(" });
         i++;
         break;
-      case ')':
-        tokens.push({ kind: 'RPAREN', value: ')' });
+      case ")":
+        tokens.push({ kind: "RPAREN", value: ")" });
         i++;
         break;
-      case '!':
-      case '~':
-      case '¬':
-        tokens.push({ kind: 'NOT', value: '!' });
+      case "!":
+      case "~":
+      case "¬":
+        tokens.push({ kind: "NOT", value: "!" });
         i++;
         break;
-      case '&':
-        if (expr[i + 1] === '&') {
-          tokens.push({ kind: 'AND', value: '&&' });
+      case "&":
+        if (expr[i + 1] === "&") {
+          tokens.push({ kind: "AND", value: "&&" });
           i += 2;
         } else {
-          tokens.push({ kind: 'AND', value: '&' });
+          tokens.push({ kind: "AND", value: "&" });
           i++;
         }
         break;
-      case '∧':
-      case '·':
-      case '*':
-        tokens.push({ kind: 'AND', value: ch });
+      case "∧":
+      case "·":
+      case "*":
+        tokens.push({ kind: "AND", value: ch });
         i++;
         break;
-      case '|':
-        if (expr[i + 1] === '|') {
-          tokens.push({ kind: 'OR', value: '||' });
+      case "|":
+        if (expr[i + 1] === "|") {
+          tokens.push({ kind: "OR", value: "||" });
           i += 2;
         } else {
-          tokens.push({ kind: 'OR', value: '|' });
+          tokens.push({ kind: "OR", value: "|" });
           i++;
         }
         break;
-      case '∨':
-      case '+':
-        tokens.push({ kind: 'OR', value: ch });
+      case "∨":
+      case "+":
+        tokens.push({ kind: "OR", value: ch });
         i++;
         break;
-      case '^':
-      case '⊕':
-        tokens.push({ kind: 'XOR', value: ch });
+      case "^":
+      case "⊕":
+        tokens.push({ kind: "XOR", value: ch });
         i++;
         break;
       default:
@@ -177,7 +177,7 @@ export function tokenize(expr: string): Token[] {
     }
   }
 
-  tokens.push({ kind: 'EOF', value: '' });
+  tokens.push({ kind: "EOF", value: "" });
   return tokens;
 }
 
@@ -215,18 +215,18 @@ class Parser {
 
     while (true) {
       const t = this.peek();
-      if (t.kind === 'OR') {
+      if (t.kind === "OR") {
         this.consume();
-        left = { op: 'OR', left, right: this.parseAnd() };
-      } else if (t.kind === 'XOR') {
+        left = { op: "OR", left, right: this.parseAnd() };
+      } else if (t.kind === "XOR") {
         this.consume();
-        left = { op: 'XOR', left, right: this.parseAnd() };
-      } else if (t.kind === 'NOR') {
+        left = { op: "XOR", left, right: this.parseAnd() };
+      } else if (t.kind === "NOR") {
         this.consume();
-        left = { op: 'NOR', left, right: this.parseAnd() };
-      } else if (t.kind === 'XNOR') {
+        left = { op: "NOR", left, right: this.parseAnd() };
+      } else if (t.kind === "XNOR") {
         this.consume();
-        left = { op: 'XNOR', left, right: this.parseAnd() };
+        left = { op: "XNOR", left, right: this.parseAnd() };
       } else {
         break;
       }
@@ -240,12 +240,12 @@ class Parser {
 
     while (true) {
       const t = this.peek();
-      if (t.kind === 'AND') {
+      if (t.kind === "AND") {
         this.consume();
-        left = { op: 'AND', left, right: this.parseNot() };
-      } else if (t.kind === 'NAND') {
+        left = { op: "AND", left, right: this.parseNot() };
+      } else if (t.kind === "NAND") {
         this.consume();
-        left = { op: 'NAND', left, right: this.parseNot() };
+        left = { op: "NAND", left, right: this.parseNot() };
       } else {
         break;
       }
@@ -255,9 +255,9 @@ class Parser {
 
   /** NOT（単項・右結合） */
   private parseNot(): ASTNode {
-    if (this.peek().kind === 'NOT') {
+    if (this.peek().kind === "NOT") {
       this.consume();
-      return { op: 'NOT', operand: this.parseNot() };
+      return { op: "NOT", operand: this.parseNot() };
     }
     return this.parsePrimary();
   }
@@ -266,15 +266,15 @@ class Parser {
   private parsePrimary(): ASTNode {
     const t = this.peek();
 
-    if (t.kind === 'VAR') {
+    if (t.kind === "VAR") {
       this.consume();
-      return { op: 'VAR', name: t.value };
+      return { op: "VAR", name: t.value };
     }
 
-    if (t.kind === 'LPAREN') {
+    if (t.kind === "LPAREN") {
       this.consume();
       const expr = this.parseExpr();
-      if (this.peek().kind !== 'RPAREN') {
+      if (this.peek().kind !== "RPAREN") {
         throw new Error('閉じ括弧 ")" が見つかりません');
       }
       this.consume();
@@ -299,9 +299,9 @@ export function collectVariables(node: ASTNode): string[] {
   const vars = new Set<string>();
 
   function walk(n: ASTNode): void {
-    if (n.op === 'VAR') {
+    if (n.op === "VAR") {
       vars.add(n.name);
-    } else if (n.op === 'NOT') {
+    } else if (n.op === "NOT") {
       walk(n.operand);
     } else {
       walk(n.left);
@@ -321,21 +321,21 @@ export function collectVariables(node: ASTNode): string[] {
  */
 function evaluate(node: ASTNode, env: Record<string, boolean>): boolean {
   switch (node.op) {
-    case 'VAR':
+    case "VAR":
       return env[node.name] ?? false;
-    case 'NOT':
+    case "NOT":
       return !evaluate(node.operand, env);
-    case 'AND':
+    case "AND":
       return evaluate(node.left, env) && evaluate(node.right, env);
-    case 'OR':
+    case "OR":
       return evaluate(node.left, env) || evaluate(node.right, env);
-    case 'XOR':
+    case "XOR":
       return evaluate(node.left, env) !== evaluate(node.right, env);
-    case 'NAND':
+    case "NAND":
       return !(evaluate(node.left, env) && evaluate(node.right, env));
-    case 'NOR':
+    case "NOR":
       return !(evaluate(node.left, env) || evaluate(node.right, env));
-    case 'XNOR':
+    case "XNOR":
       return evaluate(node.left, env) === evaluate(node.right, env);
   }
 }
@@ -347,24 +347,24 @@ function evaluate(node: ASTNode, env: Record<string, boolean>): boolean {
  */
 function astToString(node: ASTNode): string {
   switch (node.op) {
-    case 'VAR':
+    case "VAR":
       return node.name;
-    case 'NOT':
-      if (node.operand.op === 'VAR') {
+    case "NOT":
+      if (node.operand.op === "VAR") {
         return `¬${node.operand.name}`;
       }
       return `¬(${astToString(node.operand)})`;
-    case 'AND':
+    case "AND":
       return `(${astToString(node.left)} ∧ ${astToString(node.right)})`;
-    case 'OR':
+    case "OR":
       return `(${astToString(node.left)} ∨ ${astToString(node.right)})`;
-    case 'XOR':
+    case "XOR":
       return `(${astToString(node.left)} ⊕ ${astToString(node.right)})`;
-    case 'NAND':
+    case "NAND":
       return `(${astToString(node.left)} NAND ${astToString(node.right)})`;
-    case 'NOR':
+    case "NOR":
       return `(${astToString(node.left)} NOR ${astToString(node.right)})`;
-    case 'XNOR':
+    case "XNOR":
       return `(${astToString(node.left)} XNOR ${astToString(node.right)})`;
   }
 }
@@ -381,7 +381,7 @@ function astToString(node: ASTNode): string {
  */
 export function generateTruthTable(expr: string): TruthTableResult {
   if (!expr.trim()) {
-    throw new Error('式を入力してください');
+    throw new Error("式を入力してください");
   }
 
   const tokens = tokenize(expr);
@@ -391,14 +391,12 @@ export function generateTruthTable(expr: string): TruthTableResult {
   const variables = collectVariables(ast);
 
   if (variables.length === 0) {
-    throw new Error(
-      '変数が見つかりません。A, B, C などの変数を使用してください'
-    );
+    throw new Error("変数が見つかりません。A, B, C などの変数を使用してください");
   }
 
   if (variables.length > 5) {
     throw new Error(
-      `変数が多すぎます（${variables.length} 個）。最大 5 変数まで対応しています（32 行）`
+      `変数が多すぎます（${variables.length} 個）。最大 5 変数まで対応しています（32 行）`,
     );
   }
 
@@ -427,12 +425,10 @@ export function generateTruthTable(expr: string): TruthTableResult {
  * @returns CSV 文字列（ヘッダー行あり）
  */
 export function exportTruthTableCSV(result: TruthTableResult): string {
-  const header = [...result.variables, result.expression].join(',');
+  const header = [...result.variables, result.expression].join(",");
   const dataRows = result.rows.map((row) => {
-    const inputValues = result.variables.map((v) =>
-      row.inputs[v] ? '1' : '0'
-    );
-    return [...inputValues, row.output ? '1' : '0'].join(',');
+    const inputValues = result.variables.map((v) => (row.inputs[v] ? "1" : "0"));
+    return [...inputValues, row.output ? "1" : "0"].join(",");
   });
-  return [header, ...dataRows].join('\n');
+  return [header, ...dataRows].join("\n");
 }

@@ -204,9 +204,18 @@ describe("calcHaversine", () => {
 
   it("方位角は0〜360の範囲", () => {
     const coords = [
-      [{ lat: 0, lng: 0 }, { lat: 10, lng: 10 }],
-      [{ lat: -30, lng: 100 }, { lat: 50, lng: -50 }],
-      [{ lat: 90, lng: 0 }, { lat: 0, lng: 90 }],
+      [
+        { lat: 0, lng: 0 },
+        { lat: 10, lng: 10 },
+      ],
+      [
+        { lat: -30, lng: 100 },
+        { lat: 50, lng: -50 },
+      ],
+      [
+        { lat: 90, lng: 0 },
+        { lat: 0, lng: 90 },
+      ],
     ];
     for (const [from, to] of coords) {
       const result = calcHaversine(from, to);

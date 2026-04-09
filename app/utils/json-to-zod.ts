@@ -23,11 +23,7 @@ export interface JsonToZodOptions {
  * @param indent - インデントレベル（再帰呼び出し用）
  * @returns Zodスキーマ文字列
  */
-function inferZodSchema(
-  value: unknown,
-  options: JsonToZodOptions,
-  indent: number = 0
-): string {
+function inferZodSchema(value: unknown, options: JsonToZodOptions, indent: number = 0): string {
   const pad = "  ".repeat(indent);
   const innerPad = "  ".repeat(indent + 1);
 
@@ -104,10 +100,7 @@ function inferZodSchema(
  * @returns Zodスキーマ文字列（TypeScript/JavaScript形式）
  * @throws {Error} 空文字列または無効なJSON形式の場合にエラーをスローする
  */
-export function generateZodSchema(
-  json: string,
-  options: JsonToZodOptions
-): string {
+export function generateZodSchema(json: string, options: JsonToZodOptions): string {
   if (!json.trim()) {
     throw new Error("JSONを入力してください");
   }

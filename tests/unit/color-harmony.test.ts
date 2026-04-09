@@ -54,12 +54,7 @@ describe("generateAllHarmonySchemes", () => {
   it("補色・トライアド・分割補色・テトラッドの最初の色はベースカラー", () => {
     const base = "#4a90e2";
     const result = generateAllHarmonySchemes(base);
-    for (const id of [
-      "complementary",
-      "triadic",
-      "split-complementary",
-      "tetradic",
-    ]) {
+    for (const id of ["complementary", "triadic", "split-complementary", "tetradic"]) {
       const scheme = result.find((s) => s.id === id);
       expect(scheme?.colors[0].toLowerCase()).toBe(base.toLowerCase());
     }
@@ -106,9 +101,7 @@ describe("toRgbString", () => {
   });
 
   it("全て255の場合", () => {
-    expect(toRgbString({ r: 255, g: 255, b: 255 })).toBe(
-      "rgb(255, 255, 255)"
-    );
+    expect(toRgbString({ r: 255, g: 255, b: 255 })).toBe("rgb(255, 255, 255)");
   });
 });
 

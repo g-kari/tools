@@ -71,15 +71,9 @@ test.describe("カラーハーモニーツール", () => {
 
   test("各スウォッチにHEX/RGB/HSLコピーボタンがある", async ({ page }) => {
     const firstSwatch = page.locator(".ch-swatch").first();
-    await expect(
-      firstSwatch.locator(".ch-copy-btn", { hasText: "HEX" })
-    ).toBeVisible();
-    await expect(
-      firstSwatch.locator(".ch-copy-btn", { hasText: "RGB" })
-    ).toBeVisible();
-    await expect(
-      firstSwatch.locator(".ch-copy-btn", { hasText: "HSL" })
-    ).toBeVisible();
+    await expect(firstSwatch.locator(".ch-copy-btn", { hasText: "HEX" })).toBeVisible();
+    await expect(firstSwatch.locator(".ch-copy-btn", { hasText: "RGB" })).toBeVisible();
+    await expect(firstSwatch.locator(".ch-copy-btn", { hasText: "HSL" })).toBeVisible();
   });
 
   test("CSS変数コピーボタンが5つある", async ({ page }) => {

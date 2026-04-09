@@ -64,7 +64,9 @@
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.15s, opacity 0.15s;
+  transition:
+    background-color 0.15s,
+    opacity 0.15s;
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -103,11 +105,7 @@
 }
 
 .redirect-tracer-hop:hover {
-  background: color-mix(
-    in srgb,
-    var(--md-sys-color-surface) 96%,
-    var(--md-sys-color-primary) 4%
-  );
+  background: color-mix(in srgb, var(--md-sys-color-surface) 96%, var(--md-sys-color-primary) 4%);
 }
 
 /* ホップ番号バッジ */
@@ -249,17 +247,9 @@
   align-items: flex-start;
   gap: 8px;
   padding: 12px 14px;
-  background: color-mix(
-    in srgb,
-    var(--md-sys-color-success) 15%,
-    var(--md-sys-color-surface) 85%
-  );
+  background: color-mix(in srgb, var(--md-sys-color-success) 15%, var(--md-sys-color-surface) 85%);
   border: 1px solid
-    color-mix(
-      in srgb,
-      var(--md-sys-color-success) 40%,
-      var(--md-sys-color-outline-variant) 60%
-    );
+    color-mix(in srgb, var(--md-sys-color-success) 40%, var(--md-sys-color-outline-variant) 60%);
   border-radius: 8px;
   font-size: 0.875rem;
   margin-top: 8px;

@@ -42,7 +42,15 @@ export interface AuthResult {
 }
 
 /** 認証ステータス */
-export type AuthStatus = 'pass' | 'fail' | 'softfail' | 'neutral' | 'none' | 'unknown' | 'permerror' | 'temperror';
+export type AuthStatus =
+  | "pass"
+  | "fail"
+  | "softfail"
+  | "neutral"
+  | "none"
+  | "unknown"
+  | "permerror"
+  | "temperror";
 
 /** スパム情報 */
 export interface SpamInfo {
@@ -98,14 +106,14 @@ export interface EmailSummary {
 export function parseRawHeaders(rawHeaders: string): ParsedHeader[] {
   const headers: ParsedHeader[] = [];
   // 改行の正規化
-  const normalized = rawHeaders.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  const normalized = rawHeaders.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
   // 折り畳みヘッダーを展開（行頭がスペース/タブの行は前の行の続き）
-  const unfolded = normalized.replace(/\n[ \t]+/g, ' ');
-  const lines = unfolded.split('\n');
+  const unfolded = normalized.replace(/\n[ \t]+/g, " ");
+  const lines = unfolded.split("\n");
 
   for (const line of lines) {
     if (!line.trim()) continue;
-    const colonIdx = line.indexOf(':');
+    const colonIdx = line.indexOf(":");
     if (colonIdx <= 0) continue;
     const name = line.substring(0, colonIdx).trim();
     const value = line.substring(colonIdx + 1).trim();
@@ -124,7 +132,7 @@ export function parseRawHeaders(rawHeaders: string): ParsedHeader[] {
  */
 export function parseReceivedHops(headers: ParsedHeader[]): ReceivedHop[] {
   const receivedHeaders = headers
-    .filter((h) => h.name.toLowerCase() === 'received')
+    .filter((h) => h.name.toLowerCase() === "received")
     .map((h) => h.value);
 
   const hops: ReceivedHop[] = receivedHeaders.map((raw) => {
@@ -134,10 +142,10 @@ export function parseReceivedHops(headers: ParsedHeader[]): ReceivedHop[] {
     const dateMatch = raw.match(/;\s*(.+)$/i);
 
     return {
-      from: fromMatch ? fromMatch[1].trim() : '',
-      by: byMatch ? byMatch[1].trim() : '',
-      with: withMatch ? withMatch[1].trim() : '',
-      date: dateMatch ? dateMatch[1].trim() : '',
+      from: fromMatch ? fromMatch[1].trim() : "",
+      by: byMatch ? byMatch[1].trim() : "",
+      with: withMatch ? withMatch[1].trim() : "",
+      date: dateMatch ? dateMatch[1].trim() : "",
       delayMs: null,
       raw,
     };
@@ -164,28 +172,36 @@ export function parseReceivedHops(headers: ParsedHeader[]): ReceivedHop[] {
 export function parseAuthResults(headers: ParsedHeader[]): AuthResult | null {
   const authHeader = headers.find(
     (h) =>
-      h.name.toLowerCase() === 'authentication-results' ||
-      h.name.toLowerCase() === 'arc-authentication-results'
+      h.name.toLowerCase() === "authentication-results" ||
+      h.name.toLowerCase() === "arc-authentication-results",
   );
   if (!authHeader) return null;
 
   const raw = authHeader.value;
 
   const extractStatus = (protocol: string): AuthStatus => {
-    const escapedProtocol = protocol.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const regex = new RegExp(`${escapedProtocol}\\s*=\\s*([\\w]+)`, 'i');
+    const escapedProtocol = protocol.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const regex = new RegExp(`${escapedProtocol}\\s*=\\s*([\\w]+)`, "i");
     const match = raw.match(regex);
-    if (!match) return 'none';
+    if (!match) return "none";
     const val = match[1].toLowerCase();
-    const valid: AuthStatus[] = ['pass', 'fail', 'softfail', 'neutral', 'none', 'permerror', 'temperror'];
-    return valid.includes(val as AuthStatus) ? (val as AuthStatus) : 'unknown';
+    const valid: AuthStatus[] = [
+      "pass",
+      "fail",
+      "softfail",
+      "neutral",
+      "none",
+      "permerror",
+      "temperror",
+    ];
+    return valid.includes(val as AuthStatus) ? (val as AuthStatus) : "unknown";
   };
 
   return {
-    spf: extractStatus('spf'),
-    dkim: extractStatus('dkim'),
-    dmarc: extractStatus('dmarc'),
-    arc: extractStatus('arc'),
+    spf: extractStatus("spf"),
+    dkim: extractStatus("dkim"),
+    dmarc: extractStatus("dmarc"),
+    arc: extractStatus("arc"),
     raw,
   };
 }
@@ -197,18 +213,14 @@ export function parseAuthResults(headers: ParsedHeader[]): AuthResult | null {
  * @returns スパム情報
  */
 export function parseSpamInfo(headers: ParsedHeader[]): SpamInfo {
-  const statusHeader = headers.find(
-    (h) => h.name.toLowerCase() === 'x-spam-status'
-  );
-  const scoreHeader = headers.find(
-    (h) => h.name.toLowerCase() === 'x-spam-score'
-  );
+  const statusHeader = headers.find((h) => h.name.toLowerCase() === "x-spam-status");
+  const scoreHeader = headers.find((h) => h.name.toLowerCase() === "x-spam-score");
 
   if (!statusHeader && !scoreHeader) {
     return { status: null, score: null, threshold: null, isSpam: false, tests: [] };
   }
 
-  const raw = statusHeader?.value ?? '';
+  const raw = statusHeader?.value ?? "";
   const isSpam = /^yes\b/i.test(raw);
 
   // score=X.XX
@@ -225,9 +237,7 @@ export function parseSpamInfo(headers: ParsedHeader[]): SpamInfo {
 
   // tests=TEST1,TEST2,...
   const testsMatch = raw.match(/tests=([^\s]+)/i);
-  const tests = testsMatch
-    ? testsMatch[1].split(',').filter(Boolean)
-    : [];
+  const tests = testsMatch ? testsMatch[1].split(",").filter(Boolean) : [];
 
   return {
     status: raw || null,
@@ -246,19 +256,19 @@ export function parseSpamInfo(headers: ParsedHeader[]): SpamInfo {
  */
 export function extractSummary(headers: ParsedHeader[]): EmailSummary {
   const get = (name: string): string =>
-    headers.find((h) => h.name.toLowerCase() === name.toLowerCase())?.value ?? '';
+    headers.find((h) => h.name.toLowerCase() === name.toLowerCase())?.value ?? "";
 
   return {
-    from: get('From'),
-    to: get('To'),
-    subject: get('Subject'),
-    date: get('Date'),
-    messageId: get('Message-ID'),
-    replyTo: get('Reply-To'),
-    contentType: get('Content-Type'),
-    xMailer: get('X-Mailer'),
-    returnPath: get('Return-Path'),
-    mimeVersion: get('MIME-Version'),
+    from: get("From"),
+    to: get("To"),
+    subject: get("Subject"),
+    date: get("Date"),
+    messageId: get("Message-ID"),
+    replyTo: get("Reply-To"),
+    contentType: get("Content-Type"),
+    xMailer: get("X-Mailer"),
+    returnPath: get("Return-Path"),
+    mimeVersion: get("MIME-Version"),
   };
 }
 
@@ -269,10 +279,7 @@ export function extractSummary(headers: ParsedHeader[]): EmailSummary {
  * @param dateHeader - Dateヘッダーの値
  * @returns 総配信時間（ミリ秒）、計算不能な場合は null
  */
-export function calcTotalDeliveryMs(
-  hops: ReceivedHop[],
-  dateHeader: string
-): number | null {
+export function calcTotalDeliveryMs(hops: ReceivedHop[], dateHeader: string): number | null {
   if (hops.length === 0) return null;
 
   const lastHopDate = new Date(hops[hops.length - 1].date).getTime();
@@ -328,12 +335,18 @@ export function formatDeliveryTime(ms: number): string {
  */
 export function getAuthStatusColor(status: AuthStatus): string {
   switch (status) {
-    case 'pass': return 'auth-pass';
-    case 'fail': return 'auth-fail';
-    case 'softfail': return 'auth-softfail';
-    case 'neutral': return 'auth-neutral';
-    case 'none': return 'auth-none';
-    default: return 'auth-unknown';
+    case "pass":
+      return "auth-pass";
+    case "fail":
+      return "auth-fail";
+    case "softfail":
+      return "auth-softfail";
+    case "neutral":
+      return "auth-neutral";
+    case "none":
+      return "auth-none";
+    default:
+      return "auth-unknown";
   }
 }
 
@@ -345,13 +358,21 @@ export function getAuthStatusColor(status: AuthStatus): string {
  */
 export function getAuthStatusLabel(status: AuthStatus): string {
   switch (status) {
-    case 'pass': return '✓ pass';
-    case 'fail': return '✗ fail';
-    case 'softfail': return '△ softfail';
-    case 'neutral': return '○ neutral';
-    case 'none': return '- なし';
-    case 'permerror': return '! permerror';
-    case 'temperror': return '? temperror';
-    default: return '? 不明';
+    case "pass":
+      return "✓ pass";
+    case "fail":
+      return "✗ fail";
+    case "softfail":
+      return "△ softfail";
+    case "neutral":
+      return "○ neutral";
+    case "none":
+      return "- なし";
+    case "permerror":
+      return "! permerror";
+    case "temperror":
+      return "? temperror";
+    default:
+      return "? 不明";
   }
 }

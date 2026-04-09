@@ -1,32 +1,32 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useState, useMemo } from 'react';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
-import { ASCII_TABLE, filterAsciiEntries, type AsciiFilter } from '../utils/ascii-table';
-import { useClipboard } from '~/hooks/useClipboard';
-import { TipsCard } from '~/components/TipsCard';
-import '../styles/tools/ascii-table.css';
+import { createFileRoute } from "@tanstack/react-router";
+import { useState, useMemo } from "react";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
+import { ASCII_TABLE, filterAsciiEntries, type AsciiFilter } from "../utils/ascii-table";
+import { useClipboard } from "~/hooks/useClipboard";
+import { TipsCard } from "~/components/TipsCard";
+import "../styles/tools/ascii-table.css";
 
-export const Route = createFileRoute('/ascii-table')({
+export const Route = createFileRoute("/ascii-table")({
   head: () => ({
     meta: [
-      { title: 'ASCII テーブル | Web ツール集' },
+      { title: "ASCII テーブル | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          'ASCII 文字コード 0〜127 の完全リファレンス。10進数・16進数・8進数・2進数・HTML エンティティ・説明を一覧表示。制御文字・印刷可能文字のフィルタリングと検索に対応。',
+          "ASCII 文字コード 0〜127 の完全リファレンス。10進数・16進数・8進数・2進数・HTML エンティティ・説明を一覧表示。制御文字・印刷可能文字のフィルタリングと検索に対応。",
       },
-      { property: 'og:title', content: 'ASCII テーブル | Web ツール集' },
+      { property: "og:title", content: "ASCII テーブル | Web ツール集" },
       {
-        property: 'og:description',
-        content: 'ASCII コード 0〜127 の完全リファレンス。Dec/Hex/Oct/Bin/HTML Entity 対応。',
+        property: "og:description",
+        content: "ASCII コード 0〜127 の完全リファレンス。Dec/Hex/Oct/Bin/HTML Entity 対応。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/ascii-table` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
-      { name: 'twitter:title', content: 'ASCII テーブル | Web ツール集' },
+      { property: "og:url", content: `${SITE_BASE_URL}/ascii-table` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "ASCII テーブル | Web ツール集" },
       {
-        name: 'twitter:description',
-        content: 'ASCII コード 0〜127 の完全リファレンス。制御文字・印刷可能文字を一覧表示。',
+        name: "twitter:description",
+        content: "ASCII コード 0〜127 の完全リファレンス。制御文字・印刷可能文字を一覧表示。",
       },
     ],
   }),
@@ -38,33 +38,30 @@ export const Route = createFileRoute('/ascii-table')({
  * ASCII 文字コード 0–127 の完全リファレンスを提供する
  */
 function AsciiTablePage() {
-  const [filter, setFilter] = useState<AsciiFilter>('all');
-  const [query, setQuery] = useState('');
+  const [filter, setFilter] = useState<AsciiFilter>("all");
+  const [query, setQuery] = useState("");
   const { copy } = useClipboard();
 
-  const filtered = useMemo(
-    () => filterAsciiEntries(ASCII_TABLE, filter, query),
-    [filter, query],
-  );
+  const filtered = useMemo(() => filterAsciiEntries(ASCII_TABLE, filter, query), [filter, query]);
 
   return (
     <div className="tool-container">
       {/* フィルターと検索 */}
       <div className="asc-controls">
         <div className="asc-filter-group" role="group" aria-label="カテゴリフィルター">
-          {(['all', 'control', 'printable'] as AsciiFilter[]).map((f) => (
+          {(["all", "control", "printable"] as AsciiFilter[]).map((f) => (
             <button
               key={f}
               type="button"
-              className={`asc-filter-btn${filter === f ? ' active' : ''}`}
+              className={`asc-filter-btn${filter === f ? " active" : ""}`}
               onClick={() => setFilter(f)}
               aria-pressed={filter === f}
             >
-              {f === 'all'
-                ? 'すべて (0–127)'
-                : f === 'control'
-                  ? '制御文字 (0–31, 127)'
-                  : '印刷可能 (32–126)'}
+              {f === "all"
+                ? "すべて (0–127)"
+                : f === "control"
+                  ? "制御文字 (0–31, 127)"
+                  : "印刷可能 (32–126)"}
             </button>
           ))}
         </div>
@@ -85,7 +82,7 @@ function AsciiTablePage() {
             <button
               type="button"
               className="asc-search-clear"
-              onClick={() => setQuery('')}
+              onClick={() => setQuery("")}
               aria-label="検索をクリア"
             >
               ✕
@@ -111,14 +108,16 @@ function AsciiTablePage() {
               <th scope="col">文字</th>
               <th scope="col">HTML</th>
               <th scope="col">説明</th>
-              <th scope="col" className="sr-only">コピー</th>
+              <th scope="col" className="sr-only">
+                コピー
+              </th>
             </tr>
           </thead>
           <tbody>
             {filtered.map((entry) => (
               <tr
                 key={entry.dec}
-                className={`asc-row${entry.category === 'control' ? ' asc-row--control' : ''}`}
+                className={`asc-row${entry.category === "control" ? " asc-row--control" : ""}`}
               >
                 <td className="asc-cell-mono">{entry.dec}</td>
                 <td className="asc-cell-mono">{entry.hex}</td>
@@ -126,10 +125,8 @@ function AsciiTablePage() {
                 <td className="asc-cell-bin">{entry.bin}</td>
                 <td className="asc-cell-char">
                   <span
-                    className={`asc-char${entry.printable ? '' : ' asc-char--control'}`}
-                    aria-label={
-                      entry.printable ? `文字: ${entry.char}` : `制御文字: ${entry.char}`
-                    }
+                    className={`asc-char${entry.printable ? "" : " asc-char--control"}`}
+                    aria-label={entry.printable ? `文字: ${entry.char}` : `制御文字: ${entry.char}`}
                   >
                     {entry.char}
                   </span>
@@ -162,37 +159,37 @@ function AsciiTablePage() {
       <TipsCard
         sections={[
           {
-            title: '使い方',
+            title: "使い方",
             items: [
-              'カテゴリボタンで制御文字（0–31, 127）または印刷可能文字（32–126）を絞り込めます',
+              "カテゴリボタンで制御文字（0–31, 127）または印刷可能文字（32–126）を絞り込めます",
               '検索ボックスで10進数・16進数・文字・説明を検索できます（例: "65", "0x41", "A", "space"）',
-              '「コピー」ボタンで 10進数コードをクリップボードにコピーします',
+              "「コピー」ボタンで 10進数コードをクリップボードにコピーします",
             ],
           },
           {
-            title: '主な制御文字',
+            title: "主な制御文字",
             items: [
-              '0 (NUL): Null 文字 — 文字列終端に使われることがある',
-              '9 (HT): 水平タブ — \\t として知られる',
-              '10 (LF): 改行 — Unix/Linux の行末 (\\n)',
-              '13 (CR): 復帰 — Windows の行末は CR+LF (\\r\\n)',
-              '27 (ESC): エスケープ — ANSI エスケープシーケンスの開始',
-              '32 (Space): スペース — 最初の印刷可能文字',
-              '127 (DEL): 削除文字',
+              "0 (NUL): Null 文字 — 文字列終端に使われることがある",
+              "9 (HT): 水平タブ — \\t として知られる",
+              "10 (LF): 改行 — Unix/Linux の行末 (\\n)",
+              "13 (CR): 復帰 — Windows の行末は CR+LF (\\r\\n)",
+              "27 (ESC): エスケープ — ANSI エスケープシーケンスの開始",
+              "32 (Space): スペース — 最初の印刷可能文字",
+              "127 (DEL): 削除文字",
             ],
           },
           {
-            title: 'ASCII の範囲',
+            title: "ASCII の範囲",
             items: [
-              '0–31: 制御文字 (通信・フォーマット制御)',
+              "0–31: 制御文字 (通信・フォーマット制御)",
               '32–47: 記号 (スペース、! " # $ % & …)',
-              '48–57: 数字 (0–9)',
-              '58–64: 記号 (: ; < = > ? @)',
-              '65–90: 大文字英字 (A–Z)',
-              '91–96: 記号 ([ \\ ] ^ _ `)',
-              '97–122: 小文字英字 (a–z)',
-              '123–126: 記号 ({ | } ~)',
-              '127: DEL 制御文字',
+              "48–57: 数字 (0–9)",
+              "58–64: 記号 (: ; < = > ? @)",
+              "65–90: 大文字英字 (A–Z)",
+              "91–96: 記号 ([ \\ ] ^ _ `)",
+              "97–122: 小文字英字 (a–z)",
+              "123–126: 記号 ({ | } ~)",
+              "127: DEL 制御文字",
             ],
           },
         ]}

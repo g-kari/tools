@@ -184,7 +184,7 @@ export function countNeighbors(
   row: number,
   cols: number,
   rows: number,
-  wrap: boolean
+  wrap: boolean,
 ): number {
   let count = 0;
   for (let dr = -1; dr <= 1; dr++) {
@@ -220,7 +220,7 @@ export function nextGeneration(
   grid: boolean[][],
   cols: number,
   rows: number,
-  wrap: boolean
+  wrap: boolean,
 ): boolean[][] {
   const next = createGrid(cols, rows);
   for (let r = 0; r < rows; r++) {
@@ -243,13 +243,9 @@ export function nextGeneration(
  * @param density - 生きているセルの密度（0.0〜1.0）
  * @returns ランダム生成されたグリッド
  */
-export function fillRandom(
-  cols: number,
-  rows: number,
-  density: number
-): boolean[][] {
+export function fillRandom(cols: number, rows: number, density: number): boolean[][] {
   return Array.from({ length: rows }, () =>
-    Array.from({ length: cols }, () => Math.random() < density)
+    Array.from({ length: cols }, () => Math.random() < density),
   );
 }
 
@@ -259,10 +255,7 @@ export function fillRandom(
  * @returns 生きているセルの総数
  */
 export function countPopulation(grid: boolean[][]): number {
-  return grid.reduce(
-    (sum, row) => sum + row.filter(Boolean).length,
-    0
-  );
+  return grid.reduce((sum, row) => sum + row.filter(Boolean).length, 0);
 }
 
 /**
@@ -272,11 +265,7 @@ export function countPopulation(grid: boolean[][]): number {
  * @param pattern - 配置するパターン
  * @returns パターンが適用されたグリッド
  */
-export function applyPattern(
-  cols: number,
-  rows: number,
-  pattern: Pattern
-): boolean[][] {
+export function applyPattern(cols: number, rows: number, pattern: Pattern): boolean[][] {
   const grid = createGrid(cols, rows);
   if (pattern.cells.length === 0) return grid;
 
@@ -367,17 +356,12 @@ function LifeGame() {
       for (let r = 0; r < rows; r++) {
         for (let c = 0; c < cols; c++) {
           if (g[r][c]) {
-            ctx.fillRect(
-              c * cellSize + 1,
-              r * cellSize + 1,
-              cellSize - 1,
-              cellSize - 1
-            );
+            ctx.fillRect(c * cellSize + 1, r * cellSize + 1, cellSize - 1, cellSize - 1);
           }
         }
       }
     },
-    [cols, rows, cellSize]
+    [cols, rows, cellSize],
   );
 
   /** グリッドが変わったら再描画 */
@@ -459,7 +443,7 @@ function LifeGame() {
       setGeneration(0);
       setStatus("idle");
     },
-    [cols, rows, stopSimulation]
+    [cols, rows, stopSimulation],
   );
 
   /** キャンバス座標をグリッド座標に変換 */
@@ -467,7 +451,7 @@ function LifeGame() {
     (
       canvas: HTMLCanvasElement,
       clientX: number,
-      clientY: number
+      clientY: number,
     ): { c: number; r: number } | null => {
       const rect = canvas.getBoundingClientRect();
       const scaleX = canvas.width / rect.width;
@@ -479,7 +463,7 @@ function LifeGame() {
       if (c < 0 || c >= cols || r < 0 || r >= rows) return null;
       return { c, r };
     },
-    [cellSize, cols, rows]
+    [cellSize, cols, rows],
   );
 
   /** セルをトグルまたは描画 */
@@ -497,7 +481,7 @@ function LifeGame() {
         return next;
       });
     },
-    [canvasToGrid]
+    [canvasToGrid],
   );
 
   /** マウス/タッチイベントハンドラ */
@@ -514,7 +498,7 @@ function LifeGame() {
       drawValueRef.current = !gridRef.current[r][c];
       toggleCell(e.clientX, e.clientY, drawValueRef.current);
     },
-    [status, canvasToGrid, toggleCell]
+    [status, canvasToGrid, toggleCell],
   );
 
   const handlePointerMove = useCallback(
@@ -522,7 +506,7 @@ function LifeGame() {
       if (!isDrawingRef.current || status === "running") return;
       toggleCell(e.clientX, e.clientY, drawValueRef.current);
     },
-    [status, toggleCell]
+    [status, toggleCell],
   );
 
   const handlePointerUp = useCallback(() => {
@@ -547,25 +531,13 @@ function LifeGame() {
           >
             {isRunning ? "⏸ 一時停止" : "▶ 開始"}
           </Button>
-          <Button
-            onClick={step}
-            disabled={isRunning}
-            aria-label="1ステップ進める"
-          >
+          <Button onClick={step} disabled={isRunning} aria-label="1ステップ進める">
             ⏭ ステップ
           </Button>
-          <Button
-            onClick={randomize}
-            disabled={isRunning}
-            aria-label="ランダム配置"
-          >
+          <Button onClick={randomize} disabled={isRunning} aria-label="ランダム配置">
             🎲 ランダム
           </Button>
-          <Button
-            onClick={reset}
-            disabled={isRunning}
-            aria-label="リセット"
-          >
+          <Button onClick={reset} disabled={isRunning} aria-label="リセット">
             🗑 クリア
           </Button>
         </div>

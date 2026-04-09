@@ -18,7 +18,9 @@
 .rl-gauge-fill {
   height: 100%;
   border-radius: 6px;
-  transition: width 0.4s ease-out, background-color 0.3s;
+  transition:
+    width 0.4s ease-out,
+    background-color 0.3s;
 }
 
 .rl-gauge-labels {
@@ -116,7 +118,7 @@
 .rl-score-value {
   font-size: 2rem;
   font-weight: 500;
-  font-family: 'Space Mono', 'Roboto Mono', monospace;
+  font-family: "Space Mono", "Roboto Mono", monospace;
   color: var(--md-sys-color-primary);
   line-height: 1;
 }
@@ -191,14 +193,20 @@
   transition: width 0.4s ease-out;
 }
 
-.rl-density-bar--kanji { background: var(--md-sys-color-primary); }
-.rl-density-bar--hiragana { background: var(--md-sys-color-secondary); }
-.rl-density-bar--katakana { background: #7b1fa2; }
+.rl-density-bar--kanji {
+  background: var(--md-sys-color-primary);
+}
+.rl-density-bar--hiragana {
+  background: var(--md-sys-color-secondary);
+}
+.rl-density-bar--katakana {
+  background: #7b1fa2;
+}
 
 .rl-density-value {
   font-size: 0.8rem;
   font-weight: 500;
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
   color: var(--md-sys-color-on-surface);
   text-align: right;
 }
@@ -216,8 +224,14 @@
 
 /* アニメーション */
 @keyframes rl-fade-in {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

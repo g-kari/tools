@@ -9,16 +9,22 @@ import { TipsCard } from "~/components/TipsCard";
 export const Route = createFileRoute("/image-to-gif")({
   head: () => ({
     meta: [
-    { title: "画像→GIF変換 | Web ツール集" },
-    { name: "description", content: "複数の画像ファイルをアニメーションGIFに変換するツール。" },
-    { property: "og:title", content: "画像→GIF変換 | Web ツール集" },
-    { property: "og:description", content: "複数の画像ファイルをアニメーションGIFに変換するツール。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/image-to-gif` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "画像→GIF変換 | Web ツール集" },
-    { name: "twitter:description", content: "複数の画像ファイルをアニメーションGIFに変換するツール。" },
-  ],
+      { title: "画像→GIF変換 | Web ツール集" },
+      { name: "description", content: "複数の画像ファイルをアニメーションGIFに変換するツール。" },
+      { property: "og:title", content: "画像→GIF変換 | Web ツール集" },
+      {
+        property: "og:description",
+        content: "複数の画像ファイルをアニメーションGIFに変換するツール。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/image-to-gif` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "画像→GIF変換 | Web ツール集" },
+      {
+        name: "twitter:description",
+        content: "複数の画像ファイルをアニメーションGIFに変換するツール。",
+      },
+    ],
   }),
   component: ImageToGifConverter,
 });
@@ -30,7 +36,7 @@ interface ImageFile {
 }
 
 /** ディザリングモードの型定義 */
-export type DitherMode = 'bayer' | 'floyd_steinberg' | 'sierra2_4a' | 'none';
+export type DitherMode = "bayer" | "floyd_steinberg" | "sierra2_4a" | "none";
 
 /**
  * FFmpegインスタンスをロードする
@@ -40,7 +46,7 @@ export type DitherMode = 'bayer' | 'floyd_steinberg' | 'sierra2_4a' | 'none';
  */
 export async function loadFFmpeg(
   ffmpeg: FFmpeg,
-  onProgress?: (message: string) => void
+  onProgress?: (message: string) => void,
 ): Promise<boolean> {
   if (ffmpeg.loaded) return true;
 
@@ -66,13 +72,13 @@ export async function loadFFmpeg(
  * @returns paletteuseフィルター文字列
  */
 export function buildPaletteUseFilter(ditherMode: DitherMode, quality: number): string {
-  if (ditherMode === 'bayer') {
+  if (ditherMode === "bayer") {
     // quality 1-100 → bayer_scale 5-0 (高品質=低スケール)
     const bayerScale = Math.round((1 - (quality - 1) / 99) * 5);
     return `paletteuse=dither=bayer:bayer_scale=${bayerScale}`;
   }
-  if (ditherMode === 'none') {
-    return 'paletteuse=dither=none';
+  if (ditherMode === "none") {
+    return "paletteuse=dither=none";
   }
   return `paletteuse=dither=${ditherMode}`;
 }
@@ -97,7 +103,7 @@ export async function convertImagesToGif(
   quality: number,
   ditherMode: DitherMode,
   maxColors: number,
-  onProgress?: (message: string) => void
+  onProgress?: (message: string) => void,
 ): Promise<Blob | null> {
   try {
     // 画像をFFmpegファイルシステムに書き込み
@@ -135,7 +141,7 @@ export async function convertImagesToGif(
       await ffmpeg.exec([
         ...images.flatMap((_, i) => {
           const ext = images[i].name.split(".").pop() || "png";
-          return ["-loop", "1", "-t", (1/framerate).toString(), "-i", `input${i}.${ext}`];
+          return ["-loop", "1", "-t", (1 / framerate).toString(), "-i", `input${i}.${ext}`];
         }),
         "-filter_complex",
         filterComplex,
@@ -181,7 +187,7 @@ export function generateFFmpegCommand(
   loop: number,
   quality: number,
   ditherMode: DitherMode,
-  maxColors: number
+  maxColors: number,
 ): string {
   const paletteUseFilter = buildPaletteUseFilter(ditherMode, quality);
 
@@ -201,10 +207,12 @@ ffmpeg -i input.${ext} \\
   output.gif`;
   } else {
     // 複数画像の場合
-    const inputLines = images.map((img, i) => {
-      const ext = img.name.split(".").pop() || "png";
-      return `  -loop 1 -t ${(1/framerate).toFixed(4)} -i input${i}.${ext}`;
-    }).join(" \\\n");
+    const inputLines = images
+      .map((img, i) => {
+        const ext = img.name.split(".").pop() || "png";
+        return `  -loop 1 -t ${(1 / framerate).toFixed(4)} -i input${i}.${ext}`;
+      })
+      .join(" \\\n");
 
     const paletteGenFilter = `palettegen=max_colors=${maxColors}:stats_mode=full`;
     const filterComplex = `concat=n=${images.length}:v=1:a=0,fps=${framerate},split[s0][s1];[s0]${paletteGenFilter}[p];[s1][p]${paletteUseFilter}`;
@@ -223,7 +231,7 @@ function ImageToGifConverter() {
   const [framerate, setFramerate] = useState(10);
   const [loop, setLoop] = useState(0);
   const [quality, setQuality] = useState(80);
-  const [ditherMode, setDitherMode] = useState<DitherMode>('floyd_steinberg');
+  const [ditherMode, setDitherMode] = useState<DitherMode>("floyd_steinberg");
   const [maxColors, setMaxColors] = useState(256);
   const [isLoading, setIsLoading] = useState(false);
   const [progress, setProgress] = useState("");
@@ -278,9 +286,7 @@ function ImageToGifConverter() {
   const handleFileSelect = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const files = Array.from(e.target.files || []);
-      const validFiles = files.filter((file) =>
-        file.type.startsWith("image/")
-      );
+      const validFiles = files.filter((file) => file.type.startsWith("image/"));
 
       if (validFiles.length === 0) {
         announceStatus("有効な画像ファイルを選択してください");
@@ -299,7 +305,7 @@ function ImageToGifConverter() {
       setImages(newImages);
       announceStatus(`${validFiles.length}枚の画像を読み込みました`);
     },
-    [images, announceStatus]
+    [images, announceStatus],
   );
 
   const handleRemoveImage = useCallback(
@@ -311,7 +317,7 @@ function ImageToGifConverter() {
       setImages((prev) => prev.filter((i) => i.id !== id));
       announceStatus("画像を削除しました");
     },
-    [images, announceStatus]
+    [images, announceStatus],
   );
 
   const handleConvert = useCallback(async () => {
@@ -340,7 +346,7 @@ function ImageToGifConverter() {
       quality,
       ditherMode,
       maxColors,
-      setProgress
+      setProgress,
     );
 
     if (blob) {
@@ -400,9 +406,7 @@ function ImageToGifConverter() {
       setIsDragging(false);
 
       const files = Array.from(e.dataTransfer.files || []);
-      const validFiles = files.filter((file) =>
-        file.type.startsWith("image/")
-      );
+      const validFiles = files.filter((file) => file.type.startsWith("image/"));
 
       if (validFiles.length === 0) {
         announceStatus("有効な画像ファイルをドロップしてください");
@@ -421,7 +425,7 @@ function ImageToGifConverter() {
       setImages(newImages);
       announceStatus(`${validFiles.length}枚の画像を読み込みました`);
     },
-    [images, announceStatus]
+    [images, announceStatus],
   );
 
   return (
@@ -462,9 +466,7 @@ function ImageToGifConverter() {
                 <polyline points="17 8 12 3 7 8" />
                 <line x1="12" y1="3" x2="12" y2="15" />
               </svg>
-              <p className="dropzone-text">
-                クリックして画像を選択、またはドラッグ&ドロップ
-              </p>
+              <p className="dropzone-text">クリックして画像を選択、またはドラッグ&ドロップ</p>
               <p className="dropzone-hint">PNG, JPEG, WebP など（複数選択可）</p>
             </div>
           </div>
@@ -484,11 +486,7 @@ function ImageToGifConverter() {
             <div className="image-preview-list" role="list" aria-label="選択された画像">
               {images.map((img, index) => (
                 <div key={img.id} className="image-preview-item" role="listitem">
-                  <img
-                    src={img.preview}
-                    alt={`プレビュー ${index + 1}`}
-                    loading="lazy"
-                  />
+                  <img src={img.preview} alt={`プレビュー ${index + 1}`} loading="lazy" />
                   <div className="image-preview-info">
                     <span className="image-name">{img.file.name}</span>
                     <button
@@ -639,10 +637,7 @@ function ImageToGifConverter() {
             </div>
 
             <div className="button-group" role="group" aria-label="ダウンロード">
-              <Button
-                type="button"
-                onClick={handleDownload}
-              >
+              <Button type="button" onClick={handleDownload}>
                 ダウンロード
               </Button>
             </div>
@@ -656,7 +651,16 @@ function ImageToGifConverter() {
               ローカル環境でFFmpegを使用する場合は、以下のコマンドで同様の変換が可能です
             </p>
             <pre className="command-output">
-              <code>{generateFFmpegCommand(images.map(img => img.file), framerate, loop, quality, ditherMode, maxColors)}</code>
+              <code>
+                {generateFFmpegCommand(
+                  images.map((img) => img.file),
+                  framerate,
+                  loop,
+                  quality,
+                  ditherMode,
+                  maxColors,
+                )}
+              </code>
             </pre>
             <div className="button-group" role="group" aria-label="コマンド操作">
               <Button
@@ -664,7 +668,14 @@ function ImageToGifConverter() {
                 variant="secondary"
                 onClick={() => {
                   navigator.clipboard.writeText(
-                    generateFFmpegCommand(images.map(img => img.file), framerate, loop, quality, ditherMode, maxColors)
+                    generateFFmpegCommand(
+                      images.map((img) => img.file),
+                      framerate,
+                      loop,
+                      quality,
+                      ditherMode,
+                      maxColors,
+                    ),
                   );
                   announceStatus("コマンドをクリップボードにコピーしました");
                 }}
@@ -723,7 +734,6 @@ function ImageToGifConverter() {
         aria-atomic="true"
         className="sr-only"
       />
-
     </>
   );
 }

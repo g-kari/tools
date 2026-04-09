@@ -42,9 +42,7 @@ test.describe("Countdown Timer - E2E Tests", () => {
     await expect(display).toBeVisible();
   });
 
-  test("should show countdown units when a future date is set", async ({
-    page,
-  }) => {
+  test("should show countdown units when a future date is set", async ({ page }) => {
     const dateInput = page.locator("input#countdown-date");
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
@@ -85,9 +83,7 @@ test.describe("Countdown Timer - E2E Tests", () => {
     await expect(activeCategory).toContainText("ゲーム");
   });
 
-  test("should show countdown link in game category dropdown", async ({
-    page,
-  }) => {
+  test("should show countdown link in game category dropdown", async ({ page }) => {
     const categoryBtn = page.locator(".nav-category-btn", {
       hasText: "ゲーム",
     });

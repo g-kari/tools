@@ -190,7 +190,7 @@ export function generateShortCode(options: ShortCodeOptions): string {
   }
 
   const segments = Array.from({ length: segmentCount }, () =>
-    generateSegment(segmentLength, alphabet)
+    generateSegment(segmentLength, alphabet),
   );
 
   let code = segments.join(separator);
@@ -210,10 +210,7 @@ export function generateShortCode(options: ShortCodeOptions): string {
  * @param count - 生成する数（1 〜 100）
  * @returns 生成されたショートコードの配列
  */
-export function generateShortCodes(
-  options: ShortCodeOptions,
-  count: number
-): string[] {
+export function generateShortCodes(options: ShortCodeOptions, count: number): string[] {
   const clampedCount = Math.max(1, Math.min(100, count));
   return Array.from({ length: clampedCount }, () => generateShortCode(options));
 }
@@ -228,7 +225,7 @@ export function generateShortCodes(
 export function calculateEntropy(
   segmentLength: number,
   segmentCount: number,
-  alphabetSize: number
+  alphabetSize: number,
 ): number {
   return Math.log2(alphabetSize) * segmentLength * segmentCount;
 }

@@ -3,24 +3,30 @@ import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 
 export const Route = createFileRoute("/dummy-image")({
   head: () => ({
     meta: [
-    { title: "ダミー画像生成 | Web ツール集" },
-    { name: "description", content: "開発・デザイン用プレースホルダー画像を任意のサイズで生成するツール。" },
-    { property: "og:title", content: "ダミー画像生成 | Web ツール集" },
-    { property: "og:description", content: "開発・デザイン用プレースホルダー画像を任意のサイズで生成するツール。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/dummy-image` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "ダミー画像生成 | Web ツール集" },
-    { name: "twitter:description", content: "開発・デザイン用プレースホルダー画像を任意のサイズで生成するツール。" },
-  ],
+      { title: "ダミー画像生成 | Web ツール集" },
+      {
+        name: "description",
+        content: "開発・デザイン用プレースホルダー画像を任意のサイズで生成するツール。",
+      },
+      { property: "og:title", content: "ダミー画像生成 | Web ツール集" },
+      {
+        property: "og:description",
+        content: "開発・デザイン用プレースホルダー画像を任意のサイズで生成するツール。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/dummy-image` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "ダミー画像生成 | Web ツール集" },
+      {
+        name: "twitter:description",
+        content: "開発・デザイン用プレースホルダー画像を任意のサイズで生成するツール。",
+      },
+    ],
   }),
   component: DummyImageGenerator,
 });
@@ -58,7 +64,7 @@ export function drawDummyImage(
   width: number,
   height: number,
   bgColor: string,
-  textColor: string
+  textColor: string,
 ): void {
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
@@ -90,7 +96,7 @@ export function drawDummyImage(
 export function canvasToBlob(
   canvas: HTMLCanvasElement,
   format: ImageFormat,
-  quality: number = 0.92
+  quality: number = 0.92,
 ): Promise<Blob | null> {
   return new Promise((resolve) => {
     const mimeType = FORMAT_OPTIONS.find((f) => f.value === format)?.mimeType || "image/png";
@@ -179,9 +185,7 @@ function DummyImageGenerator() {
         return;
       }
 
-      await navigator.clipboard.write([
-        new ClipboardItem({ "image/png": blob }),
-      ]);
+      await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
       announceStatus("クリップボードにコピーしました");
     } catch (error) {
       console.error("Clipboard write failed:", error);
@@ -372,19 +376,20 @@ function DummyImageGenerator() {
           <div className="converter-section">
             <h2 className="section-title">プレビュー</h2>
             <div className="preview-container">
-              <canvas
-                ref={canvasRef}
-                aria-label={`プレビュー画像 (${width}x${height})`}
-              />
+              <canvas ref={canvasRef} aria-label={`プレビュー画像 (${width}x${height})`} />
             </div>
             <div className="image-info">
               <div className="info-item">
                 <span className="info-label">サイズ:</span>
-                <span className="info-value">{width} × {height} px</span>
+                <span className="info-value">
+                  {width} × {height} px
+                </span>
               </div>
               <div className="info-item">
                 <span className="info-label">形式:</span>
-                <span className="info-value">{FORMAT_OPTIONS.find((f) => f.value === format)?.label}</span>
+                <span className="info-value">
+                  {FORMAT_OPTIONS.find((f) => f.value === format)?.label}
+                </span>
               </div>
               {format !== "png" && (
                 <div className="info-item">

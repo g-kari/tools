@@ -38,7 +38,7 @@
 
 /* ラベル */
 .ngx-label {
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -95,7 +95,7 @@
   user-select: none;
 }
 
-.ngx-checkbox-row input[type='checkbox'] {
+.ngx-checkbox-row input[type="checkbox"] {
   width: 1rem;
   height: 1rem;
   cursor: pointer;
@@ -129,7 +129,7 @@
   user-select: none;
 }
 
-.ngx-radio-btn input[type='radio'] {
+.ngx-radio-btn input[type="radio"] {
   display: none;
 }
 
@@ -201,7 +201,7 @@
 .ngx-code-block {
   margin: 0;
   padding: 1rem;
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   font-size: 0.82rem;
   line-height: 1.7;
   background: var(--md-sys-color-surface-variant);

@@ -93,20 +93,17 @@ function CssGradient() {
   }, []);
 
   // Radialの中心位置変更
-  const handleRadialPositionChange = useCallback(
-    (axis: "x" | "y", value: number) => {
-      setConfig((prev) => ({
-        ...prev,
-        radial: {
-          ...prev.radial!,
-          positionX: axis === "x" ? value : prev.radial!.positionX,
-          positionY: axis === "y" ? value : prev.radial!.positionY,
-        },
-      }));
-      setSelectedPreset(null);
-    },
-    []
-  );
+  const handleRadialPositionChange = useCallback((axis: "x" | "y", value: number) => {
+    setConfig((prev) => ({
+      ...prev,
+      radial: {
+        ...prev.radial!,
+        positionX: axis === "x" ? value : prev.radial!.positionX,
+        positionY: axis === "y" ? value : prev.radial!.positionY,
+      },
+    }));
+    setSelectedPreset(null);
+  }, []);
 
   // Conicの開始角度変更
   const handleConicAngleChange = useCallback((angle: number) => {
@@ -118,20 +115,17 @@ function CssGradient() {
   }, []);
 
   // Conicの中心位置変更
-  const handleConicPositionChange = useCallback(
-    (axis: "x" | "y", value: number) => {
-      setConfig((prev) => ({
-        ...prev,
-        conic: {
-          ...prev.conic!,
-          positionX: axis === "x" ? value : prev.conic!.positionX,
-          positionY: axis === "y" ? value : prev.conic!.positionY,
-        },
-      }));
-      setSelectedPreset(null);
-    },
-    []
-  );
+  const handleConicPositionChange = useCallback((axis: "x" | "y", value: number) => {
+    setConfig((prev) => ({
+      ...prev,
+      conic: {
+        ...prev.conic!,
+        positionX: axis === "x" ? value : prev.conic!.positionX,
+        positionY: axis === "y" ? value : prev.conic!.positionY,
+      },
+    }));
+    setSelectedPreset(null);
+  }, []);
 
   // カラーストップの色変更
   const handleStopColorChange = useCallback((index: number, color: string) => {
@@ -144,18 +138,15 @@ function CssGradient() {
   }, []);
 
   // カラーストップの位置変更
-  const handleStopPositionChange = useCallback(
-    (index: number, position: number) => {
-      const clamped = Math.max(0, Math.min(100, position));
-      setConfig((prev) => {
-        const stops = [...prev.stops];
-        stops[index] = { ...stops[index], position: clamped };
-        return { ...prev, stops };
-      });
-      setSelectedPreset(null);
-    },
-    []
-  );
+  const handleStopPositionChange = useCallback((index: number, position: number) => {
+    const clamped = Math.max(0, Math.min(100, position));
+    setConfig((prev) => {
+      const stops = [...prev.stops];
+      stops[index] = { ...stops[index], position: clamped };
+      return { ...prev, stops };
+    });
+    setSelectedPreset(null);
+  }, []);
 
   // カラーストップ追加
   const handleAddStop = useCallback(() => {
@@ -203,8 +194,8 @@ function CssGradient() {
       <div className="cg-container">
         <h1 className="tool-title">CSSグラジェント生成</h1>
         <p className="tool-description">
-          ビジュアルエディターでCSSグラジェントを作成します。
-          linear / radial / conic の3タイプに対応。
+          ビジュアルエディターでCSSグラジェントを作成します。 linear / radial / conic
+          の3タイプに対応。
         </p>
 
         <div className="cg-layout">
@@ -213,11 +204,7 @@ function CssGradient() {
             {/* グラジェントタイプ */}
             <div className="cg-section">
               <p className="cg-section-title">タイプ</p>
-              <div
-                className="cg-type-tabs"
-                role="tablist"
-                aria-label="グラジェントタイプ選択"
-              >
+              <div className="cg-type-tabs" role="tablist" aria-label="グラジェントタイプ選択">
                 {GRADIENT_TYPES.map(({ id, label }) => (
                   <button
                     key={id}
@@ -255,9 +242,7 @@ function CssGradient() {
                     onChange={(e) => handleAngleChange(Number(e.target.value))}
                     aria-label="グラジェント角度"
                   />
-                  <span className="cg-range-value">
-                    {config.linear?.angle ?? 90}°
-                  </span>
+                  <span className="cg-range-value">{config.linear?.angle ?? 90}°</span>
                 </div>
               </div>
             )}
@@ -276,9 +261,7 @@ function CssGradient() {
                   <select
                     className="cg-select"
                     value={config.radial?.shape ?? "ellipse"}
-                    onChange={(e) =>
-                      handleRadialShapeChange(e.target.value as RadialShape)
-                    }
+                    onChange={(e) => handleRadialShapeChange(e.target.value as RadialShape)}
                     aria-label="ラジアル形状"
                   >
                     <option value="ellipse">Ellipse</option>
@@ -293,14 +276,10 @@ function CssGradient() {
                     min={0}
                     max={100}
                     value={config.radial?.positionX ?? 50}
-                    onChange={(e) =>
-                      handleRadialPositionChange("x", Number(e.target.value))
-                    }
+                    onChange={(e) => handleRadialPositionChange("x", Number(e.target.value))}
                     aria-label="中心X位置"
                   />
-                  <span className="cg-range-value">
-                    {config.radial?.positionX ?? 50}%
-                  </span>
+                  <span className="cg-range-value">{config.radial?.positionX ?? 50}%</span>
                 </div>
                 <div className="cg-option-row">
                   <span className="cg-option-label">中心 Y</span>
@@ -310,14 +289,10 @@ function CssGradient() {
                     min={0}
                     max={100}
                     value={config.radial?.positionY ?? 50}
-                    onChange={(e) =>
-                      handleRadialPositionChange("y", Number(e.target.value))
-                    }
+                    onChange={(e) => handleRadialPositionChange("y", Number(e.target.value))}
                     aria-label="中心Y位置"
                   />
-                  <span className="cg-range-value">
-                    {config.radial?.positionY ?? 50}%
-                  </span>
+                  <span className="cg-range-value">{config.radial?.positionY ?? 50}%</span>
                 </div>
               </div>
             )}
@@ -339,14 +314,10 @@ function CssGradient() {
                     min={0}
                     max={360}
                     value={config.conic?.angle ?? 0}
-                    onChange={(e) =>
-                      handleConicAngleChange(Number(e.target.value))
-                    }
+                    onChange={(e) => handleConicAngleChange(Number(e.target.value))}
                     aria-label="開始角度"
                   />
-                  <span className="cg-range-value">
-                    {config.conic?.angle ?? 0}°
-                  </span>
+                  <span className="cg-range-value">{config.conic?.angle ?? 0}°</span>
                 </div>
                 <div className="cg-option-row">
                   <span className="cg-option-label">中心 X</span>
@@ -356,14 +327,10 @@ function CssGradient() {
                     min={0}
                     max={100}
                     value={config.conic?.positionX ?? 50}
-                    onChange={(e) =>
-                      handleConicPositionChange("x", Number(e.target.value))
-                    }
+                    onChange={(e) => handleConicPositionChange("x", Number(e.target.value))}
                     aria-label="コニック中心X位置"
                   />
-                  <span className="cg-range-value">
-                    {config.conic?.positionX ?? 50}%
-                  </span>
+                  <span className="cg-range-value">{config.conic?.positionX ?? 50}%</span>
                 </div>
                 <div className="cg-option-row">
                   <span className="cg-option-label">中心 Y</span>
@@ -373,14 +340,10 @@ function CssGradient() {
                     min={0}
                     max={100}
                     value={config.conic?.positionY ?? 50}
-                    onChange={(e) =>
-                      handleConicPositionChange("y", Number(e.target.value))
-                    }
+                    onChange={(e) => handleConicPositionChange("y", Number(e.target.value))}
                     aria-label="コニック中心Y位置"
                   />
-                  <span className="cg-range-value">
-                    {config.conic?.positionY ?? 50}%
-                  </span>
+                  <span className="cg-range-value">{config.conic?.positionY ?? 50}%</span>
                 </div>
               </div>
             )}
@@ -388,20 +351,14 @@ function CssGradient() {
             {/* カラーストップ */}
             <div className="cg-section">
               <p className="cg-section-title">カラーストップ</p>
-              <div
-                className="cg-stops-list"
-                aria-label="カラーストップ一覧"
-                aria-live="polite"
-              >
+              <div className="cg-stops-list" aria-label="カラーストップ一覧" aria-live="polite">
                 {config.stops.map((stop, index) => (
                   <div key={stop.id} className="cg-stop-item">
                     <input
                       type="color"
                       className="cg-stop-color"
                       value={stop.color}
-                      onChange={(e) =>
-                        handleStopColorChange(index, e.target.value)
-                      }
+                      onChange={(e) => handleStopColorChange(index, e.target.value)}
                       aria-label={`カラーストップ ${index + 1} の色`}
                     />
                     <input
@@ -410,9 +367,7 @@ function CssGradient() {
                       value={stop.color}
                       onChange={(e) => {
                         const val = e.target.value;
-                        const normalized = val.startsWith("#")
-                          ? val
-                          : `#${val}`;
+                        const normalized = val.startsWith("#") ? val : `#${val}`;
                         if (/^#[0-9A-Fa-f]{6}$/.test(normalized)) {
                           handleStopColorChange(index, normalized);
                         } else {
@@ -427,14 +382,10 @@ function CssGradient() {
                       value={stop.position}
                       min={0}
                       max={100}
-                      onChange={(e) =>
-                        handleStopPositionChange(index, Number(e.target.value))
-                      }
+                      onChange={(e) => handleStopPositionChange(index, Number(e.target.value))}
                       aria-label={`カラーストップ ${index + 1} の位置 (%)`}
                     />
-                    <span className="cg-option-label cg-option-label--auto">
-                      %
-                    </span>
+                    <span className="cg-option-label cg-option-label--auto">%</span>
                     <button
                       type="button"
                       className="cg-stop-remove"
@@ -461,11 +412,7 @@ function CssGradient() {
             {/* プリセット */}
             <div className="cg-section">
               <p className="cg-section-title">プリセット</p>
-              <div
-                className="cg-presets-grid"
-                role="list"
-                aria-label="グラジェントプリセット一覧"
-              >
+              <div className="cg-presets-grid" role="list" aria-label="グラジェントプリセット一覧">
                 {GRADIENT_PRESETS.map((preset, index) => {
                   const bg = generateGradientCSS(preset.config);
                   return (

@@ -145,9 +145,7 @@ test.describe("Quoted-Printable Encode/Decode - E2E Tests", () => {
     await expect(toast).toContainText("テキストを入力してください");
   });
 
-  test("copy button should be disabled when output is empty", async ({
-    page,
-  }) => {
+  test("copy button should be disabled when output is empty", async ({ page }) => {
     const copyButton = page.locator("button.btn-copy");
     await expect(copyButton).toBeDisabled();
   });
@@ -180,9 +178,7 @@ test.describe("Quoted-Printable Encode/Decode - E2E Tests", () => {
     expect(tipsText).not.toContain("undefined");
   });
 
-  test("should display Quoted-Printable description in tips card", async ({
-    page,
-  }) => {
+  test("should display Quoted-Printable description in tips card", async ({ page }) => {
     const tipsCard = page.locator(".info-box");
     const tipsText = await tipsCard.textContent();
     expect(tipsText).toContain("RFC 2045");

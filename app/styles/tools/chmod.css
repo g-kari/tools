@@ -36,7 +36,9 @@
   font-size: 1rem;
   background-color: var(--md-sys-color-surface-variant);
   color: var(--md-sys-color-on-surface);
-  transition: border-color 0.2s, background-color 0.2s;
+  transition:
+    border-color 0.2s,
+    background-color 0.2s;
   letter-spacing: 0.1em;
   width: 100%;
 }
@@ -312,7 +314,10 @@
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.2s, color 0.2s, opacity 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    opacity 0.2s;
   font-family: "JetBrains Mono", "Space Mono", monospace;
   letter-spacing: 0.05em;
   display: flex;

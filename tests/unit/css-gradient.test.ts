@@ -28,9 +28,7 @@ describe("formatColorStops", () => {
       { id: "b", color: "#00ff00", position: 50 },
       { id: "c", color: "#0000ff", position: 100 },
     ];
-    expect(formatColorStops(stops)).toBe(
-      "#ff0000 0%, #00ff00 50%, #0000ff 100%"
-    );
+    expect(formatColorStops(stops)).toBe("#ff0000 0%, #00ff00 50%, #0000ff 100%");
   });
 
   it("空配列は空文字列を返す", () => {
@@ -87,9 +85,7 @@ describe("generateRadialGradient", () => {
       ],
     };
     const result = generateRadialGradient(config);
-    expect(result).toBe(
-      "radial-gradient(ellipse at 50% 50%, #ff0000 0%, #0000ff 100%)"
-    );
+    expect(result).toBe("radial-gradient(ellipse at 50% 50%, #ff0000 0%, #0000ff 100%)");
   });
 
   it("circle形状でradial-gradientを生成する", () => {
@@ -102,9 +98,7 @@ describe("generateRadialGradient", () => {
       radial: { shape: "circle", positionX: 30, positionY: 70 },
     };
     const result = generateRadialGradient(config);
-    expect(result).toBe(
-      "radial-gradient(circle at 30% 70%, #ff0000 0%, #0000ff 100%)"
-    );
+    expect(result).toBe("radial-gradient(circle at 30% 70%, #ff0000 0%, #0000ff 100%)");
   });
 });
 
@@ -118,9 +112,7 @@ describe("generateConicGradient", () => {
       ],
     };
     const result = generateConicGradient(config);
-    expect(result).toBe(
-      "conic-gradient(from 0deg at 50% 50%, #ff0000 0%, #0000ff 100%)"
-    );
+    expect(result).toBe("conic-gradient(from 0deg at 50% 50%, #ff0000 0%, #0000ff 100%)");
   });
 
   it("角度と位置を指定したconic-gradientを生成する", () => {
@@ -133,9 +125,7 @@ describe("generateConicGradient", () => {
       conic: { angle: 45, positionX: 25, positionY: 75 },
     };
     const result = generateConicGradient(config);
-    expect(result).toBe(
-      "conic-gradient(from 45deg at 25% 75%, #ff0000 0%, #0000ff 100%)"
-    );
+    expect(result).toBe("conic-gradient(from 45deg at 25% 75%, #ff0000 0%, #0000ff 100%)");
   });
 });
 

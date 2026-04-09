@@ -3,14 +3,7 @@
  */
 
 /** JSON Schemaの型名 */
-type JsonSchemaTypeName =
-  | "string"
-  | "number"
-  | "integer"
-  | "boolean"
-  | "null"
-  | "object"
-  | "array";
+type JsonSchemaTypeName = "string" | "number" | "integer" | "boolean" | "null" | "object" | "array";
 
 /** JSON Schemaオブジェクト */
 interface JsonSchemaObject {
@@ -40,8 +33,7 @@ function schemasEqual(a: JsonSchemaObject, b: JsonSchemaObject): boolean {
  */
 function deduplicateSchemas(schemas: JsonSchemaObject[]): JsonSchemaObject[] {
   return schemas.filter(
-    (schema, index, self) =>
-      self.findIndex((s) => schemasEqual(s, schema)) === index
+    (schema, index, self) => self.findIndex((s) => schemasEqual(s, schema)) === index,
   );
 }
 

@@ -7,7 +7,7 @@ test.describe("OpenSSLコマンドジェネレーター", () => {
 
   test("ページタイトルが表示される", async ({ page }) => {
     await expect(
-      page.getByRole("heading", { name: "OpenSSLコマンドジェネレーター" })
+      page.getByRole("heading", { name: "OpenSSLコマンドジェネレーター" }),
     ).toBeVisible();
   });
 

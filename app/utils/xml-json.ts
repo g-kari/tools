@@ -26,15 +26,15 @@ function nodeToJson(node: Element): unknown {
       const attr = node.attributes[i];
       attrs[`@${attr.name}`] = attr.value;
     }
-    result['@attributes'] = attrs;
+    result["@attributes"] = attrs;
   }
 
   const children = Array.from(node.childNodes);
   const elementChildren = children.filter((c) => c.nodeType === Node.ELEMENT_NODE) as Element[];
   const textContent = children
     .filter((c) => c.nodeType === Node.TEXT_NODE)
-    .map((c) => c.textContent ?? '')
-    .join('')
+    .map((c) => c.textContent ?? "")
+    .join("")
     .trim();
 
   if (elementChildren.length === 0) {
@@ -43,7 +43,7 @@ function nodeToJson(node: Element): unknown {
       return textContent;
     }
     if (textContent) {
-      result['#text'] = textContent;
+      result["#text"] = textContent;
     }
     return result;
   }
@@ -61,7 +61,7 @@ function nodeToJson(node: Element): unknown {
   }
 
   if (textContent && elementChildren.length === 0) {
-    result['#text'] = textContent;
+    result["#text"] = textContent;
   }
 
   return result;
@@ -75,19 +75,19 @@ function nodeToJson(node: Element): unknown {
  */
 export function xmlToJson(xmlString: string, indent = 2): XmlJsonResult {
   if (!xmlString.trim()) {
-    return { success: false, output: '', error: 'XMLを入力してください' };
+    return { success: false, output: "", error: "XMLを入力してください" };
   }
 
   try {
     const parser = new DOMParser();
-    const doc = parser.parseFromString(xmlString, 'application/xml');
+    const doc = parser.parseFromString(xmlString, "application/xml");
 
-    const parseError = doc.querySelector('parsererror');
+    const parseError = doc.querySelector("parsererror");
     if (parseError) {
       return {
         success: false,
-        output: '',
-        error: `XML解析エラー: ${parseError.textContent?.split('\n')[0] ?? '不正なXMLです'}`,
+        output: "",
+        error: `XML解析エラー: ${parseError.textContent?.split("\n")[0] ?? "不正なXMLです"}`,
       };
     }
 
@@ -102,7 +102,7 @@ export function xmlToJson(xmlString: string, indent = 2): XmlJsonResult {
   } catch (e) {
     return {
       success: false,
-      output: '',
+      output: "",
       error: `変換エラー: ${e instanceof Error ? e.message : String(e)}`,
     };
   }
@@ -115,7 +115,7 @@ function jsonToXmlNode(
   tagName: string,
   value: unknown,
   indentLevel: number,
-  indentStr: string
+  indentStr: string,
 ): string {
   const indent = indentStr.repeat(indentLevel);
 
@@ -123,53 +123,53 @@ function jsonToXmlNode(
     return `${indent}<${tagName} />`;
   }
 
-  if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+  if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
     const escaped = String(value)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&apos;');
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&apos;");
     return `${indent}<${tagName}>${escaped}</${tagName}>`;
   }
 
   if (Array.isArray(value)) {
-    return value.map((item) => jsonToXmlNode(tagName, item, indentLevel, indentStr)).join('\n');
+    return value.map((item) => jsonToXmlNode(tagName, item, indentLevel, indentStr)).join("\n");
   }
 
-  if (typeof value === 'object') {
+  if (typeof value === "object") {
     const obj = value as Record<string, unknown>;
-    let attrs = '';
-    const attrObj = obj['@attributes'];
-    if (attrObj && typeof attrObj === 'object') {
+    let attrs = "";
+    const attrObj = obj["@attributes"];
+    if (attrObj && typeof attrObj === "object") {
       for (const [k, v] of Object.entries(attrObj as Record<string, string>)) {
-        const attrName = k.startsWith('@') ? k.slice(1) : k;
-        const escaped = String(v).replace(/"/g, '&quot;');
+        const attrName = k.startsWith("@") ? k.slice(1) : k;
+        const escaped = String(v).replace(/"/g, "&quot;");
         attrs += ` ${attrName}="${escaped}"`;
       }
     }
 
     const children: string[] = [];
     for (const [key, val] of Object.entries(obj)) {
-      if (key === '@attributes') continue;
-      if (key === '#text') continue;
+      if (key === "@attributes") continue;
+      if (key === "#text") continue;
       children.push(jsonToXmlNode(key, val, indentLevel + 1, indentStr));
     }
 
-    const textContent = obj['#text'];
+    const textContent = obj["#text"];
 
     if (children.length === 0) {
       if (textContent !== undefined) {
         const escaped = String(textContent)
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;');
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;");
         return `${indent}<${tagName}${attrs}>${escaped}</${tagName}>`;
       }
       return `${indent}<${tagName}${attrs} />`;
     }
 
-    return `${indent}<${tagName}${attrs}>\n${children.join('\n')}\n${indent}</${tagName}>`;
+    return `${indent}<${tagName}${attrs}>\n${children.join("\n")}\n${indent}</${tagName}>`;
   }
 
   return `${indent}<${tagName} />`;
@@ -183,23 +183,23 @@ function jsonToXmlNode(
  */
 export function jsonToXml(jsonString: string, indent = 2): XmlJsonResult {
   if (!jsonString.trim()) {
-    return { success: false, output: '', error: 'JSONを入力してください' };
+    return { success: false, output: "", error: "JSONを入力してください" };
   }
 
   try {
     const obj = JSON.parse(jsonString) as Record<string, unknown>;
-    if (typeof obj !== 'object' || Array.isArray(obj) || obj === null) {
+    if (typeof obj !== "object" || Array.isArray(obj) || obj === null) {
       return {
         success: false,
-        output: '',
-        error: 'JSONはルートレベルのオブジェクト（{ }）である必要があります',
+        output: "",
+        error: "JSONはルートレベルのオブジェクト（{ }）である必要があります",
       };
     }
 
-    const indentStr = ' '.repeat(indent);
+    const indentStr = " ".repeat(indent);
     const entries = Object.entries(obj);
     if (entries.length === 0) {
-      return { success: false, output: '', error: 'JSONオブジェクトが空です' };
+      return { success: false, output: "", error: "JSONオブジェクトが空です" };
     }
 
     const [rootTag, rootValue] = entries[0];
@@ -213,7 +213,7 @@ export function jsonToXml(jsonString: string, indent = 2): XmlJsonResult {
   } catch (e) {
     return {
       success: false,
-      output: '',
+      output: "",
       error: `JSON解析エラー: ${e instanceof Error ? e.message : String(e)}`,
     };
   }
@@ -249,23 +249,23 @@ export function getSampleJson(): string {
       bookstore: {
         book: [
           {
-            '@attributes': { category: 'fiction' },
-            title: 'Harry Potter',
-            author: 'J.K. Rowling',
-            year: '2005',
-            price: '29.99',
+            "@attributes": { category: "fiction" },
+            title: "Harry Potter",
+            author: "J.K. Rowling",
+            year: "2005",
+            price: "29.99",
           },
           {
-            '@attributes': { category: 'non-fiction' },
-            title: '吾輩は猫である',
-            author: '夏目漱石',
-            year: '1905',
-            price: '980',
+            "@attributes": { category: "non-fiction" },
+            title: "吾輩は猫である",
+            author: "夏目漱石",
+            year: "1905",
+            price: "980",
           },
         ],
       },
     },
     null,
-    2
+    2,
   );
 }

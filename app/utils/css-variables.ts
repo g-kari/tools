@@ -49,11 +49,38 @@ export function isCssColor(value: string): boolean {
   if (/^color\s*\(/.test(trimmed)) return true;
   // CSSカラーキーワード（主要なもの）
   const colorKeywords = new Set([
-    'red', 'green', 'blue', 'white', 'black', 'gray', 'grey', 'yellow',
-    'orange', 'purple', 'pink', 'brown', 'cyan', 'magenta', 'lime',
-    'indigo', 'violet', 'teal', 'coral', 'salmon', 'navy', 'olive',
-    'maroon', 'aqua', 'fuchsia', 'silver', 'gold', 'transparent',
-    'currentcolor', 'inherit', 'initial', 'unset',
+    "red",
+    "green",
+    "blue",
+    "white",
+    "black",
+    "gray",
+    "grey",
+    "yellow",
+    "orange",
+    "purple",
+    "pink",
+    "brown",
+    "cyan",
+    "magenta",
+    "lime",
+    "indigo",
+    "violet",
+    "teal",
+    "coral",
+    "salmon",
+    "navy",
+    "olive",
+    "maroon",
+    "aqua",
+    "fuchsia",
+    "silver",
+    "gold",
+    "transparent",
+    "currentcolor",
+    "inherit",
+    "initial",
+    "unset",
   ]);
   if (colorKeywords.has(trimmed.toLowerCase())) return true;
   return false;
@@ -68,7 +95,7 @@ export function resolveColorValue(value: string): string | null {
   const trimmed = value.trim();
   if (!isCssColor(trimmed)) return null;
   // var()参照は解決できないのでnull
-  if (trimmed.includes('var(')) return null;
+  if (trimmed.includes("var(")) return null;
   return trimmed;
 }
 
@@ -86,16 +113,14 @@ export function parseCssVariables(css: string): ParseResult {
   const seen = new Map<string, number>(); // name+selector -> index
 
   // コメントを除去
-  const stripped = css
-    .replace(/\/\*[\s\S]*?\*\//g, '')
-    .replace(/\/\/.*/g, '');
+  const stripped = css.replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/.*/g, "");
 
   // セレクターブロックを解析
   const blockRegex = /([^{]*)\{([^}]*)\}/g;
   let match: RegExpExecArray | null;
 
   while ((match = blockRegex.exec(stripped)) !== null) {
-    const selector = match[1].trim().replace(/\s+/g, ' ');
+    const selector = match[1].trim().replace(/\s+/g, " ");
     const block = match[2];
 
     // --custom-property: value; を抽出
@@ -139,9 +164,9 @@ export function parseCssVariables(css: string): ParseResult {
  * @param selector - 出力するセレクター
  * @returns CSS文字列
  */
-export function exportAsCss(variables: CssVariable[], selector = ':root'): string {
-  if (variables.length === 0) return '';
-  const declarations = variables.map((v) => `  ${v.name}: ${v.value};`).join('\n');
+export function exportAsCss(variables: CssVariable[], selector = ":root"): string {
+  if (variables.length === 0) return "";
+  const declarations = variables.map((v) => `  ${v.name}: ${v.value};`).join("\n");
   return `${selector} {\n${declarations}\n}`;
 }
 
@@ -164,12 +189,12 @@ export function exportAsJson(variables: CssVariable[]): string {
  * @returns JS/TS文字列
  */
 export function exportAsJs(variables: CssVariable[]): string {
-  if (variables.length === 0) return 'export const cssVariables = {};';
+  if (variables.length === 0) return "export const cssVariables = {};";
   const entries = variables
     .map((v) => {
-      const key = v.name.replace(/^--/, '').replace(/-([a-z])/g, (_, c: string) => c.toUpperCase());
+      const key = v.name.replace(/^--/, "").replace(/-([a-z])/g, (_, c: string) => c.toUpperCase());
       return `  '${key}': '${v.value.replace(/'/g, "\\'")}'`;
     })
-    .join(',\n');
+    .join(",\n");
   return `export const cssVariables = {\n${entries},\n} as const;`;
 }

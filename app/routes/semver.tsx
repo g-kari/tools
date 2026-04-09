@@ -3,10 +3,7 @@ import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useCallback } from "react";
 import { useToast } from "../components/Toast";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 import {
   parseSemver,
@@ -40,8 +37,7 @@ export const Route = createFileRoute("/semver")({
       { name: "twitter:title", content: "Semver チェッカー | Web ツール集" },
       {
         name: "twitter:description",
-        content:
-          "セマンティックバージョン (Semver) のパース・比較・範囲チェックツール。",
+        content: "セマンティックバージョン (Semver) のパース・比較・範囲チェックツール。",
       },
     ],
   }),
@@ -65,9 +61,7 @@ function SemverBadge({
       aria-label={`${label}: ${isEmpty ? "なし" : String(value)}`}
     >
       <span className="semver-component-name">{label}</span>
-      <span
-        className={`semver-component-value ${isEmpty ? "semver-component-value-null" : ""}`}
-      >
+      <span className={`semver-component-value ${isEmpty ? "semver-component-value-null" : ""}`}>
         {isEmpty ? "なし" : String(value)}
       </span>
     </div>
@@ -75,13 +69,7 @@ function SemverBadge({
 }
 
 /** パース結果セクション */
-function ParseSection({
-  parsed,
-  label,
-}: {
-  parsed: SemverParsed | null;
-  label: string;
-}) {
+function ParseSection({ parsed, label }: { parsed: SemverParsed | null; label: string }) {
   if (!parsed) {
     return (
       <div className="semver-empty" aria-live="polite">
@@ -97,7 +85,10 @@ function ParseSection({
         {parsed.valid ? (
           <>
             <span className="semver-normalized-value">{formatSemver(parsed)}</span>
-            <span className="semver-valid-badge semver-valid-badge-ok" aria-label="有効なバージョン">
+            <span
+              className="semver-valid-badge semver-valid-badge-ok"
+              aria-label="有効なバージョン"
+            >
               ✓ 有効
             </span>
           </>
@@ -106,7 +97,10 @@ function ParseSection({
             <span className="semver-normalized-value semver-invalid-value">
               {parsed.raw || "—"}
             </span>
-            <span className="semver-valid-badge semver-valid-badge-ng" aria-label="無効なバージョン">
+            <span
+              className="semver-valid-badge semver-valid-badge-ng"
+              aria-label="無効なバージョン"
+            >
               ✕ 無効
             </span>
           </>
@@ -117,16 +111,8 @@ function ParseSection({
           <SemverBadge label="Major" value={parsed.major} />
           <SemverBadge label="Minor" value={parsed.minor} />
           <SemverBadge label="Patch" value={parsed.patch} />
-          <SemverBadge
-            label="Pre-release"
-            value={parsed.prerelease}
-            variant="prerelease"
-          />
-          <SemverBadge
-            label="Build"
-            value={parsed.buildMetadata}
-            variant="build"
-          />
+          <SemverBadge label="Pre-release" value={parsed.prerelease} variant="prerelease" />
+          <SemverBadge label="Build" value={parsed.buildMetadata} variant="build" />
         </div>
       )}
     </div>
@@ -158,14 +144,11 @@ function SemverChecker() {
   const parsedRange = rangeVersion.trim() ? parseSemver(rangeVersion) : null;
 
   // 比較結果
-  const compareResult =
-    parsedA?.valid && parsedB?.valid ? compareSemver(parsedA, parsedB) : null;
+  const compareResult = parsedA?.valid && parsedB?.valid ? compareSemver(parsedA, parsedB) : null;
 
   // 範囲チェック結果
   const rangeResult =
-    parsedRange && rangeExpr.trim()
-      ? satisfiesRange(parsedRange, rangeExpr)
-      : null;
+    parsedRange && rangeExpr.trim() ? satisfiesRange(parsedRange, rangeExpr) : null;
 
   const handleCopy = useCallback(
     async (value: string, label: string) => {
@@ -177,18 +160,20 @@ function SemverChecker() {
         showToast("コピーに失敗しました", "error");
       }
     },
-    [copy, showToast, announceStatus]
+    [copy, showToast, announceStatus],
   );
 
-  const applyRangeOperator = useCallback((op: string) => {
-    const v = rangeVersion.trim() || "1.0.0";
-    setRangeExpr(`${op}${v}`);
-  }, [rangeVersion]);
+  const applyRangeOperator = useCallback(
+    (op: string) => {
+      const v = rangeVersion.trim() || "1.0.0";
+      setRangeExpr(`${op}${v}`);
+    },
+    [rangeVersion],
+  );
 
   return (
     <>
       <div className="tool-container">
-
         {/* ── §1. バージョン解析 ── */}
         <div className="semver-section">
           <p className="semver-section-title">バージョン解析</p>
@@ -214,11 +199,7 @@ function SemverChecker() {
           {parsedForParse?.valid && (
             <div className="semver-section semver-increment-section">
               <p className="semver-section-title">次バージョン</p>
-              <div
-                className="semver-increment-grid"
-                role="list"
-                aria-label="次バージョン候補"
-              >
+              <div className="semver-increment-grid" role="list" aria-label="次バージョン候補">
                 {(
                   [
                     { type: "patch", fn: incrementPatch, desc: "バグ修正" },
@@ -253,7 +234,9 @@ function SemverChecker() {
           <div className="converter-section">
             <div className="semver-input-wrapper">
               <div className="semver-input-row">
-                <span className="semver-input-label" aria-hidden="true">A</span>
+                <span className="semver-input-label" aria-hidden="true">
+                  A
+                </span>
                 <input
                   id="semver-compare-a"
                   type="text"
@@ -266,7 +249,9 @@ function SemverChecker() {
                 />
               </div>
               <div className="semver-input-row">
-                <span className="semver-input-label" aria-hidden="true">B</span>
+                <span className="semver-input-label" aria-hidden="true">
+                  B
+                </span>
                 <input
                   id="semver-compare-b"
                   type="text"
@@ -288,7 +273,9 @@ function SemverChecker() {
               aria-live="polite"
               aria-label={`比較結果: A ${compareResult === -1 ? "< (小さい)" : compareResult === 0 ? "= (等しい)" : "> (大きい)"} B`}
             >
-              <span className="semver-compare-version">{parsedA.valid ? formatSemver(parsedA) : (compareA || "—")}</span>
+              <span className="semver-compare-version">
+                {parsedA.valid ? formatSemver(parsedA) : compareA || "—"}
+              </span>
               <span
                 className={`semver-compare-operator ${
                   !parsedA.valid || !parsedB.valid
@@ -308,13 +295,13 @@ function SemverChecker() {
                       ? "="
                       : ">"}
               </span>
-              <span className="semver-compare-version">{parsedB.valid ? formatSemver(parsedB) : (compareB || "—")}</span>
+              <span className="semver-compare-version">
+                {parsedB.valid ? formatSemver(parsedB) : compareB || "—"}
+              </span>
             </div>
           )}
           {!parsedA && !parsedB && (
-            <div className="semver-empty">
-              バージョン A・B を入力すると比較結果が表示されます
-            </div>
+            <div className="semver-empty">バージョン A・B を入力すると比較結果が表示されます</div>
           )}
         </div>
 
@@ -354,8 +341,8 @@ function SemverChecker() {
               spellCheck={false}
             />
             <p id="semver-range-hint" className="text-case-hint">
-              演算子: <code>&gt;=</code> <code>&gt;</code> <code>&lt;=</code>{" "}
-              <code>&lt;</code> <code>=</code> <code>^</code> <code>~</code>（演算子なしは完全一致）
+              演算子: <code>&gt;=</code> <code>&gt;</code> <code>&lt;=</code> <code>&lt;</code>{" "}
+              <code>=</code> <code>^</code> <code>~</code>（演算子なしは完全一致）
             </p>
             <div className="semver-range-operators" aria-label="演算子クイック入力">
               {[
@@ -404,9 +391,7 @@ function SemverChecker() {
               </span>
             </div>
           ) : (
-            <div className="semver-empty">
-              バージョンと範囲式を入力すると結果が表示されます
-            </div>
+            <div className="semver-empty">バージョンと範囲式を入力すると結果が表示されます</div>
           )}
         </div>
 

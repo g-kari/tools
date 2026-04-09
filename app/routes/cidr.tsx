@@ -1,11 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useRef, useCallback, useEffect } from "react";
-import {
-  isValidCIDR,
-  calculateCIDR,
-  type CIDRResult,
-} from "../utils/cidr";
+import { isValidCIDR, calculateCIDR, type CIDRResult } from "../utils/cidr";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { TipsCard } from "~/components/TipsCard";
@@ -13,16 +9,28 @@ import { TipsCard } from "~/components/TipsCard";
 export const Route = createFileRoute("/cidr")({
   head: () => ({
     meta: [
-    { title: "CIDR計算ツール | Web ツール集" },
-    { name: "description", content: "CIDRブロックからネットワークアドレス・ブロードキャスト・IPレンジを計算するツール。" },
-    { property: "og:title", content: "CIDR計算ツール | Web ツール集" },
-    { property: "og:description", content: "CIDRブロックからネットワークアドレス・ブロードキャスト・IPレンジを計算するツール。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/cidr` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "CIDR計算ツール | Web ツール集" },
-    { name: "twitter:description", content: "CIDRブロックからネットワークアドレス・ブロードキャスト・IPレンジを計算するツール。" },
-  ],
+      { title: "CIDR計算ツール | Web ツール集" },
+      {
+        name: "description",
+        content:
+          "CIDRブロックからネットワークアドレス・ブロードキャスト・IPレンジを計算するツール。",
+      },
+      { property: "og:title", content: "CIDR計算ツール | Web ツール集" },
+      {
+        property: "og:description",
+        content:
+          "CIDRブロックからネットワークアドレス・ブロードキャスト・IPレンジを計算するツール。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/cidr` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "CIDR計算ツール | Web ツール集" },
+      {
+        name: "twitter:description",
+        content:
+          "CIDRブロックからネットワークアドレス・ブロードキャスト・IPレンジを計算するツール。",
+      },
+    ],
   }),
   component: CIDRCalculator,
 });
@@ -60,8 +68,7 @@ function CIDRCalculator() {
       setError(null);
       announceStatus("CIDR計算が完了しました");
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "計算エラーが発生しました";
+      const message = err instanceof Error ? err.message : "計算エラーが発生しました";
       setError(message);
       setResult(null);
       announceStatus("エラー: " + message);
@@ -77,7 +84,7 @@ function CIDRCalculator() {
         announceStatus("コピーに失敗しました");
       }
     },
-    [announceStatus]
+    [announceStatus],
   );
 
   useEffect(() => {
@@ -103,10 +110,7 @@ function CIDRCalculator() {
   return (
     <>
       <div className="tool-container">
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          aria-label="CIDR計算フォーム"
-        >
+        <form onSubmit={(e) => e.preventDefault()} aria-label="CIDR計算フォーム">
           <div className="converter-section">
             <div className="search-form-row">
               <div className="search-input-wrapper">
@@ -173,9 +177,7 @@ function CIDRCalculator() {
                     <button
                       type="button"
                       className="btn-copy"
-                      onClick={() =>
-                        handleCopy(result.networkAddress, "ネットワークアドレス")
-                      }
+                      onClick={() => handleCopy(result.networkAddress, "ネットワークアドレス")}
                       aria-label="ネットワークアドレスをコピー"
                     >
                       コピー
@@ -190,10 +192,7 @@ function CIDRCalculator() {
                       type="button"
                       className="btn-copy"
                       onClick={() =>
-                        handleCopy(
-                          result.broadcastAddress,
-                          "ブロードキャストアドレス"
-                        )
+                        handleCopy(result.broadcastAddress, "ブロードキャストアドレス")
                       }
                       aria-label="ブロードキャストアドレスをコピー"
                     >
@@ -208,9 +207,7 @@ function CIDRCalculator() {
                     <button
                       type="button"
                       className="btn-copy"
-                      onClick={() =>
-                        handleCopy(result.subnetMask, "サブネットマスク")
-                      }
+                      onClick={() => handleCopy(result.subnetMask, "サブネットマスク")}
                       aria-label="サブネットマスクをコピー"
                     >
                       コピー
@@ -224,9 +221,7 @@ function CIDRCalculator() {
                     <button
                       type="button"
                       className="btn-copy"
-                      onClick={() =>
-                        handleCopy(result.wildcardMask, "ワイルドカードマスク")
-                      }
+                      onClick={() => handleCopy(result.wildcardMask, "ワイルドカードマスク")}
                       aria-label="ワイルドカードマスクをコピー"
                     >
                       コピー
@@ -248,9 +243,7 @@ function CIDRCalculator() {
                     <button
                       type="button"
                       className="btn-copy"
-                      onClick={() =>
-                        handleCopy(result.firstUsableIP, "最初の利用可能IP")
-                      }
+                      onClick={() => handleCopy(result.firstUsableIP, "最初の利用可能IP")}
                       aria-label="最初の利用可能IPをコピー"
                     >
                       コピー
@@ -264,9 +257,7 @@ function CIDRCalculator() {
                     <button
                       type="button"
                       className="btn-copy"
-                      onClick={() =>
-                        handleCopy(result.lastUsableIP, "最後の利用可能IP")
-                      }
+                      onClick={() => handleCopy(result.lastUsableIP, "最後の利用可能IP")}
                       aria-label="最後の利用可能IPをコピー"
                     >
                       コピー
@@ -275,15 +266,11 @@ function CIDRCalculator() {
                 </div>
                 <div className="result-row">
                   <div className="result-label">総IPアドレス数</div>
-                  <div className="result-value">
-                    {formatNumber(result.totalHosts)}
-                  </div>
+                  <div className="result-value">{formatNumber(result.totalHosts)}</div>
                 </div>
                 <div className="result-row">
                   <div className="result-label">利用可能ホスト数</div>
-                  <div className="result-value">
-                    {formatNumber(result.usableHosts)}
-                  </div>
+                  <div className="result-value">{formatNumber(result.usableHosts)}</div>
                 </div>
               </div>
             </section>
@@ -299,9 +286,7 @@ function CIDRCalculator() {
                 </div>
                 <div className="result-row">
                   <div className="result-label">プライベートIP範囲</div>
-                  <div className="result-value">
-                    {result.isPrivate ? "はい" : "いいえ"}
-                  </div>
+                  <div className="result-value">{result.isPrivate ? "はい" : "いいえ"}</div>
                 </div>
                 <div className="result-row">
                   <div className="result-label">サブネットマスク（2進数）</div>
@@ -311,10 +296,7 @@ function CIDRCalculator() {
                       type="button"
                       className="btn-copy"
                       onClick={() =>
-                        handleCopy(
-                          result.binarySubnetMask,
-                          "サブネットマスク（2進数）"
-                        )
+                        handleCopy(result.binarySubnetMask, "サブネットマスク（2進数）")
                       }
                       aria-label="サブネットマスク（2進数）をコピー"
                     >

@@ -6,28 +6,28 @@
 /** フレックスコンテナのプロパティ設定 */
 export interface FlexContainerConfig {
   /** 主軸の方向 */
-  flexDirection: 'row' | 'row-reverse' | 'column' | 'column-reverse';
+  flexDirection: "row" | "row-reverse" | "column" | "column-reverse";
   /** 主軸方向の揃え */
   justifyContent:
-    | 'flex-start'
-    | 'flex-end'
-    | 'center'
-    | 'space-between'
-    | 'space-around'
-    | 'space-evenly';
+    | "flex-start"
+    | "flex-end"
+    | "center"
+    | "space-between"
+    | "space-around"
+    | "space-evenly";
   /** 交差軸方向の揃え */
-  alignItems: 'flex-start' | 'flex-end' | 'center' | 'baseline' | 'stretch';
+  alignItems: "flex-start" | "flex-end" | "center" | "baseline" | "stretch";
   /** 折り返し設定 */
-  flexWrap: 'nowrap' | 'wrap' | 'wrap-reverse';
+  flexWrap: "nowrap" | "wrap" | "wrap-reverse";
   /** 複数行の揃え（flex-wrap: wrap 時に有効） */
   alignContent:
-    | 'normal'
-    | 'flex-start'
-    | 'flex-end'
-    | 'center'
-    | 'space-between'
-    | 'space-around'
-    | 'stretch';
+    | "normal"
+    | "flex-start"
+    | "flex-end"
+    | "center"
+    | "space-between"
+    | "space-around"
+    | "stretch";
   /** アイテム間のギャップ */
   gap: string;
 }
@@ -45,31 +45,31 @@ export interface FlexItemConfig {
   /** ベースサイズ */
   flexBasis: string;
   /** 個別の交差軸方向の揃え */
-  alignSelf: 'auto' | 'flex-start' | 'flex-end' | 'center' | 'baseline' | 'stretch';
+  alignSelf: "auto" | "flex-start" | "flex-end" | "center" | "baseline" | "stretch";
   /** 表示順序 */
   order: number;
 }
 
 /** デフォルトのフレックスコンテナ設定 */
 export const defaultContainerConfig: FlexContainerConfig = {
-  flexDirection: 'row',
-  justifyContent: 'flex-start',
-  alignItems: 'stretch',
-  flexWrap: 'nowrap',
-  alignContent: 'normal',
-  gap: '8px',
+  flexDirection: "row",
+  justifyContent: "flex-start",
+  alignItems: "stretch",
+  flexWrap: "nowrap",
+  alignContent: "normal",
+  gap: "8px",
 };
 
 /** プレビュー用アイテムのカラーパレット */
 export const ITEM_COLORS = [
-  '#4285F4',
-  '#EA4335',
-  '#FBBC05',
-  '#34A853',
-  '#9C27B0',
-  '#00BCD4',
-  '#FF5722',
-  '#607D8B',
+  "#4285F4",
+  "#EA4335",
+  "#FBBC05",
+  "#34A853",
+  "#9C27B0",
+  "#00BCD4",
+  "#FF5722",
+  "#607D8B",
 ];
 
 /**
@@ -83,8 +83,8 @@ export function createDefaultItem(index: number): FlexItemConfig {
     label: `Item ${index + 1}`,
     flexGrow: 0,
     flexShrink: 1,
-    flexBasis: 'auto',
-    alignSelf: 'auto',
+    flexBasis: "auto",
+    alignSelf: "auto",
     order: 0,
   };
 }
@@ -105,7 +105,7 @@ export function createDefaultItems(): FlexItemConfig[] {
  */
 export function getContainerStyles(config: FlexContainerConfig): Record<string, string> {
   const styles: Record<string, string> = {
-    display: 'flex',
+    display: "flex",
     flexDirection: config.flexDirection,
     justifyContent: config.justifyContent,
     alignItems: config.alignItems,
@@ -113,7 +113,7 @@ export function getContainerStyles(config: FlexContainerConfig): Record<string, 
     gap: config.gap,
   };
 
-  if (config.flexWrap !== 'nowrap' && config.alignContent !== 'normal') {
+  if (config.flexWrap !== "nowrap" && config.alignContent !== "normal") {
     styles.alignContent = config.alignContent;
   }
 
@@ -129,13 +129,12 @@ export function getContainerStyles(config: FlexContainerConfig): Record<string, 
 export function getItemStyles(item: FlexItemConfig): Record<string, string> {
   const styles: Record<string, string> = {};
 
-  const hasFlex =
-    item.flexGrow !== 0 || item.flexShrink !== 1 || item.flexBasis !== 'auto';
+  const hasFlex = item.flexGrow !== 0 || item.flexShrink !== 1 || item.flexBasis !== "auto";
   if (hasFlex) {
     styles.flex = `${item.flexGrow} ${item.flexShrink} ${item.flexBasis}`;
   }
 
-  if (item.alignSelf !== 'auto') {
+  if (item.alignSelf !== "auto") {
     styles.alignSelf = item.alignSelf;
   }
 
@@ -152,33 +151,30 @@ export function getItemStyles(item: FlexItemConfig): Record<string, string> {
  * @param selector - CSSセレクター名（デフォルト: .container）
  * @returns CSS文字列
  */
-export function generateContainerCSS(
-  config: FlexContainerConfig,
-  selector = '.container'
-): string {
-  const lines: string[] = [`${selector} {`, '  display: flex;'];
+export function generateContainerCSS(config: FlexContainerConfig, selector = ".container"): string {
+  const lines: string[] = [`${selector} {`, "  display: flex;"];
 
-  if (config.flexDirection !== 'row') {
+  if (config.flexDirection !== "row") {
     lines.push(`  flex-direction: ${config.flexDirection};`);
   }
-  if (config.justifyContent !== 'flex-start') {
+  if (config.justifyContent !== "flex-start") {
     lines.push(`  justify-content: ${config.justifyContent};`);
   }
-  if (config.alignItems !== 'stretch') {
+  if (config.alignItems !== "stretch") {
     lines.push(`  align-items: ${config.alignItems};`);
   }
-  if (config.flexWrap !== 'nowrap') {
+  if (config.flexWrap !== "nowrap") {
     lines.push(`  flex-wrap: ${config.flexWrap};`);
   }
-  if (config.flexWrap !== 'nowrap' && config.alignContent !== 'normal') {
+  if (config.flexWrap !== "nowrap" && config.alignContent !== "normal") {
     lines.push(`  align-content: ${config.alignContent};`);
   }
-  if (config.gap !== '0px' && config.gap !== '0') {
+  if (config.gap !== "0px" && config.gap !== "0") {
     lines.push(`  gap: ${config.gap};`);
   }
 
-  lines.push('}');
-  return lines.join('\n');
+  lines.push("}");
+  return lines.join("\n");
 }
 
 /**
@@ -190,21 +186,20 @@ export function generateContainerCSS(
 export function generateItemCSS(item: FlexItemConfig, selector: string): string {
   const lines: string[] = [];
 
-  const hasFlex =
-    item.flexGrow !== 0 || item.flexShrink !== 1 || item.flexBasis !== 'auto';
+  const hasFlex = item.flexGrow !== 0 || item.flexShrink !== 1 || item.flexBasis !== "auto";
   if (hasFlex) {
     lines.push(`  flex: ${item.flexGrow} ${item.flexShrink} ${item.flexBasis};`);
   }
-  if (item.alignSelf !== 'auto') {
+  if (item.alignSelf !== "auto") {
     lines.push(`  align-self: ${item.alignSelf};`);
   }
   if (item.order !== 0) {
     lines.push(`  order: ${item.order};`);
   }
 
-  if (lines.length === 0) return '';
+  if (lines.length === 0) return "";
 
-  return [`${selector} {`, ...lines, '}'].join('\n');
+  return [`${selector} {`, ...lines, "}"].join("\n");
 }
 
 /**
@@ -213,10 +208,7 @@ export function generateItemCSS(item: FlexItemConfig, selector: string): string 
  * @param items - フレックスアイテムの設定リスト
  * @returns 完全なCSS文字列
  */
-export function generateFullCSS(
-  container: FlexContainerConfig,
-  items: FlexItemConfig[]
-): string {
+export function generateFullCSS(container: FlexContainerConfig, items: FlexItemConfig[]): string {
   const parts: string[] = [generateContainerCSS(container)];
 
   items.forEach((item, idx) => {
@@ -227,5 +219,5 @@ export function generateFullCSS(
     }
   });
 
-  return parts.join('\n\n');
+  return parts.join("\n\n");
 }

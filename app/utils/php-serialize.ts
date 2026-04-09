@@ -38,16 +38,11 @@ export function phpSerialize(value: PhpValue): string {
     return `s:${byteLen}:"${value}";`;
   }
   if (Array.isArray(value)) {
-    const pairs = value
-      .map((v, i) => `${phpSerialize(i)}${phpSerialize(v)}`)
-      .join("");
+    const pairs = value.map((v, i) => `${phpSerialize(i)}${phpSerialize(v)}`).join("");
     return `a:${value.length}:{${pairs}}`;
   }
   if (typeof value === "object") {
-    if (
-      "__className" in value &&
-      typeof (value as PhpObject).__className === "string"
-    ) {
+    if ("__className" in value && typeof (value as PhpObject).__className === "string") {
       const obj = value as PhpObject;
       const className = obj.__className;
       const classNameByteLen = new TextEncoder().encode(className).length;
@@ -60,9 +55,7 @@ export function phpSerialize(value: PhpValue): string {
     }
     // Plain object → associative array
     const entries = Object.entries(value as Record<string, PhpValue>);
-    const pairs = entries
-      .map(([k, v]) => `${phpSerialize(k)}${phpSerialize(v)}`)
-      .join("");
+    const pairs = entries.map(([k, v]) => `${phpSerialize(k)}${phpSerialize(v)}`).join("");
     return `a:${entries.length}:{${pairs}}`;
   }
   throw new Error(`対応していない型です: ${typeof value}`);
@@ -98,7 +91,7 @@ class Parser {
         return this.parseObject();
       default:
         throw new Error(
-          `PHPシリアライズ文字列の解析エラー: 位置 ${this.pos} で不明な型 "${type ?? "EOF"}"`
+          `PHPシリアライズ文字列の解析エラー: 位置 ${this.pos} で不明な型 "${type ?? "EOF"}"`,
         );
     }
   }
@@ -123,10 +116,7 @@ class Parser {
     const raw = this.readUntil(";");
     this.consume(";");
     const n = parseInt(raw, 10);
-    if (isNaN(n))
-      throw new Error(
-        `PHPシリアライズ文字列の解析エラー: 整数値が不正 "${raw}"`
-      );
+    if (isNaN(n)) throw new Error(`PHPシリアライズ文字列の解析エラー: 整数値が不正 "${raw}"`);
     return n;
   }
 
@@ -136,10 +126,7 @@ class Parser {
     const raw = this.readUntil(";");
     this.consume(";");
     const n = parseFloat(raw);
-    if (isNaN(n))
-      throw new Error(
-        `PHPシリアライズ文字列の解析エラー: 浮動小数点値が不正 "${raw}"`
-      );
+    if (isNaN(n)) throw new Error(`PHPシリアライズ文字列の解析エラー: 浮動小数点値が不正 "${raw}"`);
     return n;
   }
 
@@ -150,17 +137,13 @@ class Parser {
     this.consume(":");
     const byteLen = parseInt(lenStr, 10);
     if (isNaN(byteLen))
-      throw new Error(
-        `PHPシリアライズ文字列の解析エラー: 文字列長が不正 "${lenStr}"`
-      );
+      throw new Error(`PHPシリアライズ文字列の解析エラー: 文字列長が不正 "${lenStr}"`);
     this.consume('"');
     // byteLen バイト分をデコード（マルチバイト文字対応）
     const remaining = this.input.slice(this.pos);
     const bytes = new TextEncoder().encode(remaining);
     if (bytes.length < byteLen) {
-      throw new Error(
-        `PHPシリアライズ文字列の解析エラー: 文字列データが短すぎます`
-      );
+      throw new Error(`PHPシリアライズ文字列の解析エラー: 文字列データが短すぎます`);
     }
     const slice = bytes.slice(0, byteLen);
     const str = new TextDecoder().decode(slice);
@@ -176,10 +159,7 @@ class Parser {
     const countStr = this.readUntil(":");
     this.consume(":");
     const count = parseInt(countStr, 10);
-    if (isNaN(count))
-      throw new Error(
-        `PHPシリアライズ文字列の解析エラー: 配列要素数が不正`
-      );
+    if (isNaN(count)) throw new Error(`PHPシリアライズ文字列の解析エラー: 配列要素数が不正`);
     this.consume("{");
     const result: Record<string, PhpValue> = {};
     let isIndexed = true;
@@ -204,10 +184,7 @@ class Parser {
     const classLenStr = this.readUntil(":");
     this.consume(":");
     const classLen = parseInt(classLenStr, 10);
-    if (isNaN(classLen))
-      throw new Error(
-        `PHPシリアライズ文字列の解析エラー: クラス名長が不正`
-      );
+    if (isNaN(classLen)) throw new Error(`PHPシリアライズ文字列の解析エラー: クラス名長が不正`);
     this.consume('"');
     const className = this.input.slice(this.pos, this.pos + classLen);
     this.pos += classLen;
@@ -216,10 +193,7 @@ class Parser {
     const countStr = this.readUntil(":");
     this.consume(":");
     const count = parseInt(countStr, 10);
-    if (isNaN(count))
-      throw new Error(
-        `PHPシリアライズ文字列の解析エラー: プロパティ数が不正`
-      );
+    if (isNaN(count)) throw new Error(`PHPシリアライズ文字列の解析エラー: プロパティ数が不正`);
     this.consume("{");
     const properties: Record<string, PhpValue> = {};
     for (let i = 0; i < count; i++) {
@@ -234,7 +208,7 @@ class Parser {
   private consume(char: string): void {
     if (this.input[this.pos] !== char) {
       throw new Error(
-        `PHPシリアライズ文字列の解析エラー: 位置 ${this.pos} で "${char}" が期待されましたが "${this.input[this.pos] ?? "EOF"}" がありました`
+        `PHPシリアライズ文字列の解析エラー: 位置 ${this.pos} で "${char}" が期待されましたが "${this.input[this.pos] ?? "EOF"}" がありました`,
       );
     }
     this.pos++;

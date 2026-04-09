@@ -4,10 +4,7 @@ import { useState, useCallback, useMemo } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 import {
   type TransformState,
@@ -109,7 +106,15 @@ const SLIDER_GROUPS: SliderGroup[] = [
     title: "遠近法 (perspective)",
     id: "ct-perspective",
     sliders: [
-      { key: "perspective", label: "距離", min: 0, max: 2000, step: 10, defaultValue: 0, unit: "px" },
+      {
+        key: "perspective",
+        label: "距離",
+        min: 0,
+        max: 2000,
+        step: 10,
+        defaultValue: 0,
+        unit: "px",
+      },
     ],
   },
 ];
@@ -132,12 +137,9 @@ function CssTransformGenerator() {
   const generatedCSS = useMemo(() => generateFullCSS(state), [state]);
 
   /** スライダー値を更新する */
-  const updateValue = useCallback(
-    (key: keyof TransformState, value: number) => {
-      setState((prev) => ({ ...prev, [key]: value }));
-    },
-    []
-  );
+  const updateValue = useCallback((key: keyof TransformState, value: number) => {
+    setState((prev) => ({ ...prev, [key]: value }));
+  }, []);
 
   /** プリセットを適用する */
   const applyPreset = useCallback(
@@ -147,7 +149,7 @@ function CssTransformGenerator() {
       setState(preset.state);
       announceStatus(`「${preset.label}」プリセットを適用しました`);
     },
-    [announceStatus]
+    [announceStatus],
   );
 
   /** リセットする */
@@ -169,11 +171,8 @@ function CssTransformGenerator() {
 
   /** perspective コンテナのスタイル */
   const perspectiveStyle = useMemo(
-    () =>
-      state.perspective > 0
-        ? { perspective: `${state.perspective}px` }
-        : {},
-    [state.perspective]
+    () => (state.perspective > 0 ? { perspective: `${state.perspective}px` } : {}),
+    [state.perspective],
   );
 
   return (
@@ -204,11 +203,7 @@ function CssTransformGenerator() {
 
             {/* スライダーグループ */}
             {SLIDER_GROUPS.map((group) => (
-              <section
-                key={group.id}
-                className="ct-section"
-                aria-labelledby={`${group.id}-title`}
-              >
+              <section key={group.id} className="ct-section" aria-labelledby={`${group.id}-title`}>
                 <div className="ct-section-header">
                   <h2 className="ct-section-title" id={`${group.id}-title`}>
                     {group.title}
@@ -217,10 +212,7 @@ function CssTransformGenerator() {
                 <div className="ct-sliders">
                   {group.sliders.map((def) => {
                     const value = state[def.key] as number;
-                    const displayValue =
-                      def.step < 1
-                        ? value.toFixed(2)
-                        : String(value);
+                    const displayValue = def.step < 1 ? value.toFixed(2) : String(value);
                     return (
                       <div key={def.key} className="ct-slider-row">
                         <span className="ct-slider-label">{def.label}</span>
@@ -231,9 +223,7 @@ function CssTransformGenerator() {
                           step={def.step}
                           value={value}
                           className="ct-range"
-                          onChange={(e) =>
-                            updateValue(def.key, Number(e.target.value))
-                          }
+                          onChange={(e) => updateValue(def.key, Number(e.target.value))}
                           aria-label={`${group.title} ${def.label}の値`}
                         />
                         <input
@@ -244,16 +234,14 @@ function CssTransformGenerator() {
                           value={value}
                           className="ct-number-input"
                           onChange={(e) => {
-                            const v = Math.max(
-                              def.min,
-                              Math.min(def.max, Number(e.target.value))
-                            );
+                            const v = Math.max(def.min, Math.min(def.max, Number(e.target.value)));
                             updateValue(def.key, v);
                           }}
                           aria-label={`${group.title} ${def.label}の数値入力`}
                         />
                         <span className="ct-range-value" aria-hidden="true">
-                          {displayValue}{def.unit}
+                          {displayValue}
+                          {def.unit}
                         </span>
                       </div>
                     );
@@ -277,10 +265,7 @@ function CssTransformGenerator() {
           {/* 右側: プレビュー + CSS 出力 */}
           <div className="ct-right">
             {/* ライブプレビュー */}
-            <section
-              className="ct-preview-section"
-              aria-labelledby="ct-preview-title"
-            >
+            <section className="ct-preview-section" aria-labelledby="ct-preview-title">
               <h2 className="ct-section-title" id="ct-preview-title">
                 ライブプレビュー
               </h2>
@@ -303,10 +288,7 @@ function CssTransformGenerator() {
             </section>
 
             {/* CSS 出力 */}
-            <section
-              className="ct-css-section"
-              aria-labelledby="ct-css-output-title"
-            >
+            <section className="ct-css-section" aria-labelledby="ct-css-output-title">
               <div className="ct-css-header">
                 <h2 className="ct-section-title" id="ct-css-output-title">
                   生成 CSS
@@ -320,11 +302,7 @@ function CssTransformGenerator() {
                   コピー
                 </Button>
               </div>
-              <pre
-                className="ct-css-output"
-                aria-label="生成されたCSSコード"
-                aria-live="polite"
-              >
+              <pre className="ct-css-output" aria-label="生成されたCSSコード" aria-live="polite">
                 {generatedCSS}
               </pre>
             </section>

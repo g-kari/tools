@@ -102,9 +102,7 @@ describe("buildMediaQuery", () => {
       mediaType: "screen",
       conditions: [makeCond({ feature: "min-width", value: 768, unit: "px" })],
     });
-    expect(buildMediaQuery(rule)).toBe(
-      "@media screen and (min-width: 768px)"
-    );
+    expect(buildMediaQuery(rule)).toBe("@media screen and (min-width: 768px)");
   });
 
   it("複数条件を AND で結合する", () => {
@@ -115,7 +113,7 @@ describe("buildMediaQuery", () => {
       ],
     });
     expect(buildMediaQuery(rule)).toBe(
-      "@media screen and (min-width: 768px) and (max-width: 1280px)"
+      "@media screen and (min-width: 768px) and (max-width: 1280px)",
     );
   });
 
@@ -195,9 +193,7 @@ describe("formatMediaQueryOutput", () => {
 
   it("json フォーマットで keyword 条件の feature/keyword が含まれる", () => {
     const rule = makeRule({
-      conditions: [
-        makeCond({ feature: "orientation", keyword: "landscape" }),
-      ],
+      conditions: [makeCond({ feature: "orientation", keyword: "landscape" })],
     });
     const output = formatMediaQueryOutput(rule, "json");
     const parsed = JSON.parse(output);
@@ -311,9 +307,7 @@ describe("MEDIA_FEATURES 定数", () => {
   });
 
   it("keyword フィーチャーには keywords 配列があること", () => {
-    const keywordFeatures = MEDIA_FEATURES.filter(
-      (f) => f.valueType === "keyword"
-    );
+    const keywordFeatures = MEDIA_FEATURES.filter((f) => f.valueType === "keyword");
     expect(keywordFeatures.length).toBeGreaterThan(0);
     for (const f of keywordFeatures) {
       expect(Array.isArray(f.keywords)).toBe(true);
@@ -336,9 +330,7 @@ describe("COMMON_BREAKPOINTS 定数", () => {
   });
 
   it("md ブレイクポイント（768px）が存在すること", () => {
-    const md = COMMON_BREAKPOINTS.find(
-      (bp) => bp.value === 768 && bp.unit === "px"
-    );
+    const md = COMMON_BREAKPOINTS.find((bp) => bp.value === 768 && bp.unit === "px");
     expect(md).toBeDefined();
   });
 });

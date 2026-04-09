@@ -4,10 +4,7 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 
 export const Route = createFileRoute("/roman-numerals")({
@@ -31,8 +28,7 @@ export const Route = createFileRoute("/roman-numerals")({
       { name: "twitter:title", content: "ローマ数字変換 | Web ツール集" },
       {
         name: "twitter:description",
-        content:
-          "アラビア数字とローマ数字を相互変換するツール。1〜3999の整数に対応。",
+        content: "アラビア数字とローマ数字を相互変換するツール。1〜3999の整数に対応。",
       },
     ],
   }),
@@ -202,7 +198,7 @@ function RomanNumeralsConverter() {
         showToast("コピーに失敗しました", "error");
       }
     },
-    [showToast, announceStatus]
+    [showToast, announceStatus],
   );
 
   const handleClearArabic = useCallback(() => {
@@ -228,15 +224,9 @@ function RomanNumeralsConverter() {
   return (
     <>
       <div className="roman-container">
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          aria-label="ローマ数字変換フォーム"
-        >
+        <form onSubmit={(e) => e.preventDefault()} aria-label="ローマ数字変換フォーム">
           {/* アラビア数字 → ローマ数字 */}
-          <section
-            className="roman-section"
-            aria-labelledby="arabic-to-roman-heading"
-          >
+          <section className="roman-section" aria-labelledby="arabic-to-roman-heading">
             <h2 id="arabic-to-roman-heading" className="section-title">
               アラビア数字 → ローマ数字
             </h2>
@@ -281,11 +271,7 @@ function RomanNumeralsConverter() {
               </Button>
             </div>
             {arabicResult && (
-              <div
-                className="roman-result"
-                aria-live="polite"
-                aria-label="変換結果"
-              >
+              <div className="roman-result" aria-live="polite" aria-label="変換結果">
                 <span className="roman-result-value">{arabicResult}</span>
                 <button
                   type="button"
@@ -299,17 +285,10 @@ function RomanNumeralsConverter() {
             )}
           </section>
 
-          <div
-            className="roman-divider"
-            role="separator"
-            aria-hidden="true"
-          />
+          <div className="roman-divider" role="separator" aria-hidden="true" />
 
           {/* ローマ数字 → アラビア数字 */}
-          <section
-            className="roman-section"
-            aria-labelledby="roman-to-arabic-heading"
-          >
+          <section className="roman-section" aria-labelledby="roman-to-arabic-heading">
             <h2 id="roman-to-arabic-heading" className="section-title">
               ローマ数字 → アラビア数字
             </h2>
@@ -322,9 +301,7 @@ function RomanNumeralsConverter() {
                 type="text"
                 className="roman-input"
                 value={romanInput}
-                onChange={(e) =>
-                  setRomanInput(e.target.value.toUpperCase())
-                }
+                onChange={(e) => setRomanInput(e.target.value.toUpperCase())}
                 placeholder="例: MMXXIV"
                 aria-label="変換するローマ数字（I, V, X, L, C, D, M）"
                 aria-describedby="roman-input-help"
@@ -353,11 +330,7 @@ function RomanNumeralsConverter() {
               </Button>
             </div>
             {romanResult && (
-              <div
-                className="roman-result"
-                aria-live="polite"
-                aria-label="変換結果"
-              >
+              <div className="roman-result" aria-live="polite" aria-label="変換結果">
                 <span className="roman-result-value">{romanResult}</span>
                 <button
                   type="button"
@@ -373,10 +346,7 @@ function RomanNumeralsConverter() {
         </form>
 
         {/* 基本記号対照表 */}
-        <section
-          className="roman-reference-section"
-          aria-labelledby="reference-heading"
-        >
+        <section className="roman-reference-section" aria-labelledby="reference-heading">
           <h2 id="reference-heading" className="section-title">
             基本記号対照表
           </h2>

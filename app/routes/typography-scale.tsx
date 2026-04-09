@@ -58,17 +58,10 @@ function ScalePreviewRow({ step }: { step: ScaleStep }) {
     >
       <div className="type-scale-preview-meta">
         <span className="type-scale-preview-label">{step.label}</span>
-        <span className="type-scale-preview-size">
-          {step.sizePx.toFixed(2)}px
-        </span>
-        <span className="type-scale-preview-rem">
-          {step.sizeRem.toFixed(4)}rem
-        </span>
+        <span className="type-scale-preview-size">{step.sizePx.toFixed(2)}px</span>
+        <span className="type-scale-preview-rem">{step.sizeRem.toFixed(4)}rem</span>
       </div>
-      <div
-        className="type-scale-preview-text"
-        aria-hidden="true"
-      >
+      <div className="type-scale-preview-text" aria-hidden="true">
         <span style={{ fontSize: `${step.sizePx}px` }}>Aa</span>
       </div>
     </div>
@@ -108,12 +101,12 @@ function TypographyScalePage() {
         stepsUp,
         stepsDown,
       }),
-    [baseSizePx, rootFontSizePx, ratio, stepsUp, stepsDown]
+    [baseSizePx, rootFontSizePx, ratio, stepsUp, stepsDown],
   );
 
   const outputCode = useMemo(
     () => generateOutput(scaleSteps, outputFormat),
-    [scaleSteps, outputFormat]
+    [scaleSteps, outputFormat],
   );
 
   const handleCopy = useCallback(async () => {
@@ -292,11 +285,7 @@ function TypographyScalePage() {
       {/* 出力フォーマット選択 + コード出力 */}
       <div className="output-section">
         <div className="type-scale-output-header">
-          <div
-            className="type-scale-format-tabs"
-            role="tablist"
-            aria-label="出力フォーマット"
-          >
+          <div className="type-scale-format-tabs" role="tablist" aria-label="出力フォーマット">
             {OUTPUT_FORMATS.map((fmt) => (
               <button
                 key={fmt.value}

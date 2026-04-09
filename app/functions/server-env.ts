@@ -249,14 +249,8 @@ export const getServerEnv = createServerFn({ method: "GET" }).handler(
         ]);
 
         for (const [key, value] of Object.entries(cf)) {
-          if (
-            !handledKeys.has(key) &&
-            value !== undefined &&
-            value !== null &&
-            value !== ""
-          ) {
-            const displayValue =
-              typeof value === "object" ? JSON.stringify(value) : String(value);
+          if (!handledKeys.has(key) && value !== undefined && value !== null && value !== "") {
+            const displayValue = typeof value === "object" ? JSON.stringify(value) : String(value);
             items.push({
               key: `cf.${key}`,
               value: displayValue,
@@ -397,9 +391,7 @@ export const getServerEnv = createServerFn({ method: "GET" }).handler(
 
       // Process CF headers first
       for (const header of cfHeaders) {
-        const value = (headers as Record<string, string | undefined>)[
-          header.key
-        ];
+        const value = (headers as Record<string, string | undefined>)[header.key];
         if (value && value.trim()) {
           items.push({
             key: header.label,
@@ -412,9 +404,7 @@ export const getServerEnv = createServerFn({ method: "GET" }).handler(
 
       // Process client hint headers
       for (const header of clientHintHeaders) {
-        const value = (headers as Record<string, string | undefined>)[
-          header.key
-        ];
+        const value = (headers as Record<string, string | undefined>)[header.key];
         if (value && value.trim()) {
           items.push({
             key: header.label,
@@ -427,9 +417,7 @@ export const getServerEnv = createServerFn({ method: "GET" }).handler(
 
       // Process standard headers
       for (const header of standardHeaders) {
-        const value = (headers as Record<string, string | undefined>)[
-          header.key
-        ];
+        const value = (headers as Record<string, string | undefined>)[header.key];
         if (value && value.trim()) {
           items.push({
             key: header.label,
@@ -490,11 +478,8 @@ export const getServerEnv = createServerFn({ method: "GET" }).handler(
       };
     } catch (err) {
       return {
-        error:
-          err instanceof Error
-            ? err.message
-            : "サーバー環境情報の取得に失敗しました",
+        error: err instanceof Error ? err.message : "サーバー環境情報の取得に失敗しました",
       };
     }
-  }
+  },
 );

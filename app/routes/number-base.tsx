@@ -3,10 +3,7 @@ import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useCallback, useRef, useEffect } from "react";
 import { bigIntToBase, parseStringToBigInt } from "~/utils/numberBase";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 
 export const Route = createFileRoute("/number-base")({
@@ -88,7 +85,6 @@ const BASE_FIELDS: BaseField[] = [
   },
 ];
 
-
 /**
  * 数値進数変換コンポーネント
  * 2進数・8進数・10進数・16進数の相互変換を行う
@@ -122,59 +118,56 @@ function NumberBaseConverter() {
    * フィールド値変更ハンドラ
    * 入力値を検証し、有効な場合は他のフィールドを更新する
    */
-  const handleChange = useCallback(
-    (fieldId: string, base: number, value: string) => {
-      const field = BASE_FIELDS.find((f) => f.id === fieldId);
-      if (!field) return;
+  const handleChange = useCallback((fieldId: string, base: number, value: string) => {
+    const field = BASE_FIELDS.find((f) => f.id === fieldId);
+    if (!field) return;
 
-      // 空文字の場合は全フィールドをクリア
-      if (value === "") {
-        setFieldValues({
-          binary: "",
-          octal: "",
-          decimal: "",
-          hexadecimal: "",
-        });
-        setErrors({});
-        return;
-      }
-
-      // バリデーション
-      if (!field.validChars.test(value)) {
-        setErrors((prev) => ({
-          ...prev,
-          [fieldId]: `${field.label}に使用できない文字が含まれています`,
-        }));
-        setFieldValues((prev) => ({ ...prev, [fieldId]: value }));
-        return;
-      }
-
-      // BigIntに変換
-      const bigValue = parseStringToBigInt(value, base);
-      if (bigValue === null) {
-        setErrors((prev) => ({
-          ...prev,
-          [fieldId]: "入力値が無効です",
-        }));
-        setFieldValues((prev) => ({ ...prev, [fieldId]: value }));
-        return;
-      }
-
-      // 全フィールドを更新
-      const newFieldValues: Record<string, string> = {};
-      for (const f of BASE_FIELDS) {
-        if (f.id === fieldId) {
-          // 入力フィールドはそのまま（大文字に正規化）
-          newFieldValues[f.id] = value.toUpperCase();
-        } else {
-          newFieldValues[f.id] = bigIntToBase(bigValue, f.base);
-        }
-      }
-      setFieldValues(newFieldValues);
+    // 空文字の場合は全フィールドをクリア
+    if (value === "") {
+      setFieldValues({
+        binary: "",
+        octal: "",
+        decimal: "",
+        hexadecimal: "",
+      });
       setErrors({});
-    },
-    []
-  );
+      return;
+    }
+
+    // バリデーション
+    if (!field.validChars.test(value)) {
+      setErrors((prev) => ({
+        ...prev,
+        [fieldId]: `${field.label}に使用できない文字が含まれています`,
+      }));
+      setFieldValues((prev) => ({ ...prev, [fieldId]: value }));
+      return;
+    }
+
+    // BigIntに変換
+    const bigValue = parseStringToBigInt(value, base);
+    if (bigValue === null) {
+      setErrors((prev) => ({
+        ...prev,
+        [fieldId]: "入力値が無効です",
+      }));
+      setFieldValues((prev) => ({ ...prev, [fieldId]: value }));
+      return;
+    }
+
+    // 全フィールドを更新
+    const newFieldValues: Record<string, string> = {};
+    for (const f of BASE_FIELDS) {
+      if (f.id === fieldId) {
+        // 入力フィールドはそのまま（大文字に正規化）
+        newFieldValues[f.id] = value.toUpperCase();
+      } else {
+        newFieldValues[f.id] = bigIntToBase(bigValue, f.base);
+      }
+    }
+    setFieldValues(newFieldValues);
+    setErrors({});
+  }, []);
 
   /**
    * コピーボタンクリックハンドラ
@@ -187,7 +180,9 @@ function NumberBaseConverter() {
       const success = await copy(value);
       if (success) {
         setCopiedId(fieldId);
-        announceStatus(`${BASE_FIELDS.find((f) => f.id === fieldId)?.label ?? "値"}をコピーしました`);
+        announceStatus(
+          `${BASE_FIELDS.find((f) => f.id === fieldId)?.label ?? "値"}をコピーしました`,
+        );
         if (copiedTimeoutRef.current) {
           clearTimeout(copiedTimeoutRef.current);
         }
@@ -196,7 +191,7 @@ function NumberBaseConverter() {
         announceStatus("コピーに失敗しました");
       }
     },
-    [fieldValues, copy, announceStatus]
+    [fieldValues, copy, announceStatus],
   );
 
   /**
@@ -233,14 +228,9 @@ function NumberBaseConverter() {
 
                 return (
                   <div key={field.id} className="number-base-field">
-                    <label
-                      htmlFor={field.id}
-                      className="number-base-label"
-                    >
+                    <label htmlFor={field.id} className="number-base-label">
                       {field.label}
-                      <span className="number-base-label-prefix">
-                        (基数 {field.base})
-                      </span>
+                      <span className="number-base-label-prefix">(基数 {field.base})</span>
                     </label>
                     <div className="number-base-input-row">
                       <input
@@ -250,14 +240,10 @@ function NumberBaseConverter() {
                         className={`number-base-input${hasError ? " error" : ""}`}
                         value={value}
                         placeholder={field.placeholder}
-                        onChange={(e) =>
-                          handleChange(field.id, field.base, e.target.value)
-                        }
+                        onChange={(e) => handleChange(field.id, field.base, e.target.value)}
                         aria-label={`${field.label}入力フィールド`}
                         aria-invalid={hasError}
-                        aria-describedby={
-                          hasError ? `${field.id}-error` : undefined
-                        }
+                        aria-describedby={hasError ? `${field.id}-error` : undefined}
                         autoComplete="off"
                         spellCheck={false}
                       />

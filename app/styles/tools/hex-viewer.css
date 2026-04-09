@@ -98,7 +98,7 @@
 .hex-dump-table {
   width: 100%;
   border-collapse: collapse;
-  font-family: 'JetBrains Mono', 'Space Mono', 'Fira Code', 'Consolas', monospace;
+  font-family: "JetBrains Mono", "Space Mono", "Fira Code", "Consolas", monospace;
   font-size: 0.8125rem;
   white-space: nowrap;
 }
@@ -297,7 +297,7 @@
 }
 
 .hex-info-value {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-weight: 600;
   color: var(--md-sys-color-on-surface);
 }

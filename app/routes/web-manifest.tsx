@@ -5,10 +5,7 @@ import { useToast } from "~/components/Toast";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import {
   generateManifestJson,
   generateLinkTag,
@@ -88,7 +85,7 @@ function ColorField({
           type="button"
           onClick={(e) => {
             const input = (e.currentTarget as HTMLButtonElement).querySelector(
-              'input[type="color"]'
+              'input[type="color"]',
             ) as HTMLInputElement | null;
             input?.click();
           }}
@@ -147,8 +144,21 @@ function IconRow({
         onChange={(e) => onUpdate(icon.id, "sizes", e.target.value)}
         aria-label="アイコンサイズ"
       >
-        {["16x16","32x32","48x48","72x72","96x96","144x144","152x152","192x192","384x384","512x512"].map((s) => (
-          <option key={s} value={s}>{s}</option>
+        {[
+          "16x16",
+          "32x32",
+          "48x48",
+          "72x72",
+          "96x96",
+          "144x144",
+          "152x152",
+          "192x192",
+          "384x384",
+          "512x512",
+        ].map((s) => (
+          <option key={s} value={s}>
+            {s}
+          </option>
         ))}
       </select>
       <Input
@@ -205,9 +215,7 @@ function DevicePreview({ options }: { options: ManifestOptions }) {
             >
               {firstLetter}
             </div>
-            <div className="manifest-app-icon-label">
-              {options.short_name || options.name}
-            </div>
+            <div className="manifest-app-icon-label">{options.short_name || options.name}</div>
           </div>
           {dummyApps.slice(3).map((emoji, i) => (
             <div key={i + 3} className="manifest-app-icon">
@@ -239,7 +247,7 @@ function WebManifestGenerator() {
     <K extends keyof ManifestOptions>(key: K, value: ManifestOptions[K]) => {
       setOptions((prev) => ({ ...prev, [key]: value }));
     },
-    []
+    [],
   );
 
   const manifestJson = useMemo(() => generateManifestJson(options), [options]);
@@ -288,12 +296,10 @@ function WebManifestGenerator() {
     (id: string, field: keyof ManifestIcon, value: string) => {
       update(
         "icons",
-        options.icons.map((icon) =>
-          icon.id === id ? { ...icon, [field]: value } : icon
-        )
+        options.icons.map((icon) => (icon.id === id ? { ...icon, [field]: value } : icon)),
       );
     },
-    [options.icons, update]
+    [options.icons, update],
   );
 
   /** アイコン削除 */
@@ -301,10 +307,10 @@ function WebManifestGenerator() {
     (id: string) => {
       update(
         "icons",
-        options.icons.filter((icon) => icon.id !== id)
+        options.icons.filter((icon) => icon.id !== id),
       );
     },
-    [options.icons, update]
+    [options.icons, update],
   );
 
   /** カテゴリ追加 */
@@ -315,7 +321,7 @@ function WebManifestGenerator() {
       update("categories", [...options.categories, trimmed]);
       setCategoryInput("");
     },
-    [options.categories, update]
+    [options.categories, update],
   );
 
   /** カテゴリ削除 */
@@ -323,10 +329,10 @@ function WebManifestGenerator() {
     (cat: string) => {
       update(
         "categories",
-        options.categories.filter((c) => c !== cat)
+        options.categories.filter((c) => c !== cat),
       );
     },
-    [options.categories, update]
+    [options.categories, update],
   );
 
   /** リセット */
@@ -351,13 +357,16 @@ function WebManifestGenerator() {
         <div className="tool-layout-split">
           {/* 左：フォーム */}
           <div className="tool-panel">
-
             {/* 基本情報 */}
             <section className="tool-section" aria-labelledby="basic-info-heading">
-              <h2 id="basic-info-heading" className="tool-section-title">基本情報</h2>
+              <h2 id="basic-info-heading" className="tool-section-title">
+                基本情報
+              </h2>
               <div className="manifest-form-grid">
                 <div className="tool-field">
-                  <label className="tool-label" htmlFor="manifest-name">名前 (name)</label>
+                  <label className="tool-label" htmlFor="manifest-name">
+                    名前 (name)
+                  </label>
                   <Input
                     id="manifest-name"
                     value={options.name}
@@ -378,7 +387,9 @@ function WebManifestGenerator() {
                 </div>
               </div>
               <div className="tool-field">
-                <label className="tool-label" htmlFor="manifest-description">説明 (description)</label>
+                <label className="tool-label" htmlFor="manifest-description">
+                  説明 (description)
+                </label>
                 <Input
                   id="manifest-description"
                   value={options.description}
@@ -399,7 +410,9 @@ function WebManifestGenerator() {
                   />
                 </div>
                 <div className="tool-field">
-                  <label className="tool-label" htmlFor="manifest-scope">スコープ (scope)</label>
+                  <label className="tool-label" htmlFor="manifest-scope">
+                    スコープ (scope)
+                  </label>
                   <Input
                     id="manifest-scope"
                     value={options.scope}
@@ -412,7 +425,9 @@ function WebManifestGenerator() {
 
             {/* 表示設定 */}
             <section className="tool-section" aria-labelledby="display-settings-heading">
-              <h2 id="display-settings-heading" className="tool-section-title">表示設定</h2>
+              <h2 id="display-settings-heading" className="tool-section-title">
+                表示設定
+              </h2>
               <div className="manifest-form-grid">
                 <div className="tool-field">
                   <label className="tool-label" htmlFor="manifest-display">
@@ -467,10 +482,14 @@ function WebManifestGenerator() {
 
             {/* 言語設定 */}
             <section className="tool-section" aria-labelledby="lang-settings-heading">
-              <h2 id="lang-settings-heading" className="tool-section-title">言語・文字方向</h2>
+              <h2 id="lang-settings-heading" className="tool-section-title">
+                言語・文字方向
+              </h2>
               <div className="manifest-form-grid">
                 <div className="tool-field">
-                  <label className="tool-label" htmlFor="manifest-lang">言語 (lang)</label>
+                  <label className="tool-label" htmlFor="manifest-lang">
+                    言語 (lang)
+                  </label>
                   <Input
                     id="manifest-lang"
                     value={options.lang}
@@ -486,9 +505,7 @@ function WebManifestGenerator() {
                     id="manifest-dir"
                     className="tool-select"
                     value={options.dir}
-                    onChange={(e) =>
-                      update("dir", e.target.value as "auto" | "ltr" | "rtl")
-                    }
+                    onChange={(e) => update("dir", e.target.value as "auto" | "ltr" | "rtl")}
                   >
                     <option value="auto">auto（自動）</option>
                     <option value="ltr">ltr（左から右）</option>
@@ -506,15 +523,9 @@ function WebManifestGenerator() {
                   <span className="manifest-section-badge">{options.icons.length}</span>
                 )}
               </h2>
-              <p className="tool-hint">
-                各アイコンのパス・サイズ・MIMEタイプ・用途を設定します。
-              </p>
+              <p className="tool-hint">各アイコンのパス・サイズ・MIMEタイプ・用途を設定します。</p>
               {options.icons.length > 0 && (
-                <div
-                  className="manifest-icons-list"
-                  role="list"
-                  aria-label="アイコンリスト"
-                >
+                <div className="manifest-icons-list" role="list" aria-label="アイコンリスト">
                   {/* ヘッダー行 */}
                   <div className="manifest-icon-row" aria-hidden="true">
                     <span className="tool-hint">パス (src)</span>
@@ -525,11 +536,7 @@ function WebManifestGenerator() {
                   </div>
                   {options.icons.map((icon) => (
                     <div key={icon.id} role="listitem">
-                      <IconRow
-                        icon={icon}
-                        onUpdate={updateIcon}
-                        onRemove={removeIcon}
-                      />
+                      <IconRow icon={icon} onUpdate={updateIcon} onRemove={removeIcon} />
                     </div>
                   ))}
                 </div>
@@ -559,9 +566,7 @@ function WebManifestGenerator() {
                     aria-label="カテゴリ選択"
                   >
                     <option value="">— カテゴリを選択 —</option>
-                    {COMMON_CATEGORIES.filter(
-                      (c) => !options.categories.includes(c)
-                    ).map((c) => (
+                    {COMMON_CATEGORIES.filter((c) => !options.categories.includes(c)).map((c) => (
                       <option key={c} value={c}>
                         {c}
                       </option>
@@ -578,11 +583,7 @@ function WebManifestGenerator() {
                 </div>
               </div>
               {options.categories.length > 0 && (
-                <div
-                  className="manifest-categories-list"
-                  role="list"
-                  aria-label="選択中のカテゴリ"
-                >
+                <div className="manifest-categories-list" role="list" aria-label="選択中のカテゴリ">
                   {options.categories.map((cat) => (
                     <div key={cat} className="manifest-category-chip" role="listitem">
                       {cat}
@@ -604,18 +605,18 @@ function WebManifestGenerator() {
           <div className="tool-panel">
             {/* モバイルプレビュー */}
             <section className="tool-section" aria-labelledby="preview-heading">
-              <h2 id="preview-heading" className="tool-section-title">プレビュー</h2>
+              <h2 id="preview-heading" className="tool-section-title">
+                プレビュー
+              </h2>
               <DevicePreview options={options} />
             </section>
 
             {/* 出力 */}
             <section className="tool-section" aria-labelledby="output-heading">
-              <h2 id="output-heading" className="tool-section-title">出力</h2>
-              <div
-                className="manifest-output-tabs"
-                role="tablist"
-                aria-label="出力形式"
-              >
+              <h2 id="output-heading" className="tool-section-title">
+                出力
+              </h2>
+              <div className="manifest-output-tabs" role="tablist" aria-label="出力形式">
                 <button
                   role="tab"
                   aria-selected={activeTab === "json"}
@@ -653,11 +654,7 @@ function WebManifestGenerator() {
                     ダウンロード
                   </Button>
                 )}
-                <Button
-                  variant="outline"
-                  onClick={handleReset}
-                  aria-label="設定をリセット"
-                >
+                <Button variant="outline" onClick={handleReset} aria-label="設定をリセット">
                   リセット
                 </Button>
               </div>
@@ -671,16 +668,20 @@ function WebManifestGenerator() {
               <strong>name</strong> はインストール確認ダイアログや、アプリ一覧に表示されます。
             </li>
             <li>
-              <strong>short_name</strong> はホーム画面のアイコン下に表示される短い名前です（10文字程度推奨）。
+              <strong>short_name</strong>{" "}
+              はホーム画面のアイコン下に表示される短い名前です（10文字程度推奨）。
             </li>
             <li>
-              <strong>maskable</strong> アイコンは Android で円形・角丸にトリミングされます。セーフゾーン（中央80%）にコンテンツを収めてください。
+              <strong>maskable</strong> アイコンは Android
+              で円形・角丸にトリミングされます。セーフゾーン（中央80%）にコンテンツを収めてください。
             </li>
             <li>
-              <strong>standalone</strong> モードではブラウザのアドレスバーが非表示になり、ネイティブアプリに近い外観になります。
+              <strong>standalone</strong>{" "}
+              モードではブラウザのアドレスバーが非表示になり、ネイティブアプリに近い外観になります。
             </li>
             <li>
-              <code>{"<link rel=\"manifest\" href=\"/manifest.json\">"}</code> を HTML の <code>{"<head>"}</code> 内に追加してください。
+              <code>{'<link rel="manifest" href="/manifest.json">'}</code> を HTML の{" "}
+              <code>{"<head>"}</code> 内に追加してください。
             </li>
           </ul>
         </TipsCard>

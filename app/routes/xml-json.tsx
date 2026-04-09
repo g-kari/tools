@@ -1,45 +1,45 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useState, useCallback } from 'react';
-import { useClipboard } from '~/hooks/useClipboard';
-import { useToast } from '../components/Toast';
-import { TipsCard } from '~/components/TipsCard';
-import { ErrorMessage } from '~/components/ErrorMessage';
-import { xmlToJson, jsonToXml, getSampleXml, getSampleJson } from '~/utils/xml-json';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
-import '../styles/tools/xml-json.css';
+import { createFileRoute } from "@tanstack/react-router";
+import { useState, useCallback } from "react";
+import { useClipboard } from "~/hooks/useClipboard";
+import { useToast } from "../components/Toast";
+import { TipsCard } from "~/components/TipsCard";
+import { ErrorMessage } from "~/components/ErrorMessage";
+import { xmlToJson, jsonToXml, getSampleXml, getSampleJson } from "~/utils/xml-json";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
+import "../styles/tools/xml-json.css";
 
-export const Route = createFileRoute('/xml-json')({
+export const Route = createFileRoute("/xml-json")({
   head: () => ({
     meta: [
-      { title: 'XML/JSON変換 | Web ツール集' },
+      { title: "XML/JSON変換 | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          'XML文字列をJSONに変換、またはJSONをXMLに変換するオンラインツール。属性・テキスト・ネスト構造に対応。',
+          "XML文字列をJSONに変換、またはJSONをXMLに変換するオンラインツール。属性・テキスト・ネスト構造に対応。",
       },
-      { property: 'og:title', content: 'XML/JSON変換 | Web ツール集' },
+      { property: "og:title", content: "XML/JSON変換 | Web ツール集" },
       {
-        property: 'og:description',
+        property: "og:description",
         content:
-          'XML文字列をJSONに変換、またはJSONをXMLに変換するオンラインツール。属性・テキスト・ネスト構造に対応。',
+          "XML文字列をJSONに変換、またはJSONをXMLに変換するオンラインツール。属性・テキスト・ネスト構造に対応。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/xml-json` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
+      { property: "og:url", content: `${SITE_BASE_URL}/xml-json` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
     ],
   }),
   component: XmlJsonConverter,
 });
 
-type Mode = 'xml-to-json' | 'json-to-xml';
+type Mode = "xml-to-json" | "json-to-xml";
 
 /**
  * XML/JSON相互変換ページコンポーネント
  */
 function XmlJsonConverter() {
-  const [mode, setMode] = useState<Mode>('xml-to-json');
-  const [inputText, setInputText] = useState('');
-  const [outputText, setOutputText] = useState('');
+  const [mode, setMode] = useState<Mode>("xml-to-json");
+  const [inputText, setInputText] = useState("");
+  const [outputText, setOutputText] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [indent, setIndent] = useState(2);
 
@@ -48,33 +48,33 @@ function XmlJsonConverter() {
 
   const handleConvert = useCallback(() => {
     if (!inputText.trim()) {
-      setError(mode === 'xml-to-json' ? 'XMLを入力してください' : 'JSONを入力してください');
-      setOutputText('');
+      setError(mode === "xml-to-json" ? "XMLを入力してください" : "JSONを入力してください");
+      setOutputText("");
       return;
     }
 
     const result =
-      mode === 'xml-to-json' ? xmlToJson(inputText, indent) : jsonToXml(inputText, indent);
+      mode === "xml-to-json" ? xmlToJson(inputText, indent) : jsonToXml(inputText, indent);
 
     if (result.success) {
       setOutputText(result.output);
       setError(null);
     } else {
-      setError(result.error ?? '変換エラーが発生しました');
-      setOutputText('');
+      setError(result.error ?? "変換エラーが発生しました");
+      setOutputText("");
     }
   }, [inputText, mode, indent]);
 
   const handleLoadSample = useCallback(() => {
-    const sample = mode === 'xml-to-json' ? getSampleXml() : getSampleJson();
+    const sample = mode === "xml-to-json" ? getSampleXml() : getSampleJson();
     setInputText(sample);
-    setOutputText('');
+    setOutputText("");
     setError(null);
   }, [mode]);
 
   const handleClear = useCallback(() => {
-    setInputText('');
-    setOutputText('');
+    setInputText("");
+    setOutputText("");
     setError(null);
   }, []);
 
@@ -82,23 +82,23 @@ function XmlJsonConverter() {
     if (!outputText) return;
     const success = await copy(outputText);
     if (success) {
-      showToast('コピーしました', 'success');
+      showToast("コピーしました", "success");
     } else {
-      showToast('コピーに失敗しました', 'error');
+      showToast("コピーに失敗しました", "error");
     }
   }, [outputText, copy, showToast]);
 
   const handleModeChange = useCallback((newMode: Mode) => {
     setMode(newMode);
-    setInputText('');
-    setOutputText('');
+    setInputText("");
+    setOutputText("");
     setError(null);
   }, []);
 
-  const inputLabel = mode === 'xml-to-json' ? 'XML入力' : 'JSON入力';
-  const outputLabel = mode === 'xml-to-json' ? 'JSON出力' : 'XML出力';
+  const inputLabel = mode === "xml-to-json" ? "XML入力" : "JSON入力";
+  const outputLabel = mode === "xml-to-json" ? "JSON出力" : "XML出力";
   const inputPlaceholder =
-    mode === 'xml-to-json'
+    mode === "xml-to-json"
       ? '<?xml version="1.0"?>\n<root>\n  <item>value</item>\n</root>'
       : '{\n  "root": {\n    "item": "value"\n  }\n}';
 
@@ -108,17 +108,17 @@ function XmlJsonConverter() {
       <div className="xml-json-mode-tabs" role="tablist" aria-label="変換モード">
         <button
           role="tab"
-          aria-selected={mode === 'xml-to-json'}
-          className={`xml-json-mode-tab${mode === 'xml-to-json' ? ' xml-json-mode-tab--active' : ''}`}
-          onClick={() => handleModeChange('xml-to-json')}
+          aria-selected={mode === "xml-to-json"}
+          className={`xml-json-mode-tab${mode === "xml-to-json" ? " xml-json-mode-tab--active" : ""}`}
+          onClick={() => handleModeChange("xml-to-json")}
         >
           XML → JSON
         </button>
         <button
           role="tab"
-          aria-selected={mode === 'json-to-xml'}
-          className={`xml-json-mode-tab${mode === 'json-to-xml' ? ' xml-json-mode-tab--active' : ''}`}
-          onClick={() => handleModeChange('json-to-xml')}
+          aria-selected={mode === "json-to-xml"}
+          className={`xml-json-mode-tab${mode === "json-to-xml" ? " xml-json-mode-tab--active" : ""}`}
+          onClick={() => handleModeChange("json-to-xml")}
         >
           JSON → XML
         </button>
@@ -215,29 +215,29 @@ function XmlJsonConverter() {
       <TipsCard
         sections={[
           {
-            title: '使い方',
+            title: "使い方",
             items: [
-              'モードタブで「XML → JSON」または「JSON → XML」を選択',
-              '入力欄にテキストを貼り付けて「変換」ボタンをクリック',
-              '「サンプル」ボタンでサンプルデータを読み込めます',
-              '出力結果は「コピー」ボタンでクリップボードにコピー可能',
+              "モードタブで「XML → JSON」または「JSON → XML」を選択",
+              "入力欄にテキストを貼り付けて「変換」ボタンをクリック",
+              "「サンプル」ボタンでサンプルデータを読み込めます",
+              "出力結果は「コピー」ボタンでクリップボードにコピー可能",
             ],
           },
           {
-            title: 'XML → JSON の変換規則',
+            title: "XML → JSON の変換規則",
             items: [
-              '要素のテキスト内容は文字列値として変換',
+              "要素のテキスト内容は文字列値として変換",
               '属性は "@attributes" オブジェクトにまとめて格納',
-              '同名の子要素が複数ある場合は配列に変換',
+              "同名の子要素が複数ある場合は配列に変換",
               'テキストと子要素が混在する場合は "#text" キーでテキストを保持',
             ],
           },
           {
-            title: 'JSON → XML の変換規則',
+            title: "JSON → XML の変換規則",
             items: [
-              'JSONのルートオブジェクトの最初のキーがルート要素名になります',
+              "JSONのルートオブジェクトの最初のキーがルート要素名になります",
               '"@attributes" オブジェクトは属性として変換',
-              '配列は同名の要素を繰り返して変換',
+              "配列は同名の要素を繰り返して変換",
               '"#text" キーの値はテキストコンテンツとして変換',
             ],
           },

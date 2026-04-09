@@ -1,31 +1,31 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
-import { useState, useCallback } from 'react';
-import { TipsCard } from '~/components/TipsCard';
-import { useStatusAnnouncement, StatusAnnouncer } from '~/hooks/useStatusAnnouncement';
-import { useClipboard } from '~/hooks/useClipboard';
+import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
+import { useState, useCallback } from "react";
+import { TipsCard } from "~/components/TipsCard";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
+import { useClipboard } from "~/hooks/useClipboard";
 
-export const Route = createFileRoute('/color-temperature')({
+export const Route = createFileRoute("/color-temperature")({
   head: () => ({
     meta: [
-      { title: '色温度変換 | Web ツール集' },
+      { title: "色温度変換 | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          '色温度（ケルビン）をRGB・HEXカラーに変換するツール。ろうそく・白熱灯・昼光色などのプリセットを使って照明や写真の色味を視覚的に確認できます。',
+          "色温度（ケルビン）をRGB・HEXカラーに変換するツール。ろうそく・白熱灯・昼光色などのプリセットを使って照明や写真の色味を視覚的に確認できます。",
       },
-      { property: 'og:title', content: '色温度変換 | Web ツール集' },
+      { property: "og:title", content: "色温度変換 | Web ツール集" },
       {
-        property: 'og:description',
-        content: '色温度（ケルビン）をRGB・HEXカラーに変換。照明・写真の色味を視覚確認。',
+        property: "og:description",
+        content: "色温度（ケルビン）をRGB・HEXカラーに変換。照明・写真の色味を視覚確認。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/color-temperature` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
-      { name: 'twitter:title', content: '色温度変換 | Web ツール集' },
+      { property: "og:url", content: `${SITE_BASE_URL}/color-temperature` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "色温度変換 | Web ツール集" },
       {
-        name: 'twitter:description',
-        content: '色温度（ケルビン）をRGB・HEXに変換。照明・写真の色味を視覚的に確認。',
+        name: "twitter:description",
+        content: "色温度（ケルビン）をRGB・HEXに変換。照明・写真の色味を視覚的に確認。",
       },
     ],
   }),
@@ -78,10 +78,10 @@ export function kelvinToRgb(kelvin: number): { r: number; g: number; b: number }
 /** RGBを16進数カラーコードに変換する */
 export function rgbToHex(r: number, g: number, b: number): string {
   return (
-    '#' +
+    "#" +
     [r, g, b]
-      .map((v) => Math.round(v).toString(16).padStart(2, '0'))
-      .join('')
+      .map((v) => Math.round(v).toString(16).padStart(2, "0"))
+      .join("")
       .toUpperCase()
   );
 }
@@ -95,22 +95,22 @@ export function kelvinToHex(kelvin: number): string {
 // ==================== プリセット ====================
 
 const PRESETS: { label: string; kelvin: number; description: string }[] = [
-  { label: 'ろうそく', kelvin: 1800, description: '炎のような温かみのある赤橙色' },
-  { label: '白熱電球', kelvin: 2700, description: '従来の電球の温かみのある暖色' },
-  { label: '電球色LED', kelvin: 3000, description: '電球色LED・ハロゲンランプ' },
-  { label: '白色LED', kelvin: 4000, description: '白色LEDの中間色' },
-  { label: '昼白色', kelvin: 5000, description: '自然光に近い標準白色' },
-  { label: '太陽光', kelvin: 5500, description: '晴天時の直射日光' },
-  { label: '昼光色', kelvin: 6500, description: '曇天・一般的なモニター基準' },
-  { label: '薄曇り', kelvin: 8000, description: '薄曇りの空の光' },
-  { label: '青空', kelvin: 15000, description: '晴れた青空の散乱光' },
+  { label: "ろうそく", kelvin: 1800, description: "炎のような温かみのある赤橙色" },
+  { label: "白熱電球", kelvin: 2700, description: "従来の電球の温かみのある暖色" },
+  { label: "電球色LED", kelvin: 3000, description: "電球色LED・ハロゲンランプ" },
+  { label: "白色LED", kelvin: 4000, description: "白色LEDの中間色" },
+  { label: "昼白色", kelvin: 5000, description: "自然光に近い標準白色" },
+  { label: "太陽光", kelvin: 5500, description: "晴天時の直射日光" },
+  { label: "昼光色", kelvin: 6500, description: "曇天・一般的なモニター基準" },
+  { label: "薄曇り", kelvin: 8000, description: "薄曇りの空の光" },
+  { label: "青空", kelvin: 15000, description: "晴れた青空の散乱光" },
 ];
 
 // ==================== コンポーネント ====================
 
 function ColorTemperature() {
   const [kelvin, setKelvin] = useState(6500);
-  const [inputValue, setInputValue] = useState('6500');
+  const [inputValue, setInputValue] = useState("6500");
 
   const { copy } = useClipboard();
   const { announceStatus, statusRef } = useStatusAnnouncement();
@@ -149,22 +149,22 @@ function ColorTemperature() {
       setInputValue(String(k));
       announceStatus(`${k}Kに設定しました`);
     },
-    [announceStatus]
+    [announceStatus],
   );
 
   const handleCopyHex = useCallback(async () => {
     const ok = await copy(hex);
-    announceStatus(ok ? `HEX ${hex} をコピーしました` : 'コピーに失敗しました');
+    announceStatus(ok ? `HEX ${hex} をコピーしました` : "コピーに失敗しました");
   }, [copy, hex, announceStatus]);
 
   const handleCopyRgb = useCallback(async () => {
     const ok = await copy(rgbString);
-    announceStatus(ok ? `RGB ${rgbString} をコピーしました` : 'コピーに失敗しました');
+    announceStatus(ok ? `RGB ${rgbString} をコピーしました` : "コピーに失敗しました");
   }, [copy, rgbString, announceStatus]);
 
   // 色温度スペクトルの背景グラデーション（1000K〜40000K）
   const spectrumGradient =
-    'linear-gradient(to right, #ff3800, #ff6000, #ffa040, #ffc87c, #fff4e8, #ffffff, #dde8ff, #c2d4ff)';
+    "linear-gradient(to right, #ff3800, #ff6000, #ffa040, #ffc87c, #fff4e8, #ffffff, #dde8ff, #c2d4ff)";
 
   return (
     <>
@@ -193,10 +193,7 @@ function ColorTemperature() {
           </div>
 
           <div className="ct-spectrum-wrap" aria-hidden="true">
-            <div
-              className="ct-spectrum-bar"
-              style={{ background: spectrumGradient }}
-            />
+            <div className="ct-spectrum-bar" style={{ background: spectrumGradient }} />
           </div>
 
           <input
@@ -277,7 +274,7 @@ function ColorTemperature() {
               <button
                 key={p.kelvin}
                 type="button"
-                className={`ct-preset-btn${kelvin === p.kelvin ? ' ct-preset-btn--active' : ''}`}
+                className={`ct-preset-btn${kelvin === p.kelvin ? " ct-preset-btn--active" : ""}`}
                 onClick={() => handlePreset(p.kelvin)}
                 aria-pressed={kelvin === p.kelvin}
                 aria-label={`${p.label} ${p.kelvin}K: ${p.description}`}
@@ -300,20 +297,20 @@ function ColorTemperature() {
         <TipsCard
           sections={[
             {
-              title: '色温度とは',
+              title: "色温度とは",
               items: [
-                '色温度とはケルビン（K）で表される光の色の指標です',
-                '低い値（1000〜3000K）は暖かみのある赤橙色、高い値（6000K以上）は青みがかった冷たい色になります',
-                '白熱電球（約2700K）・蛍光灯（約6500K）・晴天の空（約10000〜15000K）が代表例です',
+                "色温度とはケルビン（K）で表される光の色の指標です",
+                "低い値（1000〜3000K）は暖かみのある赤橙色、高い値（6000K以上）は青みがかった冷たい色になります",
+                "白熱電球（約2700K）・蛍光灯（約6500K）・晴天の空（約10000〜15000K）が代表例です",
               ],
             },
             {
-              title: '用途',
+              title: "用途",
               items: [
-                '写真・動画のホワイトバランス調整の参考に',
-                '照明設計・室内デザインの色味検討に',
-                'UIデザインやブランドカラーの色温度確認に',
-                'CSS カラー値として直接コピーして利用できます',
+                "写真・動画のホワイトバランス調整の参考に",
+                "照明設計・室内デザインの色味検討に",
+                "UIデザインやブランドカラーの色温度確認に",
+                "CSS カラー値として直接コピーして利用できます",
               ],
             },
           ]}

@@ -19,7 +19,7 @@ export interface CssFormatOptions {
  */
 export function formatCss(css: string, options: CssFormatOptions = {}): string {
   if (!css.trim()) {
-    throw new Error('CSSデータが空です');
+    throw new Error("CSSデータが空です");
   }
 
   const validation = validateCss(css);
@@ -28,15 +28,15 @@ export function formatCss(css: string, options: CssFormatOptions = {}): string {
   }
 
   const indentSize = options.indent ?? 2;
-  const indentStr = ' '.repeat(indentSize);
+  const indentStr = " ".repeat(indentSize);
 
   const lines: string[] = [];
   let depth = 0;
   let i = 0;
   const len = css.length;
-  let buffer = '';
+  let buffer = "";
   let inString = false;
-  let stringChar = '';
+  let stringChar = "";
 
   const pushLine = (content: string) => {
     const trimmed = content.trim();
@@ -50,7 +50,7 @@ export function formatCss(css: string, options: CssFormatOptions = {}): string {
     if (trimmed) {
       pushLine(trimmed);
     }
-    buffer = '';
+    buffer = "";
   };
 
   while (i < len) {
@@ -59,7 +59,7 @@ export function formatCss(css: string, options: CssFormatOptions = {}): string {
     // 文字列リテラル内
     if (inString) {
       buffer += ch;
-      if (ch === stringChar && css[i - 1] !== '\\') {
+      if (ch === stringChar && css[i - 1] !== "\\") {
         inString = false;
       }
       i++;
@@ -76,49 +76,53 @@ export function formatCss(css: string, options: CssFormatOptions = {}): string {
     }
 
     // コメント
-    if (ch === '/' && i + 1 < len && css[i + 1] === '*') {
-      const end = css.indexOf('*/', i + 2);
+    if (ch === "/" && i + 1 < len && css[i + 1] === "*") {
+      const end = css.indexOf("*/", i + 2);
       if (end === -1) {
-        throw new Error('コメントが閉じられていません');
+        throw new Error("コメントが閉じられていません");
       }
       flushBuffer();
       const comment = css.slice(i, end + 2).trim();
       // 複数行コメントの行頭にインデントを追加
       const indentedComment = comment
-        .split('\n')
-        .map((line, idx) => (idx === 0 ? indentStr.repeat(depth) + line.trim() : indentStr.repeat(depth) + ' ' + line.trim()))
-        .join('\n');
+        .split("\n")
+        .map((line, idx) =>
+          idx === 0
+            ? indentStr.repeat(depth) + line.trim()
+            : indentStr.repeat(depth) + " " + line.trim(),
+        )
+        .join("\n");
       lines.push(indentedComment);
       i = end + 2;
       // コメント後の空白をスキップ
-      while (i < len && (css[i] === ' ' || css[i] === '\t' || css[i] === '\n' || css[i] === '\r')) {
+      while (i < len && (css[i] === " " || css[i] === "\t" || css[i] === "\n" || css[i] === "\r")) {
         i++;
       }
       continue;
     }
 
     // 開き波括弧
-    if (ch === '{') {
+    if (ch === "{") {
       const selector = buffer.trim();
-      buffer = '';
-      lines.push(indentStr.repeat(depth) + selector + ' {');
+      buffer = "";
+      lines.push(indentStr.repeat(depth) + selector + " {");
       depth++;
       i++;
       // 直後の空白をスキップ
-      while (i < len && (css[i] === ' ' || css[i] === '\t' || css[i] === '\n' || css[i] === '\r')) {
+      while (i < len && (css[i] === " " || css[i] === "\t" || css[i] === "\n" || css[i] === "\r")) {
         i++;
       }
       continue;
     }
 
     // 閉じ波括弧
-    if (ch === '}') {
+    if (ch === "}") {
       // バッファに残っているデータを出力（通常はないが念のため）
       const remaining = buffer.trim();
       if (remaining) {
         pushLine(remaining);
       }
-      buffer = '';
+      buffer = "";
       depth = Math.max(0, depth - 1);
 
       // プロパティソートが有効な場合、直前のブロック内の宣言をソート
@@ -126,51 +130,51 @@ export function formatCss(css: string, options: CssFormatOptions = {}): string {
         sortPropertiesInLastBlock(lines, depth, indentStr);
       }
 
-      lines.push(indentStr.repeat(depth) + '}');
+      lines.push(indentStr.repeat(depth) + "}");
       // トップレベルのルール間に空行を挿入
       if (depth === 0) {
-        lines.push('');
+        lines.push("");
       }
       i++;
       // 直後の空白をスキップ
-      while (i < len && (css[i] === ' ' || css[i] === '\t' || css[i] === '\n' || css[i] === '\r')) {
+      while (i < len && (css[i] === " " || css[i] === "\t" || css[i] === "\n" || css[i] === "\r")) {
         i++;
       }
       continue;
     }
 
     // セミコロン（宣言の終わり）
-    if (ch === ';') {
+    if (ch === ";") {
       const decl = buffer.trim();
-      buffer = '';
+      buffer = "";
       if (decl) {
         // 宣言を正規化（プロパティ: 値 の形式に）
-        pushLine(normalizeDeclaration(decl) + ';');
+        pushLine(normalizeDeclaration(decl) + ";");
       }
       i++;
       // 直後の空白をスキップ
-      while (i < len && (css[i] === ' ' || css[i] === '\t' || css[i] === '\n' || css[i] === '\r')) {
+      while (i < len && (css[i] === " " || css[i] === "\t" || css[i] === "\n" || css[i] === "\r")) {
         i++;
       }
       continue;
     }
 
     // 改行・タブ -> 単一スペースに正規化
-    if (ch === '\n' || ch === '\r' || ch === '\t') {
-      if (buffer.length > 0 && !buffer.endsWith(' ')) {
-        buffer += ' ';
+    if (ch === "\n" || ch === "\r" || ch === "\t") {
+      if (buffer.length > 0 && !buffer.endsWith(" ")) {
+        buffer += " ";
       }
       i++;
-      while (i < len && (css[i] === ' ' || css[i] === '\t' || css[i] === '\n' || css[i] === '\r')) {
+      while (i < len && (css[i] === " " || css[i] === "\t" || css[i] === "\n" || css[i] === "\r")) {
         i++;
       }
       continue;
     }
 
     // 連続スペースの正規化
-    if (ch === ' ') {
-      if (buffer.length > 0 && !buffer.endsWith(' ')) {
-        buffer += ' ';
+    if (ch === " ") {
+      if (buffer.length > 0 && !buffer.endsWith(" ")) {
+        buffer += " ";
       }
       i++;
       continue;
@@ -187,11 +191,11 @@ export function formatCss(css: string, options: CssFormatOptions = {}): string {
   }
 
   // 末尾の空行を除去して結合
-  while (lines.length > 0 && lines[lines.length - 1].trim() === '') {
+  while (lines.length > 0 && lines[lines.length - 1].trim() === "") {
     lines.pop();
   }
 
-  return lines.join('\n');
+  return lines.join("\n");
 }
 
 /**
@@ -202,11 +206,11 @@ export function formatCss(css: string, options: CssFormatOptions = {}): string {
  */
 function sortPropertiesInLastBlock(lines: string[], depth: number, indentStr: string): void {
   const blockIndent = indentStr.repeat(depth + 1);
-  const closingBrace = indentStr.repeat(depth) + '}';
+  const closingBrace = indentStr.repeat(depth) + "}";
   // ブロック開始位置を探す
   let blockStart = -1;
   for (let i = lines.length - 1; i >= 0; i--) {
-    if (lines[i].endsWith('{')) {
+    if (lines[i].endsWith("{")) {
       blockStart = i + 1;
       break;
     }
@@ -218,8 +222,12 @@ function sortPropertiesInLastBlock(lines: string[], depth: number, indentStr: st
 
   // ブロック内の宣言行を抽出してソート
   const blockLines = lines.slice(blockStart);
-  const declarations = blockLines.filter((line) => line.startsWith(blockIndent) && line.trimEnd().endsWith(';'));
-  const nonDeclarations = blockLines.filter((line) => !line.startsWith(blockIndent) || !line.trimEnd().endsWith(';'));
+  const declarations = blockLines.filter(
+    (line) => line.startsWith(blockIndent) && line.trimEnd().endsWith(";"),
+  );
+  const nonDeclarations = blockLines.filter(
+    (line) => !line.startsWith(blockIndent) || !line.trimEnd().endsWith(";"),
+  );
 
   if (declarations.length === 0) return;
 
@@ -228,7 +236,7 @@ function sortPropertiesInLastBlock(lines: string[], depth: number, indentStr: st
   // ソートした結果をlinesに戻す（宣言のみ置き換え）
   let declIdx = 0;
   for (let i = blockStart; i < lines.length; i++) {
-    if (lines[i].startsWith(blockIndent) && lines[i].trimEnd().endsWith(';')) {
+    if (lines[i].startsWith(blockIndent) && lines[i].trimEnd().endsWith(";")) {
       lines[i] = declarations[declIdx++];
     }
   }
@@ -243,7 +251,7 @@ function sortPropertiesInLastBlock(lines: string[], depth: number, indentStr: st
  */
 function normalizeDeclaration(decl: string): string {
   // コロンを含まない（セレクター等）はそのまま返す
-  const colonIdx = decl.indexOf(':');
+  const colonIdx = decl.indexOf(":");
   if (colonIdx === -1) return decl;
 
   // data URIやurl()の中のコロンは対象外（セミコロンで終わる行のみ対象）
@@ -265,13 +273,13 @@ function normalizeDeclaration(decl: string): string {
  */
 export function minifyCss(css: string): string {
   if (!css.trim()) {
-    throw new Error('CSSデータが空です');
+    throw new Error("CSSデータが空です");
   }
 
   let result = css;
 
   // コメントを除去
-  result = result.replace(/\/\*[\s\S]*?\*\//g, '');
+  result = result.replace(/\/\*[\s\S]*?\*\//g, "");
 
   // 文字列リテラルを保護しながら圧縮
   // まず文字列リテラルをプレースホルダーで置換
@@ -283,12 +291,12 @@ export function minifyCss(css: string): string {
 
   // 空白の正規化
   result = result
-    .replace(/\s+/g, ' ') // 複数空白をひとつに
-    .replace(/\s*\{\s*/g, '{') // { 周りの空白を除去
-    .replace(/\s*\}\s*/g, '}') // } 周りの空白を除去
-    .replace(/\s*;\s*/g, ';') // ; 周りの空白を除去
-    .replace(/\s*,\s*/g, ',') // , 周りの空白を除去
-    .replace(/\s*:\s*/g, ':') // : 周りの空白を除去
+    .replace(/\s+/g, " ") // 複数空白をひとつに
+    .replace(/\s*\{\s*/g, "{") // { 周りの空白を除去
+    .replace(/\s*\}\s*/g, "}") // } 周りの空白を除去
+    .replace(/\s*;\s*/g, ";") // ; 周りの空白を除去
+    .replace(/\s*,\s*/g, ",") // , 周りの空白を除去
+    .replace(/\s*:\s*/g, ":") // : 周りの空白を除去
     .trim();
 
   // プレースホルダーを元の文字列に戻す
@@ -305,12 +313,12 @@ export function minifyCss(css: string): string {
  */
 export function validateCss(css: string): { valid: boolean; error?: string } {
   if (!css.trim()) {
-    return { valid: false, error: 'CSSデータが空です' };
+    return { valid: false, error: "CSSデータが空です" };
   }
 
   let depth = 0;
   let inString = false;
-  let stringChar = '';
+  let stringChar = "";
   let inComment = false;
   const len = css.length;
 
@@ -318,7 +326,7 @@ export function validateCss(css: string): { valid: boolean; error?: string } {
     const ch = css[i];
 
     if (inComment) {
-      if (ch === '*' && i + 1 < len && css[i + 1] === '/') {
+      if (ch === "*" && i + 1 < len && css[i + 1] === "/") {
         inComment = false;
         i++;
       }
@@ -326,13 +334,13 @@ export function validateCss(css: string): { valid: boolean; error?: string } {
     }
 
     if (inString) {
-      if (ch === stringChar && css[i - 1] !== '\\') {
+      if (ch === stringChar && css[i - 1] !== "\\") {
         inString = false;
       }
       continue;
     }
 
-    if (ch === '/' && i + 1 < len && css[i + 1] === '*') {
+    if (ch === "/" && i + 1 < len && css[i + 1] === "*") {
       inComment = true;
       i++;
       continue;
@@ -344,12 +352,12 @@ export function validateCss(css: string): { valid: boolean; error?: string } {
       continue;
     }
 
-    if (ch === '{') {
+    if (ch === "{") {
       depth++;
       continue;
     }
 
-    if (ch === '}') {
+    if (ch === "}") {
       depth--;
       if (depth < 0) {
         return { valid: false, error: '予期しない "}" が見つかりました' };

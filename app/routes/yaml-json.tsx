@@ -82,8 +82,7 @@ export function jsonToYaml(jsonStr: string): string {
  * YAML↔JSON相互変換コンポーネント
  */
 function YamlJsonConverter() {
-  const { statusRef, announceStatus, showToast, isCopied, handleCopy } =
-    useOutputCopy();
+  const { statusRef, announceStatus, showToast, isCopied, handleCopy } = useOutputCopy();
   const [mode, setMode] = useState<ConversionMode>("yaml-to-json");
   const [indent, setIndent] = useState<2 | 4>(2);
   const [inputText, setInputText] = useState("");
@@ -112,8 +111,7 @@ function YamlJsonConverter() {
       }
       setOutputText(result);
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "変換に失敗しました";
+      const message = err instanceof Error ? err.message : "変換に失敗しました";
       announceStatus(`エラー: ${message}`);
       showToast(message, "error");
     }
@@ -132,24 +130,16 @@ function YamlJsonConverter() {
     setOutputText("");
   }, []);
 
-  const convertLabel =
-    mode === "yaml-to-json" ? "YAML → JSON 変換" : "JSON → YAML 変換";
+  const convertLabel = mode === "yaml-to-json" ? "YAML → JSON 変換" : "JSON → YAML 変換";
 
   return (
     <>
       <div className="tool-container">
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          aria-label="YAML/JSON変換フォーム"
-        >
+        <form onSubmit={(e) => e.preventDefault()} aria-label="YAML/JSON変換フォーム">
           <div className="converter-section">
             <fieldset className="csv-json-mode-fieldset">
               <legend className="section-title">変換モード</legend>
-              <div
-                className="csv-json-mode-group"
-                role="group"
-                aria-label="変換モード選択"
-              >
+              <div className="csv-json-mode-group" role="group" aria-label="変換モード選択">
                 <label className="format-option">
                   <input
                     type="radio"
@@ -285,11 +275,7 @@ function YamlJsonConverter() {
               value={outputText}
               readOnly
               placeholder="変換結果がここに表示されます..."
-              aria-label={
-                mode === "yaml-to-json"
-                  ? "JSON変換結果の出力欄"
-                  : "YAML変換結果の出力欄"
-              }
+              aria-label={mode === "yaml-to-json" ? "JSON変換結果の出力欄" : "YAML変換結果の出力欄"}
               aria-live="polite"
               className="csv-json-textarea"
             />

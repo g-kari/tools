@@ -1,10 +1,10 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useState, useCallback } from 'react';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
-import { ImageUploadZone } from '~/components/ImageUploadZone';
-import { TipsCard } from '~/components/TipsCard';
-import { useToast } from '~/components/Toast';
-import { formatFileSize } from '~/utils/image';
+import { createFileRoute } from "@tanstack/react-router";
+import { useState, useCallback } from "react";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
+import { ImageUploadZone } from "~/components/ImageUploadZone";
+import { TipsCard } from "~/components/TipsCard";
+import { useToast } from "~/components/Toast";
+import { formatFileSize } from "~/utils/image";
 import {
   parseExif,
   stripExif,
@@ -12,31 +12,31 @@ import {
   isJpegFile,
   type ExifEntry,
   type GpsCoordinate,
-} from '~/utils/exif';
-import '../styles/tools/exif-viewer.css';
+} from "~/utils/exif";
+import "../styles/tools/exif-viewer.css";
 
-export const Route = createFileRoute('/exif-viewer')({
+export const Route = createFileRoute("/exif-viewer")({
   head: () => ({
     meta: [
-      { title: 'EXIFビューワー | Web ツール集' },
+      { title: "EXIFビューワー | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          'JPEG画像のEXIFメタデータ（撮影日時・カメラ情報・GPS位置情報など）を表示。プライバシー保護のためEXIFデータを除去したファイルをダウンロード可能。',
+          "JPEG画像のEXIFメタデータ（撮影日時・カメラ情報・GPS位置情報など）を表示。プライバシー保護のためEXIFデータを除去したファイルをダウンロード可能。",
       },
-      { property: 'og:title', content: 'EXIFビューワー | Web ツール集' },
+      { property: "og:title", content: "EXIFビューワー | Web ツール集" },
       {
-        property: 'og:description',
+        property: "og:description",
         content:
-          'JPEG画像のEXIFメタデータを表示・削除。GPS情報・カメラ情報・撮影日時などを確認できます。',
+          "JPEG画像のEXIFメタデータを表示・削除。GPS情報・カメラ情報・撮影日時などを確認できます。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/exif-viewer` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
-      { name: 'twitter:title', content: 'EXIFビューワー | Web ツール集' },
+      { property: "og:url", content: `${SITE_BASE_URL}/exif-viewer` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "EXIFビューワー | Web ツール集" },
       {
-        name: 'twitter:description',
-        content: 'JPEG画像のEXIFメタデータを表示・削除。',
+        name: "twitter:description",
+        content: "JPEG画像のEXIFメタデータを表示・削除。",
       },
     ],
   }),
@@ -45,11 +45,11 @@ export const Route = createFileRoute('/exif-viewer')({
 
 /** カテゴリの表示設定 */
 const CATEGORY_CONFIG = {
-  camera: { label: 'カメラ情報', icon: '📷' },
-  datetime: { label: '日時情報', icon: '📅' },
-  gps: { label: 'GPS・位置情報', icon: '📍' },
-  basic: { label: '基本情報', icon: '🖼️' },
-  other: { label: '撮影設定', icon: '⚙️' },
+  camera: { label: "カメラ情報", icon: "📷" },
+  datetime: { label: "日時情報", icon: "📅" },
+  gps: { label: "GPS・位置情報", icon: "📍" },
+  basic: { label: "基本情報", icon: "🖼️" },
+  other: { label: "撮影設定", icon: "⚙️" },
 } as const;
 
 /** EXIFエントリテーブル */
@@ -108,7 +108,7 @@ function ExifViewerPage() {
       if (!file) return;
 
       if (!isJpegFile(file)) {
-        showToast('JPEG（.jpg/.jpeg）ファイルを選択してください', 'error');
+        showToast("JPEG（.jpg/.jpeg）ファイルを選択してください", "error");
         return;
       }
 
@@ -135,11 +135,11 @@ function ExifViewerPage() {
         setExifData(groupEntriesByCategory(result.entries));
       });
     },
-    [imageUrl, showToast]
+    [imageUrl, showToast],
   );
 
   const handleTypeError = useCallback(() => {
-    showToast('JPEG（.jpg/.jpeg）ファイルを選択してください', 'error');
+    showToast("JPEG（.jpg/.jpeg）ファイルを選択してください", "error");
   }, [showToast]);
 
   const handleStripExif = useCallback(() => {
@@ -147,21 +147,21 @@ function ExifViewerPage() {
     imageFile.arrayBuffer().then((buffer) => {
       const stripped = stripExif(buffer);
       if (!stripped) {
-        showToast('EXIFの除去に失敗しました', 'error');
+        showToast("EXIFの除去に失敗しました", "error");
         return;
       }
       // ダウンロード
       const url = URL.createObjectURL(stripped);
-      const a = document.createElement('a');
+      const a = document.createElement("a");
       a.href = url;
-      const baseName = imageFile.name.replace(/\.[^.]+$/, '');
+      const baseName = imageFile.name.replace(/\.[^.]+$/, "");
       a.download = `${baseName}_no-exif.jpg`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
       setIsStripped(true);
-      showToast('EXIFデータを除去してダウンロードしました', 'success');
+      showToast("EXIFデータを除去してダウンロードしました", "success");
     });
   }, [imageFile, showToast]);
 
@@ -219,13 +219,7 @@ function ExifViewerPage() {
             {/* 左側: 画像プレビュー + ファイル情報 */}
             <div className="exif-image-panel">
               <div className="exif-image-wrap">
-                {imageUrl && (
-                  <img
-                    src={imageUrl}
-                    alt={imageFile.name}
-                    loading="lazy"
-                  />
-                )}
+                {imageUrl && <img src={imageUrl} alt={imageFile.name} loading="lazy" />}
               </div>
 
               <div className="exif-file-info" aria-label="ファイル情報">
@@ -248,7 +242,7 @@ function ExifViewerPage() {
                 <div className="exif-file-info-row">
                   <span className="exif-file-info-label">EXIFデータ</span>
                   <span className="exif-file-info-value">
-                    {hasExif ? `${totalEntries} 項目` : 'なし'}
+                    {hasExif ? `${totalEntries} 項目` : "なし"}
                   </span>
                 </div>
               </div>
@@ -312,7 +306,12 @@ function ExifViewerPage() {
 
                   {/* カテゴリ別 EXIF データ */}
                   {exifData &&
-                    (Object.entries(CATEGORY_CONFIG) as [keyof typeof CATEGORY_CONFIG, typeof CATEGORY_CONFIG[keyof typeof CATEGORY_CONFIG]][]).map(([key, config]) => {
+                    (
+                      Object.entries(CATEGORY_CONFIG) as [
+                        keyof typeof CATEGORY_CONFIG,
+                        (typeof CATEGORY_CONFIG)[keyof typeof CATEGORY_CONFIG],
+                      ][]
+                    ).map(([key, config]) => {
                       const entries = exifData[key];
                       if (!entries || entries.length === 0) return null;
                       return (
@@ -328,7 +327,7 @@ function ExifViewerPage() {
                             {config.label}
                           </div>
                           <ExifTable entries={entries} />
-                          {key === 'gps' && <GpsMapLink gps={gps} />}
+                          {key === "gps" && <GpsMapLink gps={gps} />}
                         </section>
                       );
                     })}
@@ -342,23 +341,23 @@ function ExifViewerPage() {
       <TipsCard
         sections={[
           {
-            title: '使い方',
+            title: "使い方",
             items: [
-              'JPEG（.jpg/.jpeg）ファイルをドラッグ&ドロップ、またはクリックして選択します',
-              '画像に含まれるEXIFメタデータ（カメラ情報・撮影日時・GPS位置情報など）が表示されます',
-              'GPS位置情報が含まれる場合は警告が表示されます',
-              '「EXIF除去してDL」ボタンで、EXIFデータを取り除いた画像をダウンロードできます',
-              'すべての処理はブラウザ内で完結し、画像データがサーバーに送信されることはありません',
+              "JPEG（.jpg/.jpeg）ファイルをドラッグ&ドロップ、またはクリックして選択します",
+              "画像に含まれるEXIFメタデータ（カメラ情報・撮影日時・GPS位置情報など）が表示されます",
+              "GPS位置情報が含まれる場合は警告が表示されます",
+              "「EXIF除去してDL」ボタンで、EXIFデータを取り除いた画像をダウンロードできます",
+              "すべての処理はブラウザ内で完結し、画像データがサーバーに送信されることはありません",
             ],
           },
           {
-            title: 'EXIFデータとは',
+            title: "EXIFデータとは",
             items: [
-              'EXIF（Exchangeable Image File Format）は、デジタルカメラやスマートフォンが撮影時に画像に埋め込むメタデータです',
-              'カメラのメーカー・モデル、レンズ情報、ISO感度、シャッタースピード、絞り値などの撮影設定が含まれます',
-              '撮影日時の正確な情報も記録されます（タイムゾーン情報を含む場合あり）',
-              'スマートフォンで撮影した場合、GPS情報（緯度・経度）が含まれることがあります',
-              'SNSやウェブへ画像を公開する際は、プライバシー保護のためEXIFデータの確認・削除をお勧めします',
+              "EXIF（Exchangeable Image File Format）は、デジタルカメラやスマートフォンが撮影時に画像に埋め込むメタデータです",
+              "カメラのメーカー・モデル、レンズ情報、ISO感度、シャッタースピード、絞り値などの撮影設定が含まれます",
+              "撮影日時の正確な情報も記録されます（タイムゾーン情報を含む場合あり）",
+              "スマートフォンで撮影した場合、GPS情報（緯度・経度）が含まれることがあります",
+              "SNSやウェブへ画像を公開する際は、プライバシー保護のためEXIFデータの確認・削除をお勧めします",
             ],
           },
         ]}

@@ -10,16 +10,25 @@ import { useToast } from "../components/Toast";
 export const Route = createFileRoute("/cron-parser")({
   head: () => ({
     meta: [
-    { title: "Cron式パーサー | Web ツール集" },
-    { name: "description", content: "Cron式を人間が読みやすい形式に変換・次回実行時刻を表示するツール。" },
-    { property: "og:title", content: "Cron式パーサー | Web ツール集" },
-    { property: "og:description", content: "Cron式を人間が読みやすい形式に変換・次回実行時刻を表示するツール。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/cron-parser` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "Cron式パーサー | Web ツール集" },
-    { name: "twitter:description", content: "Cron式を人間が読みやすい形式に変換・次回実行時刻を表示するツール。" },
-  ],
+      { title: "Cron式パーサー | Web ツール集" },
+      {
+        name: "description",
+        content: "Cron式を人間が読みやすい形式に変換・次回実行時刻を表示するツール。",
+      },
+      { property: "og:title", content: "Cron式パーサー | Web ツール集" },
+      {
+        property: "og:description",
+        content: "Cron式を人間が読みやすい形式に変換・次回実行時刻を表示するツール。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/cron-parser` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "Cron式パーサー | Web ツール集" },
+      {
+        name: "twitter:description",
+        content: "Cron式を人間が読みやすい形式に変換・次回実行時刻を表示するツール。",
+      },
+    ],
   }),
   component: CronParser,
 });
@@ -41,8 +50,18 @@ const WEEKDAY_NAMES = ["日", "月", "火", "水", "木", "金", "土"];
 
 /** 月名（インデックス0=1月〜11=12月） */
 const MONTH_NAMES = [
-  "1月", "2月", "3月", "4月", "5月", "6月",
-  "7月", "8月", "9月", "10月", "11月", "12月",
+  "1月",
+  "2月",
+  "3月",
+  "4月",
+  "5月",
+  "6月",
+  "7月",
+  "8月",
+  "9月",
+  "10月",
+  "11月",
+  "12月",
 ];
 
 /**
@@ -195,11 +214,7 @@ export function parseCronExpression(expr: string): {
  * @param from - 基準日時（デフォルト: 現在時刻+1分）
  * @returns 次回実行時刻の配列、または無効な式の場合は null
  */
-export function getNextExecutionTimes(
-  expr: string,
-  count = 10,
-  from?: Date
-): Date[] | null {
+export function getNextExecutionTimes(expr: string, count = 10, from?: Date): Date[] | null {
   const result = parseCronExpression(expr);
   if (!result.valid || !result.fields) return null;
 
@@ -237,12 +252,7 @@ export function getNextExecutionTimes(
       ? daySet.has(d) || weekdaySet.has(wd)
       : daySet.has(d) && weekdaySet.has(wd);
 
-    if (
-      monthSet.has(m) &&
-      dayMatch &&
-      hourSet.has(h) &&
-      minuteSet.has(min)
-    ) {
+    if (monthSet.has(m) && dayMatch && hourSet.has(h) && minuteSet.has(min)) {
       times.push(new Date(current));
     }
 
@@ -264,7 +274,7 @@ function formatValues(
   values: number[],
   allMin: number,
   allMax: number,
-  labels?: string[]
+  labels?: string[],
 ): string | null {
   if (values.length === allMax - allMin + 1) return null; // 全値
 
@@ -389,7 +399,7 @@ function CronParser() {
       announceStatus(`プリセット「${expr}」を選択しました`);
       inputRef.current?.focus();
     },
-    [announceStatus]
+    [announceStatus],
   );
 
   /** 解析ボタン押下時の処理 */
@@ -420,7 +430,7 @@ function CronParser() {
         announceStatus("次回実行時刻が見つかりませんでした");
       }
     },
-    [cronInput, showToast, announceStatus]
+    [cronInput, showToast, announceStatus],
   );
 
   /** クリアボタン押下時の処理 */
@@ -475,7 +485,9 @@ function CronParser() {
               value={cronInput}
               onChange={(e) => setCronInput(e.target.value)}
               placeholder="例: 0 9 * * 1-5"
-              aria-describedby={validationError ? "cron-error" : description ? "cron-description" : "cron-help"}
+              aria-describedby={
+                validationError ? "cron-error" : description ? "cron-description" : "cron-help"
+              }
               aria-invalid={validationError ? "true" : "false"}
               aria-label="Cron式入力フィールド（分 時 日 月 曜日）"
               autoComplete="off"
@@ -499,11 +511,7 @@ function CronParser() {
 
             {/* 日本語説明 */}
             {description && !validationError && (
-              <div
-                id="cron-description"
-                className="cron-description"
-                aria-live="polite"
-              >
+              <div id="cron-description" className="cron-description" aria-live="polite">
                 {description}
               </div>
             )}
@@ -536,23 +544,16 @@ function CronParser() {
                 次回実行予定時刻
               </h2>
               {nextTimes.length > 0 ? (
-                <ol
-                  className="cron-next-times"
-                  aria-labelledby="next-times-title"
-                >
+                <ol className="cron-next-times" aria-labelledby="next-times-title">
                   {nextTimes.map((date, index) => (
                     <li key={index} className="cron-next-time-item">
                       <span className="cron-next-time-index">{index + 1}</span>
-                      <span className="cron-next-time-value">
-                        {formatDateTime(date)}
-                      </span>
+                      <span className="cron-next-time-value">{formatDateTime(date)}</span>
                     </li>
                   ))}
                 </ol>
               ) : (
-                <p className="cron-no-times">
-                  今後2年以内に実行予定はありません
-                </p>
+                <p className="cron-no-times">今後2年以内に実行予定はありません</p>
               )}
             </div>
           )}

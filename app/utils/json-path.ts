@@ -2,7 +2,7 @@
  * JSONPath評価ユーティリティ
  * @module json-path
  */
-import { JSONPath } from 'jsonpath-plus';
+import { JSONPath } from "jsonpath-plus";
 
 /**
  * JSONPath式を評価して結果を返す
@@ -13,17 +13,17 @@ import { JSONPath } from 'jsonpath-plus';
  */
 export function evaluateJsonPath(jsonText: string, path: string): unknown[] {
   if (!jsonText.trim()) {
-    throw new Error('JSONを入力してください');
+    throw new Error("JSONを入力してください");
   }
   if (!path.trim()) {
-    throw new Error('JSONPath式を入力してください');
+    throw new Error("JSONPath式を入力してください");
   }
 
   let parsed: unknown;
   try {
     parsed = JSON.parse(jsonText);
   } catch {
-    throw new Error('無効なJSON形式です');
+    throw new Error("無効なJSON形式です");
   }
 
   try {
@@ -45,7 +45,7 @@ export function formatJson(jsonText: string, indent: number = 2): string {
   try {
     return JSON.stringify(JSON.parse(jsonText), null, indent);
   } catch {
-    throw new Error('無効なJSON形式です');
+    throw new Error("無効なJSON形式です");
   }
 }
 
@@ -56,7 +56,7 @@ export function formatJson(jsonText: string, indent: number = 2): string {
  */
 export function formatResults(results: unknown[]): string {
   if (results.length === 0) {
-    return '一致する値がありません';
+    return "一致する値がありません";
   }
   if (results.length === 1) {
     return JSON.stringify(results[0], null, 2);
@@ -69,33 +69,37 @@ export function formatResults(results: unknown[]): string {
  * @returns サンプルJSON文字列
  */
 export function getSampleJson(): string {
-  return JSON.stringify({
-    store: {
-      book: [
-        {
-          category: "reference",
-          author: "Nigel Rees",
-          title: "Sayings of the Century",
-          price: 8.95
+  return JSON.stringify(
+    {
+      store: {
+        book: [
+          {
+            category: "reference",
+            author: "Nigel Rees",
+            title: "Sayings of the Century",
+            price: 8.95,
+          },
+          {
+            category: "fiction",
+            author: "Evelyn Waugh",
+            title: "Sword of Honour",
+            price: 12.99,
+          },
+          {
+            category: "fiction",
+            author: "Herman Melville",
+            title: "Moby Dick",
+            isbn: "0-553-21311-3",
+            price: 8.99,
+          },
+        ],
+        bicycle: {
+          color: "red",
+          price: 19.95,
         },
-        {
-          category: "fiction",
-          author: "Evelyn Waugh",
-          title: "Sword of Honour",
-          price: 12.99
-        },
-        {
-          category: "fiction",
-          author: "Herman Melville",
-          title: "Moby Dick",
-          isbn: "0-553-21311-3",
-          price: 8.99
-        }
-      ],
-      bicycle: {
-        color: "red",
-        price: 19.95
-      }
-    }
-  }, null, 2);
+      },
+    },
+    null,
+    2,
+  );
 }

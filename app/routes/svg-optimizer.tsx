@@ -4,18 +4,10 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { useToast } from "../components/Toast";
 import { TipsCard } from "~/components/TipsCard";
 import { ErrorMessage } from "~/components/ErrorMessage";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 import "../styles/tools/svg-optimizer.css";
-import {
-  optimizeSvg,
-  getSampleSvg,
-  getDefaultOptions,
-  formatBytes,
-} from "../utils/svg-optimizer";
+import { optimizeSvg, getSampleSvg, getDefaultOptions, formatBytes } from "../utils/svg-optimizer";
 import type { SvgOptimizeResult } from "../utils/svg-optimizer";
 
 export const Route = createFileRoute("/svg-optimizer")({
@@ -61,17 +53,11 @@ function SvgOptimizerPage() {
 
   const defaults = getDefaultOptions();
   const [removeMetadata, setRemoveMetadata] = useState(defaults.removeMetadata);
-  const [removeUnusedAttrs, setRemoveUnusedAttrs] = useState(
-    defaults.removeUnusedAttrs
-  );
+  const [removeUnusedAttrs, setRemoveUnusedAttrs] = useState(defaults.removeUnusedAttrs);
   const [precision, setPrecision] = useState(defaults.precision);
   const [prettify, setPrettify] = useState(defaults.prettify);
-  const [removeXmlDeclaration, setRemoveXmlDeclaration] = useState(
-    defaults.removeXmlDeclaration
-  );
-  const [removeEmptyGroups, setRemoveEmptyGroups] = useState(
-    defaults.removeEmptyGroups
-  );
+  const [removeXmlDeclaration, setRemoveXmlDeclaration] = useState(defaults.removeXmlDeclaration);
+  const [removeEmptyGroups, setRemoveEmptyGroups] = useState(defaults.removeEmptyGroups);
 
   const { statusRef, announceStatus } = useStatusAnnouncement();
 
@@ -91,16 +77,10 @@ function SvgOptimizerPage() {
       });
       setOutputText(result.output);
       setStats(result);
-      announceStatus(
-        `SVGを最適化しました（${result.reductionPercent}%削減）`
-      );
-      showToast(
-        `SVGを最適化しました（${result.reductionPercent}%削減）`,
-        "success"
-      );
+      announceStatus(`SVGを最適化しました（${result.reductionPercent}%削減）`);
+      showToast(`SVGを最適化しました（${result.reductionPercent}%削減）`, "success");
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "エラーが発生しました";
+      const message = err instanceof Error ? err.message : "エラーが発生しました";
       setError(message);
       announceStatus("エラー: " + message);
       showToast(message, "error");
@@ -175,10 +155,7 @@ function SvgOptimizerPage() {
         <p className="tool-description">
           SVGファイルの最適化・圧縮・整形ができるオンラインツール。メタデータ削除、数値精度調整、空白圧縮に対応。
         </p>
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          aria-label="SVG最適化フォーム"
-        >
+        <form onSubmit={(e) => e.preventDefault()} aria-label="SVG最適化フォーム">
           <div className="so-layout">
             {/* 左パネル: SVG入力 */}
             <div className="so-panel">
@@ -199,11 +176,7 @@ function SvgOptimizerPage() {
               </span>
 
               {/* オプション設定 */}
-              <div
-                className="so-options"
-                role="group"
-                aria-label="最適化オプション"
-              >
+              <div className="so-options" role="group" aria-label="最適化オプション">
                 <div className="so-options-row">
                   <label className="so-option-label">
                     <input
@@ -260,9 +233,7 @@ function SvgOptimizerPage() {
                     max="10"
                     value={precision}
                     onChange={(e) =>
-                      setPrecision(
-                        Math.max(0, Math.min(10, parseInt(e.target.value) || 0))
-                      )
+                      setPrecision(Math.max(0, Math.min(10, parseInt(e.target.value) || 0)))
                     }
                     aria-label="数値の精度（小数点以下の桁数）"
                   />
@@ -302,28 +273,18 @@ function SvgOptimizerPage() {
               <span className="so-panel-label">最適化結果</span>
 
               {stats && (
-                <div
-                  className="so-stats"
-                  role="status"
-                  aria-label="最適化統計"
-                >
+                <div className="so-stats" role="status" aria-label="最適化統計">
                   <span className="so-stat-item">
                     <span className="so-stat-label">元サイズ:</span>
-                    <span className="so-stat-value">
-                      {formatBytes(stats.originalSize)}
-                    </span>
+                    <span className="so-stat-value">{formatBytes(stats.originalSize)}</span>
                   </span>
                   <span className="so-stat-item">
                     <span className="so-stat-label">最適化後:</span>
-                    <span className="so-stat-value">
-                      {formatBytes(stats.optimizedSize)}
-                    </span>
+                    <span className="so-stat-value">{formatBytes(stats.optimizedSize)}</span>
                   </span>
                   <span className="so-stat-item">
                     <span className="so-stat-label">削減率:</span>
-                    <span className="so-stat-value">
-                      {stats.reductionPercent}%
-                    </span>
+                    <span className="so-stat-value">{stats.reductionPercent}%</span>
                   </span>
                 </div>
               )}
@@ -386,7 +347,7 @@ function SvgOptimizerPage() {
               title: "最適化オプション",
               items: [
                 "メタデータ削除: コメント、エディタ固有の情報を除去",
-                "デフォルト属性削除: 初期値と同じ属性を除去（opacity=\"1\"等）",
+                'デフォルト属性削除: 初期値と同じ属性を除去（opacity="1"等）',
                 "XML宣言削除: <?xml ...?> 宣言を除去",
                 "空グループ削除: 中身のない<g>要素を除去",
                 "整形: インデント付きで整形出力（圧縮の逆）",

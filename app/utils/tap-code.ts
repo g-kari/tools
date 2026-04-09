@@ -180,6 +180,6 @@ export function getTapGrid(): string[][] {
     row.map((ch, c) => {
       if (r === 0 && c === 2) return "C/K";
       return ch;
-    })
+    }),
   );
 }

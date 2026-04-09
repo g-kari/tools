@@ -103,7 +103,7 @@ export function getUtcOffset(date: Date, timezone: string): string {
  */
 export function formatInTimezone(
   date: Date,
-  timezone: string
+  timezone: string,
 ): { date: string; time: string; datetime: string } {
   try {
     const dateFormatter = new Intl.DateTimeFormat("ja-JP", {
@@ -139,7 +139,7 @@ export function formatInTimezone(
  */
 export function convertToTimezones(
   date: Date,
-  targetTimezones: TimezoneInfo[]
+  targetTimezones: TimezoneInfo[],
 ): ConversionResult[] {
   return targetTimezones.map((tz) => {
     const { date: d, time, datetime } = formatInTimezone(date, tz.id);
@@ -166,9 +166,7 @@ function formatPartsToISOString(date: Date, timezone: string): string {
     second: "2-digit",
     hour12: false,
   });
-  const parts = Object.fromEntries(
-    fmt.formatToParts(date).map((p) => [p.type, p.value])
-  );
+  const parts = Object.fromEntries(fmt.formatToParts(date).map((p) => [p.type, p.value]));
   return `${parts.year}-${parts.month}-${parts.day}T${parts.hour}:${parts.minute}:${parts.second}Z`;
 }
 
@@ -198,10 +196,7 @@ export function getTimezoneOffsetMs(date: Date, timezone: string): number {
  * @param timezone - 入力値が属するIANAタイムゾーンID
  * @returns 対応するDateオブジェクト、またはnull（パース失敗時）
  */
-export function parseDateTimeWithTimezone(
-  datetimeLocal: string,
-  timezone: string
-): Date | null {
+export function parseDateTimeWithTimezone(datetimeLocal: string, timezone: string): Date | null {
   if (!datetimeLocal) return null;
   try {
     const [datePart, timePart] = datetimeLocal.split("T");

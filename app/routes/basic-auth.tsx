@@ -4,10 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 
@@ -62,9 +59,7 @@ export function encodeBasicAuth(username: string, password: string): string {
  * @param token Base64エンコードされたトークン（"Basic "プレフィックスありなし両対応）
  * @returns ユーザー名とパスワードのオブジェクト、失敗時はnull
  */
-export function decodeBasicAuth(
-  token: string
-): { username: string; password: string } | null {
+export function decodeBasicAuth(token: string): { username: string; password: string } | null {
   try {
     const base64 = token.replace(/^Basic\s+/i, "").trim();
     if (!base64) return null;
@@ -210,7 +205,7 @@ function BasicAuthTool() {
   useKeyboardShortcut(
     "Enter",
     activeTab === "encode" ? handleCopyHeader : handleCopyDecodedUsername,
-    { ctrl: true }
+    { ctrl: true },
   );
 
   return (
@@ -276,9 +271,7 @@ function BasicAuthTool() {
                     type="button"
                     className="basic-auth-toggle-password"
                     onClick={() => setShowPassword((v) => !v)}
-                    aria-label={
-                      showPassword ? "パスワードを非表示" : "パスワードを表示"
-                    }
+                    aria-label={showPassword ? "パスワードを非表示" : "パスワードを表示"}
                   >
                     {showPassword ? "🙈" : "👁️"}
                   </button>
@@ -320,33 +313,25 @@ function BasicAuthTool() {
             {(username || password) && (
               <div className="basic-auth-results" aria-live="polite">
                 <div className="basic-auth-result-item">
-                  <span className="basic-auth-result-label">
-                    認証情報（平文）
-                  </span>
+                  <span className="basic-auth-result-label">認証情報（平文）</span>
                   <code className="basic-auth-result-value">
                     {username}:{password}
                   </code>
                 </div>
                 <div className="basic-auth-result-item">
-                  <span className="basic-auth-result-label">
-                    Base64 トークン
-                  </span>
+                  <span className="basic-auth-result-label">Base64 トークン</span>
                   <code className="basic-auth-result-value basic-auth-result-monospace">
                     {encodedToken}
                   </code>
                 </div>
                 <div className="basic-auth-result-item">
-                  <span className="basic-auth-result-label">
-                    Authorization ヘッダー
-                  </span>
+                  <span className="basic-auth-result-label">Authorization ヘッダー</span>
                   <code className="basic-auth-result-value basic-auth-result-monospace">
                     Authorization: Basic {encodedToken}
                   </code>
                 </div>
                 <div className="basic-auth-result-item">
-                  <span className="basic-auth-result-label">
-                    curl オプション
-                  </span>
+                  <span className="basic-auth-result-label">curl オプション</span>
                   <code className="basic-auth-result-value basic-auth-result-monospace">
                     -u "{username}:{password}"
                   </code>
@@ -396,9 +381,7 @@ function BasicAuthTool() {
                 <div className="basic-auth-result-item">
                   <span className="basic-auth-result-label">ユーザー名</span>
                   <div className="basic-auth-result-row">
-                    <code className="basic-auth-result-value">
-                      {decodedUsername || "（空）"}
-                    </code>
+                    <code className="basic-auth-result-value">{decodedUsername || "（空）"}</code>
                     {decodedUsername && (
                       <button
                         className="basic-auth-copy-btn"
@@ -413,9 +396,7 @@ function BasicAuthTool() {
                 <div className="basic-auth-result-item">
                   <span className="basic-auth-result-label">パスワード</span>
                   <div className="basic-auth-result-row">
-                    <code className="basic-auth-result-value">
-                      {decodedPassword || "（空）"}
-                    </code>
+                    <code className="basic-auth-result-value">{decodedPassword || "（空）"}</code>
                     {decodedPassword && (
                       <button
                         className="basic-auth-copy-btn"
@@ -450,7 +431,7 @@ function BasicAuthTool() {
                 "RFC 7617で定義されたHTTP認証スキーム",
                 "ユーザー名とパスワードを「:」で連結しBase64エンコードしたもの",
                 "リクエストヘッダーに「Authorization: Basic <トークン>」の形式で送信",
-                "curlでは -u \"user:pass\" オプションで自動的にBasic認証ヘッダーを付与",
+                'curlでは -u "user:pass" オプションで自動的にBasic認証ヘッダーを付与',
               ],
             },
             {

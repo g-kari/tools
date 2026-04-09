@@ -5,26 +5,29 @@ import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 import { useClipboard } from "~/hooks/useClipboard";
 
 export const Route = createFileRoute("/diff")({
   head: () => ({
     meta: [
-    { title: "テキスト差分比較 | Web ツール集" },
-    { name: "description", content: "2つのテキストの差分を視覚的に比較するDiff表示ツール。" },
-    { property: "og:title", content: "テキスト差分比較 | Web ツール集" },
-    { property: "og:description", content: "2つのテキストの差分を視覚的に比較するDiff表示ツール。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/diff` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "テキスト差分比較 | Web ツール集" },
-    { name: "twitter:description", content: "2つのテキストの差分を視覚的に比較するDiff表示ツール。" },
-  ],
+      { title: "テキスト差分比較 | Web ツール集" },
+      { name: "description", content: "2つのテキストの差分を視覚的に比較するDiff表示ツール。" },
+      { property: "og:title", content: "テキスト差分比較 | Web ツール集" },
+      {
+        property: "og:description",
+        content: "2つのテキストの差分を視覚的に比較するDiff表示ツール。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/diff` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "テキスト差分比較 | Web ツール集" },
+      {
+        name: "twitter:description",
+        content: "2つのテキストの差分を視覚的に比較するDiff表示ツール。",
+      },
+    ],
   }),
   component: DiffChecker,
 });
@@ -58,9 +61,7 @@ export function computeDiff(oldText: string, newText: string): DiffLine[] {
   const n = newLines.length;
 
   // LCSテーブルを構築
-  const dp: number[][] = Array.from({ length: m + 1 }, () =>
-    Array(n + 1).fill(0)
-  );
+  const dp: number[][] = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
 
   for (let i = 1; i <= m; i++) {
     for (let j = 1; j <= n; j++) {
@@ -135,9 +136,7 @@ function DiffChecker() {
     if (added === 0 && removed === 0) {
       announceStatus("差分はありません");
     } else {
-      announceStatus(
-        `差分比較が完了しました: 追加${added}行、削除${removed}行`
-      );
+      announceStatus(`差分比較が完了しました: 追加${added}行、削除${removed}行`);
     }
   }, [oldText, newText, announceStatus, showToast]);
 
@@ -169,8 +168,7 @@ function DiffChecker() {
     if (!diffResult) return;
     const text = diffResult
       .map((line) => {
-        const prefix =
-          line.type === "added" ? "+" : line.type === "removed" ? "-" : " ";
+        const prefix = line.type === "added" ? "+" : line.type === "removed" ? "-" : " ";
         return `${prefix} ${line.value}`;
       })
       .join("\n");
@@ -204,10 +202,7 @@ function DiffChecker() {
   return (
     <>
       <div className="tool-container">
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          aria-label="テキスト差分比較フォーム"
-        >
+        <form onSubmit={(e) => e.preventDefault()} aria-label="テキスト差分比較フォーム">
           <div className="diff-input-grid">
             <div className="converter-section">
               <label htmlFor="oldText" className="section-title">
@@ -283,12 +278,8 @@ function DiffChecker() {
 
               {stats && (stats.added > 0 || stats.removed > 0) && (
                 <div className="diff-stats" aria-label="差分統計">
-                  <span className="diff-stats-added">
-                    +{stats.added}行 追加
-                  </span>
-                  <span className="diff-stats-removed">
-                    -{stats.removed}行 削除
-                  </span>
+                  <span className="diff-stats-added">+{stats.added}行 追加</span>
+                  <span className="diff-stats-removed">-{stats.removed}行 削除</span>
                 </div>
               )}
 
@@ -297,22 +288,14 @@ function DiffChecker() {
                   差分はありません
                 </div>
               ) : (
-                <div
-                  className="diff-result"
-                  role="region"
-                  aria-label="差分表示"
-                >
+                <div className="diff-result" role="region" aria-label="差分表示">
                   {diffResult.map((line, index) => (
                     <div
                       key={`${line.type}-${index}-${line.value}`}
                       className={`diff-line diff-line-${line.type}`}
                     >
                       <span className="diff-line-prefix" aria-hidden="true">
-                        {line.type === "added"
-                          ? "+"
-                          : line.type === "removed"
-                            ? "-"
-                            : " "}
+                        {line.type === "added" ? "+" : line.type === "removed" ? "-" : " "}
                       </span>
                       <span>{line.value}</span>
                     </div>

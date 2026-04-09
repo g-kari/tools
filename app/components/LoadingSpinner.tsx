@@ -40,15 +40,8 @@ export function LoadingSpinner({
   };
 
   return (
-    <div
-      className={`loading ${className ?? ""}`.trim()}
-      role="status"
-      aria-live="polite"
-    >
-      <div
-        className={`spinner ${sizeClasses[size]}`.trim()}
-        aria-hidden="true"
-      />
+    <div className={`loading ${className ?? ""}`.trim()} role="status" aria-live="polite">
+      <div className={`spinner ${sizeClasses[size]}`.trim()} aria-hidden="true" />
       <span>{message}</span>
     </div>
   );

@@ -61,7 +61,7 @@
   background: var(--surface);
   color: var(--on-surface);
   font-size: 0.875rem;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   box-sizing: border-box;
   transition: border-color 0.15s;
 }
@@ -78,7 +78,7 @@ textarea.ccq-input {
 .ccq-condition-preview {
   margin-top: 8px;
   font-size: 0.75rem;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   color: var(--primary);
   opacity: 0.8;
 }
@@ -126,7 +126,7 @@ textarea.ccq-input {
   background: var(--surface-variant);
   color: var(--on-surface);
   font-size: 0.8rem;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
 }
 
 .ccq-condition-type-select:focus {
@@ -172,7 +172,7 @@ textarea.ccq-input {
   background: var(--surface);
   color: var(--on-surface);
   font-size: 0.875rem;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   width: 100%;
   box-sizing: border-box;
 }
@@ -189,7 +189,7 @@ textarea.ccq-input {
   background: var(--surface-variant);
   color: var(--on-surface);
   font-size: 0.8rem;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   min-width: 56px;
 }
 
@@ -294,7 +294,7 @@ textarea.ccq-input {
 
 .ccq-preview-width-badge {
   font-size: 0.8rem;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   background: var(--surface);
   border: 1px solid var(--outline-variant);
   border-radius: 6px;
@@ -329,7 +329,7 @@ textarea.ccq-input {
   left: 8px;
   font-size: 0.65rem;
   color: var(--on-surface-variant);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   opacity: 0.8;
 }
 
@@ -411,7 +411,7 @@ textarea.ccq-input {
   border: 1px solid var(--outline-variant);
   border-radius: 8px;
   padding: 14px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.8rem;
   line-height: 1.7;
   color: var(--on-surface);

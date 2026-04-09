@@ -48,7 +48,9 @@
   border-bottom: 2px solid transparent;
   margin-bottom: -2px;
   border-radius: var(--radius-sm) var(--radius-sm) 0 0;
-  transition: color 0.15s, border-color 0.15s;
+  transition:
+    color 0.15s,
+    border-color 0.15s;
 }
 
 .cssp-tab:hover {
@@ -407,7 +409,9 @@
   font-size: var(--text-xs);
   color: var(--on-surface-variant);
   cursor: pointer;
-  transition: background 0.1s, color 0.1s;
+  transition:
+    background 0.1s,
+    color 0.1s;
 }
 
 .cssp-btn-copy:hover {
@@ -423,7 +427,9 @@
   color: var(--on-surface-variant);
   cursor: pointer;
   border-radius: var(--radius-sm);
-  transition: background 0.1s, color 0.1s;
+  transition:
+    background 0.1s,
+    color 0.1s;
 }
 
 .cssp-btn-remove:hover {

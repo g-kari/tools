@@ -22,18 +22,7 @@ export interface HslColor {
 }
 
 /** シェードスケールのキー */
-export type ShadeKey =
-  | 50
-  | 100
-  | 200
-  | 300
-  | 400
-  | 500
-  | 600
-  | 700
-  | 800
-  | 900
-  | 950;
+export type ShadeKey = 50 | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | 950;
 
 /** シェードエントリ */
 export interface ShadeEntry {
@@ -53,9 +42,7 @@ export interface ShadeEntry {
 export type TokenOutputFormat = "css" | "scss" | "tailwind" | "json";
 
 /** 全シェードキーの定義（明→暗の順） */
-export const SHADE_KEYS: ShadeKey[] = [
-  50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950,
-];
+export const SHADE_KEYS: ShadeKey[] = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
 
 /**
  * 各シェードキーに対応する目標輝度（0〜100）
@@ -204,10 +191,7 @@ export function shouldUseWhiteText(hex: string): boolean {
     const s = c / 255;
     return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
   };
-  const L =
-    0.2126 * toLinear(rgb.r) +
-    0.7152 * toLinear(rgb.g) +
-    0.0722 * toLinear(rgb.b);
+  const L = 0.2126 * toLinear(rgb.r) + 0.7152 * toLinear(rgb.g) + 0.0722 * toLinear(rgb.b);
   return L <= 0.179;
 }
 
@@ -254,9 +238,7 @@ export function generateShades(baseHex: string): ShadeEntry[] {
  */
 export function formatAsCss(shades: ShadeEntry[], name: string): string {
   const safeName = name.trim() || "color";
-  const vars = shades
-    .map((s) => `  --${safeName}-${s.key}: ${s.hex};`)
-    .join("\n");
+  const vars = shades.map((s) => `  --${safeName}-${s.key}: ${s.hex};`).join("\n");
   return `:root {\n${vars}\n}`;
 }
 
@@ -279,9 +261,7 @@ export function formatAsScss(shades: ShadeEntry[], name: string): string {
  */
 export function formatAsTailwind(shades: ShadeEntry[], name: string): string {
   const safeName = name.trim() || "color";
-  const entries = shades
-    .map((s) => `      ${s.key}: '${s.hex}',`)
-    .join("\n");
+  const entries = shades.map((s) => `      ${s.key}: '${s.hex}',`).join("\n");
   return `// tailwind.config.js\nmodule.exports = {\n  theme: {\n    extend: {\n      colors: {\n        '${safeName}': {\n${entries}\n        },\n      },\n    },\n  },\n};`;
 }
 
@@ -310,7 +290,7 @@ export function formatAsJson(shades: ShadeEntry[], name: string): string {
 export function formatShades(
   shades: ShadeEntry[],
   name: string,
-  format: TokenOutputFormat
+  format: TokenOutputFormat,
 ): string {
   switch (format) {
     case "css":

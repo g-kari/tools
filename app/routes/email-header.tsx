@@ -14,10 +14,7 @@ import { Textarea } from "~/components/ui/textarea";
 import { Input } from "~/components/ui/input";
 import { TipsCard } from "~/components/TipsCard";
 import { ErrorMessage } from "~/components/ErrorMessage";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 
@@ -113,10 +110,13 @@ function EmailHeaderAnalyzer() {
   }, [announceStatus]);
 
   /** Copy full header text */
-  const handleCopy = useCallback(async (text: string, label: string) => {
-    const success = await copy(text);
-    announceStatus(success ? `${label}をコピーしました` : "コピーに失敗しました");
-  }, [copy, announceStatus]);
+  const handleCopy = useCallback(
+    async (text: string, label: string) => {
+      const success = await copy(text);
+      announceStatus(success ? `${label}をコピーしました` : "コピーに失敗しました");
+    },
+    [copy, announceStatus],
+  );
 
   // Ctrl+Enter で解析実行
   useKeyboardShortcut("Enter", handleAnalyze, { ctrl: true });
@@ -131,8 +131,7 @@ function EmailHeaderAnalyzer() {
     if (!headerFilter.trim()) return result.headers;
     const q = headerFilter.toLowerCase();
     return result.headers.filter(
-      (h) =>
-        h.name.toLowerCase().includes(q) || h.value.toLowerCase().includes(q)
+      (h) => h.name.toLowerCase().includes(q) || h.value.toLowerCase().includes(q),
     );
   }, [result, headerFilter]);
 
@@ -255,9 +254,7 @@ function EmailHeaderAnalyzer() {
                   <div className="spam-score-bar-wrapper">
                     <div className="spam-score-labels">
                       <span>スコア: {result.spam.score}</span>
-                      {result.spam.threshold !== null && (
-                        <span>閾値: {result.spam.threshold}</span>
-                      )}
+                      {result.spam.threshold !== null && <span>閾値: {result.spam.threshold}</span>}
                     </div>
                     {result.spam.threshold !== null && (
                       <div
@@ -275,7 +272,11 @@ function EmailHeaderAnalyzer() {
                                 ? "warn"
                                 : "danger"
                           }`}
-                          style={{ "--spam-score-width": `${Math.min(100, Math.max(0, ((result.spam.score + result.spam.threshold) / (result.spam.threshold * 2)) * 100))}%` } as React.CSSProperties}
+                          style={
+                            {
+                              "--spam-score-width": `${Math.min(100, Math.max(0, ((result.spam.score + result.spam.threshold) / (result.spam.threshold * 2)) * 100))}%`,
+                            } as React.CSSProperties
+                          }
                         />
                         <div
                           className="spam-threshold-marker"
@@ -338,9 +339,7 @@ function EmailHeaderAnalyzer() {
                           <span className="routing-hop-field-value">{hop.with}</span>
                         </div>
                       )}
-                      {hop.date && (
-                        <div className="routing-hop-date">{hop.date}</div>
-                      )}
+                      {hop.date && <div className="routing-hop-date">{hop.date}</div>}
                     </div>
                   ))}
                 </div>
@@ -360,7 +359,7 @@ function EmailHeaderAnalyzer() {
                   onClick={() =>
                     handleCopy(
                       result.headers.map((h) => `${h.name}: ${h.value}`).join("\n"),
-                      "全ヘッダー"
+                      "全ヘッダー",
                     )
                   }
                   aria-label="全ヘッダーをコピー"
@@ -397,7 +396,10 @@ function EmailHeaderAnalyzer() {
                       ))
                     ) : (
                       <tr>
-                        <td colSpan={2} className="email-header-no-data email-header-no-data--center">
+                        <td
+                          colSpan={2}
+                          className="email-header-no-data email-header-no-data--center"
+                        >
                           一致するヘッダーが見つかりません
                         </td>
                       </tr>

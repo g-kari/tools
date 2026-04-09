@@ -129,12 +129,8 @@ function PomodoroTimer() {
   const DEFAULT_LONG_BREAK_MINUTES = 15;
 
   const [workMinutes, setWorkMinutes] = useState(DEFAULT_WORK_MINUTES);
-  const [shortBreakMinutes, setShortBreakMinutes] = useState(
-    DEFAULT_SHORT_BREAK_MINUTES
-  );
-  const [longBreakMinutes, setLongBreakMinutes] = useState(
-    DEFAULT_LONG_BREAK_MINUTES
-  );
+  const [shortBreakMinutes, setShortBreakMinutes] = useState(DEFAULT_SHORT_BREAK_MINUTES);
+  const [longBreakMinutes, setLongBreakMinutes] = useState(DEFAULT_LONG_BREAK_MINUTES);
 
   const [phase, setPhase] = useState<Phase>("work");
   const [sessionCount, setSessionCount] = useState(0);
@@ -158,7 +154,7 @@ function PomodoroTimer() {
           return longBreakMinutes * 60;
       }
     },
-    [workMinutes, shortBreakMinutes, longBreakMinutes]
+    [workMinutes, shortBreakMinutes, longBreakMinutes],
   );
 
   const totalSeconds = getTotalSeconds(phase);
@@ -185,8 +181,7 @@ function PomodoroTimer() {
     try {
       const AudioContext =
         window.AudioContext ||
-        (window as typeof window & { webkitAudioContext?: typeof AudioContext })
-          .webkitAudioContext;
+        (window as typeof window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
       if (!AudioContext) return;
       const ctx = new AudioContext();
       const oscillator = ctx.createOscillator();
@@ -218,10 +213,10 @@ function PomodoroTimer() {
       setElapsed(0);
       setIsRunning(false);
       announceStatus(
-        `${getPhaseLabel(completedPhase)}が終了しました。次は${getPhaseLabel(next)}です。`
+        `${getPhaseLabel(completedPhase)}が終了しました。次は${getPhaseLabel(next)}です。`,
       );
     },
-    [playBeep, announceStatus]
+    [playBeep, announceStatus],
   );
 
   // タイマーのインターバル制御
@@ -343,16 +338,9 @@ function PomodoroTimer() {
           </div>
 
           {/* セッション数 */}
-          <div
-            className="pomodoro-sessions"
-            aria-label={`セッション: ${currentSessionInCycle}/4`}
-          >
+          <div className="pomodoro-sessions" aria-label={`セッション: ${currentSessionInCycle}/4`}>
             <span className="pomodoro-sessions-label">セッション</span>
-            <div
-              className="pomodoro-session-dots"
-              role="list"
-              aria-label="セッション進捗"
-            >
+            <div className="pomodoro-session-dots" role="list" aria-label="セッション進捗">
               {sessionDots.map((dot) => (
                 <span
                   key={dot}
@@ -362,17 +350,11 @@ function PomodoroTimer() {
                 />
               ))}
             </div>
-            <span className="pomodoro-sessions-count">
-              {sessionCount} セッション完了
-            </span>
+            <span className="pomodoro-sessions-count">{sessionCount} セッション完了</span>
           </div>
 
           {/* コントロールボタン */}
-          <div
-            className="pomodoro-controls"
-            role="group"
-            aria-label="タイマー操作"
-          >
+          <div className="pomodoro-controls" role="group" aria-label="タイマー操作">
             <Button
               type="button"
               className={`btn-large ${isRunning ? "btn-secondary" : "btn-primary"}`}
@@ -414,9 +396,7 @@ function PomodoroTimer() {
                 value={workMinutes}
                 disabled={isRunning}
                 onChange={(e) =>
-                  setWorkMinutes(
-                    Math.max(1, Math.min(60, parseInt(e.target.value) || 25))
-                  )
+                  setWorkMinutes(Math.max(1, Math.min(60, parseInt(e.target.value) || 25)))
                 }
                 aria-describedby="work-minutes-help"
               />
@@ -434,9 +414,7 @@ function PomodoroTimer() {
                 value={shortBreakMinutes}
                 disabled={isRunning}
                 onChange={(e) =>
-                  setShortBreakMinutes(
-                    Math.max(1, Math.min(30, parseInt(e.target.value) || 5))
-                  )
+                  setShortBreakMinutes(Math.max(1, Math.min(30, parseInt(e.target.value) || 5)))
                 }
                 aria-describedby="short-break-help"
               />
@@ -454,9 +432,7 @@ function PomodoroTimer() {
                 value={longBreakMinutes}
                 disabled={isRunning}
                 onChange={(e) =>
-                  setLongBreakMinutes(
-                    Math.max(1, Math.min(60, parseInt(e.target.value) || 15))
-                  )
+                  setLongBreakMinutes(Math.max(1, Math.min(60, parseInt(e.target.value) || 15)))
                 }
                 aria-describedby="long-break-help"
               />

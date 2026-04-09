@@ -57,7 +57,7 @@ describe("computeHmac", () => {
     const message = textToBytes("Hi There");
     const result = await computeHmac("SHA-256", key, message);
     expect(bytesToHex(result)).toBe(
-      "b0344c61d8db38535ca8afceaf0bf12b881dc200c9833da726e9376c2e32cff7"
+      "b0344c61d8db38535ca8afceaf0bf12b881dc200c9833da726e9376c2e32cff7",
     );
   });
 
@@ -115,9 +115,7 @@ describe("computeAllHmacs", () => {
     const message = textToBytes("test");
     const key = textToBytes("key");
     const results = await computeAllHmacs(message, key);
-    const sha256Result = results.find(
-      (r) => r.algorithmName === "HMAC-SHA-256"
-    );
+    const sha256Result = results.find((r) => r.algorithmName === "HMAC-SHA-256");
     expect(sha256Result?.deprecated).toBeUndefined();
   });
 

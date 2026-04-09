@@ -7,19 +7,21 @@
  */
 
 /** Base85 バリアント */
-export type Base85Variant = 'ascii85' | 'z85';
+export type Base85Variant = "ascii85" | "z85";
 
 /**
  * ASCII85 アルファベット（'!' = 33 から 'u' = 117 まで 85 文字）
  * Adobe / PostScript / PDF で使用される標準アルファベット
  */
-const ASCII85_CHARS = '!"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstu';
+const ASCII85_CHARS =
+  "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstu";
 
 /**
  * Z85 アルファベット（ZeroMQ RFC 32 準拠）
  * 英数字 + 記号 85 文字
  */
-const Z85_CHARS = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.-:+=^!/*?&<>()[]{}@%$#';
+const Z85_CHARS =
+  "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.-:+=^!/*?&<>()[]{}@%$#";
 
 /** エンコード結果 */
 export interface Base85EncodeResult {
@@ -49,7 +51,7 @@ export interface Base85DecodeResult {
 
 /** アルファベット文字列を返す */
 function getAlphabet(variant: Base85Variant): string {
-  return variant === 'z85' ? Z85_CHARS : ASCII85_CHARS;
+  return variant === "z85" ? Z85_CHARS : ASCII85_CHARS;
 }
 
 /** アルファベットから逆引き辞書を作成する */
@@ -73,7 +75,7 @@ function encodeChunk(n: number, alphabet: string): string {
     chars[i] = alphabet[n % 85];
     n = Math.floor(n / 85);
   }
-  return chars.join('');
+  return chars.join("");
 }
 
 /**
@@ -100,7 +102,7 @@ function readUint32BE(bytes: Uint8Array, offset: number): number {
  * @param variant - バリアント（ascii85 / z85）
  * @returns エンコード結果
  */
-export function encodeBase85(text: string, variant: Base85Variant = 'ascii85'): Base85EncodeResult {
+export function encodeBase85(text: string, variant: Base85Variant = "ascii85"): Base85EncodeResult {
   const bytes = new TextEncoder().encode(text);
   return encodeBase85Bytes(bytes, variant);
 }
@@ -113,13 +115,13 @@ export function encodeBase85(text: string, variant: Base85Variant = 'ascii85'): 
  */
 export function encodeBase85Bytes(
   bytes: Uint8Array,
-  variant: Base85Variant = 'ascii85',
+  variant: Base85Variant = "ascii85",
 ): Base85EncodeResult {
   const alphabet = getAlphabet(variant);
-  const isAscii85 = variant === 'ascii85';
+  const isAscii85 = variant === "ascii85";
 
   if (bytes.length === 0) {
-    const encoded = isAscii85 ? '<~~>' : '';
+    const encoded = isAscii85 ? "<~~>" : "";
     return { encoded, inputBytes: 0, outputLength: encoded.length };
   }
 
@@ -138,7 +140,7 @@ export function encodeBase85Bytes(
     const n = readUint32BE(bytes, i * 4);
     if (isAscii85 && n === 0) {
       // 特殊ケース: 4 バイトすべて 0 → 'z' 1 文字に圧縮
-      parts.push('z');
+      parts.push("z");
     } else {
       parts.push(encodeChunk(n, alphabet));
     }
@@ -152,7 +154,7 @@ export function encodeBase85Bytes(
     parts.push(chunk.slice(0, remainder + 1));
   }
 
-  const body = parts.join('');
+  const body = parts.join("");
   const encoded = isAscii85 ? `<~${body}~>` : body;
 
   return {
@@ -174,26 +176,26 @@ export function encodeBase85Bytes(
  */
 export function decodeBase85(
   encoded: string,
-  variant: Base85Variant = 'ascii85',
+  variant: Base85Variant = "ascii85",
 ): Base85DecodeResult {
   const alphabet = getAlphabet(variant);
-  const isAscii85 = variant === 'ascii85';
+  const isAscii85 = variant === "ascii85";
   const lookup = buildLookup(alphabet);
 
   // 空白・改行を除去
-  let cleaned = encoded.replace(/\s/g, '');
+  let cleaned = encoded.replace(/\s/g, "");
 
   if (isAscii85) {
     // <~ ~> ラッパーを除去
-    if (cleaned.startsWith('<~') && cleaned.endsWith('~>')) {
+    if (cleaned.startsWith("<~") && cleaned.endsWith("~>")) {
       cleaned = cleaned.slice(2, -2);
     } else {
-      cleaned = cleaned.replace(/^<~/, '').replace(/~>$/, '');
+      cleaned = cleaned.replace(/^<~/, "").replace(/~>$/, "");
     }
   }
 
   if (cleaned.length === 0) {
-    return { decoded: '', bytes: new Uint8Array(0), success: true };
+    return { decoded: "", bytes: new Uint8Array(0), success: true };
   }
 
   const outputBytes: number[] = [];
@@ -204,7 +206,7 @@ export function decodeBase85(
       const ch = cleaned[i];
 
       // 特殊ケース 'z': 4 バイトの 0x00
-      if (ch === 'z') {
+      if (ch === "z") {
         outputBytes.push(0, 0, 0, 0);
         i++;
         continue;
@@ -220,7 +222,7 @@ export function decodeBase85(
       for (const c of chunk) {
         if (!lookup.has(c)) {
           return {
-            decoded: '',
+            decoded: "",
             bytes: new Uint8Array(0),
             success: false,
             error: `無効な文字: '${c}'`,
@@ -230,7 +232,7 @@ export function decodeBase85(
 
       // 端数の場合は 'u' でパディング（最大値 84 で埋める）
       const padLen = 5 - chunkLen;
-      const paddedChunk = chunk + 'u'.repeat(padLen);
+      const paddedChunk = chunk + "u".repeat(padLen);
 
       // Base85 → 32bit 整数
       let n = 0;
@@ -240,19 +242,14 @@ export function decodeBase85(
 
       // 32bit → 4 バイト（ビッグエンディアン）
       const byteCount = chunkLen - 1;
-      const b = [
-        (n >>> 24) & 0xff,
-        (n >>> 16) & 0xff,
-        (n >>> 8) & 0xff,
-        n & 0xff,
-      ];
+      const b = [(n >>> 24) & 0xff, (n >>> 16) & 0xff, (n >>> 8) & 0xff, n & 0xff];
       outputBytes.push(...b.slice(0, byteCount));
     }
   } else {
     // Z85: 入力長が 5 の倍数である必要がある
     if (cleaned.length % 5 !== 0) {
       return {
-        decoded: '',
+        decoded: "",
         bytes: new Uint8Array(0),
         success: false,
         error: `Z85 エンコード文字列の長さは 5 の倍数である必要があります（現在: ${cleaned.length} 文字）`,
@@ -265,7 +262,7 @@ export function decodeBase85(
       for (const c of chunk) {
         if (!lookup.has(c)) {
           return {
-            decoded: '',
+            decoded: "",
             bytes: new Uint8Array(0),
             success: false,
             error: `無効な文字: '${c}'`,
@@ -278,12 +275,7 @@ export function decodeBase85(
         n = n * 85 + lookup.get(c)!;
       }
 
-      outputBytes.push(
-        (n >>> 24) & 0xff,
-        (n >>> 16) & 0xff,
-        (n >>> 8) & 0xff,
-        n & 0xff,
-      );
+      outputBytes.push((n >>> 24) & 0xff, (n >>> 16) & 0xff, (n >>> 8) & 0xff, n & 0xff);
     }
   }
 
@@ -291,13 +283,13 @@ export function decodeBase85(
 
   // UTF-8 変換を試みる
   try {
-    const decoded = new TextDecoder('utf-8', { fatal: true }).decode(resultBytes);
+    const decoded = new TextDecoder("utf-8", { fatal: true }).decode(resultBytes);
     return { decoded, bytes: resultBytes, success: true };
   } catch {
     // バイナリデータは hex 表現で返す
     const hexStr = Array.from(resultBytes)
-      .map((b) => b.toString(16).padStart(2, '0'))
-      .join(' ');
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join(" ");
     return { decoded: hexStr, bytes: resultBytes, success: true };
   }
 }
@@ -312,26 +304,23 @@ export function decodeBase85(
  * @param variant - バリアント
  * @returns エラーメッセージ（問題なければ null）
  */
-export function validateBase85(
-  input: string,
-  variant: Base85Variant = 'ascii85',
-): string | null {
+export function validateBase85(input: string, variant: Base85Variant = "ascii85"): string | null {
   const alphabet = getAlphabet(variant);
-  let cleaned = input.replace(/\s/g, '');
+  let cleaned = input.replace(/\s/g, "");
 
-  if (variant === 'ascii85') {
-    cleaned = cleaned.replace(/^<~/, '').replace(/~>$/, '');
+  if (variant === "ascii85") {
+    cleaned = cleaned.replace(/^<~/, "").replace(/~>$/, "");
   }
 
   if (cleaned.length === 0) return null;
 
-  if (variant === 'z85' && cleaned.length % 5 !== 0) {
+  if (variant === "z85" && cleaned.length % 5 !== 0) {
     return `Z85 エンコード文字列の長さは 5 の倍数である必要があります（現在: ${cleaned.length} 文字）`;
   }
 
   for (const ch of cleaned) {
     // ASCII85 の特殊文字
-    if (variant === 'ascii85' && (ch === 'z' || ch === 'y')) continue;
+    if (variant === "ascii85" && (ch === "z" || ch === "y")) continue;
     if (!alphabet.includes(ch)) {
       return `無効な文字: '${ch}'`;
     }

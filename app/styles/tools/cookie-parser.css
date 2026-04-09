@@ -17,7 +17,9 @@
   font-size: 0.9375rem;
   font-weight: 500;
   color: var(--md-sys-color-on-surface-variant);
-  transition: color 0.2s, border-color 0.2s;
+  transition:
+    color 0.2s,
+    border-color 0.2s;
   letter-spacing: 0.02em;
   margin-bottom: -1px;
 }
@@ -57,13 +59,15 @@
   padding: 0.625rem 0.875rem;
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: 4px;
-  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  font-family: "JetBrains Mono", "Roboto Mono", "Courier New", monospace;
   font-size: 0.875rem;
   background: var(--md-sys-color-surface-variant);
   color: var(--md-sys-color-on-surface);
   resize: vertical;
   min-height: 80px;
-  transition: border-color 0.2s, background 0.2s;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
   box-sizing: border-box;
 }
 
@@ -141,14 +145,14 @@
 }
 
 .cookie-parser-table-name {
-  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  font-family: "JetBrains Mono", "Roboto Mono", "Courier New", monospace;
   font-weight: 600;
   color: var(--md-sys-color-primary);
   white-space: nowrap;
 }
 
 .cookie-parser-table-value {
-  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  font-family: "JetBrains Mono", "Roboto Mono", "Courier New", monospace;
   word-break: break-all;
   color: var(--md-sys-color-on-surface);
 }
@@ -183,7 +187,7 @@
 }
 
 .cookie-parser-attr-val {
-  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  font-family: "JetBrains Mono", "Roboto Mono", "Courier New", monospace;
   font-size: 0.875rem;
   color: var(--md-sys-color-on-surface);
   word-break: break-all;
@@ -290,7 +294,7 @@
 
 .cookie-parser-generated-value {
   padding: 0.75rem 0.875rem;
-  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  font-family: "JetBrains Mono", "Roboto Mono", "Courier New", monospace;
   font-size: 0.875rem;
   word-break: break-all;
   line-height: 1.6;
@@ -332,7 +336,10 @@
   cursor: pointer;
   font-size: 0.75rem;
   color: var(--md-sys-color-on-surface-variant);
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s;
   max-width: 240px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -360,7 +367,10 @@
   background: none;
   color: var(--md-sys-color-on-surface-variant);
   cursor: pointer;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s;
   letter-spacing: 0.03em;
   white-space: nowrap;
 }
@@ -391,7 +401,7 @@
 }
 
 .cookie-parser-unknown-chip {
-  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  font-family: "JetBrains Mono", "Roboto Mono", "Courier New", monospace;
   font-size: 0.75rem;
   padding: 0.125rem 0.5rem;
   border-radius: 4px;

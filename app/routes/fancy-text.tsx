@@ -4,10 +4,7 @@ import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 
 export const Route = createFileRoute("/fancy-text")({
   head: () => ({
@@ -44,11 +41,7 @@ export const Route = createFileRoute("/fancy-text")({
 });
 
 /** Unicode 変換マップを適用する */
-function applyMap(
-  text: string,
-  upper: readonly string[],
-  lower: readonly string[]
-): string {
+function applyMap(text: string, upper: readonly string[], lower: readonly string[]): string {
   return Array.from(text)
     .map((ch) => {
       const code = ch.charCodeAt(0);
@@ -60,43 +53,89 @@ function applyMap(
 }
 
 /** 数学記号ブロックの変換マップを生成する（例外なしのスタイル用） */
-function mathMap(
-  capBase: number,
-  smallBase: number
-): (text: string) => string {
-  const upper = Array.from({ length: 26 }, (_, i) =>
-    String.fromCodePoint(capBase + i)
-  );
-  const lower = Array.from({ length: 26 }, (_, i) =>
-    String.fromCodePoint(smallBase + i)
-  );
+function mathMap(capBase: number, smallBase: number): (text: string) => string {
+  const upper = Array.from({ length: 26 }, (_, i) => String.fromCodePoint(capBase + i));
+  const lower = Array.from({ length: 26 }, (_, i) => String.fromCodePoint(smallBase + i));
   return (text: string) => applyMap(text, upper, lower);
 }
 
 // 二重線（黒板太字）の大文字は例外があるため個別に定義
-const DOUBLE_STRUCK_UPPER = Array.from(
-  "𝔸𝔹ℂ𝔻𝔼𝔽𝔾ℍ𝕀𝕁𝕂𝕃𝕄ℕ𝕆ℙℚℝ𝕊𝕋𝕌𝕍𝕎𝕏𝕐ℤ"
-);
-const DOUBLE_STRUCK_LOWER = Array.from({ length: 26 }, (_, i) =>
-  String.fromCodePoint(0x1d552 + i)
-);
+const DOUBLE_STRUCK_UPPER = Array.from("𝔸𝔹ℂ𝔻𝔼𝔽𝔾ℍ𝕀𝕁𝕂𝕃𝕄ℕ𝕆ℙℚℝ𝕊𝕋𝕌𝕍𝕎𝕏𝕐ℤ");
+const DOUBLE_STRUCK_LOWER = Array.from({ length: 26 }, (_, i) => String.fromCodePoint(0x1d552 + i));
 
 // スモールキャップス（A-Z に対応した小型大文字）
 const SMALL_CAPS_CHARS = Array.from("ᴀʙᴄᴅᴇꜰɢʜɪᴊᴋʟᴍɴᴏᴘǫʀsᴛᴜᴠᴡxʏᴢ");
 
 // 上下反転マップ（変換後に文字列を逆順にする）
 const UPSIDE_DOWN_MAP: Readonly<Record<string, string>> = {
-  a: "ɐ", b: "q", c: "ɔ", d: "p", e: "ǝ", f: "ɟ", g: "ƃ", h: "ɥ",
-  i: "ı", j: "ɾ", k: "ʞ", l: "l", m: "ɯ", n: "u", o: "o", p: "d",
-  q: "b", r: "ɹ", s: "s", t: "ʇ", u: "n", v: "ʌ", w: "ʍ", x: "x",
-  y: "ʎ", z: "z",
-  A: "∀", B: "ᗺ", C: "Ɔ", D: "ᗡ", E: "Ǝ", F: "Ⅎ", G: "פ", H: "H",
-  I: "I", J: "ɾ", K: "ʞ", L: "⅂", M: "W", N: "N", O: "O", P: "Ԁ",
-  Q: "Ό", R: "ɹ", S: "S", T: "⊥", U: "∩", V: "Λ", W: "M", X: "X",
-  Y: "ʎ", Z: "Z",
-  "0": "0", "1": "ı", "2": "ᄅ", "3": "Ɛ", "4": "ㄣ", "5": "ϛ",
-  "6": "9", "7": "L", "8": "8", "9": "6",
-  "!": "¡", "?": "¿", ".": "˙", ",": "'", "(": ")", ")": "(",
+  a: "ɐ",
+  b: "q",
+  c: "ɔ",
+  d: "p",
+  e: "ǝ",
+  f: "ɟ",
+  g: "ƃ",
+  h: "ɥ",
+  i: "ı",
+  j: "ɾ",
+  k: "ʞ",
+  l: "l",
+  m: "ɯ",
+  n: "u",
+  o: "o",
+  p: "d",
+  q: "b",
+  r: "ɹ",
+  s: "s",
+  t: "ʇ",
+  u: "n",
+  v: "ʌ",
+  w: "ʍ",
+  x: "x",
+  y: "ʎ",
+  z: "z",
+  A: "∀",
+  B: "ᗺ",
+  C: "Ɔ",
+  D: "ᗡ",
+  E: "Ǝ",
+  F: "Ⅎ",
+  G: "פ",
+  H: "H",
+  I: "I",
+  J: "ɾ",
+  K: "ʞ",
+  L: "⅂",
+  M: "W",
+  N: "N",
+  O: "O",
+  P: "Ԁ",
+  Q: "Ό",
+  R: "ɹ",
+  S: "S",
+  T: "⊥",
+  U: "∩",
+  V: "Λ",
+  W: "M",
+  X: "X",
+  Y: "ʎ",
+  Z: "Z",
+  "0": "0",
+  "1": "ı",
+  "2": "ᄅ",
+  "3": "Ɛ",
+  "4": "ㄣ",
+  "5": "ϛ",
+  "6": "9",
+  "7": "L",
+  "8": "8",
+  "9": "6",
+  "!": "¡",
+  "?": "¿",
+  ".": "˙",
+  ",": "'",
+  "(": ")",
+  ")": "(",
 };
 
 /** ファンシースタイル定義 */
@@ -205,7 +244,7 @@ function FancyTextConverter() {
         style,
         output: style.convert(input),
       })),
-    [input]
+    [input],
   );
 
   const handleCopy = useCallback(
@@ -218,7 +257,7 @@ function FancyTextConverter() {
         showToast("コピーに失敗しました", "error");
       }
     },
-    [showToast, announceStatus]
+    [showToast, announceStatus],
   );
 
   const handleSample = useCallback(
@@ -226,18 +265,14 @@ function FancyTextConverter() {
       setInput(text);
       announceStatus("サンプルテキストを設定しました");
     },
-    [announceStatus]
+    [announceStatus],
   );
 
   return (
     <>
       <div className="tool-container">
         {/* サンプルボタン */}
-        <div
-          className="fancy-text-samples"
-          role="group"
-          aria-label="サンプルテキスト選択"
-        >
+        <div className="fancy-text-samples" role="group" aria-label="サンプルテキスト選択">
           <span className="fancy-text-samples-label">サンプル：</span>
           {SAMPLE_TEXTS.map(({ label, text }) => (
             <Button
@@ -275,11 +310,7 @@ function FancyTextConverter() {
 
         {/* スタイル一覧 */}
         {input && (
-          <div
-            className="fancy-text-grid"
-            aria-live="polite"
-            aria-label="変換結果一覧"
-          >
+          <div className="fancy-text-grid" aria-live="polite" aria-label="変換結果一覧">
             {results.map(({ style, output }) => (
               <div
                 key={style.id}

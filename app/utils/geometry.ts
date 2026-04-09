@@ -14,12 +14,7 @@ export type Shape2D =
   | "regularHexagon";
 
 /** 3D図形の種類 */
-export type Shape3D =
-  | "sphere"
-  | "cube"
-  | "rectangularPrism"
-  | "cylinder"
-  | "cone";
+export type Shape3D = "sphere" | "cube" | "rectangularPrism" | "cylinder" | "cone";
 
 /** 2D図形の計算結果 */
 export interface Result2D {

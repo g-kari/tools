@@ -99,7 +99,7 @@ const STANDARD: Record<string, string[]> = {
   "?": [" ?_", "  /", " ? ", "   ", " ? "],
   ".": [" ", " ", " ", " ", "."],
   "-": ["   ", "   ", "---", "   ", "   "],
-  "_": ["   ", "   ", "   ", "   ", "___"],
+  _: ["   ", "   ", "   ", "   ", "___"],
 };
 
 // Block font: 5行、ブロック文字スタイル（█, ▄, ▀）
@@ -145,7 +145,7 @@ const BLOCK: Record<string, string[]> = {
   "?": ["▄█▄", "  █", " █ ", "   ", " █ "],
   ".": [" ", " ", " ", " ", "█"],
   "-": ["   ", "   ", "███", "   ", "   "],
-  "_": ["   ", "   ", "   ", "   ", "███"],
+  _: ["   ", "   ", "   ", "   ", "███"],
 };
 
 // Banner font: 7行、#で塗りつぶしたバナースタイル
@@ -191,7 +191,7 @@ const BANNER: Record<string, string[]> = {
   "?": [" ##", "#  #", "   #", "  # ", "  # ", "    ", "  # "],
   ".": [" ", " ", " ", " ", " ", " ", "#"],
   "-": ["   ", "   ", "   ", "###", "   ", "   ", "   "],
-  "_": ["   ", "   ", "   ", "   ", "   ", "   ", "###"],
+  _: ["   ", "   ", "   ", "   ", "   ", "   ", "###"],
 };
 
 // Dots font: 5行、アスタリスクとドットスタイル
@@ -237,7 +237,7 @@ const DOTS: Record<string, string[]> = {
   "?": ["**", " *", " *", "  ", " *"],
   ".": [" ", " ", " ", " ", "*"],
   "-": ["   ", "   ", "***", "   ", "   "],
-  "_": ["   ", "   ", "   ", "   ", "***"],
+  _: ["   ", "   ", "   ", "   ", "***"],
 };
 
 // Thin font: 5行、細い線スタイル
@@ -283,7 +283,7 @@ const THIN: Record<string, string[]> = {
   "?": ["/--\\", "   |", " --/", "    ", "  . "],
   ".": [" ", " ", " ", " ", "."],
   "-": ["     ", "     ", "-----", "     ", "     "],
-  "_": ["     ", "     ", "     ", "     ", "_____"],
+  _: ["     ", "     ", "     ", "     ", "_____"],
 };
 
 const FONT_MAP: Record<AsciiFont, Record<string, string[]>> = {
@@ -310,10 +310,7 @@ export function getFontLineCount(font: AsciiFont): number {
  * @param font 使用するフォント
  * @returns ASCIIアートの結果
  */
-export function generateAsciiArt(
-  text: string,
-  font: AsciiFont
-): AsciiArtResult {
+export function generateAsciiArt(text: string, font: AsciiFont): AsciiArtResult {
   if (!text || text.trim() === "") {
     return { text: "", lineCount: 0, charCount: 0 };
   }

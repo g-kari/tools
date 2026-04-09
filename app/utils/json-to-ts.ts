@@ -67,7 +67,7 @@ function inferType(
   typeName: string,
   options: JsonToTsOptions,
   generatedTypes: GeneratedType[],
-  usedNames: Set<string>
+  usedNames: Set<string>,
 ): string {
   if (value === null) {
     return options.includeNull ? "null" : "unknown";
@@ -98,18 +98,10 @@ function inferType(
       if (item !== null && typeof item === "object" && !Array.isArray(item)) {
         // オブジェクト要素は最初の1つだけを代表として型推論する
         if (objectTypeName === null) {
-          objectTypeName = inferType(
-            item,
-            `${typeName}Item`,
-            options,
-            generatedTypes,
-            usedNames
-          );
+          objectTypeName = inferType(item, `${typeName}Item`, options, generatedTypes, usedNames);
         }
       } else {
-        primitiveTypes.add(
-          inferType(item, `${typeName}Item`, options, generatedTypes, usedNames)
-        );
+        primitiveTypes.add(inferType(item, `${typeName}Item`, options, generatedTypes, usedNames));
       }
     }
 
@@ -137,13 +129,7 @@ function inferType(
 
     const properties = keys.map((key) => {
       const childTypeName = toPascalCase(key);
-      const childType = inferType(
-        obj[key],
-        childTypeName,
-        options,
-        generatedTypes,
-        usedNames
-      );
+      const childType = inferType(obj[key], childTypeName, options, generatedTypes, usedNames);
 
       return `  ${key}${optionalMark}: ${childType};`;
     });
@@ -190,13 +176,7 @@ export function generateTypeScript(json: string, options: JsonToTsOptions): stri
   const generatedTypes: GeneratedType[] = [];
   const usedNames = new Set<string>();
 
-  const rootType = inferType(
-    parsed,
-    options.rootName,
-    options,
-    generatedTypes,
-    usedNames
-  );
+  const rootType = inferType(parsed, options.rootName, options, generatedTypes, usedNames);
 
   // ルート値がプリミティブの場合
   if (generatedTypes.length === 0) {

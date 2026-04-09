@@ -10,7 +10,7 @@
  */
 export function atbash(text: string): string {
   return text.replace(/[a-zA-Z]/g, (char) => {
-    const base = char >= 'a' ? 97 : 65;
+    const base = char >= "a" ? 97 : 65;
     return String.fromCharCode(25 - (char.charCodeAt(0) - base) + base);
   });
 }

@@ -43,10 +43,7 @@ describe("JSON→TypeScript型変換", () => {
     });
 
     it("ネストしたオブジェクトの型生成", () => {
-      const result = generateTypeScript(
-        '{"address":{"city":"Tokyo"}}',
-        defaultOptions
-      );
+      const result = generateTypeScript('{"address":{"city":"Tokyo"}}', defaultOptions);
       expect(result).toContain("address: Address;");
       expect(result).toContain("city: string;");
       // Addressが別のinterface/typeとして定義されている
@@ -64,20 +61,14 @@ describe("JSON→TypeScript型変換", () => {
     });
 
     it("オブジェクト配列の型生成", () => {
-      const result = generateTypeScript(
-        '{"items":[{"id":1},{"id":2}]}',
-        defaultOptions
-      );
+      const result = generateTypeScript('{"items":[{"id":1},{"id":2}]}', defaultOptions);
       expect(result).toContain("items:");
       // 配列要素のオブジェクト型が生成される
       expect(result).toContain("id: number;");
     });
 
     it("同質なオブジェクト配列は重複型を生成しない", () => {
-      const result = generateTypeScript(
-        '[{"a":1},{"a":2},{"a":3}]',
-        defaultOptions
-      );
+      const result = generateTypeScript('[{"a":1},{"a":2},{"a":3}]', defaultOptions);
       // RootItem が1つだけ生成される（RootItem2, RootItem3 は不要）
       expect(result).toContain("interface RootItem");
       expect(result).not.toContain("RootItem2");
@@ -145,21 +136,15 @@ describe("JSON→TypeScript型変換", () => {
     });
 
     it("不正なJSONでエラー（空文字列）", () => {
-      expect(() => generateTypeScript("", defaultOptions)).toThrow(
-        "JSONを入力してください"
-      );
+      expect(() => generateTypeScript("", defaultOptions)).toThrow("JSONを入力してください");
     });
 
     it("不正なJSONでエラー（不正JSON文字列）", () => {
-      expect(() => generateTypeScript("invalid", defaultOptions)).toThrow(
-        "無効なJSON形式です"
-      );
+      expect(() => generateTypeScript("invalid", defaultOptions)).toThrow("無効なJSON形式です");
     });
 
     it("空白のみの入力でエラー", () => {
-      expect(() => generateTypeScript("   ", defaultOptions)).toThrow(
-        "JSONを入力してください"
-      );
+      expect(() => generateTypeScript("   ", defaultOptions)).toThrow("JSONを入力してください");
     });
 
     it("プリミティブ値の型生成", () => {
@@ -183,7 +168,7 @@ describe("JSON→TypeScript型変換", () => {
       const parsed = JSON.parse(getSampleJson());
       const values = Object.values(parsed);
       const hasNested = values.some(
-        (v) => typeof v === "object" && v !== null && !Array.isArray(v)
+        (v) => typeof v === "object" && v !== null && !Array.isArray(v),
       );
       expect(hasNested).toBe(true);
     });

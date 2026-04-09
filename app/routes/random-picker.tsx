@@ -74,10 +74,7 @@ export function pickRandom(items: string[], count: number): string[] {
     const idx = Math.floor(Math.random() * (pool.length - i));
     picked.push(pool[idx]);
     // swap to end and shrink effective range
-    [pool[idx], pool[pool.length - 1 - i]] = [
-      pool[pool.length - 1 - i],
-      pool[idx],
-    ];
+    [pool[idx], pool[pool.length - 1 - i]] = [pool[pool.length - 1 - i], pool[idx]];
   }
   return picked;
 }
@@ -97,7 +94,7 @@ export function pickRandom(items: string[], count: number): string[] {
  */
 function RandomPickerPage() {
   const [inputText, setInputText] = useState<string>(
-    "Alice\nBob\nCharlie\nDiana\nEve\nFrank\nGrace\nHank"
+    "Alice\nBob\nCharlie\nDiana\nEve\nFrank\nGrace\nHank",
   );
   const [pickCount, setPickCount] = useState<number>(1);
   const [withoutReplacement, setWithoutReplacement] = useState<boolean>(true);
@@ -151,21 +148,11 @@ function RandomPickerPage() {
       }
 
       setLastPick(picked);
-      setHistory((prev) => [
-        { items: picked, timestamp: Date.now() },
-        ...prev.slice(0, 19),
-      ]);
+      setHistory((prev) => [{ items: picked, timestamp: Date.now() }, ...prev.slice(0, 19)]);
       announceStatus(`抽選結果: ${picked.join("、")}`);
       setIsAnimating(false);
     }, 300);
-  }, [
-    isAnimating,
-    withoutReplacement,
-    remainingItems,
-    allItems,
-    pickCount,
-    announceStatus,
-  ]);
+  }, [isAnimating, withoutReplacement, remainingItems, allItems, pickCount, announceStatus]);
 
   const handleReset = useCallback(() => {
     setRemainingItems(parseItems(inputText));
@@ -212,13 +199,9 @@ function RandomPickerPage() {
               aria-describedby="picker-item-count"
             />
             <div id="picker-item-count" className="picker-count-info">
-              <span className="picker-total-badge">
-                全{allItems.length}件
-              </span>
+              <span className="picker-total-badge">全{allItems.length}件</span>
               {withoutReplacement && (
-                <span
-                  className={`picker-remaining-badge ${isExhausted ? "exhausted" : ""}`}
-                >
+                <span className={`picker-remaining-badge ${isExhausted ? "exhausted" : ""}`}>
                   残り{remainingItems.length}件
                 </span>
               )}
@@ -234,11 +217,7 @@ function RandomPickerPage() {
                 min="1"
                 max={allItems.length || 1}
                 value={pickCount}
-                onChange={(e) =>
-                  setPickCount(
-                    Math.max(1, parseInt(e.target.value) || 1)
-                  )
-                }
+                onChange={(e) => setPickCount(Math.max(1, parseInt(e.target.value) || 1))}
                 aria-describedby="pick-count-help"
               />
               <span id="pick-count-help" className="sr-only">
@@ -350,14 +329,8 @@ function RandomPickerPage() {
             </div>
             <div className="picker-history" role="list" aria-label="抽選履歴">
               {history.map((entry) => (
-                <div
-                  key={entry.timestamp}
-                  className="picker-history-item"
-                  role="listitem"
-                >
-                  <span className="picker-history-items">
-                    {entry.items.join("、")}
-                  </span>
+                <div key={entry.timestamp} className="picker-history-item" role="listitem">
+                  <span className="picker-history-items">{entry.items.join("、")}</span>
                   <span className="picker-history-time">
                     {new Date(entry.timestamp).toLocaleTimeString("ja-JP")}
                   </span>

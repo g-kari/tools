@@ -46,9 +46,9 @@ export interface IniParseResult {
 }
 
 const DEFAULT_PARSE_OPTIONS: Required<IniParseOptions> = {
-  commentChars: [';', '#'],
+  commentChars: [";", "#"],
   allowInlineComments: true,
-  globalSection: '',
+  globalSection: "",
   multiValue: false,
   trimWhitespace: true,
 };
@@ -56,8 +56,8 @@ const DEFAULT_PARSE_OPTIONS: Required<IniParseOptions> = {
 const DEFAULT_FORMAT_OPTIONS: Required<IniFormatOptions> = {
   sectionSpacing: 1,
   preserveComments: true,
-  separator: ' = ',
-  commentChar: '; ',
+  separator: " = ",
+  commentChar: "; ",
 };
 
 /**
@@ -83,7 +83,7 @@ export function parseIni(text: string, options: IniParseOptions = {}): IniParseR
     let line = opts.trimWhitespace ? lines[i].trim() : lines[i];
 
     // 空行をスキップ
-    if (line === '') continue;
+    if (line === "") continue;
 
     // コメント行
     if (opts.commentChars.some((c) => line.startsWith(c))) {
@@ -96,7 +96,7 @@ export function parseIni(text: string, options: IniParseOptions = {}): IniParseR
     if (sectionMatch) {
       const sectionName = opts.trimWhitespace ? sectionMatch[1].trim() : sectionMatch[1];
       if (!sectionName) {
-        errors.push({ line: lineNum, message: 'セクション名が空です' });
+        errors.push({ line: lineNum, message: "セクション名が空です" });
         continue;
       }
       currentSection = sectionName;
@@ -118,7 +118,7 @@ export function parseIni(text: string, options: IniParseOptions = {}): IniParseR
       }
 
       if (!key) {
-        errors.push({ line: lineNum, message: 'キー名が空です' });
+        errors.push({ line: lineNum, message: "キー名が空です" });
         continue;
       }
 
@@ -128,7 +128,9 @@ export function parseIni(text: string, options: IniParseOptions = {}): IniParseR
           const commentIdx = findInlineCommentIndex(value, commentChar);
           if (commentIdx !== -1) {
             const commentText = value.slice(commentIdx);
-            value = opts.trimWhitespace ? value.slice(0, commentIdx).trim() : value.slice(0, commentIdx);
+            value = opts.trimWhitespace
+              ? value.slice(0, commentIdx).trim()
+              : value.slice(0, commentIdx);
             comments.push({ line: lineNum, text: commentText, section: currentSection, key });
             break;
           }
@@ -174,12 +176,12 @@ export function parseIni(text: string, options: IniParseOptions = {}): IniParseR
  */
 function findInlineCommentIndex(value: string, commentChar: string): number {
   let inQuote = false;
-  let quoteChar = '';
+  let quoteChar = "";
 
   for (let i = 0; i < value.length; i++) {
     const ch = value[i];
     if (inQuote) {
-      if (ch === quoteChar && value[i - 1] !== '\\') {
+      if (ch === quoteChar && value[i - 1] !== "\\") {
         inQuote = false;
       }
     } else {
@@ -188,7 +190,7 @@ function findInlineCommentIndex(value: string, commentChar: string): number {
         quoteChar = ch;
       } else if (value.startsWith(commentChar, i)) {
         // コメントの前に空白が必要（キーワードの一部でないことを確認）
-        if (i > 0 && (value[i - 1] === ' ' || value[i - 1] === '\t')) {
+        if (i > 0 && (value[i - 1] === " " || value[i - 1] === "\t")) {
           return i;
         }
       }
@@ -205,7 +207,7 @@ function unquote(value: string): string {
     (value.startsWith('"') && value.endsWith('"')) ||
     (value.startsWith("'") && value.endsWith("'"))
   ) {
-    return value.slice(1, -1).replace(/\\(.)/g, '$1');
+    return value.slice(1, -1).replace(/\\(.)/g, "$1");
   }
   return value;
 }
@@ -219,17 +221,17 @@ function unquote(value: string): string {
 export function formatIni(data: IniData, options: IniFormatOptions = {}): string {
   const opts = { ...DEFAULT_FORMAT_OPTIONS, ...options };
   const lines: string[] = [];
-  const spacer = '\n'.repeat(opts.sectionSpacing);
+  const spacer = "\n".repeat(opts.sectionSpacing);
 
   let isFirst = true;
   for (const [section, sectionData] of Object.entries(data)) {
     if (!isFirst) {
-      lines.push(...spacer.split('\n').map(() => ''));
+      lines.push(...spacer.split("\n").map(() => ""));
     }
     isFirst = false;
 
     // グローバルセクション（空文字）はセクションヘッダーを出力しない
-    if (section !== '') {
+    if (section !== "") {
       lines.push(`[${section}]`);
     }
 
@@ -244,7 +246,7 @@ export function formatIni(data: IniData, options: IniFormatOptions = {}): string
     }
   }
 
-  return lines.join('\n');
+  return lines.join("\n");
 }
 
 /**
@@ -253,16 +255,13 @@ export function formatIni(data: IniData, options: IniFormatOptions = {}): string
  * @param includeGlobal - グローバルセクションを含めるか
  * @returns JSON互換オブジェクト
  */
-export function iniToJson(
-  data: IniData,
-  includeGlobal = true
-): Record<string, unknown> {
+export function iniToJson(data: IniData, includeGlobal = true): Record<string, unknown> {
   const result: Record<string, unknown> = {};
 
   for (const [section, sectionData] of Object.entries(data)) {
-    if (section === '' && !includeGlobal) continue;
+    if (section === "" && !includeGlobal) continue;
 
-    if (section === '') {
+    if (section === "") {
       // グローバルキーをトップレベルに
       for (const [key, value] of Object.entries(sectionData)) {
         result[key] = value;
@@ -286,14 +285,14 @@ export function jsonToIni(json: Record<string, unknown>): IniData {
   let hasGlobal = false;
 
   for (const [key, value] of Object.entries(json)) {
-    if (value !== null && typeof value === 'object' && !Array.isArray(value)) {
+    if (value !== null && typeof value === "object" && !Array.isArray(value)) {
       // セクション
       const section: IniSection = {};
       for (const [k, v] of Object.entries(value as Record<string, unknown>)) {
         if (Array.isArray(v)) {
           section[k] = v.map(String);
         } else {
-          section[k] = String(v ?? '');
+          section[k] = String(v ?? "");
         }
       }
       data[key] = section;
@@ -303,13 +302,13 @@ export function jsonToIni(json: Record<string, unknown>): IniData {
       hasGlobal = true;
     } else {
       // プリミティブはグローバルセクションに
-      globalSection[key] = String(value ?? '');
+      globalSection[key] = String(value ?? "");
       hasGlobal = true;
     }
   }
 
   if (hasGlobal) {
-    return { '': globalSection, ...data };
+    return { "": globalSection, ...data };
   }
 
   return data;
@@ -338,7 +337,7 @@ export function calcIniStats(result: IniParseResult): IniStats {
 
   for (const [section, data] of Object.entries(result.data)) {
     const count = Object.keys(data).length;
-    sectionKeyCounts[section === '' ? '(グローバル)' : section] = count;
+    sectionKeyCounts[section === "" ? "(グローバル)" : section] = count;
     totalKeys += count;
   }
 

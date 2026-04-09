@@ -19,7 +19,7 @@ export interface BorderRadiusState {
   /** 左下 */
   bottomLeft: BorderRadiusCorner;
   /** 単位 */
-  unit: 'px' | '%';
+  unit: "px" | "%";
   /** 楕円モード（水平・垂直を独立制御） */
   elliptic: boolean;
 }
@@ -29,7 +29,7 @@ export interface BorderRadiusPreset {
   /** プリセット名 */
   label: string;
   /** 適用する状態（elliptic は含まない） */
-  state: Omit<BorderRadiusState, 'elliptic'>;
+  state: Omit<BorderRadiusState, "elliptic">;
 }
 
 /**
@@ -106,7 +106,7 @@ export function createDefaultState(): BorderRadiusState {
     topRight: { h: 8, v: 8 },
     bottomRight: { h: 8, v: 8 },
     bottomLeft: { h: 8, v: 8 },
-    unit: 'px',
+    unit: "px",
     elliptic: false,
   };
 }
@@ -114,83 +114,83 @@ export function createDefaultState(): BorderRadiusState {
 /** プリセット一覧 */
 export const BORDER_RADIUS_PRESETS: BorderRadiusPreset[] = [
   {
-    label: '角丸',
+    label: "角丸",
     state: {
       topLeft: { h: 8, v: 8 },
       topRight: { h: 8, v: 8 },
       bottomRight: { h: 8, v: 8 },
       bottomLeft: { h: 8, v: 8 },
-      unit: 'px',
+      unit: "px",
     },
   },
   {
-    label: 'カード',
+    label: "カード",
     state: {
       topLeft: { h: 16, v: 16 },
       topRight: { h: 16, v: 16 },
       bottomRight: { h: 16, v: 16 },
       bottomLeft: { h: 16, v: 16 },
-      unit: 'px',
+      unit: "px",
     },
   },
   {
-    label: '円形',
+    label: "円形",
     state: {
       topLeft: { h: 50, v: 50 },
       topRight: { h: 50, v: 50 },
       bottomRight: { h: 50, v: 50 },
       bottomLeft: { h: 50, v: 50 },
-      unit: '%',
+      unit: "%",
     },
   },
   {
-    label: 'ピル型',
+    label: "ピル型",
     state: {
       topLeft: { h: 9999, v: 9999 },
       topRight: { h: 9999, v: 9999 },
       bottomRight: { h: 9999, v: 9999 },
       bottomLeft: { h: 9999, v: 9999 },
-      unit: 'px',
+      unit: "px",
     },
   },
   {
-    label: 'リーフ',
+    label: "リーフ",
     state: {
       topLeft: { h: 0, v: 0 },
       topRight: { h: 50, v: 50 },
       bottomRight: { h: 0, v: 0 },
       bottomLeft: { h: 50, v: 50 },
-      unit: '%',
+      unit: "%",
     },
   },
   {
-    label: '斜め丸',
+    label: "斜め丸",
     state: {
       topLeft: { h: 40, v: 40 },
       topRight: { h: 0, v: 0 },
       bottomRight: { h: 40, v: 40 },
       bottomLeft: { h: 0, v: 0 },
-      unit: '%',
+      unit: "%",
     },
   },
   {
-    label: '吹き出し',
+    label: "吹き出し",
     state: {
       topLeft: { h: 16, v: 16 },
       topRight: { h: 16, v: 16 },
       bottomRight: { h: 16, v: 16 },
       bottomLeft: { h: 0, v: 0 },
-      unit: 'px',
+      unit: "px",
     },
   },
   {
-    label: '上丸',
+    label: "上丸",
     state: {
       topLeft: { h: 24, v: 24 },
       topRight: { h: 24, v: 24 },
       bottomRight: { h: 0, v: 0 },
       bottomLeft: { h: 0, v: 0 },
-      unit: 'px',
+      unit: "px",
     },
   },
 ];

@@ -83,7 +83,7 @@ async function hmacSha1(key: Uint8Array, message: Uint8Array): Promise<Uint8Arra
     key,
     { name: "HMAC", hash: "SHA-1" },
     false,
-    ["sign"]
+    ["sign"],
   );
   const signature = await crypto.subtle.sign("HMAC", cryptoKey, message);
   return new Uint8Array(signature);
@@ -101,7 +101,7 @@ async function hmacSha256(key: Uint8Array, message: Uint8Array): Promise<Uint8Ar
     key,
     { name: "HMAC", hash: "SHA-256" },
     false,
-    ["sign"]
+    ["sign"],
   );
   const signature = await crypto.subtle.sign("HMAC", cryptoKey, message);
   return new Uint8Array(signature);
@@ -119,7 +119,7 @@ async function hmacSha512(key: Uint8Array, message: Uint8Array): Promise<Uint8Ar
     key,
     { name: "HMAC", hash: "SHA-512" },
     false,
-    ["sign"]
+    ["sign"],
   );
   const signature = await crypto.subtle.sign("HMAC", cryptoKey, message);
   return new Uint8Array(signature);
@@ -152,7 +152,7 @@ export async function generateHotp(
   key: Uint8Array,
   counter: number,
   digits: number,
-  algorithm: "SHA-1" | "SHA-256" | "SHA-512" = "SHA-1"
+  algorithm: "SHA-1" | "SHA-256" | "SHA-512" = "SHA-1",
 ): Promise<string> {
   const counterBytes = counterToBytes(counter);
 
@@ -188,10 +188,7 @@ export async function generateHotp(
  * @returns TOTP生成結果
  * @throws {Error} 秘密鍵が空または無効な場合
  */
-export async function generateTotp(
-  options: TotpOptions,
-  timestamp?: number
-): Promise<TotpResult> {
+export async function generateTotp(options: TotpOptions, timestamp?: number): Promise<TotpResult> {
   if (!options.secret.trim()) {
     throw new Error("秘密鍵を入力してください");
   }
@@ -201,7 +198,7 @@ export async function generateTotp(
     key = base32Decode(options.secret);
   } catch (e) {
     throw new Error(
-      `秘密鍵のデコードに失敗しました: ${e instanceof Error ? e.message : "不明なエラー"}`
+      `秘密鍵のデコードに失敗しました: ${e instanceof Error ? e.message : "不明なエラー"}`,
     );
   }
 
@@ -281,7 +278,7 @@ export function generateOtpauthUri(
   secret: string,
   issuer: string,
   account: string,
-  options: TotpOptions
+  options: TotpOptions,
 ): string {
   const params = new URLSearchParams({
     secret: secret.replace(/\s/g, ""),
@@ -307,7 +304,7 @@ export function generateOtpauthUri(
 export async function generateHOTP(
   keyBytes: Uint8Array,
   counter: bigint,
-  digits: 6 | 8
+  digits: 6 | 8,
 ): Promise<string> {
   // カウンターを8バイトビッグエンディアンに変換
   const counterBytes = new Uint8Array(8);
@@ -322,7 +319,7 @@ export async function generateHOTP(
     keyBytes,
     { name: "HMAC", hash: "SHA-1" },
     false,
-    ["sign"]
+    ["sign"],
   );
   const signature = await crypto.subtle.sign("HMAC", key, counterBytes);
   const hmac = new Uint8Array(signature);
@@ -349,7 +346,7 @@ export async function generateHOTP(
  */
 export async function generateTOTP(
   secret: string,
-  options?: { digits?: 6 | 8; period?: number; timestamp?: number }
+  options?: { digits?: 6 | 8; period?: number; timestamp?: number },
 ): Promise<string> {
   const digits = options?.digits ?? 6;
   const period = options?.period ?? 30;
@@ -388,16 +385,10 @@ export function generateSecret(length: number = 20): string {
  * @param issuer - 発行者名
  * @returns otpauth:// URI
  */
-export function generateOtpauthUriSimple(
-  secret: string,
-  account: string,
-  issuer: string
-): string {
+export function generateOtpauthUriSimple(secret: string, account: string, issuer: string): string {
   const encodedAccount = encodeURIComponent(account);
   const encodedIssuer = encodeURIComponent(issuer);
-  const label = issuer
-    ? `${encodedIssuer}:${encodedAccount}`
-    : encodedAccount;
+  const label = issuer ? `${encodedIssuer}:${encodedAccount}` : encodedAccount;
   const params = new URLSearchParams({
     secret,
     issuer,

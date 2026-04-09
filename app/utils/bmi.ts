@@ -3,13 +3,7 @@
  */
 
 /** BMI判定カテゴリの定義（WHO基準） */
-export type BmiCategory =
-  | "underweight"
-  | "normal"
-  | "overweight"
-  | "obese1"
-  | "obese2"
-  | "obese3";
+export type BmiCategory = "underweight" | "normal" | "overweight" | "obese1" | "obese2" | "obese3";
 
 /** BMI判定カテゴリのラベル */
 export const BMI_CATEGORY_LABELS: Record<BmiCategory, string> = {
@@ -22,10 +16,7 @@ export const BMI_CATEGORY_LABELS: Record<BmiCategory, string> = {
 };
 
 /** BMI判定カテゴリのBMI範囲 */
-export const BMI_CATEGORY_RANGES: Record<
-  BmiCategory,
-  { min: number; max: number }
-> = {
+export const BMI_CATEGORY_RANGES: Record<BmiCategory, { min: number; max: number }> = {
   underweight: { min: 0, max: 18.5 },
   normal: { min: 18.5, max: 25 },
   overweight: { min: 25, max: 30 },

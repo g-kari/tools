@@ -59,7 +59,10 @@
   background: var(--surface);
   color: var(--on-surface-variant);
   cursor: pointer;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s,
+    border-color 0.15s;
   white-space: nowrap;
 }
 
@@ -103,7 +106,10 @@
   background: var(--surface);
   color: var(--on-surface-variant);
   cursor: pointer;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s,
+    border-color 0.15s;
   font-family: monospace;
 }
 

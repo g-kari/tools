@@ -17,16 +17,22 @@ import { TipsCard } from "~/components/TipsCard";
 export const Route = createFileRoute("/unit-converter")({
   head: () => ({
     meta: [
-    { title: "単位変換ツール | Web ツール集" },
-    { name: "description", content: "長さ・重さ・温度・面積・速度など各種単位の変換ツール。" },
-    { property: "og:title", content: "単位変換ツール | Web ツール集" },
-    { property: "og:description", content: "長さ・重さ・温度・面積・速度など各種単位の変換ツール。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/unit-converter` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "単位変換ツール | Web ツール集" },
-    { name: "twitter:description", content: "長さ・重さ・温度・面積・速度など各種単位の変換ツール。" },
-  ],
+      { title: "単位変換ツール | Web ツール集" },
+      { name: "description", content: "長さ・重さ・温度・面積・速度など各種単位の変換ツール。" },
+      { property: "og:title", content: "単位変換ツール | Web ツール集" },
+      {
+        property: "og:description",
+        content: "長さ・重さ・温度・面積・速度など各種単位の変換ツール。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/unit-converter` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "単位変換ツール | Web ツール集" },
+      {
+        name: "twitter:description",
+        content: "長さ・重さ・温度・面積・速度など各種単位の変換ツール。",
+      },
+    ],
   }),
   component: UnitConverter,
 });
@@ -69,9 +75,11 @@ function UnitConverter() {
         setToUnit(newUnits[1].id);
       }
       setResult(null);
-      announceStatus(`${UNIT_CATEGORIES.find((c) => c.id === categoryId)?.name}カテゴリを選択しました`);
+      announceStatus(
+        `${UNIT_CATEGORIES.find((c) => c.id === categoryId)?.name}カテゴリを選択しました`,
+      );
     },
-    [announceStatus]
+    [announceStatus],
   );
 
   // 変換実行
@@ -96,19 +104,13 @@ function UnitConverter() {
     setResult(converted);
 
     // 履歴に追加
-    const entry = createHistoryEntry(
-      selectedCategory,
-      numValue,
-      fromUnit,
-      toUnit,
-      converted
-    );
+    const entry = createHistoryEntry(selectedCategory, numValue, fromUnit, toUnit, converted);
     setHistory((prev) => [entry, ...prev].slice(0, MAX_HISTORY));
 
     const fromUnitDef = units.find((u) => u.id === fromUnit);
     const toUnitDef = units.find((u) => u.id === toUnit);
     announceStatus(
-      `${formatNumber(numValue)} ${fromUnitDef?.symbol} = ${formatNumber(converted)} ${toUnitDef?.symbol}`
+      `${formatNumber(numValue)} ${fromUnitDef?.symbol} = ${formatNumber(converted)} ${toUnitDef?.symbol}`,
     );
   }, [inputValue, fromUnit, toUnit, selectedCategory, units, showToast, announceStatus]);
 
@@ -174,11 +176,7 @@ function UnitConverter() {
         <form onSubmit={(e) => e.preventDefault()} aria-label="単位変換フォーム">
           <div className="unit-converter-layout">
             {/* カテゴリ選択（左サイドバー） */}
-            <div
-              className="unit-category-sidebar"
-              role="radiogroup"
-              aria-label="カテゴリ選択"
-            >
+            <div className="unit-category-sidebar" role="radiogroup" aria-label="カテゴリ選択">
               {UNIT_CATEGORIES.map((category) => (
                 <button
                   key={category.id}
@@ -195,75 +193,79 @@ function UnitConverter() {
 
             {/* メイン変換エリア */}
             <div className="unit-converter-main">
-            {/* 入力セクション */}
-            <div className="unit-input-group">
-              <span className="unit-input-label">変換元</span>
-              <div className="unit-input-row">
-                <input
-                  type="number"
-                  id="unitInput"
-                  ref={inputRef}
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  placeholder="0"
-                  aria-describedby="input-help"
-                  className="unit-input"
-                  step="any"
-                />
-                <select
-                  id="fromUnit"
-                  value={fromUnit}
-                  onChange={(e) => setFromUnit(e.target.value)}
-                  aria-label="変換元の単位"
-                  className="unit-select"
-                >
-                  {units.map((unit) => (
-                    <option key={unit.id} value={unit.id}>
-                      {unit.name} ({unit.symbol})
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <span id="input-help" className="sr-only">
-                変換したい数値を入力してください
-              </span>
-            </div>
-
-            {/* 単位入れ替えボタン */}
-            <div className="unit-swap-container">
-              <button
-                type="button"
-                className="unit-swap-btn"
-                onClick={handleSwapUnits}
-                aria-label="変換元と変換先の単位を入れ替え"
-                title="単位を入れ替え"
-              >
-                ⇅
-              </button>
-            </div>
-
-            {/* 出力セクション */}
-            <div className="unit-input-group">
-              <span className="unit-input-label">変換先</span>
-              <div className="unit-input-row">
-                <div className="unit-result" aria-live="polite" aria-atomic="true">
-                  {result !== null ? formatNumber(result) : <span className="unit-result-placeholder">—</span>}
+              {/* 入力セクション */}
+              <div className="unit-input-group">
+                <span className="unit-input-label">変換元</span>
+                <div className="unit-input-row">
+                  <input
+                    type="number"
+                    id="unitInput"
+                    ref={inputRef}
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    placeholder="0"
+                    aria-describedby="input-help"
+                    className="unit-input"
+                    step="any"
+                  />
+                  <select
+                    id="fromUnit"
+                    value={fromUnit}
+                    onChange={(e) => setFromUnit(e.target.value)}
+                    aria-label="変換元の単位"
+                    className="unit-select"
+                  >
+                    {units.map((unit) => (
+                      <option key={unit.id} value={unit.id}>
+                        {unit.name} ({unit.symbol})
+                      </option>
+                    ))}
+                  </select>
                 </div>
-                <select
-                  id="toUnit"
-                  value={toUnit}
-                  onChange={(e) => setToUnit(e.target.value)}
-                  aria-label="変換先の単位"
-                  className="unit-select"
-                >
-                  {units.map((unit) => (
-                    <option key={unit.id} value={unit.id}>
-                      {unit.name} ({unit.symbol})
-                    </option>
-                  ))}
-                </select>
+                <span id="input-help" className="sr-only">
+                  変換したい数値を入力してください
+                </span>
               </div>
-            </div>
+
+              {/* 単位入れ替えボタン */}
+              <div className="unit-swap-container">
+                <button
+                  type="button"
+                  className="unit-swap-btn"
+                  onClick={handleSwapUnits}
+                  aria-label="変換元と変換先の単位を入れ替え"
+                  title="単位を入れ替え"
+                >
+                  ⇅
+                </button>
+              </div>
+
+              {/* 出力セクション */}
+              <div className="unit-input-group">
+                <span className="unit-input-label">変換先</span>
+                <div className="unit-input-row">
+                  <div className="unit-result" aria-live="polite" aria-atomic="true">
+                    {result !== null ? (
+                      formatNumber(result)
+                    ) : (
+                      <span className="unit-result-placeholder">—</span>
+                    )}
+                  </div>
+                  <select
+                    id="toUnit"
+                    value={toUnit}
+                    onChange={(e) => setToUnit(e.target.value)}
+                    aria-label="変換先の単位"
+                    className="unit-select"
+                  >
+                    {units.map((unit) => (
+                      <option key={unit.id} value={unit.id}>
+                        {unit.name} ({unit.symbol})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
 
               {/* ボタングループ */}
               <div className="unit-button-group" role="group" aria-label="変換操作">
@@ -295,10 +297,10 @@ function UnitConverter() {
                     {history.map((entry) => {
                       const categoryUnits = getUnitsForCategory(entry.categoryId);
                       const fromUnitDef = categoryUnits.find(
-                        (u: UnitDefinition) => u.id === entry.fromUnitId
+                        (u: UnitDefinition) => u.id === entry.fromUnitId,
                       );
                       const toUnitDef = categoryUnits.find(
-                        (u: UnitDefinition) => u.id === entry.toUnitId
+                        (u: UnitDefinition) => u.id === entry.toUnitId,
                       );
                       return (
                         <li key={entry.id} className="unit-history-item">
@@ -306,7 +308,8 @@ function UnitConverter() {
                             {getCategoryLabel(entry.categoryId)}
                           </span>
                           <span className="unit-history-conversion">
-                            {formatNumber(entry.inputValue)} {fromUnitDef?.symbol} → {formatNumber(entry.result)} {toUnitDef?.symbol}
+                            {formatNumber(entry.inputValue)} {fromUnitDef?.symbol} →{" "}
+                            {formatNumber(entry.result)} {toUnitDef?.symbol}
                           </span>
                         </li>
                       );

@@ -122,13 +122,13 @@ describe("compareJson", () => {
 
   it("左側のJSONが不正な場合にエラーを投げる", () => {
     expect(() => compareJson("{invalid}", '{"a": 1}')).toThrow(
-      "左側のJSONの形式が正しくありません"
+      "左側のJSONの形式が正しくありません",
     );
   });
 
   it("右側のJSONが不正な場合にエラーを投げる", () => {
     expect(() => compareJson('{"a": 1}', "{invalid}")).toThrow(
-      "右側のJSONの形式が正しくありません"
+      "右側のJSONの形式が正しくありません",
     );
   });
 
@@ -158,26 +158,21 @@ describe("compareJson", () => {
   });
 
   it("追加ノードにはleftDisplayがなくrightDisplayがある", () => {
-    const result = compareJson('{}', '{"x": 1}');
+    const result = compareJson("{}", '{"x": 1}');
     const addedNode = result.nodes.find((n) => n.type === "added") as DiffNode;
     expect(addedNode.leftDisplay).toBeUndefined();
     expect(addedNode.rightDisplay).toBe("1");
   });
 
   it("削除ノードにはleftDisplayがありrightDisplayがない", () => {
-    const result = compareJson('{"x": 1}', '{}');
-    const removedNode = result.nodes.find(
-      (n) => n.type === "removed"
-    ) as DiffNode;
+    const result = compareJson('{"x": 1}', "{}");
+    const removedNode = result.nodes.find((n) => n.type === "removed") as DiffNode;
     expect(removedNode.leftDisplay).toBe("1");
     expect(removedNode.rightDisplay).toBeUndefined();
   });
 
   it("ネストしたオブジェクトのdisplayValueが正しい形式", () => {
-    const result = compareJson(
-      '{"obj": {"a": 1}}',
-      '{"obj": {"a": 2}}'
-    );
+    const result = compareJson('{"obj": {"a": 1}}', '{"obj": {"a": 2}}');
     const node = result.nodes.find((n) => n.path === "obj.a") as DiffNode;
     expect(node.leftDisplay).toBe("1");
     expect(node.rightDisplay).toBe("2");
@@ -224,8 +219,7 @@ describe("getSampleJsonPair", () => {
   it("left と right を比較すると差分がある", () => {
     const { left, right } = getSampleJsonPair();
     const result = compareJson(left, right);
-    const totalDiff =
-      result.summary.added + result.summary.removed + result.summary.changed;
+    const totalDiff = result.summary.added + result.summary.removed + result.summary.changed;
     expect(totalDiff).toBeGreaterThan(0);
   });
 });

@@ -13,7 +13,7 @@
 }
 
 .stopwatch-time {
-  font-family: 'Space Mono', 'JetBrains Mono', monospace;
+  font-family: "Space Mono", "JetBrains Mono", monospace;
   font-size: 4rem;
   font-weight: 300;
   color: var(--md-sys-color-on-surface);
@@ -98,7 +98,7 @@
   align-items: center;
   padding: 0.5rem 0.75rem;
   border-radius: 8px;
-  font-family: 'Space Mono', 'JetBrains Mono', monospace;
+  font-family: "Space Mono", "JetBrains Mono", monospace;
   font-size: 0.9375rem;
   transition: background-color 0.15s ease;
 }

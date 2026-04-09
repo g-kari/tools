@@ -28,17 +28,13 @@ test.describe("CIDR Calculator - E2E Tests", () => {
   });
 
   test("should have calculate button", async ({ page }) => {
-    const calculateButton = page.locator(
-      'button[aria-label="CIDR計算を実行"]'
-    );
+    const calculateButton = page.locator('button[aria-label="CIDR計算を実行"]');
     await expect(calculateButton).toBeVisible();
     await expect(calculateButton).toContainText("計算");
   });
 
   test("should show error when calculating empty input", async ({ page }) => {
-    const calculateButton = page.locator(
-      'button[aria-label="CIDR計算を実行"]'
-    );
+    const calculateButton = page.locator('button[aria-label="CIDR計算を実行"]');
 
     await calculateButton.click();
 
@@ -49,9 +45,7 @@ test.describe("CIDR Calculator - E2E Tests", () => {
 
   test("should calculate CIDR /24 network correctly", async ({ page }) => {
     const cidrInput = page.locator("#cidrInput");
-    const calculateButton = page.locator(
-      'button[aria-label="CIDR計算を実行"]'
-    );
+    const calculateButton = page.locator('button[aria-label="CIDR計算を実行"]');
 
     await cidrInput.fill("192.168.1.0/24");
     await calculateButton.click();
@@ -82,9 +76,7 @@ test.describe("CIDR Calculator - E2E Tests", () => {
 
   test("should show error for invalid CIDR notation", async ({ page }) => {
     const cidrInput = page.locator("#cidrInput");
-    const calculateButton = page.locator(
-      'button[aria-label="CIDR計算を実行"]'
-    );
+    const calculateButton = page.locator('button[aria-label="CIDR計算を実行"]');
 
     await cidrInput.fill("192.168.1.0/33");
     await calculateButton.click();
@@ -147,9 +139,7 @@ test.describe("CIDR Calculator - E2E Tests", () => {
 
   test("should display all result sections", async ({ page }) => {
     const cidrInput = page.locator("#cidrInput");
-    const calculateButton = page.locator(
-      'button[aria-label="CIDR計算を実行"]'
-    );
+    const calculateButton = page.locator('button[aria-label="CIDR計算を実行"]');
 
     await cidrInput.fill("172.16.0.0/12");
     await calculateButton.click();
@@ -158,23 +148,19 @@ test.describe("CIDR Calculator - E2E Tests", () => {
 
     // Check for all three sections
     await expect(
-      page.locator("#network-info-title", { hasText: "ネットワーク情報" })
+      page.locator("#network-info-title", { hasText: "ネットワーク情報" }),
     ).toBeVisible();
     await expect(
       page.locator("#ip-range-title", {
         hasText: "利用可能なIPアドレス範囲",
-      })
+      }),
     ).toBeVisible();
-    await expect(
-      page.locator("#additional-info-title", { hasText: "追加情報" })
-    ).toBeVisible();
+    await expect(page.locator("#additional-info-title", { hasText: "追加情報" })).toBeVisible();
   });
 
   test("should show private IP status", async ({ page }) => {
     const cidrInput = page.locator("#cidrInput");
-    const calculateButton = page.locator(
-      'button[aria-label="CIDR計算を実行"]'
-    );
+    const calculateButton = page.locator('button[aria-label="CIDR計算を実行"]');
 
     await cidrInput.fill("192.168.1.0/24");
     await calculateButton.click();
@@ -188,9 +174,7 @@ test.describe("CIDR Calculator - E2E Tests", () => {
 
   test("should handle /32 (single host) correctly", async ({ page }) => {
     const cidrInput = page.locator("#cidrInput");
-    const calculateButton = page.locator(
-      'button[aria-label="CIDR計算を実行"]'
-    );
+    const calculateButton = page.locator('button[aria-label="CIDR計算を実行"]');
 
     await cidrInput.fill("192.168.1.1/32");
     await calculateButton.click();
@@ -208,9 +192,7 @@ test.describe("CIDR Calculator - E2E Tests", () => {
 
   test("should have copy buttons for important values", async ({ page }) => {
     const cidrInput = page.locator("#cidrInput");
-    const calculateButton = page.locator(
-      'button[aria-label="CIDR計算を実行"]'
-    );
+    const calculateButton = page.locator('button[aria-label="CIDR計算を実行"]');
 
     await cidrInput.fill("192.168.1.0/24");
     await calculateButton.click();

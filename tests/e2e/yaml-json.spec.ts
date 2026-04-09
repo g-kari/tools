@@ -84,9 +84,7 @@ test.describe("YAML/JSON変換 - E2Eテスト", () => {
    * コピーボタンが出力なしで無効になっていることを確認するテスト
    */
   test("コピーボタンが出力なしで無効になっている", async ({ page }) => {
-    const copyBtn = page.locator(
-      'button[aria-label="出力結果をクリップボードにコピー"]'
-    );
+    const copyBtn = page.locator('button[aria-label="出力結果をクリップボードにコピー"]');
     await expect(copyBtn).toBeDisabled();
   });
 
@@ -105,9 +103,7 @@ test.describe("YAML/JSON変換 - E2Eテスト", () => {
    */
   test("無効なYAML入力時にToastエラーが表示される", async ({ page }) => {
     await page.locator('input[value="yaml-to-json"]').click();
-    await page
-      .locator("#inputText")
-      .fill("key: :\n  invalid: : yaml: :");
+    await page.locator("#inputText").fill("key: :\n  invalid: : yaml: :");
     await page.locator("button.btn-primary").click();
     const toast = page.locator(".toast");
     await expect(toast).toBeVisible();

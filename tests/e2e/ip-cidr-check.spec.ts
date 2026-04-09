@@ -99,9 +99,7 @@ test.describe("IP CIDR Range Check - E2E Tests", () => {
     expect(pageText).toContain("マッチ");
   });
 
-  test("should display unmatched result when IP is not in CIDR", async ({
-    page,
-  }) => {
+  test("should display unmatched result when IP is not in CIDR", async ({ page }) => {
     const ipTextarea = page.locator("#ipListInput");
     await ipTextarea.fill("10.0.0.1");
 
@@ -155,9 +153,7 @@ test.describe("IP CIDR Range Check - E2E Tests", () => {
     expect(matchedCount).toBe(2);
   });
 
-  test("should show network address range in matched results", async ({
-    page,
-  }) => {
+  test("should show network address range in matched results", async ({ page }) => {
     const ipTextarea = page.locator("#ipListInput");
     await ipTextarea.fill("192.168.1.50");
 
@@ -174,9 +170,7 @@ test.describe("IP CIDR Range Check - E2E Tests", () => {
     expect(pageText).toContain("192.168.1.255");
   });
 
-  test("should clear inputs and results when clear button is clicked", async ({
-    page,
-  }) => {
+  test("should clear inputs and results when clear button is clicked", async ({ page }) => {
     const ipTextarea = page.locator("#ipListInput");
     await ipTextarea.fill("192.168.1.1");
 
@@ -244,9 +238,7 @@ test.describe("IP CIDR Range Check - E2E Tests", () => {
     await expect(matchedItem).toBeVisible();
   });
 
-  test("should show invalid IP badge for invalid IP addresses", async ({
-    page,
-  }) => {
+  test("should show invalid IP badge for invalid IP addresses", async ({ page }) => {
     const ipTextarea = page.locator("#ipListInput");
     await ipTextarea.fill("256.1.1.1");
 

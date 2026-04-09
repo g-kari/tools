@@ -53,25 +53,19 @@ test.describe("ULID ジェネレーター", () => {
     await expect(page.getByRole("button", { name: "すべてコピー" })).toBeVisible();
   });
 
-  test("パーサーに有効な ULID を入力するとパース結果が表示される", async ({
-    page,
-  }) => {
+  test("パーサーに有効な ULID を入力するとパース結果が表示される", async ({ page }) => {
     await page.locator("#ulid-parse-input").fill("01ARZ3NDEKTSV4RRFFQ69G5FAV");
     await expect(page.locator(".ulid-parser-result")).toBeVisible();
     await expect(page.locator(".ulid-parser-valid-ok")).toBeVisible();
   });
 
-  test("パーサーに無効な ULID を入力するとエラーが表示される", async ({
-    page,
-  }) => {
+  test("パーサーに無効な ULID を入力するとエラーが表示される", async ({ page }) => {
     await page.locator("#ulid-parse-input").fill("INVALID");
     await expect(page.locator(".ulid-parser-error")).toBeVisible();
   });
 
   test("パーサーが小文字の ULID を受け付ける", async ({ page }) => {
-    await page
-      .locator("#ulid-parse-input")
-      .fill("01arz3ndektsv4rrffq69g5fav");
+    await page.locator("#ulid-parse-input").fill("01arz3ndektsv4rrffq69g5fav");
     await expect(page.locator(".ulid-parser-valid-ok")).toBeVisible();
   });
 
@@ -80,9 +74,7 @@ test.describe("ULID ジェネレーター", () => {
     await expect(legend).toBeVisible();
   });
 
-  test("アクセシビリティ: 生成フォームに aria-label がある", async ({
-    page,
-  }) => {
+  test("アクセシビリティ: 生成フォームに aria-label がある", async ({ page }) => {
     const form = page.locator('[aria-label="ULID 生成フォーム"]');
     await expect(form).toBeVisible();
   });

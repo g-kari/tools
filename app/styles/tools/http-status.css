@@ -19,7 +19,10 @@
   font-size: 0.8125rem;
   font-weight: 500;
   color: var(--md-sys-color-on-surface-variant);
-  transition: color 0.2s, background-color 0.2s, border-color 0.2s;
+  transition:
+    color 0.2s,
+    background-color 0.2s,
+    border-color 0.2s;
   letter-spacing: 0.03em;
 }
 
@@ -53,7 +56,9 @@
   font-size: 0.9375rem;
   background: var(--md-sys-color-surface-variant);
   color: var(--md-sys-color-on-surface);
-  transition: border-color 0.2s, background 0.2s;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
 }
 
 .http-status-search-input:focus {
@@ -91,7 +96,9 @@
   display: flex;
   flex-direction: column;
   gap: 0.375rem;
-  transition: border-color 0.2s, background-color 0.2s;
+  transition:
+    border-color 0.2s,
+    background-color 0.2s;
 }
 
 .http-status-card:hover {
@@ -147,7 +154,10 @@
   background: none;
   color: var(--md-sys-color-on-surface-variant);
   cursor: pointer;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s;
   letter-spacing: 0.03em;
 }
 

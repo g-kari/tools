@@ -1,10 +1,5 @@
 import { describe, it, expect } from "vite-plus/test";
-import {
-  generateULID,
-  isValidULID,
-  parseULID,
-  ULID_LENGTH,
-} from "../../app/utils/ulid";
+import { generateULID, isValidULID, parseULID, ULID_LENGTH } from "../../app/utils/ulid";
 
 describe("generateULID", () => {
   it("26 文字の文字列を生成する", () => {

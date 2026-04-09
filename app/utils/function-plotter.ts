@@ -5,7 +5,7 @@
  */
 
 /** プロット関数の色一覧 */
-export const PLOT_COLORS = ['#e53935', '#1976d2', '#388e3c', '#f57c00'] as const;
+export const PLOT_COLORS = ["#e53935", "#1976d2", "#388e3c", "#f57c00"] as const;
 export type PlotColor = (typeof PLOT_COLORS)[number];
 
 /** 関数プロット設定 */
@@ -44,18 +44,18 @@ export interface PlotData {
 // ---- トークナイザー ----
 
 type TokenType =
-  | 'NUMBER'
-  | 'IDENT'
-  | 'PLUS'
-  | 'MINUS'
-  | 'STAR'
-  | 'SLASH'
-  | 'PERCENT'
-  | 'CARET'
-  | 'LPAREN'
-  | 'RPAREN'
-  | 'COMMA'
-  | 'EOF';
+  | "NUMBER"
+  | "IDENT"
+  | "PLUS"
+  | "MINUS"
+  | "STAR"
+  | "SLASH"
+  | "PERCENT"
+  | "CARET"
+  | "LPAREN"
+  | "RPAREN"
+  | "COMMA"
+  | "EOF";
 
 interface Token {
   type: TokenType;
@@ -121,35 +121,35 @@ function tokenize(input: string): Token[] {
       continue;
     }
 
-    if (/[0-9]/.test(ch) || (ch === '.' && /[0-9]/.test(input[pos + 1] ?? ''))) {
-      let num = '';
+    if (/[0-9]/.test(ch) || (ch === "." && /[0-9]/.test(input[pos + 1] ?? ""))) {
+      let num = "";
       while (pos < input.length && /[0-9.]/.test(input[pos])) num += input[pos++];
-      if (pos < input.length && (input[pos] === 'e' || input[pos] === 'E')) {
+      if (pos < input.length && (input[pos] === "e" || input[pos] === "E")) {
         num += input[pos++];
-        if (pos < input.length && (input[pos] === '+' || input[pos] === '-')) num += input[pos++];
+        if (pos < input.length && (input[pos] === "+" || input[pos] === "-")) num += input[pos++];
         while (pos < input.length && /[0-9]/.test(input[pos])) num += input[pos++];
       }
-      tokens.push({ type: 'NUMBER', value: num });
+      tokens.push({ type: "NUMBER", value: num });
       continue;
     }
 
     if (/[a-zA-Z_]/.test(ch)) {
-      let ident = '';
+      let ident = "";
       while (pos < input.length && /[a-zA-Z0-9_]/.test(input[pos])) ident += input[pos++];
-      tokens.push({ type: 'IDENT', value: ident });
+      tokens.push({ type: "IDENT", value: ident });
       continue;
     }
 
     const opMap: Record<string, TokenType> = {
-      '+': 'PLUS',
-      '-': 'MINUS',
-      '*': 'STAR',
-      '/': 'SLASH',
-      '%': 'PERCENT',
-      '^': 'CARET',
-      '(': 'LPAREN',
-      ')': 'RPAREN',
-      ',': 'COMMA',
+      "+": "PLUS",
+      "-": "MINUS",
+      "*": "STAR",
+      "/": "SLASH",
+      "%": "PERCENT",
+      "^": "CARET",
+      "(": "LPAREN",
+      ")": "RPAREN",
+      ",": "COMMA",
     };
 
     if (ch in opMap) {
@@ -161,19 +161,19 @@ function tokenize(input: string): Token[] {
     throw new Error(`無効な文字: "${ch}" (位置 ${pos})`);
   }
 
-  tokens.push({ type: 'EOF', value: '' });
+  tokens.push({ type: "EOF", value: "" });
   return tokens;
 }
 
 // ---- AST ノード ----
 
 type ASTNode =
-  | { type: 'number'; value: number }
-  | { type: 'variable' }
-  | { type: 'constant'; value: number }
-  | { type: 'binop'; op: string; left: ASTNode; right: ASTNode }
-  | { type: 'unary'; operand: ASTNode }
-  | { type: 'func'; name: string; args: ASTNode[] };
+  | { type: "number"; value: number }
+  | { type: "variable" }
+  | { type: "constant"; value: number }
+  | { type: "binop"; op: string; left: ASTNode; right: ASTNode }
+  | { type: "unary"; operand: ASTNode }
+  | { type: "func"; name: string; args: ASTNode[] };
 
 // ---- AST パーサー ----
 
@@ -204,7 +204,7 @@ class ASTParser {
    */
   parse(): ASTNode {
     const node = this.parseAdditive();
-    if (this.peek().type !== 'EOF') {
+    if (this.peek().type !== "EOF") {
       throw new Error(`予期しないトークン: "${this.peek().value}"`);
     }
     return node;
@@ -212,31 +212,31 @@ class ASTParser {
 
   private parseAdditive(): ASTNode {
     let left = this.parseMultiplicative();
-    while (this.peek().type === 'PLUS' || this.peek().type === 'MINUS') {
+    while (this.peek().type === "PLUS" || this.peek().type === "MINUS") {
       const op = this.consume().value;
       const right = this.parseMultiplicative();
-      left = { type: 'binop', op, left, right };
+      left = { type: "binop", op, left, right };
     }
     return left;
   }
 
   private parseMultiplicative(): ASTNode {
     let left = this.parseUnary();
-    while (['STAR', 'SLASH', 'PERCENT'].includes(this.peek().type)) {
+    while (["STAR", "SLASH", "PERCENT"].includes(this.peek().type)) {
       const op = this.consume().value;
       const right = this.parseUnary();
-      left = { type: 'binop', op, left, right };
+      left = { type: "binop", op, left, right };
     }
     return left;
   }
 
   // 単項マイナスはべき乗より低優先度（-x^2 = -(x^2) = -4）
   private parseUnary(): ASTNode {
-    if (this.peek().type === 'MINUS') {
+    if (this.peek().type === "MINUS") {
       this.consume();
-      return { type: 'unary', operand: this.parseUnary() };
+      return { type: "unary", operand: this.parseUnary() };
     }
-    if (this.peek().type === 'PLUS') {
+    if (this.peek().type === "PLUS") {
       this.consume();
       return this.parseUnary();
     }
@@ -245,10 +245,10 @@ class ASTParser {
 
   private parsePower(): ASTNode {
     const base = this.parsePrimary();
-    if (this.peek().type === 'CARET') {
+    if (this.peek().type === "CARET") {
       this.consume();
       const exp = this.parseUnary(); // 右結合（-x^2^3 = -(x^(2^3))）
-      return { type: 'binop', op: '^', left: base, right: exp };
+      return { type: "binop", op: "^", left: base, right: exp };
     }
     return base;
   }
@@ -256,41 +256,41 @@ class ASTParser {
   private parsePrimary(): ASTNode {
     const tok = this.peek();
 
-    if (tok.type === 'NUMBER') {
+    if (tok.type === "NUMBER") {
       this.consume();
       const v = parseFloat(tok.value);
       if (isNaN(v)) throw new Error(`無効な数値: "${tok.value}"`);
-      return { type: 'number', value: v };
+      return { type: "number", value: v };
     }
 
-    if (tok.type === 'IDENT') {
+    if (tok.type === "IDENT") {
       this.consume();
       const name = tok.value;
 
-      if (name === 'x') return { type: 'variable' };
-      if (name in MATH_CONSTANTS) return { type: 'constant', value: MATH_CONSTANTS[name] };
+      if (name === "x") return { type: "variable" };
+      if (name in MATH_CONSTANTS) return { type: "constant", value: MATH_CONSTANTS[name] };
 
       if (name in MATH_FUNCTIONS) {
-        this.expect('LPAREN');
+        this.expect("LPAREN");
         const args: ASTNode[] = [];
-        if (this.peek().type !== 'RPAREN') {
+        if (this.peek().type !== "RPAREN") {
           args.push(this.parseAdditive());
-          while (this.peek().type === 'COMMA') {
+          while (this.peek().type === "COMMA") {
             this.consume();
             args.push(this.parseAdditive());
           }
         }
-        this.expect('RPAREN');
-        return { type: 'func', name, args };
+        this.expect("RPAREN");
+        return { type: "func", name, args };
       }
 
       throw new Error(`不明な関数または変数: "${name}"`);
     }
 
-    if (tok.type === 'LPAREN') {
+    if (tok.type === "LPAREN") {
       this.consume();
       const node = this.parseAdditive();
-      this.expect('RPAREN');
+      this.expect("RPAREN");
       return node;
     }
 
@@ -305,34 +305,34 @@ class ASTParser {
  */
 function evalAST(node: ASTNode, x: number): number {
   switch (node.type) {
-    case 'number':
+    case "number":
       return node.value;
-    case 'variable':
+    case "variable":
       return x;
-    case 'constant':
+    case "constant":
       return node.value;
-    case 'unary':
+    case "unary":
       return -evalAST(node.operand, x);
-    case 'func': {
+    case "func": {
       const fn = MATH_FUNCTIONS[node.name];
       const args = node.args.map((a) => evalAST(a, x));
       return fn(...args);
     }
-    case 'binop': {
+    case "binop": {
       const left = evalAST(node.left, x);
       const right = evalAST(node.right, x);
       switch (node.op) {
-        case '+':
+        case "+":
           return left + right;
-        case '-':
+        case "-":
           return left - right;
-        case '*':
+        case "*":
           return left * right;
-        case '/':
+        case "/":
           return right === 0 ? (left >= 0 ? Infinity : -Infinity) : left / right;
-        case '%':
+        case "%":
           return left % right;
-        case '^':
+        case "^":
           return Math.pow(left, right);
         default:
           throw new Error(`不明な演算子: "${node.op}"`);
@@ -351,7 +351,7 @@ export function compileExpression(expression: string): {
   error: string | null;
 } {
   if (!expression.trim()) {
-    return { fn: null, error: '式を入力してください' };
+    return { fn: null, error: "式を入力してください" };
   }
   try {
     const tokens = tokenize(expression.trim());
@@ -359,7 +359,7 @@ export function compileExpression(expression: string): {
     const fn = (x: number) => evalAST(ast, x);
     return { fn, error: null };
   } catch (e) {
-    return { fn: null, error: e instanceof Error ? e.message : '構文エラー' };
+    return { fn: null, error: e instanceof Error ? e.message : "構文エラー" };
   }
 }
 
@@ -379,7 +379,7 @@ export function computePlotPoints(
   xMax: number,
   steps = 500,
   yClipMin = -1e6,
-  yClipMax = 1e6
+  yClipMax = 1e6,
 ): PlotPoint[] {
   const points: PlotPoint[] = [];
   const dx = (xMax - xMin) / steps;
@@ -394,8 +394,7 @@ export function computePlotPoints(
       continue;
     }
 
-    const valid =
-      isFinite(y) && !isNaN(y) && y >= yClipMin && y <= yClipMax;
+    const valid = isFinite(y) && !isNaN(y) && y >= yClipMin && y <= yClipMax;
     points.push({ x, y: valid ? y : NaN, valid });
   }
 
@@ -408,10 +407,7 @@ export function computePlotPoints(
  * @param threshold 不連続判定閾値（y範囲に対する倍率）
  * @returns セグメントの配列（各セグメントは連続プロット点の配列）
  */
-export function splitIntoSegments(
-  points: PlotPoint[],
-  threshold = 10
-): PlotPoint[][] {
+export function splitIntoSegments(points: PlotPoint[], threshold = 10): PlotPoint[][] {
   if (points.length === 0) return [];
 
   const validYs = points.filter((p) => p.valid).map((p) => p.y);
@@ -458,7 +454,7 @@ export function splitIntoSegments(
  */
 export function autoYRange(
   allData: PlotData[],
-  fallback: { yMin: number; yMax: number } = { yMin: -10, yMax: 10 }
+  fallback: { yMin: number; yMax: number } = { yMin: -10, yMax: 10 },
 ): { yMin: number; yMax: number } {
   const validYs = allData
     .flatMap((d) => d.points)
@@ -511,7 +507,7 @@ export function buildAllPlotData(
   functions: PlotFunction[],
   xMin: number,
   xMax: number,
-  steps = 500
+  steps = 500,
 ): PlotData[] {
   return functions
     .filter((f) => f.enabled && f.expression.trim())
@@ -532,16 +528,16 @@ export interface SampleFunction {
 }
 
 export const SAMPLE_FUNCTIONS: SampleFunction[] = [
-  { label: 'sin(x)', expression: 'sin(x)' },
-  { label: 'cos(x)', expression: 'cos(x)' },
-  { label: 'tan(x)', expression: 'tan(x)' },
-  { label: 'x²', expression: 'x^2' },
-  { label: 'x³', expression: 'x^3' },
-  { label: '|x|', expression: 'abs(x)' },
-  { label: '1/x', expression: '1/x' },
-  { label: 'log|x|', expression: 'log(abs(x))' },
-  { label: 'exp(x)', expression: 'exp(x/3)' },
-  { label: 'x³-x', expression: 'x^3 - x' },
-  { label: '√|x|', expression: 'sqrt(abs(x))' },
-  { label: 'sinc', expression: 'sin(x*PI)/x' },
+  { label: "sin(x)", expression: "sin(x)" },
+  { label: "cos(x)", expression: "cos(x)" },
+  { label: "tan(x)", expression: "tan(x)" },
+  { label: "x²", expression: "x^2" },
+  { label: "x³", expression: "x^3" },
+  { label: "|x|", expression: "abs(x)" },
+  { label: "1/x", expression: "1/x" },
+  { label: "log|x|", expression: "log(abs(x))" },
+  { label: "exp(x)", expression: "exp(x/3)" },
+  { label: "x³-x", expression: "x^3 - x" },
+  { label: "√|x|", expression: "sqrt(abs(x))" },
+  { label: "sinc", expression: "sin(x*PI)/x" },
 ];

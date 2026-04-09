@@ -61,9 +61,7 @@ export function generateCodeVerifier(byteLength: number = 32): string {
  * @param verifier - code_verifier 文字列
  * @returns code_challenge 文字列（非同期）
  */
-export async function generateCodeChallengeS256(
-  verifier: string
-): Promise<string> {
+export async function generateCodeChallengeS256(verifier: string): Promise<string> {
   const data = new TextEncoder().encode(verifier);
   const hash = await crypto.subtle.digest("SHA-256", data);
   return base64UrlEncode(new Uint8Array(hash));
@@ -87,7 +85,7 @@ export function generateCodeChallengePlain(verifier: string): string {
  */
 export async function generatePkce(
   byteLength: number = 32,
-  method: "S256" | "plain" = "S256"
+  method: "S256" | "plain" = "S256",
 ): Promise<PkceResult> {
   const codeVerifier = generateCodeVerifier(byteLength);
   const codeChallenge =
@@ -135,8 +133,7 @@ export function validateCodeVerifier(verifier: string): VerifierValidation {
   if (!validPattern.test(verifier)) {
     return {
       valid: false,
-      error:
-        "使用できない文字が含まれています。A-Z a-z 0-9 - . _ ~ のみ使用可能です。",
+      error: "使用できない文字が含まれています。A-Z a-z 0-9 - . _ ~ のみ使用可能です。",
       length,
     };
   }

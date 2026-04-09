@@ -1,5 +1,10 @@
 import { describe, it, expect } from "vite-plus/test";
-import { encodeScytale, decodeScytale, visualizeScytale, getScytaleDiameterRange } from "../../app/utils/scytale";
+import {
+  encodeScytale,
+  decodeScytale,
+  visualizeScytale,
+  getScytaleDiameterRange,
+} from "../../app/utils/scytale";
 
 describe("encodeScytale", () => {
   it("diameter=4でエンコードする", () => {

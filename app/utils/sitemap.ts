@@ -4,14 +4,7 @@
  */
 
 /** 変更頻度の選択肢 */
-export type ChangeFreq =
-  | "always"
-  | "hourly"
-  | "daily"
-  | "weekly"
-  | "monthly"
-  | "yearly"
-  | "never";
+export type ChangeFreq = "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly" | "never";
 
 /**
  * サイトマップのURLエントリ

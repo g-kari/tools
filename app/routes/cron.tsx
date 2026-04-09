@@ -2,19 +2,11 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState, useCallback, useEffect } from "react";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  StatusAnnouncer,
-  useStatusAnnouncement,
-} from "~/hooks/useStatusAnnouncement";
+import { StatusAnnouncer, useStatusAnnouncement } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 import { useToast } from "~/components/Toast";
 import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
-import {
-  parseCron,
-  CRON_FIELDS,
-  CRON_PRESETS,
-  type CronParseResult,
-} from "../utils/cron";
+import { parseCron, CRON_FIELDS, CRON_PRESETS, type CronParseResult } from "../utils/cron";
 
 export const Route = createFileRoute("/cron")({
   head: () => ({
@@ -22,8 +14,7 @@ export const Route = createFileRoute("/cron")({
       { title: "Cron式パーサー | Web ツール集" },
       {
         name: "description",
-        content:
-          "Cron式を入力して次回実行時刻を計算するツール。プリセット選択・日本語説明表示対応",
+        content: "Cron式を入力して次回実行時刻を計算するツール。プリセット選択・日本語説明表示対応",
       },
       {
         property: "og:title",
@@ -31,8 +22,7 @@ export const Route = createFileRoute("/cron")({
       },
       {
         property: "og:description",
-        content:
-          "Cron式を入力して次回実行時刻を計算するツール。プリセット選択・日本語説明表示対応",
+        content: "Cron式を入力して次回実行時刻を計算するツール。プリセット選択・日本語説明表示対応",
       },
       { property: "og:url", content: `${SITE_BASE_URL}/cron` },
       { property: "og:type", content: "website" },
@@ -82,7 +72,7 @@ function CronParserPage() {
       setCronInput(value);
       announceStatus(`プリセット「${value}」を選択しました`);
     },
-    [announceStatus]
+    [announceStatus],
   );
 
   /** クリアボタン押下時の処理 */
@@ -198,23 +188,14 @@ function CronParserPage() {
 
           {/* エラーメッセージ */}
           {parseResult && !parseResult.isValid && (
-            <div
-              id="cron-error-msg"
-              className="cron-error"
-              role="alert"
-              aria-live="assertive"
-            >
+            <div id="cron-error-msg" className="cron-error" role="alert" aria-live="assertive">
               {parseResult.error}
             </div>
           )}
 
           {/* 日本語説明 */}
           {parseResult?.isValid && parseResult.description && (
-            <div
-              id="cron-desc-msg"
-              className="cron-description"
-              aria-live="polite"
-            >
+            <div id="cron-desc-msg" className="cron-description" aria-live="polite">
               {parseResult.description}
             </div>
           )}
@@ -248,9 +229,7 @@ function CronParserPage() {
                   <span className="cron-next-run-index" aria-hidden="true">
                     {index + 1}
                   </span>
-                  <span className="cron-next-run-value">
-                    {formatDateTime(date)}
-                  </span>
+                  <span className="cron-next-run-value">{formatDateTime(date)}</span>
                 </li>
               ))}
             </ol>
@@ -267,11 +246,7 @@ function CronParserPage() {
 
         {/* アクションボタン */}
         <div className="cron-actions">
-          <Button
-            variant="outline"
-            onClick={handleClear}
-            aria-label="入力をリセット"
-          >
+          <Button variant="outline" onClick={handleClear} aria-label="入力をリセット">
             リセット
           </Button>
         </div>

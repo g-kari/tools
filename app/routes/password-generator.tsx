@@ -1,37 +1,39 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useEffect, useRef, useCallback } from "react";
-import {
-  generatePassword,
-  calculateStrength,
-  type PasswordOptions,
-} from "../utils/password";
+import { generatePassword, calculateStrength, type PasswordOptions } from "../utils/password";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { Checkbox } from "~/components/ui/checkbox";
 import { Label } from "~/components/ui/label";
 import { Slider } from "~/components/ui/slider";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 
 export const Route = createFileRoute("/password-generator")({
   head: () => ({
     meta: [
-    { title: "パスワード生成ツール | Web ツール集" },
-    { name: "description", content: "安全なランダムパスワードをカスタマイズして生成。文字種・長さを自由設定。" },
-    { property: "og:title", content: "パスワード生成ツール | Web ツール集" },
-    { property: "og:description", content: "安全なランダムパスワードをカスタマイズして生成。文字種・長さを自由設定。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/password-generator` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "パスワード生成ツール | Web ツール集" },
-    { name: "twitter:description", content: "安全なランダムパスワードをカスタマイズして生成。文字種・長さを自由設定。" },
-  ],
+      { title: "パスワード生成ツール | Web ツール集" },
+      {
+        name: "description",
+        content: "安全なランダムパスワードをカスタマイズして生成。文字種・長さを自由設定。",
+      },
+      { property: "og:title", content: "パスワード生成ツール | Web ツール集" },
+      {
+        property: "og:description",
+        content: "安全なランダムパスワードをカスタマイズして生成。文字種・長さを自由設定。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/password-generator` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "パスワード生成ツール | Web ツール集" },
+      {
+        name: "twitter:description",
+        content: "安全なランダムパスワードをカスタマイズして生成。文字種・長さを自由設定。",
+      },
+    ],
   }),
   component: PasswordGenerator,
 });
@@ -54,12 +56,7 @@ function PasswordGenerator() {
   const { copy } = useClipboard();
 
   const handleGenerate = useCallback(() => {
-    if (
-      !options.uppercase &&
-      !options.lowercase &&
-      !options.numbers &&
-      !options.symbols
-    ) {
+    if (!options.uppercase && !options.lowercase && !options.numbers && !options.symbols) {
       announceStatus("エラー: 少なくとも1つの文字種を選択してください");
       showToast("少なくとも1つの文字種を選択してください", "error");
       return;
@@ -95,12 +92,9 @@ function PasswordGenerator() {
     announceStatus("パスワードをクリアしました");
   }, [announceStatus]);
 
-  const handleOptionChange = useCallback(
-    (key: keyof PasswordOptions, value: boolean | number) => {
-      setOptions((prev) => ({ ...prev, [key]: value }));
-    },
-    []
-  );
+  const handleOptionChange = useCallback((key: keyof PasswordOptions, value: boolean | number) => {
+    setOptions((prev) => ({ ...prev, [key]: value }));
+  }, []);
 
   // Ctrl+Enter で生成
   useKeyboardShortcut("Enter", handleGenerate, { ctrl: true });
@@ -115,10 +109,7 @@ function PasswordGenerator() {
   return (
     <>
       <div className="tool-container">
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          aria-label="パスワード生成フォーム"
-        >
+        <form onSubmit={(e) => e.preventDefault()} aria-label="パスワード生成フォーム">
           <div className="converter-section">
             <label htmlFor="passwordLength" className="section-title">
               パスワードの長さ: {options.length}文字
@@ -128,9 +119,7 @@ function PasswordGenerator() {
               type="number"
               id="passwordLength"
               value={options.length}
-              onChange={(e) =>
-                handleOptionChange("length", Number(e.target.value))
-              }
+              onChange={(e) => handleOptionChange("length", Number(e.target.value))}
               min={4}
               max={128}
               step={1}
@@ -167,19 +156,13 @@ function PasswordGenerator() {
             </button>
             <div className="collapsible-content" id="advanced-options">
               <div className="collapsible-body">
-                <div
-                  className="checkbox-group"
-                  role="group"
-                  aria-label="使用する文字種の選択"
-                >
+                <div className="checkbox-group" role="group" aria-label="使用する文字種の選択">
                   <div className="checkbox-label relative">
                     {/* Native checkbox for E2E testing - positioned over Radix checkbox */}
                     <input
                       type="checkbox"
                       checked={options.uppercase}
-                      onChange={(e) =>
-                        handleOptionChange("uppercase", e.target.checked)
-                      }
+                      onChange={(e) => handleOptionChange("uppercase", e.target.checked)}
                       aria-label="大文字を含める"
                       className="absolute left-0 top-0 w-4 h-4 opacity-[0.01] cursor-pointer z-10"
                     />
@@ -197,9 +180,7 @@ function PasswordGenerator() {
                     <input
                       type="checkbox"
                       checked={options.lowercase}
-                      onChange={(e) =>
-                        handleOptionChange("lowercase", e.target.checked)
-                      }
+                      onChange={(e) => handleOptionChange("lowercase", e.target.checked)}
                       aria-label="小文字を含める"
                       className="absolute left-0 top-0 w-4 h-4 opacity-[0.01] cursor-pointer z-10"
                     />
@@ -217,18 +198,14 @@ function PasswordGenerator() {
                     <input
                       type="checkbox"
                       checked={options.numbers}
-                      onChange={(e) =>
-                        handleOptionChange("numbers", e.target.checked)
-                      }
+                      onChange={(e) => handleOptionChange("numbers", e.target.checked)}
                       aria-label="数字を含める"
                       className="absolute left-0 top-0 w-4 h-4 opacity-[0.01] cursor-pointer z-10"
                     />
                     <Checkbox
                       id="numbers"
                       checked={options.numbers}
-                      onCheckedChange={(checked) =>
-                        handleOptionChange("numbers", checked === true)
-                      }
+                      onCheckedChange={(checked) => handleOptionChange("numbers", checked === true)}
                     />
                     <Label htmlFor="numbers">数字 (0-9)</Label>
                   </div>
@@ -237,18 +214,14 @@ function PasswordGenerator() {
                     <input
                       type="checkbox"
                       checked={options.symbols}
-                      onChange={(e) =>
-                        handleOptionChange("symbols", e.target.checked)
-                      }
+                      onChange={(e) => handleOptionChange("symbols", e.target.checked)}
                       aria-label="記号を含める"
                       className="absolute left-0 top-0 w-4 h-4 opacity-[0.01] cursor-pointer z-10"
                     />
                     <Checkbox
                       id="symbols"
                       checked={options.symbols}
-                      onCheckedChange={(checked) =>
-                        handleOptionChange("symbols", checked === true)
-                      }
+                      onCheckedChange={(checked) => handleOptionChange("symbols", checked === true)}
                     />
                     <Label htmlFor="symbols">記号 (!@#$%...)</Label>
                   </div>
@@ -257,11 +230,7 @@ function PasswordGenerator() {
             </div>
           </div>
 
-          <div
-            className="button-group"
-            role="group"
-            aria-label="パスワード生成操作"
-          >
+          <div className="button-group" role="group" aria-label="パスワード生成操作">
             <Button
               type="button"
               className="btn-primary"

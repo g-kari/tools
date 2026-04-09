@@ -38,7 +38,7 @@
 
 /* ラベル */
 .pkgjson-label {
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -95,7 +95,7 @@
   user-select: none;
 }
 
-.pkgjson-checkbox-row input[type='checkbox'] {
+.pkgjson-checkbox-row input[type="checkbox"] {
   width: 1rem;
   height: 1rem;
   cursor: pointer;
@@ -170,7 +170,7 @@
 }
 
 .pkgjson-script-key {
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   font-size: 0.82rem;
   padding: 0.45rem 0.6rem;
   border: 1px solid var(--md-sys-color-outline);
@@ -185,7 +185,7 @@
 }
 
 .pkgjson-script-value {
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   font-size: 0.82rem;
   padding: 0.45rem 0.6rem;
   border: 1px solid var(--md-sys-color-outline);
@@ -210,7 +210,7 @@
 .pkgjson-template-btn {
   padding: 0.2rem 0.55rem;
   font-size: 0.76rem;
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   border: 1px dashed var(--md-sys-color-outline-variant);
   border-radius: 4px;
   background: transparent;
@@ -302,7 +302,7 @@
   background: var(--md-sys-color-secondary-container);
   color: var(--md-sys-color-on-secondary-container);
   font-size: 0.8rem;
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
 }
 
 .pkgjson-tag-remove {
@@ -339,7 +339,7 @@
 
 .pkgjson-keyword-input {
   flex: 1;
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   font-size: 0.82rem;
   padding: 0.4rem 0.6rem;
   border: 1px solid var(--md-sys-color-outline);
@@ -363,7 +363,7 @@
 .pkgjson-code-block {
   margin: 0;
   padding: 1rem;
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   font-size: 0.82rem;
   line-height: 1.7;
   background: var(--md-sys-color-surface-variant);

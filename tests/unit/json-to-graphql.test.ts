@@ -1,8 +1,5 @@
 import { describe, test, expect } from "vite-plus/test";
-import {
-  generateGraphQLSchema,
-  getSampleJson,
-} from "../../app/utils/json-to-graphql";
+import { generateGraphQLSchema, getSampleJson } from "../../app/utils/json-to-graphql";
 
 const defaultOptions = {
   rootTypeName: "Root",
@@ -42,28 +39,19 @@ describe("generateGraphQLSchema", () => {
   });
 
   test("文字列配列が [String] を生成する", () => {
-    const result = generateGraphQLSchema(
-      '{"tags": ["a", "b"]}',
-      defaultOptions
-    );
+    const result = generateGraphQLSchema('{"tags": ["a", "b"]}', defaultOptions);
     expect(result).toContain("[String]");
     expect(result).toContain("tags:");
   });
 
   test("整数配列が [Int] を生成する", () => {
-    const result = generateGraphQLSchema(
-      '{"scores": [1, 2, 3]}',
-      defaultOptions
-    );
+    const result = generateGraphQLSchema('{"scores": [1, 2, 3]}', defaultOptions);
     expect(result).toContain("[Int]");
     expect(result).toContain("scores:");
   });
 
   test("ネストされたオブジェクトが別の type を生成する", () => {
-    const result = generateGraphQLSchema(
-      '{"address": {"city": "Tokyo"}}',
-      defaultOptions
-    );
+    const result = generateGraphQLSchema('{"address": {"city": "Tokyo"}}', defaultOptions);
     expect(result).toContain("type Address");
     expect(result).toContain("city: String");
     expect(result).toContain("type Root");
@@ -129,21 +117,17 @@ describe("generateGraphQLSchema", () => {
   });
 
   test("無効なJSONでエラーをスローする", () => {
-    expect(() =>
-      generateGraphQLSchema("invalid json", defaultOptions)
-    ).toThrow("無効なJSON形式です");
+    expect(() => generateGraphQLSchema("invalid json", defaultOptions)).toThrow(
+      "無効なJSON形式です",
+    );
   });
 
   test("空文字列でエラーをスローする", () => {
-    expect(() => generateGraphQLSchema("", defaultOptions)).toThrow(
-      "JSONを入力してください"
-    );
+    expect(() => generateGraphQLSchema("", defaultOptions)).toThrow("JSONを入力してください");
   });
 
   test("空白のみの文字列でエラーをスローする", () => {
-    expect(() => generateGraphQLSchema("   ", defaultOptions)).toThrow(
-      "JSONを入力してください"
-    );
+    expect(() => generateGraphQLSchema("   ", defaultOptions)).toThrow("JSONを入力してください");
   });
 
   test("複合的なネストオブジェクトを正しく処理する", () => {
@@ -164,10 +148,7 @@ describe("generateGraphQLSchema", () => {
   });
 
   test("依存する型はルート型より前に出力される", () => {
-    const result = generateGraphQLSchema(
-      '{"address": {"city": "Tokyo"}}',
-      defaultOptions
-    );
+    const result = generateGraphQLSchema('{"address": {"city": "Tokyo"}}', defaultOptions);
     const addressPos = result.indexOf("type Address");
     const rootPos = result.indexOf("type Root");
     expect(addressPos).toBeLessThan(rootPos);
@@ -198,7 +179,7 @@ describe("getSampleJson", () => {
     const sample = getSampleJson();
     const parsed = JSON.parse(sample) as Record<string, unknown>;
     const hasObject = Object.values(parsed).some(
-      (v) => typeof v === "object" && v !== null && !Array.isArray(v)
+      (v) => typeof v === "object" && v !== null && !Array.isArray(v),
     );
     expect(hasObject).toBe(true);
   });

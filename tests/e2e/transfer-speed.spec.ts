@@ -6,9 +6,7 @@ test.describe("転送速度・転送時間計算機 - E2E Tests", () => {
     await page.waitForLoadState("networkidle");
   });
 
-  test("undefinedコンテンツを含まずにページをロードできる", async ({
-    page,
-  }) => {
+  test("undefinedコンテンツを含まずにページをロードできる", async ({ page }) => {
     const bodyText = await page.textContent("body");
     expect(bodyText).not.toContain("undefined");
     expect(bodyText).not.toBe("undefined");
@@ -39,16 +37,12 @@ test.describe("転送速度・転送時間計算機 - E2E Tests", () => {
 
   test("ファイルサイズ入力フィールドが表示される", async ({ page }) => {
     await expect(page.locator("#ts-size")).toBeVisible();
-    await expect(
-      page.locator('select[aria-label="ファイルサイズ単位"]')
-    ).toBeVisible();
+    await expect(page.locator('select[aria-label="ファイルサイズ単位"]')).toBeVisible();
   });
 
   test("転送速度入力フィールドが表示される", async ({ page }) => {
     await expect(page.locator("#ts-speed")).toBeVisible();
-    await expect(
-      page.locator('select[aria-label="転送速度単位"]')
-    ).toBeVisible();
+    await expect(page.locator('select[aria-label="転送速度単位"]')).toBeVisible();
   });
 
   test("転送時間を計算できる - 1GB / 100Mbps", async ({ page }) => {

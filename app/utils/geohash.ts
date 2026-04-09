@@ -92,19 +92,13 @@ export function isValidGeohash(hash: string): boolean {
  */
 export function encode(lat: number, lng: number, precision = 9): string {
   if (lat < -90 || lat > 90) {
-    throw new GeohashError(
-      `緯度は-90〜90の範囲で入力してください（入力値: ${lat}）`
-    );
+    throw new GeohashError(`緯度は-90〜90の範囲で入力してください（入力値: ${lat}）`);
   }
   if (lng < -180 || lng > 180) {
-    throw new GeohashError(
-      `経度は-180〜180の範囲で入力してください（入力値: ${lng}）`
-    );
+    throw new GeohashError(`経度は-180〜180の範囲で入力してください（入力値: ${lng}）`);
   }
   if (precision < 1 || precision > 12 || !Number.isInteger(precision)) {
-    throw new GeohashError(
-      `精度は1〜12の整数で入力してください（入力値: ${precision}）`
-    );
+    throw new GeohashError(`精度は1〜12の整数で入力してください（入力値: ${precision}）`);
   }
 
   let idx = 0;
@@ -242,12 +236,8 @@ function _neighbor(hash: string, direction: [number, number]): string {
   const latErr = (bounds.maxLat - bounds.minLat) / 2;
   const lngErr = (bounds.maxLng - bounds.minLng) / 2;
 
-  const neighborLat = Math.max(
-    -90,
-    Math.min(90, lat + direction[0] * latErr * 2)
-  );
-  const neighborLng =
-    ((lng + direction[1] * lngErr * 2 + 180) % 360 + 360) % 360 - 180;
+  const neighborLat = Math.max(-90, Math.min(90, lat + direction[0] * latErr * 2));
+  const neighborLng = ((((lng + direction[1] * lngErr * 2 + 180) % 360) + 360) % 360) - 180;
 
   return encode(neighborLat, neighborLng, hash.length);
 }

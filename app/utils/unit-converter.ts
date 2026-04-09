@@ -194,7 +194,7 @@ export function convertUnit(
   value: number,
   fromUnitId: string,
   toUnitId: string,
-  categoryId: UnitCategory
+  categoryId: UnitCategory,
 ): number | null {
   const category = UNIT_CATEGORIES.find((c) => c.id === categoryId);
   if (!category) return null;
@@ -226,7 +226,7 @@ export function convertUnit(
 function convertTemperature(
   value: number,
   fromUnit: UnitDefinition,
-  toUnit: UnitDefinition
+  toUnit: UnitDefinition,
 ): number {
   // まず摂氏に変換
   let celsius: number;
@@ -323,7 +323,7 @@ export function createHistoryEntry(
   inputValue: number,
   fromUnitId: string,
   toUnitId: string,
-  result: number
+  result: number,
 ): ConversionHistoryEntry {
   return {
     id: crypto.randomUUID(),

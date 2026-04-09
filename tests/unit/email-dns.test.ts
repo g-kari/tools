@@ -96,8 +96,7 @@ describe("Email DNS Record Validation", () => {
         "123.com",
       ];
 
-      const domainRegex =
-        /^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
+      const domainRegex = /^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
 
       validDomains.forEach((domain) => {
         expect(domainRegex.test(domain)).toBe(true);
@@ -114,8 +113,7 @@ describe("Email DNS Record Validation", () => {
         "",
       ];
 
-      const domainRegex =
-        /^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
+      const domainRegex = /^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
 
       invalidDomains.forEach((domain) => {
         expect(domainRegex.test(domain)).toBe(false);

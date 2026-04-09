@@ -67,9 +67,7 @@ test.describe("CSSメディアクエリビルダー - E2E Tests", () => {
   });
 
   test("should change feature to max-width", async ({ page }) => {
-    const featureSelect = page
-      .locator(".cmq-condition-type-select")
-      .first();
+    const featureSelect = page.locator(".cmq-condition-type-select").first();
     await featureSelect.selectOption("max-width");
     const outputPre = page.locator(".cmq-output-pre");
     const content = await outputPre.textContent();
@@ -95,9 +93,7 @@ test.describe("CSSメディアクエリビルダー - E2E Tests", () => {
     await expect(cards).toHaveCount(1);
   });
 
-  test("should disable remove button when only 1 condition exists", async ({
-    page,
-  }) => {
+  test("should disable remove button when only 1 condition exists", async ({ page }) => {
     const removeBtn = page.locator(".cmq-condition-remove").first();
     await expect(removeBtn).toBeDisabled();
   });
@@ -111,18 +107,14 @@ test.describe("CSSメディアクエリビルダー - E2E Tests", () => {
 
   test("should apply breakpoint from quick access list", async ({ page }) => {
     // md (768px) ブレイクポイントを適用
-    const mdBtn = page
-      .locator(".cmq-bp-item")
-      .filter({ hasText: "md (768px)" });
+    const mdBtn = page.locator(".cmq-bp-item").filter({ hasText: "md (768px)" });
     await mdBtn.click();
     const preview = page.locator(".cmq-condition-preview").first();
     const text = await preview.textContent();
     expect(text).toContain("768px");
   });
 
-  test("should update output when target selector is changed", async ({
-    page,
-  }) => {
+  test("should update output when target selector is changed", async ({ page }) => {
     const selectorInput = page.locator("#cmq-target-selector");
     await selectorInput.fill(".wrapper");
     const outputPre = page.locator(".cmq-output-pre");

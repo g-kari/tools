@@ -60,7 +60,7 @@
 }
 
 .nato-char-original {
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   font-size: 1.125rem;
   font-weight: 700;
   color: var(--md-sys-color-primary);
@@ -127,7 +127,7 @@
 }
 
 .nato-reference-letter {
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   font-weight: 700;
   color: var(--md-sys-color-primary);
   min-width: 1rem;

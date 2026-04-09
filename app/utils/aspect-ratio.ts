@@ -28,11 +28,7 @@ export function simplifyRatio(width: number, height: number): [number, number] {
 /**
  * 幅とアスペクト比から高さを計算する
  */
-export function calcHeightFromWidth(
-  width: number,
-  ratioW: number,
-  ratioH: number
-): number {
+export function calcHeightFromWidth(width: number, ratioW: number, ratioH: number): number {
   if (ratioW <= 0) return 0;
   return Math.round((width * ratioH) / ratioW);
 }
@@ -40,11 +36,7 @@ export function calcHeightFromWidth(
 /**
  * 高さとアスペクト比から幅を計算する
  */
-export function calcWidthFromHeight(
-  height: number,
-  ratioW: number,
-  ratioH: number
-): number {
+export function calcWidthFromHeight(height: number, ratioW: number, ratioH: number): number {
   if (ratioH <= 0) return 0;
   return Math.round((height * ratioW) / ratioH);
 }

@@ -1,8 +1,8 @@
 {
   "name": "tools",
   "version": "1.0.0",
-  "type": "module",
   "description": "Collection of useful web tools",
+  "type": "module",
   "scripts": {
     "dev": "vp dev",
     "build": "NODE_OPTIONS=--max-old-space-size=4096 vp build",
@@ -54,13 +54,6 @@
     "tailwind-merge": "^3.4.0",
     "tailwindcss": "^4.1.18"
   },
-  "overrides": {
-    "undici": ">=7.24.5",
-    "h3": ">=2.0.1-rc.18",
-    "h3-v2": "npm:h3@>=2.0.1-rc.18",
-    "vite": "npm:@voidzero-dev/vite-plus-core@latest",
-    "vitest": "npm:@voidzero-dev/vite-plus-test@latest"
-  },
   "devDependencies": {
     "@cloudflare/vite-plugin": "^1.28.0",
     "@cloudflare/workers-types": "^4.20251225.0",
@@ -78,11 +71,17 @@
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "vite": "npm:@voidzero-dev/vite-plus-core@latest",
-    "vite-tsconfig-paths": "^5.1.4",
+    "vite-plus": "latest",
     "vitest": "npm:@voidzero-dev/vite-plus-test@latest",
     "wait-on": "^9.0.4",
-    "wrangler": "^4.73.0",
-    "vite-plus": "latest"
+    "wrangler": "^4.73.0"
+  },
+  "overrides": {
+    "h3": ">=2.0.1-rc.18",
+    "h3-v2": "npm:h3@>=2.0.1-rc.18",
+    "undici": ">=7.24.5",
+    "vite": "npm:@voidzero-dev/vite-plus-core@latest",
+    "vitest": "npm:@voidzero-dev/vite-plus-test@latest"
   },
   "packageManager": "npm@11.12.1"
 }

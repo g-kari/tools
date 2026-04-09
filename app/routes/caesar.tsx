@@ -107,10 +107,10 @@ function CaesarCipher() {
           ? "エンコードモードに切り替えました"
           : newMode === "decode"
             ? "デコードモードに切り替えました"
-            : "ブルートフォース解析モードに切り替えました"
+            : "ブルートフォース解析モードに切り替えました",
       );
     },
-    [announceStatus]
+    [announceStatus],
   );
 
   const isEmpty = inputText.length === 0;
@@ -296,11 +296,7 @@ function CaesarCipher() {
         )}
 
         {isBrute && isEmpty && (
-          <div
-            className="caesar-output caesar-output--empty"
-            role="status"
-            aria-live="polite"
-          >
+          <div className="caesar-output caesar-output--empty" role="status" aria-live="polite">
             入力すると全26パターンのデコード結果が表示されます
           </div>
         )}

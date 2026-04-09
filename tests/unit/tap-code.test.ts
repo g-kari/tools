@@ -1,9 +1,5 @@
 import { describe, it, expect } from "vite-plus/test";
-import {
-  encodeTapCode,
-  decodeTapCode,
-  getTapGrid,
-} from "../../app/utils/tap-code";
+import { encodeTapCode, decodeTapCode, getTapGrid } from "../../app/utils/tap-code";
 
 describe("encodeTapCode", () => {
   describe("dots format", () => {

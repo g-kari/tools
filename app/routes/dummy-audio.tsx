@@ -7,16 +7,22 @@ import { TipsCard } from "~/components/TipsCard";
 export const Route = createFileRoute("/dummy-audio")({
   head: () => ({
     meta: [
-    { title: "ダミー音声生成 | Web ツール集" },
-    { name: "description", content: "開発用のダミー音声ファイル（MP3/WAV）を生成するツール。" },
-    { property: "og:title", content: "ダミー音声生成 | Web ツール集" },
-    { property: "og:description", content: "開発用のダミー音声ファイル（MP3/WAV）を生成するツール。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/dummy-audio` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "ダミー音声生成 | Web ツール集" },
-    { name: "twitter:description", content: "開発用のダミー音声ファイル（MP3/WAV）を生成するツール。" },
-  ],
+      { title: "ダミー音声生成 | Web ツール集" },
+      { name: "description", content: "開発用のダミー音声ファイル（MP3/WAV）を生成するツール。" },
+      { property: "og:title", content: "ダミー音声生成 | Web ツール集" },
+      {
+        property: "og:description",
+        content: "開発用のダミー音声ファイル（MP3/WAV）を生成するツール。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/dummy-audio` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "ダミー音声生成 | Web ツール集" },
+      {
+        name: "twitter:description",
+        content: "開発用のダミー音声ファイル（MP3/WAV）を生成するツール。",
+      },
+    ],
   }),
   component: DummyAudioGenerator,
 });
@@ -39,7 +45,7 @@ export function generateAudioSamples(
   frequency: number,
   duration: number,
   volume: number,
-  sampleRate: number = SAMPLE_RATE
+  sampleRate: number = SAMPLE_RATE,
 ): Float32Array {
   const numSamples = Math.floor(sampleRate * duration);
   const samples = new Float32Array(numSamples);
@@ -78,7 +84,7 @@ function generateAudioBuffer(
   waveform: WaveformType,
   frequency: number,
   duration: number,
-  volume: number
+  volume: number,
 ): AudioBuffer {
   const sampleRate = audioContext.sampleRate;
   const samples = generateAudioSamples(waveform, frequency, duration, volume, sampleRate);
@@ -190,10 +196,9 @@ function generateFilename(
   waveform: WaveformType,
   frequency: number,
   duration: number,
-  extension: "wav" | "mp3"
+  extension: "wav" | "mp3",
 ): string {
-  const waveformLabel =
-    WAVEFORM_OPTIONS.find((opt) => opt.value === waveform)?.label || waveform;
+  const waveformLabel = WAVEFORM_OPTIONS.find((opt) => opt.value === waveform)?.label || waveform;
   const frequencyPart = waveform === "noise" ? "" : `_${frequency}Hz`;
   return `dummy_audio_${waveformLabel}${frequencyPart}_${duration}s.${extension}`;
 }
@@ -253,7 +258,7 @@ function DummyAudioGenerator() {
       waveform,
       frequency,
       duration,
-      volume
+      volume,
     );
     setIsGenerated(true);
     announceStatus("音声を生成しました");
@@ -395,9 +400,7 @@ function DummyAudioGenerator() {
                 <select
                   id="waveform"
                   value={waveform}
-                  onChange={(e) =>
-                    handleWaveformChange(e.target.value as WaveformType)
-                  }
+                  onChange={(e) => handleWaveformChange(e.target.value as WaveformType)}
                   aria-describedby="waveform-help"
                 >
                   {WAVEFORM_OPTIONS.map((opt) => (
@@ -421,7 +424,7 @@ function DummyAudioGenerator() {
                   value={frequency}
                   onChange={(e) =>
                     handleFrequencyChange(
-                      Math.max(20, Math.min(20000, parseInt(e.target.value) || 440))
+                      Math.max(20, Math.min(20000, parseInt(e.target.value) || 440)),
                     )
                   }
                   disabled={waveform === "noise"}
@@ -443,7 +446,7 @@ function DummyAudioGenerator() {
                   value={duration}
                   onChange={(e) =>
                     handleDurationChange(
-                      Math.max(0.1, Math.min(MAX_DURATION, parseFloat(e.target.value) || 1))
+                      Math.max(0.1, Math.min(MAX_DURATION, parseFloat(e.target.value) || 1)),
                     )
                   }
                   aria-describedby="duration-help"
@@ -590,7 +593,6 @@ function DummyAudioGenerator() {
         aria-atomic="true"
         className="sr-only"
       />
-
     </>
   );
 }

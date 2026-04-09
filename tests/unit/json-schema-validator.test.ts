@@ -7,10 +7,7 @@ import {
 
 // ヘルパー関数
 function validate(json: unknown, schema: unknown) {
-  return validateJsonAgainstSchema(
-    JSON.stringify(json),
-    JSON.stringify(schema)
-  );
+  return validateJsonAgainstSchema(JSON.stringify(json), JSON.stringify(schema));
 }
 
 describe("validateJsonAgainstSchema", () => {
@@ -28,10 +25,7 @@ describe("validateJsonAgainstSchema", () => {
     });
 
     it("不正なJSONデータはパースエラーを返す", () => {
-      const result = validateJsonAgainstSchema(
-        "{invalid}",
-        '{"type": "object"}'
-      );
+      const result = validateJsonAgainstSchema("{invalid}", '{"type": "object"}');
       expect(result.valid).toBe(false);
       expect(result.errors[0].keyword).toBe("parse");
     });
@@ -135,9 +129,7 @@ describe("validateJsonAgainstSchema", () => {
 
   describe("string キーワード", () => {
     it("minLength: 成功", () => {
-      expect(validate("hello", { type: "string", minLength: 3 }).valid).toBe(
-        true
-      );
+      expect(validate("hello", { type: "string", minLength: 3 }).valid).toBe(true);
     });
 
     it("minLength: 失敗", () => {
@@ -161,7 +153,7 @@ describe("validateJsonAgainstSchema", () => {
         validate("hello@example.com", {
           type: "string",
           pattern: "^[^@]+@[^@]+$",
-        }).valid
+        }).valid,
       ).toBe(true);
     });
 
@@ -197,9 +189,7 @@ describe("validateJsonAgainstSchema", () => {
     });
 
     it("exclusiveMinimum: 成功", () => {
-      expect(
-        validate(6, { type: "number", exclusiveMinimum: 5 }).valid
-      ).toBe(true);
+      expect(validate(6, { type: "number", exclusiveMinimum: 5 }).valid).toBe(true);
     });
 
     it("exclusiveMinimum: 境界値は失敗", () => {
@@ -209,9 +199,7 @@ describe("validateJsonAgainstSchema", () => {
     });
 
     it("exclusiveMaximum: 成功", () => {
-      expect(
-        validate(9, { type: "number", exclusiveMaximum: 10 }).valid
-      ).toBe(true);
+      expect(validate(9, { type: "number", exclusiveMaximum: 10 }).valid).toBe(true);
     });
 
     it("exclusiveMaximum: 境界値は失敗", () => {
@@ -233,9 +221,7 @@ describe("validateJsonAgainstSchema", () => {
 
   describe("array キーワード", () => {
     it("minItems: 成功", () => {
-      expect(validate([1, 2, 3], { type: "array", minItems: 2 }).valid).toBe(
-        true
-      );
+      expect(validate([1, 2, 3], { type: "array", minItems: 2 }).valid).toBe(true);
     });
 
     it("minItems: 失敗", () => {
@@ -255,9 +241,7 @@ describe("validateJsonAgainstSchema", () => {
     });
 
     it("uniqueItems: 一意の場合は成功", () => {
-      expect(
-        validate([1, 2, 3], { type: "array", uniqueItems: true }).valid
-      ).toBe(true);
+      expect(validate([1, 2, 3], { type: "array", uniqueItems: true }).valid).toBe(true);
     });
 
     it("uniqueItems: 重複ある場合は失敗", () => {
@@ -267,9 +251,7 @@ describe("validateJsonAgainstSchema", () => {
     });
 
     it("items（単一スキーマ）: 成功", () => {
-      expect(
-        validate([1, 2, 3], { type: "array", items: { type: "number" } }).valid
-      ).toBe(true);
+      expect(validate([1, 2, 3], { type: "array", items: { type: "number" } }).valid).toBe(true);
     });
 
     it("items（単一スキーマ）: 型違反は失敗", () => {
@@ -310,16 +292,13 @@ describe("validateJsonAgainstSchema", () => {
     it("required: 必須プロパティが存在する場合は成功", () => {
       const result = validate(
         { name: "Alice", age: 30 },
-        { type: "object", required: ["name", "age"] }
+        { type: "object", required: ["name", "age"] },
       );
       expect(result.valid).toBe(true);
     });
 
     it("required: 必須プロパティが欠けている場合は失敗", () => {
-      const result = validate(
-        { name: "Alice" },
-        { type: "object", required: ["name", "age"] }
-      );
+      const result = validate({ name: "Alice" }, { type: "object", required: ["name", "age"] });
       expect(result.valid).toBe(false);
       expect(result.errors[0].keyword).toBe("required");
       expect(result.errors[0].message).toContain("age");
@@ -334,7 +313,7 @@ describe("validateJsonAgainstSchema", () => {
             name: { type: "string" },
             age: { type: "integer", minimum: 0 },
           },
-        }
+        },
       );
       expect(result.valid).toBe(true);
     });
@@ -348,7 +327,7 @@ describe("validateJsonAgainstSchema", () => {
             name: { type: "string" },
             age: { type: "integer", minimum: 0 },
           },
-        }
+        },
       );
       expect(result.valid).toBe(false);
       expect(result.errors[0].path).toBe("/age");
@@ -361,7 +340,7 @@ describe("validateJsonAgainstSchema", () => {
           type: "object",
           properties: { name: { type: "string" } },
           additionalProperties: false,
-        }
+        },
       );
       expect(result.valid).toBe(false);
       expect(result.errors[0].keyword).toBe("additionalProperties");
@@ -374,43 +353,27 @@ describe("validateJsonAgainstSchema", () => {
           type: "object",
           properties: { name: { type: "string" } },
           additionalProperties: true,
-        }
+        },
       );
       expect(result.valid).toBe(true);
     });
 
     it("minProperties: 成功", () => {
-      expect(
-        validate(
-          { a: 1, b: 2 },
-          { type: "object", minProperties: 2 }
-        ).valid
-      ).toBe(true);
+      expect(validate({ a: 1, b: 2 }, { type: "object", minProperties: 2 }).valid).toBe(true);
     });
 
     it("minProperties: 失敗", () => {
-      const result = validate(
-        { a: 1 },
-        { type: "object", minProperties: 2 }
-      );
+      const result = validate({ a: 1 }, { type: "object", minProperties: 2 });
       expect(result.valid).toBe(false);
       expect(result.errors[0].keyword).toBe("minProperties");
     });
 
     it("maxProperties: 成功", () => {
-      expect(
-        validate(
-          { a: 1 },
-          { type: "object", maxProperties: 2 }
-        ).valid
-      ).toBe(true);
+      expect(validate({ a: 1 }, { type: "object", maxProperties: 2 }).valid).toBe(true);
     });
 
     it("maxProperties: 失敗", () => {
-      const result = validate(
-        { a: 1, b: 2, c: 3 },
-        { type: "object", maxProperties: 2 }
-      );
+      const result = validate({ a: 1, b: 2, c: 3 }, { type: "object", maxProperties: 2 });
       expect(result.valid).toBe(false);
       expect(result.errors[0].keyword).toBe("maxProperties");
     });
@@ -425,7 +388,7 @@ describe("validateJsonAgainstSchema", () => {
             { type: "object", required: ["name"] },
             { type: "object", required: ["age"] },
           ],
-        }
+        },
       );
       expect(result.valid).toBe(true);
     });
@@ -438,19 +401,16 @@ describe("validateJsonAgainstSchema", () => {
             { type: "object", required: ["name"] },
             { type: "object", required: ["age"] },
           ],
-        }
+        },
       );
       expect(result.valid).toBe(false);
     });
 
     it("anyOf: いずれかのスキーマに一致する場合は成功", () => {
-      expect(
-        validate("hello", { anyOf: [{ type: "string" }, { type: "number" }] })
-          .valid
-      ).toBe(true);
-      expect(
-        validate(42, { anyOf: [{ type: "string" }, { type: "number" }] }).valid
-      ).toBe(true);
+      expect(validate("hello", { anyOf: [{ type: "string" }, { type: "number" }] }).valid).toBe(
+        true,
+      );
+      expect(validate(42, { anyOf: [{ type: "string" }, { type: "number" }] }).valid).toBe(true);
     });
 
     it("anyOf: どのスキーマにも一致しない場合は失敗", () => {
@@ -463,20 +423,14 @@ describe("validateJsonAgainstSchema", () => {
 
     it("oneOf: 正確に1つのスキーマに一致する場合は成功", () => {
       const result = validate(1, {
-        oneOf: [
-          { type: "integer", minimum: 0 },
-          { type: "string" },
-        ],
+        oneOf: [{ type: "integer", minimum: 0 }, { type: "string" }],
       });
       expect(result.valid).toBe(true);
     });
 
     it("oneOf: 複数のスキーマに一致する場合は失敗", () => {
       const result = validate(1, {
-        oneOf: [
-          { type: "integer" },
-          { type: "number" },
-        ],
+        oneOf: [{ type: "integer" }, { type: "number" }],
       });
       expect(result.valid).toBe(false);
       expect(result.errors[0].keyword).toBe("oneOf");
@@ -496,10 +450,7 @@ describe("validateJsonAgainstSchema", () => {
 
   describe("複合バリデーション", () => {
     it("サンプルデータがサンプルスキーマに対してバリデーション成功", () => {
-      const result = validateJsonAgainstSchema(
-        getSampleJsonData(),
-        getSampleSchema()
-      );
+      const result = validateJsonAgainstSchema(getSampleJsonData(), getSampleSchema());
       expect(result.valid).toBe(true);
       expect(result.errors).toHaveLength(0);
     });
@@ -517,17 +468,14 @@ describe("validateJsonAgainstSchema", () => {
               },
             },
           },
-        }
+        },
       );
       expect(result.valid).toBe(false);
       expect(result.errors[0].path).toBe("/user/name");
     });
 
     it("配列要素のエラーパスが正しい", () => {
-      const result = validate(
-        [1, "a", 3],
-        { type: "array", items: { type: "integer" } }
-      );
+      const result = validate([1, "a", 3], { type: "array", items: { type: "integer" } });
       expect(result.valid).toBe(false);
       expect(result.errors[0].path).toBe("/1");
     });

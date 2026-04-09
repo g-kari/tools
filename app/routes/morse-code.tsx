@@ -1,9 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import {
-  StatusAnnouncer,
-  useStatusAnnouncement,
-} from "~/hooks/useStatusAnnouncement";
+import { StatusAnnouncer, useStatusAnnouncement } from "~/hooks/useStatusAnnouncement";
 import { TipsCard } from "~/components/TipsCard";
 import { useClipboard } from "~/hooks/useClipboard";
 import { useToast } from "~/components/Toast";
@@ -96,18 +93,14 @@ function MorseCodeConverter() {
     announceStatus(
       newMode === "text-to-morse"
         ? "テキスト→Morse Codeモードに切り替えました"
-        : "Morse Code→テキストモードに切り替えました"
+        : "Morse Code→テキストモードに切り替えました",
     );
   };
 
-  const inputLabel =
-    mode === "text-to-morse" ? "変換するテキスト" : "変換するMorse Code";
+  const inputLabel = mode === "text-to-morse" ? "変換するテキスト" : "変換するMorse Code";
   const inputPlaceholder =
-    mode === "text-to-morse"
-      ? "HELLO WORLD"
-      : ".... . .-.. .-.. --- / .-- --- .-. .-.. -..";
-  const outputLabel =
-    mode === "text-to-morse" ? "Morse Code（変換結果）" : "テキスト（変換結果）";
+    mode === "text-to-morse" ? "HELLO WORLD" : ".... . .-.. .-.. --- / .-- --- .-. .-.. -..";
+  const outputLabel = mode === "text-to-morse" ? "Morse Code（変換結果）" : "テキスト（変換結果）";
 
   return (
     <>
@@ -115,11 +108,7 @@ function MorseCodeConverter() {
         <h2 className="section-title">Morse Code変換</h2>
 
         {/* モード切替ボタン */}
-        <div
-          className="morse-code-mode-buttons"
-          role="group"
-          aria-label="変換モード選択"
-        >
+        <div className="morse-code-mode-buttons" role="group" aria-label="変換モード選択">
           <Button
             variant={mode === "text-to-morse" ? "default" : "outline"}
             onClick={() => handleModeChange("text-to-morse")}
@@ -156,7 +145,8 @@ function MorseCodeConverter() {
           </p>
           {isInvalidMorseInput && (
             <p className="morse-code-warning" role="alert">
-              入力がMorse Code形式（. - / およびスペース）ではないようです。Morse Codeは . （ドット）、- （ダッシュ）、/ （スラッシュ）、スペースのみで構成されます。
+              入力がMorse Code形式（. - / およびスペース）ではないようです。Morse Codeは .
+              （ドット）、- （ダッシュ）、/ （スラッシュ）、スペースのみで構成されます。
             </p>
           )}
         </div>
@@ -227,7 +217,7 @@ function MorseCodeConverter() {
               items: [
                 "アルファベット: A-Z（大文字・小文字どちらでも可）",
                 "数字: 0-9",
-                "基本記号: . , ? ! / ( ) & : ; = + - _ \" $ @",
+                '基本記号: . , ? ! / ( ) & : ; = + - _ " $ @',
                 "スペース: 単語の区切りとして / に変換されます",
               ],
             },

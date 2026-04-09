@@ -47,8 +47,7 @@ const TEMPLATES: GitignoreTemplate[] = [
     id: "go",
     label: "Go",
     category: "language",
-    content:
-      "*.exe\n*.exe~\n*.dll\n*.so\n*.dylib\n/vendor/\n/Godeps/\n*.test\n*.out\n",
+    content: "*.exe\n*.exe~\n*.dll\n*.so\n*.dylib\n/vendor/\n/Godeps/\n*.test\n*.out\n",
   },
   {
     id: "rust",
@@ -60,15 +59,13 @@ const TEMPLATES: GitignoreTemplate[] = [
     id: "java",
     label: "Java",
     category: "language",
-    content:
-      "*.class\n*.jar\n*.war\n*.ear\nhs_err_pid*\ntarget/\n.gradle/\nbuild/\n",
+    content: "*.class\n*.jar\n*.war\n*.ear\nhs_err_pid*\ntarget/\n.gradle/\nbuild/\n",
   },
   {
     id: "ruby",
     label: "Ruby",
     category: "language",
-    content:
-      "*.gem\n*.rbc\n.bundle/\nvendor/bundle/\nGemfile.lock\n/.yardoc/\n/doc/\n",
+    content: "*.gem\n*.rbc\n.bundle/\nvendor/bundle/\nGemfile.lock\n/.yardoc/\n/doc/\n",
   },
   {
     id: "php",
@@ -93,8 +90,7 @@ const TEMPLATES: GitignoreTemplate[] = [
     id: "swift",
     label: "Swift",
     category: "language",
-    content:
-      ".build/\n*.xcworkspace\n*.xcuserstate\nPackages/\nxcuserdata/\n.swiftpm/\n",
+    content: ".build/\n*.xcworkspace\n*.xcuserstate\nPackages/\nxcuserdata/\n.swiftpm/\n",
   },
   {
     id: "dart",
@@ -108,8 +104,7 @@ const TEMPLATES: GitignoreTemplate[] = [
     id: "react",
     label: "React",
     category: "framework",
-    content:
-      "build/\n.env.local\n.env.development.local\n.env.test.local\n.env.production.local\n",
+    content: "build/\n.env.local\n.env.development.local\n.env.test.local\n.env.production.local\n",
   },
   {
     id: "nextjs",
@@ -133,15 +128,13 @@ const TEMPLATES: GitignoreTemplate[] = [
     id: "django",
     label: "Django",
     category: "framework",
-    content:
-      "*.log\nlocal_settings.py\ndb.sqlite3\nmedia/\nstaticfiles/\n__pycache__/\n*.pyc\n",
+    content: "*.log\nlocal_settings.py\ndb.sqlite3\nmedia/\nstaticfiles/\n__pycache__/\n*.pyc\n",
   },
   {
     id: "rails",
     label: "Ruby on Rails",
     category: "framework",
-    content:
-      "log/\ntmp/\nstorage/\n.byebug_history\nconfig/master.key\nconfig/credentials/*.key\n",
+    content: "log/\ntmp/\nstorage/\n.byebug_history\nconfig/master.key\nconfig/credentials/*.key\n",
   },
   {
     id: "laravel",
@@ -154,8 +147,7 @@ const TEMPLATES: GitignoreTemplate[] = [
     id: "spring",
     label: "Spring Boot",
     category: "framework",
-    content:
-      "target/\n*.war\n*.ear\n*.jar\n!gradle-wrapper.jar\napplication-*.properties\n",
+    content: "target/\n*.war\n*.ear\n*.jar\n!gradle-wrapper.jar\napplication-*.properties\n",
   },
   // ===== IDE =====
   {
@@ -181,8 +173,7 @@ const TEMPLATES: GitignoreTemplate[] = [
     id: "emacs",
     label: "Emacs",
     category: "ide",
-    content:
-      "*~\n\\#*\\#\n/.emacs.desktop\n/.emacs.desktop.lock\n*.elc\nauto-save-list\n",
+    content: "*~\n\\#*\\#\n/.emacs.desktop\n/.emacs.desktop.lock\n*.elc\nauto-save-list\n",
   },
   {
     id: "xcode",
@@ -239,12 +230,7 @@ export function getCategoryLabel(category: GitignoreCategory): string {
 /**
  * カテゴリの表示順序
  */
-export const CATEGORY_ORDER: GitignoreCategory[] = [
-  "language",
-  "framework",
-  "ide",
-  "os",
-];
+export const CATEGORY_ORDER: GitignoreCategory[] = ["language", "framework", "ide", "os"];
 
 /**
  * 選択されたテンプレートIDから.gitignoreファイルの内容を生成する

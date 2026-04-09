@@ -48,7 +48,7 @@ export interface SampleCode {
  */
 export const SAMPLES: SampleCode[] = [
   {
-    name: 'カウンター',
+    name: "カウンター",
     html: `<div class="counter">
   <button id="decBtn" class="btn btn-dec">−</button>
   <span id="count" class="count">0</span>
@@ -109,7 +109,7 @@ decBtn.addEventListener('click', () => {
 });`,
   },
   {
-    name: 'ToDoリスト',
+    name: "ToDoリスト",
     html: `<div class="app">
   <h1>📝 ToDoリスト</h1>
   <div class="input-row">
@@ -193,7 +193,7 @@ addBtn.addEventListener('click', addTodo);
 inp.addEventListener('keydown', e => e.key === 'Enter' && addTodo());`,
   },
   {
-    name: 'CSSアニメーション',
+    name: "CSSアニメーション",
     html: `<div class="scene">
   <div class="orbit">
     <div class="planet"></div>
@@ -254,13 +254,13 @@ body {
 /**
  * コードパネルのタブ種別
  */
-export type PanelTab = 'html' | 'css' | 'js';
+export type PanelTab = "html" | "css" | "js";
 
 /**
  * パネルタブのラベルマップ
  */
 export const PANEL_TAB_LABELS: Record<PanelTab, string> = {
-  html: 'HTML',
-  css: 'CSS',
-  js: 'JavaScript',
+  html: "HTML",
+  css: "CSS",
+  js: "JavaScript",
 };

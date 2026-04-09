@@ -340,7 +340,14 @@ describe("buildManifestObject", () => {
 
   it("screenshotsがある場合はidを除外してマッピングする", () => {
     const screenshots = [
-      { id: "ss-id", src: "/ss.png", sizes: "1280x720", type: "image/png", form_factor: "wide" as const, label: "ホーム画面" },
+      {
+        id: "ss-id",
+        src: "/ss.png",
+        sizes: "1280x720",
+        type: "image/png",
+        form_factor: "wide" as const,
+        label: "ホーム画面",
+      },
     ];
     const result = buildManifestObject({ ...baseOptions, screenshots });
     const resultSs = result.screenshots as Record<string, string>[];
@@ -401,7 +408,11 @@ describe("generateLinkTag", () => {
   });
 
   it("short_nameをapple-mobile-web-app-titleに使用する", () => {
-    const options: ManifestOptions = { ...DEFAULT_MANIFEST_OPTIONS, name: "Long Name", short_name: "Short" };
+    const options: ManifestOptions = {
+      ...DEFAULT_MANIFEST_OPTIONS,
+      name: "Long Name",
+      short_name: "Short",
+    };
     const result = generateLinkTag(options);
     expect(result).toContain('content="Short"');
   });

@@ -34,9 +34,7 @@ test.describe("Discordスタンプコンバーター - E2Eテスト", () => {
     await expect(skipLink).toBeAttached();
   });
 
-  test("画像カテゴリのナビゲーションにDiscordスタンプリンクが存在すること", async ({
-    page,
-  }) => {
+  test("画像カテゴリのナビゲーションにDiscordスタンプリンクが存在すること", async ({ page }) => {
     const categoryBtn = page.locator(".nav-category-btn", { hasText: "画像" });
     await categoryBtn.hover();
     const dropdown = page.locator(".nav-dropdown");
@@ -46,9 +44,7 @@ test.describe("Discordスタンプコンバーター - E2Eテスト", () => {
     await expect(link).toContainText("Discordスタンプ");
   });
 
-  test("現在のページが画像カテゴリでアクティブになっていること", async ({
-    page,
-  }) => {
+  test("現在のページが画像カテゴリでアクティブになっていること", async ({ page }) => {
     const activeCategory = page.locator(".nav-category-btn.active");
     await expect(activeCategory).toContainText("画像");
   });

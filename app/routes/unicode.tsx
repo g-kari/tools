@@ -5,25 +5,34 @@ import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 
 export const Route = createFileRoute("/unicode")({
   head: () => ({
     meta: [
-    { title: "Unicode エスケープ変換ツール | Web ツール集" },
-    { name: "description", content: "Unicode文字列をエスケープ（\\uXXXX形式）・アンエスケープ変換するオンラインツール。" },
-    { property: "og:title", content: "Unicode エスケープ変換ツール | Web ツール集" },
-    { property: "og:description", content: "Unicode文字列をエスケープ（\\uXXXX形式）・アンエスケープ変換するオンラインツール。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/unicode` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "Unicode エスケープ変換ツール | Web ツール集" },
-    { name: "twitter:description", content: "Unicode文字列をエスケープ（\\uXXXX形式）・アンエスケープ変換するオンラインツール。" },
-  ],
+      { title: "Unicode エスケープ変換ツール | Web ツール集" },
+      {
+        name: "description",
+        content:
+          "Unicode文字列をエスケープ（\\uXXXX形式）・アンエスケープ変換するオンラインツール。",
+      },
+      { property: "og:title", content: "Unicode エスケープ変換ツール | Web ツール集" },
+      {
+        property: "og:description",
+        content:
+          "Unicode文字列をエスケープ（\\uXXXX形式）・アンエスケープ変換するオンラインツール。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/unicode` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "Unicode エスケープ変換ツール | Web ツール集" },
+      {
+        name: "twitter:description",
+        content:
+          "Unicode文字列をエスケープ（\\uXXXX形式）・アンエスケープ変換するオンラインツール。",
+      },
+    ],
   }),
   component: UnicodeConverter,
 });
@@ -52,9 +61,7 @@ function toUnicodeEscape(text: string): string {
 }
 
 function fromUnicodeEscape(text: string): string {
-  return text.replace(/\\u([0-9a-fA-F]{4})/g, (_, code) =>
-    String.fromCharCode(parseInt(code, 16))
-  );
+  return text.replace(/\\u([0-9a-fA-F]{4})/g, (_, code) => String.fromCharCode(parseInt(code, 16)));
 }
 
 function UnicodeConverter() {

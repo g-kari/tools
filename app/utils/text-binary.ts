@@ -4,7 +4,7 @@
  */
 
 /** バイト間の区切り文字オプション */
-export type BinaryDelimiter = 'space' | 'none' | 'comma' | 'newline';
+export type BinaryDelimiter = "space" | "none" | "comma" | "newline";
 
 /** グループサイズオプション（ビット数） */
 export type BinaryGroupSize = 4 | 8;
@@ -43,17 +43,17 @@ export interface ByteInfo {
 }
 
 const DELIMITERS: Record<BinaryDelimiter, string> = {
-  space: ' ',
-  none: '',
-  comma: ',',
-  newline: '\n',
+  space: " ",
+  none: "",
+  comma: ",",
+  newline: "\n",
 };
 
 /**
  * 1バイトを8ビットの2進数文字列に変換する
  */
 function byteToBinary(byte: number): string {
-  return byte.toString(2).padStart(8, '0');
+  return byte.toString(2).padStart(8, "0");
 }
 
 /**
@@ -65,7 +65,7 @@ function byteToBinary(byte: number): string {
  */
 export function textToBinary(
   text: string,
-  delimiter: BinaryDelimiter = 'space',
+  delimiter: BinaryDelimiter = "space",
   groupSize: BinaryGroupSize = 8,
 ): TextToBinaryResult {
   const encoder = new TextEncoder();
@@ -104,10 +104,8 @@ function buildByteBreakdown(text: string): ByteInfo[] {
     const bytes = encoder.encode(ch);
     return {
       char: ch,
-      codePoint: `U+${cp.toString(16).toUpperCase().padStart(4, '0')}`,
-      hexBytes: Array.from(bytes).map((b) =>
-        b.toString(16).toUpperCase().padStart(2, '0'),
-      ),
+      codePoint: `U+${cp.toString(16).toUpperCase().padStart(4, "0")}`,
+      hexBytes: Array.from(bytes).map((b) => b.toString(16).toUpperCase().padStart(2, "0")),
       binaryBytes: Array.from(bytes).map(byteToBinary),
     };
   });
@@ -119,7 +117,10 @@ function buildByteBreakdown(text: string): ByteInfo[] {
  * @returns エラーメッセージ、または null（有効な場合）
  */
 export function validateBinary(input: string): string | null {
-  const tokens = input.trim().split(/[\s,]+/).filter(Boolean);
+  const tokens = input
+    .trim()
+    .split(/[\s,]+/)
+    .filter(Boolean);
   if (tokens.length === 0) return null;
 
   for (const token of tokens) {
@@ -134,7 +135,7 @@ export function validateBinary(input: string): string | null {
   // ニブル（4ビット）の場合はペア数チェック
   const nibbles = tokens.filter((t) => t.length === 4);
   if (nibbles.length > 0 && nibbles.length % 2 !== 0) {
-    return 'ニブル（4ビット）の数が奇数です。4ビットグループは2つで1バイトを表します。';
+    return "ニブル（4ビット）の数が奇数です。4ビットグループは2つで1バイトを表します。";
   }
 
   return null;
@@ -145,12 +146,10 @@ export function validateBinary(input: string): string | null {
  * @param input - デコードする2進数文字列（スペース・コンマ・改行区切り）
  * @returns デコード結果またはエラー
  */
-export function binaryToText(
-  input: string,
-): BinaryToTextSuccess | BinaryToTextError {
+export function binaryToText(input: string): BinaryToTextSuccess | BinaryToTextError {
   const trimmed = input.trim();
-  if (trimmed === '') {
-    return { success: true, decoded: '', bytes: new Uint8Array(0) };
+  if (trimmed === "") {
+    return { success: true, decoded: "", bytes: new Uint8Array(0) };
   }
 
   const tokens = trimmed.split(/[\s,]+/).filter(Boolean);
@@ -165,7 +164,7 @@ export function binaryToText(
   const byteTokens: string[] = [];
   if (tokens[0]?.length === 4) {
     for (let i = 0; i + 1 < tokens.length; i += 2) {
-      byteTokens.push((tokens[i] ?? '') + (tokens[i + 1] ?? ''));
+      byteTokens.push((tokens[i] ?? "") + (tokens[i + 1] ?? ""));
     }
   } else {
     byteTokens.push(...tokens);
@@ -174,18 +173,18 @@ export function binaryToText(
   // バイト列に変換
   const bytes = new Uint8Array(byteTokens.length);
   for (let i = 0; i < byteTokens.length; i++) {
-    bytes[i] = parseInt(byteTokens[i] ?? '0', 2);
+    bytes[i] = parseInt(byteTokens[i] ?? "0", 2);
   }
 
   try {
-    const decoder = new TextDecoder('utf-8', { fatal: true });
+    const decoder = new TextDecoder("utf-8", { fatal: true });
     const decoded = decoder.decode(bytes);
     return { success: true, decoded, bytes };
   } catch {
     return {
       success: false,
       error:
-        '有効な UTF-8 テキストにデコードできません。バイナリデータが含まれている可能性があります。',
+        "有効な UTF-8 テキストにデコードできません。バイナリデータが含まれている可能性があります。",
     };
   }
 }

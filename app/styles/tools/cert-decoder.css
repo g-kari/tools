@@ -8,7 +8,7 @@
   padding: 0.875rem 1.25rem;
   border: 1px solid;
   margin-bottom: 1.5rem;
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   font-size: 0.875rem;
   font-weight: 600;
 }
@@ -57,7 +57,7 @@
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--md-sys-color-primary);
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   margin-bottom: 0.5rem;
   padding-bottom: 0.375rem;
   border-bottom: 1px solid var(--md-sys-color-outline-variant);
@@ -81,7 +81,7 @@
   font-size: 0.75rem;
   font-weight: 600;
   color: var(--md-sys-color-on-surface-variant);
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   flex-shrink: 0;
@@ -90,13 +90,13 @@
 .cert-field-value {
   font-size: 0.8125rem;
   color: var(--md-sys-color-on-surface);
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   word-break: break-all;
   line-height: 1.5;
 }
 
 .cert-field-value-mono {
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   font-size: 0.75rem;
   color: var(--md-sys-color-primary);
   word-break: break-all;
@@ -109,7 +109,7 @@
   padding: 0.125rem 0.5rem;
   font-size: 0.6875rem;
   font-weight: 600;
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   border: 1px solid;
@@ -147,7 +147,7 @@
 
 .cert-san-item {
   font-size: 0.8125rem;
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   color: var(--md-sys-color-on-surface);
   padding: 0.25rem 0.5rem;
   background: var(--md-sys-color-surface-variant);
@@ -155,28 +155,28 @@
 }
 
 .cert-san-item-dns::before {
-  content: 'DNS  ';
+  content: "DNS  ";
   color: var(--md-sys-color-primary);
   font-weight: 700;
   font-size: 0.6875rem;
 }
 
 .cert-san-item-email::before {
-  content: 'EMAIL';
+  content: "EMAIL";
   color: var(--md-sys-color-secondary);
   font-weight: 700;
   font-size: 0.6875rem;
 }
 
 .cert-san-item-uri::before {
-  content: 'URI  ';
+  content: "URI  ";
   color: var(--md-sys-color-on-surface-variant);
   font-weight: 700;
   font-size: 0.6875rem;
 }
 
 .cert-san-item-ip::before {
-  content: 'IP   ';
+  content: "IP   ";
   color: #e3b341;
   font-weight: 700;
   font-size: 0.6875rem;
@@ -191,7 +191,7 @@
 
 .cert-usage-tag {
   font-size: 0.6875rem;
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   padding: 0.1875rem 0.5rem;
   background: var(--md-sys-color-primary-container);
   border: 1px solid var(--md-sys-color-primary);
@@ -217,7 +217,7 @@
 .cert-fingerprint-algo {
   font-size: 0.6875rem;
   font-weight: 700;
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   color: var(--md-sys-color-on-surface-variant);
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -228,7 +228,7 @@
 
 .cert-fingerprint-value {
   font-size: 0.6875rem;
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   color: var(--md-sys-color-on-surface-variant);
   word-break: break-all;
   line-height: 1.6;
@@ -243,7 +243,7 @@
 /* コピーボタン (小) */
 .cert-copy-btn {
   font-size: 0.6875rem;
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   padding: 0.125rem 0.5rem;
   background: transparent;
   border: 1px solid var(--md-sys-color-outline-variant);
@@ -251,7 +251,9 @@
   cursor: pointer;
   min-width: auto;
   flex: 0 0 auto;
-  transition: border-color 0.15s, color 0.15s;
+  transition:
+    border-color 0.15s,
+    color 0.15s;
 }
 
 .cert-copy-btn:hover {
@@ -268,7 +270,7 @@
   background: var(--md-sys-color-surface-variant);
   border: 1px dashed var(--md-sys-color-outline);
   font-size: 0.875rem;
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
 }
 
 .cert-empty-hint {
@@ -283,7 +285,7 @@
   background: #1a0a0a;
   border: 1px solid var(--md-sys-color-error);
   color: var(--md-sys-color-error);
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   font-size: 0.875rem;
 }
 
@@ -298,7 +300,7 @@
 /* サンプル証明書ボタン */
 .cert-sample-btn {
   font-size: 0.75rem;
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   padding: 0.375rem 0.875rem;
   background: transparent;
   border: 1px solid var(--md-sys-color-outline-variant);
@@ -306,7 +308,9 @@
   cursor: pointer;
   min-width: auto;
   flex: 0 0 auto;
-  transition: border-color 0.15s, color 0.15s;
+  transition:
+    border-color 0.15s,
+    color 0.15s;
   margin-top: 0.5rem;
 }
 

@@ -7,14 +7,14 @@
  * 文字のUnicodeカテゴリ
  */
 export type UnicodeCategory =
-  | 'Letter'
-  | 'Digit'
-  | 'Punctuation'
-  | 'Symbol'
-  | 'Separator'
-  | 'Control'
-  | 'Surrogate'
-  | 'Other';
+  | "Letter"
+  | "Digit"
+  | "Punctuation"
+  | "Symbol"
+  | "Separator"
+  | "Control"
+  | "Surrogate"
+  | "Other";
 
 /**
  * 1つのUnicode文字（コードポイント）の検査結果
@@ -46,38 +46,38 @@ export interface CharInfo {
  * よく使われるHTML名前付きエンティティのマッピング
  */
 const NAMED_ENTITIES: ReadonlyMap<number, string> = new Map([
-  [0x22, '&quot;'],
-  [0x26, '&amp;'],
-  [0x27, '&apos;'],
-  [0x3c, '&lt;'],
-  [0x3e, '&gt;'],
-  [0xa0, '&nbsp;'],
-  [0xa9, '&copy;'],
-  [0xae, '&reg;'],
-  [0xb0, '&deg;'],
-  [0xb1, '&plusmn;'],
-  [0xb7, '&middot;'],
-  [0xd7, '&times;'],
-  [0xf7, '&divide;'],
-  [0x2013, '&ndash;'],
-  [0x2014, '&mdash;'],
-  [0x2018, '&lsquo;'],
-  [0x2019, '&rsquo;'],
-  [0x201c, '&ldquo;'],
-  [0x201d, '&rdquo;'],
-  [0x2026, '&hellip;'],
-  [0x2022, '&bull;'],
-  [0x2192, '&rarr;'],
-  [0x2190, '&larr;'],
-  [0x2194, '&harr;'],
-  [0x21d2, '&rArr;'],
-  [0x2260, '&ne;'],
-  [0x2264, '&le;'],
-  [0x2265, '&ge;'],
-  [0x2122, '&trade;'],
-  [0x20ac, '&euro;'],
-  [0xa3, '&pound;'],
-  [0xa5, '&yen;'],
+  [0x22, "&quot;"],
+  [0x26, "&amp;"],
+  [0x27, "&apos;"],
+  [0x3c, "&lt;"],
+  [0x3e, "&gt;"],
+  [0xa0, "&nbsp;"],
+  [0xa9, "&copy;"],
+  [0xae, "&reg;"],
+  [0xb0, "&deg;"],
+  [0xb1, "&plusmn;"],
+  [0xb7, "&middot;"],
+  [0xd7, "&times;"],
+  [0xf7, "&divide;"],
+  [0x2013, "&ndash;"],
+  [0x2014, "&mdash;"],
+  [0x2018, "&lsquo;"],
+  [0x2019, "&rsquo;"],
+  [0x201c, "&ldquo;"],
+  [0x201d, "&rdquo;"],
+  [0x2026, "&hellip;"],
+  [0x2022, "&bull;"],
+  [0x2192, "&rarr;"],
+  [0x2190, "&larr;"],
+  [0x2194, "&harr;"],
+  [0x21d2, "&rArr;"],
+  [0x2260, "&ne;"],
+  [0x2264, "&le;"],
+  [0x2265, "&ge;"],
+  [0x2122, "&trade;"],
+  [0x20ac, "&euro;"],
+  [0xa3, "&pound;"],
+  [0xa5, "&yen;"],
 ]);
 
 /**
@@ -88,23 +88,22 @@ const NAMED_ENTITIES: ReadonlyMap<number, string> = new Map([
  */
 export function getCategory(codePoint: number): UnicodeCategory {
   // サロゲート領域
-  if (codePoint >= 0xd800 && codePoint <= 0xdfff) return 'Surrogate';
+  if (codePoint >= 0xd800 && codePoint <= 0xdfff) return "Surrogate";
 
   // 制御文字
-  if (codePoint < 0x20 || (codePoint >= 0x7f && codePoint <= 0x9f))
-    return 'Control';
+  if (codePoint < 0x20 || (codePoint >= 0x7f && codePoint <= 0x9f)) return "Control";
 
   const char = String.fromCodePoint(codePoint);
 
   // Unicode プロパティエスケープを使用してカテゴリを判定
-  if (/^\p{L}/u.test(char)) return 'Letter';
-  if (/^\p{N}/u.test(char)) return 'Digit';
-  if (/^\p{P}/u.test(char)) return 'Punctuation';
-  if (/^\p{S}/u.test(char)) return 'Symbol';
-  if (/^\p{Z}/u.test(char)) return 'Separator';
-  if (/^\p{C}/u.test(char)) return 'Control';
+  if (/^\p{L}/u.test(char)) return "Letter";
+  if (/^\p{N}/u.test(char)) return "Digit";
+  if (/^\p{P}/u.test(char)) return "Punctuation";
+  if (/^\p{S}/u.test(char)) return "Symbol";
+  if (/^\p{Z}/u.test(char)) return "Separator";
+  if (/^\p{C}/u.test(char)) return "Control";
 
-  return 'Other';
+  return "Other";
 }
 
 /**
@@ -115,14 +114,14 @@ export function getCategory(codePoint: number): UnicodeCategory {
  */
 export function getCategoryLabel(category: UnicodeCategory): string {
   const labels: Record<UnicodeCategory, string> = {
-    Letter: '文字',
-    Digit: '数字',
-    Punctuation: '句読点',
-    Symbol: '記号',
-    Separator: '区切り',
-    Control: '制御',
-    Surrogate: 'サロゲート',
-    Other: 'その他',
+    Letter: "文字",
+    Digit: "数字",
+    Punctuation: "句読点",
+    Symbol: "記号",
+    Separator: "区切り",
+    Control: "制御",
+    Surrogate: "サロゲート",
+    Other: "その他",
   };
   return labels[category];
 }
@@ -138,11 +137,9 @@ export function getUtf8Bytes(codePoint: number): string[] {
     const char = String.fromCodePoint(codePoint);
     const encoder = new TextEncoder();
     const bytes = encoder.encode(char);
-    return Array.from(bytes).map(
-      (b) => `0x${b.toString(16).toUpperCase().padStart(2, '0')}`
-    );
+    return Array.from(bytes).map((b) => `0x${b.toString(16).toUpperCase().padStart(2, "0")}`);
   } catch {
-    return ['—'];
+    return ["—"];
   }
 }
 
@@ -156,7 +153,7 @@ export function getUtf16Units(char: string): string[] {
   const units: string[] = [];
   for (let i = 0; i < char.length; i++) {
     const code = char.charCodeAt(i);
-    units.push(`0x${code.toString(16).toUpperCase().padStart(4, '0')}`);
+    units.push(`0x${code.toString(16).toUpperCase().padStart(4, "0")}`);
   }
   return units;
 }
@@ -170,7 +167,7 @@ export function getUtf16Units(char: string): string[] {
  */
 export function getCharInfo(char: string, codePoint: number): CharInfo {
   const isSurrogatePair = char.length === 2;
-  const codePointHex = `U+${codePoint.toString(16).toUpperCase().padStart(4, '0')}`;
+  const codePointHex = `U+${codePoint.toString(16).toUpperCase().padStart(4, "0")}`;
   const utf8Bytes = getUtf8Bytes(codePoint);
   const utf16Units = getUtf16Units(char);
   const numericEntity = `&#${codePoint};`;

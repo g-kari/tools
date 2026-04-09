@@ -166,10 +166,8 @@ describe("decode", () => {
     const hash9 = encode(35.0, 135.0, 9);
     const bounds5 = decode(hash5).bounds;
     const bounds9 = decode(hash9).bounds;
-    const area5 =
-      (bounds5.maxLat - bounds5.minLat) * (bounds5.maxLng - bounds5.minLng);
-    const area9 =
-      (bounds9.maxLat - bounds9.minLat) * (bounds9.maxLng - bounds9.minLng);
+    const area5 = (bounds5.maxLat - bounds5.minLat) * (bounds5.maxLng - bounds5.minLng);
+    const area9 = (bounds9.maxLat - bounds9.minLat) * (bounds9.maxLng - bounds9.minLng);
     expect(area9).toBeLessThan(area5);
   });
 

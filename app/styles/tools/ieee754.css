@@ -143,7 +143,7 @@
 }
 
 .f754-legend-sign::before {
-  content: '';
+  content: "";
   display: inline-block;
   width: 10px;
   height: 10px;
@@ -159,7 +159,7 @@
 }
 
 .f754-legend-exp::before {
-  content: '';
+  content: "";
   display: inline-block;
   width: 10px;
   height: 10px;
@@ -175,7 +175,7 @@
 }
 
 .f754-legend-mant::before {
-  content: '';
+  content: "";
   display: inline-block;
   width: 10px;
   height: 10px;

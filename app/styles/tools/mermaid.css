@@ -44,7 +44,7 @@
 
 .mermaid-textarea {
   min-height: 400px;
-  font-family: 'Roboto Mono', 'Courier New', monospace;
+  font-family: "Roboto Mono", "Courier New", monospace;
   font-size: 14px;
   line-height: 1.6;
   resize: vertical;
@@ -116,7 +116,7 @@
 }
 
 .mermaid-error-body {
-  font-family: 'Roboto Mono', 'Courier New', monospace;
+  font-family: "Roboto Mono", "Courier New", monospace;
   font-size: 0.8rem;
   white-space: pre-wrap;
   word-break: break-all;

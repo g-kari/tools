@@ -12,9 +12,7 @@ import {
   type QueryCondition,
 } from "../../app/utils/css-container-query";
 
-const baseCondition = (
-  overrides: Partial<QueryCondition> = {}
-): QueryCondition => ({
+const baseCondition = (overrides: Partial<QueryCondition> = {}): QueryCondition => ({
   id: "test-cond",
   type: "min-width",
   value: 400,
@@ -30,13 +28,13 @@ const baseCondition = (
 describe("formatCondition", () => {
   it("min-width を正しくフォーマットする", () => {
     expect(formatCondition(baseCondition({ type: "min-width", value: 400, unit: "px" }))).toBe(
-      "(min-width: 400px)"
+      "(min-width: 400px)",
     );
   });
 
   it("max-width を正しくフォーマットする", () => {
     expect(formatCondition(baseCondition({ type: "max-width", value: 600, unit: "em" }))).toBe(
-      "(max-width: 600em)"
+      "(max-width: 600em)",
     );
   });
 
@@ -47,13 +45,13 @@ describe("formatCondition", () => {
 
   it("min-height を正しくフォーマットする", () => {
     expect(formatCondition(baseCondition({ type: "min-height", value: 200, unit: "px" }))).toBe(
-      "(min-height: 200px)"
+      "(min-height: 200px)",
     );
   });
 
   it("max-height を正しくフォーマットする", () => {
     expect(formatCondition(baseCondition({ type: "max-height", value: 500, unit: "rem" }))).toBe(
-      "(max-height: 500rem)"
+      "(max-height: 500rem)",
     );
   });
 
@@ -64,7 +62,7 @@ describe("formatCondition", () => {
 
   it("rem 単位を使用した min-width をフォーマットする", () => {
     expect(formatCondition(baseCondition({ type: "min-width", value: 25, unit: "rem" }))).toBe(
-      "(min-width: 25rem)"
+      "(min-width: 25rem)",
     );
   });
 });
@@ -145,7 +143,7 @@ describe("generateQueryCSS", () => {
         logicalOp: "and",
         targetSelector: ".item",
         innerCSS: "  color: red;",
-      }
+      },
     );
     expect(result).toContain("@container sidebar (min-width: 300px)");
   });
@@ -201,21 +199,33 @@ describe("generateFullCSS", () => {
 
 describe("checkCondition", () => {
   it("min-width: 幅が条件以上のとき true", () => {
-    expect(checkCondition(baseCondition({ type: "min-width", value: 400, unit: "px" }), 400)).toBe(true);
-    expect(checkCondition(baseCondition({ type: "min-width", value: 400, unit: "px" }), 500)).toBe(true);
+    expect(checkCondition(baseCondition({ type: "min-width", value: 400, unit: "px" }), 400)).toBe(
+      true,
+    );
+    expect(checkCondition(baseCondition({ type: "min-width", value: 400, unit: "px" }), 500)).toBe(
+      true,
+    );
   });
 
   it("min-width: 幅が条件未満のとき false", () => {
-    expect(checkCondition(baseCondition({ type: "min-width", value: 400, unit: "px" }), 399)).toBe(false);
+    expect(checkCondition(baseCondition({ type: "min-width", value: 400, unit: "px" }), 399)).toBe(
+      false,
+    );
   });
 
   it("max-width: 幅が条件以下のとき true", () => {
-    expect(checkCondition(baseCondition({ type: "max-width", value: 600, unit: "px" }), 600)).toBe(true);
-    expect(checkCondition(baseCondition({ type: "max-width", value: 600, unit: "px" }), 300)).toBe(true);
+    expect(checkCondition(baseCondition({ type: "max-width", value: 600, unit: "px" }), 600)).toBe(
+      true,
+    );
+    expect(checkCondition(baseCondition({ type: "max-width", value: 600, unit: "px" }), 300)).toBe(
+      true,
+    );
   });
 
   it("max-width: 幅が条件超過のとき false", () => {
-    expect(checkCondition(baseCondition({ type: "max-width", value: 600, unit: "px" }), 601)).toBe(false);
+    expect(checkCondition(baseCondition({ type: "max-width", value: 600, unit: "px" }), 601)).toBe(
+      false,
+    );
   });
 
   it("width-range: 範囲内のとき true", () => {
@@ -232,14 +242,22 @@ describe("checkCondition", () => {
   });
 
   it("min-height / max-height は常に true（プレビュー近似）", () => {
-    expect(checkCondition(baseCondition({ type: "min-height", value: 9999, unit: "px" }), 100)).toBe(true);
-    expect(checkCondition(baseCondition({ type: "max-height", value: 0, unit: "px" }), 100)).toBe(true);
+    expect(
+      checkCondition(baseCondition({ type: "min-height", value: 9999, unit: "px" }), 100),
+    ).toBe(true);
+    expect(checkCondition(baseCondition({ type: "max-height", value: 0, unit: "px" }), 100)).toBe(
+      true,
+    );
   });
 
   it("em 単位は 16px 基準で換算する", () => {
     // 25em = 400px
-    expect(checkCondition(baseCondition({ type: "min-width", value: 25, unit: "em" }), 400)).toBe(true);
-    expect(checkCondition(baseCondition({ type: "min-width", value: 25, unit: "em" }), 399)).toBe(false);
+    expect(checkCondition(baseCondition({ type: "min-width", value: 25, unit: "em" }), 400)).toBe(
+      true,
+    );
+    expect(checkCondition(baseCondition({ type: "min-width", value: 25, unit: "em" }), 399)).toBe(
+      false,
+    );
   });
 });
 

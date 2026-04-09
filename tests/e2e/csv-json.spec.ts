@@ -29,25 +29,19 @@ test.describe("CSV/JSON変換 - E2Eテスト", () => {
     await expect(delimiter).toHaveValue(",");
   });
 
-  test("CSV→JSONモードでヘッダーチェックボックスが表示される", async ({
-    page,
-  }) => {
+  test("CSV→JSONモードでヘッダーチェックボックスが表示される", async ({ page }) => {
     const checkbox = page.locator('input[type="checkbox"]');
     await expect(checkbox).toBeVisible();
     await expect(checkbox).toBeChecked();
   });
 
-  test("JSON→CSVモードに切り替えるとヘッダーチェックボックスが非表示になる", async ({
-    page,
-  }) => {
+  test("JSON→CSVモードに切り替えるとヘッダーチェックボックスが非表示になる", async ({ page }) => {
     await page.locator('input[value="json-to-csv"]').click();
     const checkbox = page.locator('input[type="checkbox"]');
     await expect(checkbox).not.toBeVisible();
   });
 
-  test("入力テキストエリアと出力テキストエリアが表示される", async ({
-    page,
-  }) => {
+  test("入力テキストエリアと出力テキストエリアが表示される", async ({ page }) => {
     await expect(page.locator("#inputText")).toBeVisible();
     await expect(page.locator("#outputText")).toBeVisible();
   });
@@ -57,9 +51,7 @@ test.describe("CSV/JSON変換 - E2Eテスト", () => {
     await expect(page.locator("button.btn-clear")).toBeVisible();
   });
 
-  test("CSV → JSON 変換（ヘッダーあり）が正しく動作する", async ({
-    page,
-  }) => {
+  test("CSV → JSON 変換（ヘッダーあり）が正しく動作する", async ({ page }) => {
     await page.locator("#inputText").fill("name,age\n田中,30\n佐藤,25");
     await page.locator("button.btn-primary").click();
 
@@ -102,9 +94,7 @@ test.describe("CSV/JSON変換 - E2Eテスト", () => {
   });
 
   test("コピーボタンが出力なしで無効になっている", async ({ page }) => {
-    const copyBtn = page.locator(
-      'button[aria-label="出力結果をクリップボードにコピー"]'
-    );
+    const copyBtn = page.locator('button[aria-label="出力結果をクリップボードにコピー"]');
     await expect(copyBtn).toBeDisabled();
   });
 

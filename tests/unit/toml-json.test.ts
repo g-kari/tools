@@ -16,8 +16,7 @@ describe("tomlToJson", () => {
      * ネストされたオブジェクトを含むTOMLをJSONに変換するテスト
      */
     it("ネストされたオブジェクトを含むTOMLをJSONに変換する", () => {
-      const toml =
-        '[person]\nname = "田中"\nage = 30\n\n[person.address]\ncity = "東京"';
+      const toml = '[person]\nname = "田中"\nage = 30\n\n[person.address]\ncity = "東京"';
       const result = JSON.parse(tomlToJson(toml));
       expect(result).toEqual({
         person: {
@@ -41,8 +40,7 @@ describe("tomlToJson", () => {
      * オブジェクトと配列が混在する複合構造をJSONに変換するテスト
      */
     it("複合構造（オブジェクト+配列）をJSONに変換する", () => {
-      const toml =
-        '[[users]]\nname = "田中"\nage = 30\n\n[[users]]\nname = "佐藤"\nage = 25';
+      const toml = '[[users]]\nname = "田中"\nage = 30\n\n[[users]]\nname = "佐藤"\nage = 25';
       const result = JSON.parse(tomlToJson(toml));
       expect(result).toEqual({
         users: [
@@ -270,7 +268,7 @@ describe("jsonToToml", () => {
      */
     it("トップレベル配列の入力でエラーをスローする", () => {
       expect(() => jsonToToml("[1, 2, 3]")).toThrow(
-        "JSONのルートはオブジェクト（{}）である必要があります"
+        "JSONのルートはオブジェクト（{}）である必要があります",
       );
     });
 

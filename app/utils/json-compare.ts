@@ -98,7 +98,7 @@ function compareValues(
   left: unknown,
   right: unknown,
   path: string,
-  summary: DiffSummary
+  summary: DiffSummary,
 ): DiffNode[] {
   const nodes: DiffNode[] = [];
 
@@ -130,12 +130,7 @@ function compareValues(
           rightDisplay: displayValue(right[key]),
         });
       } else {
-        const childNodes = compareValues(
-          left[key],
-          right[key],
-          childPath,
-          summary
-        );
+        const childNodes = compareValues(left[key], right[key], childPath, summary);
         nodes.push(...childNodes);
       }
     }
@@ -175,10 +170,7 @@ function compareValues(
  * @returns 比較結果
  * @throws JSON解析エラー
  */
-export function compareJson(
-  leftJson: string,
-  rightJson: string
-): CompareResult {
+export function compareJson(leftJson: string, rightJson: string): CompareResult {
   if (!leftJson.trim()) {
     throw new Error("左側のJSONが空です");
   }
@@ -248,7 +240,7 @@ export function getSampleJsonPair(): SamplePair {
       active: true,
     },
     null,
-    2
+    2,
   );
 
   const right = JSON.stringify(
@@ -265,7 +257,7 @@ export function getSampleJsonPair(): SamplePair {
       phone: "090-0000-0000",
     },
     null,
-    2
+    2,
   );
 
   return { left, right };

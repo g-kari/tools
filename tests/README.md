@@ -7,6 +7,7 @@ This test suite provides comprehensive coverage for the Hono application, focusi
 ## Test Structure
 
 ### Main Routes Tests (`GET /`)
+
 - Status code verification
 - Content type validation
 - HTML content structure
@@ -15,6 +16,7 @@ This test suite provides comprehensive coverage for the Hono application, focusi
 - JavaScript functionality inclusion
 
 ### 404 Handler Tests
+
 1. **Basic Functionality**
    - Status code verification (404)
    - Content type validation
@@ -66,6 +68,7 @@ npm run test:coverage
 ## Test Coverage
 
 The test suite includes over 100 test cases covering:
+
 - ✅ Happy path scenarios
 - ✅ Edge cases (special characters, long URLs, etc.)
 - ✅ Error conditions
@@ -78,6 +81,7 @@ The test suite includes over 100 test cases covering:
 ## Adding New Tests
 
 When adding new routes or features:
+
 1. Add tests for the happy path
 2. Add tests for error conditions
 3. Test accessibility features

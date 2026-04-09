@@ -5,10 +5,7 @@ import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import "../styles/tools/word-frequency.css";
 
 export const Route = createFileRoute("/word-frequency")({
@@ -69,21 +66,132 @@ export interface WordFrequencyResult {
 /** 英語・日本語共通ストップワード */
 const STOP_WORDS = new Set([
   // 英語
-  "a", "an", "the", "and", "or", "but", "in", "on", "at", "to", "for",
-  "of", "with", "by", "from", "is", "are", "was", "were", "be", "been",
-  "being", "have", "has", "had", "do", "does", "did", "will", "would",
-  "could", "should", "may", "might", "shall", "can", "it", "its", "i",
-  "you", "he", "she", "we", "they", "this", "that", "these", "those",
-  "not", "no", "if", "as", "up", "so", "my", "your", "his", "her",
-  "our", "their", "me", "him", "us", "them", "what", "which", "who",
-  "how", "when", "where", "why", "all", "any", "each", "than", "then",
-  "into", "out", "over", "after", "before", "about", "also", "just",
+  "a",
+  "an",
+  "the",
+  "and",
+  "or",
+  "but",
+  "in",
+  "on",
+  "at",
+  "to",
+  "for",
+  "of",
+  "with",
+  "by",
+  "from",
+  "is",
+  "are",
+  "was",
+  "were",
+  "be",
+  "been",
+  "being",
+  "have",
+  "has",
+  "had",
+  "do",
+  "does",
+  "did",
+  "will",
+  "would",
+  "could",
+  "should",
+  "may",
+  "might",
+  "shall",
+  "can",
+  "it",
+  "its",
+  "i",
+  "you",
+  "he",
+  "she",
+  "we",
+  "they",
+  "this",
+  "that",
+  "these",
+  "those",
+  "not",
+  "no",
+  "if",
+  "as",
+  "up",
+  "so",
+  "my",
+  "your",
+  "his",
+  "her",
+  "our",
+  "their",
+  "me",
+  "him",
+  "us",
+  "them",
+  "what",
+  "which",
+  "who",
+  "how",
+  "when",
+  "where",
+  "why",
+  "all",
+  "any",
+  "each",
+  "than",
+  "then",
+  "into",
+  "out",
+  "over",
+  "after",
+  "before",
+  "about",
+  "also",
+  "just",
   // 日本語
-  "の", "に", "は", "を", "た", "が", "で", "て", "と", "し", "れ",
-  "さ", "ある", "いる", "も", "する", "から", "な", "こと", "として",
-  "い", "や", "れる", "など", "なっ", "ない", "この", "ため", "その",
-  "あっ", "よう", "また", "もの", "という", "あり", "まし", "ます",
-  "です", "へ", "ので", "など",
+  "の",
+  "に",
+  "は",
+  "を",
+  "た",
+  "が",
+  "で",
+  "て",
+  "と",
+  "し",
+  "れ",
+  "さ",
+  "ある",
+  "いる",
+  "も",
+  "する",
+  "から",
+  "な",
+  "こと",
+  "として",
+  "い",
+  "や",
+  "れる",
+  "など",
+  "なっ",
+  "ない",
+  "この",
+  "ため",
+  "その",
+  "あっ",
+  "よう",
+  "また",
+  "もの",
+  "という",
+  "あり",
+  "まし",
+  "ます",
+  "です",
+  "へ",
+  "ので",
+  "など",
 ]);
 
 /**
@@ -92,10 +200,7 @@ const STOP_WORDS = new Set([
  * @param ignorePunctuation - 句読点を除去するか
  * @returns 単語の配列
  */
-export function tokenizeText(
-  text: string,
-  ignorePunctuation: boolean
-): string[] {
+export function tokenizeText(text: string, ignorePunctuation: boolean): string[] {
   if (!text.trim()) return [];
 
   let processed = text;
@@ -103,7 +208,7 @@ export function tokenizeText(
     // 句読点・記号を空白に変換
     processed = processed.replace(
       /[.,;:!?'"()[\]{}（）「」【】『』、。！？・…\-_/\\@#$%^&*+=|<>~`]+/g,
-      " "
+      " ",
     );
   }
 
@@ -122,7 +227,7 @@ export function tokenizeText(
  */
 export function analyzeWordFrequency(
   text: string,
-  options: WordFrequencyOptions
+  options: WordFrequencyOptions,
 ): WordFrequencyResult {
   if (!text.trim()) {
     return { entries: [], totalWords: 0, uniqueWords: 0 };
@@ -144,14 +249,9 @@ export function analyzeWordFrequency(
     frequencyMap.set(word, (frequencyMap.get(word) ?? 0) + 1);
   }
 
-  const totalWords = Array.from(frequencyMap.values()).reduce(
-    (sum, count) => sum + count,
-    0
-  );
+  const totalWords = Array.from(frequencyMap.values()).reduce((sum, count) => sum + count, 0);
 
-  const entries: WordFrequencyEntry[] = Array.from(
-    frequencyMap.entries()
-  ).map(([word, count]) => ({
+  const entries: WordFrequencyEntry[] = Array.from(frequencyMap.entries()).map(([word, count]) => ({
     word,
     count,
     percentage: totalWords > 0 ? (count / totalWords) * 100 : 0,
@@ -175,13 +275,11 @@ export type WordSortBy = "frequency" | "word";
  */
 export function sortWordEntries(
   entries: WordFrequencyEntry[],
-  sortBy: WordSortBy
+  sortBy: WordSortBy,
 ): WordFrequencyEntry[] {
   const copy = [...entries];
   if (sortBy === "frequency") {
-    return copy.sort(
-      (a, b) => b.count - a.count || a.word.localeCompare(b.word)
-    );
+    return copy.sort((a, b) => b.count - a.count || a.word.localeCompare(b.word));
   }
   return copy.sort((a, b) => a.word.localeCompare(b.word));
 }
@@ -194,8 +292,7 @@ export function sortWordEntries(
 export function wordEntriesToCsv(entries: WordFrequencyEntry[]): string {
   const header = "単語,出現回数,割合(%)";
   const rows = entries.map(
-    (e) =>
-      `"${e.word.replace(/"/g, '""')}",${e.count},${e.percentage.toFixed(2)}`
+    (e) => `"${e.word.replace(/"/g, '""')}",${e.count},${e.percentage.toFixed(2)}`,
   );
   return "\uFEFF" + [header, ...rows].join("\n");
 }
@@ -218,19 +315,16 @@ function WordFrequencyPage() {
   const [sortBy, setSortBy] = useState<WordSortBy>("frequency");
   const [displayLimit, setDisplayLimit] = useState(50);
 
-  const result = useMemo(
-    () => analyzeWordFrequency(text, options),
-    [text, options]
-  );
+  const result = useMemo(() => analyzeWordFrequency(text, options), [text, options]);
 
   const sortedEntries = useMemo(
     () => sortWordEntries(result.entries, sortBy),
-    [result.entries, sortBy]
+    [result.entries, sortBy],
   );
 
   const displayedEntries = useMemo(
     () => sortedEntries.slice(0, displayLimit),
-    [sortedEntries, displayLimit]
+    [sortedEntries, displayLimit],
   );
 
   const maxCount = sortedEntries[0]?.count ?? 1;
@@ -241,22 +335,16 @@ function WordFrequencyPage() {
     announceStatus("クリアしました");
   }, [announceStatus]);
 
-  const handleOptionChange = useCallback(
-    (key: keyof Omit<WordFrequencyOptions, "minLength">) => {
-      setOptions((prev) => ({ ...prev, [key]: !prev[key] }));
-    },
-    []
-  );
+  const handleOptionChange = useCallback((key: keyof Omit<WordFrequencyOptions, "minLength">) => {
+    setOptions((prev) => ({ ...prev, [key]: !prev[key] }));
+  }, []);
 
-  const handleMinLengthChange = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>): void => {
-      setOptions((prev) => ({
-        ...prev,
-        minLength: parseInt(e.target.value, 10),
-      }));
-    },
-    []
-  );
+  const handleMinLengthChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>): void => {
+    setOptions((prev) => ({
+      ...prev,
+      minLength: parseInt(e.target.value, 10),
+    }));
+  }, []);
 
   const handleSortToggle = useCallback(() => {
     setSortBy((prev) => (prev === "frequency" ? "word" : "frequency"));
@@ -405,20 +493,12 @@ function WordFrequencyPage() {
             <h2 id="wf-results-heading" className="section-title">
               頻度分析結果
             </h2>
-            <div
-              className="wf-results-actions"
-              role="group"
-              aria-label="結果の操作"
-            >
+            <div className="wf-results-actions" role="group" aria-label="結果の操作">
               <Button
                 type="button"
                 variant="outline"
                 onClick={handleSortToggle}
-                aria-label={
-                  sortBy === "frequency"
-                    ? "単語順に切り替え"
-                    : "頻度順に切り替え"
-                }
+                aria-label={sortBy === "frequency" ? "単語順に切り替え" : "頻度順に切り替え"}
                 aria-pressed={sortBy === "word"}
                 data-testid="sort-toggle"
               >
@@ -438,11 +518,7 @@ function WordFrequencyPage() {
           </div>
 
           {!hasResults ? (
-            <p
-              className="wf-empty-message"
-              role="status"
-              data-testid="empty-message"
-            >
+            <p className="wf-empty-message" role="status" data-testid="empty-message">
               {isEmpty
                 ? "テキストを入力すると単語の頻度が表示されます"
                 : "オプションの条件に一致する単語がありません"}
@@ -469,49 +545,31 @@ function WordFrequencyPage() {
                       <th scope="col" className="wf-th-percent">
                         割合
                       </th>
-                      <th
-                        scope="col"
-                        className="wf-th-bar"
-                        aria-label="頻度バー"
-                      >
+                      <th scope="col" className="wf-th-bar" aria-label="頻度バー">
                         頻度バー
                       </th>
                     </tr>
                   </thead>
                   <tbody>
                     {displayedEntries.map((entry, index) => {
-                      const barWidthPercent = Math.round(
-                        (entry.count / maxCount) * 100
-                      );
+                      const barWidthPercent = Math.round((entry.count / maxCount) * 100);
                       return (
                         <tr key={entry.word} className="wf-tr">
-                          <td className="wf-td-rank">
-                            {sortBy === "frequency" ? index + 1 : ""}
-                          </td>
+                          <td className="wf-td-rank">{sortBy === "frequency" ? index + 1 : ""}</td>
                           <td className="wf-td-word">
-                            <span
-                              className="wf-word-display"
-                              title={entry.word}
-                            >
+                            <span className="wf-word-display" title={entry.word}>
                               {entry.word}
                             </span>
                           </td>
-                          <td className="wf-td-count">
-                            {entry.count.toLocaleString()}
-                          </td>
-                          <td className="wf-td-percent">
-                            {entry.percentage.toFixed(2)}%
-                          </td>
+                          <td className="wf-td-count">{entry.count.toLocaleString()}</td>
+                          <td className="wf-td-percent">{entry.percentage.toFixed(2)}%</td>
                           <td className="wf-td-bar" aria-hidden="true">
                             <div className="wf-bar-wrap">
                               <div
                                 className="wf-bar"
                                 ref={(el) => {
                                   if (el)
-                                    el.style.setProperty(
-                                      "--wf-bar-width",
-                                      `${barWidthPercent}%`
-                                    );
+                                    el.style.setProperty("--wf-bar-width", `${barWidthPercent}%`);
                                 }}
                               />
                             </div>

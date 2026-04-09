@@ -4,10 +4,7 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 
 export const Route = createFileRoute("/fraction")({
@@ -87,10 +84,10 @@ export function gcd(a: number, b: number): number {
  */
 export function simplifyFraction(
   numerator: number,
-  denominator: number
+  denominator: number,
 ): { numerator: number; denominator: number } {
   if (denominator === 0) throw new Error("分母は0にできません");
-  const sign = (numerator < 0) !== (denominator < 0) ? -1 : 1;
+  const sign = numerator < 0 !== denominator < 0 ? -1 : 1;
   const absNum = Math.abs(numerator);
   const absDen = Math.abs(denominator);
   const g = gcd(absNum, absDen);
@@ -105,7 +102,7 @@ export function simplifyFraction(
  */
 export function toMixedNumber(
   numerator: number,
-  denominator: number
+  denominator: number,
 ): { whole: number; numerator: number; denominator: number } | null {
   if (denominator === 0) return null;
   const simplified = simplifyFraction(numerator, denominator);
@@ -130,7 +127,7 @@ export function toMixedNumber(
  */
 export function decimalToFraction(
   decimal: number,
-  maxDenominator: number = 10000
+  maxDenominator: number = 10000,
 ): { numerator: number; denominator: number } {
   if (!isFinite(decimal)) throw new Error("有効な数値を入力してください");
   const sign = decimal < 0 ? -1 : 1;
@@ -180,7 +177,7 @@ export function decimalToFraction(
 export function fractionToDecimal(
   numerator: number,
   denominator: number,
-  precision: number = 10
+  precision: number = 10,
 ): string {
   if (denominator === 0) throw new Error("分母は0にできません");
   const result = numerator / denominator;
@@ -222,9 +219,7 @@ function FractionConverter() {
       const raw = decimalToFraction(num);
       const result = simplifyFraction(raw.numerator, raw.denominator);
       setFractionResult(result);
-      announceStatus(
-        `変換完了: ${result.numerator}/${result.denominator}`
-      );
+      announceStatus(`変換完了: ${result.numerator}/${result.denominator}`);
     } catch {
       showToast("変換に失敗しました", "error");
       announceStatus("エラー: 変換に失敗しました");
@@ -287,20 +282,11 @@ function FractionConverter() {
     <>
       <div className="fraction-container">
         {/* 小数 → 分数 */}
-        <section
-          className="fraction-section"
-          aria-labelledby="decimal-to-fraction-heading"
-        >
-          <h2
-            id="decimal-to-fraction-heading"
-            className="fraction-section-title"
-          >
+        <section className="fraction-section" aria-labelledby="decimal-to-fraction-heading">
+          <h2 id="decimal-to-fraction-heading" className="fraction-section-title">
             小数 → 分数
           </h2>
-          <form
-            onSubmit={(e) => e.preventDefault()}
-            aria-label="小数から分数への変換フォーム"
-          >
+          <form onSubmit={(e) => e.preventDefault()} aria-label="小数から分数への変換フォーム">
             <div className="fraction-input-row">
               <input
                 id="decimal-input"
@@ -333,17 +319,14 @@ function FractionConverter() {
             </div>
 
             {fractionResult && (
-              <div
-                className="fraction-result"
-                aria-live="polite"
-                aria-label="変換結果"
-              >
+              <div className="fraction-result" aria-live="polite" aria-label="変換結果">
                 <div className="fraction-result-main">
                   <span className="fraction-result-label">分数:</span>
-                  <span className="fraction-visual" aria-label={`${fractionResult.numerator} 分の ${fractionResult.denominator}`}>
-                    <span className="fraction-visual-numerator">
-                      {fractionResult.numerator}
-                    </span>
+                  <span
+                    className="fraction-visual"
+                    aria-label={`${fractionResult.numerator} 分の ${fractionResult.denominator}`}
+                  >
+                    <span className="fraction-visual-numerator">{fractionResult.numerator}</span>
                     <span className="fraction-visual-denominator">
                       {fractionResult.denominator}
                     </span>
@@ -363,20 +346,11 @@ function FractionConverter() {
         </section>
 
         {/* 分数 → 小数 */}
-        <section
-          className="fraction-section"
-          aria-labelledby="fraction-to-decimal-heading"
-        >
-          <h2
-            id="fraction-to-decimal-heading"
-            className="fraction-section-title"
-          >
+        <section className="fraction-section" aria-labelledby="fraction-to-decimal-heading">
+          <h2 id="fraction-to-decimal-heading" className="fraction-section-title">
             分数 → 小数
           </h2>
-          <form
-            onSubmit={(e) => e.preventDefault()}
-            aria-label="分数から小数への変換フォーム"
-          >
+          <form onSubmit={(e) => e.preventDefault()} aria-label="分数から小数への変換フォーム">
             <div className="fraction-input-row">
               <input
                 id="numerator-input"
@@ -387,7 +361,9 @@ function FractionConverter() {
                 placeholder="分子"
                 aria-label="分子の入力欄"
               />
-              <span className="fraction-slash" aria-hidden="true">/</span>
+              <span className="fraction-slash" aria-hidden="true">
+                /
+              </span>
               <input
                 id="denominator-input"
                 type="number"
@@ -417,16 +393,10 @@ function FractionConverter() {
             </div>
 
             {decimalResult !== null && (
-              <div
-                className="fraction-result"
-                aria-live="polite"
-                aria-label="変換結果"
-              >
+              <div className="fraction-result" aria-live="polite" aria-label="変換結果">
                 <div className="fraction-result-main">
                   <span className="fraction-result-label">小数:</span>
-                  <span className="fraction-result-value">
-                    {decimalResult}
-                  </span>
+                  <span className="fraction-result-value">{decimalResult}</span>
                 </div>
               </div>
             )}
@@ -434,18 +404,12 @@ function FractionConverter() {
         </section>
 
         {/* よく使う分数 */}
-        <section
-          className="fraction-reference-section"
-          aria-labelledby="common-fractions-heading"
-        >
+        <section className="fraction-reference-section" aria-labelledby="common-fractions-heading">
           <h2 id="common-fractions-heading" className="fraction-section-title">
             よく使う分数
           </h2>
           <div className="fraction-table-wrapper">
-            <table
-              className="fraction-table"
-              aria-label="よく使う分数と小数の対応表"
-            >
+            <table className="fraction-table" aria-label="よく使う分数と小数の対応表">
               <thead>
                 <tr>
                   <th scope="col">分数</th>

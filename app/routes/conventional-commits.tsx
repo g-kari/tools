@@ -3,10 +3,7 @@ import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useToast } from "../components/Toast";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 import {
   parseConventionalCommit,
@@ -46,8 +43,7 @@ export const Route = createFileRoute("/conventional-commits")({
       },
       {
         name: "twitter:description",
-        content:
-          "Git コミットメッセージを Conventional Commits 仕様でパース・検証するツール。",
+        content: "Git コミットメッセージを Conventional Commits 仕様でパース・検証するツール。",
       },
     ],
   }),
@@ -112,18 +108,12 @@ function ParseResult({ parsed }: { parsed: ParsedCommit }) {
             ✓ 有効
           </span>
         ) : (
-          <span
-            className="cc-status-badge cc-status-badge-invalid"
-            role="status"
-          >
+          <span className="cc-status-badge cc-status-badge-invalid" role="status">
             ✕ 無効
           </span>
         )}
         {parsed.valid && parsed.warnings.length > 0 && (
-          <span
-            className="cc-status-badge cc-status-badge-warning"
-            role="status"
-          >
+          <span className="cc-status-badge cc-status-badge-warning" role="status">
             ⚠ 警告 {parsed.warnings.length}件
           </span>
         )}
@@ -153,9 +143,7 @@ function ParseResult({ parsed }: { parsed: ParsedCommit }) {
               <span className="cc-token-separator">)</span>
             </>
           )}
-          {parsed.breakingMark && (
-            <span className="cc-token cc-token-breaking">!</span>
-          )}
+          {parsed.breakingMark && <span className="cc-token cc-token-breaking">!</span>}
           {parsed.description && (
             <>
               <span className="cc-token-separator">:</span>
@@ -172,10 +160,7 @@ function ParseResult({ parsed }: { parsed: ParsedCommit }) {
           <ComponentItem label="Type" value={parsed.type} />
           <ComponentItem label="Scope" value={parsed.scope} />
           <ComponentItem label="Description" value={parsed.description} />
-          <ComponentItem
-            label="Breaking (!)"
-            value={parsed.breakingMark}
-          />
+          <ComponentItem label="Breaking (!)" value={parsed.breakingMark} />
         </div>
       </div>
 
@@ -192,9 +177,7 @@ function ParseResult({ parsed }: { parsed: ParsedCommit }) {
       {/* フッター */}
       {parsed.footers.length > 0 && (
         <div className="cc-section">
-          <div className="cc-section-title">
-            Footers ({parsed.footers.length})
-          </div>
+          <div className="cc-section-title">Footers ({parsed.footers.length})</div>
           <div className="cc-footers">
             {parsed.footers.map((footer, i) => (
               <div
@@ -219,16 +202,10 @@ function ParseResult({ parsed }: { parsed: ParsedCommit }) {
       {/* エラー */}
       {parsed.errors.length > 0 && (
         <div className="cc-section">
-          <div className="cc-section-title">
-            エラー ({parsed.errors.length})
-          </div>
+          <div className="cc-section-title">エラー ({parsed.errors.length})</div>
           <div className="cc-issue-list" role="list" aria-label="エラー一覧">
             {parsed.errors.map((err, i) => (
-              <div
-                key={i}
-                className="cc-issue-item cc-issue-item-error"
-                role="listitem"
-              >
+              <div key={i} className="cc-issue-item cc-issue-item-error" role="listitem">
                 <span className="cc-issue-icon" aria-hidden="true">
                   ✕
                 </span>
@@ -242,16 +219,10 @@ function ParseResult({ parsed }: { parsed: ParsedCommit }) {
       {/* 警告 */}
       {parsed.warnings.length > 0 && (
         <div className="cc-section">
-          <div className="cc-section-title">
-            警告 ({parsed.warnings.length})
-          </div>
+          <div className="cc-section-title">警告 ({parsed.warnings.length})</div>
           <div className="cc-issue-list" role="list" aria-label="警告一覧">
             {parsed.warnings.map((warn, i) => (
-              <div
-                key={i}
-                className="cc-issue-item cc-issue-item-warning"
-                role="listitem"
-              >
+              <div key={i} className="cc-issue-item cc-issue-item-warning" role="listitem">
                 <span className="cc-issue-icon" aria-hidden="true">
                   ⚠
                 </span>
@@ -323,7 +294,7 @@ function ConventionalCommitsPage() {
       announceStatus("サンプルを読み込みました");
       textareaRef.current?.focus();
     },
-    [announceStatus]
+    [announceStatus],
   );
 
   const headerLength = message.split("\n")[0]?.length ?? 0;
@@ -377,11 +348,7 @@ function ConventionalCommitsPage() {
         {/* クリアボタン */}
         {message.length > 0 && (
           <div className="cc-actions">
-            <button
-              className="btn-secondary"
-              onClick={handleClear}
-              aria-label="入力をクリア"
-            >
+            <button className="btn-secondary" onClick={handleClear} aria-label="入力をクリア">
               クリア
             </button>
           </div>
@@ -402,11 +369,7 @@ function ConventionalCommitsPage() {
         <div className="cc-section-title">コミットタイプ リファレンス</div>
         <div className="cc-types-grid">
           {COMMIT_TYPES.map((t) => (
-            <div
-              key={t.type}
-              className="cc-type-row"
-              aria-label={`${t.type}: ${t.description}`}
-            >
+            <div key={t.type} className="cc-type-row" aria-label={`${t.type}: ${t.description}`}>
               <span className="cc-type-emoji" aria-hidden="true">
                 {t.emoji}
               </span>

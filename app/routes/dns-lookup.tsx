@@ -1,11 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useEffect, useRef, useCallback } from "react";
-import {
-  lookupDns,
-  type DnsLookupResult,
-  type DnsRecordType,
-} from "../functions/dns-lookup";
+import { lookupDns, type DnsLookupResult, type DnsRecordType } from "../functions/dns-lookup";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
@@ -14,16 +10,25 @@ import { TipsCard } from "~/components/TipsCard";
 export const Route = createFileRoute("/dns-lookup")({
   head: () => ({
     meta: [
-    { title: "DNS検索 | Web ツール集" },
-    { name: "description", content: "ドメインのDNSレコード（A・AAAA・MX・TXT・CNAME等）を検索するツール。" },
-    { property: "og:title", content: "DNS検索 | Web ツール集" },
-    { property: "og:description", content: "ドメインのDNSレコード（A・AAAA・MX・TXT・CNAME等）を検索するツール。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/dns-lookup` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "DNS検索 | Web ツール集" },
-    { name: "twitter:description", content: "ドメインのDNSレコード（A・AAAA・MX・TXT・CNAME等）を検索するツール。" },
-  ],
+      { title: "DNS検索 | Web ツール集" },
+      {
+        name: "description",
+        content: "ドメインのDNSレコード（A・AAAA・MX・TXT・CNAME等）を検索するツール。",
+      },
+      { property: "og:title", content: "DNS検索 | Web ツール集" },
+      {
+        property: "og:description",
+        content: "ドメインのDNSレコード（A・AAAA・MX・TXT・CNAME等）を検索するツール。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/dns-lookup` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "DNS検索 | Web ツール集" },
+      {
+        name: "twitter:description",
+        content: "ドメインのDNSレコード（A・AAAA・MX・TXT・CNAME等）を検索するツール。",
+      },
+    ],
   }),
   component: DnsLookup,
 });
@@ -95,7 +100,7 @@ function DnsLookup() {
 
   const handleTypeToggle = (type: DnsRecordType) => {
     setSelectedTypes((prev) =>
-      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
+      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type],
     );
   };
 
@@ -134,8 +139,7 @@ function DnsLookup() {
       setResult(data);
       announceStatus("検索が完了しました");
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "通信エラーが発生しました";
+      const message = err instanceof Error ? err.message : "通信エラーが発生しました";
       setError(message);
       announceStatus("エラー: " + message);
       showToast(message, "error");
@@ -156,15 +160,12 @@ function DnsLookup() {
         .then(() => showToast("コピーしました", "success"))
         .catch(() => showToast("コピーに失敗しました", "error"));
     },
-    [showToast]
+    [showToast],
   );
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (
-        e.key === "Enter" &&
-        (e.target as HTMLElement)?.id === "domainInput"
-      ) {
+      if (e.key === "Enter" && (e.target as HTMLElement)?.id === "domainInput") {
         e.preventDefault();
         handleSearch();
       }
@@ -181,14 +182,9 @@ function DnsLookup() {
   return (
     <>
       <div className="tool-container">
-        <p className="page-subtitle">
-          ドメインのDNSレコード（A, AAAA, MX, TXT等）を検索します
-        </p>
+        <p className="page-subtitle">ドメインのDNSレコード（A, AAAA, MX, TXT等）を検索します</p>
 
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          aria-label="DNS検索フォーム"
-        >
+        <form onSubmit={(e) => e.preventDefault()} aria-label="DNS検索フォーム">
           <div className="converter-section">
             <h2 id="input-heading" className="sr-only">
               ドメイン入力
@@ -301,10 +297,7 @@ function DnsLookup() {
                   <h3 className="dns-record-type">
                     {typeResult.type} レコード
                     {hasRecords && (
-                      <span className="dns-record-count">
-                        {" "}
-                        ({typeResult.records.length}件)
-                      </span>
+                      <span className="dns-record-count"> ({typeResult.records.length}件)</span>
                     )}
                   </h3>
 

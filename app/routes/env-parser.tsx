@@ -5,10 +5,7 @@ import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { parseEnv, toJSON, toYAML, toExports } from "~/utils/env-parser";
 import type { EnvEntry, ParseResult } from "~/utils/env-parser";
 
@@ -110,16 +107,12 @@ function EnvParser() {
     setParseResult(result);
 
     if (result.entries.length === 0 && result.errors.length === 0) {
-      announceStatus(
-        "パース完了: 有効なエントリが見つかりませんでした（コメント・空行のみ）",
-      );
+      announceStatus("パース完了: 有効なエントリが見つかりませんでした（コメント・空行のみ）");
       showToast("有効なエントリが見つかりませんでした", "info");
     } else {
       const msgs = [`${result.entries.length}件のエントリをパースしました`];
-      if (result.errors.length > 0)
-        msgs.push(`エラー${result.errors.length}件`);
-      if (result.duplicates.length > 0)
-        msgs.push(`重複キー${result.duplicates.length}件`);
+      if (result.errors.length > 0) msgs.push(`エラー${result.errors.length}件`);
+      if (result.duplicates.length > 0) msgs.push(`重複キー${result.duplicates.length}件`);
       announceStatus(msgs.join("、"));
     }
   }, [inputText, announceStatus, showToast]);
@@ -165,10 +158,7 @@ function EnvParser() {
   return (
     <>
       <div className="tool-container">
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          aria-label=".envパーサーフォーム"
-        >
+        <form onSubmit={(e) => e.preventDefault()} aria-label=".envパーサーフォーム">
           {/* 入力エリア */}
           <div className="converter-section">
             <label htmlFor="envInput" className="section-title">
@@ -180,7 +170,7 @@ function EnvParser() {
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               placeholder={
-                "# .envファイルの内容を貼り付けてください\nDATABASE_URL=postgresql://localhost:5432/mydb\nAPI_KEY=\"secret-api-key-123\"\nDEBUG=true\nPORT=3000"
+                '# .envファイルの内容を貼り付けてください\nDATABASE_URL=postgresql://localhost:5432/mydb\nAPI_KEY="secret-api-key-123"\nDEBUG=true\nPORT=3000'
               }
               aria-describedby="env-input-help"
               aria-label=".envファイルの内容を入力するテキストエリア"
@@ -214,52 +204,38 @@ function EnvParser() {
         </form>
 
         {/* バリデーション結果 */}
-        {parseResult &&
-          (parseResult.errors.length > 0 ||
-            parseResult.duplicates.length > 0) && (
-            <section
-              className="env-parser-validation"
-              aria-label="バリデーション結果"
-            >
-              {parseResult.errors.map((err) => (
-                <div
-                  key={`${err.line}-${err.content}`}
-                  className="env-parser-error-item"
-                  role="alert"
-                >
-                  <span className="env-parser-error-icon" aria-hidden="true">
-                    ✕
-                  </span>
-                  <span>
-                    行 {err.line}: 無効な形式 —{" "}
-                    <code>{err.content || "(空)"}</code>
-                  </span>
-                </div>
-              ))}
-              {parseResult.duplicates.map((key) => (
-                <div
-                  key={`dup-${key}`}
-                  className="env-parser-warning-item"
-                  role="alert"
-                >
-                  <span className="env-parser-warning-icon" aria-hidden="true">
-                    ⚠
-                  </span>
-                  <span>
-                    重複キー: <code>{key}</code>{" "}
-                    が複数回定義されています（最後の値が使用されます）
-                  </span>
-                </div>
-              ))}
-            </section>
-          )}
+        {parseResult && (parseResult.errors.length > 0 || parseResult.duplicates.length > 0) && (
+          <section className="env-parser-validation" aria-label="バリデーション結果">
+            {parseResult.errors.map((err) => (
+              <div
+                key={`${err.line}-${err.content}`}
+                className="env-parser-error-item"
+                role="alert"
+              >
+                <span className="env-parser-error-icon" aria-hidden="true">
+                  ✕
+                </span>
+                <span>
+                  行 {err.line}: 無効な形式 — <code>{err.content || "(空)"}</code>
+                </span>
+              </div>
+            ))}
+            {parseResult.duplicates.map((key) => (
+              <div key={`dup-${key}`} className="env-parser-warning-item" role="alert">
+                <span className="env-parser-warning-icon" aria-hidden="true">
+                  ⚠
+                </span>
+                <span>
+                  重複キー: <code>{key}</code> が複数回定義されています（最後の値が使用されます）
+                </span>
+              </div>
+            ))}
+          </section>
+        )}
 
         {/* パース結果テーブル */}
         {parseResult && (
-          <section
-            className="output-section"
-            aria-label="パース結果テーブル"
-          >
+          <section className="output-section" aria-label="パース結果テーブル">
             <div className="env-parser-section-header">
               <span className="section-title">パース結果</span>
               {parseResult.entries.length > 0 && (
@@ -278,10 +254,7 @@ function EnvParser() {
               </div>
             ) : (
               <div className="env-parser-table-wrapper">
-                <table
-                  className="env-parser-table"
-                  aria-label="環境変数一覧テーブル"
-                >
+                <table className="env-parser-table" aria-label="環境変数一覧テーブル">
                   <thead>
                     <tr>
                       <th scope="col">Key</th>
@@ -290,40 +263,26 @@ function EnvParser() {
                   </thead>
                   <tbody>
                     {parseResult.entries.map((entry, idx) => {
-                      const isDuplicate =
-                        parseResult.duplicates.includes(entry.key);
+                      const isDuplicate = parseResult.duplicates.includes(entry.key);
                       return (
                         <tr key={`${entry.key}-${idx}`}>
                           <td>
                             <span
                               className={
-                                isDuplicate
-                                  ? "env-parser-duplicate-key"
-                                  : "env-parser-table-key"
+                                isDuplicate ? "env-parser-duplicate-key" : "env-parser-table-key"
                               }
-                              title={
-                                isDuplicate
-                                  ? "このキーは重複して定義されています"
-                                  : undefined
-                              }
+                              title={isDuplicate ? "このキーは重複して定義されています" : undefined}
                             >
                               {entry.key}
                               {isDuplicate && (
-                                <span
-                                  className="sr-only"
-                                  aria-label="重複キー"
-                                >
+                                <span className="sr-only" aria-label="重複キー">
                                   （重複）
                                 </span>
                               )}
                             </span>
                           </td>
                           <td className="env-parser-table-value">
-                            {entry.value === "" ? (
-                              <em aria-label="空の値">（空）</em>
-                            ) : (
-                              entry.value
-                            )}
+                            {entry.value === "" ? <em aria-label="空の値">（空）</em> : entry.value}
                           </td>
                         </tr>
                       );
@@ -339,11 +298,7 @@ function EnvParser() {
         {parseResult && parseResult.entries.length > 0 && (
           <section aria-label="エクスポート形式">
             <div className="section-title">エクスポート</div>
-            <div
-              className="env-parser-tabs"
-              role="tablist"
-              aria-label="エクスポート形式タブ"
-            >
+            <div className="env-parser-tabs" role="tablist" aria-label="エクスポート形式タブ">
               {EXPORT_TABS.map((tab) => (
                 <button
                   key={tab}

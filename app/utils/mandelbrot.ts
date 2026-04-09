@@ -21,7 +21,7 @@ export interface MandelbrotViewport {
 }
 
 /** カラースキーム種別 */
-export type ColorScheme = 'classic' | 'fire' | 'ocean' | 'grayscale' | 'neon';
+export type ColorScheme = "classic" | "fire" | "ocean" | "grayscale" | "neon";
 
 /** デフォルトのビューポート（全体像が見える範囲） */
 export const DEFAULT_VIEWPORT: MandelbrotViewport = {
@@ -38,11 +38,7 @@ export const DEFAULT_VIEWPORT: MandelbrotViewport = {
  * @param maxIter - 最大反復回数
  * @returns 発散するまでの反復回数（発散しない場合は maxIter）
  */
-export function mandelbrotIterations(
-  cx: number,
-  cy: number,
-  maxIter: number
-): number {
+export function mandelbrotIterations(cx: number, cy: number, maxIter: number): number {
   let zx = 0;
   let zy = 0;
   let iter = 0;
@@ -64,11 +60,7 @@ export function mandelbrotIterations(
  * @param maxIter - 最大反復回数
  * @returns スムーズな反復値（0〜maxIter）
  */
-export function mandelbrotSmooth(
-  cx: number,
-  cy: number,
-  maxIter: number
-): number {
+export function mandelbrotSmooth(cx: number, cy: number, maxIter: number): number {
   let zx = 0;
   let zy = 0;
   let iter = 0;
@@ -98,7 +90,7 @@ export function mandelbrotSmooth(
 export function iterationsToColor(
   iterations: number,
   maxIter: number,
-  scheme: ColorScheme
+  scheme: ColorScheme,
 ): [number, number, number] {
   // 集合内（発散しない点）は黒
   if (iterations >= maxIter) return [0, 0, 0];
@@ -106,32 +98,32 @@ export function iterationsToColor(
   const t = iterations / maxIter;
 
   switch (scheme) {
-    case 'classic': {
+    case "classic": {
       // 青〜シアン〜白のグラデーション
       const r = Math.floor(9 * (1 - t) * t * t * t * 255);
       const g = Math.floor(15 * (1 - t) * (1 - t) * t * t * 255);
       const b = Math.floor(8.5 * (1 - t) * (1 - t) * (1 - t) * t * 255);
       return [r, g, b];
     }
-    case 'fire': {
+    case "fire": {
       // 黒〜赤〜オレンジ〜黄〜白
       const r = Math.min(255, Math.floor(t * 3 * 255));
       const g = Math.min(255, Math.max(0, Math.floor((t * 3 - 1) * 255)));
       const b = Math.min(255, Math.max(0, Math.floor((t * 3 - 2) * 255)));
       return [r, g, b];
     }
-    case 'ocean': {
+    case "ocean": {
       // 黒〜濃紺〜青〜シアン〜白
       const r = Math.min(255, Math.max(0, Math.floor((t - 0.5) * 2 * 255)));
       const g = Math.min(255, Math.floor(t * t * 255));
       const b = Math.min(255, Math.floor(Math.sqrt(t) * 255));
       return [r, g, b];
     }
-    case 'grayscale': {
+    case "grayscale": {
       const v = Math.floor(t * 255);
       return [v, v, v];
     }
-    case 'neon': {
+    case "neon": {
       // 周期的な虹色
       const hue = (t * 360 * 5) % 360;
       return hsvToRgb(hue, 1, t < 0.01 ? 0 : 1);
@@ -148,11 +140,7 @@ export function iterationsToColor(
  * @param v - 明度 (0〜1)
  * @returns [r, g, b] (0〜255)
  */
-export function hsvToRgb(
-  h: number,
-  s: number,
-  v: number
-): [number, number, number] {
+export function hsvToRgb(h: number, s: number, v: number): [number, number, number] {
   const c = v * s;
   const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
   const m = v - c;
@@ -186,11 +174,7 @@ export function hsvToRgb(
     b = x;
   }
 
-  return [
-    Math.round((r + m) * 255),
-    Math.round((g + m) * 255),
-    Math.round((b + m) * 255),
-  ];
+  return [Math.round((r + m) * 255), Math.round((g + m) * 255), Math.round((b + m) * 255)];
 }
 
 /**
@@ -207,7 +191,7 @@ export function screenToComplex(
   py: number,
   viewport: MandelbrotViewport,
   width: number,
-  height: number
+  height: number,
 ): [number, number] {
   const cx = viewport.xMin + (px / width) * (viewport.xMax - viewport.xMin);
   const cy = viewport.yMax - (py / height) * (viewport.yMax - viewport.yMin);
@@ -226,7 +210,7 @@ export function zoomViewport(
   centerX: number,
   centerY: number,
   viewport: MandelbrotViewport,
-  factor: number
+  factor: number,
 ): MandelbrotViewport {
   const halfW = (viewport.xMax - viewport.xMin) / (2 * factor);
   const halfH = (viewport.yMax - viewport.yMin) / (2 * factor);
@@ -252,23 +236,23 @@ export function getZoomLevel(viewport: MandelbrotViewport): number {
 /** 有名な座標のプリセット */
 export const MANDELBROT_PRESETS = [
   {
-    label: '全体像',
+    label: "全体像",
     viewport: DEFAULT_VIEWPORT,
   },
   {
-    label: '海馬の谷',
+    label: "海馬の谷",
     viewport: { xMin: -0.76, xMax: -0.74, yMin: 0.09, yMax: 0.11 },
   },
   {
-    label: 'ミニブロット',
+    label: "ミニブロット",
     viewport: { xMin: -1.78, xMax: -1.74, yMin: -0.02, yMax: 0.02 },
   },
   {
-    label: 'スパイラル',
+    label: "スパイラル",
     viewport: { xMin: -0.747, xMax: -0.736, yMin: 0.116, yMax: 0.127 },
   },
   {
-    label: '象の谷',
+    label: "象の谷",
     viewport: { xMin: 0.281, xMax: 0.285, yMin: 0.012, yMax: 0.016 },
   },
 ] as const;

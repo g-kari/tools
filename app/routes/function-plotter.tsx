@@ -1,14 +1,8 @@
-import { createFileRoute } from '@tanstack/react-router';
-import {
-  useState,
-  useEffect,
-  useRef,
-  useCallback,
-  useMemo,
-} from 'react';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
-import { TipsCard } from '~/components/TipsCard';
-import { useToast } from '~/components/Toast';
+import { createFileRoute } from "@tanstack/react-router";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
+import { TipsCard } from "~/components/TipsCard";
+import { useToast } from "~/components/Toast";
 import {
   PLOT_COLORS,
   SAMPLE_FUNCTIONS,
@@ -21,31 +15,31 @@ import {
   type PlotData,
   type PlotRange,
   type PlotColor,
-} from '~/utils/function-plotter';
+} from "~/utils/function-plotter";
 
-export const Route = createFileRoute('/function-plotter')({
+export const Route = createFileRoute("/function-plotter")({
   head: () => ({
     meta: [
-      { title: '関数グラフ描画 | Web ツール集' },
+      { title: "関数グラフ描画 | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          '数学関数のグラフをブラウザ内でリアルタイム描画するツール。sin・cos・tan・log・exp・x^2 などに対応。複数関数の重ね描き、ズーム・パン操作、PNG出力が可能。',
+          "数学関数のグラフをブラウザ内でリアルタイム描画するツール。sin・cos・tan・log・exp・x^2 などに対応。複数関数の重ね描き、ズーム・パン操作、PNG出力が可能。",
       },
-      { property: 'og:title', content: '関数グラフ描画 | Web ツール集' },
+      { property: "og:title", content: "関数グラフ描画 | Web ツール集" },
       {
-        property: 'og:description',
+        property: "og:description",
         content:
-          '数学関数のグラフをブラウザ内でリアルタイム描画するツール。複数関数の重ね描き、ズーム・パン操作対応。',
+          "数学関数のグラフをブラウザ内でリアルタイム描画するツール。複数関数の重ね描き、ズーム・パン操作対応。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/function-plotter` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
-      { name: 'twitter:title', content: '関数グラフ描画 | Web ツール集' },
+      { property: "og:url", content: `${SITE_BASE_URL}/function-plotter` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "関数グラフ描画 | Web ツール集" },
       {
-        name: 'twitter:description',
+        name: "twitter:description",
         content:
-          '数学関数のグラフをブラウザ内でリアルタイム描画するツール。sin・cos・exp・x^2など対応。',
+          "数学関数のグラフをブラウザ内でリアルタイム描画するツール。sin・cos・exp・x^2など対応。",
       },
     ],
   }),
@@ -60,13 +54,13 @@ const CANVAS_HEIGHT = 480;
 
 /** テーマカラー（CSS変数から取得できないため固定値） */
 const THEME = {
-  bg: '#121212',
-  surface: '#1e1e1e',
-  gridMinor: 'rgba(255,255,255,0.04)',
-  gridMajor: 'rgba(255,255,255,0.10)',
-  axis: 'rgba(255,255,255,0.30)',
-  axisLabel: 'rgba(255,255,255,0.45)',
-  text: 'rgba(255,255,255,0.60)',
+  bg: "#121212",
+  surface: "#1e1e1e",
+  gridMinor: "rgba(255,255,255,0.04)",
+  gridMajor: "rgba(255,255,255,0.10)",
+  axis: "rgba(255,255,255,0.30)",
+  axisLabel: "rgba(255,255,255,0.45)",
+  text: "rgba(255,255,255,0.60)",
 } as const;
 
 /** ワールド座標 → キャンバスピクセル変換 */
@@ -75,7 +69,7 @@ function worldToCanvas(
   wy: number,
   range: PlotRange,
   canvasW: number,
-  canvasH: number
+  canvasH: number,
 ): [number, number] {
   const cx = ((wx - range.xMin) / (range.xMax - range.xMin)) * canvasW;
   const cy = (1 - (wy - range.yMin) / (range.yMax - range.yMin)) * canvasH;
@@ -88,7 +82,7 @@ function canvasToWorld(
   cy: number,
   range: PlotRange,
   canvasW: number,
-  canvasH: number
+  canvasH: number,
 ): [number, number] {
   const wx = (cx / canvasW) * (range.xMax - range.xMin) + range.xMin;
   const wy = (1 - cy / canvasH) * (range.yMax - range.yMin) + range.yMin;
@@ -103,7 +97,7 @@ function drawPlot(
   range: PlotRange,
   allData: PlotData[],
   w: number,
-  h: number
+  h: number,
 ): void {
   // 背景
   ctx.fillStyle = THEME.bg;
@@ -145,8 +139,8 @@ function drawPlot(
   // 軸ラベル
   ctx.fillStyle = THEME.axisLabel;
   ctx.font = '11px "JetBrains Mono", "Space Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'top';
+  ctx.textAlign = "center";
+  ctx.textBaseline = "top";
 
   const [, y0cy] = worldToCanvas(0, 0, range, w, h);
   const labelY = Math.min(h - 16, Math.max(4, y0cy + 4));
@@ -158,8 +152,8 @@ function drawPlot(
     ctx.fillText(label, cx, labelY);
   }
 
-  ctx.textAlign = 'right';
-  ctx.textBaseline = 'middle';
+  ctx.textAlign = "right";
+  ctx.textBaseline = "middle";
   const [x0cx] = worldToCanvas(0, 0, range, w, h);
   const labelX = Math.max(36, Math.min(w - 4, x0cx - 4));
 
@@ -178,8 +172,8 @@ function drawPlot(
 
     ctx.strokeStyle = data.color;
     ctx.lineWidth = 2;
-    ctx.lineJoin = 'round';
-    ctx.lineCap = 'round';
+    ctx.lineJoin = "round";
+    ctx.lineCap = "round";
 
     for (const seg of segments) {
       if (seg.length < 2) continue;
@@ -211,10 +205,10 @@ function FunctionPlotterPage() {
 
   // 関数リスト
   const [functions, setFunctions] = useState<PlotFunction[]>([
-    { expression: 'sin(x)', color: PLOT_COLORS[0], enabled: true },
-    { expression: '', color: PLOT_COLORS[1], enabled: true },
-    { expression: '', color: PLOT_COLORS[2], enabled: true },
-    { expression: '', color: PLOT_COLORS[3], enabled: true },
+    { expression: "sin(x)", color: PLOT_COLORS[0], enabled: true },
+    { expression: "", color: PLOT_COLORS[1], enabled: true },
+    { expression: "", color: PLOT_COLORS[2], enabled: true },
+    { expression: "", color: PLOT_COLORS[3], enabled: true },
   ]);
 
   // 表示範囲
@@ -246,14 +240,14 @@ function FunctionPlotterPage() {
   // プロットデータ計算
   const allData = useMemo(
     () => buildAllPlotData(functions, range.xMin, range.xMax, Math.max(300, canvasWidth)),
-    [functions, range.xMin, range.xMax, canvasWidth]
+    [functions, range.xMin, range.xMax, canvasWidth],
   );
 
   // キャンバス描画
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
     drawPlot(ctx, range, allData, canvasWidth, CANVAS_HEIGHT);
   }, [range, allData, canvasWidth]);
@@ -294,11 +288,11 @@ function FunctionPlotterPage() {
   const handleExport = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const link = document.createElement('a');
-    link.download = 'function-plot.png';
-    link.href = canvas.toDataURL('image/png');
+    const link = document.createElement("a");
+    link.download = "function-plot.png";
+    link.href = canvas.toDataURL("image/png");
     link.click();
-    showToast('PNGを保存しました', 'success');
+    showToast("PNGを保存しました", "success");
   }, [showToast]);
 
   // ホイールズーム
@@ -325,7 +319,7 @@ function FunctionPlotterPage() {
         yMax: parseFloat(newYMax.toPrecision(5)).toString(),
       });
     },
-    [range, canvasWidth]
+    [range, canvasWidth],
   );
 
   // パン開始
@@ -337,7 +331,7 @@ function FunctionPlotterPage() {
       const cy = (e.clientY - rect.top) * (CANVAS_HEIGHT / rect.height);
       panRef.current = { startX: cx, startY: cy, startRange: { ...range } };
     },
-    [range, canvasWidth]
+    [range, canvasWidth],
   );
 
   // パン中
@@ -374,7 +368,7 @@ function FunctionPlotterPage() {
         yMax: parseFloat(newRange.yMax.toPrecision(5)).toString(),
       });
     },
-    [range, canvasWidth]
+    [range, canvasWidth],
   );
 
   const handleMouseUp = useCallback(() => {
@@ -395,25 +389,22 @@ function FunctionPlotterPage() {
         return next;
       });
     },
-    []
+    [],
   );
 
   // サンプル関数を最初の空欄に適用
-  const handleSampleClick = useCallback(
-    (expr: string) => {
-      setFunctions((prev) => {
-        const next = [...prev];
-        // 空欄か無効な入力の最初のスロットを探す
-        const idx = next.findIndex(
-          (f) => !f.expression.trim() || compileExpression(f.expression).fn === null
-        );
-        const slot = idx >= 0 ? idx : 0;
-        next[slot] = { ...next[slot], expression: expr, enabled: true };
-        return next;
-      });
-    },
-    []
-  );
+  const handleSampleClick = useCallback((expr: string) => {
+    setFunctions((prev) => {
+      const next = [...prev];
+      // 空欄か無効な入力の最初のスロットを探す
+      const idx = next.findIndex(
+        (f) => !f.expression.trim() || compileExpression(f.expression).fn === null,
+      );
+      const slot = idx >= 0 ? idx : 0;
+      next[slot] = { ...next[slot], expression: expr, enabled: true };
+      return next;
+    });
+  }, []);
 
   // バリデーション
   const errors = useMemo(
@@ -425,7 +416,7 @@ function FunctionPlotterPage() {
           return error ? { expr: f.expression, msg: error, color: f.color } : null;
         })
         .filter(Boolean) as { expr: string; msg: string; color: PlotColor }[],
-    [functions]
+    [functions],
   );
 
   // 凡例（有効な関数のみ）
@@ -434,7 +425,7 @@ function FunctionPlotterPage() {
       functions
         .filter((f) => f.enabled && f.expression.trim() && !compileExpression(f.expression).error)
         .map((f) => ({ expr: f.expression, color: f.color })),
-    [functions]
+    [functions],
   );
 
   return (
@@ -446,10 +437,7 @@ function FunctionPlotterPage() {
         <div className="fp-functions-section">
           <p className="fp-section-label">y = f(x) を入力（最大4つ）</p>
           {functions.map((fn, i) => (
-            <div
-              key={i}
-              className={`fp-function-row${!fn.enabled ? ' disabled' : ''}`}
-            >
+            <div key={i} className={`fp-function-row${!fn.enabled ? " disabled" : ""}`}>
               <span
                 className="fp-color-indicator"
                 style={{ backgroundColor: fn.color }}
@@ -458,25 +446,23 @@ function FunctionPlotterPage() {
               <input
                 type="text"
                 className={`fp-function-input${
-                  fn.enabled &&
-                  fn.expression.trim() &&
-                  compileExpression(fn.expression).error
-                    ? ' error'
-                    : ''
+                  fn.enabled && fn.expression.trim() && compileExpression(fn.expression).error
+                    ? " error"
+                    : ""
                 }`}
                 value={fn.expression}
-                onChange={(e) => updateFunction(i, 'expression', e.target.value)}
-                placeholder={i === 0 ? '例: sin(x)' : `関数 ${i + 1}（省略可）`}
+                onChange={(e) => updateFunction(i, "expression", e.target.value)}
+                placeholder={i === 0 ? "例: sin(x)" : `関数 ${i + 1}（省略可）`}
                 aria-label={`関数 ${i + 1} の数式入力`}
                 disabled={!fn.enabled}
               />
               <button
-                className={`fp-toggle-btn${fn.enabled ? ' active' : ''}`}
-                onClick={() => updateFunction(i, 'enabled', !fn.enabled)}
+                className={`fp-toggle-btn${fn.enabled ? " active" : ""}`}
+                onClick={() => updateFunction(i, "enabled", !fn.enabled)}
                 aria-pressed={fn.enabled}
-                aria-label={`関数 ${i + 1} を${fn.enabled ? '無効化' : '有効化'}`}
+                aria-label={`関数 ${i + 1} を${fn.enabled ? "無効化" : "有効化"}`}
               >
-                {fn.enabled ? 'ON' : 'OFF'}
+                {fn.enabled ? "ON" : "OFF"}
               </button>
             </div>
           ))}
@@ -519,11 +505,9 @@ function FunctionPlotterPage() {
               type="number"
               className="fp-range-input"
               value={rangeInputs.xMin}
-              onChange={(e) =>
-                setRangeInputs((p) => ({ ...p, xMin: e.target.value }))
-              }
+              onChange={(e) => setRangeInputs((p) => ({ ...p, xMin: e.target.value }))}
               onBlur={handleRangeCommit}
-              onKeyDown={(e) => e.key === 'Enter' && handleRangeCommit()}
+              onKeyDown={(e) => e.key === "Enter" && handleRangeCommit()}
               aria-label="x軸最小値"
             />
             <span className="fp-range-separator">〜</span>
@@ -532,11 +516,9 @@ function FunctionPlotterPage() {
               type="number"
               className="fp-range-input"
               value={rangeInputs.xMax}
-              onChange={(e) =>
-                setRangeInputs((p) => ({ ...p, xMax: e.target.value }))
-              }
+              onChange={(e) => setRangeInputs((p) => ({ ...p, xMax: e.target.value }))}
               onBlur={handleRangeCommit}
-              onKeyDown={(e) => e.key === 'Enter' && handleRangeCommit()}
+              onKeyDown={(e) => e.key === "Enter" && handleRangeCommit()}
               aria-label="x軸最大値"
             />
           </div>
@@ -549,11 +531,9 @@ function FunctionPlotterPage() {
               type="number"
               className="fp-range-input"
               value={rangeInputs.yMin}
-              onChange={(e) =>
-                setRangeInputs((p) => ({ ...p, yMin: e.target.value }))
-              }
+              onChange={(e) => setRangeInputs((p) => ({ ...p, yMin: e.target.value }))}
               onBlur={handleRangeCommit}
-              onKeyDown={(e) => e.key === 'Enter' && handleRangeCommit()}
+              onKeyDown={(e) => e.key === "Enter" && handleRangeCommit()}
               aria-label="y軸最小値"
             />
             <span className="fp-range-separator">〜</span>
@@ -562,11 +542,9 @@ function FunctionPlotterPage() {
               type="number"
               className="fp-range-input"
               value={rangeInputs.yMax}
-              onChange={(e) =>
-                setRangeInputs((p) => ({ ...p, yMax: e.target.value }))
-              }
+              onChange={(e) => setRangeInputs((p) => ({ ...p, yMax: e.target.value }))}
               onBlur={handleRangeCommit}
-              onKeyDown={(e) => e.key === 'Enter' && handleRangeCommit()}
+              onKeyDown={(e) => e.key === "Enter" && handleRangeCommit()}
               aria-label="y軸最大値"
             />
           </div>
@@ -626,7 +604,11 @@ function FunctionPlotterPage() {
           <button className="fp-reset-btn" onClick={handleReset} aria-label="表示範囲をリセット">
             範囲リセット
           </button>
-          <button className="fp-export-btn" onClick={handleExport} aria-label="グラフをPNGとして保存">
+          <button
+            className="fp-export-btn"
+            onClick={handleExport}
+            aria-label="グラフをPNGとして保存"
+          >
             PNG 保存
           </button>
         </div>
@@ -634,42 +616,42 @@ function FunctionPlotterPage() {
         <TipsCard
           sections={[
             {
-              title: '使い方',
+              title: "使い方",
               items: [
-                '「y = f(x)」の右辺の式を入力するとグラフが即座に描画されます',
-                '最大4つの関数を同時に描画できます',
-                'ドラッグでパン、マウスホイールでズームが可能です',
-                'サンプルボタンをクリックすると関数式を入力できます',
+                "「y = f(x)」の右辺の式を入力するとグラフが即座に描画されます",
+                "最大4つの関数を同時に描画できます",
+                "ドラッグでパン、マウスホイールでズームが可能です",
+                "サンプルボタンをクリックすると関数式を入力できます",
               ],
             },
             {
-              title: '使用できる関数・定数',
+              title: "使用できる関数・定数",
               items: [
-                '三角関数: sin(x), cos(x), tan(x), asin(x), acos(x), atan(x)',
-                '双曲線関数: sinh(x), cosh(x), tanh(x)',
-                '指数・対数: exp(x), log(x), log2(x), log10(x)',
-                '基本: sqrt(x), cbrt(x), abs(x), pow(x,n), sign(x)',
-                '定数: PI (≈3.14159), E (≈2.71828), SQRT2, LN2, INF',
+                "三角関数: sin(x), cos(x), tan(x), asin(x), acos(x), atan(x)",
+                "双曲線関数: sinh(x), cosh(x), tanh(x)",
+                "指数・対数: exp(x), log(x), log2(x), log10(x)",
+                "基本: sqrt(x), cbrt(x), abs(x), pow(x,n), sign(x)",
+                "定数: PI (≈3.14159), E (≈2.71828), SQRT2, LN2, INF",
               ],
             },
             {
-              title: '演算子',
+              title: "演算子",
               items: [
-                '+ - * / : 四則演算',
-                '^ : べき乗（例: x^2, x^3）',
-                '% : 剰余（例: x % 2）',
-                '括弧 () : 優先順位制御',
+                "+ - * / : 四則演算",
+                "^ : べき乗（例: x^2, x^3）",
+                "% : 剰余（例: x % 2）",
+                "括弧 () : 優先順位制御",
               ],
             },
             {
-              title: '記述例',
+              title: "記述例",
               items: [
-                'sin(x) — サイン曲線',
-                'x^2 - 2*x + 1 — 二次関数',
-                '1/x — 双曲線',
-                'abs(x) — 絶対値',
-                'sin(x*PI)/x — sinc関数',
-                'floor(x) — 階段関数',
+                "sin(x) — サイン曲線",
+                "x^2 - 2*x + 1 — 二次関数",
+                "1/x — 双曲線",
+                "abs(x) — 絶対値",
+                "sin(x*PI)/x — sinc関数",
+                "floor(x) — 階段関数",
               ],
             },
           ]}

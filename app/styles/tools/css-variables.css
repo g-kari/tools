@@ -28,7 +28,7 @@
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: 0;
   color: var(--md-sys-color-on-surface);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.85rem;
   line-height: 1.6;
   resize: vertical;
@@ -157,7 +157,7 @@
 .css-variables-stat-value {
   font-weight: 700;
   color: var(--md-sys-color-primary);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
 }
 
 /* 変数リスト */
@@ -197,7 +197,8 @@
   border-radius: 2px;
   flex-shrink: 0;
   background: transparent;
-  background-image: linear-gradient(45deg, #ccc 25%, transparent 25%),
+  background-image:
+    linear-gradient(45deg, #ccc 25%, transparent 25%),
     linear-gradient(-45deg, #ccc 25%, transparent 25%),
     linear-gradient(45deg, transparent 75%, #ccc 75%),
     linear-gradient(-45deg, transparent 75%, #ccc 75%);
@@ -223,7 +224,7 @@
 }
 
 .css-variables-name {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.8rem;
   font-weight: 600;
   color: var(--md-sys-color-primary);
@@ -233,7 +234,7 @@
 }
 
 .css-variables-value {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.75rem;
   color: var(--md-sys-color-on-surface-variant);
   white-space: nowrap;
@@ -318,7 +319,7 @@
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: 0;
   color: var(--md-sys-color-on-surface);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.78rem;
   line-height: 1.5;
   resize: vertical;

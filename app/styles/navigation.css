@@ -25,7 +25,10 @@
   font-weight: 500;
   font-family: "JetBrains Mono", monospace;
   cursor: pointer;
-  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s,
+    color 0.2s;
   min-width: auto;
   text-transform: none;
   letter-spacing: normal;
@@ -101,7 +104,10 @@
   font-size: 13px;
   font-family: "JetBrains Mono", monospace;
   border-left: 2px solid transparent;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s;
 }
 
 .nav-dropdown-item:hover {

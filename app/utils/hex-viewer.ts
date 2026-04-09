@@ -37,7 +37,7 @@ export const DEFAULT_HEX_OPTIONS: HexViewerOptions = {
  * @returns 2桁の16進数文字列
  */
 export function byteToHex(byte: number, uppercase: boolean): string {
-  const hex = byte.toString(16).padStart(2, '0');
+  const hex = byte.toString(16).padStart(2, "0");
   return uppercase ? hex.toUpperCase() : hex;
 }
 
@@ -51,7 +51,7 @@ export function byteToAsciiChar(byte: number): string {
   if (byte >= 0x20 && byte <= 0x7e) {
     return String.fromCharCode(byte);
   }
-  return '.';
+  return ".";
 }
 
 /**
@@ -61,7 +61,7 @@ export function byteToAsciiChar(byte: number): string {
  * @returns 8桁の16進数オフセット文字列
  */
 export function formatOffset(offset: number, uppercase: boolean): string {
-  const hex = offset.toString(16).padStart(8, '0');
+  const hex = offset.toString(16).padStart(8, "0");
   return uppercase ? hex.toUpperCase() : hex;
 }
 
@@ -79,14 +79,14 @@ export function toHexRows(data: Uint8Array, options: HexViewerOptions): HexRow[]
   for (let offset = 0; offset < limitedData.length; offset += bytesPerRow) {
     const rowBytes = limitedData.slice(offset, offset + bytesPerRow);
     const hexBytes: string[] = [];
-    let ascii = '';
+    let ascii = "";
 
     for (let i = 0; i < bytesPerRow; i++) {
       if (i < rowBytes.length) {
         hexBytes.push(byteToHex(rowBytes[i], uppercase));
         ascii += byteToAsciiChar(rowBytes[i]);
       } else {
-        hexBytes.push('');
+        hexBytes.push("");
       }
     }
 
@@ -113,12 +113,12 @@ export function toHexDumpText(data: Uint8Array, options: HexViewerOptions): stri
 
     const hexPart = Array.from(rowBytes)
       .map((b) => byteToHex(b, uppercase))
-      .join(' ')
+      .join(" ")
       .padEnd(bytesPerRow * 3 - 1);
 
     const asciiPart = Array.from(rowBytes)
       .map((b) => byteToAsciiChar(b))
-      .join('');
+      .join("");
 
     lines.push(`${offsetStr}: ${hexPart}  ${asciiPart}`);
   }
@@ -127,7 +127,7 @@ export function toHexDumpText(data: Uint8Array, options: HexViewerOptions): stri
     lines.push(`... (${data.length - maxBytes} バイト省略)`);
   }
 
-  return lines.join('\n');
+  return lines.join("\n");
 }
 
 /**

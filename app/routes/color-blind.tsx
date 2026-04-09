@@ -78,11 +78,7 @@ function SimulationCard({
   onDownload: (info: CvdInfo) => void;
 }) {
   return (
-    <div
-      className="cvd-card"
-      role="group"
-      aria-label={`${info.label} シミュレーション`}
-    >
+    <div className="cvd-card" role="group" aria-label={`${info.label} シミュレーション`}>
       <div className="cvd-card-header">
         <span className="cvd-card-label">{info.label}</span>
         <span className="cvd-card-english">{info.english}</span>
@@ -129,7 +125,7 @@ function ColorBlindSimulator() {
       setImageUrl(url);
       setImageFile(file);
     },
-    [imageUrl]
+    [imageUrl],
   );
 
   const handleDownload = useCallback(
@@ -155,7 +151,7 @@ function ColorBlindSimulator() {
         showToast("ダウンロードに失敗しました", "error");
       }
     },
-    [imageFile, showToast]
+    [imageFile, showToast],
   );
 
   const handleClear = useCallback(() => {
@@ -173,9 +169,7 @@ function ColorBlindSimulator() {
           <h2 className="section-title">画像をアップロード</h2>
           <ImageUploadZone
             onFileSelect={handleFileSelect}
-            onTypeError={() =>
-              showToast("画像ファイルを選択してください", "error")
-            }
+            onTypeError={() => showToast("画像ファイルを選択してください", "error")}
             text="クリックして画像を選択、またはドラッグ&ドロップ"
             hint="PNG, JPEG, WebP など"
             ariaLabel="色覚シミュレーション用の画像をアップロード"
@@ -199,11 +193,7 @@ function ColorBlindSimulator() {
                 </button>
               </div>
               <div className="cvd-original-wrapper">
-                <img
-                  src={imageUrl}
-                  alt="アップロードした元の画像"
-                  className="cvd-original-image"
-                />
+                <img src={imageUrl} alt="アップロードした元の画像" className="cvd-original-image" />
               </div>
             </div>
 
@@ -211,13 +201,9 @@ function ColorBlindSimulator() {
             <div className="converter-section">
               <h2 className="section-title">色覚シミュレーション</h2>
               <p className="cvd-grid-hint">
-                各カードの「ダウンロード」ボタンでシミュレーション結果を PNG
-                で保存できます
+                各カードの「ダウンロード」ボタンでシミュレーション結果を PNG で保存できます
               </p>
-              <div
-                className="cvd-grid"
-                aria-label="色覚異常シミュレーション一覧"
-              >
+              <div className="cvd-grid" aria-label="色覚異常シミュレーション一覧">
                 {CVD_INFOS.map((info) => (
                   <SimulationCard
                     key={info.id}

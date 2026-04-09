@@ -6,14 +6,7 @@
 /**
  * HTTPメソッド
  */
-export type HttpMethod =
-  | "GET"
-  | "POST"
-  | "PUT"
-  | "PATCH"
-  | "DELETE"
-  | "HEAD"
-  | "OPTIONS";
+export type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "HEAD" | "OPTIONS";
 
 /**
  * ボディの種類
@@ -203,7 +196,7 @@ export function buildCurlCommand(config: CurlBuilderConfig): string {
  * サンプル設定の定義
  */
 export const SAMPLE_CONFIGS: Record<string, CurlBuilderConfig> = {
-  "GET基本": {
+  GET基本: {
     method: "GET",
     url: "https://api.example.com/users",
     headers: [{ id: "1", key: "Accept", value: "application/json", enabled: true }],
@@ -239,7 +232,7 @@ export const SAMPLE_CONFIGS: Record<string, CurlBuilderConfig> = {
     },
     outputFormat: "multiline",
   },
-  "フォーム送信": {
+  フォーム送信: {
     method: "POST",
     url: "https://example.com/login",
     headers: [
@@ -257,7 +250,7 @@ export const SAMPLE_CONFIGS: Record<string, CurlBuilderConfig> = {
     },
     outputFormat: "multiline",
   },
-  "ファイルダウンロード": {
+  ファイルダウンロード: {
     method: "GET",
     url: "https://example.com/file.zip",
     headers: [],

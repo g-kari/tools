@@ -75,9 +75,7 @@ export const Route = createFileRoute("/api/image.webp")({
 
           // キャッシュミス: SVG→PNG→WebPに変換
           const url = new URL(request.url);
-          const { width, height, bgColor, textColor } = parseImageParams(
-            url.searchParams
-          );
+          const { width, height, bgColor, textColor } = parseImageParams(url.searchParams);
 
           const svg = generateSvgImage(width, height, bgColor, textColor);
           const pngBuffer = await convertSvgToPng(svg);

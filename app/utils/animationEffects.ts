@@ -8,16 +8,24 @@ import {
   type GSAPAnimationConfig,
   type GSAPEasingType,
   type EasingDirection,
-} from './gsapAnimationEngine';
+} from "./gsapAnimationEngine";
 
 // Re-export GSAP types for convenience
 export type { GSAPEasingType, EasingDirection };
 
 /** アニメーションエフェクトの種類 */
-export type AnimationEffectType = 'bounce' | 'shake' | 'rotate' | 'pulse' | 'fade' | 'slide' | 'wobble' | 'pop';
+export type AnimationEffectType =
+  | "bounce"
+  | "shake"
+  | "rotate"
+  | "pulse"
+  | "fade"
+  | "slide"
+  | "wobble"
+  | "pop";
 
 /** アニメーション速度のプリセット */
-export type AnimationSpeed = 'slow' | 'normal' | 'fast';
+export type AnimationSpeed = "slow" | "normal" | "fast";
 
 /**
  * アニメーション設定
@@ -56,14 +64,14 @@ const SPEED_MULTIPLIERS: Record<AnimationSpeed, number> = {
 export function generateAnimationFrames(
   baseCanvas: HTMLCanvasElement,
   config: AnimationConfig,
-  fps: number = 12
+  fps: number = 12,
 ): HTMLCanvasElement[] {
   // Use GSAP engine if enabled
   if (config.useGSAP) {
     const gsapConfig: GSAPAnimationConfig = {
       effect: config.effect,
-      easing: config.gsapEasing || 'bounce',
-      easingDirection: config.easingDirection || 'out',
+      easing: config.gsapEasing || "bounce",
+      easingDirection: config.easingDirection || "out",
       fps: fps,
       duration: config.duration || 1.0,
       loop: config.loop,
@@ -85,7 +93,7 @@ export function generateAnimationFrames(
 function generateLegacyFrames(
   baseCanvas: HTMLCanvasElement,
   config: AnimationConfig,
-  fps: number
+  fps: number,
 ): HTMLCanvasElement[] {
   const speedMultiplier = SPEED_MULTIPLIERS[config.speed];
   const duration = 1.0 / speedMultiplier; // Duration in seconds
@@ -111,12 +119,12 @@ function generateLegacyFrames(
 function createAnimationFrame(
   baseCanvas: HTMLCanvasElement,
   effect: AnimationEffectType,
-  progress: number
+  progress: number,
 ): HTMLCanvasElement {
-  const canvas = document.createElement('canvas');
+  const canvas = document.createElement("canvas");
   canvas.width = baseCanvas.width;
   canvas.height = baseCanvas.height;
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext("2d");
 
   if (!ctx) {
     return canvas;
@@ -129,22 +137,22 @@ function createAnimationFrame(
   ctx.save();
 
   switch (effect) {
-    case 'bounce':
+    case "bounce":
       applyBounceEffect(ctx, canvas, baseCanvas, progress);
       break;
-    case 'shake':
+    case "shake":
       applyShakeEffect(ctx, canvas, baseCanvas, progress);
       break;
-    case 'rotate':
+    case "rotate":
       applyRotateEffect(ctx, canvas, baseCanvas, progress);
       break;
-    case 'pulse':
+    case "pulse":
       applyPulseEffect(ctx, canvas, baseCanvas, progress);
       break;
-    case 'fade':
+    case "fade":
       applyFadeEffect(ctx, canvas, baseCanvas, progress);
       break;
-    case 'slide':
+    case "slide":
       applySlideEffect(ctx, canvas, baseCanvas, progress);
       break;
   }
@@ -161,7 +169,7 @@ function applyBounceEffect(
   ctx: CanvasRenderingContext2D,
   canvas: HTMLCanvasElement,
   baseCanvas: HTMLCanvasElement,
-  progress: number
+  progress: number,
 ): void {
   // Easing function for bounce
   const bounce = Math.abs(Math.sin(progress * Math.PI * 2));
@@ -178,7 +186,7 @@ function applyShakeEffect(
   ctx: CanvasRenderingContext2D,
   canvas: HTMLCanvasElement,
   baseCanvas: HTMLCanvasElement,
-  progress: number
+  progress: number,
 ): void {
   const shakeAmount = canvas.width * 0.05; // Shake 5% of width
   const offsetX = Math.sin(progress * Math.PI * 8) * shakeAmount;
@@ -193,7 +201,7 @@ function applyRotateEffect(
   ctx: CanvasRenderingContext2D,
   canvas: HTMLCanvasElement,
   baseCanvas: HTMLCanvasElement,
-  progress: number
+  progress: number,
 ): void {
   const angle = progress * Math.PI * 2; // 0 to 2π
 
@@ -209,7 +217,7 @@ function applyPulseEffect(
   ctx: CanvasRenderingContext2D,
   canvas: HTMLCanvasElement,
   baseCanvas: HTMLCanvasElement,
-  progress: number
+  progress: number,
 ): void {
   // Scale from 0.8 to 1.2
   const scale = 0.8 + Math.abs(Math.sin(progress * Math.PI * 2)) * 0.4;
@@ -226,7 +234,7 @@ function applyFadeEffect(
   ctx: CanvasRenderingContext2D,
   canvas: HTMLCanvasElement,
   baseCanvas: HTMLCanvasElement,
-  progress: number
+  progress: number,
 ): void {
   // Opacity from 0.3 to 1.0
   const opacity = 0.3 + Math.abs(Math.sin(progress * Math.PI * 2)) * 0.7;
@@ -242,7 +250,7 @@ function applySlideEffect(
   ctx: CanvasRenderingContext2D,
   canvas: HTMLCanvasElement,
   baseCanvas: HTMLCanvasElement,
-  progress: number
+  progress: number,
 ): void {
   // Slide from -100% to +100%
   const offsetX = (progress - 0.5) * canvas.width * 1.5;
@@ -257,14 +265,14 @@ function applySlideEffect(
  */
 export function getAnimationEffectLabel(effect: AnimationEffectType): string {
   const labels: Record<AnimationEffectType, string> = {
-    bounce: 'バウンス',
-    shake: 'シェイク',
-    rotate: '回転',
-    pulse: 'パルス',
-    fade: 'フェード',
-    slide: 'スライド',
-    wobble: 'ウォブル',
-    pop: 'ポップ',
+    bounce: "バウンス",
+    shake: "シェイク",
+    rotate: "回転",
+    pulse: "パルス",
+    fade: "フェード",
+    slide: "スライド",
+    wobble: "ウォブル",
+    pop: "ポップ",
   };
   return labels[effect];
 }
@@ -276,9 +284,9 @@ export function getAnimationEffectLabel(effect: AnimationEffectType): string {
  */
 export function getAnimationSpeedLabel(speed: AnimationSpeed): string {
   const labels: Record<AnimationSpeed, string> = {
-    slow: '遅い (0.5x)',
-    normal: '普通 (1x)',
-    fast: '速い (2x)',
+    slow: "遅い (0.5x)",
+    normal: "普通 (1x)",
+    fast: "速い (2x)",
   };
   return labels[speed];
 }

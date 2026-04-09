@@ -27,12 +27,14 @@
 .wc-format-btn {
   padding: 0.375rem 0.75rem;
   font-size: 0.8125rem;
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   background: var(--md-sys-color-surface);
   color: var(--md-sys-color-on-surface-variant);
   border: none;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
   border-right: 1px solid var(--md-sys-color-outline-variant);
 }
 
@@ -53,7 +55,7 @@
 .wc-city-count {
   font-size: 0.8125rem;
   color: var(--md-sys-color-on-surface-variant);
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
 }
 
 /* 都市セレクターパネル */
@@ -79,7 +81,7 @@
   color: var(--md-sys-color-on-surface-variant);
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
 }
 
 .wc-selector-actions {
@@ -95,7 +97,7 @@
   font-size: 0.8125rem;
   color: var(--md-sys-color-primary);
   cursor: pointer;
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   text-decoration: underline;
   transition: opacity 0.15s;
 }
@@ -146,7 +148,7 @@
 .wc-city-label-text {
   font-size: 0.75rem;
   color: var(--md-sys-color-on-surface-variant);
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   margin-left: auto;
   white-space: nowrap;
 }
@@ -206,20 +208,20 @@
   padding: 0.1em 0.45em;
   border-radius: 2px;
   letter-spacing: 0.04em;
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
 }
 
 .wc-offset {
   font-size: 0.75rem;
   color: var(--md-sys-color-on-surface-variant);
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
 }
 
 /* 時刻表示 */
 .wc-time {
   font-size: 2rem;
   font-weight: 700;
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   color: var(--md-sys-color-on-surface);
   line-height: 1.1;
   letter-spacing: -0.02em;
@@ -240,13 +242,13 @@
 .wc-date {
   font-size: 0.8125rem;
   color: var(--md-sys-color-on-surface-variant);
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
 }
 
 .wc-weekday {
   font-size: 0.8125rem;
   color: var(--md-sys-color-on-surface-variant);
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
 }
 
 /* 日付差分バッジ */
@@ -254,7 +256,7 @@
   display: inline-block;
   font-size: 0.6875rem;
   font-weight: 600;
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   padding: 0.1em 0.4em;
   border-radius: 2px;
   letter-spacing: 0.04em;

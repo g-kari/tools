@@ -7,16 +7,16 @@ import { TipsCard } from "~/components/TipsCard";
 export const Route = createFileRoute("/dice-roll")({
   head: () => ({
     meta: [
-    { title: "サイコロ / 乱数生成 | Web ツール集" },
-    { name: "description", content: "サイコロの目や任意範囲の乱数を生成するツール。" },
-    { property: "og:title", content: "サイコロ / 乱数生成 | Web ツール集" },
-    { property: "og:description", content: "サイコロの目や任意範囲の乱数を生成するツール。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/dice-roll` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "サイコロ / 乱数生成 | Web ツール集" },
-    { name: "twitter:description", content: "サイコロの目や任意範囲の乱数を生成するツール。" },
-  ],
+      { title: "サイコロ / 乱数生成 | Web ツール集" },
+      { name: "description", content: "サイコロの目や任意範囲の乱数を生成するツール。" },
+      { property: "og:title", content: "サイコロ / 乱数生成 | Web ツール集" },
+      { property: "og:description", content: "サイコロの目や任意範囲の乱数を生成するツール。" },
+      { property: "og:url", content: `${SITE_BASE_URL}/dice-roll` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "サイコロ / 乱数生成 | Web ツール集" },
+      { name: "twitter:description", content: "サイコロの目や任意範囲の乱数を生成するツール。" },
+    ],
   }),
   component: DiceRoll,
 });
@@ -138,9 +138,7 @@ function DiceRoll() {
       ...prev.slice(0, 9), // 最大10件まで保持
     ]);
 
-    announceStatus(
-      `${notation}をロールしました。結果: ${results.join(", ")}。合計: ${total}`
-    );
+    announceStatus(`${notation}をロールしました。結果: ${results.join(", ")}。合計: ${total}`);
   }, [diceCount, diceSides, announceStatus]);
 
   const handleCopyResult = useCallback(async () => {
@@ -176,9 +174,7 @@ function DiceRoll() {
     { sides: 100, label: "D100" },
   ];
 
-  const total = currentRoll
-    ? currentRoll.reduce((sum, value) => sum + value, 0)
-    : 0;
+  const total = currentRoll ? currentRoll.reduce((sum, value) => sum + value, 0) : 0;
 
   return (
     <>
@@ -203,9 +199,7 @@ function DiceRoll() {
                   max="100"
                   value={diceCount}
                   onChange={(e) =>
-                    setDiceCount(
-                      Math.max(1, Math.min(100, parseInt(e.target.value) || 1))
-                    )
+                    setDiceCount(Math.max(1, Math.min(100, parseInt(e.target.value) || 1)))
                   }
                   aria-describedby="count-help"
                 />
@@ -223,9 +217,7 @@ function DiceRoll() {
                   max="1000"
                   value={diceSides}
                   onChange={(e) =>
-                    setDiceSides(
-                      Math.max(2, Math.min(1000, parseInt(e.target.value) || 6))
-                    )
+                    setDiceSides(Math.max(2, Math.min(1000, parseInt(e.target.value) || 6)))
                   }
                   aria-describedby="sides-help"
                 />
@@ -325,9 +317,7 @@ function DiceRoll() {
                   <div key={entry.timestamp} className="history-item" role="listitem">
                     <div className="history-notation">{entry.notation}</div>
                     <div className="history-details">
-                      <code className="history-results">
-                        {entry.results.join(" + ")}
-                      </code>
+                      <code className="history-results">{entry.results.join(" + ")}</code>
                       <span className="history-total">= {entry.total}</span>
                     </div>
                   </div>
@@ -369,7 +359,6 @@ function DiceRoll() {
         aria-atomic="true"
         className="sr-only"
       />
-
     </>
   );
 }

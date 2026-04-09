@@ -2,10 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState, useCallback, useId } from "react";
 import { useToast } from "~/components/Toast";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 import {
   generateVscodeSnippetJson,
@@ -74,9 +71,7 @@ function SnippetCard({
   return (
     <div className="vscode-snippet-card" aria-label={`スニペット ${index + 1}`}>
       <div className="vscode-snippet-card-header">
-        <span className="vscode-snippet-card-number">
-          Snippet #{index + 1}
-        </span>
+        <span className="vscode-snippet-card-number">Snippet #{index + 1}</span>
         {canRemove && (
           <button
             type="button"
@@ -140,9 +135,7 @@ function SnippetCard({
             id={descId}
             type="text"
             value={snippet.description}
-            onChange={(e) =>
-              onChange(snippet.id, "description", e.target.value)
-            }
+            onChange={(e) => onChange(snippet.id, "description", e.target.value)}
             placeholder="例: console.log shortcut"
             autoComplete="off"
             spellCheck={false}
@@ -189,14 +182,9 @@ function VscodeSnippetPage() {
 
   const output = generateVscodeSnippetJson(snippets);
 
-  const handleChange = useCallback(
-    (id: string, field: keyof SnippetDefinition, value: string) => {
-      setSnippets((prev) =>
-        prev.map((s) => (s.id === id ? { ...s, [field]: value } : s))
-      );
-    },
-    []
-  );
+  const handleChange = useCallback((id: string, field: keyof SnippetDefinition, value: string) => {
+    setSnippets((prev) => prev.map((s) => (s.id === id ? { ...s, [field]: value } : s)));
+  }, []);
 
   const handleAdd = useCallback(() => {
     setSnippets((prev) => [...prev, newSnippet()]);
@@ -208,7 +196,7 @@ function VscodeSnippetPage() {
       setSnippets((prev) => prev.filter((s) => s.id !== id));
       announceStatus("スニペットを削除しました");
     },
-    [announceStatus]
+    [announceStatus],
   );
 
   const handleClear = useCallback(() => {
@@ -235,11 +223,7 @@ function VscodeSnippetPage() {
         <div className="converter-section">
           <h2 className="section-title">スニペット定義</h2>
 
-          <div
-            className="vscode-snippet-list"
-            role="list"
-            aria-label="スニペット定義リスト"
-          >
+          <div className="vscode-snippet-list" role="list" aria-label="スニペット定義リスト">
             {snippets.map((snippet, index) => (
               <div key={snippet.id} role="listitem">
                 <SnippetCard
@@ -255,18 +239,10 @@ function VscodeSnippetPage() {
 
           <div className="vscode-snippet-add-row">
             <div className="button-group" role="group" aria-label="操作">
-              <button
-                type="button"
-                className="btn-secondary"
-                onClick={handleAdd}
-              >
+              <button type="button" className="btn-secondary" onClick={handleAdd}>
                 ＋ スニペットを追加
               </button>
-              <button
-                type="button"
-                className="btn-clear"
-                onClick={handleClear}
-              >
+              <button type="button" className="btn-clear" onClick={handleClear}>
                 リセット
               </button>
             </div>
@@ -279,9 +255,7 @@ function VscodeSnippetPage() {
             <h2 className="section-title">
               生成された JSON
               {output.snippetCount > 0 && (
-                <span className="vscode-snippet-count-badge">
-                  （{output.snippetCount} 件）
-                </span>
+                <span className="vscode-snippet-count-badge">（{output.snippetCount} 件）</span>
               )}
             </h2>
             <button
@@ -304,8 +278,7 @@ function VscodeSnippetPage() {
           />
 
           <p className="vscode-snippet-filename-hint">
-            保存先の例:{" "}
-            <code>~/.config/Code/User/snippets/my-snippets.code-snippets</code>
+            保存先の例: <code>~/.config/Code/User/snippets/my-snippets.code-snippets</code>
           </p>
         </div>
       </div>

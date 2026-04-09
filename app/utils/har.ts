@@ -136,19 +136,19 @@ export function parseHar(text: string): HarFile {
   try {
     parsed = JSON.parse(text);
   } catch {
-    throw new Error('無効なJSONです。HARファイルを確認してください。');
+    throw new Error("無効なJSONです。HARファイルを確認してください。");
   }
 
   if (
-    typeof parsed !== 'object' ||
+    typeof parsed !== "object" ||
     parsed === null ||
-    !('log' in parsed) ||
-    typeof (parsed as { log: unknown }).log !== 'object' ||
+    !("log" in parsed) ||
+    typeof (parsed as { log: unknown }).log !== "object" ||
     (parsed as { log: unknown }).log === null ||
-    !('entries' in (parsed as { log: object }).log) ||
-    !Array.isArray(((parsed as { log: { entries: unknown } }).log).entries)
+    !("entries" in (parsed as { log: object }).log) ||
+    !Array.isArray((parsed as { log: { entries: unknown } }).log.entries)
   ) {
-    throw new Error('無効なHARフォーマットです。log.entriesが見つかりません。');
+    throw new Error("無効なHARフォーマットです。log.entriesが見つかりません。");
   }
 
   return parsed as HarFile;
@@ -160,7 +160,7 @@ export function parseHar(text: string): HarFile {
  * @returns フォーマット済み文字列（例: "1.5 KB", "2.3 MB"）
  */
 export function formatBytes(bytes: number): string {
-  if (bytes < 0) return '0 B';
+  if (bytes < 0) return "0 B";
   if (bytes < 1024) return `${bytes} B`;
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
@@ -182,13 +182,13 @@ export function formatDuration(ms: number): string {
  * @returns ステータスカテゴリ文字列
  */
 export function getStatusCategory(
-  status: number
-): 'success' | 'redirect' | 'client-error' | 'server-error' | 'other' {
-  if (status >= 200 && status < 300) return 'success';
-  if (status >= 300 && status < 400) return 'redirect';
-  if (status >= 400 && status < 500) return 'client-error';
-  if (status >= 500 && status < 600) return 'server-error';
-  return 'other';
+  status: number,
+): "success" | "redirect" | "client-error" | "server-error" | "other" {
+  if (status >= 200 && status < 300) return "success";
+  if (status >= 300 && status < 400) return "redirect";
+  if (status >= 400 && status < 500) return "client-error";
+  if (status >= 500 && status < 600) return "server-error";
+  return "other";
 }
 
 /**
@@ -197,21 +197,21 @@ export function getStatusCategory(
  * @returns 短いラベル（例: "JSON", "HTML", "JS"）
  */
 export function getContentTypeLabel(mimeType: string): string {
-  const lower = mimeType.toLowerCase().split(';')[0].trim();
+  const lower = mimeType.toLowerCase().split(";")[0].trim();
 
-  if (lower.includes('json')) return 'JSON';
-  if (lower.includes('html')) return 'HTML';
-  if (lower === 'application/javascript' || lower === 'text/javascript') return 'JS';
-  if (lower.includes('javascript')) return 'JS';
-  if (lower === 'text/css') return 'CSS';
-  if (lower.startsWith('image/')) return 'Image';
-  if (lower.includes('xml')) return 'XML';
-  if (lower === 'text/plain') return 'Text';
-  if (lower.includes('font')) return 'Font';
-  if (lower.includes('wasm')) return 'WASM';
-  if (lower.startsWith('video/')) return 'Video';
-  if (lower.startsWith('audio/')) return 'Audio';
-  return 'Other';
+  if (lower.includes("json")) return "JSON";
+  if (lower.includes("html")) return "HTML";
+  if (lower === "application/javascript" || lower === "text/javascript") return "JS";
+  if (lower.includes("javascript")) return "JS";
+  if (lower === "text/css") return "CSS";
+  if (lower.startsWith("image/")) return "Image";
+  if (lower.includes("xml")) return "XML";
+  if (lower === "text/plain") return "Text";
+  if (lower.includes("font")) return "Font";
+  if (lower.includes("wasm")) return "WASM";
+  if (lower.startsWith("video/")) return "Video";
+  if (lower.startsWith("audio/")) return "Audio";
+  return "Other";
 }
 
 /**
@@ -273,7 +273,7 @@ export function analyzeHar(har: HarFile): HarAnalysis {
     }
 
     // コンテンツタイプ別分布
-    const mimeType = entry.response.content.mimeType ?? '';
+    const mimeType = entry.response.content.mimeType ?? "";
     const label = getContentTypeLabel(mimeType);
     contentTypeDistribution[label] = (contentTypeDistribution[label] ?? 0) + 1;
 

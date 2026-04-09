@@ -43,10 +43,7 @@ export function specificityToString(spec: SpecificityValue): string {
  * 2つの詳細度を比較する
  * @returns 正の数: a が高い, 0: 同じ, 負の数: b が高い
  */
-export function compareSpecificity(
-  a: SpecificityValue,
-  b: SpecificityValue
-): number {
+export function compareSpecificity(a: SpecificityValue, b: SpecificityValue): number {
   return specificityToNumber(a) - specificityToNumber(b);
 }
 
@@ -82,32 +79,29 @@ export function calculateSpecificity(selector: string): SpecificityValue {
 
   // :is(), :not(), :has() の処理
   // 括弧内の最も高い詳細度のセレクターを使用する
-  s = s.replace(
-    /:(?:is|not|has)\s*\(([^()]*(?:\([^()]*\)[^()]*)*)\)/gi,
-    (_, inner: string) => {
-      const parts = inner.split(",");
-      let maxIds = 0;
-      let maxClasses = 0;
-      let maxTypes = 0;
-      let maxTotal = -1;
+  s = s.replace(/:(?:is|not|has)\s*\(([^()]*(?:\([^()]*\)[^()]*)*)\)/gi, (_, inner: string) => {
+    const parts = inner.split(",");
+    let maxIds = 0;
+    let maxClasses = 0;
+    let maxTypes = 0;
+    let maxTotal = -1;
 
-      for (const part of parts) {
-        const spec = calculateSpecificity(part.trim());
-        const total = specificityToNumber(spec);
-        if (total > maxTotal) {
-          maxTotal = total;
-          maxIds = spec.ids;
-          maxClasses = spec.classes;
-          maxTypes = spec.types;
-        }
+    for (const part of parts) {
+      const spec = calculateSpecificity(part.trim());
+      const total = specificityToNumber(spec);
+      if (total > maxTotal) {
+        maxTotal = total;
+        maxIds = spec.ids;
+        maxClasses = spec.classes;
+        maxTypes = spec.types;
       }
-
-      ids += maxIds;
-      classes += maxClasses;
-      types += maxTypes;
-      return "";
     }
-  );
+
+    ids += maxIds;
+    classes += maxClasses;
+    types += maxTypes;
+    return "";
+  });
 
   // IDセレクターのカウント (#id)
   const idMatches = s.match(/#[-\w]+/g) ?? [];
@@ -125,16 +119,8 @@ export function calculateSpecificity(selector: string): SpecificityValue {
   s = s.replace(/::[a-zA-Z][-\w]*/g, "");
 
   // レガシー擬似要素のカウント (単体 : での before/after/first-line/first-letter)
-  const legacyPseudoElements = [
-    "before",
-    "after",
-    "first-line",
-    "first-letter",
-  ];
-  const legacyPseudoRegex = new RegExp(
-    `:(?:${legacyPseudoElements.join("|")})(?![\\w-])`,
-    "gi"
-  );
+  const legacyPseudoElements = ["before", "after", "first-line", "first-letter"];
+  const legacyPseudoRegex = new RegExp(`:(?:${legacyPseudoElements.join("|")})(?![\\w-])`, "gi");
   const legacyMatches = s.match(legacyPseudoRegex) ?? [];
   types += legacyMatches.length;
   s = s.replace(legacyPseudoRegex, "");
@@ -158,9 +144,7 @@ export function calculateSpecificity(selector: string): SpecificityValue {
   s = s.replace(/[*>+~|]/g, " ");
 
   // タイプセレクターのカウント（残ったアルファベットのトークン）
-  const typeTokens = s
-    .split(/[\s,]+/)
-    .filter((t) => /^[a-zA-Z][-\w]*$/.test(t));
+  const typeTokens = s.split(/[\s,]+/).filter((t) => /^[a-zA-Z][-\w]*$/.test(t));
   types += typeTokens.length;
 
   return { ids, classes, types };
@@ -222,7 +206,7 @@ export const SPECIFICITY_SAMPLES: SpecicitySample[] = [
   { selector: "#id", description: "IDセレクター" },
   { selector: "a:hover", description: "擬似クラス付き" },
   { selector: "::before", description: "擬似要素" },
-  { selector: "[type=\"text\"]", description: "属性セレクター" },
+  { selector: '[type="text"]', description: "属性セレクター" },
   { selector: ".nav > li.active", description: "子セレクター＋複合" },
   { selector: "#header .nav li:first-child", description: "複雑なセレクター" },
   { selector: ":not(.disabled)", description: ":not() 擬似クラス" },

@@ -37,13 +37,7 @@ export const Route = createFileRoute("/text-replace")({
 /**
  * テキストをパーツに分割してハイライト表示するコンポーネント
  */
-function HighlightedText({
-  text,
-  matches,
-}: {
-  text: string;
-  matches: MatchRange[];
-}) {
+function HighlightedText({ text, matches }: { text: string; matches: MatchRange[] }) {
   if (matches.length === 0) {
     return <>{text}</>;
   }
@@ -55,9 +49,7 @@ function HighlightedText({
     if (range.start > lastIndex) {
       parts.push(text.slice(lastIndex, range.start));
     }
-    parts.push(
-      <mark key={range.start}>{text.slice(range.start, range.end)}</mark>
-    );
+    parts.push(<mark key={range.start}>{text.slice(range.start, range.end)}</mark>);
     lastIndex = range.end;
   }
 
@@ -85,12 +77,9 @@ function TextReplacePage() {
   const { copy } = useClipboard();
   const { showToast } = useToast();
 
-  const toggleOption = useCallback(
-    (key: keyof ReplaceOptions) => {
-      setOptions((prev) => ({ ...prev, [key]: !prev[key] }));
-    },
-    []
-  );
+  const toggleOption = useCallback((key: keyof ReplaceOptions) => {
+    setOptions((prev) => ({ ...prev, [key]: !prev[key] }));
+  }, []);
 
   // マッチ位置を計算（常に全件検索でハイライト用）
   const { matches, findError } = useMemo(() => {
@@ -137,8 +126,16 @@ function TextReplacePage() {
           [
             { key: "useRegex", label: "正規表現", title: "正規表現モードで検索" },
             { key: "caseSensitive", label: "大文字小文字区別", title: "大文字と小文字を区別する" },
-            { key: "replaceAll", label: "全件置換", title: "マッチした全箇所を置換（OFFの場合は最初の1件のみ）" },
-            { key: "multiline", label: "複数行", title: "複数行モード（^/$が各行の先頭末尾にマッチ）" },
+            {
+              key: "replaceAll",
+              label: "全件置換",
+              title: "マッチした全箇所を置換（OFFの場合は最初の1件のみ）",
+            },
+            {
+              key: "multiline",
+              label: "複数行",
+              title: "複数行モード（^/$が各行の先頭末尾にマッチ）",
+            },
           ] as const
         ).map(({ key, label, title }) => (
           <label
@@ -177,7 +174,9 @@ function TextReplacePage() {
           )}
         </div>
 
-        <div className="text-replace-arrow" aria-hidden="true">→</div>
+        <div className="text-replace-arrow" aria-hidden="true">
+          →
+        </div>
 
         <div className="text-replace-input-group">
           <label htmlFor="replace-input">置換後</label>
@@ -186,7 +185,11 @@ function TextReplacePage() {
             type="text"
             value={replaceWith}
             onChange={(e) => setReplaceWith(e.target.value)}
-            placeholder={options.useRegex ? "置換文字列（$1 等バックリファレンス可）" : "置換後の文字列（空欄で削除）"}
+            placeholder={
+              options.useRegex
+                ? "置換文字列（$1 等バックリファレンス可）"
+                : "置換後の文字列（空欄で削除）"
+            }
           />
         </div>
       </div>
@@ -198,9 +201,7 @@ function TextReplacePage() {
           aria-live="polite"
           role="status"
         >
-          {matches.length > 0
-            ? `${matches.length} 件マッチ`
-            : "マッチなし"}
+          {matches.length > 0 ? `${matches.length} 件マッチ` : "マッチなし"}
           {!options.replaceAll && matches.length > 1 && " （1件のみ置換）"}
         </div>
       )}
@@ -221,13 +222,8 @@ function TextReplacePage() {
       {/* マッチハイライトプレビュー */}
       {hasInput && hasFind && !findError && matches.length > 0 && (
         <div className="text-replace-highlight-wrap">
-          <span className="text-replace-highlight-label">
-            マッチ箇所のプレビュー
-          </span>
-          <div
-            className="text-replace-highlight-box"
-            aria-label="マッチ箇所のハイライト表示"
-          >
+          <span className="text-replace-highlight-label">マッチ箇所のプレビュー</span>
+          <div className="text-replace-highlight-box" aria-label="マッチ箇所のハイライト表示">
             <HighlightedText text={inputText} matches={matches} />
           </div>
         </div>

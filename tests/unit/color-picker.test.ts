@@ -265,9 +265,7 @@ describe("Color Picker - String Formatting", () => {
   });
 
   it("should format CMYK to string", () => {
-    expect(cmykToString({ c: 50, m: 25, y: 0, k: 10 })).toBe(
-      "cmyk(50%, 25%, 0%, 10%)"
-    );
+    expect(cmykToString({ c: 50, m: 25, y: 0, k: 10 })).toBe("cmyk(50%, 25%, 0%, 10%)");
   });
 });
 

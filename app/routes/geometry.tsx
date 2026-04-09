@@ -1,9 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useMemo } from "react";
-import {
-  StatusAnnouncer,
-  useStatusAnnouncement,
-} from "~/hooks/useStatusAnnouncement";
+import { StatusAnnouncer, useStatusAnnouncement } from "~/hooks/useStatusAnnouncement";
 import { TipsCard } from "~/components/TipsCard";
 import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import {
@@ -94,8 +91,7 @@ function GeometryCalculator() {
     announceStatus("体積・表面積を再計算しました");
   };
 
-  const p = (key: string, dims: Record<string, string>) =>
-    parseFloat(dims[key] ?? "");
+  const p = (key: string, dims: Record<string, string>) => parseFloat(dims[key] ?? "");
 
   const result2D = useMemo(() => {
     switch (shape2D) {

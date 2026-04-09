@@ -1,10 +1,10 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
-import { useState, useCallback, useId } from 'react';
-import { useToast } from '../components/Toast';
-import { TipsCard } from '~/components/TipsCard';
-import { useStatusAnnouncement, StatusAnnouncer } from '~/hooks/useStatusAnnouncement';
-import { useClipboard } from '~/hooks/useClipboard';
+import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
+import { useState, useCallback, useId } from "react";
+import { useToast } from "../components/Toast";
+import { TipsCard } from "~/components/TipsCard";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
+import { useClipboard } from "~/hooks/useClipboard";
 import {
   RESPONSE_DIRECTIVES,
   REQUEST_DIRECTIVES,
@@ -17,30 +17,30 @@ import {
   findResponseDirectiveInfo,
   findRequestDirectiveInfo,
   formatSeconds,
-} from '~/utils/cache-control';
+} from "~/utils/cache-control";
 
-export const Route = createFileRoute('/cache-control')({
+export const Route = createFileRoute("/cache-control")({
   head: () => ({
     meta: [
-      { title: 'Cache-Control ヘッダービルダー | Web ツール集' },
+      { title: "Cache-Control ヘッダービルダー | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          'Cache-Control HTTPヘッダーをGUIで構築・パース・検証するツール。max-age・no-store・no-cache・immutable・stale-while-revalidate など全ディレクティブに対応。よく使うプリセット付き。',
+          "Cache-Control HTTPヘッダーをGUIで構築・パース・検証するツール。max-age・no-store・no-cache・immutable・stale-while-revalidate など全ディレクティブに対応。よく使うプリセット付き。",
       },
-      { property: 'og:title', content: 'Cache-Control ヘッダービルダー | Web ツール集' },
+      { property: "og:title", content: "Cache-Control ヘッダービルダー | Web ツール集" },
       {
-        property: 'og:description',
+        property: "og:description",
         content:
-          'Cache-Control HTTPヘッダーをGUIで構築・パース・検証するツール。よく使うプリセット付き。',
+          "Cache-Control HTTPヘッダーをGUIで構築・パース・検証するツール。よく使うプリセット付き。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/cache-control` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
-      { name: 'twitter:title', content: 'Cache-Control ヘッダービルダー | Web ツール集' },
+      { property: "og:url", content: `${SITE_BASE_URL}/cache-control` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "Cache-Control ヘッダービルダー | Web ツール集" },
       {
-        name: 'twitter:description',
-        content: 'Cache-Control HTTPヘッダーをGUIで構築・パース・検証するツール。',
+        name: "twitter:description",
+        content: "Cache-Control HTTPヘッダーをGUIで構築・パース・検証するツール。",
       },
     ],
   }),
@@ -48,7 +48,7 @@ export const Route = createFileRoute('/cache-control')({
 });
 
 /** モード定義 */
-type Mode = 'build' | 'parse';
+type Mode = "build" | "parse";
 
 /** ディレクティブ行コンポーネント */
 function DirectiveRow({
@@ -65,27 +65,27 @@ function DirectiveRow({
   onRemove: (name: string) => void;
 }) {
   const info =
-    target === 'response'
+    target === "response"
       ? findResponseDirectiveInfo(entry.name)
       : findRequestDirectiveInfo(entry.name);
   const inputId = useId();
 
   return (
-    <div className={`cc-directive-row ${!entry.enabled ? 'cc-directive-row-disabled' : ''}`}>
+    <div className={`cc-directive-row ${!entry.enabled ? "cc-directive-row-disabled" : ""}`}>
       <div className="cc-directive-row-header">
-        <label className="cc-directive-toggle" title={entry.enabled ? '無効化' : '有効化'}>
+        <label className="cc-directive-toggle" title={entry.enabled ? "無効化" : "有効化"}>
           <input
             type="checkbox"
             checked={entry.enabled}
             onChange={() => onToggle(entry.name)}
-            aria-label={`${entry.name} を${entry.enabled ? '無効化' : '有効化'}`}
+            aria-label={`${entry.name} を${entry.enabled ? "無効化" : "有効化"}`}
           />
         </label>
         <div className="cc-directive-name-wrap">
           <code className="cc-directive-name">{entry.name}</code>
-          {info?.valueType !== 'none' && entry.enabled && (
+          {info?.valueType !== "none" && entry.enabled && (
             <span className="cc-directive-value-badge">
-              {entry.value !== undefined ? formatSeconds(entry.value) : '値なし'}
+              {entry.value !== undefined ? formatSeconds(entry.value) : "値なし"}
             </span>
           )}
         </div>
@@ -100,10 +100,10 @@ function DirectiveRow({
         </button>
       </div>
       {info && <p className="cc-directive-description">{info.description}</p>}
-      {info && info.valueType !== 'none' && (
+      {info && info.valueType !== "none" && (
         <div className="cc-value-input-wrap">
           <label htmlFor={inputId} className="cc-value-label">
-            {info.valueType === 'optional-number' ? '値（省略可）' : '値'}
+            {info.valueType === "optional-number" ? "値（省略可）" : "値"}
             {info.unit && ` (${info.unit})`}
           </label>
           <div className="cc-value-input-row">
@@ -112,14 +112,14 @@ function DirectiveRow({
               type="number"
               min="0"
               className="cc-value-input"
-              value={entry.value ?? ''}
+              value={entry.value ?? ""}
               onChange={(e) => {
                 const v = e.target.value;
-                onUpdateValue(entry.name, v === '' ? undefined : parseInt(v, 10));
+                onUpdateValue(entry.name, v === "" ? undefined : parseInt(v, 10));
               }}
               disabled={!entry.enabled}
               placeholder={
-                info.valueType === 'optional-number'
+                info.valueType === "optional-number"
                   ? `省略可（例: ${info.defaultValue}）`
                   : `例: ${info.defaultValue}`
               }
@@ -132,7 +132,7 @@ function DirectiveRow({
                   <button
                     key={sec}
                     type="button"
-                    className={`cc-quick-chip ${entry.value === sec ? 'cc-quick-chip-active' : ''}`}
+                    className={`cc-quick-chip ${entry.value === sec ? "cc-quick-chip-active" : ""}`}
                     onClick={() => onUpdateValue(entry.name, sec)}
                     title={formatSeconds(sec)}
                     aria-label={`${sec} 秒（${formatSeconds(sec)}）を設定`}
@@ -155,15 +155,15 @@ function CacheControlPage() {
   const { copy } = useClipboard();
   const { statusRef, announceStatus } = useStatusAnnouncement();
 
-  const [mode, setMode] = useState<Mode>('build');
-  const [target, setTarget] = useState<DirectiveTarget>('response');
+  const [mode, setMode] = useState<Mode>("build");
+  const [target, setTarget] = useState<DirectiveTarget>("response");
   const [directives, setDirectives] = useState<CacheControlDirectiveEntry[]>([
-    { name: 'public', enabled: true },
-    { name: 'max-age', enabled: true, value: 3600 },
+    { name: "public", enabled: true },
+    { name: "max-age", enabled: true, value: 3600 },
   ]);
-  const [parseInput, setParseInput] = useState('');
+  const [parseInput, setParseInput] = useState("");
   const [parseErrors, setParseErrors] = useState<string[]>([]);
-  const [addDirectiveName, setAddDirectiveName] = useState('');
+  const [addDirectiveName, setAddDirectiveName] = useState("");
 
   // ビルド済みヘッダー値
   const headerValue = buildCacheControl(directives, target);
@@ -173,16 +173,12 @@ function CacheControlPage() {
 
   // ディレクティブのトグル
   const handleToggle = useCallback((name: string) => {
-    setDirectives((prev) =>
-      prev.map((d) => (d.name === name ? { ...d, enabled: !d.enabled } : d)),
-    );
+    setDirectives((prev) => prev.map((d) => (d.name === name ? { ...d, enabled: !d.enabled } : d)));
   }, []);
 
   // 値の更新
   const handleUpdateValue = useCallback((name: string, value: number | undefined) => {
-    setDirectives((prev) =>
-      prev.map((d) => (d.name === name ? { ...d, value } : d)),
-    );
+    setDirectives((prev) => prev.map((d) => (d.name === name ? { ...d, value } : d)));
   }, []);
 
   // ディレクティブ削除
@@ -195,14 +191,14 @@ function CacheControlPage() {
     const name = addDirectiveName.trim().toLowerCase();
     if (!name) return;
     if (directives.some((d) => d.name === name)) {
-      showToast(`"${name}" はすでに追加されています`, 'error');
+      showToast(`"${name}" はすでに追加されています`, "error");
       return;
     }
-    const allDirs = target === 'response' ? RESPONSE_DIRECTIVES : REQUEST_DIRECTIVES;
+    const allDirs = target === "response" ? RESPONSE_DIRECTIVES : REQUEST_DIRECTIVES;
     const info = allDirs.find((d) => d.name === name);
-    const defaultValue = info?.valueType !== 'none' ? (info?.defaultValue ?? 0) : undefined;
+    const defaultValue = info?.valueType !== "none" ? (info?.defaultValue ?? 0) : undefined;
     setDirectives((prev) => [...prev, { name, enabled: true, value: defaultValue }]);
-    setAddDirectiveName('');
+    setAddDirectiveName("");
     announceStatus(`${name} を追加しました`);
   }, [addDirectiveName, directives, target, showToast, announceStatus]);
 
@@ -212,9 +208,9 @@ function CacheControlPage() {
       const preset = RESPONSE_PRESETS[presetIndex];
       if (!preset) return;
       setDirectives(preset.directives.map((d) => ({ ...d })));
-      setTarget('response');
+      setTarget("response");
       announceStatus(`"${preset.name}" プリセットを適用しました`);
-      showToast(`"${preset.name}" プリセットを適用しました`, 'success');
+      showToast(`"${preset.name}" プリセットを適用しました`, "success");
     },
     [announceStatus, showToast],
   );
@@ -222,26 +218,26 @@ function CacheControlPage() {
   // クリア
   const handleClear = useCallback(() => {
     setDirectives([]);
-    setParseInput('');
+    setParseInput("");
     setParseErrors([]);
-    announceStatus('クリアしました');
+    announceStatus("クリアしました");
   }, [announceStatus]);
 
   // パース実行
   const handleParse = useCallback(() => {
     const { directives: parsed, errors } = parseCacheControl(parseInput, target);
     if (parsed.length === 0 && errors.length === 0) {
-      showToast('Cache-Control ヘッダー値を入力してください', 'error');
+      showToast("Cache-Control ヘッダー値を入力してください", "error");
       return;
     }
     setDirectives(parsed);
     setParseErrors(errors);
-    setMode('build');
+    setMode("build");
     announceStatus(`${parsed.length} 件のディレクティブをパースしました`);
     if (errors.length > 0) {
-      showToast(`${errors.length} 件の警告があります`, 'error');
+      showToast(`${errors.length} 件の警告があります`, "error");
     } else {
-      showToast(`${parsed.length} 件のディレクティブをパースしました`, 'success');
+      showToast(`${parsed.length} 件のディレクティブをパースしました`, "success");
     }
   }, [parseInput, target, showToast, announceStatus]);
 
@@ -250,16 +246,16 @@ function CacheControlPage() {
     if (!headerValue) return;
     const success = await copy(headerValue);
     if (success) {
-      showToast('Cache-Control ヘッダー値をコピーしました', 'success');
-      announceStatus('クリップボードにコピーしました');
+      showToast("Cache-Control ヘッダー値をコピーしました", "success");
+      announceStatus("クリップボードにコピーしました");
     } else {
-      showToast('コピーに失敗しました', 'error');
+      showToast("コピーに失敗しました", "error");
     }
   }, [headerValue, copy, showToast, announceStatus]);
 
   // 既存のディレクティブ名セット
   const usedNames = new Set(directives.map((d) => d.name));
-  const allDirs = target === 'response' ? RESPONSE_DIRECTIVES : REQUEST_DIRECTIVES;
+  const allDirs = target === "response" ? RESPONSE_DIRECTIVES : REQUEST_DIRECTIVES;
   const availableDirectives = allDirs.filter((d) => !usedNames.has(d.name));
 
   return (
@@ -276,18 +272,18 @@ function CacheControlPage() {
           <button
             type="button"
             role="tab"
-            aria-selected={mode === 'build'}
-            className={`csp-mode-tab ${mode === 'build' ? 'csp-mode-tab-active' : ''}`}
-            onClick={() => setMode('build')}
+            aria-selected={mode === "build"}
+            className={`csp-mode-tab ${mode === "build" ? "csp-mode-tab-active" : ""}`}
+            onClick={() => setMode("build")}
           >
             ビルド
           </button>
           <button
             type="button"
             role="tab"
-            aria-selected={mode === 'parse'}
-            className={`csp-mode-tab ${mode === 'parse' ? 'csp-mode-tab-active' : ''}`}
-            onClick={() => setMode('parse')}
+            aria-selected={mode === "parse"}
+            className={`csp-mode-tab ${mode === "parse" ? "csp-mode-tab-active" : ""}`}
+            onClick={() => setMode("parse")}
           >
             パース
           </button>
@@ -301,9 +297,9 @@ function CacheControlPage() {
               type="radio"
               name="cc-target"
               value="response"
-              checked={target === 'response'}
+              checked={target === "response"}
               onChange={() => {
-                setTarget('response');
+                setTarget("response");
                 setDirectives([]);
               }}
             />
@@ -314,9 +310,9 @@ function CacheControlPage() {
               type="radio"
               name="cc-target"
               value="request"
-              checked={target === 'request'}
+              checked={target === "request"}
               onChange={() => {
-                setTarget('request');
+                setTarget("request");
                 setDirectives([]);
               }}
             />
@@ -325,7 +321,7 @@ function CacheControlPage() {
         </div>
 
         {/* パースモード */}
-        {mode === 'parse' && (
+        {mode === "parse" && (
           <div className="csp-parse-section">
             <label htmlFor="cc-parse-input" className="section-title">
               既存の Cache-Control ヘッダー値を貼り付け
@@ -355,10 +351,10 @@ function CacheControlPage() {
         )}
 
         {/* ビルドモード */}
-        {mode === 'build' && (
+        {mode === "build" && (
           <>
             {/* プリセット（レスポンスのみ表示） */}
-            {target === 'response' && (
+            {target === "response" && (
               <div className="cc-presets-section">
                 <span className="csp-templates-label">プリセット:</span>
                 <div className="cc-presets-grid">
@@ -390,7 +386,7 @@ function CacheControlPage() {
             {/* ディレクティブ一覧 */}
             <section className="csp-category-section" aria-labelledby="cc-directives-heading">
               <h3 id="cc-directives-heading" className="csp-category-heading">
-                {target === 'response' ? 'レスポンス' : 'リクエスト'}ディレクティブ
+                {target === "response" ? "レスポンス" : "リクエスト"}ディレクティブ
                 <span className="csp-category-desc">
                   {directives.filter((d) => d.enabled).length} 件有効
                 </span>
@@ -433,7 +429,7 @@ function CacheControlPage() {
                     availableDirectives.map((d) => (
                       <option key={d.name} value={d.name}>
                         {d.name}
-                        {d.valueType !== 'none' ? ` (=${d.defaultValue ?? '値'})` : ''}
+                        {d.valueType !== "none" ? ` (=${d.defaultValue ?? "値"})` : ""}
                       </option>
                     ))
                   ) : (
@@ -455,7 +451,7 @@ function CacheControlPage() {
         )}
 
         {/* 生成結果 */}
-        {mode === 'build' && (
+        {mode === "build" && (
           <div className="csp-output-section">
             <div className="csp-output-header">
               <h3 className="section-title">生成された Cache-Control ヘッダー値</h3>
@@ -474,7 +470,11 @@ function CacheControlPage() {
 
             {headerValue ? (
               <>
-                <div className="csp-output-box" role="region" aria-label="生成された Cache-Control 値">
+                <div
+                  className="csp-output-box"
+                  role="region"
+                  aria-label="生成された Cache-Control 値"
+                >
                   <code className="csp-output-code" aria-label="Cache-Control の値">
                     {headerValue}
                   </code>
@@ -505,7 +505,7 @@ function CacheControlPage() {
         )}
 
         {/* 検証結果 */}
-        {mode === 'build' &&
+        {mode === "build" &&
           headerValue &&
           (validation.warnings.length > 0 || validation.suggestions.length > 0) && (
             <div className="csp-validation-section" role="region" aria-label="検証結果">
@@ -543,41 +543,41 @@ function CacheControlPage() {
         <TipsCard
           sections={[
             {
-              title: 'Cache-Control とは',
+              title: "Cache-Control とは",
               items: [
-                'Cache-Control は HTTP/1.1 で定義されたヘッダーで、ブラウザや CDN にキャッシュ方法を指示します',
-                'レスポンスヘッダーとしてサーバーが送信し、リクエストヘッダーとしてクライアントが送信できます',
+                "Cache-Control は HTTP/1.1 で定義されたヘッダーで、ブラウザや CDN にキャッシュ方法を指示します",
+                "レスポンスヘッダーとしてサーバーが送信し、リクエストヘッダーとしてクライアントが送信できます",
                 '"max-age" は秒数で指定し、その間はキャッシュからレスポンスが返されます',
                 '"no-cache" はキャッシュを禁止するのではなく、「毎回再検証せよ」という意味です',
                 '"no-store" が本当の「キャッシュ禁止」で、どこにも保存しません',
               ],
             },
             {
-              title: 'よく使うパターン',
+              title: "よく使うパターン",
               items: [
-                '機密情報（ログイン後のページ）: no-store',
-                'HTMLページ（毎回最新を確認）: no-cache',
-                '静的アセット（JS/CSS/画像）: public, max-age=31536000, immutable',
-                'API レスポンス（短期キャッシュ）: public, max-age=60, stale-while-revalidate=300',
-                'CDN を使う場合: public, max-age=3600, s-maxage=86400',
+                "機密情報（ログイン後のページ）: no-store",
+                "HTMLページ（毎回最新を確認）: no-cache",
+                "静的アセット（JS/CSS/画像）: public, max-age=31536000, immutable",
+                "API レスポンス（短期キャッシュ）: public, max-age=60, stale-while-revalidate=300",
+                "CDN を使う場合: public, max-age=3600, s-maxage=86400",
               ],
             },
             {
-              title: 'immutable を使う場合の注意',
+              title: "immutable を使う場合の注意",
               items: [
                 '"immutable" はファイル名にコンテンツハッシュを含む場合のみ安全に使えます',
-                '例: main.a1b2c3d4.js のようにビルドごとにファイル名が変わる場合',
+                "例: main.a1b2c3d4.js のようにビルドごとにファイル名が変わる場合",
                 '"immutable" を使うと、ブラウザは有効期限内の条件付きリクエスト（304チェック）を送らず、パフォーマンスが向上します',
-                'React/Vite/webpack 等の現代的なビルドツールは自動的にコンテンツハッシュを付与します',
+                "React/Vite/webpack 等の現代的なビルドツールは自動的にコンテンツハッシュを付与します",
               ],
             },
             {
-              title: 'stale-while-revalidate の活用',
+              title: "stale-while-revalidate の活用",
               items: [
                 '"stale-while-revalidate=60" は「60秒間は古いレスポンスを返しつつ、バックグラウンドで更新する」という意味です',
-                'UX（ロード速度）とデータの新鮮さのバランスを取るのに最適です',
-                'Next.js の ISR（Incremental Static Regeneration）や SWR ライブラリと相性が良いです',
-                'CDN（Cloudflare, Fastly 等）も対応しており、オリジンへのリクエスト数を削減できます',
+                "UX（ロード速度）とデータの新鮮さのバランスを取るのに最適です",
+                "Next.js の ISR（Incremental Static Regeneration）や SWR ライブラリと相性が良いです",
+                "CDN（Cloudflare, Fastly 等）も対応しており、オリジンへのリクエスト数を削減できます",
               ],
             },
           ]}

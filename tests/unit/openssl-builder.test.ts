@@ -22,9 +22,7 @@ describe("shellEscapeSingle", () => {
   });
 
   it("スラッシュを含むパスはそのまま返す", () => {
-    expect(shellEscapeSingle("/etc/ssl/private.key")).toBe(
-      "/etc/ssl/private.key"
-    );
+    expect(shellEscapeSingle("/etc/ssl/private.key")).toBe("/etc/ssl/private.key");
   });
 
   it("スペースを含む文字列はシングルクォートで囲む", () => {

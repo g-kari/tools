@@ -34,7 +34,7 @@ export interface PointerEntry {
  * @returns デコードされたトークン
  */
 export function decodeToken(token: string): string {
-  return token.replace(/~1/g, '/').replace(/~0/g, '~');
+  return token.replace(/~1/g, "/").replace(/~0/g, "~");
 }
 
 /**
@@ -44,7 +44,7 @@ export function decodeToken(token: string): string {
  * @returns エンコードされたトークン
  */
 export function encodeToken(key: string): string {
-  return key.replace(/~/g, '~0').replace(/\//g, '~1');
+  return key.replace(/~/g, "~0").replace(/\//g, "~1");
 }
 
 /**
@@ -56,28 +56,30 @@ export function encodeToken(key: string): string {
  */
 export function evaluateJsonPointer(jsonText: string, pointer: string): JsonPointerResult {
   if (!jsonText.trim()) {
-    throw new Error('JSONを入力してください');
+    throw new Error("JSONを入力してください");
   }
 
   let doc: unknown;
   try {
     doc = JSON.parse(jsonText);
   } catch {
-    throw new Error('無効なJSON形式です');
+    throw new Error("無効なJSON形式です");
   }
 
   // 空文字列はルートドキュメントを指す
-  if (pointer === '') {
+  if (pointer === "") {
     const formatted = JSON.stringify(doc, null, 2);
     return { value: doc, formatted, type: getTypeName(doc) };
   }
 
-  if (!pointer.startsWith('/')) {
-    throw new Error('JSON Pointerは "/" で始まる必要があります（例: /foo/bar）。ルートを参照するには空文字列を使用してください。');
+  if (!pointer.startsWith("/")) {
+    throw new Error(
+      'JSON Pointerは "/" で始まる必要があります（例: /foo/bar）。ルートを参照するには空文字列を使用してください。',
+    );
   }
 
   // トークンに分割（先頭の "/" の後を "/" で分割）
-  const tokens = pointer.slice(1).split('/').map(decodeToken);
+  const tokens = pointer.slice(1).split("/").map(decodeToken);
 
   let current: unknown = doc;
   for (const token of tokens) {
@@ -85,7 +87,7 @@ export function evaluateJsonPointer(jsonText: string, pointer: string): JsonPoin
       throw new Error(`パス "${pointer}" は解決できません: null/undefined に到達しました`);
     }
     if (Array.isArray(current)) {
-      if (token === '-') {
+      if (token === "-") {
         throw new Error('"−" インデックスは読み取り専用評価では使用できません（RFC 6901）');
       }
       const idx = Number(token);
@@ -93,18 +95,20 @@ export function evaluateJsonPointer(jsonText: string, pointer: string): JsonPoin
         throw new Error(`配列インデックス "${token}" が範囲外です（配列長: ${current.length}）`);
       }
       current = current[idx];
-    } else if (typeof current === 'object') {
+    } else if (typeof current === "object") {
       const obj = current as Record<string, unknown>;
       if (!(token in obj)) {
         throw new Error(`キー "${token}" がオブジェクトに存在しません`);
       }
       current = obj[token];
     } else {
-      throw new Error(`プリミティブ値 (${typeof current}) にはアクセスできません（トークン: "${token}"）`);
+      throw new Error(
+        `プリミティブ値 (${typeof current}) にはアクセスできません（トークン: "${token}"）`,
+      );
     }
   }
 
-  const formatted = JSON.stringify(current, null, 2) ?? 'null';
+  const formatted = JSON.stringify(current, null, 2) ?? "null";
   return { value: current, formatted, type: getTypeName(current) };
 }
 
@@ -114,9 +118,9 @@ export function evaluateJsonPointer(jsonText: string, pointer: string): JsonPoin
  * @returns 型名の文字列
  */
 function getTypeName(value: unknown): string {
-  if (value === null) return 'null';
+  if (value === null) return "null";
   if (Array.isArray(value)) return `array (${(value as unknown[]).length}件)`;
-  if (typeof value === 'object') return `object (${Object.keys(value as object).length}キー)`;
+  if (typeof value === "object") return `object (${Object.keys(value as object).length}キー)`;
   return typeof value;
 }
 
@@ -129,14 +133,14 @@ function getTypeName(value: unknown): string {
  */
 export function enumeratePointers(jsonText: string, maxEntries: number = 100): PointerEntry[] {
   if (!jsonText.trim()) {
-    throw new Error('JSONを入力してください');
+    throw new Error("JSONを入力してください");
   }
 
   let doc: unknown;
   try {
     doc = JSON.parse(jsonText);
   } catch {
-    throw new Error('無効なJSON形式です');
+    throw new Error("無効なJSON形式です");
   }
 
   const entries: PointerEntry[] = [];
@@ -144,7 +148,7 @@ export function enumeratePointers(jsonText: string, maxEntries: number = 100): P
   function traverse(node: unknown, currentPointer: string): void {
     if (entries.length >= maxEntries) return;
 
-    if (node === null || typeof node !== 'object') {
+    if (node === null || typeof node !== "object") {
       entries.push({
         pointer: currentPointer || '""',
         value: JSON.stringify(node),
@@ -157,7 +161,7 @@ export function enumeratePointers(jsonText: string, maxEntries: number = 100): P
       if (node.length === 0) {
         entries.push({
           pointer: currentPointer || '""',
-          value: '[]',
+          value: "[]",
           type: `array (0件)`,
         });
         return;
@@ -170,7 +174,7 @@ export function enumeratePointers(jsonText: string, maxEntries: number = 100): P
       if (keys.length === 0) {
         entries.push({
           pointer: currentPointer || '""',
-          value: '{}',
+          value: "{}",
           type: `object (0キー)`,
         });
         return;
@@ -183,7 +187,7 @@ export function enumeratePointers(jsonText: string, maxEntries: number = 100): P
     }
   }
 
-  traverse(doc, '');
+  traverse(doc, "");
   return entries;
 }
 
@@ -196,15 +200,20 @@ export function getSampleJson(): string {
     {
       store: {
         book: [
-          { category: 'reference', author: 'Nigel Rees', title: 'Sayings of the Century', price: 8.95 },
-          { category: 'fiction', author: 'Evelyn Waugh', title: 'Sword of Honour', price: 12.99 },
+          {
+            category: "reference",
+            author: "Nigel Rees",
+            title: "Sayings of the Century",
+            price: 8.95,
+          },
+          { category: "fiction", author: "Evelyn Waugh", title: "Sword of Honour", price: 12.99 },
         ],
-        bicycle: { color: 'red', price: 19.95 },
+        bicycle: { color: "red", price: 19.95 },
       },
-      user: { name: 'Alice', active: true, tags: ['admin', 'editor'] },
+      user: { name: "Alice", active: true, tags: ["admin", "editor"] },
     },
     null,
-    2
+    2,
   );
 }
 
@@ -212,9 +221,9 @@ export function getSampleJson(): string {
  * サンプルJSON Pointer の例を返す
  */
 export const EXAMPLE_POINTERS = [
-  { pointer: '/store/book/0/title', label: '最初の本のタイトル' },
-  { pointer: '/store/bicycle/color', label: '自転車の色' },
-  { pointer: '/user/tags/1', label: 'ユーザーの2番目のタグ' },
-  { pointer: '/store/book/1/price', label: '2番目の本の価格' },
-  { pointer: '', label: 'ルート全体' },
+  { pointer: "/store/book/0/title", label: "最初の本のタイトル" },
+  { pointer: "/store/bicycle/color", label: "自転車の色" },
+  { pointer: "/user/tags/1", label: "ユーザーの2番目のタグ" },
+  { pointer: "/store/book/1/price", label: "2番目の本の価格" },
+  { pointer: "", label: "ルート全体" },
 ];

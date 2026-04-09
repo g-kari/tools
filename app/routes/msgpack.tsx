@@ -7,25 +7,28 @@ import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import { TipsCard } from "~/components/TipsCard";
 import { ErrorMessage } from "~/components/ErrorMessage";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 
 export const Route = createFileRoute("/msgpack")({
   head: () => ({
     meta: [
-    { title: "MessagePack変換 | Web ツール集" },
-    { name: "description", content: "JSON ↔ MessagePackバイナリ（HEX表現）の相互変換ツール。" },
-    { property: "og:title", content: "MessagePack変換 | Web ツール集" },
-    { property: "og:description", content: "JSON ↔ MessagePackバイナリ（HEX表現）の相互変換ツール。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/msgpack` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "MessagePack変換 | Web ツール集" },
-    { name: "twitter:description", content: "JSON ↔ MessagePackバイナリ（HEX表現）の相互変換ツール。" },
-  ],
+      { title: "MessagePack変換 | Web ツール集" },
+      { name: "description", content: "JSON ↔ MessagePackバイナリ（HEX表現）の相互変換ツール。" },
+      { property: "og:title", content: "MessagePack変換 | Web ツール集" },
+      {
+        property: "og:description",
+        content: "JSON ↔ MessagePackバイナリ（HEX表現）の相互変換ツール。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/msgpack` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "MessagePack変換 | Web ツール集" },
+      {
+        name: "twitter:description",
+        content: "JSON ↔ MessagePackバイナリ（HEX表現）の相互変換ツール。",
+      },
+    ],
   }),
   component: MsgpackConverter,
 });
@@ -54,9 +57,7 @@ function MsgpackConverter() {
       const result = encodeToMsgpack(inputText);
       setOutputText(result.hex);
       setByteCount(result.bytes);
-      announceStatus(
-        `MessagePackエンコードが完了しました。${result.bytes}バイト`
-      );
+      announceStatus(`MessagePackエンコードが完了しました。${result.bytes}バイト`);
       showToast("MessagePackにエンコードしました", "success");
     } catch (err) {
       const message = err instanceof Error ? err.message : "無効なJSONです";
@@ -84,8 +85,7 @@ function MsgpackConverter() {
       announceStatus("MessagePackデコードが完了しました");
       showToast("JSONにデコードしました", "success");
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "無効なMessagePackデータです";
+      const message = err instanceof Error ? err.message : "無効なMessagePackデータです";
       setError(message);
       setOutputText("");
       setByteCount(null);

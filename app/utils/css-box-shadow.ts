@@ -25,7 +25,7 @@ export interface BoxShadowPreset {
   /** プリセット名 */
   label: string;
   /** レイヤー一覧 */
-  layers: Omit<BoxShadowLayer, 'id'>[];
+  layers: Omit<BoxShadowLayer, "id">[];
 }
 
 /**
@@ -35,7 +35,7 @@ export interface BoxShadowPreset {
  * @returns rgba() 文字列
  */
 export function hexToRgba(hex: string, opacity: number): string {
-  const sanitized = hex.replace('#', '');
+  const sanitized = hex.replace("#", "");
   const r = parseInt(sanitized.substring(0, 2), 16);
   const g = parseInt(sanitized.substring(2, 4), 16);
   const b = parseInt(sanitized.substring(4, 6), 16);
@@ -49,7 +49,7 @@ export function hexToRgba(hex: string, opacity: number): string {
  * @returns box-shadow の値部分（例: "2px 4px 8px 0px rgba(0,0,0,0.20)"）
  */
 export function layerToValue(layer: BoxShadowLayer): string {
-  const insetPrefix = layer.inset ? 'inset ' : '';
+  const insetPrefix = layer.inset ? "inset " : "";
   const rgba = hexToRgba(layer.color, layer.opacity);
   return `${insetPrefix}${layer.offsetX}px ${layer.offsetY}px ${layer.blur}px ${layer.spread}px ${rgba}`;
 }
@@ -60,8 +60,8 @@ export function layerToValue(layer: BoxShadowLayer): string {
  * @returns box-shadow プロパティ値（複数レイヤーはカンマ区切り）
  */
 export function generateBoxShadowValue(layers: BoxShadowLayer[]): string {
-  if (layers.length === 0) return 'none';
-  return layers.map(layerToValue).join(',\n         ');
+  if (layers.length === 0) return "none";
+  return layers.map(layerToValue).join(",\n         ");
 }
 
 /**
@@ -86,7 +86,7 @@ export function createDefaultLayer(index: number): BoxShadowLayer {
     offsetY: 4,
     blur: 8,
     spread: 0,
-    color: '#000000',
+    color: "#000000",
     opacity: 20,
     inset: false,
   };
@@ -95,42 +95,50 @@ export function createDefaultLayer(index: number): BoxShadowLayer {
 /** プリセット一覧 */
 export const BOX_SHADOW_PRESETS: BoxShadowPreset[] = [
   {
-    label: 'ソフト',
+    label: "ソフト",
     layers: [
-      { offsetX: 0, offsetY: 4, blur: 16, spread: -2, color: '#000000', opacity: 15, inset: false },
+      { offsetX: 0, offsetY: 4, blur: 16, spread: -2, color: "#000000", opacity: 15, inset: false },
     ],
   },
   {
-    label: 'ドロップシャドウ',
+    label: "ドロップシャドウ",
     layers: [
-      { offsetX: 0, offsetY: 8, blur: 24, spread: -4, color: '#000000', opacity: 25, inset: false },
+      { offsetX: 0, offsetY: 8, blur: 24, spread: -4, color: "#000000", opacity: 25, inset: false },
     ],
   },
   {
-    label: '二重影',
+    label: "二重影",
     layers: [
-      { offsetX: 0, offsetY: 2, blur: 4, spread: -1, color: '#000000', opacity: 12, inset: false },
-      { offsetX: 0, offsetY: 8, blur: 20, spread: -4, color: '#000000', opacity: 20, inset: false },
+      { offsetX: 0, offsetY: 2, blur: 4, spread: -1, color: "#000000", opacity: 12, inset: false },
+      { offsetX: 0, offsetY: 8, blur: 20, spread: -4, color: "#000000", opacity: 20, inset: false },
     ],
   },
   {
-    label: 'ニューモーフィズム（凸）',
+    label: "ニューモーフィズム（凸）",
     layers: [
-      { offsetX: 5, offsetY: 5, blur: 10, spread: 0, color: '#bebebe', opacity: 100, inset: false },
-      { offsetX: -5, offsetY: -5, blur: 10, spread: 0, color: '#ffffff', opacity: 100, inset: false },
+      { offsetX: 5, offsetY: 5, blur: 10, spread: 0, color: "#bebebe", opacity: 100, inset: false },
+      {
+        offsetX: -5,
+        offsetY: -5,
+        blur: 10,
+        spread: 0,
+        color: "#ffffff",
+        opacity: 100,
+        inset: false,
+      },
     ],
   },
   {
-    label: 'インセット',
+    label: "インセット",
     layers: [
-      { offsetX: 0, offsetY: 2, blur: 8, spread: 0, color: '#000000', opacity: 20, inset: true },
+      { offsetX: 0, offsetY: 2, blur: 8, spread: 0, color: "#000000", opacity: 20, inset: true },
     ],
   },
   {
-    label: 'グロウ（青）',
+    label: "グロウ（青）",
     layers: [
-      { offsetX: 0, offsetY: 0, blur: 0, spread: 3, color: '#3b82f6', opacity: 70, inset: false },
-      { offsetX: 0, offsetY: 0, blur: 16, spread: 0, color: '#3b82f6', opacity: 40, inset: false },
+      { offsetX: 0, offsetY: 0, blur: 0, spread: 3, color: "#3b82f6", opacity: 70, inset: false },
+      { offsetX: 0, offsetY: 0, blur: 16, spread: 0, color: "#3b82f6", opacity: 40, inset: false },
     ],
   },
 ];

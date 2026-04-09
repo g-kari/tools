@@ -5,10 +5,7 @@ import JsBarcode from "jsbarcode";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import {
   type BarcodeFormat,
   type BarcodeHeight,
@@ -50,17 +47,19 @@ export const Route = createFileRoute("/barcode")({
   component: BarcodeGenerator,
 });
 
-const FORMAT_OPTIONS: { value: BarcodeFormat; label: string }[] =
-  BARCODE_FORMATS.map((fmt: BarcodeFormat) => ({
+const FORMAT_OPTIONS: { value: BarcodeFormat; label: string }[] = BARCODE_FORMATS.map(
+  (fmt: BarcodeFormat) => ({
     value: fmt,
     label: getFormatLabel(fmt),
-  }));
+  }),
+);
 
-const HEIGHT_OPTIONS: { value: BarcodeHeight; label: string }[] =
-  BARCODE_HEIGHTS.map((h: BarcodeHeight) => ({
+const HEIGHT_OPTIONS: { value: BarcodeHeight; label: string }[] = BARCODE_HEIGHTS.map(
+  (h: BarcodeHeight) => ({
     value: h,
     label: `${h}px`,
-  }));
+  }),
+);
 
 /**
  * バーコード生成コンポーネント
@@ -101,15 +100,12 @@ function BarcodeGenerator() {
     if (!validateBarcodeInput(inputValue, format)) {
       setHasBarcode(false);
       setError(
-        `入力値が ${getFormatLabel(format)} 形式に合致しません。${getFormatDescription(format)}`
+        `入力値が ${getFormatLabel(format)} 形式に合致しません。${getFormatDescription(format)}`,
       );
       return;
     }
 
-    if (
-      !isValidHexColor(foregroundColor) ||
-      !isValidHexColor(backgroundColor)
-    ) {
+    if (!isValidHexColor(foregroundColor) || !isValidHexColor(backgroundColor)) {
       setHasBarcode(false);
       setError("カラーコードが無効です。#rrggbb形式で入力してください。");
       return;
@@ -129,20 +125,10 @@ function BarcodeGenerator() {
       setError(null);
     } catch (err) {
       setHasBarcode(false);
-      setError(
-        "バーコードの生成に失敗しました。入力値と形式の組み合わせを確認してください。"
-      );
+      setError("バーコードの生成に失敗しました。入力値と形式の組み合わせを確認してください。");
       console.error("Barcode generation error:", err);
     }
-  }, [
-    inputValue,
-    format,
-    height,
-    lineWidth,
-    showText,
-    foregroundColor,
-    backgroundColor,
-  ]);
+  }, [inputValue, format, height, lineWidth, showText, foregroundColor, backgroundColor]);
 
   // 入力変更時にバーコードをリアルタイム更新
   useEffect(() => {
@@ -191,7 +177,7 @@ function BarcodeGenerator() {
 
       img.src = url;
     },
-    [hasBarcode, backgroundColor]
+    [hasBarcode, backgroundColor],
   );
 
   /**
@@ -236,9 +222,7 @@ function BarcodeGenerator() {
     }
 
     try {
-      await navigator.clipboard.write([
-        new ClipboardItem({ "image/png": blob }),
-      ]);
+      await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
       announceStatus("バーコードをクリップボードにコピーしました");
     } catch (err) {
       console.error("Clipboard write failed:", err);
@@ -270,10 +254,7 @@ function BarcodeGenerator() {
                 </option>
               ))}
             </select>
-            <span
-              id="barcode-format-help"
-              className="barcode-format-description"
-            >
+            <span id="barcode-format-help" className="barcode-format-description">
               {getFormatDescription(format)}
             </span>
           </div>
@@ -299,9 +280,7 @@ function BarcodeGenerator() {
               <select
                 id="barcode-height"
                 value={height}
-                onChange={(e) =>
-                  setHeight(Number(e.target.value) as BarcodeHeight)
-                }
+                onChange={(e) => setHeight(Number(e.target.value) as BarcodeHeight)}
                 aria-describedby="barcode-height-help"
               >
                 {HEIGHT_OPTIONS.map((opt) => (
@@ -406,10 +385,7 @@ function BarcodeGenerator() {
             </div>
           )}
 
-          <div
-            className="barcode-svg-container"
-            aria-label="バーコードプレビューエリア"
-          >
+          <div className="barcode-svg-container" aria-label="バーコードプレビューエリア">
             <svg
               ref={svgRef}
               aria-label={
@@ -420,17 +396,11 @@ function BarcodeGenerator() {
               role="img"
             />
             {inputValue.length === 0 && (
-              <p className="barcode-placeholder-text">
-                値を入力するとバーコードが生成されます
-              </p>
+              <p className="barcode-placeholder-text">値を入力するとバーコードが生成されます</p>
             )}
           </div>
 
-          <div
-            className="barcode-download-section"
-            role="group"
-            aria-label="バーコード操作"
-          >
+          <div className="barcode-download-section" role="group" aria-label="バーコード操作">
             <Button
               type="button"
               className="btn-primary"

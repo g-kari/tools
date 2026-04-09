@@ -1,35 +1,35 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useMemo, useState } from 'react';
-import { StatusAnnouncer, useStatusAnnouncement } from '~/hooks/useStatusAnnouncement';
-import { TipsCard } from '~/components/TipsCard';
-import { useClipboard } from '~/hooks/useClipboard';
-import { useToast } from '~/components/Toast';
-import { Button } from '~/components/ui/button';
-import { Textarea } from '~/components/ui/textarea';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
-import { convertHtmlToMarkdown } from '../utils/html-markdown';
+import { createFileRoute } from "@tanstack/react-router";
+import { useMemo, useState } from "react";
+import { StatusAnnouncer, useStatusAnnouncement } from "~/hooks/useStatusAnnouncement";
+import { TipsCard } from "~/components/TipsCard";
+import { useClipboard } from "~/hooks/useClipboard";
+import { useToast } from "~/components/Toast";
+import { Button } from "~/components/ui/button";
+import { Textarea } from "~/components/ui/textarea";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
+import { convertHtmlToMarkdown } from "../utils/html-markdown";
 
-export const Route = createFileRoute('/html-markdown')({
+export const Route = createFileRoute("/html-markdown")({
   head: () => ({
     meta: [
-      { title: 'HTML→Markdown変換 | Web ツール集' },
+      { title: "HTML→Markdown変換 | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          'HTMLをMarkdown形式にリアルタイム変換するツール。見出し・リスト・テーブル・コードブロック・リンク・画像など主要なHTML要素に対応。コンテンツ移行やブログ執筆に便利。',
+          "HTMLをMarkdown形式にリアルタイム変換するツール。見出し・リスト・テーブル・コードブロック・リンク・画像など主要なHTML要素に対応。コンテンツ移行やブログ執筆に便利。",
       },
       {
-        property: 'og:title',
-        content: 'HTML→Markdown変換 | Web ツール集',
+        property: "og:title",
+        content: "HTML→Markdown変換 | Web ツール集",
       },
       {
-        property: 'og:description',
+        property: "og:description",
         content:
-          'HTMLをMarkdown形式にリアルタイム変換するツール。見出し・リスト・テーブル・コードブロック・リンク・画像など主要なHTML要素に対応。',
+          "HTMLをMarkdown形式にリアルタイム変換するツール。見出し・リスト・テーブル・コードブロック・リンク・画像など主要なHTML要素に対応。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/html-markdown` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
+      { property: "og:url", content: `${SITE_BASE_URL}/html-markdown` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
     ],
   }),
   component: HtmlMarkdownConverter,
@@ -62,18 +62,18 @@ console.log(greeting);</code></pre>
  * HTMLをMarkdown形式にリアルタイム変換する
  */
 function HtmlMarkdownConverter() {
-  const [inputHtml, setInputHtml] = useState('');
+  const [inputHtml, setInputHtml] = useState("");
   const { statusRef, announceStatus } = useStatusAnnouncement();
   const { copy } = useClipboard();
   const { showToast } = useToast();
 
   /** リアルタイム変換結果 */
   const outputMarkdown = useMemo(() => {
-    if (!inputHtml.trim()) return '';
+    if (!inputHtml.trim()) return "";
     try {
       return convertHtmlToMarkdown(inputHtml);
     } catch {
-      return '';
+      return "";
     }
   }, [inputHtml]);
 
@@ -81,21 +81,21 @@ function HtmlMarkdownConverter() {
     if (!outputMarkdown) return;
     const success = await copy(outputMarkdown);
     if (success) {
-      showToast('変換結果をコピーしました', 'success');
-      announceStatus('変換結果をコピーしました');
+      showToast("変換結果をコピーしました", "success");
+      announceStatus("変換結果をコピーしました");
     } else {
-      showToast('コピーに失敗しました', 'error');
+      showToast("コピーに失敗しました", "error");
     }
   };
 
   const handleClear = () => {
-    setInputHtml('');
-    announceStatus('入力内容をクリアしました');
+    setInputHtml("");
+    announceStatus("入力内容をクリアしました");
   };
 
   const handleLoadSample = () => {
     setInputHtml(SAMPLE_HTML);
-    announceStatus('サンプルHTMLを読み込みました');
+    announceStatus("サンプルHTMLを読み込みました");
   };
 
   return (
@@ -105,11 +105,7 @@ function HtmlMarkdownConverter() {
 
         {/* アクションボタン（上部） */}
         <div className="html-markdown-top-actions">
-          <Button
-            variant="outline"
-            onClick={handleLoadSample}
-            aria-label="サンプルHTMLを読み込む"
-          >
+          <Button variant="outline" onClick={handleLoadSample} aria-label="サンプルHTMLを読み込む">
             サンプルを読み込む
           </Button>
         </div>
@@ -147,7 +143,7 @@ function HtmlMarkdownConverter() {
               rows={20}
               placeholder="変換結果がここに表示されます"
               aria-live="polite"
-              aria-label={`Markdown出力: ${outputMarkdown || '（変換結果なし）'}`}
+              aria-label={`Markdown出力: ${outputMarkdown || "（変換結果なし）"}`}
               className="html-markdown-textarea"
             />
           </div>
@@ -176,36 +172,36 @@ function HtmlMarkdownConverter() {
         <TipsCard
           sections={[
             {
-              title: '使い方',
+              title: "使い方",
               items: [
-                'HTMLを入力するとMarkdownに自動変換されます',
-                '「サンプルを読み込む」で変換例を確認できます',
-                '「コピー」ボタンで変換結果をクリップボードにコピーできます',
+                "HTMLを入力するとMarkdownに自動変換されます",
+                "「サンプルを読み込む」で変換例を確認できます",
+                "「コピー」ボタンで変換結果をクリップボードにコピーできます",
               ],
             },
             {
-              title: '対応するHTML要素',
+              title: "対応するHTML要素",
               items: [
-                '見出し: <h1>〜<h6> → # 〜 ######',
-                '段落: <p> → 改行区切りのテキスト',
-                '太字・斜体: <strong>/<b> → **text**、<em>/<i> → *text*',
-                '取り消し線: <del>/<s> → ~~text~~',
+                "見出し: <h1>〜<h6> → # 〜 ######",
+                "段落: <p> → 改行区切りのテキスト",
+                "太字・斜体: <strong>/<b> → **text**、<em>/<i> → *text*",
+                "取り消し線: <del>/<s> → ~~text~~",
                 'リンク: <a href="..."> → [text](url)',
                 '画像: <img src="..." alt="..."> → ![alt](url)',
-                'コードブロック: <pre><code> → ``` ... ```（言語ハイライト対応）',
-                'インラインコード: <code> → `text`',
-                'リスト: <ul>/<ol>/<li>（ネスト対応）',
-                'テーブル: <table>/<thead>/<tbody>/<tr>/<th>/<td>',
-                'blockquote: <blockquote> → > text',
-                '水平線: <hr> → ---',
+                "コードブロック: <pre><code> → ``` ... ```（言語ハイライト対応）",
+                "インラインコード: <code> → `text`",
+                "リスト: <ul>/<ol>/<li>（ネスト対応）",
+                "テーブル: <table>/<thead>/<tbody>/<tr>/<th>/<td>",
+                "blockquote: <blockquote> → > text",
+                "水平線: <hr> → ---",
               ],
             },
             {
-              title: '活用例',
+              title: "活用例",
               items: [
-                'WordPressやCMSからコンテンツをMarkdownに移行',
-                'ウェブページのコンテンツをREADMEやドキュメントに変換',
-                'メールや文書のHTMLをMarkdownに変換してGitHubで管理',
+                "WordPressやCMSからコンテンツをMarkdownに移行",
+                "ウェブページのコンテンツをREADMEやドキュメントに変換",
+                "メールや文書のHTMLをMarkdownに変換してGitHubで管理",
               ],
             },
           ]}

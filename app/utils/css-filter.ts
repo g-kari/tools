@@ -67,7 +67,7 @@ export function generateFilterValue(state: FilterState): string {
   if (state.saturate !== 100) parts.push(`saturate(${state.saturate}%)`);
   if (state.sepia !== 0) parts.push(`sepia(${state.sepia}%)`);
 
-  return parts.length === 0 ? 'none' : parts.join(' ');
+  return parts.length === 0 ? "none" : parts.join(" ");
 }
 
 /**
@@ -103,39 +103,39 @@ export function isDefaultState(state: FilterState): boolean {
 /** プリセット一覧 */
 export const FILTER_PRESETS: FilterPreset[] = [
   {
-    label: 'モノクロ',
+    label: "モノクロ",
     state: { ...createDefaultState(), grayscale: 100 },
   },
   {
-    label: 'セピア',
+    label: "セピア",
     state: { ...createDefaultState(), sepia: 80, brightness: 90 },
   },
   {
-    label: 'ヴィンテージ',
+    label: "ヴィンテージ",
     state: { ...createDefaultState(), sepia: 40, contrast: 85, brightness: 95, saturate: 80 },
   },
   {
-    label: 'ウォーム',
+    label: "ウォーム",
     state: { ...createDefaultState(), brightness: 105, saturate: 130, sepia: 20 },
   },
   {
-    label: 'クール',
+    label: "クール",
     state: { ...createDefaultState(), hueRotate: 30, saturate: 110, brightness: 98 },
   },
   {
-    label: 'ドリーミー',
+    label: "ドリーミー",
     state: { ...createDefaultState(), blur: 1, brightness: 115, saturate: 130, contrast: 90 },
   },
   {
-    label: 'ダーク',
+    label: "ダーク",
     state: { ...createDefaultState(), brightness: 65, contrast: 115 },
   },
   {
-    label: '反転',
+    label: "反転",
     state: { ...createDefaultState(), invert: 100 },
   },
   {
-    label: 'ハイコントラスト',
+    label: "ハイコントラスト",
     state: { ...createDefaultState(), contrast: 175, brightness: 105 },
   },
 ];

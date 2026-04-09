@@ -42,7 +42,10 @@
   font-size: 0.8125rem;
   font-weight: 500;
   color: var(--md-sys-color-on-surface-variant);
-  transition: color 0.2s, background-color 0.2s, border-color 0.2s;
+  transition:
+    color 0.2s,
+    background-color 0.2s,
+    border-color 0.2s;
   letter-spacing: 0.03em;
 }
 
@@ -76,7 +79,9 @@
   font-size: 0.9375rem;
   background: var(--md-sys-color-surface-variant);
   color: var(--md-sys-color-on-surface);
-  transition: border-color 0.2s, background 0.2s;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
 }
 
 .http-headers-search-input:focus {
@@ -114,7 +119,9 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  transition: border-color 0.2s, background-color 0.2s;
+  transition:
+    border-color 0.2s,
+    background-color 0.2s;
 }
 
 .http-headers-card:hover {
@@ -133,7 +140,7 @@
 
 /* ヘッダー名（モノスペース） */
 .http-headers-name {
-  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  font-family: "JetBrains Mono", "Roboto Mono", "Courier New", monospace;
   font-size: 1rem;
   font-weight: 700;
   letter-spacing: -0.01em;
@@ -199,7 +206,7 @@
 }
 
 .http-headers-example-value {
-  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  font-family: "JetBrains Mono", "Roboto Mono", "Courier New", monospace;
   font-size: 0.75rem;
   color: var(--md-sys-color-on-surface);
   word-break: break-all;
@@ -223,7 +230,10 @@
   background: none;
   color: var(--md-sys-color-on-surface-variant);
   cursor: pointer;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s;
   letter-spacing: 0.03em;
 }
 

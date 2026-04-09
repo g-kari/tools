@@ -219,7 +219,9 @@
   font-family: "JetBrains Mono", "Space Mono", monospace;
   cursor: pointer;
   color: var(--md-sys-color-on-surface-variant);
-  transition: color 0.15s, border-color 0.15s;
+  transition:
+    color 0.15s,
+    border-color 0.15s;
   margin-bottom: -1px;
 }
 

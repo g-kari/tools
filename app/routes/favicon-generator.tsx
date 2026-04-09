@@ -9,16 +9,22 @@ import { TipsCard } from "~/components/TipsCard";
 export const Route = createFileRoute("/favicon-generator")({
   head: () => ({
     meta: [
-    { title: "ファビコン生成 | Web ツール集" },
-    { name: "description", content: "画像からfavicon.icoを生成するツール。複数サイズ対応。" },
-    { property: "og:title", content: "ファビコン生成 | Web ツール集" },
-    { property: "og:description", content: "画像からfavicon.icoを生成するツール。複数サイズ対応。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/favicon-generator` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "ファビコン生成 | Web ツール集" },
-    { name: "twitter:description", content: "画像からfavicon.icoを生成するツール。複数サイズ対応。" },
-  ],
+      { title: "ファビコン生成 | Web ツール集" },
+      { name: "description", content: "画像からfavicon.icoを生成するツール。複数サイズ対応。" },
+      { property: "og:title", content: "ファビコン生成 | Web ツール集" },
+      {
+        property: "og:description",
+        content: "画像からfavicon.icoを生成するツール。複数サイズ対応。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/favicon-generator` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "ファビコン生成 | Web ツール集" },
+      {
+        name: "twitter:description",
+        content: "画像からfavicon.icoを生成するツール。複数サイズ対応。",
+      },
+    ],
   }),
   component: FaviconGenerator,
 });
@@ -45,15 +51,78 @@ interface FaviconSize {
  * 利用可能なFaviconサイズ一覧
  */
 const FAVICON_SIZES: FaviconSize[] = [
-  { name: "16x16", width: 16, height: 16, filename: "favicon-16x16.png", description: "標準favicon", defaultSelected: true },
-  { name: "32x32", width: 32, height: 32, filename: "favicon-32x32.png", description: "高解像度favicon", defaultSelected: true },
-  { name: "48x48", width: 48, height: 48, filename: "favicon-48x48.png", description: "Windows用", defaultSelected: true },
-  { name: "64x64", width: 64, height: 64, filename: "favicon-64x64.png", description: "拡大表示用", defaultSelected: false },
-  { name: "128x128", width: 128, height: 128, filename: "favicon-128x128.png", description: "Chrome Web Store", defaultSelected: false },
-  { name: "180x180", width: 180, height: 180, filename: "apple-touch-icon.png", description: "Apple Touch Icon", defaultSelected: true },
-  { name: "192x192", width: 192, height: 192, filename: "android-chrome-192x192.png", description: "Android Chrome", defaultSelected: true },
-  { name: "256x256", width: 256, height: 256, filename: "favicon-256x256.png", description: "高解像度用", defaultSelected: false },
-  { name: "512x512", width: 512, height: 512, filename: "android-chrome-512x512.png", description: "Android Chrome大", defaultSelected: true },
+  {
+    name: "16x16",
+    width: 16,
+    height: 16,
+    filename: "favicon-16x16.png",
+    description: "標準favicon",
+    defaultSelected: true,
+  },
+  {
+    name: "32x32",
+    width: 32,
+    height: 32,
+    filename: "favicon-32x32.png",
+    description: "高解像度favicon",
+    defaultSelected: true,
+  },
+  {
+    name: "48x48",
+    width: 48,
+    height: 48,
+    filename: "favicon-48x48.png",
+    description: "Windows用",
+    defaultSelected: true,
+  },
+  {
+    name: "64x64",
+    width: 64,
+    height: 64,
+    filename: "favicon-64x64.png",
+    description: "拡大表示用",
+    defaultSelected: false,
+  },
+  {
+    name: "128x128",
+    width: 128,
+    height: 128,
+    filename: "favicon-128x128.png",
+    description: "Chrome Web Store",
+    defaultSelected: false,
+  },
+  {
+    name: "180x180",
+    width: 180,
+    height: 180,
+    filename: "apple-touch-icon.png",
+    description: "Apple Touch Icon",
+    defaultSelected: true,
+  },
+  {
+    name: "192x192",
+    width: 192,
+    height: 192,
+    filename: "android-chrome-192x192.png",
+    description: "Android Chrome",
+    defaultSelected: true,
+  },
+  {
+    name: "256x256",
+    width: 256,
+    height: 256,
+    filename: "favicon-256x256.png",
+    description: "高解像度用",
+    defaultSelected: false,
+  },
+  {
+    name: "512x512",
+    width: 512,
+    height: 512,
+    filename: "android-chrome-512x512.png",
+    description: "Android Chrome大",
+    defaultSelected: true,
+  },
 ];
 
 /**
@@ -66,7 +135,7 @@ const FAVICON_SIZES: FaviconSize[] = [
 export function resizeImage(
   img: HTMLImageElement,
   width: number,
-  height: number
+  height: number,
 ): Promise<Blob | null> {
   return new Promise((resolve) => {
     const canvas = document.createElement("canvas");
@@ -95,7 +164,7 @@ export function resizeImage(
  */
 export async function generateFavicons(
   img: HTMLImageElement,
-  sizes: FaviconSize[]
+  sizes: FaviconSize[],
 ): Promise<Map<string, Blob>> {
   const favicons = new Map<string, Blob>();
 
@@ -117,7 +186,7 @@ export async function generateFavicons(
  */
 export async function createFaviconsZip(
   favicons: Map<string, Blob>,
-  icoBlob?: Blob
+  icoBlob?: Blob,
 ): Promise<Blob> {
   const zip = new JSZip();
 
@@ -138,9 +207,7 @@ export async function createFaviconsZip(
  * @param images - サイズごとのPNG Blob配列（16, 32, 48px推奨）
  * @returns ICOファイルのBlob
  */
-export async function createIcoFile(
-  images: { size: number; blob: Blob }[]
-): Promise<Blob> {
+export async function createIcoFile(images: { size: number; blob: Blob }[]): Promise<Blob> {
   // サイズ順にソート（小さい順）
   const sortedImages = [...images].sort((a, b) => a.size - b.size);
 
@@ -213,7 +280,7 @@ function drawCheckerboard(
   ctx: CanvasRenderingContext2D,
   width: number,
   height: number,
-  cellSize: number = 8
+  cellSize: number = 8,
 ): void {
   ctx.fillStyle = "#ffffff";
   ctx.fillRect(0, 0, width, height);
@@ -232,12 +299,14 @@ function FaviconGenerator() {
   const [originalFile, setOriginalFile] = useState<File | null>(null);
   const [originalPreview, setOriginalPreview] = useState<string | null>(null);
   const [selectedSizes, setSelectedSizes] = useState<Set<string>>(
-    new Set(FAVICON_SIZES.filter((s) => s.defaultSelected).map((s) => s.name))
+    new Set(FAVICON_SIZES.filter((s) => s.defaultSelected).map((s) => s.name)),
   );
   const [generatedFavicons, setGeneratedFavicons] = useState<Map<string, Blob>>(new Map());
   const [isLoading, setIsLoading] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
-  const [imageDimensions, setImageDimensions] = useState<{ width: number; height: number } | null>(null);
+  const [imageDimensions, setImageDimensions] = useState<{ width: number; height: number } | null>(
+    null,
+  );
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const imageRef = useRef<HTMLImageElement | null>(null);
@@ -312,7 +381,7 @@ function FaviconGenerator() {
       };
       img.src = preview;
     },
-    [originalPreview, showToast]
+    [originalPreview, showToast],
   );
 
   const handleInputChange = useCallback(
@@ -322,7 +391,7 @@ function FaviconGenerator() {
         handleFileSelect(file);
       }
     },
-    [handleFileSelect]
+    [handleFileSelect],
   );
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
@@ -345,7 +414,7 @@ function FaviconGenerator() {
         handleFileSelect(file);
       }
     },
-    [handleFileSelect]
+    [handleFileSelect],
   );
 
   const handleSizeToggle = useCallback((sizeName: string) => {
@@ -486,7 +555,7 @@ function FaviconGenerator() {
 
       showToast(`${filename}をダウンロードしました`, "success");
     },
-    [generatedFavicons, showToast]
+    [generatedFavicons, showToast],
   );
 
   const handleClear = useCallback(() => {
@@ -552,9 +621,7 @@ function FaviconGenerator() {
                   <polyline points="17 8 12 3 7 8" />
                   <line x1="12" y1="3" x2="12" y2="15" />
                 </svg>
-                <p className="dropzone-text">
-                  クリックして画像を選択、またはドラッグ&ドロップ
-                </p>
+                <p className="dropzone-text">クリックして画像を選択、またはドラッグ&ドロップ</p>
                 <p className="dropzone-hint">PNG, JPEG, SVG など（正方形推奨）</p>
               </div>
             </div>
@@ -564,9 +631,7 @@ function FaviconGenerator() {
             sections={[
               {
                 title: "Favicon生成ツールとは",
-                items: [
-                  "画像から複数サイズのFaviconを一括生成するツールです",
-                ],
+                items: ["画像から複数サイズのFaviconを一括生成するツールです"],
               },
               {
                 title: "使い方",
@@ -603,11 +668,11 @@ function FaviconGenerator() {
               {imageDimensions && (
                 <div className="favicon-source-info">
                   <span>{originalFile?.name}</span>
-                  <span>{imageDimensions.width} × {imageDimensions.height} px</span>
+                  <span>
+                    {imageDimensions.width} × {imageDimensions.height} px
+                  </span>
                   {imageDimensions.width !== imageDimensions.height && (
-                    <span className="favicon-warning">
-                      ※ 正方形でない画像は引き伸ばされます
-                    </span>
+                    <span className="favicon-warning">※ 正方形でない画像は引き伸ばされます</span>
                   )}
                 </div>
               )}
@@ -715,7 +780,9 @@ function FaviconGenerator() {
                     <div key={filename} className="favicon-result-item">
                       <span className="favicon-result-name">{filename}</span>
                       {sizeInfo && (
-                        <span className="favicon-result-size">{sizeInfo.width}×{sizeInfo.height}</span>
+                        <span className="favicon-result-size">
+                          {sizeInfo.width}×{sizeInfo.height}
+                        </span>
                       )}
                       <button
                         type="button"

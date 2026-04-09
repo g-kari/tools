@@ -13,7 +13,9 @@
   padding: 0.5rem 0.75rem;
   cursor: pointer;
   border: 1px solid transparent;
-  transition: background 0.15s, border-color 0.15s;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
 }
 
 .kana-mode-option:has(input:checked) {

@@ -62,12 +62,12 @@ export function encodePunycodeLabel(input: string): string {
   if (codePoints.every((cp) => cp < 128)) return input;
 
   // --- 基本コードポイントをコピー ---
-  let output = '';
+  let output = "";
   for (const cp of codePoints) {
     if (cp < 128) output += String.fromCodePoint(cp);
   }
   const basicLen = output.length;
-  if (basicLen > 0) output += '-'; // デリミタ
+  if (basicLen > 0) output += "-"; // デリミタ
 
   // --- 非基本コードポイントをエンコード ---
   let processed = basicLen;
@@ -88,7 +88,7 @@ export function encodePunycodeLabel(input: string): string {
     for (const cp of codePoints) {
       if (cp < n) {
         delta++;
-        if (delta === 0) throw new Error('オーバーフロー');
+        if (delta === 0) throw new Error("オーバーフロー");
       }
       if (cp === n) {
         let q = delta;
@@ -110,7 +110,7 @@ export function encodePunycodeLabel(input: string): string {
     n++;
   }
 
-  return 'xn--' + output;
+  return "xn--" + output;
 }
 
 /**
@@ -119,7 +119,7 @@ export function encodePunycodeLabel(input: string): string {
  */
 export function decodePunycodeLabel(input: string): string {
   const lower = input.toLowerCase();
-  if (!lower.startsWith('xn--')) return input;
+  if (!lower.startsWith("xn--")) return input;
 
   const encoded = lower.slice(4); // 'xn--' を除去
   const output: number[] = [];
@@ -130,7 +130,7 @@ export function decodePunycodeLabel(input: string): string {
 
   for (let j = 0; j < basicEnd; j++) {
     const cp = encoded.codePointAt(j)!;
-    if (cp >= 128) throw new Error('基本部分に非 ASCII が含まれています');
+    if (cp >= 128) throw new Error("基本部分に非 ASCII が含まれています");
     output.push(cp);
   }
 
@@ -145,7 +145,7 @@ export function decodePunycodeLabel(input: string): string {
     let w = 1;
 
     for (let k = BASE; ; k += BASE) {
-      if (pos >= encoded.length) throw new Error('無効な Punycode 入力です');
+      if (pos >= encoded.length) throw new Error("無効な Punycode 入力です");
       const digit = decodeDigit(encoded.codePointAt(pos)!);
       pos++;
       if (digit >= BASE) throw new Error(`無効な文字: "${encoded[pos - 1]}"`);
@@ -162,7 +162,7 @@ export function decodePunycodeLabel(input: string): string {
     i++;
   }
 
-  return output.map((cp) => String.fromCodePoint(cp)).join('');
+  return output.map((cp) => String.fromCodePoint(cp)).join("");
 }
 
 // ---------------------------------------------------------------------------
@@ -196,13 +196,13 @@ export interface PunycodeResult {
  */
 export function encodeDomain(domain: string): PunycodeResult {
   const trimmed = domain.trim();
-  const labels = trimmed.split('.');
+  const labels = trimmed.split(".");
   const labelInfos: LabelInfo[] = labels.map((label) => {
     if (!label) return { original: label, converted: label, changed: false };
     const converted = encodePunycodeLabel(label);
     return { original: label, converted, changed: converted !== label };
   });
-  const output = labelInfos.map((l) => l.converted).join('.');
+  const output = labelInfos.map((l) => l.converted).join(".");
   return {
     input: domain,
     output,
@@ -216,13 +216,13 @@ export function encodeDomain(domain: string): PunycodeResult {
  */
 export function decodeDomain(domain: string): PunycodeResult {
   const trimmed = domain.trim().toLowerCase();
-  const labels = trimmed.split('.');
+  const labels = trimmed.split(".");
   const labelInfos: LabelInfo[] = labels.map((label) => {
     if (!label) return { original: label, converted: label, changed: false };
     const converted = decodePunycodeLabel(label);
     return { original: label, converted, changed: converted !== label };
   });
-  const output = labelInfos.map((l) => l.converted).join('.');
+  const output = labelInfos.map((l) => l.converted).join(".");
   return {
     input: domain,
     output,
@@ -237,13 +237,13 @@ export function decodeDomain(domain: string): PunycodeResult {
  * - それ以外 → Unicode → Punycode (エンコード)
  */
 export function autoConvertDomain(domain: string): {
-  mode: 'encode' | 'decode';
+  mode: "encode" | "decode";
   result: PunycodeResult;
 } {
   const trimmed = domain.trim().toLowerCase();
-  const hasPunycode = trimmed.split('.').some((l) => l.startsWith('xn--'));
+  const hasPunycode = trimmed.split(".").some((l) => l.startsWith("xn--"));
   if (hasPunycode) {
-    return { mode: 'decode', result: decodeDomain(trimmed) };
+    return { mode: "decode", result: decodeDomain(trimmed) };
   }
-  return { mode: 'encode', result: encodeDomain(domain.trim()) };
+  return { mode: "encode", result: encodeDomain(domain.trim()) };
 }

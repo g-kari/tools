@@ -18,7 +18,7 @@ export function buildPlayfairSquare(keyword: string): PlayfairSquare {
   const chars: string[] = [];
 
   // キーワードの文字を先頭に配置（J→I に正規化）
-  const normalizeChar = (c: string): string => (c === 'J' ? 'I' : c);
+  const normalizeChar = (c: string): string => (c === "J" ? "I" : c);
 
   for (const ch of keyword.toUpperCase()) {
     if (!/[A-Z]/.test(ch)) continue;
@@ -73,8 +73,8 @@ export function prepareDigraphs(text: string): string[][] {
   // アルファベット以外を除去、大文字化、J→I 正規化
   const cleaned = text
     .toUpperCase()
-    .replace(/[^A-Z]/g, '')
-    .replace(/J/g, 'I');
+    .replace(/[^A-Z]/g, "")
+    .replace(/J/g, "I");
 
   const chars: string[] = [];
   let i = 0;
@@ -82,13 +82,13 @@ export function prepareDigraphs(text: string): string[][] {
     const a = cleaned[i]!;
     if (i + 1 >= cleaned.length) {
       // 末尾の1文字: X を補充
-      chars.push(a, 'X');
+      chars.push(a, "X");
       i++;
     } else {
       const b = cleaned[i + 1]!;
       if (a === b) {
         // 同じ文字が連続: 間に X（または Q）を挿入
-        chars.push(a, a === 'X' ? 'Q' : 'X');
+        chars.push(a, a === "X" ? "Q" : "X");
         i++;
       } else {
         chars.push(a, b);
@@ -125,16 +125,10 @@ function transformDigraph(
 
   if (r1 === r2) {
     // 同じ行: 列を右（暗号化）または左（復号化）にシフト
-    return [
-      square[r1]![(c1 + shift) % 5]!,
-      square[r2]![(c2 + shift) % 5]!,
-    ];
+    return [square[r1]![(c1 + shift) % 5]!, square[r2]![(c2 + shift) % 5]!];
   } else if (c1 === c2) {
     // 同じ列: 行を下（暗号化）または上（復号化）にシフト
-    return [
-      square[(r1 + shift) % 5]![c1]!,
-      square[(r2 + shift) % 5]![c2]!,
-    ];
+    return [square[(r1 + shift) % 5]![c1]!, square[(r2 + shift) % 5]![c2]!];
   } else {
     // 矩形: 同じ行の相手の列に移動（方向は暗号化・復号化で同じ）
     return [square[r1]![c2]!, square[r2]![c1]!];
@@ -148,7 +142,7 @@ function transformDigraph(
  * @returns 暗号化されたテキスト（2文字ずつスペース区切り）
  */
 export function playfairEncrypt(text: string, keyword: string): string {
-  if (!text.trim() || !keyword.trim()) return '';
+  if (!text.trim() || !keyword.trim()) return "";
   const square = buildPlayfairSquare(keyword);
   const digraphs = prepareDigraphs(text);
   return digraphs
@@ -156,7 +150,7 @@ export function playfairEncrypt(text: string, keyword: string): string {
       const [ea, eb] = transformDigraph(a!, b!, square, true);
       return ea + eb;
     })
-    .join(' ');
+    .join(" ");
 }
 
 /**
@@ -166,21 +160,21 @@ export function playfairEncrypt(text: string, keyword: string): string {
  * @returns 復号化されたテキスト
  */
 export function playfairDecrypt(text: string, keyword: string): string {
-  if (!text.trim() || !keyword.trim()) return '';
+  if (!text.trim() || !keyword.trim()) return "";
   const square = buildPlayfairSquare(keyword);
 
   // スペースを無視してアルファベットのみ抽出し、2文字ペアに分割
   const cleaned = text
     .toUpperCase()
-    .replace(/[^A-Z]/g, '')
-    .replace(/J/g, 'I');
+    .replace(/[^A-Z]/g, "")
+    .replace(/J/g, "I");
 
-  if (cleaned.length % 2 !== 0) return '';
+  if (cleaned.length % 2 !== 0) return "";
 
   const result: string[] = [];
   for (let i = 0; i < cleaned.length; i += 2) {
     const [da, db] = transformDigraph(cleaned[i]!, cleaned[i + 1]!, square, false);
     result.push(da, db);
   }
-  return result.join('');
+  return result.join("");
 }

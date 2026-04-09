@@ -4,14 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  hexToRgb,
-  rgbToHex,
-  rgbToHsl,
-  hslToRgb,
-  type RGB,
-  type HSL,
-} from "./color-picker";
+import { hexToRgb, rgbToHex, rgbToHsl, hslToRgb, type RGB, type HSL } from "./color-picker";
 
 export const Route = createFileRoute("/color-palette")({
   head: () => ({
@@ -19,14 +12,12 @@ export const Route = createFileRoute("/color-palette")({
       { title: "カラーパレット生成 | Web ツール集" },
       {
         name: "description",
-        content:
-          "補色・三色・類似色など配色理論に基づいたカラーパレットを自動生成するツール。",
+        content: "補色・三色・類似色など配色理論に基づいたカラーパレットを自動生成するツール。",
       },
       { property: "og:title", content: "カラーパレット生成 | Web ツール集" },
       {
         property: "og:description",
-        content:
-          "補色・三色・類似色など配色理論に基づいたカラーパレットを自動生成するツール。",
+        content: "補色・三色・類似色など配色理論に基づいたカラーパレットを自動生成するツール。",
       },
       { property: "og:url", content: `${SITE_BASE_URL}/color-palette` },
       { property: "og:type", content: "website" },
@@ -37,8 +28,7 @@ export const Route = createFileRoute("/color-palette")({
       },
       {
         name: "twitter:description",
-        content:
-          "補色・三色・類似色など配色理論に基づいたカラーパレットを自動生成するツール。",
+        content: "補色・三色・類似色など配色理論に基づいたカラーパレットを自動生成するツール。",
       },
     ],
   }),
@@ -129,12 +119,7 @@ export function generateSplitComplementary(baseHex: string): string[] {
  * @returns 4色のHEX文字列配列
  */
 export function generateTetradic(baseHex: string): string[] {
-  return [
-    baseHex,
-    shiftHue(baseHex, 90),
-    shiftHue(baseHex, 180),
-    shiftHue(baseHex, 270),
-  ];
+  return [baseHex, shiftHue(baseHex, 90), shiftHue(baseHex, 180), shiftHue(baseHex, 270)];
 }
 
 /**
@@ -149,10 +134,7 @@ export function getContrastColor(hex: string): "white" | "black" {
     const s = c / 255;
     return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
   };
-  const L =
-    0.2126 * luminance(rgb.r) +
-    0.7152 * luminance(rgb.g) +
-    0.0722 * luminance(rgb.b);
+  const L = 0.2126 * luminance(rgb.r) + 0.7152 * luminance(rgb.g) + 0.0722 * luminance(rgb.b);
   return L > 0.179 ? "black" : "white";
 }
 
@@ -230,27 +212,21 @@ function ColorPalette() {
   }, [baseColor, algorithm]);
 
   // カラーピッカーからの色変更
-  const handleColorPickerChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = e.target.value;
-      setBaseColor(value);
-      setHexInputValue(value);
-    },
-    []
-  );
+  const handleColorPickerChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setBaseColor(value);
+    setHexInputValue(value);
+  }, []);
 
   // HEXテキスト入力からの色変更
-  const handleHexTextChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = e.target.value;
-      setHexInputValue(value);
-      const normalized = value.startsWith("#") ? value : `#${value}`;
-      if (/^#[0-9A-Fa-f]{6}$/.test(normalized)) {
-        setBaseColor(normalized);
-      }
-    },
-    []
-  );
+  const handleHexTextChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setHexInputValue(value);
+    const normalized = value.startsWith("#") ? value : `#${value}`;
+    if (/^#[0-9A-Fa-f]{6}$/.test(normalized)) {
+      setBaseColor(normalized);
+    }
+  }, []);
 
   // スウォッチの色をコピー
   const handleCopyColor = useCallback(
@@ -262,14 +238,12 @@ function ColorPalette() {
         showToast("コピーに失敗しました", "error");
       }
     },
-    [showToast]
+    [showToast],
   );
 
   // CSS変数としてエクスポート
   const handleExportCss = useCallback(async () => {
-    const cssVars = palette
-      .map((color, i) => `  --color-${i + 1}: ${color};`)
-      .join("\n");
+    const cssVars = palette.map((color, i) => `  --color-${i + 1}: ${color};`).join("\n");
     const output = `:root {\n${cssVars}\n}`;
     try {
       await navigator.clipboard.writeText(output);
@@ -322,11 +296,7 @@ function ColorPalette() {
         {/* アルゴリズム選択タブ */}
         <div className="tool-section">
           <span className="tool-label">配色アルゴリズム</span>
-          <div
-            className="cp-algo-tabs"
-            role="tablist"
-            aria-label="配色アルゴリズムの選択"
-          >
+          <div className="cp-algo-tabs" role="tablist" aria-label="配色アルゴリズムの選択">
             {ALGORITHMS.map((algo) => (
               <button
                 key={algo.id}
@@ -345,21 +315,13 @@ function ColorPalette() {
         {/* パレット表示グリッド */}
         <div className="tool-section">
           <span className="tool-label">生成されたパレット</span>
-          <div
-            className="cp-palette-grid"
-            role="list"
-            aria-label="生成されたカラーパレット"
-          >
+          <div className="cp-palette-grid" role="list" aria-label="生成されたカラーパレット">
             {palette.map((hex, index) => {
               const rgb = hexToRgb(hex);
               const hsl = rgbToHsl(rgb);
               const contrastColor = getContrastColor(hex);
               return (
-                <div
-                  key={`${hex}-${index}`}
-                  className="cp-swatch"
-                  role="listitem"
-                >
+                <div key={`${hex}-${index}`} className="cp-swatch" role="listitem">
                   <div
                     className="cp-swatch-color"
                     ref={(el) => {
@@ -369,12 +331,8 @@ function ColorPalette() {
                   />
                   <div className="cp-swatch-info">
                     <div className="cp-swatch-hex">{hex}</div>
-                    <div className="cp-swatch-detail">
-                      {rgbToDisplayString(rgb)}
-                    </div>
-                    <div className="cp-swatch-detail">
-                      {hslToDisplayString(hsl)}
-                    </div>
+                    <div className="cp-swatch-detail">{rgbToDisplayString(rgb)}</div>
+                    <div className="cp-swatch-detail">{hslToDisplayString(hsl)}</div>
                     <button
                       type="button"
                       className="cp-swatch-copy-btn"
@@ -395,18 +353,10 @@ function ColorPalette() {
         <div className="cp-export-section">
           <span className="tool-label">エクスポート</span>
           <div className="cp-export-btns">
-            <Button
-              type="button"
-              onClick={handleExportCss}
-              aria-label="CSS変数形式でエクスポート"
-            >
+            <Button type="button" onClick={handleExportCss} aria-label="CSS変数形式でエクスポート">
               CSS変数としてコピー
             </Button>
-            <Button
-              type="button"
-              onClick={handleExportJson}
-              aria-label="JSON形式でエクスポート"
-            >
+            <Button type="button" onClick={handleExportJson} aria-label="JSON形式でエクスポート">
               JSONとしてコピー
             </Button>
           </div>
@@ -431,7 +381,7 @@ function ColorPalette() {
             items: [
               "各スウォッチの「コピー」ボタンでHEXコードをクリップボードにコピー",
               "「CSS変数としてコピー」で :root { --color-1: #xxx; ... } 形式でエクスポート",
-              "「JSONとしてコピー」で { \"colors\": [\"#xxx\", ...] } 形式でエクスポート",
+              '「JSONとしてコピー」で { "colors": ["#xxx", ...] } 形式でエクスポート',
             ],
           },
           {

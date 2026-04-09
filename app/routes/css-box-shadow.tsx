@@ -4,10 +4,7 @@ import { useState, useCallback, useMemo } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 import {
   type BoxShadowLayer,
@@ -65,12 +62,8 @@ const BG_OPTIONS: { id: BgMode; label: string }[] = [
  * 複数レイヤーのbox-shadowをビジュアルに設定し、CSSコードを生成する
  */
 function CssBoxShadowGenerator() {
-  const [layers, setLayers] = useState<BoxShadowLayer[]>([
-    createDefaultLayer(0),
-  ]);
-  const [selectedId, setSelectedId] = useState<string | null>(
-    () => createDefaultLayer(0).id
-  );
+  const [layers, setLayers] = useState<BoxShadowLayer[]>([createDefaultLayer(0)]);
+  const [selectedId, setSelectedId] = useState<string | null>(() => createDefaultLayer(0).id);
   const [bgMode, setBgMode] = useState<BgMode>("light");
 
   const { copy } = useClipboard();
@@ -81,10 +74,7 @@ function CssBoxShadowGenerator() {
   const generatedCSS = useMemo(() => generateFullCSS(layers), [layers]);
 
   /** プレビューの box-shadow 値 */
-  const previewShadow = useMemo(
-    () => generateBoxShadowValue(layers),
-    [layers]
-  );
+  const previewShadow = useMemo(() => generateBoxShadowValue(layers), [layers]);
 
   /** 選択中レイヤー */
   const selectedLayer = layers.find((l) => l.id === selectedId) ?? null;
@@ -108,18 +98,13 @@ function CssBoxShadowGenerator() {
       if (selectedId === id) setSelectedId(null);
       announceStatus("レイヤーを削除しました");
     },
-    [layers.length, selectedId, announceStatus, showToast]
+    [layers.length, selectedId, announceStatus, showToast],
   );
 
   /** 選択中レイヤーのプロパティを更新する */
-  const updateLayer = useCallback(
-    (id: string, updates: Partial<BoxShadowLayer>) => {
-      setLayers((prev) =>
-        prev.map((l) => (l.id === id ? { ...l, ...updates } : l))
-      );
-    },
-    []
-  );
+  const updateLayer = useCallback((id: string, updates: Partial<BoxShadowLayer>) => {
+    setLayers((prev) => prev.map((l) => (l.id === id ? { ...l, ...updates } : l)));
+  }, []);
 
   /** プリセットを適用する */
   const applyPreset = useCallback(
@@ -134,7 +119,7 @@ function CssBoxShadowGenerator() {
       setSelectedId(newLayers[0]?.id ?? null);
       announceStatus(`「${preset.label}」プリセットを適用しました`);
     },
-    [announceStatus]
+    [announceStatus],
   );
 
   /** リセットする */
@@ -163,10 +148,7 @@ function CssBoxShadowGenerator() {
           {/* 左側: コントロールパネル */}
           <div className="cbs-controls" aria-label="ボックスシャドウ設定パネル">
             {/* プリセット */}
-            <section
-              className="cbs-section"
-              aria-labelledby="cbs-presets-title"
-            >
+            <section className="cbs-section" aria-labelledby="cbs-presets-title">
               <h2 className="cbs-section-title" id="cbs-presets-title">
                 プリセット
               </h2>
@@ -186,10 +168,7 @@ function CssBoxShadowGenerator() {
             </section>
 
             {/* レイヤーリスト */}
-            <section
-              className="cbs-section"
-              aria-labelledby="cbs-layers-title"
-            >
+            <section className="cbs-section" aria-labelledby="cbs-layers-title">
               <div className="cbs-section-header">
                 <h2 className="cbs-section-title" id="cbs-layers-title">
                   シャドウレイヤー ({layers.length})
@@ -205,11 +184,7 @@ function CssBoxShadowGenerator() {
                 </Button>
               </div>
 
-              <div
-                className="cbs-layers-list"
-                role="list"
-                aria-label="シャドウレイヤー一覧"
-              >
+              <div className="cbs-layers-list" role="list" aria-label="シャドウレイヤー一覧">
                 {layers.map((layer, idx) => (
                   <div
                     key={layer.id}
@@ -225,19 +200,13 @@ function CssBoxShadowGenerator() {
                       <button
                         type="button"
                         className="cbs-layer-name"
-                        onClick={() =>
-                          setSelectedId(
-                            selectedId === layer.id ? null : layer.id
-                          )
-                        }
+                        onClick={() => setSelectedId(selectedId === layer.id ? null : layer.id)}
                         aria-expanded={selectedId === layer.id}
                         aria-label={`レイヤー${idx + 1}のプロパティを${selectedId === layer.id ? "閉じる" : "開く"}`}
                       >
                         レイヤー {idx + 1}
                       </button>
-                      {layer.inset && (
-                        <span className="cbs-layer-badge">inset</span>
-                      )}
+                      {layer.inset && <span className="cbs-layer-badge">inset</span>}
                       <button
                         type="button"
                         className="cbs-layer-remove"
@@ -255,10 +224,7 @@ function CssBoxShadowGenerator() {
                       >
                         {/* offset-x */}
                         <div className="cbs-prop-row">
-                          <label
-                            htmlFor={`cbs-ox-${layer.id}`}
-                            className="cbs-prop-label"
-                          >
+                          <label htmlFor={`cbs-ox-${layer.id}`} className="cbs-prop-label">
                             offset-x
                           </label>
                           <div className="cbs-range-row">
@@ -276,18 +242,13 @@ function CssBoxShadowGenerator() {
                               }
                               aria-label="水平オフセット"
                             />
-                            <span className="cbs-range-value">
-                              {selectedLayer.offsetX}px
-                            </span>
+                            <span className="cbs-range-value">{selectedLayer.offsetX}px</span>
                           </div>
                         </div>
 
                         {/* offset-y */}
                         <div className="cbs-prop-row">
-                          <label
-                            htmlFor={`cbs-oy-${layer.id}`}
-                            className="cbs-prop-label"
-                          >
+                          <label htmlFor={`cbs-oy-${layer.id}`} className="cbs-prop-label">
                             offset-y
                           </label>
                           <div className="cbs-range-row">
@@ -305,18 +266,13 @@ function CssBoxShadowGenerator() {
                               }
                               aria-label="垂直オフセット"
                             />
-                            <span className="cbs-range-value">
-                              {selectedLayer.offsetY}px
-                            </span>
+                            <span className="cbs-range-value">{selectedLayer.offsetY}px</span>
                           </div>
                         </div>
 
                         {/* blur */}
                         <div className="cbs-prop-row">
-                          <label
-                            htmlFor={`cbs-blur-${layer.id}`}
-                            className="cbs-prop-label"
-                          >
+                          <label htmlFor={`cbs-blur-${layer.id}`} className="cbs-prop-label">
                             blur-radius
                           </label>
                           <div className="cbs-range-row">
@@ -334,18 +290,13 @@ function CssBoxShadowGenerator() {
                               }
                               aria-label="ぼかし半径"
                             />
-                            <span className="cbs-range-value">
-                              {selectedLayer.blur}px
-                            </span>
+                            <span className="cbs-range-value">{selectedLayer.blur}px</span>
                           </div>
                         </div>
 
                         {/* spread */}
                         <div className="cbs-prop-row">
-                          <label
-                            htmlFor={`cbs-spread-${layer.id}`}
-                            className="cbs-prop-label"
-                          >
+                          <label htmlFor={`cbs-spread-${layer.id}`} className="cbs-prop-label">
                             spread-radius
                           </label>
                           <div className="cbs-range-row">
@@ -363,18 +314,13 @@ function CssBoxShadowGenerator() {
                               }
                               aria-label="広がり半径"
                             />
-                            <span className="cbs-range-value">
-                              {selectedLayer.spread}px
-                            </span>
+                            <span className="cbs-range-value">{selectedLayer.spread}px</span>
                           </div>
                         </div>
 
                         {/* color */}
                         <div className="cbs-prop-row">
-                          <label
-                            htmlFor={`cbs-color-text-${layer.id}`}
-                            className="cbs-prop-label"
-                          >
+                          <label htmlFor={`cbs-color-text-${layer.id}`} className="cbs-prop-label">
                             color
                           </label>
                           <div className="cbs-color-row">
@@ -382,9 +328,7 @@ function CssBoxShadowGenerator() {
                               type="color"
                               className="cbs-color-input"
                               value={selectedLayer.color}
-                              onChange={(e) =>
-                                updateLayer(layer.id, { color: e.target.value })
-                              }
+                              onChange={(e) => updateLayer(layer.id, { color: e.target.value })}
                               aria-label="影の色（カラーピッカー）"
                             />
                             <input
@@ -392,9 +336,7 @@ function CssBoxShadowGenerator() {
                               type="text"
                               className="cbs-input cbs-color-text"
                               value={selectedLayer.color}
-                              onChange={(e) =>
-                                updateLayer(layer.id, { color: e.target.value })
-                              }
+                              onChange={(e) => updateLayer(layer.id, { color: e.target.value })}
                               placeholder="#000000"
                               aria-label="影の色（16進数）"
                             />
@@ -403,10 +345,7 @@ function CssBoxShadowGenerator() {
 
                         {/* opacity */}
                         <div className="cbs-prop-row">
-                          <label
-                            htmlFor={`cbs-opacity-${layer.id}`}
-                            className="cbs-prop-label"
-                          >
+                          <label htmlFor={`cbs-opacity-${layer.id}`} className="cbs-prop-label">
                             opacity
                           </label>
                           <div className="cbs-range-row">
@@ -424,9 +363,7 @@ function CssBoxShadowGenerator() {
                               }
                               aria-label="不透明度"
                             />
-                            <span className="cbs-range-value">
-                              {selectedLayer.opacity}%
-                            </span>
+                            <span className="cbs-range-value">{selectedLayer.opacity}%</span>
                           </div>
                         </div>
 
@@ -443,10 +380,7 @@ function CssBoxShadowGenerator() {
                             }
                             aria-label="inset（内側シャドウ）"
                           />
-                          <label
-                            htmlFor={`cbs-inset-${layer.id}`}
-                            className="cbs-inset-label"
-                          >
+                          <label htmlFor={`cbs-inset-${layer.id}`} className="cbs-inset-label">
                             inset（内側シャドウ）
                           </label>
                         </div>
@@ -471,10 +405,7 @@ function CssBoxShadowGenerator() {
           {/* 右側: プレビュー + CSS出力 */}
           <div className="cbs-right">
             {/* ライブプレビュー */}
-            <section
-              className="cbs-preview-section"
-              aria-labelledby="cbs-preview-title"
-            >
+            <section className="cbs-preview-section" aria-labelledby="cbs-preview-title">
               <h2 className="cbs-section-title" id="cbs-preview-title">
                 ライブプレビュー
               </h2>
@@ -487,11 +418,7 @@ function CssBoxShadowGenerator() {
                   Preview
                 </div>
               </div>
-              <div
-                className="cbs-preview-bg-switcher"
-                role="group"
-                aria-label="背景色を選択"
-              >
+              <div className="cbs-preview-bg-switcher" role="group" aria-label="背景色を選択">
                 {BG_OPTIONS.map((opt) => (
                   <button
                     key={opt.id}
@@ -508,10 +435,7 @@ function CssBoxShadowGenerator() {
             </section>
 
             {/* CSS出力 */}
-            <section
-              className="cbs-css-section"
-              aria-labelledby="cbs-css-output-title"
-            >
+            <section className="cbs-css-section" aria-labelledby="cbs-css-output-title">
               <div className="cbs-css-header">
                 <h2 className="cbs-section-title" id="cbs-css-output-title">
                   生成 CSS
@@ -525,11 +449,7 @@ function CssBoxShadowGenerator() {
                   コピー
                 </Button>
               </div>
-              <pre
-                className="cbs-css-output"
-                aria-label="生成されたCSSコード"
-                aria-live="polite"
-              >
+              <pre className="cbs-css-output" aria-label="生成されたCSSコード" aria-live="polite">
                 {generatedCSS}
               </pre>
             </section>

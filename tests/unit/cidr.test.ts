@@ -73,13 +73,7 @@ describe("CIDR Utilities", () => {
     });
 
     it("should round-trip correctly", () => {
-      const ips = [
-        "192.168.1.1",
-        "10.0.0.1",
-        "172.16.0.1",
-        "0.0.0.0",
-        "255.255.255.255",
-      ];
+      const ips = ["192.168.1.1", "10.0.0.1", "172.16.0.1", "0.0.0.0", "255.255.255.255"];
       ips.forEach((ip) => {
         expect(intToIp(ipToInt(ip))).toBe(ip);
       });
@@ -102,24 +96,16 @@ describe("CIDR Utilities", () => {
       expect(calculateNetworkAddress("192.168.1.100", 24)).toBe("192.168.1.0");
       expect(calculateNetworkAddress("10.1.2.3", 8)).toBe("10.0.0.0");
       expect(calculateNetworkAddress("172.16.5.7", 12)).toBe("172.16.0.0");
-      expect(calculateNetworkAddress("192.168.1.128", 25)).toBe(
-        "192.168.1.128"
-      );
+      expect(calculateNetworkAddress("192.168.1.128", 25)).toBe("192.168.1.128");
     });
   });
 
   describe("calculateBroadcastAddress", () => {
     it("should calculate correct broadcast addresses", () => {
-      expect(calculateBroadcastAddress("192.168.1.0", 24)).toBe(
-        "192.168.1.255"
-      );
+      expect(calculateBroadcastAddress("192.168.1.0", 24)).toBe("192.168.1.255");
       expect(calculateBroadcastAddress("10.0.0.0", 8)).toBe("10.255.255.255");
-      expect(calculateBroadcastAddress("172.16.0.0", 12)).toBe(
-        "172.31.255.255"
-      );
-      expect(calculateBroadcastAddress("192.168.1.128", 25)).toBe(
-        "192.168.1.255"
-      );
+      expect(calculateBroadcastAddress("172.16.0.0", 12)).toBe("172.31.255.255");
+      expect(calculateBroadcastAddress("192.168.1.128", 25)).toBe("192.168.1.255");
     });
 
     it("should handle /0 (0.0.0.0/0) broadcast address correctly", () => {
@@ -164,15 +150,9 @@ describe("CIDR Utilities", () => {
 
   describe("subnetMaskToBinary", () => {
     it("should convert subnet mask to binary", () => {
-      expect(subnetMaskToBinary("255.255.255.0")).toBe(
-        "11111111.11111111.11111111.00000000"
-      );
-      expect(subnetMaskToBinary("255.255.0.0")).toBe(
-        "11111111.11111111.00000000.00000000"
-      );
-      expect(subnetMaskToBinary("255.255.255.128")).toBe(
-        "11111111.11111111.11111111.10000000"
-      );
+      expect(subnetMaskToBinary("255.255.255.0")).toBe("11111111.11111111.11111111.00000000");
+      expect(subnetMaskToBinary("255.255.0.0")).toBe("11111111.11111111.00000000.00000000");
+      expect(subnetMaskToBinary("255.255.255.128")).toBe("11111111.11111111.11111111.10000000");
     });
   });
 
@@ -217,9 +197,7 @@ describe("CIDR Utilities", () => {
       expect(result.totalHosts).toBe(256);
       expect(result.usableHosts).toBe(254);
       expect(result.wildcardMask).toBe("0.0.0.255");
-      expect(result.binarySubnetMask).toBe(
-        "11111111.11111111.11111111.00000000"
-      );
+      expect(result.binarySubnetMask).toBe("11111111.11111111.11111111.00000000");
       expect(result.ipClass).toBe("C");
       expect(result.isPrivate).toBe(true);
     });
@@ -262,15 +240,9 @@ describe("CIDR Utilities", () => {
     });
 
     it("should throw error for invalid CIDR", () => {
-      expect(() => calculateCIDR("192.168.1.0/33")).toThrow(
-        "Invalid CIDR notation"
-      );
-      expect(() => calculateCIDR("256.1.1.1/24")).toThrow(
-        "Invalid CIDR notation"
-      );
-      expect(() => calculateCIDR("192.168.1.0")).toThrow(
-        "Invalid CIDR notation"
-      );
+      expect(() => calculateCIDR("192.168.1.0/33")).toThrow("Invalid CIDR notation");
+      expect(() => calculateCIDR("256.1.1.1/24")).toThrow("Invalid CIDR notation");
+      expect(() => calculateCIDR("192.168.1.0")).toThrow("Invalid CIDR notation");
     });
 
     it("should normalize IP address to network address", () => {

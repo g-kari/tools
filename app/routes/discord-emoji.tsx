@@ -16,16 +16,25 @@ import {
 export const Route = createFileRoute("/discord-emoji")({
   head: () => ({
     meta: [
-    { title: "Discord絵文字コンバーター | Web ツール集" },
-    { name: "description", content: "PNG/JPG画像をDiscord絵文字サイズ（最大128x128px・256KB以下）に変換するツール。" },
-    { property: "og:title", content: "Discord絵文字コンバーター | Web ツール集" },
-    { property: "og:description", content: "PNG/JPG画像をDiscord絵文字サイズ（最大128x128px・256KB以下）に変換するツール。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/discord-emoji` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "Discord絵文字コンバーター | Web ツール集" },
-    { name: "twitter:description", content: "PNG/JPG画像をDiscord絵文字サイズ（最大128x128px・256KB以下）に変換するツール。" },
-  ],
+      { title: "Discord絵文字コンバーター | Web ツール集" },
+      {
+        name: "description",
+        content: "PNG/JPG画像をDiscord絵文字サイズ（最大128x128px・256KB以下）に変換するツール。",
+      },
+      { property: "og:title", content: "Discord絵文字コンバーター | Web ツール集" },
+      {
+        property: "og:description",
+        content: "PNG/JPG画像をDiscord絵文字サイズ（最大128x128px・256KB以下）に変換するツール。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/discord-emoji` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "Discord絵文字コンバーター | Web ツール集" },
+      {
+        name: "twitter:description",
+        content: "PNG/JPG画像をDiscord絵文字サイズ（最大128x128px・256KB以下）に変換するツール。",
+      },
+    ],
   }),
   component: DiscordEmojiConverter,
 });
@@ -62,10 +71,8 @@ function DiscordEmojiConverter() {
   // アンマウント時のみ Object URL を解放する
   useEffect(() => {
     return () => {
-      if (originalPreviewRef.current)
-        URL.revokeObjectURL(originalPreviewRef.current);
-      if (convertedPreviewRef.current)
-        URL.revokeObjectURL(convertedPreviewRef.current);
+      if (originalPreviewRef.current) URL.revokeObjectURL(originalPreviewRef.current);
+      if (convertedPreviewRef.current) URL.revokeObjectURL(convertedPreviewRef.current);
     };
   }, []);
 
@@ -73,26 +80,21 @@ function DiscordEmojiConverter() {
    * ファイル選択時のハンドラー
    * @param files - 選択されたファイルの配列
    */
-  const handleFileSelect = useCallback(
-    (files: File[]) => {
-      const file = files[0];
-      if (!file) return;
+  const handleFileSelect = useCallback((files: File[]) => {
+    const file = files[0];
+    if (!file) return;
 
-      if (originalPreviewRef.current)
-        URL.revokeObjectURL(originalPreviewRef.current);
-      if (convertedPreviewRef.current)
-        URL.revokeObjectURL(convertedPreviewRef.current);
+    if (originalPreviewRef.current) URL.revokeObjectURL(originalPreviewRef.current);
+    if (convertedPreviewRef.current) URL.revokeObjectURL(convertedPreviewRef.current);
 
-      const newPreview = URL.createObjectURL(file);
-      originalPreviewRef.current = newPreview;
-      convertedPreviewRef.current = null;
-      setOriginalFile(file);
-      setOriginalPreview(newPreview);
-      setConvertedBlob(null);
-      setConvertedPreview(null);
-    },
-    []
-  );
+    const newPreview = URL.createObjectURL(file);
+    originalPreviewRef.current = newPreview;
+    convertedPreviewRef.current = null;
+    setOriginalFile(file);
+    setOriginalPreview(newPreview);
+    setConvertedBlob(null);
+    setConvertedPreview(null);
+  }, []);
 
   /**
    * 変換ボタンのハンドラー
@@ -108,8 +110,7 @@ function DiscordEmojiConverter() {
         emojiResizeMode: resizeMode,
       });
 
-      if (convertedPreviewRef.current)
-        URL.revokeObjectURL(convertedPreviewRef.current);
+      if (convertedPreviewRef.current) URL.revokeObjectURL(convertedPreviewRef.current);
       const newConvertedPreview = URL.createObjectURL(blob);
       convertedPreviewRef.current = newConvertedPreview;
       setConvertedBlob(blob);
@@ -118,16 +119,13 @@ function DiscordEmojiConverter() {
       if (blob.size > DISCORD_EMOJI_MAX_BYTES) {
         showToast(
           `変換後のサイズが${Math.round(blob.size / 1024)}KBです。256KB以下にできませんでした。`,
-          "warning"
+          "warning",
         );
       } else {
         showToast("Discord絵文字用に変換しました", "success");
       }
     } catch (err) {
-      showToast(
-        err instanceof Error ? err.message : "変換に失敗しました",
-        "error"
-      );
+      showToast(err instanceof Error ? err.message : "変換に失敗しました", "error");
     } finally {
       setIsLoading(false);
     }
@@ -147,10 +145,8 @@ function DiscordEmojiConverter() {
    * クリアボタンのハンドラー
    */
   const handleClear = useCallback(() => {
-    if (originalPreviewRef.current)
-      URL.revokeObjectURL(originalPreviewRef.current);
-    if (convertedPreviewRef.current)
-      URL.revokeObjectURL(convertedPreviewRef.current);
+    if (originalPreviewRef.current) URL.revokeObjectURL(originalPreviewRef.current);
+    if (convertedPreviewRef.current) URL.revokeObjectURL(convertedPreviewRef.current);
     originalPreviewRef.current = null;
     convertedPreviewRef.current = null;
 
@@ -169,9 +165,7 @@ function DiscordEmojiConverter() {
             <h2 className="section-title">画像選択</h2>
             <ImageUploadZone
               onFileSelect={handleFileSelect}
-              onTypeError={() =>
-                showToast("画像ファイルを選択してください", "error")
-              }
+              onTypeError={() => showToast("画像ファイルを選択してください", "error")}
               hint="PNG, JPEG, WebP, GIF など"
               ariaLabel="Discord絵文字に変換する画像をアップロード"
               inputId="discordEmojiFile"
@@ -220,29 +214,18 @@ function DiscordEmojiConverter() {
                 />
               )}
               <div className="discord-converter-info">
-                <span className="discord-converter-filename">
-                  {originalFile.name}
-                </span>
+                <span className="discord-converter-filename">{originalFile.name}</span>
                 <span>{formatFileSize(originalFile.size)}</span>
               </div>
             </div>
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={handleClear}
-              disabled={isLoading}
-            >
+            <Button type="button" variant="secondary" onClick={handleClear} disabled={isLoading}>
               別の画像を選択
             </Button>
           </div>
 
           <div className="converter-section">
             <h2 className="section-title">リサイズモード</h2>
-            <div
-              className="discord-converter-modes"
-              role="group"
-              aria-label="リサイズモード選択"
-            >
+            <div className="discord-converter-modes" role="group" aria-label="リサイズモード選択">
               {RESIZE_MODES.map((mode) => (
                 <label key={mode.value} className="discord-converter-mode-label">
                   <input
@@ -254,12 +237,8 @@ function DiscordEmojiConverter() {
                     disabled={isLoading}
                     className="discord-converter-mode-radio"
                   />
-                  <span className="discord-converter-mode-name">
-                    {mode.label}
-                  </span>
-                  <span className="discord-converter-mode-desc">
-                    {mode.description}
-                  </span>
+                  <span className="discord-converter-mode-name">{mode.label}</span>
+                  <span className="discord-converter-mode-desc">{mode.description}</span>
                 </label>
               ))}
             </div>
@@ -267,11 +246,7 @@ function DiscordEmojiConverter() {
 
           <div className="converter-section">
             <div className="button-group" role="group" aria-label="操作ボタン">
-              <Button
-                type="button"
-                onClick={handleConvert}
-                disabled={isLoading}
-              >
+              <Button type="button" onClick={handleConvert} disabled={isLoading}>
                 {isLoading ? "変換中..." : "変換"}
               </Button>
             </div>
@@ -290,9 +265,7 @@ function DiscordEmojiConverter() {
                 </div>
                 <div className="discord-converter-result-info">
                   <div className="discord-converter-result-stat">
-                    <span className="discord-converter-result-label">
-                      ファイルサイズ
-                    </span>
+                    <span className="discord-converter-result-label">ファイルサイズ</span>
                     <span
                       className={`discord-converter-result-value ${convertedBlob.size > DISCORD_EMOJI_MAX_BYTES ? "discord-converter-over-limit" : "discord-converter-ok"}`}
                     >

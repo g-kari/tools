@@ -1,18 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
-import {
-  useState,
-  useEffect,
-  useRef,
-  useCallback,
-  type DragEvent,
-} from "react";
+import { useState, useEffect, useRef, useCallback, type DragEvent } from "react";
 import { useToast } from "../components/Toast";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 import "../styles/tools/sri-hash.css";
 import {
@@ -203,8 +194,7 @@ function SriHashGenerator() {
   const hasResults = sriResults.length > 0 && !isComputing;
 
   // 推奨アルゴリズム（SHA-384）のintegrity値
-  const recommendedIntegrity =
-    sriResults.find((r) => r.algorithm === "sha384")?.integrity ?? "";
+  const recommendedIntegrity = sriResults.find((r) => r.algorithm === "sha384")?.integrity ?? "";
 
   return (
     <>
@@ -295,9 +285,7 @@ function SriHashGenerator() {
                 <span className="sri-file-name" title={selectedFile.name}>
                   {selectedFile.name}
                 </span>
-                <span className="sri-file-size">
-                  {formatFileSize(selectedFile.size)}
-                </span>
+                <span className="sri-file-size">{formatFileSize(selectedFile.size)}</span>
                 <button
                   className="sri-file-clear-btn"
                   onClick={handleClearFile}
@@ -312,11 +300,7 @@ function SriHashGenerator() {
 
         {/* SRI ハッシュ結果 */}
         {hasInput ? (
-          <div
-            className="sri-results"
-            role="list"
-            aria-label="SRI ハッシュ生成結果"
-          >
+          <div className="sri-results" role="list" aria-label="SRI ハッシュ生成結果">
             {SRI_ALGORITHMS.map((algo) => {
               const result = sriResults.find((r) => r.algorithm === algo.key);
               const integrityValue = result?.integrity ?? "";
@@ -354,9 +338,7 @@ function SriHashGenerator() {
                     </code>
                     <button
                       className="sri-copy-btn"
-                      onClick={() =>
-                        handleCopy(integrityValue, `${algo.label} integrity`)
-                      }
+                      onClick={() => handleCopy(integrityValue, `${algo.label} integrity`)}
                       disabled={isEmpty}
                       aria-label={`${algo.label} の integrity 値をコピー`}
                     >
@@ -424,7 +406,7 @@ function SriHashGenerator() {
                     onChange={() => setResourceType("stylesheet")}
                     aria-label="CSS (link タグ)"
                   />
-                  {"<link rel=\"stylesheet\">"}
+                  {'<link rel="stylesheet">'}
                 </label>
               </div>
             </div>
@@ -432,7 +414,11 @@ function SriHashGenerator() {
             {/* crossorigin 属性 */}
             <div className="form-field">
               <span className="form-label">crossorigin 属性</span>
-              <div className="sri-crossorigin-group" role="radiogroup" aria-label="crossorigin 属性">
+              <div
+                className="sri-crossorigin-group"
+                role="radiogroup"
+                aria-label="crossorigin 属性"
+              >
                 <label className="sri-radio-label">
                   <input
                     type="radio"
@@ -480,9 +466,7 @@ function SriHashGenerator() {
                       </span>
                       <button
                         className="sri-copy-btn"
-                        onClick={() =>
-                          handleCopy(snippet, `${algo.label} スニペット`)
-                        }
+                        onClick={() => handleCopy(snippet, `${algo.label} スニペット`)}
                         aria-label={`${algo.label} の HTML スニペットをコピー`}
                       >
                         コピー
@@ -499,14 +483,10 @@ function SriHashGenerator() {
               <div className="form-field">
                 <span className="form-label">推奨 integrity 値（SHA-384）</span>
                 <div className="sri-result-value-row">
-                  <code className="sri-result-value">
-                    {recommendedIntegrity}
-                  </code>
+                  <code className="sri-result-value">{recommendedIntegrity}</code>
                   <button
                     className="sri-copy-btn"
-                    onClick={() =>
-                      handleCopy(recommendedIntegrity, "推奨 integrity 値")
-                    }
+                    onClick={() => handleCopy(recommendedIntegrity, "推奨 integrity 値")}
                     aria-label="推奨 integrity 値をコピー"
                   >
                     コピー

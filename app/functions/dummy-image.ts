@@ -63,7 +63,7 @@ export function generateSvgImage(
   width: number,
   height: number,
   bgColor: string,
-  textColor: string
+  textColor: string,
 ): string {
   const text = `${width} × ${height}`;
   const fontSize = Math.max(12, Math.min(width, height) / 8);
@@ -122,7 +122,7 @@ async function getFontBuffer(): Promise<Uint8Array | null> {
   try {
     // Cloudflare Workers環境: フォントファイルをfetch
     const response = await fetch(
-      "https://fonts.gstatic.com/s/roboto/v30/KFOlCnqEu92Fr1MmWUlfBBc4AMP6lQ.woff2"
+      "https://fonts.gstatic.com/s/roboto/v30/KFOlCnqEu92Fr1MmWUlfBBc4AMP6lQ.woff2",
     );
     const arrayBuffer = await response.arrayBuffer();
     fontBuffer = new Uint8Array(arrayBuffer);
@@ -183,7 +183,7 @@ export async function convertSvgToPng(svg: string): Promise<ArrayBuffer> {
  */
 export async function convertPngToJpeg(
   pngBuffer: ArrayBuffer,
-  quality: number = 85
+  quality: number = 85,
 ): Promise<ArrayBuffer> {
   const { PhotonImage } = await import("@cf-wasm/photon");
   const photonImage = PhotonImage.new_from_byteslice(new Uint8Array(pngBuffer));

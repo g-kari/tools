@@ -7,14 +7,12 @@ test.describe("CSS Text Shadowジェネレーターページ", () => {
 
   test("ページタイトルが表示される", async ({ page }) => {
     await expect(
-      page.getByRole("heading", { name: "CSS Text Shadowジェネレーター" })
+      page.getByRole("heading", { name: "CSS Text Shadowジェネレーター" }),
     ).toBeVisible();
   });
 
   test("プリセットセクションが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "プリセット" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "プリセット" })).toBeVisible();
   });
 
   test("プリセットボタンが複数表示される", async ({ page }) => {
@@ -53,17 +51,13 @@ test.describe("CSS Text Shadowジェネレーターページ", () => {
     await expect(page.getByLabel("ぼかし半径")).toBeVisible();
   });
 
-  test("inset プロパティが存在しない（text-shadowはinset非対応）", async ({
-    page,
-  }) => {
+  test("inset プロパティが存在しない（text-shadowはinset非対応）", async ({ page }) => {
     await page.getByLabel("レイヤー1のプロパティを開く").click();
     await expect(page.getByLabel("inset（内側シャドウ）")).not.toBeVisible();
   });
 
   test("プレビューセクションが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "ライブプレビュー" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "ライブプレビュー" })).toBeVisible();
     await expect(page.locator(".cts-preview-text")).toBeVisible();
   });
 
@@ -79,9 +73,7 @@ test.describe("CSS Text Shadowジェネレーターページ", () => {
   });
 
   test("CSS出力エリアが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "生成 CSS" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "生成 CSS" })).toBeVisible();
     await expect(page.locator(".cts-css-output")).toBeVisible();
   });
 
@@ -114,9 +106,7 @@ test.describe("CSS Text Shadowジェネレーターページ", () => {
   });
 
   test("コピーボタンが存在する", async ({ page }) => {
-    await expect(
-      page.getByLabel("生成されたCSSをクリップボードにコピー")
-    ).toBeVisible();
+    await expect(page.getByLabel("生成されたCSSをクリップボードにコピー")).toBeVisible();
   });
 
   test("リセットボタンでデフォルト状態に戻る", async ({ page }) => {

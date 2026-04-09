@@ -65,7 +65,7 @@
   background-color: var(--md-sys-color-surface);
   color: var(--md-sys-color-on-surface);
   font-size: 0.875rem;
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
 }
 
 .qr-hex-input:focus {
@@ -104,4 +104,3 @@
     box-shadow: none;
   }
 }
-

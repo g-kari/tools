@@ -1,7 +1,7 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useState, useCallback, useEffect, useRef } from 'react';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
-import { TipsCard } from '~/components/TipsCard';
+import { createFileRoute } from "@tanstack/react-router";
+import { useState, useCallback, useEffect, useRef } from "react";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
+import { TipsCard } from "~/components/TipsCard";
 import {
   type BSTNode,
   type NodePosition,
@@ -19,36 +19,37 @@ import {
   NODE_RADIUS,
   BASE_WIDTH,
   LEVEL_HEIGHT,
-} from '~/utils/bst-visualizer';
-import '../styles/tools/bst-visualizer.css';
+} from "~/utils/bst-visualizer";
+import "../styles/tools/bst-visualizer.css";
 
-export const Route = createFileRoute('/bst-visualizer')({
+export const Route = createFileRoute("/bst-visualizer")({
   head: () => ({
     meta: [
-      { title: '二分探索木ビジュアライザー | Web ツール集' },
+      { title: "二分探索木ビジュアライザー | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          '二分探索木（BST）の挿入・削除・探索をアニメーションで可視化するツール。中順・前順・後順の走査結果もリアルタイム表示。',
+          "二分探索木（BST）の挿入・削除・探索をアニメーションで可視化するツール。中順・前順・後順の走査結果もリアルタイム表示。",
       },
       {
-        property: 'og:title',
-        content: '二分探索木ビジュアライザー | Web ツール集',
+        property: "og:title",
+        content: "二分探索木ビジュアライザー | Web ツール集",
       },
       {
-        property: 'og:description',
-        content: 'BSTの挿入・削除・探索をブラウザ内でアニメーション可視化。走査順序もリアルタイム確認。',
+        property: "og:description",
+        content:
+          "BSTの挿入・削除・探索をブラウザ内でアニメーション可視化。走査順序もリアルタイム確認。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/bst-visualizer` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
+      { property: "og:url", content: `${SITE_BASE_URL}/bst-visualizer` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
       {
-        name: 'twitter:title',
-        content: '二分探索木ビジュアライザー | Web ツール集',
+        name: "twitter:title",
+        content: "二分探索木ビジュアライザー | Web ツール集",
       },
       {
-        name: 'twitter:description',
-        content: 'BSTの挿入・削除・探索をアニメーションで可視化。',
+        name: "twitter:description",
+        content: "BSTの挿入・削除・探索をアニメーションで可視化。",
       },
     ],
   }),
@@ -56,13 +57,13 @@ export const Route = createFileRoute('/bst-visualizer')({
 });
 
 const PRESETS: { label: string; values: number[] }[] = [
-  { label: '基本', values: [50, 30, 70, 20, 40, 60, 80] },
-  { label: '左偏り', values: [50, 40, 30, 20, 10] },
-  { label: '右偏り', values: [10, 20, 30, 40, 50] },
-  { label: 'ランダム10', values: [] },
+  { label: "基本", values: [50, 30, 70, 20, 40, 60, 80] },
+  { label: "左偏り", values: [50, 40, 30, 20, 10] },
+  { label: "右偏り", values: [10, 20, 30, 40, 50] },
+  { label: "ランダム10", values: [] },
 ];
 
-type MessageType = 'found' | 'not-found' | 'info' | null;
+type MessageType = "found" | "not-found" | "info" | null;
 
 /** SVG の高さを木の高さに応じて計算 */
 function calcSvgHeight(root: BSTNode | null): number {
@@ -73,8 +74,8 @@ function calcSvgHeight(root: BSTNode | null): number {
 
 function BSTVisualizerPage() {
   const [root, setRoot] = useState<BSTNode | null>(null);
-  const [inputValue, setInputValue] = useState('');
-  const [highlight, setHighlight] = useState<Map<number, NodePosition['state']>>(new Map());
+  const [inputValue, setInputValue] = useState("");
+  const [highlight, setHighlight] = useState<Map<number, NodePosition["state"]>>(new Map());
   const [message, setMessage] = useState<{ text: string; type: MessageType } | null>(null);
   const highlightTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -101,58 +102,58 @@ function BSTVisualizerPage() {
   const handleInsert = useCallback(() => {
     const v = parseInput();
     if (v === null) {
-      setMessage({ text: '−9999〜9999 の整数を入力してください。', type: 'info' });
+      setMessage({ text: "−9999〜9999 の整数を入力してください。", type: "info" });
       return;
     }
     const newRoot = insertNode(root, v);
     if (newRoot === root) {
-      setMessage({ text: `${v} はすでに存在します。`, type: 'info' });
+      setMessage({ text: `${v} はすでに存在します。`, type: "info" });
       return;
     }
     setRoot(newRoot);
-    const m = new Map<number, NodePosition['state']>();
-    m.set(v, 'inserting');
+    const m = new Map<number, NodePosition["state"]>();
+    m.set(v, "inserting");
     setHighlight(m);
-    setMessage({ text: `${v} を挿入しました。`, type: 'info' });
+    setMessage({ text: `${v} を挿入しました。`, type: "info" });
     clearHighlight();
-    setInputValue('');
+    setInputValue("");
   }, [parseInput, root, clearHighlight]);
 
   const handleDelete = useCallback(() => {
     const v = parseInput();
     if (v === null) {
-      setMessage({ text: '削除する値を入力してください。', type: 'info' });
+      setMessage({ text: "削除する値を入力してください。", type: "info" });
       return;
     }
     const [path] = searchNode(root, v);
     if (!path.includes(v)) {
-      setMessage({ text: `${v} は木の中に存在しません。`, type: 'not-found' });
+      setMessage({ text: `${v} は木の中に存在しません。`, type: "not-found" });
       return;
     }
     setRoot(deleteNode(root, v));
     setHighlight(new Map());
-    setMessage({ text: `${v} を削除しました。`, type: 'info' });
+    setMessage({ text: `${v} を削除しました。`, type: "info" });
     clearHighlight();
-    setInputValue('');
+    setInputValue("");
   }, [parseInput, root, clearHighlight]);
 
   const handleSearch = useCallback(() => {
     const v = parseInput();
     if (v === null) {
-      setMessage({ text: '探索する値を入力してください。', type: 'info' });
+      setMessage({ text: "探索する値を入力してください。", type: "info" });
       return;
     }
     const [path, found] = searchNode(root, v);
-    const m = new Map<number, NodePosition['state']>();
+    const m = new Map<number, NodePosition["state"]>();
     for (const p of path) {
-      m.set(p, p === v && found ? 'found' : 'searching');
+      m.set(p, p === v && found ? "found" : "searching");
     }
     setHighlight(m);
     if (found) {
-      setMessage({ text: `${v} が見つかりました！（${path.length} ステップ）`, type: 'found' });
+      setMessage({ text: `${v} が見つかりました！（${path.length} ステップ）`, type: "found" });
     } else {
-      setMessage({ text: `${v} は見つかりませんでした。`, type: 'not-found' });
-      for (const p of path) m.set(p, 'not-found');
+      setMessage({ text: `${v} は見つかりませんでした。`, type: "not-found" });
+      for (const p of path) m.set(p, "not-found");
       setHighlight(new Map(m));
     }
     clearHighlight();
@@ -162,7 +163,7 @@ function BSTVisualizerPage() {
     setRoot(null);
     setHighlight(new Map());
     setMessage(null);
-    setInputValue('');
+    setInputValue("");
   }, []);
 
   const handlePreset = useCallback(
@@ -175,17 +176,17 @@ function BSTVisualizerPage() {
       for (const v of nums) r = insertNode(r, v);
       setRoot(r);
       setHighlight(new Map());
-      setMessage({ text: 'プリセットを読み込みました。', type: 'info' });
+      setMessage({ text: "プリセットを読み込みました。", type: "info" });
       clearHighlight();
     },
-    [clearHighlight]
+    [clearHighlight],
   );
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (e.key === 'Enter') handleInsert();
+      if (e.key === "Enter") handleInsert();
     },
-    [handleInsert]
+    [handleInsert],
   );
 
   // SVG レイアウト
@@ -195,9 +196,9 @@ function BSTVisualizerPage() {
 
   // 走査結果
   const traversals: { type: TraversalType; values: number[] }[] = [
-    { type: 'inorder', values: inorder(root) },
-    { type: 'preorder', values: preorder(root) },
-    { type: 'postorder', values: postorder(root) },
+    { type: "inorder", values: inorder(root) },
+    { type: "preorder", values: preorder(root) },
+    { type: "postorder", values: postorder(root) },
   ];
 
   const height = getHeight(root);
@@ -359,7 +360,7 @@ function BSTVisualizerPage() {
                   x2={pos.x}
                   y2={pos.y}
                 />
-              ) : null
+              ) : null,
             )}
             {/* ノード */}
             {positions.map((pos) => (
@@ -369,8 +370,8 @@ function BSTVisualizerPage() {
                   cy={pos.y}
                   r={NODE_RADIUS}
                   className={
-                    pos.state === 'normal'
-                      ? 'bst-node-circle'
+                    pos.state === "normal"
+                      ? "bst-node-circle"
                       : `bst-node-circle bst-node-circle--${pos.state}`
                   }
                 />
@@ -378,8 +379,8 @@ function BSTVisualizerPage() {
                   x={pos.x}
                   y={pos.y}
                   className={
-                    pos.state === 'normal'
-                      ? 'bst-node-text'
+                    pos.state === "normal"
+                      ? "bst-node-text"
                       : `bst-node-text bst-node-text--${pos.state}`
                   }
                 >
@@ -397,8 +398,11 @@ function BSTVisualizerPage() {
           {traversals.map(({ type, values }) => (
             <div className="bst-visualizer__traversal" key={type}>
               <div className="bst-visualizer__traversal-title">{TRAVERSAL_LABELS[type]}</div>
-              <div className="bst-visualizer__traversal-values" aria-label={`${TRAVERSAL_LABELS[type]}走査結果`}>
-                {values.join(', ')}
+              <div
+                className="bst-visualizer__traversal-values"
+                aria-label={`${TRAVERSAL_LABELS[type]}走査結果`}
+              >
+                {values.join(", ")}
               </div>
             </div>
           ))}
@@ -408,21 +412,21 @@ function BSTVisualizerPage() {
       <TipsCard
         sections={[
           {
-            title: '使い方',
+            title: "使い方",
             items: [
-              '値を入力して「挿入」ボタン（またはEnterキー）でノードを追加します。',
-              '「探索」ボタンで値を検索すると、探索経路が色で表示されます。',
-              '「削除」ボタンで指定した値のノードを削除します。',
-              'プリセットボタンで即座にサンプルの木を表示できます。',
+              "値を入力して「挿入」ボタン（またはEnterキー）でノードを追加します。",
+              "「探索」ボタンで値を検索すると、探索経路が色で表示されます。",
+              "「削除」ボタンで指定した値のノードを削除します。",
+              "プリセットボタンで即座にサンプルの木を表示できます。",
             ],
           },
           {
-            title: '二分探索木（BST）とは',
+            title: "二分探索木（BST）とは",
             items: [
-              '各ノードの左部分木には、そのノードより小さい値のみが入ります。',
-              '各ノードの右部分木には、そのノードより大きい値のみが入ります。',
-              '中順走査（inorder traversal）を行うと昇順にソートされた配列が得られます。',
-              '探索・挿入・削除の平均計算量は O(log n)、最悪計算量は O(n) です。',
+              "各ノードの左部分木には、そのノードより小さい値のみが入ります。",
+              "各ノードの右部分木には、そのノードより大きい値のみが入ります。",
+              "中順走査（inorder traversal）を行うと昇順にソートされた配列が得られます。",
+              "探索・挿入・削除の平均計算量は O(log n)、最悪計算量は O(n) です。",
             ],
           },
         ]}

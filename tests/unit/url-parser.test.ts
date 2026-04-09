@@ -14,9 +14,7 @@ describe("parseQueryString", () => {
   });
 
   it("単一パラメータを解析する", () => {
-    expect(parseQueryString("?key=value")).toEqual([
-      { key: "key", value: "value" },
-    ]);
+    expect(parseQueryString("?key=value")).toEqual([{ key: "key", value: "value" }]);
   });
 
   it("複数パラメータを解析する", () => {

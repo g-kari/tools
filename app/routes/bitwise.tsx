@@ -1,13 +1,10 @@
-import { createFileRoute } from "@tanstack/react-router"
+import { createFileRoute } from "@tanstack/react-router";
 import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useCallback, useMemo } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 import {
   type Base,
@@ -47,8 +44,7 @@ export const Route = createFileRoute("/bitwise")({
       },
       {
         name: "twitter:description",
-        content:
-          "AND・OR・XOR・NOT・シフト演算をビジュアルで確認できるビット演算計算機。",
+        content: "AND・OR・XOR・NOT・シフト演算をビジュアルで確認できるビット演算計算機。",
       },
     ],
   }),
@@ -120,7 +116,8 @@ function OperandPanel({
       </div>
       {isError && (
         <p className="bw-input-error" role="alert">
-          {BASE_LABELS[base]}として解析できません（符号付き32ビット整数の範囲：-2147483648〜2147483647）
+          {BASE_LABELS[base]}
+          として解析できません（符号付き32ビット整数の範囲：-2147483648〜2147483647）
         </p>
       )}
 
@@ -133,9 +130,7 @@ function OperandPanel({
               .map((b) => (
                 <div key={b} className="bw-repr-item">
                   <div className="bw-repr-base">{BASE_LABELS[b]}</div>
-                  <div className="bw-repr-value">
-                    {formatInteger(parsedValue, b)}
-                  </div>
+                  <div className="bw-repr-value">{formatInteger(parsedValue, b)}</div>
                 </div>
               ))}
           </div>
@@ -143,9 +138,7 @@ function OperandPanel({
           {/* 32ビットビット表示 */}
           {bin32 && (
             <div className="bw-bits-section">
-              <div className="bw-bits-label">
-                32ビット表現（MSB → LSB）
-              </div>
+              <div className="bw-bits-label">32ビット表現（MSB → LSB）</div>
               <div
                 className="bw-bits-row"
                 role="img"
@@ -158,19 +151,14 @@ function OperandPanel({
                   return (
                     <span key={i} className="bw-bit-contents">
                       {addSep && <span className="bw-bit-sep" aria-hidden="true" />}
-                      <span
-                        className={`bw-bit bw-bit-${bit}`}
-                        title={`bit ${pos}`}
-                      >
+                      <span className={`bw-bit bw-bit-${bit}`} title={`bit ${pos}`}>
                         {bit}
                       </span>
                     </span>
                   );
                 })}
               </div>
-              <p className="bw-popcount">
-                セットビット数: {popcount(parsedValue)} / 32
-              </p>
+              <p className="bw-popcount">セットビット数: {popcount(parsedValue)} / 32</p>
             </div>
           )}
         </>
@@ -213,7 +201,7 @@ function BitwiseCalculator() {
         showToast("コピーに失敗しました", "error");
       }
     },
-    [copy, announceStatus, showToast]
+    [copy, announceStatus, showToast],
   );
 
   return (
@@ -254,9 +242,7 @@ function BitwiseCalculator() {
                   max={31}
                   value={shiftAmount}
                   onChange={(e) =>
-                    setShiftAmount(
-                      Math.max(0, Math.min(31, Number(e.target.value)))
-                    )
+                    setShiftAmount(Math.max(0, Math.min(31, Number(e.target.value))))
                   }
                   aria-label="シフト量（0〜31ビット）"
                 />
@@ -321,9 +307,7 @@ function BitwiseCalculator() {
                         <td className="bw-op-label">{r.label}</td>
                         <td className="bw-op-symbol">{r.symbol}</td>
                         <td className="bw-op-decimal">{r.value}</td>
-                        <td className="bw-op-hex">
-                          0x{formatInteger(r.value, 16).toUpperCase()}
-                        </td>
+                        <td className="bw-op-hex">0x{formatInteger(r.value, 16).toUpperCase()}</td>
                         <td className="bw-op-desc">{r.description}</td>
                         <td>
                           <button
@@ -340,18 +324,13 @@ function BitwiseCalculator() {
                   </tbody>
                 </table>
               ) : (
-                <p className="bw-bits-label">
-                  有効な値をA・B両方に入力してください
-                </p>
+                <p className="bw-bits-label">有効な値をA・B両方に入力してください</p>
               )}
             </section>
 
             {/* ビット表示（AND結果） */}
             {results !== null && parsedA !== null && parsedB !== null && (
-              <section
-                className="bw-section"
-                aria-labelledby="bw-bit-visual-title"
-              >
+              <section className="bw-section" aria-labelledby="bw-bit-visual-title">
                 <h2 className="bw-section-title" id="bw-bit-visual-title">
                   ビット演算ビジュアル
                 </h2>
@@ -377,21 +356,13 @@ function BitwiseCalculator() {
                       <div className="bw-bits-label">
                         {label} = {value}
                       </div>
-                      <div
-                        className="bw-bits-row"
-                        role="img"
-                        aria-label={`${label}の32ビット表現`}
-                      >
+                      <div className="bw-bits-row" role="img" aria-label={`${label}の32ビット表現`}>
                         {bin.split("").map((bit, i) => {
                           const addSep = i > 0 && i % 8 === 0;
                           return (
                             <span key={i} className="bw-bit-contents">
-                              {addSep && (
-                                <span className="bw-bit-sep" aria-hidden="true" />
-                              )}
-                              <span className={`bw-bit bw-bit-${bit}`}>
-                                {bit}
-                              </span>
+                              {addSep && <span className="bw-bit-sep" aria-hidden="true" />}
+                              <span className={`bw-bit bw-bit-${bit}`}>{bit}</span>
                             </span>
                           );
                         })}

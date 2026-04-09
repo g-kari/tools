@@ -57,7 +57,10 @@
   font-family: var(--font-mono);
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.1s, border-color 0.1s, color 0.1s;
+  transition:
+    background 0.1s,
+    border-color 0.1s,
+    color 0.1s;
 }
 
 .css-unit-tab:hover {
@@ -271,7 +274,9 @@
   font-size: var(--text-xs);
   white-space: nowrap;
   flex-shrink: 0;
-  transition: background 0.1s, color 0.1s;
+  transition:
+    background 0.1s,
+    color 0.1s;
 }
 
 .css-unit-copy-btn:hover:not(:disabled) {

@@ -57,10 +57,7 @@ function BrailleConverter() {
 
   const brailleOutput = useMemo(() => textToBraille(inputText), [inputText]);
 
-  const hasUnknownChars = useMemo(
-    () => brailleOutput.includes("?"),
-    [brailleOutput]
-  );
+  const hasUnknownChars = useMemo(() => brailleOutput.includes("?"), [brailleOutput]);
 
   const handleCopy = useCallback(async () => {
     if (!brailleOutput) return;

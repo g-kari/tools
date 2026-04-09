@@ -4,25 +4,31 @@ import { useState, useRef, useCallback, useEffect } from "react";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 
 export const Route = createFileRoute("/uuid")({
   head: () => ({
     meta: [
-    { title: "UUID生成ツール | Web ツール集" },
-    { name: "description", content: "UUID v4をワンクリックで生成。複数同時生成・コピー機能付き。" },
-    { property: "og:title", content: "UUID生成ツール | Web ツール集" },
-    { property: "og:description", content: "UUID v4をワンクリックで生成。複数同時生成・コピー機能付き。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/uuid` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "UUID生成ツール | Web ツール集" },
-    { name: "twitter:description", content: "UUID v4をワンクリックで生成。複数同時生成・コピー機能付き。" },
-  ],
+      { title: "UUID生成ツール | Web ツール集" },
+      {
+        name: "description",
+        content: "UUID v4をワンクリックで生成。複数同時生成・コピー機能付き。",
+      },
+      { property: "og:title", content: "UUID生成ツール | Web ツール集" },
+      {
+        property: "og:description",
+        content: "UUID v4をワンクリックで生成。複数同時生成・コピー機能付き。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/uuid` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "UUID生成ツール | Web ツール集" },
+      {
+        name: "twitter:description",
+        content: "UUID v4をワンクリックで生成。複数同時生成・コピー機能付き。",
+      },
+    ],
   }),
   component: UuidGenerator,
 });
@@ -39,9 +45,7 @@ function UuidGenerator() {
   const [copied, setCopied] = useState<number | null>(null);
   const [copiedAll, setCopiedAll] = useState(false);
   const copiedTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const copiedAllTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
-    null
-  );
+  const copiedAllTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isInitialMount = useRef(true);
 
   const { statusRef, announceStatus } = useStatusAnnouncement();
@@ -70,7 +74,7 @@ function UuidGenerator() {
       }
       return result;
     },
-    [uppercase, noHyphens]
+    [uppercase, noHyphens],
   );
 
   const handleGenerate = useCallback(() => {
@@ -99,7 +103,7 @@ function UuidGenerator() {
         announceStatus("コピーに失敗しました");
       }
     },
-    [uuids, formatUUID, copy, announceStatus]
+    [uuids, formatUUID, copy, announceStatus],
   );
 
   const handleCopyAll = useCallback(async () => {
@@ -155,9 +159,7 @@ function UuidGenerator() {
                   max="100"
                   value={count}
                   onChange={(e) =>
-                    setCount(
-                      Math.max(1, Math.min(100, parseInt(e.target.value) || 1))
-                    )
+                    setCount(Math.max(1, Math.min(100, parseInt(e.target.value) || 1)))
                   }
                   aria-describedby="count-help"
                   className="w-20"

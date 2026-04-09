@@ -1,7 +1,7 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useState, useMemo, useCallback } from 'react';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
-import { TipsCard } from '~/components/TipsCard';
+import { createFileRoute } from "@tanstack/react-router";
+import { useState, useMemo, useCallback } from "react";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
+import { TipsCard } from "~/components/TipsCard";
 import {
   type AngleUnit,
   ANGLE_UNIT_LABELS,
@@ -14,52 +14,52 @@ import {
   formatAngle,
   COMMON_ANGLES_DEG,
   COMMON_ANGLE_RAD_LABELS,
-} from '~/utils/trig';
-import '../styles/tools/trig.css';
+} from "~/utils/trig";
+import "../styles/tools/trig.css";
 
-export const Route = createFileRoute('/trig')({
+export const Route = createFileRoute("/trig")({
   head: () => ({
     meta: [
-      { title: '三角関数計算機 | Web ツール集' },
+      { title: "三角関数計算機 | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          '角度の単位変換（度・ラジアン・グラジアン・回転）と sin / cos / tan / cot / sec / csc の計算、逆三角関数の計算をまとめたツール。',
+          "角度の単位変換（度・ラジアン・グラジアン・回転）と sin / cos / tan / cot / sec / csc の計算、逆三角関数の計算をまとめたツール。",
       },
-      { property: 'og:title', content: '三角関数計算機 | Web ツール集' },
+      { property: "og:title", content: "三角関数計算機 | Web ツール集" },
       {
-        property: 'og:description',
-        content: '角度変換・三角関数・逆三角関数をブラウザ内でリアルタイム計算。',
+        property: "og:description",
+        content: "角度変換・三角関数・逆三角関数をブラウザ内でリアルタイム計算。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/trig` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
+      { property: "og:url", content: `${SITE_BASE_URL}/trig` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
     ],
   }),
   component: TrigPage,
 });
 
-const UNITS: AngleUnit[] = ['deg', 'rad', 'grad', 'turn'];
+const UNITS: AngleUnit[] = ["deg", "rad", "grad", "turn"];
 
 /** 逆三角関数の定義 */
 const INVERSE_FUNS = [
   {
-    fn: 'asin' as const,
-    label: 'arcsin (x)',
-    desc: '入力範囲: −1 〜 1',
-    placeholder: '例: 0.5',
+    fn: "asin" as const,
+    label: "arcsin (x)",
+    desc: "入力範囲: −1 〜 1",
+    placeholder: "例: 0.5",
   },
   {
-    fn: 'acos' as const,
-    label: 'arccos (x)',
-    desc: '入力範囲: −1 〜 1',
-    placeholder: '例: 0.5',
+    fn: "acos" as const,
+    label: "arccos (x)",
+    desc: "入力範囲: −1 〜 1",
+    placeholder: "例: 0.5",
   },
   {
-    fn: 'atan' as const,
-    label: 'arctan (x)',
-    desc: '入力範囲: 任意の実数',
-    placeholder: '例: 1',
+    fn: "atan" as const,
+    label: "arctan (x)",
+    desc: "入力範囲: 任意の実数",
+    placeholder: "例: 1",
   },
 ] as const;
 
@@ -67,12 +67,12 @@ const INVERSE_FUNS = [
  * 三角関数計算機ページコンポーネント
  */
 function TrigPage() {
-  const [inputValue, setInputValue] = useState('45');
-  const [unit, setUnit] = useState<AngleUnit>('deg');
+  const [inputValue, setInputValue] = useState("45");
+  const [unit, setUnit] = useState<AngleUnit>("deg");
   const [inverseInputs, setInverseInputs] = useState<Record<string, string>>({
-    asin: '',
-    acos: '',
-    atan: '',
+    asin: "",
+    acos: "",
+    atan: "",
   });
 
   /** 入力角度を度に変換 */
@@ -85,9 +85,10 @@ function TrigPage() {
   /** 各単位に変換した値 */
   const conversions = useMemo(() => {
     if (degrees === null) return null;
-    return Object.fromEntries(
-      UNITS.map((u) => [u, fromDegrees(degrees, u)]),
-    ) as Record<AngleUnit, number>;
+    return Object.fromEntries(UNITS.map((u) => [u, fromDegrees(degrees, u)])) as Record<
+      AngleUnit,
+      number
+    >;
   }, [degrees]);
 
   /** 三角関数の値 */
@@ -160,12 +161,13 @@ function TrigPage() {
       <div className="trig-quick-row" role="group" aria-label="よく使う角度の選択">
         {COMMON_ANGLES_DEG.map((deg) => {
           const currentDeg = degrees !== null ? degrees : null;
-          const isActive = currentDeg !== null && Math.abs(((currentDeg % 360) + 360) % 360 - deg) < 1e-8;
+          const isActive =
+            currentDeg !== null && Math.abs((((currentDeg % 360) + 360) % 360) - deg) < 1e-8;
           return (
             <button
               key={deg}
               type="button"
-              className={`trig-quick-btn${isActive ? ' active' : ''}`}
+              className={`trig-quick-btn${isActive ? " active" : ""}`}
               onClick={() => handleQuickSelect(deg)}
               aria-pressed={isActive}
               aria-label={`${deg}度を選択`}
@@ -180,15 +182,10 @@ function TrigPage() {
       <p className="trig-section-title">角度変換</p>
       <div className="trig-conversion-grid" aria-label="角度変換結果">
         {UNITS.map((u) => (
-          <div
-            key={u}
-            className={`trig-conv-card${u === unit ? ' active' : ''}`}
-          >
+          <div key={u} className={`trig-conv-card${u === unit ? " active" : ""}`}>
             <span className="trig-conv-label">{ANGLE_UNIT_LABELS[u]}</span>
             <span className="trig-conv-value">
-              {conversions
-                ? formatAngle(conversions[u]) + ' ' + ANGLE_UNIT_SHORT[u]
-                : '—'}
+              {conversions ? formatAngle(conversions[u]) + " " + ANGLE_UNIT_SHORT[u] : "—"}
             </span>
           </div>
         ))}
@@ -201,12 +198,12 @@ function TrigPage() {
           <>
             {(
               [
-                ['sin', trigValues.sin],
-                ['cos', trigValues.cos],
-                ['tan', trigValues.tan],
-                ['cot', trigValues.cot],
-                ['sec', trigValues.sec],
-                ['csc', trigValues.csc],
+                ["sin", trigValues.sin],
+                ["cos", trigValues.cos],
+                ["tan", trigValues.tan],
+                ["cot", trigValues.cot],
+                ["sec", trigValues.sec],
+                ["csc", trigValues.csc],
               ] as [string, number | null][]
             ).map(([name, val]) => (
               <div key={name} className="trig-val-card">
@@ -230,7 +227,7 @@ function TrigPage() {
       <p className="trig-section-title">逆三角関数</p>
       <div className="trig-inverse-grid">
         {INVERSE_FUNS.map(({ fn, label, desc, placeholder }) => {
-          const val = parseFloat(inverseInputs[fn] ?? '');
+          const val = parseFloat(inverseInputs[fn] ?? "");
           const isValid = !isNaN(val);
           const result = isValid ? calcInverseTrig(fn, val) : null;
           const outOfRange = isValid && result === null;
@@ -254,16 +251,12 @@ function TrigPage() {
                   <span className="trig-inverse-error">{desc}</span>
                 ) : result !== null ? (
                   <>
-                    <span className="trig-inverse-result-val">
-                      {formatAngle(result)}°
-                    </span>
+                    <span className="trig-inverse-result-val">{formatAngle(result)}°</span>
                     <span> = </span>
-                    <span>{formatAngle(fromDegrees(result, 'rad'))} rad</span>
+                    <span>{formatAngle(fromDegrees(result, "rad"))} rad</span>
                   </>
                 ) : (
-                  <span className="trig-inverse-hint">
-                    {desc}
-                  </span>
+                  <span className="trig-inverse-hint">{desc}</span>
                 )}
               </div>
             </div>
@@ -310,29 +303,29 @@ function TrigPage() {
       <TipsCard
         sections={[
           {
-            title: '角度の単位について',
+            title: "角度の単位について",
             items: [
-              '度 (°): 円を 360 等分。日常でもっとも広く使われる単位。',
-              'ラジアン (rad): 円の弧の長さと半径の比。数学・プログラミングで標準的。π rad = 180°',
-              'グラジアン (grad): 円を 400 等分。測量・工学で利用される。100 grad = 90°',
-              '回転 (turn): 1 回転 = 360°。CSS の回転プロパティなどで利用。',
+              "度 (°): 円を 360 等分。日常でもっとも広く使われる単位。",
+              "ラジアン (rad): 円の弧の長さと半径の比。数学・プログラミングで標準的。π rad = 180°",
+              "グラジアン (grad): 円を 400 等分。測量・工学で利用される。100 grad = 90°",
+              "回転 (turn): 1 回転 = 360°。CSS の回転プロパティなどで利用。",
             ],
           },
           {
-            title: '三角関数の定義',
+            title: "三角関数の定義",
             items: [
-              'sin θ = 対辺 / 斜辺、cos θ = 隣辺 / 斜辺、tan θ = 対辺 / 隣辺',
-              'cot θ = 1 / tan θ（tan が 0 のとき未定義）',
-              'sec θ = 1 / cos θ（cos が 0 のとき未定義）',
-              'csc θ = 1 / sin θ（sin が 0 のとき未定義）',
+              "sin θ = 対辺 / 斜辺、cos θ = 隣辺 / 斜辺、tan θ = 対辺 / 隣辺",
+              "cot θ = 1 / tan θ（tan が 0 のとき未定義）",
+              "sec θ = 1 / cos θ（cos が 0 のとき未定義）",
+              "csc θ = 1 / sin θ（sin が 0 のとき未定義）",
             ],
           },
           {
-            title: '逆三角関数の出力範囲',
+            title: "逆三角関数の出力範囲",
             items: [
-              'arcsin(x): −90° 〜 90°（入力範囲 −1 〜 1）',
-              'arccos(x): 0° 〜 180°（入力範囲 −1 〜 1）',
-              'arctan(x): −90° 〜 90°（入力範囲 任意の実数）',
+              "arcsin(x): −90° 〜 90°（入力範囲 −1 〜 1）",
+              "arccos(x): 0° 〜 180°（入力範囲 −1 〜 1）",
+              "arctan(x): −90° 〜 90°（入力範囲 任意の実数）",
             ],
           },
         ]}

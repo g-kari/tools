@@ -36,7 +36,7 @@
   width: 100%;
   min-height: 200px;
   padding: 10px 12px;
-  font-family: 'Space Mono', 'Roboto Mono', monospace;
+  font-family: "Space Mono", "Roboto Mono", monospace;
   font-size: 0.85rem;
   line-height: 1.5;
   border: 1px solid var(--md-sys-color-outline);
@@ -69,7 +69,9 @@
   background: var(--md-sys-color-surface);
   color: var(--md-sys-color-on-surface);
   cursor: pointer;
-  transition: background-color 0.15s, color 0.15s;
+  transition:
+    background-color 0.15s,
+    color 0.15s;
 }
 
 .json-pointer-btn:hover {
@@ -101,7 +103,7 @@
 .json-pointer-query-input {
   flex: 1;
   padding: 6px 10px;
-  font-family: 'Space Mono', 'Roboto Mono', monospace;
+  font-family: "Space Mono", "Roboto Mono", monospace;
   font-size: 0.9rem;
   border: 1px solid var(--md-sys-color-outline);
   border-radius: 4px;
@@ -129,14 +131,16 @@
 
 .json-pointer-chip {
   padding: 4px 10px;
-  font-family: 'Space Mono', 'Roboto Mono', monospace;
+  font-family: "Space Mono", "Roboto Mono", monospace;
   font-size: 0.78rem;
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: 16px;
   background: var(--md-sys-color-surface-variant);
   color: var(--md-sys-color-on-surface-variant);
   cursor: pointer;
-  transition: background-color 0.15s, color 0.15s;
+  transition:
+    background-color 0.15s,
+    color 0.15s;
 }
 
 .json-pointer-chip:hover {
@@ -166,7 +170,7 @@
 
 .json-pointer-result-pre {
   margin: 0;
-  font-family: 'Space Mono', 'Roboto Mono', monospace;
+  font-family: "Space Mono", "Roboto Mono", monospace;
   font-size: 0.85rem;
   line-height: 1.5;
   color: var(--md-sys-color-on-surface);
@@ -213,7 +217,7 @@
 }
 
 .json-pointer-list-path {
-  font-family: 'Space Mono', 'Roboto Mono', monospace;
+  font-family: "Space Mono", "Roboto Mono", monospace;
   font-size: 0.8rem;
   color: var(--md-sys-color-primary);
   word-break: break-all;
@@ -226,7 +230,7 @@
 }
 
 .json-pointer-list-value {
-  font-family: 'Space Mono', 'Roboto Mono', monospace;
+  font-family: "Space Mono", "Roboto Mono", monospace;
   font-size: 0.78rem;
   color: var(--md-sys-color-on-surface-variant);
   max-width: 120px;

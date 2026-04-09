@@ -1,53 +1,54 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useState, useMemo, useCallback } from 'react';
-import { useToast } from '../components/Toast';
-import { useClipboard } from '../hooks/useClipboard';
-import { StatusAnnouncer, useStatusAnnouncement } from '../hooks/useStatusAnnouncement';
-import { TipsCard } from '../components/TipsCard';
-import { Button } from '~/components/ui/button';
-import { Textarea } from '~/components/ui/textarea';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
-import { encodeBifid, decodeBifid, buildBifidSquare } from '../utils/bifid';
-import '../styles/tools/bifid.css';
+import { createFileRoute } from "@tanstack/react-router";
+import { useState, useMemo, useCallback } from "react";
+import { useToast } from "../components/Toast";
+import { useClipboard } from "../hooks/useClipboard";
+import { StatusAnnouncer, useStatusAnnouncement } from "../hooks/useStatusAnnouncement";
+import { TipsCard } from "../components/TipsCard";
+import { Button } from "~/components/ui/button";
+import { Textarea } from "~/components/ui/textarea";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
+import { encodeBifid, decodeBifid, buildBifidSquare } from "../utils/bifid";
+import "../styles/tools/bifid.css";
 
-export const Route = createFileRoute('/bifid')({
+export const Route = createFileRoute("/bifid")({
   head: () => ({
     meta: [
-      { title: 'Bifid暗号（ビフィド暗号） | Web ツール集' },
+      { title: "Bifid暗号（ビフィド暗号） | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          'Bifid暗号（ビフィド暗号）のエンコード・デコードツール。ポリュビオスの方陣を使った分割転置暗号。キーワード・周期設定・方陣可視化に対応。',
+          "Bifid暗号（ビフィド暗号）のエンコード・デコードツール。ポリュビオスの方陣を使った分割転置暗号。キーワード・周期設定・方陣可視化に対応。",
       },
       {
-        property: 'og:title',
-        content: 'Bifid暗号（ビフィド暗号） | Web ツール集',
+        property: "og:title",
+        content: "Bifid暗号（ビフィド暗号） | Web ツール集",
       },
       {
-        property: 'og:description',
-        content: 'Bifid暗号のエンコード・デコードツール。ポリュビオス方陣を使った分割転置暗号。周期設定・方陣可視化付き。',
+        property: "og:description",
+        content:
+          "Bifid暗号のエンコード・デコードツール。ポリュビオス方陣を使った分割転置暗号。周期設定・方陣可視化付き。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/bifid` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
+      { property: "og:url", content: `${SITE_BASE_URL}/bifid` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
       {
-        name: 'twitter:title',
-        content: 'Bifid暗号（ビフィド暗号） | Web ツール集',
+        name: "twitter:title",
+        content: "Bifid暗号（ビフィド暗号） | Web ツール集",
       },
       {
-        name: 'twitter:description',
-        content: 'Bifid暗号のエンコード・デコードツール。ポリュビオス方陣・周期設定付き。',
+        name: "twitter:description",
+        content: "Bifid暗号のエンコード・デコードツール。ポリュビオス方陣・周期設定付き。",
       },
     ],
   }),
   component: BifidCipher,
 });
 
-type Mode = 'encode' | 'decode';
+type Mode = "encode" | "decode";
 
 /** キーワードに属するかどうかを判定するためのSet */
 function buildKeySet(key: string): Set<string> {
-  const upper = key.toUpperCase().replace(/J/g, 'I');
+  const upper = key.toUpperCase().replace(/J/g, "I");
   const seen = new Set<string>();
   for (const ch of upper) {
     if (/[A-Z]/.test(ch)) seen.add(ch);
@@ -64,17 +65,17 @@ function BifidCipher() {
   const { copy } = useClipboard();
   const { statusRef, announceStatus } = useStatusAnnouncement();
 
-  const [inputText, setInputText] = useState('');
-  const [key, setKey] = useState('KEYWORD');
+  const [inputText, setInputText] = useState("");
+  const [key, setKey] = useState("KEYWORD");
   const [period, setPeriod] = useState(0);
-  const [mode, setMode] = useState<Mode>('encode');
+  const [mode, setMode] = useState<Mode>("encode");
   const [showSquare, setShowSquare] = useState(false);
 
-  const validKey = useMemo(() => key.replace(/[^A-Za-z]/g, '').toUpperCase() || 'A', [key]);
+  const validKey = useMemo(() => key.replace(/[^A-Za-z]/g, "").toUpperCase() || "A", [key]);
 
   const output = useMemo(() => {
-    if (!inputText) return '';
-    if (mode === 'encode') return encodeBifid(inputText, validKey, period);
+    if (!inputText) return "";
+    if (mode === "encode") return encodeBifid(inputText, validKey, period);
     return decodeBifid(inputText, validKey, period);
   }, [inputText, validKey, period, mode]);
 
@@ -85,32 +86,34 @@ function BifidCipher() {
     if (!output) return;
     const ok = await copy(output);
     if (ok) {
-      showToast('変換結果をコピーしました', 'success');
-      announceStatus('変換結果をクリップボードにコピーしました');
+      showToast("変換結果をコピーしました", "success");
+      announceStatus("変換結果をクリップボードにコピーしました");
     } else {
-      showToast('コピーに失敗しました', 'error');
+      showToast("コピーに失敗しました", "error");
     }
   }, [output, copy, showToast, announceStatus]);
 
   const handleClear = useCallback(() => {
-    setInputText('');
-    announceStatus('入力をクリアしました');
+    setInputText("");
+    announceStatus("入力をクリアしました");
   }, [announceStatus]);
 
   const handleModeChange = useCallback(
     (newMode: Mode) => {
       setMode(newMode);
       announceStatus(
-        newMode === 'encode' ? 'エンコードモードに切り替えました' : 'デコードモードに切り替えました'
+        newMode === "encode"
+          ? "エンコードモードに切り替えました"
+          : "デコードモードに切り替えました",
       );
     },
-    [announceStatus]
+    [announceStatus],
   );
 
   const handleToggleSquare = useCallback(() => {
     setShowSquare((prev) => {
       const next = !prev;
-      announceStatus(next ? '方陣可視化を表示しました' : '方陣可視化を非表示にしました');
+      announceStatus(next ? "方陣可視化を表示しました" : "方陣可視化を非表示にしました");
       return next;
     });
   }, [announceStatus]);
@@ -133,17 +136,17 @@ function BifidCipher() {
           <div className="bifid-mode-group" role="group" aria-label="変換モード">
             <Button
               type="button"
-              variant={mode === 'encode' ? 'default' : 'outline'}
-              onClick={() => handleModeChange('encode')}
-              aria-pressed={mode === 'encode'}
+              variant={mode === "encode" ? "default" : "outline"}
+              onClick={() => handleModeChange("encode")}
+              aria-pressed={mode === "encode"}
             >
               エンコード
             </Button>
             <Button
               type="button"
-              variant={mode === 'decode' ? 'default' : 'outline'}
-              onClick={() => handleModeChange('decode')}
-              aria-pressed={mode === 'decode'}
+              variant={mode === "decode" ? "default" : "outline"}
+              onClick={() => handleModeChange("decode")}
+              aria-pressed={mode === "decode"}
             >
               デコード
             </Button>
@@ -194,9 +197,9 @@ function BifidCipher() {
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
             placeholder={
-              mode === 'encode'
-                ? '暗号化するテキストを入力（英字のみ有効、J は I に変換）'
-                : '復号する暗号文を入力'
+              mode === "encode"
+                ? "暗号化するテキストを入力（英字のみ有効、J は I に変換）"
+                : "復号する暗号文を入力"
             }
             rows={4}
             aria-label="Bifid暗号の入力テキスト"
@@ -210,12 +213,12 @@ function BifidCipher() {
           </h2>
           <div
             id="bifid-output"
-            className={`bifid-output${isEmpty ? ' bifid-output--empty' : ''}`}
+            className={`bifid-output${isEmpty ? " bifid-output--empty" : ""}`}
             aria-live="polite"
-            aria-label={`変換結果: ${output || '（変換結果なし）'}`}
+            aria-label={`変換結果: ${output || "（変換結果なし）"}`}
             role="region"
           >
-            {isEmpty ? '変換結果がここに表示されます' : output}
+            {isEmpty ? "変換結果がここに表示されます" : output}
           </div>
 
           <div className="bifid-actions" role="group" aria-label="操作">
@@ -232,9 +235,9 @@ function BifidCipher() {
               type="button"
               variant="outline"
               onClick={handleToggleSquare}
-              aria-label={showSquare ? '方陣可視化を非表示' : '方陣可視化を表示'}
+              aria-label={showSquare ? "方陣可視化を非表示" : "方陣可視化を表示"}
             >
-              {showSquare ? '方陣を非表示' : '方陣可視化'}
+              {showSquare ? "方陣を非表示" : "方陣可視化"}
             </Button>
             <Button
               type="button"
@@ -275,8 +278,8 @@ function BifidCipher() {
                       {row.map((ch, c) => (
                         <td
                           key={c}
-                          className={keySet.has(ch) ? 'bifid-square-key' : ''}
-                          aria-label={`(${r},${c}): ${ch}${keySet.has(ch) ? '（キー文字）' : ''}`}
+                          className={keySet.has(ch) ? "bifid-square-key" : ""}
+                          aria-label={`(${r},${c}): ${ch}${keySet.has(ch) ? "（キー文字）" : ""}`}
                         >
                           {ch}
                         </td>
@@ -292,24 +295,24 @@ function BifidCipher() {
         <TipsCard
           sections={[
             {
-              title: '使い方',
+              title: "使い方",
               items: [
-                'キーワードを入力してください（英字のみ有効、J は I と同一視）',
-                'エンコード: 平文の各文字を方陣で座標変換し、行列を分離・再結合して暗号化します',
-                'デコード: 同じキーワード・周期を指定して元のテキストに戻します',
-                '周期: テキストをN文字ずつのブロックに分けて処理します（0で全体一括）',
-                '方陣可視化: キーワードで生成されたポリュビオス方陣を確認できます',
+                "キーワードを入力してください（英字のみ有効、J は I と同一視）",
+                "エンコード: 平文の各文字を方陣で座標変換し、行列を分離・再結合して暗号化します",
+                "デコード: 同じキーワード・周期を指定して元のテキストに戻します",
+                "周期: テキストをN文字ずつのブロックに分けて処理します（0で全体一括）",
+                "方陣可視化: キーワードで生成されたポリュビオス方陣を確認できます",
               ],
             },
             {
-              title: 'Bifid暗号について',
+              title: "Bifid暗号について",
               items: [
-                '19世紀末にフェリックス・デラステルが発明した分割転置暗号です',
-                'ポリュビオスの方陣で各文字を (行, 列) の座標ペアに変換します',
-                'すべての行座標を並べ、続けて列座標を並べ、2つずつ取り出して再変換します',
-                '置換と転置を組み合わせることで、単純な暗号より解読困難になります',
-                'J は I と同一視され、25文字で5×5の方陣を構成します',
-                'CTFや暗号パズルでよく出題される古典暗号の一つです',
+                "19世紀末にフェリックス・デラステルが発明した分割転置暗号です",
+                "ポリュビオスの方陣で各文字を (行, 列) の座標ペアに変換します",
+                "すべての行座標を並べ、続けて列座標を並べ、2つずつ取り出して再変換します",
+                "置換と転置を組み合わせることで、単純な暗号より解読困難になります",
+                "J は I と同一視され、25文字で5×5の方陣を構成します",
+                "CTFや暗号パズルでよく出題される古典暗号の一つです",
               ],
             },
           ]}

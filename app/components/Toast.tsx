@@ -4,7 +4,15 @@
  * UX心理学のピーク・エンド法則に基づき、操作完了時の印象を強化
  */
 
-import { useState, useCallback, createContext, useContext, useRef, useEffect, type ReactNode } from "react";
+import {
+  useState,
+  useCallback,
+  createContext,
+  useContext,
+  useRef,
+  useEffect,
+  type ReactNode,
+} from "react";
 
 /**
  * トースト通知の種類
@@ -101,9 +109,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
 
     // Start exit animation after 2.5 seconds
     const exitTimeout = setTimeout(() => {
-      setToasts((prev) =>
-        prev.map((t) => (t.id === id ? { ...t, exiting: true } : t))
-      );
+      setToasts((prev) => prev.map((t) => (t.id === id ? { ...t, exiting: true } : t)));
     }, 2500);
     timeouts.push(exitTimeout);
 

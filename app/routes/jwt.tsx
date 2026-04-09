@@ -6,26 +6,32 @@ import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import { TipsCard } from "~/components/TipsCard";
 import { ErrorMessage } from "~/components/ErrorMessage";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 
 export const Route = createFileRoute("/jwt")({
   head: () => ({
     meta: [
-    { title: "JWTデコーダー | Web ツール集" },
-    { name: "description", content: "JWTトークンのヘッダー・ペイロードをデコード・検証するオンラインツール。" },
-    { property: "og:title", content: "JWTデコーダー | Web ツール集" },
-    { property: "og:description", content: "JWTトークンのヘッダー・ペイロードをデコード・検証するオンラインツール。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/jwt` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "JWTデコーダー | Web ツール集" },
-    { name: "twitter:description", content: "JWTトークンのヘッダー・ペイロードをデコード・検証するオンラインツール。" },
-  ],
+      { title: "JWTデコーダー | Web ツール集" },
+      {
+        name: "description",
+        content: "JWTトークンのヘッダー・ペイロードをデコード・検証するオンラインツール。",
+      },
+      { property: "og:title", content: "JWTデコーダー | Web ツール集" },
+      {
+        property: "og:description",
+        content: "JWTトークンのヘッダー・ペイロードをデコード・検証するオンラインツール。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/jwt` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "JWTデコーダー | Web ツール集" },
+      {
+        name: "twitter:description",
+        content: "JWTトークンのヘッダー・ペイロードをデコード・検証するオンラインツール。",
+      },
+    ],
   }),
   component: JwtDecoder,
 });
@@ -94,7 +100,7 @@ function JwtDecoder() {
         announceStatus("コピーに失敗しました");
       }
     },
-    [copy, announceStatus]
+    [copy, announceStatus],
   );
 
   // Ctrl+Enter でデコード

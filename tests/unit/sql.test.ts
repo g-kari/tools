@@ -160,8 +160,7 @@ function tokenizeSql(sql: string): SqlToken[] {
 
     if (ch === "`") {
       const end = sql.indexOf("`", i + 1);
-      if (end === -1)
-        throw new Error("バッククォート識別子が閉じられていません");
+      if (end === -1) throw new Error("バッククォート識別子が閉じられていません");
       tokens.push({ type: "quoted_identifier", value: sql.slice(i, end + 1) });
       i = end + 1;
       continue;
@@ -169,8 +168,7 @@ function tokenizeSql(sql: string): SqlToken[] {
 
     if (ch === '"') {
       const end = sql.indexOf('"', i + 1);
-      if (end === -1)
-        throw new Error("ダブルクォート識別子が閉じられていません");
+      if (end === -1) throw new Error("ダブルクォート識別子が閉じられていません");
       tokens.push({ type: "quoted_identifier", value: sql.slice(i, end + 1) });
       i = end + 1;
       continue;
@@ -202,10 +200,7 @@ function tokenizeSql(sql: string): SqlToken[] {
       continue;
     }
 
-    if (
-      /[0-9]/.test(ch) ||
-      (ch === "." && /[0-9]/.test(sql[i + 1] ?? ""))
-    ) {
+    if (/[0-9]/.test(ch) || (ch === "." && /[0-9]/.test(sql[i + 1] ?? ""))) {
       let j = i;
       while (j < len && /[0-9]/.test(sql[j])) j++;
       if (j < len && sql[j] === ".") {
@@ -238,9 +233,7 @@ function tokenizeSql(sql: string): SqlToken[] {
 
     if (/[<>=!+\-*/%|&^~]/.test(ch)) {
       const two = sql.slice(i, i + 2);
-      if (
-        ["<>", "<=", ">=", "!=", ":=", "||", "&&", "<<", ">>"].includes(two)
-      ) {
+      if (["<>", "<=", ">=", "!=", ":=", "||", "&&", "<<", ">>"].includes(two)) {
         tokens.push({ type: "operator", value: two });
         i += 2;
         continue;
@@ -352,10 +345,7 @@ function formatSql(sql: string, indentSize: number = 2): string {
   while (i < tokens.length) {
     const token = tokens[i];
 
-    if (
-      token.type === "line_comment" ||
-      token.type === "block_comment"
-    ) {
+    if (token.type === "line_comment" || token.type === "block_comment") {
       flushLine(currentLine.trimEnd() ? currentLine + " " : "");
       currentLine += token.value;
       i++;
@@ -377,11 +367,7 @@ function formatSql(sql: string, indentSize: number = 2): string {
       continue;
     }
 
-    if (
-      depth === 0 &&
-      token.type === "keyword" &&
-      INDENT_KEYWORDS.has(token.value)
-    ) {
+    if (depth === 0 && token.type === "keyword" && INDENT_KEYWORDS.has(token.value)) {
       flushLine("");
       currentLine = indent + token.value;
       i++;
@@ -432,11 +418,7 @@ function formatSql(sql: string, indentSize: number = 2): string {
       continue;
     }
 
-    if (
-      currentLine.length > 0 &&
-      !currentLine.endsWith(" ") &&
-      !currentLine.endsWith("(")
-    ) {
+    if (currentLine.length > 0 && !currentLine.endsWith(" ") && !currentLine.endsWith("(")) {
       currentLine += " ";
     }
     currentLine += token.value;
@@ -458,10 +440,7 @@ function minifySql(sql: string): string {
     const prev = i > 0 ? tokens[i - 1] : null;
     const next = i < tokens.length - 1 ? tokens[i + 1] : null;
 
-    if (
-      token.type === "line_comment" ||
-      token.type === "block_comment"
-    ) {
+    if (token.type === "line_comment" || token.type === "block_comment") {
       continue;
     }
 
@@ -493,11 +472,7 @@ function minifySql(sql: string): string {
       prev.type !== "line_comment" &&
       prev.type !== "block_comment";
 
-    if (
-      needsSpaceBefore &&
-      parts.length > 0 &&
-      parts[parts.length - 1] !== " "
-    ) {
+    if (needsSpaceBefore && parts.length > 0 && parts[parts.length - 1] !== " ") {
       parts.push(" ");
     }
 
@@ -520,8 +495,7 @@ function validateSql(sql: string): { valid: boolean; error?: string } {
   } catch (err) {
     return {
       valid: false,
-      error:
-        err instanceof Error ? err.message : "SQL解析エラーが発生しました",
+      error: err instanceof Error ? err.message : "SQL解析エラーが発生しました",
     };
   }
 
@@ -587,9 +561,7 @@ describe("tokenizeSql", () => {
 
   it("キーワードを大文字に正規化する", () => {
     const tokens = tokenizeSql("select id from users");
-    const keywords = tokens
-      .filter((t) => t.type === "keyword")
-      .map((t) => t.value);
+    const keywords = tokens.filter((t) => t.type === "keyword").map((t) => t.value);
     expect(keywords).toEqual(["SELECT", "FROM"]);
   });
 
@@ -644,15 +616,11 @@ describe("tokenizeSql", () => {
   });
 
   it("閉じられていない文字列でエラーを投げる", () => {
-    expect(() => tokenizeSql("SELECT 'unclosed")).toThrow(
-      "文字列リテラルが閉じられていません"
-    );
+    expect(() => tokenizeSql("SELECT 'unclosed")).toThrow("文字列リテラルが閉じられていません");
   });
 
   it("閉じられていないブロックコメントでエラーを投げる", () => {
-    expect(() => tokenizeSql("SELECT /* unclosed")).toThrow(
-      "ブロックコメントが閉じられていません"
-    );
+    expect(() => tokenizeSql("SELECT /* unclosed")).toThrow("ブロックコメントが閉じられていません");
   });
 });
 
@@ -663,9 +631,7 @@ describe("formatSql", () => {
   });
 
   it("SELECT文を整形する", () => {
-    const result = formatSql(
-      "SELECT id, name, age FROM users WHERE age > 18"
-    );
+    const result = formatSql("SELECT id, name, age FROM users WHERE age > 18");
     expect(result).toContain("SELECT");
     expect(result).toContain("FROM");
     expect(result).toContain("WHERE");
@@ -677,27 +643,21 @@ describe("formatSql", () => {
   });
 
   it("GROUP BY / ORDER BYを整形する", () => {
-    const result = formatSql(
-      "SELECT dept, COUNT(*) FROM users GROUP BY dept ORDER BY dept ASC"
-    );
+    const result = formatSql("SELECT dept, COUNT(*) FROM users GROUP BY dept ORDER BY dept ASC");
     const lines = result.split("\n");
     expect(lines.some((l) => l.startsWith("GROUP BY"))).toBe(true);
     expect(lines.some((l) => l.startsWith("ORDER BY"))).toBe(true);
   });
 
   it("LEFT JOINを整形する", () => {
-    const result = formatSql(
-      "SELECT u.id FROM users u LEFT JOIN orders o ON u.id = o.user_id"
-    );
+    const result = formatSql("SELECT u.id FROM users u LEFT JOIN orders o ON u.id = o.user_id");
     const lines = result.split("\n");
     expect(lines.some((l) => l.startsWith("LEFT JOIN"))).toBe(true);
     expect(lines.some((l) => l.startsWith("ON"))).toBe(true);
   });
 
   it("ANDをインデント付きで整形する", () => {
-    const result = formatSql(
-      "SELECT id FROM users WHERE age > 18 AND name = 'Alice'"
-    );
+    const result = formatSql("SELECT id FROM users WHERE age > 18 AND name = 'Alice'");
     const lines = result.split("\n");
     const andLine = lines.find((l) => l.trimStart().startsWith("AND"));
     expect(andLine).toBeDefined();
@@ -706,10 +666,7 @@ describe("formatSql", () => {
   });
 
   it("2スペースインデントで整形する", () => {
-    const result = formatSql(
-      "SELECT id, name FROM users WHERE age > 18",
-      2
-    );
+    const result = formatSql("SELECT id, name FROM users WHERE age > 18", 2);
     const lines = result.split("\n");
     // カンマ区切りのアイテムがインデントされている
     const indentedLine = lines.find((l) => l.startsWith("  ") && !l.startsWith("   "));
@@ -717,14 +674,9 @@ describe("formatSql", () => {
   });
 
   it("4スペースインデントで整形する", () => {
-    const result = formatSql(
-      "SELECT id, name FROM users WHERE age > 18",
-      4
-    );
+    const result = formatSql("SELECT id, name FROM users WHERE age > 18", 4);
     const lines = result.split("\n");
-    const indentedLine = lines.find(
-      (l) => l.startsWith("    ") && !l.startsWith("     ")
-    );
+    const indentedLine = lines.find((l) => l.startsWith("    ") && !l.startsWith("     "));
     expect(indentedLine).toBeDefined();
   });
 
@@ -734,9 +686,7 @@ describe("formatSql", () => {
   });
 
   it("文字列リテラル内の内容を変更しない", () => {
-    const result = formatSql(
-      "SELECT id FROM users WHERE name = 'John Doe'"
-    );
+    const result = formatSql("SELECT id FROM users WHERE name = 'John Doe'");
     expect(result).toContain("'John Doe'");
   });
 });
@@ -757,17 +707,13 @@ WHERE age > 18`;
   });
 
   it("コメントを除去する", () => {
-    const result = minifySql(
-      "SELECT id -- 主キー\nFROM users /* テーブル */"
-    );
+    const result = minifySql("SELECT id -- 主キー\nFROM users /* テーブル */");
     expect(result).not.toContain("--");
     expect(result).not.toContain("/*");
   });
 
   it("キーワードはそのまま保持する", () => {
-    const result = minifySql(
-      "SELECT id FROM users WHERE age > 18"
-    );
+    const result = minifySql("SELECT id FROM users WHERE age > 18");
     expect(result).toContain("SELECT");
     expect(result).toContain("FROM");
     expect(result).toContain("WHERE");
@@ -818,10 +764,8 @@ describe("validateSql", () => {
   });
 
   it("サブクエリを含むSQLを有効と判定する", () => {
-    expect(
-      validateSql(
-        "SELECT id FROM users WHERE id IN (SELECT user_id FROM orders)"
-      ).valid
-    ).toBe(true);
+    expect(validateSql("SELECT id FROM users WHERE id IN (SELECT user_id FROM orders)").valid).toBe(
+      true,
+    );
   });
 });

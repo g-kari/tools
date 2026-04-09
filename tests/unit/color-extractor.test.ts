@@ -49,13 +49,25 @@ describe("getPixelsFromImageData", () => {
     // 2x2の画像データを作成（赤、緑、青、白）
     const imageData = new ImageData(
       new Uint8ClampedArray([
-        255, 0, 0, 255,    // 赤
-        0, 255, 0, 255,    // 緑
-        0, 0, 255, 255,    // 青
-        255, 255, 255, 255, // 白
+        255,
+        0,
+        0,
+        255, // 赤
+        0,
+        255,
+        0,
+        255, // 緑
+        0,
+        0,
+        255,
+        255, // 青
+        255,
+        255,
+        255,
+        255, // 白
       ]),
       2,
-      2
+      2,
     );
 
     const pixels = getPixelsFromImageData(imageData, 1);
@@ -70,14 +82,9 @@ describe("getPixelsFromImageData", () => {
   it("respects sampleRate parameter", () => {
     // 4x1の画像データを作成
     const imageData = new ImageData(
-      new Uint8ClampedArray([
-        255, 0, 0, 255,
-        0, 255, 0, 255,
-        0, 0, 255, 255,
-        255, 255, 255, 255,
-      ]),
+      new Uint8ClampedArray([255, 0, 0, 255, 0, 255, 0, 255, 0, 0, 255, 255, 255, 255, 255, 255]),
       4,
-      1
+      1,
     );
 
     // サンプルレート2で半分のピクセルを取得
@@ -91,13 +98,25 @@ describe("getPixelsFromImageData", () => {
     // 半透明と完全透明のピクセルを含む画像データ
     const imageData = new ImageData(
       new Uint8ClampedArray([
-        255, 0, 0, 255,  // 不透明
-        0, 255, 0, 127,  // 半透明（含まれない）
-        0, 0, 255, 128,  // 半透明（境界、含まれる）
-        255, 255, 255, 0, // 完全透明（含まれない）
+        255,
+        0,
+        0,
+        255, // 不透明
+        0,
+        255,
+        0,
+        127, // 半透明（含まれない）
+        0,
+        0,
+        255,
+        128, // 半透明（境界、含まれる）
+        255,
+        255,
+        255,
+        0, // 完全透明（含まれない）
       ]),
       4,
-      1
+      1,
     );
 
     const pixels = getPixelsFromImageData(imageData, 1);

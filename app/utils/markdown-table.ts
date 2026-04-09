@@ -39,7 +39,7 @@ export function createEmptyTable(cols: number, rows: number): TableData {
     align: "none" as AlignType,
   }));
   const dataRows: string[][] = Array.from({ length: rows }, () =>
-    Array.from({ length: cols }, () => "")
+    Array.from({ length: cols }, () => ""),
   );
   return { columns, rows: dataRows };
 }
@@ -92,26 +92,16 @@ export function generateMarkdown(table: TableData): string {
   });
 
   const headerRow =
-    "| " +
-    columns
-      .map((col, i) => escapeCell(col.header).padEnd(colWidths[i]))
-      .join(" | ") +
-    " |";
+    "| " + columns.map((col, i) => escapeCell(col.header).padEnd(colWidths[i])).join(" | ") + " |";
 
   const separatorRow =
-    "| " +
-    columns
-      .map((col, i) => buildSeparator(col.align, colWidths[i]))
-      .join(" | ") +
-    " |";
+    "| " + columns.map((col, i) => buildSeparator(col.align, colWidths[i])).join(" | ") + " |";
 
   const dataRows = rows.map(
     (row) =>
       "| " +
-      columns
-        .map((_, i) => escapeCell(row[i] ?? "").padEnd(colWidths[i]))
-        .join(" | ") +
-      " |"
+      columns.map((_, i) => escapeCell(row[i] ?? "").padEnd(colWidths[i])).join(" | ") +
+      " |",
   );
 
   return [headerRow, separatorRow, ...dataRows].join("\n");
@@ -181,10 +171,7 @@ export function removeColumn(table: TableData, colIndex: number): TableData {
 export function addRow(table: TableData): TableData {
   return {
     columns: table.columns,
-    rows: [
-      ...table.rows,
-      Array.from({ length: table.columns.length }, () => ""),
-    ],
+    rows: [...table.rows, Array.from({ length: table.columns.length }, () => "")],
   };
 }
 
@@ -208,15 +195,9 @@ export function removeRow(table: TableData, rowIndex: number): TableData {
  * @param align 新しい配置方向
  * @returns 配置方向が変更された新しいTableData
  */
-export function setColumnAlign(
-  table: TableData,
-  colIndex: number,
-  align: AlignType
-): TableData {
+export function setColumnAlign(table: TableData, colIndex: number, align: AlignType): TableData {
   return {
-    columns: table.columns.map((col, i) =>
-      i === colIndex ? { ...col, align } : col
-    ),
+    columns: table.columns.map((col, i) => (i === colIndex ? { ...col, align } : col)),
     rows: table.rows,
   };
 }
@@ -228,15 +209,9 @@ export function setColumnAlign(
  * @param value 新しいヘッダーテキスト
  * @returns ヘッダーが更新された新しいTableData
  */
-export function updateHeader(
-  table: TableData,
-  colIndex: number,
-  value: string
-): TableData {
+export function updateHeader(table: TableData, colIndex: number, value: string): TableData {
   return {
-    columns: table.columns.map((col, i) =>
-      i === colIndex ? { ...col, header: value } : col
-    ),
+    columns: table.columns.map((col, i) => (i === colIndex ? { ...col, header: value } : col)),
     rows: table.rows,
   };
 }
@@ -253,14 +228,12 @@ export function updateCell(
   table: TableData,
   rowIndex: number,
   colIndex: number,
-  value: string
+  value: string,
 ): TableData {
   return {
     columns: table.columns,
     rows: table.rows.map((row, ri) =>
-      ri === rowIndex
-        ? row.map((cell, ci) => (ci === colIndex ? value : cell))
-        : row
+      ri === rowIndex ? row.map((cell, ci) => (ci === colIndex ? value : cell)) : row,
     ),
   };
 }

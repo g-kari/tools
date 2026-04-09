@@ -55,8 +55,7 @@ export function calculateBpm(timestamps: number[]): number {
   for (let i = 1; i < timestamps.length; i++) {
     intervals.push(timestamps[i] - timestamps[i - 1]);
   }
-  const avgInterval =
-    intervals.reduce((sum, v) => sum + v, 0) / intervals.length;
+  const avgInterval = intervals.reduce((sum, v) => sum + v, 0) / intervals.length;
   if (avgInterval <= 0) return 0;
   return Math.round((60000 / avgInterval) * 10) / 10;
 }
@@ -199,10 +198,10 @@ function BpmTapper() {
           onClick={handleTap}
           aria-label="タップ（スペースキーでも操作可）"
         >
-          <span className="bpm-tap-icon" aria-hidden="true">🥁</span>
-          <span className="bpm-tap-text">
-            {tapCount === 0 ? "タップしてスタート" : "タップ"}
+          <span className="bpm-tap-icon" aria-hidden="true">
+            🥁
           </span>
+          <span className="bpm-tap-text">{tapCount === 0 ? "タップしてスタート" : "タップ"}</span>
         </button>
       </section>
 
@@ -247,9 +246,15 @@ function BpmTapper() {
               className={`bpm-tips-row${isActive && tempoLabel === label ? " bpm-tips-row--active" : ""}`}
               role="row"
             >
-              <span role="cell" className="bpm-tips-name">{label}</span>
-              <span role="cell" className="bpm-tips-range">{range}</span>
-              <span role="cell" className="bpm-tips-meaning">{meaning}</span>
+              <span role="cell" className="bpm-tips-name">
+                {label}
+              </span>
+              <span role="cell" className="bpm-tips-range">
+                {range}
+              </span>
+              <span role="cell" className="bpm-tips-meaning">
+                {meaning}
+              </span>
             </div>
           ))}
         </div>

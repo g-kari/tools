@@ -16,7 +16,7 @@
 /* テキストエリア */
 .hf-input,
 .hf-output {
-  font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  font-family: "JetBrains Mono", "Roboto Mono", "Courier New", monospace;
   font-size: 0.875rem;
   min-height: 10rem;
 }
@@ -50,7 +50,7 @@
 }
 
 .hf-stat-value {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.875rem;
   font-weight: 700;
   color: var(--md-sys-color-primary);

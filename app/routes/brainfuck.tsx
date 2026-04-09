@@ -4,16 +4,9 @@ import { useState, useCallback } from "react";
 import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  StatusAnnouncer,
-  useStatusAnnouncement,
-} from "~/hooks/useStatusAnnouncement";
+import { StatusAnnouncer, useStatusAnnouncement } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
-import {
-  executeBrainfuck,
-  BRAINFUCK_SAMPLES,
-  type BrainfuckResult,
-} from "~/utils/brainfuck";
+import { executeBrainfuck, BRAINFUCK_SAMPLES, type BrainfuckResult } from "~/utils/brainfuck";
 import "~/styles/tools/brainfuck.css";
 
 export const Route = createFileRoute("/brainfuck")({
@@ -31,8 +24,7 @@ export const Route = createFileRoute("/brainfuck")({
       },
       {
         property: "og:description",
-        content:
-          "Brainfuck コードをブラウザ上で実行できるオンラインインタープリター。",
+        content: "Brainfuck コードをブラウザ上で実行できるオンラインインタープリター。",
       },
       { property: "og:url", content: `${SITE_BASE_URL}/brainfuck` },
       { property: "og:type", content: "website" },
@@ -92,7 +84,7 @@ function BrainfuckInterpreter() {
       announceStatus(`エラー: ${res.error}`);
     } else {
       announceStatus(
-        `実行完了。出力: ${res.output.length} 文字、${res.steps.toLocaleString()} ステップ`
+        `実行完了。出力: ${res.output.length} 文字、${res.steps.toLocaleString()} ステップ`,
       );
     }
   }, [code, input, announceStatus]);
@@ -108,7 +100,7 @@ function BrainfuckInterpreter() {
       setResult(null);
       announceStatus(`サンプル「${sample.name}」を読み込みました`);
     },
-    [announceStatus]
+    [announceStatus],
   );
 
   /**
@@ -129,7 +121,8 @@ function BrainfuckInterpreter() {
       <header className="tool-header" role="banner">
         <h1 className="tool-title">Brainfuck インタープリター</h1>
         <p className="tool-description">
-          Brainfuck コードをブラウザ上で実行します。8つのコマンドのみからなる難解プログラミング言語です。
+          Brainfuck
+          コードをブラウザ上で実行します。8つのコマンドのみからなる難解プログラミング言語です。
         </p>
       </header>
 
@@ -196,11 +189,7 @@ function BrainfuckInterpreter() {
               />
             </section>
 
-            <Button
-              onClick={handleRun}
-              className="btn-primary"
-              aria-label="Brainfuck コードを実行"
-            >
+            <Button onClick={handleRun} className="btn-primary" aria-label="Brainfuck コードを実行">
               ▶ 実行
             </Button>
           </div>
@@ -236,9 +225,7 @@ function BrainfuckInterpreter() {
                 ) : result.error ? (
                   <span>⚠️ {result.error}</span>
                 ) : result.output === "" ? (
-                  <span className="brainfuck-result-placeholder">
-                    （出力なし）
-                  </span>
+                  <span className="brainfuck-result-placeholder">（出力なし）</span>
                 ) : (
                   result.output
                 )}
@@ -249,30 +236,19 @@ function BrainfuckInterpreter() {
                   <span className="brainfuck-stat-badge">
                     {result.steps.toLocaleString()} ステップ
                   </span>
-                  <span className="brainfuck-stat-badge">
-                    出力 {result.output.length} 文字
-                  </span>
-                  <span className="brainfuck-stat-badge">
-                    ポインタ位置: {result.pointer}
-                  </span>
+                  <span className="brainfuck-stat-badge">出力 {result.output.length} 文字</span>
+                  <span className="brainfuck-stat-badge">ポインタ位置: {result.pointer}</span>
                 </div>
               )}
             </section>
 
             {/* メモリ状態 */}
             {result && (
-              <section
-                className="tool-section"
-                aria-labelledby="memory-heading"
-              >
+              <section className="tool-section" aria-labelledby="memory-heading">
                 <h2 className="section-title" id="memory-heading">
                   メモリ状態（先頭20セル）
                 </h2>
-                <div
-                  className="brainfuck-memory-grid"
-                  role="list"
-                  aria-label="メモリセル"
-                >
+                <div className="brainfuck-memory-grid" role="list" aria-label="メモリセル">
                   {result.memory.map((val, i) => (
                     <div
                       key={i}
@@ -283,9 +259,7 @@ function BrainfuckInterpreter() {
                       <span className="brainfuck-cell-index">[{i}]</span>
                       <span className="brainfuck-cell-value">{val}</span>
                       <span className="brainfuck-cell-char">
-                        {val >= 32 && val <= 126
-                          ? String.fromCharCode(val)
-                          : "·"}
+                        {val >= 32 && val <= 126 ? String.fromCharCode(val) : "·"}
                       </span>
                     </div>
                   ))}
@@ -296,20 +270,13 @@ function BrainfuckInterpreter() {
         </div>
 
         {/* コマンドリファレンス */}
-        <section
-          className="tool-section"
-          aria-labelledby="reference-heading"
-        >
+        <section className="tool-section" aria-labelledby="reference-heading">
           <h2 className="section-title" id="reference-heading">
             コマンドリファレンス
           </h2>
           <div className="brainfuck-command-ref" role="list">
             {COMMANDS.map((cmd) => (
-              <div
-                key={cmd.symbol}
-                className="brainfuck-cmd-item"
-                role="listitem"
-              >
+              <div key={cmd.symbol} className="brainfuck-cmd-item" role="listitem">
                 <span className="brainfuck-cmd-symbol" aria-label={`コマンド ${cmd.symbol}`}>
                   {cmd.symbol}
                 </span>
@@ -322,13 +289,16 @@ function BrainfuckInterpreter() {
         {/* 使い方説明 */}
         <TipsCard>
           <p>
-            <strong>Brainfuck とは</strong>：1993年に Urban Müller が作成した難解プログラミング言語です。メモリはバイト配列で構成され、8つのコマンドのみでプログラムを記述します。
+            <strong>Brainfuck とは</strong>：1993年に Urban Müller
+            が作成した難解プログラミング言語です。メモリはバイト配列で構成され、8つのコマンドのみでプログラムを記述します。
           </p>
           <p>
-            <strong>実行制限</strong>：無限ループを防ぐため、最大 1,000,000 ステップで実行を停止します。
+            <strong>実行制限</strong>：無限ループを防ぐため、最大 1,000,000
+            ステップで実行を停止します。
           </p>
           <p>
-            <strong>メモリ</strong>：30,000 バイトの配列を使用します。各セルは 0〜255 の値を持ち、オーバーフロー時は折り返します。
+            <strong>メモリ</strong>：30,000 バイトの配列を使用します。各セルは 0〜255
+            の値を持ち、オーバーフロー時は折り返します。
           </p>
         </TipsCard>
       </main>

@@ -37,55 +37,27 @@ interface CropArea {
 /**
  * リサイズハンドルの位置
  */
-type ResizeHandle =
-  | "nw"
-  | "ne"
-  | "sw"
-  | "se"
-  | "n"
-  | "s"
-  | "e"
-  | "w"
-  | "move"
-  | null;
+type ResizeHandle = "nw" | "ne" | "sw" | "se" | "n" | "s" | "e" | "w" | "move" | null;
 
 /**
  * 指定位置にあるハンドルを取得
  */
-function getHandleAtPosition(
-  x: number,
-  y: number,
-  cropArea: CropArea
-): ResizeHandle {
+function getHandleAtPosition(x: number, y: number, cropArea: CropArea): ResizeHandle {
   const handleSize = 10;
   const { x: cx, y: cy, width, height } = cropArea;
 
   // 四隅のハンドル
-  if (Math.abs(x - cx) < handleSize && Math.abs(y - cy) < handleSize)
-    return "nw";
-  if (
-    Math.abs(x - (cx + width)) < handleSize &&
-    Math.abs(y - cy) < handleSize
-  )
-    return "ne";
-  if (
-    Math.abs(x - cx) < handleSize &&
-    Math.abs(y - (cy + height)) < handleSize
-  )
-    return "sw";
-  if (
-    Math.abs(x - (cx + width)) < handleSize &&
-    Math.abs(y - (cy + height)) < handleSize
-  )
+  if (Math.abs(x - cx) < handleSize && Math.abs(y - cy) < handleSize) return "nw";
+  if (Math.abs(x - (cx + width)) < handleSize && Math.abs(y - cy) < handleSize) return "ne";
+  if (Math.abs(x - cx) < handleSize && Math.abs(y - (cy + height)) < handleSize) return "sw";
+  if (Math.abs(x - (cx + width)) < handleSize && Math.abs(y - (cy + height)) < handleSize)
     return "se";
 
   // 辺のハンドル
   if (Math.abs(y - cy) < handleSize && x > cx && x < cx + width) return "n";
-  if (Math.abs(y - (cy + height)) < handleSize && x > cx && x < cx + width)
-    return "s";
+  if (Math.abs(y - (cy + height)) < handleSize && x > cx && x < cx + width) return "s";
   if (Math.abs(x - cx) < handleSize && y > cy && y < cy + height) return "w";
-  if (Math.abs(x - (cx + width)) < handleSize && y > cy && y < cy + height)
-    return "e";
+  if (Math.abs(x - (cx + width)) < handleSize && y > cy && y < cy + height) return "e";
 
   // 範囲内（移動）
   if (x > cx && x < cx + width && y > cy && y < cy + height) return "move";
@@ -102,7 +74,7 @@ function resizeCropArea(
   dx: number,
   dy: number,
   aspectRatio: number | null,
-  bounds: { width: number; height: number }
+  bounds: { width: number; height: number },
 ): CropArea {
   let newArea = { ...initial };
 
@@ -226,9 +198,7 @@ describe("画像トリミングツール", () => {
     });
 
     it("複数のドットを含むファイル名を正しく処理する", () => {
-      expect(generateFilename("my.photo.2024.jpg")).toBe(
-        "my.photo.2024_cropped.jpg"
-      );
+      expect(generateFilename("my.photo.2024.jpg")).toBe("my.photo.2024_cropped.jpg");
     });
   });
 
@@ -339,14 +309,7 @@ describe("画像トリミングツール", () => {
     it("北西（nw）ハンドルでアスペクト比を維持してリサイズする", () => {
       const initial: CropArea = { x: 200, y: 200, width: 200, height: 200 };
       const aspectRatio = 1; // 1:1
-      const result = resizeCropArea(
-        initial,
-        "nw",
-        -50,
-        -50,
-        aspectRatio,
-        bounds
-      );
+      const result = resizeCropArea(initial, "nw", -50, -50, aspectRatio, bounds);
 
       expect(result.x).toBe(150);
       expect(result.width).toBe(250);

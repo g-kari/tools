@@ -72,7 +72,7 @@ export interface ConvertResult {
  * @returns トークンの配列
  */
 export function tokenize(command: string): string[] {
-  const normalized = command.replace(/\\\n/g, ' ').trim();
+  const normalized = command.replace(/\\\n/g, " ").trim();
 
   const tokens: string[] = [];
   let i = 0;
@@ -85,7 +85,7 @@ export function tokenize(command: string): string[] {
 
     if (ch === "'") {
       i++;
-      let s = '';
+      let s = "";
       while (i < normalized.length && normalized[i] !== "'") {
         s += normalized[i++];
       }
@@ -93,25 +93,25 @@ export function tokenize(command: string): string[] {
       tokens.push(s);
     } else if (ch === '"') {
       i++;
-      let s = '';
+      let s = "";
       while (i < normalized.length && normalized[i] !== '"') {
-        if (normalized[i] === '\\' && i + 1 < normalized.length) {
+        if (normalized[i] === "\\" && i + 1 < normalized.length) {
           i++;
           switch (normalized[i]) {
-            case 'n':
-              s += '\n';
+            case "n":
+              s += "\n";
               break;
-            case 't':
-              s += '\t';
+            case "t":
+              s += "\t";
               break;
             case '"':
               s += '"';
               break;
-            case '\\':
-              s += '\\';
+            case "\\":
+              s += "\\";
               break;
             default:
-              s += '\\' + normalized[i];
+              s += "\\" + normalized[i];
           }
         } else {
           s += normalized[i];
@@ -121,7 +121,7 @@ export function tokenize(command: string): string[] {
       i++;
       tokens.push(s);
     } else {
-      let s = '';
+      let s = "";
       while (i < normalized.length && !/\s/.test(normalized[i])) {
         s += normalized[i++];
       }
@@ -148,11 +148,11 @@ export function parseDockerRun(command: string): {
   let idx = 0;
 
   // "docker" と "run" をスキップ
-  if (tokens[idx]?.toLowerCase() === 'docker') idx++;
-  if (tokens[idx]?.toLowerCase() === 'run') idx++;
+  if (tokens[idx]?.toLowerCase() === "docker") idx++;
+  if (tokens[idx]?.toLowerCase() === "run") idx++;
 
   const result: ParsedDockerRun = {
-    image: '',
+    image: "",
     containerName: null,
     ports: [],
     environment: [],
@@ -178,137 +178,136 @@ export function parseDockerRun(command: string): {
   };
 
   /** 次のトークンを取得するヘルパー */
-  const next = (): string => tokens[++idx] ?? '';
+  const next = (): string => tokens[++idx] ?? "";
 
   while (idx < tokens.length) {
     const token = tokens[idx];
 
-    if (token === '--name') {
+    if (token === "--name") {
       result.containerName = next();
-    } else if (token.startsWith('--name=')) {
-      result.containerName = token.slice('--name='.length);
-    } else if (token === '-p' || token === '--publish') {
+    } else if (token.startsWith("--name=")) {
+      result.containerName = token.slice("--name=".length);
+    } else if (token === "-p" || token === "--publish") {
       result.ports.push(next());
-    } else if (token.startsWith('-p=') || token.startsWith('--publish=')) {
-      result.ports.push(token.slice(token.indexOf('=') + 1));
-    } else if (token === '-e' || token === '--env') {
+    } else if (token.startsWith("-p=") || token.startsWith("--publish=")) {
+      result.ports.push(token.slice(token.indexOf("=") + 1));
+    } else if (token === "-e" || token === "--env") {
       result.environment.push(next());
-    } else if (token.startsWith('-e=') || token.startsWith('--env=')) {
-      result.environment.push(token.slice(token.indexOf('=') + 1));
-    } else if (token === '--env-file') {
+    } else if (token.startsWith("-e=") || token.startsWith("--env=")) {
+      result.environment.push(token.slice(token.indexOf("=") + 1));
+    } else if (token === "--env-file") {
       const file = next();
       result.environment.push(`# env_file: ${file}`);
       warnings.push(
-        `--env-file (${file}) は docker-compose の env_file フィールドに変換してください。`
+        `--env-file (${file}) は docker-compose の env_file フィールドに変換してください。`,
       );
-    } else if (token === '-v' || token === '--volume') {
+    } else if (token === "-v" || token === "--volume") {
       result.volumes.push(next());
-    } else if (token.startsWith('-v=') || token.startsWith('--volume=')) {
-      result.volumes.push(token.slice(token.indexOf('=') + 1));
-    } else if (token === '--mount') {
+    } else if (token.startsWith("-v=") || token.startsWith("--volume=")) {
+      result.volumes.push(token.slice(token.indexOf("=") + 1));
+    } else if (token === "--mount") {
       const mountStr = next();
       result.volumes.push(mountStr);
       warnings.push(
-        `--mount オプションはvolumes形式に変換されました。内容を確認してください: ${mountStr}`
+        `--mount オプションはvolumes形式に変換されました。内容を確認してください: ${mountStr}`,
       );
-    } else if (token === '--network' || token === '--net') {
+    } else if (token === "--network" || token === "--net") {
       result.network = next();
-    } else if (token.startsWith('--network=') || token.startsWith('--net=')) {
-      result.network = token.slice(token.indexOf('=') + 1);
-    } else if (token === '--restart') {
+    } else if (token.startsWith("--network=") || token.startsWith("--net=")) {
+      result.network = token.slice(token.indexOf("=") + 1);
+    } else if (token === "--restart") {
       result.restart = next();
-    } else if (token.startsWith('--restart=')) {
-      result.restart = token.slice('--restart='.length);
-    } else if (token === '-d' || token === '--detach') {
+    } else if (token.startsWith("--restart=")) {
+      result.restart = token.slice("--restart=".length);
+    } else if (token === "-d" || token === "--detach") {
       result.detach = true;
-    } else if (token === '--rm') {
+    } else if (token === "--rm") {
       result.rm = true;
       warnings.push(
-        '--rm オプションはdocker-composeでは通常不要です（停止時削除はデフォルト動作と異なります）。'
+        "--rm オプションはdocker-composeでは通常不要です（停止時削除はデフォルト動作と異なります）。",
       );
-    } else if (token === '-t' || token === '--tty') {
+    } else if (token === "-t" || token === "--tty") {
       result.tty = true;
-    } else if (token === '-i' || token === '--interactive') {
+    } else if (token === "-i" || token === "--interactive") {
       result.interactive = true;
-    } else if (token === '-it' || token === '-ti') {
+    } else if (token === "-it" || token === "-ti") {
       result.tty = true;
       result.interactive = true;
-    } else if (token === '-w' || token === '--workdir') {
+    } else if (token === "-w" || token === "--workdir") {
       result.workdir = next();
-    } else if (token.startsWith('-w=') || token.startsWith('--workdir=')) {
-      result.workdir = token.slice(token.indexOf('=') + 1);
-    } else if (token === '--entrypoint') {
+    } else if (token.startsWith("-w=") || token.startsWith("--workdir=")) {
+      result.workdir = token.slice(token.indexOf("=") + 1);
+    } else if (token === "--entrypoint") {
       result.entrypoint = next();
-    } else if (token.startsWith('--entrypoint=')) {
-      result.entrypoint = token.slice('--entrypoint='.length);
-    } else if (token === '-u' || token === '--user') {
+    } else if (token.startsWith("--entrypoint=")) {
+      result.entrypoint = token.slice("--entrypoint=".length);
+    } else if (token === "-u" || token === "--user") {
       result.user = next();
-    } else if (token.startsWith('-u=') || token.startsWith('--user=')) {
-      result.user = token.slice(token.indexOf('=') + 1);
-    } else if (token === '-h' || token === '--hostname') {
+    } else if (token.startsWith("-u=") || token.startsWith("--user=")) {
+      result.user = token.slice(token.indexOf("=") + 1);
+    } else if (token === "-h" || token === "--hostname") {
       result.hostname = next();
-    } else if (token.startsWith('--hostname=')) {
-      result.hostname = token.slice('--hostname='.length);
-    } else if (token === '-m' || token === '--memory') {
+    } else if (token.startsWith("--hostname=")) {
+      result.hostname = token.slice("--hostname=".length);
+    } else if (token === "-m" || token === "--memory") {
       result.memory = next();
-    } else if (token.startsWith('-m=') || token.startsWith('--memory=')) {
-      result.memory = token.slice(token.indexOf('=') + 1);
-    } else if (token === '--cpus') {
+    } else if (token.startsWith("-m=") || token.startsWith("--memory=")) {
+      result.memory = token.slice(token.indexOf("=") + 1);
+    } else if (token === "--cpus") {
       result.cpus = next();
-    } else if (token.startsWith('--cpus=')) {
-      result.cpus = token.slice('--cpus='.length);
-    } else if (token === '-l' || token === '--label') {
+    } else if (token.startsWith("--cpus=")) {
+      result.cpus = token.slice("--cpus=".length);
+    } else if (token === "-l" || token === "--label") {
       result.labels.push(next());
-    } else if (token.startsWith('-l=') || token.startsWith('--label=')) {
-      result.labels.push(token.slice(token.indexOf('=') + 1));
-    } else if (token === '--privileged') {
+    } else if (token.startsWith("-l=") || token.startsWith("--label=")) {
+      result.labels.push(token.slice(token.indexOf("=") + 1));
+    } else if (token === "--privileged") {
       result.privileged = true;
-      warnings.push('--privileged は本番環境では危険です。必要最小限の cap-add を使用することを検討してください。');
-    } else if (token === '--read-only') {
-      result.readOnly = true;
-    } else if (token === '--cap-add') {
-      result.capAdd.push(next());
-    } else if (token.startsWith('--cap-add=')) {
-      result.capAdd.push(token.slice('--cap-add='.length));
-    } else if (token === '--cap-drop') {
-      result.capDrop.push(next());
-    } else if (token.startsWith('--cap-drop=')) {
-      result.capDrop.push(token.slice('--cap-drop='.length));
-    } else if (
-      token === '--link' ||
-      token.startsWith('--link=')
-    ) {
-      const linkVal = token.startsWith('--link=') ? token.slice('--link='.length) : next();
       warnings.push(
-        `--link (${linkVal}) は非推奨です。docker-compose のネットワーク機能を使用してください。`
+        "--privileged は本番環境では危険です。必要最小限の cap-add を使用することを検討してください。",
+      );
+    } else if (token === "--read-only") {
+      result.readOnly = true;
+    } else if (token === "--cap-add") {
+      result.capAdd.push(next());
+    } else if (token.startsWith("--cap-add=")) {
+      result.capAdd.push(token.slice("--cap-add=".length));
+    } else if (token === "--cap-drop") {
+      result.capDrop.push(next());
+    } else if (token.startsWith("--cap-drop=")) {
+      result.capDrop.push(token.slice("--cap-drop=".length));
+    } else if (token === "--link" || token.startsWith("--link=")) {
+      const linkVal = token.startsWith("--link=") ? token.slice("--link=".length) : next();
+      warnings.push(
+        `--link (${linkVal}) は非推奨です。docker-compose のネットワーク機能を使用してください。`,
       );
     } else if (
-      token === '-P' ||
-      token === '--publish-all' ||
-      token === '--no-healthcheck' ||
-      token === '--init' ||
-      token === '--sig-proxy'
+      token === "-P" ||
+      token === "--publish-all" ||
+      token === "--no-healthcheck" ||
+      token === "--init" ||
+      token === "--sig-proxy"
     ) {
       // 無視するフラグ（値なし）
     } else if (
-      token === '--log-driver' ||
-      token === '--log-opt' ||
-      token === '--platform' ||
-      token === '--ipc' ||
-      token === '--pid' ||
-      token === '--uts' ||
-      token === '--userns' ||
-      token === '--dns' ||
-      token === '--dns-option' ||
-      token === '--dns-search' ||
-      token === '--add-host' ||
-      token === '--expose' ||
-      token === '--device' ||
-      token === '--ulimit'
+      token === "--log-driver" ||
+      token === "--log-opt" ||
+      token === "--platform" ||
+      token === "--ipc" ||
+      token === "--pid" ||
+      token === "--uts" ||
+      token === "--userns" ||
+      token === "--dns" ||
+      token === "--dns-option" ||
+      token === "--dns-search" ||
+      token === "--add-host" ||
+      token === "--expose" ||
+      token === "--device" ||
+      token === "--ulimit"
     ) {
       // 値ありフラグをスキップ
       idx++;
-    } else if (!token.startsWith('-')) {
+    } else if (!token.startsWith("-")) {
       // イメージ名（最初の非フラグトークン）
       if (!result.image) {
         result.image = token;
@@ -321,11 +320,11 @@ export function parseDockerRun(command: string): {
       }
     } else if (/^-[a-zA-Z]{2,}$/.test(token)) {
       // 短縮フラグの組み合わせ（例: -dit）の処理
-      const chars = token.slice(1).split('');
+      const chars = token.slice(1).split("");
       for (const c of chars) {
-        if (c === 'd') result.detach = true;
-        if (c === 'i') result.interactive = true;
-        if (c === 't') result.tty = true;
+        if (c === "d") result.detach = true;
+        if (c === "i") result.interactive = true;
+        if (c === "t") result.tty = true;
       }
     }
 
@@ -348,14 +347,14 @@ function quoteYamlValue(value: string): string {
   if (
     /^\d+$/.test(value) ||
     /^(true|false|yes|no|on|off|null|~)$/i.test(value) ||
-    value.includes(':') ||
-    value.includes('#') ||
+    value.includes(":") ||
+    value.includes("#") ||
     value.includes('"') ||
-    value.startsWith(' ') ||
-    value.endsWith(' ') ||
-    value === ''
+    value.startsWith(" ") ||
+    value.endsWith(" ") ||
+    value === ""
   ) {
-    return `"${value.replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"`;
+    return `"${value.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"`;
   }
   return value;
 }
@@ -369,9 +368,9 @@ function quoteYamlValue(value: string): string {
  * @returns サービス名
  */
 function getServiceName(parsed: ParsedDockerRun): string {
-  const base = parsed.containerName ?? parsed.image.split(':')[0].split('/').pop() ?? 'app';
+  const base = parsed.containerName ?? parsed.image.split(":")[0].split("/").pop() ?? "app";
   // docker-compose のサービス名として使えるよう変換（英数字とハイフン・アンダースコアのみ）
-  return base.replace(/[^a-zA-Z0-9_-]/g, '_').replace(/^_+|_+$/g, '') || 'app';
+  return base.replace(/[^a-zA-Z0-9_-]/g, "_").replace(/^_+|_+$/g, "") || "app";
 }
 
 /**
@@ -384,9 +383,9 @@ export function toComposeYaml(parsed: ParsedDockerRun): string {
   const lines: string[] = [];
   const serviceName = getServiceName(parsed);
 
-  lines.push('services:');
+  lines.push("services:");
   lines.push(`  ${serviceName}:`);
-  lines.push(`    image: ${quoteYamlValue(parsed.image || 'your-image:latest')}`);
+  lines.push(`    image: ${quoteYamlValue(parsed.image || "your-image:latest")}`);
 
   if (parsed.containerName) {
     lines.push(`    container_name: ${quoteYamlValue(parsed.containerName)}`);
@@ -401,16 +400,16 @@ export function toComposeYaml(parsed: ParsedDockerRun): string {
   }
 
   if (parsed.ports.length > 0) {
-    lines.push('    ports:');
+    lines.push("    ports:");
     for (const p of parsed.ports) {
       lines.push(`      - ${quoteYamlValue(p)}`);
     }
   }
 
   if (parsed.environment.length > 0) {
-    lines.push('    environment:');
+    lines.push("    environment:");
     for (const e of parsed.environment) {
-      if (e.startsWith('# env_file:')) {
+      if (e.startsWith("# env_file:")) {
         lines.push(`      ${e}`);
       } else {
         lines.push(`      - ${quoteYamlValue(e)}`);
@@ -419,14 +418,14 @@ export function toComposeYaml(parsed: ParsedDockerRun): string {
   }
 
   if (parsed.volumes.length > 0) {
-    lines.push('    volumes:');
+    lines.push("    volumes:");
     for (const v of parsed.volumes) {
       lines.push(`      - ${quoteYamlValue(v)}`);
     }
   }
 
   if (parsed.network) {
-    lines.push('    networks:');
+    lines.push("    networks:");
     lines.push(`      - ${quoteYamlValue(parsed.network)}`);
   }
 
@@ -443,39 +442,39 @@ export function toComposeYaml(parsed: ParsedDockerRun): string {
   }
 
   if (parsed.tty) {
-    lines.push('    tty: true');
+    lines.push("    tty: true");
   }
 
   if (parsed.interactive) {
-    lines.push('    stdin_open: true');
+    lines.push("    stdin_open: true");
   }
 
   if (parsed.readOnly) {
-    lines.push('    read_only: true');
+    lines.push("    read_only: true");
   }
 
   if (parsed.privileged) {
-    lines.push('    privileged: true');
+    lines.push("    privileged: true");
   }
 
   if (parsed.capAdd.length > 0) {
-    lines.push('    cap_add:');
+    lines.push("    cap_add:");
     for (const cap of parsed.capAdd) {
       lines.push(`      - ${cap}`);
     }
   }
 
   if (parsed.capDrop.length > 0) {
-    lines.push('    cap_drop:');
+    lines.push("    cap_drop:");
     for (const cap of parsed.capDrop) {
       lines.push(`      - ${cap}`);
     }
   }
 
   if (parsed.labels.length > 0) {
-    lines.push('    labels:');
+    lines.push("    labels:");
     for (const label of parsed.labels) {
-      const eqIdx = label.indexOf('=');
+      const eqIdx = label.indexOf("=");
       if (eqIdx > -1) {
         const key = label.slice(0, eqIdx);
         const value = label.slice(eqIdx + 1);
@@ -487,9 +486,9 @@ export function toComposeYaml(parsed: ParsedDockerRun): string {
   }
 
   if (parsed.memory || parsed.cpus) {
-    lines.push('    deploy:');
-    lines.push('      resources:');
-    lines.push('        limits:');
+    lines.push("    deploy:");
+    lines.push("      resources:");
+    lines.push("        limits:");
     if (parsed.memory) {
       lines.push(`          memory: ${quoteYamlValue(parsed.memory)}`);
     }
@@ -502,7 +501,7 @@ export function toComposeYaml(parsed: ParsedDockerRun): string {
     if (parsed.command.length === 1) {
       lines.push(`    command: ${quoteYamlValue(parsed.command[0])}`);
     } else {
-      lines.push('    command:');
+      lines.push("    command:");
       for (const arg of parsed.command) {
         lines.push(`      - ${quoteYamlValue(arg)}`);
       }
@@ -510,13 +509,13 @@ export function toComposeYaml(parsed: ParsedDockerRun): string {
   }
 
   if (parsed.network) {
-    lines.push('');
-    lines.push('networks:');
+    lines.push("");
+    lines.push("networks:");
     lines.push(`  ${parsed.network}:`);
-    lines.push('    external: true');
+    lines.push("    external: true");
   }
 
-  return lines.join('\n');
+  return lines.join("\n");
 }
 
 /**
@@ -527,15 +526,17 @@ export function toComposeYaml(parsed: ParsedDockerRun): string {
  */
 export function convertDockerRun(command: string): ConvertResult {
   if (!command.trim()) {
-    return { yaml: '', warnings: [] };
+    return { yaml: "", warnings: [] };
   }
 
   const { parsed, warnings } = parseDockerRun(command);
 
   if (!parsed.image) {
     return {
-      yaml: '',
-      warnings: ['イメージ名が見つかりませんでした。docker run コマンドにイメージ名が含まれているか確認してください。'],
+      yaml: "",
+      warnings: [
+        "イメージ名が見つかりませんでした。docker run コマンドにイメージ名が含まれているか確認してください。",
+      ],
     };
   }
 

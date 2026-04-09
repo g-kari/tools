@@ -9,12 +9,15 @@
 コーディング前に、コンテキストを理解する：
 
 ### 1. 目的の理解
+
 - このインターフェースが解決する問題は何か？
 - 誰が使用するのか？
 - 技術的制約（パフォーマンス、アクセシビリティ）
 
 ### 2. 差別化ポイント
+
 Material Design 3の一貫性を維持しながら、以下で個性を出す：
+
 - **モーション**: アニメーションの工夫
 - **空間構成**: レイアウトと余白の使い方
 - **情報階層**: コンテンツの優先順位付け
@@ -27,6 +30,7 @@ Material Design 3の一貫性を維持しながら、以下で個性を出す：
 Material Design 3では0.2sのトランジションが基本ですが、**表現力のあるモーション**で個性を出せます。
 
 #### ページロードのスタガード効果
+
 ```css
 /* 要素を順番に表示してリズムを作る */
 @keyframes fadeInUp {
@@ -40,12 +44,19 @@ Material Design 3では0.2sのトランジションが基本ですが、**表現
   }
 }
 
-.tool-section:nth-child(1) { animation: fadeInUp 0.3s ease-out 0.1s both; }
-.tool-section:nth-child(2) { animation: fadeInUp 0.3s ease-out 0.2s both; }
-.tool-section:nth-child(3) { animation: fadeInUp 0.3s ease-out 0.3s both; }
+.tool-section:nth-child(1) {
+  animation: fadeInUp 0.3s ease-out 0.1s both;
+}
+.tool-section:nth-child(2) {
+  animation: fadeInUp 0.3s ease-out 0.2s both;
+}
+.tool-section:nth-child(3) {
+  animation: fadeInUp 0.3s ease-out 0.3s both;
+}
 ```
 
 #### インタラクティブなフィードバック
+
 ```css
 /* ボタンのプレス効果 */
 .btn-primary:active {
@@ -55,7 +66,10 @@ Material Design 3では0.2sのトランジションが基本ですが、**表現
 
 /* 入力フォーカス時のラベルアニメーション */
 .input-label {
-  transition: transform 0.2s, font-size 0.2s, color 0.2s;
+  transition:
+    transform 0.2s,
+    font-size 0.2s,
+    color 0.2s;
 }
 
 .input:focus + .input-label {
@@ -66,12 +80,19 @@ Material Design 3では0.2sのトランジションが基本ですが、**表現
 ```
 
 #### 成功/エラー時のフィードバック
+
 ```css
 /* コピー成功時のパルス効果 */
 @keyframes successPulse {
-  0% { box-shadow: 0 0 0 0 rgba(139, 105, 20, 0.4); }
-  70% { box-shadow: 0 0 0 10px rgba(139, 105, 20, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(139, 105, 20, 0); }
+  0% {
+    box-shadow: 0 0 0 0 rgba(139, 105, 20, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(139, 105, 20, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(139, 105, 20, 0);
+  }
 }
 
 .copy-success {
@@ -82,6 +103,7 @@ Material Design 3では0.2sのトランジションが基本ですが、**表現
 ### 2. 空間構成とレイアウト
 
 #### 意図的な余白
+
 ```css
 /* セクション間の余白でリズムを作る */
 .tool-section {
@@ -100,6 +122,7 @@ Material Design 3では0.2sのトランジションが基本ですが、**表現
 ```
 
 #### 情報の階層化
+
 ```css
 /* プライマリアクションを目立たせる */
 .action-primary {
@@ -121,6 +144,7 @@ Material Design 3では0.2sのトランジションが基本ですが、**表現
 ```
 
 #### レスポンシブな2カラムレイアウト
+
 ```css
 /* 入力と出力を並べて表示 */
 .tool-layout {
@@ -165,7 +189,7 @@ Robotoファミリー内でウェイトとサイズを効果的に使い分け�
 
 /* モノスペース - コード/データ表示 */
 .code-output {
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
   font-size: 0.875rem;
   line-height: 1.6;
 }
@@ -191,9 +215,15 @@ Robotoファミリー内でウェイトとサイズを効果的に使い分け�
 }
 
 /* ステータス表示 */
-.status-success { color: #2e7d32; }
-.status-error { color: #c62828; }
-.status-warning { color: #f57c00; }
+.status-success {
+  color: #2e7d32;
+}
+.status-error {
+  color: #c62828;
+}
+.status-warning {
+  color: #f57c00;
+}
 ```
 
 ### 5. マイクロインタラクション
@@ -208,7 +238,7 @@ Robotoファミリー内でウェイトとサイズを効果的に使い分け�
 }
 
 .copy-button::after {
-  content: 'コピーしました';
+  content: "コピーしました";
   position: absolute;
   inset: 0;
   display: flex;
@@ -238,35 +268,39 @@ Robotoファミリー内でウェイトとサイズを効果的に使い分け�
 
 Material Design 3を使用していても、以下は避ける：
 
-| カテゴリ | 避けるべきもの | 代わりに |
-|----------|----------------|----------|
-| **レイアウト** | すべて中央揃え、均一な間隔 | 意図的な階層と余白 |
-| **アニメーション** | 静的なUI、瞬間的な変化 | スムーズなトランジション |
-| **フィードバック** | 操作後の無反応 | 即座の視覚的フィードバック |
-| **情報設計** | フラットな情報構造 | 明確な優先順位付け |
-| **インタラクション** | 基本的なホバーのみ | 状態変化の可視化 |
+| カテゴリ             | 避けるべきもの             | 代わりに                   |
+| -------------------- | -------------------------- | -------------------------- |
+| **レイアウト**       | すべて中央揃え、均一な間隔 | 意図的な階層と余白         |
+| **アニメーション**   | 静的なUI、瞬間的な変化     | スムーズなトランジション   |
+| **フィードバック**   | 操作後の無反応             | 即座の視覚的フィードバック |
+| **情報設計**         | フラットな情報構造         | 明確な優先順位付け         |
+| **インタラクション** | 基本的なホバーのみ         | 状態変化の可視化           |
 
 ## 実装チェックリスト
 
 デザイン実装時に確認すること：
 
 ### モーション
+
 - [ ] ページロード時にスタガード効果があるか
 - [ ] ボタンクリック時にフィードバックがあるか
 - [ ] 状態変化がスムーズにアニメーションするか
 - [ ] `prefers-reduced-motion`に対応しているか
 
 ### 空間構成
+
 - [ ] 適切な余白でグループ化されているか
 - [ ] プライマリアクションが目立っているか
 - [ ] モバイルとデスクトップでレイアウトが最適化されているか
 
 ### フィードバック
+
 - [ ] 操作成功時に視覚的確認があるか
 - [ ] エラー時に明確なメッセージがあるか
 - [ ] ローディング状態が表示されるか
 
 ### アクセシビリティ
+
 - [ ] フォーカスインジケーターが視認可能か
 - [ ] コントラスト比がWCAG AA基準を満たすか
 - [ ] キーボード操作が可能か

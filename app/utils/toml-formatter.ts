@@ -1,4 +1,4 @@
-import * as TOML from 'smol-toml';
+import * as TOML from "smol-toml";
 
 /**
  * TOML文字列を整形する。
@@ -8,7 +8,7 @@ import * as TOML from 'smol-toml';
  */
 export function formatToml(tomlStr: string): string {
   if (!tomlStr.trim()) {
-    throw new Error('TOMLデータが空です');
+    throw new Error("TOMLデータが空です");
   }
   const parsed = TOML.parse(tomlStr);
   return TOML.stringify(parsed);
@@ -22,14 +22,14 @@ export function formatToml(tomlStr: string): string {
  */
 export function minifyToml(tomlStr: string): string {
   if (!tomlStr.trim()) {
-    throw new Error('TOMLデータが空です');
+    throw new Error("TOMLデータが空です");
   }
   const parsed = TOML.parse(tomlStr);
   const stringified = TOML.stringify(parsed);
   return stringified
-    .split('\n')
-    .filter((line) => line.trim() !== '')
-    .join('\n');
+    .split("\n")
+    .filter((line) => line.trim() !== "")
+    .join("\n");
 }
 
 /**
@@ -39,7 +39,7 @@ export function minifyToml(tomlStr: string): string {
  */
 export function validateToml(tomlStr: string): { valid: boolean; error?: string } {
   if (!tomlStr.trim()) {
-    return { valid: false, error: 'TOMLデータが空です' };
+    return { valid: false, error: "TOMLデータが空です" };
   }
   try {
     TOML.parse(tomlStr);
@@ -47,7 +47,7 @@ export function validateToml(tomlStr: string): { valid: boolean; error?: string 
   } catch (err) {
     return {
       valid: false,
-      error: err instanceof Error ? err.message : 'TOML解析エラーが発生しました',
+      error: err instanceof Error ? err.message : "TOML解析エラーが発生しました",
     };
   }
 }

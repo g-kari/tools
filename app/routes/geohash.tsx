@@ -1,9 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useMemo, useCallback } from "react";
-import {
-  StatusAnnouncer,
-  useStatusAnnouncement,
-} from "~/hooks/useStatusAnnouncement";
+import { StatusAnnouncer, useStatusAnnouncement } from "~/hooks/useStatusAnnouncement";
 import { TipsCard } from "~/components/TipsCard";
 import { useClipboard } from "~/hooks/useClipboard";
 import { useToast } from "~/components/Toast";
@@ -32,8 +29,7 @@ export const Route = createFileRoute("/geohash")({
       },
       {
         property: "og:description",
-        content:
-          "緯度・経度をGeohash文字列に変換、またはGeohashから座標を取得するツール。",
+        content: "緯度・経度をGeohash文字列に変換、またはGeohashから座標を取得するツール。",
       },
       { property: "og:url", content: `${SITE_BASE_URL}/geohash` },
       { property: "og:type", content: "website" },
@@ -72,8 +68,7 @@ function GeohashTool() {
     if (isNaN(lat)) return "緯度に有効な数値を入力してください";
     if (isNaN(lng)) return "経度に有効な数値を入力してください";
     if (lat < -90 || lat > 90) return "緯度は-90〜90の範囲で入力してください";
-    if (lng < -180 || lng > 180)
-      return "経度は-180〜180の範囲で入力してください";
+    if (lng < -180 || lng > 180) return "経度は-180〜180の範囲で入力してください";
     return null;
   }, [latStr, lngStr]);
 
@@ -120,11 +115,7 @@ function GeohashTool() {
   }, [mode, encodeResult, hashInput]);
 
   const currentHash =
-    mode === "encode"
-      ? encodeResult
-      : isValidGeohash(hashInput)
-        ? hashInput
-        : null;
+    mode === "encode" ? encodeResult : isValidGeohash(hashInput) ? hashInput : null;
 
   const handleCopyHash = useCallback(async () => {
     if (!currentHash) return;
@@ -155,7 +146,7 @@ function GeohashTool() {
       setHashInput(hash);
       announceStatus(`${hash} に移動しました`);
     },
-    [announceStatus]
+    [announceStatus],
   );
 
   // 3x3グリッドの配列順（左上から右下）
@@ -176,11 +167,7 @@ function GeohashTool() {
   return (
     <>
       <div className="tool-container">
-        <div
-          className="geohash-mode-tabs"
-          role="tablist"
-          aria-label="操作モード選択"
-        >
+        <div className="geohash-mode-tabs" role="tablist" aria-label="操作モード選択">
           <button
             role="tab"
             aria-selected={mode === "encode"}
@@ -243,10 +230,7 @@ function GeohashTool() {
             </div>
 
             <div className="geohash-precision-row">
-              <label
-                htmlFor="geohash-precision"
-                className="geohash-precision-label"
-              >
+              <label htmlFor="geohash-precision" className="geohash-precision-label">
                 精度
               </label>
               <input
@@ -271,11 +255,7 @@ function GeohashTool() {
             )}
 
             {encodeResult ? (
-              <div
-                className="geohash-result-block"
-                aria-label="エンコード結果"
-                aria-live="polite"
-              >
+              <div className="geohash-result-block" aria-label="エンコード結果" aria-live="polite">
                 <div className="geohash-result-header">
                   <span className="geohash-result-label">Geohash</span>
                   <button
@@ -308,9 +288,7 @@ function GeohashTool() {
                 id="geohash-input"
                 type="text"
                 value={hashInput}
-                onChange={(e) =>
-                  setHashInput(e.target.value.toLowerCase().trim())
-                }
+                onChange={(e) => setHashInput(e.target.value.toLowerCase().trim())}
                 placeholder="例: xn76urwe9"
                 aria-describedby="geohash-input-hint"
                 maxLength={12}
@@ -327,11 +305,7 @@ function GeohashTool() {
             )}
 
             {decodeResult ? (
-              <div
-                className="geohash-result-block"
-                aria-label="デコード結果"
-                aria-live="polite"
-              >
+              <div className="geohash-result-block" aria-label="デコード結果" aria-live="polite">
                 <div className="geohash-result-header">
                   <span className="geohash-result-label">デコード結果</span>
                   <button
@@ -345,15 +319,11 @@ function GeohashTool() {
                 <div className="geohash-decode-coords">
                   <div className="geohash-coord-item">
                     <span className="geohash-coord-label">緯度（Lat）</span>
-                    <span className="geohash-coord-value">
-                      {decodeResult.lat}
-                    </span>
+                    <span className="geohash-coord-value">{decodeResult.lat}</span>
                   </div>
                   <div className="geohash-coord-item">
                     <span className="geohash-coord-label">経度（Lng）</span>
-                    <span className="geohash-coord-value">
-                      {decodeResult.lng}
-                    </span>
+                    <span className="geohash-coord-value">{decodeResult.lng}</span>
                   </div>
                 </div>
                 <div className="geohash-bounds-section">
@@ -398,14 +368,8 @@ function GeohashTool() {
 
         {neighbors && (
           <section className="geohash-neighbors-section" aria-label="隣接Geohashセル">
-            <p className="geohash-neighbors-title">
-              隣接セル（クリックでデコード）
-            </p>
-            <div
-              className="geohash-neighbors-grid"
-              role="grid"
-              aria-label="3x3隣接セルグリッド"
-            >
+            <p className="geohash-neighbors-title">隣接セル（クリックでデコード）</p>
+            <div className="geohash-neighbors-grid" role="grid" aria-label="3x3隣接セルグリッド">
               {neighborGrid.map(({ label, hash, isCenter }) => (
                 <div
                   key={label}

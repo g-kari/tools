@@ -3,14 +3,7 @@ import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useCallback, useMemo } from "react";
 import { useToast } from "../components/Toast";
 import { TipsCard } from "../components/TipsCard";
-import {
-  hexToRgb,
-  rgbToHex,
-  rgbToHsl,
-  hslToRgb,
-  type RGB,
-  type HSL,
-} from "./color-picker";
+import { hexToRgb, rgbToHex, rgbToHsl, hslToRgb, type RGB, type HSL } from "./color-picker";
 import { getContrastColor } from "./color-palette";
 
 export const Route = createFileRoute("/color-harmony")({
@@ -86,15 +79,13 @@ export function generateAllHarmonySchemes(baseHex: string): HarmonyScheme[] {
     {
       id: "complementary",
       name: "補色 (Complementary)",
-      description:
-        "色相環の正反対 180°。強いコントラストで視線を引きつける配色。",
+      description: "色相環の正反対 180°。強いコントラストで視線を引きつける配色。",
       colors: [baseHex, shiftHue(baseHex, 180)],
     },
     {
       id: "analogous",
       name: "類似色 (Analogous)",
-      description:
-        "隣接する ±30°・±60° の5色。自然で調和のとれた印象を与える配色。",
+      description: "隣接する ±30°・±60° の5色。自然で調和のとれた印象を与える配色。",
       colors: [
         shiftHue(baseHex, -60),
         shiftHue(baseHex, -30),
@@ -106,28 +97,20 @@ export function generateAllHarmonySchemes(baseHex: string): HarmonyScheme[] {
     {
       id: "triadic",
       name: "トライアド (Triadic)",
-      description:
-        "色相環を3等分した 120° 間隔の3色。バランスよく活気あるデザインに。",
+      description: "色相環を3等分した 120° 間隔の3色。バランスよく活気あるデザインに。",
       colors: [baseHex, shiftHue(baseHex, 120), shiftHue(baseHex, 240)],
     },
     {
       id: "split-complementary",
       name: "分割補色 (Split-Complementary)",
-      description:
-        "補色の両隣 150°・210° の3色。補色より柔らかいコントラスト。",
+      description: "補色の両隣 150°・210° の3色。補色より柔らかいコントラスト。",
       colors: [baseHex, shiftHue(baseHex, 150), shiftHue(baseHex, 210)],
     },
     {
       id: "tetradic",
       name: "テトラッド (Tetradic / Square)",
-      description:
-        "色相環を4等分した 90° 間隔の4色。豊かな色彩表現が可能な配色。",
-      colors: [
-        baseHex,
-        shiftHue(baseHex, 90),
-        shiftHue(baseHex, 180),
-        shiftHue(baseHex, 270),
-      ],
+      description: "色相環を4等分した 90° 間隔の4色。豊かな色彩表現が可能な配色。",
+      colors: [baseHex, shiftHue(baseHex, 90), shiftHue(baseHex, 180), shiftHue(baseHex, 270)],
     },
   ];
 }
@@ -198,11 +181,7 @@ function ColorSwatch({ hex, index, isBase, onCopy }: ColorSwatchProps) {
           <span className="ch-swatch-rgb">{toRgbString(rgb)}</span>
           <span className="ch-swatch-hsl">{toHslString(hsl)}</span>
         </div>
-        <div
-          className="ch-swatch-copy-btns"
-          role="group"
-          aria-label="コピーボタン"
-        >
+        <div className="ch-swatch-copy-btns" role="group" aria-label="コピーボタン">
           <button
             type="button"
             className="ch-copy-btn"
@@ -244,23 +223,12 @@ interface HarmonySectionProps {
  * ハーモニースキームセクションコンポーネント
  * スキームのタイトル・説明・スウォッチ一覧・CSS変数エクスポートを表示する
  */
-function HarmonySection({
-  scheme,
-  baseColor,
-  onCopy,
-  onExportCss,
-}: HarmonySectionProps) {
+function HarmonySection({ scheme, baseColor, onCopy, onExportCss }: HarmonySectionProps) {
   return (
-    <section
-      className="ch-scheme-section"
-      aria-labelledby={`ch-scheme-title-${scheme.id}`}
-    >
+    <section className="ch-scheme-section" aria-labelledby={`ch-scheme-title-${scheme.id}`}>
       <div className="ch-scheme-header">
         <div className="ch-scheme-title-group">
-          <h2
-            className="ch-scheme-title"
-            id={`ch-scheme-title-${scheme.id}`}
-          >
+          <h2 className="ch-scheme-title" id={`ch-scheme-title-${scheme.id}`}>
             {scheme.name}
           </h2>
           <p className="ch-scheme-description">{scheme.description}</p>
@@ -274,11 +242,7 @@ function HarmonySection({
           CSS変数コピー
         </button>
       </div>
-      <div
-        className="ch-swatch-list"
-        role="list"
-        aria-label={`${scheme.name} のカラーパレット`}
-      >
+      <div className="ch-swatch-list" role="list" aria-label={`${scheme.name} のカラーパレット`}>
         {scheme.colors.map((color, i) => (
           <ColorSwatch
             key={`${scheme.id}-${color}-${i}`}
@@ -303,31 +267,22 @@ function ColorHarmony() {
 
   const { showToast } = useToast();
 
-  const schemes = useMemo(
-    () => generateAllHarmonySchemes(baseColor),
-    [baseColor]
-  );
+  const schemes = useMemo(() => generateAllHarmonySchemes(baseColor), [baseColor]);
 
-  const handleColorPickerChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = e.target.value;
-      setBaseColor(value);
-      setHexInputValue(value);
-    },
-    []
-  );
+  const handleColorPickerChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setBaseColor(value);
+    setHexInputValue(value);
+  }, []);
 
-  const handleHexTextChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = e.target.value;
-      setHexInputValue(value);
-      const normalized = value.startsWith("#") ? value : `#${value}`;
-      if (/^#[0-9A-Fa-f]{6}$/.test(normalized)) {
-        setBaseColor(normalized);
-      }
-    },
-    []
-  );
+  const handleHexTextChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setHexInputValue(value);
+    const normalized = value.startsWith("#") ? value : `#${value}`;
+    if (/^#[0-9A-Fa-f]{6}$/.test(normalized)) {
+      setBaseColor(normalized);
+    }
+  }, []);
 
   const handleCopy = useCallback(
     async (text: string, label: string) => {
@@ -338,7 +293,7 @@ function ColorHarmony() {
         showToast("コピーに失敗しました", "error");
       }
     },
-    [showToast]
+    [showToast],
   );
 
   const handleExportCss = useCallback(
@@ -354,17 +309,13 @@ function ColorHarmony() {
         showToast("コピーに失敗しました", "error");
       }
     },
-    [showToast]
+    [showToast],
   );
 
   return (
     <div className="tool-container ch-page">
       <section className="tool-section" aria-labelledby="ch-base-label">
-        <label
-          className="tool-label"
-          id="ch-base-label"
-          htmlFor="ch-hex-input"
-        >
+        <label className="tool-label" id="ch-base-label" htmlFor="ch-hex-input">
           ベースカラー
         </label>
         <div className="ch-base-input-row">
@@ -389,8 +340,7 @@ function ColorHarmony() {
           <div
             className="ch-base-preview"
             ref={(el) => {
-              if (el)
-                el.style.setProperty("--ch-base-preview-color", baseColor);
+              if (el) el.style.setProperty("--ch-base-preview-color", baseColor);
             }}
             aria-hidden="true"
           />

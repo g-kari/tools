@@ -109,7 +109,7 @@ describe("generateClipPathCSS", () => {
       DEFAULT_INSET,
       DEFAULT_CIRCLE,
       DEFAULT_ELLIPSE,
-      DEFAULT_POLYGON
+      DEFAULT_POLYGON,
     );
     expect(result).toMatch(/^clip-path: inset\(.*\);$/);
   });
@@ -120,7 +120,7 @@ describe("generateClipPathCSS", () => {
       DEFAULT_INSET,
       DEFAULT_CIRCLE,
       DEFAULT_ELLIPSE,
-      DEFAULT_POLYGON
+      DEFAULT_POLYGON,
     );
     expect(result).toMatch(/^clip-path: circle\(.*\);$/);
   });
@@ -131,7 +131,7 @@ describe("generateClipPathCSS", () => {
       DEFAULT_INSET,
       DEFAULT_CIRCLE,
       DEFAULT_ELLIPSE,
-      DEFAULT_POLYGON
+      DEFAULT_POLYGON,
     );
     expect(result).toMatch(/^clip-path: ellipse\(.*\);$/);
   });
@@ -142,7 +142,7 @@ describe("generateClipPathCSS", () => {
       DEFAULT_INSET,
       DEFAULT_CIRCLE,
       DEFAULT_ELLIPSE,
-      DEFAULT_POLYGON
+      DEFAULT_POLYGON,
     );
     expect(result).toMatch(/^clip-path: polygon\(.*\);$/);
   });
@@ -155,7 +155,7 @@ describe("generateClipPathValue", () => {
       DEFAULT_INSET,
       DEFAULT_CIRCLE,
       DEFAULT_ELLIPSE,
-      DEFAULT_POLYGON
+      DEFAULT_POLYGON,
     );
     expect(result).not.toContain("clip-path:");
     expect(result).not.toContain(";");

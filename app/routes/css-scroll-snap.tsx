@@ -4,10 +4,7 @@ import { useState, useCallback, useMemo } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 import {
   type ScrollSnapConfig,
@@ -38,8 +35,7 @@ export const Route = createFileRoute("/css-scroll-snap")({
       },
       {
         property: "og:description",
-        content:
-          "CSS Scroll Snap のプロパティをビジュアルで設定し、CSSコードを即座に生成。",
+        content: "CSS Scroll Snap のプロパティをビジュアルで設定し、CSSコードを即座に生成。",
       },
       { property: "og:url", content: `${SITE_BASE_URL}/css-scroll-snap` },
       { property: "og:type", content: "website" },
@@ -50,8 +46,7 @@ export const Route = createFileRoute("/css-scroll-snap")({
       },
       {
         name: "twitter:description",
-        content:
-          "CSS Scroll Snap のプロパティをビジュアルで設定し、CSSコードを即座に生成。",
+        content: "CSS Scroll Snap のプロパティをビジュアルで設定し、CSSコードを即座に生成。",
       },
     ],
   }),
@@ -88,14 +83,7 @@ const OVERFLOW_OPTIONS: { id: ScrollOverflow; label: string }[] = [
   { id: "auto", label: "auto" },
 ];
 
-const PREVIEW_ITEM_COLORS = [
-  "#6366f1",
-  "#ec4899",
-  "#f59e0b",
-  "#10b981",
-  "#3b82f6",
-  "#8b5cf6",
-];
+const PREVIEW_ITEM_COLORS = ["#6366f1", "#ec4899", "#f59e0b", "#10b981", "#3b82f6", "#8b5cf6"];
 
 /** CSS Scroll Snap ジェネレーター コンポーネント */
 function CssScrollSnapGenerator() {
@@ -109,45 +97,37 @@ function CssScrollSnapGenerator() {
 
   const containerProps = useMemo(
     () => generateContainerProperties(config.container),
-    [config.container]
+    [config.container],
   );
 
-  const itemProps = useMemo(
-    () => generateItemProperties(config.item),
-    [config.item]
-  );
+  const itemProps = useMemo(() => generateItemProperties(config.item), [config.item]);
 
   const isHorizontal = useMemo(
-    () =>
-      config.container.direction === "x" ||
-      config.container.direction === "inline",
-    [config.container.direction]
+    () => config.container.direction === "x" || config.container.direction === "inline",
+    [config.container.direction],
   );
 
   const updateContainer = useCallback(
     <K extends keyof ScrollSnapConfig["container"]>(
       key: K,
-      value: ScrollSnapConfig["container"][K]
+      value: ScrollSnapConfig["container"][K],
     ) => {
       setConfig((prev) => ({
         ...prev,
         container: { ...prev.container, [key]: value },
       }));
     },
-    []
+    [],
   );
 
   const updateItem = useCallback(
-    <K extends keyof ScrollSnapConfig["item"]>(
-      key: K,
-      value: ScrollSnapConfig["item"][K]
-    ) => {
+    <K extends keyof ScrollSnapConfig["item"]>(key: K, value: ScrollSnapConfig["item"][K]) => {
       setConfig((prev) => ({
         ...prev,
         item: { ...prev.item, [key]: value },
       }));
     },
-    []
+    [],
   );
 
   const applyPreset = useCallback(
@@ -157,7 +137,7 @@ function CssScrollSnapGenerator() {
       setConfig(preset.config);
       announceStatus(`「${preset.name}」プリセットを適用しました`);
     },
-    [announceStatus]
+    [announceStatus],
   );
 
   const handleReset = useCallback(() => {
@@ -180,19 +160,11 @@ function CssScrollSnapGenerator() {
     const base: React.CSSProperties = {
       scrollSnapType: `${config.container.direction} ${config.container.strictness}`,
       scrollPadding:
-        config.container.scrollPadding > 0
-          ? `${config.container.scrollPadding}px`
-          : undefined,
+        config.container.scrollPadding > 0 ? `${config.container.scrollPadding}px` : undefined,
     };
-    if (
-      config.container.direction === "x" ||
-      config.container.direction === "inline"
-    ) {
+    if (config.container.direction === "x" || config.container.direction === "inline") {
       base.overflowX = config.container.overflow;
-    } else if (
-      config.container.direction === "y" ||
-      config.container.direction === "block"
-    ) {
+    } else if (config.container.direction === "y" || config.container.direction === "block") {
       base.overflowY = config.container.overflow;
     } else {
       base.overflow = config.container.overflow;
@@ -222,10 +194,7 @@ function CssScrollSnapGenerator() {
           {/* 左側: コントロールパネル */}
           <div className="css-ss-controls" aria-label="Scroll Snap 設定パネル">
             {/* プリセット */}
-            <section
-              className="css-ss-section"
-              aria-labelledby="css-ss-presets-title"
-            >
+            <section className="css-ss-section" aria-labelledby="css-ss-presets-title">
               <h2 className="css-ss-section-title" id="css-ss-presets-title">
                 プリセット
               </h2>
@@ -245,15 +214,9 @@ function CssScrollSnapGenerator() {
             </section>
 
             {/* コンテナ設定 */}
-            <section
-              className="css-ss-section"
-              aria-labelledby="css-ss-container-title"
-            >
+            <section className="css-ss-section" aria-labelledby="css-ss-container-title">
               <div className="css-ss-section-header">
-                <h2
-                  className="css-ss-section-title"
-                  id="css-ss-container-title"
-                >
+                <h2 className="css-ss-section-title" id="css-ss-container-title">
                   コンテナ設定
                 </h2>
                 <Button
@@ -270,9 +233,7 @@ function CssScrollSnapGenerator() {
               <div className="css-ss-field-group">
                 {/* scroll-snap-type: direction */}
                 <div className="css-ss-field">
-                  <label className="css-ss-field-label">
-                    scroll-snap-type（方向）
-                  </label>
+                  <label className="css-ss-field-label">scroll-snap-type（方向）</label>
                   <div
                     className="css-ss-toggle-group"
                     role="group"
@@ -295,9 +256,7 @@ function CssScrollSnapGenerator() {
 
                 {/* scroll-snap-type: strictness */}
                 <div className="css-ss-field">
-                  <label className="css-ss-field-label">
-                    scroll-snap-type（厳密さ）
-                  </label>
+                  <label className="css-ss-field-label">scroll-snap-type（厳密さ）</label>
                   <div
                     className="css-ss-toggle-group"
                     role="group"
@@ -321,11 +280,7 @@ function CssScrollSnapGenerator() {
                 {/* overflow */}
                 <div className="css-ss-field">
                   <label className="css-ss-field-label">overflow</label>
-                  <div
-                    className="css-ss-toggle-group"
-                    role="group"
-                    aria-label="overflow の選択"
-                  >
+                  <div className="css-ss-toggle-group" role="group" aria-label="overflow の選択">
                     {OVERFLOW_OPTIONS.map(({ id, label }) => (
                       <button
                         key={id}
@@ -343,10 +298,7 @@ function CssScrollSnapGenerator() {
 
                 {/* scroll-padding */}
                 <div className="css-ss-field">
-                  <label
-                    className="css-ss-field-label"
-                    htmlFor="css-ss-scroll-padding"
-                  >
+                  <label className="css-ss-field-label" htmlFor="css-ss-scroll-padding">
                     scroll-padding: {config.container.scrollPadding}px
                   </label>
                   <input
@@ -357,9 +309,7 @@ function CssScrollSnapGenerator() {
                     step={4}
                     value={config.container.scrollPadding}
                     className="css-ss-range"
-                    onChange={(e) =>
-                      updateContainer("scrollPadding", Number(e.target.value))
-                    }
+                    onChange={(e) => updateContainer("scrollPadding", Number(e.target.value))}
                     aria-label={`scroll-padding: ${config.container.scrollPadding}px`}
                   />
                 </div>
@@ -367,10 +317,7 @@ function CssScrollSnapGenerator() {
             </section>
 
             {/* アイテム設定 */}
-            <section
-              className="css-ss-section"
-              aria-labelledby="css-ss-item-title"
-            >
+            <section className="css-ss-section" aria-labelledby="css-ss-item-title">
               <h2 className="css-ss-section-title" id="css-ss-item-title">
                 アイテム設定
               </h2>
@@ -378,14 +325,8 @@ function CssScrollSnapGenerator() {
               <div className="css-ss-field-group">
                 {/* scroll-snap-align */}
                 <div className="css-ss-field">
-                  <label className="css-ss-field-label">
-                    scroll-snap-align
-                  </label>
-                  <div
-                    className="css-ss-toggle-group"
-                    role="group"
-                    aria-label="スナップ位置の選択"
-                  >
+                  <label className="css-ss-field-label">scroll-snap-align</label>
+                  <div className="css-ss-toggle-group" role="group" aria-label="スナップ位置の選択">
                     {ALIGN_OPTIONS.map(({ id, label }) => (
                       <button
                         key={id}
@@ -403,9 +344,7 @@ function CssScrollSnapGenerator() {
 
                 {/* scroll-snap-stop */}
                 <div className="css-ss-field">
-                  <label className="css-ss-field-label">
-                    scroll-snap-stop
-                  </label>
+                  <label className="css-ss-field-label">scroll-snap-stop</label>
                   <div
                     className="css-ss-toggle-group"
                     role="group"
@@ -428,10 +367,7 @@ function CssScrollSnapGenerator() {
 
                 {/* scroll-margin */}
                 <div className="css-ss-field">
-                  <label
-                    className="css-ss-field-label"
-                    htmlFor="css-ss-scroll-margin"
-                  >
+                  <label className="css-ss-field-label" htmlFor="css-ss-scroll-margin">
                     scroll-margin: {config.item.scrollMargin}px
                   </label>
                   <input
@@ -442,9 +378,7 @@ function CssScrollSnapGenerator() {
                     step={4}
                     value={config.item.scrollMargin}
                     className="css-ss-range"
-                    onChange={(e) =>
-                      updateItem("scrollMargin", Number(e.target.value))
-                    }
+                    onChange={(e) => updateItem("scrollMargin", Number(e.target.value))}
                     aria-label={`scroll-margin: ${config.item.scrollMargin}px`}
                   />
                 </div>
@@ -455,10 +389,7 @@ function CssScrollSnapGenerator() {
           {/* 右側: プレビュー + CSS 出力 */}
           <div className="css-ss-right">
             {/* ライブプレビュー */}
-            <section
-              className="css-ss-preview-section"
-              aria-labelledby="css-ss-preview-title"
-            >
+            <section className="css-ss-preview-section" aria-labelledby="css-ss-preview-title">
               <h2 className="css-ss-section-title" id="css-ss-preview-title">
                 ライブプレビュー
               </h2>
@@ -504,9 +435,7 @@ function CssScrollSnapGenerator() {
                         </li>
                       ))
                     ) : (
-                      <li className="css-ss-props-item css-ss-props-item--empty">
-                        (設定なし)
-                      </li>
+                      <li className="css-ss-props-item css-ss-props-item--empty">(設定なし)</li>
                     )}
                   </ul>
                 </div>
@@ -514,15 +443,9 @@ function CssScrollSnapGenerator() {
             </section>
 
             {/* CSS 出力 */}
-            <section
-              className="css-ss-css-section"
-              aria-labelledby="css-ss-css-output-title"
-            >
+            <section className="css-ss-css-section" aria-labelledby="css-ss-css-output-title">
               <div className="css-ss-css-header">
-                <h2
-                  className="css-ss-section-title"
-                  id="css-ss-css-output-title"
-                >
+                <h2 className="css-ss-section-title" id="css-ss-css-output-title">
                   生成 CSS
                 </h2>
                 <Button

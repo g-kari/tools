@@ -1,59 +1,55 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
-import { useState, useCallback, useMemo } from 'react';
-import { useToast } from '../components/Toast';
-import { TipsCard } from '~/components/TipsCard';
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from '~/hooks/useStatusAnnouncement';
-import { useClipboard } from '~/hooks/useClipboard';
-import { hexToRgb, rgbToHex } from '~/utils/color-converter';
+import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
+import { useState, useCallback, useMemo } from "react";
+import { useToast } from "../components/Toast";
+import { TipsCard } from "~/components/TipsCard";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
+import { useClipboard } from "~/hooks/useClipboard";
+import { hexToRgb, rgbToHex } from "~/utils/color-converter";
 import {
   findNearestColors,
   findExactColorName,
   contrastColor,
   CSS_NAMED_COLORS,
   type ColorMatch,
-} from '~/utils/color-name';
+} from "~/utils/color-name";
 
-export const Route = createFileRoute('/color-name')({
+export const Route = createFileRoute("/color-name")({
   head: () => ({
     meta: [
-      { title: '色名検索 | Web ツール集' },
+      { title: "色名検索 | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          'CSS名前付き色を検索するツール。HEXやRGBカラーを入力すると最も近いCSS色名をΔE色差順に表示。140色のCSS名前付き色を完全収録。',
+          "CSS名前付き色を検索するツール。HEXやRGBカラーを入力すると最も近いCSS色名をΔE色差順に表示。140色のCSS名前付き色を完全収録。",
       },
-      { property: 'og:title', content: '色名検索 | Web ツール集' },
+      { property: "og:title", content: "色名検索 | Web ツール集" },
       {
-        property: 'og:description',
+        property: "og:description",
         content:
-          'CSS名前付き色を検索するツール。HEXやRGBカラーを入力すると最も近いCSS色名をΔE色差順に表示。',
+          "CSS名前付き色を検索するツール。HEXやRGBカラーを入力すると最も近いCSS色名をΔE色差順に表示。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/color-name` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
-      { name: 'twitter:title', content: '色名検索 | Web ツール集' },
+      { property: "og:url", content: `${SITE_BASE_URL}/color-name` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "色名検索 | Web ツール集" },
       {
-        name: 'twitter:description',
-        content:
-          'HEXやRGBカラーを入力すると最も近いCSS色名をΔE色差順に表示する色名検索ツール。',
+        name: "twitter:description",
+        content: "HEXやRGBカラーを入力すると最も近いCSS色名をΔE色差順に表示する色名検索ツール。",
       },
     ],
   }),
   component: ColorNameFinder,
 });
 
-const DEFAULT_HEX = '#39D353';
+const DEFAULT_HEX = "#39D353";
 
 /** ΔE値に応じた一致度ラベルを返す */
 function matchLabel(deltaE: number): { label: string; className: string } {
-  if (deltaE === 0) return { label: '完全一致', className: 'cn-badge-exact' };
-  if (deltaE < 5) return { label: 'ほぼ同じ', className: 'cn-badge-close' };
-  if (deltaE < 15) return { label: '近似', className: 'cn-badge-near' };
-  return { label: '参考', className: 'cn-badge-far' };
+  if (deltaE === 0) return { label: "完全一致", className: "cn-badge-exact" };
+  if (deltaE < 5) return { label: "ほぼ同じ", className: "cn-badge-close" };
+  if (deltaE < 15) return { label: "近似", className: "cn-badge-near" };
+  return { label: "参考", className: "cn-badge-far" };
 }
 
 /** 色スウォッチカードコンポーネント */
@@ -127,34 +123,28 @@ function ColorNameFinder() {
   const { showToast } = useToast();
 
   /** HEX入力変更ハンドラ */
-  const handleHexChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const raw = e.target.value;
-      setHexInput(raw);
-      const rgb = hexToRgb(raw);
-      if (rgb) {
-        setHexError(false);
-        setInputRgb(rgb);
-      } else {
-        setHexError(true);
-      }
-    },
-    []
-  );
+  const handleHexChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value;
+    setHexInput(raw);
+    const rgb = hexToRgb(raw);
+    if (rgb) {
+      setHexError(false);
+      setInputRgb(rgb);
+    } else {
+      setHexError(true);
+    }
+  }, []);
 
   /** ネイティブカラーピッカー変更ハンドラ */
-  const handlePickerChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const hex = e.target.value.toUpperCase();
-      setHexInput(hex);
-      const rgb = hexToRgb(hex);
-      if (rgb) {
-        setHexError(false);
-        setInputRgb(rgb);
-      }
-    },
-    []
-  );
+  const handlePickerChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const hex = e.target.value.toUpperCase();
+    setHexInput(hex);
+    const rgb = hexToRgb(hex);
+    if (rgb) {
+      setHexError(false);
+      setInputRgb(rgb);
+    }
+  }, []);
 
   /** コピーハンドラ */
   const handleCopy = useCallback(
@@ -162,32 +152,25 @@ function ColorNameFinder() {
       const success = await copy(text);
       if (success) {
         announceStatus(`${label} をコピーしました`);
-        showToast(`${label} をコピーしました`, 'success');
+        showToast(`${label} をコピーしました`, "success");
       } else {
-        showToast('コピーに失敗しました', 'error');
+        showToast("コピーに失敗しました", "error");
       }
     },
-    [copy, announceStatus, showToast]
+    [copy, announceStatus, showToast],
   );
 
   /** 検索結果を計算 */
-  const results = useMemo(
-    () => findNearestColors(inputRgb, 10),
-    [inputRgb]
-  );
+  const results = useMemo(() => findNearestColors(inputRgb, 10), [inputRgb]);
 
   /** 完全一致の色名 */
-  const exactName = useMemo(
-    () => findExactColorName(rgbToHex(inputRgb)),
-    [inputRgb]
-  );
+  const exactName = useMemo(() => findExactColorName(rgbToHex(inputRgb)), [inputRgb]);
 
   /** 表示する全色リスト（ブラウズモード用） */
   const allColors = useMemo(() => CSS_NAMED_COLORS, []);
 
   const inputFg = contrastColor(inputRgb);
-  const pickerValue =
-    hexInput.match(/^#[0-9a-fA-F]{6}$/) ? hexInput.toLowerCase() : '#000000';
+  const pickerValue = hexInput.match(/^#[0-9a-fA-F]{6}$/) ? hexInput.toLowerCase() : "#000000";
 
   return (
     <>
@@ -201,7 +184,12 @@ function ColorNameFinder() {
             {/* カラープレビュー */}
             <div
               className="cn-input-swatch"
-              style={{ backgroundColor: hexError ? '#161b22' : rgbToHex(inputRgb), color: hexError ? '#8b949e' : inputFg } as React.CSSProperties}
+              style={
+                {
+                  backgroundColor: hexError ? "#161b22" : rgbToHex(inputRgb),
+                  color: hexError ? "#8b949e" : inputFg,
+                } as React.CSSProperties
+              }
               role="img"
               aria-label={`現在の入力色: ${hexInput}`}
             >
@@ -228,7 +216,7 @@ function ColorNameFinder() {
               <input
                 id="cn-hex-input"
                 type="text"
-                className={`cn-hex-input${hexError ? ' error' : ''}`}
+                className={`cn-hex-input${hexError ? " error" : ""}`}
                 value={hexInput}
                 onChange={handleHexChange}
                 placeholder="#FF5733"
@@ -246,7 +234,10 @@ function ColorNameFinder() {
                 <p className="cn-input-hint">
                   rgb({inputRgb.r}, {inputRgb.g}, {inputRgb.b})
                   {exactName && (
-                    <> &mdash; <strong>{exactName}</strong> に完全一致</>
+                    <>
+                      {" "}
+                      &mdash; <strong>{exactName}</strong> に完全一致
+                    </>
                   )}
                 </p>
               )}
@@ -256,18 +247,11 @@ function ColorNameFinder() {
 
         {/* 検索結果 */}
         {!hexError && (
-          <section
-            className="cn-results-section"
-            aria-labelledby="cn-results-title"
-          >
+          <section className="cn-results-section" aria-labelledby="cn-results-title">
             <h2 className="cn-section-title" id="cn-results-title">
               近い色 TOP 10
             </h2>
-            <div
-              className="cn-results-grid"
-              role="list"
-              aria-label="近いCSS色名の一覧"
-            >
+            <div className="cn-results-grid" role="list" aria-label="近いCSS色名の一覧">
               {results.map((match) => (
                 <ColorCard
                   key={match.name}
@@ -293,16 +277,11 @@ function ColorNameFinder() {
               aria-expanded={showAll}
               aria-controls="cn-all-grid"
             >
-              {showAll ? '閉じる ▲' : '全色を表示 ▼'}
+              {showAll ? "閉じる ▲" : "全色を表示 ▼"}
             </button>
           </div>
           {showAll && (
-            <div
-              id="cn-all-grid"
-              className="cn-all-grid"
-              role="list"
-              aria-label="全CSS名前付き色"
-            >
+            <div id="cn-all-grid" className="cn-all-grid" role="list" aria-label="全CSS名前付き色">
               {allColors.map((color) => {
                 const rgb = hexToRgb(color.hex) ?? { r: 0, g: 0, b: 0 };
                 const fg = contrastColor(rgb);
@@ -317,7 +296,7 @@ function ColorNameFinder() {
                       setInputRgb(rgb);
                       setHexError(false);
                       setShowAll(false);
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                      window.scrollTo({ top: 0, behavior: "smooth" });
                     }}
                     title={`${color.name} — ${color.hex} をセット`}
                     aria-label={`${color.name} ${color.hex}`}
@@ -334,23 +313,23 @@ function ColorNameFinder() {
         <TipsCard
           sections={[
             {
-              title: '使い方',
+              title: "使い方",
               items: [
-                'HEXカラーコードを入力するか、左の色見本をクリックしてカラーピッカーで色を選択してください',
-                '入力色に最も近いCSS色名をΔE（知覚的色差）順にTOP 10で表示します',
-                'ΔE = 0 は完全一致（入力色がそのままCSS色名として使えます）',
-                '「全色を表示」で140色のCSS名前付き色を一覧表示できます',
-                '色名またはHEXをコピーしてCSSに直接貼り付けられます',
+                "HEXカラーコードを入力するか、左の色見本をクリックしてカラーピッカーで色を選択してください",
+                "入力色に最も近いCSS色名をΔE（知覚的色差）順にTOP 10で表示します",
+                "ΔE = 0 は完全一致（入力色がそのままCSS色名として使えます）",
+                "「全色を表示」で140色のCSS名前付き色を一覧表示できます",
+                "色名またはHEXをコピーしてCSSに直接貼り付けられます",
               ],
             },
             {
-              title: 'ΔE (色差) の目安',
+              title: "ΔE (色差) の目安",
               items: [
-                'ΔE = 0: 完全一致 — 入力色はCSS色名そのもの',
-                'ΔE < 5: ほぼ同じ — 人の目にはほぼ区別できない',
-                'ΔE < 15: 近似 — 似た印象の色',
-                'ΔE ≥ 15: 参考 — 近似はしているが色味が異なる',
-                'ΔEはCIE76規格に基づく知覚的色差。単純なRGB距離より正確',
+                "ΔE = 0: 完全一致 — 入力色はCSS色名そのもの",
+                "ΔE < 5: ほぼ同じ — 人の目にはほぼ区別できない",
+                "ΔE < 15: 近似 — 似た印象の色",
+                "ΔE ≥ 15: 参考 — 近似はしているが色味が異なる",
+                "ΔEはCIE76規格に基づく知覚的色差。単純なRGB距離より正確",
               ],
             },
           ]}

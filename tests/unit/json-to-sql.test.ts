@@ -1,8 +1,5 @@
 import { describe, test, expect } from "vite-plus/test";
-import {
-  generateSqlCreateTable,
-  getSampleJson,
-} from "../../app/utils/json-to-sql";
+import { generateSqlCreateTable, getSampleJson } from "../../app/utils/json-to-sql";
 
 const defaultOptions = {
   tableName: "my_table",
@@ -44,19 +41,13 @@ describe("generateSqlCreateTable", () => {
     });
 
     test("オブジェクトプロパティが JSONB を生成する", () => {
-      const result = generateSqlCreateTable(
-        '{"meta": {"key": "value"}}',
-        defaultOptions
-      );
+      const result = generateSqlCreateTable('{"meta": {"key": "value"}}', defaultOptions);
       expect(result).toContain("JSONB");
       expect(result).toContain('"meta"');
     });
 
     test("配列プロパティが JSONB を生成する", () => {
-      const result = generateSqlCreateTable(
-        '{"tags": ["a", "b"]}',
-        defaultOptions
-      );
+      const result = generateSqlCreateTable('{"tags": ["a", "b"]}', defaultOptions);
       expect(result).toContain("JSONB");
       expect(result).toContain('"tags"');
     });
@@ -96,10 +87,7 @@ describe("generateSqlCreateTable", () => {
     });
 
     test("オブジェクトプロパティが JSON を生成する", () => {
-      const result = generateSqlCreateTable(
-        '{"meta": {"key": "value"}}',
-        mysqlOptions
-      );
+      const result = generateSqlCreateTable('{"meta": {"key": "value"}}', mysqlOptions);
       expect(result).toContain("JSON");
     });
 
@@ -143,10 +131,7 @@ describe("generateSqlCreateTable", () => {
     });
 
     test("オブジェクトプロパティが TEXT を生成する", () => {
-      const result = generateSqlCreateTable(
-        '{"meta": {"key": "value"}}',
-        sqliteOptions
-      );
+      const result = generateSqlCreateTable('{"meta": {"key": "value"}}', sqliteOptions);
       expect(result).toContain("TEXT");
     });
 
@@ -230,29 +215,20 @@ describe("generateSqlCreateTable", () => {
 
   describe("キー名変換", () => {
     test("camelCase キーがスネークケースに変換される", () => {
-      const result = generateSqlCreateTable(
-        '{"userName": "Alice"}',
-        defaultOptions
-      );
+      const result = generateSqlCreateTable('{"userName": "Alice"}', defaultOptions);
       expect(result).toContain('"user_name"');
       expect(result).not.toContain('"userName"');
     });
 
     test("PascalCase キーがスネークケースに変換される", () => {
-      const result = generateSqlCreateTable(
-        '{"CreatedAt": "2024-01-01"}',
-        defaultOptions
-      );
+      const result = generateSqlCreateTable('{"CreatedAt": "2024-01-01"}', defaultOptions);
       expect(result).toContain('"created_at"');
     });
   });
 
   describe("ルートが配列の場合", () => {
     test("配列の最初の要素を使用する", () => {
-      const result = generateSqlCreateTable(
-        '[{"name": "Alice", "age": 30}]',
-        defaultOptions
-      );
+      const result = generateSqlCreateTable('[{"name": "Alice", "age": 30}]', defaultOptions);
       expect(result).toContain('"name"');
       expect(result).toContain('"age"');
     });
@@ -260,27 +236,23 @@ describe("generateSqlCreateTable", () => {
 
   describe("エラーケース", () => {
     test("空文字列でエラーをスローする", () => {
-      expect(() =>
-        generateSqlCreateTable("", defaultOptions)
-      ).toThrow("JSONを入力してください");
+      expect(() => generateSqlCreateTable("", defaultOptions)).toThrow("JSONを入力してください");
     });
 
     test("空白のみの文字列でエラーをスローする", () => {
-      expect(() =>
-        generateSqlCreateTable("   ", defaultOptions)
-      ).toThrow("JSONを入力してください");
+      expect(() => generateSqlCreateTable("   ", defaultOptions)).toThrow("JSONを入力してください");
     });
 
     test("無効なJSONでエラーをスローする", () => {
-      expect(() =>
-        generateSqlCreateTable("invalid json", defaultOptions)
-      ).toThrow("無効なJSON形式です");
+      expect(() => generateSqlCreateTable("invalid json", defaultOptions)).toThrow(
+        "無効なJSON形式です",
+      );
     });
 
     test("プリミティブなルートでエラーをスローする", () => {
-      expect(() =>
-        generateSqlCreateTable('"just a string"', defaultOptions)
-      ).toThrow("JSONのルートはオブジェクト");
+      expect(() => generateSqlCreateTable('"just a string"', defaultOptions)).toThrow(
+        "JSONのルートはオブジェクト",
+      );
     });
   });
 });
@@ -309,7 +281,7 @@ describe("getSampleJson", () => {
     const sample = getSampleJson();
     const parsed = JSON.parse(sample) as Record<string, unknown>;
     const hasObject = Object.values(parsed).some(
-      (v) => typeof v === "object" && v !== null && !Array.isArray(v)
+      (v) => typeof v === "object" && v !== null && !Array.isArray(v),
     );
     expect(hasObject).toBe(true);
   });

@@ -28,9 +28,7 @@ test.describe("JSON Schema Generator - E2E Tests", () => {
     await expect(outputArea).toBeVisible();
   });
 
-  test("should load sample JSON when clicking sample button", async ({
-    page,
-  }) => {
+  test("should load sample JSON when clicking sample button", async ({ page }) => {
     const sampleButton = page.locator("button", { hasText: "サンプル読込" });
     await sampleButton.click();
 
@@ -40,9 +38,7 @@ test.describe("JSON Schema Generator - E2E Tests", () => {
     expect(() => JSON.parse(value)).not.toThrow();
   });
 
-  test("should clear input and output when clicking clear button", async ({
-    page,
-  }) => {
+  test("should clear input and output when clicking clear button", async ({ page }) => {
     const inputTextarea = page.locator("#jsonInput");
     await inputTextarea.fill('{"name":"test"}');
 
@@ -52,9 +48,7 @@ test.describe("JSON Schema Generator - E2E Tests", () => {
     await expect(inputTextarea).toHaveValue("");
   });
 
-  test("should have copy schema button disabled when no output", async ({
-    page,
-  }) => {
+  test("should have copy schema button disabled when no output", async ({ page }) => {
     const copyButton = page.locator("button", { hasText: "スキーマをコピー" });
     await expect(copyButton).toBeDisabled();
   });

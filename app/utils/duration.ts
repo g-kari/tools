@@ -49,11 +49,11 @@ export function hmsToSeconds(input: string): number | null {
   const trimmed = input.trim();
   if (!trimmed) return null;
 
-  const negative = trimmed.startsWith('-');
+  const negative = trimmed.startsWith("-");
   const abs = negative ? trimmed.slice(1) : trimmed;
 
   // コロンがない場合は純粋な秒数として解析
-  if (!abs.includes(':')) {
+  if (!abs.includes(":")) {
     const n = Number(abs);
     if (isNaN(n) || n < 0) return null;
     return negative ? -n : n;
@@ -64,7 +64,7 @@ export function hmsToSeconds(input: string): number | null {
   if (!match) return null;
 
   const parts = [match[1], match[2], match[3]].filter((p) => p !== undefined);
-  const ms = match[4] ? parseInt(match[4].padEnd(3, '0'), 10) : 0;
+  const ms = match[4] ? parseInt(match[4].padEnd(3, "0"), 10) : 0;
 
   let hours = 0;
   let minutes = 0;
@@ -90,13 +90,13 @@ export function hmsToSeconds(input: string): number | null {
 /** 秒数から HH:MM:SS 形式の文字列へ変換する */
 export function secondsToHms(totalSeconds: number, showMs = false): string {
   const c = secondsToComponents(totalSeconds);
-  const sign = totalSeconds < 0 ? '-' : '';
+  const sign = totalSeconds < 0 ? "-" : "";
   const h = Math.abs(c.days) * 24 + Math.abs(c.hours);
-  const m = String(Math.abs(c.minutes)).padStart(2, '0');
-  const s = String(Math.abs(c.seconds)).padStart(2, '0');
-  const base = `${sign}${String(h).padStart(2, '0')}:${m}:${s}`;
+  const m = String(Math.abs(c.minutes)).padStart(2, "0");
+  const s = String(Math.abs(c.seconds)).padStart(2, "0");
+  const base = `${sign}${String(h).padStart(2, "0")}:${m}:${s}`;
   if (showMs) {
-    const ms = String(Math.abs(c.milliseconds)).padStart(3, '0');
+    const ms = String(Math.abs(c.milliseconds)).padStart(3, "0");
     return `${base}.${ms}`;
   }
   return base;
@@ -104,7 +104,7 @@ export function secondsToHms(totalSeconds: number, showMs = false): string {
 
 /** 秒数から人間が読めるフォーマットへ変換する（日本語） */
 export function secondsToHuman(totalSeconds: number): string {
-  if (totalSeconds === 0) return '0秒';
+  if (totalSeconds === 0) return "0秒";
 
   const negative = totalSeconds < 0;
   const c = secondsToComponents(Math.abs(totalSeconds));
@@ -116,7 +116,7 @@ export function secondsToHuman(totalSeconds: number): string {
   if (c.seconds > 0) parts.push(`${c.seconds}秒`);
   if (c.milliseconds > 0 && c.days === 0) parts.push(`${c.milliseconds}ミリ秒`);
 
-  return (negative ? '−' : '') + parts.join(' ');
+  return (negative ? "−" : "") + parts.join(" ");
 }
 
 /** 秒数からフレーム数へ変換する */
@@ -139,8 +139,8 @@ export function framesToTimecode(frames: number, fps: number): string {
   const totalMin = Math.floor(totalSec / 60);
   const mm = totalMin % 60;
   const hh = Math.floor(totalMin / 60);
-  const sign = frames < 0 ? '-' : '';
-  return `${sign}${String(hh).padStart(2, '0')}:${String(mm).padStart(2, '0')}:${String(ss).padStart(2, '0')}:${String(ff).padStart(2, '0')}`;
+  const sign = frames < 0 ? "-" : "";
+  return `${sign}${String(hh).padStart(2, "0")}:${String(mm).padStart(2, "0")}:${String(ss).padStart(2, "0")}:${String(ff).padStart(2, "0")}`;
 }
 
 /** 2つの秒数を加算する */
@@ -159,7 +159,7 @@ export function parseDuration(input: string): number | null {
   if (!trimmed) return null;
 
   // コロンを含む場合は HH:MM:SS として解析
-  if (trimmed.includes(':')) {
+  if (trimmed.includes(":")) {
     return hmsToSeconds(trimmed);
   }
 

@@ -6,11 +6,7 @@ import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import { TipsCard } from "~/components/TipsCard";
 import { useClipboard } from "~/hooks/useClipboard";
-import {
-  LINE_OPS,
-  applyLineOp,
-  type LineOp,
-} from "~/utils/text-line";
+import { LINE_OPS, applyLineOp, type LineOp } from "~/utils/text-line";
 import "~/styles/tools/text-line.css";
 
 export const Route = createFileRoute("/text-line")({
@@ -89,16 +85,12 @@ function TextLineTool() {
         showToast("テキストを入力してください", "error");
         return;
       }
-      const { result, lineCount: lc } = applyLineOp(
-        inputText,
-        op,
-        extraInputs[op]
-      );
+      const { result, lineCount: lc } = applyLineOp(inputText, op, extraInputs[op]);
       setOutputText(result);
       setLineCount(lc);
       showToast("操作を適用しました", "success");
     },
-    [inputText, extraInputs, showToast]
+    [inputText, extraInputs, showToast],
   );
 
   const handleCopy = useCallback(async () => {
@@ -116,16 +108,11 @@ function TextLineTool() {
     setLineCount(null);
   }, []);
 
-  const handleExtraChange = useCallback(
-    (op: LineOp, value: string) => {
-      setExtraInputs((prev) => ({ ...prev, [op]: value }));
-    },
-    []
-  );
+  const handleExtraChange = useCallback((op: LineOp, value: string) => {
+    setExtraInputs((prev) => ({ ...prev, [op]: value }));
+  }, []);
 
-  const inputLineCount = inputText
-    ? inputText.split("\n").length
-    : 0;
+  const inputLineCount = inputText ? inputText.split("\n").length : 0;
 
   return (
     <div className="tool-container">
@@ -144,9 +131,7 @@ function TextLineTool() {
           {/* 操作グループ：整形 */}
           <div className="tl-op-group">
             <div className="tl-ops-title">整形</div>
-            {LINE_OPS.filter((op) =>
-              ["trim", "remove-empty"].includes(op.id)
-            ).map((op) => (
+            {LINE_OPS.filter((op) => ["trim", "remove-empty"].includes(op.id)).map((op) => (
               <div key={op.id}>
                 <button
                   className="tl-op-btn"
@@ -164,7 +149,7 @@ function TextLineTool() {
           <div className="tl-op-group">
             <div className="tl-ops-title">追加</div>
             {LINE_OPS.filter((op) =>
-              ["add-numbers", "add-prefix", "add-suffix"].includes(op.id)
+              ["add-numbers", "add-prefix", "add-suffix"].includes(op.id),
             ).map((op) => (
               <div key={op.id} className={op.hasInput ? "tl-op-with-input" : ""}>
                 {op.hasInput ? (
@@ -174,17 +159,11 @@ function TextLineTool() {
                         type="text"
                         className="tl-extra-input"
                         value={extraInputs[op.id]}
-                        onChange={(e) =>
-                          handleExtraChange(op.id, e.target.value)
-                        }
+                        onChange={(e) => handleExtraChange(op.id, e.target.value)}
                         placeholder={op.inputPlaceholder}
                         aria-label={op.inputLabel}
                       />
-                      <Button
-                        size="sm"
-                        onClick={() => handleApply(op.id)}
-                        aria-label={op.label}
-                      >
+                      <Button size="sm" onClick={() => handleApply(op.id)} aria-label={op.label}>
                         {op.label}
                       </Button>
                     </div>
@@ -207,9 +186,7 @@ function TextLineTool() {
           {/* 操作グループ：並び替え */}
           <div className="tl-op-group">
             <div className="tl-ops-title">並び替え</div>
-            {LINE_OPS.filter((op) =>
-              ["reverse", "shuffle"].includes(op.id)
-            ).map((op) => (
+            {LINE_OPS.filter((op) => ["reverse", "shuffle"].includes(op.id)).map((op) => (
               <div key={op.id}>
                 <button
                   className="tl-op-btn"
@@ -226,9 +203,7 @@ function TextLineTool() {
           {/* 操作グループ：フィルタ */}
           <div className="tl-op-group">
             <div className="tl-ops-title">フィルタ</div>
-            {LINE_OPS.filter((op) =>
-              ["filter-keep", "filter-remove"].includes(op.id)
-            ).map((op) => (
+            {LINE_OPS.filter((op) => ["filter-keep", "filter-remove"].includes(op.id)).map((op) => (
               <div key={op.id} className="tl-op-with-input">
                 <div className="tl-op-input-row">
                   <input
@@ -239,11 +214,7 @@ function TextLineTool() {
                     placeholder={op.inputPlaceholder}
                     aria-label={op.inputLabel}
                   />
-                  <Button
-                    size="sm"
-                    onClick={() => handleApply(op.id)}
-                    aria-label={op.label}
-                  >
+                  <Button size="sm" onClick={() => handleApply(op.id)} aria-label={op.label}>
                     {op.id === "filter-keep" ? "含む" : "除外"}
                   </Button>
                 </div>
@@ -329,8 +300,8 @@ function TextLineTool() {
           <li>左側のテキストエリアにテキストを入力します。</li>
           <li>右パネルから操作を選択すると即時適用され、結果が表示されます。</li>
           <li>
-            <strong>プレフィックス/サフィックス</strong>・
-            <strong>フィルタ</strong>は入力欄にキーワードを入力してから実行します。
+            <strong>プレフィックス/サフィックス</strong>・<strong>フィルタ</strong>
+            は入力欄にキーワードを入力してから実行します。
           </li>
           <li>操作は連続して適用できます（結果を次の入力として再利用）。</li>
         </ul>

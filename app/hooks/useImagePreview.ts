@@ -1,9 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
-import {
-  isImageFile,
-  getImageDimensions,
-  createImagePreviewUrl,
-} from "~/utils/image";
+import { isImageFile, getImageDimensions, createImagePreviewUrl } from "~/utils/image";
 
 /**
  * 画像プレビューの状態
@@ -62,9 +58,7 @@ export interface UseImagePreviewReturn extends ImagePreviewState {
  * });
  * ```
  */
-export function useImagePreview(
-  options: UseImagePreviewOptions = {}
-): UseImagePreviewReturn {
+export function useImagePreview(options: UseImagePreviewOptions = {}): UseImagePreviewReturn {
   const { onTypeError, onLoadError, onLoadSuccess } = options;
 
   const [file, setFile] = useState<File | null>(null);
@@ -117,7 +111,7 @@ export function useImagePreview(
         setIsLoading(false);
       }
     },
-    [previewUrl, onTypeError, onLoadError, onLoadSuccess]
+    [previewUrl, onTypeError, onLoadError, onLoadSuccess],
   );
 
   const clear = useCallback(() => {

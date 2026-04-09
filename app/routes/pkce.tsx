@@ -4,16 +4,9 @@ import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
-import {
-  generatePkce,
-  generateCodeChallengeS256,
-  validateCodeVerifier,
-} from "~/utils/pkce";
+import { generatePkce, generateCodeChallengeS256, validateCodeVerifier } from "~/utils/pkce";
 import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 
 export const Route = createFileRoute("/pkce")({
@@ -102,7 +95,7 @@ function PkceGenerator() {
         showToast("コピーに失敗しました", "error");
       }
     },
-    [copy, announceStatus, showToast]
+    [copy, announceStatus, showToast],
   );
 
   const handleGenerate = useCallback(async () => {
@@ -111,9 +104,7 @@ function PkceGenerator() {
       const result = await generatePkce(byteLength, method);
       setCodeVerifier(result.codeVerifier);
       setCodeChallenge(result.codeChallenge);
-      announceStatus(
-        `PKCE ペアを生成しました（${result.codeVerifier.length}文字）`
-      );
+      announceStatus(`PKCE ペアを生成しました（${result.codeVerifier.length}文字）`);
     } catch {
       showToast("生成に失敗しました", "error");
       announceStatus("エラー: 生成に失敗しました");
@@ -137,15 +128,13 @@ function PkceGenerator() {
         try {
           const challenge = await generateCodeChallengeS256(value.trim());
           setChallengeFromInput(challenge);
-          announceStatus(
-            "code_challenge を計算しました"
-          );
+          announceStatus("code_challenge を計算しました");
         } catch {
           setChallengeFromInput("");
         }
       }
     },
-    [announceStatus]
+    [announceStatus],
   );
 
   const handleClear = useCallback(() => {
@@ -165,23 +154,14 @@ function PkceGenerator() {
           <h2 id="generate-section-title" className="section-title">
             PKCE ペア生成
           </h2>
-          <form
-            onSubmit={(e) => e.preventDefault()}
-            aria-label="PKCE 生成フォーム"
-          >
+          <form onSubmit={(e) => e.preventDefault()} aria-label="PKCE 生成フォーム">
             {/* オプション */}
             <div className="converter-section">
               <div className="pkce-options-row">
                 {/* バイト長 */}
                 <fieldset className="pkce-fieldset">
-                  <legend className="section-title pkce-legend">
-                    code_verifier の長さ
-                  </legend>
-                  <div
-                    className="csv-json-mode-group"
-                    role="group"
-                    aria-label="バイト長の選択"
-                  >
+                  <legend className="section-title pkce-legend">code_verifier の長さ</legend>
+                  <div className="csv-json-mode-group" role="group" aria-label="バイト長の選択">
                     {BYTE_LENGTH_OPTIONS.map((opt) => (
                       <label key={opt.value} className="format-option">
                         <input
@@ -200,14 +180,8 @@ function PkceGenerator() {
 
                 {/* メソッド */}
                 <fieldset className="pkce-fieldset">
-                  <legend className="section-title pkce-legend">
-                    code_challenge_method
-                  </legend>
-                  <div
-                    className="csv-json-mode-group"
-                    role="group"
-                    aria-label="メソッドの選択"
-                  >
+                  <legend className="section-title pkce-legend">code_challenge_method</legend>
+                  <div className="csv-json-mode-group" role="group" aria-label="メソッドの選択">
                     <label className="format-option">
                       <input
                         type="radio"
@@ -268,9 +242,7 @@ function PkceGenerator() {
                       <button
                         type="button"
                         className={`number-base-copy-btn${copiedField === "code_verifier" ? " copied" : ""}`}
-                        onClick={() =>
-                          handleCopy(codeVerifier, "code_verifier")
-                        }
+                        onClick={() => handleCopy(codeVerifier, "code_verifier")}
                         disabled={!codeVerifier}
                         aria-label="code_verifier をコピー"
                       >
@@ -306,9 +278,7 @@ function PkceGenerator() {
                         <button
                           type="button"
                           className={`number-base-copy-btn${copiedField === "code_challenge" ? " copied" : ""}`}
-                          onClick={() =>
-                            handleCopy(codeChallenge, "code_challenge")
-                          }
+                          onClick={() => handleCopy(codeChallenge, "code_challenge")}
                           disabled={!codeChallenge}
                           aria-label="code_challenge をコピー"
                         >
@@ -325,9 +295,7 @@ function PkceGenerator() {
                       {codeChallenge || "—"}
                     </div>
                     {codeChallenge && (
-                      <p className="pkce-length-info">
-                        {codeChallenge.length} 文字
-                      </p>
+                      <p className="pkce-length-info">{codeChallenge.length} 文字</p>
                     )}
                   </div>
                 </div>
@@ -344,10 +312,7 @@ function PkceGenerator() {
           <p className="pkce-verify-desc">
             既存の code_verifier を貼り付けて、対応する code_challenge（S256）を確認できます。
           </p>
-          <form
-            onSubmit={(e) => e.preventDefault()}
-            aria-label="code_verifier 検証フォーム"
-          >
+          <form onSubmit={(e) => e.preventDefault()} aria-label="code_verifier 検証フォーム">
             <div className="converter-section">
               <label htmlFor="verifier-input" className="section-title pkce-legend">
                 code_verifier を入力
@@ -370,9 +335,7 @@ function PkceGenerator() {
                   role="status"
                   aria-live="polite"
                 >
-                  <span aria-hidden="true">
-                    {validationResult.valid ? "✓" : "✗"}
-                  </span>
+                  <span aria-hidden="true">{validationResult.valid ? "✓" : "✗"}</span>
                   <span>
                     {validationResult.valid
                       ? `有効な code_verifier です（${validationResult.length} 文字）`
@@ -386,20 +349,14 @@ function PkceGenerator() {
               <div className="converter-section">
                 <div className="pkce-result-item">
                   <div className="pkce-result-header">
-                    <span className="pkce-result-label">
-                      code_challenge（S256）
-                    </span>
+                    <span className="pkce-result-label">code_challenge（S256）</span>
                     <button
                       type="button"
                       className={`number-base-copy-btn${copiedField === "challenge-from-input" ? " copied" : ""}`}
-                      onClick={() =>
-                        handleCopy(challengeFromInput, "challenge-from-input")
-                      }
+                      onClick={() => handleCopy(challengeFromInput, "challenge-from-input")}
                       aria-label="計算された code_challenge をコピー"
                     >
-                      {copiedField === "challenge-from-input"
-                        ? "コピー済"
-                        : "コピー"}
+                      {copiedField === "challenge-from-input" ? "コピー済" : "コピー"}
                     </button>
                   </div>
                   <div

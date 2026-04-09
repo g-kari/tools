@@ -8,42 +8,42 @@
  * アルファベット A-Z および数字 0-9 をサポート
  */
 export const NATO_ALPHABET_MAP: Record<string, string> = {
-  A: 'Alpha',
-  B: 'Bravo',
-  C: 'Charlie',
-  D: 'Delta',
-  E: 'Echo',
-  F: 'Foxtrot',
-  G: 'Golf',
-  H: 'Hotel',
-  I: 'India',
-  J: 'Juliet',
-  K: 'Kilo',
-  L: 'Lima',
-  M: 'Mike',
-  N: 'November',
-  O: 'Oscar',
-  P: 'Papa',
-  Q: 'Quebec',
-  R: 'Romeo',
-  S: 'Sierra',
-  T: 'Tango',
-  U: 'Uniform',
-  V: 'Victor',
-  W: 'Whiskey',
-  X: 'X-ray',
-  Y: 'Yankee',
-  Z: 'Zulu',
-  '0': 'Zero',
-  '1': 'One',
-  '2': 'Two',
-  '3': 'Three',
-  '4': 'Four',
-  '5': 'Five',
-  '6': 'Six',
-  '7': 'Seven',
-  '8': 'Eight',
-  '9': 'Nine',
+  A: "Alpha",
+  B: "Bravo",
+  C: "Charlie",
+  D: "Delta",
+  E: "Echo",
+  F: "Foxtrot",
+  G: "Golf",
+  H: "Hotel",
+  I: "India",
+  J: "Juliet",
+  K: "Kilo",
+  L: "Lima",
+  M: "Mike",
+  N: "November",
+  O: "Oscar",
+  P: "Papa",
+  Q: "Quebec",
+  R: "Romeo",
+  S: "Sierra",
+  T: "Tango",
+  U: "Uniform",
+  V: "Victor",
+  W: "Whiskey",
+  X: "X-ray",
+  Y: "Yankee",
+  Z: "Zulu",
+  "0": "Zero",
+  "1": "One",
+  "2": "Two",
+  "3": "Three",
+  "4": "Four",
+  "5": "Five",
+  "6": "Six",
+  "7": "Seven",
+  "8": "Eight",
+  "9": "Nine",
 };
 
 /** 変換結果の1文字分の型 */
@@ -64,8 +64,8 @@ export interface NatoCharResult {
 export function textToNato(text: string): NatoCharResult[] {
   if (!text) return [];
 
-  return text.split('').map((char) => {
-    if (char === ' ') {
+  return text.split("").map((char) => {
+    if (char === " ") {
       return { char, phonetic: null, isSpace: true };
     }
     const upper = char.toUpperCase();
@@ -80,14 +80,14 @@ export function textToNato(text: string): NatoCharResult[] {
  * @param separator 各フォネティック語の区切り文字（デフォルト: ' - '）
  * @returns フォネティックアルファベット文字列
  */
-export function textToNatoString(text: string, separator = ' - '): string {
-  if (!text) return '';
+export function textToNatoString(text: string, separator = " - "): string {
+  if (!text) return "";
   const results = textToNato(text);
   const parts: string[] = [];
 
   for (const result of results) {
     if (result.isSpace) {
-      parts.push('(space)');
+      parts.push("(space)");
     } else if (result.phonetic !== null) {
       parts.push(result.phonetic);
     } else {

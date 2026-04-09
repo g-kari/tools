@@ -14,7 +14,9 @@
   color: var(--md-sys-color-on-surface);
   font-size: 0.9375rem;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
 }
 
 .four-square-mode-btn--active {

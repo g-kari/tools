@@ -6,9 +6,7 @@ test.describe("CSSグラジェント生成ページ", () => {
   });
 
   test("ページタイトルが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "CSSグラジェント生成" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "CSSグラジェント生成" })).toBeVisible();
   });
 
   test("グラジェントタイプタブが3つ表示される", async ({ page }) => {
@@ -26,17 +24,14 @@ test.describe("CSSグラジェント生成ページ", () => {
     await page.getByRole("tab", { name: "Radial" }).click();
     await expect(page.getByRole("tab", { name: "Radial" })).toHaveAttribute(
       "aria-selected",
-      "true"
+      "true",
     );
     await expect(page.getByLabel("ラジアル形状")).toBeVisible();
   });
 
   test("Conicタブに切り替えると設定が表示される", async ({ page }) => {
     await page.getByRole("tab", { name: "Conic" }).click();
-    await expect(page.getByRole("tab", { name: "Conic" })).toHaveAttribute(
-      "aria-selected",
-      "true"
-    );
+    await expect(page.getByRole("tab", { name: "Conic" })).toHaveAttribute("aria-selected", "true");
     await expect(page.getByLabel("開始角度")).toBeVisible();
   });
 
@@ -80,9 +75,7 @@ test.describe("CSSグラジェント生成ページ", () => {
   });
 
   test("コピーボタンが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("button", { name: "CSSをクリップボードにコピー" })
-    ).toBeVisible();
+    await expect(page.getByRole("button", { name: "CSSをクリップボードにコピー" })).toBeVisible();
   });
 
   test("プリセットが表示される", async ({ page }) => {

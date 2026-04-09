@@ -254,11 +254,7 @@
 }
 
 .ci-schedule-table tr:nth-child(even) td {
-  background: color-mix(
-    in srgb,
-    var(--md-sys-color-surface-variant) 35%,
-    transparent
-  );
+  background: color-mix(in srgb, var(--md-sys-color-surface-variant) 35%, transparent);
 }
 
 .ci-empty-state {

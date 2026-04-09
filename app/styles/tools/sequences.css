@@ -37,7 +37,9 @@
   border-left: 3px solid transparent;
   cursor: pointer;
   text-align: left;
-  transition: background 0.15s, border-color 0.15s;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
   width: 100%;
 }
 
@@ -173,7 +175,9 @@
   font-size: 0.8125rem;
   font-family: "JetBrains Mono", "Space Mono", monospace;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
 }
 
 .sequences-format-btn:last-child {

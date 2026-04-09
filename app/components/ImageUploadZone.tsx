@@ -77,13 +77,12 @@ export function ImageUploadZone({
 }: ImageUploadZoneProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const { isDragging, handleDragOver, handleDragLeave, handleDrop } =
-    useDropZone({
-      onFileSelect,
-      acceptType: "image/",
-      onTypeError,
-      multiple,
-    });
+  const { isDragging, handleDragOver, handleDragLeave, handleDrop } = useDropZone({
+    onFileSelect,
+    acceptType: "image/",
+    onTypeError,
+    multiple,
+  });
 
   const handleClick = useCallback(() => {
     if (!disabled) {
@@ -98,7 +97,7 @@ export function ImageUploadZone({
         fileInputRef.current?.click();
       }
     },
-    [disabled]
+    [disabled],
   );
 
   const handleInputChange = useCallback(
@@ -107,9 +106,7 @@ export function ImageUploadZone({
       if (files.length === 0) return;
 
       // ドラッグ&ドロップと同じバリデーションを適用
-      const invalidFiles = files.filter(
-        (file) => !file.type.startsWith("image/")
-      );
+      const invalidFiles = files.filter((file) => !file.type.startsWith("image/"));
       if (invalidFiles.length > 0) {
         onTypeError?.();
         // inputをリセットして同じファイルを再選択可能に
@@ -121,7 +118,7 @@ export function ImageUploadZone({
       // inputをリセットして同じファイルを再選択可能に
       e.target.value = "";
     },
-    [onFileSelect, onTypeError]
+    [onFileSelect, onTypeError],
   );
 
   return (

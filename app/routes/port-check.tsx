@@ -14,24 +14,30 @@ import { Input } from "~/components/ui/input";
 import { TipsCard } from "~/components/TipsCard";
 import { ErrorMessage } from "~/components/ErrorMessage";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 
 export const Route = createFileRoute("/port-check")({
   head: () => ({
     meta: [
-    { title: "ポートチェック | Web ツール集" },
-    { name: "description", content: "指定したホスト・IPアドレスのポートが開いているか確認するツール。" },
-    { property: "og:title", content: "ポートチェック | Web ツール集" },
-    { property: "og:description", content: "指定したホスト・IPアドレスのポートが開いているか確認するツール。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/port-check` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "ポートチェック | Web ツール集" },
-    { name: "twitter:description", content: "指定したホスト・IPアドレスのポートが開いているか確認するツール。" },
-  ],
+      { title: "ポートチェック | Web ツール集" },
+      {
+        name: "description",
+        content: "指定したホスト・IPアドレスのポートが開いているか確認するツール。",
+      },
+      { property: "og:title", content: "ポートチェック | Web ツール集" },
+      {
+        property: "og:description",
+        content: "指定したホスト・IPアドレスのポートが開いているか確認するツール。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/port-check` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "ポートチェック | Web ツール集" },
+      {
+        name: "twitter:description",
+        content: "指定したホスト・IPアドレスのポートが開いているか確認するツール。",
+      },
+    ],
   }),
   component: PortCheck,
 });
@@ -63,9 +69,7 @@ function formatResultAsText(result: PortCheckResult): string {
     const status = r.isOpen ? "OPEN" : "CLOSED";
     const service = r.serviceName ?? "-";
     const responseTime =
-      r.isOpen && r.responseTime !== undefined
-        ? `${r.responseTime}ms`
-        : r.error ?? "-";
+      r.isOpen && r.responseTime !== undefined ? `${r.responseTime}ms` : (r.error ?? "-");
     lines.push(`${r.port}\t${status}\t\t${service}\t${responseTime}`);
   }
 
@@ -78,14 +82,10 @@ function formatResultAsText(result: PortCheckResult): string {
 function PortResultRow({ result }: { result: PortResult }) {
   return (
     <tr className="port-check-table-row">
-      <td className="port-check-table-cell port-check-table-cell-port">
-        {result.port}
-      </td>
+      <td className="port-check-table-cell port-check-table-cell-port">{result.port}</td>
       <td className="port-check-table-cell">
         <span
-          className={
-            result.isOpen ? "port-status-open" : "port-status-closed"
-          }
+          className={result.isOpen ? "port-status-open" : "port-status-closed"}
           aria-label={result.isOpen ? "オープン" : "クローズ"}
         >
           {result.isOpen ? "Open" : "Closed"}
@@ -97,7 +97,7 @@ function PortResultRow({ result }: { result: PortResult }) {
       <td className="port-check-table-cell port-check-table-cell-time">
         {result.isOpen && result.responseTime !== undefined
           ? `${result.responseTime}ms`
-          : result.error ?? "-"}
+          : (result.error ?? "-")}
       </td>
     </tr>
   );
@@ -169,12 +169,9 @@ function PortCheck() {
 
       setResult(data);
       const openCount = data.results.filter((r) => r.isOpen).length;
-      announceStatus(
-        `チェック完了: ${data.results.length}ポート中${openCount}ポートがオープン`
-      );
+      announceStatus(`チェック完了: ${data.results.length}ポート中${openCount}ポートがオープン`);
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "通信エラーが発生しました";
+      const message = err instanceof Error ? err.message : "通信エラーが発生しました";
       setError(message);
       announceStatus("エラー: " + message);
     } finally {
@@ -215,10 +212,7 @@ function PortCheck() {
   return (
     <>
       <div className="tool-container">
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          aria-label="ポートチェックフォーム"
-        >
+        <form onSubmit={(e) => e.preventDefault()} aria-label="ポートチェックフォーム">
           <div className="converter-section">
             <div className="port-check-form-group">
               <label htmlFor="hostInput">ホスト名 / IPアドレス</label>
@@ -240,9 +234,7 @@ function PortCheck() {
             </div>
 
             <div className="port-check-form-group">
-              <label htmlFor="portsInput">
-                ポート番号（カンマ区切り）
-              </label>
+              <label htmlFor="portsInput">ポート番号（カンマ区切り）</label>
               <div className="port-preset-buttons" role="group" aria-label="プリセットポートセット">
                 {PORT_PRESETS.map((preset) => (
                   <button
@@ -329,16 +321,10 @@ function PortCheck() {
             </div>
             <div className="port-check-result-meta" aria-live="polite">
               <span>ホスト: {result.host}</span>
+              <span>チェック日時: {new Date(result.checkTime).toLocaleString("ja-JP")}</span>
               <span>
-                チェック日時:{" "}
-                {new Date(result.checkTime).toLocaleString("ja-JP")}
-              </span>
-              <span>
-                結果:{" "}
-                <strong>
-                  {result.results.filter((r) => r.isOpen).length}
-                </strong>{" "}
-                / {result.results.length} ポートがオープン
+                結果: <strong>{result.results.filter((r) => r.isOpen).length}</strong> /{" "}
+                {result.results.length} ポートがオープン
               </span>
             </div>
             <div className="port-check-table-wrapper" aria-live="polite">

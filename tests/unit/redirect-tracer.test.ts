@@ -1,9 +1,5 @@
 import { describe, it, expect } from "vite-plus/test";
-import {
-  isRedirectStatus,
-  getStatusLabel,
-  MAX_HOPS,
-} from "../../app/functions/redirect-tracer";
+import { isRedirectStatus, getStatusLabel, MAX_HOPS } from "../../app/functions/redirect-tracer";
 
 describe("isRedirectStatus", () => {
   it("300番台はtrueを返す", () => {

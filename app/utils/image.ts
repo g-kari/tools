@@ -45,9 +45,7 @@ export function isImageFile(file: File): boolean {
  * @param file - 画像ファイル
  * @returns 幅と高さを含むPromise
  */
-export function getImageDimensions(
-  file: File
-): Promise<{ width: number; height: number }> {
+export function getImageDimensions(file: File): Promise<{ width: number; height: number }> {
   return new Promise((resolve, reject) => {
     const url = URL.createObjectURL(file);
     const img = new Image();
@@ -95,7 +93,7 @@ export const MIN_DIMENSION = 1;
 export function clampDimension(
   value: number,
   min: number = MIN_DIMENSION,
-  max: number = MAX_DIMENSION
+  max: number = MAX_DIMENSION,
 ): number {
   return Math.max(min, Math.min(max, Math.round(value)));
 }
@@ -112,7 +110,7 @@ export function calculateAspectRatioSize(
   originalWidth: number,
   originalHeight: number,
   newWidth: number | null,
-  newHeight: number | null
+  newHeight: number | null,
 ): { width: number; height: number } {
   const aspectRatio = originalWidth / originalHeight;
 

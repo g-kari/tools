@@ -104,14 +104,12 @@ describe("escapeXml", () => {
   });
 
   it("エスケープ不要な文字はそのまま返す", () => {
-    expect(escapeXml("https://example.com/page")).toBe(
-      "https://example.com/page"
-    );
+    expect(escapeXml("https://example.com/page")).toBe("https://example.com/page");
   });
 
   it("複数の特殊文字を含む文字列をエスケープする", () => {
     expect(escapeXml("<tag attr='val\"ue'>content & more</tag>")).toBe(
-      "&lt;tag attr=&apos;val&quot;ue&apos;&gt;content &amp; more&lt;/tag&gt;"
+      "&lt;tag attr=&apos;val&quot;ue&apos;&gt;content &amp; more&lt;/tag&gt;",
     );
   });
 });
@@ -120,9 +118,7 @@ describe("generateSitemapXml", () => {
   it("XMLヘッダーとurlsetを含む", () => {
     const xml = generateSitemapXml([{ loc: "https://example.com/" }]);
     expect(xml).toContain('<?xml version="1.0" encoding="UTF-8"?>');
-    expect(xml).toContain(
-      '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
-    );
+    expect(xml).toContain('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
     expect(xml).toContain("</urlset>");
   });
 
@@ -134,23 +130,17 @@ describe("generateSitemapXml", () => {
   });
 
   it("lastmodを含む", () => {
-    const xml = generateSitemapXml([
-      { loc: "https://example.com/", lastmod: "2024-01-15" },
-    ]);
+    const xml = generateSitemapXml([{ loc: "https://example.com/", lastmod: "2024-01-15" }]);
     expect(xml).toContain("<lastmod>2024-01-15</lastmod>");
   });
 
   it("changefreqを含む", () => {
-    const xml = generateSitemapXml([
-      { loc: "https://example.com/", changefreq: "weekly" },
-    ]);
+    const xml = generateSitemapXml([{ loc: "https://example.com/", changefreq: "weekly" }]);
     expect(xml).toContain("<changefreq>weekly</changefreq>");
   });
 
   it("priorityを含む", () => {
-    const xml = generateSitemapXml([
-      { loc: "https://example.com/", priority: 0.8 },
-    ]);
+    const xml = generateSitemapXml([{ loc: "https://example.com/", priority: 0.8 }]);
     expect(xml).toContain("<priority>0.8</priority>");
   });
 
@@ -181,10 +171,7 @@ describe("generateSitemapXml", () => {
   });
 
   it("無効なURLエントリはスキップする", () => {
-    const xml = generateSitemapXml([
-      { loc: "https://example.com/" },
-      { loc: "not-a-url" },
-    ]);
+    const xml = generateSitemapXml([{ loc: "https://example.com/" }, { loc: "not-a-url" }]);
     expect(xml).toContain("https://example.com/");
     expect(xml).not.toContain("not-a-url");
   });
@@ -198,17 +185,13 @@ describe("generateSitemapXml", () => {
   });
 
   it("URLに含まれる&をエスケープする", () => {
-    const xml = generateSitemapXml([
-      { loc: "https://example.com/?a=1&b=2" },
-    ]);
+    const xml = generateSitemapXml([{ loc: "https://example.com/?a=1&b=2" }]);
     expect(xml).toContain("&amp;");
     expect(xml).not.toContain("&b=");
   });
 
   it("優先度0.0を正しく出力する", () => {
-    const xml = generateSitemapXml([
-      { loc: "https://example.com/", priority: 0.0 },
-    ]);
+    const xml = generateSitemapXml([{ loc: "https://example.com/", priority: 0.0 }]);
     expect(xml).toContain("<priority>0.0</priority>");
   });
 });

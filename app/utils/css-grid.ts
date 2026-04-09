@@ -138,10 +138,7 @@ export function generateContainerCSS(config: GridContainerConfig): string {
  * @param selector - CSSセレクタ
  * @returns アイテムのCSS文字列、またはプロパティがない場合は空文字列
  */
-export function generateItemCSS(
-  item: GridItemConfig,
-  selector: string
-): string {
+export function generateItemCSS(item: GridItemConfig, selector: string): string {
   const props: string[] = [];
 
   if (item.gridColumn !== "auto") {
@@ -167,10 +164,7 @@ export function generateItemCSS(
  * @param items - グリッドアイテム設定の配列
  * @returns 完全なCSS文字列
  */
-export function generateFullCSS(
-  container: GridContainerConfig,
-  items: GridItemConfig[]
-): string {
+export function generateFullCSS(container: GridContainerConfig, items: GridItemConfig[]): string {
   const parts: string[] = [generateContainerCSS(container)];
 
   items.forEach((item, idx) => {
@@ -189,9 +183,7 @@ export function generateFullCSS(
  * @param config - グリッドコンテナ設定
  * @returns React.CSSProperties 相当のオブジェクト
  */
-export function getContainerStyles(
-  config: GridContainerConfig
-): Record<string, string> {
+export function getContainerStyles(config: GridContainerConfig): Record<string, string> {
   const style: Record<string, string> = {
     display: "grid",
   };
@@ -224,9 +216,7 @@ export function getContainerStyles(
  * @param item - グリッドアイテム設定
  * @returns React.CSSProperties 相当のオブジェクト
  */
-export function getItemStyles(
-  item: GridItemConfig
-): Record<string, string> {
+export function getItemStyles(item: GridItemConfig): Record<string, string> {
   const style: Record<string, string> = {};
   if (item.gridColumn !== "auto") {
     style.gridColumn = item.gridColumn;

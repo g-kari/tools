@@ -74,7 +74,7 @@
 }
 
 .uuid-value {
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
   font-size: 1rem;
   color: var(--md-sys-color-on-surface);
   user-select: all;
@@ -119,4 +119,3 @@
     align-self: flex-end;
   }
 }
-

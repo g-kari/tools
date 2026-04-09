@@ -74,7 +74,7 @@ describe("calculateSpecificity", () => {
       expect(calculateSpecificity("[href]")).toEqual({ ids: 0, classes: 1, types: 0 });
     });
 
-    it('a[href] → (0, 1, 1)', () => {
+    it("a[href] → (0, 1, 1)", () => {
       expect(calculateSpecificity("a[href]")).toEqual({ ids: 0, classes: 1, types: 1 });
     });
   });

@@ -145,7 +145,8 @@ function checkXContentTypeOptions(value?: string): HeaderCheck {
     return {
       name: "X-Content-Type-Options",
       level: "danger",
-      message: "X-Content-Type-Optionsヘッダーが設定されていません。MIME sniffing攻撃のリスクがあります。",
+      message:
+        "X-Content-Type-Optionsヘッダーが設定されていません。MIME sniffing攻撃のリスクがあります。",
       recommendation: "nosniff",
     };
   }
@@ -176,7 +177,8 @@ function checkXFrameOptions(value?: string): HeaderCheck {
     return {
       name: "X-Frame-Options",
       level: "danger",
-      message: "X-Frame-Optionsヘッダーが設定されていません。クリックジャッキング攻撃のリスクがあります。",
+      message:
+        "X-Frame-Optionsヘッダーが設定されていません。クリックジャッキング攻撃のリスクがあります。",
       recommendation: "DENY または SAMEORIGIN",
     };
   }
@@ -268,7 +270,8 @@ function checkXXSSProtection(value?: string): HeaderCheck {
     return {
       name: "X-XSS-Protection",
       level: "warning",
-      message: "X-XSS-Protectionヘッダーが設定されていません（非推奨のヘッダーですが、古いブラウザ対応に有用）。",
+      message:
+        "X-XSS-Protectionヘッダーが設定されていません（非推奨のヘッダーですが、古いブラウザ対応に有用）。",
       recommendation: "0（CSPの使用を推奨）",
     };
   }
@@ -396,7 +399,7 @@ export function isPrivateOrLocalhost(hostname: string): boolean {
     const ipv4Part = normalizedHostname.substring(7);
 
     // ドット10進表記 (::ffff:192.168.1.1)
-    if (ipv4Part.includes('.')) {
+    if (ipv4Part.includes(".")) {
       return isPrivateOrLocalhost(ipv4Part);
     }
 
@@ -436,16 +439,17 @@ export function isPrivateOrLocalhost(hostname: string): boolean {
   }
 
   // Unique Local Address (fc00::/7, fd00::/8)
-  if (
-    normalizedHostname.startsWith("fc") ||
-    normalizedHostname.startsWith("fd")
-  ) {
+  if (normalizedHostname.startsWith("fc") || normalizedHostname.startsWith("fd")) {
     return true;
   }
 
   // Link-Local (fe80::/10)
-  if (normalizedHostname.startsWith("fe8") || normalizedHostname.startsWith("fe9") ||
-      normalizedHostname.startsWith("fea") || normalizedHostname.startsWith("feb")) {
+  if (
+    normalizedHostname.startsWith("fe8") ||
+    normalizedHostname.startsWith("fe9") ||
+    normalizedHostname.startsWith("fea") ||
+    normalizedHostname.startsWith("feb")
+  ) {
     return true;
   }
 
@@ -466,7 +470,7 @@ export const checkSecurityHeaders = createServerFn({ method: "GET" })
       // SSRF対策: プライベートIP・ローカルホストへのアクセスを拒否
       if (isPrivateOrLocalhost(url.hostname)) {
         throw new Error(
-          "セキュリティ上の理由により、ローカルホストやプライベートIPアドレスへのアクセスはできません"
+          "セキュリティ上の理由により、ローカルホストやプライベートIPアドレスへのアクセスはできません",
         );
       }
 
@@ -501,7 +505,7 @@ export const checkSecurityHeaders = createServerFn({ method: "GET" })
           const finalUrl = new URL(response.url);
           if (isPrivateOrLocalhost(finalUrl.hostname)) {
             throw new Error(
-              "セキュリティ上の理由により、プライベートIPへのリダイレクトは許可されていません"
+              "セキュリティ上の理由により、プライベートIPへのリダイレクトは許可されていません",
             );
           }
         } catch (e) {
@@ -513,18 +517,11 @@ export const checkSecurityHeaders = createServerFn({ method: "GET" })
 
       const checks: HeaderCheck[] = [
         checkCSP(headers.get("content-security-policy") || undefined),
-        checkHSTS(
-          headers.get("strict-transport-security") || undefined,
-          isHttps
-        ),
-        checkXContentTypeOptions(
-          headers.get("x-content-type-options") || undefined
-        ),
+        checkHSTS(headers.get("strict-transport-security") || undefined, isHttps),
+        checkXContentTypeOptions(headers.get("x-content-type-options") || undefined),
         checkXFrameOptions(headers.get("x-frame-options") || undefined),
         checkReferrerPolicy(headers.get("referrer-policy") || undefined),
-        checkPermissionsPolicy(
-          headers.get("permissions-policy") || undefined
-        ),
+        checkPermissionsPolicy(headers.get("permissions-policy") || undefined),
         checkXXSSProtection(headers.get("x-xss-protection") || undefined),
       ];
 
@@ -550,10 +547,7 @@ export const checkSecurityHeaders = createServerFn({ method: "GET" })
         url,
         checks: [],
         score: 0,
-        error:
-          err instanceof Error
-            ? err.message
-            : "セキュリティヘッダーの取得に失敗しました",
+        error: err instanceof Error ? err.message : "セキュリティヘッダーの取得に失敗しました",
       };
     } finally {
       // タイムアウトのクリーンアップ（必ず実行）

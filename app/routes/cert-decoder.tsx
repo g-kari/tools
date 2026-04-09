@@ -1,39 +1,35 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useState, useCallback, useRef } from 'react';
-import { useToast } from '~/components/Toast';
-import { useClipboard } from '~/hooks/useClipboard';
-import { StatusAnnouncer, useStatusAnnouncement } from '~/hooks/useStatusAnnouncement';
-import { TipsCard } from '~/components/TipsCard';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
-import {
-  parseCertificate,
-  formatDN,
-  type CertificateInfo,
-} from '~/utils/cert-decoder';
-import '../styles/tools/cert-decoder.css';
+import { createFileRoute } from "@tanstack/react-router";
+import { useState, useCallback, useRef } from "react";
+import { useToast } from "~/components/Toast";
+import { useClipboard } from "~/hooks/useClipboard";
+import { StatusAnnouncer, useStatusAnnouncement } from "~/hooks/useStatusAnnouncement";
+import { TipsCard } from "~/components/TipsCard";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
+import { parseCertificate, formatDN, type CertificateInfo } from "~/utils/cert-decoder";
+import "../styles/tools/cert-decoder.css";
 
-export const Route = createFileRoute('/cert-decoder')({
+export const Route = createFileRoute("/cert-decoder")({
   head: () => ({
     meta: [
-      { title: 'X.509 証明書デコーダー | Web ツール集' },
+      { title: "X.509 証明書デコーダー | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          'PEM 形式の X.509 証明書を解析して Subject、Issuer、有効期限、SANs、鍵用途、フィンガープリントを表示します。ブラウザ内完結で外部送信なし。',
+          "PEM 形式の X.509 証明書を解析して Subject、Issuer、有効期限、SANs、鍵用途、フィンガープリントを表示します。ブラウザ内完結で外部送信なし。",
       },
-      { property: 'og:title', content: 'X.509 証明書デコーダー | Web ツール集' },
+      { property: "og:title", content: "X.509 証明書デコーダー | Web ツール集" },
       {
-        property: 'og:description',
+        property: "og:description",
         content:
-          'PEM 形式の X.509 証明書を解析して Subject、Issuer、有効期限、SANs、鍵用途、フィンガープリントを表示します。',
+          "PEM 形式の X.509 証明書を解析して Subject、Issuer、有効期限、SANs、鍵用途、フィンガープリントを表示します。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/cert-decoder` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
-      { name: 'twitter:title', content: 'X.509 証明書デコーダー | Web ツール集' },
+      { property: "og:url", content: `${SITE_BASE_URL}/cert-decoder` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "X.509 証明書デコーダー | Web ツール集" },
       {
-        name: 'twitter:description',
-        content: 'PEM 形式の X.509 証明書を解析。SANs・有効期限・フィンガープリントを表示。',
+        name: "twitter:description",
+        content: "PEM 形式の X.509 証明書を解析。SANs・有効期限・フィンガープリントを表示。",
       },
     ],
   }),
@@ -78,12 +74,12 @@ function StatusBanner({ cert }: { cert: CertificateInfo }) {
   if (cert.isExpired) {
     return (
       <div className="cert-status-banner cert-status-banner-expired" role="alert">
-        <span className="cert-status-icon" aria-hidden="true">✕</span>
+        <span className="cert-status-icon" aria-hidden="true">
+          ✕
+        </span>
         <span className="cert-status-text">
           この証明書は期限切れです
-          <span className="cert-status-days">
-            {' '}（{Math.abs(cert.daysUntilExpiry)} 日前に失効）
-          </span>
+          <span className="cert-status-days"> （{Math.abs(cert.daysUntilExpiry)} 日前に失効）</span>
         </span>
       </div>
     );
@@ -91,24 +87,24 @@ function StatusBanner({ cert }: { cert: CertificateInfo }) {
   if (cert.daysUntilExpiry <= 30) {
     return (
       <div className="cert-status-banner cert-status-banner-warning" role="alert">
-        <span className="cert-status-icon" aria-hidden="true">⚠</span>
+        <span className="cert-status-icon" aria-hidden="true">
+          ⚠
+        </span>
         <span className="cert-status-text">
           証明書の有効期限が近づいています
-          <span className="cert-status-days">
-            {' '}（残り {cert.daysUntilExpiry} 日）
-          </span>
+          <span className="cert-status-days"> （残り {cert.daysUntilExpiry} 日）</span>
         </span>
       </div>
     );
   }
   return (
     <div className="cert-status-banner cert-status-banner-valid" role="status">
-      <span className="cert-status-icon" aria-hidden="true">✓</span>
+      <span className="cert-status-icon" aria-hidden="true">
+        ✓
+      </span>
       <span className="cert-status-text">
         証明書は有効です
-        <span className="cert-status-days">
-          {' '}（残り {cert.daysUntilExpiry} 日）
-        </span>
+        <span className="cert-status-days"> （残り {cert.daysUntilExpiry} 日）</span>
       </span>
     </div>
   );
@@ -116,46 +112,53 @@ function StatusBanner({ cert }: { cert: CertificateInfo }) {
 
 /** SAN アイテムの CSS クラスを返す */
 function sanItemClass(san: string): string {
-  if (san.startsWith('email:')) return 'cert-san-item cert-san-item-email';
-  if (san.startsWith('uri:')) return 'cert-san-item cert-san-item-uri';
-  if (/^\d+\.\d+/.test(san) || /^[0-9a-f:]+$/i.test(san)) return 'cert-san-item cert-san-item-ip';
-  return 'cert-san-item cert-san-item-dns';
+  if (san.startsWith("email:")) return "cert-san-item cert-san-item-email";
+  if (san.startsWith("uri:")) return "cert-san-item cert-san-item-uri";
+  if (/^\d+\.\d+/.test(san) || /^[0-9a-f:]+$/i.test(san)) return "cert-san-item cert-san-item-ip";
+  return "cert-san-item cert-san-item-dns";
 }
 
 /** 証明書結果表示 */
-function CertResult({ cert, onCopy }: { cert: CertificateInfo; onCopy: (v: string, label: string) => void }) {
+function CertResult({
+  cert,
+  onCopy,
+}: {
+  cert: CertificateInfo;
+  onCopy: (v: string, label: string) => void;
+}) {
   const dateOpts: Intl.DateTimeFormatOptions = {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    timeZoneName: 'short',
-    timeZone: 'UTC',
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    timeZoneName: "short",
+    timeZone: "UTC",
   };
-  const fmtDate = (d: Date) => d.toLocaleString('ja-JP', dateOpts);
+  const fmtDate = (d: Date) => d.toLocaleString("ja-JP", dateOpts);
 
-  const algoLabel = cert.publicKeyAlgorithm === 'rsaEncryption'
-    ? `RSA${cert.publicKeySize ? ` ${cert.publicKeySize} bit` : ''}`
-    : cert.publicKeyAlgorithm === 'ecPublicKey'
-      ? `EC (${cert.publicKeyCurve ?? '?'})${cert.publicKeySize ? ` ${cert.publicKeySize} bit` : ''}`
-      : cert.publicKeyAlgorithm;
+  const algoLabel =
+    cert.publicKeyAlgorithm === "rsaEncryption"
+      ? `RSA${cert.publicKeySize ? ` ${cert.publicKeySize} bit` : ""}`
+      : cert.publicKeyAlgorithm === "ecPublicKey"
+        ? `EC (${cert.publicKeyCurve ?? "?"})${cert.publicKeySize ? ` ${cert.publicKeySize} bit` : ""}`
+        : cert.publicKeyAlgorithm;
 
   const sigAlgoLabel: Record<string, string> = {
-    sha256WithRSAEncryption: 'SHA-256 with RSA',
-    sha384WithRSAEncryption: 'SHA-384 with RSA',
-    sha512WithRSAEncryption: 'SHA-512 with RSA',
-    sha1WithRSAEncryption: 'SHA-1 with RSA',
-    md5WithRSAEncryption: 'MD5 with RSA',
-    'ecdsa-with-SHA256': 'ECDSA with SHA-256',
-    'ecdsa-with-SHA384': 'ECDSA with SHA-384',
-    'ecdsa-with-SHA512': 'ECDSA with SHA-512',
-    Ed25519: 'Ed25519',
-    Ed448: 'Ed448',
+    sha256WithRSAEncryption: "SHA-256 with RSA",
+    sha384WithRSAEncryption: "SHA-384 with RSA",
+    sha512WithRSAEncryption: "SHA-512 with RSA",
+    sha1WithRSAEncryption: "SHA-1 with RSA",
+    md5WithRSAEncryption: "MD5 with RSA",
+    "ecdsa-with-SHA256": "ECDSA with SHA-256",
+    "ecdsa-with-SHA384": "ECDSA with SHA-384",
+    "ecdsa-with-SHA512": "ECDSA with SHA-512",
+    Ed25519: "Ed25519",
+    Ed448: "Ed448",
   };
 
-  const isDeprecatedSig = ['sha1WithRSAEncryption', 'md5WithRSAEncryption'].includes(
+  const isDeprecatedSig = ["sha1WithRSAEncryption", "md5WithRSAEncryption"].includes(
     cert.signatureAlgorithm,
   );
 
@@ -194,7 +197,7 @@ function CertResult({ cert, onCopy }: { cert: CertificateInfo; onCopy: (v: strin
       {/* Subject */}
       <div className="cert-section">
         <p className="cert-section-title">サブジェクト (Subject)</p>
-        {(['CN', 'O', 'OU', 'L', 'ST', 'C'] as const).map((key) =>
+        {(["CN", "O", "OU", "L", "ST", "C"] as const).map((key) =>
           cert.subject[key] ? (
             <div key={key} className="cert-field">
               <span className="cert-field-key">{key}</span>
@@ -204,7 +207,7 @@ function CertResult({ cert, onCopy }: { cert: CertificateInfo; onCopy: (v: strin
         )}
         {/* その他フィールド */}
         {Object.entries(cert.subject)
-          .filter(([k]) => !['CN', 'O', 'OU', 'L', 'ST', 'C'].includes(k))
+          .filter(([k]) => !["CN", "O", "OU", "L", "ST", "C"].includes(k))
           .map(([k, v]) =>
             v ? (
               <div key={k} className="cert-field">
@@ -222,7 +225,7 @@ function CertResult({ cert, onCopy }: { cert: CertificateInfo; onCopy: (v: strin
       {/* Issuer */}
       <div className="cert-section">
         <p className="cert-section-title">発行者 (Issuer)</p>
-        {(['CN', 'O', 'OU', 'L', 'ST', 'C'] as const).map((key) =>
+        {(["CN", "O", "OU", "L", "ST", "C"] as const).map((key) =>
           cert.issuer[key] ? (
             <div key={key} className="cert-field">
               <span className="cert-field-key">{key}</span>
@@ -272,13 +275,15 @@ function CertResult({ cert, onCopy }: { cert: CertificateInfo; onCopy: (v: strin
       {/* SANs */}
       {cert.sans.length > 0 && (
         <div className="cert-section">
-          <p className="cert-section-title">
-            Subject Alternative Names ({cert.sans.length})
-          </p>
+          <p className="cert-section-title">Subject Alternative Names ({cert.sans.length})</p>
           <ul className="cert-san-list" aria-label="SANs 一覧">
             {cert.sans.map((san, i) => (
               <li key={i} className={sanItemClass(san)}>
-                {san.startsWith('email:') ? san.slice(6) : san.startsWith('uri:') ? san.slice(4) : san}
+                {san.startsWith("email:")
+                  ? san.slice(6)
+                  : san.startsWith("uri:")
+                    ? san.slice(4)
+                    : san}
               </li>
             ))}
           </ul>
@@ -295,7 +300,9 @@ function CertResult({ cert, onCopy }: { cert: CertificateInfo; onCopy: (v: strin
               <span className="cert-field-value">
                 <div className="cert-usage-tags">
                   {cert.keyUsage.map((u) => (
-                    <span key={u} className="cert-usage-tag">{u}</span>
+                    <span key={u} className="cert-usage-tag">
+                      {u}
+                    </span>
                   ))}
                 </div>
               </span>
@@ -307,7 +314,9 @@ function CertResult({ cert, onCopy }: { cert: CertificateInfo; onCopy: (v: strin
               <span className="cert-field-value">
                 <div className="cert-usage-tags">
                   {cert.extendedKeyUsage.map((u) => (
-                    <span key={u} className="cert-usage-tag">{u}</span>
+                    <span key={u} className="cert-usage-tag">
+                      {u}
+                    </span>
                   ))}
                 </div>
               </span>
@@ -327,11 +336,13 @@ function CertResult({ cert, onCopy }: { cert: CertificateInfo; onCopy: (v: strin
                 <span className="cert-fingerprint-algo">SHA-1</span>
                 <span
                   className="cert-fingerprint-value"
-                  onClick={() => onCopy(cert.fingerprints.sha1, 'SHA-1 フィンガープリント')}
+                  onClick={() => onCopy(cert.fingerprints.sha1, "SHA-1 フィンガープリント")}
                   title="クリックでコピー"
                   role="button"
                   tabIndex={0}
-                  onKeyDown={(e) => e.key === 'Enter' && onCopy(cert.fingerprints.sha1, 'SHA-1 フィンガープリント')}
+                  onKeyDown={(e) =>
+                    e.key === "Enter" && onCopy(cert.fingerprints.sha1, "SHA-1 フィンガープリント")
+                  }
                   aria-label="SHA-1 フィンガープリントをコピー"
                 >
                   {cert.fingerprints.sha1}
@@ -341,11 +352,14 @@ function CertResult({ cert, onCopy }: { cert: CertificateInfo; onCopy: (v: strin
                 <span className="cert-fingerprint-algo">SHA-256</span>
                 <span
                   className="cert-fingerprint-value"
-                  onClick={() => onCopy(cert.fingerprints.sha256, 'SHA-256 フィンガープリント')}
+                  onClick={() => onCopy(cert.fingerprints.sha256, "SHA-256 フィンガープリント")}
                   title="クリックでコピー"
                   role="button"
                   tabIndex={0}
-                  onKeyDown={(e) => e.key === 'Enter' && onCopy(cert.fingerprints.sha256, 'SHA-256 フィンガープリント')}
+                  onKeyDown={(e) =>
+                    e.key === "Enter" &&
+                    onCopy(cert.fingerprints.sha256, "SHA-256 フィンガープリント")
+                  }
                   aria-label="SHA-256 フィンガープリントをコピー"
                 >
                   {cert.fingerprints.sha256}
@@ -366,7 +380,7 @@ function CertDecoder() {
   const { statusRef, announceStatus } = useStatusAnnouncement();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const [pem, setPem] = useState('');
+  const [pem, setPem] = useState("");
   const [cert, setCert] = useState<CertificateInfo | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isParsing, setIsParsing] = useState(false);
@@ -374,7 +388,7 @@ function CertDecoder() {
   const handleParse = useCallback(async () => {
     const trimmed = pem.trim();
     if (!trimmed) {
-      setError('PEM 証明書を入力してください');
+      setError("PEM 証明書を入力してください");
       return;
     }
     setIsParsing(true);
@@ -383,9 +397,9 @@ function CertDecoder() {
     try {
       const result = await parseCertificate(trimmed);
       setCert(result);
-      announceStatus('証明書の解析が完了しました');
+      announceStatus("証明書の解析が完了しました");
     } catch (e) {
-      const msg = e instanceof Error ? e.message : '証明書の解析に失敗しました';
+      const msg = e instanceof Error ? e.message : "証明書の解析に失敗しました";
       setError(msg);
       announceStatus(`エラー: ${msg}`);
     } finally {
@@ -394,28 +408,28 @@ function CertDecoder() {
   }, [pem, announceStatus]);
 
   const handleClear = useCallback(() => {
-    setPem('');
+    setPem("");
     setCert(null);
     setError(null);
     textareaRef.current?.focus();
-    announceStatus('入力をクリアしました');
+    announceStatus("入力をクリアしました");
   }, [announceStatus]);
 
   const handleSample = useCallback(() => {
     setPem(SAMPLE_PEM);
     setCert(null);
     setError(null);
-    announceStatus('サンプル証明書を読み込みました');
+    announceStatus("サンプル証明書を読み込みました");
   }, [announceStatus]);
 
   const handleCopy = useCallback(
     async (value: string, label: string) => {
       const ok = await copy(value);
       if (ok) {
-        showToast(`${label} をコピーしました`, 'success');
+        showToast(`${label} をコピーしました`, "success");
         announceStatus(`${label} をコピーしました`);
       } else {
-        showToast('コピーに失敗しました', 'error');
+        showToast("コピーに失敗しました", "error");
       }
     },
     [copy, showToast, announceStatus],
@@ -423,7 +437,7 @@ function CertDecoder() {
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
         e.preventDefault();
         handleParse();
       }
@@ -445,7 +459,7 @@ function CertDecoder() {
             value={pem}
             onChange={(e) => setPem(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder={'-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----'}
+            placeholder={"-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----"}
             aria-label="PEM 形式の X.509 証明書"
             aria-describedby="cert-input-hint"
             spellCheck={false}
@@ -473,7 +487,7 @@ function CertDecoder() {
             disabled={isParsing || !pem.trim()}
             aria-busy={isParsing}
           >
-            {isParsing ? '解析中...' : '解析'}
+            {isParsing ? "解析中..." : "解析"}
           </button>
           <button
             type="button"
@@ -508,33 +522,33 @@ function CertDecoder() {
         <TipsCard
           sections={[
             {
-              title: '使い方',
+              title: "使い方",
               items: [
-                'PEM 形式の証明書を貼り付けて「解析」ボタンをクリックします',
-                '「サンプル証明書を読み込む」で Let\'s Encrypt Root CA の例を試せます',
-                'Ctrl+Enter でも解析できます',
-                'フィンガープリントはクリックでコピーできます',
-                'ブラウザ内で完結するため、証明書データが外部へ送信されることはありません',
+                "PEM 形式の証明書を貼り付けて「解析」ボタンをクリックします",
+                "「サンプル証明書を読み込む」で Let's Encrypt Root CA の例を試せます",
+                "Ctrl+Enter でも解析できます",
+                "フィンガープリントはクリックでコピーできます",
+                "ブラウザ内で完結するため、証明書データが外部へ送信されることはありません",
               ],
             },
             {
-              title: 'PEM 証明書の取得方法',
+              title: "PEM 証明書の取得方法",
               items: [
-                'ブラウザの鍵アイコン → 証明書を表示 → PEM エクスポート',
-                'openssl s_client -connect example.com:443 -showcerts',
-                'openssl x509 -in cert.crt -text',
-                '各 CA の公式サイトからルート証明書をダウンロード',
+                "ブラウザの鍵アイコン → 証明書を表示 → PEM エクスポート",
+                "openssl s_client -connect example.com:443 -showcerts",
+                "openssl x509 -in cert.crt -text",
+                "各 CA の公式サイトからルート証明書をダウンロード",
               ],
             },
             {
-              title: '証明書の主要フィールド',
+              title: "証明書の主要フィールド",
               items: [
-                'CN (Common Name): サーバーのドメイン名や CA の名称',
-                'SAN (Subject Alternative Names): 証明書が有効なドメイン・IP のリスト',
-                'Key Usage: 証明書の用途 (Digital Signature、Key Encipherment など)',
-                'Extended Key Usage: TLS/SSL サーバー認証、クライアント認証など',
-                'Basic Constraints: CA 証明書かどうか、パス長制約',
-                'Fingerprint: 証明書の SHA-256 ハッシュ（改ざん検知・同一性確認に使用）',
+                "CN (Common Name): サーバーのドメイン名や CA の名称",
+                "SAN (Subject Alternative Names): 証明書が有効なドメイン・IP のリスト",
+                "Key Usage: 証明書の用途 (Digital Signature、Key Encipherment など)",
+                "Extended Key Usage: TLS/SSL サーバー認証、クライアント認証など",
+                "Basic Constraints: CA 証明書かどうか、パス長制約",
+                "Fingerprint: 証明書の SHA-256 ハッシュ（改ざん検知・同一性確認に使用）",
               ],
             },
           ]}

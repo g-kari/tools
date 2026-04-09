@@ -40,8 +40,7 @@ export const Route = createFileRoute("/css-animation")({
       },
       {
         name: "twitter:description",
-        content:
-          "CSSキーフレームアニメーションをビジュアルエディターで作成。",
+        content: "CSSキーフレームアニメーションをビジュアルエディターで作成。",
       },
     ],
   }),
@@ -108,10 +107,7 @@ function CssAnimationGenerator() {
   const generatedCSS = useMemo(() => generateAnimationCSS(config), [config]);
 
   const previewClassName = `ca-preview-box ca-preview-box--key-${animationKey}`;
-  const previewCSS = generatedCSS.replace(
-    ".my-element",
-    `.ca-preview-box--key-${animationKey}`
-  );
+  const previewCSS = generatedCSS.replace(".my-element", `.ca-preview-box--key-${animationKey}`);
 
   // アニメーション種類変更
   const handleTypeChange = useCallback((type: AnimationType) => {
@@ -119,12 +115,9 @@ function CssAnimationGenerator() {
   }, []);
 
   // スライド方向変更
-  const handleSlideDirectionChange = useCallback(
-    (slideDirection: SlideDirection) => {
-      setConfig((prev) => ({ ...prev, slideDirection }));
-    },
-    []
-  );
+  const handleSlideDirectionChange = useCallback((slideDirection: SlideDirection) => {
+    setConfig((prev) => ({ ...prev, slideDirection }));
+  }, []);
 
   // duration変更
   const handleDurationChange = useCallback((duration: number) => {
@@ -137,28 +130,19 @@ function CssAnimationGenerator() {
   }, []);
 
   // iterationCount変更
-  const handleIterationCountChange = useCallback(
-    (iterationCount: number | "infinite") => {
-      setConfig((prev) => ({ ...prev, iterationCount }));
-    },
-    []
-  );
+  const handleIterationCountChange = useCallback((iterationCount: number | "infinite") => {
+    setConfig((prev) => ({ ...prev, iterationCount }));
+  }, []);
 
   // timingFunction変更
-  const handleTimingFunctionChange = useCallback(
-    (timingFunction: TimingFunction) => {
-      setConfig((prev) => ({ ...prev, timingFunction }));
-    },
-    []
-  );
+  const handleTimingFunctionChange = useCallback((timingFunction: TimingFunction) => {
+    setConfig((prev) => ({ ...prev, timingFunction }));
+  }, []);
 
   // direction変更
-  const handleDirectionChange = useCallback(
-    (direction: AnimationDirection) => {
-      setConfig((prev) => ({ ...prev, direction }));
-    },
-    []
-  );
+  const handleDirectionChange = useCallback((direction: AnimationDirection) => {
+    setConfig((prev) => ({ ...prev, direction }));
+  }, []);
 
   // fillMode変更
   const handleFillModeChange = useCallback((fillMode: FillMode) => {
@@ -195,11 +179,7 @@ function CssAnimationGenerator() {
             {/* アニメーション種類 */}
             <div className="ca-section">
               <p className="ca-section-title">アニメーション種類</p>
-              <div
-                className="ca-type-grid"
-                role="group"
-                aria-label="アニメーション種類選択"
-              >
+              <div className="ca-type-grid" role="group" aria-label="アニメーション種類選択">
                 {ANIMATION_TYPES.map(({ id, label }) => (
                   <button
                     key={id}
@@ -223,11 +203,7 @@ function CssAnimationGenerator() {
                   <select
                     className="ca-select"
                     value={config.slideDirection}
-                    onChange={(e) =>
-                      handleSlideDirectionChange(
-                        e.target.value as SlideDirection
-                      )
-                    }
+                    onChange={(e) => handleSlideDirectionChange(e.target.value as SlideDirection)}
                     aria-label="スライド方向"
                   >
                     {SLIDE_DIRECTIONS.map(({ id, label }) => (
@@ -291,9 +267,7 @@ function CssAnimationGenerator() {
                   value={config.iterationCount}
                   onChange={(e) => {
                     const val = e.target.value;
-                    handleIterationCountChange(
-                      val === "infinite" ? "infinite" : Number(val)
-                    );
+                    handleIterationCountChange(val === "infinite" ? "infinite" : Number(val));
                   }}
                   aria-label="繰り返し回数"
                 >
@@ -314,9 +288,7 @@ function CssAnimationGenerator() {
                   id="ca-timing"
                   className="ca-select"
                   value={config.timingFunction}
-                  onChange={(e) =>
-                    handleTimingFunctionChange(e.target.value as TimingFunction)
-                  }
+                  onChange={(e) => handleTimingFunctionChange(e.target.value as TimingFunction)}
                   aria-label="タイミング関数"
                 >
                   {TIMING_FUNCTIONS.map(({ id, label }) => (
@@ -336,9 +308,7 @@ function CssAnimationGenerator() {
                   id="ca-direction"
                   className="ca-select"
                   value={config.direction}
-                  onChange={(e) =>
-                    handleDirectionChange(e.target.value as AnimationDirection)
-                  }
+                  onChange={(e) => handleDirectionChange(e.target.value as AnimationDirection)}
                   aria-label="アニメーション方向"
                 >
                   {DIRECTIONS.map(({ id, label }) => (
@@ -358,9 +328,7 @@ function CssAnimationGenerator() {
                   id="ca-fill-mode"
                   className="ca-select"
                   value={config.fillMode}
-                  onChange={(e) =>
-                    handleFillModeChange(e.target.value as FillMode)
-                  }
+                  onChange={(e) => handleFillModeChange(e.target.value as FillMode)}
                   aria-label="フィルモード"
                 >
                   {FILL_MODES.map(({ id, label }) => (
@@ -384,11 +352,7 @@ function CssAnimationGenerator() {
                 aria-label="アニメーションプレビューエリア"
               >
                 <style>{previewCSS}</style>
-                <div
-                  key={animationKey}
-                  className={previewClassName}
-                  aria-hidden="true"
-                />
+                <div key={animationKey} className={previewClassName} aria-hidden="true" />
               </div>
               <div className="ca-preview-actions">
                 <Button
@@ -434,12 +398,12 @@ function CssAnimationGenerator() {
                 アニメーションの速度変化。easeは自然な加減速、linearは一定速度で動きます。
               </p>
               <p>
-                <strong>Fill Mode:</strong>{" "}
-                forwards にすると、アニメーション終了後もその状態を維持します。
+                <strong>Fill Mode:</strong> forwards
+                にすると、アニメーション終了後もその状態を維持します。
               </p>
               <p>
-                <strong>Direction:</strong>{" "}
-                alternate にすると、アニメーションが交互に順方向・逆方向に再生されます。
+                <strong>Direction:</strong> alternate
+                にすると、アニメーションが交互に順方向・逆方向に再生されます。
               </p>
             </TipsCard>
           </div>

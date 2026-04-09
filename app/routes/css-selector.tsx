@@ -6,10 +6,7 @@ import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import { TipsCard } from "~/components/TipsCard";
 import { ErrorMessage } from "~/components/ErrorMessage";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 
 export const Route = createFileRoute("/css-selector")({
@@ -93,7 +90,7 @@ const SAMPLE_SELECTORS = [
  */
 function runCssSelector(
   html: string,
-  selector: string
+  selector: string,
 ): { elements: MatchedElement[]; error: string | null } {
   try {
     const parser = new DOMParser();
@@ -148,7 +145,7 @@ function CssSelectorChecker() {
       announceStatus(
         elements.length > 0
           ? `${elements.length}件の要素が見つかりました`
-          : "マッチする要素が見つかりませんでした"
+          : "マッチする要素が見つかりませんでした",
       );
     }
   }, [selector, html, showToast, announceStatus]);
@@ -180,10 +177,7 @@ function CssSelectorChecker() {
   return (
     <>
       <div className="tool-container">
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          aria-label="CSS Selectorテストフォーム"
-        >
+        <form onSubmit={(e) => e.preventDefault()} aria-label="CSS Selectorテストフォーム">
           <div className="converter-section">
             <label htmlFor="selectorInput">CSSセレクター</label>
             <input
@@ -201,11 +195,7 @@ function CssSelectorChecker() {
             <span id="selector-help" className="sr-only">
               テストしたいCSSセレクターを入力してください
             </span>
-            <div
-              className="css-selector-presets"
-              role="group"
-              aria-label="サンプルセレクター"
-            >
+            <div className="css-selector-presets" role="group" aria-label="サンプルセレクター">
               {SAMPLE_SELECTORS.map((s) => (
                 <button
                   key={s.value}
@@ -343,7 +333,7 @@ function CssSelectorChecker() {
                 "div p — 子孫結合子（div内のすべてのp）",
                 "div > p — 子結合子（divの直接の子のp）",
                 "[href] — 属性の存在チェック",
-                "[data-type=\"foo\"] — 属性値でマッチ",
+                '[data-type="foo"] — 属性値でマッチ',
                 "li:first-child — 擬似クラス",
                 "h1, h2, h3 — 複数セレクター（カンマ区切り）",
               ],

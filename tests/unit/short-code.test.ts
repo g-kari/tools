@@ -66,7 +66,7 @@ describe("generateShortCode", () => {
         separator: "-",
         alphabet: CHARSETS.nolookalike.value,
         addLuhn: false,
-      })
+      }),
     ).toThrow("セグメント長は 1 〜 20 の範囲で指定してください");
   });
 
@@ -78,7 +78,7 @@ describe("generateShortCode", () => {
         separator: "-",
         alphabet: CHARSETS.nolookalike.value,
         addLuhn: false,
-      })
+      }),
     ).toThrow("セグメント数は 1 〜 8 の範囲で指定してください");
   });
 
@@ -90,7 +90,7 @@ describe("generateShortCode", () => {
         separator: "-",
         alphabet: "",
         addLuhn: false,
-      })
+      }),
     ).toThrow("文字セットを 1 文字以上指定してください");
   });
 

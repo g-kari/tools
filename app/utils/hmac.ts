@@ -83,14 +83,14 @@ export function bytesToBase64(bytes: Uint8Array): string {
 export async function computeHmac(
   algorithm: string,
   keyData: Uint8Array,
-  messageData: Uint8Array
+  messageData: Uint8Array,
 ): Promise<Uint8Array> {
   const cryptoKey = await crypto.subtle.importKey(
     "raw",
     keyData,
     { name: "HMAC", hash: { name: algorithm } },
     false,
-    ["sign"]
+    ["sign"],
   );
   const signature = await crypto.subtle.sign("HMAC", cryptoKey, messageData);
   return new Uint8Array(signature);
@@ -106,19 +106,18 @@ export async function computeHmac(
 export async function computeAllHmacs(
   message: Uint8Array,
   key: Uint8Array,
-  format: HmacOutputFormat = "hex"
+  format: HmacOutputFormat = "hex",
 ): Promise<HmacResult[]> {
   return Promise.all(
     HMAC_ALGORITHMS.map(async (algo) => {
       const bytes = await computeHmac(algo.algorithm, key, message);
-      const value =
-        format === "hex" ? bytesToHex(bytes) : bytesToBase64(bytes);
+      const value = format === "hex" ? bytesToHex(bytes) : bytesToBase64(bytes);
       return {
         algorithmName: algo.name,
         value,
         bits: algo.bits,
         deprecated: algo.deprecated,
       };
-    })
+    }),
   );
 }

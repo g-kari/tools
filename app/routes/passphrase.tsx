@@ -1,6 +1,6 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
-import { useState, useEffect, useCallback } from 'react';
+import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
+import { useState, useEffect, useCallback } from "react";
 import {
   generatePassphrase,
   calculatePassphraseEntropy,
@@ -9,43 +9,39 @@ import {
   SEPARATOR_OPTIONS,
   WORD_LIST,
   type PassphraseOptions,
-} from '../utils/passphrase';
-import { useToast } from '../components/Toast';
-import { Button } from '~/components/ui/button';
-import { Checkbox } from '~/components/ui/checkbox';
-import { Label } from '~/components/ui/label';
-import { Slider } from '~/components/ui/slider';
-import { TipsCard } from '~/components/TipsCard';
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from '~/hooks/useStatusAnnouncement';
-import { useClipboard } from '~/hooks/useClipboard';
-import { useKeyboardShortcut } from '~/hooks/useKeyboardShortcut';
+} from "../utils/passphrase";
+import { useToast } from "../components/Toast";
+import { Button } from "~/components/ui/button";
+import { Checkbox } from "~/components/ui/checkbox";
+import { Label } from "~/components/ui/label";
+import { Slider } from "~/components/ui/slider";
+import { TipsCard } from "~/components/TipsCard";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
+import { useClipboard } from "~/hooks/useClipboard";
+import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 
-export const Route = createFileRoute('/passphrase')({
+export const Route = createFileRoute("/passphrase")({
   head: () => ({
     meta: [
-      { title: 'パスフレーズ生成 | Web ツール集' },
+      { title: "パスフレーズ生成 | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          '英単語を組み合わせた記憶しやすいパスフレーズを生成。単語数・区切り文字・大文字化・数字/記号の追加を設定可能。エントロピー計算とクラック時間推定付き。',
+          "英単語を組み合わせた記憶しやすいパスフレーズを生成。単語数・区切り文字・大文字化・数字/記号の追加を設定可能。エントロピー計算とクラック時間推定付き。",
       },
-      { property: 'og:title', content: 'パスフレーズ生成 | Web ツール集' },
+      { property: "og:title", content: "パスフレーズ生成 | Web ツール集" },
       {
-        property: 'og:description',
+        property: "og:description",
         content:
-          '英単語を組み合わせた記憶しやすいパスフレーズを生成。単語数・区切り文字・大文字化・数字/記号の追加を設定可能。エントロピー計算とクラック時間推定付き。',
+          "英単語を組み合わせた記憶しやすいパスフレーズを生成。単語数・区切り文字・大文字化・数字/記号の追加を設定可能。エントロピー計算とクラック時間推定付き。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/passphrase` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
-      { name: 'twitter:title', content: 'パスフレーズ生成 | Web ツール集' },
+      { property: "og:url", content: `${SITE_BASE_URL}/passphrase` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "パスフレーズ生成 | Web ツール集" },
       {
-        name: 'twitter:description',
-        content:
-          '英単語を組み合わせた記憶しやすいパスフレーズを生成。エントロピー計算付き。',
+        name: "twitter:description",
+        content: "英単語を組み合わせた記憶しやすいパスフレーズを生成。エントロピー計算付き。",
       },
     ],
   }),
@@ -55,7 +51,7 @@ export const Route = createFileRoute('/passphrase')({
 /** デフォルト設定 */
 const DEFAULT_OPTIONS: PassphraseOptions = {
   wordCount: 5,
-  separator: '-',
+  separator: "-",
   capitalize: false,
   addNumber: false,
   addSymbol: false,
@@ -66,7 +62,7 @@ function PassphraseGenerator() {
   const { copy } = useClipboard();
   const { statusRef, announceStatus } = useStatusAnnouncement();
 
-  const [passphrase, setPassphrase] = useState('');
+  const [passphrase, setPassphrase] = useState("");
   const [options, setOptions] = useState<PassphraseOptions>(DEFAULT_OPTIONS);
   const [copied, setCopied] = useState(false);
   const [history, setHistory] = useState<string[]>([]);
@@ -76,22 +72,22 @@ function PassphraseGenerator() {
     setPassphrase(result);
     setCopied(false);
     setHistory((prev) => [result, ...prev].slice(0, 5));
-    announceStatus('パスフレーズを生成しました');
+    announceStatus("パスフレーズを生成しました");
   }, [options, announceStatus]);
 
   const handleCopy = useCallback(async () => {
     if (!passphrase) {
-      showToast('コピーするパスフレーズがありません', 'error');
+      showToast("コピーするパスフレーズがありません", "error");
       return;
     }
     const success = await copy(passphrase);
     if (success) {
       setCopied(true);
-      announceStatus('パスフレーズをクリップボードにコピーしました');
-      showToast('クリップボードにコピーしました', 'success');
+      announceStatus("パスフレーズをクリップボードにコピーしました");
+      showToast("クリップボードにコピーしました", "success");
       setTimeout(() => setCopied(false), 2000);
     } else {
-      showToast('コピーに失敗しました', 'error');
+      showToast("コピーに失敗しました", "error");
     }
   }, [passphrase, copy, showToast, announceStatus]);
 
@@ -99,21 +95,21 @@ function PassphraseGenerator() {
     async (text: string) => {
       const success = await copy(text);
       if (success) {
-        showToast('クリップボードにコピーしました', 'success');
+        showToast("クリップボードにコピーしました", "success");
       }
     },
-    [copy, showToast]
+    [copy, showToast],
   );
 
   const handleOptionChange = useCallback(
     <K extends keyof PassphraseOptions>(key: K, value: PassphraseOptions[K]) => {
       setOptions((prev) => ({ ...prev, [key]: value }));
     },
-    []
+    [],
   );
 
   // Ctrl+Enter で生成
-  useKeyboardShortcut('Enter', handleGenerate, { ctrl: true });
+  useKeyboardShortcut("Enter", handleGenerate, { ctrl: true });
 
   useEffect(() => {
     handleGenerate();
@@ -143,7 +139,7 @@ function PassphraseGenerator() {
               id="pp-word-count-hidden"
               value={options.wordCount}
               onChange={(e) =>
-                handleOptionChange('wordCount', Math.min(8, Math.max(3, Number(e.target.value))))
+                handleOptionChange("wordCount", Math.min(8, Math.max(3, Number(e.target.value))))
               }
               min={3}
               max={8}
@@ -155,7 +151,7 @@ function PassphraseGenerator() {
               max={8}
               step={1}
               value={[options.wordCount]}
-              onValueChange={(value) => handleOptionChange('wordCount', value[0])}
+              onValueChange={(value) => handleOptionChange("wordCount", value[0])}
               aria-label="単語数"
               className="mb-5"
             />
@@ -170,14 +166,14 @@ function PassphraseGenerator() {
               {SEPARATOR_OPTIONS.map((opt) => (
                 <label
                   key={opt.value}
-                  className={`pp-separator-btn ${options.separator === opt.value ? 'pp-separator-btn--active' : ''}`}
+                  className={`pp-separator-btn ${options.separator === opt.value ? "pp-separator-btn--active" : ""}`}
                 >
                   <input
                     type="radio"
                     name="separator"
                     value={opt.value}
                     checked={options.separator === opt.value}
-                    onChange={() => handleOptionChange('separator', opt.value)}
+                    onChange={() => handleOptionChange("separator", opt.value)}
                     className="sr-only"
                     aria-label={opt.label}
                   />
@@ -197,14 +193,14 @@ function PassphraseGenerator() {
                 <input
                   type="checkbox"
                   checked={options.capitalize}
-                  onChange={(e) => handleOptionChange('capitalize', e.target.checked)}
+                  onChange={(e) => handleOptionChange("capitalize", e.target.checked)}
                   aria-label="各単語の先頭を大文字にする"
                   className="absolute left-0 top-0 w-4 h-4 opacity-[0.01] cursor-pointer z-10"
                 />
                 <Checkbox
                   id="pp-capitalize"
                   checked={options.capitalize}
-                  onCheckedChange={(checked) => handleOptionChange('capitalize', checked === true)}
+                  onCheckedChange={(checked) => handleOptionChange("capitalize", checked === true)}
                 />
                 <Label htmlFor="pp-capitalize">各単語の先頭を大文字にする</Label>
               </div>
@@ -212,14 +208,14 @@ function PassphraseGenerator() {
                 <input
                   type="checkbox"
                   checked={options.addNumber}
-                  onChange={(e) => handleOptionChange('addNumber', e.target.checked)}
+                  onChange={(e) => handleOptionChange("addNumber", e.target.checked)}
                   aria-label="末尾に数字（2桁）を追加する"
                   className="absolute left-0 top-0 w-4 h-4 opacity-[0.01] cursor-pointer z-10"
                 />
                 <Checkbox
                   id="pp-add-number"
                   checked={options.addNumber}
-                  onCheckedChange={(checked) => handleOptionChange('addNumber', checked === true)}
+                  onCheckedChange={(checked) => handleOptionChange("addNumber", checked === true)}
                 />
                 <Label htmlFor="pp-add-number">末尾に数字（2桁）を追加する</Label>
               </div>
@@ -227,14 +223,14 @@ function PassphraseGenerator() {
                 <input
                   type="checkbox"
                   checked={options.addSymbol}
-                  onChange={(e) => handleOptionChange('addSymbol', e.target.checked)}
+                  onChange={(e) => handleOptionChange("addSymbol", e.target.checked)}
                   aria-label="末尾に記号を追加する"
                   className="absolute left-0 top-0 w-4 h-4 opacity-[0.01] cursor-pointer z-10"
                 />
                 <Checkbox
                   id="pp-add-symbol"
                   checked={options.addSymbol}
-                  onCheckedChange={(checked) => handleOptionChange('addSymbol', checked === true)}
+                  onCheckedChange={(checked) => handleOptionChange("addSymbol", checked === true)}
                 />
                 <Label htmlFor="pp-add-symbol">末尾に記号を追加する (!@#$%^&*)</Label>
               </div>
@@ -259,7 +255,7 @@ function PassphraseGenerator() {
               disabled={!passphrase}
               aria-label="パスフレーズをクリップボードにコピー"
             >
-              {copied ? 'コピーしました' : 'コピー'}
+              {copied ? "コピーしました" : "コピー"}
             </Button>
           </div>
 
@@ -309,7 +305,7 @@ function PassphraseGenerator() {
                       {[1, 2, 3, 4, 5].map((level) => (
                         <div
                           key={level}
-                          className={`strength-segment ${level <= strength.score ? `strength-${strength.score}` : ''}`}
+                          className={`strength-segment ${level <= strength.score ? `strength-${strength.score}` : ""}`}
                         />
                       ))}
                     </div>
@@ -355,22 +351,22 @@ function PassphraseGenerator() {
         <TipsCard
           sections={[
             {
-              title: '使い方',
+              title: "使い方",
               items: [
-                'スライダーで単語数を調整（3〜8語）',
-                '区切り文字を選択してパスフレーズの形式を変更',
-                '「生成」ボタンで新しいパスフレーズを作成',
-                '「コピー」ボタンでクリップボードにコピー',
-                'キーボードショートカット: Ctrl+Enter で生成',
+                "スライダーで単語数を調整（3〜8語）",
+                "区切り文字を選択してパスフレーズの形式を変更",
+                "「生成」ボタンで新しいパスフレーズを作成",
+                "「コピー」ボタンでクリップボードにコピー",
+                "キーボードショートカット: Ctrl+Enter で生成",
               ],
             },
             {
-              title: 'パスフレーズとは？',
+              title: "パスフレーズとは？",
               items: [
-                '複数の単語を組み合わせたパスワードの一種です',
-                '「correct-horse-battery-staple」のような形式で、覚えやすく安全です',
-                '5語以上のパスフレーズは、ランダムな12文字パスワードと同等以上のセキュリティがあります',
-                '単語数を増やすほどエントロピー（強度の指標）が向上します',
+                "複数の単語を組み合わせたパスワードの一種です",
+                "「correct-horse-battery-staple」のような形式で、覚えやすく安全です",
+                "5語以上のパスフレーズは、ランダムな12文字パスワードと同等以上のセキュリティがあります",
+                "単語数を増やすほどエントロピー（強度の指標）が向上します",
                 `クラック時間は毎秒10億回（10⁹）の試行を想定した目安です`,
               ],
             },

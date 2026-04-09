@@ -64,7 +64,11 @@
     linear-gradient(45deg, transparent 75%, #e0e0e0 75%),
     linear-gradient(-45deg, transparent 75%, #e0e0e0 75%);
   background-size: 16px 16px;
-  background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+  background-position:
+    0 0,
+    0 8px,
+    8px -8px,
+    -8px 0px;
   background-color: #ffffff;
 }
 
@@ -302,7 +306,9 @@
   border: 2px solid transparent;
   border-radius: 8px;
   cursor: pointer;
-  transition: border-color 0.2s, background-color 0.2s;
+  transition:
+    border-color 0.2s,
+    background-color 0.2s;
 }
 
 .favicon-size-item:hover {
@@ -494,7 +500,6 @@
   line-height: 1.5;
 }
 
-
 /* =====================================================
    Base64画像デコードツール専用スタイル
    ===================================================== */
@@ -512,7 +517,10 @@
   background: rgba(231, 224, 236, 0.3);
   color: var(--md-sys-color-on-surface);
   line-height: 1.6;
-  transition: border-color 0.2s, background-color 0.2s, box-shadow 0.2s;
+  transition:
+    border-color 0.2s,
+    background-color 0.2s,
+    box-shadow 0.2s;
   margin-bottom: 4px;
 }
 
@@ -589,4 +597,3 @@
   color: var(--md-sys-color-on-surface);
   margin-bottom: 6px;
 }
-

@@ -3,10 +3,7 @@ import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useCallback, useRef, useEffect } from "react";
 import { useToast } from "../components/Toast";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 import {
   generateNanoId,
@@ -122,7 +119,7 @@ function NanoIdGenerator() {
         showToast("コピーに失敗しました", "error");
       }
     },
-    [ids, copy, announceStatus, showToast]
+    [ids, copy, announceStatus, showToast],
   );
 
   const handleCopyAll = useCallback(async () => {
@@ -155,10 +152,7 @@ function NanoIdGenerator() {
 
   const uniqueAlphabet = [...new Set(customAlphabet.split(""))].join("");
   const entropy = calculateEntropy(size, uniqueAlphabet || DEFAULT_ALPHABET);
-  const collisionProb = calculateCollisionProbability(
-    size,
-    uniqueAlphabet || DEFAULT_ALPHABET
-  );
+  const collisionProb = calculateCollisionProbability(size, uniqueAlphabet || DEFAULT_ALPHABET);
 
   return (
     <>
@@ -185,9 +179,7 @@ function NanoIdGenerator() {
                   max={512}
                   value={size}
                   onChange={(e) =>
-                    setSize(
-                      Math.max(1, Math.min(512, parseInt(e.target.value) || 1))
-                    )
+                    setSize(Math.max(1, Math.min(512, parseInt(e.target.value) || 1)))
                   }
                   className="w-20"
                   aria-describedby="nanoid-size-help"
@@ -205,9 +197,7 @@ function NanoIdGenerator() {
                   max={100}
                   value={count}
                   onChange={(e) =>
-                    setCount(
-                      Math.max(1, Math.min(100, parseInt(e.target.value) || 1))
-                    )
+                    setCount(Math.max(1, Math.min(100, parseInt(e.target.value) || 1)))
                   }
                   className="w-20"
                   aria-describedby="nanoid-count-help"
@@ -250,9 +240,8 @@ function NanoIdGenerator() {
                 className="nanoid-alphabet-input"
               />
               <p id="nanoid-alphabet-hint" className="nanoid-hint">
-                {uniqueAlphabet.length} 種類の文字 ／ エントロピー:{" "}
-                {entropy.toFixed(1)} ビット ／ 100万件生成時の衝突確率:{" "}
-                {collisionProb}
+                {uniqueAlphabet.length} 種類の文字 ／ エントロピー: {entropy.toFixed(1)} ビット ／
+                100万件生成時の衝突確率: {collisionProb}
               </p>
             </div>
 
@@ -283,11 +272,7 @@ function NanoIdGenerator() {
               <div className="nanoid-result-header">
                 <h2 className="section-title">生成結果</h2>
                 {ids.length > 1 && (
-                  <button
-                    type="button"
-                    className="btn-secondary"
-                    onClick={handleCopyAll}
-                  >
+                  <button type="button" className="btn-secondary" onClick={handleCopyAll}>
                     {copiedAll ? "コピーしました" : "すべてコピー"}
                   </button>
                 )}

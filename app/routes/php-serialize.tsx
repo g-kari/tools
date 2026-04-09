@@ -7,25 +7,31 @@ import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import { TipsCard } from "~/components/TipsCard";
 import { ErrorMessage } from "~/components/ErrorMessage";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 
 export const Route = createFileRoute("/php-serialize")({
   head: () => ({
     meta: [
-    { title: "PHPシリアライズ変換 | Web ツール集" },
-    { name: "description", content: "JSON ↔ PHPシリアライズ文字列の相互変換ツール。外部ライブラリ不要。" },
-    { property: "og:title", content: "PHPシリアライズ変換 | Web ツール集" },
-    { property: "og:description", content: "JSON ↔ PHPシリアライズ文字列の相互変換ツール。外部ライブラリ不要。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/php-serialize` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "PHPシリアライズ変換 | Web ツール集" },
-    { name: "twitter:description", content: "JSON ↔ PHPシリアライズ文字列の相互変換ツール。外部ライブラリ不要。" },
-  ],
+      { title: "PHPシリアライズ変換 | Web ツール集" },
+      {
+        name: "description",
+        content: "JSON ↔ PHPシリアライズ文字列の相互変換ツール。外部ライブラリ不要。",
+      },
+      { property: "og:title", content: "PHPシリアライズ変換 | Web ツール集" },
+      {
+        property: "og:description",
+        content: "JSON ↔ PHPシリアライズ文字列の相互変換ツール。外部ライブラリ不要。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/php-serialize` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "PHPシリアライズ変換 | Web ツール集" },
+      {
+        name: "twitter:description",
+        content: "JSON ↔ PHPシリアライズ文字列の相互変換ツール。外部ライブラリ不要。",
+      },
+    ],
   }),
   component: PhpSerializeConverter,
 });
@@ -60,8 +66,7 @@ function PhpSerializeConverter() {
       announceStatus("PHPシリアライズが完了しました");
       showToast("PHPシリアライズしました", "success");
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "変換に失敗しました";
+      const message = err instanceof Error ? err.message : "変換に失敗しました";
       setError(message);
       setOutputText("");
       announceStatus("エラー: " + message);
@@ -84,8 +89,7 @@ function PhpSerializeConverter() {
       announceStatus("PHPアンシリアライズが完了しました");
       showToast("JSONに変換しました", "success");
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "無効なPHPシリアライズ文字列です";
+      const message = err instanceof Error ? err.message : "無効なPHPシリアライズ文字列です";
       setError(message);
       setOutputText("");
       announceStatus("エラー: " + message);

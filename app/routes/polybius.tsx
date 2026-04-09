@@ -90,10 +90,10 @@ function PolybiusSquare() {
       announceStatus(
         newMode === "encode"
           ? "エンコードモードに切り替えました"
-          : "デコードモードに切り替えました"
+          : "デコードモードに切り替えました",
       );
     },
-    [announceStatus]
+    [announceStatus],
   );
 
   const isEmpty = inputText.length === 0;

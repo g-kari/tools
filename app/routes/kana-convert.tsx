@@ -3,10 +3,7 @@ import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useCallback } from "react";
 import { useToast } from "../components/Toast";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 import { convertKana, type KanaConvertMode } from "~/utils/kana";
 
@@ -25,8 +22,7 @@ export const Route = createFileRoute("/kana-convert")({
       },
       {
         property: "og:description",
-        content:
-          "ひらがな・カタカナ・ローマ字を相互変換するツール。ヘボン式ローマ字対応。",
+        content: "ひらがな・カタカナ・ローマ字を相互変換するツール。ヘボン式ローマ字対応。",
       },
       { property: "og:url", content: `${SITE_BASE_URL}/kana-convert` },
       { property: "og:type", content: "website" },
@@ -81,20 +77,17 @@ function KanaConverter() {
   const [output, setOutput] = useState("");
   const [mode, setMode] = useState<KanaConvertMode>("hiraganaToKatakana");
 
-  const doConvert = useCallback(
-    (text: string, currentMode: KanaConvertMode) => {
-      if (!text) return "";
-      return convertKana(text, currentMode);
-    },
-    []
-  );
+  const doConvert = useCallback((text: string, currentMode: KanaConvertMode) => {
+    if (!text) return "";
+    return convertKana(text, currentMode);
+  }, []);
 
   const handleInputChange = useCallback(
     (value: string) => {
       setInput(value);
       setOutput(doConvert(value, mode));
     },
-    [mode, doConvert]
+    [mode, doConvert],
   );
 
   const handleModeChange = useCallback(
@@ -102,7 +95,7 @@ function KanaConverter() {
       setMode(newMode);
       setOutput(doConvert(input, newMode));
     },
-    [input, doConvert]
+    [input, doConvert],
   );
 
   const handleSwap = useCallback(() => {
@@ -136,11 +129,7 @@ function KanaConverter() {
         {/* 変換モード選択 */}
         <div className="converter-section">
           <h2 className="section-title">変換モード</h2>
-          <div
-            className="kana-mode-group"
-            role="radiogroup"
-            aria-label="変換モード選択"
-          >
+          <div className="kana-mode-group" role="radiogroup" aria-label="変換モード選択">
             {MODES.map((m) => (
               <label key={m.value} className="kana-mode-option">
                 <input

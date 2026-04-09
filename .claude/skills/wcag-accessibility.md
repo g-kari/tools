@@ -14,6 +14,7 @@
 情報とUIコンポーネントは、ユーザーが知覚できる方法で提示されなければなりません。
 
 **主要な達成基準:**
+
 - **1.1.1 非テキストコンテンツ（A）**: すべての非テキストコンテンツに代替テキストを提供
 - **1.3.1 情報及び関係性（A）**: セマンティックなHTMLマークアップを使用
 - **1.4.3 コントラスト（最低限）（AA）**: テキストと背景のコントラスト比を 4.5:1 以上に
@@ -24,6 +25,7 @@
 UIコンポーネントとナビゲーションは、ユーザーが操作できなければなりません。
 
 **主要な達成基準:**
+
 - **2.1.1 キーボード（A）**: すべての機能をキーボードで操作可能に
 - **2.1.2 キーボードトラップなし（A）**: キーボードフォーカスを閉じ込めない
 - **2.4.1 ブロックスキップ（A）**: 繰り返されるコンテンツブロックをスキップする仕組み
@@ -35,6 +37,7 @@ UIコンポーネントとナビゲーションは、ユーザーが操作でき
 情報とUIの操作は理解可能でなければなりません。
 
 **主要な達成基準:**
+
 - **3.1.1 ページの言語（A）**: HTMLのlang属性で言語を指定
 - **3.2.1 フォーカス時（A）**: フォーカスだけでコンテキストの変化を引き起こさない
 - **3.3.1 エラーの特定（A）**: 入力エラーを自動的に検出して説明
@@ -46,6 +49,7 @@ UIコンポーネントとナビゲーションは、ユーザーが操作でき
 コンテンツは、支援技術を含む様々なユーザーエージェントで解釈できるよう十分に堅牢でなければなりません。
 
 **主要な達成基準:**
+
 - **4.1.2 名前（name）、役割（role）及び値（value）（A）**: すべてのUIコンポーネントに適切な名前、役割、値を提供
 - **4.1.3 ステータスメッセージ（AA）**: ステータスメッセージをプログラムで判別可能に
 
@@ -64,18 +68,22 @@ UIコンポーネントとナビゲーションは、ユーザーが操作でき
 ```html
 <!-- ✓ 適切な文書言語の指定 -->
 <html lang="ja">
-
-<!-- ✓ セマンティックなランドマーク -->
-<header role="banner">
-<main role="main">
-<nav role="navigation">
-<aside role="complementary">
-<footer role="contentinfo">
-
-<!-- ✓ 見出しの階層構造 -->
-<h1>メインタイトル</h1>
-  <h2>セクションタイトル</h2>
-    <h3>サブセクション</h3>
+  <!-- ✓ セマンティックなランドマーク -->
+  <header role="banner">
+    <main role="main">
+      <nav role="navigation">
+        <aside role="complementary">
+          <footer role="contentinfo">
+            <!-- ✓ 見出しの階層構造 -->
+            <h1>メインタイトル</h1>
+            <h2>セクションタイトル</h2>
+            <h3>サブセクション</h3>
+          </footer>
+        </aside>
+      </nav>
+    </main>
+  </header>
+</html>
 ```
 
 ### フォームアクセシビリティ
@@ -83,34 +91,22 @@ UIコンポーネントとナビゲーションは、ユーザーが操作でき
 ```html
 <!-- ✓ label と input の関連付け -->
 <label for="username">ユーザー名</label>
-<input id="username" type="text" name="username" required>
+<input id="username" type="text" name="username" required />
 
 <!-- ✓ ARIA による説明 -->
-<input
-  id="email"
-  type="email"
-  aria-describedby="email-help"
-  aria-required="true">
+<input id="email" type="email" aria-describedby="email-help" aria-required="true" />
 <span id="email-help">例: user@example.com</span>
 
 <!-- ✓ エラーメッセージの関連付け -->
-<input
-  id="password"
-  type="password"
-  aria-invalid="true"
-  aria-describedby="password-error">
-<span id="password-error" role="alert">
-  パスワードは8文字以上である必要があります
-</span>
+<input id="password" type="password" aria-invalid="true" aria-describedby="password-error" />
+<span id="password-error" role="alert"> パスワードは8文字以上である必要があります </span>
 ```
 
 ### ボタンとリンク
 
 ```html
 <!-- ✓ 明確なラベル -->
-<button type="button" aria-label="メニューを開く">
-  ☰
-</button>
+<button type="button" aria-label="メニューを開く">☰</button>
 
 <!-- ✓ 視覚的に隠されたテキスト -->
 <a href="/search">
@@ -128,8 +124,8 @@ UIコンポーネントとナビゲーションは、ユーザーが操作でき
 
 ```javascript
 // ✓ キーボードショートカット
-document.addEventListener('keydown', (e) => {
-  if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+document.addEventListener("keydown", (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key === "s") {
     e.preventDefault();
     save();
   }
@@ -137,10 +133,10 @@ document.addEventListener('keydown', (e) => {
 
 // ✓ フォーカス管理
 function openDialog() {
-  const dialog = document.getElementById('dialog');
+  const dialog = document.getElementById("dialog");
   dialog.showModal();
   // ダイアログ内の最初のフォーカス可能要素にフォーカス
-  dialog.querySelector('button').focus();
+  dialog.querySelector("button").focus();
 }
 ```
 
@@ -148,24 +144,22 @@ function openDialog() {
 
 ```html
 <!-- ✓ ページ先頭にスキップリンク -->
-<a href="#main-content" class="skip-link">
-  メインコンテンツへスキップ
-</a>
+<a href="#main-content" class="skip-link"> メインコンテンツへスキップ </a>
 
 <style>
-.skip-link {
-  position: absolute;
-  top: -40px;
-  left: 0;
-  background: #000;
-  color: #fff;
-  padding: 8px;
-  text-decoration: none;
-  z-index: 100;
-}
-.skip-link:focus {
-  top: 0;
-}
+  .skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: #000;
+    color: #fff;
+    padding: 8px;
+    text-decoration: none;
+    z-index: 100;
+  }
+  .skip-link:focus {
+    top: 0;
+  }
 </style>
 ```
 
@@ -179,17 +173,17 @@ function openDialog() {
 
 <!-- ✓ 視覚的に隠すがスクリーンリーダーには読ませる -->
 <style>
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
-}
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
 </style>
 
 <span class="sr-only">追加情報</span>
@@ -200,7 +194,7 @@ function openDialog() {
 ```css
 /* ✓ 明確なフォーカススタイル */
 :focus-visible {
-  outline: 3px solid #4A90E2;
+  outline: 3px solid #4a90e2;
   outline-offset: 2px;
 }
 
@@ -226,13 +220,13 @@ function openDialog() {
 <div aria-labelledby="title-id">...</div>
 
 <!-- 説明 -->
-<input aria-describedby="help-text">
+<input aria-describedby="help-text" />
 
 <!-- 状態 -->
 <button aria-pressed="true">オン</button>
 <button aria-expanded="false">メニュー</button>
-<input aria-invalid="true">
-<input aria-required="true">
+<input aria-invalid="true" />
+<input aria-required="true" />
 
 <!-- ライブリージョン -->
 <div aria-live="polite"><!-- 丁寧に通知 --></div>
@@ -285,13 +279,17 @@ npx pa11y https://example.com
 <div onclick="doSomething()">クリック</div>
 
 <!-- ✗ 画像に代替テキストがない -->
-<img src="logo.png">
+<img src="logo.png" />
 
 <!-- ✗ フォーカスインジケーターを削除 -->
-<style>* { outline: none; }</style>
+<style>
+  * {
+    outline: none;
+  }
+</style>
 
 <!-- ✗ ラベルのない入力フィールド -->
-<input type="text" placeholder="名前">
+<input type="text" placeholder="名前" />
 
 <!-- ✗ 意味のないリンクテキスト -->
 <a href="/more">こちら</a>
@@ -304,14 +302,18 @@ npx pa11y https://example.com
 <button type="button" onclick="doSomething()">クリック</button>
 
 <!-- ✓ 適切な代替テキスト -->
-<img src="logo.png" alt="会社ロゴ">
+<img src="logo.png" alt="会社ロゴ" />
 
 <!-- ✓ カスタムフォーカススタイル -->
-<style>:focus-visible { outline: 2px solid blue; }</style>
+<style>
+  :focus-visible {
+    outline: 2px solid blue;
+  }
+</style>
 
 <!-- ✓ label 要素を使用 -->
 <label for="name">名前</label>
-<input id="name" type="text" placeholder="山田太郎">
+<input id="name" type="text" placeholder="山田太郎" />
 
 <!-- ✓ 明確なリンクテキスト -->
 <a href="/more">製品の詳細を見る</a>
@@ -332,10 +334,9 @@ npx pa11y https://example.com
       name="username"
       required
       aria-required="true"
-      aria-describedby="username-help">
-    <span id="username-help" class="help-text">
-      半角英数字で入力してください
-    </span>
+      aria-describedby="username-help"
+    />
+    <span id="username-help" class="help-text"> 半角英数字で入力してください </span>
   </div>
 
   <div>
@@ -350,16 +351,15 @@ npx pa11y https://example.com
       required
       aria-required="true"
       aria-invalid="false"
-      aria-describedby="email-help">
-    <span id="email-help" class="help-text">
-      例: user@example.com
-    </span>
+      aria-describedby="email-help"
+    />
+    <span id="email-help" class="help-text"> 例: user@example.com </span>
   </div>
 
   <div role="group" aria-labelledby="consent-label">
     <span id="consent-label">利用規約</span>
     <label>
-      <input type="checkbox" required aria-required="true">
+      <input type="checkbox" required aria-required="true" />
       利用規約に同意します
     </label>
   </div>

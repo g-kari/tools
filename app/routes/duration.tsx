@@ -1,10 +1,10 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useState, useMemo, useCallback } from 'react';
-import { useToast } from '~/components/Toast';
-import { useClipboard } from '~/hooks/useClipboard';
-import { StatusAnnouncer, useStatusAnnouncement } from '~/hooks/useStatusAnnouncement';
-import { TipsCard } from '~/components/TipsCard';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
+import { createFileRoute } from "@tanstack/react-router";
+import { useState, useMemo, useCallback } from "react";
+import { useToast } from "~/components/Toast";
+import { useClipboard } from "~/hooks/useClipboard";
+import { StatusAnnouncer, useStatusAnnouncement } from "~/hooks/useStatusAnnouncement";
+import { TipsCard } from "~/components/TipsCard";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import {
   parseDuration,
   secondsToHms,
@@ -19,45 +19,47 @@ import {
   FRAME_RATES,
   UNIT_FACTORS,
   type DurationUnit,
-} from '~/utils/duration';
-import '../styles/tools/duration.css';
+} from "~/utils/duration";
+import "../styles/tools/duration.css";
 
-export const Route = createFileRoute('/duration')({
+export const Route = createFileRoute("/duration")({
   head: () => ({
     meta: [
-      { title: '時間計算・変換ツール | Web ツール集' },
+      { title: "時間計算・変換ツール | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          '秒・HH:MM:SS・人間が読めるフォーマット間を相互変換。2つの時間の加算・減算、フレームレート変換（24fps/30fps/60fps）、各単位（日・時・分・秒・ミリ秒）への変換に対応。',
+          "秒・HH:MM:SS・人間が読めるフォーマット間を相互変換。2つの時間の加算・減算、フレームレート変換（24fps/30fps/60fps）、各単位（日・時・分・秒・ミリ秒）への変換に対応。",
       },
-      { property: 'og:title', content: '時間計算・変換ツール | Web ツール集' },
+      { property: "og:title", content: "時間計算・変換ツール | Web ツール集" },
       {
-        property: 'og:description',
-        content: '秒・HH:MM:SS・人間が読めるフォーマット間を相互変換。時間の加算・減算・フレーム変換対応。',
+        property: "og:description",
+        content:
+          "秒・HH:MM:SS・人間が読めるフォーマット間を相互変換。時間の加算・減算・フレーム変換対応。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/duration` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
-      { name: 'twitter:title', content: '時間計算・変換ツール | Web ツール集' },
+      { property: "og:url", content: `${SITE_BASE_URL}/duration` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "時間計算・変換ツール | Web ツール集" },
       {
-        name: 'twitter:description',
-        content: '秒・HH:MM:SS・人間が読めるフォーマット間を相互変換。時間の加算・減算・フレーム変換対応。',
+        name: "twitter:description",
+        content:
+          "秒・HH:MM:SS・人間が読めるフォーマット間を相互変換。時間の加算・減算・フレーム変換対応。",
       },
     ],
   }),
   component: DurationPage,
 });
 
-type Tab = 'convert' | 'calc' | 'frames';
+type Tab = "convert" | "calc" | "frames";
 
 const UNIT_LABELS: Record<DurationUnit, string> = {
-  milliseconds: 'ミリ秒',
-  seconds: '秒',
-  minutes: '分',
-  hours: '時間',
-  days: '日',
-  weeks: '週',
+  milliseconds: "ミリ秒",
+  seconds: "秒",
+  minutes: "分",
+  hours: "時間",
+  days: "日",
+  weeks: "週",
 };
 
 function DurationPage() {
@@ -65,28 +67,29 @@ function DurationPage() {
   const { copy } = useClipboard();
   const { statusRef, announceStatus } = useStatusAnnouncement();
 
-  const [tab, setTab] = useState<Tab>('convert');
+  const [tab, setTab] = useState<Tab>("convert");
 
   // --- 変換タブ ---
-  const [convertInput, setConvertInput] = useState('');
+  const [convertInput, setConvertInput] = useState("");
   const [showMs, setShowMs] = useState(false);
   const [selectedFps, setSelectedFps] = useState<number>(30);
 
   // --- 計算タブ ---
-  const [calcA, setCalcA] = useState('');
-  const [calcB, setCalcB] = useState('');
-  const [calcOp, setCalcOp] = useState<'+' | '-'>('+');
+  const [calcA, setCalcA] = useState("");
+  const [calcB, setCalcB] = useState("");
+  const [calcOp, setCalcOp] = useState<"+" | "-">("+");
 
   // --- フレームタブ ---
-  const [frameInput, setFrameInput] = useState('');
-  const [frameMode, setFrameMode] = useState<'toFrames' | 'fromFrames'>('toFrames');
+  const [frameInput, setFrameInput] = useState("");
+  const [frameMode, setFrameMode] = useState<"toFrames" | "fromFrames">("toFrames");
   const [frameFps, setFrameFps] = useState<number>(30);
 
   // 変換タブ: 結果
   const convertResult = useMemo(() => {
     if (!convertInput.trim()) return null;
     const secs = parseDuration(convertInput);
-    if (secs === null) return { error: '入力形式が正しくありません。秒数または HH:MM:SS 形式で入力してください。' };
+    if (secs === null)
+      return { error: "入力形式が正しくありません。秒数または HH:MM:SS 形式で入力してください。" };
 
     const c = secondsToComponents(secs);
     return {
@@ -110,7 +113,7 @@ function DurationPage() {
     const a = parseDuration(calcA);
     const b = parseDuration(calcB);
     if (a === null || b === null) return null;
-    const result = calcOp === '+' ? addDurations(a, b) : subtractDurations(a, b);
+    const result = calcOp === "+" ? addDurations(a, b) : subtractDurations(a, b);
     return {
       secs: result,
       hms: secondsToHms(result, true),
@@ -121,15 +124,16 @@ function DurationPage() {
   // フレームタブ: 結果
   const frameResult = useMemo(() => {
     if (!frameInput.trim()) return null;
-    if (frameMode === 'toFrames') {
+    if (frameMode === "toFrames") {
       const secs = parseDuration(frameInput);
-      if (secs === null) return { error: '無効な入力です' };
+      if (secs === null) return { error: "無効な入力です" };
       const frames = secondsToFrames(secs, frameFps);
       const timecode = framesToTimecode(frames, frameFps);
       return { frames, timecode, hms: secondsToHms(secs, true) };
     } else {
       const frames = parseInt(frameInput.trim(), 10);
-      if (isNaN(frames) || frames < 0) return { error: 'フレーム数は0以上の整数を入力してください' };
+      if (isNaN(frames) || frames < 0)
+        return { error: "フレーム数は0以上の整数を入力してください" };
       const secs = framesToSeconds(frames, frameFps);
       return {
         frames,
@@ -142,13 +146,13 @@ function DurationPage() {
   }, [frameInput, frameMode, frameFps]);
 
   const handleCopy = useCallback(
-    async (text: string, label = '結果') => {
+    async (text: string, label = "結果") => {
       const ok = await copy(text);
       if (ok) {
-        showToast('コピーしました', 'success');
+        showToast("コピーしました", "success");
         announceStatus(`${label}をコピーしました`);
       } else {
-        showToast('コピーに失敗しました', 'error');
+        showToast("コピーに失敗しました", "error");
       }
     },
     [copy, showToast, announceStatus],
@@ -158,19 +162,18 @@ function DurationPage() {
     (newTab: Tab) => {
       setTab(newTab);
       announceStatus(
-        newTab === 'convert'
-          ? '変換タブに切り替えました'
-          : newTab === 'calc'
-            ? '計算タブに切り替えました'
-            : 'フレーム変換タブに切り替えました',
+        newTab === "convert"
+          ? "変換タブに切り替えました"
+          : newTab === "calc"
+            ? "計算タブに切り替えました"
+            : "フレーム変換タブに切り替えました",
       );
     },
     [announceStatus],
   );
 
-  const convertError =
-    convertResult && 'error' in convertResult ? convertResult.error : null;
-  const hasConvertResult = convertResult && !('error' in convertResult);
+  const convertError = convertResult && "error" in convertResult ? convertResult.error : null;
+  const hasConvertResult = convertResult && !("error" in convertResult);
 
   return (
     <>
@@ -179,32 +182,32 @@ function DurationPage() {
         <div className="dur-tabs" role="tablist" aria-label="機能選択">
           <button
             role="tab"
-            aria-selected={tab === 'convert'}
-            className={`dur-tab-btn${tab === 'convert' ? ' active' : ''}`}
-            onClick={() => handleTabChange('convert')}
+            aria-selected={tab === "convert"}
+            className={`dur-tab-btn${tab === "convert" ? " active" : ""}`}
+            onClick={() => handleTabChange("convert")}
           >
             変換
           </button>
           <button
             role="tab"
-            aria-selected={tab === 'calc'}
-            className={`dur-tab-btn${tab === 'calc' ? ' active' : ''}`}
-            onClick={() => handleTabChange('calc')}
+            aria-selected={tab === "calc"}
+            className={`dur-tab-btn${tab === "calc" ? " active" : ""}`}
+            onClick={() => handleTabChange("calc")}
           >
             加算 / 減算
           </button>
           <button
             role="tab"
-            aria-selected={tab === 'frames'}
-            className={`dur-tab-btn${tab === 'frames' ? ' active' : ''}`}
-            onClick={() => handleTabChange('frames')}
+            aria-selected={tab === "frames"}
+            className={`dur-tab-btn${tab === "frames" ? " active" : ""}`}
+            onClick={() => handleTabChange("frames")}
           >
             フレーム変換
           </button>
         </div>
 
         {/* ===== 変換タブ ===== */}
-        {tab === 'convert' && (
+        {tab === "convert" && (
           <>
             <div className="dur-input-group">
               <label htmlFor="dur-convert-input" className="dur-label">
@@ -213,7 +216,7 @@ function DurationPage() {
               <input
                 id="dur-convert-input"
                 type="text"
-                className={`dur-input${convertError ? ' error' : ''}`}
+                className={`dur-input${convertError ? " error" : ""}`}
                 value={convertInput}
                 onChange={(e) => setConvertInput(e.target.value)}
                 placeholder="例: 3661  または  01:01:01  または  1:30:00.500"
@@ -266,8 +269,7 @@ function DurationPage() {
                     <button
                       type="button"
                       className="btn-secondary"
-  
-                      onClick={() => handleCopy(convertResult.hms, 'HH:MM:SS')}
+                      onClick={() => handleCopy(convertResult.hms, "HH:MM:SS")}
                       aria-label="HH:MM:SSをコピー"
                     >
                       コピー
@@ -279,8 +281,7 @@ function DurationPage() {
                     <button
                       type="button"
                       className="btn-secondary"
-  
-                      onClick={() => handleCopy(convertResult.hmsMs, 'HH:MM:SS.mmm')}
+                      onClick={() => handleCopy(convertResult.hmsMs, "HH:MM:SS.mmm")}
                       aria-label="HH:MM:SS.mmmをコピー"
                     >
                       コピー
@@ -295,9 +296,8 @@ function DurationPage() {
                     <button
                       type="button"
                       className="btn-secondary"
-  
                       onClick={() =>
-                        handleCopy(convertResult.components.totalSeconds.toString(), '合計秒数')
+                        handleCopy(convertResult.components.totalSeconds.toString(), "合計秒数")
                       }
                       aria-label="合計秒数をコピー"
                     >
@@ -313,12 +313,8 @@ function DurationPage() {
                     <button
                       type="button"
                       className="btn-secondary"
-  
                       onClick={() =>
-                        handleCopy(
-                          convertResult.components.totalMilliseconds.toString(),
-                          'ミリ秒',
-                        )
+                        handleCopy(convertResult.components.totalMilliseconds.toString(), "ミリ秒")
                       }
                       aria-label="ミリ秒をコピー"
                     >
@@ -336,7 +332,7 @@ function DurationPage() {
                   <button
                     type="button"
                     className="btn-secondary dur-copy-btn-start"
-                    onClick={() => handleCopy(convertResult.human, '読みやすい表示')}
+                    onClick={() => handleCopy(convertResult.human, "読みやすい表示")}
                     aria-label="読みやすい表示をコピー"
                   >
                     コピー
@@ -380,7 +376,7 @@ function DurationPage() {
                     <button
                       key={fps}
                       type="button"
-                      className={`dur-fps-btn${selectedFps === fps ? ' active' : ''}`}
+                      className={`dur-fps-btn${selectedFps === fps ? " active" : ""}`}
                       onClick={() => setSelectedFps(fps)}
                       aria-pressed={selectedFps === fps}
                     >
@@ -410,7 +406,7 @@ function DurationPage() {
         )}
 
         {/* ===== 計算タブ ===== */}
-        {tab === 'calc' && (
+        {tab === "calc" && (
           <>
             <div className="dur-calc-row">
               <div className="dur-calc-input-wrap">
@@ -436,18 +432,18 @@ function DurationPage() {
                 <div className="dur-calc-op" role="group" aria-label="演算子選択">
                   <button
                     type="button"
-                    className={`dur-op-btn${calcOp === '+' ? ' active' : ''}`}
-                    onClick={() => setCalcOp('+')}
-                    aria-pressed={calcOp === '+'}
+                    className={`dur-op-btn${calcOp === "+" ? " active" : ""}`}
+                    onClick={() => setCalcOp("+")}
+                    aria-pressed={calcOp === "+"}
                     aria-label="加算"
                   >
                     +
                   </button>
                   <button
                     type="button"
-                    className={`dur-op-btn${calcOp === '-' ? ' active' : ''}`}
-                    onClick={() => setCalcOp('-')}
-                    aria-pressed={calcOp === '-'}
+                    className={`dur-op-btn${calcOp === "-" ? " active" : ""}`}
+                    onClick={() => setCalcOp("-")}
+                    aria-pressed={calcOp === "-"}
                     aria-label="減算"
                   >
                     −
@@ -484,8 +480,7 @@ function DurationPage() {
                     <button
                       type="button"
                       className="btn-secondary"
-  
-                      onClick={() => handleCopy(calcResult.hms, '計算結果')}
+                      onClick={() => handleCopy(calcResult.hms, "計算結果")}
                       aria-label="計算結果をコピー"
                     >
                       コピー
@@ -517,23 +512,29 @@ function DurationPage() {
         )}
 
         {/* ===== フレーム変換タブ ===== */}
-        {tab === 'frames' && (
+        {tab === "frames" && (
           <>
             {/* 変換方向 */}
             <div className="dur-calc-op dur-calc-op--direction" role="group" aria-label="変換方向">
               <button
                 type="button"
-                className={`dur-fps-btn${frameMode === 'toFrames' ? ' active' : ''}`}
-                onClick={() => { setFrameMode('toFrames'); setFrameInput(''); }}
-                aria-pressed={frameMode === 'toFrames'}
+                className={`dur-fps-btn${frameMode === "toFrames" ? " active" : ""}`}
+                onClick={() => {
+                  setFrameMode("toFrames");
+                  setFrameInput("");
+                }}
+                aria-pressed={frameMode === "toFrames"}
               >
                 時間 → フレーム数
               </button>
               <button
                 type="button"
-                className={`dur-fps-btn${frameMode === 'fromFrames' ? ' active' : ''}`}
-                onClick={() => { setFrameMode('fromFrames'); setFrameInput(''); }}
-                aria-pressed={frameMode === 'fromFrames'}
+                className={`dur-fps-btn${frameMode === "fromFrames" ? " active" : ""}`}
+                onClick={() => {
+                  setFrameMode("fromFrames");
+                  setFrameInput("");
+                }}
+                aria-pressed={frameMode === "fromFrames"}
               >
                 フレーム数 → 時間
               </button>
@@ -546,7 +547,7 @@ function DurationPage() {
                 <button
                   key={fps}
                   type="button"
-                  className={`dur-fps-btn${frameFps === fps ? ' active' : ''}`}
+                  className={`dur-fps-btn${frameFps === fps ? " active" : ""}`}
                   onClick={() => setFrameFps(fps)}
                   aria-pressed={frameFps === fps}
                 >
@@ -557,39 +558,35 @@ function DurationPage() {
 
             <div className="dur-input-group">
               <label htmlFor="dur-frame-input" className="dur-label">
-                {frameMode === 'toFrames' ? '時間を入力' : 'フレーム数を入力'}
+                {frameMode === "toFrames" ? "時間を入力" : "フレーム数を入力"}
               </label>
               <input
                 id="dur-frame-input"
                 type="text"
-                className={`dur-input${frameResult && 'error' in frameResult ? ' error' : ''}`}
+                className={`dur-input${frameResult && "error" in frameResult ? " error" : ""}`}
                 value={frameInput}
                 onChange={(e) => setFrameInput(e.target.value)}
-                placeholder={
-                  frameMode === 'toFrames'
-                    ? '例: 00:01:30  または  90'
-                    : '例: 2700'
-                }
+                placeholder={frameMode === "toFrames" ? "例: 00:01:30  または  90" : "例: 2700"}
                 aria-label={
-                  frameMode === 'toFrames'
-                    ? '変換する時間（秒数またはHH:MM:SS形式）'
-                    : 'フレーム数（整数）'
+                  frameMode === "toFrames"
+                    ? "変換する時間（秒数またはHH:MM:SS形式）"
+                    : "フレーム数（整数）"
                 }
                 spellCheck={false}
               />
             </div>
 
-            {frameResult && 'error' in frameResult && frameInput.trim() && (
+            {frameResult && "error" in frameResult && frameInput.trim() && (
               <div className="dur-error" role="alert">
                 ⚠ {frameResult.error}
               </div>
             )}
 
-            {frameResult && !('error' in frameResult) && (
+            {frameResult && !("error" in frameResult) && (
               <>
                 <p className="dur-section-title">変換結果</p>
                 <div className="dur-result-grid" aria-label="フレーム変換結果">
-                  {frameMode === 'toFrames' ? (
+                  {frameMode === "toFrames" ? (
                     <>
                       <div className="dur-result-card">
                         <span className="dur-result-card-label">フレーム数</span>
@@ -600,8 +597,7 @@ function DurationPage() {
                         <button
                           type="button"
                           className="btn-secondary"
-      
-                          onClick={() => handleCopy(frameResult.frames.toString(), 'フレーム数')}
+                          onClick={() => handleCopy(frameResult.frames.toString(), "フレーム数")}
                           aria-label="フレーム数をコピー"
                         >
                           コピー
@@ -616,8 +612,7 @@ function DurationPage() {
                         <button
                           type="button"
                           className="btn-secondary"
-      
-                          onClick={() => handleCopy(frameResult.timecode, 'タイムコード')}
+                          onClick={() => handleCopy(frameResult.timecode, "タイムコード")}
                           aria-label="タイムコードをコピー"
                         >
                           コピー
@@ -632,8 +627,7 @@ function DurationPage() {
                         <button
                           type="button"
                           className="btn-secondary"
-      
-                          onClick={() => handleCopy(frameResult.hms, 'HH:MM:SS')}
+                          onClick={() => handleCopy(frameResult.hms, "HH:MM:SS")}
                           aria-label="HH:MM:SSをコピー"
                         >
                           コピー
@@ -646,7 +640,7 @@ function DurationPage() {
                         </span>
                         <span className="dur-result-card-sub">HH:MM:SS:FF</span>
                       </div>
-                      {'secs' in frameResult && (
+                      {"secs" in frameResult && (
                         <div className="dur-result-card">
                           <span className="dur-result-card-label">合計秒数</span>
                           <span className="dur-result-card-value">
@@ -657,12 +651,10 @@ function DurationPage() {
                           <span className="dur-result-card-sub">秒</span>
                         </div>
                       )}
-                      {'human' in frameResult && (
+                      {"human" in frameResult && (
                         <div className="dur-result-card">
                           <span className="dur-result-card-label">読みやすい表示</span>
-                          <span
-                            className="dur-result-card-value dur-result-card-value--xs"
-                          >
+                          <span className="dur-result-card-value dur-result-card-value--xs">
                             {frameResult.human as string}
                           </span>
                         </div>
@@ -678,33 +670,33 @@ function DurationPage() {
         <TipsCard
           sections={[
             {
-              title: '入力形式',
+              title: "入力形式",
               items: [
-                '秒数: 整数または小数（例: 3661, 90.5）',
-                'HH:MM:SS形式: 01:01:01（時:分:秒）',
-                'MM:SS形式: 01:30（分:秒）',
-                'ミリ秒付き: 01:30:00.500 または 01:30:00,500',
-                '負の値: -3600 または -01:00:00',
+                "秒数: 整数または小数（例: 3661, 90.5）",
+                "HH:MM:SS形式: 01:01:01（時:分:秒）",
+                "MM:SS形式: 01:30（分:秒）",
+                "ミリ秒付き: 01:30:00.500 または 01:30:00,500",
+                "負の値: -3600 または -01:00:00",
               ],
             },
             {
-              title: 'フレームレートの目安',
+              title: "フレームレートの目安",
               items: [
-                '23.976 fps: 映画・ブルーレイ（NTSC準拠）',
-                '24 fps: デジタル映画標準',
-                '25 fps: PAL/SECAM放送（欧州・日本向け）',
-                '29.97 fps: NTSC放送（北米・日本アナログ）',
-                '30 fps: HD動画の一般的な設定',
-                '60 fps: ゲーム動画・スポーツ中継',
+                "23.976 fps: 映画・ブルーレイ（NTSC準拠）",
+                "24 fps: デジタル映画標準",
+                "25 fps: PAL/SECAM放送（欧州・日本向け）",
+                "29.97 fps: NTSC放送（北米・日本アナログ）",
+                "30 fps: HD動画の一般的な設定",
+                "60 fps: ゲーム動画・スポーツ中継",
               ],
             },
             {
-              title: 'タイムコード（HH:MM:SS:FF）について',
+              title: "タイムコード（HH:MM:SS:FF）について",
               items: [
-                '映像編集で使われる標準的な時間表現',
-                'FF はフレーム番号を表す（0からfps-1まで）',
-                '29.97/30 fps では 00:01:30:00 = 90秒 = 2700フレーム',
-                'Drop Frame（DF）タイムコードはこのツールでは非対応',
+                "映像編集で使われる標準的な時間表現",
+                "FF はフレーム番号を表す（0からfps-1まで）",
+                "29.97/30 fps では 00:01:30:00 = 90秒 = 2700フレーム",
+                "Drop Frame（DF）タイムコードはこのツールでは非対応",
               ],
             },
           ]}

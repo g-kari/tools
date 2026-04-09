@@ -86,12 +86,7 @@ describe("CATEGORY_ORDER", () => {
   });
 
   it("全カテゴリが含まれる", () => {
-    const expected: GitignoreCategory[] = [
-      "language",
-      "framework",
-      "ide",
-      "os",
-    ];
+    const expected: GitignoreCategory[] = ["language", "framework", "ide", "os"];
     for (const cat of expected) {
       expect(CATEGORY_ORDER).toContain(cat);
     }

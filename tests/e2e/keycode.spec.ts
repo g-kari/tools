@@ -16,14 +16,10 @@ test.describe("キーコードチェッカー", () => {
     await expect(captureArea).toBeVisible();
 
     // 初期メッセージが表示される
-    await expect(
-      page.getByText("キーボードのキーを押してください")
-    ).toBeVisible();
+    await expect(page.getByText("キーボードのキーを押してください")).toBeVisible();
 
     // 履歴セクションが表示される
-    await expect(
-      page.getByRole("heading", { name: /キー履歴/ })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: /キー履歴/ })).toBeVisible();
   });
 
   test("キーを押すとイベント情報が表示される", async ({ page }) => {
@@ -31,9 +27,7 @@ test.describe("キーコードチェッカー", () => {
     await page.keyboard.press("a");
 
     // キーイベント情報セクションが表示される
-    await expect(
-      page.getByRole("heading", { name: "キーイベント情報" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "キーイベント情報" })).toBeVisible();
 
     // テーブルに key が表示される
     const table = page.getByRole("table", {
@@ -94,14 +88,10 @@ test.describe("キーコードチェッカー", () => {
     await clearButton.click();
 
     // 履歴が空になる
-    await expect(
-      page.getByText("キーを押すと履歴が表示されます")
-    ).toBeVisible();
+    await expect(page.getByText("キーを押すと履歴が表示されます")).toBeVisible();
 
     // キーイベント情報セクションが消える
-    await expect(
-      page.getByRole("heading", { name: "キーイベント情報" })
-    ).not.toBeVisible();
+    await expect(page.getByRole("heading", { name: "キーイベント情報" })).not.toBeVisible();
   });
 
   test("10件を超える履歴は最新10件のみ保持される", async ({ page }) => {

@@ -1,10 +1,10 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useState, useCallback, useMemo } from 'react';
-import { useToast } from '~/components/Toast';
-import { useClipboard } from '~/hooks/useClipboard';
-import { StatusAnnouncer, useStatusAnnouncement } from '~/hooks/useStatusAnnouncement';
-import { TipsCard } from '~/components/TipsCard';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
+import { createFileRoute } from "@tanstack/react-router";
+import { useState, useCallback, useMemo } from "react";
+import { useToast } from "~/components/Toast";
+import { useClipboard } from "~/hooks/useClipboard";
+import { StatusAnnouncer, useStatusAnnouncement } from "~/hooks/useStatusAnnouncement";
+import { TipsCard } from "~/components/TipsCard";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import {
   parseIni,
   formatIni,
@@ -13,31 +13,31 @@ import {
   calcIniStats,
   type IniData,
   type IniParseResult,
-} from '~/utils/ini-parser';
-import '../styles/tools/ini-parser.css';
+} from "~/utils/ini-parser";
+import "../styles/tools/ini-parser.css";
 
-export const Route = createFileRoute('/ini-parser')({
+export const Route = createFileRoute("/ini-parser")({
   head: () => ({
     meta: [
-      { title: 'INIファイルパーサー/フォーマッター | Web ツール集' },
+      { title: "INIファイルパーサー/フォーマッター | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          'INIファイルのパース・整形・JSON変換ツール。php.ini、.gitconfig、Windows設定ファイルなど各種INI形式に対応。セクション・キー・値をビジュアルで確認。',
+          "INIファイルのパース・整形・JSON変換ツール。php.ini、.gitconfig、Windows設定ファイルなど各種INI形式に対応。セクション・キー・値をビジュアルで確認。",
       },
-      { property: 'og:title', content: 'INIファイルパーサー/フォーマッター | Web ツール集' },
+      { property: "og:title", content: "INIファイルパーサー/フォーマッター | Web ツール集" },
       {
-        property: 'og:description',
+        property: "og:description",
         content:
-          'INIファイルのパース・整形・JSON変換。php.ini、.gitconfig、Windows設定ファイルに対応。',
+          "INIファイルのパース・整形・JSON変換。php.ini、.gitconfig、Windows設定ファイルに対応。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/ini-parser` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
-      { name: 'twitter:title', content: 'INIファイルパーサー/フォーマッター | Web ツール集' },
+      { property: "og:url", content: `${SITE_BASE_URL}/ini-parser` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "INIファイルパーサー/フォーマッター | Web ツール集" },
       {
-        name: 'twitter:description',
-        content: 'INIファイルのパース・JSON変換。php.ini / .gitconfig 対応。',
+        name: "twitter:description",
+        content: "INIファイルのパース・JSON変換。php.ini / .gitconfig 対応。",
       },
     ],
   }),
@@ -49,7 +49,7 @@ export const Route = createFileRoute('/ini-parser')({
 // ---------------------------------------------------------------------------
 
 const SAMPLES: Record<string, string> = {
-  'php.ini': `; PHP Configuration File
+  "php.ini": `; PHP Configuration File
 [PHP]
 engine = On
 short_open_tag = Off
@@ -70,7 +70,7 @@ date.timezone = Asia/Tokyo
 mysqli.max_links = -1
 mysqli.default_port = 3306`,
 
-  '.gitconfig': `[user]
+  ".gitconfig": `[user]
   name = John Doe
   email = john@example.com
 
@@ -88,7 +88,7 @@ mysqli.default_port = 3306`,
 [pull]
   rebase = true`,
 
-  'app.ini': `; Application Configuration
+  "app.ini": `; Application Configuration
 [general]
 app_name = MyApp
 version = 1.0.0
@@ -139,9 +139,7 @@ function IniTreeView({ result }: IniTreeViewProps) {
   if (entries.length === 0) {
     return (
       <div className="ini-tree">
-        <p className="ini-tree-empty">
-          パース結果がありません
-        </p>
+        <p className="ini-tree-empty">パース結果がありません</p>
       </div>
     );
   }
@@ -149,21 +147,26 @@ function IniTreeView({ result }: IniTreeViewProps) {
   return (
     <div className="ini-tree" role="tree" aria-label="INI構造ツリー">
       {entries.map(([section, data]) => {
-        const displayName = section === '' ? '(グローバル)' : section;
+        const displayName = section === "" ? "(グローバル)" : section;
         const isCollapsed = collapsed.has(section);
         const keyCount = Object.keys(data).length;
 
         return (
-          <div key={section} className="ini-tree-section" role="treeitem" aria-expanded={!isCollapsed}>
+          <div
+            key={section}
+            className="ini-tree-section"
+            role="treeitem"
+            aria-expanded={!isCollapsed}
+          >
             <div
               className="ini-tree-section-header"
               onClick={() => toggle(section)}
               tabIndex={0}
-              onKeyDown={(e) => e.key === 'Enter' || e.key === ' ' ? toggle(section) : undefined}
+              onKeyDown={(e) => (e.key === "Enter" || e.key === " " ? toggle(section) : undefined)}
               aria-label={`セクション: ${displayName} (${keyCount}件)`}
             >
               <span
-                className={`ini-tree-section-toggle${isCollapsed ? '' : ' expanded'}`}
+                className={`ini-tree-section-toggle${isCollapsed ? "" : " expanded"}`}
                 aria-hidden="true"
               >
                 ▶
@@ -180,7 +183,7 @@ function IniTreeView({ result }: IniTreeViewProps) {
                     <span className="ini-tree-separator">=</span>
                     {Array.isArray(value) ? (
                       <span className="ini-tree-value">
-                        {value.join(', ')}
+                        {value.join(", ")}
                         <span className="ini-tree-value-badge">{value.length}件</span>
                       </span>
                     ) : (
@@ -201,26 +204,26 @@ function IniTreeView({ result }: IniTreeViewProps) {
 // メインコンポーネント
 // ---------------------------------------------------------------------------
 
-type Mode = 'ini-to-json' | 'json-to-ini';
+type Mode = "ini-to-json" | "json-to-ini";
 
 function IniParserTool() {
   const { showToast } = useToast();
   const { copy } = useClipboard();
   const { statusRef, announceStatus } = useStatusAnnouncement();
 
-  const [mode, setMode] = useState<Mode>('ini-to-json');
-  const [iniInput, setIniInput] = useState('');
-  const [jsonInput, setJsonInput] = useState('');
+  const [mode, setMode] = useState<Mode>("ini-to-json");
+  const [iniInput, setIniInput] = useState("");
+  const [jsonInput, setJsonInput] = useState("");
   const [multiValue, setMultiValue] = useState(false);
 
   // INI→JSON モードの結果
   const iniParseResult = useMemo<IniParseResult | null>(() => {
-    if (mode !== 'ini-to-json' || !iniInput.trim()) return null;
+    if (mode !== "ini-to-json" || !iniInput.trim()) return null;
     return parseIni(iniInput, { multiValue });
   }, [mode, iniInput, multiValue]);
 
   const jsonOutput = useMemo<string>(() => {
-    if (!iniParseResult) return '';
+    if (!iniParseResult) return "";
     const json = iniToJson(iniParseResult.data);
     return JSON.stringify(json, null, 2);
   }, [iniParseResult]);
@@ -235,27 +238,27 @@ function IniParserTool() {
     iniOutput: string;
     jsonParseError: string | null;
   }>(() => {
-    if (mode !== 'json-to-ini' || !jsonInput.trim()) {
-      return { iniOutput: '', jsonParseError: null };
+    if (mode !== "json-to-ini" || !jsonInput.trim()) {
+      return { iniOutput: "", jsonParseError: null };
     }
     try {
       const parsed = JSON.parse(jsonInput);
-      if (typeof parsed !== 'object' || parsed === null || Array.isArray(parsed)) {
-        return { iniOutput: '', jsonParseError: 'トップレベルはオブジェクトである必要があります' };
+      if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+        return { iniOutput: "", jsonParseError: "トップレベルはオブジェクトである必要があります" };
       }
       const data = jsonToIni(parsed as Record<string, unknown>);
       return { iniOutput: formatIni(data), jsonParseError: null };
     } catch (e) {
       return {
-        iniOutput: '',
-        jsonParseError: e instanceof Error ? e.message : 'JSONのパースに失敗しました',
+        iniOutput: "",
+        jsonParseError: e instanceof Error ? e.message : "JSONのパースに失敗しました",
       };
     }
   }, [mode, jsonInput]);
 
   // JSON→INI モードのツリービュー用データ
   const jsonToIniParseResult = useMemo<IniParseResult | null>(() => {
-    if (mode !== 'json-to-ini' || !jsonInput.trim() || jsonParseError) return null;
+    if (mode !== "json-to-ini" || !jsonInput.trim() || jsonParseError) return null;
     try {
       const parsed = JSON.parse(jsonInput) as Record<string, unknown>;
       const data: IniData = jsonToIni(parsed);
@@ -266,40 +269,50 @@ function IniParserTool() {
   }, [mode, jsonInput, jsonParseError]);
 
   const handleCopyOutput = useCallback(async () => {
-    const text = mode === 'ini-to-json' ? jsonOutput : iniOutput;
+    const text = mode === "ini-to-json" ? jsonOutput : iniOutput;
     if (!text) return;
     const ok = await copy(text);
     if (ok) {
-      showToast('コピーしました', 'success');
-      announceStatus('出力をコピーしました');
+      showToast("コピーしました", "success");
+      announceStatus("出力をコピーしました");
     } else {
-      showToast('コピーに失敗しました', 'error');
+      showToast("コピーに失敗しました", "error");
     }
   }, [mode, jsonOutput, iniOutput, copy, showToast, announceStatus]);
 
   const handleClear = useCallback(() => {
-    if (mode === 'ini-to-json') {
-      setIniInput('');
+    if (mode === "ini-to-json") {
+      setIniInput("");
     } else {
-      setJsonInput('');
+      setJsonInput("");
     }
-    announceStatus('入力をクリアしました');
+    announceStatus("入力をクリアしました");
   }, [mode, announceStatus]);
 
-  const handleSample = useCallback((name: string) => {
-    if (mode === 'ini-to-json') {
-      setIniInput(SAMPLES[name] ?? '');
-    }
-    announceStatus(`${name} サンプルを読み込みました`);
-  }, [mode, announceStatus]);
+  const handleSample = useCallback(
+    (name: string) => {
+      if (mode === "ini-to-json") {
+        setIniInput(SAMPLES[name] ?? "");
+      }
+      announceStatus(`${name} サンプルを読み込みました`);
+    },
+    [mode, announceStatus],
+  );
 
-  const handleModeChange = useCallback((newMode: Mode) => {
-    setMode(newMode);
-    announceStatus(newMode === 'ini-to-json' ? 'INI→JSON モードに切り替えました' : 'JSON→INI モードに切り替えました');
-  }, [announceStatus]);
+  const handleModeChange = useCallback(
+    (newMode: Mode) => {
+      setMode(newMode);
+      announceStatus(
+        newMode === "ini-to-json"
+          ? "INI→JSON モードに切り替えました"
+          : "JSON→INI モードに切り替えました",
+      );
+    },
+    [announceStatus],
+  );
 
-  const hasInput = mode === 'ini-to-json' ? !!iniInput.trim() : !!jsonInput.trim();
-  const currentParseResult = mode === 'ini-to-json' ? iniParseResult : jsonToIniParseResult;
+  const hasInput = mode === "ini-to-json" ? !!iniInput.trim() : !!jsonInput.trim();
+  const currentParseResult = mode === "ini-to-json" ? iniParseResult : jsonToIniParseResult;
 
   return (
     <>
@@ -308,17 +321,17 @@ function IniParserTool() {
         <div className="ini-tabs" role="tablist" aria-label="変換モード">
           <button
             role="tab"
-            aria-selected={mode === 'ini-to-json'}
-            className={`ini-tab-btn${mode === 'ini-to-json' ? ' active' : ''}`}
-            onClick={() => handleModeChange('ini-to-json')}
+            aria-selected={mode === "ini-to-json"}
+            className={`ini-tab-btn${mode === "ini-to-json" ? " active" : ""}`}
+            onClick={() => handleModeChange("ini-to-json")}
           >
             INI → JSON
           </button>
           <button
             role="tab"
-            aria-selected={mode === 'json-to-ini'}
-            className={`ini-tab-btn${mode === 'json-to-ini' ? ' active' : ''}`}
-            onClick={() => handleModeChange('json-to-ini')}
+            aria-selected={mode === "json-to-ini"}
+            className={`ini-tab-btn${mode === "json-to-ini" ? " active" : ""}`}
+            onClick={() => handleModeChange("json-to-ini")}
           >
             JSON → INI
           </button>
@@ -327,20 +340,15 @@ function IniParserTool() {
         {/* 入力エリア */}
         <div className="converter-section">
           <div className="ini-output-header">
-            <label
-              htmlFor="ini-input"
-              className="section-title ini-label-no-margin"
-            >
-              {mode === 'ini-to-json' ? 'INI 入力' : 'JSON 入力'}
+            <label htmlFor="ini-input" className="section-title ini-label-no-margin">
+              {mode === "ini-to-json" ? "INI 入力" : "JSON 入力"}
             </label>
           </div>
 
           {/* INI→JSON: サンプルボタン */}
-          {mode === 'ini-to-json' && (
+          {mode === "ini-to-json" && (
             <div className="ini-sample-row" aria-label="サンプルを選択">
-              <span className="ini-sample-label">
-                サンプル:
-              </span>
+              <span className="ini-sample-label">サンプル:</span>
               {Object.keys(SAMPLES).map((name) => (
                 <button
                   key={name}
@@ -358,22 +366,22 @@ function IniParserTool() {
           <textarea
             id="ini-input"
             className="ini-textarea"
-            value={mode === 'ini-to-json' ? iniInput : jsonInput}
+            value={mode === "ini-to-json" ? iniInput : jsonInput}
             onChange={(e) => {
-              if (mode === 'ini-to-json') setIniInput(e.target.value);
+              if (mode === "ini-to-json") setIniInput(e.target.value);
               else setJsonInput(e.target.value);
             }}
             placeholder={
-              mode === 'ini-to-json'
-                ? '[section]\nkey = value\n\n; コメントも対応'
+              mode === "ini-to-json"
+                ? "[section]\nkey = value\n\n; コメントも対応"
                 : '{\n  "section": {\n    "key": "value"\n  }\n}'
             }
-            aria-label={mode === 'ini-to-json' ? 'INI入力テキストエリア' : 'JSON入力テキストエリア'}
+            aria-label={mode === "ini-to-json" ? "INI入力テキストエリア" : "JSON入力テキストエリア"}
             spellCheck={false}
           />
 
           {/* INI→JSON: オプション */}
-          {mode === 'ini-to-json' && (
+          {mode === "ini-to-json" && (
             <div className="ini-options-row">
               <label className="ini-option-label">
                 <input
@@ -393,7 +401,7 @@ function IniParserTool() {
               type="button"
               className="btn-primary"
               onClick={handleCopyOutput}
-              disabled={mode === 'ini-to-json' ? !jsonOutput : !iniOutput}
+              disabled={mode === "ini-to-json" ? !jsonOutput : !iniOutput}
               aria-label="出力をコピー"
             >
               コピー
@@ -410,7 +418,7 @@ function IniParserTool() {
           </div>
 
           {/* パースエラー */}
-          {mode === 'ini-to-json' && iniParseResult && iniParseResult.errors.length > 0 && (
+          {mode === "ini-to-json" && iniParseResult && iniParseResult.errors.length > 0 && (
             <div className="ini-errors" role="alert" aria-label="パースエラー">
               <div className="ini-errors-title">
                 <span aria-hidden="true">⚠</span>
@@ -425,7 +433,7 @@ function IniParserTool() {
           )}
 
           {/* JSON→INI: JSONパースエラー */}
-          {mode === 'json-to-ini' && jsonParseError && (
+          {mode === "json-to-ini" && jsonParseError && (
             <div className="ini-errors" role="alert" aria-label="JSONパースエラー">
               <div className="ini-errors-title">
                 <span aria-hidden="true">✕</span>
@@ -441,14 +449,14 @@ function IniParserTool() {
           <div className="converter-section">
             <div className="ini-output-header">
               <span className="ini-output-label">
-                {mode === 'ini-to-json' ? 'JSON 出力' : 'INI 出力'}
+                {mode === "ini-to-json" ? "JSON 出力" : "INI 出力"}
               </span>
             </div>
             <textarea
               className="ini-textarea"
               readOnly
-              value={mode === 'ini-to-json' ? jsonOutput : iniOutput}
-              aria-label={mode === 'ini-to-json' ? 'JSON出力' : 'INI出力'}
+              value={mode === "ini-to-json" ? jsonOutput : iniOutput}
+              aria-label={mode === "ini-to-json" ? "JSON出力" : "INI出力"}
               aria-live="polite"
             />
           </div>
@@ -463,7 +471,7 @@ function IniParserTool() {
         )}
 
         {/* 統計情報 (INI→JSON モードのみ) */}
-        {mode === 'ini-to-json' && iniStats && (
+        {mode === "ini-to-json" && iniStats && (
           <div className="converter-section">
             <p className="section-title">統計</p>
             <div className="ini-stats">
@@ -492,33 +500,33 @@ function IniParserTool() {
         <TipsCard
           sections={[
             {
-              title: 'INIファイルの書式',
+              title: "INIファイルの書式",
               items: [
-                '[section] でセクションを定義します',
-                'key = value または key: value でキーと値を設定します',
-                '; または # で始まる行はコメントです',
-                '値の末尾に ; を付けるとインラインコメントになります',
-                'セクションなしのキーはグローバルキーとして扱われます',
+                "[section] でセクションを定義します",
+                "key = value または key: value でキーと値を設定します",
+                "; または # で始まる行はコメントです",
+                "値の末尾に ; を付けるとインラインコメントになります",
+                "セクションなしのキーはグローバルキーとして扱われます",
               ],
             },
             {
-              title: '対応フォーマット',
+              title: "対応フォーマット",
               items: [
-                'php.ini (PHP設定ファイル)',
-                '.gitconfig (Git設定)',
-                'smb.conf (Samba設定)',
-                'Windows INIファイル',
-                'Python configparser形式',
-                '.editorconfig (エディター設定)',
+                "php.ini (PHP設定ファイル)",
+                ".gitconfig (Git設定)",
+                "smb.conf (Samba設定)",
+                "Windows INIファイル",
+                "Python configparser形式",
+                ".editorconfig (エディター設定)",
               ],
             },
             {
-              title: '使い方',
+              title: "使い方",
               items: [
-                'INI→JSON: INIテキストを貼り付けてJSONに変換',
-                'JSON→INI: JSONオブジェクトをINI形式に変換',
-                '「重複キーを配列として扱う」オプションで同名キーを配列化',
-                'サンプルボタンで各種設定ファイルのサンプルを読み込めます',
+                "INI→JSON: INIテキストを貼り付けてJSONに変換",
+                "JSON→INI: JSONオブジェクトをINI形式に変換",
+                "「重複キーを配列として扱う」オプションで同名キーを配列化",
+                "サンプルボタンで各種設定ファイルのサンプルを読み込めます",
               ],
             },
           ]}

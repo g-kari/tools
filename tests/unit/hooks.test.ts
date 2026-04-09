@@ -35,9 +35,7 @@ describe("useClipboard ロジック", () => {
   it("Clipboard API が失敗した場合、エラーがスローされる", async () => {
     mockWriteText.mockRejectedValue(new Error("Clipboard error"));
 
-    await expect(navigator.clipboard.writeText("test text")).rejects.toThrow(
-      "Clipboard error"
-    );
+    await expect(navigator.clipboard.writeText("test text")).rejects.toThrow("Clipboard error");
   });
 });
 

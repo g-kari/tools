@@ -16,12 +16,8 @@ function emptyBoard(): SudokuBoard {
 }
 
 /** ユーザー入力マップを生成するヘルパー */
-function makeUserValues(
-  entries: Array<[string, number, boolean?]>
-): Map<string, CellValue> {
-  return new Map(
-    entries.map(([key, value, isHint = false]) => [key, { value, isHint }])
-  );
+function makeUserValues(entries: Array<[string, number, boolean?]>): Map<string, CellValue> {
+  return new Map(entries.map(([key, value, isHint = false]) => [key, { value, isHint }]));
 }
 
 describe("isValidPlacement", () => {

@@ -7,7 +7,7 @@ test.describe("Security Headers Checker - E2E Tests", () => {
   async function navigateViaCategory(
     page: import("@playwright/test").Page,
     categoryName: string,
-    linkHref: string
+    linkHref: string,
   ) {
     const categoryBtn = page.locator(".nav-category-btn", {
       hasText: categoryName,
@@ -25,9 +25,7 @@ test.describe("Security Headers Checker - E2E Tests", () => {
     await page.waitForLoadState("networkidle");
   });
 
-  test("should load the page without 'undefined' content", async ({
-    page,
-  }) => {
+  test("should load the page without 'undefined' content", async ({ page }) => {
     const bodyText = await page.textContent("body");
     expect(bodyText).not.toContain("undefined");
     expect(bodyText).not.toBe("undefined");
@@ -49,9 +47,7 @@ test.describe("Security Headers Checker - E2E Tests", () => {
     await expect(checkButton).toContainText("チェック");
   });
 
-  test("should show toast when checking with empty input", async ({
-    page,
-  }) => {
+  test("should show toast when checking with empty input", async ({ page }) => {
     const checkButton = page.locator("button.btn-primary");
 
     await checkButton.click();
@@ -110,9 +106,7 @@ test.describe("Security Headers Checker - E2E Tests", () => {
     await expect(activeCategory).toContainText("検証");
   });
 
-  test("should navigate to other pages via category dropdown", async ({
-    page,
-  }) => {
+  test("should navigate to other pages via category dropdown", async ({ page }) => {
     await navigateViaCategory(page, "変換", "/unicode");
     await expect(page).toHaveURL("/unicode");
   });
@@ -165,15 +159,9 @@ test.describe("Security Headers Checker - E2E Tests", () => {
     await expect(form).toBeVisible();
 
     const urlInput = page.locator("#urlInput");
-    await expect(urlInput).toHaveAttribute(
-      "aria-label",
-      "チェックするURL"
-    );
+    await expect(urlInput).toHaveAttribute("aria-label", "チェックするURL");
 
     const checkButton = page.locator("button.btn-primary");
-    await expect(checkButton).toHaveAttribute(
-      "aria-label",
-      "セキュリティヘッダーをチェック"
-    );
+    await expect(checkButton).toHaveAttribute("aria-label", "セキュリティヘッダーをチェック");
   });
 });

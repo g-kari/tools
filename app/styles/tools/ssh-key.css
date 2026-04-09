@@ -15,7 +15,10 @@
   color: var(--md-sys-color-on-surface);
   cursor: pointer;
   font-size: 0.9rem;
-  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    color 0.15s;
 }
 
 .ssh-key-algo-btn:hover {
@@ -96,7 +99,9 @@
 }
 
 @keyframes ssh-key-spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .ssh-key-public-tabs {
@@ -115,7 +120,9 @@
   color: var(--md-sys-color-on-surface-variant);
   border-bottom: 2px solid transparent;
   margin-bottom: -1px;
-  transition: color 0.15s, border-color 0.15s;
+  transition:
+    color 0.15s,
+    border-color 0.15s;
 }
 
 .ssh-key-public-tab:hover {

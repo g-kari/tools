@@ -4,8 +4,8 @@
  * js-yaml と smol-toml を使用した相互変換。
  * JSON を経由しない直接変換で精度を確保する。
  */
-import * as yaml from 'js-yaml';
-import * as TOML from 'smol-toml';
+import * as yaml from "js-yaml";
+import * as TOML from "smol-toml";
 
 /**
  * YAML を TOML に変換する
@@ -14,17 +14,21 @@ import * as TOML from 'smol-toml';
  * @throws YAML 解析エラーまたは TOML 変換エラー
  */
 export function yamlToToml(yamlStr: string): string {
-  if (!yamlStr.trim()) throw new Error('YAML データが空です');
+  if (!yamlStr.trim()) throw new Error("YAML データが空です");
   const parsed = yaml.load(yamlStr);
-  if (parsed === null || parsed === undefined) throw new Error('YAML データが空です');
-  if (typeof parsed !== 'object' || Array.isArray(parsed)) {
-    throw new Error('TOML のルートはオブジェクト（{}）である必要があります。配列やプリミティブ値は変換できません');
+  if (parsed === null || parsed === undefined) throw new Error("YAML データが空です");
+  if (typeof parsed !== "object" || Array.isArray(parsed)) {
+    throw new Error(
+      "TOML のルートはオブジェクト（{}）である必要があります。配列やプリミティブ値は変換できません",
+    );
   }
   try {
     return TOML.stringify(parsed as Record<string, unknown>);
   } catch (err) {
-    if (err instanceof TypeError && String(err.message).includes('null')) {
-      throw new Error('TOML は null 値をサポートしていません。null 値を除去してから変換してください');
+    if (err instanceof TypeError && String(err.message).includes("null")) {
+      throw new Error(
+        "TOML は null 値をサポートしていません。null 値を除去してから変換してください",
+      );
     }
     throw err;
   }
@@ -37,7 +41,7 @@ export function yamlToToml(yamlStr: string): string {
  * @throws TOML 解析エラー
  */
 export function tomlToYaml(tomlStr: string): string {
-  if (!tomlStr.trim()) throw new Error('TOML データが空です');
+  if (!tomlStr.trim()) throw new Error("TOML データが空です");
   const parsed = TOML.parse(tomlStr);
   return yaml.dump(parsed, { indent: 2, lineWidth: -1 });
 }

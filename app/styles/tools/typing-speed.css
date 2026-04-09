@@ -36,7 +36,7 @@
 }
 
 .typing-timer-value {
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   font-size: 2.5rem;
   font-weight: 700;
   color: var(--md-sys-color-primary);
@@ -85,7 +85,7 @@
 }
 
 .typing-stat-value {
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   font-size: 1.375rem;
   font-weight: 700;
   color: var(--md-sys-color-on-surface);
@@ -111,7 +111,7 @@
 
 /* テキスト表示エリア */
 .typing-text-display {
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   font-size: 1.125rem;
   line-height: 1.8;
   padding: 1.25rem 1.5rem;
@@ -166,8 +166,13 @@
 }
 
 @keyframes typing-cursor-blink {
-  0%, 100% { border-left-color: var(--md-sys-color-primary); }
-  50% { border-left-color: transparent; }
+  0%,
+  100% {
+    border-left-color: var(--md-sys-color-primary);
+  }
+  50% {
+    border-left-color: transparent;
+  }
 }
 
 /* 非表示入力 */
@@ -209,7 +214,7 @@
 }
 
 .typing-result-wpm-value {
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   font-size: 3.5rem;
   font-weight: 700;
   color: var(--md-sys-color-primary);
@@ -246,7 +251,7 @@
 }
 
 .typing-result-stat-value {
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--md-sys-color-on-surface);
@@ -271,7 +276,7 @@
 }
 
 .typing-history-wpm {
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   font-size: 1rem;
   font-weight: 700;
   color: var(--md-sys-color-primary);
@@ -279,7 +284,7 @@
 }
 
 .typing-history-accuracy {
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   font-size: 0.875rem;
   font-weight: 600;
   color: var(--md-sys-color-on-surface);

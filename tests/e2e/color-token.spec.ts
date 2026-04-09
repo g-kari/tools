@@ -80,9 +80,7 @@ test.describe("カラートークン生成 - E2E Tests", () => {
   });
 
   test("should switch to Tailwind format", async ({ page }) => {
-    const twTab = page
-      .locator(".ct-format-tab")
-      .filter({ hasText: "Tailwind" });
+    const twTab = page.locator(".ct-format-tab").filter({ hasText: "Tailwind" });
     await twTab.click();
     const textarea = page.locator(".ct-output-textarea");
     const content = await textarea.inputValue();

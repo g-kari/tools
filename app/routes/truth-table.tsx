@@ -110,7 +110,8 @@ function TruthTablePage() {
             spellCheck={false}
           />
           <p className="truth-table-input-hint">
-            変数: A, B, C ... ／ 演算子: AND（&amp;&amp;）・OR（||）・NOT（!）・XOR（^）・NAND・NOR・XNOR
+            変数: A, B, C ... ／ 演算子:
+            AND（&amp;&amp;）・OR（||）・NOT（!）・XOR（^）・NAND・NOR・XNOR
           </p>
           <div className="truth-table-samples">
             <span className="truth-table-samples-label">サンプル:</span>
@@ -138,9 +139,7 @@ function TruthTablePage() {
         {result.data && (
           <div className="truth-table-expr-display">
             <span className="truth-table-expr-label">正規化:</span>
-            <span className="truth-table-expr-value">
-              {result.data.expression}
-            </span>
+            <span className="truth-table-expr-value">{result.data.expression}</span>
           </div>
         )}
 
@@ -149,8 +148,7 @@ function TruthTablePage() {
           <div className="truth-table-result">
             <div className="truth-table-result-header">
               <span className="truth-table-result-info">
-                {result.data.variables.length} 変数 ／{" "}
-                {result.data.rows.length} 行
+                {result.data.variables.length} 変数 ／ {result.data.rows.length} 行
               </span>
               <div className="truth-table-result-actions">
                 <Button
@@ -190,20 +188,11 @@ function TruthTablePage() {
                   {result.data.rows.map((row, i) => (
                     <tr key={i}>
                       {result.data!.variables.map((v) => (
-                        <td
-                          key={v}
-                          className={
-                            row.inputs[v] ? "truth-true" : "truth-false"
-                          }
-                        >
+                        <td key={v} className={row.inputs[v] ? "truth-true" : "truth-false"}>
                           {row.inputs[v] ? "1" : "0"}
                         </td>
                       ))}
-                      <td
-                        className={`output-col ${
-                          row.output ? "output-true" : "output-false"
-                        }`}
-                      >
+                      <td className={`output-col ${row.output ? "output-true" : "output-false"}`}>
                         {row.output ? "1" : "0"}
                       </td>
                     </tr>
@@ -225,13 +214,10 @@ function TruthTablePage() {
           <ul>
             <li>使用可能な変数: A〜Z（1文字の大文字、小文字も可）</li>
             <li>
-              AND: &amp;&amp; / &amp; / AND / ∧ ／ OR: || / | / OR / ∨ ／ NOT:
-              ! / ~ / NOT / ¬
+              AND: &amp;&amp; / &amp; / AND / ∧ ／ OR: || / | / OR / ∨ ／ NOT: ! / ~ / NOT / ¬
             </li>
             <li>XOR: ^ / ⊕ / XOR ／ NAND ／ NOR ／ XNOR にも対応</li>
-            <li>
-              変数が増えると行数が 2ⁿ 倍増加します（最大 5 変数 = 32 行）
-            </li>
+            <li>変数が増えると行数が 2ⁿ 倍増加します（最大 5 変数 = 32 行）</li>
             <li>括弧 () で演算の優先順位を明示できます</li>
           </ul>
         </TipsCard>

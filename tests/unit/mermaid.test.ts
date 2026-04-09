@@ -142,15 +142,11 @@ describe("detectDiagramType", () => {
   });
 
   it('sequenceDiagram から始まるコードは "sequenceDiagram" を返す', () => {
-    expect(detectDiagramType("sequenceDiagram\n  A ->> B: message")).toBe(
-      "sequenceDiagram"
-    );
+    expect(detectDiagramType("sequenceDiagram\n  A ->> B: message")).toBe("sequenceDiagram");
   });
 
   it('classDiagram から始まるコードは "classDiagram" を返す', () => {
-    expect(detectDiagramType("classDiagram\n  class Foo {}")).toBe(
-      "classDiagram"
-    );
+    expect(detectDiagramType("classDiagram\n  class Foo {}")).toBe("classDiagram");
   });
 
   it('gantt から始まるコードは "gantt" を返す', () => {
@@ -158,9 +154,7 @@ describe("detectDiagramType", () => {
   });
 
   it('stateDiagram から始まるコードは "stateDiagram" を返す', () => {
-    expect(detectDiagramType("stateDiagram-v2\n  [*] --> A")).toBe(
-      "stateDiagram"
-    );
+    expect(detectDiagramType("stateDiagram-v2\n  [*] --> A")).toBe("stateDiagram");
   });
 
   it('erDiagram から始まるコードは "erDiagram" を返す', () => {

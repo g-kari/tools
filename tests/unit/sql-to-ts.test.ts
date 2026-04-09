@@ -183,21 +183,17 @@ describe("generateTypeScript", () => {
 
   describe("エラーハンドリング", () => {
     test("空文字列でエラーをスローする", () => {
-      expect(() => generateTypeScript("", defaultOptions)).toThrow(
-        "SQLを入力してください"
-      );
+      expect(() => generateTypeScript("", defaultOptions)).toThrow("SQLを入力してください");
     });
 
     test("CREATE TABLEのない文字列でエラーをスローする", () => {
-      expect(() =>
-        generateTypeScript("SELECT * FROM users;", defaultOptions)
-      ).toThrow("CREATE TABLE文が見つかりません");
+      expect(() => generateTypeScript("SELECT * FROM users;", defaultOptions)).toThrow(
+        "CREATE TABLE文が見つかりません",
+      );
     });
 
     test("カラムのない定義でエラーをスローする", () => {
-      expect(() =>
-        generateTypeScript("CREATE TABLE empty ();", defaultOptions)
-      ).toThrow();
+      expect(() => generateTypeScript("CREATE TABLE empty ();", defaultOptions)).toThrow();
     });
   });
 

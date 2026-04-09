@@ -1,37 +1,37 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useState, useCallback, useRef, useEffect } from 'react';
-import { useToast } from '../components/Toast';
-import { Button } from '~/components/ui/button';
-import { Textarea } from '~/components/ui/textarea';
-import { TipsCard } from '~/components/TipsCard';
-import { useStatusAnnouncement, StatusAnnouncer } from '~/hooks/useStatusAnnouncement';
-import { useClipboard } from '~/hooks/useClipboard';
-import { formatYaml, minifyYaml, validateYaml } from '~/utils/yaml';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
+import { createFileRoute } from "@tanstack/react-router";
+import { useState, useCallback, useRef, useEffect } from "react";
+import { useToast } from "../components/Toast";
+import { Button } from "~/components/ui/button";
+import { Textarea } from "~/components/ui/textarea";
+import { TipsCard } from "~/components/TipsCard";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
+import { useClipboard } from "~/hooks/useClipboard";
+import { formatYaml, minifyYaml, validateYaml } from "~/utils/yaml";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 
-export const Route = createFileRoute('/yaml-formatter')({
+export const Route = createFileRoute("/yaml-formatter")({
   head: () => ({
     meta: [
-      { title: 'YAMLフォーマッター | Web ツール集' },
+      { title: "YAMLフォーマッター | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          'YAMLデータの整形・圧縮・構文検証ツール。インデント幅・キーソートを選択してYAMLを整形。Kubernetes、Docker Compose、GitHub Actions設定ファイルの確認に。',
+          "YAMLデータの整形・圧縮・構文検証ツール。インデント幅・キーソートを選択してYAMLを整形。Kubernetes、Docker Compose、GitHub Actions設定ファイルの確認に。",
       },
-      { property: 'og:title', content: 'YAMLフォーマッター | Web ツール集' },
+      { property: "og:title", content: "YAMLフォーマッター | Web ツール集" },
       {
-        property: 'og:description',
+        property: "og:description",
         content:
-          'YAMLデータの整形・圧縮・構文検証ツール。インデント幅・キーソートを選択してYAMLを整形。Kubernetes、Docker Compose、GitHub Actions設定ファイルの確認に。',
+          "YAMLデータの整形・圧縮・構文検証ツール。インデント幅・キーソートを選択してYAMLを整形。Kubernetes、Docker Compose、GitHub Actions設定ファイルの確認に。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/yaml-formatter` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
-      { name: 'twitter:title', content: 'YAMLフォーマッター | Web ツール集' },
+      { property: "og:url", content: `${SITE_BASE_URL}/yaml-formatter` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "YAMLフォーマッター | Web ツール集" },
       {
-        name: 'twitter:description',
+        name: "twitter:description",
         content:
-          'YAMLデータの整形・圧縮・構文検証ツール。インデント幅・キーソートを選択してYAMLを整形。Kubernetes、Docker Compose、GitHub Actions設定ファイルの確認に。',
+          "YAMLデータの整形・圧縮・構文検証ツール。インデント幅・キーソートを選択してYAMLを整形。Kubernetes、Docker Compose、GitHub Actions設定ファイルの確認に。",
       },
     ],
   }),
@@ -39,7 +39,7 @@ export const Route = createFileRoute('/yaml-formatter')({
 });
 
 /** 操作モードの型定義 */
-type Mode = 'format' | 'minify' | 'validate';
+type Mode = "format" | "minify" | "validate";
 
 const yamlPlaceholder = `name: my-app
 version: 1.0.0
@@ -58,11 +58,11 @@ config:
  */
 function YamlFormatter() {
   const { showToast } = useToast();
-  const [mode, setMode] = useState<Mode>('format');
+  const [mode, setMode] = useState<Mode>("format");
   const [indent, setIndent] = useState<2 | 4>(2);
   const [sortKeys, setSortKeys] = useState(false);
-  const [inputText, setInputText] = useState('');
-  const [outputText, setOutputText] = useState('');
+  const [inputText, setInputText] = useState("");
+  const [outputText, setOutputText] = useState("");
   const [isCopied, setIsCopied] = useState(false);
   const copiedTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -81,42 +81,42 @@ function YamlFormatter() {
 
   const handleProcess = useCallback(() => {
     if (!inputText.trim()) {
-      announceStatus('エラー: テキストを入力してください');
-      showToast('テキストを入力してください', 'error');
+      announceStatus("エラー: テキストを入力してください");
+      showToast("テキストを入力してください", "error");
       inputRef.current?.focus();
       return;
     }
 
     try {
-      if (mode === 'format') {
+      if (mode === "format") {
         const result = formatYaml(inputText, indent, sortKeys);
         setOutputText(result);
-        announceStatus('YAMLの整形が完了しました');
-      } else if (mode === 'minify') {
+        announceStatus("YAMLの整形が完了しました");
+      } else if (mode === "minify") {
         const result = minifyYaml(inputText);
         setOutputText(result);
-        announceStatus('YAMLの圧縮が完了しました');
+        announceStatus("YAMLの圧縮が完了しました");
       } else {
         const result = validateYaml(inputText);
         if (result.valid) {
-          setOutputText('✓ 有効なYAMLです');
-          announceStatus('YAMLは有効です');
+          setOutputText("✓ 有効なYAMLです");
+          announceStatus("YAMLは有効です");
         } else {
           setOutputText(`✗ エラー: ${result.error}`);
           announceStatus(`YAMLが無効です: ${result.error}`);
         }
       }
     } catch (err) {
-      const message = err instanceof Error ? err.message : '処理に失敗しました';
+      const message = err instanceof Error ? err.message : "処理に失敗しました";
       announceStatus(`エラー: ${message}`);
-      showToast(message, 'error');
+      showToast(message, "error");
     }
   }, [inputText, mode, indent, sortKeys, announceStatus, showToast]);
 
   const handleClear = useCallback(() => {
-    setInputText('');
-    setOutputText('');
-    announceStatus('入力と出力をクリアしました');
+    setInputText("");
+    setOutputText("");
+    announceStatus("入力と出力をクリアしました");
     inputRef.current?.focus();
   }, [announceStatus]);
 
@@ -125,24 +125,24 @@ function YamlFormatter() {
     const success = await copy(outputText);
     if (success) {
       setIsCopied(true);
-      announceStatus('出力結果をコピーしました');
+      announceStatus("出力結果をコピーしました");
       if (copiedTimeoutRef.current) {
         clearTimeout(copiedTimeoutRef.current);
       }
       copiedTimeoutRef.current = setTimeout(() => setIsCopied(false), 2000);
     } else {
-      announceStatus('コピーに失敗しました');
-      showToast('コピーに失敗しました', 'error');
+      announceStatus("コピーに失敗しました");
+      showToast("コピーに失敗しました", "error");
     }
   }, [outputText, copy, announceStatus, showToast]);
 
   const handleModeChange = useCallback((newMode: Mode) => {
     setMode(newMode);
-    setInputText('');
-    setOutputText('');
+    setInputText("");
+    setOutputText("");
   }, []);
 
-  const processLabel = mode === 'format' ? '整形' : mode === 'minify' ? '圧縮' : '検証';
+  const processLabel = mode === "format" ? "整形" : mode === "minify" ? "圧縮" : "検証";
 
   return (
     <>
@@ -160,8 +160,8 @@ function YamlFormatter() {
                     type="radio"
                     name="mode"
                     value="format"
-                    checked={mode === 'format'}
-                    onChange={() => handleModeChange('format')}
+                    checked={mode === "format"}
+                    onChange={() => handleModeChange("format")}
                     aria-label="YAMLを整形する"
                   />
                   <span className="format-label">整形</span>
@@ -171,8 +171,8 @@ function YamlFormatter() {
                     type="radio"
                     name="mode"
                     value="minify"
-                    checked={mode === 'minify'}
-                    onChange={() => handleModeChange('minify')}
+                    checked={mode === "minify"}
+                    onChange={() => handleModeChange("minify")}
                     aria-label="YAMLを圧縮する"
                   />
                   <span className="format-label">圧縮</span>
@@ -182,8 +182,8 @@ function YamlFormatter() {
                     type="radio"
                     name="mode"
                     value="validate"
-                    checked={mode === 'validate'}
-                    onChange={() => handleModeChange('validate')}
+                    checked={mode === "validate"}
+                    onChange={() => handleModeChange("validate")}
                     aria-label="YAMLを検証する"
                   />
                   <span className="format-label">検証</span>
@@ -192,7 +192,7 @@ function YamlFormatter() {
             </fieldset>
           </div>
 
-          {mode === 'format' && (
+          {mode === "format" && (
             <div className="converter-section">
               <div className="csv-json-options">
                 <div className="option-group">
@@ -288,16 +288,16 @@ function YamlFormatter() {
           <div className="output-section">
             <div className="csv-json-output-header">
               <label htmlFor="outputText" className="section-title">
-                {mode === 'validate' ? '検証結果' : '出力'}
+                {mode === "validate" ? "検証結果" : "出力"}
               </label>
               <button
                 type="button"
-                className={`number-base-copy-btn${isCopied ? ' copied' : ''}`}
+                className={`number-base-copy-btn${isCopied ? " copied" : ""}`}
                 onClick={handleCopy}
                 disabled={!outputText}
                 aria-label="出力結果をクリップボードにコピー"
               >
-                {isCopied ? 'コピー済' : 'コピー'}
+                {isCopied ? "コピー済" : "コピー"}
               </button>
             </div>
             <Textarea
@@ -305,13 +305,11 @@ function YamlFormatter() {
               value={outputText}
               readOnly
               placeholder={
-                mode === 'validate'
-                  ? '検証結果がここに表示されます...'
-                  : '処理結果がここに表示されます...'
+                mode === "validate"
+                  ? "検証結果がここに表示されます..."
+                  : "処理結果がここに表示されます..."
               }
-              aria-label={
-                mode === 'validate' ? 'YAML検証結果の出力欄' : 'YAML処理結果の出力欄'
-              }
+              aria-label={mode === "validate" ? "YAML検証結果の出力欄" : "YAML処理結果の出力欄"}
               aria-live="polite"
               className="csv-json-textarea"
             />
@@ -321,21 +319,21 @@ function YamlFormatter() {
         <TipsCard
           sections={[
             {
-              title: '使い方',
+              title: "使い方",
               items: [
-                '操作モードを「整形」「圧縮」「検証」から選択します',
-                '整形モードではインデント幅（2または4スペース）とキーソートを設定できます',
-                '入力欄にYAMLデータを貼り付けてボタンを押します',
-                '出力結果は「コピー」ボタンでクリップボードにコピーできます',
+                "操作モードを「整形」「圧縮」「検証」から選択します",
+                "整形モードではインデント幅（2または4スペース）とキーソートを設定できます",
+                "入力欄にYAMLデータを貼り付けてボタンを押します",
+                "出力結果は「コピー」ボタンでクリップボードにコピーできます",
               ],
             },
             {
-              title: 'YAMLについて',
+              title: "YAMLについて",
               items: [
-                'YAMLはYAML Ain\'t Markup Languageの略で、人間が読みやすい設定ファイル形式として広く使われています',
-                'Kubernetes、Docker Compose、GitHub Actions、Ansible など多くのツールで採用されています',
-                'インデントで階層構造を表現し、スペースとタブを混在させることはできません',
-                '圧縮モードではフロースタイル（{key: value}形式）で出力します',
+                "YAMLはYAML Ain't Markup Languageの略で、人間が読みやすい設定ファイル形式として広く使われています",
+                "Kubernetes、Docker Compose、GitHub Actions、Ansible など多くのツールで採用されています",
+                "インデントで階層構造を表現し、スペースとタブを混在させることはできません",
+                "圧縮モードではフロースタイル（{key: value}形式）で出力します",
               ],
             },
           ]}

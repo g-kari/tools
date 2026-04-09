@@ -1,9 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useMemo } from "react";
-import {
-  StatusAnnouncer,
-  useStatusAnnouncement,
-} from "~/hooks/useStatusAnnouncement";
+import { StatusAnnouncer, useStatusAnnouncement } from "~/hooks/useStatusAnnouncement";
 import { TipsCard } from "~/components/TipsCard";
 import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import {
@@ -132,12 +129,8 @@ function BmiCalculator() {
               <div className="bmi-result-grid">
                 <div className="bmi-result-card bmi-result-card--primary">
                   <span className="bmi-result-label">BMI</span>
-                  <div className="bmi-result-value">
-                    {result.bmi.toFixed(1)}
-                  </div>
-                  <span
-                    className={`bmi-category-badge ${categoryBadgeClass(result.category)}`}
-                  >
+                  <div className="bmi-result-value">{result.bmi.toFixed(1)}</div>
+                  <span className={`bmi-category-badge ${categoryBadgeClass(result.category)}`}>
                     {BMI_CATEGORY_LABELS[result.category]}
                   </span>
                 </div>

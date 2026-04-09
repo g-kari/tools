@@ -4,10 +4,7 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { useToast } from "../components/Toast";
 import { TipsCard } from "~/components/TipsCard";
 import { ErrorMessage } from "~/components/ErrorMessage";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 import {
   validateJsonAgainstSchema,
@@ -46,8 +43,7 @@ export const Route = createFileRoute("/json-schema-validator")({
       },
       {
         name: "twitter:description",
-        content:
-          "JSONデータをJSON Schema (draft-07) に対してバリデーションするツール。",
+        content: "JSONデータをJSON Schema (draft-07) に対してバリデーションするツール。",
       },
     ],
   }),
@@ -91,13 +87,8 @@ function JsonSchemaValidator() {
       announceStatus("バリデーション成功: JSONはスキーマに準拠しています");
       showToast("バリデーション成功", "success");
     } else {
-      announceStatus(
-        `バリデーション失敗: ${validationResult.errors.length} 件のエラーがあります`
-      );
-      showToast(
-        `${validationResult.errors.length} 件のエラーが見つかりました`,
-        "error"
-      );
+      announceStatus(`バリデーション失敗: ${validationResult.errors.length} 件のエラーがあります`);
+      showToast(`${validationResult.errors.length} 件のエラーが見つかりました`, "error");
     }
   }, [jsonText, schemaText, announceStatus, showToast]);
 
@@ -151,10 +142,7 @@ function JsonSchemaValidator() {
   return (
     <>
       <div className="tool-container">
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          aria-label="JSON Schema バリデーションフォーム"
-        >
+        <form onSubmit={(e) => e.preventDefault()} aria-label="JSON Schema バリデーションフォーム">
           {/* 入力パネル（2カラム） */}
           <div className="jsv-layout">
             {/* 左パネル: JSON データ */}
@@ -271,27 +259,18 @@ function JsonSchemaValidator() {
                     : "バリデーション失敗 — スキーマ違反が検出されました"}
                 </span>
                 {!result.valid && (
-                  <span className="jsv-result-banner-count">
-                    {result.errors.length} 件のエラー
-                  </span>
+                  <span className="jsv-result-banner-count">{result.errors.length} 件のエラー</span>
                 )}
               </div>
 
               {/* エラー一覧 */}
               {!result.valid && result.errors.length > 0 && (
-                <ul
-                  className="jsv-error-list"
-                  aria-label="バリデーションエラー一覧"
-                >
+                <ul className="jsv-error-list" aria-label="バリデーションエラー一覧">
                   {result.errors.map((error, index) => (
                     <li key={index} className="jsv-error-item">
                       <div className="jsv-error-header">
                         <span
-                          className={
-                            error.path
-                              ? "jsv-error-path"
-                              : "jsv-error-path-root"
-                          }
+                          className={error.path ? "jsv-error-path" : "jsv-error-path-root"}
                           aria-label={`パス: ${error.path || "(root)"}`}
                         >
                           {error.path || "(root)"}
@@ -313,7 +292,8 @@ function JsonSchemaValidator() {
 
           {!result && !parseError && (
             <div className="jsv-result-empty">
-              JSONデータとJSON Schemaを入力して「バリデーション実行」ボタンを押してください（Ctrl+Enter）
+              JSONデータとJSON
+              Schemaを入力して「バリデーション実行」ボタンを押してください（Ctrl+Enter）
             </div>
           )}
         </form>

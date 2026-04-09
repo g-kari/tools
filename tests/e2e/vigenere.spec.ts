@@ -50,7 +50,9 @@ test.describe("ヴィジュネル暗号ページ", () => {
   test("無効なキー（英字なし）を入力するとエラーメッセージが表示される", async ({ page }) => {
     await page.locator("#vigenere-key-input").fill("123");
     await page.locator("#vigenere-input").fill("HELLO");
-    await expect(page.locator("#vigenere-output")).toContainText("有効なキーワードを入力してください");
+    await expect(page.locator("#vigenere-output")).toContainText(
+      "有効なキーワードを入力してください",
+    );
   });
 
   test("コピーボタンは出力がない場合に無効になる", async ({ page }) => {

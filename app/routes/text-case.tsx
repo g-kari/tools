@@ -1,9 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import {
-  StatusAnnouncer,
-  useStatusAnnouncement,
-} from "~/hooks/useStatusAnnouncement";
+import { StatusAnnouncer, useStatusAnnouncement } from "~/hooks/useStatusAnnouncement";
 import { TipsCard } from "~/components/TipsCard";
 import { useClipboard } from "~/hooks/useClipboard";
 import { useToast } from "~/components/Toast";
@@ -44,9 +41,7 @@ export const Route = createFileRoute("/text-case")({
 export function splitIntoWords(input: string): string[] {
   if (!input) return [];
   // camelCase/PascalCaseの境界を識別して分割
-  const step1 = input
-    .replace(/([a-z])([A-Z])/g, "$1 $2")
-    .replace(/([A-Z]+)([A-Z][a-z])/g, "$1 $2");
+  const step1 = input.replace(/([a-z])([A-Z])/g, "$1 $2").replace(/([A-Z]+)([A-Z][a-z])/g, "$1 $2");
   // 区切り文字（_-. スペース）で分割
   const words = step1.split(/[-_.\s]+/).filter(Boolean);
   return words.map((w) => w.toLowerCase());
@@ -59,9 +54,7 @@ export function splitIntoWords(input: string): string[] {
  */
 export function toCamelCase(words: string[]): string {
   if (words.length === 0) return "";
-  return words
-    .map((w, i) => (i === 0 ? w : w.charAt(0).toUpperCase() + w.slice(1)))
-    .join("");
+  return words.map((w, i) => (i === 0 ? w : w.charAt(0).toUpperCase() + w.slice(1))).join("");
 }
 
 /**
@@ -290,11 +283,7 @@ function TextCaseConverter() {
         </div>
 
         {hasInput ? (
-          <div
-            className="text-case-results-grid"
-            role="list"
-            aria-label="変換結果一覧"
-          >
+          <div className="text-case-results-grid" role="list" aria-label="変換結果一覧">
             {results.map((result) => (
               <div
                 key={result.key}
@@ -304,14 +293,10 @@ function TextCaseConverter() {
               >
                 <div className="text-case-result-header">
                   <span className="text-case-result-label">{result.label}</span>
-                  <span className="text-case-result-example">
-                    例: {result.example}
-                  </span>
+                  <span className="text-case-result-example">例: {result.example}</span>
                 </div>
                 <div className="text-case-result-value-wrapper">
-                  <code className="text-case-result-value">
-                    {result.value || "（入力なし）"}
-                  </code>
+                  <code className="text-case-result-value">{result.value || "（入力なし）"}</code>
                 </div>
                 <div className="text-case-result-footer">
                   <button

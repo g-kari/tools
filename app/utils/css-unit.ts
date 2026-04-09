@@ -4,18 +4,7 @@
  */
 
 /** サポートするCSS単位の識別子 */
-export type CssUnitId =
-  | 'px'
-  | 'rem'
-  | 'em'
-  | 'vw'
-  | 'vh'
-  | '%'
-  | 'pt'
-  | 'pc'
-  | 'cm'
-  | 'mm'
-  | 'in';
+export type CssUnitId = "px" | "rem" | "em" | "vw" | "vh" | "%" | "pt" | "pc" | "cm" | "mm" | "in";
 
 /** CSS単位の定義 */
 export interface CssUnitDef {
@@ -58,69 +47,69 @@ const PX_PER_INCH = 96;
 /** サポートするCSS単位一覧 */
 export const CSS_UNITS: CssUnitDef[] = [
   {
-    id: 'px',
-    name: 'px',
-    description: 'ピクセル（CSS基準単位）',
+    id: "px",
+    name: "px",
+    description: "ピクセル（CSS基準単位）",
     contextDependent: false,
   },
   {
-    id: 'rem',
-    name: 'rem',
-    description: 'ルート要素のフォントサイズ基準',
+    id: "rem",
+    name: "rem",
+    description: "ルート要素のフォントサイズ基準",
     contextDependent: true,
   },
   {
-    id: 'em',
-    name: 'em',
-    description: '親要素のフォントサイズ基準',
+    id: "em",
+    name: "em",
+    description: "親要素のフォントサイズ基準",
     contextDependent: true,
   },
   {
-    id: 'vw',
-    name: 'vw',
-    description: 'ビューポート幅の 1%',
+    id: "vw",
+    name: "vw",
+    description: "ビューポート幅の 1%",
     contextDependent: true,
   },
   {
-    id: 'vh',
-    name: 'vh',
-    description: 'ビューポート高さの 1%',
+    id: "vh",
+    name: "vh",
+    description: "ビューポート高さの 1%",
     contextDependent: true,
   },
   {
-    id: '%',
-    name: '%',
-    description: '親要素サイズの 1%',
+    id: "%",
+    name: "%",
+    description: "親要素サイズの 1%",
     contextDependent: true,
   },
   {
-    id: 'pt',
-    name: 'pt',
-    description: 'ポイント（1pt = 1/72 インチ）',
+    id: "pt",
+    name: "pt",
+    description: "ポイント（1pt = 1/72 インチ）",
     contextDependent: false,
   },
   {
-    id: 'pc',
-    name: 'pc',
-    description: 'パイカ（1pc = 12pt = 16px）',
+    id: "pc",
+    name: "pc",
+    description: "パイカ（1pc = 12pt = 16px）",
     contextDependent: false,
   },
   {
-    id: 'cm',
-    name: 'cm',
-    description: 'センチメートル',
+    id: "cm",
+    name: "cm",
+    description: "センチメートル",
     contextDependent: false,
   },
   {
-    id: 'mm',
-    name: 'mm',
-    description: 'ミリメートル',
+    id: "mm",
+    name: "mm",
+    description: "ミリメートル",
     contextDependent: false,
   },
   {
-    id: 'in',
-    name: 'in',
-    description: 'インチ（1in = 96px）',
+    id: "in",
+    name: "in",
+    description: "インチ（1in = 96px）",
     contextDependent: false,
   },
 ];
@@ -132,35 +121,31 @@ export const CSS_UNITS: CssUnitDef[] = [
  * @param ctx - 変換コンテキスト
  * @returns ピクセル値。変換できない場合は null
  */
-export function toPx(
-  value: number,
-  unit: CssUnitId,
-  ctx: CssConversionContext,
-): number | null {
+export function toPx(value: number, unit: CssUnitId, ctx: CssConversionContext): number | null {
   if (!Number.isFinite(value)) return null;
 
   switch (unit) {
-    case 'px':
+    case "px":
       return value;
-    case 'rem':
+    case "rem":
       return value * ctx.rootFontSize;
-    case 'em':
+    case "em":
       return value * ctx.parentFontSize;
-    case 'vw':
+    case "vw":
       return (value / 100) * ctx.viewportWidth;
-    case 'vh':
+    case "vh":
       return (value / 100) * ctx.viewportHeight;
-    case '%':
+    case "%":
       return (value / 100) * ctx.parentSize;
-    case 'pt':
+    case "pt":
       return value * (PX_PER_INCH / 72);
-    case 'pc':
+    case "pc":
       return value * (PX_PER_INCH / 6);
-    case 'cm':
+    case "cm":
       return value * (PX_PER_INCH / 2.54);
-    case 'mm':
+    case "mm":
       return value * (PX_PER_INCH / 25.4);
-    case 'in':
+    case "in":
       return value * PX_PER_INCH;
   }
 }
@@ -172,40 +157,36 @@ export function toPx(
  * @param ctx - 変換コンテキスト
  * @returns 変換後の値。変換できない場合は null
  */
-export function fromPx(
-  px: number,
-  unit: CssUnitId,
-  ctx: CssConversionContext,
-): number | null {
+export function fromPx(px: number, unit: CssUnitId, ctx: CssConversionContext): number | null {
   if (!Number.isFinite(px)) return null;
 
   switch (unit) {
-    case 'px':
+    case "px":
       return px;
-    case 'rem':
+    case "rem":
       if (ctx.rootFontSize === 0) return null;
       return px / ctx.rootFontSize;
-    case 'em':
+    case "em":
       if (ctx.parentFontSize === 0) return null;
       return px / ctx.parentFontSize;
-    case 'vw':
+    case "vw":
       if (ctx.viewportWidth === 0) return null;
       return (px / ctx.viewportWidth) * 100;
-    case 'vh':
+    case "vh":
       if (ctx.viewportHeight === 0) return null;
       return (px / ctx.viewportHeight) * 100;
-    case '%':
+    case "%":
       if (ctx.parentSize === 0) return null;
       return (px / ctx.parentSize) * 100;
-    case 'pt':
+    case "pt":
       return px * (72 / PX_PER_INCH);
-    case 'pc':
+    case "pc":
       return px * (6 / PX_PER_INCH);
-    case 'cm':
+    case "cm":
       return px * (2.54 / PX_PER_INCH);
-    case 'mm':
+    case "mm":
       return px * (25.4 / PX_PER_INCH);
-    case 'in':
+    case "in":
       return px / PX_PER_INCH;
   }
 }
@@ -242,10 +223,10 @@ export function convertAllUnits(
  * @returns フォーマット済みの文字列
  */
 export function formatCssValue(value: number): string {
-  if (!Number.isFinite(value)) return '—';
+  if (!Number.isFinite(value)) return "—";
 
   // 表示上意味がないほど小さい値
-  if (Math.abs(value) < 1e-9 && value !== 0) return '≈ 0';
+  if (Math.abs(value) < 1e-9 && value !== 0) return "≈ 0";
 
   // 非常に大きな値は指数表記
   if (Math.abs(value) >= 1e9) return value.toExponential(3);

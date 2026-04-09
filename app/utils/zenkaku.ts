@@ -28,109 +28,109 @@ export const DEFAULT_OPTIONS: ZenkakuOptions = {
 };
 
 /** 変換方向 */
-export type ConversionDirection = 'toHankaku' | 'toZenkaku';
+export type ConversionDirection = "toHankaku" | "toZenkaku";
 
 /**
  * 半角カタカナ → 全角カタカナ 基本マッピング
  * （濁点・半濁点なし）
  */
 const HANKAKU_KATA_TO_ZENKAKU: Record<string, string> = {
-  'ｦ': 'ヲ',
-  'ｧ': 'ァ',
-  'ｨ': 'ィ',
-  'ｩ': 'ゥ',
-  'ｪ': 'ェ',
-  'ｫ': 'ォ',
-  'ｬ': 'ャ',
-  'ｭ': 'ュ',
-  'ｮ': 'ョ',
-  'ｯ': 'ッ',
-  'ｰ': 'ー',
-  'ｱ': 'ア',
-  'ｲ': 'イ',
-  'ｳ': 'ウ',
-  'ｴ': 'エ',
-  'ｵ': 'オ',
-  'ｶ': 'カ',
-  'ｷ': 'キ',
-  'ｸ': 'ク',
-  'ｹ': 'ケ',
-  'ｺ': 'コ',
-  'ｻ': 'サ',
-  'ｼ': 'シ',
-  'ｽ': 'ス',
-  'ｾ': 'セ',
-  'ｿ': 'ソ',
-  'ﾀ': 'タ',
-  'ﾁ': 'チ',
-  'ﾂ': 'ツ',
-  'ﾃ': 'テ',
-  'ﾄ': 'ト',
-  'ﾅ': 'ナ',
-  'ﾆ': 'ニ',
-  'ﾇ': 'ヌ',
-  'ﾈ': 'ネ',
-  'ﾉ': 'ノ',
-  'ﾊ': 'ハ',
-  'ﾋ': 'ヒ',
-  'ﾌ': 'フ',
-  'ﾍ': 'ヘ',
-  'ﾎ': 'ホ',
-  'ﾏ': 'マ',
-  'ﾐ': 'ミ',
-  'ﾑ': 'ム',
-  'ﾒ': 'メ',
-  'ﾓ': 'モ',
-  'ﾔ': 'ヤ',
-  'ﾕ': 'ユ',
-  'ﾖ': 'ヨ',
-  'ﾗ': 'ラ',
-  'ﾘ': 'リ',
-  'ﾙ': 'ル',
-  'ﾚ': 'レ',
-  'ﾛ': 'ロ',
-  'ﾜ': 'ワ',
-  'ﾝ': 'ン',
-  'ﾞ': '゛',
-  'ﾟ': '゜',
+  ｦ: "ヲ",
+  ｧ: "ァ",
+  ｨ: "ィ",
+  ｩ: "ゥ",
+  ｪ: "ェ",
+  ｫ: "ォ",
+  ｬ: "ャ",
+  ｭ: "ュ",
+  ｮ: "ョ",
+  ｯ: "ッ",
+  ｰ: "ー",
+  ｱ: "ア",
+  ｲ: "イ",
+  ｳ: "ウ",
+  ｴ: "エ",
+  ｵ: "オ",
+  ｶ: "カ",
+  ｷ: "キ",
+  ｸ: "ク",
+  ｹ: "ケ",
+  ｺ: "コ",
+  ｻ: "サ",
+  ｼ: "シ",
+  ｽ: "ス",
+  ｾ: "セ",
+  ｿ: "ソ",
+  ﾀ: "タ",
+  ﾁ: "チ",
+  ﾂ: "ツ",
+  ﾃ: "テ",
+  ﾄ: "ト",
+  ﾅ: "ナ",
+  ﾆ: "ニ",
+  ﾇ: "ヌ",
+  ﾈ: "ネ",
+  ﾉ: "ノ",
+  ﾊ: "ハ",
+  ﾋ: "ヒ",
+  ﾌ: "フ",
+  ﾍ: "ヘ",
+  ﾎ: "ホ",
+  ﾏ: "マ",
+  ﾐ: "ミ",
+  ﾑ: "ム",
+  ﾒ: "メ",
+  ﾓ: "モ",
+  ﾔ: "ヤ",
+  ﾕ: "ユ",
+  ﾖ: "ヨ",
+  ﾗ: "ラ",
+  ﾘ: "リ",
+  ﾙ: "ル",
+  ﾚ: "レ",
+  ﾛ: "ロ",
+  ﾜ: "ワ",
+  ﾝ: "ン",
+  ﾞ: "゛",
+  ﾟ: "゜",
 };
 
 /**
  * 半角カタカナ + 濁点（ﾞ）→ 全角カタカナ（有声音）
  */
 const HANKAKU_DAKUTEN_MAP: Record<string, string> = {
-  'ｶ': 'ガ',
-  'ｷ': 'ギ',
-  'ｸ': 'グ',
-  'ｹ': 'ゲ',
-  'ｺ': 'ゴ',
-  'ｻ': 'ザ',
-  'ｼ': 'ジ',
-  'ｽ': 'ズ',
-  'ｾ': 'ゼ',
-  'ｿ': 'ゾ',
-  'ﾀ': 'ダ',
-  'ﾁ': 'ヂ',
-  'ﾂ': 'ヅ',
-  'ﾃ': 'デ',
-  'ﾄ': 'ド',
-  'ﾊ': 'バ',
-  'ﾋ': 'ビ',
-  'ﾌ': 'ブ',
-  'ﾍ': 'ベ',
-  'ﾎ': 'ボ',
-  'ｳ': 'ヴ',
+  ｶ: "ガ",
+  ｷ: "ギ",
+  ｸ: "グ",
+  ｹ: "ゲ",
+  ｺ: "ゴ",
+  ｻ: "ザ",
+  ｼ: "ジ",
+  ｽ: "ズ",
+  ｾ: "ゼ",
+  ｿ: "ゾ",
+  ﾀ: "ダ",
+  ﾁ: "ヂ",
+  ﾂ: "ヅ",
+  ﾃ: "デ",
+  ﾄ: "ド",
+  ﾊ: "バ",
+  ﾋ: "ビ",
+  ﾌ: "ブ",
+  ﾍ: "ベ",
+  ﾎ: "ボ",
+  ｳ: "ヴ",
 };
 
 /**
  * 半角カタカナ + 半濁点（ﾟ）→ 全角カタカナ（半有声音）
  */
 const HANKAKU_HANDAKUTEN_MAP: Record<string, string> = {
-  'ﾊ': 'パ',
-  'ﾋ': 'ピ',
-  'ﾌ': 'プ',
-  'ﾍ': 'ペ',
-  'ﾎ': 'ポ',
+  ﾊ: "パ",
+  ﾋ: "ピ",
+  ﾌ: "プ",
+  ﾍ: "ペ",
+  ﾎ: "ポ",
 };
 
 /**
@@ -138,27 +138,92 @@ const HANKAKU_HANDAKUTEN_MAP: Record<string, string> = {
  */
 const ZENKAKU_KATA_TO_HANKAKU: Record<string, string> = {
   // 有声音（2文字に分解）
-  'ガ': 'ｶﾞ', 'ギ': 'ｷﾞ', 'グ': 'ｸﾞ', 'ゲ': 'ｹﾞ', 'ゴ': 'ｺﾞ',
-  'ザ': 'ｻﾞ', 'ジ': 'ｼﾞ', 'ズ': 'ｽﾞ', 'ゼ': 'ｾﾞ', 'ゾ': 'ｿﾞ',
-  'ダ': 'ﾀﾞ', 'ヂ': 'ﾁﾞ', 'ヅ': 'ﾂﾞ', 'デ': 'ﾃﾞ', 'ド': 'ﾄﾞ',
-  'バ': 'ﾊﾞ', 'ビ': 'ﾋﾞ', 'ブ': 'ﾌﾞ', 'ベ': 'ﾍﾞ', 'ボ': 'ﾎﾞ',
-  'ヴ': 'ｳﾞ',
+  ガ: "ｶﾞ",
+  ギ: "ｷﾞ",
+  グ: "ｸﾞ",
+  ゲ: "ｹﾞ",
+  ゴ: "ｺﾞ",
+  ザ: "ｻﾞ",
+  ジ: "ｼﾞ",
+  ズ: "ｽﾞ",
+  ゼ: "ｾﾞ",
+  ゾ: "ｿﾞ",
+  ダ: "ﾀﾞ",
+  ヂ: "ﾁﾞ",
+  ヅ: "ﾂﾞ",
+  デ: "ﾃﾞ",
+  ド: "ﾄﾞ",
+  バ: "ﾊﾞ",
+  ビ: "ﾋﾞ",
+  ブ: "ﾌﾞ",
+  ベ: "ﾍﾞ",
+  ボ: "ﾎﾞ",
+  ヴ: "ｳﾞ",
   // 半有声音（2文字に分解）
-  'パ': 'ﾊﾟ', 'ピ': 'ﾋﾟ', 'プ': 'ﾌﾟ', 'ペ': 'ﾍﾟ', 'ポ': 'ﾎﾟ',
+  パ: "ﾊﾟ",
+  ピ: "ﾋﾟ",
+  プ: "ﾌﾟ",
+  ペ: "ﾍﾟ",
+  ポ: "ﾎﾟ",
   // 通常（1:1変換）
-  'ヲ': 'ｦ', 'ァ': 'ｧ', 'ィ': 'ｨ', 'ゥ': 'ｩ', 'ェ': 'ｪ', 'ォ': 'ｫ',
-  'ャ': 'ｬ', 'ュ': 'ｭ', 'ョ': 'ｮ', 'ッ': 'ｯ', 'ー': 'ｰ',
-  'ア': 'ｱ', 'イ': 'ｲ', 'ウ': 'ｳ', 'エ': 'ｴ', 'オ': 'ｵ',
-  'カ': 'ｶ', 'キ': 'ｷ', 'ク': 'ｸ', 'ケ': 'ｹ', 'コ': 'ｺ',
-  'サ': 'ｻ', 'シ': 'ｼ', 'ス': 'ｽ', 'セ': 'ｾ', 'ソ': 'ｿ',
-  'タ': 'ﾀ', 'チ': 'ﾁ', 'ツ': 'ﾂ', 'テ': 'ﾃ', 'ト': 'ﾄ',
-  'ナ': 'ﾅ', 'ニ': 'ﾆ', 'ヌ': 'ﾇ', 'ネ': 'ﾈ', 'ノ': 'ﾉ',
-  'ハ': 'ﾊ', 'ヒ': 'ﾋ', 'フ': 'ﾌ', 'ヘ': 'ﾍ', 'ホ': 'ﾎ',
-  'マ': 'ﾏ', 'ミ': 'ﾐ', 'ム': 'ﾑ', 'メ': 'ﾒ', 'モ': 'ﾓ',
-  'ヤ': 'ﾔ', 'ユ': 'ﾕ', 'ヨ': 'ﾖ',
-  'ラ': 'ﾗ', 'リ': 'ﾘ', 'ル': 'ﾙ', 'レ': 'ﾚ', 'ロ': 'ﾛ',
-  'ワ': 'ﾜ', 'ン': 'ﾝ',
-  '゛': 'ﾞ', '゜': 'ﾟ',
+  ヲ: "ｦ",
+  ァ: "ｧ",
+  ィ: "ｨ",
+  ゥ: "ｩ",
+  ェ: "ｪ",
+  ォ: "ｫ",
+  ャ: "ｬ",
+  ュ: "ｭ",
+  ョ: "ｮ",
+  ッ: "ｯ",
+  ー: "ｰ",
+  ア: "ｱ",
+  イ: "ｲ",
+  ウ: "ｳ",
+  エ: "ｴ",
+  オ: "ｵ",
+  カ: "ｶ",
+  キ: "ｷ",
+  ク: "ｸ",
+  ケ: "ｹ",
+  コ: "ｺ",
+  サ: "ｻ",
+  シ: "ｼ",
+  ス: "ｽ",
+  セ: "ｾ",
+  ソ: "ｿ",
+  タ: "ﾀ",
+  チ: "ﾁ",
+  ツ: "ﾂ",
+  テ: "ﾃ",
+  ト: "ﾄ",
+  ナ: "ﾅ",
+  ニ: "ﾆ",
+  ヌ: "ﾇ",
+  ネ: "ﾈ",
+  ノ: "ﾉ",
+  ハ: "ﾊ",
+  ヒ: "ﾋ",
+  フ: "ﾌ",
+  ヘ: "ﾍ",
+  ホ: "ﾎ",
+  マ: "ﾏ",
+  ミ: "ﾐ",
+  ム: "ﾑ",
+  メ: "ﾒ",
+  モ: "ﾓ",
+  ヤ: "ﾔ",
+  ユ: "ﾕ",
+  ヨ: "ﾖ",
+  ラ: "ﾗ",
+  リ: "ﾘ",
+  ル: "ﾙ",
+  レ: "ﾚ",
+  ロ: "ﾛ",
+  ワ: "ﾜ",
+  ン: "ﾝ",
+  ゛: "ﾞ",
+  ゜: "ﾟ",
 };
 
 /**
@@ -168,14 +233,14 @@ const ZENKAKU_KATA_TO_HANKAKU: Record<string, string> = {
  * @returns 変換後のテキスト
  */
 export function toHankaku(text: string, options: ZenkakuOptions = DEFAULT_OPTIONS): string {
-  let result = '';
+  let result = "";
   for (let i = 0; i < text.length; i++) {
     const char = text[i];
     const code = char.charCodeAt(0);
 
     // 全角スペース（U+3000）→ 半角スペース
     if (options.space && code === 0x3000) {
-      result += ' ';
+      result += " ";
       continue;
     }
 
@@ -215,7 +280,7 @@ export function toHankaku(text: string, options: ZenkakuOptions = DEFAULT_OPTION
  * @returns 変換後のテキスト
  */
 export function toZenkaku(text: string, options: ZenkakuOptions = DEFAULT_OPTIONS): string {
-  let result = '';
+  let result = "";
   for (let i = 0; i < text.length; i++) {
     const char = text[i];
     const code = char.charCodeAt(0);
@@ -223,7 +288,7 @@ export function toZenkaku(text: string, options: ZenkakuOptions = DEFAULT_OPTION
 
     // 半角スペース → 全角スペース
     if (options.space && code === 0x20) {
-      result += '\u3000';
+      result += "\u3000";
       continue;
     }
 
@@ -246,13 +311,13 @@ export function toZenkaku(text: string, options: ZenkakuOptions = DEFAULT_OPTION
     // 半角カタカナ処理（濁点・半濁点の合成）
     if (options.katakana) {
       // 濁点（ﾞ, U+FF9E）との合成
-      if (nextChar === 'ﾞ' && HANKAKU_DAKUTEN_MAP[char] !== undefined) {
+      if (nextChar === "ﾞ" && HANKAKU_DAKUTEN_MAP[char] !== undefined) {
         result += HANKAKU_DAKUTEN_MAP[char];
         i++; // 次の文字（ﾞ）をスキップ
         continue;
       }
       // 半濁点（ﾟ, U+FF9F）との合成
-      if (nextChar === 'ﾟ' && HANKAKU_HANDAKUTEN_MAP[char] !== undefined) {
+      if (nextChar === "ﾟ" && HANKAKU_HANDAKUTEN_MAP[char] !== undefined) {
         result += HANKAKU_HANDAKUTEN_MAP[char];
         i++; // 次の文字（ﾟ）をスキップ
         continue;
@@ -279,9 +344,9 @@ export function toZenkaku(text: string, options: ZenkakuOptions = DEFAULT_OPTION
 export function convertText(
   text: string,
   direction: ConversionDirection,
-  options: ZenkakuOptions = DEFAULT_OPTIONS
+  options: ZenkakuOptions = DEFAULT_OPTIONS,
 ): string {
-  if (direction === 'toHankaku') {
+  if (direction === "toHankaku") {
     return toHankaku(text, options);
   }
   return toZenkaku(text, options);

@@ -55,11 +55,11 @@ export interface TemplateSample {
  */
 function escapeHtml(str: string): string {
   return str
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }
 
 /**
@@ -68,13 +68,13 @@ function escapeHtml(str: string): string {
  * @param key - ドット区切りのキー（例: "user.name"）
  */
 function lookup(context: TemplateData, key: string): TemplateData {
-  if (key === '.') return context;
+  if (key === ".") return context;
   if (context === null || context === undefined) return undefined;
-  const parts = key.split('.');
+  const parts = key.split(".");
   let current: TemplateData = context;
   for (const part of parts) {
     if (current === null || current === undefined) return undefined;
-    if (typeof current !== 'object' || Array.isArray(current)) return undefined;
+    if (typeof current !== "object" || Array.isArray(current)) return undefined;
     current = (current as JsonObject)[part];
   }
   return current;
@@ -98,11 +98,11 @@ function isTruthy(value: TemplateData): boolean {
  * @param context - レンダリングに使用するデータコンテキスト
  */
 function renderInternal(template: string, context: TemplateData): string {
-  let result = '';
+  let result = "";
   let pos = 0;
 
   while (pos < template.length) {
-    const openIdx = template.indexOf('{{', pos);
+    const openIdx = template.indexOf("{{", pos);
     if (openIdx === -1) {
       // 残りのテキストをそのまま追加
       result += template.slice(pos);
@@ -113,8 +113,8 @@ function renderInternal(template: string, context: TemplateData): string {
     result += template.slice(pos, openIdx);
 
     // {{{ ... }}} トリプル Mustache（エスケープなし）
-    if (template[openIdx + 2] === '{') {
-      const closeIdx = template.indexOf('}}}', openIdx + 3);
+    if (template[openIdx + 2] === "{") {
+      const closeIdx = template.indexOf("}}}", openIdx + 3);
       if (closeIdx === -1) {
         result += template.slice(openIdx);
         break;
@@ -129,7 +129,7 @@ function renderInternal(template: string, context: TemplateData): string {
     }
 
     // {{ ... }} ダブル Mustache
-    const closeIdx = template.indexOf('}}', openIdx + 2);
+    const closeIdx = template.indexOf("}}", openIdx + 2);
     if (closeIdx === -1) {
       result += template.slice(openIdx);
       break;
@@ -138,13 +138,13 @@ function renderInternal(template: string, context: TemplateData): string {
     const tag = template.slice(openIdx + 2, closeIdx).trim();
 
     // {{! comment }} コメント
-    if (tag.startsWith('!')) {
+    if (tag.startsWith("!")) {
       pos = closeIdx + 2;
       continue;
     }
 
     // {{& variable }} エスケープなし変数
-    if (tag.startsWith('&')) {
+    if (tag.startsWith("&")) {
       const key = tag.slice(1).trim();
       const value = lookup(context, key);
       if (value !== undefined && value !== null) {
@@ -155,7 +155,7 @@ function renderInternal(template: string, context: TemplateData): string {
     }
 
     // {{# section }} ... {{/ section }} セクション
-    if (tag.startsWith('#')) {
+    if (tag.startsWith("#")) {
       const key = tag.slice(1).trim();
       const closeTag = `{{/${key}}}`;
       // 閉じタグを検索（スペースを含む場合も考慮）
@@ -164,9 +164,10 @@ function renderInternal(template: string, context: TemplateData): string {
         pos = closeIdx + 2;
         continue;
       }
-      const { start: sectionStart, end: sectionEnd } = closeTagIdx === -1
-        ? { start: closeIdx + 2, end: closeIdx + 2 }
-        : { start: closeIdx + 2, end: closeTagIdx };
+      const { start: sectionStart, end: sectionEnd } =
+        closeTagIdx === -1
+          ? { start: closeIdx + 2, end: closeIdx + 2 }
+          : { start: closeIdx + 2, end: closeTagIdx };
       const sectionContent = template.slice(sectionStart, sectionEnd);
       const closeTagFull = findCloseTagFull(template, key, closeIdx + 2);
       const value = lookup(context, key);
@@ -178,7 +179,7 @@ function renderInternal(template: string, context: TemplateData): string {
         }
       } else if (isTruthy(value)) {
         // truthy な値の場合: コンテキストを更新して表示
-        const newContext = typeof value === 'object' && value !== null ? value : context;
+        const newContext = typeof value === "object" && value !== null ? value : context;
         result += renderInternal(sectionContent, newContext);
       }
       // falsy の場合は何も出力しない
@@ -188,7 +189,7 @@ function renderInternal(template: string, context: TemplateData): string {
     }
 
     // {{^ inverted }} ... {{/ inverted }} 逆セクション
-    if (tag.startsWith('^')) {
+    if (tag.startsWith("^")) {
       const key = tag.slice(1).trim();
       const closeTagIdx = findCloseTag(template, key, closeIdx + 2);
       if (closeTagIdx === -1) {
@@ -207,7 +208,7 @@ function renderInternal(template: string, context: TemplateData): string {
     }
 
     // {{/ key }} 閉じタグ（単独で現れた場合は無視）
-    if (tag.startsWith('/')) {
+    if (tag.startsWith("/")) {
       pos = closeIdx + 2;
       continue;
     }
@@ -255,12 +256,7 @@ function findCloseTag(template: string, key: string, startPos: number): number {
  * @returns 閉じタグ後の位置
  */
 function findCloseTagFull(template: string, key: string, startPos: number): number {
-  const patterns = [
-    `{{/${key}}}`,
-    `{{/ ${key} }}`,
-    `{{/ ${key}}}`,
-    `{{/${key} }}`,
-  ];
+  const patterns = [`{{/${key}}}`, `{{/ ${key} }}`, `{{/ ${key}}}`, `{{/${key} }}`];
 
   let minIdx = -1;
   let minPattern = patterns[0]!;
@@ -288,16 +284,16 @@ function findCloseTagFull(template: string, key: string, startPos: number): numb
 export function renderTemplate(template: string, jsonData: string): RenderResult {
   // 空テンプレートの処理
   if (!template.trim()) {
-    return { output: '', error: null };
+    return { output: "", error: null };
   }
 
   // JSON パース
   let data: TemplateData;
   try {
-    data = JSON.parse(jsonData.trim() || '{}');
+    data = JSON.parse(jsonData.trim() || "{}");
   } catch (e) {
     return {
-      output: '',
+      output: "",
       error: `JSONパースエラー: ${e instanceof Error ? e.message : String(e)}`,
     };
   }
@@ -308,7 +304,7 @@ export function renderTemplate(template: string, jsonData: string): RenderResult
     return { output, error: null };
   } catch (e) {
     return {
-      output: '',
+      output: "",
       error: `レンダリングエラー: ${e instanceof Error ? e.message : String(e)}`,
     };
   }
@@ -319,17 +315,17 @@ export function renderTemplate(template: string, jsonData: string): RenderResult
  */
 export const TEMPLATE_SAMPLES: TemplateSample[] = [
   {
-    name: '基本的な変数展開',
+    name: "基本的な変数展開",
     template: `こんにちは、{{name}} さん！
 あなたは {{age}} 歳です。
 お住まいは {{address.city}} です。`,
     data: JSON.stringify(
       {
-        name: '山田太郎',
+        name: "山田太郎",
         age: 30,
         address: {
-          city: '東京',
-          zip: '100-0001',
+          city: "東京",
+          zip: "100-0001",
         },
       },
       null,
@@ -337,7 +333,7 @@ export const TEMPLATE_SAMPLES: TemplateSample[] = [
     ),
   },
   {
-    name: 'リストのループ',
+    name: "リストのループ",
     template: `買い物リスト:
 {{#items}}
 - {{name}}（{{price}}円）
@@ -347,9 +343,9 @@ export const TEMPLATE_SAMPLES: TemplateSample[] = [
     data: JSON.stringify(
       {
         items: [
-          { name: 'りんご', price: 150 },
-          { name: 'バナナ', price: 200 },
-          { name: 'みかん', price: 120 },
+          { name: "りんご", price: 150 },
+          { name: "バナナ", price: 200 },
+          { name: "みかん", price: 120 },
         ],
         total: 470,
       },
@@ -358,7 +354,7 @@ export const TEMPLATE_SAMPLES: TemplateSample[] = [
     ),
   },
   {
-    name: '条件分岐',
+    name: "条件分岐",
     template: `{{#isAdmin}}
 管理者としてログインしています。
 {{/isAdmin}}
@@ -369,7 +365,7 @@ export const TEMPLATE_SAMPLES: TemplateSample[] = [
 ユーザー名: {{username}}`,
     data: JSON.stringify(
       {
-        username: 'user123',
+        username: "user123",
         isAdmin: false,
       },
       null,
@@ -377,20 +373,20 @@ export const TEMPLATE_SAMPLES: TemplateSample[] = [
     ),
   },
   {
-    name: 'HTMLエスケープ',
+    name: "HTMLエスケープ",
     template: `通常変数（エスケープあり）: {{html}}
 トリプル波括弧（エスケープなし）: {{{html}}}
 アンパサンド記法（エスケープなし）: {{&html}}`,
     data: JSON.stringify(
       {
-        html: '<strong>太字テキスト</strong>',
+        html: "<strong>太字テキスト</strong>",
       },
       null,
       2,
     ),
   },
   {
-    name: 'ネストされたデータ',
+    name: "ネストされたデータ",
     template: `プロジェクト: {{project.name}}
 バージョン: {{project.version}}
 
@@ -401,12 +397,12 @@ export const TEMPLATE_SAMPLES: TemplateSample[] = [
     data: JSON.stringify(
       {
         project: {
-          name: 'Web ツール集',
-          version: '1.0.0',
+          name: "Web ツール集",
+          version: "1.0.0",
           members: [
-            { name: '田中', role: 'フロントエンド' },
-            { name: '鈴木', role: 'バックエンド' },
-            { name: '佐藤', role: 'デザイナー' },
+            { name: "田中", role: "フロントエンド" },
+            { name: "鈴木", role: "バックエンド" },
+            { name: "佐藤", role: "デザイナー" },
           ],
         },
       },

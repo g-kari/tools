@@ -50,7 +50,9 @@
   border-radius: 0;
   font-size: 0.9375rem;
   font-family: "JetBrains Mono", "Space Mono", monospace;
-  transition: border-color 0.2s, opacity 0.2s;
+  transition:
+    border-color 0.2s,
+    opacity 0.2s;
 }
 
 .fp-function-input:focus {
@@ -75,7 +77,9 @@
   font-size: 0.75rem;
   font-family: "JetBrains Mono", "Space Mono", monospace;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
+  transition:
+    background 0.2s,
+    color 0.2s;
   border-radius: 0;
   white-space: nowrap;
 }
@@ -134,7 +138,9 @@
   font-size: 0.75rem;
   font-family: "JetBrains Mono", "Space Mono", monospace;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
+  transition:
+    background 0.2s,
+    color 0.2s;
   white-space: nowrap;
 }
 
@@ -201,7 +207,9 @@
   font-size: 0.75rem;
   font-family: "JetBrains Mono", "Space Mono", monospace;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
+  transition:
+    background 0.2s,
+    color 0.2s;
   white-space: nowrap;
 }
 
@@ -280,7 +288,9 @@
   font-size: 0.75rem;
   font-family: "JetBrains Mono", "Space Mono", monospace;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
+  transition:
+    background 0.2s,
+    color 0.2s;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }

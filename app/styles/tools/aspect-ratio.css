@@ -160,7 +160,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: width 0.2s ease, height 0.2s ease;
+  transition:
+    width 0.2s ease,
+    height 0.2s ease;
 }
 
 .ar-preview-label {
@@ -184,7 +186,9 @@
   padding: var(--space-2);
   cursor: pointer;
   text-align: center;
-  transition: border-color 0.1s, background 0.1s;
+  transition:
+    border-color 0.1s,
+    background 0.1s;
 }
 
 .ar-preset-btn:hover {

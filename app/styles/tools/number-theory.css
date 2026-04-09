@@ -19,7 +19,9 @@
   font-size: 0.8125rem;
   font-family: "JetBrains Mono", "Space Mono", monospace;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
+  transition:
+    background 0.2s,
+    color 0.2s;
   text-align: center;
   letter-spacing: 0.02em;
   white-space: nowrap;

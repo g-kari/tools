@@ -6,15 +6,11 @@ test.describe("CSS Filterジェネレーターページ", () => {
   });
 
   test("ページタイトルが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "CSS Filterジェネレーター" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "CSS Filterジェネレーター" })).toBeVisible();
   });
 
   test("プリセットセクションが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "プリセット" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "プリセット" })).toBeVisible();
   });
 
   test("プリセットボタンが複数表示される", async ({ page }) => {
@@ -23,9 +19,7 @@ test.describe("CSS Filterジェネレーターページ", () => {
   });
 
   test("フィルター設定セクションが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "フィルター設定" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "フィルター設定" })).toBeVisible();
   });
 
   test("Blur スライダーが表示される", async ({ page }) => {
@@ -41,9 +35,7 @@ test.describe("CSS Filterジェネレーターページ", () => {
   });
 
   test("プレビューセクションが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "プレビュー" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "プレビュー" })).toBeVisible();
     await expect(page.locator(".cfl-preview-canvas")).toBeVisible();
   });
 
@@ -67,9 +59,7 @@ test.describe("CSS Filterジェネレーターページ", () => {
   });
 
   test("CSS出力エリアが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("heading", { name: "生成 CSS" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "生成 CSS" })).toBeVisible();
     await expect(page.locator(".cfl-css-output")).toBeVisible();
   });
 
@@ -107,9 +97,7 @@ test.describe("CSS Filterジェネレーターページ", () => {
   });
 
   test("リセットボタンが表示される", async ({ page }) => {
-    await expect(
-      page.getByLabel("すべての設定をリセット")
-    ).toBeVisible();
+    await expect(page.getByLabel("すべての設定をリセット")).toBeVisible();
   });
 
   test("プリセット適用後にリセットで none に戻る", async ({ page }) => {
@@ -122,9 +110,7 @@ test.describe("CSS Filterジェネレーターページ", () => {
   });
 
   test("コピーボタンが存在する", async ({ page }) => {
-    await expect(
-      page.getByLabel("CSSをクリップボードにコピー")
-    ).toBeVisible();
+    await expect(page.getByLabel("CSSをクリップボードにコピー")).toBeVisible();
   });
 
   test("ページにTipsカードが表示される", async ({ page }) => {

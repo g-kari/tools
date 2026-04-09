@@ -20,7 +20,7 @@ export function levenshteinDistance(a: string, b: string): number {
 
   // dp[i][j] = a[0..i-1] と b[0..j-1] のLevenshtein距離
   const dp: number[][] = Array.from({ length: m + 1 }, (_, i) =>
-    Array.from({ length: n + 1 }, (_, j) => (i === 0 ? j : j === 0 ? i : 0))
+    Array.from({ length: n + 1 }, (_, j) => (i === 0 ? j : j === 0 ? i : 0)),
   );
 
   for (let i = 1; i <= m; i++) {
@@ -33,7 +33,7 @@ export function levenshteinDistance(a: string, b: string): number {
           Math.min(
             dp[i - 1][j], // 削除
             dp[i][j - 1], // 挿入
-            dp[i - 1][j - 1] // 置換
+            dp[i - 1][j - 1], // 置換
           );
       }
     }
@@ -103,12 +103,7 @@ export function jaroSimilarity(a: string, b: string): number {
     k++;
   }
 
-  return (
-    (matches / a.length +
-      matches / b.length +
-      (matches - transpositions / 2) / matches) /
-    3
-  );
+  return (matches / a.length + matches / b.length + (matches - transpositions / 2) / matches) / 3;
 }
 
 /**
@@ -122,11 +117,7 @@ export function jaroSimilarity(a: string, b: string): number {
  * @param scalingFactor プレフィックスのスケーリング係数（通常 0.1）
  * @returns Jaro-Winkler類似度（0〜1）
  */
-export function jaroWinklerSimilarity(
-  a: string,
-  b: string,
-  scalingFactor = 0.1
-): number {
+export function jaroWinklerSimilarity(a: string, b: string, scalingFactor = 0.1): number {
   const jaro = jaroSimilarity(a, b);
 
   // 共通プレフィックス長（最大4文字）

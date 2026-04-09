@@ -1,9 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useMemo, useCallback } from "react";
-import {
-  StatusAnnouncer,
-  useStatusAnnouncement,
-} from "~/hooks/useStatusAnnouncement";
+import { StatusAnnouncer, useStatusAnnouncement } from "~/hooks/useStatusAnnouncement";
 import { TipsCard } from "~/components/TipsCard";
 import { useClipboard } from "~/hooks/useClipboard";
 import { useToast } from "~/components/Toast";
@@ -54,18 +51,13 @@ export const Route = createFileRoute("/markdown-table")({
  * スプレッドシートUIでテーブルデータを編集し、Markdown形式で出力する
  */
 function MarkdownTableGenerator() {
-  const [tableData, setTableData] = useState<TableData>(
-    createEmptyTable(3, 3)
-  );
+  const [tableData, setTableData] = useState<TableData>(createEmptyTable(3, 3));
   const [csvInput, setCsvInput] = useState("");
   const { statusRef, announceStatus } = useStatusAnnouncement();
   const { copy } = useClipboard();
   const { showToast } = useToast();
 
-  const markdownOutput = useMemo(
-    () => generateMarkdown(tableData),
-    [tableData]
-  );
+  const markdownOutput = useMemo(() => generateMarkdown(tableData), [tableData]);
 
   const handleCopy = useCallback(async () => {
     if (!markdownOutput) return;
@@ -103,9 +95,7 @@ function MarkdownTableGenerator() {
           <div className="markdown-table-two-col">
             {/* 左: テーブルエディター */}
             <div className="markdown-table-section">
-              <div className="markdown-table-section-title">
-                テーブルエディター
-              </div>
+              <div className="markdown-table-section-title">テーブルエディター</div>
 
               <div className="markdown-table-grid-wrapper">
                 <table className="markdown-table-grid">
@@ -118,9 +108,7 @@ function MarkdownTableGenerator() {
                               className="markdown-table-header-input"
                               value={col.header}
                               onChange={(e) =>
-                                setTableData(
-                                  updateHeader(tableData, i, e.target.value)
-                                )
+                                setTableData(updateHeader(tableData, i, e.target.value))
                               }
                               id={`markdown-table-header-${i}`}
                               aria-label={`列${i + 1}のヘッダー`}
@@ -131,11 +119,7 @@ function MarkdownTableGenerator() {
                               value={col.align}
                               onChange={(e) =>
                                 setTableData(
-                                  setColumnAlign(
-                                    tableData,
-                                    i,
-                                    e.target.value as AlignType
-                                  )
+                                  setColumnAlign(tableData, i, e.target.value as AlignType),
                                 )
                               }
                               aria-label={`列${i + 1}の整列方向`}
@@ -147,9 +131,7 @@ function MarkdownTableGenerator() {
                             </select>
                             <button
                               className="markdown-table-col-remove"
-                              onClick={() =>
-                                setTableData(removeColumn(tableData, i))
-                              }
+                              onClick={() => setTableData(removeColumn(tableData, i))}
                               disabled={tableData.columns.length <= 1}
                               aria-label={`列${i + 1}を削除`}
                             >
@@ -178,14 +160,7 @@ function MarkdownTableGenerator() {
                               className="markdown-table-cell-input"
                               value={cell}
                               onChange={(e) =>
-                                setTableData(
-                                  updateCell(
-                                    tableData,
-                                    ri,
-                                    ci,
-                                    e.target.value
-                                  )
-                                )
+                                setTableData(updateCell(tableData, ri, ci, e.target.value))
                               }
                               aria-label={`行${ri + 1}列${ci + 1}`}
                             />
@@ -194,9 +169,7 @@ function MarkdownTableGenerator() {
                         <td className="markdown-table-row-controls">
                           <button
                             className="markdown-table-row-remove"
-                            onClick={() =>
-                              setTableData(removeRow(tableData, ri))
-                            }
+                            onClick={() => setTableData(removeRow(tableData, ri))}
                             disabled={tableData.rows.length <= 1}
                             aria-label={`行${ri + 1}を削除`}
                           >

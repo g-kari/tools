@@ -88,7 +88,12 @@ function buildHelpTarget(targets: Record<string, string>): string {
     `\t@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\\033[36m%-20s\\033[0m %s\\n", $$1, $$2}'`,
     ``,
   ];
-  return lines.join("\n") + Object.keys(targets).map(() => "").join("");
+  return (
+    lines.join("\n") +
+    Object.keys(targets)
+      .map(() => "")
+      .join("")
+  );
 }
 
 /** ヘルプターゲットのスニペット */
@@ -127,7 +132,7 @@ docker-push: ## Dockerイメージをプッシュ
 function generateNodejsMakefile(
   appName: string,
   includeDocker: boolean,
-  includeLint: boolean
+  includeLint: boolean,
 ): string {
   const lines: string[] = [
     `# Node.js Makefile`,
@@ -171,7 +176,7 @@ function generateNodejsMakefile(
       ``,
       `format: ## コードをフォーマット`,
       `\tnpm run format`,
-      ``
+      ``,
     );
   }
 
@@ -192,7 +197,7 @@ function generateNodejsMakefile(
 function generatePythonMakefile(
   appName: string,
   includeDocker: boolean,
-  includeLint: boolean
+  includeLint: boolean,
 ): string {
   const lines: string[] = [
     `# Python Makefile`,
@@ -238,7 +243,7 @@ function generatePythonMakefile(
       ``,
       `format: ## コードをフォーマット（ruff format）`,
       `\t$(VENV)/bin/ruff format .`,
-      ``
+      ``,
     );
   }
 
@@ -256,11 +261,7 @@ function generatePythonMakefile(
  * @param includeLint リントターゲットを含むか
  * @returns 生成されたMakefileの文字列
  */
-function generateGoMakefile(
-  appName: string,
-  includeDocker: boolean,
-  includeLint: boolean
-): string {
+function generateGoMakefile(appName: string, includeDocker: boolean, includeLint: boolean): string {
   const lines: string[] = [
     `# Go Makefile`,
     `APP_NAME := ${appName}`,
@@ -307,7 +308,7 @@ function generateGoMakefile(
       ``,
       `vet: ## go vetを実行`,
       `\tgo vet ./...`,
-      ``
+      ``,
     );
   }
 
@@ -328,7 +329,7 @@ function generateGoMakefile(
 function generateRustMakefile(
   appName: string,
   includeDocker: boolean,
-  includeLint: boolean
+  includeLint: boolean,
 ): string {
   const lines: string[] = [
     `# Rust Makefile`,
@@ -369,7 +370,7 @@ function generateRustMakefile(
       ``,
       `fmt: ## rustfmtでコードをフォーマット`,
       `\tcargo fmt`,
-      ``
+      ``,
     );
   }
 
@@ -387,11 +388,7 @@ function generateRustMakefile(
  * @param includeLint リントターゲットを含むか
  * @returns 生成されたMakefileの文字列
  */
-function generateCMakefile(
-  appName: string,
-  includeDocker: boolean,
-  includeLint: boolean
-): string {
+function generateCMakefile(appName: string, includeDocker: boolean, includeLint: boolean): string {
   const lines: string[] = [
     `# C Makefile`,
     `APP_NAME := ${appName}`,
@@ -428,7 +425,7 @@ function generateCMakefile(
       `.PHONY: lint`,
       `lint: ## clang-tidyで静的解析を実行`,
       `\tclang-tidy $(SRCS) -- $(CFLAGS)`,
-      ``
+      ``,
     );
   }
 
@@ -449,7 +446,7 @@ function generateCMakefile(
 function generateCppMakefile(
   appName: string,
   includeDocker: boolean,
-  includeLint: boolean
+  includeLint: boolean,
 ): string {
   const lines: string[] = [
     `# C++ Makefile`,
@@ -487,7 +484,7 @@ function generateCppMakefile(
       `.PHONY: lint`,
       `lint: ## clang-tidyで静的解析を実行`,
       `\tclang-tidy $(SRCS) -- $(CXXFLAGS)`,
-      ``
+      ``,
     );
   }
 

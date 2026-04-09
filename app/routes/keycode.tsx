@@ -2,10 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useToast } from "../components/Toast";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
 import {
@@ -104,7 +101,7 @@ function KeycodeChecker() {
           showToast("コピーに失敗しました", "error");
         });
     },
-    [showToast, announceStatus]
+    [showToast, announceStatus],
   );
 
   const handleClear = useCallback(() => {
@@ -123,9 +120,7 @@ function KeycodeChecker() {
     const value = info[row.field];
     if (row.isBoolean) {
       return (
-        <span
-          className={`kc-table-value ${value ? "kc-boolean-true" : "kc-boolean-false"}`}
-        >
+        <span className={`kc-table-value ${value ? "kc-boolean-true" : "kc-boolean-false"}`}>
           {String(value)}
         </span>
       );
@@ -165,12 +160,8 @@ function KeycodeChecker() {
                 <span className="kc-capture-icon" aria-hidden="true">
                   ⌨️
                 </span>
-                <strong>
-                  {getKeyDisplayName(currentEvent.key)}
-                </strong>
-                <span className="kc-capture-hint">
-                  code: {currentEvent.code}
-                </span>
+                <strong>{getKeyDisplayName(currentEvent.key)}</strong>
+                <span className="kc-capture-hint">code: {currentEvent.code}</span>
               </>
             ) : (
               <>
@@ -178,9 +169,7 @@ function KeycodeChecker() {
                   ⌨️
                 </span>
                 <span>キーボードのキーを押してください</span>
-                <span className="kc-capture-hint">
-                  押下したキーのイベント情報が表示されます
-                </span>
+                <span className="kc-capture-hint">押下したキーのイベント情報が表示されます</span>
               </>
             )}
           </div>
@@ -214,33 +203,20 @@ function KeycodeChecker() {
               </div>
 
               {/* キー情報テーブル */}
-              <div
-                className="kc-table"
-                role="table"
-                aria-label="キーイベントプロパティ一覧"
-              >
+              <div className="kc-table" role="table" aria-label="キーイベントプロパティ一覧">
                 {KEY_INFO_ROWS.map((row) => (
-                  <div
-                    key={row.field}
-                    className="kc-table-row"
-                    role="row"
-                  >
+                  <div key={row.field} className="kc-table-row" role="row">
                     <span className="kc-table-label" role="rowheader">
                       {row.label}
                     </span>
-                    <span role="cell">
-                      {renderTableValue(currentEvent, row)}
-                    </span>
+                    <span role="cell">{renderTableValue(currentEvent, row)}</span>
                     <span role="cell">
                       <button
                         type="button"
                         className="kc-copy-btn"
                         aria-label={`${row.label} の値をコピー`}
                         onClick={() =>
-                          handleCopy(
-                            getValueString(currentEvent, row.field),
-                            row.label
-                          )
+                          handleCopy(getValueString(currentEvent, row.field), row.label)
                         }
                       >
                         📋
@@ -278,24 +254,22 @@ function KeycodeChecker() {
                 キーを押すと履歴が表示されます
               </div>
             ) : (
-              <ol
-                className="kc-history-list"
-                aria-label="キー押下履歴リスト"
-              >
+              <ol className="kc-history-list" aria-label="キー押下履歴リスト">
                 {history.map((item, index) => {
                   const mods = getActiveModifiers(item);
                   return (
                     <li key={index} className="kc-history-item">
                       <span className="kc-history-key">
-                        {isModifierKey(item.key)
-                          ? item.key
-                          : getKeyDisplayName(item.key)}
+                        {isModifierKey(item.key) ? item.key : getKeyDisplayName(item.key)}
                       </span>
                       <span className="kc-history-code" aria-label={`code: ${item.code}`}>
                         {item.code}
                       </span>
                       {mods.length > 0 && (
-                        <span className="kc-history-modifiers" aria-label={`修飾キー: ${mods.join(", ")}`}>
+                        <span
+                          className="kc-history-modifiers"
+                          aria-label={`修飾キー: ${mods.join(", ")}`}
+                        >
                           {mods.map((mod) => (
                             <span key={mod} className="kc-history-mod-badge">
                               {mod}
@@ -317,8 +291,8 @@ function KeycodeChecker() {
               title: "使い方",
               items: [
                 "ページ上でキーボードのキーを押すと、イベント情報が表示されます",
-                "key: 押したキーの値（例: \"a\", \"Enter\", \"ArrowUp\"）",
-                "code: 物理キーのコード（例: \"KeyA\", \"Enter\"）",
+                'key: 押したキーの値（例: "a", "Enter", "ArrowUp"）',
+                'code: 物理キーのコード（例: "KeyA", "Enter"）',
                 "keyCode / which: 非推奨だが参考情報として表示",
                 "各値の 📋 ボタンでクリップボードにコピー可能",
                 "履歴は最新 10 件を保持します",
@@ -329,8 +303,8 @@ function KeycodeChecker() {
               items: [
                 "key: キーが表す文字や機能（ロケール・レイアウト依存）",
                 "code: 物理キーの位置（レイアウトに依存しない）",
-                "例: 日本語キーボードで「A」を押すと key=\"a\", code=\"KeyA\"",
-                "Shift + A では key=\"A\", code=\"KeyA\"",
+                '例: 日本語キーボードで「A」を押すと key="a", code="KeyA"',
+                'Shift + A では key="A", code="KeyA"',
                 "新しい実装では keyCode や which の代わりに key / code を使用推奨",
               ],
             },

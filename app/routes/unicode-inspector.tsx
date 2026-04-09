@@ -3,10 +3,7 @@ import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useMemo, useCallback, useRef } from "react";
 import { useToast } from "../components/Toast";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 import {
   analyzeText,
@@ -114,11 +111,7 @@ function CharPreview({ info }: { info: CharInfo }) {
     );
   }
   return (
-    <span
-      className="uchi-char-preview"
-      aria-label={`文字: ${info.char}`}
-      lang="und"
-    >
+    <span className="uchi-char-preview" aria-label={`文字: ${info.char}`} lang="und">
       {info.char}
     </span>
   );
@@ -137,9 +130,7 @@ function CharRow({
   return (
     <tr className="uchi-table-row" aria-rowindex={index + 2}>
       {/* # */}
-      <td className="uchi-mono-muted">
-        {index + 1}
-      </td>
+      <td className="uchi-mono-muted">{index + 1}</td>
 
       {/* 文字プレビュー */}
       <td>
@@ -160,9 +151,7 @@ function CharRow({
             📋
           </button>
         </div>
-        <div className="uchi-codepoint-decimal">
-          {info.codePoint}
-        </div>
+        <div className="uchi-codepoint-decimal">{info.codePoint}</div>
       </td>
 
       {/* UTF-8 */}
@@ -185,10 +174,7 @@ function CharRow({
             </span>
           ))}
           {info.isSurrogatePair && (
-            <span
-              className="uchi-surrogate-label"
-              title="サロゲートペア（補助文字）"
-            >
+            <span className="uchi-surrogate-label" title="サロゲートペア（補助文字）">
               SP
             </span>
           )}
@@ -206,12 +192,7 @@ function CharRow({
           <button
             type="button"
             className="uchi-copy-btn"
-            onClick={() =>
-              onCopy(
-                info.namedEntity ?? info.numericEntity,
-                "HTMLエンティティ"
-              )
-            }
+            onClick={() => onCopy(info.namedEntity ?? info.numericEntity, "HTMLエンティティ")}
             aria-label={`${info.namedEntity ?? info.numericEntity} をコピー`}
             title="HTMLエンティティをコピー"
           >
@@ -222,9 +203,7 @@ function CharRow({
 
       {/* カテゴリ */}
       <td>
-        <span
-          className={`uchi-category-badge uchi-category-${info.category}`}
-        >
+        <span className={`uchi-category-badge uchi-category-${info.category}`}>
           {info.categoryLabel}
         </span>
       </td>
@@ -251,18 +230,12 @@ function UnicodeInspector() {
   }, [inputText]);
 
   // フィルタリング
-  const filteredChars = useMemo(
-    () => filterChars(allChars, filterQuery),
-    [allChars, filterQuery]
-  );
+  const filteredChars = useMemo(() => filterChars(allChars, filterQuery), [allChars, filterQuery]);
 
   // ページネーション
   const totalPages = Math.max(1, Math.ceil(filteredChars.length / PAGE_SIZE));
   const currentPage = Math.min(page, totalPages - 1);
-  const pageChars = filteredChars.slice(
-    currentPage * PAGE_SIZE,
-    (currentPage + 1) * PAGE_SIZE
-  );
+  const pageChars = filteredChars.slice(currentPage * PAGE_SIZE, (currentPage + 1) * PAGE_SIZE);
 
   // カテゴリ集計
   const categoryStats = useMemo(() => countByCategory(allChars), [allChars]);
@@ -277,7 +250,7 @@ function UnicodeInspector() {
         showToast("コピーに失敗しました", "error");
       }
     },
-    [copy, showToast, announceStatus]
+    [copy, showToast, announceStatus],
   );
 
   const handleClear = useCallback(() => {
@@ -288,13 +261,10 @@ function UnicodeInspector() {
     textareaRef.current?.focus();
   }, [announceStatus]);
 
-  const handleFilterChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setFilterQuery(e.target.value);
-      setPage(0);
-    },
-    []
-  );
+  const handleFilterChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setFilterQuery(e.target.value);
+    setPage(0);
+  }, []);
 
   const isTruncated = [...inputText].length > MAX_CHARS;
 
@@ -321,10 +291,7 @@ function UnicodeInspector() {
               rows={4}
               autoFocus
             />
-            <p
-              id="uchi-input-hint"
-              className="uchi-input-hint"
-            >
+            <p id="uchi-input-hint" className="uchi-input-hint">
               最大 {MAX_CHARS.toLocaleString()} 文字まで解析できます
             </p>
           </div>
@@ -340,12 +307,7 @@ function UnicodeInspector() {
 
           {/* 統計バー */}
           {allChars.length > 0 && (
-            <div
-              className="uchi-stats-bar"
-              role="status"
-              aria-label="文字統計"
-              aria-live="polite"
-            >
+            <div className="uchi-stats-bar" role="status" aria-label="文字統計" aria-live="polite">
               <div className="uchi-stat-chip">
                 <span className="uchi-stat-chip-label">合計</span>
                 <span className="uchi-stat-chip-value">
@@ -414,8 +376,12 @@ function UnicodeInspector() {
                 >
                   <thead className="uchi-table-head">
                     <tr aria-rowindex={1}>
-                      <th scope="col" className="uchi-th-index">#</th>
-                      <th scope="col" className="uchi-th-char">文字</th>
+                      <th scope="col" className="uchi-th-index">
+                        #
+                      </th>
+                      <th scope="col" className="uchi-th-char">
+                        文字
+                      </th>
                       <th scope="col">コードポイント</th>
                       <th scope="col">UTF-8</th>
                       <th scope="col">UTF-16</th>

@@ -1,19 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useEffect, useRef, useCallback } from "react";
-import {
-  generateJWT,
-  type JwtAlgorithm,
-  type JwtGeneratorResult,
-} from "../utils/jwt";
+import { generateJWT, type JwtAlgorithm, type JwtGeneratorResult } from "../utils/jwt";
 import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import { TipsCard } from "~/components/TipsCard";
 import { ErrorMessage } from "~/components/ErrorMessage";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 
@@ -55,7 +48,7 @@ const SAMPLE_PAYLOAD = JSON.stringify(
     role: "user",
   },
   null,
-  2
+  2,
 );
 
 /**
@@ -99,8 +92,7 @@ function JwtGenerator() {
       setErrorMessage("");
       announceStatus("JWTトークンの生成が完了しました");
     } catch (error) {
-      const message =
-        error instanceof Error ? error.message : "生成に失敗しました";
+      const message = error instanceof Error ? error.message : "生成に失敗しました";
       setErrorMessage(message);
       setResult(null);
       announceStatus(`エラー: ${message}`);
@@ -133,7 +125,7 @@ function JwtGenerator() {
         announceStatus("コピーに失敗しました");
       }
     },
-    [copy, announceStatus]
+    [copy, announceStatus],
   );
 
   // Ctrl+Enter で生成
@@ -147,20 +139,13 @@ function JwtGenerator() {
   return (
     <>
       <div className="tool-container">
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          aria-label="JWT生成フォーム"
-        >
+        <form onSubmit={(e) => e.preventDefault()} aria-label="JWT生成フォーム">
           {/* アルゴリズム選択タブ */}
           <div className="converter-section">
             <span className="section-title" id="algo-label">
               アルゴリズム
             </span>
-            <div
-              className="jwt-gen-algo-tabs"
-              role="tablist"
-              aria-labelledby="algo-label"
-            >
+            <div className="jwt-gen-algo-tabs" role="tablist" aria-labelledby="algo-label">
               {ALGORITHMS.map((algo) => (
                 <button
                   key={algo}
@@ -217,9 +202,7 @@ function JwtGenerator() {
                 type="button"
                 className="jwt-gen-secret-toggle"
                 onClick={() => setShowSecret((prev) => !prev)}
-                aria-label={
-                  showSecret ? "シークレットを非表示" : "シークレットを表示"
-                }
+                aria-label={showSecret ? "シークレットを非表示" : "シークレットを表示"}
                 aria-pressed={showSecret}
               >
                 {showSecret ? "非表示" : "表示"}
@@ -272,7 +255,12 @@ function JwtGenerator() {
                     コピー
                   </Button>
                 </div>
-                <div className="jwt-gen-token-value" id="outputToken" aria-live="polite" aria-label="生成されたJWTトークン">
+                <div
+                  className="jwt-gen-token-value"
+                  id="outputToken"
+                  aria-live="polite"
+                  aria-label="生成されたJWTトークン"
+                >
                   {result.token}
                 </div>
               </div>

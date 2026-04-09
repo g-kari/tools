@@ -30,27 +30,15 @@ describe("IP Converter Utilities", () => {
 
   describe("IP to Binary", () => {
     it("should convert IP to binary dotted notation", () => {
-      expect(ipToBinaryDotted("192.168.1.1")).toBe(
-        "11000000.10101000.00000001.00000001"
-      );
-      expect(ipToBinaryDotted("0.0.0.0")).toBe(
-        "00000000.00000000.00000000.00000000"
-      );
-      expect(ipToBinaryDotted("255.255.255.255")).toBe(
-        "11111111.11111111.11111111.11111111"
-      );
+      expect(ipToBinaryDotted("192.168.1.1")).toBe("11000000.10101000.00000001.00000001");
+      expect(ipToBinaryDotted("0.0.0.0")).toBe("00000000.00000000.00000000.00000000");
+      expect(ipToBinaryDotted("255.255.255.255")).toBe("11111111.11111111.11111111.11111111");
     });
 
     it("should convert IP to binary solid notation", () => {
-      expect(ipToBinarySolid("192.168.1.1")).toBe(
-        "11000000101010000000000100000001"
-      );
-      expect(ipToBinarySolid("0.0.0.0")).toBe(
-        "00000000000000000000000000000000"
-      );
-      expect(ipToBinarySolid("255.255.255.255")).toBe(
-        "11111111111111111111111111111111"
-      );
+      expect(ipToBinarySolid("192.168.1.1")).toBe("11000000101010000000000100000001");
+      expect(ipToBinarySolid("0.0.0.0")).toBe("00000000000000000000000000000000");
+      expect(ipToBinarySolid("255.255.255.255")).toBe("11111111111111111111111111111111");
     });
   });
 
@@ -93,15 +81,9 @@ describe("IP Converter Utilities", () => {
 
   describe("Binary to IP", () => {
     it("should convert binary dotted notation to IP", () => {
-      expect(
-        binaryDottedToIp("11000000.10101000.00000001.00000001")
-      ).toBe("192.168.1.1");
-      expect(
-        binaryDottedToIp("00000000.00000000.00000000.00000000")
-      ).toBe("0.0.0.0");
-      expect(
-        binaryDottedToIp("11111111.11111111.11111111.11111111")
-      ).toBe("255.255.255.255");
+      expect(binaryDottedToIp("11000000.10101000.00000001.00000001")).toBe("192.168.1.1");
+      expect(binaryDottedToIp("00000000.00000000.00000000.00000000")).toBe("0.0.0.0");
+      expect(binaryDottedToIp("11111111.11111111.11111111.11111111")).toBe("255.255.255.255");
     });
 
     it("should throw error for invalid binary dotted notation", () => {
@@ -111,15 +93,9 @@ describe("IP Converter Utilities", () => {
     });
 
     it("should convert binary solid notation to IP", () => {
-      expect(binarySolidToIp("11000000101010000000000100000001")).toBe(
-        "192.168.1.1"
-      );
-      expect(binarySolidToIp("00000000000000000000000000000000")).toBe(
-        "0.0.0.0"
-      );
-      expect(binarySolidToIp("11111111111111111111111111111111")).toBe(
-        "255.255.255.255"
-      );
+      expect(binarySolidToIp("11000000101010000000000100000001")).toBe("192.168.1.1");
+      expect(binarySolidToIp("00000000000000000000000000000000")).toBe("0.0.0.0");
+      expect(binarySolidToIp("11111111111111111111111111111111")).toBe("255.255.255.255");
     });
 
     it("should handle short binary solid notation with padding", () => {
@@ -139,9 +115,7 @@ describe("IP Converter Utilities", () => {
       expect(result.decimal).toBe("192.168.1.1");
       expect(result.hexDotted).toBe("C0.A8.01.01");
       expect(result.hexSolid).toBe("0xC0A80101");
-      expect(result.binaryDotted).toBe(
-        "11000000.10101000.00000001.00000001"
-      );
+      expect(result.binaryDotted).toBe("11000000.10101000.00000001.00000001");
       expect(result.binarySolid).toBe("11000000101010000000000100000001");
       expect(result.integer).toBe(3232235777);
     });
@@ -197,9 +171,7 @@ describe("IP Converter Utilities", () => {
     });
 
     it("should throw error for out-of-range integer", () => {
-      expect(() => convertIP("4294967296")).toThrow(
-        "整数値がIPv4の範囲を超えています"
-      );
+      expect(() => convertIP("4294967296")).toThrow("整数値がIPv4の範囲を超えています");
       expect(() => convertIP("-1")).toThrow("認識できない形式です");
     });
 

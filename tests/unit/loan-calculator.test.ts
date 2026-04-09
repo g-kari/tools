@@ -98,7 +98,9 @@ describe("calcLoan - 元利均等返済", () => {
 
   it("総返済額 = 借入金額 + 総利息", () => {
     const result = calcLoan(params)!;
-    expect(Math.abs(result.totalPayment - (params.principal + result.totalInterest))).toBeLessThan(10);
+    expect(Math.abs(result.totalPayment - (params.principal + result.totalInterest))).toBeLessThan(
+      10,
+    );
   });
 
   it("月々の返済額が正の値", () => {
@@ -111,9 +113,7 @@ describe("calcLoan - 元利均等返済", () => {
     const firstPayment = result.schedule[0].payment;
     // 最終月以外の全行で確認（最終月は端数調整があり得る）
     for (let i = 0; i < result.schedule.length - 1; i++) {
-      expect(
-        Math.abs(result.schedule[i].payment - firstPayment)
-      ).toBeLessThanOrEqual(1);
+      expect(Math.abs(result.schedule[i].payment - firstPayment)).toBeLessThanOrEqual(1);
     }
   });
 
@@ -147,29 +147,21 @@ describe("calcLoan - 元金均等返済", () => {
 
   it("各月の元金返済額が一定（± 1円）", () => {
     const result = calcLoan(params)!;
-    const expectedPrincipal = Math.round(
-      params.principal / (params.termYears * 12)
-    );
+    const expectedPrincipal = Math.round(params.principal / (params.termYears * 12));
     for (let i = 0; i < result.schedule.length - 1; i++) {
-      expect(
-        Math.abs(result.schedule[i].principalPart - expectedPrincipal)
-      ).toBeLessThanOrEqual(1);
+      expect(Math.abs(result.schedule[i].principalPart - expectedPrincipal)).toBeLessThanOrEqual(1);
     }
   });
 
   it("元金均等の総利息 < 元利均等の総利息（同条件の場合）", () => {
     const equalPayment = calcLoan({ ...params, type: "equal-payment" })!;
     const equalPrincipal = calcLoan({ ...params, type: "equal-principal" })!;
-    expect(equalPrincipal.totalInterest).toBeLessThan(
-      equalPayment.totalInterest
-    );
+    expect(equalPrincipal.totalInterest).toBeLessThan(equalPayment.totalInterest);
   });
 
   it("初回の返済額が最後の返済額より大きい（利息逓減のため）", () => {
     const result = calcLoan(params)!;
-    expect(result.schedule[0].payment).toBeGreaterThan(
-      result.schedule.at(-1)!.payment
-    );
+    expect(result.schedule[0].payment).toBeGreaterThan(result.schedule.at(-1)!.payment);
   });
 });
 

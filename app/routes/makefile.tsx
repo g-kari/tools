@@ -3,11 +3,7 @@ import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useMemo } from "react";
 import { useToast } from "~/components/Toast";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  generateMakefile,
-  getTemplates,
-  type ProjectType,
-} from "~/utils/makefile";
+import { generateMakefile, getTemplates, type ProjectType } from "~/utils/makefile";
 
 export const Route = createFileRoute("/makefile")({
   head: () => ({
@@ -54,9 +50,8 @@ function MakefilePage() {
   const templates = useMemo(() => getTemplates(), []);
 
   const output = useMemo(
-    () =>
-      generateMakefile({ projectType, appName, includeDocker, includeLint }),
-    [projectType, appName, includeDocker, includeLint]
+    () => generateMakefile({ projectType, appName, includeDocker, includeLint }),
+    [projectType, appName, includeDocker, includeLint],
   );
 
   const handleCopy = async () => {
@@ -112,9 +107,7 @@ function MakefilePage() {
                   aria-label={`${template.label}（${template.description}）`}
                 />
                 <span className="makefile-type-name">{template.label}</span>
-                <span className="makefile-type-desc">
-                  {template.description}
-                </span>
+                <span className="makefile-type-desc">{template.description}</span>
               </label>
             ))}
           </div>
@@ -144,11 +137,7 @@ function MakefilePage() {
           <span className="makefile-field-label" id="options-label">
             オプション
           </span>
-          <div
-            className="makefile-options-group"
-            role="group"
-            aria-labelledby="options-label"
-          >
+          <div className="makefile-options-group" role="group" aria-labelledby="options-label">
             <label className="makefile-option-item">
               <input
                 type="checkbox"
@@ -157,9 +146,7 @@ function MakefilePage() {
                 onChange={(e) => setIncludeLint(e.target.checked)}
                 aria-label="リント・フォーマットターゲットを含む"
               />
-              <span className="makefile-option-label">
-                リント・フォーマットターゲットを含む
-              </span>
+              <span className="makefile-option-label">リント・フォーマットターゲットを含む</span>
             </label>
             <label className="makefile-option-item">
               <input
@@ -169,9 +156,7 @@ function MakefilePage() {
                 onChange={(e) => setIncludeDocker(e.target.checked)}
                 aria-label="Dockerターゲットを含む"
               />
-              <span className="makefile-option-label">
-                Dockerターゲットを含む
-              </span>
+              <span className="makefile-option-label">Dockerターゲットを含む</span>
             </label>
           </div>
         </div>
@@ -183,9 +168,7 @@ function MakefilePage() {
           <h2 className="section-title">
             生成された Makefile
             {selectedTemplate && (
-              <span className="makefile-type-badge">
-                {selectedTemplate.label}
-              </span>
+              <span className="makefile-type-badge">{selectedTemplate.label}</span>
             )}
           </h2>
           <div className="makefile-action-buttons">
@@ -224,16 +207,16 @@ function MakefilePage() {
             Makefileのレシピ行はスペースではなくタブ文字で始まる必要があります。
           </li>
           <li>
-            <strong>.PHONY</strong>:
-            ファイルを生成しないターゲットは<code>.PHONY</code>に登録しましょう。
+            <strong>.PHONY</strong>: ファイルを生成しないターゲットは<code>.PHONY</code>
+            に登録しましょう。
           </li>
           <li>
-            <strong>help ターゲット</strong>:
-            <code>make help</code>で利用可能なターゲット一覧を表示できます。
+            <strong>help ターゲット</strong>:<code>make help</code>
+            で利用可能なターゲット一覧を表示できます。
           </li>
           <li>
-            <strong>変数のオーバーライド</strong>:{" "}
-            <code>make build APP_NAME=myapp</code>のようにコマンドラインから変数を上書きできます。
+            <strong>変数のオーバーライド</strong>: <code>make build APP_NAME=myapp</code>
+            のようにコマンドラインから変数を上書きできます。
           </li>
         </ul>
       </TipsCard>

@@ -1,20 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useMemo, useCallback } from "react";
-import {
-  StatusAnnouncer,
-  useStatusAnnouncement,
-} from "~/hooks/useStatusAnnouncement";
+import { StatusAnnouncer, useStatusAnnouncement } from "~/hooks/useStatusAnnouncement";
 import { TipsCard } from "~/components/TipsCard";
 import { useClipboard } from "~/hooks/useClipboard";
 import { useToast } from "~/components/Toast";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
-import {
-  generateSlug,
-  isValidSlug,
-  DEFAULT_SLUG_OPTIONS,
-  type SlugOptions,
-} from "~/utils/slug";
+import { generateSlug, isValidSlug, DEFAULT_SLUG_OPTIONS, type SlugOptions } from "~/utils/slug";
 
 export const Route = createFileRoute("/slug")({
   head: () => ({
@@ -31,8 +23,7 @@ export const Route = createFileRoute("/slug")({
       },
       {
         property: "og:description",
-        content:
-          "テキストをURLフレンドリーなスラッグに変換するツール。アクセント文字対応。",
+        content: "テキストをURLフレンドリーなスラッグに変換するツール。アクセント文字対応。",
       },
       { property: "og:url", content: `${SITE_BASE_URL}/slug` },
       { property: "og:type", content: "website" },
@@ -52,7 +43,7 @@ function SlugGenerator() {
 
   const [inputText, setInputText] = useState("");
   const [separator, setSeparator] = useState<SlugOptions["separator"]>(
-    DEFAULT_SLUG_OPTIONS.separator
+    DEFAULT_SLUG_OPTIONS.separator,
   );
   const [lowercase, setLowercase] = useState(DEFAULT_SLUG_OPTIONS.lowercase);
   const [maxLengthStr, setMaxLengthStr] = useState("");
@@ -66,18 +57,12 @@ function SlugGenerator() {
         return maxLengthStr && !isNaN(parsed) && parsed > 0 ? parsed : null;
       })(),
     }),
-    [separator, lowercase, maxLengthStr]
+    [separator, lowercase, maxLengthStr],
   );
 
-  const slugResult = useMemo(
-    () => generateSlug(inputText, options),
-    [inputText, options]
-  );
+  const slugResult = useMemo(() => generateSlug(inputText, options), [inputText, options]);
 
-  const isValid = useMemo(
-    () => (slugResult ? isValidSlug(slugResult) : false),
-    [slugResult]
-  );
+  const isValid = useMemo(() => (slugResult ? isValidSlug(slugResult) : false), [slugResult]);
 
   const hasInput = inputText.trim().length > 0;
 
@@ -120,11 +105,7 @@ function SlugGenerator() {
         <div className="slug-options-grid">
           <div className="slug-option-group">
             <span className="slug-option-label">区切り文字</span>
-            <div
-              className="slug-radio-group"
-              role="radiogroup"
-              aria-label="区切り文字の選択"
-            >
+            <div className="slug-radio-group" role="radiogroup" aria-label="区切り文字の選択">
               <label className="slug-radio-item">
                 <input
                   type="radio"
@@ -150,11 +131,7 @@ function SlugGenerator() {
 
           <div className="slug-option-group">
             <span className="slug-option-label">大文字小文字</span>
-            <div
-              className="slug-radio-group"
-              role="radiogroup"
-              aria-label="大文字小文字の設定"
-            >
+            <div className="slug-radio-group" role="radiogroup" aria-label="大文字小文字の設定">
               <label className="slug-radio-item">
                 <input
                   type="radio"
@@ -196,25 +173,17 @@ function SlugGenerator() {
         </div>
 
         {hasInput ? (
-          <div
-            className="slug-result-wrapper"
-            aria-label="変換結果"
-            aria-live="polite"
-          >
+          <div className="slug-result-wrapper" aria-label="変換結果" aria-live="polite">
             <div className="slug-result-header">
               <span className="slug-result-label">スラッグ</span>
               <span
                 className={`slug-validity-badge ${isValid ? "valid" : "invalid"}`}
-                aria-label={
-                  isValid ? "有効なスラッグ形式" : "無効なスラッグ形式"
-                }
+                aria-label={isValid ? "有効なスラッグ形式" : "無効なスラッグ形式"}
               >
                 {isValid ? "有効" : "無効"}
               </span>
             </div>
-            <code className="slug-result-code">
-              {slugResult || "（変換結果なし）"}
-            </code>
+            <code className="slug-result-code">{slugResult || "（変換結果なし）"}</code>
             <div className="slug-action-row">
               <span className="slug-char-count" aria-live="off">
                 {slugResult.length} 文字

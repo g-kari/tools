@@ -20,9 +20,11 @@
   color: var(--md-sys-color-on-surface-variant);
   border: none;
   cursor: pointer;
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   font-size: 0.8125rem;
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
 }
 
 .matrix-mode-tab:hover {
@@ -50,8 +52,11 @@
   color: var(--md-sys-color-on-surface-variant);
   border: 1px solid var(--md-sys-color-outline-variant);
   cursor: pointer;
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  transition:
+    background 0.15s,
+    color 0.15s,
+    border-color 0.15s;
   min-width: 80px;
 }
 
@@ -89,7 +94,7 @@
 .matrix-samples-label {
   font-size: 0.75rem;
   color: var(--md-sys-color-on-surface-variant);
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
 }
 
 .matrix-sample-btn {
@@ -98,9 +103,11 @@
   color: var(--md-sys-color-on-surface-variant);
   border: 1px solid var(--md-sys-color-outline-variant);
   cursor: pointer;
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   font-size: 0.75rem;
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
 }
 
 .matrix-sample-btn:hover {
@@ -135,7 +142,7 @@
   gap: 0.5rem;
   font-size: 0.8125rem;
   color: var(--md-sys-color-on-surface-variant);
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
 }
 
 .matrix-size-badge {
@@ -143,7 +150,7 @@
   background: var(--md-sys-color-secondary-container);
   color: var(--md-sys-color-on-secondary-container);
   font-size: 0.6875rem;
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
 }
 
 .matrix-textarea {
@@ -153,7 +160,7 @@
   background: var(--md-sys-color-surface-variant);
   color: var(--md-sys-color-on-surface);
   border: 1px solid var(--md-sys-color-outline-variant);
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   font-size: 0.9375rem;
   line-height: 1.6;
   resize: vertical;
@@ -175,7 +182,7 @@
   background: var(--md-sys-color-surface-variant);
   color: var(--md-sys-color-on-surface);
   border: 1px solid var(--md-sys-color-outline-variant);
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   font-size: 1.125rem;
   width: 100%;
   box-sizing: border-box;
@@ -190,7 +197,7 @@
 .matrix-input-error {
   font-size: 0.75rem;
   color: var(--md-sys-color-error);
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
 }
 
 /* 演算子区切り */
@@ -205,7 +212,7 @@
 .matrix-op-divider-symbol {
   font-size: 1.5rem;
   color: var(--md-sys-color-primary);
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   font-weight: 700;
   min-width: 2.5rem;
   text-align: center;
@@ -227,7 +234,7 @@
 .matrix-result-title {
   font-size: 0.8125rem;
   color: var(--md-sys-color-on-surface-variant);
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
@@ -239,7 +246,7 @@
 
 .matrix-result-empty {
   color: var(--md-sys-color-on-surface-variant);
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   font-size: 0.875rem;
   text-align: center;
   padding: 1.5rem 0;
@@ -250,7 +257,7 @@
   color: var(--md-sys-color-error);
   background: var(--md-sys-color-error-container);
   padding: 0.5rem 0.75rem;
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   font-size: 0.875rem;
 }
 
@@ -268,7 +275,7 @@
 
 .matrix-scalar-result-value {
   font-size: 2.5rem;
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   color: var(--md-sys-color-primary);
   font-weight: 700;
 }
@@ -284,7 +291,7 @@
 .matrix-grid-label {
   font-size: 0.75rem;
   color: var(--md-sys-color-on-surface-variant);
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -300,7 +307,7 @@
   font-size: 1.5rem;
   line-height: 1;
   color: var(--md-sys-color-on-surface-variant);
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   font-weight: 300;
   display: flex;
   align-items: center;
@@ -312,7 +319,7 @@
 }
 
 .matrix-cell {
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   font-size: 0.9375rem;
   color: var(--md-sys-color-on-surface);
   text-align: right;
@@ -332,7 +339,7 @@
 .matrix-preview-title {
   font-size: 0.75rem;
   color: var(--md-sys-color-on-surface-variant);
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   margin: 0 0 0.75rem;

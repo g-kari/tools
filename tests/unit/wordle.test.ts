@@ -35,9 +35,9 @@ describe("evaluateGuess", () => {
     // 第2パス(present): A[1]→残targetにAなし→absent, B[2]→残targetにBあり(pos1)→present, B[3]→Bもう消費→absent, B[4]→absent
     const result = evaluateGuess("AABBB", "ABCDE");
     expect(result[0]).toBe("correct"); // A は pos0 で一致
-    expect(result[1]).toBe("absent");  // A は既に correct で消費済み
+    expect(result[1]).toBe("absent"); // A は既に correct で消費済み
     expect(result[2]).toBe("present"); // B は ABCDE の pos1 に存在（位置違い）
-    expect(result[3]).toBe("absent");  // B は既に present で消費済み
+    expect(result[3]).toBe("absent"); // B は既に present で消費済み
     expect(result[4]).toBe("absent");
   });
 
@@ -47,7 +47,7 @@ describe("evaluateGuess", () => {
     const result = evaluateGuess("LLBBB", "LLAMA");
     expect(result[0]).toBe("correct"); // L at 0 is correct
     expect(result[1]).toBe("correct"); // L at 1 is correct
-    expect(result[2]).toBe("absent");  // B not in LLAMA
+    expect(result[2]).toBe("absent"); // B not in LLAMA
     expect(result[3]).toBe("absent");
     expect(result[4]).toBe("absent");
   });
@@ -120,7 +120,7 @@ describe("getKeyboardStates", () => {
     ];
     const states = getKeyboardStates(
       guesses,
-      results.map((r) => [...r])
+      results.map((r) => [...r]),
     );
     expect(states.get("A")).toBe("correct");
   });
@@ -133,19 +133,17 @@ describe("getKeyboardStates", () => {
     ];
     const states = getKeyboardStates(
       guesses,
-      results.map((r) => [...r])
+      results.map((r) => [...r]),
     );
     expect(states.get("A")).toBe("present");
   });
 
   it("複数の文字の状態が正しく計算される", () => {
     const guesses = ["CRANE"];
-    const results = [
-      ["correct", "present", "absent", "absent", "correct"] as const,
-    ];
+    const results = [["correct", "present", "absent", "absent", "correct"] as const];
     const states = getKeyboardStates(
       guesses,
-      results.map((r) => [...r])
+      results.map((r) => [...r]),
     );
     expect(states.get("C")).toBe("correct");
     expect(states.get("R")).toBe("present");

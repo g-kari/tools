@@ -1,42 +1,42 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useState, useMemo, useCallback } from 'react';
-import { Button } from '~/components/ui/button';
-import { Textarea } from '~/components/ui/textarea';
-import { TipsCard } from '~/components/TipsCard';
-import { useToast } from '../components/Toast';
-import { useClipboard } from '../hooks/useClipboard';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
+import { createFileRoute } from "@tanstack/react-router";
+import { useState, useMemo, useCallback } from "react";
+import { Button } from "~/components/ui/button";
+import { Textarea } from "~/components/ui/textarea";
+import { TipsCard } from "~/components/TipsCard";
+import { useToast } from "../components/Toast";
+import { useClipboard } from "../hooks/useClipboard";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import {
   analyzeTokens,
   formatCost,
   getContextUsageClass,
   type TokenAnalysisResult,
-} from '../utils/token-estimator';
-import '../styles/tools/token-estimator.css';
+} from "../utils/token-estimator";
+import "../styles/tools/token-estimator.css";
 
-export const Route = createFileRoute('/token-estimator')({
+export const Route = createFileRoute("/token-estimator")({
   head: () => ({
     meta: [
-      { title: 'LLMトークン推定 | Web ツール集' },
+      { title: "LLMトークン推定 | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          'テキストのLLMトークン数をリアルタイム推定するツール。GPT-4o・Claude 3.5 Sonnet・Gemini 1.5 Proなど主要モデルのトークン数とAPIコストを比較表示。日本語・英語・コード対応。',
+          "テキストのLLMトークン数をリアルタイム推定するツール。GPT-4o・Claude 3.5 Sonnet・Gemini 1.5 Proなど主要モデルのトークン数とAPIコストを比較表示。日本語・英語・コード対応。",
       },
-      { property: 'og:title', content: 'LLMトークン推定 | Web ツール集' },
+      { property: "og:title", content: "LLMトークン推定 | Web ツール集" },
       {
-        property: 'og:description',
+        property: "og:description",
         content:
-          'テキストのLLMトークン数をリアルタイム推定。GPT-4o・Claude 3.5 Sonnet・Gemini 1.5 Pro等の主要モデルのトークン数とAPIコストを比較。',
+          "テキストのLLMトークン数をリアルタイム推定。GPT-4o・Claude 3.5 Sonnet・Gemini 1.5 Pro等の主要モデルのトークン数とAPIコストを比較。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/token-estimator` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
-      { name: 'twitter:title', content: 'LLMトークン推定 | Web ツール集' },
+      { property: "og:url", content: `${SITE_BASE_URL}/token-estimator` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "LLMトークン推定 | Web ツール集" },
       {
-        name: 'twitter:description',
+        name: "twitter:description",
         content:
-          'テキストのLLMトークン数をリアルタイム推定。GPT-4o・Claude 3.5 Sonnet・Gemini 1.5 Pro等の主要モデルのトークン数とAPIコストを比較。',
+          "テキストのLLMトークン数をリアルタイム推定。GPT-4o・Claude 3.5 Sonnet・Gemini 1.5 Pro等の主要モデルのトークン数とAPIコストを比較。",
       },
     ],
   }),
@@ -46,14 +46,14 @@ export const Route = createFileRoute('/token-estimator')({
 /** プロバイダー名からバッジクラスを返す */
 function providerBadgeClass(provider: string): string {
   switch (provider.toLowerCase()) {
-    case 'openai':
-      return 'te-provider-badge te-provider-badge--openai';
-    case 'anthropic':
-      return 'te-provider-badge te-provider-badge--anthropic';
-    case 'google':
-      return 'te-provider-badge te-provider-badge--google';
+    case "openai":
+      return "te-provider-badge te-provider-badge--openai";
+    case "anthropic":
+      return "te-provider-badge te-provider-badge--anthropic";
+    case "google":
+      return "te-provider-badge te-provider-badge--google";
     default:
-      return 'te-provider-badge';
+      return "te-provider-badge";
   }
 }
 
@@ -73,14 +73,10 @@ function BreakdownBar({
   return (
     <div className="te-breakdown-row">
       <span className="te-breakdown-label">{label}</span>
-      <div
-        className="te-breakdown-bar-track"
-        role="presentation"
-        aria-hidden="true"
-      >
+      <div className="te-breakdown-bar-track" role="presentation" aria-hidden="true">
         <div
           className={`te-breakdown-bar-fill ${barClass}`}
-          style={{ '--bar-width': `${pct}%` } as React.CSSProperties}
+          style={{ "--bar-width": `${pct}%` } as React.CSSProperties}
         />
       </div>
       <span className="te-breakdown-count" aria-label={`${label}: ${count}文字`}>
@@ -192,16 +188,14 @@ function ModelCompareTable({ result }: { result: TokenAnalysisResult }) {
                     {model.provider}
                   </span>
                 </td>
-                <td data-testid={`tokens-${model.name.replace(/\s/g, '-')}`}>
+                <td data-testid={`tokens-${model.name.replace(/\s/g, "-")}`}>
                   {estimatedTokens.toLocaleString()}
                 </td>
-                <td className="te-cost-value">
-                  {formatCost(inputCost)}
-                </td>
+                <td className="te-cost-value">{formatCost(inputCost)}</td>
                 <td>
                   <span
                     className={getContextUsageClass(contextUsage)}
-                    data-testid={`ctx-${model.name.replace(/\s/g, '-')}`}
+                    data-testid={`ctx-${model.name.replace(/\s/g, "-")}`}
                     aria-label={`コンテキスト使用率: ${(contextUsage * 100).toFixed(1)}%`}
                   >
                     {(contextUsage * 100).toFixed(1)}%
@@ -220,14 +214,14 @@ function ModelCompareTable({ result }: { result: TokenAnalysisResult }) {
 function TokenEstimatorPage() {
   const { showToast } = useToast();
   const { copy } = useClipboard();
-  const [text, setText] = useState('');
+  const [text, setText] = useState("");
 
   const result = useMemo<TokenAnalysisResult | null>(
     () => (text.length > 0 ? analyzeTokens(text) : null),
-    [text]
+    [text],
   );
 
-  const handleClear = useCallback(() => setText(''), []);
+  const handleClear = useCallback(() => setText(""), []);
 
   const handleCopyResult = useCallback(async () => {
     if (!result) return;
@@ -235,18 +229,18 @@ function TokenEstimatorPage() {
       `推定トークン数: ${result.estimatedTokens.toLocaleString()}`,
       `総文字数: ${result.totalChars.toLocaleString()}`,
       `単語数: ${result.wordCount.toLocaleString()}`,
-      '',
-      'モデル別コスト（入力トークン）:',
+      "",
+      "モデル別コスト（入力トークン）:",
       ...result.modelEstimates.map(
         ({ model, estimatedTokens, inputCost }) =>
-          `  ${model.name} (${model.provider}): ${estimatedTokens.toLocaleString()} tokens, ${formatCost(inputCost)}`
+          `  ${model.name} (${model.provider}): ${estimatedTokens.toLocaleString()} tokens, ${formatCost(inputCost)}`,
       ),
     ];
-    const success = await copy(lines.join('\n'));
+    const success = await copy(lines.join("\n"));
     if (success) {
-      showToast('結果をコピーしました', 'success');
+      showToast("結果をコピーしました", "success");
     } else {
-      showToast('コピーに失敗しました', 'error');
+      showToast("コピーに失敗しました", "error");
     }
   }, [result, copy, showToast]);
 
@@ -258,7 +252,7 @@ function TokenEstimatorPage() {
         <Textarea
           className="input-area"
           placeholder={
-            '英語例: The quick brown fox jumps over the lazy dog.\n\n日本語例: このツールはLLM APIのトークン数とコストをリアルタイムで推定します。\n\nコード例: function hello(name) { return `Hello, ${name}!`; }'
+            "英語例: The quick brown fox jumps over the lazy dog.\n\n日本語例: このツールはLLM APIのトークン数とコストをリアルタイムで推定します。\n\nコード例: function hello(name) { return `Hello, ${name}!`; }"
           }
           value={text}
           onChange={(e) => setText(e.target.value)}
@@ -307,39 +301,39 @@ function TokenEstimatorPage() {
       <TipsCard
         sections={[
           {
-            title: 'LLMトークンとは',
+            title: "LLMトークンとは",
             items: [
-              'LLM（大規模言語モデル）はテキストをトークンという単位に分割して処理します',
-              '英語では約4文字が1トークン、日本語（CJK）では約1.5文字が1トークンが目安です',
-              'APIの利用料金はトークン数に基づいて計算されます（入力・出力で料金が異なります）',
-              'このツールはヒューリスティック（文字種別統計）による近似推定値を表示します',
+              "LLM（大規模言語モデル）はテキストをトークンという単位に分割して処理します",
+              "英語では約4文字が1トークン、日本語（CJK）では約1.5文字が1トークンが目安です",
+              "APIの利用料金はトークン数に基づいて計算されます（入力・出力で料金が異なります）",
+              "このツールはヒューリスティック（文字種別統計）による近似推定値を表示します",
             ],
           },
           {
-            title: '文字種別の特徴',
+            title: "文字種別の特徴",
             items: [
-              'Latin/ASCII: 英数字・スペース（約4文字/トークン）',
-              'CJK: 漢字・ひらがな・カタカナ・ハングル（約1.5文字/トークン）',
-              'コード/記号: {}()[]<>=など（約3.5文字/トークン）',
-              '日本語テキストは英語テキストより多くのトークンを消費します',
+              "Latin/ASCII: 英数字・スペース（約4文字/トークン）",
+              "CJK: 漢字・ひらがな・カタカナ・ハングル（約1.5文字/トークン）",
+              "コード/記号: {}()[]<>=など（約3.5文字/トークン）",
+              "日本語テキストは英語テキストより多くのトークンを消費します",
             ],
           },
           {
-            title: '活用例',
+            title: "活用例",
             items: [
-              'APIコスト見積もり: プロジェクトで使用するプロンプトのコストを事前計算',
-              'コンテキスト管理: モデルのコンテキストウィンドウに収まるか確認',
-              'モデル比較: 同じテキストに対して各モデルのコストを比較',
-              'バッチ処理計画: 大量データ処理時の総コスト概算',
+              "APIコスト見積もり: プロジェクトで使用するプロンプトのコストを事前計算",
+              "コンテキスト管理: モデルのコンテキストウィンドウに収まるか確認",
+              "モデル比較: 同じテキストに対して各モデルのコストを比較",
+              "バッチ処理計画: 大量データ処理時の総コスト概算",
             ],
           },
           {
-            title: '注意事項',
+            title: "注意事項",
             items: [
-              '表示値はヒューリスティックによる推定値です。実際のトークン数と異なる場合があります',
-              '正確なトークン数を得るにはtiktoken（OpenAI）等の公式トークナイザーをご利用ください',
-              '価格情報は変動するため、最新情報は各プロバイダーの公式サイトをご確認ください',
-              'コンテキスト使用率が90%以上になると赤色で警告表示されます',
+              "表示値はヒューリスティックによる推定値です。実際のトークン数と異なる場合があります",
+              "正確なトークン数を得るにはtiktoken（OpenAI）等の公式トークナイザーをご利用ください",
+              "価格情報は変動するため、最新情報は各プロバイダーの公式サイトをご確認ください",
+              "コンテキスト使用率が90%以上になると赤色で警告表示されます",
             ],
           },
         ]}

@@ -150,7 +150,7 @@ export const ZERO_WIDTH_CHARS: ZeroWidthCharDef[] = [
 
 /** コードポイントから定義を検索するマップ */
 const ZERO_WIDTH_MAP = new Map<number, ZeroWidthCharDef>(
-  ZERO_WIDTH_CHARS.map((def) => [def.codePoint, def])
+  ZERO_WIDTH_CHARS.map((def) => [def.codePoint, def]),
 );
 
 /**
@@ -199,7 +199,7 @@ export function detectZeroWidthChars(text: string): DetectionResult {
  * @returns 除去後のテキスト
  */
 export function removeZeroWidthChars(text: string): string {
-  const codePoints = [...ZERO_WIDTH_CHARS.map((d) => String.fromCodePoint(d.codePoint))];
+  const codePoints = ZERO_WIDTH_CHARS.map((d) => String.fromCodePoint(d.codePoint));
   const pattern = new RegExp(`[${codePoints.join("")}]`, "g");
   return text.replace(pattern, "");
 }

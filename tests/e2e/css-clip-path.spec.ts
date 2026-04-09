@@ -17,14 +17,14 @@ test.describe("CSS Clip-path ジェネレーター", () => {
     // デフォルトは polygon
     await expect(page.getByRole("tab", { name: "polygon()" })).toHaveAttribute(
       "aria-selected",
-      "true"
+      "true",
     );
 
     // inset タブに切り替え
     await page.getByRole("tab", { name: "inset()" }).click();
     await expect(page.getByRole("tab", { name: "inset()" })).toHaveAttribute(
       "aria-selected",
-      "true"
+      "true",
     );
     await expect(page.getByText("上 (top)")).toBeVisible();
 
@@ -32,7 +32,7 @@ test.describe("CSS Clip-path ジェネレーター", () => {
     await page.getByRole("tab", { name: "circle()" }).click();
     await expect(page.getByRole("tab", { name: "circle()" })).toHaveAttribute(
       "aria-selected",
-      "true"
+      "true",
     );
     await expect(page.getByText("半径 (radius)")).toBeVisible();
 
@@ -70,7 +70,7 @@ test.describe("CSS Clip-path ジェネレーター", () => {
     // polygon タブがアクティブになっているはず
     await expect(page.getByRole("tab", { name: "polygon()" })).toHaveAttribute(
       "aria-selected",
-      "true"
+      "true",
     );
   });
 
@@ -112,8 +112,6 @@ test.describe("CSS Clip-path ジェネレーター", () => {
   });
 
   test("TipsCard が表示される", async ({ page }) => {
-    await expect(
-      page.getByText(/ドラッグで頂点を移動できます/)
-    ).toBeVisible();
+    await expect(page.getByText(/ドラッグで頂点を移動できます/)).toBeVisible();
   });
 });

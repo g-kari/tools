@@ -1,9 +1,5 @@
 import { describe, it, expect } from "vite-plus/test";
-import {
-  formatKeyEventInfo,
-  getKeyDisplayName,
-  isModifierKey,
-} from "../../app/utils/keycode";
+import { formatKeyEventInfo, getKeyDisplayName, isModifierKey } from "../../app/utils/keycode";
 
 describe("formatKeyEventInfo", () => {
   it("KeyboardEvent から KeyEventInfo を正しく取得する", () => {

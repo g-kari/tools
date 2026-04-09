@@ -40,9 +40,7 @@ export function ipToHexSolid(ip: string): string {
  */
 export function ipToBinaryDotted(ip: string): string {
   const parts = ip.split(".");
-  return parts
-    .map((part) => parseInt(part, 10).toString(2).padStart(8, "0"))
-    .join(".");
+  return parts.map((part) => parseInt(part, 10).toString(2).padStart(8, "0")).join(".");
 }
 
 /**
@@ -50,9 +48,7 @@ export function ipToBinaryDotted(ip: string): string {
  */
 export function ipToBinarySolid(ip: string): string {
   const parts = ip.split(".");
-  return parts
-    .map((part) => parseInt(part, 10).toString(2).padStart(8, "0"))
-    .join("");
+  return parts.map((part) => parseInt(part, 10).toString(2).padStart(8, "0")).join("");
 }
 
 /**
@@ -164,8 +160,10 @@ export function convertIP(input: string): IPConversionResult {
     }
     // If it looks like decimal but is invalid, check if it might be hex
     // (e.g., "00.00.00.00" has leading zeros)
-    if (/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/.test(trimmedInput) &&
-        trimmedInput.split('.').some(part => part.length > 1 && part.startsWith('0'))) {
+    if (
+      /^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/.test(trimmedInput) &&
+      trimmedInput.split(".").some((part) => part.length > 1 && part.startsWith("0"))
+    ) {
       // Has leading zeros, might be hex - fall through
     } else {
       // Looks like decimal but invalid (e.g., "256.1.1.1")
@@ -174,7 +172,9 @@ export function convertIP(input: string): IPConversionResult {
   }
 
   // Try hexadecimal dotted notation (C0.A8.01.01 or c0.a8.01.01)
-  if (/^[0-9a-fA-F]{1,2}\.[0-9a-fA-F]{1,2}\.[0-9a-fA-F]{1,2}\.[0-9a-fA-F]{1,2}$/.test(trimmedInput)) {
+  if (
+    /^[0-9a-fA-F]{1,2}\.[0-9a-fA-F]{1,2}\.[0-9a-fA-F]{1,2}\.[0-9a-fA-F]{1,2}$/.test(trimmedInput)
+  ) {
     const decimal = hexDottedToIp(trimmedInput);
     return {
       decimal,

@@ -15,16 +15,25 @@ import { TipsCard } from "~/components/TipsCard";
 export const Route = createFileRoute("/security-headers")({
   head: () => ({
     meta: [
-    { title: "セキュリティヘッダー確認 | Web ツール集" },
-    { name: "description", content: "WebサイトのHTTPセキュリティヘッダー（CSP・HSTS等）を確認するツール。" },
-    { property: "og:title", content: "セキュリティヘッダー確認 | Web ツール集" },
-    { property: "og:description", content: "WebサイトのHTTPセキュリティヘッダー（CSP・HSTS等）を確認するツール。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/security-headers` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "セキュリティヘッダー確認 | Web ツール集" },
-    { name: "twitter:description", content: "WebサイトのHTTPセキュリティヘッダー（CSP・HSTS等）を確認するツール。" },
-  ],
+      { title: "セキュリティヘッダー確認 | Web ツール集" },
+      {
+        name: "description",
+        content: "WebサイトのHTTPセキュリティヘッダー（CSP・HSTS等）を確認するツール。",
+      },
+      { property: "og:title", content: "セキュリティヘッダー確認 | Web ツール集" },
+      {
+        property: "og:description",
+        content: "WebサイトのHTTPセキュリティヘッダー（CSP・HSTS等）を確認するツール。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/security-headers` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "セキュリティヘッダー確認 | Web ツール集" },
+      {
+        name: "twitter:description",
+        content: "WebサイトのHTTPセキュリティヘッダー（CSP・HSTS等）を確認するツール。",
+      },
+    ],
   }),
   component: SecurityHeadersChecker,
 });
@@ -83,8 +92,7 @@ function SecurityHeadersChecker() {
       setResult(data);
       announceStatus("チェックが完了しました");
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "通信エラーが発生しました";
+      const message = err instanceof Error ? err.message : "通信エラーが発生しました";
       setError(message);
       announceStatus("エラー: " + message);
     } finally {
@@ -94,10 +102,7 @@ function SecurityHeadersChecker() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (
-        e.key === "Enter" &&
-        (e.target as HTMLElement)?.id === "urlInput"
-      ) {
+      if (e.key === "Enter" && (e.target as HTMLElement)?.id === "urlInput") {
         e.preventDefault();
         handleCheck();
       }
@@ -164,9 +169,7 @@ function SecurityHeadersChecker() {
             {getLevelIcon(check.level)}
           </span>
           <h3 className="security-check-name">{check.name}</h3>
-          <span className="security-check-level">
-            {getLevelLabel(check.level)}
-          </span>
+          <span className="security-check-level">{getLevelLabel(check.level)}</span>
         </div>
         {check.value && (
           <div className="security-check-value">

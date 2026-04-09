@@ -7,9 +7,7 @@ test.describe("Markdownテーブル生成", () => {
 
   test("ページが正しく表示される", async ({ page }) => {
     await expect(page).toHaveTitle(/Markdownテーブル生成/);
-    await expect(
-      page.getByRole("heading", { name: "Markdownテーブル生成" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Markdownテーブル生成" })).toBeVisible();
   });
 
   test("初期状態でテーブルグリッドが表示される", async ({ page }) => {
@@ -104,9 +102,7 @@ test.describe("Markdownテーブル生成", () => {
     await expect(csvInput).toBeVisible();
   });
 
-  test("CSVが入力されていない場合インポートボタンが無効", async ({
-    page,
-  }) => {
+  test("CSVが入力されていない場合インポートボタンが無効", async ({ page }) => {
     const importBtn = page.getByRole("button", {
       name: "CSVをインポートしてテーブルに反映",
     });

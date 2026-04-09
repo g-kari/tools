@@ -3,10 +3,7 @@ import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useCallback, useMemo } from "react";
 import { useToast } from "../components/Toast";
 import { TipsCard } from "~/components/TipsCard";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 import {
   generateShades,
@@ -125,31 +122,25 @@ function ColorTokenGenerator() {
   // 出力テキストを計算
   const outputText = useMemo(
     () => formatShades(shades, colorName, outputFormat),
-    [shades, colorName, outputFormat]
+    [shades, colorName, outputFormat],
   );
 
   // カラーピッカー変更
-  const handlePickerChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const val = e.target.value;
-      setBaseColor(val);
-      setHexInput(val);
-    },
-    []
-  );
+  const handlePickerChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setBaseColor(val);
+    setHexInput(val);
+  }, []);
 
   // HEX テキスト入力変更（3桁 / 6桁両対応）
-  const handleHexInput = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const val = e.target.value;
-      setHexInput(val);
-      const normalized = normalizeHex(val);
-      if (normalized) {
-        setBaseColor(normalized);
-      }
-    },
-    []
-  );
+  const handleHexInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setHexInput(val);
+    const normalized = normalizeHex(val);
+    if (normalized) {
+      setBaseColor(normalized);
+    }
+  }, []);
 
   // 個別スウォッチのコピー
   const handleSwatchCopy = useCallback(
@@ -162,15 +153,14 @@ function ColorTokenGenerator() {
         showToast("コピーに失敗しました", "error");
       }
     },
-    [copy, showToast, announceStatus]
+    [copy, showToast, announceStatus],
   );
 
   // 出力テキストをコピー
   const handleOutputCopy = useCallback(async () => {
     const success = await copy(outputText);
     if (success) {
-      const label =
-        FORMAT_OPTIONS.find((f) => f.value === outputFormat)?.label ?? "";
+      const label = FORMAT_OPTIONS.find((f) => f.value === outputFormat)?.label ?? "";
       showToast(`${label} 形式でコピーしました`, "success");
       announceStatus(`${label} 形式の出力をコピーしました`);
     } else {
@@ -232,11 +222,7 @@ function ColorTokenGenerator() {
         {/* ── シェードプレビュー ── */}
         <div className="ct-preview-section">
           <p className="section-title">シェードプレビュー</p>
-          <div
-            className="ct-swatch-strip"
-            role="list"
-            aria-label="生成されたシェード一覧"
-          >
+          <div className="ct-swatch-strip" role="list" aria-label="生成されたシェード一覧">
             {shades.map((shade) => (
               /*
                * 動的なカラーコードを CSS カスタムプロパティ（--ct-cell-bg, --ct-label-color）
@@ -249,10 +235,7 @@ function ColorTokenGenerator() {
                 ref={(el) => {
                   if (!el) return;
                   el.style.setProperty("--ct-cell-bg", shade.hex);
-                  el.style.setProperty(
-                    "--ct-label-color",
-                    shade.useWhiteText ? "#fff" : "#000"
-                  );
+                  el.style.setProperty("--ct-label-color", shade.useWhiteText ? "#fff" : "#000");
                 }}
                 onClick={() => handleSwatchCopy(shade.hex, shade.key)}
                 aria-label={`シェード ${shade.key}: ${shade.hex}。クリックでコピー`}
@@ -267,17 +250,9 @@ function ColorTokenGenerator() {
         {/* ── 詳細テーブル ── */}
         <div className="ct-table-section">
           <p className="section-title">詳細</p>
-          <div
-            className="ct-swatch-list"
-            role="list"
-            aria-label="シェード詳細一覧"
-          >
+          <div className="ct-swatch-list" role="list" aria-label="シェード詳細一覧">
             {shades.map((shade) => (
-              <ShadeSwatchRow
-                key={shade.key}
-                shade={shade}
-                onCopy={handleSwatchCopy}
-              />
+              <ShadeSwatchRow key={shade.key} shade={shade} onCopy={handleSwatchCopy} />
             ))}
           </div>
         </div>
@@ -287,11 +262,7 @@ function ColorTokenGenerator() {
           <p className="section-title">コード出力</p>
 
           {/* フォーマット選択タブ（ARIA tab pattern 準拠） */}
-          <div
-            className="ct-format-tabs"
-            role="tablist"
-            aria-label="出力フォーマット"
-          >
+          <div className="ct-format-tabs" role="tablist" aria-label="出力フォーマット">
             {FORMAT_OPTIONS.map((f) => (
               <button
                 key={f.value}

@@ -35,9 +35,7 @@ test.describe("PKCE ジェネレーター - E2E Tests", () => {
     await expect(s256Option).toBeChecked();
   });
 
-  test("should generate PKCE pair when generate button is clicked", async ({
-    page,
-  }) => {
+  test("should generate PKCE pair when generate button is clicked", async ({ page }) => {
     const generateBtn = page.locator('button[aria-label="PKCE ペアを生成"]');
     await generateBtn.click();
 
@@ -72,26 +70,18 @@ test.describe("PKCE ジェネレーター - E2E Tests", () => {
     await expect(lengthInfo.first()).toBeVisible();
   });
 
-  test("should have copy buttons for code_verifier and code_challenge", async ({
-    page,
-  }) => {
+  test("should have copy buttons for code_verifier and code_challenge", async ({ page }) => {
     const generateBtn = page.locator('button[aria-label="PKCE ペアを生成"]');
     await generateBtn.click();
 
-    const verifierCopyBtn = page.locator(
-      'button[aria-label="code_verifier をコピー"]'
-    );
+    const verifierCopyBtn = page.locator('button[aria-label="code_verifier をコピー"]');
     await expect(verifierCopyBtn).toBeVisible();
 
-    const challengeCopyBtn = page.locator(
-      'button[aria-label="code_challenge をコピー"]'
-    );
+    const challengeCopyBtn = page.locator('button[aria-label="code_challenge をコピー"]');
     await expect(challengeCopyBtn).toBeVisible();
   });
 
-  test("should clear results when clear button is clicked", async ({
-    page,
-  }) => {
+  test("should clear results when clear button is clicked", async ({ page }) => {
     const generateBtn = page.locator('button[aria-label="PKCE ペアを生成"]');
     await generateBtn.click();
 
@@ -122,17 +112,13 @@ test.describe("PKCE ジェネレーター - E2E Tests", () => {
     await expect(invalidResult).toBeVisible();
   });
 
-  test("should compute code_challenge from valid verifier input", async ({
-    page,
-  }) => {
+  test("should compute code_challenge from valid verifier input", async ({ page }) => {
     const verifierInput = page.locator("#verifier-input");
     // RFC 7636 Appendix B の既知のテストベクター
     await verifierInput.fill("dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk");
     await page.waitForTimeout(500);
 
-    const challengeOutput = page.locator(
-      '[aria-label="計算された code_challenge の値"]'
-    );
+    const challengeOutput = page.locator('[aria-label="計算された code_challenge の値"]');
     await expect(challengeOutput).toBeVisible();
     const text = await challengeOutput.textContent();
     expect(text).toBe("E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM");

@@ -26,7 +26,7 @@
   border: none;
   border-radius: 0;
   font-size: 0.875rem;
-  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
   cursor: pointer;
   transition:
     background 0.2s,
@@ -111,7 +111,7 @@
   background: var(--md-sys-color-secondary-container);
   color: var(--md-sys-color-on-secondary-container);
   font-size: 0.75rem;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   white-space: nowrap;
 }
 
@@ -163,18 +163,18 @@
 
 .text-binary-char-cell {
   font-size: 1rem;
-  font-family: 'Noto Sans JP', sans-serif;
+  font-family: "Noto Sans JP", sans-serif;
   text-align: center;
 }
 
 .text-binary-cp-cell {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   color: var(--md-sys-color-primary);
 }
 
 .text-binary-hex-cell,
 .text-binary-bin-cell {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
 }
 
 .text-binary-bin-cell {

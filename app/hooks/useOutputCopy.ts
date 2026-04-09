@@ -92,7 +92,7 @@ export function useOutputCopy(): UseOutputCopyReturn {
         showToast("コピーに失敗しました", "error");
       }
     },
-    [copy, announceStatus, showToast]
+    [copy, announceStatus, showToast],
   );
 
   return { statusRef, announceStatus, showToast, isCopied, handleCopy };

@@ -4,16 +4,9 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { useToast } from "../components/Toast";
 import { TipsCard } from "~/components/TipsCard";
 import { ErrorMessage } from "~/components/ErrorMessage";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
-import {
-  generateSqlCreateTable,
-  getSampleJson,
-  type SqlDialect,
-} from "../utils/json-to-sql";
+import { generateSqlCreateTable, getSampleJson, type SqlDialect } from "../utils/json-to-sql";
 
 export const Route = createFileRoute("/json-to-sql")({
   head: () => ({
@@ -82,8 +75,7 @@ function JsonToSqlConverter() {
       announceStatus("CREATE TABLE文を生成しました");
       showToast("CREATE TABLE文を生成しました", "success");
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "エラーが発生しました";
+      const message = err instanceof Error ? err.message : "エラーが発生しました";
       setError(message);
       announceStatus("エラー: " + message);
       showToast(message, "error");
@@ -130,10 +122,7 @@ function JsonToSqlConverter() {
   return (
     <>
       <div className="tool-container">
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          aria-label="JSON→SQL CREATE TABLE生成フォーム"
-        >
+        <form onSubmit={(e) => e.preventDefault()} aria-label="JSON→SQL CREATE TABLE生成フォーム">
           <div className="jts-layout">
             {/* 左パネル: JSON入力 */}
             <div className="jts-panel">

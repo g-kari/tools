@@ -14,9 +14,7 @@ test.describe("2048 (/game-2048)", () => {
   });
 
   test("ゲームボードが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("grid", { name: "2048ゲームボード" })
-    ).toBeVisible();
+    await expect(page.getByRole("grid", { name: "2048ゲームボード" })).toBeVisible();
   });
 
   test("ボードに16個のセルが表示される", async ({ page }) => {
@@ -41,9 +39,7 @@ test.describe("2048 (/game-2048)", () => {
   });
 
   test("新しいゲームボタンが表示される", async ({ page }) => {
-    await expect(
-      page.getByRole("button", { name: "新しいゲームを開始" })
-    ).toBeVisible();
+    await expect(page.getByRole("button", { name: "新しいゲームを開始" })).toBeVisible();
   });
 
   test("矢印キー操作でタイルが移動する", async ({ page }) => {

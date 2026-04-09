@@ -45,7 +45,7 @@ function parseOgpFromHtml(html: string, url: string): OgpData {
   // Supports various attribute orderings and formats
   const getMetaContent = (
     propertyOrName: string,
-    isProperty: boolean = true
+    isProperty: boolean = true,
   ): string | undefined => {
     const attr = isProperty ? "property" : "name";
     const escapedProp = propertyOrName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -55,35 +55,17 @@ function parseOgpFromHtml(html: string, url: string): OgpData {
     // Supports: single/double quotes with proper quote matching
     const patterns = [
       // property/name="..." content="..." (double quotes)
-      new RegExp(
-        `<meta[^>]+${attr}\\s*=\\s*"${escapedProp}"[^>]+content\\s*=\\s*"([^"]*)"`,
-        "is"
-      ),
+      new RegExp(`<meta[^>]+${attr}\\s*=\\s*"${escapedProp}"[^>]+content\\s*=\\s*"([^"]*)"`, "is"),
       // property/name='...' content='...' (single quotes)
-      new RegExp(
-        `<meta[^>]+${attr}\\s*=\\s*'${escapedProp}'[^>]+content\\s*=\\s*'([^']*)'`,
-        "is"
-      ),
+      new RegExp(`<meta[^>]+${attr}\\s*=\\s*'${escapedProp}'[^>]+content\\s*=\\s*'([^']*)'`, "is"),
       // content="..." property/name="..." (double quotes, reversed)
-      new RegExp(
-        `<meta[^>]+content\\s*=\\s*"([^"]*)"[^>]+${attr}\\s*=\\s*"${escapedProp}"`,
-        "is"
-      ),
+      new RegExp(`<meta[^>]+content\\s*=\\s*"([^"]*)"[^>]+${attr}\\s*=\\s*"${escapedProp}"`, "is"),
       // content='...' property/name='...' (single quotes, reversed)
-      new RegExp(
-        `<meta[^>]+content\\s*=\\s*'([^']*)'[^>]+${attr}\\s*=\\s*'${escapedProp}'`,
-        "is"
-      ),
+      new RegExp(`<meta[^>]+content\\s*=\\s*'([^']*)'[^>]+${attr}\\s*=\\s*'${escapedProp}'`, "is"),
       // Mixed: property/name="..." content='...'
-      new RegExp(
-        `<meta[^>]+${attr}\\s*=\\s*"${escapedProp}"[^>]+content\\s*=\\s*'([^']*)'`,
-        "is"
-      ),
+      new RegExp(`<meta[^>]+${attr}\\s*=\\s*"${escapedProp}"[^>]+content\\s*=\\s*'([^']*)'`, "is"),
       // Mixed: property/name='...' content="..."
-      new RegExp(
-        `<meta[^>]+${attr}\\s*=\\s*'${escapedProp}'[^>]+content\\s*=\\s*"([^"]*)"`,
-        "is"
-      ),
+      new RegExp(`<meta[^>]+${attr}\\s*=\\s*'${escapedProp}'[^>]+content\\s*=\\s*"([^"]*)"`, "is"),
     ];
 
     for (const regex of patterns) {
@@ -425,14 +407,12 @@ describe("OGP Parser", () => {
       });
 
       it("should extract charset from HTML4 meta tag", () => {
-        const html =
-          '<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">';
+        const html = '<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">';
         expect(extractCharsetFromHtml(html)).toBe("shift_jis");
       });
 
       it("should extract charset from HTML4 meta tag with reversed attributes", () => {
-        const html =
-          '<meta content="text/html; charset=EUC-JP" http-equiv="Content-Type">';
+        const html = '<meta content="text/html; charset=EUC-JP" http-equiv="Content-Type">';
         expect(extractCharsetFromHtml(html)).toBe("euc-jp");
       });
 
@@ -447,8 +427,7 @@ describe("OGP Parser", () => {
       });
 
       it("should extract charset from ISO-8859-1", () => {
-        const html =
-          '<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">';
+        const html = '<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">';
         expect(extractCharsetFromHtml(html)).toBe("iso-8859-1");
       });
     });
@@ -470,8 +449,7 @@ describe("OGP Parser", () => {
       });
 
       it("should handle complex Content-Type headers", () => {
-        const contentType =
-          "text/html; charset=UTF-8; boundary=something";
+        const contentType = "text/html; charset=UTF-8; boundary=something";
         expect(extractCharsetFromContentType(contentType)).toBe("utf-8");
       });
     });
@@ -557,21 +535,14 @@ describe("OGP Parser", () => {
 
       it("should decode Shift_JIS content", async () => {
         // Shift_JIS encoded "日本語" (0x93FA 0x967B 0x8CEA)
-        const shiftJisBytes = new Uint8Array([
-          0x93, 0xfa, 0x96, 0x7b, 0x8c, 0xea,
-        ]);
-        const result = await decodeHtmlWithCharset(
-          shiftJisBytes.buffer,
-          "shift_jis"
-        );
+        const shiftJisBytes = new Uint8Array([0x93, 0xfa, 0x96, 0x7b, 0x8c, 0xea]);
+        const result = await decodeHtmlWithCharset(shiftJisBytes.buffer, "shift_jis");
         expect(result).toBe("日本語");
       });
 
       it("should decode EUC-JP content", async () => {
         // EUC-JP encoded "日本語" (0xC6FC 0xCBDC 0xB8EC)
-        const eucJpBytes = new Uint8Array([
-          0xc6, 0xfc, 0xcb, 0xdc, 0xb8, 0xec,
-        ]);
+        const eucJpBytes = new Uint8Array([0xc6, 0xfc, 0xcb, 0xdc, 0xb8, 0xec]);
         const result = await decodeHtmlWithCharset(eucJpBytes.buffer, "euc-jp");
         expect(result).toBe("日本語");
       });
@@ -594,20 +565,14 @@ describe("OGP Parser", () => {
           0x6d,
           0xe9, // résumé
         ]);
-        const result = await decodeHtmlWithCharset(
-          isoBytes.buffer,
-          "iso-8859-1"
-        );
+        const result = await decodeHtmlWithCharset(isoBytes.buffer, "iso-8859-1");
         expect(result).toBe("Café résumé");
       });
 
       it("should fallback gracefully for unknown charsets", async () => {
         const utf8Text = "Hello, World!";
         const bytes = new TextEncoder().encode(utf8Text);
-        const result = await decodeHtmlWithCharset(
-          bytes.buffer,
-          "unknown-charset-xyz"
-        );
+        const result = await decodeHtmlWithCharset(bytes.buffer, "unknown-charset-xyz");
         // Should not throw and return something readable
         expect(result).toBeTruthy();
       });
@@ -623,60 +588,15 @@ describe("OGP Parser", () => {
         // "テスト" in Shift_JIS: 0x83 0x65 0x83 0x58 0x83 0x67
         const shiftJisHtml = new Uint8Array([
           // <meta charset="shift_jis"><title>
-          0x3c,
-          0x6d,
-          0x65,
-          0x74,
-          0x61,
-          0x20,
-          0x63,
-          0x68,
-          0x61,
-          0x72,
-          0x73,
-          0x65,
-          0x74,
-          0x3d,
-          0x22,
-          0x73,
-          0x68,
-          0x69,
-          0x66,
-          0x74,
-          0x5f,
-          0x6a,
-          0x69,
-          0x73,
-          0x22,
-          0x3e,
-          0x3c,
-          0x74,
-          0x69,
-          0x74,
-          0x6c,
-          0x65,
-          0x3e,
+          0x3c, 0x6d, 0x65, 0x74, 0x61, 0x20, 0x63, 0x68, 0x61, 0x72, 0x73, 0x65, 0x74, 0x3d, 0x22,
+          0x73, 0x68, 0x69, 0x66, 0x74, 0x5f, 0x6a, 0x69, 0x73, 0x22, 0x3e, 0x3c, 0x74, 0x69, 0x74,
+          0x6c, 0x65, 0x3e,
           // テスト
-          0x83,
-          0x65,
-          0x83,
-          0x58,
-          0x83,
-          0x67,
+          0x83, 0x65, 0x83, 0x58, 0x83, 0x67,
           // </title>
-          0x3c,
-          0x2f,
-          0x74,
-          0x69,
-          0x74,
-          0x6c,
-          0x65,
-          0x3e,
+          0x3c, 0x2f, 0x74, 0x69, 0x74, 0x6c, 0x65, 0x3e,
         ]);
-        const result = await decodeHtmlWithCharset(
-          shiftJisHtml.buffer,
-          "shift_jis"
-        );
+        const result = await decodeHtmlWithCharset(shiftJisHtml.buffer, "shift_jis");
         expect(result).toContain("テスト");
         expect(result).toContain("<meta charset");
       });
@@ -684,23 +604,37 @@ describe("OGP Parser", () => {
 
     describe("resolveUrl", () => {
       it("should return absolute URLs unchanged", () => {
-        expect(resolveUrl("https://example.com/image.jpg", "https://base.com/page")).toBe("https://example.com/image.jpg");
-        expect(resolveUrl("http://example.com/image.jpg", "https://base.com/page")).toBe("http://example.com/image.jpg");
+        expect(resolveUrl("https://example.com/image.jpg", "https://base.com/page")).toBe(
+          "https://example.com/image.jpg",
+        );
+        expect(resolveUrl("http://example.com/image.jpg", "https://base.com/page")).toBe(
+          "http://example.com/image.jpg",
+        );
       });
 
       it("should resolve protocol-relative URLs", () => {
-        expect(resolveUrl("//cdn.example.com/image.jpg", "https://base.com/page")).toBe("https://cdn.example.com/image.jpg");
+        expect(resolveUrl("//cdn.example.com/image.jpg", "https://base.com/page")).toBe(
+          "https://cdn.example.com/image.jpg",
+        );
       });
 
       it("should resolve root-relative URLs", () => {
-        expect(resolveUrl("/images/og.jpg", "https://example.com/path/to/page")).toBe("https://example.com/images/og.jpg");
+        expect(resolveUrl("/images/og.jpg", "https://example.com/path/to/page")).toBe(
+          "https://example.com/images/og.jpg",
+        );
         expect(resolveUrl("/og.png", "https://example.com/")).toBe("https://example.com/og.png");
       });
 
       it("should resolve relative URLs", () => {
-        expect(resolveUrl("images/og.jpg", "https://example.com/path/page.html")).toBe("https://example.com/path/images/og.jpg");
-        expect(resolveUrl("../images/og.jpg", "https://example.com/path/to/page.html")).toBe("https://example.com/path/images/og.jpg");
-        expect(resolveUrl("./og.jpg", "https://example.com/path/page.html")).toBe("https://example.com/path/og.jpg");
+        expect(resolveUrl("images/og.jpg", "https://example.com/path/page.html")).toBe(
+          "https://example.com/path/images/og.jpg",
+        );
+        expect(resolveUrl("../images/og.jpg", "https://example.com/path/to/page.html")).toBe(
+          "https://example.com/path/images/og.jpg",
+        );
+        expect(resolveUrl("./og.jpg", "https://example.com/path/page.html")).toBe(
+          "https://example.com/path/og.jpg",
+        );
       });
 
       it("should handle empty or undefined URLs", () => {
@@ -708,12 +642,18 @@ describe("OGP Parser", () => {
       });
 
       it("should handle URLs with query strings and fragments", () => {
-        expect(resolveUrl("/image.jpg?v=123", "https://example.com/page")).toBe("https://example.com/image.jpg?v=123");
-        expect(resolveUrl("/image.jpg#section", "https://example.com/page")).toBe("https://example.com/image.jpg#section");
+        expect(resolveUrl("/image.jpg?v=123", "https://example.com/page")).toBe(
+          "https://example.com/image.jpg?v=123",
+        );
+        expect(resolveUrl("/image.jpg#section", "https://example.com/page")).toBe(
+          "https://example.com/image.jpg#section",
+        );
       });
 
       it("should handle complex relative paths", () => {
-        expect(resolveUrl("../../assets/og.png", "https://example.com/a/b/c/page.html")).toBe("https://example.com/a/assets/og.png");
+        expect(resolveUrl("../../assets/og.png", "https://example.com/a/b/c/page.html")).toBe(
+          "https://example.com/a/assets/og.png",
+        );
       });
     });
   });

@@ -4,10 +4,7 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { useToast } from "../components/Toast";
 import { TipsCard } from "~/components/TipsCard";
 import { ErrorMessage } from "~/components/ErrorMessage";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 import {
   mergeJsonStrings,
@@ -134,9 +131,7 @@ function JsonMerge() {
                 <span>マージ方式:</span>
                 <select
                   value={options.deep ? "deep" : "shallow"}
-                  onChange={(e) =>
-                    setOptions((o) => ({ ...o, deep: e.target.value === "deep" }))
-                  }
+                  onChange={(e) => setOptions((o) => ({ ...o, deep: e.target.value === "deep" }))}
                   aria-label="マージ方式の選択"
                 >
                   <option value="deep">ディープマージ</option>

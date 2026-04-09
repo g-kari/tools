@@ -60,10 +60,7 @@ test.describe("JSON Schema バリデーター", () => {
 
   test("整形ボタンでJSONが整形される", async ({ page }) => {
     await page.getByLabel("JSON データ入力欄").fill('{"name":"Alice","age":30}');
-    await page
-      .getByRole("button", { name: "整形" })
-      .first()
-      .click();
+    await page.getByRole("button", { name: "整形" }).first().click();
 
     const value = await page.getByLabel("JSON データ入力欄").inputValue();
     expect(value).toContain("\n");

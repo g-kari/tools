@@ -20,50 +20,50 @@ export interface CardType {
 /** 対応するカード種別リスト */
 export const CARD_TYPES: readonly CardType[] = [
   {
-    name: 'American Express',
-    brand: 'amex',
+    name: "American Express",
+    brand: "amex",
     pattern: /^3[47]/,
     lengths: [15],
     format: [4, 6, 5],
   },
   {
-    name: 'Diners Club',
-    brand: 'diners',
+    name: "Diners Club",
+    brand: "diners",
     pattern: /^3(?:0[0-5]|[68])/,
     lengths: [14],
     format: [4, 6, 4],
   },
   {
-    name: 'Discover',
-    brand: 'discover',
+    name: "Discover",
+    brand: "discover",
     pattern: /^6(?:011|5[0-9]{2})/,
     lengths: [16, 19],
     format: [4, 4, 4, 4],
   },
   {
-    name: 'JCB',
-    brand: 'jcb',
+    name: "JCB",
+    brand: "jcb",
     pattern: /^(?:2131|1800|35\d{3})/,
     lengths: [16],
     format: [4, 4, 4, 4],
   },
   {
-    name: 'Mastercard',
-    brand: 'mastercard',
+    name: "Mastercard",
+    brand: "mastercard",
     pattern: /^(?:5[1-5]|2[2-7])/,
     lengths: [16],
     format: [4, 4, 4, 4],
   },
   {
-    name: 'UnionPay',
-    brand: 'unionpay',
+    name: "UnionPay",
+    brand: "unionpay",
     pattern: /^62/,
     lengths: [16, 17, 18, 19],
     format: [4, 4, 4, 4],
   },
   {
-    name: 'Visa',
-    brand: 'visa',
+    name: "Visa",
+    brand: "visa",
     pattern: /^4/,
     lengths: [13, 16, 19],
     format: [4, 4, 4, 4],
@@ -132,18 +132,18 @@ export function detectCardType(digits: string): CardType | null {
  * @example formatCardNumber('4532015112830366', [4,4,4,4]) // '4532 0151 1283 0366'
  */
 export function formatCardNumber(digits: string, format: number[]): string {
-  let result = '';
+  let result = "";
   let pos = 0;
 
   for (let i = 0; i < format.length; i++) {
     const chunk = digits.slice(pos, pos + format[i]);
     if (!chunk) break;
-    result += (i > 0 ? ' ' : '') + chunk;
+    result += (i > 0 ? " " : "") + chunk;
     pos += format[i];
   }
 
   const remaining = digits.slice(pos);
-  if (remaining) result += ' ' + remaining;
+  if (remaining) result += " " + remaining;
 
   return result.trim();
 }
@@ -154,7 +154,7 @@ export function formatCardNumber(digits: string, format: number[]): string {
  * @returns 検証結果オブジェクト
  */
 export function validateCard(input: string): LuhnResult {
-  const digits = input.replace(/[\s\-]/g, '');
+  const digits = input.replace(/[\s-]/g, "");
   const cardType = detectCardType(digits);
   const isValid = digits.length >= 2 && luhnCheck(digits);
   const isValidLength = cardType
@@ -164,8 +164,7 @@ export function validateCard(input: string): LuhnResult {
   const format = cardType?.format ?? [4, 4, 4, 4];
   const formatted = formatCardNumber(digits, format);
 
-  const checkDigit =
-    digits.length > 0 ? parseInt(digits[digits.length - 1], 10) : 0;
+  const checkDigit = digits.length > 0 ? parseInt(digits[digits.length - 1], 10) : 0;
 
   return {
     digits,
@@ -185,51 +184,51 @@ export const TEST_CARD_NUMBERS: ReadonlyArray<{
   note: string;
 }> = [
   {
-    brand: 'visa',
-    name: 'Visa',
-    number: '4532015112830366',
-    note: '16桁・標準',
+    brand: "visa",
+    name: "Visa",
+    number: "4532015112830366",
+    note: "16桁・標準",
   },
   {
-    brand: 'visa',
-    name: 'Visa',
-    number: '4111111111111111',
-    note: '16桁・よく使われるテスト番号',
+    brand: "visa",
+    name: "Visa",
+    number: "4111111111111111",
+    note: "16桁・よく使われるテスト番号",
   },
   {
-    brand: 'mastercard',
-    name: 'Mastercard',
-    number: '5500005555555559',
-    note: '16桁・標準',
+    brand: "mastercard",
+    name: "Mastercard",
+    number: "5500005555555559",
+    note: "16桁・標準",
   },
   {
-    brand: 'mastercard',
-    name: 'Mastercard',
-    number: '2223000048400011',
-    note: '16桁・2-series',
+    brand: "mastercard",
+    name: "Mastercard",
+    number: "2223000048400011",
+    note: "16桁・2-series",
   },
   {
-    brand: 'amex',
-    name: 'American Express',
-    number: '378282246310005',
-    note: '15桁・標準',
+    brand: "amex",
+    name: "American Express",
+    number: "378282246310005",
+    note: "15桁・標準",
   },
   {
-    brand: 'amex',
-    name: 'American Express',
-    number: '371449635398431',
-    note: '15桁・標準',
+    brand: "amex",
+    name: "American Express",
+    number: "371449635398431",
+    note: "15桁・標準",
   },
   {
-    brand: 'discover',
-    name: 'Discover',
-    number: '6011111111111117',
-    note: '16桁・標準',
+    brand: "discover",
+    name: "Discover",
+    number: "6011111111111117",
+    note: "16桁・標準",
   },
   {
-    brand: 'jcb',
-    name: 'JCB',
-    number: '3530111333300000',
-    note: '16桁・標準',
+    brand: "jcb",
+    name: "JCB",
+    number: "3530111333300000",
+    note: "16桁・標準",
   },
 ];

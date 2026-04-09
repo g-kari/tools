@@ -202,10 +202,7 @@ class Parser {
    */
   private parseAdditive(): number {
     let left = this.parseMultiplicative();
-    while (
-      this.peek().type === "PLUS" ||
-      this.peek().type === "MINUS"
-    ) {
+    while (this.peek().type === "PLUS" || this.peek().type === "MINUS") {
       const op = this.consume().type;
       const right = this.parseMultiplicative();
       left = op === "PLUS" ? left + right : left - right;
@@ -420,7 +417,7 @@ export function addToHistory(
   history: HistoryEntry[],
   expression: string,
   result: string,
-  maxEntries: number = 10
+  maxEntries: number = 10,
 ): HistoryEntry[] {
   const entry: HistoryEntry = {
     expression,

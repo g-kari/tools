@@ -4,10 +4,7 @@ import { useState, useRef, useCallback } from "react";
 import { useToast } from "../components/Toast";
 import { TipsCard } from "~/components/TipsCard";
 import { ErrorMessage } from "~/components/ErrorMessage";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 import {
   parseUrl,
@@ -80,9 +77,7 @@ function UrlParserBuilder() {
   const [buildPort, setBuildPort] = useState("");
   const [buildPathname, setBuildPathname] = useState("/");
   const [buildHash, setBuildHash] = useState("");
-  const [queryParams, setQueryParams] = useState<QueryParam[]>([
-    { key: "", value: "" },
-  ]);
+  const [queryParams, setQueryParams] = useState<QueryParam[]>([{ key: "", value: "" }]);
   const [builtUrl, setBuiltUrl] = useState("");
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -97,9 +92,7 @@ function UrlParserBuilder() {
     }
     const result = parseUrl(inputUrl.trim());
     if (!result.isValid) {
-      setError(
-        "無効なURLです。有効なURL（例: https://example.com）を入力してください"
-      );
+      setError("無効なURLです。有効なURL（例: https://example.com）を入力してください");
       setParsedResult(null);
       announceStatus("パースに失敗しました");
       return;
@@ -133,12 +126,15 @@ function UrlParserBuilder() {
 
   const handleCopyParsed = useCallback(() => {
     if (!parsedResult) return;
-    navigator.clipboard.writeText(parsedResult.href).then(() => {
-      showToast("URLをコピーしました", "success");
-      announceStatus("URLをコピーしました");
-    }).catch(() => {
-      showToast("コピーに失敗しました", "error");
-    });
+    navigator.clipboard
+      .writeText(parsedResult.href)
+      .then(() => {
+        showToast("URLをコピーしました", "success");
+        announceStatus("URLをコピーしました");
+      })
+      .catch(() => {
+        showToast("コピーに失敗しました", "error");
+      });
   }, [parsedResult, showToast, announceStatus]);
 
   useKeyboardShortcut("Enter", handleParse, { ctrl: true });
@@ -175,12 +171,15 @@ function UrlParserBuilder() {
 
   const handleCopyBuilt = useCallback(() => {
     if (!builtUrl) return;
-    navigator.clipboard.writeText(builtUrl).then(() => {
-      showToast("URLをコピーしました", "success");
-      announceStatus("URLをコピーしました");
-    }).catch(() => {
-      showToast("コピーに失敗しました", "error");
-    });
+    navigator.clipboard
+      .writeText(builtUrl)
+      .then(() => {
+        showToast("URLをコピーしました", "success");
+        announceStatus("URLをコピーしました");
+      })
+      .catch(() => {
+        showToast("コピーに失敗しました", "error");
+      });
   }, [builtUrl, showToast, announceStatus]);
 
   const handleBuilderClear = useCallback(() => {
@@ -204,14 +203,9 @@ function UrlParserBuilder() {
     setQueryParams((prev) => prev.filter((_, i) => i !== index));
   }, []);
 
-  const updateQueryParam = useCallback(
-    (index: number, field: "key" | "value", value: string) => {
-      setQueryParams((prev) =>
-        prev.map((p, i) => (i === index ? { ...p, [field]: value } : p))
-      );
-    },
-    []
-  );
+  const updateQueryParam = useCallback((index: number, field: "key" | "value", value: string) => {
+    setQueryParams((prev) => prev.map((p, i) => (i === index ? { ...p, [field]: value } : p)));
+  }, []);
 
   const componentItems = parsedResult
     ? [
@@ -253,11 +247,7 @@ function UrlParserBuilder() {
           ]}
         />
 
-        <div
-          className="url-parser-mode-tabs"
-          role="tablist"
-          aria-label="ツールモード選択"
-        >
+        <div className="url-parser-mode-tabs" role="tablist" aria-label="ツールモード選択">
           <button
             role="tab"
             aria-selected={toolMode === "parser"}
@@ -356,10 +346,7 @@ function UrlParserBuilder() {
                     <div className="url-parser-query-title">
                       クエリパラメータ ({parsedResult.queryParams.length}件)
                     </div>
-                    <table
-                      className="url-parser-query-table"
-                      aria-label="クエリパラメータ一覧"
-                    >
+                    <table className="url-parser-query-table" aria-label="クエリパラメータ一覧">
                       <thead>
                         <tr>
                           <th scope="col">キー</th>
@@ -369,9 +356,7 @@ function UrlParserBuilder() {
                       <tbody>
                         {parsedResult.queryParams.map((param, index) => (
                           <tr key={index}>
-                            <td className="url-parser-query-key">
-                              {param.key}
-                            </td>
+                            <td className="url-parser-query-key">{param.key}</td>
                             <td>{param.value}</td>
                           </tr>
                         ))}
@@ -400,10 +385,7 @@ function UrlParserBuilder() {
             <div className="url-parser-builder">
               <div className="url-parser-builder-grid">
                 <div className="url-parser-field">
-                  <label
-                    className="url-parser-label"
-                    htmlFor="build-protocol"
-                  >
+                  <label className="url-parser-label" htmlFor="build-protocol">
                     プロトコル
                   </label>
                   <input
@@ -417,10 +399,7 @@ function UrlParserBuilder() {
                   />
                 </div>
                 <div className="url-parser-field">
-                  <label
-                    className="url-parser-label"
-                    htmlFor="build-hostname"
-                  >
+                  <label className="url-parser-label" htmlFor="build-hostname">
                     ホスト名 *
                   </label>
                   <input
@@ -448,10 +427,7 @@ function UrlParserBuilder() {
                   />
                 </div>
                 <div className="url-parser-field">
-                  <label
-                    className="url-parser-label"
-                    htmlFor="build-pathname"
-                  >
+                  <label className="url-parser-label" htmlFor="build-pathname">
                     パス
                   </label>
                   <input
@@ -465,10 +441,7 @@ function UrlParserBuilder() {
                   />
                 </div>
                 <div className="url-parser-field">
-                  <label
-                    className="url-parser-label"
-                    htmlFor="build-username"
-                  >
+                  <label className="url-parser-label" htmlFor="build-username">
                     ユーザー名
                   </label>
                   <input
@@ -482,10 +455,7 @@ function UrlParserBuilder() {
                   />
                 </div>
                 <div className="url-parser-field">
-                  <label
-                    className="url-parser-label"
-                    htmlFor="build-password"
-                  >
+                  <label className="url-parser-label" htmlFor="build-password">
                     パスワード
                   </label>
                   <input
@@ -516,9 +486,7 @@ function UrlParserBuilder() {
 
               <div className="url-parser-params-section">
                 <div className="url-parser-params-header">
-                  <div className="url-parser-query-title">
-                    クエリパラメータ
-                  </div>
+                  <div className="url-parser-query-title">クエリパラメータ</div>
                   <button
                     type="button"
                     className="url-parser-btn url-parser-btn--sm"
@@ -534,9 +502,7 @@ function UrlParserBuilder() {
                       type="text"
                       className="url-parser-param-input"
                       value={param.key}
-                      onChange={(e) =>
-                        updateQueryParam(index, "key", e.target.value)
-                      }
+                      onChange={(e) => updateQueryParam(index, "key", e.target.value)}
                       placeholder="キー"
                       aria-label={`クエリパラメータ ${index + 1} のキー`}
                     />
@@ -544,9 +510,7 @@ function UrlParserBuilder() {
                       type="text"
                       className="url-parser-param-input"
                       value={param.value}
-                      onChange={(e) =>
-                        updateQueryParam(index, "value", e.target.value)
-                      }
+                      onChange={(e) => updateQueryParam(index, "value", e.target.value)}
                       placeholder="値"
                       aria-label={`クエリパラメータ ${index + 1} の値`}
                     />

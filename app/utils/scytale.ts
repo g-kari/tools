@@ -73,7 +73,7 @@ export function decodeScytale(text: string, diameter: number): string {
 export function visualizeScytale(
   text: string,
   diameter: number,
-  mode: "plain" | "cipher"
+  mode: "plain" | "cipher",
 ): string[][] {
   if (text.length === 0) return [];
 

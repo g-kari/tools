@@ -49,7 +49,7 @@ export interface MatchRange {
 export function findMatches(
   text: string,
   find: string,
-  options: ReplaceOptions
+  options: ReplaceOptions,
 ): { matches: MatchRange[]; error?: string } {
   if (!find) return { matches: [] };
 
@@ -116,7 +116,7 @@ export function replaceText(
   text: string,
   find: string,
   replace: string,
-  options: ReplaceOptions
+  options: ReplaceOptions,
 ): ReplaceResult {
   if (!find) {
     return { output: text, matchCount: 0 };
@@ -129,7 +129,7 @@ export function replaceText(
     // マッチ件数をカウント
     const countRegex = new RegExp(
       options.useRegex ? find : escapeRegex(find),
-      "g" + (!options.caseSensitive ? "i" : "") + (options.multiline ? "m" : "")
+      "g" + (!options.caseSensitive ? "i" : "") + (options.multiline ? "m" : ""),
     );
     let m: RegExpExecArray | null;
     while ((m = countRegex.exec(text)) !== null) {

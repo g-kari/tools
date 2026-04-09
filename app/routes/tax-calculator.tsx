@@ -1,9 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useMemo, useCallback } from "react";
-import {
-  StatusAnnouncer,
-  useStatusAnnouncement,
-} from "~/hooks/useStatusAnnouncement";
+import { StatusAnnouncer, useStatusAnnouncement } from "~/hooks/useStatusAnnouncement";
 import { TipsCard } from "~/components/TipsCard";
 import { useClipboard } from "~/hooks/useClipboard";
 import { useToast } from "~/components/Toast";
@@ -25,8 +22,7 @@ export const Route = createFileRoute("/tax-calculator")({
       { title: "消費税計算機 | Web ツール集" },
       {
         name: "description",
-        content:
-          "税抜→税込・税込→税抜の消費税計算ツール。8%（軽減税率）・10%（標準税率）に対応。",
+        content: "税抜→税込・税込→税抜の消費税計算ツール。8%（軽減税率）・10%（標準税率）に対応。",
       },
       {
         property: "og:title",
@@ -34,8 +30,7 @@ export const Route = createFileRoute("/tax-calculator")({
       },
       {
         property: "og:description",
-        content:
-          "税抜→税込・税込→税抜の消費税計算ツール。8%（軽減税率）・10%（標準税率）に対応。",
+        content: "税抜→税込・税込→税抜の消費税計算ツール。8%（軽減税率）・10%（標準税率）に対応。",
       },
       { property: "og:url", content: `${SITE_BASE_URL}/tax-calculator` },
       { property: "og:type", content: "website" },
@@ -94,7 +89,7 @@ function TaxCalculator() {
         showToast("コピーに失敗しました", "error");
       }
     },
-    [copy, showToast, announceStatus]
+    [copy, showToast, announceStatus],
   );
 
   const tabs: { mode: Mode; label: string }[] = [
@@ -105,11 +100,7 @@ function TaxCalculator() {
   return (
     <>
       <div className="tool-container">
-        <div
-          className="percentage-tabs"
-          role="tablist"
-          aria-label="計算モード選択"
-        >
+        <div className="percentage-tabs" role="tablist" aria-label="計算モード選択">
           {tabs.map((tab) => (
             <button
               key={tab.mode}

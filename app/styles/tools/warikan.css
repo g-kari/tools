@@ -152,11 +152,7 @@
 }
 
 .warikan-result-copy-btn:hover {
-  background: color-mix(
-    in srgb,
-    var(--md-sys-color-on-surface) 10%,
-    transparent
-  );
+  background: color-mix(in srgb, var(--md-sys-color-on-surface) 10%, transparent);
 }
 
 .warikan-main-copy-btn {
@@ -175,9 +171,5 @@
 }
 
 .warikan-main-copy-btn:hover {
-  background: color-mix(
-    in srgb,
-    var(--md-sys-color-on-primary-container) 15%,
-    transparent
-  );
+  background: color-mix(in srgb, var(--md-sys-color-on-primary-container) 15%, transparent);
 }

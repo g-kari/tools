@@ -1,10 +1,5 @@
 import { describe, it, expect } from "vite-plus/test";
-import {
-  minifyJavaScript,
-  minifyCSS,
-  minifyHTML,
-  minifyJSON,
-} from "../../app/utils/minify";
+import { minifyJavaScript, minifyCSS, minifyHTML, minifyJSON } from "../../app/utils/minify";
 
 describe("minifyJavaScript", () => {
   it("should remove single-line comments", () => {
@@ -192,7 +187,7 @@ describe("minifyHTML", () => {
     `;
     const result = minifyHTML(input);
     expect(result).toBe(
-      "<html><head><title>Test</title></head><body><div>Content</div></body></html>"
+      "<html><head><title>Test</title></head><body><div>Content</div></body></html>",
     );
   });
 

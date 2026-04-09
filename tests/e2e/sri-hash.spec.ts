@@ -7,12 +7,8 @@ test.describe("SRI Hash Generator", () => {
 
   test("ページが正しく表示される", async ({ page }) => {
     await expect(page).toHaveTitle(/SRI ハッシュ生成/);
-    await expect(
-      page.getByRole("button", { name: "テキスト" }),
-    ).toBeVisible();
-    await expect(
-      page.getByRole("button", { name: "ファイル" }),
-    ).toBeVisible();
+    await expect(page.getByRole("button", { name: "テキスト" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "ファイル" })).toBeVisible();
   });
 
   test("テキスト入力でハッシュが生成される", async ({ page }) => {
@@ -50,14 +46,10 @@ test.describe("SRI Hash Generator", () => {
 
   test("ファイルタブに切り替えができる", async ({ page }) => {
     await page.getByRole("tab", { name: "ファイル" }).click();
-    await expect(
-      page.getByLabel("ファイルをドロップするか、クリックして選択"),
-    ).toBeVisible();
+    await expect(page.getByLabel("ファイルをドロップするか、クリックして選択")).toBeVisible();
   });
 
-  test("テキスト入力後に HTML スニペットセクションが表示される", async ({
-    page,
-  }) => {
+  test("テキスト入力後に HTML スニペットセクションが表示される", async ({ page }) => {
     const textarea = page.getByLabel("リソースのコンテンツ");
     await textarea.fill("body { color: red; }");
 
@@ -89,9 +81,7 @@ test.describe("SRI Hash Generator", () => {
     await page.waitForTimeout(300);
 
     // デフォルトは anonymous
-    await expect(
-      page.getByLabel("anonymous（認証情報なし）"),
-    ).toBeChecked();
+    await expect(page.getByLabel("anonymous（認証情報なし）")).toBeChecked();
 
     // use-credentials に切り替え
     await page.getByLabel("use-credentials（認証情報あり）").click();

@@ -29,14 +29,7 @@ export interface ValidationResult {
 }
 
 /** JSON Schemaの型名 */
-type JsonSchemaTypeName =
-  | "string"
-  | "number"
-  | "integer"
-  | "boolean"
-  | "null"
-  | "array"
-  | "object";
+type JsonSchemaTypeName = "string" | "number" | "integer" | "boolean" | "null" | "array" | "object";
 
 /** JSON Schemaオブジェクト */
 interface JsonSchema {
@@ -133,7 +126,7 @@ function validateValue(
   value: unknown,
   schema: JsonSchema,
   path: string,
-  errors: ValidationError[]
+  errors: ValidationError[],
 ): void {
   const actualType = getType(value);
 
@@ -143,8 +136,7 @@ function validateValue(
     const typeMatch = types.some((t) => {
       if (t === "integer") {
         return (
-          actualType === "integer" ||
-          (actualType === "number" && Number.isInteger(value as number))
+          actualType === "integer" || (actualType === "number" && Number.isInteger(value as number))
         );
       }
       if (t === "number") {
@@ -249,10 +241,7 @@ function validateValue(
       });
     }
 
-    if (
-      typeof schema.exclusiveMinimum === "number" &&
-      num <= schema.exclusiveMinimum
-    ) {
+    if (typeof schema.exclusiveMinimum === "number" && num <= schema.exclusiveMinimum) {
       errors.push({
         path,
         keyword: "exclusiveMinimum",
@@ -260,10 +249,7 @@ function validateValue(
       });
     }
 
-    if (
-      typeof schema.exclusiveMaximum === "number" &&
-      num >= schema.exclusiveMaximum
-    ) {
+    if (typeof schema.exclusiveMaximum === "number" && num >= schema.exclusiveMaximum) {
       errors.push({
         path,
         keyword: "exclusiveMaximum",
@@ -271,11 +257,7 @@ function validateValue(
       });
     }
 
-    if (
-      schema.multipleOf !== undefined &&
-      schema.multipleOf > 0 &&
-      num % schema.multipleOf !== 0
-    ) {
+    if (schema.multipleOf !== undefined && schema.multipleOf > 0 && num % schema.multipleOf !== 0) {
       errors.push({
         path,
         keyword: "multipleOf",
@@ -328,10 +310,7 @@ function validateValue(
           }
         }
         // additionalItems
-        if (
-          schema.additionalItems === false &&
-          arr.length > schema.items.length
-        ) {
+        if (schema.additionalItems === false && arr.length > schema.items.length) {
           errors.push({
             path,
             keyword: "additionalItems",
@@ -343,12 +322,7 @@ function validateValue(
           typeof schema.additionalItems === "object"
         ) {
           for (let i = schema.items.length; i < arr.length; i++) {
-            validateValue(
-              arr[i],
-              schema.additionalItems as JsonSchema,
-              `${path}/${i}`,
-              errors
-            );
+            validateValue(arr[i], schema.additionalItems as JsonSchema, `${path}/${i}`, errors);
           }
         }
       } else {
@@ -416,9 +390,7 @@ function validateValue(
 
     // patternProperties
     if (schema.patternProperties !== undefined) {
-      for (const [pattern, propSchema] of Object.entries(
-        schema.patternProperties
-      )) {
+      for (const [pattern, propSchema] of Object.entries(schema.patternProperties)) {
         try {
           const regex = new RegExp(pattern);
           for (const key of keys) {
@@ -452,9 +424,7 @@ function validateValue(
         }
       }
 
-      const additionalKeys = keys.filter(
-        (k) => !definedKeys.has(k) && !patternMatchedKeys.has(k)
-      );
+      const additionalKeys = keys.filter((k) => !definedKeys.has(k) && !patternMatchedKeys.has(k));
 
       if (schema.additionalProperties === false) {
         for (const key of additionalKeys) {
@@ -473,7 +443,7 @@ function validateValue(
             obj[key],
             schema.additionalProperties as JsonSchema,
             `${path}/${key}`,
-            errors
+            errors,
           );
         }
       }
@@ -540,7 +510,7 @@ function validateValue(
  */
 export function validateJsonAgainstSchema(
   jsonString: string,
-  schemaString: string
+  schemaString: string,
 ): ValidationResult {
   if (!jsonString.trim()) {
     return {
@@ -624,7 +594,7 @@ export function getSampleJsonData(): string {
       tags: ["developer", "typescript"],
     },
     null,
-    2
+    2,
   );
 }
 
@@ -671,6 +641,6 @@ export function getSampleSchema(): string {
       additionalProperties: false,
     },
     null,
-    2
+    2,
   );
 }

@@ -1,9 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useMemo, useCallback } from "react";
-import {
-  StatusAnnouncer,
-  useStatusAnnouncement,
-} from "~/hooks/useStatusAnnouncement";
+import { StatusAnnouncer, useStatusAnnouncement } from "~/hooks/useStatusAnnouncement";
 import { TipsCard } from "~/components/TipsCard";
 import { useClipboard } from "~/hooks/useClipboard";
 import { useToast } from "~/components/Toast";
@@ -32,8 +29,7 @@ export const Route = createFileRoute("/math-eval")({
       },
       {
         property: "og:description",
-        content:
-          "数式をリアルタイムで評価するツール。sin・cos・sqrt・log・PI・Eなどに対応。",
+        content: "数式をリアルタイムで評価するツール。sin・cos・sqrt・log・PI・Eなどに対応。",
       },
       { property: "og:url", content: `${SITE_BASE_URL}/math-eval` },
       { property: "og:type", content: "website" },
@@ -59,14 +55,12 @@ function MathEval() {
 
   const result = useMemo(
     () => (expression.trim() ? evaluateExpression(expression) : null),
-    [expression]
+    [expression],
   );
 
   const handleEvaluate = useCallback(() => {
     if (!result || result.error || result.value === null) return;
-    setHistory((prev) =>
-      addToHistory(prev, expression, result.formatted)
-    );
+    setHistory((prev) => addToHistory(prev, expression, result.formatted));
     announceStatus(`計算結果: ${result.formatted}`);
   }, [result, expression, announceStatus]);
 
@@ -133,11 +127,7 @@ function MathEval() {
         </div>
 
         {hasResult && (
-          <div
-            className="me-result-wrapper"
-            aria-label="計算結果"
-            aria-live="polite"
-          >
+          <div className="me-result-wrapper" aria-label="計算結果" aria-live="polite">
             <div className="me-result-header">
               <span className="me-result-label">結果</span>
             </div>
@@ -157,12 +147,7 @@ function MathEval() {
         )}
 
         {hasError && (
-          <div
-            className="me-error-wrapper"
-            role="alert"
-            aria-live="assertive"
-            aria-label="エラー"
-          >
+          <div className="me-error-wrapper" role="alert" aria-live="assertive" aria-label="エラー">
             <p className="me-error-message">⚠ {result.error}</p>
           </div>
         )}
@@ -227,7 +212,12 @@ function MathEval() {
                 "べき乗・根: sqrt, cbrt, pow, exp",
                 "対数: log, log2, log10",
                 "その他: abs, ceil, floor, round, max, min",
-                `定数: ${Object.entries(supportedConstants).map(([k, v]) => `${k} = ${typeof v === "number" && !Number.isInteger(v) ? v.toFixed(4) : v}`).join(", ")}`,
+                `定数: ${Object.entries(supportedConstants)
+                  .map(
+                    ([k, v]) =>
+                      `${k} = ${typeof v === "number" && !Number.isInteger(v) ? v.toFixed(4) : v}`,
+                  )
+                  .join(", ")}`,
               ],
             },
             {

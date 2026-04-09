@@ -1,45 +1,41 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
-import { useState, useMemo } from 'react';
-import { useToast } from '../components/Toast';
-import { Button } from '~/components/ui/button';
-import { TipsCard } from '~/components/TipsCard';
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from '~/hooks/useStatusAnnouncement';
-import { useClipboard } from '~/hooks/useClipboard';
-import { convertCurl, type ConvertOptions } from '../utils/curl-to-fetch';
+import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
+import { useState, useMemo } from "react";
+import { useToast } from "../components/Toast";
+import { Button } from "~/components/ui/button";
+import { TipsCard } from "~/components/TipsCard";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
+import { useClipboard } from "~/hooks/useClipboard";
+import { convertCurl, type ConvertOptions } from "../utils/curl-to-fetch";
 
-export const Route = createFileRoute('/curl-to-fetch')({
+export const Route = createFileRoute("/curl-to-fetch")({
   head: () => ({
     meta: [
-      { title: 'cURL → fetch 変換 | Web ツール集' },
+      { title: "cURL → fetch 変換 | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          'cURLコマンドをJavaScript Fetch API または axios のコードに変換するツール。-H / -d / -X / -u などのフラグに対応。ブラウザ内完結。',
+          "cURLコマンドをJavaScript Fetch API または axios のコードに変換するツール。-H / -d / -X / -u などのフラグに対応。ブラウザ内完結。",
       },
       {
-        property: 'og:title',
-        content: 'cURL → fetch 変換 | Web ツール集',
+        property: "og:title",
+        content: "cURL → fetch 変換 | Web ツール集",
       },
       {
-        property: 'og:description',
+        property: "og:description",
         content:
-          'cURLコマンドをJavaScript Fetch API / axios コードに変換。ヘッダー・ボディ・認証に対応。',
+          "cURLコマンドをJavaScript Fetch API / axios コードに変換。ヘッダー・ボディ・認証に対応。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/curl-to-fetch` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
+      { property: "og:url", content: `${SITE_BASE_URL}/curl-to-fetch` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
       {
-        name: 'twitter:title',
-        content: 'cURL → fetch 変換 | Web ツール集',
+        name: "twitter:title",
+        content: "cURL → fetch 変換 | Web ツール集",
       },
       {
-        name: 'twitter:description',
-        content:
-          'cURLコマンドをJavaScript Fetch API / axios コードに変換するツール。',
+        name: "twitter:description",
+        content: "cURLコマンドをJavaScript Fetch API / axios コードに変換するツール。",
       },
     ],
   }),
@@ -49,26 +45,26 @@ export const Route = createFileRoute('/curl-to-fetch')({
 /** サンプルcURLコマンド集 */
 const SAMPLES = [
   {
-    label: 'GET リクエスト',
+    label: "GET リクエスト",
     value: `curl 'https://api.example.com/users' \\
   -H 'Accept: application/json' \\
   -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.example'`,
   },
   {
-    label: 'POST JSON',
+    label: "POST JSON",
     value: `curl 'https://api.example.com/users' \\
   -X POST \\
   -H 'Content-Type: application/json' \\
   -d '{"name":"山田太郎","email":"taro@example.com"}'`,
   },
   {
-    label: 'Basic 認証',
+    label: "Basic 認証",
     value: `curl 'https://api.example.com/private' \\
   -u 'admin:secret123' \\
   -H 'Accept: application/json'`,
   },
   {
-    label: 'フォームデータ送信',
+    label: "フォームデータ送信",
     value: `curl 'https://api.example.com/login' \\
   -X POST \\
   -H 'Content-Type: application/x-www-form-urlencoded' \\
@@ -84,8 +80,8 @@ function CurlToFetchPage() {
   const { copy } = useClipboard();
   const { statusRef, announceStatus } = useStatusAnnouncement();
 
-  const [curlInput, setCurlInput] = useState('');
-  const [mode, setMode] = useState<'fetch' | 'axios'>('fetch');
+  const [curlInput, setCurlInput] = useState("");
+  const [mode, setMode] = useState<"fetch" | "axios">("fetch");
   const [typescript, setTypescript] = useState(false);
 
   const opts: ConvertOptions = { mode, typescript };
@@ -97,24 +93,24 @@ function CurlToFetchPage() {
   }, [curlInput, mode, typescript]);
 
   const handleClear = () => {
-    setCurlInput('');
-    announceStatus('入力をクリアしました');
+    setCurlInput("");
+    announceStatus("入力をクリアしました");
   };
 
   const handleCopy = async () => {
     if (!result?.code) return;
     const success = await copy(result.code);
     if (success) {
-      showToast('コードをコピーしました', 'success');
-      announceStatus('コードをコピーしました');
+      showToast("コードをコピーしました", "success");
+      announceStatus("コードをコピーしました");
     } else {
-      showToast('コピーに失敗しました', 'error');
+      showToast("コピーに失敗しました", "error");
     }
   };
 
   const handleSample = (value: string) => {
     setCurlInput(value);
-    announceStatus('サンプルを読み込みました');
+    announceStatus("サンプルを読み込みました");
   };
 
   return (
@@ -171,8 +167,8 @@ function CurlToFetchPage() {
                   type="radio"
                   name="ctf-mode"
                   value="fetch"
-                  checked={mode === 'fetch'}
-                  onChange={() => setMode('fetch')}
+                  checked={mode === "fetch"}
+                  onChange={() => setMode("fetch")}
                   className="ctf-radio"
                 />
                 fetch
@@ -182,8 +178,8 @@ function CurlToFetchPage() {
                   type="radio"
                   name="ctf-mode"
                   value="axios"
-                  checked={mode === 'axios'}
-                  onChange={() => setMode('axios')}
+                  checked={mode === "axios"}
+                  onChange={() => setMode("axios")}
                   className="ctf-radio"
                 />
                 axios
@@ -230,10 +226,10 @@ function CurlToFetchPage() {
         {/* 出力セクション */}
         <section className="ctf-section" aria-labelledby="ctf-output-heading">
           <h2 id="ctf-output-heading" className="section-title">
-            変換結果{' '}
+            変換結果{" "}
             <span className="ctf-mode-badge" aria-hidden="true">
-              {mode === 'fetch' ? 'Fetch API' : 'axios'}
-              {typescript ? ' + TypeScript' : ''}
+              {mode === "fetch" ? "Fetch API" : "axios"}
+              {typescript ? " + TypeScript" : ""}
             </span>
           </h2>
 
@@ -250,11 +246,7 @@ function CurlToFetchPage() {
 
           {/* コード出力 */}
           <div className="ctf-output-wrapper">
-            <pre
-              className="ctf-code-block"
-              aria-label="変換されたコード"
-              aria-live="polite"
-            >
+            <pre className="ctf-code-block" aria-label="変換されたコード" aria-live="polite">
               {result?.code ? (
                 <code>{result.code}</code>
               ) : (
@@ -269,36 +261,36 @@ function CurlToFetchPage() {
         <TipsCard
           sections={[
             {
-              title: '使い方',
+              title: "使い方",
               items: [
                 'cURL コマンドをそのまま貼り付けてください（"curl" の有無は問いません）',
-                'バックスラッシュ改行（\\）による複数行のcURLにも対応しています',
-                '「サンプル」ボタンで典型的なパターンをすぐに試せます',
-                '「コピー」ボタンで生成されたコードをクリップボードにコピーできます',
+                "バックスラッシュ改行（\\）による複数行のcURLにも対応しています",
+                "「サンプル」ボタンで典型的なパターンをすぐに試せます",
+                "「コピー」ボタンで生成されたコードをクリップボードにコピーできます",
               ],
             },
             {
-              title: '対応フラグ',
+              title: "対応フラグ",
               items: [
-                '-X / --request : HTTPメソッドを指定（GET, POST, PUT, DELETE 等）',
-                '-H / --header : リクエストヘッダーを追加',
-                '-d / --data / --data-raw : リクエストボディを設定',
-                '-u / --user : Basic認証（Authorization: Basic ヘッダーに変換）',
-                '-b / --cookie : Cookieを設定',
-                '-A / --user-agent : User-Agentを設定',
-                '-L / --location : リダイレクト追従（fetch の redirect: follow に変換）',
-                '-I / --head : HEAD メソッドに変換',
-                '--compressed : Accept-Encoding ヘッダーを追加',
-                '--json : --data + Content-Type: application/json の組み合わせ',
+                "-X / --request : HTTPメソッドを指定（GET, POST, PUT, DELETE 等）",
+                "-H / --header : リクエストヘッダーを追加",
+                "-d / --data / --data-raw : リクエストボディを設定",
+                "-u / --user : Basic認証（Authorization: Basic ヘッダーに変換）",
+                "-b / --cookie : Cookieを設定",
+                "-A / --user-agent : User-Agentを設定",
+                "-L / --location : リダイレクト追従（fetch の redirect: follow に変換）",
+                "-I / --head : HEAD メソッドに変換",
+                "--compressed : Accept-Encoding ヘッダーを追加",
+                "--json : --data + Content-Type: application/json の組み合わせ",
               ],
             },
             {
-              title: '注意点',
+              title: "注意点",
               items: [
-                '-k / --insecure はブラウザの fetch では設定不可。Node.js 環境では https.Agent が必要です',
-                '--data-binary はバイナリデータの場合、手動での調整が必要です',
-                'Cookie セキュリティポリシー（SameSite等）はコードに含まれません',
-                '環境変数 ${VAR} や $() のコマンド置換は展開されません。手動で値を置き換えてください',
+                "-k / --insecure はブラウザの fetch では設定不可。Node.js 環境では https.Agent が必要です",
+                "--data-binary はバイナリデータの場合、手動での調整が必要です",
+                "Cookie セキュリティポリシー（SameSite等）はコードに含まれません",
+                "環境変数 ${VAR} や $() のコマンド置換は展開されません。手動で値を置き換えてください",
               ],
             },
           ]}

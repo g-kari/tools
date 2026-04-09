@@ -13,10 +13,7 @@ import { Input } from "~/components/ui/input";
 import { TipsCard } from "~/components/TipsCard";
 import { ErrorMessage } from "~/components/ErrorMessage";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 
 export const Route = createFileRoute("/http-client")({
   head: () => ({
@@ -48,15 +45,7 @@ export const Route = createFileRoute("/http-client")({
 });
 
 /** HTTPメソッドの選択肢 */
-const HTTP_METHODS: HttpMethod[] = [
-  "GET",
-  "POST",
-  "PUT",
-  "PATCH",
-  "DELETE",
-  "HEAD",
-  "OPTIONS",
-];
+const HTTP_METHODS: HttpMethod[] = ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"];
 
 /** レスポンスタブの種類 */
 type ResponseTab = "body" | "headers";
@@ -94,9 +83,7 @@ function getStatusDescription(code: number): string {
 function HttpClientTool() {
   const [method, setMethod] = useState<HttpMethod>("GET");
   const [url, setUrl] = useState("");
-  const [headers, setHeaders] = useState<HttpHeader[]>([
-    { key: "", value: "" },
-  ]);
+  const [headers, setHeaders] = useState<HttpHeader[]>([{ key: "", value: "" }]);
   const [body, setBody] = useState("");
   const [response, setResponse] = useState<HttpResponseData | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -131,14 +118,9 @@ function HttpClientTool() {
    * @param field - 更新するフィールド（key or value）
    * @param value - 新しい値
    */
-  const updateHeader = useCallback(
-    (index: number, field: "key" | "value", value: string) => {
-      setHeaders((prev) =>
-        prev.map((h, i) => (i === index ? { ...h, [field]: value } : h))
-      );
-    },
-    []
-  );
+  const updateHeader = useCallback((index: number, field: "key" | "value", value: string) => {
+    setHeaders((prev) => prev.map((h, i) => (i === index ? { ...h, [field]: value } : h)));
+  }, []);
 
   /**
    * HTTPリクエストを送信する
@@ -174,12 +156,9 @@ function HttpClientTool() {
 
       setResponse(result);
       setActiveTab("body");
-      announceStatus(
-        `レスポンスを受信しました: ${result.statusCode} ${result.statusText}`
-      );
+      announceStatus(`レスポンスを受信しました: ${result.statusCode} ${result.statusText}`);
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "通信エラーが発生しました";
+      const message = err instanceof Error ? err.message : "通信エラーが発生しました";
       setError(message);
       announceStatus("エラー: " + message);
     } finally {
@@ -205,7 +184,10 @@ function HttpClientTool() {
     <>
       <div className="tool-container">
         <form
-          onSubmit={(e) => { e.preventDefault(); handleSend(); }}
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSend();
+          }}
           aria-label="HTTPリクエストフォーム"
         >
           {/* URL入力とメソッド選択 */}
@@ -280,9 +262,7 @@ function HttpClientTool() {
                   <Input
                     type="text"
                     value={header.value}
-                    onChange={(e) =>
-                      updateHeader(index, "value", e.target.value)
-                    }
+                    onChange={(e) => updateHeader(index, "value", e.target.value)}
                     placeholder="値（例: application/json）"
                     aria-label={`ヘッダー ${index + 1} の値`}
                     autoComplete="off"
@@ -353,9 +333,7 @@ function HttpClientTool() {
                   {response.statusText || getStatusDescription(response.statusCode)}
                 </span>
               </div>
-              <span className="http-client-response-time">
-                {response.responseTime}ms
-              </span>
+              <span className="http-client-response-time">{response.responseTime}ms</span>
             </div>
 
             {/* タブ切り替え */}
@@ -412,9 +390,7 @@ function HttpClientTool() {
                   <code>{formatResponseBody(response.body)}</code>
                 </pre>
               ) : (
-                <p className="http-client-no-body">
-                  レスポンスボディが空です
-                </p>
+                <p className="http-client-no-body">レスポンスボディが空です</p>
               )}
             </div>
 
@@ -435,9 +411,7 @@ function HttpClientTool() {
                   ))}
                 </div>
               ) : (
-                <p className="http-client-no-body">
-                  レスポンスヘッダーがありません
-                </p>
+                <p className="http-client-no-body">レスポンスヘッダーがありません</p>
               )}
             </div>
           </section>

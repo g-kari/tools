@@ -85,7 +85,7 @@ describe("escapeHtmlAttribute", () => {
 
   it("複数の特殊文字を同時にエスケープする", () => {
     expect(escapeHtmlAttribute('<a href="x&y">test</a>')).toBe(
-      "&lt;a href=&quot;x&amp;y&quot;&gt;test&lt;/a&gt;"
+      "&lt;a href=&quot;x&amp;y&quot;&gt;test&lt;/a&gt;",
     );
   });
 });
@@ -93,19 +93,19 @@ describe("escapeHtmlAttribute", () => {
 describe("generateMetaTag", () => {
   it("og:title のメタタグを生成する", () => {
     expect(generateMetaTag("og:title", "Hello")).toBe(
-      '<meta property="og:title" content="Hello" />'
+      '<meta property="og:title" content="Hello" />',
     );
   });
 
   it("特殊文字をエスケープする", () => {
     expect(generateMetaTag("og:title", 'Title & "Quote"')).toBe(
-      '<meta property="og:title" content="Title &amp; &quot;Quote&quot;" />'
+      '<meta property="og:title" content="Title &amp; &quot;Quote&quot;" />',
     );
   });
 
   it("og:type のメタタグを生成する", () => {
     expect(generateMetaTag("og:type", "website")).toBe(
-      '<meta property="og:type" content="website" />'
+      '<meta property="og:type" content="website" />',
     );
   });
 });
@@ -113,7 +113,7 @@ describe("generateMetaTag", () => {
 describe("generateTwitterTag", () => {
   it("twitter:card のメタタグを生成する", () => {
     expect(generateTwitterTag("twitter:card", "summary")).toBe(
-      '<meta name="twitter:card" content="summary" />'
+      '<meta name="twitter:card" content="summary" />',
     );
   });
 
@@ -125,7 +125,7 @@ describe("generateTwitterTag", () => {
 
   it("特殊文字をエスケープする", () => {
     expect(generateTwitterTag("twitter:description", "A & B")).toBe(
-      '<meta name="twitter:description" content="A &amp; B" />'
+      '<meta name="twitter:description" content="A &amp; B" />',
     );
   });
 });
@@ -182,22 +182,18 @@ describe("generateOgpTags", () => {
 
   it("description が含まれる場合 og:description タグを生成する", () => {
     const result = generateOgpTags(baseInput);
-    expect(result).toContain(
-      '<meta property="og:description" content="テストの説明文" />'
-    );
+    expect(result).toContain('<meta property="og:description" content="テストの説明文" />');
   });
 
   it("url が含まれる場合 og:url タグを生成する", () => {
     const result = generateOgpTags(baseInput);
-    expect(result).toContain(
-      '<meta property="og:url" content="https://example.com" />'
-    );
+    expect(result).toContain('<meta property="og:url" content="https://example.com" />');
   });
 
   it("imageUrl が含まれる場合 og:image タグを生成する", () => {
     const result = generateOgpTags(baseInput);
     expect(result).toContain(
-      '<meta property="og:image" content="https://example.com/image.png" />'
+      '<meta property="og:image" content="https://example.com/image.png" />',
     );
   });
 
@@ -208,9 +204,7 @@ describe("generateOgpTags", () => {
 
   it("siteName が含まれる場合 og:site_name タグを生成する", () => {
     const result = generateOgpTags(baseInput);
-    expect(result).toContain(
-      '<meta property="og:site_name" content="テストサイト" />'
-    );
+    expect(result).toContain('<meta property="og:site_name" content="テストサイト" />');
   });
 
   it("locale が含まれる場合 og:locale タグを生成する", () => {

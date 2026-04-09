@@ -17,20 +17,15 @@ export interface SortStep {
 }
 
 /** ソートアルゴリズムの種類 */
-export type SortAlgorithm =
-  | 'bubble'
-  | 'selection'
-  | 'insertion'
-  | 'merge'
-  | 'quick';
+export type SortAlgorithm = "bubble" | "selection" | "insertion" | "merge" | "quick";
 
 /** アルゴリズムのラベル */
 export const ALGORITHM_LABELS: Record<SortAlgorithm, string> = {
-  bubble: 'バブルソート',
-  selection: '選択ソート',
-  insertion: '挿入ソート',
-  merge: 'マージソート',
-  quick: 'クイックソート',
+  bubble: "バブルソート",
+  selection: "選択ソート",
+  insertion: "挿入ソート",
+  merge: "マージソート",
+  quick: "クイックソート",
 };
 
 /** アルゴリズムの計算量情報 */
@@ -38,25 +33,25 @@ export const ALGORITHM_COMPLEXITY: Record<
   SortAlgorithm,
   { best: string; average: string; worst: string; space: string }
 > = {
-  bubble: { best: 'O(n)', average: 'O(n²)', worst: 'O(n²)', space: 'O(1)' },
+  bubble: { best: "O(n)", average: "O(n²)", worst: "O(n²)", space: "O(1)" },
   selection: {
-    best: 'O(n²)',
-    average: 'O(n²)',
-    worst: 'O(n²)',
-    space: 'O(1)',
+    best: "O(n²)",
+    average: "O(n²)",
+    worst: "O(n²)",
+    space: "O(1)",
   },
-  insertion: { best: 'O(n)', average: 'O(n²)', worst: 'O(n²)', space: 'O(1)' },
+  insertion: { best: "O(n)", average: "O(n²)", worst: "O(n²)", space: "O(1)" },
   merge: {
-    best: 'O(n log n)',
-    average: 'O(n log n)',
-    worst: 'O(n log n)',
-    space: 'O(n)',
+    best: "O(n log n)",
+    average: "O(n log n)",
+    worst: "O(n log n)",
+    space: "O(n)",
   },
   quick: {
-    best: 'O(n log n)',
-    average: 'O(n log n)',
-    worst: 'O(n²)',
-    space: 'O(log n)',
+    best: "O(n log n)",
+    average: "O(n log n)",
+    worst: "O(n²)",
+    space: "O(log n)",
   },
 };
 
@@ -324,20 +319,17 @@ export function quickSortSteps(input: number[]): SortStep[] {
  * @param algorithm アルゴリズムの種類
  * @returns ステップ生成関数
  */
-export function getSortSteps(
-  algorithm: SortAlgorithm,
-  input: number[]
-): SortStep[] {
+export function getSortSteps(algorithm: SortAlgorithm, input: number[]): SortStep[] {
   switch (algorithm) {
-    case 'bubble':
+    case "bubble":
       return bubbleSortSteps(input);
-    case 'selection':
+    case "selection":
       return selectionSortSteps(input);
-    case 'insertion':
+    case "insertion":
       return insertionSortSteps(input);
-    case 'merge':
+    case "merge":
       return mergeSortSteps(input);
-    case 'quick':
+    case "quick":
       return quickSortSteps(input);
   }
 }

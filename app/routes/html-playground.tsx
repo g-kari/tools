@@ -1,38 +1,33 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useState, useCallback, useRef, useEffect } from 'react';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
-import {
-  buildDocument,
-  SAMPLES,
-  PANEL_TAB_LABELS,
-  type PanelTab,
-} from '../utils/html-playground';
-import { TipsCard } from '~/components/TipsCard';
-import { useClipboard } from '~/hooks/useClipboard';
-import '../styles/tools/html-playground.css';
+import { createFileRoute } from "@tanstack/react-router";
+import { useState, useCallback, useRef, useEffect } from "react";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
+import { buildDocument, SAMPLES, PANEL_TAB_LABELS, type PanelTab } from "../utils/html-playground";
+import { TipsCard } from "~/components/TipsCard";
+import { useClipboard } from "~/hooks/useClipboard";
+import "../styles/tools/html-playground.css";
 
-export const Route = createFileRoute('/html-playground')({
+export const Route = createFileRoute("/html-playground")({
   head: () => ({
     meta: [
-      { title: 'HTML/CSS/JS プレイグラウンド | Web ツール集' },
+      { title: "HTML/CSS/JS プレイグラウンド | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          'HTML・CSS・JavaScript をブラウザ内で編集してリアルタイムにプレビューできるライブエディター。サンドボックス環境で安全に動作。スタンドアロン HTML としてエクスポート可能。',
+          "HTML・CSS・JavaScript をブラウザ内で編集してリアルタイムにプレビューできるライブエディター。サンドボックス環境で安全に動作。スタンドアロン HTML としてエクスポート可能。",
       },
-      { property: 'og:title', content: 'HTML/CSS/JS プレイグラウンド | Web ツール集' },
+      { property: "og:title", content: "HTML/CSS/JS プレイグラウンド | Web ツール集" },
       {
-        property: 'og:description',
+        property: "og:description",
         content:
-          'HTML・CSS・JavaScript をブラウザ内で編集してリアルタイムプレビュー。サンドボックス環境で安全に動作。',
+          "HTML・CSS・JavaScript をブラウザ内で編集してリアルタイムプレビュー。サンドボックス環境で安全に動作。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/html-playground` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
-      { name: 'twitter:title', content: 'HTML/CSS/JS プレイグラウンド | Web ツール集' },
+      { property: "og:url", content: `${SITE_BASE_URL}/html-playground` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "HTML/CSS/JS プレイグラウンド | Web ツール集" },
       {
-        name: 'twitter:description',
-        content: 'HTML・CSS・JavaScript をブラウザ内で編集してリアルタイムプレビュー。',
+        name: "twitter:description",
+        content: "HTML・CSS・JavaScript をブラウザ内で編集してリアルタイムプレビュー。",
       },
     ],
   }),
@@ -43,7 +38,7 @@ export const Route = createFileRoute('/html-playground')({
  * HTML/CSS/JS プレイグラウンドページ
  */
 function HtmlPlaygroundPage() {
-  const [activeTab, setActiveTab] = useState<PanelTab>('html');
+  const [activeTab, setActiveTab] = useState<PanelTab>("html");
   const [htmlCode, setHtmlCode] = useState(SAMPLES[0].html);
   const [cssCode, setCssCode] = useState(SAMPLES[0].css);
   const [jsCode, setJsCode] = useState(SAMPLES[0].js);
@@ -81,9 +76,9 @@ function HtmlPlaygroundPage() {
   // クリア
   // -------------------------------------------------------------------------
   const handleClear = useCallback(() => {
-    setHtmlCode('');
-    setCssCode('');
-    setJsCode('');
+    setHtmlCode("");
+    setCssCode("");
+    setJsCode("");
     setSelectedSample(-1);
   }, []);
 
@@ -98,13 +93,12 @@ function HtmlPlaygroundPage() {
   // -------------------------------------------------------------------------
   // 現在のタブのコード値と setter
   // -------------------------------------------------------------------------
-  const codeValue =
-    activeTab === 'html' ? htmlCode : activeTab === 'css' ? cssCode : jsCode;
+  const codeValue = activeTab === "html" ? htmlCode : activeTab === "css" ? cssCode : jsCode;
 
   const setCodeValue = useCallback(
     (value: string) => {
-      if (activeTab === 'html') setHtmlCode(value);
-      else if (activeTab === 'css') setCssCode(value);
+      if (activeTab === "html") setHtmlCode(value);
+      else if (activeTab === "css") setCssCode(value);
       else setJsCode(value);
     },
     [activeTab],
@@ -112,7 +106,7 @@ function HtmlPlaygroundPage() {
 
   const tabPlaceholders: Record<PanelTab, string> = {
     html: '<div class="hello">\n  <h1>Hello, World!</h1>\n</div>',
-    css: '.hello {\n  font-family: sans-serif;\n  color: #333;\n}',
+    css: ".hello {\n  font-family: sans-serif;\n  color: #333;\n}",
     js: 'console.log("Hello!");',
   };
 
@@ -160,12 +154,12 @@ function HtmlPlaygroundPage() {
         <div className="hp-editor-panel">
           {/* タブ切替 */}
           <div className="hp-tabs" role="tablist" aria-label="コードエディタータブ">
-            {(['html', 'css', 'js'] as PanelTab[]).map((tab) => (
+            {(["html", "css", "js"] as PanelTab[]).map((tab) => (
               <button
                 key={tab}
                 type="button"
                 role="tab"
-                className={`hp-tab-btn${activeTab === tab ? ' active' : ''}`}
+                className={`hp-tab-btn${activeTab === tab ? " active" : ""}`}
                 onClick={() => setActiveTab(tab)}
                 aria-selected={activeTab === tab}
                 aria-controls={`hp-panel-${tab}`}
@@ -219,21 +213,21 @@ function HtmlPlaygroundPage() {
       <TipsCard
         sections={[
           {
-            title: '使い方',
+            title: "使い方",
             items: [
-              'HTML・CSS・JavaScript タブでそれぞれのコードを編集すると、右側にリアルタイムでプレビューが表示されます',
-              '「サンプル」セレクターからプリセットコードを読み込めます',
-              '「HTML をコピー」でスタンドアロンの HTML ファイルとしてクリップボードにコピーできます',
-              '「更新」ボタンでプレビューを手動で再レンダリングします',
+              "HTML・CSS・JavaScript タブでそれぞれのコードを編集すると、右側にリアルタイムでプレビューが表示されます",
+              "「サンプル」セレクターからプリセットコードを読み込めます",
+              "「HTML をコピー」でスタンドアロンの HTML ファイルとしてクリップボードにコピーできます",
+              "「更新」ボタンでプレビューを手動で再レンダリングします",
             ],
           },
           {
-            title: '注意事項',
+            title: "注意事項",
             items: [
-              'プレビューは sandbox 属性付き iframe で実行されるため、外部リソース（CDN, 画像 URL など）の読み込みはできません',
-              'alert() / confirm() / prompt() などのダイアログは sandbox 制限により動作しません',
-              '外部 API へのフェッチリクエストは CORS 制限により制限されます',
-              'コードはすべてブラウザ内で処理されるため、外部に送信されることはありません',
+              "プレビューは sandbox 属性付き iframe で実行されるため、外部リソース（CDN, 画像 URL など）の読み込みはできません",
+              "alert() / confirm() / prompt() などのダイアログは sandbox 制限により動作しません",
+              "外部 API へのフェッチリクエストは CORS 制限により制限されます",
+              "コードはすべてブラウザ内で処理されるため、外部に送信されることはありません",
             ],
           },
         ]}

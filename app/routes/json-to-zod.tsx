@@ -4,10 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { useToast } from "../components/Toast";
 import { TipsCard } from "~/components/TipsCard";
 import { ErrorMessage } from "~/components/ErrorMessage";
-import {
-  useStatusAnnouncement,
-  StatusAnnouncer,
-} from "~/hooks/useStatusAnnouncement";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 import { generateZodSchema, getSampleJson } from "../utils/json-to-zod";
 
@@ -17,8 +14,7 @@ export const Route = createFileRoute("/json-to-zod")({
       { title: "JSON→Zodスキーマ生成 | Web ツール集" },
       {
         name: "description",
-        content:
-          "JSONデータからZodスキーマを自動生成できるオンラインツール。",
+        content: "JSONデータからZodスキーマを自動生成できるオンラインツール。",
       },
       {
         property: "og:title",
@@ -26,8 +22,7 @@ export const Route = createFileRoute("/json-to-zod")({
       },
       {
         property: "og:description",
-        content:
-          "JSONデータからZodスキーマを自動生成できるオンラインツール。",
+        content: "JSONデータからZodスキーマを自動生成できるオンラインツール。",
       },
       { property: "og:url", content: `${SITE_BASE_URL}/json-to-zod` },
       { property: "og:type", content: "website" },
@@ -38,8 +33,7 @@ export const Route = createFileRoute("/json-to-zod")({
       },
       {
         name: "twitter:description",
-        content:
-          "JSONデータからZodスキーマを自動生成できるオンラインツール。",
+        content: "JSONデータからZodスキーマを自動生成できるオンラインツール。",
       },
     ],
   }),
@@ -78,8 +72,7 @@ function JsonToZodConverter() {
       announceStatus("スキーマを生成しました");
       showToast("スキーマを生成しました", "success");
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "エラーが発生しました";
+      const message = err instanceof Error ? err.message : "エラーが発生しました";
       setError(message);
       announceStatus("エラー: " + message);
       showToast(message, "error");
@@ -126,10 +119,7 @@ function JsonToZodConverter() {
   return (
     <>
       <div className="tool-container">
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          aria-label="JSON→Zodスキーマ生成フォーム"
-        >
+        <form onSubmit={(e) => e.preventDefault()} aria-label="JSON→Zodスキーマ生成フォーム">
           <div className="jts-layout">
             {/* 左パネル: JSON入力 */}
             <div className="jts-panel">
@@ -272,7 +262,7 @@ function JsonToZodConverter() {
               title: "オプション",
               items: [
                 "ルート変数名: 生成されるルート変数の名前を変更できます（デフォルト: schema）",
-                "import文を追加: import { z } from \"zod\"; を先頭に追加します",
+                'import文を追加: import { z } from "zod"; を先頭に追加します',
                 "プロパティをオプショナルにする: 全プロパティに .optional() を付与します",
                 "nullをnullable()にする: null値のフィールドに .nullable() を適用します",
               ],

@@ -133,9 +133,7 @@ describe("calcWarikan", () => {
   });
 
   it("NaNの入力はnullを返す", () => {
-    expect(
-      calcWarikan({ totalAmount: NaN, people: 3, tipRate: 0 })
-    ).toBeNull();
+    expect(calcWarikan({ totalAmount: NaN, people: 3, tipRate: 0 })).toBeNull();
   });
 });
 

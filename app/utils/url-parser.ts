@@ -160,19 +160,11 @@ export function parseUrl(urlString: string): ParsedUrl {
 export function buildUrl(input: UrlBuildInput): string {
   if (!input.hostname) return "";
   try {
-    const protocol = input.protocol.endsWith(":")
-      ? input.protocol
-      : input.protocol + ":";
-    const host = input.port
-      ? `${input.hostname}:${input.port}`
-      : input.hostname;
+    const protocol = input.protocol.endsWith(":") ? input.protocol : input.protocol + ":";
+    const host = input.port ? `${input.hostname}:${input.port}` : input.hostname;
     const pathname = input.pathname || "/";
     const queryString = buildQueryString(input.queryParams || []);
-    const hash = input.hash
-      ? input.hash.startsWith("#")
-        ? input.hash
-        : "#" + input.hash
-      : "";
+    const hash = input.hash ? (input.hash.startsWith("#") ? input.hash : "#" + input.hash) : "";
 
     // URL APIを使用してユーザー情報を安全にエンコード
     const url = new URL(`${protocol}//${host}${pathname}`);

@@ -53,9 +53,7 @@ const BEST_SCORE_KEY = "game-2048-best-score";
 
 /** 空の4x4ボードを生成する */
 export function createBoard(): Board {
-  return Array.from({ length: BOARD_SIZE }, () =>
-    Array<number | null>(BOARD_SIZE).fill(null)
-  );
+  return Array.from({ length: BOARD_SIZE }, () => Array<number | null>(BOARD_SIZE).fill(null));
 }
 
 /** ボードのディープコピーを生成する */
@@ -82,8 +80,7 @@ export function getEmptyCells(board: Board): { row: number; col: number }[] {
 export function addRandomTile(board: Board): { board: Board; added: boolean } {
   const emptyCells = getEmptyCells(board);
   if (emptyCells.length === 0) return { board, added: false };
-  const { row, col } =
-    emptyCells[Math.floor(Math.random() * emptyCells.length)];
+  const { row, col } = emptyCells[Math.floor(Math.random() * emptyCells.length)];
   const newBoard = cloneBoard(board);
   newBoard[row][col] = Math.random() < 0.9 ? 2 : 4;
   return { board: newBoard, added: true };
@@ -161,7 +158,7 @@ export function moveRight(board: Board): {
  */
 export function transposeBoard(board: Board): Board {
   return Array.from({ length: BOARD_SIZE }, (_, col) =>
-    Array.from({ length: BOARD_SIZE }, (__, row) => board[row][col])
+    Array.from({ length: BOARD_SIZE }, (__, row) => board[row][col]),
   );
 }
 
@@ -201,7 +198,7 @@ export function moveDown(board: Board): {
  */
 export function moveBoard(
   board: Board,
-  direction: Direction
+  direction: Direction,
 ): { board: Board; score: number; moved: boolean } {
   switch (direction) {
     case "left":
@@ -283,9 +280,7 @@ function getTileClass(value: number): string {
 
 /** 2048 ゲームコンポーネント */
 function Game2048() {
-  const [state, setState] = useState<GameState>(() =>
-    initGame(loadBestScore())
-  );
+  const [state, setState] = useState<GameState>(() => initGame(loadBestScore()));
   const touchStartRef = useRef<{ x: number; y: number } | null>(null);
 
   const handleMove = useCallback((direction: Direction) => {
@@ -365,7 +360,7 @@ function Game2048() {
         handleMove(dy > 0 ? "down" : "up");
       }
     },
-    [handleMove]
+    [handleMove],
   );
 
   return (
@@ -380,17 +375,11 @@ function Game2048() {
       <div className="g2048-wrapper">
         <div className="g2048-header">
           <div className="g2048-scores">
-            <div
-              className="g2048-score-card"
-              aria-label={`スコア: ${state.score}`}
-            >
+            <div className="g2048-score-card" aria-label={`スコア: ${state.score}`}>
               <span className="g2048-score-label">スコア</span>
               <span className="g2048-score-value">{state.score}</span>
             </div>
-            <div
-              className="g2048-score-card"
-              aria-label={`ベストスコア: ${state.bestScore}`}
-            >
+            <div className="g2048-score-card" aria-label={`ベストスコア: ${state.bestScore}`}>
               <span className="g2048-score-label">ベスト</span>
               <span className="g2048-score-value">{state.bestScore}</span>
             </div>
@@ -427,16 +416,12 @@ function Game2048() {
                   role="gridcell"
                   aria-label="空きセル"
                 />
-              )
-            )
+              ),
+            ),
           )}
 
           {state.status === "won" && (
-            <div
-              className="g2048-overlay g2048-overlay-won"
-              role="status"
-              aria-live="polite"
-            >
+            <div className="g2048-overlay g2048-overlay-won" role="status" aria-live="polite">
               <div className="g2048-overlay-content">
                 <p className="g2048-overlay-message">🎉 2048達成！</p>
                 <div className="g2048-overlay-actions">
@@ -450,11 +435,7 @@ function Game2048() {
           )}
 
           {state.status === "lost" && (
-            <div
-              className="g2048-overlay g2048-overlay-lost"
-              role="status"
-              aria-live="polite"
-            >
+            <div className="g2048-overlay g2048-overlay-lost" role="status" aria-live="polite">
               <div className="g2048-overlay-content">
                 <p className="g2048-overlay-message">😞 ゲームオーバー</p>
                 <p className="g2048-overlay-score">スコア: {state.score}</p>

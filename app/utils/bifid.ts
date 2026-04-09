@@ -10,11 +10,11 @@
  * @returns 5×5の文字グリッド
  */
 export function buildBifidSquare(key: string): string[][] {
-  const upper = key.toUpperCase().replace(/J/g, 'I');
+  const upper = key.toUpperCase().replace(/J/g, "I");
   const seen = new Set<string>();
   const letters: string[] = [];
 
-  for (const ch of upper + 'ABCDEFGHIKLMNOPQRSTUVWXYZ') {
+  for (const ch of upper + "ABCDEFGHIKLMNOPQRSTUVWXYZ") {
     if (/[A-Z]/.test(ch) && !seen.has(ch)) {
       seen.add(ch);
       letters.push(ch);
@@ -48,8 +48,11 @@ export function findInSquare(grid: string[][], ch: string): [number, number] {
  * @returns エンコードされた暗号文（大文字）
  */
 export function encodeBifid(text: string, key: string, period = 0): string {
-  const upper = text.toUpperCase().replace(/J/g, 'I').replace(/[^A-Z]/g, '');
-  if (!upper) return '';
+  const upper = text
+    .toUpperCase()
+    .replace(/J/g, "I")
+    .replace(/[^A-Z]/g, "");
+  if (!upper) return "";
 
   const grid = buildBifidSquare(key);
   const coords = Array.from(upper).map((ch) => findInSquare(grid, ch));
@@ -67,7 +70,7 @@ export function encodeBifid(text: string, key: string, period = 0): string {
     }
   }
 
-  return result.join('');
+  return result.join("");
 }
 
 /**
@@ -79,8 +82,11 @@ export function encodeBifid(text: string, key: string, period = 0): string {
  * @returns デコードされた平文（大文字）
  */
 export function decodeBifid(text: string, key: string, period = 0): string {
-  const upper = text.toUpperCase().replace(/J/g, 'I').replace(/[^A-Z]/g, '');
-  if (!upper) return '';
+  const upper = text
+    .toUpperCase()
+    .replace(/J/g, "I")
+    .replace(/[^A-Z]/g, "");
+  if (!upper) return "";
 
   const grid = buildBifidSquare(key);
   const coords = Array.from(upper).map((ch) => findInSquare(grid, ch));
@@ -99,5 +105,5 @@ export function decodeBifid(text: string, key: string, period = 0): string {
     }
   }
 
-  return result.join('');
+  return result.join("");
 }

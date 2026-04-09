@@ -18,17 +18,17 @@ export interface NodePosition {
   y: number;
   parentX: number | null;
   parentY: number | null;
-  state: 'normal' | 'inserting' | 'deleting' | 'found' | 'searching' | 'not-found';
+  state: "normal" | "inserting" | "deleting" | "found" | "searching" | "not-found";
 }
 
 /** 走査の種類 */
-export type TraversalType = 'inorder' | 'preorder' | 'postorder';
+export type TraversalType = "inorder" | "preorder" | "postorder";
 
 /** 走査ラベル */
 export const TRAVERSAL_LABELS: Record<TraversalType, string> = {
-  inorder: '中順（昇順）',
-  preorder: '前順',
-  postorder: '後順',
+  inorder: "中順（昇順）",
+  preorder: "前順",
+  postorder: "後順",
 };
 
 /**
@@ -160,7 +160,7 @@ const BASE_WIDTH = 800;
  */
 export function calcTreeLayout(
   root: BSTNode | null,
-  highlightValues: Map<number, NodePosition['state']> = new Map()
+  highlightValues: Map<number, NodePosition["state"]> = new Map(),
 ): NodePosition[] {
   const positions: NodePosition[] = [];
 
@@ -170,7 +170,7 @@ export function calcTreeLayout(
     left: number,
     right: number,
     parentX: number | null,
-    parentY: number | null
+    parentY: number | null,
   ): void {
     if (node === null) return;
     const x = (left + right) / 2;
@@ -181,7 +181,7 @@ export function calcTreeLayout(
       y,
       parentX,
       parentY,
-      state: highlightValues.get(node.value) ?? 'normal',
+      state: highlightValues.get(node.value) ?? "normal",
     });
     const mid = (left + right) / 2;
     assign(node.left, depth + 1, left, mid, x, y);

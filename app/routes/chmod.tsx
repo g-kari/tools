@@ -9,12 +9,7 @@ import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { TipsCard } from "~/components/TipsCard";
 import { useToast } from "../components/Toast";
 import { useClipboard } from "~/hooks/useClipboard";
-import {
-  parseChmodOctal,
-  buildChmodOctal,
-  octalToSymbolic,
-  symbolicToOctal,
-} from "../utils/chmod";
+import { parseChmodOctal, buildChmodOctal, octalToSymbolic, symbolicToOctal } from "../utils/chmod";
 import type { ChmodPermissions } from "../utils/chmod";
 
 export const Route = createFileRoute("/chmod")({
@@ -95,57 +90,47 @@ function ChmodCalculator() {
    * 8進数入力が変更されたときの処理
    * 有効な値の場合はチェックボックスとシンボリック表記に反映する
    */
-  const handleOctalChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = e.target.value;
-      setOctalInput(value);
+  const handleOctalChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setOctalInput(value);
 
-      const parsed = parseChmodOctal(value);
-      if (parsed) {
-        setPerms(parsed);
-        setSymbolicInput(octalToSymbolic(buildChmodOctal(parsed)));
-        setOctalError(false);
-      } else {
-        setOctalError(value.length > 0);
-      }
-    },
-    []
-  );
+    const parsed = parseChmodOctal(value);
+    if (parsed) {
+      setPerms(parsed);
+      setSymbolicInput(octalToSymbolic(buildChmodOctal(parsed)));
+      setOctalError(false);
+    } else {
+      setOctalError(value.length > 0);
+    }
+  }, []);
 
   /**
    * シンボリック入力が変更されたときの処理
    * 有効な9文字の場合はチェックボックスと8進数に反映する
    */
-  const handleSymbolicChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = e.target.value;
-      setSymbolicInput(value);
+  const handleSymbolicChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSymbolicInput(value);
 
-      const octal = symbolicToOctal(value);
-      if (octal !== null) {
-        const parsed = parseChmodOctal(octal);
-        if (parsed) {
-          setPerms(parsed);
-          setOctalInput(octal);
-          setSymbolicError(false);
-        }
-      } else {
-        setSymbolicError(value.length > 0);
+    const octal = symbolicToOctal(value);
+    if (octal !== null) {
+      const parsed = parseChmodOctal(octal);
+      if (parsed) {
+        setPerms(parsed);
+        setOctalInput(octal);
+        setSymbolicError(false);
       }
-    },
-    []
-  );
+    } else {
+      setSymbolicError(value.length > 0);
+    }
+  }, []);
 
   /**
    * チェックボックス変更時の汎用ハンドラ
    * パーミッション変更後に8進数・シンボリック入力を同期する
    */
   const handlePermChange = useCallback(
-    (
-      category: "owner" | "group" | "others",
-      bit: "read" | "write" | "execute",
-      value: boolean
-    ) => {
+    (category: "owner" | "group" | "others", bit: "read" | "write" | "execute", value: boolean) => {
       setPerms((prev) => {
         const next = {
           ...prev,
@@ -159,29 +144,26 @@ function ChmodCalculator() {
         return next;
       });
     },
-    []
+    [],
   );
 
   /**
    * 特殊ビット変更時のハンドラ
    */
-  const handleSpecialChange = useCallback(
-    (bit: "setuid" | "setgid" | "sticky", value: boolean) => {
-      setPerms((prev) => {
-        const next = {
-          ...prev,
-          special: { ...prev.special, [bit]: value },
-        };
-        const octal = buildChmodOctal(next);
-        setOctalInput(octal);
-        setSymbolicInput(octalToSymbolic(octal));
-        setOctalError(false);
-        setSymbolicError(false);
-        return next;
-      });
-    },
-    []
-  );
+  const handleSpecialChange = useCallback((bit: "setuid" | "setgid" | "sticky", value: boolean) => {
+    setPerms((prev) => {
+      const next = {
+        ...prev,
+        special: { ...prev.special, [bit]: value },
+      };
+      const octal = buildChmodOctal(next);
+      setOctalInput(octal);
+      setSymbolicInput(octalToSymbolic(octal));
+      setOctalError(false);
+      setSymbolicError(false);
+      return next;
+    });
+  }, []);
 
   /**
    * プリセットボタンが押されたときの処理
@@ -252,10 +234,7 @@ function ChmodCalculator() {
           </div>
 
           <div className="chmod-input-group">
-            <label
-              htmlFor="chmod-symbolic-input"
-              className="chmod-input-label"
-            >
+            <label htmlFor="chmod-symbolic-input" className="chmod-input-label">
               シンボリック表記
             </label>
             <input
@@ -268,18 +247,12 @@ function ChmodCalculator() {
               maxLength={9}
               aria-label="パーミッションのシンボリック表記（9文字）"
               aria-invalid={symbolicError}
-              aria-describedby={
-                symbolicError ? "symbolic-error" : undefined
-              }
+              aria-describedby={symbolicError ? "symbolic-error" : undefined}
               autoComplete="off"
               spellCheck={false}
             />
             {symbolicError && (
-              <span
-                id="symbolic-error"
-                className="chmod-input-error"
-                role="alert"
-              >
+              <span id="symbolic-error" className="chmod-input-error" role="alert">
                 rwxr-xr-x 形式の9文字で入力してください
               </span>
             )}
@@ -312,16 +285,11 @@ function ChmodCalculator() {
               <div className="chmod-row-label">{label}</div>
               {(["owner", "group", "others"] as const).map((category) => (
                 <div key={category} className="chmod-checkbox-cell">
-                  <label
-                    className="chmod-checkbox-item"
-                    aria-label={`${category} ${label}`}
-                  >
+                  <label className="chmod-checkbox-item" aria-label={`${category} ${label}`}>
                     <input
                       type="checkbox"
                       checked={perms[category][key]}
-                      onChange={(e) =>
-                        handlePermChange(category, key, e.target.checked)
-                      }
+                      onChange={(e) => handlePermChange(category, key, e.target.checked)}
                     />
                   </label>
                 </div>
@@ -340,40 +308,28 @@ function ChmodCalculator() {
               <input
                 type="checkbox"
                 checked={perms.special.setuid}
-                onChange={(e) =>
-                  handleSpecialChange("setuid", e.target.checked)
-                }
+                onChange={(e) => handleSpecialChange("setuid", e.target.checked)}
                 aria-label="Setuid ビット"
               />
-              <span className="chmod-special-item-label">
-                Setuid (4000)
-              </span>
+              <span className="chmod-special-item-label">Setuid (4000)</span>
             </label>
             <label className="chmod-special-item">
               <input
                 type="checkbox"
                 checked={perms.special.setgid}
-                onChange={(e) =>
-                  handleSpecialChange("setgid", e.target.checked)
-                }
+                onChange={(e) => handleSpecialChange("setgid", e.target.checked)}
                 aria-label="Setgid ビット"
               />
-              <span className="chmod-special-item-label">
-                Setgid (2000)
-              </span>
+              <span className="chmod-special-item-label">Setgid (2000)</span>
             </label>
             <label className="chmod-special-item">
               <input
                 type="checkbox"
                 checked={perms.special.sticky}
-                onChange={(e) =>
-                  handleSpecialChange("sticky", e.target.checked)
-                }
+                onChange={(e) => handleSpecialChange("sticky", e.target.checked)}
                 aria-label="スティッキービット"
               />
-              <span className="chmod-special-item-label">
-                Sticky bit (1000)
-              </span>
+              <span className="chmod-special-item-label">Sticky bit (1000)</span>
             </label>
           </div>
         </div>
@@ -398,19 +354,13 @@ function ChmodCalculator() {
           </div>
           <div className="chmod-result-row">
             <span className="chmod-result-label">シンボリック</span>
-            <span
-              className="chmod-symbolic"
-              aria-label={`シンボリック表記: ${currentSymbolic}`}
-            >
+            <span className="chmod-symbolic" aria-label={`シンボリック表記: ${currentSymbolic}`}>
               {currentSymbolic}
             </span>
           </div>
           <div className="chmod-result-row">
             <span className="chmod-result-label">コマンド</span>
-            <code
-              className="chmod-command"
-              aria-label={`chmodコマンド: ${chmodCommand}`}
-            >
+            <code className="chmod-command" aria-label={`chmodコマンド: ${chmodCommand}`}>
               {chmodCommand}
             </code>
             <button

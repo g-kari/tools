@@ -12,7 +12,7 @@ export interface CspDirectiveInfo {
   /** 説明 */
   description: string;
   /** カテゴリ */
-  category: 'fetch' | 'document' | 'navigation' | 'reporting' | 'other';
+  category: "fetch" | "document" | "navigation" | "reporting" | "other";
   /** ソースリスト（値一覧）を取るかどうか */
   hasSourceList: boolean;
   /** 非推奨かどうか */
@@ -65,38 +65,161 @@ export interface CspValidationResult {
 
 /** Fetch ディレクティブ一覧 */
 export const CSP_FETCH_DIRECTIVES: CspDirectiveInfo[] = [
-  { name: 'default-src', description: 'すべてのリソースタイプのデフォルトポリシー（フォールバック）', category: 'fetch', hasSourceList: true },
-  { name: 'script-src', description: 'JavaScript のソースを制御（script タグ・eval など）', category: 'fetch', hasSourceList: true },
-  { name: 'script-src-elem', description: '<script> 要素のソースを制御', category: 'fetch', hasSourceList: true },
-  { name: 'script-src-attr', description: 'インラインイベントハンドラーのソースを制御', category: 'fetch', hasSourceList: true },
-  { name: 'style-src', description: 'CSS スタイルシートのソースを制御', category: 'fetch', hasSourceList: true },
-  { name: 'style-src-elem', description: '<style> 要素・<link rel="stylesheet"> のソースを制御', category: 'fetch', hasSourceList: true },
-  { name: 'style-src-attr', description: 'インラインスタイル属性のソースを制御', category: 'fetch', hasSourceList: true },
-  { name: 'img-src', description: '画像・ファビコンのソースを制御', category: 'fetch', hasSourceList: true },
-  { name: 'font-src', description: 'CSS @font-face で読み込むフォントのソースを制御', category: 'fetch', hasSourceList: true },
-  { name: 'connect-src', description: 'fetch・XHR・WebSocket・EventSource の接続先を制御', category: 'fetch', hasSourceList: true },
-  { name: 'media-src', description: '<audio>・<video>・<track> のソースを制御', category: 'fetch', hasSourceList: true },
-  { name: 'object-src', description: '<object>・<embed>・<applet> のソースを制御（Flash など）', category: 'fetch', hasSourceList: true },
-  { name: 'frame-src', description: '<frame>・<iframe> のソースを制御', category: 'fetch', hasSourceList: true },
-  { name: 'child-src', description: 'Web Workers・<frame>/<iframe> のソースを制御（frame-src/worker-src のフォールバック）', category: 'fetch', hasSourceList: true },
-  { name: 'worker-src', description: 'Web Worker・SharedWorker・ServiceWorker のソースを制御', category: 'fetch', hasSourceList: true },
-  { name: 'manifest-src', description: 'Web App Manifest のソースを制御', category: 'fetch', hasSourceList: true },
+  {
+    name: "default-src",
+    description: "すべてのリソースタイプのデフォルトポリシー（フォールバック）",
+    category: "fetch",
+    hasSourceList: true,
+  },
+  {
+    name: "script-src",
+    description: "JavaScript のソースを制御（script タグ・eval など）",
+    category: "fetch",
+    hasSourceList: true,
+  },
+  {
+    name: "script-src-elem",
+    description: "<script> 要素のソースを制御",
+    category: "fetch",
+    hasSourceList: true,
+  },
+  {
+    name: "script-src-attr",
+    description: "インラインイベントハンドラーのソースを制御",
+    category: "fetch",
+    hasSourceList: true,
+  },
+  {
+    name: "style-src",
+    description: "CSS スタイルシートのソースを制御",
+    category: "fetch",
+    hasSourceList: true,
+  },
+  {
+    name: "style-src-elem",
+    description: '<style> 要素・<link rel="stylesheet"> のソースを制御',
+    category: "fetch",
+    hasSourceList: true,
+  },
+  {
+    name: "style-src-attr",
+    description: "インラインスタイル属性のソースを制御",
+    category: "fetch",
+    hasSourceList: true,
+  },
+  {
+    name: "img-src",
+    description: "画像・ファビコンのソースを制御",
+    category: "fetch",
+    hasSourceList: true,
+  },
+  {
+    name: "font-src",
+    description: "CSS @font-face で読み込むフォントのソースを制御",
+    category: "fetch",
+    hasSourceList: true,
+  },
+  {
+    name: "connect-src",
+    description: "fetch・XHR・WebSocket・EventSource の接続先を制御",
+    category: "fetch",
+    hasSourceList: true,
+  },
+  {
+    name: "media-src",
+    description: "<audio>・<video>・<track> のソースを制御",
+    category: "fetch",
+    hasSourceList: true,
+  },
+  {
+    name: "object-src",
+    description: "<object>・<embed>・<applet> のソースを制御（Flash など）",
+    category: "fetch",
+    hasSourceList: true,
+  },
+  {
+    name: "frame-src",
+    description: "<frame>・<iframe> のソースを制御",
+    category: "fetch",
+    hasSourceList: true,
+  },
+  {
+    name: "child-src",
+    description:
+      "Web Workers・<frame>/<iframe> のソースを制御（frame-src/worker-src のフォールバック）",
+    category: "fetch",
+    hasSourceList: true,
+  },
+  {
+    name: "worker-src",
+    description: "Web Worker・SharedWorker・ServiceWorker のソースを制御",
+    category: "fetch",
+    hasSourceList: true,
+  },
+  {
+    name: "manifest-src",
+    description: "Web App Manifest のソースを制御",
+    category: "fetch",
+    hasSourceList: true,
+  },
 ];
 
 /** ドキュメント・ナビゲーションディレクティブ一覧 */
 export const CSP_DOCUMENT_DIRECTIVES: CspDirectiveInfo[] = [
-  { name: 'base-uri', description: '<base> 要素の href に使える URL を制限', category: 'document', hasSourceList: true },
-  { name: 'sandbox', description: 'iframe の sandbox 属性と同様の制限を適用', category: 'document', hasSourceList: false },
-  { name: 'form-action', description: '<form> の送信先 URL を制限', category: 'navigation', hasSourceList: true },
-  { name: 'frame-ancestors', description: 'このページを <frame>/<iframe>/<embed> に埋め込める親オリジンを制限（X-Frame-Options の代替）', category: 'navigation', hasSourceList: true },
+  {
+    name: "base-uri",
+    description: "<base> 要素の href に使える URL を制限",
+    category: "document",
+    hasSourceList: true,
+  },
+  {
+    name: "sandbox",
+    description: "iframe の sandbox 属性と同様の制限を適用",
+    category: "document",
+    hasSourceList: false,
+  },
+  {
+    name: "form-action",
+    description: "<form> の送信先 URL を制限",
+    category: "navigation",
+    hasSourceList: true,
+  },
+  {
+    name: "frame-ancestors",
+    description:
+      "このページを <frame>/<iframe>/<embed> に埋め込める親オリジンを制限（X-Frame-Options の代替）",
+    category: "navigation",
+    hasSourceList: true,
+  },
 ];
 
 /** その他のディレクティブ一覧 */
 export const CSP_OTHER_DIRECTIVES: CspDirectiveInfo[] = [
-  { name: 'upgrade-insecure-requests', description: 'HTTP リソースを自動的に HTTPS にアップグレード（値不要）', category: 'other', hasSourceList: false },
-  { name: 'block-all-mixed-content', description: 'HTTPS ページでの HTTP リソース読み込みをすべてブロック（値不要）', category: 'other', hasSourceList: false },
-  { name: 'report-uri', description: '違反レポートの送信先 URI（非推奨: report-to を使用推奨）', category: 'reporting', hasSourceList: true, deprecated: true },
-  { name: 'report-to', description: '違反レポートの送信先グループ名（Reporting API v1）', category: 'reporting', hasSourceList: true },
+  {
+    name: "upgrade-insecure-requests",
+    description: "HTTP リソースを自動的に HTTPS にアップグレード（値不要）",
+    category: "other",
+    hasSourceList: false,
+  },
+  {
+    name: "block-all-mixed-content",
+    description: "HTTPS ページでの HTTP リソース読み込みをすべてブロック（値不要）",
+    category: "other",
+    hasSourceList: false,
+  },
+  {
+    name: "report-uri",
+    description: "違反レポートの送信先 URI（非推奨: report-to を使用推奨）",
+    category: "reporting",
+    hasSourceList: true,
+    deprecated: true,
+  },
+  {
+    name: "report-to",
+    description: "違反レポートの送信先グループ名（Reporting API v1）",
+    category: "reporting",
+    hasSourceList: true,
+  },
 ];
 
 /** 全ディレクティブ一覧 */
@@ -108,19 +231,26 @@ export const ALL_CSP_DIRECTIVES: CspDirectiveInfo[] = [
 
 /** 定義済みソース一覧 */
 export const CSP_COMMON_SOURCES: CspSourceInfo[] = [
-  { value: "'none'", description: 'すべてのソースをブロック' },
-  { value: "'self'", description: '同一オリジンのみ許可' },
-  { value: "'unsafe-inline'", description: 'インラインコード（style/script）を許可', risky: true },
-  { value: "'unsafe-eval'", description: 'eval() などの動的コード実行を許可', risky: true },
-  { value: "'strict-dynamic'", description: '信頼されたスクリプトが動的に追加するスクリプトを許可（nonce/hash 使用時）' },
-  { value: "'unsafe-hashes'", description: 'インラインイベントハンドラーのハッシュを許可', risky: true },
-  { value: 'https:', description: '任意の HTTPS オリジンを許可' },
-  { value: 'http:', description: '任意の HTTP オリジンを許可（非推奨）', risky: true },
-  { value: 'data:', description: 'data: URI を許可' },
-  { value: 'blob:', description: 'blob: URI を許可' },
-  { value: 'filesystem:', description: 'filesystem: URI を許可' },
-  { value: 'mediastream:', description: 'mediastream: URI を許可' },
-  { value: '*', description: '任意のオリジンを許可（nonce 不要の HTTPS/HTTP 全域）', risky: true },
+  { value: "'none'", description: "すべてのソースをブロック" },
+  { value: "'self'", description: "同一オリジンのみ許可" },
+  { value: "'unsafe-inline'", description: "インラインコード（style/script）を許可", risky: true },
+  { value: "'unsafe-eval'", description: "eval() などの動的コード実行を許可", risky: true },
+  {
+    value: "'strict-dynamic'",
+    description: "信頼されたスクリプトが動的に追加するスクリプトを許可（nonce/hash 使用時）",
+  },
+  {
+    value: "'unsafe-hashes'",
+    description: "インラインイベントハンドラーのハッシュを許可",
+    risky: true,
+  },
+  { value: "https:", description: "任意の HTTPS オリジンを許可" },
+  { value: "http:", description: "任意の HTTP オリジンを許可（非推奨）", risky: true },
+  { value: "data:", description: "data: URI を許可" },
+  { value: "blob:", description: "blob: URI を許可" },
+  { value: "filesystem:", description: "filesystem: URI を許可" },
+  { value: "mediastream:", description: "mediastream: URI を許可" },
+  { value: "*", description: "任意のオリジンを許可（nonce 不要の HTTPS/HTTP 全域）", risky: true },
 ];
 
 /**
@@ -146,7 +276,10 @@ export function parseCsp(headerValue: string): ParsedCsp {
   }
 
   // セミコロンで区切りディレクティブに分割
-  const parts = headerValue.split(';').map((p) => p.trim()).filter(Boolean);
+  const parts = headerValue
+    .split(";")
+    .map((p) => p.trim())
+    .filter(Boolean);
 
   const seen = new Set<string>();
 
@@ -188,11 +321,11 @@ export function buildCsp(directives: CspDirectiveEntry[]): string {
     } else {
       const sources = entry.sources.filter((s) => s.trim());
       if (sources.length === 0) continue;
-      parts.push(`${entry.name} ${sources.join(' ')}`);
+      parts.push(`${entry.name} ${sources.join(" ")}`);
     }
   }
 
-  return parts.join('; ');
+  return parts.join("; ");
 }
 
 /**
@@ -208,8 +341,10 @@ export function validateCsp(directives: CspDirectiveEntry[]): CspValidationResul
   const names = new Set(enabled.map((d) => d.name));
 
   // default-src の欠如チェック
-  if (!names.has('default-src')) {
-    suggestions.push("'default-src' を設定することを推奨します。設定がない場合、他のディレクティブで明示されていないリソースはすべて許可されます。");
+  if (!names.has("default-src")) {
+    suggestions.push(
+      "'default-src' を設定することを推奨します。設定がない場合、他のディレクティブで明示されていないリソースはすべて許可されます。",
+    );
   }
 
   for (const entry of enabled) {
@@ -217,40 +352,56 @@ export function validateCsp(directives: CspDirectiveEntry[]): CspValidationResul
 
     // unsafe-inline / unsafe-eval の警告
     if (sources.includes("'unsafe-inline'")) {
-      warnings.push(`"${entry.name}": 'unsafe-inline' はインジェクション攻撃のリスクを高めます。nonce や hash ベースのアプローチを検討してください。`);
+      warnings.push(
+        `"${entry.name}": 'unsafe-inline' はインジェクション攻撃のリスクを高めます。nonce や hash ベースのアプローチを検討してください。`,
+      );
     }
     if (sources.includes("'unsafe-eval'")) {
-      warnings.push(`"${entry.name}": 'unsafe-eval' は XSS リスクを高めます。動的なコード評価を避けるよう設計の見直しを検討してください。`);
+      warnings.push(
+        `"${entry.name}": 'unsafe-eval' は XSS リスクを高めます。動的なコード評価を避けるよう設計の見直しを検討してください。`,
+      );
     }
 
     // ワイルドカードの警告
-    if (sources.includes('*')) {
-      warnings.push(`"${entry.name}": ワイルドカード '*' は任意のオリジンを許可します。必要なオリジンを明示的に列挙することを推奨します。`);
+    if (sources.includes("*")) {
+      warnings.push(
+        `"${entry.name}": ワイルドカード '*' は任意のオリジンを許可します。必要なオリジンを明示的に列挙することを推奨します。`,
+      );
     }
 
     // http: スキームの警告
-    if (sources.includes('http:')) {
-      warnings.push(`"${entry.name}": 'http:' スキームは中間者攻撃のリスクがあります。'https:' の使用を推奨します。`);
+    if (sources.includes("http:")) {
+      warnings.push(
+        `"${entry.name}": 'http:' スキームは中間者攻撃のリスクがあります。'https:' の使用を推奨します。`,
+      );
     }
 
     // object-src の推奨
-    if (entry.name === 'script-src' && !names.has('object-src')) {
-      suggestions.push("'object-src' を設定することを推奨します（Flash などのプラグインの XSS を防ぐため）。不要な場合は 'none' を設定してください。");
+    if (entry.name === "script-src" && !names.has("object-src")) {
+      suggestions.push(
+        "'object-src' を設定することを推奨します（Flash などのプラグインの XSS を防ぐため）。不要な場合は 'none' を設定してください。",
+      );
     }
 
     // base-uri の推奨
-    if (entry.name === 'default-src' && !names.has('base-uri')) {
-      suggestions.push("'base-uri' を設定することで、<base> 要素を使ったリダイレクト攻撃を防げます。");
+    if (entry.name === "default-src" && !names.has("base-uri")) {
+      suggestions.push(
+        "'base-uri' を設定することで、<base> 要素を使ったリダイレクト攻撃を防げます。",
+      );
     }
 
     // report-uri 非推奨警告
-    if (entry.name === 'report-uri') {
-      warnings.push("'report-uri' は非推奨です。代わりに 'report-to' ディレクティブと Reporting API の使用を推奨します。");
+    if (entry.name === "report-uri") {
+      warnings.push(
+        "'report-uri' は非推奨です。代わりに 'report-to' ディレクティブと Reporting API の使用を推奨します。",
+      );
     }
 
     // frame-ancestors と X-Frame-Options の関係
-    if (entry.name === 'frame-ancestors') {
-      suggestions.push("'frame-ancestors' は CSP Level 2 以降で X-Frame-Options の上位互換です。古いブラウザ向けに X-Frame-Options ヘッダーの併用を検討してください。");
+    if (entry.name === "frame-ancestors") {
+      suggestions.push(
+        "'frame-ancestors' は CSP Level 2 以降で X-Frame-Options の上位互換です。古いブラウザ向けに X-Frame-Options ヘッダーの併用を検討してください。",
+      );
     }
   }
 
@@ -268,10 +419,10 @@ export function formatCspMultiline(headerValue: string): string {
   return directives
     .filter((d) => d.enabled)
     .map((d) => {
-      if (d.sources.length === 0) return d.name + ';';
-      return `${d.name} ${d.sources.join(' ')};`;
+      if (d.sources.length === 0) return d.name + ";";
+      return `${d.name} ${d.sources.join(" ")};`;
     })
-    .join('\n');
+    .join("\n");
 }
 
 /**
@@ -280,17 +431,17 @@ export function formatCspMultiline(headerValue: string): string {
  */
 export function getDefaultPolicy(): CspDirectiveEntry[] {
   return [
-    { name: 'default-src', sources: ["'self'"], enabled: true },
-    { name: 'script-src', sources: ["'self'"], enabled: true },
-    { name: 'style-src', sources: ["'self'"], enabled: true },
-    { name: 'img-src', sources: ["'self'", 'data:'], enabled: true },
-    { name: 'font-src', sources: ["'self'"], enabled: true },
-    { name: 'connect-src', sources: ["'self'"], enabled: true },
-    { name: 'object-src', sources: ["'none'"], enabled: true },
-    { name: 'base-uri', sources: ["'self'"], enabled: true },
-    { name: 'form-action', sources: ["'self'"], enabled: true },
-    { name: 'frame-ancestors', sources: ["'none'"], enabled: true },
-    { name: 'upgrade-insecure-requests', sources: [], enabled: true },
+    { name: "default-src", sources: ["'self'"], enabled: true },
+    { name: "script-src", sources: ["'self'"], enabled: true },
+    { name: "style-src", sources: ["'self'"], enabled: true },
+    { name: "img-src", sources: ["'self'", "data:"], enabled: true },
+    { name: "font-src", sources: ["'self'"], enabled: true },
+    { name: "connect-src", sources: ["'self'"], enabled: true },
+    { name: "object-src", sources: ["'none'"], enabled: true },
+    { name: "base-uri", sources: ["'self'"], enabled: true },
+    { name: "form-action", sources: ["'self'"], enabled: true },
+    { name: "frame-ancestors", sources: ["'none'"], enabled: true },
+    { name: "upgrade-insecure-requests", sources: [], enabled: true },
   ];
 }
 
@@ -300,16 +451,20 @@ export function getDefaultPolicy(): CspDirectiveEntry[] {
  */
 export function getStrictPolicy(): CspDirectiveEntry[] {
   return [
-    { name: 'default-src', sources: ["'none'"], enabled: true },
-    { name: 'script-src', sources: ["'strict-dynamic'", "'nonce-REPLACE_WITH_NONCE'", "'unsafe-inline'", 'https:'], enabled: true },
-    { name: 'style-src', sources: ["'self'", "'unsafe-inline'"], enabled: true },
-    { name: 'img-src', sources: ["'self'", 'data:', 'https:'], enabled: true },
-    { name: 'font-src', sources: ["'self'"], enabled: true },
-    { name: 'connect-src', sources: ["'self'"], enabled: true },
-    { name: 'object-src', sources: ["'none'"], enabled: true },
-    { name: 'base-uri', sources: ["'self'"], enabled: true },
-    { name: 'form-action', sources: ["'self'"], enabled: true },
-    { name: 'frame-ancestors', sources: ["'none'"], enabled: true },
-    { name: 'upgrade-insecure-requests', sources: [], enabled: true },
+    { name: "default-src", sources: ["'none'"], enabled: true },
+    {
+      name: "script-src",
+      sources: ["'strict-dynamic'", "'nonce-REPLACE_WITH_NONCE'", "'unsafe-inline'", "https:"],
+      enabled: true,
+    },
+    { name: "style-src", sources: ["'self'", "'unsafe-inline'"], enabled: true },
+    { name: "img-src", sources: ["'self'", "data:", "https:"], enabled: true },
+    { name: "font-src", sources: ["'self'"], enabled: true },
+    { name: "connect-src", sources: ["'self'"], enabled: true },
+    { name: "object-src", sources: ["'none'"], enabled: true },
+    { name: "base-uri", sources: ["'self'"], enabled: true },
+    { name: "form-action", sources: ["'self'"], enabled: true },
+    { name: "frame-ancestors", sources: ["'none'"], enabled: true },
+    { name: "upgrade-insecure-requests", sources: [], enabled: true },
   ];
 }

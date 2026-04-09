@@ -93,7 +93,7 @@ export function visualizeRailFence(text: string, rails: number): string[] {
   }
 
   const fence: (string | null)[][] = Array.from({ length: rails }, () =>
-    new Array(text.length).fill(null)
+    new Array(text.length).fill(null),
   );
   const pattern = buildRailPattern(text.length, rails);
 

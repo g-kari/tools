@@ -150,8 +150,7 @@ describe("revealCell", () => {
 });
 
 describe("isGameWon", () => {
-  const makeBoard = (rows: number, cols: number): Board =>
-    createEmptyBoard(rows, cols);
+  const makeBoard = (rows: number, cols: number): Board => createEmptyBoard(rows, cols);
 
   it("全非地雷セルが開放済みならtrueを返すこと", () => {
     const board = makeBoard(2, 2);

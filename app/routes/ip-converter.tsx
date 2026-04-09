@@ -9,16 +9,22 @@ import { TipsCard } from "~/components/TipsCard";
 export const Route = createFileRoute("/ip-converter")({
   head: () => ({
     meta: [
-    { title: "IPアドレス変換 | Web ツール集" },
-    { name: "description", content: "IPアドレスをドット記法・整数・16進数に変換するツール。" },
-    { property: "og:title", content: "IPアドレス変換 | Web ツール集" },
-    { property: "og:description", content: "IPアドレスをドット記法・整数・16進数に変換するツール。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/ip-converter` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "IPアドレス変換 | Web ツール集" },
-    { name: "twitter:description", content: "IPアドレスをドット記法・整数・16進数に変換するツール。" },
-  ],
+      { title: "IPアドレス変換 | Web ツール集" },
+      { name: "description", content: "IPアドレスをドット記法・整数・16進数に変換するツール。" },
+      { property: "og:title", content: "IPアドレス変換 | Web ツール集" },
+      {
+        property: "og:description",
+        content: "IPアドレスをドット記法・整数・16進数に変換するツール。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/ip-converter` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "IPアドレス変換 | Web ツール集" },
+      {
+        name: "twitter:description",
+        content: "IPアドレスをドット記法・整数・16進数に変換するツール。",
+      },
+    ],
   }),
   component: IPConverter,
 });
@@ -56,8 +62,7 @@ function IPConverter() {
       setError(null);
       announceStatus("変換が完了しました");
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "変換エラーが発生しました";
+      const message = err instanceof Error ? err.message : "変換エラーが発生しました";
       setError(message);
       setResult(null);
       announceStatus("エラー: " + message);
@@ -73,7 +78,7 @@ function IPConverter() {
         announceStatus("コピーに失敗しました");
       }
     },
-    [announceStatus]
+    [announceStatus],
   );
 
   useEffect(() => {
@@ -99,10 +104,7 @@ function IPConverter() {
   return (
     <>
       <div className="tool-container">
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          aria-label="IP変換フォーム"
-        >
+        <form onSubmit={(e) => e.preventDefault()} aria-label="IP変換フォーム">
           <div className="converter-section">
             <div className="search-form-row">
               <div className="search-input-wrapper">
@@ -169,9 +171,7 @@ function IPConverter() {
                     <button
                       type="button"
                       className="btn-copy"
-                      onClick={() =>
-                        handleCopy(result.integer.toString(), "整数表記")
-                      }
+                      onClick={() => handleCopy(result.integer.toString(), "整数表記")}
                       aria-label="整数表記をコピー"
                     >
                       コピー
@@ -193,9 +193,7 @@ function IPConverter() {
                     <button
                       type="button"
                       className="btn-copy"
-                      onClick={() =>
-                        handleCopy(result.hexDotted, "16進数ドット記法")
-                      }
+                      onClick={() => handleCopy(result.hexDotted, "16進数ドット記法")}
                       aria-label="16進数ドット記法をコピー"
                     >
                       コピー
@@ -209,9 +207,7 @@ function IPConverter() {
                     <button
                       type="button"
                       className="btn-copy"
-                      onClick={() =>
-                        handleCopy(result.hexSolid, "16進数0x形式")
-                      }
+                      onClick={() => handleCopy(result.hexSolid, "16進数0x形式")}
                       aria-label="16進数0x形式をコピー"
                     >
                       コピー
@@ -233,9 +229,7 @@ function IPConverter() {
                     <button
                       type="button"
                       className="btn-copy"
-                      onClick={() =>
-                        handleCopy(result.binaryDotted, "2進数ドット記法")
-                      }
+                      onClick={() => handleCopy(result.binaryDotted, "2進数ドット記法")}
                       aria-label="2進数ドット記法をコピー"
                     >
                       コピー
@@ -249,9 +243,7 @@ function IPConverter() {
                     <button
                       type="button"
                       className="btn-copy"
-                      onClick={() =>
-                        handleCopy(result.binarySolid, "2進数32ビット形式")
-                      }
+                      onClick={() => handleCopy(result.binarySolid, "2進数32ビット形式")}
                       aria-label="2進数32ビット形式をコピー"
                     >
                       コピー

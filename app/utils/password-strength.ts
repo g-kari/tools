@@ -7,12 +7,7 @@
 export type StrengthScore = 0 | 1 | 2 | 3 | 4;
 
 /** 強度ラベル */
-export type StrengthLabel =
-  | 'とても弱い'
-  | '弱い'
-  | '普通'
-  | '強い'
-  | 'とても強い';
+export type StrengthLabel = "とても弱い" | "弱い" | "普通" | "強い" | "とても強い";
 
 /** 文字クラスの内訳 */
 export interface CharacterClasses {
@@ -70,26 +65,71 @@ export interface PasswordStrengthResult {
 
 /** よく使われるパスワード上位リスト（小文字） */
 const COMMON_PASSWORDS = new Set([
-  'password', '123456', 'password123', 'admin', 'qwerty',
-  'letmein', '12345', '12345678', '1234567890', 'abc123',
-  'password1', 'iloveyou', 'monkey', 'dragon', 'master',
-  'sunshine', 'princess', 'welcome', 'shadow', 'superman',
-  'michael', 'jessica', 'ninja', 'football', 'baseball',
-  'trustno1', 'batman', 'test', 'hello', 'login', 'pass',
-  'admin123', 'root', 'toor', 'passw0rd', 'p@ssword',
-  'p@ssw0rd', '111111', '123123', '123456789', '654321',
-  'aaaaaa', 'qwerty123', 'zxcvbnm', 'asdfgh', '1q2w3e',
-  'qazwsx', 'administrator', 'changeme', 'access', 'guest',
-  '000000', 'password!', 'pass123', 'test123', 'qwertyuiop',
+  "password",
+  "123456",
+  "password123",
+  "admin",
+  "qwerty",
+  "letmein",
+  "12345",
+  "12345678",
+  "1234567890",
+  "abc123",
+  "password1",
+  "iloveyou",
+  "monkey",
+  "dragon",
+  "master",
+  "sunshine",
+  "princess",
+  "welcome",
+  "shadow",
+  "superman",
+  "michael",
+  "jessica",
+  "ninja",
+  "football",
+  "baseball",
+  "trustno1",
+  "batman",
+  "test",
+  "hello",
+  "login",
+  "pass",
+  "admin123",
+  "root",
+  "toor",
+  "passw0rd",
+  "p@ssword",
+  "p@ssw0rd",
+  "111111",
+  "123123",
+  "123456789",
+  "654321",
+  "aaaaaa",
+  "qwerty123",
+  "zxcvbnm",
+  "asdfgh",
+  "1q2w3e",
+  "qazwsx",
+  "administrator",
+  "changeme",
+  "access",
+  "guest",
+  "000000",
+  "password!",
+  "pass123",
+  "test123",
+  "qwertyuiop",
 ]);
 
 /** 連続パターンの基準文字列 */
 const SEQUENCE_BASES = [
-  'abcdefghijklmnopqrstuvwxyz',
-  'qwertyuiopasdfghjklzxcvbnm',
-  '0123456789',
-  'zyxwvutsrqponmlkjihgfedcba',
-  'mnbvcxzlkjhgfdsapoiuytrewq',
+  "abcdefghijklmnopqrstuvwxyz",
+  "qwertyuiopasdfghjklzxcvbnm",
+  "0123456789",
+  "zyxwvutsrqponmlkjihgfedcba",
+  "mnbvcxzlkjhgfdsapoiuytrewq",
 ];
 
 /**
@@ -126,8 +166,8 @@ function calcCharsetSize(password: string): number {
 
 /** 秒数を人間が読みやすい文字列に変換する */
 function formatSeconds(seconds: number): string {
-  if (!isFinite(seconds) || seconds > 3.15e13) return '事実上不可能';
-  if (seconds < 1) return '1秒未満';
+  if (!isFinite(seconds) || seconds > 3.15e13) return "事実上不可能";
+  if (seconds < 1) return "1秒未満";
   if (seconds < 60) return `${Math.round(seconds)} 秒`;
   if (seconds < 3600) return `${Math.round(seconds / 60)} 分`;
   if (seconds < 86400) return `${Math.round(seconds / 3600)} 時間`;
@@ -149,7 +189,7 @@ export function analyzePassword(password: string): PasswordStrengthResult {
   if (!password) {
     return {
       score: 0,
-      label: 'とても弱い',
+      label: "とても弱い",
       entropy: 0,
       length: 0,
       charsetSize: 0,
@@ -157,12 +197,12 @@ export function analyzePassword(password: string): PasswordStrengthResult {
       hasRepeats: false,
       hasSequence: false,
       isCommonPassword: false,
-      suggestions: ['パスワードを入力してください'],
+      suggestions: ["パスワードを入力してください"],
       crackTimes: {
-        onlineThrottled: '-',
-        onlineUnthrottled: '-',
-        offlineSlow: '-',
-        offlineFast: '-',
+        onlineThrottled: "-",
+        onlineUnthrottled: "-",
+        offlineSlow: "-",
+        offlineFast: "-",
       },
     };
   }
@@ -202,45 +242,45 @@ export function analyzePassword(password: string): PasswordStrengthResult {
     score = 4;
   }
 
-  const LABELS: StrengthLabel[] = ['とても弱い', '弱い', '普通', '強い', 'とても強い'];
+  const LABELS: StrengthLabel[] = ["とても弱い", "弱い", "普通", "強い", "とても強い"];
   const label = LABELS[score];
 
   // クラック時間推定（平均試行回数 = 2^entropy / 2）
   const avgCombinations = Math.pow(2, effectiveEntropy - 1);
   const crackTimes: CrackTimes = {
-    onlineThrottled: formatSeconds(avgCombinations / (100 / 3600)),   // 100/時間
-    onlineUnthrottled: formatSeconds(avgCombinations / 10),           // 10/秒
-    offlineSlow: formatSeconds(avgCombinations / 10_000),             // 10k/秒
-    offlineFast: formatSeconds(avgCombinations / 10_000_000_000),     // 10G/秒
+    onlineThrottled: formatSeconds(avgCombinations / (100 / 3600)), // 100/時間
+    onlineUnthrottled: formatSeconds(avgCombinations / 10), // 10/秒
+    offlineSlow: formatSeconds(avgCombinations / 10_000), // 10k/秒
+    offlineFast: formatSeconds(avgCombinations / 10_000_000_000), // 10G/秒
   };
 
   // 改善アドバイス
   const suggestions: string[] = [];
   if (isCommonPassword) {
-    suggestions.push('よく使われるパスワードです。別のパスワードを使用してください');
+    suggestions.push("よく使われるパスワードです。別のパスワードを使用してください");
   }
   if (length < 8) {
-    suggestions.push('8文字以上にすることをお勧めします');
+    suggestions.push("8文字以上にすることをお勧めします");
   } else if (length < 12 && score < 3) {
-    suggestions.push('12文字以上でより安全になります');
+    suggestions.push("12文字以上でより安全になります");
   }
   if (!characterClasses.uppercase) {
-    suggestions.push('大文字 (A-Z) を追加してください');
+    suggestions.push("大文字 (A-Z) を追加してください");
   }
   if (!characterClasses.digits) {
-    suggestions.push('数字 (0-9) を追加してください');
+    suggestions.push("数字 (0-9) を追加してください");
   }
   if (!characterClasses.symbols) {
-    suggestions.push('記号 (!@#$% など) を追加してください');
+    suggestions.push("記号 (!@#$% など) を追加してください");
   }
   if (hasSequence) {
-    suggestions.push('連続した文字 (abc, 123, qwerty など) は避けてください');
+    suggestions.push("連続した文字 (abc, 123, qwerty など) は避けてください");
   }
   if (hasRepeats) {
-    suggestions.push('同じ文字の連続 (aaa, 111 など) は避けてください');
+    suggestions.push("同じ文字の連続 (aaa, 111 など) は避けてください");
   }
   if (suggestions.length === 0) {
-    suggestions.push('このパスワードは十分に安全です！');
+    suggestions.push("このパスワードは十分に安全です！");
   }
 
   return {

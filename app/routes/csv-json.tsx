@@ -78,11 +78,7 @@ function parseRow(line: string, delimiter: string): string[] {
  * @param hasHeader ヘッダー行の有無
  * @returns JSON文字列
  */
-export function csvToJson(
-  csv: string,
-  delimiter: string,
-  hasHeader: boolean
-): string {
+export function csvToJson(csv: string, delimiter: string, hasHeader: boolean): string {
   const lines = csv
     .trim()
     .split("\n")
@@ -103,9 +99,7 @@ export function csvToJson(
     });
     return JSON.stringify(data, null, 2);
   } else {
-    const data = lines.map((line) =>
-      parseRow(line, delimiter).map((v) => v.trim())
-    );
+    const data = lines.map((line) => parseRow(line, delimiter).map((v) => v.trim()));
     return JSON.stringify(data, null, 2);
   }
 }
@@ -125,9 +119,7 @@ export function jsonToCsv(json: string, delimiter: string): string {
   }
 
   if (!Array.isArray(parsed)) {
-    throw new Error(
-      "JSONはオブジェクトの配列または配列の配列である必要があります"
-    );
+    throw new Error("JSONはオブジェクトの配列または配列の配列である必要があります");
   }
   if (parsed.length === 0) {
     throw new Error("JSONデータが空の配列です");
@@ -135,49 +127,33 @@ export function jsonToCsv(json: string, delimiter: string): string {
 
   const escapeField = (value: unknown): string => {
     const str = value === null || value === undefined ? "" : String(value);
-    if (
-      str.includes(delimiter) ||
-      str.includes('"') ||
-      str.includes("\n") ||
-      str.includes("\r")
-    ) {
+    if (str.includes(delimiter) || str.includes('"') || str.includes("\n") || str.includes("\r")) {
       return `"${str.replace(/"/g, '""')}"`;
     }
     return str;
   };
 
-  if (
-    typeof parsed[0] === "object" &&
-    parsed[0] !== null &&
-    !Array.isArray(parsed[0])
-  ) {
+  if (typeof parsed[0] === "object" && parsed[0] !== null && !Array.isArray(parsed[0])) {
     const records = parsed as Record<string, unknown>[];
     const headers = Object.keys(records[0]);
     const headerRow = headers.map(escapeField).join(delimiter);
-    const rows = records.map((row) =>
-      headers.map((h) => escapeField(row[h])).join(delimiter)
-    );
+    const rows = records.map((row) => headers.map((h) => escapeField(row[h])).join(delimiter));
     return [headerRow, ...rows].join("\n");
   }
 
   if (Array.isArray(parsed[0])) {
-    const rows = (parsed as unknown[][]).map((row) =>
-      row.map(escapeField).join(delimiter)
-    );
+    const rows = (parsed as unknown[][]).map((row) => row.map(escapeField).join(delimiter));
     return rows.join("\n");
   }
 
-  throw new Error(
-    "JSONはオブジェクトの配列または配列の配列である必要があります"
-  );
+  throw new Error("JSONはオブジェクトの配列または配列の配列である必要があります");
 }
 
 /**
  * CSV/JSON相互変換コンポーネント
  */
 function CsvJsonConverter() {
-  const { statusRef, announceStatus, showToast, isCopied, handleCopy } =
-    useOutputCopy();
+  const { statusRef, announceStatus, showToast, isCopied, handleCopy } = useOutputCopy();
   const [mode, setMode] = useState<ConversionMode>("csv-to-json");
   const [delimiter, setDelimiter] = useState(",");
   const [hasHeader, setHasHeader] = useState(true);
@@ -207,8 +183,7 @@ function CsvJsonConverter() {
       }
       setOutputText(result);
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "変換に失敗しました";
+      const message = err instanceof Error ? err.message : "変換に失敗しました";
       announceStatus(`エラー: ${message}`);
       showToast(message, "error");
     }
@@ -227,24 +202,16 @@ function CsvJsonConverter() {
     setOutputText("");
   }, []);
 
-  const convertLabel =
-    mode === "csv-to-json" ? "CSV → JSON 変換" : "JSON → CSV 変換";
+  const convertLabel = mode === "csv-to-json" ? "CSV → JSON 変換" : "JSON → CSV 変換";
 
   return (
     <>
       <div className="tool-container">
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          aria-label="CSV/JSON変換フォーム"
-        >
+        <form onSubmit={(e) => e.preventDefault()} aria-label="CSV/JSON変換フォーム">
           <div className="converter-section">
             <fieldset className="csv-json-mode-fieldset">
               <legend className="section-title">変換モード</legend>
-              <div
-                className="csv-json-mode-group"
-                role="group"
-                aria-label="変換モード選択"
-              >
+              <div className="csv-json-mode-group" role="group" aria-label="変換モード選択">
                 <label className="format-option">
                   <input
                     type="radio"
@@ -296,10 +263,7 @@ function CsvJsonConverter() {
                   <span className="section-title" id="header-option-label">
                     ヘッダー行
                   </span>
-                  <label
-                    className="md3-checkbox-wrapper"
-                    aria-labelledby="header-option-label"
-                  >
+                  <label className="md3-checkbox-wrapper" aria-labelledby="header-option-label">
                     <input
                       type="checkbox"
                       checked={hasHeader}
@@ -307,9 +271,7 @@ function CsvJsonConverter() {
                       aria-label="1行目をヘッダー行として扱う"
                     />
                     <span className="md3-checkbox" aria-hidden="true" />
-                    <span className="md3-checkbox-label">
-                      1行目をヘッダーとして使用
-                    </span>
+                    <span className="md3-checkbox-label">1行目をヘッダーとして使用</span>
                   </label>
                 </div>
               )}
@@ -332,9 +294,7 @@ function CsvJsonConverter() {
               }
               aria-describedby="input-help"
               aria-label={
-                mode === "csv-to-json"
-                  ? "変換元のCSVテキスト入力欄"
-                  : "変換元のJSONテキスト入力欄"
+                mode === "csv-to-json" ? "変換元のCSVテキスト入力欄" : "変換元のJSONテキスト入力欄"
               }
               className="csv-json-textarea"
             />
@@ -385,11 +345,7 @@ function CsvJsonConverter() {
               value={outputText}
               readOnly
               placeholder="変換結果がここに表示されます..."
-              aria-label={
-                mode === "csv-to-json"
-                  ? "JSON変換結果の出力欄"
-                  : "CSV変換結果の出力欄"
-              }
+              aria-label={mode === "csv-to-json" ? "JSON変換結果の出力欄" : "CSV変換結果の出力欄"}
               aria-live="polite"
               className="csv-json-textarea"
             />

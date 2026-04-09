@@ -1,37 +1,37 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useState, useCallback, useRef, useEffect } from 'react';
-import { useToast } from '../components/Toast';
-import { Button } from '~/components/ui/button';
-import { Textarea } from '~/components/ui/textarea';
-import { TipsCard } from '~/components/TipsCard';
-import { useStatusAnnouncement, StatusAnnouncer } from '~/hooks/useStatusAnnouncement';
-import { useClipboard } from '~/hooks/useClipboard';
-import { formatCss, minifyCss, validateCss } from '~/utils/css-formatter';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
+import { createFileRoute } from "@tanstack/react-router";
+import { useState, useCallback, useRef, useEffect } from "react";
+import { useToast } from "../components/Toast";
+import { Button } from "~/components/ui/button";
+import { Textarea } from "~/components/ui/textarea";
+import { TipsCard } from "~/components/TipsCard";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
+import { useClipboard } from "~/hooks/useClipboard";
+import { formatCss, minifyCss, validateCss } from "~/utils/css-formatter";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 
-export const Route = createFileRoute('/css-formatter')({
+export const Route = createFileRoute("/css-formatter")({
   head: () => ({
     meta: [
-      { title: 'CSSフォーマッター | Web ツール集' },
+      { title: "CSSフォーマッター | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          'CSSコードの整形・圧縮・構文検証ツール。インデント幅・プロパティソートを選択してCSSを整形。@media・@keyframes等のネストしたルールにも対応。',
+          "CSSコードの整形・圧縮・構文検証ツール。インデント幅・プロパティソートを選択してCSSを整形。@media・@keyframes等のネストしたルールにも対応。",
       },
-      { property: 'og:title', content: 'CSSフォーマッター | Web ツール集' },
+      { property: "og:title", content: "CSSフォーマッター | Web ツール集" },
       {
-        property: 'og:description',
+        property: "og:description",
         content:
-          'CSSコードの整形・圧縮・構文検証ツール。インデント幅・プロパティソートを選択してCSSを整形。@media・@keyframes等のネストしたルールにも対応。',
+          "CSSコードの整形・圧縮・構文検証ツール。インデント幅・プロパティソートを選択してCSSを整形。@media・@keyframes等のネストしたルールにも対応。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/css-formatter` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
-      { name: 'twitter:title', content: 'CSSフォーマッター | Web ツール集' },
+      { property: "og:url", content: `${SITE_BASE_URL}/css-formatter` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "CSSフォーマッター | Web ツール集" },
       {
-        name: 'twitter:description',
+        name: "twitter:description",
         content:
-          'CSSコードの整形・圧縮・構文検証ツール。インデント幅・プロパティソートを選択してCSSを整形。@media・@keyframes等のネストしたルールにも対応。',
+          "CSSコードの整形・圧縮・構文検証ツール。インデント幅・プロパティソートを選択してCSSを整形。@media・@keyframes等のネストしたルールにも対応。",
       },
     ],
   }),
@@ -39,7 +39,7 @@ export const Route = createFileRoute('/css-formatter')({
 });
 
 /** 操作モードの型定義 */
-type Mode = 'format' | 'minify' | 'validate';
+type Mode = "format" | "minify" | "validate";
 
 const cssPlaceholder = `.container{display:flex;flex-direction:column;gap:16px;padding:24px;}
 .button{background-color:#007bff;color:#fff;border:none;border-radius:4px;padding:8px 16px;cursor:pointer;}
@@ -51,11 +51,11 @@ const cssPlaceholder = `.container{display:flex;flex-direction:column;gap:16px;p
  */
 function CssFormatter() {
   const { showToast } = useToast();
-  const [mode, setMode] = useState<Mode>('format');
+  const [mode, setMode] = useState<Mode>("format");
   const [indent, setIndent] = useState<2 | 4>(2);
   const [sortProperties, setSortProperties] = useState(false);
-  const [inputText, setInputText] = useState('');
-  const [outputText, setOutputText] = useState('');
+  const [inputText, setInputText] = useState("");
+  const [outputText, setOutputText] = useState("");
   const [isCopied, setIsCopied] = useState(false);
   const copiedTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -74,42 +74,42 @@ function CssFormatter() {
 
   const handleProcess = useCallback(() => {
     if (!inputText.trim()) {
-      announceStatus('エラー: テキストを入力してください');
-      showToast('テキストを入力してください', 'error');
+      announceStatus("エラー: テキストを入力してください");
+      showToast("テキストを入力してください", "error");
       inputRef.current?.focus();
       return;
     }
 
     try {
-      if (mode === 'format') {
+      if (mode === "format") {
         const result = formatCss(inputText, { indent, sortProperties });
         setOutputText(result);
-        announceStatus('CSSの整形が完了しました');
-      } else if (mode === 'minify') {
+        announceStatus("CSSの整形が完了しました");
+      } else if (mode === "minify") {
         const result = minifyCss(inputText);
         setOutputText(result);
-        announceStatus('CSSの圧縮が完了しました');
+        announceStatus("CSSの圧縮が完了しました");
       } else {
         const result = validateCss(inputText);
         if (result.valid) {
-          setOutputText('✓ 有効なCSSです');
-          announceStatus('CSSは有効です');
+          setOutputText("✓ 有効なCSSです");
+          announceStatus("CSSは有効です");
         } else {
           setOutputText(`✗ エラー: ${result.error}`);
           announceStatus(`CSSが無効です: ${result.error}`);
         }
       }
     } catch (err) {
-      const message = err instanceof Error ? err.message : '処理に失敗しました';
+      const message = err instanceof Error ? err.message : "処理に失敗しました";
       announceStatus(`エラー: ${message}`);
-      showToast(message, 'error');
+      showToast(message, "error");
     }
   }, [inputText, mode, indent, sortProperties, announceStatus, showToast]);
 
   const handleClear = useCallback(() => {
-    setInputText('');
-    setOutputText('');
-    announceStatus('入力と出力をクリアしました');
+    setInputText("");
+    setOutputText("");
+    announceStatus("入力と出力をクリアしました");
     inputRef.current?.focus();
   }, [announceStatus]);
 
@@ -118,24 +118,24 @@ function CssFormatter() {
     const success = await copy(outputText);
     if (success) {
       setIsCopied(true);
-      announceStatus('出力結果をコピーしました');
+      announceStatus("出力結果をコピーしました");
       if (copiedTimeoutRef.current) {
         clearTimeout(copiedTimeoutRef.current);
       }
       copiedTimeoutRef.current = setTimeout(() => setIsCopied(false), 2000);
     } else {
-      announceStatus('コピーに失敗しました');
-      showToast('コピーに失敗しました', 'error');
+      announceStatus("コピーに失敗しました");
+      showToast("コピーに失敗しました", "error");
     }
   }, [outputText, copy, announceStatus, showToast]);
 
   const handleModeChange = useCallback((newMode: Mode) => {
     setMode(newMode);
-    setInputText('');
-    setOutputText('');
+    setInputText("");
+    setOutputText("");
   }, []);
 
-  const processLabel = mode === 'format' ? '整形' : mode === 'minify' ? '圧縮' : '検証';
+  const processLabel = mode === "format" ? "整形" : mode === "minify" ? "圧縮" : "検証";
 
   return (
     <>
@@ -153,8 +153,8 @@ function CssFormatter() {
                     type="radio"
                     name="mode"
                     value="format"
-                    checked={mode === 'format'}
-                    onChange={() => handleModeChange('format')}
+                    checked={mode === "format"}
+                    onChange={() => handleModeChange("format")}
                     aria-label="CSSを整形する"
                   />
                   <span className="format-label">整形</span>
@@ -164,8 +164,8 @@ function CssFormatter() {
                     type="radio"
                     name="mode"
                     value="minify"
-                    checked={mode === 'minify'}
-                    onChange={() => handleModeChange('minify')}
+                    checked={mode === "minify"}
+                    onChange={() => handleModeChange("minify")}
                     aria-label="CSSを圧縮する"
                   />
                   <span className="format-label">圧縮</span>
@@ -175,8 +175,8 @@ function CssFormatter() {
                     type="radio"
                     name="mode"
                     value="validate"
-                    checked={mode === 'validate'}
-                    onChange={() => handleModeChange('validate')}
+                    checked={mode === "validate"}
+                    onChange={() => handleModeChange("validate")}
                     aria-label="CSSを検証する"
                   />
                   <span className="format-label">検証</span>
@@ -185,7 +185,7 @@ function CssFormatter() {
             </fieldset>
           </div>
 
-          {mode === 'format' && (
+          {mode === "format" && (
             <div className="converter-section">
               <div className="csv-json-options">
                 <div className="option-group">
@@ -281,16 +281,16 @@ function CssFormatter() {
           <div className="output-section">
             <div className="csv-json-output-header">
               <label htmlFor="outputText" className="section-title">
-                {mode === 'validate' ? '検証結果' : '出力'}
+                {mode === "validate" ? "検証結果" : "出力"}
               </label>
               <button
                 type="button"
-                className={`number-base-copy-btn${isCopied ? ' copied' : ''}`}
+                className={`number-base-copy-btn${isCopied ? " copied" : ""}`}
                 onClick={handleCopy}
                 disabled={!outputText}
                 aria-label="出力結果をクリップボードにコピー"
               >
-                {isCopied ? 'コピー済' : 'コピー'}
+                {isCopied ? "コピー済" : "コピー"}
               </button>
             </div>
             <Textarea
@@ -298,11 +298,11 @@ function CssFormatter() {
               value={outputText}
               readOnly
               placeholder={
-                mode === 'validate'
-                  ? '検証結果がここに表示されます...'
-                  : '処理結果がここに表示されます...'
+                mode === "validate"
+                  ? "検証結果がここに表示されます..."
+                  : "処理結果がここに表示されます..."
               }
-              aria-label={mode === 'validate' ? 'CSS検証結果の出力欄' : 'CSS処理結果の出力欄'}
+              aria-label={mode === "validate" ? "CSS検証結果の出力欄" : "CSS処理結果の出力欄"}
               aria-live="polite"
               className="csv-json-textarea"
             />
@@ -312,21 +312,21 @@ function CssFormatter() {
         <TipsCard
           sections={[
             {
-              title: '使い方',
+              title: "使い方",
               items: [
-                '操作モードを「整形」「圧縮」「検証」から選択します',
-                '整形モードではインデント幅（2または4スペース）とプロパティソートを設定できます',
-                '入力欄にCSSコードを貼り付けてボタンを押します',
-                '出力結果は「コピー」ボタンでクリップボードにコピーできます',
+                "操作モードを「整形」「圧縮」「検証」から選択します",
+                "整形モードではインデント幅（2または4スペース）とプロパティソートを設定できます",
+                "入力欄にCSSコードを貼り付けてボタンを押します",
+                "出力結果は「コピー」ボタンでクリップボードにコピーできます",
               ],
             },
             {
-              title: '機能について',
+              title: "機能について",
               items: [
-                '整形: セレクター・プロパティ・値を適切なインデントで整形します',
-                '圧縮: コメントや余分な空白を除去してファイルサイズを削減します',
-                '検証: 波括弧のバランス・コメントの終端・文字列リテラルの終端を検証します',
-                '@media・@keyframes・@supports等のネストしたルールにも対応しています',
+                "整形: セレクター・プロパティ・値を適切なインデントで整形します",
+                "圧縮: コメントや余分な空白を除去してファイルサイズを削減します",
+                "検証: 波括弧のバランス・コメントの終端・文字列リテラルの終端を検証します",
+                "@media・@keyframes・@supports等のネストしたルールにも対応しています",
               ],
             },
           ]}

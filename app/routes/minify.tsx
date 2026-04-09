@@ -2,12 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useCallback, useRef, useEffect } from "react";
 import { useToast } from "../components/Toast";
-import {
-  minifyJavaScript,
-  minifyCSS,
-  minifyHTML,
-  minifyJSON,
-} from "../utils/minify";
+import { minifyJavaScript, minifyCSS, minifyHTML, minifyJSON } from "../utils/minify";
 import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import { TipsCard } from "~/components/TipsCard";
@@ -17,16 +12,25 @@ import { useClipboard } from "~/hooks/useClipboard";
 export const Route = createFileRoute("/minify")({
   head: () => ({
     meta: [
-    { title: "コード圧縮（Minify） | Web ツール集" },
-    { name: "description", content: "HTML・CSS・JavaScriptコードを圧縮（Minify）するオンラインツール。" },
-    { property: "og:title", content: "コード圧縮（Minify） | Web ツール集" },
-    { property: "og:description", content: "HTML・CSS・JavaScriptコードを圧縮（Minify）するオンラインツール。" },
-    { property: "og:url", content: `${SITE_BASE_URL}/minify` },
-    { property: "og:type", content: "website" },
-    { property: "og:image", content: SITE_OGP_IMAGE },
-    { name: "twitter:title", content: "コード圧縮（Minify） | Web ツール集" },
-    { name: "twitter:description", content: "HTML・CSS・JavaScriptコードを圧縮（Minify）するオンラインツール。" },
-  ],
+      { title: "コード圧縮（Minify） | Web ツール集" },
+      {
+        name: "description",
+        content: "HTML・CSS・JavaScriptコードを圧縮（Minify）するオンラインツール。",
+      },
+      { property: "og:title", content: "コード圧縮（Minify） | Web ツール集" },
+      {
+        property: "og:description",
+        content: "HTML・CSS・JavaScriptコードを圧縮（Minify）するオンラインツール。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/minify` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "コード圧縮（Minify） | Web ツール集" },
+      {
+        name: "twitter:description",
+        content: "HTML・CSS・JavaScriptコードを圧縮（Minify）するオンラインツール。",
+      },
+    ],
     scripts: [
       // Terser - JavaScript minifier
       {
@@ -56,7 +60,7 @@ declare global {
     Terser?: {
       minify: (
         code: string,
-        options?: Record<string, unknown>
+        options?: Record<string, unknown>,
       ) => Promise<{ code?: string; error?: Error }>;
     };
     csso?: {
@@ -122,9 +126,7 @@ function MinifyTool() {
             });
             if (result.error) {
               throw new Error(
-                result.error instanceof Error
-                  ? result.error.message
-                  : String(result.error)
+                result.error instanceof Error ? result.error.message : String(result.error),
               );
             }
             minified = result.code || "";
@@ -179,16 +181,12 @@ function MinifyTool() {
       // 圧縮率を計算
       const originalSize = new Blob([input]).size;
       const minifiedSize = new Blob([minified]).size;
-      const ratio = Math.max(
-        0,
-        ((originalSize - minifiedSize) / originalSize) * 100
-      );
+      const ratio = Math.max(0, ((originalSize - minifiedSize) / originalSize) * 100);
       setCompressionRatio(ratio);
 
       showToast("コードを圧縮しました", "success");
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "圧縮エラーが発生しました";
+      const message = err instanceof Error ? err.message : "圧縮エラーが発生しました";
       setError(message);
       setOutput("");
       setCompressionRatio(null);
@@ -223,7 +221,7 @@ function MinifyTool() {
       };
       reader.readAsText(file);
     },
-    [showToast]
+    [showToast],
   );
 
   /**
@@ -259,9 +257,7 @@ function MinifyTool() {
     <>
       <div className="tool-container">
         <h1>コード圧縮ツール (Minify)</h1>
-        <p className="page-subtitle">
-          JavaScript、CSS、HTML、JSONのコードを圧縮します
-        </p>
+        <p className="page-subtitle">JavaScript、CSS、HTML、JSONのコードを圧縮します</p>
 
         <div className="converter-section">
           <div className="input-group">
@@ -313,11 +309,7 @@ function MinifyTool() {
           </div>
 
           <div className="button-group">
-            <Button
-              className="btn-primary"
-              onClick={handleMinify}
-              aria-label="コードを圧縮"
-            >
+            <Button className="btn-primary" onClick={handleMinify} aria-label="コードを圧縮">
               圧縮
             </Button>
             <Button
@@ -339,14 +331,11 @@ function MinifyTool() {
                   圧縮結果
                 </label>
                 <div className="library-info-group">
-                  {usedLibrary && (
-                    <span className="library-info">使用: {usedLibrary}</span>
-                  )}
+                  {usedLibrary && <span className="library-info">使用: {usedLibrary}</span>}
                   {compressionRatio !== null && (
                     <span className="compression-ratio">
-                      圧縮率: {compressionRatio.toFixed(2)}% 削減 (
-                      {new Blob([input]).size} → {new Blob([output]).size}{" "}
-                      bytes)
+                      圧縮率: {compressionRatio.toFixed(2)}% 削減 ({new Blob([input]).size} →{" "}
+                      {new Blob([output]).size} bytes)
                     </span>
                   )}
                 </div>
@@ -398,7 +387,7 @@ function MinifyTool() {
                 "圧縮後のコードは可読性が低下します",
                 "本番環境用のファイルサイズ削減に適しています",
                 "デバッグには元のコードを使用してください",
-                "注意: フォールバック（正規表現）モード使用時、文字列リテラル内に // や /* */ を含むコードは正しく処理されない場合があります（例: const url = \"http://example.com\" の // 以降が削除される）",
+                '注意: フォールバック（正規表現）モード使用時、文字列リテラル内に // や /* */ を含むコードは正しく処理されない場合があります（例: const url = "http://example.com" の // 以降が削除される）',
               ],
             },
           ]}

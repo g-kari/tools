@@ -1,10 +1,10 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { SITE_BASE_URL, SITE_OGP_IMAGE } from '../constants/site';
-import { useState, useCallback, useMemo } from 'react';
-import { useToast } from '../components/Toast';
-import { TipsCard } from '~/components/TipsCard';
-import { useStatusAnnouncement, StatusAnnouncer } from '~/hooks/useStatusAnnouncement';
-import { useClipboard } from '~/hooks/useClipboard';
+import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
+import { useState, useCallback, useMemo } from "react";
+import { useToast } from "../components/Toast";
+import { TipsCard } from "~/components/TipsCard";
+import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
+import { useClipboard } from "~/hooks/useClipboard";
 import {
   hexToRgb,
   rgbToAllFormats,
@@ -24,29 +24,29 @@ import {
   type HsvColor,
   type CmykColor,
   type OklchColor,
-} from '~/utils/color-converter';
+} from "~/utils/color-converter";
 
-export const Route = createFileRoute('/color-converter')({
+export const Route = createFileRoute("/color-converter")({
   head: () => ({
     meta: [
-      { title: 'カラーフォーマット変換 | Web ツール集' },
+      { title: "カラーフォーマット変換 | Web ツール集" },
       {
-        name: 'description',
+        name: "description",
         content:
-          'HEX・RGB・HSL・HSV・CMYK・OKLCHなど6種類のカラーフォーマット間をリアルタイムに相互変換。Webデザイン・印刷・CSS設計に活用できるカラーコンバーター。',
+          "HEX・RGB・HSL・HSV・CMYK・OKLCHなど6種類のカラーフォーマット間をリアルタイムに相互変換。Webデザイン・印刷・CSS設計に活用できるカラーコンバーター。",
       },
-      { property: 'og:title', content: 'カラーフォーマット変換 | Web ツール集' },
+      { property: "og:title", content: "カラーフォーマット変換 | Web ツール集" },
       {
-        property: 'og:description',
-        content: 'HEX・RGB・HSL・HSV・CMYK・OKLCH 6種のカラーフォーマットをリアルタイム相互変換。',
+        property: "og:description",
+        content: "HEX・RGB・HSL・HSV・CMYK・OKLCH 6種のカラーフォーマットをリアルタイム相互変換。",
       },
-      { property: 'og:url', content: `${SITE_BASE_URL}/color-converter` },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: SITE_OGP_IMAGE },
-      { name: 'twitter:title', content: 'カラーフォーマット変換 | Web ツール集' },
+      { property: "og:url", content: `${SITE_BASE_URL}/color-converter` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "カラーフォーマット変換 | Web ツール集" },
       {
-        name: 'twitter:description',
-        content: 'HEX・RGB・HSL・HSV・CMYK・OKLCHをリアルタイム相互変換するカラーコンバーター。',
+        name: "twitter:description",
+        content: "HEX・RGB・HSL・HSV・CMYK・OKLCHをリアルタイム相互変換するカラーコンバーター。",
       },
     ],
   }),
@@ -125,9 +125,7 @@ function FormatRow({ label, displayText, onCopy, children }: FormatRowProps) {
 // ==================== メインコンポーネント ====================
 
 function ColorConverter() {
-  const [colors, setColors] = useState<ColorFormats>(() =>
-    rgbToAllFormats(DEFAULT_COLOR_RGB)
-  );
+  const [colors, setColors] = useState<ColorFormats>(() => rgbToAllFormats(DEFAULT_COLOR_RGB));
   const [hexInput, setHexInput] = useState(rgbToAllFormats(DEFAULT_COLOR_RGB).hex);
   const [hexError, setHexError] = useState(false);
 
@@ -144,28 +142,25 @@ function ColorConverter() {
   }, []);
 
   // ---- HEX ----
-  const handleHexChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const raw = e.target.value;
-      setHexInput(raw);
-      const rgb = hexToRgb(raw);
-      if (rgb) {
-        setHexError(false);
-        const all = rgbToAllFormats(rgb);
-        setColors(all);
-      } else {
-        setHexError(true);
-      }
-    },
-    []
-  );
+  const handleHexChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value;
+    setHexInput(raw);
+    const rgb = hexToRgb(raw);
+    if (rgb) {
+      setHexError(false);
+      const all = rgbToAllFormats(rgb);
+      setColors(all);
+    } else {
+      setHexError(true);
+    }
+  }, []);
 
   // ---- RGB ----
   const handleRgbChange = useCallback(
     (key: keyof RgbColor, value: number) => {
       updateFromRgb({ ...colors.rgb, [key]: value });
     },
-    [colors.rgb, updateFromRgb]
+    [colors.rgb, updateFromRgb],
   );
 
   // ---- HSL ----
@@ -174,7 +169,7 @@ function ColorConverter() {
       const newHsl = { ...colors.hsl, [key]: value };
       updateFromRgb(hslToRgb(newHsl));
     },
-    [colors.hsl, updateFromRgb]
+    [colors.hsl, updateFromRgb],
   );
 
   // ---- HSV ----
@@ -183,7 +178,7 @@ function ColorConverter() {
       const newHsv = { ...colors.hsv, [key]: value };
       updateFromRgb(hsvToRgb(newHsv));
     },
-    [colors.hsv, updateFromRgb]
+    [colors.hsv, updateFromRgb],
   );
 
   // ---- CMYK ----
@@ -192,7 +187,7 @@ function ColorConverter() {
       const newCmyk = { ...colors.cmyk, [key]: value };
       updateFromRgb(cmykToRgb(newCmyk));
     },
-    [colors.cmyk, updateFromRgb]
+    [colors.cmyk, updateFromRgb],
   );
 
   // ---- OKLCH ----
@@ -201,7 +196,7 @@ function ColorConverter() {
       const newOklch = { ...colors.oklch, [key]: value };
       updateFromRgb(oklchToRgb(newOklch));
     },
-    [colors.oklch, updateFromRgb]
+    [colors.oklch, updateFromRgb],
   );
 
   // ---- コピー ----
@@ -210,12 +205,12 @@ function ColorConverter() {
       const success = await copy(text);
       if (success) {
         announceStatus(`${label}をコピーしました`);
-        showToast(`${label}をコピーしました`, 'success');
+        showToast(`${label}をコピーしました`, "success");
       } else {
-        showToast('コピーに失敗しました', 'error');
+        showToast("コピーに失敗しました", "error");
       }
     },
-    [copy, announceStatus, showToast]
+    [copy, announceStatus, showToast],
   );
 
   // ---- カラーピッカー（ブラウザネイティブ） ----
@@ -224,7 +219,7 @@ function ColorConverter() {
       const rgb = hexToRgb(e.target.value);
       if (rgb) updateFromRgb(rgb);
     },
-    [updateFromRgb]
+    [updateFromRgb],
   );
 
   const previewBg = useMemo(() => colors.hex, [colors.hex]);
@@ -232,7 +227,7 @@ function ColorConverter() {
     // 輝度で文字色を決定
     const { r, g, b } = colors.rgb;
     const luma = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-    return luma > 140 ? '#000000' : '#ffffff';
+    return luma > 140 ? "#000000" : "#ffffff";
   }, [colors.rgb]);
 
   return (
@@ -254,7 +249,7 @@ function ColorConverter() {
               <input
                 type="color"
                 className="ccv-native-picker"
-                value={colors.hex.length === 7 ? colors.hex : '#000000'}
+                value={colors.hex.length === 7 ? colors.hex : "#000000"}
                 onChange={handleNativePicker}
                 aria-label="カラーピッカーで色を選択"
                 title="クリックして色を選択"
@@ -273,7 +268,7 @@ function ColorConverter() {
               <FormatRow
                 label="HEX"
                 displayText={colors.hex}
-                onCopy={() => handleCopy(colors.hex, 'HEX')}
+                onCopy={() => handleCopy(colors.hex, "HEX")}
               >
                 <div className="ccv-hex-row">
                   <label htmlFor="ccv-hex-input" className="ccv-sr-only">
@@ -282,7 +277,7 @@ function ColorConverter() {
                   <input
                     id="ccv-hex-input"
                     type="text"
-                    className={`ccv-hex-input${hexError ? ' error' : ''}`}
+                    className={`ccv-hex-input${hexError ? " error" : ""}`}
                     value={hexInput}
                     onChange={handleHexChange}
                     placeholder="#39D353"
@@ -303,7 +298,7 @@ function ColorConverter() {
               <FormatRow
                 label="RGB"
                 displayText={rgbToString(colors.rgb)}
-                onCopy={() => handleCopy(rgbToString(colors.rgb), 'RGB')}
+                onCopy={() => handleCopy(rgbToString(colors.rgb), "RGB")}
               >
                 <NumInput
                   id="ccv-rgb-r"
@@ -311,7 +306,7 @@ function ColorConverter() {
                   value={colors.rgb.r}
                   min={0}
                   max={255}
-                  onChange={(v) => handleRgbChange('r', v)}
+                  onChange={(v) => handleRgbChange("r", v)}
                 />
                 <NumInput
                   id="ccv-rgb-g"
@@ -319,7 +314,7 @@ function ColorConverter() {
                   value={colors.rgb.g}
                   min={0}
                   max={255}
-                  onChange={(v) => handleRgbChange('g', v)}
+                  onChange={(v) => handleRgbChange("g", v)}
                 />
                 <NumInput
                   id="ccv-rgb-b"
@@ -327,7 +322,7 @@ function ColorConverter() {
                   value={colors.rgb.b}
                   min={0}
                   max={255}
-                  onChange={(v) => handleRgbChange('b', v)}
+                  onChange={(v) => handleRgbChange("b", v)}
                 />
               </FormatRow>
 
@@ -335,7 +330,7 @@ function ColorConverter() {
               <FormatRow
                 label="HSL"
                 displayText={hslToString(colors.hsl)}
-                onCopy={() => handleCopy(hslToString(colors.hsl), 'HSL')}
+                onCopy={() => handleCopy(hslToString(colors.hsl), "HSL")}
               >
                 <NumInput
                   id="ccv-hsl-h"
@@ -343,7 +338,7 @@ function ColorConverter() {
                   value={colors.hsl.h}
                   min={0}
                   max={360}
-                  onChange={(v) => handleHslChange('h', v)}
+                  onChange={(v) => handleHslChange("h", v)}
                 />
                 <NumInput
                   id="ccv-hsl-s"
@@ -351,7 +346,7 @@ function ColorConverter() {
                   value={colors.hsl.s}
                   min={0}
                   max={100}
-                  onChange={(v) => handleHslChange('s', v)}
+                  onChange={(v) => handleHslChange("s", v)}
                 />
                 <NumInput
                   id="ccv-hsl-l"
@@ -359,7 +354,7 @@ function ColorConverter() {
                   value={colors.hsl.l}
                   min={0}
                   max={100}
-                  onChange={(v) => handleHslChange('l', v)}
+                  onChange={(v) => handleHslChange("l", v)}
                 />
               </FormatRow>
 
@@ -367,7 +362,7 @@ function ColorConverter() {
               <FormatRow
                 label="HSV"
                 displayText={hsvToString(colors.hsv)}
-                onCopy={() => handleCopy(hsvToString(colors.hsv), 'HSV')}
+                onCopy={() => handleCopy(hsvToString(colors.hsv), "HSV")}
               >
                 <NumInput
                   id="ccv-hsv-h"
@@ -375,7 +370,7 @@ function ColorConverter() {
                   value={colors.hsv.h}
                   min={0}
                   max={360}
-                  onChange={(v) => handleHsvChange('h', v)}
+                  onChange={(v) => handleHsvChange("h", v)}
                 />
                 <NumInput
                   id="ccv-hsv-s"
@@ -383,7 +378,7 @@ function ColorConverter() {
                   value={colors.hsv.s}
                   min={0}
                   max={100}
-                  onChange={(v) => handleHsvChange('s', v)}
+                  onChange={(v) => handleHsvChange("s", v)}
                 />
                 <NumInput
                   id="ccv-hsv-v"
@@ -391,7 +386,7 @@ function ColorConverter() {
                   value={colors.hsv.v}
                   min={0}
                   max={100}
-                  onChange={(v) => handleHsvChange('v', v)}
+                  onChange={(v) => handleHsvChange("v", v)}
                 />
               </FormatRow>
 
@@ -399,7 +394,7 @@ function ColorConverter() {
               <FormatRow
                 label="CMYK"
                 displayText={cmykToString(colors.cmyk)}
-                onCopy={() => handleCopy(cmykToString(colors.cmyk), 'CMYK')}
+                onCopy={() => handleCopy(cmykToString(colors.cmyk), "CMYK")}
               >
                 <NumInput
                   id="ccv-cmyk-c"
@@ -407,7 +402,7 @@ function ColorConverter() {
                   value={colors.cmyk.c}
                   min={0}
                   max={100}
-                  onChange={(v) => handleCmykChange('c', v)}
+                  onChange={(v) => handleCmykChange("c", v)}
                 />
                 <NumInput
                   id="ccv-cmyk-m"
@@ -415,7 +410,7 @@ function ColorConverter() {
                   value={colors.cmyk.m}
                   min={0}
                   max={100}
-                  onChange={(v) => handleCmykChange('m', v)}
+                  onChange={(v) => handleCmykChange("m", v)}
                 />
                 <NumInput
                   id="ccv-cmyk-y"
@@ -423,7 +418,7 @@ function ColorConverter() {
                   value={colors.cmyk.y}
                   min={0}
                   max={100}
-                  onChange={(v) => handleCmykChange('y', v)}
+                  onChange={(v) => handleCmykChange("y", v)}
                 />
                 <NumInput
                   id="ccv-cmyk-k"
@@ -431,7 +426,7 @@ function ColorConverter() {
                   value={colors.cmyk.k}
                   min={0}
                   max={100}
-                  onChange={(v) => handleCmykChange('k', v)}
+                  onChange={(v) => handleCmykChange("k", v)}
                 />
               </FormatRow>
 
@@ -439,7 +434,7 @@ function ColorConverter() {
               <FormatRow
                 label="OKLCH"
                 displayText={oklchToString(colors.oklch)}
-                onCopy={() => handleCopy(oklchToString(colors.oklch), 'OKLCH')}
+                onCopy={() => handleCopy(oklchToString(colors.oklch), "OKLCH")}
               >
                 <NumInput
                   id="ccv-oklch-l"
@@ -448,7 +443,7 @@ function ColorConverter() {
                   min={0}
                   max={1}
                   step={0.001}
-                  onChange={(v) => handleOklchChange('l', v)}
+                  onChange={(v) => handleOklchChange("l", v)}
                 />
                 <NumInput
                   id="ccv-oklch-c"
@@ -457,7 +452,7 @@ function ColorConverter() {
                   min={0}
                   max={0.4}
                   step={0.001}
-                  onChange={(v) => handleOklchChange('c', v)}
+                  onChange={(v) => handleOklchChange("c", v)}
                 />
                 <NumInput
                   id="ccv-oklch-h"
@@ -466,7 +461,7 @@ function ColorConverter() {
                   min={0}
                   max={360}
                   step={0.1}
-                  onChange={(v) => handleOklchChange('h', v)}
+                  onChange={(v) => handleOklchChange("h", v)}
                 />
               </FormatRow>
             </div>
@@ -476,23 +471,23 @@ function ColorConverter() {
         <TipsCard
           sections={[
             {
-              title: '使い方',
+              title: "使い方",
               items: [
-                'いずれかのフォーマットの値を変更すると、他のフォーマットが自動的に更新されます',
-                'カラープレビューをクリックするとブラウザのカラーピッカーが開きます',
-                '各フォーマット右の「コピー」ボタンでCSS記法をクリップボードにコピーできます',
+                "いずれかのフォーマットの値を変更すると、他のフォーマットが自動的に更新されます",
+                "カラープレビューをクリックするとブラウザのカラーピッカーが開きます",
+                "各フォーマット右の「コピー」ボタンでCSS記法をクリップボードにコピーできます",
                 'HEX入力は "#" あり/なし・大文字小文字を問いません',
               ],
             },
             {
-              title: 'フォーマットについて',
+              title: "フォーマットについて",
               items: [
-                'HEX — #RRGGBB形式。Webデザインで最も一般的',
-                'RGB — 光の三原色。Webブラウザ・画面表示で使用',
-                'HSL — 色相・彩度・輝度。人間が直感的に理解しやすい',
-                'HSV/HSB — 色相・彩度・明度。画像編集ソフトでよく使われる',
-                'CMYK — 印刷用4色モデル（シアン・マゼンタ・イエロー・ブラック）',
-                'OKLCH — 知覚的均一性に優れた新しいCSS Color Level 4の表色系',
+                "HEX — #RRGGBB形式。Webデザインで最も一般的",
+                "RGB — 光の三原色。Webブラウザ・画面表示で使用",
+                "HSL — 色相・彩度・輝度。人間が直感的に理解しやすい",
+                "HSV/HSB — 色相・彩度・明度。画像編集ソフトでよく使われる",
+                "CMYK — 印刷用4色モデル（シアン・マゼンタ・イエロー・ブラック）",
+                "OKLCH — 知覚的均一性に優れた新しいCSS Color Level 4の表色系",
               ],
             },
           ]}

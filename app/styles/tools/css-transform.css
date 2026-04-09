@@ -59,7 +59,9 @@
   color: var(--on-surface);
   font-size: var(--text-sm);
   cursor: pointer;
-  transition: background 0.15s, border-color 0.15s;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
 }
 
 .ct-preset-btn:hover {
