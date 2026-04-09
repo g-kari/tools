@@ -152,6 +152,60 @@ describe("calculateStatistics", () => {
     const r = calculateStatistics([-1, 0, 1]);
     expect(r!.cv).toBeNull();
   });
+
+  it("標本分散を計算する (n-1 補正)", () => {
+    // [2, 4, 4, 4, 5, 5, 7, 9] → sumSqDiffs=32, varianceSample=32/7
+    const r = calculateStatistics([2, 4, 4, 4, 5, 5, 7, 9]);
+    expect(r!.varianceSample).toBeCloseTo(32 / 7, 5);
+  });
+
+  it("データが1件の場合は標本分散が 0", () => {
+    const r = calculateStatistics([5]);
+    expect(r!.varianceSample).toBe(0);
+  });
+
+  it("歪度を計算する", () => {
+    // 右に裾の長い分布 [1, 1, 1, 2, 10] → 正の歪度
+    const r = calculateStatistics([1, 1, 1, 2, 10]);
+    expect(r!.skewness).not.toBeNull();
+    expect(r!.skewness!).toBeGreaterThan(0);
+  });
+
+  it("対称分布は歪度が 0", () => {
+    // [1, 2, 3, 4, 5] は対称 → skewness = 0
+    const r = calculateStatistics([1, 2, 3, 4, 5]);
+    expect(r!.skewness).not.toBeNull();
+    expect(r!.skewness!).toBeCloseTo(0, 5);
+  });
+
+  it("データが 2 件以下の場合は歪度が null", () => {
+    expect(calculateStatistics([1])!.skewness).toBeNull();
+    expect(calculateStatistics([1, 2])!.skewness).toBeNull();
+  });
+
+  it("全値が同じ場合は歪度が null (stddevSample=0)", () => {
+    const r = calculateStatistics([3, 3, 3, 3]);
+    expect(r!.skewness).toBeNull();
+  });
+
+  it("尖度を計算する", () => {
+    // [2, 4, 4, 4, 5, 5, 7, 9] の尖度を検証
+    const r = calculateStatistics([2, 4, 4, 4, 5, 5, 7, 9]);
+    expect(r!.kurtosis).not.toBeNull();
+    // k1 = (8*9)/(7*6*5), k2 = 356/(32/7)^2, k3 = (3*49)/(6*5)
+    expect(r!.kurtosis!).toBeCloseTo(0.9406, 3);
+  });
+
+  it("データが 3 件以下の場合は尖度が null", () => {
+    expect(calculateStatistics([1])!.kurtosis).toBeNull();
+    expect(calculateStatistics([1, 2])!.kurtosis).toBeNull();
+    expect(calculateStatistics([1, 2, 3])!.kurtosis).toBeNull();
+  });
+
+  it("全値が同じ場合は尖度が null (stddevSample=0)", () => {
+    const r = calculateStatistics([5, 5, 5, 5]);
+    expect(r!.kurtosis).toBeNull();
+  });
 });
 
 describe("calculateFrequencyDistribution", () => {
