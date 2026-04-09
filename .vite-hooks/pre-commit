@@ -1,1 +1,1 @@
-vp staged
+vp staged && npm test && npm run build
