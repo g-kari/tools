@@ -18,6 +18,22 @@ paths: "app/**/*.tsx,app/**/*.ts,app/**/*.css"
 - **インラインスタイル原則禁止**: `style` 属性を使用せず、`app/styles.css` または専用CSSファイルで定義すること
 - **`alert()` 使用禁止**: 代わりに `app/components/Toast.tsx` のトースト通知を使用すること
 
+## コード品質チェック
+
+コード変更後は `vp check` で確認すること（Oxlint + Oxfmt + TypeScript）：
+
+```bash
+vp check         # チェックのみ
+vp check --fix   # 自動修正
+```
+
+## 新ツール追加のパターン
+
+1. `app/routes/<tool-name>.tsx` — ルートファイル作成
+2. `app/styles/tools/<tool-name>.css` — 専用CSSファイル作成
+3. `app/styles.css` — `@import` を末尾に追加
+4. `app/routes/top.tsx` — カテゴリに `{ path, label, description, icon }` を追加
+
 ## デザインスキル参照
 
 - [Material Design Styling](.claude/skills/material-design-styling.md)

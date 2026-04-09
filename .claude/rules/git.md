@@ -19,3 +19,14 @@ git worktree list
 # worktreeを削除（ブランチ作業完了後）
 git worktree remove wip/tools-feat-example
 ```
+
+## Pre-commit Hook
+
+`.vite-hooks/pre-commit` が自動で `vp staged` を実行する。
+ステージされたファイルに対してフォーマット・lint・自動修正が走る。
+
+手動で同じことをしたい場合：
+
+```bash
+vp check --fix   # フォーマット + lint + 自動修正
+```

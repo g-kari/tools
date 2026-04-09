@@ -1,1 +1,15 @@
-{}
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd /home/gizen/dokodemo-claude/backend/repositories/tools && /home/gizen/.vite-plus/0.1.16/bin/vp check --fix 2>&1 | tail -5"
+          }
+        ]
+      }
+    ]
+  }
+}
