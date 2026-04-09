@@ -946,6 +946,12 @@ const toolCatalog: ToolCategory[] = [
         icon: "🔍",
       },
       {
+        path: "/background-removal",
+        label: "AI背景除去",
+        description: "AIで画像の背景を自動除去（人物・商品・動物対応）",
+        icon: "✂️",
+      },
+      {
         path: "/color-extractor",
         label: "カラー抽出",
         description: "画像から主要な色を抽出",
