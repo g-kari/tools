@@ -4,206 +4,31 @@
 
 ## プロジェクト概要
 
-Cloudflare Workers上で動作するWebツール集です。以下のツールを提供しています：
-
-- **Unicodeエスケープ変換** - Unicode文字列のエスケープ/アンエスケープ変換
-- **WHOIS検索** - ドメイン情報の検索
-- **IPジオロケーション** - IPアドレスから地理情報を取得
-- **グローバルIP確認** - アクセス元のグローバルIPアドレスを表示
-- **UUID生成** - UUID v4の生成
-- **URLエンコード/デコード** - URL文字列のエンコード/デコード変換
-- **パスワード生成** - 安全なランダムパスワードの生成
-- **JSON整形** - JSONデータの整形・検証
-- **サーバー環境** - サーバー環境情報の表示
-- **正規表現チェッカー** - 正規表現のテスト・検証
-- **JWTデコーダー** - JWTトークンのデコード・検証
-- **OGPチェッカー** - Open Graph Protocol情報の取得・確認
-- **ダミー画像生成** - 開発用プレースホルダー画像の生成
+Cloudflare Workers上で動作するWebツール集（React + TanStack Start）。
 
 ## 技術スタック
 
 - **ランタイム**: Cloudflare Workers
 - **フレームワーク**: TanStack Start (React + TanStack Router)
 - **言語**: TypeScript
-- **ビルドツール**: Vite 7
+- **ビルドツール**: Vite+（`vite-plus` — Rolldown/Oxc ベース）
 - **テスト**: Vitest（ユニットテスト）、Playwright（E2Eテスト）
 
 ## 開発コマンド
 
 ```bash
-# 依存関係のインストール
-npm install
-
-# 開発サーバー起動
-npm run dev
-
-# ビルド
-npm run build
-
-# プレビュー
-npm run preview
-
-# デプロイ
-npm run deploy
+vp dev           # 開発サーバー起動（または npm run dev）
+vp build         # ビルド（または npm run build）
+vp check         # フォーマット + lint + 型チェック
+vp check --fix   # 自動修正付きチェック
+vp test run      # ユニットテスト実行（または npm test）
+npm run deploy   # ビルド + Cloudflareデプロイ
 ```
 
-## テストコマンド
+## 行動原則
 
-```bash
-# ユニットテスト実行
-npm test
-
-# ユニットテストをウォッチモードで実行
-npm run test:watch
-
-# カバレッジレポート生成
-npm run test:coverage
-
-# E2Eテスト実行
-npm run test:e2e
-```
-
-## コミット前の必須事項
-
-**重要**: コミット前に必ず以下を実行し、成功を確認してください：
-
-```bash
-# 1. ユニットテストを実行（必須）
-npm test
-
-# 2. ビルドを実行（必須）
-npm run build
-```
-
-**ユニットテストとビルドが成功するまでコミットしないでください。**
-
-### E2Eテストについて
-
-**E2Eテストの実装は必須です。** 新しい機能やページを追加した場合は、対応するE2Eテスト（`tests/e2e/`配下）を必ず実装してください。
-
-**E2Eテストの実行は任意です。** CLI環境ではPlaywrightが動作しないため、E2Eテストの実行はコミット前の必須事項には含まれません。ローカルのGUI環境で実行可能な場合は、以下のコマンドで実行できます：
-
-```bash
-# ビルドしてからE2Eテスト実行
-npm run build && npm run test:e2e
-```
-
-**注意**: E2Eテストはビルド済みのアプリケーションに対して実行されます。
-
-### テスト失敗時の対応
-
-- ユニットテストが失敗: コードの問題を修正してください
-- ビルドが失敗: TypeScriptエラーや依存関係の問題を解決してください
-- E2Eテストが失敗: UIの問題やテストの期待値を確認してください
-
-### ドキュメントカバレッジ
-
-**ドキュメントカバレッジは80%以上を維持してください。** 新しい関数やモジュールを追加した場合は、適切なJSDocコメントを必ず記述してください。
-
-## プロジェクト構造
-
-```
-.
-├── app/
-│   ├── router.tsx        # ルーター設定
-│   ├── client.tsx        # クライアントエントリ
-│   ├── ssr.tsx           # SSRエントリ
-│   ├── start.tsx         # TanStack Start設定
-│   ├── styles.css        # 共通スタイル
-│   ├── routes/
-│   │   ├── __root.tsx           # ルートレイアウト
-│   │   ├── index.tsx            # Unicode変換ページ (/)
-│   │   ├── whois.tsx            # WHOIS検索ページ (/whois)
-│   │   ├── ip-geolocation.tsx   # IPジオロケーションページ (/ip-geolocation)
-│   │   ├── global-ip.tsx        # グローバルIP確認ページ (/global-ip)
-│   │   ├── uuid.tsx             # UUID生成ページ (/uuid)
-│   │   ├── url-encode.tsx       # URLエンコードページ (/url-encode)
-│   │   ├── password-generator.tsx # パスワード生成ページ (/password-generator)
-│   │   ├── json.tsx             # JSON整形ページ (/json)
-│   │   ├── server-env.tsx       # サーバー環境ページ (/server-env)
-│   │   ├── regex-checker.tsx    # 正規表現チェッカーページ (/regex-checker)
-│   │   ├── jwt.tsx              # JWTデコーダーページ (/jwt)
-│   │   ├── ogp.tsx              # OGPチェッカーページ (/ogp)
-│   │   └── dummy-image.tsx      # ダミー画像生成ページ (/dummy-image)
-│   └── functions/
-│       ├── whois.ts             # WHOISサーバーファンクション
-│       ├── ip-geolocation.ts    # IPジオロケーションファンクション
-│       ├── global-ip.ts         # グローバルIPファンクション
-│       ├── server-env.ts        # サーバー環境ファンクション
-│       └── ogp.ts               # OGPファンクション
-├── tests/
-│   ├── unit/             # ユニットテスト
-│   │   ├── unicode.test.ts
-│   │   ├── whois.test.ts
-│   │   ├── uuid.test.ts
-│   │   ├── url-encode.test.ts
-│   │   ├── password.test.ts
-│   │   ├── json.test.ts
-│   │   ├── regex.test.ts
-│   │   ├── ip-validation.test.ts
-│   │   ├── ogp.test.ts
-│   │   └── dummy-image.test.ts
-│   └── e2e/              # E2Eテスト（Playwright）
-│       ├── navigation.spec.ts
-│       ├── unicode.spec.ts
-│       ├── whois.spec.ts
-│       ├── ip-geolocation.spec.ts
-│       ├── global-ip.spec.ts
-│       ├── uuid.spec.ts
-│       ├── url-encode.spec.ts
-│       ├── password-generator.spec.ts
-│       ├── json.spec.ts
-│       ├── server-env.spec.ts
-│       ├── regex-checker.spec.ts
-│       ├── jwt.spec.ts
-│       ├── ogp.spec.ts
-│       ├── dummy-image.spec.ts
-│       ├── accessibility.spec.ts
-│       └── not-found.spec.ts
-├── package.json
-├── tsconfig.json
-├── vite.config.ts        # Vite設定
-├── vitest.config.ts
-├── playwright.config.ts
-└── wrangler.jsonc        # Cloudflare Workers設定
-```
-
-## 開発ガイドライン
-
-- Material Design 3のカラーシステムを使用
-- アクセシビリティを考慮（ARIAラベル、キーボードナビゲーション対応）
-- レスポンシブデザイン対応
-- 日本語UIをメインにサポート
-- TanStack Startのサーバーファンクションを使用してAPI実装
-- **インラインスタイル原則禁止**: Reactコンポーネントではインラインスタイル（style属性）を使用せず、必ずapp/styles.cssまたは専用のCSSファイルでスタイルを定義すること
-- **alert()メソッド使用禁止**: サイト全体でalert()メソッドを使用しないこと。ユーザー体験を損なうため、代わりにapp/components/Toast.tsxのトースト通知を使用すること
-
-### Serenaを使用したコード解析
-
-- コードの調査・解析にはSerena MCPを積極的に活用すること。
-- ファイル検索・シンボル解析・参照検索など、コードベースの理解が必要な場面では必ずSerenaを使用すること。
-- Serenaにより、ファイルの読み込みや手動検索よりも正確かつ高速にコードを把握できる。
-
-### Git Worktreeを使用した開発
-
-- AIを利用して開発する場合は、GitWorktreeを利用すること。
-
-```bash
-# 新しい機能ブランチ用のworktreeを作成
-git worktree add wip/tools-feat-example feat/example
-
-# worktreeの一覧を確認
-git worktree list
-
-# worktreeを削除（ブランチ作業完了後）
-git worktree remove wip/tools-feat-example
-```
-
-## スキル（デザインガイドライン）
-
-このプロジェクトでは以下のスキルファイルを参照してください：
-
-- [Material Design Styling](.claude/skills/material-design-styling.md) - Material Design 3に基づくスタイリングガイドライン（カラーパレット、タイポグラフィ、コンポーネントスタイル）
-- [WCAG Accessibility](.claude/skills/wcag-accessibility.md) - WCAG 2.1準拠のアクセシビリティ実装ガイドライン
-- [UX Psychology](.claude/skills/ux-psychology.md) - UXデザインに活用できる心理学の法則と原則（認知バイアス、エンゲージメント、意思決定支援）
-- [Frontend Design](.claude/skills/frontend-design.md) - Material Design 3内での個性化ガイドライン（モーション、空間構成、マイクロインタラクション）
+- **インラインスタイル原則禁止**: `style` 属性を使用せず、`app/styles.css` または専用CSSファイルで定義すること
+- **`alert()` 使用禁止**: `app/components/Toast.tsx` のトースト通知を使用すること
+- **コード解析にSerena活用**: ファイル検索・シンボル解析には必ずSerena MCPを使用すること
+- **AIによる開発はGit Worktree使用**: `git worktree add wip/tools-feat-xxx feat/xxx`
+- **コミット前は `vp check`**: `.vite-hooks/pre-commit` が自動で `vp staged` を実行する
