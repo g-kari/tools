@@ -141,6 +141,26 @@ describe("parseCurl", () => {
     expect(parsed.url).toBe("https://api.example.com");
     expect(parsed.headers["Accept"]).toBe("application/json");
   });
+
+  it("-e でRefererヘッダーを設定する", () => {
+    const { parsed } = parseCurl("curl -e 'https://example.com' https://api.example.com");
+    expect(parsed.headers["Referer"]).toBe("https://example.com");
+  });
+
+  it("--referer でRefererヘッダーを設定する", () => {
+    const { parsed } = parseCurl("curl --referer 'https://example.com' https://api.example.com");
+    expect(parsed.headers["Referer"]).toBe("https://example.com");
+  });
+
+  it("--user-agent でUser-Agentヘッダーを設定する", () => {
+    const { parsed } = parseCurl("curl --user-agent 'Mozilla/5.0' https://api.example.com");
+    expect(parsed.headers["User-Agent"]).toBe("Mozilla/5.0");
+  });
+
+  it("未知のフラグがあっても解析できる", () => {
+    const { parsed } = parseCurl("curl --unknown-flag https://api.example.com");
+    expect(parsed.url).toBe("https://api.example.com");
+  });
 });
 
 describe("toFetchCode", () => {
@@ -317,6 +337,23 @@ describe("toAxiosCode", () => {
       baseOpts,
     );
     expect(code).toContain("data:");
+  });
+
+  it("非JSONボディを data: として文字列出力する", () => {
+    const code = toAxiosCode(
+      {
+        method: "POST",
+        url: "https://api.example.com",
+        headers: {},
+        body: "plain text body",
+        followRedirects: false,
+        insecure: false,
+      },
+      baseOpts,
+    );
+    expect(code).toContain("data:");
+    expect(code).toContain("plain text body");
+    expect(code).not.toContain("JSON.stringify");
   });
 });
 
