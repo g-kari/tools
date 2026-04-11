@@ -71,10 +71,10 @@
     "jsdom": "^29.0.1",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
-    "vite": "npm:@voidzero-dev/vite-plus-core@latest",
+    "vite": "^7.3.2",
     "vite-plus": "latest",
     "vitest": "npm:@voidzero-dev/vite-plus-test@latest",
-    "wait-on": "^9.0.4",
+    "wait-on": "^9.0.5",
     "wrangler": "^4.73.0"
   },
   "overrides": {
@@ -83,7 +83,7 @@
     "lodash": ">=4.18.1",
     "lodash-es": ">=4.18.1",
     "undici": ">=7.24.5",
-    "vite": "npm:@voidzero-dev/vite-plus-core@latest",
+    "vite": "^7.3.2",
     "vitest": "npm:@voidzero-dev/vite-plus-test@latest"
   },
   "packageManager": "npm@11.12.1"
