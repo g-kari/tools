@@ -7,7 +7,10 @@ export default defineConfig({
   staged: {
     "*": "vp check --fix",
   },
-  fmt: {},
+  fmt: {
+    // 自動生成ファイルはフォーマットチェック対象外
+    ignorePatterns: ["app/routeTree.gen.ts"],
+  },
   lint: { options: { typeAware: true, typeCheck: true } },
   plugins: [
     tanstackStart({
