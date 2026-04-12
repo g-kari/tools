@@ -9,7 +9,6 @@ import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnounc
 import {
   generateManifestJson,
   generateLinkTag,
-  buildManifestObject,
   createDefaultIcons,
   generateId,
   isValidColor,

@@ -49,7 +49,7 @@ export function decodeScytale(text: string, diameter: number): string {
   // エンコード: (r, c) → position c * encRows + r
   // デコード: position を (c, r) に逆変換して元の (r, c) 順に読む
 
-  const grid: string[] = new Array(encRows * encCols).fill(" ");
+  const grid: string[] = Array.from({ length: encRows * encCols }, () => " ");
   for (let c = 0; c < encCols; c++) {
     for (let r = 0; r < encRows; r++) {
       const srcIdx = c * encRows + r;
@@ -79,7 +79,7 @@ export function visualizeScytale(
 
   const cols = Math.max(2, Math.floor(diameter));
   const rows = Math.ceil(text.length / cols);
-  const total = rows * cols;
+  const _total = rows * cols;
 
   if (mode === "plain") {
     // 行方向に書き込んだグリッド

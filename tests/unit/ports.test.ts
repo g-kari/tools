@@ -6,7 +6,6 @@ import {
   getCategoryClass,
   getPortRange,
   type PortCategory,
-  type PortProtocol,
 } from "../../app/utils/ports";
 
 describe("PORT_DATABASE", () => {

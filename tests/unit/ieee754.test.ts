@@ -140,7 +140,7 @@ describe("analyzeFloat64", () => {
 
 describe("bitsToNumber", () => {
   it("float32 のゼロを復元できる", () => {
-    const bits = new Array(32).fill(0);
+    const bits = Array.from({ length: 32 }, () => 0);
     expect(bitsToNumber(bits, "float32")).toBe(0);
   });
 
@@ -154,7 +154,7 @@ describe("bitsToNumber", () => {
   });
 
   it("float64 のゼロを復元できる", () => {
-    const bits = new Array(64).fill(0);
+    const bits = Array.from({ length: 64 }, () => 0);
     expect(bitsToNumber(bits, "float64")).toBe(0);
   });
 

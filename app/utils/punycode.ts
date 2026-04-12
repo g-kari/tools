@@ -56,7 +56,7 @@ function decodeDigit(cp: number): number {
  * 純粋 ASCII の場合はそのまま返す。
  */
 export function encodePunycodeLabel(input: string): string {
-  const codePoints = [...input].map((c) => c.codePointAt(0)!);
+  const codePoints = Array.from(input).map((c) => c.codePointAt(0)!);
 
   // ASCII のみなら変換不要
   if (codePoints.every((cp) => cp < 128)) return input;

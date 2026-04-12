@@ -70,7 +70,7 @@ function buildLookup(alphabet: string): Map<string, number> {
  * @returns 5文字の文字列
  */
 function encodeChunk(n: number, alphabet: string): string {
-  const chars: string[] = new Array(5);
+  const chars: string[] = Array.from<string>({ length: 5 });
   for (let i = 4; i >= 0; i--) {
     chars[i] = alphabet[n % 85];
     n = Math.floor(n / 85);

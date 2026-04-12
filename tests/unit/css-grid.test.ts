@@ -8,7 +8,6 @@ import {
   getContainerStyles,
   getItemStyles,
   defaultContainerConfig,
-  type GridContainerConfig,
   type GridItemConfig,
 } from "../../app/utils/css-grid";
 

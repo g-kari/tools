@@ -247,7 +247,12 @@ interface NearestResultProps {
 }
 
 /** 最近似色の結果表示コンポーネント */
-function NearestResult({ result, showError, onCopyClass, onCopyHex }: NearestResultProps) {
+function NearestResult({
+  result,
+  showError,
+  onCopyClass,
+  onCopyHex: _onCopyHex,
+}: NearestResultProps) {
   if (showError) {
     return (
       <p className="twc-nearest-placeholder" role="status">

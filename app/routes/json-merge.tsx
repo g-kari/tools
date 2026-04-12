@@ -79,7 +79,7 @@ function JsonMerge() {
 
   const handleCopy = useCallback(() => {
     if (!outputText) return;
-    navigator.clipboard.writeText(outputText).then(() => {
+    void navigator.clipboard.writeText(outputText).then(() => {
       showToast("クリップボードにコピーしました", "success");
       announceStatus("クリップボードにコピーしました");
     });

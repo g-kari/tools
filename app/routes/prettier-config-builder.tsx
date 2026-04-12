@@ -48,7 +48,7 @@ export const Route = createFileRoute("/prettier-config-builder")({
 
 /** ブール型オプションのトグルコンポーネント */
 function BooleanToggle({
-  optionKey,
+  optionKey: _optionKey,
   value,
   onChange,
 }: {

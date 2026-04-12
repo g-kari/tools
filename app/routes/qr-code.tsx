@@ -119,7 +119,7 @@ function QrCodeGenerator() {
 
   // 入力変更時にQRコードをリアルタイム更新
   useEffect(() => {
-    renderQrCode();
+    void renderQrCode();
   }, [renderQrCode]);
 
   /**

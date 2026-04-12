@@ -174,7 +174,7 @@ export function validateIsbn(input: string): IsbnResult {
   }
 
   // X が末尾以外にある場合はエラー
-  const xPositions = [...raw].reduce<number[]>((acc, c, i) => {
+  const xPositions = Array.from(raw).reduce<number[]>((acc, c, i) => {
     if (c === "X") acc.push(i);
     return acc;
   }, []);

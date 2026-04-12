@@ -249,7 +249,7 @@ function splitJapaneseSentences(text: string): string[] {
 export function analyzeJapaneseReadability(text: string): JapaneseReadabilityScores | null {
   const sentences = splitJapaneseSentences(text);
   // 空白・改行を除いた文字
-  const chars = [...text.replace(/[\s\r\n]/g, "")];
+  const chars = Array.from(text.replace(/[\s\r\n]/g, ""));
   const charCount = chars.length;
 
   if (sentences.length === 0 || charCount === 0) return null;
@@ -297,7 +297,7 @@ export function detectLanguage(text: string): "english" | "japanese" | "mixed" {
   const trimmed = text.trim();
   if (trimmed.length === 0) return "english";
 
-  const chars = [...trimmed];
+  const chars = Array.from(trimmed);
   const japaneseChars = chars.filter((c) =>
     /[\u3040-\u30FF\u4E00-\u9FFF\u3400-\u4DBF]/.test(c),
   ).length;

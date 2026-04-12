@@ -388,7 +388,7 @@ function FaviconGenerator() {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
       if (file) {
-        handleFileSelect(file);
+        void handleFileSelect(file);
       }
     },
     [handleFileSelect],
@@ -411,7 +411,7 @@ function FaviconGenerator() {
 
       const file = e.dataTransfer.files[0];
       if (file) {
-        handleFileSelect(file);
+        void handleFileSelect(file);
       }
     },
     [handleFileSelect],

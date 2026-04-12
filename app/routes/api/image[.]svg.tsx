@@ -87,7 +87,7 @@ export const Route = createFileRoute("/api/image.svg")({
           await cache.put(cacheKey, responseToCache);
 
           return response;
-        } catch (error) {
+        } catch {
           // エラー時はデフォルトのエラー画像を返す
           const errorSvg = generateSvgImage(300, 150, "FF0000", "FFFFFF");
           return new Response(errorSvg, {

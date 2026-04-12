@@ -6,7 +6,6 @@ import {
   getUtf16Units,
   countByCategory,
   filterChars,
-  type UnicodeCategory,
 } from "../../app/utils/unicode-inspector";
 
 describe("getCategory", () => {

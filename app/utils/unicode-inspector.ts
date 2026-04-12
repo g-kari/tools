@@ -200,7 +200,7 @@ export function getCharInfo(char: string, codePoint: number): CharInfo {
 export function analyzeText(text: string): CharInfo[] {
   const result: CharInfo[] = [];
   // スプレッド演算子でコードポイント単位に分割（サロゲートペア対応）
-  const chars = [...text];
+  const chars = Array.from(text);
   for (const char of chars) {
     const codePoint = char.codePointAt(0);
     if (codePoint !== undefined) {

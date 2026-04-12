@@ -1,5 +1,4 @@
 import { test, expect } from "@playwright/test";
-import path from "path";
 
 test.describe("Image to GIF Converter - E2E Tests", () => {
   /**

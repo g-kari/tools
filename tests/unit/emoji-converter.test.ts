@@ -136,6 +136,7 @@ describe("emoji-converter", () => {
 
     it("toBlobメソッドが存在する", () => {
       const canvas = createMockCanvas();
+      // eslint-disable-next-line typescript-eslint/unbound-method
       expect(canvas.toBlob).toBeDefined();
     });
   });
@@ -423,7 +424,7 @@ describe("emoji-converter", () => {
     });
 
     it("ズームリセット時にパン位置もリセットされる", () => {
-      const modifiedOptions = {
+      const _modifiedOptions = {
         ...DEFAULT_CROP_OPTIONS,
         cropZoom: 300,
         cropPanX: 50,

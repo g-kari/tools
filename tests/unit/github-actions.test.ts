@@ -3,7 +3,6 @@ import {
   generateWorkflow,
   defaultWorkflowConfig,
   GITHUB_ACTIONS_TEMPLATES,
-  type WorkflowConfig,
 } from "../../app/utils/github-actions";
 
 describe("generateWorkflow", () => {

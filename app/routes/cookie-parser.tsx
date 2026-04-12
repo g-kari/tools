@@ -328,7 +328,7 @@ function SetCookieParsedPanel({ attrs }: { attrs: SetCookieAttributes }) {
  * CookieリクエストヘッダーとSet-Cookieレスポンスヘッダーをパース・解析する
  */
 function CookieParserPage() {
-  const { showToast } = useToast();
+  const { showToast: _showToast } = useToast();
   const { statusRef, announceStatus } = useStatusAnnouncement();
 
   const [mode, setMode] = useState<ParseMode>("cookie");

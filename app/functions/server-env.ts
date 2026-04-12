@@ -138,7 +138,10 @@ export const getServerEnv = createServerFn({ method: "GET" }).handler(
           if (value !== undefined && value !== null && value !== "") {
             items.push({
               key: field.label,
-              value: String(value),
+              value:
+                typeof value === "object"
+                  ? JSON.stringify(value)
+                  : String(value as string | number | boolean),
               category: "cloudflare-geo",
             });
           }
@@ -161,7 +164,10 @@ export const getServerEnv = createServerFn({ method: "GET" }).handler(
           if (value !== undefined && value !== null && value !== "") {
             items.push({
               key: field.label,
-              value: String(value),
+              value:
+                typeof value === "object"
+                  ? JSON.stringify(value)
+                  : String(value as string | number | boolean),
               category: "cloudflare-network",
             });
           }
@@ -181,7 +187,10 @@ export const getServerEnv = createServerFn({ method: "GET" }).handler(
           if (value !== undefined && value !== null && value !== "") {
             items.push({
               key: field.label,
-              value: String(value),
+              value:
+                typeof value === "object"
+                  ? JSON.stringify(value)
+                  : String(value as string | number | boolean),
               category: "cloudflare-security",
             });
           }
@@ -250,7 +259,10 @@ export const getServerEnv = createServerFn({ method: "GET" }).handler(
 
         for (const [key, value] of Object.entries(cf)) {
           if (!handledKeys.has(key) && value !== undefined && value !== null && value !== "") {
-            const displayValue = typeof value === "object" ? JSON.stringify(value) : String(value);
+            const displayValue =
+              typeof value === "object"
+                ? JSON.stringify(value)
+                : String(value as string | number | boolean);
             items.push({
               key: `cf.${key}`,
               value: displayValue,

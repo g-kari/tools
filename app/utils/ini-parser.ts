@@ -292,7 +292,10 @@ export function jsonToIni(json: Record<string, unknown>): IniData {
         if (Array.isArray(v)) {
           section[k] = v.map(String);
         } else {
-          section[k] = String(v ?? "");
+          section[k] =
+            typeof (v ?? "") === "object"
+              ? JSON.stringify(v)
+              : String((v ?? "") as string | number | boolean);
         }
       }
       data[key] = section;
@@ -302,7 +305,10 @@ export function jsonToIni(json: Record<string, unknown>): IniData {
       hasGlobal = true;
     } else {
       // プリミティブはグローバルセクションに
-      globalSection[key] = String(value ?? "");
+      globalSection[key] =
+        typeof (value ?? "") === "object"
+          ? JSON.stringify(value)
+          : String((value ?? "") as string | number | boolean);
       hasGlobal = true;
     }
   }

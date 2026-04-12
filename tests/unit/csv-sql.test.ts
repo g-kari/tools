@@ -1,11 +1,5 @@
 import { describe, it, expect } from "vite-plus/test";
-import {
-  parseCsv,
-  generateSql,
-  isCsvSqlError,
-  DEFAULT_OPTIONS,
-  type CsvSqlOptions,
-} from "../../app/utils/csv-sql";
+import { parseCsv, generateSql, isCsvSqlError, DEFAULT_OPTIONS } from "../../app/utils/csv-sql";
 
 // ---------------------------------------------------------------------------
 // parseCsv のテスト

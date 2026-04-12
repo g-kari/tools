@@ -71,7 +71,7 @@ function DurationPage() {
 
   // --- 変換タブ ---
   const [convertInput, setConvertInput] = useState("");
-  const [showMs, setShowMs] = useState(false);
+  const [showMs, _setShowMs] = useState(false);
   const [selectedFps, setSelectedFps] = useState<number>(30);
 
   // --- 計算タブ ---

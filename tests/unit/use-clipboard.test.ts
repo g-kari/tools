@@ -39,6 +39,7 @@ describe("useClipboard", () => {
     it("writeText に正しいテキストが渡される", async () => {
       const { copy } = useClipboard();
       await copy("コピーするテキスト");
+      // eslint-disable-next-line typescript-eslint/unbound-method
       expect(navigator.clipboard.writeText).toHaveBeenCalledWith("コピーするテキスト");
     });
 
@@ -46,6 +47,7 @@ describe("useClipboard", () => {
       const { copy } = useClipboard();
       const result = await copy("");
       expect(result).toBe(true);
+      // eslint-disable-next-line typescript-eslint/unbound-method
       expect(navigator.clipboard.writeText).toHaveBeenCalledWith("");
     });
 
@@ -60,6 +62,7 @@ describe("useClipboard", () => {
       const { copy } = useClipboard();
       const result = await copy("日本語のテキスト🎉");
       expect(result).toBe(true);
+      // eslint-disable-next-line typescript-eslint/unbound-method
       expect(navigator.clipboard.writeText).toHaveBeenCalledWith("日本語のテキスト🎉");
     });
   });

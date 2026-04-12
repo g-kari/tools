@@ -142,7 +142,7 @@ export function drawCheckerboard(
  * @returns 新しいファイル名
  */
 export function generateFilename(originalName: string): string {
-  const ext = originalName.match(/\.[^/.]+$/)?.[0] || "";
+  const _ext = originalName.match(/\.[^/.]+$/)?.[0] || "";
   const nameWithoutExt = originalName.replace(/\.[^/.]+$/, "");
   return `${nameWithoutExt}_transparent.png`;
 }
@@ -150,7 +150,7 @@ export function generateFilename(originalName: string): string {
 function TransparentImageProcessor() {
   const [originalFile, setOriginalFile] = useState<File | null>(null);
   const [originalPreview, setOriginalPreview] = useState<string | null>(null);
-  const [processedBlob, setProcessedBlob] = useState<Blob | null>(null);
+  const [_processedBlob, setProcessedBlob] = useState<Blob | null>(null);
   const [targetColor, setTargetColor] = useState<string>("#ffffff");
   const [tolerance, setTolerance] = useState<number>(30);
   const [isLoading, setIsLoading] = useState(false);
@@ -279,7 +279,7 @@ function TransparentImageProcessor() {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
       if (file) {
-        handleFileSelect(file);
+        void handleFileSelect(file);
       }
     },
     [handleFileSelect],
@@ -302,7 +302,7 @@ function TransparentImageProcessor() {
 
       const file = e.dataTransfer.files[0];
       if (file) {
-        handleFileSelect(file);
+        void handleFileSelect(file);
       }
     },
     [handleFileSelect],

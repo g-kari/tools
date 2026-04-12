@@ -218,7 +218,7 @@ export const sendHttpRequest = createServerFn({ method: "POST" })
               totalSize += value.byteLength;
               if (totalSize > MAX_BODY_SIZE) {
                 exceeded = true;
-                reader.cancel();
+                void reader.cancel();
                 break;
               }
               chunks.push(value);

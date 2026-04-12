@@ -83,7 +83,7 @@ function IpGeolocationLookup() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Enter" && (e.target as HTMLElement)?.id === "ipInput") {
         e.preventDefault();
-        handleSearch();
+        void handleSearch();
       }
     };
 

@@ -76,8 +76,8 @@ const ASPECT_RATIO_PRESETS: AspectRatioPreset[] = [
 async function cropImage(
   file: File,
   cropArea: CropArea,
-  originalWidth: number,
-  originalHeight: number,
+  _originalWidth: number,
+  _originalHeight: number,
 ): Promise<Blob | null> {
   return new Promise((resolve) => {
     const img = new Image();

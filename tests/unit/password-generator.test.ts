@@ -41,7 +41,7 @@ describe("generatePassword", () => {
         symbols: false,
       });
       expect(pw).toHaveLength(50);
-      expect([...pw].every((c) => UPPERCASE_CHARS.includes(c))).toBe(true);
+      expect(Array.from(pw).every((c) => UPPERCASE_CHARS.includes(c))).toBe(true);
     });
 
     it("小文字のみ: a-z のみを含む", () => {
@@ -52,7 +52,7 @@ describe("generatePassword", () => {
         numbers: false,
         symbols: false,
       });
-      expect([...pw].every((c) => LOWERCASE_CHARS.includes(c))).toBe(true);
+      expect(Array.from(pw).every((c) => LOWERCASE_CHARS.includes(c))).toBe(true);
     });
 
     it("数字のみ: 0-9 のみを含む", () => {
@@ -63,7 +63,7 @@ describe("generatePassword", () => {
         numbers: true,
         symbols: false,
       });
-      expect([...pw].every((c) => NUMBER_CHARS.includes(c))).toBe(true);
+      expect(Array.from(pw).every((c) => NUMBER_CHARS.includes(c))).toBe(true);
     });
 
     it("記号のみ: 記号文字のみを含む", () => {
@@ -74,7 +74,7 @@ describe("generatePassword", () => {
         numbers: false,
         symbols: true,
       });
-      expect([...pw].every((c) => SYMBOL_CHARS.includes(c))).toBe(true);
+      expect(Array.from(pw).every((c) => SYMBOL_CHARS.includes(c))).toBe(true);
     });
 
     it("全文字種: 許可された文字のみを含む", () => {
@@ -86,7 +86,7 @@ describe("generatePassword", () => {
         numbers: true,
         symbols: true,
       });
-      expect([...pw].every((c) => all.includes(c))).toBe(true);
+      expect(Array.from(pw).every((c) => all.includes(c))).toBe(true);
     });
   });
 

@@ -21,7 +21,7 @@ test.describe("ULID ジェネレーター", () => {
   });
 
   test("生成ボタンで新しい ULID が生成される", async ({ page }) => {
-    const firstUlid = await page.locator(".ulid-value").first().textContent();
+    const _firstUlid = await page.locator(".ulid-value").first().textContent();
     await page.getByRole("button", { name: "ULID 生成" }).click();
     const newUlid = await page.locator(".ulid-value").first().textContent();
     // 生成されるたびに異なる可能性が高い（稀に同一タイムスタンプで一致することがあるため、存在確認のみ）

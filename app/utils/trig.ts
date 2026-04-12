@@ -74,9 +74,9 @@ export interface TrigValues {
 }
 
 /** タンジェントが定義されない角度 (度) の倍数 */
-const TAN_UNDEFINED_DEG = 90;
+const _TAN_UNDEFINED_DEG = 90;
 /** コタンジェントが定義されない角度 (度) の倍数 */
-const COT_UNDEFINED_DEG = 180;
+const _COT_UNDEFINED_DEG = 180;
 /** 浮動小数点誤差のしきい値 */
 const EPSILON = 1e-10;
 

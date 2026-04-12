@@ -72,8 +72,8 @@ export function jaroSimilarity(a: string, b: string): number {
     return a[0] === b[0] ? 1 : 0;
   }
 
-  const aMatches = new Array(a.length).fill(false);
-  const bMatches = new Array(b.length).fill(false);
+  const aMatches = Array.from({ length: a.length }, () => false);
+  const bMatches = Array.from({ length: b.length }, () => false);
 
   let matches = 0;
   let transpositions = 0;

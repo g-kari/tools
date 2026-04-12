@@ -37,7 +37,7 @@ export const Route = createFileRoute("/char-count")({
  * @returns 文字数（スペース含む）
  */
 export function countChars(text: string): number {
-  return [...text].length;
+  return Array.from(text).length;
 }
 
 /**
@@ -46,7 +46,7 @@ export function countChars(text: string): number {
  * @returns 文字数（スペース除く）
  */
 export function countCharsWithoutSpaces(text: string): number {
-  return [...text.replace(/\s/g, "")].length;
+  return Array.from(text.replace(/\s/g, "")).length;
 }
 
 /**

@@ -72,7 +72,7 @@ function TruthTablePage() {
   /** CSV をクリップボードにコピーする */
   const handleCopyCSV = useCallback(() => {
     if (!result.data) return;
-    copy(exportTruthTableCSV(result.data));
+    void copy(exportTruthTableCSV(result.data));
   }, [result.data, copy]);
 
   /** CSV ファイルとしてダウンロードする */

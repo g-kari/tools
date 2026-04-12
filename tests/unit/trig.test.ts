@@ -10,7 +10,7 @@ import {
   COMMON_ANGLE_RAD_LABELS,
 } from "../../app/utils/trig";
 
-const EPSILON = 1e-8;
+const _EPSILON = 1e-8;
 
 describe("toDegrees", () => {
   it("度 → 度はそのまま", () => {

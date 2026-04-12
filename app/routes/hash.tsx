@@ -124,7 +124,7 @@ export function md5Ii(
 export function computeMd5Bytes(data: Uint8Array): Uint8Array {
   const msgLen = data.length;
   const wordCount = ((msgLen + 8) >>> 6) + 1;
-  const wordArray = new Array<number>(wordCount * 16).fill(0);
+  const wordArray = Array.from({ length: wordCount * 16 }, () => 0);
 
   for (let i = 0; i < msgLen; i++) {
     wordArray[i >>> 2] |= data[i] << ((i % 4) * 8);

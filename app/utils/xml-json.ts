@@ -160,7 +160,11 @@ function jsonToXmlNode(
 
     if (children.length === 0) {
       if (textContent !== undefined) {
-        const escaped = String(textContent)
+        const escaped = (
+          typeof textContent === "object"
+            ? JSON.stringify(textContent)
+            : String(textContent as string | number | boolean)
+        )
           .replace(/&/g, "&amp;")
           .replace(/</g, "&lt;")
           .replace(/>/g, "&gt;");

@@ -9,7 +9,6 @@ import {
 } from "../functions/security-headers";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
-import { Input } from "~/components/ui/input";
 import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/security-headers")({
@@ -104,7 +103,7 @@ function SecurityHeadersChecker() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Enter" && (e.target as HTMLElement)?.id === "urlInput") {
         e.preventDefault();
-        handleCheck();
+        void handleCheck();
       }
     };
 

@@ -51,7 +51,7 @@ export const Route = createFileRoute("/eslint-config-builder")({
 
 /** ブール型オプションのトグルコンポーネント */
 function BooleanToggle({
-  optionKey,
+  optionKey: _optionKey,
   value,
   onChange,
 }: {

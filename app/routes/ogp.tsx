@@ -81,7 +81,7 @@ function OgpChecker() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Enter" && (e.target as HTMLElement)?.id === "urlInput") {
         e.preventDefault();
-        handleCheck();
+        void handleCheck();
       }
     };
 

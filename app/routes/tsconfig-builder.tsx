@@ -49,7 +49,7 @@ export const Route = createFileRoute("/tsconfig-builder")({
 
 /** ブール型オプションのトグルコンポーネント */
 function BooleanToggle({
-  optionKey,
+  optionKey: _optionKey,
   value,
   onChange,
 }: {

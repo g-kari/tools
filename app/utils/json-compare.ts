@@ -60,7 +60,7 @@ function displayValue(value: unknown): string {
     const keys = Object.keys(value as object);
     return `{Object (${keys.length}件)}`;
   }
-  return String(value);
+  return String(value as string | number | boolean | null | undefined);
 }
 
 /**

@@ -73,7 +73,7 @@ describe("Video Converter", () => {
 
   describe("MIME type mapping", () => {
     it("should map gif format to image/gif MIME type", () => {
-      const format = "gif";
+      const format: string = "gif";
       const mimeType = format === "gif" ? "image/gif" : `video/${format}`;
       expect(mimeType).toBe("image/gif");
     });
@@ -180,8 +180,8 @@ describe("Video Converter", () => {
     });
 
     it("should not add resolution to GIF args when auto", () => {
-      const width = "auto";
-      const height = "auto";
+      const width: string = "auto";
+      const height: string = "auto";
       const args: string[] = [];
       if (width !== "auto" && height !== "auto") {
         args.push("-s", `${width}x${height}`);
@@ -222,7 +222,7 @@ describe("Video Converter", () => {
     });
 
     it("should not add video bitrate to args when auto", () => {
-      const videoBitrate = "auto";
+      const videoBitrate: string = "auto";
       const args: string[] = [];
       if (videoBitrate !== "auto") {
         args.push("-b:v", `${videoBitrate}k`);
@@ -241,7 +241,7 @@ describe("Video Converter", () => {
     });
 
     it("should not add audio bitrate to args when auto", () => {
-      const audioBitrate = "auto";
+      const audioBitrate: string = "auto";
       const args: string[] = [];
       if (audioBitrate !== "auto") {
         args.push("-b:a", `${audioBitrate}k`);

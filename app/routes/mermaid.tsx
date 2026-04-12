@@ -266,7 +266,7 @@ function MermaidPreview() {
       }
     };
 
-    renderDiagram();
+    void renderDiagram();
   }, [diagramCode]);
 
   // 初期フォーカス

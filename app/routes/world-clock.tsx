@@ -251,7 +251,7 @@ function WorldClockPage() {
  */
 function ClockCard({
   city,
-  label,
+  label: _label,
   data,
   isLocal,
 }: {

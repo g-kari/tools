@@ -3,7 +3,6 @@ import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { lookupEmailDNS, DOMAIN_REGEX, type EmailDNSResult } from "../functions/email-dns";
 import { Button } from "~/components/ui/button";
-import { Input } from "~/components/ui/input";
 import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/email-dns")({
@@ -95,7 +94,7 @@ function EmailDNSChecker() {
     (e: React.KeyboardEvent) => {
       if (e.key === "Enter") {
         e.preventDefault();
-        handleCheck();
+        void handleCheck();
       }
     },
     [handleCheck],

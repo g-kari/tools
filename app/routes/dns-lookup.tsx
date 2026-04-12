@@ -4,7 +4,6 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { lookupDns, type DnsLookupResult, type DnsRecordType } from "../functions/dns-lookup";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
-import { Input } from "~/components/ui/input";
 import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/dns-lookup")({
@@ -167,7 +166,7 @@ function DnsLookup() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Enter" && (e.target as HTMLElement)?.id === "domainInput") {
         e.preventDefault();
-        handleSearch();
+        void handleSearch();
       }
     };
 

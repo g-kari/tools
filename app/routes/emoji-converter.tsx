@@ -6,7 +6,6 @@ import { loadFFmpeg, convertImagesToGif } from "./image-to-gif";
 import {
   generateAnimationFrames,
   getAnimationEffectLabel,
-  getAnimationSpeedLabel,
   type AnimationEffectType,
   type AnimationSpeed,
   type AnimationConfig,
@@ -403,13 +402,13 @@ function EmojiConverter() {
   // Animation state
   const [enableAnimation, setEnableAnimation] = useState(false);
   const [animationEffect, setAnimationEffect] = useState<AnimationEffectType>("bounce");
-  const [animationSpeed, setAnimationSpeed] = useState<AnimationSpeed>("normal");
+  const [animationSpeed, _setAnimationSpeed] = useState<AnimationSpeed>("normal");
   const [animationLoop, setAnimationLoop] = useState<number>(0); // 0 = infinite
   const [animationFps, setAnimationFps] = useState<number>(12);
   const [isAnimationPlaying, setIsAnimationPlaying] = useState(false);
   const [ffmpegLoaded, setFfmpegLoaded] = useState(false);
   // GSAP animation settings
-  const [useGSAP, setUseGSAP] = useState(true);
+  const [useGSAP, _setUseGSAP] = useState(true);
   const [gsapEasing, setGsapEasing] = useState<GSAPEasingType>("bounce");
   const [easingDirection, setEasingDirection] = useState<EasingDirection>("out");
   const [animationDuration, setAnimationDuration] = useState<number>(1.0);
@@ -525,7 +524,7 @@ function EmojiConverter() {
   // ファイルまたは編集オプション変更時に画像を処理
   useEffect(() => {
     if (file) {
-      processImage();
+      void processImage();
     }
   }, [file, platform, outputFormat, outputQuality, editOptions, processImage]);
 
@@ -589,7 +588,7 @@ function EmojiConverter() {
   // Load FFmpeg when GIF format is selected (for animation support)
   useEffect(() => {
     if (outputFormat === "gif" && !ffmpegLoaded) {
-      loadFFmpeg(ffmpegRef.current).then((loaded) => {
+      void loadFFmpeg(ffmpegRef.current).then((loaded) => {
         setFfmpegLoaded(loaded);
       });
     }
@@ -598,7 +597,7 @@ function EmojiConverter() {
   // Load FFmpeg for animation
   useEffect(() => {
     if (enableAnimation && !ffmpegLoaded) {
-      loadFFmpeg(ffmpegRef.current).then((loaded) => {
+      void loadFFmpeg(ffmpegRef.current).then((loaded) => {
         setFfmpegLoaded(loaded);
       });
     }

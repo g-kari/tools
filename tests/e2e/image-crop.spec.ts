@@ -203,7 +203,7 @@ test.describe("Image Crop - E2E Tests", () => {
   test("should have correct meta tags", async ({ page }) => {
     await expect(page).toHaveTitle(/画像トリミング/);
 
-    const viewport = await page.locator('meta[name="viewport"]');
+    const viewport = page.locator('meta[name="viewport"]');
     await expect(viewport).toHaveAttribute("content", "width=device-width, initial-scale=1.0");
   });
 

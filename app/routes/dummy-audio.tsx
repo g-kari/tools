@@ -225,7 +225,7 @@ function DummyAudioGenerator() {
       }
       safeStopAudioSource(sourceNodeRef.current);
       if (audioContextRef.current) {
-        audioContextRef.current.close();
+        void audioContextRef.current.close();
       }
     };
   }, []);

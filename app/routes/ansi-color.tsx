@@ -8,7 +8,6 @@ import { Button } from "~/components/ui/button";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import {
-  applyAnsiStyle,
   generateShellCode,
   hexToRgb,
   rgbToHex,

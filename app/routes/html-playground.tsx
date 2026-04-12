@@ -87,7 +87,7 @@ function HtmlPlaygroundPage() {
   // -------------------------------------------------------------------------
   const handleExportHtml = useCallback(() => {
     const doc = buildDocument(htmlCode, cssCode, jsCode);
-    copy(doc);
+    void copy(doc);
   }, [htmlCode, cssCode, jsCode, copy]);
 
   // -------------------------------------------------------------------------

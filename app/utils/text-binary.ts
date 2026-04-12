@@ -88,7 +88,7 @@ export function textToBinary(
   return {
     encoded: binaries.join(sep),
     inputBytes: bytes.length,
-    charCount: [...text].length,
+    charCount: Array.from(text).length,
     byteBreakdown: breakdown,
   };
 }
@@ -98,7 +98,7 @@ export function textToBinary(
  */
 function buildByteBreakdown(text: string): ByteInfo[] {
   const encoder = new TextEncoder();
-  const chars = [...text].slice(0, 64);
+  const chars = Array.from(text).slice(0, 64);
   return chars.map((ch) => {
     const cp = ch.codePointAt(0) ?? 0;
     const bytes = encoder.encode(ch);

@@ -109,7 +109,7 @@ describe("isValidPosition", () => {
   it("他のピースと重なると無効", () => {
     const filledBoard = createBoard();
     filledBoard[5][4] = 1; // (4,5)に配置済みセル
-    const shape = TETROMINOES[2]; // O: (x,y),(x+1,y),(x,y+1),(x+1,y+1)
+    const _shape = TETROMINOES[2]; // O: (x,y),(x+1,y),(x,y+1),(x+1,y+1)
     // Tピースの(1,1)が(4,5)に当たる位置に配置
     expect(isValidPosition(filledBoard, TETROMINOES[3], { x: 3, y: 4 })).toBe(false);
   });

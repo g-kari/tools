@@ -93,15 +93,18 @@ export const ESCAPE_MODES: EscapeModeInfo[] = [
  * @returns エスケープ済み文字列
  */
 export function escapeJsDouble(str: string): string {
-  return str
-    .replace(/\\/g, "\\\\")
-    .replace(/"/g, '\\"')
-    .replace(/\n/g, "\\n")
-    .replace(/\r/g, "\\r")
-    .replace(/\t/g, "\\t")
-    .replace(/\0/g, "\\0")
-    .replace(/\u2028/g, "\\u2028")
-    .replace(/\u2029/g, "\\u2029");
+  return (
+    str
+      .replace(/\\/g, "\\\\")
+      .replace(/"/g, '\\"')
+      .replace(/\n/g, "\\n")
+      .replace(/\r/g, "\\r")
+      .replace(/\t/g, "\\t")
+      // eslint-disable-next-line no-control-regex
+      .replace(/\0/g, "\\0")
+      .replace(/\u2028/g, "\\u2028")
+      .replace(/\u2029/g, "\\u2029")
+  );
 }
 
 /**
@@ -110,15 +113,18 @@ export function escapeJsDouble(str: string): string {
  * @returns エスケープ済み文字列
  */
 export function escapeJsSingle(str: string): string {
-  return str
-    .replace(/\\/g, "\\\\")
-    .replace(/'/g, "\\'")
-    .replace(/\n/g, "\\n")
-    .replace(/\r/g, "\\r")
-    .replace(/\t/g, "\\t")
-    .replace(/\0/g, "\\0")
-    .replace(/\u2028/g, "\\u2028")
-    .replace(/\u2029/g, "\\u2029");
+  return (
+    str
+      .replace(/\\/g, "\\\\")
+      .replace(/'/g, "\\'")
+      .replace(/\n/g, "\\n")
+      .replace(/\r/g, "\\r")
+      .replace(/\t/g, "\\t")
+      // eslint-disable-next-line no-control-regex
+      .replace(/\0/g, "\\0")
+      .replace(/\u2028/g, "\\u2028")
+      .replace(/\u2029/g, "\\u2029")
+  );
 }
 
 /**
@@ -146,13 +152,16 @@ export function escapeJson(str: string): string {
  * @returns エスケープ済み文字列
  */
 export function escapePythonDouble(str: string): string {
-  return str
-    .replace(/\\/g, "\\\\")
-    .replace(/"/g, '\\"')
-    .replace(/\n/g, "\\n")
-    .replace(/\r/g, "\\r")
-    .replace(/\t/g, "\\t")
-    .replace(/\0/g, "\\0");
+  return (
+    str
+      .replace(/\\/g, "\\\\")
+      .replace(/"/g, '\\"')
+      .replace(/\n/g, "\\n")
+      .replace(/\r/g, "\\r")
+      .replace(/\t/g, "\\t")
+      // eslint-disable-next-line no-control-regex
+      .replace(/\0/g, "\\0")
+  );
 }
 
 /**
@@ -161,13 +170,16 @@ export function escapePythonDouble(str: string): string {
  * @returns エスケープ済み文字列
  */
 export function escapePythonSingle(str: string): string {
-  return str
-    .replace(/\\/g, "\\\\")
-    .replace(/'/g, "\\'")
-    .replace(/\n/g, "\\n")
-    .replace(/\r/g, "\\r")
-    .replace(/\t/g, "\\t")
-    .replace(/\0/g, "\\0");
+  return (
+    str
+      .replace(/\\/g, "\\\\")
+      .replace(/'/g, "\\'")
+      .replace(/\n/g, "\\n")
+      .replace(/\r/g, "\\r")
+      .replace(/\t/g, "\\t")
+      // eslint-disable-next-line no-control-regex
+      .replace(/\0/g, "\\0")
+  );
 }
 
 /**

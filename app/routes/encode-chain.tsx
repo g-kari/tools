@@ -230,7 +230,7 @@ export function applyTransform(
       case "lowercase":
         return { output: input.toLowerCase() };
       case "reverse":
-        return { output: [...input].reverse().join("") };
+        return { output: Array.from(input).reverse().join("") };
       case "trim":
         return { output: input.trim() };
       default:

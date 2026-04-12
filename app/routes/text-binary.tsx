@@ -283,7 +283,7 @@ function TextBinaryConverter() {
                   バイト数: {decodeResult.bytes.length}
                 </span>
                 <span className="text-binary-stat-badge">
-                  文字数: {[...decodeResult.decoded].length}
+                  文字数: {Array.from(decodeResult.decoded).length}
                 </span>
               </div>
             )}
@@ -320,7 +320,7 @@ function TextBinaryConverter() {
                 ))}
               </tbody>
             </table>
-            {[...inputText].length > 64 && (
+            {Array.from(inputText).length > 64 && (
               <p className="text-binary-truncate-note">※ 内訳は先頭 64 文字のみ表示しています</p>
             )}
           </div>

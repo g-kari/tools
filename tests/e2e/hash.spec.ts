@@ -109,7 +109,7 @@ test.describe("Hash Generator - E2E Tests", () => {
 
   test("TipsCardが表示される", async ({ page }) => {
     // ヒントカードのコンテンツ確認
-    const tipsSection = page.locator('.tips-card, [class*="tips"]').first();
+    const _tipsSection = page.locator('.tips-card, [class*="tips"]').first();
     // tipscardが表示されない場合でも他の要素を確認
     const bodyText = await page.textContent("body");
     expect(bodyText).toContain("使い方");

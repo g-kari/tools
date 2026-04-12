@@ -71,6 +71,7 @@ describe("ANSIカラーコードユーティリティ", () => {
 
     it("リセットコードを末尾に追加する", () => {
       const result = applyAnsiStyle({ ...DEFAULT_STYLE, bold: true }, "Test");
+      // eslint-disable-next-line no-control-regex
       expect(result).toMatch(/\x1b\[0m$/);
     });
   });

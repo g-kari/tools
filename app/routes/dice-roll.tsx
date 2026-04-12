@@ -313,7 +313,7 @@ function DiceRoll() {
               </div>
 
               <div className="roll-history" role="list" aria-label="ロール履歴">
-                {rollHistory.map((entry, index) => (
+                {rollHistory.map((entry, _index) => (
                   <div key={entry.timestamp} className="history-item" role="listitem">
                     <div className="history-notation">{entry.notation}</div>
                     <div className="history-details">

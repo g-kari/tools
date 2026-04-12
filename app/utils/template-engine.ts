@@ -122,7 +122,7 @@ function renderInternal(template: string, context: TemplateData): string {
       const key = template.slice(openIdx + 3, closeIdx).trim();
       const value = lookup(context, key);
       if (value !== undefined && value !== null) {
-        result += String(value);
+        result += typeof value === "object" ? JSON.stringify(value) : String(value);
       }
       pos = closeIdx + 3;
       continue;
@@ -148,7 +148,7 @@ function renderInternal(template: string, context: TemplateData): string {
       const key = tag.slice(1).trim();
       const value = lookup(context, key);
       if (value !== undefined && value !== null) {
-        result += String(value);
+        result += typeof value === "object" ? JSON.stringify(value) : String(value);
       }
       pos = closeIdx + 2;
       continue;
@@ -157,7 +157,7 @@ function renderInternal(template: string, context: TemplateData): string {
     // {{# section }} ... {{/ section }} セクション
     if (tag.startsWith("#")) {
       const key = tag.slice(1).trim();
-      const closeTag = `{{/${key}}}`;
+      const _closeTag = `{{/${key}}}`;
       // 閉じタグを検索（スペースを含む場合も考慮）
       const closeTagIdx = findCloseTag(template, key, closeIdx + 2);
       if (closeTagIdx === -1) {
@@ -216,7 +216,7 @@ function renderInternal(template: string, context: TemplateData): string {
     // {{variable}} 通常の変数展開（HTMLエスケープあり）
     const value = lookup(context, tag);
     if (value !== undefined && value !== null) {
-      result += escapeHtml(String(value));
+      result += escapeHtml(typeof value === "object" ? JSON.stringify(value) : String(value));
     }
     pos = closeIdx + 2;
   }

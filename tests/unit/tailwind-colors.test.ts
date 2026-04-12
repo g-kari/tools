@@ -55,8 +55,8 @@ describe("Tailwind Colors ユーティリティ", () => {
 
     it("全シェードが有効なHEX形式であること", () => {
       const hexPattern = /^#[0-9a-f]{6}$/;
-      for (const [colorName, shades] of Object.entries(TAILWIND_COLORS)) {
-        for (const [shade, hex] of Object.entries(shades)) {
+      for (const [_colorName, shades] of Object.entries(TAILWIND_COLORS)) {
+        for (const [_shade, hex] of Object.entries(shades)) {
           expect(hex).toMatch(hexPattern);
           expect(typeof hex).toBe("string");
         }
