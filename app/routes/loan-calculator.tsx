@@ -75,7 +75,7 @@ function LoanCalculator() {
 
   const handleCopy = useCallback(
     (text: string, label: string) => {
-      navigator.clipboard.writeText(text).then(() => {
+      void navigator.clipboard.writeText(text).then(() => {
         showToast(`${label}をコピーしました`, "success");
       });
     },

@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useMemo, useCallback } from "react";
 import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
-import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
 import {
   calculateCombinatorics,

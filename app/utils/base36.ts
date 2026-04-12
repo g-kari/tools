@@ -52,7 +52,7 @@ function getAlphabet(variant: Base36Variant): string {
 /**
  * アルファベットから逆引き辞書を作成する（大文字小文字を統一して扱う）
  */
-function buildLookup(variant: Base36Variant): Map<string, number> {
+function buildLookup(_variant: Base36Variant): Map<string, number> {
   const alphabet = BASE36_ALPHABET_LOWER;
   const map = new Map<string, number>();
   for (let i = 0; i < alphabet.length; i++) {

@@ -385,7 +385,7 @@ function ColorPicker() {
       try {
         await navigator.clipboard.writeText(text);
         showToast(`${format}形式をコピーしました`, "success");
-      } catch (error) {
+      } catch {
         showToast("コピーに失敗しました", "error");
       }
     },

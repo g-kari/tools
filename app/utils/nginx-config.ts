@@ -109,7 +109,7 @@ export function validateDomain(domain: string): boolean {
 /**
  * インデントを付与するヘルパー
  */
-function indent(text: string, spaces: number = 4): string {
+function _indent(text: string, spaces: number = 4): string {
   const pad = " ".repeat(spaces);
   return text
     .split("\n")

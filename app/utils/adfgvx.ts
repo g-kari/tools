@@ -145,7 +145,7 @@ function reverseColumnTranspose(text: string, key: string): string {
 
   // 各列の長さを計算（不均等な場合を考慮）
   // 元のグリッドでは列インデックス0〜(remainder-1)がnumRows行、remainder以降はnumRows-1行
-  const colLengths = new Array(numCols).fill(numRows);
+  const colLengths = Array.from({ length: numCols }, () => numRows);
   if (remainder > 0) {
     for (let c = remainder; c < numCols; c++) {
       colLengths[c]--;
@@ -153,7 +153,7 @@ function reverseColumnTranspose(text: string, key: string): string {
   }
 
   // テキストを列ごとに分割（ソート順で読み取った列に対応）
-  const columns: string[] = new Array(numCols).fill("");
+  const columns: string[] = Array.from({ length: numCols }, () => "");
   let pos = 0;
   for (const origCol of order) {
     const len = colLengths[origCol];

@@ -64,7 +64,7 @@ function IEEE754Visualizer() {
   const [precision, setPrecision] = useState<FloatPrecision>("float32");
   const [inputValue, setInputValue] = useState("");
   const [inputMode, setInputMode] = useState<InputMode>("decimal");
-  const [bits, setBits] = useState<number[]>(new Array(64).fill(0));
+  const [bits, setBits] = useState<number[]>(Array.from({ length: 64 }, () => 0));
   const [parseError, setParseError] = useState("");
 
   const { showToast } = useToast();
@@ -84,7 +84,7 @@ function IEEE754Visualizer() {
   /** ビット配列を設定する（解析結果から） */
   const applyAnalysis = useCallback((r: IEEE754Result) => {
     const newBits = [r.signBit, ...r.exponentBits, ...r.mantissaBits];
-    setBits([...newBits, ...new Array(64 - newBits.length).fill(0)]);
+    setBits([...newBits, ...Array.from({ length: 64 - newBits.length }, () => 0)]);
   }, []);
 
   /** 10進数入力の処理 */
@@ -92,7 +92,7 @@ function IEEE754Visualizer() {
     (str: string) => {
       setInputValue(str);
       if (!str.trim()) {
-        setBits(new Array(64).fill(0));
+        setBits(Array.from({ length: 64 }, () => 0));
         setParseError("");
         return;
       }
@@ -126,7 +126,7 @@ function IEEE754Visualizer() {
       setInputValue(str);
       const clean = str.replace(/[\s_]/g, "").replace(/^0x/i, "");
       if (!clean) {
-        setBits(new Array(64).fill(0));
+        setBits(Array.from({ length: 64 }, () => 0));
         setParseError("");
         return;
       }
@@ -167,7 +167,7 @@ function IEEE754Visualizer() {
       // 現在の数値を保持して新しい精度で再解析
       const currentValue = result.decimalValue;
       setPrecision(p);
-      setBits(new Array(64).fill(0));
+      setBits(Array.from({ length: 64 }, () => 0));
       setInputValue("");
       setParseError("");
       // 現在値が有効なら変換する（次のレンダリングで再計算される）
@@ -238,7 +238,7 @@ function IEEE754Visualizer() {
   const presets = precision === "float32" ? FLOAT32_PRESETS : FLOAT64_PRESETS;
 
   // ビットの種別を判定
-  function getBitType(index: number): "sign" | "exp" | "mant" {
+  function _getBitType(index: number): "sign" | "exp" | "mant" {
     if (index === 0) return "sign";
     if (index < 1 + expBitsCount) return "exp";
     return "mant";

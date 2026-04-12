@@ -208,7 +208,8 @@ describe("Dice Roll", () => {
     });
 
     it("should clamp dice count below minimum", () => {
-      const count = Math.max(1, Math.min(100, 0));
+      const input = 0;
+      const count = Math.max(1, Math.min(100, input));
       expect(count).toBe(1);
     });
 
@@ -228,7 +229,8 @@ describe("Dice Roll", () => {
     });
 
     it("should clamp dice sides below minimum", () => {
-      const sides = Math.max(2, Math.min(1000, 1));
+      const input = 1;
+      const sides = Math.max(2, Math.min(1000, input));
       expect(sides).toBe(2);
     });
 

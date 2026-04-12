@@ -172,7 +172,7 @@ class Parser {
     for (let i = 0; i < count; i++) {
       const key = this.parseValue();
       const val = this.parseValue();
-      const keyStr = String(key);
+      const keyStr = typeof key === "object" ? JSON.stringify(key) : String(key);
       result[keyStr] = val;
       if (typeof key !== "number" || key !== i) isIndexed = false;
     }
@@ -205,7 +205,7 @@ class Parser {
     for (let i = 0; i < count; i++) {
       const key = this.parseValue();
       const val = this.parseValue();
-      properties[String(key)] = val;
+      properties[typeof key === "object" ? JSON.stringify(key) : String(key)] = val;
     }
     this.consume("}");
     return { __className: className, properties };

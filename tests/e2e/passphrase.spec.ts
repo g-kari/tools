@@ -21,7 +21,7 @@ test.describe("Passphrase Generator - E2E Tests", () => {
 
   test("should generate a new passphrase when clicking the generate button", async ({ page }) => {
     const output = page.locator("#pp-output");
-    const firstValue = await output.inputValue();
+    const _firstValue = await output.inputValue();
 
     await page.getByRole("button", { name: "生成" }).click();
     const secondValue = await output.inputValue();

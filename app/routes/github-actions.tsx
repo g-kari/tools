@@ -218,7 +218,7 @@ function GithubActionsPage() {
     updateJob({ steps: newSteps });
   };
 
-  const toggleStep = (i: number, enabled: boolean) => {
+  const _toggleStep = (i: number, enabled: boolean) => {
     updateStep(i, { enabled });
   };
 

@@ -140,7 +140,7 @@ test.describe("DNS Lookup - E2E Tests", () => {
     await domainInput.press("Enter");
 
     // Should start searching (button should show "検索中...")
-    const searchButton = page.locator("button.primary-button");
+    const _searchButton = page.locator("button.primary-button");
     // Wait a bit for the button text to change
     await page.waitForTimeout(100);
   });

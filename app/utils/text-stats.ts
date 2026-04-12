@@ -131,7 +131,7 @@ export interface TextStats {
  * @returns 文字数
  */
 export function countChars(text: string): number {
-  return [...text].length;
+  return Array.from(text).length;
 }
 
 /**
@@ -140,7 +140,7 @@ export function countChars(text: string): number {
  * @returns 文字数（スペース除く）
  */
 export function countCharsNoSpaces(text: string): number {
-  return [...text.replace(/\s/g, "")].length;
+  return Array.from(text.replace(/\s/g, "")).length;
 }
 
 /**
@@ -228,7 +228,7 @@ export function countUniqueWords(text: string): number {
 export function getAverageWordLength(text: string): number {
   const words = tokenizeWords(text);
   if (words.length === 0) return 0;
-  const totalLength = words.reduce((sum, w) => sum + [...w].length, 0);
+  const totalLength = words.reduce((sum, w) => sum + Array.from(w).length, 0);
   return Math.round((totalLength / words.length) * 10) / 10;
 }
 

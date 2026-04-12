@@ -199,7 +199,7 @@ function RedirectTracer() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Enter" && e.ctrlKey) {
         e.preventDefault();
-        handleTrace();
+        void handleTrace();
       }
     };
     document.addEventListener("keydown", handleKeyDown);

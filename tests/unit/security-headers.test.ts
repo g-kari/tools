@@ -178,7 +178,7 @@ describe("Security header score calculation logic", () => {
   });
 
   it("should calculate 0% of weight for danger", () => {
-    const cspWeight = weights["Content-Security-Policy"];
+    const _cspWeight = weights["Content-Security-Policy"];
     const dangerScore = 0;
     expect(dangerScore).toBe(0);
   });

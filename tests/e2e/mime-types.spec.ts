@@ -76,7 +76,7 @@ test.describe("MIME Types Reference - E2E Tests", () => {
   });
 
   test("should filter by text category", async ({ page }) => {
-    const textButton = page.locator(".mime-filter-btn", {
+    const _textButton = page.locator(".mime-filter-btn", {
       hasText: "text",
     });
     // exactで "text" のみ一致するボタンを選択

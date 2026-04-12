@@ -92,7 +92,7 @@ function CompoundInterestCalculator() {
         ? [`積立金合計: ${formatYen(result.totalContribution)}`]
         : []),
     ].join("\n");
-    navigator.clipboard.writeText(text).then(() => {
+    void navigator.clipboard.writeText(text).then(() => {
       showToast("計算結果をコピーしました", "success");
     });
   }, [result, showToast]);

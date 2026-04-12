@@ -107,7 +107,7 @@ help: ## このヘルプを表示
  * @param appName アプリケーション名
  * @returns Dockerターゲットの文字列
  */
-function buildDockerTargets(appName: string): string {
+function buildDockerTargets(_appName: string): string {
   return `
 # Docker
 .PHONY: docker-build docker-run docker-push

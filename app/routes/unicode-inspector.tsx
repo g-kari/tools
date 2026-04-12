@@ -225,7 +225,7 @@ function UnicodeInspector() {
   // テキスト解析（上限あり）
   const allChars = useMemo(() => {
     if (!inputText) return [];
-    const truncated = [...inputText].slice(0, MAX_CHARS).join("");
+    const truncated = Array.from(inputText).slice(0, MAX_CHARS).join("");
     return analyzeText(truncated);
   }, [inputText]);
 
@@ -266,7 +266,7 @@ function UnicodeInspector() {
     setPage(0);
   }, []);
 
-  const isTruncated = [...inputText].length > MAX_CHARS;
+  const isTruncated = Array.from(inputText).length > MAX_CHARS;
 
   return (
     <>

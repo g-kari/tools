@@ -8,6090 +8,6090 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from "./routes/__root";
-import { Route as ZeroWidthRouteImport } from "./routes/zero-width";
-import { Route as ZenkakuRouteImport } from "./routes/zenkaku";
-import { Route as YamlTomlRouteImport } from "./routes/yaml-toml";
-import { Route as YamlJsonRouteImport } from "./routes/yaml-json";
-import { Route as YamlFormatterRouteImport } from "./routes/yaml-formatter";
-import { Route as XpathRouteImport } from "./routes/xpath";
-import { Route as XmlJsonRouteImport } from "./routes/xml-json";
-import { Route as XmlRouteImport } from "./routes/xml";
-import { Route as WorldClockRouteImport } from "./routes/world-clock";
-import { Route as WordleRouteImport } from "./routes/wordle";
-import { Route as WordFrequencyRouteImport } from "./routes/word-frequency";
-import { Route as WhoisRouteImport } from "./routes/whois";
-import { Route as WebsocketRouteImport } from "./routes/websocket";
-import { Route as WebManifestRouteImport } from "./routes/web-manifest";
-import { Route as WarikanRouteImport } from "./routes/warikan";
-import { Route as WarekiRouteImport } from "./routes/wareki";
-import { Route as VscodeSnippetRouteImport } from "./routes/vscode-snippet";
-import { Route as VigenereRouteImport } from "./routes/vigenere";
-import { Route as VideoConverterRouteImport } from "./routes/video-converter";
-import { Route as UuidInspectorRouteImport } from "./routes/uuid-inspector";
-import { Route as UuidRouteImport } from "./routes/uuid";
-import { Route as UtmBuilderRouteImport } from "./routes/utm-builder";
-import { Route as UserAgentRouteImport } from "./routes/user-agent";
-import { Route as UrlParserRouteImport } from "./routes/url-parser";
-import { Route as UrlEncodeRouteImport } from "./routes/url-encode";
-import { Route as UnitConverterRouteImport } from "./routes/unit-converter";
-import { Route as UnicodeInspectorRouteImport } from "./routes/unicode-inspector";
-import { Route as UnicodeRouteImport } from "./routes/unicode";
-import { Route as UlidRouteImport } from "./routes/ulid";
-import { Route as TypographyScaleRouteImport } from "./routes/typography-scale";
-import { Route as TypingSpeedRouteImport } from "./routes/typing-speed";
-import { Route as TsconfigBuilderRouteImport } from "./routes/tsconfig-builder";
-import { Route as TruthTableRouteImport } from "./routes/truth-table";
-import { Route as TrigRouteImport } from "./routes/trig";
-import { Route as TransparentImageRouteImport } from "./routes/transparent-image";
-import { Route as TransferSpeedRouteImport } from "./routes/transfer-speed";
-import { Route as TotpRouteImport } from "./routes/totp";
-import { Route as TopRouteImport } from "./routes/top";
-import { Route as TomlJsonRouteImport } from "./routes/toml-json";
-import { Route as TomlFormatterRouteImport } from "./routes/toml-formatter";
-import { Route as TokenEstimatorRouteImport } from "./routes/token-estimator";
-import { Route as TimezoneRouteImport } from "./routes/timezone";
-import { Route as TimestampRouteImport } from "./routes/timestamp";
-import { Route as TicTacToeRouteImport } from "./routes/tic-tac-toe";
-import { Route as TextStatsRouteImport } from "./routes/text-stats";
-import { Route as TextSortRouteImport } from "./routes/text-sort";
-import { Route as TextReplaceRouteImport } from "./routes/text-replace";
-import { Route as TextLineRouteImport } from "./routes/text-line";
-import { Route as TextEncryptRouteImport } from "./routes/text-encrypt";
-import { Route as TextCaseRouteImport } from "./routes/text-case";
-import { Route as TextBinaryRouteImport } from "./routes/text-binary";
-import { Route as TetrisRouteImport } from "./routes/tetris";
-import { Route as TemplateRouteImport } from "./routes/template";
-import { Route as TaxCalculatorRouteImport } from "./routes/tax-calculator";
-import { Route as TapCodeRouteImport } from "./routes/tap-code";
-import { Route as TailwindColorsRouteImport } from "./routes/tailwind-colors";
-import { Route as SvgOptimizerRouteImport } from "./routes/svg-optimizer";
-import { Route as SudokuRouteImport } from "./routes/sudoku";
-import { Route as StringSimilarityRouteImport } from "./routes/string-similarity";
-import { Route as StringEscapeRouteImport } from "./routes/string-escape";
-import { Route as StorageConverterRouteImport } from "./routes/storage-converter";
-import { Route as StopwatchRouteImport } from "./routes/stopwatch";
-import { Route as StatisticsRouteImport } from "./routes/statistics";
-import { Route as SshKeyRouteImport } from "./routes/ssh-key";
-import { Route as SriHashRouteImport } from "./routes/sri-hash";
-import { Route as SqlToTsRouteImport } from "./routes/sql-to-ts";
-import { Route as SqlRouteImport } from "./routes/sql";
-import { Route as SortVisualizerRouteImport } from "./routes/sort-visualizer";
-import { Route as SnakeRouteImport } from "./routes/snake";
-import { Route as SlugRouteImport } from "./routes/slug";
-import { Route as SitemapRouteImport } from "./routes/sitemap";
-import { Route as ShortCodeRouteImport } from "./routes/short-code";
-import { Route as ServerEnvRouteImport } from "./routes/server-env";
-import { Route as SequencesRouteImport } from "./routes/sequences";
-import { Route as SeoMetaRouteImport } from "./routes/seo-meta";
-import { Route as SemverRouteImport } from "./routes/semver";
-import { Route as SecurityHeadersRouteImport } from "./routes/security-headers";
-import { Route as ScytaleRouteImport } from "./routes/scytale";
-import { Route as RomanNumeralsRouteImport } from "./routes/roman-numerals";
-import { Route as RobotsTxtRouteImport } from "./routes/robots-txt";
-import { Route as RegexLibraryRouteImport } from "./routes/regex-library";
-import { Route as RegexCheckerRouteImport } from "./routes/regex-checker";
-import { Route as RedirectTracerRouteImport } from "./routes/redirect-tracer";
-import { Route as ReadabilityRouteImport } from "./routes/readability";
-import { Route as RandomPickerRouteImport } from "./routes/random-picker";
-import { Route as RandomDataRouteImport } from "./routes/random-data";
-import { Route as RailFenceRouteImport } from "./routes/rail-fence";
-import { Route as QuotedPrintableRouteImport } from "./routes/quoted-printable";
-import { Route as QrCodeRouteImport } from "./routes/qr-code";
-import { Route as PunycodeRouteImport } from "./routes/punycode";
-import { Route as PrettierConfigBuilderRouteImport } from "./routes/prettier-config-builder";
-import { Route as PortsRouteImport } from "./routes/ports";
-import { Route as PortCheckRouteImport } from "./routes/port-check";
-import { Route as PomodoroRouteImport } from "./routes/pomodoro";
-import { Route as PolybiusRouteImport } from "./routes/polybius";
-import { Route as PlayfairRouteImport } from "./routes/playfair";
-import { Route as PkceRouteImport } from "./routes/pkce";
-import { Route as PhpSerializeRouteImport } from "./routes/php-serialize";
-import { Route as PhoneRouteImport } from "./routes/phone";
-import { Route as PercentageCalculatorRouteImport } from "./routes/percentage-calculator";
-import { Route as PasswordStrengthRouteImport } from "./routes/password-strength";
-import { Route as PasswordGeneratorRouteImport } from "./routes/password-generator";
-import { Route as PassphraseRouteImport } from "./routes/passphrase";
-import { Route as PackageJsonRouteImport } from "./routes/package-json";
-import { Route as OpensslBuilderRouteImport } from "./routes/openssl-builder";
-import { Route as OgpGeneratorRouteImport } from "./routes/ogp-generator";
-import { Route as OgpRouteImport } from "./routes/ogp";
-import { Route as NumberWordsRouteImport } from "./routes/number-words";
-import { Route as NumberTheoryRouteImport } from "./routes/number-theory";
-import { Route as NumberFormatRouteImport } from "./routes/number-format";
-import { Route as NumberBaseRouteImport } from "./routes/number-base";
-import { Route as NginxConfigRouteImport } from "./routes/nginx-config";
-import { Route as NatoAlphabetRouteImport } from "./routes/nato-alphabet";
-import { Route as NanoIdRouteImport } from "./routes/nano-id";
-import { Route as MsgpackRouteImport } from "./routes/msgpack";
-import { Route as MorseCodeRouteImport } from "./routes/morse-code";
-import { Route as MinifyRouteImport } from "./routes/minify";
-import { Route as MinesweeperRouteImport } from "./routes/minesweeper";
-import { Route as MimeTypesRouteImport } from "./routes/mime-types";
-import { Route as MermaidRouteImport } from "./routes/mermaid";
-import { Route as MatrixRouteImport } from "./routes/matrix";
-import { Route as MathEvalRouteImport } from "./routes/math-eval";
-import { Route as MarkdownTableRouteImport } from "./routes/markdown-table";
-import { Route as MarkdownPreviewRouteImport } from "./routes/markdown-preview";
-import { Route as MandelbrotRouteImport } from "./routes/mandelbrot";
-import { Route as MakefileRouteImport } from "./routes/makefile";
-import { Route as LuhnCheckRouteImport } from "./routes/luhn-check";
-import { Route as LoremIpsumRouteImport } from "./routes/lorem-ipsum";
-import { Route as LoanCalculatorRouteImport } from "./routes/loan-calculator";
-import { Route as LissajousRouteImport } from "./routes/lissajous";
-import { Route as LineEndingRouteImport } from "./routes/line-ending";
-import { Route as LifeGameRouteImport } from "./routes/life-game";
-import { Route as KeycodeRouteImport } from "./routes/keycode";
-import { Route as KanaConvertRouteImport } from "./routes/kana-convert";
-import { Route as JwtGeneratorRouteImport } from "./routes/jwt-generator";
-import { Route as JwtRouteImport } from "./routes/jwt";
-import { Route as JsonToZodRouteImport } from "./routes/json-to-zod";
-import { Route as JsonToTsRouteImport } from "./routes/json-to-ts";
-import { Route as JsonToSqlRouteImport } from "./routes/json-to-sql";
-import { Route as JsonToGraphqlRouteImport } from "./routes/json-to-graphql";
-import { Route as JsonSchemaValidatorRouteImport } from "./routes/json-schema-validator";
-import { Route as JsonSchemaRouteImport } from "./routes/json-schema";
-import { Route as JsonPointerRouteImport } from "./routes/json-pointer";
-import { Route as JsonPathRouteImport } from "./routes/json-path";
-import { Route as JsonMergeRouteImport } from "./routes/json-merge";
-import { Route as JsonLinesRouteImport } from "./routes/json-lines";
-import { Route as JsonFlattenRouteImport } from "./routes/json-flatten";
-import { Route as JsonCompareRouteImport } from "./routes/json-compare";
-import { Route as JsonRouteImport } from "./routes/json";
-import { Route as IsbnRouteImport } from "./routes/isbn";
-import { Route as Ipv6RouteImport } from "./routes/ipv6";
-import { Route as IpGeolocationRouteImport } from "./routes/ip-geolocation";
-import { Route as IpConverterRouteImport } from "./routes/ip-converter";
-import { Route as IpCidrCheckRouteImport } from "./routes/ip-cidr-check";
-import { Route as IniParserRouteImport } from "./routes/ini-parser";
-import { Route as ImageToGifRouteImport } from "./routes/image-to-gif";
-import { Route as ImageResizeRouteImport } from "./routes/image-resize";
-import { Route as ImageCropRouteImport } from "./routes/image-crop";
-import { Route as ImageCompressRouteImport } from "./routes/image-compress";
-import { Route as ImageBase64RouteImport } from "./routes/image-base64";
-import { Route as Ieee754RouteImport } from "./routes/ieee754";
-import { Route as IbanRouteImport } from "./routes/iban";
-import { Route as HttpStatusRouteImport } from "./routes/http-status";
-import { Route as HttpHeadersRouteImport } from "./routes/http-headers";
-import { Route as HttpClientRouteImport } from "./routes/http-client";
-import { Route as HtmlToJsxRouteImport } from "./routes/html-to-jsx";
-import { Route as HtmlPlaygroundRouteImport } from "./routes/html-playground";
-import { Route as HtmlMarkdownRouteImport } from "./routes/html-markdown";
-import { Route as HtmlFormatterRouteImport } from "./routes/html-formatter";
-import { Route as HtmlEncodeRouteImport } from "./routes/html-encode";
-import { Route as HtaccessBuilderRouteImport } from "./routes/htaccess-builder";
-import { Route as HmacRouteImport } from "./routes/hmac";
-import { Route as HexViewerRouteImport } from "./routes/hex-viewer";
-import { Route as HaversineRouteImport } from "./routes/haversine";
-import { Route as HashRouteImport } from "./routes/hash";
-import { Route as HarRouteImport } from "./routes/har";
-import { Route as HangmanRouteImport } from "./routes/hangman";
-import { Route as GzipRouteImport } from "./routes/gzip";
-import { Route as GronsfeldRouteImport } from "./routes/gronsfeld";
-import { Route as GraphqlRouteImport } from "./routes/graphql";
-import { Route as GlobalIpRouteImport } from "./routes/global-ip";
-import { Route as GlobTesterRouteImport } from "./routes/glob-tester";
-import { Route as GitignoreRouteImport } from "./routes/gitignore";
-import { Route as GithubBadgeRouteImport } from "./routes/github-badge";
-import { Route as GithubActionsRouteImport } from "./routes/github-actions";
-import { Route as GitattributesRouteImport } from "./routes/gitattributes";
-import { Route as GeometryRouteImport } from "./routes/geometry";
-import { Route as GeohashRouteImport } from "./routes/geohash";
-import { Route as Game2048RouteImport } from "./routes/game-2048";
-import { Route as FunctionPlotterRouteImport } from "./routes/function-plotter";
-import { Route as FractionRouteImport } from "./routes/fraction";
-import { Route as FourSquareRouteImport } from "./routes/four-square";
-import { Route as FaviconGeneratorRouteImport } from "./routes/favicon-generator";
-import { Route as FancyTextRouteImport } from "./routes/fancy-text";
-import { Route as ExifViewerRouteImport } from "./routes/exif-viewer";
-import { Route as EslintConfigBuilderRouteImport } from "./routes/eslint-config-builder";
-import { Route as EnvParserRouteImport } from "./routes/env-parser";
-import { Route as EntropyRouteImport } from "./routes/entropy";
-import { Route as EncodingRouteImport } from "./routes/encoding";
-import { Route as EncodeChainRouteImport } from "./routes/encode-chain";
-import { Route as EmojiConverterRouteImport } from "./routes/emoji-converter";
-import { Route as EmailHeaderRouteImport } from "./routes/email-header";
-import { Route as EmailDnsRouteImport } from "./routes/email-dns";
-import { Route as EditorconfigRouteImport } from "./routes/editorconfig";
-import { Route as DurationRouteImport } from "./routes/duration";
-import { Route as DummyImageRouteImport } from "./routes/dummy-image";
-import { Route as DummyAudioRouteImport } from "./routes/dummy-audio";
-import { Route as DockerfileRouteImport } from "./routes/dockerfile";
-import { Route as DockerRunToComposeRouteImport } from "./routes/docker-run-to-compose";
-import { Route as DnsLookupRouteImport } from "./routes/dns-lookup";
-import { Route as DiscordStickerRouteImport } from "./routes/discord-sticker";
-import { Route as DiscordEmojiRouteImport } from "./routes/discord-emoji";
-import { Route as DiffRouteImport } from "./routes/diff";
-import { Route as DiceRollRouteImport } from "./routes/dice-roll";
-import { Route as DateCalcRouteImport } from "./routes/date-calc";
-import { Route as DaijiRouteImport } from "./routes/daiji";
-import { Route as CurlToFetchRouteImport } from "./routes/curl-to-fetch";
-import { Route as CurlBuilderRouteImport } from "./routes/curl-builder";
-import { Route as CsvSqlRouteImport } from "./routes/csv-sql";
-import { Route as CsvJsonRouteImport } from "./routes/csv-json";
-import { Route as CssVariablesRouteImport } from "./routes/css-variables";
-import { Route as CssUnitRouteImport } from "./routes/css-unit";
-import { Route as CssTransformRouteImport } from "./routes/css-transform";
-import { Route as CssTextShadowRouteImport } from "./routes/css-text-shadow";
-import { Route as CssSpecificityRouteImport } from "./routes/css-specificity";
-import { Route as CssShorthandRouteImport } from "./routes/css-shorthand";
-import { Route as CssSelectorRouteImport } from "./routes/css-selector";
-import { Route as CssScrollSnapRouteImport } from "./routes/css-scroll-snap";
-import { Route as CssMediaQueryRouteImport } from "./routes/css-media-query";
-import { Route as CssLogicalRouteImport } from "./routes/css-logical";
-import { Route as CssGridRouteImport } from "./routes/css-grid";
-import { Route as CssGradientRouteImport } from "./routes/css-gradient";
-import { Route as CssFormatterRouteImport } from "./routes/css-formatter";
-import { Route as CssFlexboxRouteImport } from "./routes/css-flexbox";
-import { Route as CssFilterRouteImport } from "./routes/css-filter";
-import { Route as CssCubicBezierRouteImport } from "./routes/css-cubic-bezier";
-import { Route as CssContainerQueryRouteImport } from "./routes/css-container-query";
-import { Route as CssClipPathRouteImport } from "./routes/css-clip-path";
-import { Route as CssClampRouteImport } from "./routes/css-clamp";
-import { Route as CssBoxShadowRouteImport } from "./routes/css-box-shadow";
-import { Route as CssBorderRadiusRouteImport } from "./routes/css-border-radius";
-import { Route as CssBackgroundPatternRouteImport } from "./routes/css-background-pattern";
-import { Route as CssAnimationRouteImport } from "./routes/css-animation";
-import { Route as CspBuilderRouteImport } from "./routes/csp-builder";
-import { Route as CronParserRouteImport } from "./routes/cron-parser";
-import { Route as CronRouteImport } from "./routes/cron";
-import { Route as CountdownRouteImport } from "./routes/countdown";
-import { Route as CorsBuilderRouteImport } from "./routes/cors-builder";
-import { Route as CookieParserRouteImport } from "./routes/cookie-parser";
-import { Route as ConventionalCommitsRouteImport } from "./routes/conventional-commits";
-import { Route as CompoundInterestRouteImport } from "./routes/compound-interest";
-import { Route as CombinatoricsRouteImport } from "./routes/combinatorics";
-import { Route as ColumnarTranspositionRouteImport } from "./routes/columnar-transposition";
-import { Route as ColorTokenRouteImport } from "./routes/color-token";
-import { Route as ColorTemperatureRouteImport } from "./routes/color-temperature";
-import { Route as ColorPickerRouteImport } from "./routes/color-picker";
-import { Route as ColorPaletteRouteImport } from "./routes/color-palette";
-import { Route as ColorNameRouteImport } from "./routes/color-name";
-import { Route as ColorMixRouteImport } from "./routes/color-mix";
-import { Route as ColorHarmonyRouteImport } from "./routes/color-harmony";
-import { Route as ColorExtractorRouteImport } from "./routes/color-extractor";
-import { Route as ColorConverterRouteImport } from "./routes/color-converter";
-import { Route as ColorContrastRouteImport } from "./routes/color-contrast";
-import { Route as ColorBlindRouteImport } from "./routes/color-blind";
-import { Route as CidrRouteImport } from "./routes/cidr";
-import { Route as ChmodRouteImport } from "./routes/chmod";
-import { Route as CharFrequencyRouteImport } from "./routes/char-frequency";
-import { Route as CharCountRouteImport } from "./routes/char-count";
-import { Route as CertDecoderRouteImport } from "./routes/cert-decoder";
-import { Route as CaesarRouteImport } from "./routes/caesar";
-import { Route as CacheControlRouteImport } from "./routes/cache-control";
-import { Route as BstVisualizerRouteImport } from "./routes/bst-visualizer";
-import { Route as BrainfuckRouteImport } from "./routes/brainfuck";
-import { Route as BrailleRouteImport } from "./routes/braille";
-import { Route as BpmRouteImport } from "./routes/bpm";
-import { Route as BmiCalculatorRouteImport } from "./routes/bmi-calculator";
-import { Route as BitwiseRouteImport } from "./routes/bitwise";
-import { Route as BifidRouteImport } from "./routes/bifid";
-import { Route as BeaufortRouteImport } from "./routes/beaufort";
-import { Route as BasicAuthRouteImport } from "./routes/basic-auth";
-import { Route as Base85RouteImport } from "./routes/base85";
-import { Route as Base64ImageRouteImport } from "./routes/base64-image";
-import { Route as Base64RouteImport } from "./routes/base64";
-import { Route as Base62RouteImport } from "./routes/base62";
-import { Route as Base58RouteImport } from "./routes/base58";
-import { Route as Base36RouteImport } from "./routes/base36";
-import { Route as Base32RouteImport } from "./routes/base32";
-import { Route as Base16RouteImport } from "./routes/base16";
-import { Route as BarcodeRouteImport } from "./routes/barcode";
-import { Route as BackgroundRemovalRouteImport } from "./routes/background-removal";
-import { Route as AudioConverterRouteImport } from "./routes/audio-converter";
-import { Route as AtbashRouteImport } from "./routes/atbash";
-import { Route as AspectRatioRouteImport } from "./routes/aspect-ratio";
-import { Route as AsciiTableRouteImport } from "./routes/ascii-table";
-import { Route as AsciiArtRouteImport } from "./routes/ascii-art";
-import { Route as AnsiColorRouteImport } from "./routes/ansi-color";
-import { Route as AffineRouteImport } from "./routes/affine";
-import { Route as AdfgvxRouteImport } from "./routes/adfgvx";
-import { Route as IndexRouteImport } from "./routes/index";
-import { Route as ApiImageDotwebpRouteImport } from "./routes/api/image[.]webp";
-import { Route as ApiImageDotsvgRouteImport } from "./routes/api/image[.]svg";
-import { Route as ApiImageDotpngRouteImport } from "./routes/api/image[.]png";
-import { Route as ApiImageDotjpgRouteImport } from "./routes/api/image[.]jpg";
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as ZeroWidthRouteImport } from './routes/zero-width'
+import { Route as ZenkakuRouteImport } from './routes/zenkaku'
+import { Route as YamlTomlRouteImport } from './routes/yaml-toml'
+import { Route as YamlJsonRouteImport } from './routes/yaml-json'
+import { Route as YamlFormatterRouteImport } from './routes/yaml-formatter'
+import { Route as XpathRouteImport } from './routes/xpath'
+import { Route as XmlJsonRouteImport } from './routes/xml-json'
+import { Route as XmlRouteImport } from './routes/xml'
+import { Route as WorldClockRouteImport } from './routes/world-clock'
+import { Route as WordleRouteImport } from './routes/wordle'
+import { Route as WordFrequencyRouteImport } from './routes/word-frequency'
+import { Route as WhoisRouteImport } from './routes/whois'
+import { Route as WebsocketRouteImport } from './routes/websocket'
+import { Route as WebManifestRouteImport } from './routes/web-manifest'
+import { Route as WarikanRouteImport } from './routes/warikan'
+import { Route as WarekiRouteImport } from './routes/wareki'
+import { Route as VscodeSnippetRouteImport } from './routes/vscode-snippet'
+import { Route as VigenereRouteImport } from './routes/vigenere'
+import { Route as VideoConverterRouteImport } from './routes/video-converter'
+import { Route as UuidInspectorRouteImport } from './routes/uuid-inspector'
+import { Route as UuidRouteImport } from './routes/uuid'
+import { Route as UtmBuilderRouteImport } from './routes/utm-builder'
+import { Route as UserAgentRouteImport } from './routes/user-agent'
+import { Route as UrlParserRouteImport } from './routes/url-parser'
+import { Route as UrlEncodeRouteImport } from './routes/url-encode'
+import { Route as UnitConverterRouteImport } from './routes/unit-converter'
+import { Route as UnicodeInspectorRouteImport } from './routes/unicode-inspector'
+import { Route as UnicodeRouteImport } from './routes/unicode'
+import { Route as UlidRouteImport } from './routes/ulid'
+import { Route as TypographyScaleRouteImport } from './routes/typography-scale'
+import { Route as TypingSpeedRouteImport } from './routes/typing-speed'
+import { Route as TsconfigBuilderRouteImport } from './routes/tsconfig-builder'
+import { Route as TruthTableRouteImport } from './routes/truth-table'
+import { Route as TrigRouteImport } from './routes/trig'
+import { Route as TransparentImageRouteImport } from './routes/transparent-image'
+import { Route as TransferSpeedRouteImport } from './routes/transfer-speed'
+import { Route as TotpRouteImport } from './routes/totp'
+import { Route as TopRouteImport } from './routes/top'
+import { Route as TomlJsonRouteImport } from './routes/toml-json'
+import { Route as TomlFormatterRouteImport } from './routes/toml-formatter'
+import { Route as TokenEstimatorRouteImport } from './routes/token-estimator'
+import { Route as TimezoneRouteImport } from './routes/timezone'
+import { Route as TimestampRouteImport } from './routes/timestamp'
+import { Route as TicTacToeRouteImport } from './routes/tic-tac-toe'
+import { Route as TextStatsRouteImport } from './routes/text-stats'
+import { Route as TextSortRouteImport } from './routes/text-sort'
+import { Route as TextReplaceRouteImport } from './routes/text-replace'
+import { Route as TextLineRouteImport } from './routes/text-line'
+import { Route as TextEncryptRouteImport } from './routes/text-encrypt'
+import { Route as TextCaseRouteImport } from './routes/text-case'
+import { Route as TextBinaryRouteImport } from './routes/text-binary'
+import { Route as TetrisRouteImport } from './routes/tetris'
+import { Route as TemplateRouteImport } from './routes/template'
+import { Route as TaxCalculatorRouteImport } from './routes/tax-calculator'
+import { Route as TapCodeRouteImport } from './routes/tap-code'
+import { Route as TailwindColorsRouteImport } from './routes/tailwind-colors'
+import { Route as SvgOptimizerRouteImport } from './routes/svg-optimizer'
+import { Route as SudokuRouteImport } from './routes/sudoku'
+import { Route as StringSimilarityRouteImport } from './routes/string-similarity'
+import { Route as StringEscapeRouteImport } from './routes/string-escape'
+import { Route as StorageConverterRouteImport } from './routes/storage-converter'
+import { Route as StopwatchRouteImport } from './routes/stopwatch'
+import { Route as StatisticsRouteImport } from './routes/statistics'
+import { Route as SshKeyRouteImport } from './routes/ssh-key'
+import { Route as SriHashRouteImport } from './routes/sri-hash'
+import { Route as SqlToTsRouteImport } from './routes/sql-to-ts'
+import { Route as SqlRouteImport } from './routes/sql'
+import { Route as SortVisualizerRouteImport } from './routes/sort-visualizer'
+import { Route as SnakeRouteImport } from './routes/snake'
+import { Route as SlugRouteImport } from './routes/slug'
+import { Route as SitemapRouteImport } from './routes/sitemap'
+import { Route as ShortCodeRouteImport } from './routes/short-code'
+import { Route as ServerEnvRouteImport } from './routes/server-env'
+import { Route as SequencesRouteImport } from './routes/sequences'
+import { Route as SeoMetaRouteImport } from './routes/seo-meta'
+import { Route as SemverRouteImport } from './routes/semver'
+import { Route as SecurityHeadersRouteImport } from './routes/security-headers'
+import { Route as ScytaleRouteImport } from './routes/scytale'
+import { Route as RomanNumeralsRouteImport } from './routes/roman-numerals'
+import { Route as RobotsTxtRouteImport } from './routes/robots-txt'
+import { Route as RegexLibraryRouteImport } from './routes/regex-library'
+import { Route as RegexCheckerRouteImport } from './routes/regex-checker'
+import { Route as RedirectTracerRouteImport } from './routes/redirect-tracer'
+import { Route as ReadabilityRouteImport } from './routes/readability'
+import { Route as RandomPickerRouteImport } from './routes/random-picker'
+import { Route as RandomDataRouteImport } from './routes/random-data'
+import { Route as RailFenceRouteImport } from './routes/rail-fence'
+import { Route as QuotedPrintableRouteImport } from './routes/quoted-printable'
+import { Route as QrCodeRouteImport } from './routes/qr-code'
+import { Route as PunycodeRouteImport } from './routes/punycode'
+import { Route as PrettierConfigBuilderRouteImport } from './routes/prettier-config-builder'
+import { Route as PortsRouteImport } from './routes/ports'
+import { Route as PortCheckRouteImport } from './routes/port-check'
+import { Route as PomodoroRouteImport } from './routes/pomodoro'
+import { Route as PolybiusRouteImport } from './routes/polybius'
+import { Route as PlayfairRouteImport } from './routes/playfair'
+import { Route as PkceRouteImport } from './routes/pkce'
+import { Route as PhpSerializeRouteImport } from './routes/php-serialize'
+import { Route as PhoneRouteImport } from './routes/phone'
+import { Route as PercentageCalculatorRouteImport } from './routes/percentage-calculator'
+import { Route as PasswordStrengthRouteImport } from './routes/password-strength'
+import { Route as PasswordGeneratorRouteImport } from './routes/password-generator'
+import { Route as PassphraseRouteImport } from './routes/passphrase'
+import { Route as PackageJsonRouteImport } from './routes/package-json'
+import { Route as OpensslBuilderRouteImport } from './routes/openssl-builder'
+import { Route as OgpGeneratorRouteImport } from './routes/ogp-generator'
+import { Route as OgpRouteImport } from './routes/ogp'
+import { Route as NumberWordsRouteImport } from './routes/number-words'
+import { Route as NumberTheoryRouteImport } from './routes/number-theory'
+import { Route as NumberFormatRouteImport } from './routes/number-format'
+import { Route as NumberBaseRouteImport } from './routes/number-base'
+import { Route as NginxConfigRouteImport } from './routes/nginx-config'
+import { Route as NatoAlphabetRouteImport } from './routes/nato-alphabet'
+import { Route as NanoIdRouteImport } from './routes/nano-id'
+import { Route as MsgpackRouteImport } from './routes/msgpack'
+import { Route as MorseCodeRouteImport } from './routes/morse-code'
+import { Route as MinifyRouteImport } from './routes/minify'
+import { Route as MinesweeperRouteImport } from './routes/minesweeper'
+import { Route as MimeTypesRouteImport } from './routes/mime-types'
+import { Route as MermaidRouteImport } from './routes/mermaid'
+import { Route as MatrixRouteImport } from './routes/matrix'
+import { Route as MathEvalRouteImport } from './routes/math-eval'
+import { Route as MarkdownTableRouteImport } from './routes/markdown-table'
+import { Route as MarkdownPreviewRouteImport } from './routes/markdown-preview'
+import { Route as MandelbrotRouteImport } from './routes/mandelbrot'
+import { Route as MakefileRouteImport } from './routes/makefile'
+import { Route as LuhnCheckRouteImport } from './routes/luhn-check'
+import { Route as LoremIpsumRouteImport } from './routes/lorem-ipsum'
+import { Route as LoanCalculatorRouteImport } from './routes/loan-calculator'
+import { Route as LissajousRouteImport } from './routes/lissajous'
+import { Route as LineEndingRouteImport } from './routes/line-ending'
+import { Route as LifeGameRouteImport } from './routes/life-game'
+import { Route as KeycodeRouteImport } from './routes/keycode'
+import { Route as KanaConvertRouteImport } from './routes/kana-convert'
+import { Route as JwtGeneratorRouteImport } from './routes/jwt-generator'
+import { Route as JwtRouteImport } from './routes/jwt'
+import { Route as JsonToZodRouteImport } from './routes/json-to-zod'
+import { Route as JsonToTsRouteImport } from './routes/json-to-ts'
+import { Route as JsonToSqlRouteImport } from './routes/json-to-sql'
+import { Route as JsonToGraphqlRouteImport } from './routes/json-to-graphql'
+import { Route as JsonSchemaValidatorRouteImport } from './routes/json-schema-validator'
+import { Route as JsonSchemaRouteImport } from './routes/json-schema'
+import { Route as JsonPointerRouteImport } from './routes/json-pointer'
+import { Route as JsonPathRouteImport } from './routes/json-path'
+import { Route as JsonMergeRouteImport } from './routes/json-merge'
+import { Route as JsonLinesRouteImport } from './routes/json-lines'
+import { Route as JsonFlattenRouteImport } from './routes/json-flatten'
+import { Route as JsonCompareRouteImport } from './routes/json-compare'
+import { Route as JsonRouteImport } from './routes/json'
+import { Route as IsbnRouteImport } from './routes/isbn'
+import { Route as Ipv6RouteImport } from './routes/ipv6'
+import { Route as IpGeolocationRouteImport } from './routes/ip-geolocation'
+import { Route as IpConverterRouteImport } from './routes/ip-converter'
+import { Route as IpCidrCheckRouteImport } from './routes/ip-cidr-check'
+import { Route as IniParserRouteImport } from './routes/ini-parser'
+import { Route as ImageToGifRouteImport } from './routes/image-to-gif'
+import { Route as ImageResizeRouteImport } from './routes/image-resize'
+import { Route as ImageCropRouteImport } from './routes/image-crop'
+import { Route as ImageCompressRouteImport } from './routes/image-compress'
+import { Route as ImageBase64RouteImport } from './routes/image-base64'
+import { Route as Ieee754RouteImport } from './routes/ieee754'
+import { Route as IbanRouteImport } from './routes/iban'
+import { Route as HttpStatusRouteImport } from './routes/http-status'
+import { Route as HttpHeadersRouteImport } from './routes/http-headers'
+import { Route as HttpClientRouteImport } from './routes/http-client'
+import { Route as HtmlToJsxRouteImport } from './routes/html-to-jsx'
+import { Route as HtmlPlaygroundRouteImport } from './routes/html-playground'
+import { Route as HtmlMarkdownRouteImport } from './routes/html-markdown'
+import { Route as HtmlFormatterRouteImport } from './routes/html-formatter'
+import { Route as HtmlEncodeRouteImport } from './routes/html-encode'
+import { Route as HtaccessBuilderRouteImport } from './routes/htaccess-builder'
+import { Route as HmacRouteImport } from './routes/hmac'
+import { Route as HexViewerRouteImport } from './routes/hex-viewer'
+import { Route as HaversineRouteImport } from './routes/haversine'
+import { Route as HashRouteImport } from './routes/hash'
+import { Route as HarRouteImport } from './routes/har'
+import { Route as HangmanRouteImport } from './routes/hangman'
+import { Route as GzipRouteImport } from './routes/gzip'
+import { Route as GronsfeldRouteImport } from './routes/gronsfeld'
+import { Route as GraphqlRouteImport } from './routes/graphql'
+import { Route as GlobalIpRouteImport } from './routes/global-ip'
+import { Route as GlobTesterRouteImport } from './routes/glob-tester'
+import { Route as GitignoreRouteImport } from './routes/gitignore'
+import { Route as GithubBadgeRouteImport } from './routes/github-badge'
+import { Route as GithubActionsRouteImport } from './routes/github-actions'
+import { Route as GitattributesRouteImport } from './routes/gitattributes'
+import { Route as GeometryRouteImport } from './routes/geometry'
+import { Route as GeohashRouteImport } from './routes/geohash'
+import { Route as Game2048RouteImport } from './routes/game-2048'
+import { Route as FunctionPlotterRouteImport } from './routes/function-plotter'
+import { Route as FractionRouteImport } from './routes/fraction'
+import { Route as FourSquareRouteImport } from './routes/four-square'
+import { Route as FaviconGeneratorRouteImport } from './routes/favicon-generator'
+import { Route as FancyTextRouteImport } from './routes/fancy-text'
+import { Route as ExifViewerRouteImport } from './routes/exif-viewer'
+import { Route as EslintConfigBuilderRouteImport } from './routes/eslint-config-builder'
+import { Route as EnvParserRouteImport } from './routes/env-parser'
+import { Route as EntropyRouteImport } from './routes/entropy'
+import { Route as EncodingRouteImport } from './routes/encoding'
+import { Route as EncodeChainRouteImport } from './routes/encode-chain'
+import { Route as EmojiConverterRouteImport } from './routes/emoji-converter'
+import { Route as EmailHeaderRouteImport } from './routes/email-header'
+import { Route as EmailDnsRouteImport } from './routes/email-dns'
+import { Route as EditorconfigRouteImport } from './routes/editorconfig'
+import { Route as DurationRouteImport } from './routes/duration'
+import { Route as DummyImageRouteImport } from './routes/dummy-image'
+import { Route as DummyAudioRouteImport } from './routes/dummy-audio'
+import { Route as DockerfileRouteImport } from './routes/dockerfile'
+import { Route as DockerRunToComposeRouteImport } from './routes/docker-run-to-compose'
+import { Route as DnsLookupRouteImport } from './routes/dns-lookup'
+import { Route as DiscordStickerRouteImport } from './routes/discord-sticker'
+import { Route as DiscordEmojiRouteImport } from './routes/discord-emoji'
+import { Route as DiffRouteImport } from './routes/diff'
+import { Route as DiceRollRouteImport } from './routes/dice-roll'
+import { Route as DateCalcRouteImport } from './routes/date-calc'
+import { Route as DaijiRouteImport } from './routes/daiji'
+import { Route as CurlToFetchRouteImport } from './routes/curl-to-fetch'
+import { Route as CurlBuilderRouteImport } from './routes/curl-builder'
+import { Route as CsvSqlRouteImport } from './routes/csv-sql'
+import { Route as CsvJsonRouteImport } from './routes/csv-json'
+import { Route as CssVariablesRouteImport } from './routes/css-variables'
+import { Route as CssUnitRouteImport } from './routes/css-unit'
+import { Route as CssTransformRouteImport } from './routes/css-transform'
+import { Route as CssTextShadowRouteImport } from './routes/css-text-shadow'
+import { Route as CssSpecificityRouteImport } from './routes/css-specificity'
+import { Route as CssShorthandRouteImport } from './routes/css-shorthand'
+import { Route as CssSelectorRouteImport } from './routes/css-selector'
+import { Route as CssScrollSnapRouteImport } from './routes/css-scroll-snap'
+import { Route as CssMediaQueryRouteImport } from './routes/css-media-query'
+import { Route as CssLogicalRouteImport } from './routes/css-logical'
+import { Route as CssGridRouteImport } from './routes/css-grid'
+import { Route as CssGradientRouteImport } from './routes/css-gradient'
+import { Route as CssFormatterRouteImport } from './routes/css-formatter'
+import { Route as CssFlexboxRouteImport } from './routes/css-flexbox'
+import { Route as CssFilterRouteImport } from './routes/css-filter'
+import { Route as CssCubicBezierRouteImport } from './routes/css-cubic-bezier'
+import { Route as CssContainerQueryRouteImport } from './routes/css-container-query'
+import { Route as CssClipPathRouteImport } from './routes/css-clip-path'
+import { Route as CssClampRouteImport } from './routes/css-clamp'
+import { Route as CssBoxShadowRouteImport } from './routes/css-box-shadow'
+import { Route as CssBorderRadiusRouteImport } from './routes/css-border-radius'
+import { Route as CssBackgroundPatternRouteImport } from './routes/css-background-pattern'
+import { Route as CssAnimationRouteImport } from './routes/css-animation'
+import { Route as CspBuilderRouteImport } from './routes/csp-builder'
+import { Route as CronParserRouteImport } from './routes/cron-parser'
+import { Route as CronRouteImport } from './routes/cron'
+import { Route as CountdownRouteImport } from './routes/countdown'
+import { Route as CorsBuilderRouteImport } from './routes/cors-builder'
+import { Route as CookieParserRouteImport } from './routes/cookie-parser'
+import { Route as ConventionalCommitsRouteImport } from './routes/conventional-commits'
+import { Route as CompoundInterestRouteImport } from './routes/compound-interest'
+import { Route as CombinatoricsRouteImport } from './routes/combinatorics'
+import { Route as ColumnarTranspositionRouteImport } from './routes/columnar-transposition'
+import { Route as ColorTokenRouteImport } from './routes/color-token'
+import { Route as ColorTemperatureRouteImport } from './routes/color-temperature'
+import { Route as ColorPickerRouteImport } from './routes/color-picker'
+import { Route as ColorPaletteRouteImport } from './routes/color-palette'
+import { Route as ColorNameRouteImport } from './routes/color-name'
+import { Route as ColorMixRouteImport } from './routes/color-mix'
+import { Route as ColorHarmonyRouteImport } from './routes/color-harmony'
+import { Route as ColorExtractorRouteImport } from './routes/color-extractor'
+import { Route as ColorConverterRouteImport } from './routes/color-converter'
+import { Route as ColorContrastRouteImport } from './routes/color-contrast'
+import { Route as ColorBlindRouteImport } from './routes/color-blind'
+import { Route as CidrRouteImport } from './routes/cidr'
+import { Route as ChmodRouteImport } from './routes/chmod'
+import { Route as CharFrequencyRouteImport } from './routes/char-frequency'
+import { Route as CharCountRouteImport } from './routes/char-count'
+import { Route as CertDecoderRouteImport } from './routes/cert-decoder'
+import { Route as CaesarRouteImport } from './routes/caesar'
+import { Route as CacheControlRouteImport } from './routes/cache-control'
+import { Route as BstVisualizerRouteImport } from './routes/bst-visualizer'
+import { Route as BrainfuckRouteImport } from './routes/brainfuck'
+import { Route as BrailleRouteImport } from './routes/braille'
+import { Route as BpmRouteImport } from './routes/bpm'
+import { Route as BmiCalculatorRouteImport } from './routes/bmi-calculator'
+import { Route as BitwiseRouteImport } from './routes/bitwise'
+import { Route as BifidRouteImport } from './routes/bifid'
+import { Route as BeaufortRouteImport } from './routes/beaufort'
+import { Route as BasicAuthRouteImport } from './routes/basic-auth'
+import { Route as Base85RouteImport } from './routes/base85'
+import { Route as Base64ImageRouteImport } from './routes/base64-image'
+import { Route as Base64RouteImport } from './routes/base64'
+import { Route as Base62RouteImport } from './routes/base62'
+import { Route as Base58RouteImport } from './routes/base58'
+import { Route as Base36RouteImport } from './routes/base36'
+import { Route as Base32RouteImport } from './routes/base32'
+import { Route as Base16RouteImport } from './routes/base16'
+import { Route as BarcodeRouteImport } from './routes/barcode'
+import { Route as BackgroundRemovalRouteImport } from './routes/background-removal'
+import { Route as AudioConverterRouteImport } from './routes/audio-converter'
+import { Route as AtbashRouteImport } from './routes/atbash'
+import { Route as AspectRatioRouteImport } from './routes/aspect-ratio'
+import { Route as AsciiTableRouteImport } from './routes/ascii-table'
+import { Route as AsciiArtRouteImport } from './routes/ascii-art'
+import { Route as AnsiColorRouteImport } from './routes/ansi-color'
+import { Route as AffineRouteImport } from './routes/affine'
+import { Route as AdfgvxRouteImport } from './routes/adfgvx'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiImageDotwebpRouteImport } from './routes/api/image[.]webp'
+import { Route as ApiImageDotsvgRouteImport } from './routes/api/image[.]svg'
+import { Route as ApiImageDotpngRouteImport } from './routes/api/image[.]png'
+import { Route as ApiImageDotjpgRouteImport } from './routes/api/image[.]jpg'
 
 const ZeroWidthRoute = ZeroWidthRouteImport.update({
-  id: "/zero-width",
-  path: "/zero-width",
+  id: '/zero-width',
+  path: '/zero-width',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const ZenkakuRoute = ZenkakuRouteImport.update({
-  id: "/zenkaku",
-  path: "/zenkaku",
+  id: '/zenkaku',
+  path: '/zenkaku',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const YamlTomlRoute = YamlTomlRouteImport.update({
-  id: "/yaml-toml",
-  path: "/yaml-toml",
+  id: '/yaml-toml',
+  path: '/yaml-toml',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const YamlJsonRoute = YamlJsonRouteImport.update({
-  id: "/yaml-json",
-  path: "/yaml-json",
+  id: '/yaml-json',
+  path: '/yaml-json',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const YamlFormatterRoute = YamlFormatterRouteImport.update({
-  id: "/yaml-formatter",
-  path: "/yaml-formatter",
+  id: '/yaml-formatter',
+  path: '/yaml-formatter',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const XpathRoute = XpathRouteImport.update({
-  id: "/xpath",
-  path: "/xpath",
+  id: '/xpath',
+  path: '/xpath',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const XmlJsonRoute = XmlJsonRouteImport.update({
-  id: "/xml-json",
-  path: "/xml-json",
+  id: '/xml-json',
+  path: '/xml-json',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const XmlRoute = XmlRouteImport.update({
-  id: "/xml",
-  path: "/xml",
+  id: '/xml',
+  path: '/xml',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const WorldClockRoute = WorldClockRouteImport.update({
-  id: "/world-clock",
-  path: "/world-clock",
+  id: '/world-clock',
+  path: '/world-clock',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const WordleRoute = WordleRouteImport.update({
-  id: "/wordle",
-  path: "/wordle",
+  id: '/wordle',
+  path: '/wordle',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const WordFrequencyRoute = WordFrequencyRouteImport.update({
-  id: "/word-frequency",
-  path: "/word-frequency",
+  id: '/word-frequency',
+  path: '/word-frequency',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const WhoisRoute = WhoisRouteImport.update({
-  id: "/whois",
-  path: "/whois",
+  id: '/whois',
+  path: '/whois',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const WebsocketRoute = WebsocketRouteImport.update({
-  id: "/websocket",
-  path: "/websocket",
+  id: '/websocket',
+  path: '/websocket',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const WebManifestRoute = WebManifestRouteImport.update({
-  id: "/web-manifest",
-  path: "/web-manifest",
+  id: '/web-manifest',
+  path: '/web-manifest',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const WarikanRoute = WarikanRouteImport.update({
-  id: "/warikan",
-  path: "/warikan",
+  id: '/warikan',
+  path: '/warikan',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const WarekiRoute = WarekiRouteImport.update({
-  id: "/wareki",
-  path: "/wareki",
+  id: '/wareki',
+  path: '/wareki',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const VscodeSnippetRoute = VscodeSnippetRouteImport.update({
-  id: "/vscode-snippet",
-  path: "/vscode-snippet",
+  id: '/vscode-snippet',
+  path: '/vscode-snippet',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const VigenereRoute = VigenereRouteImport.update({
-  id: "/vigenere",
-  path: "/vigenere",
+  id: '/vigenere',
+  path: '/vigenere',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const VideoConverterRoute = VideoConverterRouteImport.update({
-  id: "/video-converter",
-  path: "/video-converter",
+  id: '/video-converter',
+  path: '/video-converter',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const UuidInspectorRoute = UuidInspectorRouteImport.update({
-  id: "/uuid-inspector",
-  path: "/uuid-inspector",
+  id: '/uuid-inspector',
+  path: '/uuid-inspector',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const UuidRoute = UuidRouteImport.update({
-  id: "/uuid",
-  path: "/uuid",
+  id: '/uuid',
+  path: '/uuid',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const UtmBuilderRoute = UtmBuilderRouteImport.update({
-  id: "/utm-builder",
-  path: "/utm-builder",
+  id: '/utm-builder',
+  path: '/utm-builder',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const UserAgentRoute = UserAgentRouteImport.update({
-  id: "/user-agent",
-  path: "/user-agent",
+  id: '/user-agent',
+  path: '/user-agent',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const UrlParserRoute = UrlParserRouteImport.update({
-  id: "/url-parser",
-  path: "/url-parser",
+  id: '/url-parser',
+  path: '/url-parser',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const UrlEncodeRoute = UrlEncodeRouteImport.update({
-  id: "/url-encode",
-  path: "/url-encode",
+  id: '/url-encode',
+  path: '/url-encode',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const UnitConverterRoute = UnitConverterRouteImport.update({
-  id: "/unit-converter",
-  path: "/unit-converter",
+  id: '/unit-converter',
+  path: '/unit-converter',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const UnicodeInspectorRoute = UnicodeInspectorRouteImport.update({
-  id: "/unicode-inspector",
-  path: "/unicode-inspector",
+  id: '/unicode-inspector',
+  path: '/unicode-inspector',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const UnicodeRoute = UnicodeRouteImport.update({
-  id: "/unicode",
-  path: "/unicode",
+  id: '/unicode',
+  path: '/unicode',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const UlidRoute = UlidRouteImport.update({
-  id: "/ulid",
-  path: "/ulid",
+  id: '/ulid',
+  path: '/ulid',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const TypographyScaleRoute = TypographyScaleRouteImport.update({
-  id: "/typography-scale",
-  path: "/typography-scale",
+  id: '/typography-scale',
+  path: '/typography-scale',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const TypingSpeedRoute = TypingSpeedRouteImport.update({
-  id: "/typing-speed",
-  path: "/typing-speed",
+  id: '/typing-speed',
+  path: '/typing-speed',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const TsconfigBuilderRoute = TsconfigBuilderRouteImport.update({
-  id: "/tsconfig-builder",
-  path: "/tsconfig-builder",
+  id: '/tsconfig-builder',
+  path: '/tsconfig-builder',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const TruthTableRoute = TruthTableRouteImport.update({
-  id: "/truth-table",
-  path: "/truth-table",
+  id: '/truth-table',
+  path: '/truth-table',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const TrigRoute = TrigRouteImport.update({
-  id: "/trig",
-  path: "/trig",
+  id: '/trig',
+  path: '/trig',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const TransparentImageRoute = TransparentImageRouteImport.update({
-  id: "/transparent-image",
-  path: "/transparent-image",
+  id: '/transparent-image',
+  path: '/transparent-image',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const TransferSpeedRoute = TransferSpeedRouteImport.update({
-  id: "/transfer-speed",
-  path: "/transfer-speed",
+  id: '/transfer-speed',
+  path: '/transfer-speed',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const TotpRoute = TotpRouteImport.update({
-  id: "/totp",
-  path: "/totp",
+  id: '/totp',
+  path: '/totp',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const TopRoute = TopRouteImport.update({
-  id: "/top",
-  path: "/top",
+  id: '/top',
+  path: '/top',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const TomlJsonRoute = TomlJsonRouteImport.update({
-  id: "/toml-json",
-  path: "/toml-json",
+  id: '/toml-json',
+  path: '/toml-json',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const TomlFormatterRoute = TomlFormatterRouteImport.update({
-  id: "/toml-formatter",
-  path: "/toml-formatter",
+  id: '/toml-formatter',
+  path: '/toml-formatter',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const TokenEstimatorRoute = TokenEstimatorRouteImport.update({
-  id: "/token-estimator",
-  path: "/token-estimator",
+  id: '/token-estimator',
+  path: '/token-estimator',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const TimezoneRoute = TimezoneRouteImport.update({
-  id: "/timezone",
-  path: "/timezone",
+  id: '/timezone',
+  path: '/timezone',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const TimestampRoute = TimestampRouteImport.update({
-  id: "/timestamp",
-  path: "/timestamp",
+  id: '/timestamp',
+  path: '/timestamp',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const TicTacToeRoute = TicTacToeRouteImport.update({
-  id: "/tic-tac-toe",
-  path: "/tic-tac-toe",
+  id: '/tic-tac-toe',
+  path: '/tic-tac-toe',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const TextStatsRoute = TextStatsRouteImport.update({
-  id: "/text-stats",
-  path: "/text-stats",
+  id: '/text-stats',
+  path: '/text-stats',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const TextSortRoute = TextSortRouteImport.update({
-  id: "/text-sort",
-  path: "/text-sort",
+  id: '/text-sort',
+  path: '/text-sort',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const TextReplaceRoute = TextReplaceRouteImport.update({
-  id: "/text-replace",
-  path: "/text-replace",
+  id: '/text-replace',
+  path: '/text-replace',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const TextLineRoute = TextLineRouteImport.update({
-  id: "/text-line",
-  path: "/text-line",
+  id: '/text-line',
+  path: '/text-line',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const TextEncryptRoute = TextEncryptRouteImport.update({
-  id: "/text-encrypt",
-  path: "/text-encrypt",
+  id: '/text-encrypt',
+  path: '/text-encrypt',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const TextCaseRoute = TextCaseRouteImport.update({
-  id: "/text-case",
-  path: "/text-case",
+  id: '/text-case',
+  path: '/text-case',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const TextBinaryRoute = TextBinaryRouteImport.update({
-  id: "/text-binary",
-  path: "/text-binary",
+  id: '/text-binary',
+  path: '/text-binary',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const TetrisRoute = TetrisRouteImport.update({
-  id: "/tetris",
-  path: "/tetris",
+  id: '/tetris',
+  path: '/tetris',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const TemplateRoute = TemplateRouteImport.update({
-  id: "/template",
-  path: "/template",
+  id: '/template',
+  path: '/template',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const TaxCalculatorRoute = TaxCalculatorRouteImport.update({
-  id: "/tax-calculator",
-  path: "/tax-calculator",
+  id: '/tax-calculator',
+  path: '/tax-calculator',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const TapCodeRoute = TapCodeRouteImport.update({
-  id: "/tap-code",
-  path: "/tap-code",
+  id: '/tap-code',
+  path: '/tap-code',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const TailwindColorsRoute = TailwindColorsRouteImport.update({
-  id: "/tailwind-colors",
-  path: "/tailwind-colors",
+  id: '/tailwind-colors',
+  path: '/tailwind-colors',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const SvgOptimizerRoute = SvgOptimizerRouteImport.update({
-  id: "/svg-optimizer",
-  path: "/svg-optimizer",
+  id: '/svg-optimizer',
+  path: '/svg-optimizer',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const SudokuRoute = SudokuRouteImport.update({
-  id: "/sudoku",
-  path: "/sudoku",
+  id: '/sudoku',
+  path: '/sudoku',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const StringSimilarityRoute = StringSimilarityRouteImport.update({
-  id: "/string-similarity",
-  path: "/string-similarity",
+  id: '/string-similarity',
+  path: '/string-similarity',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const StringEscapeRoute = StringEscapeRouteImport.update({
-  id: "/string-escape",
-  path: "/string-escape",
+  id: '/string-escape',
+  path: '/string-escape',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const StorageConverterRoute = StorageConverterRouteImport.update({
-  id: "/storage-converter",
-  path: "/storage-converter",
+  id: '/storage-converter',
+  path: '/storage-converter',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const StopwatchRoute = StopwatchRouteImport.update({
-  id: "/stopwatch",
-  path: "/stopwatch",
+  id: '/stopwatch',
+  path: '/stopwatch',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const StatisticsRoute = StatisticsRouteImport.update({
-  id: "/statistics",
-  path: "/statistics",
+  id: '/statistics',
+  path: '/statistics',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const SshKeyRoute = SshKeyRouteImport.update({
-  id: "/ssh-key",
-  path: "/ssh-key",
+  id: '/ssh-key',
+  path: '/ssh-key',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const SriHashRoute = SriHashRouteImport.update({
-  id: "/sri-hash",
-  path: "/sri-hash",
+  id: '/sri-hash',
+  path: '/sri-hash',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const SqlToTsRoute = SqlToTsRouteImport.update({
-  id: "/sql-to-ts",
-  path: "/sql-to-ts",
+  id: '/sql-to-ts',
+  path: '/sql-to-ts',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const SqlRoute = SqlRouteImport.update({
-  id: "/sql",
-  path: "/sql",
+  id: '/sql',
+  path: '/sql',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const SortVisualizerRoute = SortVisualizerRouteImport.update({
-  id: "/sort-visualizer",
-  path: "/sort-visualizer",
+  id: '/sort-visualizer',
+  path: '/sort-visualizer',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const SnakeRoute = SnakeRouteImport.update({
-  id: "/snake",
-  path: "/snake",
+  id: '/snake',
+  path: '/snake',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const SlugRoute = SlugRouteImport.update({
-  id: "/slug",
-  path: "/slug",
+  id: '/slug',
+  path: '/slug',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const SitemapRoute = SitemapRouteImport.update({
-  id: "/sitemap",
-  path: "/sitemap",
+  id: '/sitemap',
+  path: '/sitemap',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const ShortCodeRoute = ShortCodeRouteImport.update({
-  id: "/short-code",
-  path: "/short-code",
+  id: '/short-code',
+  path: '/short-code',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const ServerEnvRoute = ServerEnvRouteImport.update({
-  id: "/server-env",
-  path: "/server-env",
+  id: '/server-env',
+  path: '/server-env',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const SequencesRoute = SequencesRouteImport.update({
-  id: "/sequences",
-  path: "/sequences",
+  id: '/sequences',
+  path: '/sequences',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const SeoMetaRoute = SeoMetaRouteImport.update({
-  id: "/seo-meta",
-  path: "/seo-meta",
+  id: '/seo-meta',
+  path: '/seo-meta',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const SemverRoute = SemverRouteImport.update({
-  id: "/semver",
-  path: "/semver",
+  id: '/semver',
+  path: '/semver',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const SecurityHeadersRoute = SecurityHeadersRouteImport.update({
-  id: "/security-headers",
-  path: "/security-headers",
+  id: '/security-headers',
+  path: '/security-headers',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const ScytaleRoute = ScytaleRouteImport.update({
-  id: "/scytale",
-  path: "/scytale",
+  id: '/scytale',
+  path: '/scytale',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const RomanNumeralsRoute = RomanNumeralsRouteImport.update({
-  id: "/roman-numerals",
-  path: "/roman-numerals",
+  id: '/roman-numerals',
+  path: '/roman-numerals',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const RobotsTxtRoute = RobotsTxtRouteImport.update({
-  id: "/robots-txt",
-  path: "/robots-txt",
+  id: '/robots-txt',
+  path: '/robots-txt',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const RegexLibraryRoute = RegexLibraryRouteImport.update({
-  id: "/regex-library",
-  path: "/regex-library",
+  id: '/regex-library',
+  path: '/regex-library',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const RegexCheckerRoute = RegexCheckerRouteImport.update({
-  id: "/regex-checker",
-  path: "/regex-checker",
+  id: '/regex-checker',
+  path: '/regex-checker',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const RedirectTracerRoute = RedirectTracerRouteImport.update({
-  id: "/redirect-tracer",
-  path: "/redirect-tracer",
+  id: '/redirect-tracer',
+  path: '/redirect-tracer',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const ReadabilityRoute = ReadabilityRouteImport.update({
-  id: "/readability",
-  path: "/readability",
+  id: '/readability',
+  path: '/readability',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const RandomPickerRoute = RandomPickerRouteImport.update({
-  id: "/random-picker",
-  path: "/random-picker",
+  id: '/random-picker',
+  path: '/random-picker',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const RandomDataRoute = RandomDataRouteImport.update({
-  id: "/random-data",
-  path: "/random-data",
+  id: '/random-data',
+  path: '/random-data',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const RailFenceRoute = RailFenceRouteImport.update({
-  id: "/rail-fence",
-  path: "/rail-fence",
+  id: '/rail-fence',
+  path: '/rail-fence',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const QuotedPrintableRoute = QuotedPrintableRouteImport.update({
-  id: "/quoted-printable",
-  path: "/quoted-printable",
+  id: '/quoted-printable',
+  path: '/quoted-printable',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const QrCodeRoute = QrCodeRouteImport.update({
-  id: "/qr-code",
-  path: "/qr-code",
+  id: '/qr-code',
+  path: '/qr-code',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const PunycodeRoute = PunycodeRouteImport.update({
-  id: "/punycode",
-  path: "/punycode",
+  id: '/punycode',
+  path: '/punycode',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const PrettierConfigBuilderRoute = PrettierConfigBuilderRouteImport.update({
-  id: "/prettier-config-builder",
-  path: "/prettier-config-builder",
+  id: '/prettier-config-builder',
+  path: '/prettier-config-builder',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const PortsRoute = PortsRouteImport.update({
-  id: "/ports",
-  path: "/ports",
+  id: '/ports',
+  path: '/ports',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const PortCheckRoute = PortCheckRouteImport.update({
-  id: "/port-check",
-  path: "/port-check",
+  id: '/port-check',
+  path: '/port-check',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const PomodoroRoute = PomodoroRouteImport.update({
-  id: "/pomodoro",
-  path: "/pomodoro",
+  id: '/pomodoro',
+  path: '/pomodoro',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const PolybiusRoute = PolybiusRouteImport.update({
-  id: "/polybius",
-  path: "/polybius",
+  id: '/polybius',
+  path: '/polybius',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const PlayfairRoute = PlayfairRouteImport.update({
-  id: "/playfair",
-  path: "/playfair",
+  id: '/playfair',
+  path: '/playfair',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const PkceRoute = PkceRouteImport.update({
-  id: "/pkce",
-  path: "/pkce",
+  id: '/pkce',
+  path: '/pkce',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const PhpSerializeRoute = PhpSerializeRouteImport.update({
-  id: "/php-serialize",
-  path: "/php-serialize",
+  id: '/php-serialize',
+  path: '/php-serialize',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const PhoneRoute = PhoneRouteImport.update({
-  id: "/phone",
-  path: "/phone",
+  id: '/phone',
+  path: '/phone',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const PercentageCalculatorRoute = PercentageCalculatorRouteImport.update({
-  id: "/percentage-calculator",
-  path: "/percentage-calculator",
+  id: '/percentage-calculator',
+  path: '/percentage-calculator',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const PasswordStrengthRoute = PasswordStrengthRouteImport.update({
-  id: "/password-strength",
-  path: "/password-strength",
+  id: '/password-strength',
+  path: '/password-strength',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const PasswordGeneratorRoute = PasswordGeneratorRouteImport.update({
-  id: "/password-generator",
-  path: "/password-generator",
+  id: '/password-generator',
+  path: '/password-generator',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const PassphraseRoute = PassphraseRouteImport.update({
-  id: "/passphrase",
-  path: "/passphrase",
+  id: '/passphrase',
+  path: '/passphrase',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const PackageJsonRoute = PackageJsonRouteImport.update({
-  id: "/package-json",
-  path: "/package-json",
+  id: '/package-json',
+  path: '/package-json',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const OpensslBuilderRoute = OpensslBuilderRouteImport.update({
-  id: "/openssl-builder",
-  path: "/openssl-builder",
+  id: '/openssl-builder',
+  path: '/openssl-builder',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const OgpGeneratorRoute = OgpGeneratorRouteImport.update({
-  id: "/ogp-generator",
-  path: "/ogp-generator",
+  id: '/ogp-generator',
+  path: '/ogp-generator',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const OgpRoute = OgpRouteImport.update({
-  id: "/ogp",
-  path: "/ogp",
+  id: '/ogp',
+  path: '/ogp',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const NumberWordsRoute = NumberWordsRouteImport.update({
-  id: "/number-words",
-  path: "/number-words",
+  id: '/number-words',
+  path: '/number-words',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const NumberTheoryRoute = NumberTheoryRouteImport.update({
-  id: "/number-theory",
-  path: "/number-theory",
+  id: '/number-theory',
+  path: '/number-theory',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const NumberFormatRoute = NumberFormatRouteImport.update({
-  id: "/number-format",
-  path: "/number-format",
+  id: '/number-format',
+  path: '/number-format',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const NumberBaseRoute = NumberBaseRouteImport.update({
-  id: "/number-base",
-  path: "/number-base",
+  id: '/number-base',
+  path: '/number-base',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const NginxConfigRoute = NginxConfigRouteImport.update({
-  id: "/nginx-config",
-  path: "/nginx-config",
+  id: '/nginx-config',
+  path: '/nginx-config',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const NatoAlphabetRoute = NatoAlphabetRouteImport.update({
-  id: "/nato-alphabet",
-  path: "/nato-alphabet",
+  id: '/nato-alphabet',
+  path: '/nato-alphabet',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const NanoIdRoute = NanoIdRouteImport.update({
-  id: "/nano-id",
-  path: "/nano-id",
+  id: '/nano-id',
+  path: '/nano-id',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const MsgpackRoute = MsgpackRouteImport.update({
-  id: "/msgpack",
-  path: "/msgpack",
+  id: '/msgpack',
+  path: '/msgpack',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const MorseCodeRoute = MorseCodeRouteImport.update({
-  id: "/morse-code",
-  path: "/morse-code",
+  id: '/morse-code',
+  path: '/morse-code',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const MinifyRoute = MinifyRouteImport.update({
-  id: "/minify",
-  path: "/minify",
+  id: '/minify',
+  path: '/minify',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const MinesweeperRoute = MinesweeperRouteImport.update({
-  id: "/minesweeper",
-  path: "/minesweeper",
+  id: '/minesweeper',
+  path: '/minesweeper',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const MimeTypesRoute = MimeTypesRouteImport.update({
-  id: "/mime-types",
-  path: "/mime-types",
+  id: '/mime-types',
+  path: '/mime-types',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const MermaidRoute = MermaidRouteImport.update({
-  id: "/mermaid",
-  path: "/mermaid",
+  id: '/mermaid',
+  path: '/mermaid',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const MatrixRoute = MatrixRouteImport.update({
-  id: "/matrix",
-  path: "/matrix",
+  id: '/matrix',
+  path: '/matrix',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const MathEvalRoute = MathEvalRouteImport.update({
-  id: "/math-eval",
-  path: "/math-eval",
+  id: '/math-eval',
+  path: '/math-eval',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const MarkdownTableRoute = MarkdownTableRouteImport.update({
-  id: "/markdown-table",
-  path: "/markdown-table",
+  id: '/markdown-table',
+  path: '/markdown-table',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const MarkdownPreviewRoute = MarkdownPreviewRouteImport.update({
-  id: "/markdown-preview",
-  path: "/markdown-preview",
+  id: '/markdown-preview',
+  path: '/markdown-preview',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const MandelbrotRoute = MandelbrotRouteImport.update({
-  id: "/mandelbrot",
-  path: "/mandelbrot",
+  id: '/mandelbrot',
+  path: '/mandelbrot',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const MakefileRoute = MakefileRouteImport.update({
-  id: "/makefile",
-  path: "/makefile",
+  id: '/makefile',
+  path: '/makefile',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const LuhnCheckRoute = LuhnCheckRouteImport.update({
-  id: "/luhn-check",
-  path: "/luhn-check",
+  id: '/luhn-check',
+  path: '/luhn-check',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const LoremIpsumRoute = LoremIpsumRouteImport.update({
-  id: "/lorem-ipsum",
-  path: "/lorem-ipsum",
+  id: '/lorem-ipsum',
+  path: '/lorem-ipsum',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const LoanCalculatorRoute = LoanCalculatorRouteImport.update({
-  id: "/loan-calculator",
-  path: "/loan-calculator",
+  id: '/loan-calculator',
+  path: '/loan-calculator',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const LissajousRoute = LissajousRouteImport.update({
-  id: "/lissajous",
-  path: "/lissajous",
+  id: '/lissajous',
+  path: '/lissajous',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const LineEndingRoute = LineEndingRouteImport.update({
-  id: "/line-ending",
-  path: "/line-ending",
+  id: '/line-ending',
+  path: '/line-ending',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const LifeGameRoute = LifeGameRouteImport.update({
-  id: "/life-game",
-  path: "/life-game",
+  id: '/life-game',
+  path: '/life-game',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const KeycodeRoute = KeycodeRouteImport.update({
-  id: "/keycode",
-  path: "/keycode",
+  id: '/keycode',
+  path: '/keycode',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const KanaConvertRoute = KanaConvertRouteImport.update({
-  id: "/kana-convert",
-  path: "/kana-convert",
+  id: '/kana-convert',
+  path: '/kana-convert',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const JwtGeneratorRoute = JwtGeneratorRouteImport.update({
-  id: "/jwt-generator",
-  path: "/jwt-generator",
+  id: '/jwt-generator',
+  path: '/jwt-generator',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const JwtRoute = JwtRouteImport.update({
-  id: "/jwt",
-  path: "/jwt",
+  id: '/jwt',
+  path: '/jwt',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const JsonToZodRoute = JsonToZodRouteImport.update({
-  id: "/json-to-zod",
-  path: "/json-to-zod",
+  id: '/json-to-zod',
+  path: '/json-to-zod',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const JsonToTsRoute = JsonToTsRouteImport.update({
-  id: "/json-to-ts",
-  path: "/json-to-ts",
+  id: '/json-to-ts',
+  path: '/json-to-ts',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const JsonToSqlRoute = JsonToSqlRouteImport.update({
-  id: "/json-to-sql",
-  path: "/json-to-sql",
+  id: '/json-to-sql',
+  path: '/json-to-sql',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const JsonToGraphqlRoute = JsonToGraphqlRouteImport.update({
-  id: "/json-to-graphql",
-  path: "/json-to-graphql",
+  id: '/json-to-graphql',
+  path: '/json-to-graphql',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const JsonSchemaValidatorRoute = JsonSchemaValidatorRouteImport.update({
-  id: "/json-schema-validator",
-  path: "/json-schema-validator",
+  id: '/json-schema-validator',
+  path: '/json-schema-validator',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const JsonSchemaRoute = JsonSchemaRouteImport.update({
-  id: "/json-schema",
-  path: "/json-schema",
+  id: '/json-schema',
+  path: '/json-schema',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const JsonPointerRoute = JsonPointerRouteImport.update({
-  id: "/json-pointer",
-  path: "/json-pointer",
+  id: '/json-pointer',
+  path: '/json-pointer',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const JsonPathRoute = JsonPathRouteImport.update({
-  id: "/json-path",
-  path: "/json-path",
+  id: '/json-path',
+  path: '/json-path',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const JsonMergeRoute = JsonMergeRouteImport.update({
-  id: "/json-merge",
-  path: "/json-merge",
+  id: '/json-merge',
+  path: '/json-merge',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const JsonLinesRoute = JsonLinesRouteImport.update({
-  id: "/json-lines",
-  path: "/json-lines",
+  id: '/json-lines',
+  path: '/json-lines',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const JsonFlattenRoute = JsonFlattenRouteImport.update({
-  id: "/json-flatten",
-  path: "/json-flatten",
+  id: '/json-flatten',
+  path: '/json-flatten',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const JsonCompareRoute = JsonCompareRouteImport.update({
-  id: "/json-compare",
-  path: "/json-compare",
+  id: '/json-compare',
+  path: '/json-compare',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const JsonRoute = JsonRouteImport.update({
-  id: "/json",
-  path: "/json",
+  id: '/json',
+  path: '/json',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const IsbnRoute = IsbnRouteImport.update({
-  id: "/isbn",
-  path: "/isbn",
+  id: '/isbn',
+  path: '/isbn',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const Ipv6Route = Ipv6RouteImport.update({
-  id: "/ipv6",
-  path: "/ipv6",
+  id: '/ipv6',
+  path: '/ipv6',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const IpGeolocationRoute = IpGeolocationRouteImport.update({
-  id: "/ip-geolocation",
-  path: "/ip-geolocation",
+  id: '/ip-geolocation',
+  path: '/ip-geolocation',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const IpConverterRoute = IpConverterRouteImport.update({
-  id: "/ip-converter",
-  path: "/ip-converter",
+  id: '/ip-converter',
+  path: '/ip-converter',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const IpCidrCheckRoute = IpCidrCheckRouteImport.update({
-  id: "/ip-cidr-check",
-  path: "/ip-cidr-check",
+  id: '/ip-cidr-check',
+  path: '/ip-cidr-check',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const IniParserRoute = IniParserRouteImport.update({
-  id: "/ini-parser",
-  path: "/ini-parser",
+  id: '/ini-parser',
+  path: '/ini-parser',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const ImageToGifRoute = ImageToGifRouteImport.update({
-  id: "/image-to-gif",
-  path: "/image-to-gif",
+  id: '/image-to-gif',
+  path: '/image-to-gif',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const ImageResizeRoute = ImageResizeRouteImport.update({
-  id: "/image-resize",
-  path: "/image-resize",
+  id: '/image-resize',
+  path: '/image-resize',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const ImageCropRoute = ImageCropRouteImport.update({
-  id: "/image-crop",
-  path: "/image-crop",
+  id: '/image-crop',
+  path: '/image-crop',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const ImageCompressRoute = ImageCompressRouteImport.update({
-  id: "/image-compress",
-  path: "/image-compress",
+  id: '/image-compress',
+  path: '/image-compress',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const ImageBase64Route = ImageBase64RouteImport.update({
-  id: "/image-base64",
-  path: "/image-base64",
+  id: '/image-base64',
+  path: '/image-base64',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const Ieee754Route = Ieee754RouteImport.update({
-  id: "/ieee754",
-  path: "/ieee754",
+  id: '/ieee754',
+  path: '/ieee754',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const IbanRoute = IbanRouteImport.update({
-  id: "/iban",
-  path: "/iban",
+  id: '/iban',
+  path: '/iban',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const HttpStatusRoute = HttpStatusRouteImport.update({
-  id: "/http-status",
-  path: "/http-status",
+  id: '/http-status',
+  path: '/http-status',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const HttpHeadersRoute = HttpHeadersRouteImport.update({
-  id: "/http-headers",
-  path: "/http-headers",
+  id: '/http-headers',
+  path: '/http-headers',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const HttpClientRoute = HttpClientRouteImport.update({
-  id: "/http-client",
-  path: "/http-client",
+  id: '/http-client',
+  path: '/http-client',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const HtmlToJsxRoute = HtmlToJsxRouteImport.update({
-  id: "/html-to-jsx",
-  path: "/html-to-jsx",
+  id: '/html-to-jsx',
+  path: '/html-to-jsx',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const HtmlPlaygroundRoute = HtmlPlaygroundRouteImport.update({
-  id: "/html-playground",
-  path: "/html-playground",
+  id: '/html-playground',
+  path: '/html-playground',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const HtmlMarkdownRoute = HtmlMarkdownRouteImport.update({
-  id: "/html-markdown",
-  path: "/html-markdown",
+  id: '/html-markdown',
+  path: '/html-markdown',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const HtmlFormatterRoute = HtmlFormatterRouteImport.update({
-  id: "/html-formatter",
-  path: "/html-formatter",
+  id: '/html-formatter',
+  path: '/html-formatter',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const HtmlEncodeRoute = HtmlEncodeRouteImport.update({
-  id: "/html-encode",
-  path: "/html-encode",
+  id: '/html-encode',
+  path: '/html-encode',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const HtaccessBuilderRoute = HtaccessBuilderRouteImport.update({
-  id: "/htaccess-builder",
-  path: "/htaccess-builder",
+  id: '/htaccess-builder',
+  path: '/htaccess-builder',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const HmacRoute = HmacRouteImport.update({
-  id: "/hmac",
-  path: "/hmac",
+  id: '/hmac',
+  path: '/hmac',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const HexViewerRoute = HexViewerRouteImport.update({
-  id: "/hex-viewer",
-  path: "/hex-viewer",
+  id: '/hex-viewer',
+  path: '/hex-viewer',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const HaversineRoute = HaversineRouteImport.update({
-  id: "/haversine",
-  path: "/haversine",
+  id: '/haversine',
+  path: '/haversine',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const HashRoute = HashRouteImport.update({
-  id: "/hash",
-  path: "/hash",
+  id: '/hash',
+  path: '/hash',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const HarRoute = HarRouteImport.update({
-  id: "/har",
-  path: "/har",
+  id: '/har',
+  path: '/har',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const HangmanRoute = HangmanRouteImport.update({
-  id: "/hangman",
-  path: "/hangman",
+  id: '/hangman',
+  path: '/hangman',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const GzipRoute = GzipRouteImport.update({
-  id: "/gzip",
-  path: "/gzip",
+  id: '/gzip',
+  path: '/gzip',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const GronsfeldRoute = GronsfeldRouteImport.update({
-  id: "/gronsfeld",
-  path: "/gronsfeld",
+  id: '/gronsfeld',
+  path: '/gronsfeld',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const GraphqlRoute = GraphqlRouteImport.update({
-  id: "/graphql",
-  path: "/graphql",
+  id: '/graphql',
+  path: '/graphql',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const GlobalIpRoute = GlobalIpRouteImport.update({
-  id: "/global-ip",
-  path: "/global-ip",
+  id: '/global-ip',
+  path: '/global-ip',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const GlobTesterRoute = GlobTesterRouteImport.update({
-  id: "/glob-tester",
-  path: "/glob-tester",
+  id: '/glob-tester',
+  path: '/glob-tester',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const GitignoreRoute = GitignoreRouteImport.update({
-  id: "/gitignore",
-  path: "/gitignore",
+  id: '/gitignore',
+  path: '/gitignore',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const GithubBadgeRoute = GithubBadgeRouteImport.update({
-  id: "/github-badge",
-  path: "/github-badge",
+  id: '/github-badge',
+  path: '/github-badge',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const GithubActionsRoute = GithubActionsRouteImport.update({
-  id: "/github-actions",
-  path: "/github-actions",
+  id: '/github-actions',
+  path: '/github-actions',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const GitattributesRoute = GitattributesRouteImport.update({
-  id: "/gitattributes",
-  path: "/gitattributes",
+  id: '/gitattributes',
+  path: '/gitattributes',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const GeometryRoute = GeometryRouteImport.update({
-  id: "/geometry",
-  path: "/geometry",
+  id: '/geometry',
+  path: '/geometry',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const GeohashRoute = GeohashRouteImport.update({
-  id: "/geohash",
-  path: "/geohash",
+  id: '/geohash',
+  path: '/geohash',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const Game2048Route = Game2048RouteImport.update({
-  id: "/game-2048",
-  path: "/game-2048",
+  id: '/game-2048',
+  path: '/game-2048',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const FunctionPlotterRoute = FunctionPlotterRouteImport.update({
-  id: "/function-plotter",
-  path: "/function-plotter",
+  id: '/function-plotter',
+  path: '/function-plotter',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const FractionRoute = FractionRouteImport.update({
-  id: "/fraction",
-  path: "/fraction",
+  id: '/fraction',
+  path: '/fraction',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const FourSquareRoute = FourSquareRouteImport.update({
-  id: "/four-square",
-  path: "/four-square",
+  id: '/four-square',
+  path: '/four-square',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const FaviconGeneratorRoute = FaviconGeneratorRouteImport.update({
-  id: "/favicon-generator",
-  path: "/favicon-generator",
+  id: '/favicon-generator',
+  path: '/favicon-generator',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const FancyTextRoute = FancyTextRouteImport.update({
-  id: "/fancy-text",
-  path: "/fancy-text",
+  id: '/fancy-text',
+  path: '/fancy-text',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const ExifViewerRoute = ExifViewerRouteImport.update({
-  id: "/exif-viewer",
-  path: "/exif-viewer",
+  id: '/exif-viewer',
+  path: '/exif-viewer',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const EslintConfigBuilderRoute = EslintConfigBuilderRouteImport.update({
-  id: "/eslint-config-builder",
-  path: "/eslint-config-builder",
+  id: '/eslint-config-builder',
+  path: '/eslint-config-builder',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const EnvParserRoute = EnvParserRouteImport.update({
-  id: "/env-parser",
-  path: "/env-parser",
+  id: '/env-parser',
+  path: '/env-parser',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const EntropyRoute = EntropyRouteImport.update({
-  id: "/entropy",
-  path: "/entropy",
+  id: '/entropy',
+  path: '/entropy',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const EncodingRoute = EncodingRouteImport.update({
-  id: "/encoding",
-  path: "/encoding",
+  id: '/encoding',
+  path: '/encoding',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const EncodeChainRoute = EncodeChainRouteImport.update({
-  id: "/encode-chain",
-  path: "/encode-chain",
+  id: '/encode-chain',
+  path: '/encode-chain',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const EmojiConverterRoute = EmojiConverterRouteImport.update({
-  id: "/emoji-converter",
-  path: "/emoji-converter",
+  id: '/emoji-converter',
+  path: '/emoji-converter',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const EmailHeaderRoute = EmailHeaderRouteImport.update({
-  id: "/email-header",
-  path: "/email-header",
+  id: '/email-header',
+  path: '/email-header',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const EmailDnsRoute = EmailDnsRouteImport.update({
-  id: "/email-dns",
-  path: "/email-dns",
+  id: '/email-dns',
+  path: '/email-dns',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const EditorconfigRoute = EditorconfigRouteImport.update({
-  id: "/editorconfig",
-  path: "/editorconfig",
+  id: '/editorconfig',
+  path: '/editorconfig',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const DurationRoute = DurationRouteImport.update({
-  id: "/duration",
-  path: "/duration",
+  id: '/duration',
+  path: '/duration',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const DummyImageRoute = DummyImageRouteImport.update({
-  id: "/dummy-image",
-  path: "/dummy-image",
+  id: '/dummy-image',
+  path: '/dummy-image',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const DummyAudioRoute = DummyAudioRouteImport.update({
-  id: "/dummy-audio",
-  path: "/dummy-audio",
+  id: '/dummy-audio',
+  path: '/dummy-audio',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const DockerfileRoute = DockerfileRouteImport.update({
-  id: "/dockerfile",
-  path: "/dockerfile",
+  id: '/dockerfile',
+  path: '/dockerfile',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const DockerRunToComposeRoute = DockerRunToComposeRouteImport.update({
-  id: "/docker-run-to-compose",
-  path: "/docker-run-to-compose",
+  id: '/docker-run-to-compose',
+  path: '/docker-run-to-compose',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const DnsLookupRoute = DnsLookupRouteImport.update({
-  id: "/dns-lookup",
-  path: "/dns-lookup",
+  id: '/dns-lookup',
+  path: '/dns-lookup',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const DiscordStickerRoute = DiscordStickerRouteImport.update({
-  id: "/discord-sticker",
-  path: "/discord-sticker",
+  id: '/discord-sticker',
+  path: '/discord-sticker',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const DiscordEmojiRoute = DiscordEmojiRouteImport.update({
-  id: "/discord-emoji",
-  path: "/discord-emoji",
+  id: '/discord-emoji',
+  path: '/discord-emoji',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const DiffRoute = DiffRouteImport.update({
-  id: "/diff",
-  path: "/diff",
+  id: '/diff',
+  path: '/diff',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const DiceRollRoute = DiceRollRouteImport.update({
-  id: "/dice-roll",
-  path: "/dice-roll",
+  id: '/dice-roll',
+  path: '/dice-roll',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const DateCalcRoute = DateCalcRouteImport.update({
-  id: "/date-calc",
-  path: "/date-calc",
+  id: '/date-calc',
+  path: '/date-calc',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const DaijiRoute = DaijiRouteImport.update({
-  id: "/daiji",
-  path: "/daiji",
+  id: '/daiji',
+  path: '/daiji',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CurlToFetchRoute = CurlToFetchRouteImport.update({
-  id: "/curl-to-fetch",
-  path: "/curl-to-fetch",
+  id: '/curl-to-fetch',
+  path: '/curl-to-fetch',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CurlBuilderRoute = CurlBuilderRouteImport.update({
-  id: "/curl-builder",
-  path: "/curl-builder",
+  id: '/curl-builder',
+  path: '/curl-builder',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CsvSqlRoute = CsvSqlRouteImport.update({
-  id: "/csv-sql",
-  path: "/csv-sql",
+  id: '/csv-sql',
+  path: '/csv-sql',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CsvJsonRoute = CsvJsonRouteImport.update({
-  id: "/csv-json",
-  path: "/csv-json",
+  id: '/csv-json',
+  path: '/csv-json',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CssVariablesRoute = CssVariablesRouteImport.update({
-  id: "/css-variables",
-  path: "/css-variables",
+  id: '/css-variables',
+  path: '/css-variables',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CssUnitRoute = CssUnitRouteImport.update({
-  id: "/css-unit",
-  path: "/css-unit",
+  id: '/css-unit',
+  path: '/css-unit',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CssTransformRoute = CssTransformRouteImport.update({
-  id: "/css-transform",
-  path: "/css-transform",
+  id: '/css-transform',
+  path: '/css-transform',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CssTextShadowRoute = CssTextShadowRouteImport.update({
-  id: "/css-text-shadow",
-  path: "/css-text-shadow",
+  id: '/css-text-shadow',
+  path: '/css-text-shadow',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CssSpecificityRoute = CssSpecificityRouteImport.update({
-  id: "/css-specificity",
-  path: "/css-specificity",
+  id: '/css-specificity',
+  path: '/css-specificity',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CssShorthandRoute = CssShorthandRouteImport.update({
-  id: "/css-shorthand",
-  path: "/css-shorthand",
+  id: '/css-shorthand',
+  path: '/css-shorthand',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CssSelectorRoute = CssSelectorRouteImport.update({
-  id: "/css-selector",
-  path: "/css-selector",
+  id: '/css-selector',
+  path: '/css-selector',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CssScrollSnapRoute = CssScrollSnapRouteImport.update({
-  id: "/css-scroll-snap",
-  path: "/css-scroll-snap",
+  id: '/css-scroll-snap',
+  path: '/css-scroll-snap',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CssMediaQueryRoute = CssMediaQueryRouteImport.update({
-  id: "/css-media-query",
-  path: "/css-media-query",
+  id: '/css-media-query',
+  path: '/css-media-query',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CssLogicalRoute = CssLogicalRouteImport.update({
-  id: "/css-logical",
-  path: "/css-logical",
+  id: '/css-logical',
+  path: '/css-logical',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CssGridRoute = CssGridRouteImport.update({
-  id: "/css-grid",
-  path: "/css-grid",
+  id: '/css-grid',
+  path: '/css-grid',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CssGradientRoute = CssGradientRouteImport.update({
-  id: "/css-gradient",
-  path: "/css-gradient",
+  id: '/css-gradient',
+  path: '/css-gradient',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CssFormatterRoute = CssFormatterRouteImport.update({
-  id: "/css-formatter",
-  path: "/css-formatter",
+  id: '/css-formatter',
+  path: '/css-formatter',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CssFlexboxRoute = CssFlexboxRouteImport.update({
-  id: "/css-flexbox",
-  path: "/css-flexbox",
+  id: '/css-flexbox',
+  path: '/css-flexbox',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CssFilterRoute = CssFilterRouteImport.update({
-  id: "/css-filter",
-  path: "/css-filter",
+  id: '/css-filter',
+  path: '/css-filter',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CssCubicBezierRoute = CssCubicBezierRouteImport.update({
-  id: "/css-cubic-bezier",
-  path: "/css-cubic-bezier",
+  id: '/css-cubic-bezier',
+  path: '/css-cubic-bezier',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CssContainerQueryRoute = CssContainerQueryRouteImport.update({
-  id: "/css-container-query",
-  path: "/css-container-query",
+  id: '/css-container-query',
+  path: '/css-container-query',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CssClipPathRoute = CssClipPathRouteImport.update({
-  id: "/css-clip-path",
-  path: "/css-clip-path",
+  id: '/css-clip-path',
+  path: '/css-clip-path',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CssClampRoute = CssClampRouteImport.update({
-  id: "/css-clamp",
-  path: "/css-clamp",
+  id: '/css-clamp',
+  path: '/css-clamp',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CssBoxShadowRoute = CssBoxShadowRouteImport.update({
-  id: "/css-box-shadow",
-  path: "/css-box-shadow",
+  id: '/css-box-shadow',
+  path: '/css-box-shadow',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CssBorderRadiusRoute = CssBorderRadiusRouteImport.update({
-  id: "/css-border-radius",
-  path: "/css-border-radius",
+  id: '/css-border-radius',
+  path: '/css-border-radius',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CssBackgroundPatternRoute = CssBackgroundPatternRouteImport.update({
-  id: "/css-background-pattern",
-  path: "/css-background-pattern",
+  id: '/css-background-pattern',
+  path: '/css-background-pattern',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CssAnimationRoute = CssAnimationRouteImport.update({
-  id: "/css-animation",
-  path: "/css-animation",
+  id: '/css-animation',
+  path: '/css-animation',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CspBuilderRoute = CspBuilderRouteImport.update({
-  id: "/csp-builder",
-  path: "/csp-builder",
+  id: '/csp-builder',
+  path: '/csp-builder',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CronParserRoute = CronParserRouteImport.update({
-  id: "/cron-parser",
-  path: "/cron-parser",
+  id: '/cron-parser',
+  path: '/cron-parser',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CronRoute = CronRouteImport.update({
-  id: "/cron",
-  path: "/cron",
+  id: '/cron',
+  path: '/cron',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CountdownRoute = CountdownRouteImport.update({
-  id: "/countdown",
-  path: "/countdown",
+  id: '/countdown',
+  path: '/countdown',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CorsBuilderRoute = CorsBuilderRouteImport.update({
-  id: "/cors-builder",
-  path: "/cors-builder",
+  id: '/cors-builder',
+  path: '/cors-builder',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CookieParserRoute = CookieParserRouteImport.update({
-  id: "/cookie-parser",
-  path: "/cookie-parser",
+  id: '/cookie-parser',
+  path: '/cookie-parser',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const ConventionalCommitsRoute = ConventionalCommitsRouteImport.update({
-  id: "/conventional-commits",
-  path: "/conventional-commits",
+  id: '/conventional-commits',
+  path: '/conventional-commits',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CompoundInterestRoute = CompoundInterestRouteImport.update({
-  id: "/compound-interest",
-  path: "/compound-interest",
+  id: '/compound-interest',
+  path: '/compound-interest',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CombinatoricsRoute = CombinatoricsRouteImport.update({
-  id: "/combinatorics",
-  path: "/combinatorics",
+  id: '/combinatorics',
+  path: '/combinatorics',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const ColumnarTranspositionRoute = ColumnarTranspositionRouteImport.update({
-  id: "/columnar-transposition",
-  path: "/columnar-transposition",
+  id: '/columnar-transposition',
+  path: '/columnar-transposition',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const ColorTokenRoute = ColorTokenRouteImport.update({
-  id: "/color-token",
-  path: "/color-token",
+  id: '/color-token',
+  path: '/color-token',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const ColorTemperatureRoute = ColorTemperatureRouteImport.update({
-  id: "/color-temperature",
-  path: "/color-temperature",
+  id: '/color-temperature',
+  path: '/color-temperature',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const ColorPickerRoute = ColorPickerRouteImport.update({
-  id: "/color-picker",
-  path: "/color-picker",
+  id: '/color-picker',
+  path: '/color-picker',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const ColorPaletteRoute = ColorPaletteRouteImport.update({
-  id: "/color-palette",
-  path: "/color-palette",
+  id: '/color-palette',
+  path: '/color-palette',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const ColorNameRoute = ColorNameRouteImport.update({
-  id: "/color-name",
-  path: "/color-name",
+  id: '/color-name',
+  path: '/color-name',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const ColorMixRoute = ColorMixRouteImport.update({
-  id: "/color-mix",
-  path: "/color-mix",
+  id: '/color-mix',
+  path: '/color-mix',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const ColorHarmonyRoute = ColorHarmonyRouteImport.update({
-  id: "/color-harmony",
-  path: "/color-harmony",
+  id: '/color-harmony',
+  path: '/color-harmony',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const ColorExtractorRoute = ColorExtractorRouteImport.update({
-  id: "/color-extractor",
-  path: "/color-extractor",
+  id: '/color-extractor',
+  path: '/color-extractor',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const ColorConverterRoute = ColorConverterRouteImport.update({
-  id: "/color-converter",
-  path: "/color-converter",
+  id: '/color-converter',
+  path: '/color-converter',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const ColorContrastRoute = ColorContrastRouteImport.update({
-  id: "/color-contrast",
-  path: "/color-contrast",
+  id: '/color-contrast',
+  path: '/color-contrast',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const ColorBlindRoute = ColorBlindRouteImport.update({
-  id: "/color-blind",
-  path: "/color-blind",
+  id: '/color-blind',
+  path: '/color-blind',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CidrRoute = CidrRouteImport.update({
-  id: "/cidr",
-  path: "/cidr",
+  id: '/cidr',
+  path: '/cidr',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const ChmodRoute = ChmodRouteImport.update({
-  id: "/chmod",
-  path: "/chmod",
+  id: '/chmod',
+  path: '/chmod',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CharFrequencyRoute = CharFrequencyRouteImport.update({
-  id: "/char-frequency",
-  path: "/char-frequency",
+  id: '/char-frequency',
+  path: '/char-frequency',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CharCountRoute = CharCountRouteImport.update({
-  id: "/char-count",
-  path: "/char-count",
+  id: '/char-count',
+  path: '/char-count',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CertDecoderRoute = CertDecoderRouteImport.update({
-  id: "/cert-decoder",
-  path: "/cert-decoder",
+  id: '/cert-decoder',
+  path: '/cert-decoder',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CaesarRoute = CaesarRouteImport.update({
-  id: "/caesar",
-  path: "/caesar",
+  id: '/caesar',
+  path: '/caesar',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CacheControlRoute = CacheControlRouteImport.update({
-  id: "/cache-control",
-  path: "/cache-control",
+  id: '/cache-control',
+  path: '/cache-control',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const BstVisualizerRoute = BstVisualizerRouteImport.update({
-  id: "/bst-visualizer",
-  path: "/bst-visualizer",
+  id: '/bst-visualizer',
+  path: '/bst-visualizer',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const BrainfuckRoute = BrainfuckRouteImport.update({
-  id: "/brainfuck",
-  path: "/brainfuck",
+  id: '/brainfuck',
+  path: '/brainfuck',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const BrailleRoute = BrailleRouteImport.update({
-  id: "/braille",
-  path: "/braille",
+  id: '/braille',
+  path: '/braille',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const BpmRoute = BpmRouteImport.update({
-  id: "/bpm",
-  path: "/bpm",
+  id: '/bpm',
+  path: '/bpm',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const BmiCalculatorRoute = BmiCalculatorRouteImport.update({
-  id: "/bmi-calculator",
-  path: "/bmi-calculator",
+  id: '/bmi-calculator',
+  path: '/bmi-calculator',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const BitwiseRoute = BitwiseRouteImport.update({
-  id: "/bitwise",
-  path: "/bitwise",
+  id: '/bitwise',
+  path: '/bitwise',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const BifidRoute = BifidRouteImport.update({
-  id: "/bifid",
-  path: "/bifid",
+  id: '/bifid',
+  path: '/bifid',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const BeaufortRoute = BeaufortRouteImport.update({
-  id: "/beaufort",
-  path: "/beaufort",
+  id: '/beaufort',
+  path: '/beaufort',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const BasicAuthRoute = BasicAuthRouteImport.update({
-  id: "/basic-auth",
-  path: "/basic-auth",
+  id: '/basic-auth',
+  path: '/basic-auth',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const Base85Route = Base85RouteImport.update({
-  id: "/base85",
-  path: "/base85",
+  id: '/base85',
+  path: '/base85',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const Base64ImageRoute = Base64ImageRouteImport.update({
-  id: "/base64-image",
-  path: "/base64-image",
+  id: '/base64-image',
+  path: '/base64-image',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const Base64Route = Base64RouteImport.update({
-  id: "/base64",
-  path: "/base64",
+  id: '/base64',
+  path: '/base64',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const Base62Route = Base62RouteImport.update({
-  id: "/base62",
-  path: "/base62",
+  id: '/base62',
+  path: '/base62',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const Base58Route = Base58RouteImport.update({
-  id: "/base58",
-  path: "/base58",
+  id: '/base58',
+  path: '/base58',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const Base36Route = Base36RouteImport.update({
-  id: "/base36",
-  path: "/base36",
+  id: '/base36',
+  path: '/base36',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const Base32Route = Base32RouteImport.update({
-  id: "/base32",
-  path: "/base32",
+  id: '/base32',
+  path: '/base32',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const Base16Route = Base16RouteImport.update({
-  id: "/base16",
-  path: "/base16",
+  id: '/base16',
+  path: '/base16',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const BarcodeRoute = BarcodeRouteImport.update({
-  id: "/barcode",
-  path: "/barcode",
+  id: '/barcode',
+  path: '/barcode',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const BackgroundRemovalRoute = BackgroundRemovalRouteImport.update({
-  id: "/background-removal",
-  path: "/background-removal",
+  id: '/background-removal',
+  path: '/background-removal',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const AudioConverterRoute = AudioConverterRouteImport.update({
-  id: "/audio-converter",
-  path: "/audio-converter",
+  id: '/audio-converter',
+  path: '/audio-converter',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const AtbashRoute = AtbashRouteImport.update({
-  id: "/atbash",
-  path: "/atbash",
+  id: '/atbash',
+  path: '/atbash',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const AspectRatioRoute = AspectRatioRouteImport.update({
-  id: "/aspect-ratio",
-  path: "/aspect-ratio",
+  id: '/aspect-ratio',
+  path: '/aspect-ratio',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const AsciiTableRoute = AsciiTableRouteImport.update({
-  id: "/ascii-table",
-  path: "/ascii-table",
+  id: '/ascii-table',
+  path: '/ascii-table',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const AsciiArtRoute = AsciiArtRouteImport.update({
-  id: "/ascii-art",
-  path: "/ascii-art",
+  id: '/ascii-art',
+  path: '/ascii-art',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const AnsiColorRoute = AnsiColorRouteImport.update({
-  id: "/ansi-color",
-  path: "/ansi-color",
+  id: '/ansi-color',
+  path: '/ansi-color',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const AffineRoute = AffineRouteImport.update({
-  id: "/affine",
-  path: "/affine",
+  id: '/affine',
+  path: '/affine',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const AdfgvxRoute = AdfgvxRouteImport.update({
-  id: "/adfgvx",
-  path: "/adfgvx",
+  id: '/adfgvx',
+  path: '/adfgvx',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const IndexRoute = IndexRouteImport.update({
-  id: "/",
-  path: "/",
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const ApiImageDotwebpRoute = ApiImageDotwebpRouteImport.update({
-  id: "/api/image.webp",
-  path: "/api/image.webp",
+  id: '/api/image.webp',
+  path: '/api/image.webp',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const ApiImageDotsvgRoute = ApiImageDotsvgRouteImport.update({
-  id: "/api/image.svg",
-  path: "/api/image.svg",
+  id: '/api/image.svg',
+  path: '/api/image.svg',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const ApiImageDotpngRoute = ApiImageDotpngRouteImport.update({
-  id: "/api/image.png",
-  path: "/api/image.png",
+  id: '/api/image.png',
+  path: '/api/image.png',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const ApiImageDotjpgRoute = ApiImageDotjpgRouteImport.update({
-  id: "/api/image.jpg",
-  path: "/api/image.jpg",
+  id: '/api/image.jpg',
+  path: '/api/image.jpg',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 
 export interface FileRoutesByFullPath {
-  "/": typeof IndexRoute;
-  "/adfgvx": typeof AdfgvxRoute;
-  "/affine": typeof AffineRoute;
-  "/ansi-color": typeof AnsiColorRoute;
-  "/ascii-art": typeof AsciiArtRoute;
-  "/ascii-table": typeof AsciiTableRoute;
-  "/aspect-ratio": typeof AspectRatioRoute;
-  "/atbash": typeof AtbashRoute;
-  "/audio-converter": typeof AudioConverterRoute;
-  "/background-removal": typeof BackgroundRemovalRoute;
-  "/barcode": typeof BarcodeRoute;
-  "/base16": typeof Base16Route;
-  "/base32": typeof Base32Route;
-  "/base36": typeof Base36Route;
-  "/base58": typeof Base58Route;
-  "/base62": typeof Base62Route;
-  "/base64": typeof Base64Route;
-  "/base64-image": typeof Base64ImageRoute;
-  "/base85": typeof Base85Route;
-  "/basic-auth": typeof BasicAuthRoute;
-  "/beaufort": typeof BeaufortRoute;
-  "/bifid": typeof BifidRoute;
-  "/bitwise": typeof BitwiseRoute;
-  "/bmi-calculator": typeof BmiCalculatorRoute;
-  "/bpm": typeof BpmRoute;
-  "/braille": typeof BrailleRoute;
-  "/brainfuck": typeof BrainfuckRoute;
-  "/bst-visualizer": typeof BstVisualizerRoute;
-  "/cache-control": typeof CacheControlRoute;
-  "/caesar": typeof CaesarRoute;
-  "/cert-decoder": typeof CertDecoderRoute;
-  "/char-count": typeof CharCountRoute;
-  "/char-frequency": typeof CharFrequencyRoute;
-  "/chmod": typeof ChmodRoute;
-  "/cidr": typeof CidrRoute;
-  "/color-blind": typeof ColorBlindRoute;
-  "/color-contrast": typeof ColorContrastRoute;
-  "/color-converter": typeof ColorConverterRoute;
-  "/color-extractor": typeof ColorExtractorRoute;
-  "/color-harmony": typeof ColorHarmonyRoute;
-  "/color-mix": typeof ColorMixRoute;
-  "/color-name": typeof ColorNameRoute;
-  "/color-palette": typeof ColorPaletteRoute;
-  "/color-picker": typeof ColorPickerRoute;
-  "/color-temperature": typeof ColorTemperatureRoute;
-  "/color-token": typeof ColorTokenRoute;
-  "/columnar-transposition": typeof ColumnarTranspositionRoute;
-  "/combinatorics": typeof CombinatoricsRoute;
-  "/compound-interest": typeof CompoundInterestRoute;
-  "/conventional-commits": typeof ConventionalCommitsRoute;
-  "/cookie-parser": typeof CookieParserRoute;
-  "/cors-builder": typeof CorsBuilderRoute;
-  "/countdown": typeof CountdownRoute;
-  "/cron": typeof CronRoute;
-  "/cron-parser": typeof CronParserRoute;
-  "/csp-builder": typeof CspBuilderRoute;
-  "/css-animation": typeof CssAnimationRoute;
-  "/css-background-pattern": typeof CssBackgroundPatternRoute;
-  "/css-border-radius": typeof CssBorderRadiusRoute;
-  "/css-box-shadow": typeof CssBoxShadowRoute;
-  "/css-clamp": typeof CssClampRoute;
-  "/css-clip-path": typeof CssClipPathRoute;
-  "/css-container-query": typeof CssContainerQueryRoute;
-  "/css-cubic-bezier": typeof CssCubicBezierRoute;
-  "/css-filter": typeof CssFilterRoute;
-  "/css-flexbox": typeof CssFlexboxRoute;
-  "/css-formatter": typeof CssFormatterRoute;
-  "/css-gradient": typeof CssGradientRoute;
-  "/css-grid": typeof CssGridRoute;
-  "/css-logical": typeof CssLogicalRoute;
-  "/css-media-query": typeof CssMediaQueryRoute;
-  "/css-scroll-snap": typeof CssScrollSnapRoute;
-  "/css-selector": typeof CssSelectorRoute;
-  "/css-shorthand": typeof CssShorthandRoute;
-  "/css-specificity": typeof CssSpecificityRoute;
-  "/css-text-shadow": typeof CssTextShadowRoute;
-  "/css-transform": typeof CssTransformRoute;
-  "/css-unit": typeof CssUnitRoute;
-  "/css-variables": typeof CssVariablesRoute;
-  "/csv-json": typeof CsvJsonRoute;
-  "/csv-sql": typeof CsvSqlRoute;
-  "/curl-builder": typeof CurlBuilderRoute;
-  "/curl-to-fetch": typeof CurlToFetchRoute;
-  "/daiji": typeof DaijiRoute;
-  "/date-calc": typeof DateCalcRoute;
-  "/dice-roll": typeof DiceRollRoute;
-  "/diff": typeof DiffRoute;
-  "/discord-emoji": typeof DiscordEmojiRoute;
-  "/discord-sticker": typeof DiscordStickerRoute;
-  "/dns-lookup": typeof DnsLookupRoute;
-  "/docker-run-to-compose": typeof DockerRunToComposeRoute;
-  "/dockerfile": typeof DockerfileRoute;
-  "/dummy-audio": typeof DummyAudioRoute;
-  "/dummy-image": typeof DummyImageRoute;
-  "/duration": typeof DurationRoute;
-  "/editorconfig": typeof EditorconfigRoute;
-  "/email-dns": typeof EmailDnsRoute;
-  "/email-header": typeof EmailHeaderRoute;
-  "/emoji-converter": typeof EmojiConverterRoute;
-  "/encode-chain": typeof EncodeChainRoute;
-  "/encoding": typeof EncodingRoute;
-  "/entropy": typeof EntropyRoute;
-  "/env-parser": typeof EnvParserRoute;
-  "/eslint-config-builder": typeof EslintConfigBuilderRoute;
-  "/exif-viewer": typeof ExifViewerRoute;
-  "/fancy-text": typeof FancyTextRoute;
-  "/favicon-generator": typeof FaviconGeneratorRoute;
-  "/four-square": typeof FourSquareRoute;
-  "/fraction": typeof FractionRoute;
-  "/function-plotter": typeof FunctionPlotterRoute;
-  "/game-2048": typeof Game2048Route;
-  "/geohash": typeof GeohashRoute;
-  "/geometry": typeof GeometryRoute;
-  "/gitattributes": typeof GitattributesRoute;
-  "/github-actions": typeof GithubActionsRoute;
-  "/github-badge": typeof GithubBadgeRoute;
-  "/gitignore": typeof GitignoreRoute;
-  "/glob-tester": typeof GlobTesterRoute;
-  "/global-ip": typeof GlobalIpRoute;
-  "/graphql": typeof GraphqlRoute;
-  "/gronsfeld": typeof GronsfeldRoute;
-  "/gzip": typeof GzipRoute;
-  "/hangman": typeof HangmanRoute;
-  "/har": typeof HarRoute;
-  "/hash": typeof HashRoute;
-  "/haversine": typeof HaversineRoute;
-  "/hex-viewer": typeof HexViewerRoute;
-  "/hmac": typeof HmacRoute;
-  "/htaccess-builder": typeof HtaccessBuilderRoute;
-  "/html-encode": typeof HtmlEncodeRoute;
-  "/html-formatter": typeof HtmlFormatterRoute;
-  "/html-markdown": typeof HtmlMarkdownRoute;
-  "/html-playground": typeof HtmlPlaygroundRoute;
-  "/html-to-jsx": typeof HtmlToJsxRoute;
-  "/http-client": typeof HttpClientRoute;
-  "/http-headers": typeof HttpHeadersRoute;
-  "/http-status": typeof HttpStatusRoute;
-  "/iban": typeof IbanRoute;
-  "/ieee754": typeof Ieee754Route;
-  "/image-base64": typeof ImageBase64Route;
-  "/image-compress": typeof ImageCompressRoute;
-  "/image-crop": typeof ImageCropRoute;
-  "/image-resize": typeof ImageResizeRoute;
-  "/image-to-gif": typeof ImageToGifRoute;
-  "/ini-parser": typeof IniParserRoute;
-  "/ip-cidr-check": typeof IpCidrCheckRoute;
-  "/ip-converter": typeof IpConverterRoute;
-  "/ip-geolocation": typeof IpGeolocationRoute;
-  "/ipv6": typeof Ipv6Route;
-  "/isbn": typeof IsbnRoute;
-  "/json": typeof JsonRoute;
-  "/json-compare": typeof JsonCompareRoute;
-  "/json-flatten": typeof JsonFlattenRoute;
-  "/json-lines": typeof JsonLinesRoute;
-  "/json-merge": typeof JsonMergeRoute;
-  "/json-path": typeof JsonPathRoute;
-  "/json-pointer": typeof JsonPointerRoute;
-  "/json-schema": typeof JsonSchemaRoute;
-  "/json-schema-validator": typeof JsonSchemaValidatorRoute;
-  "/json-to-graphql": typeof JsonToGraphqlRoute;
-  "/json-to-sql": typeof JsonToSqlRoute;
-  "/json-to-ts": typeof JsonToTsRoute;
-  "/json-to-zod": typeof JsonToZodRoute;
-  "/jwt": typeof JwtRoute;
-  "/jwt-generator": typeof JwtGeneratorRoute;
-  "/kana-convert": typeof KanaConvertRoute;
-  "/keycode": typeof KeycodeRoute;
-  "/life-game": typeof LifeGameRoute;
-  "/line-ending": typeof LineEndingRoute;
-  "/lissajous": typeof LissajousRoute;
-  "/loan-calculator": typeof LoanCalculatorRoute;
-  "/lorem-ipsum": typeof LoremIpsumRoute;
-  "/luhn-check": typeof LuhnCheckRoute;
-  "/makefile": typeof MakefileRoute;
-  "/mandelbrot": typeof MandelbrotRoute;
-  "/markdown-preview": typeof MarkdownPreviewRoute;
-  "/markdown-table": typeof MarkdownTableRoute;
-  "/math-eval": typeof MathEvalRoute;
-  "/matrix": typeof MatrixRoute;
-  "/mermaid": typeof MermaidRoute;
-  "/mime-types": typeof MimeTypesRoute;
-  "/minesweeper": typeof MinesweeperRoute;
-  "/minify": typeof MinifyRoute;
-  "/morse-code": typeof MorseCodeRoute;
-  "/msgpack": typeof MsgpackRoute;
-  "/nano-id": typeof NanoIdRoute;
-  "/nato-alphabet": typeof NatoAlphabetRoute;
-  "/nginx-config": typeof NginxConfigRoute;
-  "/number-base": typeof NumberBaseRoute;
-  "/number-format": typeof NumberFormatRoute;
-  "/number-theory": typeof NumberTheoryRoute;
-  "/number-words": typeof NumberWordsRoute;
-  "/ogp": typeof OgpRoute;
-  "/ogp-generator": typeof OgpGeneratorRoute;
-  "/openssl-builder": typeof OpensslBuilderRoute;
-  "/package-json": typeof PackageJsonRoute;
-  "/passphrase": typeof PassphraseRoute;
-  "/password-generator": typeof PasswordGeneratorRoute;
-  "/password-strength": typeof PasswordStrengthRoute;
-  "/percentage-calculator": typeof PercentageCalculatorRoute;
-  "/phone": typeof PhoneRoute;
-  "/php-serialize": typeof PhpSerializeRoute;
-  "/pkce": typeof PkceRoute;
-  "/playfair": typeof PlayfairRoute;
-  "/polybius": typeof PolybiusRoute;
-  "/pomodoro": typeof PomodoroRoute;
-  "/port-check": typeof PortCheckRoute;
-  "/ports": typeof PortsRoute;
-  "/prettier-config-builder": typeof PrettierConfigBuilderRoute;
-  "/punycode": typeof PunycodeRoute;
-  "/qr-code": typeof QrCodeRoute;
-  "/quoted-printable": typeof QuotedPrintableRoute;
-  "/rail-fence": typeof RailFenceRoute;
-  "/random-data": typeof RandomDataRoute;
-  "/random-picker": typeof RandomPickerRoute;
-  "/readability": typeof ReadabilityRoute;
-  "/redirect-tracer": typeof RedirectTracerRoute;
-  "/regex-checker": typeof RegexCheckerRoute;
-  "/regex-library": typeof RegexLibraryRoute;
-  "/robots-txt": typeof RobotsTxtRoute;
-  "/roman-numerals": typeof RomanNumeralsRoute;
-  "/scytale": typeof ScytaleRoute;
-  "/security-headers": typeof SecurityHeadersRoute;
-  "/semver": typeof SemverRoute;
-  "/seo-meta": typeof SeoMetaRoute;
-  "/sequences": typeof SequencesRoute;
-  "/server-env": typeof ServerEnvRoute;
-  "/short-code": typeof ShortCodeRoute;
-  "/sitemap": typeof SitemapRoute;
-  "/slug": typeof SlugRoute;
-  "/snake": typeof SnakeRoute;
-  "/sort-visualizer": typeof SortVisualizerRoute;
-  "/sql": typeof SqlRoute;
-  "/sql-to-ts": typeof SqlToTsRoute;
-  "/sri-hash": typeof SriHashRoute;
-  "/ssh-key": typeof SshKeyRoute;
-  "/statistics": typeof StatisticsRoute;
-  "/stopwatch": typeof StopwatchRoute;
-  "/storage-converter": typeof StorageConverterRoute;
-  "/string-escape": typeof StringEscapeRoute;
-  "/string-similarity": typeof StringSimilarityRoute;
-  "/sudoku": typeof SudokuRoute;
-  "/svg-optimizer": typeof SvgOptimizerRoute;
-  "/tailwind-colors": typeof TailwindColorsRoute;
-  "/tap-code": typeof TapCodeRoute;
-  "/tax-calculator": typeof TaxCalculatorRoute;
-  "/template": typeof TemplateRoute;
-  "/tetris": typeof TetrisRoute;
-  "/text-binary": typeof TextBinaryRoute;
-  "/text-case": typeof TextCaseRoute;
-  "/text-encrypt": typeof TextEncryptRoute;
-  "/text-line": typeof TextLineRoute;
-  "/text-replace": typeof TextReplaceRoute;
-  "/text-sort": typeof TextSortRoute;
-  "/text-stats": typeof TextStatsRoute;
-  "/tic-tac-toe": typeof TicTacToeRoute;
-  "/timestamp": typeof TimestampRoute;
-  "/timezone": typeof TimezoneRoute;
-  "/token-estimator": typeof TokenEstimatorRoute;
-  "/toml-formatter": typeof TomlFormatterRoute;
-  "/toml-json": typeof TomlJsonRoute;
-  "/top": typeof TopRoute;
-  "/totp": typeof TotpRoute;
-  "/transfer-speed": typeof TransferSpeedRoute;
-  "/transparent-image": typeof TransparentImageRoute;
-  "/trig": typeof TrigRoute;
-  "/truth-table": typeof TruthTableRoute;
-  "/tsconfig-builder": typeof TsconfigBuilderRoute;
-  "/typing-speed": typeof TypingSpeedRoute;
-  "/typography-scale": typeof TypographyScaleRoute;
-  "/ulid": typeof UlidRoute;
-  "/unicode": typeof UnicodeRoute;
-  "/unicode-inspector": typeof UnicodeInspectorRoute;
-  "/unit-converter": typeof UnitConverterRoute;
-  "/url-encode": typeof UrlEncodeRoute;
-  "/url-parser": typeof UrlParserRoute;
-  "/user-agent": typeof UserAgentRoute;
-  "/utm-builder": typeof UtmBuilderRoute;
-  "/uuid": typeof UuidRoute;
-  "/uuid-inspector": typeof UuidInspectorRoute;
-  "/video-converter": typeof VideoConverterRoute;
-  "/vigenere": typeof VigenereRoute;
-  "/vscode-snippet": typeof VscodeSnippetRoute;
-  "/wareki": typeof WarekiRoute;
-  "/warikan": typeof WarikanRoute;
-  "/web-manifest": typeof WebManifestRoute;
-  "/websocket": typeof WebsocketRoute;
-  "/whois": typeof WhoisRoute;
-  "/word-frequency": typeof WordFrequencyRoute;
-  "/wordle": typeof WordleRoute;
-  "/world-clock": typeof WorldClockRoute;
-  "/xml": typeof XmlRoute;
-  "/xml-json": typeof XmlJsonRoute;
-  "/xpath": typeof XpathRoute;
-  "/yaml-formatter": typeof YamlFormatterRoute;
-  "/yaml-json": typeof YamlJsonRoute;
-  "/yaml-toml": typeof YamlTomlRoute;
-  "/zenkaku": typeof ZenkakuRoute;
-  "/zero-width": typeof ZeroWidthRoute;
-  "/api/image.jpg": typeof ApiImageDotjpgRoute;
-  "/api/image.png": typeof ApiImageDotpngRoute;
-  "/api/image.svg": typeof ApiImageDotsvgRoute;
-  "/api/image.webp": typeof ApiImageDotwebpRoute;
+  '/': typeof IndexRoute
+  '/adfgvx': typeof AdfgvxRoute
+  '/affine': typeof AffineRoute
+  '/ansi-color': typeof AnsiColorRoute
+  '/ascii-art': typeof AsciiArtRoute
+  '/ascii-table': typeof AsciiTableRoute
+  '/aspect-ratio': typeof AspectRatioRoute
+  '/atbash': typeof AtbashRoute
+  '/audio-converter': typeof AudioConverterRoute
+  '/background-removal': typeof BackgroundRemovalRoute
+  '/barcode': typeof BarcodeRoute
+  '/base16': typeof Base16Route
+  '/base32': typeof Base32Route
+  '/base36': typeof Base36Route
+  '/base58': typeof Base58Route
+  '/base62': typeof Base62Route
+  '/base64': typeof Base64Route
+  '/base64-image': typeof Base64ImageRoute
+  '/base85': typeof Base85Route
+  '/basic-auth': typeof BasicAuthRoute
+  '/beaufort': typeof BeaufortRoute
+  '/bifid': typeof BifidRoute
+  '/bitwise': typeof BitwiseRoute
+  '/bmi-calculator': typeof BmiCalculatorRoute
+  '/bpm': typeof BpmRoute
+  '/braille': typeof BrailleRoute
+  '/brainfuck': typeof BrainfuckRoute
+  '/bst-visualizer': typeof BstVisualizerRoute
+  '/cache-control': typeof CacheControlRoute
+  '/caesar': typeof CaesarRoute
+  '/cert-decoder': typeof CertDecoderRoute
+  '/char-count': typeof CharCountRoute
+  '/char-frequency': typeof CharFrequencyRoute
+  '/chmod': typeof ChmodRoute
+  '/cidr': typeof CidrRoute
+  '/color-blind': typeof ColorBlindRoute
+  '/color-contrast': typeof ColorContrastRoute
+  '/color-converter': typeof ColorConverterRoute
+  '/color-extractor': typeof ColorExtractorRoute
+  '/color-harmony': typeof ColorHarmonyRoute
+  '/color-mix': typeof ColorMixRoute
+  '/color-name': typeof ColorNameRoute
+  '/color-palette': typeof ColorPaletteRoute
+  '/color-picker': typeof ColorPickerRoute
+  '/color-temperature': typeof ColorTemperatureRoute
+  '/color-token': typeof ColorTokenRoute
+  '/columnar-transposition': typeof ColumnarTranspositionRoute
+  '/combinatorics': typeof CombinatoricsRoute
+  '/compound-interest': typeof CompoundInterestRoute
+  '/conventional-commits': typeof ConventionalCommitsRoute
+  '/cookie-parser': typeof CookieParserRoute
+  '/cors-builder': typeof CorsBuilderRoute
+  '/countdown': typeof CountdownRoute
+  '/cron': typeof CronRoute
+  '/cron-parser': typeof CronParserRoute
+  '/csp-builder': typeof CspBuilderRoute
+  '/css-animation': typeof CssAnimationRoute
+  '/css-background-pattern': typeof CssBackgroundPatternRoute
+  '/css-border-radius': typeof CssBorderRadiusRoute
+  '/css-box-shadow': typeof CssBoxShadowRoute
+  '/css-clamp': typeof CssClampRoute
+  '/css-clip-path': typeof CssClipPathRoute
+  '/css-container-query': typeof CssContainerQueryRoute
+  '/css-cubic-bezier': typeof CssCubicBezierRoute
+  '/css-filter': typeof CssFilterRoute
+  '/css-flexbox': typeof CssFlexboxRoute
+  '/css-formatter': typeof CssFormatterRoute
+  '/css-gradient': typeof CssGradientRoute
+  '/css-grid': typeof CssGridRoute
+  '/css-logical': typeof CssLogicalRoute
+  '/css-media-query': typeof CssMediaQueryRoute
+  '/css-scroll-snap': typeof CssScrollSnapRoute
+  '/css-selector': typeof CssSelectorRoute
+  '/css-shorthand': typeof CssShorthandRoute
+  '/css-specificity': typeof CssSpecificityRoute
+  '/css-text-shadow': typeof CssTextShadowRoute
+  '/css-transform': typeof CssTransformRoute
+  '/css-unit': typeof CssUnitRoute
+  '/css-variables': typeof CssVariablesRoute
+  '/csv-json': typeof CsvJsonRoute
+  '/csv-sql': typeof CsvSqlRoute
+  '/curl-builder': typeof CurlBuilderRoute
+  '/curl-to-fetch': typeof CurlToFetchRoute
+  '/daiji': typeof DaijiRoute
+  '/date-calc': typeof DateCalcRoute
+  '/dice-roll': typeof DiceRollRoute
+  '/diff': typeof DiffRoute
+  '/discord-emoji': typeof DiscordEmojiRoute
+  '/discord-sticker': typeof DiscordStickerRoute
+  '/dns-lookup': typeof DnsLookupRoute
+  '/docker-run-to-compose': typeof DockerRunToComposeRoute
+  '/dockerfile': typeof DockerfileRoute
+  '/dummy-audio': typeof DummyAudioRoute
+  '/dummy-image': typeof DummyImageRoute
+  '/duration': typeof DurationRoute
+  '/editorconfig': typeof EditorconfigRoute
+  '/email-dns': typeof EmailDnsRoute
+  '/email-header': typeof EmailHeaderRoute
+  '/emoji-converter': typeof EmojiConverterRoute
+  '/encode-chain': typeof EncodeChainRoute
+  '/encoding': typeof EncodingRoute
+  '/entropy': typeof EntropyRoute
+  '/env-parser': typeof EnvParserRoute
+  '/eslint-config-builder': typeof EslintConfigBuilderRoute
+  '/exif-viewer': typeof ExifViewerRoute
+  '/fancy-text': typeof FancyTextRoute
+  '/favicon-generator': typeof FaviconGeneratorRoute
+  '/four-square': typeof FourSquareRoute
+  '/fraction': typeof FractionRoute
+  '/function-plotter': typeof FunctionPlotterRoute
+  '/game-2048': typeof Game2048Route
+  '/geohash': typeof GeohashRoute
+  '/geometry': typeof GeometryRoute
+  '/gitattributes': typeof GitattributesRoute
+  '/github-actions': typeof GithubActionsRoute
+  '/github-badge': typeof GithubBadgeRoute
+  '/gitignore': typeof GitignoreRoute
+  '/glob-tester': typeof GlobTesterRoute
+  '/global-ip': typeof GlobalIpRoute
+  '/graphql': typeof GraphqlRoute
+  '/gronsfeld': typeof GronsfeldRoute
+  '/gzip': typeof GzipRoute
+  '/hangman': typeof HangmanRoute
+  '/har': typeof HarRoute
+  '/hash': typeof HashRoute
+  '/haversine': typeof HaversineRoute
+  '/hex-viewer': typeof HexViewerRoute
+  '/hmac': typeof HmacRoute
+  '/htaccess-builder': typeof HtaccessBuilderRoute
+  '/html-encode': typeof HtmlEncodeRoute
+  '/html-formatter': typeof HtmlFormatterRoute
+  '/html-markdown': typeof HtmlMarkdownRoute
+  '/html-playground': typeof HtmlPlaygroundRoute
+  '/html-to-jsx': typeof HtmlToJsxRoute
+  '/http-client': typeof HttpClientRoute
+  '/http-headers': typeof HttpHeadersRoute
+  '/http-status': typeof HttpStatusRoute
+  '/iban': typeof IbanRoute
+  '/ieee754': typeof Ieee754Route
+  '/image-base64': typeof ImageBase64Route
+  '/image-compress': typeof ImageCompressRoute
+  '/image-crop': typeof ImageCropRoute
+  '/image-resize': typeof ImageResizeRoute
+  '/image-to-gif': typeof ImageToGifRoute
+  '/ini-parser': typeof IniParserRoute
+  '/ip-cidr-check': typeof IpCidrCheckRoute
+  '/ip-converter': typeof IpConverterRoute
+  '/ip-geolocation': typeof IpGeolocationRoute
+  '/ipv6': typeof Ipv6Route
+  '/isbn': typeof IsbnRoute
+  '/json': typeof JsonRoute
+  '/json-compare': typeof JsonCompareRoute
+  '/json-flatten': typeof JsonFlattenRoute
+  '/json-lines': typeof JsonLinesRoute
+  '/json-merge': typeof JsonMergeRoute
+  '/json-path': typeof JsonPathRoute
+  '/json-pointer': typeof JsonPointerRoute
+  '/json-schema': typeof JsonSchemaRoute
+  '/json-schema-validator': typeof JsonSchemaValidatorRoute
+  '/json-to-graphql': typeof JsonToGraphqlRoute
+  '/json-to-sql': typeof JsonToSqlRoute
+  '/json-to-ts': typeof JsonToTsRoute
+  '/json-to-zod': typeof JsonToZodRoute
+  '/jwt': typeof JwtRoute
+  '/jwt-generator': typeof JwtGeneratorRoute
+  '/kana-convert': typeof KanaConvertRoute
+  '/keycode': typeof KeycodeRoute
+  '/life-game': typeof LifeGameRoute
+  '/line-ending': typeof LineEndingRoute
+  '/lissajous': typeof LissajousRoute
+  '/loan-calculator': typeof LoanCalculatorRoute
+  '/lorem-ipsum': typeof LoremIpsumRoute
+  '/luhn-check': typeof LuhnCheckRoute
+  '/makefile': typeof MakefileRoute
+  '/mandelbrot': typeof MandelbrotRoute
+  '/markdown-preview': typeof MarkdownPreviewRoute
+  '/markdown-table': typeof MarkdownTableRoute
+  '/math-eval': typeof MathEvalRoute
+  '/matrix': typeof MatrixRoute
+  '/mermaid': typeof MermaidRoute
+  '/mime-types': typeof MimeTypesRoute
+  '/minesweeper': typeof MinesweeperRoute
+  '/minify': typeof MinifyRoute
+  '/morse-code': typeof MorseCodeRoute
+  '/msgpack': typeof MsgpackRoute
+  '/nano-id': typeof NanoIdRoute
+  '/nato-alphabet': typeof NatoAlphabetRoute
+  '/nginx-config': typeof NginxConfigRoute
+  '/number-base': typeof NumberBaseRoute
+  '/number-format': typeof NumberFormatRoute
+  '/number-theory': typeof NumberTheoryRoute
+  '/number-words': typeof NumberWordsRoute
+  '/ogp': typeof OgpRoute
+  '/ogp-generator': typeof OgpGeneratorRoute
+  '/openssl-builder': typeof OpensslBuilderRoute
+  '/package-json': typeof PackageJsonRoute
+  '/passphrase': typeof PassphraseRoute
+  '/password-generator': typeof PasswordGeneratorRoute
+  '/password-strength': typeof PasswordStrengthRoute
+  '/percentage-calculator': typeof PercentageCalculatorRoute
+  '/phone': typeof PhoneRoute
+  '/php-serialize': typeof PhpSerializeRoute
+  '/pkce': typeof PkceRoute
+  '/playfair': typeof PlayfairRoute
+  '/polybius': typeof PolybiusRoute
+  '/pomodoro': typeof PomodoroRoute
+  '/port-check': typeof PortCheckRoute
+  '/ports': typeof PortsRoute
+  '/prettier-config-builder': typeof PrettierConfigBuilderRoute
+  '/punycode': typeof PunycodeRoute
+  '/qr-code': typeof QrCodeRoute
+  '/quoted-printable': typeof QuotedPrintableRoute
+  '/rail-fence': typeof RailFenceRoute
+  '/random-data': typeof RandomDataRoute
+  '/random-picker': typeof RandomPickerRoute
+  '/readability': typeof ReadabilityRoute
+  '/redirect-tracer': typeof RedirectTracerRoute
+  '/regex-checker': typeof RegexCheckerRoute
+  '/regex-library': typeof RegexLibraryRoute
+  '/robots-txt': typeof RobotsTxtRoute
+  '/roman-numerals': typeof RomanNumeralsRoute
+  '/scytale': typeof ScytaleRoute
+  '/security-headers': typeof SecurityHeadersRoute
+  '/semver': typeof SemverRoute
+  '/seo-meta': typeof SeoMetaRoute
+  '/sequences': typeof SequencesRoute
+  '/server-env': typeof ServerEnvRoute
+  '/short-code': typeof ShortCodeRoute
+  '/sitemap': typeof SitemapRoute
+  '/slug': typeof SlugRoute
+  '/snake': typeof SnakeRoute
+  '/sort-visualizer': typeof SortVisualizerRoute
+  '/sql': typeof SqlRoute
+  '/sql-to-ts': typeof SqlToTsRoute
+  '/sri-hash': typeof SriHashRoute
+  '/ssh-key': typeof SshKeyRoute
+  '/statistics': typeof StatisticsRoute
+  '/stopwatch': typeof StopwatchRoute
+  '/storage-converter': typeof StorageConverterRoute
+  '/string-escape': typeof StringEscapeRoute
+  '/string-similarity': typeof StringSimilarityRoute
+  '/sudoku': typeof SudokuRoute
+  '/svg-optimizer': typeof SvgOptimizerRoute
+  '/tailwind-colors': typeof TailwindColorsRoute
+  '/tap-code': typeof TapCodeRoute
+  '/tax-calculator': typeof TaxCalculatorRoute
+  '/template': typeof TemplateRoute
+  '/tetris': typeof TetrisRoute
+  '/text-binary': typeof TextBinaryRoute
+  '/text-case': typeof TextCaseRoute
+  '/text-encrypt': typeof TextEncryptRoute
+  '/text-line': typeof TextLineRoute
+  '/text-replace': typeof TextReplaceRoute
+  '/text-sort': typeof TextSortRoute
+  '/text-stats': typeof TextStatsRoute
+  '/tic-tac-toe': typeof TicTacToeRoute
+  '/timestamp': typeof TimestampRoute
+  '/timezone': typeof TimezoneRoute
+  '/token-estimator': typeof TokenEstimatorRoute
+  '/toml-formatter': typeof TomlFormatterRoute
+  '/toml-json': typeof TomlJsonRoute
+  '/top': typeof TopRoute
+  '/totp': typeof TotpRoute
+  '/transfer-speed': typeof TransferSpeedRoute
+  '/transparent-image': typeof TransparentImageRoute
+  '/trig': typeof TrigRoute
+  '/truth-table': typeof TruthTableRoute
+  '/tsconfig-builder': typeof TsconfigBuilderRoute
+  '/typing-speed': typeof TypingSpeedRoute
+  '/typography-scale': typeof TypographyScaleRoute
+  '/ulid': typeof UlidRoute
+  '/unicode': typeof UnicodeRoute
+  '/unicode-inspector': typeof UnicodeInspectorRoute
+  '/unit-converter': typeof UnitConverterRoute
+  '/url-encode': typeof UrlEncodeRoute
+  '/url-parser': typeof UrlParserRoute
+  '/user-agent': typeof UserAgentRoute
+  '/utm-builder': typeof UtmBuilderRoute
+  '/uuid': typeof UuidRoute
+  '/uuid-inspector': typeof UuidInspectorRoute
+  '/video-converter': typeof VideoConverterRoute
+  '/vigenere': typeof VigenereRoute
+  '/vscode-snippet': typeof VscodeSnippetRoute
+  '/wareki': typeof WarekiRoute
+  '/warikan': typeof WarikanRoute
+  '/web-manifest': typeof WebManifestRoute
+  '/websocket': typeof WebsocketRoute
+  '/whois': typeof WhoisRoute
+  '/word-frequency': typeof WordFrequencyRoute
+  '/wordle': typeof WordleRoute
+  '/world-clock': typeof WorldClockRoute
+  '/xml': typeof XmlRoute
+  '/xml-json': typeof XmlJsonRoute
+  '/xpath': typeof XpathRoute
+  '/yaml-formatter': typeof YamlFormatterRoute
+  '/yaml-json': typeof YamlJsonRoute
+  '/yaml-toml': typeof YamlTomlRoute
+  '/zenkaku': typeof ZenkakuRoute
+  '/zero-width': typeof ZeroWidthRoute
+  '/api/image.jpg': typeof ApiImageDotjpgRoute
+  '/api/image.png': typeof ApiImageDotpngRoute
+  '/api/image.svg': typeof ApiImageDotsvgRoute
+  '/api/image.webp': typeof ApiImageDotwebpRoute
 }
 export interface FileRoutesByTo {
-  "/": typeof IndexRoute;
-  "/adfgvx": typeof AdfgvxRoute;
-  "/affine": typeof AffineRoute;
-  "/ansi-color": typeof AnsiColorRoute;
-  "/ascii-art": typeof AsciiArtRoute;
-  "/ascii-table": typeof AsciiTableRoute;
-  "/aspect-ratio": typeof AspectRatioRoute;
-  "/atbash": typeof AtbashRoute;
-  "/audio-converter": typeof AudioConverterRoute;
-  "/background-removal": typeof BackgroundRemovalRoute;
-  "/barcode": typeof BarcodeRoute;
-  "/base16": typeof Base16Route;
-  "/base32": typeof Base32Route;
-  "/base36": typeof Base36Route;
-  "/base58": typeof Base58Route;
-  "/base62": typeof Base62Route;
-  "/base64": typeof Base64Route;
-  "/base64-image": typeof Base64ImageRoute;
-  "/base85": typeof Base85Route;
-  "/basic-auth": typeof BasicAuthRoute;
-  "/beaufort": typeof BeaufortRoute;
-  "/bifid": typeof BifidRoute;
-  "/bitwise": typeof BitwiseRoute;
-  "/bmi-calculator": typeof BmiCalculatorRoute;
-  "/bpm": typeof BpmRoute;
-  "/braille": typeof BrailleRoute;
-  "/brainfuck": typeof BrainfuckRoute;
-  "/bst-visualizer": typeof BstVisualizerRoute;
-  "/cache-control": typeof CacheControlRoute;
-  "/caesar": typeof CaesarRoute;
-  "/cert-decoder": typeof CertDecoderRoute;
-  "/char-count": typeof CharCountRoute;
-  "/char-frequency": typeof CharFrequencyRoute;
-  "/chmod": typeof ChmodRoute;
-  "/cidr": typeof CidrRoute;
-  "/color-blind": typeof ColorBlindRoute;
-  "/color-contrast": typeof ColorContrastRoute;
-  "/color-converter": typeof ColorConverterRoute;
-  "/color-extractor": typeof ColorExtractorRoute;
-  "/color-harmony": typeof ColorHarmonyRoute;
-  "/color-mix": typeof ColorMixRoute;
-  "/color-name": typeof ColorNameRoute;
-  "/color-palette": typeof ColorPaletteRoute;
-  "/color-picker": typeof ColorPickerRoute;
-  "/color-temperature": typeof ColorTemperatureRoute;
-  "/color-token": typeof ColorTokenRoute;
-  "/columnar-transposition": typeof ColumnarTranspositionRoute;
-  "/combinatorics": typeof CombinatoricsRoute;
-  "/compound-interest": typeof CompoundInterestRoute;
-  "/conventional-commits": typeof ConventionalCommitsRoute;
-  "/cookie-parser": typeof CookieParserRoute;
-  "/cors-builder": typeof CorsBuilderRoute;
-  "/countdown": typeof CountdownRoute;
-  "/cron": typeof CronRoute;
-  "/cron-parser": typeof CronParserRoute;
-  "/csp-builder": typeof CspBuilderRoute;
-  "/css-animation": typeof CssAnimationRoute;
-  "/css-background-pattern": typeof CssBackgroundPatternRoute;
-  "/css-border-radius": typeof CssBorderRadiusRoute;
-  "/css-box-shadow": typeof CssBoxShadowRoute;
-  "/css-clamp": typeof CssClampRoute;
-  "/css-clip-path": typeof CssClipPathRoute;
-  "/css-container-query": typeof CssContainerQueryRoute;
-  "/css-cubic-bezier": typeof CssCubicBezierRoute;
-  "/css-filter": typeof CssFilterRoute;
-  "/css-flexbox": typeof CssFlexboxRoute;
-  "/css-formatter": typeof CssFormatterRoute;
-  "/css-gradient": typeof CssGradientRoute;
-  "/css-grid": typeof CssGridRoute;
-  "/css-logical": typeof CssLogicalRoute;
-  "/css-media-query": typeof CssMediaQueryRoute;
-  "/css-scroll-snap": typeof CssScrollSnapRoute;
-  "/css-selector": typeof CssSelectorRoute;
-  "/css-shorthand": typeof CssShorthandRoute;
-  "/css-specificity": typeof CssSpecificityRoute;
-  "/css-text-shadow": typeof CssTextShadowRoute;
-  "/css-transform": typeof CssTransformRoute;
-  "/css-unit": typeof CssUnitRoute;
-  "/css-variables": typeof CssVariablesRoute;
-  "/csv-json": typeof CsvJsonRoute;
-  "/csv-sql": typeof CsvSqlRoute;
-  "/curl-builder": typeof CurlBuilderRoute;
-  "/curl-to-fetch": typeof CurlToFetchRoute;
-  "/daiji": typeof DaijiRoute;
-  "/date-calc": typeof DateCalcRoute;
-  "/dice-roll": typeof DiceRollRoute;
-  "/diff": typeof DiffRoute;
-  "/discord-emoji": typeof DiscordEmojiRoute;
-  "/discord-sticker": typeof DiscordStickerRoute;
-  "/dns-lookup": typeof DnsLookupRoute;
-  "/docker-run-to-compose": typeof DockerRunToComposeRoute;
-  "/dockerfile": typeof DockerfileRoute;
-  "/dummy-audio": typeof DummyAudioRoute;
-  "/dummy-image": typeof DummyImageRoute;
-  "/duration": typeof DurationRoute;
-  "/editorconfig": typeof EditorconfigRoute;
-  "/email-dns": typeof EmailDnsRoute;
-  "/email-header": typeof EmailHeaderRoute;
-  "/emoji-converter": typeof EmojiConverterRoute;
-  "/encode-chain": typeof EncodeChainRoute;
-  "/encoding": typeof EncodingRoute;
-  "/entropy": typeof EntropyRoute;
-  "/env-parser": typeof EnvParserRoute;
-  "/eslint-config-builder": typeof EslintConfigBuilderRoute;
-  "/exif-viewer": typeof ExifViewerRoute;
-  "/fancy-text": typeof FancyTextRoute;
-  "/favicon-generator": typeof FaviconGeneratorRoute;
-  "/four-square": typeof FourSquareRoute;
-  "/fraction": typeof FractionRoute;
-  "/function-plotter": typeof FunctionPlotterRoute;
-  "/game-2048": typeof Game2048Route;
-  "/geohash": typeof GeohashRoute;
-  "/geometry": typeof GeometryRoute;
-  "/gitattributes": typeof GitattributesRoute;
-  "/github-actions": typeof GithubActionsRoute;
-  "/github-badge": typeof GithubBadgeRoute;
-  "/gitignore": typeof GitignoreRoute;
-  "/glob-tester": typeof GlobTesterRoute;
-  "/global-ip": typeof GlobalIpRoute;
-  "/graphql": typeof GraphqlRoute;
-  "/gronsfeld": typeof GronsfeldRoute;
-  "/gzip": typeof GzipRoute;
-  "/hangman": typeof HangmanRoute;
-  "/har": typeof HarRoute;
-  "/hash": typeof HashRoute;
-  "/haversine": typeof HaversineRoute;
-  "/hex-viewer": typeof HexViewerRoute;
-  "/hmac": typeof HmacRoute;
-  "/htaccess-builder": typeof HtaccessBuilderRoute;
-  "/html-encode": typeof HtmlEncodeRoute;
-  "/html-formatter": typeof HtmlFormatterRoute;
-  "/html-markdown": typeof HtmlMarkdownRoute;
-  "/html-playground": typeof HtmlPlaygroundRoute;
-  "/html-to-jsx": typeof HtmlToJsxRoute;
-  "/http-client": typeof HttpClientRoute;
-  "/http-headers": typeof HttpHeadersRoute;
-  "/http-status": typeof HttpStatusRoute;
-  "/iban": typeof IbanRoute;
-  "/ieee754": typeof Ieee754Route;
-  "/image-base64": typeof ImageBase64Route;
-  "/image-compress": typeof ImageCompressRoute;
-  "/image-crop": typeof ImageCropRoute;
-  "/image-resize": typeof ImageResizeRoute;
-  "/image-to-gif": typeof ImageToGifRoute;
-  "/ini-parser": typeof IniParserRoute;
-  "/ip-cidr-check": typeof IpCidrCheckRoute;
-  "/ip-converter": typeof IpConverterRoute;
-  "/ip-geolocation": typeof IpGeolocationRoute;
-  "/ipv6": typeof Ipv6Route;
-  "/isbn": typeof IsbnRoute;
-  "/json": typeof JsonRoute;
-  "/json-compare": typeof JsonCompareRoute;
-  "/json-flatten": typeof JsonFlattenRoute;
-  "/json-lines": typeof JsonLinesRoute;
-  "/json-merge": typeof JsonMergeRoute;
-  "/json-path": typeof JsonPathRoute;
-  "/json-pointer": typeof JsonPointerRoute;
-  "/json-schema": typeof JsonSchemaRoute;
-  "/json-schema-validator": typeof JsonSchemaValidatorRoute;
-  "/json-to-graphql": typeof JsonToGraphqlRoute;
-  "/json-to-sql": typeof JsonToSqlRoute;
-  "/json-to-ts": typeof JsonToTsRoute;
-  "/json-to-zod": typeof JsonToZodRoute;
-  "/jwt": typeof JwtRoute;
-  "/jwt-generator": typeof JwtGeneratorRoute;
-  "/kana-convert": typeof KanaConvertRoute;
-  "/keycode": typeof KeycodeRoute;
-  "/life-game": typeof LifeGameRoute;
-  "/line-ending": typeof LineEndingRoute;
-  "/lissajous": typeof LissajousRoute;
-  "/loan-calculator": typeof LoanCalculatorRoute;
-  "/lorem-ipsum": typeof LoremIpsumRoute;
-  "/luhn-check": typeof LuhnCheckRoute;
-  "/makefile": typeof MakefileRoute;
-  "/mandelbrot": typeof MandelbrotRoute;
-  "/markdown-preview": typeof MarkdownPreviewRoute;
-  "/markdown-table": typeof MarkdownTableRoute;
-  "/math-eval": typeof MathEvalRoute;
-  "/matrix": typeof MatrixRoute;
-  "/mermaid": typeof MermaidRoute;
-  "/mime-types": typeof MimeTypesRoute;
-  "/minesweeper": typeof MinesweeperRoute;
-  "/minify": typeof MinifyRoute;
-  "/morse-code": typeof MorseCodeRoute;
-  "/msgpack": typeof MsgpackRoute;
-  "/nano-id": typeof NanoIdRoute;
-  "/nato-alphabet": typeof NatoAlphabetRoute;
-  "/nginx-config": typeof NginxConfigRoute;
-  "/number-base": typeof NumberBaseRoute;
-  "/number-format": typeof NumberFormatRoute;
-  "/number-theory": typeof NumberTheoryRoute;
-  "/number-words": typeof NumberWordsRoute;
-  "/ogp": typeof OgpRoute;
-  "/ogp-generator": typeof OgpGeneratorRoute;
-  "/openssl-builder": typeof OpensslBuilderRoute;
-  "/package-json": typeof PackageJsonRoute;
-  "/passphrase": typeof PassphraseRoute;
-  "/password-generator": typeof PasswordGeneratorRoute;
-  "/password-strength": typeof PasswordStrengthRoute;
-  "/percentage-calculator": typeof PercentageCalculatorRoute;
-  "/phone": typeof PhoneRoute;
-  "/php-serialize": typeof PhpSerializeRoute;
-  "/pkce": typeof PkceRoute;
-  "/playfair": typeof PlayfairRoute;
-  "/polybius": typeof PolybiusRoute;
-  "/pomodoro": typeof PomodoroRoute;
-  "/port-check": typeof PortCheckRoute;
-  "/ports": typeof PortsRoute;
-  "/prettier-config-builder": typeof PrettierConfigBuilderRoute;
-  "/punycode": typeof PunycodeRoute;
-  "/qr-code": typeof QrCodeRoute;
-  "/quoted-printable": typeof QuotedPrintableRoute;
-  "/rail-fence": typeof RailFenceRoute;
-  "/random-data": typeof RandomDataRoute;
-  "/random-picker": typeof RandomPickerRoute;
-  "/readability": typeof ReadabilityRoute;
-  "/redirect-tracer": typeof RedirectTracerRoute;
-  "/regex-checker": typeof RegexCheckerRoute;
-  "/regex-library": typeof RegexLibraryRoute;
-  "/robots-txt": typeof RobotsTxtRoute;
-  "/roman-numerals": typeof RomanNumeralsRoute;
-  "/scytale": typeof ScytaleRoute;
-  "/security-headers": typeof SecurityHeadersRoute;
-  "/semver": typeof SemverRoute;
-  "/seo-meta": typeof SeoMetaRoute;
-  "/sequences": typeof SequencesRoute;
-  "/server-env": typeof ServerEnvRoute;
-  "/short-code": typeof ShortCodeRoute;
-  "/sitemap": typeof SitemapRoute;
-  "/slug": typeof SlugRoute;
-  "/snake": typeof SnakeRoute;
-  "/sort-visualizer": typeof SortVisualizerRoute;
-  "/sql": typeof SqlRoute;
-  "/sql-to-ts": typeof SqlToTsRoute;
-  "/sri-hash": typeof SriHashRoute;
-  "/ssh-key": typeof SshKeyRoute;
-  "/statistics": typeof StatisticsRoute;
-  "/stopwatch": typeof StopwatchRoute;
-  "/storage-converter": typeof StorageConverterRoute;
-  "/string-escape": typeof StringEscapeRoute;
-  "/string-similarity": typeof StringSimilarityRoute;
-  "/sudoku": typeof SudokuRoute;
-  "/svg-optimizer": typeof SvgOptimizerRoute;
-  "/tailwind-colors": typeof TailwindColorsRoute;
-  "/tap-code": typeof TapCodeRoute;
-  "/tax-calculator": typeof TaxCalculatorRoute;
-  "/template": typeof TemplateRoute;
-  "/tetris": typeof TetrisRoute;
-  "/text-binary": typeof TextBinaryRoute;
-  "/text-case": typeof TextCaseRoute;
-  "/text-encrypt": typeof TextEncryptRoute;
-  "/text-line": typeof TextLineRoute;
-  "/text-replace": typeof TextReplaceRoute;
-  "/text-sort": typeof TextSortRoute;
-  "/text-stats": typeof TextStatsRoute;
-  "/tic-tac-toe": typeof TicTacToeRoute;
-  "/timestamp": typeof TimestampRoute;
-  "/timezone": typeof TimezoneRoute;
-  "/token-estimator": typeof TokenEstimatorRoute;
-  "/toml-formatter": typeof TomlFormatterRoute;
-  "/toml-json": typeof TomlJsonRoute;
-  "/top": typeof TopRoute;
-  "/totp": typeof TotpRoute;
-  "/transfer-speed": typeof TransferSpeedRoute;
-  "/transparent-image": typeof TransparentImageRoute;
-  "/trig": typeof TrigRoute;
-  "/truth-table": typeof TruthTableRoute;
-  "/tsconfig-builder": typeof TsconfigBuilderRoute;
-  "/typing-speed": typeof TypingSpeedRoute;
-  "/typography-scale": typeof TypographyScaleRoute;
-  "/ulid": typeof UlidRoute;
-  "/unicode": typeof UnicodeRoute;
-  "/unicode-inspector": typeof UnicodeInspectorRoute;
-  "/unit-converter": typeof UnitConverterRoute;
-  "/url-encode": typeof UrlEncodeRoute;
-  "/url-parser": typeof UrlParserRoute;
-  "/user-agent": typeof UserAgentRoute;
-  "/utm-builder": typeof UtmBuilderRoute;
-  "/uuid": typeof UuidRoute;
-  "/uuid-inspector": typeof UuidInspectorRoute;
-  "/video-converter": typeof VideoConverterRoute;
-  "/vigenere": typeof VigenereRoute;
-  "/vscode-snippet": typeof VscodeSnippetRoute;
-  "/wareki": typeof WarekiRoute;
-  "/warikan": typeof WarikanRoute;
-  "/web-manifest": typeof WebManifestRoute;
-  "/websocket": typeof WebsocketRoute;
-  "/whois": typeof WhoisRoute;
-  "/word-frequency": typeof WordFrequencyRoute;
-  "/wordle": typeof WordleRoute;
-  "/world-clock": typeof WorldClockRoute;
-  "/xml": typeof XmlRoute;
-  "/xml-json": typeof XmlJsonRoute;
-  "/xpath": typeof XpathRoute;
-  "/yaml-formatter": typeof YamlFormatterRoute;
-  "/yaml-json": typeof YamlJsonRoute;
-  "/yaml-toml": typeof YamlTomlRoute;
-  "/zenkaku": typeof ZenkakuRoute;
-  "/zero-width": typeof ZeroWidthRoute;
-  "/api/image.jpg": typeof ApiImageDotjpgRoute;
-  "/api/image.png": typeof ApiImageDotpngRoute;
-  "/api/image.svg": typeof ApiImageDotsvgRoute;
-  "/api/image.webp": typeof ApiImageDotwebpRoute;
+  '/': typeof IndexRoute
+  '/adfgvx': typeof AdfgvxRoute
+  '/affine': typeof AffineRoute
+  '/ansi-color': typeof AnsiColorRoute
+  '/ascii-art': typeof AsciiArtRoute
+  '/ascii-table': typeof AsciiTableRoute
+  '/aspect-ratio': typeof AspectRatioRoute
+  '/atbash': typeof AtbashRoute
+  '/audio-converter': typeof AudioConverterRoute
+  '/background-removal': typeof BackgroundRemovalRoute
+  '/barcode': typeof BarcodeRoute
+  '/base16': typeof Base16Route
+  '/base32': typeof Base32Route
+  '/base36': typeof Base36Route
+  '/base58': typeof Base58Route
+  '/base62': typeof Base62Route
+  '/base64': typeof Base64Route
+  '/base64-image': typeof Base64ImageRoute
+  '/base85': typeof Base85Route
+  '/basic-auth': typeof BasicAuthRoute
+  '/beaufort': typeof BeaufortRoute
+  '/bifid': typeof BifidRoute
+  '/bitwise': typeof BitwiseRoute
+  '/bmi-calculator': typeof BmiCalculatorRoute
+  '/bpm': typeof BpmRoute
+  '/braille': typeof BrailleRoute
+  '/brainfuck': typeof BrainfuckRoute
+  '/bst-visualizer': typeof BstVisualizerRoute
+  '/cache-control': typeof CacheControlRoute
+  '/caesar': typeof CaesarRoute
+  '/cert-decoder': typeof CertDecoderRoute
+  '/char-count': typeof CharCountRoute
+  '/char-frequency': typeof CharFrequencyRoute
+  '/chmod': typeof ChmodRoute
+  '/cidr': typeof CidrRoute
+  '/color-blind': typeof ColorBlindRoute
+  '/color-contrast': typeof ColorContrastRoute
+  '/color-converter': typeof ColorConverterRoute
+  '/color-extractor': typeof ColorExtractorRoute
+  '/color-harmony': typeof ColorHarmonyRoute
+  '/color-mix': typeof ColorMixRoute
+  '/color-name': typeof ColorNameRoute
+  '/color-palette': typeof ColorPaletteRoute
+  '/color-picker': typeof ColorPickerRoute
+  '/color-temperature': typeof ColorTemperatureRoute
+  '/color-token': typeof ColorTokenRoute
+  '/columnar-transposition': typeof ColumnarTranspositionRoute
+  '/combinatorics': typeof CombinatoricsRoute
+  '/compound-interest': typeof CompoundInterestRoute
+  '/conventional-commits': typeof ConventionalCommitsRoute
+  '/cookie-parser': typeof CookieParserRoute
+  '/cors-builder': typeof CorsBuilderRoute
+  '/countdown': typeof CountdownRoute
+  '/cron': typeof CronRoute
+  '/cron-parser': typeof CronParserRoute
+  '/csp-builder': typeof CspBuilderRoute
+  '/css-animation': typeof CssAnimationRoute
+  '/css-background-pattern': typeof CssBackgroundPatternRoute
+  '/css-border-radius': typeof CssBorderRadiusRoute
+  '/css-box-shadow': typeof CssBoxShadowRoute
+  '/css-clamp': typeof CssClampRoute
+  '/css-clip-path': typeof CssClipPathRoute
+  '/css-container-query': typeof CssContainerQueryRoute
+  '/css-cubic-bezier': typeof CssCubicBezierRoute
+  '/css-filter': typeof CssFilterRoute
+  '/css-flexbox': typeof CssFlexboxRoute
+  '/css-formatter': typeof CssFormatterRoute
+  '/css-gradient': typeof CssGradientRoute
+  '/css-grid': typeof CssGridRoute
+  '/css-logical': typeof CssLogicalRoute
+  '/css-media-query': typeof CssMediaQueryRoute
+  '/css-scroll-snap': typeof CssScrollSnapRoute
+  '/css-selector': typeof CssSelectorRoute
+  '/css-shorthand': typeof CssShorthandRoute
+  '/css-specificity': typeof CssSpecificityRoute
+  '/css-text-shadow': typeof CssTextShadowRoute
+  '/css-transform': typeof CssTransformRoute
+  '/css-unit': typeof CssUnitRoute
+  '/css-variables': typeof CssVariablesRoute
+  '/csv-json': typeof CsvJsonRoute
+  '/csv-sql': typeof CsvSqlRoute
+  '/curl-builder': typeof CurlBuilderRoute
+  '/curl-to-fetch': typeof CurlToFetchRoute
+  '/daiji': typeof DaijiRoute
+  '/date-calc': typeof DateCalcRoute
+  '/dice-roll': typeof DiceRollRoute
+  '/diff': typeof DiffRoute
+  '/discord-emoji': typeof DiscordEmojiRoute
+  '/discord-sticker': typeof DiscordStickerRoute
+  '/dns-lookup': typeof DnsLookupRoute
+  '/docker-run-to-compose': typeof DockerRunToComposeRoute
+  '/dockerfile': typeof DockerfileRoute
+  '/dummy-audio': typeof DummyAudioRoute
+  '/dummy-image': typeof DummyImageRoute
+  '/duration': typeof DurationRoute
+  '/editorconfig': typeof EditorconfigRoute
+  '/email-dns': typeof EmailDnsRoute
+  '/email-header': typeof EmailHeaderRoute
+  '/emoji-converter': typeof EmojiConverterRoute
+  '/encode-chain': typeof EncodeChainRoute
+  '/encoding': typeof EncodingRoute
+  '/entropy': typeof EntropyRoute
+  '/env-parser': typeof EnvParserRoute
+  '/eslint-config-builder': typeof EslintConfigBuilderRoute
+  '/exif-viewer': typeof ExifViewerRoute
+  '/fancy-text': typeof FancyTextRoute
+  '/favicon-generator': typeof FaviconGeneratorRoute
+  '/four-square': typeof FourSquareRoute
+  '/fraction': typeof FractionRoute
+  '/function-plotter': typeof FunctionPlotterRoute
+  '/game-2048': typeof Game2048Route
+  '/geohash': typeof GeohashRoute
+  '/geometry': typeof GeometryRoute
+  '/gitattributes': typeof GitattributesRoute
+  '/github-actions': typeof GithubActionsRoute
+  '/github-badge': typeof GithubBadgeRoute
+  '/gitignore': typeof GitignoreRoute
+  '/glob-tester': typeof GlobTesterRoute
+  '/global-ip': typeof GlobalIpRoute
+  '/graphql': typeof GraphqlRoute
+  '/gronsfeld': typeof GronsfeldRoute
+  '/gzip': typeof GzipRoute
+  '/hangman': typeof HangmanRoute
+  '/har': typeof HarRoute
+  '/hash': typeof HashRoute
+  '/haversine': typeof HaversineRoute
+  '/hex-viewer': typeof HexViewerRoute
+  '/hmac': typeof HmacRoute
+  '/htaccess-builder': typeof HtaccessBuilderRoute
+  '/html-encode': typeof HtmlEncodeRoute
+  '/html-formatter': typeof HtmlFormatterRoute
+  '/html-markdown': typeof HtmlMarkdownRoute
+  '/html-playground': typeof HtmlPlaygroundRoute
+  '/html-to-jsx': typeof HtmlToJsxRoute
+  '/http-client': typeof HttpClientRoute
+  '/http-headers': typeof HttpHeadersRoute
+  '/http-status': typeof HttpStatusRoute
+  '/iban': typeof IbanRoute
+  '/ieee754': typeof Ieee754Route
+  '/image-base64': typeof ImageBase64Route
+  '/image-compress': typeof ImageCompressRoute
+  '/image-crop': typeof ImageCropRoute
+  '/image-resize': typeof ImageResizeRoute
+  '/image-to-gif': typeof ImageToGifRoute
+  '/ini-parser': typeof IniParserRoute
+  '/ip-cidr-check': typeof IpCidrCheckRoute
+  '/ip-converter': typeof IpConverterRoute
+  '/ip-geolocation': typeof IpGeolocationRoute
+  '/ipv6': typeof Ipv6Route
+  '/isbn': typeof IsbnRoute
+  '/json': typeof JsonRoute
+  '/json-compare': typeof JsonCompareRoute
+  '/json-flatten': typeof JsonFlattenRoute
+  '/json-lines': typeof JsonLinesRoute
+  '/json-merge': typeof JsonMergeRoute
+  '/json-path': typeof JsonPathRoute
+  '/json-pointer': typeof JsonPointerRoute
+  '/json-schema': typeof JsonSchemaRoute
+  '/json-schema-validator': typeof JsonSchemaValidatorRoute
+  '/json-to-graphql': typeof JsonToGraphqlRoute
+  '/json-to-sql': typeof JsonToSqlRoute
+  '/json-to-ts': typeof JsonToTsRoute
+  '/json-to-zod': typeof JsonToZodRoute
+  '/jwt': typeof JwtRoute
+  '/jwt-generator': typeof JwtGeneratorRoute
+  '/kana-convert': typeof KanaConvertRoute
+  '/keycode': typeof KeycodeRoute
+  '/life-game': typeof LifeGameRoute
+  '/line-ending': typeof LineEndingRoute
+  '/lissajous': typeof LissajousRoute
+  '/loan-calculator': typeof LoanCalculatorRoute
+  '/lorem-ipsum': typeof LoremIpsumRoute
+  '/luhn-check': typeof LuhnCheckRoute
+  '/makefile': typeof MakefileRoute
+  '/mandelbrot': typeof MandelbrotRoute
+  '/markdown-preview': typeof MarkdownPreviewRoute
+  '/markdown-table': typeof MarkdownTableRoute
+  '/math-eval': typeof MathEvalRoute
+  '/matrix': typeof MatrixRoute
+  '/mermaid': typeof MermaidRoute
+  '/mime-types': typeof MimeTypesRoute
+  '/minesweeper': typeof MinesweeperRoute
+  '/minify': typeof MinifyRoute
+  '/morse-code': typeof MorseCodeRoute
+  '/msgpack': typeof MsgpackRoute
+  '/nano-id': typeof NanoIdRoute
+  '/nato-alphabet': typeof NatoAlphabetRoute
+  '/nginx-config': typeof NginxConfigRoute
+  '/number-base': typeof NumberBaseRoute
+  '/number-format': typeof NumberFormatRoute
+  '/number-theory': typeof NumberTheoryRoute
+  '/number-words': typeof NumberWordsRoute
+  '/ogp': typeof OgpRoute
+  '/ogp-generator': typeof OgpGeneratorRoute
+  '/openssl-builder': typeof OpensslBuilderRoute
+  '/package-json': typeof PackageJsonRoute
+  '/passphrase': typeof PassphraseRoute
+  '/password-generator': typeof PasswordGeneratorRoute
+  '/password-strength': typeof PasswordStrengthRoute
+  '/percentage-calculator': typeof PercentageCalculatorRoute
+  '/phone': typeof PhoneRoute
+  '/php-serialize': typeof PhpSerializeRoute
+  '/pkce': typeof PkceRoute
+  '/playfair': typeof PlayfairRoute
+  '/polybius': typeof PolybiusRoute
+  '/pomodoro': typeof PomodoroRoute
+  '/port-check': typeof PortCheckRoute
+  '/ports': typeof PortsRoute
+  '/prettier-config-builder': typeof PrettierConfigBuilderRoute
+  '/punycode': typeof PunycodeRoute
+  '/qr-code': typeof QrCodeRoute
+  '/quoted-printable': typeof QuotedPrintableRoute
+  '/rail-fence': typeof RailFenceRoute
+  '/random-data': typeof RandomDataRoute
+  '/random-picker': typeof RandomPickerRoute
+  '/readability': typeof ReadabilityRoute
+  '/redirect-tracer': typeof RedirectTracerRoute
+  '/regex-checker': typeof RegexCheckerRoute
+  '/regex-library': typeof RegexLibraryRoute
+  '/robots-txt': typeof RobotsTxtRoute
+  '/roman-numerals': typeof RomanNumeralsRoute
+  '/scytale': typeof ScytaleRoute
+  '/security-headers': typeof SecurityHeadersRoute
+  '/semver': typeof SemverRoute
+  '/seo-meta': typeof SeoMetaRoute
+  '/sequences': typeof SequencesRoute
+  '/server-env': typeof ServerEnvRoute
+  '/short-code': typeof ShortCodeRoute
+  '/sitemap': typeof SitemapRoute
+  '/slug': typeof SlugRoute
+  '/snake': typeof SnakeRoute
+  '/sort-visualizer': typeof SortVisualizerRoute
+  '/sql': typeof SqlRoute
+  '/sql-to-ts': typeof SqlToTsRoute
+  '/sri-hash': typeof SriHashRoute
+  '/ssh-key': typeof SshKeyRoute
+  '/statistics': typeof StatisticsRoute
+  '/stopwatch': typeof StopwatchRoute
+  '/storage-converter': typeof StorageConverterRoute
+  '/string-escape': typeof StringEscapeRoute
+  '/string-similarity': typeof StringSimilarityRoute
+  '/sudoku': typeof SudokuRoute
+  '/svg-optimizer': typeof SvgOptimizerRoute
+  '/tailwind-colors': typeof TailwindColorsRoute
+  '/tap-code': typeof TapCodeRoute
+  '/tax-calculator': typeof TaxCalculatorRoute
+  '/template': typeof TemplateRoute
+  '/tetris': typeof TetrisRoute
+  '/text-binary': typeof TextBinaryRoute
+  '/text-case': typeof TextCaseRoute
+  '/text-encrypt': typeof TextEncryptRoute
+  '/text-line': typeof TextLineRoute
+  '/text-replace': typeof TextReplaceRoute
+  '/text-sort': typeof TextSortRoute
+  '/text-stats': typeof TextStatsRoute
+  '/tic-tac-toe': typeof TicTacToeRoute
+  '/timestamp': typeof TimestampRoute
+  '/timezone': typeof TimezoneRoute
+  '/token-estimator': typeof TokenEstimatorRoute
+  '/toml-formatter': typeof TomlFormatterRoute
+  '/toml-json': typeof TomlJsonRoute
+  '/top': typeof TopRoute
+  '/totp': typeof TotpRoute
+  '/transfer-speed': typeof TransferSpeedRoute
+  '/transparent-image': typeof TransparentImageRoute
+  '/trig': typeof TrigRoute
+  '/truth-table': typeof TruthTableRoute
+  '/tsconfig-builder': typeof TsconfigBuilderRoute
+  '/typing-speed': typeof TypingSpeedRoute
+  '/typography-scale': typeof TypographyScaleRoute
+  '/ulid': typeof UlidRoute
+  '/unicode': typeof UnicodeRoute
+  '/unicode-inspector': typeof UnicodeInspectorRoute
+  '/unit-converter': typeof UnitConverterRoute
+  '/url-encode': typeof UrlEncodeRoute
+  '/url-parser': typeof UrlParserRoute
+  '/user-agent': typeof UserAgentRoute
+  '/utm-builder': typeof UtmBuilderRoute
+  '/uuid': typeof UuidRoute
+  '/uuid-inspector': typeof UuidInspectorRoute
+  '/video-converter': typeof VideoConverterRoute
+  '/vigenere': typeof VigenereRoute
+  '/vscode-snippet': typeof VscodeSnippetRoute
+  '/wareki': typeof WarekiRoute
+  '/warikan': typeof WarikanRoute
+  '/web-manifest': typeof WebManifestRoute
+  '/websocket': typeof WebsocketRoute
+  '/whois': typeof WhoisRoute
+  '/word-frequency': typeof WordFrequencyRoute
+  '/wordle': typeof WordleRoute
+  '/world-clock': typeof WorldClockRoute
+  '/xml': typeof XmlRoute
+  '/xml-json': typeof XmlJsonRoute
+  '/xpath': typeof XpathRoute
+  '/yaml-formatter': typeof YamlFormatterRoute
+  '/yaml-json': typeof YamlJsonRoute
+  '/yaml-toml': typeof YamlTomlRoute
+  '/zenkaku': typeof ZenkakuRoute
+  '/zero-width': typeof ZeroWidthRoute
+  '/api/image.jpg': typeof ApiImageDotjpgRoute
+  '/api/image.png': typeof ApiImageDotpngRoute
+  '/api/image.svg': typeof ApiImageDotsvgRoute
+  '/api/image.webp': typeof ApiImageDotwebpRoute
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport;
-  "/": typeof IndexRoute;
-  "/adfgvx": typeof AdfgvxRoute;
-  "/affine": typeof AffineRoute;
-  "/ansi-color": typeof AnsiColorRoute;
-  "/ascii-art": typeof AsciiArtRoute;
-  "/ascii-table": typeof AsciiTableRoute;
-  "/aspect-ratio": typeof AspectRatioRoute;
-  "/atbash": typeof AtbashRoute;
-  "/audio-converter": typeof AudioConverterRoute;
-  "/background-removal": typeof BackgroundRemovalRoute;
-  "/barcode": typeof BarcodeRoute;
-  "/base16": typeof Base16Route;
-  "/base32": typeof Base32Route;
-  "/base36": typeof Base36Route;
-  "/base58": typeof Base58Route;
-  "/base62": typeof Base62Route;
-  "/base64": typeof Base64Route;
-  "/base64-image": typeof Base64ImageRoute;
-  "/base85": typeof Base85Route;
-  "/basic-auth": typeof BasicAuthRoute;
-  "/beaufort": typeof BeaufortRoute;
-  "/bifid": typeof BifidRoute;
-  "/bitwise": typeof BitwiseRoute;
-  "/bmi-calculator": typeof BmiCalculatorRoute;
-  "/bpm": typeof BpmRoute;
-  "/braille": typeof BrailleRoute;
-  "/brainfuck": typeof BrainfuckRoute;
-  "/bst-visualizer": typeof BstVisualizerRoute;
-  "/cache-control": typeof CacheControlRoute;
-  "/caesar": typeof CaesarRoute;
-  "/cert-decoder": typeof CertDecoderRoute;
-  "/char-count": typeof CharCountRoute;
-  "/char-frequency": typeof CharFrequencyRoute;
-  "/chmod": typeof ChmodRoute;
-  "/cidr": typeof CidrRoute;
-  "/color-blind": typeof ColorBlindRoute;
-  "/color-contrast": typeof ColorContrastRoute;
-  "/color-converter": typeof ColorConverterRoute;
-  "/color-extractor": typeof ColorExtractorRoute;
-  "/color-harmony": typeof ColorHarmonyRoute;
-  "/color-mix": typeof ColorMixRoute;
-  "/color-name": typeof ColorNameRoute;
-  "/color-palette": typeof ColorPaletteRoute;
-  "/color-picker": typeof ColorPickerRoute;
-  "/color-temperature": typeof ColorTemperatureRoute;
-  "/color-token": typeof ColorTokenRoute;
-  "/columnar-transposition": typeof ColumnarTranspositionRoute;
-  "/combinatorics": typeof CombinatoricsRoute;
-  "/compound-interest": typeof CompoundInterestRoute;
-  "/conventional-commits": typeof ConventionalCommitsRoute;
-  "/cookie-parser": typeof CookieParserRoute;
-  "/cors-builder": typeof CorsBuilderRoute;
-  "/countdown": typeof CountdownRoute;
-  "/cron": typeof CronRoute;
-  "/cron-parser": typeof CronParserRoute;
-  "/csp-builder": typeof CspBuilderRoute;
-  "/css-animation": typeof CssAnimationRoute;
-  "/css-background-pattern": typeof CssBackgroundPatternRoute;
-  "/css-border-radius": typeof CssBorderRadiusRoute;
-  "/css-box-shadow": typeof CssBoxShadowRoute;
-  "/css-clamp": typeof CssClampRoute;
-  "/css-clip-path": typeof CssClipPathRoute;
-  "/css-container-query": typeof CssContainerQueryRoute;
-  "/css-cubic-bezier": typeof CssCubicBezierRoute;
-  "/css-filter": typeof CssFilterRoute;
-  "/css-flexbox": typeof CssFlexboxRoute;
-  "/css-formatter": typeof CssFormatterRoute;
-  "/css-gradient": typeof CssGradientRoute;
-  "/css-grid": typeof CssGridRoute;
-  "/css-logical": typeof CssLogicalRoute;
-  "/css-media-query": typeof CssMediaQueryRoute;
-  "/css-scroll-snap": typeof CssScrollSnapRoute;
-  "/css-selector": typeof CssSelectorRoute;
-  "/css-shorthand": typeof CssShorthandRoute;
-  "/css-specificity": typeof CssSpecificityRoute;
-  "/css-text-shadow": typeof CssTextShadowRoute;
-  "/css-transform": typeof CssTransformRoute;
-  "/css-unit": typeof CssUnitRoute;
-  "/css-variables": typeof CssVariablesRoute;
-  "/csv-json": typeof CsvJsonRoute;
-  "/csv-sql": typeof CsvSqlRoute;
-  "/curl-builder": typeof CurlBuilderRoute;
-  "/curl-to-fetch": typeof CurlToFetchRoute;
-  "/daiji": typeof DaijiRoute;
-  "/date-calc": typeof DateCalcRoute;
-  "/dice-roll": typeof DiceRollRoute;
-  "/diff": typeof DiffRoute;
-  "/discord-emoji": typeof DiscordEmojiRoute;
-  "/discord-sticker": typeof DiscordStickerRoute;
-  "/dns-lookup": typeof DnsLookupRoute;
-  "/docker-run-to-compose": typeof DockerRunToComposeRoute;
-  "/dockerfile": typeof DockerfileRoute;
-  "/dummy-audio": typeof DummyAudioRoute;
-  "/dummy-image": typeof DummyImageRoute;
-  "/duration": typeof DurationRoute;
-  "/editorconfig": typeof EditorconfigRoute;
-  "/email-dns": typeof EmailDnsRoute;
-  "/email-header": typeof EmailHeaderRoute;
-  "/emoji-converter": typeof EmojiConverterRoute;
-  "/encode-chain": typeof EncodeChainRoute;
-  "/encoding": typeof EncodingRoute;
-  "/entropy": typeof EntropyRoute;
-  "/env-parser": typeof EnvParserRoute;
-  "/eslint-config-builder": typeof EslintConfigBuilderRoute;
-  "/exif-viewer": typeof ExifViewerRoute;
-  "/fancy-text": typeof FancyTextRoute;
-  "/favicon-generator": typeof FaviconGeneratorRoute;
-  "/four-square": typeof FourSquareRoute;
-  "/fraction": typeof FractionRoute;
-  "/function-plotter": typeof FunctionPlotterRoute;
-  "/game-2048": typeof Game2048Route;
-  "/geohash": typeof GeohashRoute;
-  "/geometry": typeof GeometryRoute;
-  "/gitattributes": typeof GitattributesRoute;
-  "/github-actions": typeof GithubActionsRoute;
-  "/github-badge": typeof GithubBadgeRoute;
-  "/gitignore": typeof GitignoreRoute;
-  "/glob-tester": typeof GlobTesterRoute;
-  "/global-ip": typeof GlobalIpRoute;
-  "/graphql": typeof GraphqlRoute;
-  "/gronsfeld": typeof GronsfeldRoute;
-  "/gzip": typeof GzipRoute;
-  "/hangman": typeof HangmanRoute;
-  "/har": typeof HarRoute;
-  "/hash": typeof HashRoute;
-  "/haversine": typeof HaversineRoute;
-  "/hex-viewer": typeof HexViewerRoute;
-  "/hmac": typeof HmacRoute;
-  "/htaccess-builder": typeof HtaccessBuilderRoute;
-  "/html-encode": typeof HtmlEncodeRoute;
-  "/html-formatter": typeof HtmlFormatterRoute;
-  "/html-markdown": typeof HtmlMarkdownRoute;
-  "/html-playground": typeof HtmlPlaygroundRoute;
-  "/html-to-jsx": typeof HtmlToJsxRoute;
-  "/http-client": typeof HttpClientRoute;
-  "/http-headers": typeof HttpHeadersRoute;
-  "/http-status": typeof HttpStatusRoute;
-  "/iban": typeof IbanRoute;
-  "/ieee754": typeof Ieee754Route;
-  "/image-base64": typeof ImageBase64Route;
-  "/image-compress": typeof ImageCompressRoute;
-  "/image-crop": typeof ImageCropRoute;
-  "/image-resize": typeof ImageResizeRoute;
-  "/image-to-gif": typeof ImageToGifRoute;
-  "/ini-parser": typeof IniParserRoute;
-  "/ip-cidr-check": typeof IpCidrCheckRoute;
-  "/ip-converter": typeof IpConverterRoute;
-  "/ip-geolocation": typeof IpGeolocationRoute;
-  "/ipv6": typeof Ipv6Route;
-  "/isbn": typeof IsbnRoute;
-  "/json": typeof JsonRoute;
-  "/json-compare": typeof JsonCompareRoute;
-  "/json-flatten": typeof JsonFlattenRoute;
-  "/json-lines": typeof JsonLinesRoute;
-  "/json-merge": typeof JsonMergeRoute;
-  "/json-path": typeof JsonPathRoute;
-  "/json-pointer": typeof JsonPointerRoute;
-  "/json-schema": typeof JsonSchemaRoute;
-  "/json-schema-validator": typeof JsonSchemaValidatorRoute;
-  "/json-to-graphql": typeof JsonToGraphqlRoute;
-  "/json-to-sql": typeof JsonToSqlRoute;
-  "/json-to-ts": typeof JsonToTsRoute;
-  "/json-to-zod": typeof JsonToZodRoute;
-  "/jwt": typeof JwtRoute;
-  "/jwt-generator": typeof JwtGeneratorRoute;
-  "/kana-convert": typeof KanaConvertRoute;
-  "/keycode": typeof KeycodeRoute;
-  "/life-game": typeof LifeGameRoute;
-  "/line-ending": typeof LineEndingRoute;
-  "/lissajous": typeof LissajousRoute;
-  "/loan-calculator": typeof LoanCalculatorRoute;
-  "/lorem-ipsum": typeof LoremIpsumRoute;
-  "/luhn-check": typeof LuhnCheckRoute;
-  "/makefile": typeof MakefileRoute;
-  "/mandelbrot": typeof MandelbrotRoute;
-  "/markdown-preview": typeof MarkdownPreviewRoute;
-  "/markdown-table": typeof MarkdownTableRoute;
-  "/math-eval": typeof MathEvalRoute;
-  "/matrix": typeof MatrixRoute;
-  "/mermaid": typeof MermaidRoute;
-  "/mime-types": typeof MimeTypesRoute;
-  "/minesweeper": typeof MinesweeperRoute;
-  "/minify": typeof MinifyRoute;
-  "/morse-code": typeof MorseCodeRoute;
-  "/msgpack": typeof MsgpackRoute;
-  "/nano-id": typeof NanoIdRoute;
-  "/nato-alphabet": typeof NatoAlphabetRoute;
-  "/nginx-config": typeof NginxConfigRoute;
-  "/number-base": typeof NumberBaseRoute;
-  "/number-format": typeof NumberFormatRoute;
-  "/number-theory": typeof NumberTheoryRoute;
-  "/number-words": typeof NumberWordsRoute;
-  "/ogp": typeof OgpRoute;
-  "/ogp-generator": typeof OgpGeneratorRoute;
-  "/openssl-builder": typeof OpensslBuilderRoute;
-  "/package-json": typeof PackageJsonRoute;
-  "/passphrase": typeof PassphraseRoute;
-  "/password-generator": typeof PasswordGeneratorRoute;
-  "/password-strength": typeof PasswordStrengthRoute;
-  "/percentage-calculator": typeof PercentageCalculatorRoute;
-  "/phone": typeof PhoneRoute;
-  "/php-serialize": typeof PhpSerializeRoute;
-  "/pkce": typeof PkceRoute;
-  "/playfair": typeof PlayfairRoute;
-  "/polybius": typeof PolybiusRoute;
-  "/pomodoro": typeof PomodoroRoute;
-  "/port-check": typeof PortCheckRoute;
-  "/ports": typeof PortsRoute;
-  "/prettier-config-builder": typeof PrettierConfigBuilderRoute;
-  "/punycode": typeof PunycodeRoute;
-  "/qr-code": typeof QrCodeRoute;
-  "/quoted-printable": typeof QuotedPrintableRoute;
-  "/rail-fence": typeof RailFenceRoute;
-  "/random-data": typeof RandomDataRoute;
-  "/random-picker": typeof RandomPickerRoute;
-  "/readability": typeof ReadabilityRoute;
-  "/redirect-tracer": typeof RedirectTracerRoute;
-  "/regex-checker": typeof RegexCheckerRoute;
-  "/regex-library": typeof RegexLibraryRoute;
-  "/robots-txt": typeof RobotsTxtRoute;
-  "/roman-numerals": typeof RomanNumeralsRoute;
-  "/scytale": typeof ScytaleRoute;
-  "/security-headers": typeof SecurityHeadersRoute;
-  "/semver": typeof SemverRoute;
-  "/seo-meta": typeof SeoMetaRoute;
-  "/sequences": typeof SequencesRoute;
-  "/server-env": typeof ServerEnvRoute;
-  "/short-code": typeof ShortCodeRoute;
-  "/sitemap": typeof SitemapRoute;
-  "/slug": typeof SlugRoute;
-  "/snake": typeof SnakeRoute;
-  "/sort-visualizer": typeof SortVisualizerRoute;
-  "/sql": typeof SqlRoute;
-  "/sql-to-ts": typeof SqlToTsRoute;
-  "/sri-hash": typeof SriHashRoute;
-  "/ssh-key": typeof SshKeyRoute;
-  "/statistics": typeof StatisticsRoute;
-  "/stopwatch": typeof StopwatchRoute;
-  "/storage-converter": typeof StorageConverterRoute;
-  "/string-escape": typeof StringEscapeRoute;
-  "/string-similarity": typeof StringSimilarityRoute;
-  "/sudoku": typeof SudokuRoute;
-  "/svg-optimizer": typeof SvgOptimizerRoute;
-  "/tailwind-colors": typeof TailwindColorsRoute;
-  "/tap-code": typeof TapCodeRoute;
-  "/tax-calculator": typeof TaxCalculatorRoute;
-  "/template": typeof TemplateRoute;
-  "/tetris": typeof TetrisRoute;
-  "/text-binary": typeof TextBinaryRoute;
-  "/text-case": typeof TextCaseRoute;
-  "/text-encrypt": typeof TextEncryptRoute;
-  "/text-line": typeof TextLineRoute;
-  "/text-replace": typeof TextReplaceRoute;
-  "/text-sort": typeof TextSortRoute;
-  "/text-stats": typeof TextStatsRoute;
-  "/tic-tac-toe": typeof TicTacToeRoute;
-  "/timestamp": typeof TimestampRoute;
-  "/timezone": typeof TimezoneRoute;
-  "/token-estimator": typeof TokenEstimatorRoute;
-  "/toml-formatter": typeof TomlFormatterRoute;
-  "/toml-json": typeof TomlJsonRoute;
-  "/top": typeof TopRoute;
-  "/totp": typeof TotpRoute;
-  "/transfer-speed": typeof TransferSpeedRoute;
-  "/transparent-image": typeof TransparentImageRoute;
-  "/trig": typeof TrigRoute;
-  "/truth-table": typeof TruthTableRoute;
-  "/tsconfig-builder": typeof TsconfigBuilderRoute;
-  "/typing-speed": typeof TypingSpeedRoute;
-  "/typography-scale": typeof TypographyScaleRoute;
-  "/ulid": typeof UlidRoute;
-  "/unicode": typeof UnicodeRoute;
-  "/unicode-inspector": typeof UnicodeInspectorRoute;
-  "/unit-converter": typeof UnitConverterRoute;
-  "/url-encode": typeof UrlEncodeRoute;
-  "/url-parser": typeof UrlParserRoute;
-  "/user-agent": typeof UserAgentRoute;
-  "/utm-builder": typeof UtmBuilderRoute;
-  "/uuid": typeof UuidRoute;
-  "/uuid-inspector": typeof UuidInspectorRoute;
-  "/video-converter": typeof VideoConverterRoute;
-  "/vigenere": typeof VigenereRoute;
-  "/vscode-snippet": typeof VscodeSnippetRoute;
-  "/wareki": typeof WarekiRoute;
-  "/warikan": typeof WarikanRoute;
-  "/web-manifest": typeof WebManifestRoute;
-  "/websocket": typeof WebsocketRoute;
-  "/whois": typeof WhoisRoute;
-  "/word-frequency": typeof WordFrequencyRoute;
-  "/wordle": typeof WordleRoute;
-  "/world-clock": typeof WorldClockRoute;
-  "/xml": typeof XmlRoute;
-  "/xml-json": typeof XmlJsonRoute;
-  "/xpath": typeof XpathRoute;
-  "/yaml-formatter": typeof YamlFormatterRoute;
-  "/yaml-json": typeof YamlJsonRoute;
-  "/yaml-toml": typeof YamlTomlRoute;
-  "/zenkaku": typeof ZenkakuRoute;
-  "/zero-width": typeof ZeroWidthRoute;
-  "/api/image.jpg": typeof ApiImageDotjpgRoute;
-  "/api/image.png": typeof ApiImageDotpngRoute;
-  "/api/image.svg": typeof ApiImageDotsvgRoute;
-  "/api/image.webp": typeof ApiImageDotwebpRoute;
+  __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/adfgvx': typeof AdfgvxRoute
+  '/affine': typeof AffineRoute
+  '/ansi-color': typeof AnsiColorRoute
+  '/ascii-art': typeof AsciiArtRoute
+  '/ascii-table': typeof AsciiTableRoute
+  '/aspect-ratio': typeof AspectRatioRoute
+  '/atbash': typeof AtbashRoute
+  '/audio-converter': typeof AudioConverterRoute
+  '/background-removal': typeof BackgroundRemovalRoute
+  '/barcode': typeof BarcodeRoute
+  '/base16': typeof Base16Route
+  '/base32': typeof Base32Route
+  '/base36': typeof Base36Route
+  '/base58': typeof Base58Route
+  '/base62': typeof Base62Route
+  '/base64': typeof Base64Route
+  '/base64-image': typeof Base64ImageRoute
+  '/base85': typeof Base85Route
+  '/basic-auth': typeof BasicAuthRoute
+  '/beaufort': typeof BeaufortRoute
+  '/bifid': typeof BifidRoute
+  '/bitwise': typeof BitwiseRoute
+  '/bmi-calculator': typeof BmiCalculatorRoute
+  '/bpm': typeof BpmRoute
+  '/braille': typeof BrailleRoute
+  '/brainfuck': typeof BrainfuckRoute
+  '/bst-visualizer': typeof BstVisualizerRoute
+  '/cache-control': typeof CacheControlRoute
+  '/caesar': typeof CaesarRoute
+  '/cert-decoder': typeof CertDecoderRoute
+  '/char-count': typeof CharCountRoute
+  '/char-frequency': typeof CharFrequencyRoute
+  '/chmod': typeof ChmodRoute
+  '/cidr': typeof CidrRoute
+  '/color-blind': typeof ColorBlindRoute
+  '/color-contrast': typeof ColorContrastRoute
+  '/color-converter': typeof ColorConverterRoute
+  '/color-extractor': typeof ColorExtractorRoute
+  '/color-harmony': typeof ColorHarmonyRoute
+  '/color-mix': typeof ColorMixRoute
+  '/color-name': typeof ColorNameRoute
+  '/color-palette': typeof ColorPaletteRoute
+  '/color-picker': typeof ColorPickerRoute
+  '/color-temperature': typeof ColorTemperatureRoute
+  '/color-token': typeof ColorTokenRoute
+  '/columnar-transposition': typeof ColumnarTranspositionRoute
+  '/combinatorics': typeof CombinatoricsRoute
+  '/compound-interest': typeof CompoundInterestRoute
+  '/conventional-commits': typeof ConventionalCommitsRoute
+  '/cookie-parser': typeof CookieParserRoute
+  '/cors-builder': typeof CorsBuilderRoute
+  '/countdown': typeof CountdownRoute
+  '/cron': typeof CronRoute
+  '/cron-parser': typeof CronParserRoute
+  '/csp-builder': typeof CspBuilderRoute
+  '/css-animation': typeof CssAnimationRoute
+  '/css-background-pattern': typeof CssBackgroundPatternRoute
+  '/css-border-radius': typeof CssBorderRadiusRoute
+  '/css-box-shadow': typeof CssBoxShadowRoute
+  '/css-clamp': typeof CssClampRoute
+  '/css-clip-path': typeof CssClipPathRoute
+  '/css-container-query': typeof CssContainerQueryRoute
+  '/css-cubic-bezier': typeof CssCubicBezierRoute
+  '/css-filter': typeof CssFilterRoute
+  '/css-flexbox': typeof CssFlexboxRoute
+  '/css-formatter': typeof CssFormatterRoute
+  '/css-gradient': typeof CssGradientRoute
+  '/css-grid': typeof CssGridRoute
+  '/css-logical': typeof CssLogicalRoute
+  '/css-media-query': typeof CssMediaQueryRoute
+  '/css-scroll-snap': typeof CssScrollSnapRoute
+  '/css-selector': typeof CssSelectorRoute
+  '/css-shorthand': typeof CssShorthandRoute
+  '/css-specificity': typeof CssSpecificityRoute
+  '/css-text-shadow': typeof CssTextShadowRoute
+  '/css-transform': typeof CssTransformRoute
+  '/css-unit': typeof CssUnitRoute
+  '/css-variables': typeof CssVariablesRoute
+  '/csv-json': typeof CsvJsonRoute
+  '/csv-sql': typeof CsvSqlRoute
+  '/curl-builder': typeof CurlBuilderRoute
+  '/curl-to-fetch': typeof CurlToFetchRoute
+  '/daiji': typeof DaijiRoute
+  '/date-calc': typeof DateCalcRoute
+  '/dice-roll': typeof DiceRollRoute
+  '/diff': typeof DiffRoute
+  '/discord-emoji': typeof DiscordEmojiRoute
+  '/discord-sticker': typeof DiscordStickerRoute
+  '/dns-lookup': typeof DnsLookupRoute
+  '/docker-run-to-compose': typeof DockerRunToComposeRoute
+  '/dockerfile': typeof DockerfileRoute
+  '/dummy-audio': typeof DummyAudioRoute
+  '/dummy-image': typeof DummyImageRoute
+  '/duration': typeof DurationRoute
+  '/editorconfig': typeof EditorconfigRoute
+  '/email-dns': typeof EmailDnsRoute
+  '/email-header': typeof EmailHeaderRoute
+  '/emoji-converter': typeof EmojiConverterRoute
+  '/encode-chain': typeof EncodeChainRoute
+  '/encoding': typeof EncodingRoute
+  '/entropy': typeof EntropyRoute
+  '/env-parser': typeof EnvParserRoute
+  '/eslint-config-builder': typeof EslintConfigBuilderRoute
+  '/exif-viewer': typeof ExifViewerRoute
+  '/fancy-text': typeof FancyTextRoute
+  '/favicon-generator': typeof FaviconGeneratorRoute
+  '/four-square': typeof FourSquareRoute
+  '/fraction': typeof FractionRoute
+  '/function-plotter': typeof FunctionPlotterRoute
+  '/game-2048': typeof Game2048Route
+  '/geohash': typeof GeohashRoute
+  '/geometry': typeof GeometryRoute
+  '/gitattributes': typeof GitattributesRoute
+  '/github-actions': typeof GithubActionsRoute
+  '/github-badge': typeof GithubBadgeRoute
+  '/gitignore': typeof GitignoreRoute
+  '/glob-tester': typeof GlobTesterRoute
+  '/global-ip': typeof GlobalIpRoute
+  '/graphql': typeof GraphqlRoute
+  '/gronsfeld': typeof GronsfeldRoute
+  '/gzip': typeof GzipRoute
+  '/hangman': typeof HangmanRoute
+  '/har': typeof HarRoute
+  '/hash': typeof HashRoute
+  '/haversine': typeof HaversineRoute
+  '/hex-viewer': typeof HexViewerRoute
+  '/hmac': typeof HmacRoute
+  '/htaccess-builder': typeof HtaccessBuilderRoute
+  '/html-encode': typeof HtmlEncodeRoute
+  '/html-formatter': typeof HtmlFormatterRoute
+  '/html-markdown': typeof HtmlMarkdownRoute
+  '/html-playground': typeof HtmlPlaygroundRoute
+  '/html-to-jsx': typeof HtmlToJsxRoute
+  '/http-client': typeof HttpClientRoute
+  '/http-headers': typeof HttpHeadersRoute
+  '/http-status': typeof HttpStatusRoute
+  '/iban': typeof IbanRoute
+  '/ieee754': typeof Ieee754Route
+  '/image-base64': typeof ImageBase64Route
+  '/image-compress': typeof ImageCompressRoute
+  '/image-crop': typeof ImageCropRoute
+  '/image-resize': typeof ImageResizeRoute
+  '/image-to-gif': typeof ImageToGifRoute
+  '/ini-parser': typeof IniParserRoute
+  '/ip-cidr-check': typeof IpCidrCheckRoute
+  '/ip-converter': typeof IpConverterRoute
+  '/ip-geolocation': typeof IpGeolocationRoute
+  '/ipv6': typeof Ipv6Route
+  '/isbn': typeof IsbnRoute
+  '/json': typeof JsonRoute
+  '/json-compare': typeof JsonCompareRoute
+  '/json-flatten': typeof JsonFlattenRoute
+  '/json-lines': typeof JsonLinesRoute
+  '/json-merge': typeof JsonMergeRoute
+  '/json-path': typeof JsonPathRoute
+  '/json-pointer': typeof JsonPointerRoute
+  '/json-schema': typeof JsonSchemaRoute
+  '/json-schema-validator': typeof JsonSchemaValidatorRoute
+  '/json-to-graphql': typeof JsonToGraphqlRoute
+  '/json-to-sql': typeof JsonToSqlRoute
+  '/json-to-ts': typeof JsonToTsRoute
+  '/json-to-zod': typeof JsonToZodRoute
+  '/jwt': typeof JwtRoute
+  '/jwt-generator': typeof JwtGeneratorRoute
+  '/kana-convert': typeof KanaConvertRoute
+  '/keycode': typeof KeycodeRoute
+  '/life-game': typeof LifeGameRoute
+  '/line-ending': typeof LineEndingRoute
+  '/lissajous': typeof LissajousRoute
+  '/loan-calculator': typeof LoanCalculatorRoute
+  '/lorem-ipsum': typeof LoremIpsumRoute
+  '/luhn-check': typeof LuhnCheckRoute
+  '/makefile': typeof MakefileRoute
+  '/mandelbrot': typeof MandelbrotRoute
+  '/markdown-preview': typeof MarkdownPreviewRoute
+  '/markdown-table': typeof MarkdownTableRoute
+  '/math-eval': typeof MathEvalRoute
+  '/matrix': typeof MatrixRoute
+  '/mermaid': typeof MermaidRoute
+  '/mime-types': typeof MimeTypesRoute
+  '/minesweeper': typeof MinesweeperRoute
+  '/minify': typeof MinifyRoute
+  '/morse-code': typeof MorseCodeRoute
+  '/msgpack': typeof MsgpackRoute
+  '/nano-id': typeof NanoIdRoute
+  '/nato-alphabet': typeof NatoAlphabetRoute
+  '/nginx-config': typeof NginxConfigRoute
+  '/number-base': typeof NumberBaseRoute
+  '/number-format': typeof NumberFormatRoute
+  '/number-theory': typeof NumberTheoryRoute
+  '/number-words': typeof NumberWordsRoute
+  '/ogp': typeof OgpRoute
+  '/ogp-generator': typeof OgpGeneratorRoute
+  '/openssl-builder': typeof OpensslBuilderRoute
+  '/package-json': typeof PackageJsonRoute
+  '/passphrase': typeof PassphraseRoute
+  '/password-generator': typeof PasswordGeneratorRoute
+  '/password-strength': typeof PasswordStrengthRoute
+  '/percentage-calculator': typeof PercentageCalculatorRoute
+  '/phone': typeof PhoneRoute
+  '/php-serialize': typeof PhpSerializeRoute
+  '/pkce': typeof PkceRoute
+  '/playfair': typeof PlayfairRoute
+  '/polybius': typeof PolybiusRoute
+  '/pomodoro': typeof PomodoroRoute
+  '/port-check': typeof PortCheckRoute
+  '/ports': typeof PortsRoute
+  '/prettier-config-builder': typeof PrettierConfigBuilderRoute
+  '/punycode': typeof PunycodeRoute
+  '/qr-code': typeof QrCodeRoute
+  '/quoted-printable': typeof QuotedPrintableRoute
+  '/rail-fence': typeof RailFenceRoute
+  '/random-data': typeof RandomDataRoute
+  '/random-picker': typeof RandomPickerRoute
+  '/readability': typeof ReadabilityRoute
+  '/redirect-tracer': typeof RedirectTracerRoute
+  '/regex-checker': typeof RegexCheckerRoute
+  '/regex-library': typeof RegexLibraryRoute
+  '/robots-txt': typeof RobotsTxtRoute
+  '/roman-numerals': typeof RomanNumeralsRoute
+  '/scytale': typeof ScytaleRoute
+  '/security-headers': typeof SecurityHeadersRoute
+  '/semver': typeof SemverRoute
+  '/seo-meta': typeof SeoMetaRoute
+  '/sequences': typeof SequencesRoute
+  '/server-env': typeof ServerEnvRoute
+  '/short-code': typeof ShortCodeRoute
+  '/sitemap': typeof SitemapRoute
+  '/slug': typeof SlugRoute
+  '/snake': typeof SnakeRoute
+  '/sort-visualizer': typeof SortVisualizerRoute
+  '/sql': typeof SqlRoute
+  '/sql-to-ts': typeof SqlToTsRoute
+  '/sri-hash': typeof SriHashRoute
+  '/ssh-key': typeof SshKeyRoute
+  '/statistics': typeof StatisticsRoute
+  '/stopwatch': typeof StopwatchRoute
+  '/storage-converter': typeof StorageConverterRoute
+  '/string-escape': typeof StringEscapeRoute
+  '/string-similarity': typeof StringSimilarityRoute
+  '/sudoku': typeof SudokuRoute
+  '/svg-optimizer': typeof SvgOptimizerRoute
+  '/tailwind-colors': typeof TailwindColorsRoute
+  '/tap-code': typeof TapCodeRoute
+  '/tax-calculator': typeof TaxCalculatorRoute
+  '/template': typeof TemplateRoute
+  '/tetris': typeof TetrisRoute
+  '/text-binary': typeof TextBinaryRoute
+  '/text-case': typeof TextCaseRoute
+  '/text-encrypt': typeof TextEncryptRoute
+  '/text-line': typeof TextLineRoute
+  '/text-replace': typeof TextReplaceRoute
+  '/text-sort': typeof TextSortRoute
+  '/text-stats': typeof TextStatsRoute
+  '/tic-tac-toe': typeof TicTacToeRoute
+  '/timestamp': typeof TimestampRoute
+  '/timezone': typeof TimezoneRoute
+  '/token-estimator': typeof TokenEstimatorRoute
+  '/toml-formatter': typeof TomlFormatterRoute
+  '/toml-json': typeof TomlJsonRoute
+  '/top': typeof TopRoute
+  '/totp': typeof TotpRoute
+  '/transfer-speed': typeof TransferSpeedRoute
+  '/transparent-image': typeof TransparentImageRoute
+  '/trig': typeof TrigRoute
+  '/truth-table': typeof TruthTableRoute
+  '/tsconfig-builder': typeof TsconfigBuilderRoute
+  '/typing-speed': typeof TypingSpeedRoute
+  '/typography-scale': typeof TypographyScaleRoute
+  '/ulid': typeof UlidRoute
+  '/unicode': typeof UnicodeRoute
+  '/unicode-inspector': typeof UnicodeInspectorRoute
+  '/unit-converter': typeof UnitConverterRoute
+  '/url-encode': typeof UrlEncodeRoute
+  '/url-parser': typeof UrlParserRoute
+  '/user-agent': typeof UserAgentRoute
+  '/utm-builder': typeof UtmBuilderRoute
+  '/uuid': typeof UuidRoute
+  '/uuid-inspector': typeof UuidInspectorRoute
+  '/video-converter': typeof VideoConverterRoute
+  '/vigenere': typeof VigenereRoute
+  '/vscode-snippet': typeof VscodeSnippetRoute
+  '/wareki': typeof WarekiRoute
+  '/warikan': typeof WarikanRoute
+  '/web-manifest': typeof WebManifestRoute
+  '/websocket': typeof WebsocketRoute
+  '/whois': typeof WhoisRoute
+  '/word-frequency': typeof WordFrequencyRoute
+  '/wordle': typeof WordleRoute
+  '/world-clock': typeof WorldClockRoute
+  '/xml': typeof XmlRoute
+  '/xml-json': typeof XmlJsonRoute
+  '/xpath': typeof XpathRoute
+  '/yaml-formatter': typeof YamlFormatterRoute
+  '/yaml-json': typeof YamlJsonRoute
+  '/yaml-toml': typeof YamlTomlRoute
+  '/zenkaku': typeof ZenkakuRoute
+  '/zero-width': typeof ZeroWidthRoute
+  '/api/image.jpg': typeof ApiImageDotjpgRoute
+  '/api/image.png': typeof ApiImageDotpngRoute
+  '/api/image.svg': typeof ApiImageDotsvgRoute
+  '/api/image.webp': typeof ApiImageDotwebpRoute
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath;
+  fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | "/"
-    | "/adfgvx"
-    | "/affine"
-    | "/ansi-color"
-    | "/ascii-art"
-    | "/ascii-table"
-    | "/aspect-ratio"
-    | "/atbash"
-    | "/audio-converter"
-    | "/background-removal"
-    | "/barcode"
-    | "/base16"
-    | "/base32"
-    | "/base36"
-    | "/base58"
-    | "/base62"
-    | "/base64"
-    | "/base64-image"
-    | "/base85"
-    | "/basic-auth"
-    | "/beaufort"
-    | "/bifid"
-    | "/bitwise"
-    | "/bmi-calculator"
-    | "/bpm"
-    | "/braille"
-    | "/brainfuck"
-    | "/bst-visualizer"
-    | "/cache-control"
-    | "/caesar"
-    | "/cert-decoder"
-    | "/char-count"
-    | "/char-frequency"
-    | "/chmod"
-    | "/cidr"
-    | "/color-blind"
-    | "/color-contrast"
-    | "/color-converter"
-    | "/color-extractor"
-    | "/color-harmony"
-    | "/color-mix"
-    | "/color-name"
-    | "/color-palette"
-    | "/color-picker"
-    | "/color-temperature"
-    | "/color-token"
-    | "/columnar-transposition"
-    | "/combinatorics"
-    | "/compound-interest"
-    | "/conventional-commits"
-    | "/cookie-parser"
-    | "/cors-builder"
-    | "/countdown"
-    | "/cron"
-    | "/cron-parser"
-    | "/csp-builder"
-    | "/css-animation"
-    | "/css-background-pattern"
-    | "/css-border-radius"
-    | "/css-box-shadow"
-    | "/css-clamp"
-    | "/css-clip-path"
-    | "/css-container-query"
-    | "/css-cubic-bezier"
-    | "/css-filter"
-    | "/css-flexbox"
-    | "/css-formatter"
-    | "/css-gradient"
-    | "/css-grid"
-    | "/css-logical"
-    | "/css-media-query"
-    | "/css-scroll-snap"
-    | "/css-selector"
-    | "/css-shorthand"
-    | "/css-specificity"
-    | "/css-text-shadow"
-    | "/css-transform"
-    | "/css-unit"
-    | "/css-variables"
-    | "/csv-json"
-    | "/csv-sql"
-    | "/curl-builder"
-    | "/curl-to-fetch"
-    | "/daiji"
-    | "/date-calc"
-    | "/dice-roll"
-    | "/diff"
-    | "/discord-emoji"
-    | "/discord-sticker"
-    | "/dns-lookup"
-    | "/docker-run-to-compose"
-    | "/dockerfile"
-    | "/dummy-audio"
-    | "/dummy-image"
-    | "/duration"
-    | "/editorconfig"
-    | "/email-dns"
-    | "/email-header"
-    | "/emoji-converter"
-    | "/encode-chain"
-    | "/encoding"
-    | "/entropy"
-    | "/env-parser"
-    | "/eslint-config-builder"
-    | "/exif-viewer"
-    | "/fancy-text"
-    | "/favicon-generator"
-    | "/four-square"
-    | "/fraction"
-    | "/function-plotter"
-    | "/game-2048"
-    | "/geohash"
-    | "/geometry"
-    | "/gitattributes"
-    | "/github-actions"
-    | "/github-badge"
-    | "/gitignore"
-    | "/glob-tester"
-    | "/global-ip"
-    | "/graphql"
-    | "/gronsfeld"
-    | "/gzip"
-    | "/hangman"
-    | "/har"
-    | "/hash"
-    | "/haversine"
-    | "/hex-viewer"
-    | "/hmac"
-    | "/htaccess-builder"
-    | "/html-encode"
-    | "/html-formatter"
-    | "/html-markdown"
-    | "/html-playground"
-    | "/html-to-jsx"
-    | "/http-client"
-    | "/http-headers"
-    | "/http-status"
-    | "/iban"
-    | "/ieee754"
-    | "/image-base64"
-    | "/image-compress"
-    | "/image-crop"
-    | "/image-resize"
-    | "/image-to-gif"
-    | "/ini-parser"
-    | "/ip-cidr-check"
-    | "/ip-converter"
-    | "/ip-geolocation"
-    | "/ipv6"
-    | "/isbn"
-    | "/json"
-    | "/json-compare"
-    | "/json-flatten"
-    | "/json-lines"
-    | "/json-merge"
-    | "/json-path"
-    | "/json-pointer"
-    | "/json-schema"
-    | "/json-schema-validator"
-    | "/json-to-graphql"
-    | "/json-to-sql"
-    | "/json-to-ts"
-    | "/json-to-zod"
-    | "/jwt"
-    | "/jwt-generator"
-    | "/kana-convert"
-    | "/keycode"
-    | "/life-game"
-    | "/line-ending"
-    | "/lissajous"
-    | "/loan-calculator"
-    | "/lorem-ipsum"
-    | "/luhn-check"
-    | "/makefile"
-    | "/mandelbrot"
-    | "/markdown-preview"
-    | "/markdown-table"
-    | "/math-eval"
-    | "/matrix"
-    | "/mermaid"
-    | "/mime-types"
-    | "/minesweeper"
-    | "/minify"
-    | "/morse-code"
-    | "/msgpack"
-    | "/nano-id"
-    | "/nato-alphabet"
-    | "/nginx-config"
-    | "/number-base"
-    | "/number-format"
-    | "/number-theory"
-    | "/number-words"
-    | "/ogp"
-    | "/ogp-generator"
-    | "/openssl-builder"
-    | "/package-json"
-    | "/passphrase"
-    | "/password-generator"
-    | "/password-strength"
-    | "/percentage-calculator"
-    | "/phone"
-    | "/php-serialize"
-    | "/pkce"
-    | "/playfair"
-    | "/polybius"
-    | "/pomodoro"
-    | "/port-check"
-    | "/ports"
-    | "/prettier-config-builder"
-    | "/punycode"
-    | "/qr-code"
-    | "/quoted-printable"
-    | "/rail-fence"
-    | "/random-data"
-    | "/random-picker"
-    | "/readability"
-    | "/redirect-tracer"
-    | "/regex-checker"
-    | "/regex-library"
-    | "/robots-txt"
-    | "/roman-numerals"
-    | "/scytale"
-    | "/security-headers"
-    | "/semver"
-    | "/seo-meta"
-    | "/sequences"
-    | "/server-env"
-    | "/short-code"
-    | "/sitemap"
-    | "/slug"
-    | "/snake"
-    | "/sort-visualizer"
-    | "/sql"
-    | "/sql-to-ts"
-    | "/sri-hash"
-    | "/ssh-key"
-    | "/statistics"
-    | "/stopwatch"
-    | "/storage-converter"
-    | "/string-escape"
-    | "/string-similarity"
-    | "/sudoku"
-    | "/svg-optimizer"
-    | "/tailwind-colors"
-    | "/tap-code"
-    | "/tax-calculator"
-    | "/template"
-    | "/tetris"
-    | "/text-binary"
-    | "/text-case"
-    | "/text-encrypt"
-    | "/text-line"
-    | "/text-replace"
-    | "/text-sort"
-    | "/text-stats"
-    | "/tic-tac-toe"
-    | "/timestamp"
-    | "/timezone"
-    | "/token-estimator"
-    | "/toml-formatter"
-    | "/toml-json"
-    | "/top"
-    | "/totp"
-    | "/transfer-speed"
-    | "/transparent-image"
-    | "/trig"
-    | "/truth-table"
-    | "/tsconfig-builder"
-    | "/typing-speed"
-    | "/typography-scale"
-    | "/ulid"
-    | "/unicode"
-    | "/unicode-inspector"
-    | "/unit-converter"
-    | "/url-encode"
-    | "/url-parser"
-    | "/user-agent"
-    | "/utm-builder"
-    | "/uuid"
-    | "/uuid-inspector"
-    | "/video-converter"
-    | "/vigenere"
-    | "/vscode-snippet"
-    | "/wareki"
-    | "/warikan"
-    | "/web-manifest"
-    | "/websocket"
-    | "/whois"
-    | "/word-frequency"
-    | "/wordle"
-    | "/world-clock"
-    | "/xml"
-    | "/xml-json"
-    | "/xpath"
-    | "/yaml-formatter"
-    | "/yaml-json"
-    | "/yaml-toml"
-    | "/zenkaku"
-    | "/zero-width"
-    | "/api/image.jpg"
-    | "/api/image.png"
-    | "/api/image.svg"
-    | "/api/image.webp";
-  fileRoutesByTo: FileRoutesByTo;
+    | '/'
+    | '/adfgvx'
+    | '/affine'
+    | '/ansi-color'
+    | '/ascii-art'
+    | '/ascii-table'
+    | '/aspect-ratio'
+    | '/atbash'
+    | '/audio-converter'
+    | '/background-removal'
+    | '/barcode'
+    | '/base16'
+    | '/base32'
+    | '/base36'
+    | '/base58'
+    | '/base62'
+    | '/base64'
+    | '/base64-image'
+    | '/base85'
+    | '/basic-auth'
+    | '/beaufort'
+    | '/bifid'
+    | '/bitwise'
+    | '/bmi-calculator'
+    | '/bpm'
+    | '/braille'
+    | '/brainfuck'
+    | '/bst-visualizer'
+    | '/cache-control'
+    | '/caesar'
+    | '/cert-decoder'
+    | '/char-count'
+    | '/char-frequency'
+    | '/chmod'
+    | '/cidr'
+    | '/color-blind'
+    | '/color-contrast'
+    | '/color-converter'
+    | '/color-extractor'
+    | '/color-harmony'
+    | '/color-mix'
+    | '/color-name'
+    | '/color-palette'
+    | '/color-picker'
+    | '/color-temperature'
+    | '/color-token'
+    | '/columnar-transposition'
+    | '/combinatorics'
+    | '/compound-interest'
+    | '/conventional-commits'
+    | '/cookie-parser'
+    | '/cors-builder'
+    | '/countdown'
+    | '/cron'
+    | '/cron-parser'
+    | '/csp-builder'
+    | '/css-animation'
+    | '/css-background-pattern'
+    | '/css-border-radius'
+    | '/css-box-shadow'
+    | '/css-clamp'
+    | '/css-clip-path'
+    | '/css-container-query'
+    | '/css-cubic-bezier'
+    | '/css-filter'
+    | '/css-flexbox'
+    | '/css-formatter'
+    | '/css-gradient'
+    | '/css-grid'
+    | '/css-logical'
+    | '/css-media-query'
+    | '/css-scroll-snap'
+    | '/css-selector'
+    | '/css-shorthand'
+    | '/css-specificity'
+    | '/css-text-shadow'
+    | '/css-transform'
+    | '/css-unit'
+    | '/css-variables'
+    | '/csv-json'
+    | '/csv-sql'
+    | '/curl-builder'
+    | '/curl-to-fetch'
+    | '/daiji'
+    | '/date-calc'
+    | '/dice-roll'
+    | '/diff'
+    | '/discord-emoji'
+    | '/discord-sticker'
+    | '/dns-lookup'
+    | '/docker-run-to-compose'
+    | '/dockerfile'
+    | '/dummy-audio'
+    | '/dummy-image'
+    | '/duration'
+    | '/editorconfig'
+    | '/email-dns'
+    | '/email-header'
+    | '/emoji-converter'
+    | '/encode-chain'
+    | '/encoding'
+    | '/entropy'
+    | '/env-parser'
+    | '/eslint-config-builder'
+    | '/exif-viewer'
+    | '/fancy-text'
+    | '/favicon-generator'
+    | '/four-square'
+    | '/fraction'
+    | '/function-plotter'
+    | '/game-2048'
+    | '/geohash'
+    | '/geometry'
+    | '/gitattributes'
+    | '/github-actions'
+    | '/github-badge'
+    | '/gitignore'
+    | '/glob-tester'
+    | '/global-ip'
+    | '/graphql'
+    | '/gronsfeld'
+    | '/gzip'
+    | '/hangman'
+    | '/har'
+    | '/hash'
+    | '/haversine'
+    | '/hex-viewer'
+    | '/hmac'
+    | '/htaccess-builder'
+    | '/html-encode'
+    | '/html-formatter'
+    | '/html-markdown'
+    | '/html-playground'
+    | '/html-to-jsx'
+    | '/http-client'
+    | '/http-headers'
+    | '/http-status'
+    | '/iban'
+    | '/ieee754'
+    | '/image-base64'
+    | '/image-compress'
+    | '/image-crop'
+    | '/image-resize'
+    | '/image-to-gif'
+    | '/ini-parser'
+    | '/ip-cidr-check'
+    | '/ip-converter'
+    | '/ip-geolocation'
+    | '/ipv6'
+    | '/isbn'
+    | '/json'
+    | '/json-compare'
+    | '/json-flatten'
+    | '/json-lines'
+    | '/json-merge'
+    | '/json-path'
+    | '/json-pointer'
+    | '/json-schema'
+    | '/json-schema-validator'
+    | '/json-to-graphql'
+    | '/json-to-sql'
+    | '/json-to-ts'
+    | '/json-to-zod'
+    | '/jwt'
+    | '/jwt-generator'
+    | '/kana-convert'
+    | '/keycode'
+    | '/life-game'
+    | '/line-ending'
+    | '/lissajous'
+    | '/loan-calculator'
+    | '/lorem-ipsum'
+    | '/luhn-check'
+    | '/makefile'
+    | '/mandelbrot'
+    | '/markdown-preview'
+    | '/markdown-table'
+    | '/math-eval'
+    | '/matrix'
+    | '/mermaid'
+    | '/mime-types'
+    | '/minesweeper'
+    | '/minify'
+    | '/morse-code'
+    | '/msgpack'
+    | '/nano-id'
+    | '/nato-alphabet'
+    | '/nginx-config'
+    | '/number-base'
+    | '/number-format'
+    | '/number-theory'
+    | '/number-words'
+    | '/ogp'
+    | '/ogp-generator'
+    | '/openssl-builder'
+    | '/package-json'
+    | '/passphrase'
+    | '/password-generator'
+    | '/password-strength'
+    | '/percentage-calculator'
+    | '/phone'
+    | '/php-serialize'
+    | '/pkce'
+    | '/playfair'
+    | '/polybius'
+    | '/pomodoro'
+    | '/port-check'
+    | '/ports'
+    | '/prettier-config-builder'
+    | '/punycode'
+    | '/qr-code'
+    | '/quoted-printable'
+    | '/rail-fence'
+    | '/random-data'
+    | '/random-picker'
+    | '/readability'
+    | '/redirect-tracer'
+    | '/regex-checker'
+    | '/regex-library'
+    | '/robots-txt'
+    | '/roman-numerals'
+    | '/scytale'
+    | '/security-headers'
+    | '/semver'
+    | '/seo-meta'
+    | '/sequences'
+    | '/server-env'
+    | '/short-code'
+    | '/sitemap'
+    | '/slug'
+    | '/snake'
+    | '/sort-visualizer'
+    | '/sql'
+    | '/sql-to-ts'
+    | '/sri-hash'
+    | '/ssh-key'
+    | '/statistics'
+    | '/stopwatch'
+    | '/storage-converter'
+    | '/string-escape'
+    | '/string-similarity'
+    | '/sudoku'
+    | '/svg-optimizer'
+    | '/tailwind-colors'
+    | '/tap-code'
+    | '/tax-calculator'
+    | '/template'
+    | '/tetris'
+    | '/text-binary'
+    | '/text-case'
+    | '/text-encrypt'
+    | '/text-line'
+    | '/text-replace'
+    | '/text-sort'
+    | '/text-stats'
+    | '/tic-tac-toe'
+    | '/timestamp'
+    | '/timezone'
+    | '/token-estimator'
+    | '/toml-formatter'
+    | '/toml-json'
+    | '/top'
+    | '/totp'
+    | '/transfer-speed'
+    | '/transparent-image'
+    | '/trig'
+    | '/truth-table'
+    | '/tsconfig-builder'
+    | '/typing-speed'
+    | '/typography-scale'
+    | '/ulid'
+    | '/unicode'
+    | '/unicode-inspector'
+    | '/unit-converter'
+    | '/url-encode'
+    | '/url-parser'
+    | '/user-agent'
+    | '/utm-builder'
+    | '/uuid'
+    | '/uuid-inspector'
+    | '/video-converter'
+    | '/vigenere'
+    | '/vscode-snippet'
+    | '/wareki'
+    | '/warikan'
+    | '/web-manifest'
+    | '/websocket'
+    | '/whois'
+    | '/word-frequency'
+    | '/wordle'
+    | '/world-clock'
+    | '/xml'
+    | '/xml-json'
+    | '/xpath'
+    | '/yaml-formatter'
+    | '/yaml-json'
+    | '/yaml-toml'
+    | '/zenkaku'
+    | '/zero-width'
+    | '/api/image.jpg'
+    | '/api/image.png'
+    | '/api/image.svg'
+    | '/api/image.webp'
+  fileRoutesByTo: FileRoutesByTo
   to:
-    | "/"
-    | "/adfgvx"
-    | "/affine"
-    | "/ansi-color"
-    | "/ascii-art"
-    | "/ascii-table"
-    | "/aspect-ratio"
-    | "/atbash"
-    | "/audio-converter"
-    | "/background-removal"
-    | "/barcode"
-    | "/base16"
-    | "/base32"
-    | "/base36"
-    | "/base58"
-    | "/base62"
-    | "/base64"
-    | "/base64-image"
-    | "/base85"
-    | "/basic-auth"
-    | "/beaufort"
-    | "/bifid"
-    | "/bitwise"
-    | "/bmi-calculator"
-    | "/bpm"
-    | "/braille"
-    | "/brainfuck"
-    | "/bst-visualizer"
-    | "/cache-control"
-    | "/caesar"
-    | "/cert-decoder"
-    | "/char-count"
-    | "/char-frequency"
-    | "/chmod"
-    | "/cidr"
-    | "/color-blind"
-    | "/color-contrast"
-    | "/color-converter"
-    | "/color-extractor"
-    | "/color-harmony"
-    | "/color-mix"
-    | "/color-name"
-    | "/color-palette"
-    | "/color-picker"
-    | "/color-temperature"
-    | "/color-token"
-    | "/columnar-transposition"
-    | "/combinatorics"
-    | "/compound-interest"
-    | "/conventional-commits"
-    | "/cookie-parser"
-    | "/cors-builder"
-    | "/countdown"
-    | "/cron"
-    | "/cron-parser"
-    | "/csp-builder"
-    | "/css-animation"
-    | "/css-background-pattern"
-    | "/css-border-radius"
-    | "/css-box-shadow"
-    | "/css-clamp"
-    | "/css-clip-path"
-    | "/css-container-query"
-    | "/css-cubic-bezier"
-    | "/css-filter"
-    | "/css-flexbox"
-    | "/css-formatter"
-    | "/css-gradient"
-    | "/css-grid"
-    | "/css-logical"
-    | "/css-media-query"
-    | "/css-scroll-snap"
-    | "/css-selector"
-    | "/css-shorthand"
-    | "/css-specificity"
-    | "/css-text-shadow"
-    | "/css-transform"
-    | "/css-unit"
-    | "/css-variables"
-    | "/csv-json"
-    | "/csv-sql"
-    | "/curl-builder"
-    | "/curl-to-fetch"
-    | "/daiji"
-    | "/date-calc"
-    | "/dice-roll"
-    | "/diff"
-    | "/discord-emoji"
-    | "/discord-sticker"
-    | "/dns-lookup"
-    | "/docker-run-to-compose"
-    | "/dockerfile"
-    | "/dummy-audio"
-    | "/dummy-image"
-    | "/duration"
-    | "/editorconfig"
-    | "/email-dns"
-    | "/email-header"
-    | "/emoji-converter"
-    | "/encode-chain"
-    | "/encoding"
-    | "/entropy"
-    | "/env-parser"
-    | "/eslint-config-builder"
-    | "/exif-viewer"
-    | "/fancy-text"
-    | "/favicon-generator"
-    | "/four-square"
-    | "/fraction"
-    | "/function-plotter"
-    | "/game-2048"
-    | "/geohash"
-    | "/geometry"
-    | "/gitattributes"
-    | "/github-actions"
-    | "/github-badge"
-    | "/gitignore"
-    | "/glob-tester"
-    | "/global-ip"
-    | "/graphql"
-    | "/gronsfeld"
-    | "/gzip"
-    | "/hangman"
-    | "/har"
-    | "/hash"
-    | "/haversine"
-    | "/hex-viewer"
-    | "/hmac"
-    | "/htaccess-builder"
-    | "/html-encode"
-    | "/html-formatter"
-    | "/html-markdown"
-    | "/html-playground"
-    | "/html-to-jsx"
-    | "/http-client"
-    | "/http-headers"
-    | "/http-status"
-    | "/iban"
-    | "/ieee754"
-    | "/image-base64"
-    | "/image-compress"
-    | "/image-crop"
-    | "/image-resize"
-    | "/image-to-gif"
-    | "/ini-parser"
-    | "/ip-cidr-check"
-    | "/ip-converter"
-    | "/ip-geolocation"
-    | "/ipv6"
-    | "/isbn"
-    | "/json"
-    | "/json-compare"
-    | "/json-flatten"
-    | "/json-lines"
-    | "/json-merge"
-    | "/json-path"
-    | "/json-pointer"
-    | "/json-schema"
-    | "/json-schema-validator"
-    | "/json-to-graphql"
-    | "/json-to-sql"
-    | "/json-to-ts"
-    | "/json-to-zod"
-    | "/jwt"
-    | "/jwt-generator"
-    | "/kana-convert"
-    | "/keycode"
-    | "/life-game"
-    | "/line-ending"
-    | "/lissajous"
-    | "/loan-calculator"
-    | "/lorem-ipsum"
-    | "/luhn-check"
-    | "/makefile"
-    | "/mandelbrot"
-    | "/markdown-preview"
-    | "/markdown-table"
-    | "/math-eval"
-    | "/matrix"
-    | "/mermaid"
-    | "/mime-types"
-    | "/minesweeper"
-    | "/minify"
-    | "/morse-code"
-    | "/msgpack"
-    | "/nano-id"
-    | "/nato-alphabet"
-    | "/nginx-config"
-    | "/number-base"
-    | "/number-format"
-    | "/number-theory"
-    | "/number-words"
-    | "/ogp"
-    | "/ogp-generator"
-    | "/openssl-builder"
-    | "/package-json"
-    | "/passphrase"
-    | "/password-generator"
-    | "/password-strength"
-    | "/percentage-calculator"
-    | "/phone"
-    | "/php-serialize"
-    | "/pkce"
-    | "/playfair"
-    | "/polybius"
-    | "/pomodoro"
-    | "/port-check"
-    | "/ports"
-    | "/prettier-config-builder"
-    | "/punycode"
-    | "/qr-code"
-    | "/quoted-printable"
-    | "/rail-fence"
-    | "/random-data"
-    | "/random-picker"
-    | "/readability"
-    | "/redirect-tracer"
-    | "/regex-checker"
-    | "/regex-library"
-    | "/robots-txt"
-    | "/roman-numerals"
-    | "/scytale"
-    | "/security-headers"
-    | "/semver"
-    | "/seo-meta"
-    | "/sequences"
-    | "/server-env"
-    | "/short-code"
-    | "/sitemap"
-    | "/slug"
-    | "/snake"
-    | "/sort-visualizer"
-    | "/sql"
-    | "/sql-to-ts"
-    | "/sri-hash"
-    | "/ssh-key"
-    | "/statistics"
-    | "/stopwatch"
-    | "/storage-converter"
-    | "/string-escape"
-    | "/string-similarity"
-    | "/sudoku"
-    | "/svg-optimizer"
-    | "/tailwind-colors"
-    | "/tap-code"
-    | "/tax-calculator"
-    | "/template"
-    | "/tetris"
-    | "/text-binary"
-    | "/text-case"
-    | "/text-encrypt"
-    | "/text-line"
-    | "/text-replace"
-    | "/text-sort"
-    | "/text-stats"
-    | "/tic-tac-toe"
-    | "/timestamp"
-    | "/timezone"
-    | "/token-estimator"
-    | "/toml-formatter"
-    | "/toml-json"
-    | "/top"
-    | "/totp"
-    | "/transfer-speed"
-    | "/transparent-image"
-    | "/trig"
-    | "/truth-table"
-    | "/tsconfig-builder"
-    | "/typing-speed"
-    | "/typography-scale"
-    | "/ulid"
-    | "/unicode"
-    | "/unicode-inspector"
-    | "/unit-converter"
-    | "/url-encode"
-    | "/url-parser"
-    | "/user-agent"
-    | "/utm-builder"
-    | "/uuid"
-    | "/uuid-inspector"
-    | "/video-converter"
-    | "/vigenere"
-    | "/vscode-snippet"
-    | "/wareki"
-    | "/warikan"
-    | "/web-manifest"
-    | "/websocket"
-    | "/whois"
-    | "/word-frequency"
-    | "/wordle"
-    | "/world-clock"
-    | "/xml"
-    | "/xml-json"
-    | "/xpath"
-    | "/yaml-formatter"
-    | "/yaml-json"
-    | "/yaml-toml"
-    | "/zenkaku"
-    | "/zero-width"
-    | "/api/image.jpg"
-    | "/api/image.png"
-    | "/api/image.svg"
-    | "/api/image.webp";
+    | '/'
+    | '/adfgvx'
+    | '/affine'
+    | '/ansi-color'
+    | '/ascii-art'
+    | '/ascii-table'
+    | '/aspect-ratio'
+    | '/atbash'
+    | '/audio-converter'
+    | '/background-removal'
+    | '/barcode'
+    | '/base16'
+    | '/base32'
+    | '/base36'
+    | '/base58'
+    | '/base62'
+    | '/base64'
+    | '/base64-image'
+    | '/base85'
+    | '/basic-auth'
+    | '/beaufort'
+    | '/bifid'
+    | '/bitwise'
+    | '/bmi-calculator'
+    | '/bpm'
+    | '/braille'
+    | '/brainfuck'
+    | '/bst-visualizer'
+    | '/cache-control'
+    | '/caesar'
+    | '/cert-decoder'
+    | '/char-count'
+    | '/char-frequency'
+    | '/chmod'
+    | '/cidr'
+    | '/color-blind'
+    | '/color-contrast'
+    | '/color-converter'
+    | '/color-extractor'
+    | '/color-harmony'
+    | '/color-mix'
+    | '/color-name'
+    | '/color-palette'
+    | '/color-picker'
+    | '/color-temperature'
+    | '/color-token'
+    | '/columnar-transposition'
+    | '/combinatorics'
+    | '/compound-interest'
+    | '/conventional-commits'
+    | '/cookie-parser'
+    | '/cors-builder'
+    | '/countdown'
+    | '/cron'
+    | '/cron-parser'
+    | '/csp-builder'
+    | '/css-animation'
+    | '/css-background-pattern'
+    | '/css-border-radius'
+    | '/css-box-shadow'
+    | '/css-clamp'
+    | '/css-clip-path'
+    | '/css-container-query'
+    | '/css-cubic-bezier'
+    | '/css-filter'
+    | '/css-flexbox'
+    | '/css-formatter'
+    | '/css-gradient'
+    | '/css-grid'
+    | '/css-logical'
+    | '/css-media-query'
+    | '/css-scroll-snap'
+    | '/css-selector'
+    | '/css-shorthand'
+    | '/css-specificity'
+    | '/css-text-shadow'
+    | '/css-transform'
+    | '/css-unit'
+    | '/css-variables'
+    | '/csv-json'
+    | '/csv-sql'
+    | '/curl-builder'
+    | '/curl-to-fetch'
+    | '/daiji'
+    | '/date-calc'
+    | '/dice-roll'
+    | '/diff'
+    | '/discord-emoji'
+    | '/discord-sticker'
+    | '/dns-lookup'
+    | '/docker-run-to-compose'
+    | '/dockerfile'
+    | '/dummy-audio'
+    | '/dummy-image'
+    | '/duration'
+    | '/editorconfig'
+    | '/email-dns'
+    | '/email-header'
+    | '/emoji-converter'
+    | '/encode-chain'
+    | '/encoding'
+    | '/entropy'
+    | '/env-parser'
+    | '/eslint-config-builder'
+    | '/exif-viewer'
+    | '/fancy-text'
+    | '/favicon-generator'
+    | '/four-square'
+    | '/fraction'
+    | '/function-plotter'
+    | '/game-2048'
+    | '/geohash'
+    | '/geometry'
+    | '/gitattributes'
+    | '/github-actions'
+    | '/github-badge'
+    | '/gitignore'
+    | '/glob-tester'
+    | '/global-ip'
+    | '/graphql'
+    | '/gronsfeld'
+    | '/gzip'
+    | '/hangman'
+    | '/har'
+    | '/hash'
+    | '/haversine'
+    | '/hex-viewer'
+    | '/hmac'
+    | '/htaccess-builder'
+    | '/html-encode'
+    | '/html-formatter'
+    | '/html-markdown'
+    | '/html-playground'
+    | '/html-to-jsx'
+    | '/http-client'
+    | '/http-headers'
+    | '/http-status'
+    | '/iban'
+    | '/ieee754'
+    | '/image-base64'
+    | '/image-compress'
+    | '/image-crop'
+    | '/image-resize'
+    | '/image-to-gif'
+    | '/ini-parser'
+    | '/ip-cidr-check'
+    | '/ip-converter'
+    | '/ip-geolocation'
+    | '/ipv6'
+    | '/isbn'
+    | '/json'
+    | '/json-compare'
+    | '/json-flatten'
+    | '/json-lines'
+    | '/json-merge'
+    | '/json-path'
+    | '/json-pointer'
+    | '/json-schema'
+    | '/json-schema-validator'
+    | '/json-to-graphql'
+    | '/json-to-sql'
+    | '/json-to-ts'
+    | '/json-to-zod'
+    | '/jwt'
+    | '/jwt-generator'
+    | '/kana-convert'
+    | '/keycode'
+    | '/life-game'
+    | '/line-ending'
+    | '/lissajous'
+    | '/loan-calculator'
+    | '/lorem-ipsum'
+    | '/luhn-check'
+    | '/makefile'
+    | '/mandelbrot'
+    | '/markdown-preview'
+    | '/markdown-table'
+    | '/math-eval'
+    | '/matrix'
+    | '/mermaid'
+    | '/mime-types'
+    | '/minesweeper'
+    | '/minify'
+    | '/morse-code'
+    | '/msgpack'
+    | '/nano-id'
+    | '/nato-alphabet'
+    | '/nginx-config'
+    | '/number-base'
+    | '/number-format'
+    | '/number-theory'
+    | '/number-words'
+    | '/ogp'
+    | '/ogp-generator'
+    | '/openssl-builder'
+    | '/package-json'
+    | '/passphrase'
+    | '/password-generator'
+    | '/password-strength'
+    | '/percentage-calculator'
+    | '/phone'
+    | '/php-serialize'
+    | '/pkce'
+    | '/playfair'
+    | '/polybius'
+    | '/pomodoro'
+    | '/port-check'
+    | '/ports'
+    | '/prettier-config-builder'
+    | '/punycode'
+    | '/qr-code'
+    | '/quoted-printable'
+    | '/rail-fence'
+    | '/random-data'
+    | '/random-picker'
+    | '/readability'
+    | '/redirect-tracer'
+    | '/regex-checker'
+    | '/regex-library'
+    | '/robots-txt'
+    | '/roman-numerals'
+    | '/scytale'
+    | '/security-headers'
+    | '/semver'
+    | '/seo-meta'
+    | '/sequences'
+    | '/server-env'
+    | '/short-code'
+    | '/sitemap'
+    | '/slug'
+    | '/snake'
+    | '/sort-visualizer'
+    | '/sql'
+    | '/sql-to-ts'
+    | '/sri-hash'
+    | '/ssh-key'
+    | '/statistics'
+    | '/stopwatch'
+    | '/storage-converter'
+    | '/string-escape'
+    | '/string-similarity'
+    | '/sudoku'
+    | '/svg-optimizer'
+    | '/tailwind-colors'
+    | '/tap-code'
+    | '/tax-calculator'
+    | '/template'
+    | '/tetris'
+    | '/text-binary'
+    | '/text-case'
+    | '/text-encrypt'
+    | '/text-line'
+    | '/text-replace'
+    | '/text-sort'
+    | '/text-stats'
+    | '/tic-tac-toe'
+    | '/timestamp'
+    | '/timezone'
+    | '/token-estimator'
+    | '/toml-formatter'
+    | '/toml-json'
+    | '/top'
+    | '/totp'
+    | '/transfer-speed'
+    | '/transparent-image'
+    | '/trig'
+    | '/truth-table'
+    | '/tsconfig-builder'
+    | '/typing-speed'
+    | '/typography-scale'
+    | '/ulid'
+    | '/unicode'
+    | '/unicode-inspector'
+    | '/unit-converter'
+    | '/url-encode'
+    | '/url-parser'
+    | '/user-agent'
+    | '/utm-builder'
+    | '/uuid'
+    | '/uuid-inspector'
+    | '/video-converter'
+    | '/vigenere'
+    | '/vscode-snippet'
+    | '/wareki'
+    | '/warikan'
+    | '/web-manifest'
+    | '/websocket'
+    | '/whois'
+    | '/word-frequency'
+    | '/wordle'
+    | '/world-clock'
+    | '/xml'
+    | '/xml-json'
+    | '/xpath'
+    | '/yaml-formatter'
+    | '/yaml-json'
+    | '/yaml-toml'
+    | '/zenkaku'
+    | '/zero-width'
+    | '/api/image.jpg'
+    | '/api/image.png'
+    | '/api/image.svg'
+    | '/api/image.webp'
   id:
-    | "__root__"
-    | "/"
-    | "/adfgvx"
-    | "/affine"
-    | "/ansi-color"
-    | "/ascii-art"
-    | "/ascii-table"
-    | "/aspect-ratio"
-    | "/atbash"
-    | "/audio-converter"
-    | "/background-removal"
-    | "/barcode"
-    | "/base16"
-    | "/base32"
-    | "/base36"
-    | "/base58"
-    | "/base62"
-    | "/base64"
-    | "/base64-image"
-    | "/base85"
-    | "/basic-auth"
-    | "/beaufort"
-    | "/bifid"
-    | "/bitwise"
-    | "/bmi-calculator"
-    | "/bpm"
-    | "/braille"
-    | "/brainfuck"
-    | "/bst-visualizer"
-    | "/cache-control"
-    | "/caesar"
-    | "/cert-decoder"
-    | "/char-count"
-    | "/char-frequency"
-    | "/chmod"
-    | "/cidr"
-    | "/color-blind"
-    | "/color-contrast"
-    | "/color-converter"
-    | "/color-extractor"
-    | "/color-harmony"
-    | "/color-mix"
-    | "/color-name"
-    | "/color-palette"
-    | "/color-picker"
-    | "/color-temperature"
-    | "/color-token"
-    | "/columnar-transposition"
-    | "/combinatorics"
-    | "/compound-interest"
-    | "/conventional-commits"
-    | "/cookie-parser"
-    | "/cors-builder"
-    | "/countdown"
-    | "/cron"
-    | "/cron-parser"
-    | "/csp-builder"
-    | "/css-animation"
-    | "/css-background-pattern"
-    | "/css-border-radius"
-    | "/css-box-shadow"
-    | "/css-clamp"
-    | "/css-clip-path"
-    | "/css-container-query"
-    | "/css-cubic-bezier"
-    | "/css-filter"
-    | "/css-flexbox"
-    | "/css-formatter"
-    | "/css-gradient"
-    | "/css-grid"
-    | "/css-logical"
-    | "/css-media-query"
-    | "/css-scroll-snap"
-    | "/css-selector"
-    | "/css-shorthand"
-    | "/css-specificity"
-    | "/css-text-shadow"
-    | "/css-transform"
-    | "/css-unit"
-    | "/css-variables"
-    | "/csv-json"
-    | "/csv-sql"
-    | "/curl-builder"
-    | "/curl-to-fetch"
-    | "/daiji"
-    | "/date-calc"
-    | "/dice-roll"
-    | "/diff"
-    | "/discord-emoji"
-    | "/discord-sticker"
-    | "/dns-lookup"
-    | "/docker-run-to-compose"
-    | "/dockerfile"
-    | "/dummy-audio"
-    | "/dummy-image"
-    | "/duration"
-    | "/editorconfig"
-    | "/email-dns"
-    | "/email-header"
-    | "/emoji-converter"
-    | "/encode-chain"
-    | "/encoding"
-    | "/entropy"
-    | "/env-parser"
-    | "/eslint-config-builder"
-    | "/exif-viewer"
-    | "/fancy-text"
-    | "/favicon-generator"
-    | "/four-square"
-    | "/fraction"
-    | "/function-plotter"
-    | "/game-2048"
-    | "/geohash"
-    | "/geometry"
-    | "/gitattributes"
-    | "/github-actions"
-    | "/github-badge"
-    | "/gitignore"
-    | "/glob-tester"
-    | "/global-ip"
-    | "/graphql"
-    | "/gronsfeld"
-    | "/gzip"
-    | "/hangman"
-    | "/har"
-    | "/hash"
-    | "/haversine"
-    | "/hex-viewer"
-    | "/hmac"
-    | "/htaccess-builder"
-    | "/html-encode"
-    | "/html-formatter"
-    | "/html-markdown"
-    | "/html-playground"
-    | "/html-to-jsx"
-    | "/http-client"
-    | "/http-headers"
-    | "/http-status"
-    | "/iban"
-    | "/ieee754"
-    | "/image-base64"
-    | "/image-compress"
-    | "/image-crop"
-    | "/image-resize"
-    | "/image-to-gif"
-    | "/ini-parser"
-    | "/ip-cidr-check"
-    | "/ip-converter"
-    | "/ip-geolocation"
-    | "/ipv6"
-    | "/isbn"
-    | "/json"
-    | "/json-compare"
-    | "/json-flatten"
-    | "/json-lines"
-    | "/json-merge"
-    | "/json-path"
-    | "/json-pointer"
-    | "/json-schema"
-    | "/json-schema-validator"
-    | "/json-to-graphql"
-    | "/json-to-sql"
-    | "/json-to-ts"
-    | "/json-to-zod"
-    | "/jwt"
-    | "/jwt-generator"
-    | "/kana-convert"
-    | "/keycode"
-    | "/life-game"
-    | "/line-ending"
-    | "/lissajous"
-    | "/loan-calculator"
-    | "/lorem-ipsum"
-    | "/luhn-check"
-    | "/makefile"
-    | "/mandelbrot"
-    | "/markdown-preview"
-    | "/markdown-table"
-    | "/math-eval"
-    | "/matrix"
-    | "/mermaid"
-    | "/mime-types"
-    | "/minesweeper"
-    | "/minify"
-    | "/morse-code"
-    | "/msgpack"
-    | "/nano-id"
-    | "/nato-alphabet"
-    | "/nginx-config"
-    | "/number-base"
-    | "/number-format"
-    | "/number-theory"
-    | "/number-words"
-    | "/ogp"
-    | "/ogp-generator"
-    | "/openssl-builder"
-    | "/package-json"
-    | "/passphrase"
-    | "/password-generator"
-    | "/password-strength"
-    | "/percentage-calculator"
-    | "/phone"
-    | "/php-serialize"
-    | "/pkce"
-    | "/playfair"
-    | "/polybius"
-    | "/pomodoro"
-    | "/port-check"
-    | "/ports"
-    | "/prettier-config-builder"
-    | "/punycode"
-    | "/qr-code"
-    | "/quoted-printable"
-    | "/rail-fence"
-    | "/random-data"
-    | "/random-picker"
-    | "/readability"
-    | "/redirect-tracer"
-    | "/regex-checker"
-    | "/regex-library"
-    | "/robots-txt"
-    | "/roman-numerals"
-    | "/scytale"
-    | "/security-headers"
-    | "/semver"
-    | "/seo-meta"
-    | "/sequences"
-    | "/server-env"
-    | "/short-code"
-    | "/sitemap"
-    | "/slug"
-    | "/snake"
-    | "/sort-visualizer"
-    | "/sql"
-    | "/sql-to-ts"
-    | "/sri-hash"
-    | "/ssh-key"
-    | "/statistics"
-    | "/stopwatch"
-    | "/storage-converter"
-    | "/string-escape"
-    | "/string-similarity"
-    | "/sudoku"
-    | "/svg-optimizer"
-    | "/tailwind-colors"
-    | "/tap-code"
-    | "/tax-calculator"
-    | "/template"
-    | "/tetris"
-    | "/text-binary"
-    | "/text-case"
-    | "/text-encrypt"
-    | "/text-line"
-    | "/text-replace"
-    | "/text-sort"
-    | "/text-stats"
-    | "/tic-tac-toe"
-    | "/timestamp"
-    | "/timezone"
-    | "/token-estimator"
-    | "/toml-formatter"
-    | "/toml-json"
-    | "/top"
-    | "/totp"
-    | "/transfer-speed"
-    | "/transparent-image"
-    | "/trig"
-    | "/truth-table"
-    | "/tsconfig-builder"
-    | "/typing-speed"
-    | "/typography-scale"
-    | "/ulid"
-    | "/unicode"
-    | "/unicode-inspector"
-    | "/unit-converter"
-    | "/url-encode"
-    | "/url-parser"
-    | "/user-agent"
-    | "/utm-builder"
-    | "/uuid"
-    | "/uuid-inspector"
-    | "/video-converter"
-    | "/vigenere"
-    | "/vscode-snippet"
-    | "/wareki"
-    | "/warikan"
-    | "/web-manifest"
-    | "/websocket"
-    | "/whois"
-    | "/word-frequency"
-    | "/wordle"
-    | "/world-clock"
-    | "/xml"
-    | "/xml-json"
-    | "/xpath"
-    | "/yaml-formatter"
-    | "/yaml-json"
-    | "/yaml-toml"
-    | "/zenkaku"
-    | "/zero-width"
-    | "/api/image.jpg"
-    | "/api/image.png"
-    | "/api/image.svg"
-    | "/api/image.webp";
-  fileRoutesById: FileRoutesById;
+    | '__root__'
+    | '/'
+    | '/adfgvx'
+    | '/affine'
+    | '/ansi-color'
+    | '/ascii-art'
+    | '/ascii-table'
+    | '/aspect-ratio'
+    | '/atbash'
+    | '/audio-converter'
+    | '/background-removal'
+    | '/barcode'
+    | '/base16'
+    | '/base32'
+    | '/base36'
+    | '/base58'
+    | '/base62'
+    | '/base64'
+    | '/base64-image'
+    | '/base85'
+    | '/basic-auth'
+    | '/beaufort'
+    | '/bifid'
+    | '/bitwise'
+    | '/bmi-calculator'
+    | '/bpm'
+    | '/braille'
+    | '/brainfuck'
+    | '/bst-visualizer'
+    | '/cache-control'
+    | '/caesar'
+    | '/cert-decoder'
+    | '/char-count'
+    | '/char-frequency'
+    | '/chmod'
+    | '/cidr'
+    | '/color-blind'
+    | '/color-contrast'
+    | '/color-converter'
+    | '/color-extractor'
+    | '/color-harmony'
+    | '/color-mix'
+    | '/color-name'
+    | '/color-palette'
+    | '/color-picker'
+    | '/color-temperature'
+    | '/color-token'
+    | '/columnar-transposition'
+    | '/combinatorics'
+    | '/compound-interest'
+    | '/conventional-commits'
+    | '/cookie-parser'
+    | '/cors-builder'
+    | '/countdown'
+    | '/cron'
+    | '/cron-parser'
+    | '/csp-builder'
+    | '/css-animation'
+    | '/css-background-pattern'
+    | '/css-border-radius'
+    | '/css-box-shadow'
+    | '/css-clamp'
+    | '/css-clip-path'
+    | '/css-container-query'
+    | '/css-cubic-bezier'
+    | '/css-filter'
+    | '/css-flexbox'
+    | '/css-formatter'
+    | '/css-gradient'
+    | '/css-grid'
+    | '/css-logical'
+    | '/css-media-query'
+    | '/css-scroll-snap'
+    | '/css-selector'
+    | '/css-shorthand'
+    | '/css-specificity'
+    | '/css-text-shadow'
+    | '/css-transform'
+    | '/css-unit'
+    | '/css-variables'
+    | '/csv-json'
+    | '/csv-sql'
+    | '/curl-builder'
+    | '/curl-to-fetch'
+    | '/daiji'
+    | '/date-calc'
+    | '/dice-roll'
+    | '/diff'
+    | '/discord-emoji'
+    | '/discord-sticker'
+    | '/dns-lookup'
+    | '/docker-run-to-compose'
+    | '/dockerfile'
+    | '/dummy-audio'
+    | '/dummy-image'
+    | '/duration'
+    | '/editorconfig'
+    | '/email-dns'
+    | '/email-header'
+    | '/emoji-converter'
+    | '/encode-chain'
+    | '/encoding'
+    | '/entropy'
+    | '/env-parser'
+    | '/eslint-config-builder'
+    | '/exif-viewer'
+    | '/fancy-text'
+    | '/favicon-generator'
+    | '/four-square'
+    | '/fraction'
+    | '/function-plotter'
+    | '/game-2048'
+    | '/geohash'
+    | '/geometry'
+    | '/gitattributes'
+    | '/github-actions'
+    | '/github-badge'
+    | '/gitignore'
+    | '/glob-tester'
+    | '/global-ip'
+    | '/graphql'
+    | '/gronsfeld'
+    | '/gzip'
+    | '/hangman'
+    | '/har'
+    | '/hash'
+    | '/haversine'
+    | '/hex-viewer'
+    | '/hmac'
+    | '/htaccess-builder'
+    | '/html-encode'
+    | '/html-formatter'
+    | '/html-markdown'
+    | '/html-playground'
+    | '/html-to-jsx'
+    | '/http-client'
+    | '/http-headers'
+    | '/http-status'
+    | '/iban'
+    | '/ieee754'
+    | '/image-base64'
+    | '/image-compress'
+    | '/image-crop'
+    | '/image-resize'
+    | '/image-to-gif'
+    | '/ini-parser'
+    | '/ip-cidr-check'
+    | '/ip-converter'
+    | '/ip-geolocation'
+    | '/ipv6'
+    | '/isbn'
+    | '/json'
+    | '/json-compare'
+    | '/json-flatten'
+    | '/json-lines'
+    | '/json-merge'
+    | '/json-path'
+    | '/json-pointer'
+    | '/json-schema'
+    | '/json-schema-validator'
+    | '/json-to-graphql'
+    | '/json-to-sql'
+    | '/json-to-ts'
+    | '/json-to-zod'
+    | '/jwt'
+    | '/jwt-generator'
+    | '/kana-convert'
+    | '/keycode'
+    | '/life-game'
+    | '/line-ending'
+    | '/lissajous'
+    | '/loan-calculator'
+    | '/lorem-ipsum'
+    | '/luhn-check'
+    | '/makefile'
+    | '/mandelbrot'
+    | '/markdown-preview'
+    | '/markdown-table'
+    | '/math-eval'
+    | '/matrix'
+    | '/mermaid'
+    | '/mime-types'
+    | '/minesweeper'
+    | '/minify'
+    | '/morse-code'
+    | '/msgpack'
+    | '/nano-id'
+    | '/nato-alphabet'
+    | '/nginx-config'
+    | '/number-base'
+    | '/number-format'
+    | '/number-theory'
+    | '/number-words'
+    | '/ogp'
+    | '/ogp-generator'
+    | '/openssl-builder'
+    | '/package-json'
+    | '/passphrase'
+    | '/password-generator'
+    | '/password-strength'
+    | '/percentage-calculator'
+    | '/phone'
+    | '/php-serialize'
+    | '/pkce'
+    | '/playfair'
+    | '/polybius'
+    | '/pomodoro'
+    | '/port-check'
+    | '/ports'
+    | '/prettier-config-builder'
+    | '/punycode'
+    | '/qr-code'
+    | '/quoted-printable'
+    | '/rail-fence'
+    | '/random-data'
+    | '/random-picker'
+    | '/readability'
+    | '/redirect-tracer'
+    | '/regex-checker'
+    | '/regex-library'
+    | '/robots-txt'
+    | '/roman-numerals'
+    | '/scytale'
+    | '/security-headers'
+    | '/semver'
+    | '/seo-meta'
+    | '/sequences'
+    | '/server-env'
+    | '/short-code'
+    | '/sitemap'
+    | '/slug'
+    | '/snake'
+    | '/sort-visualizer'
+    | '/sql'
+    | '/sql-to-ts'
+    | '/sri-hash'
+    | '/ssh-key'
+    | '/statistics'
+    | '/stopwatch'
+    | '/storage-converter'
+    | '/string-escape'
+    | '/string-similarity'
+    | '/sudoku'
+    | '/svg-optimizer'
+    | '/tailwind-colors'
+    | '/tap-code'
+    | '/tax-calculator'
+    | '/template'
+    | '/tetris'
+    | '/text-binary'
+    | '/text-case'
+    | '/text-encrypt'
+    | '/text-line'
+    | '/text-replace'
+    | '/text-sort'
+    | '/text-stats'
+    | '/tic-tac-toe'
+    | '/timestamp'
+    | '/timezone'
+    | '/token-estimator'
+    | '/toml-formatter'
+    | '/toml-json'
+    | '/top'
+    | '/totp'
+    | '/transfer-speed'
+    | '/transparent-image'
+    | '/trig'
+    | '/truth-table'
+    | '/tsconfig-builder'
+    | '/typing-speed'
+    | '/typography-scale'
+    | '/ulid'
+    | '/unicode'
+    | '/unicode-inspector'
+    | '/unit-converter'
+    | '/url-encode'
+    | '/url-parser'
+    | '/user-agent'
+    | '/utm-builder'
+    | '/uuid'
+    | '/uuid-inspector'
+    | '/video-converter'
+    | '/vigenere'
+    | '/vscode-snippet'
+    | '/wareki'
+    | '/warikan'
+    | '/web-manifest'
+    | '/websocket'
+    | '/whois'
+    | '/word-frequency'
+    | '/wordle'
+    | '/world-clock'
+    | '/xml'
+    | '/xml-json'
+    | '/xpath'
+    | '/yaml-formatter'
+    | '/yaml-json'
+    | '/yaml-toml'
+    | '/zenkaku'
+    | '/zero-width'
+    | '/api/image.jpg'
+    | '/api/image.png'
+    | '/api/image.svg'
+    | '/api/image.webp'
+  fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute;
-  AdfgvxRoute: typeof AdfgvxRoute;
-  AffineRoute: typeof AffineRoute;
-  AnsiColorRoute: typeof AnsiColorRoute;
-  AsciiArtRoute: typeof AsciiArtRoute;
-  AsciiTableRoute: typeof AsciiTableRoute;
-  AspectRatioRoute: typeof AspectRatioRoute;
-  AtbashRoute: typeof AtbashRoute;
-  AudioConverterRoute: typeof AudioConverterRoute;
-  BackgroundRemovalRoute: typeof BackgroundRemovalRoute;
-  BarcodeRoute: typeof BarcodeRoute;
-  Base16Route: typeof Base16Route;
-  Base32Route: typeof Base32Route;
-  Base36Route: typeof Base36Route;
-  Base58Route: typeof Base58Route;
-  Base62Route: typeof Base62Route;
-  Base64Route: typeof Base64Route;
-  Base64ImageRoute: typeof Base64ImageRoute;
-  Base85Route: typeof Base85Route;
-  BasicAuthRoute: typeof BasicAuthRoute;
-  BeaufortRoute: typeof BeaufortRoute;
-  BifidRoute: typeof BifidRoute;
-  BitwiseRoute: typeof BitwiseRoute;
-  BmiCalculatorRoute: typeof BmiCalculatorRoute;
-  BpmRoute: typeof BpmRoute;
-  BrailleRoute: typeof BrailleRoute;
-  BrainfuckRoute: typeof BrainfuckRoute;
-  BstVisualizerRoute: typeof BstVisualizerRoute;
-  CacheControlRoute: typeof CacheControlRoute;
-  CaesarRoute: typeof CaesarRoute;
-  CertDecoderRoute: typeof CertDecoderRoute;
-  CharCountRoute: typeof CharCountRoute;
-  CharFrequencyRoute: typeof CharFrequencyRoute;
-  ChmodRoute: typeof ChmodRoute;
-  CidrRoute: typeof CidrRoute;
-  ColorBlindRoute: typeof ColorBlindRoute;
-  ColorContrastRoute: typeof ColorContrastRoute;
-  ColorConverterRoute: typeof ColorConverterRoute;
-  ColorExtractorRoute: typeof ColorExtractorRoute;
-  ColorHarmonyRoute: typeof ColorHarmonyRoute;
-  ColorMixRoute: typeof ColorMixRoute;
-  ColorNameRoute: typeof ColorNameRoute;
-  ColorPaletteRoute: typeof ColorPaletteRoute;
-  ColorPickerRoute: typeof ColorPickerRoute;
-  ColorTemperatureRoute: typeof ColorTemperatureRoute;
-  ColorTokenRoute: typeof ColorTokenRoute;
-  ColumnarTranspositionRoute: typeof ColumnarTranspositionRoute;
-  CombinatoricsRoute: typeof CombinatoricsRoute;
-  CompoundInterestRoute: typeof CompoundInterestRoute;
-  ConventionalCommitsRoute: typeof ConventionalCommitsRoute;
-  CookieParserRoute: typeof CookieParserRoute;
-  CorsBuilderRoute: typeof CorsBuilderRoute;
-  CountdownRoute: typeof CountdownRoute;
-  CronRoute: typeof CronRoute;
-  CronParserRoute: typeof CronParserRoute;
-  CspBuilderRoute: typeof CspBuilderRoute;
-  CssAnimationRoute: typeof CssAnimationRoute;
-  CssBackgroundPatternRoute: typeof CssBackgroundPatternRoute;
-  CssBorderRadiusRoute: typeof CssBorderRadiusRoute;
-  CssBoxShadowRoute: typeof CssBoxShadowRoute;
-  CssClampRoute: typeof CssClampRoute;
-  CssClipPathRoute: typeof CssClipPathRoute;
-  CssContainerQueryRoute: typeof CssContainerQueryRoute;
-  CssCubicBezierRoute: typeof CssCubicBezierRoute;
-  CssFilterRoute: typeof CssFilterRoute;
-  CssFlexboxRoute: typeof CssFlexboxRoute;
-  CssFormatterRoute: typeof CssFormatterRoute;
-  CssGradientRoute: typeof CssGradientRoute;
-  CssGridRoute: typeof CssGridRoute;
-  CssLogicalRoute: typeof CssLogicalRoute;
-  CssMediaQueryRoute: typeof CssMediaQueryRoute;
-  CssScrollSnapRoute: typeof CssScrollSnapRoute;
-  CssSelectorRoute: typeof CssSelectorRoute;
-  CssShorthandRoute: typeof CssShorthandRoute;
-  CssSpecificityRoute: typeof CssSpecificityRoute;
-  CssTextShadowRoute: typeof CssTextShadowRoute;
-  CssTransformRoute: typeof CssTransformRoute;
-  CssUnitRoute: typeof CssUnitRoute;
-  CssVariablesRoute: typeof CssVariablesRoute;
-  CsvJsonRoute: typeof CsvJsonRoute;
-  CsvSqlRoute: typeof CsvSqlRoute;
-  CurlBuilderRoute: typeof CurlBuilderRoute;
-  CurlToFetchRoute: typeof CurlToFetchRoute;
-  DaijiRoute: typeof DaijiRoute;
-  DateCalcRoute: typeof DateCalcRoute;
-  DiceRollRoute: typeof DiceRollRoute;
-  DiffRoute: typeof DiffRoute;
-  DiscordEmojiRoute: typeof DiscordEmojiRoute;
-  DiscordStickerRoute: typeof DiscordStickerRoute;
-  DnsLookupRoute: typeof DnsLookupRoute;
-  DockerRunToComposeRoute: typeof DockerRunToComposeRoute;
-  DockerfileRoute: typeof DockerfileRoute;
-  DummyAudioRoute: typeof DummyAudioRoute;
-  DummyImageRoute: typeof DummyImageRoute;
-  DurationRoute: typeof DurationRoute;
-  EditorconfigRoute: typeof EditorconfigRoute;
-  EmailDnsRoute: typeof EmailDnsRoute;
-  EmailHeaderRoute: typeof EmailHeaderRoute;
-  EmojiConverterRoute: typeof EmojiConverterRoute;
-  EncodeChainRoute: typeof EncodeChainRoute;
-  EncodingRoute: typeof EncodingRoute;
-  EntropyRoute: typeof EntropyRoute;
-  EnvParserRoute: typeof EnvParserRoute;
-  EslintConfigBuilderRoute: typeof EslintConfigBuilderRoute;
-  ExifViewerRoute: typeof ExifViewerRoute;
-  FancyTextRoute: typeof FancyTextRoute;
-  FaviconGeneratorRoute: typeof FaviconGeneratorRoute;
-  FourSquareRoute: typeof FourSquareRoute;
-  FractionRoute: typeof FractionRoute;
-  FunctionPlotterRoute: typeof FunctionPlotterRoute;
-  Game2048Route: typeof Game2048Route;
-  GeohashRoute: typeof GeohashRoute;
-  GeometryRoute: typeof GeometryRoute;
-  GitattributesRoute: typeof GitattributesRoute;
-  GithubActionsRoute: typeof GithubActionsRoute;
-  GithubBadgeRoute: typeof GithubBadgeRoute;
-  GitignoreRoute: typeof GitignoreRoute;
-  GlobTesterRoute: typeof GlobTesterRoute;
-  GlobalIpRoute: typeof GlobalIpRoute;
-  GraphqlRoute: typeof GraphqlRoute;
-  GronsfeldRoute: typeof GronsfeldRoute;
-  GzipRoute: typeof GzipRoute;
-  HangmanRoute: typeof HangmanRoute;
-  HarRoute: typeof HarRoute;
-  HashRoute: typeof HashRoute;
-  HaversineRoute: typeof HaversineRoute;
-  HexViewerRoute: typeof HexViewerRoute;
-  HmacRoute: typeof HmacRoute;
-  HtaccessBuilderRoute: typeof HtaccessBuilderRoute;
-  HtmlEncodeRoute: typeof HtmlEncodeRoute;
-  HtmlFormatterRoute: typeof HtmlFormatterRoute;
-  HtmlMarkdownRoute: typeof HtmlMarkdownRoute;
-  HtmlPlaygroundRoute: typeof HtmlPlaygroundRoute;
-  HtmlToJsxRoute: typeof HtmlToJsxRoute;
-  HttpClientRoute: typeof HttpClientRoute;
-  HttpHeadersRoute: typeof HttpHeadersRoute;
-  HttpStatusRoute: typeof HttpStatusRoute;
-  IbanRoute: typeof IbanRoute;
-  Ieee754Route: typeof Ieee754Route;
-  ImageBase64Route: typeof ImageBase64Route;
-  ImageCompressRoute: typeof ImageCompressRoute;
-  ImageCropRoute: typeof ImageCropRoute;
-  ImageResizeRoute: typeof ImageResizeRoute;
-  ImageToGifRoute: typeof ImageToGifRoute;
-  IniParserRoute: typeof IniParserRoute;
-  IpCidrCheckRoute: typeof IpCidrCheckRoute;
-  IpConverterRoute: typeof IpConverterRoute;
-  IpGeolocationRoute: typeof IpGeolocationRoute;
-  Ipv6Route: typeof Ipv6Route;
-  IsbnRoute: typeof IsbnRoute;
-  JsonRoute: typeof JsonRoute;
-  JsonCompareRoute: typeof JsonCompareRoute;
-  JsonFlattenRoute: typeof JsonFlattenRoute;
-  JsonLinesRoute: typeof JsonLinesRoute;
-  JsonMergeRoute: typeof JsonMergeRoute;
-  JsonPathRoute: typeof JsonPathRoute;
-  JsonPointerRoute: typeof JsonPointerRoute;
-  JsonSchemaRoute: typeof JsonSchemaRoute;
-  JsonSchemaValidatorRoute: typeof JsonSchemaValidatorRoute;
-  JsonToGraphqlRoute: typeof JsonToGraphqlRoute;
-  JsonToSqlRoute: typeof JsonToSqlRoute;
-  JsonToTsRoute: typeof JsonToTsRoute;
-  JsonToZodRoute: typeof JsonToZodRoute;
-  JwtRoute: typeof JwtRoute;
-  JwtGeneratorRoute: typeof JwtGeneratorRoute;
-  KanaConvertRoute: typeof KanaConvertRoute;
-  KeycodeRoute: typeof KeycodeRoute;
-  LifeGameRoute: typeof LifeGameRoute;
-  LineEndingRoute: typeof LineEndingRoute;
-  LissajousRoute: typeof LissajousRoute;
-  LoanCalculatorRoute: typeof LoanCalculatorRoute;
-  LoremIpsumRoute: typeof LoremIpsumRoute;
-  LuhnCheckRoute: typeof LuhnCheckRoute;
-  MakefileRoute: typeof MakefileRoute;
-  MandelbrotRoute: typeof MandelbrotRoute;
-  MarkdownPreviewRoute: typeof MarkdownPreviewRoute;
-  MarkdownTableRoute: typeof MarkdownTableRoute;
-  MathEvalRoute: typeof MathEvalRoute;
-  MatrixRoute: typeof MatrixRoute;
-  MermaidRoute: typeof MermaidRoute;
-  MimeTypesRoute: typeof MimeTypesRoute;
-  MinesweeperRoute: typeof MinesweeperRoute;
-  MinifyRoute: typeof MinifyRoute;
-  MorseCodeRoute: typeof MorseCodeRoute;
-  MsgpackRoute: typeof MsgpackRoute;
-  NanoIdRoute: typeof NanoIdRoute;
-  NatoAlphabetRoute: typeof NatoAlphabetRoute;
-  NginxConfigRoute: typeof NginxConfigRoute;
-  NumberBaseRoute: typeof NumberBaseRoute;
-  NumberFormatRoute: typeof NumberFormatRoute;
-  NumberTheoryRoute: typeof NumberTheoryRoute;
-  NumberWordsRoute: typeof NumberWordsRoute;
-  OgpRoute: typeof OgpRoute;
-  OgpGeneratorRoute: typeof OgpGeneratorRoute;
-  OpensslBuilderRoute: typeof OpensslBuilderRoute;
-  PackageJsonRoute: typeof PackageJsonRoute;
-  PassphraseRoute: typeof PassphraseRoute;
-  PasswordGeneratorRoute: typeof PasswordGeneratorRoute;
-  PasswordStrengthRoute: typeof PasswordStrengthRoute;
-  PercentageCalculatorRoute: typeof PercentageCalculatorRoute;
-  PhoneRoute: typeof PhoneRoute;
-  PhpSerializeRoute: typeof PhpSerializeRoute;
-  PkceRoute: typeof PkceRoute;
-  PlayfairRoute: typeof PlayfairRoute;
-  PolybiusRoute: typeof PolybiusRoute;
-  PomodoroRoute: typeof PomodoroRoute;
-  PortCheckRoute: typeof PortCheckRoute;
-  PortsRoute: typeof PortsRoute;
-  PrettierConfigBuilderRoute: typeof PrettierConfigBuilderRoute;
-  PunycodeRoute: typeof PunycodeRoute;
-  QrCodeRoute: typeof QrCodeRoute;
-  QuotedPrintableRoute: typeof QuotedPrintableRoute;
-  RailFenceRoute: typeof RailFenceRoute;
-  RandomDataRoute: typeof RandomDataRoute;
-  RandomPickerRoute: typeof RandomPickerRoute;
-  ReadabilityRoute: typeof ReadabilityRoute;
-  RedirectTracerRoute: typeof RedirectTracerRoute;
-  RegexCheckerRoute: typeof RegexCheckerRoute;
-  RegexLibraryRoute: typeof RegexLibraryRoute;
-  RobotsTxtRoute: typeof RobotsTxtRoute;
-  RomanNumeralsRoute: typeof RomanNumeralsRoute;
-  ScytaleRoute: typeof ScytaleRoute;
-  SecurityHeadersRoute: typeof SecurityHeadersRoute;
-  SemverRoute: typeof SemverRoute;
-  SeoMetaRoute: typeof SeoMetaRoute;
-  SequencesRoute: typeof SequencesRoute;
-  ServerEnvRoute: typeof ServerEnvRoute;
-  ShortCodeRoute: typeof ShortCodeRoute;
-  SitemapRoute: typeof SitemapRoute;
-  SlugRoute: typeof SlugRoute;
-  SnakeRoute: typeof SnakeRoute;
-  SortVisualizerRoute: typeof SortVisualizerRoute;
-  SqlRoute: typeof SqlRoute;
-  SqlToTsRoute: typeof SqlToTsRoute;
-  SriHashRoute: typeof SriHashRoute;
-  SshKeyRoute: typeof SshKeyRoute;
-  StatisticsRoute: typeof StatisticsRoute;
-  StopwatchRoute: typeof StopwatchRoute;
-  StorageConverterRoute: typeof StorageConverterRoute;
-  StringEscapeRoute: typeof StringEscapeRoute;
-  StringSimilarityRoute: typeof StringSimilarityRoute;
-  SudokuRoute: typeof SudokuRoute;
-  SvgOptimizerRoute: typeof SvgOptimizerRoute;
-  TailwindColorsRoute: typeof TailwindColorsRoute;
-  TapCodeRoute: typeof TapCodeRoute;
-  TaxCalculatorRoute: typeof TaxCalculatorRoute;
-  TemplateRoute: typeof TemplateRoute;
-  TetrisRoute: typeof TetrisRoute;
-  TextBinaryRoute: typeof TextBinaryRoute;
-  TextCaseRoute: typeof TextCaseRoute;
-  TextEncryptRoute: typeof TextEncryptRoute;
-  TextLineRoute: typeof TextLineRoute;
-  TextReplaceRoute: typeof TextReplaceRoute;
-  TextSortRoute: typeof TextSortRoute;
-  TextStatsRoute: typeof TextStatsRoute;
-  TicTacToeRoute: typeof TicTacToeRoute;
-  TimestampRoute: typeof TimestampRoute;
-  TimezoneRoute: typeof TimezoneRoute;
-  TokenEstimatorRoute: typeof TokenEstimatorRoute;
-  TomlFormatterRoute: typeof TomlFormatterRoute;
-  TomlJsonRoute: typeof TomlJsonRoute;
-  TopRoute: typeof TopRoute;
-  TotpRoute: typeof TotpRoute;
-  TransferSpeedRoute: typeof TransferSpeedRoute;
-  TransparentImageRoute: typeof TransparentImageRoute;
-  TrigRoute: typeof TrigRoute;
-  TruthTableRoute: typeof TruthTableRoute;
-  TsconfigBuilderRoute: typeof TsconfigBuilderRoute;
-  TypingSpeedRoute: typeof TypingSpeedRoute;
-  TypographyScaleRoute: typeof TypographyScaleRoute;
-  UlidRoute: typeof UlidRoute;
-  UnicodeRoute: typeof UnicodeRoute;
-  UnicodeInspectorRoute: typeof UnicodeInspectorRoute;
-  UnitConverterRoute: typeof UnitConverterRoute;
-  UrlEncodeRoute: typeof UrlEncodeRoute;
-  UrlParserRoute: typeof UrlParserRoute;
-  UserAgentRoute: typeof UserAgentRoute;
-  UtmBuilderRoute: typeof UtmBuilderRoute;
-  UuidRoute: typeof UuidRoute;
-  UuidInspectorRoute: typeof UuidInspectorRoute;
-  VideoConverterRoute: typeof VideoConverterRoute;
-  VigenereRoute: typeof VigenereRoute;
-  VscodeSnippetRoute: typeof VscodeSnippetRoute;
-  WarekiRoute: typeof WarekiRoute;
-  WarikanRoute: typeof WarikanRoute;
-  WebManifestRoute: typeof WebManifestRoute;
-  WebsocketRoute: typeof WebsocketRoute;
-  WhoisRoute: typeof WhoisRoute;
-  WordFrequencyRoute: typeof WordFrequencyRoute;
-  WordleRoute: typeof WordleRoute;
-  WorldClockRoute: typeof WorldClockRoute;
-  XmlRoute: typeof XmlRoute;
-  XmlJsonRoute: typeof XmlJsonRoute;
-  XpathRoute: typeof XpathRoute;
-  YamlFormatterRoute: typeof YamlFormatterRoute;
-  YamlJsonRoute: typeof YamlJsonRoute;
-  YamlTomlRoute: typeof YamlTomlRoute;
-  ZenkakuRoute: typeof ZenkakuRoute;
-  ZeroWidthRoute: typeof ZeroWidthRoute;
-  ApiImageDotjpgRoute: typeof ApiImageDotjpgRoute;
-  ApiImageDotpngRoute: typeof ApiImageDotpngRoute;
-  ApiImageDotsvgRoute: typeof ApiImageDotsvgRoute;
-  ApiImageDotwebpRoute: typeof ApiImageDotwebpRoute;
+  IndexRoute: typeof IndexRoute
+  AdfgvxRoute: typeof AdfgvxRoute
+  AffineRoute: typeof AffineRoute
+  AnsiColorRoute: typeof AnsiColorRoute
+  AsciiArtRoute: typeof AsciiArtRoute
+  AsciiTableRoute: typeof AsciiTableRoute
+  AspectRatioRoute: typeof AspectRatioRoute
+  AtbashRoute: typeof AtbashRoute
+  AudioConverterRoute: typeof AudioConverterRoute
+  BackgroundRemovalRoute: typeof BackgroundRemovalRoute
+  BarcodeRoute: typeof BarcodeRoute
+  Base16Route: typeof Base16Route
+  Base32Route: typeof Base32Route
+  Base36Route: typeof Base36Route
+  Base58Route: typeof Base58Route
+  Base62Route: typeof Base62Route
+  Base64Route: typeof Base64Route
+  Base64ImageRoute: typeof Base64ImageRoute
+  Base85Route: typeof Base85Route
+  BasicAuthRoute: typeof BasicAuthRoute
+  BeaufortRoute: typeof BeaufortRoute
+  BifidRoute: typeof BifidRoute
+  BitwiseRoute: typeof BitwiseRoute
+  BmiCalculatorRoute: typeof BmiCalculatorRoute
+  BpmRoute: typeof BpmRoute
+  BrailleRoute: typeof BrailleRoute
+  BrainfuckRoute: typeof BrainfuckRoute
+  BstVisualizerRoute: typeof BstVisualizerRoute
+  CacheControlRoute: typeof CacheControlRoute
+  CaesarRoute: typeof CaesarRoute
+  CertDecoderRoute: typeof CertDecoderRoute
+  CharCountRoute: typeof CharCountRoute
+  CharFrequencyRoute: typeof CharFrequencyRoute
+  ChmodRoute: typeof ChmodRoute
+  CidrRoute: typeof CidrRoute
+  ColorBlindRoute: typeof ColorBlindRoute
+  ColorContrastRoute: typeof ColorContrastRoute
+  ColorConverterRoute: typeof ColorConverterRoute
+  ColorExtractorRoute: typeof ColorExtractorRoute
+  ColorHarmonyRoute: typeof ColorHarmonyRoute
+  ColorMixRoute: typeof ColorMixRoute
+  ColorNameRoute: typeof ColorNameRoute
+  ColorPaletteRoute: typeof ColorPaletteRoute
+  ColorPickerRoute: typeof ColorPickerRoute
+  ColorTemperatureRoute: typeof ColorTemperatureRoute
+  ColorTokenRoute: typeof ColorTokenRoute
+  ColumnarTranspositionRoute: typeof ColumnarTranspositionRoute
+  CombinatoricsRoute: typeof CombinatoricsRoute
+  CompoundInterestRoute: typeof CompoundInterestRoute
+  ConventionalCommitsRoute: typeof ConventionalCommitsRoute
+  CookieParserRoute: typeof CookieParserRoute
+  CorsBuilderRoute: typeof CorsBuilderRoute
+  CountdownRoute: typeof CountdownRoute
+  CronRoute: typeof CronRoute
+  CronParserRoute: typeof CronParserRoute
+  CspBuilderRoute: typeof CspBuilderRoute
+  CssAnimationRoute: typeof CssAnimationRoute
+  CssBackgroundPatternRoute: typeof CssBackgroundPatternRoute
+  CssBorderRadiusRoute: typeof CssBorderRadiusRoute
+  CssBoxShadowRoute: typeof CssBoxShadowRoute
+  CssClampRoute: typeof CssClampRoute
+  CssClipPathRoute: typeof CssClipPathRoute
+  CssContainerQueryRoute: typeof CssContainerQueryRoute
+  CssCubicBezierRoute: typeof CssCubicBezierRoute
+  CssFilterRoute: typeof CssFilterRoute
+  CssFlexboxRoute: typeof CssFlexboxRoute
+  CssFormatterRoute: typeof CssFormatterRoute
+  CssGradientRoute: typeof CssGradientRoute
+  CssGridRoute: typeof CssGridRoute
+  CssLogicalRoute: typeof CssLogicalRoute
+  CssMediaQueryRoute: typeof CssMediaQueryRoute
+  CssScrollSnapRoute: typeof CssScrollSnapRoute
+  CssSelectorRoute: typeof CssSelectorRoute
+  CssShorthandRoute: typeof CssShorthandRoute
+  CssSpecificityRoute: typeof CssSpecificityRoute
+  CssTextShadowRoute: typeof CssTextShadowRoute
+  CssTransformRoute: typeof CssTransformRoute
+  CssUnitRoute: typeof CssUnitRoute
+  CssVariablesRoute: typeof CssVariablesRoute
+  CsvJsonRoute: typeof CsvJsonRoute
+  CsvSqlRoute: typeof CsvSqlRoute
+  CurlBuilderRoute: typeof CurlBuilderRoute
+  CurlToFetchRoute: typeof CurlToFetchRoute
+  DaijiRoute: typeof DaijiRoute
+  DateCalcRoute: typeof DateCalcRoute
+  DiceRollRoute: typeof DiceRollRoute
+  DiffRoute: typeof DiffRoute
+  DiscordEmojiRoute: typeof DiscordEmojiRoute
+  DiscordStickerRoute: typeof DiscordStickerRoute
+  DnsLookupRoute: typeof DnsLookupRoute
+  DockerRunToComposeRoute: typeof DockerRunToComposeRoute
+  DockerfileRoute: typeof DockerfileRoute
+  DummyAudioRoute: typeof DummyAudioRoute
+  DummyImageRoute: typeof DummyImageRoute
+  DurationRoute: typeof DurationRoute
+  EditorconfigRoute: typeof EditorconfigRoute
+  EmailDnsRoute: typeof EmailDnsRoute
+  EmailHeaderRoute: typeof EmailHeaderRoute
+  EmojiConverterRoute: typeof EmojiConverterRoute
+  EncodeChainRoute: typeof EncodeChainRoute
+  EncodingRoute: typeof EncodingRoute
+  EntropyRoute: typeof EntropyRoute
+  EnvParserRoute: typeof EnvParserRoute
+  EslintConfigBuilderRoute: typeof EslintConfigBuilderRoute
+  ExifViewerRoute: typeof ExifViewerRoute
+  FancyTextRoute: typeof FancyTextRoute
+  FaviconGeneratorRoute: typeof FaviconGeneratorRoute
+  FourSquareRoute: typeof FourSquareRoute
+  FractionRoute: typeof FractionRoute
+  FunctionPlotterRoute: typeof FunctionPlotterRoute
+  Game2048Route: typeof Game2048Route
+  GeohashRoute: typeof GeohashRoute
+  GeometryRoute: typeof GeometryRoute
+  GitattributesRoute: typeof GitattributesRoute
+  GithubActionsRoute: typeof GithubActionsRoute
+  GithubBadgeRoute: typeof GithubBadgeRoute
+  GitignoreRoute: typeof GitignoreRoute
+  GlobTesterRoute: typeof GlobTesterRoute
+  GlobalIpRoute: typeof GlobalIpRoute
+  GraphqlRoute: typeof GraphqlRoute
+  GronsfeldRoute: typeof GronsfeldRoute
+  GzipRoute: typeof GzipRoute
+  HangmanRoute: typeof HangmanRoute
+  HarRoute: typeof HarRoute
+  HashRoute: typeof HashRoute
+  HaversineRoute: typeof HaversineRoute
+  HexViewerRoute: typeof HexViewerRoute
+  HmacRoute: typeof HmacRoute
+  HtaccessBuilderRoute: typeof HtaccessBuilderRoute
+  HtmlEncodeRoute: typeof HtmlEncodeRoute
+  HtmlFormatterRoute: typeof HtmlFormatterRoute
+  HtmlMarkdownRoute: typeof HtmlMarkdownRoute
+  HtmlPlaygroundRoute: typeof HtmlPlaygroundRoute
+  HtmlToJsxRoute: typeof HtmlToJsxRoute
+  HttpClientRoute: typeof HttpClientRoute
+  HttpHeadersRoute: typeof HttpHeadersRoute
+  HttpStatusRoute: typeof HttpStatusRoute
+  IbanRoute: typeof IbanRoute
+  Ieee754Route: typeof Ieee754Route
+  ImageBase64Route: typeof ImageBase64Route
+  ImageCompressRoute: typeof ImageCompressRoute
+  ImageCropRoute: typeof ImageCropRoute
+  ImageResizeRoute: typeof ImageResizeRoute
+  ImageToGifRoute: typeof ImageToGifRoute
+  IniParserRoute: typeof IniParserRoute
+  IpCidrCheckRoute: typeof IpCidrCheckRoute
+  IpConverterRoute: typeof IpConverterRoute
+  IpGeolocationRoute: typeof IpGeolocationRoute
+  Ipv6Route: typeof Ipv6Route
+  IsbnRoute: typeof IsbnRoute
+  JsonRoute: typeof JsonRoute
+  JsonCompareRoute: typeof JsonCompareRoute
+  JsonFlattenRoute: typeof JsonFlattenRoute
+  JsonLinesRoute: typeof JsonLinesRoute
+  JsonMergeRoute: typeof JsonMergeRoute
+  JsonPathRoute: typeof JsonPathRoute
+  JsonPointerRoute: typeof JsonPointerRoute
+  JsonSchemaRoute: typeof JsonSchemaRoute
+  JsonSchemaValidatorRoute: typeof JsonSchemaValidatorRoute
+  JsonToGraphqlRoute: typeof JsonToGraphqlRoute
+  JsonToSqlRoute: typeof JsonToSqlRoute
+  JsonToTsRoute: typeof JsonToTsRoute
+  JsonToZodRoute: typeof JsonToZodRoute
+  JwtRoute: typeof JwtRoute
+  JwtGeneratorRoute: typeof JwtGeneratorRoute
+  KanaConvertRoute: typeof KanaConvertRoute
+  KeycodeRoute: typeof KeycodeRoute
+  LifeGameRoute: typeof LifeGameRoute
+  LineEndingRoute: typeof LineEndingRoute
+  LissajousRoute: typeof LissajousRoute
+  LoanCalculatorRoute: typeof LoanCalculatorRoute
+  LoremIpsumRoute: typeof LoremIpsumRoute
+  LuhnCheckRoute: typeof LuhnCheckRoute
+  MakefileRoute: typeof MakefileRoute
+  MandelbrotRoute: typeof MandelbrotRoute
+  MarkdownPreviewRoute: typeof MarkdownPreviewRoute
+  MarkdownTableRoute: typeof MarkdownTableRoute
+  MathEvalRoute: typeof MathEvalRoute
+  MatrixRoute: typeof MatrixRoute
+  MermaidRoute: typeof MermaidRoute
+  MimeTypesRoute: typeof MimeTypesRoute
+  MinesweeperRoute: typeof MinesweeperRoute
+  MinifyRoute: typeof MinifyRoute
+  MorseCodeRoute: typeof MorseCodeRoute
+  MsgpackRoute: typeof MsgpackRoute
+  NanoIdRoute: typeof NanoIdRoute
+  NatoAlphabetRoute: typeof NatoAlphabetRoute
+  NginxConfigRoute: typeof NginxConfigRoute
+  NumberBaseRoute: typeof NumberBaseRoute
+  NumberFormatRoute: typeof NumberFormatRoute
+  NumberTheoryRoute: typeof NumberTheoryRoute
+  NumberWordsRoute: typeof NumberWordsRoute
+  OgpRoute: typeof OgpRoute
+  OgpGeneratorRoute: typeof OgpGeneratorRoute
+  OpensslBuilderRoute: typeof OpensslBuilderRoute
+  PackageJsonRoute: typeof PackageJsonRoute
+  PassphraseRoute: typeof PassphraseRoute
+  PasswordGeneratorRoute: typeof PasswordGeneratorRoute
+  PasswordStrengthRoute: typeof PasswordStrengthRoute
+  PercentageCalculatorRoute: typeof PercentageCalculatorRoute
+  PhoneRoute: typeof PhoneRoute
+  PhpSerializeRoute: typeof PhpSerializeRoute
+  PkceRoute: typeof PkceRoute
+  PlayfairRoute: typeof PlayfairRoute
+  PolybiusRoute: typeof PolybiusRoute
+  PomodoroRoute: typeof PomodoroRoute
+  PortCheckRoute: typeof PortCheckRoute
+  PortsRoute: typeof PortsRoute
+  PrettierConfigBuilderRoute: typeof PrettierConfigBuilderRoute
+  PunycodeRoute: typeof PunycodeRoute
+  QrCodeRoute: typeof QrCodeRoute
+  QuotedPrintableRoute: typeof QuotedPrintableRoute
+  RailFenceRoute: typeof RailFenceRoute
+  RandomDataRoute: typeof RandomDataRoute
+  RandomPickerRoute: typeof RandomPickerRoute
+  ReadabilityRoute: typeof ReadabilityRoute
+  RedirectTracerRoute: typeof RedirectTracerRoute
+  RegexCheckerRoute: typeof RegexCheckerRoute
+  RegexLibraryRoute: typeof RegexLibraryRoute
+  RobotsTxtRoute: typeof RobotsTxtRoute
+  RomanNumeralsRoute: typeof RomanNumeralsRoute
+  ScytaleRoute: typeof ScytaleRoute
+  SecurityHeadersRoute: typeof SecurityHeadersRoute
+  SemverRoute: typeof SemverRoute
+  SeoMetaRoute: typeof SeoMetaRoute
+  SequencesRoute: typeof SequencesRoute
+  ServerEnvRoute: typeof ServerEnvRoute
+  ShortCodeRoute: typeof ShortCodeRoute
+  SitemapRoute: typeof SitemapRoute
+  SlugRoute: typeof SlugRoute
+  SnakeRoute: typeof SnakeRoute
+  SortVisualizerRoute: typeof SortVisualizerRoute
+  SqlRoute: typeof SqlRoute
+  SqlToTsRoute: typeof SqlToTsRoute
+  SriHashRoute: typeof SriHashRoute
+  SshKeyRoute: typeof SshKeyRoute
+  StatisticsRoute: typeof StatisticsRoute
+  StopwatchRoute: typeof StopwatchRoute
+  StorageConverterRoute: typeof StorageConverterRoute
+  StringEscapeRoute: typeof StringEscapeRoute
+  StringSimilarityRoute: typeof StringSimilarityRoute
+  SudokuRoute: typeof SudokuRoute
+  SvgOptimizerRoute: typeof SvgOptimizerRoute
+  TailwindColorsRoute: typeof TailwindColorsRoute
+  TapCodeRoute: typeof TapCodeRoute
+  TaxCalculatorRoute: typeof TaxCalculatorRoute
+  TemplateRoute: typeof TemplateRoute
+  TetrisRoute: typeof TetrisRoute
+  TextBinaryRoute: typeof TextBinaryRoute
+  TextCaseRoute: typeof TextCaseRoute
+  TextEncryptRoute: typeof TextEncryptRoute
+  TextLineRoute: typeof TextLineRoute
+  TextReplaceRoute: typeof TextReplaceRoute
+  TextSortRoute: typeof TextSortRoute
+  TextStatsRoute: typeof TextStatsRoute
+  TicTacToeRoute: typeof TicTacToeRoute
+  TimestampRoute: typeof TimestampRoute
+  TimezoneRoute: typeof TimezoneRoute
+  TokenEstimatorRoute: typeof TokenEstimatorRoute
+  TomlFormatterRoute: typeof TomlFormatterRoute
+  TomlJsonRoute: typeof TomlJsonRoute
+  TopRoute: typeof TopRoute
+  TotpRoute: typeof TotpRoute
+  TransferSpeedRoute: typeof TransferSpeedRoute
+  TransparentImageRoute: typeof TransparentImageRoute
+  TrigRoute: typeof TrigRoute
+  TruthTableRoute: typeof TruthTableRoute
+  TsconfigBuilderRoute: typeof TsconfigBuilderRoute
+  TypingSpeedRoute: typeof TypingSpeedRoute
+  TypographyScaleRoute: typeof TypographyScaleRoute
+  UlidRoute: typeof UlidRoute
+  UnicodeRoute: typeof UnicodeRoute
+  UnicodeInspectorRoute: typeof UnicodeInspectorRoute
+  UnitConverterRoute: typeof UnitConverterRoute
+  UrlEncodeRoute: typeof UrlEncodeRoute
+  UrlParserRoute: typeof UrlParserRoute
+  UserAgentRoute: typeof UserAgentRoute
+  UtmBuilderRoute: typeof UtmBuilderRoute
+  UuidRoute: typeof UuidRoute
+  UuidInspectorRoute: typeof UuidInspectorRoute
+  VideoConverterRoute: typeof VideoConverterRoute
+  VigenereRoute: typeof VigenereRoute
+  VscodeSnippetRoute: typeof VscodeSnippetRoute
+  WarekiRoute: typeof WarekiRoute
+  WarikanRoute: typeof WarikanRoute
+  WebManifestRoute: typeof WebManifestRoute
+  WebsocketRoute: typeof WebsocketRoute
+  WhoisRoute: typeof WhoisRoute
+  WordFrequencyRoute: typeof WordFrequencyRoute
+  WordleRoute: typeof WordleRoute
+  WorldClockRoute: typeof WorldClockRoute
+  XmlRoute: typeof XmlRoute
+  XmlJsonRoute: typeof XmlJsonRoute
+  XpathRoute: typeof XpathRoute
+  YamlFormatterRoute: typeof YamlFormatterRoute
+  YamlJsonRoute: typeof YamlJsonRoute
+  YamlTomlRoute: typeof YamlTomlRoute
+  ZenkakuRoute: typeof ZenkakuRoute
+  ZeroWidthRoute: typeof ZeroWidthRoute
+  ApiImageDotjpgRoute: typeof ApiImageDotjpgRoute
+  ApiImageDotpngRoute: typeof ApiImageDotpngRoute
+  ApiImageDotsvgRoute: typeof ApiImageDotsvgRoute
+  ApiImageDotwebpRoute: typeof ApiImageDotwebpRoute
 }
 
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    "/zero-width": {
-      id: "/zero-width";
-      path: "/zero-width";
-      fullPath: "/zero-width";
-      preLoaderRoute: typeof ZeroWidthRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/zenkaku": {
-      id: "/zenkaku";
-      path: "/zenkaku";
-      fullPath: "/zenkaku";
-      preLoaderRoute: typeof ZenkakuRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/yaml-toml": {
-      id: "/yaml-toml";
-      path: "/yaml-toml";
-      fullPath: "/yaml-toml";
-      preLoaderRoute: typeof YamlTomlRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/yaml-json": {
-      id: "/yaml-json";
-      path: "/yaml-json";
-      fullPath: "/yaml-json";
-      preLoaderRoute: typeof YamlJsonRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/yaml-formatter": {
-      id: "/yaml-formatter";
-      path: "/yaml-formatter";
-      fullPath: "/yaml-formatter";
-      preLoaderRoute: typeof YamlFormatterRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/xpath": {
-      id: "/xpath";
-      path: "/xpath";
-      fullPath: "/xpath";
-      preLoaderRoute: typeof XpathRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/xml-json": {
-      id: "/xml-json";
-      path: "/xml-json";
-      fullPath: "/xml-json";
-      preLoaderRoute: typeof XmlJsonRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/xml": {
-      id: "/xml";
-      path: "/xml";
-      fullPath: "/xml";
-      preLoaderRoute: typeof XmlRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/world-clock": {
-      id: "/world-clock";
-      path: "/world-clock";
-      fullPath: "/world-clock";
-      preLoaderRoute: typeof WorldClockRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/wordle": {
-      id: "/wordle";
-      path: "/wordle";
-      fullPath: "/wordle";
-      preLoaderRoute: typeof WordleRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/word-frequency": {
-      id: "/word-frequency";
-      path: "/word-frequency";
-      fullPath: "/word-frequency";
-      preLoaderRoute: typeof WordFrequencyRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/whois": {
-      id: "/whois";
-      path: "/whois";
-      fullPath: "/whois";
-      preLoaderRoute: typeof WhoisRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/websocket": {
-      id: "/websocket";
-      path: "/websocket";
-      fullPath: "/websocket";
-      preLoaderRoute: typeof WebsocketRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/web-manifest": {
-      id: "/web-manifest";
-      path: "/web-manifest";
-      fullPath: "/web-manifest";
-      preLoaderRoute: typeof WebManifestRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/warikan": {
-      id: "/warikan";
-      path: "/warikan";
-      fullPath: "/warikan";
-      preLoaderRoute: typeof WarikanRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/wareki": {
-      id: "/wareki";
-      path: "/wareki";
-      fullPath: "/wareki";
-      preLoaderRoute: typeof WarekiRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/vscode-snippet": {
-      id: "/vscode-snippet";
-      path: "/vscode-snippet";
-      fullPath: "/vscode-snippet";
-      preLoaderRoute: typeof VscodeSnippetRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/vigenere": {
-      id: "/vigenere";
-      path: "/vigenere";
-      fullPath: "/vigenere";
-      preLoaderRoute: typeof VigenereRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/video-converter": {
-      id: "/video-converter";
-      path: "/video-converter";
-      fullPath: "/video-converter";
-      preLoaderRoute: typeof VideoConverterRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/uuid-inspector": {
-      id: "/uuid-inspector";
-      path: "/uuid-inspector";
-      fullPath: "/uuid-inspector";
-      preLoaderRoute: typeof UuidInspectorRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/uuid": {
-      id: "/uuid";
-      path: "/uuid";
-      fullPath: "/uuid";
-      preLoaderRoute: typeof UuidRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/utm-builder": {
-      id: "/utm-builder";
-      path: "/utm-builder";
-      fullPath: "/utm-builder";
-      preLoaderRoute: typeof UtmBuilderRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/user-agent": {
-      id: "/user-agent";
-      path: "/user-agent";
-      fullPath: "/user-agent";
-      preLoaderRoute: typeof UserAgentRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/url-parser": {
-      id: "/url-parser";
-      path: "/url-parser";
-      fullPath: "/url-parser";
-      preLoaderRoute: typeof UrlParserRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/url-encode": {
-      id: "/url-encode";
-      path: "/url-encode";
-      fullPath: "/url-encode";
-      preLoaderRoute: typeof UrlEncodeRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/unit-converter": {
-      id: "/unit-converter";
-      path: "/unit-converter";
-      fullPath: "/unit-converter";
-      preLoaderRoute: typeof UnitConverterRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/unicode-inspector": {
-      id: "/unicode-inspector";
-      path: "/unicode-inspector";
-      fullPath: "/unicode-inspector";
-      preLoaderRoute: typeof UnicodeInspectorRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/unicode": {
-      id: "/unicode";
-      path: "/unicode";
-      fullPath: "/unicode";
-      preLoaderRoute: typeof UnicodeRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/ulid": {
-      id: "/ulid";
-      path: "/ulid";
-      fullPath: "/ulid";
-      preLoaderRoute: typeof UlidRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/typography-scale": {
-      id: "/typography-scale";
-      path: "/typography-scale";
-      fullPath: "/typography-scale";
-      preLoaderRoute: typeof TypographyScaleRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/typing-speed": {
-      id: "/typing-speed";
-      path: "/typing-speed";
-      fullPath: "/typing-speed";
-      preLoaderRoute: typeof TypingSpeedRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/tsconfig-builder": {
-      id: "/tsconfig-builder";
-      path: "/tsconfig-builder";
-      fullPath: "/tsconfig-builder";
-      preLoaderRoute: typeof TsconfigBuilderRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/truth-table": {
-      id: "/truth-table";
-      path: "/truth-table";
-      fullPath: "/truth-table";
-      preLoaderRoute: typeof TruthTableRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/trig": {
-      id: "/trig";
-      path: "/trig";
-      fullPath: "/trig";
-      preLoaderRoute: typeof TrigRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/transparent-image": {
-      id: "/transparent-image";
-      path: "/transparent-image";
-      fullPath: "/transparent-image";
-      preLoaderRoute: typeof TransparentImageRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/transfer-speed": {
-      id: "/transfer-speed";
-      path: "/transfer-speed";
-      fullPath: "/transfer-speed";
-      preLoaderRoute: typeof TransferSpeedRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/totp": {
-      id: "/totp";
-      path: "/totp";
-      fullPath: "/totp";
-      preLoaderRoute: typeof TotpRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/top": {
-      id: "/top";
-      path: "/top";
-      fullPath: "/top";
-      preLoaderRoute: typeof TopRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/toml-json": {
-      id: "/toml-json";
-      path: "/toml-json";
-      fullPath: "/toml-json";
-      preLoaderRoute: typeof TomlJsonRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/toml-formatter": {
-      id: "/toml-formatter";
-      path: "/toml-formatter";
-      fullPath: "/toml-formatter";
-      preLoaderRoute: typeof TomlFormatterRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/token-estimator": {
-      id: "/token-estimator";
-      path: "/token-estimator";
-      fullPath: "/token-estimator";
-      preLoaderRoute: typeof TokenEstimatorRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/timezone": {
-      id: "/timezone";
-      path: "/timezone";
-      fullPath: "/timezone";
-      preLoaderRoute: typeof TimezoneRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/timestamp": {
-      id: "/timestamp";
-      path: "/timestamp";
-      fullPath: "/timestamp";
-      preLoaderRoute: typeof TimestampRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/tic-tac-toe": {
-      id: "/tic-tac-toe";
-      path: "/tic-tac-toe";
-      fullPath: "/tic-tac-toe";
-      preLoaderRoute: typeof TicTacToeRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/text-stats": {
-      id: "/text-stats";
-      path: "/text-stats";
-      fullPath: "/text-stats";
-      preLoaderRoute: typeof TextStatsRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/text-sort": {
-      id: "/text-sort";
-      path: "/text-sort";
-      fullPath: "/text-sort";
-      preLoaderRoute: typeof TextSortRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/text-replace": {
-      id: "/text-replace";
-      path: "/text-replace";
-      fullPath: "/text-replace";
-      preLoaderRoute: typeof TextReplaceRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/text-line": {
-      id: "/text-line";
-      path: "/text-line";
-      fullPath: "/text-line";
-      preLoaderRoute: typeof TextLineRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/text-encrypt": {
-      id: "/text-encrypt";
-      path: "/text-encrypt";
-      fullPath: "/text-encrypt";
-      preLoaderRoute: typeof TextEncryptRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/text-case": {
-      id: "/text-case";
-      path: "/text-case";
-      fullPath: "/text-case";
-      preLoaderRoute: typeof TextCaseRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/text-binary": {
-      id: "/text-binary";
-      path: "/text-binary";
-      fullPath: "/text-binary";
-      preLoaderRoute: typeof TextBinaryRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/tetris": {
-      id: "/tetris";
-      path: "/tetris";
-      fullPath: "/tetris";
-      preLoaderRoute: typeof TetrisRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/template": {
-      id: "/template";
-      path: "/template";
-      fullPath: "/template";
-      preLoaderRoute: typeof TemplateRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/tax-calculator": {
-      id: "/tax-calculator";
-      path: "/tax-calculator";
-      fullPath: "/tax-calculator";
-      preLoaderRoute: typeof TaxCalculatorRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/tap-code": {
-      id: "/tap-code";
-      path: "/tap-code";
-      fullPath: "/tap-code";
-      preLoaderRoute: typeof TapCodeRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/tailwind-colors": {
-      id: "/tailwind-colors";
-      path: "/tailwind-colors";
-      fullPath: "/tailwind-colors";
-      preLoaderRoute: typeof TailwindColorsRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/svg-optimizer": {
-      id: "/svg-optimizer";
-      path: "/svg-optimizer";
-      fullPath: "/svg-optimizer";
-      preLoaderRoute: typeof SvgOptimizerRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/sudoku": {
-      id: "/sudoku";
-      path: "/sudoku";
-      fullPath: "/sudoku";
-      preLoaderRoute: typeof SudokuRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/string-similarity": {
-      id: "/string-similarity";
-      path: "/string-similarity";
-      fullPath: "/string-similarity";
-      preLoaderRoute: typeof StringSimilarityRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/string-escape": {
-      id: "/string-escape";
-      path: "/string-escape";
-      fullPath: "/string-escape";
-      preLoaderRoute: typeof StringEscapeRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/storage-converter": {
-      id: "/storage-converter";
-      path: "/storage-converter";
-      fullPath: "/storage-converter";
-      preLoaderRoute: typeof StorageConverterRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/stopwatch": {
-      id: "/stopwatch";
-      path: "/stopwatch";
-      fullPath: "/stopwatch";
-      preLoaderRoute: typeof StopwatchRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/statistics": {
-      id: "/statistics";
-      path: "/statistics";
-      fullPath: "/statistics";
-      preLoaderRoute: typeof StatisticsRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/ssh-key": {
-      id: "/ssh-key";
-      path: "/ssh-key";
-      fullPath: "/ssh-key";
-      preLoaderRoute: typeof SshKeyRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/sri-hash": {
-      id: "/sri-hash";
-      path: "/sri-hash";
-      fullPath: "/sri-hash";
-      preLoaderRoute: typeof SriHashRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/sql-to-ts": {
-      id: "/sql-to-ts";
-      path: "/sql-to-ts";
-      fullPath: "/sql-to-ts";
-      preLoaderRoute: typeof SqlToTsRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/sql": {
-      id: "/sql";
-      path: "/sql";
-      fullPath: "/sql";
-      preLoaderRoute: typeof SqlRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/sort-visualizer": {
-      id: "/sort-visualizer";
-      path: "/sort-visualizer";
-      fullPath: "/sort-visualizer";
-      preLoaderRoute: typeof SortVisualizerRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/snake": {
-      id: "/snake";
-      path: "/snake";
-      fullPath: "/snake";
-      preLoaderRoute: typeof SnakeRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/slug": {
-      id: "/slug";
-      path: "/slug";
-      fullPath: "/slug";
-      preLoaderRoute: typeof SlugRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/sitemap": {
-      id: "/sitemap";
-      path: "/sitemap";
-      fullPath: "/sitemap";
-      preLoaderRoute: typeof SitemapRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/short-code": {
-      id: "/short-code";
-      path: "/short-code";
-      fullPath: "/short-code";
-      preLoaderRoute: typeof ShortCodeRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/server-env": {
-      id: "/server-env";
-      path: "/server-env";
-      fullPath: "/server-env";
-      preLoaderRoute: typeof ServerEnvRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/sequences": {
-      id: "/sequences";
-      path: "/sequences";
-      fullPath: "/sequences";
-      preLoaderRoute: typeof SequencesRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/seo-meta": {
-      id: "/seo-meta";
-      path: "/seo-meta";
-      fullPath: "/seo-meta";
-      preLoaderRoute: typeof SeoMetaRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/semver": {
-      id: "/semver";
-      path: "/semver";
-      fullPath: "/semver";
-      preLoaderRoute: typeof SemverRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/security-headers": {
-      id: "/security-headers";
-      path: "/security-headers";
-      fullPath: "/security-headers";
-      preLoaderRoute: typeof SecurityHeadersRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/scytale": {
-      id: "/scytale";
-      path: "/scytale";
-      fullPath: "/scytale";
-      preLoaderRoute: typeof ScytaleRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/roman-numerals": {
-      id: "/roman-numerals";
-      path: "/roman-numerals";
-      fullPath: "/roman-numerals";
-      preLoaderRoute: typeof RomanNumeralsRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/robots-txt": {
-      id: "/robots-txt";
-      path: "/robots-txt";
-      fullPath: "/robots-txt";
-      preLoaderRoute: typeof RobotsTxtRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/regex-library": {
-      id: "/regex-library";
-      path: "/regex-library";
-      fullPath: "/regex-library";
-      preLoaderRoute: typeof RegexLibraryRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/regex-checker": {
-      id: "/regex-checker";
-      path: "/regex-checker";
-      fullPath: "/regex-checker";
-      preLoaderRoute: typeof RegexCheckerRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/redirect-tracer": {
-      id: "/redirect-tracer";
-      path: "/redirect-tracer";
-      fullPath: "/redirect-tracer";
-      preLoaderRoute: typeof RedirectTracerRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/readability": {
-      id: "/readability";
-      path: "/readability";
-      fullPath: "/readability";
-      preLoaderRoute: typeof ReadabilityRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/random-picker": {
-      id: "/random-picker";
-      path: "/random-picker";
-      fullPath: "/random-picker";
-      preLoaderRoute: typeof RandomPickerRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/random-data": {
-      id: "/random-data";
-      path: "/random-data";
-      fullPath: "/random-data";
-      preLoaderRoute: typeof RandomDataRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/rail-fence": {
-      id: "/rail-fence";
-      path: "/rail-fence";
-      fullPath: "/rail-fence";
-      preLoaderRoute: typeof RailFenceRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/quoted-printable": {
-      id: "/quoted-printable";
-      path: "/quoted-printable";
-      fullPath: "/quoted-printable";
-      preLoaderRoute: typeof QuotedPrintableRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/qr-code": {
-      id: "/qr-code";
-      path: "/qr-code";
-      fullPath: "/qr-code";
-      preLoaderRoute: typeof QrCodeRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/punycode": {
-      id: "/punycode";
-      path: "/punycode";
-      fullPath: "/punycode";
-      preLoaderRoute: typeof PunycodeRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/prettier-config-builder": {
-      id: "/prettier-config-builder";
-      path: "/prettier-config-builder";
-      fullPath: "/prettier-config-builder";
-      preLoaderRoute: typeof PrettierConfigBuilderRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/ports": {
-      id: "/ports";
-      path: "/ports";
-      fullPath: "/ports";
-      preLoaderRoute: typeof PortsRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/port-check": {
-      id: "/port-check";
-      path: "/port-check";
-      fullPath: "/port-check";
-      preLoaderRoute: typeof PortCheckRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/pomodoro": {
-      id: "/pomodoro";
-      path: "/pomodoro";
-      fullPath: "/pomodoro";
-      preLoaderRoute: typeof PomodoroRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/polybius": {
-      id: "/polybius";
-      path: "/polybius";
-      fullPath: "/polybius";
-      preLoaderRoute: typeof PolybiusRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/playfair": {
-      id: "/playfair";
-      path: "/playfair";
-      fullPath: "/playfair";
-      preLoaderRoute: typeof PlayfairRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/pkce": {
-      id: "/pkce";
-      path: "/pkce";
-      fullPath: "/pkce";
-      preLoaderRoute: typeof PkceRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/php-serialize": {
-      id: "/php-serialize";
-      path: "/php-serialize";
-      fullPath: "/php-serialize";
-      preLoaderRoute: typeof PhpSerializeRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/phone": {
-      id: "/phone";
-      path: "/phone";
-      fullPath: "/phone";
-      preLoaderRoute: typeof PhoneRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/percentage-calculator": {
-      id: "/percentage-calculator";
-      path: "/percentage-calculator";
-      fullPath: "/percentage-calculator";
-      preLoaderRoute: typeof PercentageCalculatorRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/password-strength": {
-      id: "/password-strength";
-      path: "/password-strength";
-      fullPath: "/password-strength";
-      preLoaderRoute: typeof PasswordStrengthRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/password-generator": {
-      id: "/password-generator";
-      path: "/password-generator";
-      fullPath: "/password-generator";
-      preLoaderRoute: typeof PasswordGeneratorRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/passphrase": {
-      id: "/passphrase";
-      path: "/passphrase";
-      fullPath: "/passphrase";
-      preLoaderRoute: typeof PassphraseRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/package-json": {
-      id: "/package-json";
-      path: "/package-json";
-      fullPath: "/package-json";
-      preLoaderRoute: typeof PackageJsonRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/openssl-builder": {
-      id: "/openssl-builder";
-      path: "/openssl-builder";
-      fullPath: "/openssl-builder";
-      preLoaderRoute: typeof OpensslBuilderRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/ogp-generator": {
-      id: "/ogp-generator";
-      path: "/ogp-generator";
-      fullPath: "/ogp-generator";
-      preLoaderRoute: typeof OgpGeneratorRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/ogp": {
-      id: "/ogp";
-      path: "/ogp";
-      fullPath: "/ogp";
-      preLoaderRoute: typeof OgpRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/number-words": {
-      id: "/number-words";
-      path: "/number-words";
-      fullPath: "/number-words";
-      preLoaderRoute: typeof NumberWordsRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/number-theory": {
-      id: "/number-theory";
-      path: "/number-theory";
-      fullPath: "/number-theory";
-      preLoaderRoute: typeof NumberTheoryRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/number-format": {
-      id: "/number-format";
-      path: "/number-format";
-      fullPath: "/number-format";
-      preLoaderRoute: typeof NumberFormatRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/number-base": {
-      id: "/number-base";
-      path: "/number-base";
-      fullPath: "/number-base";
-      preLoaderRoute: typeof NumberBaseRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/nginx-config": {
-      id: "/nginx-config";
-      path: "/nginx-config";
-      fullPath: "/nginx-config";
-      preLoaderRoute: typeof NginxConfigRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/nato-alphabet": {
-      id: "/nato-alphabet";
-      path: "/nato-alphabet";
-      fullPath: "/nato-alphabet";
-      preLoaderRoute: typeof NatoAlphabetRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/nano-id": {
-      id: "/nano-id";
-      path: "/nano-id";
-      fullPath: "/nano-id";
-      preLoaderRoute: typeof NanoIdRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/msgpack": {
-      id: "/msgpack";
-      path: "/msgpack";
-      fullPath: "/msgpack";
-      preLoaderRoute: typeof MsgpackRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/morse-code": {
-      id: "/morse-code";
-      path: "/morse-code";
-      fullPath: "/morse-code";
-      preLoaderRoute: typeof MorseCodeRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/minify": {
-      id: "/minify";
-      path: "/minify";
-      fullPath: "/minify";
-      preLoaderRoute: typeof MinifyRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/minesweeper": {
-      id: "/minesweeper";
-      path: "/minesweeper";
-      fullPath: "/minesweeper";
-      preLoaderRoute: typeof MinesweeperRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/mime-types": {
-      id: "/mime-types";
-      path: "/mime-types";
-      fullPath: "/mime-types";
-      preLoaderRoute: typeof MimeTypesRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/mermaid": {
-      id: "/mermaid";
-      path: "/mermaid";
-      fullPath: "/mermaid";
-      preLoaderRoute: typeof MermaidRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/matrix": {
-      id: "/matrix";
-      path: "/matrix";
-      fullPath: "/matrix";
-      preLoaderRoute: typeof MatrixRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/math-eval": {
-      id: "/math-eval";
-      path: "/math-eval";
-      fullPath: "/math-eval";
-      preLoaderRoute: typeof MathEvalRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/markdown-table": {
-      id: "/markdown-table";
-      path: "/markdown-table";
-      fullPath: "/markdown-table";
-      preLoaderRoute: typeof MarkdownTableRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/markdown-preview": {
-      id: "/markdown-preview";
-      path: "/markdown-preview";
-      fullPath: "/markdown-preview";
-      preLoaderRoute: typeof MarkdownPreviewRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/mandelbrot": {
-      id: "/mandelbrot";
-      path: "/mandelbrot";
-      fullPath: "/mandelbrot";
-      preLoaderRoute: typeof MandelbrotRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/makefile": {
-      id: "/makefile";
-      path: "/makefile";
-      fullPath: "/makefile";
-      preLoaderRoute: typeof MakefileRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/luhn-check": {
-      id: "/luhn-check";
-      path: "/luhn-check";
-      fullPath: "/luhn-check";
-      preLoaderRoute: typeof LuhnCheckRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/lorem-ipsum": {
-      id: "/lorem-ipsum";
-      path: "/lorem-ipsum";
-      fullPath: "/lorem-ipsum";
-      preLoaderRoute: typeof LoremIpsumRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/loan-calculator": {
-      id: "/loan-calculator";
-      path: "/loan-calculator";
-      fullPath: "/loan-calculator";
-      preLoaderRoute: typeof LoanCalculatorRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/lissajous": {
-      id: "/lissajous";
-      path: "/lissajous";
-      fullPath: "/lissajous";
-      preLoaderRoute: typeof LissajousRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/line-ending": {
-      id: "/line-ending";
-      path: "/line-ending";
-      fullPath: "/line-ending";
-      preLoaderRoute: typeof LineEndingRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/life-game": {
-      id: "/life-game";
-      path: "/life-game";
-      fullPath: "/life-game";
-      preLoaderRoute: typeof LifeGameRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/keycode": {
-      id: "/keycode";
-      path: "/keycode";
-      fullPath: "/keycode";
-      preLoaderRoute: typeof KeycodeRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/kana-convert": {
-      id: "/kana-convert";
-      path: "/kana-convert";
-      fullPath: "/kana-convert";
-      preLoaderRoute: typeof KanaConvertRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/jwt-generator": {
-      id: "/jwt-generator";
-      path: "/jwt-generator";
-      fullPath: "/jwt-generator";
-      preLoaderRoute: typeof JwtGeneratorRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/jwt": {
-      id: "/jwt";
-      path: "/jwt";
-      fullPath: "/jwt";
-      preLoaderRoute: typeof JwtRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/json-to-zod": {
-      id: "/json-to-zod";
-      path: "/json-to-zod";
-      fullPath: "/json-to-zod";
-      preLoaderRoute: typeof JsonToZodRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/json-to-ts": {
-      id: "/json-to-ts";
-      path: "/json-to-ts";
-      fullPath: "/json-to-ts";
-      preLoaderRoute: typeof JsonToTsRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/json-to-sql": {
-      id: "/json-to-sql";
-      path: "/json-to-sql";
-      fullPath: "/json-to-sql";
-      preLoaderRoute: typeof JsonToSqlRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/json-to-graphql": {
-      id: "/json-to-graphql";
-      path: "/json-to-graphql";
-      fullPath: "/json-to-graphql";
-      preLoaderRoute: typeof JsonToGraphqlRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/json-schema-validator": {
-      id: "/json-schema-validator";
-      path: "/json-schema-validator";
-      fullPath: "/json-schema-validator";
-      preLoaderRoute: typeof JsonSchemaValidatorRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/json-schema": {
-      id: "/json-schema";
-      path: "/json-schema";
-      fullPath: "/json-schema";
-      preLoaderRoute: typeof JsonSchemaRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/json-pointer": {
-      id: "/json-pointer";
-      path: "/json-pointer";
-      fullPath: "/json-pointer";
-      preLoaderRoute: typeof JsonPointerRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/json-path": {
-      id: "/json-path";
-      path: "/json-path";
-      fullPath: "/json-path";
-      preLoaderRoute: typeof JsonPathRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/json-merge": {
-      id: "/json-merge";
-      path: "/json-merge";
-      fullPath: "/json-merge";
-      preLoaderRoute: typeof JsonMergeRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/json-lines": {
-      id: "/json-lines";
-      path: "/json-lines";
-      fullPath: "/json-lines";
-      preLoaderRoute: typeof JsonLinesRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/json-flatten": {
-      id: "/json-flatten";
-      path: "/json-flatten";
-      fullPath: "/json-flatten";
-      preLoaderRoute: typeof JsonFlattenRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/json-compare": {
-      id: "/json-compare";
-      path: "/json-compare";
-      fullPath: "/json-compare";
-      preLoaderRoute: typeof JsonCompareRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/json": {
-      id: "/json";
-      path: "/json";
-      fullPath: "/json";
-      preLoaderRoute: typeof JsonRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/isbn": {
-      id: "/isbn";
-      path: "/isbn";
-      fullPath: "/isbn";
-      preLoaderRoute: typeof IsbnRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/ipv6": {
-      id: "/ipv6";
-      path: "/ipv6";
-      fullPath: "/ipv6";
-      preLoaderRoute: typeof Ipv6RouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/ip-geolocation": {
-      id: "/ip-geolocation";
-      path: "/ip-geolocation";
-      fullPath: "/ip-geolocation";
-      preLoaderRoute: typeof IpGeolocationRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/ip-converter": {
-      id: "/ip-converter";
-      path: "/ip-converter";
-      fullPath: "/ip-converter";
-      preLoaderRoute: typeof IpConverterRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/ip-cidr-check": {
-      id: "/ip-cidr-check";
-      path: "/ip-cidr-check";
-      fullPath: "/ip-cidr-check";
-      preLoaderRoute: typeof IpCidrCheckRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/ini-parser": {
-      id: "/ini-parser";
-      path: "/ini-parser";
-      fullPath: "/ini-parser";
-      preLoaderRoute: typeof IniParserRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/image-to-gif": {
-      id: "/image-to-gif";
-      path: "/image-to-gif";
-      fullPath: "/image-to-gif";
-      preLoaderRoute: typeof ImageToGifRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/image-resize": {
-      id: "/image-resize";
-      path: "/image-resize";
-      fullPath: "/image-resize";
-      preLoaderRoute: typeof ImageResizeRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/image-crop": {
-      id: "/image-crop";
-      path: "/image-crop";
-      fullPath: "/image-crop";
-      preLoaderRoute: typeof ImageCropRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/image-compress": {
-      id: "/image-compress";
-      path: "/image-compress";
-      fullPath: "/image-compress";
-      preLoaderRoute: typeof ImageCompressRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/image-base64": {
-      id: "/image-base64";
-      path: "/image-base64";
-      fullPath: "/image-base64";
-      preLoaderRoute: typeof ImageBase64RouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/ieee754": {
-      id: "/ieee754";
-      path: "/ieee754";
-      fullPath: "/ieee754";
-      preLoaderRoute: typeof Ieee754RouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/iban": {
-      id: "/iban";
-      path: "/iban";
-      fullPath: "/iban";
-      preLoaderRoute: typeof IbanRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/http-status": {
-      id: "/http-status";
-      path: "/http-status";
-      fullPath: "/http-status";
-      preLoaderRoute: typeof HttpStatusRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/http-headers": {
-      id: "/http-headers";
-      path: "/http-headers";
-      fullPath: "/http-headers";
-      preLoaderRoute: typeof HttpHeadersRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/http-client": {
-      id: "/http-client";
-      path: "/http-client";
-      fullPath: "/http-client";
-      preLoaderRoute: typeof HttpClientRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/html-to-jsx": {
-      id: "/html-to-jsx";
-      path: "/html-to-jsx";
-      fullPath: "/html-to-jsx";
-      preLoaderRoute: typeof HtmlToJsxRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/html-playground": {
-      id: "/html-playground";
-      path: "/html-playground";
-      fullPath: "/html-playground";
-      preLoaderRoute: typeof HtmlPlaygroundRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/html-markdown": {
-      id: "/html-markdown";
-      path: "/html-markdown";
-      fullPath: "/html-markdown";
-      preLoaderRoute: typeof HtmlMarkdownRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/html-formatter": {
-      id: "/html-formatter";
-      path: "/html-formatter";
-      fullPath: "/html-formatter";
-      preLoaderRoute: typeof HtmlFormatterRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/html-encode": {
-      id: "/html-encode";
-      path: "/html-encode";
-      fullPath: "/html-encode";
-      preLoaderRoute: typeof HtmlEncodeRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/htaccess-builder": {
-      id: "/htaccess-builder";
-      path: "/htaccess-builder";
-      fullPath: "/htaccess-builder";
-      preLoaderRoute: typeof HtaccessBuilderRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/hmac": {
-      id: "/hmac";
-      path: "/hmac";
-      fullPath: "/hmac";
-      preLoaderRoute: typeof HmacRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/hex-viewer": {
-      id: "/hex-viewer";
-      path: "/hex-viewer";
-      fullPath: "/hex-viewer";
-      preLoaderRoute: typeof HexViewerRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/haversine": {
-      id: "/haversine";
-      path: "/haversine";
-      fullPath: "/haversine";
-      preLoaderRoute: typeof HaversineRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/hash": {
-      id: "/hash";
-      path: "/hash";
-      fullPath: "/hash";
-      preLoaderRoute: typeof HashRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/har": {
-      id: "/har";
-      path: "/har";
-      fullPath: "/har";
-      preLoaderRoute: typeof HarRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/hangman": {
-      id: "/hangman";
-      path: "/hangman";
-      fullPath: "/hangman";
-      preLoaderRoute: typeof HangmanRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/gzip": {
-      id: "/gzip";
-      path: "/gzip";
-      fullPath: "/gzip";
-      preLoaderRoute: typeof GzipRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/gronsfeld": {
-      id: "/gronsfeld";
-      path: "/gronsfeld";
-      fullPath: "/gronsfeld";
-      preLoaderRoute: typeof GronsfeldRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/graphql": {
-      id: "/graphql";
-      path: "/graphql";
-      fullPath: "/graphql";
-      preLoaderRoute: typeof GraphqlRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/global-ip": {
-      id: "/global-ip";
-      path: "/global-ip";
-      fullPath: "/global-ip";
-      preLoaderRoute: typeof GlobalIpRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/glob-tester": {
-      id: "/glob-tester";
-      path: "/glob-tester";
-      fullPath: "/glob-tester";
-      preLoaderRoute: typeof GlobTesterRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/gitignore": {
-      id: "/gitignore";
-      path: "/gitignore";
-      fullPath: "/gitignore";
-      preLoaderRoute: typeof GitignoreRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/github-badge": {
-      id: "/github-badge";
-      path: "/github-badge";
-      fullPath: "/github-badge";
-      preLoaderRoute: typeof GithubBadgeRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/github-actions": {
-      id: "/github-actions";
-      path: "/github-actions";
-      fullPath: "/github-actions";
-      preLoaderRoute: typeof GithubActionsRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/gitattributes": {
-      id: "/gitattributes";
-      path: "/gitattributes";
-      fullPath: "/gitattributes";
-      preLoaderRoute: typeof GitattributesRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/geometry": {
-      id: "/geometry";
-      path: "/geometry";
-      fullPath: "/geometry";
-      preLoaderRoute: typeof GeometryRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/geohash": {
-      id: "/geohash";
-      path: "/geohash";
-      fullPath: "/geohash";
-      preLoaderRoute: typeof GeohashRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/game-2048": {
-      id: "/game-2048";
-      path: "/game-2048";
-      fullPath: "/game-2048";
-      preLoaderRoute: typeof Game2048RouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/function-plotter": {
-      id: "/function-plotter";
-      path: "/function-plotter";
-      fullPath: "/function-plotter";
-      preLoaderRoute: typeof FunctionPlotterRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/fraction": {
-      id: "/fraction";
-      path: "/fraction";
-      fullPath: "/fraction";
-      preLoaderRoute: typeof FractionRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/four-square": {
-      id: "/four-square";
-      path: "/four-square";
-      fullPath: "/four-square";
-      preLoaderRoute: typeof FourSquareRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/favicon-generator": {
-      id: "/favicon-generator";
-      path: "/favicon-generator";
-      fullPath: "/favicon-generator";
-      preLoaderRoute: typeof FaviconGeneratorRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/fancy-text": {
-      id: "/fancy-text";
-      path: "/fancy-text";
-      fullPath: "/fancy-text";
-      preLoaderRoute: typeof FancyTextRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/exif-viewer": {
-      id: "/exif-viewer";
-      path: "/exif-viewer";
-      fullPath: "/exif-viewer";
-      preLoaderRoute: typeof ExifViewerRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/eslint-config-builder": {
-      id: "/eslint-config-builder";
-      path: "/eslint-config-builder";
-      fullPath: "/eslint-config-builder";
-      preLoaderRoute: typeof EslintConfigBuilderRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/env-parser": {
-      id: "/env-parser";
-      path: "/env-parser";
-      fullPath: "/env-parser";
-      preLoaderRoute: typeof EnvParserRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/entropy": {
-      id: "/entropy";
-      path: "/entropy";
-      fullPath: "/entropy";
-      preLoaderRoute: typeof EntropyRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/encoding": {
-      id: "/encoding";
-      path: "/encoding";
-      fullPath: "/encoding";
-      preLoaderRoute: typeof EncodingRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/encode-chain": {
-      id: "/encode-chain";
-      path: "/encode-chain";
-      fullPath: "/encode-chain";
-      preLoaderRoute: typeof EncodeChainRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/emoji-converter": {
-      id: "/emoji-converter";
-      path: "/emoji-converter";
-      fullPath: "/emoji-converter";
-      preLoaderRoute: typeof EmojiConverterRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/email-header": {
-      id: "/email-header";
-      path: "/email-header";
-      fullPath: "/email-header";
-      preLoaderRoute: typeof EmailHeaderRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/email-dns": {
-      id: "/email-dns";
-      path: "/email-dns";
-      fullPath: "/email-dns";
-      preLoaderRoute: typeof EmailDnsRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/editorconfig": {
-      id: "/editorconfig";
-      path: "/editorconfig";
-      fullPath: "/editorconfig";
-      preLoaderRoute: typeof EditorconfigRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/duration": {
-      id: "/duration";
-      path: "/duration";
-      fullPath: "/duration";
-      preLoaderRoute: typeof DurationRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/dummy-image": {
-      id: "/dummy-image";
-      path: "/dummy-image";
-      fullPath: "/dummy-image";
-      preLoaderRoute: typeof DummyImageRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/dummy-audio": {
-      id: "/dummy-audio";
-      path: "/dummy-audio";
-      fullPath: "/dummy-audio";
-      preLoaderRoute: typeof DummyAudioRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/dockerfile": {
-      id: "/dockerfile";
-      path: "/dockerfile";
-      fullPath: "/dockerfile";
-      preLoaderRoute: typeof DockerfileRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/docker-run-to-compose": {
-      id: "/docker-run-to-compose";
-      path: "/docker-run-to-compose";
-      fullPath: "/docker-run-to-compose";
-      preLoaderRoute: typeof DockerRunToComposeRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/dns-lookup": {
-      id: "/dns-lookup";
-      path: "/dns-lookup";
-      fullPath: "/dns-lookup";
-      preLoaderRoute: typeof DnsLookupRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/discord-sticker": {
-      id: "/discord-sticker";
-      path: "/discord-sticker";
-      fullPath: "/discord-sticker";
-      preLoaderRoute: typeof DiscordStickerRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/discord-emoji": {
-      id: "/discord-emoji";
-      path: "/discord-emoji";
-      fullPath: "/discord-emoji";
-      preLoaderRoute: typeof DiscordEmojiRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/diff": {
-      id: "/diff";
-      path: "/diff";
-      fullPath: "/diff";
-      preLoaderRoute: typeof DiffRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/dice-roll": {
-      id: "/dice-roll";
-      path: "/dice-roll";
-      fullPath: "/dice-roll";
-      preLoaderRoute: typeof DiceRollRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/date-calc": {
-      id: "/date-calc";
-      path: "/date-calc";
-      fullPath: "/date-calc";
-      preLoaderRoute: typeof DateCalcRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/daiji": {
-      id: "/daiji";
-      path: "/daiji";
-      fullPath: "/daiji";
-      preLoaderRoute: typeof DaijiRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/curl-to-fetch": {
-      id: "/curl-to-fetch";
-      path: "/curl-to-fetch";
-      fullPath: "/curl-to-fetch";
-      preLoaderRoute: typeof CurlToFetchRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/curl-builder": {
-      id: "/curl-builder";
-      path: "/curl-builder";
-      fullPath: "/curl-builder";
-      preLoaderRoute: typeof CurlBuilderRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/csv-sql": {
-      id: "/csv-sql";
-      path: "/csv-sql";
-      fullPath: "/csv-sql";
-      preLoaderRoute: typeof CsvSqlRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/csv-json": {
-      id: "/csv-json";
-      path: "/csv-json";
-      fullPath: "/csv-json";
-      preLoaderRoute: typeof CsvJsonRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/css-variables": {
-      id: "/css-variables";
-      path: "/css-variables";
-      fullPath: "/css-variables";
-      preLoaderRoute: typeof CssVariablesRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/css-unit": {
-      id: "/css-unit";
-      path: "/css-unit";
-      fullPath: "/css-unit";
-      preLoaderRoute: typeof CssUnitRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/css-transform": {
-      id: "/css-transform";
-      path: "/css-transform";
-      fullPath: "/css-transform";
-      preLoaderRoute: typeof CssTransformRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/css-text-shadow": {
-      id: "/css-text-shadow";
-      path: "/css-text-shadow";
-      fullPath: "/css-text-shadow";
-      preLoaderRoute: typeof CssTextShadowRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/css-specificity": {
-      id: "/css-specificity";
-      path: "/css-specificity";
-      fullPath: "/css-specificity";
-      preLoaderRoute: typeof CssSpecificityRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/css-shorthand": {
-      id: "/css-shorthand";
-      path: "/css-shorthand";
-      fullPath: "/css-shorthand";
-      preLoaderRoute: typeof CssShorthandRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/css-selector": {
-      id: "/css-selector";
-      path: "/css-selector";
-      fullPath: "/css-selector";
-      preLoaderRoute: typeof CssSelectorRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/css-scroll-snap": {
-      id: "/css-scroll-snap";
-      path: "/css-scroll-snap";
-      fullPath: "/css-scroll-snap";
-      preLoaderRoute: typeof CssScrollSnapRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/css-media-query": {
-      id: "/css-media-query";
-      path: "/css-media-query";
-      fullPath: "/css-media-query";
-      preLoaderRoute: typeof CssMediaQueryRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/css-logical": {
-      id: "/css-logical";
-      path: "/css-logical";
-      fullPath: "/css-logical";
-      preLoaderRoute: typeof CssLogicalRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/css-grid": {
-      id: "/css-grid";
-      path: "/css-grid";
-      fullPath: "/css-grid";
-      preLoaderRoute: typeof CssGridRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/css-gradient": {
-      id: "/css-gradient";
-      path: "/css-gradient";
-      fullPath: "/css-gradient";
-      preLoaderRoute: typeof CssGradientRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/css-formatter": {
-      id: "/css-formatter";
-      path: "/css-formatter";
-      fullPath: "/css-formatter";
-      preLoaderRoute: typeof CssFormatterRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/css-flexbox": {
-      id: "/css-flexbox";
-      path: "/css-flexbox";
-      fullPath: "/css-flexbox";
-      preLoaderRoute: typeof CssFlexboxRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/css-filter": {
-      id: "/css-filter";
-      path: "/css-filter";
-      fullPath: "/css-filter";
-      preLoaderRoute: typeof CssFilterRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/css-cubic-bezier": {
-      id: "/css-cubic-bezier";
-      path: "/css-cubic-bezier";
-      fullPath: "/css-cubic-bezier";
-      preLoaderRoute: typeof CssCubicBezierRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/css-container-query": {
-      id: "/css-container-query";
-      path: "/css-container-query";
-      fullPath: "/css-container-query";
-      preLoaderRoute: typeof CssContainerQueryRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/css-clip-path": {
-      id: "/css-clip-path";
-      path: "/css-clip-path";
-      fullPath: "/css-clip-path";
-      preLoaderRoute: typeof CssClipPathRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/css-clamp": {
-      id: "/css-clamp";
-      path: "/css-clamp";
-      fullPath: "/css-clamp";
-      preLoaderRoute: typeof CssClampRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/css-box-shadow": {
-      id: "/css-box-shadow";
-      path: "/css-box-shadow";
-      fullPath: "/css-box-shadow";
-      preLoaderRoute: typeof CssBoxShadowRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/css-border-radius": {
-      id: "/css-border-radius";
-      path: "/css-border-radius";
-      fullPath: "/css-border-radius";
-      preLoaderRoute: typeof CssBorderRadiusRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/css-background-pattern": {
-      id: "/css-background-pattern";
-      path: "/css-background-pattern";
-      fullPath: "/css-background-pattern";
-      preLoaderRoute: typeof CssBackgroundPatternRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/css-animation": {
-      id: "/css-animation";
-      path: "/css-animation";
-      fullPath: "/css-animation";
-      preLoaderRoute: typeof CssAnimationRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/csp-builder": {
-      id: "/csp-builder";
-      path: "/csp-builder";
-      fullPath: "/csp-builder";
-      preLoaderRoute: typeof CspBuilderRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/cron-parser": {
-      id: "/cron-parser";
-      path: "/cron-parser";
-      fullPath: "/cron-parser";
-      preLoaderRoute: typeof CronParserRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/cron": {
-      id: "/cron";
-      path: "/cron";
-      fullPath: "/cron";
-      preLoaderRoute: typeof CronRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/countdown": {
-      id: "/countdown";
-      path: "/countdown";
-      fullPath: "/countdown";
-      preLoaderRoute: typeof CountdownRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/cors-builder": {
-      id: "/cors-builder";
-      path: "/cors-builder";
-      fullPath: "/cors-builder";
-      preLoaderRoute: typeof CorsBuilderRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/cookie-parser": {
-      id: "/cookie-parser";
-      path: "/cookie-parser";
-      fullPath: "/cookie-parser";
-      preLoaderRoute: typeof CookieParserRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/conventional-commits": {
-      id: "/conventional-commits";
-      path: "/conventional-commits";
-      fullPath: "/conventional-commits";
-      preLoaderRoute: typeof ConventionalCommitsRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/compound-interest": {
-      id: "/compound-interest";
-      path: "/compound-interest";
-      fullPath: "/compound-interest";
-      preLoaderRoute: typeof CompoundInterestRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/combinatorics": {
-      id: "/combinatorics";
-      path: "/combinatorics";
-      fullPath: "/combinatorics";
-      preLoaderRoute: typeof CombinatoricsRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/columnar-transposition": {
-      id: "/columnar-transposition";
-      path: "/columnar-transposition";
-      fullPath: "/columnar-transposition";
-      preLoaderRoute: typeof ColumnarTranspositionRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/color-token": {
-      id: "/color-token";
-      path: "/color-token";
-      fullPath: "/color-token";
-      preLoaderRoute: typeof ColorTokenRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/color-temperature": {
-      id: "/color-temperature";
-      path: "/color-temperature";
-      fullPath: "/color-temperature";
-      preLoaderRoute: typeof ColorTemperatureRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/color-picker": {
-      id: "/color-picker";
-      path: "/color-picker";
-      fullPath: "/color-picker";
-      preLoaderRoute: typeof ColorPickerRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/color-palette": {
-      id: "/color-palette";
-      path: "/color-palette";
-      fullPath: "/color-palette";
-      preLoaderRoute: typeof ColorPaletteRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/color-name": {
-      id: "/color-name";
-      path: "/color-name";
-      fullPath: "/color-name";
-      preLoaderRoute: typeof ColorNameRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/color-mix": {
-      id: "/color-mix";
-      path: "/color-mix";
-      fullPath: "/color-mix";
-      preLoaderRoute: typeof ColorMixRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/color-harmony": {
-      id: "/color-harmony";
-      path: "/color-harmony";
-      fullPath: "/color-harmony";
-      preLoaderRoute: typeof ColorHarmonyRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/color-extractor": {
-      id: "/color-extractor";
-      path: "/color-extractor";
-      fullPath: "/color-extractor";
-      preLoaderRoute: typeof ColorExtractorRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/color-converter": {
-      id: "/color-converter";
-      path: "/color-converter";
-      fullPath: "/color-converter";
-      preLoaderRoute: typeof ColorConverterRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/color-contrast": {
-      id: "/color-contrast";
-      path: "/color-contrast";
-      fullPath: "/color-contrast";
-      preLoaderRoute: typeof ColorContrastRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/color-blind": {
-      id: "/color-blind";
-      path: "/color-blind";
-      fullPath: "/color-blind";
-      preLoaderRoute: typeof ColorBlindRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/cidr": {
-      id: "/cidr";
-      path: "/cidr";
-      fullPath: "/cidr";
-      preLoaderRoute: typeof CidrRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/chmod": {
-      id: "/chmod";
-      path: "/chmod";
-      fullPath: "/chmod";
-      preLoaderRoute: typeof ChmodRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/char-frequency": {
-      id: "/char-frequency";
-      path: "/char-frequency";
-      fullPath: "/char-frequency";
-      preLoaderRoute: typeof CharFrequencyRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/char-count": {
-      id: "/char-count";
-      path: "/char-count";
-      fullPath: "/char-count";
-      preLoaderRoute: typeof CharCountRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/cert-decoder": {
-      id: "/cert-decoder";
-      path: "/cert-decoder";
-      fullPath: "/cert-decoder";
-      preLoaderRoute: typeof CertDecoderRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/caesar": {
-      id: "/caesar";
-      path: "/caesar";
-      fullPath: "/caesar";
-      preLoaderRoute: typeof CaesarRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/cache-control": {
-      id: "/cache-control";
-      path: "/cache-control";
-      fullPath: "/cache-control";
-      preLoaderRoute: typeof CacheControlRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/bst-visualizer": {
-      id: "/bst-visualizer";
-      path: "/bst-visualizer";
-      fullPath: "/bst-visualizer";
-      preLoaderRoute: typeof BstVisualizerRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/brainfuck": {
-      id: "/brainfuck";
-      path: "/brainfuck";
-      fullPath: "/brainfuck";
-      preLoaderRoute: typeof BrainfuckRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/braille": {
-      id: "/braille";
-      path: "/braille";
-      fullPath: "/braille";
-      preLoaderRoute: typeof BrailleRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/bpm": {
-      id: "/bpm";
-      path: "/bpm";
-      fullPath: "/bpm";
-      preLoaderRoute: typeof BpmRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/bmi-calculator": {
-      id: "/bmi-calculator";
-      path: "/bmi-calculator";
-      fullPath: "/bmi-calculator";
-      preLoaderRoute: typeof BmiCalculatorRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/bitwise": {
-      id: "/bitwise";
-      path: "/bitwise";
-      fullPath: "/bitwise";
-      preLoaderRoute: typeof BitwiseRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/bifid": {
-      id: "/bifid";
-      path: "/bifid";
-      fullPath: "/bifid";
-      preLoaderRoute: typeof BifidRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/beaufort": {
-      id: "/beaufort";
-      path: "/beaufort";
-      fullPath: "/beaufort";
-      preLoaderRoute: typeof BeaufortRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/basic-auth": {
-      id: "/basic-auth";
-      path: "/basic-auth";
-      fullPath: "/basic-auth";
-      preLoaderRoute: typeof BasicAuthRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/base85": {
-      id: "/base85";
-      path: "/base85";
-      fullPath: "/base85";
-      preLoaderRoute: typeof Base85RouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/base64-image": {
-      id: "/base64-image";
-      path: "/base64-image";
-      fullPath: "/base64-image";
-      preLoaderRoute: typeof Base64ImageRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/base64": {
-      id: "/base64";
-      path: "/base64";
-      fullPath: "/base64";
-      preLoaderRoute: typeof Base64RouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/base62": {
-      id: "/base62";
-      path: "/base62";
-      fullPath: "/base62";
-      preLoaderRoute: typeof Base62RouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/base58": {
-      id: "/base58";
-      path: "/base58";
-      fullPath: "/base58";
-      preLoaderRoute: typeof Base58RouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/base36": {
-      id: "/base36";
-      path: "/base36";
-      fullPath: "/base36";
-      preLoaderRoute: typeof Base36RouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/base32": {
-      id: "/base32";
-      path: "/base32";
-      fullPath: "/base32";
-      preLoaderRoute: typeof Base32RouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/base16": {
-      id: "/base16";
-      path: "/base16";
-      fullPath: "/base16";
-      preLoaderRoute: typeof Base16RouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/barcode": {
-      id: "/barcode";
-      path: "/barcode";
-      fullPath: "/barcode";
-      preLoaderRoute: typeof BarcodeRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/background-removal": {
-      id: "/background-removal";
-      path: "/background-removal";
-      fullPath: "/background-removal";
-      preLoaderRoute: typeof BackgroundRemovalRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/audio-converter": {
-      id: "/audio-converter";
-      path: "/audio-converter";
-      fullPath: "/audio-converter";
-      preLoaderRoute: typeof AudioConverterRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/atbash": {
-      id: "/atbash";
-      path: "/atbash";
-      fullPath: "/atbash";
-      preLoaderRoute: typeof AtbashRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/aspect-ratio": {
-      id: "/aspect-ratio";
-      path: "/aspect-ratio";
-      fullPath: "/aspect-ratio";
-      preLoaderRoute: typeof AspectRatioRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/ascii-table": {
-      id: "/ascii-table";
-      path: "/ascii-table";
-      fullPath: "/ascii-table";
-      preLoaderRoute: typeof AsciiTableRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/ascii-art": {
-      id: "/ascii-art";
-      path: "/ascii-art";
-      fullPath: "/ascii-art";
-      preLoaderRoute: typeof AsciiArtRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/ansi-color": {
-      id: "/ansi-color";
-      path: "/ansi-color";
-      fullPath: "/ansi-color";
-      preLoaderRoute: typeof AnsiColorRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/affine": {
-      id: "/affine";
-      path: "/affine";
-      fullPath: "/affine";
-      preLoaderRoute: typeof AffineRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/adfgvx": {
-      id: "/adfgvx";
-      path: "/adfgvx";
-      fullPath: "/adfgvx";
-      preLoaderRoute: typeof AdfgvxRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/": {
-      id: "/";
-      path: "/";
-      fullPath: "/";
-      preLoaderRoute: typeof IndexRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/api/image.webp": {
-      id: "/api/image.webp";
-      path: "/api/image.webp";
-      fullPath: "/api/image.webp";
-      preLoaderRoute: typeof ApiImageDotwebpRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/api/image.svg": {
-      id: "/api/image.svg";
-      path: "/api/image.svg";
-      fullPath: "/api/image.svg";
-      preLoaderRoute: typeof ApiImageDotsvgRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/api/image.png": {
-      id: "/api/image.png";
-      path: "/api/image.png";
-      fullPath: "/api/image.png";
-      preLoaderRoute: typeof ApiImageDotpngRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/api/image.jpg": {
-      id: "/api/image.jpg";
-      path: "/api/image.jpg";
-      fullPath: "/api/image.jpg";
-      preLoaderRoute: typeof ApiImageDotjpgRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
+    '/zero-width': {
+      id: '/zero-width'
+      path: '/zero-width'
+      fullPath: '/zero-width'
+      preLoaderRoute: typeof ZeroWidthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/zenkaku': {
+      id: '/zenkaku'
+      path: '/zenkaku'
+      fullPath: '/zenkaku'
+      preLoaderRoute: typeof ZenkakuRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/yaml-toml': {
+      id: '/yaml-toml'
+      path: '/yaml-toml'
+      fullPath: '/yaml-toml'
+      preLoaderRoute: typeof YamlTomlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/yaml-json': {
+      id: '/yaml-json'
+      path: '/yaml-json'
+      fullPath: '/yaml-json'
+      preLoaderRoute: typeof YamlJsonRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/yaml-formatter': {
+      id: '/yaml-formatter'
+      path: '/yaml-formatter'
+      fullPath: '/yaml-formatter'
+      preLoaderRoute: typeof YamlFormatterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/xpath': {
+      id: '/xpath'
+      path: '/xpath'
+      fullPath: '/xpath'
+      preLoaderRoute: typeof XpathRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/xml-json': {
+      id: '/xml-json'
+      path: '/xml-json'
+      fullPath: '/xml-json'
+      preLoaderRoute: typeof XmlJsonRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/xml': {
+      id: '/xml'
+      path: '/xml'
+      fullPath: '/xml'
+      preLoaderRoute: typeof XmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/world-clock': {
+      id: '/world-clock'
+      path: '/world-clock'
+      fullPath: '/world-clock'
+      preLoaderRoute: typeof WorldClockRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/wordle': {
+      id: '/wordle'
+      path: '/wordle'
+      fullPath: '/wordle'
+      preLoaderRoute: typeof WordleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/word-frequency': {
+      id: '/word-frequency'
+      path: '/word-frequency'
+      fullPath: '/word-frequency'
+      preLoaderRoute: typeof WordFrequencyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/whois': {
+      id: '/whois'
+      path: '/whois'
+      fullPath: '/whois'
+      preLoaderRoute: typeof WhoisRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/websocket': {
+      id: '/websocket'
+      path: '/websocket'
+      fullPath: '/websocket'
+      preLoaderRoute: typeof WebsocketRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/web-manifest': {
+      id: '/web-manifest'
+      path: '/web-manifest'
+      fullPath: '/web-manifest'
+      preLoaderRoute: typeof WebManifestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/warikan': {
+      id: '/warikan'
+      path: '/warikan'
+      fullPath: '/warikan'
+      preLoaderRoute: typeof WarikanRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/wareki': {
+      id: '/wareki'
+      path: '/wareki'
+      fullPath: '/wareki'
+      preLoaderRoute: typeof WarekiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/vscode-snippet': {
+      id: '/vscode-snippet'
+      path: '/vscode-snippet'
+      fullPath: '/vscode-snippet'
+      preLoaderRoute: typeof VscodeSnippetRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/vigenere': {
+      id: '/vigenere'
+      path: '/vigenere'
+      fullPath: '/vigenere'
+      preLoaderRoute: typeof VigenereRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/video-converter': {
+      id: '/video-converter'
+      path: '/video-converter'
+      fullPath: '/video-converter'
+      preLoaderRoute: typeof VideoConverterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/uuid-inspector': {
+      id: '/uuid-inspector'
+      path: '/uuid-inspector'
+      fullPath: '/uuid-inspector'
+      preLoaderRoute: typeof UuidInspectorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/uuid': {
+      id: '/uuid'
+      path: '/uuid'
+      fullPath: '/uuid'
+      preLoaderRoute: typeof UuidRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/utm-builder': {
+      id: '/utm-builder'
+      path: '/utm-builder'
+      fullPath: '/utm-builder'
+      preLoaderRoute: typeof UtmBuilderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/user-agent': {
+      id: '/user-agent'
+      path: '/user-agent'
+      fullPath: '/user-agent'
+      preLoaderRoute: typeof UserAgentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/url-parser': {
+      id: '/url-parser'
+      path: '/url-parser'
+      fullPath: '/url-parser'
+      preLoaderRoute: typeof UrlParserRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/url-encode': {
+      id: '/url-encode'
+      path: '/url-encode'
+      fullPath: '/url-encode'
+      preLoaderRoute: typeof UrlEncodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/unit-converter': {
+      id: '/unit-converter'
+      path: '/unit-converter'
+      fullPath: '/unit-converter'
+      preLoaderRoute: typeof UnitConverterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/unicode-inspector': {
+      id: '/unicode-inspector'
+      path: '/unicode-inspector'
+      fullPath: '/unicode-inspector'
+      preLoaderRoute: typeof UnicodeInspectorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/unicode': {
+      id: '/unicode'
+      path: '/unicode'
+      fullPath: '/unicode'
+      preLoaderRoute: typeof UnicodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ulid': {
+      id: '/ulid'
+      path: '/ulid'
+      fullPath: '/ulid'
+      preLoaderRoute: typeof UlidRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/typography-scale': {
+      id: '/typography-scale'
+      path: '/typography-scale'
+      fullPath: '/typography-scale'
+      preLoaderRoute: typeof TypographyScaleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/typing-speed': {
+      id: '/typing-speed'
+      path: '/typing-speed'
+      fullPath: '/typing-speed'
+      preLoaderRoute: typeof TypingSpeedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tsconfig-builder': {
+      id: '/tsconfig-builder'
+      path: '/tsconfig-builder'
+      fullPath: '/tsconfig-builder'
+      preLoaderRoute: typeof TsconfigBuilderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/truth-table': {
+      id: '/truth-table'
+      path: '/truth-table'
+      fullPath: '/truth-table'
+      preLoaderRoute: typeof TruthTableRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/trig': {
+      id: '/trig'
+      path: '/trig'
+      fullPath: '/trig'
+      preLoaderRoute: typeof TrigRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/transparent-image': {
+      id: '/transparent-image'
+      path: '/transparent-image'
+      fullPath: '/transparent-image'
+      preLoaderRoute: typeof TransparentImageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/transfer-speed': {
+      id: '/transfer-speed'
+      path: '/transfer-speed'
+      fullPath: '/transfer-speed'
+      preLoaderRoute: typeof TransferSpeedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/totp': {
+      id: '/totp'
+      path: '/totp'
+      fullPath: '/totp'
+      preLoaderRoute: typeof TotpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/top': {
+      id: '/top'
+      path: '/top'
+      fullPath: '/top'
+      preLoaderRoute: typeof TopRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/toml-json': {
+      id: '/toml-json'
+      path: '/toml-json'
+      fullPath: '/toml-json'
+      preLoaderRoute: typeof TomlJsonRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/toml-formatter': {
+      id: '/toml-formatter'
+      path: '/toml-formatter'
+      fullPath: '/toml-formatter'
+      preLoaderRoute: typeof TomlFormatterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/token-estimator': {
+      id: '/token-estimator'
+      path: '/token-estimator'
+      fullPath: '/token-estimator'
+      preLoaderRoute: typeof TokenEstimatorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/timezone': {
+      id: '/timezone'
+      path: '/timezone'
+      fullPath: '/timezone'
+      preLoaderRoute: typeof TimezoneRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/timestamp': {
+      id: '/timestamp'
+      path: '/timestamp'
+      fullPath: '/timestamp'
+      preLoaderRoute: typeof TimestampRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tic-tac-toe': {
+      id: '/tic-tac-toe'
+      path: '/tic-tac-toe'
+      fullPath: '/tic-tac-toe'
+      preLoaderRoute: typeof TicTacToeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/text-stats': {
+      id: '/text-stats'
+      path: '/text-stats'
+      fullPath: '/text-stats'
+      preLoaderRoute: typeof TextStatsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/text-sort': {
+      id: '/text-sort'
+      path: '/text-sort'
+      fullPath: '/text-sort'
+      preLoaderRoute: typeof TextSortRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/text-replace': {
+      id: '/text-replace'
+      path: '/text-replace'
+      fullPath: '/text-replace'
+      preLoaderRoute: typeof TextReplaceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/text-line': {
+      id: '/text-line'
+      path: '/text-line'
+      fullPath: '/text-line'
+      preLoaderRoute: typeof TextLineRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/text-encrypt': {
+      id: '/text-encrypt'
+      path: '/text-encrypt'
+      fullPath: '/text-encrypt'
+      preLoaderRoute: typeof TextEncryptRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/text-case': {
+      id: '/text-case'
+      path: '/text-case'
+      fullPath: '/text-case'
+      preLoaderRoute: typeof TextCaseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/text-binary': {
+      id: '/text-binary'
+      path: '/text-binary'
+      fullPath: '/text-binary'
+      preLoaderRoute: typeof TextBinaryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tetris': {
+      id: '/tetris'
+      path: '/tetris'
+      fullPath: '/tetris'
+      preLoaderRoute: typeof TetrisRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/template': {
+      id: '/template'
+      path: '/template'
+      fullPath: '/template'
+      preLoaderRoute: typeof TemplateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tax-calculator': {
+      id: '/tax-calculator'
+      path: '/tax-calculator'
+      fullPath: '/tax-calculator'
+      preLoaderRoute: typeof TaxCalculatorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tap-code': {
+      id: '/tap-code'
+      path: '/tap-code'
+      fullPath: '/tap-code'
+      preLoaderRoute: typeof TapCodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tailwind-colors': {
+      id: '/tailwind-colors'
+      path: '/tailwind-colors'
+      fullPath: '/tailwind-colors'
+      preLoaderRoute: typeof TailwindColorsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/svg-optimizer': {
+      id: '/svg-optimizer'
+      path: '/svg-optimizer'
+      fullPath: '/svg-optimizer'
+      preLoaderRoute: typeof SvgOptimizerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sudoku': {
+      id: '/sudoku'
+      path: '/sudoku'
+      fullPath: '/sudoku'
+      preLoaderRoute: typeof SudokuRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/string-similarity': {
+      id: '/string-similarity'
+      path: '/string-similarity'
+      fullPath: '/string-similarity'
+      preLoaderRoute: typeof StringSimilarityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/string-escape': {
+      id: '/string-escape'
+      path: '/string-escape'
+      fullPath: '/string-escape'
+      preLoaderRoute: typeof StringEscapeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/storage-converter': {
+      id: '/storage-converter'
+      path: '/storage-converter'
+      fullPath: '/storage-converter'
+      preLoaderRoute: typeof StorageConverterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/stopwatch': {
+      id: '/stopwatch'
+      path: '/stopwatch'
+      fullPath: '/stopwatch'
+      preLoaderRoute: typeof StopwatchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/statistics': {
+      id: '/statistics'
+      path: '/statistics'
+      fullPath: '/statistics'
+      preLoaderRoute: typeof StatisticsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ssh-key': {
+      id: '/ssh-key'
+      path: '/ssh-key'
+      fullPath: '/ssh-key'
+      preLoaderRoute: typeof SshKeyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sri-hash': {
+      id: '/sri-hash'
+      path: '/sri-hash'
+      fullPath: '/sri-hash'
+      preLoaderRoute: typeof SriHashRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sql-to-ts': {
+      id: '/sql-to-ts'
+      path: '/sql-to-ts'
+      fullPath: '/sql-to-ts'
+      preLoaderRoute: typeof SqlToTsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sql': {
+      id: '/sql'
+      path: '/sql'
+      fullPath: '/sql'
+      preLoaderRoute: typeof SqlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sort-visualizer': {
+      id: '/sort-visualizer'
+      path: '/sort-visualizer'
+      fullPath: '/sort-visualizer'
+      preLoaderRoute: typeof SortVisualizerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/snake': {
+      id: '/snake'
+      path: '/snake'
+      fullPath: '/snake'
+      preLoaderRoute: typeof SnakeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/slug': {
+      id: '/slug'
+      path: '/slug'
+      fullPath: '/slug'
+      preLoaderRoute: typeof SlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap': {
+      id: '/sitemap'
+      path: '/sitemap'
+      fullPath: '/sitemap'
+      preLoaderRoute: typeof SitemapRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/short-code': {
+      id: '/short-code'
+      path: '/short-code'
+      fullPath: '/short-code'
+      preLoaderRoute: typeof ShortCodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/server-env': {
+      id: '/server-env'
+      path: '/server-env'
+      fullPath: '/server-env'
+      preLoaderRoute: typeof ServerEnvRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sequences': {
+      id: '/sequences'
+      path: '/sequences'
+      fullPath: '/sequences'
+      preLoaderRoute: typeof SequencesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/seo-meta': {
+      id: '/seo-meta'
+      path: '/seo-meta'
+      fullPath: '/seo-meta'
+      preLoaderRoute: typeof SeoMetaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/semver': {
+      id: '/semver'
+      path: '/semver'
+      fullPath: '/semver'
+      preLoaderRoute: typeof SemverRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/security-headers': {
+      id: '/security-headers'
+      path: '/security-headers'
+      fullPath: '/security-headers'
+      preLoaderRoute: typeof SecurityHeadersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/scytale': {
+      id: '/scytale'
+      path: '/scytale'
+      fullPath: '/scytale'
+      preLoaderRoute: typeof ScytaleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/roman-numerals': {
+      id: '/roman-numerals'
+      path: '/roman-numerals'
+      fullPath: '/roman-numerals'
+      preLoaderRoute: typeof RomanNumeralsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/robots-txt': {
+      id: '/robots-txt'
+      path: '/robots-txt'
+      fullPath: '/robots-txt'
+      preLoaderRoute: typeof RobotsTxtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/regex-library': {
+      id: '/regex-library'
+      path: '/regex-library'
+      fullPath: '/regex-library'
+      preLoaderRoute: typeof RegexLibraryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/regex-checker': {
+      id: '/regex-checker'
+      path: '/regex-checker'
+      fullPath: '/regex-checker'
+      preLoaderRoute: typeof RegexCheckerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/redirect-tracer': {
+      id: '/redirect-tracer'
+      path: '/redirect-tracer'
+      fullPath: '/redirect-tracer'
+      preLoaderRoute: typeof RedirectTracerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/readability': {
+      id: '/readability'
+      path: '/readability'
+      fullPath: '/readability'
+      preLoaderRoute: typeof ReadabilityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/random-picker': {
+      id: '/random-picker'
+      path: '/random-picker'
+      fullPath: '/random-picker'
+      preLoaderRoute: typeof RandomPickerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/random-data': {
+      id: '/random-data'
+      path: '/random-data'
+      fullPath: '/random-data'
+      preLoaderRoute: typeof RandomDataRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rail-fence': {
+      id: '/rail-fence'
+      path: '/rail-fence'
+      fullPath: '/rail-fence'
+      preLoaderRoute: typeof RailFenceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/quoted-printable': {
+      id: '/quoted-printable'
+      path: '/quoted-printable'
+      fullPath: '/quoted-printable'
+      preLoaderRoute: typeof QuotedPrintableRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/qr-code': {
+      id: '/qr-code'
+      path: '/qr-code'
+      fullPath: '/qr-code'
+      preLoaderRoute: typeof QrCodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/punycode': {
+      id: '/punycode'
+      path: '/punycode'
+      fullPath: '/punycode'
+      preLoaderRoute: typeof PunycodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/prettier-config-builder': {
+      id: '/prettier-config-builder'
+      path: '/prettier-config-builder'
+      fullPath: '/prettier-config-builder'
+      preLoaderRoute: typeof PrettierConfigBuilderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ports': {
+      id: '/ports'
+      path: '/ports'
+      fullPath: '/ports'
+      preLoaderRoute: typeof PortsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/port-check': {
+      id: '/port-check'
+      path: '/port-check'
+      fullPath: '/port-check'
+      preLoaderRoute: typeof PortCheckRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pomodoro': {
+      id: '/pomodoro'
+      path: '/pomodoro'
+      fullPath: '/pomodoro'
+      preLoaderRoute: typeof PomodoroRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/polybius': {
+      id: '/polybius'
+      path: '/polybius'
+      fullPath: '/polybius'
+      preLoaderRoute: typeof PolybiusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/playfair': {
+      id: '/playfair'
+      path: '/playfair'
+      fullPath: '/playfair'
+      preLoaderRoute: typeof PlayfairRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pkce': {
+      id: '/pkce'
+      path: '/pkce'
+      fullPath: '/pkce'
+      preLoaderRoute: typeof PkceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/php-serialize': {
+      id: '/php-serialize'
+      path: '/php-serialize'
+      fullPath: '/php-serialize'
+      preLoaderRoute: typeof PhpSerializeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/phone': {
+      id: '/phone'
+      path: '/phone'
+      fullPath: '/phone'
+      preLoaderRoute: typeof PhoneRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/percentage-calculator': {
+      id: '/percentage-calculator'
+      path: '/percentage-calculator'
+      fullPath: '/percentage-calculator'
+      preLoaderRoute: typeof PercentageCalculatorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/password-strength': {
+      id: '/password-strength'
+      path: '/password-strength'
+      fullPath: '/password-strength'
+      preLoaderRoute: typeof PasswordStrengthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/password-generator': {
+      id: '/password-generator'
+      path: '/password-generator'
+      fullPath: '/password-generator'
+      preLoaderRoute: typeof PasswordGeneratorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/passphrase': {
+      id: '/passphrase'
+      path: '/passphrase'
+      fullPath: '/passphrase'
+      preLoaderRoute: typeof PassphraseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/package-json': {
+      id: '/package-json'
+      path: '/package-json'
+      fullPath: '/package-json'
+      preLoaderRoute: typeof PackageJsonRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/openssl-builder': {
+      id: '/openssl-builder'
+      path: '/openssl-builder'
+      fullPath: '/openssl-builder'
+      preLoaderRoute: typeof OpensslBuilderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ogp-generator': {
+      id: '/ogp-generator'
+      path: '/ogp-generator'
+      fullPath: '/ogp-generator'
+      preLoaderRoute: typeof OgpGeneratorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ogp': {
+      id: '/ogp'
+      path: '/ogp'
+      fullPath: '/ogp'
+      preLoaderRoute: typeof OgpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/number-words': {
+      id: '/number-words'
+      path: '/number-words'
+      fullPath: '/number-words'
+      preLoaderRoute: typeof NumberWordsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/number-theory': {
+      id: '/number-theory'
+      path: '/number-theory'
+      fullPath: '/number-theory'
+      preLoaderRoute: typeof NumberTheoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/number-format': {
+      id: '/number-format'
+      path: '/number-format'
+      fullPath: '/number-format'
+      preLoaderRoute: typeof NumberFormatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/number-base': {
+      id: '/number-base'
+      path: '/number-base'
+      fullPath: '/number-base'
+      preLoaderRoute: typeof NumberBaseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/nginx-config': {
+      id: '/nginx-config'
+      path: '/nginx-config'
+      fullPath: '/nginx-config'
+      preLoaderRoute: typeof NginxConfigRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/nato-alphabet': {
+      id: '/nato-alphabet'
+      path: '/nato-alphabet'
+      fullPath: '/nato-alphabet'
+      preLoaderRoute: typeof NatoAlphabetRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/nano-id': {
+      id: '/nano-id'
+      path: '/nano-id'
+      fullPath: '/nano-id'
+      preLoaderRoute: typeof NanoIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/msgpack': {
+      id: '/msgpack'
+      path: '/msgpack'
+      fullPath: '/msgpack'
+      preLoaderRoute: typeof MsgpackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/morse-code': {
+      id: '/morse-code'
+      path: '/morse-code'
+      fullPath: '/morse-code'
+      preLoaderRoute: typeof MorseCodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/minify': {
+      id: '/minify'
+      path: '/minify'
+      fullPath: '/minify'
+      preLoaderRoute: typeof MinifyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/minesweeper': {
+      id: '/minesweeper'
+      path: '/minesweeper'
+      fullPath: '/minesweeper'
+      preLoaderRoute: typeof MinesweeperRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mime-types': {
+      id: '/mime-types'
+      path: '/mime-types'
+      fullPath: '/mime-types'
+      preLoaderRoute: typeof MimeTypesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mermaid': {
+      id: '/mermaid'
+      path: '/mermaid'
+      fullPath: '/mermaid'
+      preLoaderRoute: typeof MermaidRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/matrix': {
+      id: '/matrix'
+      path: '/matrix'
+      fullPath: '/matrix'
+      preLoaderRoute: typeof MatrixRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/math-eval': {
+      id: '/math-eval'
+      path: '/math-eval'
+      fullPath: '/math-eval'
+      preLoaderRoute: typeof MathEvalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/markdown-table': {
+      id: '/markdown-table'
+      path: '/markdown-table'
+      fullPath: '/markdown-table'
+      preLoaderRoute: typeof MarkdownTableRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/markdown-preview': {
+      id: '/markdown-preview'
+      path: '/markdown-preview'
+      fullPath: '/markdown-preview'
+      preLoaderRoute: typeof MarkdownPreviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mandelbrot': {
+      id: '/mandelbrot'
+      path: '/mandelbrot'
+      fullPath: '/mandelbrot'
+      preLoaderRoute: typeof MandelbrotRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/makefile': {
+      id: '/makefile'
+      path: '/makefile'
+      fullPath: '/makefile'
+      preLoaderRoute: typeof MakefileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/luhn-check': {
+      id: '/luhn-check'
+      path: '/luhn-check'
+      fullPath: '/luhn-check'
+      preLoaderRoute: typeof LuhnCheckRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lorem-ipsum': {
+      id: '/lorem-ipsum'
+      path: '/lorem-ipsum'
+      fullPath: '/lorem-ipsum'
+      preLoaderRoute: typeof LoremIpsumRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/loan-calculator': {
+      id: '/loan-calculator'
+      path: '/loan-calculator'
+      fullPath: '/loan-calculator'
+      preLoaderRoute: typeof LoanCalculatorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lissajous': {
+      id: '/lissajous'
+      path: '/lissajous'
+      fullPath: '/lissajous'
+      preLoaderRoute: typeof LissajousRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/line-ending': {
+      id: '/line-ending'
+      path: '/line-ending'
+      fullPath: '/line-ending'
+      preLoaderRoute: typeof LineEndingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/life-game': {
+      id: '/life-game'
+      path: '/life-game'
+      fullPath: '/life-game'
+      preLoaderRoute: typeof LifeGameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/keycode': {
+      id: '/keycode'
+      path: '/keycode'
+      fullPath: '/keycode'
+      preLoaderRoute: typeof KeycodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kana-convert': {
+      id: '/kana-convert'
+      path: '/kana-convert'
+      fullPath: '/kana-convert'
+      preLoaderRoute: typeof KanaConvertRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/jwt-generator': {
+      id: '/jwt-generator'
+      path: '/jwt-generator'
+      fullPath: '/jwt-generator'
+      preLoaderRoute: typeof JwtGeneratorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/jwt': {
+      id: '/jwt'
+      path: '/jwt'
+      fullPath: '/jwt'
+      preLoaderRoute: typeof JwtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/json-to-zod': {
+      id: '/json-to-zod'
+      path: '/json-to-zod'
+      fullPath: '/json-to-zod'
+      preLoaderRoute: typeof JsonToZodRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/json-to-ts': {
+      id: '/json-to-ts'
+      path: '/json-to-ts'
+      fullPath: '/json-to-ts'
+      preLoaderRoute: typeof JsonToTsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/json-to-sql': {
+      id: '/json-to-sql'
+      path: '/json-to-sql'
+      fullPath: '/json-to-sql'
+      preLoaderRoute: typeof JsonToSqlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/json-to-graphql': {
+      id: '/json-to-graphql'
+      path: '/json-to-graphql'
+      fullPath: '/json-to-graphql'
+      preLoaderRoute: typeof JsonToGraphqlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/json-schema-validator': {
+      id: '/json-schema-validator'
+      path: '/json-schema-validator'
+      fullPath: '/json-schema-validator'
+      preLoaderRoute: typeof JsonSchemaValidatorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/json-schema': {
+      id: '/json-schema'
+      path: '/json-schema'
+      fullPath: '/json-schema'
+      preLoaderRoute: typeof JsonSchemaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/json-pointer': {
+      id: '/json-pointer'
+      path: '/json-pointer'
+      fullPath: '/json-pointer'
+      preLoaderRoute: typeof JsonPointerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/json-path': {
+      id: '/json-path'
+      path: '/json-path'
+      fullPath: '/json-path'
+      preLoaderRoute: typeof JsonPathRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/json-merge': {
+      id: '/json-merge'
+      path: '/json-merge'
+      fullPath: '/json-merge'
+      preLoaderRoute: typeof JsonMergeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/json-lines': {
+      id: '/json-lines'
+      path: '/json-lines'
+      fullPath: '/json-lines'
+      preLoaderRoute: typeof JsonLinesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/json-flatten': {
+      id: '/json-flatten'
+      path: '/json-flatten'
+      fullPath: '/json-flatten'
+      preLoaderRoute: typeof JsonFlattenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/json-compare': {
+      id: '/json-compare'
+      path: '/json-compare'
+      fullPath: '/json-compare'
+      preLoaderRoute: typeof JsonCompareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/json': {
+      id: '/json'
+      path: '/json'
+      fullPath: '/json'
+      preLoaderRoute: typeof JsonRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/isbn': {
+      id: '/isbn'
+      path: '/isbn'
+      fullPath: '/isbn'
+      preLoaderRoute: typeof IsbnRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ipv6': {
+      id: '/ipv6'
+      path: '/ipv6'
+      fullPath: '/ipv6'
+      preLoaderRoute: typeof Ipv6RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ip-geolocation': {
+      id: '/ip-geolocation'
+      path: '/ip-geolocation'
+      fullPath: '/ip-geolocation'
+      preLoaderRoute: typeof IpGeolocationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ip-converter': {
+      id: '/ip-converter'
+      path: '/ip-converter'
+      fullPath: '/ip-converter'
+      preLoaderRoute: typeof IpConverterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ip-cidr-check': {
+      id: '/ip-cidr-check'
+      path: '/ip-cidr-check'
+      fullPath: '/ip-cidr-check'
+      preLoaderRoute: typeof IpCidrCheckRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ini-parser': {
+      id: '/ini-parser'
+      path: '/ini-parser'
+      fullPath: '/ini-parser'
+      preLoaderRoute: typeof IniParserRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/image-to-gif': {
+      id: '/image-to-gif'
+      path: '/image-to-gif'
+      fullPath: '/image-to-gif'
+      preLoaderRoute: typeof ImageToGifRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/image-resize': {
+      id: '/image-resize'
+      path: '/image-resize'
+      fullPath: '/image-resize'
+      preLoaderRoute: typeof ImageResizeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/image-crop': {
+      id: '/image-crop'
+      path: '/image-crop'
+      fullPath: '/image-crop'
+      preLoaderRoute: typeof ImageCropRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/image-compress': {
+      id: '/image-compress'
+      path: '/image-compress'
+      fullPath: '/image-compress'
+      preLoaderRoute: typeof ImageCompressRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/image-base64': {
+      id: '/image-base64'
+      path: '/image-base64'
+      fullPath: '/image-base64'
+      preLoaderRoute: typeof ImageBase64RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ieee754': {
+      id: '/ieee754'
+      path: '/ieee754'
+      fullPath: '/ieee754'
+      preLoaderRoute: typeof Ieee754RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/iban': {
+      id: '/iban'
+      path: '/iban'
+      fullPath: '/iban'
+      preLoaderRoute: typeof IbanRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/http-status': {
+      id: '/http-status'
+      path: '/http-status'
+      fullPath: '/http-status'
+      preLoaderRoute: typeof HttpStatusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/http-headers': {
+      id: '/http-headers'
+      path: '/http-headers'
+      fullPath: '/http-headers'
+      preLoaderRoute: typeof HttpHeadersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/http-client': {
+      id: '/http-client'
+      path: '/http-client'
+      fullPath: '/http-client'
+      preLoaderRoute: typeof HttpClientRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/html-to-jsx': {
+      id: '/html-to-jsx'
+      path: '/html-to-jsx'
+      fullPath: '/html-to-jsx'
+      preLoaderRoute: typeof HtmlToJsxRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/html-playground': {
+      id: '/html-playground'
+      path: '/html-playground'
+      fullPath: '/html-playground'
+      preLoaderRoute: typeof HtmlPlaygroundRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/html-markdown': {
+      id: '/html-markdown'
+      path: '/html-markdown'
+      fullPath: '/html-markdown'
+      preLoaderRoute: typeof HtmlMarkdownRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/html-formatter': {
+      id: '/html-formatter'
+      path: '/html-formatter'
+      fullPath: '/html-formatter'
+      preLoaderRoute: typeof HtmlFormatterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/html-encode': {
+      id: '/html-encode'
+      path: '/html-encode'
+      fullPath: '/html-encode'
+      preLoaderRoute: typeof HtmlEncodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/htaccess-builder': {
+      id: '/htaccess-builder'
+      path: '/htaccess-builder'
+      fullPath: '/htaccess-builder'
+      preLoaderRoute: typeof HtaccessBuilderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hmac': {
+      id: '/hmac'
+      path: '/hmac'
+      fullPath: '/hmac'
+      preLoaderRoute: typeof HmacRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hex-viewer': {
+      id: '/hex-viewer'
+      path: '/hex-viewer'
+      fullPath: '/hex-viewer'
+      preLoaderRoute: typeof HexViewerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/haversine': {
+      id: '/haversine'
+      path: '/haversine'
+      fullPath: '/haversine'
+      preLoaderRoute: typeof HaversineRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hash': {
+      id: '/hash'
+      path: '/hash'
+      fullPath: '/hash'
+      preLoaderRoute: typeof HashRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/har': {
+      id: '/har'
+      path: '/har'
+      fullPath: '/har'
+      preLoaderRoute: typeof HarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hangman': {
+      id: '/hangman'
+      path: '/hangman'
+      fullPath: '/hangman'
+      preLoaderRoute: typeof HangmanRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gzip': {
+      id: '/gzip'
+      path: '/gzip'
+      fullPath: '/gzip'
+      preLoaderRoute: typeof GzipRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gronsfeld': {
+      id: '/gronsfeld'
+      path: '/gronsfeld'
+      fullPath: '/gronsfeld'
+      preLoaderRoute: typeof GronsfeldRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/graphql': {
+      id: '/graphql'
+      path: '/graphql'
+      fullPath: '/graphql'
+      preLoaderRoute: typeof GraphqlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/global-ip': {
+      id: '/global-ip'
+      path: '/global-ip'
+      fullPath: '/global-ip'
+      preLoaderRoute: typeof GlobalIpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/glob-tester': {
+      id: '/glob-tester'
+      path: '/glob-tester'
+      fullPath: '/glob-tester'
+      preLoaderRoute: typeof GlobTesterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gitignore': {
+      id: '/gitignore'
+      path: '/gitignore'
+      fullPath: '/gitignore'
+      preLoaderRoute: typeof GitignoreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/github-badge': {
+      id: '/github-badge'
+      path: '/github-badge'
+      fullPath: '/github-badge'
+      preLoaderRoute: typeof GithubBadgeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/github-actions': {
+      id: '/github-actions'
+      path: '/github-actions'
+      fullPath: '/github-actions'
+      preLoaderRoute: typeof GithubActionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gitattributes': {
+      id: '/gitattributes'
+      path: '/gitattributes'
+      fullPath: '/gitattributes'
+      preLoaderRoute: typeof GitattributesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/geometry': {
+      id: '/geometry'
+      path: '/geometry'
+      fullPath: '/geometry'
+      preLoaderRoute: typeof GeometryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/geohash': {
+      id: '/geohash'
+      path: '/geohash'
+      fullPath: '/geohash'
+      preLoaderRoute: typeof GeohashRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/game-2048': {
+      id: '/game-2048'
+      path: '/game-2048'
+      fullPath: '/game-2048'
+      preLoaderRoute: typeof Game2048RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/function-plotter': {
+      id: '/function-plotter'
+      path: '/function-plotter'
+      fullPath: '/function-plotter'
+      preLoaderRoute: typeof FunctionPlotterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fraction': {
+      id: '/fraction'
+      path: '/fraction'
+      fullPath: '/fraction'
+      preLoaderRoute: typeof FractionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/four-square': {
+      id: '/four-square'
+      path: '/four-square'
+      fullPath: '/four-square'
+      preLoaderRoute: typeof FourSquareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/favicon-generator': {
+      id: '/favicon-generator'
+      path: '/favicon-generator'
+      fullPath: '/favicon-generator'
+      preLoaderRoute: typeof FaviconGeneratorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fancy-text': {
+      id: '/fancy-text'
+      path: '/fancy-text'
+      fullPath: '/fancy-text'
+      preLoaderRoute: typeof FancyTextRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/exif-viewer': {
+      id: '/exif-viewer'
+      path: '/exif-viewer'
+      fullPath: '/exif-viewer'
+      preLoaderRoute: typeof ExifViewerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/eslint-config-builder': {
+      id: '/eslint-config-builder'
+      path: '/eslint-config-builder'
+      fullPath: '/eslint-config-builder'
+      preLoaderRoute: typeof EslintConfigBuilderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/env-parser': {
+      id: '/env-parser'
+      path: '/env-parser'
+      fullPath: '/env-parser'
+      preLoaderRoute: typeof EnvParserRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/entropy': {
+      id: '/entropy'
+      path: '/entropy'
+      fullPath: '/entropy'
+      preLoaderRoute: typeof EntropyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/encoding': {
+      id: '/encoding'
+      path: '/encoding'
+      fullPath: '/encoding'
+      preLoaderRoute: typeof EncodingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/encode-chain': {
+      id: '/encode-chain'
+      path: '/encode-chain'
+      fullPath: '/encode-chain'
+      preLoaderRoute: typeof EncodeChainRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/emoji-converter': {
+      id: '/emoji-converter'
+      path: '/emoji-converter'
+      fullPath: '/emoji-converter'
+      preLoaderRoute: typeof EmojiConverterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/email-header': {
+      id: '/email-header'
+      path: '/email-header'
+      fullPath: '/email-header'
+      preLoaderRoute: typeof EmailHeaderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/email-dns': {
+      id: '/email-dns'
+      path: '/email-dns'
+      fullPath: '/email-dns'
+      preLoaderRoute: typeof EmailDnsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/editorconfig': {
+      id: '/editorconfig'
+      path: '/editorconfig'
+      fullPath: '/editorconfig'
+      preLoaderRoute: typeof EditorconfigRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/duration': {
+      id: '/duration'
+      path: '/duration'
+      fullPath: '/duration'
+      preLoaderRoute: typeof DurationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dummy-image': {
+      id: '/dummy-image'
+      path: '/dummy-image'
+      fullPath: '/dummy-image'
+      preLoaderRoute: typeof DummyImageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dummy-audio': {
+      id: '/dummy-audio'
+      path: '/dummy-audio'
+      fullPath: '/dummy-audio'
+      preLoaderRoute: typeof DummyAudioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dockerfile': {
+      id: '/dockerfile'
+      path: '/dockerfile'
+      fullPath: '/dockerfile'
+      preLoaderRoute: typeof DockerfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/docker-run-to-compose': {
+      id: '/docker-run-to-compose'
+      path: '/docker-run-to-compose'
+      fullPath: '/docker-run-to-compose'
+      preLoaderRoute: typeof DockerRunToComposeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dns-lookup': {
+      id: '/dns-lookup'
+      path: '/dns-lookup'
+      fullPath: '/dns-lookup'
+      preLoaderRoute: typeof DnsLookupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/discord-sticker': {
+      id: '/discord-sticker'
+      path: '/discord-sticker'
+      fullPath: '/discord-sticker'
+      preLoaderRoute: typeof DiscordStickerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/discord-emoji': {
+      id: '/discord-emoji'
+      path: '/discord-emoji'
+      fullPath: '/discord-emoji'
+      preLoaderRoute: typeof DiscordEmojiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/diff': {
+      id: '/diff'
+      path: '/diff'
+      fullPath: '/diff'
+      preLoaderRoute: typeof DiffRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dice-roll': {
+      id: '/dice-roll'
+      path: '/dice-roll'
+      fullPath: '/dice-roll'
+      preLoaderRoute: typeof DiceRollRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/date-calc': {
+      id: '/date-calc'
+      path: '/date-calc'
+      fullPath: '/date-calc'
+      preLoaderRoute: typeof DateCalcRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/daiji': {
+      id: '/daiji'
+      path: '/daiji'
+      fullPath: '/daiji'
+      preLoaderRoute: typeof DaijiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/curl-to-fetch': {
+      id: '/curl-to-fetch'
+      path: '/curl-to-fetch'
+      fullPath: '/curl-to-fetch'
+      preLoaderRoute: typeof CurlToFetchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/curl-builder': {
+      id: '/curl-builder'
+      path: '/curl-builder'
+      fullPath: '/curl-builder'
+      preLoaderRoute: typeof CurlBuilderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/csv-sql': {
+      id: '/csv-sql'
+      path: '/csv-sql'
+      fullPath: '/csv-sql'
+      preLoaderRoute: typeof CsvSqlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/csv-json': {
+      id: '/csv-json'
+      path: '/csv-json'
+      fullPath: '/csv-json'
+      preLoaderRoute: typeof CsvJsonRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/css-variables': {
+      id: '/css-variables'
+      path: '/css-variables'
+      fullPath: '/css-variables'
+      preLoaderRoute: typeof CssVariablesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/css-unit': {
+      id: '/css-unit'
+      path: '/css-unit'
+      fullPath: '/css-unit'
+      preLoaderRoute: typeof CssUnitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/css-transform': {
+      id: '/css-transform'
+      path: '/css-transform'
+      fullPath: '/css-transform'
+      preLoaderRoute: typeof CssTransformRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/css-text-shadow': {
+      id: '/css-text-shadow'
+      path: '/css-text-shadow'
+      fullPath: '/css-text-shadow'
+      preLoaderRoute: typeof CssTextShadowRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/css-specificity': {
+      id: '/css-specificity'
+      path: '/css-specificity'
+      fullPath: '/css-specificity'
+      preLoaderRoute: typeof CssSpecificityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/css-shorthand': {
+      id: '/css-shorthand'
+      path: '/css-shorthand'
+      fullPath: '/css-shorthand'
+      preLoaderRoute: typeof CssShorthandRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/css-selector': {
+      id: '/css-selector'
+      path: '/css-selector'
+      fullPath: '/css-selector'
+      preLoaderRoute: typeof CssSelectorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/css-scroll-snap': {
+      id: '/css-scroll-snap'
+      path: '/css-scroll-snap'
+      fullPath: '/css-scroll-snap'
+      preLoaderRoute: typeof CssScrollSnapRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/css-media-query': {
+      id: '/css-media-query'
+      path: '/css-media-query'
+      fullPath: '/css-media-query'
+      preLoaderRoute: typeof CssMediaQueryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/css-logical': {
+      id: '/css-logical'
+      path: '/css-logical'
+      fullPath: '/css-logical'
+      preLoaderRoute: typeof CssLogicalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/css-grid': {
+      id: '/css-grid'
+      path: '/css-grid'
+      fullPath: '/css-grid'
+      preLoaderRoute: typeof CssGridRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/css-gradient': {
+      id: '/css-gradient'
+      path: '/css-gradient'
+      fullPath: '/css-gradient'
+      preLoaderRoute: typeof CssGradientRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/css-formatter': {
+      id: '/css-formatter'
+      path: '/css-formatter'
+      fullPath: '/css-formatter'
+      preLoaderRoute: typeof CssFormatterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/css-flexbox': {
+      id: '/css-flexbox'
+      path: '/css-flexbox'
+      fullPath: '/css-flexbox'
+      preLoaderRoute: typeof CssFlexboxRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/css-filter': {
+      id: '/css-filter'
+      path: '/css-filter'
+      fullPath: '/css-filter'
+      preLoaderRoute: typeof CssFilterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/css-cubic-bezier': {
+      id: '/css-cubic-bezier'
+      path: '/css-cubic-bezier'
+      fullPath: '/css-cubic-bezier'
+      preLoaderRoute: typeof CssCubicBezierRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/css-container-query': {
+      id: '/css-container-query'
+      path: '/css-container-query'
+      fullPath: '/css-container-query'
+      preLoaderRoute: typeof CssContainerQueryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/css-clip-path': {
+      id: '/css-clip-path'
+      path: '/css-clip-path'
+      fullPath: '/css-clip-path'
+      preLoaderRoute: typeof CssClipPathRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/css-clamp': {
+      id: '/css-clamp'
+      path: '/css-clamp'
+      fullPath: '/css-clamp'
+      preLoaderRoute: typeof CssClampRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/css-box-shadow': {
+      id: '/css-box-shadow'
+      path: '/css-box-shadow'
+      fullPath: '/css-box-shadow'
+      preLoaderRoute: typeof CssBoxShadowRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/css-border-radius': {
+      id: '/css-border-radius'
+      path: '/css-border-radius'
+      fullPath: '/css-border-radius'
+      preLoaderRoute: typeof CssBorderRadiusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/css-background-pattern': {
+      id: '/css-background-pattern'
+      path: '/css-background-pattern'
+      fullPath: '/css-background-pattern'
+      preLoaderRoute: typeof CssBackgroundPatternRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/css-animation': {
+      id: '/css-animation'
+      path: '/css-animation'
+      fullPath: '/css-animation'
+      preLoaderRoute: typeof CssAnimationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/csp-builder': {
+      id: '/csp-builder'
+      path: '/csp-builder'
+      fullPath: '/csp-builder'
+      preLoaderRoute: typeof CspBuilderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cron-parser': {
+      id: '/cron-parser'
+      path: '/cron-parser'
+      fullPath: '/cron-parser'
+      preLoaderRoute: typeof CronParserRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cron': {
+      id: '/cron'
+      path: '/cron'
+      fullPath: '/cron'
+      preLoaderRoute: typeof CronRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/countdown': {
+      id: '/countdown'
+      path: '/countdown'
+      fullPath: '/countdown'
+      preLoaderRoute: typeof CountdownRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cors-builder': {
+      id: '/cors-builder'
+      path: '/cors-builder'
+      fullPath: '/cors-builder'
+      preLoaderRoute: typeof CorsBuilderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cookie-parser': {
+      id: '/cookie-parser'
+      path: '/cookie-parser'
+      fullPath: '/cookie-parser'
+      preLoaderRoute: typeof CookieParserRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/conventional-commits': {
+      id: '/conventional-commits'
+      path: '/conventional-commits'
+      fullPath: '/conventional-commits'
+      preLoaderRoute: typeof ConventionalCommitsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/compound-interest': {
+      id: '/compound-interest'
+      path: '/compound-interest'
+      fullPath: '/compound-interest'
+      preLoaderRoute: typeof CompoundInterestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/combinatorics': {
+      id: '/combinatorics'
+      path: '/combinatorics'
+      fullPath: '/combinatorics'
+      preLoaderRoute: typeof CombinatoricsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/columnar-transposition': {
+      id: '/columnar-transposition'
+      path: '/columnar-transposition'
+      fullPath: '/columnar-transposition'
+      preLoaderRoute: typeof ColumnarTranspositionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/color-token': {
+      id: '/color-token'
+      path: '/color-token'
+      fullPath: '/color-token'
+      preLoaderRoute: typeof ColorTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/color-temperature': {
+      id: '/color-temperature'
+      path: '/color-temperature'
+      fullPath: '/color-temperature'
+      preLoaderRoute: typeof ColorTemperatureRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/color-picker': {
+      id: '/color-picker'
+      path: '/color-picker'
+      fullPath: '/color-picker'
+      preLoaderRoute: typeof ColorPickerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/color-palette': {
+      id: '/color-palette'
+      path: '/color-palette'
+      fullPath: '/color-palette'
+      preLoaderRoute: typeof ColorPaletteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/color-name': {
+      id: '/color-name'
+      path: '/color-name'
+      fullPath: '/color-name'
+      preLoaderRoute: typeof ColorNameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/color-mix': {
+      id: '/color-mix'
+      path: '/color-mix'
+      fullPath: '/color-mix'
+      preLoaderRoute: typeof ColorMixRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/color-harmony': {
+      id: '/color-harmony'
+      path: '/color-harmony'
+      fullPath: '/color-harmony'
+      preLoaderRoute: typeof ColorHarmonyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/color-extractor': {
+      id: '/color-extractor'
+      path: '/color-extractor'
+      fullPath: '/color-extractor'
+      preLoaderRoute: typeof ColorExtractorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/color-converter': {
+      id: '/color-converter'
+      path: '/color-converter'
+      fullPath: '/color-converter'
+      preLoaderRoute: typeof ColorConverterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/color-contrast': {
+      id: '/color-contrast'
+      path: '/color-contrast'
+      fullPath: '/color-contrast'
+      preLoaderRoute: typeof ColorContrastRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/color-blind': {
+      id: '/color-blind'
+      path: '/color-blind'
+      fullPath: '/color-blind'
+      preLoaderRoute: typeof ColorBlindRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cidr': {
+      id: '/cidr'
+      path: '/cidr'
+      fullPath: '/cidr'
+      preLoaderRoute: typeof CidrRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/chmod': {
+      id: '/chmod'
+      path: '/chmod'
+      fullPath: '/chmod'
+      preLoaderRoute: typeof ChmodRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/char-frequency': {
+      id: '/char-frequency'
+      path: '/char-frequency'
+      fullPath: '/char-frequency'
+      preLoaderRoute: typeof CharFrequencyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/char-count': {
+      id: '/char-count'
+      path: '/char-count'
+      fullPath: '/char-count'
+      preLoaderRoute: typeof CharCountRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cert-decoder': {
+      id: '/cert-decoder'
+      path: '/cert-decoder'
+      fullPath: '/cert-decoder'
+      preLoaderRoute: typeof CertDecoderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/caesar': {
+      id: '/caesar'
+      path: '/caesar'
+      fullPath: '/caesar'
+      preLoaderRoute: typeof CaesarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cache-control': {
+      id: '/cache-control'
+      path: '/cache-control'
+      fullPath: '/cache-control'
+      preLoaderRoute: typeof CacheControlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bst-visualizer': {
+      id: '/bst-visualizer'
+      path: '/bst-visualizer'
+      fullPath: '/bst-visualizer'
+      preLoaderRoute: typeof BstVisualizerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/brainfuck': {
+      id: '/brainfuck'
+      path: '/brainfuck'
+      fullPath: '/brainfuck'
+      preLoaderRoute: typeof BrainfuckRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/braille': {
+      id: '/braille'
+      path: '/braille'
+      fullPath: '/braille'
+      preLoaderRoute: typeof BrailleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bpm': {
+      id: '/bpm'
+      path: '/bpm'
+      fullPath: '/bpm'
+      preLoaderRoute: typeof BpmRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bmi-calculator': {
+      id: '/bmi-calculator'
+      path: '/bmi-calculator'
+      fullPath: '/bmi-calculator'
+      preLoaderRoute: typeof BmiCalculatorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bitwise': {
+      id: '/bitwise'
+      path: '/bitwise'
+      fullPath: '/bitwise'
+      preLoaderRoute: typeof BitwiseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bifid': {
+      id: '/bifid'
+      path: '/bifid'
+      fullPath: '/bifid'
+      preLoaderRoute: typeof BifidRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/beaufort': {
+      id: '/beaufort'
+      path: '/beaufort'
+      fullPath: '/beaufort'
+      preLoaderRoute: typeof BeaufortRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/basic-auth': {
+      id: '/basic-auth'
+      path: '/basic-auth'
+      fullPath: '/basic-auth'
+      preLoaderRoute: typeof BasicAuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/base85': {
+      id: '/base85'
+      path: '/base85'
+      fullPath: '/base85'
+      preLoaderRoute: typeof Base85RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/base64-image': {
+      id: '/base64-image'
+      path: '/base64-image'
+      fullPath: '/base64-image'
+      preLoaderRoute: typeof Base64ImageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/base64': {
+      id: '/base64'
+      path: '/base64'
+      fullPath: '/base64'
+      preLoaderRoute: typeof Base64RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/base62': {
+      id: '/base62'
+      path: '/base62'
+      fullPath: '/base62'
+      preLoaderRoute: typeof Base62RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/base58': {
+      id: '/base58'
+      path: '/base58'
+      fullPath: '/base58'
+      preLoaderRoute: typeof Base58RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/base36': {
+      id: '/base36'
+      path: '/base36'
+      fullPath: '/base36'
+      preLoaderRoute: typeof Base36RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/base32': {
+      id: '/base32'
+      path: '/base32'
+      fullPath: '/base32'
+      preLoaderRoute: typeof Base32RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/base16': {
+      id: '/base16'
+      path: '/base16'
+      fullPath: '/base16'
+      preLoaderRoute: typeof Base16RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/barcode': {
+      id: '/barcode'
+      path: '/barcode'
+      fullPath: '/barcode'
+      preLoaderRoute: typeof BarcodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/background-removal': {
+      id: '/background-removal'
+      path: '/background-removal'
+      fullPath: '/background-removal'
+      preLoaderRoute: typeof BackgroundRemovalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/audio-converter': {
+      id: '/audio-converter'
+      path: '/audio-converter'
+      fullPath: '/audio-converter'
+      preLoaderRoute: typeof AudioConverterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/atbash': {
+      id: '/atbash'
+      path: '/atbash'
+      fullPath: '/atbash'
+      preLoaderRoute: typeof AtbashRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/aspect-ratio': {
+      id: '/aspect-ratio'
+      path: '/aspect-ratio'
+      fullPath: '/aspect-ratio'
+      preLoaderRoute: typeof AspectRatioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ascii-table': {
+      id: '/ascii-table'
+      path: '/ascii-table'
+      fullPath: '/ascii-table'
+      preLoaderRoute: typeof AsciiTableRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ascii-art': {
+      id: '/ascii-art'
+      path: '/ascii-art'
+      fullPath: '/ascii-art'
+      preLoaderRoute: typeof AsciiArtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ansi-color': {
+      id: '/ansi-color'
+      path: '/ansi-color'
+      fullPath: '/ansi-color'
+      preLoaderRoute: typeof AnsiColorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/affine': {
+      id: '/affine'
+      path: '/affine'
+      fullPath: '/affine'
+      preLoaderRoute: typeof AffineRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/adfgvx': {
+      id: '/adfgvx'
+      path: '/adfgvx'
+      fullPath: '/adfgvx'
+      preLoaderRoute: typeof AdfgvxRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/image.webp': {
+      id: '/api/image.webp'
+      path: '/api/image.webp'
+      fullPath: '/api/image.webp'
+      preLoaderRoute: typeof ApiImageDotwebpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/image.svg': {
+      id: '/api/image.svg'
+      path: '/api/image.svg'
+      fullPath: '/api/image.svg'
+      preLoaderRoute: typeof ApiImageDotsvgRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/image.png': {
+      id: '/api/image.png'
+      path: '/api/image.png'
+      fullPath: '/api/image.png'
+      preLoaderRoute: typeof ApiImageDotpngRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/image.jpg': {
+      id: '/api/image.jpg'
+      path: '/api/image.jpg'
+      fullPath: '/api/image.jpg'
+      preLoaderRoute: typeof ApiImageDotjpgRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -6399,16 +6399,16 @@ const rootRouteChildren: RootRouteChildren = {
   ApiImageDotpngRoute: ApiImageDotpngRoute,
   ApiImageDotsvgRoute: ApiImageDotsvgRoute,
   ApiImageDotwebpRoute: ApiImageDotwebpRoute,
-};
+}
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>();
+  ._addFileTypes<FileRouteTypes>()
 
-import type { getRouter } from "./router.tsx";
-import type { createStart } from "@tanstack/react-start";
-declare module "@tanstack/react-start" {
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
   interface Register {
-    ssr: true;
-    router: Awaited<ReturnType<typeof getRouter>>;
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
   }
 }

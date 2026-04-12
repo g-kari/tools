@@ -439,7 +439,7 @@ function CertDecoder() {
     (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
       if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
         e.preventDefault();
-        handleParse();
+        void handleParse();
       }
     },
     [handleParse],

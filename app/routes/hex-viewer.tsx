@@ -76,7 +76,7 @@ function HexTableRow({
   row,
   uppercase,
   rawData,
-  bytesPerRow,
+  bytesPerRow: _bytesPerRow,
 }: {
   row: HexRow;
   uppercase: boolean;

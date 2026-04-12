@@ -117,7 +117,7 @@ function IsbnTool() {
 
   const handleCopy = useCallback(
     (text: string) => {
-      copy(text);
+      void copy(text);
       showToast("コピーしました", "success");
       announceStatus("コピーしました");
     },

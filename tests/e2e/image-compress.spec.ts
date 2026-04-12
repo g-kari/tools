@@ -171,7 +171,7 @@ test.describe("Image Compressor (複数画像対応) - E2E Tests", () => {
       await dropzone.click();
 
       // Wait a bit for potential file chooser (may not appear in headless)
-      const fileChooser = await fileChooserPromise;
+      const _fileChooser = await fileChooserPromise;
       // In headless mode, file chooser might not open, just verify click didn't error
       expect(true).toBe(true);
     });

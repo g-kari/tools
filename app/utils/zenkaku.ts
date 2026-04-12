@@ -388,6 +388,6 @@ export function analyzeText(text: string): {
     zenkakuCount,
     hankakuCount,
     katakanaCount,
-    total: [...text].length,
+    total: Array.from(text).length,
   };
 }

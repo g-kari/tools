@@ -10,7 +10,6 @@ import {
   speedToBps,
   calcTransferTime,
   calcRequiredSpeed,
-  formatTransferTime,
   formatSpeed,
   formatFileSize,
   SPEED_PRESETS,

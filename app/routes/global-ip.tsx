@@ -82,7 +82,7 @@ function GlobalIpLookup() {
   }, [announceStatus]);
 
   useEffect(() => {
-    fetchIp();
+    void fetchIp();
   }, [fetchIp]);
 
   const handleCopy = useCallback(async () => {

@@ -10,8 +10,6 @@ import {
   hslToString,
   cmykToString,
   type RGB,
-  type HSL,
-  type CMYK,
 } from "../../app/routes/color-picker";
 
 describe("Color Picker - HEX <-> RGB", () => {

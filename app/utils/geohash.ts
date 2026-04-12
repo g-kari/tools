@@ -70,7 +70,7 @@ export class GeohashError extends Error {
  */
 export function isValidGeohash(hash: string): boolean {
   if (!hash || hash.length === 0 || hash.length > 12) return false;
-  return [...hash].every((c) => BASE32.includes(c));
+  return Array.from(hash).every((c) => BASE32.includes(c));
 }
 
 /**

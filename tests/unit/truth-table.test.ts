@@ -1,10 +1,5 @@
 import { describe, it, expect } from "vite-plus/test";
-import {
-  tokenize,
-  collectVariables,
-  generateTruthTable,
-  exportTruthTableCSV,
-} from "../../app/utils/truth-table";
+import { tokenize, generateTruthTable, exportTruthTableCSV } from "../../app/utils/truth-table";
 
 // ---------------------------------------------------------------------------
 // tokenize

@@ -340,7 +340,7 @@ function ColorExtractor() {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
       if (file) {
-        processImage(file);
+        void processImage(file);
       }
     },
     [processImage],
@@ -363,7 +363,7 @@ function ColorExtractor() {
 
       const file = e.dataTransfer.files[0];
       if (file) {
-        processImage(file);
+        void processImage(file);
       }
     },
     [processImage],

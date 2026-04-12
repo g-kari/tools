@@ -68,7 +68,7 @@ function ServerEnvPage() {
   }, [announceStatus]);
 
   useEffect(() => {
-    fetchEnv();
+    void fetchEnv();
   }, [fetchEnv]);
 
   const groupByCategory = (items: EnvItem[]) => {

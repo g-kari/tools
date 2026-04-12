@@ -667,7 +667,7 @@ function ImageToGifConverter() {
                 type="button"
                 variant="secondary"
                 onClick={() => {
-                  navigator.clipboard.writeText(
+                  void navigator.clipboard.writeText(
                     generateFFmpegCommand(
                       images.map((img) => img.file),
                       framerate,

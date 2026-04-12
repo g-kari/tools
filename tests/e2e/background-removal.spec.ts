@@ -1,5 +1,4 @@
 import { expect, test } from "@playwright/test";
-import path from "path";
 
 test.describe("AI背景除去ページ", () => {
   test.beforeEach(async ({ page }) => {

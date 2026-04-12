@@ -15,7 +15,7 @@ export function buildColumnOrder(key: string): number[] {
   const sorted = [...indexed].sort((a, b) =>
     a.char !== b.char ? a.char.localeCompare(b.char) : a.i - b.i,
   );
-  const order = new Array<number>(upper.length);
+  const order = Array.from<number>({ length: upper.length });
   sorted.forEach(({ i }, rank) => {
     order[i] = rank;
   });
@@ -44,7 +44,7 @@ export function encodeColumnar(text: string, key: string, padChar = "X"): string
 
   // 列のランク順に読み出す
   const order = buildColumnOrder(key);
-  const rankToCol = new Array<number>(keyLen);
+  const rankToCol = Array.from<number>({ length: keyLen });
   order.forEach((rank, col) => {
     rankToCol[rank] = col;
   });
@@ -75,13 +75,13 @@ export function decodeColumnar(text: string, key: string, padChar = "X"): string
   const rows = Math.ceil(text.length / keyLen);
 
   const order = buildColumnOrder(key);
-  const rankToCol = new Array<number>(keyLen);
+  const rankToCol = Array.from<number>({ length: keyLen });
   order.forEach((rank, col) => {
     rankToCol[rank] = col;
   });
 
   // 暗号文を列ごとに均等分割（エンコード時はパディング込みで均等）
-  const columns: string[] = new Array(keyLen);
+  const columns: string[] = Array.from<string>({ length: keyLen });
   let offset = 0;
   for (let rank = 0; rank < keyLen; rank++) {
     const col = rankToCol[rank];

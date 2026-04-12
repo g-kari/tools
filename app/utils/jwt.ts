@@ -49,7 +49,7 @@ export function base64UrlDecode(str: string): string {
         .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
         .join(""),
     );
-  } catch (error) {
+  } catch {
     throw new Error("Base64URLデコードに失敗しました");
   }
 }

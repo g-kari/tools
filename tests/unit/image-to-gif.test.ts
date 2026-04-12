@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vite-plus/test";
+import { describe, it, expect, vi, beforeEach } from "vite-plus/test";
 
 // @ffmpeg/utilのモック
 vi.mock("@ffmpeg/util", () => ({

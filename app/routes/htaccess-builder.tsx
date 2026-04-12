@@ -211,7 +211,7 @@ function HtaccessBuilderPage(): React.ReactElement {
   }
 
   function handleCopy(): void {
-    copy(output);
+    void copy(output);
     showToast(".htaccess をクリップボードにコピーしました", "success");
     announceStatus(".htaccess をクリップボードにコピーしました");
   }

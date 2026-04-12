@@ -123,7 +123,7 @@ function WhoisLookup() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Enter" && (e.target as HTMLElement)?.id === "domainInput") {
         e.preventDefault();
-        handleSearch();
+        void handleSearch();
       }
     };
 

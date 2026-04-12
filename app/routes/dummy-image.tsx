@@ -206,7 +206,7 @@ function DummyImageGenerator() {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            handleDownload();
+            void handleDownload();
           }}
           aria-label="ダミー画像生成フォーム"
         >

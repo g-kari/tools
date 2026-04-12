@@ -1,9 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useRef, useCallback, useEffect } from "react";
-import { isValidCIDR, calculateCIDR, type CIDRResult } from "../utils/cidr";
+import { calculateCIDR, type CIDRResult } from "../utils/cidr";
 import { Button } from "~/components/ui/button";
-import { Input } from "~/components/ui/input";
 import { TipsCard } from "~/components/TipsCard";
 
 export const Route = createFileRoute("/cidr")({

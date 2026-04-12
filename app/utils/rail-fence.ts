@@ -10,7 +10,7 @@
  * @returns 各インデックスのレール番号配列
  */
 function buildRailPattern(length: number, rails: number): number[] {
-  const pattern: number[] = new Array(length);
+  const pattern: number[] = Array.from<number>({ length });
   let rail = 0;
   let direction = 1;
 
@@ -56,7 +56,7 @@ export function decodeRailFence(text: string, rails: number): string {
   const pattern = buildRailPattern(len, rails);
 
   // 各レールの文字数を集計
-  const railLengths: number[] = new Array(rails).fill(0);
+  const railLengths: number[] = Array.from({ length: rails }, () => 0);
   for (const r of pattern) {
     railLengths[r]++;
   }
@@ -70,7 +70,7 @@ export function decodeRailFence(text: string, rails: number): string {
   }
 
   // ジグザグ順に読み取り
-  const railIndices: number[] = new Array(rails).fill(0);
+  const railIndices: number[] = Array.from({ length: rails }, () => 0);
   let result = "";
   for (let i = 0; i < len; i++) {
     const r = pattern[i];
@@ -93,7 +93,7 @@ export function visualizeRailFence(text: string, rails: number): string[] {
   }
 
   const fence: (string | null)[][] = Array.from({ length: rails }, () =>
-    new Array(text.length).fill(null),
+    Array.from({ length: text.length }, (): string | null => null),
   );
   const pattern = buildRailPattern(text.length, rails);
 

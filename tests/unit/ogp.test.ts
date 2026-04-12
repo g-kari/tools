@@ -549,8 +549,8 @@ describe("OGP Parser", () => {
 
       it("should decode ISO-8859-1 content", async () => {
         // ISO-8859-1 encoded text with accented characters
-        const text = "Café résumé";
-        const encoder = new TextEncoder();
+        const _text = "Café résumé";
+        const _encoder = new TextEncoder();
         // Create ISO-8859-1 bytes manually for special chars
         const isoBytes = new Uint8Array([
           0x43,

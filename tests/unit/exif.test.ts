@@ -48,8 +48,12 @@ function createJpegWithExif(
   modelStr: string = "TestModel",
 ): ArrayBuffer {
   // EXIF データを手動で構築（リトルエンディアン）
-  const makeBytes = [...makeStr].map((c) => c.charCodeAt(0)).concat([0]); // null 終端
-  const modelBytes = [...modelStr].map((c) => c.charCodeAt(0)).concat([0]);
+  const makeBytes = Array.from(makeStr)
+    .map((c) => c.charCodeAt(0))
+    .concat([0]); // null 終端
+  const modelBytes = Array.from(modelStr)
+    .map((c) => c.charCodeAt(0))
+    .concat([0]);
 
   // TIFF ヘッダー (8 バイト)
   // "II" + 0x002A + IFD0 オフセット (8)

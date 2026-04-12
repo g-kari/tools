@@ -160,7 +160,7 @@ function UnitConverter() {
     inputRef.current?.focus();
   }, []);
 
-  const getUnitLabel = (unitId: string): string => {
+  const _getUnitLabel = (unitId: string): string => {
     const unit = units.find((u) => u.id === unitId);
     return unit ? `${unit.name} (${unit.symbol})` : unitId;
   };

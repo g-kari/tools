@@ -126,7 +126,12 @@ export function jsonToCsv(json: string, delimiter: string): string {
   }
 
   const escapeField = (value: unknown): string => {
-    const str = value === null || value === undefined ? "" : String(value);
+    const str =
+      value === null || value === undefined
+        ? ""
+        : typeof value === "object"
+          ? JSON.stringify(value)
+          : String(value as string | number | boolean);
     if (str.includes(delimiter) || str.includes('"') || str.includes("\n") || str.includes("\r")) {
       return `"${str.replace(/"/g, '""')}"`;
     }

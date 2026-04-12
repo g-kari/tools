@@ -114,16 +114,13 @@ const T_BITS = 0x03;
 const T_OCTET = 0x04;
 const T_OID = 0x06;
 const T_SEQ = 0x30;
-const T_SET = 0x31;
-const T_UTF8STR = 0x0c;
-const T_PRINTSTR = 0x13;
-const T_IA5STR = 0x16;
+const _T_SET = 0x31;
+const _T_UTF8STR = 0x0c;
+const _T_PRINTSTR = 0x13;
+const _T_IA5STR = 0x16;
 const T_UTCTIME = 0x17;
 const T_GENTIME = 0x18;
-const T_BMPSTR = 0x1e;
-
-// 使用していない定数を suppress するため型アサーション
-(void T_BOOL, void T_SET, void T_UTF8STR, void T_PRINTSTR, void T_IA5STR, void T_BMPSTR);
+const _T_BMPSTR = 0x1e;
 
 interface AsnNode {
   tag: number;

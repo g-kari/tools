@@ -122,7 +122,9 @@ export function unflattenJson(
 
         if (Array.isArray(current[part])) {
           if (!isNextNumeric) {
-            current[part] = { ...(current[part] as JsonValue[]) };
+            current[part] = Object.fromEntries(
+              (current[part] as JsonValue[]).map((v, i) => [i, v]),
+            );
           }
         } else if (typeof current[part] === "object" && current[part] !== null) {
           if (isNextNumeric && !Array.isArray(current[part])) {
@@ -154,7 +156,7 @@ function convertArrays(obj: Record<string, JsonValue>): JsonValue {
 
   if (allNumeric) {
     const maxIndex = Math.max(...keys.map(Number));
-    const arr: JsonValue[] = new Array(maxIndex + 1).fill(null);
+    const arr: JsonValue[] = Array.from({ length: maxIndex + 1 }, () => null);
     keys.forEach((k) => {
       const val = obj[k];
       arr[Number(k)] =

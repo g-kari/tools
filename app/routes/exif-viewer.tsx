@@ -128,7 +128,7 @@ function ExifViewerPage() {
       img.src = url;
 
       // EXIF 解析
-      file.arrayBuffer().then((buffer) => {
+      void file.arrayBuffer().then((buffer) => {
         const result = parseExif(buffer);
         setHasExif(result.hasExif);
         setGps(result.gps);
@@ -144,7 +144,7 @@ function ExifViewerPage() {
 
   const handleStripExif = useCallback(() => {
     if (!imageFile) return;
-    imageFile.arrayBuffer().then((buffer) => {
+    void imageFile.arrayBuffer().then((buffer) => {
       const stripped = stripExif(buffer);
       if (!stripped) {
         showToast("EXIFの除去に失敗しました", "error");

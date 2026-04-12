@@ -9,8 +9,6 @@ import {
   getGSAPEasingLabel,
   getEasingDirectionLabel,
   type GSAPAnimationConfig,
-  type GSAPEasingType,
-  type EasingDirection,
 } from "~/utils/gsapAnimationEngine";
 
 describe("gsapAnimationEngine", () => {

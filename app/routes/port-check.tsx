@@ -198,7 +198,7 @@ function PortCheck() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Enter" && e.ctrlKey) {
         e.preventDefault();
-        handleCheck();
+        void handleCheck();
       }
     };
     document.addEventListener("keydown", handleKeyDown);

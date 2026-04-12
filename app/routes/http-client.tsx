@@ -171,7 +171,7 @@ function HttpClientTool() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
         e.preventDefault();
-        handleSend();
+        void handleSend();
       }
     };
     document.addEventListener("keydown", handleKeyDown);
@@ -186,7 +186,7 @@ function HttpClientTool() {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            handleSend();
+            void handleSend();
           }}
           aria-label="HTTPリクエストフォーム"
         >

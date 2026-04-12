@@ -196,7 +196,7 @@ export async function generateKeyPair(algorithmId: KeyAlgorithmId): Promise<SshK
       keyUsages = ["sign", "verify"];
       break;
     default:
-      throw new Error(`Unsupported algorithm: ${algorithmId}`);
+      throw new Error(`Unsupported algorithm: ${String(algorithmId)}`);
   }
 
   const keyPair = await window.crypto.subtle.generateKey(algorithm, true, keyUsages);

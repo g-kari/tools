@@ -740,7 +740,10 @@ export function evaluateGuess(
   guess: string,
   target: string,
 ): Exclude<LetterState, "empty" | "input">[] {
-  const result: Exclude<LetterState, "empty" | "input">[] = new Array(WORD_LENGTH).fill("absent");
+  const result: Exclude<LetterState, "empty" | "input">[] = Array.from(
+    { length: WORD_LENGTH },
+    () => "absent" as Exclude<LetterState, "empty" | "input">,
+  );
   const targetChars = target.split("");
   const guessChars = guess.split("");
 
@@ -925,8 +928,8 @@ function WordleGame() {
       rows.push({ letters, states });
     } else {
       rows.push({
-        letters: new Array(WORD_LENGTH).fill(""),
-        states: new Array(WORD_LENGTH).fill("empty"),
+        letters: Array.from({ length: WORD_LENGTH }, () => ""),
+        states: Array.from({ length: WORD_LENGTH }, (): LetterState => "empty"),
       });
     }
   }
