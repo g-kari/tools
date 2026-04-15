@@ -462,6 +462,7 @@ function NavCategory({
   const [focusedIndex, setFocusedIndex] = useState(-1);
   const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isActive = category.items.some((item) => item.path === pathname);
 
   // ドロップダウンが開いたときに最初のアイテムにフォーカス
@@ -525,16 +526,25 @@ function NavCategory({
     [isOpen, category.items.length],
   );
 
+  const handleMouseEnter = useCallback(() => {
+    if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
+    setIsOpen(true);
+  }, []);
+
   const handleClose = useCallback(() => {
     setIsOpen(false);
     setFocusedIndex(-1);
   }, []);
 
+  const handleMouseLeave = useCallback(() => {
+    closeTimeoutRef.current = setTimeout(handleClose, 150);
+  }, [handleClose]);
+
   return (
     <div
       className="nav-category"
-      onMouseEnter={() => setIsOpen(true)}
-      onMouseLeave={handleClose}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       onKeyDown={handleKeyDown}
     >
       <button

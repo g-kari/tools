@@ -454,7 +454,7 @@ button:focus-visible {
 
 /* TipsCard component styles */
 .tips-card {
-  background: var(--md-sys-color-secondary-container);
+  background: var(--md-sys-color-surface-variant);
   border-left: 4px solid var(--md-sys-color-primary);
   margin-top: 24px;
   padding: 1.25rem 1.75rem;
@@ -466,7 +466,7 @@ button:focus-visible {
 }
 
 .tips-card [data-slot="card-title"] {
-  color: var(--md-sys-color-on-primary-container);
+  color: var(--md-sys-color-primary);
   font-size: 1rem;
   font-weight: 600;
 }
@@ -476,7 +476,7 @@ button:focus-visible {
 }
 
 .tips-card .tips-list {
-  color: var(--md-sys-color-on-primary-container);
+  color: var(--md-sys-color-on-surface);
   font-size: 0.9rem;
   line-height: 1.8;
   padding-left: 1.5rem;
