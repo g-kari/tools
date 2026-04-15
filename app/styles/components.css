@@ -322,22 +322,26 @@ select:focus-visible {
   flex-wrap: wrap;
 }
 
-/* Buttons */
+/* Buttons - base reset */
 button {
-  flex: 1;
-  min-width: 200px;
-  padding: 16px 32px;
-  font-size: 15px;
-  font-weight: 400;
   font-family: "JetBrains Mono", "Space Mono", monospace;
   border: none;
   border-radius: 0;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  text-transform: none;
-  letter-spacing: 0.05em;
   position: relative;
   overflow: hidden;
+}
+
+/* Buttons inside .button-group get flex/sizing layout */
+.button-group button {
+  flex: 1;
+  min-width: 200px;
+  padding: 16px 32px;
+  font-size: 15px;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0.05em;
 }
 
 button::before {
@@ -923,7 +927,7 @@ input[type="range"]:focus-visible {
   .button-group {
     flex-direction: column;
   }
-  button {
+  .button-group button {
     width: 100%;
   }
   .nav-links {
