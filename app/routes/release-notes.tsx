@@ -39,6 +39,18 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
+    version: "2026.04.1",
+    date: "2026-04-18",
+    entries: [
+      {
+        type: "security",
+        title: "セキュリティ修正: protobufjs の任意コード実行脆弱性 (GHSA-xq3m-2v4x-88gg) 対応",
+        description:
+          "transitive dependency の protobufjs を overrides で修正版 (>=7.5.5) に固定しました。",
+      },
+    ],
+  },
+  {
     version: "2026.04",
     date: "2026-04-17",
     headline: "WebSocketテスター強化・UI洗練",
