@@ -17,15 +17,64 @@ export interface Era {
   startDay: number;
   /** 元号が終わる西暦年（null = 現在も継続中） */
   endYear: number | null;
+  /** 元号が終わる月（1-12、null = 現在も継続中） */
+  endMonth: number | null;
+  /** 元号が終わる日（1-31、null = 現在も継続中） */
+  endDay: number | null;
 }
 
 /** 元号一覧（新しい順） */
 export const ERAS: readonly Era[] = [
-  { name: "令和", romaji: "Reiwa", startYear: 2019, startMonth: 5, startDay: 1, endYear: null },
-  { name: "平成", romaji: "Heisei", startYear: 1989, startMonth: 1, startDay: 8, endYear: 2019 },
-  { name: "昭和", romaji: "Showa", startYear: 1926, startMonth: 12, startDay: 25, endYear: 1989 },
-  { name: "大正", romaji: "Taisho", startYear: 1912, startMonth: 7, startDay: 30, endYear: 1926 },
-  { name: "明治", romaji: "Meiji", startYear: 1868, startMonth: 1, startDay: 25, endYear: 1912 },
+  {
+    name: "令和",
+    romaji: "Reiwa",
+    startYear: 2019,
+    startMonth: 5,
+    startDay: 1,
+    endYear: null,
+    endMonth: null,
+    endDay: null,
+  },
+  {
+    name: "平成",
+    romaji: "Heisei",
+    startYear: 1989,
+    startMonth: 1,
+    startDay: 8,
+    endYear: 2019,
+    endMonth: 4,
+    endDay: 30,
+  },
+  {
+    name: "昭和",
+    romaji: "Showa",
+    startYear: 1926,
+    startMonth: 12,
+    startDay: 25,
+    endYear: 1989,
+    endMonth: 1,
+    endDay: 7,
+  },
+  {
+    name: "大正",
+    romaji: "Taisho",
+    startYear: 1912,
+    startMonth: 7,
+    startDay: 30,
+    endYear: 1926,
+    endMonth: 12,
+    endDay: 24,
+  },
+  {
+    name: "明治",
+    romaji: "Meiji",
+    startYear: 1868,
+    startMonth: 1,
+    startDay: 25,
+    endYear: 1912,
+    endMonth: 7,
+    endDay: 29,
+  },
 ] as const;
 
 /** 和暦変換結果 */
@@ -110,4 +159,18 @@ export function getEraNames(): string[] {
  */
 export function formatWareki(result: WarekiResult): string {
   return `${result.eraName}${result.year}年（${result.westernYear}年）`;
+}
+
+/**
+ * 元号の期間テキストを生成する
+ * @param era - 元号定義
+ * @returns "1989年1月8日〜2019年4月30日" / "2019年5月1日〜現在" 形式
+ */
+export function getEraPeriod(era: Era): string {
+  const start = `${era.startYear}年${era.startMonth}月${era.startDay}日`;
+  if (era.endYear === null || era.endMonth === null || era.endDay === null) {
+    return `${start}〜現在`;
+  }
+  const end = `${era.endYear}年${era.endMonth}月${era.endDay}日`;
+  return `${start}〜${end}`;
 }
