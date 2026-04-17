@@ -1808,6 +1808,13 @@ export const toolCatalog: ToolCategory[] = [
         description: "Cloudflare Workers のサーバー環境情報を表示",
         icon: "💻",
       },
+      {
+        path: "/release-notes",
+        label: "リリースノート",
+        description:
+          "Web ツール集の変更履歴を時系列で表示。新機能・修正・セキュリティ対応などをタイプ別に絞り込み可能。",
+        icon: "📝",
+      },
     ],
   },
   {
