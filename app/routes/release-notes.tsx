@@ -43,6 +43,12 @@ export const releases: Release[] = [
     date: "2026-04-18",
     entries: [
       {
+        type: "fix",
+        title: "和暦変換: 元号期間の終了日が年のみで表示されていた不具合を修正",
+        description:
+          "平成・昭和・大正・明治の期間が「1989年1月8日〜2019年4月30日」のように月日まで正しく表示されるようになりました。",
+      },
+      {
         type: "security",
         title: "セキュリティ修正: protobufjs の任意コード実行脆弱性 (GHSA-xq3m-2v4x-88gg) 対応",
         description:

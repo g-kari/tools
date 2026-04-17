@@ -11,6 +11,7 @@ import {
   warekiToSeireki,
   getEraNames,
   formatWareki,
+  getEraPeriod,
   ERAS,
   type WarekiResult,
 } from "../utils/wareki";
@@ -45,16 +46,6 @@ export const Route = createFileRoute("/wareki")({
 
 /** 元号一覧 */
 const ERA_NAMES = getEraNames();
-
-/** 元号の期間テキストを生成する */
-function getEraPeriod(era: (typeof ERAS)[number]): string {
-  const start = `${era.startYear}年${era.startMonth}月${era.startDay}日`;
-  if (era.endYear === null) return `${start}〜現在`;
-  const endEra = ERAS.find((e) => e.startYear === era.endYear);
-  if (!endEra) return start;
-  const endDay = era.endYear;
-  return `${start}〜${endDay}年`;
-}
 
 /**
  * 和暦・西暦変換コンポーネント
