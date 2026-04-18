@@ -1477,6 +1477,13 @@ export const toolCatalog: ToolCategory[] = [
         icon: "🔓",
       },
       {
+        path: "/jwt-inspector",
+        label: "JWT Inspector",
+        description:
+          "JWTのヘッダー・ペイロード解析に加え、HS/RS/ES の署名検証と exp/iat/nbf の有効期限判定をブラウザ内で実行。",
+        icon: "🔍",
+      },
+      {
         path: "/totp",
         label: "TOTP生成",
         description:
@@ -1807,6 +1814,13 @@ export const toolCatalog: ToolCategory[] = [
         label: "サーバー環境",
         description: "Cloudflare Workers のサーバー環境情報を表示",
         icon: "💻",
+      },
+      {
+        path: "/release-notes",
+        label: "リリースノート",
+        description:
+          "Web ツール集の変更履歴を時系列で表示。新機能・修正・セキュリティ対応などをタイプ別に絞り込み可能。",
+        icon: "📝",
       },
     ],
   },

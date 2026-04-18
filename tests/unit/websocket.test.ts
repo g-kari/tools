@@ -1,5 +1,13 @@
 import { describe, it, expect } from "vite-plus/test";
-import { formatTimestamp, parseJsonSafe, isValidWsUrl } from "../../app/routes/websocket";
+import { encode as msgpackEncode } from "@msgpack/msgpack";
+import {
+  formatTimestamp,
+  parseJsonSafe,
+  isValidWsUrl,
+  arrayBufferToHex,
+  hexToArrayBuffer,
+  decodeMsgpack,
+} from "../../app/routes/websocket";
 
 describe("formatTimestamp", () => {
   it("HH:MM:SS.mmm形式にフォーマットする", () => {
@@ -92,5 +100,61 @@ describe("isValidWsUrl", () => {
 
   it("ポート付きwss://URLを有効と判定する", () => {
     expect(isValidWsUrl("wss://localhost:9000/ws")).toBe(true);
+  });
+});
+
+describe("arrayBufferToHex", () => {
+  it("バイト列を16進数文字列に変換する", () => {
+    const buf = new Uint8Array([0x01, 0x0f, 0xff]).buffer;
+    expect(arrayBufferToHex(buf)).toBe("01 0f ff");
+  });
+
+  it("空のArrayBufferは空文字列を返す", () => {
+    expect(arrayBufferToHex(new ArrayBuffer(0))).toBe("");
+  });
+});
+
+describe("hexToArrayBuffer", () => {
+  it("スペース区切りの16進数文字列をArrayBufferに変換する", () => {
+    const buf = hexToArrayBuffer("01 0f ff");
+    expect(buf).not.toBeNull();
+    const bytes = new Uint8Array(buf!);
+    expect(bytes[0]).toBe(0x01);
+    expect(bytes[1]).toBe(0x0f);
+    expect(bytes[2]).toBe(0xff);
+  });
+
+  it("連続した16進数文字列を変換する", () => {
+    const buf = hexToArrayBuffer("010fff");
+    expect(buf).not.toBeNull();
+    expect(new Uint8Array(buf!).length).toBe(3);
+  });
+
+  it("無効な文字列はnullを返す", () => {
+    expect(hexToArrayBuffer("xyz")).toBeNull();
+  });
+
+  it("奇数長の16進数文字列はnullを返す", () => {
+    expect(hexToArrayBuffer("abc")).toBeNull();
+  });
+
+  it("空文字列はnullを返す", () => {
+    expect(hexToArrayBuffer("")).toBeNull();
+  });
+});
+
+describe("decodeMsgpack", () => {
+  it("有効なMessagePackをデコードしてJSON文字列を返す", () => {
+    const u8 = msgpackEncode({ key: "val" });
+    const encoded = u8.buffer.slice(u8.byteOffset, u8.byteOffset + u8.byteLength);
+    const result = decodeMsgpack(encoded);
+    expect(result).not.toBeNull();
+    const parsed = JSON.parse(result!);
+    expect(parsed.key).toBe("val");
+  });
+
+  it("無効なデータはnullを返す", () => {
+    const buf = new Uint8Array([0xc1]).buffer; // 未使用のMessagePackバイト
+    expect(decodeMsgpack(buf)).toBeNull();
   });
 });

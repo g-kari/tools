@@ -5,7 +5,7 @@ import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import { TipsCard } from "~/components/TipsCard";
 import { StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
-import { useOutputCopy } from "~/hooks/useOutputCopy";
+import { useCopyWithFeedback } from "~/hooks/useCopyWithFeedback";
 
 export const Route = createFileRoute("/csv-json")({
   head: () => ({
@@ -158,7 +158,7 @@ export function jsonToCsv(json: string, delimiter: string): string {
  * CSV/JSON相互変換コンポーネント
  */
 function CsvJsonConverter() {
-  const { statusRef, announceStatus, showToast, isCopied, handleCopy } = useOutputCopy();
+  const { statusRef, announceStatus, showToast, isCopied, handleCopy } = useCopyWithFeedback();
   const [mode, setMode] = useState<ConversionMode>("csv-to-json");
   const [delimiter, setDelimiter] = useState(",");
   const [hasHeader, setHasHeader] = useState(true);
