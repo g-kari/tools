@@ -144,6 +144,7 @@ import { Route as LineEndingRouteImport } from './routes/line-ending'
 import { Route as LifeGameRouteImport } from './routes/life-game'
 import { Route as KeycodeRouteImport } from './routes/keycode'
 import { Route as KanaConvertRouteImport } from './routes/kana-convert'
+import { Route as JwtInspectorRouteImport } from './routes/jwt-inspector'
 import { Route as JwtGeneratorRouteImport } from './routes/jwt-generator'
 import { Route as JwtRouteImport } from './routes/jwt'
 import { Route as JsonToZodRouteImport } from './routes/json-to-zod'
@@ -987,6 +988,11 @@ const KeycodeRoute = KeycodeRouteImport.update({
 const KanaConvertRoute = KanaConvertRouteImport.update({
   id: '/kana-convert',
   path: '/kana-convert',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JwtInspectorRoute = JwtInspectorRouteImport.update({
+  id: '/jwt-inspector',
+  path: '/jwt-inspector',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JwtGeneratorRoute = JwtGeneratorRouteImport.update({
@@ -2001,6 +2007,7 @@ export interface FileRoutesByFullPath {
   '/json-to-zod': typeof JsonToZodRoute
   '/jwt': typeof JwtRoute
   '/jwt-generator': typeof JwtGeneratorRoute
+  '/jwt-inspector': typeof JwtInspectorRoute
   '/kana-convert': typeof KanaConvertRoute
   '/keycode': typeof KeycodeRoute
   '/life-game': typeof LifeGameRoute
@@ -2307,6 +2314,7 @@ export interface FileRoutesByTo {
   '/json-to-zod': typeof JsonToZodRoute
   '/jwt': typeof JwtRoute
   '/jwt-generator': typeof JwtGeneratorRoute
+  '/jwt-inspector': typeof JwtInspectorRoute
   '/kana-convert': typeof KanaConvertRoute
   '/keycode': typeof KeycodeRoute
   '/life-game': typeof LifeGameRoute
@@ -2614,6 +2622,7 @@ export interface FileRoutesById {
   '/json-to-zod': typeof JsonToZodRoute
   '/jwt': typeof JwtRoute
   '/jwt-generator': typeof JwtGeneratorRoute
+  '/jwt-inspector': typeof JwtInspectorRoute
   '/kana-convert': typeof KanaConvertRoute
   '/keycode': typeof KeycodeRoute
   '/life-game': typeof LifeGameRoute
@@ -2922,6 +2931,7 @@ export interface FileRouteTypes {
     | '/json-to-zod'
     | '/jwt'
     | '/jwt-generator'
+    | '/jwt-inspector'
     | '/kana-convert'
     | '/keycode'
     | '/life-game'
@@ -3228,6 +3238,7 @@ export interface FileRouteTypes {
     | '/json-to-zod'
     | '/jwt'
     | '/jwt-generator'
+    | '/jwt-inspector'
     | '/kana-convert'
     | '/keycode'
     | '/life-game'
@@ -3534,6 +3545,7 @@ export interface FileRouteTypes {
     | '/json-to-zod'
     | '/jwt'
     | '/jwt-generator'
+    | '/jwt-inspector'
     | '/kana-convert'
     | '/keycode'
     | '/life-game'
@@ -3841,6 +3853,7 @@ export interface RootRouteChildren {
   JsonToZodRoute: typeof JsonToZodRoute
   JwtRoute: typeof JwtRoute
   JwtGeneratorRoute: typeof JwtGeneratorRoute
+  JwtInspectorRoute: typeof JwtInspectorRoute
   KanaConvertRoute: typeof KanaConvertRoute
   KeycodeRoute: typeof KeycodeRoute
   LifeGameRoute: typeof LifeGameRoute
@@ -4927,6 +4940,13 @@ declare module '@tanstack/react-router' {
       path: '/kana-convert'
       fullPath: '/kana-convert'
       preLoaderRoute: typeof KanaConvertRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/jwt-inspector': {
+      id: '/jwt-inspector'
+      path: '/jwt-inspector'
+      fullPath: '/jwt-inspector'
+      preLoaderRoute: typeof JwtInspectorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/jwt-generator': {
@@ -6281,6 +6301,7 @@ const rootRouteChildren: RootRouteChildren = {
   JsonToZodRoute: JsonToZodRoute,
   JwtRoute: JwtRoute,
   JwtGeneratorRoute: JwtGeneratorRoute,
+  JwtInspectorRoute: JwtInspectorRoute,
   KanaConvertRoute: KanaConvertRoute,
   KeycodeRoute: KeycodeRoute,
   LifeGameRoute: LifeGameRoute,
