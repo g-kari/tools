@@ -1477,6 +1477,13 @@ export const toolCatalog: ToolCategory[] = [
         icon: "🔓",
       },
       {
+        path: "/jwt-inspector",
+        label: "JWT Inspector",
+        description:
+          "JWTのヘッダー・ペイロード解析に加え、HS/RS/ES の署名検証と exp/iat/nbf の有効期限判定をブラウザ内で実行。",
+        icon: "🔍",
+      },
+      {
         path: "/totp",
         label: "TOTP生成",
         description:

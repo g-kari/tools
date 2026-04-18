@@ -43,6 +43,12 @@ export const releases: Release[] = [
     date: "2026-04-18",
     entries: [
       {
+        type: "feat",
+        title: "新ツール追加: JWT Inspector",
+        description:
+          "JWTのヘッダー・ペイロードをデコードし、exp/iat/nbfをリアルタイムで評価。HS256/384/512・RS256/384/512・ES256/384の署名検証をWeb Crypto APIでブラウザ内完結（秘密情報はサーバー送信なし）。",
+      },
+      {
         type: "fix",
         title: "和暦変換: 元号期間の終了日が年のみで表示されていた不具合を修正",
         description:

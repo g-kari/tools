@@ -71,6 +71,7 @@
 @import "./styles/tools/slug.css";
 @import "./styles/tools/mermaid.css";
 @import "./styles/tools/jwt-generator.css";
+@import "./styles/tools/jwt-inspector.css";
 @import "./styles/tools/totp.css";
 @import "./styles/tools/color-palette.css";
 
