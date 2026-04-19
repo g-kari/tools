@@ -1,150 +1,150 @@
 import { describe, it, expect } from "vite-plus/test";
-
-// Base64 encoding/decoding functions using built-in JavaScript functions
-function base64Encode(text: string): string {
-  return btoa(unescape(encodeURIComponent(text)));
-}
-
-function base64Decode(text: string): string {
-  return decodeURIComponent(escape(atob(text)));
-}
+import { decodeBase64, encodeBase64, validateBase64 } from "../../app/utils/base64";
 
 describe("Base64 Encode/Decode Functions", () => {
-  describe("base64Encode", () => {
+  describe("encodeBase64", () => {
     it("should encode Japanese text", () => {
-      const result = base64Encode("こんにちは");
-      expect(result).toBe("44GT44KT44Gr44Gh44Gv");
+      expect(encodeBase64("こんにちは").encoded).toBe("44GT44KT44Gr44Gh44Gv");
     });
 
     it("should encode ASCII text", () => {
-      const result = base64Encode("Hello");
-      expect(result).toBe("SGVsbG8=");
+      expect(encodeBase64("Hello").encoded).toBe("SGVsbG8=");
     });
 
     it("should encode text with spaces", () => {
-      const result = base64Encode("Hello World");
-      expect(result).toBe("SGVsbG8gV29ybGQ=");
+      expect(encodeBase64("Hello World").encoded).toBe("SGVsbG8gV29ybGQ=");
     });
 
     it("should encode special characters", () => {
-      const result = base64Encode("hello!@#$%^&*()");
-      expect(result).toBe("aGVsbG8hQCMkJV4mKigp");
+      expect(encodeBase64("hello!@#$%^&*()").encoded).toBe("aGVsbG8hQCMkJV4mKigp");
     });
 
     it("should handle empty string", () => {
-      const result = base64Encode("");
-      expect(result).toBe("");
+      expect(encodeBase64("").encoded).toBe("");
     });
 
     it("should encode emoji", () => {
-      const result = base64Encode("😀");
-      expect(result).toBe("8J+YgA==");
+      expect(encodeBase64("😀").encoded).toBe("8J+YgA==");
     });
 
     it("should encode Korean text", () => {
-      const result = base64Encode("안녕");
-      expect(result).toBe("7JWI64WV");
+      expect(encodeBase64("안녕").encoded).toBe("7JWI64WV");
     });
 
     it("should encode Chinese text", () => {
-      const result = base64Encode("中文");
-      expect(result).toBe("5Lit5paH");
+      expect(encodeBase64("中文").encoded).toBe("5Lit5paH");
     });
 
     it("should encode numbers", () => {
-      const result = base64Encode("1234567890");
-      expect(result).toBe("MTIzNDU2Nzg5MA==");
+      expect(encodeBase64("1234567890").encoded).toBe("MTIzNDU2Nzg5MA==");
     });
 
     it("should encode multiline text", () => {
-      const result = base64Encode("Line 1\nLine 2\nLine 3");
-      expect(result).toBe("TGluZSAxCkxpbmUgMgpMaW5lIDM=");
+      expect(encodeBase64("Line 1\nLine 2\nLine 3").encoded).toBe("TGluZSAxCkxpbmUgMgpMaW5lIDM=");
+    });
+
+    it("should return correct inputBytes for UTF-8 text", () => {
+      const result = encodeBase64("あ");
+      expect(result.inputBytes).toBe(3);
+    });
+
+    it("should return correct outputLength", () => {
+      const result = encodeBase64("Hello");
+      expect(result.outputLength).toBe(result.encoded.length);
     });
   });
 
-  describe("base64Decode", () => {
+  describe("decodeBase64", () => {
+    function expectDecoded(encoded: string, expected: string) {
+      const result = decodeBase64(encoded);
+      expect(result.success).toBe(true);
+      if (!result.success) throw new Error("expected success");
+      expect(result.decoded).toBe(expected);
+    }
+
     it("should decode to Japanese text", () => {
-      const result = base64Decode("44GT44KT44Gr44Gh44Gv");
-      expect(result).toBe("こんにちは");
+      expectDecoded("44GT44KT44Gr44Gh44Gv", "こんにちは");
     });
 
     it("should decode to ASCII text", () => {
-      const result = base64Decode("SGVsbG8=");
-      expect(result).toBe("Hello");
+      expectDecoded("SGVsbG8=", "Hello");
     });
 
     it("should decode to text with spaces", () => {
-      const result = base64Decode("SGVsbG8gV29ybGQ=");
-      expect(result).toBe("Hello World");
+      expectDecoded("SGVsbG8gV29ybGQ=", "Hello World");
     });
 
     it("should handle empty string", () => {
-      const result = base64Decode("");
-      expect(result).toBe("");
+      expectDecoded("", "");
     });
 
     it("should decode to emoji", () => {
-      const result = base64Decode("8J+YgA==");
-      expect(result).toBe("😀");
+      expectDecoded("8J+YgA==", "😀");
     });
 
-    it("should throw on invalid base64 string", () => {
-      expect(() => base64Decode("invalid!!!")).toThrow();
+    it("should return error on invalid base64 string", () => {
+      const result = decodeBase64("invalid!!!");
+      expect(result.success).toBe(false);
     });
 
     it("should decode base64 string without padding", () => {
-      // SGVsbG8 is valid base64 (without padding) and decodes to "Hello"
-      const result = base64Decode("SGVsbG8");
-      expect(result).toBe("Hello");
+      expectDecoded("SGVsbG8", "Hello");
     });
 
     it("should decode multiline text", () => {
-      const result = base64Decode("TGluZSAxCkxpbmUgMgpMaW5lIDM=");
-      expect(result).toBe("Line 1\nLine 2\nLine 3");
+      expectDecoded("TGluZSAxCkxpbmUgMgpMaW5lIDM=", "Line 1\nLine 2\nLine 3");
     });
   });
 
   describe("Round-trip conversion", () => {
+    function expectRoundTrip(original: string) {
+      const encoded = encodeBase64(original).encoded;
+      const result = decodeBase64(encoded);
+      expect(result.success).toBe(true);
+      if (!result.success) throw new Error("expected success");
+      expect(result.decoded).toBe(original);
+    }
+
     it("should preserve Japanese text through encode/decode", () => {
-      const original = "こんにちは世界";
-      const encoded = base64Encode(original);
-      const decoded = base64Decode(encoded);
-      expect(decoded).toBe(original);
+      expectRoundTrip("こんにちは世界");
     });
 
     it("should preserve mixed text through encode/decode", () => {
-      const original = "Hello, 世界! 123";
-      const encoded = base64Encode(original);
-      const decoded = base64Decode(encoded);
-      expect(decoded).toBe(original);
+      expectRoundTrip("Hello, 世界! 123");
     });
 
     it("should preserve emoji through encode/decode", () => {
-      const original = "🎉🎊🎁";
-      const encoded = base64Encode(original);
-      const decoded = base64Decode(encoded);
-      expect(decoded).toBe(original);
+      expectRoundTrip("🎉🎊🎁");
     });
 
     it("should preserve special characters through encode/decode", () => {
-      const original = "!@#$%^&*()_+-=[]{}|;:,.<>?/~`";
-      const encoded = base64Encode(original);
-      const decoded = base64Decode(encoded);
-      expect(decoded).toBe(original);
+      expectRoundTrip("!@#$%^&*()_+-=[]{}|;:,.<>?/~`");
     });
 
     it("should preserve multiline text through encode/decode", () => {
-      const original = "First Line\nSecond Line\nThird Line";
-      const encoded = base64Encode(original);
-      const decoded = base64Decode(encoded);
-      expect(decoded).toBe(original);
+      expectRoundTrip("First Line\nSecond Line\nThird Line");
     });
 
     it("should preserve mixed multilingual text", () => {
-      const original = "English 日本語 한국어 中文 Español";
-      const encoded = base64Encode(original);
-      const decoded = base64Decode(encoded);
-      expect(decoded).toBe(original);
+      expectRoundTrip("English 日本語 한국어 中文 Español");
+    });
+  });
+
+  describe("validateBase64", () => {
+    it("should return null for valid base64", () => {
+      expect(validateBase64("SGVsbG8=")).toBeNull();
+    });
+
+    it("should return null for empty string", () => {
+      expect(validateBase64("")).toBeNull();
+    });
+
+    it("should return null for whitespace-only", () => {
+      expect(validateBase64("   ")).toBeNull();
+    });
+
+    it("should detect invalid characters", () => {
+      expect(validateBase64("Hello!")).not.toBeNull();
     });
   });
 });
