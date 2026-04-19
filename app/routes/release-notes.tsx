@@ -39,6 +39,18 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
+    version: "2026.04.2",
+    date: "2026-04-19",
+    entries: [
+      {
+        type: "docs",
+        title: "ドキュメント整備: 新ツール追加ガイドと JSDoc ヘッダ規約を追加",
+        description:
+          "docs/tools-guide.md に新ツール追加テンプレートを整備。.claude/rules/new-tool.md に JSDoc モジュールヘッダ（@tool / @description 等）の記載を必須化。代表ツール（base64 / hash / jwt-inspector）にヘッダを適用。README を現状に合わせて更新。",
+      },
+    ],
+  },
+  {
     version: "2026.04.1",
     date: "2026-04-18",
     entries: [

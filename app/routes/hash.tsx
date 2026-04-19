@@ -6,6 +6,16 @@ import { TipsCard } from "~/components/TipsCard";
 import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
 
+/**
+ * @tool ハッシュ生成
+ * @description テキストまたはファイルから MD5 / SHA-1 / SHA-256 / SHA-384 / SHA-512 のハッシュ値を生成。HEX と Base64 出力に対応。
+ * @example
+ *   入力: "hello"
+ *   SHA-256: "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"
+ * @limitations
+ *   - MD5 は純 TypeScript 実装。SHA 系は Web Crypto API を利用
+ *   - 外部ネットワーク送信なし（全てブラウザ内で処理）
+ */
 export const Route = createFileRoute("/hash")({
   head: () => ({
     meta: [

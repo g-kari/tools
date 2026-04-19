@@ -8,6 +8,16 @@ import { TipsCard } from "~/components/TipsCard";
 import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 
+/**
+ * @tool Base64エンコード・デコード
+ * @description テキストをBase64形式にエンコード・デコードするブラウザ内完結ツール。
+ * @example
+ *   入力: "こんにちは"
+ *   出力: "44GT44KT44Gr44Gh44Gv"
+ * @limitations
+ *   - UTF-8 テキストを対象とする。バイナリには非対応
+ *   - 外部ネットワーク送信なし（全てブラウザ内で処理）
+ */
 export const Route = createFileRoute("/base64")({
   head: () => ({
     meta: [
