@@ -39,6 +39,18 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
+    version: "2026.04.3",
+    date: "2026-04-19",
+    entries: [
+      {
+        type: "refactor",
+        title: "Base64 ツールをモード切替 UI に刷新",
+        description:
+          "Base64 エンコード・デコードをタブ切替 UI に統一。出力のコピー・入出力の⇄入れ替え・エラー表示に対応し、他の Base 系ツールと体験を揃えた。",
+      },
+    ],
+  },
+  {
     version: "2026.04.2",
     date: "2026-04-19",
     entries: [
