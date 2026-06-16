@@ -55,7 +55,7 @@
     "tailwindcss": "^4.1.18"
   },
   "devDependencies": {
-    "@cloudflare/vite-plugin": "^1.28.0",
+    "@cloudflare/vite-plugin": "^1.31.1",
     "@cloudflare/workers-types": "^4.20251225.0",
     "@playwright/test": "^1.57.0",
     "@tanstack/router-plugin": "^1.166.14",
