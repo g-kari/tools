@@ -105,6 +105,15 @@ test.describe("Dummy Image Generator - E2E Tests", () => {
     await expect(options).toHaveCount(3);
   });
 
+  test("should select a large target file size", async ({ page }) => {
+    const targetFileSizeInput = page.locator("input#targetFileSize");
+    await expect(targetFileSizeInput).toHaveValue("0");
+
+    await page.getByRole("button", { name: "100MB", exact: true }).click();
+    await expect(targetFileSizeInput).toHaveValue("100");
+    await expect(page.locator(".image-info")).toContainText("100 MB以上");
+  });
+
   test("should display preset size buttons", async ({ page }) => {
     const presetButtons = page.locator(".preset-buttons button");
     await expect(presetButtons.first()).toBeVisible();

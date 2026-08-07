@@ -1,5 +1,10 @@
 import { describe, it, expect } from "vite-plus/test";
-import { drawDummyImage, generateFilename } from "../../app/routes/dummy-image";
+import {
+  drawDummyImage,
+  generateFilename,
+  padBlobToTargetSize,
+  formatFileSize,
+} from "../../app/routes/dummy-image";
 import {
   generateSvgImage,
   parseImageParams,
@@ -50,6 +55,35 @@ describe("Dummy Image Generation", () => {
     it("should handle large dimensions", () => {
       const filename = generateFilename(4096, 4096, "png");
       expect(filename).toBe("dummy_4096x4096.png");
+    });
+  });
+
+  describe("File size adjustment", () => {
+    it("should pad an image to the exact target size", () => {
+      const blob = new Blob([new Uint8Array(100)], { type: "image/png" });
+      const result = padBlobToTargetSize(blob, 1024 * 1024);
+
+      expect(result.size).toBe(1024 * 1024);
+      expect(result.type).toBe("image/png");
+    });
+
+    it("should not shrink an image larger than the target size", () => {
+      const blob = new Blob([new Uint8Array(1024)], { type: "image/jpeg" });
+
+      expect(padBlobToTargetSize(blob, 100)).toBe(blob);
+    });
+
+    it("should support targets larger than one padding chunk", () => {
+      const blob = new Blob([new Uint8Array(10)], { type: "image/webp" });
+      const targetSize = 5 * 1024 * 1024;
+
+      expect(padBlobToTargetSize(blob, targetSize).size).toBe(targetSize);
+    });
+
+    it("should format file sizes", () => {
+      expect(formatFileSize(512)).toBe("512 B");
+      expect(formatFileSize(1536)).toBe("1.5 KB");
+      expect(formatFileSize(10 * 1024 * 1024)).toBe("10.0 MB");
     });
   });
 
