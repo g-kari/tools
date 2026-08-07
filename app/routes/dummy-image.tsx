@@ -531,7 +531,8 @@ function DummyImageGenerator() {
                 "JPEG: /api/image.jpg?w=800&h=600&q=85",
                 "WebP: /api/image.webp?w=800&h=600",
                 "カスタム色の例: /api/image.png?w=1200&h=630&bg=FF0000&text=FFFFFF",
-                "パラメータ: w(幅), h(高さ), bg(背景色), text(テキスト色), q(画質/JPEGのみ)",
+                "容量指定の例: /api/image.png?w=800&h=600&size=10",
+                "パラメータ: w(幅), h(高さ), bg(背景色), text(テキスト色), q(画質/JPEGのみ), size(目標容量/MB)",
               ],
             },
           ]}

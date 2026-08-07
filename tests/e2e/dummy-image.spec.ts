@@ -245,6 +245,19 @@ test.describe("Dummy Image Generator - E2E Tests", () => {
       expect(body).toContain("#FFFFFF");
     });
 
+    test("API endpoints should support target file size", async ({ page }) => {
+      const endpoints = ["svg", "png", "jpg", "webp"];
+
+      for (const extension of endpoints) {
+        const response = await page.request.get(`/api/image.${extension}?w=50&h=50&size=1`);
+        expect(response.ok()).toBeTruthy();
+        expect(response.headers()["content-length"]).toBe(String(1024 * 1024));
+        expect(response.headers()["cache-control"]).toBe("no-store");
+        expect(response.headers()["x-cache-status"]).toBe("BYPASS");
+        expect((await response.body()).length).toBe(1024 * 1024);
+      }
+    });
+
     test("API endpoints should have cache headers", async ({ page }) => {
       const response = await page.request.get("/api/image.png?w=100&h=100");
       expect(response.ok()).toBeTruthy();

@@ -11,6 +11,9 @@ import {
   convertSvgToPng,
   convertPngToJpeg,
   convertPngToWebp,
+  parseTargetFileSize,
+  createPaddedImageStream,
+  MAX_TARGET_FILE_SIZE_MB,
 } from "../../app/functions/dummy-image";
 
 // Mock canvas for testing
@@ -321,6 +324,54 @@ describe("Dummy Image Generation", () => {
         expect(result.height).toBe(630);
         expect(result.bgColor).toBe("123456");
         expect(result.textColor).toBe("ABCDEF");
+      });
+    });
+
+    describe("parseTargetFileSize", () => {
+      it("should parse megabytes into bytes", () => {
+        expect(parseTargetFileSize(new URLSearchParams("size=10"))).toBe(10 * 1024 * 1024);
+        expect(parseTargetFileSize(new URLSearchParams("size=0.5"))).toBe(512 * 1024);
+      });
+
+      it("should return zero for missing or invalid values", () => {
+        expect(parseTargetFileSize(new URLSearchParams())).toBe(0);
+        expect(parseTargetFileSize(new URLSearchParams("size=invalid"))).toBe(0);
+        expect(parseTargetFileSize(new URLSearchParams("size=-1"))).toBe(0);
+      });
+
+      it("should clamp the target to the API limit", () => {
+        expect(parseTargetFileSize(new URLSearchParams("size=1000"))).toBe(
+          MAX_TARGET_FILE_SIZE_MB * 1024 * 1024,
+        );
+      });
+    });
+
+    describe("createPaddedImageStream", () => {
+      it("should stream the exact target size", async () => {
+        const { stream, contentLength } = createPaddedImageStream("image", 2 * 1024 * 1024);
+        const response = new Response(stream);
+        const body = await response.arrayBuffer();
+
+        expect(contentLength).toBe(2 * 1024 * 1024);
+        expect(body.byteLength).toBe(contentLength);
+        expect(new TextDecoder().decode(body.slice(0, 5))).toBe("image");
+      });
+
+      it("should not shrink content larger than the target", async () => {
+        const content = new Uint8Array([1, 2, 3, 4]).buffer;
+        const { stream, contentLength } = createPaddedImageStream(content, 2);
+
+        expect(contentLength).toBe(4);
+        expect(new Uint8Array(await new Response(stream).arrayBuffer())).toEqual(
+          new Uint8Array([1, 2, 3, 4]),
+        );
+      });
+
+      it("should support whitespace padding for SVG", async () => {
+        const { stream } = createPaddedImageStream("<svg></svg>", 16, 0x20);
+        const body = new Uint8Array(await new Response(stream).arrayBuffer());
+
+        expect(body.at(-1)).toBe(0x20);
       });
     });
   });
