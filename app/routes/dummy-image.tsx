@@ -50,6 +50,10 @@ const PRESET_SIZES = [
 
 const MIN_SIZE = 1;
 const MAX_SIZE = 4096;
+const MAX_FILE_SIZE_MB = 500;
+const BYTES_PER_MB = 1024 * 1024;
+const PADDING_CHUNK_SIZE = BYTES_PER_MB;
+const FILE_SIZE_PRESETS_MB = [1, 5, 10, 50, 100];
 
 /**
  * Canvas上にダミー画像を描画する
@@ -105,6 +109,42 @@ export function canvasToBlob(
 }
 
 /**
+ * Blobが指定容量未満の場合、末尾にデータを追加して容量を揃える
+ * @param blob - 元の画像Blob
+ * @param targetSizeBytes - 目標容量（バイト）
+ * @returns 指定容量以上の画像Blob
+ */
+export function padBlobToTargetSize(blob: Blob, targetSizeBytes: number): Blob {
+  const normalizedTargetSize = Math.max(0, Math.floor(targetSizeBytes));
+  if (normalizedTargetSize <= blob.size) return blob;
+
+  const paddingSize = normalizedTargetSize - blob.size;
+  const fullChunk = new Uint8Array(Math.min(PADDING_CHUNK_SIZE, paddingSize));
+  const parts: BlobPart[] = [blob];
+  let remaining = paddingSize;
+
+  while (remaining >= fullChunk.byteLength) {
+    parts.push(fullChunk);
+    remaining -= fullChunk.byteLength;
+  }
+
+  if (remaining > 0) {
+    parts.push(fullChunk.slice(0, remaining));
+  }
+
+  return new Blob(parts, { type: blob.type });
+}
+
+/**
+ * ファイル容量を読みやすい単位で表示する
+ */
+export function formatFileSize(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < BYTES_PER_MB) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / BYTES_PER_MB).toFixed(1)} MB`;
+}
+
+/**
  * ダウンロード用のファイル名を生成する
  * @param width - 画像の幅
  * @param height - 画像の高さ
@@ -122,6 +162,7 @@ function DummyImageGenerator() {
   const [textColor, setTextColor] = useState("#FFFFFF");
   const [format, setFormat] = useState<ImageFormat>("png");
   const [quality, setQuality] = useState(92);
+  const [targetFileSizeMb, setTargetFileSizeMb] = useState(0);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -155,11 +196,14 @@ function DummyImageGenerator() {
   const handleDownload = useCallback(async () => {
     if (!canvasRef.current) return;
 
-    const blob = await canvasToBlob(canvasRef.current, format, quality / 100);
-    if (!blob) {
+    const imageBlob = await canvasToBlob(canvasRef.current, format, quality / 100);
+    if (!imageBlob) {
       announceStatus("画像の生成に失敗しました");
       return;
     }
+
+    const targetSizeBytes = Math.round(targetFileSizeMb * BYTES_PER_MB);
+    const blob = padBlobToTargetSize(imageBlob, targetSizeBytes);
 
     const url = URL.createObjectURL(blob);
     const filename = generateFilename(width, height, format);
@@ -172,8 +216,10 @@ function DummyImageGenerator() {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
 
-    announceStatus(`${format.toUpperCase()}ファイルをダウンロードしました`);
-  }, [format, quality, width, height, announceStatus]);
+    announceStatus(
+      `${format.toUpperCase()}ファイル（${formatFileSize(blob.size)}）をダウンロードしました`,
+    );
+  }, [format, quality, targetFileSizeMb, width, height, announceStatus]);
 
   const handleCopyToClipboard = useCallback(async () => {
     if (!canvasRef.current) return;
@@ -328,6 +374,47 @@ function DummyImageGenerator() {
                   </span>
                 </div>
               )}
+
+              <div className="option-group file-size-group">
+                <label htmlFor="targetFileSize">目標容量 (MB):</label>
+                <input
+                  type="number"
+                  id="targetFileSize"
+                  min="0"
+                  max={MAX_FILE_SIZE_MB}
+                  step="0.1"
+                  value={targetFileSizeMb}
+                  onChange={(e) => {
+                    const value = Number.parseFloat(e.target.value);
+                    setTargetFileSizeMb(
+                      Number.isNaN(value) ? 0 : Math.max(0, Math.min(MAX_FILE_SIZE_MB, value)),
+                    );
+                  }}
+                  aria-describedby="targetFileSize-help"
+                />
+                <span id="targetFileSize-help" className="help-text">
+                  0は自動。元画像が指定容量より大きい場合は元の容量になります
+                </span>
+              </div>
+            </div>
+
+            <div className="file-size-preset-section">
+              <span className="file-size-preset-label">容量プリセット:</span>
+              <div className="file-size-preset-buttons" role="group" aria-label="目標容量選択">
+                <button type="button" className="btn-preset" onClick={() => setTargetFileSizeMb(0)}>
+                  自動
+                </button>
+                {FILE_SIZE_PRESETS_MB.map((size) => (
+                  <button
+                    key={size}
+                    type="button"
+                    className="btn-preset"
+                    onClick={() => setTargetFileSizeMb(size)}
+                  >
+                    {size}MB
+                  </button>
+                ))}
+              </div>
             </div>
 
             <div className="preset-section">
@@ -397,6 +484,12 @@ function DummyImageGenerator() {
                   <span className="info-value">{quality}%</span>
                 </div>
               )}
+              <div className="info-item">
+                <span className="info-label">目標容量:</span>
+                <span className="info-value">
+                  {targetFileSizeMb > 0 ? `${targetFileSizeMb} MB以上` : "自動"}
+                </span>
+              </div>
             </div>
           </div>
         </form>
@@ -409,6 +502,7 @@ function DummyImageGenerator() {
                 "開発やデザインモックアップ用のプレースホルダー画像を生成します",
                 "指定したサイズと色で画像を作成",
                 "PNG、JPEG、WebP形式でダウンロード可能",
+                `テスト用に最大${MAX_FILE_SIZE_MB}MBの目標容量を指定可能`,
               ],
             },
             {
@@ -424,6 +518,7 @@ function DummyImageGenerator() {
               items: [
                 "幅と高さを指定、またはプリセットを選択",
                 "背景色とテキスト色を設定",
+                "必要に応じて目標容量を指定（0は自動）",
                 "プレビューで確認",
                 "「ダウンロード」で画像を保存",
               ],
