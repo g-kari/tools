@@ -1,5 +1,23 @@
 import { describe, it, expect } from "vite-plus/test";
-import { parseMarkdown } from "../../app/routes/markdown-preview";
+import { isSafeUrlAttributeValue, parseMarkdown } from "../../app/routes/markdown-preview";
+
+describe("isSafeUrlAttributeValue", () => {
+  it("通常の URL と相対 URL を許可する", () => {
+    expect(isSafeUrlAttributeValue("https://example.com/image.png")).toBe(true);
+    expect(isSafeUrlAttributeValue("/docs/getting-started")).toBe(true);
+  });
+
+  it("スクリプトを実行する URL スキームを拒否する", () => {
+    expect(isSafeUrlAttributeValue("javascript:alert(1)")).toBe(false);
+    expect(isSafeUrlAttributeValue("VBScript:msgbox(1)")).toBe(false);
+    expect(isSafeUrlAttributeValue("data:text/html,<script>alert(1)</script>")).toBe(false);
+  });
+
+  it("空白や制御文字で難読化された危険なスキームを拒否する", () => {
+    expect(isSafeUrlAttributeValue(" \n\tjava\rscript:alert(1)")).toBe(false);
+    expect(isSafeUrlAttributeValue("java\u0000script:alert(1)")).toBe(false);
+  });
+});
 
 describe("parseMarkdown", () => {
   it("空文字列は空文字列を返す", () => {

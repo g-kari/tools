@@ -103,6 +103,19 @@ function greet(name) {
  * html-react-parserのオプション: 危険なタグを除去する
  * scriptやiframe等のタグを除去し、イベントハンドラ属性を除去する
  */
+const URL_ATTRIBUTES = new Set(["href", "src", "action", "data", "formaction", "xlink:href"]);
+
+/**
+ * URL 属性にスクリプトを実行できるスキームが含まれていないか検証する。
+ * ブラウザーがスキーム判定時に無視する ASCII 制御文字や空白も除去してから判定する。
+ */
+export function isSafeUrlAttributeValue(value: string): boolean {
+  const normalized = value.replace(/[\u0000-\u0020\u007f]+/g, "").toLowerCase();
+  return !normalized.startsWith("javascript:") &&
+    !normalized.startsWith("vbscript:") &&
+    !normalized.startsWith("data:");
+}
+
 const parseOptions: HTMLReactParserOptions = {
   replace(domNode: DOMNode) {
     if (!(domNode instanceof Element)) return;
@@ -114,7 +127,12 @@ const parseOptions: HTMLReactParserOptions = {
       tagName === "iframe" ||
       tagName === "form" ||
       tagName === "object" ||
-      tagName === "embed"
+      tagName === "embed" ||
+      tagName === "svg" ||
+      tagName === "math" ||
+      tagName === "meta" ||
+      tagName === "link" ||
+      tagName === "base"
     ) {
       return null;
     }
@@ -123,14 +141,13 @@ const parseOptions: HTMLReactParserOptions = {
     if (domNode.attribs) {
       const attribs = { ...domNode.attribs };
       Object.keys(attribs).forEach((attr) => {
-        if (attr.startsWith("on")) {
+        const normalizedAttr = attr.toLowerCase();
+        if (normalizedAttr.startsWith("on") || normalizedAttr === "style") {
           delete attribs[attr];
+          return;
         }
-        // javascript: / data: スキームのURL属性を無効化（大文字小文字を区別しない）
-        if (
-          (attr === "href" || attr === "src" || attr === "action" || attr === "data") &&
-          /^(javascript:|data:)/i.test(attribs[attr] ?? "")
-        ) {
+        // 難読化された危険なスキームを含む URL 属性を無効化
+        if (URL_ATTRIBUTES.has(normalizedAttr) && !isSafeUrlAttributeValue(attribs[attr] ?? "")) {
           attribs[attr] = "#";
         }
       });
