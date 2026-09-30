@@ -39,6 +39,18 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
+    version: "2026.10",
+    date: "2026-10-01",
+    entries: [
+      {
+        type: "fix",
+        title: "CSV/JSON変換: 引用符内の複数行と前後の空白を保持",
+        description:
+          "CSVの引用符内の改行・空行・エスケープされた引用符とフィールド前後の空白を保持し、LF/CRLF/CRのレコード区切りとUTF-8 BOMに対応。閉じ忘れなど不正な引用符はエラーで知らせ、以前の変換結果をクリアします。",
+      },
+    ],
+  },
+  {
     version: "2026.04.3",
     date: "2026-04-19",
     entries: [
