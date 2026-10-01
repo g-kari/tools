@@ -379,6 +379,7 @@ export const Route = createRootRoute({
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "ja_JP" },
       { property: "og:image", content: SITE_OGP_IMAGE },
+      { property: "og:image:type", content: "image/png" },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
       { property: "og:image:alt", content: SITE_NAME },

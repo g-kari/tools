@@ -39,6 +39,18 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
+    version: "2026.10.1",
+    date: "2026-10-02",
+    entries: [
+      {
+        type: "fix",
+        title: "リンク共有用のデフォルト画像が表示されない不具合を修正",
+        description:
+          "OGP・Twitterカードの参照先に、サイトの配色と名前を使った1200×630のPNG画像を追加しました。画像URLが404ページになる問題を解消します。",
+      },
+    ],
+  },
+  {
     version: "2026.10",
     date: "2026-10-01",
     entries: [
