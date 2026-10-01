@@ -9,9 +9,8 @@ import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnounc
 import { useClipboard } from "~/hooks/useClipboard";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 import { Marked } from "marked";
-import parse from "html-react-parser";
+import parse, { Element } from "html-react-parser";
 import type { DOMNode, HTMLReactParserOptions } from "html-react-parser";
-import { Element } from "domhandler";
 
 export const Route = createFileRoute("/markdown-preview")({
   head: () => ({
@@ -99,38 +98,57 @@ function greet(name) {
 テキストの末尾
 `;
 
+/** フィルター対象のURL属性。 */
+const URL_ATTRIBUTES = new Set(["href", "src", "action", "data", "formaction", "xlink:href"]);
+
 /**
- * html-react-parserのオプション: 危険なタグを除去する
- * scriptやiframe等のタグを除去し、イベントハンドラ属性を除去する
+ * URL 属性にスクリプトを実行できるスキームが含まれていないか検証する。
+ * ブラウザーがスキーム判定時に無視する ASCII 制御文字や空白も除去してから判定する。
  */
+export function isSafeUrlAttributeValue(value: string): boolean {
+  // oxlint-disable-next-line no-control-regex -- URLスキーム判定で無視されるASCII制御文字を意図的に除去する。
+  const normalized = value.replace(/[\u0000-\u0020\u007f]+/g, "").toLowerCase();
+  return (
+    !normalized.startsWith("javascript:") &&
+    !normalized.startsWith("vbscript:") &&
+    !normalized.startsWith("data:")
+  );
+}
+
+/** 禁止要素とイベント・style属性を除去し、危険なURLスキームを無効化する。 */
 const parseOptions: HTMLReactParserOptions = {
   replace(domNode: DOMNode) {
     if (!(domNode instanceof Element)) return;
 
     const tagName = domNode.tagName?.toLowerCase();
-    // 危険なタグをnullに置き換えて除去
+    // replaceは有効なReact要素だけを置換に使うため、空のFragmentで子ごと除去する。
     if (
       tagName === "script" ||
       tagName === "iframe" ||
       tagName === "form" ||
       tagName === "object" ||
-      tagName === "embed"
+      tagName === "embed" ||
+      tagName === "svg" ||
+      tagName === "math" ||
+      tagName === "style" ||
+      tagName === "meta" ||
+      tagName === "link" ||
+      tagName === "base"
     ) {
-      return null;
+      return <></>;
     }
 
     // イベントハンドラ属性を除去
     if (domNode.attribs) {
       const attribs = { ...domNode.attribs };
       Object.keys(attribs).forEach((attr) => {
-        if (attr.startsWith("on")) {
+        const normalizedAttr = attr.toLowerCase();
+        if (normalizedAttr.startsWith("on") || normalizedAttr === "style") {
           delete attribs[attr];
+          return;
         }
-        // javascript: / data: スキームのURL属性を無効化（大文字小文字を区別しない）
-        if (
-          (attr === "href" || attr === "src" || attr === "action" || attr === "data") &&
-          /^(javascript:|data:)/i.test(attribs[attr] ?? "")
-        ) {
+        // 難読化された危険なスキームを含む URL 属性を無効化
+        if (URL_ATTRIBUTES.has(normalizedAttr) && !isSafeUrlAttributeValue(attribs[attr] ?? "")) {
           attribs[attr] = "#";
         }
       });
@@ -150,6 +168,11 @@ const markedInstance = new Marked({ breaks: true, gfm: true });
 export function parseMarkdown(markdown: string): string {
   if (!markdown.trim()) return "";
   return markedInstance.parse(markdown) as string;
+}
+
+/** HTMLをプレビュー用の属性フィルターを適用してReactノードに変換する。 */
+export function renderMarkdownPreviewHtml(html: string): ReturnType<typeof parse> {
+  return parse(html, parseOptions);
 }
 
 /**
@@ -299,7 +322,9 @@ function MarkdownPreview() {
               className="markdown-preview-content"
             >
               {previewHtml ? (
-                <div className="markdown-preview-inner">{parse(previewHtml, parseOptions)}</div>
+                <div className="markdown-preview-inner">
+                  {renderMarkdownPreviewHtml(previewHtml)}
+                </div>
               ) : (
                 <p className="markdown-preview-placeholder">
                   左側のエリアにMarkdownを入力するとプレビューが表示されます

@@ -44,6 +44,12 @@ export const releases: Release[] = [
     entries: [
       {
         type: "fix",
+        title: "Markdownプレビュー: 禁止要素と危険なURL属性の除去を修正",
+        description:
+          "埋め込み・フォーム・スクリプト・スタイルなどの禁止要素を子要素ごと除去し、イベント・style属性と難読化された危険なURLスキームをフィルターします。通常のMarkdown構文・リンク・画像は保持します。",
+      },
+      {
+        type: "fix",
         title: "リンク共有用のデフォルト画像が表示されない不具合を修正",
         description:
           "OGP・Twitterカードの参照先に、サイトの配色と名前を使った1200×630のPNG画像を追加しました。画像URLが404ページになる問題を解消します。",
