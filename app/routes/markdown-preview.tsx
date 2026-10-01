@@ -106,6 +106,7 @@ const URL_ATTRIBUTES = new Set(["href", "src", "action", "data", "formaction", "
  * ブラウザーがスキーム判定時に無視する ASCII 制御文字や空白も除去してから判定する。
  */
 export function isSafeUrlAttributeValue(value: string): boolean {
+  // oxlint-disable-next-line no-control-regex -- URLスキーム判定で無視されるASCII制御文字を意図的に除去する。
   const normalized = value.replace(/[\u0000-\u0020\u007f]+/g, "").toLowerCase();
   return (
     !normalized.startsWith("javascript:") &&
