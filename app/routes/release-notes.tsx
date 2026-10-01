@@ -44,6 +44,12 @@ export const releases: Release[] = [
     entries: [
       {
         type: "fix",
+        title: "共有メタデータのURLを本番サイトのドメインに統一",
+        description:
+          "各ページのOGP URLとOGP・Twitter画像の参照元を、本番サイトの https://tools.0g0.xyz に修正しました。",
+      },
+      {
+        type: "fix",
         title: "JSON Lines: 整形・圧縮で1レコード1行を保持",
         description:
           "整形後もJSON Linesとして検証・変換できるように修正。不正な行がある場合は入力を変更せず修正を案内し、圧縮で後続レコードを結合しません。選択中モードの再クリックで内容を保持し、変換ショートカットは変換モードのみで動作します。",
