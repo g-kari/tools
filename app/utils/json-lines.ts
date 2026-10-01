@@ -76,88 +76,52 @@ export function parseJsonLines(text: string): ParseJsonLinesResult {
 }
 
 /**
- * JSON Lines の各行を pretty-print 整形する
+ * JSON Lines の各行を1レコード1行のまま読みやすく整形する。
+ * 文字列の外にあるコロンとカンマの後に空白を加える。
+ * 無効な行は元のテキストのまま保持し、隣のレコードと結合しない。
  *
  * @param text - 整形対象の JSON Lines テキスト
- * @param indent - インデント数（デフォルト: 2）
- * @returns 整形済みテキスト（各行が複数行に展開される）
+ * @returns 整形済みテキスト（レコード内に改行を追加しない）
  */
-export function formatJsonLines(text: string, indent = 2): string {
-  const lines = text.split("\n");
-  const result: string[] = [];
-
-  for (const line of lines) {
-    const trimmed = line.trim();
-    if (!trimmed) {
-      result.push("");
-      continue;
-    }
+export function formatJsonLines(text: string): string {
+  const result = text.split("\n").map((line) => {
+    if (!line.trim()) return "";
     try {
-      result.push(JSON.stringify(JSON.parse(trimmed), null, indent));
+      const compact = JSON.stringify(JSON.parse(line.trim()));
+      // 文字列トークン全体を先に一致させ、文字列内の句読点には触れない。
+      return compact.replace(/"(?:[^"\\]|\\.)*"|[:,]/g, (token) =>
+        token === ":" || token === "," ? `${token} ` : token,
+      );
     } catch {
-      result.push(trimmed);
+      return line;
     }
-  }
+  });
 
-  // 末尾の連続する空行を除去
-  while (result.length > 0 && result[result.length - 1] === "") {
-    result.pop();
-  }
-
+  // 末尾の連続する空行を除去する。
+  while (result.length > 0 && result[result.length - 1] === "") result.pop();
   return result.join("\n");
 }
 
 /**
- * JSON Lines の各行を1行に圧縮する
+ * JSON Lines の各レコードを1行のまま圧縮し、空行を除去する。
+ * NDJSONとして行ごとに処理し、無効な行はそのまま保持する。
+ * 複数行JSONの結合は行わない（JSON配列は専用モードで変換する）。
  *
- * @param text - 圧縮対象のテキスト（複数行JSONや空行を含む可能性あり）
- * @returns 各行が1つの JSON 値になった JSON Lines テキスト
+ * @param text - 圧縮対象の JSON Lines テキスト
+ * @returns 圧縮済みテキスト
  */
 export function minifyJsonLines(text: string): string {
-  // 複数行 JSON（整形済み）を1行ずつに圧縮するため、
-  // まず全体を連結して行ごとに分割するのではなく、
-  // JSON オブジェクト/配列の境界を検出して分割する
-  const lines = text.split("\n");
-  const result: string[] = [];
-
-  let buffer = "";
-
-  for (const line of lines) {
-    const trimmed = line.trim();
-    if (!trimmed) {
-      // 空行はバッファが空なら無視、バッファがあればフラッシュを試みる
-      if (buffer) {
-        try {
-          result.push(JSON.stringify(JSON.parse(buffer)));
-          buffer = "";
-        } catch {
-          // まだ不完全な JSON の可能性
-        }
+  return text
+    .split("\n")
+    .filter((line) => line.trim())
+    .map((line) => {
+      try {
+        return JSON.stringify(JSON.parse(line.trim()));
+      } catch {
+        return line;
       }
-      continue;
-    }
-
-    buffer = buffer ? buffer + " " + trimmed : trimmed;
-
-    // バッファが有効な JSON かチェック
-    try {
-      result.push(JSON.stringify(JSON.parse(buffer)));
-      buffer = "";
-    } catch {
-      // まだ不完全 → バッファを継続
-    }
-  }
-
-  // 残りのバッファを処理
-  if (buffer) {
-    try {
-      result.push(JSON.stringify(JSON.parse(buffer)));
-    } catch {
-      result.push(buffer);
-    }
-  }
-
-  return result.join("\n");
+    })
+    .join("\n");
 }
 
 /**
