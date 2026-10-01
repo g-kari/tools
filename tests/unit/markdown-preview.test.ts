@@ -1,5 +1,123 @@
 import { describe, it, expect } from "vite-plus/test";
-import { isSafeUrlAttributeValue, parseMarkdown } from "../../app/routes/markdown-preview";
+import { createElement, Fragment } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { JSDOM } from "jsdom";
+import {
+  isSafeUrlAttributeValue,
+  parseMarkdown,
+  renderMarkdownPreviewHtml,
+} from "../../app/routes/markdown-preview";
+
+function renderPreview(markdown: string): Document {
+  const html = renderToStaticMarkup(
+    createElement(Fragment, null, renderMarkdownPreviewHtml(parseMarkdown(markdown))),
+  );
+  return new JSDOM(html, { url: "https://preview.example/" }).window.document;
+}
+
+describe("Markdownプレビューのレンダリング", () => {
+  it.each([
+    ["script", '<script data-blocked="true">blocked child</script>'],
+    ["iframe", '<iframe data-blocked="true">blocked child</iframe>'],
+    ["form", '<form data-blocked="true"><input value="blocked child"></form>'],
+    ["object", '<object data-blocked="true">blocked child</object>'],
+    ["embed", '<embed data-blocked="true">'],
+    ["svg", '<svg data-blocked="true"><text>blocked child</text></svg>'],
+    ["math", '<math data-blocked="true"><mi>blocked child</mi></math>'],
+    ["style", '<style data-blocked="true">.blocked-child { color: red }</style>'],
+    ["meta", '<meta data-blocked="true" content="blocked child">'],
+    ["link", '<link data-blocked="true" href="/blocked-child.css">'],
+    ["base", '<base data-blocked="true" href="https://example.com/">'],
+  ])("%s要素とその子を実際の出力から除去する", (tag, input) => {
+    for (const markdown of [input, `<div>before${input}<strong>after</strong></div>`]) {
+      const document = renderPreview(markdown);
+      expect(document.querySelector(tag)).toBeNull();
+      expect(document.querySelector("[data-blocked]")).toBeNull();
+      expect(document.body.textContent).not.toContain("blocked child");
+      if (markdown.startsWith("<div>")) {
+        expect(document.querySelector("strong")?.textContent).toBe("after");
+        expect(document.body.textContent).toContain("before");
+      }
+    }
+  });
+
+  it("イベント属性とstyle属性を除去し通常の属性を保持する", () => {
+    const document = renderPreview(
+      '<p id="safe" title="kept" ONCLICK="doSomething()" style="color:red">safe text</p>',
+    );
+    const paragraph = document.querySelector("p");
+    expect(paragraph?.getAttribute("id")).toBe("safe");
+    expect(paragraph?.getAttribute("title")).toBe("kept");
+    expect(paragraph?.hasAttribute("onclick")).toBe(false);
+    expect(paragraph?.hasAttribute("style")).toBe(false);
+    expect(paragraph?.textContent).toBe("safe text");
+  });
+
+  it.each(["href", "src", "action", "data", "formaction", "xlink:href"])(
+    "%s属性の難読化された危険なスキームを無効化する",
+    (attribute) => {
+      for (const value of [
+        "javascript:doSomething()",
+        "VBScript:doSomething()",
+        "data:text/html,blocked",
+        " &#x09;java&#x0A;script:doSomething()",
+        "&#106;avascript:doSomething()",
+      ]) {
+        const document = renderPreview(`<a ${attribute}="${value}">link</a>`);
+        expect(document.querySelector("a")?.getAttribute(attribute)).toBe("#");
+      }
+    },
+  );
+
+  it.each([
+    "https://example.com/docs?q=1&next=2",
+    "http://example.com/",
+    "/docs/getting-started",
+    "../image.png",
+    "#section",
+    "mailto:hello@example.com",
+    "tel:+81312345678",
+  ])("通常のリンク%sを変更しない", (value) => {
+    const document = renderPreview(`<a href="${value}">link</a>`);
+    expect(document.querySelector("a")?.getAttribute("href")).toBe(value);
+  });
+
+  it("通常の画像とGFM構文、エスケープ済みコードを保持する", () => {
+    const markdown = `# Heading
+
+**bold** and *italic*
+
+- first
+- second
+
+> quote
+
+| name | value |
+| --- | --- |
+| one | two |
+
+![image](/image.png "caption")
+
+\`<iframe>code</iframe>\`
+
+\`\`\`html
+<script>code</script>
+\`\`\``;
+    const document = renderPreview(markdown);
+    expect(document.querySelector("h1")?.textContent).toBe("Heading");
+    expect(document.querySelector("strong")?.textContent).toBe("bold");
+    expect(document.querySelector("em")?.textContent).toBe("italic");
+    expect(document.querySelectorAll("li")).toHaveLength(2);
+    expect(document.querySelector("blockquote")?.textContent).toContain("quote");
+    expect(document.querySelector("td")?.textContent).toBe("one");
+    expect(document.querySelector("img")?.getAttribute("src")).toBe("/image.png");
+    expect(document.querySelector("img")?.getAttribute("alt")).toBe("image");
+    expect(document.querySelector("img")?.getAttribute("title")).toBe("caption");
+    expect(document.querySelector("code")?.textContent).toBe("<iframe>code</iframe>");
+    expect(document.querySelector("pre code")?.textContent).toBe("<script>code</script>\n");
+    expect(document.querySelector("script, iframe")).toBeNull();
+  });
+});
 
 describe("isSafeUrlAttributeValue", () => {
   it("通常の URL と相対 URL を許可する", () => {

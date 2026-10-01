@@ -39,6 +39,48 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
+    version: "2026.10.1",
+    date: "2026-10-02",
+    entries: [
+      {
+        type: "fix",
+        title: "Markdownプレビュー: 禁止要素と危険なURL属性の除去を修正",
+        description:
+          "埋め込み・フォーム・スクリプト・スタイルなどの禁止要素を子要素ごと除去し、イベント・style属性と難読化された危険なURLスキームをフィルターします。通常のMarkdown構文・リンク・画像は保持します。",
+      },
+      {
+        type: "fix",
+        title: "リンク共有用のデフォルト画像が表示されない不具合を修正",
+        description:
+          "OGP・Twitterカードの参照先に、サイトの配色と名前を使った1200×630のPNG画像を追加しました。画像URLが404ページになる問題を解消します。",
+      },
+    ],
+  },
+  {
+    version: "2026.10",
+    date: "2026-10-01",
+    entries: [
+      {
+        type: "fix",
+        title: "共有メタデータのURLを本番サイトのドメインに統一",
+        description:
+          "各ページのOGP URLとOGP・Twitter画像の参照元を、本番サイトの https://tools.0g0.xyz に修正しました。",
+      },
+      {
+        type: "fix",
+        title: "JSON Lines: 整形・圧縮で1レコード1行を保持",
+        description:
+          "整形後もJSON Linesとして検証・変換できるように修正。不正な行がある場合は入力を変更せず修正を案内し、圧縮で後続レコードを結合しません。選択中モードの再クリックで内容を保持し、変換ショートカットは変換モードのみで動作します。",
+      },
+      {
+        type: "fix",
+        title: "CSV/JSON変換: 引用符内の複数行と前後の空白を保持",
+        description:
+          "CSVの引用符内の改行・空行・エスケープされた引用符とフィールド前後の空白を保持し、LF/CRLF/CRのレコード区切りとUTF-8 BOMに対応。閉じ忘れなど不正な引用符はエラーで知らせ、以前の変換結果をクリアします。",
+      },
+    ],
+  },
+  {
     version: "2026.04.3",
     date: "2026-04-19",
     entries: [

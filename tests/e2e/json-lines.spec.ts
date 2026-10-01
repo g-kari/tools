@@ -56,27 +56,55 @@ test.describe("JSON Lines フォーマッター - E2E Tests", () => {
     await expect(errorList).toContainText("行 2");
   });
 
-  test("検証モード: 整形ボタンで JSON を pretty-print できる", async ({ page }) => {
+  test("検証モード: 整形ボタンで1レコード1行を保って整形できる", async ({ page }) => {
     const inputTextarea = page.locator("#inputText");
     await inputTextarea.fill('{"id":1,"name":"田中"}');
 
-    const formatBtn = page.locator("button", { hasText: "整形" });
+    const formatBtn = page.getByRole("button", { name: "各行のJSONを整形", exact: true });
     await formatBtn.click();
 
     const value = await inputTextarea.inputValue();
     expect(value).toContain('"id": 1');
     expect(value).toContain('"name": "田中"');
+    expect(value.split("\n")).toHaveLength(1);
+    await expect(page.locator(".jsonl-error-list")).toHaveCount(0);
   });
 
   test("検証モード: 圧縮ボタンで JSON を1行にできる", async ({ page }) => {
     const inputTextarea = page.locator("#inputText");
-    await inputTextarea.fill('{\n  "id": 1,\n  "name": "田中"\n}');
+    await inputTextarea.fill('{"id": 1, "name": "田中"}');
 
-    const minifyBtn = page.locator("button", { hasText: "圧縮" });
+    const minifyBtn = page.getByRole("button", { name: "各行のJSONを圧縮", exact: true });
     await minifyBtn.click();
 
     const value = await inputTextarea.inputValue();
     expect(value.split("\n").filter((l) => l.trim()).length).toBe(1);
+  });
+
+  test("不正な行の整形・圧縮で入力を保ち、修正後に再試行できる", async ({ page }) => {
+    const input = page.locator("#inputText");
+    const invalid = '{"id":1}\n  invalid  \n{"id":2}';
+    for (const action of ["各行のJSONを整形", "各行のJSONを圧縮"]) {
+      await input.fill(invalid);
+      await page.getByRole("button", { name: action, exact: true }).click();
+      await expect(input).toHaveValue(invalid);
+      await expect(page.locator(".error-message")).toContainText("入力は変更していません");
+      await expect(page.locator(".jsonl-error-list")).toContainText("行 2");
+      await input.fill('{"id":1}\n{"id":2}');
+      await page.getByRole("button", { name: action, exact: true }).click();
+      await expect(page.locator(".error-message")).toHaveCount(0);
+      await expect(page.locator(".jsonl-error-list")).toHaveCount(0);
+    }
+  });
+
+  test("検証モードのショートカットと選択中モードの再クリックは入力を保持する", async ({ page }) => {
+    const input = page.locator("#inputText");
+    await input.fill('{"id":1}');
+    await input.press("Control+Enter");
+    await page.getByRole("button", { name: "検証・整形", exact: true }).click();
+    await expect(input).toHaveValue('{"id":1}');
+    await expect(page.locator(".error-message")).toHaveCount(0);
+    await expect(page.locator("#outputText")).toHaveCount(0);
   });
 
   test("JSONL→JSON配列モード: 変換が正しく機能する", async ({ page }) => {
@@ -85,7 +113,7 @@ test.describe("JSON Lines フォーマッター - E2E Tests", () => {
 
     const inputTextarea = page.locator("#inputText");
     const outputTextarea = page.locator("#outputText");
-    const convertBtn = page.locator("button.btn-primary");
+    const convertBtn = page.getByRole("button", { name: /^(JSON配列に変換|JSON Linesに変換)$/ });
 
     await inputTextarea.fill('{"id":1}\n{"id":2}');
     await convertBtn.click();
@@ -102,7 +130,7 @@ test.describe("JSON Lines フォーマッター - E2E Tests", () => {
     await toArrayBtn.click();
 
     const inputTextarea = page.locator("#inputText");
-    const convertBtn = page.locator("button.btn-primary");
+    const convertBtn = page.getByRole("button", { name: /^(JSON配列に変換|JSON Linesに変換)$/ });
 
     await inputTextarea.fill('{"id":1}\ninvalid');
     await convertBtn.click();
@@ -117,7 +145,7 @@ test.describe("JSON Lines フォーマッター - E2E Tests", () => {
 
     const inputTextarea = page.locator("#inputText");
     const outputTextarea = page.locator("#outputText");
-    const convertBtn = page.locator("button.btn-primary");
+    const convertBtn = page.getByRole("button", { name: /^(JSON配列に変換|JSON Linesに変換)$/ });
 
     await inputTextarea.fill('[{"id":1},{"id":2}]');
     await convertBtn.click();
@@ -134,7 +162,7 @@ test.describe("JSON Lines フォーマッター - E2E Tests", () => {
     await fromArrayBtn.click();
 
     const inputTextarea = page.locator("#inputText");
-    const convertBtn = page.locator("button.btn-primary");
+    const convertBtn = page.getByRole("button", { name: /^(JSON配列に変換|JSON Linesに変換)$/ });
 
     await inputTextarea.fill('{"id":1}');
     await convertBtn.click();
@@ -160,7 +188,7 @@ test.describe("JSON Lines フォーマッター - E2E Tests", () => {
 
     const inputTextarea = page.locator("#inputText");
     const outputTextarea = page.locator("#outputText");
-    const convertBtn = page.locator("button.btn-primary");
+    const convertBtn = page.getByRole("button", { name: /^(JSON配列に変換|JSON Linesに変換)$/ });
     const clearBtn = page.locator("button.btn-clear");
 
     await inputTextarea.fill('{"id":1}');
@@ -176,7 +204,7 @@ test.describe("JSON Lines フォーマッター - E2E Tests", () => {
     const toArrayBtn = page.locator("button[aria-pressed]", { hasText: "JSONL → JSON配列" });
     await toArrayBtn.click();
 
-    const convertBtn = page.locator("button.btn-primary");
+    const convertBtn = page.getByRole("button", { name: /^(JSON配列に変換|JSON Linesに変換)$/ });
     await convertBtn.click();
 
     const errorMessage = page.locator(".error-message");
@@ -184,7 +212,7 @@ test.describe("JSON Lines フォーマッター - E2E Tests", () => {
   });
 
   test("TipsCard が表示される", async ({ page }) => {
-    const infoBox = page.locator(".info-box");
+    const infoBox = page.locator(".info-box").filter({ hasText: "使い方" });
     await expect(infoBox).toBeVisible();
 
     const infoText = await infoBox.textContent();

@@ -41,6 +41,48 @@ describe("csvToJson", () => {
       const result = JSON.parse(csvToJson(csv, ",", true));
       expect(result[0].c).toBe("");
     });
+
+    it("引用符内の改行と空行を1つのフィールドとして保持する", () => {
+      const csv = 'name,note\n田中,"1行目\n\n3行目"\n佐藤,通常';
+      expect(JSON.parse(csvToJson(csv, ",", true))).toEqual([
+        { name: "田中", note: "1行目\n\n3行目" },
+        { name: "佐藤", note: "通常" },
+      ]);
+    });
+
+    it.each(["\n", "\r\n", "\r"])("レコード区切り %j を扱う", (newline) => {
+      const csv = `name,note${newline}田中,"前${newline}後"${newline}佐藤,通常${newline}`;
+      expect(JSON.parse(csvToJson(csv, ",", true))).toEqual([
+        { name: "田中", note: `前${newline}後` },
+        { name: "佐藤", note: "通常" },
+      ]);
+    });
+
+    it("複数行フィールド内のエスケープされた引用符を保持する", () => {
+      const csv = 'name,note\n田中,"彼は""天才""だ\n次の行"';
+      expect(JSON.parse(csvToJson(csv, ",", true))).toEqual([
+        { name: "田中", note: '彼は"天才"だ\n次の行' },
+      ]);
+    });
+
+    it("ヘッダーと引用符の有無によらず値の前後の空白を保持する", () => {
+      const csv = ' name ,note\n 田中 ,"  メモ  "';
+      expect(JSON.parse(csvToJson(csv, ",", true))).toEqual([
+        { " name ": " 田中 ", note: "  メモ  " },
+      ]);
+    });
+
+    it("UTF-8 BOMとレコード間の空行を無視する", () => {
+      const csv = '\uFEFFname,note\r\n\r\n田中,"メモ"\r\n \r\n';
+      expect(JSON.parse(csvToJson(csv, ",", true))).toEqual([{ name: "田中", note: "メモ" }]);
+    });
+
+    it("特殊なプロパティ名もヘッダーとして保持する", () => {
+      const csv = "__proto__,constructor\n値,別の値";
+      const result = JSON.parse(csvToJson(csv, ",", true));
+      expect(Object.keys(result[0])).toEqual(["__proto__", "constructor"]);
+      expect(result[0]["__proto__"]).toBe("値");
+    });
   });
 
   describe("ヘッダーなし変換", () => {
@@ -52,6 +94,32 @@ describe("csvToJson", () => {
         ["4", "5", "6"],
       ]);
     });
+
+    it.each([",", "\t", ";"])("区切り文字 %j で複数行フィールドを保持する", (delimiter) => {
+      const csv = `"前\n後"${delimiter}"引用符""と${delimiter}区切り"\n次${delimiter}`;
+      expect(JSON.parse(csvToJson(csv, delimiter, false))).toEqual([
+        ["前\n後", `引用符"と${delimiter}区切り`],
+        ["次", ""],
+      ]);
+    });
+
+    it("空の引用符付きレコードと先頭・末尾の空フィールドを保持する", () => {
+      const csv = '\n""\n,値,\n';
+      expect(JSON.parse(csvToJson(csv, ",", false))).toEqual([[""], ["", "値", ""]]);
+    });
+
+    it("最初と最後のフィールドの空白を保持する", () => {
+      expect(JSON.parse(csvToJson("  前,後  ", ",", false))).toEqual([["  前", "後  "]]);
+    });
+
+    it("タブのみの空フィールドのレコードを保持する", () => {
+      expect(JSON.parse(csvToJson("\t", "\t", false))).toEqual([["", ""]]);
+      expect(JSON.parse(csvToJson("a\tb\n\t\nc\td", "\t", false))).toEqual([
+        ["a", "b"],
+        ["", ""],
+        ["c", "d"],
+      ]);
+    });
   });
 
   describe("エラーケース", () => {
@@ -61,6 +129,24 @@ describe("csvToJson", () => {
 
     it("空白のみでエラーをスローする", () => {
       expect(() => csvToJson("   \n  ", ",", true)).toThrow("CSVデータが空です");
+    });
+
+    it("引用符が閉じられていない場合にエラーをスローする", () => {
+      expect(() => csvToJson('name,note\n田中,"前\n後', ",", true)).toThrow(
+        "CSVのダブルクォートが閉じられていません",
+      );
+    });
+
+    it("引用符の後に不正な文字が続く場合にエラーをスローする", () => {
+      expect(() => csvToJson('"値"続き,他', ",", false)).toThrow(
+        "引用符を閉じた後には区切り文字または改行を指定してください",
+      );
+    });
+
+    it("引用符がフィールドの途中にある場合にエラーをスローする", () => {
+      expect(() => csvToJson('前"後,他', ",", false)).toThrow(
+        "引用符を含むフィールド全体をダブルクォートで囲んでください",
+      );
     });
   });
 });
@@ -144,6 +230,35 @@ describe("jsonToCsv", () => {
       const json = csvToJson(originalCsv, ",", true);
       const backToCsv = jsonToCsv(json, ",");
       expect(backToCsv).toBe(originalCsv);
+    });
+
+    it.each([",", "\t", ";"])("区切り文字 %j で複数行と空白を往復変換する", (delimiter) => {
+      const original = [
+        { " name ": " 田中 ", note: '前\r\n\r\n"後"', other: `a${delimiter}b` },
+        { " name ": "佐藤", note: " ", other: "" },
+      ];
+      const csv = jsonToCsv(JSON.stringify(original), delimiter);
+      expect(JSON.parse(csvToJson(csv, delimiter, true))).toEqual(original);
+    });
+
+    it("ヘッダーなしで特殊文字・空フィールド・空白を往復変換する", () => {
+      const original = [
+        ["", '改行\n"引用符"', "  空白  "],
+        ["次", "\r\n", ""],
+      ];
+      const csv = jsonToCsv(JSON.stringify(original), ",");
+      expect(JSON.parse(csvToJson(csv, ",", false))).toEqual(original);
+    });
+
+    it.each([",", "\t", ";"])("1列の空文字と空白を %j 区切りで往復変換する", (delimiter) => {
+      const arrays = [[""], [" "], ["\t"], ["通常"]];
+      expect(
+        JSON.parse(csvToJson(jsonToCsv(JSON.stringify(arrays), delimiter), delimiter, false)),
+      ).toEqual(arrays);
+      const records = [{ note: "" }, { note: " " }, { note: "\t" }, { note: "通常" }];
+      expect(
+        JSON.parse(csvToJson(jsonToCsv(JSON.stringify(records), delimiter), delimiter, true)),
+      ).toEqual(records);
     });
   });
 });
