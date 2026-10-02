@@ -718,6 +718,10 @@ test("deliberate synthetic host mismatch proves the detector is active", async (
 test("runtime-only live owned response is compared with the generated baseline", async ({
   page,
 }, testInfo) => {
+  test.skip(
+    process.env.HYDRATION_LIVE_RESPONSE !== "1",
+    "Live public response reads require explicit opt-in",
+  );
   const result = await replay(page, testInfo, "live");
   expect(
     generatedBaselineSummary?.available,

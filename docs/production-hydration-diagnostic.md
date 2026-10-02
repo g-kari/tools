@@ -20,6 +20,10 @@ runtime in a fresh native Chromium context. It rejects redirects, failed or
 blocked responses, invalid encoding, and unexpected source markers. HTML,
 headers, cookies, and observed external resource URLs remain in memory. The
 same pinned client and first-difference detector are used for comparison.
+This case is disabled by default, including every pull-request run. A separately
+approved manual workflow run must explicitly enable the `live_response` input;
+local invocation requires `HYDRATION_LIVE_RESPONSE=1`. Do not enable it merely to
+retry a rejected response.
 
 ## Snapshot provenance
 

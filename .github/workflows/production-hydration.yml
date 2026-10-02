@@ -2,6 +2,12 @@ name: Production hydration diagnostic
 
 on:
   workflow_dispatch:
+    inputs:
+      live_response:
+        description: "Read one public production response (requires explicit diagnostic approval)"
+        type: boolean
+        default: false
+        required: false
   pull_request:
     paths:
       - "tests/browser/hydration/**"
@@ -40,6 +46,7 @@ jobs:
         env:
           CI: true
           PLAYWRIGHT_NO_COPY_PROMPT: "1"
+          HYDRATION_LIVE_RESPONSE: ${{ github.event_name == 'workflow_dispatch' && inputs.live_response && '1' || '0' }}
       - name: Record exact diagnostic source revision
         if: always()
         run: |

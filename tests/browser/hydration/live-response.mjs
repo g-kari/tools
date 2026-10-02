@@ -268,9 +268,7 @@ export async function prepareLiveResponse({
         if (item.name === "srcdoc") return true;
         if (!["href", "src", "action", "formaction", "data"].includes(item.name)) return false;
         try {
-          return ["javascript:", "data:", "blob:"].includes(
-            new URL(item.value, documentUrl).protocol,
-          );
+          return new URL(item.value, documentUrl).protocol !== "https:";
         } catch {
           return true;
         }

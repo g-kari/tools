@@ -364,6 +364,60 @@ void test("document-bearing URL protocols are rejected on anchors and forms", as
   );
 });
 
+void test("document-bearing attributes reject every non-HTTPS scheme, including vbscript", async () => {
+  for (const attribute of ["href", "src", "action", "formaction", "data"]) {
+    for (const value of [
+      "vbscript:synthetic",
+      "http://synthetic.example/",
+      "file:///synthetic",
+      "ftp://synthetic.example/",
+      "mailto:synthetic@example.invalid",
+      "tel:synthetic",
+      "https://[",
+    ]) {
+      await rejects(
+        input(body.replace("</body>", `<a ${attribute}="${value}">synthetic</a></body>`)),
+        "unsupported-document-bearing-url",
+      );
+    }
+  }
+});
+
+void test("URL parsing rejects scheme aliases and decoded HTML references inside templates", async () => {
+  for (const value of [
+    "VBScript:synthetic",
+    "  vbscript:synthetic",
+    "vb\tscript:synthetic",
+    "vb\nscript:synthetic",
+    "vb&#115;cript:synthetic",
+    "javascript&#58;synthetic",
+  ]) {
+    await rejects(
+      input(
+        body.replace("</body>", `<template><a href="${value}">synthetic</a></template></body>`),
+      ),
+      "unsupported-document-bearing-url",
+    );
+  }
+});
+
+void test("HTTPS and ordinary relative document-bearing values remain byte-exact", async () => {
+  for (const attribute of ["href", "src", "action", "formaction", "data"]) {
+    for (const value of [
+      "/relative",
+      "relative",
+      "?synthetic=1",
+      "#main-content",
+      "",
+      "//synthetic.example/path",
+      "HTTPS://synthetic.example/path",
+    ]) {
+      const source = body.replace("</body>", `<a ${attribute}="${value}">synthetic</a></body>`);
+      assert.equal((await prepareLiveResponse(input(source))).html, source);
+    }
+  }
+});
+
 void test("response reporting registrations are omitted, with names/counts only", () => {
   const source = {
     NEL: '{"synthetic":"private-nel"}',
