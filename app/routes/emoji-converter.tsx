@@ -2,7 +2,10 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
-import { loadFFmpeg, convertImagesToGif } from "./image-to-gif";
+import { loadFFmpeg } from "./image-to-gif";
+import { type DitherMode } from "~/utils/gifPalette";
+import { encodeEmojiGif, canSaveEmojiGif } from "~/utils/emojiGifExport";
+import { useGeneratedGif } from "~/hooks/useGeneratedGif";
 import {
   generateAnimationFrames,
   getAnimationEffectLabel,
@@ -44,8 +47,8 @@ type Platform = "discord" | "slack";
 type OutputFormat = "png" | "jpeg" | "webp" | "avif" | "gif";
 
 const PLATFORM_LIMITS = {
-  discord: { maxSize: 256 * 1024, label: "Discord (最大256KB)" },
-  slack: { maxSize: 1024 * 1024, label: "Slack (最大1MB)" },
+  discord: { maxSize: 256 * 1024, label: "Discord向け（ツール上限256 KiB）" },
+  slack: { maxSize: 1024 * 1024, label: "Slack向け（ツール上限1 MiB）" },
 } as const;
 
 const EMOJI_SIZE = 128; // Output size
@@ -353,6 +356,8 @@ export async function canvasToBlobWithLimit(
   quality: number,
   maxSize: number,
 ): Promise<Blob | null> {
+  // Canvas cannot encode GIF; never return a PNG with a GIF filename.
+  if (format === "gif") return null;
   const mimeType = FORMAT_MIME_TYPES[format];
 
   // PNG is lossless, no quality adjustment
@@ -388,7 +393,7 @@ export async function canvasToBlobWithLimit(
   return blob;
 }
 
-function EmojiConverter() {
+export function EmojiConverter() {
   const [file, setFile] = useState<File | null>(null);
   const [platform, setPlatform] = useState<Platform>("discord");
   const [outputFormat, setOutputFormat] = useState<OutputFormat>("png");
@@ -406,7 +411,12 @@ function EmojiConverter() {
   const [animationLoop, setAnimationLoop] = useState<number>(0); // 0 = infinite
   const [animationFps, setAnimationFps] = useState<number>(12);
   const [isAnimationPlaying, setIsAnimationPlaying] = useState(false);
-  const [ffmpegLoaded, setFfmpegLoaded] = useState(false);
+  const [ffmpegStatus, setFfmpegStatus] = useState<"idle" | "loading" | "ready" | "error">("idle");
+  const [gifColors, setGifColors] = useState(256);
+  const [gifDither, setGifDither] = useState<DitherMode>("floyd_steinberg");
+  const [gifQuality, setGifQuality] = useState(80);
+  const [fileRevision, setFileRevision] = useState(0);
+  const [processedKey, setProcessedKey] = useState("");
   // GSAP animation settings
   const [useGSAP, _setUseGSAP] = useState(true);
   const [gsapEasing, setGsapEasing] = useState<GSAPEasingType>("bounce");
@@ -417,9 +427,52 @@ function EmojiConverter() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const statusRef = useRef<HTMLDivElement>(null);
   const processedImageRef = useRef<HTMLCanvasElement | null>(null);
-  const ffmpegRef = useRef<FFmpeg>(new FFmpeg());
+  const ffmpegRef = useRef<FFmpeg | null>(null);
+  const loadingRef = useRef<Promise<boolean> | null>(null);
+  const mountedRef = useRef(false);
+  const previewUrlRef = useRef("");
   const animationFramesRef = useRef<HTMLCanvasElement[]>([]);
   const animationIntervalRef = useRef<number | null>(null);
+
+  const processingKey = JSON.stringify({
+    fileRevision,
+    editOptions,
+    platform,
+    outputFormat,
+    outputQuality,
+    enableAnimation,
+  });
+  const processingKeyRef = useRef(processingKey);
+  processingKeyRef.current = processingKey;
+  const generationKey = JSON.stringify({
+    processingKey,
+    animationEffect,
+    animationSpeed,
+    animationLoop,
+    animationFps,
+    useGSAP,
+    gsapEasing,
+    easingDirection,
+    animationDuration,
+    gifColors,
+    gifDither,
+    gifQuality,
+  });
+  const gif = useGeneratedGif(generationKey);
+  const maxBytes = PLATFORM_LIMITS[platform].maxSize;
+  const canSaveGif = canSaveEmojiGif(gif.artifact?.blob ?? null, maxBytes);
+  const imageReady = !!file && processedKey === processingKey;
+
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+      if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
+      ffmpegRef.current?.terminate();
+      ffmpegRef.current = null;
+      loadingRef.current = null;
+    };
+  }, []);
 
   const announceStatus = useCallback((message: string) => {
     if (statusRef.current) {
@@ -464,83 +517,75 @@ function EmojiConverter() {
     ctx.restore();
   }, []);
 
-  // 画像処理とプレビュー更新
-  const processImage = useCallback(async () => {
-    if (!file) return;
-
-    setIsProcessing(true);
-    announceStatus("画像を処理しています...");
-
-    try {
-      // リサイズ
-      const resizedCanvas = await resizeImage(file, EMOJI_SIZE);
-
-      // 編集オプション適用
-      const editedCanvas = applyEditOptions(resizedCanvas, editOptions);
-
-      // Store processed image for interactive preview
-      processedImageRef.current = editedCanvas;
-
-      // プレビュー更新 (larger preview size with crop/zoom support)
-      // Skip preview update if animation is playing - it will be regenerated
-      if (!enableAnimation) {
-        updatePreviewCanvas();
-      }
-
-      // Blob生成（容量制限適用）
-      const maxSize = PLATFORM_LIMITS[platform].maxSize;
-      const blob = await canvasToBlobWithLimit(editedCanvas, outputFormat, outputQuality, maxSize);
-
-      if (blob) {
-        // 古いBlobURLがあればクリーンアップ
-        setPreviewUrl((prevUrl) => {
-          if (prevUrl) {
-            URL.revokeObjectURL(prevUrl);
-          }
-          return URL.createObjectURL(blob);
-        });
-        setFileSize(blob.size);
-        announceStatus(`処理完了（${(blob.size / 1024).toFixed(1)} KB）`);
-      } else {
-        announceStatus("容量制限内に圧縮できませんでした");
-      }
-    } catch (error) {
-      announceStatus("画像の処理に失敗しました");
-      console.error(error);
-    } finally {
+  // A newer file/edit must never publish an older canvas or static export.
+  useEffect(() => {
+    const key = processingKey;
+    let cancelled = false;
+    processedImageRef.current = null;
+    setProcessedKey("");
+    if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
+    previewUrlRef.current = "";
+    setPreviewUrl("");
+    setFileSize(0);
+    if (!file) {
       setIsProcessing(false);
+      return;
     }
+    setIsProcessing(true);
+    void (async () => {
+      try {
+        const resizedCanvas = await resizeImage(file, EMOJI_SIZE);
+        if (cancelled || processingKeyRef.current !== key) return;
+        const editedCanvas = applyEditOptions(resizedCanvas, editOptions);
+        processedImageRef.current = editedCanvas;
+        setProcessedKey(key);
+        if (!enableAnimation) updatePreviewCanvas();
+        if (outputFormat !== "gif") {
+          const blob = await canvasToBlobWithLimit(
+            editedCanvas,
+            outputFormat,
+            outputQuality,
+            maxBytes,
+          );
+          if (cancelled || processingKeyRef.current !== key) return;
+          if (blob) {
+            const url = URL.createObjectURL(blob);
+            previewUrlRef.current = url;
+            setPreviewUrl(url);
+            setFileSize(blob.size);
+            announceStatus(`処理完了（${(blob.size / 1024).toFixed(1)} KB）`);
+          } else {
+            announceStatus("画像を生成できませんでした");
+          }
+        }
+      } catch (error) {
+        if (!cancelled) {
+          announceStatus("画像の処理に失敗しました");
+          console.error(error);
+        }
+      } finally {
+        if (!cancelled && processingKeyRef.current === key) setIsProcessing(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, [
     file,
-    platform,
-    outputFormat,
-    outputQuality,
+    processingKey,
     editOptions,
     enableAnimation,
+    outputFormat,
+    outputQuality,
+    maxBytes,
     updatePreviewCanvas,
     announceStatus,
   ]);
 
-  // ファイルまたは編集オプション変更時に画像を処理
-  useEffect(() => {
-    if (file) {
-      void processImage();
-    }
-  }, [file, platform, outputFormat, outputQuality, editOptions, processImage]);
-
-  // コンポーネントアンマウント時にBlobURLをクリーンアップ
-  useEffect(() => {
-    return () => {
-      if (previewUrl) {
-        URL.revokeObjectURL(previewUrl);
-      }
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // マウント解除時のみクリーンアップ（二重revokeを防ぐため依存配列は空）
-
   const handleFileChange = useCallback(
     (selectedFile: File | null) => {
       if (selectedFile && selectedFile.type.startsWith("image/")) {
+        setFileRevision((revision) => revision + 1);
         setFile(selectedFile);
         announceStatus(`ファイルを選択しました: ${selectedFile.name}`);
       } else {
@@ -585,23 +630,37 @@ function EmojiConverter() {
     [handleDropzoneClick],
   );
 
-  // Load FFmpeg when GIF format is selected (for animation support)
-  useEffect(() => {
-    if (outputFormat === "gif" && !ffmpegLoaded) {
-      void loadFFmpeg(ffmpegRef.current).then((loaded) => {
-        setFfmpegLoaded(loaded);
+  // One shared load attempt. A failure is visible and retryable, never a static fallback.
+  const ensureFFmpeg = useCallback((): Promise<boolean> => {
+    if (ffmpegRef.current?.loaded) return Promise.resolve(true);
+    if (loadingRef.current) return loadingRef.current;
+    const ffmpeg = new FFmpeg();
+    ffmpegRef.current = ffmpeg;
+    setFfmpegStatus("loading");
+    const loading = loadFFmpeg(ffmpeg)
+      .then((loaded) => {
+        if (mountedRef.current && ffmpegRef.current === ffmpeg) {
+          setFfmpegStatus(loaded ? "ready" : "error");
+          if (!loaded) {
+            ffmpeg.terminate();
+            ffmpegRef.current = null;
+          }
+        } else {
+          // A core fetch can finish after cleanup and create a worker. Own that late worker too.
+          ffmpeg.terminate();
+        }
+        return loaded;
+      })
+      .finally(() => {
+        if (loadingRef.current === loading) loadingRef.current = null;
       });
-    }
-  }, [outputFormat, ffmpegLoaded]);
+    loadingRef.current = loading;
+    return loading;
+  }, []);
 
-  // Load FFmpeg for animation
   useEffect(() => {
-    if (enableAnimation && !ffmpegLoaded) {
-      void loadFFmpeg(ffmpegRef.current).then((loaded) => {
-        setFfmpegLoaded(loaded);
-      });
-    }
-  }, [enableAnimation, ffmpegLoaded]);
+    if (outputFormat === "gif") void ensureFFmpeg();
+  }, [outputFormat, ensureFFmpeg]);
 
   // Generate animation frames when animation is enabled
   const generateAnimation = useCallback(() => {
@@ -653,7 +712,7 @@ function EmojiConverter() {
         updatePreviewCanvas();
       }
     }
-  }, [enableAnimation, generateAnimation, updatePreviewCanvas, editOptions]);
+  }, [enableAnimation, generateAnimation, updatePreviewCanvas, editOptions, processedKey]);
 
   // Animation playback in preview canvas
   useEffect(() => {
@@ -696,85 +755,92 @@ function EmojiConverter() {
     };
   }, [isAnimationPlaying, animationFps]);
 
-  // Download handler with animation support
-  const handleDownload = useCallback(async () => {
-    if (!previewUrl && !enableAnimation) return;
-
-    setIsProcessing(true);
-
-    try {
-      if (enableAnimation && ffmpegLoaded && animationFramesRef.current.length > 0) {
-        // Generate animated GIF
-        announceStatus("アニメーションGIFを生成しています...");
-
-        // Convert frames to files
-        const frameFiles: File[] = [];
-        for (let i = 0; i < animationFramesRef.current.length; i++) {
-          const frameCanvas = animationFramesRef.current[i];
-          const blob = await new Promise<Blob | null>((resolve) => {
-            frameCanvas.toBlob((b) => resolve(b), "image/png");
-          });
-
-          if (blob) {
-            const file = new File([blob], `frame${i}.png`, { type: "image/png" });
-            frameFiles.push(file);
-          }
-        }
-
-        // Generate GIF with FFmpeg
-        const gifBlob = await convertImagesToGif(
-          ffmpegRef.current,
-          frameFiles,
-          animationFps,
-          animationLoop,
-          80, // Quality
-          "floyd_steinberg", // ditherMode
-          256, // maxColors
-          (msg: string) => announceStatus(msg),
-        );
-
-        if (gifBlob) {
-          const url = URL.createObjectURL(gifBlob);
-          const a = document.createElement("a");
-          a.href = url;
-          a.download = `emoji_animated_${Date.now()}.gif`;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          URL.revokeObjectURL(url);
-          announceStatus("アニメーションGIFをダウンロードしました");
-        } else {
-          announceStatus("GIF生成に失敗しました");
-        }
-      } else {
-        // Regular static image download
-        const extension = FORMAT_EXTENSIONS[outputFormat];
-        const a = document.createElement("a");
-        a.href = previewUrl;
-        a.download = `emoji_${Date.now()}.${extension}`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        announceStatus("ダウンロードしました");
-      }
-    } catch (error) {
-      console.error("Download error:", error);
-      announceStatus("ダウンロードに失敗しました");
-    } finally {
-      setIsProcessing(false);
-    }
+  const handleGenerateGif = useCallback(() => {
+    if (
+      outputFormat !== "gif" ||
+      !imageReady ||
+      isProcessing ||
+      gif.isGenerating ||
+      ffmpegStatus !== "ready" ||
+      !ffmpegRef.current ||
+      !processedImageRef.current
+    )
+      return;
+    const source = processedImageRef.current;
+    const getFrames = () =>
+      enableAnimation
+        ? generateAnimationFrames(
+            source,
+            {
+              effect: animationEffect,
+              speed: animationSpeed,
+              loop: animationLoop,
+              useGSAP,
+              gsapEasing,
+              easingDirection,
+              duration: animationDuration,
+            },
+            animationFps,
+          )
+        : [source];
+    const ffmpeg = ffmpegRef.current;
+    void gif.generate(() =>
+      encodeEmojiGif(ffmpeg, getFrames(), {
+        fps: animationFps,
+        loop: animationLoop,
+        colors: gifColors,
+        dither: gifDither,
+        quality: gifQuality,
+      }),
+    );
   }, [
-    previewUrl,
     outputFormat,
+    imageReady,
+    isProcessing,
+    gif,
+    ffmpegStatus,
     enableAnimation,
-    ffmpegLoaded,
-    animationFps,
+    animationEffect,
+    animationSpeed,
     animationLoop,
+    useGSAP,
+    gsapEasing,
+    easingDirection,
+    animationDuration,
+    animationFps,
+    gifColors,
+    gifDither,
+    gifQuality,
+  ]);
+
+  // Save the exact URL already previewed; this action never re-encodes a GIF.
+  const handleDownload = useCallback(() => {
+    const url = outputFormat === "gif" ? gif.artifact?.url : previewUrl;
+    if (!url || isProcessing || (outputFormat === "gif" && (!canSaveGif || gif.isGenerating)))
+      return;
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `emoji_${Date.now()}.${FORMAT_EXTENSIONS[outputFormat]}`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    announceStatus(
+      outputFormat === "gif" ? "プレビューと同じGIFを保存しました" : "ダウンロードしました",
+    );
+  }, [
+    outputFormat,
+    gif.artifact,
+    gif.isGenerating,
+    previewUrl,
+    isProcessing,
+    canSaveGif,
     announceStatus,
   ]);
 
   const handleReset = useCallback(() => {
+    setFileRevision((revision) => revision + 1);
     setFile(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
     setEditOptions(DEFAULT_EDIT_OPTIONS);
     setPreviewUrl("");
     setFileSize(0);
@@ -894,7 +960,26 @@ function EmojiConverter() {
               ))}
             </select>
             <small id="platform-help" className="help-text">
-              プラットフォームに応じて自動的に容量制限を適用します
+              GIFは生成後の実際の容量を確認し、このツールの上限以内の場合だけ保存できます
+            </small>
+            <small className="help-text">
+              登録先の受け付けを保証するものではありません。
+              <a
+                href="https://support.discord.com/hc/en-us/articles/360036479811-How-to-Add-Custom-Emojis-on-Discord"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Discordの公式案内
+              </a>
+              は256KB未満、
+              <a
+                href="https://slack.com/help/articles/206870177-Add-custom-emoji-and-aliases-to-your-workspace"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Slackの公式案内
+              </a>
+              は128KB未満を推奨しています。
             </small>
           </div>
         </section>
@@ -921,9 +1006,7 @@ function EmojiConverter() {
                         const newFormat = e.target.value as OutputFormat;
                         setOutputFormat(newFormat);
                         // Enable animation automatically when GIF is selected
-                        if (newFormat === "gif") {
-                          setEnableAnimation(true);
-                        }
+                        setEnableAnimation(newFormat === "gif");
                       }}
                       disabled={!isSupported}
                     />
@@ -960,7 +1043,16 @@ function EmojiConverter() {
         {/* アニメーション設定 */}
         {outputFormat === "gif" && (
           <section className="section">
-            <h2 className="section-title">アニメーション</h2>
+            <h2 className="section-title">アニメーション・GIF設定</h2>
+            <label className="format-option">
+              <input
+                id="gifAnimate"
+                type="checkbox"
+                checked={enableAnimation}
+                onChange={(e) => setEnableAnimation(e.target.checked)}
+              />
+              エフェクトでアニメーションする
+            </label>
             <div className="form-group">
               <label className="label">エフェクト</label>
               <div className="format-selector">
@@ -1097,9 +1189,81 @@ function EmojiConverter() {
               </select>
             </div>
 
-            {!ffmpegLoaded && (
-              <div className="info-box">
-                <p>⏳ FFmpegを読み込んでいます...</p>
+            <div className="form-group">
+              <label htmlFor="gifColors" className="label">
+                最大色数
+              </label>
+              <select
+                id="gifColors"
+                className="select"
+                value={gifColors}
+                onChange={(e) => setGifColors(Number(e.target.value))}
+              >
+                {[256, 128, 64, 32, 16].map((colors) => (
+                  <option key={colors} value={colors}>
+                    {colors}色
+                  </option>
+                ))}
+              </select>
+              <small className="help-text">
+                色数を減らすと容量を抑えやすくなります。生成後のGIFで見た目を確認してください
+              </small>
+            </div>
+            <div className="form-group">
+              <label htmlFor="gifDither" className="label">
+                ディザリング
+              </label>
+              <select
+                id="gifDither"
+                className="select"
+                value={gifDither}
+                onChange={(e) => setGifDither(e.target.value as DitherMode)}
+              >
+                <option value="floyd_steinberg">Floyd–Steinberg（なめらかな階調）</option>
+                <option value="sierra2_4a">Sierra（なめらかな階調）</option>
+                <option value="bayer">Bayer（規則的な模様）</option>
+                <option value="none">なし（ディザを使用しない）</option>
+              </select>
+            </div>
+            {gifDither === "bayer" && (
+              <div className="form-group">
+                <label htmlFor="gifQuality" className="label">
+                  Bayerの強さ: {gifQuality}
+                </label>
+                <input
+                  id="gifQuality"
+                  type="range"
+                  min="1"
+                  max="100"
+                  value={gifQuality}
+                  onChange={(e) => setGifQuality(Number(e.target.value))}
+                  className="slider"
+                  aria-describedby="gifQualityHelp"
+                />
+                <small id="gifQualityHelp" className="help-text">
+                  Bayer専用の調整です。値が高いほど模様が強くなります。容量や見た目は生成して確認してください
+                </small>
+              </div>
+            )}
+            <p className="help-text">
+              入力画像のアニメーションの全フレーム読み込みには対応していません。GIFの時間は1/100秒単位に丸められます
+            </p>
+            {ffmpegStatus !== "ready" && (
+              <div className="info-box" role="status">
+                <p>
+                  {ffmpegStatus === "error"
+                    ? "FFmpegを読み込めませんでした。通信環境を確認して再試行してください"
+                    : "FFmpegを読み込んでいます..."}
+                </p>
+                {ffmpegStatus === "error" && (
+                  <button
+                    type="button"
+                    className="button button-secondary"
+                    onClick={() => void ensureFFmpeg()}
+                  >
+                    FFmpegを再読み込み
+                  </button>
+                )}
               </div>
             )}
           </section>
@@ -1452,7 +1616,9 @@ function EmojiConverter() {
             {/* プレビュー */}
             <div className="emoji-preview-panel">
               <section className="section">
-                <h2 className="section-title">プレビュー</h2>
+                <h2 className="section-title">
+                  {outputFormat === "gif" ? "編集プレビュー（生成前）" : "プレビュー"}
+                </h2>
 
                 <div className="preview-container">
                   <canvas
@@ -1462,29 +1628,102 @@ function EmojiConverter() {
                   />
                 </div>
 
-                <div className="file-size-info">
-                  <p>
-                    ファイルサイズ: {(fileSize / 1024).toFixed(1)} KB /{" "}
-                    {(PLATFORM_LIMITS[platform].maxSize / 1024).toFixed(0)} KB
-                  </p>
-                  {fileSize > PLATFORM_LIMITS[platform].maxSize && (
-                    <p className="error-text">容量制限を超えています</p>
-                  )}
-                </div>
-
-                <div className="button-group">
-                  <button
-                    onClick={handleDownload}
-                    disabled={isProcessing || !previewUrl}
-                    className="button button-primary btn-primary"
-                  >
-                    {isProcessing ? "処理中..." : "ダウンロード"}
-                  </button>
-
-                  <button onClick={handleReset} className="button button-secondary btn-clear">
-                    リセット
-                  </button>
-                </div>
+                {outputFormat === "gif" ? (
+                  <div className="emoji-gif-export">
+                    <h3>生成されたGIF</h3>
+                    {gif.artifact ? (
+                      <>
+                        <div className="preview-container">
+                          <img
+                            src={gif.artifact.url}
+                            width="128"
+                            height="128"
+                            className="emoji-gif-preview"
+                            alt="生成されたGIFのプレビュー"
+                          />
+                        </div>
+                        <div className="file-size-info" role="status">
+                          <p>
+                            実際の容量: {gif.artifact.blob.size.toLocaleString()} bytes（
+                            {(gif.artifact.blob.size / 1024).toFixed(1)} KB）
+                          </p>
+                          <p>
+                            {platform === "discord" ? "Discord" : "Slack"}向けのツール上限:{" "}
+                            {maxBytes.toLocaleString()} bytes
+                          </p>
+                          <p>
+                            {canSaveGif
+                              ? "ツールの容量制限内です。プレビューと同じGIFを保存できます"
+                              : "容量制限を超えています。色数やFPSを下げて、もう一度生成してください"}
+                          </p>
+                        </div>
+                      </>
+                    ) : (
+                      <p className="help-text">
+                        {gif.isGenerating
+                          ? "GIFを生成しています..."
+                          : "設定を確認してGIFを生成してください。生成後に実際の見た目と容量を確認できます"}
+                      </p>
+                    )}
+                    {gif.error && (
+                      <p className="emoji-gif-error" role="alert">
+                        {gif.error}。設定や通信環境を確認して、もう一度生成してください
+                      </p>
+                    )}
+                    <div className="button-group emoji-gif-actions">
+                      <button
+                        type="button"
+                        onClick={handleGenerateGif}
+                        disabled={
+                          isProcessing ||
+                          !imageReady ||
+                          gif.isGenerating ||
+                          ffmpegStatus !== "ready"
+                        }
+                        className="button button-primary btn-primary"
+                      >
+                        {gif.isGenerating ? "GIFを生成中..." : "GIFを生成"}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleDownload}
+                        disabled={isProcessing || gif.isGenerating || !canSaveGif}
+                        className="button button-primary btn-primary"
+                      >
+                        GIFを保存
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleReset}
+                        className="button button-secondary btn-clear"
+                      >
+                        リセット
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <div className="file-size-info">
+                      <p>
+                        ファイルサイズ: {(fileSize / 1024).toFixed(1)} KB /{" "}
+                        {(maxBytes / 1024).toFixed(0)} KB
+                      </p>
+                      {fileSize > maxBytes && <p className="error-text">容量制限を超えています</p>}
+                    </div>
+                    <div className="button-group">
+                      <button
+                        onClick={handleDownload}
+                        disabled={isProcessing || !previewUrl}
+                        className="button button-primary btn-primary"
+                      >
+                        {isProcessing ? "処理中..." : "ダウンロード"}
+                      </button>
+                      <button onClick={handleReset} className="button button-secondary btn-clear">
+                        リセット
+                      </button>
+                    </div>
+                  </>
+                )}
               </section>
             </div>
           </div>

@@ -1,0 +1,11 @@
+{
+  "extends": "../../../tsconfig.json",
+  "include": [
+    "./**/*.ts",
+    "./**/*.tsx",
+    "../../../app/types/vendor.d.ts",
+    "../../../app/routeTree.gen.ts",
+    "../../../app/router.tsx"
+  ],
+  "exclude": ["../../../node_modules", "./dist"]
+}

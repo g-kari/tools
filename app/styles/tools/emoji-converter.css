@@ -334,3 +334,44 @@ details[open] .details-summary::before {
   background: var(--md-sys-color-primary-container);
   color: var(--md-sys-color-on-primary-container);
 }
+
+/* Byte-verified GIF artifact, separate from the editing preview. */
+.emoji-gif-export {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+  overflow-wrap: anywhere;
+}
+.emoji-gif-preview {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--md-sys-color-outline);
+}
+.emoji-gif-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.emoji-gif-actions .button {
+  white-space: normal;
+}
+.emoji-gif-error {
+  padding: 0.75rem;
+  background: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-on-error-container);
+}
+.emoji-gif-actions .button:focus-visible,
+.emoji-gif-export + .button:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+@media (max-width: 480px) {
+  .emoji-editor-layout .form-group-horizontal {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .emoji-gif-actions .button {
+    flex: 1 1 100%;
+  }
+}
