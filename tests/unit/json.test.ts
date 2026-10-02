@@ -218,7 +218,7 @@ describe("Lossless JSON whitespace transformations", () => {
   it.each([
     String.raw`" \t\r\n \b\f \/ \u0061 \uD800 \" \\ ,:{}[] "`,
     String.raw`{"quote":"\\\"","tail":"\\","literal":"text , : { } [ ]"}`,
-    '{ "text" : "日本語 😀 \u2028 \u2029\t" }'.replace("\t", "\\t"),
+    '{ "text" : "日本語 😀 \u2028 \u2029\\t" }',
   ])("preserves string token bytes and punctuation in %s", (source) => {
     const expected = withoutJsonWhitespace(source);
     expect(minifyJson(source)).toBe(expected);
