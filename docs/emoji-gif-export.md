@@ -30,10 +30,10 @@
 
 ## 検証
 
-単体テストは実際の引数生成・エンコード処理・生成結果管理を検証します。
+単体テストは実際の引数生成・エンコード処理・生成結果管理と、ブラウザのグローバル変数がない初回SSR描画を検証します。
 
 ```sh
-npx vp test run tests/unit/emoji-gif-export.test.ts tests/unit/emoji-gif-no-fallback.test.ts tests/unit/use-generated-gif.test.ts tests/unit/image-to-gif.test.ts
+npx vp test run tests/unit/emoji-gif-export.test.ts tests/unit/emoji-gif-no-fallback.test.ts tests/unit/emoji-converter-ssr.test.ts tests/unit/use-generated-gif.test.ts tests/unit/image-to-gif.test.ts
 npx vp check
 npm test
 npm run build

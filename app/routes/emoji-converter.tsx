@@ -417,6 +417,13 @@ export function EmojiConverter() {
   const [gifQuality, setGifQuality] = useState(80);
   const [fileRevision, setFileRevision] = useState(0);
   const [processedKey, setProcessedKey] = useState("");
+  const [supportedFormats, setSupportedFormats] = useState<Record<OutputFormat, boolean>>({
+    png: true,
+    jpeg: true,
+    webp: true,
+    avif: true,
+    gif: true,
+  });
   // GSAP animation settings
   const [useGSAP, _setUseGSAP] = useState(true);
   const [gsapEasing, setGsapEasing] = useState<GSAPEasingType>("bounce");
@@ -480,16 +487,19 @@ export function EmojiConverter() {
     }
   }, []);
 
-  // Check browser support for image formats
-  const checkFormatSupport = useCallback((format: OutputFormat): boolean => {
-    // GIF is always supported (generated via FFmpeg)
-    if (format === "gif") return true;
-
+  // Keep server and first client render identical; Canvas capability probing needs a mounted browser.
+  useEffect(() => {
     const canvas = document.createElement("canvas");
     canvas.width = 1;
     canvas.height = 1;
-    const mimeType = FORMAT_MIME_TYPES[format];
-    return canvas.toDataURL(mimeType).startsWith(`data:${mimeType}`);
+    const supported = { png: true, jpeg: true, webp: true, avif: true, gif: true };
+    for (const format of Object.keys(FORMAT_MIME_TYPES) as OutputFormat[]) {
+      if (format !== "gif") {
+        const mimeType = FORMAT_MIME_TYPES[format];
+        supported[format] = canvas.toDataURL(mimeType).startsWith(`data:${mimeType}`);
+      }
+    }
+    setSupportedFormats(supported);
   }, []);
 
   // プレビューキャンバス更新関数
@@ -994,7 +1004,7 @@ export function EmojiConverter() {
             </label>
             <div className="format-selector">
               {(["png", "jpeg", "webp", "avif", "gif"] as OutputFormat[]).map((format) => {
-                const isSupported = checkFormatSupport(format);
+                const isSupported = supportedFormats[format];
                 return (
                   <label key={format} className="format-option">
                     <input

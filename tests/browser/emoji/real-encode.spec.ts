@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
-import { readFile } from "node:fs/promises";
+import { readFile, mkdir, writeFile } from "node:fs/promises";
+import { dirname } from "node:path";
 import {
   containRequests,
   coreBase,
@@ -71,16 +72,34 @@ test("browser FFmpeg produces real 128px GIFs with FPS timing, infinite/finite l
     const download = await pending;
     expect(download.suggestedFilename()).toMatch(/\.gif$/);
     expect(await readFile((await download.path())!)).toEqual(Buffer.from(bytes));
+    const binaryPath = info.outputPath(`real-ffmpeg-loop-${loop}.gif`);
+    const metadataPath = info.outputPath(`real-ffmpeg-loop-${loop}.json`);
+    await mkdir(dirname(binaryPath), { recursive: true });
+    await writeFile(binaryPath, bytes);
+    await writeFile(
+      metadataPath,
+      JSON.stringify({ coreBase, bytes: bytes.length, mime: artifact.mime, ...inspected }, null, 2),
+    );
+    console.log(
+      "Real GIF metadata:",
+      JSON.stringify({
+        loop,
+        bytes: bytes.length,
+        mime: artifact.mime,
+        signature: inspected.signature,
+        width: inspected.width,
+        height: inspected.height,
+        frames: inspected.frames.length,
+        delays: inspected.frames.map((frame) => frame.delayCentiseconds),
+        totalDurationCentiseconds: inspected.totalDurationCentiseconds,
+      }),
+    );
     await info.attach(`real-ffmpeg-loop-${loop}.gif`, {
-      body: Buffer.from(bytes),
+      path: binaryPath,
       contentType: "image/gif",
     });
     await info.attach(`real-ffmpeg-loop-${loop}.json`, {
-      body: JSON.stringify(
-        { coreBase, bytes: bytes.length, mime: artifact.mime, ...inspected },
-        null,
-        2,
-      ),
+      path: metadataPath,
       contentType: "application/json",
     });
   }
@@ -93,7 +112,34 @@ test("browser FFmpeg produces real 128px GIFs with FPS timing, infinite/finite l
   await expect(preview(page)).toBeVisible({ timeout: 60000 });
   const staticGif = await previewBytes(page);
   expect(staticGif.mime).toBe("image/gif");
-  expect(inspectGif(new Uint8Array(staticGif.bytes)).frames).toHaveLength(1);
+  const staticInspection = inspectGif(new Uint8Array(staticGif.bytes));
+  expect(staticInspection.frames).toHaveLength(1);
+  const staticPath = info.outputPath("real-ffmpeg-static.gif");
+  const staticMetadataPath = info.outputPath("real-ffmpeg-static.json");
+  await writeFile(staticPath, new Uint8Array(staticGif.bytes));
+  await writeFile(
+    staticMetadataPath,
+    JSON.stringify(
+      { coreBase, bytes: staticGif.bytes.length, mime: staticGif.mime, ...staticInspection },
+      null,
+      2,
+    ),
+  );
+  await info.attach("real-ffmpeg-static.gif", { path: staticPath, contentType: "image/gif" });
+  await info.attach("real-ffmpeg-static.json", {
+    path: staticMetadataPath,
+    contentType: "application/json",
+  });
+  console.log(
+    "Real static GIF metadata:",
+    JSON.stringify({
+      bytes: staticGif.bytes.length,
+      mime: staticGif.mime,
+      width: staticInspection.width,
+      height: staticInspection.height,
+      frames: staticInspection.frames.length,
+    }),
+  );
   expect(blocked, "No unexpected destinations or outbound writes").toEqual([]);
   expect(errors, "No browser exceptions").toEqual([]);
   await page.screenshot({ path: "test-results/emoji-gif-real-ffmpeg.png", fullPage: true });

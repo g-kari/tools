@@ -1,4 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
+import { fileURLToPath } from "node:url";
 
 export default defineConfig({
   testDir: ".",
@@ -10,7 +11,17 @@ export default defineConfig({
   timeout: 30000,
   expect: { timeout: 10000 },
   outputDir: "../../../test-results/emoji-gif-browser",
-  reporter: [["list"], ["json", { outputFile: "test-results/emoji-gif-browser.json" }]],
+  reporter: [
+    ["list"],
+    [
+      "json",
+      {
+        outputFile: fileURLToPath(
+          new URL("../../../test-results/emoji-gif-browser.json", import.meta.url),
+        ),
+      },
+    ],
+  ],
   use: {
     ...devices["Desktop Chrome"],
     baseURL: "http://127.0.0.1:4194",
