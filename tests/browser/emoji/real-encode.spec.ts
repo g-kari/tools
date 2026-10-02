@@ -26,7 +26,7 @@ test("browser FFmpeg produces real 128px GIFs with FPS timing, infinite/finite l
   await page.locator('input[name="animationEffect"][value="rotate"]').check();
   await page.locator("#gifColors").selectOption("64");
   await page.locator("#animationFps").fill("12");
-  await page.locator("#animationDuration").fill("1.0");
+  await page.locator("#animationDuration").fill("1");
   await expect(generate(page)).toBeEnabled({ timeout: 120000 });
   await expect(save(page)).toBeDisabled();
   await expect(preview(page)).toHaveCount(0);

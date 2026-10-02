@@ -888,7 +888,7 @@ export function EmojiConverter() {
   };
 
   return (
-    <div className="tool-container">
+    <div className="tool-container emoji-converter">
       <h1>絵文字コンバーター</h1>
       <p className="page-subtitle">Discord・Slack用の絵文字を作成（画像編集機能付き）</p>
 

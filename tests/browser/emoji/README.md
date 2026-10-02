@@ -1,7 +1,7 @@
 # Actual EmojiConverter browser regression
 
-The fixture imports the production `EmojiConverter` route component and its actual
-base, component, and tool styles. It does not rebuild the editor as a test harness.
+The fixture imports the production `EmojiConverter` route component and its full
+`app/styles.css` cascade. It does not rebuild the editor as a test harness.
 Only `@ffmpeg/ffmpeg` is replaced in the deterministic build. Browser canvas work,
 frame PNGs, encoder argument construction, byte validation, Blob URL ownership,
 preview, capacity checks, and downloads all run through the production code.

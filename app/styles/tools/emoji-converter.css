@@ -111,7 +111,7 @@ details[open] .details-summary::before {
   background: var(--md-sys-color-error-container);
   border: none;
   border-radius: 4px;
-  color: var(--md-sys-color-on-error-container);
+  color: var(--md-sys-color-on-error-container, #410002);
   cursor: pointer;
   transition: all 0.2s;
   white-space: nowrap;
@@ -359,7 +359,7 @@ details[open] .details-summary::before {
 .emoji-gif-error {
   padding: 0.75rem;
   background: var(--md-sys-color-error-container);
-  color: var(--md-sys-color-on-error-container);
+  color: var(--md-sys-color-on-error-container, #410002);
 }
 .emoji-gif-actions .button:focus-visible,
 .emoji-gif-export + .button:focus-visible {
@@ -367,11 +367,23 @@ details[open] .details-summary::before {
   outline-offset: 2px;
 }
 @media (max-width: 480px) {
-  .emoji-editor-layout .form-group-horizontal {
+  .emoji-converter .form-group-horizontal {
     flex-direction: column;
     gap: 0.75rem;
   }
   .emoji-gif-actions .button {
     flex: 1 1 100%;
   }
+}
+
+.emoji-converter .form-group-horizontal > .form-group {
+  min-width: 0;
+}
+.emoji-converter .slider {
+  width: 100%;
+  max-width: 100%;
+}
+
+.emoji-converter .reset-all-button:hover {
+  color: var(--md-sys-color-on-error-container, #410002);
 }

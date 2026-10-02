@@ -431,12 +431,38 @@ for (const width of [320, 390, 1280])
       await page.keyboard.press("Enter");
       await expect(preview(page)).toBeVisible();
       await expect(save(page)).toBeEnabled();
-      expect(
-        await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
-      ).toBe(true);
+      await page.screenshot({
+        path: `test-results/emoji-gif-${width}-${colorScheme}.png`,
+        fullPage: true,
+      });
+      const layout = await page.evaluate(() => ({
+        viewport: window.innerWidth,
+        documentWidth: document.documentElement.scrollWidth,
+        overflowing: [...document.querySelectorAll<HTMLElement>("body *")]
+          .map((element) => {
+            const box = element.getBoundingClientRect();
+            const style = getComputedStyle(element);
+            return {
+              tag: element.tagName,
+              id: element.id,
+              classes: element.className,
+              x: box.x,
+              right: box.right,
+              width: box.width,
+              display: style.display,
+              minWidth: style.minWidth,
+            };
+          })
+          .filter((box) => box.width > 0 && (box.x < 0 || box.right > window.innerWidth + 1))
+          .slice(0, 25),
+      }));
+      expect(layout.documentWidth, JSON.stringify(layout)).toBeLessThanOrEqual(layout.viewport);
       for (const control of [
         colors,
         page.locator("#gifDither"),
+        page.locator("#animationDuration"),
+        page.locator("#animationFps"),
+        quality,
         generate(page),
         save(page),
         preview(page),
