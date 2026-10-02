@@ -43,6 +43,12 @@ export const releases: Release[] = [
     date: "2026-10-02",
     entries: [
       {
+        type: "fix",
+        title: "JSON整形・圧縮で数値と元のデータ表記を保持",
+        description:
+          "大きな整数・精密な小数・指数表記を丸めず、負のゼロ・文字列のエスケープ・キーの順序と重複も保持して空白だけを変更します。入力編集やエラー時は古い結果をクリアします。",
+      },
+      {
         type: "feat",
         title: "絵文字GIFの生成結果を確認して保存",
         description:

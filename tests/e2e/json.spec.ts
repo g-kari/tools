@@ -184,3 +184,44 @@ test.describe("JSON Formatter - E2E Tests", () => {
     await expect(activeCategory).toContainText("変換");
   });
 });
+
+test.describe("Lossless JSON formatter regression", () => {
+  test("format/minify keeps original numeric, key and string tokens", async ({ page }) => {
+    await page.goto("/json");
+    const input = page.getByRole("textbox", { name: "JSON入力欄", exact: true });
+    const output = page.getByRole("textbox", { name: "変換結果の出力欄", exact: true });
+    const source = String.raw`{"id":9007199254740993,"decimal":1.234567890123456789,"huge":1e400,"n":-0,"2":1,"1":2,"x":1,"x":2,"text":"\u0061"}`;
+    await input.fill(source);
+    await input.press("Control+Enter");
+    await expect(output).not.toHaveValue("");
+    const formatted = await output.inputValue();
+    expect(formatted).toContain("9007199254740993");
+    expect(formatted).toContain("1.234567890123456789");
+    expect(formatted).toContain("1e400");
+    await expect(input).toHaveValue(source);
+    await input.fill(formatted);
+    await expect(output).toHaveValue("");
+    await page.getByRole("button", { name: "JSONを圧縮（ミニファイ）", exact: true }).click();
+    await expect(output).toHaveValue(source);
+  });
+
+  test("editing and invalid input clear stale results and allow recovery", async ({ page }) => {
+    await page.goto("/json");
+    const input = page.getByRole("textbox", { name: "JSON入力欄", exact: true });
+    const output = page.getByRole("textbox", { name: "変換結果の出力欄", exact: true });
+    const format = page.getByRole("button", { name: "JSONを整形（フォーマット）", exact: true });
+    await input.fill("9007199254740993");
+    await format.click();
+    await expect(output).toHaveValue("9007199254740993");
+    await input.fill("[1,]");
+    await expect(output).toHaveValue("");
+    await format.click();
+    await expect(page.locator(".error-message")).toBeVisible();
+    await expect(input).toHaveValue("[1,]");
+    await expect(output).toHaveValue("");
+    await input.fill("1e400");
+    await expect(page.locator(".error-message")).toHaveCount(0);
+    await format.click();
+    await expect(output).toHaveValue("1e400");
+  });
+});
