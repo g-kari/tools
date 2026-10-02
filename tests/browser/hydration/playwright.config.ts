@@ -1,7 +1,11 @@
-import { defineConfig, devices } from "@playwright/test";
+import { defineConfig } from "@playwright/test";
 import { fileURLToPath } from "node:url";
 
-// No webServer: every document/resource response is fulfilled from memory.
+// The pinned runner checks this guard before saving failure DOM/aria context.
+process.env.PLAYWRIGHT_NO_COPY_PROMPT = "1";
+
+// No webServer: documents/resources are intercepted, including the single
+// runtime-only public-owned live GET. Browser identity remains at its defaults.
 // Browser execution is intended for hosted CI, not the restricted local shell.
 export default defineConfig({
   testDir: ".",
@@ -25,7 +29,6 @@ export default defineConfig({
     ],
   ],
   use: {
-    ...devices["Desktop Chrome"],
     serviceWorkers: "block",
     navigationTimeout: 15000,
     actionTimeout: 10000,

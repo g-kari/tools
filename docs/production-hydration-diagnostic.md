@@ -15,6 +15,12 @@ at a reproducible first host-node difference or an explicit technical limit.
 Passing this test does not establish that live third-party or extension scripts
 are harmless, or that a user-facing hydration problem has been fixed.
 
+A single additional case reads the normal public production Base64 response at
+runtime in a fresh native Chromium context. It rejects redirects, failed or
+blocked responses, invalid encoding, and unexpected source markers. HTML,
+headers, cookies, and observed external resource URLs remain in memory. The
+same pinned client and first-difference detector are used for comparison.
+
 ## Snapshot provenance
 
 - Application source: commit `23fb251f1e6a65c299f14902ef4ccc070f6fa28a`
@@ -61,12 +67,37 @@ are checked before accepting an error-free baseline.
 Only redacted JSON and the exact checked-out source SHA are uploaded. Cached JS,
 generated HTML, browser traces, and raw DOM snapshots are not uploaded.
 
+For the live-response case, source-position inspection changes only identified
+inline third-party script type attributes; it never reserializes the document
+or repairs markup. Exact observed external scripts/styles are fulfilled inertly
+without reading their providers. Actual text and unknown attribute values are
+omitted from live host snapshots. The response is buffered for interception,
+so this does not reproduce original progressive network delivery. Both buffering
+and surgical edits are recorded as diagnostic limits. Reporting-policy headers
+(`NEL`, `Report-To`, `Reporting-Endpoints`) and only CSP `report-uri`/`report-to`
+directives are removed in memory to prevent browser-managed telemetry outside
+request interception. CSP enforcement directives and COOP/COEP are retained.
+Ambiguous policies fail closed; only removal names/counts are reported.
+
+Executable inline framework scripts must match generated-reference AST
+fingerprints. All strings, identifiers, operators, and properties are retained;
+only serializer match-update epoch literals vary. Unknown executable markup,
+embedded documents, SVG scripts, and declarative shadow templates stop the case.
+The reduced generated manifest may omit inactive-route metadata present in the
+live serializer. A strict-envelope rejection is a serializer-validation technical
+limit, not evidence of source drift or a product regression; do not rewrite the
+live serializer or loosen the check to force a pass.
+
+No device/user-agent preset is used. The runner's automatic failure-context
+snapshot is disabled for these tests, in addition to traces, screenshots, and
+video, so a failure cannot save the live page's request identifiers.
+
 ## Run
 
 ```sh
 npm ci
 npx vp test run tests/unit/hydration-owned-assets.test.ts
-node --test tests/browser/hydration/generate-ssr.test.mjs
+node --test tests/browser/hydration/*.test.mjs
 npx playwright install --with-deps chromium
 npx playwright test --config tests/browser/hydration/playwright.config.ts
 ```
