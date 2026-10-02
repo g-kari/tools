@@ -5,6 +5,8 @@ import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile, toBlobURL } from "@ffmpeg/util";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
+import { buildPaletteUseFilter, type DitherMode } from "~/utils/gifPalette";
+export { buildPaletteUseFilter, type DitherMode } from "~/utils/gifPalette";
 
 export const Route = createFileRoute("/image-to-gif")({
   head: () => ({
@@ -35,9 +37,6 @@ interface ImageFile {
   preview: string;
 }
 
-/** ディザリングモードの型定義 */
-export type DitherMode = "bayer" | "floyd_steinberg" | "sierra2_4a" | "none";
-
 /**
  * FFmpegインスタンスをロードする
  * @param ffmpeg - FFmpegインスタンス
@@ -63,24 +62,6 @@ export async function loadFFmpeg(
     onProgress?.("Failed to load FFmpeg");
     return false;
   }
-}
-
-/**
- * ディザリングモードに応じたpaletteuse部分のフィルター文字列を生成する
- * @param ditherMode - ディザリングモード
- * @param quality - 画質（1-100、高いほど高画質）
- * @returns paletteuseフィルター文字列
- */
-export function buildPaletteUseFilter(ditherMode: DitherMode, quality: number): string {
-  if (ditherMode === "bayer") {
-    // quality 1-100 → bayer_scale 5-0 (高品質=低スケール)
-    const bayerScale = Math.round((1 - (quality - 1) / 99) * 5);
-    return `paletteuse=dither=bayer:bayer_scale=${bayerScale}`;
-  }
-  if (ditherMode === "none") {
-    return "paletteuse=dither=none";
-  }
-  return `paletteuse=dither=${ditherMode}`;
 }
 
 /**

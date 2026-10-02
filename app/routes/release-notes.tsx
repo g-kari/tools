@@ -43,6 +43,12 @@ export const releases: Release[] = [
     date: "2026-10-02",
     entries: [
       {
+        type: "feat",
+        title: "絵文字GIFの生成結果を確認して保存",
+        description:
+          "色数・ディザリングとBayer専用調整を追加。生成されたGIFの実際のプレビューと容量を表示し、ツールの容量上限以内の場合だけ同じファイルを保存できます。設定変更時は再生成が必要です。",
+      },
+      {
         type: "fix",
         title: "Markdownプレビュー: 禁止要素と危険なURL属性の除去を修正",
         description:
