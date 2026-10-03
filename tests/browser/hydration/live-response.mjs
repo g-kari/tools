@@ -74,7 +74,7 @@ function astFingerprint(code, normalizeTimestamps) {
 }
 
 /** Fixed syntax categories only: no literal, identifier, attribute, or source value escapes. */
-function rejectedScriptShape(code, type, ordinal) {
+function rejectedScriptShape(code, type, ordinal, node) {
   const file = ts.createSourceFile(
     "runtime-only-rejected.js",
     code,
@@ -90,8 +90,11 @@ function rejectedScriptShape(code, type, ordinal) {
     ts.forEachChild(node, visit);
   }
   visit(file);
+  const parentTag = node.parentNode?.tagName;
   return {
     ordinal,
+    parentTag: ["head", "body", "main", "div", "html"].includes(parentTag) ? parentTag : "other",
+    elementIndex: (node.parentNode?.childNodes ?? []).filter((item) => item.tagName).indexOf(node),
     type: type === "module" ? "module" : "classic",
     codeUtf16Units: code.length,
     syntaxValid: file.parseDiagnostics.length === 0,
@@ -103,6 +106,9 @@ function rejectedScriptShape(code, type, ordinal) {
       tanstackBootstrap: code.includes("$_TSR"),
       tanstackPool: code.includes('$R["tsr"]') || code.includes("$R.tsr"),
       cloudflareInitializer: code.includes("__CF$cv$params"),
+      rocketLoader: /__cfRLUnblockHandlers|rocket-loader/.test(code),
+      cloudflareFonts: code.includes("cf-fonts"),
+      zaraz: code.includes("zaraz"),
     },
   };
 }
@@ -252,6 +258,23 @@ export async function prepareLiveResponse({
   } catch {
     reject("parser-inspection-failed");
   }
+  documentMetadata.documentTransformMarkers = {
+    rocketLoaderResource: html.includes("rocket-loader.min.js"),
+    rocketLoaderSettingsAttribute: nodes.some((node) =>
+      node.attrs?.some((item) => item.name === "data-cf-settings"),
+    ),
+    rewrittenScriptType: nodes.some(
+      (node) =>
+        node.tagName === "script" &&
+        node.attrs?.some(
+          (item) =>
+            item.name === "type" &&
+            /^[a-f0-9]{16,64}-(?:text\/javascript|module)$/.test(item.value),
+        ),
+    ),
+    cloudflareFontsResource: html.includes("/cf-fonts/"),
+    zarazResource: html.includes("/cdn-cgi/zaraz/"),
+  };
   const attribute = (node, name) => node.attrs?.find((item) => item.name === name)?.value;
   const text = (node) => (node.childNodes ?? []).map((child) => child.value ?? "").join("");
   const title = nodes.find((node) => node.tagName === "title");
@@ -404,7 +427,7 @@ export async function prepareLiveResponse({
       continue;
     }
     if (code.includes("$_TSR") || code.includes('$R["tsr"]') || code.includes("$R.tsr")) {
-      rejectedInlineScript = rejectedScriptShape(code, type, inlineOrdinal);
+      rejectedInlineScript = rejectedScriptShape(code, type, inlineOrdinal, node);
       reject("serializer-validation-limit");
     }
     // The successful owned response may contain Cloudflare's injected inline
@@ -431,7 +454,7 @@ export async function prepareLiveResponse({
       classifications.push({ classification: "empty-inline-script-preserved" });
       continue;
     }
-    rejectedInlineScript = rejectedScriptShape(code, type, inlineOrdinal);
+    rejectedInlineScript = rejectedScriptShape(code, type, inlineOrdinal, node);
     reject("unrecognized-inline-script");
   }
   if (entryCount !== 1) reject("unexpected-owned-entry");

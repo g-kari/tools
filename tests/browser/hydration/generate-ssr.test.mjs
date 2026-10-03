@@ -100,11 +100,11 @@ async function checkSafeFailure(runtimeThrow) {
   }
 }
 
-test("SSR compilation failures are bounded and redacted", () => checkSafeFailure(false));
-test("data-URL source import failures expose no source or runtime constants", () =>
+void test("SSR compilation failures are bounded and redacted", () => checkSafeFailure(false));
+void test("data-URL source import failures expose no source or runtime constants", () =>
   checkSafeFailure(true));
 
-test("Worker/browser conditional exports are required; plain Node cannot silently claim equivalent SSR", () => {
+void test("Worker/browser conditional exports are required; plain Node cannot silently claim equivalent SSR", () => {
   const code = `import {verifyCloudflareSsrExports} from ${JSON.stringify(new URL("./generate-ssr.mjs", import.meta.url).href)};
     try { console.log(JSON.stringify(verifyCloudflareSsrExports())); }
     catch (error) { console.log(error.message); process.exitCode=1; }`;

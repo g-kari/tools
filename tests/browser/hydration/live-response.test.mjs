@@ -97,6 +97,8 @@ void test("unknown executable source stays rejected and syntax categories cannot
     assert.equal(error.code, "unrecognized-inline-script");
     const shape = error.diagnostics.rejectedInlineScript;
     assert.equal(shape.ordinal, 3);
+    assert.equal(shape.parentTag, "body");
+    assert.ok(Number.isSafeInteger(shape.elementIndex));
     assert.equal(shape.type, "classic");
     assert.equal(shape.syntaxValid, true);
     assert.equal(shape.codeUtf16Units, unknown.length);
@@ -125,6 +127,26 @@ void test("malformed unknown syntax remains rejected without exporting parser di
     assert.doesNotMatch(
       JSON.stringify(error.diagnostics),
       /syntheticIdentifier|synthetic-secret|parseDiagnostics/,
+    );
+    return true;
+  });
+});
+
+void test("optimization markers classify a rejection but never authorize its script", async () => {
+  const source = body.replace(
+    "</body>",
+    '<script>const name="rocket-loader /cf-fonts/ /cdn-cgi/zaraz/ synthetic-secret";</script><script src="https://synthetic-third-party.example/rocket-loader.min.js" data-cf-settings="synthetic-cookie"></script></body>',
+  );
+  await assert.rejects(prepareLiveResponse(input(source)), (error) => {
+    assert.equal(error.code, "unrecognized-inline-script");
+    assert.equal(error.diagnostics.rejectedInlineScript.namespaceMarkers.rocketLoader, true);
+    assert.equal(error.diagnostics.rejectedInlineScript.namespaceMarkers.cloudflareFonts, true);
+    assert.equal(error.diagnostics.rejectedInlineScript.namespaceMarkers.zaraz, true);
+    assert.equal(error.diagnostics.documentTransformMarkers.rocketLoaderResource, true);
+    assert.equal(error.diagnostics.documentTransformMarkers.rocketLoaderSettingsAttribute, true);
+    assert.doesNotMatch(
+      JSON.stringify(error.diagnostics),
+      /synthetic-secret|synthetic-cookie|synthetic-third-party/,
     );
     return true;
   });
