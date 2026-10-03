@@ -39,6 +39,18 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
+    version: "2026.10.2",
+    date: "2026-10-03",
+    entries: [
+      {
+        type: "fix",
+        title: "CSV/JSON変換で後続レコードの列が欠落する不具合を修正",
+        description:
+          "JSONの全オブジェクトから初出順に列を集め、欠けたキーは空欄にします。重複CSVヘッダー・余分な列・JSONの混在行や空配列は、値を黙って失わず修正方法付きのエラーで案内します。",
+      },
+    ],
+  },
+  {
     version: "2026.10.1",
     date: "2026-10-02",
     entries: [

@@ -76,6 +76,49 @@ test.describe("CSV/JSON変換 - E2Eテスト", () => {
     expect(lines[2]).toBe("佐藤,25");
   });
 
+  test("後続のJSONレコードだけにある列を保持し、混在行のエラー後に回復する", async ({ page }) => {
+    await page.locator('input[value="json-to-csv"]').click();
+    const input = page.locator("#inputText");
+    const output = page.locator("#outputText");
+    const convert = page.locator("button.btn-primary");
+    const copy = page.getByRole("button", { name: "出力結果をクリップボードにコピー" });
+    await input.fill('[{"name":"田中"},{"email":"taro@example.com"}]');
+    await convert.click();
+    await expect(output).toHaveValue("name,email\n田中,\n,taro@example.com");
+    await convert.click();
+    await expect(output).toHaveValue("name,email\n田中,\n,taro@example.com");
+
+    await input.fill('[{"name":"田中"},null]');
+    await convert.click();
+    await expect(page.locator(".toast").last()).toContainText("JSONのレコード 2");
+    await expect(output).toHaveValue("");
+    await expect(copy).toBeDisabled();
+    await expect(input).toHaveValue('[{"name":"田中"},null]');
+
+    await input.fill('[{}, {"note":"修正"}]');
+    await convert.click();
+    await expect(output).toHaveValue('note\n""\n修正');
+    await expect(copy).toBeEnabled();
+  });
+
+  for (const csv of ["name,name\n前,後", "name\n前,後"]) {
+    test(`列が失われるCSVを拒否しヘッダーなしで回復する: ${csv}`, async ({ page }) => {
+      await page.locator("#inputText").fill(csv);
+      await page.locator("button.btn-primary").click();
+      await expect(page.locator(".toast").last()).toContainText("ヘッダーなしで変換してください");
+      await expect(page.locator("#outputText")).toHaveValue("");
+      await expect(
+        page.getByRole("button", { name: "出力結果をクリップボードにコピー" }),
+      ).toBeDisabled();
+
+      await page.getByRole("checkbox", { name: "1行目をヘッダー行として扱う" }).uncheck();
+      await page.locator("button.btn-primary").click();
+      expect(JSON.parse(await page.locator("#outputText").inputValue())).toEqual(
+        csv.split("\n").map((line) => line.split(",")),
+      );
+    });
+  }
+
   test("引用符内の複数行・空行・引用符・前後の空白を保持する", async ({ page }) => {
     await page.locator("#inputText").fill('name,note\n 田中 ," 1行目\n\n""3行目"" "');
     await page.locator("button.btn-primary").click();

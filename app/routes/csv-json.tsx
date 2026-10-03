@@ -124,9 +124,24 @@ export function csvToJson(csv: string, delimiter: string, hasHeader: boolean): s
 
   if (hasHeader) {
     const [headers, ...rows] = records;
-    const data = rows.map((values) =>
-      Object.fromEntries(headers.map((header, i) => [header, values[i] ?? ""])),
-    );
+    const headerPositions = new Map<string, number>();
+    headers.forEach((header, index) => {
+      const previous = headerPositions.get(header);
+      if (previous !== undefined) {
+        throw new Error(
+          `CSVヘッダー「${header}」が重複しています（列 ${previous + 1} と列 ${index + 1}）。ヘッダー名を変更するか、ヘッダーなしで変換してください`,
+        );
+      }
+      headerPositions.set(header, index);
+    });
+    const data = rows.map((values, index) => {
+      if (values.length > headers.length) {
+        throw new Error(
+          `CSVのレコード ${index + 2} はヘッダーより列数が多いため変換できません（ヘッダー ${headers.length} 列、データ ${values.length} 列）。ヘッダーを追加するか、ヘッダーなしで変換してください`,
+        );
+      }
+      return Object.fromEntries(headers.map((header, i) => [header, values[i] ?? ""]));
+    });
     return JSON.stringify(data, null, 2);
   } else {
     return JSON.stringify(records, null, 2);
@@ -174,18 +189,43 @@ export function jsonToCsv(json: string, delimiter: string): string {
   };
 
   if (typeof parsed[0] === "object" && parsed[0] !== null && !Array.isArray(parsed[0])) {
+    parsed.forEach((row, index) => {
+      if (typeof row !== "object" || row === null || Array.isArray(row)) {
+        throw new Error(`JSONのレコード ${index + 1} はオブジェクトである必要があります`);
+      }
+    });
     const records = parsed as Record<string, unknown>[];
-    const headers = Object.keys(records[0]);
+    // 先頭行にないキーも列に含める。Setは初出の順序を保持する。
+    const columns = new Set<string>();
+    for (const row of records) {
+      for (const key of Object.keys(row)) columns.add(key);
+    }
+    const headers = [...columns];
+    if (headers.length === 0) {
+      throw new Error("JSONにCSVの列として使用できるキーがありません");
+    }
     const headerRow = headers
       .map((header) => escapeField(header, headers.length === 1))
       .join(delimiter);
     const rows = records.map((row) =>
-      headers.map((h) => escapeField(row[h], headers.length === 1)).join(delimiter),
+      headers
+        .map((h) => escapeField(Object.hasOwn(row, h) ? row[h] : undefined, headers.length === 1))
+        .join(delimiter),
     );
     return [headerRow, ...rows].join("\n");
   }
 
   if (Array.isArray(parsed[0])) {
+    parsed.forEach((row, index) => {
+      if (!Array.isArray(row)) {
+        throw new Error(`JSONのレコード ${index + 1} は配列である必要があります`);
+      }
+      if (row.length === 0) {
+        throw new Error(
+          `JSONのレコード ${index + 1} は空の配列です。CSVで表せるように1つ以上の値を指定してください`,
+        );
+      }
+    });
     const rows = (parsed as unknown[][]).map((row) =>
       row.map((value) => escapeField(value, row.length === 1)).join(delimiter),
     );
@@ -417,6 +457,9 @@ function CsvJsonConverter() {
                 "CSV → JSON（ヘッダーあり）: オブジェクトの配列 [{key: value}, ...]",
                 "CSV → JSON（ヘッダーなし）: 配列の配列 [[val1, val2], ...]",
                 "JSON → CSV: オブジェクトの配列または配列の配列に対応",
+                "オブジェクト配列は全レコードのキーを初出の順に列へ追加します。欠けているキーは空欄になります",
+                "重複したCSVヘッダーやヘッダーより多い列は、データを失わないようエラーにします。ヘッダーなしなら配列として保持できます",
+                "JSONの行はオブジェクトまたは配列に統一してください。空の配列の行やキーが全くないデータは変換できません",
                 "フィールドにカンマや改行を含む場合はダブルクォートで囲んでください",
                 "フィールド前後の空白と引用符内の改行はそのまま保持します。空行は無視します",
                 "引用符の閉じ忘れや不正な位置の引用符はエラーとして表示します",
