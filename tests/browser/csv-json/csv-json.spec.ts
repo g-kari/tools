@@ -33,7 +33,11 @@ test("sparse JSON columns survive repeated conversion and invalid-row recovery",
     await expect(output).toHaveValue("name,email,active\n田中,,\n,taro@example.com,\n,,false");
     await expect(input).toHaveValue(source);
   }
-  await page.screenshot({ path: "test-results/csv-json-sparse.png", fullPage: true });
+  await page.screenshot({
+    path: "test-results/csv-json-sparse.png",
+    fullPage: true,
+    animations: "disabled",
+  });
 
   await input.fill('[{"name":"田中"},null]');
   await convert.click();
@@ -61,6 +65,8 @@ for (const delimiter of [",", "\t", ";"]) {
       `name${delimiter}name\n前${delimiter}後`,
       `name\n"前\n後"${delimiter}追加`,
     ]) {
+      // 前のエラー通知が消えてから次のケースを始め、証跡を混在させない。
+      await expect(page.locator(".toast")).toHaveCount(0);
       await header.check();
       await input.fill(csv);
       await convert.click();
@@ -71,7 +77,12 @@ for (const delimiter of [",", "\t", ";"]) {
       ).toBeDisabled();
       await expect(input).toHaveValue(csv);
       if (delimiter === "," && csv.startsWith("name\n")) {
-        await page.screenshot({ path: "test-results/csv-json-column-error.png", fullPage: true });
+        await expect(page.locator(".toast").last()).toHaveCSS("transform", "none");
+        await page.screenshot({
+          path: "test-results/csv-json-column-error.png",
+          fullPage: true,
+          animations: "disabled",
+        });
       }
       await header.uncheck();
       await convert.click();
@@ -109,5 +120,10 @@ test("empty array rows fail explicitly, then clear and mode changes remain usabl
   await input.fill("name\n田中");
   await page.locator("button.btn-primary").click();
   expect(JSON.parse(await output.inputValue())).toEqual([{ name: "田中" }]);
-  await page.screenshot({ path: "test-results/csv-json-mobile.png", fullPage: true });
+  await expect(page.locator(".toast")).toHaveCount(0);
+  await page.screenshot({
+    path: "test-results/csv-json-mobile.png",
+    fullPage: true,
+    animations: "disabled",
+  });
 });
