@@ -88,6 +88,49 @@ describe("CSV/JSON変換のフォーム操作", () => {
     expect(JSON.parse(element<HTMLTextAreaElement>("#outputText").value)).toEqual([["", ""]]);
   });
 
+  it("後続行のキーをCSV列へ追加し、混在行のエラー後に修正して再変換できる", () => {
+    act(() => element<HTMLInputElement>('input[value="json-to-csv"]').click());
+    setInput('[{"name":"田中"},{"email":"taro@example.com"}]');
+    convert();
+    const output = element<HTMLTextAreaElement>("#outputText");
+    const copy = element<HTMLButtonElement>(
+      'button[aria-label="出力結果をクリップボードにコピー"]',
+    );
+    expect(output.value).toBe("name,email\n田中,\n,taro@example.com");
+
+    setInput('[{"name":"田中"},null]');
+    convert();
+    expect(output.value).toBe("");
+    expect(copy.disabled).toBe(true);
+    expect(container.textContent).toContain("JSONのレコード 2 はオブジェクト");
+
+    setInput(JSON.stringify([{}, { note: "修正\n完了" }]));
+    convert();
+    expect(output.value).toBe('note\n""\n"修正\n完了"');
+    expect(copy.disabled).toBe(false);
+  });
+
+  it.each(["name,name\n前,後", "name\n前,後"])(
+    "列を失うCSVはエラーになり、ヘッダーなしへ切り替えて回復できる: %s",
+    (csv) => {
+      setInput("name\n通常");
+      convert();
+      setInput(csv);
+      convert();
+      expect(element<HTMLTextAreaElement>("#outputText").value).toBe("");
+      expect(
+        element<HTMLButtonElement>('button[aria-label="出力結果をクリップボードにコピー"]')
+          .disabled,
+      ).toBe(true);
+      expect(container.textContent).toContain("ヘッダーなしで変換してください");
+      act(() => element<HTMLInputElement>('input[type="checkbox"]').click());
+      convert();
+      expect(JSON.parse(element<HTMLTextAreaElement>("#outputText").value)).toEqual(
+        csv.split("\n").map((line) => line.split(",")),
+      );
+    },
+  );
+
   it("モードを切り替えて1列の空文字・空白と複数行を往復変換できる", () => {
     const original = [{ note: "" }, { note: " " }, { note: "前\n後" }];
     act(() => element<HTMLInputElement>('input[value="json-to-csv"]').click());

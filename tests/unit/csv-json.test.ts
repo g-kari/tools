@@ -123,6 +123,37 @@ describe("csvToJson", () => {
   });
 
   describe("エラーケース", () => {
+    it.each([",", "\t", ";"])("重複ヘッダーを %j 区切りで拒否する", (delimiter) => {
+      const csv = `name${delimiter}"name"\n前${delimiter}後`;
+      expect(() => csvToJson(csv, delimiter, true)).toThrow(
+        "CSVヘッダー「name」が重複しています（列 1 と列 2）",
+      );
+      expect(JSON.parse(csvToJson(csv, delimiter, false))).toEqual([
+        ["name", "name"],
+        ["前", "後"],
+      ]);
+    });
+
+    it("空のヘッダー名の重複も拒否し、大文字小文字の違いは保持する", () => {
+      expect(() => csvToJson(",\n前,後", ",", true)).toThrow("CSVヘッダー「」が重複");
+      expect(JSON.parse(csvToJson("Name,name\n前,後", ",", true))).toEqual([
+        { Name: "前", name: "後" },
+      ]);
+    });
+
+    it("ヘッダーを超える末尾の空セルも黙って捨てない", () => {
+      expect(() => csvToJson("name\n田中,", ",", true)).toThrow("ヘッダー 1 列、データ 2 列");
+      expect(JSON.parse(csvToJson("name\n田中,", ",", false))).toEqual([["name"], ["田中", ""]]);
+    });
+
+    it.each([",", "\t", ";"])("ヘッダーを超える列を %j 区切りで拒否する", (delimiter) => {
+      const csv = `name\n"前\n後"${delimiter}追加`;
+      expect(() => csvToJson(csv, delimiter, true)).toThrow(
+        "CSVのレコード 2 はヘッダーより列数が多い",
+      );
+      expect(JSON.parse(csvToJson(csv, delimiter, false))).toEqual([["name"], ["前\n後", "追加"]]);
+    });
+
     it("空文字列でエラーをスローする", () => {
       expect(() => csvToJson("", ",", true)).toThrow("CSVデータが空です");
     });
@@ -153,6 +184,42 @@ describe("csvToJson", () => {
 
 describe("jsonToCsv", () => {
   describe("オブジェクト配列の変換", () => {
+    it("後続のオブジェクトだけに存在するキーも出現順の列として保持する", () => {
+      const json = '[{"name":"田中"},{"email":"taro@example.com","name":"佐藤"},{"active":false}]';
+      expect(jsonToCsv(json, ",")).toBe(
+        "name,email,active\n田中,,\n佐藤,taro@example.com,\n,,false",
+      );
+    });
+
+    it("整数形式のキーは各レコードのObject.keys順で初出の列に追加する", () => {
+      const json = '[{"b":1,"10":"ten","2":"two"},{"1":"one","b":2,"a":3}]';
+      expect(jsonToCsv(json, ",")).toBe("2,10,b,1,a\ntwo,ten,1,,\n,,2,one,3");
+    });
+
+    it.each([",", "\t", ";"])(
+      "空の先頭レコードと後続の複数行・区切り文字を %j で保持する",
+      (delimiter) => {
+        const json = JSON.stringify([{}, { note: `前\n後${delimiter}値` }, { other: " " }]);
+        expect(JSON.parse(csvToJson(jsonToCsv(json, delimiter), delimiter, true))).toEqual([
+          { note: "", other: "" },
+          { note: `前\n後${delimiter}値`, other: "" },
+          { note: "", other: " " },
+        ]);
+      },
+    );
+
+    it("特殊なキーが別のレコードにない場合は継承プロパティを出力しない", () => {
+      const json = '[{"__proto__":"値","constructor":"別の値"},{"name":"田中"}]';
+      expect(JSON.parse(csvToJson(jsonToCsv(json, ","), ",", true))).toEqual([
+        { ["__proto__"]: "値", constructor: "別の値", name: "" },
+        { ["__proto__"]: "", constructor: "", name: "田中" },
+      ]);
+    });
+
+    it("空オブジェクトの行を1列の場合も空のレコードとして保持する", () => {
+      expect(jsonToCsv('[{}, {"note":"値"}, {}]', ",")).toBe('note\n""\n値\n""');
+    });
+
     it("オブジェクト配列をCSVに変換する（ヘッダー行あり）", () => {
       const json = JSON.stringify([
         { name: "田中", age: 30 },
@@ -192,6 +259,12 @@ describe("jsonToCsv", () => {
   });
 
   describe("配列の配列の変換", () => {
+    it("列数が異なる配列のレコードを失わず保持する", () => {
+      const records = [["前"], ["後", "追加"], [""]];
+      expect(JSON.parse(csvToJson(jsonToCsv(JSON.stringify(records), ","), ",", false))).toEqual(
+        records,
+      );
+    });
     it("配列の配列をCSVに変換する（ヘッダー行なし）", () => {
       const json = JSON.stringify([
         ["1", "2"],
@@ -203,6 +276,29 @@ describe("jsonToCsv", () => {
   });
 
   describe("エラーケース", () => {
+    it.each(["[]", "null", "1", '"値"', "true"])(
+      "オブジェクト以外の後続レコード %s を拒否する",
+      (row) => {
+        expect(() => jsonToCsv(`[{"a":1},${row}]`, ",")).toThrow(
+          "JSONのレコード 2 はオブジェクトである必要があります",
+        );
+      },
+    );
+
+    it.each(["{}", "null", "1", '"値"', "true"])("配列以外の後続レコード %s を拒否する", (row) => {
+      expect(() => jsonToCsv(`[["前"],${row}]`, ",")).toThrow(
+        "JSONのレコード 2 は配列である必要があります",
+      );
+    });
+
+    it.each(["[[]]", '[["前"],[]]'])("CSVで表せない空の配列レコード %s を拒否する", (json) => {
+      expect(() => jsonToCsv(json, ",")).toThrow("空の配列です");
+    });
+
+    it("全レコードにキーがない場合は空CSVで成功扱いしない", () => {
+      expect(() => jsonToCsv("[{},{}]", ",")).toThrow("CSVの列として使用できるキーがありません");
+    });
+
     it("無効なJSONでエラーをスローする", () => {
       expect(() => jsonToCsv("{invalid}", ",")).toThrow("無効なJSON形式です");
     });
