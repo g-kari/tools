@@ -39,9 +39,27 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
+    version: "2026.10.2",
+    date: "2026-10-03",
+    entries: [
+      {
+        type: "fix",
+        title: "CSV/JSON変換で後続レコードの列が欠落する不具合を修正",
+        description:
+          "JSONの全オブジェクトから初出順に列を集め、欠けたキーは空欄にします。重複CSVヘッダー・余分な列・JSONの混在行や空配列は、値を黙って失わず修正方法付きのエラーで案内します。",
+      },
+    ],
+  },
+  {
     version: "2026.10.1",
     date: "2026-10-02",
     entries: [
+      {
+        type: "fix",
+        title: "JSON整形・圧縮で数値と元のデータ表記を保持",
+        description:
+          "大きな整数・精密な小数・指数表記を丸めず、負のゼロ・文字列のエスケープ・キーの順序と重複も保持して空白だけを変更します。入力編集やエラー時は古い結果をクリアします。",
+      },
       {
         type: "feat",
         title: "絵文字GIFの生成結果を確認して保存",

@@ -82,7 +82,7 @@ describe("pinned production hydration assets", () => {
   it("validates the checked-in exact owned snapshot without request identifiers", async () => {
     const manifest = await loadOwnedManifest();
     expect(manifest.assets).toHaveLength(43);
-    expect(manifest.sourceCommit).toBe("23fb251f1e6a65c299f14902ef4ccc070f6fa28a");
+    expect(manifest.sourceCommit).toBe("9a0f02f2620e52dc82ac7d7b09e0b6aec0e53ad4");
     expect(JSON.stringify(manifest)).not.toMatch(/ca-pub-|cdn-cgi|cloudflareinsights|token=/);
   });
 

@@ -1,0 +1,65 @@
+name: JSON lossless browser regression
+
+on:
+  pull_request:
+    paths:
+      - "app/routes/json.tsx"
+      - "app/utils/json.ts"
+      - "app/components/**"
+      - "app/hooks/**"
+      - "tests/browser/json/**"
+      - "tests/unit/json*.test.ts"
+      - "tests/e2e/json.spec.ts"
+      - "package*.json"
+      - ".github/workflows/json-browser.yml"
+  push:
+    branches: [main]
+    paths:
+      - "app/routes/json.tsx"
+      - "app/utils/json.ts"
+      - "app/components/**"
+      - "app/hooks/**"
+      - "tests/browser/json/**"
+      - "tests/unit/json*.test.ts"
+      - "tests/e2e/json.spec.ts"
+      - "package*.json"
+      - ".github/workflows/json-browser.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: json-browser-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npx tsc --noEmit
+      - run: npx playwright install --with-deps chromium
+      - run: npx vite build --config tests/browser/json/vite.config.ts
+      - run: npx playwright test --config tests/browser/json/playwright.config.ts
+        env:
+          CI: true
+      - run: |
+          mkdir -p test-results
+          git rev-parse HEAD | tee test-results/json-source-sha.txt
+        if: always()
+      - uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: json-browser-results
+          path: test-results/
+          retention-days: 1

@@ -5,6 +5,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 import { generateSsrFixture } from "./generate-ssr.mjs";
+import { execFileSync } from "node:child_process";
 
 const syntheticPackage = Buffer.from("{}\n");
 
@@ -102,3 +103,31 @@ async function checkSafeFailure(runtimeThrow) {
 test("SSR compilation failures are bounded and redacted", () => checkSafeFailure(false));
 test("data-URL source import failures expose no source or runtime constants", () =>
   checkSafeFailure(true));
+
+test("Worker/browser conditional exports are required; plain Node cannot silently claim equivalent SSR", () => {
+  const code = `import {verifyCloudflareSsrExports} from ${JSON.stringify(new URL("./generate-ssr.mjs", import.meta.url).href)};
+    try { console.log(JSON.stringify(verifyCloudflareSsrExports())); }
+    catch (error) { console.log(error.message); process.exitCode=1; }`;
+  const options = { env: { ...process.env, NODE_OPTIONS: "" }, encoding: "utf8" };
+  const selected = execFileSync(
+    process.execPath,
+    [
+      "--conditions=workerd",
+      "--conditions=worker",
+      "--conditions=module",
+      "--conditions=browser",
+      "--input-type=module",
+      "-e",
+      code,
+    ],
+    options,
+  );
+  assert.equal(JSON.parse(selected).scrollRestorationScript, "browser null export");
+  assert.throws(
+    () => execFileSync(process.execPath, ["--input-type=module", "-e", code], options),
+    (error) => {
+      assert.equal(error.stdout.trim(), "Cloudflare SSR conditional exports are not selected");
+      return true;
+    },
+  );
+});

@@ -20,18 +20,27 @@ runtime in a fresh native Chromium context. It rejects redirects, failed or
 blocked responses, invalid encoding, and unexpected source markers. HTML,
 headers, cookies, and observed external resource URLs remain in memory. The
 same pinned client and first-difference detector are used for comparison.
-This case is disabled by default, including every pull-request run. A separately
-approved manual workflow run must explicitly enable the `live_response` input;
-local invocation requires `HYDRATION_LIVE_RESPONSE=1`. Do not enable it merely to
-retry a rejected response.
+The current investigation permits one runtime-only GET per run for PR #250 and
+source snapshot `9a0f02f2620e52dc82ac7d7b09e0b6aec0e53ad4` only. The workflow and
+runner both enforce that boundary. Other pull requests remain disabled by
+default. A separately approved manual workflow run must explicitly enable the
+`live_response` input; local invocation requires `HYDRATION_LIVE_RESPONSE=1`.
+Do not enable a live read merely to retry a rejected response.
 
 ## Snapshot provenance
 
-- Application source: commit `23fb251f1e6a65c299f14902ef4ccc070f6fa28a`
-- Production entry: `/assets/main-VJyew4IJ.js`
+- Application source: commit `9a0f02f2620e52dc82ac7d7b09e0b6aec0e53ad4`
+- Production entry: `/assets/main-DgnOJ0SI.js`
 - Active lazy route: `/assets/base64-pNp3AUSU.js`
 - `owned-assets.json`: static route asset metadata, 43 public owned JS pins, and
-  exact source-blob pins for the generated SSR graph, client/router, and packages
+  22 exact source-blob pins for the generated SSR graph, client/router, SSR entry,
+  Vite configuration, and packages
+
+The current source-built full manifest has 304 routes. Its 302 inactive routes
+have no assets and are pruned by TanStack's actual dehydration algorithm. The
+remaining two-route manifest matches the previous snapshot after only the entry
+and release-notes paths change. Inactive metadata is not an established cause
+of this snapshot's framework-envelope rejection.
 
 Each owned JS file is read only from `https://tools.0g0.xyz`, checked against its
 exact byte length and SHA-256, and cached outside tracked source. Redirects,
@@ -48,7 +57,13 @@ Source or dependency snapshot drift also fails closed before SSR generation.
 
 The SSR fixture is generated from the actual root and Base64 source with a
 reduced server route tree and the pinned static production manifest. Router
-match timestamps and serialization are generated locally. No captured production
+match timestamps and serialization are generated locally. The same stream
+renderer and Cloudflare conditional exports are required. Plain Node resolves
+an extra 919-character scroll-restoration ScriptOnce; the Worker build's
+`browser` condition resolves its null helper instead. This was a diagnostic
+reference mismatch, not evidence of a product fault. The runtime verifies the
+React readable-stream, isServer server export, and scroll helper browser export
+before claiming equivalence. No captured production
 HTML, request-specific links, or analytics identifiers are checked into fixtures.
 Public ad constants needed to align the exact compiled client are read only at
 runtime from verified owned bytes, and omitted from logs and uploaded results.
@@ -87,10 +102,11 @@ Executable inline framework scripts must match generated-reference AST
 fingerprints. All strings, identifiers, operators, and properties are retained;
 only serializer match-update epoch literals vary. Unknown executable markup,
 embedded documents, SVG scripts, and declarative shadow templates stop the case.
-The reduced generated manifest may omit inactive-route metadata present in the
-live serializer. A strict-envelope rejection is a serializer-validation technical
-limit, not evidence of source drift or a product regression; do not rewrite the
-live serializer or loosen the check to force a pass.
+A strict-envelope rejection is a serializer-validation technical limit, not
+evidence of source drift or a product regression; do not rewrite the live
+serializer or loosen the check to force a pass. Rejected scripts can report only
+fixed numeric syntax categories, lengths, and known namespace-marker booleans.
+No literal, identifier, source, attribute value, or parser diagnostic is exported.
 
 No device/user-agent preset is used. The runner's automatic failure-context
 snapshot is disabled for these tests, in addition to traces, screenshots, and
@@ -101,9 +117,9 @@ video, so a failure cannot save the live page's request identifiers.
 ```sh
 npm ci
 npx vp test run tests/unit/hydration-owned-assets.test.ts
-node --test tests/browser/hydration/*.test.mjs
+NODE_OPTIONS='--conditions=workerd --conditions=worker --conditions=module --conditions=browser' node --test tests/browser/hydration/*.test.mjs
 npx playwright install --with-deps chromium
-npx playwright test --config tests/browser/hydration/playwright.config.ts
+NODE_OPTIONS='--conditions=workerd --conditions=worker --conditions=module --conditions=browser' npx playwright test --config tests/browser/hydration/playwright.config.ts
 ```
 
 Use the dedicated **Production hydration diagnostic** hosted workflow where

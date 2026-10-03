@@ -42,7 +42,9 @@ export function validateOwnedManifest(manifest) {
   const sourcePaths = new Set();
   for (const source of manifest.sourceFiles) {
     if (
-      !/^(?:app\/[A-Za-z0-9_/-]+\.tsx?|package(?:-lock)?\.json)$/.test(source.path ?? "") ||
+      !/^(?:app\/[A-Za-z0-9_/-]+\.tsx?|package(?:-lock)?\.json|vite\.config\.ts)$/.test(
+        source.path ?? "",
+      ) ||
       sourcePaths.has(source.path) ||
       !/^[a-f0-9]{40}$/.test(source.gitBlob ?? "")
     ) {

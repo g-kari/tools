@@ -73,6 +73,40 @@ function astFingerprint(code, normalizeTimestamps) {
   return sha256(JSON.stringify(fingerprintNode(file)));
 }
 
+/** Fixed syntax categories only: no literal, identifier, attribute, or source value escapes. */
+function rejectedScriptShape(code, type, ordinal) {
+  const file = ts.createSourceFile(
+    "runtime-only-rejected.js",
+    code,
+    ts.ScriptTarget.ESNext,
+    true,
+    ts.ScriptKind.JS,
+  );
+  const counts = new Map();
+  let nodeCount = 0;
+  function visit(node) {
+    nodeCount++;
+    counts.set(node.kind, (counts.get(node.kind) ?? 0) + 1);
+    ts.forEachChild(node, visit);
+  }
+  visit(file);
+  return {
+    ordinal,
+    type: type === "module" ? "module" : "classic",
+    codeUtf16Units: code.length,
+    syntaxValid: file.parseDiagnostics.length === 0,
+    statementCount: file.statements.length,
+    statementKinds: file.statements.slice(0, 12).map((node) => node.kind),
+    nodeCount,
+    nodeKindCounts: [...counts].sort(([left], [right]) => left - right),
+    namespaceMarkers: {
+      tanstackBootstrap: code.includes("$_TSR"),
+      tanstackPool: code.includes('$R["tsr"]') || code.includes("$R.tsr"),
+      cloudflareInitializer: code.includes("__CF$cv$params"),
+    },
+  };
+}
+
 /** Trusted generated source defines every permitted executable inline script. */
 function trustedFrameworkEnvelope(html, manifest) {
   const document = parse(html, { sourceCodeLocationInfo: true, scriptingEnabled: true });
@@ -141,6 +175,7 @@ export async function prepareLiveResponse({
   trustedGeneratedHtml,
 }) {
   let documentMetadata;
+  let rejectedInlineScript;
   const reject = (code) => {
     const error = new LiveResponseRejected(code);
     if (documentMetadata)
@@ -148,10 +183,11 @@ export async function prepareLiveResponse({
         ...documentMetadata,
         rejected: true,
         failureCode: code,
+        ...(rejectedInlineScript ? { rejectedInlineScript } : {}),
         ...(code === "serializer-validation-limit"
           ? {
               limitation:
-                "Trusted generated serializer AST differs from the live envelope; extra inactive-route asset metadata may differ. Live source is neither rewritten nor executed to force a match",
+                "Trusted generated serializer AST differs from the live envelope; the cause is unresolved. Live source is neither rewritten nor executed to force a match",
             }
           : {}),
       };
@@ -290,6 +326,7 @@ export async function prepareLiveResponse({
   let serializerCount = 0;
   let entryCount = 0;
   const matchedEnvelope = [];
+  let inlineOrdinal = 0;
   const resolveUrl = (value) => {
     let url;
     try {
@@ -339,6 +376,7 @@ export async function prepareLiveResponse({
     if (!location?.startTag || !location.endTag) reject("malformed-script-source");
     const code = html.slice(location.startTag.endOffset, location.endTag.startOffset);
     const type = (attribute(node, "type") ?? "").toLowerCase().trim();
+    inlineOrdinal++;
     if (type && !["module", "text/javascript", "application/javascript"].includes(type)) {
       if (!["application/json", "application/ld+json", inertType].includes(type))
         reject("unsupported-script-type");
@@ -365,8 +403,10 @@ export async function prepareLiveResponse({
       });
       continue;
     }
-    if (code.includes("$_TSR") || code.includes('$R["tsr"]') || code.includes("$R.tsr"))
+    if (code.includes("$_TSR") || code.includes('$R["tsr"]') || code.includes("$R.tsr")) {
+      rejectedInlineScript = rejectedScriptShape(code, type, inlineOrdinal);
       reject("serializer-validation-limit");
+    }
     // The successful owned response may contain Cloudflare's injected inline
     // iframe/challenge initializer. Its runtime identifiers stay in memory.
     if (
@@ -391,12 +431,20 @@ export async function prepareLiveResponse({
       classifications.push({ classification: "empty-inline-script-preserved" });
       continue;
     }
+    rejectedInlineScript = rejectedScriptShape(code, type, inlineOrdinal);
     reject("unrecognized-inline-script");
   }
   if (entryCount !== 1) reject("unexpected-owned-entry");
   if (serializerCount !== 1) reject("missing-or-unsupported-serializer");
-  if (matchedEnvelope.join(",") !== trustedEnvelope.map((item) => item.astSha256).join(","))
+  if (matchedEnvelope.join(",") !== trustedEnvelope.map((item) => item.astSha256).join(",")) {
+    documentMetadata.frameworkEnvelopeOrder = {
+      reference: trustedEnvelope.map((item) => item.classification),
+      observed: classifications
+        .filter((item) => item.trustedAstSha256)
+        .map((item) => item.classification),
+    };
     reject("unexpected-framework-envelope");
+  }
   let patchedHtml = html;
   for (const patch of [...patches].sort((left, right) => right.startOffset - left.startOffset)) {
     patchedHtml =

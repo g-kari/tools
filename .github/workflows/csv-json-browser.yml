@@ -1,0 +1,75 @@
+name: CSV JSON column preservation
+
+on:
+  pull_request:
+    paths:
+      - "app/routes/csv-json.tsx"
+      - "app/components/**"
+      - "app/hooks/**"
+      - "app/styles/base.css"
+      - "app/styles/animations.css"
+      - "app/styles/components.css"
+      - "app/styles/tools/csv-json.css"
+      - "app/styles/tools/number-base.css"
+      - "tests/browser/csv-json/**"
+      - "tests/unit/csv-json*.test.ts"
+      - "tests/e2e/csv-json.spec.ts"
+      - "package*.json"
+      - ".github/workflows/csv-json-browser.yml"
+  push:
+    branches: [main]
+    paths:
+      - "app/routes/csv-json.tsx"
+      - "app/components/**"
+      - "app/hooks/**"
+      - "app/styles/base.css"
+      - "app/styles/animations.css"
+      - "app/styles/components.css"
+      - "app/styles/tools/csv-json.css"
+      - "app/styles/tools/number-base.css"
+      - "tests/browser/csv-json/**"
+      - "tests/unit/csv-json*.test.ts"
+      - "tests/e2e/csv-json.spec.ts"
+      - "package*.json"
+      - ".github/workflows/csv-json-browser.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: csv-json-browser-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npx vp check
+      - run: npx vp test run
+      - run: npm run build
+      - run: npx tsc --noEmit
+      - run: npx playwright install --with-deps chromium
+      - run: npx vp build --config tests/browser/csv-json/vite.config.ts
+      - run: npx playwright test --config tests/browser/csv-json/playwright.config.ts
+        env:
+          CI: true
+      - run: |
+          mkdir -p test-results
+          git rev-parse HEAD | tee test-results/json-source-sha.txt
+        if: always()
+      - uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: csv-json-browser-results
+          path: test-results/
+          retention-days: 1

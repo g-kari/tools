@@ -86,6 +86,50 @@ async function rejects(data, code) {
   });
 }
 
+void test("unknown executable source stays rejected and syntax categories cannot leak its values", async () => {
+  const unknown =
+    'globalThis.syntheticRequestIdentifier = "synthetic-secret-value"; const userNonce = "synthetic-nonce"; fetch("https://synthetic-identifier.example/private?token=synthetic-cookie")';
+  const source = body.replace(
+    "</body>",
+    `<script nonce="synthetic-cookie">${unknown}</script></body>`,
+  );
+  await assert.rejects(prepareLiveResponse(input(source)), (error) => {
+    assert.equal(error.code, "unrecognized-inline-script");
+    const shape = error.diagnostics.rejectedInlineScript;
+    assert.equal(shape.ordinal, 3);
+    assert.equal(shape.type, "classic");
+    assert.equal(shape.syntaxValid, true);
+    assert.equal(shape.codeUtf16Units, unknown.length);
+    assert.equal(shape.statementCount, 3);
+    assert.ok(shape.nodeCount > 0);
+    assert.ok(shape.statementKinds.every(Number.isSafeInteger));
+    assert.ok(
+      shape.nodeKindCounts.every(([kind, count]) => Number.isSafeInteger(kind) && count > 0),
+    );
+    assert.doesNotMatch(
+      JSON.stringify(error.diagnostics),
+      /synthetic-secret|synthetic-nonce|synthetic-cookie|synthetic-identifier|userNonce|fetch|globalThis/,
+    );
+    return true;
+  });
+  assert.equal(globalThis.syntheticRequestIdentifier, undefined);
+});
+
+void test("malformed unknown syntax remains rejected without exporting parser diagnostics", async () => {
+  const source = body.replace(
+    "</body>",
+    '<script>const syntheticIdentifier = "synthetic-secret"; if (</script></body>',
+  );
+  await assert.rejects(prepareLiveResponse(input(source)), (error) => {
+    assert.equal(error.code, "framework-ast-inspection-failed");
+    assert.doesNotMatch(
+      JSON.stringify(error.diagnostics),
+      /syntheticIdentifier|synthetic-secret|parseDiagnostics/,
+    );
+    return true;
+  });
+});
+
 void test("unaltered owned source stays byte-exact, including parser-repair candidates", async () => {
   const result = await prepareLiveResponse(input());
   assert.equal(result.html, body);

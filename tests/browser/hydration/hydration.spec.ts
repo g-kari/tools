@@ -303,6 +303,10 @@ test.beforeAll(async () => {
   prepared = await prepareOwnedAssets(cacheDir, {
     localDirectory: process.env.HYDRATION_OWNED_ASSET_DIRECTORY,
   });
+  const approvedSource = process.env.HYDRATION_LIVE_APPROVED_SOURCE;
+  if (approvedSource && approvedSource !== prepared.manifest.sourceCommit) {
+    throw new Error("Automatic live diagnostic snapshot does not match its bounded authorization");
+  }
   fixture = await generateSsrFixture(prepared);
 });
 

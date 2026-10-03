@@ -13,6 +13,24 @@ export const FIXTURE_ORIGIN = "https://hydration.invalid";
 const defaultRepository = resolve(dirname(fileURLToPath(import.meta.url)), "../../..");
 const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");
 
+/** Fail closed if Node resolves a different renderer/SSR helper than the Worker build. */
+export function verifyCloudflareSsrExports() {
+  const resolutions = [
+    ["react-dom/server", "/react-dom/server.browser.js"],
+    ["@tanstack/router-core/isServer", "/isServer/server.js"],
+    ["@tanstack/router-core/scroll-restoration-script", "/scroll-restoration-script/client.js"],
+  ];
+  if (resolutions.some(([name, suffix]) => !import.meta.resolve(name).endsWith(suffix))) {
+    throw new Error("Cloudflare SSR conditional exports are not selected");
+  }
+  return {
+    renderer: "ReactDOM renderToReadableStream",
+    isServer: "server export",
+    scrollRestorationScript: "browser null export",
+    buildConditions: ["workerd", "worker", "module", "browser"],
+  };
+}
+
 /** Fail closed when a pinned diagnostic instrumentation site changes. */
 function replaceExactly(source, search, replacement, expectedCount, label) {
   const count = source.split(search).length - 1;
@@ -165,7 +183,7 @@ export async function generateSsrFixture({ manifest, assets, repository = defaul
       resolveDir: repository,
       contents: `import React from 'react';
         import {createRouter,createMemoryHistory,RouterProvider} from '@tanstack/react-router';
-        import {attachRouterServerSsrUtils,renderRouterToString} from '@tanstack/react-router/ssr/server';
+        import {attachRouterServerSsrUtils,renderRouterToStream} from '@tanstack/react-router/ssr/server';
         import {Route as root} from './app/routes/__root.tsx';
         import {Route as base} from './app/routes/base64.tsx';
         export async function render(manifest){
@@ -177,7 +195,7 @@ export async function generateSsrFixture({ manifest, assets, repository = defaul
           await router.serverSsr.dehydrate();
           const matches=router.state.matches.map(m=>({id:m.id,status:m.status,ssr:m.ssr,
             updatedAt:m.updatedAt,metaCount:m.meta?.length,linkCount:m.links?.length}));
-          const response=await renderRouterToString({router,responseHeaders:new Headers(),
+          const response=await renderRouterToStream({request:new Request(${JSON.stringify(FIXTURE_ORIGIN + "/base64")}),router,responseHeaders:new Headers(),
             children:React.createElement(RouterProvider,{router})});
           if(response.status!==200)throw new Error('Generated SSR failed');
           return {html:await response.text(),matches};
@@ -220,6 +238,7 @@ export async function generateSsrFixture({ manifest, assets, repository = defaul
   const previousConsoleError = console.error;
   let serverErrorCount = 0;
   let generated;
+  let conditionalExports;
   try {
     process.env.NODE_ENV = "production";
     // The TanStack renderer logs caught server errors itself. Such stacks can
@@ -227,6 +246,7 @@ export async function generateSsrFixture({ manifest, assets, repository = defaul
     console.error = () => {
       serverErrorCount++;
     };
+    conditionalExports = verifyCloudflareSsrExports();
     const server = await import(
       "data:text/javascript;base64," + Buffer.from(code).toString("base64")
     );
@@ -285,9 +305,10 @@ export async function generateSsrFixture({ manifest, assets, repository = defaul
       sourceCommit: manifest.sourceCommit,
       sourceTree: manifest.sourceTree,
       generatedAt: new Date().toISOString(),
+      conditionalExports,
       syntheticOrigin: FIXTURE_ORIGIN,
       generation:
-        "Actual root/Base64 source + reduced server route tree; real TanStack attachRouterServerSsrUtils/dehydrate/renderRouterToString; fresh match timestamps",
+        "Actual root/Base64 source + reduced server route tree; real TanStack attachRouterServerSsrUtils/dehydrate/renderRouterToStream; buffered generated stream and fresh match timestamps",
       constants: `Public compiled publisher/slot literals derived in memory from verified ${assetPath}; values and generated HTML are never reported or saved`,
       sourceHashes,
       versions,
