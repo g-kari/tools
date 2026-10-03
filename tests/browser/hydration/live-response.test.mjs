@@ -182,6 +182,293 @@ void test("unaltered owned source stays byte-exact, including parser-repair cand
     createHash("sha256").update(body).digest("hex"),
   );
 });
+
+void test("pre-guard comparison records clean source and normalized framework AST agreement", async () => {
+  const source = body.replace("1790940000000", "1791039999999");
+  const result = await prepareLiveResponse(input(source));
+  const report = result.diagnostics.sourceDifference;
+  assert.equal(report.available, true);
+  assert.equal(report.mode, "data-only-before-original-live-guard");
+  assert.equal(report.nonScriptHosts.structuralDifferences, 0);
+  assert.equal(report.nonScriptHosts.attributeDifferences, 0);
+  assert.equal(report.nonScriptHosts.firstDifference, null);
+  assert.equal(report.nonScriptText.positionalDifferences, 0);
+  assert.equal(report.outsideScriptElementsSourceEqual, true);
+  assert.deepEqual(report.framework, {
+    referenceCount: 2,
+    observedMatchCount: 2,
+    orderAndMultiplicityMatch: true,
+    entryMatchCount: 1,
+    serializerMatchCount: 1,
+  });
+  assert.equal(
+    report.scriptComparisons.filter((item) => item.normalizedSerializerEpochs).length,
+    1,
+  );
+  assert.equal(result.html, source);
+});
+
+void test("pre-guard comparison sees later unknown external modules despite an earlier inline rejection", async () => {
+  const unknown = 'globalThis.syntheticPreGuardExecution="synthetic-secret";';
+  const source = body
+    .replace(
+      "</head>",
+      `<script nonce="synthetic-cookie" data-synthetic-id="synthetic-value">${unknown}</script></head>`,
+    )
+    .replace(
+      "</body>",
+      `<script>${initializer}</script><script type="module" src="https://synthetic-private-host.example/private-synthetic-path.js?token=synthetic-token#synthetic-fragment"></script></body>`,
+    );
+  await assert.rejects(prepareLiveResponse(input(source)), (error) => {
+    assert.equal(error.code, "unrecognized-inline-script");
+    const report = error.diagnostics.sourceDifference;
+    assert.equal(report.available, true);
+    assert.equal(report.nonScriptHosts.structuralDifferences, 0);
+    assert.equal(report.nonScriptHosts.attributeDifferences, 0);
+    assert.equal(report.outsideScriptElementsSourceEqual, true);
+    assert.equal(report.framework.orderAndMultiplicityMatch, true);
+    assert.equal(report.framework.serializerMatchCount, 1);
+    assert.equal(report.framework.entryMatchCount, 1);
+    const module = report.scriptComparisons.find((item) => item.unrecognizedExternalModule);
+    assert.equal(module.parentTag, "body");
+    assert.equal(module.type, "module");
+    assert.equal(module.relationship, "no-generated-resource-match");
+    assert.deepEqual(module.attributeNames, ["src", "type"]);
+    assert.equal(
+      report.scriptComparisons.filter((item) => item.relationship === "no-generated-ast-match")
+        .length,
+      2,
+    );
+    assert.doesNotMatch(
+      JSON.stringify(report),
+      /synthetic-|globalThis|https?:|token=|astSha256|nonce.*cookie/,
+    );
+    assert.doesNotMatch(
+      JSON.stringify(error.diagnostics),
+      /synthetic-secret|synthetic-cookie|synthetic-value|synthetic-private-host|private-synthetic-path|synthetic-token|synthetic-fragment|data-synthetic-id/,
+    );
+    return true;
+  });
+  assert.equal(globalThis.syntheticPreGuardExecution, undefined);
+});
+
+void test("source host/text differences report finite shapes without values or custom names", async () => {
+  const source = body.replace(
+    '<textarea id="conv-input"></textarea>',
+    '<private-synthetic-tag data-synthetic-name="synthetic-attribute-value">synthetic-private-text</private-synthetic-tag><textarea id="conv-input"></textarea>',
+  );
+  const result = await prepareLiveResponse(input(source));
+  const report = result.diagnostics.sourceDifference;
+  assert.ok(report.nonScriptHosts.structuralDifferences > 0);
+  assert.ok(report.nonScriptText.positionalDifferences > 0);
+  assert.equal(report.outsideScriptElementsSourceEqual, false);
+  assert.equal(report.nonScriptHosts.firstDifference.actual.tag, "other");
+  assert.deepEqual(report.nonScriptHosts.firstDifference.actual.attributeNames, ["other"]);
+  assert.doesNotMatch(
+    JSON.stringify(report),
+    /private-synthetic-tag|data-synthetic-name|synthetic-attribute-value|synthetic-private-text/,
+  );
+});
+
+void test("attribute differences are compared in memory but neither values nor names escape", async () => {
+  const source = body.replace(
+    '<textarea id="conv-input"',
+    '<textarea nonce="synthetic-cookie" data-synthetic-name="synthetic-value" id="conv-input"',
+  );
+  const result = await prepareLiveResponse(input(source));
+  const report = result.diagnostics.sourceDifference;
+  assert.equal(report.nonScriptHosts.structuralDifferences, 0);
+  assert.equal(report.nonScriptHosts.attributeDifferences, 1);
+  assert.equal(report.nonScriptHosts.firstDifference.reason, "attributes");
+  assert.deepEqual(report.nonScriptHosts.firstDifference.actual.attributeNames, [
+    "id",
+    "nonce",
+    "other",
+  ]);
+  assert.doesNotMatch(
+    JSON.stringify(report),
+    /synthetic-cookie|data-synthetic-name|synthetic-value|conv-input/,
+  );
+});
+
+void test("serializer strings and non-epoch literals are never normalized to force AST agreement", async () => {
+  for (const source of [
+    body.replace('name:"base64"', 'name:"synthetic-secret"'),
+    body.replace("1790940000000", "7"),
+  ]) {
+    await assert.rejects(prepareLiveResponse(input(source)), (error) => {
+      assert.equal(error.code, "serializer-validation-limit");
+      const report = error.diagnostics.sourceDifference;
+      assert.equal(report.framework.serializerMatchCount, 0);
+      assert.equal(report.framework.entryMatchCount, 1);
+      assert.equal(report.framework.orderAndMultiplicityMatch, false);
+      assert.doesNotMatch(JSON.stringify(report), /synthetic-secret|1790940000000|name:|astSha256/);
+      return true;
+    });
+  }
+});
+
+void test("framework order and duplicate comparisons cannot widen the original guard", async () => {
+  for (const source of [
+    body.replace(`${serializer}${entry}`, `${entry}${serializer}`),
+    body.replace(`${serializer}${entry}`, `${serializer}${serializer}${entry}`),
+  ]) {
+    await assert.rejects(prepareLiveResponse(input(source)), (error) => {
+      assert.equal(
+        error.code,
+        source.includes(`${serializer}${serializer}`)
+          ? "missing-or-unsupported-serializer"
+          : "unexpected-framework-envelope",
+      );
+      assert.equal(error.diagnostics.sourceDifference.framework.orderAndMultiplicityMatch, false);
+      return true;
+    });
+  }
+});
+
+void test("malformed inline source has a redacted pre-guard comparison and retains its rejection", async () => {
+  const source = body.replace(
+    "</head>",
+    '<script>const syntheticPrivateIdentifier="synthetic-secret";if(</script></head>',
+  );
+  await assert.rejects(prepareLiveResponse(input(source)), (error) => {
+    assert.equal(error.code, "framework-ast-inspection-failed");
+    const report = error.diagnostics.sourceDifference;
+    assert.equal(report.framework.entryMatchCount, 1);
+    assert.equal(report.framework.serializerMatchCount, 1);
+    assert.equal(
+      report.scriptComparisons.find((item) => item.relationship === "no-generated-ast-match")
+        .syntaxValid,
+      false,
+    );
+    assert.doesNotMatch(
+      JSON.stringify(report),
+      /syntheticPrivateIdentifier|synthetic-secret|parseDiagnostics/,
+    );
+    return true;
+  });
+});
+
+void test("containment rejects nested documents and SVG scripts after data-only inspection", async () => {
+  for (const [markup, code] of [
+    ['<iframe srcdoc="synthetic-secret-document"></iframe>', "unexpected-embedded-document"],
+    [
+      '<svg><script>globalThis.syntheticContainedExecution="synthetic-secret"</script></svg>',
+      "non-html-script-namespace",
+    ],
+    [
+      '<template shadowrootmode="open"><script>globalThis.syntheticContainedExecution="synthetic-secret"</script></template>',
+      "declarative-shadow-template",
+    ],
+    [
+      '<a href="vbscript:syntheticSecret()">synthetic-private-text</a>',
+      "unsupported-document-bearing-url",
+    ],
+  ]) {
+    await assert.rejects(
+      prepareLiveResponse(input(body.replace("</body>", `${markup}</body>`))),
+      (error) => {
+        assert.equal(error.code, code);
+        assert.equal(
+          error.diagnostics.sourceDifference.available,
+          code !== "non-html-script-namespace",
+        );
+        assert.doesNotMatch(
+          JSON.stringify(error.diagnostics.sourceDifference),
+          /synthetic-|syntheticSecret|syntheticContainedExecution|globalThis|vbscript:/,
+        );
+        return true;
+      },
+    );
+  }
+  assert.equal(globalThis.syntheticContainedExecution, undefined);
+});
+
+void test("foreign template and nested SVG scripts cannot be reported as complete inert HTML inventories", async () => {
+  for (const markup of [
+    '<svg><template><script type="module" href="https://synthetic-host.example/module.js"></script></template></svg>',
+    '<svg><script><script type="module" href="https://synthetic-host.example/module.js"></script></script></svg>',
+  ]) {
+    await assert.rejects(
+      prepareLiveResponse(input(body.replace("</body>", `${markup}</body>`))),
+      (error) => {
+        assert.equal(error.code, "non-html-script-namespace");
+        assert.deepEqual(error.diagnostics.sourceDifference, {
+          version: 1,
+          available: false,
+          failureCode: "bounded-source-inspection-unavailable",
+          originalGuardUnchanged: true,
+        });
+        assert.doesNotMatch(
+          JSON.stringify(error.diagnostics.sourceDifference),
+          /synthetic-host|module.js|inert-template|scriptComparisons/,
+        );
+        return true;
+      },
+    );
+  }
+});
+
+void test("template external scripts do not consume executable generated resources", async () => {
+  const external =
+    '<script type="module" src="https://synthetic-host.example/module.js?secret=synthetic-token"></script>';
+  const trusted = body.replace("</head>", `${external}</head>`);
+  const source = body.replace(
+    "</head>",
+    `<template>${external}</template><script>const value="synthetic-secret";</script></head>`,
+  );
+  await assert.rejects(
+    prepareLiveResponse(input(source, { trustedGeneratedHtml: trusted })),
+    (error) => {
+      assert.equal(error.code, "unrecognized-inline-script");
+      const report = error.diagnostics.sourceDifference;
+      assert.equal(report.missingGeneratedExternalCount, 1);
+      const item = report.scriptComparisons.find((item) => item.kind === "external");
+      assert.equal(item.inTemplate, true);
+      assert.equal(item.relationship, "inert-template");
+      assert.equal(item.unrecognizedExternalModule, false);
+      assert.doesNotMatch(
+        JSON.stringify(report),
+        /synthetic-host|module.js|synthetic-token|synthetic-secret/,
+      );
+      return true;
+    },
+  );
+});
+
+void test("an unavailable bounded comparison preserves the exact original guard rejection", async () => {
+  const source = body.replace(
+    "</body>",
+    `${'<script>const value="synthetic-secret";</script>'.repeat(129)}</body>`,
+  );
+  await assert.rejects(prepareLiveResponse(input(source)), (error) => {
+    assert.equal(error.code, "unrecognized-inline-script");
+    assert.deepEqual(error.diagnostics.sourceDifference, {
+      version: 1,
+      available: false,
+      failureCode: "bounded-source-inspection-unavailable",
+      originalGuardUnchanged: true,
+    });
+    return true;
+  });
+});
+
+void test("unclosed HTML scripts cannot be reported as empty complete source inventories", async () => {
+  const source = body.replace(
+    "</body>",
+    '<script>const syntheticIdentifier="synthetic-secret";</body>',
+  );
+  await assert.rejects(prepareLiveResponse(input(source)), (error) => {
+    assert.equal(error.code, "malformed-script-source");
+    assert.equal(error.diagnostics.sourceDifference.available, false);
+    assert.equal(error.diagnostics.sourceDifference.originalGuardUnchanged, true);
+    assert.doesNotMatch(
+      JSON.stringify(error.diagnostics.sourceDifference),
+      /syntheticIdentifier|synthetic-secret|scriptComparisons/,
+    );
+    return true;
+  });
+});
 void test("only intended inline type attributes are edited; external tags and framework source stay exact", async () => {
   const external =
     '<script defer nonce="synthetic-nonce" src="https://synthetic-third-party.example/beacon.js?token=synthetic-identifier"></script>';

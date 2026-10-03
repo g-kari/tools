@@ -108,6 +108,39 @@ serializer or loosen the check to force a pass. Rejected scripts can report only
 fixed numeric syntax categories, lengths, and known namespace-marker booleans.
 No literal, identifier, source, attribute value, or parser diagnostic is exported.
 
+Before the original live guard checks executable markup, `sourceDifference`
+inertly compares the whole buffered response with generated SSR. This remains
+available on a later rejection, including when the first unknown inline script
+precedes a new external module. It reports non-script host/text counts,
+positional structural/attribute differences, a first host difference with finite
+tag/attribute-name labels and numeric paths, and byte-exact equality outside all
+script elements. Host attribute values and text stay in memory. Unknown names
+become `other`; no observed URL or unknown script fingerprint is exported.
+
+Inline framework comparison uses the original trusted AST fingerprint function:
+identifiers, properties, strings and operators remain significant; only the
+existing serializer epoch literals can normalize. The report records entry and
+serializer match counts, plus framework order/multiplicity agreement. External
+scripts compare their resolved URL and MIME type only in memory against generated
+resources, then export a finite match label. An unmatched external module is
+classified without downloading or executing it. Template scripts do not consume
+executable reference-resource matches. These comparisons cannot authenticate a
+provider or establish the hydration cause.
+
+This is source inspection, not a browser intervention. Original guard decisions,
+rejection codes, surgical edits and runtime URL allowlists are unchanged. Unknown
+script markup is never removed, rewritten or replayed to force a pass. Inspection
+is bounded to 50,000 nodes, depth 256 and 128 script elements; an unavailable
+comparison produces only a static diagnostic and cannot change the guard result.
+Unsupported script namespaces or incomplete script-tag source offsets also make
+the comparison unavailable, rather than misclassifying foreign templates,
+omitting nested foreign-script elements, or reporting unclosed scripts as empty.
+Positional parser-tree differences are not React expected-host differences, and
+an insertion can shift later comparisons. Outside-script equality deliberately
+excludes whole script elements, including attributes; it does not establish full
+document equivalence. Conditional live responses and clean generated/replayed
+cases are not evidence that the production hydration issue is fixed.
+
 No device/user-agent preset is used. The runner's automatic failure-context
 snapshot is disabled for these tests, in addition to traces, screenshots, and
 video, so a failure cannot save the live page's request identifiers.

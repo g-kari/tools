@@ -165,6 +165,273 @@ function trustedFrameworkEnvelope(html, manifest) {
 }
 
 /**
+ * Compare every source node before the execution guard can stop at its first
+ * rejection. Values/fingerprints stay in memory; this report never grants trust
+ * or changes the original source, patches, URL sets, or rejection decision.
+ */
+function sourceDifferenceReport(html, document, trustedHtml, trustedEnvelope, manifest) {
+  const referenceDocument = parse(trustedHtml, {
+    sourceCodeLocationInfo: true,
+    scriptingEnabled: true,
+  });
+  const allowedTags = new Set(
+    "html head body title meta link script style a div header h1 h2 h3 h4 p nav main button span kbd label textarea input ins ul ol li pre code section article svg path iframe template form select option img noscript footer aside strong small br hr table tbody thead tr td th".split(
+      " ",
+    ),
+  );
+  const allowedAttributeNames = new Set(
+    "id class role lang rel href src type name charset content http-equiv aria-label aria-labelledby aria-controls aria-selected aria-hidden tabindex disabled readonly value placeholder rows cols width height viewBox d fill stroke nonce async defer crossorigin data-cfasync data-cf-settings"
+      .toLowerCase()
+      .split(" "),
+  );
+  const attribute = (node, name) => node.attrs?.find((item) => item.name === name)?.value;
+  const safeTag = (node) => (allowedTags.has(node?.tagName) ? node.tagName : "other");
+  const safeNames = (node) =>
+    [
+      ...new Set(
+        (node.attrs ?? []).map((item) =>
+          allowedAttributeNames.has(item.name) ? item.name : "other",
+        ),
+      ),
+    ].sort((left, right) => left.localeCompare(right));
+  function inspect(root, source) {
+    const hosts = [];
+    const texts = [];
+    const scripts = [];
+    let visited = 0;
+    function visit(node, path, depth, inTemplate = false) {
+      if (++visited > 50000 || depth > 256) throw new Error("Source inspection limit");
+      if (node.tagName === "script") {
+        // Foreign-content scripts can have nested elements/overlapping ranges.
+        // Do not classify them as HTML scripts or claim a complete inventory.
+        if (node.namespaceURI !== "http://www.w3.org/1999/xhtml")
+          throw new Error("Unsupported script namespace");
+        scripts.push({ node, inTemplate });
+        return;
+      }
+      if (node.tagName) hosts.push({ node, path });
+      if (node.nodeName === "#text") texts.push({ value: node.value, path });
+      // Style source can contain URLs/IDs. Compare it in memory, never export it.
+      const children = [...(node.childNodes ?? []), ...(node.content?.childNodes ?? [])];
+      const inHtmlTemplate =
+        inTemplate ||
+        (node.tagName === "template" && node.namespaceURI === "http://www.w3.org/1999/xhtml");
+      let index = 0;
+      for (const child of children) {
+        if (child.tagName === "script") {
+          visit(child, path, depth + 1, inHtmlTemplate);
+          continue;
+        }
+        visit(child, [...path, index++], depth + 1, inHtmlTemplate);
+      }
+    }
+    visit(root, [], 0);
+    if (scripts.length > 128) throw new Error("Source script inspection limit");
+    const ranges = scripts.map(({ node }) => node.sourceCodeLocation);
+    if (
+      ranges.some(
+        (item) =>
+          !item?.startTag ||
+          !item.endTag ||
+          !Number.isSafeInteger(item.startOffset) ||
+          !Number.isSafeInteger(item.endOffset),
+      )
+    )
+      throw new Error("Missing source offsets");
+    const ordered = ranges.sort((left, right) => left.startOffset - right.startOffset);
+    let previous = 0;
+    let withoutScripts = "";
+    for (const range of ordered) {
+      if (
+        range.startOffset < previous ||
+        range.endOffset > source.length ||
+        range.startOffset >= range.endOffset
+      )
+        throw new Error("Invalid source offsets");
+      withoutScripts += source.slice(previous, range.startOffset);
+      previous = range.endOffset;
+    }
+    withoutScripts += source.slice(previous);
+    return { hosts, texts, scripts, withoutScripts };
+  }
+  const reference = inspect(referenceDocument, trustedHtml);
+  const observed = inspect(document, html);
+  const nodeSummary = (item, index) =>
+    item
+      ? {
+          index,
+          tag: safeTag(item.node),
+          namespace: item.node.namespaceURI === "http://www.w3.org/1999/xhtml" ? "html" : "other",
+          path: item.path,
+          attributeNames: safeNames(item.node),
+        }
+      : null;
+  const attributes = (node) =>
+    JSON.stringify(
+      (node.attrs ?? [])
+        .map(({ name, value, namespace }) => [name, value, namespace ?? ""])
+        .sort((left, right) => JSON.stringify(left).localeCompare(JSON.stringify(right))),
+    );
+  let structuralDifferences = 0;
+  let attributeDifferences = 0;
+  let firstHostDifference = null;
+  for (let index = 0; index < Math.max(reference.hosts.length, observed.hosts.length); index++) {
+    const expected = reference.hosts[index];
+    const actual = observed.hosts[index];
+    const structural =
+      !expected ||
+      !actual ||
+      expected.node.tagName !== actual.node.tagName ||
+      expected.node.namespaceURI !== actual.node.namespaceURI ||
+      JSON.stringify(expected.path) !== JSON.stringify(actual.path);
+    const attributeDifference =
+      expected && actual && attributes(expected.node) !== attributes(actual.node);
+    if (structural) structuralDifferences++;
+    if (attributeDifference) attributeDifferences++;
+    if (!firstHostDifference && (structural || attributeDifference))
+      firstHostDifference = {
+        reason: structural ? "structure" : "attributes",
+        expected: nodeSummary(expected, index),
+        actual: nodeSummary(actual, index),
+      };
+  }
+  let textDifferences = 0;
+  for (let index = 0; index < Math.max(reference.texts.length, observed.texts.length); index++) {
+    const expected = reference.texts[index];
+    const actual = observed.texts[index];
+    if (
+      !expected ||
+      !actual ||
+      expected.value !== actual.value ||
+      JSON.stringify(expected.path) !== JSON.stringify(actual.path)
+    )
+      textDifferences++;
+  }
+  const externalKey = (node) => {
+    try {
+      return JSON.stringify([
+        new URL(attribute(node, "src"), `${manifest.origin}${manifest.activeRoute}`).href,
+        (attribute(node, "type") ?? "").trim().toLowerCase(),
+      ]);
+    } catch {
+      return undefined;
+    }
+  };
+  const referenceExternal = reference.scripts
+    .filter(({ node, inTemplate }) => !inTemplate && attribute(node, "src") !== undefined)
+    .map(({ node }) => externalKey(node));
+  const remainingExternal = [...referenceExternal];
+  const matchedFramework = [];
+  const scriptComparisons = observed.scripts.map(({ node, inTemplate }, ordinal) => {
+    const source = attribute(node, "src");
+    const type = (attribute(node, "type") ?? "").trim().toLowerCase();
+    const executable = ["", "module", "text/javascript", "application/javascript"].includes(type);
+    const descriptor = {
+      ordinal: ordinal + 1,
+      parentTag: safeTag(node.parentNode),
+      elementIndex: (node.parentNode?.childNodes ?? [])
+        .filter((item) => item.tagName)
+        .indexOf(node),
+      inTemplate,
+      type: type === "module" ? "module" : executable ? "classic" : "inert-or-other",
+      attributeNames: safeNames(node),
+    };
+    if (source !== undefined) {
+      const key = externalKey(node);
+      const index = inTemplate || key === undefined ? -1 : remainingExternal.indexOf(key);
+      if (index >= 0) remainingExternal.splice(index, 1);
+      return {
+        ...descriptor,
+        kind: "external",
+        relationship: inTemplate
+          ? "inert-template"
+          : index >= 0
+            ? "generated-resource-match"
+            : "no-generated-resource-match",
+        unrecognizedExternalModule: !inTemplate && type === "module" && index < 0,
+      };
+    }
+    const location = node.sourceCodeLocation;
+    const code =
+      location?.startTag && location.endTag
+        ? html.slice(location.startTag.endOffset, location.endTag.startOffset)
+        : "";
+    let trustedMatch;
+    let syntaxValid = null;
+    if (!inTemplate && executable && code.trim()) {
+      try {
+        // Validate even when no trusted script has this exact MIME type.
+        astFingerprint(code, false);
+        trustedMatch = trustedEnvelope.find(
+          (item) =>
+            item.type === type && item.astSha256 === astFingerprint(code, item.normalizeTimestamps),
+        );
+        syntaxValid = true;
+      } catch {
+        syntaxValid = false;
+      }
+    }
+    if (trustedMatch) matchedFramework.push(trustedMatch);
+    return {
+      ...descriptor,
+      kind: "inline",
+      inlineUtf16Units: code.length,
+      syntaxValid,
+      relationship: inTemplate
+        ? "inert-template"
+        : !executable
+          ? "inert-or-other-type"
+          : !code.trim()
+            ? "empty"
+            : trustedMatch
+              ? trustedMatch.classification
+              : "no-generated-ast-match",
+      normalizedSerializerEpochs: trustedMatch?.normalizeTimestamps ?? false,
+    };
+  });
+  return {
+    version: 1,
+    available: true,
+    mode: "data-only-before-original-live-guard",
+    nonScriptHosts: {
+      referenceCount: reference.hosts.length,
+      observedCount: observed.hosts.length,
+      structuralDifferences,
+      attributeDifferences,
+      firstDifference: firstHostDifference,
+    },
+    nonScriptText: {
+      referenceCount: reference.texts.length,
+      observedCount: observed.texts.length,
+      positionalDifferences: textDifferences,
+    },
+    outsideScriptElementsSourceEqual: reference.withoutScripts === observed.withoutScripts,
+    framework: {
+      referenceCount: trustedEnvelope.length,
+      observedMatchCount: matchedFramework.length,
+      orderAndMultiplicityMatch:
+        matchedFramework.map((item) => item.astSha256).join(",") ===
+        trustedEnvelope.map((item) => item.astSha256).join(","),
+      entryMatchCount: matchedFramework.filter(
+        (item) => item.classification === "pinned-owned-entry-import-preserved",
+      ).length,
+      serializerMatchCount: matchedFramework.filter(
+        (item) => item.classification === "trusted-tanstack-serializer-preserved",
+      ).length,
+    },
+    missingGeneratedExternalCount: remainingExternal.length,
+    scriptComparisons,
+    limitations: [
+      "Source inspection only; no script evaluation, hydration, provider attribution, or execution permission",
+      "Non-script hosts/text compare positional parser trees, not React expected hosts; insertion can shift later differences",
+      "Outside-script equality excludes every script element including its attributes; script comparisons separately report finite labels",
+      "Resource matching and AST fingerprints remain memory-only; marker names and matching syntax cannot authenticate a provider",
+      "Unavailable inspection never changes the original live guard decision",
+    ],
+  };
+}
+
+/**
  * Inspect inertly with original-source offsets, then surgically change only
  * recognized inline third-party script type attributes. parse5.serialize is
  * deliberately never used: Chromium must parse the original source structure.
@@ -358,6 +625,22 @@ export async function prepareLiveResponse({
         },
       };
     });
+  try {
+    documentMetadata.sourceDifference = sourceDifferenceReport(
+      html,
+      document,
+      trustedGeneratedHtml,
+      trustedEnvelope,
+      manifest,
+    );
+  } catch {
+    documentMetadata.sourceDifference = {
+      version: 1,
+      available: false,
+      failureCode: "bounded-source-inspection-unavailable",
+      originalGuardUnchanged: true,
+    };
+  }
   const title = nodes.find((node) => node.tagName === "title");
   if (
     containmentNodes.some(
