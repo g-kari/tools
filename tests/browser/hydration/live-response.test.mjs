@@ -152,6 +152,26 @@ void test("optimization markers classify a rejection but never authorize its scr
   });
 });
 
+void test("script inventory exports only finite labels and known paths, never attributes or URL values", async () => {
+  const source = body.replace(
+    "</body>",
+    '<script src="/cdn-cgi/zaraz/s.js?token=synthetic-secret" nonce="synthetic-cookie" data-synthetic-identifier="synthetic-value"></script><script>const marker="zaraz synthetic-secret";</script></body>',
+  );
+  await assert.rejects(prepareLiveResponse(input(source)), (error) => {
+    assert.equal(error.code, "unrecognized-inline-script");
+    const inventory = error.diagnostics.scriptInventory;
+    const external = inventory.find((item) => item.resource === "zaraz");
+    assert.equal(external.knownPath, "/cdn-cgi/zaraz/s.js");
+    assert.deepEqual(external.attributeNames, ["nonce", "other", "src"]);
+    assert.ok(inventory.every((item) => Number.isSafeInteger(item.elementIndex)));
+    assert.doesNotMatch(
+      JSON.stringify(error.diagnostics),
+      /synthetic-secret|synthetic-cookie|synthetic-value|synthetic-identifier|token=/,
+    );
+    return true;
+  });
+});
+
 void test("unaltered owned source stays byte-exact, including parser-repair candidates", async () => {
   const result = await prepareLiveResponse(input());
   assert.equal(result.html, body);

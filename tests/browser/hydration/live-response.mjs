@@ -277,6 +277,87 @@ export async function prepareLiveResponse({
   };
   const attribute = (node, name) => node.attrs?.find((item) => item.name === name)?.value;
   const text = (node) => (node.childNodes ?? []).map((child) => child.value ?? "").join("");
+  const safeAttributeNames = new Set([
+    "src",
+    "type",
+    "id",
+    "class",
+    "async",
+    "defer",
+    "crossorigin",
+    "nonce",
+    "data-cfasync",
+    "data-cf-settings",
+  ]);
+  documentMetadata.scriptInventory = nodes
+    .filter((node) => node.tagName === "script")
+    .map((node) => {
+      const source = attribute(node, "src");
+      const code = text(node);
+      const parentTag = node.parentNode?.tagName;
+      const type = (attribute(node, "type") ?? "").toLowerCase().trim();
+      let resource = "inline";
+      let knownPath;
+      if (source !== undefined) {
+        resource = "other-external";
+        try {
+          const url = new URL(source, documentUrl);
+          if (
+            url.origin === manifest.origin &&
+            manifest.assets.some((asset) => asset.path === url.pathname) &&
+            !url.search &&
+            !url.hash
+          ) {
+            resource = "pinned-owned";
+            knownPath = url.pathname;
+          } else if (
+            url.origin === manifest.origin &&
+            ["/cdn-cgi/zaraz/i.js", "/cdn-cgi/zaraz/s.js"].includes(url.pathname)
+          ) {
+            resource = "zaraz";
+            knownPath = url.pathname;
+          } else if (
+            url.origin === "https://pagead2.googlesyndication.com" &&
+            url.pathname === "/pagead/js/adsbygoogle.js"
+          ) {
+            resource = "adsense";
+            knownPath = "/pagead/js/adsbygoogle.js";
+          }
+        } catch {
+          // Classification cannot make an invalid URL acceptable to the guard.
+        }
+      }
+      return {
+        parentTag: ["head", "body", "main", "div", "html"].includes(parentTag)
+          ? parentTag
+          : "other",
+        elementIndex: (node.parentNode?.childNodes ?? [])
+          .filter((item) => item.tagName)
+          .indexOf(node),
+        attributeNames: [
+          ...new Set(
+            (node.attrs ?? []).map((item) =>
+              safeAttributeNames.has(item.name) ? item.name : "other",
+            ),
+          ),
+        ].sort((left, right) => left.localeCompare(right)),
+        type: ["", "text/javascript", "application/javascript"].includes(type)
+          ? "classic"
+          : type === "module"
+            ? "module"
+            : ["application/json", "application/ld+json", inertType].includes(type)
+              ? "inert-data"
+              : "other",
+        resource,
+        ...(knownPath ? { knownPath } : {}),
+        inlineUtf16Units: code.length,
+        namespaceMarkers: {
+          tanstack: code.includes("$_TSR") || code.includes('$R["tsr"]') || code.includes("$R.tsr"),
+          zaraz: code.includes("zaraz"),
+          cloudflareInitializer: code.includes("__CF$cv$params"),
+        },
+      };
+    });
   const title = nodes.find((node) => node.tagName === "title");
   if (
     containmentNodes.some(
