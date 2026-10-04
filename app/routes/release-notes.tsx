@@ -43,6 +43,12 @@ export const releases: Release[] = [
     date: "2026-10-05",
     entries: [
       {
+        type: "fix",
+        title: "検索ダイアログのキーボード操作とフォーカスを保持",
+        description:
+          "Tabで背景へ抜ける問題を修正し、Esc・閉じるボタンで取り消した後は元の操作へ戻ります。クリアボタンや結果リンクのEnterが別の結果を開かないようにし、日本語入力と検索条件は維持します。",
+      },
+      {
         type: "feat",
         title: "ツール検索を複数キーワード・全角入力に対応",
         description:

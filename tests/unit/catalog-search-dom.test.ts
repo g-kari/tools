@@ -77,11 +77,11 @@ describe("catalog search interaction", () => {
   ])("IME event %j does not select, navigate or close", (eventOptions) => {
     const close = vi.fn();
     act(() => root.render(createElement(SearchModal, { isOpen: true, onClose: close })));
-    const input = container.querySelector<HTMLInputElement>(".search-modal-input")!;
+    const input = document.querySelector<HTMLInputElement>(".search-modal-input")!;
     type(input, "JSON 圧縮");
     const selected = input.getAttribute("aria-activedescendant");
     const click = vi.fn();
-    container.addEventListener("click", click);
+    document.querySelector('[role="dialog"]')!.addEventListener("click", click);
     const event = new KeyboardEvent("keydown", {
       bubbles: true,
       cancelable: true,
@@ -100,10 +100,10 @@ describe("catalog search interaction", () => {
   it("ordinary Enter still activates the current result", () => {
     const close = vi.fn();
     act(() => root.render(createElement(SearchModal, { isOpen: true, onClose: close })));
-    const input = container.querySelector<HTMLInputElement>(".search-modal-input")!;
+    const input = document.querySelector<HTMLInputElement>(".search-modal-input")!;
     type(input, "変換 /url-encode");
     let path = "";
-    container.addEventListener("click", (event) => {
+    document.querySelector('[role="dialog"]')!.addEventListener("click", (event) => {
       event.preventDefault();
       path = (event.target as HTMLAnchorElement).getAttribute("href") ?? "";
     });
