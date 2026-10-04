@@ -115,6 +115,23 @@ describe("useClipboard の実DOMフォールバック", () => {
     expect(selection.rangeCount).toBe(0);
   });
 
+  it("copyイベント中に選択テキストが変化しても範囲を安全に復元する", async () => {
+    const paragraph = document.createElement("p");
+    paragraph.textContent = "0123456789";
+    container.appendChild(paragraph);
+    const text = paragraph.firstChild as Text;
+    const selection = document.getSelection()!;
+    selection.setBaseAndExtent(text, 8, text, 2);
+    execCommand.mockImplementation(() => {
+      text.deleteData(0, 5);
+      return true;
+    });
+    expect(await copy("コピー値")).toBe(true);
+    expect([selection.anchorOffset, selection.focusOffset]).toEqual([3, 0]);
+    expect(selection.toString()).toBe("567");
+    expect(document.querySelectorAll("textarea")).toHaveLength(0);
+  });
+
   it("copyイベントで別の操作へフォーカスを移した場合は奪い返さない", async () => {
     const next = document.createElement("button");
     container.appendChild(next);
@@ -136,6 +153,29 @@ describe("useClipboard の実DOMフォールバック", () => {
       return true;
     });
     expect(await copy("コピー値")).toBe(true);
+    expect(document.querySelectorAll("textarea")).toHaveLength(0);
+  });
+
+  it("フォーカス復元のイベントが別の入力欄を選んだ場合は新しい選択を保持する", async () => {
+    const input = document.createElement("input");
+    input.value = "元の入力値";
+    const next = document.createElement("input");
+    next.value = "次の入力値";
+    container.appendChild(input);
+    container.appendChild(next);
+    input.focus();
+    input.setSelectionRange(0, 2);
+    input.addEventListener("focus", () => {
+      next.focus();
+      next.setSelectionRange(1, 4, "backward");
+    });
+    expect(await copy("コピー値")).toBe(true);
+    expect(document.activeElement).toBe(next);
+    expect([next.selectionStart, next.selectionEnd, next.selectionDirection]).toEqual([
+      1,
+      4,
+      "backward",
+    ]);
     expect(document.querySelectorAll("textarea")).toHaveLength(0);
   });
 

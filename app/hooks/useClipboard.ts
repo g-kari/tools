@@ -70,9 +70,11 @@ export function useClipboard(): UseClipboardReturn {
           )
         : [];
       const anchorNode = selection?.anchorNode;
-      const anchorOffset = selection?.anchorOffset ?? 0;
       const focusNode = selection?.focusNode;
-      const focusOffset = selection?.focusOffset ?? 0;
+      const isBackwardSelection =
+        ranges.length === 1 &&
+        anchorNode === ranges[0].endContainer &&
+        selection?.anchorOffset === ranges[0].endOffset;
       const textArea = document.createElement("textarea");
       textArea.value = text;
       textArea.style.position = "fixed";
@@ -91,10 +93,11 @@ export function useClipboard(): UseClipboardReturn {
         // copy イベント側で別要素へ移動したフォーカスを奪い返さない。
         const ownsFocus = document.activeElement === textArea;
         textArea.remove();
-        if (ownsFocus) {
-          if (previousFocus instanceof HTMLElement && previousFocus.isConnected) {
-            previousFocus.focus({ preventScroll: true });
-          }
+        if (ownsFocus && previousFocus instanceof HTMLElement && previousFocus.isConnected) {
+          previousFocus.focus({ preventScroll: true });
+        }
+        // 復元時の focus ハンドラーが移動した先の新しい選択も上書きしない。
+        if (ownsFocus && document.activeElement === previousFocus) {
           if (selection) {
             selection.removeAllRanges();
             if (
@@ -103,7 +106,14 @@ export function useClipboard(): UseClipboardReturn {
               focusNode?.isConnected &&
               typeof selection.setBaseAndExtent === "function"
             ) {
-              selection.setBaseAndExtent(anchorNode, anchorOffset, focusNode, focusOffset);
+              // cloneRange の境界は copy イベント中の DOM 編集にも追従する。
+              const range = ranges[0];
+              selection.setBaseAndExtent(
+                isBackwardSelection ? range.endContainer : range.startContainer,
+                isBackwardSelection ? range.endOffset : range.startOffset,
+                isBackwardSelection ? range.startContainer : range.endContainer,
+                isBackwardSelection ? range.startOffset : range.endOffset,
+              );
             } else {
               for (const range of ranges) {
                 if (range.startContainer.isConnected && range.endContainer.isConnected) {
