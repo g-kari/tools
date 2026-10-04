@@ -186,8 +186,12 @@ test("search hint and filtered results stay readable at both viewport widths", a
   await page.screenshot({
     path: `test-results/catalog-search-${testInfo.project.name}.png`,
     fullPage: true,
+    animations: "disabled",
   });
   await page.getByRole("button", { name: "ツールを検索（Ctrl+K）" }).click();
   await page.getByRole("dialog").getByRole("textbox").fill("JSON 圧縮");
-  await page.screenshot({ path: `test-results/catalog-modal-${testInfo.project.name}.png` });
+  await page.screenshot({
+    path: `test-results/catalog-modal-${testInfo.project.name}.png`,
+    animations: "disabled",
+  });
 });
