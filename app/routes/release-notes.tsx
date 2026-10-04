@@ -43,6 +43,12 @@ export const releases: Release[] = [
     date: "2026-10-05",
     entries: [
       {
+        type: "feat",
+        title: "ツール検索を複数キーワード・全角入力に対応",
+        description:
+          "ツール一覧とCtrl+K検索で「JSON 圧縮」のように空白区切りで絞り込めます。カテゴリ名・パス、全角英数字・半角かなにも対応。検索クリア後のフォーカスと日本語入力の確定操作を保持します。",
+      },
+      {
         type: "security",
         title: "サーバー通信のデータ復元ライブラリを更新",
         description:

@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { toolCatalog } from "../routes/top";
 import type { ToolItem, ToolCategory } from "../routes/top";
+import { createToolSearchMatcher } from "../utils/tool-search";
 
 /**
  * カテゴリ情報を付加したツールアイテム
@@ -25,19 +26,12 @@ export function flattenCatalog(catalog: ToolCategory[]): FlatToolItem[] {
 }
 
 /**
- * クエリでツールを検索する（ラベル・説明文の全文検索）
+ * ラベル・説明・カテゴリ・パスを共通のローカルAND検索で絞り込む。
  */
 export function searchTools(tools: FlatToolItem[], query: string): FlatToolItem[] {
-  if (!query.trim()) return tools.slice(0, 8);
-  const q = query.toLowerCase();
-  return tools
-    .filter(
-      (tool) =>
-        tool.label.toLowerCase().includes(q) ||
-        tool.description.toLowerCase().includes(q) ||
-        tool.categoryName.toLowerCase().includes(q),
-    )
-    .slice(0, 12);
+  const matches = createToolSearchMatcher(query);
+  if (!matches) return tools.slice(0, 8);
+  return tools.filter((tool) => matches(tool, tool.categoryName)).slice(0, 12);
 }
 
 interface SearchModalProps {
@@ -84,6 +78,8 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
+      // Japanese IME confirmation belongs to the input, not result navigation.
+      if (e.nativeEvent.isComposing || e.nativeEvent.keyCode === 229) return;
       switch (e.key) {
         case "ArrowDown":
           e.preventDefault();
@@ -133,7 +129,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
             type="text"
             value={query}
             onChange={handleQueryChange}
-            placeholder="ツールを検索..."
+            placeholder="ツールを検索（例: JSON 圧縮）"
             className="search-modal-input"
             aria-label="ツールを検索"
             aria-autocomplete="list"
