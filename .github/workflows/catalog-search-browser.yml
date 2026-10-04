@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - "app/routes/top.tsx"
+      - "app/routes/__root.tsx"
       - "app/components/SearchModal.tsx"
       - "app/utils/tool-search.ts"
       - "app/styles/search.css"
@@ -17,6 +18,7 @@ on:
     branches: [main]
     paths:
       - "app/routes/top.tsx"
+      - "app/routes/__root.tsx"
       - "app/components/SearchModal.tsx"
       - "app/utils/tool-search.ts"
       - "app/styles/search.css"
