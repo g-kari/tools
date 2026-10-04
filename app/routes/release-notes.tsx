@@ -39,8 +39,8 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
-    version: "2026.10.3",
-    date: "2026-10-04",
+    version: "2026.10.4",
+    date: "2026-10-05",
     entries: [
       {
         type: "feat",
@@ -48,6 +48,18 @@ export const releases: Release[] = [
         description:
           "ツール一覧とCtrl+K検索で「JSON 圧縮」のように空白区切りで絞り込めます。カテゴリ名・パス、全角英数字・半角かなにも対応。検索クリア後のフォーカスと日本語入力の確定操作を保持します。",
       },
+      {
+        type: "security",
+        title: "サーバー通信のデータ復元ライブラリを更新",
+        description:
+          "サーバー関数の通信に使うライブラリを更新し、不正なPromise参照を拒否する対策を適用しました。通常のデータ変換とストリーミング通信は維持します。",
+      },
+    ],
+  },
+  {
+    version: "2026.10.3",
+    date: "2026-10-04",
+    entries: [
       {
         type: "fix",
         title: "コピー後のキーボード操作とテキスト選択を保持",
