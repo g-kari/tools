@@ -99,7 +99,8 @@ test("ordinary arrow selection and Enter still navigate to the chosen result", a
   await page.getByRole("button", { name: "ツールを検索（Ctrl+K）" }).click();
   const dialog = page.getByRole("dialog", { name: "ツール検索", exact: true });
   const input = dialog.getByRole("textbox");
-  await input.fill("JSON 圧縮");
+  await input.fill("JSON");
+  await expect(dialog.getByRole("option").nth(1)).toBeVisible();
   const paths = await dialog
     .locator(".search-result-item")
     .evaluateAll((elements) => elements.map((element) => element.getAttribute("href")));
