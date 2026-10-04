@@ -98,6 +98,34 @@ directives are removed in memory to prevent browser-managed telemetry outside
 request interception. CSP enforcement directives and COOP/COEP are retained.
 Ambiguous policies fail closed; only removal names/counts are reported.
 
+The native live replay after the approved tools-host Zaraz exclusion reached
+completed hydration, bootstrap cleanup and encode/decode with no React errors,
+but failed because an unknown `GET` of resource type `other` was blocked before
+owned JavaScript. Its URL was not exported. Cloudflare Speed Brain is enabled;
+its documented `Speculation-Rules` response header causes an independent
+browser-managed ruleset fetch. This is a supported candidate mechanism, not
+attribution of the earlier redacted request.
+
+The fixture now reports only the count and finite classifications of that header.
+Only the exact singleton relative value `"/cdn-cgi/speculation"` (with optional
+ASCII spaces) is omitted from the in-memory replay response to prevent speculative
+network activity outside the hydration question. Other values, destinations,
+URL lists, query strings, fragments and parameters stay unchanged; the original
+unknown-request rejection and assertion remain in place. No remote speculation
+rules are fetched or allowed, and no production Speed Brain setting is changed.
+A synthetic Chromium control checks that the header triggers a ruleset fetch
+without any document script and that omission produces no fetch during a
+250-millisecond post-load observation in a fresh context. The synthetic ruleset
+is empty inert JSON fulfilled entirely by interception. This native control
+requires an exact-head hosted pass; the Node contracts separately verify the
+exact removal and preservation rules.
+Speculative loading is therefore an additional excluded behavior, and a resulting
+pass still establishes contained-response hydration rather than the full live
+production runtime. CSP enforcement, COOP/COEP and all script/source trust checks
+remain unchanged. Header values and request URLs never enter the report.
+See [Cloudflare Speed Brain](https://developers.cloudflare.com/speed/optimization/content/speed-brain/)
+and the [Speculation-Rules header](https://html.spec.whatwg.org/multipage/speculative-loading.html#the-speculation-rules-header).
+
 Executable inline framework scripts must match generated-reference AST
 fingerprints. All strings, identifiers, operators, and properties are retained;
 only serializer match-update epoch literals vary. Unknown executable markup,

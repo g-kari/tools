@@ -719,6 +719,54 @@ test("deliberate synthetic host mismatch proves the detector is active", async (
   expect(result.pageErrors).toEqual([]);
 });
 
+test("a fixed speculation header triggers a contained browser fetch, and fixture omission prevents it", async ({
+  browser,
+}) => {
+  const documentUrl = `${FIXTURE_ORIGIN}/speculation-control`;
+  const rulesetUrl = `${FIXTURE_ORIGIN}/cdn-cgi/speculation`;
+  const rawHeaders = {
+    "content-type": "text/html",
+    "speculation-rules": '"/cdn-cgi/speculation"',
+  };
+  for (const omit of [false, true]) {
+    const context = await browser.newContext();
+    try {
+      const page = await context.newPage();
+      const requests: string[] = [];
+      const unexpected: string[] = [];
+      await page.route("**/*", async (route) => {
+        const request = route.request();
+        if (request.url() === documentUrl && request.isNavigationRequest()) {
+          await route.fulfill({
+            status: 200,
+            headers: omit ? containLiveResponseHeaders(rawHeaders).headers : rawHeaders,
+            body: '<!doctype html><html><head><link rel="icon" href="data:,"><title>Speculation control</title></head><body>Controlled document without scripts</body></html>',
+          });
+        } else if (request.url() === rulesetUrl && request.method() === "GET") {
+          requests.push(request.resourceType());
+          await route.fulfill({
+            status: 200,
+            contentType: "application/speculationrules+json",
+            body: '{"prefetch":[]}',
+          });
+        } else {
+          unexpected.push(request.resourceType());
+          await route.abort("blockedbyclient");
+        }
+      });
+      await page.goto(documentUrl, { waitUntil: "load" });
+      if (!omit) await expect.poll(() => requests.length).toBe(1);
+      else {
+        await page.waitForTimeout(250);
+        expect(requests).toEqual([]);
+      }
+      expect(unexpected).toEqual([]);
+    } finally {
+      await context.close();
+    }
+  }
+});
+
 test("runtime-only live owned response is compared with the generated baseline", async ({
   page,
 }, testInfo) => {

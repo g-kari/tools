@@ -876,10 +876,11 @@ export async function prepareLiveResponse({
   };
 }
 
-/** Suppress response-triggered telemetry without altering CSP enforcement. */
+/** Suppress response-triggered telemetry and known speculative fetches in the fixture only. */
 export function containLiveResponseHeaders(originalHeaders) {
   const headers = { ...originalHeaders };
   const removedHeaderNames = [];
+  const speculationHeaders = [];
   const removedDirectives = [];
   const seenPolicies = new Set();
   const knownDirectives = new Set(
@@ -889,6 +890,17 @@ export function containLiveResponseHeaders(originalHeaders) {
   );
   for (const [name, value] of Object.entries(headers)) {
     const lowerName = name.toLowerCase();
+    if (lowerName === "speculation-rules") {
+      // This single fixed same-origin endpoint is the only speculative header
+      // the isolated fixture suppresses. Never parse, fetch, or grant trust to
+      // an arbitrary header URL/list; unsupported values remain untouched and
+      // the existing unknown-resource guard still blocks any resulting fetch.
+      const knownDefault =
+        typeof value === "string" && /^ *"\/cdn-cgi\/speculation" *$/.test(value);
+      speculationHeaders.push(knownDefault ? "known-default-omitted" : "unrecognized-preserved");
+      if (knownDefault) delete headers[name];
+      continue;
+    }
     if (["nel", "report-to", "reporting-endpoints"].includes(lowerName)) {
       delete headers[name];
       removedHeaderNames.push(lowerName);
@@ -925,10 +937,15 @@ export function containLiveResponseHeaders(originalHeaders) {
     diagnostics: {
       removedReportingHeaderNames: [...new Set(removedHeaderNames)],
       removedReportingHeaderCount: removedHeaderNames.length,
+      speculationRulesHeaderCount: speculationHeaders.length,
+      speculationRulesHeaderClassifications: speculationHeaders,
+      removedSpeculationRulesHeaderCount: speculationHeaders.filter(
+        (item) => item === "known-default-omitted",
+      ).length,
       removedCspDirectiveNames: removedDirectives,
       removedCspDirectiveCount: removedDirectives.length,
       limitation:
-        "Fixture-only response reporting registrations and CSP report directives omitted; CSP enforcement directives, COOP, and COEP retained in memory; no production/header setting or request-identity change",
+        "Fixture-only response reporting registrations, CSP report directives, and the single known default same-origin speculation header omitted; CSP enforcement directives, COOP, COEP and unsupported speculation values retained in memory; no production/header setting or request-identity change. Browser-managed speculative loading is outside this replay",
     },
   };
 }

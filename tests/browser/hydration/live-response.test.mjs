@@ -842,6 +842,67 @@ void test("CSP multi-policy reporting directives are removed surgically, includi
   assert.equal(result.diagnostics.removedCspDirectiveCount, 4);
   assert.doesNotMatch(JSON.stringify(result.diagnostics), /synthetic|relative|https:\/\//);
 });
+void test("only the fixed same-origin default speculation header is omitted without exporting values", () => {
+  const source = {
+    "Speculation-Rules": ' "/cdn-cgi/speculation" ',
+    "speculation-rules": '"/cdn-cgi/speculation"',
+    "Content-Security-Policy": "default-src 'self'; script-src 'nonce-synthetic' 'strict-dynamic'",
+    "Cross-Origin-Opener-Policy": "same-origin",
+    "Cross-Origin-Embedder-Policy": "require-corp",
+    "Content-Type": "text/html",
+    Link: '</synthetic.css>; rel="preload"; as="style"',
+  };
+  const before = JSON.stringify(source);
+  const result = containLiveResponseHeaders(source);
+  assert.equal(JSON.stringify(source), before, "Original response headers remain untouched");
+  assert.equal(result.headers["Speculation-Rules"], undefined);
+  assert.equal(result.headers["speculation-rules"], undefined);
+  for (const name of [
+    "Content-Security-Policy",
+    "Cross-Origin-Opener-Policy",
+    "Cross-Origin-Embedder-Policy",
+    "Content-Type",
+    "Link",
+  ]) {
+    assert.equal(result.headers[name], source[name]);
+  }
+  assert.equal(result.diagnostics.speculationRulesHeaderCount, 2);
+  assert.equal(result.diagnostics.removedSpeculationRulesHeaderCount, 2);
+  assert.deepEqual(result.diagnostics.speculationRulesHeaderClassifications, [
+    "known-default-omitted",
+    "known-default-omitted",
+  ]);
+  assert.equal(result.diagnostics.removedReportingHeaderCount, 0);
+  assert.doesNotMatch(JSON.stringify(result.diagnostics), /cdn-cgi|synthetic|https:\/\//);
+});
+void test("unknown speculation header destinations and syntax remain guarded, with finite labels only", () => {
+  for (const value of [
+    '"https://synthetic.example/private?synthetic-id"',
+    '"https://tools.0g0.xyz/cdn-cgi/speculation"',
+    '"/cdn-cgi/speculation?synthetic-id"',
+    '"/cdn-cgi/speculation#synthetic-id"',
+    '"/cdn-cgi/speculation", "/synthetic-second"',
+    '"/cdn-cgi/speculation";synthetic=true',
+    "/cdn-cgi/speculation",
+    '"/CDN-CGI/speculation"',
+    '"/cdn-cgi/speculation/"',
+    '"/cdn-cgi/speculation"\n',
+    "",
+  ]) {
+    const result = containLiveResponseHeaders({ "sPeCuLaTiOn-RuLeS": value });
+    assert.equal(result.headers["sPeCuLaTiOn-RuLeS"], value);
+    assert.equal(result.diagnostics.speculationRulesHeaderCount, 1);
+    assert.equal(result.diagnostics.removedSpeculationRulesHeaderCount, 0);
+    assert.deepEqual(result.diagnostics.speculationRulesHeaderClassifications, [
+      "unrecognized-preserved",
+    ]);
+    assert.doesNotMatch(JSON.stringify(result.diagnostics), /cdn-cgi|synthetic|https:\/\//);
+  }
+  const absent = containLiveResponseHeaders({ "Content-Type": "text/html" });
+  assert.equal(absent.diagnostics.speculationRulesHeaderCount, 0);
+  assert.equal(absent.diagnostics.removedSpeculationRulesHeaderCount, 0);
+  assert.deepEqual(absent.diagnostics.speculationRulesHeaderClassifications, []);
+});
 void test("ambiguous or control-character CSP policies are rejected without leaking values", () => {
   for (const policy of [
     "default-src 'self'\nreport-uri /synthetic-secret",
