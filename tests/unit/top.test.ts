@@ -48,6 +48,42 @@ const mockCatalog = [
 ];
 
 describe("filterCatalog", () => {
+  it.each(["JSON 圧縮", "圧縮 json", " ＪＳＯＮ　圧縮 ", "json\t圧縮", "json\n圧縮"])(
+    "複数語を表記や順序によらずAND検索する: %s",
+    (query) => {
+      expect(filterCatalog(mockCatalog, query)[0]?.items.map((item) => item.path)).toEqual([
+        "/json",
+      ]);
+    },
+  );
+
+  it("カテゴリとパスを組み合わせて検索する", () => {
+    expect(filterCatalog(mockCatalog, "変換 /url-encode")[0]?.items[0].path).toBe("/url-encode");
+  });
+
+  it("一語でも一致しない場合は返さない", () => {
+    expect(filterCatalog(mockCatalog, "JSON UUID")).toEqual([]);
+  });
+
+  it("カテゴリを検索して元のツール順を保持する", () => {
+    expect(filterCatalog(mockCatalog, "生成")[0].items.map((item) => item.path)).toEqual([
+      "/uuid",
+      "/password-generator",
+    ]);
+  });
+
+  it("全角・半角かなと結合文字を同じ表記として扱う", () => {
+    expect(filterCatalog(mockCatalog, "ﾊﾟｽﾜｰﾄﾞ")[0]?.items[0].path).toBe("/password-generator");
+  });
+
+  it("単語を別ツールや別フィールドの境界でつなげない", () => {
+    expect(filterCatalog(mockCatalog, "変換URL")).toEqual([]);
+  });
+
+  it("正規表現の記号はリテラルとして扱う", () => {
+    expect(filterCatalog(mockCatalog, ".*")).toEqual([]);
+  });
+
   it("空文字列の場合は全カタログを返す", () => {
     const result = filterCatalog(mockCatalog, "");
     expect(result).toEqual(mockCatalog);
