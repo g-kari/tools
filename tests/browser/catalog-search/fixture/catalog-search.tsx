@@ -68,13 +68,17 @@ const topRoute = createRoute({
 const destinationRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/$tool",
-  component: () => (
-    <>
+  component: DestinationFixture,
+});
+function DestinationFixture() {
+  const path = useRouterState({ select: (state) => state.location.pathname });
+  return (
+    <div key={path}>
       <p>Selected tool destination (fixture only)</p>
       <input aria-label="移動先の入力" autoFocus />
-    </>
-  ),
-});
+    </div>
+  );
+}
 const gameRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/minesweeper",

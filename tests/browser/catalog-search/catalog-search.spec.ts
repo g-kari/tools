@@ -337,6 +337,28 @@ test("visible close and backdrop cancellation survive repeated reopening", async
   }
 });
 
+test("history change during search preserves the new route's commit-time autofocus", async ({
+  page,
+}) => {
+  const open = page.getByRole("button", { name: "ツールを検索（Ctrl+K）" });
+  for (const query of ["変換 /url-encode", "JSON整形 /json"]) {
+    await open.click();
+    const dialog = page.getByRole("dialog", { name: "ツール検索", exact: true });
+    await dialog.getByRole("textbox").fill(query);
+    await dialog.getByRole("textbox").press("Enter");
+    await expect(dialog).toHaveCount(0);
+    await expect(page.getByRole("textbox", { name: "移動先の入力" })).toBeFocused();
+  }
+  await expect(page.getByTestId("navigation")).toHaveText("/json");
+  await page.getByRole("textbox", { name: "移動先の入力" }).press("Control+k");
+  const dialog = page.getByRole("dialog", { name: "ツール検索", exact: true });
+  await expect(dialog).toBeVisible();
+  await page.getByTestId("history-back").evaluate((element: HTMLButtonElement) => element.click());
+  await expect(page.getByTestId("navigation")).toHaveText("/url-encode");
+  await expect(dialog).toHaveCount(0);
+  await expect(page.getByRole("textbox", { name: "移動先の入力" })).toBeFocused();
+});
+
 test("search keyboard input leaves the actual background game unchanged", async ({ page }) => {
   await page.locator('.top-tool-card[href="/minesweeper"]').click();
   await page.getByRole("button", { name: "ゲームスタート", exact: true }).click();
