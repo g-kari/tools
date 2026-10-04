@@ -48,22 +48,93 @@ export function useClipboard(): UseClipboardReturn {
         return true;
       }
 
-      // フォールバック: execCommand を使用
+      // フォールバック中だけ一時的に選択を借り、キーボード操作と編集位置を戻す。
+      const previousFocus = document.activeElement;
+      const input =
+        previousFocus instanceof HTMLInputElement || previousFocus instanceof HTMLTextAreaElement
+          ? previousFocus
+          : null;
+      const inputSelection = input
+        ? {
+            start: input.selectionStart,
+            end: input.selectionEnd,
+            direction: input.selectionDirection,
+            scrollTop: input.scrollTop,
+            scrollLeft: input.scrollLeft,
+          }
+        : null;
+      const selection = document.getSelection();
+      const ranges = selection
+        ? Array.from({ length: selection.rangeCount }, (_, i) =>
+            selection.getRangeAt(i).cloneRange(),
+          )
+        : [];
+      const anchorNode = selection?.anchorNode;
+      const focusNode = selection?.focusNode;
+      const isBackwardSelection =
+        ranges.length === 1 &&
+        anchorNode === ranges[0].endContainer &&
+        selection?.anchorOffset === ranges[0].endOffset;
       const textArea = document.createElement("textarea");
       textArea.value = text;
       textArea.style.position = "fixed";
       textArea.style.left = "-9999px";
       textArea.style.top = "0";
       textArea.setAttribute("readonly", "");
+      textArea.tabIndex = -1;
       document.body.appendChild(textArea);
 
-      textArea.select();
-      textArea.setSelectionRange(0, text.length);
-
-      const success = document.execCommand("copy");
-      document.body.removeChild(textArea);
-
-      return success;
+      try {
+        textArea.focus({ preventScroll: true });
+        textArea.select();
+        textArea.setSelectionRange(0, text.length);
+        return document.execCommand("copy");
+      } finally {
+        // copy イベント側で別要素へ移動したフォーカスを奪い返さない。
+        const ownsFocus = document.activeElement === textArea;
+        textArea.remove();
+        if (ownsFocus && previousFocus instanceof HTMLElement && previousFocus.isConnected) {
+          previousFocus.focus({ preventScroll: true });
+        }
+        // 復元時の focus ハンドラーが移動した先の新しい選択も上書きしない。
+        if (ownsFocus && document.activeElement === previousFocus) {
+          if (selection) {
+            selection.removeAllRanges();
+            if (
+              ranges.length === 1 &&
+              anchorNode?.isConnected &&
+              focusNode?.isConnected &&
+              typeof selection.setBaseAndExtent === "function"
+            ) {
+              // cloneRange の境界は copy イベント中の DOM 編集にも追従する。
+              const range = ranges[0];
+              selection.setBaseAndExtent(
+                isBackwardSelection ? range.endContainer : range.startContainer,
+                isBackwardSelection ? range.endOffset : range.startOffset,
+                isBackwardSelection ? range.startContainer : range.endContainer,
+                isBackwardSelection ? range.startOffset : range.endOffset,
+              );
+            } else {
+              for (const range of ranges) {
+                if (range.startContainer.isConnected && range.endContainer.isConnected) {
+                  selection.addRange(range);
+                }
+              }
+            }
+          }
+          if (input?.isConnected && inputSelection) {
+            if (inputSelection.start !== null && inputSelection.end !== null) {
+              input.setSelectionRange(
+                inputSelection.start,
+                inputSelection.end,
+                inputSelection.direction ?? "none",
+              );
+            }
+            input.scrollTop = inputSelection.scrollTop;
+            input.scrollLeft = inputSelection.scrollLeft;
+          }
+        }
+      }
     } catch {
       return false;
     }

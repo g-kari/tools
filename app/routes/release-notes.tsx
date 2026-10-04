@@ -39,6 +39,18 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
+    version: "2026.10.3",
+    date: "2026-10-04",
+    entries: [
+      {
+        type: "fix",
+        title: "コピー後のキーボード操作とテキスト選択を保持",
+        description:
+          "Clipboard API非対応時のコピーで、元のボタンや入力欄へフォーカスを戻し、選択範囲と入力欄のスクロール位置を保持します。コピー失敗時も一時入力欄を残さず、再試行できます。",
+      },
+    ],
+  },
+  {
     version: "2026.10.2",
     date: "2026-10-03",
     entries: [
