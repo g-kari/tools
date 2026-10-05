@@ -44,6 +44,12 @@ export const releases: Release[] = [
     entries: [
       {
         type: "fix",
+        title: "Base64の変換モードを矢印キーで選択可能に",
+        description:
+          "Tabでは選択中のモードへ入り、左右矢印・Home・Endで入力を消さずにフォーカスを移動できます。Enter・Spaceでモードを確定し、従来どおり変換内容を切り替えます。",
+      },
+      {
+        type: "fix",
         title: "検索ダイアログのキーボード操作とフォーカスを保持",
         description:
           "Tabで背景へ抜ける問題を修正し、Esc・閉じるボタンで取り消した後は元の操作へ戻ります。クリアボタンや結果リンクのEnterが別の結果を開かないようにし、日本語入力と検索条件は維持します。",

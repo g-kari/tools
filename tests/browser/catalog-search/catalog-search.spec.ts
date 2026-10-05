@@ -23,6 +23,89 @@ test.afterEach(async ({ page }) => {
   expect(runtimeErrors.get(page)).toEqual([]);
 });
 
+for (const viewport of [
+  { width: 1280, height: 800 },
+  { width: 390, height: 844 },
+]) {
+  test(`Base64 manual tabs retain input until keyboard activation at ${viewport.width}px`, async ({
+    page,
+  }, testInfo) => {
+    await page.setViewportSize(viewport);
+    await page.goto("/#fixture=base64");
+    await page.reload();
+    const encode = page.getByRole("tab", { name: "Base64 エンコード", exact: true });
+    const decode = page.getByRole("tab", { name: "Base64 デコード", exact: true });
+    const input = page.getByRole("textbox", { name: "入力テキスト", exact: true });
+    await input.fill("hello");
+    await expect(page.getByRole("textbox", { name: "Base64 出力", exact: true })).toHaveValue(
+      "aGVsbG8=",
+    );
+    await page.getByTestId("history-back").focus();
+    await page.keyboard.press("Tab");
+    await expect(encode).toBeFocused();
+    await page.keyboard.press("ArrowLeft");
+    await expect(decode).toBeFocused();
+    await expect(encode).toHaveAttribute("aria-selected", "true");
+    await expect(input).toHaveValue("hello");
+    await page.keyboard.press("Home");
+    await expect(encode).toBeFocused();
+    await page.keyboard.press("End");
+    await expect(decode).toBeFocused();
+    await page.keyboard.press("Tab");
+    await expect(input).toBeFocused();
+    await page.keyboard.press("Shift+Tab");
+    await expect(encode).toBeFocused();
+    await page.keyboard.press("ArrowRight");
+    await page.keyboard.press("Enter");
+    await expect(decode).toHaveAttribute("aria-selected", "true");
+    const decodeInput = page.getByRole("textbox", { name: "Base64 文字列", exact: true });
+    await expect(decodeInput).toHaveValue("");
+    await decodeInput.fill("aGVsbG8=");
+    await expect(page.getByRole("textbox", { name: "デコード結果", exact: true })).toHaveValue(
+      "hello",
+    );
+    await decode.focus();
+    await page.keyboard.press("Enter");
+    await expect(decodeInput).toHaveValue("aGVsbG8=");
+    await page.keyboard.press("ArrowRight");
+    await expect(encode).toBeFocused();
+    await expect(decodeInput).toHaveValue("aGVsbG8=");
+    await page.keyboard.press("Space");
+    await expect(encode).toHaveAttribute("aria-selected", "true");
+    await expect(input).toHaveValue("");
+    await expect(
+      page.getByRole("tabpanel", { name: "Base64 エンコード", exact: true }),
+    ).toBeVisible();
+    await testInfo.attach(`conversion-tabs-${viewport.width}px`, {
+      body: await page.screenshot(),
+      contentType: "image/png",
+    });
+  });
+}
+
+test("Base64 swap updates tab semantics without moving action or editing focus", async ({
+  page,
+}) => {
+  await page.goto("/#fixture=base64");
+  await page.reload();
+  const input = page.getByRole("textbox", { name: "入力テキスト", exact: true });
+  await input.fill("hello");
+  const swap = page.getByRole("button", { name: "入出力を入れ替える", exact: true });
+  await swap.click();
+  await expect(swap).toBeFocused();
+  const decode = page.getByRole("tab", { name: "Base64 デコード", exact: true });
+  await expect(decode).toHaveAttribute("aria-selected", "true");
+  await expect(decode).toHaveAttribute("tabindex", "0");
+  const decodeInput = page.getByRole("textbox", { name: "Base64 文字列", exact: true });
+  await expect(decodeInput).toHaveValue("aGVsbG8=");
+  await decodeInput.focus();
+  await page.keyboard.press("ArrowLeft");
+  await expect(decodeInput).toBeFocused();
+  await expect(decode).toHaveAttribute("aria-selected", "true");
+  await page.getByRole("button", { name: "入力をクリア", exact: true }).click();
+  await expect(decodeInput).toHaveValue("");
+});
+
 for (const query of ["JSON 圧縮", "圧縮 json", " ＪＳＯＮ　圧縮 "]) {
   test(`catalog matches multiple words: ${query}`, async ({ page }) => {
     await page.locator("#tool-search").fill(query);
