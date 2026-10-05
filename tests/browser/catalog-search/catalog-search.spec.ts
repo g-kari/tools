@@ -23,6 +23,78 @@ test.afterEach(async ({ page }) => {
   expect(runtimeErrors.get(page)).toEqual([]);
 });
 
+test("Unicode empty regex matches complete and repeated Test/Clear stay usable", async ({
+  page,
+}, testInfo) => {
+  await page.goto("/#fixture=regex-checker");
+  await page.reload();
+  const pattern = page.getByRole("textbox", { name: "正規表現パターン入力欄", exact: true });
+  const flags = page.getByRole("textbox", { name: "正規表現フラグ入力欄", exact: true });
+  const text = page.getByRole("textbox", { name: "テスト文字列入力欄", exact: true });
+  const run = page.getByRole("button", { name: "正規表現をテスト", exact: true });
+  const clear = page.getByRole("button", { name: "すべての入力をクリア", exact: true });
+  await pattern.fill("(?:)");
+  await text.fill("😀");
+  for (const mode of ["gu", "gv", "gu"]) {
+    await flags.fill(mode);
+    await run.click();
+    await expect(page.locator(".match-item")).toHaveCount(2);
+    await expect(page.locator(".match-item").nth(0)).toContainText("位置0");
+    await expect(page.locator(".match-item").nth(1)).toContainText("位置2");
+    await expect(pattern).toHaveValue("(?:)");
+    await expect(text).toHaveValue("😀");
+  }
+  await testInfo.attach("regex-empty-unicode", {
+    body: await page.screenshot(),
+    contentType: "image/png",
+  });
+  await flags.fill("g");
+  await text.focus();
+  await page.keyboard.press("Control+Enter");
+  await expect(page.locator(".match-item")).toHaveCount(3);
+  await expect(page.locator(".match-item").nth(1)).toContainText("位置1");
+  await clear.click();
+  await expect(pattern).toBeFocused();
+  await expect(pattern).toHaveValue("");
+  await expect(flags).toHaveValue("");
+  await expect(text).toHaveValue("");
+  await expect(page.locator(".match-item")).toHaveCount(0);
+  await pattern.fill("(?=.)");
+  await flags.fill("gu");
+  await text.fill("A😀B");
+  await run.click();
+  await expect(page.locator(".match-item")).toHaveCount(3);
+  await expect(page.locator(".match-item").nth(2)).toContainText("位置3");
+});
+
+test("Unicode regex captures and invalid-input recovery retain offsets", async ({ page }) => {
+  await page.goto("/#fixture=regex-checker");
+  await page.reload();
+  const pattern = page.getByRole("textbox", { name: "正規表現パターン入力欄", exact: true });
+  const flags = page.getByRole("textbox", { name: "正規表現フラグ入力欄", exact: true });
+  const text = page.getByRole("textbox", { name: "テスト文字列入力欄", exact: true });
+  const run = page.getByRole("button", { name: "正規表現をテスト", exact: true });
+  await pattern.fill("(😀)?()");
+  await flags.fill("gv");
+  await text.fill("😀");
+  await run.click();
+  await expect(page.locator(".match-item")).toHaveCount(2);
+  await expect(page.locator(".match-item").nth(0)).toContainText("グループ 1: 😀");
+  await expect(page.locator(".match-item").nth(1)).toContainText("グループ 1: (空)");
+  await flags.fill("guv");
+  await run.click();
+  await expect(page.locator(".error-message")).toBeVisible();
+  await expect(page.locator(".match-item")).toHaveCount(0);
+  await expect(text).toHaveValue("😀");
+  await pattern.fill("a");
+  await flags.fill("gu");
+  await text.fill("😀a");
+  await run.click();
+  await expect(page.locator(".error-message")).toHaveCount(0);
+  await expect(page.locator(".match-item")).toHaveCount(1);
+  await expect(page.locator(".match-item")).toContainText("位置2");
+});
+
 for (const viewport of [
   { width: 1280, height: 800 },
   { width: 390, height: 844 },

@@ -44,6 +44,12 @@ export const releases: Release[] = [
     entries: [
       {
         type: "fix",
+        title: "正規表現のUnicode空一致で画面が停止する問題を修正",
+        description:
+          "絵文字を含む文字列でu/vフラグの空一致を繰り返しても、文字の途中に戻らず結果を表示します。通常の一致、キャプチャ、UTF-16の位置表示は維持します。",
+      },
+      {
+        type: "fix",
         title: "Base64の変換モードを矢印キーで選択可能に",
         description:
           "Tabでは選択中のモードへ入り、左右矢印・Home・Endで入力を消さずにフォーカスを移動できます。Enter・Spaceでモードを確定し、従来どおり変換内容を切り替えます。",

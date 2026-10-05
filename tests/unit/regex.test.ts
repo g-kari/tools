@@ -1,4 +1,5 @@
 import { describe, it, expect } from "vite-plus/test";
+import { executeRegex } from "../../app/routes/regex-checker";
 
 describe("Regex pattern testing", () => {
   function testRegexPattern(
@@ -7,23 +8,7 @@ describe("Regex pattern testing", () => {
     testString: string,
   ): { matches: number; error: string | null } {
     try {
-      const regex = new RegExp(pattern, flags);
-      let matchCount = 0;
-
-      if (flags.includes("g")) {
-        let match;
-        while ((match = regex.exec(testString)) !== null) {
-          matchCount++;
-          if (match.index === regex.lastIndex) {
-            regex.lastIndex++;
-          }
-        }
-      } else {
-        const match = regex.exec(testString);
-        if (match) matchCount = 1;
-      }
-
-      return { matches: matchCount, error: null };
+      return { matches: executeRegex(pattern, flags, testString).length, error: null };
     } catch (err) {
       return { matches: 0, error: err instanceof Error ? err.message : "Invalid regex" };
     }

@@ -14,6 +14,7 @@ import { Route } from "../../../../app/routes/top";
 import { SearchModal } from "../../../../app/components/SearchModal";
 import { Route as MinesweeperRoute } from "../../../../app/routes/minesweeper";
 import { Route as Base64Route } from "../../../../app/routes/base64";
+import { Route as RegexRoute } from "../../../../app/routes/regex-checker";
 import { ToastProvider } from "../../../../app/components/Toast";
 import "./styles.css";
 
@@ -91,13 +92,27 @@ const base64Route = createRoute({
   path: "/base64",
   component: Base64Route.options.component!,
 });
+const regexRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/regex-checker",
+  component: RegexRoute.options.component!,
+});
+const initialFixture = new URLSearchParams(window.location.hash.slice(1)).get("fixture");
 const router = createRouter({
-  routeTree: rootRoute.addChildren([topRoute, gameRoute, base64Route, destinationRoute]),
+  routeTree: rootRoute.addChildren([
+    topRoute,
+    gameRoute,
+    base64Route,
+    regexRoute,
+    destinationRoute,
+  ]),
   history: createMemoryHistory({
     initialEntries: [
-      new URLSearchParams(window.location.hash.slice(1)).get("fixture") === "base64"
+      initialFixture === "base64"
         ? "/base64"
-        : "/top",
+        : initialFixture === "regex-checker"
+          ? "/regex-checker"
+          : "/top",
     ],
   }),
   defaultPreload: false,

@@ -1,7 +1,114 @@
-import { describe, it, expect } from "vite-plus/test";
+import { describe, it, expect, vi } from "vite-plus/test";
 import { executeRegex } from "../../app/routes/regex-checker";
 
+// A regression must fail instead of hanging the synchronous test worker.
+function executeRegexBounded(pattern: string, flags: string, text: string) {
+  const regex = new RegExp(pattern, flags);
+  const source = regex.source;
+  const canonicalFlags = regex.flags;
+  const descriptor = Object.getOwnPropertyDescriptor(RegExp.prototype, "exec");
+  if (!descriptor) throw new Error("Missing native RegExp exec");
+  const nativeExec = descriptor.value as RegExp["exec"];
+  let calls = 0;
+  const spy = vi.spyOn(RegExp.prototype, "exec").mockImplementation(function (
+    this: RegExp,
+    input: string,
+  ) {
+    if (this.source === source && this.flags === canonicalFlags && input === text) {
+      if (++calls > text.length + 4) throw new Error("Regex iteration did not make progress");
+    }
+    return nativeExec.call(this, input);
+  });
+  try {
+    return executeRegex(pattern, flags, text);
+  } finally {
+    spy.mockRestore();
+  }
+}
+
 describe("executeRegex", () => {
+  it.each(["gu", "gv"])("terminates empty %s matches across a surrogate pair", (flags) => {
+    expect(executeRegexBounded("(?:)", flags, "😀")).toEqual([
+      { fullMatch: "", index: 0, groups: [] },
+      { fullMatch: "", index: 2, groups: [] },
+    ]);
+  });
+
+  for (const flags of ["gu", "gv", "guy", "gvy", "gdu", "gdv"]) {
+    it.each([
+      ["A😀B", [0, 1, 3, 4]],
+      ["😀😀", [0, 2, 4]],
+      ["", [0]],
+      ["日本語", [0, 1, 2, 3]],
+      ["\uD83D", [0, 1]],
+      ["\uDE00", [0, 1]],
+      ["\uD83DA\uDE00", [0, 1, 2, 3]],
+      ["😀\uD83D😀\uDE00", [0, 2, 3, 5, 6]],
+    ])(`advances ${flags} empty matches through %j`, (text, expected) => {
+      const result = executeRegexBounded("(?:)", flags, text as string);
+      expect(result.map((match) => match.index)).toEqual(expected);
+      expect(result.every((match) => match.fullMatch === "" && match.groups.length === 0)).toBe(
+        true,
+      );
+    });
+  }
+
+  it("keeps non-Unicode empty-match UTF-16 positions", () => {
+    expect(executeRegexBounded("(?:)", "g", "😀").map((match) => match.index)).toEqual([0, 1, 2]);
+  });
+
+  it.each(["gu", "gv", "guy", "gvy"])("keeps %s lookahead and terminal matches", (flags) => {
+    expect(executeRegexBounded("(?=.)", flags, "A😀B").map((match) => match.index)).toEqual([
+      0, 1, 3,
+    ]);
+    // A sticky end anchor only matches when the starting position is the end.
+    if (!flags.includes("y")) {
+      expect(executeRegexBounded("$", flags, "😀")).toEqual([
+        { fullMatch: "", index: 2, groups: [] },
+      ]);
+    }
+    expect(executeRegexBounded("$", flags, "")).toEqual([{ fullMatch: "", index: 0, groups: [] }]);
+  });
+
+  it.each(["gu", "gv"])("preserves %s consuming/empty matches and optional captures", (flags) => {
+    expect(executeRegexBounded("(😀)?()", flags, "😀")).toEqual([
+      { fullMatch: "😀", index: 0, groups: ["😀", ""] },
+      { fullMatch: "", index: 2, groups: [undefined, ""] },
+    ]);
+    expect(executeRegexBounded("😀|(?=B)", flags, "😀B")).toEqual([
+      { fullMatch: "😀", index: 0, groups: [] },
+      { fullMatch: "", index: 2, groups: [] },
+    ]);
+  });
+
+  it("preserves sticky stop behavior and Unicode UTF-16 offsets", () => {
+    expect(executeRegexBounded("a", "gy", "a a")).toEqual([
+      { fullMatch: "a", index: 0, groups: [] },
+    ]);
+    expect(executeRegexBounded("a", "g", "a a").map((match) => match.index)).toEqual([0, 2]);
+    expect(executeRegexBounded("a", "gu", "😀a")).toEqual([
+      { fullMatch: "a", index: 2, groups: [] },
+    ]);
+    expect(executeRegex("a", "y", "ba")).toEqual([]);
+  });
+
+  it.each(["u", "v", "y", "uy", "vy"])("keeps non-global %s first-match behavior", (flags) => {
+    expect(executeRegex("(?:)", flags, "😀")).toEqual([{ fullMatch: "", index: 0, groups: [] }]);
+  });
+
+  it("retains unrestricted match count and independent repeated calls", () => {
+    const text = "😀".repeat(1200);
+    const result = executeRegexBounded("(?:)", "gu", text);
+    expect(result).toHaveLength(1201);
+    expect(result.at(-1)?.index).toBe(2400);
+    for (let repeat = 0; repeat < 3; repeat++) {
+      expect(executeRegexBounded("(?:)", "gu", "😀").map((match) => match.index)).toEqual([0, 2]);
+    }
+  });
+
+  it.each(["gg", "guv", "z"])("retains invalid %s flag errors", (flags) => {
+    expect(() => executeRegex("(?:)", flags, "😀")).toThrow(SyntaxError);
+  });
   describe("基本的なマッチング（フラグなし）", () => {
     it("シンプルな文字列にマッチする", () => {
       const result = executeRegex("hello", "", "hello world");
