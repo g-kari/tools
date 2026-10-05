@@ -7,7 +7,7 @@
  */
 
 import type { ReactNode } from "react";
-import { useCallback } from "react";
+import { useCallback, useEffect, useId, useState, type KeyboardEvent } from "react";
 import { TipsCard } from "~/components/TipsCard";
 import { StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useCopyWithFeedback } from "~/hooks/useCopyWithFeedback";
@@ -85,6 +85,38 @@ export function ConversionTool({
   tips,
 }: ConversionToolProps) {
   const { statusRef, copyWithFeedback, announceStatus } = useCopyWithFeedback();
+  const id = useId();
+  const panelId = `${id}-panel`;
+  const [tabStop, setTabStop] = useState(mode);
+
+  useEffect(() => setTabStop(mode), [mode]);
+
+  // Manual activation preserves input: the existing mode-change callback clears it.
+  // Arrow keys move focus only; native Enter/Space/click perform the chosen change.
+  const handleTabKeyDown = useCallback((event: KeyboardEvent<HTMLDivElement>) => {
+    if (
+      event.nativeEvent.isComposing ||
+      event.keyCode === 229 ||
+      event.altKey ||
+      event.ctrlKey ||
+      event.metaKey ||
+      event.shiftKey
+    )
+      return;
+    const tabs = Array.from(
+      event.currentTarget.querySelectorAll<HTMLButtonElement>('[role="tab"]'),
+    );
+    const index = tabs.indexOf(event.target as HTMLButtonElement);
+    if (index < 0) return;
+    let next = -1;
+    if (event.key === "ArrowRight") next = (index + 1) % tabs.length;
+    else if (event.key === "ArrowLeft") next = (index + tabs.length - 1) % tabs.length;
+    else if (event.key === "Home") next = 0;
+    else if (event.key === "End") next = tabs.length - 1;
+    if (next < 0) return;
+    event.preventDefault();
+    tabs[next].focus();
+  }, []);
 
   const handleCopy = useCallback(async () => {
     await copyWithFeedback(output, "出力をコピーしました");
@@ -119,11 +151,23 @@ export function ConversionTool({
   return (
     <>
       <div className="tool-container">
-        <div className="conv-tabs" role="tablist" aria-label="変換モード">
+        <div
+          className="conv-tabs"
+          role="tablist"
+          aria-label="変換モード"
+          onKeyDown={handleTabKeyDown}
+          onBlur={(event) => {
+            if (!event.currentTarget.contains(event.relatedTarget)) setTabStop(mode);
+          }}
+        >
           <button
             type="button"
             role="tab"
+            id={`${id}-encode`}
+            aria-controls={panelId}
             aria-selected={mode === "encode"}
+            tabIndex={tabStop === "encode" ? 0 : -1}
+            onFocus={() => setTabStop("encode")}
             className={`conv-tab-btn${mode === "encode" ? " active" : ""}`}
             onClick={() => handleModeChange("encode")}
           >
@@ -132,7 +176,11 @@ export function ConversionTool({
           <button
             type="button"
             role="tab"
+            id={`${id}-decode`}
+            aria-controls={panelId}
             aria-selected={mode === "decode"}
+            tabIndex={tabStop === "decode" ? 0 : -1}
+            onFocus={() => setTabStop("decode")}
             className={`conv-tab-btn${mode === "decode" ? " active" : ""}`}
             onClick={() => handleModeChange("decode")}
           >
@@ -140,81 +188,82 @@ export function ConversionTool({
           </button>
         </div>
 
-        {optionsSlot && <div className="conv-options-row">{optionsSlot}</div>}
+        <div role="tabpanel" id={panelId} aria-labelledby={`${id}-${mode}`}>
+          {optionsSlot && <div className="conv-options-row">{optionsSlot}</div>}
 
-        <div className="converter-section">
-          <label htmlFor="conv-input" className="section-title">
-            {inputLabel}
-          </label>
-          <textarea
-            id="conv-input"
-            className="conv-textarea"
-            value={input}
-            onChange={(e) => onInputChange(e.target.value)}
-            placeholder={placeholder}
-            aria-label={inputLabel}
-            spellCheck={false}
-          />
-        </div>
-
-        {belowInput}
-
-        {error && input.trim() && (
-          <div className="conv-error" role="alert">
-            <span className="conv-error-icon" aria-hidden="true">
-              ⚠
-            </span>
-            {error}
-          </div>
-        )}
-
-        <div className="conv-action-row">
-          <button
-            type="button"
-            className="btn-primary"
-            onClick={handleCopy}
-            disabled={!hasOutput}
-            aria-label="出力をコピー"
-          >
-            コピー
-          </button>
-          <button
-            type="button"
-            className="btn-secondary"
-            onClick={handleSwap}
-            disabled={!hasOutput}
-            aria-label="入出力を入れ替える"
-            title="出力を入力に入れ替え"
-          >
-            ⇄ 入れ替え
-          </button>
-          <button
-            type="button"
-            className="btn-clear"
-            onClick={handleClear}
-            disabled={!input}
-            aria-label="入力をクリア"
-          >
-            クリア
-          </button>
-        </div>
-
-        {hasOutput && (
           <div className="converter-section">
-            <div className="conv-output-header">
-              <span className="conv-output-label">{outputLabel}</span>
-              {outputMeta && <span className="conv-output-meta">{outputMeta}</span>}
-            </div>
+            <label htmlFor="conv-input" className="section-title">
+              {inputLabel}
+            </label>
             <textarea
-              className="conv-textarea conv-textarea-output"
-              readOnly
-              value={output}
-              aria-label={outputLabel}
-              aria-live="polite"
+              id="conv-input"
+              className="conv-textarea"
+              value={input}
+              onChange={(e) => onInputChange(e.target.value)}
+              placeholder={placeholder}
+              aria-label={inputLabel}
+              spellCheck={false}
             />
           </div>
-        )}
 
+          {belowInput}
+
+          {error && input.trim() && (
+            <div className="conv-error" role="alert">
+              <span className="conv-error-icon" aria-hidden="true">
+                ⚠
+              </span>
+              {error}
+            </div>
+          )}
+
+          <div className="conv-action-row">
+            <button
+              type="button"
+              className="btn-primary"
+              onClick={handleCopy}
+              disabled={!hasOutput}
+              aria-label="出力をコピー"
+            >
+              コピー
+            </button>
+            <button
+              type="button"
+              className="btn-secondary"
+              onClick={handleSwap}
+              disabled={!hasOutput}
+              aria-label="入出力を入れ替える"
+              title="出力を入力に入れ替え"
+            >
+              ⇄ 入れ替え
+            </button>
+            <button
+              type="button"
+              className="btn-clear"
+              onClick={handleClear}
+              disabled={!input}
+              aria-label="入力をクリア"
+            >
+              クリア
+            </button>
+          </div>
+
+          {hasOutput && (
+            <div className="converter-section">
+              <div className="conv-output-header">
+                <span className="conv-output-label">{outputLabel}</span>
+                {outputMeta && <span className="conv-output-meta">{outputMeta}</span>}
+              </div>
+              <textarea
+                className="conv-textarea conv-textarea-output"
+                readOnly
+                value={output}
+                aria-label={outputLabel}
+                aria-live="polite"
+              />
+            </div>
+          )}
+        </div>
         {tips && tips.length > 0 && <TipsCard sections={tips} />}
       </div>
       <StatusAnnouncer statusRef={statusRef} />

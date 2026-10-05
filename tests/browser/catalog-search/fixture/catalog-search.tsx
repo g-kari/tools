@@ -13,6 +13,8 @@ import {
 import { Route } from "../../../../app/routes/top";
 import { SearchModal } from "../../../../app/components/SearchModal";
 import { Route as MinesweeperRoute } from "../../../../app/routes/minesweeper";
+import { Route as Base64Route } from "../../../../app/routes/base64";
+import { ToastProvider } from "../../../../app/components/Toast";
 import "./styles.css";
 
 function FixtureShell() {
@@ -84,11 +86,26 @@ const gameRoute = createRoute({
   path: "/minesweeper",
   component: MinesweeperRoute.options.component!,
 });
+const base64Route = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/base64",
+  component: Base64Route.options.component!,
+});
 const router = createRouter({
-  routeTree: rootRoute.addChildren([topRoute, gameRoute, destinationRoute]),
-  history: createMemoryHistory({ initialEntries: ["/top"] }),
+  routeTree: rootRoute.addChildren([topRoute, gameRoute, base64Route, destinationRoute]),
+  history: createMemoryHistory({
+    initialEntries: [
+      new URLSearchParams(window.location.hash.slice(1)).get("fixture") === "base64"
+        ? "/base64"
+        : "/top",
+    ],
+  }),
   defaultPreload: false,
 });
 const container = document.getElementById("root");
 if (!container) throw new Error("Missing catalog fixture root");
-createRoot(container).render(<RouterProvider router={router} />);
+createRoot(container).render(
+  <ToastProvider>
+    <RouterProvider router={router} />
+  </ToastProvider>,
+);
