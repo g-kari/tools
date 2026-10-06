@@ -56,14 +56,17 @@ describe("XML/JSON テキスト変換ページ", () => {
     expect(input().value).toBe(source);
   });
 
-  it("JSONモードで #text と子要素の両方を出力する", () => {
+  it("JSONモードで #text と子要素をエスケープし、繰り返し変換しても保持する", () => {
     switchToJson();
-    fill(JSON.stringify({ root: { "#text": "a < b & c", child: "value" } }));
+    const source = JSON.stringify({ root: { "#text": "a < b & c", child: "value" } });
+    const expected =
+      '<?xml version="1.0" encoding="UTF-8"?>\n<root>a &lt; b &amp; c<child>value</child></root>';
+    fill(source);
     convert();
-    const document = new DOMParser().parseFromString(output().value, "application/xml");
-    expect(document.querySelector("parsererror")).toBeNull();
-    expect(document.documentElement.textContent).toBe("a < b & cvalue");
-    expect(document.querySelector("child")?.textContent).toBe("value");
+    expect(output().value).toBe(expected);
+    convert();
+    expect(output().value).toBe(expected);
+    expect(input().value).toBe(source);
   });
 
   it("不正なXMLで結果をクリアし、有効なCDATA入力から再開する", () => {
