@@ -32,7 +32,7 @@ function nodeToJson(node: Element): unknown {
   const children = Array.from(node.childNodes);
   const elementChildren = children.filter((c) => c.nodeType === Node.ELEMENT_NODE) as Element[];
   const textContent = children
-    .filter((c) => c.nodeType === Node.TEXT_NODE)
+    .filter((c) => c.nodeType === Node.TEXT_NODE || c.nodeType === Node.CDATA_SECTION_NODE)
     .map((c) => c.textContent ?? "")
     .join("")
     .trim();
@@ -60,7 +60,7 @@ function nodeToJson(node: Element): unknown {
     result[name] = values.length === 1 ? values[0] : values;
   }
 
-  if (textContent && elementChildren.length === 0) {
+  if (textContent) {
     result["#text"] = textContent;
   }
 
@@ -116,6 +116,7 @@ function jsonToXmlNode(
   value: unknown,
   indentLevel: number,
   indentStr: string,
+  inline = false,
 ): string {
   const indent = indentStr.repeat(indentLevel);
 
@@ -134,7 +135,9 @@ function jsonToXmlNode(
   }
 
   if (Array.isArray(value)) {
-    return value.map((item) => jsonToXmlNode(tagName, item, indentLevel, indentStr)).join("\n");
+    return value
+      .map((item) => jsonToXmlNode(tagName, item, indentLevel, indentStr, inline))
+      .join(inline ? "" : "\n");
   }
 
   if (typeof value === "object") {
@@ -149,28 +152,42 @@ function jsonToXmlNode(
       }
     }
 
+    const textContent = obj["#text"];
+    // 混在内容に整形用の空白を加えない。#text は既存JSON表現の規則で子要素の前に出力する。
+    const inlineChildren = inline || textContent !== undefined;
     const children: string[] = [];
     for (const [key, val] of Object.entries(obj)) {
       if (key === "@attributes") continue;
       if (key === "#text") continue;
-      children.push(jsonToXmlNode(key, val, indentLevel + 1, indentStr));
+      children.push(
+        jsonToXmlNode(
+          key,
+          val,
+          inlineChildren ? 0 : indentLevel + 1,
+          inlineChildren ? "" : indentStr,
+          inlineChildren,
+        ),
+      );
     }
 
-    const textContent = obj["#text"];
+    if (textContent !== undefined) {
+      const escaped = (
+        typeof textContent === "object"
+          ? JSON.stringify(textContent)
+          : String(textContent as string | number | boolean)
+      )
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+      return `${indent}<${tagName}${attrs}>${escaped}${children.join("")}</${tagName}>`;
+    }
 
     if (children.length === 0) {
-      if (textContent !== undefined) {
-        const escaped = (
-          typeof textContent === "object"
-            ? JSON.stringify(textContent)
-            : String(textContent as string | number | boolean)
-        )
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;");
-        return `${indent}<${tagName}${attrs}>${escaped}</${tagName}>`;
-      }
       return `${indent}<${tagName}${attrs} />`;
+    }
+
+    if (inline) {
+      return `${indent}<${tagName}${attrs}>${children.join("")}</${tagName}>`;
     }
 
     return `${indent}<${tagName}${attrs}>\n${children.join("\n")}\n${indent}</${tagName}>`;

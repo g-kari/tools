@@ -39,6 +39,18 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
+    version: "2026.10.5",
+    date: "2026-10-06",
+    entries: [
+      {
+        type: "fix",
+        title: "XML/JSON変換でCDATAと混在テキストの欠落を修正",
+        description:
+          "CDATAと子要素の前後のテキストをJSONに含め、子要素と併存する#textもXMLへ出力します。既存のJSON表現では混在内容の位置と子要素の元の順序を復元できない制約を明記しました。",
+      },
+    ],
+  },
+  {
     version: "2026.10.4",
     date: "2026-10-05",
     entries: [
