@@ -50,6 +50,7 @@ export function loadLockedImageAsset(): LockedImageAsset {
 export function createImageAssetFetch(asset: LockedImageAsset) {
   validateLockedImageAsset(asset);
   const unexpected: string[] = [];
+  let fontRejections = 0;
   const fetchAsset: typeof fetch = async (input, init) => {
     const url = typeof input === "string" ? input : input instanceof URL ? input.href : input.url;
     const method = init?.method ?? (input instanceof Request ? input.method : "GET");
@@ -58,9 +59,14 @@ export function createImageAssetFetch(asset: LockedImageAsset) {
       throw new Error("Unexpected asset request in offline image test");
     }
     if (url === FONT_URL) {
+      fontRejections++;
       throw new Error("Offline image test intentionally exercises the missing-font fallback");
     }
-    return new Response(asset.bytes.buffer, { headers: { "Content-Type": "application/wasm" } });
+    return new Response(asset.bytes, { headers: { "Content-Type": "application/wasm" } });
   };
-  return { fetchAsset, unexpectedRequests: () => [...unexpected] };
+  return {
+    fetchAsset,
+    unexpectedRequests: () => [...unexpected],
+    fontRejections: () => fontRejections,
+  };
 }

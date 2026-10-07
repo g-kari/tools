@@ -1,4 +1,13 @@
-import { afterAll, afterEach, beforeAll, describe, it, expect, vi } from "vite-plus/test";
+import {
+  afterAll,
+  afterEach,
+  beforeAll,
+  beforeEach,
+  describe,
+  it,
+  expect,
+  vi,
+} from "vite-plus/test";
 import { PhotonImage } from "@cf-wasm/photon";
 import { createImageAssetFetch, loadLockedImageAsset } from "../fixtures/dummy-image-assets";
 import {
@@ -383,14 +392,19 @@ describe("Dummy Image Generation", () => {
     // fallback. They do not verify Roboto, mutable CDNs, or Cloudflare runtime.
     const assets = createImageAssetFetch(loadLockedImageAsset());
     let fetchSpy: { mockRestore(): void };
+    let fontRejectionsBeforeTest = 0;
 
     beforeAll(() => {
       fetchSpy = vi.spyOn(globalThis, "fetch").mockImplementation(assets.fetchAsset);
+    });
+    beforeEach(() => {
+      fontRejectionsBeforeTest = assets.fontRejections();
     });
     afterEach(() => {
       // Font loading catches errors; checking recorded requests makes URL drift
       // fail instead of turning an unexpected request into a false green.
       expect(assets.unexpectedRequests()).toEqual([]);
+      expect(assets.fontRejections()).toBeGreaterThan(fontRejectionsBeforeTest);
     });
     afterAll(() => fetchSpy.mockRestore());
 

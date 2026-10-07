@@ -8,7 +8,7 @@
 
 resvgは導入済みのexported WASMを読み、installed package versionとcommitted lockfile、既知の2.6.2 WASM SHA256を一致確認する。依存更新時は公式package assetを確認してfixtureのversion/hashも更新する。WASMやfontのbinaryを新規コピー・download・依存追加しない。
 
-fixtureは既存WASM URLのGETにlocal bytesを返し、既知Roboto URLのGETは明示的にrejectして既存のnull-font fallbackを実行する。これはRobotoを取得できたという擬装ではない。その他のURLやmethodはrejectと記録を行い、元の処理がエラーをcatchした場合も各test後のassertionで失敗する。native/external fetchへ委譲しない。
+fixtureは既存WASM URLのGETにlocal bytesを返し、既知Roboto URLのGETは明示的にrejectして既存のnull-font fallbackを実行する。これはRobotoを取得できたという擬装ではない。その他のURLやmethodはrejectと記録を行い、元の処理がエラーをcatchした場合も各test後のassertionで失敗する。native/external fetchへ委譲しない。各conversion testでは既知fontのrejectが実際に起きたこともassertし、runtimeがfont読み込みを省略した場合を検出する。
 
 ## 保証しないこと
 

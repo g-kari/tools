@@ -23,6 +23,18 @@ describe("Dummy image offline asset fixture", () => {
     expect(fixture.unexpectedRequests()).toEqual([]);
   });
 
+  it("serves exactly the validated bytes of a nonzero-offset view", async () => {
+    const asset = loadLockedImageAsset();
+    const padded = new Uint8Array(asset.bytes.byteLength + 4);
+    padded.set(asset.bytes, 2);
+    const fixture = createImageAssetFetch({ ...asset, bytes: padded.subarray(2, -2) });
+    const response = await fixture.fetchAsset(WASM_URL);
+    const output = await response.arrayBuffer();
+    expect(output.byteLength).toBe(asset.bytes.byteLength);
+    expect(Buffer.compare(Buffer.from(output), Buffer.from(asset.bytes))).toBe(0);
+    expect(fixture.unexpectedRequests()).toEqual([]);
+  });
+
   it("rejects mismatched version or WASM content before a fixture can hide it", () => {
     const asset = loadLockedImageAsset();
     expect(() => validateLockedImageAsset({ ...asset, installedVersion: "0.0.0" })).toThrow(
@@ -38,7 +50,9 @@ describe("Dummy image offline asset fixture", () => {
 
   it("explicitly rejects the known font without pretending to have loaded Roboto", async () => {
     const fixture = createImageAssetFetch(loadLockedImageAsset());
+    expect(fixture.fontRejections()).toBe(0);
     await expect(fixture.fetchAsset(FONT_URL)).rejects.toThrow("missing-font fallback");
+    expect(fixture.fontRejections()).toBe(1);
     expect(fixture.unexpectedRequests()).toEqual([]);
   });
 
