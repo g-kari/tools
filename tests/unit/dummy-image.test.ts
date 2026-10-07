@@ -1,4 +1,6 @@
-import { describe, it, expect } from "vite-plus/test";
+import { afterAll, afterEach, beforeAll, describe, it, expect, vi } from "vite-plus/test";
+import { PhotonImage } from "@cf-wasm/photon";
+import { createImageAssetFetch, loadLockedImageAsset } from "../fixtures/dummy-image-assets";
 import {
   drawDummyImage,
   generateFilename,
@@ -377,18 +379,66 @@ describe("Dummy Image Generation", () => {
   });
 
   describe("Image Conversion API", () => {
+    // These are real codec tests with locked local WASM and the explicit no-font
+    // fallback. They do not verify Roboto, mutable CDNs, or Cloudflare runtime.
+    const assets = createImageAssetFetch(loadLockedImageAsset());
+    let fetchSpy: { mockRestore(): void };
+
+    beforeAll(() => {
+      fetchSpy = vi.spyOn(globalThis, "fetch").mockImplementation(assets.fetchAsset);
+    });
+    afterEach(() => {
+      // Font loading catches errors; checking recorded requests makes URL drift
+      // fail instead of turning an unexpected request into a false green.
+      expect(assets.unexpectedRequests()).toEqual([]);
+    });
+    afterAll(() => fetchSpy.mockRestore());
+
+    function expectDecodedImage(buffer: ArrayBuffer, width: number, height: number) {
+      const image = PhotonImage.new_from_byteslice(new Uint8Array(buffer));
+      try {
+        expect(image.get_width()).toBe(width);
+        expect(image.get_height()).toBe(height);
+      } finally {
+        image.free();
+      }
+    }
+
+    function expectPng(buffer: ArrayBuffer, width: number, height: number) {
+      expect(new Uint8Array(buffer).subarray(0, 8)).toEqual(
+        new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10]),
+      );
+      expectDecodedImage(buffer, width, height);
+    }
+
+    function expectJpeg(buffer: ArrayBuffer, width: number, height: number) {
+      const bytes = new Uint8Array(buffer);
+      expect(bytes.subarray(0, 2)).toEqual(new Uint8Array([255, 216]));
+      expect(bytes.subarray(-2)).toEqual(new Uint8Array([255, 217]));
+      expectDecodedImage(buffer, width, height);
+    }
+
+    function expectWebp(buffer: ArrayBuffer, width: number, height: number) {
+      const bytes = new Uint8Array(buffer);
+      expect(new TextDecoder().decode(bytes.slice(0, 4))).toBe("RIFF");
+      expect(new TextDecoder().decode(bytes.slice(8, 12))).toBe("WEBP");
+      expect(new DataView(buffer).getUint32(4, true)).toBe(buffer.byteLength - 8);
+      expectDecodedImage(buffer, width, height);
+    }
     describe("convertSvgToPng", () => {
       it("should convert SVG to PNG buffer", async () => {
         const svg = generateSvgImage(100, 100, "000000", "FFFFFF");
         const pngBuffer = await convertSvgToPng(svg);
         expect(pngBuffer).toBeInstanceOf(ArrayBuffer);
         expect(pngBuffer.byteLength).toBeGreaterThan(0);
+        expectPng(pngBuffer, 100, 100);
       });
 
       it("should handle small SVG images", async () => {
         const svg = generateSvgImage(1, 1, "000000", "FFFFFF");
         const pngBuffer = await convertSvgToPng(svg);
         expect(pngBuffer).toBeInstanceOf(ArrayBuffer);
+        expectPng(pngBuffer, 1, 1);
       });
 
       it("should handle large SVG images", async () => {
@@ -396,6 +446,7 @@ describe("Dummy Image Generation", () => {
         const pngBuffer = await convertSvgToPng(svg);
         expect(pngBuffer).toBeInstanceOf(ArrayBuffer);
         expect(pngBuffer.byteLength).toBeGreaterThan(0);
+        expectPng(pngBuffer, 1000, 1000);
       });
     });
 
@@ -406,6 +457,7 @@ describe("Dummy Image Generation", () => {
         const jpegBuffer = await convertPngToJpeg(pngBuffer, 85);
         expect(jpegBuffer).toBeInstanceOf(ArrayBuffer);
         expect(jpegBuffer.byteLength).toBeGreaterThan(0);
+        expectJpeg(jpegBuffer, 100, 100);
       });
 
       it("should accept quality parameter", async () => {
@@ -417,6 +469,8 @@ describe("Dummy Image Generation", () => {
 
         expect(jpegLowQuality).toBeInstanceOf(ArrayBuffer);
         expect(jpegHighQuality).toBeInstanceOf(ArrayBuffer);
+        expectJpeg(jpegLowQuality, 100, 100);
+        expectJpeg(jpegHighQuality, 100, 100);
       });
     });
 
@@ -427,6 +481,7 @@ describe("Dummy Image Generation", () => {
         const webpBuffer = await convertPngToWebp(pngBuffer);
         expect(webpBuffer).toBeInstanceOf(ArrayBuffer);
         expect(webpBuffer.byteLength).toBeGreaterThan(0);
+        expectWebp(webpBuffer, 100, 100);
       });
     });
 
@@ -437,14 +492,17 @@ describe("Dummy Image Generation", () => {
         // SVG to PNG
         const pngBuffer = await convertSvgToPng(svg);
         expect(pngBuffer).toBeInstanceOf(ArrayBuffer);
+        expectPng(pngBuffer, 200, 200);
 
         // PNG to JPEG
         const jpegBuffer = await convertPngToJpeg(pngBuffer, 85);
         expect(jpegBuffer).toBeInstanceOf(ArrayBuffer);
+        expectJpeg(jpegBuffer, 200, 200);
 
         // PNG to WebP
         const webpBuffer = await convertPngToWebp(pngBuffer);
         expect(webpBuffer).toBeInstanceOf(ArrayBuffer);
+        expectWebp(webpBuffer, 200, 200);
       });
     });
   });
