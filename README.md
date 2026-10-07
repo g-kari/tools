@@ -91,6 +91,8 @@ npm run test:watch
 npm run test:coverage
 ```
 
+ダミー画像のconversion unit testsは、lockfileに対応する導入済みresvg WASMを使い、PNG/JPEG/WebPの実encoderとdecode後の寸法を確認します。外部assetへの実通信は行わず、既知fontの取得失敗を明示して既存のno-font fallbackを検証します。未知URLはtest failureにします。これは実Robotoの見た目、実CDNの到達性・可変assetの互換性、Cloudflare runtimeの動作を検証したものではありません。詳しくは [画像変換テストのoffline境界](docs/dummy-image-offline-tests.md) を参照してください。
+
 ### E2Eテスト
 
 ```bash
