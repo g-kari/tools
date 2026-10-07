@@ -166,3 +166,36 @@ test("BOM・NBSP付きの有効な入力を検証と同じ基準で整形・圧�
   await expect(input).toHaveValue('{"id":1,"v":[1,2]}\n{"id":2}');
   await expect(page.locator(".error-message")).toHaveCount(0);
 });
+
+test("全4操作で大整数・指数・重複キー・escapeとレコード境界を保つ", async ({ page }) => {
+  const record = String.raw`{"id":9007199254740993,"n":1e400,"d":0.1234567890123456789,"x":1,"x":2,"s":"\u0061\/","2":1,"1":2}`;
+  const formatted = String.raw`{"id": 9007199254740993, "n": 1e400, "d": 0.1234567890123456789, "x": 1, "x": 2, "s": "\u0061\/", "2": 1, "1": 2}`;
+  const original = `${record}\n-0\n"a,b]"`;
+  const input = page.locator("#inputText");
+  await input.fill(original);
+  await page.getByRole("button", { name: "各行のJSONを整形", exact: true }).click();
+  await expect(input).toHaveValue(`${formatted}\n-0\n"a,b]"`);
+  await page.getByRole("button", { name: "各行のJSONを圧縮", exact: true }).click();
+  await expect(input).toHaveValue(original);
+  await page.getByRole("button", { name: "JSONL → JSON配列", exact: true }).click();
+  await input.fill(original);
+  await input.press("Control+Enter");
+  const output = page.locator("#outputText");
+  const array = await output.inputValue();
+  expect(array).toContain('"id": 9007199254740993');
+  expect(array).toContain('"n": 1e400');
+  expect(array).toContain('"x": 1,\n    "x": 2');
+  expect(array).toContain(String.raw`"s": "\u0061\/"`);
+  await page.getByRole("button", { name: "JSON配列 → JSONL", exact: true }).click();
+  await input.fill(array);
+  await page.getByRole("button", { name: "JSON Linesに変換", exact: true }).click();
+  await expect(output).toHaveValue(original);
+  await input.fill(`[${record},]`);
+  await page.getByRole("button", { name: "JSON Linesに変換", exact: true }).click();
+  await expect(output).toHaveValue("");
+  await expect(page.locator(".error-message")).toContainText("JSON の解析に失敗しました");
+  await input.fill(array);
+  await input.press("Meta+Enter");
+  await expect(output).toHaveValue(original);
+  await expect(page.locator(".error-message")).toHaveCount(0);
+});
