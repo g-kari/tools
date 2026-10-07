@@ -39,6 +39,18 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
+    version: "2026.10.6",
+    date: "2026-10-07",
+    entries: [
+      {
+        type: "fix",
+        title: "ワールドクロックの初期表示とローカル時刻を安定化",
+        description:
+          "サーバーとブラウザーの時刻・タイムゾーンが違っても初期画面を置き換えず、画面の起動後にブラウザーの現在時刻とLOCAL表示を反映します。1秒ごとの更新、都市選択と12h/24h切替は維持します。",
+      },
+    ],
+  },
+  {
     version: "2026.10.5",
     date: "2026-10-06",
     entries: [
