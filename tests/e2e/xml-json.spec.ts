@@ -93,6 +93,59 @@ test.describe("XML/JSON変換 - E2E Tests", () => {
     expect(output).toContain("<item>value</item>");
   });
 
+  test("should preserve CDATA and mixed direct text on repeated XML conversion", async ({
+    page,
+  }) => {
+    const source = "<root>before<child><![CDATA[<&>]]></child>after</root>";
+    await page.locator("#input-text").fill(source);
+    await page.locator("#convert-btn").click();
+    const first = await page.locator("#output-text").inputValue();
+    expect(JSON.parse(first) as unknown).toEqual({
+      root: { child: "<&>", "#text": "beforeafter" },
+    });
+    await page.locator("#convert-btn").click();
+    await expect(page.locator("#output-text")).toHaveValue(first);
+    await expect(page.locator("#input-text")).toHaveValue(source);
+  });
+
+  test("should output mixed JSON text without introducing formatter whitespace", async ({
+    page,
+  }) => {
+    await page.locator('[role="tab"]').filter({ hasText: "JSON → XML" }).click();
+    await page.locator("#input-text").fill(
+      JSON.stringify({
+        root: { "#text": "a < b & c", child: [{ nested: "one" }, { nested: "two" }] },
+      }),
+    );
+    await page.locator("#convert-btn").click();
+    const output = await page.locator("#output-text").inputValue();
+    const result = await page.evaluate((xml) => {
+      const document = new DOMParser().parseFromString(xml, "application/xml");
+      return {
+        invalid: document.querySelector("parsererror") !== null,
+        text: document.documentElement.textContent,
+        children: document.querySelectorAll("root > child").length,
+      };
+    }, output);
+    expect(result).toEqual({ invalid: false, text: "a < b & conetwo", children: 2 });
+  });
+
+  test("should clear a failed XML result and recover with CDATA", async ({ page }) => {
+    await page.locator("#input-text").fill("<root><![CDATA[value]]></root>");
+    await page.locator("#convert-btn").click();
+    await expect(page.locator("#output-text")).toHaveValue(/value/);
+    await page.locator("#input-text").fill("<root>");
+    await page.locator("#convert-btn").click();
+    await expect(page.locator("#output-text")).toHaveValue("");
+    await expect(page.locator(".error-message")).toBeVisible();
+    await page.locator("#input-text").fill("<root><![CDATA[recovered]]></root>");
+    await page.locator("#convert-btn").click();
+    expect(JSON.parse(await page.locator("#output-text").inputValue()) as unknown).toEqual({
+      root: "recovered",
+    });
+    await expect(page.locator(".error-message")).not.toBeVisible();
+  });
+
   test("should have indent selector", async ({ page }) => {
     const indentSelect = page.locator(".xml-json-indent-select");
     await expect(indentSelect).toBeVisible();
