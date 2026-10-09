@@ -39,6 +39,18 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
+    version: "2026.10.7",
+    date: "2026-10-09",
+    entries: [
+      {
+        type: "fix",
+        title: "JSON Pointerで存在しないパスを誤って評価する問題を修正",
+        description:
+          "配列の空番号・先頭ゼロ・符号・小数などを別の要素として扱わず、~0・~1以外のエスケープと入力JSONにない継承キーをエラーにします。空のオブジェクトキーや実際に登録された特殊な名前のキーは引き続き評価できます。",
+      },
+    ],
+  },
+  {
     version: "2026.10.6",
     date: "2026-10-07",
     entries: [
