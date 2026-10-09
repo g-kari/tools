@@ -1,6 +1,6 @@
 # JSON Pointer exact-resolution browser regression
 
-The fixture bundles the production `/json-pointer` component, ToastProvider and real base/control/JSON Pointer styles. It uses the same assertions as the full-app Playwright regression spec. It excludes the application shell, Workers bindings, ads and external services. It checks client-component behavior rather than production SSR hydration.
+The fixture bundles the production `/json-pointer` component, ToastProvider and real base/animation/control/JSON Pointer styles. It uses the same assertions as the full-app Playwright regression spec. It excludes the application shell, Workers bindings, ads and external services. It checks client-component behavior rather than production SSR hydration.
 
 Only synthetic JSON is used. The GET-only server binds to `127.0.0.1:4197`, serves three fixed built assets and maps `/json-pointer` to its fixture page. A restrictive CSP disables connections and external resources. Browser tests reject every attempted external request and JavaScript runtime error. No secrets, login, saved data or new persistent permissions are required.
 
