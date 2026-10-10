@@ -154,4 +154,50 @@ describe("JSON Linesのフォーム操作", () => {
     expect(element<HTMLTextAreaElement>("#inputText").value).toBe('{"id":1,"v":[1,2]}\n{"id":2}');
     expect(container.querySelector(".error-message")).toBeNull();
   });
+  it("整形・圧縮の入力置換でID、指数、重複キー、escapeを失わない", () => {
+    const record = String.raw`{"id":9007199254740993,"n":1e400,"d":0.1234567890123456789,"x":1,"x":2,"2":"\u0061","1":"\/"}`;
+    const formatted = String.raw`{"id": 9007199254740993, "n": 1e400, "d": 0.1234567890123456789, "x": 1, "x": 2, "2": "\u0061", "1": "\/"}`;
+    setInput(`${record}\n-0`);
+    click("各行のJSONを整形");
+    expect(element<HTMLTextAreaElement>("#inputText").value).toBe(`${formatted}\n-0`);
+    click("各行のJSONを圧縮");
+    expect(element<HTMLTextAreaElement>("#inputText").value).toBe(`${record}\n-0`);
+    click("各行のJSONを整形");
+    click("各行のJSONを圧縮");
+    expect(element<HTMLTextAreaElement>("#inputText").value).toBe(`${record}\n-0`);
+    expect(container.querySelector(".jsonl-error-list")).toBeNull();
+  });
+
+  it("両方の変換モードと再試行で数値と重複メンバーの元表記を保つ", () => {
+    const record = String.raw`{"id":9007199254740993,"n":1e400,"x":1,"x":2,"s":"\u0061\/"}`;
+    const expected = String.raw`[
+  {
+    "id": 9007199254740993,
+    "n": 1e400,
+    "x": 1,
+    "x": 2,
+    "s": "\u0061\/"
+  },
+  -0
+]`;
+    mode("JSONL → JSON配列");
+    setInput(`${record}\n-0`);
+    click("JSON配列に変換");
+    expect(element<HTMLTextAreaElement>("#outputText").value).toBe(expected);
+    setInput(`${record}\n{ "bad": 01 }`);
+    click("JSON配列に変換");
+    expect(element<HTMLTextAreaElement>("#outputText").value).toBe("");
+    expect(element<HTMLDivElement>(".error-message").textContent).toContain("行 2");
+    mode("JSON配列 → JSONL");
+    setInput(expected);
+    click("JSON Linesに変換");
+    expect(element<HTMLTextAreaElement>("#outputText").value).toBe(`${record}\n-0`);
+    setInput(`[${record},]`);
+    click("JSON Linesに変換");
+    expect(element<HTMLTextAreaElement>("#outputText").value).toBe("");
+    setInput(expected);
+    click("JSON Linesに変換");
+    expect(element<HTMLTextAreaElement>("#outputText").value).toBe(`${record}\n-0`);
+    expect(container.querySelector(".error-message")).toBeNull();
+  });
 });

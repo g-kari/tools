@@ -2,8 +2,11 @@
  * @fileoverview JSON Lines（NDJSON）フォーマッター ユーティリティ
  *
  * JSON Lines フォーマットの解析・整形・変換機能を提供します。
+ * 整形・変換は元の数値・文字列・重複メンバーのトークンを保ちます。
  * JSON Lines は各行が独立した JSON 値であるテキストフォーマットです。
  */
+
+import { formatJson, minifyJson } from "./json";
 
 /** 解析された1行分の情報 */
 export interface JsonLine {
@@ -11,7 +14,7 @@ export interface JsonLine {
   lineNumber: number;
   /** 元のテキスト（trim済み） */
   raw: string;
-  /** パース済みの値 */
+  /** 互換APIのJavaScript値。精度を保つ出力にはrawを使い、この値をserializeしない。 */
   parsed: unknown;
   /** エラーメッセージ（無効な場合のみ） */
   error?: string;
@@ -87,7 +90,7 @@ export function formatJsonLines(text: string): string {
   const result = text.split("\n").map((line) => {
     if (!line.trim()) return "";
     try {
-      const compact = JSON.stringify(JSON.parse(line.trim()));
+      const compact = minifyJson(line.trim());
       // 文字列トークン全体を先に一致させ、文字列内の句読点には触れない。
       return compact.replace(/"(?:[^"\\]|\\.)*"|[:,]/g, (token) =>
         token === ":" || token === "," ? `${token} ` : token,
@@ -116,7 +119,7 @@ export function minifyJsonLines(text: string): string {
     .filter((line) => line.trim())
     .map((line) => {
       try {
-        return JSON.stringify(JSON.parse(line.trim()));
+        return minifyJson(line.trim());
       } catch {
         return line;
       }
@@ -134,13 +137,13 @@ export function minifyJsonLines(text: string): string {
  */
 export function jsonLinesToJsonArray(text: string, indent = 2): string {
   const lines = text.split("\n");
-  const items: unknown[] = [];
+  const items: string[] = [];
 
   for (let i = 0; i < lines.length; i++) {
     const trimmed = lines[i].trim();
     if (!trimmed) continue;
     try {
-      items.push(JSON.parse(trimmed));
+      items.push(minifyJson(trimmed));
     } catch (err) {
       throw new Error(
         `行 ${i + 1} の JSON が無効です: ${err instanceof Error ? err.message : "解析エラー"}`,
@@ -148,7 +151,7 @@ export function jsonLinesToJsonArray(text: string, indent = 2): string {
     }
   }
 
-  return JSON.stringify(items, null, indent);
+  return formatJson(`[${items.join(",")}]`, indent);
 }
 
 /**
@@ -159,18 +162,45 @@ export function jsonLinesToJsonArray(text: string, indent = 2): string {
  * @throws JSON 配列でない場合にエラーをスロー
  */
 export function jsonArrayToJsonLines(text: string): string {
-  let parsed: unknown;
+  let isArray: boolean;
   try {
-    parsed = JSON.parse(text);
+    // Validate the complete native grammar without retaining or serializing values.
+    isArray = Array.isArray(JSON.parse(text));
   } catch (err) {
     throw new Error(
       `JSON の解析に失敗しました: ${err instanceof Error ? err.message : "解析エラー"}`,
     );
   }
 
-  if (!Array.isArray(parsed)) {
+  if (!isArray) {
     throw new Error("入力はJSON配列（[ ... ]）である必要があります");
   }
 
-  return (parsed as unknown[]).map((item) => JSON.stringify(item)).join("\n");
+  // Only top-level commas separate records; quoted/nested punctuation is data.
+  const items: string[] = [];
+  const end = text.lastIndexOf("]");
+  let start = text.indexOf("[") + 1;
+  let depth = 0;
+  let inString = false;
+  let escaped = false;
+  for (let i = start; i < end; i++) {
+    const character = text[i];
+    if (inString) {
+      if (escaped) escaped = false;
+      else if (character === "\\") escaped = true;
+      else if (character === '"') inString = false;
+    } else if (character === '"') {
+      inString = true;
+    } else if (character === "{" || character === "[") {
+      depth++;
+    } else if (character === "}" || character === "]") {
+      depth--;
+    } else if (character === "," && depth === 0) {
+      items.push(minifyJson(text.slice(start, i)));
+      start = i + 1;
+    }
+  }
+  const last = text.slice(start, end).trim();
+  if (last) items.push(minifyJson(last));
+  return items.join("\n");
 }

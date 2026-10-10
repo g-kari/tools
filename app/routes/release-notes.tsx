@@ -39,6 +39,18 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
+    version: "2026.10.8",
+    date: "2026-10-10",
+    entries: [
+      {
+        type: "fix",
+        title: "JSON Linesの整形・相互変換で数値や重複キーを保持",
+        description:
+          "大整数や小数の丸め、巨大な指数のnull化、重複キーの欠落を防ぎます。元の数値・文字列のエスケープ・キー順を保ち、1レコード1行と無効入力の修正・再試行を維持します。",
+      },
+    ],
+  },
+  {
     version: "2026.10.7",
     date: "2026-10-09",
     entries: [
