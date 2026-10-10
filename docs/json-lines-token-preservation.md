@@ -1,6 +1,6 @@
 # JSON Linesのトークン保持
 
-2026-10-07。対象は `/json-lines` の整形、圧縮、JSONL→配列、配列→JSONLの4操作。
+2026-10-10。対象は `/json-lines` の整形、圧縮、JSONL→配列、配列→JSONLの4操作。
 
 `JSON.parse` 後の値を `JSON.stringify` すると、大整数・高精度小数が丸められ、`1e400` が `null` になり、重複キーが消える。既存 `/json` の `formatJson` / `minifyJson` を再利用し、入力のJSON文法を確認してから元の字句を出力する。
 
