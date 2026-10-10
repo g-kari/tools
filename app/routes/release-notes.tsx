@@ -39,6 +39,18 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
+    version: "2026.10.8",
+    date: "2026-10-10",
+    entries: [
+      {
+        type: "fix",
+        title: "JSONフラット化でキーの衝突による値の欠落を防止",
+        description:
+          "区切り文字で結合したキーが重なるフラット化と、親キー・子キーが重なるアンフラット化をエラーにします。入力は修正用に保持し、失敗時は出力を消去します。特殊な名前の実際のJSONメンバーも保持し、従来の区切り文字・配列・最大深さの形式は維持します。",
+      },
+    ],
+  },
+  {
     version: "2026.10.7",
     date: "2026-10-09",
     entries: [

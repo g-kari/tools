@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vite-plus/test";
 import {
   flattenJson,
+  type JsonValue,
   flattenJsonString,
   unflattenJson,
   unflattenJsonString,
@@ -42,6 +43,18 @@ describe("JSON flatten path conflicts", () => {
     expect(() => flattenJsonString('{"":{"value":1},"value":2}')).toThrow("衝突");
   });
 
+  for (const value of [null, false, 0, "", [], {}]) {
+    it(`detects a duplicate destination after ${JSON.stringify(value)}`, () => {
+      const source = JSON.stringify(
+        Object.fromEntries([
+          ["a.b", value],
+          ["a", { b: 2 }],
+        ]),
+      );
+      expect(() => flattenJsonString(source)).toThrow("衝突");
+    });
+  }
+
   it("detects collisions at the selected maximum depth", () => {
     expect(() => flattenJsonString('{"a.b":{"c":1},"a":{"b":{"c":2}}}', { maxDepth: 2 })).toThrow(
       "衝突",
@@ -62,7 +75,7 @@ describe("JSON flatten path conflicts", () => {
     expect(unflattenJson({ "tags.0": "a", "tags.1": "b" })).toEqual({ tags: ["a", "b"] });
   });
 
-  for (const value of [null, 1, {}, { b: 1 }, [1]]) {
+  for (const value of [null, false, 0, "", 1, {}, { b: 1 }, [], [1]]) {
     it(`treats ${JSON.stringify(value)} as a leaf during prefix validation`, () => {
       const entries: [string, unknown][] = [
         ["a", value],
@@ -71,7 +84,7 @@ describe("JSON flatten path conflicts", () => {
       for (const ordered of [entries, [...entries].reverse()]) {
         const input = Object.fromEntries(ordered);
         const before = JSON.stringify(input);
-        expect(() => unflattenJsonString(before)).toThrow("衝突");
+        expect(() => unflattenJson(input as Record<string, JsonValue>)).toThrow("衝突");
         expect(JSON.stringify(input)).toBe(before);
       }
     });
@@ -84,6 +97,16 @@ describe("JSON flatten path conflicts", () => {
     expect(() => unflattenJson({ a: 1, ab: 2 }, { delimiter: "" })).toThrow("衝突");
     expect(unflattenJson({ "": 1, a: 2 }, { delimiter: "" })).toEqual({ a: 2 });
     expect(unflattenJson({ "": 1 }, { delimiter: "" })).toEqual({});
+  });
+
+  it("preserves numeric-root, sparse-array, and existing numeric-alias outputs", () => {
+    expect(unflattenJson({ "0": "a", "2": "c" })).toEqual(["a", null, "c"]);
+    expect(unflattenJson({ "0": "a", name: "x" })).toEqual({ "0": "a", name: "x" });
+    expect(JSON.parse(unflattenJsonString('{"tags.01":"odd","tags.1":"regular"}'))).toEqual({
+      tags: [null, "regular"],
+    });
+    expect(flattenJson(1)).toEqual({ "": 1 });
+    expect(flattenJson({})).toEqual({ "": {} });
   });
 
   it("preserves literal own special keys with ordinary output objects", () => {
