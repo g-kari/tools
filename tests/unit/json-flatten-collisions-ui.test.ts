@@ -56,20 +56,20 @@ describe("JSON Flatten conflict recovery", () => {
     expect(copy()).toBeNull();
     expect(input().value).toBe(source);
     fill('{"a":{"b":2}}');
-    act(() =>
+    act(() => {
       input().dispatchEvent(
         new KeyboardEvent("keydown", { key: "Enter", ctrlKey: true, bubbles: true }),
-      ),
-    );
+      );
+    });
     expect(JSON.parse(output().value)).toEqual({ "a.b": 2 });
     expect(error()).toBeNull();
     expect(copy()).not.toBeNull();
   });
 
   it("reports custom-delimiter collisions without rewriting the input", () => {
-    const select = container.querySelector<HTMLSelectElement>("#delimiter")!;
+    const select = container.querySelector("#delimiter")!;
     act(() => {
-      select.value = "__";
+      Reflect.set(select, "value", "__");
       Simulate.change(select);
     });
     const source = '{"a__b":1,"a":{"b":2}}';

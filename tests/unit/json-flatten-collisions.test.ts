@@ -93,6 +93,7 @@ describe("JSON flatten path conflicts", () => {
     expect(Object.keys(flattened)).toEqual(["__proto__", "constructor", "toString"]);
     expect(JSON.parse(JSON.stringify(flattened))).toEqual(input);
     const restored = unflattenJson(input);
+    if (restored === null || typeof restored !== "object") throw new Error("Expected an object");
     expect(Object.getPrototypeOf(restored)).toBe(Object.prototype);
     expect(Object.keys(restored)).toEqual(Object.keys(input));
     expect(JSON.stringify(restored)).toBe(JSON.stringify(input));
