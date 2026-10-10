@@ -17,6 +17,8 @@ Validation uses an OS-enforced namespace with no external network, an empty allo
 
 The 2GiB scratch budget includes 128MiB of explicitly writable dependency-cache mounts (`.vite-temp`, `.vite`, and `.cache`) beneath the disposable checkout. All dependency code remains read-only. Resource settings and cgroup placement are checked before any target execution.
 
+The trusted cgroup helper immediately drops root to the non-root checkout owner's uid/gid, clears supplementary groups, and sets no-new-privileges before starting bubblewrap. Bubblewrap therefore maps the checkout owner, not host root, when it reads the existing source/cache paths. No host file permissions are changed.
+
 The workflow retains only the trusted checkout's source SHA for one day. Test reports, screenshots and traces stay inside disposable scratch and are discarded; results and isolation failures are visible in the workflow log. The repository's ordinary CI workflow remains unchanged and separately runs all unit tests plus format/lint/type checks.
 
 Covered behavior: duplicate flatten destinations, repeated errors, custom-delimiter recovery, unflatten prefix conflicts in both input orders, literal own special keys, array output, input preservation, stale-output clearing, hidden copy actions on failure, and Ctrl+Enter recovery. The same assertions are registered by the full-app E2E spec.

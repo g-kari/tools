@@ -6,14 +6,16 @@ test "${GITHUB_ACTIONS:-}" = true
 test -d node_modules
 test -d "${HOME}/.cache/ms-playwright"
 test -f /sys/fs/cgroup/cgroup.controllers
-command -v bwrap >/dev/null
-command -v prlimit >/dev/null
+test -x /usr/bin/bwrap
+test -x /usr/bin/prlimit
+test -x /usr/bin/setpriv
 node_bin=$(dirname "$(readlink -f "$(command -v node)")")
 node_root=$(dirname "${node_bin}")
 [[ "${node_root}" == /opt/hostedtoolcache/node/*/x64 ]]
 mkdir -p node_modules/.vite-temp node_modules/.vite node_modules/.cache
 uid=$(id -u)
 gid=$(id -g)
+test "${uid}" -ne 0
 cgroup="/sys/fs/cgroup/json-flatten-${BASHPID}"
 sudo mkdir "${cgroup}"
 cleanup() {
@@ -40,8 +42,11 @@ sudo /bin/bash -euo pipefail -c '
 ' -- "${cgroup}"
 echo "Isolation: no external network; empty allowlisted environment; read-only source/toolchain; 2GiB temporary scratch; 3GiB memory; 128 tasks; two CPUs; 360s process CPU; 128MiB file cap; 480s wall cap."
 
+# Root is needed only to join the cgroup. Drop to the checkout owner before
+# bwrap maps the caller's host uid; no host permissions need to be changed.
 sudo /bin/bash -euo pipefail -c 'printf "%s\n" "$$" > "$1/cgroup.procs"; grep -qx "$$" "$1/cgroup.procs"; shift; exec "$@"' -- \
-  "${cgroup}" /usr/bin/timeout --signal=KILL 480 \
+  "${cgroup}" /usr/bin/setpriv --reuid "${uid}" --regid "${gid}" --clear-groups --no-new-privs \
+  /usr/bin/timeout --signal=KILL 480 \
   /usr/bin/prlimit --cpu=360 --fsize=134217728 --nofile=512 --nproc=128 \
   /usr/bin/bwrap --unshare-all --unshare-user --unshare-cgroup --disable-userns --die-with-parent --new-session \
   --uid "${uid}" --gid "${gid}" --cap-drop ALL \

@@ -56,9 +56,12 @@ describe("JSON flatten path conflicts", () => {
   }
 
   it("detects collisions at the selected maximum depth", () => {
-    expect(() => flattenJsonString('{"a.b":{"c":1},"a":{"b":{"c":2}}}', { maxDepth: 2 })).toThrow(
-      "衝突",
-    );
+    expect(() => flattenJsonString('{"a.b":1,"a":{"b":{"c":2}}}', { maxDepth: 2 })).toThrow("衝突");
+    expect(() => flattenJsonString('{"a":{"b":{"c":2}},"a.b":1}', { maxDepth: 2 })).toThrow("衝突");
+    expect(JSON.parse(flattenJsonString('{"a.b":1,"a":{"b":{"c":2}}}'))).toEqual({
+      "a.b": 1,
+      "a.b.c": 2,
+    });
     expect(JSON.parse(flattenJsonString('{"a.b":1,"a":{"b":2}}', { maxDepth: 1 }))).toEqual({
       "a.b": 1,
       a: { b: 2 },
