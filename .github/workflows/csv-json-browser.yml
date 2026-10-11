@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - "app/routes/csv-json.tsx"
+      - "app/routes/url-encode.tsx"
       - "app/components/**"
       - "app/hooks/**"
       - "app/styles/base.css"
@@ -14,12 +15,15 @@ on:
       - "tests/browser/csv-json/**"
       - "tests/unit/csv-json*.test.ts"
       - "tests/e2e/csv-json.spec.ts"
+      - "tests/unit/url-encode*.test.ts"
+      - "tests/e2e/url-encode.spec.ts"
       - "package*.json"
       - ".github/workflows/csv-json-browser.yml"
   push:
     branches: [main]
     paths:
       - "app/routes/csv-json.tsx"
+      - "app/routes/url-encode.tsx"
       - "app/components/**"
       - "app/hooks/**"
       - "app/styles/base.css"
@@ -30,6 +34,8 @@ on:
       - "tests/browser/csv-json/**"
       - "tests/unit/csv-json*.test.ts"
       - "tests/e2e/csv-json.spec.ts"
+      - "tests/unit/url-encode*.test.ts"
+      - "tests/e2e/url-encode.spec.ts"
       - "package*.json"
       - ".github/workflows/csv-json-browser.yml"
 
