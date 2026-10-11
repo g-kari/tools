@@ -39,6 +39,18 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
+    version: "2026.10.9",
+    date: "2026-10-11",
+    entries: [
+      {
+        type: "feat",
+        title: "文字数カウントとテキスト統計に書記素数を追加",
+        description:
+          "複合絵文字や結合文字を1まとまりとして数え、従来のコードポイント数と区別して表示します。入力や既存の単語数・バイト数は維持し、非対応ブラウザーでは書記素数を未対応と明記します。",
+      },
+    ],
+  },
+  {
     version: "2026.10.8",
     date: "2026-10-10",
     entries: [
