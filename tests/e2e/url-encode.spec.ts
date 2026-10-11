@@ -180,11 +180,13 @@ test.describe("URL Encode/Decode - E2E Tests", () => {
       .toEqual(units);
   }
 
-  test("preserves malformed UTF16 input but clears previous encode output", async ({ page }) => {
-    const input = page.locator("#inputText");
-    const output = page.locator("#outputText");
-    const encode = page.getByRole("button", { name: "入力テキストをURLエンコード", exact: true });
-    for (const units of [[0xd800], [0xdc00], [0x41, 0xd800, 0x42]]) {
+  for (const units of [[0xd800], [0xdc00], [0x41, 0xd800, 0x42]]) {
+    test(`preserves UTF16 units ${units.join("-")} but clears previous encode output`, async ({
+      page,
+    }) => {
+      const input = page.locator("#inputText");
+      const output = page.locator("#outputText");
+      const encode = page.getByRole("button", { name: "入力テキストをURLエンコード", exact: true });
       await input.fill("old value");
       await encode.click();
       await expect(output).toHaveValue("old%20value");
@@ -203,15 +205,15 @@ test.describe("URL Encode/Decode - E2E Tests", () => {
       await input.fill("fixed value");
       await encode.click();
       await expect(output).toHaveValue("fixed%20value");
-    }
-  });
+    });
+  }
 
-  test("clears previous output when either conversion is attempted with empty input", async ({
-    page,
-  }) => {
-    const input = page.locator("#inputText");
-    const output = page.locator("#outputText");
-    for (const mode of ["encode", "decode"] as const) {
+  for (const mode of ["encode", "decode"] as const) {
+    test(`clears previous ${mode} output when conversion is attempted with empty input`, async ({
+      page,
+    }) => {
+      const input = page.locator("#inputText");
+      const output = page.locator("#outputText");
       const button = page.getByRole("button", {
         name:
           mode === "encode" ? "入力テキストをURLエンコード" : "URLエンコードされた文字列をデコード",
@@ -225,6 +227,6 @@ test.describe("URL Encode/Decode - E2E Tests", () => {
       await expect(output).toHaveValue("");
       await expect(input).toBeFocused();
       await expect(page.locator(".toast-error").last()).toContainText("テキストを入力してください");
-    }
-  });
+    });
+  }
 });
