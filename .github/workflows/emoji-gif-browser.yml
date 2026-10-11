@@ -1,0 +1,77 @@
+name: Emoji GIF browser regression
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "app/routes/emoji-converter.tsx"
+      - "app/routes/image-to-gif.tsx"
+      - "app/hooks/useGeneratedGif.ts"
+      - "app/utils/emojiGifExport.ts"
+      - "app/utils/gifPalette.ts"
+      - "app/utils/animationEffects.ts"
+      - "app/utils/gsapAnimationEngine.ts"
+      - "app/styles/**"
+      - "tests/browser/emoji/**"
+      - "tests/unit/gif-inspector.test.ts"
+      - "package*.json"
+      - ".github/workflows/emoji-gif-browser.yml"
+  push:
+    branches: [main]
+    paths:
+      - "app/routes/emoji-converter.tsx"
+      - "app/routes/image-to-gif.tsx"
+      - "app/hooks/useGeneratedGif.ts"
+      - "app/utils/emojiGifExport.ts"
+      - "app/utils/gifPalette.ts"
+      - "app/utils/animationEffects.ts"
+      - "app/utils/gsapAnimationEngine.ts"
+      - "app/styles/**"
+      - "tests/browser/emoji/**"
+      - "tests/unit/gif-inspector.test.ts"
+      - "package*.json"
+      - ".github/workflows/emoji-gif-browser.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: emoji-gif-browser-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npx tsc --noEmit
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npx vp test run tests/unit/gif-inspector.test.ts
+      - run: npx vite build --config tests/browser/emoji/vite.config.ts
+      - run: npx vite build --config tests/browser/emoji/vite.config.ts
+        env:
+          EMOJI_REAL_FFMPEG: "1"
+      - name: Test actual EmojiConverter with narrow encoder fixture and real FFmpeg
+        run: npx playwright test --config tests/browser/emoji/playwright.config.ts
+        env:
+          CI: true
+      - run: |
+          mkdir -p test-results
+          git rev-parse HEAD | tee test-results/emoji-gif-source-sha.txt
+        if: always()
+      - uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: emoji-gif-browser-results
+          path: test-results/
+          retention-days: 1

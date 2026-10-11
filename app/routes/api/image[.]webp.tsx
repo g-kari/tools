@@ -11,6 +11,8 @@ import {
   parseImageParams,
   convertSvgToPng,
   convertPngToWebp,
+  parseTargetFileSize,
+  createPaddedImageStream,
 } from "../../functions/dummy-image";
 
 /**
@@ -39,6 +41,7 @@ export const Route = createFileRoute("/api/image.webp")({
        * @queryParam {number} [h=150] - 画像の高さ (1-4096)
        * @queryParam {string} [bg=6750A4] - 背景色 (HEX形式、#なし)
        * @queryParam {string} [text=FFFFFF] - テキスト色 (HEX形式、#なし)
+       * @queryParam {number} [size] - 目標ファイル容量 (MB、最大500)
        *
        * @returns {Response} 200: WebP画像 (Content-Type: image/webp)
        *   - Cache-Control: public, max-age=31536000, immutable
@@ -57,12 +60,15 @@ export const Route = createFileRoute("/api/image.webp")({
        */
       GET: async ({ request }) => {
         try {
-          // Cloudflare Workers Cache API
+          const url = new URL(request.url);
+          const targetFileSize = parseTargetFileSize(url.searchParams);
+
+          // 容量指定のない通常画像のみCloudflare Workers Cache APIを使用
           const cache = (caches as unknown as { default: Cache }).default;
           const cacheKey = new Request(request.url, { method: "GET" });
 
           // キャッシュをチェック
-          const cachedResponse = await cache.match(cacheKey);
+          const cachedResponse = targetFileSize === 0 ? await cache.match(cacheKey) : undefined;
           if (cachedResponse) {
             // キャッシュヒット: X-Cache-Statusヘッダーを追加して返す
             const headers = new Headers(cachedResponse.headers);
@@ -74,12 +80,23 @@ export const Route = createFileRoute("/api/image.webp")({
           }
 
           // キャッシュミス: SVG→PNG→WebPに変換
-          const url = new URL(request.url);
           const { width, height, bgColor, textColor } = parseImageParams(url.searchParams);
 
           const svg = generateSvgImage(width, height, bgColor, textColor);
           const pngBuffer = await convertSvgToPng(svg);
           const webpBuffer = await convertPngToWebp(pngBuffer);
+
+          if (targetFileSize > 0) {
+            const { stream, contentLength } = createPaddedImageStream(webpBuffer, targetFileSize);
+            return new Response(stream, {
+              headers: {
+                "Content-Type": "image/webp",
+                "Content-Length": String(contentLength),
+                "Cache-Control": "no-store",
+                "X-Cache-Status": "BYPASS",
+              },
+            });
+          }
 
           const response = new Response(webpBuffer, {
             headers: {

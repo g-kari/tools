@@ -1,0 +1,57 @@
+name: Clipboard focus browser regression
+
+on:
+  pull_request:
+    paths:
+      - "app/hooks/useClipboard.ts"
+      - "tests/browser/clipboard/**"
+      - "tests/unit/use-clipboard*.test.*"
+      - "package*.json"
+      - ".github/workflows/clipboard-browser.yml"
+  push:
+    branches: [main]
+    paths:
+      - "app/hooks/useClipboard.ts"
+      - "tests/browser/clipboard/**"
+      - "tests/unit/use-clipboard*.test.*"
+      - "package*.json"
+      - ".github/workflows/clipboard-browser.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: clipboard-browser-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npx tsc --noEmit
+      - run: npx playwright install --with-deps chromium
+      - run: npx vite build --config tests/browser/clipboard/vite.config.ts
+      - run: npx playwright test --config tests/browser/clipboard/playwright.config.ts
+        env:
+          CI: true
+      - run: |
+          mkdir -p test-results
+          git rev-parse HEAD | tee test-results/clipboard-source-sha.txt
+        if: always()
+      - uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: clipboard-browser-results
+          path: test-results/
+          retention-days: 1

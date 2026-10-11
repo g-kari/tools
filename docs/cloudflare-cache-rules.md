@@ -68,6 +68,9 @@ Cache Rulesは上から順に評価されます。このルールが最初に適
 curl -I "https://your-domain.workers.dev/api/image.svg?w=800&h=600"
 ```
 
+`size` パラメータで目標容量を指定したレスポンスは、大容量データをCDNへ保存しないよう
+`Cache-Control: no-store` と `X-Cache-Status: BYPASS` を返し、キャッシュ対象外になります。
+
 以下のヘッダーを確認:
 
 - `cf-cache-status`: `HIT` であればCDNキャッシュから配信されています

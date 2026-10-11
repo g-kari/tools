@@ -76,6 +76,111 @@ test.describe("CSV/JSON変換 - E2Eテスト", () => {
     expect(lines[2]).toBe("佐藤,25");
   });
 
+  test("後続のJSONレコードだけにある列を保持し、混在行のエラー後に回復する", async ({ page }) => {
+    await page.locator('input[value="json-to-csv"]').click();
+    const input = page.locator("#inputText");
+    const output = page.locator("#outputText");
+    const convert = page.locator("button.btn-primary");
+    const copy = page.getByRole("button", { name: "出力結果をクリップボードにコピー" });
+    await input.fill('[{"name":"田中"},{"email":"taro@example.com"}]');
+    await convert.click();
+    await expect(output).toHaveValue("name,email\n田中,\n,taro@example.com");
+    await convert.click();
+    await expect(output).toHaveValue("name,email\n田中,\n,taro@example.com");
+
+    await input.fill('[{"name":"田中"},null]');
+    await convert.click();
+    await expect(page.locator(".toast").last()).toContainText("JSONのレコード 2");
+    await expect(output).toHaveValue("");
+    await expect(copy).toBeDisabled();
+    await expect(input).toHaveValue('[{"name":"田中"},null]');
+
+    await input.fill('[{}, {"note":"修正"}]');
+    await convert.click();
+    await expect(output).toHaveValue('note\n""\n修正');
+    await expect(copy).toBeEnabled();
+  });
+
+  for (const csv of ["name,name\n前,後", "name\n前,後"]) {
+    test(`列が失われるCSVを拒否しヘッダーなしで回復する: ${csv}`, async ({ page }) => {
+      await page.locator("#inputText").fill(csv);
+      await page.locator("button.btn-primary").click();
+      await expect(page.locator(".toast").last()).toContainText("ヘッダーなしで変換してください");
+      await expect(page.locator("#outputText")).toHaveValue("");
+      await expect(
+        page.getByRole("button", { name: "出力結果をクリップボードにコピー" }),
+      ).toBeDisabled();
+
+      await page.getByRole("checkbox", { name: "1行目をヘッダー行として扱う" }).uncheck();
+      await page.locator("button.btn-primary").click();
+      expect(JSON.parse(await page.locator("#outputText").inputValue())).toEqual(
+        csv.split("\n").map((line) => line.split(",")),
+      );
+    });
+  }
+
+  test("引用符内の複数行・空行・引用符・前後の空白を保持する", async ({ page }) => {
+    await page.locator("#inputText").fill('name,note\n 田中 ," 1行目\n\n""3行目"" "');
+    await page.locator("button.btn-primary").click();
+
+    const output = await page.locator("#outputText").inputValue();
+    expect(JSON.parse(output)).toEqual([{ name: " 田中 ", note: ' 1行目\n\n"3行目" ' }]);
+  });
+
+  test("タブ区切り・ヘッダーなしで複数行フィールドを変換する", async ({ page }) => {
+    await page.locator("#delimiter").selectOption("\t");
+    await page.locator('input[type="checkbox"]').uncheck();
+    await page.locator("#inputText").fill('"前\n後"\t値\n次\t');
+    await page.locator("button.btn-primary").click();
+
+    const output = await page.locator("#outputText").inputValue();
+    expect(JSON.parse(output)).toEqual([
+      ["前\n後", "値"],
+      ["次", ""],
+    ]);
+  });
+
+  test("複数行JSON → CSV → JSON の往復変換でデータを保持する", async ({ page }) => {
+    const original = [{ name: " 田中 ", note: '前\n\n"後"' }];
+    await page.locator('input[value="json-to-csv"]').click();
+    await page.locator("#inputText").fill(JSON.stringify(original));
+    await page.locator("button.btn-primary").click();
+    const csv = await page.locator("#outputText").inputValue();
+
+    await page.locator('input[value="csv-to-json"]').click();
+    await page.locator("#inputText").fill(csv);
+    await page.locator("button.btn-primary").click();
+    expect(JSON.parse(await page.locator("#outputText").inputValue())).toEqual(original);
+  });
+
+  test("タブのみの空フィールドを空入力として拒否しない", async ({ page }) => {
+    await page.locator("#delimiter").selectOption("\t");
+    await page.locator('input[type="checkbox"]').uncheck();
+    await page.locator("#inputText").fill("\t");
+    await page.locator("button.btn-primary").click();
+    expect(JSON.parse(await page.locator("#outputText").inputValue())).toEqual([["", ""]]);
+  });
+
+  test("不正な引用符でエラーを表示し以前の出力をクリアして再変換できる", async ({ page }) => {
+    await page.locator("#inputText").fill("name,note\n田中,通常");
+    await page.locator("button.btn-primary").click();
+    await expect(page.locator("#outputText")).not.toHaveValue("");
+
+    await page.locator("#inputText").fill('name,note\n田中,"閉じ忘れ');
+    await page.locator("button.btn-primary").click();
+    await expect(page.locator(".toast").last()).toContainText("ダブルクォートが閉じられていません");
+    await expect(page.locator("#outputText")).toHaveValue("");
+    await expect(
+      page.getByRole("button", { name: "出力結果をクリップボードにコピー" }),
+    ).toBeDisabled();
+
+    await page.locator("#inputText").fill('name,note\n田中,"修正\n完了"');
+    await page.locator("button.btn-primary").click();
+    expect(JSON.parse(await page.locator("#outputText").inputValue())).toEqual([
+      { name: "田中", note: "修正\n完了" },
+    ]);
+  });
+
   test("空入力で変換するとToastエラーが表示される", async ({ page }) => {
     await page.locator("button.btn-primary").click();
     const toast = page.locator(".toast");

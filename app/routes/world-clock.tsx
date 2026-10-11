@@ -52,16 +52,20 @@ const DEFAULT_CITIES = new Set([
  * ワールドクロックページコンポーネント
  */
 function WorldClockPage() {
-  const [now, setNow] = useState<Date>(() => new Date());
+  // The server and first client render share placeholders. Host time/timezone
+  // are sampled only after mount, so hydration never publishes a server-local clock.
+  const [now, setNow] = useState<Date | null>(null);
   const [hour12, setHour12] = useState(false);
   const [showSelector, setShowSelector] = useState(false);
   const [selectedCities, setSelectedCities] = useState<Set<string>>(() => new Set(DEFAULT_CITIES));
-  const localTz = useRef(getLocalTimezone());
+  const localTz = useRef("UTC");
 
   const { statusRef, announceStatus } = useStatusAnnouncement();
 
   // 毎秒更新
   useEffect(() => {
+    localTz.current = getLocalTimezone();
+    setNow(new Date());
     const id = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(id);
   }, []);
@@ -198,8 +202,8 @@ function WorldClockPage() {
         {activeCities.length > 0 ? (
           <div className="wc-grid" role="list" aria-label="ワールドクロック一覧" aria-live="off">
             {activeCities.map((tz) => {
-              const isLocal = tz.id === localTz.current;
-              const data = getClockData(now, tz.id, hour12, localTz.current);
+              const isLocal = now !== null && tz.id === localTz.current;
+              const data = now ? getClockData(now, tz.id, hour12, localTz.current) : null;
               return (
                 <ClockCard
                   key={tz.id}
@@ -257,14 +261,14 @@ function ClockCard({
 }: {
   city: string;
   label: string;
-  data: ReturnType<typeof getClockData>;
+  data: ReturnType<typeof getClockData> | null;
   isLocal: boolean;
 }) {
   return (
     <div
       className={`wc-card${isLocal ? " wc-card--local" : ""}`}
       role="listitem"
-      aria-label={`${city} ${data.time}`}
+      aria-label={`${city} ${data?.time ?? "時刻を取得中"}`}
     >
       <div className="wc-card-header">
         <span className="wc-city-title">
@@ -275,17 +279,17 @@ function ClockCard({
             </span>
           )}
         </span>
-        <span className="wc-offset">{data.offset}</span>
+        <span className="wc-offset">{data?.offset ?? "—"}</span>
       </div>
 
-      <div className="wc-time" aria-label={`現在時刻 ${data.time}`}>
-        {data.time}
+      <div className="wc-time" aria-label={data ? `現在時刻 ${data.time}` : "現在時刻を取得中"}>
+        {data?.time ?? "--:--:--"}
       </div>
 
       <div className="wc-date-row">
-        <span className="wc-date">{data.date}</span>
-        <span className="wc-weekday">（{data.weekday}）</span>
-        {data.dayDiff !== 0 && (
+        <span className="wc-date">{data?.date ?? "----/--/--"}</span>
+        <span className="wc-weekday">（{data?.weekday ?? "—"}）</span>
+        {data && data.dayDiff !== 0 && (
           <span
             className={`wc-day-diff${data.dayDiff > 0 ? " wc-day-diff--next" : " wc-day-diff--prev"}`}
             aria-label={data.dayDiff > 0 ? "翌日" : "前日"}

@@ -379,6 +379,7 @@ export const Route = createRootRoute({
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "ja_JP" },
       { property: "og:image", content: SITE_OGP_IMAGE },
+      { property: "og:image:type", content: "image/png" },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
       { property: "og:image:alt", content: SITE_NAME },
@@ -585,12 +586,15 @@ function NavCategory({
 function RootDocument({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const searchButtonRef = useRef<HTMLButtonElement>(null);
 
   // Ctrl+K / Cmd+K でモーダルを開く
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.isComposing || e.keyCode === 229) return;
       if ((e.ctrlKey || e.metaKey) && e.key === "k") {
         e.preventDefault();
+        e.stopPropagation();
         setIsSearchOpen((prev) => !prev);
       }
     };
@@ -626,8 +630,12 @@ function RootDocument({ children }: { children: ReactNode }) {
                   <NavCategory key={category.name} category={category} pathname={pathname} />
                 ))}
                 <button
+                  ref={searchButtonRef}
                   className="nav-search-btn"
-                  onClick={() => setIsSearchOpen(true)}
+                  onClick={(event) => {
+                    event.currentTarget.focus({ preventScroll: true });
+                    setIsSearchOpen(true);
+                  }}
                   aria-label="ツールを検索（Ctrl+K）"
                   type="button"
                 >
@@ -652,7 +660,12 @@ function RootDocument({ children }: { children: ReactNode }) {
             id="status-message"
           />
 
-          <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+          <SearchModal
+            isOpen={isSearchOpen}
+            onClose={() => setIsSearchOpen(false)}
+            locationKey={pathname}
+            returnFocusRef={searchButtonRef}
+          />
         </ToastProvider>
 
         <Scripts />

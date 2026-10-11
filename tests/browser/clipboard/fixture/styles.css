@@ -1,0 +1,35 @@
+body {
+  margin: 16px;
+  font-family: system-ui, sans-serif;
+}
+
+main {
+  max-width: 720px;
+}
+
+button,
+input,
+textarea {
+  display: block;
+  box-sizing: border-box;
+  width: min(100%, 320px);
+  margin: 12px 0;
+}
+
+button {
+  padding: 10px;
+}
+
+textarea {
+  height: 90px;
+  white-space: pre;
+}
+
+#editable {
+  padding: 8px;
+  border: 1px solid;
+}
+
+.spacer {
+  height: 1600px;
+}

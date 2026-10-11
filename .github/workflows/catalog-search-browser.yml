@@ -1,0 +1,73 @@
+name: Catalog multi-keyword search browser regression
+
+on:
+  pull_request:
+    paths:
+      - "app/routes/top.tsx"
+      - "app/routes/regex-checker.tsx"
+      - "app/routes/__root.tsx"
+      - "app/components/SearchModal.tsx"
+      - "app/utils/tool-search.ts"
+      - "app/styles/search.css"
+      - "app/styles/tools/top-page.css"
+      - "tests/browser/catalog-search/**"
+      - "tests/unit/*search*.test.ts"
+      - "tests/unit/regex*.test.ts"
+      - "tests/unit/top.test.ts"
+      - "package*.json"
+      - ".github/workflows/catalog-search-browser.yml"
+  push:
+    branches: [main]
+    paths:
+      - "app/routes/top.tsx"
+      - "app/routes/regex-checker.tsx"
+      - "app/routes/__root.tsx"
+      - "app/components/SearchModal.tsx"
+      - "app/utils/tool-search.ts"
+      - "app/styles/search.css"
+      - "app/styles/tools/top-page.css"
+      - "tests/browser/catalog-search/**"
+      - "tests/unit/*search*.test.ts"
+      - "tests/unit/regex*.test.ts"
+      - "tests/unit/top.test.ts"
+      - "package*.json"
+      - ".github/workflows/catalog-search-browser.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: catalog-search-browser-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npx tsc --noEmit
+      - run: npx playwright install --with-deps chromium
+      - run: npx vite build --config tests/browser/catalog-search/vite.config.ts
+      - run: npx playwright test --config tests/browser/catalog-search/playwright.config.ts
+        env:
+          CI: true
+      - run: |
+          mkdir -p test-results
+          git rev-parse HEAD | tee test-results/catalog-search-source-sha.txt
+        if: always()
+      - uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: catalog-search-browser-results
+          path: test-results/
+          retention-days: 1

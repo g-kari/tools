@@ -4,58 +4,31 @@
 
 ## 機能
 
-### Unicode エスケープ変換ツール
+エンコード・デコード、ハッシュ・暗号、JSON / YAML / XML、色変換、日付・時刻、画像・QR、ネットワーク系ツールなど **300 種類以上**のツールを提供しています。
 
-日本語などのUnicode文字を `\uXXXX` 形式のエスケープシーケンスに変換したり、その逆変換を行うツールです。
+全ツールの一覧・カテゴリは `app/routes/top.tsx` の `toolCatalog` を参照するか、本番サイトのトップページで確認できます。
 
-**使用例:**
+ツール一覧と Ctrl+K / Cmd+K の検索では、ツール名・説明・カテゴリ名・パスを検索できます。`JSON 圧縮` のように空白で区切るとすべての語で絞り込みます。前後の空白、大文字小文字、全角英数字・半角かなの違いを吸収し、検索語はサーバーへ送信・保存しません。
 
-- 入力: `こんにちは`
-- 出力: `\u3053\u3093\u306b\u3061\u306f`
+検索ダイアログは Tab / Shift+Tab で中の操作を循環し、Esc・閉じるボタン・外側クリックで取り消せます。取り消した後は検索を開いたボタンや入力欄へ戻ります。検索欄では矢印キーで結果を選び、Enter で開けます。
 
-### WHOIS 検索ツール
+ワールドクロックは最初に時刻の読み込み表示を出し、画面の起動後にブラウザーの現在時刻・ローカルタイムゾーンを反映します。サーバーの時刻やタイムゾーンを現地時刻として表示せず、以後は従来どおり1秒ごとに更新します。
 
-ドメイン名のWHOIS情報を検索できるツールです。ドメインの登録情報、有効期限、ネームサーバーなどを確認できます。
+JSON Linesの整形・圧縮・JSON配列との相互変換は、数値の元の表記（大整数、小数、指数、負のゼロ）、文字列のエスケープ、キー順と重複キーを保持します。空白と配列の外枠だけを変更し、1レコード1行を維持します。無効な入力を許可するものではなく、重複キーの解釈や数値計算、元の空白の完全な復元は行いません。詳しくは [JSON Linesのトークン保持](docs/json-lines-token-preservation.md) を参照してください。
 
-### IP ジオロケーションツール
+主要カテゴリ:
 
-IPアドレスから地理情報（国、都市、緯度経度など）を取得するツールです。
+- **エンコード/デコード系**: Base16/32/36/58/62/64/85、URL エンコード、Unicode エスケープ、他
+- **ハッシュ・暗号系**: MD5 / SHA-1 / SHA-256 / SHA-384 / SHA-512、JWT Inspector、他
+- **テキスト・データ系**: JSON / YAML / XML / TOML 整形、正規表現チェッカー、diff、他
+- **色・デザイン系**: RGB / HSL / CMYK / HEX 変換、グラデーション、カラーパレット、他
+- **日付・時刻系**: タイムゾーン、Unix 時刻、和暦、タイマー、他
+- **ネットワーク系**: WHOIS、IP ジオロケーション、OGP、DNS、他
+- **画像・QR 系**: QR コード生成・読み取り、画像圧縮、他
 
-### グローバルIP確認ツール
+## 新しいツールを追加するには
 
-アクセス元のグローバルIPアドレスを表示するツールです。
-
-### UUID 生成ツール
-
-UUID v4形式のユニークIDを生成するツールです。
-
-### URL エンコード/デコードツール
-
-URL文字列のエンコード（パーセントエンコーディング）およびデコードを行うツールです。
-
-### パスワード生成ツール
-
-安全なランダムパスワードを生成するツールです。長さや使用する文字種（大文字、小文字、数字、記号）を指定できます。
-
-### JSON 整形ツール
-
-JSONデータの整形（フォーマット）および検証を行うツールです。
-
-### サーバー環境確認ツール
-
-Cloudflare Workersのサーバー環境情報を表示するツールです。
-
-### 正規表現チェッカー
-
-正規表現パターンのテスト・検証を行うツールです。マッチ結果をリアルタイムで確認できます。
-
-### JWT デコーダー
-
-JWT（JSON Web Token）トークンをデコードし、ヘッダーとペイロードの内容を確認できるツールです。
-
-### OGP チェッカー
-
-URLを入力してOpen Graph Protocol（OGP）情報を取得・確認できるツールです。SNSでのシェア時の表示を事前に確認できます。
+[`docs/tools-guide.md`](docs/tools-guide.md) にテンプレートと手順をまとめています。最小限のチェックリストは [`.claude/rules/new-tool.md`](.claude/rules/new-tool.md) にあります。
 
 ## 技術スタック
 
@@ -120,6 +93,8 @@ npm run test:watch
 npm run test:coverage
 ```
 
+ダミー画像のconversion unit testsは、lockfileに対応する導入済みresvg WASMを使い、PNG/JPEG/WebPの実encoderとdecode後の寸法を確認します。外部assetへの実通信は行わず、既知fontの取得失敗を明示して既存のno-font fallbackを検証します。未知URLはtest failureにします。これは実Robotoの見た目、実CDNの到達性・可変assetの互換性、Cloudflare runtimeの動作を検証したものではありません。詳しくは [画像変換テストのoffline境界](docs/dummy-image-offline-tests.md) を参照してください。
+
 ### E2Eテスト
 
 ```bash
@@ -135,29 +110,19 @@ npm run test:e2e
 │   ├── client.tsx        # クライアントエントリ
 │   ├── ssr.tsx           # SSRエントリ
 │   ├── start.tsx         # TanStack Start設定
-│   ├── styles.css        # 共通スタイル
-│   ├── routes/
-│   │   ├── __root.tsx           # ルートレイアウト
-│   │   ├── index.tsx            # Unicode変換ページ (/)
-│   │   ├── whois.tsx            # WHOIS検索ページ (/whois)
-│   │   ├── ip-geolocation.tsx   # IPジオロケーションページ (/ip-geolocation)
-│   │   ├── global-ip.tsx        # グローバルIP確認ページ (/global-ip)
-│   │   ├── uuid.tsx             # UUID生成ページ (/uuid)
-│   │   ├── url-encode.tsx       # URLエンコードページ (/url-encode)
-│   │   ├── password-generator.tsx # パスワード生成ページ (/password-generator)
-│   │   ├── json.tsx             # JSON整形ページ (/json)
-│   │   ├── server-env.tsx       # サーバー環境ページ (/server-env)
-│   │   ├── regex-checker.tsx    # 正規表現チェッカーページ (/regex-checker)
-│   │   ├── jwt.tsx              # JWTデコーダーページ (/jwt)
-│   │   └── ogp.tsx              # OGPチェッカーページ (/ogp)
-│   └── functions/
-│       ├── whois.ts             # WHOISサーバーファンクション
-│       ├── ip-geolocation.ts    # IPジオロケーションファンクション
-│       ├── global-ip.ts         # グローバルIPファンクション
-│       ├── server-env.ts        # サーバー環境ファンクション
-│       └── ogp.ts               # OGPファンクション
+│   ├── styles.css        # 共通スタイル（各ツールCSSをimport）
+│   ├── styles/tools/     # 各ツール専用CSS
+│   ├── components/       # 共通Reactコンポーネント
+│   ├── hooks/            # 共通カスタムフック
+│   ├── utils/            # 共通ユーティリティ
+│   ├── functions/        # TanStack Start サーバーファンクション
+│   └── routes/           # 各ツールのルート（300以上。top.tsxで一覧管理）
+├── docs/                 # 開発者向けドキュメント
+│   ├── tools-guide.md            # 新ツール追加ガイド
+│   └── cloudflare-cache-rules.md # CDNキャッシュ方針
+├── .claude/rules/        # AI向けプロジェクトルール
 ├── tests/
-│   ├── unit/             # ユニットテスト
+│   ├── unit/             # ユニットテスト (Vitest)
 │   └── e2e/              # E2Eテスト（Playwright）
 ├── package.json
 ├── tsconfig.json

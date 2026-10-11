@@ -18,6 +18,16 @@ import { StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useCopyWithFeedback } from "~/hooks/useCopyWithFeedback";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 
+/**
+ * @tool JWT Inspector
+ * @description JWT のヘッダー・ペイロードをデコードし、HS256/384/512・RS256/384/512・ES256/384 の署名検証と有効期限解析をブラウザ内で実行するツール。
+ * @example
+ *   入力: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMifQ.xxx"
+ *   出力: ヘッダ / クレーム / 署名検証結果 / exp・iat・nbf のリアルタイム評価
+ * @limitations
+ *   - 署名検証は Web Crypto API 対応アルゴリズムのみ
+ *   - 外部ネットワーク送信なし。秘密情報はサーバーに送られない
+ */
 export const Route = createFileRoute("/jwt-inspector")({
   head: () => ({
     meta: [

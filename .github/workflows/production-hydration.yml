@@ -1,0 +1,67 @@
+name: Production hydration diagnostic
+
+on:
+  workflow_dispatch:
+    inputs:
+      live_response:
+        description: "Read one public production response (requires explicit diagnostic approval)"
+        type: boolean
+        default: false
+        required: false
+  pull_request:
+    paths:
+      - "tests/browser/hydration/**"
+      - "tests/unit/hydration-owned-assets.test.ts"
+      - ".github/workflows/production-hydration.yml"
+      - "docs/production-hydration-diagnostic.md"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-hydration-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  chromium:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npx tsc --noEmit
+      - run: npm run build
+      - run: npx vp test run tests/unit/hydration-owned-assets.test.ts
+      - run: node --test tests/browser/hydration/*.test.mjs
+        env:
+          NODE_OPTIONS: "--conditions=workerd --conditions=worker --conditions=module --conditions=browser"
+      - run: npx playwright install --with-deps chromium
+      - name: Isolate exact owned production JavaScript hydration
+        run: npx playwright test --config tests/browser/hydration/playwright.config.ts
+        env:
+          CI: true
+          PLAYWRIGHT_NO_COPY_PROMPT: "1"
+          NODE_OPTIONS: "--conditions=workerd --conditions=worker --conditions=module --conditions=browser"
+          # Only the currently authorized PR/snapshot gets an automatic live GET.
+          HYDRATION_LIVE_RESPONSE: ${{ (github.event_name == 'workflow_dispatch' && inputs.live_response || github.event_name == 'pull_request' && github.event.pull_request.number == 250) && '1' || '0' }}
+          HYDRATION_LIVE_APPROVED_SOURCE: ${{ github.event_name == 'pull_request' && github.event.pull_request.number == 250 && '9a0f02f2620e52dc82ac7d7b09e0b6aec0e53ad4' || '' }}
+      - name: Record exact diagnostic source revision
+        if: always()
+        run: |
+          mkdir -p test-results/hydration-diagnostic
+          git rev-parse HEAD > test-results/hydration-diagnostic/source-sha.txt
+      - uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: production-hydration-redacted-results
+          path: |
+            test-results/hydration-diagnostic/*.json
+            test-results/hydration-diagnostic/source-sha.txt
+          retention-days: 1

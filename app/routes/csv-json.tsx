@@ -45,30 +45,71 @@ const DELIMITER_OPTIONS = [
 ] as const;
 
 /**
- * CSVの1行をフィールドの配列にパースする（RFC 4180準拠）
+ * CSV全体をレコードごとにパースする。
+ * 引用符内の改行・空白は保持し、レコード区切りのLF/CRLF/CRを扱う。
  */
-function parseRow(line: string, delimiter: string): string[] {
-  const result: string[] = [];
+function parseCsvRecords(csv: string, delimiter: string): string[][] {
+  const text = csv.startsWith("\uFEFF") ? csv.slice(1) : csv;
+  if (!text.trim() && !text.includes(delimiter)) {
+    throw new Error("CSVデータが空です");
+  }
+
+  const records: string[][] = [];
+  let fields: string[] = [];
   let current = "";
-  let inQuotes = false;
-  for (let i = 0; i < line.length; i++) {
-    const ch = line[i];
-    if (ch === '"') {
-      if (inQuotes && line[i + 1] === '"') {
-        current += '"';
-        i++;
+  let state: "start" | "unquoted" | "quoted" | "closed" = "start";
+  let recordStart = 0;
+
+  const finishRecord = (end: number): void => {
+    // 空の物理行は従来どおり無視する。引用符で囲んだ空フィールドは保持する。
+    const record = text.slice(recordStart, end);
+    if (record.trim() || record.includes(delimiter)) {
+      records.push([...fields, current]);
+    }
+    fields = [];
+    current = "";
+    state = "start";
+  };
+
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (state === "quoted") {
+      if (ch === '"') {
+        if (text[i + 1] === '"') {
+          current += '"';
+          i++;
+        } else {
+          state = "closed";
+        }
       } else {
-        inQuotes = !inQuotes;
+        current += ch;
       }
-    } else if (ch === delimiter && !inQuotes) {
-      result.push(current);
+    } else if (ch === delimiter) {
+      fields.push(current);
       current = "";
+      state = "start";
+    } else if (ch === "\n" || ch === "\r") {
+      finishRecord(i);
+      if (ch === "\r" && text[i + 1] === "\n") i++;
+      recordStart = i + 1;
+    } else if (state === "closed") {
+      throw new Error("引用符を閉じた後には区切り文字または改行を指定してください");
+    } else if (ch === '"') {
+      if (state !== "start") {
+        throw new Error("引用符を含むフィールド全体をダブルクォートで囲んでください");
+      }
+      state = "quoted";
     } else {
       current += ch;
+      state = "unquoted";
     }
   }
-  result.push(current);
-  return result;
+
+  if (state === "quoted") {
+    throw new Error("CSVのダブルクォートが閉じられていません");
+  }
+  finishRecord(text.length);
+  return records;
 }
 
 /**
@@ -79,28 +120,31 @@ function parseRow(line: string, delimiter: string): string[] {
  * @returns JSON文字列
  */
 export function csvToJson(csv: string, delimiter: string, hasHeader: boolean): string {
-  const lines = csv
-    .trim()
-    .split("\n")
-    .filter((line) => line.trim() !== "");
-  if (lines.length === 0) {
-    throw new Error("CSVデータが空です");
-  }
+  const records = parseCsvRecords(csv, delimiter);
 
   if (hasHeader) {
-    const headers = parseRow(lines[0], delimiter);
-    const data = lines.slice(1).map((line) => {
-      const values = parseRow(line, delimiter);
-      const obj: Record<string, string> = {};
-      headers.forEach((header, i) => {
-        obj[header.trim()] = values[i] !== undefined ? values[i].trim() : "";
-      });
-      return obj;
+    const [headers, ...rows] = records;
+    const headerPositions = new Map<string, number>();
+    headers.forEach((header, index) => {
+      const previous = headerPositions.get(header);
+      if (previous !== undefined) {
+        throw new Error(
+          `CSVヘッダー「${header}」が重複しています（列 ${previous + 1} と列 ${index + 1}）。ヘッダー名を変更するか、ヘッダーなしで変換してください`,
+        );
+      }
+      headerPositions.set(header, index);
+    });
+    const data = rows.map((values, index) => {
+      if (values.length > headers.length) {
+        throw new Error(
+          `CSVのレコード ${index + 2} はヘッダーより列数が多いため変換できません（ヘッダー ${headers.length} 列、データ ${values.length} 列）。ヘッダーを追加するか、ヘッダーなしで変換してください`,
+        );
+      }
+      return Object.fromEntries(headers.map((header, i) => [header, values[i] ?? ""]));
     });
     return JSON.stringify(data, null, 2);
   } else {
-    const data = lines.map((line) => parseRow(line, delimiter).map((v) => v.trim()));
-    return JSON.stringify(data, null, 2);
+    return JSON.stringify(records, null, 2);
   }
 }
 
@@ -125,29 +169,66 @@ export function jsonToCsv(json: string, delimiter: string): string {
     throw new Error("JSONデータが空の配列です");
   }
 
-  const escapeField = (value: unknown): string => {
+  const escapeField = (value: unknown, singleColumn = false): string => {
     const str =
       value === null || value === undefined
         ? ""
         : typeof value === "object"
           ? JSON.stringify(value)
           : String(value as string | number | boolean);
-    if (str.includes(delimiter) || str.includes('"') || str.includes("\n") || str.includes("\r")) {
+    if (
+      str.includes(delimiter) ||
+      str.includes('"') ||
+      str.includes("\n") ||
+      str.includes("\r") ||
+      (singleColumn && !str.trim())
+    ) {
       return `"${str.replace(/"/g, '""')}"`;
     }
     return str;
   };
 
   if (typeof parsed[0] === "object" && parsed[0] !== null && !Array.isArray(parsed[0])) {
+    parsed.forEach((row, index) => {
+      if (typeof row !== "object" || row === null || Array.isArray(row)) {
+        throw new Error(`JSONのレコード ${index + 1} はオブジェクトである必要があります`);
+      }
+    });
     const records = parsed as Record<string, unknown>[];
-    const headers = Object.keys(records[0]);
-    const headerRow = headers.map(escapeField).join(delimiter);
-    const rows = records.map((row) => headers.map((h) => escapeField(row[h])).join(delimiter));
+    // 先頭行にないキーも列に含める。Setは初出の順序を保持する。
+    const columns = new Set<string>();
+    for (const row of records) {
+      for (const key of Object.keys(row)) columns.add(key);
+    }
+    const headers = [...columns];
+    if (headers.length === 0) {
+      throw new Error("JSONにCSVの列として使用できるキーがありません");
+    }
+    const headerRow = headers
+      .map((header) => escapeField(header, headers.length === 1))
+      .join(delimiter);
+    const rows = records.map((row) =>
+      headers
+        .map((h) => escapeField(Object.hasOwn(row, h) ? row[h] : undefined, headers.length === 1))
+        .join(delimiter),
+    );
     return [headerRow, ...rows].join("\n");
   }
 
   if (Array.isArray(parsed[0])) {
-    const rows = (parsed as unknown[][]).map((row) => row.map(escapeField).join(delimiter));
+    parsed.forEach((row, index) => {
+      if (!Array.isArray(row)) {
+        throw new Error(`JSONのレコード ${index + 1} は配列である必要があります`);
+      }
+      if (row.length === 0) {
+        throw new Error(
+          `JSONのレコード ${index + 1} は空の配列です。CSVで表せるように1つ以上の値を指定してください`,
+        );
+      }
+    });
+    const rows = (parsed as unknown[][]).map((row) =>
+      row.map((value) => escapeField(value, row.length === 1)).join(delimiter),
+    );
     return rows.join("\n");
   }
 
@@ -171,7 +252,8 @@ function CsvJsonConverter() {
   }, []);
 
   const handleConvert = useCallback(() => {
-    if (!inputText.trim()) {
+    setOutputText("");
+    if (!inputText.trim() && (mode !== "csv-to-json" || !inputText.includes(delimiter))) {
       announceStatus("エラー: テキストを入力してください");
       showToast("テキストを入力してください", "error");
       inputRef.current?.focus();
@@ -375,7 +457,12 @@ function CsvJsonConverter() {
                 "CSV → JSON（ヘッダーあり）: オブジェクトの配列 [{key: value}, ...]",
                 "CSV → JSON（ヘッダーなし）: 配列の配列 [[val1, val2], ...]",
                 "JSON → CSV: オブジェクトの配列または配列の配列に対応",
+                "オブジェクト配列は全レコードのキーを初出の順に列へ追加します。欠けているキーは空欄になります",
+                "重複したCSVヘッダーやヘッダーより多い列は、データを失わないようエラーにします。ヘッダーなしなら配列として保持できます",
+                "JSONの行はオブジェクトまたは配列に統一してください。空の配列の行やキーが全くないデータは変換できません",
                 "フィールドにカンマや改行を含む場合はダブルクォートで囲んでください",
+                "フィールド前後の空白と引用符内の改行はそのまま保持します。空行は無視します",
+                "引用符の閉じ忘れや不正な位置の引用符はエラーとして表示します",
               ],
             },
           ]}
