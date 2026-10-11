@@ -44,7 +44,7 @@
     "jsonpath-plus": "^10.4.0",
     "jszip": "^3.10.1",
     "lamejs": "^1.2.1",
-    "lucide-react": "^0.562.0",
+    "lucide-react": "^1.8.0",
     "marked": "^17.0.4",
     "mermaid": "^11.13.0",
     "qrcode": "^1.5.4",
