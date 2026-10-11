@@ -299,3 +299,120 @@ describe("JSONL ↔ JSON配列 ラウンドトリップ", () => {
     expect(JSON.parse(restored)).toEqual(JSON.parse(original));
   });
 });
+
+describe("JSON Linesの元トークン保持", () => {
+  const record = String.raw`{"id":9007199254740993,"huge":1e400,"tiny":1e-400,"decimal":0.1234567890123456789,"negative":-0,"exponent":1E+03,"x":1,"x":2,"2":"two","1":"one","text":"\u65e5\/\uD800","\u0061":"\u0062"}`;
+  const formatted = String.raw`{"id": 9007199254740993, "huge": 1e400, "tiny": 1e-400, "decimal": 0.1234567890123456789, "negative": -0, "exponent": 1E+03, "x": 1, "x": 2, "2": "two", "1": "one", "text": "\u65e5\/\uD800", "\u0061": "\u0062"}`;
+
+  it("整形・圧縮は大整数、指数、重複キー、キー順、escapeを変えない", () => {
+    const input = ` ${record} \r\n\n${record}\n`;
+    expect(formatJsonLines(input)).toBe(`${formatted}\n\n${formatted}`);
+    expect(minifyJsonLines(input)).toBe(`${record}\n${record}`);
+    expect(minifyJsonLines(formatJsonLines(input))).toBe(`${record}\n${record}`);
+    expect(formatJsonLines(formatted)).toBe(formatted);
+    expect(minifyJsonLines(record)).toBe(record);
+  });
+
+  it("両方の配列変換で元トークンを保ち、繰り返しても値を直さない", () => {
+    expect(jsonLinesToJsonArray(`${record}\n${record}`, 0)).toBe(`[${record},${record}]`);
+    expect(jsonArrayToJsonLines(`[${record},${record}]`)).toBe(`${record}\n${record}`);
+    expect(jsonArrayToJsonLines(jsonLinesToJsonArray(`${record}\n${record}`))).toBe(
+      `${record}\n${record}`,
+    );
+    const once = jsonLinesToJsonArray(record);
+    expect(jsonLinesToJsonArray(jsonArrayToJsonLines(once))).toBe(once);
+  });
+
+  it.each([
+    "9007199254740993",
+    "123456789012345678901234567890",
+    "1e400",
+    "1e-400",
+    "0.1234567890123456789",
+    "-0",
+    "-0.000",
+    "1E+03",
+    "1.2300",
+    "true",
+    "false",
+    "null",
+    String.raw`"\u0061\/\uD800"`,
+  ])("有効なプリミティブ %s の表記を全4操作で保つ", (literal) => {
+    expect(formatJsonLines(`  ${literal}  `)).toBe(literal);
+    expect(minifyJsonLines(`  ${literal}  `)).toBe(literal);
+    expect(jsonLinesToJsonArray(literal, 0)).toBe(`[${literal}]`);
+    expect(jsonArrayToJsonLines(`[${literal}]`)).toBe(literal);
+  });
+
+  it("配列の境界は文字列・escape・入れ子内のカンマや括弧と混同しない", () => {
+    const records = [
+      String.raw`"[,]}:\"\\"`,
+      String.raw`{"x":[{"a":9007199254740993},"],",[]],"x":-0}`,
+      String.raw`[[],{},[1e400,["a,b",{"q":"\""}]]]`,
+      String.raw`"\n\r\t"`,
+      "null",
+      "false",
+      "-0.0",
+    ];
+    const array = ` \r\n[\n  ${records.join(",\n  ")}\n]\t `;
+    expect(jsonArrayToJsonLines(array)).toBe(records.join("\n"));
+    expect(jsonLinesToJsonArray(jsonArrayToJsonLines(array), 0)).toBe(`[${records.join(",")}]`);
+  });
+
+  it("空行とtrim契約を維持し、無効な行を変換結果へ部分採用しない", () => {
+    const input = `\uFEFF ${record}\u00A0\n\n\u00A0-0\uFEFF`;
+    expect(jsonLinesToJsonArray(input, 0)).toBe(`[${record},-0]`);
+    const invalid = `\uFEFF  {"x":01} \u00A0\r`;
+    for (const transform of [formatJsonLines, minifyJsonLines]) {
+      expect(transform(`${record}\n${invalid}\n-0`).split("\n")[1]).toBe(invalid);
+    }
+    expect(() => jsonLinesToJsonArray(`${record}\n\n${invalid}\n-0`)).toThrow(
+      "行 3 の JSON が無効です",
+    );
+  });
+
+  it.each([
+    "[1,]",
+    "[01]",
+    "[+1]",
+    "[.1]",
+    "[NaN]",
+    "[Infinity]",
+    "[undefined]",
+    "['x']",
+    "[\u00A01]",
+    "\uFEFF[1]",
+    "[1]\u00A0",
+  ])("配列入力 %j のJSON文法を緩和しない", (input) => {
+    expect(() => jsonArrayToJsonLines(input)).toThrow("JSON の解析に失敗しました");
+  });
+
+  it.each([0, 1, 2, 4, 10, 20, -1, 1.5, Number.NaN, Number.POSITIVE_INFINITY])(
+    "indent %s は既存JSON helperと同じ空白方針を使う",
+    (indent) => {
+      // 値ではなく安全な定数だけをnative stringifyし、indent契約を比較する。
+      const template = JSON.stringify([{ a: 0 }], null, indent);
+      expect(jsonLinesToJsonArray('{"a":9007199254740993}', indent)).toBe(
+        template
+          .replace('"a": 0', '"a": 9007199254740993')
+          .replace('"a":0', '"a":9007199254740993'),
+      );
+    },
+  );
+
+  it("parse APIのJS値は互換維持し、出力には採用しない", () => {
+    const parsed = parseJsonLines(`${record}\n1e400`);
+    expect(parsed.validCount).toBe(2);
+    expect(parsed.lines[0].raw).toBe(record);
+    expect(parsed.lines[1].parsed).toBe(Number.POSITIVE_INFINITY);
+    expect(jsonLinesToJsonArray(`${record}\n1e400`, 0)).toBe(`[${record},1e400]`);
+  });
+
+  it("多数の長いレコードでも境界と元トークンを保つ", () => {
+    const values = Array.from({ length: 10000 }, () => record);
+    const lines = values.join("\n");
+    const compact = `[${values.join(",")}]`;
+    expect(jsonLinesToJsonArray(lines, 0)).toBe(compact);
+    expect(jsonArrayToJsonLines(compact)).toBe(lines);
+  });
+});

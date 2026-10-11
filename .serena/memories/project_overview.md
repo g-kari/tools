@@ -33,5 +33,5 @@ Cloudflare Workers上で動作するWebツール集。200以上のツールを�
 - インラインスタイル（style属性）使用禁止 → app/styles.cssまたは専用CSSで定義
 - alert()使用禁止 → app/components/Toast.tsxのトースト通知を使用
 - JSDocコメントで80%以上のドキュメントカバレッジを維持
-- Serena MCP積極活用
+- コードの読み取り・検索・編集には利用可能なツールを使い、対象のシンボルと参照先を確認する
 - Git Worktreeを使用した開発
