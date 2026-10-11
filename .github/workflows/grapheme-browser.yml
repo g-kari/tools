@@ -1,0 +1,77 @@
+name: Grapheme count browser regression
+
+on:
+  pull_request:
+    paths:
+      - "app/routes/char-count.tsx"
+      - "app/routes/text-stats.tsx"
+      - "app/hooks/useGraphemeCount.ts"
+      - "app/utils/grapheme-count.ts"
+      - "app/components/**"
+      - "app/styles/base.css"
+      - "app/styles/animations.css"
+      - "app/styles/components.css"
+      - "app/styles/tools/character-count.css"
+      - "app/styles/tools/text-stats.css"
+      - "tests/browser/grapheme/**"
+      - "tests/e2e/grapheme-count.spec.ts"
+      - "tests/unit/grapheme-count*.test.ts"
+      - "package*.json"
+      - ".github/workflows/grapheme-browser.yml"
+  push:
+    branches: [main]
+    paths:
+      - "app/routes/char-count.tsx"
+      - "app/routes/text-stats.tsx"
+      - "app/hooks/useGraphemeCount.ts"
+      - "app/utils/grapheme-count.ts"
+      - "app/components/**"
+      - "app/styles/base.css"
+      - "app/styles/animations.css"
+      - "app/styles/components.css"
+      - "app/styles/tools/character-count.css"
+      - "app/styles/tools/text-stats.css"
+      - "tests/browser/grapheme/**"
+      - "tests/e2e/grapheme-count.spec.ts"
+      - "tests/unit/grapheme-count*.test.ts"
+      - "package*.json"
+      - ".github/workflows/grapheme-browser.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: grapheme-browser-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npx tsc --noEmit
+      - run: npx playwright install --with-deps chromium
+      - run: npx vite build --config tests/browser/grapheme/vite.config.ts
+      - run: npx playwright test --config tests/browser/grapheme/playwright.config.ts
+        env:
+          CI: true
+      - run: |
+          mkdir -p test-results
+          git rev-parse HEAD | tee test-results/grapheme-source-sha.txt
+        if: always()
+      - uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: grapheme-browser-results
+          path: test-results/
+          retention-days: 1
