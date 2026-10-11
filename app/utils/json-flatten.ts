@@ -27,6 +27,51 @@ export type JsonValue =
   | JsonValue[]
   | { [key: string]: JsonValue };
 
+/** 特殊な名前も通常のJSONメンバーとして書き込む。 */
+function setOwnValue(target: Record<string, JsonValue>, key: string, value: JsonValue): void {
+  Object.defineProperty(target, key, {
+    value,
+    enumerable: true,
+    configurable: true,
+    writable: true,
+  });
+}
+
+/** フラットな各キーを葉として扱い、祖先と子孫が重なる入力を拒否する。 */
+function validateUnflattenPaths(keys: string[], delimiter: string): void {
+  interface PathNode {
+    children: Map<string, PathNode>;
+    leaf?: string;
+    firstKey?: string;
+  }
+  const root: PathNode = { children: new Map() };
+  for (const key of keys) {
+    const parts = key.split(delimiter);
+    // 空区切り文字で空キーが無視される既存の振る舞いを維持する。
+    if (parts.length === 0) continue;
+    let node = root;
+    for (const part of parts) {
+      if (node.leaf !== undefined) {
+        throw new Error(
+          `キー ${JSON.stringify(node.leaf)} と ${JSON.stringify(key)} が衝突しています。親キーと子キーを同時に指定できません（区切り文字: ${JSON.stringify(delimiter)}）。`,
+        );
+      }
+      let next = node.children.get(part);
+      if (!next) {
+        next = { children: new Map(), firstKey: key };
+        node.children.set(part, next);
+      }
+      node = next;
+    }
+    if (node.children.size > 0) {
+      throw new Error(
+        `キー ${JSON.stringify(key)} と ${JSON.stringify(node.firstKey)} が衝突しています。親キーと子キーを同時に指定できません（区切り文字: ${JSON.stringify(delimiter)}）。`,
+      );
+    }
+    node.leaf = key;
+  }
+}
+
 /**
  * ネストされたJSONオブジェクトをフラットなオブジェクトに変換する
  * @param obj - フラット化するオブジェクト
@@ -40,24 +85,33 @@ export function flattenJson(
   const { delimiter = ".", flattenArrays = true, maxDepth = 0 } = options;
   const result: Record<string, JsonValue> = {};
 
+  function emit(key: string, value: JsonValue): void {
+    if (Object.hasOwn(result, key)) {
+      throw new Error(
+        `フラット化したキー ${JSON.stringify(key)} が衝突しています（区切り文字: ${JSON.stringify(delimiter)}）。区切り文字または入力キーを変更してください。`,
+      );
+    }
+    setOwnValue(result, key, value);
+  }
+
   function recurse(current: JsonValue, prefix: string, depth: number): void {
     if (maxDepth > 0 && depth >= maxDepth) {
-      result[prefix] = current;
+      emit(prefix, current);
       return;
     }
 
     if (current === null || typeof current !== "object") {
-      result[prefix] = current;
+      emit(prefix, current);
       return;
     }
 
     if (Array.isArray(current)) {
       if (!flattenArrays) {
-        result[prefix] = current;
+        emit(prefix, current);
         return;
       }
       if (current.length === 0) {
-        result[prefix] = [];
+        emit(prefix, []);
         return;
       }
       current.forEach((item, index) => {
@@ -69,7 +123,7 @@ export function flattenJson(
 
     const keys = Object.keys(current as Record<string, JsonValue>);
     if (keys.length === 0) {
-      result[prefix] = {};
+      emit(prefix, {});
       return;
     }
 
@@ -103,6 +157,8 @@ export function unflattenJson(
     return {};
   }
 
+  validateUnflattenPaths(Object.keys(obj), delimiter);
+
   const result: Record<string, JsonValue> = {};
 
   Object.entries(obj).forEach(([key, value]) => {
@@ -111,19 +167,21 @@ export function unflattenJson(
 
     parts.forEach((part, index) => {
       if (index === parts.length - 1) {
-        current[part] = value;
+        setOwnValue(current, part, value);
       } else {
         const nextPart = parts[index + 1];
         const isNextNumeric = /^\d+$/.test(nextPart);
 
-        if (!(part in current)) {
-          current[part] = isNextNumeric ? [] : {};
+        if (!Object.hasOwn(current, part)) {
+          setOwnValue(current, part, isNextNumeric ? [] : {});
         }
 
         if (Array.isArray(current[part])) {
           if (!isNextNumeric) {
-            current[part] = Object.fromEntries(
-              (current[part] as JsonValue[]).map((v, i) => [i, v]),
+            setOwnValue(
+              current,
+              part,
+              Object.fromEntries((current[part] as JsonValue[]).map((v, i) => [i, v])),
             );
           }
         } else if (typeof current[part] === "object" && current[part] !== null) {
@@ -170,10 +228,13 @@ function convertArrays(obj: Record<string, JsonValue>): JsonValue {
   const result: Record<string, JsonValue> = {};
   keys.forEach((k) => {
     const val = obj[k];
-    result[k] =
+    setOwnValue(
+      result,
+      k,
       val !== null && typeof val === "object" && !Array.isArray(val)
         ? convertArrays(val as Record<string, JsonValue>)
-        : val;
+        : val,
+    );
   });
   return result;
 }

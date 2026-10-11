@@ -1,0 +1,69 @@
+name: JSON Flatten collision browser regression
+
+on:
+  pull_request:
+    paths:
+      - "app/routes/json-flatten.tsx"
+      - "app/utils/json-flatten.ts"
+      - "app/components/**"
+      - "app/hooks/**"
+      - "app/styles/base.css"
+      - "app/styles/animations.css"
+      - "app/styles/components.css"
+      - "app/styles/tools/json-flatten.css"
+      - "tests/browser/json-flatten/**"
+      - "tests/unit/json-flatten*.test.ts"
+      - "tests/e2e/json-flatten*.spec.ts"
+      - "package*.json"
+      - ".github/workflows/json-flatten-browser.yml"
+  push:
+    branches: [main]
+    paths:
+      - "app/routes/json-flatten.tsx"
+      - "app/utils/json-flatten.ts"
+      - "app/components/**"
+      - "app/hooks/**"
+      - "app/styles/base.css"
+      - "app/styles/animations.css"
+      - "app/styles/components.css"
+      - "app/styles/tools/json-flatten.css"
+      - "tests/browser/json-flatten/**"
+      - "tests/unit/json-flatten*.test.ts"
+      - "tests/e2e/json-flatten*.spec.ts"
+      - "package*.json"
+      - ".github/workflows/json-flatten-browser.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: json-flatten-browser-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+      - run: npm ci --ignore-scripts
+      - run: node node_modules/@playwright/test/cli.js install --with-deps chromium
+      - run: sudo apt-get update && sudo apt-get install -y bubblewrap
+      - name: Isolated production build, related unit tests, types and Chromium
+        run: bash tests/browser/json-flatten/run-isolated.sh
+      - run: |
+          mkdir -p test-results
+          git rev-parse HEAD | tee test-results/json-flatten-source-sha.txt
+        if: always()
+      - uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: json-flatten-browser-results
+          path: test-results/json-flatten-source-sha.txt
+          retention-days: 1
