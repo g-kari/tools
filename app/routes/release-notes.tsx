@@ -43,6 +43,12 @@ export const releases: Release[] = [
     date: "2026-10-11",
     entries: [
       {
+        type: "fix",
+        title: "URL変換の失敗時に古い結果をクリア",
+        description:
+          "不正な文字列や空入力の変換後に前の成功結果が残る混同を防ぎます。入力と既存のエラー通知を保持し、修正後に再変換できます。",
+      },
+      {
         type: "feat",
         title: "文字数カウントとテキスト統計に書記素数を追加",
         description:

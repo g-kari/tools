@@ -44,6 +44,7 @@ function UrlEncoder() {
 
   const handleEncode = useCallback(() => {
     if (!inputText) {
+      setOutputText("");
       announceStatus("エラー: テキストを入力してください");
       showToast("テキストを入力してください", "error");
       inputRef.current?.focus();
@@ -54,6 +55,7 @@ function UrlEncoder() {
       setOutputText(result);
       announceStatus("URLエンコードが完了しました");
     } catch {
+      setOutputText("");
       announceStatus("エラー: エンコードに失敗しました");
       showToast("エンコードに失敗しました", "error");
     }
@@ -61,6 +63,7 @@ function UrlEncoder() {
 
   const handleDecode = useCallback(() => {
     if (!inputText) {
+      setOutputText("");
       announceStatus("エラー: テキストを入力してください");
       showToast("テキストを入力してください", "error");
       inputRef.current?.focus();
@@ -71,6 +74,7 @@ function UrlEncoder() {
       setOutputText(result);
       announceStatus("URLデコードが完了しました");
     } catch {
+      setOutputText("");
       announceStatus("エラー: 無効なURLエンコード文字列です");
       showToast("無効なURLエンコード文字列です", "error");
     }

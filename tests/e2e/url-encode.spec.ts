@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
 
 test.describe("URL Encode/Decode - E2E Tests", () => {
   test.describe.configure({ timeout: 10000 });
@@ -132,5 +132,99 @@ test.describe("URL Encode/Decode - E2E Tests", () => {
     const output = await outputTextarea.inputValue();
     // Space should be encoded as %20
     expect(output).toContain("%20");
+  });
+
+  for (const malformed of ["%ZZ", "%E3%81", "%"]) {
+    test(`clears prior success after invalid decode ${malformed} and allows correction`, async ({
+      page,
+    }) => {
+      const input = page.locator("#inputText");
+      const output = page.locator("#outputText");
+      const decode = page.getByRole("button", {
+        name: "URLエンコードされた文字列をデコード",
+        exact: true,
+      });
+      await input.fill("old%20value");
+      await decode.click();
+      await expect(output).toHaveValue("old value");
+      await input.fill(malformed);
+      await decode.click();
+      await expect(input).toHaveValue(malformed);
+      await expect(output).toHaveValue("");
+      await expect(page.locator(".toast-error").last()).toContainText(
+        "無効なURLエンコード文字列です",
+      );
+      await input.fill("new%20value");
+      await decode.click();
+      await expect(output).toHaveValue("new value");
+    });
+  }
+
+  async function enterCodeUnits(page: Page, units: number[]) {
+    const input = page.locator("#inputText");
+    await input.evaluate((element, values) => {
+      const textarea = element as HTMLTextAreaElement;
+      Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, "value")!.set!.call(
+        textarea,
+        String.fromCharCode(...values),
+      );
+      textarea.dispatchEvent(new Event("input", { bubbles: true }));
+    }, units);
+    await expect
+      .poll(() =>
+        input.evaluate((element) => {
+          const value = (element as HTMLTextAreaElement).value;
+          return Array.from({ length: value.length }, (_, index) => value.charCodeAt(index));
+        }),
+      )
+      .toEqual(units);
+  }
+
+  test("preserves malformed UTF16 input but clears previous encode output", async ({ page }) => {
+    const input = page.locator("#inputText");
+    const output = page.locator("#outputText");
+    const encode = page.getByRole("button", { name: "入力テキストをURLエンコード", exact: true });
+    for (const units of [[0xd800], [0xdc00], [0x41, 0xd800, 0x42]]) {
+      await input.fill("old value");
+      await encode.click();
+      await expect(output).toHaveValue("old%20value");
+      await enterCodeUnits(page, units);
+      await encode.click();
+      await expect(output).toHaveValue("");
+      await expect(page.locator(".toast-error").last()).toContainText("エンコードに失敗しました");
+      await expect
+        .poll(() =>
+          input.evaluate((element) => {
+            const value = (element as HTMLTextAreaElement).value;
+            return Array.from({ length: value.length }, (_, index) => value.charCodeAt(index));
+          }),
+        )
+        .toEqual(units);
+      await input.fill("fixed value");
+      await encode.click();
+      await expect(output).toHaveValue("fixed%20value");
+    }
+  });
+
+  test("clears previous output when either conversion is attempted with empty input", async ({
+    page,
+  }) => {
+    const input = page.locator("#inputText");
+    const output = page.locator("#outputText");
+    for (const mode of ["encode", "decode"] as const) {
+      const button = page.getByRole("button", {
+        name:
+          mode === "encode" ? "入力テキストをURLエンコード" : "URLエンコードされた文字列をデコード",
+        exact: true,
+      });
+      await input.fill(mode === "encode" ? "old value" : "old%20value");
+      await button.click();
+      await expect(output).not.toHaveValue("");
+      await input.fill("");
+      await button.click();
+      await expect(output).toHaveValue("");
+      await expect(input).toBeFocused();
+      await expect(page.locator(".toast-error").last()).toContainText("テキストを入力してください");
+    }
   });
 });
