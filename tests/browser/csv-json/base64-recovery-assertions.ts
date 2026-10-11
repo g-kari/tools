@@ -7,7 +7,11 @@ export const malformedInputs = [
 ] as const;
 
 /** Assert the same input-preserving flow in the app and bounded real-route fixture. */
-export async function assertBase64Recovery(page: Page, codeUnits: readonly number[]) {
+export async function assertBase64Recovery(
+  page: Page,
+  codeUnits: readonly number[],
+  screenshotPrefix = "base64-error",
+) {
   const pageErrors: string[] = [];
   page.on("pageerror", (error) => pageErrors.push(error.message));
   await page.goto("/base64");
@@ -46,7 +50,7 @@ export async function assertBase64Recovery(page: Page, codeUnits: readonly numbe
   await expect(page.locator(".tool-container")).toHaveCSS("opacity", "1");
   await expect(page.getByRole("alert")).toBeInViewport();
   await page.screenshot({
-    path: `test-results/base64-error-${page.viewportSize()?.width}-${codeUnits[0]}.png`,
+    path: `test-results/${screenshotPrefix}-${page.viewportSize()?.width}-${codeUnits[0]}.png`,
     fullPage: true,
   });
   await input.fill("日本語 👩‍💻 e\u0301");

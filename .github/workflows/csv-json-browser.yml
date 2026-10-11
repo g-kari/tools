@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - "app/routes/csv-json.tsx"
+      - "app/routes/base64.tsx"
       - "app/components/**"
       - "app/hooks/**"
       - "app/styles/base.css"
@@ -14,12 +15,15 @@ on:
       - "tests/browser/csv-json/**"
       - "tests/unit/csv-json*.test.ts"
       - "tests/e2e/csv-json.spec.ts"
+      - "tests/e2e/base64-input-recovery.spec.ts"
+      - "tests/unit/base64-input-recovery.test.ts"
       - "package*.json"
       - ".github/workflows/csv-json-browser.yml"
   push:
     branches: [main]
     paths:
       - "app/routes/csv-json.tsx"
+      - "app/routes/base64.tsx"
       - "app/components/**"
       - "app/hooks/**"
       - "app/styles/base.css"
@@ -30,6 +34,8 @@ on:
       - "tests/browser/csv-json/**"
       - "tests/unit/csv-json*.test.ts"
       - "tests/e2e/csv-json.spec.ts"
+      - "tests/e2e/base64-input-recovery.spec.ts"
+      - "tests/unit/base64-input-recovery.test.ts"
       - "package*.json"
       - ".github/workflows/csv-json-browser.yml"
 
@@ -63,6 +69,10 @@ jobs:
       - run: npx playwright test --config tests/browser/csv-json/playwright.config.ts
         env:
           CI: true
+      - run: npx playwright test --config tests/browser/csv-json/base64-app.config.ts
+        env:
+          CI: true
+          WRANGLER_SEND_METRICS: "false"
       - run: |
           mkdir -p test-results
           git rev-parse HEAD | tee test-results/json-source-sha.txt
