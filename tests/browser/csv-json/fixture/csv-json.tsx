@@ -1,10 +1,11 @@
-/** Test the real route with synthetic CSV/JSON only, without the app shell or services. */
+/** Test real conversion routes with synthetic input, without the app shell or services. */
 import { createElement } from "react";
 import { createRoot } from "react-dom/client";
 import { ToastProvider } from "../../../../app/components/Toast";
-import { Route } from "../../../../app/routes/csv-json";
+import { Route as CsvJsonRoute } from "../../../../app/routes/csv-json";
+import { Route as Base64Route } from "../../../../app/routes/base64";
 import "./styles.css";
 const container = document.getElementById("root");
 if (!container) throw new Error("Missing fixture root");
-const Component = Route.options.component!;
+const Component = (location.pathname === "/base64" ? Base64Route : CsvJsonRoute).options.component!;
 createRoot(container).render(createElement(ToastProvider, { children: createElement(Component) }));
