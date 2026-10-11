@@ -46,7 +46,9 @@ concurrency:
 
 jobs:
   browser:
-    runs-on: ubuntu-latest
+    # Standard supported VM; Ubuntu 24 blocks the downloaded Chromium sandbox.
+    # Keep Chromium sandbox enabled rather than changing host security policy.
+    runs-on: ubuntu-22.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v6
