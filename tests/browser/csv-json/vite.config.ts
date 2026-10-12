@@ -2,7 +2,7 @@ import { fileURLToPath } from "node:url";
 import { defineConfig } from "vite-plus";
 import tailwindcss from "@tailwindcss/vite";
 
-/** Workers・外部サービスを含めず、実際のCSV/JSON UIだけをビルドする。 */
+/** Workers・外部サービスを含めず、実際の変換UIだけをビルドする。 */
 export default defineConfig({
   root: fileURLToPath(new URL("./fixture", import.meta.url)),
   plugins: [tailwindcss()],

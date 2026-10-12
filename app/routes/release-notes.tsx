@@ -43,6 +43,12 @@ export const releases: Release[] = [
     date: "2026-10-11",
     entries: [
       {
+        type: "fix",
+        title: "Base64で変換できない入力から修復できるように改善",
+        description:
+          "孤立したサロゲートなどでエンコードに失敗しても入力欄を維持してエラーを表示します。入力の修正・クリアから再開でき、失敗時にはコピーと入れ替えを無効にします。",
+      },
+      {
         type: "feat",
         title: "文字数カウントとテキスト統計に書記素数を追加",
         description:
