@@ -5,6 +5,7 @@ on:
     paths:
       - "app/routes/csv-json.tsx"
       - "app/routes/url-encode.tsx"
+      - "app/routes/base64.tsx"
       - "app/components/**"
       - "app/hooks/**"
       - "app/styles/base.css"
@@ -17,6 +18,8 @@ on:
       - "tests/e2e/csv-json.spec.ts"
       - "tests/unit/url-encode*.test.ts"
       - "tests/e2e/url-encode.spec.ts"
+      - "tests/e2e/base64-input-recovery.spec.ts"
+      - "tests/unit/base64-input-recovery.test.ts"
       - "package*.json"
       - ".github/workflows/csv-json-browser.yml"
   push:
@@ -24,6 +27,7 @@ on:
     paths:
       - "app/routes/csv-json.tsx"
       - "app/routes/url-encode.tsx"
+      - "app/routes/base64.tsx"
       - "app/components/**"
       - "app/hooks/**"
       - "app/styles/base.css"
@@ -36,6 +40,8 @@ on:
       - "tests/e2e/csv-json.spec.ts"
       - "tests/unit/url-encode*.test.ts"
       - "tests/e2e/url-encode.spec.ts"
+      - "tests/e2e/base64-input-recovery.spec.ts"
+      - "tests/unit/base64-input-recovery.test.ts"
       - "package*.json"
       - ".github/workflows/csv-json-browser.yml"
 
@@ -70,6 +76,10 @@ jobs:
         env:
           CI: true
       - run: npx playwright test --config tests/browser/csv-json/url-app.config.ts
+        env:
+          CI: true
+          WRANGLER_SEND_METRICS: "false"
+      - run: npx playwright test --config tests/browser/csv-json/base64-app.config.ts
         env:
           CI: true
           WRANGLER_SEND_METRICS: "false"

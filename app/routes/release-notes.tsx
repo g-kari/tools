@@ -39,14 +39,26 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
-    version: "2026.10.9",
-    date: "2026-10-11",
+    version: "2026.10.10",
+    date: "2026-10-12",
     entries: [
       {
         type: "fix",
         title: "URL変換の失敗時に古い結果をクリア",
         description:
           "不正な文字列や空入力の変換後に前の成功結果が残る混同を防ぎます。入力と既存のエラー通知を保持し、修正後に再変換できます。",
+      },
+    ],
+  },
+  {
+    version: "2026.10.9",
+    date: "2026-10-11",
+    entries: [
+      {
+        type: "fix",
+        title: "Base64で変換できない入力から修復できるように改善",
+        description:
+          "孤立したサロゲートなどでエンコードに失敗しても入力欄を維持してエラーを表示します。入力の修正・クリアから再開でき、失敗時にはコピーと入れ替えを無効にします。",
       },
       {
         type: "feat",

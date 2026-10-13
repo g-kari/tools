@@ -26,7 +26,7 @@ interface UseConversionToolReturn<T> {
   encodeResult: EncodeResult | null;
   /** デコード成功結果（デコードモードかつ成功時のみ） */
   decodeResult: DecodeSuccessResult | null;
-  /** デコードエラーメッセージ（デコードモードかつエラー時のみ） */
+  /** 現在のモードの変換エラーメッセージ（エラー時のみ） */
   error: string | null;
   /** 入力テキストを更新する */
   setInput: (text: string) => void;
@@ -69,12 +69,23 @@ export function useConversionTool<T>(config: ConversionConfig<T>): UseConversion
   const [input, setInput] = useState("");
   const [options, setOptions] = useState<T>(defaultOptions);
 
-  const encodeResult = useMemo<EncodeResult | null>(() => {
-    if (mode !== "encode" || !input) return null;
-    return encode(input, options);
+  const { encodeResult, encodeError } = useMemo<{
+    encodeResult: EncodeResult | null;
+    encodeError: string | null;
+  }>(() => {
+    if (mode !== "encode" || !input) return { encodeResult: null, encodeError: null };
+    try {
+      return { encodeResult: encode(input, options), encodeError: null };
+    } catch {
+      // encode の例外は詳細を表示せず、入力を修正できる失敗状態として扱う。
+      return {
+        encodeResult: null,
+        encodeError: "エンコードに失敗しました。入力と設定を確認してください。",
+      };
+    }
   }, [mode, input, options, encode]);
 
-  const { decodeResult, error } = useMemo<{
+  const { decodeResult, error: decodeError } = useMemo<{
     decodeResult: DecodeSuccessResult | null;
     error: string | null;
   }>(() => {
@@ -92,6 +103,7 @@ export function useConversionTool<T>(config: ConversionConfig<T>): UseConversion
     return { decodeResult: result, error: null };
   }, [mode, input, options, decode, validate]);
 
+  const error = mode === "encode" ? encodeError : decodeError;
   const output = mode === "encode" ? (encodeResult?.encoded ?? "") : (decodeResult?.decoded ?? "");
 
   const updateOptions = useCallback((patch: Partial<T>) => {
