@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 /** GitHubホスト環境で実コンポーネントの限定ブラウザ検証を実行する。 */
 export default defineConfig({
   testDir: ".",
-  testMatch: ["csv-json.spec.ts", "base64-input-recovery.spec.ts"],
+  testMatch: ["csv-json.spec.ts", "base64-input-recovery.spec.ts", "url-recovery.spec.ts"],
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
   retries: 0,
