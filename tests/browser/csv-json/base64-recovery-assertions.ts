@@ -6,6 +6,13 @@ export const malformedInputs = [
   ["embedded-high-surrogate", [0x524d, 0xd800, 0x5f8c]],
 ] as const;
 
+/** Wait until the shared conversion layout is interactive after SSR hydration. */
+export async function waitForConversionToolHydrated(page: Page) {
+  const root = page.locator(".tool-container");
+  await expect(root).toHaveAttribute("data-hydrated", "true");
+  await expect(page.locator("#conv-input")).toBeEnabled();
+}
+
 /** Assert the same input-preserving flow in the app and bounded real-route fixture. */
 export async function assertBase64Recovery(
   page: Page,
@@ -15,6 +22,7 @@ export async function assertBase64Recovery(
   const pageErrors: string[] = [];
   page.on("pageerror", (error) => pageErrors.push(error.message));
   await page.goto("/base64");
+  await waitForConversionToolHydrated(page);
   const input = page.locator("#conv-input");
   await input.fill("previous valid output");
   await expect(page.locator(".conv-textarea-output")).toBeVisible();
