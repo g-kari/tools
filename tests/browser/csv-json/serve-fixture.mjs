@@ -4,6 +4,7 @@ import { readFile } from "node:fs/promises";
 
 const files = new Map([
   ["/", ["index.html", "text/html; charset=utf-8"]],
+  ["/base64", ["index.html", "text/html; charset=utf-8"]],
   ["/fixture.js", ["fixture.js", "text/javascript; charset=utf-8"]],
   ["/fixture.css", ["fixture.css", "text/css; charset=utf-8"]],
 ]);
