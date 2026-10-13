@@ -67,6 +67,15 @@ describe("manual conversion mode tabs", () => {
     act(() => element.focus());
   }
 
+  it("enables controls after the client hydration gate", () => {
+    render();
+    const input = container.querySelector<HTMLTextAreaElement>("#conv-input")!;
+    expect(container.querySelector(".tool-container")?.getAttribute("data-hydrated")).toBe("true");
+    expect(input.disabled).toBe(false);
+    expect(
+      container.querySelector<HTMLButtonElement>('button[aria-label="出力をコピー"]')!.disabled,
+    ).toBe(false);
+  });
   it.each(["encode", "decode"] as const)("starts with only %s in the tab sequence", (mode) => {
     render({ mode });
     expect(tabs().map((tab) => tab.tabIndex)).toEqual(mode === "encode" ? [0, -1] : [-1, 0]);

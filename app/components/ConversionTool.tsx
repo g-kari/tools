@@ -88,8 +88,12 @@ export function ConversionTool({
   const id = useId();
   const panelId = `${id}-panel`;
   const [tabStop, setTabStop] = useState(mode);
+  const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => setTabStop(mode), [mode]);
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
 
   // Manual activation preserves input: the existing mode-change callback clears it.
   // Arrow keys move focus only; native Enter/Space/click perform the chosen change.
@@ -150,7 +154,7 @@ export function ConversionTool({
 
   return (
     <>
-      <div className="tool-container">
+      <div className="tool-container" data-hydrated={hydrated ? "true" : undefined}>
         <div
           className="conv-tabs"
           role="tablist"
@@ -170,6 +174,7 @@ export function ConversionTool({
             onFocus={() => setTabStop("encode")}
             className={`conv-tab-btn${mode === "encode" ? " active" : ""}`}
             onClick={() => handleModeChange("encode")}
+            disabled={!hydrated}
           >
             {encodeLabel}
           </button>
@@ -183,6 +188,7 @@ export function ConversionTool({
             onFocus={() => setTabStop("decode")}
             className={`conv-tab-btn${mode === "decode" ? " active" : ""}`}
             onClick={() => handleModeChange("decode")}
+            disabled={!hydrated}
           >
             {decodeLabel}
           </button>
@@ -203,6 +209,7 @@ export function ConversionTool({
               placeholder={placeholder}
               aria-label={inputLabel}
               spellCheck={false}
+              disabled={!hydrated}
             />
           </div>
 
@@ -222,7 +229,7 @@ export function ConversionTool({
               type="button"
               className="btn-primary"
               onClick={handleCopy}
-              disabled={!hasOutput}
+              disabled={!hydrated || !hasOutput}
               aria-label="出力をコピー"
             >
               コピー
@@ -231,7 +238,7 @@ export function ConversionTool({
               type="button"
               className="btn-secondary"
               onClick={handleSwap}
-              disabled={!hasOutput}
+              disabled={!hydrated || !hasOutput}
               aria-label="入出力を入れ替える"
               title="出力を入力に入れ替え"
             >
@@ -241,7 +248,7 @@ export function ConversionTool({
               type="button"
               className="btn-clear"
               onClick={handleClear}
-              disabled={!input}
+              disabled={!hydrated || !input}
               aria-label="入力をクリア"
             >
               クリア
