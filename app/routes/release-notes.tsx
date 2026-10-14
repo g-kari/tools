@@ -39,6 +39,18 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
+    version: "2026.10.12",
+    date: "2026-10-14",
+    entries: [
+      {
+        type: "fix",
+        title: "ハッシュ生成で古い計算結果の上書きを防止",
+        description:
+          "入力の変更・ファイルのクリア・モード切り替え後に、前の計算が新しい結果や計算中表示を上書きしないようにします。同じファイルを再選択でき、読み込み失敗からも再開できます。",
+      },
+    ],
+  },
+  {
     version: "2026.10.11",
     date: "2026-10-13",
     entries: [
