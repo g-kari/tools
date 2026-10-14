@@ -5,6 +5,7 @@ import { useToast } from "../components/Toast";
 import { TipsCard } from "~/components/TipsCard";
 import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
+import { ErrorMessage } from "~/components/ErrorMessage";
 
 /**
  * @tool ハッシュ生成
@@ -401,69 +402,131 @@ function HashGenerator() {
   const [hashResults, setHashResults] = useState<HashResult[]>([]);
   const [isComputing, setIsComputing] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [operationError, setOperationError] = useState<string | null>(null);
+  const [requestVersion, setRequestVersion] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const computeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const generationRef = useRef(0);
+  const inputSnapshotRef = useRef<{ mode: "text" | "file"; text: string }>({
+    mode: "text",
+    text: "",
+  });
+
+  // Revoke old callbacks before React's passive-effect cleanup can run.
+  const invalidateRequest = useCallback(
+    (hasInput: boolean) => {
+      setRequestVersion(++generationRef.current);
+      setHashResults([]);
+      setOperationError(null);
+      setIsComputing(hasInput);
+      if (statusRef.current) statusRef.current.textContent = "";
+    },
+    [statusRef],
+  );
+
+  const handleTextChange = useCallback(
+    (text: string) => {
+      inputSnapshotRef.current.text = text;
+      invalidateRequest(text.length > 0);
+      setInputText(text);
+    },
+    [invalidateRequest],
+  );
 
   // テキスト入力変更時にハッシュを計算（デバウンス付き）
   useEffect(() => {
-    if (inputMode !== "text") return;
+    if (inputMode !== "text" || !inputText) return;
+    let cancelled = false;
+    const active = () => !cancelled && requestVersion === generationRef.current;
+    if (!active()) return;
 
-    if (computeTimerRef.current) {
-      clearTimeout(computeTimerRef.current);
-    }
-
-    if (!inputText) {
-      setHashResults([]);
-      return;
-    }
-
-    computeTimerRef.current = setTimeout(async () => {
-      setIsComputing(true);
+    const timer = setTimeout(async () => {
+      if (!active()) return;
       try {
         const data = textToBytes(inputText);
         const results = await computeAllHashes(data);
-        setHashResults(results);
+        if (active()) setHashResults(results);
+      } catch {
+        if (active()) {
+          const message = "ハッシュ計算に失敗しました。入力を変更してもう一度お試しください。";
+          setOperationError(message);
+          announceStatus(message);
+        }
       } finally {
-        setIsComputing(false);
+        if (active()) setIsComputing(false);
       }
     }, 150);
 
     return () => {
-      if (computeTimerRef.current) {
-        clearTimeout(computeTimerRef.current);
-      }
+      cancelled = true;
+      clearTimeout(timer);
     };
-  }, [inputText, inputMode]);
+  }, [inputText, inputMode, requestVersion, announceStatus]);
 
   // ファイル選択時にハッシュを計算
   useEffect(() => {
-    if (inputMode !== "file" || !selectedFile) {
-      if (inputMode === "file") setHashResults([]);
-      return;
-    }
+    if (inputMode !== "file" || !selectedFile) return;
+    let cancelled = false;
+    let readFinished = false;
+    const active = () => !cancelled && requestVersion === generationRef.current;
+    if (!active()) return;
 
     const reader = new FileReader();
-    reader.onload = async (e) => {
-      if (!e.target?.result) return;
-      setIsComputing(true);
+    const failRead = () => {
+      if (!active() || readFinished) return;
+      readFinished = true;
+      const message = "ファイルを読み込めませんでした。もう一度選択してください。";
+      setOperationError(message);
+      setIsComputing(false);
+      announceStatus(message);
+    };
+    reader.onerror = failRead;
+    reader.onabort = failRead;
+    reader.onload = async () => {
+      if (!active() || readFinished) return;
+      if (!(reader.result instanceof ArrayBuffer)) {
+        failRead();
+        return;
+      }
+      readFinished = true;
       try {
-        const data = new Uint8Array(e.target.result as ArrayBuffer);
+        const data = new Uint8Array(reader.result);
         const results = await computeAllHashes(data);
-        setHashResults(results);
-        announceStatus("ファイルのハッシュ計算が完了しました");
+        if (active()) {
+          setHashResults(results);
+          announceStatus("ファイルのハッシュ計算が完了しました");
+        }
+      } catch {
+        if (active()) {
+          const message = "ハッシュ計算に失敗しました。入力を変更してもう一度お試しください。";
+          setOperationError(message);
+          announceStatus(message);
+        }
       } finally {
-        setIsComputing(false);
+        if (active()) setIsComputing(false);
       }
     };
-    reader.readAsArrayBuffer(selectedFile);
-  }, [selectedFile, inputMode, announceStatus]);
+    try {
+      reader.readAsArrayBuffer(selectedFile);
+    } catch {
+      failRead();
+    }
+    return () => {
+      cancelled = true;
+      reader.onload = reader.onerror = reader.onabort = null;
+      if (reader.readyState === FileReader.LOADING) reader.abort();
+    };
+  }, [selectedFile, inputMode, requestVersion, announceStatus]);
 
-  const handleFileSelect = useCallback((files: File[]) => {
-    const file = files[0];
-    if (!file) return;
-    setSelectedFile(file);
-    setHashResults([]);
-  }, []);
+  const handleFileSelect = useCallback(
+    (files: File[]) => {
+      const file = files[0];
+      if (!file) return;
+      invalidateRequest(true);
+      setSelectedFile(file);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    },
+    [invalidateRequest],
+  );
 
   const handleFileDrop = useCallback(
     (e: DragEvent<HTMLDivElement>) => {
@@ -502,21 +565,24 @@ function HashGenerator() {
   );
 
   const handleClearFile = useCallback(() => {
+    invalidateRequest(false);
     setSelectedFile(null);
-    setHashResults([]);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
-  }, []);
+  }, [invalidateRequest]);
 
-  const handleInputModeChange = useCallback((mode: "text" | "file") => {
-    setInputMode(mode);
-    setHashResults([]);
-    setSelectedFile(null);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
-  }, []);
+  const handleInputModeChange = useCallback(
+    (mode: "text" | "file") => {
+      if (mode === inputSnapshotRef.current.mode) return;
+      inputSnapshotRef.current.mode = mode;
+      invalidateRequest(mode === "text" && inputSnapshotRef.current.text.length > 0);
+      setInputMode(mode);
+      setSelectedFile(null);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    },
+    [invalidateRequest],
+  );
 
   const hasInput = inputMode === "text" ? inputText.length > 0 : selectedFile !== null;
 
@@ -552,7 +618,7 @@ function HashGenerator() {
             <textarea
               id="hash-input"
               value={inputText}
-              onChange={(e) => setInputText(e.target.value)}
+              onChange={(e) => handleTextChange(e.target.value)}
               placeholder="ハッシュ値を計算するテキストを入力してください..."
               rows={5}
               aria-describedby="hash-input-hint"
@@ -643,6 +709,7 @@ function HashGenerator() {
         )}
 
         {/* ハッシュ結果一覧 */}
+        <ErrorMessage message={operationError} />
         {hasInput ? (
           <div className="hash-results-grid" role="list" aria-label="ハッシュ生成結果">
             {HASH_ALGORITHMS.map((algo) => {
