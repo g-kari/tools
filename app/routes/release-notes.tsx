@@ -39,6 +39,18 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
+    version: "2026.10.13",
+    date: "2026-10-15",
+    entries: [
+      {
+        type: "fix",
+        title: "CSV → SQL 変換で列の欠落を防止",
+        description:
+          "基準より列が多いレコードを切り捨てず、レコード番号付きのエラーを表示します。末尾の空セルも保持し、NULL 変換を無効にした場合は空文字列にします。入力の修正・再生成と、不足列の NULL 補完は維持します。",
+      },
+    ],
+  },
+  {
     version: "2026.10.12",
     date: "2026-10-14",
     entries: [
