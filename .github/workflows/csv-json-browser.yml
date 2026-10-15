@@ -4,6 +4,8 @@ on:
   pull_request:
     paths:
       - "app/routes/csv-json.tsx"
+      - "app/routes/csv-sql.tsx"
+      - "app/utils/csv-sql.ts"
       - "app/routes/url-encode.tsx"
       - "app/routes/base64.tsx"
       - "app/components/**"
@@ -12,9 +14,12 @@ on:
       - "app/styles/animations.css"
       - "app/styles/components.css"
       - "app/styles/tools/csv-json.css"
+      - "app/styles/tools/csv-sql.css"
       - "app/styles/tools/number-base.css"
       - "tests/browser/csv-json/**"
       - "tests/unit/csv-json*.test.ts"
+      - "tests/unit/csv-sql*.test.ts"
+      - "tests/e2e/csv-sql*.spec.ts"
       - "tests/e2e/csv-json.spec.ts"
       - "tests/unit/url-encode*.test.ts"
       - "tests/e2e/url-encode.spec.ts"
@@ -26,6 +31,8 @@ on:
     branches: [main]
     paths:
       - "app/routes/csv-json.tsx"
+      - "app/routes/csv-sql.tsx"
+      - "app/utils/csv-sql.ts"
       - "app/routes/url-encode.tsx"
       - "app/routes/base64.tsx"
       - "app/components/**"
@@ -34,9 +41,12 @@ on:
       - "app/styles/animations.css"
       - "app/styles/components.css"
       - "app/styles/tools/csv-json.css"
+      - "app/styles/tools/csv-sql.css"
       - "app/styles/tools/number-base.css"
       - "tests/browser/csv-json/**"
       - "tests/unit/csv-json*.test.ts"
+      - "tests/unit/csv-sql*.test.ts"
+      - "tests/e2e/csv-sql*.spec.ts"
       - "tests/e2e/csv-json.spec.ts"
       - "tests/unit/url-encode*.test.ts"
       - "tests/e2e/url-encode.spec.ts"
@@ -80,6 +90,10 @@ jobs:
           CI: true
           WRANGLER_SEND_METRICS: "false"
       - run: npx playwright test --config tests/browser/csv-json/base64-app.config.ts
+        env:
+          CI: true
+          WRANGLER_SEND_METRICS: "false"
+      - run: npx playwright test --config tests/browser/csv-json/csv-sql-app.config.ts
         env:
           CI: true
           WRANGLER_SEND_METRICS: "false"
