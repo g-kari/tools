@@ -1,8 +1,8 @@
 # CSV/JSON column-preservation browser regression
 
-This fixture mounts the actual `/csv-json`, `/base64` or `/url-encode` route component and ToastProvider, with the real base, animation, shared-control and route styles. The component is selected only at those fixed paths. It avoids the application shell, Workers bindings and production hydration path. It is a client-component regression test, not an assertion about live production hydration.
+This fixture mounts the actual `/csv-json`, `/base64`, `/url-encode` or `/csv-sql` route component and ToastProvider, with the real base, animation, shared-control and route styles. The component is selected only at those fixed paths. It avoids the application shell, Workers bindings and production hydration path. It is a client-component regression test, not an assertion about live production hydration.
 
-Only synthetic CSV/JSON and URL strings are used. The server binds to `127.0.0.1:4195`, permits GET for exactly three built files (the index also has the fixed Base64 and URL route aliases) and sets a restrictive CSP. The browser blocks and fails on every attempted external request. No authentication, saved data, remote API, credential or account setting is needed.
+Only synthetic conversion strings are used. The server binds to `127.0.0.1:4195`, permits GET for exactly three built files (the index also has the fixed Base64, URL and CSV SQL route aliases) and sets a restrictive CSP. The browser blocks and fails on every attempted external request. No authentication, saved data, remote API, credential or account setting is needed.
 
 Run from the repository root:
 
@@ -44,3 +44,16 @@ npx playwright test --config tests/browser/csv-json/base64-app.config.ts
 ```
 
 The app-specific transport blocks every external HTTP resource, records the known Google Fonts/ads origins without request paths, and fails on unknown origins, page errors or hydration warnings. Service workers stay blocked and no browser launch flags or clipboard grants are added. Root preconnect hints may still attempt DNS/TCP/TLS; HTTP interception does not establish process-wide network isolation. The app screenshots use a separate prefix so they do not overwrite the six component-fixture images. This local preview validation does not prove production traffic or live account behavior.
+
+## CSV SQL malformed-quote recovery
+
+The same component fixture adds six CSV SQL cases: unclosed quoted fields, bare quotes in unquoted fields and characters after closing quotes, each at desktop (1280px) and mobile (390px) widths. Every case starts with valid SQL, then checks a visible accessible alert with record/column coordinates, retained exact input and focus, absent SQL/statistics and disabled Copy. Corrected quoted commas, multiline content, escaped quotes and a terminal empty cell restore SQL/statistics/Copy; clear removes input and output again. The component transport rejects every attempted external request.
+
+The existing read-only workflow also runs all fourteen original `csv-sql.spec.ts` cases and the six quote-recovery cases against the built application through `csv-sql-app.config.ts`. All twenty use the same external-HTTP-blocking transport as the URL checks, including page-error and hydration-warning checks. Known shell fonts/ads attempts are aborted and recorded; unknown origins fail. The same preconnect/process-egress caveat applies. Component and full-app screenshots use separate prefixes.
+
+```sh
+npx vp build --config tests/browser/csv-json/vite.config.ts
+npx playwright test --config tests/browser/csv-json/playwright.config.ts
+npm run build
+npx playwright test --config tests/browser/csv-json/csv-sql-app.config.ts
+```

@@ -88,6 +88,7 @@ export function parseCsv(csv: string): ParsedCsv | CsvSqlError {
       if (trimmed[i] === '"') {
         i++; // 開始クォートをスキップ
         let field = "";
+        let closed = false;
         while (i < trimmed.length) {
           if (trimmed[i] === '"') {
             if (trimmed[i + 1] === '"') {
@@ -95,11 +96,29 @@ export function parseCsv(csv: string): ParsedCsv | CsvSqlError {
               i += 2;
             } else {
               i++; // 終了クォートをスキップ
+              closed = true;
               break;
             }
           } else {
             field += trimmed[i++];
           }
+        }
+        if (!closed) {
+          return {
+            type: "parse",
+            message: `CSV の${rows.length + 1}番目のレコードの${row.length + 1}列目: 引用符が閉じていません。`,
+          };
+        }
+        if (
+          i < trimmed.length &&
+          trimmed[i] !== "," &&
+          trimmed[i] !== "\r" &&
+          trimmed[i] !== "\n"
+        ) {
+          return {
+            type: "parse",
+            message: `CSV の${rows.length + 1}番目のレコードの${row.length + 1}列目: 閉じた引用符の後にはカンマまたは改行を置いてください。`,
+          };
         }
         row.push(field);
       } else {
@@ -111,6 +130,12 @@ export function parseCsv(csv: string): ParsedCsv | CsvSqlError {
           trimmed[i] !== "\n" &&
           trimmed[i] !== "\r"
         ) {
+          if (trimmed[i] === '"') {
+            return {
+              type: "parse",
+              message: `CSV の${rows.length + 1}番目のレコードの${row.length + 1}列目: 引用符を含む値は全体を引用符で囲み、内部の引用符を二重にしてください。`,
+            };
+          }
           field += trimmed[i++];
         }
         row.push(field);
