@@ -47,6 +47,7 @@ function PasswordGenerator() {
     numbers: true,
     symbols: false,
   });
+  const [generatedOptions, setGeneratedOptions] = useState<PasswordOptions>(options);
   const [copied, setCopied] = useState(false);
   const [showAdvanced, setShowAdvanced] = useState(false);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -63,6 +64,7 @@ function PasswordGenerator() {
     }
     const newPassword = generatePassword(options);
     setPassword(newPassword);
+    setGeneratedOptions({ ...options });
     setCopied(false);
     announceStatus("パスワードを生成しました");
     showToast("パスワードを生成しました", "success");
@@ -104,7 +106,7 @@ function PasswordGenerator() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const strength = calculateStrength(password, options);
+  const strength = calculateStrength(password, generatedOptions);
 
   return (
     <>

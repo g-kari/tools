@@ -235,3 +235,34 @@ test.describe("Password Generator - E2E Tests", () => {
     await expect(copyButton).toContainText("コピーしました");
   });
 });
+
+test("generated strength stays with the displayed password until regeneration", async ({
+  page,
+}) => {
+  await page.goto("/password-generator", { waitUntil: "domcontentloaded" });
+  const output = page.locator("#passwordOutput");
+  const strength = page.getByRole("progressbar");
+  await expect.poll(async () => (await output.inputValue()).length).toBe(16);
+  await page.getByRole("button", { name: "詳細設定（文字種）" }).click();
+  await page.getByLabel("大文字を含める", { exact: true }).uncheck();
+  await page.getByLabel("小文字を含める", { exact: true }).uncheck();
+  await page.getByRole("button", { name: "新しいパスワードを生成", exact: true }).click();
+  const digits = await output.inputValue();
+  expect(digits).toMatch(/^\d{16}$/);
+  await expect(strength).toHaveAttribute("aria-valuenow", "3");
+  await page.getByLabel("大文字を含める", { exact: true }).check();
+  await page.getByLabel("小文字を含める", { exact: true }).check();
+  await page.getByLabel("記号を含める", { exact: true }).check();
+  await page.getByRole("slider").press("End");
+  await expect(output).toHaveValue(digits);
+  await expect(strength).toHaveAttribute("aria-valuenow", "3");
+  await page.getByRole("button", { name: "新しいパスワードを生成", exact: true }).click();
+  await expect.poll(async () => (await output.inputValue()).length).toBe(128);
+  await expect(strength).toHaveAttribute("aria-valuenow", "5");
+  await page.getByRole("button", { name: "パスワードをクリア", exact: true }).click();
+  await expect(output).toHaveValue("");
+  await expect(strength).toHaveCount(0);
+  await expect(
+    page.getByRole("button", { name: "パスワードをクリップボードにコピー", exact: true }),
+  ).toBeDisabled();
+});
