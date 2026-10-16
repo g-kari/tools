@@ -56,9 +56,8 @@ export async function assertYamlJsonRecovery(
   if (failure.reason === "flow" || failure.reason === "無効なJSON形式です") {
     await error.scrollIntoViewIfNeeded();
     await expect(page.locator(".tool-container")).toHaveCSS("opacity", "1");
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
-      true,
-    );
+    const overflows = await page.evaluate(() => document.documentElement.scrollWidth > innerWidth);
+    expect(overflows).toBe(false);
     await testInfo.attach(`${screenshotPrefix}-${failure.mode}-${page.viewportSize()?.width}`, {
       body: await page.screenshot({
         path: `test-results/${screenshotPrefix}-${failure.mode}-${page.viewportSize()?.width}.png`,

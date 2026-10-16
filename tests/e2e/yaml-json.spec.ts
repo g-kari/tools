@@ -201,7 +201,9 @@ for (const viewport of [
       await convert.click();
       await expect(output).toHaveValue("user:\n  name: repaired\n");
       await copy.click();
-      expect(await page.evaluate(() => navigator.clipboard.readText())).toBe("user:\n  name: repaired\n");
+      expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(
+        "user:\n  name: repaired\n",
+      );
       await page.getByRole("radio", { name: "YAML から JSON へ変換" }).check();
       await expect(output).toHaveValue("");
       await expect(copy).toBeDisabled();
