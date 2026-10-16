@@ -106,6 +106,31 @@ function toSnakeCase(key: string): string {
 }
 
 /**
+ * 正規化後の列名が重複する入力を、データを変更せず生成前に拒否する
+ * @param keys - JSONの入力キー
+ * @param addId - idカラムを追加するか
+ * @throws {Error} 入力列同士または追加idと列名が重複する場合
+ */
+function validateColumnNames(keys: string[], addId: boolean): void {
+  const sourceKeys = new Map<string, string>();
+  for (const key of keys) {
+    const column = toSnakeCase(key);
+    if (addId && column === "id") {
+      throw new Error(
+        `キー ${JSON.stringify(key)} の列名 "id" は、追加するidカラムと重複します。「id カラムを追加する」をオフにするか、入力キーを変更してください。`,
+      );
+    }
+    const previousKey = sourceKeys.get(column);
+    if (previousKey !== undefined) {
+      throw new Error(
+        `キー ${JSON.stringify(previousKey)} と ${JSON.stringify(key)} はどちらも列名 ${JSON.stringify(column)} になります。入力キーを変更して、列名が重複しないようにしてください。`,
+      );
+    }
+    sourceKeys.set(column, key);
+  }
+}
+
+/**
  * カラム名をダイアレクトに合わせてクォートする
  * @param name - カラム名
  * @param dialect - SQLダイアレクト
@@ -140,7 +165,7 @@ function buildIdColumn(dialect: SqlDialect): string {
  * @param json - 変換対象のJSON文字列
  * @param options - SQL生成オプション
  * @returns SQL CREATE TABLE文字列
- * @throws {Error} 空文字列または無効なJSON形式の場合にエラーをスローする
+ * @throws {Error} 空文字列・無効なJSON形式・列名の衝突の場合にエラーをスローする
  */
 export function generateSqlCreateTable(json: string, options: JsonToSqlOptions): string {
   if (!json.trim()) {
@@ -164,6 +189,8 @@ export function generateSqlCreateTable(json: string, options: JsonToSqlOptions):
   const obj = rootValue as Record<string, unknown>;
   const tableName = (options.tableName || "my_table").replace(/[^a-zA-Z0-9_]/g, "_");
   const { dialect, notNull, addId } = options;
+
+  validateColumnNames(Object.keys(obj), addId);
 
   const columnLines: string[] = [];
 
