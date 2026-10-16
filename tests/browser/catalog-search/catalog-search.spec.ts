@@ -8,7 +8,10 @@ test.beforeEach(async ({ page }) => {
   externalRequests.set(page, attempts);
   runtimeErrors.set(page, errors);
   page.on("pageerror", (error) => errors.push(error.message));
-  await page.route("**/*", (route) => {
+  page.context().on("page", (opened) => {
+    opened.on("pageerror", (error) => errors.push(error.message));
+  });
+  await page.context().route("**/*", (route) => {
     if (new URL(route.request().url()).origin !== "http://127.0.0.1:4196") {
       attempts.push(route.request().url());
       return route.abort();
@@ -53,8 +56,8 @@ test("search results expose named links in a plain list", async ({ page }, testI
   await expect(dialog.getByRole("link")).toHaveAccessibleDescription(
     "URL文字列のエンコード/デコード変換 カテゴリ: 変換",
   );
-  expect(structure.some((node) => node.role === "list" && node.name === "検索結果")).toBe(true);
-  expect(structure.some((node) => node.role === "link" && node.name === "URLエンコード")).toBe(true);
+  expect(structure).toContainEqual({ role: "list", name: "検索結果" });
+  expect(structure).toContainEqual({ role: "link", name: "URLエンコード" });
   expect(structure.some((node) => node.role === "listbox" || node.role === "option")).toBe(false);
 });
 
@@ -83,6 +86,10 @@ test("arrows move real link focus and return to editing without changing the que
   await page.keyboard.press("ArrowDown");
   await expect(input).toBeFocused();
   await expect(input).toHaveValue("JSON");
+  await page.keyboard.type(" 圧縮");
+  await expect(input).toHaveValue("JSON 圧縮");
+  await expect(links).toHaveCount(1);
+  await expect(links).toHaveAttribute("href", "/json");
   await page.keyboard.press("Enter");
   await expect(dialog).toHaveCount(0);
   await expect(page.getByTestId("navigation")).toHaveText("/json");
@@ -97,7 +104,8 @@ for (const activation of ["ControlOrMeta", "Shift", "middle"] as const) {
     const dialog = page.getByRole("dialog", { name: "ツール検索", exact: true });
     await dialog.getByRole("textbox").fill("変換 /url-encode");
     const link = dialog.getByRole("link", { name: "URLエンコード", exact: true });
-    const popupPromise = page.waitForEvent("popup");
+    // Native modifier tabs may have no opener; observe all new context pages.
+    const popupPromise = page.context().waitForEvent("page");
     if (activation === "middle") await link.click({ button: "middle" });
     else await link.click({ modifiers: [activation] });
     const popup = await popupPromise;

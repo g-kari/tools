@@ -213,10 +213,12 @@ export function SearchModal({ isOpen, onClose, locationKey, returnFocusRef }: Se
     setSelectedIndex(0);
   }, []);
 
+  /** Move DOM focus so assistive technology encounters the result as a link. */
   const focusResult = useCallback((index: number) => {
     listRef.current?.children[index]?.querySelector<HTMLAnchorElement>("a")?.focus();
   }, []);
 
+  /** Supplement native link keys with arrows; the list edges return to editing. */
   const handleResultKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLAnchorElement>, index: number) => {
       if (
@@ -402,7 +404,7 @@ export function SearchModal({ isOpen, onClose, locationKey, returnFocusRef }: Se
 
         {/* フッター: キーボードショートカットのヒント */}
         <p id="search-keyboard-help" className="sr-only">
-          Tab で結果のリンクへ移動できます。上下の矢印キーでもリンクへ移動し、結果の端からは検索欄に戻ります。Enter で開き、Esc で閉じます。
+          Tab・矢印でリンク移動。先頭↑・末尾↓で検索欄に戻り、Enterで開く、Escで閉じる。
         </p>
         <div className="search-modal-footer" aria-hidden="true">
           <span>

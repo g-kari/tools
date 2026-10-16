@@ -113,9 +113,7 @@ describe("search dialog focus lifecycle", () => {
     const list = document.querySelector("#search-results-list")!;
     expect(list.tagName).toBe("UL");
     expect(list.getAttribute("aria-label")).toBe("検索結果");
-    expect(
-      document.querySelector('[role="listbox"], [role="option"], [aria-selected]'),
-    ).toBeNull();
+    expect(document.querySelector('[role="listbox"], [role="option"], [aria-selected]')).toBeNull();
     expect(input().hasAttribute("aria-activedescendant")).toBe(false);
     expect(input().hasAttribute("aria-autocomplete")).toBe(false);
     for (const link of list.querySelectorAll<HTMLAnchorElement>("a[href]")) {
