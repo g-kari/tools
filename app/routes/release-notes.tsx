@@ -43,6 +43,12 @@ export const releases: Release[] = [
     date: "2026-10-16",
     entries: [
       {
+        type: "feat",
+        title: "テキスト差分で行番号と変更箇所の前後表示に対応",
+        description:
+          "元・新しい行番号を表示し、変更箇所の前後3行に絞れます。省略した未変更行は個別に展開・折りたたみでき、コピーには常に全行の差分を含めます。比較方法は変更していません。",
+      },
+      {
         type: "fix",
         title: "JSON→Zod生成で特殊なキー名を保持",
         description:
