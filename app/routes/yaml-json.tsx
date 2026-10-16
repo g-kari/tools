@@ -87,7 +87,6 @@ function YamlJsonConverter() {
   const [indent, setIndent] = useState<2 | 4>(2);
   const [inputText, setInputText] = useState("");
   const [outputText, setOutputText] = useState("");
-  const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
@@ -95,10 +94,7 @@ function YamlJsonConverter() {
   }, []);
 
   const handleConvert = useCallback(() => {
-    setError(null);
     if (!inputText.trim()) {
-      setOutputText("");
-      setError("テキストを入力してください");
       announceStatus("エラー: テキストを入力してください");
       showToast("テキストを入力してください", "error");
       inputRef.current?.focus();
@@ -116,18 +112,14 @@ function YamlJsonConverter() {
       setOutputText(result);
     } catch (err) {
       const message = err instanceof Error ? err.message : "変換に失敗しました";
-      setOutputText("");
-      setError(message);
       announceStatus(`エラー: ${message}`);
       showToast(message, "error");
-      inputRef.current?.focus();
     }
   }, [inputText, mode, indent, announceStatus, showToast]);
 
   const handleClear = useCallback(() => {
     setInputText("");
     setOutputText("");
-    setError(null);
     announceStatus("入力と出力をクリアしました");
     inputRef.current?.focus();
   }, [announceStatus]);
@@ -136,11 +128,9 @@ function YamlJsonConverter() {
     setMode(newMode);
     setInputText("");
     setOutputText("");
-    setError(null);
   }, []);
 
   const convertLabel = mode === "yaml-to-json" ? "YAML → JSON 変換" : "JSON → YAML 変換";
-  const outputIsCopied = isCopied && !!outputText;
 
   return (
     <>
@@ -230,8 +220,7 @@ function YamlJsonConverter() {
                   ? "name: 田中\nage: 30\ncity: 東京"
                   : '{"name":"田中","age":30,"city":"東京"}'
               }
-              aria-describedby={error ? "input-help input-error" : "input-help"}
-              aria-invalid={error ? true : undefined}
+              aria-describedby="input-help"
               aria-label={
                 mode === "yaml-to-json"
                   ? "変換元のYAMLテキスト入力欄"
@@ -244,12 +233,6 @@ function YamlJsonConverter() {
                 ? "YAMLデータを入力して変換ボタンを押してください"
                 : "JSONデータを入力して変換ボタンを押してください"}
             </span>
-            {error && (
-              <div id="input-error" className="error-message" role="alert" aria-label="変換エラー">
-                <p>変換できませんでした。入力を確認して再度変換してください。</p>
-                <pre className="yaml-json-error-detail">{error}</pre>
-              </div>
-            )}
           </div>
 
           <div className="button-group" role="group" aria-label="変換操作">
@@ -279,12 +262,12 @@ function YamlJsonConverter() {
               </label>
               <button
                 type="button"
-                className={`number-base-copy-btn${outputIsCopied ? " copied" : ""}`}
+                className={`number-base-copy-btn${isCopied ? " copied" : ""}`}
                 onClick={() => handleCopy(outputText)}
                 disabled={!outputText}
                 aria-label="出力結果をクリップボードにコピー"
               >
-                {outputIsCopied ? "コピー済" : "コピー"}
+                {isCopied ? "コピー済" : "コピー"}
               </button>
             </div>
             <Textarea
