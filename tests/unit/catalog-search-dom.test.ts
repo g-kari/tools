@@ -79,7 +79,7 @@ describe("catalog search interaction", () => {
     act(() => root.render(createElement(SearchModal, { isOpen: true, onClose: close })));
     const input = document.querySelector<HTMLInputElement>(".search-modal-input")!;
     type(input, "JSON 圧縮");
-    const selected = input.getAttribute("aria-activedescendant");
+    const selected = document.querySelector(".search-result-item.selected");
     const click = vi.fn();
     document.querySelector('[role="dialog"]')!.addEventListener("click", click);
     const event = new KeyboardEvent("keydown", {
@@ -91,7 +91,8 @@ describe("catalog search interaction", () => {
       input.dispatchEvent(event);
     });
     expect(event.defaultPrevented).toBe(false);
-    expect(input.getAttribute("aria-activedescendant")).toBe(selected);
+    expect(document.querySelector(".search-result-item.selected")).toBe(selected);
+    expect(document.activeElement).toBe(input);
     expect(click).not.toHaveBeenCalled();
     expect(close).not.toHaveBeenCalled();
     expect(fetch).not.toHaveBeenCalled();

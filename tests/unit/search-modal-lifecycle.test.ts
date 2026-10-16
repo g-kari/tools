@@ -108,6 +108,81 @@ describe("search dialog focus lifecycle", () => {
     expect(fetch).not.toHaveBeenCalled();
   });
 
+  it("uses a plain list with named links and separate descriptions", () => {
+    render();
+    const list = document.querySelector("#search-results-list")!;
+    expect(list.tagName).toBe("UL");
+    expect(list.getAttribute("aria-label")).toBe("検索結果");
+    expect(
+      document.querySelector('[role="listbox"], [role="option"], [aria-selected]'),
+    ).toBeNull();
+    expect(input().hasAttribute("aria-activedescendant")).toBe(false);
+    expect(input().hasAttribute("aria-autocomplete")).toBe(false);
+    for (const link of list.querySelectorAll<HTMLAnchorElement>("a[href]")) {
+      const label = document.getElementById(link.getAttribute("aria-labelledby")!);
+      expect(label?.textContent).toBe(link.querySelector(".search-result-label")?.textContent);
+      const description = link.getAttribute("aria-describedby")!.split(" ");
+      expect(description).toHaveLength(2);
+      expect(description.every((id) => document.getElementById(id)?.textContent)).toBe(true);
+      expect(link.tabIndex).toBe(0);
+    }
+  });
+
+  it("arrows focus actual links while preserving the selected result order", () => {
+    render();
+    type("JSON");
+    const links = document.querySelectorAll<HTMLAnchorElement>(".search-result-item");
+    expect(press(input(), "ArrowDown").defaultPrevented).toBe(true);
+    expect(document.activeElement).toBe(links[1]);
+    expect(press(links[1], "ArrowDown").defaultPrevented).toBe(true);
+    expect(document.activeElement).toBe(links[2]);
+    press(links[2], "ArrowUp");
+    expect(document.activeElement).toBe(links[1]);
+    press(links[1], "ArrowUp");
+    expect(document.activeElement).toBe(links[0]);
+    press(links[0], "ArrowUp");
+    expect(document.activeElement).toBe(input());
+    expect(input().value).toBe("JSON");
+    act(() => links[links.length - 1].focus());
+    press(links[links.length - 1], "ArrowDown");
+    expect(document.activeElement).toBe(input());
+  });
+
+  it.each([
+    { key: "ArrowDown", ctrlKey: true },
+    { key: "ArrowUp", metaKey: true },
+    { key: "ArrowDown", shiftKey: true },
+    { key: "Enter", altKey: true },
+    { key: "Enter", isComposing: true },
+    { key: "ArrowDown", keyCode: 229 },
+  ])("preserves modified and composing key defaults: %j", (options) => {
+    render();
+    type("JSON");
+    for (const target of [input(), document.querySelector<HTMLElement>(".search-result-item")!]) {
+      act(() => target.focus());
+      const event = new KeyboardEvent("keydown", { bubbles: true, cancelable: true, ...options });
+      act(() => {
+        target.dispatchEvent(event);
+      });
+      expect(event.defaultPrevented).toBe(false);
+      expect(document.activeElement).toBe(target);
+      expect(close).not.toHaveBeenCalled();
+    }
+  });
+
+  it("pointer hover does not replace the focused link as the keyboard target", () => {
+    render();
+    type("JSON");
+    const links = document.querySelectorAll<HTMLAnchorElement>(".search-result-item");
+    act(() => links[1].focus());
+    act(() => {
+      links[2].dispatchEvent(new MouseEvent("mouseover", { bubbles: true }));
+    });
+    expect(document.activeElement).toBe(links[1]);
+    expect(links[1].classList.contains("selected")).toBe(true);
+    expect(links[2].classList.contains("selected")).toBe(false);
+  });
+
   it("cycles both boundaries and recomputes tab stops after results disappear", () => {
     render();
     const links = document.querySelectorAll<HTMLAnchorElement>(".search-result-item");
@@ -162,7 +237,7 @@ describe("search dialog focus lifecycle", () => {
     expect(click).not.toHaveBeenCalled();
     expect(close).not.toHaveBeenCalled();
     act(() => links[1].focus());
-    expect(input().getAttribute("aria-activedescendant")).toBe("search-result-1");
+    expect(links[1].classList.contains("selected")).toBe(true);
     expect(press(links[1], "Enter").defaultPrevented).toBe(false);
     expect(click).not.toHaveBeenCalled();
   });
@@ -262,7 +337,7 @@ describe("search dialog focus lifecycle", () => {
       type("JSON");
       for (const key of ["f", " "]) expect(press(input(), key).defaultPrevented).toBe(false);
       press(input(), "ArrowDown");
-      expect(input().getAttribute("aria-activedescendant")).toBe("search-result-1");
+      expect(document.activeElement).toBe(document.querySelectorAll(".search-result-item")[1]);
       const clear = document.querySelector<HTMLButtonElement>(".search-modal-clear")!;
       expect(press(clear, "Enter").defaultPrevented).toBe(false);
       const composing = new KeyboardEvent("keydown", {

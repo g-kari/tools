@@ -39,6 +39,18 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
+    version: "2026.10.14",
+    date: "2026-10-16",
+    entries: [
+      {
+        type: "fix",
+        title: "検索結果を支援技術でもリンクとして操作できるよう改善",
+        description:
+          "検索ダイアログの結果をツール名付きのリンク一覧にし、説明とカテゴリを別に伝えます。Tab・上下矢印でリンクへ移動でき、Enter・修飾クリック・中クリックで開けます。検索条件、IME入力の保護、取り消し後のフォーカス復帰は維持します。",
+      },
+    ],
+  },
+  {
     version: "2026.10.13",
     date: "2026-10-15",
     entries: [

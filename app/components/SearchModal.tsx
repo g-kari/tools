@@ -213,18 +213,50 @@ export function SearchModal({ isOpen, onClose, locationKey, returnFocusRef }: Se
     setSelectedIndex(0);
   }, []);
 
+  const focusResult = useCallback((index: number) => {
+    listRef.current?.children[index]?.querySelector<HTMLAnchorElement>("a")?.focus();
+  }, []);
+
+  const handleResultKeyDown = useCallback(
+    (event: React.KeyboardEvent<HTMLAnchorElement>, index: number) => {
+      if (
+        event.nativeEvent.isComposing ||
+        event.nativeEvent.keyCode === 229 ||
+        event.ctrlKey ||
+        event.metaKey ||
+        event.altKey ||
+        event.shiftKey
+      )
+        return;
+      if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return;
+      event.preventDefault();
+      const next = index + (event.key === "ArrowDown" ? 1 : -1);
+      if (next < 0 || next >= results.length) inputRef.current?.focus();
+      else focusResult(next);
+    },
+    [focusResult, results.length],
+  );
+
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
       // Japanese IME confirmation belongs to the input, not result navigation.
-      if (e.nativeEvent.isComposing || e.nativeEvent.keyCode === 229) return;
+      if (
+        e.nativeEvent.isComposing ||
+        e.nativeEvent.keyCode === 229 ||
+        e.ctrlKey ||
+        e.metaKey ||
+        e.altKey ||
+        e.shiftKey
+      )
+        return;
       switch (e.key) {
         case "ArrowDown":
           e.preventDefault();
-          setSelectedIndex((prev) => Math.min(prev + 1, Math.max(0, results.length - 1)));
+          focusResult(Math.min(selectedIndex + 1, Math.max(0, results.length - 1)));
           break;
         case "ArrowUp":
           e.preventDefault();
-          setSelectedIndex((prev) => Math.max(prev - 1, 0));
+          focusResult(Math.max(selectedIndex - 1, 0));
           break;
         case "Enter": {
           e.preventDefault();
@@ -238,7 +270,7 @@ export function SearchModal({ isOpen, onClose, locationKey, returnFocusRef }: Se
         }
       }
     },
-    [results, selectedIndex],
+    [focusResult, results, selectedIndex],
   );
 
   if (!isOpen) return null;
@@ -279,14 +311,12 @@ export function SearchModal({ isOpen, onClose, locationKey, returnFocusRef }: Se
             value={query}
             onChange={handleQueryChange}
             onKeyDown={handleKeyDown}
+            onFocus={() => setSelectedIndex(0)}
             placeholder="ツールを検索（例: JSON 圧縮）"
             className="search-modal-input"
             aria-label="ツールを検索"
-            aria-autocomplete="list"
             aria-controls="search-results-list"
-            aria-activedescendant={
-              results[selectedIndex] ? `search-result-${selectedIndex}` : undefined
-            }
+            aria-describedby="search-keyboard-help"
           />
           {query && (
             <button
@@ -318,20 +348,16 @@ export function SearchModal({ isOpen, onClose, locationKey, returnFocusRef }: Se
           id="search-results-list"
           className="search-modal-results"
           ref={listRef}
-          role="listbox"
           aria-label="検索結果"
         >
           {results.length > 0 ? (
             results.map((tool, i) => (
-              <li
-                key={tool.path}
-                id={`search-result-${i}`}
-                role="option"
-                aria-selected={i === selectedIndex}
-              >
+              <li key={tool.path}>
                 <Link
                   to={tool.path}
                   className={`search-result-item${i === selectedIndex ? " selected" : ""}`}
+                  aria-labelledby={`search-result-label-${i}`}
+                  aria-describedby={`search-result-description-${i} search-result-category-${i}`}
                   onClick={(event) => {
                     // Modified clicks keep this page, so cancellation-style focus
                     // restoration still applies. Ordinary navigation owns new focus.
@@ -339,18 +365,26 @@ export function SearchModal({ isOpen, onClose, locationKey, returnFocusRef }: Se
                       event.ctrlKey || event.metaKey || event.shiftKey || event.altKey;
                     onClose();
                   }}
+                  onKeyDown={(event) => handleResultKeyDown(event, i)}
                   onFocus={() => setSelectedIndex(i)}
-                  onMouseEnter={() => setSelectedIndex(i)}
+                  onMouseEnter={() => {
+                    if (document.activeElement === inputRef.current) setSelectedIndex(i);
+                  }}
                 >
                   <span className="search-result-icon" aria-hidden="true">
                     {tool.icon}
                   </span>
                   <div className="search-result-text">
-                    <span className="search-result-label">{tool.label}</span>
-                    <span className="search-result-desc">{tool.description}</span>
+                    <span id={`search-result-label-${i}`} className="search-result-label">
+                      {tool.label}
+                    </span>
+                    <span id={`search-result-description-${i}`} className="search-result-desc">
+                      {tool.description}
+                    </span>
                   </div>
                   <span
                     className="search-result-category"
+                    id={`search-result-category-${i}`}
                     aria-label={`カテゴリ: ${tool.categoryName}`}
                   >
                     <span aria-hidden="true">{tool.categoryIcon}</span>
@@ -367,6 +401,9 @@ export function SearchModal({ isOpen, onClose, locationKey, returnFocusRef }: Se
         </ul>
 
         {/* フッター: キーボードショートカットのヒント */}
+        <p id="search-keyboard-help" className="sr-only">
+          Tab で結果のリンクへ移動できます。上下の矢印キーでもリンクへ移動し、結果の端からは検索欄に戻ります。Enter で開き、Esc で閉じます。
+        </p>
         <div className="search-modal-footer" aria-hidden="true">
           <span>
             <kbd>↑</kbd>
