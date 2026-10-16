@@ -53,6 +53,7 @@ export const Route = createFileRoute("/markdown-table")({
 function MarkdownTableGenerator() {
   const [tableData, setTableData] = useState<TableData>(createEmptyTable(3, 3));
   const [csvInput, setCsvInput] = useState("");
+  const [importError, setImportError] = useState("");
   const { statusRef, announceStatus } = useStatusAnnouncement();
   const { copy } = useClipboard();
   const { showToast } = useToast();
@@ -72,15 +73,21 @@ function MarkdownTableGenerator() {
 
   const handleClear = useCallback(() => {
     setTableData(createEmptyTable(3, 3));
+    setImportError("");
     announceStatus("テーブルをリセットしました");
   }, [announceStatus]);
 
   const handleImport = useCallback(() => {
     if (!csvInput.trim()) return;
-    const parsed = parseCSV(csvInput);
-    setTableData(parsed);
-    setCsvInput("");
-    announceStatus("CSVをインポートしました");
+    try {
+      const parsed = parseCSV(csvInput);
+      setTableData(parsed);
+      setCsvInput("");
+      setImportError("");
+      announceStatus("CSVをインポートしました");
+    } catch (error) {
+      setImportError(error instanceof Error ? error.message : "CSVをインポートできませんでした");
+    }
   }, [csvInput, announceStatus]);
 
   return (
@@ -233,7 +240,15 @@ function MarkdownTableGenerator() {
               onChange={(e) => setCsvInput(e.target.value)}
               placeholder="CSVまたはTSVをここに貼り付けてください（1行目がヘッダーになります）..."
               aria-label="CSVインポート入力"
+              aria-invalid={importError ? true : undefined}
+              aria-describedby={importError ? "markdown-table-import-error" : undefined}
             />
+            {importError && (
+              <p id="markdown-table-import-error" className="error-message" role="alert">
+                {importError}{" "}
+                入力を修正して再度インポートしてください。現在のテーブルは保持しています。
+              </p>
+            )}
             <div className="markdown-table-import-actions">
               <button
                 className="markdown-table-btn markdown-table-btn--primary"
@@ -245,7 +260,10 @@ function MarkdownTableGenerator() {
               </button>
               <button
                 className="markdown-table-btn markdown-table-btn--secondary"
-                onClick={() => setCsvInput("")}
+                onClick={() => {
+                  setCsvInput("");
+                  setImportError("");
+                }}
                 aria-label="CSVインポート入力をクリア"
               >
                 クリア
@@ -270,7 +288,13 @@ function MarkdownTableGenerator() {
               title: "CSVインポート",
               items: [
                 "スプレッドシート（Excel、Googleスプレッドシート等）からコピーしてTSVとして貼り付け可能",
-                "カンマ区切り（CSV）とタブ区切り（TSV）を自動判定します",
+                "先頭の非空ヘッダーの引用符外にタブがあればTSV、それ以外はCSVとして読み込みます",
+                'CSVはダブルクォートで囲んだカンマ・二重引用符（""）に対応し、内部の空白とタブを保持します',
+                "TSVの同じセル内で閉じる引用符は文字として扱います。引用符付き改行・タブや先頭の引用符が閉じないセルは拒否します。必要なら1セル1行のCSVに整形してください",
+                "引用符で始まる曖昧なヘッダーはCSVとして検証します。不正な引用符・超過列はエラーにし、不足列は空文字で補います",
+                "セル・ヘッダー内の改行と、バックスラッシュの直後に|がある値は現在の編集・Markdown出力で保持できないためインポートを拒否します",
+                "インポート失敗時は入力と現在のテーブルを保持します。理由を確認して入力を修正してください",
+                "引用符外の前後空白と空行は除去します。手入力とMarkdown出力の既存の記法は変更しておらず、表の完全な可逆性は保証しません",
                 "1行目がヘッダー行として扱われます",
                 "インポート後もエディターで各セルを自由に編集できます",
               ],
