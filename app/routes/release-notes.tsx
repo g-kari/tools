@@ -44,6 +44,12 @@ export const releases: Release[] = [
     entries: [
       {
         type: "fix",
+        title: "JSON→Zod生成で特殊なキー名を保持",
+        description:
+          "ハイフン・空白・引用符・改行などを含むキーを文字列リテラルとして出力します。__proto__もスキーマのshapeに保持します。型推論やZod自体のparse結果の方針は変更していません。",
+      },
+      {
+        type: "fix",
         title: "JSON→SQL生成で重複する列名をエラー表示",
         description:
           "スネークケースへの変換後の列名同士や、追加idとの衝突を生成前に拒否します。入力キーと修復方法を示し、列を自動改名・省略せず、修正後に再生成できます。",
