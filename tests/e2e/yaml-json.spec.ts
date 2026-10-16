@@ -171,57 +171,69 @@ for (const viewport of [
     ] as const;
 
     for (const [index, failure] of failures.entries()) {
-      test(`failure ${index + 1}: ${failure.mode} retains input and recovers`, async ({ page }) => {
-        await page.goto("/yaml-json");
-        await page.locator(`input[value="${failure.mode}"]`).check();
-        const input = page.locator("#inputText");
-        const output = page.locator("#outputText");
-        const copy = page.getByRole("button", { name: "出力結果をクリップボードにコピー" });
-        const convert = page.getByRole("button", {
-          name: failure.mode === "yaml-to-json" ? "YAML → JSON 変換" : "JSON → YAML 変換",
-        });
-        const error = page.getByRole("alert", { name: "変換エラー", exact: true });
-        const valid = failure.mode === "yaml-to-json" ? "name: 田中" : '{"name":"田中"}';
-        const repaired = failure.mode === "yaml-to-json" ? "name: 修復済み" : '{"name":"修復済み"}';
-        await input.fill(valid);
-        await convert.click();
-        await expect(output).toHaveValue(/田中/);
-        await expect(copy).toBeEnabled();
-        const previous = await output.inputValue();
+      test(
+        `failure ${index + 1}: ${failure.mode} retains input and recovers`,
+        async ({ page }, testInfo) => {
+          await page.goto("/yaml-json");
+          await page.locator(`input[value="${failure.mode}"]`).check();
+          const input = page.locator("#inputText");
+          const output = page.locator("#outputText");
+          const copy = page.getByRole("button", { name: "出力結果をクリップボードにコピー" });
+          const convert = page.getByRole("button", {
+            name: failure.mode === "yaml-to-json" ? "YAML → JSON 変換" : "JSON → YAML 変換",
+          });
+          const error = page.getByRole("alert", { name: "変換エラー", exact: true });
+          const valid = failure.mode === "yaml-to-json" ? "name: 田中" : '{"name":"田中"}';
+          const repaired =
+            failure.mode === "yaml-to-json" ? "name: 修復済み" : '{"name":"修復済み"}';
+          await input.fill(valid);
+          await convert.click();
+          await expect(output).toHaveValue(/田中/);
+          await expect(copy).toBeEnabled();
+          const previous = await output.inputValue();
 
-        await input.fill(failure.value);
-        await expect(output).toHaveValue(previous);
-        await convert.click();
-        await expect(output).toHaveValue("");
-        await expect(copy).toBeDisabled();
-        await expect(input).toHaveValue(failure.value);
-        await expect(input).toBeFocused();
-        await expect(input).toHaveAttribute("aria-invalid", "true");
-        await expect(input).toHaveAttribute("aria-describedby", "input-help input-error");
-        await expect(error).toBeVisible();
-        await expect(error).toContainText(failure.reason);
-        await expect(error).toContainText("入力を確認して再度変換してください");
-        await expect(page.locator('[role="status"]')).toContainText(failure.reason);
-        // The reason remains available after the transient toast has disappeared.
-        await expect(page.locator(".toast-error")).toHaveCount(0);
-        await expect(error).toBeVisible();
+          await input.fill(failure.value);
+          await expect(output).toHaveValue(previous);
+          await convert.click();
+          await expect(output).toHaveValue("");
+          await expect(copy).toBeDisabled();
+          await expect(input).toHaveValue(failure.value);
+          await expect(input).toBeFocused();
+          await expect(input).toHaveAttribute("aria-invalid", "true");
+          await expect(input).toHaveAttribute("aria-describedby", "input-help input-error");
+          await expect(error).toBeVisible();
+          await expect(error).toContainText(failure.reason);
+          await expect(error).toContainText("入力を確認して再度変換してください");
+          await expect(page.locator('[role="status"]')).toContainText(failure.reason);
+          // The reason remains available after the transient toast has disappeared.
+          await expect(page.locator(".toast-error")).toHaveCount(0);
+          await expect(error).toBeVisible();
+          if (index < 2) {
+            await error.scrollIntoViewIfNeeded();
+            await expect(page.locator(".tool-container")).toHaveCSS("opacity", "1");
+            await testInfo.attach(`yaml-json-error-${failure.mode}-${viewport.width}`, {
+              body: await page.screenshot({ fullPage: true, animations: "disabled" }),
+              contentType: "image/png",
+            });
+          }
 
-        await input.fill(repaired);
-        await convert.click();
-        await expect(input).toHaveValue(repaired);
-        await expect(output).toHaveValue(/修復済み/);
-        await expect(output).toHaveAttribute("readonly", "");
-        await expect(copy).toBeEnabled();
-        await expect(error).toHaveCount(0);
-        await expect(input).not.toHaveAttribute("aria-invalid", "true");
-        await expect(input).toHaveAttribute("aria-describedby", "input-help");
+          await input.fill(repaired);
+          await convert.click();
+          await expect(input).toHaveValue(repaired);
+          await expect(output).toHaveValue(/修復済み/);
+          await expect(output).toHaveAttribute("readonly", "");
+          await expect(copy).toBeEnabled();
+          await expect(error).toHaveCount(0);
+          await expect(input).not.toHaveAttribute("aria-invalid", "true");
+          await expect(input).toHaveAttribute("aria-describedby", "input-help");
 
-        await page.getByRole("button", { name: "入力と出力をクリア", exact: true }).click();
-        await expect(input).toHaveValue("");
-        await expect(output).toHaveValue("");
-        await expect(copy).toBeDisabled();
-        await expect(input).toBeFocused();
-      });
+          await page.getByRole("button", { name: "入力と出力をクリア", exact: true }).click();
+          await expect(input).toHaveValue("");
+          await expect(output).toHaveValue("");
+          await expect(copy).toBeDisabled();
+          await expect(input).toBeFocused();
+        },
+      );
     }
 
     test("mode/indent changes and Copy work across success, failure and repair", async ({ page }) => {
