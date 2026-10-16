@@ -251,3 +251,51 @@ describe("CIDR Utilities", () => {
     });
   });
 });
+
+describe("CIDR zero-prefix normalization", () => {
+  it.each([
+    "0.0.0.0",
+    "0.0.0.1",
+    "10.0.0.1",
+    "127.255.255.255",
+    "128.0.0.0",
+    "192.168.1.100",
+    "255.255.255.254",
+    "255.255.255.255",
+  ])("normalizes %s/0 to the entire IPv4 range", (ip) => {
+    expect(calculateNetworkAddress(ip, 0)).toBe("0.0.0.0");
+    expect(calculateCIDR(`${ip}/0`)).toEqual({
+      ...calculateCIDR("0.0.0.0/0"),
+      cidr: `${ip}/0`,
+    });
+    const result = calculateCIDR(`${ip}/0`);
+    expect(result.networkAddress).toBe("0.0.0.0");
+    expect(result.broadcastAddress).toBe("255.255.255.255");
+    expect(result.firstUsableIP).toBe("0.0.0.1");
+    expect(result.lastUsableIP).toBe("255.255.255.254");
+    expect(result.isPrivate).toBe(false);
+  });
+
+  it("matches arithmetic subnet boundaries for every valid prefix", () => {
+    for (const ip of [
+      "0.0.0.0",
+      "0.0.0.1",
+      "10.0.0.1",
+      "127.255.255.255",
+      "128.0.0.0",
+      "192.168.1.100",
+      "255.255.255.254",
+      "255.255.255.255",
+    ]) {
+      const integer = ip.split(".").reduce((value, octet) => value * 256 + Number(octet), 0);
+      for (let prefix = 0; prefix <= 32; prefix++) {
+        const size = 2 ** (32 - prefix);
+        const network = Math.floor(integer / size) * size;
+        const expected = [24, 16, 8, 0]
+          .map((shift) => Math.floor(network / 2 ** shift) % 256)
+          .join(".");
+        expect(calculateNetworkAddress(ip, prefix)).toBe(expected);
+      }
+    }
+  });
+});
