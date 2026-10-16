@@ -57,3 +57,7 @@ npx playwright test --config tests/browser/csv-json/playwright.config.ts
 npm run build
 npx playwright test --config tests/browser/csv-json/csv-sql-app.config.ts
 ```
+
+## Generated password strength snapshot
+
+The bounded real-route component fixture also mounts `/password-generator`. Two desktop/mobile Chromium cases preserve the generated output, strength and synthetic Clipboard API call target while changing next-generation character types and length, then verify regeneration, clear and the minimum length. External HTTP is blocked and every attempted origin/page error fails. Generated values are disposable synthetic test values; no saved credential is read. Clipboard writes are intercepted, so native OS clipboard and the full application shell/SSR are not verified by these two cases. Workflow permissions, browser flags and service isolation are unchanged.
