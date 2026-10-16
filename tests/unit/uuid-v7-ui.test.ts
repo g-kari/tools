@@ -2,7 +2,7 @@
 import { act, createElement, type ComponentType } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { Simulate } from "react-dom/test-utils";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
+import { afterEach, beforeEach, describe, expect, it, vi, type MockInstance } from "vite-plus/test";
 import { ToastProvider } from "../../app/components/Toast";
 import { Route } from "../../app/routes/uuid";
 
@@ -16,6 +16,8 @@ describe("UUID version selection in the actual route", () => {
   let writeText: ReturnType<typeof vi.fn>;
   let fetch: ReturnType<typeof vi.fn>;
   let clipboardDescriptor: PropertyDescriptor | undefined;
+  let secureRandom: MockInstance<Crypto["getRandomValues"]>;
+  let randomUuid: MockInstance<Crypto["randomUUID"]>;
   const v4 = "00112233-4455-4677-8899-aabbccddeeff";
   const values = () =>
     [...container.querySelectorAll(".uuid-value")].map((node) => node.textContent!);
@@ -40,8 +42,8 @@ describe("UUID version selection in the actual route", () => {
     });
     vi.stubGlobal("fetch", fetch);
     vi.spyOn(Date, "now").mockReturnValue(1645557742000);
-    vi.spyOn(crypto, "randomUUID").mockReturnValue(v4);
-    vi.spyOn(crypto, "getRandomValues").mockImplementation((array) => {
+    randomUuid = vi.spyOn(crypto, "randomUUID").mockReturnValue(v4);
+    secureRandom = vi.spyOn(crypto, "getRandomValues").mockImplementation((array) => {
       (array as Uint8Array).fill(0xab);
       return array;
     });
@@ -72,7 +74,7 @@ describe("UUID version selection in the actual route", () => {
     expect(container.querySelector<HTMLInputElement>("#uuid-version-4")?.checked).toBe(true);
     expect(values()).toEqual([v4]);
     expect(generatedVersion()).toContain("v4");
-    expect(crypto.getRandomValues).not.toHaveBeenCalled();
+    expect(secureRandom).not.toHaveBeenCalled();
   });
 
   it("keeps the result label and value when selecting the next version", () => {
@@ -91,7 +93,7 @@ describe("UUID version selection in the actual route", () => {
     count(3);
     click(button("UUID生成"));
     expect(values()).toHaveLength(3);
-    expect(crypto.getRandomValues).toHaveBeenCalledTimes(3);
+    expect(secureRandom).toHaveBeenCalledTimes(3);
     expect(values().every((value) => value[14] === "7")).toBe(true);
   });
 
@@ -103,7 +105,7 @@ describe("UUID version selection in the actual route", () => {
       click(node);
     const expected = "017F22E279B07BABABABABABABABABAB";
     expect(values()).toEqual([expected, expected]);
-    expect(crypto.getRandomValues).toHaveBeenCalledTimes(2);
+    expect(secureRandom).toHaveBeenCalledTimes(2);
     await act(async () =>
       container.querySelector<HTMLButtonElement>('button[aria-label="UUID 1をコピー"]')!.click(),
     );
@@ -126,7 +128,7 @@ describe("UUID version selection in the actual route", () => {
 
   it("removes old results after entropy failure and recovers on retry", () => {
     choose(7);
-    vi.mocked(crypto.getRandomValues).mockImplementationOnce(() => {
+    secureRandom.mockImplementationOnce(() => {
       throw new Error("private environment detail");
     });
     click(button("UUID生成"));
@@ -149,7 +151,7 @@ describe("UUID version selection in the actual route", () => {
   it("does not expose partial batches when a later entropy call fails", () => {
     choose(7);
     count(3);
-    vi.mocked(crypto.getRandomValues)
+    secureRandom
       .mockImplementationOnce((array) => array)
       .mockImplementationOnce(() => {
         throw new Error("unavailable");
@@ -157,11 +159,11 @@ describe("UUID version selection in the actual route", () => {
     click(button("UUID生成"));
     expect(values()).toEqual([]);
     expect(container.querySelector('[role="alert"]')).not.toBeNull();
-    expect(crypto.getRandomValues).toHaveBeenCalledTimes(2);
+    expect(secureRandom).toHaveBeenCalledTimes(2);
   });
 
   it("clears errors and old output when v4 generation fails, then retries", () => {
-    vi.mocked(crypto.randomUUID).mockImplementationOnce(() => {
+    randomUuid.mockImplementationOnce(() => {
       throw new Error("unavailable");
     });
     click(button("UUID生成"));
@@ -178,7 +180,7 @@ describe("UUID version selection in the actual route", () => {
     click(button("UUID生成"));
     expect(values()).toEqual([]);
     expect(container.querySelector('[role="alert"]')).not.toBeNull();
-    expect(crypto.getRandomValues).not.toHaveBeenCalled();
+    expect(secureRandom).not.toHaveBeenCalled();
     vi.mocked(Date.now).mockReturnValue(1645557742000);
     click(button("UUID生成"));
     expect(values()).toHaveLength(1);
