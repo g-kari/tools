@@ -23,6 +23,35 @@ test.afterEach(async ({ page }) => {
   expect(runtimeErrors.get(page)).toEqual([]);
 });
 
+test("search results expose named links in a plain list", async ({ page }, testInfo) => {
+  await page.getByRole("button", { name: "ツールを検索（Ctrl+K）" }).click();
+  const dialog = page.getByRole("dialog", { name: "ツール検索", exact: true });
+  await dialog.getByRole("textbox").fill("変換 /url-encode");
+  await expect(dialog.locator(".search-result-item")).toHaveCount(1);
+  const session = await page.context().newCDPSession(page);
+  const { nodes } = await session.send("Accessibility.getFullAXTree");
+  const structure = nodes
+    .filter(
+      (node) =>
+        !node.ignored &&
+        ["dialog", "textbox", "list", "listitem", "listbox", "option", "link"].includes(
+          node.role?.value ?? "",
+        ),
+    )
+    .map((node) => ({ role: node.role?.value, name: node.name?.value }));
+  console.log("Search accessibility structure:", JSON.stringify(structure));
+  await testInfo.attach("search-accessibility-structure", {
+    body: JSON.stringify(structure, null, 2),
+    contentType: "application/json",
+  });
+  await session.detach();
+  await expect(dialog.getByRole("list", { name: "検索結果", exact: true })).toBeVisible();
+  await expect(dialog.getByRole("listbox")).toHaveCount(0);
+  await expect(dialog.getByRole("option")).toHaveCount(0);
+  await expect(dialog.getByRole("link")).toHaveCount(1);
+  await expect(dialog.getByRole("link")).toHaveAccessibleName("URLエンコード");
+});
+
 test("Unicode empty regex matches complete and repeated Test/Clear stay usable", async ({
   page,
 }, testInfo) => {
