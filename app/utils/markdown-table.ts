@@ -108,29 +108,181 @@ export function generateMarkdown(table: TableData): string {
 }
 
 /**
+ * ヘッダーレコードの引用符外にあるタブでTSVを判定する。
+ * データや引用符内のタブでCSVの列構造を変更しない。
+ */
+function detectTableDelimiter(csv: string): "," | "\t" {
+  // 空白だけの物理行のタブは区切り文字の候補にしない。
+  // 同じ行にヘッダーがあれば、先頭の空TSV列を含むタブは残す。
+  const text = csv.replace(/^(?:[^\S\r\n]*(?:\r\n|\r|\n))+/, "");
+  let quoted = false;
+  let fieldStart = true;
+  let recordStart = 0;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (quoted) {
+      if (ch === '"') {
+        if (text[i + 1] === '"') i++;
+        else quoted = false;
+      }
+    } else if (ch === "\t") {
+      return "\t";
+    } else if (ch === "\n" || ch === "\r") {
+      if (text.slice(recordStart, i).trim()) break;
+      recordStart = i + 1;
+      fieldStart = true;
+    } else if (ch === ",") {
+      fieldStart = true;
+    } else if (ch === '"' && fieldStart) {
+      quoted = true;
+      fieldStart = false;
+    } else if (ch.trim()) {
+      fieldStart = false;
+    }
+  }
+  return ",";
+}
+
+/**
+ * CSVの引用符・エスケープ・複数行を扱い、不正な構文は位置付きで拒否する。
+ * 引用符外の前後空白と空の物理行は従来どおり除去する。
+ */
+function parseTableCsvRecords(text: string): string[][] {
+  const records: string[][] = [];
+  let fields: string[] = [];
+  let current = "";
+  let state: "start" | "unquoted" | "quoted" | "closed" = "start";
+  let recordStart = 0;
+  const fail = (message: string): never => {
+    throw new Error(`レコード ${records.length + 1}、列 ${fields.length + 1}: ${message}`);
+  };
+  const finishField = () => {
+    fields.push(state === "closed" ? current : current.trim());
+    current = "";
+    state = "start";
+  };
+  const finishRecord = (end: number) => {
+    // 引用符付き空文字や区切りのみのレコードは空行ではない。
+    if (text.slice(recordStart, end).trim()) {
+      finishField();
+      records.push(fields);
+    }
+    fields = [];
+    current = "";
+    state = "start";
+  };
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (state === "quoted") {
+      if (ch === '"') {
+        if (text[i + 1] === '"') {
+          current += '"';
+          i++;
+        } else state = "closed";
+      } else current += ch;
+    } else if (ch === ",") {
+      finishField();
+    } else if (ch === "\r" || ch === "\n") {
+      finishRecord(i);
+      if (ch === "\r" && text[i + 1] === "\n") i++;
+      recordStart = i + 1;
+    } else if (state === "closed") {
+      if (ch.trim()) fail("引用符を閉じた後は区切り文字または改行を指定してください");
+    } else if (ch === '"') {
+      if (state !== "start") fail("引用符を含む値全体をダブルクォートで囲んでください");
+      current = "";
+      state = "quoted";
+    } else {
+      current += ch;
+      if (ch.trim()) state = "unquoted";
+    }
+  }
+  if (state === "quoted") fail("ダブルクォートが閉じられていません");
+  finishRecord(text.length);
+  return records;
+}
+
+/**
+ * TSVは同一セル内で閉じた引用符を文字として維持する。
+ * 引用符付き改行・タブの疑いがある未閉じセルは、列へ分割して成功扱いしない。
+ */
+function parseTableTsvRecords(text: string): string[][] {
+  return text
+    .split(/\r\n|\r|\n/)
+    .filter((line) => line.trim() !== "")
+    .map((line, recordIndex) =>
+      line.split("\t").map((cell, columnIndex) => {
+        const value = cell.trim();
+        if (value.startsWith('"')) {
+          let closed = false;
+          for (let i = 1; i < value.length; i++) {
+            if (value[i] === '"') {
+              if (value[i + 1] === '"') i++;
+              else {
+                closed = true;
+                break;
+              }
+            }
+          }
+          if (!closed) {
+            throw new Error(
+              `レコード ${recordIndex + 1}、列 ${columnIndex + 1}: TSVの先頭の引用符は同じセル内で閉じてください。引用符付き改行・タブは未対応です。1セル1行のカンマ区切りCSV等に整形してください`,
+            );
+          }
+        }
+        return value;
+      }),
+    );
+}
+
+/** 現在の単一行エディター・Markdown出力で保持できないimport値を位置付きで拒否する。 */
+function validateImportedTableCell(value: string, record: number, column: number): string {
+  if (value.includes("\r") || value.includes("\n")) {
+    throw new Error(
+      `レコード ${record}、列 ${column}: セル・ヘッダー内の改行は未対応です。改行を除いてからインポートしてください`,
+    );
+  }
+  if (value.includes("\\|")) {
+    throw new Error(
+      `レコード ${record}、列 ${column}: バックスラッシュと | が隣接する値は現在のMarkdown出力では未対応です。値を変更するか、別の形式を使用してください`,
+    );
+  }
+  return value;
+}
+
+/**
  * CSV/TSV文字列をTableDataに変換する
  * 空文字列はcreateEmptyTable(3, 2)を返す
- * タブが含まれていればTSV、そうでなければCSVとして解析する
+ * ヘッダーの引用符外にタブがあれば従来の単純なTSVとして解析する
+ * CSVは引用符内のカンマ・二重引用符を保持する
  * 1行目をヘッダー、2行目以降をデータ行として扱う
+ * 不足列は空文字で補完し、超過列と不正なCSV構文はエラーにする
+ * セル内改行とbackslash+pipeは既存の編集・出力で保持できないため拒否する
  * @param csv パースするCSVまたはTSV文字列
  * @returns パース結果のTableData
  */
 export function parseCSV(csv: string): TableData {
   if (!csv.trim()) return createEmptyTable(3, 2);
 
-  const delimiter = csv.includes("\t") ? "\t" : ",";
-  const lines = csv.split(/\r?\n/).filter((line) => line.trim() !== "");
+  const text = csv.startsWith("\uFEFF") ? csv.slice(1) : csv;
+  const delimiter = detectTableDelimiter(text);
+  const records = delimiter === "\t" ? parseTableTsvRecords(text) : parseTableCsvRecords(text);
 
-  if (lines.length === 0) return createEmptyTable(3, 2);
+  if (records.length === 0) return createEmptyTable(3, 2);
 
-  const headers = lines[0].split(delimiter).map((h) => h.trim());
+  const headers = records[0].map((value, index) => validateImportedTableCell(value, 1, index + 1));
   const columns: TableColumn[] = headers.map((header) => ({
     header,
     align: "none" as AlignType,
   }));
 
-  const dataRows: string[][] = lines.slice(1).map((line) => {
-    const cells = line.split(delimiter).map((c) => c.trim());
+  const dataRows: string[][] = records.slice(1).map((cells, index) => {
+    if (cells.length > columns.length) {
+      throw new Error(
+        `レコード ${index + 2} はヘッダーより列数が多いためインポートできません（ヘッダー ${columns.length} 列、データ ${cells.length} 列）。ヘッダーまたは区切り文字を確認してください`,
+      );
+    }
+    cells.forEach((value, column) => validateImportedTableCell(value, index + 2, column + 1));
     return Array.from({ length: columns.length }, (_, i) => cells[i] ?? "");
   });
 
