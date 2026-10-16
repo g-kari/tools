@@ -230,7 +230,9 @@ function YamlJsonConverter() {
                   ? "name: 田中\nage: 30\ncity: 東京"
                   : '{"name":"田中","age":30,"city":"東京"}'
               }
-              aria-describedby={error ? "input-help input-error" : "input-help"}
+              aria-describedby={
+                error ? "input-help input-error-summary input-error-detail" : "input-help"
+              }
               aria-invalid={error ? true : undefined}
               aria-label={
                 mode === "yaml-to-json"
@@ -246,8 +248,12 @@ function YamlJsonConverter() {
             </span>
             {error && (
               <div id="input-error" className="error-message" role="alert" aria-label="変換エラー">
-                <p>変換できませんでした。入力を確認して再度変換してください。</p>
-                <pre className="yaml-json-error-detail">{error}</pre>
+                <p id="input-error-summary">
+                  変換できませんでした。入力を確認して再度変換してください。
+                </p>
+                <pre id="input-error-detail" className="yaml-json-error-detail">
+                  {error}
+                </pre>
               </div>
             )}
           </div>

@@ -103,7 +103,15 @@ describe("YAML/JSON conversion recovery", () => {
     expect(input().value).toBe(value);
     expect(document.activeElement).toBe(input());
     expect(input().getAttribute("aria-invalid")).toBe("true");
-    expect(input().getAttribute("aria-describedby")?.split(" ")).toContain("input-error");
+    expect(input().getAttribute("aria-describedby")?.split(" ")).toEqual([
+      "input-help",
+      "input-error-summary",
+      "input-error-detail",
+    ]);
+    expect(container.querySelector("#input-error-summary")?.textContent).toContain(
+      "入力を確認して再度変換してください",
+    );
+    expect(container.querySelector("#input-error-detail")?.textContent).toContain(reason);
     expect(error()?.textContent).toContain(reason);
     expect(container.querySelector(".toast-error")?.textContent).toContain(reason);
     expect(container.querySelector('[role="status"]')?.textContent).toContain(reason);

@@ -45,7 +45,10 @@ export async function assertYamlJsonRecovery(
   await expect(input).toHaveValue(failure.value);
   await expect(input).toBeFocused();
   await expect(input).toHaveAttribute("aria-invalid", "true");
-  await expect(input).toHaveAttribute("aria-describedby", "input-help input-error");
+  await expect(input).toHaveAttribute(
+    "aria-describedby",
+    "input-help input-error-summary input-error-detail",
+  );
   await expect(error).toBeVisible();
   await expect(error).toContainText(failure.reason);
   await expect(error).toContainText("入力を確認して再度変換してください");
@@ -53,6 +56,8 @@ export async function assertYamlJsonRecovery(
   // The reason remains available after the transient toast has disappeared.
   await expect(page.locator(".toast-error")).toHaveCount(0);
   await expect(error).toBeVisible();
+  await expect(input).toHaveAccessibleDescription(new RegExp(failure.reason));
+  await expect(input).toHaveAccessibleDescription(/入力を確認して再度変換してください/);
   if (failure.reason === "flow" || failure.reason === "無効なJSON形式です") {
     await error.scrollIntoViewIfNeeded();
     await expect(page.locator(".tool-container")).toHaveCSS("opacity", "1");
@@ -77,6 +82,11 @@ export async function assertYamlJsonRecovery(
   await expect(error).toHaveCount(0);
   await expect(input).not.toHaveAttribute("aria-invalid", "true");
   await expect(input).toHaveAttribute("aria-describedby", "input-help");
+  await expect(input).toHaveAccessibleDescription(
+    failure.mode === "yaml-to-json"
+      ? "YAMLデータを入力して変換ボタンを押してください"
+      : "JSONデータを入力して変換ボタンを押してください",
+  );
 
   await page.getByRole("button", { name: "入力と出力をクリア", exact: true }).click();
   await expect(input).toHaveValue("");
