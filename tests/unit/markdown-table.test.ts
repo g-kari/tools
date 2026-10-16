@@ -1,7 +1,4 @@
 import { describe, expect, it } from "vite-plus/test";
-import { marked } from "marked";
-import { JSDOM } from "jsdom";
-import { readFileSync } from "node:fs";
 import {
   createEmptyTable,
   generateMarkdown,
@@ -162,87 +159,6 @@ describe("generateMarkdown", () => {
   });
 });
 
-describe("generateMarkdown rendered cell semantics", () => {
-  it("linear-time guard: backslash runを改行の有無に関わらず消費する", () => {
-    const source = readFileSync(
-      new URL("../../app/utils/markdown-table.ts", import.meta.url),
-      "utf8",
-    );
-    // 改行がない長いrunで位置ごとに再試行する旧パターンを戻さない。
-    expect(source).not.toContain(String.raw`/(\\*)(?:\r\n|\r|\n)/g`);
-    expect(source).toContain(String.raw`/\\+|\r\n|\r|\n/g`);
-  });
-
-  it.each([4096, 8192, 16384])("長さ %i のbackslash runを改行ありなしで保持する", (size) => {
-    const run = "\\".repeat(size);
-    const plain = generateMarkdown({
-      columns: [{ header: "header", align: "none" }],
-      rows: [[run]],
-    });
-    expect(plain.split("\n")[2]).toBe(`| ${run} |`);
-    const multiline = generateMarkdown({
-      columns: [{ header: "header", align: "none" }],
-      rows: [[`a${run}\nb`]],
-    });
-    expect(multiline.split("\n")).toHaveLength(3);
-    expect(multiline.split("\n")[2]).toBe(`| a${run.repeat(2)}<br>b |`);
-  });
-
-  it.each(["\n", "\r\n", "\r"])(
-    "改行 %j の直前のbackslashを失わずheader/bodyのbrを描画する",
-    (newline) => {
-      for (const count of [0, 1, 2, 3, 4]) {
-        for (const before of ["a", "a|"]) {
-          for (const after of ["b", "|b"]) {
-            const value = before + "\\".repeat(count) + newline + after;
-            const csv = [value, value].map((cell) => '"' + cell + '"').join("\n");
-            const markdown = generateMarkdown(parseCSV(csv));
-            const dom = new JSDOM(marked.parse(markdown, { async: false, gfm: true }));
-            const document = dom.window.document;
-            expect(document.querySelectorAll("th,td")).toHaveLength(2);
-            for (const cell of document.querySelectorAll("th,td")) {
-              expect(cell.textContent).toBe(before + "\\".repeat(count) + after);
-              expect(cell.querySelectorAll("br")).toHaveLength(1);
-              expect(cell.innerHTML).not.toContain("&lt;br&gt;");
-            }
-            expect(markdown.split("\n")).toHaveLength(3);
-            expect(markdown).toContain(
-              before.replace(/\|/g, "\\|") +
-                "\\".repeat(count * 2) +
-                "<br>" +
-                after.replace(/\|/g, "\\|"),
-            );
-            dom.window.close();
-          }
-        }
-      }
-    },
-  );
-
-  it("セルの通常のraw Markdown記法と改行に隣接しないbackslashを維持する", () => {
-    const value = "**bold** [link](https://example.invalid/) `code` \\*literal\\*";
-    const markdown = generateMarkdown({
-      columns: [{ header: "**header**", align: "none" }],
-      rows: [[value]],
-    });
-    expect(markdown).toContain(value);
-    const document = new JSDOM(marked.parse(markdown, { async: false })).window.document;
-    expect(document.querySelector("th strong")?.textContent).toBe("header");
-    expect(document.querySelector("td strong")?.textContent).toBe("bold");
-    expect(document.querySelector("td a")?.getAttribute("href")).toBe("https://example.invalid/");
-    expect(document.querySelector("td code")?.textContent).toBe("code");
-    expect(document.querySelector("td")?.textContent).toContain("*literal*");
-    expect(document.querySelector("td em")).toBeNull();
-  });
-
-  it("複数行inline-codeではbrが文字となる既知のraw Markdown制限を記録する", () => {
-    const markdown = generateMarkdown(parseCSV('A\n"`a\nb`"'));
-    const document = new JSDOM(marked.parse(markdown, { async: false })).window.document;
-    expect(document.querySelector("td code")?.textContent).toBe("a<br>b");
-    expect(document.querySelector("td br")).toBeNull();
-  });
-});
-
 describe("parseCSV", () => {
   it.each(["\t\n", " \t \r\n", "\t\r"])(
     "先頭の空白物理行 %j のタブをヘッダー区切りと誤認しない",
@@ -252,10 +168,10 @@ describe("parseCSV", () => {
       expect(table.rows).toEqual([["x,y", "z"]]);
     },
   );
-  it("引用符内のカンマ・改行・空白・二重引用符を保持する", () => {
-    const result = parseCSV('"名,前",備考\r\n"  Alice  ","前\r\n\r\n""後"""');
+  it("引用符内のカンマ・空白・二重引用符を保持する", () => {
+    const result = parseCSV('"名,前",備考\r\n"  Alice  ","前""後"""');
     expect(result.columns.map((column) => column.header)).toEqual(["名,前", "備考"]);
-    expect(result.rows).toEqual([["  Alice  ", '前\r\n\r\n"後"']]);
+    expect(result.rows).toEqual([["  Alice  ", '前"後"']]);
   });
 
   it.each(["\n", "\r\n", "\r"])("%j のレコード区切りを扱う", (newline) => {
@@ -290,8 +206,8 @@ describe("parseCSV", () => {
     (csv) => expect(() => parseCSV(csv)).toThrow(/レコード 2.*2 列.*3 列/),
   );
 
-  it("空の物理行は無視し引用符内の空行は保持する", () => {
-    expect(parseCSV('\n  \nA,B\n\n1,"x\n\ny"\n  \n').rows).toEqual([["1", "x\n\ny"]]);
+  it("空の物理行は無視し引用符付き空セルは保持する", () => {
+    expect(parseCSV('\n  \nA,B\n\n1,""\n  \n').rows).toEqual([["1", ""]]);
   });
 
   it("先頭のBOMをヘッダーに含めない", () => {
@@ -325,7 +241,6 @@ describe("parseCSV", () => {
     expect(parseCSV("A,B\nx\ty,z").rows).toEqual([["x\ty", "z"]]);
     expect(parseCSV('"A\tB",C\nx,y').columns[0].header).toBe("A\tB");
     expect(parseCSV("A\nx\ty").rows).toEqual([["x\ty"]]);
-    expect(parseCSV('"A\nB",C\n"x\ty",z').rows).toEqual([["x\ty", "z"]]);
   });
 
   it("引用符付きの空白と空文字のレコードを空行と区別する", () => {
@@ -337,11 +252,23 @@ describe("parseCSV", () => {
     expect(() => parseCSV('\t\nA,B\n1,"open')).toThrow(/レコード 2.*列 2/);
   });
 
-  it("セルとヘッダーの改行をMarkdownの同じ行内のbrへ変換する", () => {
-    const markdown = generateMarkdown(parseCSV('"A\nB",C\n"x\r\ny\rz\nq|r",s'));
-    expect(markdown.split("\n")).toHaveLength(3);
-    expect(markdown).toContain("A<br>B");
-    expect(markdown).toContain("x<br>y<br>z<br>q\\|r");
+  it.each(["\n", "\r\n", "\r"])(
+    "引用符内の改行 %j を含むヘッダー・セルを位置付きで拒否する",
+    (newline) => {
+      expect(() => parseCSV(`"A${newline}B",C\nx,y`)).toThrow(/レコード 1.*列 1.*改行.*未対応/);
+      expect(() => parseCSV(`A,B\nx,"前${newline}後"`)).toThrow(/レコード 2.*列 2.*改行.*未対応/);
+    },
+  );
+
+  it.each([
+    ['"A\\|B",C\nx,y', 1, 1],
+    ['A,B\nx,"a\\|b"', 2, 2],
+    ["A\\|B\tC\nx\ty", 1, 1],
+    ["A\tB\nx\ta\\\\|b", 2, 2],
+  ])("backslashとpipeが隣接する未対応値を拒否する: %j", (csv, record, column) => {
+    expect(() => parseCSV(String(csv))).toThrow(
+      new RegExp(`レコード ${record}.*列 ${column}.*未対応`),
+    );
   });
 
   it("空文字列はcreateEmptyTable(3, 2)を返す", () => {

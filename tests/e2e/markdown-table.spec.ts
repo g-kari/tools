@@ -126,24 +126,33 @@ test.describe("Markdownテーブル生成", () => {
     await expect(tips).toBeVisible();
   });
 
-  test("引用符付き複数行を編集し、不正なCSVから修復できる", async ({ page }) => {
+  test("引用符付きCSVを編集し、未対応・不正な入力を保持して修復できる", async ({ page }) => {
     const source = page.getByLabel("CSVインポート入力", { exact: true });
     const importButton = page.getByRole("button", { name: "CSVをインポートしてテーブルに反映" });
     const output = page.getByLabel("Markdown出力", { exact: true });
-    await source.fill('"A\nB",C\n"x,\n""y""",z');
+    await source.fill('"A,B",C\n"x,""y""",z');
     await importButton.click();
-    await expect(page.getByLabel("列1のヘッダー", { exact: true })).toHaveValue("A\nB");
+    await expect(page.getByLabel("列1のヘッダー", { exact: true })).toHaveValue("A,B");
     const cell = page.getByLabel("行1列1", { exact: true });
-    await expect(cell).toHaveValue('x,\n"y"');
-    await cell.fill('x,\n"y"\n編集');
-    await expect(output).toHaveValue(/x,<br>"y"<br>編集/);
+    await expect(cell).toHaveValue('x,"y"');
+    await cell.fill('x,"y"編集');
+    await expect(output).toHaveValue(/x,"y"編集/);
     const previous = await output.inputValue();
-    for (const invalid of ['A,B\n1,"open', "A,B\n1,2,3", 'A\tB\n"x\ny"\tz']) {
+    for (const invalid of [
+      'A,B\n1,"open',
+      "A,B\n1,2,3",
+      'A\tB\n"x\ny"\tz',
+      '\t\nA,B\n1,"open',
+      'A,B\nx,"前\n後"',
+      '"A\nB",C\nx,y',
+      'A,B\nx,"a\\|b"',
+      '"A\\|B",C\nx,y',
+    ]) {
       await source.fill(invalid);
       await importButton.click();
       await importButton.click();
-      await expect(page.getByRole("alert")).toContainText("レコード 2");
-      await expect(source).toHaveAccessibleDescription(/レコード 2/);
+      await expect(page.getByRole("alert")).toContainText("レコード");
+      await expect(source).toHaveAccessibleDescription(/レコード/);
       await expect(source).toHaveValue(invalid);
       await expect(output).toHaveValue(previous);
     }

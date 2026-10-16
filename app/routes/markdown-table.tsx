@@ -111,9 +111,8 @@ function MarkdownTableGenerator() {
                       {tableData.columns.map((col, i) => (
                         <th key={i}>
                           <div className="markdown-table-header-cell">
-                            <textarea
+                            <input
                               className="markdown-table-header-input"
-                              rows={Math.min(4, col.header.split(/\r\n|\r|\n/).length)}
                               value={col.header}
                               onChange={(e) =>
                                 setTableData(updateHeader(tableData, i, e.target.value))
@@ -164,9 +163,8 @@ function MarkdownTableGenerator() {
                       <tr key={ri}>
                         {row.map((cell, ci) => (
                           <td key={ci}>
-                            <textarea
+                            <input
                               className="markdown-table-cell-input"
-                              rows={Math.min(4, cell.split(/\r\n|\r|\n/).length)}
                               value={cell}
                               onChange={(e) =>
                                 setTableData(updateCell(tableData, ri, ci, e.target.value))
@@ -291,11 +289,12 @@ function MarkdownTableGenerator() {
               items: [
                 "スプレッドシート（Excel、Googleスプレッドシート等）からコピーしてTSVとして貼り付け可能",
                 "先頭の非空ヘッダーの引用符外にタブがあればTSV、それ以外はCSVとして読み込みます",
-                'CSVはダブルクォートで囲んだカンマ・改行・二重引用符（""）に対応し、内部の空白を保持します',
-                "TSVの同じセル内で閉じる引用符は文字として扱います。引用符付き改行・タブや先頭の引用符が閉じないセルは拒否します。必要ならCSVに変換してください",
+                'CSVはダブルクォートで囲んだカンマ・二重引用符（""）に対応し、内部の空白とタブを保持します',
+                "TSVの同じセル内で閉じる引用符は文字として扱います。引用符付き改行・タブや先頭の引用符が閉じないセルは拒否します。必要なら1セル1行のCSVに整形してください",
                 "引用符で始まる曖昧なヘッダーはCSVとして検証します。不正な引用符・超過列はエラーにし、不足列は空文字で補います",
-                "引用符外の前後空白と空行は除去します。セル・ヘッダーの改行はMarkdownでは<br>に変換します",
-                "セルのMarkdown記法はそのまま扱います。複数行のインラインコードは未対応で、<br>が文字として表示されます。HTMLを無効にするレンダラーでも表示が異なります",
+                "セル・ヘッダー内の改行と、バックスラッシュの直後に|がある値は現在の編集・Markdown出力で保持できないためインポートを拒否します",
+                "インポート失敗時は入力と現在のテーブルを保持します。理由を確認して入力を修正してください",
+                "引用符外の前後空白と空行は除去します。手入力とMarkdown出力の既存の記法は変更しておらず、表の完全な可逆性は保証しません",
                 "1行目がヘッダー行として扱われます",
                 "インポート後もエディターで各セルを自由に編集できます",
               ],

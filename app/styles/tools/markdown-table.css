@@ -86,7 +86,6 @@
 
 /* ヘッダー名入力フィールド */
 .markdown-table-header-input {
-  resize: vertical;
   flex: 1;
   min-width: 60px;
   border: 1px solid var(--md-sys-color-outline-variant);
@@ -173,7 +172,6 @@
 
 /* データセル入力フィールド */
 .markdown-table-cell-input {
-  resize: vertical;
   display: block;
   width: 100%;
   border: none;

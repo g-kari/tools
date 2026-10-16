@@ -45,21 +45,12 @@ export function createEmptyTable(cols: number, rows: number): TableData {
 }
 
 /**
- * セル内の | をエスケープし、改行を同じMarkdown行内のbrへ変換する
+ * セル内の | をエスケープする
  * @param cell エスケープするセルの文字列
  * @returns エスケープ済み文字列
  */
 function escapeCell(cell: string): string {
-  return cell
-    .replace(/\|/g, "\\|")
-    .replace(/\\+|\r\n|\r|\n/g, (token: string, offset: number, text: string) => {
-      if (token[0] !== "\\") return "<br>";
-      // 挿入するHTMLタグが直前のbackslashでMarkdownエスケープされないようにする。
-      // 改行直前だけは元のbackslash数も描画結果に保持する。他のMarkdown記法は維持する。
-      // run自体を必ず消費し、改行のない長いrunで位置ごとの再探索を発生させない。
-      const next = text[offset + token.length];
-      return next === "\r" || next === "\n" ? token.repeat(2) : token;
-    });
+  return cell.replace(/\|/g, "\\|");
 }
 
 /**
@@ -235,7 +226,7 @@ function parseTableTsvRecords(text: string): string[][] {
           }
           if (!closed) {
             throw new Error(
-              `レコード ${recordIndex + 1}、列 ${columnIndex + 1}: TSVの先頭の引用符は同じセル内で閉じてください。引用符付き改行・タブは未対応です。カンマ区切りのCSVとして入力してください`,
+              `レコード ${recordIndex + 1}、列 ${columnIndex + 1}: TSVの先頭の引用符は同じセル内で閉じてください。引用符付き改行・タブは未対応です。1セル1行のカンマ区切りCSV等に整形してください`,
             );
           }
         }
@@ -244,13 +235,29 @@ function parseTableTsvRecords(text: string): string[][] {
     );
 }
 
+/** 現在の単一行エディター・Markdown出力で保持できないimport値を位置付きで拒否する。 */
+function validateImportedTableCell(value: string, record: number, column: number): string {
+  if (value.includes("\r") || value.includes("\n")) {
+    throw new Error(
+      `レコード ${record}、列 ${column}: セル・ヘッダー内の改行は未対応です。改行を除いてからインポートしてください`,
+    );
+  }
+  if (value.includes("\\|")) {
+    throw new Error(
+      `レコード ${record}、列 ${column}: バックスラッシュと | が隣接する値は現在のMarkdown出力では未対応です。値を変更するか、別の形式を使用してください`,
+    );
+  }
+  return value;
+}
+
 /**
  * CSV/TSV文字列をTableDataに変換する
  * 空文字列はcreateEmptyTable(3, 2)を返す
  * ヘッダーの引用符外にタブがあれば従来の単純なTSVとして解析する
- * CSVは引用符内のカンマ・改行・二重引用符を保持する
+ * CSVは引用符内のカンマ・二重引用符を保持する
  * 1行目をヘッダー、2行目以降をデータ行として扱う
  * 不足列は空文字で補完し、超過列と不正なCSV構文はエラーにする
+ * セル内改行とbackslash+pipeは既存の編集・出力で保持できないため拒否する
  * @param csv パースするCSVまたはTSV文字列
  * @returns パース結果のTableData
  */
@@ -263,7 +270,7 @@ export function parseCSV(csv: string): TableData {
 
   if (records.length === 0) return createEmptyTable(3, 2);
 
-  const headers = records[0];
+  const headers = records[0].map((value, index) => validateImportedTableCell(value, 1, index + 1));
   const columns: TableColumn[] = headers.map((header) => ({
     header,
     align: "none" as AlignType,
@@ -275,6 +282,7 @@ export function parseCSV(csv: string): TableData {
         `レコード ${index + 2} はヘッダーより列数が多いためインポートできません（ヘッダー ${columns.length} 列、データ ${cells.length} 列）。ヘッダーまたは区切り文字を確認してください`,
       );
     }
+    cells.forEach((value, column) => validateImportedTableCell(value, index + 2, column + 1));
     return Array.from({ length: columns.length }, (_, i) => cells[i] ?? "");
   });
 
