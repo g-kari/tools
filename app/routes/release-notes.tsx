@@ -44,6 +44,12 @@ export const releases: Release[] = [
     entries: [
       {
         type: "fix",
+        title: "IPv6解析でIPv4末尾付きの圧縮表記を正しく処理",
+        description:
+          "2001:db8::192.0.2.1などを正しく展開・圧縮し、::が1グループも省略していない不正な表記を拒否します。",
+      },
+      {
+        type: "fix",
         title: "CIDR計算で非ゼロのIPアドレスに指定した/0を正しく処理",
         description:
           "IPv4全体のネットワークアドレスと先頭利用可能IPを正規化します。/1〜/32の計算は変更していません。",
