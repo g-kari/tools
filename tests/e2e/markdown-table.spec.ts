@@ -126,6 +126,39 @@ test.describe("Markdownテーブル生成", () => {
     await expect(tips).toBeVisible();
   });
 
+  test("引用符付き複数行を編集し、不正なCSVから修復できる", async ({ page }) => {
+    const source = page.getByLabel("CSVインポート入力", { exact: true });
+    const importButton = page.getByRole("button", { name: "CSVをインポートしてテーブルに反映" });
+    const output = page.getByLabel("Markdown出力", { exact: true });
+    await source.fill('"A\nB",C\n"x,\n""y""",z');
+    await importButton.click();
+    await expect(page.getByLabel("列1のヘッダー", { exact: true })).toHaveValue("A\nB");
+    const cell = page.getByLabel("行1列1", { exact: true });
+    await expect(cell).toHaveValue('x,\n"y"');
+    await cell.fill('x,\n"y"\n編集');
+    await expect(output).toHaveValue(/x,<br>"y"<br>編集/);
+    const previous = await output.inputValue();
+    for (const invalid of ['A,B\n1,"open', "A,B\n1,2,3", 'A\tB\n"x\ny"\tz']) {
+      await source.fill(invalid);
+      await importButton.click();
+      await importButton.click();
+      await expect(page.getByRole("alert")).toContainText("レコード 2");
+      await expect(source).toHaveAccessibleDescription(/レコード 2/);
+      await expect(source).toHaveValue(invalid);
+      await expect(output).toHaveValue(previous);
+    }
+    await source.fill('A,B\n"fixed,ok",value');
+    await importButton.click();
+    await expect(page.getByRole("alert")).toHaveCount(0);
+    await expect(source).toHaveValue("");
+    await expect(output).toHaveValue(/fixed,ok/);
+    await source.fill('A\n"open');
+    await importButton.click();
+    await page.getByRole("button", { name: "CSVインポート入力をクリア" }).click();
+    await expect(page.getByRole("alert")).toHaveCount(0);
+    await expect(source).toHaveValue("");
+  });
+
   test("キーボードナビゲーションが機能する", async ({ page }) => {
     const headerInput = page.locator("#markdown-table-header-0");
     await headerInput.focus();

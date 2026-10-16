@@ -44,6 +44,12 @@ export const releases: Release[] = [
     entries: [
       {
         type: "fix",
+        title: "MarkdownテーブルのCSVインポートで値の欠落を防止",
+        description:
+          "引用符内のカンマ・改行・二重引用符を保持し、不正な引用符やヘッダーより多い列をエラー表示します。失敗時は入力と現在の表を保持し、修正後に再インポートできます。複数行のセルとヘッダーを編集でき、Markdownでは改行を<br>に変換します。",
+      },
+      {
+        type: "fix",
         title: "JSONマージで特殊なキーの値が消える問題を修正",
         description: "__proto__などもJSONの通常のデータとして保持します。",
       },
