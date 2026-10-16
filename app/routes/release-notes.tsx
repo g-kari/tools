@@ -39,6 +39,18 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
+    version: "2026.10.14",
+    date: "2026-10-16",
+    entries: [
+      {
+        type: "fix",
+        title: "YAML・JSON変換の失敗時に古い結果をクリア",
+        description:
+          "空入力や変換エラーの後に前の結果をコピーする混同を防ぎます。入力と失敗理由を保持し、修正後に再変換できます。",
+      },
+    ],
+  },
+  {
     version: "2026.10.13",
     date: "2026-10-15",
     entries: [
