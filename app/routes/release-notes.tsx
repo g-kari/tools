@@ -44,6 +44,12 @@ export const releases: Release[] = [
     entries: [
       {
         type: "fix",
+        title: "CIDR計算で非ゼロのIPアドレスに指定した/0を正しく処理",
+        description:
+          "IPv4全体のネットワークアドレスと先頭利用可能IPを正規化します。/1〜/32の計算は変更していません。",
+      },
+      {
+        type: "fix",
         title: "JSONマージで特殊なキーの値が消える問題を修正",
         description: "__proto__などもJSONの通常のデータとして保持します。",
       },

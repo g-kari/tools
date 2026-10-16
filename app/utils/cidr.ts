@@ -68,7 +68,8 @@ export function prefixToSubnetMask(prefix: number): string {
  */
 export function calculateNetworkAddress(ip: string, prefix: number): string {
   const ipInt = ipToInt(ip);
-  const mask = (0xffffffff << (32 - prefix)) >>> 0;
+  // JavaScript masks shift counts to five bits, so /0 needs an explicit zero mask.
+  const mask = prefix === 0 ? 0 : (0xffffffff << (32 - prefix)) >>> 0;
   const networkInt = (ipInt & mask) >>> 0;
   return intToIp(networkInt);
 }
