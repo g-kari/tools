@@ -154,3 +154,50 @@ describe("getSampleJsonPair", () => {
     expect(() => mergeJsonStrings([s1, s2])).not.toThrow();
   });
 });
+
+describe("JSON own-key preservation", () => {
+  it.each(["replace", "concat", "unique"] as const)(
+    "preserves special keys for %s",
+    (arrayStrategy) => {
+      const left =
+        '{"__proto__":{"left":1,"items":["a"]},"constructor":{"left":1},"toString":{"left":1}}';
+      const right =
+        '{"__proto__":{"right":2,"items":["b"]},"constructor":{"right":2},"toString":{"right":2}}';
+      const result = JSON.parse(mergeJsonStrings([left, right], { deep: true, arrayStrategy }));
+      expect(Object.hasOwn(result, "__proto__")).toBe(true);
+      expect(result.__proto__).toEqual({
+        left: 1,
+        right: 2,
+        items: arrayStrategy === "replace" ? ["b"] : ["a", "b"],
+      });
+      expect(result.constructor).toEqual({ left: 1, right: 2 });
+      expect(result.toString).toEqual({ left: 1, right: 2 });
+      expect(JSON.parse(left).__proto__).toEqual({ left: 1, items: ["a"] });
+      expect(Object.getPrototypeOf({})).toBe(Object.prototype);
+      expect(Object.hasOwn(Object.prototype, "left")).toBe(false);
+    },
+  );
+  it("preserves newly added nested special keys and primitive replacements", () => {
+    const result = JSON.parse(
+      mergeJsonStrings(['{"nested":{}}', '{"nested":{"__proto__":{"sample":"synthetic"}}}']),
+    );
+    expect(Object.hasOwn(result.nested, "__proto__")).toBe(true);
+    expect(result.nested.__proto__).toEqual({ sample: "synthetic" });
+    expect(JSON.parse(mergeJsonStrings(["{}", '{"__proto__":null}']))).toEqual(
+      JSON.parse('{"__proto__":null}'),
+    );
+  });
+});
+
+
+describe("special-key merge strategy controls", () => {
+  it("retains shallow replacement and unique array semantics", () => {
+    const left = '{"__proto__":{"left":1,"items":["shared","a"]}}';
+    const right = '{"__proto__":{"right":2,"items":["shared","b"]}}';
+    const shallow = JSON.parse(mergeJsonStrings([left, right], { deep: false, arrayStrategy: "unique" }));
+    expect(Object.hasOwn(shallow, "__proto__")).toBe(true);
+    expect(shallow.__proto__).toEqual({ right: 2, items: ["shared", "b"] });
+    const deep = JSON.parse(mergeJsonStrings([left, right], { deep: true, arrayStrategy: "unique" }));
+    expect(deep.__proto__).toEqual({ left: 1, right: 2, items: ["shared", "a", "b"] });
+  });
+});

@@ -44,6 +44,11 @@ export const releases: Release[] = [
     entries: [
       {
         type: "fix",
+        title: "JSONマージで特殊なキーの値が消える問題を修正",
+        description: "__proto__などもJSONの通常のデータとして保持します。",
+      },
+      {
+        type: "fix",
         title: "パスワード強度を生成済みの値の条件に合わせて表示",
         description:
           "長さや文字種の設定だけを変えても、生成済みパスワードの強度表示は変わりません。再生成すると新しい条件を反映します。生成方法とコピーする値は変更していません。",
