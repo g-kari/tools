@@ -189,15 +189,18 @@ describe("JSON own-key preservation", () => {
   });
 });
 
-
 describe("special-key merge strategy controls", () => {
   it("retains shallow replacement and unique array semantics", () => {
     const left = '{"__proto__":{"left":1,"items":["shared","a"]}}';
     const right = '{"__proto__":{"right":2,"items":["shared","b"]}}';
-    const shallow = JSON.parse(mergeJsonStrings([left, right], { deep: false, arrayStrategy: "unique" }));
+    const shallow = JSON.parse(
+      mergeJsonStrings([left, right], { deep: false, arrayStrategy: "unique" }),
+    );
     expect(Object.hasOwn(shallow, "__proto__")).toBe(true);
     expect(shallow.__proto__).toEqual({ right: 2, items: ["shared", "b"] });
-    const deep = JSON.parse(mergeJsonStrings([left, right], { deep: true, arrayStrategy: "unique" }));
+    const deep = JSON.parse(
+      mergeJsonStrings([left, right], { deep: true, arrayStrategy: "unique" }),
+    );
     expect(deep.__proto__).toEqual({ left: 1, right: 2, items: ["shared", "a", "b"] });
   });
 });
