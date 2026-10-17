@@ -91,10 +91,10 @@ function inferSchema(value: unknown): JsonSchemaObject {
       };
     }
 
-    const properties: Record<string, JsonSchemaObject> = {};
-    for (const key of keys) {
-      properties[key] = inferSchema(obj[key]);
-    }
+    // fromEntriesは__proto__もsetterを呼ばず、通常のown propertyとして保持する。
+    const properties: Record<string, JsonSchemaObject> = Object.fromEntries(
+      keys.map((key) => [key, inferSchema(obj[key])]),
+    );
 
     return {
       type: "object",

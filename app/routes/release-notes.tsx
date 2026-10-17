@@ -44,6 +44,12 @@ export const releases: Release[] = [
     entries: [
       {
         type: "fix",
+        title: "JSON Schema生成で__proto__キーが脱落する不具合を修正",
+        description:
+          "__proto__を通常のJSONキーとしてpropertiesに保持し、ネストや配列の元データも生成スキーマで検証できるようにします。required・型・追加プロパティ拒否は維持します。",
+      },
+      {
+        type: "fix",
         title: "JSON Schemaの混在配列で元データを拒否する不具合を修正",
         description:
           "配列要素の候補をanyOfで結合し、整数と小数や空配列を含む重なる候補への適合を認めます。生成キーワードは従来のoneOfから変わります。",
