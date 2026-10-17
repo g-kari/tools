@@ -44,6 +44,24 @@ export const releases: Release[] = [
     entries: [
       {
         type: "fix",
+        title: "JSON→XML変換で属性値の特殊文字を保持",
+        description:
+          "属性値の&・<・二重引用符をエスケープし、不正なXMLの出力と実体参照のような文字列の意図しない変化を防ぎます。CDATA・混在テキストの既存の変換規則は維持します。",
+      },
+      {
+        type: "fix",
+        title: "YAML・JSON変換の失敗時に古い結果をクリア",
+        description:
+          "空入力や変換エラーの後に前の結果をコピーする混同を防ぎます。入力と失敗理由を保持し、修正後に再変換できます。",
+      },
+      {
+        type: "fix",
+        title: "Base58/62で全ゼロのバイト列が増える不具合を修正",
+        description:
+          "バイト変換で全ゼロの入力を1バイトにつき1個のゼロ記号にし、同じ長さに復号します。各アルファベット・通常データ・Base62整数変換は維持し、従来の不正な出力の自動補正は行いません。",
+      },
+      {
+        type: "fix",
         title: "JSON Schema検証で継承キーを入力項目と誤判定する不具合を修正",
         description:
           "requiredとpropertiesは入力JSON自身のキーだけを調べます。__proto__・constructor・toStringなどが欠落した場合も、必須項目の拒否と任意項目の省略を正しく判定します。存在する項目の型検査は維持します。",

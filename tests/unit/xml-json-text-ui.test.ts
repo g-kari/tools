@@ -69,6 +69,22 @@ describe("XML/JSON テキスト変換ページ", () => {
     expect(input().value).toBe(source);
   });
 
+  it("JSONモードの属性値をエスケープし、再変換しても入力と出力を保持する", () => {
+    switchToJson();
+    const source = JSON.stringify({
+      root: { "@attributes": { title: 'R&D < "quoted" &amp; &#65;' }, "#text": "value" },
+    });
+    const expected =
+      '<?xml version="1.0" encoding="UTF-8"?>\n<root title="R&amp;D &lt; &quot;quoted&quot; &amp;amp; &amp;#65;">value</root>';
+    fill(source);
+    convert();
+    expect(output().value).toBe(expected);
+    convert();
+    expect(output().value).toBe(expected);
+    expect(input().value).toBe(source);
+    expect(container.querySelector(".error-message")).toBeNull();
+  });
+
   it("不正なXMLで結果をクリアし、有効なCDATA入力から再開する", () => {
     fill("<root><![CDATA[value]]></root>");
     convert();
