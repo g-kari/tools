@@ -147,7 +147,10 @@ function jsonToXmlNode(
     if (attrObj && typeof attrObj === "object") {
       for (const [k, v] of Object.entries(attrObj as Record<string, string>)) {
         const attrName = k.startsWith("@") ? k.slice(1) : k;
-        const escaped = String(v).replace(/"/g, "&quot;");
+        const escaped = String(v)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/"/g, "&quot;");
         attrs += ` ${attrName}="${escaped}"`;
       }
     }

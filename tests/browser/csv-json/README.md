@@ -66,6 +66,10 @@ The mode/indent/Copy component cases observe writes at a synthetic Clipboard API
 
 The workflow additionally runs all thirteen original plus twenty-two recovery cases in `tests/e2e/yaml-json.spec.ts` through `yaml-json-app.config.ts` against the production build on loopback. These use the existing external-HTTP, page-error and hydration guard. The app-only configuration grants Chromium clipboard read/write permissions for the existing real Clipboard API assertions; component fixtures keep their synthetic clipboard boundary. The existing runner, time budget, permissions and sandbox flags are unchanged. No dependency or deployment configuration changes.
 
+## XML/JSON full-application validation
+
+The workflow runs all 21 cases in `tests/e2e/xml-json.spec.ts` through `xml-json-app.config.ts` against the production build on loopback. The unmodified functional assertions include escaped attribute values and repeated conversion, CDATA, mixed content and invalid-input recovery. The shared full-app transport rejects unexpected external origins, page errors and hydration warnings; known fonts and ad HTTP requests are blocked and recorded. Service workers remain blocked and no extra browser permissions or launch flags are added. These are executed browser cases, not a manual UI checklist; a run must succeed before it is reported as passed.
+
 ## Generated password strength snapshot
 
 The bounded real-route component fixture also mounts `/password-generator`. Two desktop/mobile Chromium cases preserve the generated output, strength and synthetic Clipboard API call target while changing next-generation character types and length, then verify regeneration, clear and the minimum length. External HTTP is blocked and every attempted origin/page error fails. Generated values are disposable synthetic test values; no saved credential is read. Clipboard writes are intercepted, so native OS clipboard and the full application shell/SSR are not verified by these two cases. Workflow permissions, browser flags and service isolation are unchanged.

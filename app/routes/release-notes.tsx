@@ -44,6 +44,12 @@ export const releases: Release[] = [
     entries: [
       {
         type: "fix",
+        title: "JSON→XML変換で属性値の特殊文字を保持",
+        description:
+          "属性値の&・<・二重引用符をエスケープし、不正なXMLの出力と実体参照のような文字列の意図しない変化を防ぎます。CDATA・混在テキストの既存の変換規則は維持します。",
+      },
+      {
+        type: "fix",
         title: "YAML・JSON変換の失敗時に古い結果をクリア",
         description:
           "空入力や変換エラーの後に前の結果をコピーする混同を防ぎます。入力と失敗理由を保持し、修正後に再変換できます。",

@@ -9,6 +9,8 @@ on:
       - "app/routes/url-encode.tsx"
       - "app/routes/base64.tsx"
       - "app/routes/yaml-json.tsx"
+      - "app/routes/xml-json.tsx"
+      - "app/utils/xml-json.ts"
       - "app/components/**"
       - "app/hooks/**"
       - "app/styles/base.css"
@@ -28,6 +30,8 @@ on:
       - "tests/unit/base64-input-recovery.test.ts"
       - "tests/unit/yaml-json*.test.ts"
       - "tests/e2e/yaml-json.spec.ts"
+      - "tests/unit/xml-json*.test.ts"
+      - "tests/e2e/xml-json.spec.ts"
       - "package*.json"
       - ".github/workflows/csv-json-browser.yml"
   push:
@@ -39,6 +43,8 @@ on:
       - "app/routes/url-encode.tsx"
       - "app/routes/base64.tsx"
       - "app/routes/yaml-json.tsx"
+      - "app/routes/xml-json.tsx"
+      - "app/utils/xml-json.ts"
       - "app/components/**"
       - "app/hooks/**"
       - "app/styles/base.css"
@@ -58,6 +64,8 @@ on:
       - "tests/unit/base64-input-recovery.test.ts"
       - "tests/unit/yaml-json*.test.ts"
       - "tests/e2e/yaml-json.spec.ts"
+      - "tests/unit/xml-json*.test.ts"
+      - "tests/e2e/xml-json.spec.ts"
       - "package*.json"
       - ".github/workflows/csv-json-browser.yml"
 
@@ -71,7 +79,7 @@ concurrency:
 jobs:
   browser:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 12
     steps:
       - uses: actions/checkout@v6
         with:
@@ -100,6 +108,10 @@ jobs:
           CI: true
           WRANGLER_SEND_METRICS: "false"
       - run: npx playwright test --config tests/browser/csv-json/csv-sql-app.config.ts
+        env:
+          CI: true
+          WRANGLER_SEND_METRICS: "false"
+      - run: npx playwright test --config tests/browser/csv-json/xml-json-app.config.ts
         env:
           CI: true
           WRANGLER_SEND_METRICS: "false"
