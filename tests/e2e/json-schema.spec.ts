@@ -139,4 +139,37 @@ test.describe("JSON Schema Generator - E2E Tests", () => {
     await expect(copy).toBeDisabled();
     await expect(output).not.toContainText('"anyOf"');
   });
+
+  test("preserves __proto__ keys in nested and mixed array samples", async ({ page }) => {
+    const input = page.getByRole("textbox", { name: "JSON入力欄" });
+    const output = page.getByRole("region", { name: "生成されたJSONスキーマ" });
+    const generate = page.getByRole("button", { name: "JSONスキーマを生成する", exact: true });
+    for (const value of [
+      '{"__proto__":1}',
+      '{"outer":{"__proto__":{"nested":true}}}',
+      '[{"__proto__":1},{"__proto__":1.5}]',
+    ]) {
+      await input.fill(value);
+      await generate.click();
+      const schema = (await output.textContent()) ?? "";
+      const parsed = JSON.parse(schema);
+      const properties = parsed.properties ?? parsed.items.anyOf[0].properties;
+      expect(
+        Object.hasOwn(properties, "__proto__") ||
+          Object.hasOwn(properties.outer.properties, "__proto__"),
+      ).toBe(true);
+      expect(validateJsonAgainstSchema(value, schema).valid).toBe(true);
+      await expect(input).toHaveValue(value);
+    }
+    await input.fill('{"__proto__":');
+    await generate.click();
+    await expect(
+      page.getByRole("button", { name: "生成されたスキーマをクリップボードにコピーする" }),
+    ).toBeDisabled();
+    await input.fill('{"__proto__":true}');
+    await input.press("Control+Enter");
+    expect(
+      validateJsonAgainstSchema(await input.inputValue(), (await output.textContent()) ?? "").valid,
+    ).toBe(true);
+  });
 });
