@@ -12,17 +12,18 @@ import {
   runTestFiles,
 } from "../../scripts/e2e-matrix.mjs";
 
+const comparePaths = (left, right) => (left < right ? -1 : left > right ? 1 : 0);
 const script = fileURLToPath(new URL("../../scripts/e2e-matrix.mjs", import.meta.url));
 const paths = (count) =>
   Array.from({ length: count }, (_, index) => `tests/e2e/test-${index}.spec.ts`);
 
 for (const count of [1, 255, 256, 257, 312, 1000, 65537]) {
-  test(`${count} specs are assigned exactly once to at most 256 nonempty balanced jobs`, () => {
+  await test(`${count} specs are assigned exactly once to at most 256 nonempty balanced jobs`, () => {
     const files = paths(count);
     const matrix = createMatrix(files);
     const grouped = matrix.include.flatMap((group) => group.files);
     assert.equal(matrix.include.length, Math.min(count, 256));
-    assert.deepEqual([...grouped].sort(), [...files].sort());
+    assert.deepEqual([...grouped].sort(comparePaths), [...files].sort(comparePaths));
     assert.equal(new Set(grouped).size, count);
     assert.deepEqual(
       matrix.include.map((group) => group.group),
@@ -38,10 +39,12 @@ for (const count of [1, 255, 256, 257, 312, 1000, 65537]) {
   });
 }
 
-test("empty, duplicate, non-spec, traversal, and malformed groups fail closed", () => {
+await test("empty, duplicate, non-spec, traversal, and malformed groups fail closed", () => {
+  const sparse = [];
+  sparse.length = 1;
   for (const files of [
     [],
-    new Array(1),
+    sparse,
     null,
     {},
     "tests/e2e/a.spec.ts",
@@ -61,7 +64,7 @@ test("empty, duplicate, non-spec, traversal, and malformed groups fail closed", 
   }
 });
 
-test("discovery and matrix CLI include nested and unusual filenames, ignoring non-spec files and symlinks", (t) => {
+await test("discovery and matrix CLI include nested and unusual filenames, ignoring non-spec files and symlinks", (t) => {
   const directory = mkdtempSync(join(tmpdir(), "e2e-matrix-test-"));
   t.after(() => rmSync(directory, { recursive: true, force: true }));
   mkdirSync(join(directory, "tests/e2e/nested"), { recursive: true });
@@ -72,15 +75,18 @@ test("discovery and matrix CLI include nested and unusual filenames, ignoring no
   symlinkSync(join(directory, "tests/e2e/nested"), join(directory, "tests/e2e/link-directory"));
   assert.deepEqual(
     findTestFiles(join(directory, "tests/e2e")),
-    files.map((file) => join(directory, file)).sort(),
+    files.map((file) => join(directory, file)).sort(comparePaths),
   );
   const matrix = JSON.parse(
     execFileSync(process.execPath, [script, "matrix"], { cwd: directory, encoding: "utf8" }),
   );
-  assert.deepEqual(matrix.include.flatMap((group) => group.files).sort(), [...files].sort());
+  assert.deepEqual(
+    matrix.include.flatMap((group) => group.files).sort(comparePaths),
+    [...files].sort(comparePaths),
+  );
 });
 
-test("file filters select only the exact absolute path, escaping regex and shell metacharacters", () => {
+await test("file filters select only the exact absolute path, escaping regex and shell metacharacters", () => {
   for (const file of [
     "tests/e2e/a.spec.ts",
     "tests/e2e/nested/[a]+(b).*$^?|{}\\ '$(echo test)\n.spec.ts",
@@ -93,7 +99,7 @@ test("file filters select only the exact absolute path, escaping regex and shell
   }
 });
 
-test("each file gets one shell-free Playwright invocation and all files run after failures", () => {
+await test("each file gets one shell-free Playwright invocation and all files run after failures", () => {
   const files = [
     "tests/e2e/first.spec.ts",
     "tests/e2e/a '$(echo test) [2].spec.ts",
@@ -132,7 +138,7 @@ test("each file gets one shell-free Playwright invocation and all files run afte
   );
 });
 
-test("CLI fails for invalid JSON, empty groups, empty discovery, or an unknown command", (t) => {
+await test("CLI fails for invalid JSON, empty groups, empty discovery, or an unknown command", (t) => {
   const directory = mkdtempSync(join(tmpdir(), "e2e-matrix-empty-"));
   t.after(() => rmSync(directory, { recursive: true, force: true }));
   mkdirSync(join(directory, "tests/e2e"), { recursive: true });

@@ -5,6 +5,11 @@ import { pathToFileURL } from "node:url";
 
 const MAX_MATRIX_JOBS = 256;
 
+/** Match the default code-unit path ordering without depending on the runner's locale. */
+function comparePaths(left, right) {
+  return left < right ? -1 : left > right ? 1 : 0;
+}
+
 /** Find the same regular .spec.ts files as the former find command, without following symlinks. */
 export function findTestFiles(directory = "tests/e2e") {
   return readdirSync(directory, { withFileTypes: true })
@@ -13,7 +18,7 @@ export function findTestFiles(directory = "tests/e2e") {
       if (entry.isDirectory()) return findTestFiles(file);
       return entry.isFile() && entry.name.endsWith(".spec.ts") ? [file] : [];
     })
-    .sort();
+    .sort(comparePaths);
 }
 
 /** Validate the group shape; Playwright still checks file existence and collects the actual tests. */
@@ -42,7 +47,9 @@ export function createMatrix(files) {
     group: index + 1,
     files: [],
   }));
-  [...files].sort().forEach((file, index) => groups[index % groups.length].files.push(file));
+  [...files]
+    .sort(comparePaths)
+    .forEach((file, index) => groups[index % groups.length].files.push(file));
   return { include: groups };
 }
 
