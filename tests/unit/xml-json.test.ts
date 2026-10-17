@@ -331,7 +331,7 @@ describe("jsonToXml", () => {
     const json = JSON.stringify({
       root: {
         parent: {
-          "#text": "ignored text",
+          "#text": "preserved text",
           child: "value",
         },
       },
@@ -339,6 +339,7 @@ describe("jsonToXml", () => {
     const result = jsonToXml(json);
     expect(result.success).toBe(true);
     expect(result.output).toContain("<child>value</child>");
+    expect(result.output).toContain("preserved text<child>value</child>");
   });
 });
 

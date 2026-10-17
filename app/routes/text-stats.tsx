@@ -5,6 +5,7 @@ import { Textarea } from "~/components/ui/textarea";
 import { TipsCard } from "~/components/TipsCard";
 import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { analyzeText, formatReadingTime } from "../utils/text-stats";
+import { useGraphemeCount } from "../hooks/useGraphemeCount";
 
 export const Route = createFileRoute("/text-stats")({
   head: () => ({
@@ -47,6 +48,7 @@ function TextStatsPage() {
   const [text, setText] = useState("");
 
   const stats = useMemo(() => analyzeText(text), [text]);
+  const graphemes = useGraphemeCount(text);
 
   const handleClear = useCallback(() => {
     setText("");
@@ -56,16 +58,27 @@ function TextStatsPage() {
 
   const basicStats: StatCard[] = [
     {
-      label: "文字数",
+      label: "文字のまとまり（書記素）",
+      value:
+        graphemes === undefined
+          ? "確認中"
+          : graphemes === null
+            ? "未対応"
+            : graphemes.toLocaleString(),
+      testId: "grapheme-count",
+      description: "空白・改行含む",
+    },
+    {
+      label: "文字数（コードポイント）",
       value: stats.charCount.toLocaleString(),
       testId: "char-count",
       description: "スペース含む",
     },
     {
-      label: "文字数",
+      label: "コードポイント",
       value: stats.charCountNoSpaces.toLocaleString(),
       testId: "char-count-no-spaces",
-      description: "スペース除く",
+      description: "空白・タブ・改行除く",
     },
     {
       label: "単語数",
@@ -234,6 +247,10 @@ function TextStatsPage() {
               title: "テキスト統計・分析とは",
               items: [
                 "テキストの文字数・単語数・文章数・段落数をリアルタイムで分析します",
+                "書記素は、家族の絵文字や結合文字などを1まとまりとして数えます。コードポイント数は従来の文字数です",
+                "書記素数は空白・改行を含み、CRLFは1まとまりです。表示上の字形や投稿サービスの文字制限とは異なる場合があります",
+                "ブラウザーのIntl.Segmenterが使えない場合、書記素数は「未対応」と表示します",
+                "単語数は空白区切りで、日本語の形態素解析は行いません",
                 "読書時間は平均読書速度（200 WPM）を基に推定します",
                 "頻出単語は英語のストップワード（a, the, is など）を除外してランキング表示します",
               ],

@@ -4,6 +4,8 @@ import {
   warekiToSeireki,
   getEraNames,
   formatWareki,
+  getEraPeriod,
+  ERAS,
 } from "../../app/utils/wareki";
 
 describe("seirekiToWareki - 西暦 → 和暦", () => {
@@ -204,6 +206,50 @@ describe("seirekiToWareki と warekiToSeireki の往復変換", () => {
       const results = seirekiToWareki(expectedWestern);
       const match = results.find((r) => r.eraName === eraName && r.year === eraYear);
       expect(match).toBeDefined();
+    }
+  });
+});
+
+describe("getEraPeriod - 元号の期間テキスト", () => {
+  it("令和（現存元号）は終了日が「現在」と表示される", () => {
+    const reiwa = ERAS.find((e) => e.name === "令和");
+    expect(reiwa).toBeDefined();
+    expect(getEraPeriod(reiwa!)).toBe("2019年5月1日〜現在");
+  });
+
+  it("平成は開始日から終了日まで正しく表示される", () => {
+    const heisei = ERAS.find((e) => e.name === "平成");
+    expect(heisei).toBeDefined();
+    expect(getEraPeriod(heisei!)).toBe("1989年1月8日〜2019年4月30日");
+  });
+
+  it("昭和は開始日から終了日まで正しく表示される", () => {
+    const showa = ERAS.find((e) => e.name === "昭和");
+    expect(showa).toBeDefined();
+    expect(getEraPeriod(showa!)).toBe("1926年12月25日〜1989年1月7日");
+  });
+
+  it("大正は開始日から終了日まで正しく表示される", () => {
+    const taisho = ERAS.find((e) => e.name === "大正");
+    expect(taisho).toBeDefined();
+    expect(getEraPeriod(taisho!)).toBe("1912年7月30日〜1926年12月24日");
+  });
+
+  it("明治は開始日から終了日まで正しく表示される", () => {
+    const meiji = ERAS.find((e) => e.name === "明治");
+    expect(meiji).toBeDefined();
+    expect(getEraPeriod(meiji!)).toBe("1868年1月25日〜1912年7月29日");
+  });
+
+  it("終了元号の開始日は直前元号の終了日の翌日である（整合性チェック）", () => {
+    for (let i = 0; i < ERAS.length - 1; i++) {
+      const newer = ERAS[i];
+      const older = ERAS[i + 1];
+      expect(older.endYear).toBe(newer.startYear);
+      const nextDay = new Date(Date.UTC(older.endYear!, older.endMonth! - 1, older.endDay! + 1));
+      expect(nextDay.getUTCFullYear()).toBe(newer.startYear);
+      expect(nextDay.getUTCMonth() + 1).toBe(newer.startMonth);
+      expect(nextDay.getUTCDate()).toBe(newer.startDay);
     }
   });
 });

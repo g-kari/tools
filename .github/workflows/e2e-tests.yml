@@ -1,4 +1,4 @@
-name: E2E Tests (Self-Hosted)
+name: E2E Tests (GitHub-hosted)
 
 on:
   push:
@@ -6,12 +6,6 @@ on:
   pull_request:
     branches: [main, master]
   workflow_dispatch:
-    inputs:
-      use_self_hosted:
-        description: "Use self-hosted runner"
-        required: false
-        default: "true"
-        type: boolean
 
 # Cancel in-progress runs for the same branch
 concurrency:
@@ -25,25 +19,8 @@ jobs:
     timeout-minutes: 10
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
-      is_internal: ${{ steps.check-origin.outputs.is_internal }}
 
     steps:
-      - name: Check PR origin
-        id: check-origin
-        run: |
-          # For push events or internal PRs, use self-hosted runner
-          # For external PRs (forks), use GitHub-hosted runner for security
-          if [ "${{ github.event_name }}" == "push" ]; then
-            echo "is_internal=true" >> $GITHUB_OUTPUT
-            echo "Push event - using self-hosted runner"
-          elif [ "${{ github.event.pull_request.head.repo.full_name }}" == "${{ github.repository }}" ]; then
-            echo "is_internal=true" >> $GITHUB_OUTPUT
-            echo "Internal PR - using self-hosted runner"
-          else
-            echo "is_internal=false" >> $GITHUB_OUTPUT
-            echo "External PR (fork) - using GitHub-hosted runner for security"
-          fi
-
       - name: Checkout
         uses: actions/checkout@v6
 
@@ -82,12 +59,11 @@ jobs:
           echo "matrix={\"test-file\":$FILES}" >> $GITHUB_OUTPUT
           echo "Found test files: $FILES"
 
-  # E2E test jobs - runs on self-hosted runners in parallel (internal only)
-  # External PRs use GitHub-hosted runners for security
+  # Keep all E2E validation in the cloud, including internal PRs and main pushes.
   e2e:
     needs: build
     timeout-minutes: 30
-    runs-on: ${{ needs.build.outputs.is_internal == 'true' && fromJson('["self-hosted", "playwright", "e2e"]') || 'ubuntu-latest' }}
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix: ${{ fromJson(needs.build.outputs.matrix) }}
@@ -160,8 +136,7 @@ jobs:
 
             let body = `## ${emoji} E2E Tests ${status}\n\n`;
 
-            const isInternal = '${{ needs.build.outputs.is_internal }}' === 'true';
-            const runnerType = isInternal ? 'self-hosted runners' : 'GitHub-hosted runners';
+            const runnerType = 'GitHub-hosted runners';
 
             if (success) {
               body += `All E2E tests passed successfully.\n\n`;

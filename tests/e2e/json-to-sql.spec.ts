@@ -60,6 +60,69 @@ test.describe("JSON→SQL CREATE TABLE生成 - E2E Tests", () => {
     await expect(copyButton).toBeDisabled();
   });
 
+  for (const dialect of ["postgresql", "mysql", "sqlite"]) {
+    test(`${dialect}: 成功後の列名衝突を拒否し、入力修正で回復する`, async ({ page }) => {
+      const input = page.getByLabel("JSON入力欄");
+      const output = page.getByRole("region", { name: "生成されたCREATE TABLE文" });
+      const copy = page.getByRole("button", {
+        name: "生成されたSQL文をクリップボードにコピーする",
+      });
+      const generate = page.getByRole("button", { name: "CREATE TABLE文を生成する" });
+      await page.getByLabel("SQLダイアレクト選択").selectOption(dialect);
+      await input.fill('{"name":"demo"}');
+      await generate.click();
+      await expect(output).toContainText("CREATE TABLE");
+      await expect(copy).toBeEnabled();
+
+      const invalid = '{"userName":1,"user_name":2}';
+      await input.fill(invalid);
+      await generate.click();
+      await expect(input).toHaveValue(invalid);
+      await expect(output).not.toContainText("CREATE TABLE");
+      await expect(copy).toBeDisabled();
+      const error = page.locator('.error-message[role="alert"]');
+      await expect(error).toContainText("userName");
+      await expect(error).toContainText("user_name");
+      await expect(error).toContainText("入力キーを変更");
+
+      await input.fill('{"userName":1,"displayName":2}');
+      await generate.click();
+      await expect(error).toHaveCount(0);
+      await expect(output).toContainText("user_name");
+      await expect(output).toContainText("display_name");
+      await expect(copy).toBeEnabled();
+    });
+
+    test(`${dialect}: サンプルのid衝突をオプション変更で回復する`, async ({ page }) => {
+      const input = page.getByLabel("JSON入力欄");
+      const output = page.getByRole("region", { name: "生成されたCREATE TABLE文" });
+      const copy = page.getByRole("button", {
+        name: "生成されたSQL文をクリップボードにコピーする",
+      });
+      const generate = page.getByRole("button", { name: "CREATE TABLE文を生成する" });
+      await page.getByLabel("SQLダイアレクト選択").selectOption(dialect);
+      await page.getByRole("button", { name: "サンプルJSONを読み込む" }).click();
+      const sample = await input.inputValue();
+      const addId = page.getByLabel("id カラムを追加する（AUTO INCREMENT）");
+      await addId.check();
+      await generate.click();
+      await expect(input).toHaveValue(sample);
+      await expect(output).not.toContainText("CREATE TABLE");
+      await expect(copy).toBeDisabled();
+      const error = page.locator('.error-message[role="alert"]');
+      await expect(error).toContainText("id カラムを追加する");
+      await expect(error).toContainText("オフ");
+
+      await addId.uncheck();
+      await generate.click();
+      await expect(input).toHaveValue(sample);
+      await expect(error).toHaveCount(0);
+      await expect(output).toContainText("CREATE TABLE");
+      await expect(output).not.toContainText("PRIMARY KEY");
+      await expect(copy).toBeEnabled();
+    });
+  }
+
   test("テーブル名が変更できる", async ({ page }) => {
     const tableNameInput = page.locator("#jtsql-table-name");
     await tableNameInput.clear();

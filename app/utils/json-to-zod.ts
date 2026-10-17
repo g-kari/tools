@@ -16,6 +16,13 @@ export interface JsonToZodOptions {
   nullable: boolean;
 }
 
+/** Encode JSON member names as literal property names without changing their text. */
+function formatPropertyName(key: string): string {
+  // Even a quoted __proto__ is a prototype setter in an object literal.
+  if (key === "__proto__") return '["__proto__"]';
+  return /^[A-Za-z_$][A-Za-z0-9_$]*$/.test(key) ? key : JSON.stringify(key);
+}
+
 /**
  * JSON値からZodスキーマ文字列を再帰的に生成する（内部実装）
  * @param value - スキーマを生成する対象の値
@@ -84,7 +91,7 @@ function inferZodSchema(value: unknown, options: JsonToZodOptions, indent: numbe
     const properties = keys.map((key) => {
       const childSchema = inferZodSchema(obj[key], options, indent + 1);
       const optionalSuffix = options.optional ? ".optional()" : "";
-      return `${innerPad}${key}: ${childSchema}${optionalSuffix},`;
+      return `${innerPad}${formatPropertyName(key)}: ${childSchema}${optionalSuffix},`;
     });
 
     return `z.object({\n${properties.join("\n")}\n${pad}})`;

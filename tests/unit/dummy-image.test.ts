@@ -1,11 +1,30 @@
-import { describe, it, expect } from "vite-plus/test";
-import { drawDummyImage, generateFilename } from "../../app/routes/dummy-image";
+import {
+  afterAll,
+  afterEach,
+  beforeAll,
+  beforeEach,
+  describe,
+  it,
+  expect,
+  vi,
+} from "vite-plus/test";
+import { PhotonImage } from "@cf-wasm/photon";
+import { createImageAssetFetch, loadLockedImageAsset } from "../fixtures/dummy-image-assets";
+import {
+  drawDummyImage,
+  generateFilename,
+  padBlobToTargetSize,
+  formatFileSize,
+} from "../../app/routes/dummy-image";
 import {
   generateSvgImage,
   parseImageParams,
   convertSvgToPng,
   convertPngToJpeg,
   convertPngToWebp,
+  parseTargetFileSize,
+  createPaddedImageStream,
+  MAX_TARGET_FILE_SIZE_MB,
 } from "../../app/functions/dummy-image";
 
 // Mock canvas for testing
@@ -50,6 +69,35 @@ describe("Dummy Image Generation", () => {
     it("should handle large dimensions", () => {
       const filename = generateFilename(4096, 4096, "png");
       expect(filename).toBe("dummy_4096x4096.png");
+    });
+  });
+
+  describe("File size adjustment", () => {
+    it("should pad an image to the exact target size", () => {
+      const blob = new Blob([new Uint8Array(100)], { type: "image/png" });
+      const result = padBlobToTargetSize(blob, 1024 * 1024);
+
+      expect(result.size).toBe(1024 * 1024);
+      expect(result.type).toBe("image/png");
+    });
+
+    it("should not shrink an image larger than the target size", () => {
+      const blob = new Blob([new Uint8Array(1024)], { type: "image/jpeg" });
+
+      expect(padBlobToTargetSize(blob, 100)).toBe(blob);
+    });
+
+    it("should support targets larger than one padding chunk", () => {
+      const blob = new Blob([new Uint8Array(10)], { type: "image/webp" });
+      const targetSize = 5 * 1024 * 1024;
+
+      expect(padBlobToTargetSize(blob, targetSize).size).toBe(targetSize);
+    });
+
+    it("should format file sizes", () => {
+      expect(formatFileSize(512)).toBe("512 B");
+      expect(formatFileSize(1536)).toBe("1.5 KB");
+      expect(formatFileSize(10 * 1024 * 1024)).toBe("10.0 MB");
     });
   });
 
@@ -289,21 +337,122 @@ describe("Dummy Image Generation", () => {
         expect(result.textColor).toBe("ABCDEF");
       });
     });
+
+    describe("parseTargetFileSize", () => {
+      it("should parse megabytes into bytes", () => {
+        expect(parseTargetFileSize(new URLSearchParams("size=10"))).toBe(10 * 1024 * 1024);
+        expect(parseTargetFileSize(new URLSearchParams("size=0.5"))).toBe(512 * 1024);
+      });
+
+      it("should return zero for missing or invalid values", () => {
+        expect(parseTargetFileSize(new URLSearchParams())).toBe(0);
+        expect(parseTargetFileSize(new URLSearchParams("size=invalid"))).toBe(0);
+        expect(parseTargetFileSize(new URLSearchParams("size=-1"))).toBe(0);
+      });
+
+      it("should clamp the target to the API limit", () => {
+        expect(parseTargetFileSize(new URLSearchParams("size=1000"))).toBe(
+          MAX_TARGET_FILE_SIZE_MB * 1024 * 1024,
+        );
+      });
+    });
+
+    describe("createPaddedImageStream", () => {
+      it("should stream the exact target size", async () => {
+        const { stream, contentLength } = createPaddedImageStream("image", 2 * 1024 * 1024);
+        const response = new Response(stream);
+        const body = await response.arrayBuffer();
+
+        expect(contentLength).toBe(2 * 1024 * 1024);
+        expect(body.byteLength).toBe(contentLength);
+        expect(new TextDecoder().decode(body.slice(0, 5))).toBe("image");
+      });
+
+      it("should not shrink content larger than the target", async () => {
+        const content = new Uint8Array([1, 2, 3, 4]).buffer;
+        const { stream, contentLength } = createPaddedImageStream(content, 2);
+
+        expect(contentLength).toBe(4);
+        expect(new Uint8Array(await new Response(stream).arrayBuffer())).toEqual(
+          new Uint8Array([1, 2, 3, 4]),
+        );
+      });
+
+      it("should support whitespace padding for SVG", async () => {
+        const { stream } = createPaddedImageStream("<svg></svg>", 16, 0x20);
+        const body = new Uint8Array(await new Response(stream).arrayBuffer());
+
+        expect(body.at(-1)).toBe(0x20);
+      });
+    });
   });
 
   describe("Image Conversion API", () => {
+    // These are real codec tests with locked local WASM and the explicit no-font
+    // fallback. They do not verify Roboto, mutable CDNs, or Cloudflare runtime.
+    const assets = createImageAssetFetch(loadLockedImageAsset());
+    let fetchSpy: { mockRestore(): void };
+    let fontRejectionsBeforeTest = 0;
+
+    beforeAll(() => {
+      fetchSpy = vi.spyOn(globalThis, "fetch").mockImplementation(assets.fetchAsset);
+    });
+    beforeEach(() => {
+      fontRejectionsBeforeTest = assets.fontRejections();
+    });
+    afterEach(() => {
+      // Font loading catches errors; checking recorded requests makes URL drift
+      // fail instead of turning an unexpected request into a false green.
+      expect(assets.unexpectedRequests()).toEqual([]);
+      expect(assets.fontRejections()).toBeGreaterThan(fontRejectionsBeforeTest);
+    });
+    afterAll(() => fetchSpy.mockRestore());
+
+    function expectDecodedImage(buffer: ArrayBuffer, width: number, height: number) {
+      const image = PhotonImage.new_from_byteslice(new Uint8Array(buffer));
+      try {
+        expect(image.get_width()).toBe(width);
+        expect(image.get_height()).toBe(height);
+      } finally {
+        image.free();
+      }
+    }
+
+    function expectPng(buffer: ArrayBuffer, width: number, height: number) {
+      expect(new Uint8Array(buffer).subarray(0, 8)).toEqual(
+        new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10]),
+      );
+      expectDecodedImage(buffer, width, height);
+    }
+
+    function expectJpeg(buffer: ArrayBuffer, width: number, height: number) {
+      const bytes = new Uint8Array(buffer);
+      expect(bytes.subarray(0, 2)).toEqual(new Uint8Array([255, 216]));
+      expect(bytes.subarray(-2)).toEqual(new Uint8Array([255, 217]));
+      expectDecodedImage(buffer, width, height);
+    }
+
+    function expectWebp(buffer: ArrayBuffer, width: number, height: number) {
+      const bytes = new Uint8Array(buffer);
+      expect(new TextDecoder().decode(bytes.slice(0, 4))).toBe("RIFF");
+      expect(new TextDecoder().decode(bytes.slice(8, 12))).toBe("WEBP");
+      expect(new DataView(buffer).getUint32(4, true)).toBe(buffer.byteLength - 8);
+      expectDecodedImage(buffer, width, height);
+    }
     describe("convertSvgToPng", () => {
       it("should convert SVG to PNG buffer", async () => {
         const svg = generateSvgImage(100, 100, "000000", "FFFFFF");
         const pngBuffer = await convertSvgToPng(svg);
         expect(pngBuffer).toBeInstanceOf(ArrayBuffer);
         expect(pngBuffer.byteLength).toBeGreaterThan(0);
+        expectPng(pngBuffer, 100, 100);
       });
 
       it("should handle small SVG images", async () => {
         const svg = generateSvgImage(1, 1, "000000", "FFFFFF");
         const pngBuffer = await convertSvgToPng(svg);
         expect(pngBuffer).toBeInstanceOf(ArrayBuffer);
+        expectPng(pngBuffer, 1, 1);
       });
 
       it("should handle large SVG images", async () => {
@@ -311,6 +460,7 @@ describe("Dummy Image Generation", () => {
         const pngBuffer = await convertSvgToPng(svg);
         expect(pngBuffer).toBeInstanceOf(ArrayBuffer);
         expect(pngBuffer.byteLength).toBeGreaterThan(0);
+        expectPng(pngBuffer, 1000, 1000);
       });
     });
 
@@ -321,6 +471,7 @@ describe("Dummy Image Generation", () => {
         const jpegBuffer = await convertPngToJpeg(pngBuffer, 85);
         expect(jpegBuffer).toBeInstanceOf(ArrayBuffer);
         expect(jpegBuffer.byteLength).toBeGreaterThan(0);
+        expectJpeg(jpegBuffer, 100, 100);
       });
 
       it("should accept quality parameter", async () => {
@@ -332,6 +483,8 @@ describe("Dummy Image Generation", () => {
 
         expect(jpegLowQuality).toBeInstanceOf(ArrayBuffer);
         expect(jpegHighQuality).toBeInstanceOf(ArrayBuffer);
+        expectJpeg(jpegLowQuality, 100, 100);
+        expectJpeg(jpegHighQuality, 100, 100);
       });
     });
 
@@ -342,6 +495,7 @@ describe("Dummy Image Generation", () => {
         const webpBuffer = await convertPngToWebp(pngBuffer);
         expect(webpBuffer).toBeInstanceOf(ArrayBuffer);
         expect(webpBuffer.byteLength).toBeGreaterThan(0);
+        expectWebp(webpBuffer, 100, 100);
       });
     });
 
@@ -352,14 +506,17 @@ describe("Dummy Image Generation", () => {
         // SVG to PNG
         const pngBuffer = await convertSvgToPng(svg);
         expect(pngBuffer).toBeInstanceOf(ArrayBuffer);
+        expectPng(pngBuffer, 200, 200);
 
         // PNG to JPEG
         const jpegBuffer = await convertPngToJpeg(pngBuffer, 85);
         expect(jpegBuffer).toBeInstanceOf(ArrayBuffer);
+        expectJpeg(jpegBuffer, 200, 200);
 
         // PNG to WebP
         const webpBuffer = await convertPngToWebp(pngBuffer);
         expect(webpBuffer).toBeInstanceOf(ArrayBuffer);
+        expectWebp(webpBuffer, 200, 200);
       });
     });
   });

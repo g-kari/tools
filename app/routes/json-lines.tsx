@@ -79,6 +79,8 @@ function JsonLinesPage() {
   }, [mode, inputText]);
 
   const handleConvert = useCallback(() => {
+    if (mode === "validate") return;
+    setOutputText("");
     if (!inputText.trim()) {
       const msg =
         mode === "from-array" ? "JSON配列を入力してください" : "JSON Linesを入力してください";
@@ -111,21 +113,38 @@ function JsonLinesPage() {
     }
   }, [inputText, mode, announceStatus, showToast]);
 
-  const handleFormat = useCallback(() => {
-    if (!inputText.trim()) return;
-    const formatted = formatJsonLines(inputText);
-    setInputText(formatted);
-    showToast("整形しました", "success");
-    announceStatus("JSON Linesを整形しました");
-  }, [inputText, showToast, announceStatus]);
+  /** 無効な行があれば入力全体を保ち、修正後に再試行できるようにする。 */
+  const handleTransform = useCallback(
+    (operation: "format" | "minify") => {
+      if (!inputText.trim()) return;
+      const result = parseJsonLines(inputText);
+      if (result.errorCount > 0) {
+        const message = `無効なJSONが${result.errorCount}行あります。エラー行を修正してください。入力は変更していません。`;
+        setError(message);
+        showToast(message, "error");
+        announceStatus("エラー: " + message);
+        return;
+      }
+      setError(null);
+      setInputText(
+        operation === "format" ? formatJsonLines(inputText) : minifyJsonLines(inputText),
+      );
+      const message =
+        operation === "format" ? "JSON Linesを1行ずつ整形しました" : "JSON Linesを圧縮しました";
+      showToast(message, "success");
+      announceStatus(message);
+    },
+    [inputText, showToast, announceStatus],
+  );
 
-  const handleMinify = useCallback(() => {
-    if (!inputText.trim()) return;
-    const minified = minifyJsonLines(inputText);
-    setInputText(minified);
-    showToast("圧縮しました", "success");
-    announceStatus("JSON Linesを圧縮しました");
-  }, [inputText, showToast, announceStatus]);
+  /** 選択中のモードの再クリックでは編集内容を消さない。 */
+  const handleModeChange = (nextMode: Mode) => {
+    if (mode === nextMode) return;
+    setMode(nextMode);
+    setInputText("");
+    setOutputText("");
+    setError(null);
+  };
 
   const handleClear = useCallback(() => {
     setInputText("");
@@ -172,12 +191,7 @@ function JsonLinesPage() {
           <Button
             type="button"
             className={mode === "validate" ? "btn-primary" : "btn-secondary"}
-            onClick={() => {
-              setMode("validate");
-              setInputText("");
-              setOutputText("");
-              setError(null);
-            }}
+            onClick={() => handleModeChange("validate")}
             aria-pressed={mode === "validate"}
           >
             検証・整形
@@ -185,12 +199,7 @@ function JsonLinesPage() {
           <Button
             type="button"
             className={mode === "to-array" ? "btn-primary" : "btn-secondary"}
-            onClick={() => {
-              setMode("to-array");
-              setInputText("");
-              setOutputText("");
-              setError(null);
-            }}
+            onClick={() => handleModeChange("to-array")}
             aria-pressed={mode === "to-array"}
           >
             JSONL → JSON配列
@@ -198,12 +207,7 @@ function JsonLinesPage() {
           <Button
             type="button"
             className={mode === "from-array" ? "btn-primary" : "btn-secondary"}
-            onClick={() => {
-              setMode("from-array");
-              setInputText("");
-              setOutputText("");
-              setError(null);
-            }}
+            onClick={() => handleModeChange("from-array")}
             aria-pressed={mode === "from-array"}
           >
             JSON配列 → JSONL
@@ -220,7 +224,11 @@ function JsonLinesPage() {
               id="inputText"
               ref={inputRef}
               value={inputText}
-              onChange={(e) => setInputText(e.target.value)}
+              onChange={(e) => {
+                setInputText(e.target.value);
+                setOutputText("");
+                setError(null);
+              }}
               placeholder={
                 mode === "from-array"
                   ? '[{"id":1,"name":"田中"},...] の形式で入力してください'
@@ -278,7 +286,7 @@ function JsonLinesPage() {
                 <Button
                   type="button"
                   className="btn-primary"
-                  onClick={handleFormat}
+                  onClick={() => handleTransform("format")}
                   disabled={!inputText.trim()}
                   aria-label="各行のJSONを整形"
                 >
@@ -288,7 +296,7 @@ function JsonLinesPage() {
                   type="button"
                   variant="secondary"
                   className="btn-secondary"
-                  onClick={handleMinify}
+                  onClick={() => handleTransform("minify")}
                   disabled={!inputText.trim()}
                   aria-label="各行のJSONを圧縮"
                 >
@@ -364,7 +372,7 @@ function JsonLinesPage() {
             {
               title: "JSON Lines（NDJSON）とは",
               items: [
-                "各行が独立したJSONオブジェクトであるテキストフォーマット",
+                "各行が独立したJSON値（オブジェクト・配列・文字列など）であるテキストフォーマット",
                 "ログファイル・ストリーミングAPI・大量データの処理に使用される",
                 "拡張子は .jsonl または .ndjson が一般的",
                 "行ごとに読み書きできるため大容量データに適している",
@@ -373,10 +381,14 @@ function JsonLinesPage() {
             {
               title: "使い方",
               items: [
-                "「検証・整形」: 各行のJSONをリアルタイムでバリデーション・整形・圧縮",
-                "「JSONL → JSON配列」: 複数行JSONをひとつのJSON配列に変換",
+                "「検証・整形」: 各行のJSONをリアルタイムで検証し、1レコード1行を保って整形・圧縮",
+                "不正な行がある場合は入力を変更せず、エラー行の修正を案内します",
+                "整形・圧縮・配列との相互変換でも、大整数・小数・指数・文字列のエスケープ・キーの順序・重複キーの元の表記を保持します",
+                "空白と配列の外枠だけを変更します。元の改行や空白の完全な復元、重複キーの解釈や数値の計算は行いません",
+                "複数行のJSONオブジェクトはJSON Linesではありません。JSON配列は専用モードを使ってください",
+                "「JSONL → JSON配列」: 各行のJSON値をひとつのJSON配列に変換",
                 "「JSON配列 → JSONL」: JSON配列を1行ずつのJSONLに展開",
-                "キーボードショートカット: Ctrl+Enter で変換実行",
+                "キーボードショートカット: 変換モードで Ctrl+Enter / ⌘+Enter を押すと変換実行",
               ],
             },
             {

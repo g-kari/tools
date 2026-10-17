@@ -32,8 +32,12 @@ export interface PointerEntry {
  * `~1` → `/`, `~0` → `~` の順で展開する（RFC 6901 Section 3）
  * @param token - デコード対象のトークン
  * @returns デコードされたトークン
+ * @throws {Error} ~0 / ~1 以外のエスケープを含む場合
  */
 export function decodeToken(token: string): string {
+  if (/~(?:[^01]|$)/.test(token)) {
+    throw new Error('JSON Pointerのエスケープは "~0" または "~1" を使用してください（RFC 6901）');
+  }
   return token.replace(/~1/g, "/").replace(/~0/g, "~");
 }
 
@@ -90,14 +94,20 @@ export function evaluateJsonPointer(jsonText: string, pointer: string): JsonPoin
       if (token === "-") {
         throw new Error('"−" インデックスは読み取り専用評価では使用できません（RFC 6901）');
       }
+      // Number() alone also accepts empty strings, signs, whitespace and exponents.
+      if (!token || /[^0-9]/.test(token) || (token.length > 1 && token.startsWith("0"))) {
+        throw new Error(
+          `配列インデックス "${token}" は0または先頭に0のない非負整数で指定してください（RFC 6901）`,
+        );
+      }
       const idx = Number(token);
-      if (!Number.isInteger(idx) || idx < 0 || idx >= current.length) {
+      if (!Number.isSafeInteger(idx) || idx >= current.length) {
         throw new Error(`配列インデックス "${token}" が範囲外です（配列長: ${current.length}）`);
       }
       current = current[idx];
     } else if (typeof current === "object") {
       const obj = current as Record<string, unknown>;
-      if (!(token in obj)) {
+      if (!Object.prototype.hasOwnProperty.call(obj, token)) {
         throw new Error(`キー "${token}" がオブジェクトに存在しません`);
       }
       current = obj[token];
