@@ -52,7 +52,7 @@ export async function assertYamlJsonRecovery(
   await expect(error).toBeVisible();
   await expect(error).toContainText(failure.reason);
   await expect(error).toContainText("入力を確認して再度変換してください");
-  await expect(page.locator('[role="status"]')).toContainText(failure.reason);
+  await expect(page.getByRole("main").getByRole("status")).toContainText(failure.reason);
   // The reason remains available after the transient toast has disappeared.
   await expect(page.locator(".toast-error")).toHaveCount(0);
   await expect(error).toBeVisible();
