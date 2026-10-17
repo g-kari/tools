@@ -1,4 +1,8 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "../browser/csv-json/url-app-test";
+import {
+  assertYamlJsonRecovery,
+  yamlJsonFailures,
+} from "../browser/csv-json/yaml-json-recovery-assertions";
 
 test.describe("YAML/JSON変換 - E2Eテスト", () => {
   test.beforeEach(async ({ page }) => {
@@ -149,3 +153,61 @@ test.describe("YAML/JSON変換 - E2Eテスト", () => {
     }
   });
 });
+
+for (const viewport of [
+  { width: 1280, height: 900 },
+  { width: 390, height: 844 },
+]) {
+  test.describe(`YAML/JSON recovery at ${viewport.width}px`, () => {
+    test.use({ viewport });
+
+    for (const [index, failure] of yamlJsonFailures.entries()) {
+      test(`recovery ${index + 1}: ${failure.mode}`, async ({ page }, testInfo) => {
+        await assertYamlJsonRecovery(page, failure, testInfo, "yaml-json-app-error");
+      });
+    }
+
+    test("mode, indent and Copy recover", async ({ page }) => {
+      await page.goto("/yaml-json");
+      const input = page.locator("#inputText");
+      const output = page.locator("#outputText");
+      const copy = page.getByRole("button", { name: "出力結果をクリップボードにコピー" });
+      const convert = page.locator("button.btn-primary");
+      const error = page.getByRole("alert", { name: "変換エラー", exact: true });
+      await input.fill("user:\n  name: first");
+      await convert.click();
+      const first = await output.inputValue();
+      await copy.click();
+      expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(first);
+      await expect(copy).toHaveText("コピー済");
+
+      await page.getByRole("radio", { name: "インデント4スペース" }).check();
+      await expect(output).toHaveValue(first);
+      await convert.click();
+      await expect(output).toHaveValue('{\n    "user": {\n        "name": "first"\n    }\n}');
+      await input.fill("name: [");
+      await convert.click();
+      await expect(copy).toBeDisabled();
+      await expect(copy).toHaveText("コピー");
+      expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(first);
+
+      await page.getByRole("radio", { name: "JSON から YAML へ変換" }).check();
+      await expect(input).toHaveValue("");
+      await expect(output).toHaveValue("");
+      await expect(error).toHaveCount(0);
+      await expect(copy).toBeDisabled();
+      await expect(page.getByRole("radio", { name: "インデント4スペース" })).toHaveCount(0);
+      await input.fill('{"user":{"name":"repaired"}}');
+      await convert.click();
+      await expect(output).toHaveValue("user:\n  name: repaired\n");
+      await copy.click();
+      expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(
+        "user:\n  name: repaired\n",
+      );
+      await page.getByRole("radio", { name: "YAML から JSON へ変換" }).check();
+      await expect(output).toHaveValue("");
+      await expect(copy).toBeDisabled();
+      await expect(page.getByRole("radio", { name: "インデント4スペース" })).toBeChecked();
+    });
+  });
+}

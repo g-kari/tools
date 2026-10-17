@@ -50,6 +50,18 @@ export const releases: Release[] = [
       },
       {
         type: "fix",
+        title: "YAML・JSON変換の失敗時に古い結果をクリア",
+        description:
+          "空入力や変換エラーの後に前の結果をコピーする混同を防ぎます。入力と失敗理由を保持し、修正後に再変換できます。",
+      },
+      {
+        type: "fix",
+        title: "Base58/62で全ゼロのバイト列が増える不具合を修正",
+        description:
+          "バイト変換で全ゼロの入力を1バイトにつき1個のゼロ記号にし、同じ長さに復号します。各アルファベット・通常データ・Base62整数変換は維持し、従来の不正な出力の自動補正は行いません。",
+      },
+      {
+        type: "fix",
         title: "JSON Schema検証で継承キーを入力項目と誤判定する不具合を修正",
         description:
           "requiredとpropertiesは入力JSON自身のキーだけを調べます。__proto__・constructor・toStringなどが欠落した場合も、必須項目の拒否と任意項目の省略を正しく判定します。存在する項目の型検査は維持します。",
