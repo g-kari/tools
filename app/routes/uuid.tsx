@@ -6,6 +6,8 @@ import { Input } from "~/components/ui/input";
 import { TipsCard } from "~/components/TipsCard";
 import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useClipboard } from "~/hooks/useClipboard";
+import { ErrorMessage } from "~/components/ErrorMessage";
+import { generateUuidV7 } from "~/utils/uuid-generator";
 
 export const Route = createFileRoute("/uuid")({
   head: () => ({
@@ -13,12 +15,12 @@ export const Route = createFileRoute("/uuid")({
       { title: "UUID生成ツール | Web ツール集" },
       {
         name: "description",
-        content: "UUID v4をワンクリックで生成。複数同時生成・コピー機能付き。",
+        content: "UUID v4・v7をブラウザー内で生成。複数同時生成・コピー機能付き。",
       },
       { property: "og:title", content: "UUID生成ツール | Web ツール集" },
       {
         property: "og:description",
-        content: "UUID v4をワンクリックで生成。複数同時生成・コピー機能付き。",
+        content: "UUID v4・v7をブラウザー内で生成。複数同時生成・コピー機能付き。",
       },
       { property: "og:url", content: `${SITE_BASE_URL}/uuid` },
       { property: "og:type", content: "website" },
@@ -26,19 +28,18 @@ export const Route = createFileRoute("/uuid")({
       { name: "twitter:title", content: "UUID生成ツール | Web ツール集" },
       {
         name: "twitter:description",
-        content: "UUID v4をワンクリックで生成。複数同時生成・コピー機能付き。",
+        content: "UUID v4・v7をブラウザー内で生成。複数同時生成・コピー機能付き。",
       },
     ],
   }),
   component: UuidGenerator,
 });
 
-function generateUUID(): string {
-  return crypto.randomUUID();
-}
-
 function UuidGenerator() {
   const [uuids, setUuids] = useState<string[]>([]);
+  const [version, setVersion] = useState<4 | 7>(4);
+  const [generatedVersion, setGeneratedVersion] = useState<4 | 7>(4);
+  const [error, setError] = useState<string | null>(null);
   const [count, setCount] = useState(1);
   const [uppercase, setUppercase] = useState(false);
   const [noHyphens, setNoHyphens] = useState(false);
@@ -78,15 +79,25 @@ function UuidGenerator() {
   );
 
   const handleGenerate = useCallback(() => {
-    const newUuids: string[] = [];
-    for (let i = 0; i < count; i++) {
-      newUuids.push(generateUUID());
-    }
-    setUuids(newUuids);
+    setError(null);
     setCopied(null);
     setCopiedAll(false);
-    announceStatus(`${count}個のUUIDを生成しました`);
-  }, [count, announceStatus]);
+    try {
+      const newUuids: string[] = [];
+      for (let i = 0; i < count; i++) {
+        newUuids.push(version === 7 ? generateUuidV7() : crypto.randomUUID());
+      }
+      setUuids(newUuids);
+      setGeneratedVersion(version);
+      announceStatus(`${count}個のUUID v${version}を生成しました`);
+    } catch {
+      setUuids([]);
+      const message =
+        "UUIDを生成できませんでした。ブラウザーの乱数機能と日時設定を確認してください。";
+      setError(message);
+      announceStatus(message);
+    }
+  }, [count, version, announceStatus]);
 
   const handleCopy = useCallback(
     async (index: number) => {
@@ -123,6 +134,7 @@ function UuidGenerator() {
 
   const handleClear = useCallback(() => {
     setUuids([]);
+    setError(null);
     setCopied(null);
     setCopiedAll(false);
     announceStatus("UUIDをクリアしました");
@@ -148,6 +160,38 @@ function UuidGenerator() {
         >
           <div className="converter-section">
             <h2 className="section-title">UUID生成設定</h2>
+
+            <fieldset className="uuid-version-group" aria-describedby="uuid-version-help">
+              <legend>UUIDのバージョン</legend>
+              <div className="uuid-options">
+                <label>
+                  <input
+                    id="uuid-version-4"
+                    type="radio"
+                    name="uuid-version"
+                    value="4"
+                    checked={version === 4}
+                    onChange={() => setVersion(4)}
+                  />
+                  v4（ランダム）
+                </label>
+                <label>
+                  <input
+                    id="uuid-version-7"
+                    type="radio"
+                    name="uuid-version"
+                    value="7"
+                    checked={version === 7}
+                    onChange={() => setVersion(7)}
+                  />
+                  v7（時刻＋ランダム）
+                </label>
+              </div>
+            </fieldset>
+            <p id="uuid-version-help">
+              v7には生成時刻（ミリ秒）が含まれます。同じミリ秒の生成や時計が戻った場合の並び順は保証しません。
+              バージョンの選択は次の生成に適用します。
+            </p>
 
             <div className="uuid-options">
               <div className="option-group">
@@ -206,6 +250,7 @@ function UuidGenerator() {
                 クリア
               </Button>
             </div>
+            <ErrorMessage message={error} />
           </div>
 
           {uuids.length > 0 && (
@@ -224,6 +269,8 @@ function UuidGenerator() {
                   </Button>
                 )}
               </div>
+
+              <p id="uuid-result-version">生成した形式: UUID v{generatedVersion}</p>
 
               <div className="uuid-list" role="list" aria-live="polite">
                 {uuids.map((uuid, index) => (
@@ -252,9 +299,10 @@ function UuidGenerator() {
               title: "UUIDとは",
               items: [
                 "UUID（Universally Unique Identifier）は128ビットの一意識別子です",
-                "このツールはUUID v4（ランダム生成）を使用しています",
-                "形式: xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx",
-                "衝突確率は実用上ほぼゼロです",
+                "v4はランダム生成、v7は生成時刻とランダム値を組み合わせます（RFC 9562）",
+                "どちらもブラウザーの暗号学的乱数を使い、生成値を送信・保存しません",
+                "v7は生成時刻を隠す用途や秘密のトークンには向きません",
+                "同じミリ秒や時計が戻った場合の順序、衝突しないことを保証するものではありません",
               ],
             },
             {

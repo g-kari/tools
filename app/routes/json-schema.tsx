@@ -207,7 +207,7 @@ function JsonSchemaGenerator() {
                 "オブジェクトのすべてのプロパティは required として扱われます",
                 "additionalProperties は false に設定されます",
                 "整数値は integer、小数値は number として区別されます",
-                "混在型の配列は oneOf を使ったスキーマになります",
+                "異なる要素スキーマの配列は anyOf で結合し、1つ以上の候補への適合を認めます",
               ],
             },
           ]}

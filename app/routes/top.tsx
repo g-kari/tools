@@ -661,7 +661,7 @@ export const toolCatalog: ToolCategory[] = [
       {
         path: "/uuid",
         label: "UUID生成",
-        description: "UUID v4のランダム生成",
+        description: "UUID v4・v7をブラウザー内で生成",
         icon: "🔑",
       },
       {

@@ -109,7 +109,8 @@ export function encodeBase58Bytes(
 
   // バイト列を大整数として処理（Base256 → Base58）
   // 可変長整数演算のため number[] を使用
-  const digits: number[] = [0];
+  // 数値0の桁は空にし、ゼロのみの入力は先頭ゼロの表現だけで保持する。
+  const digits: number[] = [];
   for (let i = 0; i < bytes.length; i++) {
     let carry = bytes[i];
     for (let j = 0; j < digits.length; j++) {
@@ -187,7 +188,8 @@ export function decodeBase58(
   }
 
   // Base58 → Base256 変換
-  const digits: number[] = [0];
+  // 数値0の桁は空にし、ゼロのみの入力は先頭ゼロの表現だけで保持する。
+  const digits: number[] = [];
   for (let i = 0; i < cleaned.length; i++) {
     let carry = lookup.get(cleaned[i])!;
     for (let j = 0; j < digits.length; j++) {

@@ -76,11 +76,16 @@ function mergeValues(target: unknown, source: unknown, options: MergeOptions): u
   if (isPlainObject(target) && isPlainObject(source)) {
     const result: Record<string, unknown> = { ...target };
     for (const key of Object.keys(source)) {
-      if (key in target) {
-        result[key] = mergeValues(target[key], source[key], options);
-      } else {
-        result[key] = source[key];
-      }
+      const value = Object.hasOwn(target, key)
+        ? mergeValues(target[key], source[key], options)
+        : source[key];
+      // JSONの特殊なキーも継承先のsetterではなくデータとして保持する。
+      Object.defineProperty(result, key, {
+        value,
+        enumerable: true,
+        configurable: true,
+        writable: true,
+      });
     }
     return result;
   }

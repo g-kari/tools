@@ -6,6 +6,7 @@ export default defineConfig({
   testDir: ".",
   testMatch: [
     "csv-json.spec.ts",
+    "password-strength-snapshot.spec.ts",
     "base64-input-recovery.spec.ts",
     "url-recovery.spec.ts",
     "csv-sql-quotes.spec.ts",

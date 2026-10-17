@@ -92,4 +92,53 @@ test.describe("Base32エンコード・デコード", () => {
     await expect(page.getByText("Base32 について")).toBeVisible();
     await expect(page.getByText("主な用途")).toBeVisible();
   });
+
+  test("不正な末尾は出力を残さず、入力の説明から修復できる", async ({ page }) => {
+    await page.getByRole("tab", { name: "デコード" }).click();
+    const input = page.getByLabel("デコード入力Base32文字列");
+    const output = page.getByLabel("デコード結果", { exact: true });
+    const copy = page.getByRole("button", { name: "出力をコピー" });
+    for (const [value, reason] of [
+      ["M", "文字数が不正"],
+      ["MY=", "パディング"],
+      ["MZ======", "未使用ビット"],
+      ["ſA", "無効な文字"],
+      ["MY=AAAAA", "パディング"],
+    ]) {
+      await input.fill("MY======");
+      await expect(output).toHaveValue("f");
+      await input.fill(value);
+      await expect(input).toHaveValue(value);
+      await expect(input).toHaveAttribute("aria-invalid", "true");
+      await expect(input).toHaveAccessibleDescription(new RegExp(reason));
+      await expect(page.getByRole("alert", { name: "デコードエラー" })).toContainText(reason);
+      await expect(output).toHaveCount(0);
+      await expect(copy).toBeDisabled();
+      await expect(page.getByRole("button", { name: "入出力を入れ替える" })).toBeDisabled();
+    }
+    await input.fill(" mzxw6=== \n");
+    await expect(output).toHaveValue("foo");
+    await expect(input).not.toHaveAttribute("aria-invalid");
+    await expect(copy).toBeEnabled();
+    await expect(page.getByRole("alert", { name: "デコードエラー" })).toHaveCount(0);
+    await page.getByRole("button", { name: "入力をクリア" }).click();
+    await expect(input).toHaveValue("");
+    await expect(output).toHaveCount(0);
+  });
+
+  test("Base32hexの末尾検査と方式変更から回復する", async ({ page }) => {
+    await page.getByRole("tab", { name: "デコード" }).click();
+    await page.getByRole("radio", { name: /Base32hex/ }).check();
+    const input = page.getByLabel("デコード入力Base32文字列");
+    await input.fill("CP======");
+    await expect(input).toHaveAccessibleDescription(/未使用ビット/);
+    await input.fill("co====== \n");
+    await expect(page.getByLabel("デコード結果", { exact: true })).toHaveValue("f");
+    await page.getByRole("radio", { name: /Standard/ }).check();
+    await expect(input).toHaveAccessibleDescription(/未使用ビット/);
+    await expect(page.getByLabel("デコード結果", { exact: true })).toHaveCount(0);
+    await page.getByRole("tab", { name: "エンコード" }).click();
+    await expect(page.getByLabel("エンコード入力テキスト")).toHaveValue("");
+    await expect(page.getByRole("alert", { name: "デコードエラー" })).toHaveCount(0);
+  });
 });

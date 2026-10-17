@@ -8,7 +8,10 @@ test.beforeEach(async ({ page }) => {
   externalRequests.set(page, attempts);
   runtimeErrors.set(page, errors);
   page.on("pageerror", (error) => errors.push(error.message));
-  await page.route("**/*", (route) => {
+  page.context().on("page", (opened) => {
+    opened.on("pageerror", (error) => errors.push(error.message));
+  });
+  await page.context().route("**/*", (route) => {
     if (new URL(route.request().url()).origin !== "http://127.0.0.1:4196") {
       attempts.push(route.request().url());
       return route.abort();
@@ -22,6 +25,101 @@ test.afterEach(async ({ page }) => {
   expect(externalRequests.get(page)).toEqual([]);
   expect(runtimeErrors.get(page)).toEqual([]);
 });
+
+test("search results expose named links in a plain list", async ({ page }, testInfo) => {
+  await page.getByRole("button", { name: "ツールを検索（Ctrl+K）" }).click();
+  const dialog = page.getByRole("dialog", { name: "ツール検索", exact: true });
+  await dialog.getByRole("textbox").fill("変換 /url-encode");
+  await expect(dialog.locator(".search-result-item")).toHaveCount(1);
+  const session = await page.context().newCDPSession(page);
+  const { nodes } = await session.send("Accessibility.getFullAXTree");
+  const structure = nodes
+    .filter(
+      (node) =>
+        !node.ignored &&
+        ["dialog", "textbox", "list", "listitem", "listbox", "option", "link"].includes(
+          node.role?.value ?? "",
+        ),
+    )
+    .map((node) => ({ role: node.role?.value, name: node.name?.value }));
+  console.log("Search accessibility structure:", JSON.stringify(structure));
+  await testInfo.attach("search-accessibility-structure", {
+    body: JSON.stringify(structure, null, 2),
+    contentType: "application/json",
+  });
+  await session.detach();
+  await expect(dialog.getByRole("list", { name: "検索結果", exact: true })).toBeVisible();
+  await expect(dialog.getByRole("listbox")).toHaveCount(0);
+  await expect(dialog.getByRole("option")).toHaveCount(0);
+  await expect(dialog.getByRole("link")).toHaveCount(1);
+  await expect(dialog.getByRole("link")).toHaveAccessibleName("URLエンコード");
+  await expect(dialog.getByRole("link")).toHaveAccessibleDescription(
+    "URL文字列のエンコード/デコード変換 カテゴリ: 変換",
+  );
+  expect(structure).toContainEqual({ role: "list", name: "検索結果" });
+  expect(structure).toContainEqual({ role: "link", name: "URLエンコード" });
+  expect(structure.some((node) => node.role === "listbox" || node.role === "option")).toBe(false);
+});
+
+test("arrows move real link focus and return to editing without changing the query", async ({
+  page,
+}) => {
+  await page.getByRole("button", { name: "ツールを検索（Ctrl+K）" }).click();
+  const dialog = page.getByRole("dialog", { name: "ツール検索", exact: true });
+  const input = dialog.getByRole("textbox");
+  await input.fill("JSON");
+  const links = dialog.getByRole("link");
+  await input.press("ArrowDown");
+  await expect(links.nth(1)).toBeFocused();
+  await page.keyboard.press("ArrowDown");
+  await expect(links.nth(2)).toBeFocused();
+  await page.keyboard.press("ArrowUp");
+  await expect(links.nth(1)).toBeFocused();
+  await page.keyboard.press("ArrowUp");
+  await expect(links.first()).toBeFocused();
+  await page.keyboard.press("ArrowUp");
+  await expect(input).toBeFocused();
+  await expect(input).toHaveValue("JSON");
+  await input.press("Shift+ArrowRight");
+  await expect(input).toBeFocused();
+  await links.last().focus();
+  await page.keyboard.press("ArrowDown");
+  await expect(input).toBeFocused();
+  await expect(input).toHaveValue("JSON");
+  await page.keyboard.type(" 圧縮");
+  await expect(input).toHaveValue("JSON 圧縮");
+  await expect(links).toHaveCount(1);
+  await expect(links).toHaveAttribute("href", "/json");
+  await page.keyboard.press("Enter");
+  await expect(dialog).toHaveCount(0);
+  await expect(page.getByTestId("navigation")).toHaveText("/json");
+});
+
+for (const activation of ["ControlOrMeta", "Shift", "middle"] as const) {
+  test(`${activation} click preserves native link opening and current-page focus`, async ({
+    page,
+  }) => {
+    const open = page.getByRole("button", { name: "ツールを検索（Ctrl+K）" });
+    await open.click();
+    const dialog = page.getByRole("dialog", { name: "ツール検索", exact: true });
+    await dialog.getByRole("textbox").fill("変換 /url-encode");
+    const link = dialog.getByRole("link", { name: "URLエンコード", exact: true });
+    // Native modifier tabs may have no opener; observe all new context pages.
+    const popupPromise = page.context().waitForEvent("page");
+    if (activation === "middle") await link.click({ button: "middle" });
+    else await link.click({ modifiers: [activation] });
+    const popup = await popupPromise;
+    await expect(popup).toHaveURL("http://127.0.0.1:4196/url-encode");
+    await popup.close();
+    await expect(page.getByTestId("navigation")).toHaveText("/top");
+    if (activation === "middle") {
+      await expect(dialog).toBeVisible();
+      await page.keyboard.press("Escape");
+    } else await expect(dialog).toHaveCount(0);
+    await expect(open).toBeFocused();
+    await expect(page.locator("#root")).not.toHaveAttribute("inert");
+  });
+}
 
 test("Unicode empty regex matches complete and repeated Test/Clear stay usable", async ({
   page,
@@ -255,14 +353,14 @@ test("ordinary arrow selection and Enter still navigate to the chosen result", a
   const dialog = page.getByRole("dialog", { name: "ツール検索", exact: true });
   const input = dialog.getByRole("textbox");
   await input.fill("JSON");
-  await expect(dialog.getByRole("option").nth(1)).toBeVisible();
+  await expect(dialog.getByRole("link").nth(1)).toBeVisible();
   const paths = await dialog
     .locator(".search-result-item")
     .evaluateAll((elements) => elements.map((element) => element.getAttribute("href")));
   expect(paths.length).toBeGreaterThan(1);
   await input.press("ArrowDown");
-  await expect(input).toHaveAttribute("aria-activedescendant", "search-result-1");
-  await input.press("Enter");
+  await expect(dialog.getByRole("link").nth(1)).toBeFocused();
+  await page.keyboard.press("Enter");
   await expect(dialog).toHaveCount(0);
   await expect(page.getByTestId("navigation")).toHaveText(paths[1]!);
 });
@@ -291,7 +389,8 @@ test("IME-confirming keys leave navigation, selected result and dismissal untouc
     }, options);
     expect(prevented).toBe(false);
     await expect(dialog).toBeVisible();
-    await expect(input).toHaveAttribute("aria-activedescendant", "search-result-0");
+    await expect(input).toBeFocused();
+    await expect(dialog.getByRole("link")).toHaveClass(/selected/);
     await expect(page.getByTestId("navigation")).toHaveText("/top");
   }
   await input.press("Enter");
@@ -306,9 +405,9 @@ test("modal clear, empty results, dismissal and reopening retain existing defaul
   await open.click();
   const dialog = page.getByRole("dialog", { name: "ツール検索", exact: true });
   const input = dialog.getByRole("textbox");
-  await expect(dialog.getByRole("option")).toHaveCount(8);
+  await expect(dialog.getByRole("link")).toHaveCount(8);
   await input.fill("xxx-absent JSON");
-  await expect(dialog.getByRole("option")).toHaveCount(0);
+  await expect(dialog.getByRole("link")).toHaveCount(0);
   await input.press("ArrowDown");
   await input.press("Enter");
   await expect(dialog).toBeVisible();
@@ -317,13 +416,13 @@ test("modal clear, empty results, dismissal and reopening retain existing defaul
   await dialog.getByRole("button", { name: "検索をクリア" }).click();
   await expect(input).toBeFocused();
   await expect(input).toHaveValue("");
-  await expect(dialog.getByRole("option")).toHaveCount(8);
+  await expect(dialog.getByRole("link")).toHaveCount(8);
   await page.locator(".search-modal-overlay").click({ position: { x: 1, y: 1 } });
   await expect(dialog).toHaveCount(0);
   await open.click();
   await expect(input).toBeFocused();
   await expect(input).toHaveValue("");
-  await expect(dialog.getByRole("option")).toHaveCount(8);
+  await expect(dialog.getByRole("link")).toHaveCount(8);
 });
 
 test("Tab and Shift+Tab cycle inside search while background controls stay inert", async ({
@@ -375,7 +474,7 @@ test("zero results and changing clear controls keep a live Tab cycle", async ({ 
   await expect(input).toBeFocused();
   await expect(input).toHaveValue("");
   await expect(page.getByTestId("navigation")).toHaveText("/top");
-  await expect(dialog.getByRole("option")).toHaveCount(8);
+  await expect(dialog.getByRole("link")).toHaveCount(8);
   await input.press("Tab");
   await expect(close).toBeFocused();
 });
@@ -439,7 +538,7 @@ test("focused result Enter opens that link and leaves destination focus intact t
   await page.keyboard.press("Tab");
   await page.keyboard.press("Tab");
   await expect(links.nth(1)).toBeFocused();
-  await expect(input).toHaveAttribute("aria-activedescendant", "search-result-1");
+  await expect(links.nth(1)).toHaveClass(/selected/);
   await page.keyboard.press("Enter");
   await expect(dialog).toHaveCount(0);
   await expect(page.getByTestId("navigation")).toHaveText(chosen!);
@@ -451,7 +550,7 @@ test("focused result Enter opens that link and leaves destination focus intact t
   await open.click();
   await expect(input).toBeFocused();
   await expect(input).toHaveValue("");
-  await expect(dialog.getByRole("option")).toHaveCount(8);
+  await expect(dialog.getByRole("link")).toHaveCount(8);
 });
 
 test("route changes while open dismiss search and release the old background", async ({ page }) => {

@@ -1,12 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, Fragment } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import { TipsCard } from "~/components/TipsCard";
 import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
+import { createDiffView, type NumberedDiffLine } from "../utils/diff-view";
 import { useClipboard } from "~/hooks/useClipboard";
 
 export const Route = createFileRoute("/diff")({
@@ -113,6 +114,8 @@ function DiffChecker() {
   const [newText, setNewText] = useState("");
   const [diffResult, setDiffResult] = useState<DiffLine[] | null>(null);
   const oldTextRef = useRef<HTMLTextAreaElement>(null);
+  const [contextOnly, setContextOnly] = useState(false);
+  const [expandedBlocks, setExpandedBlocks] = useState<Set<number>>(() => new Set());
 
   const { statusRef, announceStatus } = useStatusAnnouncement();
 
@@ -129,6 +132,7 @@ function DiffChecker() {
 
     const result = computeDiff(oldText, newText);
     setDiffResult(result);
+    setExpandedBlocks(new Set());
 
     const added = result.filter((l) => l.type === "added").length;
     const removed = result.filter((l) => l.type === "removed").length;
@@ -147,6 +151,7 @@ function DiffChecker() {
     setOldText("");
     setNewText("");
     setDiffResult(null);
+    setExpandedBlocks(new Set());
     announceStatus("入力と結果をクリアしました");
     oldTextRef.current?.focus();
   }, [announceStatus]);
@@ -158,6 +163,7 @@ function DiffChecker() {
     setOldText(SAMPLE_OLD_TEXT);
     setNewText(SAMPLE_NEW_TEXT);
     setDiffResult(null);
+    setExpandedBlocks(new Set());
     announceStatus("サンプルデータを読み込みました");
   }, [announceStatus]);
 
@@ -198,6 +204,37 @@ function DiffChecker() {
         removed: diffResult.filter((l) => l.type === "removed").length,
       }
     : null;
+
+  const viewBlocks = createDiffView(diffResult ?? [], contextOnly);
+
+  /** Render a line with separate, semantically labelled old/new table columns. */
+  const renderLine = (line: NumberedDiffLine) => (
+    <tr key={line.index} className={`diff-line diff-line-${line.type}`}>
+      <td className="diff-line-number">{line.oldLine}</td>
+      <td className="diff-line-number">{line.newLine}</td>
+      <td className="diff-line-prefix">
+        <span aria-hidden="true">
+          {line.type === "added" ? "+" : line.type === "removed" ? "−" : " "}
+        </span>
+        <span className="sr-only">
+          {line.type === "added" ? "追加" : line.type === "removed" ? "削除" : "変更なし"}
+        </span>
+      </td>
+      <td className="diff-line-value">{line.value}</td>
+    </tr>
+  );
+
+  /** Keep the disclosure button mounted so keyboard focus survives expansion. */
+  const toggleBlock = (index: number, count: number) => {
+    const expanding = !expandedBlocks.has(index);
+    setExpandedBlocks((previous) => {
+      const next = new Set(previous);
+      if (expanding) next.add(index);
+      else next.delete(index);
+      return next;
+    });
+    announceStatus(`未変更の${count}行を${expanding ? "表示しました" : "折りたたみました"}`);
+  };
 
   return (
     <>
@@ -288,19 +325,74 @@ function DiffChecker() {
                   差分はありません
                 </div>
               ) : (
-                <div className="diff-result" role="region" aria-label="差分表示">
-                  {diffResult.map((line, index) => (
-                    <div
-                      key={`${line.type}-${index}-${line.value}`}
-                      className={`diff-line diff-line-${line.type}`}
-                    >
-                      <span className="diff-line-prefix" aria-hidden="true">
-                        {line.type === "added" ? "+" : line.type === "removed" ? "-" : " "}
-                      </span>
-                      <span>{line.value}</span>
-                    </div>
-                  ))}
-                </div>
+                <>
+                  <div className="diff-view-options">
+                    <label htmlFor="diff-context-only">
+                      <input
+                        id="diff-context-only"
+                        type="checkbox"
+                        checked={contextOnly}
+                        onChange={(event) => setContextOnly(event.target.checked)}
+                        aria-describedby="diff-context-help"
+                      />
+                      変更箇所の前後3行だけ表示
+                    </label>
+                    <p id="diff-context-help">
+                      省略した未変更行は個別に展開できます。コピーには常に全行を含めます。
+                    </p>
+                  </div>
+                  <div className="diff-result" role="region" aria-label="差分表示" tabIndex={0}>
+                    <table className="diff-table" aria-label="元と新しい行番号付きの差分">
+                      <thead>
+                        <tr>
+                          <th scope="col">元</th>
+                          <th scope="col">新</th>
+                          <th scope="col">
+                            <span className="sr-only">変更</span>
+                          </th>
+                          <th scope="col">内容</th>
+                        </tr>
+                      </thead>
+                      {viewBlocks.map((block) => {
+                        const first = block.lines[0];
+                        if (block.type === "lines")
+                          return (
+                            <tbody key={`lines-${first.index}`}>
+                              {block.lines.map(renderLine)}
+                            </tbody>
+                          );
+                        const last = block.lines[block.lines.length - 1];
+                        const expanded = expandedBlocks.has(first.index);
+                        const count = block.lines.length;
+                        const action = expanded ? "折りたたむ" : "表示";
+                        return (
+                          <Fragment key={`gap-${first.index}`}>
+                            <tbody>
+                              <tr className="diff-context-row">
+                                <td colSpan={4}>
+                                  <Button
+                                    type="button"
+                                    variant="outline"
+                                    className="diff-context-toggle"
+                                    aria-expanded={expanded}
+                                    aria-controls={`diff-context-${first.index}`}
+                                    aria-label={`未変更の${count}行（元${first.oldLine}〜${last.oldLine}行、新${first.newLine}〜${last.newLine}行）を${action}`}
+                                    onClick={() => toggleBlock(first.index, count)}
+                                  >
+                                    未変更の{count}行を{action}
+                                  </Button>
+                                </td>
+                              </tr>
+                            </tbody>
+                            <tbody id={`diff-context-${first.index}`} hidden={!expanded}>
+                              {expanded ? block.lines.map(renderLine) : null}
+                            </tbody>
+                          </Fragment>
+                        );
+                      })}
+                    </table>
+                  </div>
+                </>
               )}
             </div>
           )}
@@ -324,6 +416,8 @@ function DiffChecker() {
                 "LCS（最長共通部分列）アルゴリズムによる正確な差分検出",
                 "行単位での差分比較（追加・削除・変更なし）",
                 "差分統計サマリー（追加行数・削除行数）の表示",
+                "元・新しいテキストの行番号を表示。変更箇所の前後3行表示と未変更行の個別展開に対応",
+                "表示を絞ってもコピーは全行の差分です。入力はブラウザー内だけで処理し、送信・保存しません",
               ],
             },
           ]}
