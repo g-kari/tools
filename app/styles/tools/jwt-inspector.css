@@ -1,0 +1,127 @@
+/* JWT Inspector ツール */
+
+.jwti-meta {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.jwti-meta-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.75rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  border-radius: 999px;
+}
+
+.jwti-claims {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.4rem;
+}
+
+.jwti-claim-row {
+  display: grid;
+  grid-template-columns: 10rem 1fr;
+  align-items: baseline;
+  padding: 0.55rem 0.75rem;
+  border-radius: 4px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-variant);
+  gap: 0.75rem;
+}
+
+.jwti-claim-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.jwti-claim-value {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.8rem;
+  color: var(--md-sys-color-on-surface);
+  word-break: break-all;
+}
+
+.jwti-claim-date {
+  font-size: 0.72rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.jwti-claim-relative {
+  font-size: 0.72rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.jwti-claim-absent {
+  opacity: 0.6;
+}
+
+.jwti-claim-valid {
+  border-color: rgba(34, 197, 94, 0.6);
+  background: rgba(34, 197, 94, 0.08);
+}
+
+.jwti-claim-invalid {
+  border-color: rgba(239, 68, 68, 0.6);
+  background: rgba(239, 68, 68, 0.08);
+}
+
+.jwti-hint {
+  margin-top: 0.4rem;
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.jwti-verify-result {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  border: 1px solid transparent;
+}
+
+.jwti-verify-result.ok {
+  background: rgba(34, 197, 94, 0.08);
+  border-color: rgba(34, 197, 94, 0.55);
+  color: var(--md-sys-color-on-surface);
+}
+
+.jwti-verify-result.ng {
+  background: rgba(239, 68, 68, 0.08);
+  border-color: rgba(239, 68, 68, 0.55);
+  color: var(--md-sys-color-on-surface);
+}
+
+.jwti-verify-badge {
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+}
+
+.jwti-verify-detail {
+  font-family: "JetBrains Mono", "Space Mono", monospace;
+  font-size: 0.78rem;
+  color: var(--md-sys-color-on-surface-variant);
+  word-break: break-all;
+}
+
+@media (max-width: 480px) {
+  .jwti-claim-row {
+    grid-template-columns: 1fr;
+    gap: 0.3rem;
+  }
+}

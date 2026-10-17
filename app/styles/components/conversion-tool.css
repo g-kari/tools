@@ -1,0 +1,162 @@
+/* 変換ツール共通レイアウト（ConversionTool コンポーネント） */
+
+/* モード切替タブ */
+.conv-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  padding-bottom: 0.5rem;
+}
+
+.conv-tab-btn {
+  padding: 0.375rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid transparent;
+  border-radius: 4px 4px 0 0;
+  cursor: pointer;
+  background: none;
+  color: var(--md-sys-color-on-surface-variant);
+  transition:
+    background-color 0.15s,
+    color 0.15s,
+    border-color 0.15s;
+}
+
+.conv-tab-btn:hover:not(.active) {
+  background-color: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+}
+
+.conv-tab-btn.active {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border-color: var(--md-sys-color-primary);
+}
+
+.conv-tab-btn:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* オプション行 */
+.conv-options-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+/* テキストエリア */
+.conv-textarea {
+  width: 100%;
+  min-height: 160px;
+  padding: 0.75rem;
+  font-family: "JetBrains Mono", "Roboto Mono", "Courier New", monospace;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  resize: vertical;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
+  box-sizing: border-box;
+}
+
+.conv-textarea:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-surface);
+}
+
+.conv-textarea::placeholder {
+  color: var(--md-sys-color-on-surface-variant);
+  opacity: 0.6;
+}
+
+.conv-textarea-output {
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  cursor: default;
+}
+
+/* アクションボタン行 */
+.conv-action-row {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+/* エラーパネル */
+.conv-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  margin-bottom: 0.75rem;
+  border: 1px solid var(--md-sys-color-error);
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--md-sys-color-error) 8%, transparent);
+  color: var(--md-sys-color-error);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+.conv-error-icon {
+  flex-shrink: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* 出力ヘッダー */
+.conv-output-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.conv-output-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+}
+
+.conv-output-meta {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: "JetBrains Mono", monospace;
+}
+
+/* レスポンシブ */
+@media (max-width: 600px) {
+  .conv-options-row {
+    flex-direction: column;
+  }
+
+  .conv-action-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .conv-action-row > button {
+    width: 100%;
+  }
+}
+
+/* モーション低減 */
+@media (prefers-reduced-motion: reduce) {
+  .conv-tab-btn,
+  .conv-textarea {
+    transition: none;
+  }
+}

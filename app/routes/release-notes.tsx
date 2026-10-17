@@ -1,0 +1,693 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
+import { useMemo, useState } from "react";
+
+/**
+ * リリースエントリのタイプ
+ */
+export type ReleaseType = "feat" | "fix" | "security" | "refactor" | "test" | "chore" | "docs";
+
+/**
+ * リリースエントリ（1件の変更）
+ */
+export interface ReleaseEntry {
+  /** タイプ（feat / fix / security など） */
+  type: ReleaseType;
+  /** 変更タイトル（1行） */
+  title: string;
+  /** 詳細説明（任意） */
+  description?: string;
+}
+
+/**
+ * 1つのリリース（バージョン単位）
+ */
+export interface Release {
+  /** バージョン表記（例: "2026.04"） */
+  version: string;
+  /** リリース日（YYYY-MM-DD） */
+  date: string;
+  /** 見出し（任意。例: "MessagePack対応"） */
+  headline?: string;
+  /** 含まれる変更 */
+  entries: ReleaseEntry[];
+}
+
+/**
+ * リリースノートのデータ
+ * 新しいものを上にする
+ */
+export const releases: Release[] = [
+  {
+    version: "2026.10.15",
+    date: "2026-10-17",
+    entries: [
+      {
+        type: "fix",
+        title: "JSON Schema検証で継承キーを入力項目と誤判定する不具合を修正",
+        description:
+          "requiredとpropertiesは入力JSON自身のキーだけを調べます。__proto__・constructor・toStringなどが欠落した場合も、必須項目の拒否と任意項目の省略を正しく判定します。存在する項目の型検査は維持します。",
+      },
+      {
+        type: "fix",
+        title: "JSON Schema生成で__proto__キーが脱落する不具合を修正",
+        description:
+          "__proto__を通常のJSONキーとしてpropertiesに保持し、ネストや配列の元データも生成スキーマで検証できるようにします。required・型・追加プロパティ拒否は維持します。",
+      },
+      {
+        type: "fix",
+        title: "JSON Schemaの混在配列で元データを拒否する不具合を修正",
+        description:
+          "配列要素の候補をanyOfで結合し、整数と小数や空配列を含む重なる候補への適合を認めます。生成キーワードは従来のoneOfから変わります。",
+      },
+      {
+        type: "fix",
+        title: "Base32デコードで不正な末尾を検出",
+        description:
+          "不完全な文字数・不正な=・0でない未使用ビットを出力前に検査します。入力を保持して理由と修復案内を表示し、Copyと入れ替えを無効にします。小文字・空白・=省略は維持し、正規のpadding後の空白も受け付けます。",
+      },
+    ],
+  },
+  {
+    version: "2026.10.14",
+    date: "2026-10-16",
+    entries: [
+      {
+        type: "feat",
+        title: "UUID v7の生成に対応",
+        description:
+          "既定のv4に加え、Unix時刻と暗号学的乱数を使うv7を選べます。生成数・表示形式・コピーを維持し、結果の形式は生成時のバージョンを表示します。v7の生成時刻の露出と同一ミリ秒・時計後退時の順序の制限も案内します。",
+      },
+      {
+        type: "feat",
+        title: "テキスト差分で行番号と変更箇所の前後表示に対応",
+        description:
+          "元・新しい行番号を表示し、変更箇所の前後3行に絞れます。省略した未変更行は個別に展開・折りたたみでき、コピーには常に全行の差分を含めます。比較方法は変更していません。",
+      },
+      {
+        type: "fix",
+        title: "JSON→Zod生成で特殊なキー名を保持",
+        description:
+          "ハイフン・空白・引用符・改行などを含むキーを文字列リテラルとして出力します。__proto__もスキーマのshapeに保持します。型推論やZod自体のparse結果の方針は変更していません。",
+      },
+      {
+        type: "fix",
+        title: "JSON→SQL生成で重複する列名をエラー表示",
+        description:
+          "スネークケースへの変換後の列名同士や、追加idとの衝突を生成前に拒否します。入力キーと修復方法を示し、列を自動改名・省略せず、修正後に再生成できます。",
+      },
+      {
+        type: "fix",
+        title: "IPv6解析でIPv4末尾付きの圧縮表記を正しく処理",
+        description:
+          "2001:db8::192.0.2.1などを正しく展開・圧縮し、::が1グループも省略していない不正な表記を拒否します。",
+      },
+      {
+        type: "fix",
+        title: "CIDR計算で非ゼロのIPアドレスに指定した/0を正しく処理",
+        description:
+          "IPv4全体のネットワークアドレスと先頭利用可能IPを正規化します。/1〜/32の計算は変更していません。",
+      },
+      {
+        type: "fix",
+        title: "MarkdownテーブルのCSVインポートで値の欠落を防止",
+        description:
+          "引用符内のカンマ・二重引用符・空白を保持し、不正な引用符やヘッダーより多い列を位置付きでエラー表示します。セル・ヘッダー内の改行とバックスラッシュ直後の|は現在の編集・出力で保持できないため、未対応として拒否します。失敗時は入力と現在の表を保持し、修正後に再インポートできます。既存の手入力・Markdown出力は変更していません。",
+      },
+      {
+        type: "fix",
+        title: "JSONマージで特殊なキーの値が消える問題を修正",
+        description: "__proto__などもJSONの通常のデータとして保持します。",
+      },
+      {
+        type: "fix",
+        title: "パスワード強度を生成済みの値の条件に合わせて表示",
+        description:
+          "長さや文字種の設定だけを変えても、生成済みパスワードの強度表示は変わりません。再生成すると新しい条件を反映します。生成方法とコピーする値は変更していません。",
+      },
+      {
+        type: "fix",
+        title: "検索結果を支援技術でもリンクとして操作できるよう改善",
+        description:
+          "検索ダイアログの結果をツール名付きのリンク一覧にし、説明とカテゴリを別に伝えます。Tab・上下矢印でリンクへ移動でき、Enter・修飾クリック・中クリックで開けます。検索条件、IME入力の保護、取り消し後のフォーカス復帰は維持します。",
+      },
+    ],
+  },
+  {
+    version: "2026.10.13",
+    date: "2026-10-15",
+    entries: [
+      {
+        type: "fix",
+        title: "CSV → SQL 変換で不正な引用符をエラー表示",
+        description:
+          "引用符の閉じ忘れ、囲んでいない値の引用符、閉じた引用符の後の不正な文字をレコード・列番号付きで示します。誤った SQL を生成せず、入力を保持して修正後に再生成できます。正しい引用符内のカンマ・改行・二重引用符と列数の検証は維持します。",
+      },
+      {
+        type: "fix",
+        title: "CSV → SQL 変換で列の欠落を防止",
+        description:
+          "基準より列が多いレコードを切り捨てず、レコード番号付きのエラーを表示します。末尾の空セルも保持し、NULL 変換を無効にした場合は空文字列にします。入力の修正・再生成と、不足列の NULL 補完は維持します。",
+      },
+    ],
+  },
+  {
+    version: "2026.10.12",
+    date: "2026-10-14",
+    entries: [
+      {
+        type: "fix",
+        title: "ハッシュ生成で古い計算結果の上書きを防止",
+        description:
+          "入力の変更・ファイルのクリア・モード切り替え後に、前の計算が新しい結果や計算中表示を上書きしないようにします。同じファイルを再選択でき、読み込み失敗からも再開できます。",
+      },
+    ],
+  },
+  {
+    version: "2026.10.11",
+    date: "2026-10-13",
+    entries: [
+      {
+        type: "fix",
+        title: "URL変換の失敗時に古い結果をクリア",
+        description:
+          "不正な文字列や空入力の変換後に前の成功結果が残る混同を防ぎます。入力と既存のエラー通知を保持し、修正後に再変換できます。",
+      },
+    ],
+  },
+  {
+    version: "2026.10.10",
+    date: "2026-10-12",
+    entries: [
+      {
+        type: "fix",
+        title: "JSONフラット化でキーの衝突による値の欠落を防止",
+        description:
+          "区切り文字で結合したキーが重なるフラット化と、親キー・子キーが重なるアンフラット化をエラーにします。入力は修正用に保持し、失敗時は出力を消去します。特殊な名前の実際のJSONメンバーも保持し、従来の区切り文字・配列・最大深さの形式は維持します。",
+      },
+    ],
+  },
+  {
+    version: "2026.10.9",
+    date: "2026-10-11",
+    entries: [
+      {
+        type: "fix",
+        title: "Base64で変換できない入力から修復できるように改善",
+        description:
+          "孤立したサロゲートなどでエンコードに失敗しても入力欄を維持してエラーを表示します。入力の修正・クリアから再開でき、失敗時にはコピーと入れ替えを無効にします。",
+      },
+      {
+        type: "feat",
+        title: "文字数カウントとテキスト統計に書記素数を追加",
+        description:
+          "複合絵文字や結合文字を1まとまりとして数え、従来のコードポイント数と区別して表示します。入力や既存の単語数・バイト数は維持し、非対応ブラウザーでは書記素数を未対応と明記します。",
+      },
+    ],
+  },
+  {
+    version: "2026.10.8",
+    date: "2026-10-10",
+    entries: [
+      {
+        type: "fix",
+        title: "JSON Linesの整形・相互変換で数値や重複キーを保持",
+        description:
+          "大整数や小数の丸め、巨大な指数のnull化、重複キーの欠落を防ぎます。元の数値・文字列のエスケープ・キー順を保ち、1レコード1行と無効入力の修正・再試行を維持します。",
+      },
+    ],
+  },
+  {
+    version: "2026.10.7",
+    date: "2026-10-09",
+    entries: [
+      {
+        type: "fix",
+        title: "JSON Pointerで存在しないパスを誤って評価する問題を修正",
+        description:
+          "配列の空番号・先頭ゼロ・符号・小数などを別の要素として扱わず、~0・~1以外のエスケープと入力JSONにない継承キーをエラーにします。空のオブジェクトキーや実際に登録された特殊な名前のキーは引き続き評価できます。",
+      },
+    ],
+  },
+  {
+    version: "2026.10.6",
+    date: "2026-10-07",
+    entries: [
+      {
+        type: "fix",
+        title: "ワールドクロックの初期表示とローカル時刻を安定化",
+        description:
+          "サーバーとブラウザーの時刻・タイムゾーンが違っても初期画面を置き換えず、画面の起動後にブラウザーの現在時刻とLOCAL表示を反映します。1秒ごとの更新、都市選択と12h/24h切替は維持します。",
+      },
+    ],
+  },
+  {
+    version: "2026.10.5",
+    date: "2026-10-06",
+    entries: [
+      {
+        type: "fix",
+        title: "XML/JSON変換でCDATAと混在テキストの欠落を修正",
+        description:
+          "CDATAと子要素の前後のテキストをJSONに含め、子要素と併存する#textもXMLへ出力します。既存のJSON表現では混在内容の位置と子要素の元の順序を復元できない制約を明記しました。",
+      },
+    ],
+  },
+  {
+    version: "2026.10.4",
+    date: "2026-10-05",
+    entries: [
+      {
+        type: "fix",
+        title: "正規表現のUnicode空一致で画面が停止する問題を修正",
+        description:
+          "絵文字を含む文字列でu/vフラグの空一致を繰り返しても、文字の途中に戻らず結果を表示します。通常の一致、キャプチャ、UTF-16の位置表示は維持します。",
+      },
+      {
+        type: "fix",
+        title: "Base64の変換モードを矢印キーで選択可能に",
+        description:
+          "Tabでは選択中のモードへ入り、左右矢印・Home・Endで入力を消さずにフォーカスを移動できます。Enter・Spaceでモードを確定し、従来どおり変換内容を切り替えます。",
+      },
+      {
+        type: "fix",
+        title: "検索ダイアログのキーボード操作とフォーカスを保持",
+        description:
+          "Tabで背景へ抜ける問題を修正し、Esc・閉じるボタンで取り消した後は元の操作へ戻ります。クリアボタンや結果リンクのEnterが別の結果を開かないようにし、日本語入力と検索条件は維持します。",
+      },
+      {
+        type: "feat",
+        title: "ツール検索を複数キーワード・全角入力に対応",
+        description:
+          "ツール一覧とCtrl+K検索で「JSON 圧縮」のように空白区切りで絞り込めます。カテゴリ名・パス、全角英数字・半角かなにも対応。検索クリア後のフォーカスと日本語入力の確定操作を保持します。",
+      },
+      {
+        type: "security",
+        title: "サーバー通信のデータ復元ライブラリを更新",
+        description:
+          "サーバー関数の通信に使うライブラリを更新し、不正なPromise参照を拒否する対策を適用しました。通常のデータ変換とストリーミング通信は維持します。",
+      },
+    ],
+  },
+  {
+    version: "2026.10.3",
+    date: "2026-10-04",
+    entries: [
+      {
+        type: "fix",
+        title: "コピー後のキーボード操作とテキスト選択を保持",
+        description:
+          "Clipboard API非対応時のコピーで、元のボタンや入力欄へフォーカスを戻し、選択範囲と入力欄のスクロール位置を保持します。コピー失敗時も一時入力欄を残さず、再試行できます。",
+      },
+    ],
+  },
+  {
+    version: "2026.10.2",
+    date: "2026-10-03",
+    entries: [
+      {
+        type: "fix",
+        title: "CSV/JSON変換で後続レコードの列が欠落する不具合を修正",
+        description:
+          "JSONの全オブジェクトから初出順に列を集め、欠けたキーは空欄にします。重複CSVヘッダー・余分な列・JSONの混在行や空配列は、値を黙って失わず修正方法付きのエラーで案内します。",
+      },
+    ],
+  },
+  {
+    version: "2026.10.1",
+    date: "2026-10-02",
+    entries: [
+      {
+        type: "fix",
+        title: "JSON整形・圧縮で数値と元のデータ表記を保持",
+        description:
+          "大きな整数・精密な小数・指数表記を丸めず、負のゼロ・文字列のエスケープ・キーの順序と重複も保持して空白だけを変更します。入力編集やエラー時は古い結果をクリアします。",
+      },
+      {
+        type: "feat",
+        title: "絵文字GIFの生成結果を確認して保存",
+        description:
+          "色数・ディザリングとBayer専用調整を追加。生成されたGIFの実際のプレビューと容量を表示し、ツールの容量上限以内の場合だけ同じファイルを保存できます。設定変更時は再生成が必要です。",
+      },
+      {
+        type: "fix",
+        title: "Markdownプレビュー: 禁止要素と危険なURL属性の除去を修正",
+        description:
+          "埋め込み・フォーム・スクリプト・スタイルなどの禁止要素を子要素ごと除去し、イベント・style属性と難読化された危険なURLスキームをフィルターします。通常のMarkdown構文・リンク・画像は保持します。",
+      },
+      {
+        type: "fix",
+        title: "リンク共有用のデフォルト画像が表示されない不具合を修正",
+        description:
+          "OGP・Twitterカードの参照先に、サイトの配色と名前を使った1200×630のPNG画像を追加しました。画像URLが404ページになる問題を解消します。",
+      },
+    ],
+  },
+  {
+    version: "2026.10",
+    date: "2026-10-01",
+    entries: [
+      {
+        type: "fix",
+        title: "共有メタデータのURLを本番サイトのドメインに統一",
+        description:
+          "各ページのOGP URLとOGP・Twitter画像の参照元を、本番サイトの https://tools.0g0.xyz に修正しました。",
+      },
+      {
+        type: "fix",
+        title: "JSON Lines: 整形・圧縮で1レコード1行を保持",
+        description:
+          "整形後もJSON Linesとして検証・変換できるように修正。不正な行がある場合は入力を変更せず修正を案内し、圧縮で後続レコードを結合しません。選択中モードの再クリックで内容を保持し、変換ショートカットは変換モードのみで動作します。",
+      },
+      {
+        type: "fix",
+        title: "CSV/JSON変換: 引用符内の複数行と前後の空白を保持",
+        description:
+          "CSVの引用符内の改行・空行・エスケープされた引用符とフィールド前後の空白を保持し、LF/CRLF/CRのレコード区切りとUTF-8 BOMに対応。閉じ忘れなど不正な引用符はエラーで知らせ、以前の変換結果をクリアします。",
+      },
+    ],
+  },
+  {
+    version: "2026.04.3",
+    date: "2026-04-19",
+    entries: [
+      {
+        type: "refactor",
+        title: "Base64 ツールをモード切替 UI に刷新",
+        description:
+          "Base64 エンコード・デコードをタブ切替 UI に統一。出力のコピー・入出力の⇄入れ替え・エラー表示に対応し、他の Base 系ツールと体験を揃えた。",
+      },
+    ],
+  },
+  {
+    version: "2026.04.2",
+    date: "2026-04-19",
+    entries: [
+      {
+        type: "docs",
+        title: "ドキュメント整備: 新ツール追加ガイドと JSDoc ヘッダ規約を追加",
+        description:
+          "docs/tools-guide.md に新ツール追加テンプレートを整備。.claude/rules/new-tool.md に JSDoc モジュールヘッダ（@tool / @description 等）の記載を必須化。代表ツール（base64 / hash / jwt-inspector）にヘッダを適用。README を現状に合わせて更新。",
+      },
+    ],
+  },
+  {
+    version: "2026.04.1",
+    date: "2026-04-18",
+    entries: [
+      {
+        type: "feat",
+        title: "新ツール追加: JWT Inspector",
+        description:
+          "JWTのヘッダー・ペイロードをデコードし、exp/iat/nbfをリアルタイムで評価。HS256/384/512・RS256/384/512・ES256/384の署名検証をWeb Crypto APIでブラウザ内完結（秘密情報はサーバー送信なし）。",
+      },
+      {
+        type: "fix",
+        title: "和暦変換: 元号期間の終了日が年のみで表示されていた不具合を修正",
+        description:
+          "平成・昭和・大正・明治の期間が「1989年1月8日〜2019年4月30日」のように月日まで正しく表示されるようになりました。",
+      },
+      {
+        type: "security",
+        title: "セキュリティ修正: protobufjs の任意コード実行脆弱性 (GHSA-xq3m-2v4x-88gg) 対応",
+        description:
+          "transitive dependency の protobufjs を overrides で修正版 (>=7.5.5) に固定しました。",
+      },
+    ],
+  },
+  {
+    version: "2026.04",
+    date: "2026-04-17",
+    headline: "WebSocketテスター強化・UI洗練",
+    entries: [
+      {
+        type: "feat",
+        title: "WebSocketテスター: MessagePack・バイナリ送受信対応",
+        description:
+          "JSON以外にMessagePack形式と任意バイナリの送受信をサポート。受信メッセージも自動でデコード表示します。",
+      },
+      {
+        type: "fix",
+        title: "UI修正: tipsカードの配色改善・ドロップダウン誤閉じ防止",
+      },
+      {
+        type: "fix",
+        title: "UI改善: コントラスト・ボタン崩れ・フォント修正",
+      },
+      {
+        type: "chore",
+        title: "Dependabot: minimum-release-age を cooldown に変更",
+        description: "Dependabotの設定を最新仕様に合わせ、依存更新の自動化を継続可能にしました。",
+      },
+      {
+        type: "chore",
+        title: "CI追加: lint・フォーマット・ユニットテストをPR/pushで自動実行",
+      },
+      {
+        type: "test",
+        title: "テストカバレッジ向上",
+        description:
+          "ip-geolocation, curl-to-fetch, docker-run-to-compose, password-generator, yaml-toml, statistics などのユニットテストを追加。",
+      },
+      {
+        type: "security",
+        title: "セキュリティ修正: vite・axios の脆弱性対応",
+      },
+    ],
+  },
+  {
+    version: "2026.04.0",
+    date: "2026-04-09",
+    headline: "Vite+移行・背景除去ツール追加",
+    entries: [
+      {
+        type: "feat",
+        title: "AI背景除去ツールを追加",
+        description: "@imgly/background-removal を使ってブラウザ内で画像の背景を自動除去できます。",
+      },
+      {
+        type: "feat",
+        title: "全文検索モーダル（Ctrl+K）",
+        description: "どのページからでもCtrl+Kで全ツールを検索・ジャンプできるようになりました。",
+      },
+      {
+        type: "chore",
+        title: "ツールチェーン移行: Vite+ (vite-plus) を導入",
+        description:
+          "Rolldown/Oxc ベースの vite-plus に移行し、ビルド・lint・フォーマットを高速化。",
+      },
+      {
+        type: "feat",
+        title: "デプロイ最適化: static assets を CF CDN から配信",
+        description: "Cloudflare Worker 呼び出し回数を削減し、配信を高速化しました。",
+      },
+      {
+        type: "security",
+        title: "lodash / lodash-es の脆弱性対応（CVE）",
+      },
+    ],
+  },
+  {
+    version: "2026.04.0-rc",
+    date: "2026-04-03",
+    headline: "ビジュアライザー系ツール拡充",
+    entries: [
+      {
+        type: "feat",
+        title: "マンデルブロット集合ビジュアライザー (/mandelbrot)",
+      },
+      {
+        type: "feat",
+        title: "リサジュー図形ビジュアライザー (/lissajous)",
+      },
+      {
+        type: "feat",
+        title: "二分探索木ビジュアライザー (/bst-visualizer)",
+      },
+      {
+        type: "feat",
+        title: "ソートアルゴリズム可視化ツール (/sort-visualizer)",
+      },
+      {
+        type: "feat",
+        title: "三角関数計算機 (/trig)",
+      },
+      {
+        type: "refactor",
+        title: "useOutputCopy フックでコピー処理を一元化",
+      },
+      {
+        type: "security",
+        title: "port-check の SSRF 対策（localhost・プライベートIPブロック）",
+      },
+      {
+        type: "fix",
+        title: "ip-api.com のリクエストを HTTP に調整",
+      },
+    ],
+  },
+  {
+    version: "2026.03",
+    date: "2026-03-20",
+    headline: "初版公開",
+    entries: [
+      {
+        type: "feat",
+        title: "Webツール集を公開",
+        description:
+          "変換・計算・エンコード・情報・ゲームなど 200 以上のツールをカテゴリ別に提供開始。",
+      },
+    ],
+  },
+];
+
+/**
+ * タイプごとの日本語ラベル
+ */
+export const typeLabels: Record<ReleaseType, string> = {
+  feat: "新機能",
+  fix: "修正",
+  security: "セキュリティ",
+  refactor: "リファクタ",
+  test: "テスト",
+  chore: "メンテナンス",
+  docs: "ドキュメント",
+};
+
+/**
+ * リリース一覧をタイプでフィルタリングする
+ * @param list - リリース一覧
+ * @param type - フィルタ対象のタイプ（null の場合は絞り込みなし）
+ * @returns エントリが残ったリリースのみ
+ */
+export function filterReleases(list: Release[], type: ReleaseType | null): Release[] {
+  if (type === null) return list;
+  return list
+    .map((release) => ({
+      ...release,
+      entries: release.entries.filter((entry) => entry.type === type),
+    }))
+    .filter((release) => release.entries.length > 0);
+}
+
+/**
+ * リリースノートに含まれる全タイプの集合を取得する
+ */
+export function collectTypes(list: Release[]): ReleaseType[] {
+  const set = new Set<ReleaseType>();
+  for (const release of list) {
+    for (const entry of release.entries) {
+      set.add(entry.type);
+    }
+  }
+  return Array.from(set);
+}
+
+export const Route = createFileRoute("/release-notes")({
+  head: () => ({
+    meta: [
+      { title: "リリースノート | Web ツール集" },
+      {
+        name: "description",
+        content:
+          "Web ツール集のリリースノート。新機能・修正・セキュリティ対応などの変更履歴を時系列で確認できます。",
+      },
+      { property: "og:title", content: "リリースノート | Web ツール集" },
+      {
+        property: "og:description",
+        content:
+          "Web ツール集のリリースノート。新機能・修正・セキュリティ対応などの変更履歴を時系列で確認できます。",
+      },
+      { property: "og:url", content: `${SITE_BASE_URL}/release-notes` },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: SITE_OGP_IMAGE },
+      { name: "twitter:title", content: "リリースノート | Web ツール集" },
+      {
+        name: "twitter:description",
+        content:
+          "Web ツール集のリリースノート。新機能・修正・セキュリティ対応などの変更履歴を時系列で確認できます。",
+      },
+    ],
+  }),
+  component: ReleaseNotesPage,
+});
+
+/**
+ * リリースノートページコンポーネント
+ */
+function ReleaseNotesPage() {
+  const [activeType, setActiveType] = useState<ReleaseType | null>(null);
+
+  const availableTypes = useMemo(() => collectTypes(releases), []);
+  const filteredReleases = useMemo(() => filterReleases(releases, activeType), [activeType]);
+
+  return (
+    <div className="release-notes-container">
+      <header className="release-notes-header">
+        <h2 className="release-notes-title">リリースノート</h2>
+        <p className="release-notes-subtitle">主要な変更を時系列で掲載しています</p>
+      </header>
+
+      <nav className="release-notes-filters" role="tablist" aria-label="タイプで絞り込み">
+        <button
+          type="button"
+          role="tab"
+          aria-selected={activeType === null}
+          className={`release-notes-filter-chip${activeType === null ? " is-active" : ""}`}
+          onClick={() => setActiveType(null)}
+        >
+          すべて
+        </button>
+        {availableTypes.map((type) => (
+          <button
+            key={type}
+            type="button"
+            role="tab"
+            aria-selected={activeType === type}
+            className={`release-notes-filter-chip release-notes-filter-chip--${type}${activeType === type ? " is-active" : ""}`}
+            onClick={() => setActiveType(type)}
+          >
+            {typeLabels[type]}
+          </button>
+        ))}
+      </nav>
+
+      {filteredReleases.length === 0 ? (
+        <p className="release-notes-empty" role="status" aria-live="polite">
+          該当する変更はありません
+        </p>
+      ) : (
+        <ol className="release-notes-list">
+          {filteredReleases.map((release) => (
+            <li key={release.version} className="release-notes-item">
+              <div className="release-notes-item-heading">
+                <span className="release-notes-version">v{release.version}</span>
+                <time className="release-notes-date" dateTime={release.date}>
+                  {release.date}
+                </time>
+                {release.headline && (
+                  <span className="release-notes-headline">{release.headline}</span>
+                )}
+              </div>
+              <ul className="release-notes-entries">
+                {release.entries.map((entry, idx) => (
+                  <li key={`${release.version}-${idx}`} className="release-notes-entry">
+                    <span className={`release-notes-badge release-notes-badge--${entry.type}`}>
+                      {typeLabels[entry.type]}
+                    </span>
+                    <div className="release-notes-entry-body">
+                      <span className="release-notes-entry-title">{entry.title}</span>
+                      {entry.description && (
+                        <span className="release-notes-entry-description">{entry.description}</span>
+                      )}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ))}
+        </ol>
+      )}
+    </div>
+  );
+}

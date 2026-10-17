@@ -105,6 +105,15 @@ test.describe("Dummy Image Generator - E2E Tests", () => {
     await expect(options).toHaveCount(3);
   });
 
+  test("should select a large target file size", async ({ page }) => {
+    const targetFileSizeInput = page.locator("input#targetFileSize");
+    await expect(targetFileSizeInput).toHaveValue("0");
+
+    await page.getByRole("button", { name: "100MB", exact: true }).click();
+    await expect(targetFileSizeInput).toHaveValue("100");
+    await expect(page.locator(".image-info")).toContainText("100 MB以上");
+  });
+
   test("should display preset size buttons", async ({ page }) => {
     const presetButtons = page.locator(".preset-buttons button");
     await expect(presetButtons.first()).toBeVisible();
@@ -234,6 +243,19 @@ test.describe("Dummy Image Generator - E2E Tests", () => {
       const body = await response.text();
       expect(body).toContain("#FF0000");
       expect(body).toContain("#FFFFFF");
+    });
+
+    test("API endpoints should support target file size", async ({ page }) => {
+      const endpoints = ["svg", "png", "jpg", "webp"];
+
+      for (const extension of endpoints) {
+        const response = await page.request.get(`/api/image.${extension}?w=50&h=50&size=1`);
+        expect(response.ok()).toBeTruthy();
+        expect(response.headers()["content-length"]).toBe(String(1024 * 1024));
+        expect(response.headers()["cache-control"]).toBe("no-store");
+        expect(response.headers()["x-cache-status"]).toBe("BYPASS");
+        expect((await response.body()).length).toBe(1024 * 1024);
+      }
     });
 
     test("API endpoints should have cache headers", async ({ page }) => {

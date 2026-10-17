@@ -1,4 +1,37 @@
 /* UUID Generator Styles */
+.uuid-version-group {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+
+.uuid-version-group legend {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.uuid-version-group label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.uuid-version-group input[type="radio"] {
+  accent-color: var(--md-sys-color-primary);
+}
+
+.uuid-version-group .uuid-options {
+  margin-bottom: 0.75rem;
+}
+
+#uuid-version-help,
+#uuid-result-version {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
 .uuid-options {
   display: flex;
   gap: 1.5rem;

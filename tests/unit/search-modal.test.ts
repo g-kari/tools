@@ -110,6 +110,25 @@ describe("flattenCatalog", () => {
 // ----------------------------------------------------------------
 
 describe("searchTools", () => {
+  it.each(["URL デコード", "デコード url", " ＵＲＬ　ﾃﾞｺｰﾄﾞ ", "url\tデコード"])(
+    "モーダルも複数語をAND検索する: %s",
+    (query) => {
+      expect(searchTools(flattenCatalog(mockCatalog), query).map((tool) => tool.path)).toEqual([
+        "/url-encode",
+      ]);
+    },
+  );
+
+  it("モーダルもカテゴリ・パスを検索対象にする", () => {
+    expect(searchTools(flattenCatalog(mockCatalog), "変換 /url-encode")[0]?.path).toBe(
+      "/url-encode",
+    );
+  });
+
+  it("異なるツールにある語をAND検索の一致として扱わない", () => {
+    expect(searchTools(flattenCatalog(mockCatalog), "UUID エスケープ")).toEqual([]);
+  });
+
   let tools: FlatToolItem[];
 
   // 各テスト前にフラット化されたツールリストを作成
@@ -194,12 +213,8 @@ describe("searchTools", () => {
   });
 
   it("クエリが前後に空白を含む場合でも検索できる（trim後にマッチ）", () => {
-    // "  UUID  " はtrimせずに小文字変換するため " uuid " として検索 → "UUID生成"にはマッチしない
-    // ただし searchTools は q = query.toLowerCase() なのでtrimしない
-    // query.trim()はあくまで「全体が空白かどうか」の判定のみ
     const result = searchTools(tools, "  UUID  ");
-    // " uuid " を含む label/description/categoryName は存在しないのでマッチしない
-    expect(result).toHaveLength(0);
+    expect(result.map((tool) => tool.path)).toEqual(["/uuid"]);
   });
 
   it("部分一致で検索できる", () => {

@@ -1,0 +1,62 @@
+name: Markdown preview browser regression
+
+on:
+  pull_request:
+    paths:
+      - "app/routes/markdown-preview.tsx"
+      - "tests/unit/markdown-preview.test.ts"
+      - "tests/e2e/markdown-preview.spec.ts"
+      - "package*.json"
+      - ".github/workflows/markdown-preview-browser.yml"
+  push:
+    branches: [main]
+    paths:
+      - "app/routes/markdown-preview.tsx"
+      - "tests/unit/markdown-preview.test.ts"
+      - "tests/e2e/markdown-preview.spec.ts"
+      - "package*.json"
+      - ".github/workflows/markdown-preview-browser.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: markdown-preview-browser-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run build
+      - name: Test the built Markdown preview
+        run: |
+          npm run preview -- --port 8788 --host &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
+          npx wait-on http://127.0.0.1:8788 --timeout 60000
+          npm run test:e2e -- tests/e2e/markdown-preview.spec.ts --project=chromium --reporter=list
+        env:
+          CI: true
+          BASE_URL: http://127.0.0.1:8788
+      - run: |
+          mkdir -p test-results
+          git rev-parse HEAD | tee test-results/markdown-preview-source-sha.txt
+        if: always()
+      - uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: markdown-preview-browser-results
+          path: test-results/
+          retention-days: 1

@@ -10,6 +10,11 @@ import { ErrorMessage } from "~/components/ErrorMessage";
 import { useStatusAnnouncement, StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useKeyboardShortcut } from "~/hooks/useKeyboardShortcut";
 
+/**
+ * @tool JSON整形・検証
+ * @description 数値や文字列の表記を変えずに、JSONの整形・検証・圧縮を行います。
+ * @limitations 入力はブラウザ内で処理し、保存・外部送信しません。重複キーも保持します。
+ */
 export const Route = createFileRoute("/json")({
   head: () => ({
     meta: [
@@ -46,6 +51,7 @@ function JsonFormatter() {
   const { statusRef, announceStatus } = useStatusAnnouncement();
 
   const handleFormat = useCallback(() => {
+    setOutputText("");
     if (!inputText) {
       setError("JSONを入力してください");
       announceStatus("エラー: JSONを入力してください");
@@ -69,6 +75,7 @@ function JsonFormatter() {
   }, [inputText, announceStatus, showToast]);
 
   const handleMinify = useCallback(() => {
+    setOutputText("");
     if (!inputText) {
       setError("JSONを入力してください");
       announceStatus("エラー: JSONを入力してください");
@@ -118,7 +125,11 @@ function JsonFormatter() {
               id="inputText"
               ref={inputRef}
               value={inputText}
-              onChange={(e) => setInputText(e.target.value)}
+              onChange={(e) => {
+                setInputText(e.target.value);
+                setOutputText("");
+                setError(null);
+              }}
               placeholder='JSONを入力してください...&#10;例: {"name": "太郎", "age": 30}'
               aria-describedby="input-help"
               aria-label="JSON入力欄"
@@ -183,6 +194,8 @@ function JsonFormatter() {
                 "「フォーマット」ボタンでJSONを見やすく整形",
                 "「圧縮」ボタンでJSONを1行に圧縮（ミニファイ）",
                 "変換結果は「出力結果」欄に表示されます",
+                "大きな整数・小数・指数表記・文字列のエスケープ・キーの順序と重複をそのまま保持します",
+                "空白だけを変更します。入力はブラウザ内で処理され、保存・外部送信されません",
                 "キーボードショートカット: Ctrl+Enter でフォーマット実行",
               ],
             },

@@ -5,7 +5,7 @@ import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import { TipsCard } from "~/components/TipsCard";
 import { StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
-import { useOutputCopy } from "~/hooks/useOutputCopy";
+import { useCopyWithFeedback } from "~/hooks/useCopyWithFeedback";
 import { yamlToToml, tomlToYaml } from "~/utils/yaml-toml";
 
 export const Route = createFileRoute("/yaml-toml")({
@@ -42,7 +42,7 @@ type ConversionMode = "yaml-to-toml" | "toml-to-yaml";
  * YAML ↔ TOML 相互変換コンポーネント
  */
 function YamlTomlConverter() {
-  const { statusRef, announceStatus, showToast, isCopied, handleCopy } = useOutputCopy();
+  const { statusRef, announceStatus, showToast, isCopied, handleCopy } = useCopyWithFeedback();
   const [mode, setMode] = useState<ConversionMode>("yaml-to-toml");
   const [inputText, setInputText] = useState("");
   const [outputText, setOutputText] = useState("");

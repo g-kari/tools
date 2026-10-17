@@ -4,7 +4,7 @@ import { StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useCopyWithFeedback } from "~/hooks/useCopyWithFeedback";
 import { TipsCard } from "~/components/TipsCard";
 import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
-import { encodeBase32, decodeBase32, validateBase32, type Base32Variant } from "~/utils/base32";
+import { encodeBase32, decodeBase32, type Base32Variant } from "~/utils/base32";
 import "../styles/tools/base32.css";
 
 export const Route = createFileRoute("/base32")({
@@ -58,10 +58,6 @@ function Base32Converter() {
   const { decodeResult, decodeError } = useMemo(() => {
     if (mode !== "decode" || !input.trim()) {
       return { decodeResult: null, decodeError: null };
-    }
-    const validationError = validateBase32(input, variant);
-    if (validationError) {
-      return { decodeResult: null, decodeError: validationError };
     }
     const result = decodeBase32(input, variant);
     if (!result.success) {
@@ -180,8 +176,21 @@ function Base32Converter() {
                 : "デコードしたい Base32 文字列を入力..."
             }
             aria-label={mode === "encode" ? "エンコード入力テキスト" : "デコード入力Base32文字列"}
+            aria-invalid={decodeError ? true : undefined}
+            aria-describedby={
+              mode === "decode"
+                ? decodeError
+                  ? "b32-decode-rules b32-error-detail"
+                  : "b32-decode-rules"
+                : undefined
+            }
             spellCheck={false}
           />
+          {mode === "decode" && (
+            <p id="b32-decode-rules">
+              小文字・空白・末尾の=の省略に対応します。不正な文字数・=の数・末尾の未使用ビットは補正せず、エラーにします。エラー時は元の文字列を確認して入力し直してください。
+            </p>
+          )}
         </div>
 
         {/* デコードエラー */}
@@ -190,7 +199,7 @@ function Base32Converter() {
             <span className="b32-error-icon" aria-hidden="true">
               ⚠
             </span>
-            {decodeError}
+            <span id="b32-error-detail">{decodeError}</span>
           </div>
         )}
 
