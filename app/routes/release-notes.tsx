@@ -39,6 +39,18 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
+    version: "2026.10.15",
+    date: "2026-10-17",
+    entries: [
+      {
+        type: "fix",
+        title: "Base32デコードで不正な末尾を検出",
+        description:
+          "不完全な文字数・不正な=・0でない未使用ビットを出力前に検査します。入力を保持して理由と修復案内を表示し、Copyと入れ替えを無効にします。小文字・空白・=省略は維持し、正規のpadding後の空白も受け付けます。",
+      },
+    ],
+  },
+  {
     version: "2026.10.14",
     date: "2026-10-16",
     entries: [
