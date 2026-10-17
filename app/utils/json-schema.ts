@@ -12,8 +12,8 @@ interface JsonSchemaObject {
   properties?: Record<string, JsonSchemaObject>;
   required?: string[];
   additionalProperties?: boolean | JsonSchemaObject;
-  items?: JsonSchemaObject | { oneOf: JsonSchemaObject[] };
-  oneOf?: JsonSchemaObject[];
+  items?: JsonSchemaObject;
+  anyOf?: JsonSchemaObject[];
 }
 
 /**
@@ -74,7 +74,8 @@ function inferSchema(value: unknown): JsonSchemaObject {
       return { type: "array", items: dedupedSchemas[0] };
     }
 
-    return { type: "array", items: { oneOf: dedupedSchemas } };
+    // 推論した候補は排他的とは限らない（integer/number、空配列など）。
+    return { type: "array", items: { anyOf: dedupedSchemas } };
   }
 
   if (typeof value === "object") {

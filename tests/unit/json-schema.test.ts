@@ -99,11 +99,11 @@ describe("JSON Schema Generator", () => {
       expect(() => generateJsonSchema("   ")).toThrow();
     });
 
-    it("should generate oneOf schema for mixed-type array", () => {
+    it("should generate anyOf schema for mixed-type array", () => {
       const result = JSON.parse(generateJsonSchema('[1, "text", true]'));
       expect(result.type).toBe("array");
-      expect(result.items.oneOf).toBeDefined();
-      expect(result.items.oneOf).toHaveLength(3);
+      expect(result.items.anyOf).toBeDefined();
+      expect(result.items.anyOf).toHaveLength(3);
     });
   });
 
