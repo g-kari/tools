@@ -21,6 +21,7 @@ export async function assertYamlJsonRecovery(
   screenshotPrefix: string,
 ): Promise<void> {
   await page.goto("/yaml-json");
+  await page.waitForLoadState("networkidle");
   await page.locator(`input[value="${failure.mode}"]`).check();
   const input = page.locator("#inputText");
   const output = page.locator("#outputText");
