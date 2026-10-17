@@ -44,6 +44,12 @@ export const releases: Release[] = [
     entries: [
       {
         type: "fix",
+        title: "JSON Schema検証で継承キーを入力項目と誤判定する不具合を修正",
+        description:
+          "requiredとpropertiesは入力JSON自身のキーだけを調べます。__proto__・constructor・toStringなどが欠落した場合も、必須項目の拒否と任意項目の省略を正しく判定します。存在する項目の型検査は維持します。",
+      },
+      {
+        type: "fix",
         title: "JSON Schema生成で__proto__キーが脱落する不具合を修正",
         description:
           "__proto__を通常のJSONキーとしてpropertiesに保持し、ネストや配列の元データも生成スキーマで検証できるようにします。required・型・追加プロパティ拒否は維持します。",

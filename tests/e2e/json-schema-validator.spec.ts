@@ -77,4 +77,56 @@ test.describe("JSON Schema バリデーター", () => {
     const emptyState = page.locator(".jsv-result-empty");
     await expect(emptyState).toBeVisible();
   });
+
+  for (const key of ["__proto__", "constructor", "toString", "hasOwnProperty"]) {
+    test(`${key}の欠落・復帰・型違いをownキーとして検証する`, async ({ page }) => {
+      const json = page.getByLabel("JSON データ入力欄", { exact: true });
+      const schema = page.getByLabel("JSON Schema 入力欄", { exact: true });
+      const run = page.getByRole("button", { name: "バリデーションを実行する（Ctrl+Enter）" });
+      const name = JSON.stringify(key);
+
+      await json.fill("{}");
+      await schema.fill(`{"type":"object","required":[${name}]}`);
+      await run.click();
+      await expect(page.locator(".jsv-result-banner--invalid")).toBeVisible();
+      await expect(page.locator(".jsv-error-list")).toContainText(`必須プロパティ "${key}"`);
+
+      await schema.fill(`{"type":"object","properties":{${name}:{"type":"string"}}}`);
+      await run.click();
+      await expect(page.locator(".jsv-result-banner--valid")).toBeVisible();
+      await expect(page.locator(".jsv-error-list")).toHaveCount(0);
+
+      await json.fill(`{${name}:"sample"}`);
+      await schema.fill(
+        `{"type":"object","required":[${name}],"properties":{${name}:{"type":"string"}}}`,
+      );
+      await run.click();
+      await expect(page.locator(".jsv-result-banner--valid")).toBeVisible();
+
+      await json.fill(`{${name}:42}`);
+      await run.click();
+      await expect(page.locator(".jsv-result-banner--invalid")).toBeVisible();
+      await expect(page.locator(".jsv-error-list")).toContainText("型が一致しません");
+      await expect(page.locator(".jsv-error-list")).not.toContainText("必須プロパティ");
+      await expect(json).toHaveValue(`{${name}:42}`);
+    });
+  }
+
+  test("ネストと配列内のobject-valued __proto__の欠落と復帰を検証する", async ({ page }) => {
+    const json = page.getByLabel("JSON データ入力欄", { exact: true });
+    const schema = page.getByLabel("JSON Schema 入力欄", { exact: true });
+    const run = page.getByRole("button", { name: "バリデーションを実行する（Ctrl+Enter）" });
+    await schema.fill(
+      '{"type":"object","properties":{"items":{"type":"array","items":{"type":"object","required":["__proto__"],"properties":{"__proto__":{"type":"object"}}}}}}',
+    );
+    await json.fill('{"items":[{}]}');
+    await run.click();
+    await expect(page.locator(".jsv-result-banner--invalid")).toBeVisible();
+    await expect(page.locator(".jsv-error-list")).toContainText("/items/0");
+    await expect(page.locator(".jsv-error-list")).toContainText("必須プロパティ");
+    await json.fill('{"items":[{"__proto__":{}}]}');
+    await run.click();
+    await expect(page.locator(".jsv-result-banner--valid")).toBeVisible();
+    await expect(page.locator(".jsv-error-list")).toHaveCount(0);
+  });
 });

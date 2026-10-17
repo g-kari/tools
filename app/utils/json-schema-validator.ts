@@ -369,7 +369,7 @@ function validateValue(
     // required
     if (schema.required !== undefined) {
       for (const req of schema.required) {
-        if (!(req in obj)) {
+        if (!Object.hasOwn(obj, req)) {
           errors.push({
             path,
             keyword: "required",
@@ -382,7 +382,7 @@ function validateValue(
     // properties
     if (schema.properties !== undefined) {
       for (const [key, propSchema] of Object.entries(schema.properties)) {
-        if (key in obj) {
+        if (Object.hasOwn(obj, key)) {
           validateValue(obj[key], propSchema, `${path}/${key}`, errors);
         }
       }
