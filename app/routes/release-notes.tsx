@@ -44,6 +44,12 @@ export const releases: Release[] = [
     entries: [
       {
         type: "fix",
+        title: "JSON Schemaの混在配列で元データを拒否する不具合を修正",
+        description:
+          "配列要素の候補をanyOfで結合し、整数と小数や空配列を含む重なる候補への適合を認めます。生成キーワードは従来のoneOfから変わります。",
+      },
+      {
+        type: "fix",
         title: "Base32デコードで不正な末尾を検出",
         description:
           "不完全な文字数・不正な=・0でない未使用ビットを出力前に検査します。入力を保持して理由と修復案内を表示し、Copyと入れ替えを無効にします。小文字・空白・=省略は維持し、正規のpadding後の空白も受け付けます。",
