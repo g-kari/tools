@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
+import { createToolSearchMatcher } from "../utils/tool-search";
 
 /**
  * ツールアイテムの型定義
@@ -660,7 +661,7 @@ export const toolCatalog: ToolCategory[] = [
       {
         path: "/uuid",
         label: "UUID生成",
-        description: "UUID v4のランダム生成",
+        description: "UUID v4・v7をブラウザー内で生成",
         icon: "🔑",
       },
       {
@@ -1477,6 +1478,13 @@ export const toolCatalog: ToolCategory[] = [
         icon: "🔓",
       },
       {
+        path: "/jwt-inspector",
+        label: "JWT Inspector",
+        description:
+          "JWTのヘッダー・ペイロード解析に加え、HS/RS/ES の署名検証と exp/iat/nbf の有効期限判定をブラウザ内で実行。",
+        icon: "🔍",
+      },
+      {
         path: "/totp",
         label: "TOTP生成",
         description:
@@ -1808,6 +1816,13 @@ export const toolCatalog: ToolCategory[] = [
         description: "Cloudflare Workers のサーバー環境情報を表示",
         icon: "💻",
       },
+      {
+        path: "/release-notes",
+        label: "リリースノート",
+        description:
+          "Web ツール集の変更履歴を時系列で表示。新機能・修正・セキュリティ対応などをタイプ別に絞り込み可能。",
+        icon: "📝",
+      },
     ],
   },
   {
@@ -1957,15 +1972,12 @@ export const toolCatalog: ToolCategory[] = [
  * @returns フィルタリング後のカタログ（アイテムが0のカテゴリは除外）
  */
 export function filterCatalog(catalog: ToolCategory[], query: string): ToolCategory[] {
-  if (!query.trim()) return catalog;
-  const q = query.toLowerCase();
+  const matches = createToolSearchMatcher(query);
+  if (!matches) return catalog;
   return catalog
     .map((category) => ({
       ...category,
-      items: category.items.filter(
-        (item) =>
-          item.label.toLowerCase().includes(q) || item.description.toLowerCase().includes(q),
-      ),
+      items: category.items.filter((item) => matches(item, category.name)),
     }))
     .filter((category) => category.items.length > 0);
 }
@@ -2005,6 +2017,12 @@ export const Route = createFileRoute("/top")({
  */
 function TopPage() {
   const [searchQuery, setSearchQuery] = useState("");
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  function clearSearch() {
+    setSearchQuery("");
+    searchInputRef.current?.focus();
+  }
 
   const filteredCatalog = useMemo(() => filterCatalog(toolCatalog, searchQuery), [searchQuery]);
 
@@ -2025,6 +2043,7 @@ function TopPage() {
           ツールを検索
         </label>
         <input
+          ref={searchInputRef}
           id="tool-search"
           type="text"
           value={searchQuery}
@@ -2032,11 +2051,12 @@ function TopPage() {
           placeholder="ツール名や機能で検索..."
           className="top-search-input"
           aria-label="ツールを検索"
+          aria-describedby="tool-search-help"
         />
         {searchQuery && (
           <button
             className="top-search-clear"
-            onClick={() => setSearchQuery("")}
+            onClick={clearSearch}
             aria-label="検索をクリア"
             type="button"
           >
@@ -2044,6 +2064,9 @@ function TopPage() {
           </button>
         )}
       </div>
+      <p id="tool-search-help" className="top-search-result-count">
+        例: JSON 圧縮。空白で区切ると、すべての語で絞り込めます。カテゴリ名やパスでも検索できます。
+      </p>
 
       {/* 検索結果カウント */}
       {searchQuery && (
@@ -2084,7 +2107,7 @@ function TopPage() {
       {filteredCatalog.length === 0 && (
         <div className="top-no-results" role="status" aria-live="polite">
           <p>「{searchQuery}」に一致するツールが見つかりませんでした</p>
-          <button onClick={() => setSearchQuery("")} type="button" className="btn-primary">
+          <button onClick={clearSearch} type="button" className="btn-primary">
             検索をクリア
           </button>
         </div>

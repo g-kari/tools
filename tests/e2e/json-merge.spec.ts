@@ -38,6 +38,20 @@ test.describe("JSON Merge Tool - E2E Tests", () => {
     expect(parsed).toEqual({ a: 1, b: 3, c: 4 });
   });
 
+  test("preserves special JSON own keys in merged output", async ({ page }) => {
+    await page.locator("#json-input-0").fill("{}");
+    await page
+      .locator("#json-input-1")
+      .fill('{"__proto__":{"sample":"synthetic"},"nested":{"__proto__":null}}');
+    await page.locator("button.btn-primary").click();
+    const output = JSON.parse(await page.locator("#outputText").inputValue());
+    expect(Object.hasOwn(output, "__proto__")).toBe(true);
+    expect(output.__proto__).toEqual({ sample: "synthetic" });
+    expect(Object.hasOwn(output.nested, "__proto__")).toBe(true);
+    expect(output.nested.__proto__).toBeNull();
+    await expect(page.locator("#json-input-0")).toHaveValue("{}");
+  });
+
   test("should load sample data", async ({ page }) => {
     const sampleBtn = page.locator("button", { hasText: "サンプル" });
     await sampleBtn.click();

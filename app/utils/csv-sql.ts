@@ -88,6 +88,7 @@ export function parseCsv(csv: string): ParsedCsv | CsvSqlError {
       if (trimmed[i] === '"') {
         i++; // 開始クォートをスキップ
         let field = "";
+        let closed = false;
         while (i < trimmed.length) {
           if (trimmed[i] === '"') {
             if (trimmed[i + 1] === '"') {
@@ -95,11 +96,29 @@ export function parseCsv(csv: string): ParsedCsv | CsvSqlError {
               i += 2;
             } else {
               i++; // 終了クォートをスキップ
+              closed = true;
               break;
             }
           } else {
             field += trimmed[i++];
           }
+        }
+        if (!closed) {
+          return {
+            type: "parse",
+            message: `CSV の${rows.length + 1}番目のレコードの${row.length + 1}列目: 引用符が閉じていません。`,
+          };
+        }
+        if (
+          i < trimmed.length &&
+          trimmed[i] !== "," &&
+          trimmed[i] !== "\r" &&
+          trimmed[i] !== "\n"
+        ) {
+          return {
+            type: "parse",
+            message: `CSV の${rows.length + 1}番目のレコードの${row.length + 1}列目: 閉じた引用符の後にはカンマまたは改行を置いてください。`,
+          };
         }
         row.push(field);
       } else {
@@ -111,6 +130,12 @@ export function parseCsv(csv: string): ParsedCsv | CsvSqlError {
           trimmed[i] !== "\n" &&
           trimmed[i] !== "\r"
         ) {
+          if (trimmed[i] === '"') {
+            return {
+              type: "parse",
+              message: `CSV の${rows.length + 1}番目のレコードの${row.length + 1}列目: 引用符を含む値は全体を引用符で囲み、内部の引用符を二重にしてください。`,
+            };
+          }
           field += trimmed[i++];
         }
         row.push(field);
@@ -119,6 +144,8 @@ export function parseCsv(csv: string): ParsedCsv | CsvSqlError {
       // 区切り文字の処理
       if (i < trimmed.length && trimmed[i] === ",") {
         i++; // カンマをスキップして次のフィールドへ
+        // 最終カンマの後にも空セルがある。EOF で内側のループを抜ける前に保持する。
+        if (i === trimmed.length) row.push("");
       } else {
         break; // 行末
       }
@@ -194,6 +221,7 @@ function toSqlLiteral(value: string, options: CsvSqlOptions, dialect: SqlDialect
 
 /**
  * CSV データから SQL INSERT 文を生成します。
+ * 最初のレコードより列が多い場合はエラー、不足列は NULL で補完します。
  */
 export function generateSql(csv: string, options: CsvSqlOptions): SqlResult | CsvSqlError {
   const parsed = parseCsv(csv);
@@ -209,6 +237,16 @@ export function generateSql(csv: string, options: CsvSqlOptions): SqlResult | Cs
 
   if (dataRows.length === 0) {
     return { type: "generate", message: "データ行がありません。ヘッダー行のみが含まれています。" };
+  }
+
+  // SQL を組み立てる前に全レコードを検証し、余分なセルの切り捨てを防ぐ。
+  const extraColumnIndex = dataRows.findIndex((row) => row.length > columnCount);
+  if (extraColumnIndex !== -1) {
+    const recordNumber = extraColumnIndex + (options.hasHeader ? 2 : 1);
+    return {
+      type: "generate",
+      message: `CSV の${recordNumber}番目のレコードは${dataRows[extraColumnIndex].length}列あります。1番目のレコードに合わせて${columnCount}列以内にしてください。`,
+    };
   }
 
   const { dialect, batchSize } = options;
@@ -230,10 +268,7 @@ export function generateSql(csv: string, options: CsvSqlOptions): SqlResult | Cs
     if (effectiveBatch === 1) {
       // 個別 INSERT
       const row = batch[0];
-      const values = row
-        .slice(0, columnCount)
-        .map((v) => toSqlLiteral(v, options, dialect))
-        .join(", ");
+      const values = row.map((v) => toSqlLiteral(v, options, dialect)).join(", ");
       // 列数が足りない場合は NULL で埋める
       const missing = columnCount - row.length;
       const nullPad = missing > 0 ? ", " + Array(missing).fill("NULL").join(", ") : "";
@@ -241,10 +276,7 @@ export function generateSql(csv: string, options: CsvSqlOptions): SqlResult | Cs
     } else {
       // バッチ INSERT
       const valuesList = batch.map((row) => {
-        const values = row
-          .slice(0, columnCount)
-          .map((v) => toSqlLiteral(v, options, dialect))
-          .join(", ");
+        const values = row.map((v) => toSqlLiteral(v, options, dialect)).join(", ");
         const missing = columnCount - row.length;
         const nullPad = missing > 0 ? ", " + Array(missing).fill("NULL").join(", ") : "";
         return `  (${values}${nullPad})`;

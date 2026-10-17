@@ -322,22 +322,26 @@ select:focus-visible {
   flex-wrap: wrap;
 }
 
-/* Buttons */
+/* Buttons - base reset */
 button {
-  flex: 1;
-  min-width: 200px;
-  padding: 16px 32px;
-  font-size: 15px;
-  font-weight: 400;
   font-family: "JetBrains Mono", "Space Mono", monospace;
   border: none;
   border-radius: 0;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  text-transform: none;
-  letter-spacing: 0.05em;
   position: relative;
   overflow: hidden;
+}
+
+/* Buttons inside .button-group get flex/sizing layout */
+.button-group button {
+  flex: 1;
+  min-width: 200px;
+  padding: 16px 32px;
+  font-size: 15px;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0.05em;
 }
 
 button::before {
@@ -450,7 +454,7 @@ button:focus-visible {
 
 /* TipsCard component styles */
 .tips-card {
-  background: var(--md-sys-color-secondary-container);
+  background: var(--md-sys-color-surface-variant);
   border-left: 4px solid var(--md-sys-color-primary);
   margin-top: 24px;
   padding: 1.25rem 1.75rem;
@@ -462,7 +466,7 @@ button:focus-visible {
 }
 
 .tips-card [data-slot="card-title"] {
-  color: var(--md-sys-color-on-primary-container);
+  color: var(--md-sys-color-primary);
   font-size: 1rem;
   font-weight: 600;
 }
@@ -472,7 +476,7 @@ button:focus-visible {
 }
 
 .tips-card .tips-list {
-  color: var(--md-sys-color-on-primary-container);
+  color: var(--md-sys-color-on-surface);
   font-size: 0.9rem;
   line-height: 1.8;
   padding-left: 1.5rem;
@@ -923,7 +927,7 @@ input[type="range"]:focus-visible {
   .button-group {
     flex-direction: column;
   }
-  button {
+  .button-group button {
     width: 100%;
   }
   .nav-links {

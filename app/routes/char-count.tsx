@@ -4,6 +4,7 @@ import { useState, useCallback } from "react";
 import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import { TipsCard } from "~/components/TipsCard";
+import { useGraphemeCount } from "../hooks/useGraphemeCount";
 
 export const Route = createFileRoute("/char-count")({
   head: () => ({
@@ -32,7 +33,7 @@ export const Route = createFileRoute("/char-count")({
 });
 
 /**
- * テキストの文字数をカウントする
+ * テキストのコードポイント数をカウントする
  * @param text - カウント対象のテキスト
  * @returns 文字数（スペース含む）
  */
@@ -41,7 +42,7 @@ export function countChars(text: string): number {
 }
 
 /**
- * テキストの文字数をカウントする（スペース除く）
+ * テキストのコードポイント数をカウントする（空白・タブ・改行を除く）
  * @param text - カウント対象のテキスト
  * @returns 文字数（スペース除く）
  */
@@ -76,8 +77,7 @@ export function countLines(text: string): number {
 export function countWords(text: string): number {
   const trimmed = text.trim();
   if (trimmed === "") return 0;
-  // 英単語と日本語の文字をそれぞれカウント
-  // 英単語はスペース区切り、日本語は1文字=1単語としてカウント
+  // 空白区切りでカウント。日本語の形態素解析は行わない。
   const words = trimmed.split(/\s+/).filter((word) => word.length > 0);
   return words.length;
 }
@@ -102,6 +102,7 @@ function CharCountPage() {
   }, []);
 
   const chars = countChars(text);
+  const graphemes = useGraphemeCount(text);
   const charsWithoutSpaces = countCharsWithoutSpaces(text);
   const bytes = countBytes(text);
   const lines = countLines(text);
@@ -136,15 +137,25 @@ function CharCountPage() {
 
         <div className="converter-section">
           <h2 className="section-title">カウント結果</h2>
-          <div className="count-results" role="region" aria-live="polite">
+          <div className="count-results" role="region" aria-label="カウント結果" aria-live="polite">
             <div className="count-item">
-              <span className="count-label">文字数</span>
+              <span className="count-label">文字のまとまり（書記素）</span>
+              <span className="count-value" data-testid="grapheme-count">
+                {graphemes === undefined
+                  ? "確認中"
+                  : graphemes === null
+                    ? "未対応"
+                    : graphemes.toLocaleString()}
+              </span>
+            </div>
+            <div className="count-item">
+              <span className="count-label">文字数（コードポイント）</span>
               <span className="count-value" data-testid="char-count">
                 {chars.toLocaleString()}
               </span>
             </div>
             <div className="count-item">
-              <span className="count-label">文字数（空白除く）</span>
+              <span className="count-label">コードポイント（空白除く）</span>
               <span className="count-value" data-testid="char-count-no-space">
                 {charsWithoutSpaces.toLocaleString()}
               </span>
@@ -182,7 +193,10 @@ function CharCountPage() {
               title: "文字数カウントとは",
               items: [
                 "テキストの文字数、バイト数、行数などをリアルタイムでカウントします",
-                "日本語、英語、絵文字など、あらゆる文字に対応しています",
+                "書記素は、家族の絵文字や結合文字などを1まとまりとして数えます。表示上の字形や投稿サービスの文字制限とは異なる場合があります",
+                "書記素数は空白・改行を含み、CRLFは1まとまりです。ブラウザーのIntl.Segmenterが使えない場合は「未対応」と表示します",
+                "コードポイント数は従来の文字数です。例えば👨‍👩‍👧‍👦は書記素1・コードポイント7になります",
+                "空白除く値は空白・タブ・改行を除きます。単語数は空白区切りで、日本語の形態素解析は行いません",
                 "バイト数はUTF-8エンコーディングで計算されます",
               ],
             },

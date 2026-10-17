@@ -5,7 +5,7 @@ import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import { TipsCard } from "~/components/TipsCard";
 import { StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
-import { useOutputCopy } from "~/hooks/useOutputCopy";
+import { useCopyWithFeedback } from "~/hooks/useCopyWithFeedback";
 import * as yaml from "js-yaml";
 
 export const Route = createFileRoute("/yaml-json")({
@@ -82,7 +82,7 @@ export function jsonToYaml(jsonStr: string): string {
  * YAML↔JSON相互変換コンポーネント
  */
 function YamlJsonConverter() {
-  const { statusRef, announceStatus, showToast, isCopied, handleCopy } = useOutputCopy();
+  const { statusRef, announceStatus, showToast, isCopied, handleCopy } = useCopyWithFeedback();
   const [mode, setMode] = useState<ConversionMode>("yaml-to-json");
   const [indent, setIndent] = useState<2 | 4>(2);
   const [inputText, setInputText] = useState("");

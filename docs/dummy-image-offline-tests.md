@@ -1,0 +1,19 @@
+# ダミー画像conversion unit testsのoffline境界
+
+2026-10-07。既存unit testsの外部WASM/font取得による不安定性を、main基準で独立して対処する。保留中JSON Lines差分は含めない。
+
+## 対象と検証
+
+`tests/unit/dummy-image.test.ts` のImage Conversion APIだけにstrict fetch fixtureを適用する。実resvg rendererとphoton codec、既存assertions、default5秒を維持し、PNG/JPEG/WebP signatureとdecode後の寸法も確認する。スキップやtimeout延長はしない。
+
+resvgは導入済みのexported WASMを読み、installed package versionとcommitted lockfile、既知の2.6.2 WASM SHA256を一致確認する。依存更新時は公式package assetを確認してfixtureのversion/hashも更新する。WASMやfontのbinaryを新規コピー・download・依存追加しない。
+
+fixtureは既存WASM URLのGETにlocal bytesを返し、既知Roboto URLのGETは明示的にrejectして既存のnull-font fallbackを実行する。これはRobotoを取得できたという擬装ではない。その他のURLやmethodはrejectと記録を行い、元の処理がエラーをcatchした場合も各test後のassertionで失敗する。native/external fetchへ委譲しない。各conversion testでは既知fontのrejectが実際に起きたこともassertし、runtimeがfont読み込みを省略した場合を検出する。
+
+## 保証しないこと
+
+実Robotoの字体・文字pixel、実CDNの到達性、unversioned CDN WASMとinstalled wrapperの互換性、Cloudflare Workerのasset import/runtime、本番のネットワーク待ちの改善は検証・変更していない。unit成功をこれらの検証成功と扱わない。production code、timeout、lockfile、CI設定は変更しない。
+
+13UTCの診断では、元source/default deadlineのままWASMだけ・fontだけを5.3秒遅延するとそれぞれ5秒timeoutを再現した。local locked WASMと明示的font rejectionではbase/proposedの51既存testsが成功した。過去ログだけで実際に遅かったendpointは特定できない。
+
+この変更はmutable public CDNに依存していたunit testsを再現可能にする独立したtest infrastructure改善であり、保留中JSON Linesの公開を別経路で進めるものではない。通常のrequired CI/独立reviewを通してから統合する。

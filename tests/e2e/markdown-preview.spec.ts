@@ -120,4 +120,32 @@ test.describe("Markdown Preview - E2E Tests", () => {
     const previewArea = page.locator(".markdown-preview-content");
     await expect(previewArea.locator("ul li")).toHaveCount(3);
   });
+
+  test("should remove prohibited nodes and attributes after repeated edits", async ({ page }) => {
+    const textarea = page.locator("#markdownInput");
+    const preview = page.locator(".markdown-preview-inner");
+    await textarea.fill(
+      '<div>before<iframe><b>blocked child</b></iframe><form><input></form><script>blocked child</script><style>.blocked-child { color:red }</style><svg><text>blocked child</text></svg><math><mi>blocked child</mi></math><object>blocked child</object><embed><meta content="blocked"><link href="/blocked.css"><base href="https://example.com/"><p id="kept" onclick="doSomething()" style="color:red">after</p><a href="java&#x09;script:doSomething()">unsafe link</a><img src="data:text/html,blocked" alt="unsafe image"></div>',
+    );
+    await expect(preview.locator("#kept")).toHaveText("after");
+    await expect(
+      preview.locator("script,iframe,form,object,embed,svg,math,style,meta,link,base"),
+    ).toHaveCount(0);
+    await expect(preview).not.toContainText("blocked child");
+    await expect(preview.locator("[onclick], [style]")).toHaveCount(0);
+    await expect(preview.locator("a")).toHaveAttribute("href", "#");
+    await expect(preview.locator("img")).toHaveAttribute("src", "#");
+
+    await textarea.fill("# Safe\n\n[relative link](/docs)\n\n**kept**\n\n`<iframe>code</iframe>`");
+    await expect(preview.locator("h1")).toHaveText("Safe");
+    await expect(preview.locator("a")).toHaveAttribute("href", "/docs");
+    await expect(preview.locator("strong")).toHaveText("kept");
+    await expect(preview.locator("code")).toHaveText("<iframe>code</iframe>");
+    await page.locator("button.btn-clear").click();
+    await expect(textarea).toHaveValue("");
+    await expect(page.locator(".markdown-preview-placeholder")).toBeVisible();
+    await textarea.fill("<p>again<iframe>blocked child</iframe></p>");
+    await expect(preview).toHaveText("again");
+    await expect(preview.locator("iframe")).toHaveCount(0);
+  });
 });

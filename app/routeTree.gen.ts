@@ -89,6 +89,7 @@ import { Route as SecurityHeadersRouteImport } from './routes/security-headers'
 import { Route as ScytaleRouteImport } from './routes/scytale'
 import { Route as RomanNumeralsRouteImport } from './routes/roman-numerals'
 import { Route as RobotsTxtRouteImport } from './routes/robots-txt'
+import { Route as ReleaseNotesRouteImport } from './routes/release-notes'
 import { Route as RegexLibraryRouteImport } from './routes/regex-library'
 import { Route as RegexCheckerRouteImport } from './routes/regex-checker'
 import { Route as RedirectTracerRouteImport } from './routes/redirect-tracer'
@@ -143,6 +144,7 @@ import { Route as LineEndingRouteImport } from './routes/line-ending'
 import { Route as LifeGameRouteImport } from './routes/life-game'
 import { Route as KeycodeRouteImport } from './routes/keycode'
 import { Route as KanaConvertRouteImport } from './routes/kana-convert'
+import { Route as JwtInspectorRouteImport } from './routes/jwt-inspector'
 import { Route as JwtGeneratorRouteImport } from './routes/jwt-generator'
 import { Route as JwtRouteImport } from './routes/jwt'
 import { Route as JsonToZodRouteImport } from './routes/json-to-zod'
@@ -713,6 +715,11 @@ const RobotsTxtRoute = RobotsTxtRouteImport.update({
   path: '/robots-txt',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ReleaseNotesRoute = ReleaseNotesRouteImport.update({
+  id: '/release-notes',
+  path: '/release-notes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RegexLibraryRoute = RegexLibraryRouteImport.update({
   id: '/regex-library',
   path: '/regex-library',
@@ -981,6 +988,11 @@ const KeycodeRoute = KeycodeRouteImport.update({
 const KanaConvertRoute = KanaConvertRouteImport.update({
   id: '/kana-convert',
   path: '/kana-convert',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JwtInspectorRoute = JwtInspectorRouteImport.update({
+  id: '/jwt-inspector',
+  path: '/jwt-inspector',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JwtGeneratorRoute = JwtGeneratorRouteImport.update({
@@ -1995,6 +2007,7 @@ export interface FileRoutesByFullPath {
   '/json-to-zod': typeof JsonToZodRoute
   '/jwt': typeof JwtRoute
   '/jwt-generator': typeof JwtGeneratorRoute
+  '/jwt-inspector': typeof JwtInspectorRoute
   '/kana-convert': typeof KanaConvertRoute
   '/keycode': typeof KeycodeRoute
   '/life-game': typeof LifeGameRoute
@@ -2049,6 +2062,7 @@ export interface FileRoutesByFullPath {
   '/redirect-tracer': typeof RedirectTracerRoute
   '/regex-checker': typeof RegexCheckerRoute
   '/regex-library': typeof RegexLibraryRoute
+  '/release-notes': typeof ReleaseNotesRoute
   '/robots-txt': typeof RobotsTxtRoute
   '/roman-numerals': typeof RomanNumeralsRoute
   '/scytale': typeof ScytaleRoute
@@ -2300,6 +2314,7 @@ export interface FileRoutesByTo {
   '/json-to-zod': typeof JsonToZodRoute
   '/jwt': typeof JwtRoute
   '/jwt-generator': typeof JwtGeneratorRoute
+  '/jwt-inspector': typeof JwtInspectorRoute
   '/kana-convert': typeof KanaConvertRoute
   '/keycode': typeof KeycodeRoute
   '/life-game': typeof LifeGameRoute
@@ -2354,6 +2369,7 @@ export interface FileRoutesByTo {
   '/redirect-tracer': typeof RedirectTracerRoute
   '/regex-checker': typeof RegexCheckerRoute
   '/regex-library': typeof RegexLibraryRoute
+  '/release-notes': typeof ReleaseNotesRoute
   '/robots-txt': typeof RobotsTxtRoute
   '/roman-numerals': typeof RomanNumeralsRoute
   '/scytale': typeof ScytaleRoute
@@ -2606,6 +2622,7 @@ export interface FileRoutesById {
   '/json-to-zod': typeof JsonToZodRoute
   '/jwt': typeof JwtRoute
   '/jwt-generator': typeof JwtGeneratorRoute
+  '/jwt-inspector': typeof JwtInspectorRoute
   '/kana-convert': typeof KanaConvertRoute
   '/keycode': typeof KeycodeRoute
   '/life-game': typeof LifeGameRoute
@@ -2660,6 +2677,7 @@ export interface FileRoutesById {
   '/redirect-tracer': typeof RedirectTracerRoute
   '/regex-checker': typeof RegexCheckerRoute
   '/regex-library': typeof RegexLibraryRoute
+  '/release-notes': typeof ReleaseNotesRoute
   '/robots-txt': typeof RobotsTxtRoute
   '/roman-numerals': typeof RomanNumeralsRoute
   '/scytale': typeof ScytaleRoute
@@ -2913,6 +2931,7 @@ export interface FileRouteTypes {
     | '/json-to-zod'
     | '/jwt'
     | '/jwt-generator'
+    | '/jwt-inspector'
     | '/kana-convert'
     | '/keycode'
     | '/life-game'
@@ -2967,6 +2986,7 @@ export interface FileRouteTypes {
     | '/redirect-tracer'
     | '/regex-checker'
     | '/regex-library'
+    | '/release-notes'
     | '/robots-txt'
     | '/roman-numerals'
     | '/scytale'
@@ -3218,6 +3238,7 @@ export interface FileRouteTypes {
     | '/json-to-zod'
     | '/jwt'
     | '/jwt-generator'
+    | '/jwt-inspector'
     | '/kana-convert'
     | '/keycode'
     | '/life-game'
@@ -3272,6 +3293,7 @@ export interface FileRouteTypes {
     | '/redirect-tracer'
     | '/regex-checker'
     | '/regex-library'
+    | '/release-notes'
     | '/robots-txt'
     | '/roman-numerals'
     | '/scytale'
@@ -3523,6 +3545,7 @@ export interface FileRouteTypes {
     | '/json-to-zod'
     | '/jwt'
     | '/jwt-generator'
+    | '/jwt-inspector'
     | '/kana-convert'
     | '/keycode'
     | '/life-game'
@@ -3577,6 +3600,7 @@ export interface FileRouteTypes {
     | '/redirect-tracer'
     | '/regex-checker'
     | '/regex-library'
+    | '/release-notes'
     | '/robots-txt'
     | '/roman-numerals'
     | '/scytale'
@@ -3829,6 +3853,7 @@ export interface RootRouteChildren {
   JsonToZodRoute: typeof JsonToZodRoute
   JwtRoute: typeof JwtRoute
   JwtGeneratorRoute: typeof JwtGeneratorRoute
+  JwtInspectorRoute: typeof JwtInspectorRoute
   KanaConvertRoute: typeof KanaConvertRoute
   KeycodeRoute: typeof KeycodeRoute
   LifeGameRoute: typeof LifeGameRoute
@@ -3883,6 +3908,7 @@ export interface RootRouteChildren {
   RedirectTracerRoute: typeof RedirectTracerRoute
   RegexCheckerRoute: typeof RegexCheckerRoute
   RegexLibraryRoute: typeof RegexLibraryRoute
+  ReleaseNotesRoute: typeof ReleaseNotesRoute
   RobotsTxtRoute: typeof RobotsTxtRoute
   RomanNumeralsRoute: typeof RomanNumeralsRoute
   ScytaleRoute: typeof ScytaleRoute
@@ -4531,6 +4557,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RobotsTxtRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/release-notes': {
+      id: '/release-notes'
+      path: '/release-notes'
+      fullPath: '/release-notes'
+      preLoaderRoute: typeof ReleaseNotesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/regex-library': {
       id: '/regex-library'
       path: '/regex-library'
@@ -4907,6 +4940,13 @@ declare module '@tanstack/react-router' {
       path: '/kana-convert'
       fullPath: '/kana-convert'
       preLoaderRoute: typeof KanaConvertRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/jwt-inspector': {
+      id: '/jwt-inspector'
+      path: '/jwt-inspector'
+      fullPath: '/jwt-inspector'
+      preLoaderRoute: typeof JwtInspectorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/jwt-generator': {
@@ -6261,6 +6301,7 @@ const rootRouteChildren: RootRouteChildren = {
   JsonToZodRoute: JsonToZodRoute,
   JwtRoute: JwtRoute,
   JwtGeneratorRoute: JwtGeneratorRoute,
+  JwtInspectorRoute: JwtInspectorRoute,
   KanaConvertRoute: KanaConvertRoute,
   KeycodeRoute: KeycodeRoute,
   LifeGameRoute: LifeGameRoute,
@@ -6315,6 +6356,7 @@ const rootRouteChildren: RootRouteChildren = {
   RedirectTracerRoute: RedirectTracerRoute,
   RegexCheckerRoute: RegexCheckerRoute,
   RegexLibraryRoute: RegexLibraryRoute,
+  ReleaseNotesRoute: ReleaseNotesRoute,
   RobotsTxtRoute: RobotsTxtRoute,
   RomanNumeralsRoute: RomanNumeralsRoute,
   ScytaleRoute: ScytaleRoute,

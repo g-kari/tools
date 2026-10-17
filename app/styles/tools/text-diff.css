@@ -13,14 +13,68 @@
   max-height: 500px;
 }
 
-.diff-line {
-  display: flex;
-  padding: 2px 8px;
+.diff-table {
+  width: 100%;
+  border-collapse: collapse;
   font-family: "Roboto Mono", "Courier New", monospace;
   font-size: 0.875rem;
   line-height: 1.6;
+}
+
+.diff-table th {
+  padding: 4px 8px;
+  text-align: left;
+  color: var(--md-sys-color-on-surface-variant);
+  background: var(--md-sys-color-surface-container);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.diff-line td {
+  padding: 2px 8px;
+  vertical-align: top;
+}
+
+.diff-line-value {
   white-space: pre-wrap;
-  word-break: break-all;
+  overflow-wrap: anywhere;
+}
+
+.diff-line-number {
+  width: 1%;
+  text-align: right;
+  white-space: nowrap;
+  border-right: 1px solid var(--md-sys-color-outline-variant);
+  font-variant-numeric: tabular-nums;
+}
+
+.diff-view-options {
+  margin-bottom: 12px;
+}
+
+.diff-view-options label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.diff-view-options p {
+  margin: 4px 0 0;
+  font-size: 0.875rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.diff-context-row td {
+  padding: 4px;
+  background: var(--md-sys-color-surface-container);
+}
+
+.diff-context-toggle {
+  width: 100%;
+  min-height: 44px;
+  font-family: inherit;
+  font-size: 0.875rem;
+  white-space: normal;
 }
 
 .diff-line-added {
@@ -38,10 +92,9 @@
 }
 
 .diff-line-prefix {
-  min-width: 24px;
+  width: 1%;
+  text-align: center;
   user-select: none;
-  opacity: 0.6;
-  flex-shrink: 0;
 }
 
 .diff-stats {
