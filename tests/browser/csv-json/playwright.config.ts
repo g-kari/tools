@@ -10,6 +10,7 @@ export default defineConfig({
     "base64-input-recovery.spec.ts",
     "url-recovery.spec.ts",
     "csv-sql-quotes.spec.ts",
+    "yaml-json-recovery.spec.ts",
   ],
   fullyParallel: false,
   forbidOnly: !!process.env.CI,

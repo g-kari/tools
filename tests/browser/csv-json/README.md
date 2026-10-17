@@ -1,8 +1,8 @@
 # CSV/JSON column-preservation browser regression
 
-This fixture mounts the actual `/csv-json`, `/base64`, `/url-encode` or `/csv-sql` route component and ToastProvider, with the real base, animation, shared-control and route styles. The component is selected only at those fixed paths. It avoids the application shell, Workers bindings and production hydration path. It is a client-component regression test, not an assertion about live production hydration.
+This fixture mounts the actual `/csv-json`, `/base64`, `/url-encode`, `/csv-sql` or `/yaml-json` route component and ToastProvider, with the real base, animation, shared-control and route styles. The component is selected only at those fixed paths. It avoids the application shell, Workers bindings and production hydration path. It is a client-component regression test, not an assertion about live production hydration.
 
-Only synthetic conversion strings are used. The server binds to `127.0.0.1:4195`, permits GET for exactly three built files (the index also has the fixed Base64, URL and CSV SQL route aliases) and sets a restrictive CSP. The browser blocks and fails on every attempted external request. No authentication, saved data, remote API, credential or account setting is needed.
+Only synthetic conversion strings are used. The server binds to `127.0.0.1:4195`, permits GET for exactly three built files (the index also has the fixed Base64, URL, CSV SQL and YAML/JSON route aliases) and sets a restrictive CSP. The browser blocks and fails on every attempted external request. No authentication, saved data, remote API, credential or account setting is needed.
 
 Run from the repository root:
 
@@ -57,6 +57,14 @@ npx playwright test --config tests/browser/csv-json/playwright.config.ts
 npm run build
 npx playwright test --config tests/browser/csv-json/csv-sql-app.config.ts
 ```
+
+## YAML/JSON failure recovery
+
+The same workflow and component fixture run 22 YAML/JSON cases at desktop (1280px) and mobile (390px) widths. They seed a successful result before syntax errors in both directions, empty/whitespace attempts, comment-only/null YAML and a small cyclic YAML value that fails JSON serialization. They check exact input retention, focus, disabled Copy, cleared output, an input-associated persistent alert after the toast disappears, successful repair and Clear. Syntax-error screenshots and the JSON report are included in the existing one-day artifact; the screenshots also check horizontal overflow.
+
+The mode/indent/Copy component cases observe writes at a synthetic Clipboard API boundary, without extra browser permissions or changes to the shared clipboard hook. They verify the repaired output is passed to Copy and the disabled button cannot write. This fixture does not prove native clipboard permissions or real-app hydration.
+
+The workflow additionally runs all thirteen original plus twenty-two recovery cases in `tests/e2e/yaml-json.spec.ts` through `yaml-json-app.config.ts` against the production build on loopback. These use the existing external-HTTP, page-error and hydration guard. The app-only configuration grants Chromium clipboard read/write permissions for the existing real Clipboard API assertions; component fixtures keep their synthetic clipboard boundary. The existing runner, time budget, permissions and sandbox flags are unchanged. No dependency or deployment configuration changes.
 
 ## Generated password strength snapshot
 
