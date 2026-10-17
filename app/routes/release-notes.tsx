@@ -44,6 +44,12 @@ export const releases: Release[] = [
     entries: [
       {
         type: "fix",
+        title: "JSON→XML変換で属性値の特殊文字を保持",
+        description:
+          "属性値の&・<・二重引用符をエスケープし、不正なXMLの出力と実体参照のような文字列の意図しない変化を防ぎます。CDATA・混在テキストの既存の変換規則は維持します。",
+      },
+      {
+        type: "fix",
         title: "JSON Schema検証で継承キーを入力項目と誤判定する不具合を修正",
         description:
           "requiredとpropertiesは入力JSON自身のキーだけを調べます。__proto__・constructor・toStringなどが欠落した場合も、必須項目の拒否と任意項目の省略を正しく判定します。存在する項目の型検査は維持します。",
