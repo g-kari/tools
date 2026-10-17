@@ -143,26 +143,15 @@ export function decodeBase32(
   encoded: string,
   variant: Base32Variant = "standard",
 ): Base32DecodeResult {
+  const { cleaned, error } = parseBase32(encoded, variant);
+  if (error) {
+    return { decoded: "", bytes: new Uint8Array(0), success: false, error };
+  }
   const alphabet = variant === "hex" ? HEX_ALPHABET : STANDARD_ALPHABET;
   const lookup = buildLookup(alphabet);
 
-  // パディング・空白を除去して大文字に正規化
-  const cleaned = encoded.toUpperCase().replace(/=+$/, "").replace(/\s/g, "");
-
   if (cleaned.length === 0) {
     return { decoded: "", bytes: new Uint8Array(0), success: true };
-  }
-
-  // 文字バリデーション
-  for (const ch of cleaned) {
-    if (lookup[ch] === undefined) {
-      return {
-        decoded: "",
-        bytes: new Uint8Array(0),
-        success: false,
-        error: `無効な文字が含まれています: '${ch}' （使用可能: ${alphabet}）`,
-      };
-    }
   }
 
   // 8文字 → 5バイト のグループ処理
@@ -219,22 +208,58 @@ export function decodeBase32(
  * @returns エラーメッセージ（問題なければ null）
  */
 export function validateBase32(input: string, variant: Base32Variant = "standard"): string | null {
-  const alphabet = variant === "hex" ? HEX_ALPHABET : STANDARD_ALPHABET;
-  const cleaned = input.toUpperCase().replace(/=+$/, "").replace(/\s/g, "");
+  return parseBase32(input, variant).error;
+}
 
-  if (cleaned.length === 0) return null;
+/**
+ * デコード前の共通検査。小文字・空白・パディング省略は許容し、
+ * 不完全なデータや非正規の末尾を暗黙に補正しない。
+ */
+function parseBase32(
+  input: string,
+  variant: Base32Variant,
+): { cleaned: string; error: string | null } {
+  const alphabet = variant === "hex" ? HEX_ALPHABET : STANDARD_ALPHABET;
+  // ASCIIだけを大小文字正規化し、ſ/ß等をalphabetへ変換しない。
+  const compact = input.replace(/\s/g, "").replace(/[a-z]/g, (ch) => ch.toUpperCase());
+  const paddingAt = compact.indexOf("=");
+  const cleaned = paddingAt < 0 ? compact : compact.slice(0, paddingAt);
 
   for (const ch of cleaned) {
     if (!alphabet.includes(ch)) {
-      return `無効な文字: '${ch}'`;
+      return { cleaned, error: `無効な文字: '${ch}' （使用可能: ${alphabet}）` };
     }
   }
 
-  // 有効な長さ (mod 8) は 0, 2, 4, 5, 7 のみ
-  const VALID_REMAINDERS = new Set([0, 2, 4, 5, 7]);
-  if (!VALID_REMAINDERS.has(cleaned.length % 8)) {
-    return `文字数が不正です（${cleaned.length} 文字）。Base32 は 8 の倍数、またはパディングなしで 2/4/5/7 の余り数が必要です`;
+  if (paddingAt >= 0 && !/^=+$/.test(compact.slice(paddingAt))) {
+    return { cleaned, error: "パディング（=）は末尾だけに指定してください" };
   }
 
-  return null;
+  // 有効な長さ (mod 8) は 0, 2, 4, 5, 7 のみ
+  const remainder = cleaned.length % 8;
+  const paddingCounts: Record<number, number> = { 0: 0, 2: 6, 4: 4, 5: 3, 7: 1 };
+  if (paddingCounts[remainder] === undefined) {
+    return {
+      cleaned,
+      error: `文字数が不正です（${cleaned.length} 文字）。Base32 は 8 の倍数、またはパディングなしで 2/4/5/7 の余り数が必要です`,
+    };
+  }
+  if (paddingAt >= 0 && compact.length - paddingAt !== paddingCounts[remainder]) {
+    return {
+      cleaned,
+      error: `パディング（=）の数が不正です。この文字数では${paddingCounts[remainder]}個、または省略してください`,
+    };
+  }
+
+  // RFC 4648 §3.5/§6: 最終文字の未使用ビットは0の正規表現だけを受け付ける。
+  const unusedBitMasks: Record<number, number> = { 2: 3, 4: 15, 5: 1, 7: 7 };
+  const mask = unusedBitMasks[remainder] ?? 0;
+  if (mask && (alphabet.indexOf(cleaned[cleaned.length - 1]) & mask) !== 0) {
+    return {
+      cleaned,
+      error: "末尾の未使用ビットが0ではありません。元のBase32文字列を確認してください",
+    };
+  }
+
+  return { cleaned, error: null };
 }

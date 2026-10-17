@@ -160,6 +160,117 @@ describe("generateMarkdown", () => {
 });
 
 describe("parseCSV", () => {
+  it.each(["\t\n", " \t \r\n", "\t\r"])(
+    "先頭の空白物理行 %j のタブをヘッダー区切りと誤認しない",
+    (prefix) => {
+      const table = parseCSV(prefix + 'A,B\n"x,y",z');
+      expect(table.columns.map((column) => column.header)).toEqual(["A", "B"]);
+      expect(table.rows).toEqual([["x,y", "z"]]);
+    },
+  );
+  it("引用符内のカンマ・空白・二重引用符を保持する", () => {
+    const result = parseCSV('"名,前",備考\r\n"  Alice  ","前""後"""');
+    expect(result.columns.map((column) => column.header)).toEqual(["名,前", "備考"]);
+    expect(result.rows).toEqual([["  Alice  ", '前"後"']]);
+  });
+
+  it.each(["\n", "\r\n", "\r"])("%j のレコード区切りを扱う", (newline) => {
+    expect(parseCSV(`A,B${newline}1,2${newline}3,4${newline}`).rows).toEqual([
+      ["1", "2"],
+      ["3", "4"],
+    ]);
+  });
+
+  it("引用符の外側の空白だけを除去する", () => {
+    const result = parseCSV(' A , B \n  plain  , " quoted "  ');
+    expect(result.columns.map((column) => column.header)).toEqual(["A", "B"]);
+    expect(result.rows).toEqual([["plain", " quoted "]]);
+  });
+
+  it("不足列を空文字で補完し末尾と引用符付きの空セルを保持する", () => {
+    expect(parseCSV('A,B,C\n1,\n"",,\n2').rows).toEqual([
+      ["1", "", ""],
+      ["", "", ""],
+      ["2", "", ""],
+    ]);
+    expect(parseCSV('A\n""').rows).toEqual([[""]]);
+  });
+
+  it.each(['A,B\n1,"open', 'A,B\n1,ab"cd', 'A,B\n1,"ok"tail'])(
+    "不正な引用符をレコード・列番号付きで拒否する: %j",
+    (csv) => expect(() => parseCSV(csv)).toThrow(/レコード 2.*列 2/),
+  );
+
+  it.each(["A,B\n1,2,3", "A,B\n1,2,", 'A,B\n"one\ntwo",2,3'])(
+    "超過列を切り捨てず拒否する: %j",
+    (csv) => expect(() => parseCSV(csv)).toThrow(/レコード 2.*2 列.*3 列/),
+  );
+
+  it("空の物理行は無視し引用符付き空セルは保持する", () => {
+    expect(parseCSV('\n  \nA,B\n\n1,""\n  \n').rows).toEqual([["1", ""]]);
+  });
+
+  it("先頭のBOMをヘッダーに含めない", () => {
+    expect(parseCSV('\uFEFF"A",B\n1,2').columns[0].header).toBe("A");
+  });
+
+  it("TSVの引用符は従来どおり文字として扱いカンマとtrimを維持する", () => {
+    expect(parseCSV(' A \t B \n "x,y" \t "z" ').rows).toEqual([['"x,y"', '"z"']]);
+  });
+
+  it.each(["\n", "\r\n", "\r"])("TSVの引用符が物理行 %j を跨ぐ疑いがあれば拒否する", (newline) => {
+    expect(() => parseCSV(`A\tB${newline}"x${newline}y"\tz`)).toThrow(/レコード 2.*列 1/);
+  });
+
+  it("TSVの引用符付きタブと閉じ忘れは曖昧な列へ分解せず拒否する", () => {
+    expect(() => parseCSV('A\tB\n"x\ty"\tz')).toThrow(/レコード 2.*列 1/);
+    expect(() => parseCSV('A\tB\n"open\tz')).toThrow(/レコード 2.*列 1/);
+  });
+
+  it("TSVの同一セル内で閉じる引用符と空の先頭列を維持する", () => {
+    expect(parseCSV('\tB\n"x"\t"y"').rows).toEqual([['"x"', '"y"']]);
+    expect(parseCSV("\tB\nx\ty").columns.map((column) => column.header)).toEqual(["", "B"]);
+  });
+
+  it("TSVの超過列も切り捨てず拒否する", () => {
+    expect(() => parseCSV("A\tB\n1\t2\t3")).toThrow(/レコード 2.*2 列.*3 列/);
+  });
+
+  it("CSVの引用符内やデータ内のタブでTSVへ切り替えない", () => {
+    expect(parseCSV('A,B\n"x\ty",z').rows).toEqual([["x\ty", "z"]]);
+    expect(parseCSV("A,B\nx\ty,z").rows).toEqual([["x\ty", "z"]]);
+    expect(parseCSV('"A\tB",C\nx,y').columns[0].header).toBe("A\tB");
+    expect(parseCSV("A\nx\ty").rows).toEqual([["x\ty"]]);
+  });
+
+  it("引用符付きの空白と空文字のレコードを空行と区別する", () => {
+    expect(parseCSV('A\n  \n" "\n""\n').rows).toEqual([[" "], [""]]);
+  });
+
+  it("閉じない引用符内のタブを曖昧なTSVとして解釈しない", () => {
+    expect(() => parseCSV('"A\tB\nx\ty')).toThrow(/レコード 1.*列 1/);
+    expect(() => parseCSV('\t\nA,B\n1,"open')).toThrow(/レコード 2.*列 2/);
+  });
+
+  it.each(["\n", "\r\n", "\r"])(
+    "引用符内の改行 %j を含むヘッダー・セルを位置付きで拒否する",
+    (newline) => {
+      expect(() => parseCSV(`"A${newline}B",C\nx,y`)).toThrow(/レコード 1.*列 1.*改行.*未対応/);
+      expect(() => parseCSV(`A,B\nx,"前${newline}後"`)).toThrow(/レコード 2.*列 2.*改行.*未対応/);
+    },
+  );
+
+  it.each([
+    ['"A\\|B",C\nx,y', 1, 1],
+    ['A,B\nx,"a\\|b"', 2, 2],
+    ["A\\|B\tC\nx\ty", 1, 1],
+    ["A\tB\nx\ta\\\\|b", 2, 2],
+  ])("backslashとpipeが隣接する未対応値を拒否する: %j", (csv, record, column) => {
+    expect(() => parseCSV(String(csv))).toThrow(
+      new RegExp(`レコード ${record}.*列 ${column}.*未対応`),
+    );
+  });
+
   it("空文字列はcreateEmptyTable(3, 2)を返す", () => {
     const result = parseCSV("");
     expect(result.columns).toHaveLength(3);

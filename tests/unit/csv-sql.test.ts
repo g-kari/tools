@@ -45,6 +45,24 @@ describe("parseCsv", () => {
       expect(result.rowCount).toBe(3);
     }
   });
+
+  it.each(["", "\n", "\r\n"])("末尾の空セルを保持する（終端 %j）", (ending) => {
+    const result = parseCsv(`id,name,note\n1,alpha,${ending}`);
+    expect(result).toMatchObject({
+      columnCount: 3,
+      rows: [
+        ["id", "name", "note"],
+        ["1", "alpha", ""],
+      ],
+    });
+  });
+
+  it("最後のレコードの連続する空セルを保持する", () => {
+    expect(parseCsv("1,,")).toMatchObject({
+      columnCount: 3,
+      rows: [["1", "", ""]],
+    });
+  });
 });
 
 // ---------------------------------------------------------------------------
@@ -227,6 +245,76 @@ describe("generateSql - エラーケース", () => {
   it("空 CSV でエラーを返す", () => {
     const result = generateSql("", DEFAULT_OPTIONS);
     expect(isCsvSqlError(result)).toBe(true);
+  });
+});
+
+describe("generateSql - 列の欠落を防ぐ", () => {
+  for (const dialect of ["mysql", "postgresql", "sqlite", "sqlserver"] as const) {
+    for (const batchSize of [1, 2]) {
+      it.each([true, false])(
+        `${dialect} / batch ${batchSize} / header %s: 多すぎる列を拒否する`,
+        (hasHeader) => {
+          const input = hasHeader ? "id,name\n1,alpha\n2,beta,EXTRA" : "1,alpha\n2,beta,EXTRA";
+          expect(generateSql(input, { ...DEFAULT_OPTIONS, dialect, batchSize, hasHeader })).toEqual(
+            {
+              type: "generate",
+              message: `CSV の${hasHeader ? 3 : 2}番目のレコードは3列あります。1番目のレコードに合わせて2列以内にしてください。`,
+            },
+          );
+        },
+      );
+    }
+  }
+
+  it.each(["", "\n", "\r\n"])("余分な末尾の空セルも拒否する（終端 %j）", (ending) => {
+    const result = generateSql(`id,name\n1,alpha,${ending}`, DEFAULT_OPTIONS);
+    expect(result).toMatchObject({ type: "generate" });
+    expect(result).not.toHaveProperty("sql");
+  });
+
+  it("引用符内の改行をレコード数に含めず、後続の過剰列を報告する", () => {
+    const result = generateSql('id,name\n1,"alpha\nbeta"\n2,gamma,EXTRA', DEFAULT_OPTIONS);
+    expect(result).toMatchObject({
+      type: "generate",
+      message: expect.stringContaining("3番目のレコードは3列"),
+    });
+  });
+
+  it.each([1, 2])(
+    "NULL 変換無効時は明示した末尾の空セルを空文字列にする（batch %i）",
+    (batchSize) => {
+      const result = generateSql("id,name\n1,", {
+        ...DEFAULT_OPTIONS,
+        convertNull: false,
+        batchSize,
+      });
+      expect(isCsvSqlError(result)).toBe(false);
+      if (!isCsvSqlError(result)) {
+        expect(result.sql).toContain("(1, '')");
+      }
+    },
+  );
+
+  it.each([1, 2])("不足列の NULL 補完は維持する（batch %i）", (batchSize) => {
+    const result = generateSql("id,name,note\n1,alpha\n2,beta", {
+      ...DEFAULT_OPTIONS,
+      convertNull: false,
+      batchSize,
+    });
+    expect(isCsvSqlError(result)).toBe(false);
+    if (!isCsvSqlError(result)) {
+      expect(result.sql).toContain("(1, 'alpha', NULL)");
+      expect(result.sql).toContain("(2, 'beta', NULL)");
+    }
+  });
+
+  it("引用符内のカンマ・改行とエスケープした引用符を保持する", () => {
+    const result = generateSql('id,name,note\n1,"alpha,beta","line1\n""line2"""', DEFAULT_OPTIONS);
+    expect(result).toMatchObject({
+      rowCount: 1,
+      columnCount: 3,
+      sql: expect.stringContaining("(1, 'alpha,beta', 'line1\n\"line2\"')"),
+    });
   });
 });
 

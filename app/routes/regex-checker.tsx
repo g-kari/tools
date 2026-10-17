@@ -54,16 +54,14 @@ export function executeRegex(pattern: string, flags: string, testString: string)
   const foundMatches: RegexMatch[] = [];
 
   if (flags.includes("g")) {
-    let match;
-    while ((match = regex.exec(testString)) !== null) {
+    // The native iterator advances empty matches by code point for u/v flags.
+    // Incrementing lastIndex by one can land inside a surrogate pair and loop.
+    for (const match of testString.matchAll(regex)) {
       foundMatches.push({
         fullMatch: match[0],
         index: match.index,
         groups: match.slice(1),
       });
-      if (match.index === regex.lastIndex) {
-        regex.lastIndex++;
-      }
     }
   } else {
     const match = regex.exec(testString);

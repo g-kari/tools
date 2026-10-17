@@ -75,8 +75,8 @@ function expandDoubleColon(address: string, targetGroups: number): string[] {
     const right = parts[1] ? parts[1].split(":") : [];
 
     const missing = targetGroups - left.length - right.length;
-    if (missing < 0) {
-      throw new Error("不正なIPv6アドレスです (グループ数が多すぎます)");
+    if (missing < 1) {
+      throw new Error("不正なIPv6アドレスです (:: は1グループ以上を省略する必要があります)");
     }
 
     const middle = Array(missing).fill("0000");
@@ -104,7 +104,7 @@ function normalizeToGroups(address: string): string[] {
   // IPv4末尾形式を検出 (::ffff:192.168.1.1 や ::192.168.1.1)
   const ipv4Suffix = addr.match(/^(.*:)(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})$/);
   if (ipv4Suffix) {
-    const prefix = ipv4Suffix[1].replace(/:$/, "");
+    const prefix = ipv4Suffix[1];
     const ipv4 = ipv4Suffix[2];
     const octets = ipv4.split(".").map((n) => {
       const num = parseInt(n, 10);
@@ -115,8 +115,8 @@ function normalizeToGroups(address: string): string[] {
       ((octets[0] << 8) | octets[1]).toString(16).padStart(4, "0"),
       ((octets[2] << 8) | octets[3]).toString(16).padStart(4, "0"),
     ];
-    const prefixGroups = expandDoubleColon(prefix, 6);
-    return [...prefixGroups, ...ipv4Groups];
+    // 末尾だけを置換し、直前の :: を壊さず128ビット全体として検証する。
+    return expandDoubleColon(prefix + ipv4Groups.join(":"), 8);
   }
 
   return expandDoubleColon(addr, 8);

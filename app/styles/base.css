@@ -13,10 +13,10 @@
   --color-secondary: #e3b341;
   --color-secondary-foreground: #0d1117;
   --color-muted: #161b22;
-  --color-muted-foreground: #8b949e;
+  --color-muted-foreground: #9ca6b0;
   --color-accent: #0f2419;
   --color-accent-foreground: #39d353;
-  --color-destructive: hsl(0 73% 42%);
+  --color-destructive: #f85149;
   --color-destructive-foreground: hsl(0 0% 100%);
   --color-success: hsl(123 46% 34%);
   --color-success-foreground: hsl(0 0% 100%);
@@ -31,7 +31,7 @@
   /* Terminal dark surface */
   --md-sys-color-surface: #0d1117;
   --md-sys-color-on-surface: #c9d1d9;
-  --md-sys-color-on-surface-variant: #8b949e;
+  --md-sys-color-on-surface-variant: #9ca6b0;
 
   /* Primary colors - terminal green */
   --md-sys-color-primary: #39d353;
@@ -64,49 +64,30 @@
   --terminal-cursor-color: #39d353;
   --terminal-border-char: #30363d;
 
-  /* shadcn/ui CSS Variables - mapped from Terminal Theme */
+  /* shadcn/ui CSS Variables - MD3変数を参照（値の重複排除） */
   --radius: 0px;
 
-  /* Background and foreground (surface colors) */
-  --background: #0d1117;
-  --foreground: #c9d1d9;
-
-  /* Card */
-  --card: #0d1117;
-  --card-foreground: #c9d1d9;
-
-  /* Popover */
-  --popover: #0d1117;
-  --popover-foreground: #c9d1d9;
-
-  /* Primary - terminal green */
-  --primary: #39d353;
-  --primary-foreground: #0d1117;
-
-  /* Secondary - terminal amber */
-  --secondary: #e3b341;
-  --secondary-foreground: #0d1117;
-
-  /* Muted */
-  --muted: #161b22;
-  --muted-foreground: #8b949e;
-
-  /* Accent */
-  --accent: #0f2419;
-  --accent-foreground: #39d353;
-
-  /* Destructive - error */
-  --destructive: #f85149;
-  --destructive-foreground: #ffffff;
-
-  /* Success */
-  --success: #3fb950;
-  --success-foreground: #ffffff;
-
-  /* Border and input */
-  --border: #30363d;
-  --input: #30363d;
-  --ring: #39d353;
+  --background: var(--md-sys-color-surface);
+  --foreground: var(--md-sys-color-on-surface);
+  --card: var(--md-sys-color-surface);
+  --card-foreground: var(--md-sys-color-on-surface);
+  --popover: var(--md-sys-color-surface);
+  --popover-foreground: var(--md-sys-color-on-surface);
+  --primary: var(--md-sys-color-primary);
+  --primary-foreground: var(--md-sys-color-on-primary);
+  --secondary: var(--md-sys-color-secondary);
+  --secondary-foreground: var(--md-sys-color-on-secondary);
+  --muted: var(--md-sys-color-surface-variant);
+  --muted-foreground: var(--md-sys-color-on-surface-variant);
+  --accent: var(--md-sys-color-primary-container);
+  --accent-foreground: var(--md-sys-color-on-primary-container);
+  --destructive: var(--md-sys-color-error);
+  --destructive-foreground: var(--md-sys-color-on-error);
+  --success: var(--md-sys-color-success);
+  --success-foreground: var(--md-sys-color-on-success);
+  --border: var(--md-sys-color-outline);
+  --input: var(--md-sys-color-outline);
+  --ring: var(--md-sys-color-primary);
 }
 
 /* Material Design - Base Styles */
@@ -117,7 +98,12 @@
 }
 
 body {
-  font-family: "JetBrains Mono", "Space Mono", "Courier New", monospace;
+  font-family:
+    "Noto Sans JP",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
   background: #0d1117;
   min-height: 100vh;
   padding: 20px;
@@ -138,11 +124,17 @@ body::before {
     0deg,
     transparent,
     transparent 2px,
-    rgba(0, 0, 0, 0.05) 2px,
-    rgba(0, 0, 0, 0.05) 4px
+    rgba(0, 0, 0, 0.02) 2px,
+    rgba(0, 0, 0, 0.02) 4px
   );
   pointer-events: none;
   z-index: 0;
+}
+
+@media (prefers-contrast: more) {
+  body::before {
+    display: none;
+  }
 }
 
 .container {

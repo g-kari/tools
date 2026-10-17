@@ -37,6 +37,41 @@
   min-width: 200px;
 }
 
+.file-size-group {
+  min-width: 240px;
+}
+
+.file-size-group input[type="number"] {
+  width: 120px;
+}
+
+.file-size-group .help-text {
+  display: block;
+  max-width: 280px;
+  margin-top: 0.25rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.75rem;
+}
+
+.file-size-preset-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.file-size-preset-label {
+  color: var(--md-sys-color-on-surface);
+  font-weight: 500;
+}
+
+.file-size-preset-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
 .preset-section {
   margin-bottom: 1.5rem;
 }

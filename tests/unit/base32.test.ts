@@ -207,7 +207,7 @@ describe("validateBase32", () => {
     expect(validateBase32("MY")).toBeNull(); // 2 mod 8 = 2
     expect(validateBase32("MZXQ")).toBeNull(); // 4 mod 8 = 4
     expect(validateBase32("MZXW6")).toBeNull(); // 5 mod 8 = 5
-    expect(validateBase32("MZXW6YT")).toBeNull(); // 7 mod 8 = 7
+    expect(validateBase32("MZXW6YQ")).toBeNull(); // 7 mod 8 = 7、未使用ビットは0
   });
 
   it("Base32hex バリアントで無効な文字を検出", () => {

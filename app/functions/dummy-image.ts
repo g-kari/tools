@@ -10,6 +10,8 @@ export interface DummyImageParams {
   bg?: string;
   /** テキスト色 (HEX, デフォルト: FFFFFF) */
   text?: string;
+  /** 目標ファイル容量 (MB, 最大500) */
+  size?: number;
 }
 
 const MIN_SIZE = 1;
@@ -18,6 +20,9 @@ const DEFAULT_WIDTH = 300;
 const DEFAULT_HEIGHT = 150;
 const DEFAULT_BG_COLOR = "6750A4";
 const DEFAULT_TEXT_COLOR = "FFFFFF";
+export const MAX_TARGET_FILE_SIZE_MB = 500;
+const BYTES_PER_MB = 1024 * 1024;
+const STREAM_CHUNK_SIZE = BYTES_PER_MB;
 
 /**
  * 数値をクランプする
@@ -100,6 +105,55 @@ export function parseImageParams(searchParams: URLSearchParams): {
     bgColor: sanitizeHexColor(bg, DEFAULT_BG_COLOR),
     textColor: sanitizeHexColor(text, DEFAULT_TEXT_COLOR),
   };
+}
+
+/**
+ * URLパラメータから目標ファイル容量を取得する
+ * @param searchParams - URLSearchParams オブジェクト
+ * @returns 目標容量（バイト）。未指定または無効な場合は0
+ */
+export function parseTargetFileSize(searchParams: URLSearchParams): number {
+  const sizeMb = Number.parseFloat(searchParams.get("size") || "");
+  if (!Number.isFinite(sizeMb) || sizeMb <= 0) return 0;
+
+  return Math.round(Math.min(sizeMb, MAX_TARGET_FILE_SIZE_MB) * BYTES_PER_MB);
+}
+
+/**
+ * 元データにパディングを追加し、指定容量以上のレスポンスをストリームする
+ * @param content - 元の画像データ
+ * @param targetSizeBytes - 目標容量（バイト）
+ * @param paddingByte - パディングに使用するバイト
+ * @returns レスポンス本文のストリームと実際の容量
+ */
+export function createPaddedImageStream(
+  content: ArrayBuffer | string,
+  targetSizeBytes: number,
+  paddingByte: number = 0,
+): { stream: ReadableStream<Uint8Array>; contentLength: number } {
+  const contentBytes =
+    typeof content === "string" ? new TextEncoder().encode(content) : new Uint8Array(content);
+  const contentLength = Math.max(contentBytes.byteLength, Math.floor(targetSizeBytes));
+  let remaining = contentLength - contentBytes.byteLength;
+  const paddingChunk = new Uint8Array(Math.min(STREAM_CHUNK_SIZE, remaining));
+  paddingChunk.fill(paddingByte);
+
+  const stream = new ReadableStream<Uint8Array>({
+    start(controller) {
+      controller.enqueue(contentBytes);
+      if (remaining === 0) controller.close();
+    },
+    pull(controller) {
+      const chunkSize = Math.min(paddingChunk.byteLength, remaining);
+      controller.enqueue(
+        chunkSize === paddingChunk.byteLength ? paddingChunk : paddingChunk.slice(0, chunkSize),
+      );
+      remaining -= chunkSize;
+      if (remaining === 0) controller.close();
+    },
+  });
+
+  return { stream, contentLength };
 }
 
 // WASMの初期化状態を追跡
