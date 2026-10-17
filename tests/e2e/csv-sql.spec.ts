@@ -3,6 +3,7 @@ import { test, expect } from "../browser/csv-json/url-app-test";
 test.describe("CSV → SQL INSERT文ジェネレーター", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/csv-sql");
+    await page.waitForLoadState("networkidle");
   });
 
   test("ページタイトルが正しく表示される", async ({ page }) => {

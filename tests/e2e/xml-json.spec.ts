@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "../browser/csv-json/url-app-test";
 
 test.describe("XML/JSON変換 - E2E Tests", () => {
   test.describe.configure({ timeout: 10000 });
@@ -91,6 +91,24 @@ test.describe("XML/JSON変換 - E2E Tests", () => {
     expect(output).toContain("<?xml");
     expect(output).toContain("<root>");
     expect(output).toContain("<item>value</item>");
+  });
+
+  test("should escape attribute values and preserve input on repeated JSON conversion", async ({
+    page,
+  }) => {
+    await page.locator('[role="tab"]').filter({ hasText: "JSON → XML" }).click();
+    const source = JSON.stringify({
+      root: { "@attributes": { title: 'R&D < "quoted" &amp; &#65;' }, "#text": "value" },
+    });
+    const expected =
+      '<?xml version="1.0" encoding="UTF-8"?>\n<root title="R&amp;D &lt; &quot;quoted&quot; &amp;amp; &amp;#65;">value</root>';
+    await page.locator("#input-text").fill(source);
+    await page.locator("#convert-btn").click();
+    await expect(page.locator("#output-text")).toHaveValue(expected);
+    await page.locator("#convert-btn").click();
+    await expect(page.locator("#output-text")).toHaveValue(expected);
+    await expect(page.locator("#input-text")).toHaveValue(source);
+    await expect(page.locator(".error-message")).not.toBeVisible();
   });
 
   test("should preserve CDATA and mixed direct text on repeated XML conversion", async ({
