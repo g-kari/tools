@@ -93,13 +93,17 @@ test.describe("テキスト置換 - E2E Tests", () => {
         await expect(page.locator("#find-input")).toHaveValue("foo");
         await expect(page.locator("#replace-input")).toHaveValue(replacement);
         await expect(page.getByRole("button", { name: "置換後テキストをコピー" })).toBeEnabled();
-        await expect(page.getByRole("status")).toContainText("2 件マッチ");
+        await expect(page.locator('.text-replace-match-badge[role="status"]')).toContainText(
+          "2 件マッチ",
+        );
       }
     }
 
     await page.locator("#replace-input").fill("");
     await expect(page.locator("#output-text")).toHaveValue(" foo");
-    await expect(page.getByRole("status")).toContainText("1件のみ置換");
+    await expect(page.locator('.text-replace-match-badge[role="status"]')).toContainText(
+      "1件のみ置換",
+    );
   });
 
   test("should preserve regex substitutions and return to literal replacement", async ({
