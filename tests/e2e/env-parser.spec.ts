@@ -7,6 +7,7 @@ test.describe(".envパーサー・コンバーター - E2Eテスト", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/env-parser");
     await page.waitForLoadState("networkidle");
+    await expect(page.locator("#envInput")).toBeFocused();
   });
 
   test("ページに「undefined」が表示されないこと", async ({ page }) => {
