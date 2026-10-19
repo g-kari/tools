@@ -14,12 +14,12 @@ test.describe("JSON→GraphQLスキーマ生成 - E2E Tests", () => {
     await input.fill(
       '{"billing":{"address":{"city":"Tokyo"}},"shipping":{"address":{"zip":"100"}}}',
     );
-    await page.getByRole("button", { name: "スキーマ生成", exact: true }).click();
+    await page.getByRole("button", { name: "GraphQLスキーマを生成する", exact: true }).click();
     await expect(output).toContainText("type Address2");
     await expect(output).toContainText("zip: String!");
     await expect(output).toContainText("address: Address2!");
     await page.locator("#jtg-root-type-name").fill("Address");
-    await page.getByRole("button", { name: "スキーマ生成", exact: true }).click();
+    await page.getByRole("button", { name: "GraphQLスキーマを生成する", exact: true }).click();
     await expect(output).toContainText("type Address3");
     await expect(output).toContainText("address: Address3!");
     await expect(output).toContainText("city: String!");
@@ -131,7 +131,9 @@ test.describe("JSON→GraphQLスキーマ生成 - E2E Tests", () => {
     const generateButton = page.locator("button", { hasText: "スキーマ生成" });
     await generateButton.click();
 
-    const errorArea = page.locator('[role="alert"]');
+    const errorArea = page
+      .getByRole("form", { name: "JSON→GraphQLスキーマ生成フォーム" })
+      .getByRole("alert");
     await expect(errorArea).toBeVisible({ timeout: 3000 });
   });
 });
