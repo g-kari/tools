@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "../browser/csv-json/url-app-test";
 
 test.describe("URLパーサー/ビルダー - E2E Tests", () => {
   test.describe.configure({ timeout: 10000 });
