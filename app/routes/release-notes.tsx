@@ -39,6 +39,18 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
+    version: "2026.10.19",
+    date: "2026-10-19",
+    entries: [
+      {
+        type: "fix",
+        title: "JSON→TypeScript生成で特殊キーを保持",
+        description:
+          "ハイフン・引用符・改行・空文字などのキーを引用して元の名前を保持し、ネストの型名も有効な識別子にします。interface/type・optionalと従来の型推論は維持します。",
+      },
+    ],
+  },
+  {
     version: "2026.10.15",
     date: "2026-10-17",
     entries: [
