@@ -3,6 +3,10 @@ name: CSV JSON column preservation
 on:
   pull_request:
     paths:
+      - "app/routes/curl-to-fetch.tsx"
+      - "app/utils/curl-to-fetch.ts"
+      - "tests/unit/curl-to-fetch.test.ts"
+      - "tests/e2e/curl-to-fetch.spec.ts"
       - "app/routes/csv-json.tsx"
       - "app/routes/csv-sql.tsx"
       - "app/utils/csv-sql.ts"
@@ -37,6 +41,10 @@ on:
   push:
     branches: [main]
     paths:
+      - "app/routes/curl-to-fetch.tsx"
+      - "app/utils/curl-to-fetch.ts"
+      - "tests/unit/curl-to-fetch.test.ts"
+      - "tests/e2e/curl-to-fetch.spec.ts"
       - "app/routes/csv-json.tsx"
       - "app/routes/csv-sql.tsx"
       - "app/utils/csv-sql.ts"
@@ -116,6 +124,10 @@ jobs:
           CI: true
           WRANGLER_SEND_METRICS: "false"
       - run: npx playwright test --config tests/browser/csv-json/yaml-json-app.config.ts
+        env:
+          CI: true
+          WRANGLER_SEND_METRICS: "false"
+      - run: npx playwright test --config tests/browser/csv-json/curl-to-fetch-app.config.ts
         env:
           CI: true
           WRANGLER_SEND_METRICS: "false"
