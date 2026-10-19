@@ -88,7 +88,17 @@ function YamlJsonConverter() {
   const [inputText, setInputText] = useState("");
   const [outputText, setOutputText] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement | null>(null);
+  const hasAdoptedInput = useRef(false);
+
+  /** Adopt SSR edits during attachment, before the first replayed action can read stale state. */
+  const attachInput = useCallback((input: HTMLTextAreaElement | null) => {
+    inputRef.current = input;
+    if (input && !hasAdoptedInput.current) {
+      hasAdoptedInput.current = true;
+      setInputText(input.value);
+    }
+  }, []);
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -222,7 +232,7 @@ function YamlJsonConverter() {
             </label>
             <Textarea
               id="inputText"
-              ref={inputRef}
+              ref={attachInput}
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               placeholder={

@@ -39,6 +39,18 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
+    version: "2026.10.19",
+    date: "2026-10-19",
+    entries: [
+      {
+        type: "fix",
+        title: "YAML変換で起動前に入力したテキストを保持",
+        description:
+          "ページの起動完了前の入力を一度だけ引き継ぎ、初回変換やインデント変更で消えることを防ぎます。以後のクリア・モード切替と変換規則は維持します。",
+      },
+    ],
+  },
+  {
     version: "2026.10.15",
     date: "2026-10-17",
     entries: [
