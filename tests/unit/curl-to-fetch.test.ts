@@ -1,3 +1,5 @@
+import { runInNewContext } from "node:vm";
+import ts from "typescript";
 import { describe, it, expect } from "vite-plus/test";
 import {
   tokenize,
@@ -5,7 +7,146 @@ import {
   toFetchCode,
   toAxiosCode,
   convertCurl,
+  type ParsedCurl,
+  type ConvertOptions,
 } from "../../app/utils/curl-to-fetch";
+
+interface CapturedRequest {
+  url: string;
+  method: string;
+  headers: Record<string, string>;
+  body: unknown;
+}
+
+/** Compile only fixed synthetic fixtures and capture requests without external I/O. */
+async function captureGeneratedRequest(
+  code: string,
+  typescript: boolean,
+): Promise<CapturedRequest[]> {
+  const compiled = ts.transpileModule(code, {
+    compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ESNext },
+    reportDiagnostics: true,
+  });
+  expect(compiled.diagnostics).toEqual([]);
+  const calls: CapturedRequest[] = [];
+  const context = {
+    marker: false,
+    fetch: async (url: string, init: RequestInit = {}) => {
+      calls.push({
+        url,
+        method: init.method ?? "GET",
+        headers: (init.headers ?? {}) as Record<string, string>,
+        body: init.body ?? null,
+      });
+      return { ok: true, json: async () => ({}) };
+    },
+    axios: async (config: {
+      url: string;
+      method: string;
+      headers?: Record<string, string>;
+      data?: unknown;
+    }) => {
+      calls.push({
+        url: config.url,
+        method: config.method,
+        headers: config.headers ?? {},
+        body: config.data ?? null,
+      });
+      return { data: {} };
+    },
+    console: { log: () => {} },
+  };
+  // Axios's fixed import is replaced by the local stub, never loaded from a package or URL.
+  const executable = (typescript ? compiled.outputText : code).replace(
+    "import axios from 'axios';",
+    "",
+  );
+  await runInNewContext(`(async () => {\n${executable}\n})()`, context, { timeout: 1000 });
+  expect(context.marker).toBe(false);
+  return calls;
+}
+
+describe("generated string literal integrity", () => {
+  const modes: ConvertOptions[] = [
+    { mode: "fetch", typescript: false },
+    { mode: "fetch", typescript: true },
+    { mode: "axios", typescript: false },
+    { mode: "axios", typescript: true },
+  ];
+
+  const stringCases = [
+    ["apostrophe", "O'Reilly"],
+    ["backslash and quote", "path\\'\"end"],
+    ["line feed", "line1\nline2"],
+    ["carriage return", "line1\rline2"],
+    ["tab", "left\tright"],
+    ["NUL before a digit", "zero\u00001"],
+    ["other ASCII controls", "\u0001\b\f\u001f"],
+    ["Unicode line separators", "left\u2028middle\u2029right"],
+    ["lone high surrogate", "left\ud800right"],
+    ["lone low surrogate", "left\udc00right"],
+    ["surrogate pair", "left😀right"],
+    ["interpolation and statement text", "${marker}`'); globalThis.marker = true; //"],
+  ];
+
+  for (const options of modes) {
+    for (const [label, value] of stringCases) {
+      it(`${options.mode} TS=${options.typescript}: ${label} stays data in every string slot`, async () => {
+        // Some fixtures are not valid HTTP fields. This tests code serialization, not HTTP validation.
+        const parsed: ParsedCurl = {
+          method: `X-${value}`,
+          url: `https://example.com/${value}`,
+          headers: { [`X-${value}`]: value },
+          body: `raw:${value}`,
+          followRedirects: false,
+          insecure: false,
+        };
+        const code =
+          options.mode === "fetch" ? toFetchCode(parsed, options) : toAxiosCode(parsed, options);
+        expect(await captureGeneratedRequest(code, options.typescript)).toEqual([
+          {
+            url: parsed.url,
+            method: options.mode === "axios" ? parsed.method.toLowerCase() : parsed.method,
+            headers: parsed.headers,
+            body: parsed.body,
+          },
+        ]);
+      });
+    }
+
+    it(`${options.mode} TS=${options.typescript}: parsed cURL values survive conversion`, async () => {
+      const command =
+        `curl "https://example.com/O'Reilly" -X "X'PATCH" -H "X'O: safe" ` +
+        String.raw`--data-raw $'line1\nline2\rline3\tvalue'`;
+      const { parsed } = parseCurl(command);
+      expect(parsed.url).toBe("https://example.com/O'Reilly");
+      expect(parsed.headers).toEqual({ "X'O": "safe" });
+      expect(parsed.body).toBe("line1\nline2\rline3\tvalue");
+      const result = convertCurl(command, options);
+      expect(result.warnings).toEqual([]);
+      expect(await captureGeneratedRequest(result.code, options.typescript)).toEqual([
+        {
+          url: parsed.url,
+          method: options.mode === "axios" ? parsed.method.toLowerCase() : parsed.method,
+          headers: parsed.headers,
+          body: parsed.body,
+        },
+      ]);
+    });
+
+    it(`${options.mode} TS=${options.typescript}: an apostrophe in a GET URL needs no init`, async () => {
+      const result = convertCurl(`curl "https://example.com/O'Reilly"`, options);
+      expect(await captureGeneratedRequest(result.code, options.typescript)).toEqual([
+        {
+          url: "https://example.com/O'Reilly",
+          method: options.mode === "axios" ? "get" : "GET",
+          headers: {},
+          body: null,
+        },
+      ]);
+    });
+  }
+});
 
 describe("tokenize", () => {
   it("シンプルなcURLコマンドをトークン化する", () => {

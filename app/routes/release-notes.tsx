@@ -39,6 +39,18 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
+    version: "2026.10.19",
+    date: "2026-10-19",
+    entries: [
+      {
+        type: "fix",
+        title: "cURL変換で引用符や改行を含む値を保持",
+        description:
+          "URL・ヘッダー・本文の特殊文字をJavaScript文字列として出力し、fetch/axiosの生成コードが構文エラーになる不具合を修正しました。入力URLへの通信やシェル解析規則の変更は行いません。",
+      },
+    ],
+  },
+  {
     version: "2026.10.15",
     date: "2026-10-17",
     entries: [

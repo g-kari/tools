@@ -321,13 +321,30 @@ export function parseCurl(command: string): {
 }
 
 /**
- * 文字列内のシングルクォートをエスケープする
+ * シングルクォートのJS文字列リテラル内で元の文字列を保持する
  *
  * @param s 元の文字列
  * @returns エスケープ済み文字列
  */
 function escapeStr(s: string): string {
-  return s.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+  // oxlint-disable-next-line no-control-regex -- JSリテラル内の制御文字を意図的にエスケープする。
+  return s.replace(/[\\'\u0000-\u001f\u2028\u2029\ud800-\udfff]/g, (ch) => {
+    switch (ch) {
+      case "\\":
+        return "\\\\";
+      case "'":
+        return "\\'";
+      case "\n":
+        return "\\n";
+      case "\r":
+        return "\\r";
+      case "\t":
+        return "\\t";
+      default:
+        // NULの後の数字や孤立サロゲートも、固定長のコード単位として保持する。
+        return `\\u${ch.charCodeAt(0).toString(16).padStart(4, "0")}`;
+    }
+  });
 }
 
 /**
@@ -340,7 +357,7 @@ function escapeStr(s: string): string {
 function buildHeadersCode(headers: Record<string, string>, indent: string): string {
   const entries = Object.entries(headers);
   if (entries.length === 0) return "";
-  const lines = entries.map(([k, v]) => `${indent}  '${k}': '${escapeStr(v)}'`);
+  const lines = entries.map(([k, v]) => `${indent}  '${escapeStr(k)}': '${escapeStr(v)}'`);
   return `${indent}headers: {\n${lines.join(",\n")},\n${indent}}`;
 }
 
@@ -390,7 +407,7 @@ export function toFetchCode(parsed: ParsedCurl, opts: ConvertOptions): string {
   const initProps: string[] = [];
 
   if (method !== "GET") {
-    initProps.push(`${indent}method: '${method}'`);
+    initProps.push(`${indent}method: '${escapeStr(method)}'`);
   }
 
   const headerCode = buildHeadersCode(headers, indent);
@@ -408,9 +425,9 @@ export function toFetchCode(parsed: ParsedCurl, opts: ConvertOptions): string {
   const typeAnnotation = opts.typescript ? ": Response" : "";
 
   if (initProps.length === 0) {
-    lines.push(`const response${typeAnnotation} = await fetch('${displayUrl}');`);
+    lines.push(`const response${typeAnnotation} = await fetch('${escapeStr(displayUrl)}');`);
   } else {
-    lines.push(`const response${typeAnnotation} = await fetch('${displayUrl}', {`);
+    lines.push(`const response${typeAnnotation} = await fetch('${escapeStr(displayUrl)}', {`);
     for (let i = 0; i < initProps.length; i++) {
       lines.push(initProps[i] + (i < initProps.length - 1 ? "," : ","));
     }
@@ -447,8 +464,8 @@ export function toAxiosCode(parsed: ParsedCurl, opts: ConvertOptions): string {
   const configProps: string[] = [];
   const displayUrl = url || "https://example.com/api";
 
-  configProps.push(`${indent}method: '${method.toLowerCase()}'`);
-  configProps.push(`${indent}url: '${displayUrl}'`);
+  configProps.push(`${indent}method: '${escapeStr(method.toLowerCase())}'`);
+  configProps.push(`${indent}url: '${escapeStr(displayUrl)}'`);
 
   const headerCode = buildHeadersCode(headers, indent);
   if (headerCode) configProps.push(headerCode);
