@@ -1,4 +1,5 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "../browser/csv-json/url-app-test";
+import * as yaml from "js-yaml";
 
 test.describe(".envパーサー・コンバーター - E2Eテスト", () => {
   test.describe.configure({ timeout: 10000 });
@@ -6,6 +7,7 @@ test.describe(".envパーサー・コンバーター - E2Eテスト", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/env-parser");
     await page.waitForLoadState("networkidle");
+    await expect(page.locator("#envInput")).toBeFocused();
   });
 
   test("ページに「undefined」が表示されないこと", async ({ page }) => {
@@ -104,7 +106,114 @@ test.describe(".envパーサー・コンバーター - E2Eテスト", () => {
     const yamlPanel = page.locator("#tabpanel-yaml");
     await expect(yamlPanel).toBeVisible();
     const outputText = await yamlPanel.locator("textarea").inputValue();
-    expect(outputText).toContain("MY_KEY: my_value");
+    expect(outputText).toContain('MY_KEY: "my_value"');
+  });
+
+  test("YAML出力とコピーが文字列の値とキー名を保持する", async ({ page }, testInfo) => {
+    const source =
+      "PORT=3000\nDEBUG=true\nPOSTCODE=00123\nLARGE=9007199254740993\nOPTION=null\nDATE=2026-10-19\nQUOTES=\"'quoted'\"\nDASH=-\nEMPTY=\nTRUE=upper\nTrue=title\ntrue=lower\n__proto__=plain\nconstructor=own\ntoString=text";
+    await page.locator("#envInput").fill(source);
+    await page.getByRole("button", { name: ".envの内容をパース", exact: true }).click();
+    await page.getByRole("tab", { name: "YAML", exact: true }).click();
+    const output = await page
+      .getByRole("textbox", { name: "YAML形式の出力結果", exact: true })
+      .inputValue();
+    const decoded = yaml.load(output) as Record<string, string>;
+    const expected = Object.fromEntries([
+      ["PORT", "3000"],
+      ["DEBUG", "true"],
+      ["POSTCODE", "00123"],
+      ["LARGE", "9007199254740993"],
+      ["OPTION", "null"],
+      ["DATE", "2026-10-19"],
+      ["QUOTES", "'quoted'"],
+      ["DASH", "-"],
+      ["EMPTY", ""],
+      ["TRUE", "upper"],
+      ["True", "title"],
+      ["true", "lower"],
+      ["__proto__", "plain"],
+      ["constructor", "own"],
+      ["toString", "text"],
+    ]);
+    expect(decoded).toEqual(expected);
+    expect(Object.keys(decoded)).toEqual(Object.keys(expected));
+    expect(Object.prototype.hasOwnProperty.call(decoded, "__proto__")).toBe(true);
+    await expect(page.locator("#envInput")).toHaveValue(source);
+    await expect(page.locator(".env-parser-table tbody tr")).toHaveCount(15);
+    await page.getByRole("button", { name: "YAML形式でコピー", exact: true }).click();
+    await expect.poll(() => page.evaluate(() => navigator.clipboard.readText())).toBe(output);
+    await expect(page.locator("body")).toContainText("YAMLでは値を常に文字列として出力");
+    await expect
+      .poll(() =>
+        page.locator(".tool-container").evaluate((element) => getComputedStyle(element).opacity),
+      )
+      .toBe("1");
+    const noOverflow = await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth,
+    );
+    expect(noOverflow).toBe(true);
+    await page.screenshot({
+      path: testInfo.outputPath("env-yaml-string-values.png"),
+      fullPage: true,
+    });
+  });
+
+  test("重複キーはYAMLで最後の値を使い入力と診断を保持する", async ({ page }) => {
+    const source = "KEY=first\nBAD LINE\nKEY=last\nEMPTY=old\nEMPTY=\n__proto__=old\n__proto__=new";
+    await page.locator("#envInput").fill(source);
+    await page.getByRole("button", { name: ".envの内容をパース", exact: true }).click();
+    await page.getByRole("tab", { name: "YAML", exact: true }).click();
+    const output = await page
+      .getByRole("textbox", { name: "YAML形式の出力結果", exact: true })
+      .inputValue();
+    const decoded = yaml.load(output) as Record<string, string>;
+    expect(Object.keys(decoded)).toEqual(["KEY", "EMPTY", "__proto__"]);
+    expect(decoded.KEY).toBe("last");
+    expect(decoded.EMPTY).toBe("");
+    expect(Object.prototype.hasOwnProperty.call(decoded, "__proto__")).toBe(true);
+    expect(decoded.__proto__).toBe("new");
+    await expect(page.locator("#envInput")).toHaveValue(source);
+    await expect(page.locator(".env-parser-table tbody tr")).toHaveCount(6);
+    await expect(page.locator(".env-parser-warning-item")).toHaveCount(3);
+    await expect(page.locator(".env-parser-error-item")).toContainText("BAD LINE");
+  });
+
+  test("YAMLのタブ再選択とキーボードのクリア後に最新結果をコピーする", async ({ page }) => {
+    const input = page.locator("#envInput");
+    const parse = page.getByRole("button", { name: ".envの内容をパース", exact: true });
+    const output = page.getByRole("textbox", { name: "YAML形式の出力結果", exact: true });
+    await input.fill("PORT=00123\nDEBUG=false");
+    await parse.click();
+    await page.getByRole("tab", { name: "YAML", exact: true }).click();
+    const first = await output.inputValue();
+    for (const tab of ["JSON", "Shell export", "YAML", "JSON", "YAML"]) {
+      await page.getByRole("tab", { name: tab, exact: true }).click();
+    }
+    await expect(output).toHaveValue(first);
+    expect(yaml.load(first)).toEqual({ PORT: "00123", DEBUG: "false" });
+    // Exercise keyboard Clear without the unchanged shell's pointer-hover focus behavior.
+    await page.keyboard.press("Shift+Tab");
+    await expect(page.getByRole("tab", { name: "JSON", exact: true })).toBeFocused();
+    await page.keyboard.press("Shift+Tab");
+    await expect(
+      page.getByRole("button", { name: "入力と結果をクリア", exact: true }),
+    ).toBeFocused();
+    await page.keyboard.press("Enter");
+    await expect(input).toHaveValue("");
+    await expect(input).toBeFocused();
+    await expect(page.getByRole("tablist", { name: "エクスポート形式タブ" })).toHaveCount(0);
+    await input.fill("PORT=00007\nDEBUG=null\nQUOTED='\"new\"'");
+    await parse.click();
+    await expect(page.getByRole("tab", { name: "YAML", exact: true })).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
+    const second = await output.inputValue();
+    expect(yaml.load(second)).toEqual({ PORT: "00007", DEBUG: "null", QUOTED: '"new"' });
+    expect(second).not.toBe(first);
+    await page.getByRole("button", { name: "YAML形式でコピー", exact: true }).click();
+    await expect.poll(() => page.evaluate(() => navigator.clipboard.readText())).toBe(second);
   });
 
   test("Shellタブ切り替えで正しい出力が表示されること", async ({ page }) => {
@@ -205,10 +314,13 @@ test.describe(".envパーサー・コンバーター - E2Eテスト", () => {
   });
 
   test("ヒントカードが表示されること", async ({ page }) => {
-    const infoBox = page.locator(".info-box");
-    await expect(infoBox).toBeVisible();
-    const infoText = await infoBox.textContent();
-    expect(infoText).not.toContain("undefined");
+    await expect(page.locator(".info-box")).toHaveCount(2);
+    for (const name of ["使い方", "バリデーション"]) {
+      const infoBox = page.getByRole("complementary", { name, exact: true });
+      await expect(infoBox).toBeVisible();
+      await expect(infoBox).toContainText(name);
+      await expect(infoBox).not.toContainText("undefined");
+    }
   });
 
   test("アクセシビリティ属性が設定されていること", async ({ page }) => {
