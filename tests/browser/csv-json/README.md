@@ -73,3 +73,9 @@ The workflow runs all 21 cases in `tests/e2e/xml-json.spec.ts` through `xml-json
 ## Generated password strength snapshot
 
 The bounded real-route component fixture also mounts `/password-generator`. Two desktop/mobile Chromium cases preserve the generated output, strength and synthetic Clipboard API call target while changing next-generation character types and length, then verify regeneration, clear and the minimum length. External HTTP is blocked and every attempted origin/page error fails. Generated values are disposable synthetic test values; no saved credential is read. Clipboard writes are intercepted, so native OS clipboard and the full application shell/SSR are not verified by these two cases. Workflow permissions, browser flags and service isolation are unchanged.
+
+## Early YAML input diagnostic baseline
+
+Four additional full-application cases withhold same-origin JavaScript requests while the actual SSR textarea is edited at 1280px and 390px, then release the scripts and wait for the route's own mount-focus effect. They verify first conversion both directly and after an indent option causes a rerender. Native Tab first removes input focus before scripts are released; test-driven focus is not a readiness substitute. The normal external HTTP/page-error/hydration guard remains in force. No production source, dependencies, browser flags, permissions, retries or timeouts are changed for this baseline. Only synthetic YAML is entered. Native JSON attachment records the exact input/output/error after conversion.
+
+This deterministic delayed-script condition is an independent current-main diagnostic, not proof of the timing or cause of PR314's earlier observation, a normal-network frequency measurement, or a fix. Failed cases must remain reported as failures. The baseline leaves production input behavior unchanged. A later fix requires separate exact-head validation; the ordinary existing YAML/JSON cases and other suites remain intact.
