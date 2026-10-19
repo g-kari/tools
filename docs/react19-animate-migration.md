@@ -22,6 +22,9 @@ stay at their original locked versions. PR #307 is independent and untouched.
   under reduced motion. No initial route or continuous animation is requested. Mobile layout keeps an inline fixed icon
   slot. No user data is sent to a new endpoint.
 - MIT + Commons Clause notice is preserved verbatim in ANIMATE-UI-LICENSE.md.
+  Verbatim Animate UI and Motion-family notices also ship under
+  `public/third-party-licenses/` as application assets; the distinct Framer
+  Motion notice is separate. Build-output byte comparisons verify retention.
 
 ## Evidence and gates
 
