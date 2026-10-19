@@ -39,6 +39,18 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
+    version: "2026.10.19",
+    date: "2026-10-19",
+    entries: [
+      {
+        type: "fix",
+        title: "URLビルダーでスラッシュなしのパスがホスト名へ混ざる不具合を修正",
+        description:
+          "パスの先頭の/を省略してもホスト名と分離し、ポート付きでもURLを生成できます。先頭/付きやルート、クエリ・フラグメント・エンコードの既存動作は維持します。",
+      },
+    ],
+  },
+  {
     version: "2026.10.15",
     date: "2026-10-17",
     entries: [
