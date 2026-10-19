@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 /** Run all YAML/JSON cases against the built shell and hydrated application. */
 export default defineConfig({
   testDir: "../../e2e",
-  testMatch: "yaml-json.spec.ts",
+  testMatch: ["yaml-json-early-input.spec.ts", "yaml-json.spec.ts"],
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
   retries: 0,
