@@ -3,6 +3,9 @@ name: CSV JSON column preservation
 on:
   pull_request:
     paths:
+      - "app/routes/__root.tsx"
+      - "tests/e2e/navigation-focus.spec.ts"
+      - "tests/unit/nav-category-focus.test.ts"
       - "app/routes/csv-json.tsx"
       - "app/routes/csv-sql.tsx"
       - "app/utils/csv-sql.ts"
@@ -37,6 +40,9 @@ on:
   push:
     branches: [main]
     paths:
+      - "app/routes/__root.tsx"
+      - "tests/e2e/navigation-focus.spec.ts"
+      - "tests/unit/nav-category-focus.test.ts"
       - "app/routes/csv-json.tsx"
       - "app/routes/csv-sql.tsx"
       - "app/utils/csv-sql.ts"
@@ -95,6 +101,10 @@ jobs:
       - run: npm run build
       - run: npx tsc --noEmit
       - run: npx playwright install --with-deps chromium
+      - run: npx playwright test --config tests/browser/csv-json/navigation-focus-app.config.ts
+        env:
+          CI: true
+          WRANGLER_SEND_METRICS: "false"
       - run: npx vp build --config tests/browser/csv-json/vite.config.ts
       - run: npx playwright test --config tests/browser/csv-json/playwright.config.ts
         env:
