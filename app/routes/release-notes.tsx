@@ -39,6 +39,18 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
+    version: "2026.10.19",
+    date: "2026-10-19",
+    entries: [
+      {
+        type: "fix",
+        title: "INI変換で特殊なセクション名とキーを保持",
+        description:
+          "__proto__・constructorなども通常のデータとして扱い、項目の欠落や継承元への書き込みを防ぎます。両方向の変換・重複キーの配列化・統計に対応します。",
+      },
+    ],
+  },
+  {
     version: "2026.10.15",
     date: "2026-10-17",
     entries: [
