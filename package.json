@@ -17,6 +17,7 @@
     "prepare": "vp config"
   },
   "dependencies": {
+    "@animate-ui/react": "2.0.0",
     "@cf-wasm/photon": "^0.3.4",
     "@ffmpeg/ffmpeg": "^0.12.15",
     "@ffmpeg/util": "^0.12.2",
@@ -47,9 +48,10 @@
     "lucide-react": "^0.562.0",
     "marked": "^17.0.4",
     "mermaid": "^11.13.0",
+    "motion": "14.4.0",
     "qrcode": "^1.5.4",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react": "19.2.6",
+    "react-dom": "19.2.6",
     "smol-toml": "^1.6.1",
     "tailwind-merge": "^3.4.0",
     "tailwindcss": "^4.2.2"
@@ -65,8 +67,8 @@
     "@types/marked": "^5.0.2",
     "@types/node": "^25.5.2",
     "@types/qrcode": "^1.5.6",
-    "@types/react": "^18.3.1",
-    "@types/react-dom": "^18.3.1",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
     "@vitest/coverage-v8": "^4.0.16",
     "esbuild": "^0.28.0",
     "jsdom": "^29.0.1",

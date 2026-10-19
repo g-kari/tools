@@ -3,7 +3,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { act, createElement } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { Simulate } from "react-dom/test-utils";
+import { changeControl } from "../helpers/change-control";
 import { ToastProvider } from "../../app/components/Toast";
 import { Route } from "../../app/routes/csv-json";
 
@@ -40,7 +40,7 @@ describe("CSV/JSON変換のフォーム操作", () => {
     act(() => {
       const input = element<HTMLTextAreaElement>("#inputText");
       input.value = value;
-      Simulate.change(input);
+      changeControl(input);
     });
   }
 
@@ -80,7 +80,7 @@ describe("CSV/JSON変換のフォーム操作", () => {
     act(() => {
       const delimiter = element<Element & { value: string }>("#delimiter");
       delimiter.value = "\t";
-      Simulate.change(delimiter);
+      changeControl(delimiter);
       element<HTMLInputElement>('input[type="checkbox"]').click();
     });
     setInput("\t");

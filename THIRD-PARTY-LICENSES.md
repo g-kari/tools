@@ -300,3 +300,11 @@ END OF TERMS AND CONDITIONS
 ---
 
 _This file was last updated: 2025-12-28_
+
+## Animate UI
+
+The UUID bulk-copy visual feedback uses @animate-ui/react 2.0.0, licensed under
+MIT + Commons Clause, copyright (c) 2025 Elliot Sutton. This permits use as part
+of an application but not sale or redistribution of the components themselves
+in their original form, alone or bundled. See [the complete notice](docs/ANIMATE-UI-LICENSE.md).
+Motion is MIT licensed; its package notice is retained in the installed dependency.

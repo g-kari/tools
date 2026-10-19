@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test"
 import { act, createElement, StrictMode, type ComponentType } from "react";
 import { createRoot, hydrateRoot, type Root } from "react-dom/client";
 import { renderToString } from "react-dom/server";
-import { Simulate } from "react-dom/test-utils";
+import { changeControl } from "../helpers/change-control";
 import { Route as CharCountRoute } from "../../app/routes/char-count";
 import { Route as TextStatsRoute } from "../../app/routes/text-stats";
 
@@ -32,7 +32,7 @@ const result = (testId: string) =>
   container.querySelector(`[data-testid="${testId}"]`)!.textContent;
 async function input(text: string) {
   const textarea = container.querySelector("textarea")!;
-  await act(async () => Simulate.change(textarea, { target: { value: text } } as never));
+  await act(async () => changeControl(textarea, { target: { value: text } } as never));
   expect(textarea.value).toBe(text);
 }
 

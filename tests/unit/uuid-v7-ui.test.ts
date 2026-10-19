@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { act, createElement, type ComponentType } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { Simulate } from "react-dom/test-utils";
+import { changeControl } from "../helpers/change-control";
 import { afterEach, beforeEach, describe, expect, it, vi, type MockInstance } from "vite-plus/test";
 import { ToastProvider } from "../../app/components/Toast";
 import { Route } from "../../app/routes/uuid";
@@ -31,12 +31,22 @@ describe("UUID version selection in the actual route", () => {
     act(() => {
       const input = container.querySelector<HTMLInputElement>("#count")!;
       input.value = String(value);
-      Simulate.change(input);
+      changeControl(input);
     });
   }
 
   beforeEach(() => {
     vi.stubGlobal("IS_REACT_ACT_ENVIRONMENT", true);
+    vi.stubGlobal("matchMedia", (media: string) => ({
+      matches: false,
+      media,
+      onchange: null,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      dispatchEvent: () => true,
+    }));
     fetch = vi.fn(() => {
       throw new Error("Unexpected external request");
     });

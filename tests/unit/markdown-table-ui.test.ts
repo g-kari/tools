@@ -2,7 +2,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { act, createElement, type ComponentType } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { Simulate } from "react-dom/test-utils";
+import { changeControl } from "../helpers/change-control";
 import { Route } from "../../app/routes/markdown-table";
 
 const { copy } = vi.hoisted(() => ({ copy: vi.fn(async () => true) }));
@@ -20,7 +20,7 @@ const button = (label: string) =>
 function fill(element: HTMLInputElement | HTMLTextAreaElement, value: string) {
   act(() => {
     element.value = value;
-    Simulate.change(element);
+    changeControl(element);
   });
 }
 function click(label: string) {

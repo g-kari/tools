@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { act, createElement, type ComponentType } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { Simulate } from "react-dom/test-utils";
+import { changeControl } from "../helpers/change-control";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { ToastProvider } from "../../app/components/Toast";
 import { Route } from "../../app/routes/json-to-zod";
@@ -59,7 +59,7 @@ describe("JSON→Zod special member names in the actual component", () => {
   function enter(value: string) {
     act(() => {
       input().value = value;
-      Simulate.change(input());
+      changeControl(input());
     });
   }
 
@@ -89,11 +89,11 @@ describe("JSON→Zod special member names in the actual component", () => {
     const checks = container.querySelectorAll<HTMLInputElement>('input[type="checkbox"]');
     act(() => {
       checks[0].checked = false;
-      Simulate.change(checks[0]);
+      changeControl(checks[0]);
       checks[1].checked = true;
-      Simulate.change(checks[1]);
+      changeControl(checks[1]);
       checks[2].checked = true;
-      Simulate.change(checks[2]);
+      changeControl(checks[2]);
     });
     enter('{"rows":[{"line\\nbreak":null}]}');
     generate();
