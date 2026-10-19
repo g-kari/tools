@@ -178,7 +178,7 @@ test.describe(".envパーサー・コンバーター - E2Eテスト", () => {
     await expect(page.locator(".env-parser-error-item")).toContainText("BAD LINE");
   });
 
-  test("YAMLのタブ再選択とクリア後の再パースで最新結果をコピーする", async ({ page }) => {
+  test("YAMLのタブ再選択とキーボードのクリア後に最新結果をコピーする", async ({ page }) => {
     const input = page.locator("#envInput");
     const parse = page.getByRole("button", { name: ".envの内容をパース", exact: true });
     const output = page.getByRole("textbox", { name: "YAML形式の出力結果", exact: true });
@@ -191,7 +191,14 @@ test.describe(".envパーサー・コンバーター - E2Eテスト", () => {
     }
     await expect(output).toHaveValue(first);
     expect(yaml.load(first)).toEqual({ PORT: "00123", DEBUG: "false" });
-    await page.getByRole("button", { name: "入力と結果をクリア", exact: true }).click();
+    // Exercise keyboard Clear without the unchanged shell's pointer-hover focus behavior.
+    await page.keyboard.press("Shift+Tab");
+    await expect(page.getByRole("tab", { name: "JSON", exact: true })).toBeFocused();
+    await page.keyboard.press("Shift+Tab");
+    await expect(
+      page.getByRole("button", { name: "入力と結果をクリア", exact: true }),
+    ).toBeFocused();
+    await page.keyboard.press("Enter");
     await expect(input).toHaveValue("");
     await expect(input).toBeFocused();
     await expect(page.getByRole("tablist", { name: "エクスポート形式タブ" })).toHaveCount(0);
@@ -306,10 +313,13 @@ test.describe(".envパーサー・コンバーター - E2Eテスト", () => {
   });
 
   test("ヒントカードが表示されること", async ({ page }) => {
-    const infoBox = page.locator(".info-box");
-    await expect(infoBox).toBeVisible();
-    const infoText = await infoBox.textContent();
-    expect(infoText).not.toContain("undefined");
+    await expect(page.locator(".info-box")).toHaveCount(2);
+    for (const name of ["使い方", "バリデーション"]) {
+      const infoBox = page.getByRole("complementary", { name, exact: true });
+      await expect(infoBox).toBeVisible();
+      await expect(infoBox).toContainText(name);
+      await expect(infoBox).not.toContainText("undefined");
+    }
   });
 
   test("アクセシビリティ属性が設定されていること", async ({ page }) => {

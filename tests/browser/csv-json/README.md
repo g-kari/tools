@@ -76,6 +76,8 @@ The same read-only workflow additionally runs all existing `.env` cases plus thr
 
 The configuration follows the existing YAML/JSON full-app suite: built shell/SSR/hydration, external-HTTP/page-error/hydration guards, blocked service workers, bounded one-worker zero-retry execution and test-only clipboard read/write grants. It adds no workflow privileges, event types, dependencies, account bindings or sandbox-disabling flags. Narrow viewport coverage is not testing a physical mobile device. Source SHA, native JSON report, two string-fidelity screenshots and failure traces share the existing one-day artifact. The preconnect/process-egress caveats above still apply.
 
+Clear/refocus in the new tab-switch/reparse case uses real Shift+Tab traversal from the YAML tab through JSON to the Clear button, checks the button's focus, then presses Enter and checks the input's focus. It never focuses the input directly. The separate existing pointer-Clear case still checks input/result clearing. The initial hosted narrow pointer path cleared the form but automatic scrolling placed the pointer over the unchanged shell navigation, whose hover handler opened the Color menu and focused its first item. That pre-existing shell pointer/scroll focus interaction is not fixed here or claimed to pass. The initial 41-pass/3-fail report and trace are retained; the other two failures were the old ambiguous `.info-box` selector, now strengthened to check both named Tips regions.
+
 ```sh
 npm run build
 npx playwright test --config tests/browser/csv-json/env-parser-app.config.ts
