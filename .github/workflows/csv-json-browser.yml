@@ -11,6 +11,8 @@ on:
       - "app/routes/yaml-json.tsx"
       - "app/routes/xml-json.tsx"
       - "app/utils/xml-json.ts"
+      - "app/routes/json-to-ts.tsx"
+      - "app/utils/json-to-ts.ts"
       - "app/components/**"
       - "app/hooks/**"
       - "app/styles/base.css"
@@ -32,6 +34,8 @@ on:
       - "tests/e2e/yaml-json.spec.ts"
       - "tests/unit/xml-json*.test.ts"
       - "tests/e2e/xml-json.spec.ts"
+      - "tests/unit/json-to-ts.test.ts"
+      - "tests/e2e/json-to-ts.spec.ts"
       - "package*.json"
       - ".github/workflows/csv-json-browser.yml"
   push:
@@ -45,6 +49,8 @@ on:
       - "app/routes/yaml-json.tsx"
       - "app/routes/xml-json.tsx"
       - "app/utils/xml-json.ts"
+      - "app/routes/json-to-ts.tsx"
+      - "app/utils/json-to-ts.ts"
       - "app/components/**"
       - "app/hooks/**"
       - "app/styles/base.css"
@@ -66,6 +72,8 @@ on:
       - "tests/e2e/yaml-json.spec.ts"
       - "tests/unit/xml-json*.test.ts"
       - "tests/e2e/xml-json.spec.ts"
+      - "tests/unit/json-to-ts.test.ts"
+      - "tests/e2e/json-to-ts.spec.ts"
       - "package*.json"
       - ".github/workflows/csv-json-browser.yml"
 
@@ -116,6 +124,10 @@ jobs:
           CI: true
           WRANGLER_SEND_METRICS: "false"
       - run: npx playwright test --config tests/browser/csv-json/yaml-json-app.config.ts
+        env:
+          CI: true
+          WRANGLER_SEND_METRICS: "false"
+      - run: npx playwright test --config tests/browser/csv-json/json-to-ts-app.config.ts
         env:
           CI: true
           WRANGLER_SEND_METRICS: "false"
