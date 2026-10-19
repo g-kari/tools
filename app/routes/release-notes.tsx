@@ -39,6 +39,18 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
+    version: "2026.10.16",
+    date: "2026-10-19",
+    entries: [
+      {
+        type: "fix",
+        title: "通常のテキスト置換でドル記号を入力どおりに保持",
+        description:
+          "正規表現OFFの置換後は$&・$$等を置換記号として解釈せず、そのまま挿入します。全件・最初の1件とも対象です。置換記号を使う場合は正規表現をONにしてください。ONのキャプチャ参照・マッチ数・削除は維持します。",
+      },
+    ],
+  },
+  {
     version: "2026.10.15",
     date: "2026-10-17",
     entries: [
