@@ -39,6 +39,18 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
+    version: "2026.10.19",
+    date: "2026-10-19",
+    entries: [
+      {
+        type: "fix",
+        title: "JSON→GraphQLの型名衝突で項目が欠落する不具合を修正",
+        description:
+          "別階層の同名オブジェクトを連番付きの別型に分け、ルート型や組込みscalarとの衝突も避けます。入力キーや既存の型推論は変更しません。",
+      },
+    ],
+  },
+  {
     version: "2026.10.15",
     date: "2026-10-17",
     entries: [
