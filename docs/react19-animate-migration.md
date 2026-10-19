@@ -54,10 +54,13 @@ tools has no configured 24-hour exception mechanism to alter.
   These are static build sizes, not measured browser timing or frame performance.
 - Read-only independent review found two native-event helper issues, both corrected;
   re-review found no remaining implementation blockers.
-- Actual browser tests remain unexecuted: normal dev startup fails in this cloud
+- Local browser tests remain unexecuted: normal dev startup fails in this cloud
   environment at `uv_interface_addresses`; the official Chromium download returned
   truncated ZIP / HTTP 400 GatewayExceptionResponse. No sandbox or security setting
   was relaxed and no alternate URL was used to evade those restrictions.
+- The existing hosted CSV JSON app-suite workflow is extended with a UUID-only
+  app config, retaining its read-only permissions, normal browser settings, full
+  build and preview server. Its exact-head results must be checked.
 - Browser coverage is implemented for mobile normal/reduced motion, keyboard,
   successful/repeated/failed clipboard writes, desktop unavailable-Clipboard
   fallback/focus/cleanup, and optional animation-chunk failure.
