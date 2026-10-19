@@ -70,6 +70,17 @@ The workflow additionally runs all thirteen original plus twenty-two recovery ca
 
 The workflow runs all 21 cases in `tests/e2e/xml-json.spec.ts` through `xml-json-app.config.ts` against the production build on loopback. The unmodified functional assertions include escaped attribute values and repeated conversion, CDATA, mixed content and invalid-input recovery. The shared full-app transport rejects unexpected external origins, page errors and hydration warnings; known fonts and ad HTTP requests are blocked and recorded. Service workers remain blocked and no extra browser permissions or launch flags are added. These are executed browser cases, not a manual UI checklist; a run must succeed before it is reported as passed.
 
+## .env YAML string fidelity in the real application
+
+The same read-only workflow additionally runs all existing `.env` cases plus three YAML regressions through `env-parser-app.config.ts`, at 1280px and 390px widths. The new cases decode the actual displayed YAML with the declared js-yaml parser, verify string values and case-sensitive/prototype-like keys, assert native Clipboard API text, retain duplicate/error diagnostics and input, and exercise repeated tab switches plus Clear/reparse. The YAML serializer's quoting change is intentional; the .env parser, JSON and Shell exporters are unchanged. This is not a claim that those other formats are lossless or that generated Shell code is safe to execute.
+
+The configuration follows the existing YAML/JSON full-app suite: built shell/SSR/hydration, external-HTTP/page-error/hydration guards, blocked service workers, bounded one-worker zero-retry execution and test-only clipboard read/write grants. It adds no workflow privileges, event types, dependencies, account bindings or sandbox-disabling flags. Narrow viewport coverage is not testing a physical mobile device. Source SHA, native JSON report, two string-fidelity screenshots and failure traces share the existing one-day artifact. The preconnect/process-egress caveats above still apply.
+
+```sh
+npm run build
+npx playwright test --config tests/browser/csv-json/env-parser-app.config.ts
+```
+
 ## Generated password strength snapshot
 
 The bounded real-route component fixture also mounts `/password-generator`. Two desktop/mobile Chromium cases preserve the generated output, strength and synthetic Clipboard API call target while changing next-generation character types and length, then verify regeneration, clear and the minimum length. External HTTP is blocked and every attempted origin/page error fails. Generated values are disposable synthetic test values; no saved credential is read. Clipboard writes are intercepted, so native OS clipboard and the full application shell/SSR are not verified by these two cases. Workflow permissions, browser flags and service isolation are unchanged.

@@ -39,6 +39,18 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
+    version: "2026.10.19",
+    date: "2026-10-19",
+    entries: [
+      {
+        type: "fix",
+        title: ".envのYAML出力で文字列の値とキー名を保持",
+        description:
+          "数値・true・null・日付に見える値や引用符を文字列として保持し、キー名の大文字小文字を区別します。重複キーは最後の値を使用します。YAMLの表記は引用符付きに変わりますが、入力のパース・JSON・Shell exportは変更しません。",
+      },
+    ],
+  },
+  {
     version: "2026.10.15",
     date: "2026-10-17",
     entries: [

@@ -1,3 +1,5 @@
+import * as yaml from "js-yaml";
+
 /**
  * .envファイルのエントリ（キーと値のペア）
  */
@@ -87,24 +89,25 @@ export function toJSON(entries: EnvEntry[]): string {
 
 /**
  * エントリをYAML形式に変換する
+ * キーと値を文字列として保持し、重複キーは最後の値を使用する。
  * @param entries - 変換するエントリ一覧
  * @returns YAML形式の文字列
  */
 export function toYAML(entries: EnvEntry[]): string {
-  return entries
-    .map(({ key, value }) => {
-      const needsQuote =
-        /[:#{}[\],&*?|<>=!%@`]/.test(value) ||
-        value === "" ||
-        /^\s|\s$/.test(value) ||
-        value.includes("\n") ||
-        value.includes("\r");
-      const escaped = needsQuote
-        ? `"${value.replace(/\\/g, "\\\\").replace(/"/g, '\\"').replace(/\n/g, "\\n").replace(/\r/g, "\\r")}"`
-        : value;
-      return `${key}: ${escaped}`;
+  if (entries.length === 0) return "";
+
+  // fromEntries defines own data properties even for names such as __proto__.
+  const values: Record<string, string> = Object.fromEntries(
+    entries.map(({ key, value }) => [key, value]),
+  );
+  return yaml
+    .dump(values, {
+      forceQuotes: true,
+      quotingType: '"',
+      lineWidth: -1,
+      noRefs: true,
     })
-    .join("\n");
+    .replace(/\n$/, "");
 }
 
 /**
