@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { Component, act, createElement, type ReactNode } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { Simulate } from "react-dom/test-utils";
+import { changeControl } from "../helpers/change-control";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { Route } from "../../app/routes/base64";
 import { ToastProvider } from "../../app/components/Toast";
@@ -72,7 +72,7 @@ describe("Base64 input failure recovery", () => {
   function enter(value: string) {
     act(() => {
       input().value = value;
-      Simulate.change(input());
+      changeControl(input());
     });
   }
   function button(label: string) {
