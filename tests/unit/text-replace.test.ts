@@ -232,3 +232,93 @@ describe("replaceText", () => {
     expect(result.matchCount).toBe(2);
   });
 });
+
+describe("置換後の文字列のモード境界", () => {
+  const literalReplacements = ["$$", "$&", "$`", "$'", "$1", "$<name>", "\\$&", "日本語😀\\$$"];
+
+  for (const replaceAll of [true, false]) {
+    for (const replacement of literalReplacements) {
+      it(`通常モードの${replaceAll ? "全件" : "最初の1件"}置換は ${replacement} をそのまま挿入する`, () => {
+        const result = replaceText("foo foo", "foo", replacement, {
+          ...defaultOptions,
+          replaceAll,
+        });
+        expect(result).toEqual({
+          output: replaceAll ? `${replacement} ${replacement}` : `${replacement} foo`,
+          matchCount: replaceAll ? 2 : 1,
+        });
+      });
+    }
+  }
+
+  it("通常モードは検索の特殊文字・大小文字区別・複数行を維持する", () => {
+    const input = "A.B\na.b\naXb";
+    const options = { ...defaultOptions, multiline: true };
+    expect(replaceText(input, "a.b", "$&", options)).toEqual({
+      output: "$&\n$&\naXb",
+      matchCount: 2,
+    });
+    expect(replaceText(input, "a.b", "$&", { ...options, caseSensitive: true })).toEqual({
+      output: "A.B\n$&\naXb",
+      matchCount: 1,
+    });
+    expect(findMatches(input, "a.b", options).matches).toEqual([
+      { start: 0, end: 3 },
+      { start: 4, end: 7 },
+    ]);
+  });
+
+  it("通常モードは日本語と絵文字を含む検索・置換を保持する", () => {
+    expect(replaceText("例😀と例😀", "例😀", "\\$&😀", defaultOptions)).toEqual({
+      output: "\\$&😀と\\$&😀",
+      matchCount: 2,
+    });
+  });
+
+  it("通常モードの削除・空検索・不一致の規則を維持する", () => {
+    expect(replaceText("foo foo", "foo", "", { ...defaultOptions, replaceAll: false })).toEqual({
+      output: " foo",
+      matchCount: 1,
+    });
+    expect(replaceText("foo", "", "$&", defaultOptions)).toEqual({ output: "foo", matchCount: 0 });
+    expect(replaceText("foo", "bar", "$&", defaultOptions)).toEqual({
+      output: "foo",
+      matchCount: 0,
+    });
+  });
+
+  for (const replaceAll of [true, false]) {
+    const options = { ...defaultOptions, useRegex: true, replaceAll };
+    const cases = [
+      { replacement: "$$", all: "$ $", first: "$ foo" },
+      { replacement: "$&", all: "foo foo", first: "foo foo" },
+      { replacement: "$`", all: " foo ", first: " foo" },
+      { replacement: "$'", all: " foo ", first: " foo foo" },
+      { replacement: "$2-$1", all: "oo-f oo-f", first: "oo-f foo" },
+    ];
+    for (const { replacement, all, first } of cases) {
+      it(`正規表現モードの${replaceAll ? "全件" : "最初の1件"}置換は ${replacement} の既存規則を維持する`, () => {
+        expect(replaceText("foo foo", "(f)(oo)", replacement, options)).toEqual({
+          output: replaceAll ? all : first,
+          matchCount: replaceAll ? 2 : 1,
+        });
+      });
+    }
+  }
+
+  it("正規表現の名前付き参照と空マッチを変更しない", () => {
+    expect(
+      replaceText("foo foo", "(?<name>foo)", "<$<name>>", {
+        ...defaultOptions,
+        useRegex: true,
+      }),
+    ).toEqual({ output: "<foo> <foo>", matchCount: 2 });
+    expect(
+      replaceText("foo\nbar", "^", "$&>", {
+        ...defaultOptions,
+        useRegex: true,
+        multiline: true,
+      }),
+    ).toEqual({ output: ">foo\n>bar", matchCount: 2 });
+  });
+});

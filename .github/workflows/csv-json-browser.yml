@@ -8,6 +8,8 @@ on:
       - "app/utils/csv-sql.ts"
       - "app/routes/url-encode.tsx"
       - "app/routes/base64.tsx"
+      - "app/routes/text-replace.tsx"
+      - "app/utils/text-replace.ts"
       - "app/routes/yaml-json.tsx"
       - "app/routes/xml-json.tsx"
       - "app/utils/xml-json.ts"
@@ -27,6 +29,8 @@ on:
       - "tests/unit/url-encode*.test.ts"
       - "tests/e2e/url-encode.spec.ts"
       - "tests/e2e/base64-input-recovery.spec.ts"
+      - "tests/e2e/text-replace.spec.ts"
+      - "tests/unit/text-replace.test.ts"
       - "tests/unit/base64-input-recovery.test.ts"
       - "tests/unit/yaml-json*.test.ts"
       - "tests/e2e/yaml-json.spec.ts"
@@ -42,6 +46,8 @@ on:
       - "app/utils/csv-sql.ts"
       - "app/routes/url-encode.tsx"
       - "app/routes/base64.tsx"
+      - "app/routes/text-replace.tsx"
+      - "app/utils/text-replace.ts"
       - "app/routes/yaml-json.tsx"
       - "app/routes/xml-json.tsx"
       - "app/utils/xml-json.ts"
@@ -61,6 +67,8 @@ on:
       - "tests/unit/url-encode*.test.ts"
       - "tests/e2e/url-encode.spec.ts"
       - "tests/e2e/base64-input-recovery.spec.ts"
+      - "tests/e2e/text-replace.spec.ts"
+      - "tests/unit/text-replace.test.ts"
       - "tests/unit/base64-input-recovery.test.ts"
       - "tests/unit/yaml-json*.test.ts"
       - "tests/e2e/yaml-json.spec.ts"
@@ -104,6 +112,10 @@ jobs:
           CI: true
           WRANGLER_SEND_METRICS: "false"
       - run: npx playwright test --config tests/browser/csv-json/base64-app.config.ts
+        env:
+          CI: true
+          WRANGLER_SEND_METRICS: "false"
+      - run: npx playwright test --config tests/browser/csv-json/text-replace-app.config.ts
         env:
           CI: true
           WRANGLER_SEND_METRICS: "false"

@@ -108,7 +108,7 @@ export function escapeRegex(str: string): string {
  * テキストを検索・置換する
  * @param text - 置換対象テキスト
  * @param find - 検索文字列または正規表現パターン
- * @param replace - 置換文字列（正規表現モード時は$1等のバックリファレンス使用可）
+ * @param replace - リテラルモードでは入力どおりの文字列（正規表現モード時は$1等のバックリファレンス使用可）
  * @param options - 置換オプション
  * @returns 置換結果
  */
@@ -143,11 +143,13 @@ export function replaceText(
 
     let output: string;
     if (options.replaceAll) {
-      output = text.replace(regex, replace);
+      output = options.useRegex ? text.replace(regex, replace) : text.replace(regex, () => replace);
     } else {
       // 最初の1件のみ置換
       const singleRegex = buildRegex(find, { ...options, replaceAll: false });
-      output = text.replace(singleRegex, replace);
+      output = options.useRegex
+        ? text.replace(singleRegex, replace)
+        : text.replace(singleRegex, () => replace);
       matchCount = Math.min(matchCount, 1);
     }
 
