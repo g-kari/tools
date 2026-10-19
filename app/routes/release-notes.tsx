@@ -39,6 +39,18 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
+    version: "2026.10.19",
+    date: "2026-10-19",
+    entries: [
+      {
+        type: "fix",
+        title: "ナビゲーションのホバーで入力フォーカスを奪わない",
+        description:
+          "カテゴリの表示とキーボード起動を分離し、入力欄や操作中のメニューリンクのフォーカスを保ちます。矢印・Esc・Tab / Shift+Tab とクリックによる操作を維持します。初期読み込み前の入力保持は対象外です。",
+      },
+    ],
+  },
+  {
     version: "2026.10.15",
     date: "2026-10-17",
     entries: [

@@ -466,14 +466,25 @@ function NavCategory({
   const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isActive = category.items.some((item) => item.path === pathname);
 
-  // ドロップダウンが開いたときに最初のアイテムにフォーカス
-  useEffect(() => {
-    if (isOpen && focusedIndex === -1) {
-      setFocusedIndex(0);
-    }
-  }, [isOpen, focusedIndex]);
+  const tabExitRef = useRef(false);
 
-  // フォーカスインデックスが変更されたときにフォーカスを更新
+  const cancelClose = useCallback(() => {
+    if (closeTimeoutRef.current !== null) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
+  }, []);
+
+  const handleClose = useCallback(() => {
+    cancelClose();
+    tabExitRef.current = false;
+    setIsOpen(false);
+    setFocusedIndex(-1);
+  }, [cancelClose]);
+
+  useEffect(() => cancelClose, [cancelClose]);
+
+  // Hover changes visibility only. Keyboard/click activation explicitly requests focus.
   useEffect(() => {
     if (isOpen && focusedIndex >= 0 && menuRef.current) {
       const items = menuRef.current.querySelectorAll<HTMLAnchorElement>('[role="menuitem"]');
@@ -481,19 +492,25 @@ function NavCategory({
     }
   }, [isOpen, focusedIndex]);
 
+  const openWithFocus = useCallback(() => {
+    cancelClose();
+    tabExitRef.current = false;
+    setIsOpen(true);
+    setFocusedIndex(0);
+    // The hover-open menu may already have index 0, so React state can be unchanged.
+    menuRef.current?.querySelector<HTMLAnchorElement>('[role="menuitem"]')?.focus();
+  }, [cancelClose]);
+
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
-      if (!isOpen) {
-        // ドロップダウンが閉じている場合
-        if (e.key === "ArrowDown" || e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          setIsOpen(true);
-          setFocusedIndex(0);
-        }
+      tabExitRef.current = false;
+      if (e.target === buttonRef.current && ["ArrowDown", "Enter", " "].includes(e.key)) {
+        e.preventDefault();
+        openWithFocus();
         return;
       }
+      if (!isOpen) return;
 
-      // ドロップダウンが開いている場合
       switch (e.key) {
         case "ArrowDown":
           e.preventDefault();
@@ -505,14 +522,12 @@ function NavCategory({
           break;
         case "Escape":
           e.preventDefault();
-          setIsOpen(false);
-          setFocusedIndex(-1);
+          handleClose();
           buttonRef.current?.focus();
           break;
         case "Tab":
-          // Tabでドロップダウンを閉じる
-          setIsOpen(false);
-          setFocusedIndex(-1);
+          // Keep the focused link mounted until native Tab/Shift+Tab moves focus.
+          tabExitRef.current = !e.defaultPrevented && !e.ctrlKey && !e.altKey && !e.metaKey;
           break;
         case "Home":
           e.preventDefault();
@@ -524,22 +539,43 @@ function NavCategory({
           break;
       }
     },
-    [isOpen, category.items.length],
+    [isOpen, category.items.length, handleClose, openWithFocus],
   );
 
   const handleMouseEnter = useCallback(() => {
-    if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
+    cancelClose();
+    tabExitRef.current = false;
     setIsOpen(true);
-  }, []);
-
-  const handleClose = useCallback(() => {
-    setIsOpen(false);
-    setFocusedIndex(-1);
-  }, []);
+  }, [cancelClose]);
 
   const handleMouseLeave = useCallback(() => {
-    closeTimeoutRef.current = setTimeout(handleClose, 150);
-  }, [handleClose]);
+    cancelClose();
+    closeTimeoutRef.current = setTimeout(() => {
+      closeTimeoutRef.current = null;
+      // Moving the pointer must not remove an anchor still used by the keyboard.
+      if (
+        !menuRef.current?.contains(document.activeElement) &&
+        document.activeElement !== buttonRef.current
+      ) {
+        handleClose();
+      }
+    }, 150);
+  }, [cancelClose, handleClose]);
+
+  const handleBlur = useCallback(
+    (event: React.FocusEvent<HTMLDivElement>) => {
+      const tabExit = tabExitRef.current;
+      tabExitRef.current = false;
+      const next = event.relatedTarget;
+      if (
+        !(next instanceof Node && event.currentTarget.contains(next)) ||
+        (tabExit && next === buttonRef.current)
+      ) {
+        handleClose();
+      }
+    },
+    [handleClose],
+  );
 
   return (
     <div
@@ -547,13 +583,23 @@ function NavCategory({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onKeyDown={handleKeyDown}
+      onKeyUp={() => {
+        tabExitRef.current = false;
+      }}
+      onPointerDownCapture={() => {
+        tabExitRef.current = false;
+      }}
+      onBlur={handleBlur}
     >
       <button
         ref={buttonRef}
         className={`nav-category-btn ${isActive ? "active" : ""}`}
         aria-expanded={isOpen}
         aria-haspopup="true"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => {
+          if (isOpen) handleClose();
+          else openWithFocus();
+        }}
       >
         <span className="nav-category-icon" aria-hidden="true">
           {category.icon}
