@@ -101,4 +101,55 @@ test.describe("INIファイルパーサー/フォーマッター", () => {
   test("TipsCardが表示される", async ({ page }) => {
     await expect(page.getByText("INIファイルの書式")).toBeVisible();
   });
+  test("特殊なセクション名とキーを保持し、次の入力へ持ち越さない", async ({ page }) => {
+    const marker = "__iniSyntheticMarker_20261019";
+    for (const name of ["__proto__", "constructor", "toString", "hasOwnProperty"]) {
+      const input = `[${name}]\n${marker} = first\n[ordinary]\n${name} = kept`;
+      await page.getByLabel("INI入力テキストエリア").fill(input);
+      const value = JSON.parse(await page.getByLabel("JSON出力").inputValue());
+      expect(Object.hasOwn(value, name)).toBe(true);
+      expect(value[name][marker]).toBe("first");
+      expect(Object.hasOwn(value.ordinary, name)).toBe(true);
+      expect(value.ordinary[name]).toBe("kept");
+      await expect(page.getByRole("tree", { name: "INI構造ツリー" })).toBeVisible();
+      expect(await page.evaluate((key) => Object.hasOwn(Object.prototype, key), marker)).toBe(
+        false,
+      );
+    }
+    await page.getByLabel("INI入力テキストエリア").fill("[clean]\nkey = next");
+    await expect(page.getByLabel("JSON出力")).toHaveValue(
+      JSON.stringify({ clean: { key: "next" } }, null, 2),
+    );
+    await expect(page.getByRole("alert")).toHaveCount(0);
+  });
+
+  test("特殊なグローバルキーの重複を正しい配列にする", async ({ page }) => {
+    await page.getByLabel("重複キーを配列として扱う").check();
+    for (const name of ["__proto__", "constructor", "toString", "hasOwnProperty"]) {
+      await page.getByLabel("INI入力テキストエリア").fill(`${name} = first\n${name} = second`);
+      const value = JSON.parse(await page.getByLabel("JSON出力").inputValue());
+      expect(Object.hasOwn(value, name)).toBe(true);
+      expect(value[name]).toEqual(["first", "second"]);
+    }
+    await page.getByRole("button", { name: "入力をクリア", exact: true }).click();
+    await expect(page.getByLabel("INI入力テキストエリア")).toHaveValue("");
+  });
+
+  test("JSONの特殊なキーとセクション名をINIへ出力し往復する", async ({ page }) => {
+    const source = JSON.parse(
+      '{"__proto__":{"__proto__":"first","constructor":"second"},"toString":"global","hasOwnProperty":["a","b"]}',
+    );
+    await page.getByRole("tab", { name: "JSON → INI" }).click();
+    await page.getByLabel("JSON入力テキストエリア").fill(JSON.stringify(source));
+    const output = await page.getByLabel("INI出力").inputValue();
+    expect(output).toContain("[__proto__]");
+    expect(output).toContain("__proto__ = first");
+    expect(output).toContain("constructor = second");
+    expect(output).toContain("toString = global");
+    await page.getByRole("tab", { name: "INI → JSON" }).click();
+    await page.getByLabel("重複キーを配列として扱う").check();
+    await page.getByLabel("INI入力テキストエリア").fill(output);
+    expect(JSON.parse(await page.getByLabel("JSON出力").inputValue())).toEqual(source);
+    await expect(page.getByRole("button", { name: "出力をコピー", exact: true })).toBeEnabled();
+  });
 });
