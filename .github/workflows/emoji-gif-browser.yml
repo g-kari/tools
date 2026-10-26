@@ -69,7 +69,7 @@ jobs:
           mkdir -p test-results
           git rev-parse HEAD | tee test-results/emoji-gif-source-sha.txt
         if: always()
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: emoji-gif-browser-results
