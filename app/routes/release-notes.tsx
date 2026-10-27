@@ -44,9 +44,9 @@ export const releases: Release[] = [
     entries: [
       {
         type: "fix",
-        title: "JSON→TypeScript生成で特殊キーを保持",
+        title: "URLビルダーでスラッシュなしのパスがホスト名へ混ざる不具合を修正",
         description:
-          "ハイフン・引用符・改行・空文字などのキーを引用して元の名前を保持し、ネストの型名も有効な識別子にします。interface/type・optionalと従来の型推論は維持します。",
+          "パスの先頭の/を省略してもホスト名と分離し、ポート付きでもURLを生成できます。先頭/付きやルート、クエリ・フラグメント・エンコードの既存動作は維持します。",
       },
     ],
   },
