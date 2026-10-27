@@ -57,7 +57,7 @@ export interface UrlBuildInput {
   hostname: string;
   /** ポート番号（省略可） */
   port?: string;
-  /** パス（例: "/path/to/page"、省略可） */
+  /** パス（例: "/path/to/page"、先頭の / は省略可） */
   pathname?: string;
   /** クエリパラメータ配列（省略可） */
   queryParams?: QueryParam[];
@@ -163,11 +163,12 @@ export function buildUrl(input: UrlBuildInput): string {
     const protocol = input.protocol.endsWith(":") ? input.protocol : input.protocol + ":";
     const host = input.port ? `${input.hostname}:${input.port}` : input.hostname;
     const pathname = input.pathname || "/";
+    const normalizedPathname = pathname.startsWith("/") ? pathname : "/" + pathname;
     const queryString = buildQueryString(input.queryParams || []);
     const hash = input.hash ? (input.hash.startsWith("#") ? input.hash : "#" + input.hash) : "";
 
     // URL APIを使用してユーザー情報を安全にエンコード
-    const url = new URL(`${protocol}//${host}${pathname}`);
+    const url = new URL(`${protocol}//${host}${normalizedPathname}`);
     if (input.username) url.username = input.username;
     if (input.password) url.password = input.password;
 
