@@ -7,6 +7,8 @@ on:
       - "app/routes/csv-sql.tsx"
       - "app/utils/csv-sql.ts"
       - "app/routes/url-encode.tsx"
+      - "app/routes/url-parser.tsx"
+      - "app/utils/url-parser.ts"
       - "app/routes/base64.tsx"
       - "app/routes/yaml-json.tsx"
       - "app/routes/xml-json.tsx"
@@ -18,6 +20,7 @@ on:
       - "app/styles/components.css"
       - "app/styles/tools/csv-json.css"
       - "app/styles/tools/csv-sql.css"
+      - "app/styles/tools/url-parser.css"
       - "app/styles/tools/number-base.css"
       - "tests/browser/csv-json/**"
       - "tests/unit/csv-json*.test.ts"
@@ -26,6 +29,8 @@ on:
       - "tests/e2e/csv-json.spec.ts"
       - "tests/unit/url-encode*.test.ts"
       - "tests/e2e/url-encode.spec.ts"
+      - "tests/e2e/url-parser.spec.ts"
+      - "tests/unit/url-parser.test.ts"
       - "tests/e2e/base64-input-recovery.spec.ts"
       - "tests/unit/base64-input-recovery.test.ts"
       - "tests/unit/yaml-json*.test.ts"
@@ -41,6 +46,8 @@ on:
       - "app/routes/csv-sql.tsx"
       - "app/utils/csv-sql.ts"
       - "app/routes/url-encode.tsx"
+      - "app/routes/url-parser.tsx"
+      - "app/utils/url-parser.ts"
       - "app/routes/base64.tsx"
       - "app/routes/yaml-json.tsx"
       - "app/routes/xml-json.tsx"
@@ -52,6 +59,7 @@ on:
       - "app/styles/components.css"
       - "app/styles/tools/csv-json.css"
       - "app/styles/tools/csv-sql.css"
+      - "app/styles/tools/url-parser.css"
       - "app/styles/tools/number-base.css"
       - "tests/browser/csv-json/**"
       - "tests/unit/csv-json*.test.ts"
@@ -60,6 +68,8 @@ on:
       - "tests/e2e/csv-json.spec.ts"
       - "tests/unit/url-encode*.test.ts"
       - "tests/e2e/url-encode.spec.ts"
+      - "tests/e2e/url-parser.spec.ts"
+      - "tests/unit/url-parser.test.ts"
       - "tests/e2e/base64-input-recovery.spec.ts"
       - "tests/unit/base64-input-recovery.test.ts"
       - "tests/unit/yaml-json*.test.ts"
@@ -100,6 +110,10 @@ jobs:
         env:
           CI: true
       - run: npx playwright test --config tests/browser/csv-json/url-app.config.ts
+        env:
+          CI: true
+          WRANGLER_SEND_METRICS: "false"
+      - run: npx playwright test --config tests/browser/csv-json/url-parser-app.config.ts
         env:
           CI: true
           WRANGLER_SEND_METRICS: "false"
