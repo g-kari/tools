@@ -42,13 +42,54 @@ sudo /bin/bash -euo pipefail -c '
 ' -- "${cgroup}"
 echo "Isolation: no external network; empty allowlisted environment; read-only source/toolchain; 2GiB temporary scratch; 3GiB memory; 128 tasks; two CPUs; 360s process CPU; 128MiB file cap; 480s wall cap."
 
+# Diagnostics are read-only and allowlisted: never dump the environment or a
+# general kernel log. An unavailable observation does not change the sandbox.
+isolation_diagnostics() {
+  printf 'Isolation runner image: %s / %s\n' "${ImageOS:-unavailable}" "${ImageVersion:-unavailable}"
+  uname -srv || true
+  /usr/bin/bwrap --version || true
+  dpkg-query -W -f='${binary:Package}=${Version}\n' bubblewrap apparmor apparmor-profiles 2>/dev/null || true
+  stat -Lc 'bwrap mode=%a uid=%u gid=%g size=%s' /usr/bin/bwrap || true
+  sha256sum /usr/bin/bwrap || true
+  if command -v getcap >/dev/null 2>&1; then
+    getcap /usr/bin/bwrap || true
+  else
+    printf '%s\n' 'bwrap file capabilities: unavailable'
+  fi
+  printf '%s\n' 'Launcher shell security status (before setpriv; not the sandbox status):'
+  grep -E '^(Uid|Gid|CapInh|CapPrm|CapEff|CapBnd|CapAmb|NoNewPrivs|Seccomp|Seccomp_filters):' "/proc/$$/status" || true
+  for file in "/proc/$$/attr/current" "/proc/$$/uid_map" "/proc/$$/gid_map" \
+    /sys/module/apparmor/parameters/enabled \
+    /proc/sys/kernel/unprivileged_userns_clone \
+    /proc/sys/kernel/apparmor_restrict_unprivileged_userns \
+    /proc/sys/kernel/apparmor_restrict_unprivileged_unconfined \
+    /proc/sys/user/max_user_namespaces; do
+    printf '%s: ' "${file}"
+    if test -r "${file}"; then
+      head -n 4 "${file}" || true
+      printf '\n'
+    else
+      printf '%s\n' 'unavailable'
+    fi
+  done
+}
+
+isolation_failure_diagnostics() {
+  printf 'Isolation failed after %s UTC; child PID/namespace observations are above when available.\n' "${isolation_started}"
+  printf '%s\n' 'Kernel audit not collected: exact child-process audit observation is unavailable.'
+}
+
+isolation_diagnostics || true
+isolation_started=$(date -u '+%Y-%m-%d %H:%M:%S')
+
 # Root is needed only to join the cgroup. Drop to the checkout owner before
 # bwrap maps the caller's host uid; no host permissions need to be changed.
-sudo /bin/bash -euo pipefail -c 'printf "%s\n" "$$" > "$1/cgroup.procs"; grep -qx "$$" "$1/cgroup.procs"; shift; exec "$@"' -- \
+if sudo /bin/bash -euo pipefail -c 'printf "%s\n" "$$" > "$1/cgroup.procs"; grep -qx "$$" "$1/cgroup.procs"; shift; exec "$@"' -- \
   "${cgroup}" /usr/bin/setpriv --reuid "${uid}" --regid "${gid}" --clear-groups --no-new-privs \
   /usr/bin/timeout --signal=KILL 480 \
   /usr/bin/prlimit --cpu=360 --fsize=134217728 --nofile=512 --nproc=128 \
   /usr/bin/bwrap --unshare-all --unshare-user --unshare-cgroup --disable-userns --die-with-parent --new-session \
+  --json-status-fd 2 \
   --uid "${uid}" --gid "${gid}" --cap-drop ALL \
   --ro-bind /usr /usr --ro-bind "${node_root}" "${node_root}" \
   --ro-bind /bin /bin --ro-bind /lib /lib --ro-bind /lib64 /lib64 \
@@ -69,6 +110,10 @@ sudo /bin/bash -euo pipefail -c 'printf "%s\n" "$$" > "$1/cgroup.procs"; grep -q
   --setenv XDG_CACHE_HOME /scratch/cache --setenv npm_config_cache /scratch/npm-cache \
   --setenv PLAYWRIGHT_BROWSERS_PATH /browsers --setenv CI true \
   --setenv UV_THREADPOOL_SIZE 2 \
-  /bin/bash /source/tests/browser/json-flatten/inside-isolated.sh
-
-echo "Isolated Flatten validation exited successfully. No sandbox-generated files are retained."
+  /bin/bash /source/tests/browser/json-flatten/inside-isolated.sh; then
+  echo "Isolated Flatten validation exited successfully. No sandbox-generated files are retained."
+else
+  isolation_status=$?
+  isolation_failure_diagnostics || true
+  exit "${isolation_status}"
+fi
