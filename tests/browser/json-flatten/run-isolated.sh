@@ -79,7 +79,67 @@ isolation_failure_diagnostics() {
   printf '%s\n' 'Kernel audit not collected: exact child-process audit observation is unavailable.'
 }
 
+# Distinguish known packaged bwrap policy files from loaded policy names.
+# Normal reads only; do not load profiles, change policy, or inspect other logs.
+isolation_profile_diagnostics() {
+  local profile canonical checksum loaded bytes
+  for profile in /etc/apparmor.d/bwrap /etc/apparmor.d/bwrap-userns-restrict \
+    /etc/apparmor.d/usr.bin.bwrap /usr/share/apparmor/extra-profiles/bwrap-userns-restrict; do
+    printf 'Known bwrap policy file %s: ' "${profile}"
+    if ! test -e "${profile}" && ! test -L "${profile}"; then
+      printf '%s\n' 'not observed (absent or inaccessible)'
+      continue
+    fi
+    if ! test -f "${profile}" || ! test -r "${profile}"; then
+      printf '%s\n' 'present; regular-file read unavailable'
+      continue
+    fi
+    if ! canonical=$(readlink -f -- "${profile}" 2>/dev/null); then
+      printf '%s\n' 'present; canonical path unavailable'
+      continue
+    fi
+    case "${canonical}" in
+      /etc/apparmor.d/bwrap|/etc/apparmor.d/bwrap-userns-restrict|/etc/apparmor.d/usr.bin.bwrap|/usr/share/apparmor/extra-profiles/bwrap-userns-restrict)
+        if ! bytes=$(stat -Lc '%s' -- "${canonical}" 2>/dev/null) || ! [[ "${bytes}" =~ ^[0-9]+$ ]] || ! test "${bytes}" -le 65536; then
+          printf '%s\n' 'present; size observation unavailable or above the 64KiB diagnostic bound'
+          continue
+        fi
+        if checksum=$(/usr/bin/timeout 2 sha256sum -- "${canonical}" 2>/dev/null); then
+          printf 'readable; sha256=%s\n' "${checksum%% *}"
+        else
+          printf '%s\n' 'present; checksum read unavailable'
+        fi
+        ;;
+      *) printf '%s\n' 'present; resolved content is outside the allowlist (not read)' ;;
+    esac
+  done
+  printf '%s\n' 'Loaded known bwrap profile names (not the child process label):'
+  if ! test -r /sys/kernel/security/apparmor/profiles; then
+    printf '%s\n' 'unavailable (normal read not permitted or interface absent)'
+    return
+  fi
+  if loaded=$(/usr/bin/timeout 2 awk '
+    $1 == "bwrap" || $1 == "unpriv_bwrap" || $1 == "bwrap//&unpriv_bwrap" || $1 == "/usr/bin/bwrap" {
+      if (count++ < 8) {
+        if ($2 == "(enforce)" || $2 == "(complain)" || $2 == "(kill)" || $2 == "(unconfined)")
+          print $1 " " $2
+        else
+          print $1 " (mode unavailable)"
+      }
+    }' /sys/kernel/security/apparmor/profiles 2>/dev/null); then
+    if test -n "${loaded}"; then
+      printf '%s\n' "${loaded}"
+      printf '%s\n' 'Reporting is capped at 8 matching records; additional or differently named relevant policy is not ruled out.'
+    else
+      printf '%s\n' 'No allowlisted profile name observed; other policy names are not reported, and absence of other relevant policy is not established.'
+    fi
+  else
+    printf '%s\n' 'unavailable (normal profile-list read failed; no retry or privilege change)'
+  fi
+}
+
 isolation_diagnostics || true
+isolation_profile_diagnostics || true
 isolation_started=$(date -u '+%Y-%m-%d %H:%M:%S')
 
 # Root is needed only to join the cgroup. Drop to the checkout owner before
