@@ -84,12 +84,15 @@ isolation_started=$(date -u '+%Y-%m-%d %H:%M:%S')
 
 # Root is needed only to join the cgroup. Drop to the checkout owner before
 # bwrap maps the caller's host uid; no host permissions need to be changed.
-if sudo /bin/bash -euo pipefail -c 'printf "%s\n" "$$" > "$1/cgroup.procs"; grep -qx "$$" "$1/cgroup.procs"; shift; exec "$@"' -- \
+# Duplicate stderr in this existing trusted shell, after sudo has closed inherited
+# descriptors. bwrap owns/closes its status descriptor in the sandbox child;
+# using descriptor 2 directly would hide the original setup/product errors.
+if sudo /bin/bash -euo pipefail -c 'printf "%s\n" "$$" > "$1/cgroup.procs"; grep -qx "$$" "$1/cgroup.procs"; shift; exec 3>&2; exec "$@"' -- \
   "${cgroup}" /usr/bin/setpriv --reuid "${uid}" --regid "${gid}" --clear-groups --no-new-privs \
   /usr/bin/timeout --signal=KILL 480 \
   /usr/bin/prlimit --cpu=360 --fsize=134217728 --nofile=512 --nproc=128 \
   /usr/bin/bwrap --unshare-all --unshare-user --unshare-cgroup --disable-userns --die-with-parent --new-session \
-  --json-status-fd 2 \
+  --json-status-fd 3 \
   --uid "${uid}" --gid "${gid}" --cap-drop ALL \
   --ro-bind /usr /usr --ro-bind "${node_root}" "${node_root}" \
   --ro-bind /bin /bin --ro-bind /lib /lib --ro-bind /lib64 /lib64 \
