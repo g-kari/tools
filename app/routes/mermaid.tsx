@@ -241,6 +241,8 @@ function MermaidPreview() {
           mermaid.initialize({
             startOnLoad: false,
             theme: "default",
+            layout: "dagre",
+            look: "classic",
             securityLevel: "strict",
           });
           mermaidInitializedRef.current = true;
@@ -442,3 +444,4 @@ function MermaidPreview() {
     </>
   );
 }
+

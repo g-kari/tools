@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { readFile } from "node:fs/promises";
 
 test.describe("Mermaid Preview - E2E Tests", () => {
   /**
@@ -161,4 +162,64 @@ test.describe("Mermaid Preview - E2E Tests", () => {
       await expect(btn).toBeVisible();
     }
   });
+  // Exercise the shipped samples through the real lazy-loaded renderer, not a Mermaid mock.
+  for (const { label, expectedLabels } of [
+    { label: "フローチャート", expectedLabels: ["開始", "条件分岐", "処理A", "終了"] },
+    {
+      label: "シーケンス図",
+      expectedLabels: ["ブラウザ", "サーバー", "DB", "HTTPリクエスト"],
+    },
+    { label: "クラス図", expectedLabels: ["Animal", "Dog", "name", "breed"] },
+    {
+      label: "ガントチャート",
+      expectedLabels: ["プロジェクトスケジュール", "要件定義", "実装"],
+    },
+    { label: "状態図", expectedLabels: ["待機中", "処理中", "完了", "リトライ"] },
+    { label: "ER図", expectedLabels: ["USER", "POST", "email", "投稿する"] },
+  ]) {
+    test(`should render and export the shipped ${label} sample as SVG`, async ({ page }) => {
+      await page
+        .getByRole("button", { name: `${label}のサンプルを挿入`, exact: true })
+        .click();
+      const preview = page.locator("#mermaid-output");
+      const svg = preview.locator(".mermaid-svg-wrapper svg");
+      await expect(svg).toBeVisible({ timeout: 10000 });
+      await expect(preview).toHaveAttribute("aria-busy", "false");
+      await expect(preview.getByRole("alert")).toHaveCount(0);
+      for (const expectedLabel of expectedLabels) {
+        await expect(svg).toContainText(expectedLabel);
+      }
+      const bounds = await svg.boundingBox();
+      expect(bounds).not.toBeNull();
+      expect(bounds?.width).toBeGreaterThan(0);
+      expect(bounds?.height).toBeGreaterThan(0);
+
+      const downloadPromise = page.waitForEvent("download");
+      await page
+        .getByRole("button", { name: "ダイアグラムをSVGとしてダウンロード", exact: true })
+        .click();
+      const download = await downloadPromise;
+      expect(download.suggestedFilename()).toBe("diagram.svg");
+      expect(await download.failure()).toBeNull();
+      const path = await download.path();
+      if (!path) throw new Error("SVG download did not produce a local file");
+      const exported = await readFile(path, "utf8");
+      const parsed = await page.evaluate((text) => {
+        const document = new DOMParser().parseFromString(text, "image/svg+xml");
+        return {
+          parseErrors: document.querySelectorAll("parsererror").length,
+          rootName: document.documentElement.localName,
+          namespace: document.documentElement.namespaceURI,
+          text: document.documentElement.textContent,
+        };
+      }, exported);
+      expect(parsed.parseErrors).toBe(0);
+      expect(parsed.rootName).toBe("svg");
+      expect(parsed.namespace).toBe("http://www.w3.org/2000/svg");
+      for (const expectedLabel of expectedLabels) {
+        expect(parsed.text).toContain(expectedLabel);
+      }
+    });
+  }
 });
+
