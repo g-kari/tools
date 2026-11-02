@@ -165,22 +165,14 @@ test.describe("Mermaid Preview - E2E Tests", () => {
   // Exercise the shipped samples through the real lazy-loaded renderer, not a Mermaid mock.
   for (const { label, expectedLabels } of [
     { label: "フローチャート", expectedLabels: ["開始", "条件分岐", "処理A", "終了"] },
-    {
-      label: "シーケンス図",
-      expectedLabels: ["ブラウザ", "サーバー", "DB", "HTTPリクエスト"],
-    },
+    { label: "シーケンス図", expectedLabels: ["ブラウザ", "サーバー", "DB", "HTTPリクエスト"] },
     { label: "クラス図", expectedLabels: ["Animal", "Dog", "name", "breed"] },
-    {
-      label: "ガントチャート",
-      expectedLabels: ["プロジェクトスケジュール", "要件定義", "実装"],
-    },
+    { label: "ガントチャート", expectedLabels: ["プロジェクトスケジュール", "要件定義", "実装"] },
     { label: "状態図", expectedLabels: ["待機中", "処理中", "完了", "リトライ"] },
     { label: "ER図", expectedLabels: ["USER", "POST", "email", "投稿する"] },
   ]) {
     test(`should render and export the shipped ${label} sample as SVG`, async ({ page }) => {
-      await page
-        .getByRole("button", { name: `${label}のサンプルを挿入`, exact: true })
-        .click();
+      await page.getByRole("button", { name: `${label}のサンプルを挿入`, exact: true }).click();
       const preview = page.locator("#mermaid-output");
       const svg = preview.locator(".mermaid-svg-wrapper svg");
       await expect(svg).toBeVisible({ timeout: 10000 });
@@ -195,9 +187,7 @@ test.describe("Mermaid Preview - E2E Tests", () => {
       expect(bounds?.height).toBeGreaterThan(0);
 
       const downloadPromise = page.waitForEvent("download");
-      await page
-        .getByRole("button", { name: "ダイアグラムをSVGとしてダウンロード", exact: true })
-        .click();
+      await page.getByRole("button", { name: "ダイアグラムをSVGとしてダウンロード", exact: true }).click();
       const download = await downloadPromise;
       expect(download.suggestedFilename()).toBe("diagram.svg");
       expect(await download.failure()).toBeNull();
@@ -222,4 +212,3 @@ test.describe("Mermaid Preview - E2E Tests", () => {
     });
   }
 });
-
