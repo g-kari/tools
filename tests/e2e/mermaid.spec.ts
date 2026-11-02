@@ -187,7 +187,9 @@ test.describe("Mermaid Preview - E2E Tests", () => {
       expect(bounds?.height).toBeGreaterThan(0);
 
       const downloadPromise = page.waitForEvent("download");
-      await page.getByRole("button", { name: "ダイアグラムをSVGとしてダウンロード", exact: true }).click();
+      await page
+        .getByRole("button", { name: "ダイアグラムをSVGとしてダウンロード", exact: true })
+        .click();
       const download = await downloadPromise;
       expect(download.suggestedFilename()).toBe("diagram.svg");
       expect(await download.failure()).toBeNull();
