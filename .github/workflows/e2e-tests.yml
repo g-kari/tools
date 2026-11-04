@@ -51,13 +51,16 @@ jobs:
           include-hidden-files: true
           retention-days: 1
 
-      - name: Get E2E test files
+      - name: Check E2E matrix grouping
+        run: node --test tests/scripts/e2e-matrix.test.mjs
+
+      - name: Group E2E test files
         id: set-matrix
         run: |
-          # Get list of E2E test files and create matrix
-          FILES=$(find tests/e2e -name "*.spec.ts" -type f | sort | jq -R -s -c 'split("\n") | map(select(length > 0))')
-          echo "matrix={\"test-file\":$FILES}" >> $GITHUB_OUTPUT
-          echo "Found test files: $FILES"
+          # Keep every spec while staying within GitHub's 256-job matrix limit.
+          MATRIX=$(node scripts/e2e-matrix.mjs matrix)
+          echo "matrix=$MATRIX" >> "$GITHUB_OUTPUT"
+          echo "E2E matrix: $MATRIX"
 
   # Keep all E2E validation in the cloud, including internal PRs and main pushes.
   e2e:
@@ -102,17 +105,17 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps chromium
 
-      - name: Run E2E test
+      - name: Run E2E test group
         run: |
+          node scripts/e2e-matrix.mjs validate
           npm run preview -- --port 8788 --host &
           SERVER_PID=$!
+          trap 'kill "$SERVER_PID" || true' EXIT
           npx wait-on http://127.0.0.1:8788 --timeout 60000
-          BASE_URL=http://127.0.0.1:8788 npx playwright test ${{ matrix.test-file }} --project=chromium --reporter=list
-          TEST_EXIT_CODE=$?
-          kill $SERVER_PID || true
-          exit $TEST_EXIT_CODE
+          BASE_URL=http://127.0.0.1:8788 node scripts/e2e-matrix.mjs run
         env:
           CI: true
+          E2E_TEST_FILES: ${{ toJSON(matrix.files) }}
 
   # Summary job - aggregates results
   summary:
