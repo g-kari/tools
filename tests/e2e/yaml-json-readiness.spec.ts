@@ -137,7 +137,12 @@ test.describe("YAML without JavaScript", () => {
   test.use({ javaScriptEnabled: false });
   test("explains the requirement without offering nonfunctional actions", async ({ page }) => {
     await page.goto("/yaml-json");
-    await expect(page.locator("noscript")).toContainText("変換にはJavaScriptが必要です");
+    const explanation = page.locator("noscript");
+    await expect(explanation).toBeVisible();
+    // Playwright text matching skips noscript; inspect its visible DOM text directly.
+    expect(await explanation.textContent()).toBe(
+      "変換にはJavaScriptが必要です。JavaScriptを有効にして再読み込みしてください。",
+    );
     const input = page.locator("#inputText");
     await input.fill("name: retained");
     await expect(input).toHaveValue("name: retained");
