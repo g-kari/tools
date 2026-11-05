@@ -1,10 +1,10 @@
 import { defineConfig, devices } from "@playwright/test";
 import { fileURLToPath } from "node:url";
 
-/** Run the existing CSV SQL cases and quote recovery against the built shell/SSR application. */
+/** Run CSV SQL conversion, quote recovery and early input against the built SSR application. */
 export default defineConfig({
   testDir: "../../e2e",
-  testMatch: ["csv-sql.spec.ts", "csv-sql-quotes.spec.ts"],
+  testMatch: ["csv-sql.spec.ts", "csv-sql-quotes.spec.ts", "csv-sql-early-input.spec.ts"],
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
   retries: 0,

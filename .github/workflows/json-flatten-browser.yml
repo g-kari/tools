@@ -56,7 +56,12 @@ jobs:
       - run: node node_modules/@playwright/test/cli.js install --with-deps chromium
       - run: sudo apt-get update && sudo apt-get install -y bubblewrap
       - name: Isolated production build, related unit tests, types and Chromium
-        run: bash tests/browser/json-flatten/run-isolated.sh
+        run: |
+          test -s tests/browser/json-flatten/run-isolated.sh
+          test -s tests/browser/json-flatten/inside-isolated.sh
+          bash -n tests/browser/json-flatten/run-isolated.sh
+          bash -n tests/browser/json-flatten/inside-isolated.sh
+          bash tests/browser/json-flatten/run-isolated.sh
       - run: |
           mkdir -p test-results
           git rev-parse HEAD | tee test-results/json-flatten-source-sha.txt
