@@ -29,7 +29,12 @@ describe("CSV SQL input across server rendering and hydration", () => {
     expect(recoverableErrors).toEqual([]);
   });
 
-  async function hydrate(early: string, strict = false, firstAction?: () => void) {
+  async function hydrate(
+    early: string,
+    strict = false,
+    firstAction?: () => void,
+    beforeHydration?: () => void,
+  ) {
     vi.stubGlobal("IS_REACT_ACT_ENVIRONMENT", true);
     recoverableErrors = [];
     const route = createElement(Route.options.component as () => ReactNode);
@@ -43,6 +48,7 @@ describe("CSV SQL input across server rendering and hydration", () => {
     ssrInput.value = early;
     ssrInput.dispatchEvent(new InputEvent("input", { bubbles: true, inputType: "insertText" }));
     expect(ssrInput.value).toBe(early);
+    beforeHydration?.();
     expect(output()).toBeNull();
     expect(button("入力をクリア").disabled).toBe(true);
     expect(button("SQLをコピー").disabled).toBe(true);
@@ -141,6 +147,8 @@ describe("CSV SQL input across server rendering and hydration", () => {
         const select = container.querySelector<ValueControl>("#csv-sql-dialect")!;
         select.value = "postgresql";
         select.dispatchEvent(new Event("change", { bubbles: true }));
+        expect(select.value).toBe("postgresql");
+        expect(input().value).toBe(early);
       });
       expect(input().value).toBe(early);
       expect(output()?.value).toBe('INSERT INTO "my_table" ("id", "name")\nVALUES (1, \'early\');');
@@ -235,4 +243,200 @@ describe("CSV SQL input across server rendering and hydration", () => {
     edit("id,name\n1,new");
     expect(output()?.value).toContain("(1, 'new')");
   });
+  function valueControl(id: string) {
+    return container.querySelector<ValueControl>(`#${id}`)!;
+  }
+  function checkbox(id: string) {
+    return container.querySelector<HTMLInputElement>(`#${id}`)!;
+  }
+  function editAllSsrOptions() {
+    valueControl("csv-sql-table").value = "  early_rows  ";
+    valueControl("csv-sql-table").dispatchEvent(new Event("input", { bubbles: true }));
+    valueControl("csv-sql-dialect").value = "postgresql";
+    valueControl("csv-sql-dialect").dispatchEvent(new Event("change", { bubbles: true }));
+    valueControl("csv-sql-batch").value = "2";
+    valueControl("csv-sql-batch").dispatchEvent(new Event("input", { bubbles: true }));
+    for (const id of ["csv-sql-header", "csv-sql-null", "csv-sql-numbers", "csv-sql-booleans"]) {
+      checkbox(id).click();
+    }
+  }
+  function expectAllSsrOptions() {
+    expect(valueControl("csv-sql-table").value).toBe("  early_rows  ");
+    expect(valueControl("csv-sql-dialect").value).toBe("postgresql");
+    expect(valueControl("csv-sql-batch").value).toBe("2");
+    expect(checkbox("csv-sql-header").checked).toBe(false);
+    expect(checkbox("csv-sql-null").checked).toBe(false);
+    expect(checkbox("csv-sql-numbers").checked).toBe(false);
+    expect(checkbox("csv-sql-booleans").checked).toBe(true);
+  }
+
+  for (const strict of [false, true]) {
+    it(`retains a select input/change sequence without clearing CSV (StrictMode ${strict})`, async () => {
+      const early = "id,name\n1,early";
+      await hydrate(early, strict, () => {
+        const select = valueControl("csv-sql-dialect");
+        select.value = "postgresql";
+        // Browsers notify a select edit with input then change, without setting its value twice.
+        select.dispatchEvent(new Event("input", { bubbles: true, composed: true }));
+        expect(select.value).toBe("postgresql");
+        expect(input().value).toBe(early);
+        select.dispatchEvent(new Event("change", { bubbles: true }));
+        expect(select.value).toBe("postgresql");
+        expect(input().value).toBe(early);
+      });
+      expect(output()?.value).toBe('INSERT INTO "my_table" ("id", "name")\nVALUES (1, \'early\');');
+      expect(error()).toBeNull();
+    });
+
+    it.each(["  early_table  ", ""])(
+      `retains first native table input %j and existing validation (StrictMode ${strict})`,
+      async (table) => {
+        const early = "id,name\n1,early";
+        await hydrate(early, strict, () => {
+          const control = valueControl("csv-sql-table");
+          control.value = table;
+          control.dispatchEvent(new Event("input", { bubbles: true }));
+          expect(control.value).toBe(table);
+          expect(input().value).toBe(early);
+        });
+        if (table) {
+          expect(output()?.value).toBe(
+            "INSERT INTO `early_table` (`id`, `name`)\nVALUES (1, 'early');",
+          );
+          expect(error()).toBeNull();
+        } else {
+          expect(error()?.textContent).toContain("テーブル名を入力してください");
+          expect(output()).toBeNull();
+          expect(button("SQLをコピー").disabled).toBe(true);
+          changeOption("csv-sql-table", "repaired");
+          expect(output()?.value).toContain("INSERT INTO `repaired`");
+        }
+      },
+    );
+
+    it.each([
+      ["", 1],
+      ["0", 1],
+      ["-2", 1],
+      ["2.9", 2],
+      ["1001", 1001],
+    ] as const)(
+      `normalizes first native batch input %j to %s as before (StrictMode ${strict})`,
+      async (value, expectedBatch) => {
+        const early = "id,name\n1,alpha\n2,beta\n3,gamma";
+        await hydrate(early, strict, () => {
+          const batch = valueControl("csv-sql-batch");
+          batch.value = value;
+          batch.dispatchEvent(new Event("input", { bubbles: true }));
+          expect(batch.value).toBe(String(expectedBatch));
+          expect(input().value).toBe(early);
+        });
+        expect(output()?.value).toContain("(3, 'gamma')");
+        expect(statistics()?.textContent).toBe(`3 行2 列${Math.ceil(3 / expectedBatch)} 文`);
+        expect(error()).toBeNull();
+      },
+    );
+
+    it.each([
+      {
+        id: "csv-sql-header",
+        early: "id,name\n1,alpha",
+        expected:
+          "INSERT INTO `my_table` (`col1`, `col2`)\nVALUES ('id', 'name');\n\n" +
+          "INSERT INTO `my_table` (`col1`, `col2`)\nVALUES (1, 'alpha');",
+        checked: false,
+      },
+      {
+        id: "csv-sql-null",
+        early: "id,name\n1,",
+        expected: "INSERT INTO `my_table` (`id`, `name`)\nVALUES (1, '');",
+        checked: false,
+      },
+      {
+        id: "csv-sql-numbers",
+        early: "id,name\n1,alpha",
+        expected: "INSERT INTO `my_table` (`id`, `name`)\nVALUES ('1', 'alpha');",
+        checked: false,
+      },
+      {
+        id: "csv-sql-booleans",
+        early: "id,active\n1,true",
+        expected: "INSERT INTO `my_table` (`id`, `active`)\nVALUES (1, 1);",
+        checked: true,
+      },
+    ])(
+      `retains first native $id click (StrictMode ${strict})`,
+      async ({ id, early, expected, checked }) => {
+        await hydrate(early, strict, () => {
+          const control = checkbox(id);
+          expect(control.closest("label")).not.toBeNull();
+          control.click();
+          expect(control.checked).toBe(checked);
+          expect(input().value).toBe(early);
+        });
+        expect(checkbox(id).checked).toBe(checked);
+        expect(output()?.value).toBe(expected);
+        expect(error()).toBeNull();
+        click("入力をクリア");
+        expectEmpty();
+        expect(checkbox(id).checked).toBe(checked);
+      },
+    );
+
+    it(`adopts all seven SSR options together with CSV (StrictMode ${strict})`, async () => {
+      const early = "true,,3\nfalse,tail,4";
+      await hydrate(early, strict, undefined, editAllSsrOptions);
+      expectAllSsrOptions();
+      expect(input().value).toBe(early);
+      expect(output()?.value).toBe(
+        'INSERT INTO "early_rows" ("col1", "col2", "col3")\nVALUES\n' +
+          "  (TRUE, '', '3'),\n  (FALSE, 'tail', '4');",
+      );
+      expect(statistics()?.textContent).toBe("2 行3 列1 文");
+      expect(error()).toBeNull();
+      click("入力をクリア");
+      expectEmpty();
+      expectAllSsrOptions();
+      edit("false,later,5");
+      expect(output()?.value).toBe(
+        'INSERT INTO "early_rows" ("col1", "col2", "col3")\nVALUES\n' + "  (FALSE, 'later', '5');",
+      );
+      expect(input().value).toBe("false,later,5");
+    });
+
+    it(`honors first sample with all seven SSR options (StrictMode ${strict})`, async () => {
+      await hydrate(
+        "true,discard-me,3",
+        strict,
+        () => {
+          button("サンプルデータを読み込む").click();
+        },
+        editAllSsrOptions,
+      );
+      expectAllSsrOptions();
+      expect(input().value).not.toContain("discard-me");
+      expect(input().value).toContain("田中 太郎");
+      expect(output()?.value).toContain(
+        'INSERT INTO "early_rows" ("col1", "col2", "col3", "col4", "col5", "col6")',
+      );
+      expect(output()?.value).toContain("('id', 'name', 'email', 'age', 'active', 'score')");
+      expect(output()?.value).toContain(
+        "(TRUE, '田中 太郎', 'taro@example.com', '28', TRUE, '95.5')",
+      );
+      expect(statistics()?.textContent).toBe("6 行6 列3 文");
+      expect(error()).toBeNull();
+      expect(container.querySelector('[role="status"]')?.textContent).toBe(
+        "サンプルデータを読み込みました",
+      );
+      click("入力をクリア");
+      expectEmpty();
+      expectAllSsrOptions();
+      changeOption("csv-sql-table", "after_clear");
+      expectEmpty();
+      edit("false,later,5");
+      expect(output()?.value).toBe(
+        'INSERT INTO "after_clear" ("col1", "col2", "col3")\nVALUES\n' + "  (FALSE, 'later', '5');",
+      );
+    });
+  }
 });

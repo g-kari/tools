@@ -63,14 +63,49 @@ function CsvSqlGenerator() {
 
   const [csvInput, setCsvInput] = useState("");
   const [options, setOptions] = useState<CsvSqlOptions>({ ...DEFAULT_OPTIONS });
-  const hasAdoptedInput = useRef(false);
+  const hasAdoptedForm = useRef(false);
 
-  /** Adopt SSR edits once, before the first replayed action can read stale state. */
-  const attachInput = useCallback((input: HTMLTextAreaElement | null) => {
-    if (input && !hasAdoptedInput.current) {
-      hasAdoptedInput.current = true;
-      setCsvInput(input.value);
+  /** Snapshot all controlled fields before an adoption render can overwrite a native edit. */
+  const attachForm = useCallback((form: HTMLDivElement | null) => {
+    if (!form || hasAdoptedForm.current) return;
+    // This parent ref runs after its DOM children exist; every lookup stays inside this route.
+    const input = form.querySelector<HTMLTextAreaElement>("#csv-sql-input");
+    const table = form.querySelector<HTMLInputElement>("#csv-sql-table");
+    // Workers and DOM globals disagree on select.remove(); only its value API is needed.
+    const dialect = form.querySelector<Element & Pick<HTMLSelectElement, "value">>(
+      "#csv-sql-dialect",
+    );
+    const batch = form.querySelector<HTMLInputElement>("#csv-sql-batch");
+    const header = form.querySelector<HTMLInputElement>("#csv-sql-header");
+    const convertNull = form.querySelector<HTMLInputElement>("#csv-sql-null");
+    const numbers = form.querySelector<HTMLInputElement>("#csv-sql-numbers");
+    const booleans = form.querySelector<HTMLInputElement>("#csv-sql-booleans");
+    if (
+      !input ||
+      !table ||
+      !dialect ||
+      !batch ||
+      !header ||
+      !convertNull ||
+      !numbers ||
+      !booleans
+    ) {
+      return;
     }
+    const initialInput = input.value;
+    const initialOptions: CsvSqlOptions = {
+      tableName: table.value,
+      dialect: dialect.value as SqlDialect,
+      batchSize: Math.max(1, parseInt(batch.value, 10) || 1),
+      hasHeader: header.checked,
+      convertNull: convertNull.checked,
+      detectNumbers: numbers.checked,
+      detectBooleans: booleans.checked,
+    };
+    // Read the entire snapshot before either setter; later edits, samples and Clear own state.
+    hasAdoptedForm.current = true;
+    setCsvInput(initialInput);
+    setOptions(initialOptions);
   }, []);
 
   // SQL 生成（リアルタイム）
@@ -112,7 +147,7 @@ function CsvSqlGenerator() {
 
   return (
     <>
-      <div className="tool-container">
+      <div className="tool-container" ref={attachForm}>
         {/* オプション */}
         <div className="csv-sql-options">
           {/* テーブル名 */}
@@ -174,6 +209,7 @@ function CsvSqlGenerator() {
         <div className="csv-sql-checkboxes">
           <label className="csv-sql-checkbox-label">
             <input
+              id="csv-sql-header"
               type="checkbox"
               checked={options.hasHeader}
               onChange={(e) => handleOptionChange("hasHeader", e.target.checked)}
@@ -183,6 +219,7 @@ function CsvSqlGenerator() {
           </label>
           <label className="csv-sql-checkbox-label">
             <input
+              id="csv-sql-null"
               type="checkbox"
               checked={options.convertNull}
               onChange={(e) => handleOptionChange("convertNull", e.target.checked)}
@@ -192,6 +229,7 @@ function CsvSqlGenerator() {
           </label>
           <label className="csv-sql-checkbox-label">
             <input
+              id="csv-sql-numbers"
               type="checkbox"
               checked={options.detectNumbers}
               onChange={(e) => handleOptionChange("detectNumbers", e.target.checked)}
@@ -201,6 +239,7 @@ function CsvSqlGenerator() {
           </label>
           <label className="csv-sql-checkbox-label">
             <input
+              id="csv-sql-booleans"
               type="checkbox"
               checked={options.detectBooleans}
               onChange={(e) => handleOptionChange("detectBooleans", e.target.checked)}
@@ -217,7 +256,6 @@ function CsvSqlGenerator() {
           </label>
           <textarea
             id="csv-sql-input"
-            ref={attachInput}
             className="csv-sql-textarea"
             value={csvInput}
             onChange={(e) => setCsvInput(e.target.value)}
