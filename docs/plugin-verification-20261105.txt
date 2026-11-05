@@ -1,0 +1,4 @@
+GitHub Repository Tools connection verification.
+
+This file verifies a bounded write and exact readback on a dedicated non-default branch.
+No application code or repository settings were changed.
