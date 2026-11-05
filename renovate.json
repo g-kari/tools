@@ -17,7 +17,7 @@
       "automerge": false
     },
     {
-      "description": "Automerge non-major updates for the existing official GitHub Actions only in the explicitly read-only browser-regression workflows after release-age and CI checks pass.",
+      "description": "Keep these updates manual until required real CI checks are enforced and verified.",
       "matchManagers": ["github-actions"],
       "matchPackageNames": ["actions/checkout", "actions/setup-node", "actions/upload-artifact"],
       "matchFileNames": [
@@ -38,7 +38,7 @@
       "minimumReleaseAgeBehaviour": "timestamp-required",
       "internalChecksFilter": "strict",
       "ignoreTests": false,
-      "automerge": true,
+      "automerge": false,
       "automergeType": "pr",
       "platformAutomerge": false,
       "ignoreScripts": true,
@@ -47,6 +47,11 @@
     {
       "description": "Review pre-1.0 dependency changes explicitly.",
       "matchCurrentVersion": "/^v?0\\./",
+      "automerge": false
+    },
+    {
+      "description": "Fail closed: keep every dependency manual until required real CI checks are enforced and verified.",
+      "matchPackageNames": ["*"],
       "automerge": false
     }
   ],
