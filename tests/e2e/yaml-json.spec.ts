@@ -176,6 +176,7 @@ for (const viewport of [
       const error = page.getByRole("alert", { name: "変換エラー", exact: true });
       await input.fill("user:\n  name: first");
       await convert.click();
+      await expect(output).toHaveValue(JSON.stringify({ user: { name: "first" } }, null, 2));
       const first = await output.inputValue();
       await copy.click();
       expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(first);
