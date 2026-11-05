@@ -1,4 +1,62 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended"]
+  "extends": ["config:recommended", "helpers:pinGitHubActionDigests"],
+  "automerge": false,
+  "automergeType": "pr",
+  "platformAutomerge": false,
+  "ignoreTests": false,
+  "ignoreScripts": true,
+  "rebaseWhen": "behind-base-branch",
+  "minimumReleaseAge": "14 days",
+  "minimumReleaseAgeBehaviour": "timestamp-required",
+  "internalChecksFilter": "strict",
+  "packageRules": [
+    {
+      "description": "Keep every dependency review-first unless explicitly allowed below.",
+      "matchPackageNames": ["*"],
+      "automerge": false
+    },
+    {
+      "description": "Automerge non-major updates for the existing official GitHub Actions only in the explicitly read-only browser-regression workflows after release-age and CI checks pass.",
+      "matchManagers": ["github-actions"],
+      "matchPackageNames": ["actions/checkout", "actions/setup-node", "actions/upload-artifact"],
+      "matchFileNames": [
+        ".github/workflows/catalog-search-browser.yml",
+        ".github/workflows/clipboard-browser.yml",
+        ".github/workflows/csv-json-browser.yml",
+        ".github/workflows/emoji-gif-browser.yml",
+        ".github/workflows/grapheme-browser.yml",
+        ".github/workflows/hash-browser.yml",
+        ".github/workflows/json-browser.yml",
+        ".github/workflows/json-flatten-browser.yml",
+        ".github/workflows/json-lines-browser.yml",
+        ".github/workflows/json-pointer-browser.yml",
+        ".github/workflows/markdown-preview-browser.yml"
+      ],
+      "matchUpdateTypes": ["minor", "patch", "digest", "pinDigest"],
+      "minimumReleaseAge": "14 days",
+      "minimumReleaseAgeBehaviour": "timestamp-required",
+      "internalChecksFilter": "strict",
+      "ignoreTests": false,
+      "automerge": true,
+      "automergeType": "pr",
+      "platformAutomerge": false,
+      "ignoreScripts": true,
+      "rebaseWhen": "behind-base-branch"
+    },
+    {
+      "description": "Review pre-1.0 dependency changes explicitly.",
+      "matchCurrentVersion": "/^v?0\\./",
+      "automerge": false
+    }
+  ],
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "minimumReleaseAge": null,
+    "automerge": false
+  },
+  "lockFileMaintenance": {
+    "enabled": false,
+    "automerge": false
+  }
 }
