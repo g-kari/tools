@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useRef } from "react";
 import { useToast } from "~/components/Toast";
 import { useClipboard } from "~/hooks/useClipboard";
 import { StatusAnnouncer, useStatusAnnouncement } from "~/hooks/useStatusAnnouncement";
@@ -63,6 +63,15 @@ function CsvSqlGenerator() {
 
   const [csvInput, setCsvInput] = useState("");
   const [options, setOptions] = useState<CsvSqlOptions>({ ...DEFAULT_OPTIONS });
+  const hasAdoptedInput = useRef(false);
+
+  /** Adopt SSR edits once, before the first replayed action can read stale state. */
+  const attachInput = useCallback((input: HTMLTextAreaElement | null) => {
+    if (input && !hasAdoptedInput.current) {
+      hasAdoptedInput.current = true;
+      setCsvInput(input.value);
+    }
+  }, []);
 
   // SQL 生成（リアルタイム）
   const result = useMemo(() => {
@@ -208,6 +217,7 @@ function CsvSqlGenerator() {
           </label>
           <textarea
             id="csv-sql-input"
+            ref={attachInput}
             className="csv-sql-textarea"
             value={csvInput}
             onChange={(e) => setCsvInput(e.target.value)}
