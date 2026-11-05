@@ -62,6 +62,12 @@ export const releases: Release[] = [
     entries: [
       {
         type: "fix",
+        title: "JSON→GraphQLの型名衝突で項目が欠落する不具合を修正",
+        description:
+          "別階層の同名オブジェクトを連番付きの別型に分け、ルート型や組込みscalarとの衝突も避けます。入力キーや既存の型推論は変更しません。",
+      },
+      {
+        type: "fix",
         title: "JSON→TypeScript生成で特殊キーを保持",
         description:
           "ハイフン・引用符・改行・空文字などのキーを引用して元の名前を保持し、ネストの型名も有効な識別子にします。interface/type・optionalと従来の型推論は維持します。",
