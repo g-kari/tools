@@ -83,6 +83,7 @@ export function jsonToYaml(jsonStr: string): string {
  */
 function YamlJsonConverter() {
   const { statusRef, announceStatus, showToast, isCopied, handleCopy } = useCopyWithFeedback();
+  const [ready, setReady] = useState(false);
   const [mode, setMode] = useState<ConversionMode>("yaml-to-json");
   const [indent, setIndent] = useState<2 | 4>(2);
   const [inputText, setInputText] = useState("");
@@ -101,6 +102,7 @@ function YamlJsonConverter() {
   }, []);
 
   useEffect(() => {
+    setReady(true);
     inputRef.current?.focus();
   }, []);
 
@@ -155,9 +157,17 @@ function YamlJsonConverter() {
   return (
     <>
       <div className="tool-container">
+        {!ready && (
+          <p id="yaml-loading" role="status">
+            変換機能を読み込み中です。入力は先に編集できます。読み込み後に変換してください。
+          </p>
+        )}
+        <noscript>
+          変換にはJavaScriptが必要です。JavaScriptを有効にして再読み込みしてください。
+        </noscript>
         <form onSubmit={(e) => e.preventDefault()} aria-label="YAML/JSON変換フォーム">
           <div className="converter-section">
-            <fieldset className="csv-json-mode-fieldset">
+            <fieldset className="csv-json-mode-fieldset" disabled={!ready}>
               <legend className="section-title">変換モード</legend>
               <div className="csv-json-mode-group" role="group" aria-label="変換モード選択">
                 <label className="format-option">
@@ -202,6 +212,7 @@ function YamlJsonConverter() {
                       <input
                         type="radio"
                         name="indent"
+                        disabled={!ready}
                         value="2"
                         checked={indent === 2}
                         onChange={() => setIndent(2)}
@@ -213,6 +224,7 @@ function YamlJsonConverter() {
                       <input
                         type="radio"
                         name="indent"
+                        disabled={!ready}
                         value="4"
                         checked={indent === 4}
                         onChange={() => setIndent(4)}
@@ -241,7 +253,11 @@ function YamlJsonConverter() {
                   : '{"name":"田中","age":30,"city":"東京"}'
               }
               aria-describedby={
-                error ? "input-help input-error-summary input-error-detail" : "input-help"
+                !ready
+                  ? "input-help yaml-loading"
+                  : error
+                    ? "input-help input-error-summary input-error-detail"
+                    : "input-help"
               }
               aria-invalid={error ? true : undefined}
               aria-label={
@@ -273,6 +289,7 @@ function YamlJsonConverter() {
               type="button"
               className="btn-primary"
               onClick={handleConvert}
+              disabled={!ready}
               aria-label={convertLabel}
             >
               {convertLabel}
@@ -282,6 +299,7 @@ function YamlJsonConverter() {
               variant="outline"
               className="btn-clear"
               onClick={handleClear}
+              disabled={!ready}
               aria-label="入力と出力をクリア"
             >
               クリア
@@ -297,7 +315,7 @@ function YamlJsonConverter() {
                 type="button"
                 className={`number-base-copy-btn${outputIsCopied ? " copied" : ""}`}
                 onClick={() => handleCopy(outputText)}
-                disabled={!outputText}
+                disabled={!ready || !outputText}
                 aria-label="出力結果をクリップボードにコピー"
               >
                 {outputIsCopied ? "コピー済" : "コピー"}
