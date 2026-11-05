@@ -39,6 +39,18 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
+    version: "2026.11",
+    date: "2026-11-05",
+    entries: [
+      {
+        type: "fix",
+        title: "バイナリ変換で4ビットと8ビットの混在によるデータ欠落を防止",
+        description:
+          "混在入力を部分的にデコードせず、すべて8ビットまたはすべて4ビットにそろえる案内を表示します。統一したグループ・区切り・UTF-8検査・エンコードの既存動作は維持します。",
+      },
+    ],
+  },
+  {
     version: "2026.10.19",
     date: "2026-10-19",
     entries: [
