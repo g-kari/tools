@@ -178,7 +178,7 @@ for (const viewport of [
       await expect(input).toBeFocused();
       await input.fill("user:\n  name: first");
       await convert.click();
-      await expect(output).toHaveValue('{\n  "user": {\n    "name": "first"\n  }\n}');
+      await expect(output).toHaveValue(JSON.stringify({ user: { name: "first" } }, null, 2));
       await expect(copy).toBeEnabled();
       const first = await output.inputValue();
       await copy.click();
