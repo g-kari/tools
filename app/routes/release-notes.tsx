@@ -39,6 +39,18 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
+    version: "2026.10.28",
+    date: "2026-10-28",
+    entries: [
+      {
+        type: "security",
+        title: "変換・描画ライブラリと開発ツールのセキュリティ更新",
+        description:
+          "既知の脆弱性に対応した依存バージョンへ更新し、依存関係の固定内容を整理しました。",
+      },
+    ],
+  },
+  {
     version: "2026.10.19",
     date: "2026-10-19",
     entries: [
