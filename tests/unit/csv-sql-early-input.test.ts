@@ -12,6 +12,9 @@ vi.mock("@tanstack/react-router", () => ({
   createFileRoute: () => (options: unknown) => ({ options }),
 }));
 
+// Workers Element.remove() conflicts with HTMLSelectElement.remove(); use the needed DOM API.
+type ValueControl = Element & Pick<HTMLInputElement | HTMLSelectElement, "value">;
+
 /** Exercise the real route, parser and providers, including native edits before handlers exist. */
 describe("CSV SQL input across server rendering and hydration", () => {
   let root: Root | undefined;
@@ -76,7 +79,7 @@ describe("CSV SQL input across server rendering and hydration", () => {
   }
   function changeOption(id: string, value: string) {
     act(() => {
-      const option = container.querySelector<HTMLInputElement | HTMLSelectElement>(`#${id}`)!;
+      const option = container.querySelector<ValueControl>(`#${id}`)!;
       option.value = value;
       Simulate.change(option);
     });
@@ -135,7 +138,7 @@ describe("CSV SQL input across server rendering and hydration", () => {
     async (strict) => {
       const early = "id,name\n1,early";
       await hydrate(early, strict, () => {
-        const select = container.querySelector<HTMLSelectElement>("#csv-sql-dialect")!;
+        const select = container.querySelector<ValueControl>("#csv-sql-dialect")!;
         select.value = "postgresql";
         select.dispatchEvent(new Event("change", { bubbles: true }));
       });
