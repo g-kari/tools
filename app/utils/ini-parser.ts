@@ -60,6 +60,16 @@ const DEFAULT_FORMAT_OPTIONS: Required<IniFormatOptions> = {
   commentChar: "; ",
 };
 
+/** 入力由来の名前を継承プロパティやsetterではなく通常のデータとして保持する。 */
+function setOwn<T>(record: Record<string, T>, key: string, value: NoInfer<T>): void {
+  Object.defineProperty(record, key, {
+    value,
+    enumerable: true,
+    configurable: true,
+    writable: true,
+  });
+}
+
 /**
  * INIテキストをパースしてデータ構造に変換する
  * @param text - INI形式のテキスト
@@ -76,7 +86,7 @@ export function parseIni(text: string, options: IniParseOptions = {}): IniParseR
   const lines = text.split(/\r?\n/);
 
   // グローバルセクションを初期化
-  data[currentSection] = {};
+  setOwn(data, currentSection, {});
 
   for (let i = 0; i < lines.length; i++) {
     const lineNum = i + 1;
@@ -100,8 +110,8 @@ export function parseIni(text: string, options: IniParseOptions = {}): IniParseR
         continue;
       }
       currentSection = sectionName;
-      if (!data[currentSection]) {
-        data[currentSection] = {};
+      if (!Object.hasOwn(data, currentSection)) {
+        setOwn(data, currentSection, {});
       }
       continue;
     }
@@ -142,18 +152,18 @@ export function parseIni(text: string, options: IniParseOptions = {}): IniParseR
 
       if (opts.multiValue) {
         const section = data[currentSection];
-        const existing = section[key];
+        const existing = Object.hasOwn(section, key) ? section[key] : undefined;
         if (existing !== undefined) {
           if (Array.isArray(existing)) {
             existing.push(value);
           } else {
-            section[key] = [existing as string, value];
+            setOwn(section, key, [existing as string, value]);
           }
         } else {
-          section[key] = value;
+          setOwn(section, key, value);
         }
       } else {
-        data[currentSection][key] = value;
+        setOwn(data[currentSection], key, value);
       }
 
       continue;
@@ -264,10 +274,10 @@ export function iniToJson(data: IniData, includeGlobal = true): Record<string, u
     if (section === "") {
       // グローバルキーをトップレベルに
       for (const [key, value] of Object.entries(sectionData)) {
-        result[key] = value;
+        setOwn(result, key, value);
       }
     } else {
-      result[section] = { ...sectionData };
+      setOwn(result, section, { ...sectionData });
     }
   }
 
@@ -290,25 +300,31 @@ export function jsonToIni(json: Record<string, unknown>): IniData {
       const section: IniSection = {};
       for (const [k, v] of Object.entries(value as Record<string, unknown>)) {
         if (Array.isArray(v)) {
-          section[k] = v.map(String);
+          setOwn(section, k, v.map(String));
         } else {
-          section[k] =
+          setOwn(
+            section,
+            k,
             typeof (v ?? "") === "object"
               ? JSON.stringify(v)
-              : String((v ?? "") as string | number | boolean);
+              : String((v ?? "") as string | number | boolean),
+          );
         }
       }
-      data[key] = section;
+      setOwn(data, key, section);
     } else if (Array.isArray(value)) {
       // 配列はグローバルセクションのマルチバリューとして
-      globalSection[key] = value.map(String);
+      setOwn(globalSection, key, value.map(String));
       hasGlobal = true;
     } else {
       // プリミティブはグローバルセクションに
-      globalSection[key] =
+      setOwn(
+        globalSection,
+        key,
         typeof (value ?? "") === "object"
           ? JSON.stringify(value)
-          : String((value ?? "") as string | number | boolean);
+          : String((value ?? "") as string | number | boolean),
+      );
       hasGlobal = true;
     }
   }
@@ -343,7 +359,7 @@ export function calcIniStats(result: IniParseResult): IniStats {
 
   for (const [section, data] of Object.entries(result.data)) {
     const count = Object.keys(data).length;
-    sectionKeyCounts[section === "" ? "(グローバル)" : section] = count;
+    setOwn(sectionKeyCounts, section === "" ? "(グローバル)" : section, count);
     totalKeys += count;
   }
 

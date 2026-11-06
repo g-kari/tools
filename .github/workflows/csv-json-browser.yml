@@ -11,6 +11,10 @@ on:
       - "app/utils/curl-to-fetch.ts"
       - "tests/unit/curl-to-fetch*.test.ts"
       - "tests/e2e/curl-to-fetch*.spec.ts"
+      - "app/routes/ini-parser.tsx"
+      - "app/utils/ini-parser.ts"
+      - "tests/unit/ini*.test.ts"
+      - "tests/e2e/ini-parser.spec.ts"
       - "app/routes/csv-json.tsx"
       - "app/routes/csv-sql.tsx"
       - "app/utils/csv-sql.ts"
@@ -66,6 +70,10 @@ on:
       - "app/utils/curl-to-fetch.ts"
       - "tests/unit/curl-to-fetch*.test.ts"
       - "tests/e2e/curl-to-fetch*.spec.ts"
+      - "app/routes/ini-parser.tsx"
+      - "app/utils/ini-parser.ts"
+      - "tests/unit/ini*.test.ts"
+      - "tests/e2e/ini-parser.spec.ts"
       - "app/routes/csv-json.tsx"
       - "app/routes/csv-sql.tsx"
       - "app/utils/csv-sql.ts"
@@ -160,6 +168,11 @@ jobs:
           WRANGLER_SEND_METRICS: "false"
       - if: matrix.suite == 'core'
         run: npx playwright test --config tests/browser/csv-json/base64-app.config.ts
+        env:
+          CI: true
+          WRANGLER_SEND_METRICS: "false"
+      - if: matrix.suite == 'core'
+        run: npx playwright test --config tests/browser/csv-json/ini-app.config.ts
         env:
           CI: true
           WRANGLER_SEND_METRICS: "false"
