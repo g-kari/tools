@@ -3,6 +3,9 @@ name: CSV JSON column preservation
 on:
   pull_request:
     paths:
+      - "app/client.tsx"
+      - "tests/unit/client-startup.test.ts"
+      - "tests/e2e/client-startup-native.spec.ts"
       - "app/routes/json-to-graphql.tsx"
       - "app/utils/json-to-graphql.ts"
       - "tests/unit/json-to-graphql.test.ts"
@@ -68,6 +71,9 @@ on:
   push:
     branches: [main]
     paths:
+      - "app/client.tsx"
+      - "tests/unit/client-startup.test.ts"
+      - "tests/e2e/client-startup-native.spec.ts"
       - "app/routes/json-to-graphql.tsx"
       - "app/utils/json-to-graphql.ts"
       - "tests/unit/json-to-graphql.test.ts"
@@ -190,6 +196,11 @@ jobs:
           WRANGLER_SEND_METRICS: "false"
       - if: matrix.suite == 'core'
         run: npx playwright test --config tests/browser/csv-json/csv-sql-app.config.ts
+        env:
+          CI: true
+          WRANGLER_SEND_METRICS: "false"
+      - if: matrix.suite == 'core'
+        run: npx playwright test --config tests/browser/csv-json/client-startup-app.config.ts
         env:
           CI: true
           WRANGLER_SEND_METRICS: "false"
