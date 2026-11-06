@@ -111,9 +111,14 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  browser:
+  browser_shard:
+    name: browser (${{ matrix.suite }})
     runs-on: ubuntu-latest
     timeout-minutes: 12
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [core, generators]
     steps:
       - uses: actions/checkout@v6
         with:
@@ -130,42 +135,52 @@ jobs:
       - run: npx tsc --noEmit
       - run: npx playwright install --with-deps chromium
       - run: npx vp build --config tests/browser/csv-json/vite.config.ts
-      - run: npx playwright test --config tests/browser/csv-json/playwright.config.ts
+      - if: matrix.suite == 'core'
+        run: npx playwright test --config tests/browser/csv-json/playwright.config.ts
         env:
           CI: true
-      - run: npx playwright test --config tests/browser/csv-json/url-app.config.ts
-        env:
-          CI: true
-          WRANGLER_SEND_METRICS: "false"
-      - run: npx playwright test --config tests/browser/csv-json/url-parser-app.config.ts
-        env:
-          CI: true
-          WRANGLER_SEND_METRICS: "false"
-      - run: npx playwright test --config tests/browser/csv-json/base64-app.config.ts
+      - if: matrix.suite == 'core'
+        run: npx playwright test --config tests/browser/csv-json/url-app.config.ts
         env:
           CI: true
           WRANGLER_SEND_METRICS: "false"
-      - run: npx playwright test --config tests/browser/csv-json/csv-sql-app.config.ts
+      - if: matrix.suite == 'core'
+        run: npx playwright test --config tests/browser/csv-json/url-parser-app.config.ts
         env:
           CI: true
           WRANGLER_SEND_METRICS: "false"
-      - run: npx playwright test --config tests/browser/csv-json/xml-json-app.config.ts
+      - if: matrix.suite == 'core'
+        run: npx playwright test --config tests/browser/csv-json/base64-app.config.ts
         env:
           CI: true
           WRANGLER_SEND_METRICS: "false"
-      - run: npx playwright test --config tests/browser/csv-json/yaml-json-app.config.ts
+      - if: matrix.suite == 'core'
+        run: npx playwright test --config tests/browser/csv-json/csv-sql-app.config.ts
         env:
           CI: true
           WRANGLER_SEND_METRICS: "false"
-      - run: npx playwright test --config tests/browser/csv-json/json-to-ts-app.config.ts
+      - if: matrix.suite == 'generators'
+        run: npx playwright test --config tests/browser/csv-json/xml-json-app.config.ts
         env:
           CI: true
           WRANGLER_SEND_METRICS: "false"
-      - run: npx playwright test --config tests/browser/csv-json/json-to-graphql-app.config.ts
+      - if: matrix.suite == 'generators'
+        run: npx playwright test --config tests/browser/csv-json/yaml-json-app.config.ts
         env:
           CI: true
           WRANGLER_SEND_METRICS: "false"
-      - run: npx playwright test --config tests/browser/csv-json/curl-to-fetch-app.config.ts
+      - if: matrix.suite == 'generators'
+        run: npx playwright test --config tests/browser/csv-json/json-to-ts-app.config.ts
+        env:
+          CI: true
+          WRANGLER_SEND_METRICS: "false"
+      - if: matrix.suite == 'generators'
+        run: npx playwright test --config tests/browser/csv-json/json-to-graphql-app.config.ts
+        env:
+          CI: true
+          WRANGLER_SEND_METRICS: "false"
+      - if: matrix.suite == 'generators'
+        run: npx playwright test --config tests/browser/csv-json/curl-to-fetch-app.config.ts
         env:
           CI: true
           WRANGLER_SEND_METRICS: "false"
@@ -176,6 +191,17 @@ jobs:
       - uses: actions/upload-artifact@v6
         if: always()
         with:
-          name: csv-json-browser-results
+          name: csv-json-browser-results-${{ matrix.suite }}
           path: test-results/
           retention-days: 1
+
+  browser:
+    if: ${{ always() }}
+    needs: browser_shard
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    steps:
+      - name: Require every browser shard
+        env:
+          SHARD_RESULT: ${{ needs.browser_shard.result }}
+        run: test "$SHARD_RESULT" = success
