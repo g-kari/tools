@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useRef } from "react";
 import { useToast } from "~/components/Toast";
 import { useClipboard } from "~/hooks/useClipboard";
 import { StatusAnnouncer, useStatusAnnouncement } from "~/hooks/useStatusAnnouncement";
@@ -215,6 +215,17 @@ function IniParserTool() {
   const [iniInput, setIniInput] = useState("");
   const [jsonInput, setJsonInput] = useState("");
   const [multiValue, setMultiValue] = useState(false);
+  const [ready, setReady] = useState(false);
+  const adoptedInput = useRef(false);
+  const adoptInitialInput = useCallback((node: HTMLDivElement | null) => {
+    if (!node || adoptedInput.current) return;
+    const input = node.querySelector<HTMLTextAreaElement>("#ini-input");
+    if (!input) return;
+    const initialInput = input.value;
+    adoptedInput.current = true;
+    setIniInput(initialInput);
+    setReady(true);
+  }, []);
 
   // INI→JSON モードの結果
   const iniParseResult = useMemo<IniParseResult | null>(() => {
@@ -316,13 +327,22 @@ function IniParserTool() {
 
   return (
     <>
-      <div className="tool-container">
+      <div className="tool-container" ref={adoptInitialInput}>
+        <p role="status" aria-label="INIツールの準備">
+          {ready
+            ? "操作の準備ができました。"
+            : "操作の準備中です。先に入力したINIテキストは保持します。"}
+        </p>
+        <noscript>
+          <p>変換と各操作にはJavaScriptが必要です。入力欄は編集できますが、変換は実行されません。</p>
+        </noscript>
         {/* モード切替 */}
         <div className="ini-tabs" role="tablist" aria-label="変換モード">
           <button
             role="tab"
             aria-selected={mode === "ini-to-json"}
             className={`ini-tab-btn${mode === "ini-to-json" ? " active" : ""}`}
+            disabled={!ready}
             onClick={() => handleModeChange("ini-to-json")}
           >
             INI → JSON
@@ -331,6 +351,7 @@ function IniParserTool() {
             role="tab"
             aria-selected={mode === "json-to-ini"}
             className={`ini-tab-btn${mode === "json-to-ini" ? " active" : ""}`}
+            disabled={!ready}
             onClick={() => handleModeChange("json-to-ini")}
           >
             JSON → INI
@@ -354,6 +375,7 @@ function IniParserTool() {
                   key={name}
                   type="button"
                   className="ini-sample-btn"
+                  disabled={!ready}
                   onClick={() => handleSample(name)}
                   aria-label={`${name} のサンプルを読み込む`}
                 >
@@ -387,6 +409,7 @@ function IniParserTool() {
                 <input
                   type="checkbox"
                   checked={multiValue}
+                  disabled={!ready}
                   onChange={(e) => setMultiValue(e.target.checked)}
                   aria-label="重複キーを配列として扱う"
                 />
@@ -401,7 +424,7 @@ function IniParserTool() {
               type="button"
               className="btn-primary"
               onClick={handleCopyOutput}
-              disabled={mode === "ini-to-json" ? !jsonOutput : !iniOutput}
+              disabled={!ready || (mode === "ini-to-json" ? !jsonOutput : !iniOutput)}
               aria-label="出力をコピー"
             >
               コピー
@@ -410,7 +433,7 @@ function IniParserTool() {
               type="button"
               className="btn-clear"
               onClick={handleClear}
-              disabled={!hasInput}
+              disabled={!ready || !hasInput}
               aria-label="入力をクリア"
             >
               クリア
