@@ -323,6 +323,18 @@ jobs:
             fs.writeFileSync("test-results/locked-" + file + ".txt", bytes);
             records.push({ file: source, bytes: bytes.length, sha256: crypto.createHash("sha256").update(bytes).digest("hex") });
           }
+          for (const [label, source] of [
+            ["client-package", root + "package.json"],
+            ["client-index", root + "dist/esm/index.js"],
+            ["start-package", "node_modules/@tanstack/react-start/package.json"],
+            ["start-client-entry", "node_modules/@tanstack/react-start/dist/esm/client.js"],
+          ]) {
+            if (!fs.existsSync(source)) { records.push({ label, source, missing: true }); continue; }
+            const bytes = fs.readFileSync(source);
+            if (bytes.length > 65536) throw new Error("Public startup export too large");
+            fs.writeFileSync("test-results/locked-" + label + ".txt", bytes);
+            records.push({ label, source, bytes: bytes.length, sha256: crypto.createHash("sha256").update(bytes).digest("hex") });
+          }
           fs.writeFileSync("test-results/locked-startup-manifest.json", JSON.stringify({ version: pkg.version, records }, null, 2));
           JS
       - run: npm run build
