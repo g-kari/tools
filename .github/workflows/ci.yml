@@ -36,6 +36,14 @@ jobs:
         env:
           CI: true
 
+      - name: Show INI route formatting diff after validation failure
+        if: failure()
+        timeout-minutes: 1
+        run: |
+          file=app/routes/ini-parser.tsx
+          node node_modules/oxfmt/bin/oxfmt --stdin-filepath "$file" < "$file" > "$RUNNER_TEMP/ini-route-formatted.tsx"
+          diff -u "$file" "$RUNNER_TEMP/ini-route-formatted.tsx" || test "$?" -eq 1
+
       - name: Unit tests
         run: npm test
         env:
