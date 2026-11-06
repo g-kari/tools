@@ -337,6 +337,11 @@ jobs:
           }
           fs.writeFileSync("test-results/locked-startup-manifest.json", JSON.stringify({ version: pkg.version, records }, null, 2));
           JS
+      - name: Preserve exact locked formatter output for the public diagnostic
+        timeout-minutes: 1
+        run: |
+          file=tests/e2e/csv-sql-hydration-window.spec.ts
+          node node_modules/oxfmt/bin/oxfmt --stdin-filepath "$file" < "$file" > test-results/phase-formatted-spec.txt
       - run: npm run build
       - run: npx tsc --noEmit
       - run: npx playwright install --with-deps chromium

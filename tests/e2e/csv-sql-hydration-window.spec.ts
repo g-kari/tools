@@ -28,7 +28,7 @@ test.afterEach(async ({ page }, testInfo) => {
  * Diagnostic candidate, not published or runtime-validated.
  * Exercise the narrow interval after React installs document-root event handlers,
  * before its first scheduled hydration task. The original 26 cases stay unchanged.
- * selectionchange is a React 18 phase heuristic, not a root identity proof. This
+ * Document input capture is a phase heuristic, not a root identity proof. This
  * synthetic InputEvent has isTrusted=false and is not a production reproduction.
  */
 for (const width of [1280, 390]) {
@@ -69,9 +69,10 @@ for (const width of [1280, 390]) {
       document.addEventListener = new Proxy(original, {
         apply(target, thisArg, args) {
           const result = Reflect.apply(target, thisArg, args);
-          // React 18 installs selectionchange last on the owner document. This is a
-          // deliberate phase probe, not an assumption that network load means ready.
-          if (!state.enabled || thisArg !== document || args[0] !== "selectionchange" || state.armed) {
+          // React 18 installs input capture on the document root synchronously.
+          // A microtask runs after the registration stack, not during that loop.
+          // selectionchange is skipped for a document root by its dedup marker.
+          if (!state.enabled || thisArg !== document || args[0] !== "input" || args[2] !== true || state.armed) {
             return result;
           }
           observations.push({
