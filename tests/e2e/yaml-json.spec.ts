@@ -174,8 +174,12 @@ for (const viewport of [
       const copy = page.getByRole("button", { name: "出力結果をクリップボードにコピー" });
       const convert = page.locator("button.btn-primary");
       const error = page.getByRole("alert", { name: "変換エラー", exact: true });
+      // The route's mount effect focuses this input after hydration; do not fill SSR-only markup.
+      await expect(input).toBeFocused();
       await input.fill("user:\n  name: first");
       await convert.click();
+      await expect(output).toHaveValue('{\n  "user": {\n    "name": "first"\n  }\n}');
+      await expect(copy).toBeEnabled();
       const first = await output.inputValue();
       await copy.click();
       expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(first);

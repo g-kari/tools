@@ -29,6 +29,10 @@ on:
       - "app/utils/xml-json.ts"
       - "app/routes/json-to-ts.tsx"
       - "app/utils/json-to-ts.ts"
+      - "app/routes/env-parser.tsx"
+      - "app/utils/env-parser.ts"
+      - "tests/unit/env-parser*.test.ts"
+      - "tests/e2e/env-parser.spec.ts"
       - "app/components/**"
       - "app/hooks/**"
       - "app/styles/base.css"
@@ -88,6 +92,10 @@ on:
       - "app/utils/xml-json.ts"
       - "app/routes/json-to-ts.tsx"
       - "app/utils/json-to-ts.ts"
+      - "app/routes/env-parser.tsx"
+      - "app/utils/env-parser.ts"
+      - "tests/unit/env-parser*.test.ts"
+      - "tests/e2e/env-parser.spec.ts"
       - "app/components/**"
       - "app/hooks/**"
       - "app/styles/base.css"
@@ -208,6 +216,11 @@ jobs:
           WRANGLER_SEND_METRICS: "false"
       - if: matrix.suite == 'generators'
         run: npx playwright test --config tests/browser/csv-json/curl-to-fetch-app.config.ts
+        env:
+          CI: true
+          WRANGLER_SEND_METRICS: "false"
+      - if: matrix.suite == 'generators'
+        run: npx playwright test --config tests/browser/csv-json/env-parser-app.config.ts
         env:
           CI: true
           WRANGLER_SEND_METRICS: "false"

@@ -80,6 +80,12 @@ export const releases: Release[] = [
     entries: [
       {
         type: "fix",
+        title: ".envのYAML出力で文字列の値とキー名を保持",
+        description:
+          "数値・true・null・日付に見える値や引用符を文字列として保持し、キー名の大文字小文字を区別します。重複キーは最後の値を使用します。YAMLの表記は引用符付きに変わりますが、入力のパース・JSON・Shell exportは変更しません。",
+      },
+      {
+        type: "fix",
         title: "INI変換で特殊なセクション名とキーを保持",
         description:
           "__proto__・constructorなども通常のデータとして扱い、項目の欠落や継承元への書き込みを防ぎます。両方向の変換・重複キーの配列化・統計に対応します。",
