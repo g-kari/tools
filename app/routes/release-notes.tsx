@@ -39,6 +39,18 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
+    version: "2026.11.06",
+    date: "2026-11-06",
+    entries: [
+      {
+        type: "fix",
+        title: "cURL変換で起動前の入力と設定を保持",
+        description:
+          "起動前に編集したcURL入力とfetch/axios・TypeScript設定を一緒に一度だけ引き継ぎ、最初のモード切替で入力が消える不具合を修正しました。その後のクリア・サンプル読み込み・再編集と変換規則は維持します。",
+      },
+    ],
+  },
+  {
     version: "2026.11",
     date: "2026-11-05",
     entries: [
@@ -66,6 +78,12 @@ export const releases: Release[] = [
     version: "2026.10.19",
     date: "2026-10-19",
     entries: [
+      {
+        type: "fix",
+        title: "cURL変換で引用符や改行を含む値を保持",
+        description:
+          "URL・ヘッダー・本文の特殊文字をJavaScript文字列として出力し、fetch/axiosの生成コードが構文エラーになる不具合を修正しました。入力URLへの通信やシェル解析規則の変更は行いません。",
+      },
       {
         type: "fix",
         title: "JSON→GraphQLの型名衝突で項目が欠落する不具合を修正",
