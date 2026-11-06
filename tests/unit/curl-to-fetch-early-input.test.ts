@@ -104,6 +104,8 @@ describe("cURL input and options across server rendering and hydration", () => {
       await hydrate(strict, () => {
         radio("axios").click();
         typed().click();
+        expect(radio("axios").checked).toBe(true);
+        expect(typed().checked).toBe(true);
       });
       expectCode(early, { mode: "axios", typescript: true });
       act(() => button("入力をクリア").click());
@@ -161,6 +163,8 @@ describe("cURL input and options across server rendering and hydration", () => {
         () => {
           radio("axios").click();
           typed().click();
+          expect(radio("axios").checked).toBe(true);
+          expect(typed().checked).toBe(true);
         },
         undefined,
         "",
