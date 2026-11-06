@@ -32,7 +32,10 @@ test.afterEach(async ({ page }, testInfo) => {
  * synthetic InputEvent has isTrusted=false and is not a production reproduction.
  */
 for (const width of [1280, 390]) {
-  test(`CSV SQL first native input during root hydration at ${width}px`, async ({ page, baseURL }) => {
+  test(`CSV SQL first native input during root hydration at ${width}px`, async ({
+    page,
+    baseURL,
+  }) => {
     await page.setViewportSize({ width, height: 900 });
     const origin = new URL(baseURL!).origin;
     let releaseScripts!: () => void;
@@ -72,7 +75,13 @@ for (const width of [1280, 390]) {
           // React 18 installs input capture on the document root synchronously.
           // A microtask runs after the registration stack, not during that loop.
           // selectionchange is skipped for a document root by its dedup marker.
-          if (!state.enabled || thisArg !== document || args[0] !== "input" || args[2] !== true || state.armed) {
+          if (
+            !state.enabled ||
+            thisArg !== document ||
+            args[0] !== "input" ||
+            args[2] !== true ||
+            state.armed
+          ) {
             return result;
           }
           observations.push({
