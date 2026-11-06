@@ -130,13 +130,6 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx vp check
-      - name: Show cURL formatting diff after validation failure
-        if: failure()
-        timeout-minutes: 1
-        run: |
-          file=tests/e2e/curl-to-fetch-early-input.spec.ts
-          node node_modules/oxfmt/bin/oxfmt --stdin-filepath "$file" < "$file" > "$RUNNER_TEMP/curl-spec-formatted.ts"
-          diff -u "$file" "$RUNNER_TEMP/curl-spec-formatted.ts" || test "$?" -eq 1
       - run: npx vp test run
       - run: npm run build
       - run: npx tsc --noEmit
