@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "../browser/csv-json/url-app-test";
 
 test.describe("JSON→GraphQLスキーマ生成 - E2E Tests", () => {
   test.describe.configure({ timeout: 10000 });
@@ -6,6 +6,24 @@ test.describe("JSON→GraphQLスキーマ生成 - E2E Tests", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/json-to-graphql");
     await page.waitForLoadState("networkidle");
+  });
+
+  test("同名のネスト型を分離して再生成後も項目を保持する", async ({ page }) => {
+    const input = page.locator("#jsonInput");
+    const output = page.locator('[role="region"][aria-live="polite"]');
+    await input.fill(
+      '{"billing":{"address":{"city":"Tokyo"}},"shipping":{"address":{"zip":"100"}}}',
+    );
+    await page.getByRole("button", { name: "GraphQLスキーマを生成する", exact: true }).click();
+    await expect(output).toContainText("type Address2");
+    await expect(output).toContainText("zip: String!");
+    await expect(output).toContainText("address: Address2!");
+    await page.locator("#jtg-root-type-name").fill("Address");
+    await page.getByRole("button", { name: "GraphQLスキーマを生成する", exact: true }).click();
+    await expect(output).toContainText("type Address3");
+    await expect(output).toContainText("address: Address3!");
+    await expect(output).toContainText("city: String!");
+    await expect(output).toContainText("zip: String!");
   });
 
   test("ページタイトルが表示される", async ({ page }) => {
@@ -113,7 +131,9 @@ test.describe("JSON→GraphQLスキーマ生成 - E2E Tests", () => {
     const generateButton = page.locator("button", { hasText: "スキーマ生成" });
     await generateButton.click();
 
-    const errorArea = page.locator('[role="alert"]');
+    const errorArea = page
+      .getByRole("form", { name: "JSON→GraphQLスキーマ生成フォーム" })
+      .getByRole("alert");
     await expect(errorArea).toBeVisible({ timeout: 3000 });
   });
 });
