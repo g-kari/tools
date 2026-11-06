@@ -130,13 +130,6 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx vp check
-      - name: Show cURL route formatting diff after validation failure
-        if: failure()
-        timeout-minutes: 1
-        run: |
-          file=app/routes/curl-to-fetch.tsx
-          node node_modules/oxfmt/bin/oxfmt --stdin-filepath "$file" < "$file" > "$RUNNER_TEMP/curl-route-formatted.tsx"
-          diff -u "$file" "$RUNNER_TEMP/curl-route-formatted.tsx" || test "$?" -eq 1
       - run: npx vp test run
       - run: npm run build
       - run: npx tsc --noEmit

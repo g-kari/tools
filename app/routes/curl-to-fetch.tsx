@@ -95,21 +95,24 @@ function CurlToFetchPage() {
   const hasAdoptedForm = useRef(false);
 
   /** Adopt every native SSR edit before a controlled render can replace it. */
-  const attachForm = useCallback((form: HTMLDivElement | null) => {
-    if (!form || hasAdoptedForm.current) return;
-    const input = form.querySelector<HTMLTextAreaElement>("#ctf-curl-input");
-    const axios = form.querySelector<HTMLInputElement>('input[name="ctf-mode"][value="axios"]');
-    const typed = form.querySelector<HTMLInputElement>(".ctf-checkbox");
-    if (!input || !axios || !typed) return;
-    // Read the complete snapshot before any setter. Later edits, samples and Clear own state.
-    const initialInput = input.value;
-    const initialMode = hydrationMode ?? (axios.checked ? "axios" : "fetch");
-    const initialTypescript = typed.checked;
-    hasAdoptedForm.current = true;
-    setCurlInput(initialInput);
-    setMode(initialMode);
-    setTypescript(initialTypescript);
-  }, [hydrationMode]);
+  const attachForm = useCallback(
+    (form: HTMLDivElement | null) => {
+      if (!form || hasAdoptedForm.current) return;
+      const input = form.querySelector<HTMLTextAreaElement>("#ctf-curl-input");
+      const axios = form.querySelector<HTMLInputElement>('input[name="ctf-mode"][value="axios"]');
+      const typed = form.querySelector<HTMLInputElement>(".ctf-checkbox");
+      if (!input || !axios || !typed) return;
+      // Read the complete snapshot before any setter. Later edits, samples and Clear own state.
+      const initialInput = input.value;
+      const initialMode = hydrationMode ?? (axios.checked ? "axios" : "fetch");
+      const initialTypescript = typed.checked;
+      hasAdoptedForm.current = true;
+      setCurlInput(initialInput);
+      setMode(initialMode);
+      setTypescript(initialTypescript);
+    },
+    [hydrationMode],
+  );
 
   const opts: ConvertOptions = { mode, typescript };
 
