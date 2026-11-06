@@ -72,7 +72,9 @@ test.describe("startup without JavaScript", () => {
     test(`SSR content and native input remain available at ${width}px`, async ({ page }) => {
       await page.setViewportSize({ width, height: 900 });
       await page.goto("/csv-sql");
-      await expect(page.getByRole("heading", { name: "Web ツール集", exact: true })).toBeVisible();
+      const heading = page.getByRole("heading", { level: 1 });
+      await expect(heading).toBeVisible();
+      await expect(heading).toHaveText("Web ツール集");
       const input = page.getByLabel("CSV入力", { exact: true });
       await expect(input).toBeEditable();
       await input.fill("id,name\n6,no-js");
