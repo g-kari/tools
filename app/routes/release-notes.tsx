@@ -39,6 +39,18 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
+    version: "2026.11.06",
+    date: "2026-11-06",
+    entries: [
+      {
+        type: "fix",
+        title: "cURL変換で起動前の入力と設定を保持",
+        description:
+          "起動前に編集したcURL入力とfetch/axios・TypeScript設定を一緒に一度だけ引き継ぎ、最初のモード切替で入力が消える不具合を修正しました。その後のクリア・サンプル読み込み・再編集と変換規則は維持します。",
+      },
+    ],
+  },
+  {
     version: "2026.11",
     date: "2026-11-05",
     entries: [

@@ -64,6 +64,8 @@ Base85デコードは、ASCII85の末尾1文字と、32ビットの範囲を超�
 
 cURL→fetch/axios変換は、URL・HTTPメソッド・ヘッダー名/値・JSON以外の本文に含まれる引用符・バックスラッシュ・制御文字をJavaScript文字列として保持します。生成はブラウザー内だけで行い、入力URLへ通信しません。シェル構文の解析範囲、JSON本文の既存の正規化、HTTPリクエストの実行可能性そのものは変更・保証しません。
 
+ページの起動前に編集したcURL入力とfetch/axios・TypeScript設定も、一度だけ一緒に引き継ぎます。初回のモード変更で入力が消えず、その後のクリア・サンプル・再入力も保持します。
+
 ## 新しいツールを追加するには
 
 [`docs/tools-guide.md`](docs/tools-guide.md) にテンプレートと手順をまとめています。最小限のチェックリストは [`.claude/rules/new-tool.md`](.claude/rules/new-tool.md) にあります。
