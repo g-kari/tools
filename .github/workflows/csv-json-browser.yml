@@ -160,7 +160,7 @@ jobs:
       matrix:
         suite: [core, generators]
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
