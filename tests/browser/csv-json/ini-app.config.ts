@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 /** Bounded real-shell/SSR INI validation using the already-built local application. */
 export default defineConfig({
   testDir: "../../e2e",
-  testMatch: "ini-parser.spec.ts",
+  testMatch: ["ini-parser-early-input.spec.ts", "ini-parser.spec.ts"],
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
   retries: 0,
