@@ -260,3 +260,81 @@ jobs:
         env:
           SHARD_RESULT: ${{ needs.browser_shard.result }}
         run: test "$SHARD_RESULT" = success
+
+  # Temporary read-only source comparison. Remove after diagnosis, before merge.
+  csv_sql_phase_probe:
+    name: CSV SQL phase (${{ matrix.source }})
+    if: github.event_name == 'pull_request' && github.event.pull_request.number == 315
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - source: main2901
+            ref: 290196672ec908485b65a0354ab930492e0a2eb5
+          - source: pr6df7
+            ref: 6df7cc472f02d035d4d82a7aaa019f64ec18bbee
+    defaults:
+      run:
+        working-directory: runtime
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha }}
+          path: probe
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+          ref: ${{ matrix.ref }}
+          path: runtime
+      - name: Overlay only the identical public diagnostic test and config
+        run: |
+          cp ../probe/tests/e2e/csv-sql-hydration-window.spec.ts tests/e2e/csv-sql-hydration-window.spec.ts
+          cp ../probe/tests/browser/csv-json/csv-sql-hydration-window.config.ts tests/browser/csv-json/csv-sql-hydration-window.config.ts
+          test "$(git rev-parse HEAD)" = "${{ matrix.ref }}"
+          git diff --exit-code
+          test "$(git ls-files --others --exclude-standard | LC_ALL=C sort)" = "$(printf '%s\n' tests/browser/csv-json/csv-sql-hydration-window.config.ts tests/e2e/csv-sql-hydration-window.spec.ts)"
+          mkdir -p test-results
+          git rev-parse HEAD > test-results/phase-runtime-source.txt
+          git -C ../probe rev-parse HEAD > test-results/phase-probe-source.txt
+          sha256sum tests/e2e/csv-sql-hydration-window.spec.ts tests/browser/csv-json/csv-sql-hydration-window.config.ts tests/browser/csv-json/url-app-test.ts tests/browser/csv-json/csv-sql-app.config.ts package-lock.json > test-results/phase-input-sha256.txt
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: runtime/package-lock.json
+      - run: npm ci
+      - name: Preserve exact locked public startup source for diagnosis
+        run: |
+          node --input-type=module <<'JS'
+          import fs from "node:fs";
+          import crypto from "node:crypto";
+          const root = "node_modules/@tanstack/react-start-client/";
+          const pkg = JSON.parse(fs.readFileSync(root + "package.json", "utf8"));
+          if (pkg.version !== "1.166.25") throw new Error("Unexpected locked startup version");
+          const records = [];
+          for (const file of ["StartClient", "hydrateStart"]) {
+            const source = ["dist/esm/" + file + ".js", "src/" + file + ".tsx", "src/" + file + ".ts"].find((path) => fs.existsSync(root + path));
+            if (!source) throw new Error("Public startup source missing: " + file);
+            const bytes = fs.readFileSync(root + source);
+            if (bytes.length > 65536) throw new Error("Public startup source too large");
+            fs.writeFileSync("test-results/locked-" + file + ".txt", bytes);
+            records.push({ file: source, bytes: bytes.length, sha256: crypto.createHash("sha256").update(bytes).digest("hex") });
+          }
+          fs.writeFileSync("test-results/locked-startup-manifest.json", JSON.stringify({ version: pkg.version, records }, null, 2));
+          JS
+      - run: npm run build
+      - run: npx tsc --noEmit
+      - run: npx playwright install --with-deps chromium
+        timeout-minutes: 10
+      - run: npx playwright test --config tests/browser/csv-json/csv-sql-hydration-window.config.ts
+        env:
+          CI: true
+      - uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: csv-sql-hydration-phase-${{ matrix.source }}
+          path: runtime/test-results/
+          retention-days: 1
