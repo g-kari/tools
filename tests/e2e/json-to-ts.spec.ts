@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "../browser/csv-json/url-app-test";
 
 test.describe("JSON→TypeScript型変換 - E2E Tests", () => {
   test.describe.configure({ timeout: 10000 });
@@ -43,6 +43,37 @@ test.describe("JSON→TypeScript型変換 - E2E Tests", () => {
     await expect(outputArea).toContainText("interface");
     await expect(outputArea).toContainText("name: string");
     await expect(outputArea).toContainText("age: number");
+  });
+
+  test("特殊キーを保持してinterface・typeへ変換できる", async ({ page }) => {
+    const json = JSON.stringify({
+      "user-name": "Alice",
+      'quote"key': true,
+      "line\nbreak": 1,
+      "": { "123": { value: true } },
+    });
+    const input = page.locator("#jsonInput");
+    const output = page.locator('[role="region"][aria-live="polite"]');
+    await input.fill(json);
+    await page.getByRole("button", { name: "TypeScript型定義を生成する", exact: true }).click();
+    await expect(output).toContainText('"user-name": string;');
+    await expect(output).toContainText('"quote\\"key": boolean;');
+    await expect(output).toContainText('"line\\nbreak": number;');
+    await expect(output).toContainText('"": Value;');
+    await expect(output).toContainText("interface Type123");
+    await expect(input).toHaveValue(json);
+    await page.locator('input[type="radio"][name="typeStyle"]').nth(1).check();
+    await page.locator('input[type="checkbox"]').first().check();
+    await page.getByRole("button", { name: "TypeScript型定義を生成する", exact: true }).click();
+    await expect(output).toContainText("type Root =");
+    await expect(output).toContainText('"user-name"?: string;');
+    await expect(output).toContainText('"line\\nbreak"?: number;');
+    await expect(input).toHaveValue(json);
+    await page.getByRole("button", { name: "入力と結果をクリアする", exact: true }).click();
+    await expect(input).toHaveValue("");
+    await expect(
+      page.getByRole("button", { name: "生成された型定義をクリップボードにコピーする" }),
+    ).toBeDisabled();
   });
 
   test("クリアボタンが機能する", async ({ page }) => {
