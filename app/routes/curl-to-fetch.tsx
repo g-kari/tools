@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback, useRef, useId } from "react";
 import { useToast } from "../components/Toast";
 import { Button } from "~/components/ui/button";
 import { TipsCard } from "~/components/TipsCard";
@@ -80,9 +80,39 @@ function CurlToFetchPage() {
   const { copy } = useClipboard();
   const { statusRef, announceStatus } = useStatusAnnouncement();
 
+  const formId = useId();
   const [curlInput, setCurlInput] = useState("");
   const [mode, setMode] = useState<"fetch" | "axios">("fetch");
+  // Capture native radio edits before React 18 restores radio defaults during hydration.
+  // Keep this snapshot separate from rendered state so the first client markup still matches SSR.
+  const [hydrationMode] = useState<"fetch" | "axios" | null>(() => {
+    if (typeof document === "undefined") return null;
+    const form = document.getElementById(formId);
+    const axios = form?.querySelector<HTMLInputElement>('input[name="ctf-mode"][value="axios"]');
+    return axios ? (axios.checked ? "axios" : "fetch") : null;
+  });
   const [typescript, setTypescript] = useState(false);
+  const hasAdoptedForm = useRef(false);
+
+  /** Adopt every native SSR edit before a controlled render can replace it. */
+  const attachForm = useCallback(
+    (form: HTMLDivElement | null) => {
+      if (!form || hasAdoptedForm.current) return;
+      const input = form.querySelector<HTMLTextAreaElement>("#ctf-curl-input");
+      const axios = form.querySelector<HTMLInputElement>('input[name="ctf-mode"][value="axios"]');
+      const typed = form.querySelector<HTMLInputElement>(".ctf-checkbox");
+      if (!input || !axios || !typed) return;
+      // Read the complete snapshot before any setter. Later edits, samples and Clear own state.
+      const initialInput = input.value;
+      const initialMode = hydrationMode ?? (axios.checked ? "axios" : "fetch");
+      const initialTypescript = typed.checked;
+      hasAdoptedForm.current = true;
+      setCurlInput(initialInput);
+      setMode(initialMode);
+      setTypescript(initialTypescript);
+    },
+    [hydrationMode],
+  );
 
   const opts: ConvertOptions = { mode, typescript };
 
@@ -115,7 +145,7 @@ function CurlToFetchPage() {
 
   return (
     <>
-      <div className="ctf-container">
+      <div id={formId} className="ctf-container" ref={attachForm}>
         {/* 入力セクション */}
         <section className="ctf-section" aria-labelledby="ctf-input-heading">
           <h2 id="ctf-input-heading" className="section-title">

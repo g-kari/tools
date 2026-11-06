@@ -1,3 +1,4 @@
+import ts from "typescript";
 import { describe, it, expect } from "vite-plus/test";
 import { generateTypeScript, getSampleJson } from "../../app/utils/json-to-ts";
 import type { JsonToTsOptions } from "../../app/utils/json-to-ts";
@@ -11,6 +12,58 @@ const defaultOptions: JsonToTsOptions = {
 
 describe("JSON→TypeScript型変換", () => {
   describe("generateTypeScript", () => {
+    it.each([true, false])("特殊キーを元の名前のまま出力する (interface=%s)", (useInterface) => {
+      const keys = [
+        "user-name",
+        "first name",
+        'quote"key',
+        "back\\slash",
+        "line\nbreak",
+        "",
+        "123",
+        "日本語",
+        "__proto__",
+        "$id",
+      ];
+      const json = JSON.stringify(Object.fromEntries(keys.map((key) => [key, "value"])));
+      for (const optional of [true, false]) {
+        const result = generateTypeScript(json, { ...defaultOptions, useInterface, optional });
+        const parsed = ts.createSourceFile("generated.ts", result, ts.ScriptTarget.Latest, true);
+        const diagnostics = ts.transpileModule(result, { reportDiagnostics: true }).diagnostics;
+        expect(diagnostics).toEqual([]);
+        const declaration = parsed.statements[0] as
+          | ts.InterfaceDeclaration
+          | ts.TypeAliasDeclaration;
+        const members = ts.isInterfaceDeclaration(declaration)
+          ? declaration.members
+          : (declaration.type as ts.TypeLiteralNode).members;
+        expect(
+          members.map((member) => (member.name as ts.Identifier | ts.StringLiteral).text),
+        ).toEqual(Object.keys(JSON.parse(json)));
+        expect(
+          members.every((member) => !!(member as ts.PropertySignature).questionToken === optional),
+        ).toBe(true);
+        expect(result).toContain("$id");
+        expect(result).toContain("__proto__");
+      }
+    });
+
+    it.each([true, false])(
+      "特殊キーのネストと配列に有効な型名を付ける (interface=%s)",
+      (useInterface) => {
+        const result = generateTypeScript(
+          '{"": {"123": {"name": "one"}}, "123": [{"line\\nbreak": {"value": true}}], "---": {"id": 1}}',
+          { ...defaultOptions, useInterface },
+        );
+        expect(ts.transpileModule(result, { reportDiagnostics: true }).diagnostics).toEqual([]);
+        expect(result).toContain('"": Value;');
+        expect(result).toContain('"123": Type123;');
+        expect(result).toContain('"123": Type123Item[];');
+        expect(result).toContain('"line\\nbreak": LineBreak;');
+        expect(result).toContain('"---": Value2;');
+      },
+    );
+
     it("文字列プロパティの型生成", () => {
       const result = generateTypeScript('{"name":"test"}', defaultOptions);
       expect(result).toContain("name: string;");
