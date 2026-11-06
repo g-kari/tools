@@ -195,7 +195,9 @@ test("INI keyboard editing and the first enabled checkbox keep focus and input",
 
 test.describe("INI without JavaScript", () => {
   test.use({ javaScriptEnabled: false });
-  test("keeps the input editable, actions unavailable and explanation visible", async ({ page }) => {
+  test("keeps the input editable, actions unavailable and explanation visible", async ({
+    page,
+  }) => {
     await page.goto("/ini-parser");
     const input = page.locator("#ini-input");
     await expectUnready(page);
