@@ -214,7 +214,7 @@ describe("toYAML", () => {
       { key: "KEY2", value: "value2" },
     ];
     const result = toYAML(entries);
-    expect(result).toBe("KEY1: value1\nKEY2: value2");
+    expect(result).toBe('KEY1: "value1"\nKEY2: "value2"');
   });
 
   it("空のエントリ配列は空文字列になる", () => {
@@ -240,10 +240,10 @@ describe("toYAML", () => {
     expect(result).toContain('"');
   });
 
-  it("シンプルな値はクォートなしで出力される", () => {
+  it("数値に見える値も文字列としてクォートされる", () => {
     const entries: EnvEntry[] = [{ key: "PORT", value: "3000" }];
     const result = toYAML(entries);
-    expect(result).toBe("PORT: 3000");
+    expect(result).toBe('PORT: "3000"');
   });
 });
 
@@ -305,8 +305,8 @@ describe("ラウンドトリップ変換", () => {
     const input = "PORT=3000\nHOST=localhost";
     const result = parseEnv(input);
     const yaml = toYAML(result.entries);
-    expect(yaml).toContain("PORT: 3000");
-    expect(yaml).toContain("HOST: localhost");
+    expect(yaml).toContain('PORT: "3000"');
+    expect(yaml).toContain('HOST: "localhost"');
   });
 
   it("parseEnvしてtoExportsするとexport文になる", () => {

@@ -206,3 +206,84 @@ describe("looksLikeBinary", () => {
     expect(looksLikeBinary("   ")).toBe(false);
   });
 });
+
+describe("バイナリのグループ幅", () => {
+  const mixedWidthError =
+    "4ビットと8ビットのグループが混在しています。すべて8ビット（1バイト）、またはすべて4ビット（ニブル）のグループにそろえてください。";
+  const separators = [" ", ",", "\n", "\t", "\r\n, \t"];
+  const mixedGroups = [
+    ["0100", "0001", "01000010"],
+    ["01000001", "0100", "0010"],
+    ["0100", "01000010", "0001"],
+    ["0100", "01000010"],
+    ["01000001", "0100"],
+  ];
+
+  for (const separator of separators) {
+    it.each(mixedGroups)(
+      `区切り ${JSON.stringify(separator)} で混在した %j を部分的にデコードしない`,
+      (...groups) => {
+        const input = `, ${groups.join(separator)} ,`;
+        expect(validateBinary(input)).toBe(mixedWidthError);
+        expect(binaryToText(input)).toEqual({ success: false, error: mixedWidthError });
+      },
+    );
+
+    for (const groupSize of [4, 8] as const) {
+      it.each(["AB", "あ🙂", "\0\n"])(
+        `${groupSize}ビットに統一した %j を区切り ${JSON.stringify(separator)} で保持する`,
+        (text) => {
+          const input = `, ${textToBinary(text, "space", groupSize).encoded.split(" ").join(separator)} ,`;
+          expect(validateBinary(input)).toBeNull();
+          expect(binaryToText(input)).toEqual({
+            success: true,
+            decoded: text,
+            bytes: new TextEncoder().encode(text),
+          });
+        },
+      );
+    }
+  }
+
+  it("成功後の混在エラーに旧結果を含めず、幅を修復すると再デコードできる", () => {
+    expect(binaryToText("01000001 01000010")).toEqual({
+      success: true,
+      decoded: "AB",
+      bytes: new Uint8Array([65, 66]),
+    });
+    expect(binaryToText("0100 0001 01000010")).toEqual({
+      success: false,
+      error: mixedWidthError,
+    });
+    expect(binaryToText("0100 0001 0100 0010")).toEqual({
+      success: true,
+      decoded: "AB",
+      bytes: new Uint8Array([65, 66]),
+    });
+  });
+
+  it.each([
+    ["0100ABC1", "無効な文字"],
+    ["010 101", "ビット列の長さが不正"],
+    ["0100000101000010", "ビット列の長さが不正"],
+    ["0100", "ニブル（4ビット）の数が奇数"],
+    ["0100 0001 0100", "ニブル（4ビット）の数が奇数"],
+    ["11111111", "有効な UTF-8 テキストにデコードできません"],
+    ["1111 1111", "有効な UTF-8 テキストにデコードできません"],
+  ])("既存の入力エラーを保持する: %s", (input, message) => {
+    const result = binaryToText(input);
+    expect(result.success).toBe(false);
+    if (!result.success) expect(result.error).toContain(message);
+    expect(result).not.toHaveProperty("decoded");
+    expect(result).not.toHaveProperty("bytes");
+  });
+
+  it.each(["", " \t\r\n", ", ,\n"])("空の入力を保持する: %j", (input) => {
+    expect(validateBinary(input)).toBeNull();
+    expect(binaryToText(input)).toEqual({
+      success: true,
+      decoded: "",
+      bytes: new Uint8Array(0),
+    });
+  });
+});

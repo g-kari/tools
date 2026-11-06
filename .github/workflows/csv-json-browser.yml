@@ -3,6 +3,20 @@ name: CSV JSON column preservation
 on:
   pull_request:
     paths:
+      - "app/routes/json-to-graphql.tsx"
+      - "app/utils/json-to-graphql.ts"
+      - "tests/unit/json-to-graphql.test.ts"
+      - "tests/e2e/json-to-graphql.spec.ts"
+      - "app/routes/curl-to-fetch.tsx"
+      - "app/utils/curl-to-fetch.ts"
+      - "tests/unit/curl-to-fetch*.test.ts"
+      - "tests/e2e/curl-to-fetch*.spec.ts"
+      - "app/routes/ini-parser.tsx"
+      - "app/utils/ini-parser.ts"
+      - "tests/unit/ini*.test.ts"
+      - "tests/e2e/ini-parser.spec.ts"
+      - "tests/e2e/ini-parser-early-input.spec.ts"
+      - "tests/unit/ini-parser-early-input.test.ts"
       - "app/routes/__root.tsx"
       - "tests/e2e/navigation-focus.spec.ts"
       - "tests/unit/nav-category-focus.test.ts"
@@ -10,10 +24,20 @@ on:
       - "app/routes/csv-sql.tsx"
       - "app/utils/csv-sql.ts"
       - "app/routes/url-encode.tsx"
+      - "app/routes/url-parser.tsx"
+      - "app/utils/url-parser.ts"
       - "app/routes/base64.tsx"
+      - "app/routes/text-replace.tsx"
+      - "app/utils/text-replace.ts"
       - "app/routes/yaml-json.tsx"
       - "app/routes/xml-json.tsx"
       - "app/utils/xml-json.ts"
+      - "app/routes/json-to-ts.tsx"
+      - "app/utils/json-to-ts.ts"
+      - "app/routes/env-parser.tsx"
+      - "app/utils/env-parser.ts"
+      - "tests/unit/env-parser*.test.ts"
+      - "tests/e2e/env-parser.spec.ts"
       - "app/components/**"
       - "app/hooks/**"
       - "app/styles/base.css"
@@ -21,6 +45,7 @@ on:
       - "app/styles/components.css"
       - "app/styles/tools/csv-json.css"
       - "app/styles/tools/csv-sql.css"
+      - "app/styles/tools/url-parser.css"
       - "app/styles/tools/number-base.css"
       - "tests/browser/csv-json/**"
       - "tests/unit/csv-json*.test.ts"
@@ -29,17 +54,37 @@ on:
       - "tests/e2e/csv-json.spec.ts"
       - "tests/unit/url-encode*.test.ts"
       - "tests/e2e/url-encode.spec.ts"
+      - "tests/e2e/url-parser.spec.ts"
+      - "tests/unit/url-parser.test.ts"
       - "tests/e2e/base64-input-recovery.spec.ts"
+      - "tests/e2e/text-replace.spec.ts"
+      - "tests/unit/text-replace.test.ts"
       - "tests/unit/base64-input-recovery.test.ts"
       - "tests/unit/yaml-json*.test.ts"
       - "tests/e2e/yaml-json.spec.ts"
       - "tests/unit/xml-json*.test.ts"
       - "tests/e2e/xml-json.spec.ts"
+      - "tests/unit/json-to-ts.test.ts"
+      - "tests/e2e/json-to-ts.spec.ts"
       - "package*.json"
       - ".github/workflows/csv-json-browser.yml"
   push:
     branches: [main]
     paths:
+      - "app/routes/json-to-graphql.tsx"
+      - "app/utils/json-to-graphql.ts"
+      - "tests/unit/json-to-graphql.test.ts"
+      - "tests/e2e/json-to-graphql.spec.ts"
+      - "app/routes/curl-to-fetch.tsx"
+      - "app/utils/curl-to-fetch.ts"
+      - "tests/unit/curl-to-fetch*.test.ts"
+      - "tests/e2e/curl-to-fetch*.spec.ts"
+      - "app/routes/ini-parser.tsx"
+      - "app/utils/ini-parser.ts"
+      - "tests/unit/ini*.test.ts"
+      - "tests/e2e/ini-parser.spec.ts"
+      - "tests/e2e/ini-parser-early-input.spec.ts"
+      - "tests/unit/ini-parser-early-input.test.ts"
       - "app/routes/__root.tsx"
       - "tests/e2e/navigation-focus.spec.ts"
       - "tests/unit/nav-category-focus.test.ts"
@@ -47,10 +92,20 @@ on:
       - "app/routes/csv-sql.tsx"
       - "app/utils/csv-sql.ts"
       - "app/routes/url-encode.tsx"
+      - "app/routes/url-parser.tsx"
+      - "app/utils/url-parser.ts"
       - "app/routes/base64.tsx"
+      - "app/routes/text-replace.tsx"
+      - "app/utils/text-replace.ts"
       - "app/routes/yaml-json.tsx"
       - "app/routes/xml-json.tsx"
       - "app/utils/xml-json.ts"
+      - "app/routes/json-to-ts.tsx"
+      - "app/utils/json-to-ts.ts"
+      - "app/routes/env-parser.tsx"
+      - "app/utils/env-parser.ts"
+      - "tests/unit/env-parser*.test.ts"
+      - "tests/e2e/env-parser.spec.ts"
       - "app/components/**"
       - "app/hooks/**"
       - "app/styles/base.css"
@@ -58,6 +113,7 @@ on:
       - "app/styles/components.css"
       - "app/styles/tools/csv-json.css"
       - "app/styles/tools/csv-sql.css"
+      - "app/styles/tools/url-parser.css"
       - "app/styles/tools/number-base.css"
       - "tests/browser/csv-json/**"
       - "tests/unit/csv-json*.test.ts"
@@ -66,12 +122,18 @@ on:
       - "tests/e2e/csv-json.spec.ts"
       - "tests/unit/url-encode*.test.ts"
       - "tests/e2e/url-encode.spec.ts"
+      - "tests/e2e/url-parser.spec.ts"
+      - "tests/unit/url-parser.test.ts"
       - "tests/e2e/base64-input-recovery.spec.ts"
+      - "tests/e2e/text-replace.spec.ts"
+      - "tests/unit/text-replace.test.ts"
       - "tests/unit/base64-input-recovery.test.ts"
       - "tests/unit/yaml-json*.test.ts"
       - "tests/e2e/yaml-json.spec.ts"
       - "tests/unit/xml-json*.test.ts"
       - "tests/e2e/xml-json.spec.ts"
+      - "tests/unit/json-to-ts.test.ts"
+      - "tests/e2e/json-to-ts.spec.ts"
       - "package*.json"
       - ".github/workflows/csv-json-browser.yml"
 
@@ -83,9 +145,14 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  browser:
+  browser_shard:
+    name: browser (${{ matrix.suite }})
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [core, generators]
     steps:
       - uses: actions/checkout@v6
         with:
@@ -101,31 +168,74 @@ jobs:
       - run: npm run build
       - run: npx tsc --noEmit
       - run: npx playwright install --with-deps chromium
-      - run: npx playwright test --config tests/browser/csv-json/navigation-focus-app.config.ts
+        timeout-minutes: 10
+      - if: matrix.suite == 'core'
+        run: npx playwright test --config tests/browser/csv-json/navigation-focus-app.config.ts
         env:
           CI: true
           WRANGLER_SEND_METRICS: "false"
       - run: npx vp build --config tests/browser/csv-json/vite.config.ts
-      - run: npx playwright test --config tests/browser/csv-json/playwright.config.ts
+      - if: matrix.suite == 'core'
+        run: npx playwright test --config tests/browser/csv-json/playwright.config.ts
         env:
           CI: true
-      - run: npx playwright test --config tests/browser/csv-json/url-app.config.ts
-        env:
-          CI: true
-          WRANGLER_SEND_METRICS: "false"
-      - run: npx playwright test --config tests/browser/csv-json/base64-app.config.ts
-        env:
-          CI: true
-          WRANGLER_SEND_METRICS: "false"
-      - run: npx playwright test --config tests/browser/csv-json/csv-sql-app.config.ts
+      - if: matrix.suite == 'core'
+        run: npx playwright test --config tests/browser/csv-json/url-app.config.ts
         env:
           CI: true
           WRANGLER_SEND_METRICS: "false"
-      - run: npx playwright test --config tests/browser/csv-json/xml-json-app.config.ts
+      - if: matrix.suite == 'core'
+        run: npx playwright test --config tests/browser/csv-json/url-parser-app.config.ts
         env:
           CI: true
           WRANGLER_SEND_METRICS: "false"
-      - run: npx playwright test --config tests/browser/csv-json/yaml-json-app.config.ts
+      - if: matrix.suite == 'core'
+        run: npx playwright test --config tests/browser/csv-json/base64-app.config.ts
+        env:
+          CI: true
+          WRANGLER_SEND_METRICS: "false"
+      - if: matrix.suite == 'core'
+        run: npx playwright test --config tests/browser/csv-json/ini-app.config.ts
+        env:
+          CI: true
+          WRANGLER_SEND_METRICS: "false"
+      - if: matrix.suite == 'core'
+        run: npx playwright test --config tests/browser/csv-json/csv-sql-app.config.ts
+        env:
+          CI: true
+          WRANGLER_SEND_METRICS: "false"
+      - if: matrix.suite == 'generators'
+        run: npx playwright test --config tests/browser/csv-json/xml-json-app.config.ts
+        env:
+          CI: true
+          WRANGLER_SEND_METRICS: "false"
+      - if: matrix.suite == 'generators'
+        run: npx playwright test --config tests/browser/csv-json/yaml-json-app.config.ts
+        env:
+          CI: true
+          WRANGLER_SEND_METRICS: "false"
+      - if: matrix.suite == 'generators'
+        run: npx playwright test --config tests/browser/csv-json/json-to-ts-app.config.ts
+        env:
+          CI: true
+          WRANGLER_SEND_METRICS: "false"
+      - if: matrix.suite == 'generators'
+        run: npx playwright test --config tests/browser/csv-json/json-to-graphql-app.config.ts
+        env:
+          CI: true
+          WRANGLER_SEND_METRICS: "false"
+      - if: matrix.suite == 'generators'
+        run: npx playwright test --config tests/browser/csv-json/text-replace-app.config.ts
+        env:
+          CI: true
+          WRANGLER_SEND_METRICS: "false"
+      - if: matrix.suite == 'generators'
+        run: npx playwright test --config tests/browser/csv-json/curl-to-fetch-app.config.ts
+        env:
+          CI: true
+          WRANGLER_SEND_METRICS: "false"
+      - if: matrix.suite == 'generators'
+        run: npx playwright test --config tests/browser/csv-json/env-parser-app.config.ts
         env:
           CI: true
           WRANGLER_SEND_METRICS: "false"
@@ -136,6 +246,17 @@ jobs:
       - uses: actions/upload-artifact@v6
         if: always()
         with:
-          name: csv-json-browser-results
+          name: csv-json-browser-results-${{ matrix.suite }}
           path: test-results/
           retention-days: 1
+
+  browser:
+    if: ${{ always() }}
+    needs: browser_shard
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    steps:
+      - name: Require every browser shard
+        env:
+          SHARD_RESULT: ${{ needs.browser_shard.result }}
+        run: test "$SHARD_RESULT" = success
