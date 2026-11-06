@@ -334,7 +334,9 @@ function IniParserTool() {
             : "操作の準備中です。先に入力したINIテキストは保持します。"}
         </p>
         <noscript>
-          <p>変換と各操作にはJavaScriptが必要です。入力欄は編集できますが、変換は実行されません。</p>
+          <p>
+            変換と各操作にはJavaScriptが必要です。入力欄は編集できますが、変換は実行されません。
+          </p>
         </noscript>
         {/* モード切替 */}
         <div className="ini-tabs" role="tablist" aria-label="変換モード">
