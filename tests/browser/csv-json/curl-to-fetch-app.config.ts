@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 /** Bounded real-shell/SSR cURL string-literal validation using the already-built local application. */
 export default defineConfig({
   testDir: "../../e2e",
-  testMatch: "curl-to-fetch.spec.ts",
+  testMatch: ["curl-to-fetch.spec.ts", "curl-to-fetch-early-input.spec.ts"],
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
   retries: 0,
