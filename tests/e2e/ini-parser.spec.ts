@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "../browser/csv-json/url-app-test";
 
 test.describe("INIファイルパーサー/フォーマッター", () => {
   test.beforeEach(async ({ page }) => {
