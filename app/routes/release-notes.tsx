@@ -80,6 +80,12 @@ export const releases: Release[] = [
     entries: [
       {
         type: "fix",
+        title: "通常のテキスト置換でドル記号を入力どおりに保持",
+        description:
+          "正規表現OFFの置換後は$&・$$等を置換記号として解釈せず、そのまま挿入します。全件・最初の1件とも対象です。置換記号を使う場合は正規表現をONにしてください。ONのキャプチャ参照・マッチ数・削除は維持します。",
+      },
+      {
+        type: "fix",
         title: "cURL変換で引用符や改行を含む値を保持",
         description:
           "URL・ヘッダー・本文の特殊文字をJavaScript文字列として出力し、fetch/axiosの生成コードが構文エラーになる不具合を修正しました。入力URLへの通信やシェル解析規則の変更は行いません。",
