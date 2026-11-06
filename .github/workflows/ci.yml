@@ -36,6 +36,14 @@ jobs:
         env:
           CI: true
 
+      - name: Show INI spec formatting diff after validation failure
+        if: failure()
+        timeout-minutes: 1
+        run: |
+          file=tests/e2e/ini-parser-early-input.spec.ts
+          node node_modules/oxfmt/bin/oxfmt --stdin-filepath "$file" < "$file" > "$RUNNER_TEMP/ini-spec-formatted.ts"
+          diff -u "$file" "$RUNNER_TEMP/ini-spec-formatted.ts" || test "$?" -eq 1
+
       - name: Unit tests
         run: npm test
         env:
