@@ -1,8 +1,9 @@
 import { hydrateRoot } from "react-dom/client";
-import { StartClient } from "@tanstack/react-start/client";
-import { createRouter } from "./router";
+import { RouterProvider } from "@tanstack/react-router";
+import { hydrateStart } from "@tanstack/react-start/client";
 
-const router = createRouter();
-
-// @ts-expect-error - TanStack Start framework internal
-hydrateRoot(document, <StartClient router={router} />);
+// Prepare the server router before React can synchronously hydrate the document
+// in response to an early focus or input event.
+export const hydration = hydrateStart().then((router) =>
+  hydrateRoot(document, <RouterProvider router={router} />),
+);
