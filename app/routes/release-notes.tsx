@@ -39,6 +39,18 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
+    version: "2026.11.07",
+    date: "2026-11-07",
+    entries: [
+      {
+        type: "security",
+        title: "TOML整形・変換で終端コメントによる停止を防止",
+        description:
+          "TOML解析ライブラリを更新し、配列やインラインテーブルが閉じないままコメントで終わる入力をエラーにします。多数のキーの解析も改善し、通常の整形・検証・JSON／YAML相互変換を維持します。ローカル日時への無効なオフセットは拒否します。",
+      },
+    ],
+  },
+  {
     version: "2026.11.06",
     date: "2026-11-06",
     entries: [
