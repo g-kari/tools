@@ -1,9 +1,9 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:recommended", "helpers:pinGitHubActionDigests"],
-  "automerge": true,
+  "automerge": false,
   "automergeType": "pr",
-  "platformAutomerge": true,
+  "platformAutomerge": false,
   "ignoreTests": false,
   "ignoreScripts": true,
   "rebaseWhen": "behind-base-branch",
@@ -14,7 +14,7 @@
     {
       "description": "Keep every dependency review-first unless explicitly allowed below.",
       "matchPackageNames": ["*"],
-      "automerge": true
+      "automerge": false
     },
     {
       "description": "Keep these updates manual until required real CI checks are enforced and verified.",
@@ -52,12 +52,7 @@
     {
       "description": "Fail closed: keep every dependency manual until required real CI checks are enforced and verified.",
       "matchPackageNames": ["*"],
-      "automerge": true
-    },
-    {
-      "matchUpdateTypes": ["minor", "patch"],
-      "matchCurrentVersion": "!/^0/",
-      "automerge": true
+      "automerge": false
     }
   ],
   "vulnerabilityAlerts": {
