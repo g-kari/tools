@@ -19,8 +19,15 @@ Before proposing a narrower auto-merge allowlist:
 
 The deleted generic Auto Merge workflow must not be restored as part of this guard. Changing this file does not cancel existing workflow runs or remove auto-merge that is already enabled on an open PR. Those need separate verification before claiming that all previously queued actions have stopped.
 
+## Browser CI compatibility
+
+Every job that installs Playwright browsers uses the explicit `ubuntu-22.04` GitHub-hosted image. The floating `ubuntu-latest` image moved to Ubuntu 26.04, which the locked Playwright version does not support. The existing Grapheme job already uses 22.04 because Ubuntu 24.04 blocks its downloaded Chromium sandbox. Reuse that supported image without disabling Chromium's sandbox, changing host security settings, or weakening the JSON Flatten isolation scripts.
+
+This pin is a compatibility repair, not a permanent upgrade plan. GitHub has announced that the Ubuntu 22.04 runner image will be unsupported in April 2027. Before that retirement, validate a supported browser/runtime combination on a newer runner while keeping the sandbox and existing checks enabled. Build-only and result-summary jobs keep their existing runners.
+
 References:
 
 - [Renovate platform auto-merge](https://docs.renovatebot.com/configuration-options/#platformautomerge)
 - [Renovate auto-merge configuration](https://docs.renovatebot.com/key-concepts/automerge/)
 - [GitHub required status checks](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches#require-status-checks-before-merging)
+- [GitHub-hosted Ubuntu runner images](https://github.com/actions/runner-images)
