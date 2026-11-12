@@ -1,9 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended",
-    "helpers:pinGitHubActionDigests"
-  ],
+  "extends": ["config:recommended", "helpers:pinGitHubActionDigests"],
   "automerge": true,
   "automergeType": "pr",
   "platformAutomerge": true,
@@ -16,21 +13,13 @@
   "packageRules": [
     {
       "description": "Keep every dependency review-first unless explicitly allowed below.",
-      "matchPackageNames": [
-        "*"
-      ],
+      "matchPackageNames": ["*"],
       "automerge": true
     },
     {
       "description": "Keep these updates manual until required real CI checks are enforced and verified.",
-      "matchManagers": [
-        "github-actions"
-      ],
-      "matchPackageNames": [
-        "actions/checkout",
-        "actions/setup-node",
-        "actions/upload-artifact"
-      ],
+      "matchManagers": ["github-actions"],
+      "matchPackageNames": ["actions/checkout", "actions/setup-node", "actions/upload-artifact"],
       "matchFileNames": [
         ".github/workflows/catalog-search-browser.yml",
         ".github/workflows/clipboard-browser.yml",
@@ -44,12 +33,7 @@
         ".github/workflows/json-pointer-browser.yml",
         ".github/workflows/markdown-preview-browser.yml"
       ],
-      "matchUpdateTypes": [
-        "minor",
-        "patch",
-        "digest",
-        "pinDigest"
-      ],
+      "matchUpdateTypes": ["minor", "patch", "digest", "pinDigest"],
       "minimumReleaseAge": "14 days",
       "minimumReleaseAgeBehaviour": "timestamp-required",
       "internalChecksFilter": "strict",
@@ -67,16 +51,11 @@
     },
     {
       "description": "Fail closed: keep every dependency manual until required real CI checks are enforced and verified.",
-      "matchPackageNames": [
-        "*"
-      ],
+      "matchPackageNames": ["*"],
       "automerge": true
     },
     {
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ],
+      "matchUpdateTypes": ["minor", "patch"],
       "matchCurrentVersion": "!/^0/",
       "automerge": true
     }
