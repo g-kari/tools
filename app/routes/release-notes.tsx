@@ -56,6 +56,12 @@ export const releases: Release[] = [
     entries: [
       {
         type: "fix",
+        title: "YAML変換の読み込み中に初回の操作が失われることを防止",
+        description:
+          "入力は先に編集できるまま、変換・クリア・モード・インデントの操作を読み込み完了まで無効にします。起動前の入力は引き継ぎ、JavaScriptが無効な場合は案内を表示します。",
+      },
+      {
+        type: "fix",
         title: "Base85の不正なグループによるデータ欠落を防止",
         description:
           "ASCII85の末尾1文字や32ビットを超えるASCII85・Z85のグループをエラーにし、部分的な結果を返しません。正しい端数・最大値・zによるゼロ圧縮は維持します。",
