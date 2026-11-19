@@ -125,10 +125,14 @@ describe("Seroval resolver provenance (GHSA-mv8w-475r-vwqw)", () => {
     expect(result[key]).toBe(result);
   });
 
-  test("keeps rejecting a circular own constructor unsupported by the parser", () => {
+  test("preserves a circular own constructor without polluting prototypes", () => {
     const value: Record<string, unknown> = {};
     Object.defineProperty(value, "constructor", { value, enumerable: true });
-    expect(() => serialize(value)).toThrow();
+    const result = deserialize<Record<string, unknown>>(serialize(value));
+
+    expect(Object.keys(result)).toEqual(["constructor"]);
+    expect(result.constructor).toBe(result);
+    expect(Object.getPrototypeOf(result)).toBe(Object.prototype);
   });
 
   test("preserves a genuine Promise resolved in a later stream message", async () => {
