@@ -193,7 +193,7 @@ async function checkPort(
  * 複数ポートのオープン状態を並列チェックするサーバーファンクション
  */
 export const checkPorts = createServerFn({ method: "POST" })
-  .inputValidator((data: PortCheckInput) => {
+  .validator((data: PortCheckInput) => {
     if (!data.host || !validateHost(data.host.trim())) {
       throw new Error("無効なホスト名またはIPアドレスです");
     }

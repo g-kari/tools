@@ -731,7 +731,7 @@ async function queryEmailDNS(domain: string, dkimSelector?: string): Promise<Ema
  * @throws 無効なドメイン形式またはDKIMセレクタ形式の場合
  */
 export const lookupEmailDNS = createServerFn({ method: "GET" })
-  .inputValidator((data: { domain: string; dkimSelector?: string }) => {
+  .validator((data: { domain: string; dkimSelector?: string }) => {
     if (!DOMAIN_REGEX.test(data.domain)) {
       throw new Error("無効なドメイン形式です");
     }

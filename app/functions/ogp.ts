@@ -655,7 +655,7 @@ async function fetchTwitterOgp(
 
 // Server function to fetch OGP data
 export const fetchOgp = createServerFn({ method: "GET" })
-  .inputValidator((data: unknown) => {
+  .validator((data: unknown) => {
     if (!data || typeof data !== "string") {
       throw new Error("URLを入力してください");
     }
