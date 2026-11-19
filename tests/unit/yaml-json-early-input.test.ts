@@ -32,6 +32,12 @@ describe("YAML input across server rendering and hydration", () => {
     document.body.appendChild(container);
     container.innerHTML = renderToString(element);
     const ssrInput = input();
+    const controls = container.querySelectorAll<HTMLInputElement | HTMLButtonElement>(
+      "input, button",
+    );
+    for (const control of controls) expect(control.matches(":disabled")).toBe(true);
+    expect(ssrInput.disabled).toBe(false);
+    expect(container.querySelector("#yaml-loading")?.textContent).toContain("読み込み中");
     expect(ssrInput.value).toBe("");
     // No React onChange is installed yet. Use the real DOM value and a native input event.
     ssrInput.value = early;
@@ -41,10 +47,26 @@ describe("YAML input across server rendering and hydration", () => {
       root = hydrateRoot(container, element);
       if (firstAction) {
         const selector = firstAction === "convert" ? "button.btn-primary" : "button.btn-clear";
-        container.querySelector<HTMLButtonElement>(selector)!.click();
+        const button = container.querySelector<HTMLButtonElement>(selector)!;
+        expect(button.disabled).toBe(true);
+        button.click();
+        expect(input().value).toBe(early);
+        expect(output().value).toBe("");
       }
     });
     expect(input()).toBe(ssrInput);
+    expect(input().value).toBe(early);
+    expect(container.querySelector("#yaml-loading")).toBeNull();
+    for (const control of controls) {
+      if (control.getAttribute("aria-label") === "出力結果をクリップボードにコピー") continue;
+      expect(control.matches(":disabled")).toBe(false);
+    }
+    if (firstAction) {
+      act(() => {
+        const selector = firstAction === "convert" ? "button.btn-primary" : "button.btn-clear";
+        container.querySelector<HTMLButtonElement>(selector)!.click();
+      });
+    }
     expect(input().value).toBe(firstAction === "clear" ? "" : early);
     expect(document.activeElement).toBe(ssrInput);
   }
@@ -88,7 +110,7 @@ describe("YAML input across server rendering and hydration", () => {
   );
 
   it.each([false, true])(
-    "handles first Convert when the click itself forces hydration (StrictMode %s)",
+    "blocks premature Convert and honors the first enabled Convert (StrictMode %s)",
     async (strict) => {
       await hydrate("name: first-action", strict, "convert");
       expect(container.querySelector("#input-error")).toBeNull();
@@ -97,7 +119,7 @@ describe("YAML input across server rendering and hydration", () => {
   );
 
   it.each([false, true])(
-    "honors first Clear without restoring adopted input (StrictMode %s)",
+    "blocks premature Clear and honors first enabled Clear without restoring adopted input (StrictMode %s)",
     async (strict) => {
       await hydrate("name: discard-me", strict, "clear");
       expect(container.querySelector('[role="status"]')?.textContent).toBe(
