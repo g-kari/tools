@@ -246,6 +246,63 @@ describe("validateBase85", () => {
   });
 });
 
+describe("不正なBase85グループの拒否", () => {
+  const invalidCases: ["ascii85" | "z85", string][] = [
+    ["ascii85", "!"],
+    ["ascii85", "<~!~>"],
+    ["ascii85", "!!!!!?"],
+    ["ascii85", "z!"],
+    ["ascii85", 's8W-"'],
+    ["ascii85", "uuuuu"],
+    ["ascii85", 'zs8W-"'],
+    ["ascii85", "s8W-"],
+    ["ascii85", "y"],
+    ["ascii85", "!z"],
+    ["ascii85", "!!!!z"],
+    ["z85", "%nSc1"],
+    ["z85", "#####"],
+    ["z85", "00000#####"],
+  ];
+
+  for (const [variant, encoded] of invalidCases) {
+    it(`${variant}: ${JSON.stringify(encoded)} を部分出力なしで拒否する`, () => {
+      const result = decodeBase85(encoded, variant);
+      expect(result.success).toBe(false);
+      expect(result.decoded).toBe("");
+      expect(result.bytes).toEqual(new Uint8Array(0));
+      expect(result.error).toBeTruthy();
+      expect(validateBase85(encoded, variant)).toBe(result.error);
+    });
+  }
+
+  it.each([
+    ["ascii85", "s8W-!"],
+    ["z85", "%nSc0"],
+  ] as const)("%s: 最大32ビット値 %s を切り捨てずに受理する", (variant, encoded) => {
+    expect(validateBase85(encoded, variant)).toBeNull();
+    const result = decodeBase85(encoded, variant);
+    expect(result.success).toBe(true);
+    expect(result.bytes).toEqual(new Uint8Array(4).fill(255));
+  });
+
+  it("ASCII85: 最大バイト値を含む端数グループを保持する", () => {
+    for (const length of [1, 2, 3]) {
+      const bytes = new Uint8Array(length).fill(255);
+      const encoded = encodeBase85Bytes(bytes, "ascii85").encoded;
+      expect(validateBase85(encoded, "ascii85")).toBeNull();
+      const result = decodeBase85(encoded, "ascii85");
+      expect(result.success).toBe(true);
+      expect(result.bytes).toEqual(bytes);
+    }
+  });
+
+  it("ASCII85: zを完全なグループ間で使える", () => {
+    const result = decodeBase85("<~9jqo^ z 9jqo~>");
+    expect(result.success).toBe(true);
+    expect(result.bytes).toEqual(new Uint8Array([77, 97, 110, 32, 0, 0, 0, 0, 77, 97, 110]));
+  });
+});
+
 // ---------------------------------------------------------------------------
 // encodeBase85Bytes
 // ---------------------------------------------------------------------------

@@ -23,6 +23,17 @@ function toPascalCase(key: string): string {
   return key.charAt(0).toUpperCase() + key.slice(1);
 }
 
+/** 同名のオブジェクトや組込みscalarと衝突しない型名を予約する。 */
+function reserveTypeName(name: string, usedTypeNames: Set<string>): string {
+  let candidate = name;
+  let suffix = 2;
+  while (usedTypeNames.has(candidate)) {
+    candidate = `${name}${suffix++}`;
+  }
+  usedTypeNames.add(candidate);
+  return candidate;
+}
+
 /**
  * 数値が整数かどうかを判定する
  * @param value - 判定対象の数値
@@ -46,6 +57,7 @@ function inferGraphQLType(
   typeName: string,
   options: JsonToGraphQLOptions,
   typeDefsMap: Map<string, string[]>,
+  usedTypeNames: Set<string>,
 ): string {
   if (value === null) {
     return "String";
@@ -68,15 +80,22 @@ function inferGraphQLType(
       return "[String]";
     }
     const firstElem = value[0];
-    const elemType = inferGraphQLType(firstElem, typeName, options, typeDefsMap);
+    const elemType = inferGraphQLType(firstElem, typeName, options, typeDefsMap, usedTypeNames);
     const nn = options.nonNull ? "!" : "";
     return `[${elemType}${nn}]`;
   }
 
   if (typeof value === "object" && value !== null) {
     // ネストされたオブジェクト → 新しい型として登録
-    collectTypeDef(value as Record<string, unknown>, typeName, options, typeDefsMap);
-    return typeName;
+    const uniqueName = reserveTypeName(typeName, usedTypeNames);
+    collectTypeDef(
+      value as Record<string, unknown>,
+      uniqueName,
+      options,
+      typeDefsMap,
+      usedTypeNames,
+    );
+    return uniqueName;
   }
 
   return "String";
@@ -94,16 +113,13 @@ function collectTypeDef(
   typeName: string,
   options: JsonToGraphQLOptions,
   typeDefsMap: Map<string, string[]>,
+  usedTypeNames: Set<string>,
 ): void {
-  if (typeDefsMap.has(typeName)) {
-    return;
-  }
-
   const fieldLines: string[] = [];
 
   for (const [key, val] of Object.entries(obj)) {
     const childTypeName = toPascalCase(key);
-    let fieldType = inferGraphQLType(val, childTypeName, options, typeDefsMap);
+    let fieldType = inferGraphQLType(val, childTypeName, options, typeDefsMap, usedTypeNames);
 
     if (options.nonNull && val !== null) {
       fieldType = `${fieldType}!`;
@@ -137,18 +153,25 @@ export function generateGraphQLSchema(json: string, options: JsonToGraphQLOption
   const rootTypeName = options.rootTypeName || "Root";
   const keyword = options.useInterface ? "interface" : "type";
   const typeDefsMap = new Map<string, string[]>();
+  const usedTypeNames = new Set([rootTypeName, "String", "Int", "Float", "Boolean", "ID"]);
 
   // ルートが配列の場合は最初の要素を使う
   const rootValue = Array.isArray(parsed) ? (parsed.length > 0 ? parsed[0] : {}) : parsed;
 
   if (typeof rootValue !== "object" || rootValue === null) {
     // プリミティブなルートの場合
-    const fieldType = inferGraphQLType(rootValue, "Value", options, typeDefsMap);
+    const fieldType = inferGraphQLType(rootValue, "Value", options, typeDefsMap, usedTypeNames);
     const nn = options.nonNull ? "!" : "";
     return `${keyword} ${rootTypeName} {\n  value: ${fieldType}${nn}\n}`;
   }
 
-  collectTypeDef(rootValue as Record<string, unknown>, rootTypeName, options, typeDefsMap);
+  collectTypeDef(
+    rootValue as Record<string, unknown>,
+    rootTypeName,
+    options,
+    typeDefsMap,
+    usedTypeNames,
+  );
 
   // ルート型を最後に出力するため、順序を整える
   const entries = Array.from(typeDefsMap.entries());

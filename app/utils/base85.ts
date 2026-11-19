@@ -178,6 +178,11 @@ export function decodeBase85(
   encoded: string,
   variant: Base85Variant = "ascii85",
 ): Base85DecodeResult {
+  const error = validateBase85(encoded, variant);
+  if (error) {
+    return { decoded: "", bytes: new Uint8Array(0), success: false, error };
+  }
+
   const alphabet = getAlphabet(variant);
   const isAscii85 = variant === "ascii85";
   const lookup = buildLookup(alphabet);
@@ -318,12 +323,31 @@ export function validateBase85(input: string, variant: Base85Variant = "ascii85"
     return `Z85 エンコード文字列の長さは 5 の倍数である必要があります（現在: ${cleaned.length} 文字）`;
   }
 
-  for (const ch of cleaned) {
-    // ASCII85 の特殊文字
-    if (variant === "ascii85" && (ch === "z" || ch === "y")) continue;
-    if (!alphabet.includes(ch)) {
-      return `無効な文字: '${ch}'`;
+  let offset = 0;
+  while (offset < cleaned.length) {
+    // 'z' は4バイトのゼロを表す独立したグループに限る。
+    if (variant === "ascii85" && cleaned[offset] === "z") {
+      offset++;
+      continue;
     }
+
+    const chunkLength = Math.min(5, cleaned.length - offset);
+    if (chunkLength === 1) {
+      return "ASCII85 の末尾グループは2〜5文字で入力してください（1文字だけではデコードできません）";
+    }
+
+    let value = 0;
+    for (let index = 0; index < 5; index++) {
+      // ASCII85の端数はデコードと同じく最大桁で補完する。
+      const ch = index < chunkLength ? cleaned[offset + index] : "u";
+      const digit = alphabet.indexOf(ch);
+      if (digit === -1) return `無効な文字: '${ch}'`;
+      value = value * 85 + digit;
+    }
+    if (value > 0xffffffff) {
+      return "Base85 のグループが32ビットの範囲を超えています。入力を確認してください";
+    }
+    offset += chunkLength;
   }
 
   return null;
