@@ -51,7 +51,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
-          node-version: "22"
+          node-version: "26"
       - run: npm ci --ignore-scripts
       - run: node node_modules/@playwright/test/cli.js install --with-deps chromium
       - run: sudo apt-get update && sudo apt-get install -y bubblewrap
