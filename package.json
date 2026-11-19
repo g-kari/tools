@@ -62,7 +62,7 @@
     "@types/js-yaml": "^4.0.9",
     "@types/jsbarcode": "^3.11.4",
     "@types/jsdom": "^30.0.0",
-    "@types/marked": "^5.0.2",
+    "@types/marked": "^6.0.0",
     "@types/node": "^25.5.2",
     "@types/qrcode": "^1.5.6",
     "@types/react": "^18.3.1",
