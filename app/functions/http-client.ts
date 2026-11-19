@@ -113,7 +113,7 @@ export function responseHeadersToObject(headers: Headers): Record<string, string
  * Cloudflare Workers上で実行されることでCORSを回避する
  */
 export const sendHttpRequest = createServerFn({ method: "POST" })
-  .inputValidator((data: unknown) => {
+  .validator((data: unknown) => {
     if (!data || typeof data !== "object") {
       throw new Error("リクエストパラメータが無効です");
     }

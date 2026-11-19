@@ -246,7 +246,7 @@ async function queryIpApi(ip: string): Promise<IpGeolocationResult> {
  * @throws IPアドレスが空または無効な形式の場合
  */
 export const lookupIpGeolocation = createServerFn({ method: "GET" })
-  .inputValidator((data: string) => {
+  .validator((data: string) => {
     const trimmed = data.trim();
     if (!trimmed) {
       throw new Error("IPアドレスを入力してください");

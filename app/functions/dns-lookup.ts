@@ -191,7 +191,7 @@ export interface DnsLookupInput {
  * Server function for DNS lookup
  */
 export const lookupDns = createServerFn({ method: "GET" })
-  .inputValidator((data: unknown): DnsLookupInput => {
+  .validator((data: unknown): DnsLookupInput => {
     if (typeof data !== "object" || data === null) {
       throw new Error("Invalid input");
     }

@@ -93,7 +93,7 @@ export function getStatusLabel(status: number): string {
  * 最大 MAX_HOPS ホップまで追跡します。
  */
 export const traceRedirects = createServerFn({ method: "GET" })
-  .inputValidator((data: unknown) => {
+  .validator((data: unknown) => {
     if (!data || typeof data !== "string") {
       throw new Error("URLを入力してください");
     }

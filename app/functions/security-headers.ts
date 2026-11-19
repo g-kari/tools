@@ -460,7 +460,7 @@ export function isPrivateOrLocalhost(hostname: string): boolean {
  * URLからHTTPヘッダーを取得してセキュリティチェックを実行
  */
 export const checkSecurityHeaders = createServerFn({ method: "GET" })
-  .inputValidator((data: string) => {
+  .validator((data: string) => {
     try {
       const url = new URL(data);
       if (!["http:", "https:"].includes(url.protocol)) {
