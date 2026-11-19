@@ -43,7 +43,7 @@ concurrency:
 jobs:
   browser:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v6
         with:
@@ -57,6 +57,7 @@ jobs:
       - run: npm run build
       - run: npx tsc --noEmit
       - run: npx playwright install --with-deps chromium
+        timeout-minutes: 10
       - run: npx vite build --config tests/browser/catalog-search/vite.config.ts
       - run: npx playwright test --config tests/browser/catalog-search/playwright.config.ts
         env:

@@ -8,6 +8,62 @@ const defaultOptions = {
 };
 
 describe("generateGraphQLSchema", () => {
+  test("別階層の同じ子名でも各オブジェクトの項目を保持する", () => {
+    const result = generateGraphQLSchema(
+      JSON.stringify({
+        billing: { address: { city: "Tokyo" } },
+        shipping: { address: { zip: "100" } },
+      }),
+      defaultOptions,
+    );
+    expect(result).toContain("type Address {\n  city: String\n}");
+    expect(result).toContain("type Address2 {\n  zip: String\n}");
+    expect(result).toContain("type Shipping {\n  address: Address2\n}");
+  });
+
+  test("ルートと同じ子名を別型にして両方の項目を保持する", () => {
+    const result = generateGraphQLSchema('{"root":{"nested":true},"outer":1}', defaultOptions);
+    expect(result).toContain("type Root2 {\n  nested: Boolean\n}");
+    expect(result).toContain("type Root {\n  root: Root2\n  outer: Int\n}");
+  });
+
+  test("収集中の親型と同じ子名を再利用しない", () => {
+    const result = generateGraphQLSchema(
+      '{"item":{"item":{"leaf":1},"middle":true}}',
+      defaultOptions,
+    );
+    expect(result).toContain("type Item2 {\n  leaf: Int\n}");
+    expect(result).toContain("type Item {\n  item: Item2\n  middle: Boolean\n}");
+  });
+
+  test("連番候補が既存の型名と衝突しても新しい名前を選ぶ", () => {
+    const result = generateGraphQLSchema(
+      '{"address2":{"a":1},"left":{"address":{"b":true}},"right":{"address":{"c":"x"}}}',
+      defaultOptions,
+    );
+    expect(result).toContain("type Address3 {\n  c: String\n}");
+    expect(result).toContain("type Right {\n  address: Address3\n}");
+  });
+
+  test("組込みscalar名を子オブジェクトで上書きしない", () => {
+    const result = generateGraphQLSchema(
+      '{"string":{"value":1},"id":{"label":"x"},"name":"Alice"}',
+      defaultOptions,
+    );
+    expect(result).toContain("type String2 {\n  value: Int\n}");
+    expect(result).toContain("type Id {\n  label: String\n}");
+    expect(result).toContain("name: String");
+  });
+
+  test("配列とinterface/nonNullでも衝突した型の参照を保持する", () => {
+    const result = generateGraphQLSchema(
+      '{"left":{"items":[{"one":1}]},"right":{"items":[{"two":true}]}}',
+      { ...defaultOptions, nonNull: true, useInterface: true },
+    );
+    expect(result).toContain("interface Items2 {\n  two: Boolean!\n}");
+    expect(result).toContain("interface Right {\n  items: [Items2!]!\n}");
+  });
+
   test("文字列プロパティが String を生成する", () => {
     const result = generateGraphQLSchema('{"name": "Alice"}', defaultOptions);
     expect(result).toContain("String");

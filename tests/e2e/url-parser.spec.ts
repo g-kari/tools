@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "../browser/csv-json/url-app-test";
 
 test.describe("URLパーサー/ビルダー - E2E Tests", () => {
   test.describe.configure({ timeout: 10000 });
@@ -91,6 +91,28 @@ test.describe("URLパーサー/ビルダー - E2E Tests", () => {
 
     const resultUrl = page.locator(".url-parser-result-url-value");
     await expect(resultUrl).toContainText("example.com");
+  });
+
+  test("should keep hostname and port when building a path without a leading slash", async ({
+    page,
+  }) => {
+    await page.locator('[role="tab"]').filter({ hasText: "ビルダー" }).click();
+    await page.locator("#build-hostname").fill("example.com");
+    await page.locator("#build-port").fill("8080");
+    await page.locator("#build-pathname").fill("api/v1/users");
+    await page.locator("#build-hash").fill("results");
+    await page.locator('button[aria-label="URLを生成"]').click();
+
+    const output = page.locator(".url-parser-result-url-value");
+    await expect(output).toHaveText("https://example.com:8080/api/v1/users#results");
+    const parsed = new URL((await output.textContent())!);
+    expect(parsed.hostname).toBe("example.com");
+    expect(parsed.port).toBe("8080");
+    expect(parsed.pathname).toBe("/api/v1/users");
+
+    await page.locator("#build-pathname").fill("/api/v1/users");
+    await page.locator('button[aria-label="URLを生成"]').click();
+    await expect(output).toHaveText("https://example.com:8080/api/v1/users#results");
   });
 
   test("should have proper accessibility attributes", async ({ page }) => {

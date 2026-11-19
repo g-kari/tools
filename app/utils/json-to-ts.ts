@@ -28,9 +28,12 @@ interface GeneratedType {
  * @returns PascalCaseに変換された文字列
  */
 function toPascalCase(str: string): string {
-  return str
+  const name = str
     .replace(/[^a-zA-Z0-9]+(.)/g, (_, c: string) => c.toUpperCase())
-    .replace(/^(.)/, (_, c: string) => c.toUpperCase());
+    .replace(/^(.)/, (_, c: string) => c.toUpperCase())
+    .replace(/[^a-zA-Z0-9_$]/g, "");
+  if (!name) return "Value";
+  return /^[a-zA-Z_$]/.test(name) ? name : `Type${name}`;
 }
 
 /**
@@ -131,7 +134,8 @@ function inferType(
       const childTypeName = toPascalCase(key);
       const childType = inferType(obj[key], childTypeName, options, generatedTypes, usedNames);
 
-      return `  ${key}${optionalMark}: ${childType};`;
+      const propertyName = /^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(key) ? key : JSON.stringify(key);
+      return `  ${propertyName}${optionalMark}: ${childType};`;
     });
 
     const body = properties.join("\n");

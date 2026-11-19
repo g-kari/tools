@@ -143,6 +143,77 @@ describe("buildUrl", () => {
     expect(result).toBe("https://example.com/api/v1/users");
   });
 
+  it.each([undefined, "", "/"])("空またはルートのパス %s はルートを保持する", (pathname) => {
+    expect(buildUrl({ protocol: "https", hostname: "example.com", pathname })).toBe(
+      "https://example.com/",
+    );
+  });
+
+  it.each(["", "8080"])("先頭の / がないパスでホストとポート %s を保持する", (port) => {
+    const result = buildUrl({
+      protocol: "https",
+      hostname: "example.com",
+      port,
+      pathname: "api/v1/users",
+    });
+    expect(result).toBe(`https://example.com${port ? ":" + port : ""}/api/v1/users`);
+    expect(parseUrl(result).hostname).toBe("example.com");
+    expect(parseUrl(result).pathname).toBe("/api/v1/users");
+  });
+
+  it.each(["@other.test/api", "//other.test/api", "https://other.test/api", "\\other.test\\api"])(
+    "パス %s をホスト名として解釈しない",
+    (pathname) => {
+      const result = buildUrl({ protocol: "https", hostname: "example.com", pathname });
+      expect(parseUrl(result).hostname).toBe("example.com");
+      expect(parseUrl(result).isValid).toBe(true);
+    },
+  );
+
+  it.each(["api%2Fv1/日本語 item", "/api%2Fv1/日本語 item"])(
+    "パス %s の既存エンコードを保持する",
+    (pathname) => {
+      expect(buildUrl({ protocol: "https", hostname: "example.com", pathname })).toBe(
+        "https://example.com/api%2Fv1/%E6%97%A5%E6%9C%AC%E8%AA%9E%20item",
+      );
+    },
+  );
+
+  it.each(["api/v1/users", "/api/v1/users"])(
+    "パス %s とユーザー情報・クエリ・フラグメントを分離する",
+    (pathname) => {
+      const result = buildUrl({
+        protocol: "https:",
+        hostname: "example.com",
+        port: "8080",
+        pathname,
+        username: "user@name",
+        password: "synthetic:pass?",
+        queryParams: [
+          { key: "q", value: "hello world & 日本語" },
+          { key: "tag", value: "a" },
+          { key: "tag", value: "b" },
+        ],
+        hash: "#section",
+      });
+      expect(result).toBe(
+        "https://user%40name:synthetic%3Apass%3F@example.com:8080/api/v1/users?q=hello+world+%26+%E6%97%A5%E6%9C%AC%E8%AA%9E&tag=a&tag=b#section",
+      );
+    },
+  );
+
+  it("パス内のクエリとフラグメントより専用入力を優先する既存動作を保持する", () => {
+    expect(
+      buildUrl({
+        protocol: "https",
+        hostname: "example.com",
+        pathname: "/api?old=ignored#ignored",
+        queryParams: [{ key: "page", value: "1" }],
+        hash: "section",
+      }),
+    ).toBe("https://example.com/api?page=1#section");
+  });
+
   it("クエリパラメータを含むURLを生成する", () => {
     const result = buildUrl({
       protocol: "https",
