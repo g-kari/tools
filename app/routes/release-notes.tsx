@@ -85,6 +85,18 @@ export const releases: Release[] = [
     date: "2026-10-19",
     entries: [
       {
+        type: "refactor",
+        title: "UUIDの一括コピーに完了アイコンを追加",
+        description:
+          "React 19へ更新し、UUIDの一括コピーに短い完了フィードバックを追加しました。動きを減らす設定と従来のコピー処理を維持します。",
+      },
+    ],
+  },
+  {
+    version: "2026.10.19",
+    date: "2026-10-19",
+    entries: [
+      {
         type: "fix",
         title: "ナビゲーションのホバーで入力フォーカスを奪わない",
         description:

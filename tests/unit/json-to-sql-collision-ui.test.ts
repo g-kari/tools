@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { act, createElement, type ComponentType } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { Simulate } from "react-dom/test-utils";
+import { changeControl } from "../helpers/change-control";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { ToastProvider } from "../../app/components/Toast";
 import { Route } from "../../app/routes/json-to-sql";
@@ -49,7 +49,7 @@ describe("JSON→SQL列名衝突の実コンポーネント", () => {
   function enter(value: string) {
     act(() => {
       input().value = value;
-      Simulate.change(input());
+      changeControl(input());
     });
   }
   function generate() {
@@ -63,7 +63,7 @@ describe("JSON→SQL列名衝突の実コンポーネント", () => {
     const node = container.querySelectorAll<HTMLInputElement>('input[type="checkbox"]')[1];
     act(() => {
       node.checked = checked;
-      Simulate.change(node);
+      changeControl(node);
     });
   }
 
@@ -73,7 +73,7 @@ describe("JSON→SQL列名衝突の実コンポーネント", () => {
       const select = container.querySelector<HTMLElement & { value: string }>("#jtsql-dialect")!;
       act(() => {
         select.value = dialect;
-        Simulate.change(select);
+        changeControl(select);
       });
       enter('{"name":"demo"}');
       generate();

@@ -3,7 +3,7 @@
 import { act, createElement, StrictMode, type ReactNode } from "react";
 import { hydrateRoot, type Root } from "react-dom/client";
 import { renderToString } from "react-dom/server";
-import { Simulate } from "react-dom/test-utils";
+import { changeControl } from "../helpers/change-control";
 import { afterEach, describe, expect, it, vi } from "vite-plus/test";
 import { ToastProvider } from "../../app/components/Toast";
 import { Route } from "../../app/routes/csv-sql";
@@ -80,14 +80,14 @@ describe("CSV SQL input across server rendering and hydration", () => {
   function edit(value: string) {
     act(() => {
       input().value = value;
-      Simulate.change(input());
+      changeControl(input());
     });
   }
   function changeOption(id: string, value: string) {
     act(() => {
       const option = container.querySelector<ValueControl>(`#${id}`)!;
       option.value = value;
-      Simulate.change(option);
+      changeControl(option);
     });
   }
   function click(name: string) {

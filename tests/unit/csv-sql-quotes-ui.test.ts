@@ -3,7 +3,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { act, createElement } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { Simulate } from "react-dom/test-utils";
+import { changeControl } from "../helpers/change-control";
 import { ToastProvider } from "../../app/components/Toast";
 import { Route } from "../../app/routes/csv-sql";
 
@@ -32,7 +32,7 @@ describe("CSV SQL の引用符エラーからの回復", () => {
     input.focus();
     act(() => {
       input.value = value;
-      Simulate.change(input);
+      changeControl(input);
     });
     return input;
   }

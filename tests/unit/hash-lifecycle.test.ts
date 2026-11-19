@@ -3,7 +3,7 @@ import { webcrypto } from "node:crypto";
 import { TextEncoder } from "node:util";
 import { act, createElement, StrictMode, type ComponentType } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { Simulate } from "react-dom/test-utils";
+import { changeControl } from "../helpers/change-control";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { ToastProvider } from "../../app/components/Toast";
 import { Route, computeMd5Bytes, bytesToHex, bytesToBase64 } from "../../app/routes/hash";
@@ -139,7 +139,7 @@ describe("Hash page latest-input lifecycle", () => {
     const input = container.querySelector<HTMLTextAreaElement>("#hash-input")!;
     act(() => {
       input.value = value;
-      Simulate.change(input);
+      changeControl(input);
     });
   }
   function tab(mode: "text" | "file") {
@@ -149,7 +149,7 @@ describe("Hash page latest-input lifecycle", () => {
   function select(file?: File) {
     const input = container.querySelector<HTMLInputElement>('input[type="file"]')!;
     Object.defineProperty(input, "files", { configurable: true, value: file ? [file] : [] });
-    act(() => Simulate.change(input));
+    act(() => changeControl(input));
   }
   function clearFile() {
     act(() =>
@@ -411,7 +411,7 @@ describe("Hash page latest-input lifecycle", () => {
     },
   );
 
-  it("restarts batched File A→B→A even though the final File object is unchanged", async () => {
+  it("restarts rapid native File A→B→A changes even though the final File object is unchanged", async () => {
     tab("file");
     const a = new File(["A"], "a.txt");
     const b = new File(["B"], "b.txt");
@@ -421,7 +421,10 @@ describe("Hash page latest-input lifecycle", () => {
       select(b);
       select(a);
     });
-    expect(ControlledReader.instances).toHaveLength(2);
+    // Native change events are discrete and React 19 flushes each one. Unlike
+    // Simulate, B starts its own read before A supersedes it; that read must abort.
+    expect(ControlledReader.instances).toHaveLength(3);
+    expect(ControlledReader.instances[1].aborted).toBe(1);
     expect(lastReader().file).toBe(a);
     await load(lastReader(), "A");
     await finish(1);

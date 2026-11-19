@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { act, createElement } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { Simulate } from "react-dom/test-utils";
+import { changeControl } from "../helpers/change-control";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { ToastProvider } from "../../app/components/Toast";
 import { Route } from "../../app/routes/json-flatten";
@@ -33,7 +33,7 @@ describe("JSON Flatten conflict recovery", () => {
   function fill(value: string) {
     act(() => {
       input().value = value;
-      Simulate.change(input());
+      changeControl(input());
     });
   }
 
@@ -70,7 +70,7 @@ describe("JSON Flatten conflict recovery", () => {
     const select = container.querySelector("#delimiter")!;
     act(() => {
       Reflect.set(select, "value", "__");
-      Simulate.change(select);
+      changeControl(select);
     });
     const source = '{"a__b":1,"a":{"b":2}}';
     fill(source);

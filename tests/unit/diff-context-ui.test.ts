@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { act, createElement, type ComponentType } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { Simulate } from "react-dom/test-utils";
+import { changeControl } from "../helpers/change-control";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { ToastProvider } from "../../app/components/Toast";
 import { Route, computeDiff } from "../../app/routes/diff";
@@ -64,7 +64,7 @@ describe("Diff context view in the actual component", () => {
       ]) {
         const area = container.querySelector<HTMLTextAreaElement>(`#${id}`)!;
         area.value = value;
-        Simulate.change(area);
+        changeControl(area);
       }
     });
   }

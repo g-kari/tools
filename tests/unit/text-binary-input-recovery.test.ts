@@ -2,7 +2,7 @@
 
 import { act, createElement } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { Simulate } from "react-dom/test-utils";
+import { changeControl } from "../helpers/change-control";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { ToastProvider } from "../../app/components/Toast";
 import { Route } from "../../app/routes/text-binary";
@@ -66,7 +66,7 @@ describe("text-binary mounted mixed-group recovery", () => {
   function enter(value: string) {
     act(() => {
       input().value = value;
-      Simulate.change(input());
+      changeControl(input());
     });
   }
 

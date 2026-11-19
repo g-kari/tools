@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { act, createElement } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { Simulate } from "react-dom/test-utils";
+import { changeControl } from "../helpers/change-control";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { ToastProvider } from "../../app/components/Toast";
 import { Route } from "../../app/routes/json-pointer";
@@ -37,14 +37,14 @@ describe("JSON Pointer evaluation recovery", () => {
   function fillJson(value: string) {
     act(() => {
       jsonInput().value = value;
-      Simulate.change(jsonInput());
+      changeControl(jsonInput());
     });
   }
 
   function fillPointer(value: string) {
     act(() => {
       pointerInput().value = value;
-      Simulate.change(pointerInput());
+      changeControl(pointerInput());
     });
   }
 

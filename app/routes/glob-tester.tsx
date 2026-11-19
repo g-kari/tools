@@ -1,3 +1,4 @@
+import type { JSX } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useMemo } from "react";
 import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";

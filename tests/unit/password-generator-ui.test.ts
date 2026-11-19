@@ -2,7 +2,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { act, createElement, type ComponentType } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { Simulate } from "react-dom/test-utils";
+import { changeControl } from "../helpers/change-control";
 import { Route } from "../../app/routes/password-generator";
 const { copy } = vi.hoisted(() => ({ copy: vi.fn(async () => true) }));
 vi.mock("@tanstack/react-router", () => ({ createFileRoute: () => (options: unknown) => options }));
@@ -20,11 +20,11 @@ async function click(name: string) {
 }
 async function option(name: string, checked: boolean) {
   const input = container.querySelector<HTMLInputElement>(`input[aria-label="${name}"]`)!;
-  await act(async () => Simulate.change(input, { target: { checked } } as never));
+  await act(async () => changeControl(input, { target: { checked } } as never));
 }
 async function length(value: number) {
   await act(async () =>
-    Simulate.change(container.querySelector("#passwordLength")!, {
+    changeControl(container.querySelector("#passwordLength")!, {
       target: { value: String(value) },
     } as never),
   );
