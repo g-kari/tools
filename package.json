@@ -94,5 +94,5 @@
     "vite": "npm:@voidzero-dev/vite-plus-core@8.3.8000",
     "vitest": "5.1.0"
   },
-  "packageManager": "npm@11.12.1"
+  "packageManager": "npm@11.21.2"
 }
