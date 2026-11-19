@@ -40,9 +40,10 @@ for (const width of [1280, 390]) {
         await expect(input).toHaveValue(early);
         // Move native focus away, so only the route's mount effect can grant readiness.
         await page.keyboard.press("Tab");
-        await expect(
-          page.getByRole("button", { name: "YAML → JSON 変換", exact: true }),
-        ).toBeFocused();
+        const convert = page.getByRole("button", { name: "YAML → JSON 変換", exact: true });
+        await expect(convert).toBeDisabled();
+        await expect(convert).not.toBeFocused();
+        await expect(input).not.toBeFocused();
       } finally {
         releaseScripts();
       }
