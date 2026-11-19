@@ -31,23 +31,23 @@ cleanup() {
 }
 trap cleanup EXIT
 sudo /bin/bash -euo pipefail -c '
-  printf "3221225472\n" > "$1/memory.max"
+  printf "6442450944\n" > "$1/memory.max"
   printf "0\n" > "$1/memory.swap.max"
-  printf "128\n" > "$1/pids.max"
+  printf "512\n" > "$1/pids.max"
   printf "200000 100000\n" > "$1/cpu.max"
-  test "$(cat "$1/memory.max")" = 3221225472
+  test "$(cat "$1/memory.max")" = 6442450944
   test "$(cat "$1/memory.swap.max")" = 0
-  test "$(cat "$1/pids.max")" = 128
+  test "$(cat "$1/pids.max")" = 512
   test "$(cat "$1/cpu.max")" = "200000 100000"
 ' -- "${cgroup}"
-echo "Isolation: no external network; empty allowlisted environment; read-only source/toolchain; 2GiB temporary scratch; 3GiB memory; 128 tasks; two CPUs; 360s process CPU; 128MiB file cap; 480s wall cap."
+echo "Isolation: no external network; empty allowlisted environment; read-only source/toolchain; 2GiB temporary scratch; 6GiB memory; 512 tasks; two CPUs; 360s process CPU; 128MiB file cap; 480s wall cap."
 
 # Root is needed only to join the cgroup. Drop to the checkout owner before
 # bwrap maps the caller's host uid; no host permissions need to be changed.
 sudo /bin/bash -euo pipefail -c 'printf "%s\n" "$$" > "$1/cgroup.procs"; grep -qx "$$" "$1/cgroup.procs"; shift; exec "$@"' -- \
   "${cgroup}" /usr/bin/setpriv --reuid "${uid}" --regid "${gid}" --clear-groups --no-new-privs \
   /usr/bin/timeout --signal=KILL 480 \
-  /usr/bin/prlimit --cpu=360 --fsize=134217728 --nofile=512 --nproc=128 \
+  /usr/bin/prlimit --cpu=360 --fsize=134217728 --nofile=512 --nproc=512 \
   /usr/bin/bwrap --unshare-all --unshare-user --unshare-cgroup --disable-userns --die-with-parent --new-session \
   --uid "${uid}" --gid "${gid}" --cap-drop ALL \
   --ro-bind /usr /usr --ro-bind "${node_root}" "${node_root}" \
