@@ -122,12 +122,7 @@
 }
 
 body {
-  font-family:
-    "Roboto",
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
+  font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background: var(--md-sys-color-surface);
   color: var(--md-sys-color-on-surface);
 }

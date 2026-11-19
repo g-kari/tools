@@ -45,10 +45,7 @@ test.describe("robots.txtジェネレーター - E2E Tests", () => {
   });
 
   test("should have add rule functionality", async ({ page }) => {
-    const addBtn = page
-      .locator("button")
-      .filter({ hasText: /追加/ })
-      .first();
+    const addBtn = page.locator("button").filter({ hasText: /追加/ }).first();
     await expect(addBtn).toBeVisible();
   });
 

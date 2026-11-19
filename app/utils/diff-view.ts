@@ -48,7 +48,7 @@ export function createDiffView(
     else blocks.push({ type: "lines", lines: visible });
   }
 
-  for (let start = 0; start < lines.length; ) {
+  for (let start = 0; start < lines.length;) {
     if (lines[start].type !== "unchanged") {
       appendVisible([lines[start]]);
       start++;
