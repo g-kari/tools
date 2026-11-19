@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "../browser/csv-json/url-app-test";
 
 test.describe("テキスト置換 - E2E Tests", () => {
   test.describe.configure({ timeout: 10000 });
@@ -75,6 +75,69 @@ test.describe("テキスト置換 - E2E Tests", () => {
 
     const output = await page.locator("#output-text").inputValue();
     expect(output).toContain("NUM");
+  });
+
+  test("should preserve replacement tokens as literal text with regex off", async ({ page }) => {
+    await expect(page.getByRole("checkbox", { name: "正規表現", exact: true })).not.toBeChecked();
+    await page.locator("#input-text").fill("foo foo");
+    await page.locator("#find-input").fill("foo");
+
+    for (const replaceAll of [true, false]) {
+      await page.getByRole("checkbox", { name: "全件置換", exact: true }).setChecked(replaceAll);
+      for (const replacement of ["$$", "$&", "$`", "$'", "$1", "\\$&"]) {
+        await page.locator("#replace-input").fill(replacement);
+        await expect(page.locator("#output-text")).toHaveValue(
+          replaceAll ? `${replacement} ${replacement}` : `${replacement} foo`,
+        );
+        await expect(page.locator("#input-text")).toHaveValue("foo foo");
+        await expect(page.locator("#find-input")).toHaveValue("foo");
+        await expect(page.locator("#replace-input")).toHaveValue(replacement);
+        await expect(page.getByRole("button", { name: "置換後テキストをコピー" })).toBeEnabled();
+        await expect(page.locator('.text-replace-match-badge[role="status"]')).toContainText(
+          "2 件マッチ",
+        );
+      }
+    }
+
+    await page.locator("#replace-input").fill("");
+    await expect(page.locator("#output-text")).toHaveValue(" foo");
+    await expect(page.locator('.text-replace-match-badge[role="status"]')).toContainText(
+      "1件のみ置換",
+    );
+  });
+
+  test("should preserve regex substitutions and return to literal replacement", async ({
+    page,
+  }) => {
+    await page.locator("#input-text").fill("foo foo");
+    await page.getByRole("checkbox", { name: "正規表現", exact: true }).check();
+    await page.locator("#find-input").fill("(f)(oo)");
+    await page.locator("#replace-input").fill("$2-$1");
+    await expect(page.locator("#output-text")).toHaveValue("oo-f oo-f");
+    await page.getByRole("checkbox", { name: "全件置換", exact: true }).uncheck();
+    await expect(page.locator("#output-text")).toHaveValue("oo-f foo");
+    await page.locator("#replace-input").fill("$$");
+    await expect(page.locator("#output-text")).toHaveValue("$ foo");
+
+    await page.getByRole("checkbox", { name: "正規表現", exact: true }).uncheck();
+    await page.locator("#find-input").fill("foo");
+    await expect(page.locator("#output-text")).toHaveValue("$$ foo");
+    await page.getByRole("checkbox", { name: "全件置換", exact: true }).check();
+    await expect(page.locator("#output-text")).toHaveValue("$$ $$");
+    await page.getByRole("button", { name: "すべてクリア" }).click();
+    for (const id of ["input-text", "find-input", "replace-input", "output-text"]) {
+      await expect(page.locator(`#${id}`)).toHaveValue("");
+    }
+    await expect(page.getByRole("button", { name: "置換後テキストをコピー" })).toBeDisabled();
+
+    await page.locator("#input-text").fill("foo foo");
+    await page.locator("#find-input").fill("foo");
+    await page.locator("#replace-input").fill("\\$&😀");
+    await expect(page.locator("#output-text")).toHaveValue("\\$&😀 \\$&😀");
+    await page.getByRole("button", { name: "置換後テキストをコピー" }).click();
+    await expect
+      .poll(() => page.evaluate(() => navigator.clipboard.readText()))
+      .toBe("\\$&😀 \\$&😀");
   });
 
   test("should clear input when clear button is clicked", async ({ page }) => {
