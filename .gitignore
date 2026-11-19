@@ -175,3 +175,4 @@ tmp
 
 # Claude Code development files
 .claude/plans/
+.vitest/

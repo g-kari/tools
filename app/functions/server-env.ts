@@ -403,7 +403,7 @@ export const getServerEnv = createServerFn({ method: "GET" }).handler(
 
       // Process CF headers first
       for (const header of cfHeaders) {
-        const value = (headers as Record<string, string | undefined>)[header.key];
+        const value = (headers as unknown as Record<string, string | undefined>)[header.key];
         if (value && value.trim()) {
           items.push({
             key: header.label,
@@ -416,7 +416,7 @@ export const getServerEnv = createServerFn({ method: "GET" }).handler(
 
       // Process client hint headers
       for (const header of clientHintHeaders) {
-        const value = (headers as Record<string, string | undefined>)[header.key];
+        const value = (headers as unknown as Record<string, string | undefined>)[header.key];
         if (value && value.trim()) {
           items.push({
             key: header.label,
@@ -429,7 +429,7 @@ export const getServerEnv = createServerFn({ method: "GET" }).handler(
 
       // Process standard headers
       for (const header of standardHeaders) {
-        const value = (headers as Record<string, string | undefined>)[header.key];
+        const value = (headers as unknown as Record<string, string | undefined>)[header.key];
         if (value && value.trim()) {
           items.push({
             key: header.label,

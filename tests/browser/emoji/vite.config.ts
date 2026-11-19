@@ -1,5 +1,5 @@
 import { fileURLToPath } from "node:url";
-import { defineConfig } from "vite";
+import { defineConfig } from "vite-plus";
 import tailwindcss from "@tailwindcss/vite";
 
 const real = process.env.EMOJI_REAL_FFMPEG === "1";

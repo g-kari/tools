@@ -1,5 +1,5 @@
 import { fileURLToPath } from "node:url";
-import { defineConfig } from "vite";
+import { defineConfig } from "vite-plus";
 
 /** Build the real clipboard hook with a synthetic React UI and no app services. */
 export default defineConfig({

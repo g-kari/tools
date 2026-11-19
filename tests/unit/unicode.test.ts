@@ -3,7 +3,7 @@ import { describe, it, expect } from "vite-plus/test";
 // Unicode conversion utility functions (same as in the app)
 function toUnicodeEscape(text: string): string {
   let result = "";
-  for (let i = 0; i < text.length; ) {
+  for (let i = 0; i < text.length;) {
     const cp = text.codePointAt(i);
     if (cp === undefined) break;
 

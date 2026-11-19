@@ -39,7 +39,7 @@ export const Route = createFileRoute("/unicode")({
 
 function toUnicodeEscape(text: string): string {
   let result = "";
-  for (let i = 0; i < text.length; ) {
+  for (let i = 0; i < text.length;) {
     const cp = text.codePointAt(i);
     if (cp === undefined) break;
 

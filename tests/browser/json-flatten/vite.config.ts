@@ -1,5 +1,5 @@
 import { fileURLToPath } from "node:url";
-import { defineConfig } from "vite";
+import { defineConfig } from "vite-plus";
 import tailwindcss from "@tailwindcss/vite";
 
 /** Workers・外部サービスを含めず、実際のJSON Flatten UIだけをビルドする。 */
