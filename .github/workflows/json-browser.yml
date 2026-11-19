@@ -57,7 +57,7 @@ jobs:
           mkdir -p test-results
           git rev-parse HEAD | tee test-results/json-source-sha.txt
         if: always()
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: json-browser-results

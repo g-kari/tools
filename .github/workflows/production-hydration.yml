@@ -57,7 +57,7 @@ jobs:
         run: |
           mkdir -p test-results/hydration-diagnostic
           git rev-parse HEAD > test-results/hydration-diagnostic/source-sha.txt
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: production-hydration-redacted-results
