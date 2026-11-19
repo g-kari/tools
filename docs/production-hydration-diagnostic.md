@@ -29,18 +29,22 @@ Do not enable a live read merely to retry a rejected response.
 
 ## Snapshot provenance
 
-- Application source: commit `9a0f02f2620e52dc82ac7d7b09e0b6aec0e53ad4`
-- Production entry: `/assets/main-DgnOJ0SI.js`
-- Active lazy route: `/assets/base64-pNp3AUSU.js`
-- `owned-assets.json`: static route asset metadata, 43 public owned JS pins, and
+- Application source: commit `0bda822dcf11cb6dc15774691a9c7a7a6d48f740`
+- Production entry: `/assets/index-Dy4Opz-M.js`
+- Active lazy route: `/assets/base64-Bg5omd1F.js`
+- `owned-assets.json`: static route asset metadata, 14 public owned JS pins, and
   22 exact source-blob pins for the generated SSR graph, client/router, SSR entry,
   Vite configuration, and packages
 
 The current source-built full manifest has 304 routes. Its 302 inactive routes
-have no assets and are pruned by TanStack's actual dehydration algorithm. The
-remaining two-route manifest matches the previous snapshot after only the entry
-and release-notes paths change. Inactive metadata is not an established cause
-of this snapshot's framework-envelope rejection.
+have no assets and are pruned by TanStack's actual dehydration algorithm. For
+this refresh, production was verified as a build of the pinned source commit:
+9 of the 14 pinned chunks and every stylesheet are byte-identical to a local
+build of that commit, two chunks match after normalizing referenced chunk
+filenames, and the remaining chunks differ only through the site chunk's
+build-time publisher/slot constants and the import aliases they cause.
+Inactive metadata is not an established cause of this snapshot's
+framework-envelope rejection.
 
 Each owned JS file is read only from `https://tools.0g0.xyz`, checked against its
 exact byte length and SHA-256, and cached outside tracked source. Redirects,
