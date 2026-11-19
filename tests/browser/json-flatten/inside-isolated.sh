@@ -13,5 +13,5 @@ test -d node_modules
 npm test -- tests/unit/json-flatten.test.ts tests/unit/json-flatten-collisions.test.ts tests/unit/json-flatten-collisions-ui.test.ts tests/unit/release-notes.test.ts
 npm run build
 node node_modules/typescript/bin/tsc --noEmit
-node node_modules/vite/bin/vite.js build --config tests/browser/json-flatten/vite.config.ts
+node node_modules/vite-plus/bin/vp build --config tests/browser/json-flatten/vite.config.ts
 node node_modules/@playwright/test/cli.js test --config tests/browser/json-flatten/playwright.config.ts
