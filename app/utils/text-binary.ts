@@ -132,9 +132,13 @@ export function validateBinary(input: string): string | null {
     }
   }
 
+  const groupSize = tokens[0]?.length;
+  if (tokens.some((token) => token.length !== groupSize)) {
+    return "4ビットと8ビットのグループが混在しています。すべて8ビット（1バイト）、またはすべて4ビット（ニブル）のグループにそろえてください。";
+  }
+
   // ニブル（4ビット）の場合はペア数チェック
-  const nibbles = tokens.filter((t) => t.length === 4);
-  if (nibbles.length > 0 && nibbles.length % 2 !== 0) {
+  if (groupSize === 4 && tokens.length % 2 !== 0) {
     return "ニブル（4ビット）の数が奇数です。4ビットグループは2つで1バイトを表します。";
   }
 
