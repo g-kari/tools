@@ -5,7 +5,7 @@ test "${HOME}" = /scratch/home
 test "${TMPDIR}" = /scratch/tmp
 mkdir -p /scratch/home /scratch/tmp /scratch/cache /scratch/repo
 cp -R /source/app /source/public /source/tests /scratch/repo/
-for file in package.json package-lock.json vite.config.ts vitest.config.ts tsconfig.json tailwind.config.ts components.json wrangler.jsonc; do
+for file in package.json package-lock.json renovate.json vite.config.ts vitest.config.ts tsconfig.json tailwind.config.ts components.json wrangler.jsonc; do
   cp "/source/${file}" /scratch/repo/
 done
 cd /scratch/repo
