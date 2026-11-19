@@ -4,14 +4,13 @@ The fixture bundles the real `/json-flatten` component, ToastProvider, and exist
 
 Only synthetic JSON is used. The GET-only server binds to `127.0.0.1:4198`, serves fixed built assets, and maps `/json-flatten` to its fixture page. A restrictive CSP blocks connections and external resources; browser assertions reject external requests and JavaScript runtime errors.
 
-Run from the repository root:
+On a trusted hosted runner with all isolation prerequisites installed, run from the repository root:
 
 ```sh
-npx vite build --config tests/browser/json-flatten/vite.config.ts
-npx playwright test --config tests/browser/json-flatten/playwright.config.ts
+bash tests/browser/json-flatten/run-isolated.sh
 ```
 
-The scoped workflow checks the exact PR head or main push SHA. Dependency and Chromium installation occur before validation, with repository lifecycle scripts disabled. A fail-closed hosted wrapper then runs related unit tests, the production build, TypeScript, the fixture build, and two Chromium scenarios at desktop 1280px and mobile-width 390px.
+The scoped workflow checks the exact PR head or main push SHA. Dependency and Chromium installation occur before validation, with repository lifecycle scripts disabled. The workflow rejects empty or syntactically invalid wrapper and inner scripts before execution. A fail-closed hosted wrapper then runs related unit tests, the production build, TypeScript, the fixture build, and two Chromium scenarios at desktop 1280px and mobile-width 390px.
 
 Validation uses an OS-enforced namespace with no external network, an empty allowlisted environment, read-only source/toolchain, and a disposable source copy inside 2GiB of temporary scratch. Cgroup limits cap memory at 3GiB without swap, tasks at 128, and CPU bandwidth at two cores; process limits cap CPU at 360 seconds and individual files at 128MiB, with a 480-second wall limit. No alternate execution route is used if these controls fail. Loopback is available only inside the isolated namespace for the fixture server.
 

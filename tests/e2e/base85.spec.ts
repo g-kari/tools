@@ -78,4 +78,34 @@ test.describe("Base85 エンコード・デコードツール (/base85)", () => 
     // エラーメッセージが表示される
     await expect(page.getByRole("alert")).toBeVisible();
   });
+
+  for (const { variant, valid, invalid, expected } of [
+    { variant: "ASCII85", valid: "9jqo^", invalid: "9jqo^!", expected: "Man " },
+    { variant: "ASCII85", valid: "9jqo^", invalid: 's8W-"', expected: "Man " },
+    { variant: "Z85", valid: "Hello", invalid: "%nSc1", expected: "86 4f d2 6f" },
+  ]) {
+    test(`${variant}: ${invalid} の拒否後に入力を直して回復できる`, async ({ page }) => {
+      await page.getByRole("tab", { name: "デコード" }).click();
+      const variantName = variant === "ASCII85" ? /^ASCII85（/ : /^Z85（/;
+      await page.getByRole("radio", { name: variantName }).check();
+      const input = page.locator("textarea").first();
+      const output = page.getByRole("textbox", { name: "デコード結果", exact: true });
+      const copy = page.getByRole("button", { name: /コピー/i });
+      const swap = page.getByRole("button", { name: /入れ替え|swap/i });
+      await input.fill(valid);
+      await expect(output).toHaveValue(expected);
+      await expect(copy).toBeEnabled();
+      await input.fill(invalid);
+      await expect(input).toHaveValue(invalid);
+      await expect(page.getByRole("alert")).toBeVisible();
+      await expect(output).toHaveCount(0);
+      await expect(copy).toBeDisabled();
+      await expect(swap).toBeDisabled();
+      await input.fill(valid);
+      await expect(page.getByRole("alert")).toHaveCount(0);
+      await expect(output).toHaveValue(expected);
+      await expect(copy).toBeEnabled();
+      await expect(swap).toBeEnabled();
+    });
+  }
 });
