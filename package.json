@@ -35,7 +35,7 @@
     "@tanstack/react-start": "1.169.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "croner": "^10.0.1",
+    "croner": "^11.0.0",
     "encoding-japanese": "^2.2.0",
     "gsap": "^3.14.2",
     "html-react-parser": "^5.2.17",
