@@ -38,7 +38,7 @@
     "croner": "^11.0.0",
     "encoding-japanese": "^2.2.0",
     "gsap": "^3.14.2",
-    "html-react-parser": "^5.2.17",
+    "html-react-parser": "^6.0.0",
     "js-yaml": "^4.3.2",
     "jsbarcode": "^3.12.3",
     "jsonpath-plus": "^10.4.0",
