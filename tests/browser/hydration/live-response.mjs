@@ -1,7 +1,9 @@
 /** Runtime-only public response inspection; never serialize or save its HTML. */
 import { createHash } from "node:crypto";
 import { parse } from "parse5";
-import ts from "typescript";
+// TypeScript 7.0 ships no compiler API (transpileModule / createSourceFile); the official
+// compat package @typescript/typescript6 provides the 6.0 API until the 7.1 API lands.
+import ts from "@typescript/typescript6";
 import { verifySourceSnapshot } from "./owned-assets.mjs";
 
 const inertType = "application/x-tools-hydration-inert";

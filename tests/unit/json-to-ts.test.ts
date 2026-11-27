@@ -1,4 +1,6 @@
-import ts from "typescript";
+// TypeScript 7.0 ships no compiler API (transpileModule / createSourceFile); the official
+// compat package @typescript/typescript6 provides the 6.0 API until the 7.1 API lands.
+import ts from "@typescript/typescript6";
 import { describe, it, expect } from "vite-plus/test";
 import { generateTypeScript, getSampleJson } from "../../app/utils/json-to-ts";
 import type { JsonToTsOptions } from "../../app/utils/json-to-ts";
