@@ -7,6 +7,7 @@ import { TipsCard } from "~/components/TipsCard";
 import { StatusAnnouncer } from "~/hooks/useStatusAnnouncement";
 import { useCopyWithFeedback } from "~/hooks/useCopyWithFeedback";
 import * as yaml from "js-yaml";
+import { loadYamlDocument } from "../utils/yaml";
 
 export const Route = createFileRoute("/yaml-json")({
   head: () => ({
@@ -56,7 +57,7 @@ export function yamlToJson(yamlStr: string, indent: number = 2): string {
   if (!yamlStr.trim()) {
     throw new Error("YAMLデータが空です");
   }
-  const parsed = yaml.load(yamlStr);
+  const parsed = loadYamlDocument(yamlStr);
   if (parsed === null || parsed === undefined) {
     throw new Error("YAMLデータが空です");
   }

@@ -3,7 +3,7 @@ import { webcrypto } from "node:crypto";
 import { TextEncoder } from "node:util";
 import { act, createElement, StrictMode, type ComponentType } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { Simulate } from "react-dom/test-utils";
+import { Simulate } from "./helpers/simulate";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { ToastProvider } from "../../app/components/Toast";
 import { Route, computeMd5Bytes, bytesToHex, bytesToBase64 } from "../../app/routes/hash";
