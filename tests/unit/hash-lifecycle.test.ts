@@ -3,7 +3,7 @@ import { webcrypto } from "node:crypto";
 import { TextEncoder } from "node:util";
 import { act, createElement, StrictMode, type ComponentType } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { Simulate } from "react-dom/test-utils";
+import { Simulate } from "./helpers/simulate";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { ToastProvider } from "../../app/components/Toast";
 import { Route, computeMd5Bytes, bytesToHex, bytesToBase64 } from "../../app/routes/hash";
@@ -411,7 +411,7 @@ describe("Hash page latest-input lifecycle", () => {
     },
   );
 
-  it("restarts batched File A→B→A even though the final File object is unchanged", async () => {
+  it("restarts File A→B→A even though the final File object is unchanged", async () => {
     tab("file");
     const a = new File(["A"], "a.txt");
     const b = new File(["B"], "b.txt");
@@ -421,7 +421,13 @@ describe("Hash page latest-input lifecycle", () => {
       select(b);
       select(a);
     });
-    expect(ControlledReader.instances).toHaveLength(2);
+    // React 19 flushes each real change event discretely (React 18's Simulate batched
+    // them), so B's selection commits and starts its own read before A's reselection
+    // supersedes it. The component cancels B's read via the effect cleanup, and the
+    // reselection of the identical File object still starts a fresh read for A.
+    expect(ControlledReader.instances).toHaveLength(3);
+    expect(ControlledReader.instances[1].file).toBe(b);
+    expect(ControlledReader.instances[1].aborted).toBe(1);
     expect(lastReader().file).toBe(a);
     await load(lastReader(), "A");
     await finish(1);

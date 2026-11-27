@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, useMemo } from "react";
+import { useState, useMemo, type JSX } from "react";
 import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
 import { TipsCard } from "~/components/TipsCard";
 import { matchGlobPatterns } from "../utils/glob-tester";

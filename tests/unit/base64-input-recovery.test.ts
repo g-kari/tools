@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { Component, act, createElement, type ReactNode } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { Simulate } from "react-dom/test-utils";
+import { Simulate } from "./helpers/simulate";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { Route } from "../../app/routes/base64";
 import { ToastProvider } from "../../app/components/Toast";

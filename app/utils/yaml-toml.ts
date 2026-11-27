@@ -7,6 +7,32 @@
 import * as yaml from "js-yaml";
 import * as TOML from "smol-toml";
 
+// js-yaml 5 では !!timestamp がデフォルトのスキーマ（CORE_SCHEMA）から外れたが、
+// v4 では YAML のタイムスタンプが Date に解決され、この変換はその前提で動いている。
+// このモジュール専用に timestamp タグを戻したスキーマで読み取る。
+// あわせて、js-yaml 5 の dumper が TOML のローカル時刻に対して出す
+// !!timestamp '07:32:00.000' 形式（v4/v5 標準の timestamp タグでは読み戻せない）を、
+// 明示タグの場合に限り TOML のローカル時刻として読み取る。
+const LOCAL_TIME_PATTERN = /^[0-9]{1,2}:[0-9]{2}:[0-9]{2}(\.[0-9]+)?$/;
+
+const timestampTag = yaml.defineScalarTag<Date>("tag:yaml.org,2002:timestamp", {
+  implicit: true,
+  implicitFirstChars: yaml.timestampTag.implicitFirstChars,
+  resolve: (source, isExplicit) => {
+    const resolved = yaml.timestampTag.resolve(source, isExplicit, "tag:yaml.org,2002:timestamp");
+    if (resolved !== yaml.NOT_RESOLVED) return resolved;
+    if (isExplicit && LOCAL_TIME_PATTERN.test(source)) {
+      const time = new TOML.TomlDate(source);
+      if (time.isValid()) return time;
+    }
+    return yaml.NOT_RESOLVED;
+  },
+  identify: (data) => data instanceof Date,
+  represent: (data) => data.toISOString(),
+});
+
+const loadSchema = yaml.CORE_SCHEMA.withTags(timestampTag);
+
 /**
  * YAML を TOML に変換する
  * @param yamlStr - 変換元の YAML 文字列
@@ -15,7 +41,7 @@ import * as TOML from "smol-toml";
  */
 export function yamlToToml(yamlStr: string): string {
   if (!yamlStr.trim()) throw new Error("YAML データが空です");
-  const parsed = yaml.load(yamlStr);
+  const parsed = yaml.load(yamlStr, { schema: loadSchema });
   if (parsed === null || parsed === undefined) throw new Error("YAML データが空です");
   if (typeof parsed !== "object" || Array.isArray(parsed)) {
     throw new Error(
