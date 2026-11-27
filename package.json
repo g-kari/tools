@@ -17,6 +17,7 @@
     "prepare": "vp config"
   },
   "dependencies": {
+    "@animate-ui/react": "2.0.0",
     "@cf-wasm/photon": "^0.4.0",
     "@ffmpeg/ffmpeg": "^0.12.15",
     "@ffmpeg/util": "^0.12.2",
@@ -47,6 +48,7 @@
     "lucide-react": "^1.69.0",
     "marked": "^18.0.0",
     "mermaid": "^12.3.0",
+    "motion": "14.4.0",
     "qrcode": "^1.5.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

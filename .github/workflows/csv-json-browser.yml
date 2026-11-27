@@ -3,6 +3,9 @@ name: CSV JSON column preservation
 on:
   pull_request:
     paths:
+      - "app/routes/uuid.tsx"
+      - "app/styles/tools/uuid-generator.css"
+      - "tests/e2e/uuid-copy-feedback.spec.ts"
       - "app/client.tsx"
       - "tests/unit/client-startup.test.ts"
       - "tests/e2e/client-startup-native.spec.ts"
@@ -74,6 +77,9 @@ on:
   push:
     branches: [main]
     paths:
+      - "app/routes/uuid.tsx"
+      - "app/styles/tools/uuid-generator.css"
+      - "tests/e2e/uuid-copy-feedback.spec.ts"
       - "app/client.tsx"
       - "tests/unit/client-startup.test.ts"
       - "tests/e2e/client-startup-native.spec.ts"
@@ -175,6 +181,10 @@ jobs:
       - run: npx tsc --noEmit
       - run: npx playwright install --with-deps chromium
         timeout-minutes: 10
+      - run: npx playwright test --config tests/browser/csv-json/uuid-app.config.ts
+        env:
+          CI: true
+          WRANGLER_SEND_METRICS: "false"
       - if: matrix.suite == 'core'
         run: npx playwright test --config tests/browser/csv-json/navigation-focus-app.config.ts
         env:

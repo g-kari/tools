@@ -39,6 +39,18 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
+    version: "2026.11.27",
+    date: "2026-11-27",
+    entries: [
+      {
+        type: "feat",
+        title: "UUIDの一括コピーに完了アイコンを追加",
+        description:
+          "UUIDの一括コピーが成功したときに短い完了フィードバックを追加しました。動きを減らす設定ではフェードを省略し、従来のコピー処理と読み上げ通知を維持します。",
+      },
+    ],
+  },
+  {
     version: "2026.11.07",
     date: "2026-11-07",
     entries: [

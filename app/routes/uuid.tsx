@@ -1,6 +1,7 @@
+import { Check, Copy } from "lucide-react";
 import { createFileRoute } from "@tanstack/react-router";
 import { SITE_BASE_URL, SITE_OGP_IMAGE } from "../constants/site";
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useRef, useCallback, useEffect, type ComponentType } from "react";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { TipsCard } from "~/components/TipsCard";
@@ -116,6 +117,24 @@ function UuidGenerator() {
     },
     [uuids, formatUUID, copy, announceStatus],
   );
+
+  const [CopyFeedback, setCopyFeedback] = useState<ComponentType | null>(null);
+  useEffect(() => {
+    if (!copiedAll || CopyFeedback) return;
+    let active = true;
+    // The native button stays mounted and usable even if this optional chunk fails.
+    void import("~/components/UuidCopyFeedback").then(
+      ({ UuidCopyFeedback }) => {
+        if (active) setCopyFeedback(() => UuidCopyFeedback);
+      },
+      () => {
+        /* A static success icon is the complete fallback. */
+      },
+    );
+    return () => {
+      active = false;
+    };
+  }, [copiedAll, CopyFeedback]);
 
   const handleCopyAll = useCallback(async () => {
     const allUuids = uuids.map(formatUUID).join("\n");
@@ -261,10 +280,20 @@ function UuidGenerator() {
                   <Button
                     type="button"
                     variant="secondary"
-                    className="btn-secondary"
+                    className="btn-secondary uuid-copy-all"
                     size="sm"
+                    data-copied={copiedAll ? "" : undefined}
                     onClick={handleCopyAll}
                   >
+                    {copiedAll ? (
+                      CopyFeedback ? (
+                        <CopyFeedback />
+                      ) : (
+                        <Check size={16} aria-hidden="true" data-icon="copied" />
+                      )
+                    ) : (
+                      <Copy size={16} aria-hidden="true" data-icon="copy" />
+                    )}
                     {copiedAll ? "コピーしました" : "すべてコピー"}
                   </Button>
                 )}
