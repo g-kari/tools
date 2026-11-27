@@ -40,7 +40,8 @@ describe("global navigation focus ownership", () => {
       vi.fn(() => Promise.reject(new Error("Unexpected fetch"))),
     );
     mounted = true;
-    // React 18's runtime accepts Document roots; its installed Container type omits Document.
+    // React 19 renders into a Document root by adopting the existing <html>/<head>/<body>
+    // as singletons; its installed Container type still omits Document.
     // Keep the real root document hierarchy instead of nesting an <html> inside a test <div>.
     root = createRoot(document as unknown as Parameters<typeof createRoot>[0]);
     actSync(() => root.render(createElement(Route.options.component as () => ReactNode)));
@@ -49,9 +50,10 @@ describe("global navigation focus ownership", () => {
     if (mounted) actSync(() => root.unmount());
     vi.clearAllTimers();
     vi.useRealTimers();
-    document.appendChild(document.createElement("html"));
-    document.documentElement.appendChild(document.createElement("head"));
-    document.documentElement.appendChild(document.createElement("body"));
+    // React 19 leaves the adopted document skeleton in place on unmount (only the
+    // rendered children are removed), so there is no skeleton to rebuild here.
+    // Rebuilding it anyway throws HierarchyRequestError: a document can have only
+    // one element child.
     vi.unstubAllGlobals();
     vi.restoreAllMocks();
   });

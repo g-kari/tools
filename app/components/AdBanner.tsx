@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, type JSX } from "react";
 import { ADSENSE_PUBLISHER_ID } from "../constants/site";
 
 /**

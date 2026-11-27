@@ -103,7 +103,7 @@ export function toYAML(entries: EnvEntry[]): string {
   return yaml
     .dump(values, {
       forceQuotes: true,
-      quotingType: '"',
+      quoteStyle: "double",
       lineWidth: -1,
       noRefs: true,
     })

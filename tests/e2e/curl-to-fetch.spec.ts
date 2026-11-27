@@ -1,5 +1,7 @@
 import { test, expect } from "../browser/csv-json/url-app-test";
-import ts from "typescript";
+// TypeScript 7.0 ships no compiler API (transpileModule / createSourceFile); the official
+// compat package @typescript/typescript6 provides the 6.0 API until the 7.1 API lands.
+import ts from "@typescript/typescript6";
 
 test.describe("cURL → fetch 変換ツール", () => {
   test.beforeEach(async ({ page }) => {
