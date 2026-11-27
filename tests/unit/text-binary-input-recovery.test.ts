@@ -2,7 +2,7 @@
 
 import { act, createElement } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { Simulate } from "react-dom/test-utils";
+import { Simulate } from "./helpers/simulate";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { ToastProvider } from "../../app/components/Toast";
 import { Route } from "../../app/routes/text-binary";

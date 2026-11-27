@@ -1,6 +1,24 @@
 import * as yaml from "js-yaml";
 
 /**
+ * YAML文字列をパースする。
+ *
+ * js-yaml 5 はコメントのみ等の「内容のないドキュメント」で
+ * "expected a document, but the input is empty" を投げる（v4 は undefined を返した）。
+ * 呼び出し側の既存の空チェックに乗せるため、その場合だけ undefined を返す。
+ */
+export function loadYamlDocument(yamlStr: string): unknown {
+  try {
+    return yaml.load(yamlStr);
+  } catch (err) {
+    if (err instanceof Error && err.message.includes("input is empty")) {
+      return undefined;
+    }
+    throw err;
+  }
+}
+
+/**
  * YAML文字列を整形（インデント付き）する。
  * @param yamlStr - 整形対象のYAML文字列
  * @param indent - インデントのスペース数（デフォルト: 2）
@@ -12,7 +30,7 @@ export function formatYaml(yamlStr: string, indent: number = 2, sortKeys: boolea
   if (!yamlStr.trim()) {
     throw new Error("YAMLデータが空です");
   }
-  const parsed = yaml.load(yamlStr);
+  const parsed = loadYamlDocument(yamlStr);
   if (parsed === null || parsed === undefined) {
     throw new Error("YAMLデータが空です");
   }
@@ -33,7 +51,7 @@ export function minifyYaml(yamlStr: string): string {
   if (!yamlStr.trim()) {
     throw new Error("YAMLデータが空です");
   }
-  const parsed = yaml.load(yamlStr);
+  const parsed = loadYamlDocument(yamlStr);
   if (parsed === null || parsed === undefined) {
     throw new Error("YAMLデータが空です");
   }
@@ -55,7 +73,7 @@ export function validateYaml(yamlStr: string): { valid: boolean; error?: string 
     return { valid: false, error: "YAMLデータが空です" };
   }
   try {
-    const parsed = yaml.load(yamlStr);
+    const parsed = loadYamlDocument(yamlStr);
     if (parsed === null || parsed === undefined) {
       return { valid: false, error: "YAMLデータが空または内容がありません" };
     }

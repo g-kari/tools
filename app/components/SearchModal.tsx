@@ -46,7 +46,7 @@ interface SearchModalProps {
   /** Route changes dismiss search without restoring focus to the previous page. */
   locationKey?: string;
   /** Logical fallback when a shortcut has no connected, focusable invoker. */
-  returnFocusRef?: RefObject<HTMLElement>;
+  returnFocusRef?: RefObject<HTMLElement | null>;
 }
 
 function dialogTabStops(dialog: HTMLElement): HTMLElement[] {

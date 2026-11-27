@@ -67,6 +67,7 @@
     "@types/qrcode": "^1.5.6",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "@typescript/typescript6": "^6.0.2",
     "@vitest/coverage-v8": "5.1.0",
     "esbuild": "^0.28.0",
     "jsdom": "^31.0.1",

@@ -67,6 +67,15 @@ test.describe("Global navigation focus ownership", () => {
     await expect(input).toBeFocused();
     await page.keyboard.type("AFTER=clear");
     await expect(input).toHaveValue("AFTER=clear");
+    // Scrolling the narrow layout can leave the resting pointer over a nav category,
+    // whose hover-open dropdown then covers the parse button and intercepts the click
+    // (the pointer ends up inside the category subtree, so the menu never closes).
+    // Park the pointer at the bottom-right corner so any open menu closes first.
+    await page.mouse.move(385, 839);
+    await expect(page.locator(".nav-category-btn", { hasText: "カラー" })).toHaveAttribute(
+      "aria-expanded",
+      "false",
+    );
     await page.getByRole("button", { name: ".envの内容をパース", exact: true }).click();
     await expect(page.locator(".env-parser-table")).toContainText("AFTER");
     await expect(page.locator(".env-parser-table")).toContainText("clear");

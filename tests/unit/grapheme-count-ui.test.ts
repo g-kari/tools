@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test"
 import { act, createElement, StrictMode, type ComponentType } from "react";
 import { createRoot, hydrateRoot, type Root } from "react-dom/client";
 import { renderToString } from "react-dom/server";
-import { Simulate } from "react-dom/test-utils";
+import { Simulate } from "./helpers/simulate";
 import { Route as CharCountRoute } from "../../app/routes/char-count";
 import { Route as TextStatsRoute } from "../../app/routes/text-stats";
 
