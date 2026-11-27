@@ -37,6 +37,17 @@ describe("UUID version selection in the actual route", () => {
 
   beforeEach(() => {
     vi.stubGlobal("IS_REACT_ACT_ENVIRONMENT", true);
+    // The lazily loaded copy feedback reads matchMedia (reduced motion); jsdom lacks it.
+    vi.stubGlobal("matchMedia", (media: string) => ({
+      matches: false,
+      media,
+      onchange: null,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      dispatchEvent: () => true,
+    }));
     fetch = vi.fn(() => {
       throw new Error("Unexpected external request");
     });
