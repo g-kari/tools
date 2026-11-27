@@ -17,7 +17,7 @@
     "prepare": "vp config"
   },
   "dependencies": {
-    "@animate-ui/react": "2.0.0",
+    "@animate-ui/react": "2.4.3",
     "@cf-wasm/photon": "^0.4.0",
     "@ffmpeg/ffmpeg": "^0.12.15",
     "@ffmpeg/util": "^0.12.2",
